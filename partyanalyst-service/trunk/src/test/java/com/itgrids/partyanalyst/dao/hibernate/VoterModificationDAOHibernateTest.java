@@ -256,11 +256,187 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testGetVoterModificationDetailsOfAConstituencyForAPublication()
+	/*public void testGetVoterModificationDetailsOfAConstituencyForAPublication()
 	{
 		List<Object[]> list = voterModificationDAO.getVoterModificationDetailsOfAConstituencyForAPublication(232l, 8l);
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetAvailableConstituenciesInAPublication()
+	{
+		List<Long> list = voterModificationDAO.getAvailableConstituenciesInAPublication(8l);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetListOfVoterIdsInAPublicationBasedOnCount()
+	{
+		List<Long> list = voterModificationDAO.getListOfVoterIdsInAPublicationBasedOnCount(1l,8l,1l);
+		System.out.println(list.size());
+		for(Long voterId : list)
+			System.out.println(voterId);
+	}*/
+	
+	/*public void testGetObjectsByVoterIdsList()
+	{
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		voterIdsList.add(1l);
+		List<VoterModification> list = voterModificationDAO.getObjectsByVoterIdsList(221l,8l, voterIdsList);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetVMVoterIdsAndStatusList()
+	{
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		voterIdsList.add(1l);
+		List<Object[]> list = voterModificationDAO.getVMVoterIdsAndStatusList(221l,8l, voterIdsList);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testUpdateVoterStatus()
+	{
+		List<Long> voterModificationIdsList = new ArrayList<Long>(0);
+		voterModificationIdsList.add(305882l);
+		int count = voterModificationDAO.updateVoterStatus(voterModificationIdsList, 3l);
+		System.out.println(count);
+	}*/
+	public void testUpdateVoterStatusInVoterModification()
+	{
+		try{
+			List<Long> constituenciesList = voterModificationDAO.getAvailableConstituenciesInAPublication(8l);
+			if(constituenciesList != null && constituenciesList.size() > 0)
+			{
+				for(Long constituencyId : constituenciesList)
+				{
+					try{
+						System.out.println(constituencyId +" -- Constituency has Started.....");
+						List<Long> addNDeleteList = voterModificationDAO.getListOfVoterIdsInAPublicationBasedOnCount(constituencyId,8l,1l);
+						List<Long> rList = new ArrayList<Long>(0);
+						if(addNDeleteList != null && addNDeleteList.size() > 0)
+						{
+							List<Object[]> vmlist = new ArrayList<Object[]>(0);
+							System.out.println("Add deletion List Size : "+addNDeleteList.size());
+							if(addNDeleteList.size() <= 1000)
+							{
+								vmlist = voterModificationDAO.getVMVoterIdsAndStatusList(constituencyId,8l,addNDeleteList);
+								
+								if(vmlist != null && vmlist.size() > 0)
+								{
+									rList = getList(vmlist,"added");
+									updateVoterStatus(rList,1l);
+									rList = getList(vmlist,"deleted");
+									updateVoterStatus(rList,2l);
+								}
+							}
+							else
+							{
+								int fromIndex = 0;
+								int toIndex = 1000;
+								for(;;)
+								{
+									if(fromIndex >= toIndex)
+										break;
+									vmlist = voterModificationDAO.getVMVoterIdsAndStatusList(constituencyId,8l,addNDeleteList.subList(fromIndex, toIndex));
+									
+									fromIndex+=1000;
+									toIndex+=1000;
+									
+									if(toIndex >= addNDeleteList.size())
+										toIndex = addNDeleteList.size();
+									
+									if(vmlist != null && vmlist.size() > 0)
+									{
+										rList = getList(vmlist,"added");
+										updateVoterStatus(rList,1l);
+										rList = getList(vmlist,"deleted");
+										updateVoterStatus(rList,2l);
+									}
+								}
+							}
+							
+						}
+						
+						List<Long> movOrRelList = voterModificationDAO.getListOfVoterIdsInAPublicationBasedOnCount(constituencyId,8l,2l);
+						if(movOrRelList != null && movOrRelList.size() > 0)
+						{
+							List<Object[]> vmlist = new ArrayList<Object[]>(0);
+							System.out.println("Add deletion List Size : "+movOrRelList.size());
+							if(movOrRelList.size() <= 1000)
+							{
+								vmlist = voterModificationDAO.getVMVoterIdsAndStatusList(constituencyId,8l,movOrRelList);
+								if(vmlist != null && vmlist.size() > 0)
+								{
+									rList = getList(vmlist,"added");
+									updateVoterStatus(rList,4l);
+									rList = getList(vmlist,"deleted");
+									updateVoterStatus(rList,3l);
+								}
+							}
+							else
+							{
+								int fromIndex = 0;
+								int toIndex = 1000;
+								for(;;)
+								{
+									if(fromIndex >= toIndex)
+										break;
+									vmlist = voterModificationDAO.getVMVoterIdsAndStatusList(constituencyId,8l,movOrRelList.subList(fromIndex, toIndex));
+									fromIndex+=1000;
+									toIndex+=1000;
+									
+									if(toIndex >= movOrRelList.size())
+										toIndex = movOrRelList.size();
+									
+									if(vmlist != null && vmlist.size() > 0)
+									{
+										rList = getList(vmlist,"added");
+										updateVoterStatus(rList,4l);
+										rList = getList(vmlist,"deleted");
+										updateVoterStatus(rList,3l);
+									}
+								}
+							}
+							
+						}
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
+	public void updateVoterStatus(List<Long> list, Long statusId)
+	{
+		try{
+			if(list.size() > 0)
+			{
+				int count = voterModificationDAO.updateVoterStatus(list,statusId);
+				System.out.println(count+" Records are updated");
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+	}
 	
+	public List<Long> getList(List<Object[]> inList, String status)
+	{
+		List<Long> list = new ArrayList<Long>(0);
+		try{
+			for(Object[] params : inList)
+			{
+				if(params[1].toString().equalsIgnoreCase(status))
+					list.add((Long)params[0]);
+			}
+			return list;
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return list;
+		}
+		
+	}
 }
