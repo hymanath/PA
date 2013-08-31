@@ -42,6 +42,7 @@ public class VoterModification extends BaseModel implements Serializable{
 	private Long publicationDateId;
 	private Long constituencyId;
 	private VoterStatus voterStatus;
+	private Long voterStatusId;
 	
 	public VoterModification()
 	{}
@@ -151,6 +152,15 @@ public class VoterModification extends BaseModel implements Serializable{
 
 	public void setVoterStatus(VoterStatus voterStatus) {
 		this.voterStatus = voterStatus;
+	}
+
+	@Column(name = "voter_status_id", length = 10)
+	public Long getVoterStatusId() {
+		return voterStatusId;
+	}
+
+	public void setVoterStatusId(Long voterStatusId) {
+		this.voterStatusId = voterStatusId;
 	}
 
 	
