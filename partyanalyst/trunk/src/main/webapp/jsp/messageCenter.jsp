@@ -1082,7 +1082,7 @@ var jsObj=
 	</div>
 
    <div style="margin:27px 0 0;">
-          <button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> 
+          <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
 
 	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;" onclick="isValidateFields('search');"> Search </button> 
    </div>
