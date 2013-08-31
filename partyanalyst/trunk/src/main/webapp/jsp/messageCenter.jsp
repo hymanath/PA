@@ -1083,14 +1083,16 @@ var jsObj=
 
 	</div>
 
-   <div style="margin:27px 0 0;">
+  
+   </div>
+
+    <div style="margin:27px 0 0;text-align:center;">
           <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
 
-	     <button id="searchCandidatesId" class="btn btn-primary" style="float:right;" onclick="isValidateFields('search');"> Search </button> 
+	     <button id="searchCandidatesId" class="btn btn-primary" onclick="isValidateFields('search');"> Search </button> 
    </div>
 
 
-   </div>
 
 
     <div class="span4" style="margin:19px 0px 14px 292px;border:2px solid #F2F2F2;padding:8px;">
