@@ -237,6 +237,7 @@ function showUpdateStatus(results)
   {
    
    $('#errorDiv').html('Demo Request Updated Successfully.').css("color","green");
+   window.opener.parentWindowRefresh();
    return;
   }
   else
