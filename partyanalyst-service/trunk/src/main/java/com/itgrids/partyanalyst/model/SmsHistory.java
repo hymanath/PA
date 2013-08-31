@@ -38,7 +38,6 @@ public class SmsHistory extends BaseModel implements Serializable {
 	private Long userId;
 	
 	private SmsType smsType;
-	private Long smsTypeId;
 	private Long smsResponseDetailsId;
 	private VoiceSmsResponseDetails voiceSmsResponseDetails;
 	
@@ -147,14 +146,7 @@ public class SmsHistory extends BaseModel implements Serializable {
 		this.smsType = smsType;
 	}
 
-	@Column(name="sms_type_id")
-	public Long getSmsTypeId() {
-		return smsTypeId;
-	}
-
-	public void setSmsTypeId(Long smsTypeId) {
-		this.smsTypeId = smsTypeId;
-	}
+	
 	
    @Column(name="voice_sms_response_details_id")
 	public Long getSmsResponseDetailsId() {

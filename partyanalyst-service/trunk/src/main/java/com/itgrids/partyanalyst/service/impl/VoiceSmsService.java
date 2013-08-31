@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
@@ -51,8 +52,16 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private TransactionTemplate transactionTemplate = null;
 	private ISmsHistoryDAO smsHistoryDAO;
 	private ISmsModuleDAO smsModuleDAO;
+	private TaskExecutor taskExecutor;
 
 
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
 
 	public ISmsModuleDAO getSmsModuleDAO() {
 		return smsModuleDAO;
@@ -256,20 +265,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 				  smsTrackDAO.save(smsTrack);
 			  }
 			
-		 String responseCode = sendVoiceSMSUsingProvider(userName , password , senderMobileNumber.toString() ,mobileNumbersString ,audioPath);
+			  taskExecutor.execute(sendVoiceSMSUsingProvider(userName , password , senderMobileNumber.toString() ,mobileNumbersString ,audioPath, voiceSmsResponseDetailsVO , userId , otherNumbers , description , mobileNumbers));
 		 
-		 if(responseCode.equalsIgnoreCase("No Matched Mobile Numbers Found."))
-			 return "No Matched Mobile Numbers Found.";
-		
-	     Long responseId = 	saveResponseDetails(responseCode , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
-	     
-	     
-	     saveSentSMSHistoryDetails(
-					userId,
-					voiceSmsResponseDetailsVO.getCadreMobileNumbers(),
-					voiceSmsResponseDetailsVO.getInfluencePeopleMobileNumbers(),
-					voiceSmsResponseDetailsVO.getVotersMobileNumbers(),
-					otherNumbers,responseId);	     
+		 
 		
 		}catch(Exception e)
 		{
@@ -290,16 +288,14 @@ public class VoiceSmsService implements IVoiceSmsService {
 	 * @param audioPath
 	 * @return String
 	 */
-	public String sendVoiceSMSUsingProvider(String userName , String password , String senderMobileNumber ,String mobileNumbersString ,String audioPath)
+	public Runnable sendVoiceSMSUsingProvider(String userName , String password , String senderMobileNumber ,String mobileNumbersString ,String audioPath , VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO,Long userId ,List<Long> otherNumbers,String description ,String mobileNumbers)
 	{
 		log.debug("Entered into the sendVoiceSMSUsingProvider service method");
 		StringBuffer buffer = new StringBuffer();
 		
 		try
-		{
-			
-			if(mobileNumbersString.equalsIgnoreCase(""))
-				return "No Matched Mobile Numbers Found.";
+		{			
+	
 			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
 	
 		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -318,12 +314,24 @@ public class VoiceSmsService implements IVoiceSmsService {
 			rd.close();
 			conn.disconnect();
 		
+			
+		 Long responseId = 	saveResponseDetails(buffer.toString() , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
+		     
+		     
+		     saveSentSMSHistoryDetails(
+						userId,
+						voiceSmsResponseDetailsVO.getCadreMobileNumbers(),
+						voiceSmsResponseDetailsVO.getInfluencePeopleMobileNumbers(),
+						voiceSmsResponseDetailsVO.getVotersMobileNumbers(),
+						otherNumbers,responseId);	     
+			
+		
 		}catch(Exception e)
 		{
 			log.error("Exception raised in  sendVoiceSMSUsingProvider service method");
 			e.printStackTrace();
 		}
-		return buffer.toString();
+		return new Thread();
 	}
 	
 	/**
@@ -414,7 +422,6 @@ public class VoiceSmsService implements IVoiceSmsService {
 			smsHistory.setSentDate(dateUtilService.getCurrentDateAndTimeInStringFormat());
 			smsHistory.setSmsModule(smsModule);
 			smsHistory.setSmsResponseDetailsId(responseId);
-			smsHistory.setSmsTypeId(1L);
 	
 	        smsHistoryDAO.save(smsHistory);
 		}catch(Exception e)
@@ -437,7 +444,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			voiceSmsResponseDetails.setNoOfSmsSent(new Long(noOfSmsSent));
 			voiceSmsResponseDetails.setResponseCode(responseCode);
 			voiceSmsResponseDetails.setUser(userDAO.get(userId));
-			voiceSmsResponseDetails.setMobileNumbers(mobileNumbers);
+			//voiceSmsResponseDetails.setMobileNumbers(mobileNumbers);
 			voiceSmsResponseDetails.setSmsDescription(description);
 			
 			voiceSmsResponseDetails = voiceSmsResponseDetailsDAO.save(voiceSmsResponseDetails);
@@ -480,7 +487,6 @@ public class VoiceSmsService implements IVoiceSmsService {
 					
 					responseVO.setResponseId(details.getVoiceSmsResponseDetailsId());
 					responseVO.setResponseCode(details.getResponseCode());
-					responseVO.setNumbers(details.getMobileNumbers());
 					responseVO.setDateSent(details.getTimeSent().toString());
 					responseVO.setDescription(details.getSmsDescription());
 					responseVO.setUserName(details.getUser().getFirstName()+" "+details.getUser().getLastName());
@@ -781,7 +787,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 				queryString.append("and UVD.casteState.caste.casteId in(:casteIds) ");
 			}
 			if(searchVO.isGenderSelected())
-				queryString.append("and UVD.voter.gender = :gender");
+				queryString.append("and UVD.voter.gender = :gender ");
 			
 			if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
 				queryString.append("and BPV.booth.constituency.constituencyId = :locationValue");
