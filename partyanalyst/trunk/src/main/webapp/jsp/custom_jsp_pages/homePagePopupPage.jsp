@@ -145,14 +145,14 @@ text-shadow:0px 1px 1px #fff;
 <div>	
 								
 								  <div class="modal-header ">
-									<h3>Win 2014 Election by gaining 3-5% more votes with our product at a very low price</h3>
+									<h3> Lot of New Functionalities are available as <span style="color:green;">Online</span> & <span style="color:red;">Offline</span> Application in PartyAnalyst to Earn 3%-5% more Votes</h3>
 								  </div>
 								  
 								  <div class="modal-body "><div class="row-fluid">
 									    
 
 <div class="span8">
-<img src="images/new_homepage/explain.gif"/></div>
+<img src="images/new_homepage/Popup.png" height='350' width='400' style="margin-left:55px;"/></div>
 <form class=" span4">
 										  <h2><small>For our Product</small> DEMO</h2><span id="errorMsg" style="display:none;color:red;font-family:verdana;"></span><fieldset>
 											<div class="control-group">
