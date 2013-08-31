@@ -2097,7 +2097,6 @@ window.receiveFromChild = function(data) {
 		var url = "<%=request.getContextPath()%>/getMobileNumbersOfSelectedId.action?"+param;
 		callAjax1(param,jsObj,url);
 };
-//3333
 window.receiveFromCadreChild = function(data) {
 	var str='';
 	/*console.log(mobileNoArr);
@@ -2859,7 +2858,6 @@ function openSmsHistoryWindow()
 
 function removeCadre()
 {
-			 	//console.log(selectedCadreDetails);
 
 	 selectedCadreDetails = {};
 
@@ -2869,11 +2867,6 @@ function removeCadre()
      });
 
 	 $('#cadreCount').html(0);
-	 		 	console.log(selectedCadreDetails);
-
-
-
-
 
 }
 
@@ -2889,14 +2882,11 @@ function removeInfluencePeople()
      });
 
 	 $('#influencePeopleCount').html(0);
-	 	console.log(selectedCadreDetails);
 
 }
 
 function removeVoters()
 {
-			 	//console.log(selectedCadreDetails);
-
 	selectedVotersDetails = {};
 
 	$.each(selectedVotersDetails, function(index, value) {
@@ -2904,7 +2894,6 @@ function removeVoters()
          selectedMobileNumbers.splice(numberIndex, 1);
      });
 	 $('#voterCount').html(0);
-	 		 	//console.log(selectedCadreDetails);
 }
 
 function sendDirectSMSToVoters()
@@ -2937,7 +2926,6 @@ function sendDirectSMSToVotersAjax()
                  smsType:$("input:radio[name=smsType]:checked").val()
 
 			};
-			console.log(jsObj);
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendVoiceSMSDirectlyToVoters.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
