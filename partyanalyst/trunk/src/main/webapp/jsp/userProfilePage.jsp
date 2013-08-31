@@ -971,7 +971,13 @@ var newsajaxCalled = false;
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location)
 	{
 
-	
+	$(".placeholderCenterDiv").children().remove();
+$("#headerDiv").html('');
+ $("#subscriptionsStreamingData").children().remove();
+ $("#impdatesDiv").hide();
+ $("#announcementsDiv").hide();
+ clearAllFavoriteLinkDivs();
+ clearAllSubscriptionDivs();
     var jsObj=
 	      { 
 		    queryType:queryType,
@@ -1062,12 +1068,7 @@ function getMaxCount(result)
 
 function showNewsCountDetails(result,jsObj)
 {
-$(".placeholderCenterDiv").children().remove();
-$("#headerDiv").html('');
- $("#subscriptionsStreamingData").children().remove();
- $("#impdatesDiv").hide();
- clearAllFavoriteLinkDivs();
- clearAllSubscriptionDivs();
+
 
 $("#headerDiv").html('<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'');
 
