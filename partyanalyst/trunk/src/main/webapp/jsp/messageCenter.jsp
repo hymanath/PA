@@ -1068,7 +1068,7 @@ var jsObj=
 		<input type="text" id="age2" style="width:100px;">
 	 </div>
 	 -->
-	 <div id="ageDiv">
+	 <div id="ageDiv" style="display:none;">
 	  <!-- <div  class="selectDiv"  style="float:left;">
 		 <input type="checkbox" id="ageCheckbox"/>Age range :</div>-->
 		 <span>Age Range</span>
@@ -1321,14 +1321,6 @@ function validateFieldsForSendingSms()
 
 function ajaxToSendVoiceSms(){
 
-	
- selectedVotersDetails = {};
-
- selectedCadreDetails = {};
-
- selectedInfluencePeopleDetails = {};
-
- selectedMobileNumbers = new Array();
 
 
 
@@ -1753,8 +1745,18 @@ function callAjax1(param,jsObj,url){
 						buildResponseDetails(myResults);
 
 					else if(jsObj.task == "sendVoiceSms")
-				    {
-						// $.unblockUI();
+				    { 
+							
+							 selectedVotersDetails = {};
+
+							 selectedCadreDetails = {};
+
+							 selectedInfluencePeopleDetails = {};
+
+							 selectedMobileNumbers = new Array();
+
+							 $('#cadreCount , #influencePeopleCount, #voterCount').html(0)
+
 						$('#responseDetailsDiv').dialog('close');
 						alert(myResults);
 
