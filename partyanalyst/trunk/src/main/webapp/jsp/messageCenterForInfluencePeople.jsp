@@ -157,7 +157,7 @@ $(document).ready(function(){
 
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
 
-<div class="span11" align="center" style="margin-left:30px;">
+<div class="span11" align="center">
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -178px;"></span>
  <div class="row">
 
