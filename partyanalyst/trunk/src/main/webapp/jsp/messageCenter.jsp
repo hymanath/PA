@@ -1221,7 +1221,7 @@ var jsObj=
 
  <a class="btn pull-left btn-primary" href="javascript:{openSmsHistoryWindow();}">Click Here To See History</a>
 
- <span id="successMsg" style="font-weight:bold;color:green;"></span>
+ <span id="successMsg" style="font-weight:bold;color:green;margin-left:200px;"></span>
  <a class="btn pull-right btn-primary" href="javascript:{sendSMS();}">Send SMS </a>
  </div>
 
