@@ -1084,7 +1084,7 @@ var jsObj=
    <div style="margin:27px 0 0;">
           <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
 
-	     <button id="searchCandidatesId" class="btn btn-success" style="float:right;" onclick="isValidateFields('search');"> Search </button> 
+	     <button id="searchCandidatesId" class="btn btn-primary" style="float:right;" onclick="isValidateFields('search');"> Search </button> 
    </div>
 
 
@@ -1211,8 +1211,8 @@ var jsObj=
 
  </div>
 
- <a class="btn pull-left" href="javascript:{openSmsHistoryWindow();}">HISTORY</a>
- <a class="btn pull-right" href="javascript:{sendSMS();}">Send SMS </a>
+ <a class="btn pull-left btn-primary" href="javascript:{openSmsHistoryWindow();}">Click Here To See History</a>
+ <a class="btn pull-right btn-primary" href="javascript:{sendSMS();}">Send SMS </a>
  </div>
 
 
