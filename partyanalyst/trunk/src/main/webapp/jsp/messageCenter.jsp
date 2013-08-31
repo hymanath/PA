@@ -946,8 +946,9 @@ var jsObj=
     
 
   <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
+
    
-     <div style="margin:12px 0px 0px 318px;" class="radioSpecial">
+     <div class="radioSpecial" style="margin:9px 0px 0px 72px;">
 		 <span style="font-size:13px;font-weight:bold;">Search By:</span><input type="radio" id="cadre" name="searchFor" value="cadre" class="searchType" checked>
 		   <label for="cadre">Cadre</label>
 		<input type="radio" id="influencePeople" name="searchFor" value="influencePeople" class="searchType" >
@@ -956,14 +957,11 @@ var jsObj=
 		   <label for="voter">Voter</label>
 	 </div>
 
-  <!--<div style="margin:6px 0px 20px 356px;">
-		<label style="float:left;"> <input type="radio" name="searchFor" value="cadre" class="searchType" checked="checked" style="margin:0px;">&nbsp;&nbsp;&nbsp;Cadre</label>
-		<label style="float:left;" > <input type="radio" name="searchFor" value="influencePeople" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Influencing People</label>
-		<label style="float:left;"> <input type="radio" name="searchFor" value="voter" class="searchType"  style="margin:0px;"/>&nbsp;&nbsp;&nbsp;Voter</label>
-	 </div>-->
+	
   
-  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="border:0;text-align:center;margin:6px 0px 13px 288px;">
-        
+  <div class="widget whitegloss span5"  id="voterSearchDiv1" style="border:0;text-align:center;margin:9px;">
+
+    
 		   
 		<div id="AlertMsgs" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
@@ -1035,25 +1033,19 @@ var jsObj=
 	   <span>Select Locality</span><font class="requiredFont">*</font> <select id="localityField" class="selectWidth" name="state" onchange="getLocalitiesList('ward','wardField'),getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:60px;width:165px;">
 	   <option value="0">Select Locality</option></select> 
 	  </div>
-	
-   <!--<div style="text-align:center;margin-left:140px;"><input type="button" value="Voter Search" id="voterSearchBtn" class="btn" onclick="voterDetailsValidation()"/></div>-->
-		
+   
  </div>
 
+  <div class="span4" style="border:2px solid #F2F2F2;padding:8px;background-color:#FAFAFA;margin:5px 0px 0px 95px;" id="selectedPeople">
+    <label>No Of Cadre Selected<span id="cadreCount" style="font-weight:bold;margin-left:83px;" class="badge">0</span><a class="pull-right" href="javascript:{removeCadre()}" title="Click here to remove selected cadre numbers"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
+    <label>No Of Influencing People Selected<span id="influencePeopleCount" style="font-weight:bold;margin-left:2px;" class="badge">0</span><a class="pull-right" href="javascript:{removeInfluencePeople()}" title="Click here to remove selected influencing people numbers"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
+    <label>No Of Voters Selected<span id="voterCount" style="font-weight:bold;margin-left:77px;" class="badge">0</span><a href="javascript:{removeVoters();}" title="Click here to remove selected voter numbers" class="pull-right"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
+  </div>
 
-   <div class="span5 widget" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 381px;margin-left: 268px;border:0px;padding:17px 0px 0px 37px;display:none;" id="searchOptionsDiv">
 
-   
-	 
+   <div class="span5 widget" style="font-weight:bold;margin-bottom: 15px;font-size:13px;width: 381px;border:0px;padding:17px 0px 0px 37px;display:none;clear:both;margin-left:10px;" id="searchOptionsDiv">
 
-	 <!--<div class="selectDiv" id="genderDiv"style="margin-bottom: 10px;">
-	  Gender  <span style="margin-left:79px;">:</span>
-		<input type="radio" checked="true" id="all" name="gender" style=" margin-top: 0px;margin-left: 25px;" value="All"></label><Span style="margin-left:5px;">All </Span> 
-		<input type="radio" id="male" name="gender" style=" margin-top: 0px;margin-left: 10px;" value="M"><Span style="margin-left:5px;">Male </Span> 
-		<input type="radio" id="female" value="F" name="gender" style=" margin-top: 0px;margin-left: 10px;"> <Span style="margin-left:5px;" >Female<Span>
-		
-	  </div>-->
-	  
+   	   
    
      <div class="selectDiv radioSpecial" id="genderDiv"style="margin-bottom: 10px;">
 	 <span style="margin-right:100px;">GENDER:</span>
@@ -1100,11 +1092,12 @@ var jsObj=
    </div>
 
    <div style="clear:both;">
-	<a href="javascript:{$('#searchOptionsDiv').toggle('slow');}" style="float:right;margin-right:252px;font-size:12px;"><b>Show/Hide Search Options</b></a>
+	
    </div>
 
-    <div style="margin:27px 0 0;text-align:center;">
+    <div style="margin-left:209px;margin-bottom:9px;">
           <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
+		  <a href="javascript:{$('#searchOptionsDiv').toggle('slow');}" style="font-size:12px;"><b>Show/Hide Search Options</b></a>
 
 	     <button id="searchCandidatesId" class="btn btn-primary" onclick="isValidateFields('search');"> Search </button> 
    </div>
@@ -1112,7 +1105,7 @@ var jsObj=
 
 
 
-    <div class="span4" style="margin:19px 0px 14px 292px;border:2px solid #F2F2F2;padding:8px;">
+    <div class="span4" style="margin:19px 0px 14px 292px;border:2px solid #F2F2F2;padding:8px;display:none;" id="selectedPeople">
     <label>No Of Cadre Selected<span id="cadreCount" style="font-weight:bold;margin-left:83px;" class="badge">0</span><a class="pull-right" href="javascript:{removeCadre()}" title="Click here to remove selected cadre numbers"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
     <label>No Of Influencing People Selected<span id="influencePeopleCount" style="font-weight:bold;margin-left:2px;" class="badge">0</span><a class="pull-right" href="javascript:{removeInfluencePeople()}" title="Click here to remove selected influencing people numbers"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
     <label>No Of Voters Selected<span id="voterCount" style="font-weight:bold;margin-left:77px;" class="badge">0</span><a href="javascript:{removeVoters();}" title="Click here to remove selected voter numbers" class="pull-right"><img style='text-decoration: none; border: 0px none;' src='images/cross.png'></a></label>
@@ -1244,7 +1237,7 @@ var jsObj=
 </div>
  </div>
 
- <a class="btn" href="javascript:{openSmsHistoryWindow();}">HISTORY</a>
+ <!--<a class="btn" href="javascript:{openSmsHistoryWindow();}">HISTORY</a>-->
 
 
 
