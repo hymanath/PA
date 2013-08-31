@@ -93,7 +93,8 @@ $('#connectMessageText').live("keyup",function() {
 		clearAllSubscriptionDivs();
 		clearAllFavoriteLinkDivs();
 		buildCalendarControl();
-		showInitialImpEventsAndDates(impDates,'impDates',"");
+		//showInitialImpEventsAndDates(impDates,'impDates',"");
+		changePageHandler("","","");
 		renderStack();
 		$("#impdatesDiv").show();
 		$("#impEvents").hide();
