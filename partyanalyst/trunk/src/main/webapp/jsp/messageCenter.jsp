@@ -1104,7 +1104,7 @@ var jsObj=
 
 <h4 style="color: rgb(255, 255, 255); text-align: center; background-color: rgb(6, 171, 234); padding: 7px; background-position: initial initial; background-repeat: initial initial;">YOU CAN ENTER  NUMBERS MANUALLY HERE</h4>
 
- <div style="text-align:center;margin:0px;" class="widget whitegloss"><label>(Add country code before mobile number):<br>Example:<b>919999999999</b></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+ <div style="text-align:center;margin:0px;" class="widget whitegloss"><label>(Add Country Code Before Mobile Number):<br>Example:<b>919999999999</b></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
 </div>
 
 
@@ -1120,7 +1120,10 @@ var jsObj=
 <div style="clear:both;" id="textSmsDiv">
 <h4 style="color:#FFF;text-align:center;background:#06ABEA;padding:7px;">SEND TEXT SMS</h4>
 
-<div class="widget whitegloss" style="margin:0px 0px 0px 0px;text-align:center;"><label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
+<div class="widget whitegloss" style="margin:0px 0px 0px 0px;text-align:center;">
+
+<span id="errorMsg"></span>
+<label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
 
 </div>
 
@@ -2631,6 +2634,7 @@ function sendSMS()
 
 function sendTextSms()
 {
+	$('#errorMsg').html("");
 
 	var cadreDetails = new Array();
 	var influencePeopleDetails = new Array();
@@ -2651,7 +2655,7 @@ function sendTextSms()
 
     if($('#textSmsDescription').val().trim() == "")
 	{
-		alert("Description is required..");
+		$('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter The Message To Send.</font>");
 		return false;
 	}
   if($('#mobileNumber').val().trim() != "")
