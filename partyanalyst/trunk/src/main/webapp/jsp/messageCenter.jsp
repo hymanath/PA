@@ -972,8 +972,8 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 			  <s:select theme="simple" class="selectWidth" style="margin-left:65px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
-		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;">
-		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio"/> Assembly Constituency</label></div><label for="parliamentRdio"><input class="contiType" type="radio" name="constituency" id="parliamentRdio"/> Parliament Constituency</label>
+		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;margin-left:128px;">
+		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio" style="margin:0px;"/> Assembly Constituency</label></div><label for="parliamentRdio" style="margin-left:9px;"><input class="contiType" type="radio" name="constituency" id="parliamentRdio" style="margin:0px;"/> Parliament Constituency</label>
 		</div>
 
 		 <div class="selectDivs" id="districtDiv" style="display:none;">
@@ -1131,7 +1131,7 @@ var jsObj=
 
 <div class="widget whitegloss" style="margin:0px 0px 20px 0px;">
 <h5 style="margin:8px 0px 0px 92px;">Instructions To Send Voice SMS</h5>
- <ul style="margin:8px 0px 0px 92px;"> 
+ <ul style="margin:8px 0px 0px 92px;font-size:13px;font-weight:bold;"> 
   <li>Enter new mobile numbers or search from voters , cadre , influencing people from the above search feature provided and add their mobile numbers.</li>
   <li>Enter the description specifying the purpose of the voice SMS.</li>
   <li>Please install flash player to listen to the audio files sent previously or uploaded to the server by you.</li>
