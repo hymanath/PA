@@ -88,7 +88,54 @@ width: 55%;
 </div>
 
 <script>
-getVoiceSmsHistory();
+
+var dataArr = new Array();
+<c:forEach var="voiceSmsResponseDetailsVO" items="${responseDtls.responseDetailsList}">
+	var obj = {
+					userName : "${voiceSmsResponseDetailsVO.userName}",
+					dateSent : "${voiceSmsResponseDetailsVO.dateSent}",
+					description : "${voiceSmsResponseDetailsVO.description}",
+					responseCode : "${voiceSmsResponseDetailsVO.responseCode}",
+					responseId : "${voiceSmsResponseDetailsVO.responseId}",
+					details:'<a title="Click Here to See Details" href="javascript:{showMessageResponseDetails(${voiceSmsResponseDetailsVO.responseCode});}"><img src="./images/icons/details.png"/></a>'
+				
+				};
+	dataArr.push(obj);
+	</c:forEach>
+	getVoiceSmsUserHistory();
+	//getVoiceSmsHistory();
+
+	
+function getVoiceSmsUserHistory(){
+
+	var votersByLocBoothColumnDefs = [
+		{key:"responseCode", label: "Message Id",sortable: true},
+		{key:"dateSent",label:"Date Sent",sortable:false},
+		{key:"description",label:"Description",sortable:false},
+		{key:"userName",label:"User Name",width:110,sortable:false},
+		{key:"details",label:"Details",width:70}
+		];
+
+
+	 var myConfigs = {    
+				
+						paginator : new YAHOO.widget.Paginator({ 
+						rowsPerPage    : 100,
+						pageLinks: 10
+						})
+						
+					};	
+
+					var myDataSource = new YAHOO.util.DataSource(dataArr);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : [ "checkBox","userName" , "mobile" ,  "constituency"]
+					};
+
+				
+	var myDataTable = new YAHOO.widget.DataTable("voiceSmsHistoryDiv",votersByLocBoothColumnDefs, myDataSource,myConfigs);  
+}
+/*
 function getVoiceSmsHistory()
 {
 
@@ -112,7 +159,7 @@ function getVoiceSmsHistory()
 		{key:"details",label:"Details",width:70,formatter:YAHOO.widget.DataTable.details}
 		];
 
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoiceSmsHistoryForAuser.action?");
+	
 
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
@@ -148,6 +195,7 @@ function getVoiceSmsHistory()
 		oDT: votersByLocBoothDataTable
 		};
 }
+*/
 function showMessageResponseDetails(responseCode){
 
 	var jsObj=
