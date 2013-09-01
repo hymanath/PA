@@ -1065,7 +1065,7 @@ var jsObj=
 		</div>
 		</c:if>
 
-		 <div class="selectDivs" id="districtDiv">
+		 <div class="selectDivs" id="districtDiv" style="display:none;">
 			 <span>Select District</span>
 			 <font class="requiredFont">*</font>
 			 <s:select theme="simple" class="selectWidth" style="margin-left:60px;width:165px;" cssClass="selectWidth" label="Select Your State" name="districtList" id="districtList" list="districtList" listKey="id" listValue="name" onchange="clearErrDiv(),getallConstituencies(this.value);"/>
