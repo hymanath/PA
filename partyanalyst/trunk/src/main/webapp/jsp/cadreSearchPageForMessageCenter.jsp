@@ -347,7 +347,12 @@ function getUpdatedData(){
 	#searchResult table tr:nth-child(even){background:#EdF5FF;}
 	#searchResult table{border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
 </style>
-
+<script>
+function addNewCandidate(){
+var urlStr = "cadreRegisterPageAction.action?cadreId=0&windowTask=new";
+window.open(urlStr,"addNewCadrePeople","scrollbars=yes,height=570,width=1300,left=300,top=50").focus();	
+}
+</script>
 </head>
 <body>
 
@@ -355,6 +360,7 @@ function getUpdatedData(){
  <h2 style="text-align:center;color:#06ABEA;">CADRE SEARCH RESULTS TO SEND SMS</h2>
 
 <input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
+<input type="button" class="btnClass" onClick="addNewCandidate();" value="Add Cadre" style="float:right;margin-right:40px;"/>
 	<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 
@@ -587,8 +593,7 @@ function buildCadreSearchResultDataTableForSMS(rparam)
 	var mobile= oRecord.getData("mobile");
 	var firstName= oRecord.getData("firstName");
 	var lastName= oRecord.getData("lastName");
-	count=count+1;
-	$('#peopleCount').html("Total Count : <span>"+count +"</span>");
+	
   if(window.opener.selectedCadreDetails[id] == undefined || mobile == "")
       elLiner.innerHTML=firstName+' '+lastName;
   else
@@ -601,9 +606,9 @@ function buildCadreSearchResultDataTableForSMS(rparam)
 							{key:"firstName", label: "Name",sortable: true, formatter:YAHOO.widget.DataTable.fullName} ,
 		    	            {key:"mobile", label: "Mobile", sortable: true}, 
 		    	           	{key:"strCadreLevel", label: "Cadre Level", sortable: true},
-							{key:"educationStr", label: "Education",sortable:true},
-		    				{key:"professionStr", label: "Occupation",sortable:true},
-                            {key:"casteCategoryStr", label: "Caste ",sortable:true},
+							/*{key:"educationStr", label: "Education",sortable:true},
+		    				{key:"professionStr", label: "Occupation",sortable:true},*/
+                            {key:"casteCategoryStr", label: "Caste ",sortable:true}
 		    	        ]; 
 	var CadreSearchResultDataSource = new YAHOO.util.DataSource("getCadreDetailsForSMSAjaxAction.action?"+rparam+"&windowTask="+winTask+"&"); 
 	CadreSearchResultDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON; 
@@ -633,6 +638,7 @@ function buildCadreSearchResultDataTableForSMS(rparam)
 		CadreSearchResultDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) 
 		{		
 		        oPayload.totalRecords = oResponse.meta.totalRecords;
+				$('#peopleCount').html("Total Count : <span>"+oResponse.meta.totalRecords +"</span>");
 		        return oPayload;
 		}
 		//function calling to build Result
