@@ -335,10 +335,10 @@ var accessType = '${accessType}';
 $(document).ready(function() {
 
    $('#reportLevel').change(function(){
-     if($(this).val() == 2){
-		 $('#constituencyList').trigger('click');
+     if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6){
+		 $('#constituencyList').trigger('change');
 	 }
-	 if($(this).val() != 8 && $(this).val() != 9 && $(this).val() != 1){
+	 if( accessType != "MLA" && accessType != "MP" && $(this).val() != 8 && $(this).val() != 9 && $(this).val() != 1 && $('input:radio[name=searchFor]:checked').val() != "voter"){
 		 $('#constituencyList').find('option').remove();
 	 }
 	 
@@ -551,6 +551,7 @@ function isValidateFields(type){
 		var hamletId;
 		var reportLevelValue = $("#reportLevel").val();
 		var selctedType = $('input:radio[name=searchFor]:checked').val();
+		
 		$('#AlertMsgs').html('');
 		
 			if(reportLevelValue == 8){
@@ -608,16 +609,19 @@ function isValidateFields(type){
 				districtId = $("#districtList").val();
 				constituencyId = $("#constituencyList").val(); 
 				
+				if(selctedType !="voter")
+				{
 				
-				if(($('#statesList option').length ) == 0 || stateId ==0){
-					$('#AlertMsgs').html('Please Select State');
-					stattus = false;
-					return;
-				}
-				if(($('#districtList option').length ) == 0 || districtId == 0){
-					$('#AlertMsgs').html('Please Select District');
-					stattus = false;
-					return;
+					if(($('#statesList option').length ) == 0 || stateId ==0){
+						$('#AlertMsgs').html('Please Select State');
+						stattus = false;
+						return;
+					}
+					if(($('#districtList option').length ) == 0 || districtId == 0){
+						$('#AlertMsgs').html('Please Select District');
+						stattus = false;
+						return;
+					}
 				}
 				if(($('#constituencyList option').length) == 0|| constituencyId==null || constituencyId == 0){
 					$('#AlertMsgs').html('Please Select Constituency');
@@ -643,17 +647,21 @@ function isValidateFields(type){
 			else if(reportLevelValue == 3){
 				stateId = $("#statesList").val(); 
 				districtId = $("#districtList").val();
-				constituencyId = $("#constituencyList").val(); 
+				constituencyId = $("#constituencyList").val();
+				
+				if(selctedType !="voter")
+				{
 			
-				if(($('#statesList option').length ) >0 && stateId ==0){
-					$('#AlertMsgs').html('Please Select State');
-					stattus = false;
-					return;
-				}
-				if(districtId == 0){
-					$('#AlertMsgs').html('Please Select District');
-					stattus = false;
-					return;
+					if(($('#statesList option').length ) >0 && stateId ==0){
+						$('#AlertMsgs').html('Please Select State');
+						stattus = false;
+						return;
+					}
+					if(districtId == 0){
+						$('#AlertMsgs').html('Please Select District');
+						stattus = false;
+						return;
+					}
 				}
 				if(constituencyId==null || constituencyId == 0){
 					$('#AlertMsgs').html('Please Select Constituency');
@@ -675,19 +683,23 @@ function isValidateFields(type){
 
 			}
 			 else if(reportLevelValue == 4){
+
 				stateId = $("#statesList").val(); 
 				districtId = $("#districtList").val();
 				constituencyId = $("#constituencyList").val(); 
-						
-				if(stateId ==0){
-					$('#AlertMsgs').html('Please Select State');
-					stattus = false;
-					return;
-				}
-				if(districtId == 0){
-					$('#AlertMsgs').html('Please Select District');
-					stattus = false;
-					return;
+				
+				if(selctedType !="voter")
+				{
+					if(stateId ==0){
+						$('#AlertMsgs').html('Please Select State');
+						stattus = false;
+						return;
+					}
+					if(districtId == 0){
+						$('#AlertMsgs').html('Please Select District');
+						stattus = false;
+						return;
+					}
 				}
 				if(constituencyId==null || constituencyId == 0){
 					$('#AlertMsgs').html('Please Select Constituency');
@@ -712,16 +724,20 @@ function isValidateFields(type){
 				
 				stateId = $("#statesList").val(); 
 				districtId = $("#districtList").val();
-				constituencyId = $("#constituencyList").val(); 				
-				if(stateId ==0){
-					$('#AlertMsgs').html('Please Select State');
-					stattus = false;
-					return;
-				}
-				if(districtId == 0){
-					$('#AlertMsgs').html('Please Select District');
-					stattus = false;
-					return;
+				constituencyId = $("#constituencyList").val(); 
+				
+				if(selctedType !="voter")
+				{
+					if(stateId ==0){
+						$('#AlertMsgs').html('Please Select State');
+						stattus = false;
+						return;
+					}
+					if(districtId == 0){
+						$('#AlertMsgs').html('Please Select District');
+						stattus = false;
+						return;
+					}
 				}
 				if(constituencyId==null || constituencyId == 0){
 					$('#AlertMsgs').html('Please Select Constituency');
@@ -1049,7 +1065,7 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 			<!--<select id="constituencyList" style="margin-left:37px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>-->
                
-             <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onclick="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+             <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
 
 			 </div>
 			 </div>
@@ -1062,7 +1078,7 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 
 
-			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onclick="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
 			 </div>
 			 </div>
 		 </c:if>
@@ -1073,7 +1089,7 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 
 
-			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onclick="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
 			 </div>
 			 </div>
 		 </c:if>
@@ -3188,6 +3204,7 @@ $('#constituencyList').append('<option value="0">Select Constituency</option>')
         	else
 				$('#constiTypeDiv').hide();
 	}
+
 }
 </script>
  </body>
