@@ -526,6 +526,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		
 		districtList = new ArrayList<SelectOptionVO>();
 		constituencyList = new ArrayList<SelectOptionVO>();
+		statesList = new ArrayList<SelectOptionVO>();
 		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
 		
 		if("MLA".equals(accessType))
