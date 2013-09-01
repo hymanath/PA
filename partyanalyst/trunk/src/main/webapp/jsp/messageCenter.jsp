@@ -334,6 +334,16 @@ var selectedCriteria={};
 var accessType = '${accessType}';
 $(document).ready(function() {
 
+   $('#reportLevel').change(function(){
+     if($(this).val() == 2){
+		 $('#constituencyList').trigger('click');
+	 }
+	 if($(this).val() != 8 && $(this).val() != 9 && $(this).val() != 1){
+		 $('#constituencyList').find('option').remove();
+	 }
+	 
+   });
+
 
 	$('#directSMSToVotersId').hide();
 
@@ -374,12 +384,14 @@ $(document).ready(function() {
 			if($('#reportLevel').val() == 1)
 					$('#constiTypeDiv').show();
 			mySearch ='cadre';
+			populateConstituencies();
 		}
 		else if($(this).val() == "influencePeople")
 		{ 
 			$('#directSMSToVotersId').hide();
 			//clearFieldsData();
 			showHideLocationOptionsForOtherthanVoter();
+			populateConstituencies();
 			$('#constiTypeDiv').hide();
 
 			try
@@ -408,7 +420,6 @@ $(document).ready(function() {
 		else if($(this).val() == "voter")
 		{
 			$("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
-
 
 		    $("#reportLevel option[value='8']").remove();
 			$("#reportLevel option[value='9']").remove();
@@ -1014,13 +1025,15 @@ var jsObj=
 		 <div class="selectDivs" id="stateDiv">
 			 <span>Select State</span>
 			 <font class="requiredFont">*</font>
-			  <s:select theme="simple" class="selectWidth" style="margin-left:71px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
+			  <s:select theme="simple" class="selectWidth" style="margin-left:71px;width:165px;" cssClass="selectWidth" label="Select Your State" name="statesList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
 
 
-		 <!--<div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;margin-left:128px;">
+         <c:if test="${accessType != 'MP' && accessType != 'MLA'}">
+		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;margin-left:128px;display:none;">
 		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio" style="margin:0px;"/> Assembly Constituency</label></div><label for="parliamentRdio" style="margin-left:9px;" id="parlimntRdio"><input class="contiType" type="radio" name="constituency" id="parliamentRdio" style="margin:0px;"/> Parliament Constituency</label>
-		</div>-->
+		</div>
+		</c:if>
 
 		 <div class="selectDivs" id="districtDiv">
 			 <span>Select District</span>
@@ -1862,6 +1875,12 @@ function callAjax1(param,jsObj,url){
 				    }
 					else if(jsObj.task == "getUserConstituencyNames")
 				    {
+						if(myResults.length == 1)
+						{
+							$('#publicationDateDiv,#mandalDiv,#panchayatDiv,#wardDiv,#pollingStationDiv,#hamletDiv').hide();
+
+							return false;
+						}
 						 iterateUserConstiDetailsNames(myResults);
 				    }					
 					else if(jsObj.task == "influencingPeopleSearch")
@@ -3147,6 +3166,28 @@ function buildReportLevelValues()
 		$('.woption').remove();
 	}
 
+}
+
+function populateConstituencies()
+{
+
+$('#constituencyList').find('option').remove();
+$('#constituencyList').append('<option value="0">Select Constituency</option>')   
+
+	 if(accessType == "MP"){
+		 <c:forEach items="${parliamentConstituencyList}" var="item">
+			  $('#constituencyList').append('<option value="${item.id}">'+'${item.name}'+'</option>')   
+        </c:forEach>
+	 }
+	else{
+		<c:forEach items="${constituencyList}" var="item">
+               $('#constituencyList').append('<option value="${item.id}">'+'${item.name}'+'</option>');		  
+        </c:forEach>
+			if($('#reportLevel').val() == 1)
+			  $('#constiTypeDiv').show();
+        	else
+				$('#constiTypeDiv').hide();
+	}
 }
 </script>
  </body>
