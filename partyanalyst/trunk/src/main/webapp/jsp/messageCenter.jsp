@@ -70,6 +70,12 @@
 </style>
 
 <script>
+var counnt;
+<c:forEach var="voiceSmsResponseDetailsVO" items="${voiceSmsHistory}">
+counnt = ${voiceSmsResponseDetailsVO.responseCount};
+//console.log(counnt);
+</c:forEach>
+
 var startAge = 18;
 var endAge = 68;
   $(function() {
@@ -346,7 +352,8 @@ $(document).ready(function() {
 
 
 	$('#directSMSToVotersId').hide();
-
+	if(counnt >0)
+	$('#historyBtn').css("display","block");
 	$('.smsType').change(function(){
 
 		if($(this).val() == "text")
@@ -450,14 +457,14 @@ $(document).ready(function() {
 		if('${verifiedNumbersCount}' == 0)
 		{
 			$('#mainDiv').hide();
-			$('#noVerificationNumbers').html('<h5>You do not have any verified mobile numbers.Please contact us to get your mobile number approved by us<h5>');
+			$('#noVerificationNumbers').html('<h5>You Do not have any verified mobile numbers.Please contact us to get your mobile number approved by us<h5>');
 			return false;
 		}else
 	    {
 			ajaxToGetRecordingDetails();
             getVerifiedNumbersOfUser();
            // getVoiceSmsHistoryOfUser('hide');
-			//getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
+			getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
 
 		}
 	$('#mobileNumbersDiv').hide();
@@ -750,11 +757,14 @@ function isValidateFields(type){
 					stattus = false;
 					return;
 				}				
+				if(selctedType =="voter")
+				{			
 				panchayatId = $("#panchayatField").val();
 				if(panchayatId==null || panchayatId == 0){
 					$('#AlertMsgs').html('Please Select Panchayat');
 					stattus = false;
 					return;
+					}	
 				}				 
 				hamletId = $("#hamletField").val(); 
 				if(hamletId==null || hamletId == 0){
@@ -770,15 +780,19 @@ function isValidateFields(type){
 	else
 	{
 	 stattus = true;
-	 getCandidatesInfo(stattus);
+	 //getCandidatesInfo(stattus);
+	 var ref = document.getElementById("searchCandidatesId");
+	 ref.addEventListener("click", getCandidatesData("search"), false); 
 	}
 }
 	
-function getCandidatesInfo(stattus){
+/* function getCandidatesInfo(stattus){
 //alert(stattus);
+$("#searchCandidatesId").click(function() {
 	if(stattus)
-		getCandidatesData("search");
-}
+		getCandidatesData("search",stattus);
+});
+} */
 
 var cnstiType;
 
@@ -868,6 +882,7 @@ function getCandidatesData(sentType){
 			else if(reportLevelValue == 8){
 				stateId = $("#statesList").val(); 
 				areaId = $("#statesList").val(); 
+				searchArea='state';
 				cadreLocationId = 2;
 			}
 			else if(reportLevelValue == 9){
@@ -897,7 +912,7 @@ function getCandidatesData(sentType){
 					}
 				}
 			}
-			console.log(casteIds);
+			//console.log(casteIds);
 			  selectedCriteria.isAgeSelected = isAgeSelected;
 			  selectedCriteria.isCasteSelected = isCasteSelected;
 			  selectedCriteria.isFamilySelected = isFamilySelected;
@@ -1021,7 +1036,6 @@ var jsObj=
     
 		   
 		<div id="AlertMsgs" style="font-family: verdana;font-size: 13px;color:red;"></div>
-		<div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
      
 	  <div id="reportLevelDiv"><span style="margin-left: 5px;">Select Level</span><font class="requiredFont">*</font>
@@ -1325,7 +1339,7 @@ var jsObj=
  </div>
 
 <div style="margin:5px;">
- <a class="btn pull-left btn-primary" href="javascript:{openSmsHistoryWindow();}">Click Here To See History</a>
+ <a class="btn pull-left btn-primary" id="historyBtn" href="javascript:{openSmsHistoryWindow();}" style="display:none;">Click Here To See History</a>
 
  <span id="successMsg" style="font-weight:bold;color:green;margin-left:200px;"></span>
  <a class="btn pull-right btn-primary" href="javascript:{sendSMS();}">Send SMS </a>
@@ -2798,7 +2812,14 @@ function showReportsLevels(value)
 	else if(value == 4)
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#pollingStationDiv").show();
 	else if(value == 5)
+	{
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#wardDiv").show();
+		$('#mandalField').find('option').remove().end()
+    .append('<option value="0">Select</option>').val();
+	$('#wardField').find('option').remove().end()
+    .append('<option value="0">Select</option>').val();
+	$('#constituencyList').val(0);
+		}
 	else if(value == 6){
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#hamletDiv").show();
 		getMandalOrMuncipalityList($('#constituencyList').val());
@@ -3073,7 +3094,7 @@ function buildHamletsForOtherthanVoters(results)
 function openSmsHistoryWindow()
 {
  
-  var urlStr = "voiceSmsHistory.action";
+  var urlStr = "voiceSmsHistory.action?sort=name&dir=asc&startIndex=0&results=100";
   var browser2 = window.open(urlStr,"voiceSmsHistory","scrollbars=yes,height=570,width=1300,left=200,top=50");	
   browser2.focus(); 
 
