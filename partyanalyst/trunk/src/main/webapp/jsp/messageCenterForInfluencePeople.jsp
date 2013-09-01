@@ -150,13 +150,17 @@ $(document).ready(function(){
   });
 
 });
+function addNewCandidate(){
+var urlStr = "influencingPeopleAction.action?windowTask=new&influencingPersonId=0";
+window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300,left=300,top=50").focus();	
+}
 </script>
 </head>
 <body>
   <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS</h2>
 
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
-
+<input type="button" class="btnClass" onClick="addNewCandidate()" value="Add Influencing People" style="float:right;margin-right:40px;"/>
 <div class="span11" align="center">
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -178px;"></span>
  <div class="row">
@@ -195,7 +199,7 @@ $(document).ready(function(){
 }
 
 getInfluencePeopleDetailsBySearchCritteria();
-var count=0;
+
 function getInfluencePeopleDetailsBySearchCritteria()
 {
 
@@ -204,12 +208,25 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 
 			var name= oRecord.getData("name");
 			var mobileNumber = oRecord.getData("mobileNumber");
-	count=count+1;
-	$('#peopleCount').html("Total Count : <span>"+count +"</span>");
+
 			if(window.opener.selectedInfluencePeopleDetails[name] == undefined)
 		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: -1px;"/>';
 	else
 		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: 29px;"/>';
+
+		elLiner.innerHTML =str;
+	}
+	
+	YAHOO.widget.DataTable.Caste = function(elLiner, oRecord, oColumn, oData)
+	{
+
+			var casteName= oRecord.getData("casteIds");
+			if(casteName.length <= 1)
+				console.log(casteName);
+	if(casteName==null)
+		var str ='Not Available';
+	else
+		var str =casteName;
 
 		elLiner.innerHTML =str;
 	}
@@ -219,7 +236,8 @@ var votersByLocBoothColumnDefs = [
 {key:"select", label: "<input type='checkbox' class='selectAll' style='margin-left:34px;'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
 {key:"name", label: "Name",sortable: true},
 {key:"mobileNumber",label:"Mobile Number",width:110,sortable:false},
-{key:"locationType",label:"Area Type",width:70,sortable:false}
+{key:"locationType",label:"Area Type",width:70,sortable:false},
+{key:"casteIds",label:"Caste",formatter:YAHOO.widget.DataTable.Caste}
 ];
 
 
@@ -248,7 +266,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "resultVotersList",
 fields: [
 {key:"name"},
-"mobileNumber","locationType"],
+"mobileNumber","locationType","casteIds"],
 
 metaFields: {
 totalRecords: "totalResultsCount" // Access to value in the server response
@@ -269,6 +287,7 @@ votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 oPayload.totalRecords = oResponse.meta.totalRecords;
+	$('#peopleCount').html("Total Count : <span>"+oResponse.meta.totalRecords +"</span>");
 return oPayload;
 }
 
