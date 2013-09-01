@@ -168,6 +168,7 @@
 			<result>/jsp/loginsuccess.jsp</result>
 			<result type="redirect" name="populateVoterDataAction">populateVoterDataAction.action</result>
 			<result type="redirect" name="suggestiveModelAction">suggestiveModelAction.action</result>
+			<result type="redirect" name="messageCenterAction">messageCenterAction.action</result>
 			<result type="redirect" name="updateCustomerContactsAction">updateCustomerContactsAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -5763,8 +5764,11 @@
 		 
 		 
 		 <action name="messageCenterAction" class="messageCenterAction">
-		  	<result name="success">/jsp/messageCenter.jsp</result>
-		  	<result name="error">/jsp/messageCenter.jsp</result>	
+		  	<result name="success">/jsp/messageCenter.jsp</result>	
+		  	<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		  	<result name="input">/jsp/loginForm.jsp?src=messageCenterAction</result>
+
+
 		 </action>
 		 
 		 <action name="getSublevelsOfMessageCenterAction" class="messageCenterAction" method="getSublevels">
@@ -5859,7 +5863,7 @@
                <result name="success">/jsp/voiceSmsReport.jsp</result>
           </action>
           
-          <action name="voiceSmsHistory" class="voiceSmsAction" method="voiceSmsHistory">
+          <action name="voiceSmsHistory" class="voiceSmsAction" method="getVoiceSmsHistoryForAuser">
            <result name="success">/jsp/smsHistory.jsp</result>
           </action>
 		 
