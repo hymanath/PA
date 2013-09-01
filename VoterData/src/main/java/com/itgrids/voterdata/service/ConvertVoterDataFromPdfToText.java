@@ -75,7 +75,7 @@ public class ConvertVoterDataFromPdfToText {
     			stmt.executeUpdate(insertQuery);
     			}catch(Exception e)
     			{
-    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+")");
+    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+") in Booth - "+info.getBoothNo());
     				System.out.println("Exception is -"+e);
     			}
     		}
