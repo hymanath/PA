@@ -397,7 +397,6 @@ $(document).ready(function() {
 			
 			 $('#houseDiv ,#ageDiv,#casteDiv').hide();
 			if(mySearch =='voter'  && accessType != "MLA" && accessType != "MP"){
-				alert(accessType);
 
 			 $("<option value='9'>District</option>").insertBefore($('#reportLevel option:first-child'));
 			$("<option value='8'>State</option>").insertBefore($('#reportLevel option:first-child'));
@@ -408,6 +407,8 @@ $(document).ready(function() {
 		}
 		else if($(this).val() == "voter")
 		{
+			$("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
+
 
 		    $("#reportLevel option[value='8']").remove();
 			$("#reportLevel option[value='9']").remove();
@@ -418,18 +419,17 @@ $(document).ready(function() {
 			$('#directSMSToVotersId').show();
 			$('#houseDiv , #ageDiv,#casteDiv').show();
 
-			clearFieldsData();
-			getConstituencyList();
-			showHideLocationOptionsForVoter();
-
+		
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			if($('#reportLevel').val() > 1 && $('#reportLevel').val() <= 7 )		
 			  document.getElementById('publicationDateDiv').style.display = 'block';
 			
 		   // $("#reportLevel").append('<option value="3">Panchayat</option>');
 
-		   $("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
 		   		
+	         clearFieldsData();
+			getConstituencyList();
+			showHideLocationOptionsForVoter();
 
 
 		}
@@ -1044,7 +1044,6 @@ var jsObj=
 		 </c:if>
 
 		 <c:if test="${accessType == 'MP'}">
-
 			<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px;"> 
 			 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
 			 <font class="requiredFont">*</font>
@@ -1053,7 +1052,17 @@ var jsObj=
 			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onclick="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
 			 </div>
 			 </div>
+		 </c:if>
 
+		 <c:if test="${accessType != 'MP' && accessType != 'MLA'}">
+			<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px;display:none;"> 
+			 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
+			 <font class="requiredFont">*</font>
+
+
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onclick="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 </div>
+			 </div>
 		 </c:if>
 
 	     <div class="selectDivs" id="publicationDateDiv" style="display:none;"><span>Select Publication Date</span><font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;margin-left:20px;" name="publicationDateList" >
@@ -3112,7 +3121,7 @@ function sendDirectSMSToVotersAjax()
 }
 getCandidateLocationDetails();
 buildReportLevelValues();
-	
+
 function buildReportLevelValues()
 {
 
@@ -3128,6 +3137,14 @@ function buildReportLevelValues()
 		$('.soption ,.doption,#districtDiv').remove(); 
 		$('.soption ,.doption,#districtDiv').remove();
 		$('#constituencyList').val(1);
+	}
+
+	if('${areaType}' == "URBAN")
+	{
+		$('.hoption').remove();
+	}else if('${areaType}' == "RURAL")
+	{
+		$('.woption').remove();
 	}
 
 }
