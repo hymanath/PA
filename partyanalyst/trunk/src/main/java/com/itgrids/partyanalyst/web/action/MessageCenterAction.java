@@ -16,6 +16,12 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
+import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IVoiceSmsService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.InfluencingPeopleService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
@@ -23,10 +29,6 @@ import com.itgrids.partyanalyst.service.impl.StaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
-import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
-import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
-import com.itgrids.partyanalyst.service.IVoiceSmsService;
-import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 
 public class MessageCenterAction  extends ActionSupport implements ServletRequestAware {
 	/**
@@ -59,7 +61,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private IVoiceSmsService voiceSmsService;
 	private CadreManagementService cadreManagementService;
 
-
+	private EntitlementsHelper entitlementsHelper;	
 	private String isAgeSelected;
 	private String isCasteSelected;
 	private String isFamilySelected;
@@ -72,7 +74,8 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private String houseNo;
 	private String name;
 	private String gender;
-	private String areaType;	
+	private String areaType;
+	private List<VoiceSmsResponseDetailsVO> voiceSmsHistory ;
 	
 	public String getAreaType() {
 		return areaType;
@@ -90,7 +93,22 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 			CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
 	}
-	
+
+	public List<VoiceSmsResponseDetailsVO> getVoiceSmsHistory() {
+		return voiceSmsHistory;
+	}
+
+	public void setVoiceSmsHistory(List<VoiceSmsResponseDetailsVO> voiceSmsHistory) {
+		this.voiceSmsHistory = voiceSmsHistory;
+	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public String getIsAgeSelected() {
 		return isAgeSelected;
 	}
@@ -482,19 +500,23 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	{
 		session = request.getSession();
 		RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-		
-		accessType=registrationVO.getAccessType();
-		accessValue=new Long(registrationVO.getAccessValue());
-		
+
 		if (registrationVO != null) 
 		{/*
 			if (!registrationVO.getIsAdmin().equals("true")){
 				  return ERROR;
 			}
 		*/} 
-		else{
-			return ERROR;
+		else{			
+			if(registrationVO == null && 
+					!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.VOTER_ANALYSIS))
+				return Action.INPUT;
+			if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
+				return Action.ERROR;
 		}
+		
+		accessType=registrationVO.getAccessType();
+		accessValue=new Long(registrationVO.getAccessValue());
 		
 		Long userId = registrationVO.getRegistrationID();
 		sublevelsList=influencingPeopleService.getInfluenceRange();
@@ -562,6 +584,8 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));*/
+
+		voiceSmsHistory = voiceSmsService.getVoiceSmsHistoryForAuser(registrationVO.getRegistrationID(),0,0,true);
 		
 		return Action.SUCCESS;
 		
