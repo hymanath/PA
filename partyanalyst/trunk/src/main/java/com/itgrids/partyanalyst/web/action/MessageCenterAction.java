@@ -72,8 +72,16 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private String houseNo;
 	private String name;
 	private String gender;
+	private String areaType;	
 	
-	
+	public String getAreaType() {
+		return areaType;
+	}
+
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
+	}
+
 	public CadreManagementService getCadreManagementService() {
 		return cadreManagementService;
 	}
@@ -540,6 +548,9 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
 			
 		}
+		
+		 areaType = regionServiceDataImp.getConstituencyAreaType(new Long(accessValue));
+		
 		
 		//districtList = regionServiceDataImp.getDistrictsByStateID(statesList.get(0).getId());
 		/*districtList = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
