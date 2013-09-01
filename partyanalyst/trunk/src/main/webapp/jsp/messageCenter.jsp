@@ -331,8 +331,10 @@ var selectedInfluencePeopleDetails = {
 var mySearch ='cadre';
 var selectedMobileNumbers = new Array();
 var selectedCriteria={};
-
+var accessType = '${accessType}';
 $(document).ready(function() {
+
+
 	$('#directSMSToVotersId').hide();
 
 	$('.smsType').change(function(){
@@ -355,7 +357,7 @@ $(document).ready(function() {
 		if($(this).val() == "cadre")
 		{
 			$('#directSMSToVotersId').hide();
-			clearFieldsData();
+			//clearFieldsData();
 			showHideLocationOptionsForOtherthanVoter();
 			$('#houseDiv,#casteDiv').hide();
 			$('#ageDiv').hide();			
@@ -364,7 +366,7 @@ $(document).ready(function() {
 			document.getElementById('districtDiv').style.display = 'block';		
 			document.getElementById('publicationDateDiv').style.display = 'none';
 			}
-			if(mySearch =='voter'){
+			if(mySearch =='voter' && accessType != "MLA" && accessType != "MP"){
 			 $("<option value='9'>District</option>").insertBefore($('#reportLevel option:first-child'));
 			$("<option value='8'>State</option>").insertBefore($('#reportLevel option:first-child'));
 			 }
@@ -374,19 +376,29 @@ $(document).ready(function() {
 			mySearch ='cadre';
 		}
 		else if($(this).val() == "influencePeople")
-		{   
+		{ 
 			$('#directSMSToVotersId').hide();
-			clearFieldsData();
+			//clearFieldsData();
 			showHideLocationOptionsForOtherthanVoter();
 			$('#constiTypeDiv').hide();
-			if(mySearch =='voter' && $('#reportLevel').val() <= 7 ){
-			document.getElementById('ConstituencyDiv').style.display = 'block';
-			document.getElementById('districtDiv').style.display = 'block';		
-			document.getElementById('publicationDateDiv').style.display = 'none';
-			}
-			 $('#houseDiv ,#ageDiv,#casteDiv').hide();
 
-			if(mySearch =='voter'){
+			try
+			{
+				if(mySearch =='voter' && $('#reportLevel').val() <= 7 ){
+					document.getElementById('ConstituencyDiv').style.display = 'block';
+					document.getElementById('districtDiv').style.display = 'block';		
+					document.getElementById('publicationDateDiv').style.display = 'none';
+			}
+				
+			}
+			catch (err)
+			{
+			}
+			
+			 $('#houseDiv ,#ageDiv,#casteDiv').hide();
+			if(mySearch =='voter'  && accessType != "MLA" && accessType != "MP"){
+				alert(accessType);
+
 			 $("<option value='9'>District</option>").insertBefore($('#reportLevel option:first-child'));
 			$("<option value='8'>State</option>").insertBefore($('#reportLevel option:first-child'));
 			 }
@@ -396,16 +408,19 @@ $(document).ready(function() {
 		}
 		else if($(this).val() == "voter")
 		{
+
 		    $("#reportLevel option[value='8']").remove();
 			$("#reportLevel option[value='9']").remove();
-			clearFieldsData();
-			getConstituencyList();
-			showHideLocationOptionsForVoter();
+			
 			$('#constiTypeDiv,#ConstituencyDiv').hide();
             mySearch ='voter';
 			$('#constiDiv').show();
 			$('#directSMSToVotersId').show();
 			$('#houseDiv , #ageDiv,#casteDiv').show();
+
+			clearFieldsData();
+			getConstituencyList();
+			showHideLocationOptionsForVoter();
 
 			document.getElementById('ConstituencyDiv').style.display = 'block';
 			if($('#reportLevel').val() > 1 && $('#reportLevel').val() <= 7 )		
@@ -414,6 +429,8 @@ $(document).ready(function() {
 		   // $("#reportLevel").append('<option value="3">Panchayat</option>');
 
 		   $("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
+		   		
+
 
 		}
 	});
@@ -422,14 +439,14 @@ $(document).ready(function() {
 		if('${verifiedNumbersCount}' == 0)
 		{
 			$('#mainDiv').hide();
-			$('#noVerificationNumbers').html('<h5>You Do not have any verified mobile numbers.Please contact us to get your mobile number approved by us<h5>');
+			$('#noVerificationNumbers').html('<h5>You do not have any verified mobile numbers.Please contact us to get your mobile number approved by us<h5>');
 			return false;
 		}else
 	    {
 			ajaxToGetRecordingDetails();
             getVerifiedNumbersOfUser();
            // getVoiceSmsHistoryOfUser('hide');
-			getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
+			//getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
 
 		}
 	$('#mobileNumbersDiv').hide();
@@ -495,6 +512,20 @@ $(document).ready(function() {
 	});
 	
 });
+
+function getCandidateLocationDetails()
+{
+   var jsObj={
+				value:"locationWise",
+				taskType:"search",
+				task:"getUserLocation"
+			  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "cadreSMSLocationWiseData.action?"+rparam;
+
+	callAjax1(rparam,jsObj,url);
+
+}
 var stattus = false;
 function isValidateFields(type){
 
@@ -718,10 +749,8 @@ function isValidateFields(type){
 	
 function getCandidatesInfo(stattus){
 //alert(stattus);
-$("#searchCandidatesId").click(function() {
 	if(stattus)
 		getCandidatesData("search");
-});
 }
 
 var cnstiType;
@@ -739,6 +768,7 @@ var searchName = "";
 var casteIds = "";
 var gender = "";
 var searchArea='constituency';
+var cadreLocationId =1;
 
 function getCandidatesData(sentType){
 	casteIds='';
@@ -761,7 +791,7 @@ function getCandidatesData(sentType){
 		var wardFieldId = $("#wardField").val(); 
 		var hamletFieldId = $("#hamletField").val(); 
 		var pollingStationFieldId = $("#pollingStationField").val(); 
-		var cadreLocationId;
+		
 	
 		//var isAgeSelected = (startAge.trim() == "") && endAge.trim() == "" ? false : true;
 
@@ -964,17 +994,18 @@ var jsObj=
     
 		   
 		<div id="AlertMsgs" style="font-family: verdana;font-size: 13px;color:red;"></div>
+		<div id="AlertMsg" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
      
 	  <div id="reportLevelDiv"><span style="margin-left: 5px;">Select Level</span><font class="requiredFont">*</font>
 	  <select id="reportLevel" class="selectWidth" style="margin-left:70px;width:165px;" name="constituencyList" onchange="showReportsLevels(this.options[this.selectedIndex].value);">
-		<option value=8  selected="true">State</option>
-		<option value=9>District</option>
-		<option value=1>Constituency</option>
-		<option value=2>Mandal  / Muncipality</option>
-		<option value=5>Ward</option>
-	    <option value=6>Hamlets</option>
-        <option value=4>PollingStation</option>
+		<option value=8 class="soption">State</option>
+		<option value=9 class="doption">District</option>
+		<option value=1 class="coption">Constituency</option>
+		<option value=2 class="moption">Mandal  / Muncipality</option>
+		<option value=5 class="woption">Ward</option>
+	    <option value=6 class="hoption">Hamlets</option>
+        <option value=4 class="poption">PollingStation</option>
 		</select>
       </div>
 
@@ -985,21 +1016,46 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 			  <s:select theme="simple" class="selectWidth" style="margin-left:71px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="statesList" list="statesList" listKey="id" listValue="name" onchange="clearErrDiv(),"/>
 		 </div>
-		 <div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;margin-left:128px;">
-		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio" style="margin:0px;"/> Assembly Constituency</label></div><label for="parliamentRdio" style="margin-left:9px;"><input class="contiType" type="radio" name="constituency" id="parliamentRdio" style="margin:0px;"/> Parliament Constituency</label>
-		</div>
 
-		 <div class="selectDivs" id="districtDiv" style="display:none;">
+
+		 <!--<div class="" id="constiTypeDiv" style="font-weight:bold;font-size:13px;display:none;margin-left:128px;">
+		<div><label for="assemblyRdio"><input class="contiType" checked="true" type="radio" name="constituency" id="assemblyRdio" style="margin:0px;"/> Assembly Constituency</label></div><label for="parliamentRdio" style="margin-left:9px;" id="parlimntRdio"><input class="contiType" type="radio" name="constituency" id="parliamentRdio" style="margin:0px;"/> Parliament Constituency</label>
+		</div>-->
+
+		 <div class="selectDivs" id="districtDiv">
 			 <span>Select District</span>
 			 <font class="requiredFont">*</font>
 			 <s:select theme="simple" class="selectWidth" style="margin-left:60px;width:165px;" cssClass="selectWidth" label="Select Your State" name="districtList" id="districtList" list="districtList" listKey="id" listValue="name" onchange="clearErrDiv(),getallConstituencies(this.value);"/>
 		 </div>
-		<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px;display:none;"> 
-		 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
-		 <font class="requiredFont">*</font>
-		<select id="constituencyList" style="margin-left:37px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>
-		 </div>
-		 </div>
+
+         <c:if test="${accessType == 'MLA'}">
+
+
+			<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px;"> 
+			 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
+			 <font class="requiredFont">*</font>
+			<!--<select id="constituencyList" style="margin-left:37px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>-->
+               
+             <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onclick="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+
+			 </div>
+			 </div>
+
+		 </c:if>
+
+		 <c:if test="${accessType == 'MP'}">
+
+			<div class="selectDivs" id="ConstituencyDiv" style="margin-left:0px;"> 
+			 <div class="selectDivs" id="constiDiv" ><span>Select Constituency</span>
+			 <font class="requiredFont">*</font>
+
+
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onclick="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 </div>
+			 </div>
+
+		 </c:if>
+
 	     <div class="selectDivs" id="publicationDateDiv" style="display:none;"><span>Select Publication Date</span><font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;margin-left:20px;" name="publicationDateList" >
 		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>	
 		</div>
@@ -1095,11 +1151,12 @@ var jsObj=
 	
    </div>
 
-    <div style="margin-left:209px;margin-bottom:9px;">
+    <div style="margin-left:100px;margin-bottom:9px;">
           <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
 		  <a href="javascript:{$('#searchOptionsDiv').toggle('slow');}" style="font-size:12px;"><b>Show/Hide Search Options</b></a>
 
 	     <button id="searchCandidatesId" class="btn btn-primary" onclick="isValidateFields('search');"> Search </button> 
+		
    </div>
 
 
@@ -1123,11 +1180,11 @@ var jsObj=
 </div>
 
 
-    <div class="selectDiv radioSpecial" id="ssmTypeDiv" style="margin:0px 0px 17px 367px;">
+    <div class="selectDiv radioSpecial" id="ssmTypeDiv" style="margin:0px 0px 9px 413px;">
 		 <input type="radio" id="textSMS"  name="smsType" value="text"  class="smsType" checked>
-		   <label for="textSMS">Send Text SMS</label>
+		   <label for="textSMS">Text SMS</label>
 		<input type="radio" id="voiceSMS" name="smsType" value="voice" class="smsType">
-		   <label for="voiceSMS">Send Voice SMS</label>	
+		   <label for="voiceSMS">Voice SMS</label>	
 	 </div>
 
  <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
@@ -1701,7 +1758,6 @@ function getSubLevelInfluenceData(regionId,regionName,regionType,areaType,region
 
 function callAjax1(param,jsObj,url){
 
-
 	var myResults;	
 	var callback = {			
 	    success : function( o ) {
@@ -1817,6 +1873,8 @@ function callAjax1(param,jsObj,url){
 					else if(jsObj.task == "getPariamentConstituencies"){
 					
 						iterateDetailsNames(myResults);
+					}else if(jsObj.task == "getUserLocation"){
+						buildRegionsSelectBoxes(myResults);
 					}
 					
 			}catch (e) {   		
@@ -2422,7 +2480,7 @@ function getMandalOrMuncipalityList()
 			
 		var jsObj=
 			{
-				constituencyId:constituencyId,
+				constituencyId:$('#constituencyList').val(),
 				tempVar:tempVar,
 				selectElmt:selectElmt,
 				task:"getMandalOrMuncipalityList"
@@ -2779,6 +2837,11 @@ function sendTextSms()
 
 function getAllTheCastesOfConstituency(value)
 {
+
+
+	if($('input[name=searchFor]:checked').val() != "voter")
+		return false;
+
 	if(value == 0)
 	return;
 	else{
@@ -3046,6 +3109,26 @@ function sendDirectSMSToVotersAjax()
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendVoiceSMSDirectlyToVoters.action?"+rparam;	
 			callAjax1(rparam,jsObj,url);
+}
+getCandidateLocationDetails();
+buildReportLevelValues();
+	
+function buildReportLevelValues()
+{
+
+	if(accessType == "DISTRICT"){	
+		$('#reportLevel option:eq(0)').remove();
+		$('.soption').hide();
+	}
+    else if(accessType == "MLA"){	
+		$('.soption , .doption ,.parlimntRdio').remove(); 
+		$('#constituencyList').val(1);
+	}
+	else if(accessType == "MP"){	
+		$('.soption ,.doption,#districtDiv').remove(); 
+		$('.soption ,.doption,#districtDiv').remove();
+		$('#constituencyList').val(1);
+	}
 
 }
 </script>

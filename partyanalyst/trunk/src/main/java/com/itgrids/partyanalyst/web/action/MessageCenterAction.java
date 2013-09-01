@@ -11,10 +11,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
+import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.service.impl.InfluencingPeopleService;
 import com.itgrids.partyanalyst.service.impl.RegionServiceDataImp;
 import com.itgrids.partyanalyst.service.impl.StaticDataService;
@@ -39,7 +41,7 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private RegionServiceDataImp regionServiceDataImp;
 	private Long accessValue;
 	private String accessType;
-	private List<SelectOptionVO> statesList,sublevelsList,districtList,constituenciesList,subRegions,
+	private List<SelectOptionVO> statesList,sublevelsList,districtList,constituenciesList,subRegions , parliamentConstituencyList,
 	booths,hamletsOrWards;
 	private InfluencingPeopleService influencingPeopleService;
 	private StaticDataService staticDataService;
@@ -55,8 +57,9 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private String locationName;
 	private int verifiedNumbersCount;
 	private IVoiceSmsService voiceSmsService;
-	
-	
+	private CadreManagementService cadreManagementService;
+
+
 	private String isAgeSelected;
 	private String isCasteSelected;
 	private String isFamilySelected;
@@ -70,7 +73,16 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	private String name;
 	private String gender;
 	
+	
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
 
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+	
 	public String getIsAgeSelected() {
 		return isAgeSelected;
 	}
@@ -281,6 +293,15 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 	}
 
 
+	public List<SelectOptionVO> getParliamentConstituencyList() {
+		return parliamentConstituencyList;
+	}
+
+	public void setParliamentConstituencyList(
+			List<SelectOptionVO> parliamentConstituencyList) {
+		this.parliamentConstituencyList = parliamentConstituencyList;
+	}
+
 	public void setDistrictList(List<SelectOptionVO> districtList) {
 		this.districtList = districtList;
 	}
@@ -458,29 +479,78 @@ public class MessageCenterAction  extends ActionSupport implements ServletReques
 		accessValue=new Long(registrationVO.getAccessValue());
 		
 		if (registrationVO != null) 
-		{
+		{/*
 			if (!registrationVO.getIsAdmin().equals("true")){
 				  return ERROR;
 			}
-		} 
+		*/} 
 		else{
 			return ERROR;
 		}
 		
 		Long userId = registrationVO.getRegistrationID();
 		sublevelsList=influencingPeopleService.getInfluenceRange();
-		statesList=regionServiceDataImp.getUserStateList(accessType, accessValue);
+		//statesList=regionServiceDataImp.getUserStateList(accessType, accessValue);
 		
 		verifiedNumbersCount = voiceSmsService.getVerifiedNumbersCountOfUser(userId);
 		
-		districtList = regionServiceDataImp.getDistrictsByStateID(statesList.get(0).getId());
+		districtList = new ArrayList<SelectOptionVO>();
+		constituencyList = new ArrayList<SelectOptionVO>();
+		parliamentConstituencyList = new ArrayList<SelectOptionVO>();
+		
+		if("MLA".equals(accessType))
+		{
+			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByConstituencyID(accessValue);
+			statesList.add(list.get(0));			
+			districtList.add(list.get(1));			
+			constituencyList.add(list.get(2));
+			
+		}else if("COUNTRY".equals(accessType))
+		{
+			statesList = cadreManagementService.findStatesByCountryID(accessValue.toString());
+			statesList.add(0,new SelectOptionVO(0L, "Select State"));			
+			
+		}else if("STATE".equals(accessType)){
+			
+			String name = cadreManagementService.getStateName(accessValue);
+			SelectOptionVO obj2 = new SelectOptionVO();
+			obj2.setId(accessValue);
+			obj2.setName(name);			
+			statesList.add(obj2);
+			districtList = staticDataService.getDistricts(accessValue);
+			districtList.add(0,new SelectOptionVO(0l,"Select District"));	
+			
+		}else if("DISTRICT".equals(accessType)){
+						
+			List<SelectOptionVO> list = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+			statesList.add(list.get(0));			
+			districtList.add(list.get(1));
+			constituencyList = regionServiceDataImp.getConstituenciesByDistrictID(accessValue);
+			constituencyList.add(0, new SelectOptionVO(0l,"Select Constituency"));
+			
+		} else if("MP".equals(accessType)){
+			
+			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+			statesList = regionServiceDataImp.getStateByParliamentConstituencyID(accessValue);
+			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+			constituencyList = constituencyInfoVO.getAssembyConstituencies();
+			constituencyList.add(0,new SelectOptionVO(0l,"Select Constituency"));
+			if(parliamentConstituencyList == null)
+			parliamentConstituencyList = new ArrayList<SelectOptionVO>();
+			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
+			
+		}
+		
+		//districtList = regionServiceDataImp.getDistrictsByStateID(statesList.get(0).getId());
+		/*districtList = regionServiceDataImp.getStateDistrictByDistrictID(accessValue);
+		
 		districtList.add(0, new SelectOptionVO(0L,"Select District"));
 		
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
-		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));*/
 		
 		return Action.SUCCESS;
 		

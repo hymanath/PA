@@ -1284,6 +1284,9 @@
     	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
     	<property name="votersAnalysisService" ref="votersAnalysisService" />
     	<property name="voiceSmsService" ref="voiceSmsService" />
+    	<property name="cadreManagementService" ref="cadreManagementService" />
+    	
+    	
     </bean>
      <bean id="voiceSmsAction" class="com.itgrids.partyanalyst.web.action.VoiceSmsAction" singleton="false">
 		<property name="voiceSmsService" ref="voiceSmsService" />	
