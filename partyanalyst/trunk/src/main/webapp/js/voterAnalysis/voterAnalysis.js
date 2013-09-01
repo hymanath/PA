@@ -718,7 +718,8 @@ function showImportantFamiliesDiv()
 		var value = value1.substring(1);
 		var publicationValue = $('#publicationDateList').val();
 		var alertEl = document.getElementById("AlertMsg");
-		alertEl.innerHTML = '';
+		if(alertEl !=null)
+			alertEl.innerHTML = '';
 		if(mandalId.selectedIndex != -1 && mandalId != 0)
 		{
 			var selectname = mandalId.options[mandalId.selectedIndex].text;
