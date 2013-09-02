@@ -1517,13 +1517,13 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	$("#connectPeoplePopup").dialog({
 		modal: true,
 		title: "<b>Change Image</b>",
-		width: 583,
+		width: 600,
 		height: "auto"
            
 	});
 	
 	
-	$(".ui-dialog-titlebar").hide();
+	//$(".ui-dialog-titlebar").hide();
 
 	var elmt = $("#allConnectedUsersDisplay_main");
 	var div =$("<div></div>");
