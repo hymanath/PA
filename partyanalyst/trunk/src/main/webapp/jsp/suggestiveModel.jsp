@@ -1328,7 +1328,7 @@ function applyOtherExpCasteToSelectedMandal(value,j,i,id)
 	});
 	
 }
-function applyOtherExpCasteToConstituency(value,i,j,id)
+function applyOtherExpCasteToConstituency(value,j,i,id)
 {
 	var expPercentage = $('#'+i+''+j+''+id+'').val();
 	$('.'+value+'').each(function() {
