@@ -1348,7 +1348,7 @@ var jsObj=
 
  </div>
 
-<div style="margin:5px;">
+<div style="margin-top:15px;">
  <a class="btn pull-left btn-primary" id="historyBtn" href="javascript:{openSmsHistoryWindow();}" style="display:none;">Click Here To See Voice SMS History</a>
 
  <span id="successMsg" style="font-weight:bold;color:green;margin-left:200px;"></span>
