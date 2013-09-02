@@ -160,7 +160,7 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
   <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS TO SEND SMS</h2>
 
 <div style="float:right;margin:0px 35px 12px 5px;">
-<input type="button" class="btnClass" onClick="addNewCandidate()" value="Add Influencing People"/>
+<input type="button" class="btnClass" onClick="addNewCandidate()" value="Click Here To Add Influencing People"/>
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window"/>
 </div>
 
@@ -168,7 +168,7 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -178px;"></span>
  <div class="row">
 
-	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
+	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable" style="margin-top:30px;"></div>
 	</div>
 </div>
 
