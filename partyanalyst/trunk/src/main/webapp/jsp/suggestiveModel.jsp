@@ -1181,6 +1181,11 @@ function ckeckForExpCasteDetails()
 }
 var noOfCastesSelected ;
 var selectedCastes = new Array();
+var otherCastes = new Array();
+var casteDetails = {};
+casteDetails["casteId"] =  0;
+casteDetails["casteName"] = "others";
+otherCastes.push(casteDetails);
 function getSelectedCastes()
 {
 	$('#selCastesDisplayDiv').html('');
@@ -1197,23 +1202,13 @@ function getSelectedCastes()
 	noOfCastesSelected = selectedCastes.length;
 	var str = '';
 	str += '<div id="expCasteErrorMsgDiv" style="color:red"></div></br>';
-	str += '<div> <b style="color:red;">Hint : EXPECTED CASTE PERCENTAGE MUST BE BETWEEN 0 AND 1</b></div></br>';
+	str += '<div> <b style="color:red;">Hint : EXPECTED CASTE PERCENTAGE MUST BE BETWEEN 0 TO 1</b></div></br>';
 	for(var i in selectedCastes)
 	{
 		var casteId = selectedCastes[i].casteId;
 		var casteName = selectedCastes[i].casteName;
 		var capsCasteName = casteName.toUpperCase();
-		//var a = ++i;
-		/* if(a < noOfCastesSelected)
-		{
-			var nextCaste = selectedCastes[a].casteName;
-		} */
-		
 		str += '<div id="'+casteName+'div"><a  id="'+casteName+''+casteId+'"   onClick="showSelectedCasteFadeIn(\''+casteName+''+constituencyId+'\')" style="border-radius: 4px 4px 4px 4px; background-color: rgb(88, 172, 250); margin-left: 10px; padding: 10px 10px 11px; margin-bottom: 19px; float: left; width: 600px; cursor: pointer;" >CLICK HERE TO FILL THE <b style="color:black;">'+capsCasteName+' </b>CASTE EXPECTED CASTE DETAILS</a>';
-		/* if(a < noOfCastesSelected)
-		{
-		str += '<input type="button" id="'+casteName+''+casteId+'" value="Click here to fill the '+nextCaste+' caste Excepeted Details" class="btn-info"  onClick="showSelectedCasteFadeIn(\''+casteName+''+constituencyId+'\')" style="width: 424px;border-radius: 4px 4px 4px 4px; margin-bottom: 10px; height: 30px;margin-left:10px;"></input>';
-		} */
 		str += '</div></br>';
 		str += '<div id="'+casteName+''+constituencyId+'" style="display: block; float: left; width: 645px;"><table class="table table-hover table-bordered expCasteDetails'+i+'" >';
 		str += '<th>PANCHAYAT</th>';
@@ -1240,8 +1235,49 @@ function getSelectedCastes()
 				str += '<input id="panchayaName'+i+''+j+'" class="'+casteId+''+constituencyId+'" type="hidden" style="width:100px;" value="'+panchayatName+'" readonly="readonly"></input></td>';
 			}
 			str += '<td><input type="hidden" value="'+mandelId+'" id="mandalId'+i+''+j+'" class="mandalIdClass"></input><input id="mandalName'+i+''+j+'" class="'+casteId+''+mandelId+'" type="text" style="width:100px;" value="'+mandelName+'" readonly="readonly"></input></td>';
-			str += '<td><input class="expPercClass" id="expPerc'+i+''+j+'" id="" type="text" style="width:100px;"></input></td>';
+			str += '<td><input class="expPercClass" id="expPerc'+i+''+j+'" id="" type="text" style="width:100px;" value="0.0"></input></td>';
 			str += '<td><span><a class="icon-ok" title ="Apply To  Mandal" onClick="applyExpCasteToSelectedMandal(\''+casteId+''+mandelId+'\','+i+','+j+',\'expPerc\');"></a></span><span> <a class=" icon-ok-sign" title = "Apply to Constituency"><i class="icon-ok" onClick="applyExpCasteToConstituency(\''+casteId+''+constituencyId+'\','+i+','+j+',\'expPerc\');"></i></a></span></td>';
+			str += '</tr>';
+			
+		}
+		
+		str += '</table></div>';
+		
+	}
+	for(var i in otherCastes)
+	{
+		var casteId = otherCastes[i].casteId;
+		var casteName = otherCastes[i].casteName;
+		var capsCasteName = casteName.toUpperCase();
+		str += '<div id="'+casteName+'div"><a  id="'+casteName+''+casteId+'"   onClick="showSelectedCasteFadeIn(\''+casteName+''+constituencyId+'\')" style="border-radius: 4px 4px 4px 4px; background-color: rgb(88, 172, 250); margin-left: 10px; padding: 10px 10px 11px; margin-bottom: 19px; float: left; width: 600px; cursor: pointer;" >CLICK HERE TO FILL THE <b style="color:black;">'+capsCasteName+' </b>CASTE EXPECTED CASTE DETAILS</a>';
+		str += '</div></br>';
+		str += '<div id="'+casteName+''+constituencyId+'" style="display: block; float: left; width: 645px;"><table class="table table-hover table-bordered expCasteDetails'+i+'" >';
+		str += '<th>PANCHAYAT</th>';
+		str += '<th>MANDAL</th>';
+		str += '<th>EXPECTED  %</th>';
+		str += '<th>ACTIONS</th>';
+		
+		for(var j in madalPanchayatsArray)
+		{
+			str += '<tr>';
+			var panchayatId   = madalPanchayatsArray[j].panchayatId;
+			var panchayatName = madalPanchayatsArray[j].panchayatname;
+			var mandelId      = madalPanchayatsArray[j].mandalId;
+			var mandelName    = madalPanchayatsArray[j].mandalName;
+			
+			str += '<td><input type="hidden" value="'+panchayatId+'" id="panchayaId'+i+''+j+'" class="panchayatIdClass"></input>';
+			
+			if(panchayatName != null)
+			{
+				str += '<input id="'+i+''+j+'panchayaName" class="'+casteId+''+constituencyId+'" type="text" style="width:100px;" value="'+panchayatName+'" readonly="readonly"></input></td>';
+			}
+			else
+			{
+				str += '<input id="'+i+''+j+'panchayaName" class="'+casteId+''+constituencyId+'" type="hidden" style="width:100px;" value="'+panchayatName+'" readonly="readonly"></input></td>';
+			}
+			str += '<td><input type="hidden" value="'+mandelId+'" id="'+i+''+j+'mandalId" class="mandalIdClass"></input><input id="'+i+''+j+'mandalName" class="'+casteId+''+mandelId+'" type="text" style="width:100px;" value="'+mandelName+'" readonly="readonly"></input></td>';
+			str += '<td><input class="expPercClass" id="'+i+''+j+'expPerc"  type="text" style="width:100px;" value="0.0"></input></td>';
+			str += '<td><span><a class="icon-ok" title ="Apply To  Mandal" onClick="applyOtherExpCasteToSelectedMandal(\''+casteId+''+mandelId+'\','+j+','+i+',\'expPerc\');"></a></span><span> <a class=" icon-ok-sign" title = "Apply to Constituency"><i class="icon-ok" onClick="applyOtherExpCasteToConstituency(\''+casteId+''+constituencyId+'\','+j+','+i+',\'expPerc\');"></i></a></span></td>';
 			str += '</tr>';
 			
 		}
@@ -1284,6 +1320,21 @@ function applyExpCasteToConstituency(value,i,j,id)
 		$(this).closest("tr").find('.expPercClass').val(expPercentage);
 	});
 }
+function applyOtherExpCasteToSelectedMandal(value,j,i,id)
+{
+	var expPercentage = $('#'+i+''+j+''+id+'').val();
+	$('.'+value+'').each(function() {
+		$(this).closest("tr").find('.expPercClass').val(expPercentage);
+	});
+	
+}
+function applyOtherExpCasteToConstituency(value,i,j,id)
+{
+	var expPercentage = $('#'+i+''+j+''+id+'').val();
+	$('.'+value+'').each(function() {
+		$(this).closest("tr").find('.expPercClass').val(expPercentage);
+	});
+}
 var expCasteArray = new Array();
 var expCasteArrayForMuncipality = new Array();
 function getAllExpcetedCasteDetails(id)
@@ -1299,7 +1350,7 @@ function getAllExpcetedCasteDetails(id)
 			var mandalId = $(this).closest("tr").find('.mandalIdClass').val();
 			var panchayatId = $(this).closest("tr").find('.panchayatIdClass').val();
 			var expPerc = $(this).closest("tr").find('.expPercClass').val();
-			if(expPerc > 0 )
+			if(parseFloat(''+expPerc+'') >= 0 && parseFloat(''+expPerc+'') <= 1)
 			{
 				if(mandalId.charAt(0) == 2)
 				{
@@ -1326,8 +1377,42 @@ function getAllExpcetedCasteDetails(id)
 			
 			});
 		}
-		//console.log(expCasteArrayForMuncipality);
-		//console.log(expCasteArray);
+		for(var j = 0 ; j < otherCastes.length ; j++)
+		{
+			var casteName = otherCastes[j].casteName;
+			var casteId = otherCastes[j].casteId;
+			$('.'+casteId+''+id+'').each(function() {
+			var casteDetails = {};
+			var mandalId = $(this).closest("tr").find('.mandalIdClass').val();
+			var panchayatId = $(this).closest("tr").find('.panchayatIdClass').val();
+			var expPerc = $(this).closest("tr").find('.expPercClass').val();
+			if(parseFloat(''+expPerc+'') >= 0 && parseFloat(''+expPerc+'') <= 1)
+			{
+				if(mandalId.charAt(0) == 2)
+				{
+					casteDetails["panchayatId"]  =    panchayatId,
+					casteDetails["casteId"]      =    casteId,
+					casteDetails["expPerc"]      =     expPerc
+					expCasteArray.push(casteDetails);
+					
+				}
+				else
+				{
+					casteDetails["mandalId"]     =     mandalId.slice(1),
+					casteDetails["casteId"]      =     casteId,
+					casteDetails["expPerc"]      =     expPerc
+					expCasteArrayForMuncipality.push(casteDetails);
+				}
+			}
+			else
+			{
+				$('#expCasteErrorMsgDiv').show();
+				$('#expCasteErrorMsgDiv').html('<b>PLEASE ENTER VALID EXPECTED CASTE PERCENTAGE..</b>');
+				$('#expCasteErrorMsgDiv').show().delay("3000").hide('slow');
+			}
+			
+			});
+		}
 }
 function getMandalsAndPanchayts()
 {
@@ -1384,8 +1469,6 @@ function buildLeadersTableWithExpPercForMuncipal(results)
 		str += '<tr>';
 		str += '<th>Mandal</th>';
 		str += '<th>Total Voters</th>';
-		//str += '<th>Major Castes</th>';
-		
 			for(var b in results[0].exceptdCateDetails)
 			{
 				str += '<th>'+results[0].exceptdCateDetails[b].name+'</th>';
@@ -1410,7 +1493,6 @@ function buildLeadersTableWithExpPercForMuncipal(results)
 			
 			str += '</tr>';
 			}catch(e){
-			//console.log(e);
 			}
 		}
 		
@@ -1437,9 +1519,7 @@ function buildLeadersTableWithExpPerc(results)
 		str += '<tr>';
 		str += '<th>Mandal</th>';
 		str += '<th>Panchayat</th>';
-		str += '<th>Total Voters</th>';
-		//str += '<th>Major Castes</th>';
-		
+		str += '<th>Total Voters</th>';		
 			for(var b in results[0].exceptdCateDetails)
 			{
 				str += '<th>'+results[0].exceptdCateDetails[b].name+'</th>';
@@ -1465,7 +1545,6 @@ function buildLeadersTableWithExpPerc(results)
 			
 			str += '</tr>';
 			}catch(e){
-			//console.log(e);
 			}
 		}
 		
@@ -1557,7 +1636,6 @@ function buildLeadersTable(results)
 			
 			str += '</tr>';
 		}catch(e){
-		//console.log(e);
 		}
 		}
 		
