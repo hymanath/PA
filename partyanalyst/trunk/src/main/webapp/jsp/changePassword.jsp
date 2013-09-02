@@ -266,7 +266,7 @@ function callAjax(jsObj,url){
 function validatefields()
 { 
 	var eFlag = true;
-	
+	var pwdCheck = false;
 	var currentPWDEle = document.getElementById("currentPWDId").value;
 	var newPWDEle = document.getElementById("newPWDId").value;
 	var confirmPWDEle = document.getElementById("confirmPWDId").value;
@@ -295,7 +295,21 @@ function validatefields()
 	{
 		str += '<%=newPWDLength%><br>';
 		eFlag = false;
-	}
+	}else if ( newPWDEle != null)
+			{ 				
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < newPWDEle.length; i++)
+                {      
+                    if (iChars.indexOf(newPWDEle.charAt(i)) != -1)
+                    {  
+					pwdCheck = true;
+					str +='<font color="red">Password should not contain special characters</font>';
+					eFlag = false;
+                    } 
+                }
+			
+			}
 	
 	if(confirmPWDEle.length == 0)
 	{
@@ -306,7 +320,21 @@ function validatefields()
 	{
 		str += '<%=confirmPWDLength%><br>';
 		eFlag = false;
-	}
+	}else if ( newPWDEle != null)
+			{ 
+				if(!pwdCheck){
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < newPWDEle.length; i++)
+                {      
+                    if (iChars.indexOf(newPWDEle.charAt(i)) != -1)
+                    {   
+					str +='<font color="red">Password should not contain special characters</font>';
+					eFlag = false;
+                    } 
+                }
+				}
+			}
 	else if(currentPWDEle == newPWDEle)
 	{
 		str += '<%=newAndConfirmPWDEqual%><br>';
