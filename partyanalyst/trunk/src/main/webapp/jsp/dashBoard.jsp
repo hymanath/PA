@@ -767,7 +767,7 @@ lable{line-height:40px;}
 			<div class="span6 widget">
 				<h2> Send Voice And Text SMS </h2>
 				<div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/sms.png"style="width: 64px; height: 64px;"></img>
+					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/dashboard/sms.png"style="width: 64px; height: 64px;"></img>
 						<div class="media-body">
 						<p>Send Voice And Text SMS To Cadre , Influencing People and Voters</p>
 							
