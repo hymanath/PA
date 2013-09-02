@@ -239,6 +239,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 }
 .paginatorElmtClass a{padding:5px;}
 .table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
+.customclass{left:50% !important;top:300px !important;margin-left:-70px;}
 </style>
 </head>
 <body>
@@ -397,12 +398,13 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				
 				        <div id="fLinks"></div>
 				        <div id="headerDiv" class="whitegloss" style="cursor: pointer;padding: 14px;"></div>
+						
 						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;margin-bottom: -60px;width:450px;display:inline-block;">
 						<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 						
 						</div>
 		
-						
+						<div id="processingDialogue"></div>
 						
 						<div id="subscriptionsDiv">
 							<div id="userSpecialPageSubscriptionsDiv" class="subscriptionInnerDiv"></div>
@@ -972,7 +974,9 @@ var newsajaxCalled = false;
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location)
 	{
 
-	$(".placeholderCenterDiv").children().remove();
+ajaxProcessing();
+ 
+$(".placeholderCenterDiv").children().remove();
 $("#headerDiv").html('');
  $("#subscriptionsStreamingData").children().remove();
  $("#impdatesDiv").hide();
@@ -1142,7 +1146,7 @@ if(maxCount >0)
 		div1.append('</table>');
 		$(".placeholderCenterDiv").append(div1);
 	}
-
+ closeDialogue();
 
 }
 
@@ -1230,18 +1234,22 @@ var callback = {
 			 if(jsObj.queryType == "getCount")
 			 {
 			   showNewsCountDetails(myResults,jsObj);
+			
 			   //hideScrolling();
 			 }
 			 else if(jsObj.queryType == "getNews")
 			 {	
 				newsDetails = myResults;
+				
 				showNewsDetails(myResults);
+				
 				//document.getElementById("ajaxImg").style.display="none";
 			 }
 			
 			
 		}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
+			closeDialogue();
 		}  
     },
     scope : this,
@@ -1359,6 +1367,7 @@ function callAjaxForUserSettings(jsObj,url)
 										
 											
 			}catch (e) { 
+				closeDialogue();
 				//alert("Invalid JSON result" + e);   
 			}  
 	   },
