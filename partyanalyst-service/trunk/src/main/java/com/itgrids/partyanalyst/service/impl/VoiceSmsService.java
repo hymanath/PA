@@ -17,20 +17,20 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
+import com.itgrids.partyanalyst.dao.ISmsResponseDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
-import com.itgrids.partyanalyst.dao.IVoiceSmsResponseDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
+import com.itgrids.partyanalyst.model.SmsResponseDetails;
 import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
-import com.itgrids.partyanalyst.model.VoiceSmsResponseDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -43,7 +43,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 
 	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
 	private IUserDAO userDAO;
-	private IVoiceSmsResponseDetailsDAO voiceSmsResponseDetailsDAO;
+	private ISmsResponseDetailsDAO smsResponseDetailsDAO;
 	private IVoiceSmsVerifiedNumbersDAO voiceSmsVerifiedNumbersDAO;
 	private IUserVoterDetailsDAO userVoterDetailsDAO;
 	private IInfluencingPeopleDAO influencingPeopleDAO;
@@ -53,6 +53,15 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private ISmsHistoryDAO smsHistoryDAO;
 	private ISmsModuleDAO smsModuleDAO;
 	private TaskExecutor taskExecutor;
+	
+	public ISmsResponseDetailsDAO getSmsResponseDetailsDAO() {
+		return smsResponseDetailsDAO;
+	}
+
+	public void setSmsResponseDetailsDAO(
+			ISmsResponseDetailsDAO smsResponseDetailsDAO) {
+		this.smsResponseDetailsDAO = smsResponseDetailsDAO;
+	}
 
 
 	public TaskExecutor getTaskExecutor() {
@@ -128,14 +137,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		this.voiceSmsVerifiedNumbersDAO = voiceSmsVerifiedNumbersDAO;
 	}
 
-	public IVoiceSmsResponseDetailsDAO getVoiceSmsResponseDetailsDAO() {
-		return voiceSmsResponseDetailsDAO;
-	}
-
-	public void setVoiceSmsResponseDetailsDAO(
-			IVoiceSmsResponseDetailsDAO voiceSmsResponseDetailsDAO) {
-		this.voiceSmsResponseDetailsDAO = voiceSmsResponseDetailsDAO;
-	}
+	
 
 	public IUserDAO getUserDAO() {
 		return userDAO;
@@ -435,29 +437,31 @@ public class VoiceSmsService implements IVoiceSmsService {
 	
 	public Long saveResponseDetails(String responseCode , Long userId , int noOfSmsSent,String mobileNumbers,String description)
 	{
-		VoiceSmsResponseDetails voiceSmsResponseDetails = new VoiceSmsResponseDetails();
+		SmsResponseDetails smsResponseDetails = new SmsResponseDetails();
 
 		
 		log.debug("Entered into the saveResponseDetails service method");
 		try
 		{
-			voiceSmsResponseDetails.setNoOfSmsSent(new Long(noOfSmsSent));
-			voiceSmsResponseDetails.setResponseCode(responseCode);
-			voiceSmsResponseDetails.setUser(userDAO.get(userId));
+			smsResponseDetails.setNoOfSmsSent(new Long(noOfSmsSent));
+			smsResponseDetails.setResponseCode(responseCode);
+			smsResponseDetails.setUser(userDAO.get(userId));
 			//voiceSmsResponseDetails.setMobileNumbers(mobileNumbers);
-			voiceSmsResponseDetails.setSmsDescription(description);
-			voiceSmsResponseDetails.setTimeSent(dateUtilService.getCurrentDateAndTime());
+			smsResponseDetails.setSmsDescription(description);
+			smsResponseDetails.setTimeSent(dateUtilService.getCurrentDateAndTime());
 			
-			voiceSmsResponseDetails = voiceSmsResponseDetailsDAO.save(voiceSmsResponseDetails);
+			smsResponseDetails = smsResponseDetailsDAO.save(smsResponseDetails);
 			
 		}catch(Exception e)
 		{
 			log.error("Exception raised in   the saveResponseDetails service method");
 			e.printStackTrace();
 		}
-		return voiceSmsResponseDetails.getVoiceSmsResponseDetailsId();
+		return smsResponseDetails.getSmsResponseDetailsId();
 	}
 	
+	
+
 	public List<VoiceSmsResponseDetailsVO> getVoiceSmsHistoryForAuser(Long userId , Integer startIndex , Integer maxResults , boolean forCount)
 	{
 		log.debug("Entered into the getVoiceSmsHistoryForAuser service method");
@@ -480,13 +484,13 @@ public class VoiceSmsService implements IVoiceSmsService {
 			
 			if(forCount == false)
 			{
-				List<VoiceSmsResponseDetails> responseDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryForAllSubUsers(subUserIdsList,startIndex,maxResults);
+				List<SmsResponseDetails> responseDetailsList = smsResponseDetailsDAO.getVoiceSmsHistoryForAllSubUsers(subUserIdsList,startIndex,maxResults);
 				
-				for(VoiceSmsResponseDetails details:responseDetailsList)
+				for(SmsResponseDetails details:responseDetailsList)
 				{
 					VoiceSmsResponseDetailsVO responseVO = new VoiceSmsResponseDetailsVO();
 					
-					responseVO.setResponseId(details.getVoiceSmsResponseDetailsId());
+					responseVO.setResponseId(details.getSmsResponseDetailsId());
 					responseVO.setResponseCode(details.getResponseCode());
 					responseVO.setDateSent(details.getTimeSent().toString());
 					responseVO.setDescription(details.getSmsDescription());
@@ -498,7 +502,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			else
 			{
 				
-				List<Long> countList = voiceSmsResponseDetailsDAO.getVoiceSmsHistoryCountForAllSubUsers(subUserIdsList);
+				List<Long> countList = smsResponseDetailsDAO.getVoiceSmsHistoryCountForAllSubUsers(subUserIdsList);
 				
 				if(countList != null && countList.size() >0)
 				{
@@ -544,12 +548,12 @@ public class VoiceSmsService implements IVoiceSmsService {
 		
 		try
 		{
-			List<Object[]> userDetailsList = voiceSmsResponseDetailsDAO.getVoiceSmsSentUserDetails( fromDate, toDate);
+			List<Object[]> userDetailsList = smsResponseDetailsDAO.getVoiceSmsSentUserDetails( fromDate, toDate);
 			
 			
 			for(Object[] obj:userDetailsList)
 			{
-				List<String> responseCodesList = voiceSmsResponseDetailsDAO.getResponseCodesForAnUser((Long)obj[2]);
+				List<String> responseCodesList = smsResponseDetailsDAO.getResponseCodesForAnUser((Long)obj[2]);
 				
 				map = new HashMap<String, Integer>();
 				for(String code:responseCodesList)

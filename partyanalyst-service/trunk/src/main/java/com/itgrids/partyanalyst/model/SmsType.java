@@ -29,7 +29,7 @@ public class SmsType extends BaseModel implements Serializable{
 		 private String type;
 	    
 		 private Set<SmsTrack> smsTrack = new HashSet<SmsTrack>(0);
-	     private Set<VoiceSmsResponseDetails> voiceSmsResponseDetails = new HashSet<VoiceSmsResponseDetails>(0);
+	     private Set<SmsResponseDetails> smsResponseDetails = new HashSet<SmsResponseDetails>(0);
 
 
 
@@ -59,18 +59,17 @@ public class SmsType extends BaseModel implements Serializable{
 		}
 		public void setSmsTrack(Set<SmsTrack> smsTrack) {
 			this.smsTrack = smsTrack;
-		}
-		
+		}		
 		
 	
-		 @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "smsType")
-		 @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-		 public Set<VoiceSmsResponseDetails> getVoiceSmsResponseDetails() {
-			return voiceSmsResponseDetails;
-		 }
-		 public void setVoiceSmsResponseDetails(
-				Set<VoiceSmsResponseDetails> voiceSmsResponseDetails) {
-			this.voiceSmsResponseDetails = voiceSmsResponseDetails;
-		 }
+		@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "smsType")
+		@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+		public Set<SmsResponseDetails> getSmsResponseDetails() {
+			return smsResponseDetails;
+		}
+		public void setSmsResponseDetails(Set<SmsResponseDetails> smsResponseDetails) {
+			this.smsResponseDetails = smsResponseDetails;
+		}
+		 
 }
 
