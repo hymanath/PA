@@ -360,11 +360,13 @@ $(document).ready(function() {
 		{
 			$('#textSmsDiv').show('slide', {direction: 'left'}, 500);
 			$('#voiceSmsDiv').hide();
+			$('#sendSMSBtn').html("Send Text SMS");
 
 		}else
 		{
 			 $('#textSmsDiv').hide();
-			$('#voiceSmsDiv').show('slide', {direction: 'right'}, 500);
+			 $('#voiceSmsDiv').show('slide', {direction: 'right'}, 500);
+			 $('#sendSMSBtn').html("Send Voice SMS");
 
 		}
 	});
@@ -373,6 +375,9 @@ $(document).ready(function() {
 	$('.searchType').change(function(){
 		if($(this).val() == "cadre")
 		{
+			 if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6)
+              $('#districtList').trigger('change');
+			 
 			$('#directSMSToVotersId').hide();
 			//clearFieldsData();
 			showHideLocationOptionsForOtherthanVoter();
@@ -395,6 +400,10 @@ $(document).ready(function() {
 		}
 		else if($(this).val() == "influencePeople")
 		{ 
+			 if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6)
+			  $('#districtList').trigger('change'); 
+
+
 			$('#directSMSToVotersId').hide();
 			//clearFieldsData();
 			showHideLocationOptionsForOtherthanVoter();
@@ -1015,11 +1024,12 @@ var jsObj=
  </div>
 
   
-    
-
   <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
 
-   
+  <div style="float:right;margin-right:121px;">
+    <a id="sendSMSBtn" class="btn btn-primary" href="javascript:{sendSMS();}" style="position:fixed;z-index:9999;">Send Text SMS </a> 
+  </div>
+ 
      <div class="radioSpecial" style="margin:9px 0px 0px 72px;">
 		 <span style="font-size:13px;font-weight:bold;">Search By:</span><input type="radio" id="cadre" name="searchFor" value="cadre" class="searchType" checked>
 		   <label for="cadre">Cadre</label>
@@ -1342,7 +1352,7 @@ var jsObj=
  <a class="btn pull-left btn-primary" id="historyBtn" href="javascript:{openSmsHistoryWindow();}" style="display:none;">Click Here To See History</a>
 
  <span id="successMsg" style="font-weight:bold;color:green;margin-left:200px;"></span>
- <a class="btn pull-right btn-primary" href="javascript:{sendSMS();}">Send SMS </a>
+
 </div>
  </div>
 
@@ -1440,6 +1450,8 @@ function validateFieldsForSendingSms()
 	if(error == true)
 	{
 		$('#errorDiv').html(str);
+		$('html,body').animate({scrollTop: $("#errorDiv").offset().top}, 2000);
+
 		return false;
 	}
 	else
@@ -2870,6 +2882,8 @@ function sendTextSms()
     if($('#textSmsDescription').val().trim() == "")
 	{
 		$('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter The Message To Send.</font>");
+		$('html,body').animate({scrollTop: $("#errorMsg").offset().top}, 2000);
+
 		return false;
 	}
   if($('#mobileNumber').val().trim() != "")

@@ -157,10 +157,13 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
 </script>
 </head>
 <body>
-  <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS</h2>
+  <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS TO SEND SMS</h2>
 
-<input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
-<input type="button" class="btnClass" onClick="addNewCandidate()" value="Add Influencing People" style="float:right;margin-right:40px;"/>
+<div style="float:right;margin:5px;">
+<input type="button" class="btnClass" onClick="addNewCandidate()" value="Add Influencing People"/>
+<input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window"/>
+</div>
+
 <div class="span11" align="center">
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -178px;"></span>
  <div class="row">

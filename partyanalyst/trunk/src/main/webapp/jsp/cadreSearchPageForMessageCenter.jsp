@@ -359,8 +359,11 @@ window.open(urlStr,"addNewCadrePeople","scrollbars=yes,height=570,width=1300,lef
 
  <h2 style="text-align:center;color:#06ABEA;">CADRE SEARCH RESULTS TO SEND SMS</h2>
 
-<input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
-<input type="button" class="btnClass" onClick="addNewCandidate();" value="Add Cadre" style="float:right;margin-right:40px;"/>
+<div style="float:right;">
+<input type="button" class="btnClass" onClick="addNewCandidate();" value="Click Here To Add Cadre"/>
+<input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window"/>
+
+</div>
 	<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 
