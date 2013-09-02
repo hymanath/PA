@@ -295,7 +295,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		
 		try
 		{			
-	
+			
 			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
 	
 		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -446,6 +446,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			voiceSmsResponseDetails.setUser(userDAO.get(userId));
 			//voiceSmsResponseDetails.setMobileNumbers(mobileNumbers);
 			voiceSmsResponseDetails.setSmsDescription(description);
+			voiceSmsResponseDetails.setTimeSent(dateUtilService.getCurrentDateAndTime());
 			
 			voiceSmsResponseDetails = voiceSmsResponseDetailsDAO.save(voiceSmsResponseDetails);
 			
