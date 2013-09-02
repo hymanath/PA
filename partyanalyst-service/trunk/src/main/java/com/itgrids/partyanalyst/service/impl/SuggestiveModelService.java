@@ -1844,20 +1844,37 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					{
 						
 							expCasteList = new ArrayList<BasicVO>();
+							Long casteCount = 0l;
 							for (Long casteId : expCastesIds) {
-				
-									BasicVO casteVO = new BasicVO();
-									casteVO.setId(casteId);
-									Long total = casteCountsMap.get(casteId);
-									Double expPerc = castePanchayatMap.get(casteId).get(list.get(0));
-									Long expVoters = (long) (total*expPerc);
-									casteVO.setCount(total);
-									casteVO.setExpCount(expVoters);
-									casteVO.setName(casteNamesMap.get(casteId));
-									casteVO.setPerc(expPerc);
-									expCasteList.add(casteVO);
-									panchaytwiseCasteMap.put(list.get(0), expCasteList);
+									if(casteId > 0)
+									{
+										BasicVO casteVO = new BasicVO();
+										casteVO.setId(casteId);
+										Long total = casteCountsMap.get(casteId);
+										Double expPerc = castePanchayatMap.get(casteId).get(list.get(0));
+										Long expVoters = (long) (total*expPerc);
+										casteVO.setCount(total);
+										casteVO.setExpCount(expVoters);
+										casteVO.setName(casteNamesMap.get(casteId));
+										casteVO.setPerc(expPerc);
+										expCasteList.add(casteVO);
+										casteCount = casteCount + total;
+										panchaytwiseCasteMap.put(list.get(0), expCasteList);
+									}
+										
+									
 								}
+							BasicVO casteVO = new BasicVO();
+							casteVO.setId(0l);
+							Long total = boothTotalVoters - casteCount;
+							Double expPerc = castePanchayatMap.get(0l).get(list.get(0));
+							Long expVoters = (long) (total*expPerc);
+							casteVO.setCount(total);
+							casteVO.setExpCount(expVoters);
+							casteVO.setName("OTHERS");
+							casteVO.setPerc(expPerc);
+							expCasteList.add(casteVO);
+							panchaytwiseCasteMap.put(list.get(0), expCasteList);
 							}
 					}
 				youthLeaderSelectionVO.setExceptdCateDetails(panchaytwiseCasteMap.get(list.get(0)));
@@ -2198,35 +2215,54 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 									Map<Long,BasicVO> casteData = casteDetailsMap.get(panchayatid);
 									if(casteData != null && casteData.size() > 0)
 									{
+										Long casteCount = 0l;
 										expCasteDetails = new ArrayList<BasicVO>();
 										for (Long casteId : expCastesIds) {
-											BasicVO basicVO = casteData.get(casteId);
-											if(basicVO == null)
+											if(casteId > 0)
 											{
-												BasicVO casteVO = new BasicVO();
-												casteVO.setId(casteId);
-												casteVO.setName(casteNamesMap.get(casteId));
-												casteVO.setPerc(castePanchayatMap.get(casteId).get(panchayatid));
-												casteVO.setCount(0l);
-												casteVO.setExpCount(0l);
-												expCasteDetails.add(casteVO);
-												panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
-											}
-											else
-											{
-												BasicVO casteVO = new BasicVO();
-												casteVO.setId(basicVO.getId());
-												Long total = basicVO.getCount();
-												Double expPerc = castePanchayatMap.get(casteId).get(panchayatid);
-												Long expVoters = (long) (total*expPerc);
-												casteVO.setCount(basicVO.getCount());
-												casteVO.setExpCount(expVoters);
-												casteVO.setName(basicVO.getName());
-												casteVO.setPerc(expPerc);
-												expCasteDetails.add(casteVO);
-												panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+												BasicVO basicVO = casteData.get(casteId);
+												if(basicVO == null)
+												{
+													BasicVO casteVO = new BasicVO();
+													casteVO.setId(casteId);
+													casteVO.setName(casteNamesMap.get(casteId));
+													casteVO.setPerc(castePanchayatMap.get(casteId).get(panchayatid));
+													casteVO.setCount(0l);
+													casteVO.setExpCount(0l);
+													expCasteDetails.add(casteVO);
+													panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+												}
+												else
+												{
+													BasicVO casteVO = new BasicVO();
+													casteVO.setId(basicVO.getId());
+													Long total = basicVO.getCount();
+													Double expPerc = castePanchayatMap.get(casteId).get(panchayatid);
+													Long expVoters = (long) (total*expPerc);
+													casteVO.setCount(basicVO.getCount());
+													casteVO.setExpCount(expVoters);
+													casteVO.setName(basicVO.getName());
+													casteVO.setPerc(expPerc);
+													expCasteDetails.add(casteVO);
+													casteCount = casteCount + total;
+													panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+												}
+														
+												
 											}
 										}
+										BasicVO casteVO = new BasicVO();
+										casteVO.setId(0l);
+										Long total = panchayatTotalVoters - casteCount ;
+										Double expPerc = castePanchayatMap.get(0l).get(panchayatid);
+										Long expVoters = (long) (total*expPerc);
+										casteVO.setCount(total);
+										casteVO.setExpCount(expVoters);
+										casteVO.setName("OTHERS");
+										casteVO.setPerc(expPerc);
+										expCasteDetails.add(casteVO);
+										casteCount = casteCount + total;
+										panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
 									}
 									
 									youthLeaderSelectionVO.setExceptdCateDetails(panchaytwiseCasteMap.get(panchayatid));
