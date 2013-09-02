@@ -164,8 +164,8 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window"/>
 </div>
 
-<div class="span11" align="center">
-<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -178px;"></span>
+<div class="span11" align="center" style="margin-top:66px;">
+<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;"></span>
  <div class="row">
 
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable" style="margin-top:30px;"></div>
@@ -290,6 +290,12 @@ votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 oPayload.totalRecords = oResponse.meta.totalRecords;
+
+	if(oResponse.meta.totalRecords  == 0)
+	{
+		$('#peopleCount').html("<font style='color:red;font-weight:bold;'>No records found matching your search criteria. Changing the search criteria might help you.</font>");
+	}
+	else
 	$('#peopleCount').html("Total Count : <span>"+oResponse.meta.totalRecords +"</span>");
 return oPayload;
 }

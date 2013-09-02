@@ -1027,7 +1027,7 @@ var jsObj=
   <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
 
   <div style="float:right;margin-right:121px;">
-    <a id="sendSMSBtn" class="btn btn-primary" href="javascript:{sendSMS();}" style="position:fixed;z-index:9999;">Send Text SMS </a> 
+    <a id="sendSMSBtn" class="btn btn-warning" href="javascript:{sendSMS();}" style="position:fixed;z-index:9999;">Send Text SMS </a> 
   </div>
  
      <div class="radioSpecial" style="margin:9px 0px 0px 72px;">
@@ -1194,7 +1194,7 @@ var jsObj=
 	 </div>
 	 -->
 	 <div id="ageDiv" style="display:none;">
-		 <input type="checkbox" id="ageCheckbox" style="float:right;margin:18px 22px 0px 0px;"/>
+		 <input type="checkbox" id="ageCheckbox" style="float:right;margin:18px 22px 0px 0px;" title="Consider Age"/>
 		 <span>Age Range</span>
 		 <!-- <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width:50px;" />-->
 		 <div style="width:165px;margin-left:162px;">
