@@ -102,20 +102,10 @@ function buildMandalVoting(myResult)
 	
 	if(result == "")
 	{
-		$('#reportAjaxImg , #mandalVotingResultsDiv').hide();
-
 		$("#mandalVotingResultsDivBody").html('');
-		//alert("Result empty or not found");
-		$('#errorMsg').html("Result empty or not found");
+		alert("Result empty or not found");
 		return;
-
-
 	}
-
-	$('#mandalVotingResultsDiv').show();
-	$('#errorMsg').html("");
-
-
 	var elmt= document.getElementById("mandalVotingResultsDiv");
 	var elmtHead= document.getElementById("mandalVotingResultsDivHead");
 	var elmtBody= document.getElementById("mandalVotingResultsDivBody");
@@ -360,7 +350,6 @@ function getMandalVotingReport()
 			constituency:constituencyValue,
 			mandal:mandalValue,
 			party:partyValue,
-			alliance:true
 			"task":"mandalVoting"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -594,8 +583,6 @@ function buildConstituency(myResults)
 							<img id="ajaxImg" height="13" width="100" src="<%=request.getContextPath()%>/images/icons/goldAjaxLoad.gif"/>
 	</div>
 
-
-     <div id="errorMsg" style="font-weight:bold;color:red;margin-left:50px;"></div>
 	<div id="mandalVotingResultsDiv" style="position:relative;">
 		<div id="mandalVotingResultsDivHead"></div>
 		<div id="mandalVotingResultsDivGraph" style="minwidth:310px;height:400px;margin:0 auto;"></div>
