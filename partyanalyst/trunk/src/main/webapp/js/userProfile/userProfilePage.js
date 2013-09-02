@@ -512,7 +512,7 @@ $(".changePwdLink").live("click",function(){
             modal: true,
             title: "<b>Change Password</b>",
 			width: 600,
-            height: 225
+            height: 320
            
         });
 		var elmt = $("#allConnectedUsersDisplay_main");
@@ -520,7 +520,11 @@ $(".changePwdLink").live("click",function(){
 
 		div.append('<div id="password_window_errorMsg"></div>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span>');
+		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span><br>');
+		div.append('<img src="images/icons/infoicon.png" />');
+		div.append('<span>Password should contain 6 characters</span><br>');
+		div.append('<img src="images/icons/infoicon.png" />');
+		div.append('<span>Password should not contain $,#,\\,+,% characters</span>');
 		div.append('<div align="center"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
 		div.append('<div align="center"> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
 		div.append('<div align="center"> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
@@ -572,12 +576,38 @@ $(".changePwdLink").live("click",function(){
 	{
       errorDiv.html("<font color='red'>Please enter new password.</font>");
 	   return;
-	}
+	}else if ( npwd != null)
+			{ 				
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < npwd.length; i++)
+                {      
+                    if (iChars.indexOf(npwd.charAt(i)) != -1)
+                    {   
+					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					return;
+                    } 
+                }
+			
+			}
 	if(cfmpwd=='')
 	{
 	   errorDiv.html("<font color='red'>Please enter confirm password.</font>");
 	   return;
-	}
+	}else if ( cfmpwd != null)
+			{ 				
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < cfmpwd.length; i++)
+                {      
+                    if (iChars.indexOf(cfmpwd.charAt(i)) != -1)
+                    {   
+					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					return;
+                    } 
+                }
+			
+			}
 	if(cpwd == npwd)
 	{
 	  errorDiv.html("<font color='green'>Your new password is same as existing one.</font>");
@@ -761,8 +791,12 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	     }
 		 else{
 		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
-		 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
 		
+		 if(uploadPicStatus){
+			 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
+		 }else{
+			 photoStatusElmt.innerHTML = 'Please select a valid Image... &nbsp"/>'
+		 }
 		 getUploadpic();
 		}
 	});
@@ -782,12 +816,15 @@ $("#uploadPicButton").live("click",function(){
 		var str = '<font color="red">';
 		if(uploadPhotoId.length == 0)
 	     {   
-	       $("#uploadPic_window_status").html('Please Select a image .<br>');
+	       $("#uploadPic_window_status").html('Please Select a image .<br>').css('color','red');
 		   return;
 	     }
 		 else
 		 {
-		   $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
+			 if(uploadPicStatus)
+				 $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
+			 else
+				 $("#uploadPic_window_status").html('Please select valid Image.. &nbsp').css('color','red');
 			 getUploadpic();
 		}
 });
