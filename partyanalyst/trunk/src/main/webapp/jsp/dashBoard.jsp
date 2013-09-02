@@ -758,6 +758,28 @@ lable{line-height:40px;}
    </div>
 	<!-- SUGGESTIVE MODEL END -- >
    <!--Created By SASI Management Tools Block-->
+
+ <div class="span12 well well-small" style="margin-left:0px;">
+     <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Message Center</h4></div>
+		
+		
+		<div class="row-fluid">
+			<div class="span6 widget">
+				<h2> Send Voice And Text SMS </h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/sms.png"style="width: 64px; height: 64px;"></img>
+						<div class="media-body">
+						<p>Send Voice And Text SMS To Cadre , Influencing People and Voters</p>
+							
+							<a class="btn btn-small pull-right" target="_blank" href="messageCenterAction.action">View</a>
+						</div>
+				</div> 
+			</div> 
+					   
+	
+        </div>
+   </div>		
+		   
    
   <div class="row-fluid">
 	<div class="span12 well well-small">
@@ -830,22 +852,7 @@ lable{line-height:40px;}
 		 </div>
 	
         </div>
-		
-		<!--<div class="row-fluid">
-			<div class="span6 widget">
-				<h2> Message Center </h2>
-				<div class="media">
-					<img class="media-object pull-left" alt="Party Performance Report" src="./images/dashboard/Constituency Management.png"style="width: 64px; height: 64px;"></img>
-						<div class="media-body">
-						<p>Send Voice And Text SMS To Cadre , Influencing People and Voters</p>
-							
-							<a class="btn btn-small pull-right" target="_blank" href="messageCenterAction.action">View</a>
-						</div>
-				</div> 
-			</div> -->
 			
-		   
-	
         </div>
      </div>
 	
