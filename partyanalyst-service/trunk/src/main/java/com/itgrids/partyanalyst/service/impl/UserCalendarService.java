@@ -298,7 +298,10 @@ public class UserCalendarService implements IUserCalendarService {
 		} else if("MONTHLY".equalsIgnoreCase(impDate.getRecFreqType())){
 			int months[] = new int[2];
 			if(currentDay<=sDay){
-				months[0]=currentMonth;
+				if(calendar.getActualMaximum(Calendar.DATE) == currentDay)
+				  months[0]=currentMonth+1;
+				else
+				  months[0]=currentMonth;	
 				months[1]=currentMonth+1;
 			}else {
 				months[0]=currentMonth+1;
@@ -317,7 +320,7 @@ public class UserCalendarService implements IUserCalendarService {
 
 			monthlyCal2.add(Calendar.MONTH, 1);
 			
-			dbEndDate.add(Calendar.DAY_OF_MONTH, 1);  
+			//dbEndDate.add(Calendar.DAY_OF_MONTH, 1);  
 			if((monthlyCal1.after(startCalendar) || monthlyCal1.equals(startCalendar)) && (monthlyCal1.before(endCalendar)) && monthlyCal1.before(dbEndDate) && monthlyCal1.after(dbStartDate) ){
 				ImportantDatesVO importantDatesVO = createImportantDatesVOForUser(monthlyCal1,impDate);
 				importantDatesVOs.add(importantDatesVO);
