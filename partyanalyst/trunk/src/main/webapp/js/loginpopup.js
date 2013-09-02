@@ -219,7 +219,20 @@ function showLoginStatus(results)
 	               {
 		               str += ' password is required<br>';
 		                eFlag = true;
-	               }
+	               }else if ( securityName != null)
+					{ 				
+						var iChars = "#%&+\\";  
+						
+							for (var i = 0; i < securityName.length; i++)
+						{      
+							if (iChars.indexOf(securityName.charAt(i)) != -1)
+							{   
+							errorDivEle.innerHTML = '<font color="red">Password should not contain special characters</font>';
+							return;
+							} 
+						}
+					
+					}
 	              	                str += '</font>';
 	                errorDivEle.innerHTML = str;
 
