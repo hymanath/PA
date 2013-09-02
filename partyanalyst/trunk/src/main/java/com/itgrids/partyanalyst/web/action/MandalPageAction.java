@@ -27,11 +27,9 @@ import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.PartyElectionVotersHeaderDataVO;
 import com.itgrids.partyanalyst.dto.ResultWithExceptionVO;
 import com.itgrids.partyanalyst.dto.VillageDetailsVO;
-import com.itgrids.partyanalyst.helper.ChartProducer;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IDelimitationConstituencyMandalService;
 import com.itgrids.partyanalyst.service.IPartyBoothWiseResultsService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -239,7 +237,8 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		
 		String mandalId = jsonObj.getString("mandal");
 		String partyId = jsonObj.getString("party");
-		String alliance = "true";//jsonObj.getString("alliance");
+		//String alliance = "true";//jsonObj.getString("alliance");
+		String alliance = jsonObj.getString("alliance");
 		
 		/*String chartName = "mandalWisePartyPerformance_"+mandalId+"_"+partyId+".png";
          if(cPath.contains("PartyAnalyst"))

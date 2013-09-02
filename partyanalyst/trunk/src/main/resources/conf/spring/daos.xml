@@ -1217,7 +1217,7 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="voiceSmsResponseDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceSmsResponseDetailsDAO">
+	<bean id="smsResponseDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsResponseDetailsDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
