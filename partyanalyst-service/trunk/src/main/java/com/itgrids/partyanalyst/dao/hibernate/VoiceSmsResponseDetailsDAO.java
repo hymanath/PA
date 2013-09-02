@@ -53,7 +53,7 @@ public class VoiceSmsResponseDetailsDAO  extends GenericDaoHibernate<VoiceSmsRes
 	{
 		
 		Query query = getSession().createQuery("select distinct model.user.firstName , model.user.lastName , model.user.userId " +
-				"from  VoiceSmsResponseDetails model where  model.sentDate between date(:fromDate) and date(:toDate)");
+				"from  VoiceSmsResponseDetails model where  model.timeSent between date(:fromDate) and date(:toDate)");
 		query.setParameter("fromDate", fromDate);
 		query.setParameter("toDate", toDate);
 		
