@@ -359,12 +359,15 @@ window.open(urlStr,"addNewCadrePeople","scrollbars=yes,height=570,width=1300,lef
 
  <h2 style="text-align:center;color:#06ABEA;">CADRE SEARCH RESULTS TO SEND SMS</h2>
 
+
+<div><span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span></div>
+
+
 <div style="float:right;">
 <input type="button" class="btnClass" onClick="addNewCandidate();" value="Click Here To Add Cadre"/>
 <input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window"/>
 
 </div>
-	<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span>
 	<div id="smsDialogBox" class="yui-skin-sam"></div>
 
 	<div id="searchResultsDiv_main" class="yui-skin-sam">
@@ -639,9 +642,15 @@ function buildCadreSearchResultDataTableForSMS(rparam)
 		var CadreSearchResultDataTable = new YAHOO.widget.DataTable("searchResult", CadreSearchResultColumnDefs,CadreSearchResultDataSource, myConfigs);
 
 		CadreSearchResultDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) 
-		{		
+		{	
+			if(oResponse.meta.totalRecords == 0)
+			{		
+
+				$('#peopleCount').html("<font style='color:red;font-weight:bold;'>No records found matching your search criteria. Changing the search criteria might help you.</font>");
+			}else{
 		        oPayload.totalRecords = oResponse.meta.totalRecords;
 				$('#peopleCount').html("Total Count : <span>"+oResponse.meta.totalRecords +"</span>");
+			}
 		        return oPayload;
 		}
 		//function calling to build Result
