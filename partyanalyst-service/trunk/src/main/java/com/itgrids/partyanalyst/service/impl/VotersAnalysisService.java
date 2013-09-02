@@ -5115,8 +5115,10 @@ public List<VotersDetailsVO> getAgewiseVotersDetailsByHamletId(Long hamletId,Lon
 			if(!younger.getGender().equalsIgnoreCase(IConstants.MALE))
 			{
 				for(int i=1;i<(voterVOs.size()-1);i++)
-					if(voterVOs.get(i).getGender().equalsIgnoreCase(IConstants.MALE))
+					if(voterVOs.get(i).getGender().equalsIgnoreCase(IConstants.MALE)){
 							younger = voterVOs.get(i);
+							break;
+					}
 			}
 			voterHouseInfoVO.setYounger(younger.getFirstName());
 			voterHouseInfoVO.setYoungerAge(younger.getAge());
