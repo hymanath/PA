@@ -219,9 +219,10 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 	var selMonth;
 	function changePageHandler(type,args,obj)
 	{
+		var current = args[1];
+		var date = new Date(current);
+		if(isNaN(date.getMonth()) || isNaN(date.getFullYear()))
 		var date = new Date();
-		//var current = args[1];
-		//var date = new Date(current);
 		var month = date.getMonth();
 		var year = date.getFullYear();	
 		dateObj.dateVal = '1';
@@ -564,10 +565,10 @@ function buildNewImpDatePopup()
 								if(jsObj.task=="createImpDateEvent")
 								{
 									//alert("Important Date created successfully");
-									$("#cadreImpDatesMainDiv").html("Important Date created successfully");
+									$("#cadreImpDatesMainDiv").html("Important Date created successfully").css("color","green");
 									setTimeout(function() {
 									 $("#cadreImpDatesMainDiv").html("");
-										}, 2000);
+										}, 5000);
 									var jsObj2={
 									task:'getUpdatedEvents'
 								   };
@@ -634,10 +635,10 @@ function buildNewImpDatePopup()
 								else if(jsObj.task=="updateImpDateEvent")
 								{	
 									//alert("Updated Successfully");
-									$("#cadreImpDatesMainDiv").html("Updated Successfully");
+									$("#cadreImpDatesMainDiv").html("Updated Successfully").css("color","green");
 									setTimeout(function() {
 									 $("#cadreImpDatesMainDiv").html("");
-										}, 2000);
+										}, 5000);
 									/*var date = new Date();
 									
 									var jsObj1={
@@ -859,10 +860,10 @@ function buildNewImpDatePopup()
 		
 		var elmt = document.getElementById("ImpDate_"+myResults);
 		//alert("Date successfully deleted");
-		$("#cadreImpDatesMainDiv").html("Date successfully deleted");
+		$("#cadreImpDatesMainDiv").html("Date successfully deleted").css("color","green");
 		setTimeout(function() {
 		 $("#cadreImpDatesMainDiv").html("");
-			}, 2000);
+			}, 5000);
 		getUpdatedEvents();
 		var parent = elmt.parentNode;
 		parent.removeChild(elmt);
