@@ -116,7 +116,7 @@ input, button, select, textarea {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
-ul li {list-style-type:square;}
+.voiceSmsInstructions ul li {list-style-type:square;}
 
    .textAreaClass{
 	   background-color:#fff;
@@ -1266,7 +1266,7 @@ var jsObj=
 
 <h4 style="color:#FFF;text-align:center;background:#06ABEA;padding:7px;">SEND VOICE SMS</h4>
 
-<div class="widget whitegloss" style="margin:0px 0px 20px 0px;">
+<div class="voiceSmsInstructions widget whitegloss" style="margin:0px 0px 20px 0px;">
 <h5 style="margin:8px 0px 0px 92px;">Instructions To Send Voice SMS</h5>
  <ul style="margin:8px 0px 0px 92px;font-size:13px;font-weight:bold;"> 
   <li>Enter new mobile numbers or search from voters , cadre , influencing people from the above search feature provided and add their mobile numbers.</li>
