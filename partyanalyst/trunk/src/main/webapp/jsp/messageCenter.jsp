@@ -1194,8 +1194,7 @@ var jsObj=
 	 </div>
 	 -->
 	 <div id="ageDiv" style="display:none;">
-	  <!-- <div  class="selectDiv"  style="float:left;">
-		 <input type="checkbox" id="ageCheckbox"/>Age range :</div>-->
+		 <input type="checkbox" id="ageCheckbox" style="float:right;margin:18px 22px 0px 0px;"/>
 		 <span>Age Range</span>
 		 <!-- <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width:50px;" />-->
 		 <div style="width:165px;margin-left:162px;">
