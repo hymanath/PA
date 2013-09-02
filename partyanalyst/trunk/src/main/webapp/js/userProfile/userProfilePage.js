@@ -63,6 +63,7 @@ $('#connectMessageText').live("keyup",function() {
 
 	
 	$("#friendsLink").click(function(){
+		ajaxProcessing();
 		var jsObj ={
 			task:"getLatestFriendsList"
 	};
@@ -77,6 +78,7 @@ $('#connectMessageText').live("keyup",function() {
 	});
 
 	$("#requestLink").click(function(){
+		ajaxProcessing();
 		var jsObj ={
 			task:"getAllRequestMessagesForUser"						
 		};
@@ -90,6 +92,7 @@ $('#connectMessageText').live("keyup",function() {
 		
 	});
 	$(".ImportantDates").click(function(){
+		ajaxProcessing();
 		clearAllSubscriptionDivs();
 		clearAllFavoriteLinkDivs();
 		buildCalendarControl();
@@ -159,6 +162,7 @@ $('#connectMessageText').live("keyup",function() {
 	});
 	 
 	$("#Inbox").live("click",function(){
+		ajaxProcessing();
 		$(this).closest(".nav-tabs").find("li").removeClass("active");
 		$(this).parent().addClass("active");
 		
@@ -259,8 +263,10 @@ $('#connectMessageText').live("keyup",function() {
 	//subscriptions
 
 	 $(".subscriptionsLink").click(function(){
+		 ajaxProcessing();
 		 $("#subscriptionsStreamingMoreDiv").hide();
 		  $("#subscriptionsStreamingData").html('');
+		  
 		var jsObj ={
 			task:"getUserScriptions"
 		};
@@ -327,6 +333,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 		var linkType = "problemsLink";
 		startIndex = 0;
 		getAllPostedProblemsForUser();
+ajaxProcessing();
 		var jsObj ={
 			startIndex : startIndex,
 			maxIndex   : 10,
@@ -1117,6 +1124,7 @@ function callAjax1(jsObj,url){
 						showAllUserCandidateSubscriptions(jsObj,results);
 						showAllUserConstituencySubscriptions(jsObj,results);
 						showAllUserPartySubscriptions(jsObj,results);
+						closeDialogue();
 						
 					}
 					else if(jsObj.task =="changePassword")
@@ -1215,7 +1223,9 @@ function callAjax1(jsObj,url){
 								buildCadreInfoTable(results);
 							}
 			}catch (e) {  
-                  $("#subscriptionsStreamingAjaxImg").hide();			
+                  $("#subscriptionsStreamingAjaxImg").hide();	
+				  closeDialogue();
+						
 			   	//alert("Invalid JSON result" + e);   
 			}  
 	    },
@@ -1285,6 +1295,7 @@ function buildAvailFavIds(results){
 		 stateList.push(results[0].setFavIdMap.states[i]);
 		 }
 	}
+	closeDialogue();
 }
 
 
@@ -1495,11 +1506,13 @@ function getFriendsListForUser(results)
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
 	{
 		$("#headerDiv").html('<div>Data could not be retrived due to some technical difficulties</div>').appendTo(".placeholderCenterDiv");;
+		closeDialogue();
 			return;
 	}
 	else if(results.connectedPeople == "")
 	{
 		$("#headerDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
+		closeDialogue();
 			return;
 	}
 	
@@ -1530,7 +1543,7 @@ function getFriendsListForUser(results)
 		templateClone.find('.sendMsg').html('<a href="javascript:{}" onclick="showMailPopup(\''+results.connectedPeople[i].id+'\',\''+results.connectedPeople[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message To '+results.connectedPeople[i].candidateName+'" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
-
+closeDialogue();
 }
 
 function buildAllSubscriptions(results,place){
@@ -1551,12 +1564,14 @@ function buildAllSubscriptions(results,place){
 		else
 		  templateClone.prependTo("#subscriptionsStreamingData");		 
 	}
+	
   }
   else
   {
 	$(subscriptionsStreamingMore).hide();
 	$("#headerDiv").html('<b style="color:blue">No Subscriptions Are Avalible Please Select Subscriptions</b>');
   }
+  closeDialogue();
 }
 
 function callForEveryFiveMins(){
@@ -1574,7 +1589,9 @@ function getInitialUpdates(){
   getSubscriptionDetails("main");
 }
 function getSubscriptionDetails(type){
+ajaxProcessing();
 	clearDiv1();
+
    $("#subscriptionsStreamingMoreDiv").show();
    var task ="";
    if(type == "main")
@@ -1604,6 +1621,7 @@ function showAllRequestMessagesForUser(results,jsObj){
 	if(results.friendRequest ==null)
 	{
 		$("#headerDiv").html('You have 0 Requests');
+		closeDialogue();
 		return;
 	}
 	
@@ -1627,6 +1645,7 @@ function showAllRequestMessagesForUser(results,jsObj){
 		templateClone.find('.blockPersonBtn').html('<a onclick="blockRequest('+results.friendRequest[i].id+',\''+results.friendRequest[i].candidateName+'\')" class="rejectButton btn btn-mini" rel="tooltip" title="Block This Person"><i class="icon-ban-circle opacityFilter-50"></i></a>').css("display","block");
 		templateClone.appendTo(".placeholderCenterDiv");
 	}
+	closeDialogue();
 }
 
 var inboxCount=0;
@@ -2223,11 +2242,13 @@ function showAllPostedProblems(jsObj,results)
 	if(problemsData == null && jsObj.linkType == "problemsLink")
 	{
 		$('.problemTemplateDiv').html('Problems Does Not Exists').appendTo('.placeholderCenterDiv');
+		closeDialogue();
 		return;
 	}
 	else if(problemsData == null && jsObj.linkType == "problemsViewMoreLink")
 	{
 		$('.problemsViewMoreLink').css("display","none");
+		closeDialogue();
 		return;
 	}
 	
@@ -2264,7 +2285,7 @@ function showAllPostedProblems(jsObj,results)
 		var viewMore = $('<div class="viewMoreDiv"><span class="problemsViewMoreLink btn">View More</span><span class="ajaxImg"><img src="images/icons/search.gif"/></span><input type="hidden" value="'+jsObj.type+'" class="problemViewMoreTypeVar"/></div>');
 		viewMore.appendTo('.placeholderCenterDiv');
 	}
-	
+	closeDialogue();
 }
 //changed for alignment
 function connectToSelectedPerson(id,name)
@@ -2408,7 +2429,7 @@ function setDefaultImage(img)
 
 function getAllPostedReasonsForUser()
 {
-
+ajaxProcessing();
 	var jsObj=
 	{
 			task:"getAllPostedReasonsStatusUser"						
@@ -2496,6 +2517,7 @@ function showPostedReasons(jsObj,results)
 	div.append(label);
 	div.append(ulinner);
 	$("#headerDiv").append(div);
+	closeDialogue();
 }
 
 /* -- subscription functions Start -- */
@@ -2755,7 +2777,7 @@ function closewdw()
 
 function getAllPostedProblemsForUser()
 {
-	
+	ajaxProcessing();
 	var jsObj=
 	{
 			task:"getAllPostedProblemsByUser"						
@@ -2810,6 +2832,7 @@ function showPostedProblems(jsObj,results)
 	 div.append(label);
 	div.append(ulInner);
 	$('#headerDiv').append(div);
+	closeDialogue();
 }
 
 function openAddReasonWindow(taskType)
@@ -3424,6 +3447,7 @@ function showSelectBoxForSpecialPages(results){
 	}
 }
 function getAllFavLinksOfUser(){
+	ajaxProcessing();
 	 var jsObj ={
 			task:"forAllFavLinks"
 		};
@@ -3614,8 +3638,10 @@ $("#SentBox").trigger("click");
 
 function getCadresInfo()
 {
+	ajaxProcessing();
 		$('#announcementsDiv').hide();
 		$("#impdatesDiv").hide();
+		
 	  var jsObj = 
 		{
 			task:"getCadreInfo"
@@ -3677,6 +3703,7 @@ function buildCadreInfoTable(results)
 	}
 	 str+='</div>';
 	$("#caderInfo").html(str);
+closeDialogue();
 }
 function openNewAnnouncementPopup()
 {
@@ -3691,7 +3718,7 @@ function openEditAnnouncement()
 
 function getUserImpEvents()
 {
- 
+ ajaxProcessing();
 		var jsObj = {
 			task:"getUserImportantEvents"
 		};
@@ -3748,6 +3775,7 @@ function buildUserImpEvents(results)
 	}
 	str+='</div>';
 	$("#impEvents").html(str);
+	closeDialogue();
 }
 
 
@@ -3778,12 +3806,14 @@ function buildProblemDetailsByStatus(jsObj,results)
 	if(results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html("Data could not be retrived due to some technical difficulties.");
+		closeDialogue();
 		return;
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
 		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>No messages has been sent to you.</div>');
 	//	$(".placeholderCenterDiv").html("No messages has been sent to you.");
+	closeDialogue();
 		return;
 	}
 		
@@ -3796,6 +3826,7 @@ function buildProblemDetailsByStatus(jsObj,results)
 	 if(newProblems == null || newProblems.length == 0)
 		{
 		  elmtBody.innerHTML = '<div class="newProblemData_main" style="width:95%"><center><b>No Records Found<center></b> </div>';
+		  closeDialogue();
 		  return;
 		}
 
@@ -3833,6 +3864,7 @@ for(var i in results.candidateVO)
 
 		var viewMore = $('<div style="padding: 5px;" class="custom_paginator_class" id="custom_paginator_class"></div>');
 		viewMore.appendTo('.placeholderCenterDiv');
+		closeDialogue();
 
 }
 function buildSentDetailsByStatus(jsObj,results)
@@ -3927,12 +3959,14 @@ var custom_paginator1 = {
 				 this.buildPaginator(eleIdClicked);
 			}
 			catch (e)
-			{   		
+			{   
+				closeDialogue();
 				//alert("Invalid JSON result" + e);   
 			}  
 		},
 		scope : this,
 		failure : function( o ) {
+			closeDialogue();
 					//alert( "Failed to load result" + o.status + " " + o.statusText);
 				  }
 		};
@@ -3991,3 +4025,32 @@ function clearDiv1()
 	
 	$("#paliamentDiv").css("display","none");
 }
+function ajaxProcessing()
+{
+	
+$("#processingDialogue").dialog({
+	  
+	   width:300,
+		height:100,
+		autoOpen: false,
+		modal: true,
+		position:'center',
+		closeOnEscape: false
+			
+});
+$(".ui-dialog-titlebar").hide();
+ $(".ui-dialog").addClass("customclass");
+$(".ui-widget-content").css({'border':'none','background':'none'});
+ $(".ui-dialog-content").dialog("option","position","center");
+$("ui-dialog").css({left:378 ,width:512});
+$(".ui-icon").css("display","none");
+ $("#processingDialogue").dialog('open').html("<img src='images/ajaxImg2.gif' style='width:40px;'/>");
+}
+function closeDialogue()
+{
+$( "#processingDialogue" ).dialog('close');
+}
+
+
+
+

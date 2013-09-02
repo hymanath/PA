@@ -160,6 +160,7 @@ function showInitialImpEventsAndDates(eventsarr,type,task)
 
 		
 		mainEventCalendar.render(); 
+		closeDialogue();
 	}
 	function getDateTime(date)
 	{	
@@ -1252,4 +1253,3 @@ function buildUpdatedEvents(myResults ,jsObj)
 	renderStack();
 
 }
-	
