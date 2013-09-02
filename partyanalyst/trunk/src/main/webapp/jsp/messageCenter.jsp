@@ -1349,7 +1349,7 @@ var jsObj=
  </div>
 
 <div style="margin:5px;">
- <a class="btn pull-left btn-primary" id="historyBtn" href="javascript:{openSmsHistoryWindow();}" style="display:none;">Click Here To See History</a>
+ <a class="btn pull-left btn-primary" id="historyBtn" href="javascript:{openSmsHistoryWindow();}" style="display:none;">Click Here To See Voice SMS History</a>
 
  <span id="successMsg" style="font-weight:bold;color:green;margin-left:200px;"></span>
 
@@ -1917,7 +1917,7 @@ function callAjax1(param,jsObj,url){
 				    }
 					else if(jsObj.task == "getUserConstituencyNames")
 				    {
-						if(myResults.length == 1)
+						if(myResults.length == 1 || myResults.length == 0)
 						{
 							$('#publicationDateDiv,#mandalDiv,#panchayatDiv,#wardDiv,#pollingStationDiv,#hamletDiv').hide();
 

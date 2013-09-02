@@ -159,7 +159,7 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
 <body>
   <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS TO SEND SMS</h2>
 
-<div style="float:right;margin:5px;">
+<div style="float:right;margin:0px 35px 12px 5px;">
 <input type="button" class="btnClass" onClick="addNewCandidate()" value="Add Influencing People"/>
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window"/>
 </div>
@@ -224,8 +224,8 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	{
 
 			var casteName= oRecord.getData("casteIds");
-			if(casteName.length <= 1)
-				console.log(casteName);
+			//if(casteName.length <= 1)
+			//	console.log(casteName);
 	if(casteName==null)
 		var str ='Not Available';
 	else
