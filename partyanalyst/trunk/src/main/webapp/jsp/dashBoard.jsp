@@ -18,7 +18,7 @@
 	
 </head>
 <style>
-	
+	#changePWDButton,#cancelButtonID{background-color: #2F96B4;}
 	table {
     background-color: transparent;
     border-spacing: 14px;
@@ -1394,7 +1394,7 @@ $(".changePwdLink").live("click",function(){
             modal: true,
             title: "<b>Change Password</b>",
 			width: 565,
-            height: 300
+            height: 320
            
         });
 		var elmt = $("#allConnectedUsersDisplay_main");
@@ -1402,11 +1402,15 @@ $(".changePwdLink").live("click",function(){
 
 		div.append('<div id="password_window_errorMsg"></div>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span>');
-		div.append('<div> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 15px;"/></div>');
-		div.append('<div> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
-		div.append('<div> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 13px;"/></div>');
-        div.append('<div style="margin-left: auto; margin-right: auto; width: 550px;"><input class="btn-info btn-small btnStyle" id="changePWDButton" type="button" value="Change Password"></input><input class="btn-info btn-small btnStyle" id="cancelButtonID" type="button" value="Cancel" style="margin-left:10px;"></input></div>');
+		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span><br>');
+		div.append('<img src="images/icons/infoicon.png" />');
+		div.append('<span>Password should contain 6 characters</span><br>');
+		div.append('<img src="images/icons/infoicon.png" />');
+		div.append('<span>Password should not contain $,#,\\,+,% characters</span>');
+		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 15px;"/></div>');
+		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
+		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 13px;"/></div>');
+        div.append('<div style="margin-left: auto; margin-right: auto; width: 270px;"><input class="btn-info btn-small btnStyle" id="changePWDButton" type="button" value="Change Password"></input><input class="btn-info btn-small btnStyle" id="cancelButtonID" type="button" value="Cancel" style="margin-left:10px;"></input></div>');
 
 		elmt.append(div);
 	});
@@ -1451,12 +1455,38 @@ $(".changePwdLink").live("click",function(){
 	{
       errorDiv.html("<font color='red'>Please enter new password.</font>");
 	   return;
-	}
+	}else if ( npwd != null)
+			{ 				
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < npwd.length; i++)
+                {      
+                    if (iChars.indexOf(npwd.charAt(i)) != -1)
+                    {   
+					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					return;
+                    } 
+                }
+			
+			}
 	if(cfmpwd=='')
 	{
 	   errorDiv.html("<font color='red'>Please enter confirm password.</font>");
 	   return;
-	}
+	}else if ( cfmpwd != null)
+			{ 				
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < cfmpwd.length; i++)
+                {      
+                    if (iChars.indexOf(cfmpwd.charAt(i)) != -1)
+                    {   
+					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					return;
+                    } 
+                }
+			
+			}
 	if(cpwd == npwd)
 	{
 	  errorDiv.html("<font color='green'>Your new password is same as existing one.</font>");
