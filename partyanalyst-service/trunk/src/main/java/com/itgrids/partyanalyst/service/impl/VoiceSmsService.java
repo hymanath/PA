@@ -449,6 +449,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			//voiceSmsResponseDetails.setMobileNumbers(mobileNumbers);
 			smsResponseDetails.setSmsDescription(description);
 			smsResponseDetails.setTimeSent(dateUtilService.getCurrentDateAndTime());
+			smsResponseDetails.setSmsTypeId(1L);
 			
 			smsResponseDetails = smsResponseDetailsDAO.save(smsResponseDetails);
 			
