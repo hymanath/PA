@@ -32,17 +32,20 @@ public class SmsHistory extends BaseModel implements Serializable {
 	private Long historyId;
 	private String sentDate;
 	private String mobileNumber;
+	
+
 	private String smsContent;
 	private SmsModule smsModule;
 	private User user;
 	private Long userId;
 	
 	private Long smsResponseDetailsId;
-	private VoiceSmsResponseDetails voiceSmsResponseDetails;
+	private SmsResponseDetails smsResponseDetails;
 	
 		
 	// Constructors
 
+	
 	
 	/** default constructor */
 	public SmsHistory() {
@@ -135,7 +138,7 @@ public class SmsHistory extends BaseModel implements Serializable {
 
 	
 	
-   @Column(name="voice_sms_response_details_id")
+   @Column(name="sms_response_details_id")
 	public Long getSmsResponseDetailsId() {
 		return smsResponseDetailsId;
 	}
@@ -145,16 +148,16 @@ public class SmsHistory extends BaseModel implements Serializable {
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="voice_sms_response_details_id",updatable = false, insertable = false)
+	@JoinColumn(name="sms_response_details_id",updatable = false, insertable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public VoiceSmsResponseDetails getVoiceSmsResponseDetails() {
-		return voiceSmsResponseDetails;
+	public SmsResponseDetails getSmsResponseDetails() {
+		return smsResponseDetails;
 	}
 
-	public void setVoiceSmsResponseDetails(
-			VoiceSmsResponseDetails voiceSmsResponseDetails) {
-		this.voiceSmsResponseDetails = voiceSmsResponseDetails;
+	public void setSmsResponseDetails(SmsResponseDetails smsResponseDetails) {
+		this.smsResponseDetails = smsResponseDetails;
 	}
+	
 
 }

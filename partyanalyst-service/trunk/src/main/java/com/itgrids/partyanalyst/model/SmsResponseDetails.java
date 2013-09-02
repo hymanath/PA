@@ -27,11 +27,11 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name="sms_response_details")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
+public class SmsResponseDetails extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = 1L;	
 	
-	private Long voiceSmsResponseDetailsId;
+	private Long smsResponseDetailsId;
 	
 	private Long noOfSmsSent;
 	private String responseCode;
@@ -47,18 +47,20 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "voice_sms_response_details_id", unique = true, nullable = false)
-	public Long getVoiceSmsResponseDetailsId() {
-		return voiceSmsResponseDetailsId;
+	@Column(name = "sms_response_details_id", unique = true, nullable = false)
+	public Long getSmsResponseDetailsId() {
+		return smsResponseDetailsId;
 	}
-	public void setVoiceSmsResponseDetailsId(Long voiceSmsResponseDetailsId) {
-		this.voiceSmsResponseDetailsId = voiceSmsResponseDetailsId;
+	public void setSmsResponseDetailsId(Long smsResponseDetailsId) {
+		this.smsResponseDetailsId = smsResponseDetailsId;
 	}
+	
 	
 	@Column(name="no_of_sms_sent" , length = 15)
 	public Long getNoOfSmsSent() {
 		return noOfSmsSent;
 	}
+	
 	public void setNoOfSmsSent(Long noOfSmsSent) {
 		this.noOfSmsSent = noOfSmsSent;
 	}
@@ -121,7 +123,7 @@ public class VoiceSmsResponseDetails extends BaseModel implements Serializable{
 	}
 	
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "voiceSmsResponseDetails")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "smsResponseDetails")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<SmsHistory> getSmsHistory() {
 		return smsHistory;

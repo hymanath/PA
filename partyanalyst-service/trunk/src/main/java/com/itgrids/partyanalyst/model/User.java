@@ -108,7 +108,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UserVoterCategory> userVoterCategory = new HashSet<UserVoterCategory>(0);
 	private Set<UserVoterCategoryValue> userVoterCategoryValue = new HashSet<UserVoterCategoryValue>(0);
 	private Set<VoiceRecordingDetails> recordingDetails = new HashSet<VoiceRecordingDetails>(0);
-	private Set<VoiceSmsResponseDetails> voiceSmsResponseDetails = new HashSet<VoiceSmsResponseDetails>(0);
+	private Set<SmsResponseDetails> smsResponseDetails = new HashSet<SmsResponseDetails>(0);
 	private Set<VoiceSmsVerifiedNumbers>  voioceSmsVerifiedNumbers = new HashSet<VoiceSmsVerifiedNumbers>(0);
 
 	
@@ -1008,13 +1008,13 @@ public class User extends BaseModel implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<VoiceSmsResponseDetails> getVoiceSmsResponseDetails() {
-		return voiceSmsResponseDetails;
+
+	public Set<SmsResponseDetails> getSmsResponseDetails() {
+		return smsResponseDetails;
 	}
 
-	public void setVoiceSmsResponseDetails(
-			Set<VoiceSmsResponseDetails> voiceSmsResponseDetails) {
-		this.voiceSmsResponseDetails = voiceSmsResponseDetails;
+	public void setSmsResponseDetails(Set<SmsResponseDetails> smsResponseDetails) {
+		this.smsResponseDetails = smsResponseDetails;
 	}
 	
 
