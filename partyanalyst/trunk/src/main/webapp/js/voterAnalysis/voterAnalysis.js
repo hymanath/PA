@@ -702,6 +702,7 @@ function showImportantFamiliesDiv()
 	function getPanchayatOrWardsList(checkedele,selectedEle)
 	{
       showNewsDetails();
+	  var publicationValue = 0;
 		var constituencyId = $("#constituencyList").val();
 		var reportLevel = $("#reportLevel").val();
 		var mandalId=document.getElementById("mandalField");
@@ -716,7 +717,8 @@ function showImportantFamiliesDiv()
 		 type = "muncipality";
 		}
 		var value = value1.substring(1);
-		var publicationValue = $('#publicationDateList').val();
+		if($("#publicationDateList").val() != null && $("#publicationDateList").val() > 0)
+	   publicationValue = $('#publicationDateList').val();
 		var alertEl = document.getElementById("AlertMsg");
 		if(alertEl !=null)
 			alertEl.innerHTML = '';
