@@ -33,6 +33,7 @@ public class PanchayatVO implements Serializable {
 	private int othrExpctdVotes;
 	private String othrExpctdPrcntg;
 	private int otherVotes;
+	private String areaType;
 	
 	
 	public Long getPanchayatId() {
@@ -167,6 +168,12 @@ public class PanchayatVO implements Serializable {
 	}
 	public void setOtherVotes(int otherVotes) {
 		this.otherVotes = otherVotes;
+	}
+	public String getAreaType() {
+		return areaType;
+	}
+	public void setAreaType(String areaType) {
+		this.areaType = areaType;
 	}
 	
 		

@@ -351,9 +351,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				String constAreaType=constituencyType.get(0)[1].toString();
 				Long publicationId = 8l;
 				String mncplName="";
+				List<Object[]> ttlVtrsInPnchyt=new ArrayList<Object[]>();
+				List<Object[]> ttlVtrsInBooths=new ArrayList<Object[]>();
 				
-				List<Object[]> ttlVtrsInPnchyt=boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituency(constituencyId,publicationId);
-				List<Object[]> ttlVtrsInBooths=boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityByConstituencyId(constituencyId,publicationId);
+				if(constAreaType.equalsIgnoreCase(IConstants.RURAL)){
+					ttlVtrsInPnchyt=boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituency(constituencyId,publicationId,"rural");
+				}else if(constAreaType.equalsIgnoreCase(IConstants.RURALURBAN)){
+					ttlVtrsInPnchyt=boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituency(constituencyId,publicationId,"rural");
+					ttlVtrsInBooths=boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityByConstituencyId(constituencyId,publicationId);
+				}else{
+					ttlVtrsInPnchyt=boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituency(constituencyId,publicationId,"urban");
+				}
 				List<Long> ttlPnchytIds=new ArrayList<Long>();
 				List<Long> ttlBoothIds=new ArrayList<Long>();
 				for(Object[] obj:ttlVtrsInPnchyt){
@@ -375,15 +383,23 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					
 					panchaytVO1.setAgeRange(ageRange);
 					
+					panchaytVO1.setAreaType(constAreaType);
+					
 					if(constAreaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN)){
-						
+						 List<Object[]> ttlVtrsInPnchytByAge=boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituencyByAge(constituencyId,publicationId, group.getId(), group.getPopulateId(),"urban");
+					 	 areaMap=getTheMapForArea(ttlVtrsInPnchyt,ttlVtrsInPnchytByAge);
+					 		
+						 List<Object[]> ttlRslts=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId(),"urban");
+						 areaMap=getResults(ttlRslts,areaMap,casteIds,exptdCastes,ttlPnchytIds);
+						 List<PanchayatVO> list=new ArrayList<PanchayatVO>(areaMap.values());
+						 panchaytVO1.setPanchayatList(list);
 				 	}
 				 	else if(constAreaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL)|| constAreaType.equalsIgnoreCase(IConstants.RURALURBAN)){
 				 	  
-				 	   List<Object[]> ttlVtrsInPnchytByAge=boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituencyByAge(constituencyId,publicationId, group.getId(), group.getPopulateId());
+				 	   List<Object[]> ttlVtrsInPnchytByAge=boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituencyByAge(constituencyId,publicationId, group.getId(), group.getPopulateId(),"rural");
 				 	   areaMap=getTheMapForArea(ttlVtrsInPnchyt,ttlVtrsInPnchytByAge);
 				 		
-					   List<Object[]> ttlRslts=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId());
+					   List<Object[]> ttlRslts=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId(),"rural");
 					   areaMap=getResults(ttlRslts,areaMap,casteIds,exptdCastes,ttlPnchytIds);
 					   List<PanchayatVO> list=new ArrayList<PanchayatVO>(areaMap.values());
 					   panchaytVO1.setPanchayatList(list);

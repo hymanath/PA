@@ -4618,10 +4618,15 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		}
 		
-		public List<Object[]> getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo){
+		public List<Object[]> getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,String type){
 			StringBuilder str=new StringBuilder();
-			str.append("select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName," +
-					" model1.casteState.caste.casteName,model1.casteState.casteStateId,count(model.voter.voterId) from" +
+			if(type.equalsIgnoreCase("rural")){
+				str.append("select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName,");
+			}else{
+				str.append("select model.booth.boothId,model.booth.partNo,");
+			}
+			
+			str.append(" model1.casteState.caste.casteName,model1.casteState.casteStateId,count(model.voter.voterId) from" +
 					" BoothPublicationVoter model,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId" +
 					" and model.booth.constituency.constituencyId =:constituencyId" +
 					" and model.booth.publicationDate.publicationDateId =:publicationDateId");
@@ -4633,7 +4638,13 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				str.append(" and model.voter.age > :ageFrom");
 			}
 			
-			str.append(" group by model.booth.panchayat.panchayatId, model1.casteState.casteStateId");
+			str.append(" group by model1.casteState.casteStateId,");
+			
+			if(type.equalsIgnoreCase("rural")){
+				str.append(" model.booth.panchayat.panchayatId");
+			}else{
+				str.append(" model.booth.boothId");
+			}
 			
 			Query qry=getSession().createQuery(str.toString());
 			qry.setParameter("constituencyId", constituencyId);
@@ -4646,15 +4657,23 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 			return qry.list();
 		}
-		public List<Object[]> getTotalVotersInPanchayatOfConstituency(Long constituencyId,Long publicationDateId){
+		public List<Object[]> getTotalVotersInPanchayatOfConstituency(Long constituencyId,Long publicationDateId,String type){
 			StringBuilder str=new StringBuilder();
-			str.append("select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName," +
-					" count(model.voter.voterId) from" +
+			if(type.equalsIgnoreCase("rural")){
+				str.append("select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName,");
+			}else{
+				str.append("select model.booth.boothId,model.booth.partNo,");
+			}
+			str.append(" count(model.voter.voterId) from" +
 					" BoothPublicationVoter model" +
 					" where model.booth.constituency.constituencyId =:constituencyId" +
 					" and model.booth.publicationDate.publicationDateId =:publicationDateId");
 			
-			str.append(" group by model.booth.panchayat.panchayatId ");
+			if(type.equalsIgnoreCase("rural")){
+				str.append(" group by model.booth.panchayat.panchayatId ");
+			}else{
+				str.append(" group by model.booth.boothId");
+			}
 			
 			Query qry=getSession().createQuery(str.toString());
 			qry.setParameter("constituencyId", constituencyId);
@@ -4663,10 +4682,15 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return qry.list();
 		}
 		
-		public List<Object[]> getTotalVotersInPanchayatOfConstituencyByAge(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo){
+		public List<Object[]> getTotalVotersInPanchayatOfConstituencyByAge(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,String type){
 			StringBuilder str=new StringBuilder();
-			str.append("select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName," +
-					" count(model.voter.voterId),model.voter.gender from" +
+			if(type.equalsIgnoreCase("rural")){
+				str.append("select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName," );
+			}else{
+				str.append("select model.booth.boothId,model.booth.partNo,");
+			}
+			
+			str.append(" count(model.voter.voterId),model.voter.gender from" +
 					" BoothPublicationVoter model" +
 					" where model.booth.constituency.constituencyId =:constituencyId" +
 					" and model.booth.publicationDate.publicationDateId =:publicationDateId");
@@ -4678,7 +4702,13 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				str.append(" and model.voter.age > :ageFrom");
 			}
 			
-			str.append(" group by model.booth.panchayat.panchayatId,model.voter.gender ");
+			str.append(" group by model.voter.gender, ");
+			
+			if(type.equalsIgnoreCase("rural")){
+				str.append(" model.booth.panchayat.panchayatId");
+			}else{
+				str.append(" model.booth.boothId");
+			}
 			
 			Query qry=getSession().createQuery(str.toString());
 			qry.setParameter("constituencyId", constituencyId);
