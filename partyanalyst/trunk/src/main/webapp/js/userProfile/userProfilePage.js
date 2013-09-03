@@ -32,6 +32,18 @@ $('#connectMessageText').live("keyup",function() {
 	}
 });
 
+$("#connectMessageText").live("click", function()
+{
+   $(this).attr("placeholder", " ");
+});
+
+
+$("#connectMessageText").live("blur", function()
+{
+if($(this).val().length==0)
+   $(this).attr("placeholder", "Enter Your Message Here.. ");
+});
+
 
 	var startIndex=0;
 	var maxIndex=5;
