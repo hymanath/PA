@@ -110,7 +110,12 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		if(reasonType.equalsIgnoreCase(IConstants.LOGGED_USER))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = 'true'");			
 		else if(reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
-			query.append(" and  model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"' and model.user.userId not in(:connectedUserIds) ");
+		{
+			//query.append(" and  model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"' and model.user.userId not in(:connectedUserIds) ");
+			query.append(" and  model.user.userId != ? and model.problem.isApproved = '"+IConstants.TRUE+"' ");
+			if(connectedUserIds != null && connectedUserIds.size() > 0)
+				query.append("and model.user.userId not in (:connectedUserIds) ");
+		}
 		else if(reasonType.equalsIgnoreCase(IConstants.APPROVED))
 			query.append(" and model.user.userId = ? and model.problem.isApproved = '"+IConstants.TRUE+"'");
 		else if(reasonType.equalsIgnoreCase(IConstants.REJECTED))
@@ -128,7 +133,10 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 			queryObject.setParameter(0, userId);
 		
 		if(reasonType.equalsIgnoreCase("ConnectedUserProblems") || reasonType.equalsIgnoreCase(IConstants.OTHERUSERS))
+		{
+			if(connectedUserIds != null && connectedUserIds.size() > 0)
 			queryObject.setParameterList("connectedUserIds", connectedUserIds);
+		}
 		
 		queryObject.setFirstResult(startIndex);		
 		queryObject.setMaxResults(results);
