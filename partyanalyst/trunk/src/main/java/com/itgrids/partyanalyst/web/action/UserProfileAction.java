@@ -707,7 +707,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		}
 		//subscriptionsMainVO = specialPageService.getAllProfileSubScriptions(user.getRegistrationID(), jObj.getLong("profileId"));
 		
-		subscriptionsMainVO = specialPageService.getUserProfileSubScriptions(user.getRegistrationID());
+		subscriptionsMainVO = specialPageService.getUserProfileSubScriptions(user.getRegistrationID(),jObj.getString("tempVar"));
 		
 		return Action.SUCCESS;
 	}
