@@ -1755,16 +1755,19 @@ public class SpecialPageService implements ISpecialPageService{
 	
 	/* User Profile Subscriptions Start*/
 	
-	public SubscriptionsMainVO getUserProfileSubScriptions(Long userId)
+	public SubscriptionsMainVO getUserProfileSubScriptions(Long userId,String tempVar)
 	{
 		SubscriptionsMainVO subscriptionsMainVO = new SubscriptionsMainVO();
 		try{
-			subscriptionsMainVO.setUserSpecialPageSubscriptions(getAllSpecialPagesForUserProfile(userId));
+			subscriptionsMainVO.setUserSpecialPageSubscriptions(getAllSpecialPagesForUserProfile(userId,tempVar));
 			//subscriptionsMainVO.setUserPartySubscriptions(getAllUserSubscribedPartyPages(userId));
 			//subscriptionsMainVO.setUserPartySubscriptions(getAllPartyPagesForUserProfile(userId));
-			subscriptionsMainVO.setUserPartySubscriptions(getAllSubscribedPartiesForUserProfile(userId));
-			subscriptionsMainVO.setUserCandidateSubscriptions(getAllUserSubscribedCandidatePages(userId));
-			subscriptionsMainVO.setUserConstituencySubscriptions(getAllUserSubscribedConstituencyPages(userId));
+			if(tempVar != null && tempVar.equalsIgnoreCase("fromSubscriptionLink"))
+			{
+			  subscriptionsMainVO.setUserPartySubscriptions(getAllSubscribedPartiesForUserProfile(userId));
+			  subscriptionsMainVO.setUserCandidateSubscriptions(getAllUserSubscribedCandidatePages(userId));
+			  subscriptionsMainVO.setUserConstituencySubscriptions(getAllUserSubscribedConstituencyPages(userId));
+			}
 		
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -1774,7 +1777,7 @@ public class SpecialPageService implements ISpecialPageService{
 		return subscriptionsMainVO;
 	}
 	
-	public List<SubscriptionsVO> getAllSpecialPagesForUserProfile(Long userId)
+	public List<SubscriptionsVO> getAllSpecialPagesForUserProfile(Long userId,String tempVar)
 	{
 		List<SubscriptionsVO> subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
 		List<SpecialPageVO> specialPageVOList = new ArrayList<SpecialPageVO>(0);
@@ -1788,11 +1791,18 @@ public class SpecialPageService implements ISpecialPageService{
 				if(specialPageVOList != null && specialPageVOList.size() >0)
 					for(SpecialPageVO specialPageVO : specialPageVOList)
 					{
-						subscriptionsVO = new SubscriptionsVO();
-						if(list.contains(specialPageVO.getSpecialPageId()))
+						if(tempVar != null && !tempVar.equalsIgnoreCase("fromSubscriptionLink") && !list.contains(specialPageVO.getSpecialPageId()))
+						{
+						  subscriptionsVO = new SubscriptionsVO();
+						  subscriptionsVO.setSpecialPageVO(specialPageVO);
+						  subscriptionsVOList.add(subscriptionsVO);
+						}else if(tempVar != null && tempVar.equalsIgnoreCase("fromSubscriptionLink")){
+						 subscriptionsVO = new SubscriptionsVO();
+						 if(list.contains(specialPageVO.getSpecialPageId()))
 							subscriptionsVO.setSubscribed(true);
-						subscriptionsVO.setSpecialPageVO(specialPageVO);
-						subscriptionsVOList.add(subscriptionsVO);
+						    subscriptionsVO.setSpecialPageVO(specialPageVO);
+						    subscriptionsVOList.add(subscriptionsVO);
+						}
 					}
 			if(subscriptionsVOList != null && subscriptionsVOList.size() > 0)
 			 subscriptionsVOList.get(0).setFlag(tempFlag);
