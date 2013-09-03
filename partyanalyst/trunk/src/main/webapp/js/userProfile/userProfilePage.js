@@ -495,7 +495,7 @@ ajaxProcessing();
 			return;
 		}
 		
-		disableButton("connectDistrictPeopleLink");
+		disableButton1("connectDistrictPeopleLink");
 		$("#connectPeoplePopup").dialog("close");
 		
 		var jsObj ={
@@ -4306,3 +4306,8 @@ function subscriptionDetails()
 	  $("#constituencyErrorMsgDiv").html("Error occured! try again.").css("color","red");	
    }
  }
+ function disableButton1(id)
+{
+
+	document.getElementById(id).disabled  = true;
+}
