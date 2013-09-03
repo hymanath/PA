@@ -13,6 +13,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -119,8 +120,17 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private IFavoriteLinkPageDAO favoriteLinkPageDAO;
 	private ISpecialPageDAO specialPageDAO;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
+	private TaskExecutor taskExecutor;
 	
 	
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
+	}
+
 	public ISpecialPageDAO getSpecialPageDAO() {
 		return specialPageDAO;
 	}
@@ -803,8 +813,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							emailDetailsVO.setToAddress(email);
 							emailDetailsVO.setSubject(subject);
 							emailDetailsVO.setSenderName(senderName);
-							
-							mailsSendingService.sendEmailFriendRequest(emailDetailsVO);
+							taskExecutor.execute(sendMailForFriendRequest(emailDetailsVO));
 						}
 					}
 			}
@@ -821,7 +830,17 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	return dataTransferVO;
 	} 
 	
-	
+	public Runnable sendMailForFriendRequest(EmailDetailsVO emailDetailsVO)
+	{
+		try{
+			mailsSendingService.sendEmailFriendRequest(emailDetailsVO);
+			return new Thread();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			return new Thread();
+		}
+	}
 	/**
 	 * This method can be used by other methods to populate or set data into a data transfer object which contains the list of 
 	 * registered users.
