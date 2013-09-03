@@ -369,7 +369,7 @@
 				<value>com.itgrids.partyanalyst.model.SuggestiveRange</value>
 				<value>com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo</value>
 				<value>com.itgrids.partyanalyst.model.VoiceRecordingDetails</value>
-				<value>com.itgrids.partyanalyst.model.VoiceSmsResponseDetails</value>
+				<value>com.itgrids.partyanalyst.model.SmsResponseDetails</value>
 				<value>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</value>	
 				<value>com.itgrids.partyanalyst.model.SmsType</value>		
 				<value>com.itgrids.partyanalyst.model.DemoRequest</value>	
@@ -1910,7 +1910,7 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="voiceSmsResponseDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoiceSmsResponseDetailsDAO">
+	<bean id="smsResponseDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsResponseDetailsDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
