@@ -102,6 +102,15 @@ public List<Object[]> getAllCasteInfoDetails(){
 				" model.caste.casteId from CasteState model ");
 	}
 	
+	public List<Object[]> getCasteNamesByCasteIds(List<Long> casteIds){
+		Query query=getSession().createQuery("select model.casteStateId,model.caste.casteName from CasteState model" +
+				" where model.casteStateId in (:casteIds)");
+		
+		query.setParameterList("casteIds", casteIds);
+		return query.list();
+	}
+	
+
 	public List<Object[]> getCasteListByCasteIds(List<Long> casteIds)
 	{
 		Query query  = getSession().createQuery("select  model.casteStateId,model.caste.casteName from CasteState model " +
