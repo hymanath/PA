@@ -2152,8 +2152,9 @@ return Action.SUCCESS;
 		Long userId = user.getRegistrationID();
 		try{
 		 jObj = new JSONObject(getTask());
+		 Long id=jObj.getLong("localEleBodyId");
 		if(jObj.getLong("publicationDateId")==0)
-			resultData = getRegionServiceDataImp().getHamletsOrWards(jObj.getLong("localEleBodyId"), IConstants.PRESENT_YEAR);
+			resultData = getRegionServiceDataImp().getHamletsOrWards(id, IConstants.PRESENT_YEAR);
 		else
 		  resultData = votersAnalysisService.getWardsListForMuncipality(jObj.getLong("constituencyId"),jObj.getLong("localEleBodyId"),jObj.getLong("publicationDateId"),userId);
 			

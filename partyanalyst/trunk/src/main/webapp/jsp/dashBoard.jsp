@@ -764,7 +764,7 @@ lable{line-height:40px;}
 		
 		
 		<div class="row-fluid">
-			<div class="span6 widget">
+			<div class="span12 widget">
 				<h2> Send Voice And Text SMS </h2>
 				<div class="media">
 					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/dashboard/sms.png"style="width: 64px; height: 64px;"></img>
