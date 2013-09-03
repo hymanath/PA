@@ -160,7 +160,7 @@
 	{
 		width:100%;
 	}
-	.districtPageRoundedHeaders_center{width:814px;}
+	.districtPageRoundedHeaders_center{width:842px;}
 </style>
 
 <script type="text/javascript">
@@ -380,7 +380,7 @@
 					if(partiesDetails[k].partyDetails[j].won==0){
 						str += '<b class="cursorStyle">0 </b>';
 					}else{
-						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\',\''+results.selectedYearsCount+'\')">';
 						str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].won+' </b>';
 					}
 					str += '</td>';	
@@ -392,7 +392,7 @@
 						str += '</td>';
 
 						str += '<td align="center">';
-						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getData(\''+partyName+'\',\''+counter+'\',\''+results.selectedYearsCount+'\')">';
 						str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].won+' </b>';
 						str += '</td>';	
 					}
@@ -402,7 +402,7 @@
 						if(partiesDetails[k].partyDetails[j].wonRecently==0){
 							str += '<b class="cursorStyle">0 </b>';
 						}else{
-							str += '<a title="click here to view constituencies details" onclick="getExcludingWonData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\')">';
+							str += '<a title="click here to view constituencies details" onclick="getExcludingWonData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\',\''+results.selectedYearsCount+'\')">';
 							str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
 						}					
 						str += '</td>';
@@ -411,7 +411,7 @@
 						if(partiesDetails[k].partyDetails[j].lostRecently==0){
 							str += '<b class="cursorStyle">0 </b>';
 						}else{
-							str += '<a title="click here to view constituencies details" onclick="getExcludingLostData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\')">';
+							str += '<a title="click here to view constituencies details" onclick="getExcludingLostData(\''+partyId+'\',\''+counter+'\',\''+partyName+'\',\''+results.selectedYearsCount+'\')">';
 							str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
 						}					
 						str += '</td>';	
@@ -590,7 +590,7 @@
 					str += '<td align="center">'+counter+'</td>';
 
 					str += '<td align="center">';
-					str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\')">';
+					str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\',\''+results.selectedYearsCount+'\')">';
 					str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].won+' </b>';
 					str += '</td>';	
 
@@ -602,7 +602,7 @@
 						str += '</td>';
 
 						str += '<td align="center">';
-						str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\')">';
+						str += '<a title="click here to view constituencies details" onclick="getData(\''+partiesDetails[k].partyName+'\',\''+counter+'\',\''+results.selectedYearsCount+'\')">';
 						str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].won+' </b>';
 						str += '</td>';	
 
@@ -614,7 +614,7 @@
 						if(partiesDetails[k].partyDetails[j].wonRecently==0){
 							str += '<b class="cursorStyle">0</b>';
 						}else{
-							str += '<a title="click here to view constituencies details" onclick="getExcludingWonData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
+							str += '<a title="click here to view constituencies details" onclick="getExcludingWonData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\',\''+results.selectedYearsCount+'\')">';
 							str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].wonRecently+' </b>';
 						}
 						
@@ -624,7 +624,7 @@
 						if(partiesDetails[k].partyDetails[j].lostRecently==0){
 							str += '<b class="cursorStyle">0</b>';
 						}else{
-							str += '<a title="click here to view constituencies details" onclick="getExcludingLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\')">';
+							str += '<a title="click here to view constituencies details" onclick="getExcludingLostData(\''+partiesDetails[k].partyId+'\',\''+counter+'\',\''+partiesDetails[k].partyName+'\',\''+results.selectedYearsCount+'\')">';
 							str += '<b class="cursorStyle">'+partiesDetails[k].partyDetails[j].lostRecently+' </b>';
 						}
 						str += '</td>';	
@@ -735,32 +735,36 @@
 		}
 	}
 	
-	function getData(partyName,columnId){
+	function getData(partyName,columnId,selectedPartyId){
 		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId,"excludingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
 
-	function getIncludingData(partyName,columnId,partyId){			
+	function getIncludingData(partyName,columnId,partyId){	
+		var selectedPartyId = $("#electionYearsSelect").val();
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=all","includingAllianceResults","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
 
-	function getWonData(partyId,columnId,partyName){		
+	function getWonData(partyId,columnId,partyName){
+		var selectedPartyId = $("#electionYearsSelect").val();
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();	
 	}
 
-	function getLostData(partyId,columnId,partyName){		
+	function getLostData(partyId,columnId,partyName){
+		var selectedPartyId = $("#electionYearsSelect").val();
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&partyId="+partyId+"&elecId="+selectedElecId+"&type=lost","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
-	function getExcludingWonData(partyId,columnId,partyName){		
+	function getExcludingWonData(partyId,columnId,partyName,selectedPartyId){	
+		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&elecId="+selectedElecId+"&excludeType=WINNER","WonData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();	
 	}
 
-	function getExcludingLostData(partyId,columnId,partyName){		
+	function getExcludingLostData(partyId,columnId,partyName,selectedPartyId){		
 		var browser1 = window.open("<s:url action="candidateStrenthsAction.action"/>?electionType="+electionType+"&selectedStateElmts="+selectedStateElmts+"&partyName="+partyName+"&elecYears="+selectedPartyId+"&columnId="+columnId+"&elecId="+selectedElecId+"&excludeType=SUCCESSOR","LostData","scrollbars=yes,height=500,width=800,left=200,top=200");
 		browser1.focus();		
 	}
@@ -1350,7 +1354,7 @@
 	   {   
 		 //  overViewStr+='		<td style="background:lightGrey;"> </td>';
 		   overViewStr+='		<td style="background:lightGrey;"><span style="color:#247CD4;font-weight:bold;font-size:12px;"> Party </span></td>';
-		   overViewStr+='<td style="background:lightGrey;"> <span style="font-weight:bold;color:darkgreen;font-size:12px;"> No of Times Won </span> </td>';
+		   overViewStr+='<td style="background:lightGrey;"> <span style="font-weight:bold;color:darkgreen;font-size:12px;"> No. of Seats Won  </span> </td>';
 	   }
 	   overViewStr+='	</tr>';
 	   overViewStr+='	<tr>';
@@ -1792,7 +1796,7 @@
 								<table border="0" cellpadding="0" cellspacing="0" style="width:101%;">
 									<tr>
 										<td width="30px"><img  width="30" height="36" src="images/icons/districtPage/header_left.gif"/></td>
-										<td><div class="districtPageRoundedHeaders_center"> <div id="newConstituenciesCount"></div></div></td>
+										<td><div class="districtPageRoundedHeaders_center" > <div id="newConstituenciesCount"></div></div></td>
 										<td><img width="5" height="36" src="images/icons/districtPage/header_right.gif"/></td>
 									</tr>
 								</table>
