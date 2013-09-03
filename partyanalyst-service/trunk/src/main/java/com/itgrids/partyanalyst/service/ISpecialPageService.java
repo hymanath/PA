@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
+import com.itgrids.partyanalyst.dto.SubscriptionsVO;
 import com.itgrids.partyanalyst.model.FilePaths;
 
 public interface ISpecialPageService {
@@ -109,4 +110,9 @@ public interface ISpecialPageService {
     
     public ResultStatus updateSpecialPageHighLightsDesc(
 			List<SpecialPageVO> specialPageVO, Long specialPageId) ;
+    
+    public List<SelectOptionVO> getAllUnSubscribedConstituencies(Long userId,Long stateId);
+    
+    public List<SubscriptionsVO> getUnSubscribedPartiesForUserProfile(Long stateId,Long userId);
+    
 }

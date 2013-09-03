@@ -9,6 +9,7 @@ public class SpecialPageVO {
 	private Long orderNo;
 	private String description;
 	private Long specialPageDescriptionId;
+	private String tempVar;
 	
 	public Long getSpecialPageDescriptionId() {
 		return specialPageDescriptionId;
@@ -52,4 +53,11 @@ public class SpecialPageVO {
 	public void setEventImagePath(String eventImagePath) {
 		this.eventImagePath = eventImagePath;
 	}
+	public String getTempVar() {
+		return tempVar;
+	}
+	public void setTempVar(String tempVar) {
+		this.tempVar = tempVar;
+	}
+	
 }

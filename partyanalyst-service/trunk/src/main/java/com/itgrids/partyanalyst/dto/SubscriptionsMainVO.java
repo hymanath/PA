@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriptionsMainVO implements Serializable{
@@ -13,6 +14,9 @@ public class SubscriptionsMainVO implements Serializable{
 	List<SubscriptionsVO> userSpecialPageSubscriptions;
 	List<SubscriptionsVO> userCandidateSubscriptions;
 	List<SubscriptionsVO> userConstituencySubscriptions;
+	private List<SelectOptionVO> partyList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);
+	
 	
 	public List<SubscriptionsVO> getProfilePartySubscriptions() {
 		return profilePartySubscriptions;
@@ -69,6 +73,18 @@ public class SubscriptionsMainVO implements Serializable{
 	public void setUserConstituencySubscriptions(
 			List<SubscriptionsVO> userConstituencySubscriptions) {
 		this.userConstituencySubscriptions = userConstituencySubscriptions;
+	}
+	public List<SelectOptionVO> getPartyList() {
+		return partyList;
+	}
+	public void setPartyList(List<SelectOptionVO> partyList) {
+		this.partyList = partyList;
+	}
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
 	}
 	
 	
