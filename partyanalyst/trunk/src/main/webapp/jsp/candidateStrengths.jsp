@@ -111,7 +111,11 @@ browser2.focus();
 				key : "candidateName"
 			},{
 				key : "constituencyName"
-			},{
+			},
+				{
+			key : "partyName"
+				},
+				{
 				key : "electionYear"
 			}, {
 				key : "votesEarned"
@@ -129,6 +133,11 @@ browser2.focus();
 			label : "Constituency Name",
 			sortable : true
 		},{
+			key : "partyName",
+			label : "Party Name",
+			sortable : true
+		},
+			{
 			key : "electionYear",
 			label : "Election Year",
 			sortable : true
@@ -148,6 +157,7 @@ browser2.focus();
 		    })
 		};				
 		var myDataTable = new YAHOO.widget.DataTable("mainDataDiv",resultsColumnDefs,resultsDataSource,paginatorConfig);
+	
 	}
 
 	function initializeResultsTableForAllParties()
@@ -236,9 +246,13 @@ browser2.focus();
 								<td>
 									<a id='${requiredConstituencyDetails.candidateName}' href="javascript:{}" onclick="redirectCandidateResult('${requiredConstituencyDetails.candidateId}')" onmouseover="displayImage(this.id);" onmouseout="return nd();">${requiredConstituencyDetails.candidateName}
 								</td>
+								
 								<td>
 									${requiredConstituencyDetails.constituencyName}
-								</td>						
+								</td>	
+								<td>
+										<img src="<%=request.getContextPath()%>/images/party_flags/${requiredConstituencyDetails.partyFlag}" height="30" width="40"/>
+								</td>		
 								<td>
 									${requiredConstituencyDetails.electionYear}
 								</td>
@@ -261,7 +275,7 @@ browser2.focus();
 									${requiredConstituencyDetails.constituencyName}
 								</td>	
 								<td>
-									<img src="<%=request.getContextPath()%>/images/party_flags/${requiredConstituencyDetails.partyName}" height="30" width="40"/>
+									<img src="<%=request.getContextPath()%>/images/party_flags/${requiredConstituencyDetails.partyFlag}" height="30" width="40"/>
 								</td>							
 								<td>
 									${requiredConstituencyDetails.electionYear}

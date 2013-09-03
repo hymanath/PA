@@ -1690,6 +1690,9 @@
       <property name="regionServiceDataImp" ref="regionServiceDataImp" />
       <property name="votersAnalysisService" ref="votersAnalysisService" />
       <property name="casteStateDAO" ref="casteStateDAO" />
+      <property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
+      <property name="partyDAO" ref="partyDAO" />
+	  <property name="voterModificationDAO" ref="voterModificationDAO" />
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
