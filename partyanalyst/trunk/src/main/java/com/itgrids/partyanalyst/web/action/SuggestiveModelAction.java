@@ -441,6 +441,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		//Long electionId=jObj.getLong("electionId");
 		JSONArray elctionIds = jObj.getJSONArray("electionIds");
 		JSONArray castesSelected=jObj.getJSONArray("castesSelcted");
+		JSONArray jsonArray = jObj.getJSONArray("expCasteArray");
 		
 		List<Long> electionIds = new ArrayList<Long>(); 
 		if(elctionIds != null && elctionIds.length() >0){
@@ -470,7 +471,20 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 		}
 		
-		panchayatVOs=suggestiveModelService.getVotersGroupDetails(groups,constiId,loctnId,loctnType,electionIds,regVO.getRegistrationID(),casteIds);
+		List<ExceptCastsVO> exceptCasteList = new ArrayList<ExceptCastsVO>();
+		for (int i = 0 ; i < jsonArray.length() ; i++) {
+			JSONObject jSONObject= jsonArray.getJSONObject(i);
+			ExceptCastsVO exceptCastsVO = new ExceptCastsVO();
+			exceptCastsVO.setCasteId(jSONObject.getLong("casteId"));
+			//exceptCastsVO.setCasteName(jSONObject.getString("casteName"));
+			exceptCastsVO.setCastePerc(jSONObject.getDouble("expPerc"));
+			exceptCastsVO.setPanchayatId(jSONObject.getLong("panchayatId"));
+			//exceptCastsVO.setSelectLevelId(jSONObject.getLong("selLevel"));
+			//exceptCastsVO.setSelectLevelvalue(jSONObject.getLong("levelValue"));
+			exceptCasteList.add(exceptCastsVO);
+		}
+		
+		panchayatVOs=suggestiveModelService.getVotersGroupDetails(groups,constiId,loctnId,loctnType,electionIds,regVO.getRegistrationID(),casteIds,exceptCasteList);
 		
 		return Action.SUCCESS;
 	}
