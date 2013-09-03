@@ -46,7 +46,7 @@ public class PartySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0].toString());
 	}*/
 	
-	public void testGetAllUserSubscribedPartyPages()
+	/*public void testGetAllUserSubscribedPartyPages()
 	{
 		List<Object[]> list = partySubscriptionsDAO.getAllUserSubscribedPartyPages(1l);
 		System.out.println(list.size());
@@ -54,6 +54,12 @@ public class PartySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0]);
 		}
+	}*/
+	
+	public void testGetAllSubscribedParties()
+	{
+		List<Object[]> list = partySubscriptionsDAO.getAllSubscribedParties(1L);
+		System.out.println(list.size());
 	}
 
 }

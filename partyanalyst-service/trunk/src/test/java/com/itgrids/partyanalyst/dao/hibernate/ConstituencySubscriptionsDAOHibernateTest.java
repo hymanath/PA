@@ -39,12 +39,17 @@ public class ConstituencySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(constituencySubscriptionsDAO.unSubscriptionDetails(218l,1l));
 	}*/
 	
-	public void testGetAllUserSubscribedConstituencyPages()
+	/*public void testGetAllUserSubscribedConstituencyPages()
 	{
 		List<Object[]> list = constituencySubscriptionsDAO.getAllUserSubscribedConstituencyPages(1l);
 		System.out.println(list.size());
 		for(Object[] params : list)
 			System.out.println(params[0]);
+	}*/
+	
+	public void testgetAllUserSubScribedConstituencies()
+	{
+		System.out.println(constituencySubscriptionsDAO.getAllUserSubScribedConstituencies(1l).size());
 	}
 	
 }
