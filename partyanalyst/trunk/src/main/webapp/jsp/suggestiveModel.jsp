@@ -2697,6 +2697,9 @@ var count=0;
 		str+='<th>Expected Votes</th>';
 		str+='<th>Expected % </th>';
 		}
+		str+='<th>Other Votes</th>';
+		str+='<th>Expected Votes</th>';
+		str+='<th>Expected % </th>';
 		
 		str+='</tr>';
 		str+='</thead>';
@@ -2712,6 +2715,10 @@ var count=0;
 			str+='<td>'+result.panchayatList[i].allSelectedCastes[j].expctdVotesCount+'</td>';
 			str+='<td>'+result.panchayatList[i].allSelectedCastes[j].expctdPercentage+'</td>';
 		}
+		str+='<td>'+result.panchayatList[i].otherVotes+'</td>';
+		str+='<td>'+result.panchayatList[i].othrExpctdVotes+'</td>';
+		str+='<td>'+result.panchayatList[i].othrExpctdPrcntg+'</td>';
+		
 		str+='</tr>';
 		}
 		str+='</tbody></table>';
@@ -2803,6 +2810,9 @@ var count=0;
 		str+='<th>Expected Votes</th>';
 		str+='<th>Expected %</th>';
 		}
+		str+='<th>Other Votes</th>';
+		str+='<th>Expected Votes</th>';
+		str+='<th>Expected % </th>';
 		str+='</tr>';
 		str+='</thead>';
 		str+='<tbody style="font-size:12px;color:#000000;">';
@@ -2816,6 +2826,9 @@ var count=0;
 			str+='<td>'+result.boothsList[i].allSelectedCastes[j].expctdVotesCount+'</td>';
 			str+='<td>'+result.boothsList[i].allSelectedCastes[j].expctdPercentage+'</td>';
 		}
+		str+='<td>'+result.boothsList[i].otherVotes+'</td>';
+		str+='<td>'+result.boothsList[i].othrExpctdVotes+'</td>';
+		str+='<td>'+result.boothsList[i].othrExpctdPrcntg+'</td>';
 		str+='</tr>';
 		}
 		str+='</tbody></table>';
