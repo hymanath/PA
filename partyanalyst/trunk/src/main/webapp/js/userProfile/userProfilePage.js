@@ -92,6 +92,7 @@ $('#connectMessageText').live("keyup",function() {
 		
 	});
 	$(".ImportantDates").click(function(){
+		$("#subscriptionsDiv").css("display","none");
 		ajaxProcessing();
 		clearAllSubscriptionDivs();
 		clearAllFavoriteLinkDivs();
@@ -110,6 +111,7 @@ $('#connectMessageText').live("keyup",function() {
 		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
 	});
 	$("#announcements").click(function(){
+       $("#subscriptionsDiv").css("display","none");
 		clearAllSubscriptionDivs();
 		clearAllFavoriteLinkDivs();
 		$("#announcementsDiv").show();
@@ -119,6 +121,7 @@ $('#connectMessageText').live("keyup",function() {
 		$('#headerDiv').html('<b>Announcements</b>');
 	});
 	$(".ImportantEvents").click(function(){
+		$("#subscriptionsDiv").css("display","none");
 		clearAllSubscriptionDivs();
 		clearAllFavoriteLinkDivs();
 		$("#announcementsDiv").hide();
@@ -146,6 +149,7 @@ $('#connectMessageText').live("keyup",function() {
 		$("#impdatesDiv").hide();
 		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
+		$("#subscriptionsDiv").css("display","none");
 	});
 	
 	$(".messagesLink").click(function(){
@@ -247,7 +251,7 @@ $('#connectMessageText').live("keyup",function() {
 
    $("#FavouriteLinks").click(function(){
    
-	
+	$("#subscriptionsDiv").css("display","none");
 	 var jsObj ={
 			task:"getFavouriteLinks"
 		};
@@ -266,7 +270,8 @@ $('#connectMessageText').live("keyup",function() {
 		 ajaxProcessing();
 		 $("#subscriptionsStreamingMoreDiv").hide();
 		  $("#subscriptionsStreamingData").html('');
-		  
+		  $("#headerDiv").html('');
+		  $("#subscriptionsDiv").css("display","block");
 		var jsObj ={
 			task:"getUserScriptions"
 		};
@@ -276,6 +281,8 @@ $('#connectMessageText').live("keyup",function() {
 		$("#impEvents").hide();
 		$("#announcementsDiv").hide();
 		callAjax1(jsObj,url);
+
+		getPartyStateList();
 
 	});
 
@@ -869,8 +876,8 @@ $("#uploadCoverPicButton").live("click",function(){
 //subscription
 
 $(".unSubscribedLink").live("click",function(){
-	var id = $(this).closest('div').find('.hiddenVarId').val();
-	var type = $(this).closest('div').find('.subscripType').val();
+	var id = $(this).closest('.specialPagSubscrDiv').find('.hiddenVarId').val();
+	var type = $(this).closest('.specialPagSubscrDiv').find('.subscripType').val();
 	var jsObj=
 	{		
             time : new Date().getTime(),	
@@ -887,6 +894,8 @@ $(".unSubscribedLink").live("click",function(){
 $(".subscribedLink").live("click",function(){
 	var id = $(this).closest('div').find('.hiddenVarId').val();
 	var type = $(this).closest('div').find('.subscripType').val();
+	if(type == "partyPage")
+	 $(this).css("display","none");
 	var jsObj=
 	{		
             time : new Date().getTime(),	
@@ -929,7 +938,7 @@ $(".unreadfont").live("click",function(){
 	});
 
 	$(".constituencyunSubscrBtn").live("click",function(){
-	var id = $(this).closest('div').find('.hiddenVarId').val();
+	var id = $(this).closest('.specialPagSubscrDiv').find('.hiddenVarId').val();
 	var timeST = new Date().getTime();
 	
 	var jsObj=
@@ -947,6 +956,50 @@ $(".unreadfont").live("click",function(){
 		
 	});
 
+ $("#partyStateList").live("change",function(){
+  var stateId = $("#partyStateList").val();
+  if(stateId==0)
+   return;
+  var jsObj=
+	{		
+       		stateId: stateId,
+			task: "getUnsubscribedParties",
+			
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "getUnsubscribedPartiesAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+	 
+ });
+
+
+ $("#constituencyStateList").live("change",function(){
+	
+  var stateId = $("#constituencyStateList").val();
+  if(stateId == 0)
+   return;
+  $("#constituencyErrorMsgDiv").html('');
+  var jsObj=
+	{		
+           
+			stateId: stateId,
+			task: "getUnsubscribedConstituencies",
+			
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "getUnsubscribedConstituenciesAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+	 
+ });
+
+$("#unSubscribedConstituencyList").live("change",function(){
+	$("#constituencyErrorMsgDiv").html('');
+	
+});
+ 
+ 
 });//End ready
 
 
@@ -1157,6 +1210,10 @@ function callAjax1(jsObj,url){
 					}
 					else if(jsObj.task == "unsubscriptionDetails" || jsObj.task == "constituencyUnsubscriptionDetails"|| jsObj.task == "subscriptionDetails")
 					{
+						
+						if(jsObj.task == "subscriptionDetails" && jsObj.page == "partyPage"){}
+						
+						else
 						$(".subscriptionsLink").trigger("click");
 					}
 					else if(jsObj.task == "getAllPostedProblems")
@@ -1235,6 +1292,24 @@ function callAjax1(jsObj,url){
 							{
 								buildCadreInfoTable(results);
 							}
+				else if(jsObj.task == "getStatesList")
+				{
+				 buildStateList(results);
+				}
+				else if(jsObj.task == "getUnsubscribedParties")
+				 getUnsubscribedParties(results);
+
+				else if(jsObj.task == "getUnsubscribedConstituencies")
+				{
+				 buildUnsubscribedConstituencies(results);
+				}
+				else if(jsObj.task == "constituencySubscriptionDetails")
+				{
+					showConstituencySubScriptionStatus(results);
+					//$(".subscriptionsLink").trigger("click");
+				}
+				
+
 			}catch (e) {  
                   	
 				  closeDialogue();
@@ -1603,6 +1678,7 @@ function getInitialUpdates(){
 	clearAllFavoriteLinkDivs();
   $("#headerDiv").html('');
   getSubscriptionDetails("main");
+  $("#subscriptionsDiv").css("display","none");
 }
 function getSubscriptionDetails(type){
 ajaxProcessing();
@@ -2554,13 +2630,36 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		$('#userSpecialPageSubscriptionsDiv').html("Special page subscriptions are not available.");
 		return;
 	}
-	
+
+	var unSubScribedFlag = true;
+    for(var i in specialPages)
+	 if(!specialPages[i].subscribed)
+	  unSubScribedFlag = false;
+		
+    	
 	var div = $('<div class="subscriptionHeaderDiv"></div>');
-	var label = $('<span class="subscriptionType">Special Pages</span>');
-	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
+	var label = $('<span class="subscriptionType">Subscribed Special Pages</span>');
 	div.append(label);
-	//div.append(btns);
+    if(!specialPages[0].flag)
+	{
+	  var messageDiv = $('<div><p class="paraClss">Your are not subscribed for any special page.<a href="#userUnSubScriptionsDiv">Click here</a> to subscribe the special page.</p></div>');
+	  div.append(messageDiv);
+	  
+	}
+	
 	$('#userSpecialPageSubscriptionsDiv').append(div);
+
+	var div1 = $('<div class="subscriptionHeaderDiv"></div>');
+	var label1 = $('<span class="subscriptionType">Not Yet Subscribed Special Pages</span>');
+	div1.append(label1);
+	if(unSubScribedFlag)
+	{
+      var message = $('<div><p class="paraClss">No more special pages are avaliable to subscribe.</p></div>');
+	  div1.append(message);
+	}
+	$('#userSpecialPageSubscriptionsDiv').append(div);
+	$('#userSpecialPageUnSubscriptionsDiv').append(div1);
+
 	for(var i in specialPages)
 	{
 		if(specialPages[i].subscribed)
@@ -2568,9 +2667,10 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVO.title+'');
+		  templateClone.find('.titleCls').html('<a class="titleVar" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
-		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
+		  //templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
+		  templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+specialPages[i].specialPageVO.title+'"><img src="images/icons/closeImg.png" /></a>');
 		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVO.specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageSubscriptionsDiv');
 		}
@@ -2579,9 +2679,9 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html(''+specialPages[i].specialPageVO.title+'');
+		  templateClone.find('.titleCls').html('<a class="titleVar" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
-		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink"  style="color:red; font-weight:bold;">SUBSCRIBE</a>');
+		  templateClone.find('.btnClass').html('<a href="javascript:{}" class="subscribedLink label label-info">SUBSCRIBE</a>');
 		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVO.specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageUnSubscriptionsDiv');
 		
@@ -2613,17 +2713,19 @@ function showAllUserCandidateSubscriptions(jsObj,results)
 	$('#userCandidateSubscriptionsDiv').html('');
 	var politicians = results.userCandidateSubscriptions;
 
+    var div = $('<div class="subscriptionHeaderDiv"></div>');
+	var label = $('<span class="subscriptionType">Subscribed Politicians</span>');
+	
+	div.append(label);
+
 	if(politicians == null || politicians.length == 0)
 	{
-		$('#userCandidateSubscriptionsDiv').html("Politician subscriptions are not available.");
+		var politionSubDiv = $('<div><p class="paraClss">Your are not subscribed for any politician.</p></div>');
+		div.append(politionSubDiv);
+		$('#userCandidateSubscriptionsDiv').append(div);
 		return;
 	}
 	
-	var div = $('<div class="subscriptionHeaderDiv"></div>');
-	var label = $('<span class="subscriptionType">Politicians</span>');
-	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
-	div.append(label);
-	//div.append(btns);
 	$('#userCandidateSubscriptionsDiv').append(div);
 	
 	for(var i in politicians)
@@ -2637,8 +2739,8 @@ function showAllUserCandidateSubscriptions(jsObj,results)
 		/*if(buildSubscribeButtons(results.profileCandidateSubscriptions[i].id,results.userCandidateSubscriptions))
 			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
 		else*/
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
-		
+			//templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
+		templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+politicians[i].name+'"><img src="images/icons/closeImg.png" /></a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+politicians[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="candidatePage"/>');
 		templateClone.appendTo('#userCandidateSubscriptionsDiv');
 	}
@@ -2654,26 +2756,27 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 	$('#userConstituencySubscriptionsDiv').children().remove();
 	$('#userConstituencySubscriptionsDiv').html('');
 	var constituencies = results.userConstituencySubscriptions;
+    
+	var div = $('<div class="subscriptionHeaderDiv"></div>');
+	var label = $('<span class="subscriptionType">Subscribed Constituencies</span>');
+	div.append(label);
 
 	if(constituencies == null || constituencies.length == 0)
 	{
-		$('#userConstituencySubscriptionsDiv').html("Constituency subscriptions are not available.");
+		var constituencySubDiv = $('<div><p class="paraClss">Your are not subscribed for any constituency.<a href="#userConstituencyDiv">Click here </a>to subscribe the constituency.</p></div>');
+		div.append(constituencySubDiv);
+		$('#userConstituencySubscriptionsDiv').append(div);
 		return;
 	}
 	
-	var div = $('<div class="subscriptionHeaderDiv"></div>');
-	var label = $('<span class="subscriptionType">Constituencies</span>');
-	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
-	div.append(label);
-	//div.append(btns);
 	$('#userConstituencySubscriptionsDiv').append(div);
 	for(var i in constituencies)
 	{
-		var template = $(".specialPagSubscrTemplDiv");
+		var template = $(".constituencyTemplateDiv");
 		var templateClone = template.clone();
-		templateClone.removeClass('specialPagSubscrTemplDiv');
+		templateClone.removeClass('constituencyTemplateDiv');
 		templateClone.find('.titleCls').html('<a href="constituencyPageAction.action?constituencyId='+constituencies[i].id+'">'+constituencies[i].name+'</a>');
-		templateClone.find('.btnClass').html('<a href="javascript:{}" class="constituencyunSubscrBtn">UNSUBSCRIBE</a>');
+		templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="constituencyunSubscrBtn" title="click here to UnSubscribe '+constituencies[i].name+'"><img src="images/icons/closeImg.png" /></a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+constituencies[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="constituencyPage"/>');
 		templateClone.appendTo('#userConstituencySubscriptionsDiv');
 	}
@@ -2687,24 +2790,25 @@ function showAllUserPartySubscriptions(jsObj,results)
 	$(".placeholderCenterDiv").children().remove();
 	$('#userPartySubscriptionsDiv').children().remove();
 	$('#userPartySubscriptionsDiv').html('');
-	$('#userPartyUnSubscriptionsDiv').children().remove();
-	$('#userPartyUnSubscriptionsDiv').html('');
+	//$('#userPartyUnSubscriptionsDiv').children().remove();
+	//$('#userPartyUnSubscriptionsDiv').html('');
 
 	var partySubscriptions = results.userPartySubscriptions;
+	var div = $('<div class="subscriptionHeaderDiv"></div>');
+	var label = $('<span class="subscriptionType">Subscribed Parties</span>');
+	div.append(label);
+	
 	
 
 	if(partySubscriptions == null || partySubscriptions.length == 0)
 	{
-		$('#userPartySubscriptionsDiv').html("Party subscriptions are not available.");
+		var partyDiv = $('<div><p class="paraClss">Your are not subscribed for any party.<a href="#userPartyDiv">Click here</a> to subscribe the party.</p></div>');
+		div.append(partyDiv);
+		$('#userPartySubscriptionsDiv').append(div);
 		return;
 	}
-	
-	var div = $('<div class="subscriptionHeaderDiv"></div>');
-	var label = $('<span class="subscriptionType">Parties</span>');
-	var btns = $('<span>Sunscribe All</span><span class="unSubscriptionBtn">Un Subscribe All</span>');
-	div.append(label);
-	//div.append(btns);
 	$('#userPartySubscriptionsDiv').append(div);
+	
 	for(var i in partySubscriptions)
 	{
 		
@@ -2713,13 +2817,14 @@ function showAllUserPartySubscriptions(jsObj,results)
 			var template = $(".specialPagSubscrTemplDiv");
 			var templateClone = template.clone();
 			templateClone.removeClass('specialPagSubscrTemplDiv');
-			templateClone.find('.titleCls').html('<br>'+partySubscriptions[i].name+'');
+			templateClone.find('.titleCls').html('<a href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
 			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
-			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
+			//templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
+			templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+partySubscriptions[i].name+'"><img src="images/icons/closeImg.png" /></i></a>');
 			templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
 			templateClone.appendTo('#userPartySubscriptionsDiv');
 		}
-		else
+		/* else
 		{
 			
 			var template = $(".specialPagSubscrTemplDiv");
@@ -2732,7 +2837,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 			templateClone.appendTo('#userPartyUnSubscriptionsDiv');
 
 			
-		}
+		} */
 	}
 }
 
@@ -2756,7 +2861,10 @@ function clearAllSubscriptionDivs()
 	$("#caderInfo").children().remove();
 	$("#impEvents").html('');
 	$("#impEvents").children().remove();
-
+    $("#partyStateListDiv").html('');
+	$("#partyStateListDiv").children().remove();
+	$("#constituencyStateListDiv").html('');
+	$("#constituencyStateListDiv").children().remove();
 	//$("#announcementsDiv").html('');
 	//$("#announcementsDiv").children().remove();
 
@@ -3885,7 +3993,7 @@ for(var i in results.candidateVO)
 }
 function buildSentDetailsByStatus(jsObj,results)
 {
-debugger;
+//debugger;
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
@@ -4066,6 +4174,135 @@ function closeDialogue()
 $( "#processingDialogue" ).dialog('close');
 }
 
+function getPartyStateList()
+{
+	var jsObj={
+			electionTypeId : 2,
+		    task           :"getStatesList"						
+			};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);		
+		var url = "getStatesListAction.action?"+rparam;
+		callAjax1(jsObj ,url);
+}
 
+function buildStateList(results)
+{
+ $("#userPartyUnSubscriptionsDiv").html('');
+ $("#userPartyUnSubscriptionsDiv").children().remove();
+ $('#partyStateListDiv').html('');
+ $('#constituencyStateListDiv').html('');
 
+ 
+ var div = $('<div id="unsubscribePartyInnerDiv"></div>');
+ var heading = $('<span class="subscriptionType">Not Yet Subscribed Parties</span>');
+ 
+ var partySelectBox = $('<div style="margin-top: 14px;">Select State: <select id="partyStateList"></select></div>');
+ div.append(heading);
+ div.append(partySelectBox);
 
+ $('#partyStateListDiv').append(div);
+
+ createSelectOptionsForSelectElmtId('partyStateList');
+ createOptionsForSelectElmtId('partyStateList',results);
+
+ var constituencyUnSubDiv = $('<div id="constituencyUnSubInnerDiv"></div>');
+ var constituencyHeading = $('<span class="subscriptionType">Not Yet Subscribed Constituencies</span>');
+
+ var errorMagDiv = $('<div id="constituencyErrorMsgDiv"></div>');
+ var constituencyStateList = $('<div style="margin-top: 10px;">Select State: <select id="constituencyStateList"></select></div>');
+ var constituencyList = $('<div>Select Constituency: <select id="unSubscribedConstituencyList"></select></div>');
+ var constituencySubBtn= $('<a class="label label-info" onclick="subscriptionDetails()" style="color: #FFFFFF;font-size: 11px;padding: 3px;background-color:#2D6987;">SUBSCRIBE</a>')
+
+ constituencyUnSubDiv.append(constituencyHeading);
+ constituencyUnSubDiv.append(errorMagDiv);
+ constituencyUnSubDiv.append(constituencyStateList);
+ constituencyUnSubDiv.append(constituencyList);
+ constituencyUnSubDiv.append(constituencySubBtn);
+ 
+ $('#constituencyStateListDiv').append(constituencyUnSubDiv);
+
+ createSelectOptionsForSelectElmtId('constituencyStateList');
+ createOptionsForSelectElmtId('constituencyStateList',results);
+}
+
+function getUnsubscribedParties(partySubscriptions)
+{
+   $('#userPartyUnSubscriptionsDiv').html("");
+    
+	if(partySubscriptions == null || partySubscriptions.length == 0)
+	{
+		
+		$('#userPartyUnSubscriptionsDiv').html("<p>No more parties are avaliable in this state.Please Select another state.</p>");
+		return;
+	}
+	
+	
+	for(var i in partySubscriptions)
+	{
+		
+		if(!partySubscriptions[i].subscribed)
+		{
+			var template = $(".specialPagSubscrTemplDiv");
+			var templateClone = template.clone();
+			templateClone.removeClass('specialPagSubscrTemplDiv');
+			templateClone.find('.titleCls').html('<a href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
+			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
+			templateClone.find('.btnClass').html('<a href="javascript:{}" class="label label-info subscribedLink">SUBSCRIBE</a>');
+			templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
+			templateClone.appendTo('#userPartyUnSubscriptionsDiv');
+			
+		}
+		
+	}
+}
+
+function buildUnsubscribedConstituencies(results)
+{
+ clearOptionsListForSelectElmtId('unSubscribedConstituencyList');
+ createOptionsForSelectElmtIdWithSelectOption('unSubscribedConstituencyList',results);
+}
+
+function subscriptionDetails()
+ {
+	$("#constituencyErrorMsgDiv").html('');
+	var constituencyId = $("#unSubscribedConstituencyList").val();
+	var stateId = $("#constituencyStateList").val();
+
+	if(stateId == 0)
+	{
+     $("#constituencyErrorMsgDiv").html('Please Select State.').css('color','red');
+	 return;
+	}
+	if(constituencyId == 0 || constituencyId == -1)
+	{
+     $("#constituencyErrorMsgDiv").html('Please Select Constituency.').css('color','red');
+	 return;
+	}
+	var timeST = new Date().getTime();
+	var jsObj=
+	{		
+            time : timeST,	
+			id: constituencyId,
+			task: "constituencySubscriptionDetails",
+			
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "constituencyEmailAlertsForUserAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+   
+ }
+
+ function showConstituencySubScriptionStatus(results)
+ {
+   if(results.resultCode == 0)
+   {
+	 $("#constituencyErrorMsgDiv").html("Selected constituency subscribed successfully.").css("color","green");	
+     $(".subscriptionsLink").trigger("click");
+   }
+   else
+   {
+	  $("#constituencyErrorMsgDiv").html("Error occured! try again.").css("color","red");	
+   }
+ }

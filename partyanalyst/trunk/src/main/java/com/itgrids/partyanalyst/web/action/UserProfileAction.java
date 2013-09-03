@@ -23,8 +23,10 @@ import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.SubscriptionsMainVO;
+import com.itgrids.partyanalyst.dto.SubscriptionsVO;
 import com.itgrids.partyanalyst.dto.UserCommentsInfoVO;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
 import com.itgrids.partyanalyst.dto.UserSettingsVO;
@@ -90,7 +92,8 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private Boolean logInStatus = false;
 	private String userType;
 	private String connectStatus;
-	
+	private List<SubscriptionsVO> subscriptionsVOList;
+	private List<SelectOptionVO> selectOptionVOList;
 	
 	public boolean isHasProfileManagement() {
 		return hasProfileManagement;
@@ -472,6 +475,20 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	public void setConnectStatus(String connectStatus) {
 		this.connectStatus = connectStatus;
 	}
+	public List<SubscriptionsVO> getSubscriptionsVOList() {
+		return subscriptionsVOList;
+	}
+
+	public void setSubscriptionsVOList(List<SubscriptionsVO> subscriptionsVOList) {
+		this.subscriptionsVOList = subscriptionsVOList;
+	}
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
 
 	public String execute()
 	{
@@ -720,6 +737,12 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			userId.add(user.getRegistrationID());
 			userDetails = ananymousUserService.getDataForAUserProfile(userId,IConstants.FRIEND_REQUEST);
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getUnsubscribedParties"))
+			subscriptionsVOList = specialPageService.getUnSubscribedPartiesForUserProfile(jObj.getLong("stateId"),user.getRegistrationID());
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getUnsubscribedConstituencies"))
+			selectOptionVOList = specialPageService.getAllUnSubscribedConstituencies(user.getRegistrationID(),jObj.getLong("stateId"));
+		
 		return Action.SUCCESS;
 	}
 	
