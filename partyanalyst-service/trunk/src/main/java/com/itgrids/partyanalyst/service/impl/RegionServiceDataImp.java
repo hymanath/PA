@@ -785,7 +785,9 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year) {
 		List<SelectOptionVO> regionsList = new ArrayList<SelectOptionVO>();
 		String areaFlag = locationId.toString().substring(0,1);
-		Long id = new Long(locationId.toString().substring(1));
+		Long id=locationId;
+		if(locationId > 1)
+		id = new Long(locationId.toString().substring(1));
 		
 		if(areaFlag.equalsIgnoreCase(IConstants.URBAN_TYPE))
 		{
