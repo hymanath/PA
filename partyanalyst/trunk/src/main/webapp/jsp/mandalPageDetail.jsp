@@ -350,7 +350,7 @@ function getMandalVotingReport()
 			constituency:constituencyValue,
 			mandal:mandalValue,
 			party:partyValue,
-			"task":"mandalVoting"
+			task:"mandalVoting"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/mandalVotingResultAction.action?"+rparam;			
