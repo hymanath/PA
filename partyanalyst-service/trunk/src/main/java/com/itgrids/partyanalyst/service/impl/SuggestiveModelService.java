@@ -24,6 +24,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyElectionResultDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
@@ -31,6 +32,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -39,6 +41,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -51,6 +54,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
@@ -90,9 +94,39 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IPanchayatHamletDAO panchayatHamletDAO ;
 	private IVotersAnalysisService votersAnalysisService;
 	private ICasteStateDAO casteStateDAO;
+	private IConstituencyElectionResultDAO constituencyElectionResultDAO;
+	private IPartyDAO partyDAO;
+	private IVoterModificationDAO voterModificationDAO;
 	
 	
-	
+		
+		
+		
+	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
+			return constituencyElectionResultDAO;
+		}
+
+		public void setConstituencyElectionResultDAO(
+				IConstituencyElectionResultDAO constituencyElectionResultDAO) {
+			this.constituencyElectionResultDAO = constituencyElectionResultDAO;
+		}
+
+		public IPartyDAO getPartyDAO() {
+			return partyDAO;
+		}
+
+		public void setPartyDAO(IPartyDAO partyDAO) {
+			this.partyDAO = partyDAO;
+		}
+
+		public IVoterModificationDAO getVoterModificationDAO() {
+			return voterModificationDAO;
+		}
+
+		public void setVoterModificationDAO(IVoterModificationDAO voterModificationDAO) {
+			this.voterModificationDAO = voterModificationDAO;
+		}
+
 	public ICasteStateDAO getCasteStateDAO() {
 		return casteStateDAO;
 	}
@@ -3857,5 +3891,191 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 
 				 return returnList;
 			 }
+			 		
+			 
+			 public List<PartyPositionVO> getPollingPercentagesByParty(Long constituenycId,Long partyId,Long electionId,Long electionId1)
+			 {
+				 Long latestPublictaionId = 0l;
+				 Long TotalVotesInConstituency = 0l;
+				 Long TotalPolledVotesInConstituency = 0l;
+				 Double partyPercentage = 0.0;
+				 Map<Long,Map<Long,Long>> boothMap = new HashMap<Long, Map<Long,Long>>();//<boothId,PartyMap<PartyId,polledVotes>)
+				 List<PartyPositionVO> result = new ArrayList<PartyPositionVO>();
+				 List<Object[]> totalVotesForBooth = null;
+				 List<Object[]> totalPolledVotesForBooth = null;
+				 Map<Long,Long> totalVotersMap = new HashMap<Long, Long>();
+				 Map<Long,String> panchayatMap = new HashMap<Long, String>();
+				 Map<Long,Long> addedVotersMap = new HashMap<Long, Long>();
+				 List<Long> electionIdsList = new ArrayList<Long>();
+				 try{
+					 electionIdsList.add(electionId);
+					 electionIdsList.add(electionId1);
+					 electionId = electionDAO.getSortedElectionIds(electionIdsList).get(0);
+					 List<Long> boothIds = boothConstituencyElectionDAO.getBoothIdsByConstituencyId(constituenycId,electionId);
+					 List<Object[]> totalVotersInBooth =boothDAO.getTotalVotesForBooth(boothIds);
+					 List<Object[]> panchayatnames = hamletBoothElectionDAO.getPanchayatNamesByBoothIds(boothIds);
+					 latestPublictaionId = publicationDateDAO.getLatestPublicationId();
+					 List<Object[]> addedVotersCount = voterModificationDAO.getAddedVotersByBoothIds(boothIds,latestPublictaionId,constituenycId);
+					 List<Object[]> constituencyInfo = constituencyElectionResultDAO.findTotalVotesAndPolledVotesAndVotesPercentage(electionId,constituenycId);
+					 if(constituencyInfo != null && constituencyInfo.size() > 0)
+						for(Object[] params : constituencyInfo)
+						{
+							TotalVotesInConstituency = new Double(params[0].toString()).longValue();
+							TotalPolledVotesInConstituency =new Double(params[1].toString()).longValue();
+						}
+					 Double pollingPerForConstituency = (TotalPolledVotesInConstituency * 100.0)/TotalVotesInConstituency;
+					 Long partyPolledVotesInConstituency = nominationDAO.getPartyPercentage(constituenycId, electionId, partyId).longValue();
+					 Double partyPerInConstituency = (partyPolledVotesInConstituency * 100.0)/TotalPolledVotesInConstituency;
+					
+					 Set<Long> booths = new HashSet<Long>(boothIds);
+					 totalVotesForBooth =candidateBoothResultDAO.findBoothResultsForMultipleBoothsAndElectionIdForSelElection(booths,electionId); 
+					 
+					 if(totalVotersInBooth != null && totalVotersInBooth.size() > 0)
+					 {
+						 for(Object[] params : totalVotersInBooth)
+						 totalVotersMap.put((Long)params[0],(Long)params[1]);
+					 }
+					 if(addedVotersCount != null && addedVotersCount.size() > 0)
+					 {
+						 for(Object[] params : addedVotersCount)
+						 {
+						 if(params[1] != null && ((Long)params[1]).longValue() >= IConstants.MIN_ADDED_VOTERS)
+						 addedVotersMap.put((Long)params[0],(Long)params[1]);
+						 }
+					 }
+					 if(panchayatnames !=null &&panchayatnames.size() > 0)
+						 for(Object[] params : panchayatnames)
+							 panchayatMap.put((Long)params[0],params[1].toString()); 
+					 
+					 if(totalVotesForBooth != null && totalVotesForBooth.size() > 0)
+					 {
+						 for(Object[] params : totalVotesForBooth)
+						 {
+							Map<Long,Long> partyMap =  boothMap.get((Long)params[0]);
+							if(partyMap == null)
+							{
+								partyMap = new HashMap<Long, Long>();
+								boothMap.put((Long)params[0], partyMap);
+							}
+							Long polledVotes = partyMap.get((Long)params[1]);
+							if(polledVotes == null)
+								
+								partyMap.put((Long)params[1],(Long)params[2]);
+							else
+							partyMap.put((Long)params[1], polledVotes+(Long)params[2]);
+						 }
+				 }
+					 List<PartyPositionVO> PollingHighboothResultList = new ArrayList<PartyPositionVO>();
+					 List<PartyPositionVO> PollingLowboothResultList = new ArrayList<PartyPositionVO>();
+					 PartyPositionVO mainVo = new PartyPositionVO();
+					 for(Long boothId :boothMap.keySet())
+					 {
+						 PartyPositionVO partyPositionVO = new PartyPositionVO();
+						 partyPositionVO.setId(boothId);
+						 partyPositionVO.setName(boothDAO.getBoothPartNoByBoothId(boothId));
+						 if(panchayatMap.get(boothId) == null || panchayatMap.get(boothId).equals(""))
+							 partyPositionVO.setLocalbodyName("");
+						 else
+						 partyPositionVO.setLocalbodyName(panchayatMap.get(boothId));
+						 Long totalValidVotes = 0l;
+						 List<PartyPositionVO> StrongpartyInfo = new ArrayList<PartyPositionVO>();
+						 List<PartyPositionVO> WeakpartyInfo = new ArrayList<PartyPositionVO>();
+						 Map<Long,Long> partyMap =  boothMap.get(boothId);
+						 for(Long partyId1 : partyMap.keySet())
+							 totalValidVotes +=partyMap.get(partyId1);
+						 for(Long partyId1 : partyMap.keySet())
+						 {
+							 if(partyId.equals(partyId1))
+							 {
+							 PartyPositionVO partyVo = new PartyPositionVO();
+							 partyVo.setPartyName(partyDAO.getPartyShortNameById(partyId1));
+							 partyVo.setPartyTotalvotes(partyMap.get(partyId1));
+							 partyVo.setPartyPercentage(partyVo.getPartyTotalvotes() * 100.0 /totalValidVotes);
+							 partyVo.setSelectedParty(true);
+							 
+							 if(partyPerInConstituency > partyVo.getPartyPercentage())
+								 WeakpartyInfo.add(partyVo); 
+							 else
+								 StrongpartyInfo.add(partyVo);
+							 }
+						}
+						
+						 partyPositionVO.setTotalValidVotes(totalValidVotes);
+						 partyPositionVO.setTotalVoters(totalVotersMap.get(boothId));
+						 partyPositionVO.setPollingPercentage((partyPositionVO.getTotalValidVotes() * 100.0 )/ partyPositionVO.getTotalVoters());
+						 partyPositionVO.setRangePercentage((long)(pollingPerForConstituency * partyPositionVO.getTotalVoters())/100 );
+						
+						
+						 if(pollingPerForConstituency < partyPositionVO.getPollingPercentage())
+						 {
+							 if(WeakpartyInfo != null && WeakpartyInfo.size() >0)
+							 {
+							 partyPositionVO.setMinValue(partyPositionVO.getPollingPercentage()-pollingPerForConstituency) ;
+							 partyPositionVO.setLostSeats(new Double((partyPositionVO.getMinValue()* partyPositionVO.getTotalVoters())/100).longValue());
+							 partyPositionVO.setWeakPollingPercentVOList(WeakpartyInfo);
+							 if(addedVotersMap.get(boothId) == null || addedVotersMap.get(boothId).equals(""))
+								 partyPositionVO.setAddedVotersCount(0l);
+							 else
+								partyPositionVO.setAddedVotersCount(addedVotersMap.get(boothId));
+							 PollingHighboothResultList.add(partyPositionVO);
+							 }
+						 }
+						 else
+						 {
+							 if(StrongpartyInfo != null && StrongpartyInfo.size() >0)
+							 {
+							 partyPositionVO.setMaxValue(pollingPerForConstituency-partyPositionVO.getPollingPercentage());
+							 partyPositionVO.setToTarget(new Double((partyPositionVO.getMaxValue() * partyPositionVO.getTotalVoters())/100).longValue());
+							 partyPositionVO.setToImprove(new Double((partyPositionVO.getToTarget() * StrongpartyInfo.get(0).getPartyPercentage())/100).longValue());
+							 partyPositionVO.setStrongPollingPercentVOList(StrongpartyInfo);
+							 PollingLowboothResultList.add(partyPositionVO);
+							 }
+						 }
+						 }
+					
+					 mainVo.setPartyPercentage(partyPerInConstituency);
+					 mainVo.setPollingPercentage(pollingPerForConstituency);
+					 if(PollingHighboothResultList != null && PollingHighboothResultList.size() >0)
+					 mainVo.setStrongPollingPercentVOList(PollingHighboothResultList);
+					 if(PollingLowboothResultList != null && PollingLowboothResultList.size() > 0)
+					 mainVo.setWeakPollingPercentVOList(PollingLowboothResultList);
+					 result.add(mainVo);
+			 }
+				 catch(Exception e)
+				 {
+					 
+					 e.printStackTrace();
+				 }
+				return result;
+			 }
+			 
+			 
+			 public List<VoterVO> getAddedVotersDetailsByPartNo(Long ConstituencyId,Long partNo,Integer startIndex,Integer maxIndex)
+			 {
+				 List<VoterVO> result = new ArrayList<VoterVO>();
+				 try{
+					Long latestPublictaionId = publicationDateDAO.getLatestPublicationId();
+					List<Object[]> list = voterModificationDAO.getAddedVotersDetailsByPartNo(partNo,latestPublictaionId,ConstituencyId,startIndex,maxIndex); 
+					if(list != null && list.size() > 0)
+						for(Object[] params : list)
+						{
+							VoterVO votervo = new VoterVO();
+							votervo.setVoterId(params[0].toString());
+							votervo.setName(params[1].toString());
+							votervo.setAge((Long)params[2]);
+							votervo.setGender(params[3].toString());
+							votervo.setHouseNo(params[4].toString());
+							
+							result.add(votervo);	
+						}
+					result.get(0).setTotalVoters(new Long(voterModificationDAO.getAddedVotersDetailsByPartNo(partNo,latestPublictaionId,ConstituencyId,null,null).size()));
+				 }
+				 catch(Exception e)
+				 {
+					e.printStackTrace(); 
+				 }
+				return result;
+			 }
+			 		
 			 		
 }

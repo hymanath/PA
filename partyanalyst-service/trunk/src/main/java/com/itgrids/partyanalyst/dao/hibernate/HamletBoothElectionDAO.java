@@ -388,6 +388,12 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		query.setParameter("electionId", electionId);
 		return query.list();
 	}
-	
+	public List<Object[]> getPanchayatNamesByBoothIds(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select distinct model.boothConstituencyElection.booth.boothId,model2.panchayat.panchayatName from HamletBoothElection model,PanchayatHamlet model2 where " +
+				" model.hamlet.hamletId = model2.hamlet.hamletId and model.boothConstituencyElection.booth.boothId in (:boothIds)");
+		query.setParameterList("boothIds", boothIds);
+		return  query.list(); 
+	}
 	
 }

@@ -1484,4 +1484,13 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("publicationDateId",publicationDateId);
 			return query.list();
 		}
+		
+		
+		public List<Object[]> getTotalVotesForBooth(List<Long> boothIds)
+		{
+			Query query = getSession().createQuery("select model.boothId,sum(model.totalVoters) from Booth model where model.boothId in(:boothIds) group by model.boothId");
+			query.setParameterList("boothIds", boothIds);
+			return query.list(); 
+		}
+		
 }

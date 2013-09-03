@@ -9,6 +9,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.HibernateException;
@@ -4144,6 +4145,16 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		query.setParameter("partyId", partyId);
 		return query.list();
 	}
+	
+	 public Double getPartyPercentage(Long constitunecyId,Long electionId,Long partyId){
+			Query query = getSession().createQuery("select model.candidateResult.votesEarned "+
+					" from Nomination model where model.constituencyElection.constituency.constituencyId=:constitunecyId " +
+					"and model.constituencyElection.election.electionId=:electionId and model.party.partyId=:partyId");
+			query.setParameter("partyId",partyId);
+			query.setParameter("electionId",electionId);
+			query.setParameter("constitunecyId",constitunecyId);
+			return (Double) query.uniqueResult();
+		} 
 
 }
 

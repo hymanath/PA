@@ -709,4 +709,32 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	}
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAddedVotersByBoothIds(List<Long> boothIds,Long publicationId,Long constituencyId)
+	{
+		Query query = getSession().createQuery("select distinct model2.boothId,count(model.voter.voterId) from VoterModification model, Booth model2 where model.constituency.constituencyId = model2.constituency.constituencyId" +
+			(" and model.publicationDate.publicationDateId=:publicationId and model.partNo = model2.partNo and model.voterStatus.status = '"+IConstants.STATUS_ADDED+"' and model2.boothId in( :boothIds) and model2.constituency.constituencyId = :constituencyId group by model2.boothId"));
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAddedVotersDetailsByPartNo(Long partNo,Long publicationId,Long constituencyId,Integer startIndex,Integer maxIndex)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender,model.voter.houseNo from VoterModification model where" +
+			
+			(" model.publicationDate.publicationDateId=:publicationId and model.voterStatus.status = '"+IConstants.STATUS_ADDED+"' and model.partNo=:partNo and model.constituency.constituencyId = :constituencyId "));
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("partNo", partNo);
+		if(startIndex!=null)
+		query.setFirstResult(startIndex);
+		if(maxIndex != null)
+		query.setMaxResults(maxIndex);
+		return query.list();
+	}
+	
+	
 }

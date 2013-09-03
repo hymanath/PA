@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dto.PartiesStrengthsInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.State;
@@ -264,7 +266,13 @@ public class PartyStrengthService implements IPartyStrengthService {
 				//getUnParticipatedConstituenciesData(stateId,electionType,requiredConstituencies,staticParties);
 				
 				if(partyId.intValue()==0){
-					selectedParties = staticDataService.getStaticPartiesAsList(stateId);					 				
+					
+					List<SelectOptionVO> allParties = getAllPartiesData1(stateId,electionType);
+					if(allParties != null && allParties.size() > 0)
+						for(SelectOptionVO party : allParties)
+						selectedParties.add(party.getId());
+						
+					//selectedParties = staticDataService.getStaticPartiesAsList(stateId);					 				
 					getDataForAllParties(resultVo,requiredConstituencies,latestConstituencies,remianingConstituencies,selectedParties,electionYearsCount,electionType,stateId);				
 				}else{
 					selectedParties.add(partyId);
@@ -647,6 +655,7 @@ public class PartyStrengthService implements IPartyStrengthService {
 				}			
  			}
  			constituencyElectionResults.setTotalNumberOfConstituencies(constituencyIds.size()+0l);
+ 			Collections.sort(partiesStrengthsInfoVO,sortByName);
  			constituencyElectionResults.setPartiesStrengthsInfoVO(partiesStrengthsInfoVO);
  			resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 	
  		}catch(Exception e){
@@ -660,7 +669,13 @@ public class PartyStrengthService implements IPartyStrengthService {
  		return constituencyElectionResults;
  	}
  	
- 	
+	public static Comparator<PartiesStrengthsInfoVO> sortByName = new Comparator<PartiesStrengthsInfoVO>()
+			{	  
+					  public int compare(PartiesStrengthsInfoVO arg1,PartiesStrengthsInfoVO arg2)
+						{
+						  return arg1.getConstituencyName().trim().toUpperCase().compareTo(arg2.getConstituencyName().trim().toUpperCase());
+						}
+			};	
  	
  	/**
  	 * This method can be used to know all parties strengths and weakness based on the given inputs.
@@ -1487,7 +1502,8 @@ public class PartyStrengthService implements IPartyStrengthService {
  					if(electionType.equalsIgnoreCase(IConstants.ASSEMBLY_ELECTION_TYPE))
  						reqCons = segregateAllConstituencies(totalElectionYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId).getRequiredConstituencies();
  					else
- 						reqCons = segregateAllConstituencies(totalElectionYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId).getRemianingConstituencies();
+ 						//reqCons = segregateAllConstituencies(totalElectionYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId).getRemianingConstituencies();
+ 						reqCons = segregateAllConstituencies(totalElectionYears,electionType,IConstants.ELECTION_SUBTYPE_MAIN,stateId).getRequiredConstituencies();
  					reqCons.removeAll(consIds);
  					//System.out.println(reqCons.size());
  					
@@ -1609,6 +1625,7 @@ public class PartyStrengthService implements IPartyStrengthService {
  				partyDetailsVo.setConstituencyName(parms[1].toString());
  				if(parms[3] != null)
  				partyDetailsVo.setPartyName(parms[3].toString());
+ 				partyDetailsVo.setPartyFlag(parms[3].toString());
  				partyDetailsVo.setElectionYear(parms[4].toString()); 				
  				partyDetailsVo.setVotesEarned(new BigDecimal(parms[5].toString()).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
  				partyDetailsVo.setCandidateName(parms[6].toString()); 	 				
@@ -1780,13 +1797,18 @@ public class PartyStrengthService implements IPartyStrengthService {
 			data = getPartyWiseConstituencies(result,totalElectionYears);
 			Election election = electionDAO.get(latestElecId) ;
 			List<Party> alliance = staticDataService.getAllianceParties(election.getElectionYear(),election.getElectionScope().getElectionType().getElectionTypeId(),partyId,stateId);
-
-				List<Long> partyIds = new ArrayList<Long>();
+			
+			    List<Long> partyIds = new ArrayList<Long>();
+				
 				if(alliance != null)
+				{
 					for(Party party : alliance)
 					{
 						partyIds.add(party.getPartyId().longValue())	;
 					}
+				}
+				else
+					partyIds.add(partyId);	
 					
  			for(Map.Entry<Long,Map<Long,List<Long>>> entry: data.entrySet()){
  				List<Long> constIds = new ArrayList<Long>(0); 
@@ -1907,6 +1929,8 @@ public class PartyStrengthService implements IPartyStrengthService {
 					{
 						partyIds.add(party.getPartyId().longValue())	;
 					}
+				else
+					partyIds.add(partyId);	
  			if(colId!=0){
  				Map<Long,List<Long>> colData = data.get(colId);
  		 		
