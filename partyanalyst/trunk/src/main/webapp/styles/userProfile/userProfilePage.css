@@ -295,7 +295,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	.templatePersons .prinfo{}
 	
 	.templatePersons .connectedPersonName{}
-	.templateMessage {border:1px solid #CFCFCF;margin:1px;padding:4px;}
+	.templateMessage {border:1px solid #CFCFCF;margin: 5px 1px 1px;padding:4px;border-radius: 5px 5px 5px 5px;}
 	.templateMessage .reply a{text-decoration:none;color:white}
 	.templateMessage .msgDelete a{text-decoration:none;color:white}
 	.templateMessage .imgClass{float:left;width:20%;}
