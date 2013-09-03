@@ -2590,7 +2590,7 @@ var count=0;
 		var tablesCount=myResults.length;
 		
 		if(tablesCount==1){
-			createTable(myResults[0],'ageGroupTableId1');
+			createTable(myResults[0],'ageGroupTableId1',myResults[0].areaType);
 			
 			if(myResults[0].boothsList!=null){
 				createBoothsTable(myResults[0],'ageGroupBoothTableId1','mncpl');
@@ -2600,8 +2600,7 @@ var count=0;
 		else if(tablesCount==2){
 			for(var i=0;i<tablesCount;i++){
 				var num=i+1;
-				createTable(myResults[i],'ageGroupTableId'+num);
-				
+				createTable(myResults[i],'ageGroupTableId'+num,myResults[0].areaType);
 				if(myResults[i].boothsList!=null){
 					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num,'mncpl');
 				}
@@ -2612,7 +2611,7 @@ var count=0;
 		else{
 			for(var i=0;i<tablesCount;i++){
 				var num=i+1;
-				createTable(myResults[i],'ageGroupTableId'+num);
+				createTable(myResults[i],'ageGroupTableId'+num,myResults[0].areaType);
 				
 				if(myResults[i].boothsList!=null){
 					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num,'mncpl');
@@ -2622,11 +2621,19 @@ var count=0;
 	}
 	
 	
-	function createTable(result,tableId){
+	function createTable(result,tableId,areaType){
 	$('#title'+tableId).css('display','block');
 	$('.title'+tableId+"Cls").addClass('widget').addClass('blue');
 	$('.title'+tableId+"Cls").css('margin-top','50px');
-	$('#title'+tableId).html('<h4>Panchayat Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
+	
+	var area="";
+	if(areaType=="RURAL" || areaType=="RURAL-URBAN"){
+		area=" Panchayat";
+	}else{
+		area=" Booth"
+	}
+	
+	$('#title'+tableId).html('<h4>'+area+' Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
 	
 	var allSlctedCastes=[];
 	for(var i in result.panchayatList[0].allSelectedCastes){
@@ -2638,7 +2645,7 @@ var count=0;
 		var str='';
 		<!--str+='<div style="width:800px" align="center"><h4>Panchayat Wise Voters Analysis of Age Range - +'+result.ageRange+'</h4></div>'-->
 		if(checked!='expCaste'){
-		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th>';
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th rowspan=2>'+area+'</th><th rowspan=2>Total Voters In '+area+'</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th>';
 		str+='</tr>';
 		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
 		str+='<tbody style="font-size:12px;color:#000000;">';
@@ -2646,7 +2653,12 @@ var count=0;
 				
 		for(var i in result.panchayatList){
 		str+='<tr>';
-		str+='<td>'+result.panchayatList[i].panchayatName+'</td>';
+		if(areaType=="RURAL"|| areaType=="RURAL-URBAN"){
+			str+='<td>'+result.panchayatList[i].panchayatName+'</td>';
+		}else{
+			str+='<td> Booth - '+result.panchayatList[i].panchayatName+'</td>';
+		}
+		
 		str+='<td>'+result.panchayatList[i].totalPanchayatVoters+'</td>';
 		str+='<td>'+result.panchayatList[i].totalVoters+'</td>';
 		str+='<td>'+result.panchayatList[i].maleVoters+'</td>';
@@ -2691,7 +2703,7 @@ var count=0;
 		<!---->
 		else{
 		
-		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th>Panchayat</th><th>Total Voters In Panchayat</th>';
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th>'+area+'</th><th>Total Voters In '+area+'</th>';
 		for(var i in allSlctedCastes){
 		str+='<th>'+allSlctedCastes[i]+'</th>';
 		str+='<th>Expected Votes</th>';
@@ -2707,7 +2719,11 @@ var count=0;
 		var res=result.panchayatList;
 		for(var i in result.panchayatList){
 		str+='<tr>';
-		str+='<td>'+result.panchayatList[i].panchayatName+'</td>';
+		if(areaType=="RURAL"|| areaType=="RURAL-URBAN"){
+			str+='<td>'+result.panchayatList[i].panchayatName+'</td>';
+		}else{
+			str+='<td> Booth - '+result.panchayatList[i].panchayatName+'</td>';
+		}
 		str+='<td>'+result.panchayatList[i].totalVoters+'</td>';
 				
 		for(var j in result.panchayatList[i].allSelectedCastes){
