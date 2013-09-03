@@ -725,4 +725,22 @@ public List<Long> getElectionsByMandals(List<Long> mandalIds,Long partyId,Long e
 	query.setParameterList("mandalIds", mandalIds);
 	return query.list();
 }
+
+public List<Object[]> getTotalValidVotesAndTotalVotersByBoothIdsList(List<Long> boothslist,Long electionId,Long constituencyId)
+{
+	   Query query = getSession().createQuery(" select sum(model.boothResult.validVotes),model.booth.totalVoters,model.booth.panchayat.panchayatName,model.booth.partNo from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId  " +
+		   		" and model.booth.boothId in(:boothslist) and model.booth.constituency.constituencyId =:constituencyId group by model.booth.boothId");
+		    query.setParameter("electionId",electionId);
+			query.setParameterList("boothslist",boothslist);
+			query.setParameter("constituencyId", constituencyId);
+		   return query.list(); 
+}
+public List<Object[]> getTotalValidVotesAndTotalVotersByConstituency(Long electionId,Long constituencyId)
+{
+	   Query query = getSession().createQuery(" select sum(model.boothResult.validVotes),sum(model.booth.totalVoters) from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId  " +
+		   		" and model.booth.boothId in(:boothslist) and model.booth.constituency.constituencyId =:constituencyId");
+		    query.setParameter("electionId",electionId);
+			query.setParameter("constituencyId", constituencyId);
+		   return query.list(); 
+}
 }

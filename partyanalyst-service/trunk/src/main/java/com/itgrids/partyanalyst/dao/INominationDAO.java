@@ -600,5 +600,7 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	public List getPartyResultsForAPartybyEleIdsAndAllConstituencies(List<Long> constituencyIds,Long partyId,String electionSubType,List<Long> electionIds,String type);
 	
 	public List<Object[]> getElectionyearsByElection(List<Long> electionIds,Long partyId);
+	
+	 public Double getPartyPercentage(Long constitunecyId,Long electionId,Long partyId);
 
 }

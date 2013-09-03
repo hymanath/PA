@@ -35,7 +35,56 @@ public class PartyPositionVO implements Serializable{
 	private double percentage = 0.00;
 	private double margin = 0.00;
 	private int priorityOrder = 0;
-	
+	private String partyName ;
+	private Long partyTotalvotes;
+	private Long LostSeats;
+	private Long toTarget;
+	private boolean selectedParty = false;
+	private Long toDecrease;
+	private Long toImprove;
+
+	public Long getToDecrease() {
+		return toDecrease;
+	}
+	public void setToDecrease(Long toDecrease) {
+		this.toDecrease = toDecrease;
+	}
+	public Long getToImprove() {
+		return toImprove;
+	}
+	public void setToImprove(Long toImprove) {
+		this.toImprove = toImprove;
+	}
+	public boolean isSelectedParty() {
+		return selectedParty;
+	}
+	public void setSelectedParty(boolean selectedParty) {
+		this.selectedParty = selectedParty;
+	}
+	public Long getToTarget() {
+		return toTarget;
+	}
+	public void setToTarget(Long toTarget) {
+		this.toTarget = toTarget;
+	}
+	public Long getLostSeats() {
+		return LostSeats;
+	}
+	public void setLostSeats(Long lostSeats) {
+		LostSeats = lostSeats;
+	}
+	public Long getPartyTotalvotes() {
+		return partyTotalvotes;
+	}
+	public void setPartyTotalvotes(Long partyTotalvotes) {
+		this.partyTotalvotes = partyTotalvotes;
+	}
+	public String getPartyName() {
+		return partyName;
+	}
+	public void setPartyName(String partyName) {
+		this.partyName = partyName;
+	}
 	public List<PartyPositionVO> getLocalbodyList() {
 		return localbodyList;
 	}

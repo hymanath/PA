@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 public interface ISuggestiveModelService {
 	
 	public List<SelectOptionVO> getConstituenciesForUserAccessByStateId(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear);
@@ -38,5 +39,10 @@ public interface ISuggestiveModelService {
 	
 	public List<SelectOptionVO> getCasteAvaliableConstituencysService(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear,Long userId);
 	
+	public List<PartyPositionVO> getPollingPercentagesByParty(Long constituenycId,Long partyId,Long electionId,Long electionId1);
+	 
+	 public List<VoterVO> getAddedVotersDetailsByPartNo(Long ConstituencyId,Long partNo,Integer startIndex,Integer maxIndex);
+
 	 public List<VoterDataVO> getMandalsAndPanchayats(Long constituencyId);
+	
 }

@@ -68,7 +68,7 @@ public interface IVoterModificationDAO extends GenericDao<VoterModification,Long
 	public List<Object[]> getMovedOrRelocatedVoterDetails(Long constituencyId, Long publicationDateId, List<Long> partNosList);
 	
 	public List<Object[]> getVoterModificationDetailsOfAConstituencyForAPublication(Long constituencyId, Long publicationDateId);
-	
+
 	public List<Long> getAvailableConstituenciesInAPublication(Long publicationDateId);
 	
 	public List<Long> getListOfVoterIdsInAPublicationBasedOnCount(Long constituencyId, Long publicationDateId, Long count);
@@ -78,4 +78,9 @@ public interface IVoterModificationDAO extends GenericDao<VoterModification,Long
 	public List<Object[]> getVMVoterIdsAndStatusList(Long constituencyId, Long publicationDateId,List<Long> voterIdsList);
 	
 	public Integer updateVoterStatus(List<Long> voterModificationIdsList, Long voterStatusId);
+	public List<Object[]> getAddedVotersByBoothIds(List<Long> boothIds,Long publicationId,Long constituencyId);
+	
+	public List<Object[]> getAddedVotersDetailsByPartNo(Long partNo,Long publicationId,Long constituencyId,Integer startIndex,Integer maxIndex);
+	
+
 }

@@ -236,4 +236,12 @@ public class ConstituencyElectionResultDAO extends GenericDaoHibernate<Constitue
 		
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findTotalVotesAndPolledVotesAndVotesPercentage(Long electionId,Long constituencyId){
+		Object[] params = {electionId,constituencyId};
+		return getHibernateTemplate().find("select sum(model.totalVotes),sum(model.totalVotesPolled)"+
+				" from ConstituencyElectionResult model where model.constituencyElection.election.electionId = ? and model.constituencyElection.constituency.constituencyId = ? " 
+				, params); 
+	}
 }
