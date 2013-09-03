@@ -1185,7 +1185,8 @@
 		<property name="transactionTemplate" ref="transactionTemplate" />
 		<property name="specialPageDataDAO" ref="specialPageDataDAO" />
 		<property name="keyCandidateDAO" ref="keyCandidateDAO" />
-		 
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
 	</bean>
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">

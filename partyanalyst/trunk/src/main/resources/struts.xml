@@ -5974,5 +5974,16 @@
 		  </result>
 		 </action>
 		 
+		 <action name="getUnsubscribedPartiesAction" class="userProfileAction" method="AjaxHandler">
+		  <result type="json" name="success">
+		     <param name="root">subscriptionsVOList</param>
+		  </result>
+		 </action>
+		 
+		 <action name="getUnsubscribedConstituenciesAction" class="userProfileAction" method="AjaxHandler">
+		  <result type="json" name="success">
+		     <param name="root">selectOptionVOList</param>
+		  </result>
+		 </action>
 		</package>
 </struts>      
