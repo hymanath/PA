@@ -116,6 +116,7 @@
 		<property name="favoriteLinkPageDAO" ref="favoriteLinkPageDAO"/>
 		<property name="userFavoriteLinksDAO" ref="userFavoriteLinksDAO"/>
 		<property name="specialPageDAO" ref="specialPageDAO" />
+		<property name="taskExecutor" ref="taskExecutor" />	
 		
 	</bean>  
 	
