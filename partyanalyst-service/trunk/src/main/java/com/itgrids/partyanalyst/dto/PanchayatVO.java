@@ -25,6 +25,12 @@ public class PanchayatVO implements Serializable {
 	private List<String> muncipalities;
 	private Map<String,List<PanchayatVO>> municipalitesBoothsMap;
 	private List<CastVO> selectedCastes;
+	private List<CastVO> allSelectedCastes;
+	private Long casteStateId;
+	private String casteName;
+	private String gender;
+	private String muncipalityName;
+	
 	
 	public Long getPanchayatId() {
 		return panchayatId;
@@ -110,6 +116,36 @@ public class PanchayatVO implements Serializable {
 	}
 	public void setSelectedCastes(List<CastVO> selectedCastes) {
 		this.selectedCastes = selectedCastes;
+	}
+	public List<CastVO> getAllSelectedCastes() {
+		return allSelectedCastes;
+	}
+	public void setAllSelectedCastes(List<CastVO> allSelectedCastes) {
+		this.allSelectedCastes = allSelectedCastes;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+	public String getCasteName() {
+		return casteName;
+	}
+	public void setCasteName(String casteName) {
+		this.casteName = casteName;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getMuncipalityName() {
+		return muncipalityName;
+	}
+	public void setMuncipalityName(String muncipalityName) {
+		this.muncipalityName = muncipalityName;
 	}
 	
 		

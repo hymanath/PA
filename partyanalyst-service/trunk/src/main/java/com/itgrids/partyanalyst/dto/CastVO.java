@@ -35,6 +35,12 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	
 	private Long partyNotAssigCount = 0l;
 	
+	private String expctdPercentage;
+	
+	private int expctdVotesCount;
+	
+	private int otherVotes;
+	
 	public CastVO(){
 		
 	}
@@ -179,5 +185,31 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 		this.partyNotAssigCount = partyNotAssigCount;
 	}
 
+	public String getExpctdPercentage() {
+		return expctdPercentage;
+	}
+
+	public void setExpctdPercentage(String expctdPercentage) {
+		this.expctdPercentage = expctdPercentage;
+	}
+
+	public int getExpctdVotesCount() {
+		return expctdVotesCount;
+	}
+
+	public void setExpctdVotesCount(int expctdVotesCount) {
+		this.expctdVotesCount = expctdVotesCount;
+	}
+
+	public int getOtherVotes() {
+		return otherVotes;
+	}
+
+	public void setOtherVotes(int otherVotes) {
+		this.otherVotes = otherVotes;
+	}
+	
+	
+	
 
 }
