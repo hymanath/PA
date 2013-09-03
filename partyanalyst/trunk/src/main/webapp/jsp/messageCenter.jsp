@@ -1214,7 +1214,7 @@ var jsObj=
 
     <div style="margin-left:100px;margin-bottom:9px;">
           <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
-		  <a href="javascript:{$('#searchOptionsDiv').toggle('slow');}" style="font-size:12px;"><b>Show/Hide Search Options</b></a>
+		  <a id="showhidebtn" style="font-size:12px;"><b>Show/Hide Search Options</b></a>
 
 	     <button id="searchCandidatesId" class="btn btn-primary" onclick="isValidateFields('search');"> Search </button> 
 		
@@ -2771,6 +2771,7 @@ function showTermsAndConditiond()
 
 function showReportsLevels(value)
 {
+	
 	$('.selectDivs').hide();
 	$('#constiTypeDiv').hide();
 	var selectedType = $('input:radio[name=searchFor]:checked').val();
@@ -2791,17 +2792,33 @@ function showReportsLevels(value)
 	if(selectedType =='voter'){
 	$('#publicationDateDiv,#panchayatDiv').show();
 	if(value == 1)
+	{
 		$(" #ConstituencyDiv,#constiDiv").show();
+		
+	}
 	else if(value == 2)
+	{
 		$(" #ConstituencyDiv,#constiDiv,#mandalDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
+	}
 	else if(value == 3)
+	{
 		$("#ConstituencyDiv,#constiDiv,#mandalDiv,#panchayatDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
+	}
 	else if(value == 4)
+	{
 		$("#ConstituencyDiv,#constiDiv,#mandalDiv,#pollingStationDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
+	}
 	else if(value == 5)
+	{
 		$("#ConstituencyDiv,#constiDiv,#mandalDiv,#wardDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
+	}
 	else if(value == 6){
 		$("#ConstituencyDiv,#constiDiv,#mandalDiv,#hamletDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
 	getMandalOrMuncipalityList($('#constituencyList').val());
 		if(selectedType == "voter"){
 		   $('#panchayatDiv').show();
@@ -2815,24 +2832,39 @@ function showReportsLevels(value)
 	else{
 
 	if(value == 1)
+	{
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv").show();
+		
+	}
 	else if(value == 2)
+	{
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
+		}
 	else if(value == 3)
+	{
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#panchayatDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
+	}
 	else if(value == 4)
+	{
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#pollingStationDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
+	}
 	else if(value == 5)
 	{
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#wardDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
 		$('#mandalField').find('option').remove().end()
     .append('<option value="0">Select</option>').val();
 	$('#wardField').find('option').remove().end()
     .append('<option value="0">Select</option>').val();
 	$('#constituencyList').val(0);
+	
 		}
 	else if(value == 6){
 		$("#stateDiv , #districtDiv , #ConstituencyDiv,#constiDiv,#mandalDiv,#hamletDiv").show();
+		$('#districtDiv option[value="0"]').attr("selected",true);
 		getMandalOrMuncipalityList($('#constituencyList').val());
 		if(selectedType == "voter"){
 		   $('#panchayatDiv').show();
@@ -3240,6 +3272,9 @@ $('#constituencyList').append('<option value="0">Select Constituency</option>')
 	}
 
 }
+$("#showhidebtn").live("click",function(){
+	$('#searchOptionsDiv').toggle('slow');
+})
 </script>
  </body>
  </html>
