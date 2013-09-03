@@ -22,5 +22,7 @@ public interface ICasteStateDAO extends GenericDao<CasteState, Long>{
 	 
 	 public List<Object[]> getCasteStateList();
 	 
+	 public List<Object[]> getCasteNamesByCasteIds(List<Long> casteIds);
+	 
 	 public List<Object[]> getCasteListByCasteIds(List<Long> casteIds);
 }
