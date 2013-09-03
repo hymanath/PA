@@ -181,7 +181,7 @@ th {
 .table thead th{vertical-align:middle;}
 tr.even td.sorting_1{background-color:#ffffff;}
 
-#titleageGroupBoothTableId1,#titleageGroupTableId1,#titleageGroupBoothTableId2,#titleageGroupTableId2,#titleageGroupBoothTableId3,#titleageGroupTableId3{clear:both;padding:15px;background:#9CE7FC;border:1px solid #cccccc;display:none;margin-top:25px;color:#000000;}
+#titleageGroupBoothTableId1,#titleageGroupTableId1,#titleageGroupBoothTableId2,#titleageGroupTableId2,#titleageGroupBoothTableId3,#titleageGroupTableId3{clear:both;padding:15px 10px;display:none;color:#000000;}
 
 #panchayatWisePollingPercentageDiv{padding-top: 9px; padding-bottom: 21px;}
 
@@ -276,6 +276,13 @@ function clearAll(){
 	$('#titleageGroupTableId1').css("display","none");
 	$('#panchayatWisePollingPercMainDiv').css("display","none");
 	$('#leadersTable2').css("display","none");
+	
+	$('.titleageGroupTableId1Cls').removeClass('widget').removeClass('blue');
+	$('.titleageGroupBoothTableId1Cls').removeClass('widget').removeClass('blue');
+	$('.titleageGroupTableId2Cls').removeClass('widget').removeClass('blue');
+	$('.titleageGroupBoothTableId2Cls').removeClass('widget').removeClass('blue');
+	$('.titleageGroupTableId3Cls').removeClass('widget').removeClass('blue');
+	$('.titleageGroupBoothTableId3Cls').removeClass('widget').removeClass('blue');
 
 }
 function getPartyDetails(mandalId){
@@ -942,7 +949,7 @@ function panchayatMatrx(result)
 	</table>
 </div></br>
 <div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
-	<span style="float: left; margin-left: 1px; padding-top: 13px; padding-bottom: 13px;">Please Check For Excepted Caste Details <input type="checkbox" name="expCaste" id="expCaste" value="" onclick="showExpCasteDetailsButton();"><br></span></br>
+	<span style="float: left; margin-left: 1px; padding-top: 13px; padding-bottom: 13px;">Please Check For Excepted Caste Details <input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();"><br></span></br>
 	<table>
 		<tr>
 			<td id="tdWidth">
@@ -1081,6 +1088,8 @@ function panchayatMatrx(result)
 
 <form id="muncipalityExceptedCasteDetailsDiv" method="post" action="getLeadersListInRuralUrbansAction.action" name="muncipalityexceptedCasteDetailsForm">
 <input type="hidden" name="task" id="muncipalityExpCasteDetails" /></form>
+<form id="ageGroupCasteDetailsForm" method="post" action="getLeadersDataAction.action" name="ageGroupCasteDetailsForm">
+<input type="hidden" name="task" id="ageGroupCasteDetailsId" /></form>
 <!--
 <div id="titleDiv" style="display:none;">
 <h4>PANCHAYAT WISE ELECTION RESULTS COMPARISION</h4>
@@ -2472,11 +2481,24 @@ var count=0;
 			tempVar:"all",
 			task:"getAgeGroupWiseReport",
 			agesList:agesArr,
-			castesSelcted:selectedCasteIds
+			castesSelcted:selectedCasteIds,
+			expCasteArray:expCasteArray
 		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "<%=request.getContextPath()%>/getAgeGroupWiseReportAction.action?"+rparam;
-		callAjax(rparam,jsObj,url);
+		
+		$("#ageGroupCasteDetailsId").val(YAHOO.lang.JSON.stringify(jsObj));
+			  
+		var uploadHandler = {
+		success: function(o) {
+		var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+		
+			$('#ajaxLoaderImg').css('display','none');
+			$("#dashBoardImgLoading").hide();
+			buildAgeGroupWiseTable(uploadResult,jsObj);
+		
+		}
+		};
+		YAHOO.util.Connect.setForm('ageGroupCasteDetailsForm',false);
+		YAHOO.util.Connect.asyncRequest('POST','getAgeGroupWiseReportAction.action',uploadHandler);
 	}	
   
 		
@@ -2570,9 +2592,9 @@ var count=0;
 		if(tablesCount==1){
 			createTable(myResults[0],'ageGroupTableId1');
 			
-			$.each(myResults[0].municipalitesBoothsMap, function(key, value){
-				createBoothsTable(value,'ageGroupBoothTableId1',key);
-			}); 
+			if(myResults[0].boothsList!=null){
+				createBoothsTable(myResults[0],'ageGroupBoothTableId1','mncpl');
+			}
 			
 		}
 		else if(tablesCount==2){
@@ -2580,9 +2602,9 @@ var count=0;
 				var num=i+1;
 				createTable(myResults[i],'ageGroupTableId'+num);
 				
-				$.each(myResults[i].municipalitesBoothsMap, function(key, value){
-					createBoothsTable(value,'ageGroupBoothTableId'+num,key);
-				});
+				if(myResults[i].boothsList!=null){
+					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num,'mncpl');
+				}
 			}
 			
 						
@@ -2592,9 +2614,9 @@ var count=0;
 				var num=i+1;
 				createTable(myResults[i],'ageGroupTableId'+num);
 				
-				$.each(myResults[i].municipalitesBoothsMap, function(key, value){
-					createBoothsTable(value,'ageGroupBoothTableId'+num,key);
-				});
+				if(myResults[i].boothsList!=null){
+					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num,'mncpl');
+				}
 			}
 		}
 	}
@@ -2602,13 +2624,26 @@ var count=0;
 	
 	function createTable(result,tableId){
 	$('#title'+tableId).css('display','block');
+	$('.title'+tableId+"Cls").addClass('widget').addClass('blue');
+	$('.title'+tableId+"Cls").css('margin-top','50px');
 	$('#title'+tableId).html('<h4>Panchayat Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
+	
+	var allSlctedCastes=[];
+	for(var i in result.panchayatList[0].allSelectedCastes){
+		allSlctedCastes.push(result.panchayatList[0].allSelectedCastes[i].castName);
+	}
+	
+	
+		var checked = $('input[name=expCaste]:checked').val();
 		var str='';
 		<!--str+='<div style="width:800px" align="center"><h4>Panchayat Wise Voters Analysis of Age Range - +'+result.ageRange+'</h4></div>'-->
-		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th></tr>';
+		if(checked!='expCaste'){
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th rowspan=2>Panchayat</th><th rowspan=2>Total Voters In Panchayat</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th>';
+		str+='</tr>';
 		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
-		str+='<tbody>';
+		str+='<tbody style="font-size:12px;color:#000000;">';
 		var res=result.panchayatList;
+				
 		for(var i in result.panchayatList){
 		str+='<tr>';
 		str+='<td>'+result.panchayatList[i].panchayatName+'</td>';
@@ -2618,7 +2653,12 @@ var count=0;
 		str+='<td>'+result.panchayatList[i].femaleVoters+'</td>';
 		str+='<td>'+result.panchayatList[i].percentage+'</td>';
 		str+='<td>';
-		var topCastesLength=result.panchayatList[i].topCastes.length;
+		
+		var topCastesLength=0;
+		if(result.panchayatList[i].topCastes!=null){
+			var topCastesLength=result.panchayatList[i].topCastes.length;
+		}
+		
 		for(var j in result.panchayatList[i].topCastes){
 		str+=result.panchayatList[i].topCastes[j].castName+"("+result.panchayatList[i].topCastes[j].castCount+")";
 			 if(topCastesLength>j){
@@ -2627,8 +2667,12 @@ var count=0;
 		}
 		str+='</td>';
 		str+='<td>';
-			var slctdCastesLength=result.panchayatList[i].selectedCastes.length;
-			if(slctdCastesLength>0){
+		var slctdCastesLength=0;
+		
+		if(result.panchayatList[i].selectedCastes!=null){
+			slctdCastesLength=result.panchayatList[i].selectedCastes.length;
+		}
+		if(slctdCastesLength>0){
 		for(var j in result.panchayatList[i].selectedCastes){
 		str+=result.panchayatList[i].selectedCastes[j].castName+"("+result.panchayatList[i].selectedCastes[j].castCount+")";
 			 if(slctdCastesLength>j){
@@ -2638,10 +2682,44 @@ var count=0;
 		else{
 			str+="-";
 		}
-		str+='</td>'
+		str+='</td>';
 		str+='</tr>';
 		}
 		str+='</tbody></table>';
+		}
+		
+		<!---->
+		else{
+		
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th>Panchayat</th><th>Total Voters In Panchayat</th>';
+		for(var i in allSlctedCastes){
+		str+='<th>'+allSlctedCastes[i]+'</th>';
+		str+='<th>Expected Votes</th>';
+		str+='<th>Expected % </th>';
+		}
+		
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody style="font-size:12px;color:#000000;">';
+		var res=result.panchayatList;
+		for(var i in result.panchayatList){
+		str+='<tr>';
+		str+='<td>'+result.panchayatList[i].panchayatName+'</td>';
+		str+='<td>'+result.panchayatList[i].totalVoters+'</td>';
+				
+		for(var j in result.panchayatList[i].allSelectedCastes){
+			str+='<td>'+result.panchayatList[i].allSelectedCastes[j].castCount+'</td>';
+			str+='<td>'+result.panchayatList[i].allSelectedCastes[j].expctdVotesCount+'</td>';
+			str+='<td>'+result.panchayatList[i].allSelectedCastes[j].expctdPercentage+'</td>';
+		}
+		str+='</tr>';
+		}
+		str+='</tbody></table>';
+		}
+		<!---->
+		
+		
+		
 		
 		$('#'+tableId).html(str);
 		$('#table'+tableId).dataTable({
@@ -2658,49 +2736,91 @@ var count=0;
 	
 	function createBoothsTable(result,tableId,mncplName){
 	$('#title'+tableId).css('display','block');
-	$('#title'+tableId).html('<h4>'+mncplName+'- Booth Wise Voters Analysis of Age Range - '+result[0].ageRange+'</h4>');
+	$('.title'+tableId+"Cls").addClass('widget').addClass('blue');
+	$('.title'+tableId+"Cls").css('margin-top','50px');
+	$('#title'+tableId).html('<h4>'+mncplName+'- Booth Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
+	
+	var allSlctedCastes=[];
+	for(var i in result.boothsList[0].allSelectedCastes){
+		allSlctedCastes.push(result.boothsList[0].allSelectedCastes[i].castName);
+	}
+	
+	
+		var expCaste = $('input[name=expCaste]:checked').val();
 		var str='';
-		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead><tr><th rowspan=2>Booths</th><th rowspan=2>Total Voters In Booth</th><th colspan=4>'+result[0].ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th></tr>';
+		if(expCaste!='expCaste'){
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th rowspan=2>Booths</th><th rowspan=2>Total Voters In Booth</th><th colspan=4>'+result.ageRange+'</th><th rowspan=2>Top Castes</th><th rowspan=2>Selected Castes</th>';
+		str+='</tr>';
 		str+='<tr><th>Total Voters</th><th>Male Voters</th><th>Female Voters</th>	<th>Percentage</th></tr></thead>';
-		str+='<tbody>';
-		for(var i in result){
-		var vstr="";
-		vstr+='<tr>';
-		vstr+='<td>'+result[i].panchayatName+'</td>';
-		vstr+='<td>'+result[i].totalPanchayatVoters+'</td>';
-		vstr+='<td>'+result[i].totalVoters+'</td>';
-		vstr+='<td>'+result[i].maleVoters+'</td>';
-		vstr+='<td>'+result[i].femaleVoters+'</td>';
-		vstr+='<td>'+result[i].percentage+'</td>';
-		vstr+='<td>';
-		var topCastesLength=result[i].topCastes.length;
-		for(var j in result[i].topCastes){
-		vstr+=result[i].topCastes[j].castName+"("+result[i].topCastes[j].castCount+")";
+		str+='<tbody style="font-size:12px;color:#000000;">';
+		for(var i in result.boothsList){
+		str+='<tr>';
+		str+='<td> Booth - '+result.boothsList[i].panchayatName+'</td>';
+		str+='<td>'+result.boothsList[i].totalPanchayatVoters+'</td>';
+		str+='<td>'+result.boothsList[i].totalVoters+'</td>';
+		str+='<td>'+result.boothsList[i].maleVoters+'</td>';
+		str+='<td>'+result.boothsList[i].femaleVoters+'</td>';
+		str+='<td>'+result.boothsList[i].percentage+'</td>';
+		str+='<td>';
+		
+		var topCastesLength=0;
+		if(result.boothsList[i].topCastes!=null){
+		var topCastesLength=result.boothsList[i].topCastes.length;
+		for(var j in result.boothsList[i].topCastes){
+		str+=result.boothsList[i].topCastes[j].castName+"("+result.boothsList[i].topCastes[j].castCount+")";
 			 if(topCastesLength>j){
-				vstr+=", ";
+				str+=", ";
 			}
 		}
-		vstr+='</td>';
-		vstr+='<td>';
-		var slctedCastesLength=result[i].selectedCastes.length;
+		}
+		str+='</td>';
+		str+='<td>';
+		var slctedCastesLength=0;
+		if(result.boothsList[i].selectedCastes!=null){
+		var slctedCastesLength=result.boothsList[i].selectedCastes.length;
 		if(slctedCastesLength>0){
-		for(var j in result[i].selectedCastes){
-		vstr+=result[i].selectedCastes[j].castName+"("+result[i].selectedCastes[j].castCount+")";
+		for(var j in result.boothsList[i].selectedCastes){
+		str+=result.boothsList[i].selectedCastes[j].castName+"("+result.boothsList[i].selectedCastes[j].castCount+")";
 			 if(slctedCastesLength>j){
-				vstr+=", ";
+				str+=", ";
 			}
 		}
 		}
 		else{
-			vstr+="-";
+			str+="-";
 		}
-		vstr+='</td>';
-		vstr+='</tr>';
-		
-		str+=vstr;
+		str+='</td>';
+		str+='</tr>';
+		}
 		}
 		str+='</tbody></table>';
 		
+		}
+		else{
+		str+='<table class="table table-bordered table-striped table-hover" style="font-family:verdana,font-size:12px;" id="table'+tableId+'"><thead style="background:#D9EDF7;color:#000000;"><tr><th>Booths</th><th>Total Voters In Booth</th>';
+		for(var i in allSlctedCastes){
+		str+='<th>'+allSlctedCastes[i]+'</th>';
+		str+='<th>Expected Votes</th>';
+		str+='<th>Expected %</th>';
+		}
+		str+='</tr>';
+		str+='</thead>';
+		str+='<tbody style="font-size:12px;color:#000000;">';
+		for(var i in result.boothsList){
+		str+='<tr>';
+		str+='<td> Booth - '+result.boothsList[i].panchayatName+'</td>';
+		str+='<td>'+result.boothsList[i].totalVoters+'</td>';
+				
+		for(var j in result.boothsList[i].allSelectedCastes){
+			str+='<td>'+result.boothsList[i].allSelectedCastes[j].castCount+'</td>';
+			str+='<td>'+result.boothsList[i].allSelectedCastes[j].expctdVotesCount+'</td>';
+			str+='<td>'+result.boothsList[i].allSelectedCastes[j].expctdPercentage+'</td>';
+		}
+		str+='</tr>';
+		}
+		str+='</tbody></table>';
+		
+		}
 		$('#'+tableId).html(str);
 		$('#table'+tableId).dataTable({
 			"iDisplayLength": 15,
