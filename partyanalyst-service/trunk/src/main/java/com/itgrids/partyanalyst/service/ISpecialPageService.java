@@ -83,7 +83,7 @@ public interface ISpecialPageService {
     
  public SubscriptionsMainVO getAllUserSubScriptions(Long userId, Long profileId);
     
-    public SubscriptionsMainVO getUserProfileSubScriptions(Long userId);
+    public SubscriptionsMainVO getUserProfileSubScriptions(Long userId,String tempVar);
     
     public String getProfileUserName(Long profileId);
     
