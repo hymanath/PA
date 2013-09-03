@@ -523,7 +523,6 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				else{
 					panchayatIdList.add(pnchtId);
 					cstVOlist=new ArrayList<CastVO>();
-					
 					cstVO.setCastName(cstName);
 					cstVO.setCastStateId(casteStateId);
 					cstVO.setCastCount(cstCount);
@@ -604,10 +603,25 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 			 
 				areaMap.get(entry.getKey()).setTopCastes(top3CstsList);
 				areaMap.get(entry.getKey()).setSelectedCastes(slctedCstsList);
-				areaMap.get(entry.getKey()).setAllSelectedCastes(getAllSelectedCastesList(allSlctdCsts,areaMap));
+				//areaMap.get(entry.getKey()).setAllSelectedCastes(getAllSelectedCastesList(allSlctdCsts,areaMap.get(entry.getKey()).getTotalVoters()));
+				List<CastVO> allSlctdCastes=new ArrayList<CastVO>(getAllSelectedCastesList(allSlctdCsts));
+				String db=String.valueOf(getExpctdPercentage(exptdCastes,entry.getKey(),0l));
+				Double.parseDouble(db);
+				areaMap.get(entry.getKey()).setOthrExpctdPrcntg(db);
+				
+				Long expVotes=0l;
+				for(CastVO cst:allSlctdCastes){
+					expVotes+=cst.getExpctdVotesCount();
+				}
+				int otherVotes=(int) (areaMap.get(entry.getKey()).getTotalVoters()-expVotes);
+				int othrExpctdVotes=(int)(otherVotes*(Double.parseDouble(db)));
+				
+				areaMap.get(entry.getKey()).setAllSelectedCastes(allSlctdCastes);
+				areaMap.get(entry.getKey()).setOthrExpctdVotes(othrExpctdVotes);
+				areaMap.get(entry.getKey()).setOtherVotes(otherVotes);
 			}
 			}catch (Exception e) {
-				System.out.println("Exception Raised in getResults() in SuggestiveModel Service");
+				System.out.println("Exception Raised in getResults() in SuggestiveModel Service"+e);
 			}
 			return areaMap;
 		}
@@ -903,7 +917,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	
 	
 	
-	public List<CastVO> getAllSelectedCastesList(Map<Long,CastVO> castMap,Map<Long,PanchayatVO> areaMap){
+	public List<CastVO> getAllSelectedCastesList(Map<Long,CastVO> castMap){
 		List<CastVO> allSelectedCastesVOs= new ArrayList<CastVO>();
 		 Long slctdCstsVtsCount=0l;
 		for (Entry<Long, CastVO> entry : castMap.entrySet())
@@ -913,8 +927,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			Long totVotes=entry.getValue().getCastCount();
 			int exptdVotes=(int) (exptPrcntg*totVotes);
 			entry.getValue().setExpctdVotesCount(exptdVotes);
-			
-			slctdCstsVtsCount=slctdCstsVtsCount+totVotes;
+					
 			allSelectedCastesVOs.add(entry.getValue());
 		 }
 		return allSelectedCastesVOs;
