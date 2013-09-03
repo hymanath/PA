@@ -42,6 +42,13 @@ public class ConstituencySubscriptionsDAO extends  GenericDaoHibernate<Constitue
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllUserSubscribedConstituencyPages(Long userId)
 	{
-		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name,model.user.userId from ConstituencySubscriptions model,Constituency model2 where model.user.userId = ? and model.constituency.constituencyId = model2.constituencyId",userId);
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name,model.user.userId,model2.electionScope.electionType.electionType from ConstituencySubscriptions model,Constituency model2 where model.user.userId = ? and model.constituency.constituencyId = model2.constituencyId",userId);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getAllUserSubScribedConstituencies(Long userId)
+	{
+	  return getHibernateTemplate().find(" select model.constituency.constituencyId from ConstituencySubscriptions model, Constituency model2 where model.constituency.constituencyId = model2.constituencyId and model.user.userId =? ",userId);
+	}
+	
 }

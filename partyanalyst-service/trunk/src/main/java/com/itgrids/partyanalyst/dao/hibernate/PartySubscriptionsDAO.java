@@ -65,4 +65,14 @@ public class PartySubscriptionsDAO extends GenericDaoHibernate<PartySubscription
 	public List<Long> getAllPartiesSubscribedByUser(Long userId){
 		return getHibernateTemplate().find("select model.party.partyId from PartySubscriptions model where model.user.userId = ?",userId);	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllSubscribedParties(Long userId)
+	{
+		Query query = getSession().createQuery(" select model.party.partyId, model.party.longName, model.party.shortName from " +
+				" PartySubscriptions model where model.user.userId =:userId order by model.party.longName ");
+		
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
