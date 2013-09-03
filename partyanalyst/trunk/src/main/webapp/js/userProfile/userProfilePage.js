@@ -38,7 +38,7 @@ $('#connectMessageText').live("keyup",function() {
 	var resultsCount = 5;
 	var clickid = null;
 
-	setInterval("callForEveryFiveMins()", 10*60*60*5);
+	//setInterval("callForEveryFiveMins()", 10*60*60*5);
     $("#subscriptionsStreamingMore").live("click",function(){
 	  getSubscriptionDetails("old");
 	});
@@ -529,9 +529,9 @@ $(".changePwdLink").live("click",function(){
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password should contain 6 characters</span><br>');
+		div.append('<span>Password must be minimum of 6 characters long</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password should not contain $,#,\\,+,% characters</span>');
+		div.append('<span>Password should not contain & # \\ + % characters</span>');
 		div.append('<div align="center"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
 		div.append('<div align="center"> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
 		div.append('<div align="center"> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
@@ -556,12 +556,12 @@ $(".changePwdLink").live("click",function(){
 		errorDiv.html('');		
 		if(cpwd.length > 0 &&cpwd.length < 6)
 		{
-		  errorDiv.html("<font color='red'>Current Password Minimum Of 6 Characters.</font>");
+		  errorDiv.html("<font color='red'>Current password must be minimum Of 6 characters.</font>");
 	      return;
 		}
 	if(npwd.length > 0 &&npwd.length < 6)
 	{
-	  errorDiv.html("<font color='red'>New Password Minimum Of 6 Characters.</font>");
+	  errorDiv.html("<font color='red'>New password must be minimum of 6 characters.</font>");
 	  return;
 	}
 	if(cpwd=="")
@@ -578,7 +578,20 @@ $(".changePwdLink").live("click",function(){
 	{
      errorDiv.html("<font color='red'>Please enter current password.</font>");
 	 return;
-	}
+	}else if ( cpwd != null)
+			{ 				
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < cpwd.length; i++)
+                {      
+                    if (iChars.indexOf(cpwd.charAt(i)) != -1)
+                    {   
+					errorDiv.html('<font color="red">Current password should not contain & # \\ + % characters</font>');
+					return;
+                    } 
+                }
+			
+			}
 	if(npwd=='')
 	{
       errorDiv.html("<font color='red'>Please enter new password.</font>");
@@ -591,7 +604,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(npwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					errorDiv.html('<font color="red">New password should not contain & # \\ + % characters</font>');
 					return;
                     } 
                 }
@@ -609,7 +622,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(cfmpwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					errorDiv.html('<font color="red">Confirm password should not contain & # \\ + % characters</font>');
 					return;
                     } 
                 }
@@ -618,7 +631,7 @@ $(".changePwdLink").live("click",function(){
 	if(cpwd == npwd)
 	{
 	  errorDiv.html("<font color='green'>Your new password is same as existing one.</font>");
-	  setTimeout("closewdw()",3000);
+	  //setTimeout("closewdw()",3000);
 	  return;
 	}
 	if(cpwd!='')
@@ -1157,21 +1170,21 @@ function callAjax1(jsObj,url){
 						$('#FavouriteLinks').click();
 					}
 					else if(jsObj.task == "allsubscriptions" || jsObj.task == "oldersubscriptions"){
-					   $("#subscriptionsStreamingAjaxImg").hide();
+					   
 					   if(results == "sessionExpired"){
 						  openDialogForLoginWindow();
 					   }
 					   else{
-					     buildAllSubscriptions(results,"end");
+					     buildAllSubscriptions(results,"end",jsObj);
 					   }
 					}
 					else if(jsObj.task == "latestsubscriptions"){
-					   $("#subscriptionsStreamingAjaxImg").hide();
+					   
 					   if(results == "sessionExpired"){
 						  openDialogForLoginWindow();
 					   }
 					   else{
-					     buildAllSubscriptions(results,"start");
+					     buildAllSubscriptions(results,"start",jsObj);
 					   }
 					}
 					else if(jsObj.task == "getFriendsList")
@@ -1223,7 +1236,7 @@ function callAjax1(jsObj,url){
 								buildCadreInfoTable(results);
 							}
 			}catch (e) {  
-                  $("#subscriptionsStreamingAjaxImg").hide();	
+                  	
 				  closeDialogue();
 						
 			   	//alert("Invalid JSON result" + e);   
@@ -1546,7 +1559,7 @@ function getFriendsListForUser(results)
 closeDialogue();
 }
 
-function buildAllSubscriptions(results,place){
+function buildAllSubscriptions(results,place,jsObj){
    if(results != null && results.length > 0){
 	   $(".subscrStreamingMoreCls").css("display","block");
     for(var i in results)
@@ -1569,7 +1582,10 @@ function buildAllSubscriptions(results,place){
   else
   {
 	$(subscriptionsStreamingMore).hide();
-	$("#headerDiv").html('<b style="color:blue">No Subscriptions Are Avalible Please Select Subscriptions</b>');
+	if(jsObj.task == "allsubscriptions")
+	  $("#headerDiv").html('<b style="color:blue">No Subscriptions Are Avalible Please Select Subscriptions</b>');
+	else
+      $("#headerDiv").html('<b style="color:blue">No More Updates Are Avalible</b>');	
   }
   closeDialogue();
 }
@@ -1610,7 +1626,7 @@ ajaxProcessing();
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAllSubscriptionsAction.action?"+rparam;					
 	callAjax1(jsObj,url);
-	$("#subscriptionsStreamingAjaxImg").show();
+	
 }
 
 function showAllRequestMessagesForUser(results,jsObj){
@@ -3949,7 +3965,6 @@ var custom_paginator1 = {
 			try 
 			{				
 				results = YAHOO.lang.JSON.parse(o.responseText);
-				console.log(results);
 				if(results != null)
 				    this.totalRecords = results.totalMsgCount;	
 				else
