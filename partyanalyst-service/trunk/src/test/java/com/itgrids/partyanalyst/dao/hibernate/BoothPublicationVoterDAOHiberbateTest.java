@@ -793,13 +793,45 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetVoterAgeDetailsForSelectedLocation()
+	/*public void testgetVoterAgeDetailsForSelectedLocation()
 	{
 		List<Long> locationIdsList = new ArrayList<Long>(0);
 		locationIdsList.add(232l);
 		List<Object[]> list = boothPublicationVoterDAO.getVoterAgeDetailsForSelectedLocation(232l, 8l, locationIdsList, IConstants.CONSTITUENCY);
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
+		List<Object[]> list = boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(228l, 8l, 18l, 22l);
+		for(Object[] obj:list){
+			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString());
+		}
+	}*/
+	
+	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
+		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituency(221l, 8l);
+		for(Object[] obj:list){
+			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString());
+		}
+	}*/
+	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
+		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityByConstituencyId(232l, 8l);
+		for(Object[] obj:list){
+			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString()+"--"+obj[5].toString());
+		}
+	}*/
+	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
+		List<Object[]> list = boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(232l, 8l, 18l, 22l);
+		for(Object[] obj:list){
+			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString()+"--"+obj[5].toString()+"--"+obj[6].toString()+"--"+obj[7].toString());
+		}
+	}*/
+	
+	public void testgetAgeAndGenderWiseVoterInConstituency(){
+		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(232l, 8l, 18l, 22l);
+		for(Object[] obj:list){
+			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString()+"--"+obj[5].toString()+"--"+obj[6].toString());
+		}
 	}
-		
 	
 }
