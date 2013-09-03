@@ -79,7 +79,7 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 			System.out.println(casteState.getCaste().getCasteName());
 	}*/
 	
-	public void testgetCasteStateList()
+	/*public void testgetCasteStateList()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(290l);
@@ -91,6 +91,17 @@ public class CasteStateDAOHibernateTest extends BaseDaoTestCase {
 		for (Object[] params : values) {
 			System.out.println(params[0]+" "+params[1]);
 		}
-	}
+	}*/
 	
+	public void testcasteNamesByIdsList(){
+		List<Long> casteIds=new ArrayList<Long>();
+		casteIds.add(1l);
+		casteIds.add(2l);
+		List<Object[]> castes=casteStateDAO.getCasteNamesByCasteIds(casteIds);
+		
+		for(Object[] csts:castes){
+			System.out.println(csts[0].toString()+" "+csts[1]);
+			
+		}
+	}
 }
