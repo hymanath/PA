@@ -237,8 +237,7 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 		
 		String mandalId = jsonObj.getString("mandal");
 		String partyId = jsonObj.getString("party");
-		//String alliance = "true";//jsonObj.getString("alliance");
-		String alliance = jsonObj.getString("alliance");
+		String alliance = "true";//jsonObj.getString("alliance");
 		
 		/*String chartName = "mandalWisePartyPerformance_"+mandalId+"_"+partyId+".png";
          if(cPath.contains("PartyAnalyst"))
