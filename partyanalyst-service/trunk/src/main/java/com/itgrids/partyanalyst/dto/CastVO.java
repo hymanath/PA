@@ -39,7 +39,7 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	
 	private int expctdVotesCount;
 	
-	private int otherVotes;
+	private Long panchayatId;
 	
 	public CastVO(){
 		
@@ -201,15 +201,6 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 		this.expctdVotesCount = expctdVotesCount;
 	}
 
-	public int getOtherVotes() {
-		return otherVotes;
-	}
-
-	public void setOtherVotes(int otherVotes) {
-		this.otherVotes = otherVotes;
-	}
-	
-	
 	
 
 }

@@ -30,6 +30,9 @@ public class PanchayatVO implements Serializable {
 	private String casteName;
 	private String gender;
 	private String muncipalityName;
+	private int othrExpctdVotes;
+	private String othrExpctdPrcntg;
+	private int otherVotes;
 	
 	
 	public Long getPanchayatId() {
@@ -146,6 +149,24 @@ public class PanchayatVO implements Serializable {
 	}
 	public void setMuncipalityName(String muncipalityName) {
 		this.muncipalityName = muncipalityName;
+	}
+	public int getOthrExpctdVotes() {
+		return othrExpctdVotes;
+	}
+	public void setOthrExpctdVotes(int othrExpctdVotes) {
+		this.othrExpctdVotes = othrExpctdVotes;
+	}
+	public String getOthrExpctdPrcntg() {
+		return othrExpctdPrcntg;
+	}
+	public void setOthrExpctdPrcntg(String othrExpctdPrcntg) {
+		this.othrExpctdPrcntg = othrExpctdPrcntg;
+	}
+	public int getOtherVotes() {
+		return otherVotes;
+	}
+	public void setOtherVotes(int otherVotes) {
+		this.otherVotes = otherVotes;
 	}
 	
 		
