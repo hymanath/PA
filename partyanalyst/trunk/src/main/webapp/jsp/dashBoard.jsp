@@ -1404,9 +1404,9 @@ $(".changePwdLink").live("click",function(){
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password should contain 6 characters</span><br>');
+		div.append('<span>Password must be minimum of 6 characters long</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password should not contain $,#,\\,+,% characters</span>');
+		div.append('<span>Password should not contain & # \\ + % characters</span>');
 		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 15px;"/></div>');
 		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
 		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 13px;"/></div>');
@@ -1428,12 +1428,12 @@ $(".changePwdLink").live("click",function(){
 		errorDiv.html('');		
 		if(cpwd.length > 0 &&cpwd.length < 6)
 		{
-		  errorDiv.html("<font color='red'>Current Password Minimum Of 6 Characters.</font>");
+		  errorDiv.html("<font color='red'>Current password must be minimum Of 6 characters.</font>");
 	      return;
 		}
 	if(npwd.length > 0 &&npwd.length < 6)
 	{
-	  errorDiv.html("<font color='red'>New Password Minimum Of 6 Characters.</font>");
+	  errorDiv.html("<font color='red'>New password must be minimum Of 6 characters.</font>");
 	  return;
 	}
 	if(cpwd=="")
@@ -1450,7 +1450,20 @@ $(".changePwdLink").live("click",function(){
 	{
      errorDiv.html("<font color='red'>Please enter current password.</font>");
 	 return;
-	}
+	}else if ( cpwd != null)
+			{ 				
+				var iChars = "#%&+\\";  
+				
+		            for (var i = 0; i < cpwd.length; i++)
+                {      
+                    if (iChars.indexOf(cpwd.charAt(i)) != -1)
+                    {   
+					errorDiv.html('<font color="red">Current password should not contain & # \\ + % characters</font>');
+					return;
+                    } 
+                }
+			
+			}
 	if(npwd=='')
 	{
       errorDiv.html("<font color='red'>Please enter new password.</font>");
@@ -1463,7 +1476,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(npwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					errorDiv.html('<font color="red">New password should not contain & # \\ + % characters</font>');
 					return;
                     } 
                 }
@@ -1481,7 +1494,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(cfmpwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					errorDiv.html('<font color="red">Confirm password should not contain & # \\ + % characters</font>');
 					return;
                     } 
                 }
@@ -1490,7 +1503,7 @@ $(".changePwdLink").live("click",function(){
 	if(cpwd == npwd)
 	{
 	  errorDiv.html("<font color='green'>Your new password is same as existing one.</font>");
-	  setTimeout("closewdw()",3000);
+	  //setTimeout("closewdw()",3000);
 	  return;
 	}
 	if(cpwd!='')
