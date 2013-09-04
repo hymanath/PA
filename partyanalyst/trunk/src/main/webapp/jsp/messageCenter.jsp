@@ -1497,6 +1497,15 @@ function validateFieldsForSendingSms()
 
 function ajaxToSendVoiceSms(){
 
+
+	if(selectedMobileNumbers.length == 0 &&  $('#mobileNumber').val() == "")
+	{
+          alert("You need to select atleast one number to send SMS.");
+		  return false;
+	}
+
+
+
 	 $('#responseDetailsInnerDiv').html("Sending voice SMS will take some time.Please wait....<img style='margin-left:130px;' src='./images/icons/search.gif' />");
 				
 
@@ -1531,8 +1540,6 @@ function ajaxToSendVoiceSms(){
 	$.each(selectedVotersDetails, function(index, value) {
 		votersDetails.push(value);
     });
-
-
 
 	var jsObj=
 			{
@@ -1943,7 +1950,7 @@ function callAjax1(param,jsObj,url){
 
 						    $('#responseDetailsDiv').dialog('close');
 						    $('#successMsg').html(myResults);
-							$('#voiceSmsDescription').val("");
+							$('#voiceSmsDescription,#mobileNumber').val("");
 
 							$('input[name=audio]').attr('checked', false);
 						  
