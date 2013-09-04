@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IApprovalDetailsDAO;
@@ -150,6 +151,7 @@ public class ProblemManagementReportService implements
 	private IProblemProgressDAO problemProgressDAO;
 	private IMessageToCandidateDAO messageToCandidateDAO;
 	private IMessageToPartyDAO messageToPartyDAO;
+	private TaskExecutor taskExecutor;
 	
 	public IMessageToPartyDAO getMessageToPartyDAO() {
 		return messageToPartyDAO;
@@ -504,6 +506,14 @@ public class ProblemManagementReportService implements
 
 	public void setProblemFilesDAO(IProblemFilesDAO problemFilesDAO) {
 		this.problemFilesDAO = problemFilesDAO;
+	}
+
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
 	}
 
 	/**
@@ -2180,7 +2190,8 @@ public class ProblemManagementReportService implements
 		problemDetailsVO.setSource(problemDetails.getProblem().getReferenceNo());
 		problemDetailsVO.setProblemHistoryId(problemDetails.getUserProblemId());
 		problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
-		mailsSendingService.sendEmailToFreeUserAfterProblemApproval(problemDetailsVO);
+		//mailsSendingService.sendEmailToFreeUserAfterProblemApproval(problemDetailsVO);
+		taskExecutor.execute(sendProblemRelatedEmailsFromTaskExecutor(problemDetailsVO,"emailToFreeUserAfterProbApproval"));
 		sendEmailToConnectedUsersAfterProblemApproval(problemDetails);
 		}
 		}
@@ -2227,8 +2238,8 @@ public class ProblemManagementReportService implements
 						problemDetailsVO.setSource(problemDetails.getProblem().getReferenceNo());
 						problemDetailsVO.setProblemHistoryId(problemDetails.getUserProblemId());
 						problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
-						mailsSendingService.sendEmailToFreeUserAfterProblemRejected(problemDetailsVO);
-					
+						//mailsSendingService.sendEmailToFreeUserAfterProblemRejected(problemDetailsVO);
+						taskExecutor.execute(sendProblemRelatedEmailsFromTaskExecutor(problemDetailsVO, "emailToFreeUserAfterProbRejected"));
 					}
 				}
 				
@@ -2290,7 +2301,9 @@ public class ProblemManagementReportService implements
 								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
-								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								//mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								taskExecutor.execute(sendProblemRelatedEmailsFromTaskExecutor(problemDetailsVO, "emailToConnectedUsersAfterProblemApproval"));
+								
 							}
 						}
 					}
@@ -2314,7 +2327,8 @@ public class ProblemManagementReportService implements
 								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
-								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								//mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								taskExecutor.execute(sendProblemRelatedEmailsFromTaskExecutor(problemDetailsVO, "emailToConnectedUsersAfterProblemApproval"));
 							}
 						}
 					}
@@ -2369,7 +2383,8 @@ public class ProblemManagementReportService implements
 								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
-								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								//mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								taskExecutor.execute(sendProblemRelatedEmailsFromTaskExecutor(problemDetailsVO, "emailToConnectedUsersAfterProblemApproval"));
 							}
 						}
 					}
@@ -2394,7 +2409,8 @@ public class ProblemManagementReportService implements
 								emailDetailsVO.setSenderName(senderName);
 								problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 								
-								mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								//mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+								taskExecutor.execute(sendProblemRelatedEmailsFromTaskExecutor(problemDetailsVO, "emailToConnectedUsersAfterProblemApproval"));
 							}
 						}
 					}
@@ -3803,5 +3819,25 @@ public Date getCurrentDateAndTime(){
 				e.printStackTrace();
 			}
 			return problemsList;
+		}
+		
+		
+		public Runnable sendProblemRelatedEmailsFromTaskExecutor(ProblemDetailsVO problemDetailsVO,String emailType)
+		{
+			try{
+				
+			   if(emailType != null && emailType.equalsIgnoreCase("emailToFreeUserAfterProbApproval"))
+				mailsSendingService.sendEmailToFreeUserAfterProblemApproval(problemDetailsVO);
+			   else if(emailType != null && emailType.equalsIgnoreCase("emailToFreeUserAfterProbRejected"))
+				mailsSendingService.sendEmailToFreeUserAfterProblemRejected(problemDetailsVO);
+			   else if(emailType != null && emailType.equalsIgnoreCase("emailToConnectedUsersAfterProblemApproval"))
+				mailsSendingService.sendEmailToConnectedUsersAfterProblemApproval(problemDetailsVO);
+			   
+			  return new Thread();	
+			}catch (Exception e) {
+			 e.printStackTrace();
+			 log.error(" Exception Occured in sendProblemRelatedEmailsFromTaskExecutor() method, Exception - "+e);
+			 return new Thread();
+			}
 		}
 }

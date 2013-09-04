@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -233,6 +234,7 @@ public class ProblemManagementService implements IProblemManagementService {
     private ICandidateDetailsService candidateDetailsService;
     private IPanchayatHamletDAO panchayatHamletDAO;
     private INewsProblemDAO newsProblemDAO;
+    private TaskExecutor taskExecutor;
     
     public INewsProblemDAO getNewsProblemDAO() {
 		return newsProblemDAO;
@@ -749,6 +751,14 @@ public class ProblemManagementService implements IProblemManagementService {
 
 	public void setAbusedCommentsDAO(IAbusedCommentsDAO abusedCommentsDAO) {
 		this.abusedCommentsDAO = abusedCommentsDAO;
+	}
+
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
 	}
 
 	/**
@@ -6310,7 +6320,8 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 					emailDetailsVO.setElectionType(problemBeanVO.getProblemRefNum());
 					problemDetailsVO.setEmailDetailsVO(emailDetailsVO);
 					
-					mailsSendingService.sendEmailToFreeUserAfterProblemAdded(problemDetailsVO);
+					//mailsSendingService.sendEmailToFreeUserAfterProblemAdded(problemDetailsVO);
+					taskExecutor.execute(sendEmailToFreeUserAfterProblemAdded(problemDetailsVO));
 				}
 			
 		return resultStatus;
@@ -6321,6 +6332,19 @@ ResultStatus resultStatus = (ResultStatus) transactionTemplate
 			log.error("Exception Occured in sendEmailToFreeUserAfterProblemAdded() , Exception is - "+e);
 			return resultStatus;
 		}
+		
+	}
+	
+	public Runnable sendEmailToFreeUserAfterProblemAdded(ProblemDetailsVO problemDetailsVO)
+	{
+	  try{
+		  mailsSendingService.sendEmailToFreeUserAfterProblemAdded(problemDetailsVO); 
+		return new Thread();
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error(" Exception Occured in sendEmailToFreeUserAfterProbAdded() method, Exception - "+e);
+		return new Thread();
+	  }
 	}
 	
 	/*public List<FileVO> getImageDetails()
