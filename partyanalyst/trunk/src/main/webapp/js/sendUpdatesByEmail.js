@@ -58,8 +58,9 @@
 		textAreaElmt=$('#descriptionForEmail').val();
 		if(textAreaElmt){
 			// txtElmtValue =  textAreaElmt;
-			 txtElmtValue = removeAllUnwantedCharacters(textAreaElmt);
+			 txtElmtValue = removeAllUnwantedCharacters1(textAreaElmt);
 		}
+		
 		var errorElmt = document.getElementById("errorDiv1");
 		if(subject.length != '0')
 			subject.innerHTML = '';
@@ -92,6 +93,15 @@
 	YAHOO.util.Connect.asyncRequest('POST','sendEmailForSelectedUsersAction.action',sendEmailHandler);
 	$('#imageForMail').show();
 	}
+
+function removeAllUnwantedCharacters1(str)
+{
+	
+	var str = str.replace('&lt;', '<').replace('&gt;', '>').replace('&amp;','&');
+	var strng = str.replace(/[\'\\\%\"+"]/g," ");
+    //  strng = str.replace(/[\'\\\%\&\#\"+"]/g," ");
+   return replaceEnterKey(strng,"  ");
+} 
 	/*function sendEmail(selectedElmts)
 	{	
 		var textAreaElmt;
