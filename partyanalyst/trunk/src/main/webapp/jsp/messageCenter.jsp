@@ -1245,7 +1245,7 @@ var jsObj=
 
 
 
-<div class="widget whitegloss">
+<div class="widget whitegloss" style="margin:0px;">
  <ul  style="margin:0px;font-weight:bold;font-size:13px;margin-left:240px;">
   <li>Enter mobile numbers separated by commas to send SMS to multiple recipients</li>
   <li>Add Country Code Before Mobile Number.Example:<b>919999999999</b></li>
@@ -3042,8 +3042,6 @@ function showHideLocationOptionsForOtherthanVoter()
 	   	   $('#stateDiv,#districtDiv,#ConstituencyDiv,#constiDiv,#mandalDiv').show();
 
 }
-
-
 function showHideLocationOptionsForVoter()
 {
 	var selectedValue = $('#reportLevel').val();
@@ -3066,8 +3064,6 @@ function showHideLocationOptionsForVoter()
 	   	   $('#ConstituencyDiv,#constiDiv,#mandalDiv,#hamletDiv').show();
 
 }
-
-
 function getBoothDetailsForCadre()
 {
 
@@ -3088,7 +3084,6 @@ function getBoothDetailsForCadre()
 			callAjax1(rparam,jsObj,url);
 
 }
-
 function getHamletsInMandal()
 {
 
@@ -3110,7 +3105,6 @@ function getHamletsInMandal()
 			callAjax1(rparam,jsObj,url);
 
 }
-
 function getBooths()
 {
 	
@@ -3126,9 +3120,7 @@ function getBooths()
 			else	
   			   getBoothDetailsForCadre();
 		}
-	
 }
-
 function buildBoothResultdForOtherthanVoter(results)
 {
 	$('#pollingStationField').find('option').remove();
@@ -3138,7 +3130,6 @@ function buildBoothResultdForOtherthanVoter(results)
 
 	});
 }
-
 function buildHamletsForOtherthanVoters(results)
 {
 
@@ -3149,7 +3140,6 @@ function buildHamletsForOtherthanVoters(results)
 
 	});
 }
-
 function openSmsHistoryWindow()
 {
  
@@ -3158,8 +3148,6 @@ function openSmsHistoryWindow()
   browser2.focus(); 
 
 }
-
-
 function removeCadre()
 {
 
@@ -3173,7 +3161,6 @@ function removeCadre()
 	 $('#cadreCount').html(0);
 
 }
-
 function removeInfluencePeople()
 {
 		 	//console.log(selectedCadreDetails);
@@ -3188,7 +3175,6 @@ function removeInfluencePeople()
 	 $('#influencePeopleCount').html(0);
 
 }
-
 function removeVoters()
 {
 	selectedVotersDetails = {};
@@ -3199,12 +3185,10 @@ function removeVoters()
      });
 	 $('#voterCount').html(0);
 }
-
 function sendDirectSMSToVoters()
 {
    getCandidatesData("direct");
 }
-
 function sendDirectSMSToVotersAjax()
 {
 	  var jsObj=
@@ -3261,9 +3245,7 @@ function buildReportLevelValues()
 	{
 		$('.woption').remove();
 	}
-
 }
-
 function populateConstituencies()
 {
 
@@ -3284,7 +3266,6 @@ $('#constituencyList').append('<option value="0">Select Constituency</option>')
         	else
 				$('#constiTypeDiv').hide();
 	}
-
 }
 $("#showhidebtn").live("click",function(){
 	$('#searchOptionsDiv').toggle('slow');
