@@ -35,6 +35,8 @@
 <link type="text/css" href="styles/userProfile/userProfilePage.css" rel="stylesheet" />
 <link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
 
+<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"> </script>
+
 <script type="text/javascript">
 var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr; 
 var monthname = new Array("January", "February", "March", 
@@ -221,7 +223,7 @@ background: linear-gradient(top,  #5189c6 0%,#0f4b93 100%); /* W3C */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', endColorstr='#0f4b93',GradientType=0 ); /* IE6-9 */
 -moz-border-radius:5px;
 }
-.subscribedLink{color:red;font-weight:bold;}
+.subscribedLink{font-size: 11px;color:#fff;padding: 3px 3px;}
 .modal{width:400px;left:60%;}
 .modal.fade.in { top: 70%;}
 #sendMessageButtonId {
@@ -240,6 +242,48 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 }
 .paginatorElmtClass a{padding:5px;}
 .table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
+.customclass{left:50% !important;margin-left:-70px;}
+#processingDialogue{heigth:100% !important;}
+.unsubScribeCls{margin-left: 39px;
+    margin-top: 1px;}
+
+.unSubscribedLink{margin-left: 37px;}
+.unSubscribedLink,.constituencyunSubscrBtn{cursor:pointer;}
+
+.subscribebtn {
+    background: none repeat scroll 0 0 #0063DC;
+    border: medium none;
+    border-radius: 4px 4px 4px 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 2px;
+    padding: 1px 6px;
+    white-space: nowrap;
+}
+#userSubScriptionsDiv,#userUnSubScriptionsDiv{display: table;}
+#constituencyStateList{margin-left: 48px;}
+#partyStateList{margin-left: 50px;
+    }
+#unSubscribedConstituencyList,#partyStateList,#constituencyStateList{width: 180px;}
+
+.prinfo .titleCls { margin-top: 1px;}
+.titleVar,.titleVar:hover{color: #999999;
+    cursor: pointer;
+    text-decoration: none;}
+
+#constituencyErrorMsgDiv{ margin-top: 4px; font-size: 12px;}
+#userSpecialPageSubscriptionsDiv,#userCandidateSubscriptionsDiv,#userPartySubscriptionsDiv,#userConstituencySubscriptionsDiv,#userPartyDiv,#userConstituencyDiv,#userPartyUnSubscriptionsDiv,#userSpecialPageUnSubscriptionsDiv{display: table;}	
+.subscribe{ width: 212px;}
+.paraClss{margin-top: 4px;}
+.subscriptionInnerDiv,#userConstituencyDiv{width:475px;}
+.constituencySubscribe{height: 50px;
+ font-weight: bold;}
+ .constituencyunSubscrBtn {
+     margin-left: 91px;
+}
 </style>
 </head>
 <body>
@@ -403,19 +447,36 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						
 						</div>
 		
+						<div id="processingDialogue"></div>
 						
+                    <div id="subscriptionsDiv">
+					  <div id="userSubScriptionsDiv">
+						 
+						 <div id="userSpecialPageSubscriptionsDiv" class="subscriptionInnerDiv breadcrumb"></div>
+						 <div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv breadcrumb"></div>
+						 <div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv breadcrumb"></div>
+						 <div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv breadcrumb"></div>
+					 </div>
+					 <div id="userUnSubScriptionsDiv">
 						
-						<div id="subscriptionsDiv">
-							<div id="userSpecialPageSubscriptionsDiv" class="subscriptionInnerDiv"></div>
-							<div id="userSpecialPageUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
-
-							<div id="userCandidateSubscriptionsDiv" class="subscriptionInnerDiv"></div>
-							<div id="userPartySubscriptionsDiv" class="subscriptionInnerDiv"></div>
-
-							<div id="userPartyUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
-
-							<div id="userConstituencySubscriptionsDiv" class="subscriptionInnerDiv"></div>
+						<div id="userSpecialPageUnSubscriptionsDiv" class="subscriptionInnerDiv breadcrumb"></div>
+						<div id="userCandidateUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
+						<div id="userPartyDiv" class="breadcrumb">
+						  <div id="partyStateListDiv"></div>
+						  <div id="userPartyUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 						</div>
+						<div id="userConstituencyDiv" class="breadcrumb">
+						  <div id="constituencyStateListDiv"></div>
+						  <!-- <div id="userConstituencyUnSubscriptionsDiv" class="subscriptionInnerDiv breadcrumb"></div> -->
+						</div>
+						 <!--<div id="userPoliticianDiv" class="breadcrumb">
+						 <div id="userPoliticianInnerDiv"></div>
+                         <div id="userPoliticianUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
+						</div>-->
+					</div>
+
+				</div>
+
 	<!--PRASAD-->
 		<div id="impdatesDiv" style="display:none">
 			<div id="cadreDatesYUICalDiv" class="yui-skin-sam"></div>
@@ -454,7 +515,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						<div id="viewAllAnnouncements" style="margin-left: 313px;"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
 						</div>
 						</c:if>
-						<div class="FavoriteLinksDiv breadcrumb whitegloss"  style=" margin-top: -26px; width: 414px; margin-left: 11px;">
+						<div class="FavoriteLinksDiv breadcrumb whitegloss"  style="width: 414px; margin-left: 11px;">
 							
 							<div class="stateDivMain ">
 								<div style="background:#2D6987;border-radius:5px 5px 5px 5px;" class="favouriteLinksHeading stateDivheading stateHeadingCls" ></div>
@@ -758,12 +819,20 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 
 	<div class="subscribe specialPagSubscrTemplDiv templateholder specialPagSubscrDiv templatePersons">
 		<div class="imgClass span3"></div>
-		<div class="prinfo span7">
+		<div class="prinfo span6">
 			<span class="titleCls"></span>
-			<span class="btnClass"></span>
+			<span class="btnClass"></span> 
 			<span class="hiddenVar"></span>
 		</div>
-		
+		<div class="unsubScribeCls"></div>
+	</div>
+
+	<div class="constituencySubscribe constituencyTemplateDiv templateholder specialPagSubscrDiv templatePersons">
+		<div class="prinfo span6">
+			<span class="titleCls"></span>
+			<span class="hiddenVar"></span>
+		</div>
+		<div class="unsubScribeCls"></div>
 	</div>
 
 	<!--<div class="problemTemplateDiv templateholder problemsShowDiv">
@@ -977,7 +1046,9 @@ var newsajaxCalled = false;
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location)
 	{
 
-	$(".placeholderCenterDiv").children().remove();
+ajaxProcessing();
+ 
+$(".placeholderCenterDiv").children().remove();
 $("#headerDiv").html('');
  $("#subscriptionsStreamingData").children().remove();
  $("#impdatesDiv").hide();
@@ -1145,7 +1216,7 @@ if(maxCount >0)
 		div1.append('</table>');
 		$(".placeholderCenterDiv").append(div1);
 	}
-
+ closeDialogue();
 
 }
 
@@ -1245,6 +1316,7 @@ var callback = {
 			
 		}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
+			closeDialogue();
 		}  
     },
     scope : this,
@@ -1362,6 +1434,7 @@ function callAjaxForUserSettings(jsObj,url)
 										
 											
 			}catch (e) { 
+				closeDialogue();
 				//alert("Invalid JSON result" + e);   
 			}  
 	   },

@@ -375,7 +375,7 @@ ajaxProcessing();
 		var type = $(this).closest('div').find(".problemViewMoreTypeVar").val();
 		var linkType = "problemsViewMoreLink";		
 		startIndex = startIndex+10;
-		$('.ajaxImg').css("display","block");
+		//$('.ajaxImg').css("display","block");
 		getAllPostedProblemsForUser();
 		var jsObj ={
 			startIndex : startIndex,
@@ -4222,7 +4222,7 @@ $(".ui-widget-content").css({'border':'none','background':'none'});
  $(".ui-dialog-content").dialog("option","position","center");
 $("ui-dialog").css({left:378 ,width:512});
 $(".ui-icon").css("display","none");
- $("#processingDialogue").dialog('open').html("<img src='images/ajaxImg2.gif' style='width:40px;'/>");
+ $("#processingDialogue").dialog('open').html("<img id='processingImg' src='images/ajaxImg2.gif' style='width:40px;'/>");
 }
 function closeDialogue()
 {
