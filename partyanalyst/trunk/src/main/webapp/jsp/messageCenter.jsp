@@ -1233,11 +1233,25 @@ var jsObj=
   </div>
 
 	
-<div style="border:1px solid #06ABEA;" class="span12" >
+<div style="border:1px solid #06ABEA;" class="span12 voiceSmsInstructions" >
 
 <h4 style="color: rgb(255, 255, 255); text-align: center; background-color: rgb(6, 171, 234); padding: 7px; background-position: initial initial; background-repeat: initial initial;">YOU CAN ENTER  NUMBERS MANUALLY HERE</h4>
 
- <div style="text-align:center;margin:0px;" class="widget whitegloss"><label>(Add Country Code Before Mobile Number):<br>Example:<b>919999999999</b></label><textarea id="mobileNumber" class="textAreaClass"></textarea></div>
+ <!--<div style="text-align:center;margin:0px;" class="widget whitegloss">
+  <label>Enter mobile numbers separated by commas to send SMS to multiple recipients</label>
+ <label>(Add Country Code Before Mobile Number):<br>Example:<b>919999999999</b></label>
+ <textarea id="mobileNumber" class="textAreaClass"></textarea>
+ </div>-->
+
+
+
+<div class="widget whitegloss">
+ <ul  style="margin:0px;font-weight:bold;font-size:13px;margin-left:240px;">
+  <li>Enter mobile numbers separated by commas to send SMS to multiple recipients</li>
+  <li>Add Country Code Before Mobile Number.Example:<b>919999999999</b></li>
+   <textarea id="mobileNumber" class="textAreaClass"></textarea>
+ </ul>
+</div>
 </div>
 
 
