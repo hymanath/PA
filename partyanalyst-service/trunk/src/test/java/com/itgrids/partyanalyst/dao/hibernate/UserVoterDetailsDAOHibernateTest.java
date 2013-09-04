@@ -484,9 +484,27 @@ for (Object[] objects : list) {
 		}
 	}*/
 	
-	public void testGetUserVoterDetailsOfAConstituencyForAPublication()
+	/*public void testGetUserVoterDetailsOfAConstituencyForAPublication()
 	{
 		List<UserVoterDetails> list = userVoterDetailsDAO.getUserVoterDetailsOfAConstituencyForAPublication(221l, 8l, 1l);
 		System.out.println(list.size()); 
+	}*/
+	
+	public void testgetCasteDetailsOfVoterByBoothIds()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(31804l);
+		ids.add(31805l);
+		ids.add(31806l);
+		ids.add(31807l);
+		ids.add(31808l);
+		ids.add(31809l);
+		ids.add(31810l);
+		ids.add(31937l);
+		List<Object[]> values = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothIds(ids,8l,1l);
+		System.out.println(values.size());
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2]);
+		}
 	}
 }

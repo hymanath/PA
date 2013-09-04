@@ -45,4 +45,6 @@ public interface ISuggestiveModelService {
 
 	public List<VoterDataVO> getMandalsAndPanchayats(Long constituencyId);
 	
+	 
+	 public List<YouthLeaderSelectionVO> getLeadersInUrbanConstituencyes(Long userId,Long constituencyId,List<Long> casteIdsList ,List<ExceptCastsVO> expCasteDetails,Boolean checkStatus);
 }
