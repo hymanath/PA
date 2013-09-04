@@ -252,7 +252,7 @@ padding:5px 20px;
 </head>
 <body>
   <div class="container m-top15">
-	<div class="row">
+	<div class="row-fluid">
 		<div class="publicProfileInnerDiv">
 			<div class="span8">
 			
@@ -313,7 +313,7 @@ padding:5px 20px;
 			
 				
 				
-				<div class="span8 placeholderCenterDiv" >
+				<div class="span12 placeholderCenterDiv" >
 				
 				</div>
 				
