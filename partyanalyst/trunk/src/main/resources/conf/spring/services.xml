@@ -683,6 +683,7 @@
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
 		<property name="newsProblemDAO" ref="newsProblemDAO"/> 
+		<property name="taskExecutor" ref="taskExecutor" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -836,6 +837,7 @@
 		<property name="problemProgressDAO" ref="problemProgressDAO"/>
 		<property name="messageToCandidateDAO" ref="messageToCandidateDAO"/>
 		<property name="messageToPartyDAO" ref="messageToPartyDAO"/>
+        <property name="taskExecutor" ref="taskExecutor" />
 
 	</bean>
 	
