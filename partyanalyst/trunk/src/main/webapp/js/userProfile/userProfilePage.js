@@ -75,6 +75,9 @@ if($(this).val().length==0)
 
 	
 	$("#friendsLink").click(function(){
+	    $(".FavoriteLinksDiv").hide();
+	    $("#placeholderCenterDivId").show();
+		$("#subscriptionsDiv").hide();
 		ajaxProcessing();
 		var jsObj ={
 			task:"getLatestFriendsList"
@@ -90,6 +93,9 @@ if($(this).val().length==0)
 	});
 
 	$("#requestLink").click(function(){
+	    $(".FavoriteLinksDiv").hide();
+	    $("#placeholderCenterDivId").show();
+		$("#userPartyDiv").hide();
 		ajaxProcessing();
 		var jsObj ={
 			task:"getAllRequestMessagesForUser"						
@@ -104,6 +110,8 @@ if($(this).val().length==0)
 		
 	});
 	$(".ImportantDates").click(function(){
+	     $("#placeholderCenterDivId").hide();
+	    $(".FavoriteLinksDiv").hide();
 		$("#subscriptionsDiv").css("display","none");
 		ajaxProcessing();
 		clearAllSubscriptionDivs();
@@ -123,6 +131,8 @@ if($(this).val().length==0)
 		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
 	});
 	$("#announcements").click(function(){
+	$("#placeholderCenterDivId").hide();
+	$(".FavoriteLinksDiv").hide();
        $("#subscriptionsDiv").css("display","none");
 		clearAllSubscriptionDivs();
 		clearAllFavoriteLinkDivs();
@@ -134,17 +144,21 @@ if($(this).val().length==0)
 		$("#announcementsDiv").css("display","block");
 	});
 	$(".ImportantEvents").click(function(){
+	    $(".FavoriteLinksDiv").hide();
 		$("#subscriptionsDiv").css("display","none");
 		clearAllSubscriptionDivs();
 		clearAllFavoriteLinkDivs();
 		$("#announcementsDiv").hide();
+		$("#placeholderCenterDivId").hide();
 		$("#impdatesDiv").hide();
 		$('#impEvents').show();
 		$(".placeholderCenterDiv").children().remove();
 		getUserImpEvents();
 	});
 	$("#settings").click(function(){
+	     $("#placeholderCenterDivId").hide();
 	     $("#subscriptionsStreamingMoreDiv").hide();
+		 $(".FavoriteLinksDiv").hide();
 		$(".placeholderCenterDiv").children().remove();
 		clearAllFavoriteLinkDivs();
 		clearAllSubscriptionDivs();
@@ -166,7 +180,11 @@ if($(this).val().length==0)
 	});
 	
 	$(".messagesLink").click(function(){
-	    
+	     $("#subscriptionsDiv").hide();
+	     $("#userUnSubScriptionsDiv").hide();
+	    $(".FavoriteLinksDiv").hide();
+		$("#userPartyDiv").hide();
+	    $("#placeholderCenterDivId").show();
 			clearDiv1();	
 		if($("#headerDiv").find("#Inbox").length<1) {
 		$('#headerDiv').prepend("<ul class='nav nav-tabs'><li class='active' ><a id='Inbox' href='' >Inbox</a></li><li><a id='SentBox' href=''>Sent</a></li></ul>"); }
@@ -263,7 +281,8 @@ if($(this).val().length==0)
 
 
    $("#FavouriteLinks").click(function(){
-   
+   $(".FavoriteLinksDiv").show();
+   $("#placeholderCenterDivId").hide();
 	$("#subscriptionsDiv").css("display","none");
 	 var jsObj ={
 			task:"getFavouriteLinks"
@@ -280,6 +299,11 @@ if($(this).val().length==0)
 	//subscriptions
 
 	 $(".subscriptionsLink").click(function(){
+	     $("#subscriptionsDiv").show();
+		 $("#userUnSubScriptionsDiv").show();
+	     $("#placeholderCenterDivId").hide();
+		 $(".FavoriteLinksDiv").hide();
+		 $("#userPartyDiv").show();
 		 ajaxProcessing();
 		 $("#subscriptionsStreamingMoreDiv").hide();
 		  $("#subscriptionsStreamingData").html('');
@@ -302,6 +326,10 @@ if($(this).val().length==0)
 
 
 	$('.assessPoliticianLink').live("click",function(){
+	     $("#placeholderCenterDivId").show();
+		 $(".FavoriteLinksDiv").hide();
+		 $("#userPartyDiv").hide();
+		 $("#subscriptionsDiv").hide();
 	    $("#subscriptionsStreamingMoreDiv").hide();
 		$("#subscriptionsStreamingData").html('');
 		clearDiv1();
@@ -350,6 +378,10 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	//problems 
 
 	$(".problemsLink").live("click",function(){
+	   $("#placeholderCenterDivId").show();
+	   $(".FavoriteLinksDiv").hide();
+	   $("#userPartyDiv").hide();
+	   $("#subscriptionsDiv").hide(); 
 		var type = $(this).parent().find(".problemTypeVariable").val();
 		var linkType = "problemsLink";
 		startIndex = 0;
@@ -1739,6 +1771,11 @@ function callForEveryFiveMins(){
 }
 
 function getInitialUpdates(){
+  $(".FavoriteLinksDiv").hide();
+  $("#placeholderCenterDivId").hide();
+  $("#userPartyDiv").show();
+  $("#subscriptionsDiv").show();
+  $("#userUnSubScriptionsDiv").show();
   $("#subscriptionsStreamingData").children().remove();
   $(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
@@ -3864,7 +3901,7 @@ function getCadresInfo()
 	ajaxProcessing();
 		$('#announcementsDiv').hide();
 		$("#impdatesDiv").hide();
-		
+		$("#impEvents").hide();
 	  var jsObj = 
 		{
 			task:"getCadreInfo"
@@ -3910,7 +3947,7 @@ function buildCadreInfoTable(results)
 		});
 	
 	str+='</div> ';
-	str+='<div id="cadresDiv_footer" style="text-align:right;margin: 10px;margin-right: 94px;">';
+	str+='<div id="cadresDiv_footer" style="padding-top: 10px;padding-bottom: 10px;text-align:right;margin: 10px;margin-right: 94px;">';
 	str+='	<span class="dashBoardLinks">';
 	str+='		<a href="cadreManagementAction.action#regionLevelCadreDivHead" class="indexPageAnc" style="font-size: 13px;" target="_blank">View All</a>';
 	str+='	</span>';
