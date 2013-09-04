@@ -1699,7 +1699,15 @@ function buildAllSubscriptions(results,place,jsObj){
 		var templateClone =  template.clone();
 		templateClone.removeClass("subscriptionsMainTemplate");
 		templateClone.find('.subscriptionsHeaderTitle').html(results[i].headerTitle+'');
-		templateClone.find('.subscriptionsDateDiff').html(''+results[i].dateDiff);
+		if(type = "news"){
+		  templateClone.find('.subscriptionsDateDiff').html('<span class="label label-success updates">News</span> '+results[i].dateDiff);
+		}else if(type = "photo"){
+		  templateClone.find('.subscriptionsDateDiff').html('<span class="label label-primary updates">Photo</span> '+results[i].dateDiff);
+		}else if(type = "video"){
+		  templateClone.find('.subscriptionsDateDiff').html('<span class="label label-info updates">Video</span> '+results[i].dateDiff);
+		}else{
+		  templateClone.find('.subscriptionsDateDiff').html(''+results[i].dateDiff);
+		}
 		templateClone.find('.subscriptionsDescription').html(''+results[i].description);
 		templateClone.find('.subscriptionsFileImgDiv').html("<a href='"+results[i].fileLink+"'><img src='"+results[i].imageUrl+"' style='width:100px;height:100px;vertical-align:middle;' ></img></a>");
 		templateClone.find('.activity-title').html("<a href='"+results[i].fileLink+"'>"+results[i].title+"</a>");
