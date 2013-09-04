@@ -242,7 +242,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 }
 .paginatorElmtClass a{padding:5px;}
 .table thead.info th,.impFamilesMainDiv th{background:#d9edf7; color:#454545;}
-.customclass{left:50% !important;margin-left:-70px;}
+
 #processingDialogue{heigth:100% !important;}
 .unsubScribeCls{margin-left: 39px;
     margin-top: 1px;}
@@ -284,6 +284,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
  .constituencyunSubscrBtn {
      margin-left: 91px;
 }
+.customclass{left:50% !important;top:300px !important;margin-left:-70px;border:none !important;background:none !important}
+.customclass1{border:none !important;background:none !important}
 </style>
 </head>
 <body>
@@ -943,7 +945,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 		</ul>
 
 	</div>
-<div id="addPopupForFavouriteLinks"></div>
+<div id="addPopupForFavouriteLinks" style="display:none;"></div>
 </div>
 
 <!--<span id="openModal" class="btn" data-toggle="modal" onClick="openModal()">Launch Modal</span>-->

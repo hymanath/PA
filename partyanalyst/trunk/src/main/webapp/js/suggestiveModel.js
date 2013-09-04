@@ -76,3 +76,196 @@ function showPartyPerformanceReportForBooth(result,jsObj)
 	str += '</div>';
 	$("#partyPerformanceBoothDiv").html(str);
 }
+function buildPollingHighPercentageForBooths(result)
+{
+
+var divEle = document.getElementById("strongPollingPerDiv");
+var strongList = result[0].strongPollingPercentVOList;
+if(strongList != null)
+$("#strongPollingPerDiv").css("display","block");
+var str = '';
+str+='<div class="widget green">';
+str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
+str+='<span>'+strongList[0].weakPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
+str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling High,' +strongList[0].weakPollingPercentVOList[0].partyName+' Party Weak</h4>';
+str+='<table id="pollingPerHigh"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+str+='<th>Booth</th>';
+str+='<th>Panchayat</th>';
+str+='<th>'+strongList[0].weakPollingPercentVOList[0].partyName+' </th>';
+str+='<th>Total Votes</th>';
+str+='<th>Polled Votes</th>';
+str+='<th>Polling %</th>';
+str+='<th>'+strongList[0].weakPollingPercentVOList[0].partyName+' %</th>';
+str+='<th>To Decrease</th>';
+str+='<th>Polling @'+result[0].pollingPercentage.toFixed(2)+'</th>';
+str+='<th>Lost Seats</th>';
+for(var i in strongList)
+	{
+str+='<tr>';
+str+='<td>'+strongList[i].name+'</td>';
+if(strongList[i].localbodyName !="")
+str+='<td>'+strongList[i].localbodyName+'</td>';
+else
+str+='<td>-</td>';
+str+='<td>'+strongList[i].weakPollingPercentVOList[0].partyTotalvotes+'</td>';
+str+='<td>'+strongList[i].totalVoters+'</td>';
+str+='<td>'+strongList[i].totalValidVotes+'</td>';
+str+='<td>'+strongList[i].pollingPercentage.toFixed(2)+'</td>';
+str+='<td>'+strongList[i].weakPollingPercentVOList[0].partyPercentage.toFixed(2)+'</td>';
+str+='<td>'+strongList[i].minValue.toFixed(2)+'</td>';
+str+='<td>'+strongList[i].rangePercentage+'</td>';
+str+='<td>'+strongList[i].lostSeats+'</td>';
+str+='</tr>';
+	}
+str+='</table>';
+str+='</div>';
+divEle.innerHTML = str;
+buildAddedVotersCountForBooth(result);
+}
+
+function buildPollingLowPercentageForBooths(result)
+{
+
+var divEle = document.getElementById("weakPollingPerDiv");
+var weakList = result[0].weakPollingPercentVOList;
+if(weakList != null)
+$("#weakPollingPerDiv").css("display","block");
+var str = '';
+str+='<div class="widget green">';
+str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
+str+='<span>'+weakList[0].strongPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
+str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling Low,' +weakList[0].strongPollingPercentVOList[0].partyName+' Party Strong</h4>';
+str+='<table id="pollingPerLow"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+str+='<th>Booth</th>';
+str+='<th>Panchayat</th>';
+str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+'</th>';
+str+='<th>Total Votes</th>';
+str+='<th>Polled Votes</th>';
+str+='<th>Polling %</th>';
+str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+' %</th>';
+str+='<th>Scope To Improve(Avg Poll%('+result[0].pollingPercentage+'))</th>';
+str+='<th>Polling @'+result[0].pollingPercentage.toFixed(2)+'</th>';
+str+='<th>To Target</th>';
+str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+'</th>';
+for(var i in weakList)
+	{
+str+='<tr>';
+str+='<td>'+weakList[i].name+'</td>';
+if(weakList[i].localbodyName !="")
+str+='<td>'+weakList[i].localbodyName+'</td>';
+else
+	str+='<td>-</td>';
+str+='<td>'+weakList[0].strongPollingPercentVOList[0].partyTotalvotes+'</td>';
+str+='<td>'+weakList[i].totalVoters+'</td>';
+str+='<td>'+weakList[i].totalValidVotes+'</td>';
+str+='<td>'+weakList[i].pollingPercentage.toFixed(2)+'</td>';
+str+='<td>'+weakList[i].strongPollingPercentVOList[0].partyPercentage.toFixed(2)+'</td>';
+str+='<td>'+weakList[i].maxValue.toFixed(2)+'</td>';
+str+='<td>'+weakList[i].rangePercentage+'</td>';
+str+='<td>'+weakList[i].toTarget+'</td>';
+str+='<td>'+weakList[i].toImprove+'</td>';
+str+='</tr>';
+	}
+str+='</table>';
+str+='</div>';
+divEle.innerHTML = str;
+
+}
+
+function buildAddedVotersCountForBooth(result)
+{
+
+var strongList = result[0].strongPollingPercentVOList;
+var str='';
+var divEle = document.getElementById("addedVoterDetailsDiv1");
+var constituencyId = $("#listConstituencyNames").val();
+var flag = false;
+for(var i in strongList)
+	{
+	if(strongList[i].addedVotersCount > 0)
+		flag = true;
+		if(flag)
+		break;
+	}
+	if(flag)
+	{
+$("#addedVoterDetailsDiv1").css("display","block");
+ str+='<div class="widget green">';
+ str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Poor AND ADDED VOTERS ARE MORE</h4>';
+str+='<table id="addedvoters"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+str+='<th>Booth</th>';
+str+='<th>Panchayat</th>';
+str+='<th>ADDED VOTERS</th>';
+
+for(var i in strongList)
+	{
+	if(strongList[i].addedVotersCount > 0)
+		{
+	str+='<tr>';
+	str+='<td>'+strongList[i].name+'</td>';
+if(strongList[i].localbodyName !="")
+str+='<td>'+strongList[i].localbodyName+'</td>';
+else
+str+='<td>-</td>';
+str+='<td><a onclick="getVoterDetailsByPartNo('+strongList[i].name+','+constituencyId+',0);">'+strongList[i].addedVotersCount+'</td>';
+	
+	str+='</tr>';
+		}
+	}
+
+str+='</table>';
+str+='</div>';
+	}
+divEle.innerHTML = str;
+
+}
+
+function buildAddedVoterDetails(results,jsObj)
+{
+$("#voterDetailsDiv").css("display","block");
+	 $('#voterDetailsInnerDiv').html('');
+  var str = '';
+ 
+  str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+  str +='<tr>';
+  str +='<th>Name</th>';
+  str +='<th>Age</th>';
+  str +='<th>Gender</th>';
+  str +='<th>HouseNo</th>';
+  str +='</tr>';
+  for(var i in results)
+  {
+    str +='<tr>';
+    
+    str +='<td>'+results[i].name+'</td>';
+    str +='<td>'+results[i].age+'</td>';
+    str +='<td>'+results[i].gender+'</td>';
+    str +='<td>'+results[i].houseNo+'</td>';
+    str +='</tr>'; 
+  }
+  str+='</table>';
+
+  $('#voterDetailsInnerDiv').html(str);
+$('#voterDetailsDiv').dialog({                   
+		    modal: true,
+            title: "<b>Voter Details</b>",
+			width: 970,
+            height: 600
+     });
+	
+  var itemsCount=results[0].totalVoters;
+	    var maxResults=jsObj.results;
+	   
+	     if(jsObj.startIndex==0){
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getVoterDetailsByPartNo(jsObj.partno,jsObj.constituencyId,num);
+				
+			}
+		});
+	}
+}

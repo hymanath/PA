@@ -185,3 +185,12 @@ ul.simple-pagination {
 	font-weight: bold;
 	cursor: default;
 }
+
+.prev, .next {
+    cursor: pointer;
+    height: 26px;
+    text-indent: 0px !important;
+    top: 32px;
+	width:30px !important;
+	position:static !important;
+}

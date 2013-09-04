@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.excel.problem.PollingBoothPartVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -692,7 +693,6 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			constituencies = suggestiveModelService.getCasteAvaliableConstituencysService(userAccessConstituencyList,electionTypeId,electionYear,userId);
 			return Action.SUCCESS;
 		}
-		
 		public String getMandalsAndPanchayts()
 		{
 			try {
@@ -711,6 +711,40 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 			mandalPanchayatList = suggestiveModelService.getMandalsAndPanchayats(constituencyId);
 			
+			return Action.SUCCESS;
+		}
+		public String getPollingPercentagesByParty()
+		{
+			
+			try{
+				jObj = new JSONObject(getTask());
+				Long partyId = jObj.getLong("partyId");
+				Long eleId = jObj.getLong("eleId");
+				Long constituenycId = jObj.getLong("constituencyId");
+				partyPositionVOList = suggestiveModelService.getPollingPercentagesByParty(constituenycId,partyId,eleId,jObj.getLong("eleId1"));
+				
+			}
+			catch(Exception e)
+			{
+			e.printStackTrace();	
+			}
+			return Action.SUCCESS;
+		}
+		
+		public String getAddedVoterDetailsForBooth()
+		{
+			
+			try{
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+				Long partno = jObj.getLong("partno");
+				deletedVoters = suggestiveModelService.getAddedVotersDetailsByPartNo(constituencyId,partno,jObj.getInt("startIndex"),jObj.getInt("results"));
+				
+			}
+			catch(Exception e)
+			{
+			e.printStackTrace();	
+			}
 			return Action.SUCCESS;
 		}
 }

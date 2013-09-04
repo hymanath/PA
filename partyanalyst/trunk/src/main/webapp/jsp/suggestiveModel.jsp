@@ -8,6 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title> Party Analyst - Suggestive Model</title>
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
  <!--<script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.min.js"></script>-->
@@ -58,6 +59,9 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
+	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+
+
 	<!-- YUI Dependency files (End) -->
 
 
@@ -92,6 +96,13 @@ google.load("visualization", "1", {packages:["corechart"]});
 	color:red;
 	font-size:large;
 	}	
+	#paginationDivId{float: none;
+    margin-left: auto;
+    margin-right: auto;
+  
+    width: 900px;}
+	
+
 	/*#mainDiv{
 	font-family: serif verdana sans-serif;
 	border: 1px lightBlue solid ;
@@ -193,6 +204,7 @@ html{overflow-x: hidden;}
     font-weight: bold;}
 
 #partyPerformanceInnerDiv table th{background: none repeat scroll 0 0 #D9EDF7;color: #454545;}
+
 </style>
 
 
@@ -573,7 +585,7 @@ function callAjax(param,jsObj,url){
 							showPartyPerformanceReport(myResults,jsObj);
 							if(myResults[0].boothwisePartyPositionVOList.length > 0)
 							showPartyPerformanceReportForBooth(myResults,jsObj);
-							showStrongAndWeakPollingPercentage(myResults,jsObj);
+							//showStrongAndWeakPollingPercentage(myResults,jsObj);
 							buildAddedVotersDetails(myResults);
 							showPartyPerformancePieChart(myResults,jsObj);
 							showSuggestedLocations(myResults,jsObj);
@@ -606,6 +618,16 @@ function callAjax(param,jsObj,url){
 						else if (jsObj.task== "getMandalsAndPanchayts"){
 							storeMandalPanchayatValues(myResults);
 						}
+						else if(jsObj.task== "getPollingPercentages")
+						{
+							buildPollingHighPercentageForBooths(myResults);
+							buildPollingLowPercentageForBooths(myResults);
+						}
+						else if(jsObj.task== "getVoterDetailsByPartNo")
+						{
+							buildAddedVoterDetails(myResults,jsObj);
+						}
+						
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
 					  $("#dashBoardImgLoading").hide();
@@ -843,7 +865,7 @@ function showSuggestedLocations(myResults,jsObj){
 function panchayatMatrx(result)
 {
 	//alert(123);
-	//debugger;
+
 	var latestYearDetails = result[0].partyPositionVOList.reverse();
 	//console.log(latestYearDetails);
 	var preYearDetails = result[1].partyPositionVOList.reverse();
@@ -1037,7 +1059,7 @@ function panchayatMatrx(result)
 
 
 <div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();"/>
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();getPollingPercentageForBooths();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 <!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
@@ -1066,15 +1088,24 @@ function panchayatMatrx(result)
    <div id="partyPerformanceBoothDiv" style="display:none;"></div>
 </div>
 
-<div id="strongPollingPerDiv" class="row-fluid" style="display:none;">
+<!--<div id="strongPollingPerDiv" class="row-fluid" style="display:none;">
     <div id="strongPollingPercentageDiv" class="span6"></div>
 </div>
 <div id="weakPollingPerDiv" class="row-fluid" style="display:none;">
 <div id="weakPollingPercentageDiv" class="span6"></div>
+</div>-->
+<div id="strongPollingPerDiv" class="row-fluid" style="display:none;" >
+   
 </div>
-<div id="addedVotesDib" class="row-fluid">
+<div id="weakPollingPerDiv" class="row-fluid" style="display:none;" >
+   
+</div>
+<div id="addedVoterDetailsDiv1" class="row-fluid" style="display:none;" ></div><br>
+<div id="voterDetailsDiv" style="display:none;"><div id="voterDetailsInnerDiv"></div><div id="paginationDivId"></div>
+</div>
+<!--<div id="addedVotesDib" class="row-fluid">
 <div id="addedVoterDetailsDiv" class="span6"></div>
-</div>
+</div>-->
 
 <!--<div id="deletedVotersInfo">
 
@@ -2874,6 +2905,7 @@ var count=0;
 		});
 	}
 	
+	
 	function createBoothsTable(result,tableId){
 	mncplName=result.boothsList[0].muncipalityName;
 	$('#title'+tableId).css('display','block');
@@ -3093,6 +3125,54 @@ function buildnewPartyEffectResults(results)
 
 	$('#newPartyDiv').html(str);
 }	 
+
+function getPollingPercentageForBooths()
+{
+	$("#strongPollingPerDiv").css("display","none");
+	$("#weakPollingPerDiv").css("display","none");
+	$("#addedVoterDetailsDiv1").css("display","none");
+	var constituencyId = $('#listConstituencyNames').val();
+	var partyId = $('#partySelectEl').val();
+	/*var electionIdsArr = new Array();
+	$("#electionYearSelectEl1 option").each(function() {
+	var val = $(this).val();
+	electionIdsArr.push(val);
+	});
+	var largest = Math.max.apply(Math, electionIdsArr);*/
+	var eleId =  $('#electionYearSelectEl1').val();
+	var eleId1 = $('#electionYearSelectEl2').val();
+	if(eleId==0 || eleId1 == 0)
+		return;
+	var jsObj= 
+	{	
+		constituencyId:constituencyId,
+		partyId:partyId,
+		eleId:eleId,
+		eleId1:eleId1,
+		task:"getPollingPercentages"		
+	};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPollingPercentagesByPartyNYearAction.action?"+param;
+	callAjax(param,jsObj,url);
+	
+}
+
+function getVoterDetailsByPartNo(partno,constituencyId,startIndex)
+{
+ var jsObj= 
+			{
+			
+				constituencyId:constituencyId,
+				partno:partno,
+				startIndex:startIndex,
+				results:10,
+				task:"getVoterDetailsByPartNo"
+	
+			}
+	   var param ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getVoterDetailsByPartNo.action?"+param;						
+		callAjax(param,jsObj,url);;
+}
 <c:if test="${hideMainMenu}">
   <c:if test="${castDetails}">
     $("#dashBoardImgLoading").show();

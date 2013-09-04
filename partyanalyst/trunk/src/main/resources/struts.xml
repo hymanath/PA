@@ -5985,5 +5985,17 @@
 		     <param name="root">selectOptionVOList</param>
 		  </result>
 		 </action>
+		  <action name="getVoterDetailsByPartNo" class="suggestiveModelAction" method="getAddedVoterDetailsForBooth">
+		 <result type="json" name="success">
+		   <param name="root">deletedVoters</param>
+		  </result>
+		 </action>
+
+		 	  <action name="getPollingPercentagesByPartyNYearAction" class="suggestiveModelAction" method="getPollingPercentagesByParty">
+		 <result type="json" name="success">
+		   <param name="root">partyPositionVOList</param>
+		  </result>
+		 </action>
+		
 		</package>
 </struts>      
