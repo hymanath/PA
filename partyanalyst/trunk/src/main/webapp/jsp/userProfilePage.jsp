@@ -289,6 +289,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 }
 .customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
 .customclass1{border:none !important;background:none !important}
+.updates{font-style: normal; font-size: 11px}
 </style>
 </head>
 <body>
@@ -757,10 +758,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
     				<img src="images/new_homepage/logo.png" style="width:50px;height:50px;vertical-align:bottom;" class="img-rounded"/>
     		   </div>
     		   <div class="span10">
-    				   <span class="span9 activity-name">
+    				   <span class="span8 activity-name">
     						<h6><span class="subscriptionsHeaderTitle"/></h6>
     				   </span>
-    					<span class="span3 pull-right date-span">
+    					<span class="span4 pull-right date-span">
     						<span class="subscriptionsDateDiff"></span>
     					</span>
     	   
