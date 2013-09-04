@@ -184,7 +184,7 @@ margin:3px;
 	
 }
 #showNewsCountTable{
-border-collapse:collapse;border:1px solid #d3d3d3;width:98%;font-size:12px;margin-top:100px;padding:5px;
+border-collapse:collapse;border:1px solid #d3d3d3;width:98%;font-size:12px;margin-top:30px;padding:5px;
 }
 #showNewsCountTable td{
 padding:3px;padding-left:10px;font-weight:normal;
@@ -439,17 +439,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 		<!--------Center div------>
 			<div class="span6 centerSpan6">
 				<div class="widget green" id="MyProfileActions">
-				        <div id="subscriptionsStreamingMain">
-				           <div id="subscriptionsStreamingData">
-
-				           </div>
-				           <div id="subscriptionsStreamingMoreDiv"><input type="button" value="More" id="subscriptionsStreamingMore" class="btn subscrStreamingMoreCls"/><img src="images/icons/ajaxImg.gif"  style="width:20px;padding-left:150px;display:none;" id="subscriptionsStreamingAjaxImg"></img></div>
-				        </div>
+				       
 				
 				        <div id="fLinks"></div>
 				        <div id="headerDiv1" class="whitegloss" style="padding: 14px;display:none;"></div> 
 						<div id="headerDiv" class="whitegloss" style="padding: 14px;"></div>
-						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;margin-bottom: -60px;width:450px;display:inline-block;">
+						<div id="subscriptionsStreamingMain">
+				           <div id="subscriptionsStreamingData">
+
+				           </div>
+				           <div id="subscriptionsStreamingMoreDiv" style="padding:10px;"><input type="button" value="More" id="subscriptionsStreamingMore" class="btn subscrStreamingMoreCls"/><img src="images/icons/ajaxImg.gif"  style="width:20px;padding-left:150px;display:none;" id="subscriptionsStreamingAjaxImg"></img></div>
+				        </div>
+						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;width:450px;display:inline-block;">
 						<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 						
 						</div>
@@ -517,7 +518,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						<c:if test="${(dataTransferVO.userStatusType == 'PARTY_ANALYST_USER')||(dataTransferVO.userStatusType =='BOTH')}">
 						<div id="caderInfo"></div>
 						<div id="impEvents"></div>
-						<div id="announcementsDiv" style="display: inline-block;">
+						<div id="announcementsDiv" style="display: inline-block;padding-bottom: 25px;padding-top: 25px;">
 						<div id="addNewAnnouncement"><a onclick="openNewAnnouncementPopup()" href="javascript:{}">Add New Announcement</a></div>
 						<div id="viewAllAnnouncements" style="margin-left: 313px;"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
 						</div>
@@ -1052,7 +1053,9 @@ var newsDetails = null;
 var newsajaxCalled = false;
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location)
 	{
-
+$("#placeholderCenterDivId").show();
+$(".FavoriteLinksDiv").hide();
+$("#userPartyDiv").hide();
 ajaxProcessing();
  
 $(".placeholderCenterDiv").children().remove();
