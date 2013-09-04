@@ -2593,7 +2593,7 @@ var count=0;
 			createTable(myResults[0],'ageGroupTableId1',myResults[0].areaType);
 			
 			if(myResults[0].boothsList!=null){
-				createBoothsTable(myResults[0],'ageGroupBoothTableId1','mncpl');
+				createBoothsTable(myResults[0],'ageGroupBoothTableId1');
 			}
 			
 		}
@@ -2602,7 +2602,7 @@ var count=0;
 				var num=i+1;
 				createTable(myResults[i],'ageGroupTableId'+num,myResults[0].areaType);
 				if(myResults[i].boothsList!=null){
-					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num,'mncpl');
+					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num);
 				}
 			}
 			
@@ -2614,7 +2614,7 @@ var count=0;
 				createTable(myResults[i],'ageGroupTableId'+num,myResults[0].areaType);
 				
 				if(myResults[i].boothsList!=null){
-					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num,'mncpl');
+					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num);
 				}
 			}
 		}
@@ -2757,7 +2757,8 @@ var count=0;
 		});
 	}
 	
-	function createBoothsTable(result,tableId,mncplName){
+	function createBoothsTable(result,tableId){
+	mncplName=result.boothsList[0].muncipalityName;
 	$('#title'+tableId).css('display','block');
 	$('.title'+tableId+"Cls").addClass('widget').addClass('blue');
 	$('.title'+tableId+"Cls").css('margin-top','50px');
