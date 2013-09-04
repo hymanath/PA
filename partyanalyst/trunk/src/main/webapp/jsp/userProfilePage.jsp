@@ -795,7 +795,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 		<div class="problemsShowDIV span12 widget-simple">
 			<div class="span2 problemImg"></div>
 			<span class="postedPersonName"></span>
-			<div class="span10" style="background:#f1f1f1;padding:7px;">
+			<div class="span10" style="background:#f1f1f1;padding:7px;float:right;">
 				<div class="ProblemImgTitleDescDiv">
     					 <span class="subscriptionsDescDiv span12">
     						  <span class="activity-title">
@@ -806,12 +806,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
     						  </span>
     					  </span>
 				</div>
-				<span class="pull-right date-span">
+				<!--<span class="pull-right date-span">
 					<h6><span class="problemFromDate pull-right"></span></h6>
 					<h6><span class="location pull-left" style="margin-bottom:20px;color:#273241;"></span></h6>
 					<h6><span class="problemReportedDate pull-right"></span></h6>
 					
-				</span>
+				</span>-->
+				<div style="font-size: 11.9px; margin-left: 10px; margin-bottom: 5px; margin-top: -15px;" class="pull-left">
+					<div class="pull-left"><b><div class="problemFromDate pull-right"></div></b></div>
+					<div class="pull-left" style="clear:both;"><b><div class="problemReportedDate pull-right"></div></b></div>
+				</div>
 				<div id='prblmCommentShare' >
 					<span class="commentCls pull-right btn btn-mini"></span>
 					<span class="shareCls pull-left btn btn-mini"></span>
