@@ -184,7 +184,7 @@ $(document).ready(function(){
 });
 
 getVotersDetailsBySearchCritteria();
-var count = 0;
+
 function getVotersDetailsBySearchCritteria()
 {
 
@@ -194,8 +194,7 @@ function getVotersDetailsBySearchCritteria()
 			var voterName= oRecord.getData("name");
 			var mobileNumber = oRecord.getData("mobileNumber");
 			var voterIdCardNo = oRecord.getData("voterIdCardNo");
-	count=count+1;
-	$('#peopleCount').html("Total Count : <span>"+count +"</span>");
+
 			 if(window.opener.selectedVotersDetails[voterIdCardNo] == undefined)
 				var str ='<input type="checkbox" onchange="pushIntoVoterObject(\''+voterIdCardNo+'\',\''+mobileNumber+'\')" class="voter" value="'+voterIdCardNo+'-'+mobileNumber+'"/>';
 			else
@@ -261,7 +260,8 @@ votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
 //debugger;
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-oPayload.totalRecords = oResponse.meta.totalRecords;
+	oPayload.totalRecords = oResponse.meta.totalRecords;
+	$('#peopleCount').html("Total Count : <span>"+oResponse.meta.totalRecords +"</span>");
 return oPayload;
 }
 
