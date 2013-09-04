@@ -508,9 +508,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			Map<Long,String> castByIdMap=new HashMap<Long, String>();
 			List<Long> panchayatIdList=new ArrayList<Long>();
 			List<CastVO> cstVOlist=null;
-			
+			List<Object[]> allCsts=new ArrayList<Object[]>();
 			try{
-			List<Object[]> allCsts=casteStateDAO.getCasteNamesByCasteIds(casteIds);
+			if(casteIds.size()>0){
+				allCsts=casteStateDAO.getCasteNamesByCasteIds(casteIds);
+			}
 			for(Object[] allcsts:allCsts){
 				 String caste=allcsts[1].toString();
 				 Long casteStateId=Long.valueOf(allcsts[0].toString());
