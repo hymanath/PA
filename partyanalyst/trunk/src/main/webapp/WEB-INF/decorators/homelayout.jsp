@@ -1177,11 +1177,11 @@ function contactForDemoLinkInHomePage(){
 
 						//instantiate the dialog
 						$("#contactWindowDiv").dialog({ stack: false,
-							    height: 220,
-								width: 700,
+							    height: 570,
+								width: 900,
 								modal: true,
-								position: [170,150],
-								title:'Contact Us www.partyanalyst.com',
+								position: [30,10],
+								title:'Ask For Demo',
 								overlay: { opacity: 0.5, background: 'black'}
 								});
 						
@@ -1203,7 +1203,7 @@ function contactForDemoLinkInHomePage(){
 
   var str ='';
 
-str+='<table width="100%">';
+/*str+='<table width="100%">';
 str+='<tr>';
 str+='<td><img src="images/icons/homePage_new/logo.png" height="100px" width="170px"></td>';
 str+='<td>';
@@ -1218,7 +1218,53 @@ str+='</table>';
 str+='</td>';
 str+='<td><img src="images/icons/homePage_new/itgrids_logo.gif" height="130px" width="200px"></td>';				
 str+='</tr>';
-str+='</table>';
+str+='</table>';*/
+str+='<div class="whitegloss requestDemo" >';
+str+='<div>	';
+str+='<div class="modal-header ">';
+str+='<h3 style="font-size:18px;color:#5B5B5B;"> Lot of New Functionalities are available as <span style="color:green;">Online</span> & <span style="color:red;">Offline</span> Application in PartyAnalyst to Earn 3%-5% more Votes</h3>';
+str+='</div>';
+str+='<div class="modal-body "><div class="row-fluid">';
+str+='<div class="span8">';
+str+='<img src="images/new_homepage/Popup.png" height="350" width="400" style="margin-left:55px;"/></div>';
+str+='<form class=" span4">';
+str+='<h2 style="font-size: 24px;line-height: 36px;"><small>For our Product</small> DEMO</h2><span id="errorMsg" style="display:none;color:red;font-family:verdana;"></span>';
+str+='<fieldset style="border: 1.7px solid #D1D1D1;margin-bottom: 10px;padding:8px 10px 4px;">';
+str+='<div class="control-group">';
+str+='<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">MLA/Aspirant Name</label>';
+str+='<div class="controls" style="height:28px;">';
+str+='<input type="text" placeholder="Enter MLA/Aspirant Name..." id="aspirantName">';
+str+='</div>';
+str+='</div>';
+str+='<div class="control-group">';
+str+='<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">Mobile Number</label>';
+str+='<div class="controls" style="height:28px;">';
+str+='<input type="text" placeholder="Enter Mobile Number..." id="mobileId">';
+str+='</div>';
+str+='</div>';
+str+='<div class="control-group">';
+str+='<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">Constituency</label>';
+str+='<div class="controls" style="height:28px;">';
+str+='<input type="text" placeholder="Enter Constituency..."  id="constituencyName">';
+str+='</div>';
+str+='</div>';
+str+='<div class="control-group">';
+str+='<label class="control-label" style="font-size:13px;line-height:18px;color:#5b5b5b">Email Id</label>';
+str+='<div class="controls" style="height:28px;">';
+str+='<input type="text" placeholder="Enter Email Id..." id="aspirantEmailId">';
+str+='</div>';
+str+='</div>';
+str+='</fieldset>';
+str+='</form>';
+str+='</div></div>';
+str+='<div class="modal-footer">';
+str+='<div id="textMsg" style="text-align:center;display:none;font-family:verdana;">Hello</div>';
+str+='<img id="AjaxImg" style="width: 20px; padding-left: 30px; display: none;" src="images/icons/loading.gif">';
+str+='<a class="btn btn-primary" id="sendMailToAdminGroup" onclick="validateDemo()">Submit</a>';
+str+='<a class="btn " id="skipId" onclick="closeDialogue();">Skip</a>';
+str+='</div>';
+str+='</div>';
+str+='</div>';
 
 
 elmt.innerHTML = str;
@@ -1711,6 +1757,62 @@ str+='</table>';
 
 elmt.innerHTML = str;
 }
+
+function validateDemo()
+{
+var mobileNO = $(".requestDemo #mobileId").val();
+
+if(mobileNO.length == 0)
+	{
+	$(".requestDemo #errorMsg").css("display","block");
+	$(".requestDemo #errorMsg").html('Mobile No is Mandatory').css("display","red");;
+    return;
+	}
+	
+$(".requestDemo #textMsg").html('Your request is submitted successfully and we will get back to you soon..........').css({ 'display': 'block', 'color': 'green' });
+$(".requestDemo #AjaxImg").show();
+$(".requestDemo #errorMsg").html("");
+	var constituencyName = $(".requestDemo #constituencyName").val();
+	var name = $(".requestDemo #name").val();
+	var email =$(".requestDemo #emailId").val();
+	 $(".requestDemo #sendMailToAdminGroup").attr('disabled','disabled');
+	var jsObj=
+				{ 
+					constituencyName:constituencyName,
+					mobileNO:mobileNO,
+					name:name,
+					email:email,
+					task:"sendEmail"
+				};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "sendMailtoAdminGroupAction.action?"+rparam;
+	ajaxResultInPopUpPage(jsObj,url);
+	setTimeout(function(){
+		$(dialog).close();
+	}, 2000);
+}
+function ajaxResultInPopUpPage(jsObj,url)
+		{
+			 var myResults;
+
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+									myResults = YAHOO.lang.JSON.parse(o.responseText);	
+									
+									}catch (e) {
+							     
+								}  
+ 		               },
+ 		               scope : this,
+ 		               failure : function( o ) {
+ 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
+ 		                         }
+ 		               };
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+ 	}
 </script>
 </body>
 </html>
