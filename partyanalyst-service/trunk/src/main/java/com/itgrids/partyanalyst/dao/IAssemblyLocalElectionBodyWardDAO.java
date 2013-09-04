@@ -23,4 +23,6 @@ public interface IAssemblyLocalElectionBodyWardDAO extends GenericDao<AssemblyLo
 	public List<Object[]> getWardsByAssemblyLocalElectionBody(Long id);
 	
 	public List<Long> getWardIdsByAssemblyLocalElectionBody(Long id,Long constituencyId);
+	
+	public List<Long> findWardsByAssemblyLocalBody(Long localElectionBodyId, String year);
 }

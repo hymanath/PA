@@ -2313,6 +2313,33 @@ IUserVoterDetailsDAO{
 		
 	}
 	
+	public List<Object[]> getCasteDetailsOfVoterByBoothIds(List<Long> constituencyIds,Long publicationId,Long userId)
+	{
+		Query query = getSession().createQuery("select BPV.booth.boothId,UVD.casteState.caste.casteName,count(UVD.casteState.caste.casteName), UVD.casteState.casteStateId " +
+				" from UserVoterDetails UVD,BoothPublicationVoter BPV where BPV.voter.voterId = UVD.voter.voterId " +
+				" and BPV.booth.localBodyWard.constituencyId in (:constituencyIds) and UVD.user.userId = :userId " +
+				"and BPV.booth.publicationDate.publicationDateId = :publicationId " +
+				" group by BPV.booth.boothId,UVD.casteState.caste.casteName order by BPV.booth.boothId,count(UVD.casteState.caste.casteName) desc");
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	/*public List<Object[]> getCasteDetailsOfVoterByConstituency(Long constituencyId,Long publicationId,Long userId,List<Long> casteIds)
+	{
+		Query query = getSession().createQuery("select BPV.booth.boothId,UVD.casteState.casteStateId,count(UVD.casteState.caste.casteName)  " +
+				" from UserVoterDetails UVD,BoothPublicationVoter BPV where BPV.voter.voterId = UVD.voter.voterId " +
+				" and BPV.booth.constituency.constituencyId = :constituencyId and UVD.user.userId = :userId " +
+				"and BPV.booth.publicationDate.publicationDateId = :publicationId and UVD.casteState.casteStateId in (:casteIds)" +
+				" group by BPV.booth.boothId,UVD.casteState.caste.casteName order by BPV.booth.boothId desc");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		query.setParameterList("casteIds", casteIds);
+		return query.list();
+	}*/
+	
 	
 	
 	

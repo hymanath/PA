@@ -89,4 +89,12 @@ public class AssemblyLocalElectionBodyWardDAO  extends GenericDaoHibernate<Assem
 		return getHibernateTemplate().find("select model.constituency.constituencyId from AssemblyLocalElectionBodyWard model " +
 				"where model.assemblyLocalElectionBody.assemblyLocalElectionBodyId = ? and  model.assemblyLocalElectionBody.constituency.constituencyId = ?", params);
 	}
+	
+	
+	public List<Long> findWardsByAssemblyLocalBody(Long localElectionBodyId, String year) {
+		Object[] params = {localElectionBodyId,year};
+		return getHibernateTemplate().find("select model.constituency.constituencyId  from AssemblyLocalElectionBodyWard model " +
+				"where model.assemblyLocalElectionBody.assemblyLocalElectionBodyId = ? and model.year = (select max(model2.year) from AssemblyLocalElectionBodyWard model2 where model2.year <= ?)", params);
+	}
+	
 }

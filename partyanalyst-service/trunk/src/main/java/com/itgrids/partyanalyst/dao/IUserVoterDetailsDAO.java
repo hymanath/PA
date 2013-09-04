@@ -236,6 +236,10 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getAllTheCastesOfConstituency(Long constituencyId , Long userId,Long publicationDateId);
 	public List<Object[]> getVotersDetailsBySearchToSendSMS(String queryString , SMSSearchCriteriaVO searchVO );
 	public List<Long> getVotersDetailsCountBySearchToSendSMS(String queryString,SMSSearchCriteriaVO searchVO);
+	
+	public List<Object[]> getCasteDetailsOfVoterByBoothIds(List<Long> boothId,Long publicationId,Long userId);
+	
+	//public List<Object[]> getCasteDetailsOfVoterByConstituency(Long constituencyId,Long publicationId,Long userId,List<Long> casteIds);
 
 
 
