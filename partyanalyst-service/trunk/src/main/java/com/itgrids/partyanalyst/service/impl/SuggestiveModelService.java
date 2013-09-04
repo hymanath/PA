@@ -390,7 +390,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 	 areaMap=getTheMapForArea(ttlVtrsInPnchyt,ttlVtrsInPnchytByAge);
 					 		
 						 List<Object[]> ttlRslts=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId(),"urban");
-						 areaMap=getResults(ttlRslts,areaMap,casteIds,exptdCastes,ttlPnchytIds);
+						 areaMap=getResults(ttlRslts,areaMap,casteIds,exptdCastes,ttlPnchytIds,"");
 						 List<PanchayatVO> list=new ArrayList<PanchayatVO>(areaMap.values());
 						 panchaytVO1.setPanchayatList(list);
 				 	}
@@ -400,16 +400,19 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 	   areaMap=getTheMapForArea(ttlVtrsInPnchyt,ttlVtrsInPnchytByAge);
 				 		
 					   List<Object[]> ttlRslts=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId(),"rural");
-					   areaMap=getResults(ttlRslts,areaMap,casteIds,exptdCastes,ttlPnchytIds);
+					   areaMap=getResults(ttlRslts,areaMap,casteIds,exptdCastes,ttlPnchytIds,"");
 					   List<PanchayatVO> list=new ArrayList<PanchayatVO>(areaMap.values());
 					   panchaytVO1.setPanchayatList(list);
 					   
 					   if(constAreaType.equalsIgnoreCase(IConstants.RURALURBAN)){
 						   List<Object[]> ttlVtrsInBoothByAge=boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(constituencyId,publicationId, group.getId(), group.getPopulateId());
 						   muncipalMap=getTheMapForArea(ttlVtrsInBooths,ttlVtrsInBoothByAge);
-					 		
+						   
 						   List<Object[]> ttlRsltsInBooths=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId());
-						   muncipalMap=getResults(ttlRsltsInBooths,muncipalMap,casteIds,exptdCastes,ttlBoothIds);
+						   Object[] obj=ttlVtrsInBoothByAge.get(0);
+						   String Area=obj[5].toString()+" "+obj[6].toString();
+						  
+						   muncipalMap=getResults(ttlRsltsInBooths,muncipalMap,casteIds,exptdCastes,ttlBoothIds,Area);
 						   List<PanchayatVO> list1=new ArrayList<PanchayatVO>(muncipalMap.values());
 						   panchaytVO1.setBoothsList(list1);
 					   }
@@ -499,7 +502,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			}
 			return arMap;
 		}
-		public Map<Long,PanchayatVO> getResults(List<Object[]> ttlRsltsList,Map<Long,PanchayatVO> areaMap,List<Long> casteIds,List<ExceptCastsVO> exptdCastes,List<Long> ttlPanchayatIds){
+		public Map<Long,PanchayatVO> getResults(List<Object[]> ttlRsltsList,Map<Long,PanchayatVO> areaMap,List<Long> casteIds,List<ExceptCastsVO> exptdCastes,List<Long> ttlPanchayatIds,String area){
 			Map<Long,List<CastVO>> castsMapOfPanchayat=new HashMap<Long, List<CastVO>>();
 			
 			Map<Long,String> castByIdMap=new HashMap<Long, String>();
@@ -635,6 +638,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				areaMap.get(entry.getKey()).setAllSelectedCastes(allSlctdCastes);
 				areaMap.get(entry.getKey()).setOthrExpctdVotes(othrExpctdVotes);
 				areaMap.get(entry.getKey()).setOtherVotes(otherVotes);
+				areaMap.get(entry.getKey()).setMuncipalityName(area);
 			}
 			}catch (Exception e) {
 				System.out.println("Exception Raised in getResults() in SuggestiveModel Service"+e);
