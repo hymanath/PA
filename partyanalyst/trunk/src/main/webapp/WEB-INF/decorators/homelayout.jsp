@@ -1261,7 +1261,7 @@ str+='<div class="modal-footer">';
 str+='<div id="textMsg" style="text-align:center;display:none;font-family:verdana;">Hello</div>';
 str+='<img id="AjaxImg" style="width: 20px; padding-left: 30px; display: none;" src="images/icons/loading.gif">';
 str+='<a class="btn btn-primary" id="sendMailToAdminGroup" onclick="validateDemo()">Submit</a>';
-str+='<a class="btn " id="skipId" onclick="closeDialogue();">Skip</a>';
+str+='<a class="btn btn-primary" id="skipId" onclick="closeDialog()">Skip</a>';
 str+='</div>';
 str+='</div>';
 str+='</div>';
@@ -1792,6 +1792,13 @@ $(".requestDemo #errorMsg").html("");
 		$(dialog).close();
 	}, 2000);
 }
+
+
+function closeDialog(){
+	$("#contactWindowDiv").dialog('close');
+}
+
+	
 function ajaxResultInPopUpPage(jsObj,url)
 		{
 			 var myResults;
