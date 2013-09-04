@@ -284,7 +284,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
  .constituencyunSubscrBtn {
      margin-left: 91px;
 }
-.customclass{left:50% !important;top:300px !important;margin-left:-70px;border:none !important;background:none !important}
+.customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
 .customclass1{border:none !important;background:none !important}
 </style>
 </head>
