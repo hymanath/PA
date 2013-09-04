@@ -445,15 +445,14 @@ function getLeadersList(){
 				 }
 				 else 
 				 {
-					if(jsObj.constituencyType == 'URBAN')
+					 if(jsObj.constituencyType == 'URBAN')
 					{
 						buildLeadersTableWithExpPercForUrban(uploadResult);
 					}
 					else
 					{
 						buildLeadersTableWithExpPerc(uploadResult);
-					}
-					
+					} 
 				 }
 				}
 				};
@@ -1571,6 +1570,86 @@ function buildLeadersTableWithExpPercForMuncipal(results)
 	}
 	
 }
+function buildLeadersTableWithExpPercForUrban(results)
+{
+	$('#leadersTable').html('')
+	if(results != null && results.length > 0)
+	{
+		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
+
+		var str = "";
+		str+='<div class="widget blue">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY PANCHAYAT LEVEL EXPECTED CASTE DETAILS </h4>';
+		str += '<table class="table table-hover table-bordered" id="expCasteDetailsForUrban" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;" >';
+		str += '<thead><tr>';
+		str += '<th>Mandal</th>';
+		str += '<th>Ward</th>';
+		str += '<th>Total Voters</th>';	
+		str += '<th>Booth</th>';
+		str += '<th>Total Voters</th>';	
+		for(var c in results[0].boothLevelLeadersList[0].exceptdCateDetails)
+		{
+			str += '<th>'+results[0].boothLevelLeadersList[0].exceptdCateDetails[c].name+'</th>';
+			str += '<th>Excepted Perc</th>';
+			str += '<th>Excepted Votes</th>';
+		}
+
+		str += '</tr></thead><tbody>';
+
+		for(var i in results)
+		{
+		try{
+			var rowLength = results[i].boothLevelLeadersList.length;
+			str += '<tr>';
+			str += '<td rowspan='+rowLength+'>'+results[i].mandalName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatTotalVoters+'</td>'; 
+			for(var m in results[i].boothLevelLeadersList)
+			{
+				if(m > 0)
+				{
+					str += '<tr>';
+				}
+				str += '<td>'+results[i].boothLevelLeadersList[m].boothName+'</td>';
+				str += '<td>'+results[i].boothLevelLeadersList[m].boothTotalVoters+'</td>';
+			
+			
+				for(var k in results[i].boothLevelLeadersList[m].exceptdCateDetails)
+				{
+				if(results[i].boothLevelLeadersList[m].exceptdCateDetails[k].count !=null)
+				{
+					str += '<td>'+results[i].boothLevelLeadersList[m].exceptdCateDetails[k].count+'</td>';
+					str += '<td>'+results[i].boothLevelLeadersList[m].exceptdCateDetails[k].perc+'</td>';
+					str += '<td>'+results[i].boothLevelLeadersList[m].exceptdCateDetails[k].expCount+'</td>';
+				}
+				else
+				{
+					str += '<td>0</td>';
+					str += '<td>0</td>';
+					str += '<td>0</td>';
+				}
+					
+				}
+				if(m > 0)
+				{
+					str += '</tr>';
+				}
+			}
+			str += '</tr>';
+			}catch(e){
+			}
+		}
+		
+		str += '</tbody></table>';
+		str += '</div>';
+		str += '</div>';
+
+		$('#leadersTableForUrban').html(str);
+		//$('#expCasteDetailsForUrban').dataTable();
+	}
+	
+}
 function buildLeadersTableWithExpPerc(results)
 {
 	$('#leadersTable').html('')
@@ -1768,7 +1847,7 @@ function buildLeadersTableForUrban(results)
 				}
 				else
 				{
-					str += '<td></td>';
+					str += '<td>0</td>';
 				}
 				if(results[i].boothLevelLeadersList[k].selectedCateList != null)
 				{
@@ -1782,7 +1861,7 @@ function buildLeadersTableForUrban(results)
 				}
 				else
 				{
-					str += '<td></td>';
+					str += '<td>0</td>';
 				}
 				if(k > 0)
 				{
