@@ -1214,7 +1214,7 @@ var jsObj=
 
     <div style="margin-left:100px;margin-bottom:9px;">
           <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
-		  <a id="showhidebtn" style="font-size:12px;"><b>Show/Hide Search Options</b></a>
+		  <a id="showhidebtn" style="font-size:12px;" href="javascript:{}"><b>Show/Hide Search Options</b></a>
 
 	     <button id="searchCandidatesId" class="btn btn-primary" onclick="isValidateFields('search');"> Search </button> 
 		
