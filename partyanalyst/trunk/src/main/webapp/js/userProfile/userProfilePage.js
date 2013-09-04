@@ -550,9 +550,9 @@ $(".changePwdLink").live("click",function(){
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password must be minimum of 6 characters long</span><br>');
+		div.append('<span>Password should contain 6 characters</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password should not contain & # \\ + % characters</span>');
+		div.append('<span>Password should not contain $,#,\\,+,% characters</span>');
 		div.append('<div align="center"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
 		div.append('<div align="center"> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
 		div.append('<div align="center"> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
@@ -625,7 +625,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(npwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">New password should not contain & # \\ + % characters</font>');
+					errorDiv.html('<font color="red">Password should not contain special characters</font>');
 					return;
                     } 
                 }
@@ -643,7 +643,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(cfmpwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">Confirm password should not contain & # \\ + % characters</font>');
+					errorDiv.html('<font color="red">Password should not contain special characters</font>');
 					return;
                     } 
                 }
@@ -721,7 +721,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 
 	str += '<tr>';
 	str += '<td>';
-	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;" accept="image/*"/>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="errorClear();" style="width:430px;" accept="image/*"/>';
 	str += '</td>';
 	str += '</tr>';
 	
@@ -793,7 +793,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 
 	str += '<tr>';
 	str += '<td>';
-	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="previewImg()" style="width:430px;" accept="image/*"/>';
+	str += '<input type="file" size="45" id="photoUploadElmt" name="upload" onchange="errorClear()" style="width:430px;" accept="image/*"/>';
 	str += '</td>';
 	str += '</tr>';
 	
@@ -838,7 +838,7 @@ $("#allConnectedUsersDisplay_main").children().remove();
 		 if(uploadPicStatus){
 			 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
 		 }else{
-			 photoStatusElmt.innerHTML = 'Please select a valid Image... &nbsp"/>'
+			 photoStatusElmt.innerHTML = 'Please select a valid Image...  '
 		 }
 		 getUploadpic();
 		}
@@ -855,6 +855,7 @@ $("#cancelPicButton").live("click",function(){
 });
 
 $("#uploadPicButton").live("click",function(){
+$("#uploadPic_window_status").html('');
 	var uploadPhotoId = $.trim($("#photoUploadElmt").val());
 		var str = '<font color="red">';
 		if(uploadPhotoId.length == 0)
@@ -866,8 +867,9 @@ $("#uploadPicButton").live("click",function(){
 		 {
 			 if(uploadPicStatus)
 				 $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
-			 else
-				 $("#uploadPic_window_status").html('Please select valid Image.. &nbsp').css('color','red');
+			 else{
+				 $("#uploadPic_window_status").html('Please select valid Image..  ').css('color','red');
+			 }
 			 getUploadpic();
 		}
 });
@@ -1046,7 +1048,10 @@ if($(this).next().val()!="null"){rating= $(this).next().val();}
 				});
 });
 }*/
-
+function errorClear(){
+	$("#uploadPic_window_status").html('');
+	previewImg();
+}
 function previewImg()
 {
 	var photoElmt = document.getElementById("photoUploadElmt");
@@ -1291,8 +1296,9 @@ function callAjax1(jsObj,url){
 						buildPeopleYouMayKnowBlock(results);
 					}
 					else if(jsObj.task== "saveFavouriteLink"){
-						openModal("Link added successfully","msg");
-						$("#FavouriteLinks").trigger('click');//to rebuild the favourite link section
+						$("#errorsDiv").html("Link added successfully..").css("color","Green");
+						setTimeout(function(){$("#FavouriteLinks").trigger('click');},3000);//to rebuild the favourite link section
+						//openModal("Link added successfully","msg");
 						setTimeout(hello,1000);
 						$("#addPopupForFavouriteLinks").html('');
 						$("#addPopupForFavouriteLinks").dialog( "close" );
@@ -1635,6 +1641,7 @@ var hasFriends = true;
 function getFriendsListForUser(results)
 {
 	$(".placeholderCenterDiv").children().remove();
+	$("#headerDiv").html('Friends list is empty.');
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
@@ -1766,7 +1773,7 @@ function showAllRequestMessagesForUser(results,jsObj){
 	//clearDiv1();
 	if(results.friendRequest ==null)
 	{
-		$("#headerDiv").html('You have 0 Requests');
+		$("#headerDiv").html('Sorry! you have no Requests');
 		closeDialogue();
 		return;
 	}
@@ -1810,7 +1817,7 @@ function showRequestedMessagesForAUser(results)
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>No messages has been sent to you.</div>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>Sorry! You have no mails.</div>');
 		//$(".placeholderCenterDiv").html("No messages has been sent to you.");
 		return;
 	}
@@ -1870,7 +1877,7 @@ function showSentBoxMessagesForAUser(results)
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
 		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
-		$(".placeholderCenterDiv").html("No messages has been sent by you.");
+		$(".placeholderCenterDiv").html("your sent items are Empty.");
 		return;
 	}
 		
@@ -3222,12 +3229,14 @@ function savefavouriteLink(){
 					queryString ='constituencyId='+id+',';
 				}
 				else{
-					openModal('Please Select Assembly Constituency',"alert");
+					$("#errorsDiv").html("Please Select Assembly Constituency").css("color","red");
+					//openModal('Please Select Assembly Constituency',"alert");
 					return;
 				}
 			}
 			else{
-				openModal('Please Select State','"alert"');
+				$("#errorsDiv").html("Please Select State").css("color","red");
+				//openModal('Please Select State','"alert"');
 				return;
 			}
 		}
@@ -3241,12 +3250,14 @@ function savefavouriteLink(){
 				queryString ='constituencyId='+id+',';	
 			}
 			else{
-				openModal('Please Select Parliament Constituency',"alert");
+				$("#errorsDiv").html("Please Select Parliament Constituency").css("color","red");
+				//openModal('Please Select Parliament Constituency',"alert");
 				return;
 			}
 		}
 		else{
-			openModal('Please Select Constituency Type',"alert");
+			$("#errorsDiv").html("Please Select Constituency Type").css("color","red");
+			//openModal('Please Select Constituency Type',"alert");
 		}
 	}
 	else if(areaSelected=='State'){
@@ -3258,7 +3269,8 @@ function savefavouriteLink(){
 			queryString ='stateId='+id+',';
 		}
 		else{
-			openModal('Please Select the State',"alert");
+			$("#errorsDiv").html("Please Select the State").css("color","red");
+			//openModal('Please Select the State',"alert");
 			return;
 		}
 		
@@ -3273,12 +3285,14 @@ function savefavouriteLink(){
 				queryString='districtName='+name+',districtId='+id+',';
 			}
 			else{
-				openModal('Please Select District',"alert");
+				$("#errorsDiv").html("Please Select District").css("color","red");
+				//openModal('Please Select District',"alert");
 				return;
 			}
 		}
 		else{
-			openModal('Please Select State',"alert");
+			$("#errorsDiv").html("Please Select State").css("color","red");
+			//openModal('Please Select State',"alert");
 			return;
 		}
 	
@@ -3292,13 +3306,15 @@ function savefavouriteLink(){
 			queryString ='specialPageId='+id+',';
 		}
 		else{
-			openModal('Please Select Special Page',"alert");
+			$("#errorsDiv").html("Please Select Special Page").css("color","red");
+			//openModal('Please Select Special Page',"alert");
 			return;
 		}
 	}
 	
 	else {
-		openModal('Please Select Any Option',"alert");
+		$("#errorsDiv").html("Please Select Any Option").css("color","red");
+		//openModal('Please Select Any Option',"alert");
 	}
 	var jObj = {
 				link: link,
@@ -3530,6 +3546,7 @@ $('#Parliament').live('click',function(){
 function openPopupForFavouriteLinks(){
 $("#addPopupForFavouriteLinks").css("display","block");
 var str=''; 
+str+='<div id="errorsDiv"></div>';
 str+='<label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">State</span></label>';
 str+=' <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">District</span> </label>';
 str+='  <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="Constituency" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="Constituency" style="margin-top:1px;"/> <span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">Constituency</span> </label>';
@@ -4009,7 +4026,7 @@ function buildProblemDetailsByStatus(jsObj,results)
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>No messages has been sent to you.</div>');
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li class="active"><a id="Inbox" style="cursor:pointer">Inbox ( '+inboxCount +' )</a></li><li><a id="SentBox" style="cursor:pointer">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>Sorry! You have no mails.</div>');
 	//	$(".placeholderCenterDiv").html("No messages has been sent to you.");
 	closeDialogue();
 		return;
@@ -4067,7 +4084,7 @@ for(var i in results.candidateVO)
 }
 function buildSentDetailsByStatus(jsObj,results)
 {
-//debugger;
+
 	$("#headerDiv").html('');
 	$(".placeholderCenterDiv").html('');
 	$(".placeholderCenterDiv").children().remove();
@@ -4080,8 +4097,8 @@ function buildSentDetailsByStatus(jsObj,results)
 	}
 	else if(results.candidateVO == null || results.candidateVO.length == 0)
 	{
-		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6>');
-		$(".placeholderCenterDiv").html("No messages has been sent by you.");
+		$("#headerDiv").html('<ul class="nav nav-tabs"><li><a id="Inbox" >Inbox ( '+inboxCount +' )</a></li><li class="active"><a id="SentBox">Sent</a></li></ul><h6 class="pull-right" style="margin-top:-10px;">Total Messages: <span style="color:blue;">'+results.totalMsgCount+'</span></h6><br><div>your sent items are Empty.</div>');
+		//$(".placeholderCenterDiv").html("your sent items are Empty2.");
 		return;
 	}
 		
