@@ -137,7 +137,7 @@ ul li {list-style-type:square;}
 
 <div>
 
-<div id="errorDiv" style="color:red;font-weight:bold;margin:5px;"></div>
+<div id="errorDiv" style="color:red;font-weight:bold;margin-left:400px;"></div>
 	<div class="widget">
 	 <h4 style="text-align:center;">Upload Audio</h4>
 
