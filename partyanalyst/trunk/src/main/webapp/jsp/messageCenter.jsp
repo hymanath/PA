@@ -1497,17 +1497,15 @@ function validateFieldsForSendingSms()
 
 function ajaxToSendVoiceSms(){
 
-
-
-
-	 $('#responseDetailsInnerDiv').html("<img style='margin-left:130px;' src='./images/icons/search.gif' />");
+	 $('#responseDetailsInnerDiv').html("Sending voice SMS will take some time.Please wait....<img style='margin-left:130px;' src='./images/icons/search.gif' />");
 				
 
-					     $('#responseDetailsDiv').dialog({
-						    title:"Response Details" ,
-						    buttons: {								
-								"Ok":function(){$(this).dialog("close");} 
-							}
+			 $('#responseDetailsDiv').dialog({
+				title:"Sending Voice SMS" ,
+                modal:true,
+				buttons: {								
+					"Ok":function(){$(this).dialog("close");} 
+				}
 	       });
 
 
@@ -1931,8 +1929,9 @@ function callAjax1(param,jsObj,url){
 
 					else if(jsObj.task == "sendVoiceSms")
 				    { 
-							
-							 selectedVotersDetails = {};
+						if(myResults == "Successfully Sent..")
+						{
+							selectedVotersDetails = {};
 
 							 selectedCadreDetails = {};
 
@@ -1942,8 +1941,16 @@ function callAjax1(param,jsObj,url){
 
 							 $('#cadreCount , #influencePeopleCount, #voterCount').html(0)
 
-						$('#responseDetailsDiv').dialog('close');
-						$('#successMsg').html(myResults);
+						    $('#responseDetailsDiv').dialog('close');
+						    $('#successMsg').html(myResults);
+							$('#voiceSmsDescription').val("");
+
+							$('input[name=audio]').attr('checked', false);
+						  
+
+						}
+							
+							 
 
 				    }
 					else if(jsObj.task == "getConstituencyNames")
