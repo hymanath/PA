@@ -397,7 +397,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv1" class="alert alert-info"  style="padding: 14px;display:none;color: #03BFF0;font-weight: bold;margin-top:20px;"></div>
 				        <div id="headerDiv" class="whitegloss" style="padding: 14px; margin-top: 20px;"></div>
 						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;margin-bottom: -60px;width:450px;display:inline-block;">
 						<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
@@ -980,7 +979,6 @@ function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImpo
 
 	$(".placeholderCenterDiv").children().remove();
 $("#headerDiv").html('');
-$("#headerDiv1").css('display','none');
  $("#subscriptionsStreamingData").children().remove();
  $("#impdatesDiv").hide();
  $("#announcementsDiv").hide();
@@ -1014,7 +1012,6 @@ function openShowNews()
 	var i = 0;
 	//document.getElementById("newsCount").innerHTML='<font color="navy"><b>Total //News Count : </b></font>'+result.length;
 	$("#headerDiv").html('');
-	$("#headerDiv1").css('display','none');
 	$("#headerDiv").html('<font color="navy"><b>Total News Count : </b></font>'+result.length+'');
   document.getElementById("placeholderCenterDivId").innerHTML='';
   YAHOO.widget.DataTable.news = function(elLiner, oRecord, oColumn, oData) 
@@ -1077,8 +1074,6 @@ function getMaxCount(result)
 
 function showNewsCountDetails(result,jsObj)
 {
-
-$("#headerDiv1").css('display','none');
 $("#headerDiv").html('<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'');
 
 
@@ -1166,7 +1161,6 @@ function showNewsCountDetails(result,jsObj)
 	
 	$('#subscriptionsStreamingData').children().remove();
 	$("#headerDiv").html('');
-$("#headerDiv1").css('display','none');
 	$("#impdatesDiv").hide();
 	$("#headerDiv").html('<font color="navy"><strong>Today\'s Total News Count : </strong></font>'+result[0].count+'');
 	var maxCount = getMaxCount(result);
