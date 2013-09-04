@@ -1058,7 +1058,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 									emailDetailsVO.setFromAddress(userName);
 									emailDetailsVO.setSenderName(senderName);
 									emailDetailsVO.setToAddress(email);
-									mailsSendingService.acceptEmailFriendRequest(emailDetailsVO);
+									//mailsSendingService.acceptEmailFriendRequest(emailDetailsVO);
+									mailsSendingFromTaskExecutor(emailDetailsVO,"mailForAcceptFriendRequest");
 								}
 							}
 							}
@@ -1091,7 +1092,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 										emailDetailsVO.setToAddress(email);
 										emailDetailsVO.setSubject(subject);
 										emailDetailsVO.setSenderName(senderName);
-										mailsSendingService.sendMessageToConnectUser(emailDetailsVO);
+										//mailsSendingService.sendMessageToConnectUser(emailDetailsVO);
+										mailsSendingFromTaskExecutor(emailDetailsVO,"mailForMsgToConnectedUsers");
 									}
 								}
 							}
@@ -1119,6 +1121,22 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 			}
 		});
 		return resultStatus;
+	}
+	
+	public Runnable mailsSendingFromTaskExecutor(EmailDetailsVO emailDetailsVO,String emailType)
+	{
+		try{
+			 if(emailType != null && emailType.equalsIgnoreCase("mailForAcceptFriendRequest"))
+				mailsSendingService.acceptEmailFriendRequest(emailDetailsVO);
+			 else if(emailType != null && emailType.equalsIgnoreCase("mailForMsgToConnectedUsers"))
+				mailsSendingService.sendMessageToConnectUser(emailDetailsVO);
+			 
+		  return new Thread();
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error(" Exception Occured in mailsSendingFromTaskExecutor() method, Exception - "+e);
+		 return new Thread();
+		}
 	}
 	
 	
