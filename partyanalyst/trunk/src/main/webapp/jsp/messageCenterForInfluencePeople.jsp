@@ -165,7 +165,7 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
 </div>
 
 <div class="span11" align="center" style="margin-top:66px;">
-<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;"></span>
+<span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -445px;"></span>
  <div class="row">
 
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable" style="margin-top:30px;"></div>
