@@ -69,7 +69,10 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 		Fields marked with (<font color="red">*</font>) are mandatory</td></tr></table> -->
 		<div id="pwdErrorMsg" style="color: red; margin-left: 125px; margin-top: -8px; margin-bottom: 6px;display:none;"></div>
 		<div id="password_window_errorMsg" style="font-size: 13px; margin-left: 123px; margin-top: -3px; margin-bottom: 8px;"></div>
-		
+		<div><span style="color: black;font-size:13px;"><img src="images/icons/infoicon.png">Fields marked with (<font color=red>*</font>) are mandatory</span><br>
+		<span style="color: black;font-size:13px;"><img src="images/icons/infoicon.png">Password should contain 6 characters</span><br>
+		<span style="color: black;font-size:13px;"><img src="images/icons/infoicon.png">Password should not contain $,#,\,+,% characters</span></div>
+
 		<table style="font-family: verdana; font-size: 13px;margin-left: 5px;color:#000;">
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle" ></td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPWDId" cssclass="textFieldStyle">
