@@ -1692,6 +1692,8 @@
       <property name="regionServiceDataImp" ref="regionServiceDataImp" />
       <property name="votersAnalysisService" ref="votersAnalysisService" />
       <property name="casteStateDAO" ref="casteStateDAO" />
+      <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
+      <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
       <property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
       <property name="partyDAO" ref="partyDAO" />
 	  <property name="voterModificationDAO" ref="voterModificationDAO" />
