@@ -4671,6 +4671,7 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 			String genderStr = new String();
 			String mobileStr = new String();
 			String cadreNameStr = null;
+			Boolean isSmsType = cadreInputVO.getIsVoiceSms();
 			/*
 			 * Modified by gayathri 
 			 * please refer previous version to check for original code.
@@ -4895,9 +4896,11 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				roleStr = " ";
 			else if(taskName.equalsIgnoreCase(IConstants.PROBLEM_ADDING))
 				roleStr = " and model.cadreId in (select model1.cadre.cadreId from CadreRoleRelation model1) "; 
-			 
-			Long totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr).get(0);
-			
+			Long totalSearchCount = 0L;
+			if(isSmsType)
+				totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr," and (model.mobile is not null and model.mobile !='') ").get(0);				
+			else 
+				totalSearchCount = cadreDAO.findTotalCadreCountForSms(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,null).get(0);
 			if(maxResult < 0)
 			{
 				List<CadreInfo> cadreInfoListTotal = new ArrayList<CadreInfo>();
@@ -4907,8 +4910,12 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				return cadreInfoListTotal;
 			}
 			
-			List<Long> cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,sortOption,order,startIndex,maxResult);
-			
+			List<Long> cadreIds = new ArrayList<Long>(); 
+			if(isSmsType)
+				cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,sortOption,order," and (model.mobile is not null and model.mobile !='') ",startIndex,maxResult);				
+			else 
+				cadreIds = cadreDAO.findCadreForSMS(userId,cadreType,SearchCriteria,socStatus,genderStr,mobileStr,cadreNameStr,memberShipNoStr,roleStr,bloodGroupStr,registerCadreSearchTypeStr,sortOption,order,null,startIndex,maxResult);
+						
 			List<Object[]> list = cadreDAO.getCadreCasteDetails(userId , cadreIds);
 			
 			Map<Long , String>  casteDetailsMap = convertListToMap(list);
