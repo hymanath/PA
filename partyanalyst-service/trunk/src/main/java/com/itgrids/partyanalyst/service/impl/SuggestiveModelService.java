@@ -104,6 +104,25 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		
 		
 		
+	
+	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
+		return assemblyLocalElectionBodyWardDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyWardDAO(
+			IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO) {
+		this.assemblyLocalElectionBodyWardDAO = assemblyLocalElectionBodyWardDAO;
+	}
+
+	public ILocalElectionBodyWardDAO getLocalElectionBodyWardDAO() {
+		return localElectionBodyWardDAO;
+	}
+
+	public void setLocalElectionBodyWardDAO(
+			ILocalElectionBodyWardDAO localElectionBodyWardDAO) {
+		this.localElectionBodyWardDAO = localElectionBodyWardDAO;
+	}
+
 	public IConstituencyElectionResultDAO getConstituencyElectionResultDAO() {
 			return constituencyElectionResultDAO;
 		}
