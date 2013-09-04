@@ -1312,7 +1312,7 @@ var jsObj=
 </div>
 
 
-  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="voiceSmsDescription" class="textAreaClass" maxlength="10"></textarea></div>
+  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="voiceSmsDescription" class="textAreaClass"></textarea></div>
 
 <div id="invalidContactsDiv" style="float: right; margin-top: -200px; position: static; width: 200px;">
  <!--<span id="notValidContactSpan" style="border: 1px solid rgb(156, 156, 156); width: 180px; height: 200px; font-weight: bold;"><font style="margin-left: 40px;">Invalid Contacts:</font>
