@@ -1631,6 +1631,7 @@ $("#Inbox").trigger("click");
 
 	return;
 }
+var hasFriends = true;
 function getFriendsListForUser(results)
 {
 	$(".placeholderCenterDiv").children().remove();
@@ -1642,9 +1643,12 @@ function getFriendsListForUser(results)
 		closeDialogue();
 			return;
 	}
-	else if(results.connectedPeople == "")
+	else if(results.connectedPeople==null || results.connectedPeople == "")
 	{
-		$("#headerDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
+		getAllCconnectedUserDetails();
+		setTimeout("getDetailsForallDistricts()",1000);	
+		hasFriends = false;
+		$("#headerDiv1").html('<div style="color:#0000ff;font-weight:bold;">You are not connected to any of your friends. Now you can connect to your friends from bellow Locations.</div>');
 		closeDialogue();
 			return;
 	}
@@ -2120,6 +2124,11 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	var users = results.candidateVO;
 	var str = '';
 	var filterDiv = $("<div id='filterDiv'></div>");
+	if(!hasFriends)
+		$("#headerDiv1").css('display','block');
+	else
+		$("#headerDiv1").css('display','none');
+	
 
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !=0)
 	{
@@ -2243,7 +2252,11 @@ function selectedStatusValue(){
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
-	
+	if(!hasFriends)
+		$("#headerDiv1").css('display','block');
+	else
+		$("#headerDiv1").css('display','none');
+		
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html('');
@@ -2691,8 +2704,8 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
     for(var i in specialPages)
 	 if(!specialPages[i].subscribed)
 	  unSubScribedFlag = false;
-		
-    	
+	$("#headerDiv1").css('display','none');
+	
 	var div = $('<div class="subscriptionHeaderDiv"></div>');
 	var label = $('<span class="subscriptionType">Subscribed Special Pages</span>');
 	div.append(label);
@@ -2925,6 +2938,7 @@ function clearAllSubscriptionDivs()
 	$("#partyStateListDiv").children().remove();
 	$("#constituencyStateListDiv").html('');
 	$("#constituencyStateListDiv").children().remove();
+	$("#headerDiv1").css('display','none');
 	//$("#announcementsDiv").html('');
 	//$("#announcementsDiv").children().remove();
 
