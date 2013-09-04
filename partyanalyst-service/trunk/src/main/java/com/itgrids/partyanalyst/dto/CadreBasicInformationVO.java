@@ -32,11 +32,18 @@ public class CadreBasicInformationVO implements Serializable {
 	private String genderSearchType;
 	private Long bloodGroupId;
 	private String registerCadreSearchType;
+	private Boolean isVoiceSms;
 	
 	//Getters and Setters
 	
 	public Long getBloodGroupId() {
 		return bloodGroupId;
+	}
+	public Boolean getIsVoiceSms() {
+		return isVoiceSms;
+	}
+	public void setIsVoiceSms(Boolean isVoiceSms) {
+		this.isVoiceSms = isVoiceSms;
 	}
 	public void setBloodGroupId(Long bloodGroupId) {
 		this.bloodGroupId = bloodGroupId;
