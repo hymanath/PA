@@ -1599,7 +1599,9 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	
 	oPushButton1 = new YAHOO.widget.Button("uploadPicButton");  
 	oPushButton2 = new YAHOO.widget.Button("cancelPicButton");
-	
+	$("#uploadPicButton-button").addClass("btn btn-info btn-small");
+	$("#cancelPicButton-button").addClass("btn");
+
 	oPushButton1.on("click",function(){
 	   
 		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
