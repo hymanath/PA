@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Message Center Cadre details</title>
+<title>Message Center Voter Search Details</title>
 
 <!-- Javascript  start-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -111,9 +111,20 @@ width:100%;
 </head>
 <body>
 
-<h2 style="text-align:center;color:#06ABEA;">VOTER SEARCH RESULTS</h2>
+<h2 style="text-align:center;color:#06ABEA;"><u>VOTER SEARCH RESULTS</u></h2>
 
-<input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window" style="float:right;margin-right:40px;"/>
+
+<div style="margin-left:173px;width:660px;padding:10px;background-color:#f3f3f3;font-weight:bold;font-family:Arial;font-size:11px;">
+<h4>Instructions to select voter for sending voice SMS</h4>
+
+ <ul>
+  <li>Select the voter to whom you would like to send SMS and click <a href="javascript:{closeWindow();}">here</a> once you are done with the selection, to close this window.</li>
+ 
+</li>
+ </ul>
+</div>
+
+<!--<input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window" style="float:right;margin-right:40px;"/>-->
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: 50px;"></span>
 <div style="margin-left:30px;margin-top:13px;padding:5px;">
 	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>
@@ -285,6 +296,10 @@ function pushIntoVoterObject(voterName , mobileNumber)
 		var index =  window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
          window.opener.selectedMobileNumbers.splice(index, 1);
 	}
+}
+function closeWindow()
+{
+	window.close();
 }
 </script>
 </body>

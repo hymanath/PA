@@ -159,12 +159,24 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
 <body>
   <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS TO SEND SMS</h2>
 
+<!--
 <div style="float:right;margin:0px 35px 12px 5px;">
 <input type="button" class="btnClass" onClick="addNewCandidate()" value="Click Here To Add Influencing People"/>
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window"/>
 </div>
+-->
 
-<div class="span11" align="center" style="margin-top:66px;">
+<div style="margin-left:173px;width:660px;padding:10px;background-color:#f3f3f3;font-weight:bold;font-family:Arial;font-size:11px;">
+<h4>Instructions to select influencing people for sending voice SMS</h4>
+
+ <ul>
+  <li>Select the influencing people to whom you would like to send SMS and click <a href="javascript:{closeWindow();}">here</a> once you are done with the selection, to close this window.</li>
+  <li>You can get new INFLUENCING PEOPLE registered from <a href="javascript:{addNewCandidate();}">here</a> 
+</li>
+ </ul>
+</div>
+
+<div class="span11" align="center" style="margin-top:10px;">
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -445px;"></span>
  <div class="row">
 
@@ -320,6 +332,11 @@ function pushIntoInfluencePeopleObject(voterName , mobileNumber)
 		var index =  window.opener.selectedMobileNumbers.indexOf("91"+mobileNumber);
          window.opener.selectedMobileNumbers.splice(index, 1);
 	}
+}
+
+function closeWindow()
+{
+	window.close();
 }
 </script>
 </body>
