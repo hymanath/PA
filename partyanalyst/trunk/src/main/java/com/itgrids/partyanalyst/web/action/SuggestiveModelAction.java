@@ -503,6 +503,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			//Long mandalId       = jObj.getLong("mandalId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			String casteIds = jObj.getString("casteIds");
+			String constituencyType = jObj.getString("constituencyType");
 			String[] strArray = casteIds.split(",");
 			
 			JSONArray jsonArray = jObj.getJSONArray("expCasteArray");
@@ -523,7 +524,15 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			}
 			for(String casteId:strArray)
 				castesIdsList.add(Long.parseLong(casteId));
-			LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList,casteMap,exceptCasteList,checkStatus);
+			
+			if(constituencyType.equalsIgnoreCase(IConstants.URBAN))
+			{
+				LeaderSelectionList = suggestiveModelService.getLeadersInUrbanConstituencyes(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus);
+			}
+			else
+			{
+				LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList,casteMap,exceptCasteList,checkStatus);
+			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}

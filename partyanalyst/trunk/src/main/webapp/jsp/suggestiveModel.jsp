@@ -200,6 +200,7 @@ html{overflow-x: hidden;}
 $(document).ready(function(){
  <c:if test="${!hideMainMenu}">
   getConstituencyList();
+  var constituencyType ;
  </c:if>
 });
 function getConstituencyList(){
@@ -383,52 +384,75 @@ function validateYear2(yearId){
 	}	
 }
 function getLeadersList(){
-var checkStatus = $('#expCaste').is(":checked");
-if(checkStatus == false)
-{
-	expCasteArray = new Array();
-}
-//var mandalId = $('#listMandalNames option:selected').val();
- <c:if test="${!castDetails}">
-var constituencyId = $('#listConstituencyNames option:selected').val();
-var casteIds=0;
- if(constituencyId == 0)
-	return;
-$('#candidateCastes :selected').each(function(i, selected){ 
-	   casteIds+=','+$(this).val();
-});
-</c:if>
-<c:if test="${castDetails}">
-  var constituencyId = '${constituencyId}';
-  var casteIds = '${casteIds}';
-</c:if>
-var jsObj= 
-	{	
-		//mandalId       : mandalId.slice(1),
-		constituencyId   : constituencyId,
-		casteIds         : casteIds,
-		expCasteArray    : expCasteArray,
-		checkStatus      : checkStatus,
-		task             : "getLeadersList"		
-	};
-	 $("#getAllExpCasteDetails").val(YAHOO.lang.JSON.stringify(jsObj));
-			  
-		var uploadHandler = {
-		success: function(o) {
-		var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
-		 $("#dashBoardImgLoading").hide();
-		 if(checkStatus == false)
-		 {
-			buildLeadersTable(uploadResult);
-		 }
-		 else 
-		 {
-			buildLeadersTableWithExpPerc(uploadResult);
-		 }
+	if(constituencyType == 'RURAL-URBAN' || constituencyType == 'RURAL' || constituencyType == 'URBAN')
+	{
+		var checkStatus = $('#expCaste').is(":checked");
+		if(checkStatus == false)
+		{
+			expCasteArray = new Array();
 		}
-		};
-		YAHOO.util.Connect.setForm('exceptedCasteDetailsForm',false);
-		YAHOO.util.Connect.asyncRequest('POST','getLeadersDataAction.action',uploadHandler);
+		<c:if test="${!castDetails}">
+		var constituencyId = $('#listConstituencyNames option:selected').val();
+		var casteIds=0;
+		if(constituencyId == 0)
+		return;
+		$('#candidateCastes :selected').each(function(i, selected){ 
+			   casteIds+=','+$(this).val();
+		});
+		</c:if>
+		<c:if test="${castDetails}">
+		  var constituencyId = '${constituencyId}';
+		  var casteIds = '${casteIds}';
+		</c:if>
+		var jsObj= 
+			{	
+				constituencyId   : constituencyId,
+				casteIds         : casteIds,
+				expCasteArray    : expCasteArray,
+				checkStatus      : checkStatus,
+				constituencyType : constituencyType,
+				task             : "getLeadersList"		
+			};
+			 $("#getAllExpCasteDetails").val(YAHOO.lang.JSON.stringify(jsObj));
+					  
+				var uploadHandler = {
+				success: function(o) {
+				var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+				 $("#dashBoardImgLoading").hide();
+				 if(checkStatus == false)
+				 {
+					if(jsObj.constituencyType == 'URBAN')
+					{
+						buildLeadersTableForUrban(uploadResult);
+					}
+					else
+					{
+						buildLeadersTable(uploadResult);
+					}
+					
+				 }
+				 else 
+				 {
+					if(jsObj.constituencyType == 'URBAN')
+					{
+						buildLeadersTableWithExpPercForUrban(uploadResult);
+					}
+					else
+					{
+						buildLeadersTableWithExpPerc(uploadResult);
+					}
+					
+				 }
+				}
+				};
+				YAHOO.util.Connect.setForm('exceptedCasteDetailsForm',false);
+				YAHOO.util.Connect.asyncRequest('POST','getLeadersDataAction.action',uploadHandler);
+	}
+	if(constituencyType == 'RURAL-URBAN')
+	{
+		getLeadersListInRuralUrbans();
+	}
+
 }
 
 function getLeadersListInRuralUrbans(){
@@ -571,8 +595,9 @@ function callAjax(param,jsObj,url){
 							buildUserAssignedVotersCastes(myResults);
 						}
 						else if(jsObj.task== "getConstituencyType"){
-							if(myResults[0].name == "RURAL-URBAN")
-								getLeadersListInRuralUrbans();
+							/* if(myResults[0].name == "RURAL-URBAN")
+								getLeadersListInRuralUrbans(); */
+								constituencyType = myResults[0].name;
 						}
 						/* else if (jsObj.task== "getLeadersListInRuralUrbans"){
 						    $("#dashBoardImgLoadingNew").hide();
@@ -896,7 +921,7 @@ function panchayatMatrx(result)
 					Constituency Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
 				<td>
-					<select id="listConstituencyNames" onchange="clearAll(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);;">
+					<select id="listConstituencyNames" onchange="clearAll(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyType();">
 					<option value="0"> Select Constituency </option>
 					</select>
 				</td>		
@@ -1027,6 +1052,8 @@ function panchayatMatrx(result)
 <div id="leadersTable1"></div>
 
 <div id="leadersTable2"></div>
+
+<div id="leadersTableForUrban"></div>
 
 <div id="matrixDiv"></div>
 <div id="suggestedLocationsDiv"></div>
@@ -1565,7 +1592,7 @@ function buildLeadersTableWithExpPerc(results)
 	}
 	
 }
-function buildLeadersTable(results)
+ function buildLeadersTable(results)
 {
 	$('#leadersTable').html('')
 	if(results != null && results.length > 0)
@@ -1653,6 +1680,96 @@ function buildLeadersTable(results)
 		str += '</div>';
 
 		$('#leadersTable').html(str);
+	}
+	
+} 
+function buildLeadersTableForUrban(results)
+{
+	$('#leadersTable').html('')
+	if(results != null && results.length > 0)
+	{
+		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
+
+		var str = "";
+		str+='<div class="widget blue">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY BOOTH LEVEL CASTE DETAILS </h4>';
+
+		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
+		str += '<tr>';
+		//str += '<th>Mandal</th>';
+		str += '<th>Ward</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Booth</th>';
+		str += '<th>Total Voters</th>';
+		str += '<th>Major Castes</th>';
+		str += '<th>Selected Castes</th>';
+		str += '</tr>';
+
+		for(var i in results)
+		{
+		try{
+			str += '<tr>';
+
+			var rowLength = results[i].boothLevelLeadersList.length;
+			//str += '<td rowspan='+rowLength+'>'+results[i].mandalName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatName+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].casteVoters+'</td>'; 
+						
+			if(results[i].boothLevelLeadersList != null && results[i].boothLevelLeadersList.length > 0){
+			for(var k in results[i].boothLevelLeadersList)
+			{
+				if(k > 0)
+				{
+					str += '<tr>';
+				}
+				str += '<td>'+results[i].boothLevelLeadersList[k].boothName+'</td>'; 
+				str += '<td>'+results[i].boothLevelLeadersList[k].boothTotalVoters+'</td>';
+				
+				if(results[i].boothLevelLeadersList[k].topThreeCateList != null)
+				{
+					str += '<td>';
+					for(var m in results[i].boothLevelLeadersList[k].topThreeCateList)
+					{
+					str += ' '+results[i].boothLevelLeadersList[k].topThreeCateList[m].name+' ('+results[i].boothLevelLeadersList[k].topThreeCateList[m].perc+')  '; 
+					}
+					str += '</td>';
+				}
+				else
+				{
+					str += '<td></td>';
+				}
+				if(results[i].boothLevelLeadersList[k].selectedCateList != null)
+				{
+					str += '<td>';
+				
+					for(var m in results[i].boothLevelLeadersList[k].selectedCateList)
+					{
+						str += ' '+results[i].boothLevelLeadersList[k].selectedCateList[m].name+'  ('+results[i].boothLevelLeadersList[k].selectedCateList[m].perc+')'; 
+					}
+					str +='</td>';
+				}
+				else
+				{
+					str += '<td></td>';
+				}
+				if(k > 0)
+				{
+					str += '</tr>';
+				}
+			}
+			}
+			
+			str += '</tr>';
+		}catch(e){
+		}
+		}
+		
+		str += '</table>';
+		str += '</div>';
+		str += '</div>';
+
+		$('#leadersTableForUrban').html(str);
 	}
 	
 }
@@ -2983,7 +3100,7 @@ function buildnewPartyEffectResults(results)
   </c:if>
   <c:if test="${castDetails}"> 
    
-   getConstituencyType();
+   //getConstituencyType();
   </c:if>
   <c:if test="${youngVoters || oldVoters}"> 
      $("#dashBoardImgLoading").show();
