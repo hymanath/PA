@@ -319,7 +319,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	.problemTitle,.headingCls{color: -moz-menuhover;font-size: 16px;font-weight: bold;}
 	.likeCls{margin-right: 55px; margin-left: 62px;}
 	.commentCls{margin-right: 62px;}
-	.problemFromDate{margin-left: 200px;color: #273241;}
+	.problemFromDate{color: #273241;}
 	.problemReportedDate{float: right;color: #273241;}
 	.problemsShowDIV p{font-size: 12px; text-align: justify;color: #273241;}
 	.problemsShowDIV .problemTitle{font-size: 13px;}

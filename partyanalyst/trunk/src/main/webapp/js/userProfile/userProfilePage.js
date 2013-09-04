@@ -2408,7 +2408,7 @@ function showAllPostedProblems(jsObj,results)
 		templateClone.removeClass('problemTemplateDiv');
 		templateClone.find('.problemReportedDate').html('Posted On: '+problemsData[i].identifiedDate+'');
 		templateClone.find('.problemImg').html('<a href="userProfile.action?profileId='+problemsData[i].userId+'"><img height="40" width="40"  class="thumbnail" src='+imageStr+'></img></a>');
-		templateClone.find('.postedPersonName').html('<h5 style="color:#273241">'+problemsData[i].firstName+ ' Posted</h5>');
+		templateClone.find('.postedPersonName').html('<h5 style="color:#273241">'+problemsData[i].location+' Problem Posted By '+problemsData[i].firstName+ '</h5>');
 		templateClone.find('.problemTitle').html('<a href="completeProblemDetailsAction.action?problemId='+problemsData[i].problemID+'">'+problemsData[i].definition+'</a>');
 		templateClone.find('.problemDescription').html(''+problemsData[i].description+'');
 		templateClone.find('.problemFromDate').html('<span>Existing From: </span>'+problemsData[i].existingFrom+'');
