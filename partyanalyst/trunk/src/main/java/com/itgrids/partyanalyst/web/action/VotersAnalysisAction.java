@@ -1159,7 +1159,7 @@ public String getVotersFamilyDetails(){
 		else
 			votersFamilyInfo = votersAnalysisService.getFamilyInformation(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null);
 	}catch(Exception e){
-		log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- "+e);
+		log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
 	}
 	
 	return SUCCESS;
