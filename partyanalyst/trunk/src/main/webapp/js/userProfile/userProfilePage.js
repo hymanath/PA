@@ -395,6 +395,7 @@ ajaxProcessing();
 
 	//flag value created by Srishailam
 	$(".districtPeopleLink").click(function(){	
+	$("#headerDiv1").html('');
 	flag=false;
 	if(!flag1){
 	flag1=true;
@@ -1639,9 +1640,11 @@ function getFriendsListForUser(results)
 		closeDialogue();
 			return;
 	}
-	else if(results.connectedPeople == "")
+	else if(results.connectedPeople==null || results.connectedPeople == "")
 	{
-		$("#headerDiv").html('<div>There are no connections established till now.</div>').appendTo(".placeholderCenterDiv");;
+		getAllCconnectedUserDetails();
+		setTimeout("getDetailsForallDistricts()",1000);	
+		$("#headerDiv1").html('<div style="color:#0000ff;font-weight:bold;">You are not connected to any of your friends. Now you can connect to your friends from bellow Locations.</div>');
 		closeDialogue();
 			return;
 	}
@@ -2109,6 +2112,7 @@ function showAllConnectedUsersInPanel(jsObj,results)
 	$(".placeholderCenterDiv").children().remove();	
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
+	$("#headerDiv1").css('display','block');
 	var totalResultsCount = results.totalResultsCount;
 	var connectedPeopleCount = results.connectedPeopleCount;
 	var notConnectedPeopleCount = (results.totalResultsCount - results.connectedPeopleCount);
@@ -2239,6 +2243,7 @@ function selectedStatusValue(){
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
 	
+	$("#headerDiv1").css('display','block');
 	if(results.resultStatus.exceptionEncountered != null || results.resultStatus.resultCode !="0")
 	{
 		$("#headerDiv").html('');
@@ -2671,6 +2676,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 	$('#userSpecialPageSubscriptionsDiv').html('');
 	$('#userSpecialPageUnSubscriptionsDiv').html('');
 
+	$("#headerDiv1").css('display','none');
 	var specialPages = results.userSpecialPageSubscriptions;
 
 	if(jsObj.tempVar == "fromWhatsNewLink")
@@ -2916,6 +2922,7 @@ function clearAllSubscriptionDivs()
 	$("#caderInfo").children().remove();
 	$("#impEvents").html('');
 	$("#impEvents").children().remove();
+	$("#headerDiv1").css('display','none');
     $("#partyStateListDiv").html('');
 	$("#partyStateListDiv").children().remove();
 	$("#constituencyStateListDiv").html('');
@@ -4371,7 +4378,6 @@ function subscriptionDetails(linkType)
 	 {
 	  $("#constituencyStateList").val(0);
 	  $("#unSubscribedConstituencyList").find("option").remove();
-	  setTimeout("clearDiv()",1000);	
 	 }
 	 else
       $(".subscriptionsLink").trigger("click");
@@ -4380,11 +4386,6 @@ function subscriptionDetails(linkType)
    {
 	  $("#constituencyErrorMsgDiv").html("Error occured! try again.").css("color","red");	
    }
- }
-
- function clearDiv()
- {
-	$('#constituencyErrorMsgDiv').html('');
  }
 
  function getUnSubScribedLocationDetails()
