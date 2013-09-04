@@ -443,7 +443,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				        </div>
 				
 				        <div id="fLinks"></div>
-				        <div id="headerDiv" class="whitegloss" style="padding: 14px; margin-top: 20px;"></div>
+				        <div id="headerDiv1" class="whitegloss" style="padding: 14px;display:none;"></div> 
+						<div id="headerDiv" class="whitegloss" style="padding: 14px;"></div>
 						<div class="placeholderCenterDiv" id="placeholderCenterDivId" style="padding: 32px;margin-bottom: -60px;width:450px;display:inline-block;">
 						<div id="custom_paginator_class" class="paginatorElmtClass" style="margin-top:10px;margin-left:20px;margin-bottom: 30px;"></div>
 						
