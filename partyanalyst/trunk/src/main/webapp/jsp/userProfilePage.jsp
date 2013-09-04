@@ -57,6 +57,9 @@ var hasNewsMonitoring = "${hasNewsMonitoring == true}";
 	  environment = "live";
 %>
 environment = '<%=environment%>';
+$(".p4").live("click",function(){
+$(".widget-block > ul.nav > li").removeClass("active");
+});
 </script>
 <style>
 
@@ -638,7 +641,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						</c:if>-->
 				
 						
-				<p class="p4"><a class="btn btn-mini btn-small btn-info districtPeopleLink"href="javascript:{}">See All</a></p>
+				<p class="p4"><a class="btn btn-mini btn-small btn-info districtPeopleLink" href="javascript:{}">See All</a></p>
 
 				</div>
 			<!-- People You May Know Div End -->
@@ -1357,26 +1360,26 @@ $('#userSettingsDialog').html('');
 
 	var str='';
 
-	str+='<div style="width:285px;">';
+	str+='<div style="width:375px;">';
 
 	//str+='<label>Profile Settings:</label><br>';
 
 	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b>Private View</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b> Private View :</b> Your profile is invisible to all.</label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b>Private View</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b> Private View :</b> &nbsp;&nbsp;&nbsp;Your profile is invisible to all.</label>';
 
     if(results.selectedOptionId == 1)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b>Public View</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b> Public View :</b> Your profile is visible to all.</label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b>Public View</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b> Public View :</b> Your profile is visible to all.</label>';
 	
 	if(results.selectedOptionId == 3)
-	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b>Friends View</b></label>';
+	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b> Friends View :</b> Your Profile visible to your friends only</label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b>Friends View</b></label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b> Friends View :</b> Your Profile visible to your friends only</label>';
 
-    str+='<div style="margin-top:10px;">';
+    str+='<div style="margin-top:10px; float: right;">';
 	str+='<input  type="button"   class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
 
 	str+='<input  style="margin:10px;" type="button" class="btn btn-success" value="Cancel" onClick="closeDialog();"/>';
@@ -1390,7 +1393,8 @@ $('#userSettingsDialog').html('');
 
 	$('#userSettingsDialog').dialog({
         title:'Update Profile View',
-		hide:'explode'
+		hide:'explode',
+		width:'auto'
 	});
 
 	
