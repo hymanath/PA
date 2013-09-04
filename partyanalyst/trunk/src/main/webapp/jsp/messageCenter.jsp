@@ -360,13 +360,11 @@ $(document).ready(function() {
 		{
 			$('#textSmsDiv').show('slide', {direction: 'left'}, 500);
 			$('#voiceSmsDiv').hide();
-			$('#sendSMSBtn').html("Send Text SMS");
 
 		}else
 		{
 			 $('#textSmsDiv').hide();
 			 $('#voiceSmsDiv').show('slide', {direction: 'right'}, 500);
-			 $('#sendSMSBtn').html("Send Voice SMS");
 
 		}
 	});
@@ -1026,9 +1024,7 @@ var jsObj=
   
   <div style="height:auto;border:1px solid #06ABEA;" class="span12" >
 
-  <div style="float:right;margin-right:121px;">
-    <a id="sendSMSBtn" class="btn btn-warning" href="javascript:{sendSMS();}" style="position:fixed;z-index:9999;">Send Text SMS </a> 
-  </div>
+
  
      <div class="radioSpecial" style="margin:9px 0px 0px 72px;">
 		 <span style="font-size:13px;font-weight:bold;">Search By:</span><input type="radio" id="cadre" name="searchFor" value="cadre" class="searchType" checked>
@@ -1269,8 +1265,23 @@ var jsObj=
 
 <div class="widget whitegloss" style="margin:0px 0px 0px 0px;text-align:center;">
 
+<div>
+
 <span id="errorMsg"></span>
-<label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea></div>
+<label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea>
+</div>
+
+
+   <div>
+     <a id="sendSMSBtn" class="btn btn-warning" href="javascript:{sendTextSms();}" style="margin-top:20px;">Send Text SMS </a> 
+   </div>
+
+
+</div>
+
+
+
+
 
 </div>
 
@@ -1311,7 +1322,15 @@ var jsObj=
   <h4 style="color:#3A87AD;margin:40px 0px 0px 124px;"><u>VERIFIED NUMBERS TO SEND VOICE SMS</u><font style="color:red;">*</font></h4>
   <div id="verifiedNumbersDiv"></div>
 
-  <div style="margin:14px 0px 0px 116px"><label><input type="checkbox" style="margin:0px;" id="termsAndConditions"/><span style="margin:0px 0px 0px 7px;">I have read and agree to the <a href="javascript:{showTermsAndConditiond();}">Terms and Conditions</a></span></label></div>
+  <div style="margin:14px 0px 0px 116px"><label><input type="checkbox" style="margin:0px;" id="termsAndConditions"/><span style="margin:0px 0px 0px 7px;">I have read and agree to the <a href="javascript:{showTermsAndConditiond();}">Terms and Conditions</a></span></label>
+
+
+  <div style="text-align:center;">
+     <a id="sendSMSBtn" class="btn btn-warning" href="javascript:{validateFieldsForSendingSms();}" style="margin-top:20px;">Send Voice SMS </a> 
+   </div>
+  
+  
+  </div>
 
 
    
@@ -1463,9 +1482,8 @@ function validateFieldsForSendingSms()
 	if(error == true)
 	{
 		$('#errorDiv').html(str);
-		$('html,body').animate({scrollTop: $("#errorDiv").offset().top}, 2000);
+		//$('html,body').animate({scrollTop: $("#errorDiv").offset().top}, 2000);
 
-		return false;
 	}
 	else
 		ajaxToSendVoiceSms();
@@ -2892,7 +2910,7 @@ function showReportsLevels(value)
 	}
 	
 }
-function sendSMS()
+/*function sendSMS()
 {
 	
 	if($("input:radio[name=smsType]:checked").val() == "text")
@@ -2901,7 +2919,7 @@ function sendSMS()
 		validateFieldsForSendingSms();
 
 
-}
+}*/
 
 function sendTextSms()
 {
@@ -2924,12 +2942,14 @@ function sendTextSms()
 		votersDetails.push(value);
     });
 
+	var error = false;
+
     if($('#textSmsDescription').val().trim() == "")
 	{
 		$('#errorMsg').html("<font style='font-weight:bold;color:red;'>Please Enter The Message To Send.</font>");
-		$('html,body').animate({scrollTop: $("#errorMsg").offset().top}, 2000);
+		//$('html,body').animate({scrollTop: $("#errorMsg").offset().top}, 2000);
 
-		return false;
+		error = true;
 	}
   if($('#mobileNumber').val().trim() != "")
   {
@@ -2955,6 +2975,8 @@ function sendTextSms()
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendTextSMS.action?"+rparam;	
+
+			if(error  != true)
 			callAjax1(rparam,jsObj,url);
 
 }
@@ -3042,6 +3064,8 @@ function showHideLocationOptionsForOtherthanVoter()
 	   	   $('#stateDiv,#districtDiv,#ConstituencyDiv,#constiDiv,#mandalDiv').show();
 
 }
+
+
 function showHideLocationOptionsForVoter()
 {
 	var selectedValue = $('#reportLevel').val();
@@ -3064,6 +3088,8 @@ function showHideLocationOptionsForVoter()
 	   	   $('#ConstituencyDiv,#constiDiv,#mandalDiv,#hamletDiv').show();
 
 }
+
+
 function getBoothDetailsForCadre()
 {
 
@@ -3084,6 +3110,7 @@ function getBoothDetailsForCadre()
 			callAjax1(rparam,jsObj,url);
 
 }
+
 function getHamletsInMandal()
 {
 
@@ -3105,6 +3132,7 @@ function getHamletsInMandal()
 			callAjax1(rparam,jsObj,url);
 
 }
+
 function getBooths()
 {
 	
@@ -3120,7 +3148,9 @@ function getBooths()
 			else	
   			   getBoothDetailsForCadre();
 		}
+	
 }
+
 function buildBoothResultdForOtherthanVoter(results)
 {
 	$('#pollingStationField').find('option').remove();
@@ -3130,6 +3160,7 @@ function buildBoothResultdForOtherthanVoter(results)
 
 	});
 }
+
 function buildHamletsForOtherthanVoters(results)
 {
 
@@ -3140,6 +3171,7 @@ function buildHamletsForOtherthanVoters(results)
 
 	});
 }
+
 function openSmsHistoryWindow()
 {
  
@@ -3148,6 +3180,8 @@ function openSmsHistoryWindow()
   browser2.focus(); 
 
 }
+
+
 function removeCadre()
 {
 
@@ -3161,6 +3195,7 @@ function removeCadre()
 	 $('#cadreCount').html(0);
 
 }
+
 function removeInfluencePeople()
 {
 		 	//console.log(selectedCadreDetails);
@@ -3175,6 +3210,7 @@ function removeInfluencePeople()
 	 $('#influencePeopleCount').html(0);
 
 }
+
 function removeVoters()
 {
 	selectedVotersDetails = {};
@@ -3185,10 +3221,12 @@ function removeVoters()
      });
 	 $('#voterCount').html(0);
 }
+
 function sendDirectSMSToVoters()
 {
    getCandidatesData("direct");
 }
+
 function sendDirectSMSToVotersAjax()
 {
 	  var jsObj=
@@ -3245,7 +3283,9 @@ function buildReportLevelValues()
 	{
 		$('.woption').remove();
 	}
+
 }
+
 function populateConstituencies()
 {
 
@@ -3266,6 +3306,7 @@ $('#constituencyList').append('<option value="0">Select Constituency</option>')
         	else
 				$('#constiTypeDiv').hide();
 	}
+
 }
 $("#showhidebtn").live("click",function(){
 	$('#searchOptionsDiv').toggle('slow');
