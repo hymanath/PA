@@ -2903,7 +2903,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 			  
 			}
-			mobileNoExist = null;
+			mobileNoExist = "true";
 				
 		}
 		VoterHouseInfoVO voterHouseInfoVO = null;
@@ -2943,7 +2943,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 			return votersList;
 		}catch(Exception e){
 			e.printStackTrace();
-			log.error(" Exception Occured in getVoterDetailsByCaste() Method, Exception - "+e);
+			log.error(" Exception Occured in getVoterDetailsByCaste() Method, Exception - ",e);
 			return votersList;
 		}
 	}
