@@ -4371,6 +4371,7 @@ function subscriptionDetails(linkType)
 	 {
 	  $("#constituencyStateList").val(0);
 	  $("#unSubscribedConstituencyList").find("option").remove();
+	  setTimeout("clearDiv()",1000);	
 	 }
 	 else
       $(".subscriptionsLink").trigger("click");
@@ -4379,6 +4380,11 @@ function subscriptionDetails(linkType)
    {
 	  $("#constituencyErrorMsgDiv").html("Error occured! try again.").css("color","red");	
    }
+ }
+
+ function clearDiv()
+ {
+	$('#constituencyErrorMsgDiv').html('');
  }
 
  function getUnSubScribedLocationDetails()
