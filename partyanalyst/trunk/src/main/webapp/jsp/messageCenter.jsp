@@ -360,11 +360,15 @@ $(document).ready(function() {
 		{
 			$('#textSmsDiv').show('slide', {direction: 'left'}, 500);
 			$('#voiceSmsDiv').hide();
+			$('#errorMsg').html('');
+            
 
 		}else
 		{
 			 $('#textSmsDiv').hide();
 			 $('#voiceSmsDiv').show('slide', {direction: 'right'}, 500);
+			 $('#errorDiv').html('');
+
 
 		}
 	});
