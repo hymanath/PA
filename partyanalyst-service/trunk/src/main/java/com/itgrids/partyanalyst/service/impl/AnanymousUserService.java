@@ -1059,7 +1059,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 									emailDetailsVO.setSenderName(senderName);
 									emailDetailsVO.setToAddress(email);
 									//mailsSendingService.acceptEmailFriendRequest(emailDetailsVO);
-									mailsSendingFromTaskExecutor(emailDetailsVO,"mailForAcceptFriendRequest");
+									taskExecutor.execute(mailsSendingFromTaskExecutor(emailDetailsVO,"mailForAcceptFriendRequest"));
 								}
 							}
 							}
@@ -1093,7 +1093,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 										emailDetailsVO.setSubject(subject);
 										emailDetailsVO.setSenderName(senderName);
 										//mailsSendingService.sendMessageToConnectUser(emailDetailsVO);
-										mailsSendingFromTaskExecutor(emailDetailsVO,"mailForMsgToConnectedUsers");
+										taskExecutor.execute(mailsSendingFromTaskExecutor(emailDetailsVO,"mailForMsgToConnectedUsers"));
 									}
 								}
 							}
