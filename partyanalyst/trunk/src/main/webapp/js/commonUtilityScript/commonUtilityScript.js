@@ -311,6 +311,18 @@ function removeAllUnwantedCharacters(str)
    return replaceEnterKey(strng,"  ");
 } 
 
+function replaceSpecialCharacters(str)
+{
+  str = str.replace(/\&/g,"%26");
+  str = str.replace(/\#/g,"%23");
+  str = str.replace(/\%/g,"%25");
+  str = str.replace(/\+/g,"%2B");
+  str = str.replace(/\//g,"%2F");
+
+  str = replaceEnterKey(str,"\n");
+  return str;
+}
+
 function enableButton(id)
 {
 	document.getElementById(id).disabled  = false;
