@@ -1294,6 +1294,9 @@ function callAjax1(jsObj,url){
 						openModal("Link added successfully","msg");
 						$("#FavouriteLinks").trigger('click');//to rebuild the favourite link section
 						setTimeout(hello,1000);
+						$("#addPopupForFavouriteLinks").html('');
+						$("#addPopupForFavouriteLinks").dialog( "close" );
+
 					}
 					else if(jsObj.task =="getStatesAjaxAction"){
 						buildStatesIntoDropDown(results,'stateList');
@@ -3509,7 +3512,7 @@ $('#Parliament').live('click',function(){
 });
 
 function openPopupForFavouriteLinks(){
-
+$("#addPopupForFavouriteLinks").css("display","block");
 var str=''; 
 str+='<label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="state" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="State" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">State</span></label>';
 str+=' <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="District" name="radioForFavourite" onclick="displayLocationScope(this.id)" value="District" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">District</span> </label>';
@@ -4216,13 +4219,17 @@ $("#processingDialogue").dialog({
 		closeOnEscape: false
 			
 });
-$(".ui-dialog-titlebar").hide();
- $(".ui-dialog").addClass("customclass");
-$(".ui-widget-content").css({'border':'none','background':'none'});
- $(".ui-dialog-content").dialog("option","position","center");
-$("ui-dialog").css({left:378 ,width:512});
-$(".ui-icon").css("display","none");
- $("#processingDialogue").dialog('open').html("<img id='processingImg' src='images/ajaxImg2.gif' style='width:40px;'/>");
+$('#processingDialogue').siblings('div.ui-dialog-titlebar').hide();
+$('#processingDialogue').closest('.ui-dialog').addClass("customclass");
+$('#processingDialogue').addClass("customclass1");
+$('#processingDialogue').removeClass("ui-widget-content ui-dialog-content");
+//$(".ui-dialog-titlebar").hide();
+// $(".ui-dialog").addClass("customclass");
+//$('.ui-widget-content').css({'border':'none','background':'none'});
+//$('.ui-dialog-content').dialog("option","position","center");
+$('.ui-dialog').css({left:378 ,width:512});
+$('#processingDialogue').closest('.ui-icon').css("display","none");
+ $("#processingDialogue").dialog('open').html("<img src='images/ajaxImg2.gif' style='width:40px;'/>");
 }
 function closeDialogue()
 {
