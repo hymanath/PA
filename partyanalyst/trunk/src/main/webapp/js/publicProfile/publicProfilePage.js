@@ -217,6 +217,8 @@ function sendMessageToConnectedUser(userId,type)
 		
 	$("#ErrorMsgDivId").html('<img src="images/icons/search.gif" class="searchImgCls"/>');
 	disableButton("sendMessageButtonId");
+	connectMsg = replaceSpecialCharacters(connectMsg);
+
 	var jsObj ={
 				loginUserId:loginUserId,
 				message:connectMsg,				
