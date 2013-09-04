@@ -551,7 +551,7 @@ var jsObj=
 			searchCriteriaArray		: [],
 			searchCriteriaValue		: "0",
 			performSearch			: "and",
-			txtAreaValue			: "",
+			txtAreaValue			: "smsSend",
 			includeCadreName		: "NO",
 			bloodGroupId			: "0",
 			taskType				: "search",
