@@ -1203,8 +1203,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				sb.append(",").append(partyID);
 			}
 			
-			List temp = boothConstituencyElectionDAO.getPartyVotesByMandal(tehsilID, sb.substring(1), 
-					mandalAllElectionDetailsVO.getElectionID());
+			/*List temp = boothConstituencyElectionDAO.getPartyVotesByMandal(tehsilID, sb.substring(1), 
+					mandalAllElectionDetailsVO.getElectionID());*/
+			List temp =  boothConstituencyElectionDAO.getPartyVotesByMandalWithRankDetails(tehsilID, sb.substring(1), 
+					mandalAllElectionDetailsVO.getElectionID()); 
 			//0-firstName, 1-middlename, 2-lastname, 3-election, 4-votesearned, 5-partyId, 6-shortName
 			if(temp.size()==0){
 				iterator.remove();
@@ -1228,6 +1230,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			mandalAllElectionDetailsVO.setPartyId(new Long(obj[5].toString()));
 			Long totalPartyVotes = new Long(obj[4].toString());
 			String partyPercentage = calculateVotesPercengate(mandalAllElectionDetailsVO.getValidVoters(),totalPartyVotes);//getTotalVoters();
+			
+			mandalAllElectionDetailsVO.setTotalVotersEarned(totalPartyVotes);
+			mandalAllElectionDetailsVO.setRank(obj[7].toString());
+			
 			mandalAllElectionDetailsVO.setPartyVotesPercentage(partyPercentage);
 		}
 		
@@ -1267,7 +1273,9 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	public void getMPTCDetailsForMandal(Long tehsilID, Long partyId, List<MandalAllElectionDetailsVO> mandalAllElectionDetails){
 		ResultStatus resultVO = new ResultStatus();
 		try{
-			List mptcInfo = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty(tehsilID, partyId);
+			//List mptcInfo = nominationDAO.findMPTCInfoByElectionTypeTehsilAndParty(tehsilID, partyId);
+			List mptcInfo = nominationDAO.findMPTCInfoByElectionTypeTehsilAndPartyWithGainedVotes(tehsilID, partyId);
+			
 			MandalAllElectionDetailsVO mandalAllElectionDetailsVO = null;
 			String partyName = "";
 			String electionYear = "";
@@ -1277,6 +1285,8 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			String partyVotesPercentage = "";
 			String candidateName = "";
 			String electionType = "";
+			Double votersEarned = null;
+			
 			for(int i=0; i < mptcInfo.size(); i++){
 				mandalAllElectionDetailsVO = new MandalAllElectionDetailsVO();
 				Object[] values = (Object[]) mptcInfo.get(i);
@@ -1287,6 +1297,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				votesGainedByParty = (Double)values[4];
 				candidateName = (String)values[5];
 				electionType = (String)values[6];
+				votersEarned = (Double)values[7];
 				
 				if(validVotes == null || validVotes == 0){
 					List votes = nominationDAO.findValidVotesOfAllCandiatesOfAMandalByElectionTypeMandalAndYear(IConstants.MPTC_ELECTION_TYPE, electionYear, tehsilID);
@@ -1313,8 +1324,49 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				mandalAllElectionDetailsVO.setTotalVoters(totalVoters.longValue());
 				mandalAllElectionDetailsVO.setValidVoters(validVotes.longValue());
 				mandalAllElectionDetailsVO.setPartyVotesPercentage(partyVotesPercentage);
+				mandalAllElectionDetailsVO.setTotalVotersEarned(votersEarned.longValue());
+				mandalAllElectionDetailsVO.setRank(values[8].toString());
 				mandalAllElectionDetails.add(mandalAllElectionDetailsVO);
 			}
+			
+			
+			Map<String , Double> map = new HashMap<String, Double>();
+			Map<String , Integer> noOfRecords = new HashMap<String, Integer>();
+			
+			Long earnedVotes = 0L;
+			
+			for(MandalAllElectionDetailsVO vo:mandalAllElectionDetails)
+			{
+				if(vo.getElectionType().equalsIgnoreCase(IConstants.MPTC))
+				{
+					Double count = 0.0;
+					if(map.get(vo.getElectionYear()) != null)
+					{
+						count = map.get(vo.getElectionYear()) ;					
+						map.put(vo.getElectionYear(), count + Double.parseDouble(vo.getPartyVotesPercentage()));
+						
+						noOfRecords.put(vo.getElectionYear(), noOfRecords.get(vo.getElectionYear()) +1);
+					}else{
+						map.put(vo.getElectionYear(), Double.parseDouble(vo.getPartyVotesPercentage()));
+						
+						noOfRecords.put(vo.getElectionYear(), 1);
+
+					}
+					
+				}
+			}
+			
+			
+			
+			for(MandalAllElectionDetailsVO vo:mandalAllElectionDetails)
+			{	
+				if(vo.getElectionType().equalsIgnoreCase(IConstants.MPTC))
+				{
+					Double percent = map.get(vo.getElectionYear()) / noOfRecords.get(vo.getElectionYear());
+				     vo.setVotesGainedPercent(percent.toString());
+				}
+			}
+			
 		}catch(IndexOutOfBoundsException ex){
 			resultVO.setExceptionEncountered(ex);
 			resultVO.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
