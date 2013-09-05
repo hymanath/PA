@@ -1330,7 +1330,7 @@ function callAjax1(jsObj,url){
 					}
 					else if(jsObj.task== "saveFavouriteLink"){
 						$("#errorsDiv").html("Link added successfully..").css("color","Green");
-						setTimeout(function(){$("#FavouriteLinks").trigger('click');},3000);//to rebuild the favourite link section
+						setTimeout(function(){$("#FavouriteLinks").trigger('click');},1000);//to rebuild the favourite link section
 						//openModal("Link added successfully","msg");
 						setTimeout(hello,1000);
 						$("#addPopupForFavouriteLinks").html('');
@@ -4296,6 +4296,7 @@ $("#processingDialogue").dialog({
 		autoOpen: false,
 		modal: true,
 		position:'center',
+		resizable: false,
 		closeOnEscape: false
 			
 });
