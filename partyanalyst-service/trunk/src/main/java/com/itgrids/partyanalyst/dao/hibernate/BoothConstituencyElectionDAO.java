@@ -741,6 +741,18 @@ public List<Long> getElectionsByMandals(List<Long> mandalIds,Long partyId,Long e
 	return query.list();
 }
 
+public List<Long> getElectionsByUrbanConsti(Long constiId,Long electionTypeId)
+{
+	Query query = getSession().createQuery("select distinct model.constituencyElection.election.electionId from BoothConstituencyElection model " +
+			" where model.constituencyElection.constituency.constituencyId=:constituencyId and " +
+			" model.constituencyElection.election.electionScope.electionType.electionTypeId = :electionTypeId " );
+	//query.setParameter("partyId", partyId);
+	query.setParameter("electionTypeId", electionTypeId);
+	query.setParameter("constituencyId", constiId);
+	return query.list();
+}
+
+
 public List<Object[]> getTotalValidVotesAndTotalVotersByBoothIdsList(List<Long> boothslist,Long electionId,Long constituencyId)
 {
 	   Query query = getSession().createQuery(" select sum(model.boothResult.validVotes),model.booth.totalVoters,model.booth.panchayat.panchayatName,model.booth.partNo from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId  " +
