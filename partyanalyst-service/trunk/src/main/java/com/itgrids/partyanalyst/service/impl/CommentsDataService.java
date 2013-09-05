@@ -18,6 +18,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -74,6 +75,7 @@ public class CommentsDataService implements ICommentsDataService {
 	private IMailsSendingService mailsSendingService;
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private IUserDAO userDAO;
+	private TaskExecutor taskExecutor;
 	
 
 	public IUserConnectedtoDAO getUserConnectedtoDAO() {
@@ -199,6 +201,13 @@ public class CommentsDataService implements ICommentsDataService {
 	}
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
+	}
+	
+	public TaskExecutor getTaskExecutor() {
+		return taskExecutor;
+	}
+	public void setTaskExecutor(TaskExecutor taskExecutor) {
+		this.taskExecutor = taskExecutor;
 	}
 	/*
 	 * This Method gets all comments on a candidate based on the input selected parameters and sets the data to VO,ElectionCommentsVO.
@@ -651,7 +660,8 @@ public class CommentsDataService implements ICommentsDataService {
 						emailDetailsVO.setConstituencyName(candidateComments.getConstituencyName().toString());
 						
 						
-						mailsSendingService.acceptEmailForAnalyzeConstituency(emailDetailsVO);
+						//mailsSendingService.acceptEmailForAnalyzeConstituency(emailDetailsVO);
+						taskExecutor.execute(sendEmailsFromTaskExecutor(emailDetailsVO, "emailForFreeUserAfterPoliticalReaAdded"));
 						
 						List<Object[]> connectedPeople = userConnectedtoDAO.getAllConnectedPeopleForFreeUser(userId);
 						
@@ -670,7 +680,8 @@ public class CommentsDataService implements ICommentsDataService {
 						emailDetailsVO.setSenderName(name);
 						
 						
-						mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+						//mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+						taskExecutor.execute(sendEmailsFromTaskExecutor(emailDetailsVO,"emailForConnectedUsersAfterPoliticalReaAdded"));
 						}
 						}
 						List<Object[]> connectedRecepientPeople = userConnectedtoDAO.getAllConnectedPeoplesForFreeUser(userId);
@@ -688,8 +699,8 @@ public class CommentsDataService implements ICommentsDataService {
 								
 							emailDetailsVO.setToAddress(recepientPeople[3].toString());
 							emailDetailsVO.setSenderName(recepentUserName);
-							mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
-							
+							//mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+							taskExecutor.execute(sendEmailsFromTaskExecutor(emailDetailsVO,"emailForConnectedUsersAfterPoliticalReaAdded"));
 						}
 						}
 						
@@ -1255,7 +1266,8 @@ public class CommentsDataService implements ICommentsDataService {
 						emailDetailsVO.setPartyStrength("loosing");
 					emailDetailsVO.setConstituencyName(params[5].toString());
 					emailDetailsVO.setElectionType(params[6].toString());
-					mailsSendingService.sendEmailToFreeUserAfterCommentRejected(emailDetailsVO);
+					//mailsSendingService.sendEmailToFreeUserAfterCommentRejected(emailDetailsVO);
+					taskExecutor.execute(sendEmailsFromTaskExecutor(emailDetailsVO,"emailForFreeUserAfterPoliticalReaRejected"));
 			}}
 		}		
 		catch(Exception e)
@@ -1318,6 +1330,25 @@ public class CommentsDataService implements ICommentsDataService {
 			
 		} catch (Exception e) {
 			return candidateComments;
+		}
+	}
+	
+	public Runnable sendEmailsFromTaskExecutor(EmailDetailsVO emailDetailsVO,String emailType)
+	{
+		try{
+			
+		  if(emailType != null && emailType.equalsIgnoreCase("emailForConnectedUsersAfterPoliticalReaAdded"))
+			mailsSendingService.sendEmailForConnectedUsers(emailDetailsVO);
+		  else if(emailType != null && emailType.equalsIgnoreCase("emailForFreeUserAfterPoliticalReaRejected"))
+		    mailsSendingService.sendEmailToFreeUserAfterCommentRejected(emailDetailsVO);
+		  else if(emailType != null && emailType.equalsIgnoreCase("emailForFreeUserAfterPoliticalReaAdded"))
+		    mailsSendingService.acceptEmailForAnalyzeConstituency(emailDetailsVO);
+		  
+		 return new Thread();	
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in sendEmailsFromTaskExecutor() method, Exception - "+e);
+		 return new Thread();
 		}
 	}
 }
