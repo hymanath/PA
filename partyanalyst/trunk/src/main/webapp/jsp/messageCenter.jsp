@@ -1042,6 +1042,15 @@ clearOptionsListForSelectElmtId("pollingStationField");
  </head>
  <body>
 
+  <form id="sendVoiceSMS" method="post" action="sendVoiceSMS.action" name="sendVoiceSMS">
+	   <input type="hidden" name="task" id="sendVoiceSMSId" />
+  </form>
+
+
+ <form id="sendTextSMS" method="post" action="sendTextSMS.action" name="sendTextSMS">
+	   <input type="hidden" name="task" id="sendTextSMSId" />
+  </form>
+
 
 <div id="noVerificationNumbers" style="text-align:center;margin:5px;"></div>
 <div id="mainDiv" class="container" style="margin-top:12px;">
@@ -1192,7 +1201,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
    	   
    
      <div class="selectDiv radioSpecial" id="genderDiv"style="margin-bottom: 10px;">
-	 <span style="margin-right:100px;">GENDER:</span>
+	 <span style="margin-right:100px;">Gender:</span>
 		 <input type="radio" id="all"  name="gender" value="All"  checked>
 		   <label for="all">All</label>
 		<input type="radio" id="male" name="gender" value="M"  >
@@ -1569,8 +1578,6 @@ function ajaxToSendVoiceSms(){
 		votersDetails.push(value);
     });
 
-	
-
 	var jsObj=
 			{
 				task:"sendVoiceSms",
@@ -1584,9 +1591,40 @@ function ajaxToSendVoiceSms(){
                 votersDetails:votersDetails
 					
 			};
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "sendVoiceSMS.action?"+rparam;	
-			callAjax1(rparam,jsObj,url);
+
+	
+
+		$("#sendVoiceSMSId").val(YAHOO.lang.JSON.stringify(jsObj));
+		  var uploadHandler = {
+			success: function(o) {
+				var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+			          if(myResults == "Successfully Sent..")
+						{
+							selectedVotersDetails = {};
+
+							 selectedCadreDetails = {};
+
+							 selectedInfluencePeopleDetails = {};
+
+							 selectedMobileNumbers = new Array();
+
+							 $('#cadreCount , #influencePeopleCount, #voterCount').html(0)
+
+						    $('#responseDetailsDiv').dialog('close');
+						    $('#successMsg').html(myResults);
+							$('#voiceSmsDescription,#mobileNumber').val("");
+
+							$('input[name=audio]').attr('checked', false);
+						  
+
+						}
+			
+			}
+		};
+	
+	YAHOO.util.Connect.setForm('sendVoiceSMS',false);
+	YAHOO.util.Connect.asyncRequest('POST','sendVoiceSMS.action',uploadHandler);
+
 }
 
 
@@ -2014,7 +2052,7 @@ function callAjax1(param,jsObj,url){
 					}
 					else if(jsObj.task == "sendTextSms")
 				    {
-						alert(123);
+						//alert(123);
 					}
 					else if(jsObj.task == "boothsInTehsilOrMunicipality"){
 						buildBoothResultdForOtherthanVoter(myResults);
@@ -3021,11 +3059,23 @@ function sendTextSms()
 
 
 			};
-			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+
+			$("#sendTextSMSId").val(YAHOO.lang.JSON.stringify(jsObj));
+		  var uploadHandler = {
+			success: function(o) {
+				var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+			          		
+			}
+		};
+	
+	YAHOO.util.Connect.setForm('sendTextSMS',false);
+	YAHOO.util.Connect.asyncRequest('POST','sendTextSMS.action',uploadHandler);
+
+		/*	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "sendTextSMS.action?"+rparam;	
 
 			if(error  != true)
-			callAjax1(rparam,jsObj,url);
+			callAjax1(rparam,jsObj,url);*/
 
 }
 
