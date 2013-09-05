@@ -1364,7 +1364,7 @@ $('#userSettingsDialog').html('');
 
 	var str='';
 
-	str+='<div style="width:375px;">';
+	str+='<div style="width:382px;">';
 
 	//str+='<label>Profile Settings:</label><br>';
 
