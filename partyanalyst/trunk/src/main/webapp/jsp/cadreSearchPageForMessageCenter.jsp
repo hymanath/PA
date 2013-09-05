@@ -431,7 +431,7 @@ window.open(urlStr,"addNewCadrePeople","scrollbars=yes,height=570,width=1300,lef
 			   }
 
 
-			   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
+			   if($.inArray("91"+mobileNumber, window.opener.selectedMobileNumbers) == -1)
                        window.opener.selectedMobileNumbers.push(mobileNumber);
 
 			});
