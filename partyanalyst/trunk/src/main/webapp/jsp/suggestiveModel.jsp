@@ -179,7 +179,19 @@ th {
     font-size: 15px;
     margin-bottom: 10px;}
 
-.fromDiv,.toDiv{float:left;margin:10px;}
+.fromDiv {
+    float: left;
+    margin-bottom: 12px;
+    margin-left: 56px;
+    margin-top: 10px;
+}
+
+.toDiv {
+    float: left;
+    margin-bottom: 12px;
+    margin-left: 18px;
+    margin-top: 10px;
+}
 .inputDiv{float:right;margin-left:10px;}
 #errorMsg{color:red;}
 .table thead th{text-align:center;}
@@ -933,7 +945,7 @@ function panchayatMatrx(result)
   <div class="widget blue">
   <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 450px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
-   <div id="mainDiv" align="center" style="margin-left: 100px;">
+   <div id="mainDiv" align="center"  style="margin-left: 196px;">
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
      <div style="width: 500px; float: left;margin-bottom: 5px;">
 		<table>
@@ -979,23 +991,28 @@ function panchayatMatrx(result)
 <table>
 		<tr>
 			<td id="tdWidth">
-				Election Year :<font id="requiredValue" class="requiredFont">*</font> 
+				From Year :<font id="requiredValue" class="requiredFont">*</font> 
 			</td>		
 			<td>
 				<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);">
 				<option value="0"> Select Year </option>
 				</select>
 			</td>
-			<td Style="padding-left: 15px;">
+		</tr>
+		<tr>
+		<td id="tdWidth">
+				To Year :<font id="requiredValue" class="requiredFont">*</font> 
+			</td>	
+			<td>
 				<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)">
 				<option value="0"> Select Year </option>
 				</select>
 			</td>
 		</tr>
 	</table>
-</div></br>
+</div>
 <div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
-	<span style="float: left; margin-left: 1px; padding-top: 13px; padding-bottom: 13px;">Please Check For Excepted Caste Details <input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();"><br></span></br>
+	
 	<table>
 		<tr>
 			<td id="tdWidth">
@@ -1006,42 +1023,82 @@ function panchayatMatrx(result)
 				<option value="0"> Select Caste </option>
 				</select>
 			</td>	
-			<td>
-				<input type="button" id="expCasteButton" value="CASTE PERCENTAGES" class="btn-success" onClick="ckeckForExpCasteDetails()" style="height: 29px; border-radius: 4px 4px 4px 4px; margin-left: 59px;display:none;"></input>
+
+		<td><input type="checkbox" name="expCaste" id="expCaste" value="expCaste" onclick="showExpCasteDetailsButton();" style="margin-left: 10px; margin-top: 0px;"><span id="ecpCheckBox" style="margin-left:10px;">Please Check Here For Excepted Castes</span></td>
+		
+		</tr>
+	</table>
+	<input type="button" id="expCasteButton" value="CASTE PERCENTAGES" class="btn-success" onClick="ckeckForExpCasteDetails()"  style="height: 29px; border-radius: 4px 4px 4px 4px; margin-top: -20px; margin-left: 227px;display:none;"></input>
+</div>
+<div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
+<div id="ageGroupWiseId">
+<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
+<div class="pull-left"  style="margin-left: -2px; float: left; padding-top: 10px;">Young Voters :</div><div class="fromDiv">
+From
+<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" style="width: 35px; height: 12px;" value="18"/></div>
+</div>
+<div class="toDiv">
+To
+<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width: 35px; height: 12px;" value="22"/></div>
+</div>
+<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="35px" style="display:none;"/></div>
+</div>
+<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
+<div class="pull-left"  style="margin-left: -2px; float: left; padding-top: 10px;">Old Voters :</div><div class="fromDiv" style="margin-left: 74px;">
+From
+<div class="inputDiv" ><input type="text" id="fromTxt" class="fromInput" style="width: 25px; height: 12px;" value="60"/></div>
+</div>
+<div class="toDiv">
+To
+<div class="inputDiv" ><input type="text" id="toTxt" class="toInput" style="width: 35px; height: 12px;" value="120"/></div>
+</div>
+<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="35px" style="display:none;"/></div>
+</div>
+</div>
+</div>
+
+<!--<div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
+<div id="ageGroupWiseId">
+	<table>
+		<tr>
+			<td id="tdWidth">Young Voters : 
+			</td>
+			<td><span>From</span>
+			<input type="text" id="fromTxt" class="fromInput"  style="height: 10px; width: 25px; margin-left: 16px;" value="18"/>
+			<span  style="margin-left: 15px;">To</span>
+			<input type="text" id="toTxt" class="toInput"  style="height: 10px; width: 25px; margin-left: 16px;" value="22"/>
+			</td>
+		</tr>
+		<tr>
+			<td id="tdWidth">Old Voters : 
+			</td>
+			<td><span>From</span>
+			<input type="text" id="fromTxt" class="fromInput"  style="height: 10px; width: 25px; margin-left: 16px;" value="60"/>
+			<span  style="margin-left: 15px;">To</span>
+			<input type="text" id="toTxt" class="toInput"  style="height: 10px; width: 25px; margin-left: 16px;" value="120"/>
 			</td>
 		</tr>
 	</table>
+		<!--<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
+	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
+		<div class="pull-left" >Old Voters : </div><div class="fromDiv" style="margin-left:30px;">
+			From
+			<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" style="width:25px;" value="60"/></div>
+		</div>
+		<div class="toDiv">
+			To
+			<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width:25px;" value="120"/></div>
+		</div>
+		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
+	</div>
 </div>
+</div>-->
+
 
 <div id="selCastesDisplayDiv">
 <div id="sublevelSelectionDiv"></div>
 </div>
-<div style="margin-left:80px;margin-top:70px;">
-<div id="ageGroupWiseId">
-	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
-		<div class="pull-left" style="margin:10px;font-weight:bold;">Young Voters -</div><div class="fromDiv">
-			From
-			<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" style="width:80px;" value="18"/></div>
-		</div>
-		<div class="toDiv">
-			To
-			<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width:80px;" value="22"/></div>
-		</div>
-		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
-	</div>
-	<div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
-		<div class="pull-left" style="margin:10px;font-weight:bold;">Old Voters     -</div><div class="fromDiv" style="margin-left:30px;">
-			From
-			<div class="inputDiv"><input type="text" id="fromTxt" class="fromInput" style="width:80px;" value="60"/></div>
-		</div>
-		<div class="toDiv">
-			To
-			<div class="inputDiv"><input type="text" id="toTxt" class="toInput" style="width:80px;" value="120"/></div>
-		</div>
-		<div class="closeImgDiv pull-left" style="margin-top:12px;"><img src="images/close.png" height="25px" width="25px" style="display:none;"/></div>
-	</div>
-</div>
-</div>
+
 <div style="clear:both;">
 	<span id="errorMsg"></span>
 </div>
@@ -1057,8 +1114,8 @@ function panchayatMatrx(result)
  </div>
 
 
-<div id="partyPerformanceBtnDiv" style="margin-bottom: 4px;float: left; width: 980px;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-bottom: 10px; margin-top: 10px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();getPollingPercentageForBooths();"/>
+<div id="partyPerformanceBtnDiv" style="float: right;">
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-right: 199px; margin-top: -44px; margin-bottom: 20px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();getPollingPercentageForBooths();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 <!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
@@ -1242,7 +1299,7 @@ function ckeckForExpCasteDetails()
 	if(checkStatus == true)
 	{
 		getMandalsAndPanchayts();
-		
+		//$('#ecpCheckBox').hide();
 	}
 }
 var noOfCastesSelected ;
