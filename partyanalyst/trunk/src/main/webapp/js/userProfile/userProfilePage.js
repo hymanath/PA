@@ -584,7 +584,7 @@ $(".changePwdLink").live("click",function(){
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password should contain 6 characters</span><br>');
+		div.append('<span>Password must be minimum of 6 characters long</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Password should not contain $,#,\\,+,% characters</span>');
 		div.append('<div align="center"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px;"/></div>');
@@ -659,7 +659,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(npwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					errorDiv.html('<font color="red">New password should not contain & # \\ + % characters</font>');
 					return;
                     } 
                 }
@@ -677,7 +677,7 @@ $(".changePwdLink").live("click",function(){
                 {      
                     if (iChars.indexOf(cfmpwd.charAt(i)) != -1)
                     {   
-					errorDiv.html('<font color="red">Password should not contain special characters</font>');
+					errorDiv.html('<font color="red">Confirm password should not contain & # \\ + % characters</font>');
 					return;
                     } 
                 }
