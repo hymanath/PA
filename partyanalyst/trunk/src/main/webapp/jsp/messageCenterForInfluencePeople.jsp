@@ -143,8 +143,8 @@ $(document).ready(function(){
 		   }
 
 
-		   if($.inArray(mobileNumber, window.opener.selectedMobileNumbers) == -1)
-				   window.opener.selectedMobileNumbers.push(mobileNumber);
+		   if($.inArray("91"+mobileNumber, window.opener.selectedMobileNumbers) == -1)
+				   window.opener.selectedMobileNumbers.push("91"+mobileNumber);
 		});
 	  }
   });
