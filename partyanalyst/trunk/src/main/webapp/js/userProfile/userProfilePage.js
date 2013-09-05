@@ -1733,11 +1733,11 @@ function buildAllSubscriptions(results,place,jsObj){
 		var templateClone =  template.clone();
 		templateClone.removeClass("subscriptionsMainTemplate");
 		templateClone.find('.subscriptionsHeaderTitle').html(results[i].headerTitle+'');
-		if(type = "news"){
+		if(results[i].type == "news"){
 		  templateClone.find('.subscriptionsDateDiff').html('<span class="label label-success updates">News</span> '+results[i].dateDiff);
-		}else if(type = "photo"){
+		}else if(results[i].type == "photo"){
 		  templateClone.find('.subscriptionsDateDiff').html('<span class="label label-primary updates">Photo</span> '+results[i].dateDiff);
-		}else if(type = "video"){
+		}else if(results[i].type == "video"){
 		  templateClone.find('.subscriptionsDateDiff').html('<span class="label label-info updates">Video</span> '+results[i].dateDiff);
 		}else{
 		  templateClone.find('.subscriptionsDateDiff').html(''+results[i].dateDiff);
