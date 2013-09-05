@@ -217,8 +217,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	public List<Long> getNONURBANConstituencyIds(Long electionTypeId,Long electionYear,Long countryId){
 		Query query = getSession().createQuery("select distinct model1.constituencyId from VoterInfo model1 where model1.voterReportLevel.reportLevel =:reportLevel " +
 				" and model1.constituencyId in ( Select model.constituency.constituencyId from DelimitationConstituency model where " +
-				" model.constituency.electionScope.electionType.electionTypeId = :electionTypeId and model.constituency.state.country.countryId = :countryId and model.year = :electionYear " +
-				" )");
+				" model.constituency.electionScope.electionType.electionTypeId = :electionTypeId and model.constituency.state.country.countryId = :countryId and model.year = :electionYear)");
 		query.setParameter("reportLevel", IConstants.CONSTITUENCY);
 		query.setParameter("electionTypeId", electionTypeId);
 		query.setParameter("electionYear", electionYear);
