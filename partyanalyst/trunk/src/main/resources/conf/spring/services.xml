@@ -905,6 +905,7 @@
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/> 
 		<property name="userDAO" ref="userDAO" />
+		<property name="taskExecutor" ref="taskExecutor" />
 	</bean>
 	
 	<bean name="analysisReportService" class="com.itgrids.partyanalyst.service.impl.AnalysisReportService">
