@@ -290,6 +290,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 .customclass{left:50% !important;margin-left:-70px;border:none !important;background:none !important}
 .customclass1{border:none !important;background:none !important}
 .updates{font-style: normal; font-size: 11px}
+.nav-tabs > li > a:hover {
+    border-color: #EEEEEE #EEEEEE #DDDDDD;
+	cursor:pointer !important;
+}
 </style>
 </head>
 <body>
