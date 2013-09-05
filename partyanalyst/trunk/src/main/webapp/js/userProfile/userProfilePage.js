@@ -110,6 +110,7 @@ if($(this).val().length==0)
 		
 	});
 	$(".ImportantDates").click(function(){
+	     $("#impdatesDiv").show();
 	     $("#placeholderCenterDivId").hide();
 	    $(".FavoriteLinksDiv").hide();
 		$("#subscriptionsDiv").css("display","none");
@@ -1771,6 +1772,7 @@ function callForEveryFiveMins(){
 }
 
 function getInitialUpdates(){
+  $("#impdatesDiv").hide();
   $(".FavoriteLinksDiv").hide();
   $("#placeholderCenterDivId").hide();
   $("#userPartyDiv").show();
@@ -2698,7 +2700,7 @@ function showPostedReasons(jsObj,results)
 	}
 	else
 	{
-		ul.append('<span > Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></span>');
+		ul.append('<span><h4> Total Political reasons posted - <a href="javascript:{}" class="assessPoliticianLink">'+totalPostedReasonsCount+'</a><input type="hidden" value="Total" class="politicalReasTypeVar" /></h4></span>');
 		ul.append('<span class="APSpan">By You - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsByLoggedInUser+'</a><input type="hidden" value="LOGGED_USER" class="politicalReasTypeVar" /></span>');
 		ul.append('<span class="APSpan"> By Friends - <a href="javascript:{}" class="assessPoliticianLink">'+connectedUsersReasCount+'</a><input type="hidden" value="ConnectedUserPoliticalReasons" class="politicalReasTypeVar" /></span>');	
 		ul.append('<span class="APSpan"> By Others - <a href="javascript:{}" class="assessPoliticianLink">'+postedReasonsCountByOtherUsers+'</a><input type="hidden" value="OtherUsers" class="politicalReasTypeVar" /></span>');	
