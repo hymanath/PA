@@ -270,7 +270,15 @@ public class MandalPageAction extends ActionSupport implements ServletRequestAwa
 			if(percentage == null)
 			{
 				Double val = Double.parseDouble(list.getPartyVotesPercentage().toString());
-				yearVotesMap.put(list.getElectionYear(), val);
+				
+				if(!list.getElectionType().equalsIgnoreCase(IConstants.MPTC)){
+				  yearVotesMap.put(list.getElectionYear(), val);
+				}else
+				{
+					yearVotesMap.put(list.getElectionYear(), Double.parseDouble(list.getVotesGainedPercent().toString()));
+					
+				}
+				
 			}
 			
 	}
