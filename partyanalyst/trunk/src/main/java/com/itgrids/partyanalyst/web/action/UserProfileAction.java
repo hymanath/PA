@@ -1027,7 +1027,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 				   Date fromDate = (Date)session.getAttribute("fromDate");
 				   Calendar cal = Calendar.getInstance();
 				   cal.setTime(fromDate);
-				   cal.add(Calendar.DATE, -2);
+				   cal.add(Calendar.DATE, -5);
 				   Date newFromDate = cal.getTime();
 				   session.setAttribute("fromDate",newFromDate);
 				   subscriptionsList = userProfileService.getPartyAnalystLatestUpdates(newFromDate,fromDate,user.getRegistrationID());
