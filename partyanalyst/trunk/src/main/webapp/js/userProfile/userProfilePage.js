@@ -1495,12 +1495,12 @@ if(results == null || results.lenght == 0)
 {
 
 	$("#headerDiv").html('<h5>No Favourite Links has been added.</h5><br>');
-	$("#headerDiv").append('<h5 style="font-weight: bold; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 14px;margin-top: -14px;"><small style="font-size: 14px; color: rgb(74, 90, 85);">Add Your Interested</small> State/District/Constituency/Special Pages</h5><input type="button" style="margin-right:5px; margin-top: -31px;" class="btn btn-primary pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+	$("#headerDiv").append('<h5 style="font-weight: bold; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 14px;margin-top: -14px;"><small style="font-size: 14px; color: rgb(74, 90, 85);">Add Your Interested</small> State/District/Constituency/Special Pages<br/><small style="font-size: 14px; color: rgb(74, 90, 85);">as favourite links</small></h5><input type="button" style="margin-right:5px; margin-top: -40px;" class="btn btn-primary pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 	return;
 }
 
 //$("#headerDiv").html('<span btn="info" onClick="savefavouriteLink()">Add</span> <br> <select id="specialPageSelectBox" name="specialPage"></select>');
-$("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 14px;"><small style="font-size: 14px; color: rgb(74, 90, 85);">Add Your Interested</small> State/District/Constituency/Special Pages</h5><input type="button" style="margin-right:5px; margin-top: -31px;" class="btn btn-primary pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
+$("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif; font-size: 14px;"><small style="font-size: 14px; color: rgb(74, 90, 85);">Add Your Interested</small> State/District/Constituency/Special Pages<br/><small style="font-size: 14px; color: rgb(74, 90, 85);">as favourite links</small></h5><input type="button" style="margin-right:5px; margin-top: -40px;" class="btn btn-primary pull-right" value="Add" id="Add" onclick="openPopupForFavouriteLinks()"/>');
 
  for(var i in results){
 	 if(results[i].favouriteLinkType == "constituency")
