@@ -454,8 +454,9 @@ ajaxProcessing();
 			autoOpen: true,
 			show: "blind",
 			width: 500,
-			minHeight:250,
+			
 			modal: true,
+			height:"auto",
 			hide: "explode"
 		});
 
@@ -543,7 +544,7 @@ ajaxProcessing();
 		}
 		
 		disableButton1("connectDistrictPeopleLink");
-		$("#connectPeoplePopup").dialog("close");
+		//$("#connectPeoplePopup").dialog("close");
 		
 		var jsObj ={
 			
@@ -2156,11 +2157,13 @@ function closeConnectPanel(jsObj,results)
 		$("#errorMsgDiv").html('<font color="green" style="font-weight:bold;"> Requested sent successfully.</font>');
 		//var t=setTimeout("closeConnectPopup()",2000);
 		//buildConnectUsersContent(results.candidateVO,connectDivId,jsObj.locationType,jsObj.locationId,jsObj.locationName,connectUserLoginStatus,jsObj.userId);		
+			setTimeout("closewdw()",3000);
 		return;
 	}
 	else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
 	{
 		$("#errorMsgDiv").html('<font color="red" style="font-weight:bold;">Request Cannot be sent due to some technically difficulty.</font>');
+		setTimeout("closewdw()",3000);
 		return;
 	}
 	
@@ -2548,7 +2551,10 @@ function showAllConnectedUsersStatus(jsObj,results)
 
 if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncountered == null)
 	{		
-		var msga = $('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');
+		//var msga = $('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');
+		$("#errorMsgDiv").html('<font color="green" style="font-weight:bold;"> Request sent to selected users successfully.');
+		setTimeout("closewdw()",3000);
+		
 		if(jsObj.locationType=="DISTRICT"){
 		getAllConnectedUsersByFilterView();
 			//$("#districtPeopleLink").trigger("click");
@@ -2562,6 +2568,7 @@ if(results.resultStatus.resultCode == 0 || results.resultStatus.exceptionEncount
 	}
 	//else if(results.resultStatus.resultCode == 1 || results.resultStatus.exceptionEncountered != null)
 		//elmt.innerHTML = '<font color="red" style="font-weight:bold;"><blink> Request cannot be sent to the selected users due to some technical difficulty.</blink></font>';
+				setTimeout("closewdw()",3000);
 }
 
 
@@ -4537,3 +4544,6 @@ function subscriptionDetails(linkType)
 
 	document.getElementById(id).disabled  = true;
 }
+$("#canceluserSettings").live("click",function(){
+$("#userSettingsDialog").dialog('close');
+})

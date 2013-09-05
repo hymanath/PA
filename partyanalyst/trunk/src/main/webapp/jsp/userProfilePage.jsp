@@ -1386,7 +1386,7 @@ $('#userSettingsDialog').html('');
     str+='<div style="margin-top:10px; float: right;">';
 	str+='<input  type="button"   class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
 
-	str+='<input  style="margin:10px;" type="button" class="btn btn-success" value="Cancel" onClick="closeDialog();"/>';
+	str+='<input  id="canceluserSettings" style="margin:10px;" type="button" class="btn btn-success" value="Cancel"/>';
 	str+='</div>';
 
 
