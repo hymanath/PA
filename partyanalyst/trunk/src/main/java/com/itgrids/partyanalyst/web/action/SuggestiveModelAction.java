@@ -570,7 +570,9 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				}
 				
 				if(jObj.getString("task").equals("getElectionYears")){
-					electionsYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(jObj.getLong("electionScopeId"),jObj.getLong("partyId"),jObj.getLong("constituencyId"));
+					
+					String cnstncyType=suggestiveModelService.getConstituencyType(jObj.getLong("constituencyId"));
+					electionsYears = staticDataService.getElectionIdsAndYearsByElectionScopeId(jObj.getLong("electionScopeId"),jObj.getLong("partyId"),jObj.getLong("constituencyId"),cnstncyType);
 					log.debug("getElectionScopes......"+electionsYears.size());
 				}
 			}
