@@ -447,6 +447,21 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			
 		}
 		
+		public String getConstituencyType(Long constituencyId){
+			String type="";
+			List<Object[]> constituencyType=constituencyDAO.getConstituencyType(constituencyId);
+			String constAreaType=constituencyType.get(0)[1].toString();
+			if(constAreaType.equalsIgnoreCase(IConstants.RURAL)){
+				type="rural";
+			}else if(constAreaType.equalsIgnoreCase(IConstants.RURALURBAN)){
+				type="rural-urban";
+			}else{
+				type="urban";
+			}
+			
+			return type;
+		}
+		
 		public Map<Long,PanchayatVO> getTheMapForArea(List<Object[]> ttlVotersInArea,List<Object[]> ttlVotersInAreaByAge){
 			Map<Long,PanchayatVO> areaMap=new HashMap<Long, PanchayatVO>();;
 			PanchayatVO areaVO=null;

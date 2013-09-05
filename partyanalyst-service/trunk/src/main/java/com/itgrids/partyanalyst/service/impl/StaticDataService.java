@@ -9055,7 +9055,7 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 	 * This method returns a list of Objects that contains all (main and bye) electionIds and
 	 * election years based on the Election-Scopes Ids and Party Id.
 	 */
-	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId) {
+	public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId,String constiType) {
 		List<SelectOptionVO> electionYearslist;
 		List<Long> mandalIds;
 		List<Long> eleIds;
@@ -9065,8 +9065,13 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			/*List<Long> electionIds = nominationDAO.getElectionYearsByScopeNPartyNconstiId(
 					electionScopeId,partyId,constituencyId);*/
 			 Long publicationId = publicationDateDAO.getLatestPublicationId();
-			 mandalIds = boothDAO.getTehsildByConstituency(constituencyId, publicationId);
-			 List<Long> electionIds = boothConstituencyElectionDAO.getElectionsByMandals(mandalIds,partyId,electionScopeId);
+			 List<Long> electionIds=new ArrayList<Long>();
+			 if(constiType.equalsIgnoreCase("rural")||constiType.equalsIgnoreCase("rural-urban")){
+				 mandalIds = boothDAO.getTehsildByConstituency(constituencyId, publicationId);
+			 	 electionIds = boothConstituencyElectionDAO.getElectionsByMandals(mandalIds,partyId,electionScopeId);
+			 }else{
+				 electionIds = boothConstituencyElectionDAO.getElectionsByUrbanConsti(constituencyId,electionScopeId);
+			 }
 			 if(electionIds != null && electionIds.size() > 0)
 			 {
 				List<Object[]> electionYearsList = nominationDAO.getElectionyearsByElection(electionIds,partyId);
@@ -9099,4 +9104,5 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			return null;
 		}
 	}
+	
 }
