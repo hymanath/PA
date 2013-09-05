@@ -47,4 +47,6 @@ public interface ISuggestiveModelService {
 	
 	 
 	 public List<YouthLeaderSelectionVO> getLeadersInUrbanConstituencyes(Long userId,Long constituencyId,List<Long> casteIdsList ,List<ExceptCastsVO> expCasteDetails,Boolean checkStatus);
+	 
+	 public String getConstituencyType(Long constituencyId);
 }
