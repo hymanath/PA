@@ -377,6 +377,9 @@ $(document).ready(function() {
 	$('.searchType').change(function(){
 		if($(this).val() == "cadre")
 		{
+		getallConstituencies($('#districtList').val());
+		$('#mandalField').find('option').remove().end()
+		.append('<option value="0">Select Mandal</option>').val('');
 			 if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6)
               $('#districtList').trigger('change');
 			 
@@ -402,6 +405,9 @@ $(document).ready(function() {
 		}
 		else if($(this).val() == "influencePeople")
 		{ 
+		getallConstituencies($('#districtList').val());
+		$('#mandalField').find('option').remove().end()
+		.append('<option value="0">Select Mandal</option>').val('');
 			 if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6)
 			  $('#districtList').trigger('change'); 
 
@@ -692,11 +698,13 @@ function isValidateFields(type){
 					stattus = false;
 					return;
 				}
-				panchayatId = $("#panchayatField").val();
-				if(panchayatId==null || panchayatId == 0){
-					$('#AlertMsgs').html('Please Select Panchayat');
-					stattus = false;
-					return;
+				if($('#mandalField').val().charAt(0) !=1){
+					panchayatId = $("#panchayatField").val();
+					if(panchayatId==null || panchayatId == 0){
+						$('#AlertMsgs').html('Please Select Panchayat');
+						stattus = false;
+						return;
+					}
 				}
 
 			}
@@ -767,7 +775,8 @@ function isValidateFields(type){
 					$('#AlertMsgs').html('Please Select Mandal');
 					stattus = false;
 					return;
-				}				
+				}
+			if($('#mandalField').val().charAt(0) !=1){
 				if(selctedType =="voter")
 				{			
 				panchayatId = $("#panchayatField").val();
@@ -783,6 +792,7 @@ function isValidateFields(type){
 					stattus = false;
 					return;
 				}
+			}
 			}
 
 
@@ -944,7 +954,12 @@ function getCandidatesData(sentType){
 
 			  selectedCriteria.socialStatus = false;
 			  
-
+	
+	var selctedType = $('input:radio[name=searchFor]:checked').val();
+	if($('#mandalField').val().charAt(0) ==1 && (reportLevelValue == 6 || reportLevelValue == 3)){
+	clearOptionsListForSelectElmtId("hamletField");
+	return;
+	}else{
         if(sentType != "direct")
 	    {
 
@@ -957,6 +972,7 @@ function getCandidatesData(sentType){
 	   }
 	   else
 		   sendDirectSMSToVotersAjax();
+	}
 }
 var flag=false;
 function getVoterSearchDetails()
@@ -1003,6 +1019,8 @@ function openInfluencePeopleWindow(){
 	
 }
 function getallConstituencies(district){
+
+ clearSelectOptions();
 var jsObj=
 		{						
 				districtId:district,
@@ -1011,6 +1029,14 @@ var jsObj=
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "sendUpdatesByemailsAction.action?"+rparam;						
 	callAjax1(rparam,jsObj,url);
+}
+
+function clearSelectOptions(){
+clearOptionsListForSelectElmtId("mandalField");
+clearOptionsListForSelectElmtId("hamletField");
+clearOptionsListForSelectElmtId("wardField");
+clearOptionsListForSelectElmtId("panchayatField");
+clearOptionsListForSelectElmtId("pollingStationField");
 }
 </script>
  </head>
@@ -1102,7 +1128,7 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 
 
-			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),	clearSelectOptions(this.value);,getMandalOrMuncipalityList();,getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
 			 </div>
 			 </div>
 		 </c:if>
@@ -1113,12 +1139,12 @@ var jsObj=
 			 <font class="requiredFont">*</font>
 
 
-			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),	clearSelectOptions(this.value);getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
 			 </div>
 			 </div>
 		 </c:if>
 
-	     <div class="selectDivs" id="publicationDateDiv" style="display:none;"><span>Select Publication Date</span><font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;margin-left:20px;" name="publicationDateList" >
+	     <div class="selectDivs" id="publicationDateDiv" style="display:none;"><span>Select Publication Date</span><font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;margin-left:20px;" name="publicationDateList" onChange="	clearSelectOptions(this.value);">
 		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>	
 		</div>
 	  
@@ -1130,8 +1156,8 @@ var jsObj=
 
 
 	   <div id="wardDiv" style="display:none;" class="selectDivs">
-	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:74px;width:165px;">
-		<option value="0">Select Ward</option></select> 
+	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),	getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:74px;width:165px;">
+		<option value="0">Select Ward</option></select>
 	  </div>
 		
 	  <div id="panchayatDiv"  style="display:none;" class="selectDivs">
@@ -1140,7 +1166,7 @@ var jsObj=
 		<option value="0">Select Panchayat</option></select>
 	  </div>
 	   <div id="hamletDiv"  style="display:none;" class="selectDivs">
-	    <span>Select Hamlet</span><font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:67px;width:165px;"><option value="0">Select Hamlet</option></select> 
+	    <span>Select Hamlet</span><font class="requiredFont">*</font> <select id="hamletField" class="selectWidth" name="state" onchange="clearErrDiv(),getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:67px;width:165px;"><option value="0">Select Hamlet</option></select>
 	 </div>
 	
 	  <div id="pollingStationDiv"  style="display:none;" class="selectDivs">
@@ -3157,8 +3183,12 @@ function getHamletsInMandal()
 
 function getBooths()
 {
-	
-
+	if($('#mandalField').val().charAt(0) ==1 && $('#reportLevel').val() == 6){
+	$('#panchayatDiv').hide();
+	clearOptionsListForSelectElmtId("hamletField");
+	return;
+	} 
+	else{
 		if($('input[name=searchFor]:checked').val() == "voter" || $('#reportLevel').val() == 5){
 		   getPanchayatOrWardsList('panchayat','panchayatField');
 		   getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');
@@ -3170,6 +3200,7 @@ function getBooths()
 			else	
   			   getBoothDetailsForCadre();
 		}
+	}
 	
 }
 
