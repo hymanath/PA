@@ -486,8 +486,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 				</div>
 
 	<!--PRASAD-->
-		<div id="impdatesDiv" style="display:none">
-			<div id="cadreDatesYUICalDiv" class="yui-skin-sam"></div>
+		<div id="impdatesDiv" class="yui-skin-sam" style="display:none">
+			<div id="cadreDatesYUICalDiv" ></div>
 			<div id="cadreEventsDetailsDivMain">
 				<span class="impInfoSpan"> <img height="10" width="10" src="<%=request.getContextPath()%>/images/icons/bluebox.png"/> - Only Important Dates </span>
 			</div>	
@@ -1369,19 +1369,19 @@ $('#userSettingsDialog').html('');
 	//str+='<label>Profile Settings:</label><br>';
 
 	if(results.selectedOptionId == 0 || results.selectedOptionId == 2)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b> Private View :</b> Your profile is invisible to all.</label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="2"/><b> Private View :</b> Your profile is invisible.</label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b> Private View :</b> &nbsp;&nbsp;&nbsp;Your profile is invisible to all.</label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="2"/><b> Private View :</b> &nbsp;&nbsp;&nbsp;Your profile is invisible.</label>';
 
     if(results.selectedOptionId == 1)
-	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b> Public View :</b> Your profile is visible to all.</label>';
+	  str+='<label><input name="profile" style="margin:0px;" checked="true" type="radio" value="1"/><b> Public View :</b> Your profile is visible to every one.</label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b> Public View :</b> Your profile is visible to all.</label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="1"/><b> Public View :</b> Your profile is visible to every one.</label>';
 	
 	if(results.selectedOptionId == 3)
-	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b> Friends View :</b> Your Profile visible to your friends only</label>';
+	  str+='<label><input name="profile"  style="margin:0px;" checked="true"type="radio" value="3"/><b> Friends View :</b> Your Profile is visible to your friends only.</label>';
 	else
-	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b> Friends View :</b> Your Profile visible to your friends only</label>';
+	  str+='<label><input name="profile" style="margin:0px;" type="radio" value="3"/><b> Friends View :</b> Your Profile is visible to your friends only.</label>';
 
     str+='<div style="margin-top:10px; float: right;">';
 	str+='<input  type="button"   class="btn btn-success" value="Update" onClick="updateSelectedOption();"/>';
