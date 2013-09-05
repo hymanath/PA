@@ -324,7 +324,7 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetElectionsByMandals()
+	/*public void testGetElectionsByMandals()
 	{
 		List<Long> mandalIds = new ArrayList<Long>();
 		mandalIds.add(597l);
@@ -333,6 +333,14 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		List<Long> values = boothConstituencyElectionDAO.getElectionsByMandals(mandalIds,2l,2l);
 		for (Long long1 : values) {
 			System.out.println(long1);
+		}
+	}*/
+	
+	public void testgetelecitionYear(){
+		List<Long> list=boothConstituencyElectionDAO.getElectionsByUrbanConsti(347l,2l);
+		System.out.println(list.size());
+		for(Long l:list){
+			System.out.println(l);
 		}
 	}
 	

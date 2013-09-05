@@ -48,20 +48,21 @@ public class WardDAOHibernateTest extends BaseDaoTestCase {
 		Assert.assertEquals(1, 1);
 	}*/
 	
-/*	public void testgetWardsListByLocalEleBodyIdAndConstituencyId()
+	public void testgetWardsListByLocalEleBodyIdAndConstituencyId()
 	{
-		List<Object[]> list = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(20l, 8l, 347l);
+		List<Object[]> list = wardDAO.getWardsListByLocalEleBodyIdAndConstituencyId(20l, 7l, 347l);
 		if(list!= null && list.size() > 0)
 		{
 			for(Object[] params : list)
 				System.out.println(params[0]+" "+params[1]);
-		}*/
+		}
+	}
 		
-	public void testfindByWardsByAssemblyLocalElectionBodyId(){
+	/*public void testfindByWardsByAssemblyLocalElectionBodyId(){
 		List<Object[]> list = wardDAO.findByWardsByAssemblyLocalElectionBodyId(31l,8l);
 		System.out.println(list.size());
 		for(Object[] params : list){
 		System.out.println(params[1]);
 		}
-	}
+	}*/
 }

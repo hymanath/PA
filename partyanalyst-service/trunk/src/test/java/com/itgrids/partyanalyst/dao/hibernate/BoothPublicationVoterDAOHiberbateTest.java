@@ -801,19 +801,19 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
-		List<Object[]> list = boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(228l, 8l, 18l, 22l,"rural");
+	public void testgetAgeAndGenderWiseVoterInConstituency(){
+		List<Object[]> list = boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(347l, 8l, 18l, 22l,"urban");
 		for(Object[] obj:list){
 			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString());
 		}
-	}*/
+	}
 	
-	public void testgetAgeAndGenderWiseVoterInConstituency(){
+	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
 		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituency(228l, 8l,"rural");
 		for(Object[] obj:list){
 			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString());
 		}
-	}
+	}*/
 	
 	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
 		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituencyByAge(228l, 8l,18l,22l,"rural");
