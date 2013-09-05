@@ -98,14 +98,21 @@ function callAjax(jsObj,url,name){
 
 function buildMandalVoting(myResult)
 {
+
+
 	var result = myResult.mandalAllElectionDetailsVO;
 	
 	if(result == "")
 	{
 		$("#mandalVotingResultsDivBody").html('');
-		alert("Result empty or not found");
+
+		//alert("Result empty or not found");
+		$('#errorMsg').html("Result empty or not found");
+		$('#reportAjaxImg').hide();
 		return;
 	}
+	$('#errorMsg').html("");
+
 	var elmt= document.getElementById("mandalVotingResultsDiv");
 	var elmtHead= document.getElementById("mandalVotingResultsDivHead");
 	var elmtBody= document.getElementById("mandalVotingResultsDivBody");
@@ -137,6 +144,9 @@ function buildMandalVoting(myResult)
 		else
 		str+='<td align="right">'+result[i].totalVoters+'</td>';
 		str+='<td align="right">'+result[i].validVoters+'</td>';
+		str+='<td align="right">'+result[i].totalVotersEarned+'</td>';
+		str+='<td align="right">'+result[i].rank+'</td>';
+
 		str+='</tr>';	
 	}
 	str+='</table>';
@@ -220,6 +230,10 @@ function buildMandalDataTable()
 			key : "totalVoters"
 		} , {
 			key : "validVoters",parser:"number"
+		}, {
+			key : "totalVotersEarned",parser:"number"
+		}, {
+			key : "rank",parser:"number"
 		} ]
 	};
 			
@@ -250,6 +264,14 @@ function buildMandalDataTable()
 	}, {
 		key : "validVoters",
 		label : "Valid Voters",
+		sortable : true
+	}, {
+		key : "totalVotersEarned",
+		label : "Votes Earned",
+		sortable : true
+	}, {
+		key : "rank",
+		label : "Rank",
 		sortable : true
 	} ];
 
@@ -559,7 +581,8 @@ function buildConstituency(myResults)
 						</td>
 					
 						
-						<th align="left" class="tdLeftBorder" style="padding-left:30px;"><s:label for="mandalField" id="mandalLabel"  value="%{getText('MANDAL')}" /></th>
+						<th align="left" class="tdLeftBorder" style="padding-left:30px;font-weight:normal;">
+						Mandal / Tehsil</th>
 						<td align="left">
 							<select class="mySelectBox" id="mandalField" name="mandal" onchange= "checkForFormSubmit()" >
 								<option value="0">Select Mandal</option>
@@ -576,6 +599,8 @@ function buildConstituency(myResults)
 				</table>
 				</div>
 		</div>
+
+		<div id="errorMsg" style="text-align:center;font-weight:bold;color:red;"></div>
 	</s:form>
 
 	<div id="ajaxLoadDiv" style="display:none;padding-top:20px;">
