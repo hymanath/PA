@@ -501,7 +501,7 @@ ajaxProcessing();
 			return;
 		}
 		
-		disableButton("connectPeopleLink");
+		disableButton1("connectPeopleLink");
 		//$("#connectPeoplePopup").dialog('close');
 		var jsObj ={
 				
@@ -2031,7 +2031,7 @@ function sendMessageToConnectedUser(userId,type)
 	}
 		
 	/*$("#ErrorMsgDivId").html('<img src="images/icons/search.gif" class="searchImgCls"/>');*/
-	disableButton("sendMessageButtonId");
+	disableButton1("sendMessageButtonId");
 	connectMsg = replaceSpecialCharacters(connectMsg);
 	
 	var jsObj ={
