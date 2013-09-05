@@ -603,4 +603,8 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	 public Double getPartyPercentage(Long constitunecyId,Long electionId,Long partyId);
 
+	
+	public List findMPTCInfoByElectionTypeTehsilAndPartyWithGainedVotes( Long tehsilID, Long partyId);
+
+
 }

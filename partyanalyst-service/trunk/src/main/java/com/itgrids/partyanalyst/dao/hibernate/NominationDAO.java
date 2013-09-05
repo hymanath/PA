@@ -182,6 +182,20 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 				"  order by model.constituencyElection.constituency.electionScope.electionType.electionType",params);
 	}
 	
+	public List findMPTCInfoByElectionTypeTehsilAndPartyWithGainedVotes( Long tehsilID, Long partyId) {
+		Object[] params = {tehsilID};
+		return getHibernateTemplate().find("select model.party.shortName, model.constituencyElection.election.electionYear, " +
+				" sum(model.constituencyElection.constituencyElectionResult.totalVotesPolled), " +
+				" sum(model.constituencyElection.constituencyElectionResult.validVotes), "+
+				" sum(model.candidateResult.votesEarned), model.candidate.lastname," +
+				" model.constituencyElection.constituency.electionScope.electionType.electionType," +
+				" model.candidateResult.votesEarned , model.candidateResult.rank " +
+				" from Nomination model where model.constituencyElection.constituency.tehsil.tehsilId = ? " +
+				" and model.party.partyId in ("+partyId+") " +
+						" group by model.nominationId, model.constituencyElection.election.electionId " +
+				"  order by model.constituencyElection.constituency.electionScope.electionType.electionType",params);
+	}
+	
 	public List findCandidatesInfoByConstituencyAndElectionYear(Long constituencyId, String electionYear){
 		Object[] params = {electionYear, constituencyId};
 		return getHibernateTemplate().find( "select model.party.partyId, model.party.shortName, model.candidateResult.votesEarned, " +

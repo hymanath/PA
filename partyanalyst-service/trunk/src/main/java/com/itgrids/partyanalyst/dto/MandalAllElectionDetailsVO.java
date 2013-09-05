@@ -47,7 +47,21 @@ public class MandalAllElectionDetailsVO implements Serializable {
 	private ResultStatus resultStatus;
 	private List<String> electionYears = new ArrayList<String>();
 	private List<String> electionTypes = new ArrayList<String>();
+	private Long totalVotersEarned;
+	private String votesGainedPercent;
 	
+	public String getVotesGainedPercent() {
+		return votesGainedPercent;
+	}
+	public void setVotesGainedPercent(String votesGainedPercent) {
+		this.votesGainedPercent = votesGainedPercent;
+	}
+	public Long getTotalVotersEarned() {
+		return totalVotersEarned;
+	}
+	public void setTotalVotersEarned(Long totalVotersEarned) {
+		this.totalVotersEarned = totalVotersEarned;
+	}
 	public List<String> getElectionYears() {
 		return electionYears;
 	}

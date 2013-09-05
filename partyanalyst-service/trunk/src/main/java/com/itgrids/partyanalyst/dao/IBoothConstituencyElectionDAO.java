@@ -165,4 +165,6 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	public List<Object[]> getTotalValidVotesAndTotalVotersByBoothIdsList(List<Long> boothIdsList,Long electionId,Long constituencyId);
 	
 	public List<Object[]> getTotalValidVotesAndTotalVotersByConstituency(Long electionId,Long constituencyId);
+	public List getPartyVotesByMandalWithRankDetails(Long tehsilID, String partyIDs, Long electionID);
+
 }

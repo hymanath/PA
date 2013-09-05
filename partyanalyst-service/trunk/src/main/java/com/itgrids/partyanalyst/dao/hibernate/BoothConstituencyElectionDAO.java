@@ -67,6 +67,21 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		return getHibernateTemplate().find(query.toString());
 	}
 	
+	public List getPartyVotesByMandalWithRankDetails(Long tehsilID, String partyIDs, Long electionID){
+		StringBuilder query = new StringBuilder();
+		query.append("Select model.nomination.candidate.firstname,");
+		query.append(" model.nomination.candidate.middlename,"); 
+		query.append(" model.nomination.candidate.lastname,");		 
+		query.append(" model.boothConstituencyElection.constituencyElection.election,");
+		query.append(" sum(model.votesEarned), model.nomination.party.partyId, model.nomination.party.shortName,model.nomination.candidateResult.rank "); 
+		query.append(" from CandidateBoothResult model"); 
+		query.append(" where model.boothConstituencyElection.booth.tehsil.tehsilId =").append(tehsilID);    
+		query.append(" and model.boothConstituencyElection.constituencyElection.election.electionId=").append(electionID);
+		query.append(" and model.nomination.party.partyId in (").append(partyIDs);
+		query.append(") group by model.nomination.party.partyId");
+		return getHibernateTemplate().find(query.toString());
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Constituency> findConstituencyByElectionYearAndElectionScope(String electionYear, Long electionScopeId){
 		Object[] params = {electionScopeId, electionYear};
