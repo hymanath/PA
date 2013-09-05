@@ -1673,7 +1673,7 @@ var hasFriends = true;
 function getFriendsListForUser(results)
 {
 	$(".placeholderCenterDiv").children().remove();
-	$("#headerDiv").html('Friends list is empty.');
+	//$("#headerDiv").html('Friends list is empty.');
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
 	if(results.resultStatusForConnectedPeople.resultCode != "0")
@@ -1687,7 +1687,7 @@ function getFriendsListForUser(results)
 		getAllCconnectedUserDetails();
 		setTimeout("getDetailsForallDistricts()",1000);	
 		hasFriends = false;
-		$("#headerDiv1").html('<div style="color:#0000ff;font-weight:bold;">You are not connected to any of your friends. Now you can connect to your friends from bellow Locations.</div>');
+		$("#headerDiv1").html('<div style="color:#0000ff;font-weight:bold;">You are not connected to any of your friends. Now you can connect to your friends from below Locations.</div>');
 		closeDialogue();
 			return;
 	}
@@ -2763,7 +2763,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 	div.append(label);
     if(!specialPages[0].flag)
 	{
-	  var messageDiv = $('<div><p class="paraClss">Your are not subscribed for any special page.<a href="#userUnSubScriptionsDiv">Click here</a> to subscribe the special page.</p></div>');
+	  var messageDiv = $('<div><p class="paraClss">Your are not subscribed for any special page.<a href="#userUnSubScriptionsDiv">Click here</a> to subscribe for the special page.</p></div>');
 	  div.append(messageDiv);
 	  
 	}
@@ -2888,7 +2888,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 
 	if(constituencies == null || constituencies.length == 0)
 	{
-		var constituencySubDiv = $('<div><p class="paraClss">Your are not subscribed for any constituency.<a href="#userConstituencyDiv">Click here </a>to subscribe the constituency.</p></div>');
+		var constituencySubDiv = $('<div><p class="paraClss">Your are not subscribed for any constituency.<a href="#userConstituencyDiv">Click here </a>to subscribe for the constituency.</p></div>');
 		div.append(constituencySubDiv);
 		$('#userConstituencySubscriptionsDiv').append(div);
 		return;
@@ -2927,7 +2927,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 
 	if(partySubscriptions == null || partySubscriptions.length == 0)
 	{
-		var partyDiv = $('<div><p class="paraClss">Your are not subscribed for any party.<a href="#userPartyDiv">Click here</a> to subscribe the party.</p></div>');
+		var partyDiv = $('<div><p class="paraClss">Your are not subscribed for any party.<a href="#userPartyDiv">Click here</a> to subscribe for the party.</p></div>');
 		div.append(partyDiv);
 		$('#userPartySubscriptionsDiv').append(div);
 		return;
