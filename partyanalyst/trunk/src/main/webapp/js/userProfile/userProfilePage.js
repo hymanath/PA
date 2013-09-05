@@ -428,6 +428,7 @@ ajaxProcessing();
 
 	//flag value created by Srishailam
 	$(".districtPeopleLink").click(function(){	
+		$("#placeholderCenterDivId").show();
 	flag=false;
 	if(!flag1){
 	flag1=true;
