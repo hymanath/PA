@@ -1314,9 +1314,13 @@ clearOptionsListForSelectElmtId("pollingStationField");
 <div>
 
 <span id="errorMsg"></span>
-<label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" class="textAreaClass"></textarea>
+<label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" maxlength="200" onkeyup="countChars();" class="textAreaClass"></textarea>
 </div>
 
+<div id="charsCountDiv">
+<span id="charsCountId">200</span> chars remaining... 
+<span style="margin-left: 50px;"> Should not exceed 200 chars </span>
+</div>
 
    <div>
      <a id="sendSMSBtn" class="btn btn-warning" href="javascript:{sendTextSms();}" style="margin-top:20px;">Send Text SMS </a> 
@@ -1354,7 +1358,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 </div>
 
 
-  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="voiceSmsDescription" class="textAreaClass"></textarea></div>
+  <div style="text-align:center;margin-top:5px;"><label>Enter Description:<font style="color:red;">*</font></label><textarea id="voiceSmsDescription" class="textAreaClass" maxlength="500"></textarea></div>
 
 <div id="invalidContactsDiv" style="float: right; margin-top: -200px; position: static; width: 200px;">
  <!--<span id="notValidContactSpan" style="border: 1px solid rgb(156, 156, 156); width: 180px; height: 200px; font-weight: bold;"><font style="margin-left: 40px;">Invalid Contacts:</font>
@@ -3421,6 +3425,20 @@ $('#constituencyList').append('<option value="0">Select Constituency</option>')
 $("#showhidebtn").live("click",function(){
 	$('#searchOptionsDiv').toggle('slow');
 })
+
+function countChars(){
+
+var textContent = $('#textSmsDescription').val();
+
+if(textContent.length == 0){
+	$('#charsCountId').html('200');
+}
+else{
+	var length = 200 - (textContent.length);
+	if(length >=0)
+	$('#charsCountId').html(length);
+}
+}
 </script>
  </body>
  </html>
