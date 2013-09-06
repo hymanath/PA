@@ -358,6 +358,7 @@ width: 500px;
   .close{opacity:1.5;}
   .close:hover{opacity:1.5;}
 
+#parliamentElecProfileDiv{overflow-x: scroll;}
 </style>
 
 </head>
