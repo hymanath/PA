@@ -2360,6 +2360,42 @@ return res;
 		}
  	}
  	
+ 	public List<SubscriptionsVO> getAllUnSubScribedNationalParties(Long userId)
+ 	{
+ 		List<SubscriptionsVO> subscriptionsVOList = null;
+ 		try{
+ 			List<Long> subscribedPartyIds = partySubscriptionsDAO.getAllPartiesSubscribedByUser(userId);
+ 		
+ 			List<SelectOptionVO> list = staticDataService.getAllNationalParties();
+ 			if(list != null && list.size() > 0)
+ 			{
+ 				subscriptionsVOList = new ArrayList<SubscriptionsVO>(0);
+ 			  for(SelectOptionVO optionVO:list)
+ 			  {
+ 				 if(!subscribedPartyIds.contains(optionVO.getId()))
+ 				 {
+ 					SubscriptionsVO subscriptionsVO = new SubscriptionsVO();
+ 					subscriptionsVO.setId(optionVO.getId());
+ 					subscriptionsVO.setName(optionVO.getUrl());
+ 	 				subscriptionsVO.setImageURL(optionVO.getName());
+ 	 				if(optionVO.getUrl() != null && optionVO.getUrl().length() >= 22)
+ 	 				 subscriptionsVO.setTempVar(optionVO.getUrl().substring(0, 21)+"...");
+ 	 				else
+ 	 					subscriptionsVO.setTempVar(optionVO.getUrl()!= null?optionVO.getUrl():"");
+ 	 				subscriptionsVOList.add(subscriptionsVO);	
+ 				 }
+ 			  }
+ 			  
+ 			}
+ 			
+ 		return subscriptionsVOList;	
+ 		}catch (Exception e) {
+ 			e.printStackTrace();
+ 			log.error("Exception Occured in getAllUnSubScribedNationalParties() method, Exception - "+e);
+ 			return subscriptionsVOList;
+		}
+ 	}
+ 	
  	
 
 }

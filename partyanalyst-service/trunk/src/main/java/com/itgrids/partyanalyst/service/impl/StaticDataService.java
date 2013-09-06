@@ -7578,7 +7578,7 @@ public class StaticDataService implements IStaticDataService {
 				SelectOptionVO partyVO = new SelectOptionVO();
 				partyVO.setId(party.getPartyId());
 				partyVO.setName(party.getShortName());
-
+                partyVO.setUrl(party.getLongName());
 				selectedParties.add(partyVO);
 			}
 		}
