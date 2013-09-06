@@ -31,8 +31,15 @@ public class SMSSearchCriteriaVO {
 	private String voterIdCardNo;
 	private Long totalCount;
 	private boolean directSent;
+	private Long constituencyId;
 	
-
+	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
 	public boolean isDirectSent() {
 		return directSent;
 	}
