@@ -968,6 +968,33 @@ $(".subscribedLink").live("click",function(){
    callAjax1(jsObj,url);
 });
 
+$(".nationalPartySubscribedLink").live("click",function(){
+	var id = $(this).closest('div').find('.hiddenVarId').val();
+	var type = $(this).closest('div').find('.subscripType').val();
+	var stateId = 0;
+	if(type == "partyPage")
+	{
+	  stateId = $("#partyStateList").val();
+	  $(this).css("display","none");
+	}
+	var jsObj=
+	{		
+            time : new Date().getTime(),	
+			id: id,
+			task: "subscriptionDetails",
+			temp:"nationalPartySubscribedLink",
+			stateId:stateId,
+			page:type
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+});
+
+
+
+
 $(".forWhatSubscribedLink").live("click",function(){
 	var id = $(this).closest('div').find('.hiddenVarId').val();
 	var type = $(this).closest('div').find('.subscripType').val();
@@ -1066,7 +1093,23 @@ $("#unSubscribedConstituencyList").live("change",function(){
  
 });//End ready
 
-
+function getPatyList(linkType)
+{
+  
+  var selectValue = $("input[name='partyRadio']:checked").val();
+  $("#userPartyUnSubscriptionsDiv").html("");
+  if(selectValue == "staeParty")
+  {
+	$("#statePartySelectDiv").css("display","block");
+	
+  }
+  else
+  {
+  $("#statePartySelectDiv").css("display","none");
+  getUnSubScribedNationalParties(linkType);
+    
+  }
+ }
 
 /* 
 //problem rating
@@ -1292,7 +1335,7 @@ function callAjax1(jsObj,url){
 						if(jsObj.task == "subscriptionDetails" && jsObj.tempVar == "forWhatSubscribedLink"){}
 						
 						else if(jsObj.task == "subscriptionDetails" && jsObj.page == "partyPage"){
-						 showPartyPageSubScriptions(jsObj.stateId);
+						 showPartyPageSubScriptions(jsObj,jsObj.stateId);
 						}
 						
 						else
@@ -1382,7 +1425,7 @@ function callAjax1(jsObj,url){
 				{
 				 buildStateList(results,jsObj);
 				}
-				else if(jsObj.task == "getUnsubscribedParties")
+				else if(jsObj.task == "getUnsubscribedParties" || jsObj.task == "getAllUnsubscribedNationalParties")
 				 getUnsubscribedParties(results,jsObj);
 
 				else if(jsObj.task == "getUnsubscribedConstituencies")
@@ -4339,6 +4382,23 @@ function getPartyStateList(stateId,linkType)
 		callAjax1(jsObj ,url);
 }
 
+
+function getUnSubScribedNationalParties(linkType)
+{
+	
+	var jsObj=
+	{	
+	   linkType:linkType+"NationalParty",
+       task: "getAllUnsubscribedNationalParties",
+	   
+			
+	}
+   
+   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "getAllUnsubscribedNationalPartiesAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+}
+
 function buildStateList(results,jsObj)
 {
  $("#userPartyUnSubscriptionsDiv").html('');
@@ -4349,9 +4409,16 @@ function buildStateList(results,jsObj)
  
  var div = $('<div id="unsubscribePartyInnerDiv"></div>');
  var heading = $('<span class="subscriptionType">Not Yet Subscribed Parties</span>');
+ var radioBtnDiv = $('<div id="radioBtnDiv"></div>');
+ var nationalParties = $('<span><input checked="true" onclick="getPatyList(\''+linkType+'\')" class="partyRadioCls" type="radio" value="nationalParty" name="partyRadio" id="nationaPartyId"/> National Parties </span>');
+ var stateParties = $('<span> <input type="radio" onclick="getPatyList(\''+linkType+'\')" class="partyRadioCls" value="staeParty" name="partyRadio" id="statePartyId"/> State Parties </span>');
+
+ radioBtnDiv.append(nationalParties);
+ radioBtnDiv.append(stateParties);
  
- var partySelectBox = $('<div style="margin-top: 14px;">Select State: <select id="partyStateList" onchange="buildPartyStateList(\''+linkType+'\')"></select></div>');
+ var partySelectBox = $('<div style="margin-top: 14px;display:none;" id="statePartySelectDiv">Select State: <select id="partyStateList" onchange="buildPartyStateList(\''+linkType+'\')"></select></div>');
  div.append(heading);
+ div.append(radioBtnDiv);
  div.append(partySelectBox);
 
  $('#partyStateListDiv').append(div);
@@ -4377,6 +4444,9 @@ function buildStateList(results,jsObj)
 
  createSelectOptionsForSelectElmtId('constituencyStateList');
  createOptionsForSelectElmtId('constituencyStateList',results);
+
+ getUnSubScribedNationalParties(linkType);
+
  var state = jsObj.stateId;
  if(state != null)
  {
@@ -4388,11 +4458,23 @@ function buildStateList(results,jsObj)
 
 function getUnsubscribedParties(partySubscriptions,jsObj)
 {
+	closeDialogue();
    $('#userPartyUnSubscriptionsDiv').html("");
-    
+    if(jsObj.linkType == "fromWhatsNewLinkNationalParty" || jsObj.linkType == "fromSubscriptionLinkNationalParty")
+		{
+		  $("#nationaPartyId").attr("checked","true");
+		  $("#statePartySelectDiv").css("display","none");
+		}
+		else
+		{
+         $("#statePartyId").attr("checked","true");
+		 $("#statePartySelectDiv").css("display","block");
+		}
 	if(partySubscriptions == null || partySubscriptions.length == 0)
 	{
-		
+		if(jsObj.linkType == "fromWhatsNewLinkNationalParty" || jsObj.linkType == "fromSubscriptionLinkNationalParty")
+		 $('#userPartyUnSubscriptionsDiv').html("<p>No more national parties are avaliable.</p>");
+		else
 		$('#userPartyUnSubscriptionsDiv').html("<p>No more parties are avaliable in this state.Please Select another state.</p>");
 		return;
 	}
@@ -4408,9 +4490,11 @@ function getUnsubscribedParties(partySubscriptions,jsObj)
 			templateClone.removeClass('specialPagSubscrTemplDiv');
 			templateClone.find('.titleCls').html('<a rel="tooltip" href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
 			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
-			if(jsObj.linkType == "fromWhatsNewLink")
+			if(jsObj.linkType == "fromWhatsNewLink" || jsObj.linkType == "fromWhatsNewLinkNationalParty")
 			 templateClone.find('.btnClass').html('<a href="javascript:{}" class="label label-info forWhatSubscribedLink">SUBSCRIBE</a>');
-			else
+			else if(jsObj.linkType == "fromSubscriptionLinkNationalParty")
+			 templateClone.find('.btnClass').html('<a href="javascript:{}" class="label label-info nationalPartySubscribedLink">SUBSCRIBE</a>');
+			else 
 			 templateClone.find('.btnClass').html('<a href="javascript:{}" class="label label-info subscribedLink">SUBSCRIBE</a>');
 			templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
 			templateClone.appendTo('#userPartyUnSubscriptionsDiv');
@@ -4499,7 +4583,7 @@ function subscriptionDetails(linkType)
 		getPartyStateList(null,"fromWhatsNewLink");
  }
 
- function showPartyPageSubScriptions(stateId)
+ function showPartyPageSubScriptions(jsObj,stateId)
  {
 	 //$(".subscriptionsLink").trigger("click");
 	 ajaxProcessing();
@@ -4507,6 +4591,15 @@ function subscriptionDetails(linkType)
 		  $("#subscriptionsStreamingData").html('');
 		  $("#headerDiv").html('');
 		  $("#subscriptionsDiv").css("display","block");
+
+	 if(jsObj.temp == "nationalPartySubscribedLink")
+	 {
+		 $("#nationaPartyId").attr("checked","true");
+         getUnSubScribedNationalParties("fromSubscriptionLink");
+
+	 }
+	 else
+	 {
 		var jsObj ={
 			task:"getUserScriptions",
 			tempVar:"fromSubscriptionLink"
@@ -4519,6 +4612,7 @@ function subscriptionDetails(linkType)
 		callAjax1(jsObj,url);
 
 		getPartyStateList(stateId,"fromSubscriptionLink");
+	 }
  }
 
  function buildPartyStateList(linkType)

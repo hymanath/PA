@@ -294,6 +294,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
     border-color: #EEEEEE #EEEEEE #DDDDDD;
 	cursor:pointer !important;
 }
+#radioBtnDiv{margin-top: 10px;padding-bottom: 3px;}
+#nationaPartyId{ margin-top: 0;}
+#statePartyId{margin-left: 12px;margin-top: 0;}
 </style>
 </head>
 <body>
