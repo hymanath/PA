@@ -893,16 +893,23 @@ function getCandidatesData(sentType){
 			 else if(reportLevelValue == 4){
 
 				areaId = $("#pollingStationField").val(); 
+				cadreReportLevelValue = $("#pollingStationField").val();
 				searchArea = "booth";
 				cadreLocationId = 9;
 			}
 			else if(reportLevelValue == 5){
 				areaId = $("#wardField").val(); 
+				cadreReportLevelValue = "1"+$("#wardField").val();
 				searchArea = "ward";
 				cadreLocationId = 8;
 			}
 			else if(reportLevelValue == 6){
 				areaId = $("#hamletField").val(); 
+				cadreReportLevelValue =$("#hamletField").val();
+				var selectedType = $('input:radio[name=searchFor]:checked').val();
+				if(selectedType == "influencePeople"){
+				areaId=areaId.slice(1);
+				}
 				searchArea = "hamlet";
 				cadreLocationId = 6;
 			}
@@ -1316,7 +1323,6 @@ clearOptionsListForSelectElmtId("pollingStationField");
 <span id="errorMsg"></span>
 <label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" maxlength="200" onkeyup="countChars();" class="textAreaClass"></textarea>
 </div>
-
 <div id="charsCountDiv">
 <span id="charsCountId">200</span> chars remaining... 
 <span style="margin-left: 50px;"> Should not exceed 200 chars </span>
