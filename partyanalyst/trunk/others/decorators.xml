@@ -126,9 +126,9 @@
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
-             <pattern>/newhomePageAction*</pattern>
-             <pattern>/dashBoardAction*</pattern>
-             <pattern>/newconnectPeoplePage*</pattern>
+    	<pattern>/newhomePageAction*</pattern>
+        <pattern>/dashBoardAction*</pattern>
+        <pattern>/newconnectPeoplePage*</pattern>
     	<pattern>/voters*</pattern>
     	<pattern>/userProfile*</pattern>
     	<pattern>/votersAnalysisAction*</pattern>
