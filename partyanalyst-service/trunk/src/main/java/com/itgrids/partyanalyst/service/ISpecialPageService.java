@@ -115,4 +115,7 @@ public interface ISpecialPageService {
     
     public List<SubscriptionsVO> getUnSubscribedPartiesForUserProfile(Long stateId,Long userId);
     
+    public List<SubscriptionsVO> getAllUnSubScribedNationalParties(Long userId);
+    
+    
 }
