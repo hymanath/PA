@@ -48,9 +48,16 @@ public class MessageCenterForInfluencePeopleAction extends ActionSupport impleme
 	private String locationType;
 	private String locationValue;
 	private String gender;
+	private Long parentLocationId;
 	private SMSSearchCriteriaVO smsPeopleList; 	
 
 	
+	public Long getParentLocationId() {
+		return parentLocationId;
+	}
+	public void setParentLocationId(Long parentLocationId) {
+		this.parentLocationId = parentLocationId;
+	}
 	public String getGender() {
 		return gender;
 	}
@@ -286,6 +293,7 @@ public String searchCandidatesForVoiceSms(){
 		searchVO.setFamilySelected(Boolean.valueOf(request.getParameter("isFamilySelected")));
 		searchVO.setNameSelected(Boolean.valueOf(request.getParameter("isNameSelected")));
 		searchVO.setGenderSelected(Boolean.valueOf(request.getParameter("isGenderSelected")));
+		searchVO.setConstituencyId(Long.valueOf((request.getParameter("parentLocationId"))));
 		
 		
 		if(searchVO.isAgeSelected()){
