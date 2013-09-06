@@ -2882,10 +2882,11 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 		else
 		{
 			
-			if(buildType.equalsIgnoreCase("booth"))
+			if(buildType.equalsIgnoreCase("booth")){
+				mobileNoExist = "true";
 				listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayat(id,publicationDateId,casteStateId,userId);
-			else{	
-				
+			}else{	
+				mobileNoExist = null;
 				/*List<Long> voterIds = userVoterDetailsDAO.getVoterIdsForuserByHamletIdsByCaste(userId , id,casteStateId);
 
 				listVal = boothPublicationVoterDAO.getVoterDetailsByCasteStateForPanchayatByHamlet(voterIds,publicationDateId);*/
@@ -2903,7 +2904,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				}
 			  
 			}
-			mobileNoExist = "true";
+			
 				
 		}
 		VoterHouseInfoVO voterHouseInfoVO = null;
@@ -12773,7 +12774,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			for (Object[] a : hamlets)
 		    {  SelectOptionVO sv =new  SelectOptionVO();
 			   // a[0]="x"+a[0];
-			    sv.setId((Long)a[0]);
+			    sv.setId(((BigInteger)a[0]).longValue());
 			    sv.setName(a[1]!=null?a[1].toString():"");
 			    sv.setValue(a[1]!=null?a[1].toString():"");
 			    sv.setHampletPresent(flag);
