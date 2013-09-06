@@ -16,6 +16,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
 import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
@@ -59,8 +61,17 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private TaskExecutor taskExecutor;
 	private LocalElectionBodyDAO localElectionBodyDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IConstituencyDAO constituencyDAO;
 	
 	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
 		return assemblyLocalElectionBodyDAO;
 	}
@@ -1005,12 +1016,15 @@ public class VoiceSmsService implements IVoiceSmsService {
 			queryString.append(" and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId ="+localBody.getLocalElectionBodyId()+""+
 					" and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = "+searchVO.getConstituencyId()+"");
 		}
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.WARD))
-			queryString.append(" and model.userAddress.ward.constituencyId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.WARD)){
+			Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue()));
+			searchVO.setLocationValue(constituency.getConstituencyId());
+			queryString.append(" and model.userAddress.ward is not null and model.userAddress.ward.constituencyId =:locationId ");
+		}
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.BOOTH))
-			queryString.append(" and model.userAddress.booth.boothId =:locationId ");
+			queryString.append(" and model.influencingScope like '"+IConstants.BOOTH+"' and model.userAddress.booth.boothId =:locationId ");
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.HAMLET))
-			queryString.append(" and model.userAddress.hamlet.hamletId =:locationId ");
+			queryString.append(" and model.influencingScope like '"+IConstants.VILLAGE+"' and model.userAddress.hamlet.hamletId =:locationId ");
 		
 		/*	Region Based Search for Influencing People
 		 * if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
