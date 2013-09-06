@@ -2799,10 +2799,10 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html('<a class="titleVar" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
+		  templateClone.find('.titleCls').html('<a class="titleVar" rel="tooltip" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
 		  //templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
-		  templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+specialPages[i].specialPageVO.title+'"><img src="images/icons/closeImg.png" /></a>');
+		  templateClone.find('.unsubScribeCls').html('<a rel="tooltip" href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+specialPages[i].specialPageVO.title+'"><img src="images/icons/closeImg.png" /></a>');
 		  templateClone.find('.hiddenVar').html('<input type="hidden" value="'+specialPages[i].specialPageVO.specialPageId+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="specialPage"/>');
 		  templateClone.appendTo('#userSpecialPageSubscriptionsDiv');
 		}
@@ -2811,7 +2811,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html('<a class="titleVar" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
+		  templateClone.find('.titleCls').html('<a rel="tooltip" class="titleVar" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
 		  if(jsObj.tempVar == "fromWhatsNewLink")
 			templateClone.find('.btnClass').html('<a href="javascript:{}" class="forWhatSubscribedLink label label-info">SUBSCRIBE</a>');
@@ -2875,7 +2875,7 @@ function showAllUserCandidateSubscriptions(jsObj,results)
 			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
 		else*/
 			//templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
-		templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+politicians[i].name+'"><img src="images/icons/closeImg.png" /></a>');
+		templateClone.find('.unsubScribeCls').html('<a rel="tooltip" href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+politicians[i].name+'"><img src="images/icons/closeImg.png" /></a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+politicians[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="candidatePage"/>');
 		templateClone.appendTo('#userCandidateSubscriptionsDiv');
 	}
@@ -2911,7 +2911,7 @@ function showAllUserConstituencySubscriptions(jsObj,results)
 		var templateClone = template.clone();
 		templateClone.removeClass('constituencyTemplateDiv');
 		templateClone.find('.titleCls').html('<a href="constituencyPageAction.action?constituencyId='+constituencies[i].id+'">'+constituencies[i].name+'</a>');
-		templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="constituencyunSubscrBtn" title="click here to UnSubscribe '+constituencies[i].name+'"><img src="images/icons/closeImg.png" /></a>');
+		templateClone.find('.unsubScribeCls').html('<a rel="tooltip" href="javascript:{}" class="constituencyunSubscrBtn" title="click here to UnSubscribe '+constituencies[i].name+'"><img src="images/icons/closeImg.png" /></a>');
 		templateClone.find('.hiddenVar').html('<input type="hidden" value="'+constituencies[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="constituencyPage"/>');
 		templateClone.appendTo('#userConstituencySubscriptionsDiv');
 	}
@@ -2952,10 +2952,10 @@ function showAllUserPartySubscriptions(jsObj,results)
 			var template = $(".specialPagSubscrTemplDiv");
 			var templateClone = template.clone();
 			templateClone.removeClass('specialPagSubscrTemplDiv');
-			templateClone.find('.titleCls').html('<a href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
+			templateClone.find('.titleCls').html('<a rel="tooltip" href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
 			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
 			//templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
-			templateClone.find('.unsubScribeCls').html('<a href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+partySubscriptions[i].name+'"><img src="images/icons/closeImg.png" /></i></a>');
+			templateClone.find('.unsubScribeCls').html('<a rel="tooltip" href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+partySubscriptions[i].name+'"><img src="images/icons/closeImg.png" /></i></a>');
 			templateClone.find('.hiddenVar').html('<input type="hidden" value="'+partySubscriptions[i].id+'" class="hiddenVarId" /><input type="hidden" class="subscripType" value="partyPage"/>');
 			templateClone.appendTo('#userPartySubscriptionsDiv');
 		}
@@ -4406,7 +4406,7 @@ function getUnsubscribedParties(partySubscriptions,jsObj)
 			var template = $(".specialPagSubscrTemplDiv");
 			var templateClone = template.clone();
 			templateClone.removeClass('specialPagSubscrTemplDiv');
-			templateClone.find('.titleCls').html('<a href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
+			templateClone.find('.titleCls').html('<a rel="tooltip" href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
 			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
 			if(jsObj.linkType == "fromWhatsNewLink")
 			 templateClone.find('.btnClass').html('<a href="javascript:{}" class="label label-info forWhatSubscribedLink">SUBSCRIBE</a>');
