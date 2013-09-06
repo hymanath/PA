@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
@@ -24,8 +25,10 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
+import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsResponseDetails;
@@ -54,7 +57,27 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private ISmsHistoryDAO smsHistoryDAO;
 	private ISmsModuleDAO smsModuleDAO;
 	private TaskExecutor taskExecutor;
+	private LocalElectionBodyDAO localElectionBodyDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
+	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
+	public LocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(LocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 	public ISmsResponseDetailsDAO getSmsResponseDetailsDAO() {
 		return smsResponseDetailsDAO;
 	}
@@ -929,8 +952,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 		{
 		StringBuffer queryString = new StringBuffer();
 
-		queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope from " +
-				" InfluencingPeople model where model.user.userId =:userId ");
+		queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope,model2.casteState.caste.casteName from " +
+				" InfluencingPeople model,UserVoterDetails model2 where model.user.userId =:userId and model2.user.userId =:userId and " +
+				" model.voter.voterId = model2.voter.voterId ");
 
 		if(searchVO.isNameSelected())
 		queryString.append(" and ( model.firstName like '%"+searchVO.getName()+"%' or model.lastName like '%"+searchVO.getName()+"%' )");
@@ -976,8 +1000,11 @@ public class VoiceSmsService implements IVoiceSmsService {
 			queryString.append(" and model.userAddress.constituency.constituencyId =:locationId ");
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MANDAL))
 			queryString.append(" and model.userAddress.tehsil.tehsilId =:locationId ");
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
-			queryString.append(" and model.userAddress.localElectionBody.localElectionBodyId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+			LocalElectionBody localBody = localElectionBodyDAO.get(new Long(assemblyLocalElectionBodyDAO.getLocalBodyIdBasedOnConstituencyId(searchVO.getConstituencyId())));
+			queryString.append(" and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId ="+localBody.getLocalElectionBodyId()+""+
+					" and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = "+searchVO.getConstituencyId()+"");
+		}
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.WARD))
 			queryString.append(" and model.userAddress.ward.constituencyId =:locationId ");
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.BOOTH))
@@ -1023,7 +1050,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		vo.setName(list[0].toString()+" " +list[1].toString());
 		//vo.setHouseNo(list[2].toString());
 		vo.setMobileNumber(Long.valueOf(list[2].toString()));
-		//vo.setCasteIds(list[3].toString());
+		vo.setCasteIds(list[4].toString());
 		vo.setLocationType(list[3].toString());
 		
 		//vo.setStartAge(Integer.parseInt(list[3].toString()));
