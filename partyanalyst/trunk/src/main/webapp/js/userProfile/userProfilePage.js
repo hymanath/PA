@@ -2842,7 +2842,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html('<a class="titleVar" rel="tooltip" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
+		  templateClone.find('.titleCls').html('<a class="titleVar" rel="tooltip" title="'+specialPages[i].specialPageVO.title+'" href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'">'+specialPages[i].specialPageVO.tempVar+'</a>');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
 		  //templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
 		  templateClone.find('.unsubScribeCls').html('<a rel="tooltip" href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+specialPages[i].specialPageVO.title+'"><img src="images/icons/closeImg.png" /></a>');
@@ -2854,7 +2854,7 @@ function showAllUserSubScribedSpecialPagesPages(jsObj,results)
 		  var template = $(".specialPagSubscrTemplDiv");
 		  var templateClone = template.clone();
 		  templateClone.removeClass('specialPagSubscrTemplDiv');
-		  templateClone.find('.titleCls').html('<a rel="tooltip" class="titleVar" title="'+specialPages[i].specialPageVO.title+'" href="javascript:{}">'+specialPages[i].specialPageVO.tempVar+'</a>');
+		  templateClone.find('.titleCls').html('<a rel="tooltip" class="titleVar" title="'+specialPages[i].specialPageVO.title+'" href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'">'+specialPages[i].specialPageVO.tempVar+'</a>');
 		  templateClone.find('.imgClass').html('<a href="specialPageAction.action?specialPageId='+specialPages[i].specialPageVO.specialPageId+'"><img height="100" width="95" src="'+specialPages[i].specialPageVO.eventImagePath+'"/></a>');
 		  if(jsObj.tempVar == "fromWhatsNewLink")
 			templateClone.find('.btnClass').html('<a href="javascript:{}" class="forWhatSubscribedLink label label-info">SUBSCRIBE</a>');
@@ -2912,7 +2912,7 @@ function showAllUserCandidateSubscriptions(jsObj,results)
 		var template = $(".specialPagSubscrTemplDiv");
 		var templateClone = template.clone();
 		templateClone.removeClass('specialPagSubscrTemplDiv');
-		templateClone.find('.titleCls').html(''+politicians[i].name+'');
+		templateClone.find('.titleCls').html('<a href="candidateElectionResultsAction.action?candidateId='+politicians[i].id+'" class="titleVar">'+politicians[i].name+'</a>');
 		templateClone.find('.imgClass').html('<img height="100" width="95" src="images/candidates/'+politicians[i].name+'.jpg"/>');
 		/*if(buildSubscribeButtons(results.profileCandidateSubscriptions[i].id,results.userCandidateSubscriptions))
 			templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink">UNSUBSCRIBE</a>');
@@ -2995,7 +2995,7 @@ function showAllUserPartySubscriptions(jsObj,results)
 			var template = $(".specialPagSubscrTemplDiv");
 			var templateClone = template.clone();
 			templateClone.removeClass('specialPagSubscrTemplDiv');
-			templateClone.find('.titleCls').html('<a rel="tooltip" href="javascript:{}" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
+			templateClone.find('.titleCls').html('<a rel="tooltip" href="partyPageAction.action?partyId='+partySubscriptions[i].id+'" class="titleVar" title="'+partySubscriptions[i].name+'">'+partySubscriptions[i].tempVar+'');
 			templateClone.find('.imgClass').html('<a href="partyPageAction.action?partyId='+partySubscriptions[i].id+'"><img height="100" width="95" src="images/party_flags/'+partySubscriptions[i].imageURL+'.png"/></a>');
 			//templateClone.find('.btnClass').html('<a href="javascript:{}" class="unSubscribedLink" >UNSUBSCRIBE</a>');
 			templateClone.find('.unsubScribeCls').html('<a rel="tooltip" href="javascript:{}" class="unSubscribedLink" title="click here to UnSubscribe '+partySubscriptions[i].name+'"><img src="images/icons/closeImg.png" /></i></a>');
