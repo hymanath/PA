@@ -743,6 +743,9 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		else if(jObj.getString("task").equalsIgnoreCase("getUnsubscribedConstituencies"))
 			selectOptionVOList = specialPageService.getAllUnSubscribedConstituencies(user.getRegistrationID(),jObj.getLong("stateId"));
 		
+		else if(jObj.getString("task").equalsIgnoreCase("getAllUnsubscribedNationalParties"))
+			subscriptionsVOList = specialPageService.getAllUnSubScribedNationalParties(user.getRegistrationID());
+		
 		return Action.SUCCESS;
 	}
 	

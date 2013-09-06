@@ -5996,6 +5996,12 @@
 		   <param name="root">partyPositionVOList</param>
 		  </result>
 		 </action>
+		 
+		 <action name="getAllUnsubscribedNationalPartiesAction" class="userProfileAction" method="AjaxHandler">
+		   <result type="json" name="success">
+		    <param name="root">subscriptionsVOList</param>
+		   </result>
+		</action>
 		
 		</package>
 </struts>      
