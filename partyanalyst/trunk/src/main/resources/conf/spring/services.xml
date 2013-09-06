@@ -683,7 +683,6 @@
 		<property name="fileGallaryDAO" ref="fileGallaryDAO" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"/>
 		<property name="newsProblemDAO" ref="newsProblemDAO"/> 
-		<property name="taskExecutor" ref="taskExecutor" />
    </bean>
    
 	<bean name="partyRebelCandidatesService" class="com.itgrids.partyanalyst.service.impl.PartyRebelCandidatesService" >
@@ -837,7 +836,6 @@
 		<property name="problemProgressDAO" ref="problemProgressDAO"/>
 		<property name="messageToCandidateDAO" ref="messageToCandidateDAO"/>
 		<property name="messageToPartyDAO" ref="messageToPartyDAO"/>
-        <property name="taskExecutor" ref="taskExecutor" />
 
 	</bean>
 	
@@ -905,7 +903,6 @@
 	    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/> 
 		<property name="userDAO" ref="userDAO" />
-		<property name="taskExecutor" ref="taskExecutor" />
 	</bean>
 	
 	<bean name="analysisReportService" class="com.itgrids.partyanalyst.service.impl.AnalysisReportService">
@@ -1695,8 +1692,6 @@
       <property name="regionServiceDataImp" ref="regionServiceDataImp" />
       <property name="votersAnalysisService" ref="votersAnalysisService" />
       <property name="casteStateDAO" ref="casteStateDAO" />
-      <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
-      <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
       <property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
       <property name="partyDAO" ref="partyDAO" />
 	  <property name="voterModificationDAO" ref="voterModificationDAO" />
@@ -1753,7 +1748,7 @@
      <property name="smsModuleDAO" ref="smsModuleDAO"></property>
      <property name="smsHistoryDAO" ref="smsHistoryDAO"></property>
      <property name="taskExecutor" ref="taskExecutor" />	
-     <property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property>   
+     <property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property> <property name="constituencyDAO" ref="constituencyDAO" /> 
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property> 	     
     </bean>
     
