@@ -120,6 +120,7 @@ input, button, select, textarea {
 
    .textAreaClass{
 	   background-color:#fff;
+	   resize: none;
    }
   .datagrid table {
 	  border-collapse: collapse; 
@@ -877,8 +878,13 @@ function getCandidatesData(sentType){
 			else if(reportLevelValue == 2){
 				areaId = $("#mandalField").val().substring(1);
 				cadreReportLevelValue =  $("#mandalField").val();
-				searchArea = "mandal";
 				cadreLocationId = 5;
+				searchArea = "mandal";
+				var mandalName = $("#mandalField :selected").text();
+				if(mandalName.toLowerCase().contains("muncipality")){
+					cadreLocationId = 7;
+					searchArea = "MUNCIPALITY/CORPORATION";
+				}			
 			}
 			else if(reportLevelValue == 3){
 				areaId = $("#panchayatField").val(); 
@@ -953,6 +959,7 @@ function getCandidatesData(sentType){
 			  selectedCriteria.cadreReportLevelValue = cadreReportLevelValue;
 
 			  selectedCriteria.socialStatus = false;
+			  selectedCriteria.consituencyId =  $("#constituencyList").val();
 			  
 	
 	var selctedType = $('input:radio[name=searchFor]:checked').val();
@@ -1001,7 +1008,7 @@ function getVoterSearchDetails()
 }
 function openInfluencePeopleWindow(){
 	
-	var urlStr = "searchInfluencePeopleForSmsAction.action?locationValue="+selectedCriteria.reportLevelValue+"&locationType="+selectedCriteria.searchArea+"&";
+	var urlStr = "searchInfluencePeopleForSmsAction.action?locationValue="+selectedCriteria.reportLevelValue+"&locationType="+selectedCriteria.searchArea+"&parentLocationId="+selectedCriteria.consituencyId+"&";
 	
 	if(selectedCriteria.isAgeSelected == true)
 	   urlStr += "startAge="+selectedCriteria.startAge+"&endAge="+selectedCriteria.endAge+"&";
@@ -3364,7 +3371,8 @@ buildReportLevelValues();
 
 function buildReportLevelValues()
 {
-
+	$('#mandalField').find('option').remove().end()
+		.append('<option value="0">Select Mandal</option>').val('');
 	if(accessType == "DISTRICT"){	
 		$('#reportLevel option:eq(0)').remove();
 		$('.soption').hide();
