@@ -111,6 +111,7 @@ width: 55%;
 	var houseNo = '${houseNo}';
 	var name = '${name}';
 	var gender = '${gender}';
+	var parentLocationId = '${parentLocationId}';
 </script>
 <script>
 $(document).ready(function(){
@@ -249,14 +250,14 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 
 var votersByLocBoothColumnDefs = [
 {key:"select", label: "<input type='checkbox' class='selectAll' style='margin-left:34px;'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
-{key:"name", label: "Name",sortable: true},
+{key:"name", label: "Name",width:110,sortable: true},
 {key:"mobileNumber",label:"Mobile Number",width:110,sortable:false},
-{key:"locationType",label:"Area Type",width:70,sortable:false},
+{key:"locationType",label:"Area Type",width:170,sortable:false},
 {key:"casteIds",label:"Caste",formatter:YAHOO.widget.DataTable.Caste}
 ];
 
-
-var urlStr = "searchCandidatesForVoiceSmsAction.action?publicationDateId=8&locationType="+locationType+"&locationValue="+locationId+"&";
+//parentLocationId
+var urlStr = "searchCandidatesForVoiceSmsAction.action?publicationDateId=8&locationType="+locationType+"&locationValue="+locationId+"&parentLocationId="+parentLocationId+"&";
 
 
 urlStr += "isAgeSelected="+isAgeSelected+"&isCasteSelected="+isCasteSelected+"&isFamilySelected="+isFamilySelected+"&isNameSelected="+isNameSelected+"&isGenderSelected="+isGenderSelected+"&";

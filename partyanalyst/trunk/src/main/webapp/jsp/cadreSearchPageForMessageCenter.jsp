@@ -551,7 +551,7 @@ var locationValue;
 	if(window.opener.selectedCriteria.cadreLocationId == 5)
 		 locationValue =  window.opener.selectedCriteria.cadreReportLevelValue;
 	else
-		locationValue = window.opener.selectedCriteria.reportLevelValue
+		locationValue = window.opener.selectedCriteria.cadreReportLevelValue
 
 var jsObj=
 		{	extra				    :"one",
