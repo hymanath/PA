@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -266,7 +267,51 @@ public class VoiceSmsService implements IVoiceSmsService {
 				  
 				  smsTrackDAO.save(smsTrack);
 			  }
-			
+			  
+			  String allNumbers[] = Arrays.copyOf(mobileNumbersString.split(","), 3);
+			  
+			  int noOfIterations = 0;
+			  if(allNumbers.length % 10000 == 0)
+				  noOfIterations = allNumbers.length / 10000;				  
+			 else
+				  
+				  noOfIterations = (allNumbers.length / 10000)+1;			  
+		
+			  
+			  if(allNumbers.length -1 >10000){
+				  
+				 for(int i=0;i < noOfIterations ;i++)
+				 {
+					 String[]  subSet = null;
+										 
+					 if(i != noOfIterations-1)
+					 {
+						 if(allNumbers.length >= (i+1)*10000 )
+					       subSet = Arrays.copyOfRange(allNumbers, i*10000+1, (i+1)*10000);
+						 else
+						   subSet = Arrays.copyOfRange(allNumbers, i*10000+1, allNumbers.length);
+					   
+					 }else
+					 {
+						subSet = Arrays.copyOfRange(allNumbers, i*10000+1,(i+1)*10000);
+					 }					 
+					 
+					 StringBuilder subString = new StringBuilder();
+					 
+					 for(String number:subSet)
+					 {
+						 subString.append(number+",");
+					 }
+					 
+					 String mobileNoStr = subString.toString();
+					 mobileNoStr = mobileNoStr.substring(0, mobileNoStr.length()-1);
+					 
+					  taskExecutor.execute(sendVoiceSMSUsingProvider(userName , password , senderMobileNumber.toString() ,mobileNoStr ,audioPath, voiceSmsResponseDetailsVO , userId , otherNumbers , description , mobileNumbers));
+
+					 
+				 }
+				  
+			  }else			
 			  taskExecutor.execute(sendVoiceSMSUsingProvider(userName , password , senderMobileNumber.toString() ,mobileNumbersString ,audioPath, voiceSmsResponseDetailsVO , userId , otherNumbers , description , mobileNumbers));
 		 
 		 
