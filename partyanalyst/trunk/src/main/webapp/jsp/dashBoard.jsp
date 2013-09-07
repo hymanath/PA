@@ -2183,7 +2183,7 @@ function getYoungerVoterDetails()
 	$('#candidateCastes1 :selected').each(function(i, selected){ 
 	    casteIds+=','+$(this).val();
    });
-	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=19&toAge=22&constituencyId="+constituencyId+"&casteIds="+casteIds+"&youngVoters=true&constituencyName="+constituencyName+"");
+	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=18&toAge=22&constituencyId="+constituencyId+"&casteIds="+casteIds+"&youngVoters=true&constituencyName="+constituencyName+"");
 }
 
 function previousElectionDetails()
