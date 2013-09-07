@@ -27,7 +27,7 @@ public interface IVoiceSmsService {
 	public Long getVotersDetailsCountBySearchToSendSMS(SMSSearchCriteriaVO searchVO ,boolean forCount);
 	public List<Long> sendVoiceSmsDirectlyToVoters(SMSSearchCriteriaVO searchVO);
 
-
+    public boolean checkUploadFileExists(String fileName);
 
 
 }

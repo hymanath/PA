@@ -26,11 +26,8 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
-import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsResponseDetails;
@@ -215,6 +212,42 @@ public class VoiceSmsService implements IVoiceSmsService {
 		}
 		
 	}
+	
+	public boolean checkUploadFileExists(String fileName)
+	{
+		boolean check = false;
+		
+	List<String> list=	voiceRecordingDetailsDAO.getAllVoiceRecordingNames();
+		
+		for(String s : list)
+		{
+			String[] parts = s.split("\\.");
+			if(fileName.equals(parts[0]))
+			{
+			  check=true;
+			  break;
+			}
+		}
+		   
+		return check;	
+			
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public Map<String , String> getAllTheRecordedFilesOfAUser(Long userId)
 	{

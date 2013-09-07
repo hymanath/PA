@@ -10,5 +10,5 @@ public interface IVoiceRecordingDetailsDAO extends GenericDao<VoiceRecordingDeta
 	
 	public List<Object[]> getAllTheRecordingDetailsOfUser(Long userId);
 
-
+    public List<String> getAllVoiceRecordingNames();
 }
