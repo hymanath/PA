@@ -1142,7 +1142,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 			 <font class="requiredFont">*</font>
 			<!--<select id="constituencyList" style="margin-left:37px;width:165px;" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"><option value="0">Select Constituency</option></select>-->
                
-             <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+             <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getValuesForConstituencyChange(this.value);"/>
 
 			 </div>
 			 </div>
@@ -1155,7 +1155,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 			 <font class="requiredFont">*</font>
 
 
-			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),	clearSelectOptions(this.value);,getMandalOrMuncipalityList();,getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="parliamentConstituencyList" listKey="id" listValue="name" onchange="getValuesForConstituencyChange(this.value);"/>
 			 </div>
 			 </div>
 		 </c:if>
@@ -1166,7 +1166,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 			 <font class="requiredFont">*</font>
 
 
-			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),	clearSelectOptions(this.value);getMandalOrMuncipalityList();getPublicationDate();getAllTheCastesOfConstituency(this.value)"/>
+			 <s:select theme="simple" class="selectWidth" style="margin-left:37px;width:165px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getValuesForConstituencyChange(this.value);"/>
 			 </div>
 			 </div>
 		 </c:if>
@@ -1972,7 +1972,16 @@ function callAjax1(param,jsObj,url){
 					{
 						clearOptionsListForSelectElmtId("constituencyField_s");
 						createOptionsForSelectElmtId("constituencyField_s",myResults);
-					}		
+					}
+					else if(jsObj.task1 == "subRegionsInConstituency")
+ 				    {
+						$('#mandalField').find('option').remove();
+
+						$.each(myResults,function(index,value){
+                          $('#mandalField').append('<option value="'+value.id+'">'+value.name+'</option>');
+						});
+
+					}					
 					else if(jsObj.task == "subRegionsInConstituency" )
 					{
 						clearOptionsListForSelectElmtId("mandalField_s");
@@ -3254,7 +3263,7 @@ function getHamletsInMandal()
 
 function getBooths()
 {
-	if($('#mandalField').val().charAt(0) ==1 && $('#reportLevel').val() == 6){
+	if($('#mandalField').val().substring(0,1) ==1 && $('#reportLevel').val() == 6){
 	$('#panchayatDiv').hide();
 	clearOptionsListForSelectElmtId("hamletField");
 	return;
@@ -3263,6 +3272,8 @@ function getBooths()
 		if($('input[name=searchFor]:checked').val() == "voter" || $('#reportLevel').val() == 5){
 		   getPanchayatOrWardsList('panchayat','panchayatField');
 		   getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');
+
+		   //this is to get wards for muncipality in voter
 		   getPanchayatOrWardsList('ward','wardField');
 		}
 		else{
@@ -3449,6 +3460,46 @@ else{
 	$('#charsCountId').html(length);
 }
 }
+
+
+function getValuesForConstituencyChange(value)
+{
+	clearErrDiv();
+	getAllTheCastesOfConstituency(value);
+
+	if($('input:radio[name=searchFor]:checked').val() == "voter"){
+		getMandalOrMuncipalityList();
+		getPublicationDate();
+
+	}
+	else
+	{
+         getLocations(value);
+	}
+
+}
+
+function getLocations(value)
+{	
+
+	var jsObj=
+		{				
+			id: value,
+			task: "subRegionsInConstituency",
+			task1: "subRegionsInConstituency",
+			taskType:"cadreSearch",
+			address: "",
+			areaType: "",
+			constId: $('#constituencyList').val(),
+			isParliament : ""
+			
+		}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
+	callAjax1(rparam,jsObj,url);
+}
+
 </script>
  </body>
  </html>
