@@ -970,7 +970,7 @@ function getCandidatesData(sentType){
 			  
 	
 	var selctedType = $('input:radio[name=searchFor]:checked').val();
-	if($('#mandalField').val().charAt(0) ==1 && (reportLevelValue == 6 || reportLevelValue == 3)){
+	if((reportLevelValue == 6 || reportLevelValue == 3) && $('#mandalField').val().charAt(0) ==1 ){
 	clearOptionsListForSelectElmtId("hamletField");
 	return;
 	}else{
