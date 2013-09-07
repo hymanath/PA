@@ -625,9 +625,13 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				try{
 					jObj = new JSONObject(getTask());
 				}catch(Exception e){}
+				Long userID = regVO.getRegistrationID();
+				if(regVO.getMainAccountId() != null){
+					userID = regVO.getMainAccountId();
+				}
 				
 				if(jObj.getString("task").equals("getUserAssignedVoterCastes")){
-					castesList = suggestiveModelService.getUserAssignedVotersCasteDetailsByConstId(jObj.getLong("constituencyId"),regVO.getRegistrationID());
+					castesList = suggestiveModelService.getUserAssignedVotersCasteDetailsByConstId(jObj.getLong("constituencyId"),userID);
 				}
 			}
 			
