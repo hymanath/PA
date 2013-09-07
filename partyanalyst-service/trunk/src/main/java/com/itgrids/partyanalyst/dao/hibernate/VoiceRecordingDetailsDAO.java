@@ -25,4 +25,16 @@ public class VoiceRecordingDetailsDAO extends GenericDaoHibernate<VoiceRecording
 			return query.list();
 			
 		}
+		
+		 public List<String> getAllVoiceRecordingNames()
+		 {
+			 Query query = getSession().createQuery("select model.recordingName  from VoiceRecordingDetails model");
+			 return query.list();
+			 
+			 
+			 
+			 
+		 }
+		
+		
 }
