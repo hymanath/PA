@@ -5932,6 +5932,14 @@
 			  </result>
 		 </action>
 		 
+		 <action name="uploadFileExists" class="voiceSmsAction" method="uploadFileExists">
+		  <result type="json" name="success">
+			   <param name="root">check</param>
+			  </result>
+		 </action>
+		 
+		 
+		 
 		 <action name="demoRequestAction" class="demoRequestAction">
 		    <result name="input">jsp/loginForm.jsp</result>
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
