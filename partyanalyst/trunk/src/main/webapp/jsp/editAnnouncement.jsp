@@ -412,12 +412,12 @@ $(function()
              <table width="100%" class="annSearchInputTable">	
 				<TR>
 					<TD class="tdClass">From Date <font class="requiredFont"> * </font> </TD>       
-					<TD><s:textfield id="fromDateField"  name="fromDate" readonly="true" onfocus="getCalenderForFromDate()" theme="simple" size="20" class="dateSelection"/></TD>
+					<TD><s:textfield id="fromDateField"  name="fromDate1" readonly="true" onfocus="getCalenderForFromDate()" theme="simple" size="20" class="dateSelection"/></TD>
 				</TR>
 	 
 				<TR>
 					<TD class="tdClass">To Date <font class="requiredFont"> * </font></TD>
-					<TD><s:textfield id="toDateField"  name="toDate" size="20"  readonly="true" onfocus="getCalenderFortoDate()" theme="simple" class="dateSelection"/></TD>
+					<TD><s:textfield id="toDateField"  name="toDate1" size="20"  readonly="true" onfocus="getCalenderFortoDate()" theme="simple" class="dateSelection"/></TD>
 				</TR>
 			 </table>
 			  <table width="100%" class="annSearchInputTable">
