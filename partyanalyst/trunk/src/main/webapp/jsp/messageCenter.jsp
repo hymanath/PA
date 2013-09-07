@@ -832,6 +832,7 @@ var casteIds = "";
 var gender = "";
 var searchArea='constituency';
 var cadreLocationId =1;
+var cadreReportLevelValue = 1;
 
 function getCandidatesData(sentType){
 	casteIds='';
@@ -865,7 +866,6 @@ function getCandidatesData(sentType){
 	   isNameSelected = (searchName.trim() == "") ? false : true;	  
 	   isGenderSelected =  (gender == "All") ? false : true;
 
-	   var cadreReportLevelValue;
 			
 			if(publicationDateId == null)
 				publicationDateId = 8;
@@ -881,10 +881,14 @@ function getCandidatesData(sentType){
 				cadreLocationId = 5;
 				searchArea = "mandal";
 				var mandalName = $("#mandalField :selected").text();
-				if(mandalName.toLowerCase().contains("muncipality")){
+				//if(mandalName.toLowerCase().contains("muncipality")){
+				if($('#mandalField').val().substring(0,1) == "1"){
 					cadreLocationId = 7;
 					searchArea = "MUNCIPALITY/CORPORATION";
-				}			
+					cadreReportLevelValue =  $("#mandalField").val();
+
+				}
+				
 			}
 			else if(reportLevelValue == 3){
 				areaId = $("#panchayatField").val(); 
@@ -970,7 +974,7 @@ function getCandidatesData(sentType){
 			  
 	
 	var selctedType = $('input:radio[name=searchFor]:checked').val();
-	if((reportLevelValue == 6 || reportLevelValue == 3) && $('#mandalField').val().charAt(0) ==1 ){
+	if((reportLevelValue == 6 || reportLevelValue == 3) && $('#mandalField').val().charAt(0) ==1  ){
 	clearOptionsListForSelectElmtId("hamletField");
 	return;
 	}else{
