@@ -216,15 +216,18 @@ html{overflow-x: hidden;}
     font-weight: bold;}
 
 #partyPerformanceInnerDiv table th{background: none repeat scroll 0 0 #D9EDF7;color: #454545;}
-
+.dataTables_wrapper {
+    overflow-x: scroll;
+}
 </style>
 
 
 <script type="text/javascript" >
+var constituencyType ;
 $(document).ready(function(){
  <c:if test="${!hideMainMenu}">
   getConstituencyList();
-  var constituencyType ;
+  
  </c:if>
 });
 function getConstituencyList(){
@@ -621,6 +624,10 @@ function callAjax(param,jsObj,url){
 							/* if(myResults[0].name == "RURAL-URBAN")
 								getLeadersListInRuralUrbans(); */
 								constituencyType = myResults[0].name;
+								<c:if test="${castDetails}"> 
+		                            $("#dashBoardImgLoading").show();
+                                    getLeadersList();
+		                        </c:if>
 						}
 						/* else if (jsObj.task== "getLeadersListInRuralUrbans"){
 						    $("#dashBoardImgLoadingNew").hide();
@@ -3311,12 +3318,12 @@ function getVoterDetailsByPartNo(partno,constituencyId,startIndex)
 }
 <c:if test="${hideMainMenu}">
   <c:if test="${castDetails}">
-    $("#dashBoardImgLoading").show();
-    getLeadersList();
+    
+	getConstituencyType();
   </c:if>
   <c:if test="${castDetails}"> 
    
-   //getConstituencyType();
+
   </c:if>
   <c:if test="${youngVoters || oldVoters}"> 
      $("#dashBoardImgLoading").show();
