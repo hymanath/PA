@@ -8,6 +8,7 @@
 
 <head>
 <title>Record And Upload Audio File</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 <style>
 ul li {list-style-type:square;}
@@ -137,17 +138,22 @@ ul li {list-style-type:square;}
 
 <div>
 
-<div id="errorDiv" style="color:red;font-weight:bold;margin-left:400px;"></div>
+<div id="errorDiv" style="color:red;font-weight:bold;margin:5px 5px 5px 188px;"></div>
 	<div class="widget">
 	 <h4 style="text-align:center;">Upload Audio</h4>
 
 	 <div style="width:auto;text-align:center;margin-left:-66px;">
-	   <div style="margin:15px 0 0 50px;"><span>Enter File Name : <font style="color:red;">*</font></span><input type="text" name="voiceFileName" id="fileName" style="margin-left:44px;"/></div>
+	   <div style="margin:15px 0 0 50px;"><span>Enter File Name : <font style="color:red;">*</font></span><input type="text" name="voiceFileName" id="fileName" style="margin-left:44px;" onBlur="checkUploadFileExists();"/></div>
+	    <div id="errormsg" style="margin-left: 143px;color:#ff0000"></div>
+
+	    
 	   <div style="margin: 15px 0px 0px 114px;"><span>Enter File Description:<font style="color:red;">*</font></span> <textarea  name="voiceDescription" style="width:300px;background-color:#fff;margin-left:38px;" id="description"></textarea></div>
 
-	   <div style="margin:16px 0 0 129px;"><span>Select File:<font style="color:red;">*</font></span><input type="file" name="recordedVoice"  style="margin-top: 8px; margin-left: 45px;" id="audioFile"/></div>
+	   <div style="margin:16px 0 0 129px;"><span>Select File:<font style="color:red;">*</font></span>
+	   <input type="file"  name="recordedVoice"  style="margin-top: 8px; margin-left: 45px;" id="audioFile"/>
+	   </div>
 
-	   <div style="margin:0px 0px 0px 456px;"><input class="btn btn-info" type="submit" value="Upload To Server"/></div>
+	   <div style="margin:0px 0px 0px 456px;"><input class="btn btn-info" type="submit" value="Upload To Server"  /></div>
 
 
 
@@ -161,6 +167,8 @@ ul li {list-style-type:square;}
  </div>
 
 <script>
+var error = false;
+
 function showRecordDiv()
 {
  $('#recordingDiv , #recordingMenuDiv').slideToggle('slow');
@@ -168,41 +176,154 @@ function showRecordDiv()
 }
 
 function validateForm()
-{
-	 var errorDiv = document.getElementById("errorDiv");
-	 errorDiv.innerHTML="";
-
-	var error = false;
-	var str='';
+{	 
+var str='';
+var errorDiv = document.getElementById("errorDiv");
+errorDiv.innerHTML="";
+	
+	
+	
 
    if($('#fileName').val() == "")
    {
 	   str+='File name is required</br>';
 	   error = true;
-
+    }
+   if($('#fileName').val().length >10)
+   {
+	   str+='File name should not exceed 10 characters.</br>';
+	   error = true;
+  
    }
+  
 
+   
    if($('#description').val() == "")
    {
 	   str+='File description is required</br>';
 	   error = true;
+      
 
    }
+
+   if($('#description').val().length >500)
+   {
+	   str+='File description should not exceed 500 characters.</br>';
+	   error = true;
+      
+   }
+
 
    if($('#audioFile').val() =="")
    {
 	   str+='File  is required</br>';
-	   error = true;
+	   error = true; 
+       
 
    }
 
-  errorDiv.innerHTML = str;
+   //validation for file type
+  if($('#audioFile').val() !="")
+ {
+  var fileName=document.getElementById("audioFile").value;
+  var fileNameInUpperCase=fileName.toUpperCase();
+  var ext = fileNameInUpperCase.substring(fileName.lastIndexOf('.') + 1);
+ if(ext !="WAV" && ext != "MP3") 
+ {
+	 str+='file should be in .wav or .mp3 format only.</br>';
+	 error=true;
+ }else{
+	error=false;
+ }
+ 
+ }
+//validation for file size
+if($('#audioFile').val() !="")
+{
+  var fileSize=Math.round( (Math.round(document.getElementById("audioFile").files[0].size /1024)) /1024) ;
   
+  if(fileSize>2)
+	{
+      str+='File size should not exceed 2 MB</br>';
+       error = true;
+	   
+    }
+	else{
+	error=false;
+	}
+ 
+}
+
+
+errorDiv.innerHTML+= str;
   if(error == true)
 	  return false;
   else
 	  return true;
 }
+
+function checkUploadFileExists()
+{ 
+	
+   var patt1=/^[a-zA-Z0-9_]+$/;
+   var str1=' ';
+    if($('#fileName').val() != "")
+	{
+     if( !$('#fileName').val().match(patt1))
+     {  
+		str1+='filename should not contain any special characters and spaces.</br>';
+	    error = true;
+        $("#errormsg").html(str1);
+        return false;
+	  } 
+    
+     else{
+          str1='';
+          $("#errormsg").html(str1);
+         }
+	}
+  $.ajaxSetup({
+			  
+			   jsonp: null,
+			   jsonpCallback: null
+			 });
+
+
+$.ajax({
+		 
+		 type:'GET', 
+		 url: 'uploadFileExists.action', 
+		 dataType: 'json',
+		 data: {   
+				 fileName:document.getElementById("fileName").value
+	            },
+					 
+		 success: function(data){ 				 
+				 
+                                  if(data==true)
+			                       {
+									 $("#errormsg").html("A file already exists with this name.");
+						              error=true;
+									}
+
+								  
+								  else
+			                       {
+									  $("#errormsg").html('');
+                                      error=false;
+                                   }   
+								   
+								
+								  },
+								 
+							
+		 error:function(){ 
+						    alert("failure");
+						 }
+							    
+		});
+}					 
+
 </script>
 </body>
 </html>

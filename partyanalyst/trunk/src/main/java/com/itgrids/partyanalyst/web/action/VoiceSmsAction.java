@@ -42,7 +42,30 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private List<VoiceSmsResponseDetailsVO> voiceSmsResponseDetails;
 	private VoiceSmsResponseDetailsVO responseDtls;
 	private List<Long> mobileNumbersList  ;
+	private String fileName;
 	
+	private boolean check;
+	
+	
+	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	
+	
+	public boolean isCheck() {
+		return check;
+	}
+
+	public void setCheck(boolean check) {
+		this.check = check;
+	}
+
 	public List<Long> getMobileNumbersList() {
 		return mobileNumbersList;
 	}
@@ -284,6 +307,10 @@ public class VoiceSmsAction implements ServletRequestAware{
 		
 		return Action.SUCCESS;
 		
+	}
+	public void prepare() throws Exception {
+		
+		System.out.println("prepare method called");
 	}
 	
 	public String uploadAudioFile() throws Exception
@@ -854,4 +881,28 @@ public class VoiceSmsAction implements ServletRequestAware{
 		
 		return Action.SUCCESS;
 	}
+	
+	
+	public String uploadFileExists()
+	{
+		
+	 check=	voiceSmsService.checkUploadFileExists(fileName);
+		
+		
+		
+		return Action.SUCCESS;
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
