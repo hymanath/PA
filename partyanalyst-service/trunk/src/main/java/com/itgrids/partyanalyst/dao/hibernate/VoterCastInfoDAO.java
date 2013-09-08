@@ -192,4 +192,15 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 		return query.list();
 				
 	}
+	
+	public List<Object[]> getCasteAvaliableConstituencyes(List<Long> constituencyIds,Long userId)
+	{
+		Query query = getSession().createQuery("select distinct model.constituency.constituencyId,model.constituency.name " +
+				" from  VoterCastInfo model where model.userId = :userId and " +
+				" model.constituency.constituencyId in (:constituencyIds)");
+		query.setParameter("userId", userId);
+		query.setParameterList("constituencyIds", constituencyIds);
+		
+		return query.list();
+	}
 }

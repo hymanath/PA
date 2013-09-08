@@ -427,10 +427,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						   muncipalMap=getTheMapForArea(ttlVtrsInBooths,ttlVtrsInBoothByAge);
 						   
 						   List<Object[]> ttlRsltsInBooths=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId());
-						   Object[] obj=ttlVtrsInBoothByAge.get(0);
-						   String Area=obj[5].toString()+" "+obj[6].toString();
-						  
-						   muncipalMap=getResults(ttlRsltsInBooths,muncipalMap,casteIds,exptdCastes,ttlBoothIds,Area);
+						   String area= "";
+						   if(ttlVtrsInBoothByAge != null && ttlVtrsInBoothByAge.size() > 0){
+						    Object[] obj=ttlVtrsInBoothByAge.get(0);
+						    area=obj[5].toString()+" "+obj[6].toString();
+						   }
+						   muncipalMap=getResults(ttlRsltsInBooths,muncipalMap,casteIds,exptdCastes,ttlBoothIds,area);
 						   List<PanchayatVO> list1=new ArrayList<PanchayatVO>(muncipalMap.values());
 						   panchaytVO1.setBoothsList(list1);
 					   }
@@ -2014,12 +2016,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			return constituencyList;
 		}
 		}
-		public List<SelectOptionVO> getCasteAvaliableConstituencysService(List<SelectOptionVO> ConstituenciesForUserAccessed,Long electionId,Long electionYear,Long userId)
+		public List<SelectOptionVO> getCasteAvaliableConstituencysService(List<SelectOptionVO> constituenciesForUserAccessed,Long electionId,Long electionYear,Long userId)
 		{
 		 List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);
 		 List<SelectOptionVO> returnList = null;
 		try{
-			List<Long> constituencyIds =  voterInfoDAO.getNONURBANConstituencyIds(electionId,electionYear,1L);
+			/*List<Long> constituencyIds =  voterInfoDAO.getNONURBANConstituencyIds(electionId,electionYear,1L);
 			if(ConstituenciesForUserAccessed != null && ConstituenciesForUserAccessed.size() > 0 && constituencyIds != null)
 			{
 				for(SelectOptionVO selectOptionVO : ConstituenciesForUserAccessed)
@@ -2027,13 +2029,13 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					if(constituencyIds.contains(selectOptionVO.getId()))
 						constituencyList.add(selectOptionVO);
 				}
-			}
+			}*/
 			List<Long> consIds = new ArrayList<Long>();
-			for (SelectOptionVO selectOptionVO : constituencyList) {
+			for (SelectOptionVO selectOptionVO : constituenciesForUserAccessed) {
 				Long constituencyId = selectOptionVO.getId();
 				consIds.add(constituencyId);
 			}
-			List<Object[]> constituencysList = voterCastBasicInfoDAO.getCasteAvaliableConstituencyes(consIds,userId);
+			List<Object[]> constituencysList = voterCastInfoDAO.getCasteAvaliableConstituencyes(consIds,userId);
 			if(constituencysList != null && constituencysList.size() > 0)
 			{
 				returnList = new ArrayList<SelectOptionVO>();
@@ -2120,6 +2122,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 try{
 			 publicationId = publicationDateDAO.getLatestPublicationId();
 			 List<Long> list = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(constituencyId, publicationId);
+			 if(list == null || list.size() == 0)
+			  return null;
 			 Tehsil tehsilDetails = localElectionBodyDAO.get(list.get(0)).getTehsil();
 			 if(checkStatus)
 				{
@@ -2347,7 +2351,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				youthLeaderSelectionVO.setSelectedCastesList(topCastesListInTotalMuncipality);
 				returnList.add(youthLeaderSelectionVO);
 		 }catch(Exception e){
-			 e.printStackTrace();
+			 LOG.error("Exception raised in findingBoothInchargesForBoothLevelForMincipality() method in Suggestive Model Service", e);
 		 }
 		 return returnList;		 
 	 }
@@ -3674,7 +3678,9 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							 localelectionList.add(localElection);
 								}
 						 }
-						 List<Object[]> boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
+						 List<Object[]> boothIdsList = null;
+						 if(localbodyIds != null && localbodyIds.size() > 0)
+						  boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
 						 if(boothIdsList != null && boothIdsList.size() > 0)
 						 partyPositionVO.setBoothwisePartyPositionVOList(localelectionList);
 						 }
@@ -3685,15 +3691,18 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						
 						if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
 						{
-							List<Long> panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIds,eleId);
+							List<Long> panchayatIds = null;
+							if(mandalIds != null && mandalIds.size() > 0)
+							 panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIds,eleId);
 							if(panchayatIds != null && panchayatIds.size() > 0)
 								getMandalWisePartyPerformanceReport1(constituencyId,eleId, partyPositionVO, partyId,panchayatIds);	
 							
 						}
 						else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
-						{
-							
-							List<Object[]> boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
+						{    partyPositionVO.setConstituencyType("urban");
+							List<Object[]> boothIdsList = null;
+							if(localbodyIds != null && localbodyIds.size() > 0)
+							 boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
 							
 							if(boothIdsList != null && boothIdsList.size() > 0)
 								getPanchayatWisePartyPerformance1(constituencyId,eleId, partyPositionVO, partyId,boothIdsList);
@@ -3701,12 +3710,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						}
 						else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
 						{
-							
-							List<Long> panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIds,eleId);
+							List<Long> panchayatIds = null;
+							if(mandalIds != null && mandalIds.size() > 0)
+							 panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIds,eleId);
 							if(panchayatIds != null && panchayatIds.size() > 0)
 								getMandalWisePartyPerformanceReport1(constituencyId,eleId, partyPositionVO, partyId,panchayatIds);
-							
-							List<Object[]> boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
+							List<Object[]> boothIdsList = null;
+							if(localbodyIds != null && localbodyIds.size() > 0)
+							 boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
 							
 							if(boothIdsList != null && boothIdsList.size() > 0)
 								getPanchayatWisePartyPerformance1(constituencyId,eleId, partyPositionVO, partyId,boothIdsList);
@@ -3722,12 +3733,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				}	
 
 				//For PollingPercentage Panchayats
-				if(resultList != null && resultList.size() > 0){
+				/*if(resultList != null && resultList.size() > 0){
 					tempLocationName = IConstants.PANCHAYAT;
 					getPollingPercentageForALocation(resultList.get(0),tempLocationName,constituencyId);
 					List<PartyPositionVO>  panchayatVos = getMoreVotersAddedLocDetailsWherePartyIsPoor(resultList.get(0).getPartyPositionVOList());
 					resultList.get(0).setAddedVoterDetails(panchayatVos);
-				}
+				}*/
 				
 				//Percentage
 				Map<Long,Map<String,Long>> map = new HashMap<Long, Map<String,Long>>(0);//<electionId,Map<strong,totalValidVotes>>
@@ -4397,7 +4408,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							if(wardsList != null && wardsList.size() > 0)
 							{
 								for (Object[] parms : wardsList) {
-									wardsNameMap.put((Long)parms[0], parms[2].toString().concat("(").concat(parms[1].toString().toUpperCase().concat("")));
+									wardsNameMap.put((Long)parms[0], parms[2].toString().concat("(").concat(parms[1].toString().toUpperCase().concat(")")));
 								}
 							}
 						}
