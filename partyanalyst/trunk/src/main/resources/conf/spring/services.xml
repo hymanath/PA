@@ -1695,6 +1695,8 @@
       <property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
       <property name="partyDAO" ref="partyDAO" />
 	  <property name="voterModificationDAO" ref="voterModificationDAO" />
+	  <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
+	  <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">

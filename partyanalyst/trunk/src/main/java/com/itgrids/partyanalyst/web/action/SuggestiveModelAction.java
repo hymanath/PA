@@ -692,7 +692,15 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			{
 				return Action.ERROR;
 			}
-			Long userId         = regVO.getRegistrationID();
+			Long userId         = null;
+			if(regVO.getParentUserId()!=null)
+			{
+			  userId = regVO.getMainAccountId();
+			}
+			else
+			{
+			  userId = regVO.getRegistrationID();
+			}
 			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);

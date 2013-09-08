@@ -514,7 +514,7 @@ var jsObj=
 		var uploadHandler = {
 		success: function(o) {
 		var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
-		 $("#dashBoardImgLoading").hide();
+		 $("#dashBoardImgLoadingNew").hide();
 		 if(checkStatus == false)
 		 {
 			buildLeadersTableForNONUrbanAreas(uploadResult);
@@ -595,15 +595,18 @@ function callAjax(param,jsObj,url){
 						{
 						    $("#ajaxImg").css("display","none");
 							$("#dashBoardImgLoading").hide();
-					      if(myResults[0].partyPositionVOList.length > 0)
+					      if(myResults[0].partyPositionVOList.length > 0 && myResults[0].constituencyType != "urban")
 							showPartyPerformanceReport(myResults,jsObj);
 							if(myResults[0].boothwisePartyPositionVOList.length > 0)
 							showPartyPerformanceReportForBooth(myResults,jsObj);
 							//showStrongAndWeakPollingPercentage(myResults,jsObj);
-							buildAddedVotersDetails(myResults);
-							showPartyPerformancePieChart(myResults,jsObj);
-							showSuggestedLocations(myResults,jsObj);
-							panchayatMatrx(myResults);
+							
+							//buildAddedVotersDetails(myResults);
+							if(myResults[0].constituencyType != "urban"){
+							 showPartyPerformancePieChart(myResults,jsObj);
+							 showSuggestedLocations(myResults,jsObj);
+							 panchayatMatrx(myResults);
+							}
 						}
 						else if(jsObj.task == "getDeletedVotersInfo")
 						{
@@ -1888,7 +1891,7 @@ function buildLeadersTableForUrban(results)
 			var rowLength = results[i].boothLevelLeadersList.length;
 			//str += '<td rowspan='+rowLength+'>'+results[i].mandalName+'</td>'; 
 			str += '<td rowspan='+rowLength+'>'+results[i].panchayatName+'</td>'; 
-			str += '<td rowspan='+rowLength+'>'+results[i].casteVoters+'</td>'; 
+			str += '<td rowspan='+rowLength+'>'+results[i].panchayatTotalVoters+'</td>'; 
 						
 			if(results[i].boothLevelLeadersList != null && results[i].boothLevelLeadersList.length > 0){
 			for(var k in results[i].boothLevelLeadersList)
@@ -2873,6 +2876,9 @@ var count=0;
 		$('#ageGroupBoothTableId1').html('');
 		$('#ageGroupBoothTableId2').html('');
 		$('#ageGroupBoothTableId3').html('');
+		if(!(myResults.panchayatList != null && myResults.panchayatList.length > 0)){
+		$('#ageGroupTableId1').html("<b>No Data Available</b>");
+		}
 		buildHeadBodyForTable(myResults,jsObj);
 		
 	}

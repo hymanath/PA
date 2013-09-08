@@ -2,7 +2,8 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.ResourceBundle;" %>
+<%@ page import="java.util.ResourceBundle" %>
+<%@page import="com.itgrids.partyanalyst.utils.IConstants"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>DashBoard</title>			 
@@ -864,10 +865,16 @@ lable{line-height:40px;}
 </div></div>
 
 <script>
+
  $(document).ready(function(){
     $("#floatingDiv_relative_main").hide();
 	$('.active').removeClass(); 
-	$('#dashBoardBtn').css("background-color","#0088CC"); 
+	var host = "<%=IConstants.DEPLOYED_HOST%>";
+	if(host == "tdpserver")
+		$('#dashBoardBtn').css("background-color","#FE2307");
+	else
+		$('#dashBoardBtn').css("background-color","#0088CC");
+	 
 	$('#dashBoardBtn').css("border-radius","4px 4px 4px 4px");
 	getCasteAvaliableConstituencys();
 	getConstituencyList();
