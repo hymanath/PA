@@ -18,6 +18,4 @@ public interface IVoterCastBasicInfoDAO extends GenericDao<VoterCastBasicInfo, L
 	
 	public List<VoterCastBasicInfo> getVoterCastBasicInfoList(Long constituencyId,Long publicationDateId, Long userId);
 	
-	public List<Object[]> getCasteAvaliableConstituencyes(List<Long> constituencyIds,Long userId);
-	
 }

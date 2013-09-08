@@ -42,6 +42,7 @@ public class PartyPositionVO implements Serializable{
 	private boolean selectedParty = false;
 	private Long toDecrease;
 	private Long toImprove;
+	private String constituencyType;
 
 	public Long getToDecrease() {
 		return toDecrease;
@@ -239,6 +240,12 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setPriorityOrder(int priorityOrder) {
 		this.priorityOrder = priorityOrder;
+	}
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
 	}
 	
 	
