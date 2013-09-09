@@ -500,7 +500,16 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			{
 				return Action.ERROR;
 			}
-			Long userId         = regVO.getRegistrationID();
+			
+			Long userId = null;
+			if(regVO.getParentUserId()!=null)
+			{
+			  userId = regVO.getMainAccountId();
+			}
+			else
+			{
+			  userId = regVO.getRegistrationID();
+			}
 			//Long mandalId       = jObj.getLong("mandalId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			String casteIds = jObj.getString("casteIds");
@@ -590,7 +599,16 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				{
 					return Action.ERROR;
 				}
-				Long userId         = regVO.getRegistrationID();
+				
+				Long userId = null;
+				if(regVO.getParentUserId()!=null)
+				{
+				  userId = regVO.getMainAccountId();
+				}
+				else
+				{
+				  userId = regVO.getRegistrationID();
+				}
 				//Long mandalId       = jObj.getLong("mandalId");
 				JSONArray jsonArray = jObj.getJSONArray("expCasteArrayForMuncipality");
 				String casteIds = jObj.getString("casteIds");
@@ -664,8 +682,16 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				{
 					return Action.ERROR;
 				}
-				Long userId         = regVO.getRegistrationID();
-			
+				
+				Long userId = null;
+				if(regVO.getParentUserId()!=null)
+				{
+				  userId = regVO.getMainAccountId();
+				}
+				else
+				{
+				  userId = regVO.getRegistrationID();
+				}
 				List<Long> candidateCastes = new ArrayList<Long>(0);
 			Long publicationId= jObj.getLong("publicationId");
 			JSONArray arr = jObj.getJSONArray("candidateCastes");
