@@ -1040,6 +1040,9 @@ function overallResultsForYearOne()
    str+='<td align="center" style="color:red;"><a href="partyPageAction.action?partyId=${partyPositions.partyId}" style="text-decoration:none;">${partyPositions.partyName}</a></td>';
    str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
    }
+   else{
+     str+='<td align="center">'+"${partyPositions.totalConstiParticipated}"+'</td>';
+   }
 
    if("${partyPositions.totalSeatsWon}"!="0"){
 	   str+='<td align="center"><a href="#" onclick="getPartyPositions('+${partyPositions.partyId}+',\'overallResultsYearOne\',\'1\')">'+"${partyPositions.totalSeatsWon}"+'</a></td>';
