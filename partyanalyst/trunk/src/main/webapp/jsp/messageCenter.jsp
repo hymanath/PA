@@ -3229,6 +3229,8 @@ function showHideLocationOptionsForVoter()
 	   $('#ConstituencyDiv,#constiDiv').show();
    else if(selectedValue == 2)
 	   $('#ConstituencyDiv,#constiDiv,#mandalDiv').show();
+   else if(selectedValue == 3)
+	   	   $('#ConstituencyDiv,#constiDiv,#mandalDiv,#panchayatDiv').show();
    else if(selectedValue == 4){
 	   	   $('#ConstituencyDiv,#constiDiv,#mandalDiv,#pollingStationDiv').show();
 		   		   $('#mandalField').change();
