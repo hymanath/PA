@@ -836,8 +836,24 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	{
 		try{
 			List<SelectOptionVO> partiesResult = null;
-			List<Object[]> list = nominationDAO.getPartywiseWonCount(electionId,constituenciesList);
 			
+			List<Object[]> list = new ArrayList<Object[]>(0);
+			int fromIndex = 0;
+			int toIndex = 1000;
+			 if(constituenciesList.size() >= 1000)
+			  {
+				 while(fromIndex <= toIndex)
+				  {
+					  List<Object[]> countListSub = nominationDAO.getPartywiseWonCount(electionId,constituenciesList.subList(fromIndex, toIndex));
+					  list.addAll(countListSub);
+					  fromIndex += 1000;
+					  toIndex += 1000;
+					  if(toIndex >= constituenciesList.size())
+						toIndex = constituenciesList.size();
+				  }
+			  }else 
+				  list = nominationDAO.getPartywiseWonCount(electionId,constituenciesList);
+			  
 			if(list != null && list.size() > 0)
 			{
 				partiesResult = new ArrayList<SelectOptionVO>(0);
@@ -895,6 +911,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			}
 			return electionLiveResultVO;
 		}catch (Exception e) {
+			e.printStackTrace();
 			log.error("Exception occured in getPartiesLostInfo() Method, Exception is - "+e);
 			return electionLiveResultVO;
 		}
@@ -1035,7 +1052,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			{
 				otherPartiesList = new ArrayList<SelectOptionVO>(0);
 				for(SelectOptionVO optionVO : list)
-					if(!optionVO.getName().equalsIgnoreCase(partyName))
+					if(optionVO.getName() != null && !optionVO.getName().equalsIgnoreCase(partyName))
 						otherPartiesList.add(optionVO);
 			}
 			
