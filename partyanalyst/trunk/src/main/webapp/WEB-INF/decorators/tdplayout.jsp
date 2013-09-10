@@ -245,56 +245,11 @@ margin-top:10px;
 		</li>
 		
 		
-		<li><a href="statePageAction.action?stateId=1"><span>STATES</span></a>
+		<li><a href="statePageAction.action?stateId=1"><span>STATE</span></a>
 			<div  style="z-index:8;text-align:left;" >
-			<ul>
-				<li><a onmousedown="return false;" class="parent"><span>South India</span></a>
-					<div style="z-index:1;text-align:left;">
-						<ul>
-							<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
-							<li><a href="statePageAction.action?stateId=6"><span>Goa</span>
-							</a></li>
-							<li><a href="statePageAction.action?stateId=12"><span>Karnataka</span></a></li>
-							<li><a href="statePageAction.action?stateId=13"><span>Kerala 	</span></a></li>
-							<li><a href="statePageAction.action?stateId=24"><span>Tamil Nadu</span></a></li>
-						</ul>
-					</div>
-				</li>
-				<li><a onmousedown="return false;" class="parent"><span>North India</span></a>
-					<div style="z-index:1;text-align:left;">
-						<ul>
-							<li><a href="statePageAction.action?stateId=3"><span>Assam</span>
-								</a></li>
-							<li><a href="statePageAction.action?stateId=7"><span>Gujarat</span>
-								</a></li>
-							<li><a href="statePageAction.action?stateId=9"><span>Himachal Pradesh</span></a></li>
-							<li><a href="statePageAction.action?stateId=16"><span>Manipur</span>
-							</a></li>
-							<li><a href="statePageAction.action?stateId=21"><span>Punjab</span>
-							</a></li>
-							<li><a href="statePageAction.action?stateId=27"><span>Uttar Pradesh</span></a></li>
-							<li><a href="statePageAction.action?stateId=26"><span>Uttaranchal</span>
-							</a></li>
-							<li><a href="statePageAction.action?stateId=28"><span>West Bengal</span>
-							</a></li>
-							<li><a href="statePageAction.action?stateId=17"><span>Meghalaya</span>
-							</a></li>
-							<li><a href="statePageAction.action?stateId=19"><span>Nagaland</span>
-							</a></li>
-							<li><a href="statePageAction.action?stateId=25"><span>Tripura</span>
-							</a></li>
-						</ul>
-					</div>
-				</li>
-				<li><a onmousedown="return false;" class="parent"><span>Union Territories</span></a>
-					<div style="z-index:1;text-align:left;">
-						<ul>
-							<li><a href="statePageAction.action?stateId=35"><span>Puducherry</span>
-							</a></li>
-						</ul>
-					</div>
-				</li>
-			</ul>
+			  <ul>		
+				<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
+			  </ul>
 			</div>
 		</li>
 		
@@ -380,9 +335,7 @@ margin-top:10px;
 
 	<div class="container" style="border-top:2px solid #ffdc2d;">
 <div class="row-fluid"> 
-    <div class="span6" style="line-height:15px;color:#7d7d7d;text-shadow:0px 1px 1px #fff;font-size:12px;margin-top:18.5px;">
-&copy; Copyright 2013. <br> Powered By <a href="http://www.itgrids.com" class="tdp-text-error" target="_blank">IT GRIDS (India) Pvt. Ltd. </a></div>
-<div class="span6"><img src="./images/TDP/PA_LOGO.jpg" class="pull-right"/></div>
+   <div class="span12"><img src="./images/TDP/PA_LOGO.jpg" class="pull-right"/></div>
 </div>
   <!--COPYRIGHT SECTION END--> 
 </div>
