@@ -12774,8 +12774,11 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 			for (Object[] a : hamlets)
 		    {  SelectOptionVO sv =new  SelectOptionVO();
 			   // a[0]="x"+a[0];
+		      if(a[0] instanceof BigInteger)
 			    sv.setId(((BigInteger)a[0]).longValue());
-			    sv.setName(a[1]!=null?a[1].toString():"");
+			  if(a[0] instanceof Long)  
+				sv.setId((Long)a[0]);
+		        sv.setName(a[1]!=null?a[1].toString():"");
 			    sv.setValue(a[1]!=null?a[1].toString():"");
 			    sv.setHampletPresent(flag);
 			    localitiesList.add(sv);
