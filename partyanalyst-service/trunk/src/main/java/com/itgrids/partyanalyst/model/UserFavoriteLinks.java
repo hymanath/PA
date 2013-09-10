@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -34,6 +35,7 @@ public class UserFavoriteLinks extends BaseModel implements Serializable{
 	private FavoriteLinkPage favoriteLinkPage;
 	private String url;
 	private String pageTitle;
+	private Date createdTime;
 	
 	public UserFavoriteLinks()
 	{
@@ -96,6 +98,14 @@ public class UserFavoriteLinks extends BaseModel implements Serializable{
 	}
 	public void setPageTitle(String pageTitle) {
 		this.pageTitle = pageTitle;
+	}
+	
+	@Column(name="created_time")
+	public Date getCreatedTime() {
+		return createdTime;
+	}
+	public void setCreatedTime(Date createdTime) {
+		this.createdTime = createdTime;
 	}
 	
 	

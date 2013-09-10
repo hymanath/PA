@@ -40,4 +40,6 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	
 	public List<Object[]> getCountOfAllConnectedPeopleForUserInSameLocation(List<Long> senderId,List<Long> locationIds,String constituencyType);
 	
+	public List<Object[]> getRecentConnectedPeopleForUser(Long userId);
+	
 }

@@ -357,8 +357,33 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
                }
 			};
 			
-			
-			
+	public ProblemBeanVO getRecentConnectedPeople(Long userId){
+		Map<Long,String> recentConnectedMap=new HashMap<Long,String>();
+		List<Object[]> connectedPeople = userConnectedtoDAO.getRecentConnectedPeopleForUser(userId);
+		ProblemBeanVO problemBeanVO=new ProblemBeanVO();
+		
+		for(Object[] obj:connectedPeople){
+			if(Long.parseLong(obj[0].toString())!=userId){
+				if(recentConnectedMap.get(Long.parseLong(obj[0].toString())) == null){
+					recentConnectedMap.put(Long.parseLong(obj[0].toString()), obj[1].toString()+" "+obj[2].toString());
+				}
+			}
+			if(Long.parseLong(obj[3].toString())!=userId){
+				if(recentConnectedMap.get(Long.parseLong(obj[3].toString())) == null){
+					recentConnectedMap.put(Long.parseLong(obj[3].toString()), obj[4].toString()+" "+obj[5].toString());
+				}
+			}
+		}
+		
+		if(recentConnectedMap.size()>0){
+			List<String> recentConnected=new ArrayList<String>(recentConnectedMap.values());
+			if(recentConnected.size()>0){
+				problemBeanVO = new ProblemBeanVO();
+				problemBeanVO.setRecentConnected(recentConnected);
+			}
+		}
+		return problemBeanVO;
+	}
    public List<ProblemBeanVO> getStreamingDataForPublicProfile(Long userId,int startIndex, int maxIndex)
    {
 	  List<ProblemBeanVO> problemBeanVOList = new ArrayList<ProblemBeanVO>(0);
