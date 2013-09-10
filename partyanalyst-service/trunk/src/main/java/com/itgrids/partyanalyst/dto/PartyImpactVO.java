@@ -19,7 +19,14 @@ public class PartyImpactVO {
 	private List<String> considerableParties;
 	private List<String> conclusionStatements;
 	private String fromPrpVoters;
+	private List<BasicVO> panchayatList;
 	
+	public List<BasicVO> getPanchayatList() {
+		return panchayatList;
+	}
+	public void setPanchayatList(List<BasicVO> panchayatList) {
+		this.panchayatList = panchayatList;
+	}
 	public List<String> getConclusionStatements() {
 		return conclusionStatements;
 	}
