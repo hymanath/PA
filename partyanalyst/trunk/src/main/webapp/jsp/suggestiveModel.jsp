@@ -219,6 +219,9 @@ html{overflow-x: hidden;}
 .dataTables_wrapper {
     overflow-x: scroll;
 }
+.paginate_disabled_previous,.paginate_enabled_previous,.paginate_enabled_next{
+   padding-bottom: 10px;
+}
 </style>
 
 
@@ -615,6 +618,15 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task == "getAgeGroupWiseReport"){
 							$('#ajaxLoaderImg').css('display','none');
 							$("#dashBoardImgLoading").hide();
+							if(myResults != null && myResults.length > 0){
+								if(myResults[0].ageRange == '60> & <120'){
+									myResults[0].ageRange = "ABOVE 60";
+								}
+								if(myResults[0].ageRange == '18> & <22'){
+									myResults[0].ageRange = "18 TO 22";
+								}
+								
+							}
 							buildAgeGroupWiseTable(myResults,jsObj);
 						}
 						else if(jsObj.task == "getEffectOfNewParty"){
@@ -2787,6 +2799,15 @@ var count=0;
 		
 			$('#ajaxLoaderImg').css('display','none');
 			$("#dashBoardImgLoading").hide();
+			if(uploadResult != null && uploadResult.length > 0){
+								if(uploadResult[0].ageRange == '60> & <120'){
+									uploadResult[0].ageRange = "ABOVE 60";
+								}
+								if(uploadResult[0].ageRange == '18> & <22'){
+									uploadResult[0].ageRange = "18 TO 22";
+								}
+								
+							}
 			buildAgeGroupWiseTable(uploadResult,jsObj);
 		
 		}
@@ -2922,7 +2943,9 @@ var count=0;
 	$('#title'+tableId).css('display','block');
 	$('.title'+tableId+"Cls").addClass('widget').addClass('blue');
 	$('.title'+tableId+"Cls").css('margin-top','50px');
-	
+	<c:if test="${hideMainMenu}">
+	$('.title'+tableId+"Cls").css('margin-top','0px');
+	</c:if>
 	var area="";
 	if(areaType=="RURAL" || areaType=="RURAL-URBAN"){
 		area=" Panchayat";
@@ -3060,6 +3083,9 @@ var count=0;
 	$('#title'+tableId).css('display','block');
 	$('.title'+tableId+"Cls").addClass('widget').addClass('blue');
 	$('.title'+tableId+"Cls").css('margin-top','50px');
+	<c:if test="${hideMainMenu}">
+	$('.title'+tableId+"Cls").css('margin-top','0px');
+	</c:if>
 	$('#title'+tableId).html('<h4>'+mncplName+'- Booth Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
 	
 	var allSlctedCastes=[];
@@ -3322,7 +3348,7 @@ function getVoterDetailsByPartNo(partno,constituencyId,startIndex)
 			var url = "getVoterDetailsByPartNo.action?"+param;						
 		callAjax(param,jsObj,url);;
 }
-<c:if test="${hideMainMenu}">
+<c:if test="${hideMainMenu}">  
   <c:if test="${castDetails}">
     
 	getConstituencyType();
