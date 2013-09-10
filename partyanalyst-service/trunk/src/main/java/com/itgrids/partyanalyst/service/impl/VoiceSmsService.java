@@ -18,6 +18,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsResponseDetailsDAO;
@@ -62,8 +63,17 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private LocalElectionBodyDAO localElectionBodyDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IConstituencyDAO constituencyDAO;
+	private IPanchayatHamletDAO panchayatHamletDAO;
 	
 	
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
 	public IConstituencyDAO getConstituencyDAO() {
 		return constituencyDAO;
 	}
@@ -1061,6 +1071,18 @@ public class VoiceSmsService implements IVoiceSmsService {
 			queryString.append(" and model.influencingScope like '"+IConstants.BOOTH+"' and model.userAddress.booth.boothId =:locationId ");
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.HAMLET))
 			queryString.append(" and model.influencingScope like '"+IConstants.VILLAGE+"' and model.userAddress.hamlet.hamletId =:locationId ");
+		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+
+			String hamletIds = "";
+			
+			List<Object[]> hamletsDetails = panchayatHamletDAO.getHamletsOfAPanchayat(Long.valueOf(searchVO.getLocationValue()));
+			
+			for(Object[] details:hamletsDetails){
+				hamletIds = hamletIds + details[0].toString()+",";
+			}
+			hamletIds = hamletIds.substring(0,hamletIds.length()-1);
+			queryString.append(" and model.userAddress.hamlet.hamletId in("+hamletIds+") ");
+		}
 		
 		/*	Region Based Search for Influencing People
 		 * if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
