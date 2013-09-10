@@ -1212,7 +1212,7 @@ To
 <div id="titleDiv" style="display:none;">
 <h4>PANCHAYAT WISE ELECTION RESULTS COMPARISION</h4>
 </div>
-<div id="newPartyDiv">
+<div id="newPartyDiv" style="overflow-x: scroll; width: 988px;">
 </div>
 <img src="images/icons/loading.gif" id="ajaxLoaderImgForNewPartyDiv" height="25px" width="25px;" style="display:none;"/>
 
@@ -2585,8 +2585,10 @@ function showPartyPerformancePieChart(result,jsObj)
 //getDeletedVotersInfo();
 function casteDetailsByPanchayatId(){
 	var constituencyId = $('#listConstituencyNames option:selected').val();
+	if($('#candidateCastes').val() != null)
 	var candidateCastes = $('#candidateCastes').val();
-	 
+	else
+	 var candidateCastes = [];
 	if(constituencyId == 0)
 	 return ;	 
 var jsObj= 
@@ -3241,7 +3243,8 @@ function buildnewPartyEffectResults(results)
    {
      str+='<th colspan="3">'+parties[i]+'</th>';
    }
-   str+='<th rowspan="2">PRP EFFECT ON '+party+' PARTY</th>';
+   str+='<th rowspan="2">Major Castes</th>';
+    str+='<th rowspan="2">PRP EFFECT ON '+party+' PARTY</th>';
    str+='</tr>';
    for(var i in parties)
    {
@@ -3281,10 +3284,18 @@ function buildnewPartyEffectResults(results)
 					 str+='<td>--</td>';
 				if(parties[i] == 'PRP')
 				{
+					str+='<td>';
+					for(var j=0;j<value[parties[i]].panchayatList.length;j++){
+					var casteName = value[parties[i]].panchayatList[j].casteName;
+					var count = value[parties[i]].panchayatList[j].count;
+					var persent = value[parties[i]].panchayatList[j].persent;
+
+					str+='('+casteName+','+persent+','+count+') ';
+					}
+					str+='</td>';
+
 					var value = parseFloat(value[parties[i]].fromPrpVoters).toFixed(2)
-					if(value == 'NaN')
-					str+='<td>--</td>';
-					else
+					
 					str+='<td>'+value+'</td>';
 					
 				}
