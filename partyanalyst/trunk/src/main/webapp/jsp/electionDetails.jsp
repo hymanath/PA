@@ -4762,7 +4762,7 @@ function hideAnalysisToolsDiv()
   var selectYearStateWise = $("#selectYearStateWise option").length;
   var selectYearDistrictwise = $("#selectYearDistrictwise option").length;
 
-  if(selectYearStateWise == 1 && selectYearDistrictwise == 1)
+  if(selectYearStateWise == 0 || selectYearStateWise == 1 && selectYearDistrictwise == 1)
 	{
 	  $("#analysisToolsDataDiv").css("display","none");
 	}
