@@ -73,10 +73,10 @@ ul li {list-style-type:square;}
   
 <div class="widget whitegloss">
 <h5 style="margin:7px 0px 0px 199px;">Instructions To Upload Audio</h5>
- <ul style="margin:7px 0px 0px 199px;"> 
-  <li>You can upload existing audio files from your computer or you can record a new voice message now and upload it to the server.(<a href="javascript:{showRecordDiv();}">Click here to record now</a>)</li>
-  <li>Upload only .wav , .mp3 files only.</li>
-  <li>You can not upload promotional audios.</li>
+ <ul style="margin:7px 0px 0px 199px;font-size:13px;font-weight:bold;"> 
+  <li>You can upload existing audio files from your computer or you can record a new voice message now and upload it to the server <a href="javascript:{showRecordDiv();}">Click here to record now</a>.</li>
+  <li>Upload only .wav, .mp3 files only.</li>
+  <li>You can't upload promotional audios.</li>
   <li>File name should not contain any special characters, spaces except underscore.</li>
  </ul>
 </div>
