@@ -1301,7 +1301,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 <div class="widget whitegloss" style="margin:0px;">
  <ul  style="margin:0px;font-weight:bold;font-size:13px;margin-left:240px;">
   <li>Enter mobile numbers separated by commas to send SMS to multiple recipients</li>
-  <li>Add Country Code Before Mobile Number.Example:<b>919999999999</b></li>
+  <li>Add Country Code Before Mobile Number. Example: <b>919999999999</b></li>
    <textarea id="mobileNumber" class="textAreaClass" style="margin-left:50px;"></textarea>
  </ul>
 </div>
@@ -1353,11 +1353,11 @@ clearOptionsListForSelectElmtId("pollingStationField");
 <div class="voiceSmsInstructions widget whitegloss" style="margin:0px 0px 20px 0px;">
 <h5 style="margin:8px 0px 0px 92px;">Instructions To Send Voice SMS</h5>
  <ul style="margin:8px 0px 0px 92px;font-size:13px;font-weight:bold;"> 
-  <li>Enter new mobile numbers or search from voters , cadre , influencing people from the above search feature provided and add their mobile numbers.</li>
+  <li>Enter new mobile numbers or search from voters, cadre, influencing people from the above search feature provided and add their mobile numbers.</li>
   <li>Enter the description specifying the purpose of the voice SMS.</li>
   <li>Please install flash player to listen to the audio files sent previously or uploaded to the server by you.</li>
-  <li>You can send already existing audio files in the server or select an audio file from your computer and upload to the server or record your own new voice message<a href="uploadAudioFile.action" target="_blank"><b>Upload/ Record</b></a></li>.
-  <li>You can not send promotional audios.</li>
+  <li>You can send already existing audio files in the server or select an audio file from your computer and upload to the server or record your own new voice message  <a href="uploadAudioFile.action" target="_blank"><b>Upload/ Record</b></a>.</li>
+  <li>You can't send/upload promotional audios.</li>
   <li>If you want to send voice SMS from a new mobile number which doesn't exist in the verified numbers list, please contact us to get your new number approved by us.</li>
   <li>You need to accept our terms and conditions.</li>
 
