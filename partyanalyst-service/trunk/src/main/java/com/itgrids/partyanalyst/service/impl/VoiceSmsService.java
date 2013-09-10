@@ -1009,9 +1009,12 @@ public class VoiceSmsService implements IVoiceSmsService {
 		{
 		StringBuffer queryString = new StringBuffer();
 
-		queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope,model2.casteState.caste.casteName from " +
+		/*queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope,model2.casteState.caste.casteName from " +
 				" InfluencingPeople model,UserVoterDetails model2 where model.user.userId =:userId and model2.user.userId =:userId and " +
-				" model.voter.voterId = model2.voter.voterId ");
+				" model.voter.voterId = model2.voter.voterId ");*/
+		
+		queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope from " +
+				" InfluencingPeople model  where model.user.userId =:userId ");
 
 		if(searchVO.isNameSelected())
 		queryString.append(" and ( model.firstName like '%"+searchVO.getName()+"%' or model.lastName like '%"+searchVO.getName()+"%' )");
@@ -1063,14 +1066,15 @@ public class VoiceSmsService implements IVoiceSmsService {
 					" and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = "+searchVO.getConstituencyId()+"");
 		}
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.WARD)){
-			Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue()));
+			//Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue()));
+			Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue().toString().substring(1)));
 			searchVO.setLocationValue(constituency.getConstituencyId());
 			queryString.append(" and model.userAddress.ward is not null and model.userAddress.ward.constituencyId =:locationId ");
 		}
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.BOOTH))
-			queryString.append(" and model.influencingScope like '"+IConstants.BOOTH+"' and model.userAddress.booth.boothId =:locationId ");
+			queryString.append(" and model.userAddress.booth.boothId =:locationId ");
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.HAMLET))
-			queryString.append(" and model.influencingScope like '"+IConstants.VILLAGE+"' and model.userAddress.hamlet.hamletId =:locationId ");
+			queryString.append(" and model.userAddress.hamlet.hamletId =:locationId ");
 		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
 
 			String hamletIds = "";
@@ -1122,7 +1126,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		vo.setName(list[0].toString()+" " +list[1].toString());
 		//vo.setHouseNo(list[2].toString());
 		vo.setMobileNumber(Long.valueOf(list[2].toString()));
-		vo.setCasteIds(list[4].toString());
+		//vo.setCasteIds(list[4].toString());
 		vo.setLocationType(list[3].toString());
 		
 		//vo.setStartAge(Integer.parseInt(list[3].toString()));
