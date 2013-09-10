@@ -134,7 +134,7 @@ ul li {list-style-type:square;}
 <div style="background-color:#fff;padding:5px;">
 <div style="text-align:center;color:green;"><s:property value="status"/></div>
 
-<form action="uploadAudioFile.action" method="POST" enctype="multipart/form-data" onSubmit="return validateForm();">
+<form action="uploadAudioFile.action" method="post" enctype="multipart/form-data" onSubmit="return validateForm();">
 
 <div>
 

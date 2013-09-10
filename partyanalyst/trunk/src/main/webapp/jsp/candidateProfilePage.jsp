@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="com.itgrids.partyanalyst.utils.IConstants"%>	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -712,12 +713,13 @@ Tweet</a>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js">
 	</script>
  <script type="text/javascript">
- var loadingFirstTime = '${sessionScope.candidatePageLoadingFirstTime}';
+ 
  $(document).ready(function(){
-//if(loadingFirstTime == 'true'){
+	 var host = "<%=IConstants.DEPLOYED_HOST%>";
+	  if(host != "tdpserver"){	
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
-//		}
+	  }
 	});
    var descriptions = '${descriptions}';
    var timeST = new Date().getTime();
