@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -32,12 +33,14 @@ public class UserConnectedto extends BaseModel implements Serializable {
 	private Long userConnectedtoId;
 	private User userSource;
 	private User userTarget;
+	private Date updatedTime;
 	
 	
 	//default constructor
 	public UserConnectedto(){
 		
 	}
+	
 	
 	//Primary key constructor
 	public UserConnectedto(Long userConnectedtoId){
@@ -86,5 +89,18 @@ public class UserConnectedto extends BaseModel implements Serializable {
 	public void setUserTarget(User userTarget) {
 		this.userTarget = userTarget;
 	}
+
+	
+	@Column(name="updated_time")
+	public Date getUpdatedTime() {
+		return updatedTime;
+	}
+
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+	
+	
 			
 }

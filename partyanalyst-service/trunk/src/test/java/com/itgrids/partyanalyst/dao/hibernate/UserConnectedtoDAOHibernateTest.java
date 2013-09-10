@@ -210,7 +210,7 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list);
 	}*/
 
-	public void testCountOfAllConnectedPeopleForUserByDistrict()
+	/*public void testCountOfAllConnectedPeopleForUserByDistrict()
 	{
 		List<Long> userIds = new ArrayList<Long>();
 		userIds.add(611l);
@@ -235,7 +235,7 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		for (Object[] objects : userIdses) {
 			System.out.println(objects[0]);
 		}
-	}
+	}*/
 	
 	/*public void testgetCountOfAllConnectedPeopleForUserInSameConstituency()
 	{
@@ -272,4 +272,10 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(userIdses);
 	}*/
 	
+	public void testGetRecentConnectedUser(){
+		List<Object[]> list=userConnectedtoDAO.getRecentConnectedPeopleForUser(611l);
+		for(Object[] obj:list){
+			System.out.println(obj[0].toString()+"-"+obj[1].toString()+"-"+obj[2].toString()+"-"+obj[3].toString()+"-"+obj[4].toString()+"-"+obj[5].toString());
+		}
+	}
 }

@@ -322,4 +322,21 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		queryObject.setParameter("role", IConstants.FREE_USER);
 		return queryObject.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getRecentConnectedPeopleForUser(Long userId){
+		StringBuilder query = new StringBuilder();	
+		query.append(" select model.userSource.userId,model.userSource.firstName,model.userSource.lastName," +
+				"model.userTarget.userId,model.userTarget.firstName,model.userTarget.lastName from UserConnectedto model where ");
+		query.append(" (model.userSource.userId =:userId or  model.userTarget.userId =:userId) ");	
+		query.append(" and model.userSource.userId in (select model2.user.userId from UserRoles model2 where model2.role.roleType = :role ) ");
+		query.append(" and model.userTarget.userId in (select model3.user.userId from UserRoles model3 where model3.role.roleType = :role ) " +
+				" order by model.updatedTime desc");
+		Query queryObject = getSession().createQuery(query.toString());
+		queryObject.setParameter("userId", userId);
+		queryObject.setParameter("role", IConstants.FREE_USER);
+		queryObject.setFirstResult(0);
+		queryObject.setMaxResults(2);
+		return queryObject.list();
+	}
 }

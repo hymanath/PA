@@ -1035,7 +1035,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 							UserConnectedto userConnectedto = new UserConnectedto();
 							for(int i=0;i<recipeintId.size();i++){
 								userConnectedto.setUserTarget(userDAO.get(recipeintId.get(i)));
-								userConnectedto.setUserSource(userDAO.get(senderId.get(0)));		
+								userConnectedto.setUserSource(userDAO.get(senderId.get(0)));	
+								userConnectedto.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 								userConnectedtoDAO.save(userConnectedto);
 							}
 							List<CustomMessage> result = customMessageDAO.checkForRelationBetweenUsersBasedOnType(senderId,recipeintId,IConstants.PENDING);
@@ -3145,6 +3146,7 @@ public String saveUserFavouriteLink(Long userId , String link,String pageTitle, 
 			 userFavoriteLinks.setUrl(finalURL);
 				
 			userFavoriteLinks.setPageTitle(pageTitle);
+			userFavoriteLinks.setCreatedTime(dateUtilService.getCurrentDateAndTime());
 			
 			userFavoriteLinksDAO.save(userFavoriteLinks);
 			

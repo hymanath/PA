@@ -137,6 +137,7 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 	private String destinationFilePath;
 	private String pathSepecrator;
 	private String locationExist;
+	private List<String> recentConnected;
 
 
 	public Long getBoothId() {
@@ -1147,6 +1148,14 @@ public class ProblemBeanVO extends ResultStatus implements Serializable{
 
 	public void setPrivateProblemsList(List<ProblemBeanVO> privateProblemsList) {
 		this.privateProblemsList = privateProblemsList;
+	}
+
+	public List<String> getRecentConnected() {
+		return recentConnected;
+	}
+
+	public void setRecentConnected(List<String> recentConnected) {
+		this.recentConnected = recentConnected;
 	}
 
 	
