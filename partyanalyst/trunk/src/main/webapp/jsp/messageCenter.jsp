@@ -1300,8 +1300,8 @@ clearOptionsListForSelectElmtId("pollingStationField");
 
 <div class="widget whitegloss" style="margin:0px;">
  <ul  style="margin:0px;font-weight:bold;font-size:13px;margin-left:240px;">
-  <li>Enter mobile numbers separated by commas to send SMS to multiple recipients</li>
-  <li>Add Country Code Before Mobile Number. Example: <b>919999999999</b></li>
+  <li>Enter mobile numbers separated by commas to send SMS to multiple recipients.</li>
+  <li>Add Country Code Before Mobile Number. Example: <b>919999999999.</b></li>
    <textarea id="mobileNumber" class="textAreaClass" style="margin-left:50px;"></textarea>
  </ul>
 </div>
