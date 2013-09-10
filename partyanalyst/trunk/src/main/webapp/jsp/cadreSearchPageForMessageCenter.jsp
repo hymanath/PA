@@ -554,7 +554,6 @@ var locationValue;
 		locationValue = window.opener.selectedCriteria.cadreReportLevelValue;
 
 
-alert(window.opener.selectedCriteria.reportLevelValue);
 var jsObj=
 		{	extra				    :"one",
 			reportLevel				: window.opener.selectedCriteria.cadreLocationId,
