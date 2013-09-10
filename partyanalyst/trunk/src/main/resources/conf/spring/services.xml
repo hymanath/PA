@@ -1751,6 +1751,7 @@
      <property name="smsModuleDAO" ref="smsModuleDAO"></property>
      <property name="smsHistoryDAO" ref="smsHistoryDAO"></property>
      <property name="taskExecutor" ref="taskExecutor" />	
+	 <property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
      <property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property> <property name="constituencyDAO" ref="constituencyDAO" /> 
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property> 	     
     </bean>
