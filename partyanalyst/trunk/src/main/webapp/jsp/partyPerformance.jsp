@@ -93,6 +93,11 @@
 	}
 	</style>
 	<script type="text/javascript">
+	$(document).ready(function(){
+	 $("#assemblyRadio").attr("checked",true);
+	 $("#partyPerformanceReport_11").attr("checked",true);
+	});
+	
 	var labelResources = { <%		
 	ResourceBundle rb = ResourceBundle.getBundle("common_Lables");
 	String electionType = rb.getString("electionType");
@@ -350,6 +355,7 @@
  	var partyId = $('#partyList').val();
 	var stateVal = $('#stateList').val();
 	var electionYear = $('#yearList').val();
+	var errorMsg = document.getElementById("errorsDiv");
  	 	if(level == 2){
  	 		var stateListEl = document.getElementById("stateList");
  	 		var partyListEl = document.getElementById("partyList");
@@ -357,7 +363,12 @@
 			
 	 	 	var index = document.getElementById("stateList").selectedIndex;
 	 	 	var stateId = document.getElementById("stateList").options[index].value;
-	 	 	
+			
+	 	 	if(electionYear == null || electionYear == "Select"){
+				errorMsg.innerHTML = 'Please select Election year.';
+				$("#partyPerformanceReport_11").attr('checked', true);
+				return;
+			}
 	 	 	var url = "<%=request.getContextPath()%>/partyPerformanceDistrict.action?";
 			pprCallAjax("stateId="+stateVal+"&partyId="+partyId+"&electionYear="+electionYear, url);
  	 	}
