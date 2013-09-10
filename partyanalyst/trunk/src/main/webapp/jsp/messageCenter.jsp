@@ -398,7 +398,7 @@ $(document).ready(function() {
 			 $("<option value='9'>District</option>").insertBefore($('#reportLevel option:first-child'));
 			$("<option value='8'>State</option>").insertBefore($('#reportLevel option:first-child'));
 			 }
-			$("#reportLevel option[value='3']").remove();
+			//$("#reportLevel option[value='3']").remove();
 			if($('#reportLevel').val() == 1)
 					$('#constiTypeDiv').show();
 			mySearch ='cadre';
@@ -439,12 +439,12 @@ $(document).ready(function() {
 			$("<option value='8'>State</option>").insertBefore($('#reportLevel option:first-child'));
 			 }
 			
-		    $("#reportLevel option[value='3']").remove();
+		   // $("#reportLevel option[value='3']").remove();
 			mySearch ='influencePeople';
 		}
 		else if($(this).val() == "voter")
 		{
-			$("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
+			//$("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
 
 		    $("#reportLevel option[value='8']").remove();
 			$("#reportLevel option[value='9']").remove();
@@ -893,6 +893,8 @@ function getCandidatesData(sentType){
 			else if(reportLevelValue == 3){
 				areaId = $("#panchayatField").val(); 
 				searchArea = "panchayat";
+				cadreLocationId = 11;
+				cadreReportLevelValue = $("#panchayatField").val(); 
 			}
 			 else if(reportLevelValue == 4){
 
@@ -1107,6 +1109,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 		<option value=9 class="doption">District</option>
 		<option value=1 class="coption">Constituency</option>
 		<option value=2 class="moption">Mandal  / Muncipality</option>
+		<option value=3 class="moption">Panchayat</option>
 		<option value=5 class="woption">Ward</option>
 	    <option value=6 class="hoption">Hamlets</option>
         <option value=4 class="poption">PollingStation</option>
@@ -1325,7 +1328,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 <div>
 
 <span id="errorMsg"></span>
-<label>Enter Message To send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" maxlength="200" onkeyup="countChars();" class="textAreaClass"></textarea>
+<label>Enter message to send:<font style="color:red;">*</font></label><textarea id="textSmsDescription" maxlength="200" onkeyup="countChars();" class="textAreaClass"></textarea>
 </div>
 <div id="charsCountDiv">
 <span id="charsCountId">200</span> chars remaining... 
@@ -1955,6 +1958,7 @@ function callAjax1(param,jsObj,url){
 	var callback = {			
 	    success : function( o ) {
 			try {	
+				debugger;
 					if(o.responseText.length!=0){
 						myResults = YAHOO.lang.JSON.parse(o.responseText);	
 					}						
@@ -1987,11 +1991,29 @@ function callAjax1(param,jsObj,url){
 						clearOptionsListForSelectElmtId("mandalField_s");
 						createOptionsForSelectElmtId("mandalField_s",myResults);
 					}
-					else if(jsObj.type == "hamletsOrWardsInRegion")
+					else if(jsObj.task == "hamletsOrWardsInRegion" && jsObj.locations == "ward" )
+				    {
+                        $('#wardField').find('option').remove();
+
+						$.each(myResults,function(index,value){
+						$('#wardField').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+						});
+					}
+					else if(jsObj.task == "hamletsOrWardsInRegion" && jsObj.locations == "booth" )
+				    {
+                        $('#pollingStationField').find('option').remove();
+
+						$.each(myResults,function(index,value){
+						$('#pollingStationField').append('<option value="'+value.id+'">'+value.name+'</option>');
+
+						});
+
+					}
+					else if(jsObj.type == "hamletsOrWardsInRegion" )
 				    {
                         buildHamletsForOtherthanVoters(myResults);
-					}
-					
+					}					
 					else if(jsObj.task == "hamletsOrWardsInRegion")
 					{
 						var name=jsObj.name;
@@ -2925,7 +2947,8 @@ function showReportsLevels(value)
 	var selectedType = $('input:radio[name=searchFor]:checked').val();
 
 	if(selectedType != "voter"){
-          $('#publicationDateDiv,#panchayatDiv').hide();
+         // $('#publicationDateDiv,#panchayatDiv').hide();
+		  $('#publicationDateDiv').hide();
 		  $('#stateDiv').show();
 		  if(selectedType =="cadre" && $('#reportLevel').val() == 1)
 				$('#constiTypeDiv').show();
@@ -2938,7 +2961,8 @@ function showReportsLevels(value)
 		 $('#stateDiv,#districtDiv').hide();
 	}
 	if(selectedType =='voter'){
-	$('#publicationDateDiv,#panchayatDiv').show();
+	//$('#publicationDateDiv,#panchayatDiv').show();
+	$('#publicationDateDiv').show();
 	if(value == 1)
 	{
 		$(" #ConstituencyDiv,#constiDiv").show();
@@ -3263,18 +3287,86 @@ function getHamletsInMandal()
 
 function getBooths()
 {
-	if($('#mandalField').val().substring(0,1) ==1 && $('#reportLevel').val() == 6){
-	$('#panchayatDiv').hide();
-	clearOptionsListForSelectElmtId("hamletField");
+	var selectedLevelId = $('#reportLevel').val();
+
+
+	if($('input[name=searchFor]:checked').val() == "voter")
+	{
+
+		if(selectedLevelId == 3 || selectedLevelId == 6)
+			getPanchayatOrWardsList('panchayat','panchayatField');
+		else if(selectedLevelId == 5)
+			getPanchayatOrWardsList('ward','wardField');
+		else if(selectedLevelId == 4)
+			getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');
+		
+
+       
+	}
+	else
+	{
+		if($('#mandalField').val().substring(0,1) ==1)
+		{
+			$('#hamletField').find('option').remove();
+			if(selectedLevelId == 5){
+				getSubRegionsOfLocalBody($('#mandalField').val());
+			}
+			else if(selectedLevelId == 4){
+ 			   //getBoothDetailsForCadre();
+			   getBoothSubRegionsOfLocalBody($('#mandalField').val());
+			}
+			else if(selectedLevelId == 3)
+				$('#panchayatField').find('option').remove();
+
+		}
+		else
+		{
+			if(selectedLevelId == 3)
+				getPanchayatOrWardsList('panchayat','panchayatField');
+			else if(selectedLevelId == 4)
+				//getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');
+ 			   getBoothDetailsForCadre();
+			else if(selectedLevelId == 6)
+                getHamletsInMandal();
+			else if(selectedLevelId == 5)
+               $('#wardField').find('option').remove();
+
+		}
+	}
+
+	/*if($('#mandalField').val().substring(0,1) ==1){
+
+		if( $('#reportLevel').val() == 6)
+		{
+	      $('#panchayatDiv').hide();
+	      clearOptionsListForSelectElmtId("hamletField");
+		}else if( $('#reportLevel').val() == 5)
+		{
+			getPanchayatOrWardsList('ward','wardField');
+
+		}else if( $('#reportLevel').val() == 3)
+		{
+           $('#panchayatField').find('option').remove();
+		}
 	return;
 	} 
 	else{
+
+           if($('#reportLevel').val() == 3){
+		      getPanchayatOrWardsList('panchayat','panchayatField');
+		   }
+
+		   if( $('#reportLevel').val() == 4)
+		      getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');
 		if($('input[name=searchFor]:checked').val() == "voter" || $('#reportLevel').val() == 5){
-		   getPanchayatOrWardsList('panchayat','panchayatField');
-		   getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');
+			$('#wardField').find('option').remove();
+		  // getPanchayatOrWardsList('panchayat','panchayatField');
+		  // getPanchayatOrWardsList('pollingstationByPublication','pollingStationField');
 
 		   //this is to get wards for muncipality in voter
-		   getPanchayatOrWardsList('ward','wardField');
+		   //if( $('#reportLevel').val() != 5)
+		   //getPanchayatOrWardsList('ward','wardField');
+
 		}
 		else{
 			if($('#reportLevel').val() == 6)	
@@ -3282,7 +3374,36 @@ function getBooths()
 			else	
   			   getBoothDetailsForCadre();
 		}
-	}
+	}*/
+	
+}
+
+function getSubRegionsOfLocalBody(localId){
+	
+	var jsObj=
+			{
+					id:localId,
+                    locations:'ward' ,
+					task:"hamletsOrWardsInRegion"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getLocationsById.action?"+rparam;	
+			callAjax1(rparam,jsObj,url);
+	
+}
+
+function getBoothSubRegionsOfLocalBody(localId){
+	
+	var jsObj=
+			{
+					id:localId,
+                    constId:$('#constituencyList').val(),
+                    locations:'booth' ,
+					task:"boothsInTehsilOrMunicipality"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getLocationsById.action?"+rparam;	
+			callAjax1(rparam,jsObj,url);
 	
 }
 

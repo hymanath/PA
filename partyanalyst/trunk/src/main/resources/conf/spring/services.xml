@@ -538,6 +538,7 @@
 		<property name="cadreOnlineRegistrationDAO" ref="cadreOnlineRegistrationDAO" />
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
 		<property name="taskExecutor" ref="taskExecutor" />	
+		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
