@@ -812,8 +812,10 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO){
 		Query queryObj = getSession().createQuery("select "+query);
 		queryObj.setParameter("userId", searchVO.getUserId());
-		if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
-		queryObj.setParameter("locationId", searchVO.getLocationValue());
+		if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+			if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT))
+				queryObj.setParameter("locationId", searchVO.getLocationValue());
+		} 
 		queryObj.setFirstResult(searchVO.getStartIndex());
 		queryObj.setMaxResults(searchVO.getMaxRecords());
 		
@@ -823,8 +825,11 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO,String count){
 		Query queryObj = getSession().createQuery("select count(model), "+query);
 		queryObj.setParameter("userId", searchVO.getUserId());
-		if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL))
-		queryObj.setParameter("locationId", searchVO.getLocationValue());
+		if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+			if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT))
+				queryObj.setParameter("locationId", searchVO.getLocationValue());
+		} 
+		
 		return queryObj.list();
 	}
 }
