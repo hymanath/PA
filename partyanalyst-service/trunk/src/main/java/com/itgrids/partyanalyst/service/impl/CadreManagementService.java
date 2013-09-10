@@ -45,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILanguageDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyCadreSkillsDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrainingCampsDAO;
 import com.itgrids.partyanalyst.dao.IPartyWorkingCommitteeDAO;
@@ -164,7 +165,18 @@ public class CadreManagementService {
 	private IVoterDAO voterDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private TaskExecutor taskExecutor;
+	private IPanchayatHamletDAO panchayatHamletDAO;
 	
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
+
 	public ICadreOnlineRegistrationDAO getCadreOnlineRegistrationDAO() {
 		return cadreOnlineRegistrationDAO;
 	}
@@ -4716,6 +4728,20 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 					if(parliamentId.length() >1)
 					parliamentId = parliamentId.substring(0,parliamentId.length()-1);
 					SearchCriteria = "and model.currentAddress.constituency.constituencyId in ("+parliamentId+")";
+				}
+				else if(cadreLevelId == 11)
+				{
+					String hamletIds = "";
+					
+					List<Object[]> hamletsDetails = panchayatHamletDAO.getHamletsOfAPanchayat(cadreLocationId);
+					
+					for(Object[] details:hamletsDetails){
+						hamletIds = hamletIds + details[0].toString()+",";
+					}
+					hamletIds = hamletIds.substring(0,hamletIds.length()-1);
+
+						
+					SearchCriteria = "and model.currentAddress.hamlet.hamletId in ("+hamletIds+")";
 				}
 			}
 			
