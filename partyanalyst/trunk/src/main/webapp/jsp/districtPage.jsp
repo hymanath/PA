@@ -213,7 +213,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 
 
 #partyPositionsDiv{height:350px;width:900px;}
-
+#connectPeoplePopup{overflow-x:hidden;}
 </style>
 <!--[if IE]>
 <style>

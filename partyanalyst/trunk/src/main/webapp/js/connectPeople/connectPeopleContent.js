@@ -1012,8 +1012,11 @@ function hideConfirmDiv()
 
 function showConfirmDiv(name,id)
 {
-	if(LoginUserID !=null && LoginUserID != '' && LoginUserID.length >0)
+
+	if(loginUserId !=null && loginUserId != '' && loginUserId.length >0)
 	{
+		
+			
 		var elmt = document.getElementById("allConnectPeople_footer");
 		var spanElmt = document.getElementById("allConnectPeople_footer_span");
 
@@ -1190,7 +1193,7 @@ function showMailPopup(id,name,type)
 			title:"Send Message to <span style='text-transform:capitalize'>"+name+"</span>",
 			autoOpen: true,
 			show: "blind",
-			width: 500,
+			width: 700,
 			minHeight:250,
 			modal: true,
 			hide: "explode"
