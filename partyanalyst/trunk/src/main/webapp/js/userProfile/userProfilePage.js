@@ -31,6 +31,21 @@ $('#connectMessageText').live("keyup",function() {
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 });
+$('#connectUserMsg').live("keyup",function() {
+
+	var limitFieldElmt = document.getElementById('connectUserMsg');
+	var limitCountElmt = document.getElementById('maxcount');
+	var limitNum = 300;
+
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+	}
+});
 
 $("#connectMessageText").live("click", function()
 {
@@ -468,7 +483,7 @@ ajaxProcessing();
 		var message = $("<label class='messageLabel'></label>");
 		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 327px; height:102px;'></textarea>");
 		var image = $('<img height="80" width="80" src="images/icons/indexPage/human.jpg" style="clear: both; margin-left: 26px; margin-top: -30px;">');
-		var connectBtn = $('<input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:0px;"/>');
+		var connectBtn = $('<div id="remainChars"><span id="maxcount">300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input type="button" value="Send Request" id="connectPeopleLink" class="btn btn-info btn-mini" style="margin-right:0px;"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
@@ -2587,7 +2602,7 @@ function connectToSelectedPerson(id,name)
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		/*var Name=$("<label>"+userName+"</label>");
 		var message = $("<label class='messageLabel'>Message</label>");*/
-		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 354px; height: 74px;'></textarea>");
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..' style='width: 354px; height: 74px;' maxlength='300'></textarea>");
 		var image = $('<img height="100" width="95" style="margin-bottom: 11px;" src="images/icons/indexPage/human.jpg">');
 		var connectBtn = $('<input type="button" class="btn" name="connectDistrictPeopleLink" style="float: right" value="Connect" id="connectDistrictPeopleLink"/>');
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');

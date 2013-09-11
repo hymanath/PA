@@ -96,6 +96,21 @@ $('#connectMessageText').live("keyup",function() {
 		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
 	}
 });
+$('#connectUserMsg').live("keyup",function() {
+
+	var limitFieldElmt = document.getElementById('connectUserMsg');
+	var limitCountElmt = document.getElementById('maxcount');
+	var limitNum = 300;
+
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+	}
+});
 $(".connectLinkInPP").click(function(){
 	
 	$("#allConnectedUsersDisplay_main").children().remove();
@@ -119,9 +134,10 @@ $(".connectLinkInPP").click(function(){
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var Name=$("<label>"+userName+"</label>");
 		var message = $("<label class='messageLabel'>Message</label>");
-		var textArea = $("<textarea id='connectUserMsg'></textarea>");
+		var connectBtn = $('<div id="remainChars"><span id="maxcount">300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input type="button" value="Connect" class="btn-info btn-small" id="connectMessageLinkInPP"  style="float:right;"/>');
+		var textArea = $("<textarea id='connectUserMsg'  style='width:347px;height:60px;'></textarea>");
 		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
-		var connectBtn = $('<input type="button" value="Connect" id="connectMessageLinkInPP"/>');
+		
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
