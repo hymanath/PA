@@ -61,8 +61,8 @@ $("document").ready(function(){
 			title:"Send Message to "+name,
 			autoOpen: true,
 			show: "blind",
-			width: 400,
-			minHeight:250,
+			width: 430,
+			height:"auto",
 			modal: true,
 			hide: "explode"
 		});
@@ -70,8 +70,10 @@ $("document").ready(function(){
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
 		var label = $("<label class='messageLabel'></label>");
-		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'></textarea><br>");
-		var button = $("<input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		
+		var button = $("<div id='remainChars'><span id='maxcount'>300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'  maxlength='300' style='width:357px;height:60px;'></textarea><br>");
+		
 		div.append(errorDiv);
 		div.append(label);
 		div.append(textarea);
@@ -79,7 +81,21 @@ $("document").ready(function(){
 		$('#allConnectedUsersDisplay_main').append(div);
 		
 	});
+$('#connectMessageText').live("keyup",function() {
 
+	var limitFieldElmt = document.getElementById('connectMessageText');
+	var limitCountElmt = document.getElementById('maxcount');
+	var limitNum = 300;
+
+	if (limitFieldElmt.value.length > limitNum) 
+	{
+		limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);			
+	}
+	else
+	{			
+		limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
+	}
+});
 $(".connectLinkInPP").click(function(){
 	
 	$("#allConnectedUsersDisplay_main").children().remove();
