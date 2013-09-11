@@ -1537,6 +1537,7 @@
 		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
 		<property name="customMessageDAO" ref="customMessageDAO" />	
+		<property name="staticDataService" ref="staticDataService" />	
 	</bean>
 	
 	<bean name="userService" class="com.itgrids.partyanalyst.service.impl.UserService">
