@@ -155,10 +155,15 @@ function addNewCandidate(){
 var urlStr = "influencingPeopleAction.action?windowTask=new&influencingPersonId=0";
 window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300,left=300,top=50").focus();	
 }
+
+function unSelectAllCheckBoxes(){
+	$(".checkbox").attr('checked', false);
+	$(".selectAll").attr('checked', false);
+}
 </script>
 </head>
 <body>
-  <h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS TO SEND SMS</h2>
+  <u style="color:#06ABEA;"><h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS TO SEND SMS</h2></u>
 
 <!--
 <div style="float:right;margin:0px 35px 12px 5px;">
@@ -167,7 +172,7 @@ window.open(urlStr,"addNewInfluencePeople","scrollbars=yes,height=570,width=1300
 </div>
 -->
 
-<div style="margin-left:173px;width:660px;padding:10px;background-color:#f3f3f3;font-weight:bold;font-family:Arial;font-size:11px;">
+<div style="margin-left:225px;width:660px;padding:10px;background-color:#f3f3f3;font-weight:bold;font-family:Arial;font-size:11px;">
 <h4>Instructions to select influencing people for sending voice SMS</h4>
 
  <ul>
@@ -252,8 +257,8 @@ var votersByLocBoothColumnDefs = [
 {key:"select", label: "<input type='checkbox' class='selectAll' style='margin-left:34px;'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
 {key:"name", label: "Name",width:110,sortable: true},
 {key:"mobileNumber",label:"Mobile Number",width:110,sortable:false},
-{key:"locationType",label:"Area Type",width:170,sortable:false},
-{key:"casteIds",label:"Caste",formatter:YAHOO.widget.DataTable.Caste}
+{key:"locationType",label:"Area Type",width:170,sortable:false}
+/*{key:"casteIds",label:"Caste",formatter:YAHOO.widget.DataTable.Caste}*/
 ];
 
 //parentLocationId
@@ -282,7 +287,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "resultVotersList",
 fields: [
 {key:"name"},
-"mobileNumber","locationType","casteIds"],
+"mobileNumber","locationType"],
 
 metaFields: {
 totalRecords: "totalResultsCount" // Access to value in the server response
