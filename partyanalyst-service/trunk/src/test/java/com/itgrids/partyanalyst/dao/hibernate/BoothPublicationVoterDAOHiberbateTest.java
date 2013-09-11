@@ -841,4 +841,9 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
+	public void testgetVotersDetailsForPanchayatByPublicationId(){
+		List<Object[]> list = boothPublicationVoterDAO.getVotersDetailsForPanchayatByPublicationId(4l,4l,0,100,"asc","initial");
+		System.out.println(list.size());
+	}
+	
 }

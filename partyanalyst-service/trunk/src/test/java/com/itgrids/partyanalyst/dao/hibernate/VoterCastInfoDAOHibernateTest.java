@@ -81,17 +81,15 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	/*public void testgetTopThreeCasteForPanchayat(){
-		List<Long> ids = new ArrayList<Long>();
-		ids.add(11l);
+	public void testgetTopThreeCasteForPanchayat(){
 		
-		List<Object[]> values = voterCastInfoDAO.getTopThreeCasteForPanchayat(ids,3l,8l,1l);
+		List<Object[]> values = voterCastInfoDAO.getTopThreeCasteForPanchayat(5304l,3l,8l,1l);
 		for (Object[] parms : values) {
-			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2] );
+			System.out.println(parms[0]  +":"+ parms[1] +":"+ parms[2]+":"+ parms[3] );
 		}
-	}*/
+	}
 	
-/*	public void testgetVoterCasteInfoList()
+	/*	public void testgetVoterCasteInfoList()
 	{
 		List<VoterCastInfo> list = voterCastInfoDAO.getVoterCasteInfoList(232l,8l,1l);
 		System.out.println(list.size());
