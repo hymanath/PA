@@ -542,6 +542,10 @@ public class ConnectPeopleAction extends ActionSupport implements ServletRequest
 		{
 			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.BLOCK,"",senderName);
 		}
+		if(jObj.getString("task").equalsIgnoreCase("unblockRequest"))
+		{
+			resultStatus =  ananymousUserService.saveCommunicationDataBetweenUsers(userId,recepientId,IConstants.UNBLOCK,"",senderName);
+		}
 		return Action.SUCCESS;
 	}
 	
