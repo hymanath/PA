@@ -601,7 +601,7 @@ function callAjax(param,jsObj,url){
 					      if(myResults[0].partyPositionVOList.length > 0 && myResults[0].constituencyType != "urban")
 							showPartyPerformanceReport(myResults,jsObj);
 							if(myResults[0].boothwisePartyPositionVOList.length > 0)
-							showPartyPerformanceReportForBooth(myResults,jsObj);
+							showPartyPerformanceReportForBooth(myResults,jsObj,myResults[0].constituencyType);
 							//showStrongAndWeakPollingPercentage(myResults,jsObj);
 							
 							//buildAddedVotersDetails(myResults);
