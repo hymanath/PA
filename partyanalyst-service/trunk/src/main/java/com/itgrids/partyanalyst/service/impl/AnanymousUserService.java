@@ -989,6 +989,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 	 */
 	public ResultStatus saveCommunicationDataBetweenUsers(final List<Long> senderId,final List<Long> recipeintId,final String messageType,final String subject,final String senderName){
 		
+		final String regex = "%26(?!\\d)"; //&ampersend 
 		final ResultStatus resultStatus = new ResultStatus();
 		transactionTemplate.execute(new TransactionCallback() {
 			public Object doInTransaction(TransactionStatus status) {
@@ -1018,7 +1019,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						
 						if(messageType.equalsIgnoreCase(IConstants.FRIEND_REQUEST)){	
 							for(int i=0;i<recipeintId.size();i++){
-								customMessage.setSubject(subject);								
+								customMessage.setSubject(subject.replaceAll(regex, "&").replaceAll( "%23(?!\\d)", "#"));								
 								customMessage.setSender(userDAO.get(senderId.get(0)));
 								customMessage.setRecepient(userDAO.get(recipeintId.get(i)));
 								customMessage.setMessageType(messageTypeDAO.get(pendingId));
@@ -1068,7 +1069,8 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						
 						else if(messageType.equalsIgnoreCase(IConstants.COMMENTS) || messageType.equalsIgnoreCase(IConstants.SCRAP)){
 							for(int i=0;i<recipeintId.size();i++){
-								customMessage.setSubject(subject);
+								
+								customMessage.setSubject(subject.replaceAll(regex, "&").replaceAll( "%23(?!\\d)", "#"));
 								customMessage.setRecepient(userDAO.get(recipeintId.get(i)));
 								customMessage.setSender(userDAO.get(senderId.get(0)));
 								customMessage.setMessageType(messageTypeDAO.get(messageTypeId));
@@ -1091,7 +1093,7 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 									{
 										emailDetailsVO.setFromAddress(userName);
 										emailDetailsVO.setToAddress(email);
-										emailDetailsVO.setSubject(subject);
+										emailDetailsVO.setSubject(subject.replaceAll(regex, "&").replaceAll( "%23(?!\\d)", "#"));
 										emailDetailsVO.setSenderName(senderName);
 										//mailsSendingService.sendMessageToConnectUser(emailDetailsVO);
 										taskExecutor.execute(mailsSendingFromTaskExecutor(emailDetailsVO,"mailForMsgToConnectedUsers"));
