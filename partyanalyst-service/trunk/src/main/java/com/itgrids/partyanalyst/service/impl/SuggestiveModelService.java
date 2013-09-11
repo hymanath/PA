@@ -3632,6 +3632,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				List<Long> mandalIds = new ArrayList<Long>();
 				List<Long> localbodyIds = new ArrayList<Long>();
 				List<Object[]> electionList = null;
+				List<PartyPositionVO> localelectionList = null;
 				String tempLocationName = "";
 				List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId,IConstants.PRESENT_YEAR, null);
 				if(mandalsList != null && mandalsList.size() > 0)
@@ -3698,11 +3699,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						
 						partyPositionVO.setPartyPositionVOList(rangeList);
 						
-						if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN) || constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+						if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
 						{
 						 if(localbodyIds != null && localbodyIds.size() > 0)
 						 {
-						 List<PartyPositionVO> localelectionList = new ArrayList<PartyPositionVO>(0);
+						  localelectionList = new ArrayList<PartyPositionVO>(0);
 						 
 						 for(Long localBody : localbodyIds)
 						 {
@@ -3717,11 +3718,22 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								}
 						 }
 						 List<Object[]> boothIdsList = null;
-						 if(localbodyIds != null && localbodyIds.size() > 0)
+						 
+						 /*if(localbodyIds != null && localbodyIds.size() > 0)
 						  boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
 						 if(boothIdsList != null && boothIdsList.size() > 0)
-						 partyPositionVO.setBoothwisePartyPositionVOList(localelectionList);
+						 partyPositionVO.setBoothwisePartyPositionVOList(localelectionList);*/
 						 }
+						}
+						
+						else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+						{
+							localelectionList = new ArrayList<PartyPositionVO>(0);
+							 PartyPositionVO localElection = new PartyPositionVO();
+							 localElection.setId(constituencyId);
+							 localElection.setName(constituencyDAO.get(constituencyId).getName());
+							 localElection.setBoothwisePartyPositionVOList(rangeList1);
+							 localelectionList.add(localElection);
 						}
 						partyPositionVO.setName(election.getElectionYear() != null?election.getElectionYear():" ");
 						partyPositionVO.setId(eleId);
@@ -3739,11 +3751,15 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
 						{    partyPositionVO.setConstituencyType("urban");
 							List<Object[]> boothIdsList = null;
-							if(localbodyIds != null && localbodyIds.size() > 0)
-							 boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
+							/*if(localbodyIds != null && localbodyIds.size() > 0)
+							 boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);*/
+							boothIdsList = boothConstituencyElectionDAO.getBoothIdsByConstituencyIdAndEleId(eleId, constituencyId);
 							
 							if(boothIdsList != null && boothIdsList.size() > 0)
+							{
+								partyPositionVO.setBoothwisePartyPositionVOList(localelectionList);
 								getPanchayatWisePartyPerformance1(constituencyId,eleId, partyPositionVO, partyId,boothIdsList);
+							}
 							
 						}
 						else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
@@ -3758,7 +3774,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							 boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
 							
 							if(boothIdsList != null && boothIdsList.size() > 0)
+							{
+								partyPositionVO.setBoothwisePartyPositionVOList(localelectionList);
 								getPanchayatWisePartyPerformance1(constituencyId,eleId, partyPositionVO, partyId,boothIdsList);
+							}
 							
 						}
 						resultList.add(partyPositionVO);
@@ -3911,6 +3930,16 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			public void getPartyPerformanceForLocalBodyBooth(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<String,Map<Long,Map<Long,Long>>> resultMap)
 			{
 				try{
+					Map<Long,Long> boothTotalMap = new HashMap<Long, Long>(0);
+					for(String localbodyName : resultMap.keySet())
+					{
+						Map<Long,Map<Long,Long>> boothMap = resultMap.get(localbodyName);
+						 for(Long id:boothMap.keySet())
+							boothTotalMap.put(id, boothDAO.getTotalVotesForSelectedBooth(id));
+						
+					}
+							
+					
 					for(String localbodyName : resultMap.keySet())
 					{
 				 List<PartyPositionVO> localbodyList = partyPositionVO.getBoothwisePartyPositionVOList();
@@ -3966,7 +3995,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				    		 locationVO.setName(locationName != null?locationName:" ");
 				    		 locationVO.setPartyPercentage(selectedPartyTotalPercent);
 				    		 locationVO.setTotalValidVotes(totalVotes);
-				    		  boothwiselocationList.add(locationVO);
+				    		 locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
+				    		 locationVO.setMargin(difference);
+				    		 locationVO.setTotalVoters(boothTotalMap.get(id));
+				    		 locationVO.setPercentage(new BigDecimal((totalVotes*100.0/boothTotalMap.get(id))).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				    		 boothwiselocationList.add(locationVO);
 				    		 positionVO.setPartyPositionVOList(boothwiselocationList);
 				    		
 				    	 }

@@ -733,9 +733,9 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetBoothsForUrbanConstituencyes()
+	/*public void testgetBoothsForUrbanConstituencyes()
 	{
-		/*List<Long> ids = new ArrayList<Long>();
+		List<Long> ids = new ArrayList<Long>();
 		ids.add(31804l);
 		ids.add(31805l);
 		ids.add(31806l);
@@ -743,11 +743,16 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		ids.add(31808l);
 		ids.add(31809l);
 		ids.add(31810l);
-		ids.add(31937l);*/
+		ids.add(31937l);
 		List<Object[]> values = boothDAO.getBoothsAndWardsInUrbanConstituency(347l,8l);
 		System.out.println(values.size());
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2] +":"+ parms[3]);
 		}
+	}*/
+	
+	public void testgetTotalVotesForSelectedBooth()
+	{
+		System.out.println(boothDAO.getTotalVotesForSelectedBooth(1L));
 	}
 }
