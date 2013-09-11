@@ -6011,5 +6011,11 @@
 		   </result>
 		</action>
 		
+		<action name="getBlockRequestDetailsAction" class="userProfileAction" method="getBlockRequestDetails">
+		  <result type="json" name="success">
+		      <param name="root">userBlockedRequestsList</param>
+		  </result>
+		 </action>
+
 		</package>
 </struts>      
