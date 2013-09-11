@@ -314,8 +314,7 @@ function removeAllUnwantedCharacters(str)
 function replaceSpecialCharacters(str)
 {
   str = str.replace(/\&/g,"%26");
-  //str = str.replace(/\#/g,"%23");
-  str = str.replace(/\#/g," ");
+  str = str.replace(/\#/g,"%23");
   str = str.replace(/\%/g,"%25");
   str = str.replace(/\+/g,"%2B");
   str = str.replace(/\//g,"%2F");
