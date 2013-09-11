@@ -1346,7 +1346,9 @@ function callAjax1(jsObj,url){
 					else if(jsObj.task == "getAllPostedReasons")
 						showAllPostedReasonsForUserProfile(jsObj,results);
 					else if(jsObj.task == "getFavouriteLinks")
-						buildFavouriteLinks(results);
+				        { 
+						  buildFavouriteLinks(results);
+						}
 						
 					else if(jsObj.task =="removeFavouriteLink"){
 						$('#FavouriteLinks').click();
@@ -1517,7 +1519,6 @@ function buildAvailFavIds(results){
 
 
 function buildFavouriteLinks(results){
-
 $(".placeholderCenterDiv").children().remove();
 $("#headerDiv").html('');
 $(".specialPageDivInnerFav").children().remove();
@@ -1642,7 +1643,6 @@ $("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica
 				
 		    if(results[k].favouriteLinkType == "district"){
 
-
 				$('.districtDivheading').html('<a href="javaScript:{}" class="label label-info stateHeadingCls" style="font-size: 16px;padding: 6px;">District</span>');
 				
 				var template = $('.favouriteLinkConstituencyClass');
@@ -1655,7 +1655,12 @@ $("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica
 
 				templateClone.find('.imageClass').html("<i class='icon-tags'></i>");
 				//templateClone.find('.titleClass').html("<b><a  class='problemTitle' href="+results[j].favouriteLink+">"+results[k].favouriteLinkTitle+"</a></b>");
-			templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[k].favouriteLinkTitle+"' href="+results[k].favouriteLink+">"+results[k].name+"</a></b>");
+
+	            var favouriteLink=results[k].favouriteLink;
+                var favouriteLink=favouriteLink.split(" ").join("");
+
+				
+			    templateClone.find('.titleClass').html("<b><a  class='problemTitle' title='"+results[k].favouriteLinkTitle+"' href="+favouriteLink+">"+results[k].name+"</a></b>");
 
 
 				templateClone.find('.removeClass').html("<b><a class='removeLinkButton btn'  href='javaScript:{removeFavouriteLink("+results[k].userFavoriteLinksId+")}'>Remove</a></b>");
