@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsResponseDetailsDAO;
@@ -39,6 +40,7 @@ import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -64,8 +66,27 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO;
+	private IRegionScopesDAO regionScopesDAO;
+	private ICandidateDetailsService candidateDetailsService;
 	
 	
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+
 	public IPanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
 	}
@@ -1013,7 +1034,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 				" InfluencingPeople model,UserVoterDetails model2 where model.user.userId =:userId and model2.user.userId =:userId and " +
 				" model.voter.voterId = model2.voter.voterId ");*/
 		
-		queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope from " +
+		queryString.append(" model.firstName,model.lastName,model.phoneNo,model.influencingScope,model.influencingScope.influencingScopeValue from " +
 				" InfluencingPeople model  where model.user.userId =:userId ");
 
 		if(searchVO.isNameSelected())
@@ -1127,7 +1148,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 		//vo.setHouseNo(list[2].toString());
 		vo.setMobileNumber(Long.valueOf(list[2].toString()));
 		//vo.setCasteIds(list[4].toString());
-		vo.setLocationType(list[3].toString());
+		Long scopeTypeId = regionScopesDAO.getRegionScopeIdByScope(list[3].toString());
+		String locationName = candidateDetailsService.getLocationDetails(scopeTypeId,Long.valueOf(list[4].toString()));
+		vo.setLocationType(list[3].toString()+"-"+locationName);
 		
 		//vo.setStartAge(Integer.parseInt(list[3].toString()));
 		resultList.add(vo);
