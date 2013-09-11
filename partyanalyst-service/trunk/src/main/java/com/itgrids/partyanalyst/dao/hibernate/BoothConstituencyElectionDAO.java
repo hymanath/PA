@@ -770,4 +770,17 @@ public List<Object[]> getTotalValidVotesAndTotalVotersByConstituency(Long electi
 			query.setParameter("constituencyId", constituencyId);
 		   return query.list(); 
 }
+
+@SuppressWarnings("unchecked")
+public List<Object[]> getBoothIdsByConstituencyIdAndEleId(Long electionId,Long constituencyId)
+{
+	StringBuilder stringBuilder = new StringBuilder();
+	stringBuilder.append("select distinct model.booth.boothId,model.booth.constituency.name from BoothConstituencyElection model where  " +
+			" model.constituencyElection.election.electionId = :electionId and model.booth.constituency.constituencyId = :constituencyId");
+	Query query = getSession().createQuery(stringBuilder.toString());
+	query.setParameter("electionId", electionId);
+	query.setParameter("constituencyId", constituencyId);
+	return query.list();
+}
+
 }
