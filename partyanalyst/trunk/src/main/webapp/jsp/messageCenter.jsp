@@ -1571,11 +1571,16 @@ function ajaxToSendVoiceSms(){
 
 			 $('#responseDetailsDiv').dialog({
 				title:"Sending Voice SMS" ,
+                closeOnEscape:false,
+				open: function(event, ui) { 
+    //hide close button.
+    $(this).parent().children().children('.ui-dialog-titlebar-close').hide();
+},
                 modal:true,
-                resizable: false,
-				buttons: {								
+                resizable: false//,
+				/*buttons: {								
 					"Ok":function(){$(this).dialog("close");} 
-				}
+				}*/
 	       });
 
 
