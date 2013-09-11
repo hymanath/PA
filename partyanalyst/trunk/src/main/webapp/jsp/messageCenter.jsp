@@ -1015,10 +1015,12 @@ function getVoterSearchDetails()
    urlStr += "isAgeSelected="+selectedCriteria.isAgeSelected+"&isCasteSelected="+selectedCriteria.isCasteSelected+"&isFamilySelected="+selectedCriteria.isFamilySelected+"&isNameSelected="+selectedCriteria.isNameSelected+"&isGenderSelected="+selectedCriteria.isGenderSelected+"&";
 
 
-  var browser2 = window.open(urlStr,"messageCenterVoterSearch","scrollbars=yes,height=570,width=1300,left=200,top=50");	
-  browser2.focus();
+  voterWindow = window.open(urlStr,"messageCenterVoterSearch","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+  voterWindow.focus();
 	}
 }
+var voterWindow;
+var influencingWindow;
 function openInfluencePeopleWindow(){
 	
 	var urlStr = "searchInfluencePeopleForSmsAction.action?locationValue="+selectedCriteria.reportLevelValue+"&locationType="+selectedCriteria.searchArea+"&parentLocationId="+selectedCriteria.consituencyId+"&";
@@ -1034,8 +1036,8 @@ function openInfluencePeopleWindow(){
    if(selectedCriteria.isGenderSelected == true)
 	   urlStr += "gender="+selectedCriteria.gender+"&";
    urlStr += "isAgeSelected="+selectedCriteria.isAgeSelected+"&isCasteSelected="+selectedCriteria.isCasteSelected+"&isFamilySelected="+selectedCriteria.isFamilySelected+"&isNameSelected="+selectedCriteria.isNameSelected+"&isGenderSelected="+selectedCriteria.isGenderSelected+"&";
-  var browser3 = window.open(urlStr,"messageCenterinfluencingPeopleSearch","scrollbars=yes,height=570,width=1300,left=200,top=50");	
-  browser3.focus();
+  influencingWindow = window.open(urlStr,"messageCenterinfluencingPeopleSearch","scrollbars=yes,height=570,width=1300,left=200,top=50");	
+  influencingWindow.focus();
 	
 }
 function getallConstituencies(district){
@@ -2463,13 +2465,13 @@ function openCandidatesPopup(parentRegionId,regionId,regionName,regionType,scope
 	var browser2 = window.open(urlStr,"influencingPersonInfoPopup2","scrollbars=yes,height=570,width=1300,left=200,top=50");	
 	browser2.focus();
 }
-
+var cadreWindow;
 function buildSearchPagePopup(type)
 {	
 	var fromParent="messageCenter";
 	var urlStr = "cadreSearchActionForMessageCenter.action?windowTask="+type+"&fromParent="+fromParent;
-	var browser2 = window.open(urlStr,"cadreSearchAndSMSPopup2","scrollbars=yes,height=650,width=1100,left=150,top=100");	
-	browser2.focus();
+	cadreWindow = window.open(urlStr,"cadreSearchAndSMSPopup2","scrollbars=yes,height=650,width=1100,left=150,top=100");	
+	cadreWindow.focus();
 
 }
 
@@ -3498,6 +3500,7 @@ function removeCadre()
 
 	 selectedCadreDetails = {};
 
+	 cadreWindow.unSelectAllCheckBoxes();
 	 $.each(selectedCadreDetails, function(index, value) {
 	 var numberIndex =  window.opener.selectedMobileNumbers.indexOf(value);
          selectedMobileNumbers.splice(numberIndex, 1);
@@ -3513,6 +3516,7 @@ function removeInfluencePeople()
 
 	 selectedInfluencePeopleDetails = {};
 
+	 influencingWindow.unSelectAllCheckBoxes();
 	 $.each(selectedInfluencePeopleDetails, function(index, value) {
 	 var numberIndex =  window.opener.selectedMobileNumbers.indexOf(value);
          selectedMobileNumbers.splice(numberIndex, 1);
@@ -3526,6 +3530,7 @@ function removeVoters()
 {
 	selectedVotersDetails = {};
 
+	voterWindow.unSelectAllCheckBoxes(); 
 	$.each(selectedVotersDetails, function(index, value) {
 	 var numberIndex =  window.opener.selectedMobileNumbers.indexOf(value);
          selectedMobileNumbers.splice(numberIndex, 1);
