@@ -1031,7 +1031,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						if(messageType.equalsIgnoreCase(IConstants.BLOCK)){	
 							int result = customMessageDAO.updateRelationBetweenUsers(senderId,recipeintId,blockId,dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));						
 						}
-						
+						if(messageType.equalsIgnoreCase(IConstants.UNBLOCK)){	
+							int result = customMessageDAO.updateRelationBetweenUsers(senderId,recipeintId,3l,dateService.getPresentPreviousAndCurrentDayDate(IConstants.DATE_PATTERN,0,IConstants.PRESENT_DAY));						
+						}
 						else if(messageType.equalsIgnoreCase(IConstants.CONNECTED)){
 							UserConnectedto userConnectedto = new UserConnectedto();
 							for(int i=0;i<recipeintId.size();i++){
