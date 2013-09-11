@@ -1513,4 +1513,11 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 					" model.localBodyWard.constituencyId,model.localBodyWard.name from Booth model " +
 					" where model.constituency.constituencyId = ? and model.publicationDate.publicationDateId = ? order by model.localBodyWard.constituencyId asc ",parms);
 		}
+		
+		public Long getTotalVotesForSelectedBooth(Long boothId)
+		{
+			Query query = getSession().createQuery(" select model.totalVoters from Booth model where model.boothId =:boothId ");
+			query.setParameter("boothId", boothId);
+			return (Long) query.uniqueResult();
+		}
 }

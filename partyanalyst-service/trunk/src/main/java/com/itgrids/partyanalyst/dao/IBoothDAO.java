@@ -292,4 +292,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Object[]> getBoothsForUrbanConstituencyes(List<Long> wardIds,Long constituencyId,Long publicationId);
 	
 	public List<Object[]> getBoothsAndWardsInUrbanConstituency(Long constituencyId,Long publicationId);
+	
+	public Long getTotalVotesForSelectedBooth(Long boothId);
+	
 }
