@@ -1948,22 +1948,22 @@ public class VoterModificationService implements IVoterModificationService{
 			 stringBuilder.append(" select count(model.voter.voterId),model.voterStatus.status,model.voter.gender,"); 
 			 
 			 if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-				 stringBuilder.append(" model2.booth.constituency.constituencyId, model2.booth.constituency.name ");
+				 stringBuilder.append(" model2.constituency.constituencyId, model2.constituency.name ");
 			 
 			 else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
-				 stringBuilder.append(" model2.booth.tehsil.tehsilId,model2.booth.tehsil.tehsilName ");
+				 stringBuilder.append(" model2.tehsil.tehsilId,model2.tehsil.tehsilName ");
 			 
 			 else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || locationType.equalsIgnoreCase("localElectionBody"))
-				 stringBuilder.append(" model2.booth.localBody.localElectionBodyId,model2.booth.localBody.name,model2.booth.localBody.electionType.electionType ");
+				 stringBuilder.append(" model2.localBody.localElectionBodyId,model2.localBody.name,model2.localBody.electionType.electionType ");
 			 
 			 else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-				 stringBuilder.append(" model2.booth.panchayat.panchayatId,model2.booth.panchayat.panchayatName ");
+				 stringBuilder.append(" model2.panchayat.panchayatId,model2.panchayat.panchayatName ");
 			 
 			 else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
-				 stringBuilder.append(" model2.booth.boothId,model2.booth.partNo ");
+				 stringBuilder.append(" model2.boothId,model2.partNo ");
 			 
 			 else if(locationType.equalsIgnoreCase(IConstants.WARD))
-				 stringBuilder.append(" model2.booth.localBodyWard.constituencyId,model2.booth.localBodyWard.name ");
+				 stringBuilder.append(" model2.localBodyWard.constituencyId,model2.localBodyWard.name ");
 			
 			 return stringBuilder.toString();
 			 

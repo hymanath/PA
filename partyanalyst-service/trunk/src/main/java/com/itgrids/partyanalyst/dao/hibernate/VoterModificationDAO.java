@@ -481,28 +481,28 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	{
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(queryStr.toString());
-		stringBuilder.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		stringBuilder.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo and ");
+		stringBuilder.append(" from VoterModification model, Booth model2 where model.constituency.constituencyId = model2.constituency.constituencyId and model.partNo = model2.partNo and ");
+		stringBuilder.append(" model.publicationDate.publicationDateId = model2.publicationDate.publicationDateId and model.publicationDate.publicationDateId in(:publicationIdsList) and ");
 		
 		if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
-			 stringBuilder.append(" model2.booth.constituency.constituencyId in(:locationValuesList) group by model2.booth.constituency.constituencyId ");
+			 stringBuilder.append(" model2.constituency.constituencyId in(:locationValuesList) group by model2.constituency.constituencyId ");
 		 
 		 else if(type.equalsIgnoreCase(IConstants.MANDAL))
-			 stringBuilder.append(" model2.booth.tehsil.tehsilId in(:locationValuesList) group by model2.booth.tehsil.tehsilId ");
+			 stringBuilder.append(" model2.tehsil.tehsilId in(:locationValuesList) group by model2.tehsil.tehsilId ");
 		 
 		 else if(type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
-			 stringBuilder.append(" model2.booth.localBody.localElectionBodyId in(:locationValuesList) group by model2.booth.localBody.localElectionBodyId ");
+			 stringBuilder.append(" model2.localBody.localElectionBodyId in(:locationValuesList) group by model2.localBody.localElectionBodyId ");
 		 
 		 else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
-			 stringBuilder.append(" model2.booth.panchayat.panchayatId in(:locationValuesList) group by model2.booth.panchayat.panchayatId ");
+			 stringBuilder.append(" model2.panchayat.panchayatId in(:locationValuesList) group by model2.panchayat.panchayatId ");
 		 
 		 else if(type.equalsIgnoreCase(IConstants.BOOTH))
-			 stringBuilder.append(" model2.booth.boothId in(:locationValuesList) group by model2.booth.boothId ");
+			 stringBuilder.append(" model2.boothId in(:locationValuesList) group by model2.boothId ");
 		 
 		 else if(type.equalsIgnoreCase(IConstants.WARD))
-			 stringBuilder.append(" model2.booth.localBodyWard.constituencyId in(:locationValuesList) group by model2.booth.localBodyWard.constituencyId ");
+			 stringBuilder.append(" model2.localBodyWard.constituencyId in(:locationValuesList) group by model2.localBodyWard.constituencyId ");
 		
-		stringBuilder.append(" , model.publicationDate.publicationDateId, model.voterStatus.voterStatusId, model.voter.gender order by cast(model2.booth.partNo,int)");
+		stringBuilder.append(" , model.publicationDate.publicationDateId, model.voterStatus.voterStatusId, model.voter.gender order by cast(model2.partNo,int)");
 		
 		Query queryObj = getSession().createQuery(stringBuilder.toString());
 		
