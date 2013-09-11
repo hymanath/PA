@@ -1093,12 +1093,24 @@ var str = '';
 		str += '</table>';
 		str += '</div>';
 	}	
-	str += '<div class="custom_paginator_class"></div>';
+	
+	if(users.length <  8)
+	{
+	
+	str += '<div class="custom_paginator_class" style="display:none;"></div>';	
+	}
+	else
+	{
+
+	str += '<div class="custom_paginator_class" style="display:block;"></div>';	
+	}
+	
 	return str;
 }
 
 function buildAllConnectUserStringOfDistrict(users)
 {  
+	
 	var str = '';
 	for(var i=0; i<users.length; i++){
 			var imageStr = "pictures/profiles/"+users[i].image;
@@ -1141,7 +1153,18 @@ function buildAllConnectUserStringOfDistrict(users)
 		}
 		str+='</span>';
 	}	
-	str += '<div class="custom_paginator_class"></div>';	
+	
+	if(users.length <  8)
+	{
+	
+	str += '<div class="custom_paginator_class" style="display:none;"></div>';	
+	}
+	else
+	{
+
+	str += '<div class="custom_paginator_class" style="display:block;"></div>';	
+	}
+	
 	return str;
 }
 
