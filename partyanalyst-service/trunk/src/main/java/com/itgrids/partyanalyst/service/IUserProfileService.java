@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
 
@@ -14,4 +15,6 @@ public interface IUserProfileService {
 	public String getUserConnectStatus(Long profileId, Long userId);
 	
 	public ProblemBeanVO getRecentConnectedPeople(Long userId);
+	
+	public List<CandidateVO> getBlockRequestDetails(Long userId);
 }
