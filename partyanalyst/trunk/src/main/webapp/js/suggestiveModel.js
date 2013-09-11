@@ -1,5 +1,5 @@
 
-function showPartyPerformanceReportForBooth(result,jsObj)
+/* function showPartyPerformanceReportForBooth(result,jsObj)
 {
 
 	 $("#partyPerformanceBoothDiv").css("display","block");
@@ -75,7 +75,140 @@ function showPartyPerformanceReportForBooth(result,jsObj)
 	str += '</div>';
 	str += '</div>';
 	$("#partyPerformanceBoothDiv").html(str);
+}*/
+
+
+function showPartyPerformanceReportForBooth(result,jsObj,constituencyType)
+{
+
+	$("#partyPerformanceBoothDiv").css("display","block");
+	$("#partyPerformanceBoothDiv").html('');
+  if(result == null || result.length == 0)
+	{
+     $("#partyPerformanceBoothDiv").html('No Data Found');
+	 return;
+	}
+	var partyName = $('#partySelectEl option:selected').text();
+	var str = '';
+	 
+	str+='<div class="widget green">';
+	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;" class="widget-block">';
+
+	var tempVar1 = "";
+	if(constituencyType == "urban")
+     tempVar1 = "";
+	else
+	 tempVar1 = "Muncipality ";
+
+	for(var i in result[0].boothwisePartyPositionVOList)
+	{
+	  str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+ result[0].boothwisePartyPositionVOList[i].name+' '+tempVar1+'BOOTH WISE '+partyName+' PARTY PERFORMANCE REPORT</h4>';
+	}
+	str +='<div style="margin-top:12px;">';
+	str +='<span class="yearSpan" style="margin-right: 530px;">'+result[0].name+'</span>';
+	str +='<span class="yearSpan">'+result[1].name+'</span>';
+	str +='</div>';
+
+    str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
+    str +='<tr>';
+	str +='<th>Type</th>';
+	str +='<th>Booth</th>';
+	str +='<th>Total Votes</th>';
+	str +='<th>Votes Polled</th>';
+	str +='<th>Polling %</th>';
+	str +='<th>Margin</th>';
+	str +='<th>Votes Gained('+partyName+')</th>';
+
+	str +='<th>Booth</th>';
+	str +='<th>Total Votes</th>';
+	str +='<th>Votes Polled</th>';
+	str +='<th>Polling %</th>';
+	str +='<th>Margin</th>';
+	str +='<th>Votes Gained('+partyName+')</th>';
+	
+	str +='</tr>';
+
+
+   var length = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList.length;
+   for(var j=0;j<length;j++)
+   {
+      var listSize1 = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList.length;
+	  var trFlag = false;
+	
+	  var strengthType = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].name;
+	  
+	    if(listSize1 == 0)
+	    {
+		 str +='<tr>';
+	     str +='<td style="background: none repeat scroll 0% 0% '+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
+		 str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
+		 str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
+		 str +='</tr>';
+	    }
+	    else if(listSize1 > 0)
+	    {
+         str +='<tr>';
+	     str +='<td rowspan="'+listSize1+'" style="background: none repeat scroll 0% 0% '+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
+         for(var r=0;r<listSize1;r++)
+	     {
+           var partNo = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].name;
+		   var inFlag = true;
+          
+		   if(trFlag)
+		    str +='<tr>';
+			
+		    str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].name+'</td>';
+			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].totalVoters+'</td>';
+			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].totalValidVotes+'</td>';
+			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].percentage+'</td>';
+			str +='<td><span style="background: none repeat scroll 0% 0% '+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+'" class="spanCls">'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].margin+'</span></td>';
+			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].selectedPartyTotalVoters+'</td>';
+            
+		 if(result[1].boothwisePartyPositionVOList.length > 0)
+		 {
+			 for(var k=0;k<result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList.length;k++)
+			 {
+					for(var m=0;m<result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList.length;m++)
+					{
+					 if(result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].name==partNo)
+					 {
+					    inFlag = false;
+					    str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].name+'</td>';
+					    str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalVoters+'</td>';
+						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalValidVotes+'</td>';
+						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
+						str +='<td><span style="background: none repeat scroll 0% 0% '+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+'" class="spanCls">'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
+					 }
+					}
+			 }
+		 }
+				if(inFlag)
+				 str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
+
+				str +='</tr>';
+		  	     trFlag = true;
+					
+		  
+		 }//inner for close
+
+
+
+		 str +='</tr>';
+
+	    }//else if
+
+   }//main for close
+
+   str += ' </table>';
+	str += '</div>';
+	str += '</div>';
+	str += '</div>';
+
+	
+	$("#partyPerformanceBoothDiv").html(str);
 }
+
 function buildPollingHighPercentageForBooths(result)
 {
 
