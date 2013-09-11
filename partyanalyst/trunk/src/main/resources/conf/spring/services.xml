@@ -1755,6 +1755,8 @@
 	 <property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
      <property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property> <property name="constituencyDAO" ref="constituencyDAO" /> 
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property> 	     
+     <property name="regionScopesDAO" ref="regionScopesDAO"></property>
+     <property name="candidateDetailsService" ref="candidateDetailsService"></property>
     </bean>
     
     <bean name="marketingManagementService" class="com.itgrids.partyanalyst.service.impl.MarketingManagementService">
