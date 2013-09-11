@@ -194,6 +194,11 @@ $(document).ready(function(){
 
 });
 
+function unSelectAllCheckBoxes(){
+	$(".voter").attr('checked', false);
+	$(".allVoters").attr('checked', false);
+}
+
 getVotersDetailsBySearchCritteria();
 
 function getVotersDetailsBySearchCritteria()
