@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
@@ -23,12 +24,16 @@ import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dto.CandidateVO;
+import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
 import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserProfileService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -50,10 +55,21 @@ public class UserProfileService implements IUserProfileService {
 	
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private ICustomMessageDAO customMessageDAO;
+	private IStaticDataService staticDataService;
 	
 	private static final Logger log = Logger.getLogger(UserProfileService.class);
 			
-   public ICandidateSubscriptionsDAO getCandidateSubscriptionsDAO() {
+   public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+
+public ICandidateSubscriptionsDAO getCandidateSubscriptionsDAO() {
 		return candidateSubscriptionsDAO;
 	}
 
@@ -529,5 +545,66 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 		return status;
 	}
    }
-			
+	
+   public List<CandidateVO> getBlockRequestDetails(Long userId){
+	   List<ProblemBeanVO> results = new ArrayList<ProblemBeanVO>();
+	   List<Long> value = new ArrayList<Long>();
+	   value.add(userId);
+	   
+	   ResultStatus resultStatus = new ResultStatus();
+		List<CandidateVO> candiateVO = new ArrayList<CandidateVO>(0); 
+		DataTransferVO dataTransferVO = new DataTransferVO();
+		Long totalMsgCount = 0l;
+		Long unreadMsgCount= 0l;
+		String message,data;
+		
+	   List<Object> result = customMessageDAO.getAllMessagesForUser(value,"BLOCK");
+	   if(result!=null && result.size()!=0){
+			totalMsgCount = new Long(result.size());
+			for(int i=0;i<result.size();i++){
+				Object[] parms = (Object[])result.get(i);
+				CandidateVO candidateResults = new CandidateVO();
+				
+				if(parms[0] != null)
+					message = staticDataService.removeSpecialCharectersFromString(parms[0].toString());
+				else
+					message = "";
+				
+				
+				
+				data = StringUtils.replace(parms[0].toString(),"\n"," ");
+				data = staticDataService.removeSpecialCharectersFromString(data);
+				
+				if(data.length() < 20)
+					candidateResults.setData(data);
+				else
+					candidateResults.setData(data.substring(0, 19));
+				
+				candidateResults.setMessage(message);
+				candidateResults.setId(new Long(parms[1].toString()));
+				String candidateName="";
+				
+				if(parms[2]!=null)
+					candidateName+=parms[2].toString().concat("  ").concat("  ");
+				
+				if(parms[3]!=null)
+					candidateName+=parms[3].toString();
+
+				candidateResults.setState(parms[4].toString());
+				candidateResults.setDistrict(parms[5].toString());					
+				candidateResults.setConstituencyName(parms[6].toString());
+				candidateResults.setCandidateName(candidateName.toUpperCase());
+				String status = (parms[8]!=null)?parms[8].toString():"";
+				candidateResults.setStatus(status);
+				if(IConstants.MSG_UNREAD.equalsIgnoreCase(status))
+					unreadMsgCount++;
+				
+				candidateResults.setRecepientId(parms[10]!=null?(Long)parms[10]:null);
+				candidateResults.setPostedDate(parms[9]!=null?DateService.timeStampConversion(parms[9].toString()):"");
+				candidateResults.setCostumMessageId(parms[7]!=null?(Long)parms[7]:null);
+				candiateVO.add(candidateResults);
+			}
+		}
+	   return candiateVO;
+   }
 }
