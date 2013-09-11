@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CadreManagementVO;
+import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
@@ -94,7 +95,16 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private String connectStatus;
 	private List<SubscriptionsVO> subscriptionsVOList;
 	private List<SelectOptionVO> selectOptionVOList;
+	private List<CandidateVO> userBlockedRequestsList;
 	
+	public List<CandidateVO> getUserBlockedRequestsList() {
+		return userBlockedRequestsList;
+	}
+
+	public void setUserBlockedRequestsList(List<CandidateVO> userBlockedRequestsList) {
+		this.userBlockedRequestsList = userBlockedRequestsList;
+	}
+
 	public boolean isHasProfileManagement() {
 		return hasProfileManagement;
 	}
@@ -1121,4 +1131,21 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		return Action.SUCCESS;
 	}
 
+	public String getBlockRequestDetails(){
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);	
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getBlockRequestDetails() Method, Exception - " +e); 
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return "error" ;
+		Long userId = user.getRegistrationID();
+		userBlockedRequestsList = userProfileService.getBlockRequestDetails(userId);
+		return Action.SUCCESS;
+	}
 }
