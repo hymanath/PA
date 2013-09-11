@@ -169,6 +169,7 @@ if($(this).val().length==0)
               str+='  <tr><td><a href="javascript:{}" class="changePwdLink"><span class="icon-hand-right"></span>  Change Password</a></td></tr>';
               str+='   <tr><td><a href="javascript:{}" class="editPictureLink"><span class="icon-user"></span>  Edit Picture</a></td></tr>';
               str+='   <tr><td><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink"><span class="icon-thumbs-up"></span>  Edit View Settings</a></td></tr>';
+			  str+='   <tr><td><a href="javascript:{getBlockRequestDetails();}" class="editSettingsLink"><span class="icon-thumbs-up"></span>  Blocked requests</a></td></tr>';
              // str+='   <tr><td><a href="javascript:{}" class="editCoverImgLink"><span class="icon-user"></span>  Upload CoverImage</a></td></tr>';
 			  str+='  </tbody>';
               str+='</table>';
@@ -1280,6 +1281,12 @@ function callAjax1(jsObj,url){
 						$('#requestLink').trigger('click');
 												
 					}
+					else if(jsObj.task == "unblockRequest")
+					{
+						var value ='';
+
+					$("#"+jsObj.recepientId+"").css("display","none");
+					}
 					else if(jsObj.task == "getSpecialPages")
 					{
 						showSpecialPages(results);
@@ -1439,7 +1446,10 @@ function callAjax1(jsObj,url){
 					showConstituencySubScriptionStatus(results,jsObj);
 					//$(".subscriptionsLink").trigger("click");
 				}
-				
+				else if(jsObj.task == "getBlockRequestDetails")
+				{
+					buildBlockRequestDetails(results);
+				}
 
 			}catch (e) {  
                   	
@@ -1602,6 +1612,9 @@ $("#headerDiv").html('<h5 style="font-weight: bold; font-family: &quot;Helvetica
 
 				templateClone.appendTo('.constituencyDivInnerFav1');
 				}
+			}else{
+				$("#assemblyDiv").css("display","none");
+				$("#paliamentDiv").css("display","none");
 			}
 
 			}
@@ -4643,6 +4656,74 @@ function subscriptionDetails(linkType)
 {
 
 	document.getElementById(id).disabled  = true;
+}
+
+function getBlockRequestDetails(){
+
+var jsObj=
+	{
+	task:"getBlockRequestDetails"
+	}
+
+	var rparam=""+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getBlockRequestDetailsAction.action?"+rparam;
+
+	callAjax1(jsObj,url);
+}
+function buildBlockRequestDetails(results){
+
+$( "#BlockPeoplePopup" ).dialog({
+			title:"Blocked Requests",
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			minHeight:250,
+			modal: true,
+			hide: "explode"
+		});
+
+if(results.length == 0){
+	$("#BlockPeoplePopup").html("You don't have any blocked requests.");
+	return;
+}
+$("#BlockPeoplePopup").children().remove();
+$("#BlockPeoplePopup").html('');
+       for(var i in results){
+		  var imageStr = "pictures/profiles/"+results[i].image;
+		var template = $('.templateDiv');
+		var templateClone = template.clone();
+		templateClone.removeClass('templateDiv');
+		templateClone.find(".connectedPersonName").html('<a style="color:#0088CC;" href="userProfile.action?profileId='+results[i].id+'">'+results[i].candidateName+'</a>');
+		templateClone.find('.imgClass').css("width","55px");
+		templateClone.find('.prinfo').css("width","89px");
+		 
+		if(results[i].image == null)
+			templateClone.find('.imgClass').html('<a onClick="openNewWindow('+results[i].id+');"><img height="50" width="55" src="images/icons/indexPage/human.jpg"/></a>');
+		else
+			templateClone.find('.imgClass').html('<a  onClick="openNewWindow('+results[i].id+');"><img height="50" width="55" src="'+imageStr+'"/></a>');
+
+		templateClone.find(".constituencyName").html(''+results[i].constituencyName+'');
+		templateClone.find('.districtName').html(''+results[i].district+'');
+		templateClone.find('.stateName').html(''+results[i].state+'');
+		templateClone.find('.sendMsg').html('<a class="rejectButton btn btn-mini" rel="tooltip" id=\''+results[i].id+'\'  onclick="unblockRequest(\''+results[i].id+'\',\''+results[i].candidateName+'\')" data-original-title="Unblock This Person"><i class="icon-ban-circle opacityFilter-50"></i></a> <a href="javascript:{}" onclick="showMailPopup(\''+results[i].id+'\',\''+results[i].candidateName+'\',\'Message\')" rel="tooltip" title="Send Message To '+results[i].candidateName+'" class="btn btn-mini"><i class="icon-envelope opacityFilter-50"></i></a>');
+		templateClone.appendTo("#BlockPeoplePopup");
+	   }
+closeDialogue();
+
+}
+
+function unblockRequest(requestId,requestName){
+	var jsObj=
+	{		
+			type:"unblock",
+			recepientId:requestId,
+			task:"unblockRequest"								
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateUserStatusAction.action?"+rparam;		
+	alert(requestName+" request is unblocked.");
+	callAjax1(jsObj,url);
 }
 $("#canceluserSettings").live("click",function(){
 $("#userSettingsDialog").dialog('close');
