@@ -22,7 +22,7 @@ function createOptionsForSelectElmtIdWithSelectOption(elmtId,optionsList)
 	
 	var option = document.createElement('option');
 	option.value="0";
-	option.text="Select";
+	option.text="Select State";
 	try
 	{
 		elmt.add(option,null); // standards compliant
