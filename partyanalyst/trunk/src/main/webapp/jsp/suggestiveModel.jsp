@@ -2790,7 +2790,8 @@ var count=0;
 			task:"getAgeGroupWiseReport",
 			agesList:agesArr,
 			castesSelcted:selectedCasteIds,
-			expCasteArray:expCasteArray
+			expCasteArray:expCasteArray,
+			expCasteArrayForMuncipality:expCasteArrayForMuncipality
 		};
 		
 		$("#ageGroupCasteDetailsId").val(YAHOO.lang.JSON.stringify(jsObj));

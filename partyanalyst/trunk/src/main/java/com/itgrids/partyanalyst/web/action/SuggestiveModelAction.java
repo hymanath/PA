@@ -429,11 +429,16 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public String getAgeWiseGroupReport(){
 		session=request.getSession();
 		RegistrationVO regVO=(RegistrationVO)session.getAttribute(IConstants.USER);
+		
+		Long userId=null;
+		if(regVO.getParentUserId()!=null){
+			userId=regVO.getMainAccountId();
+		}else{
+			userId=regVO.getRegistrationID();
+		}
 		try{
 			jObj = new JSONObject(getTask());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		
 		String task=jObj.getString("task");
 		JSONArray agesArr = jObj.getJSONArray("agesList");
 		Long constiId=jObj.getLong("constituencyId");
@@ -443,6 +448,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		JSONArray elctionIds = jObj.getJSONArray("electionIds");
 		JSONArray castesSelected=jObj.getJSONArray("castesSelcted");
 		JSONArray jsonArray = jObj.getJSONArray("expCasteArray");
+		JSONArray jsonArrayMncpl=jObj.getJSONArray("expCasteArrayForMuncipality");
 		
 		List<Long> electionIds = new ArrayList<Long>(); 
 		if(elctionIds != null && elctionIds.length() >0){
@@ -485,8 +491,25 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			exceptCasteList.add(exceptCastsVO);
 		}
 		
-		panchayatVOs=suggestiveModelService.getVotersGroupDetails(groups,constiId,loctnId,loctnType,electionIds,regVO.getRegistrationID(),casteIds,exceptCasteList);
+		List<ExceptCastsVO> exceptCasteMncplList = new ArrayList<ExceptCastsVO>();
+		if(jsonArrayMncpl.length()>0){
+		for (int i = 0 ; i < jsonArrayMncpl.length() ; i++) {
+			JSONObject jSONObject= jsonArrayMncpl.getJSONObject(i);
+			ExceptCastsVO exceptCastsVO = new ExceptCastsVO();
+			exceptCastsVO.setCasteId(jSONObject.getLong("casteId"));
+			//exceptCastsVO.setCasteName(jSONObject.getString("casteName"));
+			exceptCastsVO.setCastePerc(jSONObject.getDouble("expPerc"));
+			exceptCastsVO.setPanchayatId(jSONObject.getLong("mandalId"));
+			//exceptCastsVO.setSelectLevelId(jSONObject.getLong("selLevel"));
+			//exceptCastsVO.setSelectLevelvalue(jSONObject.getLong("levelValue"));
+			exceptCasteMncplList.add(exceptCastsVO);
+		}
+		}
 		
+		panchayatVOs=suggestiveModelService.getVotersGroupDetails(groups,constiId,loctnId,loctnType,electionIds,userId,casteIds,exceptCasteList,exceptCasteMncplList);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 	
