@@ -1186,7 +1186,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 
 
 	   <div id="wardDiv" style="display:none;" class="selectDivs">
-	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),	getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:74px;width:165px;">
+	    <span>Select Ward</span><font class="requiredFont">*</font> <select id="wardField" class="selectWidth" name="state" onchange="clearErrDiv(),getBoothsForWards(),	getLocalitiesList('ward','wardField');getLocalitiesList('pollingstationByPublication','pollingStationField');" style="margin-left:74px;width:165px;">
 		<option value="0">Select Ward</option></select>
 	  </div>
 		
@@ -2000,6 +2000,7 @@ function callAjax1(param,jsObj,url){
 				    {
                         $('#wardField').find('option').remove();
 
+						$('#wardField').append('<option value="0">Select Ward</option>');
 						$.each(myResults,function(index,value){
 						$('#wardField').append('<option value="'+value.id+'">'+value.name+'</option>');
 
@@ -2119,6 +2120,8 @@ function callAjax1(param,jsObj,url){
 						iterateDetailsNames(myResults);
 					}else if(jsObj.task == "getUserLocation"){
 						buildRegionsSelectBoxes(myResults);
+					}else if(jsObj.task == "boothsInWard"){
+						iterateBoothNames(myResults)
 					}
 					
 			}catch (e) {   		
@@ -2132,6 +2135,27 @@ function callAjax1(param,jsObj,url){
 	    };
 
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function iterateBoothNames(result){
+	var elmt = document.getElementById('pollingStationField');
+	var option = document.createElement('option');
+	clearOptionsListForSelectElmtId('pollingStationField');
+
+	for(var i in result)
+	{		
+		var option=document.createElement('option');		
+		option.value=result[i].id;
+		option.text=result[i].name;		
+		try
+		{
+		elmt.add(option,null);	
+		}
+		catch (ex)
+		{
+			elmt.add(option);
+		}
+	}
 }
 
 function iterateDetailsNames(result){
@@ -3292,6 +3316,22 @@ function getHamletsInMandal()
 
 }
 
+function getBoothsForWards(){
+
+var jsObj=
+			{
+		         task:"boothsInWard",
+				 id:$('#wardField').val(),
+				 constId:$('#constituencyList').val(),
+				 taskType:"cadreReg",
+				 address:"cadreSearch"
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "locationsHierarchiesAjaxAction.action?"+rparam;	
+			callAjax1(rparam,jsObj,url);
+
+}
+
 function getBooths()
 {
 	var selectedLevelId = $('#reportLevel').val();
@@ -3320,7 +3360,15 @@ function getBooths()
 			}
 			else if(selectedLevelId == 4){
  			   //getBoothDetailsForCadre();
+			  var munciplName = $('#mandalField :selected').text();
+				if(munciplName.contains("Greater Municipal Corp") ==true){
+					$('#wardDiv').show();		
+					getSubRegionsOfLocalBody($('#mandalField').val());							
+				}
+			else{
+			   $('#wardDiv').hide();
 			   getBoothSubRegionsOfLocalBody($('#mandalField').val());
+			 }
 			}
 			else if(selectedLevelId == 3)
 				$('#panchayatField').find('option').remove();
