@@ -712,7 +712,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 	<div id="allConnectedUsersDisplay_main"></div>
 	</div>
 
+<div id="BlockPeoplePopup" style="display:none;">
 
+	</div>
 <!-- Templates -->
 <div class="TemplateCollection">
 
