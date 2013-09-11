@@ -4618,7 +4618,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		}
 		
-		public List<Object[]> getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,String type){
+		public List<Object[]> getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,String type,Long userId){
 			StringBuilder str=new StringBuilder();
 			if(type.equalsIgnoreCase("rural")){
 				str.append("select model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName,");
@@ -4629,7 +4629,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			str.append(" model1.casteState.caste.casteName,model1.casteState.casteStateId,count(model.voter.voterId) from" +
 					" BoothPublicationVoter model,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId" +
 					" and model.booth.constituency.constituencyId =:constituencyId" +
-					" and model.booth.publicationDate.publicationDateId =:publicationDateId");
+					" and model.booth.publicationDate.publicationDateId =:publicationDateId and model1.user.userId=:userId");
 			
 			if(ageTo != null){
 				str.append(" and model.voter.age between :ageFrom and :ageTo");
@@ -4649,6 +4649,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			Query qry=getSession().createQuery(str.toString());
 			qry.setParameter("constituencyId", constituencyId);
 			qry.setParameter("publicationDateId", publicationDateId);
+			qry.setParameter("userId",userId);
 			qry.setParameter("ageFrom",ageFrom);
 			
 			if(ageTo != null){
@@ -4740,14 +4741,15 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return qry.list();
 		}
 		
-		public List<Object[]> getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo){
+		public List<Object[]> getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId){
 			StringBuilder str=new StringBuilder();
 			str.append("select model.booth.boothId,model.booth.partNo," +
 					" model1.casteState.caste.casteName,model1.casteState.casteStateId,count(model.voter.voterId),model.booth.localBody.localElectionBodyId,model.booth.localBody.name," +
 					" model.booth.localBody.electionType.electionType from" +
 					" BoothPublicationVoter model,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId" +
 					" and model.booth.constituency.constituencyId =:constituencyId" +
-					" and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.localBody!=null");
+					" and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.localBody!=null" +
+					" and model1.user.userId=:userId ");
 			
 			if(ageTo != null){
 				str.append(" and model.voter.age between :ageFrom and :ageTo");
@@ -4761,6 +4763,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			Query qry=getSession().createQuery(str.toString());
 			qry.setParameter("constituencyId", constituencyId);
 			qry.setParameter("publicationDateId", publicationDateId);
+			qry.setParameter("userId", userId);
 			qry.setParameter("ageFrom",ageFrom);
 			
 			if(ageTo != null){
