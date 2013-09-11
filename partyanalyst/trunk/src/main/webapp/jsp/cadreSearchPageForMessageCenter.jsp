@@ -690,6 +690,11 @@ function openRegistrationForm(cadreId)
 	var updateBrowser = window.open(urlStr,"cadreRegistration","scrollbars=yes,left=200,top=200");	
 	updateBrowser.focus();				
 }
+function unSelectAllCheckBoxes(){
+	$(".cadre").attr('checked', false);
+	$(".selectAllCadre").attr('checked', false);
+}
+
 /*
 function showCadreSearchResults(searchCount)
  {
