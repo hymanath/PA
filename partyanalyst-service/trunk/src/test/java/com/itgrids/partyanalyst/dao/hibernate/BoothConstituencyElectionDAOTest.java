@@ -190,13 +190,14 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	/*public void testgetBoothIdsByLocalEleBodyId()
+	public void testgetBoothIdsByLocalEleBodyId()
 	{
-		List<Long> boothIds = boothConstituencyElectionDAO.getBoothIdsByLocalEleBodyId(83l, 38l);
+		List<Long> boothIds = boothConstituencyElectionDAO.getBoothIdsByLocalEleBodyId(110l, 186l,298l);
+		System.out.println(boothIds.size());
 		if(boothIds != null && boothIds.size() > 0)
 		 for(Long id : boothIds)
 			 System.out.println(id);
-	}*/
+	}
 	
 	/*public void testgetBoothIdsByConstituencyId()
 	{
@@ -336,12 +337,20 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetelecitionYear(){
+	/*public void testgetelecitionYear(){
 		List<Long> list=boothConstituencyElectionDAO.getElectionsByUrbanConsti(347l,2l);
 		System.out.println(list.size());
 		for(Long l:list){
 			System.out.println(l);
 		}
+	}*/
+	
+	public void testgetBoothIdsByConstituencyIdAndEleId()
+	{
+		List<Object[]> boothIdsList = boothConstituencyElectionDAO.getBoothIdsByConstituencyIdAndEleId(186l, 298l);
+		System.out.println(boothIdsList.size());
+		for(Object[] params:boothIdsList)
+		 System.out.println(params[0]+" "+params[1]);
 	}
 	
 }
