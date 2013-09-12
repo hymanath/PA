@@ -13,6 +13,7 @@ String districtId = "";
 String localBodyId = "";
 String constituencyId = "";
 String localBodyElectionTypeId = "";
+String tempVar = "";
 
 if(request.getParameter("redirectLoc")!=null){
 	redirectLoc = request.getParameter("redirectLoc");
@@ -45,6 +46,11 @@ if(request.getParameter("constituencyId")!=null){
 if(request.getParameter("localBodyElectionTypeId")!=null){
 	localBodyElectionTypeId = request.getParameter("localBodyElectionTypeId");
 }
+
+if(request.getParameter("tempVar")!=null){
+	tempVar = request.getParameter("tempVar");
+}
+
 %>
 
 <html>  
@@ -578,7 +584,12 @@ Your password will be sent to this Email address
 		 <input type="hidden" name="constituencyId" value="<%=constituencyId %>"
 		 />
          
-		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />  </s:form> 
+		 <input type="hidden" name="localBodyElectionTypeId" value="<%=localBodyElectionTypeId %>" />  
+
+		 <input type="hidden" name="tempVar" value="<%=tempVar %>" />  
+
+		 
+		 </s:form> 
 	
 <script language="javascript">
 
