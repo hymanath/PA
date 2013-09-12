@@ -341,6 +341,7 @@ var selectedCriteria={};
 var accessType = '${accessType}';
 $(document).ready(function() {
 
+$('#reportLevel').val(8);
    $('#reportLevel').change(function(){
      if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6){
 		 $('#constituencyList').trigger('change');
@@ -1041,7 +1042,7 @@ function openInfluencePeopleWindow(){
 	
 }
 function getallConstituencies(district){
-
+$('#wardDiv').hide();
  clearSelectOptions();
 var jsObj=
 		{						
@@ -3363,7 +3364,7 @@ function getBooths()
 			else if(selectedLevelId == 4){
  			   //getBoothDetailsForCadre();
 			  var munciplName = $('#mandalField :selected').text();
-				if(munciplName.contains("Greater Municipal Corp") ==true){
+				if(munciplName.indexOf("Greater Municipal Corp") != -1){
 					$('#wardDiv').show();		
 					getSubRegionsOfLocalBody($('#mandalField').val());							
 				}
@@ -3647,7 +3648,7 @@ function getValuesForConstituencyChange(value)
 {
 	clearErrDiv();
 	getAllTheCastesOfConstituency(value);
-
+	$('#wardDiv').hide();
 	if($('input:radio[name=searchFor]:checked').val() == "voter"){
 		getMandalOrMuncipalityList();
 		getPublicationDate();
