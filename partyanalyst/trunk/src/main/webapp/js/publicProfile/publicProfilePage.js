@@ -132,17 +132,17 @@ $(".connectLinkInPP").click(function(){
 		});
 
 		var div = $("<div class='connectPeoplePopupInnerDiv'></div>");
-		var Name=$("<label>"+userName+"</label>");
-		var message = $("<label class='messageLabel'>Message</label>");
+		//var Name=$("<label>"+userName+"</label>");
+		//var message = $("<label class='messageLabel'>Message</label>");
 		var connectBtn = $('<div id="remainChars"><span id="maxcount">300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input type="button" value="Connect" class="btn-info btn-small" id="connectMessageLinkInPP"  style="float:right;"/>');
-		var textArea = $("<textarea id='connectUserMsg'  style='width:347px;height:60px;'></textarea>");
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'  style='width:347px;height:60px;'></textarea>");
 		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
 		
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
 		var errorDiv = $("<div id='errorMsgDiv'></div>")
 		div.append(errorDiv);
-		div.append(Name);
-		div.append(message);
+		//div.append(Name);
+		//div.append(message);
 		div.append(textArea);
 		div.append(image);
 		div.append(connectBtn);
