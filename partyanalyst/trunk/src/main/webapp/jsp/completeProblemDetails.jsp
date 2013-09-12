@@ -2574,5 +2574,12 @@ rateWiseCountOfAProblem();
 </s:if>
 </s:if>
 
+window.onbeforeunload = function () {
+  var referrer =  document.referrer;
+  if(referrer.indexOf('constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT') != -1)
+  window.history.back();
+}
+
+
 </script>
 
