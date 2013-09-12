@@ -180,7 +180,7 @@ if($(this).val().length==0)
 		clearAllSubscriptionDivs();
 		$("#headerDiv").html('');
 		  var str='<table class="table table-hover"><thead><tr><td><b>Account Settings</b></td></tr></thead>';
-              str+='<tbody><tr><td><a href="freeUserRegistration.action"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>';
+              str+='<tbody><tr><td><a href="freeUserRegistration.action?tempVar=userProfile"><span class="icon-pencil"></span>  Edit Profile</a></td></tr>';
               str+='  <tr><td><a href="javascript:{}" class="changePwdLink"><span class="icon-hand-right"></span>  Change Password</a></td></tr>';
               str+='   <tr><td><a href="javascript:{}" class="editPictureLink"><span class="icon-user"></span>  Edit Picture</a></td></tr>';
               str+='   <tr><td><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink"><span class="icon-thumbs-up"></span>  Edit View Settings</a></td></tr>';

@@ -81,6 +81,7 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
     private List<SelectOptionVO> constituencies;
     private IRegionServiceData regionServiceDataImp;
     private ILoginService loginService;
+    private String tempVar;
     
     private String status;
  
@@ -385,14 +386,19 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 		this.loginService = loginService;
 	}
 	
-	
-	
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getTempVar() {
+		return tempVar;
+	}
+	public void setTempVar(String tempVar) {
+		this.tempVar = tempVar;
+	}
+	
 	public String execute()
 	{
 		session = request.getSession();
@@ -514,10 +520,16 @@ public class AnonymousUserRegistrationAction extends ActionSupport implements
 			
 			status = "success";
 			session.setAttribute("status", status);
-			if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
+			
+			if(tempVar != null && tempVar.equalsIgnoreCase("dashBoard"))
+				return "dashBoard";
+			else
+			 return "connect";
+			
+			/*if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver"))
 			return "dashBoard";
 			else
-			return "connect";
+			return "connect";*/
 			
 		}
 			

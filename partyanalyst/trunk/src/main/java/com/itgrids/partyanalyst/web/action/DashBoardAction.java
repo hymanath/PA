@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -447,6 +448,15 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		this.crossVotingParty = crossVotingParty;
 	}
 
+	public HttpSession getSession() {
+		return session;
+	}
+
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
 
 	public String execute()
 	{	
@@ -464,6 +474,11 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
+		
+		if(!(Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+		 return "userProfile";
+		
+		
 		constituencyId = user.getConstituencyId();
 		loginUserName = user.getFirstName()+" "+user.getLastName();
 		loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());

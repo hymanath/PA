@@ -170,6 +170,7 @@
 			<result type="redirect" name="suggestiveModelAction">suggestiveModelAction.action</result>
 			<result type="redirect" name="messageCenterAction">messageCenterAction.action</result>
 			<result type="redirect" name="updateCustomerContactsAction">updateCustomerContactsAction.action</result>
+			<result type="redirect" name="dashBoardAction">dashBoardAction.action</result>
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
 			 <interceptor-ref name="basicStack"/>
@@ -5493,7 +5494,7 @@
 	     
 	     <action name="dashBoardAction" class="dashBoardAction"> 
 		    <result name="success">/jsp/dashBoard.jsp</result>
-		    <result name="input">/jsp/loginForm.jsp</result>
+		    <result name="input">/jsp/loginForm.jsp?src=dashBoardAction</result>
 		    <result name="userProfile" type="redirect">userProfile.action</result>
 		</action>
 		

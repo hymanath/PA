@@ -52,6 +52,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
     private RegistrationVO regVO = null;
     private HttpSession session;
     private Integer resultValue;
+    private String tempVar;
         
    	public ResultStatus getResults() {
 		return results;
@@ -202,6 +203,13 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	}
 	public void setStaticDataService(IStaticDataService staticDataService) {
 		this.staticDataService = staticDataService;
+	}
+	
+	public String getTempVar() {
+		return tempVar;
+	}
+	public void setTempVar(String tempVar) {
+		this.tempVar = tempVar;
 	}
 	public String execute(){
 		
