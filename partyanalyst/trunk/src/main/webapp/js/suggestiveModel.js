@@ -105,8 +105,8 @@ function showPartyPerformanceReportForBooth(result,jsObj,constituencyType)
 	  str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+ result[0].boothwisePartyPositionVOList[i].name+' '+tempVar1+'BOOTH WISE '+partyName+' PARTY PERFORMANCE REPORT</h4>';
 	}
 	str +='<div style="margin-top:12px;">';
-	str +='<span class="yearSpan" style="margin-right: 530px;">'+result[0].name+'</span>';
-	str +='<span class="yearSpan">'+result[1].name+'</span>';
+	str +='<span class="yearSpan" style="margin-right: 530px;">'+result[1].name+'</span>';
+	str +='<span class="yearSpan">'+result[0].name+'</span>';
 	str +='</div>';
 
     str +='<table class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
@@ -129,18 +129,18 @@ function showPartyPerformanceReportForBooth(result,jsObj,constituencyType)
 	str +='</tr>';
 
 
-   var length = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList.length;
+   var length = result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList.length;
    for(var j=0;j<length;j++)
    {
-      var listSize1 = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList.length;
+      var listSize1 = result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList.length;
 	  var trFlag = false;
 	
-	  var strengthType = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].name;
+	  var strengthType = result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].name;
 	  
 	    if(listSize1 == 0)
 	    {
 		 str +='<tr>';
-	     str +='<td style="background: none repeat scroll 0% 0% '+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
+	     str +='<td style="background: none repeat scroll 0% 0% '+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
 		 str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
 		 str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
 		 str +='</tr>';
@@ -148,37 +148,37 @@ function showPartyPerformanceReportForBooth(result,jsObj,constituencyType)
 	    else if(listSize1 > 0)
 	    {
          str +='<tr>';
-	     str +='<td rowspan="'+listSize1+'" style="background: none repeat scroll 0% 0% '+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
+	     str +='<td rowspan="'+listSize1+'" style="background: none repeat scroll 0% 0% '+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
          for(var r=0;r<listSize1;r++)
 	     {
-           var partNo = result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].name;
+           var partNo = result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].name;
 		   var inFlag = true;
           
 		   if(trFlag)
 		    str +='<tr>';
 			
-		    str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].name+'</td>';
-			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].totalVoters+'</td>';
-			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].totalValidVotes+'</td>';
-			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].percentage+'</td>';
-			str +='<td><span style="background: none repeat scroll 0% 0% '+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+'" class="spanCls">'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].margin+'</span></td>';
-			str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].selectedPartyTotalVoters+'</td>';
+		    str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].name+'</td>';
+			str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].totalVoters+'</td>';
+			str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].totalValidVotes+'</td>';
+			str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].percentage+'</td>';
+			str +='<td><span style="background: none repeat scroll 0% 0% '+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+'" class="spanCls">'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].margin+'</span></td>';
+			str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].partyPositionVOList[r].selectedPartyTotalVoters+'</td>';
             
-		 if(result[1].boothwisePartyPositionVOList.length > 0)
+		 if(result[0].boothwisePartyPositionVOList.length > 0)
 		 {
-			 for(var k=0;k<result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList.length;k++)
+			 for(var k=0;k<result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList.length;k++)
 			 {
-					for(var m=0;m<result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList.length;m++)
+					for(var m=0;m<result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList.length;m++)
 					{
-					 if(result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].name==partNo)
+					 if(result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].name==partNo)
 					 {
 					    inFlag = false;
-					    str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].name+'</td>';
-					    str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalVoters+'</td>';
-						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalValidVotes+'</td>';
-						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
-						str +='<td><span style="background: none repeat scroll 0% 0% '+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].tempVar+'" class="spanCls">'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
-						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
+					    str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].name+'</td>';
+					    str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalVoters+'</td>';
+						str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalValidVotes+'</td>';
+						str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
+						str +='<td><span style="background: none repeat scroll 0% 0% '+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].tempVar+'" class="spanCls">'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+						str +='<td>'+result[0].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
 					 }
 					}
 			 }
