@@ -177,7 +177,7 @@ function showPartyPerformanceReportForBooth(result,jsObj,constituencyType)
 					    str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalVoters+'</td>';
 						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].totalValidVotes+'</td>';
 						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
-						str +='<td><span style="background: none repeat scroll 0% 0% '+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[j].tempVar+'" class="spanCls">'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+						str +='<td><span style="background: none repeat scroll 0% 0% '+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].tempVar+'" class="spanCls">'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
 						str +='<td>'+result[1].boothwisePartyPositionVOList[0].boothwisePartyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
 					 }
 					}
