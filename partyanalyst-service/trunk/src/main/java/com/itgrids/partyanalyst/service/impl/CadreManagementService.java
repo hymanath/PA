@@ -522,7 +522,10 @@ public class CadreManagementService {
 			
 			//send sms to onlineRegistration cadre
 			/*if(cadreInfoToSave.getCadreOnlineRegId() != null && cadreInfoToSave.getCadreOnlineRegId() > 0)
-				sendMessageToOnlineCadre(cadreInfoToSave.getMobile(),cadreInfoToSave.getUserID());*/
+			{
+				if(cadreInfoToSave.getMobile() != null)
+				sendMessageToOnlineCadre(cadreInfoToSave.getMobile(),cadreInfoToSave.getUserID());
+			}*/
 			rs.setResultState(cadreObj.getCadreId());
 		}catch(Exception e){
 			log.debug(e);
