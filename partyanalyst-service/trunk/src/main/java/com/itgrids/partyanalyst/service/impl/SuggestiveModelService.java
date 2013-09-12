@@ -396,7 +396,13 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				for(SelectOptionVO group : groupVos){
 					PanchayatVO panchaytVO1=new PanchayatVO();
 					
-					String ageRange=group.getId()+"> & <"+group.getPopulateId();
+					//String ageRange=group.getId()+"> & <"+group.getPopulateId();
+
+					String ageRange = null;
+					if(group.getId()==60 && group.getPopulateId()>=100)
+						ageRange=" above "+group.getId();
+					else
+						ageRange=group.getId()+" To "+group.getPopulateId();
 					
 					panchaytVO1.setMuncipalityName(mncplName);									
 					
