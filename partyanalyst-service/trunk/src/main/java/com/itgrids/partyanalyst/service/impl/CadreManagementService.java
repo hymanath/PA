@@ -519,6 +519,10 @@ public class CadreManagementService {
 				}
 			}
 			rs.setResultCode(ResultCodeMapper.SUCCESS);
+			
+			//send sms to onlineRegistration cadre
+			/*if(cadreInfoToSave.getCadreOnlineRegId() != null && cadreInfoToSave.getCadreOnlineRegId() > 0)
+				sendMessageToOnlineCadre(cadreInfoToSave.getMobile(),cadreInfoToSave.getUserID());*/
 			rs.setResultState(cadreObj.getCadreId());
 		}catch(Exception e){
 			log.debug(e);
@@ -532,7 +536,21 @@ public class CadreManagementService {
 		
 		return rs;
 	}
-		
+	public ResultStatus sendMessageToOnlineCadre(String mobileNo,Long userId)
+	{
+		ResultStatus rs= new ResultStatus();
+		try{
+			String message = "Thanks for Registering";
+		    smsCountrySmsService.sendSms(message, true, userId, IConstants.Cadre_Management, mobileNo);
+			rs.setResultCode(ResultCodeMapper.SUCCESS);
+		}
+		catch(Exception e)
+		{
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+			log.error("Exception Occured in sendMessageToOnlineCadre()");
+		}
+		return rs;
+	}
 	public Cadre saveCadreInTransaction (final CadreInfo cadreInfo,final String task) 
 	{
 		Cadre cadreObj = (Cadre) transactionTemplate.execute(new TransactionCallback() {
