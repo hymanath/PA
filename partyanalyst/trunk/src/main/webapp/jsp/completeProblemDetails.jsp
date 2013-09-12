@@ -2574,7 +2574,6 @@ rateWiseCountOfAProblem();
 </s:if>
 </s:if>
 
-}
 
 
 </script>
