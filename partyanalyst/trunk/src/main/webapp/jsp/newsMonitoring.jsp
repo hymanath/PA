@@ -257,11 +257,11 @@ span {
  
  </div>
  <div class="rightdiv">
- <div class="span4 btn btn-primary">
-	<a class="btn btn-primary">
+ <div class="span4 btn btn-primary" style="cursor: default;">
+	<a class="btn btn-primary"  style="cursor: default;">
 	   <h5>Get Started Now!! </h5>
   Our qualified team will be happy to answer all your questions about News Monitoring Service and Other Services. 
-  <h4>Email us : info@partyanalyst.com  <br>Please call us : +91 9246827788<br/>+91 9246837788  </h4>
+  <h4>Email us : info@partyanalyst.com  <br><br/>Please call us :<br/> +91 9246827788<br/>+91 9246837788  </h4>
     </a>
 	</div>
  <div class="span4" style="margin-top:35px;width:252px;">
@@ -291,7 +291,7 @@ span {
  
  <div class="sevices-rights breadcrumb">
  <div class="span3" >
-	<a class="btn btn-primary" style="margin-top:28px;">
+	<a class="btn btn-primary" style="margin-top:28px;cursor: default;">
 	   <h5>Get Started Now!! </h5>
   Our qualified team will be happy to answer all your questions about News Monitoring Service and Other Services. 
   <h4>Email us : info@partyanalyst.com  <br><br>Please call us : <br>+91 9246827788<br>+91 9246837788  </h4>

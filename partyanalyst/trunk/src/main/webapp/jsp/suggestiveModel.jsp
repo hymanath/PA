@@ -2802,7 +2802,7 @@ var count=0;
 		
 			$('#ajaxLoaderImg').css('display','none');
 			$("#dashBoardImgLoading").hide();
-			if(uploadResult != null && uploadResult.length > 0){
+		/*	if(uploadResult != null && uploadResult.length > 0){
 								if(uploadResult[0].ageRange == '60> & <120'){
 									uploadResult[0].ageRange = "ABOVE 60";
 								}
@@ -2810,7 +2810,7 @@ var count=0;
 									uploadResult[0].ageRange = "18 TO 22";
 								}
 								
-							}
+							}*/
 			buildAgeGroupWiseTable(uploadResult,jsObj);
 		
 		}
@@ -2956,7 +2956,7 @@ var count=0;
 		area=" Booth"
 	}
 	
-	$('#title'+tableId).html('<h4>'+area+' Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
+	$('#title'+tableId).html('<h4> ${constituencyName} Constituency '+area+' Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
 	
 	var allSlctedCastes=[];
 	for(var i in result.panchayatList[0].allSelectedCastes){
