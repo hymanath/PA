@@ -90,7 +90,7 @@ function createNumberCoulmnChart()
 	data.addColumn('string', 'Year');
 	data.addColumn('number', 'Seats Participated');
 	data.addColumn('number', 'Seats Won');
-	data.addColumn('number', 'Seats Won%');
+	data.addColumn('number', 'Votes gain%');
 	var length = 0;
 	<c:forEach var="partyResultInfoVO" items="${partyResultInfoVOs}" >	
 	length++;
