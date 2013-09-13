@@ -560,8 +560,14 @@ public class CandidateBoothResultDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(value[0].toString()+" "+value[1].toString());
 	}*/
 	
-	public void testGetConstituencyTotalVotes()
+/*	public void testGetConstituencyTotalVotes()
 	{
 	  System.out.println(candidateBoothResultDAO.getConstituencyTotalVotes(232l, 38l));
+	}*/
+	
+	public void testgetParticipatedPartiesInConstituency(){
+		List<Object[]> results = candidateBoothResultDAO.getParticipatedPartiesInConstituency(221l);
+		for(Object[] params:results)
+			 System.out.println(params[0]+":"+params[1]);
 	}
 }
