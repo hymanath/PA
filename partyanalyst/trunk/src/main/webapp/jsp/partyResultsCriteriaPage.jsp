@@ -557,7 +557,7 @@ table.PartyResultsReportInputSelection {
 		function setElectionType(electionType){
 			document.getElementById("selectedElectionTypeName").value=electionType;	
 		}
-		window.history.forward(1);
+		//window.history.forward(1);
   </script>
 </head>
 <body>
