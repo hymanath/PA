@@ -337,11 +337,11 @@ function getPartyDetails(mandalId){
 	}
 	var jsObj = 
 	{
-	mandalId : mandalId.slice(1),
+	mandalId : mandalId,
 	task:"getPartyDetails"
 	}	
 	var param = "task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getPartyForSuggestiveAction.action?"+param;
+	var url = "getParticipatedPartyForSuggestiveAction.action?"+param;
 	callAjax(param,jsObj,url);
 
 }
@@ -696,11 +696,11 @@ function populatePartiesDropdown(results)
 		opElmt.value='0';
 		opElmt.text='Select Party';
 		addOptions(partySelectEl,opElmt);
-	for(var i in results)
+	for(var i in results.partiesInMandal)
 	{
 		var opElmt=document.createElement('option');
-		opElmt.value=results[i].id;
-		opElmt.text=results[i].name;
+		opElmt.value=results.partiesInMandal[i].id;
+		opElmt.text=results.partiesInMandal[i].name;
 		addOptions(partySelectEl,opElmt);	
 	}	
 }
