@@ -371,7 +371,9 @@ $("#pageUpBtn").live("click",function(){
     var ColType1="";
   var ColType="";
   function getVotersInfo(){
-	
+	//var btnId = document.getElementById("searchbtnId");
+	//disableButton('searchbtnId');
+	document.getElementById("searchbtnId").disabled  = true;
   var id7 = $("#mandalField").val();
 	       	 if(id7!=null){    
 				if(type !=  "ward" && id7.charAt(0) !="1"){
@@ -640,12 +642,16 @@ $("#pageUpBtn").live("click",function(){
 	
 	}else{
 	  $("#errorMsgAlert").html(str);
+	  //enableButton('searchbtnId');
+	  document.getElementById("searchbtnId").disabled  = false;
 	}
   }
   function showNewsDetails(){
   }
   function buildVotersByLocBoothDataTable(locationLvl,lId,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno,constituencyId,mandalId)
-	{var x = 1;
+	{
+		
+		var x = 1;
 	RlocationLvl=locationLvl;RlId=lId;RpublicationDateId=publicationDateId;RvoterCardId=voterCardId;RvoterName=voterName;RvoterNameType=voterNameType;RguardianName=guardianName;Rgender=gender;RstartAge=startAge;RendAge=endAge;Rreqfields=reqfields;RreqfieldsArr=reqfieldsArr;RQueryType=queryType;RHouseNo=houseNo;RfromSno=fromSno;RtoSno=toSno;
 	
 	RconstituencyId = constituencyId;
@@ -883,8 +889,12 @@ $("#pageUpBtn").live("click",function(){
 		}
 		var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersBySearchTabContentDiv_body",
 		votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+		
          $("#votersBySearchTabContentDiv_body").show();
+		
+		  
 		votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+		
 		oPayload.totalRecords = oResponse.meta.totalRecords;
 		totalReq = oResponse.meta.totalRecords;
 		if(totalReq == null)
@@ -914,7 +924,7 @@ $("#pageUpBtn").live("click",function(){
 			$("#topCount").html("<b>Total Voters: "+totalReq+"</b>");
 			$("#bottomCount").html("<b>Total Voters: "+totalReq+"</b>");
 		}
-        
+         document.getElementById("searchbtnId").disabled  = false;
 		return oPayload;
 		}
 
@@ -923,7 +933,9 @@ $("#pageUpBtn").live("click",function(){
 		oDS: votersByLocBoothDataSource,
 		oDT: votersByLocBoothDataTable
 		};
+		
     }
+
 	function selectAllCheckBoxesForEdit(){
 	 selectedVotersArr = new Array();
 	 $(".familyMemberCheck").each(function() {
@@ -3105,7 +3117,7 @@ function showAlert()
 	   
 	   </table>
 	  </div>
-	  <input style="margin-left:240px;margin-bottom:10px;" onclick="getVotersInfo();" class="btn btn-success" type="button" value="Search"/>
+	  <input style="margin-left:240px;margin-bottom:10px;" onclick="getVotersInfo();" class="btn btn-success" type="button" id="searchbtnId" value="Search"/>
 
 	  <div id="noteDiv" style="float: right;"></div>
 	   </fieldset>
@@ -3525,7 +3537,17 @@ function getWardsForMuncipality()
 		callAjax(jsObj,url);
   
 }
+	function enableButton(id)
+{
 
+	document.getElementById(id).disabled  = false;
+}
+
+function disableButton(id)
+{
+	
+	document.getElementById(id).disabled  = true;
+}
 
 </script>
 <!--CHANGE BY SAMBA END-->
