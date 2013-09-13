@@ -220,7 +220,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 			<a href="#" class="parent"><span>ANALYSIS</span></a>
             <div  style="z-index:1;text-align:left;">
 			<ul>
-                <li><a href="#" class="parent">
+                <li><a onmousedown="return false;" class="parent">
 					<span>Election Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
@@ -235,7 +235,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 						</div>
                 </li>
                 <li>
-					<a href="#" class="parent"><span>Politician Analysis</span></a>
+					<a onmousedown="return false;" class="parent"><span>Politician Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
 								<li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
@@ -245,7 +245,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 						</div>
                 </li>
 				
-				<li><a href="#" class="parent"><span>Live Results Analysis</span></a>
+				<li><a onmousedown="return false;" class="parent"><span>Live Results Analysis</span></a>
 					<div  style="z-index:1;text-align:left;">
 						<ul>
 							<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>
@@ -263,10 +263,10 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 		<li><a href="initailConstituencyManagementAction.action" class="parent"><span>CONSTITUENCY</span></a>
             <div  style="z-index:1;text-align:left;">
 				<ul>
-					<li><a href="#" class="parent"><span>Problem Management</span></a>
+					<li><a onmousedown="return false;" class="parent"><span>Problem Management</span></a>
 						<div>
 							<ul>
-								<li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
+								<li><a   onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
 								<li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
 								<li><a href="completeProblemDetailsSearchAction.action"><span>Problem Search And Report</span></a></li>
 							</ul>

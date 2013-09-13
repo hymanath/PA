@@ -200,7 +200,7 @@ a.tdp-text-error:hover {
 			<a href="#" class="parent"><span>ANALYSIS</span></a>
             <div  style="z-index:1;text-align:left;">
 			<ul>
-                <li><a href="#" class="parent">
+                <li><a onmousedown="return false;" class="parent">
 					<span>Election Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
@@ -216,7 +216,7 @@ a.tdp-text-error:hover {
 						</div>
                 </li>
                 <li>
-					<a href="#" class="parent"><span>Politician Analysis</span></a>
+					<a onmousedown="return false;" class="parent"><span>Politician Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
 								<li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
@@ -235,7 +235,7 @@ a.tdp-text-error:hover {
 		<li id="mangntId"><a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
             <div  style="z-index:1;text-align:left;">
 				<ul>
-					<li><a href="#" class="parent"><span>Problem Management</span></a>
+					<li><a onmousedown="return false;" class="parent"><span>Problem Management</span></a>
 						<div>
 							<ul>
 								<li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>

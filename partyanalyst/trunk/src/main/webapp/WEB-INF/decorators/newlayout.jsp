@@ -280,7 +280,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
        	<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}"> 
          <li><a id="analysisId" href="#" class="parent"><span id="analysisSpanId">ANALYSIS</span></a>
             <div  style="z-index:1;text-align:left;"><ul>
-                <li><a href="#" class="parent"><span>Election Analysis</span></a>
+                <li><a onmousedown="return false;" class="parent"><span>Election Analysis</span></a>
                     <div  style="z-index:1;text-align:left;"><ul>
                         <li><a href="partyPerformanceMain.action"><span>Party Performance Report</span></a></li>
                         <li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
@@ -291,14 +291,14 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
 						<li><a href="partyStrengthAction.action"><span>Party Strengths/Weakness</span></a></li>
 					 </ul></div>
                 </li>
-                <li><a href="#" class="parent"><span>Politician Analysis</span></a>
+                <li><a onmousedown="return false;" class="parent"><span>Politician Analysis</span></a>
                     <div  style="z-index:1;text-align:left;"><ul>
                         <li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
                         <li><a href="crossVotingReportInputAction.action"><span>Cross Voting Report</span></a></li>
 						 <li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
                     </ul></div>
                 </li>
-				<li><a href="#" class="parent"><span>Live Results Analysis</span></a>
+				<li><a onmousedown="return false;" class="parent"><span>Live Results Analysis</span></a>
 					<div  style="z-index:1;text-align:left;"><ul>
 						<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>
 						<li><a href="ministerAnalysisAction.action"><span>Ministers & Special Candidates Analysis</span></a></li>
@@ -311,7 +311,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
              </ul></div>
          <li><a id="constituencyId" href="initailConstituencyManagementAction.action" class="parent"><span id="constituencySpanId">CONSTITUENCY</span></a>
             <div  style="z-index:1;text-align:left;"><ul>
-                <li><a href="#" class="parent"><span>Problem Management</span></a>
+                <li><a onmousedown="return false;" class="parent"><span>Problem Management</span></a>
                     <div><ul>
                         <li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
                         <li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
