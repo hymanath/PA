@@ -1987,7 +1987,9 @@ input, button, select, textarea {
 		<tr class="tableRow" id="selLevelId">
 		<td><div id="multiSelectLevelsHeading" ></div></td>
 		<td><div id="multiSelectLevelsValues" style="margin-bottom:15px;"></div></td>
-		<td id="selectAndUnselectmandal" style="display:none;"><input type="radio" name="selectAndUnselectmandal" onclick="selectAllMandals();" id="selectAllMandals"/><b>Select All</b><input type="radio" name="selectAndUnselectmandal"  onclick="unSelectAllMandal();"  id="unSelectAllMandal"/><b>UnSelect All</b></td>
+		<td id="selectAndUnselectmandal" style="display:none;padding-top: 20px;">
+		<input type="button" class="btn btn-info" name="selectAndUnselectmandal" onclick="selectAllMandals();" id="selectAllMandals" value="Select All"/>
+		<input type="button" class="btn btn-info" name="selectAndUnselectmandal"  onclick="unSelectAllMandal();"  id="unSelectAllMandal"value="UnSelect All"/></td>
 		</tr>
 		
 		<tr id="selReqFileldId" class="tableRow" style="display:none;">
@@ -1998,7 +2000,9 @@ input, button, select, textarea {
 		<tr id="selUserCatgId" class="tableRow">
 		<td><div id="userSelCatgListHeading" ></div></td>
 		<td><div id="userSelCatgListValue" style="margin-bottom:15px;" ></div></td>
-		<td id="selectAndUnselectCastes" style="display:none;"><input type="radio" name="selectAndUnselectCastes" onclick="selectAllCastes();" id="selectAllCastes"/><b>Select All</b><input type="radio" name="selectAndUnselectCastes"  onclick="unSelectAllCastes();"  id="unSelectAllCastes"/><b>UnSelect All</b></td>
+		<td id="selectAndUnselectCastes" style="display:none;padding-bottom: 20px;">
+		<input type="button" class="btn btn-info" name="selectAndUnselectCastes" onclick="selectAllCastes();" id="selectAllCastes" value="Select All"/>
+		<input type="button" class="btn btn-info" name="selectAndUnselectCastes"  onclick="unSelectAllCastes();"  id="unSelectAllCastes" value="UnSelect All"/></td>
 		</tr>
 		
 		</table>
