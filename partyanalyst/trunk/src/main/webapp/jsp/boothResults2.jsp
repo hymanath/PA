@@ -259,7 +259,7 @@ a, .reg-form li a:hover, a.change:hover {
 			<div class="boothResultHeadingDiv" style="margin-left:80px;">Party Votes Percentage vs Polling Percentage</div><br>
 			<table id="boothResultsTableId">
 				<tr> 	 	
-			       <th>Polling % Range</th>
+			       <th>Party Votes % Range</th>
 				   <th>Total No of Booths</th>
 				   <th>Polling %</th>
 				 </tr>
