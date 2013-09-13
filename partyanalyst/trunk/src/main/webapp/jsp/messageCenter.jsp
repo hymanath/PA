@@ -1630,7 +1630,7 @@ function ajaxToSendVoiceSms(){
 		  var uploadHandler = {
 			success: function(o) {
 				var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
-			          if(myResults == "Successfully Sent..")
+			          if(uploadResult == "Successfully Sent..")
 						{
 							selectedVotersDetails = {};
 
