@@ -1991,6 +1991,7 @@ var queryString='';
         
         
         <!--VIEW YOUR PROBLEMS SECTION END-->
+		<c:if test="${!empty mandals}">
 		<div class="connect-people-sec" style="padding-top:1px;width:311px;margin-left: 22px;">
 			<div class="cp-title-sec" style="border-radius: 3px 3px 0 0;margin-top:0px;">
                 <h1 class="cp-title">Know Your Mandals/Tehsils</h1>
@@ -2014,7 +2015,7 @@ var queryString='';
 				</div>			
 
 				 </div>
-
+			</c:if>
     </div>
 				
 
