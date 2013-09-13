@@ -3082,6 +3082,8 @@ var count=0;
 	
 	
 	function createBoothsTable(result,tableId){
+	  if(!(result.boothsList != null &&  result.boothsList.length > 0))
+				return;
 	mncplName=result.boothsList[0].muncipalityName;
 	$('#title'+tableId).css('display','block');
 	$('.title'+tableId+"Cls").addClass('widget').addClass('blue');
