@@ -2299,8 +2299,8 @@ function populateConstituenyes(myresults)
 	getCandidateCastes($('#sugYoungconstituencyId option:selected').val(),"candidateCastes1");
 	getCandidateCastes($('#sugOldTarconstituencyId option:selected').val(),"candidateCastes2");
 	$("#sugTarconstituencyId option[value=0]").remove();
-	$("#sugYoungconstituencyId option[value=0]").remove();
-	$("#sugOldTarconstituencyId option[value=0]").remove();
+	//$("#sugYoungconstituencyId option[value=0]").remove();
+	//$("#sugOldTarconstituencyId option[value=0]").remove();
 	
 }
 function checkForUserStatus()
