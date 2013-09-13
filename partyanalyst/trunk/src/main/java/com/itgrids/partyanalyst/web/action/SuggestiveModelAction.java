@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ExceptCastsVO;
+import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyImpactVO;
@@ -73,8 +74,17 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private Long toAge;
 	private String constituencyName;
 	private List<VoterDataVO> mandalPanchayatList;
+	private MandalVO paricipatedPartyList;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
+	public MandalVO getParicipatedPartyList() {
+		return paricipatedPartyList;
+	}
+
+	public void setParicipaytedPartyList(MandalVO paricipatedPartyList) {
+		this.paricipatedPartyList = paricipatedPartyList;
+	}
+
 	public List<BasicVO> getHamletDetails() {
 		return hamletDetails;
 	}
@@ -808,6 +818,18 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			{
 			e.printStackTrace();	
 			}
+			return Action.SUCCESS;
+		}
+		
+		public String getPartipatedPartyDetailsInAConstituency(){
+			try{
+				jObj = new JSONObject(getTask());
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			Long constituencyId= jObj.getLong("mandalId");
+			//partyList = suggestiveModelService.getPartyDetailsByMandal(tehsilId);
+			paricipatedPartyList = staticDataService.getElectionYearsAndPartiesForSelectedConstituency(constituencyId);
 			return Action.SUCCESS;
 		}
 }
