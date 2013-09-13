@@ -6017,6 +6017,11 @@
 		      <param name="root">userBlockedRequestsList</param>
 		  </result>
 		 </action>
-
+		 
+		<action name="getParticipatedPartyForSuggestiveAction" class="suggestiveModelAction" method="getPartipatedPartyDetailsInAConstituency">
+		 <result type="json" name="success">
+		  <param name="root">paricipatedPartyList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
