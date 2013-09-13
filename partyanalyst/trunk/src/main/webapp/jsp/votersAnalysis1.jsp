@@ -1091,6 +1091,7 @@ color:#2A4F97;
 	#castPopupShowBtn{margin-right: 3px;}
 	#customGroupAgeLink{margin-right: 10px;}
 	.middleNav{width:223px;}
+	#customGroupsDiv,#voterGroupsDiv,.middleNav,#forHide{display:table;}
 </style>
 
 </SCRIPT>
