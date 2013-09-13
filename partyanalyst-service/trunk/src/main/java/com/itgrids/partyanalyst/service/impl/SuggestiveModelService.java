@@ -4717,6 +4717,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 Map<Long,String> panchayatMap = new HashMap<Long, String>();
 				 Map<Long,Long> addedVotersMap = new HashMap<Long, Long>();
 				 List<Long> electionIdsList = new ArrayList<Long>();
+				 DecimalFormat decimalFormat = new DecimalFormat("#.##");
 				 try{
 					 electionIdsList.add(electionId);
 					 electionIdsList.add(electionId1);
@@ -4843,8 +4844,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						 }
 						 }
 					
-					 mainVo.setPartyPercentage(partyPerInConstituency);
-					 mainVo.setPollingPercentage(pollingPerForConstituency);
+					 mainVo.setPartyPercentage(Double.valueOf(decimalFormat.format(partyPerInConstituency)));
+					 mainVo.setPollingPercentage(Double.valueOf(decimalFormat.format(pollingPerForConstituency)));
 					 if(PollingHighboothResultList != null && PollingHighboothResultList.size() >0)
 					 mainVo.setStrongPollingPercentVOList(PollingHighboothResultList);
 					 if(PollingLowboothResultList != null && PollingLowboothResultList.size() > 0)
