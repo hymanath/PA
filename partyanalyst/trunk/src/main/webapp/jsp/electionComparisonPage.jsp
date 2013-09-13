@@ -346,7 +346,7 @@ var yearsPopulation={
 		   {
 			window.location.reload(true);
 		    }
-		window.history.forward(1);	
+		//window.history.forward(1);	
 </script>
 </head>
 <body onload = "refresh()">
