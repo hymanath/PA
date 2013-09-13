@@ -619,13 +619,14 @@ function callAjax(param,jsObj,url){
 							$('#ajaxLoaderImg').css('display','none');
 							$("#dashBoardImgLoading").hide();
 							if(myResults != null && myResults.length > 0){
-								if(myResults[0].ageRange == '60> & <120'){
-									myResults[0].ageRange = "ABOVE 60";
-								}
-								if(myResults[0].ageRange == '18> & <22'){
-									myResults[0].ageRange = "18 TO 22";
-								}
-								
+								for(var i in myResults){
+									if(myResults[i].ageRange == '60> & <120'){
+										myResults[i].ageRange = "ABOVE 60";
+									}
+									if(myResults[i].ageRange == '18> & <22'){
+										myResults[i].ageRange = "18 TO 22";
+									}
+							    }	
 							}
 							buildAgeGroupWiseTable(myResults,jsObj);
 						}
@@ -2179,67 +2180,67 @@ function showPartyPerformanceReport(result,jsObj)
 	
 	str +='</tr>';
 
-    var length = result[1].partyPositionVOList.length;
+    var length = result[0].partyPositionVOList.length;
     
 	
    for(var j=0;j<length;j++)
    {
 	  
-     var listSize1 = result[1].partyPositionVOList[j].partyPositionVOList.length;
+     var listSize1 = result[0].partyPositionVOList[j].partyPositionVOList.length;
 	
 		 
 	 var trFlag = false;
 	
-	 var strengthType = result[1].partyPositionVOList[j].name;
+	 var strengthType = result[0].partyPositionVOList[j].name;
      
 	
-    if(result[1].partyPositionVOList[j].partyPositionVOList.length == 0)
+    if(result[0].partyPositionVOList[j].partyPositionVOList.length == 0)
 	{
 		str +='<tr>';
-	    str +='<td style="background: none repeat scroll 0% 0% '+result[1].partyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
+	    str +='<td style="background: none repeat scroll 0% 0% '+result[0].partyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
 		str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
 		str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
 		str +='</tr>';
 
 	}
 
-	else if(result[1].partyPositionVOList[j].partyPositionVOList.length > 0)
+	else if(result[0].partyPositionVOList[j].partyPositionVOList.length > 0)
 	{
 	  str +='<tr>';
-	  str +='<td rowspan="'+listSize1+'" style="background: none repeat scroll 0% 0% '+result[1].partyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
+	  str +='<td rowspan="'+listSize1+'" style="background: none repeat scroll 0% 0% '+result[0].partyPositionVOList[j].tempVar+';font-weight:bold;">'+strengthType+'</td>';
 	   for(var r=0;r<listSize1;r++)
 	   {
-		  var panchayatId = result[1].partyPositionVOList[j].partyPositionVOList[r].id;
+		  var panchayatId = result[0].partyPositionVOList[j].partyPositionVOList[r].id;
 		  var inFlag = true;
 
 		   if(trFlag)
 			 str +='<tr>';
 
-				str +='<td>'+result[1].partyPositionVOList[j].partyPositionVOList[r].name+'</td>';
-				str +='<td>'+result[1].partyPositionVOList[j].partyPositionVOList[r].totalVoters+'</td>';
-				str +='<td>'+result[1].partyPositionVOList[j].partyPositionVOList[r].totalValidVotes+'</td>';
-				str +='<td>'+result[1].partyPositionVOList[j].partyPositionVOList[r].percentage+'</td>';
-				str +='<td><span style="background: none repeat scroll 0% 0% '+result[1].partyPositionVOList[j].tempVar+'" class="spanCls">'+result[1].partyPositionVOList[j].partyPositionVOList[r].margin+'</span></td>';
-				str +='<td>'+result[1].partyPositionVOList[j].partyPositionVOList[r].selectedPartyTotalVoters+'</td>';
-
-				for(var k=0;k<result[0].partyPositionVOList.length;k++)
+				
+				for(var k=0;k<result[1].partyPositionVOList.length;k++)
 				{
-					for(var m=0;m<result[0].partyPositionVOList[k].partyPositionVOList.length;m++)
+					for(var m=0;m<result[1].partyPositionVOList[k].partyPositionVOList.length;m++)
 					{
-					 if(result[0].partyPositionVOList[k].partyPositionVOList[m].id==panchayatId)
+					 if(result[1].partyPositionVOList[k].partyPositionVOList[m].id==panchayatId)
 					 {
 					    inFlag = false;
-					    str +='<td>'+result[0].partyPositionVOList[k].partyPositionVOList[m].name+'</td>';
-					    str +='<td>'+result[0].partyPositionVOList[k].partyPositionVOList[m].totalVoters+'</td>';
-						str +='<td>'+result[0].partyPositionVOList[k].partyPositionVOList[m].totalValidVotes+'</td>';
-						str +='<td>'+result[0].partyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
-						str +='<td><span style="background: none repeat scroll 0% 0% '+result[0].partyPositionVOList[k].tempVar+'" class="spanCls">'+result[0].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
-						str +='<td>'+result[0].partyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
+					    str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].name+'</td>';
+					    str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].totalVoters+'</td>';
+						str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].totalValidVotes+'</td>';
+						str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].percentage+'</td>';
+						str +='<td><span style="background: none repeat scroll 0% 0% '+result[1].partyPositionVOList[k].tempVar+'" class="spanCls">'+result[1].partyPositionVOList[k].partyPositionVOList[m].margin+'</span></td>';
+						str +='<td>'+result[1].partyPositionVOList[k].partyPositionVOList[m].selectedPartyTotalVoters+'</td>';
 					 }
 					}
 				}
 				if(inFlag)
-				 str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
+				    str +='<td></td><td></td><td></td><td></td><td></td><td></td>';
+				    str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[r].name+'</td>';
+					str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[r].totalVoters+'</td>';
+					str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[r].totalValidVotes+'</td>';
+					str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[r].percentage+'</td>';
+					str +='<td><span style="background: none repeat scroll 0% 0% '+result[0].partyPositionVOList[j].tempVar+'" class="spanCls">'+result[0].partyPositionVOList[j].partyPositionVOList[r].margin+'</span></td>';
+					str +='<td>'+result[0].partyPositionVOList[j].partyPositionVOList[r].selectedPartyTotalVoters+'</td>';
 
 				str +='</tr>';
 		  	     trFlag = true;
