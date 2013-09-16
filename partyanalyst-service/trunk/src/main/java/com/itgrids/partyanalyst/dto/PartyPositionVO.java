@@ -43,7 +43,22 @@ public class PartyPositionVO implements Serializable{
 	private Long toDecrease;
 	private Long toImprove;
 	private String constituencyType;
-
+    private String location;
+    private String villagesCovered;
+    
+   
+	public String getVillagesCovered() {
+		return villagesCovered;
+	}
+	public void setVillagesCovered(String villagesCovered) {
+		this.villagesCovered = villagesCovered;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	public Long getToDecrease() {
 		return toDecrease;
 	}
