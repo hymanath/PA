@@ -1425,6 +1425,7 @@ function getSelectElmtForLocalBody(localBodyId)
 	homePageAjaxCall(rparam,jsObj,url);	
 }
 
+var specific = false; /* updated by srishailam (specific used in .js) */
 function buildLocalBodiesSelectElmt(jsObj,results)
 {
 	var labelElmt = document.getElementById("localBodiesSelectDiv_label");
@@ -1444,6 +1445,11 @@ function buildLocalBodiesSelectElmt(jsObj,results)
 
 	clearOptionsListForSelectElmtId("localBodySelectElmt");
 	createOptionsForSelectElmtIdWithSelectOption("localBodySelectElmt",results);
+
+	$('#localBodySelectElmt option:eq(0)').remove();	
+	$("#localBodySelectElmt option:first").before('<option value="0">Select Location </option>');
+	$('#localBodySelectElmt').val(0);
+	
 }
 
 function buildLocalBodiesForAState(jsObj,results)
