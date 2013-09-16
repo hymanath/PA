@@ -4713,7 +4713,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 List<PartyPositionVO> result = new ArrayList<PartyPositionVO>();
 				 List<Object[]> totalVotesForBooth = null;
 				 List<Object[]> totalPolledVotesForBooth = null;
-				 Map<Long,Long> totalVotersMap = new HashMap<Long, Long>();
+				 Map<Long,Object[]> totalVotersMap = new HashMap<Long, Object[]>();
 				 Map<Long,String> panchayatMap = new HashMap<Long, String>();
 				 Map<Long,Long> addedVotersMap = new HashMap<Long, Long>();
 				 List<Long> electionIdsList = new ArrayList<Long>();
@@ -4744,7 +4744,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 if(totalVotersInBooth != null && totalVotersInBooth.size() > 0)
 					 {
 						 for(Object[] params : totalVotersInBooth)
-						 totalVotersMap.put((Long)params[0],(Long)params[1]);
+						 {
+							
+						 totalVotersMap.put((Long)params[0],params);
+						 }
 					 }
 					 if(addedVotersCount != null && addedVotersCount.size() > 0)
 					 {
@@ -4812,7 +4815,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						}
 						
 						 partyPositionVO.setTotalValidVotes(totalValidVotes);
-						 partyPositionVO.setTotalVoters(totalVotersMap.get(boothId));
+						 Object[] params1 = totalVotersMap.get(boothId);
+						
+						 partyPositionVO.setTotalVoters((Long)params1[1]);
+						 partyPositionVO.setLocation(params1[2].toString());
+						 partyPositionVO.setVillagesCovered(params1[3].toString());
 						 partyPositionVO.setPollingPercentage((partyPositionVO.getTotalValidVotes() * 100.0 )/ partyPositionVO.getTotalVoters());
 						 partyPositionVO.setRangePercentage((long)(pollingPerForConstituency * partyPositionVO.getTotalVoters())/100 );
 						
