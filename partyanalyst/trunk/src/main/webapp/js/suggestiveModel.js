@@ -221,9 +221,11 @@ str+='<div class="widget green">';
 str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
 str+='<span>'+strongList[0].weakPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
 str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling High,' +strongList[0].weakPollingPercentVOList[0].partyName+' Party Weak</h4>';
-str+='<table id="pollingPerHigh"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+str+='<div style="overflow-x:scroll;"><table id="pollingPerHigh"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
 str+='<th>Booth</th>';
 str+='<th>Panchayat</th>';
+str+='<th>Location</th>';
+str+='<th>Villages Covered</th>';
 str+='<th>'+strongList[0].weakPollingPercentVOList[0].partyName+' </th>';
 str+='<th>Total Votes</th>';
 str+='<th>Polled Votes</th>';
@@ -240,6 +242,14 @@ if(strongList[i].localbodyName !="")
 str+='<td>'+strongList[i].localbodyName+'</td>';
 else
 str+='<td>-</td>';
+if(strongList[i].location !="")
+str+='<td>'+strongList[i].location+'</td>';
+else
+str+='<td>-</td>';
+if(strongList[i].villagesCovered !="")
+str+='<td>'+strongList[i].villagesCovered+'</td>';
+else
+str+='<td>-</td>';
 str+='<td>'+strongList[i].weakPollingPercentVOList[0].partyTotalvotes+'</td>';
 str+='<td>'+strongList[i].totalVoters+'</td>';
 str+='<td>'+strongList[i].totalValidVotes+'</td>';
@@ -250,7 +260,7 @@ str+='<td>'+strongList[i].rangePercentage+'</td>';
 str+='<td>'+strongList[i].lostSeats+'</td>';
 str+='</tr>';
 	}
-str+='</table>';
+str+='</table></div>';
 str+='</div>';
 divEle.innerHTML = str;
 buildAddedVotersCountForBooth(result);
@@ -268,9 +278,11 @@ str+='<div class="widget green">';
 str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
 str+='<span>'+weakList[0].strongPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
 str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling Low,' +weakList[0].strongPollingPercentVOList[0].partyName+' Party Strong</h4>';
-str+='<table id="pollingPerLow"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+str+='<div style="overflow-x:scroll;"><table id="pollingPerLow"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
 str+='<th>Booth</th>';
 str+='<th>Panchayat</th>';
+str+='<th>Location</th>';
+str+='<th>Villages Covered</th>';
 str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+'</th>';
 str+='<th>Total Votes</th>';
 str+='<th>Polled Votes</th>';
@@ -288,6 +300,14 @@ if(weakList[i].localbodyName !="")
 str+='<td>'+weakList[i].localbodyName+'</td>';
 else
 	str+='<td>-</td>';
+if(weakList[i].location !="")
+str+='<td>'+weakList[i].location+'</td>';
+else
+str+='<td>-</td>';
+if(weakList[i].villagesCovered !="")
+str+='<td>'+weakList[i].villagesCovered+'</td>';
+else
+str+='<td>-</td>';
 str+='<td>'+weakList[0].strongPollingPercentVOList[0].partyTotalvotes+'</td>';
 str+='<td>'+weakList[i].totalVoters+'</td>';
 str+='<td>'+weakList[i].totalValidVotes+'</td>';
@@ -299,7 +319,7 @@ str+='<td>'+weakList[i].toTarget+'</td>';
 str+='<td>'+weakList[i].toImprove+'</td>';
 str+='</tr>';
 	}
-str+='</table>';
+str+='</table></div>';
 str+='</div>';
 divEle.innerHTML = str;
 
