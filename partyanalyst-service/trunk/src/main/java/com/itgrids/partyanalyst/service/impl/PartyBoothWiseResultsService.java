@@ -1222,9 +1222,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				for(int i=0; i<temp.size(); i++){
 					Object[] obj = (Object[]) temp.get(i);
 					Long presentPartyVotes = new Long(obj[4].toString()).longValue();
-					if(partyID.equals(obj[5]) || presentPartyVotes > 0)
-					{
-						StringBuilder name = new StringBuilder();
+					StringBuilder name = new StringBuilder();
 						if(obj[0]!=null){
 							name.append(obj[0].toString()).append(" ");
 						}
@@ -1275,7 +1273,6 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 						}
 						count ++;
 							
-					}
 				}
 			
 			/* int i = getAlliancePartyInfo(temp, partyID);
@@ -1368,7 +1365,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				Object[] values = (Object[]) mptcInfo.get(i);
 				partyName = (String)values[0];
 				electionYear = (String)values[1];
-				totalVoters = (Double)values[2];
+				//totalVoters = (Double)values[2];
 				validVotes = (Double)values[3];
 				votesGainedByParty = (Double)values[4];
 				candidateName = (String)values[5];
