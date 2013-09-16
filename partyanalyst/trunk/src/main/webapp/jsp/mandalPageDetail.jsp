@@ -101,7 +101,7 @@ function buildMandalVoting(myResult)
 	
    $('#mandalVotingResultsDivGraph').html('');
    $('#mandalVotingResultsDivHead').html('');
-   $('#tempMsgDiv').html('');
+  
 	var result = myResult.mandalAllElectionDetailsVO;
 	
 	if(result == "")
@@ -155,7 +155,7 @@ function buildMandalVoting(myResult)
 	
 	if(elmtBody)
 		elmtBody.innerHTML=str;
-	$('#tempMsgDiv').html('<div><font Style="color:red;">*</font> Here we are considering alliances</div>');
+	
 
 	var result1 =  myResult.mandalAllElectionDetailsVO1;
 		buildColumnChart(result1);		
@@ -368,12 +368,14 @@ function getMandalVotingReport()
 
 	if(stateValue == "0" || districtValue == "0" || constituencyValue == "0" || mandalValue == "0" || partyValue == "0")
 		return;
+    var allianceVal = $('input:radio[name=alliance]:checked').val();
 	
 	$('#reportAjaxImg').show();
 	var jsObj={
 			state:stateValue,
 			district:districtValue,
 			constituency:constituencyValue,
+			allianceVal:allianceVal,
 			mandal:mandalValue,
 			party:partyValue,
 			task:"mandalVoting"
@@ -494,7 +496,7 @@ function buildConstituency(myResults)
 		{
 			padding:5px;
 			text-align:left;
-			margin-bottom: 6px;
+			margin-bottom: 20px;
 			margin-top: 5px;
 		}
 		#mandalVotingTable
@@ -547,7 +549,9 @@ function buildConstituency(myResults)
 			border-left:1px solid #8E9AAE;			
 		}
 		#mandalVotingResultsDivBody table{border:1px solid #cdcdcd;width:95%;}
-		#tempMsgDiv{margin-bottom: 30px;margin-left: 520px;}
+		
+		#includeAllianceId{margin-top: 0px;}
+		#withOutAllianceId{margin-top: 0px; margin-left: 10px;}
 	</style>
 
 </head>
@@ -601,6 +605,12 @@ function buildConstituency(myResults)
 							<s:select cssClass="mySelectBox" id="partyField" name="party" list="partyList" listKey="id" listValue="name" onchange="getMandalVotingReport()"></s:select>	<img  id="reportAjaxImg" class="ajaxImgClass" src='images/icons/search.gif' style="display:none;"></img>
 						</td>
 					</tr>
+				
+				<tr>
+				 <th align="left"><s:label for="districtField" id="districtLabel"  value="Include Alliances" /></th>
+				 <td><input type="radio" id="includeAllianceId" value="true" class="allianceCheckBox" name="alliance"/> Yes <input id="withOutAllianceId" checked="true" type="radio" value="false" class="allianceCheckBox"  name="alliance"/> No</td>
+				</tr>
+
 				</table>
 				</div>
 		</div>
@@ -617,10 +627,24 @@ function buildConstituency(myResults)
 		<div id="mandalVotingResultsDivHead"></div>
 		<div id="mandalVotingResultsDivGraph" style="minwidth:310px;height:400px;margin:0 auto;"></div>
 		<div id="mandalVotingResultsDivBody" class="yui-skin-sam"></div>
-		<div id="tempMsgDiv"></div>
+		
 	</div>
 	</div>
 	</div>
+
+<script>
+	$(document).ready(function(){
+		
+	$(".allianceCheckBox").click(function(){
+		
+     getMandalVotingReport();
+		
+	});
+
+		
+});
+</script>
+
 </body>
 
 </html>
