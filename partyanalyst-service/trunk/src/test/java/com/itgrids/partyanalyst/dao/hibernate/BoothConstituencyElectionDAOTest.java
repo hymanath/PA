@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
@@ -190,14 +191,14 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetBoothIdsByLocalEleBodyId()
+	/*public void testgetBoothIdsByLocalEleBodyId()
 	{
 		List<Long> boothIds = boothConstituencyElectionDAO.getBoothIdsByLocalEleBodyId(110l, 186l,298l);
 		System.out.println(boothIds.size());
 		if(boothIds != null && boothIds.size() > 0)
 		 for(Long id : boothIds)
 			 System.out.println(id);
-	}
+	}*/
 	
 	/*public void testgetBoothIdsByConstituencyId()
 	{
@@ -345,12 +346,35 @@ public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetBoothIdsByConstituencyIdAndEleId()
+	/*public void testgetBoothIdsByConstituencyIdAndEleId()
 	{
 		List<Object[]> boothIdsList = boothConstituencyElectionDAO.getBoothIdsByConstituencyIdAndEleId(186l, 298l);
 		System.out.println(boothIdsList.size());
 		for(Object[] params:boothIdsList)
 		 System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	/*public void testGetPartyVotesByMandalWithRankDetails()
+	{
+		List list = boothConstituencyElectionDAO.getPartyVotesByMandalWithRankDetails(1098L, "872", 3L);
+		System.out.println(list.size());
+		List<Object[]> list1 = (List<Object[]>)list;
+		for(Object[] params:list1)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+		
+	}*/
+	
+	
+	public void testgetAllElectionBoothVotersForMandal()
+	{
+		List list = boothConstituencyElectionDAO.getAllElectionBoothVotersForMandal(1098L);
+		System.out.println(list.size());
+		List<Object[]> list1 = (List<Object[]>)list;
+		for(Object[] params:list1)
+		{
+			Election election = (Election)params[0];
+		 System.out.println(election.getElectionId()+" "+election.getElectionYear());
+		}
 	}
 	
 }
