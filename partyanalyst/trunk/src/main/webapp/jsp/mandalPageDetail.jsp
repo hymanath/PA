@@ -98,8 +98,10 @@ function callAjax(jsObj,url,name){
 
 function buildMandalVoting(myResult)
 {
-
-
+	
+   $('#mandalVotingResultsDivGraph').html('');
+   $('#mandalVotingResultsDivHead').html('');
+   $('#tempMsgDiv').html('');
 	var result = myResult.mandalAllElectionDetailsVO;
 	
 	if(result == "")
@@ -153,6 +155,8 @@ function buildMandalVoting(myResult)
 	
 	if(elmtBody)
 		elmtBody.innerHTML=str;
+	$('#tempMsgDiv').html('<div><font Style="color:red;">*</font> Here we are considering alliances</div>');
+
 	var result1 =  myResult.mandalAllElectionDetailsVO1;
 		buildColumnChart(result1);		
 	buildMandalDataTable();
@@ -490,7 +494,7 @@ function buildConstituency(myResults)
 		{
 			padding:5px;
 			text-align:left;
-			margin-bottom: 20px;
+			margin-bottom: 6px;
 			margin-top: 5px;
 		}
 		#mandalVotingTable
@@ -543,6 +547,7 @@ function buildConstituency(myResults)
 			border-left:1px solid #8E9AAE;			
 		}
 		#mandalVotingResultsDivBody table{border:1px solid #cdcdcd;width:95%;}
+		#tempMsgDiv{margin-bottom: 30px;margin-left: 520px;}
 	</style>
 
 </head>
@@ -612,6 +617,7 @@ function buildConstituency(myResults)
 		<div id="mandalVotingResultsDivHead"></div>
 		<div id="mandalVotingResultsDivGraph" style="minwidth:310px;height:400px;margin:0 auto;"></div>
 		<div id="mandalVotingResultsDivBody" class="yui-skin-sam"></div>
+		<div id="tempMsgDiv"></div>
 	</div>
 	</div>
 	</div>
