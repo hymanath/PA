@@ -1157,7 +1157,12 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 	}
 	
 	public List getMandalAllElectionDetails(Long tehsilID, Long partyID, boolean allianceFlag){
+		
 		List<MandalAllElectionDetailsVO> mandalAllElectionDetails = new ArrayList<MandalAllElectionDetailsVO>();
+		try{
+		
+		List<MandalAllElectionDetailsVO> tempList = null;
+		
 		// 0 - election, 1 - totalvoters , 2 - validvotes, 3- rejectedvotes, 4-tenderedvotes
 		List result = boothConstituencyElectionDAO.getAllElectionBoothVotersForMandal(tehsilID);
 		
@@ -1212,7 +1217,68 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				iterator.remove();
 				continue;
 			}
-			int i = getAlliancePartyInfo(temp, partyID);
+			
+			Long count = 0L;
+				for(int i=0; i<temp.size(); i++){
+					Object[] obj = (Object[]) temp.get(i);
+					Long presentPartyVotes = new Long(obj[4].toString()).longValue();
+					if(partyID.equals(obj[5]) || presentPartyVotes > 0)
+					{
+						StringBuilder name = new StringBuilder();
+						if(obj[0]!=null){
+							name.append(obj[0].toString()).append(" ");
+						}
+						if(obj[1]!=null){
+							name.append(obj[1].toString()).append(" ");
+						}
+						if(obj[2]!=null){
+							name.append(obj[2].toString());
+						}
+						if(count==0L){
+							mandalAllElectionDetailsVO.setPartyShortName(obj[6].toString());
+							mandalAllElectionDetailsVO.setCandidateName(name.toString());
+							mandalAllElectionDetailsVO.setPartyId(new Long(obj[5].toString()));
+							Long totalPartyVotes = new Long(obj[4].toString());
+							String partyPercentage = calculateVotesPercengate(mandalAllElectionDetailsVO.getValidVoters(),totalPartyVotes);//getTotalVoters();
+							
+							mandalAllElectionDetailsVO.setTotalVotersEarned(totalPartyVotes);
+							mandalAllElectionDetailsVO.setRank(obj[7].toString());
+							
+							mandalAllElectionDetailsVO.setPartyVotesPercentage(partyPercentage);	
+							
+						}
+						else{
+							tempList = new ArrayList<MandalAllElectionDetailsVO>();
+							MandalAllElectionDetailsVO detailsVO = new MandalAllElectionDetailsVO();
+							detailsVO.setElectionYear(mandalAllElectionDetailsVO.getElectionYear());
+							detailsVO.setElectionType(mandalAllElectionDetailsVO.getElectionType());
+							detailsVO.setElectionTypeID(mandalAllElectionDetailsVO.getElectionTypeID());
+							detailsVO.setTotalVoters(mandalAllElectionDetailsVO.getTotalVoters());
+							detailsVO.setValidVoters(mandalAllElectionDetailsVO.getValidVoters());
+							detailsVO.setRejectedVoters(mandalAllElectionDetailsVO.getRejectedVoters());
+							detailsVO.setTenderedVoters(mandalAllElectionDetailsVO.getTenderedVoters());
+							detailsVO.setElectionScopeID(mandalAllElectionDetailsVO.getElectionScopeID());
+							detailsVO.setElectionID(mandalAllElectionDetailsVO.getElectionID());
+							detailsVO.setPartyShortName(obj[6].toString());
+							detailsVO.setCandidateName(name.toString());
+							detailsVO.setPartyId(new Long(obj[5].toString()));
+							Long totalPartyVotes = new Long(obj[4].toString());
+							String partyPercentage = calculateVotesPercengate(mandalAllElectionDetailsVO.getValidVoters(),totalPartyVotes);//getTotalVoters();
+							
+							detailsVO.setTotalVotersEarned(totalPartyVotes);
+							detailsVO.setRank(obj[7].toString());
+							
+							detailsVO.setPartyVotesPercentage(partyPercentage);
+							
+							tempList.add(detailsVO);
+							
+						}
+						count ++;
+							
+					}
+				}
+			
+			/* int i = getAlliancePartyInfo(temp, partyID);
 			
 			Object[] obj = (Object[]) temp.get(i);
 			StringBuilder name = new StringBuilder();
@@ -1234,12 +1300,22 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 			mandalAllElectionDetailsVO.setTotalVotersEarned(totalPartyVotes);
 			mandalAllElectionDetailsVO.setRank(obj[7].toString());
 			
-			mandalAllElectionDetailsVO.setPartyVotesPercentage(partyPercentage);
+			mandalAllElectionDetailsVO.setPartyVotesPercentage(partyPercentage);*/
+
 		}
+		
+		if(tempList != null && tempList.size() > 0)
+			mandalAllElectionDetails.addAll(tempList);
 		
 		getMPTCDetailsForMandal(tehsilID, partyID, mandalAllElectionDetails);
 		Collections.sort(mandalAllElectionDetails, new MandalVotingTrendsComparator());
 		return mandalAllElectionDetails;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getMandalAllElectionDetails() method, Exception - "+e);
+			return mandalAllElectionDetails;
+		}
 	}
 	/**
 	 * checking for rebels in the the List temp and sending the alliance party handler

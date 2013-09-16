@@ -78,7 +78,7 @@ public class BoothConstituencyElectionDAO extends GenericDaoHibernate<BoothConst
 		query.append(" where model.boothConstituencyElection.booth.tehsil.tehsilId =").append(tehsilID);    
 		query.append(" and model.boothConstituencyElection.constituencyElection.election.electionId=").append(electionID);
 		query.append(" and model.nomination.party.partyId in (").append(partyIDs);
-		query.append(") group by model.nomination.party.partyId");
+		query.append(") group by model.nomination.party.partyId,model.nomination.nominationId");
 		return getHibernateTemplate().find(query.toString());
 	}
 	
