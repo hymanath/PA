@@ -371,9 +371,8 @@ $("#pageUpBtn").live("click",function(){
     var ColType1="";
   var ColType="";
   function getVotersInfo(){
-	//var btnId = document.getElementById("searchbtnId");
-	//disableButton('searchbtnId');
-	document.getElementById("searchbtnId").disabled  = true;
+
+	//document.getElementById("searchbtnId").disabled  = true;
   var id7 = $("#mandalField").val();
 	       	 if(id7!=null){    
 				if(type !=  "ward" && id7.charAt(0) !="1"){
@@ -637,12 +636,12 @@ $("#pageUpBtn").live("click",function(){
 
 	if($("#reportLevel").val() == 5)
 	 mandalId = $("#mandalField").val();
+	 	document.getElementById("searchbtnId").disabled  = true;
 	buildVotersByLocBoothDataTable(type,id,publicationDateId,voterCardId,voterName,voterNameType,guardianName,gender,startAge,endAge,reqfields,reqfieldsArr,queryType,houseNo,fromSno,toSno,constituencyId,mandalId);
 	   //alert(reqfieldsArr);
 	
 	}else{
 	  $("#errorMsgAlert").html(str);
-	  //enableButton('searchbtnId');
 	  document.getElementById("searchbtnId").disabled  = false;
 	}
   }
@@ -924,7 +923,11 @@ $("#pageUpBtn").live("click",function(){
 			$("#topCount").html("<b>Total Voters: "+totalReq+"</b>");
 			$("#bottomCount").html("<b>Total Voters: "+totalReq+"</b>");
 		}
-         document.getElementById("searchbtnId").disabled  = false;
+
+		setTimeout(function(){
+			document.getElementById("searchbtnId").disabled  = false;	
+		},500);
+   
 		return oPayload;
 		}
 
