@@ -3218,20 +3218,20 @@ function buildFirstThreePhotoRecords(results)
 	  if(results[0].path!=null)
 	  {
 	   count++;
-	   str+='<li><img class="imageClass" alt="'+results[0].title+'" src="'+results[0].path+'" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')" title="'+results[0].gallaryDescription+'"/><br />';
+	   str+='<li style="cursor:default;"><img class="imageClass" alt="'+results[0].title+'" src="'+results[0].path+'" onclick="getCandidatesPhotosInAGallary(\''+results[0].gallaryId+'\')" title="'+results[0].gallaryDescription+'"/><br />';
 	  str+=''+results[0].title+'</li>';
 	 
 	  }
 	  if(results[1]!=null && results[1].path!=null)
 	  {
 	  count++;
-	  str+='<li><img class="imageClass" alt="'+results[1].title+'" src="'+results[1].path+'" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')" title="'+results[1].gallaryDescription+'"/><br />';
+	  str+='<li style="cursor:default;"><img class="imageClass" alt="'+results[1].title+'" src="'+results[1].path+'" onclick="getCandidatesPhotosInAGallary(\''+results[1].gallaryId+'\')" title="'+results[1].gallaryDescription+'"/><br />';
 	  str+=''+results[1].title+'</li>';
 	  }
 	  if(results[2]!=null  && results[2].path!=null)
 	  {
 	  count++;
-	  str+=' <li><img class="imageClass" alt="'+results[2].title+'" title="'+results[2].gallaryDescription+'" src="'+results[2].path+'"  onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
+	  str+=' <li style="cursor:default;"><img class="imageClass" alt="'+results[2].title+'" title="'+results[2].gallaryDescription+'" src="'+results[2].path+'"  onclick="getCandidatesPhotosInAGallary('+results[2].gallaryId+')"/><br />';
 	  str+=''+results[2].title+'</li>';
 	  
 	  }
@@ -3240,7 +3240,7 @@ function buildFirstThreePhotoRecords(results)
 	   if(results[i]!=null  && results[i].path!=null && count<3)
 	   {
 		count++;
-		str+='<li><img class="imageClass" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'" src="'+results[i].path+'"  onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
+		str+='<li style="cursor:default;"><img class="imageClass" alt="'+results[i].title+'" title="'+results[i].gallaryDescription+'" src="'+results[i].path+'"  onclick="getCandidatesPhotosInAGallary('+results[i].gallaryId+')"/><br />';
 	    str+=''+results[i].title+'</li>';
 	   }
 	  }
