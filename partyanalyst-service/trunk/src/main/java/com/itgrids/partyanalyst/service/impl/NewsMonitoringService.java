@@ -3122,4 +3122,170 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		return newsList;
 	}
 	
+	//for server side validation
+	public List<FileVO> getNewsForRegisterUsers2(FileVO inputs,String direction ,String columnName , Integer startIndex,Integer resultsCount){
+    log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
+     List<FileVO> fileVOList = new ArrayList<FileVO>();
+  	try{
+  		
+  		List<Long> contentIds = new ArrayList<Long>();
+  		Map<Long , Long> countMap = new HashMap<Long, Long>();
+  		Map<Long , Long> notesCountMap = new HashMap<Long, Long>();
+  		List<Object[]> countList = new ArrayList<Object[]>();
+  		List<Object[]> notesCountList = new ArrayList<Object[]>();
+  		
+  	 // List<Object[]> fileList1 = fileGallaryDAO.getNewsForRegisterUsers1(inputs);
+  		List<Long> fileCount = fileGallaryDAO.getNewsCountForRegisterUsers(inputs,columnName,direction);
+  	  List<Object[]> fileList = fileGallaryDAO.getNewsForRegisterUsers2(inputs,direction,columnName,startIndex,resultsCount);
+  	  
+  	  for(Object[] obj:fileList)	    		  
+  		  contentIds.add((Long)obj[0]);
+  	  
+  	  if(contentIds.size() >0)	    	  
+  	      countList= newsFlagDAO.getCountForFlagByFileGallaryId(contentIds);
+  	  
+  	  
+  	  //if(inputs.getCandidateId() != null){
+  	  
+  	  if(contentIds.size() > 0)
+  	        notesCountList =  contentNotesDAO.getContentNotesCountByContentIds(contentIds);
+  	    
+  	    for(Object[] obj:notesCountList)	    	    	
+  	    	notesCountMap.put((Long)obj[0], (Long)obj[1]);
+  	    	
+  	 // }
+  	  
+  	  
+  	  for(Object[] obj:countList)
+  		  countMap.put((Long)obj[0],(Long)obj[1]);	
+  		  
+  	  for(Object[] obj:fileList){
+  		  
+  		  File file = (File)obj[1];
+  		  FileVO  fileVO = new FileVO();
+  		  
+            if(fileVOList.size() == 0){
+          	  fileVO.setTotalFlaggedNews(countList.size());
+          	  fileVO.setTotalNotesNews(notesCountMap.size());
+            }
+  		  
+  		  if(countMap.get(((Long)obj[0]).longValue()) == null)
+  			  fileVO.setFlagSet("false");
+  		  else
+  			  fileVO.setFlagSet("true");
+  		  
+  		  if(notesCountMap.get((Long)obj[0]) != null){
+  			  
+  			  if(notesCountMap.get((Long)obj[0]).longValue() >0)
+  				  fileVO.setNotesExist("true");
+  			  else
+  				  fileVO.setNotesExist("false");
+  			  
+  		  }
+  		  
+  		  fileVO.setContentId((Long)obj[0]);
+  		  fileVO.setKeywords(file.getKeywords());
+  		  fileVO.setFileDate(file.getFileDate().toString());
+  		  
+  		  String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
+  		  fileVO.setFileDateAsString(dateString);
+  		  fileVO.setComments(file.getComment());
+  		  
+  		  fileVO.setDisplayImagePath(file.getFilePath());
+  		  fileVO.setVisibility(obj[2].toString());
+  		  
+  		  if(file.getRegionScopes() != null)
+  		    fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
+  		  
+  		  if(file.getLocationValue() != null)
+  		    fileVO.setLocationValue(file.getLocationValue().toString());
+  		  
+  		  fileVO.setFileId(file.getFileId());
+  		  fileVO.setName(file.getFileName());
+  		  fileVO.setPath(file.getFilePath());
+  		  fileVO.setFileTitle1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle()));
+  		  fileVO.setDescription(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()));
+  		  String fileDate = file.getFileDate().toString();
+  		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+  		  fileVO.setFileDate(dateObj!=null?dateObj:"");
+  		  fileVO.setFileGallaryId((Long)obj[3]);
+  		  fileVO.setGallaryName(obj[4].toString());
+  		  
+  		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+  		  List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(); 
+  		  Set<String> sourceSet = new HashSet<String>();
+			  Set<String> languageSet = new HashSet<String>();
+			 StringBuilder sourceVal =new StringBuilder();
+			 StringBuilder languageVal =new StringBuilder();
+				 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+					 if(inputs.getSourceId() == null && inputs.getLanguegeId() == null)
+					 {
+						  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+						  if(fileSourceLanguage.getSource() != null)
+						  sourceSet.add(fileSourceLanguage.getSource().getSource());
+						  if(fileSourceLanguage.getLanguage() != null)
+						  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+					 }
+					 else if(inputs.getLanguegeId() != null){
+						 if(inputs.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
+						 {
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
+							 if(fileSourceLanguage.getSource() != null)
+							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							 if(fileSourceLanguage.getLanguage() != null)
+							 languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+					 }
+					 else if(inputs.getSourceId() != null){
+						 if(inputs.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
+						 { 
+							 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
+							 if(fileSourceLanguage.getSource() != null)
+							 sourceSet.add(fileSourceLanguage.getSource().getSource());
+							 if(fileSourceLanguage.getLanguage() != null)
+							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
+						 }
+					 }
+					 
+				 }
+				 for(String source:sourceSet){
+					 sourceVal.append(source);
+					 sourceVal.append("-");
+				 }
+	             for(String language:languageSet){
+	            	 languageVal.append(language);
+	            	 languageVal.append("-");
+				 }
+	             if(sourceVal != null && sourceVal.length() > 0)
+	             sourceVal.deleteCharAt(sourceVal.length() - 1);
+	             if(languageVal != null && languageVal.length() > 0)
+	             languageVal.deleteCharAt(languageVal.length() - 1);
+			fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+			Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+			fileVO.setFileVOList(fileVOSourceLanguageList);
+			
+			
+  		  fileVO.setSource(sourceVal!=null?sourceVal.toString():"");
+  		  fileVO.setLanguage(languageVal!=null?languageVal.toString():"");
+  		  fileVO.setCategoryId(file.getCategory()!=null?file.getCategory().getCategoryId():null);
+  		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"N/A");
+  		  fileVO.setNewsImportanceId(file.getNewsImportance()!=null?file.getNewsImportance().getNewsImportanceId():null);
+  		  fileVO.setImportance(file.getNewsImportance()!=null?file.getNewsImportance().getImportance():"");
+  		  fileVO.setLocationScope(file.getRegionScopes()!=null?file.getRegionScopes().getRegionScopesId():null);
+  		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
+  		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
+  		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
+  		  if(file.getRegionScopes()!=null)
+  		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
+  		  
+  		  fileVOList.add(fileVO);
+  		fileVOList.get(0).setCount(Integer.parseInt(fileCount.get(0).toString()));
+  	  }
+  	}
+  	catch(Exception e){
+  		log.error("Exception rised in  getNewsForRegisterUsers Method of NewsMonitoringService", e);
+  		e.printStackTrace();
+  	}
+  	  return fileVOList;
+    }
 }
