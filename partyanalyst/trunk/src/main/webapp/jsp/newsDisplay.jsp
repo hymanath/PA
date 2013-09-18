@@ -221,10 +221,10 @@ width: 500px;
 }
 .newssources{
  background-color:#97DFEB;
- padding:8px 8px 8px 8px;
- margin-left:5px;
+ padding:6px;
+ margin-left:2px;
  border-radius: 5px 5px 5px 5px;
-
+ display:table;
 }
 .newsParts{
   
@@ -246,7 +246,7 @@ width: 500px;
 .close{opacity:1.5;}
   .close:hover{opacity:1.5;}
 #videogallery a{width:120px}
-
+#buildNewSources{display:table;}
 </style>
 <style>
 #showNews #showNewsCount table{
@@ -411,10 +411,10 @@ width: 618px;
 }
 .newssources{
  background-color:#97DFEB;
- padding:8px 8px 8px 8px;
- margin-left:5px;
+ padding:6px;
+ margin-left:2px;
  border-radius: 5px 5px 5px 5px;
-
+ display:table;
 }
 .newsParts{
   
