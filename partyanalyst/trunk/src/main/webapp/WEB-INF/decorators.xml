@@ -270,6 +270,7 @@
 		<pattern>/dashBoardAction*</pattern>
 		<pattern>/searchInfluencePeopleForSmsAction*</pattern>		
 		<pattern>/demoRequestAction*</pattern>
+		<pattern>/subUserRegPageAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
