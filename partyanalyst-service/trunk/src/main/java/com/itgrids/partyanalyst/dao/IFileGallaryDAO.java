@@ -242,6 +242,9 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{
 	public List<FileGallary> getNewsDetailsByForHamlets(NewsCountVO newsCountVO);
 	
 	public List<Object[]> getNewsForRegisterUsers2(FileVO fileVO,String direction , String columnName , Integer startIndex,Integer resultsCount);
+	
+  	public List<Long> getNewsCountForRegisterUsers(FileVO fileVO,String columnName , String direction);
+
 
 }
 
