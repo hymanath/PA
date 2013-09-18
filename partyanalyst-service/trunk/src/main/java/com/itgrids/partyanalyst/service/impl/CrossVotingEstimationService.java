@@ -672,6 +672,77 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		return options;
 	}
 	
+	
+	public List<SelectOptionVO> getUserAccessStateList(Long userId)
+	{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		try{
+			
+			List<Long> constituenciesIds = null;
+			
+			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			
+			List<SelectOptionVO> userAccessConstituenciesList = getConstituenciesForElectionYearAndTypeWithUserAccess(userId, electionYear, electionTypeId);
+			if(userAccessConstituenciesList != null && userAccessConstituenciesList.size() > 0)
+			{
+			  constituenciesIds = new ArrayList<Long>(0);
+			  for(SelectOptionVO optionVO:userAccessConstituenciesList)
+				  if(!constituenciesIds.contains(optionVO.getId()))
+				  constituenciesIds.add(optionVO.getId());
+			}
+			if(constituenciesIds != null && constituenciesIds.size() > 0)
+			{
+			 List<Object[]> list = constituencyDAO.getStateForSelectedConstituency(constituenciesIds);
+			 if(list != null && list.size() > 0)
+			 {
+			   for(Object[] params:list)
+				selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
+			 }
+			}
+			
+			return selectOptionVOList;	
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getUserAccessStateList() method, Exception - "+e);
+			return selectOptionVOList;
+		}
+	}
+	
+	public List<SelectOptionVO> getUserAccessElectionYears(Long electionTypeId,Long stateId,List<Long> constituencyIdsList)
+	{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+	 try{
+		List<Object[]> list = boothConstituencyElectionDAO.getElectionYearsByConstituencyIdsList(electionTypeId, stateId, constituencyIdsList);
+		 if(list != null && list.size() > 0)
+			for(Object[] params:list)
+			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
+		 
+	  return selectOptionVOList;
+	 }catch (Exception e) {
+      e.printStackTrace();
+      log.error("Exception Occured in getUserAccessElectionYears() method, Exception - "+e);
+      return selectOptionVOList;
+	 }
+	}
+	
+	public List<SelectOptionVO> getConstituencyListByConstituenciesIds(Long electionId,List<Long> constituencyIdsList)
+	{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		try{
+			List<Object[]> list = boothConstituencyElectionDAO.getConstituencyListByElectionId(electionId, constituencyIdsList);
+			if(list != null && list.size() > 0)
+			 for(Object[] params:list)
+				 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
+				 
+			 return selectOptionVOList;	
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getConstituencyListByConstituenciesIds() method, Exception - "+e);
+		 return selectOptionVOList;
+		}
+	}
+	
 	public List<SelectOptionVO> getTehsilsForConstituencies(List<Long> constituenyIds)
 	{
 		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();

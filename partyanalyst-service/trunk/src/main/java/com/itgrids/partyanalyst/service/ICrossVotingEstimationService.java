@@ -41,4 +41,10 @@ public interface ICrossVotingEstimationService {
 	
 	public List<SelectOptionVO> getAllAssemblyConstituenciesForCrossVoting(List<Long> assemblyIds,Long parliamentId,String electionYear);
 	
+	public List<SelectOptionVO> getUserAccessStateList(Long userId);
+	
+	public List<SelectOptionVO> getUserAccessElectionYears(Long electionTypeId,Long stateId,List<Long> constituencyIdsList);
+	
+	public List<SelectOptionVO> getConstituencyListByConstituenciesIds(Long electionId,List<Long> constituencyIdsList);
+	
 }
