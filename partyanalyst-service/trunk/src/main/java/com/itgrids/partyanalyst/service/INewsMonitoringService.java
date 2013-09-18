@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.model.FileGallary;
 public interface INewsMonitoringService {
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs);
 	public List<FileVO> getNewsForRegisterUsers1(FileVO inputs);
+	public List<FileVO> getNewsForRegisterUsers2(FileVO inputs,String direction ,String columnName , Integer startIndex,Integer resultsCount);
 	public List<FileVO> getAllCountDetails(Date fromDate,Date toDate,String fileType,Long regId,FileVO fileVO);
 	public List<FileVO> getAllSourceDetails();
 	public List<FileVO> getAllCategoryDetails();
