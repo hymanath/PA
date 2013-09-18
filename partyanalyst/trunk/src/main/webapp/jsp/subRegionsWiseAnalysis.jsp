@@ -115,10 +115,10 @@ margin-top: 3px !important;
 
 .newssources{
  background-color:#97DFEB;
- padding:8px 8px 8px 8px;
- margin-left:5px;
+ padding:6px;
+ margin-left:2px;
  border-radius: 5px 5px 5px 5px;
-
+ display:table;
 }
 
 #voterBasicInfoTable td{
@@ -422,6 +422,7 @@ table.dataTable thead th {
  
  }
  h3{text-transform:uppercase;font-size:13px;}
+ #buildNewSources{display:table;}
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
