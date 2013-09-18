@@ -171,4 +171,9 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List<Object[]> getBoothIdsByConstituencyIdAndEleId(Long electionId,Long constituencyId);
 	
+	public List<Object[]> getElectionYearsByConstituencyIdsList(Long electionTypeId,Long stateId,List<Long> constituencyIdsList);
+	
+	public List<Object[]> getConstituencyListByElectionId(Long electionId,List<Long> constituencyIdsList);
+	
+	
 }
