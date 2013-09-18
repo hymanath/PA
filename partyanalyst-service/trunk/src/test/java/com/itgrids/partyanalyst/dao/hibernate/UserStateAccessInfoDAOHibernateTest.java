@@ -26,5 +26,8 @@ public class UserStateAccessInfoDAOHibernateTest extends BaseDaoTestCase{
 	public void testFindByUser(){
 		List list = userStateAccessInfoDAO.findByUser(1l);
 		assertEquals(list.size() >= 0, true);
+		if(list != null && list.size() > 0)
+		for(Object[] params:(List<Object[]>)list)
+		 System.out.println(params[0]+" "+params[1]);
 	}
 }
