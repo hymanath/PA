@@ -2720,6 +2720,100 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	
 	}
 
-	
-   
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getNewsForRegisterUsers2(FileVO fileVO,String direction , String columnName , Integer startIndex,Integer resultsCount){
+		 StringBuilder query = new StringBuilder();
+	  		query.append("select model.fileGallaryId ,model.file,model.isPrivate,model.gallary.gallaryId,model.gallary.name " +
+	  				"from FileGallary model  where model.file.fileId in(select distinct model1.file.fileId from FileSourceLanguage model1 where model1.file.fileId != 0 " );
+	  		if(fileVO.getSourceId() != null)
+	  			query.append(" and model1.source.sourceId = :sourceId");
+	  		
+	  		if(fileVO.getLanguegeId() != null)
+	 			query.append(" and model1.language.languageId = :languageId");
+	  		
+	  		query.append(") and model.gallary.candidate.candidateId in(select model1.candidate.candidateId from UserCandidateRelation model1 " +
+	  				" where model1.user.userId = :userId) and model.gallary.contentType.contentType= :type and model.isDelete = 'false' and model.gallary.isDelete = 'false'  ");
+	  		
+	  		if(fileVO.getExistingFrom() != null)
+	  			query.append(" and date(model.file.fileDate) >= :fromDate");
+	  			
+	  		if(fileVO.getIdentifiedOn() != null)
+	  			query.append(" and date(model.file.fileDate) <= :toDate");
+	  		
+	  		if(fileVO.getCategoryId() != null)
+	  			query.append(" and model.file.category.categoryId = :categoryId");
+	  			
+	  		if(fileVO.getNewsImportanceId() != null)
+	  			query.append(" and model.file.newsImportance.newsImportanceId = :newsImportanceId");
+	  			
+	  		if(fileVO.getLocationScope() != null)
+	  			query.append(" and model.file.regionScopes.regionScopesId = :locScop");	
+	  			
+	  		if(fileVO.getLocation() != null)
+	 			query.append(" and model.file.locationValue =:locScopVal");		
+	 		
+	 		if(fileVO.getFileType().trim().equalsIgnoreCase("Public"))
+	 			query.append(" and model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
+	 			
+	 		if(fileVO.getFileType().trim().equalsIgnoreCase("Private"))
+	 			query.append(" and ((model.gallary.isPrivate='true') or (model.gallary.isPrivate='false' and model.isPrivate ='true'))");
+	 		
+	 		//query.append(" order by model.file.fileDate desc ,model.updateddate");
+	 		
+	 		if(columnName.equalsIgnoreCase("categoryType"))
+	 			query.append(" order by trim(model.file.category.categoryType) "+direction+"");
+	 		else if(columnName.equalsIgnoreCase("gallaryName"))
+	 			query.append(" order by  trim(model.gallary.name) "+direction);
+	 		else if(columnName.equalsIgnoreCase("source"))
+	 			query.append(" order by  trim(model1.source.source)  "+direction);
+	 		else if(columnName.equalsIgnoreCase("fileTitle1"))
+	 			query.append(" order by  trim(model.file.fileTitle)  "+direction);
+	 		else if(columnName.equalsIgnoreCase("description"))
+	 			query.append(" order by  trim(model.file.fileDescription)  "+direction);
+	 		else if(columnName.equalsIgnoreCase("locationScopeValue"))
+	 			query.append(" order by  trim(model.file.regionScopes.scope)  "+direction);
+	 		else if(columnName.equalsIgnoreCase("fileDate"))
+	 			//query.append(" order by model.file.fileDate desc ,model.createdDate desc ");	
+	 			query.append(" order by model.createdDate  "+direction);	
+	 		else	 		
+	 		//query.append(" order by model.file.fileDate desc ,model.createdDate desc");
+	 			query.append(" order by model.file.fileDate "+direction);
+	 		
+	 		query.append(" , model.createdDate desc");
+	  		
+	 		Query queryObject = getSession().createQuery(query.toString());
+	 		
+	 		queryObject.setLong("userId", fileVO.getCandidateId());
+	 		
+	 		queryObject.setString("type", IConstants.NEWS_GALLARY);
+	 		
+	 		if(fileVO.getExistingFrom() != null)
+	 		    queryObject.setDate("fromDate", fileVO.getExistingFrom());
+	 		
+	 		if(fileVO.getIdentifiedOn() != null)
+	 			queryObject.setDate("toDate",fileVO.getIdentifiedOn());
+	  			
+	  		if(fileVO.getSourceId() != null)
+	  			queryObject.setLong("sourceId",fileVO.getSourceId());
+	  		
+	  		if(fileVO.getLanguegeId() != null)
+	  			queryObject.setLong("languageId",fileVO.getLanguegeId());
+	  		
+	  		if(fileVO.getCategoryId() != null)
+	  			queryObject.setLong("categoryId",fileVO.getCategoryId());
+	  			
+	  		if(fileVO.getNewsImportanceId() != null)
+	  			queryObject.setLong("newsImportanceId",fileVO.getNewsImportanceId());
+	  			
+	  		if(fileVO.getLocationScope() != null)
+	  			queryObject.setLong("locScop",fileVO.getLocationScope());	
+	  			
+	  		if(fileVO.getLocation() != null)
+	  			queryObject.setLong("locScopVal",fileVO.getLocation());		
+	 		 
+	  		queryObject.setFirstResult(startIndex);
+	  		queryObject.setMaxResults(resultsCount);
+	 		return queryObject.list();
+	}
+     
 }

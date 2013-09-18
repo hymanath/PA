@@ -923,7 +923,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 			if(searchVO.isAgeSelected())
 				queryString.append("and UVD.voter.age between "+searchVO.getStartAge()+" and "+searchVO.getEndAge());
 			if(searchVO.isNameSelected())
-				queryString.append("and UVD.voter.name like %"+searchVO.getName()+"%" );
+				queryString.append("and UVD.voter.name like '%"+searchVO.getName()+"%'" );
 			if(searchVO.isFamilySelected())
 				queryString.append("and UVD.voter.houseNo = :houseNo ");
 			if(searchVO.isCasteSelected()){
@@ -986,7 +986,11 @@ public class VoiceSmsService implements IVoiceSmsService {
 							
 							SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
 							
-							vo.setName(voterDetails[0].toString());
+							if(voterDetails[0] != null )
+							 vo.setName(voterDetails[0].toString());
+							else
+							 vo.setName("---");
+								
 							vo.setHouseNo(voterDetails[1].toString());
 							if(voterDetails[2] != null && !voterDetails[2].toString().trim().equalsIgnoreCase(""))
 								vo.setMobileNumber(Long.parseLong(voterDetails[2].toString()));
