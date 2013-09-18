@@ -3913,8 +3913,8 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 		 
 			// List<Object[]> list = candidateRelatedNewsDAO.getRespondNewsPartyDetails(responseNewsFileGalleryIds);
 			// List<Object[]> list1 = candidateRelatedNewsDAO.getRespondNewsPartyDetailsCustom(responseNewsFileGalleryIds);
-			   listFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null,"partyDetails");
-			   listFromCandidateParty = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null,"partyDetails");
+			   listFromNamination = candidateRelatedNewsDAO.getRespondNewsPartyDetails(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null,"");
+			   listFromCandidateParty = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(fromDate, toDate, 872l, categoryIdsList, galleryIdsList, locationIdsList, locationScopeId, tempVar, null, null, null,"");
 			       if(listFromNamination == null || listFromNamination.size()== 0)
 			    	 //return    listFromCandidateParty;
 			    	   System.out.println("anil");
