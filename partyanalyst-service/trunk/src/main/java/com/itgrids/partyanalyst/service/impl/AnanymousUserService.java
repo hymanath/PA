@@ -2841,8 +2841,16 @@ public UserSettingsVO getTotalSettingsOptionsOfAnUser(Long userId){
 		
 		if(userSettings != null && userSettings.size() >0)			
 			userSettingsVO.setSelectedOptionId(userSettings.get(0).getSettingsOption().getSettingsOptionId());
-		else
-			userSettingsVO.setSelectedOptionId(0L);
+		else{
+			
+			UserPrivacySettings userPrivacySettings = new UserPrivacySettings();
+			userPrivacySettings.setUser(userDAO.get(userId));
+			userPrivacySettings.setContent(contentDAO.get(1L)); //Default UserProfile Settings 
+			userPrivacySettings.setSettingsOption(settingsOptionDAO.get(2L)); //Private View By Default
+			userPrivacySettingsDAO.save(userPrivacySettings);
+			
+			userSettingsVO.setSelectedOptionId(2L); //Private View By Default
+		}
 			
 		
 		
