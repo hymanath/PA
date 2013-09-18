@@ -783,4 +783,40 @@ public List<Object[]> getBoothIdsByConstituencyIdAndEleId(Long electionId,Long c
 	return query.list();
 }
 
+
+ @SuppressWarnings("unchecked")
+public List<Object[]> getElectionYearsByConstituencyIdsList(Long electionTypeId,Long stateId,List<Long> constituencyIdsList)
+ {
+	StringBuilder str = new StringBuilder();
+	str.append(" select distinct model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear from " +
+			" BoothConstituencyElection model where model.constituencyElection.election.electionScope.electionType.electionTypeId =:electionTypeId ");
+	
+	str.append(" and model.constituencyElection.constituency.constituencyId in (:constituencyIdsList)");
+	if(electionTypeId.longValue() == 2l)
+	 str.append(" and model.constituencyElection.constituency.state.stateId =:stateId ");
+	str.append(" order by model.constituencyElection.election.electionYear desc ");
+	
+	Query query = getSession().createQuery(str.toString());
+	
+	query.setParameter("electionTypeId", electionTypeId);
+	if(electionTypeId.longValue() == 2l)
+	 query.setParameter("stateId", stateId);
+	query.setParameterList("constituencyIdsList", constituencyIdsList);
+	
+	return query.list();
+ }
+
+@SuppressWarnings("unchecked")
+public List<Object[]> getConstituencyListByElectionId(Long electionId,List<Long> constituencyIdsList)
+{
+  Query query = getSession().createQuery(" select distinct model.constituencyElection.constituency.constituencyId,model.constituencyElection.constituency.name " +
+  		" from BoothConstituencyElection model where model.constituencyElection.election.electionId =:electionId and model.constituencyElection.constituency.constituencyId in (:constituencyIdsList) " +
+  		" order by model.constituencyElection.constituency.name ");
+  
+  query.setParameter("electionId", electionId);
+  query.setParameterList("constituencyIdsList", constituencyIdsList);
+  return query.list();
+}
+
+
 }
