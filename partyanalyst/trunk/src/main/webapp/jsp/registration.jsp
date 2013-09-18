@@ -24,6 +24,34 @@
 		height: 24px;
 		width: 24px;	
 	}
+	
+	#genderFieldFemale,#genderFieldMale {
+	    float: left;
+		margin-bottom: 14px;
+		margin-left: -13px;
+		margin-top: 7px;
+	}
+	#freeuser
+	{
+		float: left;
+		margin-bottom: 11px;
+		margin-left: -9px;
+		margin-top: 4px;
+	}
+	#userTypeFieldadmin
+	{
+		float: left;
+    margin-bottom: -19px;
+    margin-left: -2px;
+    margin-top: 5px;
+	}
+	
+	label 
+	{
+		margin-left: 12px;
+	}
+	
+	
 
 </style>
 <script type="text/javascript">
@@ -46,7 +74,7 @@
 		var str='';
 		if(value=="COUNTRY")
 		{			
-			str+='<select id="accessValueField" name="accessValue">';			
+			str+='<select id="accessValueField" name="accessValue"  style="float: left; margin-left: -372px;">';			
 			str+='<option value="1">India</option>';
 			str+='</select>';			
 		}else if(value=="STATE")
@@ -125,7 +153,7 @@
 		var str='';
 		if(ACCESSVALUE=="State")
 		{
-			str+='<select name="accessValue" id="stateNameSelect">';
+			str+='<select name="accessValue" id="stateNameSelect"  style="float: left; margin-left: -372px;">';
 		}
 		else
 		{
@@ -138,19 +166,19 @@
 			
 		if(ACCESSVALUE=="District")
 		{			
-			str+='<select name="accessValue" id="DistrictNameSelect" style="margin-left:5px;">';
+			str+='<select name="accessValue" id="DistrictNameSelect"  style="float: left; margin-left: -372px;">';
 			str+='<option>Select District</option>';
 			str+='</select>';
 		}
 		if(ACCESSVALUE=="MLA")
 		{
-			str+='<select name="accessValue" id="MLANameSelect" style="margin-left:5px;">';
+			str+='<select name="accessValue" id="MLANameSelect"  style="float: left; margin-left: -372px;">';
 			str+='<option>Select Constituency</option>';
 			str+='</select>';
 		}
 		if(ACCESSVALUE=="MP")
 		{
-			str+='<select name="accessValue" id="MPNameSelect" style="margin-left:5px;">';
+			str+='<select name="accessValue" id="MPNameSelect"  style="float: left; margin-left: -372px;">';
 			str+='<option>Select Constituency</option>';
 			str+='</select>';
 		}
@@ -210,7 +238,7 @@
 		var tdElmt=document.getElementById("tdId");
 
 		var str = '';
-		str += '<select name="accessValue">';
+		str += '<select name="accessValue"  style="float: left; margin-left: -372px;">';
 		for(var i=0; i<results.length; i++)
 		{
 			str += '<option value="'+results[i].id+'">'+results[i].name+'</option>';
@@ -286,16 +314,15 @@ function getUserNameAvailabilityResult(results)
 	function getAccessValuesForSubUser(value)
 	{
 		SUB_USER_ACCESSVALUE = value;
-
 		var thElmt=document.getElementById("thId");
 		var tdElmt=document.getElementById("tdId");
 
-		thElmt.innerHTML='<font class="requiredFont"> * </font> <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}" />';
+		thElmt.innerHTML=' <s:label theme="simple" for="accessValueField" id="accessValueLabel"  value="%{getText(\'accessValue\')}"/><b  style="color: red; float: left; margin-right: 88px; margin-top: -16px; margin-bottom: 17px;">*</b>';
 		
 		var str = '';
 		if(mainUserAccessType == value)
 		{
-			str += '<select name="accessValue">';
+			str += '<select name="accessValue"  style="float: left; margin-left: -372px;">';
 			str += '<option>'+mainUserAccessLocation+'</option>';
 			str += '</select>';
 			tdElmt.innerHTML=str;
@@ -345,7 +372,7 @@ var str = '<font style="color:red;font-size:12px;">';
 	
 }
 
-function checkUserNameAvailability()
+/* function checkUserNameAvailability()
 {
 	var userName = document.getElementById("userNameField").value;
 	var errorDiv = document.getElementById('userNameAvlDiv');
@@ -381,7 +408,7 @@ function checkUserNameAvailability()
 	}
 	
 }
-
+ */
 
 
 </script>
@@ -389,11 +416,11 @@ function checkUserNameAvailability()
 </head>  
 <body>  
 <s:form action="RegistrationAction" method="POST" theme="simple">  
-    <h2>User Registration Form</h2> 
- <div id="registrationMainDiv">
+    <div align="center" style="margin-bottom: 17px; margin-top: 13px; font-family: arial; font-size: 15px; width: 900px; padding-bottom: 3px; height: 28px; margin-left: 53px; padding-top: 12px; font-weight: bold; border-radius: 4px 4px 4px 4px; color: white; background-color: rgb(91, 192, 222);">User Registration Form</div> 
+ <div id="registrationMainDiv" align = "center"  style="font-family: verdana; font-size: 12px;">
 		<table class="registrationTable">
 			<tr>
-				<td colspan="2">
+				<td colspan="2" >
 					<div style="color: red;">
 						<s:actionerror />
 						<s:fielderror />
@@ -404,149 +431,167 @@ function checkUserNameAvailability()
 
 		 <div id="loginDetailsDiv" class="accessDivMain">
 		 <div id="errorMsgDiv"></div>
-			<div id="loginDetailsDivHead" class="accessDivHead"><u>Login Details...</u></div>
-			<div id="loginDetailsDivBody" class="accessDivBody">
-				<table class="registrationTable">
+			<div id="loginDetailsDivHead" class="accessDivHead"><div style="width: 102px; margin-bottom: 11px; color: blue; font-family: verdana; font-size: 13px; margin-left: -265px;">Login Details</div></div>
+			<div id="loginDetailsDivBody" class="accessDivBody" style="margin-left: -11px;">
+				<table class="registrationTable" >
 					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="userNameField" id="userNameLabel"  value="%{getText('userName')}" /></td>
-						<td style="padding-left: 15px;"><s:textfield id="userNameField" name="userName" onBlur="checkUserNameAvailability()" /></td>
+						<td width="100px;"><span>User Name </span><b class="requiredFont" style="color:red"> * </b></td>
+						<td ><s:textfield id="userNameField" name="userName" onBlur="checkUserNameAvailability()" /></td>
 						<td><div id="userNameAvlDiv"></div></td>
 					</tr>
-					</table>
-					<table class="registrationTable">
+				</table>
+				<table class="registrationTable">
 					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="passwordField" id="passwordLabel"  value="%{getText('password')}" /></td>
-						<td style="padding-left: 15px;"><s:password id="passwordField" name="password"/>  </td>
+						<td width="100px;"><span>Password</span><b class="requiredFont" style="color:red"> * </b></td>
+						<td ><s:password id="passwordField" name="password"/>  </td>
+						<td></td>
 					</tr>
 				</table>
 			</div>
 		 </div>
 
 		 <div id="personalDetailsDiv" class="accessDivMain">
-			 <div id="personalDetailsDivHead" class="accessDivHead"><u>Personal Details...</u></div>
+			 <div id="personalDetailsDivHead" class="accessDivHead"><div style="color: blue; font-family: verdana; font-size: 13px; margin-left: -243px; margin-bottom: 14px; width: 130px; margin-top: 10px;">Personal Details</div></div>
 			 <div id="personalDetailsDivBody" class="accessDivBody">
 				<table class="registrationTable">
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font><s:label for="firstNameField" id="fnameLabel"  value="%{getText('firstName')}" /></td>
+						<td width="100px;"><span>First Name</span><b class="requiredFont" style="color:red"> * </b></td>
 						<td><s:textfield id="firstNameField" name="firstName"/>  </td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;" ><s:label for="middleNameField" id="middleNameLabel"  value="%{getText('middleName')}" /></td>
+						<td width="100px;" ><span>Middle Name</span></td>
 						<td><s:textfield id="middleNameField" name="middleName"/>  </td>
 					</tr>
 					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="lastNameField" id="lastNameLabel"  value="%{getText('lastName')}" /></td>
+						<td width="100px;"><span>Last Name</span><b class="requiredFont" style="color:red"> * </b></td>
 						<td align="left"><s:textfield id="lastNameField" name="lastName"/>  </td>
 					</tr>
 					
 					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="partyField" id="partyLabel"  value="%{getText('party')}" /></td>
+						<td width="100px;"><span>Party</span><b class="requiredFont" style="color:red"> * </b></td>
 						<td align="left"> <s:select name="party" id="party"  list="#session.parties" listKey="id" listValue="name"></s:select> </td>
 					</tr>
 					
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="genderField" id="genderLabel"  value="%{getText('gender')}" /></td>
-						<td><s:radio id="genderField" name="gender" list="#session.gender" />  </td>			
+						<td width="100px;"><span>Gender</span><b class="requiredFont" style="color:red"> * </b></td>
+						<td><s:radio theme="simple" id="genderField" name="gender" list="#session.gender" />  </td>
+						<!--<s:iterator value="#session.gender" var="gender" >
+							<td width="150px;"><input type="radio" id="accessTypeField" name="gender"></input><span style="float: left; margin: -14px 10px 0px 18px;">${gender}</span></td>
+						</s:iterator>		-->				
 					</tr>
 					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font><s:label for="dateOfBirthField" id="dateOfBirthLabel"  value="%{getText('dateOfBirth')}" /></td>
+						<td width="100px;"><span>Date Of Birth</span><b class="requiredFont" style="color:red"> * </b></td>
 						<td> 
-							<s:textfield id="dateOfBirthField" readonly="true" name="dateOfBirth" size="25"/>
+							<s:textfield id="dateOfBirthField"  readonly="true" name="dateOfBirth" size="25"/>
 							<DIV class="yui-skin-sam"><DIV id="DOB_div" style="position:absolute;"></DIV></DIV>
 						 </td>
 						<td>
-							<input id="calBtnEl" type="button" class="calBtn" title="Click To Select A Date" onclick="showDateCal('DOB_div','dateOfBirthField','1/1970')"/>
+							<input id="calBtnEl" type="button" style="width: 28px;" class="calBtn" title="Click To Select A Date" onclick="showDateCal('DOB_div','dateOfBirthField','1/1970')"/>
 						</td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="emailField" id="emailLabel"  value="%{getText('email')}" /></td>
+						<td width="100px;"><span>Email</span></td>
 						<td><s:textfield id="emailField" name="email"/>  </td>
 					</tr>
 					<tr>
-						<td width="100px;" style="padding-left:15px;"><s:label for="telephoneNoField" id="telephoneNoLabel"  value="%{getText('telephoneNo')}" /></td>
+						<td width="100px;"><span>Telephone</span></td>
 						<td><s:textfield id="telephoneNoField" name="phone"/>  </td>
 					</tr>
 					<tr>
-						<td width="100px;"> <font class="requiredFont"> * </font> <s:label for="mobileField" id="mobileLabel"  value="%{getText('mobile')}" /></td>
+						<td width="100px;"> <span>Mobile</span><b class="requiredFont" style="color:red"> * </b></td>
 						<td><s:textfield id="mobileField" name="mobile"/>  </td>
 					</tr>
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="addressField" id="addressLabel"  value="%{getText('address')}" /></td>
+						<td width="100px;"><span>Address</span><b class="requiredFont" style="color:red"> * </b></td>
 						<td><s:textfield id="addressField" name="address"/>  </td>
 					</tr>
 					
 				</table>
 			</div>	
 		 </div>
-			<div id="errorDiv"></div>
-		 <div id="accessDetailsDiv" class="accessDivMain">
-			 <div id="accessDetailsDivHead" class="accessDivHead"><u>Access Level Details...</u></div>
-			 <div id="accessDetailsDivBody" class="accessDivBody">
-				<table class="registrationTable">
+		<div id="errorDiv"></div>
+		<div id="accessDetailsDiv" class="accessDivMain">
+		<div id="accessDetailsDivHead" class="accessDivHead"><div style="color: blue; font-family: verdana; font-size: 13px; margin-bottom: 14px; margin-top: 10px; width: 147px; margin-left: -229px;">Access Level Details</div></div>
+		<div id="accessDetailsDivBody" class="accessDivBody" style="width: 102px; margin-bottom: 11px; font-family: verdana; font-size: 13px; margin-left: -265px;">
+		<table class="registrationTable">
 					
-					<tr>
-					<td style="padding-left: 10px;">
-					<s:label for="userrole" id="roleTypeid"/>Role Type
-					</td>
-				
-				<td style="padding-left: 11px;"><s:checkbox id="freeuser"  value="freeuser" name ="freeuser" onclick="showAndHide()"/>FREE_USER</td>
+		<tr style="float: left; margin-left: 1px;">
+			<td ><span>Role Type</span></td>
 
-				
-					</tr>
+			<td  style="float: left; margin-left: 130px; margin-top: -22px;"><s:checkbox id="freeuser"  value="freeuser" name ="freeuser" onclick="showAndHide()" /><span style="float: left; margin-left: 9px; margin-top: 2px;">FREE_USER</span></td>
 
-			<tr><td colspan="2">		
+		</tr>
+
+		<tr>
+			<td colspan="2">		
 			
-		<div id="freeuserDiv" style="display:none;color:#926682"><b style="color:red">*</b> Select State<s:select name="stateId" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')" cssStyle="width: 144px;
-		margin-left: 49px;" theme="simple" />
-						
+			<div id="freeuserDiv" style="display:none;color:#926682"><b style="color:red">*</b> Select State<s:select name="stateId" id="stateSelectBox" cssClass="textFieldStyle" headerKey="0" headerValue="Select State" list="#session.states" listKey="id" listValue="name"  onchange="getAllConstituenciesInStateByType(2,this.options[this.selectedIndex].value,'constituency')"  theme="simple"  style="width: 148px; margin-left: 61px;"/>
+							
 
 
-	<br><br><b style="color:red">*</b> 
- Select Constituency<select name="constituency" id="constituency"  cssClass="textFieldStyle" cssStyle="width: 145px;margin-left:12px;" style="margin-left:12px;"/>
- <option>Select Constituency</option>
- </select><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
-		 </div></td></tr>
+				<br><br><b style="color:red">*</b> 
+			 Select Constituency<select name="constituency" id="constituency"  cssClass="textFieldStyle" style="margin-top: -18px; margin-left: 12px;"/>
+			 <option>Select Constituency</option>
+			 </select><span id="selectConstituency" style="border-radius: 2px 2px 2px 2px;padding-left:10px;font-weight:lighter"></span>
+			</div>
+			</td>
+		 </tr>
 
 				
 					
+					<tr><td>
+					<table>
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="userTypeField" id="userTypeLabel"  value="%{getText('userType')}" /></td>
-						<td style="padding-left: 10px;"><s:radio id="userTypeField" name="userType" list="#session.userType" required="true"></s:radio> </td>
+						<td><span>User Type</span><b class="requiredFont" style="color: red; margin-right: 41px;"> * </b></td>
+						<td><s:radio id="userTypeField" name="userType" list="#session.userType" required="true" ></s:radio> </td>
+						<!--<s:iterator value="#session.userType" var="userType" >
+							<td width="150px;"><input type="radio" id="userTypeField"></input><span style="float: left; margin: -14px 10px 0px 18px;">${userType}</span></td>
+						</s:iterator>-->
 					</tr>
-										
+					</table></td>
+					</tr>					
 					<c:if test="${registrationType == 'subUser'}">				
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
-						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" required="true" onclick="getAccessValuesForSubUser(this.value);"></s:radio> </td>
+					<td>
+					<table>
+					<tr>
+						<td>Access Type<b class="requiredFont" style="color: red; margin-right: 119px; margin-bottom: 15px;"> * </b></td>
+						<!--<s:radio id="accessTypeField" name="accessType" list="#session.type" required="true" onclick="getAccessValuesForSubUser(this.value);" ></s:radio> -->
+						<s:iterator value="#session.type" var="accessType" >
+							<td><input type="radio" id="accessTypeField" name="accessType" onclick="getAccessValuesForSubUser('${accessType}');"></input><span style="float: left; margin: -14px 10px 0px 18px;">${accessType}</span></td>
+						</s:iterator>
+					</tr>
+					</table>
+					</td>
 					</tr>
 					</c:if>
 
 					<c:if test="${registrationType == 'mainUser'}">
 					<tr>
-						<td width="100px;"><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
+						<td ><font class="requiredFont"> * </font> <s:label for="accessTypeField" id="accessTypeLabel"  value="%{getText('accessType')}" /></td>
 						<td style="padding-left: 10px;"><s:radio id="accessTypeField" name="accessType" list="#session.type" onclick="getAccessValue(this.value);" required="true"></s:radio> </td>
 					</tr>
 					</c:if>					
-				<tr>
-						<td width="100px;" id="thId"> </td>
+					<tr>
+						<td id="thId"> </td>
 						<td style="padding-left: 15px;" id="tdId"> </td>
 					</tr>
 
 					<tr>
-						<td width="100px;" id="thId"> </td>
+						<td  id="thId"> </td>
 						<td style="padding-left: 15px;" id="tdId">
 							<input type="hidden" name="registrationType" value="${registrationType}"/>							
 						</td>
 					</tr>
 					
 
-				 </table>
-			 </div>
+		</table>
+		</div>
 
 			
 		</div> 
 		<div style="text-align: center;">
-<s:submit name="Save" onclick="return getStatesValidationForFreeuser()"></s:submit> 
+<s:submit name="Save" style="background-color: green; color: white; height: 38px; border-radius: 7px 7px 7px 7px; width: 78px;"  onclick="return getStatesValidationForFreeuser()" ></s:submit> 
 		</div>
 </div>
 </s:form>  
