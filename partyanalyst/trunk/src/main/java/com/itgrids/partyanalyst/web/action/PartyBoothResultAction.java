@@ -19,7 +19,7 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 
 	private static final long serialVersionUID = 1L;
 	private List<SelectOptionVO> partyVOs;
-	private List<SelectOptionVO> electionTypes;
+	private List<SelectOptionVO> electionTypes,parlConstis,assemblyConstis;
 	private List<String> electionYears;
 	private HttpServletRequest request;
 	private EntitlementsHelper entitlementsHelper;
@@ -69,6 +69,21 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 			ICrossVotingEstimationService crossVotingEstimationService) {
 		this.crossVotingEstimationService = crossVotingEstimationService;
 	}
+	public List<SelectOptionVO> getParlConstis() {
+		return parlConstis;
+	}
+
+	public void setParlConstis(List<SelectOptionVO> parlConstis) {
+		this.parlConstis = parlConstis;
+	}
+
+	public List<SelectOptionVO> getAssemblyConstis() {
+		return assemblyConstis;
+	}
+
+	public void setAssemblyConstis(List<SelectOptionVO> assemblyConstis) {
+		this.assemblyConstis = assemblyConstis;
+	}
 
 	public String execute()throws Exception{
 		HttpSession session = request.getSession();
@@ -78,18 +93,48 @@ public class PartyBoothResultAction extends ActionSupport implements ServletRequ
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.PARTY_BOOTHWISE_RESULTS_REPORT))
 			return ERROR;
 		electionTypes = new ArrayList<SelectOptionVO>();		
-				
-		SelectOptionVO electionType2 = new SelectOptionVO();
-		electionType2.setId(new Long(2));
-		electionType2.setName("Assembly");
+			
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		Long userId = user.getRegistrationID();
+		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		
-		SelectOptionVO electionType1 = new SelectOptionVO();
-		electionType1.setId(new Long(1));
-		electionType1.setName("Parliament");
+		assemblyConstis = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
+		parlConstis = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,1l);
 		
-		electionTypes.add(electionType1);
-		electionTypes.add(electionType2);
+		List<Long> userAccessAssembConsIds = new ArrayList<Long>(0);
+		List<Long> userAccessParConsIds = new ArrayList<Long>(0);
+		
+		if(assemblyConstis != null && assemblyConstis.size() > 0)
+		{
+			SelectOptionVO electionType2 = new SelectOptionVO();
+			electionType2.setId(new Long(2));
+			electionType2.setName("Assembly");
+			electionTypes.add(electionType2);
+			
+			for(SelectOptionVO optionVO:assemblyConstis)
+			 if(!userAccessAssembConsIds.contains(optionVO.getId()))
+				 userAccessAssembConsIds.add(optionVO.getId());
+			
+		}
+		
+		if(parlConstis != null && parlConstis.size() > 0)
+		{
+			SelectOptionVO electionType1 = new SelectOptionVO();
+			electionType1.setId(new Long(1));
+			electionType1.setName("Parliament");
+			electionTypes.add(electionType1);
+			
+			for(SelectOptionVO optionVO:parlConstis)
+			 if(!userAccessParConsIds.contains(optionVO.getId()))
+				 userAccessParConsIds.add(optionVO.getId());
+		}
 		setElectionTypes(electionTypes);
+		
+		
+		session.setAttribute("userAccessAssembConsIds", userAccessAssembConsIds);
+		session.setAttribute("userAccessParConsIds", userAccessParConsIds);
+		
 		
 		/*electionYears = new ArrayList<String>();	
 		electionYears.add("2009");
