@@ -227,9 +227,12 @@ var Localization = { <%
 		  if(parseInt(resultYears[i].name) == parseInt(year))
 		    electionId = resultYears[i].id;
 		 }
+		var electionType = $("#electionType1").val();
+
 		var jsObj=
              {
-			     electionId:electionId,				 
+			     electionId:electionId,
+				 electionType:electionType,
 				 task:"constituencies"	
 			 }
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				

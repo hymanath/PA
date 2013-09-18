@@ -341,9 +341,10 @@ width: 500px;
 }
 .newssources{
  background-color:#97DFEB;
- padding:8px 8px 8px 8px;
- margin-left:5px;
+ padding:6px;
+ margin-left:2px;
  border-radius: 5px 5px 5px 5px;
+ display:table;
 
 }
 .newsParts{
@@ -360,6 +361,7 @@ width: 500px;
   .close:hover{opacity:1.5;}
 
 #parliamentElecProfileDiv{overflow-x: scroll;}
+#buildNewSources{display:table;}
 </style>
 
 </head>

@@ -267,9 +267,10 @@ width: 500px;
 }
 .newssources{
  background-color:#97DFEB;
- padding:8px 8px 8px 8px;
- margin-left:5px;
+ padding:6px;
+ margin-left:2px;
  border-radius: 5px 5px 5px 5px;
+ display:table;
 
 }
 .newsParts{
@@ -283,6 +284,7 @@ width: 500px;
   }
   .close{opacity:1.5;}
   .close:hover{opacity:1.5;}
+#buildNewSources{display:table;}
 
 </style>
 
