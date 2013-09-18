@@ -446,7 +446,6 @@ $('#reportLevel').val(8);
 		else if($(this).val() == "voter")
 		{
 			//$("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
-
 		    $("#reportLevel option[value='8']").remove();
 			$("#reportLevel option[value='9']").remove();
 			
@@ -1042,7 +1041,8 @@ function openInfluencePeopleWindow(){
 	
 }
 function getallConstituencies(district){
-$('#wardDiv').hide();
+	if($('#reportLevel').val() != 5)
+        $('#wardDiv').hide();
  clearSelectOptions();
 var jsObj=
 		{						
@@ -1632,23 +1632,24 @@ function ajaxToSendVoiceSms(){
 				var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
 			          if(uploadResult == "Successfully Sent..")
 						{
-							selectedVotersDetails = {};
+					  $('#voiceSmsDescription,#mobileNumber').val("");
+					  $('#cadreCount , #influencePeopleCount, #voterCount').html(0);
+					  $('#responseDetailsDiv').dialog('close');
+
+					  showSuccessMessage();
+
+						  //  $('#successMsg').html(myResults);
+						    setTimeout("closeDialog()",5000);
+						
+
+							$('input[name=audio]').attr('checked', false);
+							 selectedVotersDetails = {};
 
 							 selectedCadreDetails = {};
 
 							 selectedInfluencePeopleDetails = {};
 
 							 selectedMobileNumbers = new Array();
-
-							 $('#cadreCount , #influencePeopleCount, #voterCount').html(0)
-
-						    $('#responseDetailsDiv').dialog('close');
-						    $('#successMsg').html(myResults);
-							$('#voiceSmsDescription,#mobileNumber').val("");
-
-							$('input[name=audio]').attr('checked', false);
-						  
-
 						}
 			
 			}
@@ -1659,6 +1660,20 @@ function ajaxToSendVoiceSms(){
 
 }
 
+function showSuccessMessage()
+{
+	$('#responseDetailsInnerDiv').html("Voice SMS Sent Successfully.");
+
+$( "#responseDetailsDiv" ).dialog({
+				title:'SMS sent successfully.',
+				width:'auto',
+				height:'auto',
+				buttons: {
+					
+					"Ok":function(){$(this).dialog("close");} 
+				}
+			});
+}
 
 </script>
 
@@ -3256,6 +3271,7 @@ function showHideLocationOptionsForVoter()
 
    // $('#ConstituencyDiv').show();
    $('.selectDivs').hide();
+   	$('#publicationDateDiv').show();
 
     if(selectedValue == 1)
 	   $('#ConstituencyDiv,#constiDiv').show();
@@ -3648,7 +3664,8 @@ function getValuesForConstituencyChange(value)
 {
 	clearErrDiv();
 	getAllTheCastesOfConstituency(value);
-	$('#wardDiv').hide();
+	if($('#reportLevel').val() != 5)
+	 $('#wardDiv').hide();
 	if($('input:radio[name=searchFor]:checked').val() == "voter"){
 		getMandalOrMuncipalityList();
 		getPublicationDate();

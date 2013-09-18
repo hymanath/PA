@@ -21,8 +21,44 @@
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
+	<!-- YUI Dependency files (End) -->
 <style>
+#showNews > table{font-size: 12px !important;}
+
 #fromDate,#toDate{
  cursor: text !important;
 }
@@ -402,7 +438,6 @@ width: 618px;
 }
 </style>
 <script type="text/javascript">
-
 var ajaxCount = 0;
 var newsDetails = null;
  var reqFile;
@@ -411,6 +446,7 @@ var modifiedRecord = 0;
 var returnedResults;
 var bvalue = false;
 $(document).ready(function(){
+
 
 	$('.yui-pg-rpp-options').live('change',function(){
 		noOfRowsPerPage = $(this).val();
@@ -429,6 +465,10 @@ $(document).ready(function(){
 			maxDate: new Date()
         });
 });
+
+
+
+
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location,title,fromDate,toDate){
 if(returnedResults != undefined){
 	modifiedRecord = returnedResults.fileGallaryId;
@@ -603,6 +643,7 @@ var callback = {
 				newsDetails = myResults;
 				showNewsDetails(jsObj,myResults);
 				hideImg();
+
 			 }
 			else if(jsObj.queryType == "getAllSourceDetails")
 			 {	
@@ -628,11 +669,13 @@ var callback = {
 			 }
 			 else if(jsObj.task == "Delete")
 			 {
+				modifiedInd = true;
 			    newsSearch();
 				showDeletedMessage(myResults);
 			 }
 			 else if(jsObj.task == "Update")
 			 {
+				 modifiedInd = true;
 				returnedResults = myResults;
 			    newsSearch();
 				showUpdatedMessage(myResults.resultStatus);
@@ -742,23 +785,28 @@ function showNewsCountDetails(result,jsObj)
    {
    str+= '<tr style="text-align:center">';
       if(result[0].fileVOList[i] != null)
-       str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\',\''+result[0].fileVOList[i].categoryType+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown">  '+result[0].fileVOList[i].sizeOfGallary+'</font></a></td>';
+      // str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\',\''+result[0].fileVOList[i].categoryType+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown">  '+result[0].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	   str+= '<td>'+result[0].fileVOList[i].categoryType+' -  <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\''+result[0].fileVOList[i].categoryId+'\',\'\',\'\',\'\',\''+result[0].fileVOList[i].categoryType+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown">  '+result[0].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	   str+= '<td style="text-align:center">--</td>';
 	  if(result[1].fileVOList[i] != null)
-	    str+= '<td>'+ result[1].fileVOList[i].source+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\''+result[1].fileVOList[i].sourceId+'\',\'\',\'\',\'\',\'\',\'\',\''+result[1].fileVOList[i].source+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"> <font color="brown"> '+result[1].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	    //str+= '<td>'+ result[1].fileVOList[i].source+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\''+result[1].fileVOList[i].sourceId+'\',\'\',\'\',\'\',\'\',\'\',\''+result[1].fileVOList[i].source+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"> <font color="brown"> '+result[1].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	  str+= '<td>'+ result[1].fileVOList[i].source+' -   <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\''+result[1].fileVOList[i].sourceId+'\',\'\',\'\',\'\',\'\',\'\',\''+result[1].fileVOList[i].source+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"> <font color="brown"> '+result[1].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[2].fileVOList[i] != null)
-	   str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\',\''+result[2].fileVOList[i].language+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[2].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	   //str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\',\''+result[2].fileVOList[i].language+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[2].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	  str+= '<td>'+  result[2].fileVOList[i].language+' -   <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\''+result[2].fileVOList[i].languegeId+'\',\'\',\'\',\'\',\'\',\''+result[2].fileVOList[i].language+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[2].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
 	  if(result[3].fileVOList[i] != null)
-	    str+= '<td>'+ result[3].fileVOList[i].importance +' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\''+result[3].fileVOList[i].newsImportanceId+'\',\'\',\'\',\''+result[3].fileVOList[i].importance+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+result[3].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	   // str+= '<td>'+ result[3].fileVOList[i].importance +' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\''+result[3].fileVOList[i].newsImportanceId+'\',\'\',\'\',\''+result[3].fileVOList[i].importance+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+result[3].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	   str+= '<td>'+ result[3].fileVOList[i].importance +' -   <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\''+result[3].fileVOList[i].newsImportanceId+'\',\'\',\'\',\''+result[3].fileVOList[i].importance+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+result[3].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	   str+= '<td>--</td>';
 	  if(result[4].fileVOList[i] != null)	
-	    str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\',\''+result[4].fileVOList[i].locationScopeValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[4].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	    //str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="getNews(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\',\''+result[4].fileVOList[i].locationScopeValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[4].fileVOList[i].sizeOfGallary+'</font></a></td>';
+	  str+= '<td>'+ result[4].fileVOList[i].locationScopeValue+' -   <a href="javascript:{}" onclick="buildVotersByLocCustomWardDataTable1(\''+jsObj.task+'\',\'getNews\',\'All\',\'\',\'\',\'\',\'\',\''+result[4].fileVOList[i].locationScope+'\',\'\',\''+result[4].fileVOList[i].locationScopeValue+'\',\''+jsObj.fromDate+'\',\''+jsObj.toDate+'\');"><font color="brown"> '+ result[4].fileVOList[i].sizeOfGallary+'</font></a></td>';
 	  else
 	    str+= '<td>--</td>';
 	 /* if(result[5].fileVOList[i] != null)
@@ -1168,7 +1216,18 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    $("#newsSearch").slideToggle("slow");
  }
  
- function newsSearch(){
+ function newsSearch(from){
+
+	 if(from == "btn")
+	 {		 
+		previousSelectedColumn = "categoryType";
+		selectedColumn = "categoryType";
+		previousDirection = "asc";
+		selectedDirection = "asc";
+		modifiedInd = false;
+	 }  
+
+	 $('#searchBtn').attr('disabled',true);
  showAjaxImg('searchAjaxImgSpan');
    var sourceEle =   document.getElementById("source");
    var  source = sourceEle.options[sourceEle.selectedIndex].value;
@@ -1195,22 +1254,28 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
    {
       getNews('byTodayDate','getCount','All',source,language,category,importance,'','','','','');
 	  getGraphDetails("byTodayDate","categoryDetailsForGraph","","","categoryGraphDiv",source,language,category,importance);
-	  getNews('byTodayDate','getNews','All',source,language,category,importance,'','','Today','','');
+	 
+	 buildVotersByLocCustomWardDataTable1('byTodayDate','getNews','All',source,language,category,importance,'','','Today','',''); //getNews('byTodayDate','getNews','All',source,language,category,importance,'','','Today','','');
    }
  if(document.getElementById("thisweek").checked == true)
   {
      getNews('byThisWeek','getCount','All',source,language,category,importance,'','','','','');
 	 getGraphDetails("byThisWeek","categoryDetailsForGraph","","","categoryGraphDiv",source,language,category,importance);
-	 getNews('byThisWeek','getNews','All',source,language,category,importance,'','','This Week','','');
+	 
+	buildVotersByLocCustomWardDataTable1('byThisWeek','getNews','All',source,language,category,importance,'','','This Week','','');
+	//getNews('byThisWeek','getNews','All',source,language,category,importance,'','','This Week','','');
    }
  if(document.getElementById("thismonth").checked == true)
   {
+
     getNews('byThisMonth','getCount','All',source,language,category,importance,'','','','','');
 	getGraphDetails("byThisMonth","categoryDetailsForGraph","","","categoryGraphDiv",source,language,category,importance);
-	getNews('byThisMonth','getNews','All',source,language,category,importance,'','','This Month','','');
+
+	buildVotersByLocCustomWardDataTable1('byThisMonth','getNews','All',source,language,category,importance,'','','This Week','','');	//getNews('byThisMonth','getNews','All',source,language,category,importance,'','','This Month','','');
    }
  if(document.getElementById("betweendates").checked == true)
   {
+
 	  var fromDate = "";
 	  var toDate = "";	
 		fromDate = document.getElementById("fromDate").value;
@@ -1266,7 +1331,7 @@ function showAnotherNewsPart(fileSourceLanguageId,orderNo,fileId,title,desc,path
 	
 	getGraphDetails("betweendates","categoryDetailsForGraph",startDate,endDate,"categoryGraphDiv",source,language,category,importance);
   	getNews("betweendates","getCount","All",source,language,category,importance,"","","",startDate,endDate);
-  	getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
+  buildVotersByLocCustomWardDataTable1("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);	//getNews("betweendates","getNews","All",source,language,category,importance,"","",title,startDate,endDate);
 	
 // ENDING : validations updated by srishailam
    }
@@ -1317,7 +1382,7 @@ function editNewsDetails(fileId){
 								});
 	$("#editNewsOuter").dialog();
 	var str= '';
-	
+
 	
 	for(var i in newsDetails){
 	  if(newsDetails[i].fileId == fileId)
@@ -2174,7 +2239,6 @@ document.getElementById("newsDeleteMessage").innerHTML = "";
    fileDate = document.getElementById("existingFromText").value;
    locationScopeId = document.getElementById("scopeDiv").value;
    fileGallaryId = $('#fileGallaryId').val();
-
    try
   {
   	 locationScopeValue = document.getElementsByName('locationValue')[0].value; 
@@ -2265,7 +2329,7 @@ try{
  }
 </script>
 </head>
-<body>
+<body Style="font:12px !important;">
 <div class="rounded">
 <fieldset class="f3">
 <body>
@@ -2333,7 +2397,8 @@ try{
 </div>
 <div style="padding-top:15px;">
  <center>
- <a href="javascript:{}" onclick="newsSearch();" ><img src="images/search_button.jpg" /></a>
+ <!--<a href="javascript:{}" onclick="newsSearch();" ><img src="images/search_button.jpg" /></a>-->
+ <input type="button" value="Search" style="background-color:#529EC0;border-radius:3px;border:1px solid #529EC0;color:#fff;font-weight:bold;padding:3px;font-family:verdana;" id="searchBtn" onclick="newsSearch('btn');"/>
  <a href="javascript:{}" onclick="clearAll();" style="padding-left:10px;" ><img src="images/clear_all_buttom.jpg" ></a>
  <span id="searchAjaxImgSpan" style="margin-left:15px;display:none;"><img src="images/icons/search.gif"></img width="18px" height="18px;"></div></center>
 </span>
@@ -2405,7 +2470,9 @@ try{
 <script type="text/javascript">
 
 getNews("byThisWeek","getCount","All","","","","","","","","","");
-getNews("byThisWeek","getNews","All","","","","","","","Today","","");
+//getNews("byThisWeek","getNews","All","","","","","","","Today","","");
+buildVotersByLocCustomWardDataTable1('byThisWeek','getNews','All',"","","","","","","","","");
+
 getGraphDetails("byThisWeek","categoryDetailsForGraph","","","categoryGraphDiv","","","","");
 
 //getNews("byTodayDate","getCount","All","","","","","","","","","");

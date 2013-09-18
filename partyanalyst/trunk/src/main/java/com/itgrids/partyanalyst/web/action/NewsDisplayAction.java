@@ -36,6 +36,34 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private ResultStatus resultStatus;
 	private FileVO savedDetails;
 	private List<FileVO> fileVOs;
+	private int startIndex;
+	private int results;
+	private FileVO fileVO;
+	
+	public FileVO getFileVO() {
+		return fileVO;
+	}
+
+	public void setFileVO(FileVO fileVO) {
+		this.fileVO = fileVO;
+	}
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	public int getResults() {
+		return results;
+	}
+
+	public void setResults(int results) {
+		this.results = results;
+	}
+
 	public FileVO getSavedDetails() {
 		return savedDetails;
 	}
@@ -448,5 +476,71 @@ public class NewsDisplayAction implements ServletRequestAware{
 	  } 
 		    
 	   return Action.SUCCESS; 
+   }
+   
+   public String getNews1(){
+	   fileVO = new FileVO();
+	   try{
+		
+		   session = request.getSession();
+		   RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		   
+		   if(request.getParameter("queryType").equalsIgnoreCase("getNews")){
+			 
+			 
+			 if(request.getParameter("task").trim().equalsIgnoreCase("byTodayDate"))
+				{
+				   fileVO.setExistingFrom(dateUtilService.getCurrentDateAndTime());
+				   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+				}
+			 else if(request.getParameter("task").trim().equalsIgnoreCase("byThisWeek"))
+				{
+				   fileVO.setExistingFrom(getStartDayOfWeek());
+				   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+				}
+				else if(request.getParameter("task").trim().equalsIgnoreCase("byThisMonth"))
+				{
+				   fileVO.setExistingFrom(getStartDayOfMonth());
+				   fileVO.setIdentifiedOn(dateUtilService.getCurrentDateAndTime());
+				}
+				else if(request.getParameter("task").trim().equalsIgnoreCase("betweendates"))
+				{
+				   if(request.getParameter("fromDate").trim().length() > 0)
+				     fileVO.setExistingFrom(getDate(request.getParameter("fromDate").trim()));
+				   if(request.getParameter("toDate").trim().length() > 0)
+				     fileVO.setIdentifiedOn(getDate(request.getParameter("toDate").trim()));
+				}
+				
+				if(regVO!=null)
+					fileVO.setCandidateId(regVO.getRegistrationID());
+				    fileVO.setFileType(request.getParameter("fileType"));
+				
+			    if(request.getParameter("sourceId") !=null && request.getParameter("sourceId").trim().length()>0)
+					fileVO.setSourceId(new Long(request.getParameter("sourceId")));
+			    if(request.getParameter("languegeId") !=null && request.getParameter("languegeId").trim().length()>0)
+				    fileVO.setLanguegeId(new Long(request.getParameter("languegeId")));
+			    if(request.getParameter("categoryId") !=null && request.getParameter("categoryId").trim().length()>0)
+				    fileVO.setCategoryId(new Long(request.getParameter("categoryId")));
+			    if(request.getParameter("newsImportanceId") !=null && request.getParameter("newsImportanceId").trim().length()>0)
+				    fileVO.setNewsImportanceId(new Long(request.getParameter("newsImportanceId")));
+			    if(request.getParameter("locationScope") !=null && request.getParameter("locationScope").trim().length()>0)
+				    fileVO.setLocationScope(new Long(request.getParameter("locationScope")));
+			    if(request.getParameter("location") !=null && request.getParameter("location").trim().length()>0)
+				    fileVO.setLocation(new Long(request.getParameter("location")));
+			    
+				 String direction =   request.getParameter("dir");
+				 String columnName = request.getParameter("sort");
+				 int startIndex = Integer.parseInt(request.getParameter("startIndex"));
+				 int endIndex = Integer.parseInt(request.getParameter("results"));
+
+				
+			returnVal = newsMonitoringService.getNewsForRegisterUsers2(fileVO,direction,columnName,startIndex,endIndex);
+			fileVO.setFileVOList(returnVal);
+		   }
+	   }
+	   catch(Exception e){
+			  log.error("Exception rised in getGraphDetails Method of NewsDisplayAction ",e); 
+		  }
+			 return Action.SUCCESS;
    }
 }

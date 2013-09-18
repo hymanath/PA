@@ -242,8 +242,10 @@ urlStr += "isAgeSelected="+isAgeSelected+"&isCasteSelected="+isCasteSelected+"&i
 
    if(isFamilySelected == "true")
 	   urlStr += "houseNo="+houseNo+"&";
+
    if(isNameSelected == "true")
-	   urlStr += "name="+searchName+"&";
+	   urlStr += "name="+window.opener.selectedCriteria.searchName+"&";
+
    if(isGenderSelected == "true")
 	   urlStr += "gender="+gender+"&";
 
