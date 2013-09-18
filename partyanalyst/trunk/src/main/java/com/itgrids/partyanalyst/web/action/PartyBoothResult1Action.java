@@ -154,18 +154,40 @@ public class PartyBoothResult1Action extends ActionSupport  implements ServletRe
 
 	public String getAllOptions(){
 		try{
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		    jObj=new JSONObject(task);
 		    if(jObj.getString("task").trim().equalsIgnoreCase("states")){
 				
-		    	  options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),null,null,null);
+		    	  //options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),null,null,null);
+				
+		    	options = crossVotingEstimationService.getUserAccessStateList(regVO.getRegistrationID());
 				
 			  }else if(jObj.getString("task").trim().equalsIgnoreCase("years")){
 				
-				  options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),jObj.getLong("stateId"),jObj.getLong("electionType"),null);
+				  List<Long> constituencyIds = null;
+				  Long electionType = jObj.getLong("electionType");
+				  if(electionType.equals(1L))
+					constituencyIds = (List<Long>)session.getAttribute("userAccessParConsIds");
+				  else
+					constituencyIds = (List<Long>)session.getAttribute("userAccessAssembConsIds");
+					  
+					options = crossVotingEstimationService.getUserAccessElectionYears(electionType,jObj.getLong("stateId"),constituencyIds);  
+				  //options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),jObj.getLong("stateId"),jObj.getLong("electionType"),null);
 				
 			  }else if(jObj.getString("task").trim().equalsIgnoreCase("constituencies")){
 				
-				  options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),null,null,jObj.getLong("electionId"));
+				  List<Long> constituencyIds = null;
+				  Long electionType = jObj.getLong("electionType");
+				  if(electionType.equals(1L))
+					constituencyIds = (List<Long>)session.getAttribute("userAccessParConsIds");
+				  else
+					constituencyIds = (List<Long>)session.getAttribute("userAccessAssembConsIds");
+				  
+				  options = crossVotingEstimationService.getConstituencyListByConstituenciesIds(jObj.getLong("electionId"),constituencyIds);
+				  
+				  //options = crossVotingEstimationService.getAllOptions(jObj.getString("task").trim(),null,null,jObj.getLong("electionId"));
+				  
 				
 			  }
 		}catch(Exception e){
