@@ -4,14 +4,18 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.electoralconnect.dao.IAnnouncementsDAO;
 import com.itgrids.electoralconnect.dao.ICommentDAO;
+import com.itgrids.electoralconnect.dao.ICommentReplyDAO;
 import com.itgrids.electoralconnect.dao.IRolesDAO;
 import com.itgrids.electoralconnect.dao.IUserDAO;
 import com.itgrids.electoralconnect.dao.IUserLoginDAO;
@@ -21,6 +25,7 @@ import com.itgrids.electoralconnect.dto.CommentVO;
 import com.itgrids.electoralconnect.dto.UserProfileVO;
 import com.itgrids.electoralconnect.model.Announcements;
 import com.itgrids.electoralconnect.model.Comment;
+import com.itgrids.electoralconnect.model.CommentReply;
 import com.itgrids.electoralconnect.model.Roles;
 import com.itgrids.electoralconnect.model.User;
 import com.itgrids.electoralconnect.model.UserLogin;
@@ -43,6 +48,7 @@ public class UserService implements IUserService{
 		private IAnnouncementsDAO announcementsDAO;
 		private DateUtilService dateUtilService;
 		private ICommentDAO commentDAO;
+		private ICommentReplyDAO commentReplyDAO;
 		private static final Logger LOG=Logger.getLogger(UserService.class);
 		private TransactionTemplate transactionTemplate=null;
 		
@@ -97,6 +103,14 @@ public class UserService implements IUserService{
 		}
 		public void setCommentDAO(ICommentDAO commentDAO) {
 			this.commentDAO = commentDAO;
+		}
+		
+		
+		public ICommentReplyDAO getCommentReplyDAO() {
+			return commentReplyDAO;
+		}
+		public void setCommentReplyDAO(ICommentReplyDAO commentReplyDAO) {
+			this.commentReplyDAO = commentReplyDAO;
 		}
 		public String validateEmail(String emailId){
 			String res="";
@@ -345,6 +359,52 @@ public class UserService implements IUserService{
 			
 			return resultStatus;
 		}
+		
+		
+		public ResultStatus saveReplyComment(final Long userId,final Long commentId,final String comment){
+			ResultStatus resultStatus = new ResultStatus();
+			try 
+			{
+				CommentReply commentReply=(CommentReply) transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+				LOG.debug("Entered into saveComment() method in UserService Service");
+				Comment commentModel = new Comment();
+				CommentReply commentReply = new CommentReply();
+				
+				if(userId != null && userId > 0)
+				{
+					commentModel.setUser(userDAO.get(userId));
+				}
+				/*if(commentId != null && commentId > 0)
+				{
+					commentModel.setAnnouncements(commentDAO .get(commentId));
+				}*/
+				dateUtilService = new DateUtilService();
+				commentModel.setComment(comment);
+				commentModel.setTime(dateUtilService.getCurrentDateAndTime());
+				commentModel.setIsDelete("NO");
+				commentModel = commentDAO.save(commentModel);
+				commentReply.setComment(commentModel);
+				commentReply.setCommentedOn(commentId);
+				commentReply =commentReplyDAO.save(commentReply);
+				}
+				});
+				if(commentReply != null)
+				{
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+				else
+				{
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				}
+			} catch (Exception e)
+			{
+				LOG.error("Exception Raised in saveComment() method in UserService Service",e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			
+			return resultStatus;
+		}
 		/**
 		 * This Service is used for getting all comments commented by users
 		 * @param Long announcementId
@@ -355,7 +415,11 @@ public class UserService implements IUserService{
 		 */
 		public List<CommentVO> getAllCommentsCommentedByUser(Long announcementId,int startIndex,int maxIndex)
 		{
-			List<CommentVO> returnList = null;
+			List<CommentVO> cmmntRplyList =null; 
+			List<Long> cmmntIdsList=new ArrayList<Long>();
+			Map<Long,CommentVO> cmmntMap=new HashMap<Long, CommentVO>();
+			List<CommentReply> cmmntRply=new ArrayList<CommentReply>();
+			List<CommentVO> returnList=null;
 			try
 			{
 				LOG.debug("Entered into getAllCommentsCommentedByUser() method in UserService Service");
@@ -364,13 +428,16 @@ public class UserService implements IUserService{
 				List<Object[]> commentsList = commentDAO.getAllComments(announcementId, startIndex, maxIndex);
 				if(commentsList != null && commentsList.size() > 0)
 				{
-					returnList = new ArrayList<CommentVO>();
+					//returnList = new ArrayList<CommentVO>();
 					for (Object[] parms : commentsList) {
 						CommentVO commentVO = new CommentVO();
+						cmmntRplyList =new ArrayList<CommentVO>(); 
+						
 						commentVO.setCommentId((Long)parms[0]);
 						commentVO.setComment(parms[1].toString());
 						user          = (User) parms[2];
 						commentVO.setName(user.getUserProfile().getFirstName());
+						commentVO.setCmmntRplyList(cmmntRplyList);
 						
 						DateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 						
@@ -382,8 +449,38 @@ public class UserService implements IUserService{
 						//commentVO.setDate((Date) parms[3]);
 						commentVO.setCommentedTime(reportDate);
 						commentVO.setTotal(totalCount);
-						returnList.add(commentVO);
+						cmmntIdsList.add((Long)parms[0]);
+						cmmntMap.put((Long)parms[0], commentVO);
+						//returnList.add(commentVO);
 					}
+					cmmntRply=commentReplyDAO.getRepliesForCommentByIds(cmmntIdsList);
+					
+					for(CommentReply param:cmmntRply){
+						CommentVO commentVO2=new CommentVO();
+						commentVO2.setCommentId(param.getComment().getCommentId());
+						commentVO2.setComment(param.getComment().getComment());
+						commentVO2.setName(param.getComment().getUser().getUserProfile().getFirstName()+""+param.getComment().getUser().getUserProfile().getLastName());
+						DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+						
+						String reportDate1="";
+						if(param.getComment().getTime()!=null){
+							reportDate1 = df1.format(param.getComment().getTime());
+						}
+						commentVO2.setCommentedTime(reportDate1);
+						commentVO2.setAbused(param.getComment().getIsDelete());
+						if(cmmntMap.get(param.getCommentedOn().longValue())!=null){
+							cmmntMap.get(param.getCommentedOn().longValue()).getCmmntRplyList().add(commentVO2);
+						}
+					}
+					List<Object[]> cmntReply=commentReplyDAO.getReplyCountsByIdsList(cmmntIdsList);
+					for(Object[] obj:cmntReply){
+						if(cmmntMap.get(Long.parseLong(obj[0].toString()))!=null){
+							cmmntMap.get(obj[0]).setReplyCount(Long.parseLong(obj[1].toString()));
+						}
+					}
+					
+					returnList=new ArrayList<CommentVO>(cmmntMap.values());
+					
 				}
 			} catch (Exception e)
 			{
@@ -467,9 +564,35 @@ public class UserService implements IUserService{
 						commentVO.setAnnouncement(announcements.getTitle());
 						commentVO.setAbused(parms[5].toString());
 						commentVO.setTotal(totalCount);
+						
+						List<CommentReply> cmmntReplyList=commentReplyDAO.getRepliesForCommentById(commentVO.getCommentId());
+						List<CommentVO> replyList=new ArrayList<CommentVO>();
+						if(cmmntReplyList!=null){
+							
+							for(CommentReply param:cmmntReplyList){
+								CommentVO commentVO2=new CommentVO();
+								commentVO2.setCommentId(param.getComment().getCommentId());
+								commentVO2.setComment(param.getComment().getComment());
+								commentVO2.setName(param.getComment().getUser().getUserProfile().getFirstName()+""+param.getComment().getUser().getUserProfile().getLastName());
+								Long replyCount=commentReplyDAO.getRepliesForCommentByIdCount(commentVO.getCommentId());
+								commentVO2.setTotal(replyCount);
+								DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+								
+								String reportDate1="";
+								if(param.getComment().getTime()!=null){
+									reportDate1 = df1.format(param.getComment().getTime());
+								}
+								commentVO2.setCommentedTime(reportDate1);
+								commentVO2.setAbused(param.getComment().getIsDelete());
+								replyList.add(commentVO2);
+							}
+						}
+						
+						commentVO.setCmmntRplyList(replyList);
 						returnList.add(commentVO);
 					}
 				}
+				
 			} catch (Exception e)
 			{
 				returnList = new ArrayList<CommentVO>();
@@ -517,6 +640,30 @@ public class UserService implements IUserService{
 						commentVO.setAnnouncement(announcements.getTitle());
 						commentVO.setAbused(parms[5].toString());
 						commentVO.setTotal(totalCount);
+						List<CommentReply> cmmntReplyList=commentReplyDAO.getRepliesForCommentById(commentVO.getCommentId());
+						List<CommentVO> replyList=new ArrayList<CommentVO>();
+						if(cmmntReplyList!=null){
+							
+							for(CommentReply param:cmmntReplyList){
+								CommentVO commentVO2=new CommentVO();
+								commentVO2.setCommentId(param.getComment().getCommentId());
+								commentVO2.setComment(param.getComment().getComment());
+								commentVO2.setName(param.getComment().getUser().getUserProfile().getFirstName()+""+param.getComment().getUser().getUserProfile().getLastName());
+								Long replyCount=commentReplyDAO.getRepliesForCommentByIdCount(commentVO.getCommentId());
+								commentVO2.setTotal(replyCount);
+								DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+								
+								String reportDate1="";
+								if(param.getComment().getTime()!=null){
+									reportDate1 = df1.format(param.getComment().getTime());
+								}
+								commentVO2.setCommentedTime(reportDate1);
+								commentVO2.setAbused(param.getComment().getIsDelete());
+								replyList.add(commentVO2);
+							}
+						}
+						
+						commentVO.setCmmntRplyList(replyList);
 						returnList.add(commentVO);
 					}
 				}
@@ -603,5 +750,39 @@ public class UserService implements IUserService{
 				password = userDAO.getPasswordByUser(userId);
 			}
 			return password;
+		}
+		
+		public Long getRepliesCount(Long commentId){
+			Long repcount=0l;
+			if(commentId>0){
+				repcount=commentReplyDAO.getRepliesForCommentByIdCount(commentId);
+			}
+			return repcount;
+		}
+		public List<CommentVO> getRepliesList(Long commentId){
+			List<CommentVO> repliesList=new ArrayList<CommentVO>();
+			List<CommentReply> replist=commentReplyDAO.getRepliesForCommentById(commentId);
+			
+			if(replist!=null){
+				for(CommentReply param:replist){
+					CommentVO commentVO=new CommentVO();
+					commentVO.setCommentId(param.getComment().getCommentId());
+					commentVO.setComment(param.getComment().getComment());
+					commentVO.setName(param.getComment().getUser().getUserProfile().getFirstName()+""+param.getComment().getUser().getUserProfile().getLastName());
+					Long replyCount=commentReplyDAO.getRepliesForCommentByIdCount(commentId);
+					commentVO.setTotal(replyCount);
+					DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					
+					String reportDate1="";
+					if(param.getComment().getTime()!=null){
+						reportDate1 = df1.format(param.getComment().getTime());
+					}
+					commentVO.setCommentedTime(reportDate1);
+					commentVO.setAbused(param.getComment().getIsDelete());
+					repliesList.add(commentVO);
+				}
+			}
+			
+			return repliesList;
 		}
 }

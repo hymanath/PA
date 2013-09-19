@@ -106,9 +106,16 @@ public String saveComment()
 		if(regVO == null)
 			return "notLogged";
 		String commentString = jobj.getString("comment");
-		Long annoucementId = jobj.getLong("id");
+		
 		Long userId = regVO.getRegistrationID();
-		resultStatus = userService.saveComment(userId, annoucementId, commentString);
+		if(jobj.getString("task").equalsIgnoreCase("commentReplySave")){
+			Long commentId = jobj.getLong("id");
+			resultStatus=userService.saveReplyComment(userId, commentId, commentString);
+		}
+		else{		
+			Long annoucementId = jobj.getLong("id");
+			resultStatus = userService.saveComment(userId, annoucementId, commentString);
+		}
 	} catch (Exception e) {
 		LOG.error("Exception raised in  saveComment() method in HomePageAction Action",e);
 	}

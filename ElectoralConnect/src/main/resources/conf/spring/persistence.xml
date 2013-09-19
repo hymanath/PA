@@ -37,6 +37,7 @@
 				<value>com.itgrids.electoralconnect.model.AnnouncementFiles</value>
 				<value>com.itgrids.electoralconnect.model.FileType</value>
 				<value>com.itgrids.electoralconnect.model.Comment</value>
+				<value>com.itgrids.electoralconnect.model.CommentReply</value>
 			</list>
 			
 		</property>

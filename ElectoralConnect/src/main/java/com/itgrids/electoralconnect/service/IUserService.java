@@ -34,4 +34,10 @@ public interface IUserService {
 	public UserVO abuseCommentService(Long commentId);
 	
 	public String getPasswordByUserId(Long userId);
+	
+	public ResultStatus saveReplyComment(Long userId,Long commentId,String comment);
+	
+	public Long getRepliesCount(Long commentId);
+	
+	public List<CommentVO> getRepliesList(Long commentId);
 }
