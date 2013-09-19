@@ -35,12 +35,26 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	private ResultStatus resultStatus;
 	private UserVO userVO;
 	private IMailService mailService;
+	private Long repliesCount;
 	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request  = request;
 	}
 	
 	
+
+	public Long getRepliesCount() {
+		return repliesCount;
+	}
+
+
+
+	public void setRepliesCount(Long repliesCount) {
+		this.repliesCount = repliesCount;
+	}
+
+
+
 	public String getTask() {
 		return task;
 	}
@@ -142,6 +156,29 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised in  getCommentsBtSelDates() method in AdminPageAction Action",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getRepliesForComment(){
+		try {
+			LOG.debug("Entered into abuseComment() method in AdminPageAction Action");
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return Action.ERROR;
+			jobj = new JSONObject(getTask());
+			Long commentId = jobj.getLong("id");
+			if(jobj.getString("task").equalsIgnoreCase("getRepliesForComment")){
+				commentVO=userService.getRepliesList(commentId);
+			}
+			else{
+				repliesCount = userService.getRepliesCount(commentId);
+			}
+			
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in  abuseComment() method in AdminPageAction Action",e);
 		}
 		return Action.SUCCESS;
 	}

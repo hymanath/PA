@@ -126,6 +126,18 @@
 			</result>
 		</action>
 		
+		<action name="commentRepliesAction" class="adminPageAction" method="getRepliesForComment">
+			<result type="json" name="success">
+				<param name="root">repliesCount</param>				
+			</result>
+		</action>
+		
+		<action name="commentRepliesList" class="adminPageAction" method="getRepliesForComment">
+			<result type="json" name="success">
+				<param name="root">commentVO</param>				
+			</result>
+		</action>
+		
 		<action name="abuseCommentAction" class="adminPageAction" method="abuseComment">
 			<result type="json" name="success">
 				<param name="root">resultStatus</param>				

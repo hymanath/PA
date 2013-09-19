@@ -13,6 +13,7 @@
 		<property name="rolesDAO" ref="rolesDAO"/>
 		<property name="announcementsDAO" ref="announcementsDAO"/>
 		<property name="commentDAO" ref="commentDAO"/>
+		<property name="commentReplyDAO" ref="commentReplyDAO"></property>
 	</bean>
 	<bean name="mailService" class="com.itgrids.electoralconnect.service.impl.MailService">
 		<property name="mailsTemplateService" ref="mailsTemplateService" />
