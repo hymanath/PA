@@ -75,7 +75,7 @@ if(myResults != null)
 			<!--str += '<b>Name : </b><span>'+myResults[i].name+'</span></br>';-->
 			if(myResults[i].filePath != null && myResults[i].filePath != "")
 			{
-			   str +='<div ><span class="title_sec3">Releted Document:</span><s:a href="'+myResults[i].filePath+'"><span>'+myResults[i].fileName+'</span></s:a></div>';
+			   str +='<div ><span class="title_sec3">Releted Document:</span><s:a href="'+myResults[i].filePath+'" target="_blank"><span>'+myResults[i].fileName+'</span></s:a></div>';
 				
 				<!--str += '<b>File Description : </b><span>'+myResults[i].fileDescription+'</span></br>';-->
 				<!--str += '<b>File Date : </b><span>'+myResults[i].fileDate+'</span></br>';-->
@@ -164,7 +164,15 @@ function buildTotalCommentsList(myResults,jsObj)
 				str +='<span class="description_font">'+myResults[i].comment+'</span></br></br>';
 				str +='<span class="pull-left label label-important">'+myResults[i].name+'</span>';
 				str +='<span class="pull-right ">'+myResults[i].commentedTime+'</span></br>';
-				str += '</div>';
+				if(myResults[i].cmmntRplyList.length>0){
+					str +='<div class="row"><a class="span2 offset6" onClick="showReplies('+myResults[i].commentId+')" style="cursor:pointer;"><span id="replyCountId'+myResults[i].commentId+'" style="margin-left:12px;" >Replies : '+myResults[i].replyCount+'<i class="icon-comment"></i></span></a></div>';
+					
+					str +='<div id="repliesDivId'+myResults[i].commentId+'" style="display:none;" >';
+					for(var j in myResults[i].cmmntRplyList){
+						str+='<div class="breadcrumb" style="margin-top:30px;"><span class="cmmntRply" style="padding:10px;color:#3A87AD">'+myResults[i].cmmntRplyList[j].comment+'</span><div class="row cmmntReplyDt"><span class="pull-left span3">'+myResults[i].cmmntRplyList[j].name+'</span><span class="pull-right span3" style="text-align:right;">'+myResults[i].cmmntRplyList[j].commentedTime+'</span></div></div>';
+					}
+				}
+				str += '</div></div>';
 				
 			}
 			str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList();">More</a>'
@@ -243,6 +251,10 @@ function callAjaxForComments(jsObj,url)
 	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 getTop5Comments(id,startIndex,maxIndex,"getTotalComments",false);
+
+function showReplies(id){
+	$('#repliesDivId'+id).toggle();
+	}
 </script>
 </body>
 </html>

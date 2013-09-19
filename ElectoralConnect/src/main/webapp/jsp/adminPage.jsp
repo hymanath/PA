@@ -74,13 +74,13 @@
 		#indiCommentDate{margin:2px;color:#28B0D6;}
 		
 		#announcementsFilterId{text-align:center;}
+		.replyComment{margin-top:20px;}
 			
 	
 </style>
 
 <div id="mainBodyId" class="container well">
-	
-				<div class="row-fluid">
+			<div class="row-fluid">
 			<div class="span12">
 			<div class="span3 btn menu activeNow" id="user" style="height:66px;">
 
@@ -222,7 +222,7 @@
 		<div id="pagedCommentsId" style="display:inline-block"></div>
 						<!----pagination Div----->
 			<div class="span12 text-center">
-				<div id="paginationAnnouncementId"></div>
+				<div id="paginationAnnouncementId" style="margin-left:250px;margin-top:20px;"></div>
 			</div>
 		</div>
 	</div>
@@ -319,7 +319,7 @@
 			</div>
 						<!----pagination Div----->
 			<div class="span12 text-center">
-				<div id="paginationId"></div>
+				<div id="paginationId" style="margin-left:250px;margin-top:20px;"></div>
 			</div>
 			</div>
 			
@@ -337,6 +337,9 @@
 		</div>
 		</form>
 </div>
+
+
+
 </div>
 
 <script>
@@ -627,20 +630,46 @@
 			str += '<div id="commentsDIv'+myResults[i].commentId+'">';
 			str +='<div class="comment_sec span9">';
 			if(myResults[i].abused.toLowerCase() == "no")
-			{
-			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
+			{	
+			str += '<a class="pull-right" style="margin:5px;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
+			str +='<i id="commentReplyId'+myResults[i].commentId+'" class="icon-repeat pull-right" style="margin:5px;" title="Reply to this Comment" onClick="replyToThisComment('+myResults[i].commentId+')"></i>';
+
 			str +='<span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span class="font_desc">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +=' <span class="label1 label-info">Posted By:</span>';
 			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
-			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].commentedTime+'</span></div>';
-
+			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].commentedTime+'</span>';
+			
 
 			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+			
+			str +='<div id="commentReplyTextId'+myResults[i].commentId+'" style="display:none;">';
+			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+			str +='<div class="span3"><div id="errorMsg'+myResults[i].commentId+'"></div></div>';
+			str +='<div><textarea id="commentText'+myResults[i].commentId+'" class="replyComment" style="width:598px; margin-left:71px;" cols="50" placeholder="Post your comment here..." rows="4"></textarea></div>';
+			str +='<div class="span9"><input type="button" onclick="saveReplyComment('+myResults[i].commentId+');" value="Post Comment" class="btn btn-success pull-right"></div>';
+			str +='</div><div id="repliesCountMainDiv'+myResults[i].commentId+'">';
+			if(myResults[i].cmmntRplyList.length>0){
+			str +='<a onClick="showReplies('+myResults[i].commentId+')" style="cursor:pointer;"><span class="pull-right" id="replyCountId'+myResults[i].commentId+'" style="margin:10px;" >Replies : '+ myResults[i].cmmntRplyList[0].total+'<i class="icon-comment"></i></span></a>';
+			str +='<div id="repliesDivId'+myResults[i].commentId+'" style="display:none;" >';
+			for(var j in myResults[i].cmmntRplyList){
+				str+='<div class="breadcrumb row" style="margin-top:30px;"><span class="span8" style="padding:10px;color:#3A87AD">'+myResults[i].cmmntRplyList[j].comment+'</span><span class="pull-left span3">'+myResults[i].cmmntRplyList[j].name+'</span><span class="pull-right span5" style="text-align:right;">'+myResults[i].cmmntRplyList[j].commentedTime+'</span></div>';
+			}
+			/*for(var j in cmmntRplyList){
+					str +='<div><span>'+myResults[i].cmmntRplyList[j].comment+'</span>';
+					str +='<span>'+myResults[i].cmmntRplyList[j].name+'</span>';
+					str +='<span>'+myResults[i].cmmntRplyList[j].commentedTime+'</span>'
+					str +='</div>';
+				}*/
+			}
+			str+= '</div></div></div>';
 
+			
+			
+			
 			str +='</div>';
 			str +='</div>';
 			str += '<a id="moreButton" style="display:none;margin-top:5px;" class="btn btn-primary pull-right" onClick="getRemaingTotalCommentsList();">More</a>'
@@ -666,7 +695,19 @@
   
 	}
  }
-
+function showReplies(id){
+	$('#repliesDivId'+id).toggle();
+	
+	 var jsObj =
+		{  	
+			id   : id,
+			task : "getRepliesForComment"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "commentRepliesList.action?"+rparam;
+		callAjaxForAdmin(jsObj, url);
+	
+}
 	function buildTotalCommentsListBtDates(myResults)
 	{
 		if(myResults != null)
@@ -681,6 +722,7 @@
 			{
 			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
+			
 			str +='<span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
@@ -733,15 +775,31 @@
 			str +='<div class="comment_sec span9">';
 			if(myResults[i].abused.toLowerCase() == "no")
 			{
-			str += '<a style="float: right;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
+			str += '<a style="float: right;margin:5px;" id="abusedButton'+myResults[i].commentId+'" onClick="abuseComment('+myResults[i].commentId+');" ><img src="img/error.png"></a>';
 			}
+			str +='<i id="commentReplyId'+myResults[i].commentId+'" class="icon-repeat pull-right" style="margin:5px;" title="Reply to this Comment" onClick="replyToThisComment('+myResults[i].commentId+')"></i>';
 			str +='<span class="title_sec"></span><span class="title_sec1">'+myResults[i].announcement+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +='<span style="font-size: 15px;">'+myResults[i].comment+'</span>';
 			str +='<hr style="margin-top:0px;">';
 			str +=' <span class="label1 label-info">Posted By:</span>';
 			str +='<span class="posted_sec">'+myResults[i].name+'</span>';
-			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].commentedTime+'</span></div>';
+			str +='<span class="pull-right"><b>Date : </b>'+myResults[i].commentedTime+'</span>';
+			str +='<div id="commentReplyTextId'+myResults[i].commentId+'" style="display:none;">';
+			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
+			str +='<div class="span3"><div id="errorMsg'+myResults[i].commentId+'"></div></div>';
+			str +='<div><textarea id="commentText'+myResults[i].commentId+'" class="replyComment" style="width:598px; margin-left:71px;" cols="50" placeholder="Post your comment here..." rows="4"></textarea></div>';
+			str +='<div class="span9"><input type="button" onclick="saveReplyComment('+myResults[i].commentId+');" value="Post Comment" class="btn btn-success pull-right"></div>';
+			str +='</div><div id="repliesCountMainDiv'+myResults[i].commentId+'">';
+			
+			if(myResults[i].cmmntRplyList.length>0){
+			str +='<a onClick="showReplies('+myResults[i].commentId+')" style="cursor:pointer;"><span class="pull-right" id="replyCountId'+myResults[i].commentId+'" style="margin:10px;" >Replies : '+myResults[i].cmmntRplyList[0].total+'<i class="icon-comment"></i></span></a>';
+			str +='<div id="repliesDivId'+myResults[i].commentId+'" style="display:none;" >';
+			for(var j in myResults[i].cmmntRplyList){
+				str+='<div class="breadcrumb row" style="margin-top:30px;"><span class="span8" style="padding:10px;color:#3A87AD">'+myResults[i].cmmntRplyList[j].comment+'</span><span class="pull-left span3">'+myResults[i].cmmntRplyList[j].name+'</span><span class="pull-right span5" style="text-align:right;">'+myResults[i].cmmntRplyList[j].commentedTime+'</span></div>';
+			}
+			}
+			str+='</div></div></div>';
 
 
 			str += '<div id="abusedStatus'+myResults[i].commentId+'"></div>';
@@ -864,9 +922,35 @@
 										$('#statusMsg'+jsObj.announcementId+'').html('<b style="color:red">Error Occured While Deleteing The Announcement</b>');
 									}
 								}
+								else if(jsObj.task =="commentReplySave"){
+									$('#commentReplyId'+jsObj.id).trigger('click');
+									
+									getRepliesCount(jsObj.id);
+								}
+								else if(jsObj.task == "getRepliesCount"){
+									
+									if(typeof $("#replyCountId"+jsObj.id).html()=='undefined'){
+									
+										var str='';
+										str +='<a onClick="showReplies('+jsObj.id+')" style="cursor:pointer;"><span class="pull-right" id="replyCountId'+jsObj.id+'" style="margin:10px;" >Replies : '+myResults+'<i class="icon-comment"></i></span></a>'
+										str +='<div id="repliesDivId'+jsObj.id+'" style="display:none;" ></div>';
+										
+										$('#repliesCountMainDiv'+jsObj.id).html(str);
+									}
+									
+									else{
+										$("#replyCountId"+jsObj.id).html('Replies : '+myResults+'<i class="icon-comment"></i>');
+									}
+									
+									//str +='<a onClick="showReplies('+myResults[i].commentId+')" style="cursor:pointer;"><span class="pull-right" id="replyCountId'+myResults[i].commentId+'" style="margin:10px;" >Replies : '+myResults[i].cmmntRplyList[0].total+'<i class="icon-comment"></i></span></a>';
+			
+								}
+								else if(jsObj.task == "getRepliesForComment"){
+									buildReplies(myResults,jsObj);
+								}
 								
 								}catch (e) {
-							     
+							     console.log(e);
 								}  
  		               },
  		               scope : this,
@@ -886,6 +970,32 @@
 			document.userDetailsForm.submit();
 		}
 	});
+	
+	
+	function getRepliesCount(id){
+		 var jsObj =
+		{  	
+			id   : id,
+			task : "getRepliesCount"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "commentRepliesAction.action?"+rparam;
+		callAjaxForAdmin(jsObj, url);
+	}
+	
+	function buildReplies(myResults,jsObj){
+	
+	 var str="";
+		
+		if(myResults!=null){
+			for(var i in myResults){
+				
+				str+='<div class="breadcrumb row" style="margin-top:30px;"><span class="span8" style="padding:10px;color:#3A87AD">'+myResults[i].comment+'</span><span class="pull-left span3">'+myResults[i].name+'</span><span class="pull-right span5" style="text-align:right;">'+myResults[i].commentedTime+'</span></div>';
+				
+			}
+		}
+		$('#repliesDivId'+jsObj.id).html(str);
+	}
 	
 	function buildAllAnnouncements(results,jsObj){
 	if(results != null && results.length > 0)
@@ -958,6 +1068,7 @@
 			};
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 			var url = "getCommentsAction.action?"+rparam;
+			var url = "getCommentsAction.action?"+rparam;
 			callAjaxForAdmin(jsObj, url);
 	}
 	function buildTotalCommentsList(myResults,jsObj)
@@ -980,6 +1091,7 @@
 					str +='<span class="pull-left label label-important" id="indiCommentName">'+myResults[i].name+'</span>';
 					str +='<span class="pull-right " id="indiCommentDate">'+myResults[i].commentedTime+'</span></br>';
 					str += '</div>';
+					
 				}
 				<!--str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>';-->
 				$('#totalComments').append(str);
@@ -1035,6 +1147,35 @@
 			callAjaxForAdmin(jsObj, url);
 	  }
 	}
+	
+	function replyToThisComment(commentId){
+		 $('#commentReplyTextId'+commentId).toggle();
+		 $('#commentText'+commentId).html('');
+	}
+	
+	function saveReplyComment(id)
+	{
+		
+		$("#errorMsg"+id).html('');
+		var comment = $.trim($('#commentText'+id).val());
+     
+		if(comment.length == 0)
+		{
+			$("#errorMsg"+id).html('Please Enter Comment.').css("color","red");
+			return;
+		}
+		var jsObj =
+			{  	
+				id       : id,
+				comment  : comment,
+				task     : 'commentReplySave'
+			};
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+			var url = "commentSaveAction.action?"+rparam;
+			callAjaxForAdmin(jsObj, url);
+	}
+	
+	
 	$(document).ready(function(){
 
 					var type = '${type}';

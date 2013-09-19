@@ -54,6 +54,7 @@
 				<value>com.itgrids.electoralconnect.model.AnnouncementFiles</value>
 				<value>com.itgrids.electoralconnect.model.FileType</value>
 				<value>com.itgrids.electoralconnect.model.Comment</value>
+				<value>com.itgrids.electoralconnect.model.CommentReply</value>
 			</list>
 		</property>
 	</bean>
@@ -93,6 +94,10 @@
 	</bean>
 	
 	<bean id="announcementTypeDAO" class="com.itgrids.electoralconnect.dao.hibernate.AnnouncementTypeDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="commentReplyDAO" class="com.itgrids.electoralconnect.dao.hibernate.CommentReplyDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
