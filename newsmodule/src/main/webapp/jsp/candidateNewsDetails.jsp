@@ -197,6 +197,7 @@ border-collapse:collapse;
     margin-right: auto;
     width: 950px;}
 #getCandidatesNewsId,#criticsId{cursor:pointer;}
+#criticsAjaxImg{margin-bottom: 37px; margin-left: 652px; margin-top: -91px;width: 28px;}
 </style>
 <script type="text/javascript">
 var fromDate = '${fromDate}';
@@ -307,6 +308,7 @@ var requestFor = '${requestFor}';
       <div id="hideAndShowLatestNewsDiv">
 	   <div id="latestNewsDiv"></div>
 	   <div id="paginationId"></div>
+	   <img src="images/icons/loading.gif" id="criticsAjaxImg" style="display:none;"/>
 	  </div>
 	 </div>
 	</div>
@@ -1325,7 +1327,7 @@ function getPartyWiseCriticsNews(startIndex)
 
    }
    
-
+ $("#criticsAjaxImg").css("display","inline-block");
  var jObj=
 	{
 		
@@ -1352,6 +1354,7 @@ function getPartyWiseCriticsNews(startIndex)
 
 function buildPaginatedNews(results,jsObj)
 {
+	 $("#criticsAjaxImg").css("display","none");
    $("#partyWiseCriticsNewsMainDiv").css("display","block");
    $("#latestNewsDiv").html('');
    if(results == null || results.length == 0)
