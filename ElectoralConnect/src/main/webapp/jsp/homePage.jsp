@@ -44,6 +44,10 @@
 			#indiCommentName{margin:2px;}
 			#indiCommentDate{margin:2px;color:#28B0D6;}
 			#specialBlockDIV >div,.bigsblock{cursor:pointer;}
+			.cmmntRply{clear:both;}
+			.cmmntReplyDt{margin-top:10px;}
+			
+			
 </style>
 <div>
 <!--<div id="bodyId">Hello Welcome to Electoral Connect </div>
@@ -90,9 +94,9 @@
 							  <li data-slide-to="3" data-target="#myCarousel" ></li>
 							  <li data-slide-to="4" data-target="#myCarousel"></li>
 							  <li data-slide-to="5" data-target="#myCarousel" ></li>
-							  <li data-slide-to="6" data-target="#myCarousel"></li>
+							  <!--<li data-slide-to="6" data-target="#myCarousel"></li>
 							  <li data-slide-to="7" data-target="#myCarousel"></li>
-							  <li data-slide-to="8" data-target="#myCarousel"></li>
+							  <li data-slide-to="8" data-target="#myCarousel"></li>-->
 							</ol>
 							<div class="carousel-inner">
 							  <div class="item active">
@@ -122,13 +126,40 @@
 									</ul>-->
 								</div>
 							  </div>
-							  <div class="item ">
+							   <div class="item ">
+								<div class="hero-unit small ">
+									<h1> Electoral Connect Now in Mobile </h1>
+									<h2>- Use Electoral Connect Mobile APP.</h2>
+								<!--	<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							   <div class="item ">
+								<div class="hero-unit small ">
+									<h1> Connect with Election Commission from your Mobile</h1>
+									<h2>- Get Frequent Updates to your mobile from Election Commission.</h2>
+								<!--	<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							   <div class="item ">
+								<div class="hero-unit small ">
+									<h1> Know your booth details and Way to go to booth in your Mobile</h1>
+									<h2>- Use Map Service in Electoral Connect Mobile APP.</h2>
+								<!--	<ul class="pager">
+										<li class="next"><a href="#">Know More &rarr;</a></li>
+									</ul>-->
+								</div>
+							  </div>
+							 <!-- <div class="item ">
 								<div class="hero-unit small ">
 									<h1>Are you eligible for voting? But, still don't have vote?</h1>
 									<h2>- See how to register your vote.</h2>
 								<!--	<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>-->
+									</ul>
 								</div>
 							  </div>
 							  <div class="item">
@@ -137,7 +168,7 @@
 									<h2>- See how to get Duplicate your vote.</h2>
 									<!--<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>-->
+									</ul>
 								</div>
 							  </div>
 							  <div class="item">
@@ -146,7 +177,7 @@
 									<h2>- See how to Transfer your vote.</h2>
 									<!--<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>-->
+									</ul>
 								</div>
 							  </div>
 							   <div class="item">
@@ -155,7 +186,7 @@
 									<h2>- See how to Modify your details.</h2>
 									<!--<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>-->
+									</ul>
 								</div>
 							  </div>
 							   <div class="item">
@@ -164,7 +195,7 @@
 									<h2>- See Army/NRI Personnel Voting.</h2>
 									<!--<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>-->
+									</ul>
 								</div>
 							  </div>
 							  <div class="item">
@@ -173,9 +204,9 @@
 									<h2>- See how to Cancel Voter Id.</h2>
 									<!--<ul class="pager">
 										<li class="next"><a href="#">Know More &rarr;</a></li>
-									</ul>-->
+									</ul>
 								</div>
-							  </div>
+							  </div>-->
 							   
 							</div>
 							<!---<a data-slide="prev" href="#myCarousel" class="left carousel-control">&lsaquo;</a>
@@ -437,7 +468,15 @@ function buildTotalCommentsList(myResults,jsObj)
 				str +='<span id="indiCommentId">'+myResults[i].comment+'</span></br>';
 				str +='<span class="pull-left label label-info" id="indiCommentName">'+myResults[i].name+'</span>';
 				str +='<span class="pull-right" id="indiCommentDate">'+myResults[i].commentedTime+'</span></br>';
-				str += '</div>';
+				if(myResults[i].cmmntRplyList.length>0){
+					str +='<div class="row"><a class="span2 offset5" onClick="showReplies('+myResults[i].commentId+')" style="cursor:pointer;"><span id="replyCountId'+myResults[i].commentId+'" style="margin-left:6px;" >Replies : '+myResults[i].replyCount+'<i class="icon-comment"></i></span></a></div>';
+					
+					str +='<div id="repliesDivId'+myResults[i].commentId+'" style="display:none;" >';
+					for(var j in myResults[i].cmmntRplyList){
+						str+='<div class="breadcrumb" style="margin-top:30px;"><span class="cmmntRply" style="padding:10px;color:#3A87AD">'+myResults[i].cmmntRplyList[j].comment+'</span><div class="row cmmntReplyDt"><span class="pull-left span3">'+myResults[i].cmmntRplyList[j].name+'</span><span class="pull-right span3" style="text-align:right;">'+myResults[i].cmmntRplyList[j].commentedTime+'</span></div></div>';
+					}
+				}
+				str += '</div></div>';
 			}
 			<!--str += '<a id="moreButton" style="display:none;" class="btn btn-primary" onClick="getRemaingCommentsList('+announcementId+');">More</a>';-->
 			
@@ -668,6 +707,9 @@ function callAjaxForComments(jsObj,url){
 	}
 	function hideSubBoxes(subBoxId){
 	      $('#'+subBoxId).toggle('slow');  
+	}
+	function showReplies(id){
+	$('#repliesDivId'+id).toggle();
 	}
 </script>
 

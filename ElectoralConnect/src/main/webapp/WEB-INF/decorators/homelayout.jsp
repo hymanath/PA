@@ -119,7 +119,7 @@
 								</ul>
 							</nav>
 						</div>
-						<div class="span10 " style="margin-top: -10px;"><a class="btn btn-inverse pull-left" href="homePage.action"><i class="icon-home icon-white" style="height:20px;"></i></a></div>
+						<div class="span10 " style="margin-top: -10px;"><a class="btn btn-inverse pull-left" href="homePage.action" title="Go to Home Page"><i class="icon-home icon-white" style="height:20px;"></i></a><a class="btn btn-inverse pull-left" href="https://www.facebook.com/APCEO" target="_blank" style="padding:4px;" title="Follow Us on Facebook"><img src="image/fb.jpeg" height="24px;" width="22px;" alt="facebook image"/></a></div>
 
 					</div>
 				</div><!---header Container---->
