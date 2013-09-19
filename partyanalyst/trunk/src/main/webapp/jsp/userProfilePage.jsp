@@ -385,7 +385,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 					</h4>
 					<ul class="nav nav-list bs-docs-sidenav nav-stacked">
 					<li ><a href="javascript:{}" class="subscriptionsLink"><i class="icon-list"></i><i class="icon-chevron-right"></i> Subscriptions</a></li>
-					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Asses Politician</a>
+					<li><a  href="javascript:{}" class="assessPoliticianLink"><i class="icon-edit"></i><i class="icon-chevron-right"></i> Assess Politician</a>
 					<input type="hidden" value="Total" class="politicalReasTypeVar" /></li>
 					<li><a href="javascript:{}" id="FavouriteLinks"><i class="icon-heart"></i><i class="icon-chevron-right"></i> Favourite Links</a></li>
 					<c:if test="${hasNewsMonitoring == true && host != 'tdpserver'}">
@@ -526,6 +526,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						<div id="caderInfo"></div>
 						<div id="impEvents"></div>
 						<div id="announcementsDiv" style="display: inline-block;padding-bottom: 25px;padding-top: 25px;">
+						<div id="recentannouncement"></div><br>					
 						<div id="addNewAnnouncement"><a onclick="openNewAnnouncementPopup()" href="javascript:{}">Add New Announcement</a></div>
 						<div id="viewAllAnnouncements" style="margin-left: 313px;"><a onclick="openEditAnnouncement()" href="javascript:{}" style="float: right;margin-top: -17px;">View All Announcements</a></div>
 						</div>

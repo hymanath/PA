@@ -226,6 +226,14 @@ select
 		$('#diRadioId').click(function(){
 			document.getElementById("districtList").disabled= false;
 		});
+		$("#censusSelect").live("change",function(){
+     			var val = $("#censusSelect").val();
+				if(val == 0)
+			    {
+					$("#censusReporterror_Div").html('Please Select Census Type');
+			    }
+		});
+
 	});
 	function showAjaxImage()
 	{
@@ -289,12 +297,12 @@ select
 			errorElmt.innerHTML = "Please Select Year";
 			return;
 		}
+		
 		if(censusValue == '0')
 		{
-				errorElmt.innerHTML = ' Please Select Census Type ';
+				//errorElmt.innerHTML = ' Please Select Census Type ';
 				return;
 		}
-		
 		showAjaxImage();
 		var stateElmt = document.getElementById("stateList");		
 		var reportLevel = '';

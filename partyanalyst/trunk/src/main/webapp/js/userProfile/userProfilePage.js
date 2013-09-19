@@ -158,6 +158,7 @@ if($(this).val().length==0)
 		$(".placeholderCenterDiv").children().remove();
 		$('#headerDiv').html('<b>Announcements</b>');
 		$("#announcementsDiv").css("display","block");
+        getUserAnnouncements();
 	});
 	$(".ImportantEvents").click(function(){
 	    $(".FavoriteLinksDiv").hide();
@@ -877,16 +878,18 @@ $("#allConnectedUsersDisplay_main").children().remove();
 	oPushButton1.on("click",function(){
 	   
 		var uploadPhotoId = document.getElementById("photoUploadElmt").value;
-		var str = '<font color="red">';
+		var str = '<font color="#000">';
 		if(uploadPhotoId.length == 0)
 	     {   
 		     str += ' Please Select a image .<br>';
 		     document.getElementById("uploadPic_window_status").innerHTML = str;
 	     }
 		 else{
+                  photoStatusElmt.innerHTML = ' ';
 		 var photoStatusElmt = document.getElementById("uploadPic_window_status");
 		
 		 if(uploadPicStatus){
+			
 			 photoStatusElmt.innerHTML = 'Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>'
 		 }else{
 			 photoStatusElmt.innerHTML = 'Please select a valid Image...  '
@@ -916,8 +919,9 @@ $("#uploadPic_window_status").html('');
 	     }
 		 else
 		 {
-			 if(uploadPicStatus)
-				 $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>');
+			 if(uploadPicStatus){
+			
+				 $("#uploadPic_window_status").html('Uploading Image. Please Wait... &nbsp<img width="16" height="11" src="images/icons/partypositions.gif"/>').css('color','black');}
 			 else{
 				 $("#uploadPic_window_status").html('Please select valid Image..  ').css('color','red');
 			 }
@@ -1433,6 +1437,10 @@ function callAjax1(jsObj,url){
 						    {
 								buildUserImpEvents(results);
 						    }							
+				   else if(jsObj.task == 'getUserAnnouncement')
+						    {
+								buildUserAnnouncenents(results);
+						    }
 					else if(jsObj.task == 'getConstituencyNames')
 							{
 								iterateDetailsNames(results);
@@ -4073,6 +4081,17 @@ function getUserImpEvents()
 		callAjax1(jsObj ,url);
 }
 
+function getUserAnnouncements()
+{	
+ ajaxProcessing();
+		var jsObj = {
+			task:"getUserAnnouncement"
+		};
+		var rparam = "task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAnnouncementAction.action?"+rparam;
+		callAjax1(jsObj ,url);
+}
+
 
 
 function buildUserImpEvents(results)
@@ -4121,6 +4140,32 @@ function buildUserImpEvents(results)
 	}
 	str+='</div>';
 	$("#impEvents").html(str);
+	closeDialogue();
+}
+
+function buildUserAnnouncenents(results)
+{	
+	var str='<div id="recentannouncementinner">';
+	$('#headerDiv').html('<b>Announcements</b>');
+	str+='<div id="recentannouncementinner_head">';
+	str+='<table><tr>';
+	str+='<td style="vertical-align:center;"><span class="dashBoardCenterContentHeader">Today \'s Announcements</span></td>';
+	str+='</tr></table>';
+	str+='</div>';
+	if(results.length>0)
+		for(var i  in results){
+		str+='	<ul class="dashBoardContentList" style=" margin: 0 0 7px 25px;">';
+		str+='<li style="margin: 0 0 7px 25px;">'+ results[i].title+' --  '+results[i].fromDate+"   to "+results[i].toDate;
+        +'</li>';
+		str+='</ul>';
+	}
+	else
+	{
+		str+='<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  '+results.length+'  announcements(s)present today</span>';
+	}
+	
+    str+='</div>';
+	$("#recentannouncement").html(str);
 	closeDialogue();
 }
 

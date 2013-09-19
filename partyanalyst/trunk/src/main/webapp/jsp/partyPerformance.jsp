@@ -56,15 +56,16 @@
 		border-radius: 5px 5px 5px 5px; 
 		color: #FFF;
 		}
-		#partyPerformanceReport_11,#partyPerformanceReport_12
+		#partyPerformanceReport_11,#partyPerformanceReport_12,#stateRadio,#countryRadio
 		{
 			margin-right: 3px;
 			margin-top: -4px;
+			
 		}
-		.marginClass{
-
-	margin:5px;
-}
+		.marginClass
+		{
+	        margin:5px;
+        }
 	.selectBoxWidth {
 	    padding: 2px;
 	    width: 250px;
@@ -307,8 +308,8 @@
 		var distElmt = document.getElementById("districtList").disabled = true;
 
 		var str='';
-		str+='<input type="radio" id="stateRadio" checked="checked" name="1" value="'+results[0].id+'" onclick="getDistricts(this.value);">'+results[0].name+'</input>';
-		str+='<input type="radio" id="countryRadio"" name="1" value="'+results[1].id+'" onclick="getDistricts(this.value);">'+results[1].name+'</input>';
+		str+='<input type="radio" id="stateRadio" checked="checked" name="1" value="'+results[0].id+'"onclick="getDistricts(this.value);">'+results[0].name +'    </input>';
+		str+='<input type="radio" id="countryRadio"" name="1" value="'+results[1].id+'" onclick="getDistricts(this.value);">'+results[1].name +'   </input>';
 				
 		if(divElmt)
 			divElmt.innerHTML=str;
