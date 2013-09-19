@@ -1260,7 +1260,7 @@ for  body3 start    result  -->
 </div>
 <!-- Left Nave End-->
  <!-- Middle Nav -->
-<div class="span3 middleNav" style="margin-left:10px;">
+<div class="span3 middleNav" style="margin-left:10px;display:none;">
 	<div class="middleNav-Panchayats">
 		<h5 class="breadcrumb" style="margin-bottom:0px;">Panchayat(s)</h5>
 		<ul id="middleNav-Panchayats-list" class="nav nav-list bs-docs-sidenav nav-stacked"></ul>
@@ -1277,7 +1277,7 @@ for  body3 start    result  -->
 
 
 <!-- Middle Nav -->
-<div class="span3" style="margin-left:10px;box-shadow:0px 1px 2px #aaa;background:#fff;border-radius:2px;" id="customGroupsDiv">
+<div class="span3" style="display:none;margin-left:10px;box-shadow:0px 1px 2px #aaa;background:#fff;border-radius:2px;" id="customGroupsDiv">
 	<div class="middleNav-Panchayats middleNav-CustomGroups">
 		<h5 class="breadcrumb" style="margin-bottom:0px;">Custom Voter Group (s)</h5>
 		<ul id="middleNav-CustomGroups-list" class="nav nav-list bs-docs-sidenav nav-stacked disableClass">		
@@ -1345,7 +1345,7 @@ for  body3 start    result  -->
   </div>
 </div>
 
-<div class="span6 rightNav" id="forHide">
+<div class="span6 rightNav" id="forHide" style="display:none;">
 	<div class="rightNav-Booths">
 			<!--<h5 class="breadcrumb" style="margin-bottom:0px;">Booth(s)</h5>-->
 			<ul id="rightNav-Booths-list"></ul>
@@ -1353,7 +1353,7 @@ for  body3 start    result  -->
 	
 </div>
 
-<div class="span6 rightNav" id="voterGroupsDiv">
+<div class="span6 rightNav" id="voterGroupsDiv" style="display:none;">
 	<div class="rightNav-cutomGroups" style="display:none;">
 			<!--<h5 class="breadcrumb" style="margin-bottom:0px;">Booth(s)</h5>-->
 			<ul id="rightNav-votergroups-list">
