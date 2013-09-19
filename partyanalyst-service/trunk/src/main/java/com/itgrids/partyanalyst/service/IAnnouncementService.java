@@ -1,4 +1,5 @@
 package com.itgrids.partyanalyst.service;
+import java.util.Date;
 import java.util.List;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 public interface IAnnouncementService {
@@ -12,5 +13,7 @@ public interface IAnnouncementService {
     public AnnouncementVO getAnnouncementDetailsByAnnouncementId(long announcementId);
     
     public List<AnnouncementVO> searchAnnouncementDetailsByUserIdDateConstId(AnnouncementVO annVO);
+    
+    public List<AnnouncementVO> getAllUserAnnouncementDetails(Long userId,Date today);
     
 } 
