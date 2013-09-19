@@ -122,11 +122,11 @@ var obj={
 	 
 	var data = new google.visualization.DataTable();
 		data.addColumn('string', 'Pos');
-		data.addColumn('number', '2ndPos');
+		data.addColumn('number', '2nd Pos');
 		data.addRows([
-          ['SeatsWon', result[0].totalSeatsWon],
-          ['2ndPos', result[0].secondPosWon],
-          ['3rdPos', result[0].thirdPosWon]
+          ['Seats Won', result[0].totalSeatsWon],
+          ['2nd Pos', result[0].secondPosWon],
+          ['3rd Pos', result[0].thirdPosWon]
         
         ]);
  // Set chart options

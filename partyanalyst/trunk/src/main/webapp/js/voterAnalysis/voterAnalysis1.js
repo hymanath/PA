@@ -2303,6 +2303,15 @@ $(document).ready(function(){
 		    publicationYear = "";
 		}
 	});
+	function hidePublicationblock()
+	{
+	if($("#publicationDateList option").length == 2)
+         {	
+             $("#votersCountVaryDiv").css('display','none');  
+		 }
+		 else
+			 $("#votersCountVaryDiv").css('display','block');
+	}
 	$("#publicationDateList").change(function(){
 	     if($(this).val() != 0){
 		    if($("#constituencyList option").length > 0 && $("#constituencyList").val() != 0){
@@ -2410,6 +2419,7 @@ $(document).ready(function(){
 
 $('#publicationDateList').live('change',function(){
 	getPreAndPresentPublicationDtaeList();
+hidePublicationblock();
 });
 
 $("#voterDetailedReportId").live("click",function(){

@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAnnouncementService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
@@ -259,5 +260,21 @@ public class AnnouncementPageAction extends ActionSupport implements ServletRequ
 				announcementVO = new AnnouncementVO();	
 		}
 	}
+	public String getAnnouncementDetails(){
+		try {
+			jObj=new JSONObject(getTask());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		DateUtilService dateUtilService = new DateUtilService();
+		session = request.getSession(false);
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		userId = regVO.getRegistrationID();
+		
+		announcementInfo = announcementService.getAllUserAnnouncementDetails(userId, dateUtilService.getCurrentDateAndTime());
+		return Action.SUCCESS;
+	}
+	
+	
 	
 }

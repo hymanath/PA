@@ -201,13 +201,13 @@ var yearsPopulation={
                                     if(jsObj.task == "getPartiesInState")
 									{			
 										clearOptionsListForSelectElmtId("partyList");															
-										createOptionsForSelectElmtIdWithSelectOption("partyList",resultVO);
+										createOptionsForSelectElmtIdWithSelectOptionNew("partyList",resultVO,jsObj);
 										hideBusyImgWithId(jsObj.elmtId);
 									}
 									if(jsObj.task == "getElectionScopes")
 									{			
 										clearOptionsListForSelectElmtId("electionScopeSelect");															
-										createOptionsForSelectElmtIdWithSelectOption("electionScopeSelect",resultVO);
+										createOptionsForSelectElmtIdWithSelectOptionNew("electionScopeSelect",resultVO,jsObj);
 										hideBusyImgWithId(jsObj.elmtId);
 									}else
 									if(jsObj.task == "getElectionYears")
@@ -219,7 +219,7 @@ var yearsPopulation={
 										clearOptionsListForSelectElmtId("electionYearSelect1");
 										
 										storeYears(resultVO);
-										createOptionsForSelectElmtIdWithSelectOption("electionYearSelect1",resultVO);		
+										createOptionsForSelectElmtIdWithSelectOptionNew("electionYearSelect1",resultVO,jsObj);		
 										clearOptionsListForSelectElmtId("electionYearSelect2");	
 										
 										hideBusyImgWithId(jsObj.elmtId);
@@ -341,11 +341,61 @@ var yearsPopulation={
 				return true;							
 			}	
 		}
+		function createOptionsForSelectElmtIdWithSelectOptionNew(elmtId,optionsList,jsObj)
+        {
+			$('#electionTypeSelect_ImgSpan').hide();
+	        $('#electionScopeSelect_ImgSpan').hide();
+	        $('#partyList_ImgSpan').hide();
+	        var elmt = document.getElementById(elmtId);
+	      
+			if( !elmt || optionsList == null)
+	           	return;
+	        var option = document.createElement('option');
+	        option.value="0";
+			option.text="Select";
+			 if(jsObj.task == "getElectionScopes"){
+                if($("#electionTypeSelect option:selected").val() == '2')
+                    option.text="Select State";
+				else
+					option.text="Select Country";
+			 }
+			 if(jsObj.task == "getPartiesInState")
+			    option.text="Select Party";
+			 
+			 if(jsObj.task == "getElectionYears")
+			     option.text="Select Year";
+	
+	        try
+	        {
+		        elmt.add(option,null); // standards compliant
+	        }
+	        catch(ex)
+	        {
+	        	elmt.add(option); // IE only
+	        }
 
-		function refresh()
-		   {
-			window.location.reload(true);
-		    }
+	        for(var i in optionsList)
+	        {
+	         	var option = document.createElement('option');
+		        option.value=optionsList[i].id;
+		        option.text=optionsList[i].name;
+		        try
+		        {
+			        elmt.add(option,null); // standards compliant
+		        }catch(ex)
+		        {
+			         elmt.add(option); // IE only
+		        }
+	        }
+	        if(specific == true){
+	           $("#partySelect").append(new Option('IND','366',false,false));
+	        }
+       }
+	
+	   function refresh()
+	   {
+		   window.location.reload(true);
+	   }
 		//window.history.forward(1);	
 </script>
 </head>

@@ -555,7 +555,7 @@ lable{line-height:40px;}
 				     <tr>
 				        <td><s:label theme="simple" for="electionYearField" value="Election year"/></td>
 						<td><s:select cssClass="selectstyle" theme="simple" id="electionYearField" name="crossVotingYear" list="crossVotingVO.yearsList" listKey="id" listValue="name" onChange="getParlmentsList();"/></td>
-				        <td><s:label theme="simple" for="pConstituencyList" value="Parliment Constituency"/></td>
+				        <td><s:label theme="simple" for="pConstituencyList" value="Parliament Constituency"/></td>
 						<td><s:select cssClass="selectstyle" theme="simple" id="pConstituencyList" name="crossVotingPConsti" list="crossVotingVO.parliamentLists" listKey="id" listValue="name" onChange="getAssemblyConstituencies();"/></td>
 				     </tr>
 				     <tr>
@@ -689,8 +689,8 @@ lable{line-height:40px;}
 				<h2> Panchayat wise Caste Details</h2>
 				<fieldset>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="sugconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes');" name=""   style="margin-left: 1px; width: 171px;"></s:select>
-					<lable>Select Caste </lable><select id="candidateCastes" multiple="multiple" style="width: 171px; margin-left: 50px;">
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes');" name=""   style="margin-left: 1px; width: 155px;"></s:select>
+					<lable>Select Caste </lable><select id="candidateCastes" multiple="multiple" style="margin-left: 50px;">
 					</select>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getBoothLeaderDetails();" style="float:right;"></input>
 				</fieldset>
@@ -700,16 +700,16 @@ lable{line-height:40px;}
 				<fieldset>
 					<div id="errorMessage"></div>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="sugTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getPartyDetails();" name="" style="width: 168px; margin-left: 5px;"></s:select>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getPartyDetails();" name="" style="width: 152px; margin-left: 5px;"></s:select>
 					<lable>Select Party </lable>
-					<select id="partySelectEl" onchange="getElectionYears(this.options[this.selectedIndex].value)" style="width: 168px; margin-left: 54px;">
+					<select id="partySelectEl" onchange="getElectionYears(this.options[this.selectedIndex].value)" style="width: 152px; margin-left: 54px;">
 					</select>
 					<lable>From</lable>
-					<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);" style="width: 97px; margin-left: 23px;">
+					<select id="electionYearSelectEl1" onchange="validateYear1(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);" style="width: 91px; margin-left: 23px;">
 					<option value="0">Year</option>
 					</select>
 					<lable>To</lable>
-					<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)" style="width: 100px; margin-left: 21px;">
+					<select id="electionYearSelectEl2" onchange="validateYear2(this.options[this.selectedIndex].value)" style="width: 91px; margin-left: 21px;">
 					<option value="0">Year</option>
 					</select>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="previousElectionDetails();" style="float:right;"></input>
@@ -730,9 +730,9 @@ lable{line-height:40px;}
 				</div> -->	
 					<fieldset>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="sugYoungconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes1');" name="" style="width: 168px; margin-left: 5px;"></s:select>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugYoungconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes1');" name="" style="width: 148px; margin-left: 5px;"></s:select>
 					
-					<lable>Select Caste </lable><select id="candidateCastes1" multiple="multiple" style="width: 171px; margin-left: 50px;">
+					<lable>Select Caste </lable><select id="candidateCastes1" multiple="multiple" style="margin-left: 50px;">
 					</select>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getYoungerVoterDetails();" style="float:right;"></input>
 				</fieldset>				
@@ -748,9 +748,9 @@ lable{line-height:40px;}
 		   </div> -->
 		   <fieldset>
 					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="sugOldTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes2');" name="" style="width: 168px; margin-left: 5px;"></s:select>
+					<s:select cssClass="selectstyle span12" theme="simple" id="sugOldTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes2');" name="" style="width: 152px; margin-left: 5px;"></s:select>
 					
-					<lable>Select Caste </lable><select id="candidateCastes2" multiple="multiple" style="width: 171px; margin-left: 50px;">
+					<lable>Select Caste </lable><select id="candidateCastes2" multiple="multiple" style="margin-left: 50px;">
 					</select>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getOlderVoterDetails();" style="float:right;"></input>
 				</fieldset>

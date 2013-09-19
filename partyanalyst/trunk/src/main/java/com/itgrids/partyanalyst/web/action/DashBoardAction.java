@@ -511,7 +511,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 			assemblyConstis.add(0, initialVo);
 			user.setUserAccessVoterConstituencies(constituencyList);
 		}
-		if("Politician".equalsIgnoreCase(user.getUserType())){
+		if("Politician".equalsIgnoreCase(user.getUserType()) && assemblyConstis != null){
 			mandalsList = votersAnalysisService.getMandalsInConstituencys(assemblyConstis);
 			politician = true;
 			}
