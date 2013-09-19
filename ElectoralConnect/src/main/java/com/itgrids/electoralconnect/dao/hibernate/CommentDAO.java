@@ -62,7 +62,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public Long getTotalCommentsCountByAnnouncementId(Long id)
 	{
 		Query query = getSession().createQuery("select count(*) from Comment model " +
-				" where model.announcements.announcementId = :id and model.isDelete='NO'");
+				" where model.announcements.announcementId = :id and model.isDelete='NO' ");
 		query.setParameter("id", id);
 		return (Long) query.uniqueResult();
 	}
@@ -82,7 +82,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	{
 		Query query = getSession().createQuery("select model.commentId,model.comment,model.user," +
 				"model.time,model.announcements,model.isDelete from Comment model where  " +
-				" Date(model.time) between :startDate and :endDate and model.isDelete = 'NO'");
+				" Date(model.time) between :startDate and :endDate and model.isDelete = 'NO' and model.announcements.announcementId!='null'");
 		//query.setParameter("announcementId", announcementId);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -102,7 +102,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public Long getCommentsCountBetweenSelectedDates(Date startDate,Date endDate)
 	{
 		Query query = getSession().createQuery("select count(*) from Comment model where " +
-				" Date(model.time) between :startDate and :endDate and model.isDelete='NO'");
+				" Date(model.time) between :startDate and :endDate and model.isDelete='NO' and model.announcements.announcementId!='null'");
 		//query.setParameter("announcementId", announcementId);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
@@ -119,7 +119,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	public List<Object[]> getAllComments(int startIndex,int maxIndex)
 	{
 		Query query = getSession().createQuery("select model.commentId,model.comment,model.user," +
-				"model.time,model.announcements,model.isDelete  from Comment model where model.isDelete = 'NO'");
+				"model.time,model.announcements,model.isDelete  from Comment model where model.isDelete = 'NO' and model.announcements.announcementId!='null'");
 		
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
@@ -133,7 +133,7 @@ public class CommentDAO extends GenericDaoHibernate<Comment, Long> implements IC
 	 */
 	public Long getTotalComments()
 	{
-		Query query = getSession().createQuery("select count(*) from Comment model where model.isDelete = 'NO'");
+		Query query = getSession().createQuery("select count(*) from Comment model where model.isDelete = 'NO' and model.announcements.announcementId!='null'");
 		
 		return (Long) query.uniqueResult();
 	}
