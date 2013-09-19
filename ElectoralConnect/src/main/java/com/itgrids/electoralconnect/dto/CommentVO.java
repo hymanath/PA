@@ -2,6 +2,9 @@ package com.itgrids.electoralconnect.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.itgrids.electoralconnect.model.CommentReply;
 
 @SuppressWarnings("serial")
 public class CommentVO implements Serializable{
@@ -14,6 +17,8 @@ public class CommentVO implements Serializable{
 	private Long total;
 	private String abused;
 	private String commentedTime;
+	private List<CommentVO> cmmntRplyList;
+	private Long replyCount;
 	
 	public Long getCommentId() {
 		return commentId;
@@ -63,6 +68,18 @@ public class CommentVO implements Serializable{
 	public void setCommentedTime(String commentedTime) {
 		this.commentedTime = commentedTime;
 	}
-	
+	public List<CommentVO> getCmmntRplyList() {
+		return cmmntRplyList;
+	}
+	public void setCmmntRplyList(List<CommentVO> cmmntRplyList) {
+		this.cmmntRplyList = cmmntRplyList;
+	}
+	public Long getReplyCount() {
+		return replyCount;
+	}
+	public void setReplyCount(Long replyCount) {
+		this.replyCount = replyCount;
+	}
+		
 	
 }
