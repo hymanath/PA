@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.model.Announcement;
 import com.itgrids.partyanalyst.model.UserAnnouncement;
 import com.itgrids.partyanalyst.model.UserConstituencyScope;
 import com.itgrids.partyanalyst.service.IAnnouncementService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class AnnouncementService implements IAnnouncementService {
@@ -284,5 +285,24 @@ public class AnnouncementService implements IAnnouncementService {
 	}
 	
 }
+	public List<AnnouncementVO> getAllUserAnnouncementDetails(Long userId,Date today) {
+		
+	  try
+	  {
+	    List<Object[]> announcementDetails = userAnnouncementDAO.getUserAnnouncementDetailsRecent(userId,today);
+	    List<AnnouncementVO> returnVal = new ArrayList<AnnouncementVO>();
+	    for(Object[] announcement:announcementDetails){
+    		AnnouncementVO obj = new AnnouncementVO();
+    		obj.setTitle(announcement[0].toString());
+    		obj.setFromDate(announcement[1].toString());
+    		obj.setToDate(announcement[2].toString());
+    		returnVal.add(obj);
+	    }
+	    return returnVal;
+	}catch(Exception e){
+		log.error(" Exception rised in getAllUserAnnouncementDetails ",e);
+		return null;
+	}
+	}
 		
 }

@@ -17504,6 +17504,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				Long constituencyId = constituency.getId();
 				constituencyIds.add(constituencyId);
 			}
+			
 		}
 		List<DelimitationConstituency> delimitationConstituencys = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDs(constituencyIds);
 		for(DelimitationConstituency delimitationConstituency:delimitationConstituencys){
@@ -17515,7 +17516,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		for(Object[] tehsil : mandals){
 			SelectOptionVO objVO = new SelectOptionVO();
 			objVO.setId((Long)tehsil[0]);
-			objVO.setName(tehsil[1]!=null?tehsil[1].toString():"");
+			objVO.setName(tehsil[1]!=null?tehsil[1].toString()+"("+tehsil[2].toString()+")":"");
 			mandalNames.add(objVO);
 		}	
 	 return mandalNames;

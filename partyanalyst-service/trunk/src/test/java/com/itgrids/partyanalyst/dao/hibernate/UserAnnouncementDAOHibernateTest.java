@@ -1,12 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IUserAnnouncementDAO;
+import com.itgrids.partyanalyst.dto.AnnouncementVO;
 
 public class UserAnnouncementDAOHibernateTest extends BaseDaoTestCase{
 	private IUserAnnouncementDAO userAnnouncementDAO;
@@ -15,10 +15,10 @@ public class UserAnnouncementDAOHibernateTest extends BaseDaoTestCase{
 		this.userAnnouncementDAO = userAnnouncementDAO;
 	}
 	
-	public void test()
+	/*public void test()
 	{
 		userAnnouncementDAO.getAll();
-	}
+	}*/
 	
 	/*@Test
 	public void testAnnouncementResultsByAUser(){
@@ -41,5 +41,13 @@ public class UserAnnouncementDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		System.out.println(list.get(0).getAnnouncement().getDiscription());
 	}*/
-
+    public void testGetUserAnnouncementDetails(){
+    	List<Object[]> announcements = userAnnouncementDAO.getUserAnnouncementDetailsRecent(1l, new Date());
+    	for(Object[] announcement:announcements){
+    		for(Object value : announcement){
+    			System.out.print(value+" - ");
+    	    }
+    		System.out.println("");
+    	}	
+    }
 }

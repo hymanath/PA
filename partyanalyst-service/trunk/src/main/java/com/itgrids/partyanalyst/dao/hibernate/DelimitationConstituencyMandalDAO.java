@@ -200,7 +200,7 @@ IDelimitationConstituencyMandalDAO {
 	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getTehsilByDelimitationConstituencyIds(List<Long> delimitationConstituencyIDs){
-		Query query = getSession().createQuery("Select distinct model.tehsil.tehsilId,model.tehsil.tehsilName from DelimitationConstituencyMandal model where " +
+		Query query = getSession().createQuery("Select distinct model.tehsil.tehsilId,model.tehsil.tehsilName, model.delimitationConstituency.constituency.name from DelimitationConstituencyMandal model where " +
 				"model.delimitationConstituency.delimitationConstituencyID in (:delimitationConstituencyIDs) order by model.tehsil.tehsilName");
 		query.setParameterList("delimitationConstituencyIDs", delimitationConstituencyIDs);
 		
