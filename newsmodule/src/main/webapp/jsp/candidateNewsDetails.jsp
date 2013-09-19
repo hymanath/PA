@@ -1340,7 +1340,7 @@ function getPartyWiseCriticsNews(startIndex)
       fromDate:fromDate,
       toDate :toDate,
       tempVar :tempVar,
-	  tempVarForParty:"partyDetails",
+	  tempVarForParty:"",
       candidateId:0,
 	  task:"getNewsDetails"
 

@@ -2841,35 +2841,35 @@ public List<SelectOptionVO> getCandidatesOfAParty(Long partyId)
 	    {
 	    	//return countryDAO.get(1L).getCountryName();
 	    }
-	    else if(scope == 2L && locationValue != null)
+	    else if(scope == 2L && locationValue != null && locationValue > 0)
 	    {
 	    	return stateDAO.get(locationValue).getStateName();
 	    }
-	    else if(scope == 3L && locationValue != null)
+	    else if(scope == 3L && locationValue != null && locationValue > 0)
 	    {
 	    	return districtDAO.get(locationValue).getDistrictName();
 	    }
-	    else if(scope == 4L && locationValue != null)
+	    else if(scope == 4L && locationValue != null && locationValue > 0)
 	    {
 	    	return constituencyDAO.get(locationValue).getName();
 	    }
-	    else if(scope == 5L && locationValue != null)
+	    else if(scope == 5L && locationValue != null && locationValue > 0)
 	    {
 	    	return tehsilDAO.get(locationValue).getTehsilName();
 	    }
-	    else if(scope == 6L && locationValue != null)
+	    else if(scope == 6L && locationValue != null && locationValue > 0)
 	    {
 	    	return hamletDAO.get(locationValue).getHamletName();
 	    }
-	    else if(scope == 7L && locationValue != null)
+	    else if(scope == 7L && locationValue != null && locationValue > 0)
 	    {
 	    	return localElectionBodyDAO.get(locationValue).getName();
 	    }
-	    else if(scope == 8L && locationValue != null)
+	    else if(scope == 8L && locationValue != null && locationValue > 0)
 	    {
 	    	return constituencyDAO.get(locationValue).getName();
 	    }
-	    else if(scope == 9L && locationValue != null)
+	    else if(scope == 9L && locationValue != null && locationValue > 0)
 	    {
 	    	return boothDAO.get(locationValue).getPartName();
 	    }
