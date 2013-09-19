@@ -1009,8 +1009,8 @@ ICandidateRelatedNewsDAO {
 	  if(toDate != null)
 		str.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
 	  
-	  if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
-	   str.append(" and model3.party.partyId =:partyId ");
+	  /*if(tempVar != null && (tempVar.equalsIgnoreCase("all") || tempVar.equalsIgnoreCase("byDate")))
+	   str.append(" and model3.party.partyId =:partyId ");*/
 	  
 	  if(categoryIdsList != null && categoryIdsList.size() > 0)
 	   str.append(" and model.fileGallary.file.category.categoryId in (:categoryIdsList) ");
@@ -1023,6 +1023,8 @@ ICandidateRelatedNewsDAO {
 	   str.append(" and model.fileGallary.file.locationValue in (:locationIdsList) ");
 	// str.append(" group by model6.party.partyId ");
 	  
+	  str.append(" and model6.party.partyId != :partyId ");
+			  
 	  //for selected candidate
 	  if(tempVarForParty != null && tempVarForParty.equalsIgnoreCase("candidateDetails"))
 	   if(candidateId != null && candidateId > 0)

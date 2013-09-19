@@ -711,7 +711,7 @@ var responseFilesList = [];
 <c:forEach var="status"  items="${responseFilesList}" >
 	var ob={
 				fileGallaryId:'${status.fileGallaryId}',
-				title:'${status.title}',
+				title:"${status.title}",
 				fileDate:'${status.fileDate}'
 			};
 	responseFilesList.push(ob);	

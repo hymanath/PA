@@ -21,16 +21,17 @@ public class CandidateRelatedNewsDAOHibernateTest extends BaseDaoTestCase{
 	}
 	public void testGetAllfileGallariesOfCandidate(){
 		//List<Object[]> items = candidateRelatedNewsDAO.getCandidatesContainsNews();
-	   // List<?> items1 =  candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCountForCandidateParty(null, null,872l, null, null, null, null, null, null, null, null);//.getNotResponseCountBasedTotalNewsCount(null,null,872,null,null,null,null,null,null,null,null);
+	    List<?> items =  candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCountForCandidateParty(null, null,872l, null, null, null, null, "all", null, null,0L,0L, "");//.getNotResponseCountBasedTotalNewsCount(null,null,872,null,null,null,null,null,null,null,null);
+	    //List<?> items =  candidateRelatedNewsDAO.getNotResponseCountBasedTotalNewsCountForCandidateParty(null, null,872l, null, null, null, null, "all", null, null,0L,0L, "");
 		//List<Object[]> items = candidateRelatedNewsDAO.getNotResponseCountPerfect(null,null,872l,null,null,null,null,"all",null,null,null);
-	 //List<Object[]> items = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(null,null,872l,null,null,null,null,null,null,null,10534l);
+	 //List<Object[]> items = candidateRelatedNewsDAO.getRespondNewsPartyDetailsForCandidateTable(null,null,872l,null,null,null,null,"all",null,null,null,"");
 		//List<Object[]> items =     candidateRelatedNewsDAO.getRespondNewsIdsForCandidateParty(null,null,872l,null,null,null,null,"all",null,null,null);
 		//List<Object[]> items =  candidateRelatedNewsDAO.getNotResponseCountForCandidateParty(null,null,872l,null,null,null,null,"all",null,null,null);
 	   // List<?> items =   candidateRelatedNewsDAO.getNewsCountForACandidateFromCandidateParty(null,null,null,null,null,null,"all",872L);
 		//List<?> items =   candidateRelatedNewsDAO.getNewsCountForACandidate(null,null,null,null,null,null,"all",872L);
     	//List<?> items =  candidateRelatedNewsDAO.getNotResponseCountForCandidatePartyByCandidate(null,null,872l,null,null,null,null,null,null,null,10534l);
     	                          //getRespondNewsPartyDetailsForCandidateTable
-		 List<Object[]> items  = candidateRelatedNewsDAO.getRespondNewsPartyDetails(null, null, 872l, null, null, null, 0L, "all", null, null, null,"candidateDetails");
+		 //List<Object[]> items  = candidateRelatedNewsDAO.getRespondNewsPartyDetails(null, null, 872l, null, null, null, 0L, "all", null, null, null,"candidateDetails");
 		// if(items != null && items.size() > 0)
 	
 		//	  for(Object[] params : items)
@@ -83,7 +84,7 @@ public class CandidateRelatedNewsDAOHibernateTest extends BaseDaoTestCase{
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
 	}*/
 	
-	public void testgetCandidateNameByFileGalleryIdsList()
+	/*public void testgetCandidateNameByFileGalleryIdsList()
 	{
 		List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
 		fileGalleryIdsList.add(412L);
@@ -100,5 +101,5 @@ public class CandidateRelatedNewsDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 		
 		
-	}
+	}*/
 }
