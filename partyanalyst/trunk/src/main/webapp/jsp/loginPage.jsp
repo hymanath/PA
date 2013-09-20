@@ -193,7 +193,7 @@ if(request.getParameter("showMessage")!=null){
 			<style>
 				.background{background: url("./images/new_homepage/js-banner-bg1.jpg")}
 			</style>
-		     <div class="span3 well" style="border: 5px solid #E3E3E3;">
+		     <div class="span3 well" id="loginDivId" style="border: 5px solid #E3E3E3;">
 				     
 				     <div id = "getLoginErrorMessageDiv" style="color:red;">
 					     <s:actionerror />
@@ -201,7 +201,7 @@ if(request.getParameter("showMessage")!=null){
 					 </div>
 				       
 				   
-		            <form name="loginForm" action="loginAction.action" method="POST" cssClass="form-horizontal" onSubmit="return handleErrorMessage();">
+		            <form id="loginFormId" name="loginForm" action="loginAction.action" method="POST" cssClass="form-horizontal" onSubmit="return handleErrorMessage();">
 		                    <%
 							if(src != ""){
 							%>
