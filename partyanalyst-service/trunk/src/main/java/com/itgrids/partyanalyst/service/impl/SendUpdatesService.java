@@ -249,7 +249,8 @@ public class SendUpdatesService implements ISendUpdatesService{
 		
 	}
 	
-	public List<RegistrationVO>  getUsersForSendingEmails(Long selectedState,Long selectedDistrict,Long selectedConstituency,Long userType,Long locationScope){
+	/*commented by srishailam SendupdatesByemail writen below
+	 * public List<RegistrationVO>  getUsersForSendingEmails(Long selectedState,Long selectedDistrict,Long selectedConstituency,Long userType,Long locationScope){
 		log.debug("Entered into getAllUsersForSendSms() method of SendUpdatesService");
 		List<RegistrationVO> regVOForCus= new ArrayList<RegistrationVO>();
 		RegistrationVO registrationVO = null;
@@ -293,6 +294,57 @@ public class SendUpdatesService implements ISendUpdatesService{
 		
 	}
 	
+	*/
+	public List<RegistrationVO>  getUsersForSendingEmail(RegistrationVO regiVO,String order,String sortBy,int startIndex,int maxIndex){
+		
+		log.debug("Entered into getUsersForSendingEmail() method of SendUpdatesService");
+		List<RegistrationVO> regVOForCus= new ArrayList<RegistrationVO>();
+		RegistrationVO registrationVO = null;
+		try
+		{
+			List<Object[]> userDetails =null;
+			List<Object[]> totalUserDetails =null;
+			userDetails=userRolesDAO.getUsersForSendingEmail(regiVO,order,sortBy,startIndex,maxIndex,false);
+			totalUserDetails=userRolesDAO.getUsersForSendingEmail(regiVO,order,sortBy,startIndex,maxIndex,true);
+			for (Object[] parms : totalUserDetails) {
+				registrationVO = new RegistrationVO();
+				registrationVO.setTotalCount((Long)parms[0]);
+				regVOForCus.add(registrationVO);
+			}
+			
+			if(userDetails!=null)
+			for(Object[] params : userDetails)
+			{
+				registrationVO = new RegistrationVO();
+				
+				 if(params[0]!=null)
+					 registrationVO.setRegistrationID((Long)params[0]);
+				 if(params[1]!=null && params[2]!=null)
+					 registrationVO.setName(params[1].toString() +" "+ params[2].toString()); 
+				 if(params[3]!=null)
+					 registrationVO.setEmail(params[3].toString());
+				 if(params[4]!=null)
+					 registrationVO.setState(params[4].toString());
+				 if(params[5]!=null)
+					 registrationVO.setDistrict(params[5].toString());
+				 if(params[6]!=null)
+					 registrationVO.setConstituency(params[6].toString());
+				 
+				 if(registrationVO!=null)
+					 regVOForCus.add(registrationVO);
+				
+			}
+			
+			return regVOForCus;
+		}
+		catch(Exception e){
+			log.error("Exception occured in getUsersForSendingEmail() in sendUpdateService ",e);
+			//e.printStackTrace();
+		}
+		
+		
+		return regVOForCus;
+	}
 	public ResultStatus sendSMSToSelectedPeople(Long userId,String scope, Long scopeId, String content,String type)
 	{	
 		ResultStatus resultStatus = new ResultStatus();
