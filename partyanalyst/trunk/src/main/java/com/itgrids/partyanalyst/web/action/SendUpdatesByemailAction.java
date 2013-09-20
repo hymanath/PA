@@ -11,21 +11,18 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.context.ServletContextAware;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.service.ISendUpdatesService;
-import com.itgrids.partyanalyst.service.ISmsService;
-import com.opensymphony.xwork2.Action;
-import com.opensymphony.xwork2.ActionSupport;
-
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.ISendUpdatesService;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.social.service.ISocialService;
-
+import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
 
 public class SendUpdatesByemailAction extends ActionSupport implements ServletRequestAware,ServletResponseAware,ServletContextAware{
 
@@ -57,9 +54,78 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
     private String userIds;
     private String subject;
     
+	private String startIndex;
+	private String dir;
+	private String sort;
+	private String selectedState;
+	private String selectedDistrict;
+	private String selectedConstituency;
+	private String userType;
+	private String locationScope;
+	private String freuserType;
+	private RegistrationVO registrationVO = null;
     
-	
-  public String getDescription() {
+	public RegistrationVO getRegistrationVO() {
+		return registrationVO;
+	}
+	public void setRegistrationVO(RegistrationVO registrationVO) {
+		this.registrationVO = registrationVO;
+	}
+	public String getStartIndex() {
+		return startIndex;
+	}
+	public void setStartIndex(String startIndex) {
+		this.startIndex = startIndex;
+	}
+	public String getDir() {
+		return dir;
+	}
+	public void setDir(String dir) {
+		this.dir = dir;
+	}
+	public String getSort() {
+		return sort;
+	}
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+	public String getSelectedState() {
+		return selectedState;
+	}
+	public void setSelectedState(String selectedState) {
+		this.selectedState = selectedState;
+	}
+	public String getSelectedDistrict() {
+		return selectedDistrict;
+	}
+	public void setSelectedDistrict(String selectedDistrict) {
+		this.selectedDistrict = selectedDistrict;
+	}
+	public String getSelectedConstituency() {
+		return selectedConstituency;
+	}
+	public void setSelectedConstituency(String selectedConstituency) {
+		this.selectedConstituency = selectedConstituency;
+	}
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+	public String getLocationScope() {
+		return locationScope;
+	}
+	public void setLocationScope(String locationScope) {
+		this.locationScope = locationScope;
+	}
+	public String getFreuserType() {
+		return freuserType;
+	}
+	public void setFreuserType(String freuserType) {
+		this.freuserType = freuserType;
+	}
+	public String getDescription() {
 		return description;
 	}
 	public void setDescription(String description) {
@@ -231,10 +297,10 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
 				list= regionServiceDataImp.getConstituenciesByDistrictIDs(jObj.getLong("districtId"));
 			}
 			
-			else if(jObj.getString("task").equalsIgnoreCase("getUsersForSendingEmails")){
+		/*	else if(jObj.getString("task").equalsIgnoreCase("getUsersForSendingEmails")){
 				regVoForEmail=sendUpdatesService.getUsersForSendingEmails(jObj.getLong("selectedState"),jObj.getLong("selectedDistrict"),jObj.getLong("selectedConstituency"),jObj.getLong("userType"),jObj.getLong("locationScope"));
 			}
-			
+		*/	
 			/*else if(jObj.getString("task").equalsIgnoreCase("sendEmailsForUserIds")){
 				userEmailId=new ArrayList<String>();
 				textArea=jObj.getString("txtAreaValue");
@@ -257,6 +323,37 @@ public class SendUpdatesByemailAction extends ActionSupport implements ServletRe
 				
 			}*/
 		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+		
+	public String getUsersForemail(){
+		
+		try{
+		registrationVO = new RegistrationVO();
+		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		String order = request.getParameter("dir");
+		String sortBy = request.getParameter("sort");
+		Integer maxRecords = Integer.parseInt(request.getParameter("results"));
+		
+		RegistrationVO regiVO = new RegistrationVO();
+		regiVO.setStateId(Long.valueOf(selectedState.trim()));
+		regiVO.setDistrictId(Long.valueOf(selectedDistrict.trim()));
+		regiVO.setConstituencyId(Long.valueOf(selectedConstituency.trim()));
+		regiVO.setAccessType(userType.trim());
+		regiVO.setAccessValue(locationScope.trim());
+		regiVO.setUserType(freuserType.trim());
+		
+		regVoForEmail=sendUpdatesService.getUsersForSendingEmail(regiVO,order,sortBy,startIndex,maxRecords);
+		
+		if(regVoForEmail != null && regVoForEmail.size() >0){	
+		registrationVO.setTotalCount(regVoForEmail.get(0).getTotalCount());
+		regVoForEmail.remove(0);
+		registrationVO.setRegisteredUsersList(regVoForEmail);
+		}
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
