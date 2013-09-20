@@ -4263,9 +4263,15 @@
 			</result>
 		</action>
 
-		<action name="sendUpdatesByemailsForgettingUsers" class="sendUpdatesByemailAction" method="callAjaxforSendemails">
+		<!-- <action name="sendUpdatesByemailsForgettingUsers" class="sendUpdatesByemailAction" method="callAjaxforSendemails">
 			<result type="json" name="success">
 			<param name="root">regVoForEmail</param>
+			</result>
+		</action> -->
+
+		<action name="sendUpdatesByemailsForgettingUsers" class="sendUpdatesByemailAction" method="getUsersForemail">
+			<result type="json" name="success">
+			<param name="root">registrationVO</param>
 			</result>
 		</action>
 		
