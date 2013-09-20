@@ -42,6 +42,9 @@ public class PartyResultsVO {
 	private Map<String,List<Long>> totalVotes;
 	private Map<String,List<BigDecimal>> polledVotesPercnts;
 	private List<String> locationNames;
+	private List<CasteWiseResultVO> casteWiseResultList;
+	private Long electionId;
+	private Long year;
 	
 	// getters and setters
 	
@@ -290,6 +293,30 @@ public class PartyResultsVO {
 	public void setPolledVotesPercnts(
 			Map<String, List<BigDecimal>> polledVotesPercnts) {
 		this.polledVotesPercnts = polledVotesPercnts;
+	}
+
+	public List<CasteWiseResultVO> getCasteWiseResultList() {
+		return casteWiseResultList;
+	}
+
+	public void setCasteWiseResultList(List<CasteWiseResultVO> casteWiseResultList) {
+		this.casteWiseResultList = casteWiseResultList;
+	}
+
+	public Long getElectionId() {
+		return electionId;
+	}
+
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
+
+	public Long getYear() {
+		return year;
+	}
+
+	public void setYear(Long year) {
+		this.year = year;
 	}
 	
 	
