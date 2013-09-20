@@ -2,6 +2,7 @@
 <div class="background">
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@page import="com.itgrids.partyanalyst.utils.IConstants"%>	
 
 
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
@@ -328,13 +329,55 @@ if(request.getParameter("showMessage")!=null){
     #cnstituencyDiv{
 	   heigth:263px;
 	}
+	
 	[if IE]
 	    #cnstituencyDiv{
 	      heigth:244px;
 	   }
     [endif]
 
-	</style>	
+	</style>
+	<script type="text/javascript">  
+	
+	$(document).ready(function(){
+	$('.span2').live("click",function(){console.log(4444);
+	css("background-color","#FDFDFD");
+	});
+	var host = "<%=IConstants.DEPLOYED_HOST%>";
+	//var host="localhost";
+	if(host == "tdpserver"){
+	$('#newTOPAId').css("display","none");
+	$('#PA_widgetsID').css("display","none");
+	$('.row').css("height","300");
+		$('.span4').css( {
+		'margin-left': '320px ',
+		'margin-top': '50px', 
+		'width': '300px'
+		});
+		$('#loginDivId').css({
+		'background-color':'#FFDC2D',
+		'border': '5px solid #168787',
+		'width': '300px',
+		'height': '200px'
+		});
+		$('#loginFormId').css({
+		'margin-left': '45px',
+		'margin-top': '55px'
+		});
+		$('#getLoginErrorMessageDiv').css("float", "left");
+
+	}
+	else{
+	$('#newTOPAId').css({
+	"display":"block",
+	'border':'5px solid #E3E3E3'
+	});
+	$('#PA_widgetsID').css("display","block");	
+
+	}
+
+	});
+	</script>	
 	</head>
 	<body style="background-color:#5d5d5d;">
 	
@@ -368,7 +411,7 @@ if(request.getParameter("showMessage")!=null){
 
 
 	    <div class="row">
-		    <div class="span8">
+		    <div id="PA_widgetsID" class="span8">
 			 
 		        <h4>PARTY ANALYST</h4>
                 <p style="lead" class="newFontSize">We always strive to make things easy for you, Here are our services.</p>
@@ -426,7 +469,7 @@ if(request.getParameter("showMessage")!=null){
 			              <div>
 			                <jsp:include page="loginPage.jsp" flush="true" />
 						 </div>
-		                 <div class="span3 well"style="border: 5px solid #E3E3E3;
+		                 <div id="newTOPAId" class="span3 well"style="border: 5px solid #565656;
     margin-left: 21px;">
 		                      <h4 style="margin-bottom: 7px;">New to Party Analyst?</h4>
 		                      <a href="freeUserRegistration.action" class="btn btn-success pull-right">Create an Account</a>
