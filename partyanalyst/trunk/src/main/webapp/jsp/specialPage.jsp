@@ -1210,7 +1210,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </div>
 
 <div class="main-mbg">${specialPageVO.heading}
-<span style="margin-top:10px;margin-right:30px;float:right">
+<span id="googlePlusSpanId" style="margin-top:10px;margin-right:30px;float:right">
 <g:plusone size="medium"></g:plusone>
 
 <script type="text/javascript">
@@ -1222,14 +1222,14 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 </span>
 
-<span style="margin-top:10px;float:right">
+<span id="twitterSpanId" style="margin-top:10px;float:right">
 <a href="https://twitter.com/share" class="twitter-share-button" data-url="www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}">
 Tweet</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
 </script>
 </span>
 
-<span style="margin-top:10px;margin-right:18px;float:right">
+<span id="facebookSpanId" style="margin-top:10px;margin-right:18px;float:right">
 <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a>
 </span>
 </div>
@@ -1491,8 +1491,15 @@ displayProfile();
 getFirstThreePhotoRecords();
 
 $(document).ready(function(){
-	var host = "<%=IConstants.DEPLOYED_HOST%>";
+
+	$('#googlePlusSpanId').css("display","none");
+	$('#twitterSpanId').css("display","none");
+	$('#facebookSpanId').css("display","none");
+	 var host = "<%=IConstants.DEPLOYED_HOST%>";
 	  if(host != "tdpserver"){
+		$('#googlePlusSpanId').css("display","block");
+		$('#twitterSpanId').css("display","block");
+		$('#facebookSpanId').css("display","block");
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
 	  }
