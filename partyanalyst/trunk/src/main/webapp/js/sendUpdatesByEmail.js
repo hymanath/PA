@@ -139,7 +139,8 @@ function showPreview()
 	{
 	$('#previewDiv').html($('#descriptionForEmail').val());
 	}
-function sendEmailsToUsersTable()
+/* updated by srishailam
+function sendEmailsToUsersTable() 
 	{
     var resultsColumnDefs = [
 		{
@@ -185,7 +186,7 @@ function sendEmailsToUsersTable()
 					myDataSource.responseschema = {
 						 fields : [ "checkBox","userName" , "email" ,"state","district",  "constituency"]
 					};				
-	var myDataTable = new YAHOO.widget.DataTable("table",resultsColumnDefs, myDataSource,myConfigs);
+	var myDataTable = new YAHOO.widget.DataTable("buildDataTable",resultsColumnDefs, myDataSource,myConfigs);
 	//to update selectall checkbox for each page.
 	setTimeout(function(){
 		$(".yui-pg-pages").each(function(){
@@ -196,6 +197,7 @@ function sendEmailsToUsersTable()
 		});
 	},1000);
 }
+*/
 function callAjaxForEmail(jsObj,url)
 {
 	var callback = {			
@@ -384,8 +386,20 @@ function iterateStateNames(result)
 		elmt.remove(i);
 	}	
 }
+function clearErrDiv(){
+$('#errorDiv').html('');
+	freuserType = $('#freeUserTypeId').val();
+					if(freuserType ==0){
+					$('#errorDiv').html('Please Select  User Type ');								
+					return false;
+	}
+
+}
+var searchValues;
 //For getting Users based on radiobutton select		
 		function getUsers(){
+		searchValues= new Array();
+		$('#errorDiv').html('');
 			var userType;
 			var allUsers = document.getElementById('All');
 			var customerRadio =document.getElementById('Customers');
@@ -394,6 +408,8 @@ function iterateStateNames(result)
 			var selectedState1 =document.getElementById('state');
 			var selectedDistrict1 = document.getElementById('district');
 			var selectedConstituency1 = document.getElementById('constituency');
+			var freuserType ="";
+			
 			if(allUsers.checked){
 				userType='0';
 				locationScope=locationScope1.value;
@@ -476,7 +492,12 @@ function iterateStateNames(result)
 			}
 			else if(freeUsersRadio.checked){
 				userType='2';
-				locationScope=locationScope1.value;				
+				locationScope=locationScope1.value;
+				freuserType = $('#freeUserTypeId').val();
+					if(freuserType ==0){
+					$('#errorDiv').html('Please Select  User Type ');								
+					return false;
+					}
 				if(locationScope=='1'){							
 					selectedState='0';
 					selectedDistrict='0';
@@ -513,18 +534,29 @@ function iterateStateNames(result)
 						}
 					}
 			}			
-			var jsObj=
+	searchValues.push(selectedState);
+	searchValues.push(selectedDistrict);
+	searchValues.push(selectedConstituency);
+	searchValues.push(userType);
+	searchValues.push(locationScope);
+	searchValues.push(freuserType);
+	searchValues.push("getUsersForSendingEmails");
+
+	getRegisteredUsers(searchValues);
+	
+		/*	var jsObj=
 			{		
 				selectedState:selectedState,
 				selectedDistrict:selectedDistrict,
 				selectedConstituency:selectedConstituency,
 				userType:userType,
 				locationScope:locationScope,
+				freuserType:freuserType,
 				task:"getUsersForSendingEmails"
 			}
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "sendUpdatesByemailsForgettingUsers.action?"+rparam;		
-		callAjaxForEmail(jsObj,url);
+		callAjaxForEmail(jsObj,url); */
 		}
 function selectLocation(){
 			  $("#state").val(0);
@@ -560,6 +592,17 @@ function selectLocation(){
 		}
 	function defaultForRadio(){
 			 $("#locationScope").val(1);
+			 $('#freuserTypeDiv').html('');
+			 var freeUsersRadio =document.getElementById('FreeUsers');
+			 if(freeUsersRadio.checked){
+			 var str ='';
+			 str +=': <select id="freeUserTypeId" onchange=" clearErrDiv();">';
+			 str +='<option value="0"> Select User Type</option>';
+			 str +='<option value="All"> All</option>';
+			 str +='<option value="Volunteer"> Volunteers </option>';
+			 str +='</select>';
+			 }
+			 $('#freuserTypeDiv').html(str);
 			 selectLocation();	
 		}
 function clearSelectBoxes(id){	
@@ -585,3 +628,61 @@ function clearSelectBoxes(id){
 	function hideTableDiv(){
 		$("#commentsData_outer").hide();
 	}
+
+function getRegisteredUsers(searchCriteria){
+//console.log(searchCriteria);
+YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
+	{
+		var emailId = oRecord.getData("email");
+		//console.log(emailId);
+		var str ="<input type='checkbox'   name='userCheckBox1' value="+emailId+">";
+
+		elLiner.innerHTML =str;
+	}
+	
+var votersByLocBoothColumnDefs = [
+{key:"checkbox", label: "<input type='checkbox'  id='selectall' onclick='selectMe()'>", width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"name", label: "User Name",width:110,sortable: true},
+{key:"email",label:"E-mail",width:150,sortable: true},
+{key:"state",label:"State",width:110,sortable: true},
+{key:"district",label:"District",width:110,sortable: true},
+{key:"constituency",label:"Constituency",width:110,sortable: true}
+];
+//parentLocationId
+var urlStr = "sendUpdatesByemailsForgettingUsers.action?selectedState="+searchCriteria[0]+"&selectedDistrict="+searchCriteria[1]+"+&selectedConstituency="+searchCriteria[2]+"&userType="+searchCriteria[3]+"&locationScope="+searchCriteria[4]+"&freuserType="+searchCriteria[5]+"&task=getUsersForSendingEmails"+"&";
+$("#commentsData_outer").show();
+var votersByLocBoothDataSource = new YAHOO.util.DataSource(urlStr);
+
+votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+votersByLocBoothDataSource.responseSchema = {
+resultsList: "registeredUsersList",
+fields: ["checkbox","name","email","state","district","constituency"],
+
+metaFields: {
+totalRecords: "totalCount" // Access to value in the server response
+},
+};
+
+var myConfigs = {
+initialRequest: "sort=name&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+dynamicData: true, // Enables dynamic server-driven data
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10 
+			    })  // Enables pagination
+};
+
+var votersByLocBoothDataTable = new YAHOO.widget.DataTable("buildDataTable",
+votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
+
+votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+}
+
+
+return {
+oDS: votersByLocBoothDataSource,
+oDT: votersByLocBoothDataTable
+};
+}
