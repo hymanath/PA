@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -58,7 +59,8 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles, Long>
 
 	}
 
-	@SuppressWarnings("unchecked")
+	/* commented by srishailam SendupdatesByemail writen below
+	 * @SuppressWarnings("unchecked")
 	public List<Object[]> getUsersForSendingEmails(Long selectedState,
 			Long selectedDistrict, Long selectedConstituency, Long userType,Long locationScope) {
 
@@ -188,6 +190,156 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles, Long>
 					query1.setParameter(2, selectedConstituency);
 					query1.setParameter(3, userType);
 				}
+			}
+	return query1.list();
+	
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getUsersForSendingEmail(RegistrationVO regiVO,String order, String sortBy, int startIndex, int maxIndex,boolean iscount) {
+		String query = null;
+		Query query1 = null;
+		Long userType = Long.valueOf(regiVO.getAccessType());
+		Long locationScope = Long.valueOf(regiVO.getAccessValue());
+		if(sortBy.equalsIgnoreCase("name"))
+			sortBy = "firstName";
+		if(iscount == true)
+			query = "select distinct count(model.user.userId),model.user.userId from UserRoles model,User model1 ";
+		else
+			query = "select model.user.userId,model.user.firstName,model.user.lastName,model.user.email,model.user.state.stateName,"
+				+ "model.user.district.districtName,model.user.constituency.name from UserRoles model,User model1 ";
+		
+		if(userType==0){
+			
+			if(locationScope==1){
+				query=query+" "+"where  model.user.userId = model1.userId and model.user.email IS NOT NULL and model.user.email!='' order by model.user."+sortBy+" "+order+" ";
+			query1 = getSession().createQuery(query);
+			}
+			else if(locationScope==2){
+				query=query+" "+"where  model.user.userId = model1.userId and   model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());				
+			}
+			
+			else if(locationScope==3){
+				query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.user.districtId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());
+				query1.setParameter(1, regiVO.getDistrictId());	
+			}
+			
+			else if(locationScope==4){
+				query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.user.districtId=? and model.user.constituencyId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());
+				query1.setParameter(1, regiVO.getDistrictId());	
+				query1.setParameter(2, regiVO.getConstituencyId());
+			}
+		}
+		
+		if(userType==1){
+			
+			if(locationScope==1){
+			query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";	
+			query1 = getSession().createQuery(query);
+			query1.setParameter(0, userType);	
+			
+			}
+			else if(locationScope==2){
+				query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());
+				query1.setParameter(1, userType);	
+			}
+			
+			else if(locationScope==3){
+				query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.user.districtId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());
+				query1.setParameter(1, regiVO.getDistrictId());	
+				query1.setParameter(2, userType);
+			}
+			
+			else if(locationScope==4){
+				query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.user.districtId=? and model.user.constituencyId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());
+				query1.setParameter(1, regiVO.getDistrictId());	
+				query1.setParameter(2, regiVO.getConstituencyId());
+				query1.setParameter(3, userType);
+			}
+		}
+		
+			if(userType==2){
+				
+				if(regiVO.getUserType().equalsIgnoreCase("Volunteer"))
+				{
+					query=query+" ,UserProfileOpts model2 where  model.user.userId = model1.userId and model2.user.userId = model.user.userId and model2.profileOpts.profileOptsId = 2 and ";
+				}
+				else 
+					query=query+" where  model.user.userId = model1.userId and  ";
+			if(locationScope==1){
+				query=query+" "+" model.user.email IS NOT NULL and model.user.email!='' and model.role.roleId=? order by model.user.firstName asc ";	
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, userType);	
+			}
+			else if(locationScope==2){
+				query=query+" "+" model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());	
+				query1.setParameter(1, userType);
+			}
+			
+			else if(locationScope==3){
+				query=query+" "+" model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.user.districtId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());
+				query1.setParameter(1, regiVO.getDistrictId());	
+				query1.setParameter(2, userType);
+			}
+			
+			else if(locationScope==4){
+				query=query+" "+" model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.user.districtId=? and model.user.constituencyId=? and model.role.roleId=? order by model.user.firstName asc ";
+				query1 = getSession().createQuery(query);
+				query1.setParameter(0, regiVO.getStateId());
+				query1.setParameter(1, regiVO.getDistrictId());	
+				query1.setParameter(2, regiVO.getConstituencyId());
+				query1.setParameter(3, userType);
+			}
+		}
+			
+			if(userType==3){
+				
+				if(locationScope==1){
+				query1 = getSession().createQuery(query);
+			}
+				else if(locationScope==2){
+					query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+					query1 = getSession().createQuery(query);
+					query1.setParameter(0, regiVO.getStateId());	
+					query1.setParameter(1, userType);
+				}
+				
+				else if(locationScope==3){
+					query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and model.user.email!='' and model.user.stateId=? and model.user.districtId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+					query1 = getSession().createQuery(query);
+					query1.setParameter(0, regiVO.getStateId());
+					query1.setParameter(1, regiVO.getDistrictId());
+					query1.setParameter(2, userType);
+				}
+				
+				else if(locationScope==4){
+					query=query+" "+"where  model.user.userId = model1.userId and  model.user.email IS NOT NULL and  model.user.email!='' and model.user.stateId=? and model.user.districtId=? and model.user.constituencyId=? and model.role.roleId=? order by model.user."+sortBy+" "+order+" ";
+					query1 = getSession().createQuery(query);
+					query1.setParameter(0, regiVO.getStateId());
+					query1.setParameter(1, regiVO.getDistrictId());	
+					query1.setParameter(2, regiVO.getConstituencyId());
+					query1.setParameter(3, userType);
+				}
+			}
+			if(iscount == false){
+				query1.setFirstResult(startIndex);
+				query1.setMaxResults(maxIndex);
 			}
 	return query1.list();
 	
