@@ -49,6 +49,32 @@
     margin-left: 396px;
     border-radius: 3px;
 }
+.selectBoxWidth {
+    padding: 2px;
+    width: 150px;
+}
+.span2{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-weight: bold;
+	margin-top: 8px;	
+}
+select {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 250px;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,#fromDate,#toDate {
+    border-radius: 4px 4px 4px 4px;
+	color: #000000;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 4px;
+}
+input, button, select, textarea {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 </style>
 <script type="text/javascript">
  $(document).ready(function() {
@@ -76,7 +102,7 @@
 			<input type="radio" id="Customers" name="user"  value="Selected User"
 			onclick="defaultForRadio(),hideTableDiv()"/>&nbsp;Customers
 			<input type="radio" id="FreeUsers" name="user"  value="Selected User" onclick="defaultForRadio(),hideTableDiv()"/>&nbsp;Free User
-			</div><br>
+			<span id="freuserTypeDiv"></span></div><br>
 		<div style=" font-weight: bold; margin-left: 70px; margin-bottom: 20px;">
 		<div id="scopeDiv"  style="margin-left: -20px;">
 		Location Scope:<select id="locationScope" name="locationScope" onChange="selectLocation(),getDetailsForStates(),hideTableDiv()" style="width: 175px;">
@@ -102,11 +128,11 @@
 		</select>
 		</div>
 		<div id="viewByajax">
-		<input type="button" id="view" value="View"  onclick="getUsers()" style="margin-left: 380px; width: 80px; height: 25px; margin-top: 20px;" onclick="getUsers()" value="View"/>
+		<input type="button" id="view" value="View"  onclick="getUsers()" style="margin-left: 380px; width: 80px; height: 25px; margin-top: 20px;"/>
 		</div>
 	</div>
 		<div id="commentsData_outer" class="yui-skin-sam">
-		<div id="table">
+		<div id="buildDataTable">
 		</div>
 	</div>
 
@@ -148,6 +174,7 @@
 </s:else>
 		
 <script type="text/javascript">
+/* updated by srishailam
 var dataArr;
 function printUserDetatils(userDetails){
 	dataArr=new Array();
@@ -163,7 +190,7 @@ function printUserDetatils(userDetails){
 	dataArr.push(obj);
   }
 				sendEmailsToUsersTable();
-}
+}*/
 </script>
 </body>
 </html>
