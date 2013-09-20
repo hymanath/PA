@@ -407,7 +407,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 <div class="main-title-sec">
  <div class="main-mbg">${partyVO.partyLongName} 
  
- <span style="margin-top:10px;margin-right:18px;float:right">
+ <span id="facebookSpanId" style="margin-top:10px;margin-right:18px;float:right">
  <a href="javascript:{}" onClick="shareInFacebook('www.partyanalyst.com/partyPageAction.action?partyId=${partyId}')" title="Share this Page in Facebook"><img alt="Share in Facebook" src="images/FBshare.jpg"></img></a> 
 </span>
 </div>
@@ -774,8 +774,10 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 	$(document).ready(function(){
 
 $(document).ready(function(){
+	$('#facebookSpanId').css("display","none");
 	var host = "<%=IConstants.DEPLOYED_HOST%>";
 	  if(host != "tdpserver"){	
+	  $('#facebookSpanId').css("display","block");
 		$("#inline").fancybox();
 		$("#inline").trigger("click");
 	  }
