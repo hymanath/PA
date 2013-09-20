@@ -67,7 +67,26 @@ public class RegistrationVO extends BaseDTO{
 	private String cadreOnlineRegFor;
 	private Long cadreRegiserForId;
 	private boolean multipleAccessRestriction;
+	private List<RegistrationVO> registeredUsersList = new ArrayList<RegistrationVO>();
+	private Long totalCount; 
 	
+	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public List<RegistrationVO> getRegisteredUsersList() {
+		return registeredUsersList;
+	}
+
+	public void setRegisteredUsersList(List<RegistrationVO> registeredUsersList) {
+		this.registeredUsersList = registeredUsersList;
+	}
+
 	public boolean isMultipleAccessRestriction() {
 		return multipleAccessRestriction;
 	}
