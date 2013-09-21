@@ -36,7 +36,8 @@
 <link rel="stylesheet" type="text/css" href="styles/cadreManagement/cadreManagement.css">
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"> </script>
-
+	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
 var smsDialog, newEventDialog, newDateDialog,eventDateDialog,mainEventCalendar,dateCalendar,cadreDataTable,cadreAnim,jsonStr; 
 var monthname = new Array("January", "February", "March", 
@@ -62,7 +63,9 @@ $(".widget-block > ul.nav > li").removeClass("active");
 });
 </script>
 <style>
-
+#paginationDivId{float: none;
+   float:right;
+    width: 313px;}
 /*#connectPeoplePopup{
  height: 230px !important;
 }*/
@@ -488,6 +491,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 						 <div id="userPoliticianInnerDiv"></div>
                          <div id="userPoliticianUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 						</div>-->
+
+						<div id="userConstituencyDiv" class="breadcrumb">
+						  <div id="candidateSubscribeDiv"></div>
+						</div>
 					</div>
 
 				</div>
@@ -716,6 +723,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 <div id="BlockPeoplePopup" style="display:none;">
 
 	</div>
+<div id="CandidateSubscribePopup" style="display:none;">
+
+	</div>
 <!-- Templates -->
 <div class="TemplateCollection">
 
@@ -853,6 +863,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 		<div class="unsubScribeCls"></div>
 	</div>
 
+<div class="subscribe1 specialPagSubscrTemplDiv1 templateholder specialPagSubscrDiv1 templatePersons">
+		<div class="imgClass1 span3"></div>
+		<div class="prinfo1 span6">
+			<span class="titleCls1"></span>
+			<span class="btnClass1"></span> 
+			<span class="hiddenVar1"></span>
+		</div>
+		<div class="unsubScribeCls1"></div>
+	</div>
 	<!--<div class="problemTemplateDiv templateholder problemsShowDiv">
 		<div class="problemsShowDIV">
 			<div class="">
@@ -924,6 +943,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 
 		
   
+</div>
+
+<div class="CandidateSubscriptionDiv">
+<span class="nameClass"></span>
 </div>
 <!-- <div class="favouriteLinkStateClass favouriteLinkDivClass" >
 	<span class="imageClass"></span>
