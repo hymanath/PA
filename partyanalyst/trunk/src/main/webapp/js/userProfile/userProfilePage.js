@@ -4161,7 +4161,7 @@ function buildUserAnnouncenents(results)
 	}
 	else
 	{
-		str+='<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  '+results.length+'  announcements(s)present today</span>';
+		str+='<div class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;margin-top: 8px;">You have  '+results.length+'  announcement(s) for the day</div>';
 	}
 	
     str+='</div>';

@@ -114,7 +114,9 @@
 	String reportLevel = pprRb.getString("reportLevel");
 	
 	%> }
-	
+	function removeSelMesg(){
+			$("#errorsDiv").html("");
+	}
  	function pprCallAjax(param, url){
  		var myResults;
  		url = url + param;
@@ -677,7 +679,7 @@
 				<td>
 					<div><s:select theme="simple" label="State" name="state" id="stateList" list="states" cssStyle="width:150px;" listKey="id" listValue="name" onchange="fetchPartiesInState(this.options[this.selectedIndex].value);"/></div><!-- // onchange="fetchDistricts(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text);"/>-->
 					<input type="hidden" id="stateNameHiddenId" name="stateNameHidden" style="margin-right: 3px;"/>
-					<div class="ajaxImageStyle"><img id="stateSelectAjaxImgId" class="ajaxImgClass" style="display: none;" src="images/icons/search.gif"></div>
+					<div class="ajaxImageStyle"><img id="stateSelectAjaxImgId" class="ajaxImgClass" style="display: none;margin-left: 42px;margin-top:-3px;" src="images/icons/search.gif"></div>
 				</td>
 			</tr>
 			
@@ -687,14 +689,14 @@
 					<!--<s:select theme="simple" label="Party" name="party" onchange="setPartyNameHidden(this.options[this.selectedIndex].text)" id="partyList" list="parties" listKey="id" listValue="name" />-->
 					<div><s:select theme="simple" label="Party" name="party" onchange="getElectionYears(this.options[this.selectedIndex].value,this.options[this.selectedIndex].text)" id="partyList" list="{}" listKey="id" listValue="name" cssStyle="width:150px;" /></div>
 					<input type="hidden" id="partyNameHiddenId" name="partyNameHidden"/>
-					<div class="ajaxImageStyle"><img id="partySelectAjaxImgId" class="ajaxImgClass" style="display: none;" src="images/icons/search.gif"></div>
+					<div class="ajaxImageStyle"><img id="partySelectAjaxImgId" class="ajaxImgClass" style="display: none;margin-left: 42px;margin-top:-3px;" src="images/icons/search.gif"></div>
 				</td>
 			</tr>
 
 			<tr>
 				<th align="left"><%=electionYear%></th>
 				<td>
-				    <div><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" cssStyle="width:150px;"/></div>
+				    <div><s:select theme="simple" label="Year" name="year" id="yearList" list="{}" onchange="removeSelMesg();" cssStyle="width:150px;"/></div>
 				</td>
 			</tr>
 			

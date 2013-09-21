@@ -71,7 +71,7 @@ $("document").ready(function(){
 		var errorDiv = $("<div id='ErrorMsgDivId'></div>");
 		var label = $("<label class='messageLabel'></label>");
 		
-		var button = $("<div id='remainChars'><span id='maxcount'>300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input class='btn-info btn-small' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
+		var button = $("<div id='remainChars'><span id='maxcount'>300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input class='btn-info btn-small' style='margin-left:15px;' id='sendMessageButtonId' type='button' value='send' onclick='sendMessageToConnectedUser("+id+",\""+type+"\")'/>");
 		var textarea = $("<textarea id='connectMessageText' placeholder='Enter Your Message Here..'  maxlength='300' style='width:357px;height:60px;'></textarea><br>");
 		
 		div.append(errorDiv);
@@ -135,7 +135,7 @@ $(".connectLinkInPP").click(function(){
 		//var Name=$("<label>"+userName+"</label>");
 		//var message = $("<label class='messageLabel'>Message</label>");
 		var connectBtn = $('<div id="remainChars"><span id="maxcount">300 </span> <span>chars remaining..</span>&nbsp;&nbsp;<span>Should not exceed 300 chars</span></div><input type="button" value="Connect" class="btn-info btn-small" id="connectMessageLinkInPP"  style="float:right;"/>');
-		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'  style='width:347px;height:60px;'></textarea>");
+		var textArea = $("<textarea id='connectUserMsg' placeholder='Enter Your Message Here..'  style='width:339px;height:82px;resize:none;'></textarea>");
 		var image = $('<img height="100" width="95" src="images/icons/indexPage/human.jpg">');
 		
 		var connectedPersonId = $('<input type="hidden" value='+userId+' id="connectedPersonId"/>');
