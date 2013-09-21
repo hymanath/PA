@@ -1148,4 +1148,27 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		userBlockedRequestsList = userProfileService.getBlockRequestDetails(userId);
 		return Action.SUCCESS;
 	}
+	
+	public String getCandidatesToSubscribe(){
+		String param;
+		param = getTask();
+		try{
+			jObj = new JSONObject(param);	
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception occured in getBlockRequestDetails() Method, Exception - " +e); 
+		}
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return "error" ;
+		Long userId = user.getRegistrationID();
+		String type = jObj.getString("type");
+		String name = jObj.getString("name");
+		Long stateId = jObj.getLong("stateId");
+		Integer startIndex    = jObj.getInt("startIndex");
+		Integer resultsCount    = jObj.getInt("resultsCount");
+		userBlockedRequestsList = userProfileService.getCandidatesToSubscribe(userId,stateId,name,type,startIndex,resultsCount);
+		return Action.SUCCESS;
+	}
 }
