@@ -606,5 +606,6 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	
 	public List findMPTCInfoByElectionTypeTehsilAndPartyWithGainedVotes( Long tehsilID, Long partyId);
 
-
+	public List<Object[]> getCandidatesToSubScribe(Long stateId,String name,String electionType,Integer startIndex,Integer endIndex);
+	
 }
