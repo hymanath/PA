@@ -922,18 +922,23 @@ public class ConstituencyPageAction extends ActionSupport implements
    		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
    		listOfConstituencies = ananymousUserService.getParliamentConstituencies(listOfConstituencies,IConstants.CONSTITUENCY);
    		Long connectedUsers = ananymousUserService.getAllUsersCountInSelectedLocationsInFilterView(0L, listOfConstituencies, IConstants.CONSTITUENCY_LEVEL, IConstants.ALL, "", null);
-   		if(user==null){
+   		
+   		if(!("tdpserver".equalsIgnoreCase(IConstants.DEPLOYED_HOST))){
+   	if(user==null){
    			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,connectedUsers,0l,IConstants.ALL,startIndex,nameString);	
    		}else{
    			userDetails = ananymousUserService.getAllRegisteredAnonymousUserBasedOnLocation(listOfConstituencies,IConstants.CONSTITUENCY_LEVEL,connectedUsers,user.getRegistrationID(),IConstants.ALL,startIndex,nameString);
    		}
-   		
+   		}
    		//	Free User
    		if(user !=null)
-   		{
-   			Long userId=user.getRegistrationID();
-   			isSubscribed=constituencyManagementService.getIsSubscribed(userId,constituencyId);
-	   		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true)){
+   		{   if(userDetails!=null)
+   		    {
+   		
+   			 Long userId=user.getRegistrationID();
+   			 isSubscribed=constituencyManagementService.getIsSubscribed(userId,constituencyId);
+	   		if(session.getAttribute(IWebConstants.FREE_USER_ROLE) !=null && session.getAttribute(IWebConstants.FREE_USER_ROLE).equals(true))
+	   		{
 				userDetails.setLoginStatus("true");
 				userDetails.setUserId(user.getRegistrationID());
 				userDetails.setConstituencyId(user.getConstituencyId());
@@ -944,13 +949,13 @@ public class ConstituencyPageAction extends ActionSupport implements
 			}else{
 				userDetails.setLoginStatus("false");
 			}
+   		    }
    		}
    	//For Both roles
+   		if(userDetails != null)
    		if(user !=null)
    		{
-   	 
-		
-   	 if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
+   		 if(session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 		userStatusType = IConstants.PARTY_ANALYST_USER;
    	 userDetails.setUserStatusType(userStatusType);
 	 if(session.getAttribute(IWebConstants.FREE_USER_ROLE) != null && (Boolean)session.getAttribute(IWebConstants.FREE_USER_ROLE))
@@ -964,7 +969,7 @@ public class ConstituencyPageAction extends ActionSupport implements
         userStatusType = IConstants.NOT_LOGGED_IN;
         userDetails.setUserStatusType(userStatusType);
 		}
-	 
+   		
 	 messageTypes = ananymousUserService.getAllMessageTypes();
 		
 	
