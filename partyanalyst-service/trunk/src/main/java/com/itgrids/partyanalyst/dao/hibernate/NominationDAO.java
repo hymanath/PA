@@ -4170,6 +4170,22 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return (Double) query.uniqueResult();
 		} 
 
-}
+	 public List<Object[]> getCandidatesToSubScribe(Long stateId,String name,String electionType,Integer startIndex,Integer endIndex)
+		{
+			StringBuilder query = new StringBuilder();
+			query.append("select distinct model.candidate.candidateId,model.candidate.lastname  from Nomination model " +
+			" where model.candidate.candidateId not in(select model1.candidate.candidateId from UserCandidateRelation model1)" +
+			" and model.constituencyElection.constituency.state.stateId=:stateId and model.candidate.lastname like '%"+name+"%' "+
+			" and model.constituencyElection.constituency.electionScope.electionType.electionType = :electionType ");
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setLong("stateId", stateId);	 
+			queryObject.setString("electionType", electionType);
+			if(startIndex != null)
+			queryObject.setFirstResult(startIndex);
+			if(endIndex != null)
+			queryObject.setMaxResults(endIndex);
+			return queryObject.list();
+		}
 
+}
 
