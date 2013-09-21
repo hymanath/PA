@@ -63,6 +63,8 @@
 			$("#inline").fancybox();
 			$("#inline").trigger("click");
 		}
+		else
+			$("#connect-people-sec-id").hide();
 	});
 	
 	var censusResultForParl = null;
@@ -850,7 +852,7 @@ var queryString='';
             
             <!--CONNECT PEOPLE SECTION START-->
             
-            <div class="connect-people-sec">
+            <div class="connect-people-sec" id="connect-people-sec-id">
               <div class="cp-title-sec">
                <h1 class="cp-title">Connect To Your Constituency People</h1>
            </div>
