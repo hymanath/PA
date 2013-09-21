@@ -6042,6 +6042,10 @@
 			</result>
 		 </action>
 	
-
+		<action name="getCandidatesToSubscribe" class="userProfileAction" method="getCandidatesToSubscribe">
+		 <result type="json" name="success">
+		  <param name="root">userBlockedRequestsList</param>
+		 </result>
+		</action>
 		</package>
 </struts>      
