@@ -17,4 +17,6 @@ public interface IUserProfileService {
 	public ProblemBeanVO getRecentConnectedPeople(Long userId);
 	
 	public List<CandidateVO> getBlockRequestDetails(Long userId);
+	
+	public List<CandidateVO> getCandidatesToSubscribe(Long userId,Long stateId,String name,String type,Integer startIndex,Integer endIndex);
 }
