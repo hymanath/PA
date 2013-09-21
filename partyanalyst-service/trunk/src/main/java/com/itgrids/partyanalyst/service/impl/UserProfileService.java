@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
+import com.itgrids.partyanalyst.model.CandidateSubscriptions;
 import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
@@ -56,10 +58,20 @@ public class UserProfileService implements IUserProfileService {
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private ICustomMessageDAO customMessageDAO;
 	private IStaticDataService staticDataService;
-	
+	private INominationDAO nominationDAO;
 	private static final Logger log = Logger.getLogger(UserProfileService.class);
 			
-   public IStaticDataService getStaticDataService() {
+   public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+
+
+public IStaticDataService getStaticDataService() {
 		return staticDataService;
 	}
 
@@ -606,5 +618,39 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 			}
 		}
 	   return candiateVO;
+   }
+   public List<CandidateVO> getCandidatesToSubscribe(Long userId,Long stateId,String name,String type,Integer startIndex,Integer endIndex){
+	   List<CandidateVO> candiates = null;
+	   List<Long> candidateIds1 = new ArrayList<Long>();
+	   List<Object[]> cadidateList = nominationDAO.getCandidatesToSubScribe(stateId,name,type,startIndex,endIndex);
+	   List<Object[]> cadidateList1 = nominationDAO.getCandidatesToSubScribe(stateId,name,type,null,null);
+	   List<Long> subscribedCandidates= candidateSubscriptionsDAO.getAllCandidatesSubscribedByUser(userId);
+	   if(subscribedCandidates != null && subscribedCandidates.size() > 0)
+		{
+		   candiates = new ArrayList<CandidateVO>();
+		   if(cadidateList1.size() > 0){
+		   for(Object[] vo:cadidateList1)
+		   {
+			  if(!subscribedCandidates.contains((Long)vo[0]))
+				{
+				  candidateIds1.add((Long)vo[0]);
+				}
+		   }
+		   }
+		   if(cadidateList.size() > 0){
+		   for(Object[] vo:cadidateList)
+		   {
+			   if(!subscribedCandidates.contains((Long)vo[0])){
+			   CandidateVO candidate = new CandidateVO();
+			   candidate.setCandidateId((Long)vo[0]) ;
+			   candidate.setCandidateName(vo[1].toString());
+			   candiates.add(candidate);
+			   }
+		   }
+		   }
+		}
+	   if(candidateIds1.size()>0)
+	   candiates.get(0).setTotalSearchCount(new Long(candidateIds1.size()));
+	   return candiates;
    }
 }
