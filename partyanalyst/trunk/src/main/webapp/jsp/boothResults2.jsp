@@ -167,7 +167,7 @@ a, .reg-form li a:hover, a.change:hover {
 </head>
 <body>
 <div id="mainDiv">
-<div id="titleDiv"><s:property value="boothResult.constituencyName" /> Constituency Booth Results for <s:property value="boothResult.partyName" /> in  <s:property value="boothResult.electionYear" /> <s:property value="boothResult.electionType" /></div>
+<div id="titleDiv"><s:property value="boothResult.constituencyName" /> Constituency Booth Results for <s:property value="boothResult.partyName" /> in  <s:property value="boothResult.electionYear" />&nbsp;<s:property value="boothResult.electionType" /></div>
 <div id="boothResultsDiv">
 
 <div class="resultTableDiv">

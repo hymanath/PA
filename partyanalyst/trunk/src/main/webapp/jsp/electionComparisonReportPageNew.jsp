@@ -1895,10 +1895,10 @@ function createPercentageCoulmnChart()
 {
 	var title = "";
 	<c:if test="${electionComparisonReportVO.electionType == 'Parliament'}">
-	title = "Participated District Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections"
+	title = "Participated Constituency Percentage Gained By ${selectedPartyName} Party In All States For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Parliament Elections"
 	</c:if>
 	<c:if test="${electionComparisonReportVO.electionType != 'Parliament'}">										
-	title = "Participated District Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections"
+	title = "Participated Constituency Percentage Gained By ${selectedPartyName} Party In All Districts For ${electionComparisonReportVO.yearOne} - ${electionComparisonReportVO.yearTwo} Assembly Elections"
 	</c:if>
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', 'District');
