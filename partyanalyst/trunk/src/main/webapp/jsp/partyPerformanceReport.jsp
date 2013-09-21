@@ -152,7 +152,7 @@ var obj={
 	var data = new google.visualization.DataTable();
 		data.addColumn('string', 'Year');
 		data.addColumn('number', 'Seats Won');
-		 data.addColumn('number', 'Percentage of Votes');
+		 data.addColumn('number', 'Votes %');
 		data.addRows([
 		  [' ${sessionScope.reportVO.prevYear}', prevYearTotalSeatsWon,prevYeartotalPercentageOfVotesWon],
           [' ${sessionScope.reportVO.year}', totalSeatsWon,totalPercentageOfVotesWon]
