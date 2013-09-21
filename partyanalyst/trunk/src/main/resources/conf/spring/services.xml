@@ -1538,6 +1538,7 @@
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
 		<property name="customMessageDAO" ref="customMessageDAO" />	
 		<property name="staticDataService" ref="staticDataService" />	
+		<property name="nominationDAO" ref="nominationDAO" />	
 	</bean>
 	
 	<bean name="userService" class="com.itgrids.partyanalyst.service.impl.UserService">
