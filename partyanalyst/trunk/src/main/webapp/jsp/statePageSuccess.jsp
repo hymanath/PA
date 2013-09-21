@@ -7,7 +7,7 @@
  <%@page import="com.itgrids.partyanalyst.dto.StateElectionsVO" %>
  <%@page import="java.util.ArrayList" %>
  <%@page import="java.util.List" %>
-
+<%@page import="com.itgrids.partyanalyst.utils.IConstants"%>
 <HTML>
  <HEAD>
   <TITLE> <c:out value="${statePage.stateName}" /> News,Elections, districts,Constituencies,Census, Election Results</TITLE>
@@ -70,7 +70,18 @@
 
 	<!-- YUI Dependency files (End) -->
 
+<script>
 
+ $(document).ready(function(){
+
+var host = "<%=IConstants.DEPLOYED_HOST%>";
+	if(host == "tdpserver")
+		$('#stateBtn').css("background-color","#FE2307");
+	else
+		$('#stateBtn').css("background-color","#0088CC");
+
+ });
+</script>
 	<script type="text/javascript">
 
 		google.load("elements", "1", {packages : ["newsshow"]});

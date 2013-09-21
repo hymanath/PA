@@ -245,7 +245,7 @@ margin-top:10px;
 		</li>
 		
 		
-		<li><a href="statePageAction.action?stateId=1"><span>STATE</span></a>
+		<li><a id="stateBtn"  href="statePageAction.action?stateId=1"><span>STATE</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			  <ul>		
 				<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>
