@@ -1473,7 +1473,18 @@ function callAjax1(jsObj,url){
 				{
 					buildBlockRequestDetails(results);
 				}
-
+				else if(jsObj.task == "getCandidatesToSubscribe")
+				{
+					buildCandidatesToSubscribe(results,jsObj);
+				}
+				else if(jsObj.task == "candidateSubscriptionDetails")
+				{
+					$("#errorMsgDiv").html("Candidate Subscribed successfully..").css("color","green");
+					setTimeout(function() {
+						$("#CandidateSubscribePopup").dialog('close');
+						$(".subscriptionsLink").trigger("click");
+					}, 2000);
+				}
 			}catch (e) {  
                   	
 				  closeDialogue();
@@ -4476,7 +4487,7 @@ function getUnSubScribedNationalParties(linkType)
    var url = "getAllUnsubscribedNationalPartiesAction.action?"+rparam;						
    callAjax1(jsObj,url);
 }
-
+var arr=[];
 function buildStateList(results,jsObj)
 {
  $("#userPartyUnSubscriptionsDiv").html('');
@@ -4517,9 +4528,27 @@ function buildStateList(results,jsObj)
  constituencyUnSubDiv.append(constituencyStateList);
  constituencyUnSubDiv.append(constituencyList);
  constituencyUnSubDiv.append(constituencySubBtn);
- 
  $('#constituencyStateListDiv').append(constituencyUnSubDiv);
 
+ if(arr.length==0)
+	 var obj = {
+		 id: "0",
+		 name:"select"
+	 }
+ arr.push(obj);
+ for(var i in results)
+	{
+	 var obj = {
+		 id:results[i].id,
+		 name:results[i].name
+	 }
+	 arr.push(obj);
+	}
+
+var candidateSubscribeSubDiv = $('<div id="candidateSubscribeSubDiv"></div>');
+ candidateSubscribeSubDiv.append('<span class="subscriptionType">Not Yet Subscribed Candidates</span><br><span><a onclick="subscriptionCandidateDetails();"> Click here</a> to subscribe Candidates<span>');
+ 
+$('#candidateSubscribeDiv').append(candidateSubscribeSubDiv);
  createSelectOptionsForSelectElmtId('constituencyStateList');
  createOptionsForSelectElmtId('constituencyStateList',results);
 
@@ -4785,6 +4814,140 @@ function unblockRequest(requestId,requestName){
 	alert(requestName+" request is unblocked.");
 	callAjax1(jsObj,url);
 }
+
+function subscriptionCandidateDetails(){
+	
+		$('#CandidateSubscribePopup').html('');
+		$( "#CandidateSubscribePopup" ).dialog({
+			title:"Subscribe Candidate",
+			autoOpen: true,
+			show: "blind",
+			width: 500,
+			modal: true,
+			height:500,
+			hide: "explode"
+		});
+$("#CandidateSubscribePopup").html('');
+		var str='';
+		str+='<div align="center">';
+		str+= "<div class='connectPeoplePopupInnerDiv' style='border:1px solid #D6D6D6;'>";
+		str+= "<div id='errorMsgDiv' style='font-size:13px;'></div>";
+		str+='<label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="assembly" name="radioForCandidate" onclick="displayLocationScope(this.id)" value="Assembly" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">Assembly</span></label>';
+		str+=' <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="parliament" name="radioForCandidate" onclick="displayLocationScope(this.id)" value="Parliament" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">Parliament</span> </label>';
+		str+= "<div align='center' style='margin-top: 10px;'>";
+		str+= "<div><span style='margin-left: 2px;'>State:<font color='red'> *</font></span> <span><select id='constituencyStateList1' style='width: 170px;margin-left: 68px;' onChange='getDetails();'></select></span></div>";
+		str+= '<div><span style="margin-left: 5px;">Candidate Name:<font color="red"> *</font></span> <span><input type="text" id="candidateName" name="candidateName" style="height: 18px; width: 160px; margin-top: 7px; margin-left: 4px;"/></span></div>';
+		str+= '</div>';
+		str+= '<div align="center" style="margin-top: 11px; margin-left: 31px; margin-bottom: 10px;"><input id="searchCandidate" class="btn btn-success" type="button" value="Search Candidate" onclick="getCandidatesBySearch(0);"></div>';
+		str+= "</div>";
+		str+= '<div id="paginationDivId" style="margin-top: 25px;"></div>';
+		str+= '<div id="resultDivId" align="center"></div>';
+		str+= "</div>";
+		$('#CandidateSubscribePopup').append(str);
+	
+ createOptionsForSelectElmtId('constituencyStateList1',arr);
+
+}
+function getDetails(){
+$("#errorMsgDiv").html('');
+//$("#nameDiv").css("display","block");
+}
+
+function getCandidatesBySearch(startIndex){
+var stateId = $("#constituencyStateList1").val();
+var name = $("#candidateName").val();
+var val = 0;
+
+if($('input:radio[name=radioForCandidate]:checked').is(":checked")) {
+	val = $('input:radio[name=radioForCandidate]:checked').attr('id');
+}
+$("#errorMsgDiv").html('');
+	if(val == 0){
+		$("#errorMsgDiv").html('Please select Assembly/Parliament');
+		$('#resultDivId').html('');
+		return;
+	}
+	if(stateId == 0){
+		$("#errorMsgDiv").html('Please select state');
+		$('#resultDivId').html('');
+		return;
+	}
+	if(name == ''){
+		$("#errorMsgDiv").html('Please provide candidate name');
+		$('#resultDivId').html('');
+		return;
+	}
+	$('#resultDivId').html('');
+	var jsObj=
+	{		startIndex:startIndex,
+			resultsCount:10,
+			name:name,
+			type:val,
+			stateId:stateId,
+			task:"getCandidatesToSubscribe"		
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesToSubscribe.action?"+rparam;		
+	callAjax1(jsObj,url);
+}
+
+function buildCandidatesToSubscribe(results,jsObj){
+	
+	if(results.length == 0){
+		$('#resultDivId').html("<b>Data Not Available</b>").css("margin-top","20px");
+		$('#paginationDivId').html('');
+		return;
+	}
+ var timeST = new Date().getTime();
+	for(var i in results){
+		var template = $(".specialPagSubscrTemplDiv1");
+		var templateClone = template.clone();
+		$(".specialPagSubscrTemplDiv1").css({"width":"200px !important","height":"90px !important"});
+		
+		templateClone.removeClass("specialPagSubscrTemplDiv1");
+		
+		templateClone.attr("id",results[i].candidateId);
+		
+		$('.prinfo1').css({"width":"104px","height":"84px","margin-left": "4px"});
+		$('.imgClass1').css({"width":"50px","height":"33px"});
+		$('.btnClass1').css({"margin-top":"10px"});
+		templateClone.find('.imgClass1').html("<img height='100' width='95' src='images/icons/indexPage/human.jpg'/>");
+		templateClone.find('.titleCls1').html('<a class="titleVar" href="candidateElectionResultsAction.action?candidateId='+results[i].candidateId+'" target="_blank">'+results[i].candidateName+'</a>');
+		templateClone.find('.btnClass1').html('<a class="label label-info nationalPartySubscribedLink" href="javascript:{}" onClick="getCandidateSubScribe('+results[i].candidateId+','+timeST+');" style="color: rgb(255, 255, 255);">SUBSCRIBE</a>');
+		templateClone.appendTo('#resultDivId');
+	}
+	  var itemsCount=results[0].totalSearchCount;
+	    var maxResults=jsObj.resultsCount;
+	   
+	     if(jsObj.startIndex==0){
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getCandidatesBySearch(num);
+			}
+		});
+	}
+}
+
+function getCandidateSubScribe(id,timeST){
+
+	var jsObj=
+	{		
+			id:id,
+			timeST:timeST,
+			task:"candidateSubscriptionDetails",
+			page:"candidatePage"
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+   var url = "candidateEmailAlertsForUserAction.action?"+rparam;						
+   callAjax1(jsObj,url);
+}
+
 $("#canceluserSettings").live("click",function(){
 $("#userSettingsDialog").dialog('close');
 })
