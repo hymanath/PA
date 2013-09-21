@@ -1645,7 +1645,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			
-			 if(jObj.getString("task").equalsIgnoreCase("subscriptionDetails"))
+			 if(jObj.getString("task").equalsIgnoreCase("subscriptionDetails") || jObj.getString("task").equalsIgnoreCase("candidateSubscriptionDetails"))
 			 {
 				 
 				 if(regVO != null){
