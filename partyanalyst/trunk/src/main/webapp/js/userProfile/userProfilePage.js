@@ -456,6 +456,7 @@ ajaxProcessing();
 
 	//flag value created by Srishailam
 	$(".districtPeopleLink").click(function(){	
+		$("#userUnSubScriptionsDiv").hide();
 		$("#placeholderCenterDivId").show();
 	flag=false;
 	if(!flag1){
@@ -4009,7 +4010,7 @@ $("#SentBox").trigger("click");
 // ending ----------You May Know Module (See All) updated by Srishailam------
 
 function getCadresInfo()
-{
+{$("#userUnSubScriptionsDiv").hide();
 	ajaxProcessing();
 		$('#announcementsDiv').hide();
 		$("#impdatesDiv").hide();
@@ -4189,7 +4190,7 @@ function buildUserAnnouncenents(results)
 
 
 function clearDivs()
-{
+{    $("#userUnSubScriptionsDiv").hide();
 	$(".placeholderCenterDiv").children().remove();
 	clearAllSubscriptionDivs();
 	clearAllFavoriteLinkDivs();
