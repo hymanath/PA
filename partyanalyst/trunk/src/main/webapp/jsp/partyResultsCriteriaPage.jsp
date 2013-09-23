@@ -444,7 +444,7 @@ table.PartyResultsReportInputSelection {
 										if(jsObj.task == "getStates")
 										{									
 											clearOptionsListForSelectElmtId('stateNameSelect');
-											createOptionsForSelectElmtIdWithSelectOption('stateNameSelect',myResults);
+											createOptionsForSelectElmtIdWithSelectOptionState('stateNameSelect',myResults,jsObj);
 										}
 										if(jsObj.task == "getStaticParties")
 										{									
@@ -558,6 +558,49 @@ table.PartyResultsReportInputSelection {
 			document.getElementById("selectedElectionTypeName").value=electionType;	
 		}
 		//window.history.forward(1);
+   function createOptionsForSelectElmtIdWithSelectOptionState(elmtId,optionsList,jsObj)
+   {	
+	$('#electionTypeSelect_ImgSpan').hide();
+	$('#electionScopeSelect_ImgSpan').hide();
+	$('#partyList_ImgSpan').hide();
+	var elmt = document.getElementById(elmtId);
+	
+	if( !elmt || optionsList == null)
+		return;
+	
+	var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+	  if(jsObj.task == "getStates")
+		 option.text="Select State";
+	try
+	{
+		elmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+	if(specific == true){
+	$("#partySelect").append(new Option('IND','366',false,false));
+	}
+}
+  
   </script>
 </head>
 <body>
