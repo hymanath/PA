@@ -1409,6 +1409,8 @@ public String saveLocality()
 				voterDataVO.setDir(dir);
 				voterDataVO.setBuildType(buildType);
 				voterDataVO.setSort(sort);
+				voterDataVO.setSearchColumnName(request.getParameter("sortColumnName"));
+				voterDataVO.setSearchString(request.getParameter("searchString"));
 				List<Long> categories = new ArrayList<Long>();
 				if(request.getParameter("reqfields").trim().length() >0){
 					String[] idsArray = request.getParameter("reqfields").trim().split(",");
@@ -1424,6 +1426,7 @@ public String saveLocality()
 				    }
 				} 
 				votersData = votersAnalysisService.getVoterData(voterDataVO , userId , categories);
+				//votersData = votersAnalysisService.getVoterData1(voterDataVO , userId , categories,sortColumnName,searchString);
 				voterVO = new VoterVO();
 				if(votersData != null && votersData.size() > 0)
 				{

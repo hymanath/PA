@@ -151,19 +151,19 @@
 <div id="atterHeadingDiv" style="display:none;margin-left:20px"><h5>Check Required Fields To Show</h5></div>
 <div id="impFamilySelectedDetails" style="padding:10px 0 10px 27px;border:1px solid #c3c3c3;border-radius:5px; display:none;margin-left:20px;margin-right: 20px;height:100px;">
 		
-<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="snoId">S NO</input></label>
+<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="snoId" value="serial_no">S NO</input></label>
 		
-<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="nameId">Name</input></label>
+<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="nameId" value="name">Name</input></label>
 
-<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="voterId">Voter Id</input></label>
+<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="voterId" value="voter_id_card_no">Voter Id</input></label>
 
-<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="boothNoId">Booth NO</input></label>
+<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="boothNoId" value="booth_id">Booth NO</input></label>
 
-<label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="genderId" >Gender</input></label>
+<label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="genderId" value="gender">Gender</input></label>
 
-<label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="ageId" >Age</input></label>
+<label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="ageId" value="age" >Age</input></label>
 
-<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="houseNoId">House NO</input></label>
+<label style="float:left;margin:0px 7px 4px 0px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="houseNoId" value="house_no">House NO</input></label>
 			
 <label style="float:left;margin:2px;"><input type="checkbox" class="voterAttributes requiredAttrClass" style="margin:0px 7px 4px 0px;" id="typeId">Type</input></label>
 			
@@ -184,16 +184,44 @@
   <div id="totalCountId" style="display:none;"></div>
   <div id="searchResultsDiv"  class="yui-skin-sam yui-dt-sortable" style="display:none;border: 1px solid black;border-radius: 4px 4px 4px 4px;margin-top: 11px;padding: 10px;"></div>
 </div>
+
+
+
 <div id="votersInnerDiv1" style="height:auto">
 <div id="imgDescriptionDiv" style="margin-top: 30px; display:none;margin-left:20px;float:left;">
 <b style="margin-left: 5px">Influencing People</b>:<img title="Influencing People" alt="Influencing People" src="./images/icons/influencing.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
-<b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Cadre" src="./images/icons/cadre.png" style="margin-bottom: 10px;
+<b style="margin-left: 30px">Cadre</b>:<img title="Cadre" alt="Cadre" src="./images/icons/cadre.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
-<b style="margin-left: 50px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;
+<b style="margin-left: 30px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
 <div id="errorMessageDiv"></div>
+
+
 </div>
+
+<c:if test="${maintype == 'booth' || maintype == 'panchayat'}">
+<div style="float:right;margin-top:25px;">
+	Search By:<select id="searchTypeId" onchange="$('#searchValue').val('');">
+	    <option value="serial_no">S NO</option>
+		<option value="name">Name</option>
+		<option value="voter_id_card_no">Voter Id</option>
+		<option value="part_no">Booth NO</option>
+		<option value="gender">Gender</option>
+		<option value="age">Age</option>
+		<option value="house_no">House No</option>
+		<option value="cast">Caste</option>
+		<option value="party">Party</option>
+		<!--<option value="relative_name">Relative Name</option>-->
+		
+	</select>
+
+	<input type="text" id="searchValue"/> 
+	<a class="btn btn-primary" href="javascript:{getResultsBasedOnSearch()}" style="margin-top:-10px;">Search</a>
+</div>
+</c:if>
+
+
 <div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable yui-dt table table-bordered table-striped table-hover" style="display:none;float: left;overflow-x: scroll;">
 </div></div>
 
@@ -1167,6 +1195,7 @@ function showLocationsDiv(){
 		}
 
 		$('#constituencySelectId ,#mandalSelectId , #wardSelectId ,#wardSelectId,#boothSelectId').find('option').remove();
+         $('#searchValue').val('');
 
 		$('#constituencySelectId ,#mandalSelectId , #wardSelectId ,#wardSelectId,#boothSelectId').append('<option value="0">Select</option>');
 
@@ -1670,13 +1699,58 @@ function buildCategories(results){
 	for(var i in results){
       
        str+='<label style="float:left;margin:3px;"><input type="checkbox" style="margin:0px 7px 4px 0px;" class="attributeTypeClassIni1" value="'+results[i].id+','+results[i].name+'"/>'+results[i].name+'</label>';
+       $('#searchTypeId').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
 	}
 
 	$('#impFamilySelectedDetails1').html(str);
 
 }
+var searchType ="";
+var searchValue = "";
+function checkForAttributesToDisplay(type){
 
-function checkForAttributesToDisplay(){
+
+  
+
+	if(type == "search")
+	{
+		searchType  = $('#searchTypeId').val();
+		searchValue = $('#searchValue').val();
+		var selectedValue = $('#searchTypeId').val();
+
+		$(":checkbox[value="+selectedValue+"]").attr("checked","true");
+
+		$('.attributeTypeClassIni1').each(function(index,value){
+
+			if($(this).val().substring(0,1) == selectedValue)
+			$(this).attr("checked","true");
+
+		});
+
+
+	}else
+	{
+		searchType  = "";
+		searchValue = "";
+
+
+		//$('#searchTypeId').find('option').remove();
+
+		/*$('.voterAttributes').each(function(index,value){
+			if(this.checked && this.value != "on")
+			 $('#searchTypeId').append('<option value="'+this.value+'">'+$(this).parent().text()+'</option>');
+
+		});
+
+		$('.attributeTypeClassIni1').each(function(index,value){
+			if(this.checked)
+			  $('#searchTypeId').append('<option value="'+this.value.split(',')[0]+'">'+this.value.split(',')[1]+'</option>');
+
+		});
+*/
+
+	}
+
 	confTrue = true;
 	reqfields = "";
 	reqfieldsArr = new Array();
@@ -1710,7 +1784,10 @@ function checkForAttributesToDisplay(){
 				buildType : "panchayat",
 				sort : "voterId",
 				dir : "asc",
-				task:"getVoterData"
+				task:"getVoterData",
+                searchType:searchType,
+                searchValue:searchValue
+                
 			}
 			//var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			//var url = "getVoterData.action?"+rparam;						
@@ -1812,7 +1889,7 @@ str += ' </li>';
 str += ' </ul>';
 elLiner.innerHTML =str;
 }
-		 
+		
 YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	    {
 			var str ='';
@@ -1923,7 +2000,8 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 					votersResultColumnDefs.push(obj);
 					
 		 }
-		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterData.action?constituencyId="+constituencyId+"&reqfields="+reqfields+"&buildType="+maintype+"&publicationId="+publicationId+"&id="+id+"&");
+		
+		var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterData.action?sortColumnName="+searchType+"&searchString="+searchValue+"&constituencyId="+constituencyId+"&reqfields="+reqfields+"&buildType="+maintype+"&publicationId="+publicationId+"&id="+id+"&");
 		votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 		votersByLocBoothDataSource.responseSchema = {
 		resultsList: "votersList",
@@ -1937,11 +2015,11 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		var initialPageNumber = 1;
 		if($('.yui-pg-current-page').html() != undefined)
 			initialPageNumber = $('.yui-pg-current-page').html();	
-//end
+//end 
 		if($('.yui-dt-paginator').hasClass('yui-pg-container') == true)
 		{
 			var myConfigs = {
-			initialRequest: "sort=initial&dir=asc&startIndex=1&results=100", // Initial request for first page of data
+			initialRequest: "sortColumnName="+searchType+"&searchString="+searchValue+"&sort=initial&dir=asc&startIndex=1&results=100", // Initial request for first page of data
 			dynamicData: true, // Enables dynamic server-driven data
 			sortedBy : {key:"serialNo", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 			   paginator : new YAHOO.widget.Paginator({ 
@@ -1958,14 +2036,19 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		  else
 		  stindx =  (parseInt($.trim($('.yui-pg-current-page').html()))-1)*100;
 		  
-		  myConfigs["paginator"] = new YAHOO.widget.Paginator({ 
+		  /*if(searchType == "" || searchValue == ""){
+
+			myConfigs["paginator"] = new YAHOO.widget.Paginator({ 
 						rowsPerPage    : limit ,
 						//initialPage:$('.yui-pg-current-page').html(),
 						initialPage:initialPageNumber,
 						totalRecords:totalReq
 						}) 
+		  }*/
 		  }catch(e){}
-		 myConfigs["initialRequest"] ="sort=name&dir=asc&startIndex="+stindx+"&results="+limit+"&initialPage ="+$('.yui-pg-current-page').html();
+		// myConfigs["initialRequest"] ="sortColumnName="+searchType+"&searchString="+searchValue+"&sort=name&dir=asc&startIndex="+stindx+"&results="+limit+"&initialPage ="+$('.yui-pg-current-page').html();
+
+		 myConfigs["initialRequest"] ="sortColumnName="+searchType+"&searchString="+searchValue+"&sort=name&dir=asc&startIndex=0&results=100&initialPage ="+$('.yui-pg-current-page').html();
 		}
 		var votersByLocBoothDataTable = new YAHOO.widget.DataTable("votersByLocationTabContentDiv_body",
 		votersResultColumnDefs, votersByLocBoothDataSource, myConfigs);
@@ -1995,5 +2078,14 @@ getCountOfHamletsAndBoothsInPanchayat();
 </script>
 <script>
  document.title = '${name} Voter Details';
+
+ function getResultsBasedOnSearch()
+ {
+	 if($('#searchValue').val().trim() == "")
+     	alert("Please enter search value.");
+     else
+	   checkForAttributesToDisplay('search');
+
+ }
  </script>
 </body>
