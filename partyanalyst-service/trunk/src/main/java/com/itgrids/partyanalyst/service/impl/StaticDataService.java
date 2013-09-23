@@ -8929,6 +8929,7 @@ public class StaticDataService implements IStaticDataService {
 				resultList.add(selectOptionVO);
 			}
 		}
+		Collections.sort(resultList,sortByName);
 		return resultList;
 	}
 	
@@ -8945,9 +8946,17 @@ public class StaticDataService implements IStaticDataService {
 				resultList.add(selectOptionVO);
 			}
 		}
+		Collections.sort(resultList,sortByName);
 		return resultList;
 	}
 	
+	public static Comparator<SelectOptionVO> sortByName = new Comparator<SelectOptionVO>()
+			{	  
+			    public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
+						{
+						  return arg1.getName().trim().toUpperCase().compareTo(arg2.getName().trim().toUpperCase());
+						}
+			};	
 	public Long getdistrictForAConstituency(Long constituencyId)
 	{
 		
