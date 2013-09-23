@@ -1387,6 +1387,7 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 			selectOptionList.add(optionVO);
 		}
 	}
+			Collections.sort(selectOptionList,sortByName);
 		 return selectOptionList;
 	}catch(Exception e){
 		e.printStackTrace();
@@ -1394,7 +1395,13 @@ public class ElectionLiveResultsAnalysisService implements IElectionLiveResultsA
 	}
 	  
   }
-  
+  public static Comparator<SelectOptionVO> sortByName = new Comparator<SelectOptionVO>()
+			{	  
+			    public int compare(SelectOptionVO arg1,SelectOptionVO arg2)
+						{
+						  return arg1.getName().trim().toUpperCase().compareTo(arg2.getName().trim().toUpperCase());
+						}
+			};	
   public ResultStatus saveKeyCandidates(AssignKeyCandidateVO assignKeyCandidateVO){
 	  log.debug("Enter into saveKeyCandidates of ElectionLiveResultsAnalysisService");
 	  ResultStatus resultStatus = new ResultStatus();
