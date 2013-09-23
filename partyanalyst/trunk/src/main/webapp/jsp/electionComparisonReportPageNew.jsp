@@ -846,6 +846,12 @@ function buildElectionResultsComparePanel()
 
 function buildTwoYearPanelDataTable(arr,divId)
 {
+	var value="";
+	if("${electionComparisonReportVO.electionType}"=="Assembly")
+         value="District";
+    else
+         value="State";
+   
 	var resultsDataSource = new YAHOO.util.DataSource(arr);
 	resultsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
 	resultsDataSource.responseSchema = {
@@ -905,7 +911,7 @@ function buildTwoYearPanelDataTable(arr,divId)
 	}, 
 	{
 		key : "districtName",
-		label : "<%=dist%>",
+		label : value,
 		sortable : true
 	}, 
 	{

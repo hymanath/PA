@@ -167,8 +167,8 @@ function getAllCandidates()
 	
 	
 	   divEle.innerHTML = str;
-	  if(flag)
-	  return;
+	  if(flag)	
+	     return;
 	  else
 	  {
 	   document.getElementById("searchAjaxImgSpan").style.display = 'block';
@@ -297,15 +297,15 @@ function getAllCandidates()
 			 else if(jObj.task == "getCandidates"){
 				 
 				 if(myResults == ''){
-					var candidateName = document.getElementById("candidateName").value; 
-					document.getElementById("errorDivElement").innerHTML = '<b><font style="color:red;font-size:12px;">No candidates are found for given "'+candidateName+'"</font></b>';
 					document.getElementById('searchAjaxImgSpan').style.display = 'none';
+					var candidateName = document.getElementById("candidateName").value; 
+					document.getElementById("errorDivElement").innerHTML = '<b><font style="color:red;font-size:12px;">No candidates are found for given "'+candidateName+'"</font></b>';					
 					}
 
 			    else{
+					document.getElementById('searchAjaxImgSpan').style.display = 'none';
 					clearOptionsListForSelectElmtId("candidateId");
 					createOptionsForSelectElmtIdWithSelectOption("candidateId",myResults);
-					document.getElementById('searchAjaxImgSpan').style.display = 'none';
 				}
 			 }
 			 else if(jObj.task == "assignKeyCandidate"){

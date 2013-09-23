@@ -65,6 +65,11 @@
 		}
 		else
 			$("#connect-people-sec-id").hide();
+		if(host == "tdpserver"){
+			$("#headingWidget").hide();
+            $("#serviceDiv").hide();
+			}
+		
 	});
 	
 	var censusResultForParl = null;
@@ -364,7 +369,7 @@ src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
         <div class="main-mbg"><div id="constituencyType"></div></div>
         <div class="main-bbg"></div>
 
-		<div style="margin-top: 9px;">
+		<div style="margin-top: 9px;" id="headingWidget">
 		<span style="float:right;">
 			<g:plusone size="medium"></g:plusone>
 
@@ -1001,7 +1006,7 @@ var queryString='';
 		                    <a href="electionAnalysisAndManagementTool.action" title="Our unique tool designed for Politicians">Political<br/>Management Tool</a>
 		                </div> -->
 
-						<div class="our-services">
+						<div class="our-services" id="serviceDiv">
 		                    <h3 class="headingClass">Our Services</h3>
 		                    <a href="newsMonitoringService.action" title="News tracking service">News<br/>Monitoring Service</a>
 		                    <a href="VotersPulse.action" title="Election-Political Surveys">Voters<br/> Pulse</a>
