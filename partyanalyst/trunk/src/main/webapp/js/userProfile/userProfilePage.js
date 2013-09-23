@@ -185,7 +185,7 @@ if($(this).val().length==0)
               str+='  <tr><td><a href="javascript:{}" class="changePwdLink"><span class="icon-hand-right"></span>  Change Password</a></td></tr>';
               str+='   <tr><td><a href="javascript:{}" class="editPictureLink"><span class="icon-user"></span>  Edit Picture</a></td></tr>';
               str+='   <tr><td><a href="javascript:{getUserSettingsDetails();}" class="editSettingsLink"><span class="icon-thumbs-up"></span>  Edit View Settings</a></td></tr>';
-			  str+='   <tr><td><a href="javascript:{getBlockRequestDetails();}" class="editSettingsLink"><span class="icon-thumbs-up"></span>  Blocked requests</a></td></tr>';
+			  str+='   <tr><td><a href="javascript:{getBlockRequestDetails();}" class="editSettingsLink"><span class="icon-ban-circle"></span>  Blocked requests</a></td></tr>';
              // str+='   <tr><td><a href="javascript:{}" class="editCoverImgLink"><span class="icon-user"></span>  Upload CoverImage</a></td></tr>';
 			  str+='  </tbody>';
               str+='</table>';
