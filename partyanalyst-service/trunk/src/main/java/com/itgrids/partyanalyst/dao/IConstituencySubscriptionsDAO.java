@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -19,5 +20,7 @@ public interface IConstituencySubscriptionsDAO extends GenericDao<ConstituencySu
 	public List<Object[]> getAllUserSubscribedConstituencyPages(Long userId);
 	
 	public List<Long> getAllUserSubScribedConstituencies(Long userId);
+	
+	public List<Object[]> getConctituencySubscriptionsForPublicProfileStreeming(Long userId,Date toDate,Date fromDate);
 	
 }

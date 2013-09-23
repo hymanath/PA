@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -46,6 +47,23 @@ public class UserFavoriteLinksDAO  extends GenericDaoHibernate<UserFavoriteLinks
 		query.setParameter(1, userId);
 		return query.list();
 		
+	}
+	
+	public List<Object[]> getFavoroteLinksForPublicProfileStreeming(Long userId,Date toDate,Date fromDate)
+	{
+		Query query = getSession().createQuery("select model.favoriteLinkPage.page," +//0
+				" model.url , " +//1
+				" model.createdTime," +//2
+				" model.user.firstName , " +//3
+				" model.user.lastName ," +//4
+				" model.user.profileImg " +//5
+				" from UserFavoriteLinks model " +
+				" where model.user.userId = :userId and date(model.createdTime) >= :fromDate  and " +
+				" date(model.createdTime) <= :toDate ");
+		query.setParameter("userId", userId);
+		query.setParameter("toDate", toDate);
+		query.setParameter("fromDate", fromDate);
+	 	return query.list();
 	}
 
 }

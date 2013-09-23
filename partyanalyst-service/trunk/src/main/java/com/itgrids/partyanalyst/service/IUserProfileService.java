@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.PublicProfileStreemVO;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
 
 public interface IUserProfileService {
@@ -18,5 +19,13 @@ public interface IUserProfileService {
 	
 	public List<CandidateVO> getBlockRequestDetails(Long userId);
 	
-	public List<CandidateVO> getCandidatesToSubscribe(Long userId,Long stateId,String name,String type,Integer startIndex,Integer endIndex);
+	public List<CandidateVO> getCandidatesToSubscribe(Long userId,Long stateId,String name,String type,Integer startIndex,Integer endIndex);\
+	
+	public List<PublicProfileStreemVO> getPublicProfileDataStreaming(Long userId,Date todate,Date fromDate);
+	
+	public Long getUserAcessViw(Long userId);
+	
+	public Long checkWeaterUserConnectedOrNot(Long sourcrId,Long targetId);
+	
+	public Long getUserTypeAcessViw(Long userId);
 }

@@ -198,4 +198,6 @@ public interface IUserProblemDAO extends GenericDao<UserProblem,Long>{
 	 
 	 public List<Object[]> findLatestUpdateProblems(Long userid,List<Long> statusIds);
 	 
+	 public List<Object[]> getUserPostedProblemsForPublicStreaming(Long userId,Date toDate,Date fromDate);
+	 
 }

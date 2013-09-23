@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -41,5 +42,10 @@ public interface IUserConnectedtoDAO extends GenericDao<UserConnectedto, Long> {
 	public List<Object[]> getCountOfAllConnectedPeopleForUserInSameLocation(List<Long> senderId,List<Long> locationIds,String constituencyType);
 	
 	public List<Object[]> getRecentConnectedPeopleForUser(Long userId);
+	
+	public List<Object[]> getUserConnectedForPublicProfileStreeming(Long userId,Date toDate,Date fromDate);
+	
+	public Long getFrindsConnectdOrNot(Long sourceId,Long targetId);
+
 	
 }

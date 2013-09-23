@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -73,6 +74,25 @@ public class PartySubscriptionsDAO extends GenericDaoHibernate<PartySubscription
 				" PartySubscriptions model where model.user.userId =:userId order by model.party.longName ");
 		
 		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getpartySubscriptionsForPublicProfileStreeming(Long userId,Date toDate,Date fromDate)
+	{
+		Query query = getSession().createQuery("select model.party.shortName ," +//0
+				" model.updatedTime ," +//1
+				" model.user.firstName , " +//2
+				" model.user.lastName ," +//3
+				" model.user.profileImg ," +//4
+				" model.party.partyFlag , " +//5
+				" model.party.partyId  " +//6
+				" from PartySubscriptions model " +
+				" where model.user.userId = :userId and " +
+				" date(model.updatedTime) >= :fromDate  and " +
+				" date(model.updatedTime) <= :toDate");
+		query.setParameter("userId", userId);
+		query.setParameter("toDate", toDate);
+		query.setParameter("fromDate", fromDate);
 		return query.list();
 	}
 }

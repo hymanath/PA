@@ -1428,5 +1428,26 @@ public class UserProblemDAO extends GenericDaoHibernate<UserProblem,Long> implem
 		return queryObj.list(); 
 	}
 	
-	
+	public List<Object[]> getUserPostedProblemsForPublicStreaming(Long userId,Date toDate,Date fromDate)
+	{
+		Query query = getSession().createQuery("select model.problem.description, " +//0
+				" model.updatedTime ," +//1
+				" model.problem.title ," +//2
+				" model.user.firstName ," +//3
+				" model.user.lastName , " +//4
+				" model.user.profileImg ," +//5
+				" model.problem.existingFrom , " +//6
+				" model.problem.regionScopes.regionScopesId , " +//7
+				" model.problem.impactLevelValue , " +//8
+				" model.problem.problemId , " +//9
+				" model.problem.regionScopes.scope " +//10
+				" from UserProblem model where model.user.userId = :userId " +
+				" and model.visibility.visibilityId = 1 " +
+				" and date(model.updatedTime) >= :fromDate  and " +
+				" date(model.updatedTime) <= :toDate ");
+		query.setParameter("userId", userId);
+		query.setParameter("toDate", toDate);
+		query.setParameter("fromDate", fromDate);
+		return query.list();
+	}
 }

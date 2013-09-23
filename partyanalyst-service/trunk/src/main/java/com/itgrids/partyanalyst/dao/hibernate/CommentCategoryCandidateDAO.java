@@ -605,4 +605,33 @@ public class CommentCategoryCandidateDAO extends GenericDaoHibernate<CommentCate
 		queryObj.setParameterList("constituencyIds", constituencyIds);
 		return queryObj.list();
 	}
+	
+	/**
+	 * This DAO is used for getting commemts commented by user for politicans by using userId, to and from dates
+	 * @param Long userId
+	 * @param Date toDate
+	 * @param Date fromDate
+	 * @return List<Object[]>
+	 */
+	public List<Object[]> getCommentDataForPublicStreeming(Long userId,Date toDate,Date fromDate)
+	{
+		Query query = getSession().createQuery("select model.commentData.commentBy , " +//0
+				" model.nomination.candidate.lastname , " +//1
+				" model.commentData.commentDataCategory.commentClassification , " +//2
+				" model.nomination.constituencyElection.constituency.name, " +//3
+				" model.nomination.candidate.image , " +//4
+				" model.commentData.commentDataCategory.commentDataCategoryType , " +//5
+				" model.commentData.commentDesc, " +//6
+				" model.commentData.commentDate , " +//7
+				" model.user.profileImg " +//8
+				" from CommentCategoryCandidate model " +
+				" where model.user.userId = :userId and " +
+				" date(model.commentData.commentDate) >= :fromDate " +
+				" and date(model.commentData.commentDate) <= :toDate ");
+		query.setParameter("userId", userId);
+		query.setParameter("toDate", toDate);
+		query.setParameter("fromDate", fromDate);
+		
+		return query.list();
+	}
 }

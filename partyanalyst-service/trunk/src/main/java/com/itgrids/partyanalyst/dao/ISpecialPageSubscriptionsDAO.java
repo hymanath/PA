@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -15,5 +16,6 @@ public interface ISpecialPageSubscriptionsDAO extends GenericDao<SpecialPageSubs
 	public List<Long> getUserSubscribedSpecialPageIds(Long userId);
 	public List<Object[]> getAllSpecialPages();
 	public List<Long> getAllSpecialPagesSubscribedByUser(Long userId);
+	public List<Object[]> getSpecialSubscriptionsForPublicProfileStreeming(Long userId,Date toDate,Date fromDate);
  
 }

@@ -9,5 +9,7 @@ import com.itgrids.partyanalyst.model.UserPrivacySettings;
 public interface IUserPrivacySettingsDAO extends GenericDao<UserPrivacySettings, Long>{
 	
 	public List<UserPrivacySettings> getUserSavedSettings(Long userId);
+	
+	public Long getUserPrivicyViewDetails(Long userId);
 
 }

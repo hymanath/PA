@@ -27,4 +27,6 @@ public interface IUserRolesDAO extends GenericDao<UserRoles,Long>{
 	
 	public List<Object[]> getAllUsersByRoleType(String roleType);
 	
+	public Long checkForUserPublicStreeming(Long userId);
+	
 }

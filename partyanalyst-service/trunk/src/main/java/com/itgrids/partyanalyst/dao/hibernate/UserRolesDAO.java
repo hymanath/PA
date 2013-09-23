@@ -362,5 +362,13 @@ public class UserRolesDAO extends GenericDaoHibernate<UserRoles, Long>
 		return getHibernateTemplate().find(" select distinct model.user.userId,model.user.firstName,model.user.lastName from UserRoles model where model.role.roleType = ? order by model.user.firstName ",roleType);
 	}
 	
+	
+	public Long checkForUserPublicStreeming(Long userId)
+	{
+		Query query = getSession().createQuery("select model.user.userId from UserRoles model " +
+				" where model.role.roleId = 2 and model.user.userId = :userId ");
+		query.setParameter("userId", userId);
+		return (Long)query.uniqueResult();
+	}
 
 }
