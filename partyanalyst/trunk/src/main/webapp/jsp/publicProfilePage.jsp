@@ -256,7 +256,7 @@ padding:5px 20px;
 		<div class="publicProfileInnerDiv">
 			<div class="span8">
 			
-				<div class="span2" style="width: 90px;">
+				<div class="span2" style="">
 				<c:if test="${loginUserProfilePic == '' || loginUserProfilePic == null}">
 					<img class="thumbnail"  src="pictures/profiles/human.jpg"  id="userProfileImg">
 				</c:if>
@@ -264,7 +264,7 @@ padding:5px 20px;
 				 <img class="thumbnail"  src="pictures/profiles/${loginUserProfilePic}"  id="userProfileImg">
 				</c:if>
 				</div>
-				<div class="span7" style="width: 550px;">
+				<div class="span10" style="">
 					<span class="profileUserName row"  style="text-transform: capitalize; font-family: sans-serif;">${profileUserName}<br></span>
 					<span class="fontStyle"><a href="constituencyPageAction.action?districtId=${dataTransferVO.districtId}&constituencyId=${dataTransferVO.constituencyId}">${dataTransferVO.constituencyName}</a>&nbsp;&nbsp;&nbsp;
 					<a href="districtPageAction.action?districtId=${dataTransferVO.districtId}&districtName=${dataTransferVO.districtName}">${dataTransferVO.districtName}</a>&nbsp;&nbsp;&nbsp;
@@ -313,8 +313,8 @@ padding:5px 20px;
 			
 				
 				
-				<div class="span12 placeholderCenterDiv" >
-				
+				<div class="span12 placeholderCenterDiv" class="widget blue">
+				<div id="headingDiv"></div>
 				</div>
 				
 				<div class="row-fluid">
@@ -358,7 +358,9 @@ padding:5px 20px;
 
 					</div>-->
 				</div>
+				<div id="moreButtonDiv"></div>
 			</div>
+			
 			<div class="span4 ">
 			<div class="friendsDiv widget blue ">
 			<h2>

@@ -46,6 +46,8 @@
       	<action name="userProfile" class="userProfileAction">
 			<result name="success">/jsp/userProfilePage.jsp</result>
 			<result name="error">/jsp/loginForm.jsp?src=userProfile</result>
+			<result name="publicprofile">/jsp/publicProfilePage.jsp</result>
+			<result name="failure">/jsp/noProfileExists.jsp</result>
 		</action>
 		<action name="getDashBoardInformationAction" class="indexAction" method="indexPageAjaxCallHandler">
 			<result type="json" name="success">
@@ -3771,11 +3773,11 @@
 			</result> 
 		</action>
 		
-		<action name="userProfile" class="userProfileAction">
+		<!--  <action name="userProfile" class="userProfileAction">
 			<result name="success">/jsp/userProfilePage.jsp</result>
 			<result name="publicprofile">/jsp/publicProfilePage.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
-		</action>
+		</action>-->
 		<action name="getAllRequestMessagesForAUserAction" class="userProfileAction" method="getRequestMessagesForUser">
 			<result type="json" name="success">
 				<param name="root">dataTransferVO</param>				
@@ -4142,8 +4144,8 @@
 		</action>
 		<action name="getStreamingDataForProfileUserAction" class="userProfileAction" method="getStreamingDataForPublicProfileByProfileId">
 		  	 <result type="json" name="success">
-		    	<param name="root">streamList</param>
-		   </result>
+		    	<param name="root">publicProfileStreemList</param>
+		   	 </result>
 		</action>
 		
 	<action name="votersEditAction" class="votersEditAction">
