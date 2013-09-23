@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,6 +21,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
@@ -27,6 +30,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -60,6 +64,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
@@ -138,7 +143,36 @@ public class VoterReportService implements IVoterReportService{
 	private PanchayatHamletDAO panchayatHamletDAO;
 	
 	
+	private IInfluencingPeopleDAO influencingPeopleDAO;
+	private ICadreDAO cadreDAO;
+	private ICandidateDAO candidateDAO;
 	
+	
+	
+	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
+		return influencingPeopleDAO;
+	}
+
+	public void setInfluencingPeopleDAO(IInfluencingPeopleDAO influencingPeopleDAO) {
+		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
+	public ICadreDAO getCadreDAO() {
+		return cadreDAO;
+	}
+
+	public void setCadreDAO(ICadreDAO cadreDAO) {
+		this.cadreDAO = cadreDAO;
+	}
+
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+
 	public PanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
 	}
@@ -3722,5 +3756,317 @@ public class VoterReportService implements IVoterReportService{
 				return resultStatus;
 				
 			  } 
-			 
+		  
+		
+	  public List<VoterVO> getVoterDataForBooth(Long boothId,Long userId, Integer startIndex,Integer maxRecords, String order, String columnName,List<Long> categories ,String searchColumn , String searchString)
+	  {
+			LOG.debug("entered into the getVoterDataForBooth method in VotersAnalysisSevice");
+		  
+			List<VoterVO> voterData = new ArrayList<VoterVO>();
+			List<Object[]> voters = null;
+			VoterVO voterVO = null;
+			List<Long> voterIds = new ArrayList<Long>();
+			Long totalCount = 0l;
+			Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
+			
+			try {
+					StringBuffer queryForCategories = new StringBuffer();
+					StringBuffer queryForselect = new StringBuffer();
+					
+					prepareQueryForCategories(categories, queryForCategories, queryForselect);
+					
+					StringBuffer str = prepareQueryForSearchCriteria(searchColumn , searchString);
+					
+					voters  = new ArrayList<Object[]>();
+					
+					voters = boothPublicationVoterDAO.getVotersDetailsAndCountDetailsByBoothId(boothId , startIndex, maxRecords , order,columnName ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
+					List countList = boothPublicationVoterDAO.getVotersDetailsAndCountDetailsByBoothId(boothId ,startIndex, maxRecords , order,columnName ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
+					
+					totalCount = ((BigInteger)countList.get(0)).longValue();
+				
+				if(voters != null && voters.size() > 0)
+				{
+					for (Object[] voterDetails : voters) {
+						
+						voterVO = new VoterVO();
+						voterVO.setVoterId(voterDetails[1].toString());
+						voterVO.setName(voterDetails[2].toString());
+						voterVO.setGender(voterDetails[5].toString());
+						voterVO.setAge(Long.parseLong(voterDetails[6].toString()));
+						voterVO.setHouseNo(voterDetails[3].toString());
+						if(voterDetails[11] != null)
+						 voterVO.setMobileNo(voterDetails[11].toString());
+						else
+							voterVO.setMobileNo("N/A");
+						voterVO.setRelativeFirstName(voterDetails[4].toString());
+						voterVO.setPartNo(Long.valueOf(voterDetails[7].toString()));
+						voterVO.setTotalVoters(totalCount);
+						voterVO.setVoterIds(Long.parseLong(voterDetails[0].toString()));
+						voterIds.add(Long.parseLong(voterDetails[0].toString()));
+						voterMap.put(Long.parseLong(voterDetails[0].toString()), voterVO);
+						voterData.add(voterVO);
+						voterVO.setSerialNo(Long.parseLong(voterDetails[11].toString()));
+					}
+				}
+				
+				if(voterIds != null && voterIds.size() >0)
+				 getInfuelcePeopleAndCadreDetails(voterIds, userId, voterMap);
+				
+				getCastePartyAndCategoriesDetails(voters, categories, voterMap);
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised in  getVoterDataForBooth method in VotersAnalysis" , e) ;
+				e.printStackTrace();
+			}
+			return voterData;
+		}
+	  
+
+      /**
+       * This method is used to get voter details of a panchayat
+       * @param voterDataVO 
+       * @param userId
+       * @param categories
+       * @param searchColumn
+       * @param searchString
+       * @return List<VoterVO>
+       */
+	  public List<VoterVO> getVoterDataForPanchayat(VoterDataVO voterDataVO , Long userId , List<Long> categories ,String searchColumn,String searchString)
+		{
+			List<VoterVO> voterData = new ArrayList<VoterVO>();
+			List<Object[]> voters = null;
+			VoterVO voterVO = null;
+			List<Long> voterIds = new ArrayList<Long>();
+			Long totalCount = 0l;
+			Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
+			try {
+				LOG.debug("entered into the getVoterData() method in VotersAnalysisSevice");
+				if(voterDataVO.getBuildType().equalsIgnoreCase("panchayat"))
+				{					
+				    StringBuffer str = prepareQueryForSearchCriteria(searchColumn , searchString);
+					
+					StringBuffer queryForCategories = new StringBuffer();
+					StringBuffer queryForselect = new StringBuffer();
+					
+				    prepareQueryForCategories(categories, queryForCategories, queryForselect);
+				  
+					voters  = new ArrayList<Object[]>();
+					
+					voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
+					List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
+					
+					totalCount = ((BigInteger)countList.get(0)).longValue();
+				}
+				
+				if(voters != null && voters.size() > 0)
+				{
+					for (Object[] voterDetails : voters) {
+						
+						voterVO = new VoterVO();
+						voterVO.setVoterId(voterDetails[1].toString());
+						voterVO.setName(voterDetails[2].toString());
+						voterVO.setGender(voterDetails[5].toString());
+						voterVO.setAge(Long.parseLong(voterDetails[6].toString()));
+						voterVO.setHouseNo(voterDetails[3].toString());
+						if(voterDetails[12] != null)
+						 voterVO.setMobileNo(voterDetails[12].toString());
+						else
+							voterVO.setMobileNo("N/A");
+						voterVO.setRelativeFirstName(voterDetails[4].toString());
+						voterVO.setPartNo(Long.valueOf(voterDetails[7].toString()));
+						voterVO.setTotalVoters(totalCount);
+						voterVO.setVoterIds(Long.parseLong(voterDetails[0].toString()));
+						voterIds.add(Long.parseLong(voterDetails[0].toString()));
+						voterMap.put(Long.parseLong(voterDetails[0].toString()), voterVO);
+						voterData.add(voterVO);
+						voterVO.setSerialNo(Long.parseLong(voterDetails[11].toString()));
+					}
+				}
+				
+				if(voterIds != null && voterIds.size() >0)
+				 getInfuelcePeopleAndCadreDetails(voterIds,userId,voterMap);
+				
+				getCastePartyAndCategoriesDetails(voters, categories, voterMap);
+				
+			} catch (Exception e) {
+				LOG.error("error occured in the getVoterData() method in VotersAnalysis" , e) ;
+			}
+			return voterData;
+		}
+	   /**
+	    * This method will set all the influence people , cadre and candidate details
+	    * @param voterIds
+	    * @param userId
+	    * @param voterMap
+	    */
+		public void getInfuelcePeopleAndCadreDetails(List<Long> voterIds ,Long userId , Map<Long , VoterVO> voterMap)
+		{
+			LOG.debug("Entered into getInfuelcePeopleAndCadreDetails service method");
+			VoterVO voterVO = null;
+			
+			try
+			{
+				List<Long> influencingPeopleList = influencingPeopleDAO.findInfluencingPeopleDetails(voterIds,userId);
+				if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+				{
+					for (Long influencingPeople : influencingPeopleList) {
+						if(influencingPeople != null)
+						{
+							voterVO = voterMap.get(influencingPeople);
+							voterVO.setInfluencePerson(true);
+						}
+					}
+				}
+				List<Long> cadrePeopleList = cadreDAO.findCadrePeopleDetails(voterIds,userId);
+				if(cadrePeopleList != null && cadrePeopleList.size() > 0)
+				{
+					for (Long cadrePeople : cadrePeopleList) {
+						if(cadrePeople != null)
+						{
+							voterVO = voterMap.get(cadrePeople);
+							voterVO.setIsCadrePerson(true);
+						}
+					}
+				}
+				List<Long> candidatePeopleList = candidateDAO.findCandidatePeopleDetails(voterIds);
+				if(candidatePeopleList != null && candidatePeopleList.size() > 0)
+				{
+					for (Long candidatePeople : candidatePeopleList) {
+						if(candidatePeople != null)
+						{
+							voterVO = voterMap.get(candidatePeople);
+							voterVO.setIsPoliticion(true);
+						}
+					}
+				}
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in getInfuelcePeopleAndCadreDetails service method");
+				e.printStackTrace();
+			}
+		}
+		
+		/**
+		 * This method will set the caste and party details of voters
+		 * @param voters
+		 * @param categories
+		 * @param voterMap
+		 */
+		public void getCastePartyAndCategoriesDetails(List<Object[]> voters,List<Long> categories, Map<Long , VoterVO> voterMap)
+		{
+			LOG.debug("Exception raised in getCastePartyAndCategoriesDetails method");
+
+			try
+			{
+				if(voters != null && voters.size() > 0)
+				{
+						for (Object[] voterDetails : voters) {
+							
+							VoterVO voterDtls = voterMap.get(Long.parseLong(voterDetails[0].toString()));
+							
+							if(voterDtls != null)
+							{
+								voterDtls.setCasteName(voterDetails[9] != null ? voterDetails[9].toString() :"");
+								voterDtls.setPartyName(voterDetails[10] != null ? voterDetails[10].toString() :"");
+								
+							}
+							for(int i=13;i<categories.size()*2+12;i = i+2)
+							{
+								if(voterDetails[i] != null && voterDetails[i+1] != null)
+								{
+									VoterVO category = null;
+									 if(voterDtls != null){
+							    		 List<VoterVO> categoriesList = voterDtls.getCategoriesList();
+							    		 if(categoriesList == null){
+							    			 categoriesList = new ArrayList<VoterVO>();
+							    			 voterDtls.setCategoriesList(categoriesList);
+							    		 }
+							    		  category = new VoterVO();
+							    		  categoriesList.add(category);
+							    		  category.setCategoryValuesId(Long.parseLong(voterDetails[i].toString()));
+							    		  category.setName(voterDetails[i+1]!=null?voterDetails[i+1].toString():"");
+							    	 }
+								}
+							}
+						}
+					}
+				
+			}
+			catch(Exception e)
+			{
+				LOG.error("Exception raised in getCastePartyAndCategoriesDetails method");
+				e.printStackTrace();
+			}
+		}
+		
+		/**
+		 * This method will prepare the query for categories selected by the user to display
+		 * @param categories
+		 * @param queryForCategories
+		 * @param queryForselect
+		 */
+		public void prepareQueryForCategories(List<Long> categories,StringBuffer queryForCategories,StringBuffer queryForselect )
+		{
+			LOG.debug("Entered into the prepareQueryForCategories service method");
+			try
+			{
+				for(Long categoryId:categories)
+				{
+					queryForCategories.append("LEFT JOIN (voter_category_value vcu"+categoryId+" JOIN user_voter_category_value uvcu"+categoryId+" on uvcu"+categoryId+".user_voter_category_value_id = vcu"+categoryId+".user_voter_category_value_id and uvcu"+categoryId+".user_voter_category_id = "+categoryId+")on v.voter_id = vcu"+categoryId+".voter_id  ");
+					queryForselect.append(" , uvcu"+categoryId+".user_voter_category_id as category"+categoryId+",uvcu"+categoryId+".category_value as value"+categoryId+" ");
+				}
+				
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in prepareQueryForCategories service method");
+				e.printStackTrace();
+			}
+		}
+		
+		
+		/**
+		 * This method will prepare the query to get the search results.
+		 * @param searchColumn
+		 * @param searchString
+		 * @return
+		 */
+		public StringBuffer prepareQueryForSearchCriteria(String searchColumn ,String searchString )
+		{
+			LOG.debug("Entered into the prepareQueryForSearchCriteria service method");
+			StringBuffer str = new StringBuffer();
+
+			try
+			{
+				List<String> voterSearchCriteria = new ArrayList<String>();
+				
+				voterSearchCriteria.add("name");
+				voterSearchCriteria.add("voter_id_card_no");
+				voterSearchCriteria.add("house_no");
+				voterSearchCriteria.add("relative_name");
+				voterSearchCriteria.add("gender");
+				//voterSearchCriteria.add("age");
+				
+				if(searchColumn != null && !searchColumn.equalsIgnoreCase(""))
+				if(voterSearchCriteria.contains(searchColumn))
+					str.append("and v."+searchColumn+" like '%"+searchString+"%'");	
+				else if(searchColumn.equalsIgnoreCase("serial_no"))
+					str.append("and bpv.serial_no ="+searchString);
+				else if(searchColumn.equalsIgnoreCase("part_no"))
+					str.append("and b.part_no ="+searchString);
+				else if(searchColumn.equalsIgnoreCase("party"))
+					str.append("and pa.short_name like '%"+searchString+"%'");
+				else if(searchColumn.equalsIgnoreCase("cast"))
+					str.append("and c.caste_name like '%"+searchString+"%'");
+				else if(searchColumn.equalsIgnoreCase("age"))
+					str.append("and c.caste_name = "+searchString);
+				else 
+					str.append("and uvcu"+searchColumn+".category_value"+"='"+searchString+"'");
+				
+			}catch(Exception e)
+			{
+				LOG.error("Exception raised in prepareQueryForSearchCriteria service method");
+				e.printStackTrace();
+			}
+			return str;
+		}
 }

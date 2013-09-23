@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
@@ -89,4 +90,9 @@ public interface IVoterReportService {
 	  
 	  public ResultStatus deletePreviousEleVotingIntoIntermediateTables(Long constituencyId);
 	  public ResultStatus insertVotingTrendzToIntermediateTables(final Long reportLevelValue,Long publicationDateId,Long userId);
+	  
+	public List<VoterVO> getVoterDataForPanchayat(VoterDataVO voterDataVO , Long userId , List<Long> categories ,String searchColumn,String searchString);
+    public List<VoterVO> getVoterDataForBooth(Long boothId,Long userId, Integer startIndex,Integer maxRecords, String order, String columnName,List<Long> categories ,String searchColumn , String searchString);
+
+
 }

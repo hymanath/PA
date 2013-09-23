@@ -34,8 +34,21 @@ public class VoterDataVO implements Serializable{
 	private String gender;
 	private Long casteId;
 	private String locationId;
+	private String searchColumnName;
+	private String searchString;
 	
-	
+	public String getSearchColumnName() {
+		return searchColumnName;
+	}
+	public void setSearchColumnName(String searchColumnName) {
+		this.searchColumnName = searchColumnName;
+	}
+	public String getSearchString() {
+		return searchString;
+	}
+	public void setSearchString(String searchString) {
+		this.searchString = searchString;
+	}
 	public String getLocationId() {
 		return locationId;
 	}
