@@ -41,7 +41,9 @@
 		<property name="votingTrendzDAO" ref="votingTrendzDAO"/>
 		<property name="votingTrendzPartiesResultDAO" ref="votingTrendzPartiesResultDAO"/>
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
-		
+		<property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
+		<property name="candidateDAO" ref="candidateDAO" />	
+		<property name="cadreDAO" ref="cadreDAO" />	
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
@@ -1538,8 +1540,8 @@
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
 		<property name="customMessageDAO" ref="customMessageDAO" />	
 		<property name="staticDataService" ref="staticDataService" />
-		<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO"/>
-		<property name="specialPageDAO" ref="specialPageDAO" />	
+<!-- 		<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO"/>
+ -->	<property name="specialPageDAO" ref="specialPageDAO" />	
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO"/>
