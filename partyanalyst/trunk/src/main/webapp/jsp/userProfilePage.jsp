@@ -1090,6 +1090,7 @@ var newsajaxCalled = false;
 function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location)
 	{
 $("#placeholderCenterDivId").show();
+$("#userUnSubScriptionsDiv").hide();
 $(".FavoriteLinksDiv").hide();
 $("#userPartyDiv").hide();
 ajaxProcessing();
