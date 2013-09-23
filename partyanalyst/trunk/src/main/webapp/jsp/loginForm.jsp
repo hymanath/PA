@@ -411,7 +411,7 @@ if(request.getParameter("showMessage")!=null){
 
 
 	    <div class="row">
-		    <div id="PA_widgetsID" class="span8">
+		    <div id="PA_widgetsID" class="span8" style="display:none;">
 			 
 		        <h4>PARTY ANALYST</h4>
                 <p style="lead" class="newFontSize">We always strive to make things easy for you, Here are our services.</p>
@@ -470,7 +470,7 @@ if(request.getParameter("showMessage")!=null){
 			                <jsp:include page="loginPage.jsp" flush="true" />
 						 </div>
 		                 <div id="newTOPAId" class="span3 well"style="border: 5px solid #565656;
-    margin-left: 21px;">
+    margin-left: 21px;display:none;">
 		                      <h4 style="margin-bottom: 7px;">New to Party Analyst?</h4>
 		                      <a href="freeUserRegistration.action" class="btn btn-success pull-right">Create an Account</a>
 		                 </div>
