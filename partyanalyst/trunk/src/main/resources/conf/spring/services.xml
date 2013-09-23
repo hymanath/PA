@@ -1537,7 +1537,16 @@
 		<property name="commentCategoryCandidateDAO" ref="commentCategoryCandidateDAO" />
 		<property name="userConnectedtoDAO" ref="userConnectedtoDAO"/>
 		<property name="customMessageDAO" ref="customMessageDAO" />	
-		<property name="staticDataService" ref="staticDataService" />	
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="constituencySubscriptionsDAO" ref="constituencySubscriptionsDAO"/>
+		<property name="specialPageDAO" ref="specialPageDAO" />	
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO"/>
+		<property name="userFavoriteLinksDAO" ref="userFavoriteLinksDAO"/>
+		<property name="candidateDetailsService" ref="candidateDetailsService"/>
+		<property name="userPrivacySettingsDAO" ref="userPrivacySettingsDAO"/>
+		<property name="userRolesDAO" ref="userRolesDAO"/>
 		<property name="nominationDAO" ref="nominationDAO" />	
 	</bean>
 	

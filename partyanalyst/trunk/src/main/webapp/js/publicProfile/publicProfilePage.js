@@ -1,6 +1,7 @@
 
 var friendsInPP = [];
 var startIndex;
+var fromDate;
 $("document").ready(function(){
 	
 	$('.friendsInPP').click(function(){
@@ -289,8 +290,12 @@ function callAjaxForProfilePage(jsObj,url){
 					
 					results = YAHOO.lang.JSON.parse(o.responseText);
 					
-					if(jsObj.task == "getStreamingData")
+					if(jsObj.task == "getStreamingData" || jsObj.task == "getViewMoreStreamingData")
+					{
+						
 						showStreamingData(results,jsObj);
+					}
+						
 
 					else if(jsObj.task == "getProblemDetails")
 						showProblemDetails(results,jsObj);
@@ -353,11 +358,12 @@ function showProblemDetails(results,jsObj)
 
 function executeOnload()
 {
-	startIndex = 0;
+
+	//startIndex = 0;
 	
 	var jsObj ={
-		startIndex   : startIndex,
-		maxIndex     : 10,
+		//startIndex   : startIndex,
+		//maxIndex     : 10,
 		profileId    :profileId,
 		task:"getStreamingData"
 		};
@@ -365,10 +371,24 @@ function executeOnload()
 	var url = "getStreamingDataForProfileUserAction.action?"+rparam;	
 	callAjaxForProfilePage(jsObj,url);
 }
-
-function showStreamingData(results,jsObj)
+function viewMoreStreeming()
 {
-	$("#problemsDiv").children().remove();
+	$('#moreButtonDiv').html('');
+	var jsObj ={
+		//startIndex   : startIndex,
+		//maxIndex     : 10,
+		fromDate     : fromDate,
+		profileId    :profileId,
+		task:"getViewMoreStreamingData"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getStreamingDataForProfileUserAction.action?"+rparam;	
+	callAjaxForProfilePage(jsObj,url);
+}
+
+/* function showStreamingData(results,jsObj)
+{
+	 $("#problemsDiv").children().remove();
 	var status;
 	if(results != null && results.length > 0)
 	{		
@@ -428,9 +448,194 @@ function showStreamingData(results,jsObj)
 		$(".placeholderCenterDiv").children().remove();
 		$(".placeholderCenterDiv").css('display','inline-block'); 
 		$(".placeholderCenterDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;"> Updates : </span></h4><b> There are no Updates from <font style="text-transform: capitalize;">'+profileUserName+'  </font> <b>');	
+	} 
+} */
+function showStreamingData(results,jsObj)
+{
+	
+	var str = '';
+	$("#headingDiv").html('<h4 class=" breadcrumb" style="width:593px;"><span style="margin-left: -10px;">Recent Updates : </span></h4>');
+	if(results != null && results.length > 0)
+	{
+		for(var i in results)
+		{
+			fromDate = results[0].date;
+			if(results[i].title == 'Problem')
+			{
+				
+				str += '<div id="streemDiv'+i+'" class="row breadcrumb">';
+				if(results[i].userImg != "")
+				{
+					str += '<img src="pictures/profiles/'+results[i].userImg+'" class="thumbnail span1" height="25" width="25" onerror="setDefaultImage(this)"/>';
+				}
+				else
+				{
+					str += '<img src="pictures/profiles/human.jpg" class="thumbnail span1" height="25" width="25" />';
+				}
+				str += '<div class="span11"><b style="color:royalblue"><span>'+results[i].commentedBy+'</span></b>';
+				str += '<span style="float: right;"> '+results[i].date+'</span></div>';
+				str += '<div class="span11 offset1">';
+				str += '<a href="'+results[i].url+'" target="_blank"><b style="color:royalblue"><span>'+results[i].politicalDescription+'</span></b></a>';
+				str += '<div class=""><b>Problem Title : </b> <span>'+results[i].problemTitle+' </span></br>';
+				str += '<b>Description : </b> ';
+				str += '<span>'+results[i].description+'    </span></br></div>';
+				str += ' <b style="float:right;">Existing From: ';
+				str += '<span> '+results[i].existinFrom+'</span></b>';
+				
+				str += '</div></div>';
+			}
+			if(results[i].title == 'Asses Politician')
+			{
+				
+				str += '<div id="streemDiv'+i+'" class="row breadcrumb">';
+				if(results[i].userImg != "")
+				{
+					str += '<img src="pictures/profiles/'+results[i].userImg+'" class="thumbnail span1" height="25" width="25" onerror="setDefaultImage(this)"/>';
+				}
+				else
+				{
+					str += '<img src="pictures/profiles/human.jpg" class="thumbnail span1" height="25" width="25" />';
+				}
+				str += '<div><b style="color:royalblue"><span>'+results[i].commentedBy+'</span></b>';
+				str += '<span style="float: right;"> '+results[i].date+'</span></div>';
+				str += '';
+				str += '<div class="offset1 span11 "><b style="color:royalblue">'+results[i].description+'  </b></div>';
+				str += '<div class="span11 offset1">';
+				if(results[i].img != '')
+				{
+					str+= '<span><img src="images/candidates/'+results[i].img+'" class="thumbnail" height="40" width="40" onerror="setDefaultImage(this)"/></span>';
+				}
+				else
+				{
+					str+= '<span><img src="pictures/profiles/human.jpg" class="thumbnail" height="40" width="40"/></span>';
+				}
+				str += '<div  style="float: left; margin-left: 81px; margin-top: -50px;"><b>Political Reason : </b> <span>'+results[i].politicalReasion+' </span></br>';
+				str += '<b>Description : </b> ';
+				str += '<span>'+results[i].politicalDescription+'</span></div></br>';
+				str += ' <b style="float:right;">Posted On: ';
+				str += '<span style="float: right;"> '+results[i].date+'</span></b>';
+				
+				str += '</div></div>';
+			}
+			
+			if(results[i].title == 'Subscriptions')
+			{
+				
+				str += '<div id="streemDiv'+i+'" class="row breadcrumb" >';
+				str += '<div class="row-fluid">';
+				if(results[i].userImg != "")
+				{
+					str += '<img src="pictures/profiles/'+results[i].userImg+'" class="thumbnail span1" height="25" width="25" onerror="setDefaultImage(this)" />';
+				}
+				else
+				{
+					str += '<img src="pictures/profiles/human.jpg" class="thumbnail span1" height="25" width="25" />';
+				}
+				str += '<div class="span11"><b style="color:royalblue"><span>'+results[i].commentedBy+'</span></b>';
+				str += '<span style="float: right;">'+results[i].date+'</span></div></div>';
+				str += '<div class="span11 offset1">';
+				str += '<div class="row-fluid">';
+				if(results[i].subTitle == "Party")
+				{
+					if(results[i].img != "")
+					{
+						str += '<a href="'+results[i].url+'" target="_blank"><img src="images/party_flags/'+results[i].img+'" class="thumbnail span1" height="40" width="40" onerror="setDefaultImage(this)"/></a>';
+					}
+					else
+					{
+						str += '<a href="'+results[i].url+'" target="_blank"><img src="pictures/profiles/human.jpg" class="thumbnail span1" height="40" width="40" /></a>';
+					}
+				}
+				else if(results[i].subTitle == "Special Page")
+				{
+					if(results[i].img != "")
+					{
+						str += '<a href="'+results[i].url+'" target="_blank"><img src="'+results[i].img+'" class="thumbnail span1" height="40" width="40" onerror="setDefaultImage(this)"/></a>';
+					}
+					else
+					{
+						str += '<a href="'+results[i].url+'" target="_blank"><img src="pictures/profiles/human.jpg" class="thumbnail span1" height="40" width="40" /></a>';
+					}
+				}
+				else if(results[i].subTitle == "Politician")
+				{
+					if(results[i].img != "")
+					{
+						str += '<a href="'+results[i].url+'" target="_blank"><img src="images/candidates/'+results[i].img+'" class="thumbnail span1" height="40" width="40" onerror="setDefaultImage(this)"/></a>';
+					}
+					else
+					{
+						str += '<a href="'+results[i].url+'" target="_blank"><img src="pictures/profiles/human.jpg" class="thumbnail span1" height="40" width="40" /></a>';
+					}
+				}
+				str += '<div class="span11"><p><a href="'+results[i].url+'" target="_blank">'+results[i].description+'</a></p></div></div></div></div>';
+			}
+			if(results[i].title == 'Favirote Links')
+			{
+				
+				str += '<div id="streemDiv'+i+'" class="row  breadcrumb">';
+				str += '<div class="row-fluid">';
+				if(results[i].userImg != "")
+				{
+					str += '<img src="pictures/profiles/'+results[i].userImg+'" class="thumbnail span1" height="25" width="25" onerror="setDefaultImage(this)"/>';
+				}
+				else
+				{
+					str += '<img src="pictures/profiles/human.jpg" class="thumbnail span1" height="25" width="25" />';
+				}
+				str += '<div class="span11"><b style="color:royalblue"><span>'+results[i].commentedBy+'</span></b>';
+				str += '<span style="float: right;">'+results[i].date+'</span></div></div>';
+				str += '<div class="span11 offset1">';
+				str += '<div class="row-fluid">';
+				str += '<a href="'+results[i].url+'" target="_blank"><p>'+results[i].description+'</a></p></div></div></div>';
+			}
+			if(results[i].title == 'Friends')
+			{
+				str += '<div id="streemDiv'+i+'" class="row  breadcrumb">';
+				str += '<div class="row-fluid">';
+				if(results[i].userImg != "")
+				{
+					str += '<img width="25" height="25" src="images/candidates/human.jpg" class="thumbnail span1" onerror="setDefaultImage(this)">';
+				}
+				else
+				{
+					str += '<img width="25" height="25" src="pictures/profiles/human.jpg" class="thumbnail span1" />';
+				}
+				str += '<div class="span11"><b style="color:royalblue"><span>'+results[i].name+'</span></b>';
+				str += '<span style="float: right;">'+results[i].date+'</span></div></div>';
+				str += '<div class="span11 offset1">';
+				str += '<div class="row-fluid">';
+				if(results[i].img != "")
+				{
+					str += '<a href="'+results[i].url+'" target="_blank"><img src="pictures/profiles/'+results[i].img+'" class="thumbnail span1" height="40" width="40" onerror="setDefaultImage(this)"/></a>';
+				}
+				else
+				{
+					str += '<a href="'+results[i].url+'" target="_blank"><img src="pictures/profiles/human.jpg" class="thumbnail span1" height="40" width="40" /></a>';
+				}
+				
+				str += '<div class="span11"><p><a href="'+results[i].url+'" target="_blank">'+results[i].description+'</a></p></div></div></div></div>';
+			}
+			
+		}
+		
 	}
+	else{
+		//$(".placeholderCenterDiv").children().remove();
+		//$(".placeholderCenterDiv").css('display','inline-block'); 
+		str += '<h4 class=" " style="width:593px;"><span style="margin-left: -10px;"></span></h4><b>No more updates from <font style="text-transform: capitalize;">'+profileUserName+'  </font> <b>';	
+		
+	} 
+	$(".placeholderCenterDiv").append(str);
+	if(results.length > 0)
+	{
+		var btnStr = '';
+		btnStr += '<div id="viewMoreDiv"><input  type="button" value = "View More" class="btn-info" onClick="viewMoreStreeming();"  style="width: 100px; height: 27px; border-radius: 4px 4px 4px 4px;"></input></div>';
+		$('#moreButtonDiv').html(btnStr);
+	}
+	
+	
 }
-
 function setDefaultImage(img)
 {
 		img.src = "images/candidates/human.jpg";

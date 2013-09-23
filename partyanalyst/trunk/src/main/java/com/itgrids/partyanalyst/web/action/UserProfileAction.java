@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.PageBreakRecord.Break;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dto.ConstituenciesStatusVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.NavigationVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.PublicProfileStreemVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -67,7 +69,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private IProblemManagementService problemManagementService;
 	private String profileUserName;
 	private List<RegistrationVO> registrationVOList;
-	
+	private List<PublicProfileStreemVO> publicProfileStreemList;
 
 	private ISpecialPageService specialPageService;
 	private List<SpecialPageVO> specialPageVOList;
@@ -97,6 +99,16 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private List<SelectOptionVO> selectOptionVOList;
 	private List<CandidateVO> userBlockedRequestsList;
 	
+	
+	public List<PublicProfileStreemVO> getPublicProfileStreemList() {
+		return publicProfileStreemList;
+	}
+
+	public void setPublicProfileStreemList(
+			List<PublicProfileStreemVO> publicProfileStreemList) {
+		this.publicProfileStreemList = publicProfileStreemList;
+	}
+
 	public List<CandidateVO> getUserBlockedRequestsList() {
 		return userBlockedRequestsList;
 	}
@@ -512,9 +524,6 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 			log.error(" No User Log In .....");			
 			return "error";
 		}
-		
-		
-		
 		 List<Long> userId = new ArrayList<Long>(0);
 		 
 		 loginUserId = user.getRegistrationID();
@@ -575,6 +584,13 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	  }else{
 
  
+		  Long roleId = userProfileService.getUserTypeAcessViw(profileId);
+		  {
+			if(roleId == null)
+			{
+				return "failure";
+			}
+		  }
 		  RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
 		  if(regVO != null)
 		  {
@@ -1083,12 +1099,80 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		String param;
 		param = getTask();
 		try{
-			jObj = new JSONObject(param);	
+			jObj = new JSONObject(param);
+			session = request.getSession();
+			Long userId = jObj.getLong("profileId");
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null || ((RegistrationVO)user).getRegistrationID() == null){
+				log.error(" No User Log In .....");			
+				return "error";
+			}
+			Long  viewId = userProfileService.getUserAcessViw(userId);
+			if(viewId == 1 || viewId == 3)
+			{
+				if(viewId == 3)
+				{
+					Long id = userProfileService.checkWeaterUserConnectedOrNot(user.getRegistrationID(),userId);
+					if(id == null)
+					{
+						publicProfileStreemList = new ArrayList<PublicProfileStreemVO>();
+						return  Action.SUCCESS;
+					}
+						
+				}
+				int count = 0;
+				DateUtilService dateUtilService = new DateUtilService();
+				Date toDate ;
+				if(jObj.getString("task").equalsIgnoreCase("getViewMoreStreamingData"))
+				{
+					toDate = (Date) session.getAttribute("datefromDate");
+				}
+				else
+				{
+					toDate = dateUtilService.getCurrentDateAndTime();
+				}
+				
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(toDate);
+				cal.add(Calendar.DATE, -7);
+				Date fromDate = cal.getTime();
+				session.setAttribute("datefromDate", fromDate);
+				//session.setAttribute("toDate", toDate);
+				
+				while(count < 10){
+				 if(publicProfileStreemList == null || publicProfileStreemList.size() == 0){
+					 Date newFromDate = null;
+					 Date newToDate = null;
+					 if(count == 0){
+						 newFromDate = fromDate;
+						 newToDate = toDate;
+					 }else{
+						 cal = Calendar.getInstance();
+						 cal.setTime(fromDate);
+						 cal.add(Calendar.DATE, -7);
+						 newFromDate = cal.getTime();
+						 newToDate = fromDate;
+						 fromDate = newFromDate;
+						 session.setAttribute("datefromDate", fromDate);
+					 }
+					 publicProfileStreemList = userProfileService.getPublicProfileDataStreaming(userId,newToDate,newFromDate);
+				   count = count+1;
+				 }else{
+					 break;
+				 }
+				}
+			}
+			else 
+			{
+				publicProfileStreemList = new ArrayList<PublicProfileStreemVO>();
+			}
+			
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception occured in getStreamingDataForPublicProfileByProfileId() Method, Exception - " +e); 
 		}
-		streamList = userProfileService.getStreamingDataForPublicProfileByProfileId(jObj.getLong("profileId"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+		//streamList = userProfileService.getStreamingDataForPublicProfileByProfileId(jObj.getLong("profileId"),jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
 		return Action.SUCCESS;
 	}
 	
