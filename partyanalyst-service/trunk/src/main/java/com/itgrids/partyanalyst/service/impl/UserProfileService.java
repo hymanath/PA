@@ -838,13 +838,16 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 		    	publicProfileStreemVO.setImg("");
 		    }
 		    String url = "";
+		    String  pageStr = "";
 		    if(title.equalsIgnoreCase("Politician"))
 		    {
 		    	url = "candidateElectionResultsAction.action?candidateId=" +parms[6]+ "";
+		    	pageStr = " page";
 		    }
 		    else if(title.equalsIgnoreCase("Party"))
 		    {
 		    	url = "partyPageAction.action?partyId="+parms[6]+ "";
+		    	pageStr = " page";
 		    }
 		    else if(title.equalsIgnoreCase("Special Page"))
 		    {
@@ -853,11 +856,12 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 		    else if(title.equalsIgnoreCase("Constituency"))
 		    {
 		    	url = "constituencyPageAction.action?constituencyId="+parms[5]+ "";
+		    	pageStr = " page";
 		    }
 		    String description = "";
 		    if(parms[0] != null)
 		    {
-		    	description = "Subscribed  to "   +parms[0]+ " " +title+ " page  " ;
+		    	description = "Subscribed  to "   +parms[0]+ " " +title+ "" +pageStr+ "" ;
 		    }
 		    publicProfileStreemVO.setUrl(url);
 		    publicProfileStreemVO.setDescription(description != null ? description :"");
