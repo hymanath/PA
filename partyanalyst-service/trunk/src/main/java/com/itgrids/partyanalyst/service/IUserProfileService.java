@@ -19,7 +19,7 @@ public interface IUserProfileService {
 	
 	public List<CandidateVO> getBlockRequestDetails(Long userId);
 	
-	public List<CandidateVO> getCandidatesToSubscribe(Long userId,Long stateId,String name,String type,Integer startIndex,Integer endIndex);\
+	public List<CandidateVO> getCandidatesToSubscribe(Long userId,Long stateId,String name,String type,Integer startIndex,Integer endIndex);
 	
 	public List<PublicProfileStreemVO> getPublicProfileDataStreaming(Long userId,Date todate,Date fromDate);
 	
