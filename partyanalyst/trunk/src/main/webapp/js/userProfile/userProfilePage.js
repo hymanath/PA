@@ -90,6 +90,7 @@ if($(this).val().length==0)
 
 	
 	$("#friendsLink").click(function(){
+		$("#userCandidateDiv").hide();
 	    $(".FavoriteLinksDiv").hide();
 	    $("#placeholderCenterDivId").show();
 		$("#subscriptionsDiv").hide();
@@ -108,6 +109,7 @@ if($(this).val().length==0)
 	});
 
 	$("#requestLink").click(function(){
+		$("#userCandidateDiv").hide();
 	    $(".FavoriteLinksDiv").hide();
 	    $("#placeholderCenterDivId").show();
 		$("#userPartyDiv").hide();
@@ -125,6 +127,7 @@ if($(this).val().length==0)
 		
 	});
 	$(".ImportantDates").click(function(){
+		$("#userCandidateDiv").hide();
 	     $("#impdatesDiv").show();
 	     $("#placeholderCenterDivId").hide();
 	    $(".FavoriteLinksDiv").hide();
@@ -147,6 +150,7 @@ if($(this).val().length==0)
 		$('#headerDiv').html('<b><font color="blue">'+year+' '+nameOfMonth+'</font> Month Important Dates</b>');
 	});
 	$("#announcements").click(function(){
+		$("#userCandidateDiv").hide();
 	$("#placeholderCenterDivId").hide();
 	$(".FavoriteLinksDiv").hide();
        $("#subscriptionsDiv").css("display","none");
@@ -161,6 +165,7 @@ if($(this).val().length==0)
         getUserAnnouncements();
 	});
 	$(".ImportantEvents").click(function(){
+		$("#userCandidateDiv").hide();
 	    $(".FavoriteLinksDiv").hide();
 		$("#subscriptionsDiv").css("display","none");
 		clearAllSubscriptionDivs();
@@ -173,6 +178,7 @@ if($(this).val().length==0)
 		getUserImpEvents();
 	});
 	$("#settings").click(function(){
+		$("#userCandidateDiv").hide();
 	     $("#placeholderCenterDivId").hide();
 	     $("#subscriptionsStreamingMoreDiv").hide();
 		 $(".FavoriteLinksDiv").hide();
@@ -198,6 +204,7 @@ if($(this).val().length==0)
 	});
 	
 	$(".messagesLink").click(function(){
+		$("#userCandidateDiv").hide();
 	     $("#subscriptionsDiv").hide();
 	     $("#userUnSubScriptionsDiv").hide();
 	    $(".FavoriteLinksDiv").hide();
@@ -300,6 +307,7 @@ if($(this).val().length==0)
 
    $("#FavouriteLinks").click(function(){
    $(".FavoriteLinksDiv").show();
+   $("#userCandidateDiv").hide();
    $("#placeholderCenterDivId").hide();
 	$("#subscriptionsDiv").css("display","none");
 	 var jsObj ={
@@ -317,6 +325,7 @@ if($(this).val().length==0)
 	//subscriptions
 
 	 $(".subscriptionsLink").click(function(){
+		 $("#userCandidateDiv").show();
 	     $("#subscriptionsDiv").show();
 		 $("#userUnSubScriptionsDiv").show();
 	     $("#placeholderCenterDivId").hide();
@@ -344,6 +353,7 @@ if($(this).val().length==0)
 
 
 	$('.assessPoliticianLink').live("click",function(){
+		$("#userCandidateDiv").hide();
 	     $("#placeholderCenterDivId").show();
 		 $(".FavoriteLinksDiv").hide();
 		 $("#userPartyDiv").hide();
@@ -396,6 +406,7 @@ $('.PoliticalReaViewMoreLink').live("click",function(){
 	//problems 
 
 	$(".problemsLink").live("click",function(){
+		$("#userCandidateDiv").hide();
 	   $("#placeholderCenterDivId").show();
 	   $(".FavoriteLinksDiv").hide();
 	   $("#userPartyDiv").hide();
@@ -4540,9 +4551,9 @@ function buildStateList(results,jsObj)
 	 }
 	 arr.push(obj);
 	}
-
+$('#candidateSubscribeDiv').html('');
 var candidateSubscribeSubDiv = $('<div id="candidateSubscribeSubDiv"></div>');
- candidateSubscribeSubDiv.append('<span class="subscriptionType">Not Yet Subscribed Candidates</span><br><span><a onclick="subscriptionCandidateDetails();"> Click here</a> to subscribe Candidates<span>');
+ candidateSubscribeSubDiv.append('<div class="subscriptionType">Not Yet Subscribed Candidates</div><div style="margin-top: 5px;"><a style="cursor: pointer;"  onclick="subscriptionCandidateDetails();"> Click here</a> to subscribe Candidates</div>');
  
 $('#candidateSubscribeDiv').append(candidateSubscribeSubDiv);
  createSelectOptionsForSelectElmtId('constituencyStateList');
@@ -4818,7 +4829,7 @@ function subscriptionCandidateDetails(){
 			title:"Subscribe Candidate",
 			autoOpen: true,
 			show: "blind",
-			width: 500,
+			width: 600,
 			modal: true,
 			height:500,
 			hide: "explode"
@@ -4828,13 +4839,13 @@ $("#CandidateSubscribePopup").html('');
 		str+='<div align="center">';
 		str+= "<div class='connectPeoplePopupInnerDiv' style='border:1px solid #D6D6D6;'>";
 		str+= "<div id='errorMsgDiv' style='font-size:13px;'></div>";
-		str+='<label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="assembly" name="radioForCandidate" onclick="displayLocationScope(this.id)" value="Assembly" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">Assembly</span></label>';
+		str+='<label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="assembly" name="radioForCandidate" checked="checked"  onclick="displayLocationScope(this.id)" value="Assembly" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">Assembly</span></label>';
 		str+=' <label class="" style="display:inline-block;margin-left: 10px;font-size: 16px;"><input type="radio" id="parliament" name="radioForCandidate" onclick="displayLocationScope(this.id)" value="Parliament" style="margin-top:1px;"/><span style="font-family: Helvetica; font-size: 14px; margin-left: 5px;">Parliament</span> </label>';
 		str+= "<div align='center' style='margin-top: 10px;'>";
 		str+= "<div><span style='margin-left: 2px;'>State:<font color='red'> *</font></span> <span><select id='constituencyStateList1' style='width: 170px;margin-left: 68px;' onChange='getDetails();'></select></span></div>";
 		str+= '<div><span style="margin-left: 5px;">Candidate Name:<font color="red"> *</font></span> <span><input type="text" id="candidateName" name="candidateName" style="height: 18px; width: 160px; margin-top: 7px; margin-left: 4px;"/></span></div>';
 		str+= '</div>';
-		str+= '<div align="center" style="margin-top: 11px; margin-left: 31px; margin-bottom: 10px;"><input id="searchCandidate" class="btn btn-success" type="button" value="Search Candidate" onclick="getCandidatesBySearch(0);"></div>';
+		str+= '<div align="center" style="margin-top: 11px; margin-left: 31px; margin-bottom: 10px;"><input id="searchCandidate" class="btn btn-success" type="button" value="Search Candidate" onclick="getCandidatesBySearch(0);"><img id="votersEditSaveAjaxImg" style="width: 20px;margin-top: -23px; margin-right: -175px;display: none;" src="images/icons/ajaxImg.gif"></div>';
 		str+= "</div>";
 		str+= '<div id="paginationDivId" style="margin-top: 25px;"></div>';
 		str+= '<div id="resultDivId" align="center"></div>';
@@ -4846,10 +4857,10 @@ $("#CandidateSubscribePopup").html('');
 }
 function getDetails(){
 $("#errorMsgDiv").html('');
-//$("#nameDiv").css("display","block");
 }
 
 function getCandidatesBySearch(startIndex){
+$("#votersEditSaveAjaxImg").css("display","block");
 var stateId = $("#constituencyStateList1").val();
 var name = $("#candidateName").val();
 var val = 0;
@@ -4889,7 +4900,7 @@ $("#errorMsgDiv").html('');
 }
 
 function buildCandidatesToSubscribe(results,jsObj){
-	
+	$("#votersEditSaveAjaxImg").css("display","none");
 	if(results.length == 0){
 		$('#resultDivId').html("<b>Data Not Available</b>").css("margin-top","20px");
 		$('#paginationDivId').html('');
