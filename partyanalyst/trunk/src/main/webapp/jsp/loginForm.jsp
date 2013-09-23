@@ -340,7 +340,7 @@ if(request.getParameter("showMessage")!=null){
 	<script type="text/javascript">  
 	
 	$(document).ready(function(){
-	$('.span2').live("click",function(){console.log(4444);
+	$('.span2').live("click",function(){
 	css("background-color","#FDFDFD");
 	});
 	var host = "<%=IConstants.DEPLOYED_HOST%>";
