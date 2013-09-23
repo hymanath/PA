@@ -1479,11 +1479,7 @@ function callAjax1(jsObj,url){
 				}
 				else if(jsObj.task == "candidateSubscriptionDetails")
 				{
-					$("#errorMsgDiv").html("Candidate Subscribed successfully..").css("color","green");
-					setTimeout(function() {
-						$("#CandidateSubscribePopup").dialog('close');
-						$(".subscriptionsLink").trigger("click");
-					}, 2000);
+					$("#button"+jsObj.id+"").css("display","none");
 				}
 			}catch (e) {  
                   	
@@ -4914,7 +4910,7 @@ function buildCandidatesToSubscribe(results,jsObj){
 		$('.btnClass1').css({"margin-top":"10px"});
 		templateClone.find('.imgClass1').html("<img height='100' width='95' src='images/icons/indexPage/human.jpg'/>");
 		templateClone.find('.titleCls1').html('<a class="titleVar" href="candidateElectionResultsAction.action?candidateId='+results[i].candidateId+'" target="_blank">'+results[i].candidateName+'</a>');
-		templateClone.find('.btnClass1').html('<a class="label label-info nationalPartySubscribedLink" href="javascript:{}" onClick="getCandidateSubScribe('+results[i].candidateId+','+timeST+');" style="color: rgb(255, 255, 255);">SUBSCRIBE</a>');
+		templateClone.find('.btnClass1').html('<a id=button'+results[i].candidateId+' class="label label-info nationalPartySubscribedLink" href="javascript:{}" onClick="getCandidateSubScribe('+results[i].candidateId+','+timeST+');" style="color: rgb(255, 255, 255);">SUBSCRIBE</a>');
 		templateClone.appendTo('#resultDivId');
 	}
 	  var itemsCount=results[0].totalSearchCount;
