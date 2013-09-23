@@ -1238,4 +1238,8 @@
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
+    <bean id="partialBoothPanchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartialBoothPanchayatDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
 </beans>		
