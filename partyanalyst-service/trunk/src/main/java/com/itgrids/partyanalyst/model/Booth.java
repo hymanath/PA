@@ -56,6 +56,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private PublicationDate publicationDate;
 	
 	private Constituency localBodyWard;
+	private String isPartial;
 	
 	/** default constructor */
 	public Booth() {
@@ -314,6 +315,16 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setLocalBodyWard(Constituency localBodyWard) {
 		this.localBodyWard = localBodyWard;
+	}
+
+	@Column(name ="is_partial",length = 1,nullable=true,updatable=true)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	public String getIsPartial() {
+		return isPartial;
+	}
+
+	public void setIsPartial(String isPartial) {
+		this.isPartial = isPartial;
 	}
 	
 	
