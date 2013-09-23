@@ -63,6 +63,9 @@ $(".widget-block > ul.nav > li").removeClass("active");
 });
 </script>
 <style>
+#paginationDivId ul li{
+margin-top:6px;
+}
 #paginationDivId{float: none;
    float:right;
     width: 313px;}
@@ -492,7 +495,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
                          <div id="userPoliticianUnSubscriptionsDiv" class="subscriptionInnerDiv"></div>
 						</div>-->
 
-						<div id="userConstituencyDiv" class="breadcrumb">
+						<div id="userCandidateDiv" class="breadcrumb" style="margin-top: 22px;">
 						  <div id="candidateSubscribeDiv"></div>
 						</div>
 					</div>
