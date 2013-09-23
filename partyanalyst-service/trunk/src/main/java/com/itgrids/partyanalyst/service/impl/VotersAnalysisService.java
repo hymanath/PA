@@ -16614,17 +16614,24 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 			log.debug("entered into the getVoterData() method in VotersAnalysisSevice");
 			if(voterDataVO.getBuildType().equalsIgnoreCase("panchayat"))
 			{
-				voters     = new ArrayList<Object[]>();
+				/*voters     = new ArrayList<Object[]>();
 				voters     = boothPublicationVoterDAO.getVotersDetailsForPanchayatByPublicationId(voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() );
 				totalCount = (Long) boothPublicationVoterDAO.getVotersCountForPanchayat(voterDataVO.getId() , voterDataVO.getPublicationId()).get(0);
-				
+		*/
+				voterData = voterReportService.getVoterDataForPanchayat(voterDataVO , userId , categories ,voterDataVO.getSearchColumnName(), voterDataVO.getSearchString());
+				return voterData;
 			}
 			else if(voterDataVO.getBuildType().equalsIgnoreCase("booth"))
 			{
 				voters     = new ArrayList<Object[]>();
-				voters     = boothPublicationVoterDAO.getVotersDetailsByBoothId(voterDataVO.getId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort());
+				
+				voterData = voterReportService.getVoterDataForBooth(voterDataVO.getId() ,userId,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort(),categories ,voterDataVO.getSearchColumnName(), voterDataVO.getSearchString());
+				
+				return voterData;
+				
+				/*voters     = boothPublicationVoterDAO.getVotersDetailsByBoothId(voterDataVO.getId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort());
 				totalCount = (Long) boothPublicationVoterDAO.getVotersCountByBoothId(voterDataVO.getId()).get(0);
-			}
+		*/	}
 			else if (voterDataVO.getBuildType().equalsIgnoreCase("hamlet"))
 			{
 				voters     =  new ArrayList<Object[]>();

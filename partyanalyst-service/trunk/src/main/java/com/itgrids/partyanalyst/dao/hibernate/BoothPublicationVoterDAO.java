@@ -119,7 +119,7 @@ public class BoothPublicationVoterDAO extends
 	 	query.setFirstResult(startIndex);
 	 	query.setMaxResults(maxRecords);
 	 	return query.list();
-		}
+	  }
 		
 		/*public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
 			
@@ -135,7 +135,7 @@ public class BoothPublicationVoterDAO extends
 			
 		}*/
 		
-         public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
+      public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId){
 			
         	 Query query = getSession().createQuery("select count(BPV.voter.voterId) from BoothPublicationVoter BPV where BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
  					" BPV.booth.panchayat.panchayatId = :panchayatId  ") ;
@@ -4804,7 +4804,206 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return qry.list();
 		}
 		
-		
-		
+		 
+		 public List<Object[]> getVotersDetailsAndCountDetailsByBoothId(Long boothId, Integer startIndex,
+					Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount) {  
+			 Query query = null;
+			 
+			 
+			 StringBuffer strBuffer = new StringBuffer();
+			 
+			 if(!isCount)
+			 {
+			 
+				 strBuffer.append("SELECT * FROM (select " +
+				 		"v.voter_id," +
+				 		"v.voter_id_card_no," +
+				 		"v.name," +
+				 		"v.house_no," +
+				 		"v.relative_name," +
+				 		"v.gender," +
+				 		"v.age," +
+				 		"b.part_no," +
+				 		"b.location," +
+				 		"c.caste_name," +
+				 		"pa.short_name," +
+	                    "bpv.serial_no ,"+
+				 		"uvd.mobile_no " );
+				 
+				 if(queryForselect.length() >0)
+					 strBuffer.append(queryForselect);
+			 }else
+				 strBuffer.append("SELECT * FROM (" +
+					 		"select count(v.voter_id) ");
+				 
+			 		/*"uvcu.user_voter_category_id ," +
+			 		"uvcu.category_value," +
+			 		"uvcu1.user_voter_category_id ," +
+			 		"uvcu1.category_value " +*/
+			 		strBuffer.append("from " +
+			 		"booth b," +
+			 		"booth_publication_voter bpv," +
+			 		"voter v " +
+			 		"LEFT JOIN (user_voter_details uvd JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id ) on v.voter_id = uvd.voter_id and uvd.user_id = 1 " +
+			 		"LEFT JOIN (user_voter_details uvd1 join party pa on pa.party_id = uvd1.party_id )on v.voter_id = uvd1.voter_id and uvd1.user_id = 1 ");
+			 		/*"LEFT JOIN (voter_category_value vcu JOIN user_voter_category_value uvcu on uvcu.user_voter_category_value_id = vcu.user_voter_category_value_id and uvcu.user_voter_category_id = 5)on v.voter_id = vcu.voter_id " +
+			 		"LEFT JOIN (voter_category_value vcu1 JOIN user_voter_category_value uvcu1 on uvcu1.user_voter_category_value_id = vcu1.user_voter_category_value_id and uvcu1.user_voter_category_id = 8)on v.voter_id = vcu1.voter_id " +
+			 	*/
+			 		
+					if(queryForCategories.length() >0)
+						strBuffer.append(queryForCategories);
+			 		
+			 		strBuffer.append("where " +
+			 		"v.voter_id = bpv.voter_id and " +
+			 		"bpv.booth_id = b.booth_id and " +
+			 		"b.booth_id = :boothId  " );
+			 		
+			 		if(queryString.length() >0)
+			 		strBuffer.append(queryString);
+			 		
+			 		if("initial".equalsIgnoreCase(columnName))
+					 {
+			 			strBuffer.append(" order by b.part_no ,bpv.serial_no  ,v.house_no ");
+					 }
+					 else if("partNo".equalsIgnoreCase(columnName))
+					 {
+						 strBuffer.append(" order by b.part_no "+order);
+					 }
+					 else if("serialNo".equalsIgnoreCase(columnName))
+					 {
+						 strBuffer.append(" order by bpv.serial_no "+order);
+					 }
+					 else if("gender".equalsIgnoreCase(columnName))
+					 {
+						 strBuffer.append(" order by v.gender "+order);
+					 }
+					 else if("age".equalsIgnoreCase(columnName))
+					 {
+						 strBuffer.append(" order by v.age "+order);
+					 }
+					 else if("houseNo".equalsIgnoreCase(columnName))
+					 {
+						 strBuffer.append(" order by v.house_no "+order);
+					 }
+					 else if("voterId".equalsIgnoreCase(columnName))
+					 {
+						 strBuffer.append(" order by v.voter_id_card_no "+order);
+					 }
+					 else if("name".equalsIgnoreCase(columnName))
+					 {
+						 strBuffer.append(" order by v.name "+order);
+					 }
+			 	
+			 		strBuffer.append(") AS subselection");
+			 		
+			 		
+			 
+			 
+			 
+			 query = getSession().createSQLQuery(strBuffer.toString());
+
+			 query.setParameter("boothId", 122995);
+			 if(!isCount)
+			 {
+			  query.setFirstResult(startIndex);
+			  query.setMaxResults(maxRecords);
+			 }
+
+			 return query.list();
+			 
+		 }
+		 
+		  public List<Object[]> getVotersDetailsAnCountDetailsForPanchayatByPublicationId(
+					Long panchayatId, Long publicationDateId, Integer startIndex,
+					Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount) {
+			 
+			 StringBuffer str = new StringBuffer();		 
+			 
+			 if(!isCount)
+			 {
+			 str.append("SELECT * FROM (" +
+				 		"select v.voter_id ,v.voter_id_card_no,v.name,v.house_no,v.relative_name," +
+				 		"v.gender,v.age,b.part_no,p.panchayat_name,c.caste_name,pa.short_name,bpv.serial_no ," +
+				 		"uvd.mobile_no ");
+				 		
+				 		if(queryForselect.length() >0)
+				 			str.append(queryForselect);
+			 }else
+			 {
+				 str.append("SELECT * FROM (" +
+					 		"select count(v.voter_id) ");
+			 }
+				 		
+				 		str.append("from" +
+				 		" booth b," +
+				 		"panchayat p," +
+				 		"booth_publication_voter bpv," +
+				 		"voter v LEFT JOIN (user_voter_details uvd JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id ) on v.voter_id = uvd.voter_id and uvd.user_id = 1 " +
+				 		"LEFT JOIN (user_voter_details uvd1 join party pa on pa.party_id = uvd1.party_id )on v.voter_id = uvd1.voter_id and uvd1.user_id = 1 " );
+				 		/*"LEFT JOIN (voter_category_value vcu JOIN user_voter_category_value uvcu on uvcu.user_voter_category_value_id = vcu.user_voter_category_value_id and uvcu.user_voter_category_id = 5)on v.voter_id = vcu.voter_id " +
+				 		"LEFT JOIN (voter_category_value vcu1 JOIN user_voter_category_value uvcu1 on uvcu1.user_voter_category_value_id = vcu1.user_voter_category_value_id and uvcu1.user_voter_category_id = 8  )on v.voter_id = vcu1.voter_id " +*/
+				 		
+				 		if(queryForCategories.length() >0)
+				 			str.append(queryForCategories);
+				 		
+				 		str.append("where " +
+				 		"v.voter_id = bpv.voter_id and " +
+				 		"bpv.booth_id = b.booth_id and " +
+				 		"b.panchayat_id = p.panchayat_id and " +
+				 		//"b.constituency_id = 232 and " +
+				 		"b.publication_date_id = :publicationDateId and " +
+				 		//"b.panchayat_id in(2) ");
+					    "b.panchayat_id =:panchayatId ");
+			 
+			 if(queryString.length() >0)
+				 str.append(queryString);
+			 
+			 if("initial".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by b.part_no ,bpv.serial_no  ,v.house_no ");
+			 }
+			 else if("partNo".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by b.part_no "+order);
+			 }
+			 else if("serialNo".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by bpv.serial_no "+order);
+			 }
+			 else if("gender".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by v.gender "+order);
+			 }
+			 else if("age".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by v.age "+order);
+			 }
+			 else if("houseNo".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by v.house_no "+order);
+			 }
+			 else if("voterId".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by v.voter_id_card_no "+order);
+			 }
+			 else if("name".equalsIgnoreCase(columnName))
+			 {
+				 str.append(" order by v.name "+order);
+			 }
+			 
+			 str.append(") AS subselection"); 
+			 
+			 Query query =  getSession().createSQLQuery(str.toString());
+
+		 	query.setParameter("publicationDateId", publicationDateId);
+		 	query.setParameter("panchayatId", panchayatId);
+		 	
+		 	if(!isCount){
+		 	 query.setFirstResult(startIndex);
+		 	 query.setMaxResults(maxRecords);
+		 	}
+		 	
+		 	return query.list();
+			}
 	
 }
