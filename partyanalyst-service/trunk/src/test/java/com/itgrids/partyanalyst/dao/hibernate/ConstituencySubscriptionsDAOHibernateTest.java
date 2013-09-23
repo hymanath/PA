@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -7,6 +9,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IConstituencySubscriptionsDAO;
 import com.itgrids.partyanalyst.model.ConstituencySubscriptions;
 import com.itgrids.partyanalyst.model.PartySubscriptions;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class ConstituencySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 
@@ -47,9 +50,24 @@ public class ConstituencySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(params[0]);
 	}*/
 	
-	public void testgetAllUserSubScribedConstituencies()
+	/*public void testgetAllUserSubScribedConstituencies()
 	{
 		System.out.println(constituencySubscriptionsDAO.getAllUserSubScribedConstituencies(1l).size());
+	}*/
+	
+	public void testgetCommentDataForPublicStreeming()
+	{
+		DateUtilService dateUtilService = new DateUtilService();
+		Date toDate = dateUtilService.getCurrentDateAndTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(toDate);
+		cal.add(Calendar.DATE, -7);
+		Date fromDate = cal.getTime();
+		List<Object[]> values = constituencySubscriptionsDAO.getConctituencySubscriptionsForPublicProfileStreeming(1l,toDate,fromDate);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] );
+		}
+		
 	}
 	
 }

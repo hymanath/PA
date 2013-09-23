@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -51,4 +52,21 @@ public class ConstituencySubscriptionsDAO extends  GenericDaoHibernate<Constitue
 	  return getHibernateTemplate().find(" select model.constituency.constituencyId from ConstituencySubscriptions model, Constituency model2 where model.constituency.constituencyId = model2.constituencyId and model.user.userId =? ",userId);
 	}
 	
+	public List<Object[]> getConctituencySubscriptionsForPublicProfileStreeming(Long userId,Date toDate,Date fromDate)
+	{
+		Query query = getSession().createQuery("select model.constituency.name ," +//0
+				" model.updatedTime, " +//1
+				" model.user.firstName , " +//2
+				" model.user.lastName ," +//3
+				" model.user.profileImg , " +//4
+				" model.constituency.constituencyId " +//5
+				" from ConstituencySubscriptions model " +
+				" where model.user.userId = :userId and " +
+				" date(model.updatedTime) >= :fromDate  and " +
+				" date(model.updatedTime) <= :toDate");
+		query.setParameter("userId", userId);
+		query.setParameter("toDate", toDate);
+		query.setParameter("fromDate", fromDate);
+		return query.list();
+	}
 }

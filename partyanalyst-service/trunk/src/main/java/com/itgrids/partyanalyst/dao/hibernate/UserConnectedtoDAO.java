@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -338,5 +339,36 @@ public class UserConnectedtoDAO extends GenericDaoHibernate<UserConnectedto,Long
 		queryObject.setFirstResult(0);
 		queryObject.setMaxResults(2);
 		return queryObject.list();
+	}
+	
+	public List<Object[]> getUserConnectedForPublicProfileStreeming(Long userId,Date toDate,Date fromDate)
+	{
+		Query query = getSession().createQuery("select distinct  model.userTarget.firstName , " +//0
+				" model.userTarget.lastName," +//1
+				" model.userTarget.profileImg ," +//2
+				" model.updatedTime ," +//3
+				" model.userSource.firstName ," +//4
+				" model.userSource.lastName , " +//5
+				" model.userSource.profileImg, " +//6
+				" model.userTarget.userId " +//7
+				" from UserConnectedto model where " +
+				" model.userSource.userId = :userId  and " +
+				" date(model.updatedTime) >= :fromDate  and " +
+				" date(model.updatedTime) <= :toDate ");
+		query.setParameter("userId", userId);
+		query.setParameter("toDate", toDate);
+		query.setParameter("fromDate", fromDate);
+	 	return query.list();
+	}
+	
+	public Long getFrindsConnectdOrNot(Long sourceId,Long targetId)
+	{
+		Query query = getSession().createQuery("select model.userConnectedtoId from UserConnectedto model where " +
+				" (model.userTarget.userId = :targetId and model.userSource.userId = :sourceId ) " +
+				" or (model.userTarget.userId = :sourceId and model.userSource.userId = :targetId )");
+		query.setParameter("sourceId", sourceId);
+		query.setParameter("targetId", targetId);
+		return (Long) query.uniqueResult();
+				
 	}
 }

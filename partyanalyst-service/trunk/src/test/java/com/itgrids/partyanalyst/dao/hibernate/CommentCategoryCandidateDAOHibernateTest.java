@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.model.CommentCategoryCandidate;
 import com.itgrids.partyanalyst.service.impl.DateService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
@@ -313,7 +315,7 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testgetCommentsResultsForAPartyInAnElection1(){
+	/*public void testgetCommentsResultsForAPartyInAnElection1(){
 		List<Long> list = new ArrayList<Long>(0);
 		list.add(30l);
 		list.add(40l);
@@ -321,6 +323,21 @@ public class CommentCategoryCandidateDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list1.get(0));
 		System.out.println(list1.get(1));
 		System.out.println(list1.size());
+	}*/
+	
+	public void testgetCommentDataForPublicStreeming()
+	{
+		DateUtilService dateUtilService = new DateUtilService();
+		Date toDate = dateUtilService.getCurrentDateAndTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(toDate);
+		cal.add(Calendar.DATE, -7);
+		Date fromDate = cal.getTime();
+		List<Object[]> values = commentCategoryCandidateDAO.getCommentDataForPublicStreeming(2058l,toDate,fromDate);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[5]);
+		}
+		
 	}
 	
 }

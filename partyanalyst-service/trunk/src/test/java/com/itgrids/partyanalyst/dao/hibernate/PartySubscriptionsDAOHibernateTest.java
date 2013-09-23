@@ -1,11 +1,14 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
 import com.itgrids.partyanalyst.model.PartySubscriptions;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class PartySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -56,10 +59,25 @@ public class PartySubscriptionsDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testGetAllSubscribedParties()
+	/*public void testGetAllSubscribedParties()
 	{
 		List<Object[]> list = partySubscriptionsDAO.getAllSubscribedParties(1L);
 		System.out.println(list.size());
+	}*/
+	public void testgetpartySubscriptionsForPublicProfileStreeming()
+	{
+		DateUtilService dateUtilService = new DateUtilService();
+		Date toDate = dateUtilService.getCurrentDateAndTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(toDate);
+		cal.add(Calendar.DATE, -7);
+		Date fromDate = cal.getTime();
+		List<Object[]> values = partySubscriptionsDAO.getpartySubscriptionsForPublicProfileStreeming(1l,toDate,fromDate);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] );
+		}
+		
 	}
+	
 
 }

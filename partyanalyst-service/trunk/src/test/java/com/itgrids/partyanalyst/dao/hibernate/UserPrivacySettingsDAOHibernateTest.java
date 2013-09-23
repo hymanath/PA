@@ -12,5 +12,11 @@ public class UserPrivacySettingsDAOHibernateTest extends BaseDaoTestCase{
 			IUserPrivacySettingsDAO userPrivacySettingsDAO) {
 		this.userPrivacySettingsDAO = userPrivacySettingsDAO;
 	}
+	
+	public void testgetUserPrivicyViewDetails()
+	{
+		Long value = userPrivacySettingsDAO.getUserPrivicyViewDetails(1l);
+		System.out.println(value);
+	}
 
 }

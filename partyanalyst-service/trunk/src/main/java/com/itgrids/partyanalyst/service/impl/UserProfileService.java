@@ -18,16 +18,26 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.ICandidateSubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ICommentCategoryCandidateDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IConstituencySubscriptionsDAO;
 import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartySubscriptionsDAO;
+import com.itgrids.partyanalyst.dao.ISpecialPageDAO;
 import com.itgrids.partyanalyst.dao.ISpecialPageSubscriptionsDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserConnectedtoDAO;
+import com.itgrids.partyanalyst.dao.IUserFavoriteLinksDAO;
+import com.itgrids.partyanalyst.dao.IUserPrivacySettingsDAO;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
+import com.itgrids.partyanalyst.dao.IUserRolesDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserRolesDAO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
 import com.itgrids.partyanalyst.dto.ProblemBeanVO;
+import com.itgrids.partyanalyst.dto.PublicProfileStreemVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.UserProfileVO;
 import com.itgrids.partyanalyst.model.CandidateSubscriptions;
@@ -35,6 +45,7 @@ import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserProfileService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
@@ -44,30 +55,127 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class UserProfileService implements IUserProfileService {
 	
     private ICandidateSubscriptionsDAO candidateSubscriptionsDAO;
-	
+	private ISpecialPageDAO specialPageDAO;
 	private IPartySubscriptionsDAO partySubscriptionsDAO;
-	
+	private IStateDAO stateDAO;
 	private ISpecialPageSubscriptionsDAO specialPageSubscriptionsDAO;
-	
+	private IDistrictDAO districtDAO;
 	private IFileGallaryDAO fileGallaryDAO;
-	
+	private IConstituencyDAO constituencyDAO;
 	private IUserProblemDAO userProblemDAO;
-	
+	private IUserFavoriteLinksDAO userFavoriteLinksDAO;
 	private ICommentCategoryCandidateDAO commentCategoryCandidateDAO;
-	
+	private IConstituencySubscriptionsDAO constituencySubscriptionsDAO;
 	private IUserConnectedtoDAO userConnectedtoDAO;
 	private ICustomMessageDAO customMessageDAO;
 	private IStaticDataService staticDataService;
-	private INominationDAO nominationDAO;
+	private ICandidateDetailsService candidateDetailsService ;
+	private IUserPrivacySettingsDAO userPrivacySettingsDAO;
+	private IUserRolesDAO userRolesDAO;
+	SimpleDateFormat df = new SimpleDateFormat(IConstants.DATE_TIME_PATTERN);
 	private static final Logger log = Logger.getLogger(UserProfileService.class);
-			
-   public INominationDAO getNominationDAO() {
+	private INominationDAO nominationDAO;
+	
+	public INominationDAO getNominationDAO() {
 		return nominationDAO;
 	}
 
 
 	public void setNominationDAO(INominationDAO nominationDAO) {
 		this.nominationDAO = nominationDAO;
+	}
+
+
+   public IUserRolesDAO getUserRolesDAO() {
+		return userRolesDAO;
+	}
+
+
+	public void setUserRolesDAO(IUserRolesDAO userRolesDAO) {
+		this.userRolesDAO = userRolesDAO;
+	}
+
+
+public IUserPrivacySettingsDAO getUserPrivacySettingsDAO() {
+		return userPrivacySettingsDAO;
+	}
+
+
+	public void setUserPrivacySettingsDAO(
+			IUserPrivacySettingsDAO userPrivacySettingsDAO) {
+		this.userPrivacySettingsDAO = userPrivacySettingsDAO;
+	}
+
+
+public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
+
+
+	public ISpecialPageDAO getSpecialPageDAO() {
+		return specialPageDAO;
+	}
+
+
+	public void setSpecialPageDAO(ISpecialPageDAO specialPageDAO) {
+		this.specialPageDAO = specialPageDAO;
+	}
+
+
+public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+
+public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+
+public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+
+public IUserFavoriteLinksDAO getUserFavoriteLinksDAO() {
+		return userFavoriteLinksDAO;
+	}
+
+
+	public void setUserFavoriteLinksDAO(IUserFavoriteLinksDAO userFavoriteLinksDAO) {
+		this.userFavoriteLinksDAO = userFavoriteLinksDAO;
+	}
+
+
+public IConstituencySubscriptionsDAO getConstituencySubscriptionsDAO() {
+		return constituencySubscriptionsDAO;
+	}
+
+
+	public void setConstituencySubscriptionsDAO(
+			IConstituencySubscriptionsDAO constituencySubscriptionsDAO) {
+		this.constituencySubscriptionsDAO = constituencySubscriptionsDAO;
 	}
 
 
@@ -619,6 +727,7 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 		}
 	   return candiateVO;
    }
+   
    public List<CandidateVO> getCandidatesToSubscribe(Long userId,Long stateId,String name,String type,Integer startIndex,Integer endIndex){
 	   List<CandidateVO> candiates = null;
 	   List<Long> candidateIds1 = new ArrayList<Long>();
@@ -652,5 +761,253 @@ public List<UserProfileVO> getPartyAnalystLatestUpdates(Date fromDate,Date toDat
 	   if(candidateIds1.size()>0)
 	   candiates.get(0).setTotalSearchCount(new Long(candidateIds1.size()));
 	   return candiates;
+   }
+   
+    
+   public List<PublicProfileStreemVO> getPublicProfileDataStreaming(Long userId,Date todate,Date fromDate)
+   {
+	   List<PublicProfileStreemVO> returnList = new ArrayList<PublicProfileStreemVO>();
+	   List<Object[]> assecPoliticanDetails = commentCategoryCandidateDAO.getCommentDataForPublicStreeming(userId,todate,fromDate);
+	   if(assecPoliticanDetails != null && assecPoliticanDetails.size() > 0)
+	   {
+		   fillAcssenPoliticanVO(assecPoliticanDetails,returnList);
+	   }
+	   List<Object[]> problemDetails = userProblemDAO.getUserPostedProblemsForPublicStreaming(userId,todate,fromDate);
+	   if(problemDetails != null && problemDetails.size() > 0)
+	   {
+		   fillproblemDetailsVO(problemDetails,returnList);
+	   }
+	   List<Object[]> candidateSubScriptions = candidateSubscriptionsDAO.getCandidateSubscriptionsForPublicProfileStreeming(userId,todate,fromDate);
+	   if(candidateSubScriptions != null && candidateSubScriptions.size() > 0)
+	   { 
+		   fillSubscriptionsVO(candidateSubScriptions,returnList,"Subscriptions","Politician");
+	   }
+	   List<Object[]> partySubscriptions = partySubscriptionsDAO.getpartySubscriptionsForPublicProfileStreeming(userId,todate,fromDate);
+	   if(partySubscriptions != null && partySubscriptions.size() > 0 )
+	   {
+		   fillSubscriptionsVO(partySubscriptions,returnList,"Subscriptions","Party");
+	   }	
+	   List<Object[]> specialPageSubscriptions = specialPageSubscriptionsDAO.getSpecialSubscriptionsForPublicProfileStreeming(userId, todate, fromDate);
+	   if(specialPageSubscriptions != null && specialPageSubscriptions.size() > 0)
+	   {
+		   fillSubscriptionsVO(specialPageSubscriptions,returnList,"Subscriptions","Special Page");
+	   }
+	   List<Object[]> constituencySubscriptions = constituencySubscriptionsDAO.getConctituencySubscriptionsForPublicProfileStreeming(userId, todate, fromDate);
+	   if(constituencySubscriptions != null && constituencySubscriptions.size() > 0)
+	   {
+		   fillSubscriptionsVO(constituencySubscriptions,returnList,"Subscriptions","Constituency");
+	   }
+	   List<Object[]> frindsList = userConnectedtoDAO.getUserConnectedForPublicProfileStreeming(userId, todate, fromDate);
+	   if(frindsList != null && frindsList.size() > 0)
+	   {
+		   fillFrindsListVO(frindsList,returnList);
+	   }
+	   List<Object[]> faviroteLiksList = userFavoriteLinksDAO.getFavoroteLinksForPublicProfileStreeming(userId, todate, fromDate);
+	   if(faviroteLiksList != null && faviroteLiksList.size() > 0)
+	   {
+		   fillFaviroteLinksVO(faviroteLiksList,returnList);
+	   }
+	   Collections.sort(returnList,PublicProfileStreemVOSort);
+	   return returnList;
+   }
+   
+   public static Comparator<PublicProfileStreemVO> PublicProfileStreemVOSort = new Comparator<PublicProfileStreemVO>()
+			{
+						  
+		      public int compare (PublicProfileStreemVO m1, PublicProfileStreemVO m2){
+               return m2.getDate().compareTo(m1.getDate());
+              }
+			};
+   public void fillSubscriptionsVO(List<Object[]> fillData ,List<PublicProfileStreemVO> returnList,String type,String title)
+   {
+	   for (Object[] parms : fillData) {
+		   PublicProfileStreemVO publicProfileStreemVO = new PublicProfileStreemVO();  
+		    String name = "";
+		    if(parms[2] != null && parms[3] != null)
+			{
+				name = "" +parms[2]+ " " +parms[3]+ "";
+			}
+			publicProfileStreemVO.setCommentedBy(name != null ? name : "");
+		    publicProfileStreemVO.setUserImg(parms[4] != null ? parms[4].toString() :"");
+		    if(title != "Constituency")
+		    {
+		    	publicProfileStreemVO.setImg(parms[5] != null ? parms[5].toString() :"");
+		    }
+		    else
+		    {
+		    	publicProfileStreemVO.setImg("");
+		    }
+		    String url = "";
+		    if(title.equalsIgnoreCase("Politician"))
+		    {
+		    	url = "candidateElectionResultsAction.action?candidateId=" +parms[6]+ "";
+		    }
+		    else if(title.equalsIgnoreCase("Party"))
+		    {
+		    	url = "partyPageAction.action?partyId="+parms[6]+ "";
+		    }
+		    else if(title.equalsIgnoreCase("Special Page"))
+		    {
+		    	url = "specialPageAction.action?specialPageId="+parms[6]+ "";
+		    }
+		    else if(title.equalsIgnoreCase("Constituency"))
+		    {
+		    	url = "constituencyPageAction.action?constituencyId="+parms[5]+ "";
+		    }
+		    String description = "";
+		    if(parms[0] != null)
+		    {
+		    	description = "Subscribed  to "   +parms[0]+ " " +title+ " page  " ;
+		    }
+		    publicProfileStreemVO.setUrl(url);
+		    publicProfileStreemVO.setDescription(description != null ? description :"");
+		    publicProfileStreemVO.setDate(parms[1] != null ? df.format(parms[1]).toString() :"");
+		    publicProfileStreemVO.setTitle(type);
+		    publicProfileStreemVO.setSubTitle(title);
+		    returnList.add(publicProfileStreemVO);
+	}
+   }
+   
+   public void fillFrindsListVO(List<Object[]> fillData ,List<PublicProfileStreemVO> returnList)
+   {
+	     for (Object[] parms : fillData) {
+			   PublicProfileStreemVO publicProfileStreemVO = new PublicProfileStreemVO();
+			   String targetName = "";
+			   String sourceName = "";
+			   if(parms[0] != null && parms[1] != null)
+			   {
+				   targetName = "" +parms[0]+ " " +parms[1]+ "";
+			   }
+			   if(parms[4] != null && parms[5] != null)
+			   {
+				   sourceName = "" +parms[4]+ " " +parms[5]+ "";
+			   }
+			   String url = "";
+			   if(parms[7] != null)
+			   {
+				   url = "userProfile.action?profileId=" +parms[7]+ "";
+			   }
+			   publicProfileStreemVO.setUrl(url);
+			   String description = "" +targetName+ " and " +sourceName+ " now friends each other";
+			   publicProfileStreemVO.setDate(parms[3] != null ? df.format(parms[3]).toString() :"");
+			   publicProfileStreemVO.setImg(parms[2] != null ? parms[2].toString() :"");
+			   publicProfileStreemVO.setDescription(description);
+			   publicProfileStreemVO.setUserImg(parms[6] != null ? parms[6].toString() :"");
+			   publicProfileStreemVO.setName(sourceName);
+			   publicProfileStreemVO.setTitle("Friends");
+			   returnList.add(publicProfileStreemVO); 
+		   }
+	  
+   }
+   public void fillFaviroteLinksVO(List<Object[]> faviroteLiksList,List<PublicProfileStreemVO> returnList)
+   {
+	   for (Object[] parms : faviroteLiksList) {
+		   PublicProfileStreemVO publicProfileStreemVO = new PublicProfileStreemVO();
+			publicProfileStreemVO.setDate(parms[2] != null ? df.format(parms[2]).toString() : "");
+			publicProfileStreemVO.setTitle("Favirote Links");
+			 String userName = "";
+			    if(parms[3] != null && parms[4] != null)
+				{
+			    	userName = "" +parms[3]+ " " +parms[4]+ "";
+				}
+				publicProfileStreemVO.setCommentedBy(userName != null ? userName : "");
+			    publicProfileStreemVO.setUserImg(parms[5] != null ? parms[5].toString() :"");
+			String url = parms[1].toString();
+			publicProfileStreemVO.setUrl(url);
+			Long id = Long.valueOf(url.replaceAll("\\D+",""));
+			if(parms[0].toString().equalsIgnoreCase("constituency"))
+			{
+				String name = constituencyDAO.get(id).getName();
+				String description = "" +name+ " constituency page was added  as a favourite link";
+				publicProfileStreemVO.setDescription(description);
+			}
+			else if(parms[0].toString().equalsIgnoreCase("district"))
+			{
+				String name = districtDAO.get(id).getDistrictName();
+				String description = "" +name+ " district page was added  as a favourite link";
+				publicProfileStreemVO.setDescription(description);
+			}
+			else if(parms[0].toString().equalsIgnoreCase("state"))
+			{
+				String name = stateDAO.get(id).getStateName();
+				String description = "" +name+ " state page was added  as a favourite link";
+				publicProfileStreemVO.setDescription(description);
+			}
+			else if(parms[0].toString().equalsIgnoreCase("specialpage"))
+			{
+				String name = specialPageDAO.get(id).getTitle();
+				String description = "" +name+ " special page was added  as a favourite link";
+				publicProfileStreemVO.setDescription(description);
+			}
+			returnList.add(publicProfileStreemVO);
+		}
+   }
+   
+   public void fillAcssenPoliticanVO(List<Object[]> assecPoliticanDetails,List<PublicProfileStreemVO> returnList)
+   {
+	   for (Object[] parms : assecPoliticanDetails) {
+		   PublicProfileStreemVO publicProfileStreemVO = new PublicProfileStreemVO();  
+		    publicProfileStreemVO.setCommentedBy(parms[0] != null ? parms[0].toString() : "");
+		    String asscessPoliticanDiscription = "Posted a political reason for " +parms[1]+ " "  +parms[2]+ " The " +parms[3]+ " constituency " ;
+		    publicProfileStreemVO.setDescription(asscessPoliticanDiscription);
+		    publicProfileStreemVO.setImg(parms[4] != null ? parms[4].toString() : "");
+		    publicProfileStreemVO.setPoliticalReasion(parms[5] != null ? parms[5].toString() : "");
+		    publicProfileStreemVO.setPoliticalDescription(parms[6] != null ? parms[6].toString() : "");
+		    publicProfileStreemVO.setDate(parms[7] != null ? df.format(parms[7]).toString() : "");
+		    publicProfileStreemVO.setUserImg(parms[8] != null ? parms[8].toString() : "");
+		    publicProfileStreemVO.setTitle("Asses Politician");
+		    returnList.add(publicProfileStreemVO);
+	   }
+   }
+   
+   public void fillproblemDetailsVO(List<Object[]> problemDetails,List<PublicProfileStreemVO> returnList)
+   {
+	   for (Object[] parms : problemDetails) {
+		   PublicProfileStreemVO publicProfileStreemVO = new PublicProfileStreemVO();  
+			publicProfileStreemVO.setUserImg(parms[5] != null ? parms[5].toString() :"");
+			String name = "";
+			if(parms[3] != null && parms[4] != null)
+			{
+				name = "" +parms[3]+ " " +parms[4]+ "";
+			}
+			publicProfileStreemVO.setCommentedBy(name != null ? name : "");
+			publicProfileStreemVO.setProblemTitle(parms[2] != null ? parms[2].toString() : "");
+			publicProfileStreemVO.setDescription(parms[0] != null ? parms[0].toString() : "");
+			publicProfileStreemVO.setExistinFrom(parms[6] != null ? parms[6].toString() : "");
+			publicProfileStreemVO.setDate(parms[1] != null ? df.format(parms[1]).toString() : "");
+			String url = "";
+			if(parms[9] != null)
+			{
+				url = "completeProblemDetailsAction.action?problemId=" +parms[9]+ "";
+			}
+			String reportName = candidateDetailsService.getLocationDetails((Long)parms[7],(Long)parms[8]);
+			String ProblemDiscription = "";
+			if(reportName != null)
+			{
+				ProblemDiscription = "" +reportName+ " "  +parms[10]+ " Problem Posted By " +name+ "";
+			}
+			publicProfileStreemVO.setPoliticalDescription(ProblemDiscription);
+			publicProfileStreemVO.setUrl(url);
+		    publicProfileStreemVO.setTitle("Problem");
+		    returnList.add(publicProfileStreemVO);
+		}
+   }
+   
+   public Long getUserAcessViw(Long userId)
+   {
+	   Long viewId = userPrivacySettingsDAO.getUserPrivicyViewDetails(userId);
+	   return viewId;
+   }
+   
+   public Long checkWeaterUserConnectedOrNot(Long sourcrId,Long targetId)
+   {
+	   Long userId = userConnectedtoDAO.getFrindsConnectdOrNot(sourcrId,targetId);
+	   return userId;
+   }
+   
+   public Long getUserTypeAcessViw(Long userId)
+   {
+	   Long viewId = userRolesDAO.checkForUserPublicStreeming(userId);
+	   return viewId;
    }
 }

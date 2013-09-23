@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 import com.itgrids.partyanalyst.dao.IUserProblemDAO;
 import com.itgrids.partyanalyst.dto.ProblemSearchVO;
 import com.itgrids.partyanalyst.model.UserProblem;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
@@ -414,14 +416,28 @@ public class UserProblemDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testfindLatestUpdateProblems()
+	/*public void testfindLatestUpdateProblems()
 		{
 			List<Long> ids = new ArrayList<Long>();
 			ids.add(1l);
 			ids.add(4l);
 			List<Object[]> values = userProblemDAO.findLatestUpdateProblems(1l,ids);
 			
+		}*/
+	
+	public void testgetUserPostedProblemsForPublicStreaming()
+	{
+		DateUtilService dateUtilService = new DateUtilService();
+		Date toDate = dateUtilService.getCurrentDateAndTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(toDate);
+		cal.add(Calendar.DATE, -7);
+		Date fromDate = cal.getTime();
+		List<Object[]> values = userProblemDAO.getUserPostedProblemsForPublicStreaming(2058l,toDate,fromDate);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] );
 		}
+	}
 	
 	
 }

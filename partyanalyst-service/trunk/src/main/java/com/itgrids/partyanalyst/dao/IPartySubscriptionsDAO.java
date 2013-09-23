@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -16,4 +17,5 @@ public interface IPartySubscriptionsDAO extends GenericDao<PartySubscriptions, L
 	public List<Object[]> getAllParties();
 	public List<Long> getAllPartiesSubscribedByUser(Long userId);
 	public List<Object[]> getAllSubscribedParties(Long userId);
+	public List<Object[]> getpartySubscriptionsForPublicProfileStreeming(Long userId,Date toDate,Date fromDate);
 }

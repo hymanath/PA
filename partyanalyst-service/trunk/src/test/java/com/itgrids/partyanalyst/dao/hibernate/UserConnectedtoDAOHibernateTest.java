@@ -1,10 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
@@ -272,10 +275,31 @@ public class UserConnectedtoDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(userIdses);
 	}*/
 	
-	public void testGetRecentConnectedUser(){
+	/*public void testGetRecentConnectedUser(){
 		List<Object[]> list=userConnectedtoDAO.getRecentConnectedPeopleForUser(611l);
 		for(Object[] obj:list){
 			System.out.println(obj[0].toString()+"-"+obj[1].toString()+"-"+obj[2].toString()+"-"+obj[3].toString()+"-"+obj[4].toString()+"-"+obj[5].toString());
 		}
+	}*/
+	
+	/*public void testgetCommentDataForPublicStreeming()
+	{
+		DateUtilService dateUtilService = new DateUtilService();
+		Date toDate = dateUtilService.getCurrentDateAndTime();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(toDate);
+		cal.add(Calendar.DATE, -7);
+		Date fromDate = cal.getTime();
+		List<Object[]> values = userConnectedtoDAO.getUserConnectedForPublicProfileStreeming(1l,toDate,fromDate);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+ parms[1] );
+		}
+		
+	}*/
+	
+	public void testgetFrindsConnectdOrNot()
+	{
+		Long value = userConnectedtoDAO.getFrindsConnectdOrNot(1l,1210l);
+		System.out.println(value);
 	}
 }
