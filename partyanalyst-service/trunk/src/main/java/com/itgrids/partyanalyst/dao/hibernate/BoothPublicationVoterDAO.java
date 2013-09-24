@@ -4805,7 +4805,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		}
 		
 		 
-		 public List<Object[]> getVotersDetailsAndCountDetailsByBoothId(Long boothId, Integer startIndex,
+		 public List<Object[]> getVotersDetailsAndCountDetailsByBoothId(Long userId , Long boothId, Integer startIndex,
 					Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount) {  
 			 Query query = null;
 			 
@@ -4844,8 +4844,8 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			 		"booth b," +
 			 		"booth_publication_voter bpv," +
 			 		"voter v " +
-			 		"LEFT JOIN (user_voter_details uvd JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id ) on v.voter_id = uvd.voter_id and uvd.user_id = 1 " +
-			 		"LEFT JOIN (user_voter_details uvd1 join party pa on pa.party_id = uvd1.party_id )on v.voter_id = uvd1.voter_id and uvd1.user_id = 1 ");
+			 		"LEFT JOIN (user_voter_details uvd JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id ) on v.voter_id = uvd.voter_id and uvd.user_id = :userId " +
+			 		"LEFT JOIN (user_voter_details uvd1 join party pa on pa.party_id = uvd1.party_id )on v.voter_id = uvd1.voter_id and uvd1.user_id = :userId ");
 			 		/*"LEFT JOIN (voter_category_value vcu JOIN user_voter_category_value uvcu on uvcu.user_voter_category_value_id = vcu.user_voter_category_value_id and uvcu.user_voter_category_id = 5)on v.voter_id = vcu.voter_id " +
 			 		"LEFT JOIN (voter_category_value vcu1 JOIN user_voter_category_value uvcu1 on uvcu1.user_voter_category_value_id = vcu1.user_voter_category_value_id and uvcu1.user_voter_category_id = 8)on v.voter_id = vcu1.voter_id " +
 			 	*/
@@ -4896,13 +4896,13 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			 	
 			 		strBuffer.append(") AS subselection");
 			 		
-			 		
-			 
 			 
 			 
 			 query = getSession().createSQLQuery(strBuffer.toString());
 
 			 query.setParameter("boothId", boothId);
+			 query.setParameter("userId", userId);
+			 
 			 if(!isCount)
 			 {
 			  query.setFirstResult(startIndex);
@@ -4914,7 +4914,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 }
 		 
 		  public List<Object[]> getVotersDetailsAnCountDetailsForPanchayatByPublicationId(
-					Long panchayatId, Long publicationDateId, Integer startIndex,
+					Long userId , Long panchayatId, Long publicationDateId, Integer startIndex,
 					Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount) {
 			 
 			 StringBuffer str = new StringBuffer();		 
@@ -4938,8 +4938,8 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				 		" booth b," +
 				 		"panchayat p," +
 				 		"booth_publication_voter bpv," +
-				 		"voter v LEFT JOIN (user_voter_details uvd JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id ) on v.voter_id = uvd.voter_id and uvd.user_id = 1 " +
-				 		"LEFT JOIN (user_voter_details uvd1 join party pa on pa.party_id = uvd1.party_id )on v.voter_id = uvd1.voter_id and uvd1.user_id = 1 " );
+				 		"voter v LEFT JOIN (user_voter_details uvd JOIN caste_state cs on uvd.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id ) on v.voter_id = uvd.voter_id and uvd.user_id = :userId " +
+				 		"LEFT JOIN (user_voter_details uvd1 join party pa on pa.party_id = uvd1.party_id )on v.voter_id = uvd1.voter_id and uvd1.user_id = :userId " );
 				 		/*"LEFT JOIN (voter_category_value vcu JOIN user_voter_category_value uvcu on uvcu.user_voter_category_value_id = vcu.user_voter_category_value_id and uvcu.user_voter_category_id = 5)on v.voter_id = vcu.voter_id " +
 				 		"LEFT JOIN (voter_category_value vcu1 JOIN user_voter_category_value uvcu1 on uvcu1.user_voter_category_value_id = vcu1.user_voter_category_value_id and uvcu1.user_voter_category_id = 8  )on v.voter_id = vcu1.voter_id " +*/
 				 		
@@ -4997,6 +4997,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 
 		 	query.setParameter("publicationDateId", publicationDateId);
 		 	query.setParameter("panchayatId", panchayatId);
+		 	query.setParameter("userId", userId);
 		 	
 		 	if(!isCount){
 		 	 query.setFirstResult(startIndex);
@@ -5004,6 +5005,6 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 	}
 		 	
 		 	return query.list();
-			}
-	
+	}
+
 }
