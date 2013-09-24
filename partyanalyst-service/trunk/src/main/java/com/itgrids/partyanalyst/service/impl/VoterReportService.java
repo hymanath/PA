@@ -3779,8 +3779,8 @@ public class VoterReportService implements IVoterReportService{
 					
 					voters  = new ArrayList<Object[]>();
 					
-					voters = boothPublicationVoterDAO.getVotersDetailsAndCountDetailsByBoothId(boothId , startIndex, maxRecords , order,columnName ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
-					List countList = boothPublicationVoterDAO.getVotersDetailsAndCountDetailsByBoothId(boothId ,startIndex, maxRecords , order,columnName ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
+					voters = boothPublicationVoterDAO.getVotersDetailsAndCountDetailsByBoothId(userId,boothId , startIndex, maxRecords , order,columnName ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
+					List countList = boothPublicationVoterDAO.getVotersDetailsAndCountDetailsByBoothId(userId,boothId ,startIndex, maxRecords , order,columnName ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
 					
 					totalCount = ((BigInteger)countList.get(0)).longValue();
 				
@@ -3840,7 +3840,7 @@ public class VoterReportService implements IVoterReportService{
 			Long totalCount = 0l;
 			Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
 			try {
-				LOG.debug("entered into the getVoterData() method in VotersAnalysisSevice");
+				LOG.debug("Enterd into the getVoterDataForPanchayat service method");
 				if(voterDataVO.getBuildType().equalsIgnoreCase("panchayat"))
 				{					
 				    StringBuffer str = prepareQueryForSearchCriteria(searchColumn , searchString);
@@ -3852,8 +3852,8 @@ public class VoterReportService implements IVoterReportService{
 				  
 					voters  = new ArrayList<Object[]>();
 					
-					voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
-					List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
+					voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
+					List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
 					
 					totalCount = ((BigInteger)countList.get(0)).longValue();
 				}
@@ -3889,7 +3889,8 @@ public class VoterReportService implements IVoterReportService{
 				getCastePartyAndCategoriesDetails(voters, categories, voterMap);
 				
 			} catch (Exception e) {
-				LOG.error("error occured in the getVoterData() method in VotersAnalysis" , e) ;
+				LOG.error("Exception raised in getVoterDataForPanchayat service method" , e) ;
+				e.printStackTrace();
 			}
 			return voterData;
 		}
