@@ -405,4 +405,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getPartitesList(Long stateId,String electionType);
 			
 		public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId,String constiType);
+		
+		public List<SelectOptionVO> getElecIdsAndYearsInTehsilToGetForPanchResults(Long electionType,Long tehsilId);
 }
