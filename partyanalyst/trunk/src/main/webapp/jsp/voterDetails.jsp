@@ -184,44 +184,16 @@
   <div id="totalCountId" style="display:none;"></div>
   <div id="searchResultsDiv"  class="yui-skin-sam yui-dt-sortable" style="display:none;border: 1px solid black;border-radius: 4px 4px 4px 4px;margin-top: 11px;padding: 10px;"></div>
 </div>
-
-
-
 <div id="votersInnerDiv1" style="height:auto">
 <div id="imgDescriptionDiv" style="margin-top: 30px; display:none;margin-left:20px;float:left;">
 <b style="margin-left: 5px">Influencing People</b>:<img title="Influencing People" alt="Influencing People" src="./images/icons/influencing.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
-<b style="margin-left: 30px">Cadre</b>:<img title="Cadre" alt="Cadre" src="./images/icons/cadre.png" style="margin-bottom: 10px;
+<b style="margin-left: 50px">Cadre</b>:<img title="Cadre" alt="Cadre" src="./images/icons/cadre.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
-<b style="margin-left: 30px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;
+<b style="margin-left: 50px">Politician</b>:<img title="Politician" alt="Politicion" src="./images/icons/politican.png" style="margin-bottom: 10px;
     margin-left: 16px;"/>
 <div id="errorMessageDiv"></div>
-
-
 </div>
-
-<c:if test="${maintype == 'booth' || maintype == 'panchayat'}">
-<div style="float:right;margin-top:25px;">
-	Search By:<select id="searchTypeId" onchange="$('#searchValue').val('');">
-	    <option value="serial_no">S NO</option>
-		<option value="name">Name</option>
-		<option value="voter_id_card_no">Voter Id</option>
-		<option value="part_no">Booth NO</option>
-		<option value="gender">Gender</option>
-		<option value="age">Age</option>
-		<option value="house_no">House No</option>
-		<option value="cast">Caste</option>
-		<option value="party">Party</option>
-		<!--<option value="relative_name">Relative Name</option>-->
-		
-	</select>
-
-	<input type="text" id="searchValue"/> 
-	<a class="btn btn-primary" href="javascript:{getResultsBasedOnSearch()}" style="margin-top:-10px;">Search</a>
-</div>
-</c:if>
-
-
 <div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable yui-dt table table-bordered table-striped table-hover" style="display:none;float: left;overflow-x: scroll;">
 </div></div>
 
@@ -359,16 +331,16 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:60,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
@@ -488,16 +460,16 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:60,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
@@ -603,16 +575,16 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	}
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:60,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
@@ -735,16 +707,16 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:80, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
-{key:"gender", label: "Gen", width:20, sortable: true},
+{key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
@@ -1705,51 +1677,6 @@ function buildCategories(results){
 	$('#impFamilySelectedDetails1').html(str);
 
 }
-var searchType ="";
-var searchValue = "";
-function checkForAttributesToDisplay(type){
-
-
-  
-
-	if(type == "search")
-	{
-		searchType  = $('#searchTypeId').val();
-		searchValue = $('#searchValue').val();
-		var selectedValue = $('#searchTypeId').val();
-
-		$(":checkbox[value="+selectedValue+"]").attr("checked","true");
-
-		$('.attributeTypeClassIni1').each(function(index,value){
-
-			if($(this).val().substring(0,1) == selectedValue)
-			$(this).attr("checked","true");
-
-		});
-
-
-	}else
-	{
-		searchType  = "";
-		searchValue = "";
-
-
-		//$('#searchTypeId').find('option').remove();
-
-		/*$('.voterAttributes').each(function(index,value){
-			if(this.checked && this.value != "on")
-			 $('#searchTypeId').append('<option value="'+this.value+'">'+$(this).parent().text()+'</option>');
-
-		});
-
-		$('.attributeTypeClassIni1').each(function(index,value){
-			if(this.checked)
-			  $('#searchTypeId').append('<option value="'+this.value.split(',')[0]+'">'+this.value.split(',')[1]+'</option>');
-
-		});
-*/
-
-	}
 
 	confTrue = true;
 	reqfields = "";
@@ -2015,11 +1942,11 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		var initialPageNumber = 1;
 		if($('.yui-pg-current-page').html() != undefined)
 			initialPageNumber = $('.yui-pg-current-page').html();	
-//end 
+//end
 		if($('.yui-dt-paginator').hasClass('yui-pg-container') == true)
 		{
 			var myConfigs = {
-			initialRequest: "sortColumnName="+searchType+"&searchString="+searchValue+"&sort=initial&dir=asc&startIndex=1&results=100", // Initial request for first page of data
+			initialRequest: "sort=initial&dir=asc&startIndex=1&results=100", // Initial request for first page of data
 			dynamicData: true, // Enables dynamic server-driven data
 			sortedBy : {key:"serialNo", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
 			   paginator : new YAHOO.widget.Paginator({ 
