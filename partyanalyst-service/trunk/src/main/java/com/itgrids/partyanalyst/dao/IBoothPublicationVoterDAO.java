@@ -27,7 +27,7 @@ public interface IBoothPublicationVoterDAO extends
 			Integer maxRecords, String order, String columnName);
 	
 	  public List<Object[]> getVotersDetailsAnCountDetailsForPanchayatByPublicationId(
-				Long panchayatId, Long publicationDateId, Integer startIndex,
+				Long userId , Long panchayatId, Long publicationDateId, Integer startIndex,
 				Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount);
 	
 	public List getVotersCountByBoothId(Long boothId);
@@ -447,7 +447,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo);
 	  
 	  public List<Object[]> getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId);
-	  public List<Object[]> getVotersDetailsAndCountDetailsByBoothId(Long boothId, Integer startIndex,
+	  public List<Object[]> getVotersDetailsAndCountDetailsByBoothId(Long userId , Long boothId, Integer startIndex,
 				Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount);
-	   
 }
