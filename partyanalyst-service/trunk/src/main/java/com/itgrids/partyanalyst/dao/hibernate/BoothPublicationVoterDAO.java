@@ -4902,7 +4902,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			 
 			 query = getSession().createSQLQuery(strBuffer.toString());
 
-			 query.setParameter("boothId", 122995);
+			 query.setParameter("boothId", boothId);
 			 if(!isCount)
 			 {
 			  query.setFirstResult(startIndex);
