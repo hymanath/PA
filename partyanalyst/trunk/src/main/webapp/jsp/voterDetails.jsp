@@ -359,19 +359,18 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:60,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
-
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -488,19 +487,18 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:60,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
-
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
@@ -603,19 +601,18 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	}
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:100, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
 {key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:60,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
-
 ];
 YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
@@ -735,19 +732,18 @@ YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData)
 
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
-{key:"firstName", label: "Name",width:80, sortable: true},
-{key:"voterIDCardNo", label: "Voter ID",width:120,sortable: true},
+{key:"firstName", label: "Name",width:120, sortable: true},
+{key:"voterIDCardNo", label: "Voter ID",width:90,sortable: true},
 {key:"partNo", label: "Booth No",width:30, sortable:true},
-{key:"gender", label: "Gen", width:20, sortable: true},
+{key:"gender", label: "Gen", width:15, sortable: true},
 {key:"age", label: "Age",  width:15,sortable:true},
-{key:"houseNo", label: "HNO",width:20, sortable:true},
-{key:"relativeFirstName", label: "Guardian Name", width:70,sortable:true},
-{key:"Type", label: "Type", width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"houseNo", label: "HNO",width:55, sortable:true},
+{key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
+{key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
 //{key:"relationshipType", label: "Relationship", sortable:true},
-{key:"mobileNo",label:"MobileNo",sortable:true,width:50},
+{key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 //{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
-
 ];
 
 //var votersByLocBoothDataSource = new YAHOO.util.DataSource("getVoterDetails.action?boothId=115&isVoter=true&checkedele="+checkedele+"&");
