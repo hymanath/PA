@@ -739,7 +739,8 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 				
 				 votersList = boothPublicationVoterDAO
 							.getVotersDetailsByCustomWardId(customwardId,publicationDateId,constiId,userId,startIndex, maxRecords, order, columnName);
-				 totalCount=new Long(votersList.size());
+				 totalCount=(Long) boothPublicationVoterDAO.getVotersCountByCustomWardId(customwardId,publicationDateId,constiId,userId).get(0);
+				
 			}
 			
 			else
