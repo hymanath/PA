@@ -9,7 +9,7 @@
 <link type="text/css" href="styles/socialnetwork/scrollpane_style/jquery.jscrollpane.css" rel="stylesheet" media="all" />
 <!-- For UserSocialNetworkSite.jsp-->
 		
- <script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+ <script type="text/javascript" src="js/jqueryvalidation/jquery.validate.js"></script>
  <script type="text/javascript" src="js/UserSocialNetworkSite.js"></script>
  <script type="text/javascript" src="js/socialNetwork/newTwitterAPI.js?1000"></script>
 <!-- <script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>-->
