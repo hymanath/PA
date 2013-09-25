@@ -3068,8 +3068,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 {
 			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV,UserVoterDetails UVD " +
 					"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int),BPV.serialNo,BPV.voter.houseNo");
-		 }
-		 else if("partNo".equalsIgnoreCase(columnName))
+		 }		 else if("partNo".equalsIgnoreCase(columnName))
 		 {
 			 query = getSession().createQuery("select BPV.voter,BPV.booth.partNo,BPV.serialNo from BoothPublicationVoter BPV,UserVoterDetails UVD " +
 						"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId order by cast(BPV.booth.partNo , int) "+order); 
@@ -3095,6 +3094,25 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 return query.list();
 		 
 	 }  
+	 
+	 public List getVotersCountByCustomWardId(Long wardId,Long publicationDateId,Long constituencyId,Long userId)
+	 {
+		 Query query = null;
+		 
+		 
+			 query = getSession().createQuery("select count(BPV.serialNo) from BoothPublicationVoter BPV,UserVoterDetails UVD " +
+					"where UVD.ward.constituencyId =:wardId and BPV.voter.voterId = UVD.voter.voterId and UVD.user.userId = :userId and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId ");
+		
+
+		 query.setParameter("wardId", wardId);
+		 query.setParameter("userId", userId);
+		 query.setParameter("constituencyId", constituencyId);
+		 query.setParameter("publicationDateId", publicationDateId);
+		
+
+		 return query.list();
+		 
+	 } 
 		/**
 		 * This  is Uesd For Getting all voter in a house  count for a customward good for muncipality Level
 		 *  

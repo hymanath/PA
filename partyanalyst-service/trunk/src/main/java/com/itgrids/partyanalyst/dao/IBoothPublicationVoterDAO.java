@@ -324,6 +324,8 @@ public interface IBoothPublicationVoterDAO extends
   public List<Object[]> getVotersDetailsByCustomWardId(Long wardId,Long publicationDateId,Long constituencyId,Long userId, Integer startIndex,
 			Integer maxRecords, String order, String columnName);
   
+  public List getVotersCountByCustomWardId(Long wardId,Long publicationDateId,Long constituencyId,Long userId);
+  
   public List<Object[]> getVotersCountForCustomWardBooths(Long constituencyId,Long wardId,Long publicationDateId,Long userId);
   public List<Object[]> getFamiliesInWard(Long userId, Long id ,Long publicationDateId , Long constituencyId , String type);
   public List<Object[]> getVotersCountByGender(Long userId ,Long id ,Long  publicationDateId,Long constituencyId ,String type);
