@@ -5024,5 +5024,203 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 	
 		 	return query.list();
 	}
-
+		  
+		  public List getVotersDetailsAnCountDetailsForHamletByPublicationId(Long userId , Long hamletId, Long publicationdateId, int startIndex,
+					int maxIndex, String order, String columnName, String queryStr,
+					String queryForCategories, String queryForselect, boolean isCount)
+		  {
+			  
+			  StringBuffer queryString = new StringBuffer();
+			  
+			  
+				 if(!isCount)
+				 {
+					 queryString.append("SELECT * FROM (" +
+					 		"select v.voter_id,v.voter_id_card_no,v.name,v.house_no," +
+			  		        "v.relative_name,v.gender,v.age,b.part_no,p.long_name," +
+			  		        "c.caste_name,p.short_name," +
+			  		        "bpv.serial_no , uvd.mobile_no");
+					 		
+					 		if(queryForselect.length() >0)
+					 			queryString.append(queryForselect);
+				 }else
+				 {
+					 queryString.append("SELECT * FROM (" +
+						 		"select count(v.voter_id) ");
+				 }
+			  
+				 queryString.append(" from " +
+			  		" booth b," +
+			  		" booth_publication_voter bpv," +
+			  		"voter v ," +
+			  		"user_voter_details uvd LEFT JOIN ( user_voter_details uvd1 JOIN caste_state cs on uvd1.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id) on uvd.user_voter_details_id = uvd1.user_voter_details_id " +
+			  		"LEFT JOIN (user_voter_details uvd2 JOIN party p on uvd2.party_id = p.party_id ) on uvd.user_voter_details_id = uvd2.user_voter_details_id " );		  	
+			  
+					if(queryForCategories.length() >0)
+						queryString.append(queryForCategories);
+		
+					queryString.append(" where  " +
+							" b.publication_date_id = :publicationDateId and " +
+							" b.booth_id = bpv.booth_id and " +
+							" bpv.voter_id = v.voter_id and " +
+							" bpv.voter_id = uvd.voter_id and " +
+							" uvd.user_id = :userId and " +
+							" uvd.hamlet_id = :hamletId " );
+							
+				 
+				 if(queryStr.length() >0)
+					 queryString.append(queryStr);
+				 
+				 if("initial".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by b.part_no ,bpv.serial_no  ,v.house_no ");
+				 }
+				 else if("partNo".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by b.part_no "+order);
+				 }
+				 else if("serialNo".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by bpv.serial_no "+order);
+				 }
+				 else if("gender".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.gender "+order);
+				 }
+				 else if("age".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.age "+order);
+				 }
+				 else if("houseNo".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.house_no "+order);
+				 }
+				 else if("voterId".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.voter_id_card_no "+order);
+				 }
+				 else if("name".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.name "+order);
+				 }
+				 
+				 queryString.append(") AS subselection"); 
+				 
+			  Query query = getSession().createSQLQuery(queryString.toString());
+			  
+			  query.setParameter("hamletId", hamletId);
+			  query.setParameter("publicationDateId", publicationdateId);
+			  query.setParameter("userId", userId);
+			  
+			  
+			  if(!isCount)
+			  {
+				  query.setFirstResult(startIndex);
+				  query.setMaxResults(maxIndex);
+				  
+			  }
+			  
+		  return query.list();
+			  
+		  }
+		  
+		 public List getVotersDetailsAnCountDetailsForWardByPublicationId(Long wardId,Long userId,Long constituencyId,Long publicationId,int startIndex,int  maxIndex,String order,String columnName,String queryStr,
+					String queryForCategories, String queryForselect, boolean isCount)
+		  {
+			  
+			  StringBuffer queryString = new StringBuffer();
+			  
+			  
+				 if(!isCount)
+				 {
+					 queryString.append("SELECT * FROM (" +
+					 		"select v.voter_id,v.voter_id_card_no,v.name,v.house_no," +
+			  		        "v.relative_name,v.gender,v.age,b.part_no,p.long_name," +
+			  		        "c.caste_name,p.short_name," +
+			  		        "bpv.serial_no , uvd.mobile_no");
+					 		
+					 		if(queryForselect.length() >0)
+					 			queryString.append(queryForselect);
+				 }else
+				 {
+					 queryString.append("SELECT * FROM (" +
+						 		"select count(v.voter_id) ");
+				 }
+				 
+				 queryString.append(" from booth b, booth_publication_voter bpv ,voter v,");
+				 queryString.append("user_voter_details uvd LEFT JOIN (user_voter_details uvd1 JOIN caste_state CS on uvd1.caste_state_id = cs.caste_state_id JOIN caste c on cs.caste_id = c.caste_id ) on uvd.user_voter_details_id = uvd1.user_voter_details_id ");
+				 queryString.append("LEFT JOIN");
+				 queryString.append("(user_voter_details uvd2 JOIN party p on uvd2.party_id = p.party_id ) on uvd.user_voter_details_id = uvd2.user_voter_details_id");
+				 
+					if(queryForCategories.length() >0)
+						queryString.append(queryForCategories);
+					
+				 queryString.append(" where ");
+				 
+				 queryString.append(" b.publication_date_id = :publicationDateId and ");
+				 queryString.append(" bpv.voter_id = uvd.voter_id and ");
+				 queryString.append(" bpv.booth_id = b.booth_id and ");
+				 queryString.append(" uvd.user_id = :userId and ");
+				 queryString.append(" uvd.ward_id = :wardId and ");
+				 queryString.append(" v.voter_id = uvd.voter_id and ");
+				 queryString.append(" b.constituency_id = :constituencyId  ");
+				 
+				 
+				 if(queryStr.length() >0)
+					 queryString.append(queryStr);
+				 
+				 if("initial".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by b.part_no ,bpv.serial_no  ,v.house_no ");
+				 }
+				 else if("partNo".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by b.part_no "+order);
+				 }
+				 else if("serialNo".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by bpv.serial_no "+order);
+				 }
+				 else if("gender".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.gender "+order);
+				 }
+				 else if("age".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.age "+order);
+				 }
+				 else if("houseNo".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.house_no "+order);
+				 }
+				 else if("voterId".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.voter_id_card_no "+order);
+				 }
+				 else if("name".equalsIgnoreCase(columnName))
+				 {
+					 queryString.append(" order by v.name "+order);
+				 }
+				 
+				 queryString.append(") AS subselection"); 
+				 
+			  Query query = getSession().createSQLQuery(queryString.toString());
+					
+			
+			  query.setParameter("wardId", wardId);
+			  query.setParameter("publicationDateId", publicationId);
+			  query.setParameter("userId", userId);
+			  query.setParameter("constituencyId", constituencyId);
+			  
+			  
+			  if(!isCount)
+			  {
+				  query.setFirstResult(startIndex);
+				  query.setMaxResults(maxIndex);
+				  
+			  }
+			  
+		  return query.list();
+			  
+		  }
 }

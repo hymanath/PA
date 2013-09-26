@@ -93,6 +93,11 @@ public interface IVoterReportService {
 	  
 	public List<VoterVO> getVoterDataForPanchayat(VoterDataVO voterDataVO , Long userId , List<Long> categories ,String searchColumn,String searchString);
     public List<VoterVO> getVoterDataForBooth(Long boothId,Long userId, Integer startIndex,Integer maxRecords, String order, String columnName,List<Long> categories ,String searchColumn , String searchString);
+    public List<VoterVO> getVoterDataForHamlet(VoterDataVO voterDataVO , Long userId , List<Long> categories ,String searchColumn,String searchString);
+    public List<VoterVO> getVoterDataForWard(VoterDataVO voterDataVO , Long userId , List<Long> categories ,String searchColumn,String searchString);
+
+    
+
 
 
 }

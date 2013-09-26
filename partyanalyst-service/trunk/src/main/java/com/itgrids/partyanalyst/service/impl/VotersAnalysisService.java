@@ -16635,19 +16635,26 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 		*/	}
 			else if (voterDataVO.getBuildType().equalsIgnoreCase("hamlet"))
 			{
-				voters     =  new ArrayList<Object[]>();
+				voters     = new ArrayList<Object[]>();	
+				voterData  = voterReportService.getVoterDataForHamlet(voterDataVO , userId , categories ,voterDataVO.getSearchColumnName(), voterDataVO.getSearchString());
+				return voterData;
+				
+				
+				/*voters     =  new ArrayList<Object[]>();
 				List<?> votersList1 = userVoterDetailsDAO.getVotersDetailsByHamletPublication(voterDataVO.getId(), userId,voterDataVO.getStartIndex().intValue(),voterDataVO.getMaxIndex().intValue(),voterDataVO.getDir(),voterDataVO.getSort());
 				voters     =  (List<Object[]>) userVoterDetailsDAO.getVotersBasedOnVoterIdsAndPublication(voterDataVO.getPublicationId(),votersList1,voterDataVO.getSort(),voterDataVO.getDir());
 				totalCount =  (Long) userVoterDetailsDAO.getVotersCountByHamlet(voterDataVO.getId(),userId).get(0);
-			}
+		*/	}
 			
 			else if(voterDataVO.getBuildType().equalsIgnoreCase("customWard"))
 			{
 				
 				
-				voters = boothPublicationVoterDAO
+				/*voters = boothPublicationVoterDAO
 							.getVotersDetailsByCustomWardId(voterDataVO.getId(),voterDataVO.getPublicationId(),voterDataVO.getConstituencyId(),userId,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue(), voterDataVO.getDir(), voterDataVO.getSort());
-				 totalCount=new Long(voters.size());
+				 totalCount=new Long(voters.size());*/
+				voterData =  voterReportService.getVoterDataForWard(voterDataVO , userId , categories ,voterDataVO.getSearchColumnName(), voterDataVO.getSearchString());
+				return voterData;
 			}
 			
 			List<Long> voterIdsList = new ArrayList<Long>(0);
