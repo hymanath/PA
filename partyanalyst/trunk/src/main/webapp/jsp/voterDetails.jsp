@@ -200,7 +200,7 @@
 
 </div>
 
-<c:if test="${maintype == 'booth' || maintype == 'panchayat'}">
+<c:if test="${maintype == 'booth' || maintype == 'panchayat' || maintype == 'customWard' || maintype == 'hamlet'}">
 <div style="float:right;margin-top:25px;">
 	Search By:<select id="searchTypeId" onchange="$('#searchValue').val('');">
 	    <option value="serial_no">S NO</option>
