@@ -4059,7 +4059,7 @@ public class VoterReportService implements IVoterReportService{
 				else if(searchColumn.equalsIgnoreCase("cast"))
 					str.append("and c.caste_name like '%"+searchString+"%'");
 				else if(searchColumn.equalsIgnoreCase("age"))
-					str.append("and c.caste_name = "+searchString);
+					str.append("and v.age = "+searchString);
 				else 
 					str.append("and uvcu"+searchColumn+".category_value"+"='"+searchString+"'");
 				
@@ -4070,4 +4070,153 @@ public class VoterReportService implements IVoterReportService{
 			}
 			return str;
 		}
+		
+		/**
+	       * This method is used to get voter details of a panchayat
+	       * @param voterDataVO 
+	       * @param userId
+	       * @param categories
+	       * @param searchColumn
+	       * @param searchString
+	       * @return List<VoterVO>
+	       */
+		  public List<VoterVO> getVoterDataForHamlet(VoterDataVO voterDataVO , Long userId , List<Long> categories ,String searchColumn,String searchString)
+			{
+				LOG.debug("Enterd into the getVoterDataForHamlet service method ");
+
+				List<VoterVO> voterData = new ArrayList<VoterVO>();
+				List<Object[]> voters = null;
+				VoterVO voterVO = null;
+				List<Long> voterIds = new ArrayList<Long>();
+				Long totalCount = 0l;
+				Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
+				try {
+					
+					    StringBuffer str = prepareQueryForSearchCriteria(searchColumn , searchString);
+						
+						StringBuffer queryForCategories = new StringBuffer();
+						StringBuffer queryForselect = new StringBuffer();
+						
+					   // prepareQueryForCategories(categories, queryForCategories, queryForselect);
+					    
+					    for(Long categoryId:categories)
+						{
+							queryForCategories.append("LEFT JOIN (voter_category_value vcu"+categoryId+" JOIN user_voter_category_value uvcu"+categoryId+" on uvcu"+categoryId+".user_voter_category_value_id = vcu"+categoryId+".user_voter_category_value_id and uvcu"+categoryId+".user_voter_category_id = "+categoryId+")on uvd.voter_id = vcu"+categoryId+".voter_id  ");
+							queryForselect.append(" , uvcu"+categoryId+".user_voter_category_id as category"+categoryId+",uvcu"+categoryId+".category_value as value"+categoryId+" ");
+						}
+					
+						voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForHamletByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
+						List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForHamletByPublicationId(userId,voterDataVO.getId(), voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
+					
+						totalCount = ((BigInteger)countList.get(0)).longValue();
+						//totalCount = 316L;
+					
+					if(voters != null && voters.size() > 0)
+					{
+						for (Object[] voterDetails : voters) {
+							
+							voterVO = new VoterVO();
+							voterVO.setVoterIds(Long.parseLong(voterDetails[0].toString()));
+							voterVO.setVoterId(voterDetails[1].toString());
+							voterVO.setName(voterDetails[2].toString());
+							voterVO.setHouseNo(voterDetails[3].toString());
+							voterVO.setRelativeFirstName(voterDetails[4].toString());
+							voterVO.setGender(voterDetails[5].toString());
+							voterVO.setAge(Long.parseLong(voterDetails[6].toString()));
+							voterVO.setPartNo(Long.valueOf(voterDetails[7].toString()));
+							voterVO.setSerialNo(Long.parseLong(voterDetails[11].toString()));
+
+							if(voterDetails[12] != null)
+							   voterVO.setMobileNo(voterDetails[12].toString());
+							else
+								voterVO.setMobileNo("N/A");
+							
+							voterVO.setTotalVoters(totalCount);
+							voterIds.add(Long.parseLong(voterDetails[0].toString()));
+							voterMap.put(Long.parseLong(voterDetails[0].toString()), voterVO);
+							voterData.add(voterVO);
+						}
+					}
+					
+					if(voterIds != null && voterIds.size() >0)
+					 getInfuelcePeopleAndCadreDetails(voterIds,userId,voterMap);
+					
+					getCastePartyAndCategoriesDetails(voters, categories, voterMap);
+					
+				} catch (Exception e) {
+					LOG.error("Exception raised in  getVoterDataForHamlet service method " , e) ;
+					e.printStackTrace();
+				}
+				return voterData;
+			}
+		  
+		  public List<VoterVO> getVoterDataForWard(VoterDataVO voterDataVO , Long userId , List<Long> categories ,String searchColumn,String searchString)
+			{
+				LOG.debug("Enterd into the getVoterDataForWard service method ");
+
+				List<VoterVO> voterData = new ArrayList<VoterVO>();
+				List<Object[]> voters = null;
+				VoterVO voterVO = null;
+				List<Long> voterIds = new ArrayList<Long>();
+				Long totalCount = 0l;
+				Map<Long , VoterVO> voterMap = new HashMap<Long, VoterVO>();
+				try {
+					
+					    StringBuffer str = prepareQueryForSearchCriteria(searchColumn , searchString);
+						
+						StringBuffer queryForCategories = new StringBuffer();
+						StringBuffer queryForselect = new StringBuffer();
+						
+					   // prepareQueryForCategories(categories, queryForCategories, queryForselect);
+					    
+					    for(Long categoryId:categories)
+						{
+							queryForCategories.append(" LEFT JOIN (voter_category_value vcu"+categoryId+" JOIN user_voter_category_value uvcu"+categoryId+" on uvcu"+categoryId+".user_voter_category_value_id = vcu"+categoryId+".user_voter_category_value_id and uvcu"+categoryId+".user_voter_category_id = "+categoryId+")on uvd.voter_id = vcu"+categoryId+".voter_id  ");
+							queryForselect.append(" , uvcu"+categoryId+".user_voter_category_id as category"+categoryId+",uvcu"+categoryId+".category_value as value"+categoryId+" ");
+						}
+					
+						voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForWardByPublicationId(voterDataVO.getId(),userId,voterDataVO.getConstituencyId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
+						List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForWardByPublicationId(voterDataVO.getId(),userId,voterDataVO.getConstituencyId(), voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
+					
+						totalCount = ((BigInteger)countList.get(0)).longValue();
+						//totalCount = 316L;
+					
+					if(voters != null && voters.size() > 0)
+					{
+						for (Object[] voterDetails : voters) {
+							
+							voterVO = new VoterVO();
+							voterVO.setVoterIds(Long.parseLong(voterDetails[0].toString()));
+							voterVO.setVoterId(voterDetails[1].toString());
+							voterVO.setName(voterDetails[2].toString());
+							voterVO.setHouseNo(voterDetails[3].toString());
+							voterVO.setRelativeFirstName(voterDetails[4].toString());
+							voterVO.setGender(voterDetails[5].toString());
+							voterVO.setAge(Long.parseLong(voterDetails[6].toString()));
+							voterVO.setPartNo(Long.valueOf(voterDetails[7].toString()));
+							voterVO.setSerialNo(Long.parseLong(voterDetails[11].toString()));
+
+							if(voterDetails[12] != null)
+							   voterVO.setMobileNo(voterDetails[12].toString());
+							else
+								voterVO.setMobileNo("N/A");
+							
+							voterVO.setTotalVoters(totalCount);
+							voterIds.add(Long.parseLong(voterDetails[0].toString()));
+							voterMap.put(Long.parseLong(voterDetails[0].toString()), voterVO);
+							voterData.add(voterVO);
+						}
+					}
+					
+					if(voterIds != null && voterIds.size() >0)
+					 getInfuelcePeopleAndCadreDetails(voterIds,userId,voterMap);
+					
+					getCastePartyAndCategoriesDetails(voters, categories, voterMap);
+					
+				} catch (Exception e) {
+					LOG.error("Exception raised in  getVoterDataForWard service method " , e) ;
+					e.printStackTrace();
+				}
+				return voterData;
+			}
 }

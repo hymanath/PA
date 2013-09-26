@@ -451,4 +451,15 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId);
 	  public List<Object[]> getVotersDetailsAndCountDetailsByBoothId(Long userId , Long boothId, Integer startIndex,
 				Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount);
+	  
+	  
+	public List<Object[]> getVotersDetailsAnCountDetailsForHamletByPublicationId(
+			Long userId , Long hamletId, Long publicationdateId, int startIndex,
+			int maxIndex, String direction, String columnName, String queryStr,
+			String queryForCategories, String queryForselect, boolean isCount);
+	
+	public List getVotersDetailsAnCountDetailsForWardByPublicationId(Long wardId,Long userId,Long constituencyId,Long publicationId,int startIndex,int  maxIndex,String order,String columnName,String queryStr,
+			String queryForCategories, String queryForselect, boolean isCount);
+	
+
 }
