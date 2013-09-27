@@ -1015,7 +1015,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 		  return getHibernateTemplate().find("select distinct model.booth.tehsil.district.state.stateId from BoothPublicationVoter model where model.voter.voterId =? ",voterId);
 	  }
 	  
-	  public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString) {
+	  /*public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString) {
 			
 			 Query query = getSession().createQuery("select model.voter,model.booth.boothId,model.booth.partNo,model.serialNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
 	 			  query.setParameter("publicationDateId", publicationDateId);
@@ -1024,17 +1024,37 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	 			query.setFirstResult(startRecord);
 	 			query.setMaxResults(maxRecords);
 	 			return query.list();
+		}*/
+	  public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString,String locationType,List<Long> boothIds) {
+			
+			 Query query = getSession().createQuery("select model.voter,model.booth.boothId,model.booth.partNo,model.serialNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
+	 			  query.setParameter("publicationDateId", publicationDateId);
+	 			  if(locationType.equalsIgnoreCase("panchayat") && boothIds != null && boothIds.size() >0)
+	 				 query.setParameterList("id", boothIds);
+	 			  else if(id != 0l)
+	 				query.setParameter("id", id);
+	 			query.setFirstResult(startRecord);
+	 			query.setMaxResults(maxRecords);
+	 			return query.list();
 		}
-	  
-	  public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString) {
+	  /*public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString) {
 			
 			 Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
 	 			  query.setParameter("publicationDateId", publicationDateId);
 	 			 if(id != 0l)
 	 			  query.setParameter("id", id);
 	 			return query.list();
+		}*/
+	  public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString,List<Long> boothIds,String locationType) {
+			
+			 Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
+	 			  query.setParameter("publicationDateId", publicationDateId);
+	 			 if(locationType.equalsIgnoreCase("panchayat") && boothIds != null && boothIds.size()>0 )
+	 				query.setParameterList("id", boothIds);
+	 			 else if(id != 0l)
+	 				 query.setParameter("id", id);
+	 			return query.list();
 		}
-	  
 	  public List<Object[]> getCastWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 		{
 			StringBuilder str = new StringBuilder();
@@ -5223,4 +5243,20 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		  return query.list();
 			  
 		  }
+		 public List<Object[]>  getHamletsForPartialBooth(Long boothId){
+				
+				Query query = getSession().createSQLQuery("select distinct h.hamlet_id,h.hamlet_name from partial_booth_panchayat pbp,panchayat_hamlet ph,hamlet h where " +
+						" pbp.booth_id = :boothId and pbp.panchayat_id = ph.panchayat_id and ph.hamlet_id = h.hamlet_id") ;
+				query.setParameter("boothId", boothId);
+				
+			     return query.list();
+			}
+		 public List<Object[]> getPartialBoothHamlets(Long panchayatId,Long publicationId){
+			 
+				Query query = getSession().createQuery("select distinct ph.hamlet.hamletId, ph.hamlet.hamletName from PanchayatHamlet ph,PartialBoothPanchayat pbp where pbp.booth.panchayat.panchayatId = :panchayatId " +
+						" and pbp.booth.publicationDate.publicationDateId = :publicationId and pbp.panchayat.panchayatId = ph.panchayat.panchayatId ");
+				query.setParameter("panchayatId", panchayatId);
+				query.setParameter("publicationId", publicationId);
+				return query.list();
+			}
 }

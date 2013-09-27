@@ -16,11 +16,12 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PartialBoothPanchayat> getPartialBoothPanchayatDetailsByPanchayatId(Long panchayatId) {
-		String queryString = " from PartialBoothPanchayat model where model.panchayat.panchayatId = :panchayatId  " ;
+	public List<Long> getPartialBoothPanchayatDetailsByPanchayatId(Long panchayatId,Long publicationDateId) {
+		String queryString = "select distinct(model.booth.boothId) from PartialBoothPanchayat model where model.panchayat.panchayatId = :panchayatId  and model.booth.publicationDate.publicationDateId = :publicationDateId" ;
 				//" and model.booth.isPartial like '%y%'";
 		Query query = getSession().createQuery(queryString);
 		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("publicationDateId", publicationDateId);
 	return query.list();
 	}
 }
