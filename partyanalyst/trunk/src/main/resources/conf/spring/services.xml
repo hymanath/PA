@@ -1489,6 +1489,7 @@
 		<property name="userAddressDAO" ref="userAddressDAO"></property>
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"></property>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"></property>
+		<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"></property>
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
