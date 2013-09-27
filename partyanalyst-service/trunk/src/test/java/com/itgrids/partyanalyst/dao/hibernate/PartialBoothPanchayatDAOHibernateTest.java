@@ -21,12 +21,6 @@ public class PartialBoothPanchayatDAOHibernateTest extends BaseDaoTestCase{
 		this.partialBoothPanchayatDAO = partialBoothPanchayatDAO;
 	}
 	
-	public void testgetPartialBoothPanchayatDetailsByPanchayatId(){
-		List<PartialBoothPanchayat> list1 = new ArrayList<PartialBoothPanchayat>();
-		System.out.println("hyderabad");
-		list1 = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatId(3282L);
-		System.out.println(list1.size());
-		System.out.println(list1);
-	}
+	
 	
 }

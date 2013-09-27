@@ -104,7 +104,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
-	public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString);
+	public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString,String locationType,List<Long> boothIds);
 	
 	public List<Object[]> getCastWiseCount(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	 
@@ -112,7 +112,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	public List<Object[]> getParties(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
-	public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString);
+	public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString,List<Long> boothIds,String locationType);
 	
 	 public List<Object[]> getConstituencies();
 	 
@@ -461,5 +461,7 @@ public interface IBoothPublicationVoterDAO extends
 	public List getVotersDetailsAnCountDetailsForWardByPublicationId(Long wardId,Long userId,Long constituencyId,Long publicationId,int startIndex,int  maxIndex,String order,String columnName,String queryStr,
 			String queryForCategories, String queryForselect, boolean isCount);
 	
-
+	public List<Object[]>  getHamletsForPartialBooth(Long boothId);
+	
+	public List<Object[]> getPartialBoothHamlets(Long panchayatId,Long publicationId);
 }

@@ -8,6 +8,6 @@ import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 
 public interface IPartialBoothPanchayatDAO extends 
 					GenericDao<PartialBoothPanchayat,Long>{
-	public List<PartialBoothPanchayat> getPartialBoothPanchayatDetailsByPanchayatId(Long PanchayatId);
+	public List<Long> getPartialBoothPanchayatDetailsByPanchayatId(Long PanchayatId,Long publicationDateId);
 
 }
