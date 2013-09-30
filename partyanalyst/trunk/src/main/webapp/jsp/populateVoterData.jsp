@@ -131,6 +131,8 @@ fieldset{
 		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="ajaxLoad"><img src="images/icons/search.gif" /></span>
 	<span style="width:40px;">
 	 <input type="checkbox" id="voterInfoHamletChecked" value="Hamlet" style="margin-top:-5px;"> Hamlet
+
+	 <input type="checkbox" id="voterInfoHamletBoothChecked" value="Hamlet Booth" style="margin-top:-5px;"> Hamlet Booth
 	</span>
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="voterDataInsertBtn" />
@@ -459,6 +461,7 @@ $(document).ready(function(){
 	});
 	$("#voterDataInsertBtn").click(function(){
 		var hamletChecked= $("#voterInfoHamletChecked").is(':checked');
+		var hamletBoothChecked = $("#voterInfoHamletBoothChecked").is(':checked');
 		var constituencyId = $("#voterDataConstituencyList").val(); 
 		var publicationDateId = $("#publicationDateList").val();
 		if(constituencyId == 0)
@@ -480,6 +483,7 @@ $(document).ready(function(){
 		  id				  :constituencyId,
 		  publicationDateId : publicationDateId,
 			hamletChecked:hamletChecked,
+			hamletBoothChecked:hamletBoothChecked,
 		  task:"insertVotersData"
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
