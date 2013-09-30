@@ -2206,7 +2206,7 @@ IUserVoterDetailsDAO{
 	public List<Object[]> getVoterAgeDetailsForHamlet(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,Long userId)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append(" select count(distinct model.voter.voterId),model.voter.gender,model.voterAgeRange.voterAgeRangeId,model2.hamlet.hamletId");
+		str.append(" select count(distinct model.voter.voterId),model.voter.gender,model.voter.voterAgeRange.voterAgeRangeId,model2.hamlet.hamletId");
 		str.append(" from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and " +
 				" model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId ");
 		str.append(" and model2.hamlet.hamletId in(:locationIdsList) group by model2.hamlet.hamletId,model.voter.voterAgeRange.voterAgeRangeId,model.voter.gender ");
