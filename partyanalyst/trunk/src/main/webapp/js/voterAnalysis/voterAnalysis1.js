@@ -889,7 +889,6 @@ function addToPolitician(voterId,name)
 	
 	function getAllTabs(id,publicationId,type){
 
-
        if(type == "constituency")
 	      $('#tabContainer1').hide();
        // alert(type +'---'+muncipalityType+'----'+myCorpType);
@@ -1928,6 +1927,7 @@ function addToPolitician(voterId,name)
 								else if(jsObj.task == "getCensusDetails")
 								{
 									showCensusReportInALocation(myResults,jsObj);
+								$("#partialBoothMainDiv").css("display","none");	//getPartialBoothDetails(jsObj.constituencyId,$("#publicationDateList").val(),jsObj.constituencyId,"constituency");
 								}
 								else if(jsObj.task == "getCustomVoterGroupsForMuncipality"){
 							    $('#voterGroupMuncipalityAjaxImage').hide();
@@ -1938,7 +1938,10 @@ function addToPolitician(voterId,name)
 									buildCustomVoterGroups1(myResults,jsObj);								
 	                                 $('#voterGroupMandalAjaxImage').hide();
 								}
-
+								else if(jsObj.task == "getPartialBoothDetails")
+								{
+								buildPartialBoothDetails(myResults);
+								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -6769,6 +6772,8 @@ getAllTabs(mandalid,$("#publicationDateList").val(),'mandal');
 showHideNewsProblems();
 //getvotersSubBasicInfo(mandalid,"mandal-name","mandal");
 //showSubNewsDetails(mandalid,"Mandal");
+
+getPartialBoothDetails(mandalid,$("#publicationDateList").val(),$("#constituencyList").val(),'mandal');
 });
 
 //// Municipalities CLICKED
@@ -6815,6 +6820,8 @@ getAllTabs(panchayatid,$("#publicationDateList").val(),'panchayat');
 //buildVotersByPanchayatDataTable(panchayatid);
 
 showHideNewsProblems();
+
+getPartialBoothDetails(panchayatid,$("#publicationDateList").val(),$("#constituencyList").val(),'panchayat');
 });
 //wardclicked
 $("#middleNav-Wards-list a .checkbox").live("click",function(){
@@ -6861,10 +6868,13 @@ getAllTabs(boothid,$("#publicationDateList").val(),'booth');
 //getvotersSubBasicInfo(boothid,"booth-name","booth");
 //buildVotersByBoothDataTable(boothid);
 showHideNewsProblems();
+
 });
 $("#rightNav-Booths-list2 a .checkbox").live("click",function(){
 buildForBooths(this);
 showHideNewsProblems();
+boothid = $(this).closest("a").attr("data-boothid");
+getPartialBoothDetails(boothid,$("#publicationDateList").val(),$("#constituencyList").val(),'booth');
 });
 //hamlets clicked
 $("#rightNav-Booths-list1 a .checkbox").live("click",function(){
@@ -9931,4 +9941,42 @@ function showVotersGroupsDetails(votergroupid)
 var urlStr="customVoterGroupAnalysisAction.action?customVoterGroupId="+votergroupid+"&type=customVoterGroup&publicationDateId=8";
 	var updateBrowser = window.open(urlStr,"votersInfo","scrollbars=yes,height=600,width=850,left=200,top=200");	
 	updateBrowser.focus();	
+}
+
+function getPartialBoothDetails(id,publicationId,constituencyId,type){
+	
+var panchayatid=$("#rightNav-Booths-list2 a .checkbox").closest("a").attr("data-panchayatid");
+if(type == "booth" || type == "boothHamlets")
+constituencyId = panchayatid;
+
+	  var jsObj=
+	  {
+		id:id,
+        publicationId:publicationId,
+        constituencyId: constituencyId,
+		type:type,
+		task:"getPartialBoothDetails"
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartialBoothDetailsAction.action?"+rparam;
+
+	callAjax(jsObj,url);
+}
+
+function buildPartialBoothDetails(results){
+
+	$("#partialBoothDiv").html('');
+	if(results.length == 0)
+	{
+		$("#partialBoothMainDiv").css("display","none");
+		return;
+	}
+	$("#partialBoothMainDiv").css("display","block");
+
+var str='';
+str+='<h4>Information in '+mainname+' </h4>';
+	for(var i in results){
+		str+='<div>'+results[i].url+'</div>';
+	}
+$("#partialBoothDiv").html(str);
 }
