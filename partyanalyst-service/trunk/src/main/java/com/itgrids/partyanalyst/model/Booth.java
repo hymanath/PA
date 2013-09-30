@@ -57,6 +57,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	
 	private Constituency localBodyWard;
 	private String isPartial;
+	private Set<HamletBooth> hamletBooths = new HashSet<HamletBooth>(0);
 	
 	/** default constructor */
 	public Booth() {
@@ -325,6 +326,15 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setIsPartial(String isPartial) {
 		this.isPartial = isPartial;
+	}
+    
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "booth")
+	public Set<HamletBooth> getHamletBooths() {
+		return hamletBooths;
+	}
+
+	public void setHamletBooths(Set<HamletBooth> hamletBooths) {
+		this.hamletBooths = hamletBooths;
 	}
 	
 	
