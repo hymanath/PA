@@ -470,4 +470,7 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]>  getHamletsForPartialBooth(Long boothId);
 	
 	public List<Object[]> getPartialBoothHamlets(Long panchayatId,Long publicationId);
+	
+	public List<Object[]> getBoothAndHamletIdsByConstituencyId(Long constituencyId,Long publicationDateId,Long userId);
+	  
 }
