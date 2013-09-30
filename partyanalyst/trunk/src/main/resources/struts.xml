@@ -6049,5 +6049,12 @@
 		  <param name="root">userBlockedRequestsList</param>
 		 </result>
 		</action>
+		
+		<action name="getPartialBoothDetailsAction" class="votersAnalysisAction" method="getPartialBoothDetails">
+			<result type="json" name="success">
+			 <param name="root">partialBoothList</param>
+			</result>
+		</action>
+		
 		</package>
 </struts>      
