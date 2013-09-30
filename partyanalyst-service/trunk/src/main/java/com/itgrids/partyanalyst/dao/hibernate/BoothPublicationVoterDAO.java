@@ -5330,4 +5330,17 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		}
 		 
 
+	public List<Object[]> getBoothAndHamletIdsByConstituencyId(Long constituencyId,Long publicationDateId,Long userId)
+	{
+		Query query = getSession().createQuery("select model.booth.boothId,model2.hamlet.hamletId from BoothPublicationVoter model,UserVoterDetails model2 " +
+				" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId " +
+				" and model2.user.userId =:userId and model2.hamlet is not null group by model.booth.boothId ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+
 }
