@@ -186,7 +186,7 @@ var selectedVotersNewArr = new Array();
 			 $('.allFieldsUnCheck').attr('checked',false);
 
 			  $('.fields').each(function(index,value){
-				 $(this).attr('disabled',true);
+				// $(this).attr('disabled',true);
 				 $(this).attr('checked',true);
 				 $(this).trigger('change')
 			  });
@@ -350,7 +350,7 @@ function buildSelectedVotersData(results)
 
 		str+='<label class="labelClass"><input type="checkbox" value="Party" class="fields" checked="true" style="margin:0px;"/>&nbsp;Party</label>';
 
-		str+='<label class="labelClass"><input type="checkbox"  class="fields" checked="true" style="margin:0px;"/>&nbsp;Voter Group</label>';
+		str+='<label class="labelClass"><input type="checkbox"  class="fields" checked="true" style="margin:0px;" value="Voter Group"/>&nbsp;Voter Group</label>';
 
 
 
