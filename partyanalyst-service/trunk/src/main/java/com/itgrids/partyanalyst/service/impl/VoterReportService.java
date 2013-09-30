@@ -33,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IQueryTempDAO;
@@ -81,6 +82,7 @@ import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.QueryTemp;
 import com.itgrids.partyanalyst.model.State;
@@ -146,6 +148,18 @@ public class VoterReportService implements IVoterReportService{
 	private IInfluencingPeopleDAO influencingPeopleDAO;
 	private ICadreDAO cadreDAO;
 	private ICandidateDAO candidateDAO;
+    private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+    
+    
+    public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
+		return partialBoothPanchayatDAO;
+	}
+
+	public void setPartialBoothPanchayatDAO(
+			IPartialBoothPanchayatDAO partialBoothPanchayatDAO) {
+		this.partialBoothPanchayatDAO = partialBoothPanchayatDAO;
+	}
+    
 	
 	
 	
@@ -3294,15 +3308,15 @@ public class VoterReportService implements IVoterReportService{
 			 VotersInfoForMandalVO votersInfoForMandalVO = null;
 			try{
 				if(locationType.equalsIgnoreCase(IConstants.CONSTITUENCY))
-					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,0l ,locationType);
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,0l ,locationType,userId);
 				else if(locationType.equalsIgnoreCase(IConstants.MANDAL))
-					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,Long.valueOf(IConstants.RURAL_TYPE+locationValue.toString()), 0l,0l ,locationType);
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,Long.valueOf(IConstants.RURAL_TYPE+locationValue.toString()), 0l,0l ,locationType,userId);
 				else if(locationType.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
-					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,locationValue, 0l,0l ,IConstants.MANDAL);
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,locationValue, 0l,0l ,IConstants.MANDAL,userId);
 				else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT))
-					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, locationValue,0l ,locationType);
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, locationValue,0l ,locationType,userId);
 				else if(locationType.equalsIgnoreCase(IConstants.BOOTH))
-					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,locationValue ,locationType);
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l, 0l,locationValue ,locationType,userId);
 				else if(locationType.equalsIgnoreCase(IConstants.WARD))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,locationValue,userId ,IConstants.CUSTOMWARD);
 				else if(locationType.equalsIgnoreCase(IConstants.HAMLET))
@@ -3852,8 +3866,31 @@ public class VoterReportService implements IVoterReportService{
 				  
 					voters  = new ArrayList<Object[]>();
 					
-					voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false);
-					List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true);
+					
+				List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(voterDataVO.getId(), voterDataVO.getPublicationId());
+
+					
+				List<Long> partialBoothIds = new ArrayList<Long>();
+				List<Long> boothIds = new ArrayList<Long>();
+				
+				if(list != null && list.size() >0)
+					for(PartialBoothPanchayat partialPanchayat:list)
+						partialBoothIds.add(partialPanchayat.getBooth().getBoothId());
+				
+				List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(voterDataVO.getId(),voterDataVO.getPublicationId());
+				
+				if(boothsList.size() >0)
+					for(Object[] obj:boothsList)
+						boothIds.add((Long)obj[0]);
+				
+				if(partialBoothIds.size() >0)
+					for(Long id:partialBoothIds)
+						if(!boothIds.contains(id))
+							boothIds.add(id);
+					
+					
+					voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false,boothIds);
+					List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true,boothIds);
 					
 					totalCount = ((BigInteger)countList.get(0)).longValue();
 				}

@@ -28,7 +28,7 @@ public interface IBoothPublicationVoterDAO extends
 	
 	  public List<Object[]> getVotersDetailsAnCountDetailsForPanchayatByPublicationId(
 				Long userId , Long panchayatId, Long publicationDateId, Integer startIndex,
-				Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount);
+				Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount,List<Long> boothIds);
 	
 	public List getVotersCountByBoothId(Long boothId);
 	public List getVotersCountForPanchayat(Long panchayatId,Long publicationDateId);
@@ -461,6 +461,12 @@ public interface IBoothPublicationVoterDAO extends
 	public List getVotersDetailsAnCountDetailsForWardByPublicationId(Long wardId,Long userId,Long constituencyId,Long publicationId,int startIndex,int  maxIndex,String order,String columnName,String queryStr,
 			String queryForCategories, String queryForselect, boolean isCount);
 	
+    public List<Object[]> getVotersCountForPanchayatByPublicationIdAndHamlet(Long panchayatId,Long publicationDateId,Long userId);
+	public List<Object[]> getPartyAndGenderWiseVotersCountByPublicationIdInAndPanchayatWithHamlets(Long userId , Long panchayatId ,Long publicationDateId);
+    public List<Object[]> getPartyWiseCountForPanchayatByHamlets(Long userId,Long locationId,Long publicationDateId);
+	public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationIdInHamlets(Long panchayatId,Long publicationDateId,Long startAge,Long endAge ,Long userId);
+
+
 	public List<Object[]>  getHamletsForPartialBooth(Long boothId);
 	
 	public List<Object[]> getPartialBoothHamlets(Long panchayatId,Long publicationId);

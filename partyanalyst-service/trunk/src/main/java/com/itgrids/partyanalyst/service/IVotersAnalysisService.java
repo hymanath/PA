@@ -42,7 +42,7 @@ public interface IVotersAnalysisService {
 	public  List<VoterCastInfoVO> getVotersCastDetailsForSubLevels(Long id,Long publicationDateId,String type,Long userId,Long constituencyId,String buildType,String queryType);
 	
 	public List<VotersDetailsVO> getVotersDetailsByAgewise(Long constituencyId, Long tehsilId,Long panchayatId,Long boothId,
-			 Long publicationDateId , String type);
+			 Long publicationDateId , String type,Long userId);
 	public ImportantFamiliesInfoVo getImportantFamiliesInfo(Long userId,String type,Long id,Long publicationDateId,Long constituencyId ,String resultFor,String buildType);
 	
 	//public List<VoterHouseInfoVO> getVoterHouseInfoDetails(Long id, Long publicationDateId,String checkedEle);
@@ -52,10 +52,10 @@ public interface IVotersAnalysisService {
 	
 	public VoterHouseInfoVO getBoothDetailsForVoter(Long boothId);
 
-	public List<VotersDetailsVO>  getAgewiseVotersDetailsForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId);
-	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByPanchayatId(Long panchayatId,Long publicationDateId);
-	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(Long localElectionBodyId,Long publicationDateId);
-	public List<VotersDetailsVO> getAgewiseVotersDetailsForTehsilsByConstituencyId(Long constituencyId,Long publicationDateId);
+	public List<VotersDetailsVO>  getAgewiseVotersDetailsForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId,Long userId);
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByPanchayatId(Long panchayatId,Long publicationDateId,Long userId);
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForBoothsByLocalElectionBodyId(Long localElectionBodyId,Long publicationDateId,Long userId);
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForTehsilsByConstituencyId(Long constituencyId,Long publicationDateId,Long userId);
 	
     //public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,String caste);
 	public List<VoterHouseInfoVO> getVoterDetailsByCaste(Long id,Long publicationDateId,Long casteStateId,String type,String buildType,Long userId,Long hamletId,Long constituencyId);
@@ -123,7 +123,7 @@ public interface IVotersAnalysisService {
 	//public List<VoterVO> getAllElectionAndPublicationsForConstituencyId(Long constituencyId);
 	
 	public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
-			 Long constituencyId,Long mandalId, Long panchayatId, Long boothId , String type);
+			 Long constituencyId,Long mandalId, Long panchayatId, Long boothId , String type,Long userId);
 	
 	public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked);
 	
@@ -155,7 +155,7 @@ public interface IVotersAnalysisService {
 		
 	public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long publicationDateId,Long constituencyId);
 	
-	public List<VotersDetailsVO> getAgewiseVotersDetailsForWardsByLocalElectionBodyId(Long assemblyLocalBodyId,Long publicationDateId,Long constituencyId);
+	public List<VotersDetailsVO> getAgewiseVotersDetailsForWardsByLocalElectionBodyId(Long assemblyLocalBodyId,Long publicationDateId,Long constituencyId,Long userId);
 	
 	public VoterCastInfoVO getCastWisePartyCount(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId);
 	
