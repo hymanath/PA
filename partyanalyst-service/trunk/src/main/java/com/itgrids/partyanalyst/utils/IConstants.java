@@ -660,5 +660,7 @@ public interface IConstants {
     public static final String TEXT_SMS_TYPE = "Text Sms";
     
     public static final String DEMO_REQUEST_ACTIONS = "Email,Phone Call,SMS";
+    
+    public static final String Hamlet_Booth = "HamletBooth";
 	
 }

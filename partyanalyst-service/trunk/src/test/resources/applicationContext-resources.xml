@@ -375,6 +375,7 @@
 				<value>com.itgrids.partyanalyst.model.DemoRequest</value>	
 				<value>com.itgrids.partyanalyst.model.DemoRequestActions</value>
 				<value>com.itgrids.partyanalyst.model.PartialBoothPanchayat</value>
+				<value>com.itgrids.partyanalyst.model.HamletBooth</value>
 			</list>
 		</property>
 	</bean>
@@ -1932,6 +1933,10 @@
    </bean>
    
     <bean id="partialBoothPanchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartialBoothPanchayatDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="hamletBoothDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
