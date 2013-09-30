@@ -1378,6 +1378,11 @@ for  body3 start    result  -->
 <div id='votersHeaderDiv3' class="widget green" style="display:none;">
 	<div class="votersWidgetMainHeader"><span id="votersTitle-unused" class="votersWidgetHeader_span"> </span></div>
 	</div>
+
+<div id="partialBoothMainDiv" class="widget blue whitegloss" style="display:none;">
+	  <div id="partialBoothDiv"></div>
+	</div>
+
 <div id="votersBasicInfoBtnDiv"> 
 	<span></span>
 	<span value="Mandal Wise Voters Info" id="votersShareBtn1"></span>
