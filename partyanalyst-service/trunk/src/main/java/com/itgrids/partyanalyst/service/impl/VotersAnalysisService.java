@@ -18478,5 +18478,24 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  return resultStatus;
 	}
  }
- 
+ public List<SelectOptionVO> getPartialBoothDetails(Long id,Long publicationId,Long constituencyId,String type){
+	 List<SelectOptionVO> partialBoothList = new ArrayList<SelectOptionVO>();
+	 List<String> values = null;
+	 
+	 if(type.equalsIgnoreCase("mandal")){
+		 id = new Long(id.toString().substring(1));
+		values = boothDAO.getDescriptionForMandalLevel(id,publicationId);
+	 }else if(type.equalsIgnoreCase("panchayat")){
+		values = boothDAO.getDescriptionForPanchayatLevel(id,publicationId);
+	 } else if(type.equalsIgnoreCase("booth") || type.equalsIgnoreCase("boothHamlets")){
+		 values = boothDAO.getDescriptionForBoothLevel(constituencyId,id);
+	 }
+	 
+	 for(String param:values){
+		 SelectOptionVO selectOptionVO = new SelectOptionVO();
+		 selectOptionVO.setUrl(param);
+		 partialBoothList.add(selectOptionVO);
+	 }
+	 return partialBoothList;
+ }
 }
