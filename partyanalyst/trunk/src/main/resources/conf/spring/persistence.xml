@@ -356,7 +356,7 @@
 				<value>com.itgrids.partyanalyst.model.DemoRequest</value>
 				<value>com.itgrids.partyanalyst.model.DemoRequestActions</value>				
 				<value>com.itgrids.partyanalyst.model.PartialBoothPanchayat</value>		
-				
+				<value>com.itgrids.partyanalyst.model.HamletBooth</value>
 			</list>
 			
 		</property>

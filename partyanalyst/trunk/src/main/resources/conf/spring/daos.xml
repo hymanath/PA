@@ -1242,4 +1242,8 @@
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
+   <bean id="hamletBoothDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
 </beans>		
