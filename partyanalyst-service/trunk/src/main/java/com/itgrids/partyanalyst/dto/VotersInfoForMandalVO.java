@@ -10,8 +10,8 @@ public class VotersInfoForMandalVO implements Serializable, Comparable<VotersInf
 	private String mandalId;
 	private String mandalName;
 	private String totalMaleVoters;
-	private Long maleVoters;
-	private Long femaleVoters;
+	private Long maleVoters = 0L;
+	private Long femaleVoters = 0L;
 	private String totalFemaleVoters;
 	private String totalVoters;
 	private String isPartial;
@@ -48,6 +48,13 @@ public class VotersInfoForMandalVO implements Serializable, Comparable<VotersInf
 	private Long unassignedVotersForLocalBodies;
 	private long publicationVoters;
 	private Integer orderNo;
+	private Long casteStateId;
+	private Long OCVoters = 0L;
+	private Long BCVoters = 0L;
+	private Long SCVoters = 0L;
+	private Long STVoters = 0L;
+	private Long totalCasts = 0L;
+    private Long castAssignedVoters = 0L;	
 	
 	public Integer getOrderNo() {
 		return orderNo;
@@ -391,6 +398,48 @@ public class VotersInfoForMandalVO implements Serializable, Comparable<VotersInf
 		}
 		else
 			return 0;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+	public Long getOCVoters() {
+		return OCVoters;
+	}
+	public void setOCVoters(Long oCVoters) {
+		OCVoters = oCVoters;
+	}
+	public Long getBCVoters() {
+		return BCVoters;
+	}
+	public void setBCVoters(Long bCVoters) {
+		BCVoters = bCVoters;
+	}
+	public Long getSCVoters() {
+		return SCVoters;
+	}
+	public void setSCVoters(Long sCVoters) {
+		SCVoters = sCVoters;
+	}
+	public Long getSTVoters() {
+		return STVoters;
+	}
+	public void setSTVoters(Long sTVoters) {
+		STVoters = sTVoters;
+	}
+	public Long getTotalCasts() {
+		return totalCasts;
+	}
+	public void setTotalCasts(Long totalCasts) {
+		this.totalCasts = totalCasts;
+	}
+	public Long getCastAssignedVoters() {
+		return castAssignedVoters;
+	}
+	public void setCastAssignedVoters(Long castAssignedVoters) {
+		this.castAssignedVoters = castAssignedVoters;
 	}
 	
 	
