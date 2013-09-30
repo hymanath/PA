@@ -301,5 +301,5 @@ public interface IVotersAnalysisService {
 	 
 	 public VoterHouseInfoVO getVoterDetailsForSelectedLocation(VoterHouseInfoVO voterHouseInfoVO,Long locationValue);
 	 
-	 
+	 public List<SelectOptionVO> getPartialBoothDetails(Long id,Long publicationId,Long constituencyId,String type);
 }
