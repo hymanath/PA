@@ -1317,6 +1317,9 @@ function callAjax1(jsObj,url){
 						var value ='';
 
 					$("#"+jsObj.recepientId+"").css("display","none");
+					$("#messagesDiv").html("Unblocked Successfully..").css("color","green");
+					setTimeout(function(){$("#messagesDiv").html("");},3000);
+					
 					}
 					else if(jsObj.task == "getSpecialPages")
 					{
@@ -4784,7 +4787,7 @@ if(results.length == 0){
 	return;
 }
 $("#BlockPeoplePopup").children().remove();
-$("#BlockPeoplePopup").html('');
+$("#BlockPeoplePopup").html('<div id="messagesDiv"></div>');
        for(var i in results){
 		  var imageStr = "pictures/profiles/"+results[i].image;
 		var template = $('.templateDiv');
@@ -4819,7 +4822,7 @@ function unblockRequest(requestId,requestName){
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "updateUserStatusAction.action?"+rparam;		
-	alert(requestName+" request is unblocked.");
+	//alert(requestName+" request is unblocked.");
 	callAjax1(jsObj,url);
 }
 
