@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IHamletBoothDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -120,6 +121,7 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.Hamlet;
+import com.itgrids.partyanalyst.model.HamletBooth;
 import com.itgrids.partyanalyst.model.HamletBoothElection;
 import com.itgrids.partyanalyst.model.HamletBoothPublication;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
@@ -138,6 +140,8 @@ import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
+import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
+import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
@@ -227,7 +231,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IDelimitationConstituencyDAO delimitationConstituencyDAO;
     private IUserAddressDAO userAddressDAO;
     private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
-    
+   private IHamletBoothDAO hamletBoothDAO;
     
     public IUserAddressDAO getUserAddressDAO() {
 		return userAddressDAO;
@@ -708,6 +712,14 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	public void setPartialBoothPanchayatDAO(
 			IPartialBoothPanchayatDAO partialBoothPanchayatDAO) {
 		this.partialBoothPanchayatDAO = partialBoothPanchayatDAO;
+	}
+	
+	public IHamletBoothDAO getHamletBoothDAO() {
+		return hamletBoothDAO;
+	}
+
+	public void setHamletBoothDAO(IHamletBoothDAO hamletBoothDAO) {
+		this.hamletBoothDAO = hamletBoothDAO;
 	}
 
 	//  @Override
@@ -8702,7 +8714,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			}
 		 } 
 	  
-	  public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked)
+	  public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean hamletBoothChecked)
 	  {
 		  log.info(" Entered into insertVotersDataInIntermediateTables() Method, with Values - Report Level Value - "+reportLevelValue+" and Publicarion Date Id - "+publicationDateId);
 		  ResultStatus resultStatus = new ResultStatus();
@@ -8885,6 +8897,9 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  }
 			  }
 			  
+			  //HamletBooth
+			  if(hamletBoothChecked)
+			    getHamletBoothDataByConstituencyIdAndPublicationDateId(reportLevelValue,publicationDateId,userId);
 			  
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			  return resultStatus;
@@ -17912,5 +17927,556 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	}
  }
  
+ 
+ public ResultStatus calculateAndInsertVoterCasteInfoForHamletBooth(Long constituencyId,Long publicationDateId,Long userId,Long reportLevelId)
+ {
+	 ResultStatus resultStatus = new ResultStatus();
+	 try{
+		
+		 List<Object[]> list = hamletBoothDAO.getCasteWiseVoterDetailsForHamletBooth(constituencyId, publicationDateId, userId);
+		 if(list != null && list.size() > 0)
+		 {
+			
+			//voter Cast info
+			List<VotersInfoForMandalVO> votersInfoForMandalVOsList = new ArrayList<VotersInfoForMandalVO>(0);
+			VotersInfoForMandalVO voterCastInfo = null;
+			Map<Long,Long> totalCastMap = new HashMap<Long, Long>(0);
+			
+			for(Object[] params:list)
+			{
+				  voterCastInfo = checkVoterCasteInfoExists((Long)params[4],votersInfoForMandalVOsList); 
+				  if(voterCastInfo == null)
+				  { 
+					  voterCastInfo = new VotersInfoForMandalVO();
+					  voterCastInfo.setReportLevelId(reportLevelId);
+					  voterCastInfo.setReportLevelValue((Long)params[4]);
+					  voterCastInfo.setConstituencyId(constituencyId);
+					  voterCastInfo.setPublicationDateId(publicationDateId);
+					  voterCastInfo.setCasteStateId((Long)params[2]);
+					  votersInfoForMandalVOsList.add(voterCastInfo);
+				  }
+				  
+				  if(params[0] != null && params[0].toString().equalsIgnoreCase(IConstants.MALE))
+					  voterCastInfo.setMaleVoters((Long)params[1]);
+				  else if(params[0] != null && params[0].toString().equalsIgnoreCase(IConstants.FEMALE))
+					  voterCastInfo.setFemaleVoters((Long)params[1]);
+				  
+				  if(voterCastInfo.getTotalVotersDiff() != null)
+					voterCastInfo.setTotalVotersDiff((Long)params[1]);
+				  else
+					voterCastInfo.setTotalVotersDiff(voterCastInfo.getTotalVotersDiff()+(Long)params[1]);
+				  
+				  Long totalCasts = totalCastMap.get((Long)params[4]);
+				  if(totalCasts == null)
+					  totalCastMap.put((Long)params[4], 1L);
+				  else
+					totalCastMap.put((Long)params[4], totalCasts+1);
+				  
+		    }
+			
+			saveVoterCastInfoForHamletBooth(votersInfoForMandalVOsList,userId);
+			
+			//voter cast basic info
+			
+				List<Object[]> totalVotersList = voterInfoDAO.getTotalVotersForHamletBooth(constituencyId, publicationDateId, reportLevelId);
+				Map<Long,Long> totalVotersMap = new HashMap<Long, Long>(0);
+				if(totalVotersList != null && totalVotersList.size() > 0)
+				  for(Object[] params :totalVotersList)
+				   totalVotersMap.put((Long)params[0], (Long)params[1]); 
+			
+			
+			List<VotersInfoForMandalVO> voterCastBasicList = new ArrayList<VotersInfoForMandalVO>(0);
+			VotersInfoForMandalVO infoForMandalVO = null;
+			for(Object[] params:list)
+			{
+				infoForMandalVO = checkVoterCasteInfoExists((Long)params[4], voterCastBasicList);
+				if(infoForMandalVO == null)
+				{
+					infoForMandalVO = new VotersInfoForMandalVO();
+					infoForMandalVO.setReportLevelId(reportLevelId);
+					infoForMandalVO.setReportLevelValue((Long)params[4]);
+					infoForMandalVO.setPublicationDateId(publicationDateId);
+					infoForMandalVO.setConstituencyId(constituencyId);
+					infoForMandalVO.setTotalCasts(totalCastMap.get((Long)params[4]!= null?totalCastMap.get((Long)params[4]):0L));
+					infoForMandalVO.setTotalVotersDiff(totalVotersMap.get((Long)params[4]) != null?totalVotersMap.get((Long)params[4]):0L);
+					voterCastBasicList.add(infoForMandalVO);
+				}
+				if(params[3] != null && params[3].toString().equalsIgnoreCase("OC"))
+				 infoForMandalVO.setOCVoters((Long)params[1]);
+				else if(params[3] != null && params[3].toString().equalsIgnoreCase("BC"))
+				 infoForMandalVO.setBCVoters((Long)params[1]);
+				else if(params[3] != null && params[3].toString().equalsIgnoreCase("SC"))
+				 infoForMandalVO.setSCVoters((Long)params[1]);
+				else if(params[3] != null && params[3].toString().equalsIgnoreCase("ST"))
+				  infoForMandalVO.setSTVoters((Long)params[1]);
+				
+				infoForMandalVO.setCastAssignedVoters(infoForMandalVO.getOCVoters()+infoForMandalVO.getBCVoters()+infoForMandalVO.getSCVoters()+infoForMandalVO.getSTVoters());
+				
+			}
+			
+			if(voterCastBasicList != null && voterCastBasicList.size() >0)
+			{
+			 for(VotersInfoForMandalVO mandalVO :voterCastBasicList)
+			  mandalVO.setTotalVotersDiff(mandalVO.getTotalVotersDiff()-mandalVO.getCastAssignedVoters());
+			
+			  saveVoterCastBasicInfoForHamletBoothModel(voterCastBasicList,userId);
+			}
+		 
+		 }
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+		 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error("Exception Occured in calculateAndInsertVoterCasteInfoForHamletBooth() method, Exception - "+e);
+	  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	  return resultStatus;
+	}
+ }
+ 
+ public ResultStatus saveVoterCastBasicInfoForHamletBoothModel(final List<VotersInfoForMandalVO> list,final Long userId)
+ {
+	 ResultStatus resultStatus = new ResultStatus();
+	 try{
+		 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus status) 
+				{
+			  log.info(" Entered into saveVoterCastInfoForHamletBooth() method... ");
+			  if(list != null && list.size() > 0)
+			  {
+				  for(VotersInfoForMandalVO mandalVO:list)
+				  {
+					  VoterCastBasicInfo castInfo = new VoterCastBasicInfo();
+					  castInfo.setReportLevelValue(mandalVO.getReportLevelValue());
+					  castInfo.setVoterReportLevel(voterReportLevelDAO.get(mandalVO.getReportLevelId()));
+					  castInfo.setUserId(userId);
+					  castInfo.setConstituency(constituencyDAO.get(mandalVO.getConstituencyId()));
+					  castInfo.setPublicationDateId(mandalVO.getPublicationDateId());
+					  castInfo.setOcVoters(mandalVO.getOCVoters() != null?mandalVO.getOCVoters():0L);
+					  castInfo.setBcVoters(mandalVO.getBCVoters()!= null?mandalVO.getBCVoters():0L);
+					  castInfo.setScVoters(mandalVO.getSCVoters() != null?mandalVO.getSCVoters():0L);
+					  castInfo.setStVoters(mandalVO.getSTVoters()!= null?mandalVO.getSTVoters():0L);
+					  castInfo.setTotalCastes(mandalVO.getTotalCasts() != null?mandalVO.getTotalCasts():0L);
+					  castInfo.setCasteAssignedVoters(mandalVO.getCastAssignedVoters() != null?mandalVO.getCastAssignedVoters():0L);
+					  castInfo.setCasteNotAssignedVoters(mandalVO.getTotalVotersDiff() != null?mandalVO.getTotalVotersDiff():0L);
+					  voterCastBasicInfoDAO.save(castInfo);
+				  }
+			  }
+				}}); 
+			
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+			 
+		 }catch (Exception e) {
+		  e.printStackTrace();
+		  log.error("Exception Occured in saveVoterCastBasicInfoForHamletBoothModel() method, Exception - "+e);
+		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  return resultStatus;
+	 }
+ }
+ 
+ public ResultStatus saveVoterCastInfoForHamletBooth(final List<VotersInfoForMandalVO> list,final Long userId)
+ {
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			protected void doInTransactionWithoutResult(TransactionStatus status) 
+			{
+		  log.info(" Entered into saveVoterCastInfoForHamletBooth() method... ");
+		  if(list != null && list.size() > 0)
+		  {
+			  for(VotersInfoForMandalVO mandalVO:list)
+			  {
+				  VoterCastInfo castInfo = new VoterCastInfo();
+				  castInfo.setReportLevelValue(mandalVO.getReportLevelValue());
+				  castInfo.setVoterReportLevel(voterReportLevelDAO.get(mandalVO.getReportLevelId()));
+				  castInfo.setUserId(userId);
+				  castInfo.setConstituency(constituencyDAO.get(mandalVO.getConstituencyId()));
+				  castInfo.setPublicationDateId(mandalVO.getPublicationDateId());
+				  castInfo.setCasteState(casteStateDAO.get(mandalVO.getCasteStateId()));
+				  castInfo.setCasteMaleVoters(mandalVO.getMaleVoters());
+				  castInfo.setCasteFemaleVoters(mandalVO.getFemaleVoters());
+				  castInfo.setCasteVoters(mandalVO.getTotalVotersDiff());
+				  voterCastInfoDAO.save(castInfo);
+			  }
+		  }
+			}}); 
+		
+	  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+	  return resultStatus;
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 log.error(" Exception Occured in saveVoterCastInfoForHamletBooth() method, Exception - "+e);
+	 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	 return resultStatus;
+	}
+ }
+ 
+ public VotersInfoForMandalVO checkVoterCasteInfoExists(Long hamletBoothId, List<VotersInfoForMandalVO> list)
+ {
+	 try{
+		
+		 if(list == null || list.size() == 0)
+			return null;
+		 for(VotersInfoForMandalVO castInfo : list)
+		  if(castInfo.getReportLevelValue().equals(hamletBoothId))
+			 return castInfo;
+		 return null;
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error(" Exception Occured in checkVoterCasteInfoExists() method, Exception - "+e);
+	  return null;
+	 }
+ }
+ 
+ public ResultStatus getHamletBoothDataByConstituencyIdAndPublicationDateId(Long constituencyId,Long publicationDateId,Long userId)
+ {
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		  
+		 List<Long> boothIdsList = boothDAO.getBoothIdsByConstituencyIdAndPublicationId(constituencyId, publicationDateId);
+		 if(boothIdsList != null && boothIdsList.size() > 0)
+		  hamletBoothDAO.deleteHamletBoothsByBoothIdsList(boothIdsList);
+		 
+		 insertHamletIdAndBoothIdInHamletBoothTable(constituencyId,publicationDateId,userId);
+		 
+		 Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(IConstants.Hamlet_Booth);
+		 calculateTheHamletBoothVotersBasicData(constituencyId,publicationDateId,userId,reportLevelId);
+		 calculateAndInsertVoterAgeInfoForHamletBooth(constituencyId,publicationDateId,userId,reportLevelId);
+		 calculateAndInsertVoterFamilyInfoForHamletBooth(constituencyId,publicationDateId,userId,reportLevelId);
+		 calculateAndInsertVoterCasteInfoForHamletBooth(constituencyId, publicationDateId, userId, reportLevelId);
+			 
+		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 return resultStatus;
+	  }catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in getHamletBoothDataByConstituencyIdAndPublicationDateId() method, Exception - "+e);
+		 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 return resultStatus;
+		 
+	  }
+ }
+ 
+ public ResultStatus calculateAndInsertVoterFamilyInfoForHamletBooth(Long constituencyId,Long publicationDateId,Long userId,Long reportLevelId)
+ {
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		  
+		  List<Object[]> familyList = hamletBoothDAO.getVoterFamilyInfoForHamletBooth(userId, constituencyId, publicationDateId);
+		  if(familyList != null && familyList.size() > 0)
+		  {
+			  Map<Long,Map<Long,Long>> familyMap = new HashMap<Long, Map<Long,Long>>(0);//<hamletBoothId,<familyRange,totalFamilies>>
+			  Map<Long,Long> totalVotersCountMap = new HashMap<Long, Long>(0);//<hamletBoothId,totalFamilies>
+			  
+			  for(Object[] params :familyList)
+			  {
+				  Map<Long,Long> totalFamilies = familyMap.get((Long)params[1]);
+				  if(totalFamilies == null)
+				  {
+					  totalFamilies = new HashMap<Long,Long>(0);
+					  familyMap.put((Long)params[1], totalFamilies);
+					  Long totalFamiliesCount = 0L;
+					  Long familyRangeId = 0L;
+					  Long familyCount = (Long)params[0]; 
+					  if(familyCount <=3)
+					  {
+						  familyRangeId = getVoterFamilyRangeIdByFamilyRange("0-3");
+						  totalFamiliesCount =  totalFamilies.get(familyRangeId); 
+						  if(totalFamiliesCount == null)
+							  totalFamilies.put(familyRangeId, 1L);
+						  else
+							  totalFamilies.put(familyRangeId, totalFamiliesCount+1);
+					  }
+					  else if(familyCount.longValue() >=4 && familyCount.longValue() <= 6)
+					  {
+						  familyRangeId = getVoterFamilyRangeIdByFamilyRange("4-6");
+						  totalFamiliesCount =  totalFamilies.get(familyRangeId); 
+						  if(totalFamiliesCount == null)
+							  totalFamilies.put(familyRangeId, 1L);
+						  else
+							  totalFamilies.put(familyRangeId, totalFamiliesCount+1);  
+					  }
+					  else if(familyCount.longValue() >=7 && familyCount.longValue() <= 10)
+					  {
+						  familyRangeId = getVoterFamilyRangeIdByFamilyRange("7-10");
+						  totalFamiliesCount =  totalFamilies.get(familyRangeId); 
+						  if(totalFamiliesCount == null)
+							  totalFamilies.put(familyRangeId, 1L);
+						  else
+							  totalFamilies.put(familyRangeId, totalFamiliesCount+1); 
+					  }
+					  else  if(familyCount.longValue() >10)
+					  {
+						  familyRangeId = getVoterFamilyRangeIdByFamilyRange("10-Above");
+						  totalFamiliesCount =  totalFamilies.get(familyRangeId); 
+						  if(totalFamiliesCount == null)
+							  totalFamilies.put(familyRangeId, 1L);
+						  else
+							  totalFamilies.put(familyRangeId, totalFamiliesCount+1);  
+					  }
+					  
+				  }
+				  
+				  Long totalVoters = totalVotersCountMap.get((Long)params[1]);
+				  if(totalVoters == null)
+					  totalVotersCountMap.put((Long)params[1], 1L);
+				  else
+					  totalVotersCountMap.put((Long)params[1], totalVoters+1);
+				  
+			  }
+			  
+			  List<ImportantFamiliesInfoVo> importantFamiliesInfoVoList = new ArrayList<ImportantFamiliesInfoVo>(0);
+			  if(familyMap != null && familyMap.size() > 0)
+			  {
+				  for(Long hamletBoothId :familyMap.keySet())
+				  {
+					 Map<Long,Long> totalVotersMap = familyMap.get(hamletBoothId);
+					 if(totalVotersMap != null)
+					 {
+						for(Long familyRangeId :totalVotersMap.keySet())
+						{
+						  ImportantFamiliesInfoVo importantFamiliesInfoVo = new ImportantFamiliesInfoVo();
+						  importantFamiliesInfoVo.setReportLevelId(reportLevelId);
+						  importantFamiliesInfoVo.setReportLevelValue(hamletBoothId);
+						  importantFamiliesInfoVo.setTypeId(familyRangeId);
+						  importantFamiliesInfoVo.setTotalFamalies(totalVotersMap.get(familyRangeId));
+						  importantFamiliesInfoVo.setConstituencyId(constituencyId);
+						  importantFamiliesInfoVo.setPublicationDateId(publicationDateId);
+						  importantFamiliesInfoVo.setTotalPercentage(new BigDecimal(importantFamiliesInfoVo.getTotalFamalies().doubleValue()*100.0/totalVotersCountMap.get(hamletBoothId).doubleValue()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						  importantFamiliesInfoVoList.add(importantFamiliesInfoVo);
+						  
+						}
+					 }
+				  }
+			  }
+			  
+			  for(ImportantFamiliesInfoVo familiesInfoVo:importantFamiliesInfoVoList)
+				saveVotersDataInVoterFamilyInfoTable(familiesInfoVo);
+			  
+			  
+		  }
+		  
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in calculateAndInsertVoterFamilyInfoForHamletBooth() method, Exception - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		return resultStatus;
+	  }
+ }
+ 
+ 
+ public ResultStatus calculateAndInsertVoterAgeInfoForHamletBooth(Long constituencyId,Long publicationDateId,Long userId,Long reportLevelId)
+ {
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		  
+		  List<VoterAgeRange> ageRangesList = voterAgeRangeDAO.getVoterAgeRangeList();
+		  
+		  List<VoterAgeRangeVO> ageRangeVOsList = new ArrayList<VoterAgeRangeVO>();
+			
+		  if(ageRangesList != null && ageRangesList.size() > 0)
+		  {
+			  for(VoterAgeRange ageRange:ageRangesList)
+			  {
+			    List<Object[]> list = hamletBoothDAO.getAgeWiseHamletBoothList(userId, constituencyId, publicationDateId, ageRange.getMinValue(), ageRange.getMaxValue());
+			    if(list != null && list.size() > 0)
+			    {
+			    	VoterAgeRangeVO ageRangeVO = null;
+			      for(Object[] params:list)
+			      {
+			    	  ageRangeVO = checkAgeInfoVOExists((Long)params[2],ageRange.getVoterAgeRangeId(),ageRangeVOsList);
+			    	  if(ageRangeVO == null)
+			    	  {
+			    		  ageRangeVO = new VoterAgeRangeVO();
+			    		  ageRangeVO.setReportLevelValue((Long)params[2]);
+			    		  ageRangeVO.setAgeRangeId(ageRange.getVoterAgeRangeId());
+			    		  ageRangeVO.setReportLevelId(reportLevelId);
+			    		  ageRangeVO.setConstituencyId(constituencyId);
+			    		  ageRangeVO.setPublicationDateId(publicationDateId);
+			    		  ageRangeVOsList.add(ageRangeVO);
+			    	  }
+			    	  if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.MALE))
+			    		ageRangeVO.setMaleVoters((Long)params[0]);
+			    	  else if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+			    		ageRangeVO.setFemaleVoters((Long)params[0]);
+			    	  
+			    	  ageRangeVO.setTotalVotersInARange(ageRangeVO.getMaleVoters()+ageRangeVO.getFemaleVoters());
+			    	  
+			      }
+			    }
+			  }
+		  }
+		  
+		  List<Object[]> totalVotersList = voterInfoDAO.getTotalVotersForHamletBooth(constituencyId, publicationDateId, reportLevelId);
+		  if(totalVotersList != null && totalVotersList.size() > 0)
+		  {
+			  Map<Long,Long> totalVotersMap = new HashMap<Long, Long>(0);
+			  for(Object[] params :totalVotersList)
+				totalVotersMap.put((Long)params[0], (Long)params[1]); 
+			  
+			  if(ageRangeVOsList != null && ageRangeVOsList.size() > 0)
+			  {
+				 for(VoterAgeRangeVO rangeVO:ageRangeVOsList)
+				 {
+					 rangeVO.setMalePercentage(new BigDecimal((rangeVO.getMaleVoters().doubleValue()*100.0)/rangeVO.getTotalVotersInARange().doubleValue()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue()); 
+					 rangeVO.setFemalePercentage(new BigDecimal((rangeVO.getFemaleVoters().doubleValue()*100.0)/rangeVO.getTotalVotersInARange().doubleValue()).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+					 rangeVO.setPercentage(new BigDecimal((rangeVO.getTotalVotersInARange().doubleValue()*100)/totalVotersMap.get(rangeVO.getReportLevelValue()).doubleValue()).setScale(2,BigDecimal.ROUND_HALF_UP).toString());
+				 }
+					
+				 saveVoterAgeDetailsInVoterAgeInfo(ageRangeVOsList);
+			  }
+			  
+		  }
+		  return resultStatus;
+	  }catch (Exception e) {
+		 e.printStackTrace();
+		 log.error("Exception Occured in calculateAndInsertVoterAgeInfoForHamletBooth() method, Exception - "+e);
+		 return resultStatus;
+	  }
+ }
+ 
+ public VoterAgeRangeVO checkAgeInfoVOExists(Long hamletBoothId,Long ageRangeId,List<VoterAgeRangeVO> list)
+ {
+	try{
+		if(list == null || list.size() == 0)
+		 return null;
+		for(VoterAgeRangeVO ageRangeVO:list)
+		 if(ageRangeVO.getReportLevelValue().equals(hamletBoothId) && ageRangeVO.getAgeRangeId().equals(ageRangeId))
+			return ageRangeVO;
+		
+	  return null;
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 log.error("Exception Occured in checkAgeInfoVOExists() method, Exception - "+e);
+	 return null;
+	}
+ }
+ 
+ public ResultStatus calculateTheHamletBoothVotersBasicData(Long constituencyId,Long publicationDateId,Long userId,Long reportLevelId)
+ {
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		  
+		  List<VotersInfoForMandalVO> votersInfoMandalVOList = new ArrayList<VotersInfoForMandalVO>(0);
+		  
+		  Map<Long,Long> totalFamilies = new HashMap<Long, Long>(0);//<hamletBoothId,count(HNO)>
+		  Map<Long,Long> totalVotersMap = new HashMap<Long, Long>(0);//<hamletBoothId,totalVoters>
+		  
+		  List<Object[]> familiesList = hamletBoothDAO.getFamiliesCountByHamletBoothIdsList(userId, constituencyId, publicationDateId);
+		  if(familiesList != null && familiesList.size() > 0)
+			for(Object[] params:familiesList)
+			 totalFamilies.put((Long)params[1], (Long)params[0]);
+			
+		  
+		  List<Object[]> hamletBoothList = hamletBoothDAO.getVotersCountForHamletBooth(userId, constituencyId, publicationDateId);
+		  if(hamletBoothList != null && hamletBoothList.size() > 0)
+		  {
+			  
+			 VotersInfoForMandalVO infoForMandalVO = null;
+			for(Object[] params:hamletBoothList)
+			{
+			  infoForMandalVO = checkVotersInfoForMandalVOExist((Long)params[2],votersInfoMandalVOList);
+			  if(infoForMandalVO == null)
+			  {
+				  infoForMandalVO = new VotersInfoForMandalVO();
+				  infoForMandalVO.setReportLevelId(reportLevelId);
+				  infoForMandalVO.setReportLevelValue((Long)params[2]);
+				  infoForMandalVO.setConstituencyId(constituencyId);
+				  infoForMandalVO.setPublicationDateId(publicationDateId);
+				  infoForMandalVO.setTotalFamilies(totalFamilies.get((Long)params[2]) != null?totalFamilies.get((Long)params[2]):0);
+				  votersInfoMandalVOList.add(infoForMandalVO);
+			  }
+			  if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.FEMALE))
+				infoForMandalVO.setTotalFemaleVoters(params[0]!= null?params[0].toString():"0");
+			  
+			  else if(params[1] != null && params[1].toString().equalsIgnoreCase(IConstants.MALE))
+				infoForMandalVO.setTotalMaleVoters(params[0]!= null?params[0].toString():"0");
+			  
+			  Long totalVotersCount = totalVotersMap.get((Long)params[2]);
+			  if(totalVotersCount == null)
+				totalVotersMap.put((Long)params[2], (Long)params[0]);
+			  else
+				totalVotersMap.put((Long)params[2], totalVotersCount+(Long)params[0]);
+			}
+			
+			for(VotersInfoForMandalVO mandalVO:votersInfoMandalVOList)
+			{
+				Long totalVoters = totalVotersMap.get(mandalVO.getReportLevelValue());
+				mandalVO.setTotalVoters(totalVoters != null?totalVoters.toString():"0");
+				if(totalVoters != null && totalVoters > 0)
+				{
+				  mandalVO.setTotalMalePercentage(new BigDecimal((new Double(mandalVO.getTotalMaleVoters())*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				  mandalVO.setTotalFemalePercentage(new BigDecimal((new Double(mandalVO.getTotalFemaleVoters())*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				  mandalVO.setTotalFamilyPercentage(new BigDecimal((new Double(mandalVO.getTotalFamilies())*100)/totalVoters).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				}
+			}
+			
+			if(votersInfoMandalVOList != null && votersInfoMandalVOList.size() > 0)
+			 for(VotersInfoForMandalVO votersInfo:votersInfoMandalVOList)
+				saveVotersDataInVoterInfoTable(votersInfo);
+			
+		  }
+		  
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 return resultStatus;
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in calculateTheHamletBoothVotersBasicData() method, Exception - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 return resultStatus;
+	  }
+ }
+ 
+ public VotersInfoForMandalVO checkVotersInfoForMandalVOExist(Long hamletBoothId,List<VotersInfoForMandalVO> list)
+ {
+	 try{
+	  if(list == null || list.size() == 0)
+		return null;;
+		 for(VotersInfoForMandalVO mandalVO:list)
+			if(mandalVO.getReportLevelValue().equals(hamletBoothId))
+			  return mandalVO;
+		 return null;
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in checkVotersInfoForMandalVOExist() method, Exception - "+e);
+		return null;
+	}
+	  
+ }
+ 
+ 
+ public ResultStatus insertHamletIdAndBoothIdInHamletBoothTable(final Long constituencyId,final Long publicationDateId,final Long userId)
+ {
+	  log.info("Entered into saveHamletBoothDetails() Method...");
+	  ResultStatus resultStatus = new ResultStatus();
+	  try{
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+		protected void doInTransactionWithoutResult(TransactionStatus status) 
+		{
+		    List<Object[]> list = boothPublicationVoterDAO.getBoothAndHamletIdsByConstituencyId(constituencyId, publicationDateId, userId);
+		    if(list != null && list.size() > 0)
+			{
+			  for(Object[] params:list)
+			  {
+				 HamletBooth hamletBooth = new HamletBooth();
+				 hamletBooth.setBooth(boothDAO.get((Long)params[0]));
+				 hamletBooth.setHamlet(hamletDAO.get((Long)params[1]));
+				 hamletBoothDAO.save(hamletBooth);
+			  }
+			}	
+		
+		}});
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  
+		  return resultStatus;
+	  }catch (Exception e) {
+		  e.printStackTrace();
+		  log.error("Exception Occured in saveHamletBoothDetails() Method, Exception - "+e);
+		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  return resultStatus;
+	}
+ }
  
 }
