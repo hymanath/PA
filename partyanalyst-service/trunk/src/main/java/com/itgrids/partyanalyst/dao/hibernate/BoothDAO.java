@@ -1531,4 +1531,26 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("publicationDateId", publicationDateId);
 			return query.list();
 		}
+	
+			
+			public List<String> getDescriptionForMandalLevel(Long tehsilId,Long publicationId){
+		        Query query = getSession().createQuery("select pbp.description from PartialBoothPanchayat pbp where pbp.booth.publicationDate.publicationDateId = :publicationId and  pbp.booth.tehsil.tehsilId = :tehsilId and pbp.panchayat.panchayatId = pbp.booth.panchayat.panchayatId");
+		        query.setParameter("publicationId", publicationId);
+		        query.setParameter("tehsilId", tehsilId);
+		        return query.list();
+		    }
+		   
+		    public List<String> getDescriptionForPanchayatLevel(Long panchayatId,Long publicationId){
+		        Query query = getSession().createQuery("select pbp.description from PartialBoothPanchayat pbp where pbp.booth.publicationDate.publicationDateId = :publicationId and pbp.panchayat.panchayatId = :panchayatId ");
+		        query.setParameter("publicationId", publicationId);
+		        query.setParameter("panchayatId", panchayatId);
+		        return query.list();
+		    }
+		    
+		    public List<String> getDescriptionForBoothLevel(Long panchayatId,Long boothId){
+		        Query query = getSession().createQuery("select pbp.description from PartialBoothPanchayat pbp where pbp.booth.boothId = :boothId and pbp.panchayat.panchayatId = :panchayatId ");
+		        query.setParameter("boothId", boothId);
+		        query.setParameter("panchayatId", panchayatId);
+		        return query.list();
+		    }
 }
