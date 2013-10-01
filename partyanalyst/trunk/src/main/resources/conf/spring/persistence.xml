@@ -357,6 +357,8 @@
 				<value>com.itgrids.partyanalyst.model.DemoRequestActions</value>				
 				<value>com.itgrids.partyanalyst.model.PartialBoothPanchayat</value>		
 				<value>com.itgrids.partyanalyst.model.HamletBooth</value>
+			    <value>com.itgrids.partyanalyst.model.AdvVideo</value>
+				<value>com.itgrids.partyanalyst.model.VideoCategory</value>
 			</list>
 			
 		</property>

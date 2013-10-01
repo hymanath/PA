@@ -192,6 +192,7 @@
 		<property name="electionLiveResultsAnalysisService" ref="electionLiveResultsAnalysisService" />
 	     <property name="thumbnailService" ref="thumbnailService"></property>
 	     <property name="newsMonitoringService" ref="newsMonitoringService"></property>
+	     <property name="advVideoService" ref="advVideoService"></property>
 	</bean>
 	<!--  <bean id="candidateProfileAction" class="com.itgrids.partyanalyst.web.action.CandidateProfileAction" singleton="false">
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
@@ -457,6 +458,7 @@
 	 <property name="partyDetailsService" ref="partyDetailsService"/>
 	 <property name="partyResultService" ref="partyResultService"/>
 	 <property name="candidateDetailsService" ref="candidateDetailsService" />
+	 <property name="advVideoService" ref="advVideoService" />
 	</bean>
 	
 	<bean id="electionVotingTrendzAction" class="com.itgrids.partyanalyst.web.action.ElectionVotingTrendzAction" singleton="false">
@@ -665,7 +667,7 @@
 		<property name="ananymousUserService" ref="ananymousUserService" />		
 		<property name="opinionPollService" ref="opinionPollService" />	
 		<property name="specialPageService" ref="specialPageService" />
-		
+		<property name="advVideoService" ref="advVideoService" />	
 	</bean>
 	
 	<bean id="announcementPageAction" class="com.itgrids.partyanalyst.web.action.AnnouncementPageAction">
@@ -854,6 +856,7 @@
 	<bean id="specialPageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageAction" singleton="false">
 		<property name="specialPageService" ref="specialPageService" />	
 		<property name="candidateDetailsService" ref="candidateDetailsService" />
+		<property name="advVideoService" ref="advVideoService" />
 	</bean>
 	
 	<bean id="specialPageManageAction" class="com.itgrids.partyanalyst.web.action.SpecialPageManageAction" singleton="false">
@@ -1306,5 +1309,16 @@
     <property name="marketingManagementService" ref="marketingManagementService" />
     <property name="entitlementsHelper" ref="entitlementsHelper" />
    </bean>
+   
+   <bean id="advVideoAction" class="com.itgrids.partyanalyst.web.action.AdvVideoAction" singleton="false">
+		<property name="advVideoService" ref="advVideoService" />
+	</bean>
+	
+   <bean id="moreAdvVideoAction" class="com.itgrids.partyanalyst.web.action.MoreAdvVideoAction" singleton="false">
+	</bean>
+	<bean id="partialBoothPanchayatAction" class="com.itgrids.partyanalyst.web.action.PartialBoothPanchayatAction" singleton="false">
+	    <property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+	     <property name="partialBoothPanchayatService" ref="partialBoothPanchayatService" />
+	</bean>
 </beans>	
 	
