@@ -211,6 +211,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="cadreDAO" ref="cadreDAO" />	
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
+		<!--<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>-->
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
@@ -1779,6 +1780,19 @@
       <property name="demoRequestDAO" ref="demoRequestDAO" />
       <property name="demoRequestActionsDAO" ref="demoRequestActionsDAO" />
       <property name="userDAO" ref="userDAO" />
+    </bean>
+    
+    <bean name="advVideoService" class="com.itgrids.partyanalyst.service.impl.AdvVideoService">
+      	<property name="advVideoDAO" ref="advVideoDAO" />
+      	<property name="transactionTemplate" ref="transactionTemplate" />
+      	<property name="videoCategoeryDAO" ref="videoCategoeryDAO" />	
+    </bean>
+    
+    <bean name="partialBoothPanchayatService" class="com.itgrids.partyanalyst.service.impl.PartialBoothPanchayatService">
+      	<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO" />
+      	<property name="transactionTemplate" ref="transactionTemplate" />
+      	<property name="panchayatDAO" ref="panchayatDAO" />	
+      	<property name="boothDAO" ref="boothDAO" />	
     </bean>
     
 </beans>		

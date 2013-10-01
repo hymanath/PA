@@ -116,6 +116,7 @@
 		<pattern>/searchInfluencePeopleForSmsAction*</pattern>
 		<pattern>/demoRequestDataUpdateAction*</pattern>
 		<pattern>/addDemoRequestActions*</pattern>
+		<pattern>/moreVideosAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -271,6 +272,9 @@
 		<pattern>/searchInfluencePeopleForSmsAction*</pattern>		
 		<pattern>/demoRequestAction*</pattern>
 		<pattern>/subUserRegPageAction*</pattern>
+		<pattern>/advVideoSaveAction*</pattern>
+		<pattern>/advVideoActionForSave*</pattern>
+		<pattern>/partialBoothPanchayatAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

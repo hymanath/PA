@@ -1245,5 +1245,13 @@
    <bean id="hamletBoothDAO" class="com.itgrids.partyanalyst.dao.hibernate.HamletBoothDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
+     
+     <bean id="advVideoDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdvVideoDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+      <bean id="videoCategoeryDAO" class="com.itgrids.partyanalyst.dao.hibernate.VideoCategoeryDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
    
 </beans>		

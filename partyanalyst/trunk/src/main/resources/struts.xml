@@ -6055,6 +6055,59 @@
 			 <param name="root">partialBoothList</param>
 			</result>
 		</action>
+			
+		<action name="advVideoSaveAction" class="advVideoAction">
+			<result name="success">/jsp/advVideo.jsp</result>
+		</action>
 		
+		<action name="advVideoActionForSave" class="advVideoAction" method="saveVideos">
+			<result name="success">/jsp/advVideo.jsp</result>
+		</action>
+		<action name="advVideoAction" class="advVideoAction" method="getAdvVideoForDisplay">
+			<result type="json" name="success">
+			  	<param name="root">advVideoVO</param>
+			 </result>
+		 </action>
+		 
+		<action name="getVideosForSelectionAction" class="advVideoAction" method="getVideosForSelection">
+			<result type="json" name="success">
+			  	<param name="root">advVideoList</param>
+			 </result>
+		 </action>
+		 
+		<action name="moreVideosAction" class="moreAdvVideoAction">
+			<result name="success">/jsp/moreAdvVideo.jsp</result>
+		</action>
+		
+		<action name="partialBoothPanchayatAction" class="partialBoothPanchayatAction">
+			<result name="success">/jsp/partialBoothPanchayat.jsp</result>
+		</action>
+		
+		<action name="savePartialBoothPanchayatAction" class="partialBoothPanchayatAction" method="savePartialBoothDetails">
+			<result type="json" name="success">
+			  	<param name="root">resultStatus</param>
+			 </result>
+		 </action>
+		 
+		<action name="getPartialBoothPanchayatAction" class="partialBoothPanchayatAction" method="getPartialBoothDetails">
+			<result type="json" name="success">
+			  	<param name="root">partialBoothPanchayatList</param>
+			 </result>
+		 </action>
+		 
+		<action name="editOrDeleteSelectedPartialBoothAction" class="partialBoothPanchayatAction" method="editOrDeleteSelectedPartialBooth">
+			<result type="json" name="edit">
+			  	<param name="root">partialBoothPanchayatList</param>
+			 </result>
+			 <result type="json" name="delete">
+			  	<param name="root">resultStatus</param>
+			 </result>
+		 </action>
+		 
+		<action name="updatePartialBoothPanchayatAction" class="partialBoothPanchayatAction" method="updatePartialBoothDetails">
+			<result type="json" name="success">
+			  	<param name="root">resultStatus</param>
+			 </result>
+		 </action>
 		</package>
 </struts>      
