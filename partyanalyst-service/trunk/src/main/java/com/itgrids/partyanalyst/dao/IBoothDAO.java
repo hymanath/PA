@@ -302,4 +302,7 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<String> getDescriptionForPanchayatLevel(Long panchayatId,Long publicationId);
 	
 	public List<String> getDescriptionForBoothLevel(Long panchayatId,Long boothId);
+	
+	public List<Long> getPanchayatsMandalId(Long mandalId,Long constituencyId,Long publicationDateId);
+	
 }

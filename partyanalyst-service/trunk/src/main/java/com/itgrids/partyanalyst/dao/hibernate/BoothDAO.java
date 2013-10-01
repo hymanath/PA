@@ -1115,10 +1115,16 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		@SuppressWarnings("unchecked")
 		public List<Object[]> getPanchayatiesByMandalsListAndConstituencyId(List<Long> mandalsList,Long constituencyId,Long publicationDateId){
 			
-			Query query =getSession().createQuery("select model.tehsil.tehsilId, model.tehsil.tehsilName,model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where " +
+			Query query =getSession().createQuery("select model.tehsil.tehsilId," +//0
+					" model.tehsil.tehsilName," +//1
+					" model.panchayat.panchayatId," +//2
+					" model.panchayat.panchayatName" +//3
+					//" model.boothId ," +//4
+					" from Booth model where " +//5
 					" model.publicationDate.publicationDateId = :publicationDateId and model.constituency.constituencyId =:constituencyId and " +
-					" model.tehsil.tehsilId in(:mandalsList) group by model.tehsil.tehsilId,model.panchayat.panchayatId order by " +
-					" model.tehsil.tehsilName, model.panchayat.panchayatName ");
+					" model.tehsil.tehsilId in(:mandalsList)" +
+					" group by model.tehsil.tehsilId,model.panchayat.panchayatId " +
+					" order by model.tehsil.tehsilName, model.panchayat.panchayatName ");
 			
 			query.setParameter("constituencyId", constituencyId);
 			query.setParameter("publicationDateId", publicationDateId);
@@ -1553,4 +1559,18 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		        query.setParameter("panchayatId", panchayatId);
 		        return query.list();
 		    }
+		    
+		public List<Long> getPanchayatsMandalId(Long mandalId,Long constituencyId,Long publicationDateId)
+		{
+			Query query = getSession().createQuery(" select distinct model.panchayat.panchayatId " +
+					" from Booth model where " +
+					" model.tehsil.tehsilId =:tehsilId and " +
+					" model.constituency.constituencyId =:constituencyId " +
+					" and model.publicationDate.publicationDateId =:publicationDateId ");
+			
+			query.setParameter("tehsilId", mandalId);
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			return query.list();
+		}
 }
