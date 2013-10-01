@@ -445,6 +445,7 @@ public List<SelectOptionVO> getConstituencyList()
 
   public ResultStatus createDataDumpFileForSelectedConstituency(Long constituencyId,String path)
   {
+	 LOG.info("Entered into createDataDumpFileForSelectedConstituency Method ");
 	 ResultStatus resultStatus = new ResultStatus();
 	try{
 	File f= new File(path);	
@@ -461,6 +462,9 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	
 	str.append("\n \n");
+	
+	LOG.info("Properties File is read ");
+	
 	List<BloodGroup> bloodGroupList = bloodGroupDAO.getBloodGroupList();
 	if(bloodGroupList != null && bloodGroupList.size()>0)
 	{
@@ -470,6 +474,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	str.append("\n\n");
 	
+	LOG.info("Bloo Group Data Completed.");
 	//List<Booth> boothList = boothDAO.getBoothsListByConstituencyId(constituencyId);
 	List<Booth> boothList = boothDAO.getBoothOfAConstituencyInAPublication(constituencyId, latestPublicationId);
 			
@@ -498,6 +503,7 @@ public List<SelectOptionVO> getConstituencyList()
 	  }
 	  str.append("\n");
 	}
+	LOG.info("Booth Data Completed...");
 	
 	List<CadreLevel> cadreLevelList = cadreLevelDAO.getCadreLevelList();
 	if(cadreLevelList != null && cadreLevelList.size() > 0)
@@ -511,6 +517,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
     str.append("\n");
 	
+    LOG.info("Cadre Level data Completed...");
+    
 	List<Caste> casteList = casteDAO.getCasteList();
 	if(casteList != null && casteList.size() > 0)
 	{
@@ -518,6 +526,8 @@ public List<SelectOptionVO> getConstituencyList()
 		str.append("INSERT INTO caste(caste_id,caste_name) VALUES ('"+caste.getCasteId()+"','"+caste.getCasteName()+"');\n");
 	}
 	str.append("\n");
+	
+	LOG.info("Caste data Completed...");
 	
 	List<Object[]> casteStateList = casteStateDAO.getCasteStateList();
 	if(casteStateList != null && casteStateList.size() > 0)
@@ -528,6 +538,8 @@ public List<SelectOptionVO> getConstituencyList()
 		
 	 str.append("\n");
 	 
+	 LOG.info("Caste State data Completed...");
+	 
 	 List<CasteCategory> casteCategoryList = casteCategoryDAO.getCasteCategoryList();
 	 if(casteCategoryList != null && casteCategoryList.size() > 0)
 	 {
@@ -535,6 +547,8 @@ public List<SelectOptionVO> getConstituencyList()
 		str.append("INSERT INTO caste_category (caste_category_id,category_name,description) VALUES ('"+casteCategory.getCasteCategoryId()+"','"+casteCategory.getCategoryName()+"','"+casteCategory.getDescription()+"');\n");
 	 }
 	 str.append("\n");
+	 
+	 LOG.info("Caste Category data Completed...");
 	 
 	 List<ConstituencyHierarchyInfo> constituencyHierarchyInfoList = constituencyHierarchyInfoDAO.getConstituencyHierarchyInfoList(constituencyId, 1L);
 	 if(constituencyHierarchyInfoList != null && constituencyHierarchyInfoList.size() > 0)
@@ -546,6 +560,8 @@ public List<SelectOptionVO> getConstituencyList()
 	 }
 	 
 	 str.append("\n");
+	 
+	 LOG.info("Constituency Hierarchy Info data Completed...");
 	 
 	 List<Constituency> constituencyList = constituencyDAO.getConstituencyDetails();
 	 if(constituencyList != null && constituencyList.size() > 0)
@@ -564,6 +580,8 @@ public List<SelectOptionVO> getConstituencyList()
 	 
 	 str.append("\n");
 	 
+	 LOG.info("Constituency table data Completed...");
+	 
 	 List<CasteCategoryGroup> list = casteCategoryGroupDAO.getCasteCategoryGroupList();
 	 if(list != null && list.size() > 0)
 	 {
@@ -572,6 +590,8 @@ public List<SelectOptionVO> getConstituencyList()
 		 		" VALUES ('"+casteCategoryGroup.getCasteCategoryGroupId()+"','"+casteCategoryGroup.getCasteCategory().getCasteCategoryId()+"','"+casteCategoryGroup.getCasteCategoryGroupName()+"');\n");
 	 }
 	 str.append("\n");
+	
+	 LOG.info("caste Category Group table data Completed...");
 	 
 	List<Object[]> districtList = districtDAO.getDistrictList();
 	if(districtList != null && districtList.size() > 0)
@@ -581,6 +601,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	str.append("\n");
 	
+	LOG.info("District data Completed...");
+	
 	List<EducationalQualifications> eduQualifList = educationalQualificationsDAO.getEducationalQualificationsList();
 	if(eduQualifList != null && eduQualifList.size() > 0)
 	{
@@ -589,6 +611,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	str.append("\n");
 	
+	LOG.info("educational_qualifications data Completed...");
+	
 	List<ElectionType> electionTypeList = electionTypeDAO.getElectionTypeList();
 	if(electionTypeList != null && electionTypeList.size() > 0)
 	{
@@ -596,6 +620,8 @@ public List<SelectOptionVO> getConstituencyList()
 		str.append("INSERT INTO election_type(election_type_id,election_type) VALUES ('"+electionType.getElectionTypeId()+"','"+electionType.getElectionType()+"');\n");
 	}
 	str.append("\n");
+	
+	LOG.info("Election Type data Completed...");
 	
 	/*List<Object[]> hamletsAndMandalsList = hamletDAO.gethamletsInAState(constituencyDAO.get(constituencyId).getState().getStateId());
 	List<Object[]> hamletsAndPanchayatsList = panchayatHamletDAO.gethamletsInAState(constituencyDAO.get(constituencyId).getState().getStateId());
@@ -610,6 +636,8 @@ public List<SelectOptionVO> getConstituencyList()
 			hamletsAndPanchayatsMap.put((Long)params[0],(Long)params[1]);
 		}
 	}*/
+	
+	LOG.info("Booth data Completed...");
 	
 	if(hamletsList != null && hamletsList.size() > 0)
 	{
@@ -626,6 +654,8 @@ public List<SelectOptionVO> getConstituencyList()
 		str.append("\n");
 	}
 	
+	LOG.info("hamlet table data Completed...");
+	
 	List<Object[]> localElectionBodieList = localElectionBodyDAO.getLocationElectionBodyList();
 	if(localElectionBodieList != null && localElectionBodieList.size() > 0)
 	{
@@ -634,6 +664,8 @@ public List<SelectOptionVO> getConstituencyList()
 		 		"VALUES ('"+(Long)params[0]+"','"+params[1].toString()+"','"+(Long)params[2]+"','"+(Long)params[3]+"','"+(Long)params[4]+"',"+params[4].toString()+");\n");
 	}
 	str.append("\n");
+	
+	LOG.info("Local Election Body data Completed...");
 	
 	List<Occupation> occupationList = occupationDAO.getOccupationList();
 	if(occupationList != null && occupationList.size() > 0)
@@ -646,6 +678,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	str.append("\n");
 	
+	LOG.info("Occupation data Completed...");
+	
 	List<Object[]> panchayatList = boothDAO.getPanchayatsForAConstituencyForAPublication(constituencyId,latestPublicationId);
 	if(panchayatList != null && panchayatList.size() > 0)
 	{
@@ -654,6 +688,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	
 	str.append("\n");
+	
+	LOG.info("Panchayat table data Completed...");
 	
 	List<Object[]> partyList = partyDAO.getPartyShortName();
 	if(partyList != null && partyList.size() > 0)
@@ -664,6 +700,8 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	str.append("\n");
 	
+	LOG.info("party table data Completed...");
+	
 	List<Object[]> stateList = stateDAO.getStateNames();
 	if(stateList != null && stateList.size() > 0)
 	{
@@ -671,6 +709,8 @@ public List<SelectOptionVO> getConstituencyList()
 		 str.append("INSERT INTO state(state_id,state_name) VALUES ('"+(Long)params[0]+"','"+params[1].toString()+"');\n");
 	}
 	str.append("\n");
+	
+	LOG.info("state table data Completed...");
 	
 	List<Object[]> tehsilList = boothDAO.getTehsilsForAConstituencyForAPublication(constituencyId,latestPublicationId);
 	if(tehsilList != null && tehsilList.size() > 0)
@@ -680,6 +720,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	
 	str.append("\n");
+	
+	LOG.info("tehsil table data Completed...");
 	
 	List<VoterAgeInfo> voterAgeInfoList = voterAgeInfoDAO.getVoterAgeInfoList(constituencyId);
 	if(voterAgeInfoList != null && voterAgeInfoList.size() > 0)
@@ -692,6 +734,8 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	str.append("\n");
 	
+	LOG.info("voter age info table data Completed...");
+	
 	List<VoterAgeRange> voterAgeRangeList = voterAgeRangeDAO.getVoterAgeRangeList();
 	if(voterAgeRangeList != null && voterAgeRangeList.size() > 0)
 	{
@@ -699,6 +743,8 @@ public List<SelectOptionVO> getConstituencyList()
 		str.append("INSERT INTO voter_age_range(voter_age_range_id,age_range) VALUES ('"+voterAgeRange.getVoterAgeRangeId()+"','"+voterAgeRange.getAgeRange()+"');\n");
 	}
 	str.append("\n");
+	
+	LOG.info("voter age range table data Completed...");
 	
 	List<VoterBasicInfo> voterBasicInfoList = voterBasicInfoDAO.getVoterBasicInfoList(constituencyId);
 	if(voterBasicInfoList != null && voterBasicInfoList.size() > 0)
@@ -710,6 +756,8 @@ public List<SelectOptionVO> getConstituencyList()
 								",'"+basicInfo.getFemaleDiff()+"','"+basicInfo.getType()+"','"+basicInfo.getOrderNo()+"');\n");
 	}
 	str.append("\n");
+	
+	LOG.info("voter basic info table data Completed...");
 	
 	List<VoterCastInfo> voterCasteInfoList = voterCastInfoDAO.getVoterCasteInfoList(constituencyId,latestPublicationId,1L);
 	if(voterCasteInfoList != null && voterCasteInfoList.size() > 0)
@@ -735,6 +783,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	str.append("\n");
 	
+	LOG.info("voter caste info table data Completed...");
+	
 	List<VoterCastBasicInfo> voterCasteList = voterCastBasicInfoDAO.getVoterCastBasicInfoList(constituencyId,latestPublicationId,1L);
 	if(voterCasteList != null && voterCasteList.size() > 0)
 	{
@@ -758,6 +808,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	str.append("\n");
 	
+	LOG.info("voter family info table data Completed...");
+	
 	List<VoterFamilyRange> familyRangeList = voterFamilyRangeDAO.getVoterFamilyRangeList();
 	if(familyRangeList != null && familyRangeList.size() > 0)
 	{
@@ -765,6 +817,8 @@ public List<SelectOptionVO> getConstituencyList()
 		str.append("INSERT INTO voter_family_range(voter_family_range_id,family_range) VALUES ('"+familyRange.getVoterFamilyRangeId()+"','"+familyRange.getFamilyRange()+"');\n");
 	}
 	str.append("\n");
+	
+	LOG.info("voter family range table data Completed...");
 	
 	List<VoterInfo> voterInfoList = voterInfoDAO.getVoterInfoList(constituencyId);
 	if(voterInfoList != null && voterInfoList.size() > 0)
@@ -785,6 +839,8 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	str.append("\n");
 	
+	LOG.info("voter info table data Completed...");
+	
 	List<VoterReportLevel> reportLevelList = voterReportLevelDAO.getVoterReportLevelList();
 	if(reportLevelList != null && reportLevelList.size() > 0)
 	{
@@ -793,6 +849,8 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	
 	str.append("\n");
+	
+	LOG.info("voter report level table data Completed...");
 	
 	List<VotingTrendz> votingTrendZList = votingTrendzDAO.getVotingTrendzList(constituencyId);
 	if(votingTrendZList != null && votingTrendZList.size() > 0)
@@ -803,6 +861,8 @@ public List<SelectOptionVO> getConstituencyList()
 						",'"+trendz.getYear()+"','"+trendz.getTotalBooths()+"','"+trendz.getTotalVotes()+"','"+trendz.getVotesPolled()+"','"+trendz.getElectionType().getElectionTypeId()+"','"+trendz.getOrderNo()+"');\n");
 	}
 	str.append("\n");
+	
+	LOG.info("voting trendz table data Completed...");
 	
 	try{
 	List<VotingTrendzPartiesResult> list1 = votingTrendzPartiesResultDAO.getVotingTrendzPartiesResultList(constituencyId);
@@ -816,6 +876,8 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error("Exception occured in VotingTrendzPartiesResult inserting - "+e);
 	}
 	str.append("\n");
+	
+	LOG.info("voting trendz parties result table data Completed...");
 	
 	try{
 		List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(constituencyId, latestPublicationId);
@@ -836,6 +898,8 @@ public List<SelectOptionVO> getConstituencyList()
 			str.append("\n");
 		}
 	}catch(Exception e){}
+	
+	LOG.info("booth punlication voter table data Completed...");
 	
 	try{
 		List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(constituencyId,latestPublicationId,1L);
@@ -861,6 +925,8 @@ public List<SelectOptionVO> getConstituencyList()
 			str.append("\n");
 		}
 	}catch(Exception e){}
+	
+	LOG.info("voter table data Completed...");
 	
 	try{
 		List<UserVoterDetails> userVoterList = userVoterDetailsDAO.getUserVoterDetailsOfAConstituencyForAPublication(constituencyId,latestPublicationId,1L);
@@ -890,6 +956,8 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 	}catch(Exception e){}
 	
+	LOG.info("user voter details table data Completed...");
+	
 	try{
 		List<Object[]> voterModificationList = voterModificationDAO.getVoterModificationDetailsOfAConstituencyForAPublication(constituencyId,latestPublicationId);
 		
@@ -914,6 +982,8 @@ public List<SelectOptionVO> getConstituencyList()
 	{
 		LOG.error("Exception Occured in Voter Modification Inserts");
 	}
+	
+	LOG.info("voter modification table data Completed...");
 	
 	try{
 		List<Object[]> voterModificationInfoList = voterModificationInfoDAO.getVoterModificationInfoOfAConstituencyForAPublication(constituencyId,latestPublicationId);
@@ -940,6 +1010,8 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error("Exception Occured in Voter Modification Info Inserts");
 	}
 	
+	LOG.info("voter modification info table data Completed...");
+	
 	try{
 		List<Object[]> voterModificationAgeInfoList = voterModificationAgeInfoDAO.getVoterModificationAgeInfoDetailsOfAConstituencyForAPublication(constituencyId,latestPublicationId);
 		
@@ -964,6 +1036,8 @@ public List<SelectOptionVO> getConstituencyList()
 	{
 		LOG.error("Exception Occured in Voter Modification Age Info Inserts");
 	}
+	
+	LOG.info("voter modification age info table data Completed...");
 	
 	try{
 		List<Object[]> partiesListForVT = votingTrendzPartiesResultDAO.getpartiesListForVotingTrendz(constituencyId);
@@ -1014,6 +1088,8 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error("Exception Occured in Parties Voting Trendz Inserts."+e);
 	}
 	
+	LOG.info("parties voting trendz table data Completed...");
+	
 	try{
 		List<PublicationDate> publicationsList = publicationDateDAO.getAll();
 		
@@ -1034,9 +1110,18 @@ public List<SelectOptionVO> getConstituencyList()
 	{
 		LOG.error("Exception Occured in Publication Date Inserts."+e);
 	}
-	outPut.write(str.toString());
-	outPut.close();
-	resultStatus.setResultCode(0);
+	
+	LOG.info("publication date table data Completed...");
+	
+	try
+	{	
+		outPut.write(str.toString());
+		outPut.close();
+		resultStatus.setResultCode(0);
+	}catch(Exception e)
+	{
+		LOG.error("Exception ocuured in writing output - exception is ",e);
+	}
 	 return resultStatus;
 	}catch (Exception e) {
 	 e.printStackTrace();
