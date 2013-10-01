@@ -390,7 +390,7 @@ var panchayatId;
 		str += '<div><b>Description : </b><textarea    id="PartialDescriptionEdit" style="margin-left: 89px;">'+result[0].partialDescription+'</textarea></div>';
 		str += '<div id="updateButtonDiv" style="margin-left: 170px; margin-top: 12px; float: left;"><input type="submit" value="Update" class="btn btn-success" onClick="updateDetails('+result[0].partialBoothPanchayatId+','+panchayatId+','+result[0].boothId+');"></input></div>';
 		$('#editDetailsDiv').html(str);
-		getPanchayatsForEdit(constituencyId,publicationId,mandalId,result[0].partialpanchayatId);
+		getPanchayatsForEdit(constituencyId,publicationId,mandalId,result[0].panchayatId);
 		//alert(result[0].partialpanchayatId);
 		//$('#partialPanchayatEdit').val(result[0].partialpanchayatId);
 		
