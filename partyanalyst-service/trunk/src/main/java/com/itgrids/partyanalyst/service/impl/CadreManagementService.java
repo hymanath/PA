@@ -798,9 +798,11 @@ public class CadreManagementService {
 						Object object = (Object)localElectionBodyIdsList.get(0);
 						Long cadreLevelLocalElectionBodyId = (Long)object;
 						cadre.setCadreLevelValue(cadreLevelLocalElectionBodyId);
+					} else if("WARD".equalsIgnoreCase(level.getLevel())){
+						cadre.setCadreLevelValue(Long.parseLong(cadreInfo.getStrCadreLevelValue().substring(1)));
 					} else{
 						cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
-					}						
+					}
 					
 					if (IConstants.USER_TYPE_PARTY.equals(cadreInfo.getUserType())&& IConstants.BJP.equalsIgnoreCase(cadreInfo.getUserPartyName())) {
 						if (!cadreInfo.getDesignation().equals(0l))
