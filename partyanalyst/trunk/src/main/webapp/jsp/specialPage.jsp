@@ -1355,7 +1355,7 @@ Tweet</a>
           <div class="pm-inner-cont-sec" id="pm-inner-cont-sec">
             <h1 class="inc-title">About Event</h1>
             <p></p>
-            <div class="read-more"><a href="#">read more</a></div>
+            <div class="read-more"><a href="javascript:{}">read more</a></div>
           </div>
           
           <!--ABOUT POLITICIAN SECTION END--> 
@@ -1387,6 +1387,35 @@ Tweet</a>
           <span style="background-color: #ED5B21; color: #FFFFFF; font-weight: bold;padding: 5px;">Share Your Views On ${specialPageVO.heading}</span>
 		  <div class="fb-comments" data-href="http://www.partyanalyst.com/specialPageAction.action?specialPageId=${specialPageId}" data-num-posts="500" data-width="430" style="margin-top: 9px;"></div>
 		  </div>
+		  <div id="advVideoDiv" >
+		<b>
+		More Videos</b>
+		<div style="margin-left: 12px;"><ul class="video-thumb-sec">
+		<s:iterator value="advVideosList" var="advVideos">
+		<li  style="height:175px;">
+		<a   role="button"  data-toggle="modal"  onClick='openAdvVidepForView("<s:property value="advVideoId"/>")')><img  class="thumbnail" style="width: 85px; height: 85px;" src='<s:property value="thumbnailUrl"/>'/>
+		</a>
+		
+		<a style="cursor: pointer; font-size: 11px; font-family: arial;" onClick='openAdvVidepForView("<s:property value="advVideoId"/>")'><s:property value="description"/></a>
+		</li>
+		
+		</s:iterator>
+		</ul>
+		</div>
+		<div id="moreBtnDiv" ><a role="button" class="btn btn-success" data-toggle="modal" type="button"  style="float: right; margin-top: -12px;" onClick="openMoreViodeosWindow();">More</a></div>
+		</div> 
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h3 id="myModalLabel"></h3>
+			</div>
+			  <div class="modal-body">
+			   <div id="advVideoDialogDiv"></div>
+			  </div>
+			  <div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			  </div>
+		</div>
           <div class="clear"></div>
           <p></p>
           
@@ -1512,6 +1541,50 @@ $(document).ready(function(){
 </script>
 
 <script>
+
+function openAdvVidepForView(id)
+{
+	var jObj=
+	{ 
+		id:id,
+		task:"advVideoDisplay"
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "advVideoAction.action?"+rparam;
+	callAjaxTosaveUserFavouriteLink(jObj,url);
+}
+	
+function openPouUpForVideo(result)
+{
+	var str = '';
+	//var vstr = '';
+	//vstr += '<b style="color:seagreen">'+result.title+'</b>';
+	//$('#myModalLabel').html(vstr);	
+	str += '<div>';
+	str += '<div  style="padding-left: 38px;">'+result.code+'</div>'; 
+	str += '<div  style="margin-top: 23px;"><b style="color:seagreen">Description : </b> '+result.description+'</div>';
+	str += '<div><b style="color:seagreen">Tags : </b> '+result.tags+'</div>';
+	//str += '<div><b>Duration : </b></div><div> '+result.duration+' Seconds</div>';
+	str += '</div>';
+	
+	//$('#modelHeader').html(vstr);	
+	$('#advVideoDialogDiv').html(str);
+	
+	$('#advVideoDialogDiv').dialog({
+		title : ''+result.title+'',
+		width: 500,
+		height : 500
+	}); 
+	
+}
+function openMoreViodeosWindow()
+	{
+		var urlStr="moreVideosAction.action";
+		var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
+		updateBrowser.focus();
+	}
+
 function savefavouriteLink(){
 
 	var pageTitle = '${specialPageVO.title}';
@@ -1547,6 +1620,10 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 									if(jObj.task == "saveFavouriteLink"){
 										$('.favouritelink').hide();
 										alert("Link added successfully");
+									}
+									else if(jObj.task =="advVideoDisplay")
+									{
+										openPouUpForVideo(myResults);
 									}
 								}
 							catch (e) {   

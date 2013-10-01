@@ -42,7 +42,6 @@
 		<link href="styles/newhome_inner_styles.css" rel="stylesheet" type="text/css" />
 		<script src="js/rating/jquery.MetaData.js" type="text/javascript"></script>
 		<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
-			
 	      <!-- <script src="js/slides.min.jquery.js"></script> -->
 		  <script type="text/javascript" src="js/jquery.carousel.js"></script>
 		  <script type="text/javascript" src="js/homePage/newHomePage.js"> </script>
@@ -127,6 +126,9 @@
 								<a href="voters.action" class="btn btn-small btn-primary" >Voter's Guide</a>
 								
 							</div>
+							<!--<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>-->
+ 
+
 			
 		<div class="widget blue quicklinks"><h2><span><i class="icon-random "id="icon_leftsec"></i></span>
 Quick Links</h2>
@@ -522,6 +524,44 @@ Quick Links</h2>
 						<jsp:include page="newsocialtwitter.jsp" />
 						</div>
 				</div>
+				<div id="advVideoDiv" class="widget blue">
+				<h2><span><i class="icon-bookmark "id="icon_leftsec"></i><span>
+				More Videos</h2>
+				<div class="jqCarousel module v-gallary" id="my-jqCarousel-3">
+				<div class="mask" style="height: 207px;"><ul style="width: 2205px;">
+				<s:iterator value="advVideosList" var="advVideos">
+				
+				<li  style="width: 134.375px; height: 146px;">
+				<a  href="#myModal" role="button" data-toggle="modal"  onClick='openAdvVidepForView("<s:property value="advVideoId"/>")')><img  style="width: 100px; height: 95px;" src='<s:property value="thumbnailUrl"/>'/>
+				</a>
+				
+				<a style="cursor: pointer;" onClick='openAdvVidepForView("<s:property value="advVideoId"/>")'><s:property value="description"/></a>
+				</li>
+				
+				</s:iterator>
+				</ul>
+				
+				</div>
+				<div id="moreBtnDiv" ><a href="#moreVideoModal" role="button" class="btn btn-success" data-toggle="modal" type="button"  style="float: right; margin-top: -18px;" onClick="openMoreViodeosWindow();">More</a></div>
+				</div>
+				
+				</div>
+				<!-- Modal -->
+			<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h3 id="myModalLabel"></h3>
+			</div>
+			  <div class="modal-body">
+			   <div id="advVideoDialogDiv"></div>
+			  </div>
+			  <div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			  </div>
+			  
+			  
+			</div>	
+				
 				<!-- Close Center DIV -->			
 			</div>
 		<!--------Right div------>
@@ -670,12 +710,15 @@ Opinion Poll</h2>
 	<div id="fancydivbox">
 	<jsp:include page="custom_jsp_pages/homePagePopupPage1.jsp" flush="true" />
 	</div>
+	<!-- Button to trigger modal -->
+
 </div>
 	<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 	<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 	<link rel="stylesheet" type="text/css" href="js/fancybox/jquery.fancybox-1.3.4.css" media="screen" />
 	<script>
 	
+	//$('#myModal').modal();
 	var loadingFirstTime = '${sessionScope.homePageLoadingFirstTime}';
 	
 	$(document).ready(function(){
@@ -689,7 +732,76 @@ Opinion Poll</h2>
 	var loginMode = '${loginMode}'; 
 	constituencyId = '${sessionScope.USER.constituencyId}';
 	showVotesObtainedForOpinionPoll();
-		  
+		 
+	function openAdvVidepForView(id)
+	{
+		var jsObj=
+		{ 
+			id:id,
+			task:"advVideoDisplay"
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "advVideoAction.action?"+rparam;
+		ajaxResults(jsObj,url);
+	}
+	
+	function openPouUpForVideo(result)
+	{
+		var str = '';
+		var vstr = '';
+		vstr += '<b style="color:seagreen">'+result.title+'</b>';
+		$('#myModalLabel').html(vstr);	
+		str += '<div>';
+		str += '<div  style="padding-left: 57px;">'+result.code+'</div>'; 
+		str += '<div style="margin-top: 23px;"><b style="color:seagreen">Description : </b> '+result.description+'</div>';
+		str += '<div><b style="color:seagreen">Tags : </b> '+result.tags+'</div>';
+		//str += '<div><b>Duration : </b></div><div> '+result.duration+' Seconds</div>';
+		str += '</div>';
+		
+		$('#modelHeader').html(vstr);	
+		$('#advVideoDialogDiv').html(str);
+		
+		$('#myModal').model(); 
+		
+	}
+	function openMoreViodeosWindow()
+	{
+		var urlStr="moreVideosAction.action";
+		var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
+		updateBrowser.focus();
+		/* var str = '';
+		str += '<div><b>From Date : </b> <input type="text" id="fromDate"  style="width: 110px;" onClick="openCal(\'fromDate\');" readonly="true"></input>';
+		str += '<b style="margin-left: 11px;">To Date : </b> <input type="text" id="toDate"  onClick="openCal(\'toDate\');" readonly="true" style="width: 110px;"></input></div>';
+		$('#MoreVideosDiv').html(str);
+		$('#moreVideoModal').model(); */
+	}
+	/* function getVideosForSelectdDates()
+	{
+		var fromDate = $('#fromDate').val();
+		var toDate   = $('#toDate').val();
+		var jsObj=
+		{ 
+			fromDate: fromDate,
+			toDate  : toDate,
+			task    :"getVideosForSelection"
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVideosForSelectionAction.action?"+rparam;
+		ajaxResults(jsObj,url);
+	} */
+	/* function openCal(divId)
+	{
+		$('#'+divId+'').datepicker(
+		{
+			dateFormat: "yy-mm-dd",
+			changeMonth: true,
+            changeYear: true
+			
+		}
+		).datepicker();
+	} */
 	function showVotesObtainedForOpinionPoll()
 	{
     var elmt = document.getElementById("pollsWidgetBody");
@@ -913,7 +1025,10 @@ function ajaxResults(jsObj,url)
  		               success : function( o ) {
 							try {												
 									myResults = YAHOO.lang.JSON.parse(o.responseText);	
-									
+									if(jsObj.task =="advVideoDisplay")
+									{
+										openPouUpForVideo(myResults);
+									}
 									}catch (e) {
 							     
 								}  

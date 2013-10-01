@@ -27,7 +27,7 @@
 <!--  for pagination purpose -->
 <script type="text/javascript" src="js/customPaginator/totalNewsPaginator.js"></script>
 <script type="text/javascript" src="js/customPaginator/messagePaginator.js"></script>
-
+<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 <style type="text/css">
 #showAllNewsDiv #videoGallaryPopUpDiv #buildPhotoGallaryDiv
 #showProfile .ui-widget-header {
@@ -600,7 +600,35 @@ Tweet</a>
 
 		  <div id="commentBoxDiv" style="margin-top:15px;"class="constituencyPageCenterInfoDiv.rounded">
 		  </div>
-                    			  
+		<div id="advVideoDiv" >
+		<b>
+		More Videos</b>
+		<div style="margin-left: 12px;"><ul class="video-thumb-sec">
+		<s:iterator value="advVideosList" var="advVideos">
+		<li  style="height:175px;">
+		<a   role="button"  data-toggle="modal"  onClick='openAdvVidepForView("<s:property value="advVideoId"/>")')><img class="thumbnail" style="width: 85px; height: 85px;" src='<s:property value="thumbnailUrl"/>'/>
+		</a>
+		
+		<a style="cursor: pointer; font-size: 11px; font-family: arial;" onClick='openAdvVidepForView("<s:property value="advVideoId"/>")'><s:property value="description"/></a>
+		</li>
+		
+		</s:iterator>
+		</ul>
+		</div>
+		<div id="moreBtnDiv" ><a role="button" class="btn btn-success" data-toggle="modal" type="button"  style="float: right; margin-top: -12px;" onClick="openMoreViodeosWindow();">More</a></div>
+		</div> 
+		<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+			<h3 id="myModalLabel"></h3>
+			</div>
+			  <div class="modal-body">
+			   <div id="advVideoDialogDiv"></div>
+			  </div>
+			  <div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			  </div>
+		</div>
 	</div>
    </div>
           
@@ -675,13 +703,17 @@ Tweet</a>
 	<div id="showContentDivInnerDiv"></div>
 	<div id="showContentDivInnerDiv"></div>
 	</div>
+	
 	<div id="videoGallaryPopUpDiv"></div>
+	
 	<div id="emailAlertDiv"></div>
 	<div id="sendMessageDiv">
     <div id="constituencySelectDiv"/>
+	
 	</div>
+	
 	<div id="logInDiv"></div>
-
+	
 	<s:if test="customPages != null && customPages.size() > 0">
 		<s:iterator value="customPages" var="custom"> 
 			<s:if test="#custom.type == 'right_navigation'">
@@ -1154,6 +1186,48 @@ var message_Obj = {
 	   
 };
 
+function openAdvVidepForView(id)
+{
+	var jsObj=
+	{ 
+		id:id,
+		task:"advVideoDisplay"
+	};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "advVideoAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+	
+function openPouUpForVideo(result)
+{
+	var str = '';
+	//var vstr = '';
+	//vstr += '<b style="color:seagreen">'+result.title+'</b>';
+	//$('#myModalLabel').html(vstr);	
+	str += '<div>';
+	str += '<div  style="padding-left: 38px;">'+result.code+'</div>'; 
+	str += '<div style="margin-top: 23px;"><b style="color:seagreen">Description : </b> '+result.description+'</div>';
+	str += '<div><b style="color:seagreen">Tags : </b> '+result.tags+'</div>';
+	//str += '<div><b>Duration : </b></div><div> '+result.duration+' Seconds</div>';
+	str += '</div>';
+	
+	//$('#modelHeader').html(vstr);	
+	$('#advVideoDialogDiv').html(str);
+	
+	$('#advVideoDialogDiv').dialog({
+		title : ''+result.title+'',
+		width: 500,
+		height : 500
+	}); 
+	
+}
+function openMoreViodeosWindow()
+{
+	var urlStr="moreVideosAction.action";
+	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	updateBrowser.focus();
+}
 function buildAnalyzeConstituencyWindow()
  {
 	var constituencyId = '${candidateElectionDetails[0].constituencyId}';
@@ -1556,6 +1630,10 @@ function callAjax(jsObj,url)
          if(jsObj.viewtype == "getFirstFourNewsRecordsToDisplay")
 			{
  				showFirstFourNewsRecords(myResults);
+			}
+		 else if(jsObj.task =="advVideoDisplay")
+			{
+				openPouUpForVideo(myResults);
 			}
 		else if(jsObj.task == "getStates")
 			  {    
