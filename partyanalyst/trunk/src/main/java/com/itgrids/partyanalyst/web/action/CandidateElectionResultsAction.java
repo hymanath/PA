@@ -29,6 +29,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AdvVideoVO;
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
 import com.itgrids.partyanalyst.dto.CandidateProfileInfoVO;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IAdvVideoService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.service.IElectionLiveResultsAnalysisService;
@@ -148,7 +150,22 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long savedCommentId;
 	private IContentManagementService contentManagementService;
 	private ContentDetailsVO contentDetailsVO;
-	
+	private IAdvVideoService advVideoService;
+	private List<AdvVideoVO> advVideosList;
+    
+    
+	public List<AdvVideoVO> getAdvVideosList() {
+		return advVideosList;
+	}
+	public void setAdvVideosList(List<AdvVideoVO> advVideosList) {
+		this.advVideosList = advVideosList;
+	}
+	public IAdvVideoService getAdvVideoService() {
+		return advVideoService;
+	}
+	public void setAdvVideoService(IAdvVideoService advVideoService) {
+		this.advVideoService = advVideoService;
+	}
 	
 	
 	public IContentManagementService getContentManagementService() {
@@ -910,6 +927,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO = candidateDetailsService.getCandidateLatestVideos(candidateId,0,20);
 		
 		customPages   = candidateDetailsService.getCustomPagesOfACandidatePage(candidateId);
+		
+		advVideosList = advVideoService.getTopAdvVideosForDisplaying();	
 		
 		if(candidateElectionDetails != null)
 			return SUCCESS;
