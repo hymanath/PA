@@ -16,6 +16,7 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AdvVideoVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.OpinionPollVO;
@@ -26,6 +27,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SpecialPageVO;
 import com.itgrids.partyanalyst.dto.StateElectionsVO;
+import com.itgrids.partyanalyst.service.IAdvVideoService;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IOpinionPollService;
@@ -79,8 +81,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private IOpinionPollService opinionPollService;
 	private IAnanymousUserService ananymousUserService;
 	private QuestionsOptionsVO questionsOptionsVO;
-	
-
+	private IAdvVideoService advVideoService;
+	private List<AdvVideoVO> advVideosList;
 	private OpinionPollVO opinionPollVO;
 	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
@@ -91,6 +93,19 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String timeOut;
 	private String action;
 	
+	
+	public List<AdvVideoVO> getAdvVideosList() {
+		return advVideosList;
+	}
+	public void setAdvVideosList(List<AdvVideoVO> advVideosList) {
+		this.advVideosList = advVideosList;
+	}
+	public IAdvVideoService getAdvVideoService() {
+		return advVideoService;
+	}
+	public void setAdvVideoService(IAdvVideoService advVideoService) {
+		this.advVideoService = advVideoService;
+	}
 	public String getTimeOut() {
 		return timeOut;
 	}
@@ -487,6 +502,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 					return "cadreOnlineReg";
 				} 
 		
+				advVideosList = advVideoService.getTopAdvVideosForDisplaying();	
 		
 		return Action.SUCCESS;
 	}

@@ -17,6 +17,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AdvVideoVO;
 import com.itgrids.partyanalyst.dto.CandidateElectionResultVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -28,6 +29,7 @@ import com.itgrids.partyanalyst.dto.PartyVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.IAdvVideoService;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.impl.PartyDetailsService;
@@ -68,9 +70,22 @@ public class PartyPageAction extends ActionSupport implements
     private ICandidateDetailsService candidateDetailsService;
     private Boolean isSubscribed;
     private String partyPageLoadingFirstTime;
+    private IAdvVideoService advVideoService;
+	private List<AdvVideoVO> advVideosList;
     
     
-    
+	public List<AdvVideoVO> getAdvVideosList() {
+		return advVideosList;
+	}
+	public void setAdvVideosList(List<AdvVideoVO> advVideosList) {
+		this.advVideosList = advVideosList;
+	}
+	public IAdvVideoService getAdvVideoService() {
+		return advVideoService;
+	}
+	public void setAdvVideoService(IAdvVideoService advVideoService) {
+		this.advVideoService = advVideoService;
+	}
 	public Boolean getIsSubscribed() {
 		return isSubscribed;
 	}
@@ -279,6 +294,7 @@ public class PartyPageAction extends ActionSupport implements
 		fileVO = partyDetailsService.getPartyLatestVideos(partyId,0,20);
 		customPages   = partyDetailsService.getCustomPagesOfAPartyPage(partyId);
 
+		advVideosList = advVideoService.getTopAdvVideosForDisplaying();	
 		return Action.SUCCESS;
 	}
 
