@@ -6109,5 +6109,11 @@
 			  	<param name="root">resultStatus</param>
 			 </result>
 		 </action>
+		 
+		<action name="getPartiesPerformanceInDiffElectionAction" class="constituencyPageAction" method="getPartiesPerformanceInDiffElection">
+			<result type="json" name="success">
+			 <param name="root">partyPerformenceList</param>
+			</result>
+		</action>
 		</package>
 </struts>      
