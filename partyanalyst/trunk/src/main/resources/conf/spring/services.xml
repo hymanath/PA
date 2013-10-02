@@ -1793,6 +1793,8 @@
       	<property name="transactionTemplate" ref="transactionTemplate" />
       	<property name="panchayatDAO" ref="panchayatDAO" />	
       	<property name="boothDAO" ref="boothDAO" />	
+      	<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />	
+      	<property name="hamletDAO" ref="hamletDAO" />
     </bean>
     
 </beans>		

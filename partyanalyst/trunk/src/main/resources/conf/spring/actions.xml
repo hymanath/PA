@@ -1319,6 +1319,8 @@
 	<bean id="partialBoothPanchayatAction" class="com.itgrids.partyanalyst.web.action.PartialBoothPanchayatAction" singleton="false">
 	    <property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	     <property name="partialBoothPanchayatService" ref="partialBoothPanchayatService" />
+	     <property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 </beans>	
 	

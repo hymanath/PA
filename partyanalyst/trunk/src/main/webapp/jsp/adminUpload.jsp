@@ -549,6 +549,16 @@
 										</a>
 									</span><br>
 									</fieldset></td>
+									
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Partial Booths Mapping</legend>
+									<span class="fontStyle">
+										Partial Booths Mapping:&nbsp;
+										<a class="alinkstyle" href="<s:url action="partialBoothPanchayatAction"/>">  Assign
+										</a>
+									</span><br>
+									</fieldset></td>
 								</tr>
 								<tr>
 								<td>

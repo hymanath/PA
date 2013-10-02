@@ -113,6 +113,15 @@ function callAjaxToGetData(jsObj,url)
 				{
 					buildUdatePartianBoothDetails(myResults);
 				}
+				
+				else if(jsObj.task == "getHamlets" && jsObj.name == "add" )
+				{
+					buildSelectBoxValues(myResults,"hamlet");
+				}
+				else if(jsObj.task == "getHamlets" && jsObj.name == "edit" )
+				{
+					buildSelectBoxValuesForPanchaytEdit(myResults,"hamletEdit",jsObj.hamletId);
+				}
 			}catch (e) {
 			
 			}  
@@ -196,6 +205,33 @@ function getPanchayts()
 	callAjaxToGetData(jsObj,url);
 	
 }
+
+function getHamlets()
+{
+	var jsObj=
+	{
+		panchaytId     : $('#partialPanchayat option:selected').val(),
+		name           : "add",
+		task           : "getHamlets"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getHamletsForPanchayatAction.action?"+rparam;	
+	callAjaxToGetData(jsObj,url);
+}
+
+function getHamletsForEdit(panchayatId,hamletId)
+{
+	var jsObj=
+	{
+		panchaytId     : panchayatId,
+		hamletId       : hamletId,
+		name           : "edit",
+		task           : "getHamlets"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getHamletsForPanchayatAction.action?"+rparam;	
+	callAjaxToGetData(jsObj,url);
+}
 function getPanchayatsForEdit(constituencyId,publicationId,mandalId,partialPanchayatId)
 {
 	var jsObj=
@@ -250,6 +286,10 @@ function getBooths()
 
 function saveDetails()
 {
+	var hamletIds = new Array();
+	$('#hamlet :selected').each(function(i, selected){ 
+	  hamletIds.push($(selected).val()); 
+	});
 	var jsObj=
 	{
 		panchayatId   : $("#panchayat option:selected").val(),
@@ -257,6 +297,7 @@ function saveDetails()
 		description   : $('#descriptionId').val(),
 		pdescription  : $('#PartialDescription').val(), 
 		ppanchayatId  : $("#partialPanchayat option:selected").val(),
+		hamletsIds    : hamletIds,
 		task          : "savePartianBoothDetails"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -305,6 +346,7 @@ function buildPartialBoothDetails(result)
 		str += '<tr>';
 		str += '<th>Booth</th>';
 		str += '<th>Panchayat</th>';
+		str += '<th>Hamlet</th>';
 		str += '<th>Description</th>';
 		str += '<th>Actions</th>'
 		str += '</tr>';
@@ -313,6 +355,7 @@ function buildPartialBoothDetails(result)
 			str += '<tr id="'+i+'">';
 			str += '<td>'+result[i].boothName+'</td>';
 			str += '<td>'+result[i].panchayatName+'</td>';
+			str += '<td>'+result[i].hamletName+'</td>';
 			str += '<td>'+result[i].description+'</td>';
 			str += '<td><a onClick="editSelectedPartialBooth('+result[i].partialBoothPanchayatId+');"><img src="images/icons/edit.png" style="border: 0px none; text-decoration: none; margin-left: 19px;" title="edit"></a><a onClick="deleteSelectedPartialBooth('+result[i].partialBoothPanchayatId+','+result[i].boothId+','+i+');"><img src="images/icons/delete.png" style="border: 0px none; text-decoration: none; margin-left: 19px;" title="delete"></a></td>';
 			str += '</tr>';
@@ -375,7 +418,7 @@ var panchayatId;
 		
 		//getBoothsForEdit(constituencyId,publicationId,panchayatId);
 		var str = '';
-		str += '<div id="updateStatusDiv" style="color:green;"></div>'
+		str += '<div id="updateStatusDiv"></div>'
 		str += '<div><b>Constituency : </b> <span  style="margin-left: 81px;">'+constituencyName+' </span></div></br>';
 		str += '<div><b>Publication Date : </b> <span  style="margin-left: 51px;">'+publicationDate+' </span></div></br>';
 		str += '<div><b>Mandal : </b> <span  style="margin-left: 126px;">'+mandalName+' </span></div></br>';
@@ -387,10 +430,13 @@ var panchayatId;
 		//str += '<div><b>Booth: </b> <select id="BoothEdit"  style="margin-left: 138px;"></select></div>';
 		str += '<div><b>Description : </b><textarea    id="descriptionEdit" style="margin-left: 89px;">'+result[0].description+'</textarea></div>'
 		str += '<div><b>Panchayat: </b> <select id="partialPanchayatEdit"  style="margin-left: 100px;"></select></div>';
+		str += '<div><b>Hamlet: </b> <select id="hamletEdit"  style="margin-left: 125px;"></select></div>';
 		str += '<div><b>Description : </b><textarea    id="PartialDescriptionEdit" style="margin-left: 89px;">'+result[0].partialDescription+'</textarea></div>';
-		str += '<div id="updateButtonDiv" style="margin-left: 170px; margin-top: 12px; float: left;"><input type="submit" value="Update" class="btn btn-success" onClick="updateDetails('+result[0].partialBoothPanchayatId+','+panchayatId+','+result[0].boothId+');"></input></div>';
+		str += '<div id="updateButtonDiv" style="margin-left: 170px; margin-top: 12px; float: left;"><input type="submit" value="Update" class="btn btn-success" onClick="updateDetails('+result[0].partialBoothPanchayatId+','+panchayatId+','+result[0].boothId+','+result[0].hamletId+');"></input></div>';
 		$('#editDetailsDiv').html(str);
 		getPanchayatsForEdit(constituencyId,publicationId,mandalId,result[0].panchayatId);
+		
+		getHamletsForEdit(result[0].panchayatId,result[0].hamletId);
 		//alert(result[0].partialpanchayatId);
 		//$('#partialPanchayatEdit').val(result[0].partialpanchayatId);
 		
@@ -398,14 +444,14 @@ var panchayatId;
 		$('#editDetailsDiv').dialog({
 		title : "Update Details...",
 		width : 500,
-		height : 500
+		height : 550
 		});
 		
 		
 	}
 }
 
-function updateDetails(id,panchayatId,boothId)
+function updateDetails(id,panchayatId,boothId,hamletId)
 {
 	var jsObj=
 	{
@@ -415,6 +461,7 @@ function updateDetails(id,panchayatId,boothId)
 		description   : $('#descriptionEdit').val(),
 		pdescription  : $('#PartialDescriptionEdit').val(), 
 		ppanchayatId  : $("#partialPanchayatEdit option:selected").val(),
+		hamletId  	  : $("#hamletEdit option:selected").val(),
 		task          : "updatePartianBoothDetails"
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -424,7 +471,15 @@ function updateDetails(id,panchayatId,boothId)
 
 function buildUdatePartianBoothDetails(result)
 {
-	$('#updateStatusDiv').html(''+result.message+'');
+	if(result.resultCode == 0)
+	{
+		$('#updateStatusDiv').html('<b style="color:green">'+result.message+'</b>');
+	}
+	else
+	{
+		$('#updateStatusDiv').html('<b style="color:red">'+result.message+'</b>');
+	}
+	
 }
 
 function validateTheFields()
@@ -481,7 +536,8 @@ function validateTheFields()
 	<div><b>Panchayat : </b><select id="panchayat" name="panchayatsList" style="margin-left: 121px;" onChange="getBooths();"><option value="0">Select Panchayat</option></select></div>
 	<div><b>Booth : </b><b style="color:red">*</b><select id="booth" name="boothsList" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>
 	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;"></textarea></div>
-	<div><b>Panchayat : </b><b style="color:red">*</b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 116px;"><option value="0">Select Panchayat</option></select></div>
+	<div><b>Panchayat : </b><b style="color:red">*</b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 116px;" onChange="getHamlets();"><option value="0">Select Panchayat</option></select></div>
+	<div><b>Hamlet : </b><b style="color:red">*</b><select id="hamlet" name="hamletList" style="margin-left: 140px;" multiple ><option value="0">Select Hamlet</option></select></div>
 	<!--<div><b>Booth : </b><select id="PartialBooth" name="PartialBooth" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>-->
 	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;"></textarea></div>
 	<div id="submitButton" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Submit" class="btn btn-success" onClick="validateTheFields();"></input></div>
