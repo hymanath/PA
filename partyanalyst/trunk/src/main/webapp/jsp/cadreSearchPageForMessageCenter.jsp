@@ -552,7 +552,6 @@ var locationValue;
 		 locationValue =  window.opener.selectedCriteria.cadreReportLevelValue;
 	else
 		locationValue = window.opener.selectedCriteria.reportLevelValue;
-
 var jsObj=
 		{	extra				    :"one",
 			reportLevel				: window.opener.selectedCriteria.cadreLocationId,
@@ -561,7 +560,7 @@ var jsObj=
 			socialStatusArray		: [],
 			cadreType				: "all",
 			cadreName				: window.opener.selectedCriteria.searchName,
-			searchType				: "location",
+			searchType				: window.opener.selectedCriteria.searchAreaType,
 			gender					: genderType,
 			searchCriteria			: "all",
 			searchCriteriaArray		: [],
@@ -576,6 +575,7 @@ var jsObj=
 			cadreRegTypeRadioValue	: "allCadres",	
 			task					: "cadreSearch",
 		    memberShipNo            :"" ,
+	        requestFrom             :"messageCenter" 
 	
 		}
 		

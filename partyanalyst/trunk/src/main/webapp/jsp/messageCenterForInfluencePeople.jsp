@@ -261,11 +261,12 @@ var votersByLocBoothColumnDefs = [
 /*{key:"casteIds",label:"Caste",formatter:YAHOO.widget.DataTable.Caste}*/
 ];
 
+
 //parentLocationId
 var urlStr = "searchCandidatesForVoiceSmsAction.action?publicationDateId=8&locationType="+locationType+"&locationValue="+locationId+"&parentLocationId="+parentLocationId+"&";
 
 
-urlStr += "isAgeSelected="+isAgeSelected+"&isCasteSelected="+isCasteSelected+"&isFamilySelected="+isFamilySelected+"&isNameSelected="+isNameSelected+"&isGenderSelected="+isGenderSelected+"&";
+urlStr += "isAgeSelected="+isAgeSelected+"&isCasteSelected="+isCasteSelected+"&isFamilySelected="+isFamilySelected+"&isNameSelected="+isNameSelected+"&isGenderSelected="+isGenderSelected+"&searchAreaType="+window.opener.selectedCriteria.searchAreaType+"&";
 
    if(isAgeSelected == "true")
 	   urlStr += "startAge="+startAge+"&endAge="+endAge+"&";

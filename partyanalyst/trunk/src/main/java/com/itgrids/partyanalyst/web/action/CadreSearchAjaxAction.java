@@ -378,6 +378,19 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		else if(jObj.getString("cadreType").equalsIgnoreCase("normal"))
 			partyCadreDetailsVO.setCadreType(IConstants.CADRE_MEMBER_TYPE_NORMAL);
 		
+		
+		try
+		{
+		   String requestForm =	jObj.getString("requestFrom");
+		   
+		   if(requestForm.equalsIgnoreCase("messageCenter"))
+			   partyCadreDetailsVO.setMessageCenter(true);
+			
+		}catch(Exception e){			
+			 partyCadreDetailsVO.setMessageCenter(false);
+
+		}
+		
 		partyCadreDetailsVO.setCadreLevelId(new Long(jObj.getString("reportLevel")));
 		partyCadreDetailsVO.setCadreLocationId(new Long(jObj.getString("reportLocationValue")));
 		partyCadreDetailsVO.setIsSocialStatus(jObj.getBoolean("socialStatus"));
@@ -473,6 +486,7 @@ public class CadreSearchAjaxAction extends ActionSupport implements ServletReque
 		String windowTask = request.getParameter("windowTask");
 		Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
 		Integer maxResult = Integer.parseInt(request.getParameter("results"));
+		
 		
 		Long registrationId = user.getParentUserId() == null ? user.getRegistrationID() : user.getParentUserId() ;
 		

@@ -296,6 +296,7 @@ public String searchCandidatesForVoiceSms(){
 		searchVO.setConstituencyId(Long.valueOf((request.getParameter("parentLocationId"))));
 		
 		
+		
 		if(searchVO.isAgeSelected()){
 			searchVO.setStartAge(Integer.parseInt(request.getParameter("startAge")));
 			searchVO.setEndAge(Integer.parseInt(request.getParameter("endAge")));
@@ -321,6 +322,8 @@ public String searchCandidatesForVoiceSms(){
 		searchVO.setMaxRecords(maxRecords);
 		searchVO.setColumnName(columnName);
 		searchVO.setOrder(order);
+		
+		searchVO.setSearchAreaType(request.getParameter("searchAreaType"));
 		
 		influencPeopleDetailsList = voiceSmsService.getAllInfluencingPeopleDetailsForVoiceSMS(searchVO);
 		int totalResultCount = influencPeopleDetailsList.get(0).getTotalResultsCount();
