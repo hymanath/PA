@@ -168,7 +168,7 @@ function showLoginStatus(results)
   {
     $('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
     var tempStr = window.location.href;
-										
+						
      if(tempStr.indexOf("homePage") != -1 && results.message == "PARTY_ANALYST_USER")
      {
        window.location.href = "dashBoardAction.action";
@@ -177,6 +177,7 @@ function showLoginStatus(results)
 	 {
 		window.location.href = "userProfile.action";
 	 }
+	
 	 else if(results.message=="IPFAILURE")
 	 {
 		$("#ajaxcallimage").hide();
@@ -184,7 +185,14 @@ function showLoginStatus(results)
 	 }
      else
      {
-		  window.location.reload();
+	 if(tempStr.indexOf("loginAction") != -1 && results.message == "PARTY_ANALYST_USER")
+     {
+       window.location.href = "dashBoardAction.action";
+     }
+	 else if(tempStr.indexOf("loginAction") != -1 && results.message == "FREE_USER")
+	 {
+		window.location.href = "userProfile.action";
+	 }
      }
   }
 
