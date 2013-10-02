@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,14 +11,17 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.jfree.util.Log;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.PartialBoothPanchayatVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IPartialBoothPanchayatService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -37,6 +41,10 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 	private String task;
 	JSONObject jObj = null;
 	private List<PartialBoothPanchayatVO> partialBoothPanchayatList;
+	private List<SelectOptionVO> hamletsList;
+	private IVotersAnalysisService votersAnalysisService;
+	private EntitlementsHelper entitlementsHelper;
+	private String isAdmin ;
 	public void setServletContext(ServletContext context) {
 		this.context = context;
 	}
@@ -111,6 +119,42 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		this.partialBoothPanchayatList = partialBoothPanchayatList;
 	}
 
+	
+	public List<SelectOptionVO> getHamletsList() {
+		return hamletsList;
+	}
+
+	public void setHamletsList(List<SelectOptionVO> hamletsList) {
+		this.hamletsList = hamletsList;
+	}
+
+	
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
+
+	
+	public String getIsAdmin() {
+		return isAdmin;
+	}
+
+	public void setIsAdmin(String isAdmin) {
+		this.isAdmin = isAdmin;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -119,9 +163,16 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		{
 			return Action.ERROR;
 		}
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_SEARCH_AND_EDIT))
+			return ERROR;
+		
+		if(entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
+				isAdmin = "true";
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
+		userAccessConstituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		//userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		//constituencies = suggestiveModelService.getConstituenciesForUserAccessByStateId(userAccessConstituencyList,electionTypeId,electionYear);
 		userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		return Action.SUCCESS;
@@ -134,7 +185,13 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 			String param = null;
 			param = getTask();
 			jObj = new JSONObject(param);
-			resultStatus = partialBoothPanchayatService.savePartialBoothPanchayaDetails(jObj.getLong("panchayatId"),jObj.getLong("boothId"),jObj.getLong("ppanchayatId"),jObj.getString("description"),jObj.getString("pdescription"));
+			List<Long> hamletIds = new ArrayList<Long>();
+		   JSONArray jArray = jObj.getJSONArray("hamletsIds");
+		   for (int i = 0; i < jArray.length(); i++) 
+		   {
+			   hamletIds.add(new Long(jArray.get(i).toString()));
+		   }
+			resultStatus = partialBoothPanchayatService.savePartialBoothPanchayaDetails(jObj.getLong("panchayatId"),jObj.getLong("boothId"),jObj.getLong("ppanchayatId"),jObj.getString("description"),jObj.getString("pdescription"),hamletIds);
 			
 		} catch (Exception e) {
 			Log.error("exception raised in savePartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
@@ -189,10 +246,24 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 			String param = null;
 			param = getTask();
 			jObj = new JSONObject(param);
-			resultStatus = partialBoothPanchayatService.updatePartialBoothPanchayaDetails(jObj.getLong("id"),jObj.getLong("panchayatId"),jObj.getLong("boothId"),jObj.getLong("ppanchayatId"),jObj.getString("description"),jObj.getString("pdescription"));
+			resultStatus = partialBoothPanchayatService.updatePartialBoothPanchayaDetails(jObj.getLong("id"),jObj.getLong("panchayatId"),jObj.getLong("boothId"),jObj.getLong("ppanchayatId"),jObj.getString("description"),jObj.getString("pdescription"),jObj.getLong("hamletId"));
 			
 		} catch (Exception e) {
 			Log.error("exception raised in updatePartialBoothDetails() in PartialBoothPanchayatAction Class" , e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getHamletsInaPanchayat()
+	{
+		try {
+			LOG.debug("Enterd into getHamletsInaPanchayat() in PartialBoothPanchayatAction Class");
+			String param = null;
+			param = getTask();
+			jObj = new JSONObject(param);
+			hamletsList = partialBoothPanchayatService.getHamletsIaAPanchaya(jObj.getLong("panchaytId"));
+		} catch (Exception e) {
+			Log.error("exception raised in getHamletsInaPanchayat() in PartialBoothPanchayatAction Class" , e);
 		}
 		return Action.SUCCESS;
 	}

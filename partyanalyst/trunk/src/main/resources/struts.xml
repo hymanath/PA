@@ -6115,5 +6115,11 @@
 			 <param name="root">partyPerformenceList</param>
 			</result>
 		</action>
+				 
+		<action name="getHamletsForPanchayatAction" class="partialBoothPanchayatAction" method="getHamletsInaPanchayat">
+			<result type="json" name="success">
+			  	<param name="root">hamletsList</param>
+			 </result>
+		 </action>
 		</package>
 </struts>      
