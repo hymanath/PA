@@ -9,12 +9,14 @@ public class PartialBoothPanchayatVO implements Serializable{
 	private Long     panchayatId;
 	private Long     boothId;
 	private Long     partialpanchayatId;
+	private Long     hamletId;
 	
 	private String   panchayatName;
 	private String   boothName;
 	private String   description;
 	private String   partialPanchayatName;
 	private String   partialDescription;
+	private String   hamletName;
 	
 	
 	public Long getPartialBoothPanchayatId() {
@@ -70,6 +72,18 @@ public class PartialBoothPanchayatVO implements Serializable{
 	}
 	public void setPartialDescription(String partialDescription) {
 		this.partialDescription = partialDescription;
+	}
+	public Long getHamletId() {
+		return hamletId;
+	}
+	public void setHamletId(Long hamletId) {
+		this.hamletId = hamletId;
+	}
+	public String getHamletName() {
+		return hamletName;
+	}
+	public void setHamletName(String hamletName) {
+		this.hamletName = hamletName;
 	}
 	
 	

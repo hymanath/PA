@@ -103,6 +103,18 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 		return (Long)query.uniqueResult();
 	}
 	
+	public Long getBoothPanchayatDetails(Long panchayatId,Long boothId,Long hamletId)
+	{
+		Query query = getSession().createQuery("select model.partialBoothPanchayatId from " +
+				" PartialBoothPanchayat model where " +
+				" model.panchayat.panchayatId = :panchayatId and  " +
+				" model.booth.boothId = :boothId and " +
+				" model.hamlet.hamletId = :hamletId ");
+		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("boothId", boothId);
+		query.setParameter("hamletId", hamletId);
+		return (Long)query.uniqueResult();
+	}
 	public List<Object[]> getPartialBoothsAndPanchayats(Long mandalId,Long publicationId)
 	{
 		Query query = getSession().createQuery("select model.partialBoothPanchayatId , " +//0
@@ -110,7 +122,9 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 				" model.panchayat.panchayatName , " +//2
 				" model.booth.boothId," +//3
 				" model.booth.partNo ," +//4
-				" model.description  " +//5
+				" model.description , " +//5
+				" model.hamlet.hamletId ," +//6
+				" model.hamlet.hamletName " +//7
 				" from PartialBoothPanchayat model where  " +
 				" model.booth.tehsil.tehsilId = :mandalId and " +
 				" model.booth.publicationDate.publicationDateId = :publicationId " +
@@ -129,7 +143,9 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 				" model.booth.partNo , " +//3
 				" model.booth.panchayat.panchayatId , " +//4
 				" model.booth.panchayat.panchayatName, " +//5
-				" model.description  " +//6
+				" model.description  ," +//6
+				" model.hamlet.hamletId ," +//7
+				" model.hamlet.hamletName " +//8
 				" from PartialBoothPanchayat model where " +
 				" model.partialBoothPanchayatId = :id ");
 		query.setParameter("id", id);

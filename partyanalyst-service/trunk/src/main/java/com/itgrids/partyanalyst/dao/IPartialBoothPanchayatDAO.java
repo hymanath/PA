@@ -35,5 +35,7 @@ public interface IPartialBoothPanchayatDAO extends
 	public int deleteSelectedMultiplePartialBoothPanchayat(Long boothId);
 	
 	public int updateDescriptionForPartialPanchayat(Long panchayatId,Long boothId,String description);
+	
+	public Long getBoothPanchayatDetails(Long panchayatId,Long boothId,Long hamletId);
 
 }
