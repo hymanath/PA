@@ -124,7 +124,7 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
     
     private List<MandalInfoVO> mandalInfoVOsList;
     
-    private List<SelectOptionVO> resultData,ageDetailsList;
+    private List<SelectOptionVO> resultData,ageDetailsList,partialBoothList;
     
     private VoterInfo voterInfo;
     
@@ -137,6 +137,14 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 	private Long mandalId,panchayatId,boothId;
 	private String type;
     
+	public List<SelectOptionVO> getPartialBoothList() {
+		return partialBoothList;
+	}
+
+	public void setPartialBoothList(List<SelectOptionVO> partialBoothList) {
+		this.partialBoothList = partialBoothList;
+	}
+
 	public List<VotersDetailsVO> getCasteDetailsVO() {
 		return casteDetailsVO;
 	}
@@ -2176,4 +2184,25 @@ return Action.SUCCESS;
 		return Action.SUCCESS;
 	}
 	
+	public String getPartialBoothDetails(){
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+			return ERROR;
+		Long userId = user.getRegistrationID();
+		try{
+		 jObj = new JSONObject(getTask());
+		 if(jObj.getString("task").equalsIgnoreCase("getPartialBoothDetails")){
+		 Long id=jObj.getLong("id");
+		 Long publicationId = jObj.getLong("publicationId");
+		 Long constituencyId = jObj.getLong("constituencyId");
+		 String type = jObj.getString("type");
+		partialBoothList=votersAnalysisService.getPartialBoothDetails(id,publicationId,constituencyId,type);
+		 }
+		}catch (Exception e) {
+			e.printStackTrace();
+			 log.error("Exception Occured in getWardsListForMuncipality() method,Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
 }
