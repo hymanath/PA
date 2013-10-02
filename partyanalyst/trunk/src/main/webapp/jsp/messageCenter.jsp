@@ -379,6 +379,8 @@ $('#reportLevel').val(8);
 	$('.searchType').change(function(){
 		if($(this).val() == "cadre")
 		{
+        $('#selectedAreaType').show();
+		$(":radio[value=level]").attr('checked',true);
 		getallConstituencies($('#districtList').val());
 		$('#mandalField').find('option').remove().end()
 		.append('<option value="0">Select Mandal</option>').val('');
@@ -406,7 +408,11 @@ $('#reportLevel').val(8);
 			populateConstituencies();
 		}
 		else if($(this).val() == "influencePeople")
-		{ 
+		{
+			$('#selectedAreaType').show();
+			$(":radio[value=level]").attr('checked',true);
+
+
 		getallConstituencies($('#districtList').val());
 		$('#mandalField').find('option').remove().end()
 		.append('<option value="0">Select Mandal</option>').val('');
@@ -445,6 +451,7 @@ $('#reportLevel').val(8);
 		}
 		else if($(this).val() == "voter")
 		{
+			        $('#selectedAreaType').hide();
 			//$("#reportLevel option").eq(4).before($("<option></option>").val(3).html("Panchayat"));
 		    $("#reportLevel option[value='8']").remove();
 			$("#reportLevel option[value='9']").remove();
@@ -480,7 +487,7 @@ $('#reportLevel').val(8);
 		}else
 	    {
 			ajaxToGetRecordingDetails();
-            getVerifiedNumbersOfUser();
+            //getVerifiedNumbersOfUser();
            // getVoiceSmsHistoryOfUser('hide');
 			getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
 
@@ -833,6 +840,7 @@ var gender = "";
 var searchArea='constituency';
 var cadreLocationId =1;
 var cadreReportLevelValue = 1;
+var searchAreaType = "level";
 
 function getCandidatesData(sentType){
 	casteIds='';
@@ -849,7 +857,8 @@ function getCandidatesData(sentType){
 		 gender=$('#genderDiv input:radio:checked').val();
 		 reportLevelValue = $("#reportLevel").val();
 		 publicationDateId = $("#publicationDateList").val();
-	
+		 searchAreaType = $('input:radio[name=searchBasedRadio]:checked').val();
+
 	
 		var panchayatFieldId = 0; 
 		var wardFieldId = $("#wardField").val(); 
@@ -970,6 +979,7 @@ function getCandidatesData(sentType){
 			  selectedCriteria.searchName = searchName;
 			  selectedCriteria.cadreLocationId = cadreLocationId;
 			  selectedCriteria.cadreReportLevelValue = cadreReportLevelValue;
+			  selectedCriteria.searchAreaType = searchAreaType;
 
 			  selectedCriteria.socialStatus = false;
 			  selectedCriteria.consituencyId =  $("#constituencyList").val();
@@ -1105,6 +1115,12 @@ clearOptionsListForSelectElmtId("pollingStationField");
 		   
 		<div id="AlertMsgs" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
+
+	  <div style="margin-left:186px;margin-bottom:10px;" id="selectedAreaType">
+	  	<label  style="float:left;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="level" checked="checked"/>Region Level</label>
+
+	    <label style="float:left;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="location"/>Location</label>
+	  </div>
      
 	  <div id="reportLevelDiv"><span style="margin-left: 5px;">Select Level</span><font class="requiredFont">*</font>
 	  <select id="reportLevel" class="selectWidth" style="margin-left:70px;width:165px;" name="constituencyList" onchange="showReportsLevels(this.options[this.selectedIndex].value);">
@@ -1385,7 +1401,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
   <h4 style="color:#3A87AD;margin:40px 0px 0px 128px;"><u>AUDIO FILES AVAILABLE</u><font style="color:red;">*</font><a href="javascript:{ajaxToGetRecordingDetails()}"><img src="images/icons/refreshImg.png" alt="Processing Image" title="Click here to refresh audio files"/></a></h4>
   <div id="audioFilesDiv"></div>
 
-  <h4 style="color:#3A87AD;margin:40px 0px 0px 124px;"><u>VERIFIED NUMBERS TO SEND VOICE SMS</u><font style="color:red;">*</font></h4>
+ <!-- <h4 style="color:#3A87AD;margin:40px 0px 0px 124px;"><u>VERIFIED NUMBERS TO SEND VOICE SMS</u><font style="color:red;">*</font></h4>-->
   <div id="verifiedNumbersDiv"></div>
 
   <div style="margin:14px 0px 0px 116px"><label><input type="checkbox" style="margin:0px;" id="termsAndConditions"/><span style="margin:0px 0px 0px 7px;">I have read and agree to the <a href="javascript:{showTermsAndConditiond();}">Terms and Conditions</a></span></label>
@@ -1447,7 +1463,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
  </div>
 
 <div style="margin-top:15px;">
- <a class="btn pull-left btn-primary" id="historyBtn" href="javascript:{openSmsHistoryWindow();}" style="display:none;">Click Here To See Voice SMS History</a>
+ <!--<a class="btn pull-left btn-primary" id="historyBtn" href="javascript:{openSmsHistoryWindow();}" style="display:none;">Click Here To See Voice SMS History</a>-->
 
  <span id="successMsg" style="font-weight:bold;color:green;margin-left:200px;"></span>
 
@@ -1535,11 +1551,11 @@ function validateFieldsForSendingSms()
 		error = true;
 	}
 
-	if(senderNumber == undefined)
+	/*if(senderNumber == undefined)
 	{
 		str+='<b>Select a sender number to sent sms</b></br>';
 		error = true;
-	}
+	}*/
 
 	if(!$("#termsAndConditions").prop('checked') == true){
        

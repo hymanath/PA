@@ -449,9 +449,10 @@ public class VoiceSmsAction implements ServletRequestAware{
 			 voiceSmsResponseDetailsVO.setAllmobileNumbers(allMobileNumbers);
 
 			
-			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"),voiceSmsResponseDetailsVO);
+			 //status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"),voiceSmsResponseDetailsVO);
 			 
 			//status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,request.getParameter("mobileNumbers"),Long.parseLong(request.getParameter("senderMobileNumber")),request.getParameter("description"));
+			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),null,jObj.getString("description"),voiceSmsResponseDetailsVO);
 		}
 		catch(Exception e)
 		{
