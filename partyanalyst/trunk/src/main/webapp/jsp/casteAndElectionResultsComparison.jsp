@@ -104,6 +104,23 @@ input, button, select, textarea {
 	{
 		margin-left: 10px;
 	}
+
+	
+	#casteTable th {
+    text-align: center;
+    width: 14%;
+	}
+	#casteTable th {
+    background: none repeat scroll 0 0 #D9EDF7;
+    color: #454545;
+    }
+	#castTableDiv{ background: #FFFFFF;overflow-x: scroll;}
+	#castTableDiv{margin-bottom: 47px;
+    margin-top: 24px;
+    padding-bottom: 23px;}
+	.table thead th {
+    vertical-align: bottom;
+   }
  </style>
  <script type="text/javascript">
   var locationSelected = "mandal";
@@ -332,6 +349,8 @@ input, button, select, textarea {
 									  
 									  resultsData = myResults;
 									  buildChart("voterscount");
+									  buildTable();
+
 									}
 									else if(jsObj.task == "getConstiEleAndPartiesForSelected")
 									{
@@ -2046,6 +2065,150 @@ input, button, select, textarea {
 		<span class="label label-info btn btn-info" style="padding:5px;" id="hide_votes">Hide All 	</span>
 	</div>
 	
+	<div id="castTableMainDiv" class="widget blue" style="display:none;">
+	 <h4>Caste Wise Votes Analysis</h4>
+	  <div id="castTableDiv"></div>
+	</div>
+
 	<div>
+    
+
+	<script type="text/javascript">
+
+	function buildTable()
+	{
+	
+     var result = resultsData.casteWiseResultList;
+	 if(resultsData == null)
+	  return;
+     
+	 $("#castTableMainDiv").css("display","block");
+	 $("#castTableDiv").html('');
+
+	 var casteStr = resultsData.attributeResults;
+	 var castPercentage = resultsData.attributePercnts;
+    
+	 var castArray = [];
+	 for(var i in casteStr)
+	 {
+	   var name = i.split(" Votes");
+	    if(castArray.indexOf(name[0]) == -1)
+		   castArray.push(name[0]);
+		   	   
+	 } 
+	 castArray.sort();
+	
+	 var str = '';
+	 str +='<table class="table table-bordered table-hover" id="casteTable">';
+	 str +='<tr>';
+	 str +='<th rowspan="2">Name</th>';
+	  if(castArray != null && castArray.length > 0)
+	  {
+       for(var j in casteStr)
+	    str +='<th colspan="2">'+j.replace(" Votes","")+'</th>';
+	  }
+     
+
+	  for(var j in result)
+	  {
+        
+       var partieslength = result[j].partiesList.length;
+       var count = 3+(partieslength*2);
+       str +='<th colspan="'+count+'">'+result[j].year+" "+result[j].type+'</th>';
+
+      }
+	
+
+	  str +='</tr>';
+	  str +='<tr>';
+      if(castArray != null && castArray.length > 0)
+	  {
+	    for(var j in castArray)
+	    {
+	     str += '<th >Votes</th>';
+	     str += '<th>%</th>';
+	    }
+	  }
+
+	  for(var j in result)
+	  {
+	     str += '<th>Total Votes</th>';
+	     str += '<th>Polled Votes</th>';
+	     str += '<th>Polled Votes %</th>';
+          for(var k in result[j].partiesList)
+	      {
+		   str += '<th>'+result[j].partiesList[k].name+'</th>';
+	       str += '<th>'+result[j].partiesList[k].name+' %</th>';
+	      }
+
+	   }
+
+	 str +='</tr>';
+	 for(var m in resultsData.locationNames)
+	 {
+	  str +='<tr>';
+	  str +='<td>'+resultsData.locationNames[m]+'</td>';
+	   if(castArray != null && castArray.length > 0)
+	   {
+		 
+	      for(var l in casteStr)
+		  {
+			if(casteStr[l][m] != null)
+			 str +='<td>'+casteStr[l][m]+'</td>';
+			else
+		     str +='<td>-</td>';
+              var x = l;
+			  var percStr = x.replace("Votes","Percentage");
+			  if(castPercentage[percStr][m] != null)
+			   str +='<td>'+castPercentage[percStr][m]+'</td>';
+			  else
+				str +='<td>-</td>';
+			
+		   }
+
+	   }
+
+	   if(result != null && result.length > 0)
+	   {
+		 for(var i in result)
+		 {
+			 if(result[i].totalVotesList[m] != null)
+			  str +='<td>'+result[i].totalVotesList[m]+'</td>';
+			 else
+			  str +='<td>-</td>';
+			  
+			if(result[i].polledVotesList[m] != null)
+			  str +='<td>'+result[i].polledVotesList[m]+'</td>';
+			 else
+			  str +='<td>-</td>';
+
+			 if(result[i].polledVotesPercList[m] != null)
+			  str +='<td>'+result[i].polledVotesPercList[m]+'</td>';
+			 else
+			  str +='<td>-</td>';
+
+			 for(var p in result[i].partiesList)
+			 {
+				if(result[i].partiesList[p].polledVotesList[m] != null)
+				str +='<td>'+result[i].partiesList[p].polledVotesList[m]+'</td>';
+				else
+				str +='<td>-</td>';
+
+				if(result[i].partiesList[p].polledVotesPercList[m] != null)
+				str +='<td>'+result[i].partiesList[p].polledVotesPercList[m]+'</td>';
+				else
+				str +='<td>-</td>';
+			 }
+           
+		 }
+	   }
+
+	  str +='</tr>';
+	 }
+
+	 str +='</table>';
+     $("#castTableDiv").html(str);
+	}
+	</script>
 	</body>
 	</html>
