@@ -31,17 +31,19 @@ public class PartialBoothPanchayat implements java.io.Serializable {
 	private Booth booth;
 	private Panchayat panchayat;
 	private String description;
+	private Hamlet hamlet;
 	
 	public PartialBoothPanchayat(){
 		super();
 	}
 	
-	public PartialBoothPanchayat(Long partialBoothPanchayatId,Booth booth,Panchayat panchayat,String description){
+	public PartialBoothPanchayat(Long partialBoothPanchayatId,Booth booth,Panchayat panchayat,String description,Hamlet hamlet){
 		super();
 		this.partialBoothPanchayatId=partialBoothPanchayatId;
 		this.booth = booth;
 		this.panchayat = panchayat;
 		this.description = description;
+		this.hamlet = hamlet;
 	}
 	
 	@Id
@@ -82,4 +84,18 @@ public class PartialBoothPanchayat implements java.io.Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
+	@JoinColumn(name ="hamlet_id")
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Hamlet getHamlet() {
+		return hamlet;
+	}
+
+	public void setHamlet(Hamlet hamlet) {
+		this.hamlet = hamlet;
+	}
+	
+	
 }
