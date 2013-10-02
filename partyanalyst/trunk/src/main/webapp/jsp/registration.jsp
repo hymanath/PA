@@ -429,7 +429,7 @@ var str = '<font style="color:red;font-size:12px;">';
 			</tr>
 		</table>
 
-		 <div id="loginDetailsDiv" class="accessDivMain">
+		 <div id="loginDetailsDiv" class="accessDivMain" align="center">
 		 <div id="errorMsgDiv"></div>
 			<div id="loginDetailsDivHead" class="accessDivHead"><div style="width: 102px; margin-bottom: 11px; color: blue; font-family: verdana; font-size: 13px; margin-left: -265px;">Login Details</div></div>
 			<div id="loginDetailsDivBody" class="accessDivBody" style="margin-left: -11px;">
@@ -452,7 +452,7 @@ var str = '<font style="color:red;font-size:12px;">';
 
 		 <div id="personalDetailsDiv" class="accessDivMain">
 			 <div id="personalDetailsDivHead" class="accessDivHead"><div style="color: blue; font-family: verdana; font-size: 13px; margin-left: -243px; margin-bottom: 14px; width: 130px; margin-top: 10px;">Personal Details</div></div>
-			 <div id="personalDetailsDivBody" class="accessDivBody">
+			 <div id="personalDetailsDivBody" class="accessDivBody" align="center">
 				<table class="registrationTable">
 					<tr>
 						<td width="100px;"><span>First Name</span><b class="requiredFont" style="color:red"> * </b></td>
@@ -510,8 +510,8 @@ var str = '<font style="color:red;font-size:12px;">';
 			</div>	
 		 </div>
 		<div id="errorDiv"></div>
-		<div id="accessDetailsDiv" class="accessDivMain">
-		<div id="accessDetailsDivHead" class="accessDivHead"><div style="color: blue; font-family: verdana; font-size: 13px; margin-bottom: 14px; margin-top: 10px; width: 147px; margin-left: -229px;">Access Level Details</div></div>
+		<div id="accessDetailsDiv" class="accessDivMain" align="center">
+		<div id="accessDetailsDivHead" class="accessDivHead"><div style="color: blue; font-family: verdana; font-size: 13px; margin-bottom: 14px; margin-top: 10px; width: 150px; margin-left: -229px;">Access Level Details</div></div>
 		<div id="accessDetailsDivBody" class="accessDivBody" style="width: 102px; margin-bottom: 11px; font-family: verdana; font-size: 13px; margin-left: -265px;">
 		<table class="registrationTable">
 					
