@@ -814,6 +814,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		queryObj.setParameter("userId", searchVO.getUserId());
 		if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 			if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT))
+				if(searchVO.getSearchAreaType().equalsIgnoreCase(IConstants.LOCATION_BASED))
 				queryObj.setParameter("locationId", searchVO.getLocationValue());
 		} 
 		queryObj.setFirstResult(searchVO.getStartIndex());
@@ -827,6 +828,7 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		queryObj.setParameter("userId", searchVO.getUserId());
 		if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
 			if(!searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT))
+				if(searchVO.getSearchAreaType().equalsIgnoreCase(IConstants.LOCATION_BASED))
 				queryObj.setParameter("locationId", searchVO.getLocationValue());
 		} 
 		

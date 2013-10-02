@@ -32,8 +32,15 @@ public class SMSSearchCriteriaVO {
 	private Long totalCount;
 	private boolean directSent;
 	private Long constituencyId;
+	private String searchAreaType;
 	
 	
+	public String getSearchAreaType() {
+		return searchAreaType;
+	}
+	public void setSearchAreaType(String searchAreaType) {
+		this.searchAreaType = searchAreaType;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}

@@ -662,5 +662,11 @@ public interface IConstants {
     public static final String DEMO_REQUEST_ACTIONS = "Email,Phone Call,SMS";
     
     public static final String Hamlet_Booth = "HamletBooth";
+    
+    
+    /*SMS COUNTRY VOICE SMS START*/
+    public static final String VOICE_SMS_API_KEY = "Nj8uWwjyzEORIuAAKCVG";
+    public static final String VOICE_SMS_ACCESS_KEY ="koIDAaXxaZEfQ6EAPwyLaOuk4n574CcEBNKdBWha";
+    /*SMS COUNTRY VOICE SMS END*/
 	
 }

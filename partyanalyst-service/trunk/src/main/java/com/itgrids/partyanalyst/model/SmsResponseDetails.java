@@ -65,7 +65,7 @@ public class SmsResponseDetails extends BaseModel implements Serializable{
 		this.noOfSmsSent = noOfSmsSent;
 	}
 	
-	@Column(name="response_code" , length=20)
+	@Column(name="response_code" , length=100)
 	public String getResponseCode() {
 		return responseCode;
 	}
