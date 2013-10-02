@@ -1116,10 +1116,10 @@ clearOptionsListForSelectElmtId("pollingStationField");
 		<div id="AlertMsgs" style="font-family: verdana;font-size: 13px;color:red;"></div>
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
 
-	  <div style="margin-left:186px;margin-bottom:10px;" id="selectedAreaType">
-	  	<label  style="float:left;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="level" checked="checked"/>Region Level</label>
+	  <div style="" id="selectedAreaType">
+	  	<label  style="float:left;margin:14px;margin-left:36px;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="level" checked="checked"/>&nbsp;&nbsp;Search By Region Level</label>
 
-	    <label style="float:left;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="location"/>Location</label>
+	    <label style="float:left;margin:14px;margin-left:-3px;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="location"/>&nbsp;&nbsp;Search By Location</label>
 	  </div>
      
 	  <div id="reportLevelDiv"><span style="margin-left: 5px;">Select Level</span><font class="requiredFont">*</font>
