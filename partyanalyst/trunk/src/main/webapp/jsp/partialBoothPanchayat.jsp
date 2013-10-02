@@ -426,10 +426,51 @@ function buildUdatePartianBoothDetails(result)
 {
 	$('#updateStatusDiv').html(''+result.message+'');
 }
+
+function validateTheFields()
+{
+	var flag = true;
+	var boothId       = $('#booth option:selected').val();
+	var description   = $('#descriptionId').val();
+	var panchayatId   = $('#partialPanchayat option:selected').val();
+	var pdescription  = $('#PartialDescription').val();
+	var str = '';
+	if(boothId == 0)
+	{
+		flag = false;
+		str += '<b style="color:red">Please select the booth</b></br>';
+	}
+	if(description == '')
+	{
+		flag = false;
+		str += '<b style="color:red">Please enter the description</b></br>';
+	}
+	if(panchayatId == 0 )
+	{
+		flag = false;
+		str += '<b style="color:red">Please select the Panchayat</b></br>';
+	}	
+	if(pdescription == '')
+	{
+		flag = false;
+		str += '<b style="color:red">Please enter the description</b></br>';
+	}
+	
+	if(flag)
+	{
+		saveDetails();
+	}
+	else
+	{
+		$('#errorMsg').html(str);
+		$("#errorMsg").delay("2000").hide("slow");
+	}
+	
+}
 </script>
 <body>
 <div id="mainDiv">
-	<div style="height: 506px;">
+	<div style="height: 600px;">
 	<div id="headingDiv" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px;">Save Partial Booth Panchayat Details</div>
 	<div id="bodyDiv" style="float: left; margin-left: 258px; margin-top: 18px;">
 	<div id="successMsg" style="color: green; font-family: verdana; font-size: 14px; font-weight: bold;"></div>
@@ -438,12 +479,12 @@ function buildUdatePartianBoothDetails(result)
 	<div><b>Publication Date : </b><select id="publicationDate" name="publicationDate"style="margin-left: 79px;" onChange="getMandals('add');"><option value="0">Publication Date</option></select></div>
 	<div><b>Mandal : </b><select id="mandal" name="mandal" style="margin-left: 141px;"onChange="getPanchayts();"><option value="0">Select Mandal</option></select></div>
 	<div><b>Panchayat : </b><select id="panchayat" name="panchayatsList" style="margin-left: 121px;" onChange="getBooths();"><option value="0">Select Panchayat</option></select></div>
-	<div><b>Booth : </b><select id="booth" name="boothsList" style="margin-left: 150px;"><option value="0">Select Booth</option></select></div>
-	<div><b>Description : </b><textarea name="description" id="descriptionId" style="margin-left: 110px;"></textarea></div>
-	<div><b>Panchayat : </b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 121px;"><option value="0">Select Panchayat</option></select></div>
+	<div><b>Booth : </b><b style="color:red">*</b><select id="booth" name="boothsList" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;"></textarea></div>
+	<div><b>Panchayat : </b><b style="color:red">*</b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 116px;"><option value="0">Select Panchayat</option></select></div>
 	<!--<div><b>Booth : </b><select id="PartialBooth" name="PartialBooth" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>-->
-	<div><b>Description : </b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 111px;"></textarea></div>
-	<div id="submitButton" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Submit" class="btn btn-success" onClick="saveDetails();"></input></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;"></textarea></div>
+	<div id="submitButton" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Submit" class="btn btn-success" onClick="validateTheFields();"></input></div>
 	</div>
 	</div>
 	
