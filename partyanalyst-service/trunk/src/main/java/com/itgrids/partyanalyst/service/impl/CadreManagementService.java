@@ -4768,9 +4768,15 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 				}
 			}
 			
-			
 			if(searchType.equalsIgnoreCase(IConstants.LEVEL_BASED))
-				SearchCriteria = "and model.cadreLevel.cadreLevelID = "+cadreLevelId.toString();
+			{
+				if( cadreInputVO.isMessageCenter())
+					SearchCriteria = "and model.cadreLevel.cadreLevelID = "+cadreLevelId.toString()+" and model.cadreLevelValue = "+cadreLocationId.toString();
+				else
+					SearchCriteria = "and model.cadreLevel.cadreLevelID = "+cadreLevelId.toString();
+				
+			}
+			//if(searchType.equalsIgnoreCase(IConstants.LEVEL_BASED))
 				
 			if(cdType.equalsIgnoreCase(IConstants.CADRE_MEMBER_TYPE_NORMAL))
 			{

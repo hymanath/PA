@@ -379,7 +379,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 				  noOfIterations = (allNumbers.length / 10000)+1;			  
 		
 			  
-			  if(allNumbers.length -1 >10000){
+			 /* if(allNumbers.length -1 >10000){
 				  
 				 for(int i=0;i < noOfIterations ;i++)
 				 {
@@ -412,8 +412,8 @@ public class VoiceSmsService implements IVoiceSmsService {
 					 
 				 }
 				  
-			  }else			
-			  taskExecutor.execute(sendVoiceSMSUsingProvider(userName , password , senderMobileNumber.toString() ,mobileNumbersString ,audioPath, voiceSmsResponseDetailsVO , userId , otherNumbers , description , mobileNumbers));
+			  }else*/			
+			  taskExecutor.execute(sendVoiceSMSUsingProvider(userName , password , null ,mobileNumbersString ,audioPath, voiceSmsResponseDetailsVO , userId , otherNumbers , description , mobileNumbers));
 		 
 		 
 		
@@ -444,7 +444,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		try
 		{			
 			
-			URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
+			/*URL url = new URL("http://control.msg91.com/send_voice_mail.php?user="+userName+"&password="+password+"&sender="+senderMobileNumber+"&mobile_no="+mobileNumbersString+"&url_file_name="+audioPath);
 	
 		    HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setRequestMethod("GET");
@@ -460,10 +460,37 @@ public class VoiceSmsService implements IVoiceSmsService {
 			}
 			System.out.println(buffer.toString());
 			rd.close();
-			conn.disconnect();
+			conn.disconnect();*/
+			
+			//URL url = new URL("https://voiceapi.smscountry.com/api?api_key=Nj8uWwjyzEORIuAAKCVG&access_key=koIDAaXxaZEfQ6EAPwyLaOuk4n574CcEBNKdBWha&xml=%3Crequest%20action=%22www.partyanalyst.com%22%3E%3Cfrom%3E919985420156,919985420156%3C/from%3E%3Cto%3E"+mobileNumbersString+"%3C/to%3E%3Cplay%3Ehttp://www.partyanalyst.com/voice_recordings/1/meeting_on_10th.wav%3C/play%3E%3C/request%3E");
+			URL url = new URL("https://voiceapi.smscountry.com/api?api_key="+IConstants.VOICE_SMS_API_KEY+"&access_key="+IConstants.VOICE_SMS_ACCESS_KEY+"&xml=%3Crequest%20action=%22www.partyanalyst.com%22%3E%3Cfrom%3E919985420156,919985420156%3C/from%3E%3Cto%3E"+mobileNumbersString+"%3C/to%3E%3Cplay%3E"+audioPath+"%3C/play%3E%3C/request%3E");
+
+
+			   HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+				conn.setRequestMethod("GET");
+				conn.setDoOutput(true);
+				conn.setDoInput(true);
+				conn.setUseCaches(false);
+				conn.connect();
+				BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				String line;
+				while ((line = rd.readLine()) != null)
+				{
+				  buffer.append(line).append("\n");
+				}
+				
+				System.out.println(buffer.toString());
+				rd.close();
+				conn.disconnect();
+				
+				
+				String[] split = buffer.toString().split("\\{|:|,|\\}");
+				
+				String meggaseResponseId = split[4].substring(1,split[4].length()-1);
+
 		
 			
-		 Long responseId = 	saveResponseDetails(buffer.toString() , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
+		 Long responseId = 	saveResponseDetails(meggaseResponseId , userId , voiceSmsResponseDetailsVO.getAllmobileNumbers().size(),mobileNumbers,description);
 		     
 		     
 		     saveSentSMSHistoryDetails(
@@ -1076,57 +1103,72 @@ public class VoiceSmsService implements IVoiceSmsService {
 		if(searchVO.isGenderSelected())
 			if(!searchVO.getGender().equalsIgnoreCase("All") || !searchVO.getGender().equalsIgnoreCase(""))
 				queryString.append("and model.gender like '"+searchVO.getGender()+"%' ");
-		//Location Based Search for Influencing People
-		if(searchVO.getLocationType().equalsIgnoreCase(IConstants.STATE))
-			queryString.append(" and model.userAddress.state.stateId =:locationId ");
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.DISTRICT))
-			queryString.append(" and model.userAddress.district.districtId =:locationId ");
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.CONSTITUENCY))
-			queryString.append(" and model.userAddress.constituency.constituencyId =:locationId ");
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MANDAL))
-			queryString.append(" and model.userAddress.tehsil.tehsilId =:locationId ");
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
-			LocalElectionBody localBody = localElectionBodyDAO.get(new Long(assemblyLocalElectionBodyDAO.getLocalBodyIdBasedOnConstituencyId(searchVO.getConstituencyId())));
-			queryString.append(" and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId ="+localBody.getLocalElectionBodyId()+""+
-					" and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = "+searchVO.getConstituencyId()+"");
-		}
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.WARD)){
-			//Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue()));
-			Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue().toString().substring(1)));
-			searchVO.setLocationValue(constituency.getConstituencyId());
-			queryString.append(" and model.userAddress.ward is not null and model.userAddress.ward.constituencyId =:locationId ");
-		}
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.BOOTH))
-			queryString.append(" and model.userAddress.booth.boothId =:locationId ");
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.HAMLET))
-			queryString.append(" and model.userAddress.hamlet.hamletId =:locationId ");
-		else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
-
-			String hamletIds = "";
-			
-			List<Object[]> hamletsDetails = panchayatHamletDAO.getHamletsOfAPanchayat(Long.valueOf(searchVO.getLocationValue()));
-			
-			for(Object[] details:hamletsDetails){
-				hamletIds = hamletIds + details[0].toString()+",";
-			}
-			hamletIds = hamletIds.substring(0,hamletIds.length()-1);
-			queryString.append(" and model.userAddress.hamlet.hamletId in("+hamletIds+") ");
+		
+		
+		
+		if(searchVO.getSearchAreaType().equalsIgnoreCase(IConstants.LOCATION_BASED))
+		{
+				//Location Based Search for Influencing People
+				if(searchVO.getLocationType().equalsIgnoreCase(IConstants.STATE))
+					queryString.append(" and model.userAddress.state.stateId =:locationId ");
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.DISTRICT))
+					queryString.append(" and model.userAddress.district.districtId =:locationId ");
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.CONSTITUENCY))
+					queryString.append(" and model.userAddress.constituency.constituencyId =:locationId ");
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MANDAL))
+					queryString.append(" and model.userAddress.tehsil.tehsilId =:locationId ");
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.MUNCIPALITY_CORPORATION_LEVEL)){
+					LocalElectionBody localBody = localElectionBodyDAO.get(new Long(assemblyLocalElectionBodyDAO.getLocalBodyIdBasedOnConstituencyId(searchVO.getConstituencyId())));
+					queryString.append(" and model.userAddress.localElectionBody is not null and model.userAddress.localElectionBody.localElectionBodyId ="+localBody.getLocalElectionBodyId()+""+
+							" and model.userAddress.ward is not null and model.userAddress.constituency.constituencyId = "+searchVO.getConstituencyId()+"");
+				}
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.WARD)){
+					//Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue()));
+					Constituency constituency = constituencyDAO.get(new Long(searchVO.getLocationValue().toString().substring(1)));
+					searchVO.setLocationValue(constituency.getConstituencyId());
+					queryString.append(" and model.userAddress.ward is not null and model.userAddress.ward.constituencyId =:locationId ");
+				}
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.BOOTH))
+					queryString.append(" and model.userAddress.booth.boothId =:locationId ");
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.HAMLET))
+					queryString.append(" and model.userAddress.hamlet.hamletId =:locationId ");
+				else if(searchVO.getLocationType().equalsIgnoreCase(IConstants.PANCHAYAT)){
+		
+					String hamletIds = "";
+					
+					List<Object[]> hamletsDetails = panchayatHamletDAO.getHamletsOfAPanchayat(Long.valueOf(searchVO.getLocationValue()));
+					
+					for(Object[] details:hamletsDetails){
+						hamletIds = hamletIds + details[0].toString()+",";
+					}
+					hamletIds = hamletIds.substring(0,hamletIds.length()-1);
+					queryString.append(" and model.userAddress.hamlet.hamletId in("+hamletIds+") ");
+				}
 		}
 		
-		/*	Region Based Search for Influencing People
-		 * if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
-		queryString.append(" and (model.influencingScope like '"+IConstants.CONSTITUENCY+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
-		else if(searchVO.getLocationType().equalsIgnoreCase("mandal"))
-		queryString.append(" and (model.influencingScope like '"+IConstants.MANDAL+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
-		else if(searchVO.getLocationType().equalsIgnoreCase("panchayat"))
-		queryString.append(" and (model.influencingScope like '"+IConstants.PANCHAYAT+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
-		else if(searchVO.getLocationType().equalsIgnoreCase("ward"))
-		queryString.append(" and (model.influencingScope like '"+IConstants.WARD+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
-		else if(searchVO.getLocationType().equalsIgnoreCase("booth"))
-		queryString.append(" and (model.influencingScope like '"+IConstants.BOOTH+"' and model.influencingScopeValue like '"+searchVO.getLocationValue().toString()+"')");
-		else if(searchVO.getLocationType().equalsIgnoreCase("hamlet"))
-		queryString.append(" and (model.influencingScope like '"+IConstants.BOOTH+"' and model.hamlet.hamletId like '"+searchVO.getLocationValue().toString()+"')");
-		 */
+/*			Region Based Search for Influencing People
+ * 
+*/
+		if(searchVO.getSearchAreaType().equalsIgnoreCase(IConstants.LEVEL_BASED))
+		{
+				if(searchVO.getLocationType().equalsIgnoreCase("state"))
+					queryString.append(" and (model.influencingScope like '"+IConstants.STATE+"' and model.influencingScopeValue = "+searchVO.getLocationValue().toString()+")");
+				else if(searchVO.getLocationType().equalsIgnoreCase("district"))
+					queryString.append(" and (model.influencingScope like '"+IConstants.DISTRICT+"' and model.influencingScopeValue = "+searchVO.getLocationValue().toString()+")");					
+				else if(searchVO.getLocationType().equalsIgnoreCase("constituency"))
+				queryString.append(" and (model.influencingScope like '"+IConstants.CONSTITUENCY+"' and model.influencingScopeValue = "+searchVO.getLocationValue().toString()+")");
+				else if(searchVO.getLocationType().equalsIgnoreCase("mandal"))
+				queryString.append(" and (model.influencingScope like '"+IConstants.MANDAL+"' and model.influencingScopeValue = "+searchVO.getLocationValue().toString()+")");
+				else if(searchVO.getLocationType().equalsIgnoreCase("panchayat"))
+				queryString.append(" and (model.influencingScope like '"+IConstants.PANCHAYAT+"' and model.influencingScopeValue = "+searchVO.getLocationValue().toString()+")");
+				else if(searchVO.getLocationType().equalsIgnoreCase("ward"))
+				queryString.append(" and (model.influencingScope like '"+IConstants.WARD+"' and model.influencingScopeValue = "+searchVO.getLocationValue().toString()+")");
+				else if(searchVO.getLocationType().equalsIgnoreCase("booth"))
+				queryString.append(" and (model.influencingScope like '"+IConstants.BOOTH+"' and model.influencingScopeValue = "+searchVO.getLocationValue().toString()+")");
+				else if(searchVO.getLocationType().equalsIgnoreCase("hamlet"))
+				queryString.append(" and (model.influencingScope like '"+IConstants.HAMLET+"' and model.hamlet.hamletId = "+searchVO.getLocationValue().toString()+")");
+				
+		}
 		
 		queryString.append(" order by model.firstName "+ searchVO.getOrder());
 

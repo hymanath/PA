@@ -34,7 +34,14 @@ public class PartyCadreDetailsVO extends CadreBasicInformationVO implements Seri
 	private List<CadreCategoryVO> cadreKnownLanguage;
 	private List<CadreCategoryVO> cadreCommitteeDesignation;
 	private List<CadreCategoryVO> cadreEducationQualification;
+	private boolean messageCenter;
 	
+	public boolean isMessageCenter() {
+		return messageCenter;
+	}
+	public void setMessageCenter(boolean messageCenter) {
+		this.messageCenter = messageCenter;
+	}
 	//Getters and Setters
 	public Long getPartyId() {
 		return partyId;
