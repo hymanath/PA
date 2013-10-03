@@ -44,7 +44,7 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	
+	<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
@@ -58,7 +58,8 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
-
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+		<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 
 
@@ -481,6 +482,10 @@ function getLeadersList(){
 	{
 		getLeadersListInRuralUrbans();
 	}
+	if(constituencyType == 'RURAL-URBAN' || constituencyType == 'RURAL')
+	{
+		getVotersCountsForPanchayats();
+	}
 
 }
 
@@ -660,6 +665,16 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task== "getVoterDetailsByPartNo")
 						{
 							buildAddedVoterDetails(myResults,jsObj);
+						}
+						
+						else if(jsObj.task== "getVoterscountInPanchayats")
+						{
+							buildVoterscountInPanchayats(myResults);
+						}
+						
+						else if(jsObj.task== "getSelectedCountPAnchayatsDetails")
+						{
+							buildgetSelectedCountPAnchayatsDetails(myResults);
 						}
 						
 					}catch (e){
@@ -966,7 +981,7 @@ function panchayatMatrx(result)
   <!--<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>-->
  <c:if test="${!hideMainMenu}"> 
   <div class="widget blue">
-  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 450px;" class="widget-block">
+  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 485px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
    <div id="mainDiv" align="center"  style="margin-left: 196px;">
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
@@ -1148,6 +1163,21 @@ To
 </div></div>
 </c:if>
 <span id="dashBoardImgLoading" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"/></span>
+<div id="votersCountRageDiv" style="overflow-x: scroll;display:none"></div>
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 id="myModalLabel">Panchayats</h3>
+  </div>
+  <div class="modal-body">
+  <div id="processingImg"><img style="margin-top:20px;" src="images/icons/goldAjaxLoad.gif"/></div>
+  <div id="pachayatListDiv"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
 <div id="leadersTable"></div>
 <span id="dashBoardImgLoadingNew" style="display:none;"><img style="margin-top:20px;" src="images/icons/goldAjaxLoad.gif"/></span>
 <div id="leadersTable1"></div>
@@ -1586,6 +1616,86 @@ function storeMandalPanchayatValues(result)
 			madalPanchayatsArray.push(mandalPanchayatDetails);
 		}
 		getSelectedCastes();
+	}
+}
+
+function getVotersCountsForPanchayats()
+{
+	var constituencyId = $('#listConstituencyNames option:selected').val();
+	var jsObj = {
+	        constituencyId : constituencyId,
+			task           : "getVoterscountInPanchayats"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getVoterscountInPanchayatsAction.action?"+rparam;
+		callAjax(rparam,jsObj,url);
+}
+
+function buildVoterscountInPanchayats(result)
+{
+	if(result != null && result.length > 0)
+	{
+		$('#votersCountRageDiv').show();
+		var str = '';
+		str+='<div class="widget blue">';
+		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">VOTER DENSITY VS PANCHAYATS</h4>';
+		str += '<table class="table table-hover table-bordered">';
+		str += '<tr>';
+		str += '<th>Voters Range</th>';
+		for(var i in result)
+		{
+			str += '<th>'+result[i].type+'</th>';
+			///str += '<input type="hidden" id="minValue" value="'+result[i].minValue+'"></input>';
+			//str += '<input type="hidden" id="maxValue" value="'+result[i].maxValue+'"></input>';
+		}
+		str += '</tr>';
+		str += '<tr>';
+		str += '<td>No of Panchayats</td>';
+		for(var j in result)
+		{
+			str += '<td><a href="#myModal" role="button"  data-toggle="modal" onClick="getPachayatsList('+result[j].minValue+','+result[j].maxValue+');">'+result[j].count+'</a></td>';
+		}
+		str += '</tr>';
+		str += '</table>';
+		$('#votersCountRageDiv').html(str);
+	}
+}
+
+function getPachayatsList(minValue,maxValue)
+{
+	$('#pachayatListDiv').html('');
+	var constituencyId = $('#listConstituencyNames option:selected').val();
+	var jsObj = {
+	        constituencyId : constituencyId,
+			minValue       : minValue,
+			maxValue       : maxValue,
+			task           : "getSelectedCountPAnchayatsDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getSelectedCountPAnchayatsDetailsAction.action?"+rparam;
+		callAjax(rparam,jsObj,url);
+}
+
+function buildgetSelectedCountPAnchayatsDetails(result)
+{
+	if(result != null && result.length > 0 )
+	{
+		var str = '';
+		$('#processingImg').hide();
+		str += '<table class="table table-hover table-bordered" style="width: 223px;">';
+		str += '<tr>';
+		str += '<th>Panchayat</th>';
+		str += '</tr>';
+		for(var i in result)
+		{
+			str += '<tr>';
+			str += '<td>'+result[i].name+'</td>';
+			str += '</tr>';
+		}
+		str += '</table>';
+		$('#pachayatListDiv').html(str);
+		$('#myModal').model();
 	}
 }
 function showExpCasteDetailsButton()
