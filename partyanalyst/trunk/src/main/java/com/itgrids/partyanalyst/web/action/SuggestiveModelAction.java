@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,10 +11,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ExceptCastsVO;
@@ -26,10 +23,10 @@ import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.excel.problem.PollingBoothPartVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -75,8 +72,29 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private String constituencyName;
 	private List<VoterDataVO> mandalPanchayatList;
 	private MandalVO paricipatedPartyList;
+	private List<VoterCountVO> VoterCountVOList;
+	private List<SelectOptionVO> pachayatsList;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
+	
+	
+	
+	public List<SelectOptionVO> getPachayatsList() {
+		return pachayatsList;
+	}
+
+	public void setPachayatsList(List<SelectOptionVO> pachayatsList) {
+		this.pachayatsList = pachayatsList;
+	}
+
+	public List<VoterCountVO> getVoterCountVOList() {
+		return VoterCountVOList;
+	}
+
+	public void setVoterCountVOList(List<VoterCountVO> voterCountVOList) {
+		VoterCountVOList = voterCountVOList;
+	}
+
 	public MandalVO getParicipatedPartyList() {
 		return paricipatedPartyList;
 	}
@@ -830,6 +848,36 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			Long constituencyId= jObj.getLong("mandalId");
 			//partyList = suggestiveModelService.getPartyDetailsByMandal(tehsilId);
 			paricipatedPartyList = staticDataService.getElectionYearsAndPartiesForSelectedConstituency(constituencyId);
+			return Action.SUCCESS;
+		}
+		
+		public String getVoterscountInPanchayats()
+		{
+			try{
+				log.debug("Entered into getVoterscountInPanchayats() method in Suggestive Model Action");
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+				//Long publicationId = jObj.getLong("publicatinId");
+				VoterCountVOList = suggestiveModelService.getVotersCountInPanchayats(constituencyId);
+			}catch(Exception e){
+				log.error("Exception raised in getVoterscountInPanchayats() method in Suggestive Model Action",e);
+			}
+			return Action.SUCCESS;
+		}
+		
+		public String getSelectedCountPAnchayatsDetails()
+		{
+			try{
+				log.debug("Entered into getSelectedCountPAnchayatsDetails() method in Suggestive Model Action");
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+				//Long publicationId  = jObj.getLong("publicatinId");
+				Long minValue       = jObj.getLong("minValue");
+				Long maxValue       = jObj.getLong("maxValue");
+				pachayatsList = suggestiveModelService.getSelectedCountPAnchayatsDetails(constituencyId,minValue,maxValue);
+			}catch(Exception e){
+				log.error("Exception raised in getSelectedCountPAnchayatsDetails() method in Suggestive Model Action",e);
+			}
 			return Action.SUCCESS;
 		}
 }
