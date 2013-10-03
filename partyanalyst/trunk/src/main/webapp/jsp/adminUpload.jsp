@@ -540,7 +540,7 @@
 										</a>
 									</span><br>
 									</fieldset></td>
-								<td>
+								<!--<td>
 								<fieldset class="f2">
 									<legend class="l2">Customer Contacts For Voice SMS </legend>
 									<span class="fontStyle">
@@ -548,7 +548,7 @@
 										<a class="alinkstyle" href="<s:url action="updateCustomerContactsAction"/>"> Add Customer Contacts
 										</a>
 									</span><br>
-									</fieldset></td>
+									</fieldset></td>-->
 									
 								<td>
 								<fieldset class="f2">
@@ -576,14 +576,14 @@
 
 								<tr>
 								<td>
-								<fieldset class="f2">
+								<!--<fieldset class="f2">
 									<legend class="l2">Voice Sms Report</legend>
 									<span class="fontStyle">
 										Click Here To Get Report:&nbsp;
 										<a class="alinkstyle" target="_blank" href="<s:url action="getvoiceSmsReportAction.action"/>"> Get
 										</a>
 									</span><br>
-									</fieldset></td>
+									</fieldset></td>-->
 								</tr>
 								<td></td>
 								</tr>
