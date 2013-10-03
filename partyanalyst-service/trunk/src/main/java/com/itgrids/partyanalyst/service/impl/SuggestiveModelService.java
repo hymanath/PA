@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -55,6 +54,7 @@ import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
+import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -4894,6 +4894,140 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 }
 				return result;
 			 }
+			 
+	public List<VoterCountVO> getVotersCountInPanchayats(Long constituencyId)
+	{
+		List<VoterCountVO> voterCountVOList = new ArrayList<VoterCountVO>();
+	
+		try {
+			LOG.debug("Enterd into getVotersCountInPanchayats() method in Suggestive Model Service");
+			Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+			if(publicationId != null)
+			{
+				//String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
+				createObjectsForVoterCountVO(voterCountVOList);
+				List<Object[]> votersCountList = voterInfoDAO.getVoterCountInPanchayatLevel(constituencyId,publicationId,3l);
+				
+				if(votersCountList != null && votersCountList.size() > 0)
+				{
+					for (Object[] parms : votersCountList) {
+						
+						for (int i = 0; i < voterCountVOList.size(); i++) {
+							if((Long)parms[1] >= voterCountVOList.get(i).getMinValue() && (Long)parms[1] <= voterCountVOList.get(i).getMaxValue())
+							{
+								Long count = voterCountVOList.get(i).getCount();
+								count = count + 1;
+								voterCountVOList.get(i).setCount(count);
+								break;
+							}
+						}
+					}
+					
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVotersCountInPanchayats() method in Suggestive Model Service",e);
+		}
+		
+		return voterCountVOList;
+	}
+	
+	public void createObjectsForVoterCountVO(List<VoterCountVO> voterCountVOList)
+	{
+		VoterCountVO voterCountVO1 = new VoterCountVO();
+		voterCountVO1.setMinValue(0l);
+		voterCountVO1.setMaxValue(500l);
+		voterCountVO1.setType("Below 500");
+		voterCountVOList.add(voterCountVO1);
+		
+		VoterCountVO voterCountVO2 = new VoterCountVO();
+		voterCountVO2.setMinValue(501l);
+		voterCountVO2.setMaxValue(1000l);
+		voterCountVO2.setType("501-1000");
+		voterCountVOList.add(voterCountVO2);
+		
+		VoterCountVO voterCountVO3 = new VoterCountVO();
+		voterCountVO3.setMinValue(1001l);
+		voterCountVO3.setMaxValue(1500l);
+		voterCountVO3.setType("1001-1500");
+		voterCountVOList.add(voterCountVO3);
+		
+		VoterCountVO voterCountVO4 = new VoterCountVO();
+		voterCountVO4.setMinValue(1501l);
+		voterCountVO4.setMaxValue(2000l);
+		voterCountVO4.setType("1501-2000");
+		voterCountVOList.add(voterCountVO4);
+		
+		VoterCountVO voterCountVO5 = new VoterCountVO();
+		voterCountVO5.setMinValue(2001l);
+		voterCountVO5.setMaxValue(2500l);
+		voterCountVO5.setType("2001-2500");
+		voterCountVOList.add(voterCountVO5);
+		
+		VoterCountVO voterCountVO6 = new VoterCountVO();
+		voterCountVO6.setMinValue(2501l);
+		voterCountVO6.setMaxValue(3000l);
+		voterCountVO6.setType("2501-3000");
+		voterCountVOList.add(voterCountVO6);
+		
+		VoterCountVO voterCountVO7 = new VoterCountVO();
+		voterCountVO7.setMinValue(3001l);
+		voterCountVO7.setMaxValue(4000l);
+		voterCountVO7.setType("3001-4000");
+		voterCountVOList.add(voterCountVO7);
+		
+		VoterCountVO voterCountVO8 = new VoterCountVO();
+		voterCountVO8.setMinValue(4001l);
+		voterCountVO8.setMaxValue(5000l);
+		voterCountVO8.setType("4001-5000");
+		voterCountVOList.add(voterCountVO8);
+		
+		VoterCountVO voterCountVO9 = new VoterCountVO();
+		voterCountVO9.setMinValue(5001l);
+		voterCountVO9.setMaxValue(6000l);
+		voterCountVO9.setType("5001-6000");
+		voterCountVOList.add(voterCountVO9);
+		
+		VoterCountVO voterCountVO10 = new VoterCountVO();
+		voterCountVO10.setMinValue(6001l);
+		voterCountVO10.setMaxValue(60000l);
+		voterCountVO10.setType("Above 6000");
+		voterCountVOList.add(voterCountVO10);
+		
+	}
+	
+	
+	public List<SelectOptionVO> getSelectedCountPAnchayatsDetails(Long constituencyId,Long minValue,Long maxValue)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		try {
+			LOG.debug("Enterd into getSelectedCountPAnchayatsDetails() method in Suggestive Model Service");
+			Long publicatiobId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+			if(publicatiobId != null)
+			{
+				//String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
+				List<Long> pachayatIds  = voterInfoDAO.getCountForSelectdCountRange(constituencyId,publicatiobId,minValue,maxValue,3l);
+				List<Object[]> panchayatList = panchayatDAO.getPanchayatsByPanchayatIdsList(pachayatIds);
+				if(panchayatList != null && panchayatList.size() > 0)
+				{
+					returnList = new ArrayList<SelectOptionVO>();
+					for (Object[] parms : panchayatList) {
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setName(parms[1].toString());
+						returnList.add(selectOptionVO);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised in getSelectedCountPAnchayatsDetails() method in Suggestive Model Service",e);
+		}
+		
+		
+		return returnList;
+	}
+	
 			 		
 			 		
 }
