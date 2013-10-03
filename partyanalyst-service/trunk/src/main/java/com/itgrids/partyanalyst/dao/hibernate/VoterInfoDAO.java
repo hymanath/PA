@@ -256,4 +256,41 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterCountInPanchayatLevel(Long constituencyId,Long publicationDateId,Long reportLevelId)
+	{
+		Query query = getSession().createQuery("select model.reportLevelValue ,model.totalVoters from VoterInfo model " +
+				" where model.constituencyId = :constituencyId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and " +
+				" model.publicationDate.publicationDateId = :publicationDateId");
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Long> getCountForSelectdCountRange(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Long reportLevelId)
+	{
+		Query query = getSession().createQuery("select model.reportLevelValue  from VoterInfo model " +
+				" where model.constituencyId = :constituencyId and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and " +
+				" model.publicationDate.publicationDateId = :publicationId and " +
+				" model.totalVoters >= :minValue and " +
+				" model.totalVoters <= :maxValue");
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("minValue", minValue);
+		query.setParameter("maxValue", maxValue);
+		return query.list();
+	}
+	
+	public Long getLatestPublicationDate(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select max(model.publicationDate.publicationDateId) " +
+				" from VoterInfo model  where model.constituencyId = :constituencyId ");
+		query.setParameter("constituencyId", constituencyId);
+		return (Long)query.uniqueResult();
+	}
 }

@@ -49,5 +49,11 @@ public interface IVoterInfoDAO extends GenericDao<VoterInfo, Long>{
 	
 	public List<Object[]> getTotalVotersForHamletBooth(Long constituencyId,Long publicationDateId,Long reportLevelId);
 	
+	public List<Object[]> getVoterCountInPanchayatLevel(Long constituencyId,Long publicationDateId,Long reportLevelId);
+	
+	public List<Long> getCountForSelectdCountRange(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Long reportLevelId);
+	
+	public Long getLatestPublicationDate(Long constituencyId);
+	
 
 }

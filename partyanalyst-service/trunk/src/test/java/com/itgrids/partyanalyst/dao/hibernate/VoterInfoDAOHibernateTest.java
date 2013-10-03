@@ -156,7 +156,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(count);
 	}*/
 	
-	public void testgetTotalVotersForHamletBooth()
+	/*public void testgetTotalVotersForHamletBooth()
 	{
 		List<Object[]> list = voterInfoDAO.getTotalVotersForHamletBooth(232l, 8l, 2l);
 		if(list != null && list.size() > 0)
@@ -164,6 +164,29 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		  for(Object[] params:list)
 			System.out.println(params[0]+" "+params[1]);
 		}
+	}*/
+	
+	/*public void testgetVoterCountInPanchayatLevel()
+	{
+		List<Object[]> values = voterInfoDAO.getVoterCountInPanchayatLevel(347l,8l,6l);
+		for (Object[] objects : values) {
+			System.out.println(objects[0] +":"+ objects[1]);
+		}
+	}*/
+	
+	
+	public void testgetVoterCountInPanchayatLevel()
+	{
+		List<Long> values = voterInfoDAO.getCountForSelectdCountRange(347l,8l,30000l,40000l,6l);
+		for (Long long1 : values) {
+			System.out.println(long1);
+		}
 	}
+	
+	/*public void testgetLatestPublicationDate()
+	{
+		Long id = voterInfoDAO.getLatestPublicationDate(347l);
+		System.out.println(id);
+	}*/
 	
 }
