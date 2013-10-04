@@ -476,4 +476,6 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getPanchayatAgeWiseDetailsByHamletWise(Long userId , Long publicationDateId , List<Long> panchayatId);
 
 	  
+	public List<Object[]> getYoungVotersCount(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,String locationType,Long ageFrom,Long ageTo);
+	  
 }

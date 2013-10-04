@@ -241,6 +241,20 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	//public List<Object[]> getCasteDetailsOfVoterByConstituency(Long constituencyId,Long publicationId,Long userId,List<Long> casteIds);
 
+	public List<Object[]> getYoungVoterAgeDetailsForHamlet(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,Long userId,Long ageFrom,Long ageTo);
+	
+	public List<Object[]> getYoungerVoterDetailsForHamlet(Long publicationDateId ,Long id,Long userId,String type,Long ageFrom,Long ageTo);
+	
+	public List<Object[]> getYoungerVoterDetailsForHamletBylocationIdsList(List<Long> locationIds, Long publicationDateId,Long userId,String type,Long ageFrom,Long ageTo);
+	
+	public List<Object[]> getTotalVoterForHamletBylocationIdsList(List<Long> locationIds, Long publicationDateId,Long userId,String type);
+	
+	public List<Object[]> getYoungVotersForHamlet(Long constituencyId,Long userId,Long publicationDateId,Long boothId,Long ageFrom,Long ageTo,String type);
+	
+	public List<Object[]> getTotalYoungVotersForHamlet(Long constituencyId,Long userId,Long publicationDateId,Long boothId,String type);
+	
+	public List<Object[]> getYoungerVotersForLocality(
+			 Long publicationDateId ,Long id,Long userId,String type,Long ageFrom,Long ageTo);
 
 
 }
