@@ -262,8 +262,17 @@ function buildAgeWiseInGroupTable(result){
 	str+='<h4>Age Wise Voters Information</h4>';
 	str+='<table class="table table-bordered" id="ageWiseInGroupTable">';
 	str+='<thead><tr><th rowspan=2>AGE Range</th><th colspan=2>Total Voters</th><th colspan=2>Male</th>	<th colspan=2>Female</th></tr><tr>	<th>Total Voters</th><th>Total Percentage</th><th>Voters</th><th>Percentage</th><th>Voters</th>	<th>Percentage</th>	</tr></thead><tbody>';
+	    
+		str+='<tr><td>Young Voters</td>';
+		str+='<td>'+checkForNull(result.totalVotersForYoungerVoters)+'</td>';
+		str+='<td>'+result.VotersPercentForYoungerVoters+'</td>';
+		str+='<td>'+checkForNull(result.maleVotersCountForYoungerVoters)+'</td>';
+		str+='<td>'+result.maleVotersPercentForYoungerVoters+'</td>';
+		str+='<td>'+checkForNull(result.femaleVotersCountForYoungerVoters)+'</td>';
+		str+='<td>'+result.femaleVotersPercentForYoungerVoters+'</td>';
+		str+='</tr>'
 	
-		str+='<tr><td>18-22</td>';
+		str+='<tr><td>18-25</td>';
 		str+='<td>'+checkForNull(result.totalVotersFor18To25)+'</td>';
 		str+='<td>'+result.votersPercentFor18To25+'</td>';
 		str+='<td>'+checkForNull(result.maleVotersCountBetween18To25)+'</td>';
@@ -272,7 +281,7 @@ function buildAgeWiseInGroupTable(result){
 		str+='<td>'+result.femaleVotersPercentFor18To25+'</td>';
 		str+='</tr>'
 		
-		str+='<tr><td>23-30</td>';
+		str+='<tr><td>26-35</td>';
 		str+='<td>'+checkForNull(result.totalVotersFor26To35)+'</td>';
 		str+='<td>'+result.votersPercentFor26To35+'</td>';
 		str+='<td>'+checkForNull(result.maleVotersCountBetween26To35)+'</td>';
@@ -281,7 +290,7 @@ function buildAgeWiseInGroupTable(result){
 		str+='<td>'+result.femaleVotersPercentFor26To35+'</td>';
 		str+='</tr>'
 		
-		str+='<tr><td>31-45</td>';
+		str+='<tr><td>36-45</td>';
 		str+='<td>'+checkForNull(result.totalVotersFor36To45)+'</td>';
 		str+='<td>'+result.votersPercentFor36To45+'</td>';
 		str+='<td>'+checkForNull(result.maleVotersCountBetween36To45)+'</td>';

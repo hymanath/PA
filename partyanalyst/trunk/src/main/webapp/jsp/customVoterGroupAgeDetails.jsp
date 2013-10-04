@@ -203,13 +203,16 @@ function buildCustomGroupAgeDetails(results,jsObj)
    str +='<tr>';
    str +='<th rowspan="2">Group Name</th>';
    str +='<th rowspan="2">Total Voters</th>';
-   str +='<th colspan="2">18-22</th>';
-   str +='<th colspan="2">23-30</th>';
-   str +='<th colspan="2">31-45</th>';
+   str +='<th colspan="2">Young Voters</th>';
+   str +='<th colspan="2">18-25</th>';
+   str +='<th colspan="2">26-35</th>';
+   str +='<th colspan="2">36-45</th>';
    str +='<th colspan="2">46-60</th>';
    str +='<th colspan="2">60-Above</th>';
    str +='</tr>';
    str +='<tr>';
+   str +='<th>Voters</th>';
+   str +='<th>%</th>';
    str +='<th>Voters</th>';
    str +='<th>%</th>';
    str +='<th>Voters</th>';
@@ -226,6 +229,8 @@ function buildCustomGroupAgeDetails(results,jsObj)
     str +='<tr>';
 	str +='<td>'+results[i].name+'</td>';
 	str +='<td>'+results[i].totalVoters+'</td>';
+	str +='<td>'+results[i].totalVotersForYoungerVoters+'</td>';
+	str +='<td>'+results[i].VotersPercentForYoungerVoters+'</td>';
 	str +='<td>'+results[i].totalVotersFor18To25+'</td>';
 	str +='<td>'+results[i].votersPercentFor18To25+'</td>';
 	str +='<td>'+results[i].totalVotersFor26To35+'</td>';
@@ -255,13 +260,16 @@ function buildCustomGroupAgeWiseGenderDetails(results,jsObj)
    str +='<table id="groupWiseAgeAndGenderTbl" class="table table-bordered">';
    str +='<tr>';
    str +='<th rowspan="2">Group Name</th>';
-   str +='<th colspan="2">18-22</th>';
-   str +='<th colspan="2">23-30</th>';
-   str +='<th colspan="2">31-45</th>';
+   str +='<th colspan="2">Young Voters</th>';
+   str +='<th colspan="2">18-25</th>';
+   str +='<th colspan="2">26-35</th>';
+   str +='<th colspan="2">36-45</th>';
    str +='<th colspan="2">46-60</th>';
    str +='<th colspan="2">60-Above</th>';
    str +='</tr>';
    str +='<tr>';
+   str +='<th>Male</th>';
+   str +='<th>Female</th>';
    str +='<th>Male</th>';
    str +='<th>Female</th>';
    str +='<th>Male</th>';
@@ -277,6 +285,8 @@ function buildCustomGroupAgeWiseGenderDetails(results,jsObj)
   {
     str +='<tr>';
 	str +='<td>'+results[i].name+'</td>';
+	str +='<td>'+results[i].maleVotersCountForYoungerVoters+'</td>';
+	str +='<td>'+results[i].femaleVotersCountForYoungerVoters+'</td>';
 	str +='<td>'+results[i].maleVotersCountBetween18To25+'</td>';
 	str +='<td>'+results[i].femaleVotersCountBetween18To25+'</td>';
 	str +='<td>'+results[i].maleVotersCountBetween26To35+'</td>';
@@ -313,13 +323,17 @@ function buildCustomGroupAgeWisePercentageDetails(results,jsObj)
    str +='<table class="table table-bordered">';
    str +='<tr>';
    str +='<th rowspan="2">Group Name</th>';
-   str +='<th colspan="3">18-22</th>';
-   str +='<th colspan="3">23-30</th>';
-   str +='<th colspan="3">31-45</th>';
+   str +='<th colspan="3">Young Voters</th>';
+   str +='<th colspan="3">18-25</th>';
+   str +='<th colspan="3">26-35</th>';
+   str +='<th colspan="3">36-45</th>';
    str +='<th colspan="3">46-60</th>';
    str +='<th colspan="3">60-Above</th>';
    str +='</tr>';
    str +='<tr>';
+   str +='<th>Male</th>';
+   str +='<th>Female</th>';
+   str +='<th>Total</th>';
    str +='<th>Male</th>';
    str +='<th>Female</th>';
    str +='<th>Total</th>';
@@ -341,6 +355,10 @@ function buildCustomGroupAgeWisePercentageDetails(results,jsObj)
     str +='<tr>';
 	str +='<td>'+results[i].name+'</td>';
 
+	str +='<td>'+results[i].maleVotersPercentForYoungerVoters+'</td>';
+	str +='<td>'+results[i].femaleVotersPercentForYoungerVoters+'</td>';
+	str +='<td>'+results[i].totalVotersForYoungerVoters+'</td>';
+	
 	str +='<td>'+results[i].maleVotersPercentFor18To25+'</td>';
 	str +='<td>'+results[i].femaleVotersPercentFor18To25+'</td>';
 	str +='<td>'+results[i].totalVotersFor18To25+'</td>';
@@ -376,7 +394,7 @@ function buildGraphForAgeDetails(results)
   
   $("#customGroupAgeGraphDiv").html('');
   $("#customGroupAgeGraphDiv").addClass("customGroupAgeGraphDiv");
-  var xAxisArray = new Array("18-22","23-30","31-45","46-60","60-Above");
+  var xAxisArray = new Array("Young Voters","18-25","26-35","36-45","46-60","60-Above");
   var YDataObject = new Array();
   
   for(var i in results)
@@ -384,10 +402,11 @@ function buildGraphForAgeDetails(results)
 	 var YDataObjectTemp = new Object();
 	 var ageTemp = new Object();
 	 YDataObjectTemp['name'] = results[i].name;
-
-     ageTemp['18-22'] = results[i].totalVotersFor18To25;
-     ageTemp['23-30'] = results[i].totalVotersFor26To35;
-	 ageTemp['31-45'] = results[i].totalVotersFor36To45;
+	 
+	 ageTemp['Young Voters'] = results[i].totalVotersForYoungerVoters;
+     ageTemp['18-25'] = results[i].totalVotersFor18To25;
+     ageTemp['26-35'] = results[i].totalVotersFor26To35;
+	 ageTemp['36-45'] = results[i].totalVotersFor36To45;
 	 ageTemp['46-60'] = results[i].totalVotersFor46To60;
 	 ageTemp['60-Above'] = results[i].totalVotersForAbove60;
 

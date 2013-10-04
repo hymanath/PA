@@ -316,11 +316,12 @@ $('#GenderOrAddedVotersTable').html(str);
 if(jsObj.forGender=='false'){
 	var range='';
 	switch (jsObj.ageRangeId) {
-		case 1: range="18-22";break;
-		case 2: range="23-30";break;
-		case 3: range="31-45";break;
-		case 4: range="46-60";break;
-		case 5: range="60-Above";break;
+	    case 1: range="Young Voters";break;
+		case 2: range="18-25";break;
+		case 3: range="26-35";break;
+		case 4: range="36-45";break;
+		case 5: range="46-60";break;
+		case 6: range="60-Above";break;
 	}
 	
 	title= range+" Age "+jsObj.status+" Voters Details";
@@ -1410,16 +1411,18 @@ function getVoterDetailsByAge(range,voterStatusId,status)
 {
 $.blockUI({ message: '<h4><img src="./images/icons/search.gif"/> Request Processing...</h4>' }); 
 	 var ageRangeId = 0;
-	 if(range == "18-22")
-		  ageRangeId = 1;
-	 else if (range == "23-30")
-		 ageRangeId = 2;
-	 else if (range == "31-45")
+	 if(range == "Young Voters")
+		ageRangeId = 1; 
+	 else if(range == "18-25")
+		  ageRangeId = 2;
+	 else if (range == "26-35")
 		 ageRangeId = 3;
-	 else if (range == "46-60")
+	 else if (range == "36-45")
 		 ageRangeId = 4;
+	 else if (range == "46-60")
+		 ageRangeId = 5;
 	 else 
-		 ageRangeId = 5
+		 ageRangeId = 6;
  
 
 	var jObj=
