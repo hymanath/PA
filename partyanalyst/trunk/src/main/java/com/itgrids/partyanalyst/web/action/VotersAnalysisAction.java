@@ -1403,7 +1403,7 @@ return Action.SUCCESS;
 			if(!(type.equalsIgnoreCase("hamletLocalArea") || type.equalsIgnoreCase("customWardLocalArea")) ){
 			
 		votersDeatailsForConstituency = votersAnalysisService.getVoterAgeWiseDetails(constituencyId, mandalId,
-		panchayatId , boothId, publicationDateId,type);
+		panchayatId , boothId, publicationDateId,type,userId1);
 		if(votersDeatailsForConstituency == null || votersDeatailsForConstituency.size() == 0)
 		votersDeatailsForConstituency = votersAnalysisService.getVotersDetailsByAgewise(constituencyId, mandalId,
 		panchayatId , boothId, publicationDateId,type,userId1);
@@ -1419,7 +1419,7 @@ return Action.SUCCESS;
 		}
 		else if (type.equalsIgnoreCase("mandal")){
 		
-		panchatyVotersDetails = votersAnalysisService.getAgewiseVotersDetaForPanchayatisByTehsilId(mandalId,publicationDateId, type,constituencyId);
+		panchatyVotersDetails = votersAnalysisService.getAgewiseVotersDetaForPanchayatisByTehsilId(mandalId,publicationDateId, type,constituencyId,userId1);
 		if(panchatyVotersDetails == null || panchatyVotersDetails.size() == 0)
 		panchatyVotersDetails = votersAnalysisService.getAgewiseVotersDetailsForPanchayatisByTehsilId(mandalId,publicationDateId,userId1);
 		constituencyManagementVO.setPanchayatVotersDetails(panchatyVotersDetails);
