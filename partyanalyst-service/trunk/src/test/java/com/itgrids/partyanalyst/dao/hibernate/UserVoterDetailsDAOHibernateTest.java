@@ -7,6 +7,7 @@ import java.util.Map;
 
 import java.util.List;
 
+import org.apache.xmlbeans.impl.tool.Extension.Param;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
@@ -490,7 +491,7 @@ for (Object[] objects : list) {
 		System.out.println(list.size()); 
 	}*/
 	
-	public void testgetCasteDetailsOfVoterByBoothIds()
+	/*public void testgetCasteDetailsOfVoterByBoothIds()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(31804l);
@@ -506,5 +507,60 @@ for (Object[] objects : list) {
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1] +":"+ parms[2]);
 		}
+	}*/
+	
+	
+	/*public void testgetYoungVoterAgeDetailsForHamlet()
+	{
+		List<Long> locationIdsList = new ArrayList<Long>(0);
+		locationIdsList.add(1l);
+		List<Object[]> list = userVoterDetailsDAO.getYoungVoterAgeDetailsForHamlet(232l, 8l, locationIdsList, 1l, 18l, 22l);
+		System.out.println(list.size());
+	}*/
+
+	/*public void testGetYoungerVoterDetailsForHamlet()
+	{
+	  List<Object[]> list = userVoterDetailsDAO.getYoungerVoterDetailsForHamlet(8l, 1l, 1l, "Hamlet", 18l, 25l);
+	  System.out.println(list.size());
+	  if(list != null)
+	  for(Object[] params:list)
+	   System.out.println(params[2]+" "+params[3]);
+	}*/
+	
+	/*public void testgetYoungerVoterDetailsForHamlet()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(1l);
+		locationIds.add(2l);
+		List<Object[]> list = userVoterDetailsDAO.getYoungerVoterDetailsForHamletBylocationIdsList(locationIds, 8l, 1l, "hamlet",18l, 22l);
+		System.out.println(list.size());
+	}*/
+
+	/*public void testgetTotalVoterForHamletBylocationIdsList()
+	{
+		List<Long> locationIds = new ArrayList<Long>(0);
+		locationIds.add(1l);
+		locationIds.add(2l);
+		List<Object[]> list = userVoterDetailsDAO.getTotalVoterForHamletBylocationIdsList(locationIds, 8l, 1l, "hamlet");
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetYoungVotersForHamlet()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getYoungVotersForHamlet(232l, 1l, 8l, 1l, 18l, 22l, "boothHamlets");
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetTotalYoungVotersForHamlet()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getTotalYoungVotersForHamlet(232l, 1l, 8l, 1l, "boothHamlets");
+		System.out.println(list.size());
+	}*/
+
+	public void testgetYoungerVotersForLocality()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getYoungerVotersForLocality(8l, 1l, 1l, "hamlet",18l,22l);
+		System.out.println(list.size());
 	}
+	
 }

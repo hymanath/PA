@@ -850,4 +850,14 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 	{
 		System.out.println(boothPublicationVoterDAO.getBoothAndHamletIdsByConstituencyId(232l, 8l, 1l).size());
 	}
+	
+	public void testgetYoungVotersCount()
+	{
+		List<Long> locationIdsList = new ArrayList<Long>(0);
+		locationIdsList.add(844l);
+		List<Object[]> list = boothPublicationVoterDAO.getYoungVotersCount(232l, 8l, locationIdsList, "mandal", 18l, 22l);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}
 }
