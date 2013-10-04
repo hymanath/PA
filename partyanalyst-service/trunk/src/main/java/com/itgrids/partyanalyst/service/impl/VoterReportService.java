@@ -2975,7 +2975,25 @@ public class VoterReportService implements IVoterReportService{
 				boothsIds.add(booths);
 			}*/
 			
-			List<Object[]> ageDeatilsBt18To25 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.AGE18,IConstants.AGE22,constituencyId);
+			List<Object[]> ageDeatilsBt18To22 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO,constituencyId);
+			if(ageDeatilsBt18To22 != null && ageDeatilsBt18To22.size() >0)
+			{
+				for (Object[] parms : ageDeatilsBt18To22) {
+					votersDetailsVO = ageWiseDetails.get((Long)parms[0]);
+					if(votersDetailsVO == null)
+					{
+						votersDetailsVO = new VotersDetailsVO();
+						ageWiseDetails.put((Long)parms[0], votersDetailsVO);
+					}
+					//votersDetailsVO.setAgeRange("18-22");
+					votersDetailsVO.setId((Long)parms[0]);
+					votersDetailsVO.setBoothName("Booth -" +parms[2]);
+					votersDetailsVO.setTotalVotersForYoungerVoters((Long)parms[1]);
+					//returnList.add(votersDetailsVO);
+				}
+			}
+			
+			List<Object[]> ageDeatilsBt18To25 = userVoterDetailsDAO.getAgeWiseDetailsInSelectdCustomWard(wardId,userId,publicationDateId,IConstants.AGE18,IConstants.AGE25,constituencyId);
 			if(ageDeatilsBt18To25 != null && ageDeatilsBt18To25.size() >0)
 			{
 				for (Object[] parms : ageDeatilsBt18To25) {
@@ -3085,6 +3103,8 @@ public class VoterReportService implements IVoterReportService{
 					objects.setVotersPercentFor46To60(objects.getTotalVotersFor46To60()  != 0 ? roundTo2DigitsFloatValue((float)objects.getTotalVotersFor46To60() *100f/totalVoters) :"0.00");
 					objects.setVotersPercentForAbove60(objects.getTotalVotersForAbove60()!= 0 ? roundTo2DigitsFloatValue ((float)objects.getTotalVotersForAbove60()*100f/totalVoters) :"0.00");
 					
+					objects.setTotalVotersForYoungerVoters(objects.getTotalVotersForYoungerVoters()!= null? Long.valueOf(objects.getTotalVotersForYoungerVoters())  :0l);
+					objects.setVotersPercentForYoungerVoters(objects.getTotalVotersForYoungerVoters()!= 0 ? roundTo2DigitsFloatValue ((float)objects.getTotalVotersForYoungerVoters()*100f/totalVoters) :"0.00");
 					returnList.add(objects);
 				}
 				Collections.sort(returnList,sortBoothIds);
@@ -3867,36 +3887,36 @@ public class VoterReportService implements IVoterReportService{
 					voters  = new ArrayList<Object[]>();
 					
 					
-				List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(voterDataVO.getId(), voterDataVO.getPublicationId());
+					List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(voterDataVO.getId(), voterDataVO.getPublicationId());
 
 					
-				List<Long> partialBoothIds = new ArrayList<Long>();
-				List<Long> boothIds = new ArrayList<Long>();
-				
-				if(list != null && list.size() >0)
-					for(PartialBoothPanchayat partialPanchayat:list)
-						partialBoothIds.add(partialPanchayat.getBooth().getBoothId());
-				
-				List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(voterDataVO.getId(),voterDataVO.getPublicationId());
-				
-				if(boothsList.size() >0)
-					for(Object[] obj:boothsList)
-						boothIds.add((Long)obj[0]);
-				
-				if(partialBoothIds.size() >0)
-					for(Long id:partialBoothIds)
-						if(!boothIds.contains(id))
-							boothIds.add(id);
+					List<Long> partialBoothIds = new ArrayList<Long>();
+					List<Long> boothIds = new ArrayList<Long>();
 					
+					if(list != null && list.size() >0)
+						for(PartialBoothPanchayat partialPanchayat:list)
+							partialBoothIds.add(partialPanchayat.getBooth().getBoothId());
 					
-					voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false,boothIds);
-					List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true,boothIds);
+					List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(voterDataVO.getId(),voterDataVO.getPublicationId());
 					
-					totalCount = ((BigInteger)countList.get(0)).longValue();
-				}
-				
-				if(voters != null && voters.size() > 0)
-				{
+					if(boothsList.size() >0)
+						for(Object[] obj:boothsList)
+							boothIds.add((Long)obj[0]);
+					
+					if(partialBoothIds.size() >0)
+						for(Long id:partialBoothIds)
+							if(!boothIds.contains(id))
+								boothIds.add(id);
+						
+						
+						voters = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),false,boothIds);
+						List countList = boothPublicationVoterDAO.getVotersDetailsAnCountDetailsForPanchayatByPublicationId(userId,voterDataVO.getId() , voterDataVO.getPublicationId() ,voterDataVO.getStartIndex().intValue(), voterDataVO.getMaxIndex().intValue() , voterDataVO.getDir(),voterDataVO.getSort() ,str.toString(),queryForCategories.toString(),queryForselect.toString(),true,boothIds);
+						
+						totalCount = ((BigInteger)countList.get(0)).longValue();
+					}
+					
+					if(voters != null && voters.size() > 0)
+					{
 					for (Object[] voterDetails : voters) {
 						
 						voterVO = new VoterVO();

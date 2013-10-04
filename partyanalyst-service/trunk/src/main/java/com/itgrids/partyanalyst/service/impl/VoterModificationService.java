@@ -401,6 +401,8 @@ public class VoterModificationService implements IVoterModificationService{
 					 try{
 					 voterModificationAgeRangeVO = new VoterModificationAgeRangeVO();
 					 voterModificationAgeRangeVO.setRange(ageRange);
+					 if(ageRange != null && ageRange.equalsIgnoreCase(IConstants.YOUNGER_VOTERS))
+					  ageRange = IConstants.YOUNG_VOTERS_AGE_RANGE;
 					 String[] ages = ageRange.split("-");
 					 Long ageFrom = new Long(ages[0].trim());
 					 Long ageTo = null;
@@ -2254,16 +2256,25 @@ public class VoterModificationService implements IVoterModificationService{
 			 
 			 Long ageRangeId = voterModificationVO.getAgeRangeId();
 			 
-			 if(ageRangeId.longValue() == 1)
-				 queryStr.append("and model.voter.age >= 18 and  model.voter.age <= 22");
-			 else if(ageRangeId.longValue() == 2)
-				 queryStr.append("and model.voter.age >= 23 and  model.voter.age <= 30");
+			 if(ageRangeId.longValue() == 2)
+				 queryStr.append("and model.voter.age >= 18 and  model.voter.age <= 25");
 			 else if(ageRangeId.longValue() == 3)
-				 queryStr.append("and model.voter.age >= 31 and  model.voter.age <= 45");
+				 queryStr.append("and model.voter.age >= 26 and  model.voter.age <= 35");
 			 else if(ageRangeId.longValue() == 4)
-				 queryStr.append("and model.voter.age >= 46 and  model.voter.age <= 60");
+				 queryStr.append("and model.voter.age >= 36 and  model.voter.age <= 45");
 			 else if(ageRangeId.longValue() == 5)
+				 queryStr.append("and model.voter.age >= 46 and  model.voter.age <= 60");
+			 else if(ageRangeId.longValue() == 6)
 				 queryStr.append("and model.voter.age > 60");
+			 else if(ageRangeId.longValue() == 1)
+			 {
+				 Long ageFrom =  IConstants.YOUNG_VOTERS_AGE_FROM;
+				 Long ageTo = IConstants.YOUNG_VOTERS_AGE_TO;
+				 
+				 queryStr.append("and model.voter.age >= :ageFrom and  model.voter.age <= :ageTo ");
+			 }
+				
+			
 			 
 		 }
 		 queryStr.append(" and model.voterStatus.voterStatusId = '"+voterStatusId+"'");
