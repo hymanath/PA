@@ -620,7 +620,7 @@ public interface IConstants {
 	public static final String AGE46to60 = "46-60";
 	public static final String Above60  = "Above60";*/
 
-	public static final String AGE18to22  = "Young Voters";
+	public static final String AGE18to22  = "18-25";
 	public static final String AGE23to30  = "26-35";
 	public static final String AGE31to45  = "36-45";
 	public static final String AGE46to60 = "46-60";
