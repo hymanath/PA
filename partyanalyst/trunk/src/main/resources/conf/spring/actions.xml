@@ -1322,5 +1322,10 @@
 	     <property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
+		<bean id="constituencyInfoAction" class="com.itgrids.partyanalyst.web.action.ConstituencyInfoAction" singleton="false">
+	      	<property name="constituencyInfoService" ref="constituencyInfoService" />
+	      	<property name="votersAnalysisService" ref="votersAnalysisService" />
+	      	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
+	</bean>
 </beans>	
 	
