@@ -5400,7 +5400,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
 				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=18 THEN 1 ELSE 0 END))*100,2) ," +
 				"SUM (CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=18 THEN 1 ELSE 0 END))*100,2) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=18 THEN 1 ELSE 0 END))*100,2) " +
 
 				
 				"from PanchayatHamlet PH , BoothPublicationVoter BPV , UserVoterDetails UVD " +
