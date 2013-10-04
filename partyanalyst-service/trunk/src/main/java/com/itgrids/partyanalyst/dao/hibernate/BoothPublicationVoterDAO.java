@@ -5359,26 +5359,26 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		//queryString.append("select SUM( CASE WHEN v.age>=18 and v.age <=22 THEN 1 ELSE 0 END) / count(*) from panchayat_hamlet PH,user_voter_details UVD ,booth_publication_voter BPV ,booth B ,voter V where PH.panchayat_id = 2 and PH.hamlet_id =UVD.hamlet_id and UVD.user_id = 1 and UVD.hamlet_id = PH.hamlet_id and UVD.voter_id = BPV.voter_id and BPV.booth_id = B.booth_id and B.publication_date_id =8 and BPV.voter_id = V.voter_id");
 		queryString.append("select " +
-				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END)," +
-				"ROUND(SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId)*100 ,2)," +
-				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END))*100,2) ," +
-				"SUM (CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 THEN 1 ELSE 0 END)," +
+				"ROUND(SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId)*100 ,2)," +
+				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=25 THEN 1 ELSE 0 END))*100,2) ," +
 
-				"SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END) ," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
-				"SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END))*100,2) ," +
-				"SUM (CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END))*100,2), " +
+				"SUM(CASE  WHEN UVD.voter.age>=26 and UVD.voter.age <=35 THEN 1 ELSE 0 END) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=26 and UVD.voter.age <=35 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
+				"SUM(CASE  WHEN UVD.voter.age>=26 and UVD.voter.age <=35 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=26 and UVD.voter.age <=35 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=26 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=26 and UVD.voter.age <=35 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=26 and UVD.voter.age <=35 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=26 THEN 1 ELSE 0 END))*100,2), " +
 
-				"SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END) ," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
-				"SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END))*100,2) ," +
-				"SUM (CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
-				"ROUND((SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END))*100,2), " +
+				"SUM(CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 THEN 1 ELSE 0 END) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
+				"SUM(CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=36 and UVD.voter.age <=45 THEN 1 ELSE 0 END))*100,2), " +
 
 				"SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 THEN 1 ELSE 0 END) ," +
 				"ROUND((SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +

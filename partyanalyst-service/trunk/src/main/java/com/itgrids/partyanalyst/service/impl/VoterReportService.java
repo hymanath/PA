@@ -4298,6 +4298,17 @@ public class VoterReportService implements IVoterReportService{
 		 			
 		 			votersDetailsVOList = new ArrayList<VotersDetailsVO>();
 		 			
+		 			 VotersDetailsVO youngVoters = new VotersDetailsVO();
+			 			
+		 			youngVoters.setAgeRange(IConstants.YOUNG_VOTERS);
+		 			youngVoters.setTotalVoters((Long)obj[33]);
+		 			youngVoters.setTotalVotersPercent(Long.parseLong(obj[33].toString())*100f/totalVoters);
+		 			youngVoters.setTotalMaleVoters((Long)obj[35]);
+		 			youngVoters.setTotalMaleVotersPercent((float)(Long)obj[35]*100f/((Long)obj[35] +(Long)obj[37]));
+		 			youngVoters.setTotalFemaleVoters((Long)obj[37]);
+		 			youngVoters.setTotalFemaleVotersPercent((float)(Long)obj[37]*100f/((Long)obj[35] +(Long)obj[37]));
+		             
+		 			
 		 			VotersDetailsVO age18to22Details = new VotersDetailsVO();
 		 			
 		 			age18to22Details.setAgeRange(IConstants.AGE18to22);
@@ -4354,6 +4365,7 @@ public class VoterReportService implements IVoterReportService{
 		             votersDetailsVOList.add(age31To45Details);
 		             votersDetailsVOList.add(age46To60Details);
 		             votersDetailsVOList.add(above60Details);
+		             votersDetailsVOList.add(youngVoters);
 		 			
 		 		}
 		 		}
@@ -4411,6 +4423,15 @@ public class VoterReportService implements IVoterReportService{
 	 				votersDetailsVO.setTotalVotersForAbove60((Long)obj[24]);
 	 				votersDetailsVO.setVotersPercentForAbove60(Long.parseLong(obj[24].toString()) != 0L ?roundTo2DigitsFloatValue(Long.parseLong(obj[24].toString())*100f/totalVoters):"0.00");
 	 				votersDetailsVO.setTotalVoters(totalVoters);
+	 				
+	 				
+	 				votersDetailsVO.setMaleVotersCountForYoungerVoters((Long)obj[35]);
+	 				votersDetailsVO.setMaleVotersPercentForYoungerVoters((Long)obj[35] != null ? roundTo2DigitsFloatValue((float)(Long)obj[35]*100f/((Long)obj[35] +(Long)obj[37])):"0.00");
+	 				votersDetailsVO.setFemaleVotersCountForYoungerVoters((Long)obj[37]);
+	 				votersDetailsVO.setFemaleVotersPercentForYoungerVoters((Long)obj[37] != null ? roundTo2DigitsFloatValue((float)(Long)obj[37]*100f/((Long)obj[35] +(Long)obj[37])):"0.00");
+	 				votersDetailsVO.setTotalVotersForYoungerVoters((Long)obj[33]);
+	 				votersDetailsVO.setVotersPercentForYoungerVoters(Long.parseLong(obj[33].toString()) != 0L ?roundTo2DigitsFloatValue(Long.parseLong(obj[33].toString())*100f/totalVoters):"0.00");
+	 				
 	 				
 	 				votersDetailsVOList.add(votersDetailsVO);
 	 				
