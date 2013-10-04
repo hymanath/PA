@@ -81,7 +81,8 @@ margin-top:30px;
 	
 		</select>
 	 </div>
-
+ <img id="basicInfoAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:350px;margin-top:-29px;"/>
+	
 	 <div id="constituencyBasicInfo"></div><br>
 	 </div>
 </div>
@@ -100,11 +101,13 @@ if($(this).val() != 0 && $("#reportLevel").val() == 1 && $("#publicationDateList
 function getConstituencyBasicInfo()
 {
 
+$("#basicInfoAjaxImage").css("display","block");
 	var id=$("#constituencyList").val();
 	var publicationid=$("#publicationDateList").val();
 	if(id == 0)
 	{
 	
+$("#basicInfoAjaxImage").css("display","none");
 		$("#errorDiv").html("Please Select Constituency").css({'display':'block','color':'red'});
 		return;
 	}
