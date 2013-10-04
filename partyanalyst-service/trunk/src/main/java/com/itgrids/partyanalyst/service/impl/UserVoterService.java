@@ -312,9 +312,9 @@ public class UserVoterService implements IUserVoterService{
 			 }
 			 if(!locationType.equalsIgnoreCase("hamlet"))
 			 {
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE22);
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE25);
 			 if(votersList != null && votersList.size() > 0)
-			   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to22,totalVoters);
+			   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to25,totalVoters);
 			 
 			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE23,IConstants.AGE30);
 			 if(votersList != null && votersList.size() > 0)
@@ -329,12 +329,18 @@ public class UserVoterService implements IUserVoterService{
 			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE61,IConstants.AGE160);
 			 if(votersList != null && votersList.size() > 0)
 			  getVoterDetails(categoryValues,category,votersList,"60",totalVoters);
+			 
+			 //young Voters Implementation
+			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO);
+			 if(votersList != null && votersList.size() > 0)
+			   getVoterDetails(categoryValues,category,votersList,IConstants.YOUNG_VOTERS,totalVoters);
+			 
 			 }
 			 else if(locationType.equalsIgnoreCase("hamlet"))
 			 {
 				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE22);
 				 if(votersList != null && votersList.size() > 0)
-				   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to22,totalVoters);
+				   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to25,totalVoters);
 				 
 				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE23,IConstants.AGE30);
 				 if(votersList != null && votersList.size() > 0)
@@ -349,6 +355,11 @@ public class UserVoterService implements IUserVoterService{
 				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE61,IConstants.AGE160);
 				 if(votersList != null && votersList.size() > 0)
 				  getVoterDetails(categoryValues,category,votersList,"60",totalVoters); 
+				 
+				 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForHamlet(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO);
+				 if(votersList != null && votersList.size() > 0)
+				   getVoterDetails(categoryValues,category,votersList,IConstants.YOUNG_VOTERS,totalVoters);
+				 
 			 }
 			 for(Long categoryKey:categoryValues.keySet()){
 				 Map<Long,VotersDetailsVO> mainCategory1 = categoryValues.get(categoryKey);
@@ -394,7 +405,7 @@ public class UserVoterService implements IUserVoterService{
 					if(votersDetailsVO != null){
 						if(params[1].toString().equalsIgnoreCase("M"))
 						{
-							if(ageRange.equalsIgnoreCase(IConstants.AGE18to22)){
+							if(ageRange.equalsIgnoreCase(IConstants.AGE18to25)){
 								
 								votersDetailsVO.setMaleVotersCountBetween18To25((Long)params[0]);
 									
@@ -417,10 +428,13 @@ public class UserVoterService implements IUserVoterService{
 								votersDetailsVO.setMaleVotersCountAbove60((Long)params[0]);
 								
 							}
+							else if(ageRange.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+							 votersDetailsVO.setMaleVotersCountForYoungerVoters((Long)params[0]);
+							
 						}
 						if(params[1].toString().equalsIgnoreCase("F"))
 						{
-                            if(ageRange.equalsIgnoreCase(IConstants.AGE18to22)){
+                            if(ageRange.equalsIgnoreCase(IConstants.AGE18to25)){
                             	
                             	votersDetailsVO.setFemaleVotersCountBetween18To25((Long)params[0]);
                             	
@@ -444,14 +458,20 @@ public class UserVoterService implements IUserVoterService{
 								votersDetailsVO.setFemaleVotersCountAbove60((Long)params[0]);
 								
 							}
-						}
-						if(categoryVO.getTotalVoters() != null){
-							categoryVO.setTotalVoters(categoryVO.getTotalVoters()+(Long)params[0]);
-						}else{
-							categoryVO.setTotalVoters((Long)params[0]);
+							else if(ageRange.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+							 votersDetailsVO.setFemaleVotersCountForYoungerVoters((Long)params[0]);
 						}
 						
-						totalVoters = totalVoters+(Long)params[0];
+						if(!ageRange.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+						{
+						   if(categoryVO.getTotalVoters() != null){
+							 categoryVO.setTotalVoters(categoryVO.getTotalVoters()+(Long)params[0]);
+						   }else{
+							categoryVO.setTotalVoters((Long)params[0]);
+						   }
+						
+						  totalVoters = totalVoters+(Long)params[0];
+						}
 					}
 				}
 			}
