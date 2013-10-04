@@ -574,7 +574,7 @@ public interface IConstants {
 	public static final int LARGE_WIDTH   = 320;
 	public static final int LARGE_HEIGHT  = 240;
 	
-	public static final long AGE18  = 18l;
+	/*public static final long AGE18  = 18l;
 	public static final long AGE22  = 22l;
 	public static final long AGE23  = 23l;
 	public static final long AGE30  = 30l;
@@ -583,7 +583,23 @@ public interface IConstants {
 	public static final long AGE46  = 46l;
 	public static final long AGE60  = 60l;
 	public static final long AGE61  = 61l;
+	public static final long AGE160  = 160l;*/
+	
+	
+	public static final long AGE18  = 18l;
+	public static final long AGE22  = 22l;
+	public static final long AGE23  = 26l;
+	public static final long AGE30  = 35l;
+	public static final long AGE31  = 36l;
+	public static final long AGE45  = 45l;
+	public static final long AGE46  = 46l;
+	public static final long AGE60  = 60l;
+	public static final long AGE61  = 61l;
 	public static final long AGE160  = 160l;
+	
+	public static final long AGE25 = 25l;
+	
+	public static final String YOUNGER_VOTERS = "Young Voters";
 	
 	public static final String HAMLETLOCALAREA = "hamletLocalArea";
 	
@@ -598,11 +614,24 @@ public interface IConstants {
 	public static final String ELECTION = "Election";
 	
 	public static final String GALLARY_PDF_FILES= "gallary_pdf_files";
-	public static final String AGE18to22  = "18-22";
-	public static final String AGE23to30  = "23-30";
-	public static final String AGE31to45  = "31-45";
+	/*public static final String AGE18to22  = "18-25";
+	public static final String AGE23to30  = "26-35";
+	public static final String AGE31to45  = "36-45";
+	public static final String AGE46to60 = "46-60";
+	public static final String Above60  = "Above60";*/
+
+	public static final String AGE18to22  = "Young Voters";
+	public static final String AGE23to30  = "26-35";
+	public static final String AGE31to45  = "36-45";
 	public static final String AGE46to60 = "46-60";
 	public static final String Above60  = "Above60";
+	
+	public static final String AGE18to25 = "18-25";
+	
+	public static final long YOUNG_VOTERS_AGE_FROM = 18L;
+	public static final long YOUNG_VOTERS_AGE_TO = 22L;
+	public static final String YOUNG_VOTERS = "Young Voters";
+	public static final String YOUNG_VOTERS_AGE_RANGE = "18-22";
 	
 	public final static String ASSEMBLY_CONSTITUENCY_TYPE = "Assembly";
 	public final static String PARLIAMENT_CONSTITUENCY_TYPE = "Parliament";
