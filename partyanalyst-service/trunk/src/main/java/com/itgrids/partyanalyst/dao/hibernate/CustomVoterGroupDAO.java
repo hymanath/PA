@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
 import com.itgrids.partyanalyst.model.CustomVoterGroup;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CustomVoterGroupDAO extends GenericDaoHibernate<CustomVoterGroup,Long> implements ICustomVoterGroupDAO {
 
@@ -104,13 +105,20 @@ public class CustomVoterGroupDAO extends GenericDaoHibernate<CustomVoterGroup,Lo
 		else if(age.equalsIgnoreCase("60Above")){
 			query.append("and model.voter.age>=61 ");
 		}
+		else if(age.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+		 query.append(" and model.voter.age between :ageFrom and :ageTo");
+		
 		query.append(" group by model.voter.gender");
 		
 		Query queryObject = getSession().createQuery(query.toString());
 		
 		queryObject.setParameter("customGroupId", customGroupId);
 		queryObject.setParameter("publicationDate", publicationDate);
-		
+		if(age.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+		{
+		  queryObject.setParameter("ageFrom", IConstants.YOUNG_VOTERS_AGE_FROM);
+		  queryObject.setParameter("ageTo", IConstants.YOUNG_VOTERS_AGE_TO);	
+		}
 		return queryObject.list();
 	}
 	
