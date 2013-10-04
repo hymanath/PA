@@ -6114,7 +6114,7 @@
 			<result type="json" name="success">
 			 <param name="root">partyPerformenceList</param>
 			</result>
-		</action>
+				</action>
 				 
 		<action name="getHamletsForPanchayatAction" class="partialBoothPanchayatAction" method="getHamletsInaPanchayat">
 			<result type="json" name="success">
@@ -6132,6 +6132,14 @@
 			<result type="json" name="success">
 			  	<param name="root">pachayatsList</param>
 			 </result>
+		 </action>
+		 <action name="constituencyInfoAction" class="constituencyInfoAction">
+		<result name="success">/jsp/constituencyInfo.jsp</result>
+		</action>
+		<action name="getConstituencyBasicInfoAction" class="constituencyInfoAction" method="getConstituencyBasicInfo">
+		<result type="json" name="success">
+		<param name="root">votersDetailsVO</param>
+		</result>
 		 </action>
 		</package>
 </struts>      

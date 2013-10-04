@@ -275,6 +275,8 @@
 		<pattern>/advVideoSaveAction*</pattern>
 		<pattern>/advVideoActionForSave*</pattern>
 		<pattern>/partialBoothPanchayatAction*</pattern>
+		<pattern>/constituencyInfoAction*</pattern>
+		
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
