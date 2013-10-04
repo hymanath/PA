@@ -304,11 +304,12 @@ $('#GenderOrAddedVotersTable').html(str);
 if(jsObj.forGender=='false'){
 	var range='';
 	switch (jsObj.ageRangeId) {
-		case 1: range="18-22";break;
-		case 2: range="23-30";break;
-		case 3: range="31-45";break;
-		case 4: range="46-60";break;
-		case 5: range="60-Above";break;
+	    case 1: range="Young Voters";break;
+		case 2: range="18-25";break;
+		case 3: range="26-35";break;
+		case 4: range="36-45";break;
+		case 5: range="46-60";break;
+		case 6: range="60-Above";break;
 	}
 	
 	title= range+" Age "+jsObj.status+" Voters Details";
