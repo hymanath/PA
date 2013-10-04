@@ -24,6 +24,9 @@ public class VotersDetailsVO implements Serializable{
 	private Long maleVotersCountAbove60 = 0L;
 	private Long femaleVotersCountAbove60 = 0L;
 	private Long unknownVotersCountAbove60 = 0L;
+	private Long maleVotersCountForYoungerVoters = 0L;
+	private Long femaleVotersCountForYoungerVoters = 0L;
+	private Long unknownVotersCountForYoungerVoters = 0L;
 	
 	
 	private Long totalMaleVotesFor18To25 = 0L;
@@ -51,12 +54,18 @@ public class VotersDetailsVO implements Serializable{
 	private Long totalUnknownVotersForAbove60 = 0L;
 	private Long totalVotersForAbove60 = 0L;
 	
+	private Long totalMaleVotersForYoungerVoters = 0L;
+	private Long totalFemaleVotersForYoungerVoters =0L;
+	private Long totalUnknownVotersForYoungerVoters = 0L;
+	private Long totalVotersForYoungerVoters = 0L;
+	
+	
 	
 	private Long totalMaleVoters = 0L;
 	private Long totalFemaleVoters = 0L;
-	private Long totalUnknownVoters;
+	private Long totalUnknownVoters = 0L;
 	private Long totalVoters = 0L;
-	private Long totalAssignedCount;
+	private Long totalAssignedCount =0L;
 	
 
 	private Float totalMaleVotersPercent;
@@ -87,6 +96,13 @@ public class VotersDetailsVO implements Serializable{
 	private String femaleVotersPercentFor36To45;
 	private String femaleVotersPercentFor46To60;
 	private String femaleVotersPercentForAbove60;
+	
+	
+	private String femaleVotersPercentForYoungerVoters;
+	private String maleVotersPercentForYoungerVoters;
+	private String VotersPercentForYoungerVoters;
+	
+	
 	
 	private String areaType;
 	
@@ -701,5 +717,76 @@ public class VotersDetailsVO implements Serializable{
 	public void setTotalVotersPrcnt(String totalVotersPrcnt) {
 		this.totalVotersPrcnt = totalVotersPrcnt;
 	}
+	public Long getMaleVotersCountForYoungerVoters() {
+		return maleVotersCountForYoungerVoters;
+	}
+	public void setMaleVotersCountForYoungerVoters(
+			Long maleVotersCountForYoungerVoters) {
+		this.maleVotersCountForYoungerVoters = maleVotersCountForYoungerVoters;
+	}
+	public Long getFemaleVotersCountForYoungerVoters() {
+		return femaleVotersCountForYoungerVoters;
+	}
+	public void setFemaleVotersCountForYoungerVoters(
+			Long femaleVotersCountForYoungerVoters) {
+		this.femaleVotersCountForYoungerVoters = femaleVotersCountForYoungerVoters;
+	}
+	public Long getUnknownVotersCountForYoungerVoters() {
+		return unknownVotersCountForYoungerVoters;
+	}
+	public void setUnknownVotersCountForYoungerVoters(
+			Long unknownVotersCountForYoungerVoters) {
+		this.unknownVotersCountForYoungerVoters = unknownVotersCountForYoungerVoters;
+	}
+	public Long getTotalMaleVotersForYoungerVoters() {
+		return totalMaleVotersForYoungerVoters;
+	}
+	public void setTotalMaleVotersForYoungerVoters(
+			Long totalMaleVotersForYoungerVoters) {
+		this.totalMaleVotersForYoungerVoters = totalMaleVotersForYoungerVoters;
+	}
+	public Long getTotalFemaleVotersForYoungerVoters() {
+		return totalFemaleVotersForYoungerVoters;
+	}
+	public void setTotalFemaleVotersForYoungerVoters(
+			Long totalFemaleVotersForYoungerVoters) {
+		this.totalFemaleVotersForYoungerVoters = totalFemaleVotersForYoungerVoters;
+	}
+	public Long getTotalUnknownVotersForYoungerVoters() {
+		return totalUnknownVotersForYoungerVoters;
+	}
+	public void setTotalUnknownVotersForYoungerVoters(
+			Long totalUnknownVotersForYoungerVoters) {
+		this.totalUnknownVotersForYoungerVoters = totalUnknownVotersForYoungerVoters;
+	}
+	public Long getTotalVotersForYoungerVoters() {
+		return totalVotersForYoungerVoters;
+	}
+	public void setTotalVotersForYoungerVoters(Long totalVotersForYoungerVoters) {
+		this.totalVotersForYoungerVoters = totalVotersForYoungerVoters;
+	}
+	public String getFemaleVotersPercentForYoungerVoters() {
+		return femaleVotersPercentForYoungerVoters;
+	}
+	public void setFemaleVotersPercentForYoungerVoters(
+			String femaleVotersPercentForYoungerVoters) {
+		this.femaleVotersPercentForYoungerVoters = femaleVotersPercentForYoungerVoters;
+	}
+	public String getMaleVotersPercentForYoungerVoters() {
+		return maleVotersPercentForYoungerVoters;
+	}
+	public void setMaleVotersPercentForYoungerVoters(
+			String maleVotersPercentForYoungerVoters) {
+		this.maleVotersPercentForYoungerVoters = maleVotersPercentForYoungerVoters;
+	}
+	public String getVotersPercentForYoungerVoters() {
+		return VotersPercentForYoungerVoters;
+	}
+	public void setVotersPercentForYoungerVoters(
+			String votersPercentForYoungerVoters) {
+		VotersPercentForYoungerVoters = votersPercentForYoungerVoters;
+	}
+	
+	
 	
 }
