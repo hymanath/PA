@@ -391,6 +391,9 @@ public static final String AGE5="60Above";
 	 List<Object[]> votersCount5 =customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(userId, customGroupId, AGE5, publicationDateId);
 	 setAgewiseVotersFromGroup(votersCount5,AGE5,votersDetailsVO);  
 	 
+	 List<Object[]> votersCount6 =customVoterGroupDAO.getVotersCountBasedOnAgeInGroup(userId, customGroupId, IConstants.YOUNG_VOTERS, publicationDateId);
+	 setAgewiseVotersFromGroup(votersCount6,IConstants.YOUNG_VOTERS,votersDetailsVO);  
+	 
 	 countPercentages(votersDetailsVO);
 	 
 		return votersDetailsVO;
@@ -420,6 +423,8 @@ public static final String AGE5="60Above";
 			  if(age.equalsIgnoreCase(AGE5)){
 				  votersDetailsVO.setFemaleVotersCountAbove60((Long)obj[0]);
 			  }
+			  if(age.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+			   votersDetailsVO.setMaleVotersCountForYoungerVoters((Long)obj[0]);
 			  
 			  ttlVtrs+=(Long)obj[0];
 		  }
@@ -440,6 +445,9 @@ public static final String AGE5="60Above";
 			  if(age.equalsIgnoreCase(AGE5)){
 				  votersDetailsVO.setMaleVotersCountAbove60((Long)obj[0]);
 			  }
+			  if(age.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+				votersDetailsVO.setFemaleVotersCountForYoungerVoters((Long)obj[0]);
+			  
 			  ttlVtrs+=(Long)obj[0];
 		  }
 	  }
@@ -459,6 +467,8 @@ public static final String AGE5="60Above";
 			  votersDetailsVO.setTotalVotersForAbove60(ttlVtrs!=null ? ttlVtrs :0l);
 		  }
 		  
+		  if(age.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+			  votersDetailsVO.setTotalVotersForYoungerVoters(votersDetailsVO.getMaleVotersCountForYoungerVoters()+votersDetailsVO.getFemaleVotersCountForYoungerVoters());
 		 
  }
  	public void countPercentages(VotersDetailsVO vo){
@@ -498,6 +508,11 @@ public static final String AGE5="60Above";
  		vo.setVotersPercentForAbove60(changeToPercentageString(vo.getTotalVotersForAbove60(),totalVotersOfGroup));
  		vo.setFemaleVotersPercentForAbove60(changeToPercentageString(vo.getFemaleVotersCountAbove60(),vo.getTotalVotersForAbove60()));
  		vo.setMaleVotersPercentForAbove60(changeToPercentageString(vo.getMaleVotersCountAbove60(),vo.getTotalVotersForAbove60()));
+ 		
+ 		vo.setVotersPercentForYoungerVoters(changeToPercentageString(vo.getTotalVotersForYoungerVoters(),totalVotersOfGroup));
+ 		vo.setFemaleVotersPercentForYoungerVoters(changeToPercentageString(vo.getFemaleVotersCountForYoungerVoters(),vo.getTotalVotersForYoungerVoters()));
+ 		vo.setMaleVotersPercentForAbove60(changeToPercentageString(vo.getMaleVotersCountForYoungerVoters(),vo.getTotalVotersForYoungerVoters()));
+ 		
  		vo.setTotalVoters(totalVotersOfGroup);
 }
  	
@@ -1086,6 +1101,9 @@ public List<VotersDetailsVO> getCustomVotersAgeDetails(Long constituencyId, Long
 		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,AGE5);
 		 setCustomVoterAgeDetails(AGE5,list,votersDetailsVOsList);
 		 
+		 list = boothPublicationVoterDAO.getAgeWiseCustomVoterDetails(constituencyId, locationId, publicationDateId, areaType, userId,IConstants.YOUNG_VOTERS);
+		 setCustomVoterAgeDetails(IConstants.YOUNG_VOTERS,list,votersDetailsVOsList);
+		 
 		 if(votersDetailsVOsList != null && votersDetailsVOsList.size() > 0)
 		 {
 			for(VotersDetailsVO vo:votersDetailsVOsList)
@@ -1095,7 +1113,7 @@ public List<VotersDetailsVO> getCustomVotersAgeDetails(Long constituencyId, Long
 			  vo.setTotalVotersFor36To45(vo.getFemaleVotersCountBetween36To45() + vo.getMaleVotersCountBetween36To45());
 			  vo.setTotalVotersFor46To60(vo.getFemaleVotersCountBetween46To60() + vo.getMaleVotersCountBetween46To60());
 			  vo.setTotalVotersForAbove60(vo.getFemaleVotersCountAbove60() + vo.getMaleVotersCountAbove60());
-			  
+			  vo.setTotalVotersForYoungerVoters(vo.getFemaleVotersCountForYoungerVoters()+vo.getMaleVotersCountForYoungerVoters());
 			  countPercentages(vo);
 			}
 		 }
@@ -1136,6 +1154,8 @@ public void setCustomVoterAgeDetails(String age ,List<Object[]> list,List<Voters
 				   votersDetailsVO.setMaleVotersCountBetween46To60((Long)params[0]);
 				  else if(age.equalsIgnoreCase(AGE5))
 				   votersDetailsVO.setMaleVotersCountAbove60((Long)params[0]);
+				  else if(age.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+				   votersDetailsVO.setMaleVotersCountForYoungerVoters((Long)params[0]);
 			  }
 			  else if(params[1].toString().equalsIgnoreCase(IConstants.FEMALE))
 			  {
@@ -1149,6 +1169,8 @@ public void setCustomVoterAgeDetails(String age ,List<Object[]> list,List<Voters
 				  votersDetailsVO.setFemaleVotersCountBetween46To60((Long)params[0]);
 				else if(age.equalsIgnoreCase(AGE5))
 				  votersDetailsVO.setFemaleVotersCountAbove60((Long)params[0]);  
+				else if(age.equalsIgnoreCase(IConstants.YOUNG_VOTERS))
+				 votersDetailsVO.setFemaleVotersCountForYoungerVoters((Long)params[0]);	
 			  }
 			  
 			}
