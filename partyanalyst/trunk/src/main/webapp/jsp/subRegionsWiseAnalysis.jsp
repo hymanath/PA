@@ -3531,13 +3531,16 @@ function buildAgewiseDetails(results , obj){
 //18111	 
   
 	str+='<th  rowspan="2">Total Voters</th>';
-	str+='<th colspan="2">18-22</th>';
-	str+='<th colspan="2">23-30</th>';
-	str+='<th colspan="2">31-45</th>';
+	str+='<th colspan="2">Young Voters</th>';
+	str+='<th colspan="2">18-25</th>';
+	str+='<th colspan="2">26-35</th>';
+	str+='<th colspan="2">36-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
 	str+='<tr>';
+	str+='<th>Voters</th>';
+	str+='<th>%</th>';
 	str+='<th>Voters</th>';
 	str+='<th>%</th>';
 	str+='<th>Voters</th>';
@@ -3606,6 +3609,8 @@ var YDataObjectTemp = new Object();
 	   YDataObject.push(YDataObjectTemp);*/
 	   
 	str+='<td>'+innerResults[i].totalVoters+'</td>';
+	str+='<td>'+innerResults[i].totalVotersForYoungerVoters+'</td>';
+	str+='<td>'+innerResults[i].VotersPercentForYoungerVoters+'</td>';
 	str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
 	str+='<td>'+innerResults[i].votersPercentFor18To25+'</td>';
 	str+='<td>'+innerResults[i].totalVotersFor26To35+'</td>';
@@ -3730,14 +3735,17 @@ function buildAgeAndGenderWiseDetails(results , obj){
 		 str+='<th rowspan="2">HamletName</th>';
 	}
 	   
-	str+='<th colspan="2">18-22</th>';
-	str+='<th colspan="2">23-30</th>';
-	str+='<th colspan="2">31-45</th>';
+	str+='<th colspan="2">Young Voters</th>';
+	str+='<th colspan="2">18-25</th>';
+	str+='<th colspan="2">26-35</th>';
+	str+='<th colspan="2">36-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
 
 	str+='<tr>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
 	str+='<th>Male</th>';
@@ -3772,6 +3780,9 @@ for(var i=0;i<innerResults.length;i++){
 	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths")
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
 	   
+	str+='<td>'+innerResults[i].totalMaleVotersForYoungerVoters+'</td>';
+    str+='<td>'+innerResults[i].totalFemaleVotersForYoungerVoters+'</td>';
+		
 	str+='<td>'+innerResults[i].totalMaleVotesFor18To25+'</td>';
 	str+='<td>'+innerResults[i].totalFemaleVotersFor18To25+'</td>';
 
@@ -3880,15 +3891,18 @@ function buildAgeAndGenderWiseDetailsForPercent(results , obj){
 		
 		  str+='<th rowspan="2">Hamlet Name</th>';
 	}
-	   
-	str+='<th colspan="3">18-22</th>';
-	str+='<th colspan="3">23-30</th>';
-	str+='<th colspan="3">31-45</th>';
+	str+='<th colspan="3">Young Voters</th>';   
+	str+='<th colspan="3">18-25</th>';
+	str+='<th colspan="3">26-35</th>';
+	str+='<th colspan="3">36-45</th>';
 	str+='<th colspan="3">46-60</th>';
 	str+='<th colspan="3">60-Above</th>';
 	str+='</tr>';
 
 	str+='<tr>';
+	str+='<th>Total</th>';
+	str+='<th>Male</th>';
+	str+='<th>Female</th>';
 	str+='<th>Total</th>';
 	str+='<th>Male</th>';
 	str+='<th>Female</th>';
@@ -3928,6 +3942,10 @@ for(var i=0;i<innerResults.length;i++){
 	    else if((type="hamlet" && obj.type == "hamletBooths")||(type="booth" && obj.type == "boothHamlets") || obj.type == "wardBooths")
 	   str+='<td>'+innerResults[i].hamletName+'</td>';
 
+	str+='<td>'+innerResults[i].totalVotersForYoungerVoters+'</td>';
+	str+='<td>'+innerResults[i].maleVotersPercentForYoungerVoters+'</td>';
+	str+='<td>'+innerResults[i].femaleVotersPercentForYoungerVoters+'</td>';
+		
     str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
 	str+='<td>'+innerResults[i].maleVotersPercentFor18To25+'</td>';
 	str+='<td>'+innerResults[i].femaleVotersPercentFor18To25+'</td>';

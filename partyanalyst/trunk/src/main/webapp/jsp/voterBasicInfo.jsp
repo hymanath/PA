@@ -830,13 +830,16 @@ function buildVotersAgeWiseInfo(myResults)
 		str += '<tr>';
 		str += '<th rowspan="2">Booth NO</th>';
 		str += '<th rowspan="2">Toatl Voters</th>';
-		str += '<th colspan="2" style="padding-left: 63px;">18-22</th>';
-		str += '<th colspan="2" style="padding-left: 63px;">23-30</th>';
-		str += '<th colspan="2" style="padding-left: 63px;">31-45</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">Young Voters</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">18-25</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">26-35</th>';
+		str += '<th colspan="2" style="padding-left: 63px;">36-45</th>';
 		str += '<th colspan="2" style="padding-left: 63px;">46-60</th>';
 		str += '<th colspan="2" style="padding-left: 45px;">Above 60</th>';
 		str += '</tr>';
 		str+='<tr>';
+		str+='<th>Voters</th>';
+		str+='<th>%</th>';
 		str+='<th>Voters</th>';
 		str+='<th>%</th>';
 		str+='<th>Voters</th>';
@@ -855,6 +858,8 @@ function buildVotersAgeWiseInfo(myResults)
 			str+='<tr>';
 			str+='<td>'+myResults[i].boothName+'</td>';
 			str+='<td>'+myResults[i].totalVoters+'</td>';
+			str+='<td>'+myResults[i].totalVotersForYoungerVoters+'</td>';
+			str+='<td>'+myResults[i].votersPercentForYoungerVoters+'</td>';
 			str+='<td>'+myResults[i].totalVotersFor18To25+'</td>';
 			str+='<td>'+myResults[i].votersPercentFor18To25+'</td>';
 			str+='<td>'+myResults[i].totalVotersFor26To35+'</td>';

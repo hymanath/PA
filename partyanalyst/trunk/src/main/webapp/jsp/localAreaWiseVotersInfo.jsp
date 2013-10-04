@@ -461,13 +461,16 @@ function buildAgewiseDetails(myResults,jsObj)
 	str+='<tr>';
 	str+='<th rowspan="2">LocalArea</th>';
 	str+='<th rowspan="2">Total Voters</th>';
-	str+='<th colspan="2">18-22</th>';
-	str+='<th colspan="2">23-30</th>';
-	str+='<th colspan="2">31-45</th>';
+	str+='<th colspan="2">Young Voters</th>';
+	str+='<th colspan="2">18-25</th>';
+	str+='<th colspan="2">26-35</th>';
+	str+='<th colspan="2">36-45</th>';
 	str+='<th colspan="2">46-60</th>';
 	str+='<th colspan="2">60-Above</th>';
 	str+='</tr>';
 	str+='<tr>';
+	str+='<th>Voters</th>';
+	str+='<th>%</th>';
 	str+='<th>Voters</th>';
 	str+='<th>%</th>';
 	str+='<th>Voters</th>';
@@ -487,6 +490,8 @@ function buildAgewiseDetails(myResults,jsObj)
 			str+='<tr>';
 			str+='<td>'+result[i].localityName+'</td>';
 			str+='<td>'+result[i].totalVoters+'</td>';
+			str+='<td>'+result[i].totalVotersForYoungerVoters+'</td>';
+			str+='<td>'+result[i].votersPercentForYoungerVoters+'</td>';
 			str+='<td>'+result[i].totalVotersFor18To25+'</td>';
 			str+='<td>'+result[i].votersPercentFor18To25+'</td>';
 			str+='<td>'+result[i].totalVotersFor26To35+'</td>';

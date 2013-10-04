@@ -339,13 +339,17 @@ function buildCasteWiseWiseDetails(result,jobj)
 		 str+="<thead class='info'>";
 		 str  +='<tr>';
 		 str+="<th rowspan=3>"+result[i].name+"</th>";
-		 str+=" <th colspan=3>18-22</th>";
-		 str+=" <th colspan=3>23-30</th>";
-		 str+=" <th colspan=3>31-45</th>";
+		 str+=" <th colspan=3>Young Voters</th>";
+		 str+=" <th colspan=3>18-25</th>";
+		 str+=" <th colspan=3>26-35</th>";
+		 str+=" <th colspan=3>36-45</th>";
 		 str+=" <th colspan=3>46-60</th>";
 		 str+=" <th colspan=3>60-Above</th>";
 		 str+='</tr>';
 		 str  +='<tr>';
+		 str+=" <th>Male</th>";
+		 str+=" <th>Female</th>";
+		 str+=" <th>Total</th>";
 		 str+=" <th>Male</th>";
 		 str+=" <th>Female</th>";
 		 str+=" <th>Total</th>";
@@ -389,14 +393,24 @@ function buildCasteWiseWiseDetails(result,jobj)
 
 		if(obj.femaleVotersCountAbove60 == null)
 	     obj.femaleVotersCountAbove60 = 0;
+		
+		if(obj.maleVotersCountForYoungerVoters == null)
+		  obj.maleVotersCountForYoungerVoters = 0;
+		if(obj.femaleVotersCountForYoungerVoters == null)
+		  obj.femaleVotersCountForYoungerVoters = 0;
 
 		var totalFor18To25 = obj.maleVotersCountBetween18To25+obj.femaleVotersCountBetween18To25;
 		var totalFor26To35 = obj.maleVotersCountBetween26To35+obj.femaleVotersCountBetween26To35;
 		var totalFor36To45 = obj.maleVotersCountBetween36To45+obj.femaleVotersCountBetween36To45;
 		var totalFor46To60 =obj.maleVotersCountBetween46To60+obj.femaleVotersCountBetween46To60;
 		var totalFor60 = obj.maleVotersCountAbove60+obj.femaleVotersCountAbove60;
+		var totalYoungerVotes = obj.maleVotersCountForYoungerVoters+obj.femaleVotersCountForYoungerVoters;
 
 		str +='<td>'+obj.name+'</td>';
+		
+		str +='<td>'+obj.maleVotersCountForYoungerVoters+'</td>';
+		str +='<td>'+obj.femaleVotersCountForYoungerVoters+'</td>';
+		str +='<td>'+totalYoungerVotes+'</td>';
 
 		str +='<td>'+obj.maleVotersCountBetween18To25+'</td>';
 
