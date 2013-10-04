@@ -128,11 +128,11 @@ public interface IVotersAnalysisService {
 	public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean hamletBoothChecked);
 	
 	public List<VotersDetailsVO> getVoterAgeWiseDetails(Long constituencyId, Long mandalId,
-			 Long panchayatId , Long boothId, Long publicationDateId, String type);
+			 Long panchayatId , Long boothId, Long publicationDateId, String type,Long userId);
 	
 	public List<VotersDetailsVO> getAgewiseVotersDetForTehsilsByConstituencyId(Long constituencyId,Long publicationDateId, String type);
 	
-	public List<VotersDetailsVO> getAgewiseVotersDetaForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId, String type,Long constituencyId);
+	public List<VotersDetailsVO> getAgewiseVotersDetaForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId, String type,Long constituencyId,Long userId);
 	
 	public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByLocalElectionBodyId(Long localElectionBodyId,Long publicationDateId, String type,Long constituencyId);
 	

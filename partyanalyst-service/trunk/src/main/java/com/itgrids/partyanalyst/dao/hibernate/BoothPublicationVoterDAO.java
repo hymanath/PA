@@ -5342,5 +5342,125 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getPanchayatAgeWiseDetailsByHamletWise(Long userId , Long publicationDateId , List<Long> panchayatIds)
+	{
+		StringBuffer queryString = new StringBuffer();
+		
+		
+		//queryString.append("select SUM( CASE WHEN v.age>=18 and v.age <=22 THEN 1 ELSE 0 END) / count(*) from panchayat_hamlet PH,user_voter_details UVD ,booth_publication_voter BPV ,booth B ,voter V where PH.panchayat_id = 2 and PH.hamlet_id =UVD.hamlet_id and UVD.user_id = 1 and UVD.hamlet_id = PH.hamlet_id and UVD.voter_id = BPV.voter_id and BPV.booth_id = B.booth_id and B.publication_date_id =8 and BPV.voter_id = V.voter_id");
+		queryString.append("select " +
+				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END)," +
+				"ROUND(SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId)*100 ,2)," +
+				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END))*100,2) ," +
+
+				"SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
+				"SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=23 and UVD.voter.age <=30 THEN 1 ELSE 0 END))*100,2), " +
+
+				"SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
+				"SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=31 and UVD.voter.age <=45 THEN 1 ELSE 0 END))*100,2), " +
+
+				"SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 THEN 1 ELSE 0 END) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
+				"SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=46 and UVD.voter.age <=60 THEN 1 ELSE 0 END))*100,2) ," +
+
+				"SUM(CASE  WHEN UVD.voter.age>60 THEN 1 ELSE 0 END) , " +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age > 60   THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ,"+
+				"SUM(CASE  WHEN UVD.voter.age>60  and UVD.voter.gender = 'M'   THEN 1 ELSE 0 END) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>60 and UVD.voter.gender = 'M'  THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>60  THEN 1 ELSE 0 END))*100,2) ,"+				
+				"SUM(CASE  WHEN UVD.voter.age>60  and UVD.voter.gender = 'F'  THEN 1 ELSE 0 END) ," +				
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>60 and UVD.voter.gender = 'F'  THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>60  THEN 1 ELSE 0 END))*100,2) ," + 
+				"COUNT(UVD.voter.voterId ) ,PH.panchayat.panchayatId,PH.panchayat.panchayatName " +
+				"from PanchayatHamlet PH , BoothPublicationVoter BPV , UserVoterDetails UVD " +
+				"where " +
+				"PH.hamlet.hamletId = UVD.hamlet.hamletId and " +
+				"UVD.user.userId = :userId and " +
+				"UVD.voter.voterId = BPV.voter.voterId and " +
+				"BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				"PH.panchayat.panchayatId in(:panchayatIds) group by PH.panchayat.panchayatId ");
+		
+		
+		queryString.append("");
+		
+		Query query = getSession().createQuery(queryString.toString());
+		
+		query.setParameter("userId", userId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("panchayatIds", panchayatIds);
+		
+		return query.list();
+		
+	}
+	
+	/*
+	select 
+	COUNT(v.voter_id) as totalCount,
+	SUM(IF(v.age>=18 and v.age <=22 and v.gender = 'M',1,0)) as 18To22Male ,
+	SUM(IF(v.age>=18 and v.age <=22 and v.gender = 'F',1,0)) as 18To22FeMale ,
+	SUM(IF(v.age>=23 and v.age <=30 and v.gender = 'M',1,0)) as 23To30Male ,
+	SUM(IF(v.age>=23 and v.age <=30 and v.gender = 'F',1,0)) as 23To30FeMale ,
+	SUM(IF(v.age>=31 and v.age <=45 and v.gender = 'M',1,0)) as 31To45Male ,
+	SUM(IF(v.age>=31 and v.age <=45 and v.gender = 'F',1,0)) as 31To45FeMale ,
+	SUM(IF(v.age>=46 and v.age <=60 and v.gender = 'M',1,0)) as 46To60Male ,
+	SUM(IF(v.age>=46 and v.age <=60 and v.gender = 'F',1,0)) as 46To60FeMale ,
+	SUM(IF(v.age>60 and v.gender = 'M',1,0)) as above60Male ,
+	SUM(IF(v.age>60 and v.gender = 'F',1,0)) as above60FeMale ,
+	SUM(IF(v.age>=18 and v.age <=22,1,0)) as 18To22Total ,
+	SUM(IF(v.age>=23 and v.age <=30,1,0)) as 23To30Total ,
+	SUM(IF(v.age>=31 and v.age <=45,1,0)) as 31To45Total ,
+	SUM(IF(v.age>=46 and v.age <=60,1,0)) as 46To60Total ,
+	SUM(IF(v.age>60,1,0)) as above60Total ,
+	ROUND((SUM(IF(v.age>=18 and v.age <=22,1,0))/COUNT(v.voter_id))*100,2) as 18To22TotalPercent,
+	ROUND((SUM(IF(v.age>=18 and v.age <=22 and v.gender = 'M',1,0))/SUM(IF(v.age>=18 and v.age <=22,1,0)))*100,2) as 18To22MalelPercent,
+	ROUND((SUM(IF(v.age>=18 and v.age <=22 and v.gender = 'F',1,0))/SUM(IF(v.age>=18 and v.age <=22,1,0)))*100,2) as 18To22FemalePercent,
+	ROUND((SUM(IF(v.age>=23 and v.age <=30,1,0))/COUNT(v.voter_id))*100,2) as 23To30TotalPercent,
+	ROUND((SUM(IF(v.age>=23 and v.age <=30 and v.gender = 'M',1,0))/SUM(IF(v.age>=23 and v.age <=30,1,0)))*100,2) as 23To30MalelPercent,
+	ROUND((SUM(IF(v.age>=23 and v.age <=30 and v.gender = 'F',1,0))/SUM(IF(v.age>=23 and v.age <=30,1,0)))*100,2) as 23To30FemalePercent,
+	####100-ROUND((SUM(IF(v.age>=23 and v.age <=30 and v.gender = 'M',1,0))/SUM(IF(v.age>=23 and v.age <=30,1,0)))*100,2) as 23To30FemalePercent,
+
+	ROUND((SUM(IF(v.age>=31 and v.age <=45,1,0))/COUNT(v.voter_id))*100,2) as 31To45TotalPercent,
+	ROUND((SUM(IF(v.age>=31 and v.age <=45 and v.gender = 'M',1,0))/SUM(IF(v.age>=31 and v.age <=45,1,0)))*100,2) as 31To45MalelPercent,
+	ROUND((SUM(IF(v.age>=31 and v.age <=45 and v.gender = 'F',1,0))/SUM(IF(v.age>=31 and v.age <=45,1,0)))*100,2) as 31To45FemalePercent,
+
+	ROUND((SUM(IF(v.age>=46 and v.age <=60,1,0))/COUNT(v.voter_id))*100,2) as 46To60TotalPercent,
+	ROUND((SUM(IF(v.age>=46 and v.age <=60 and v.gender = 'M',1,0))/SUM(IF(v.age>=46 and v.age <=60,1,0)))*100,2) as 46To60MalelPercent,
+	ROUND((SUM(IF(v.age>=46 and v.age <=60 and v.gender = 'F',1,0))/SUM(IF(v.age>=46 and v.age <=60,1,0)))*100,2) as 46To60FeMalelPercent,
+
+
+	ROUND((SUM(IF(v.age>60,1,0))/COUNT(v.voter_id))*100,2) as above60TotalPercent,
+	ROUND((SUM(IF(v.age>60 and v.gender = 'M',1,0))/SUM(IF(v.age>60,1,0)))*100,2) as above60MalelPercent,
+	ROUND((SUM(IF(v.age>60 and v.gender = 'F',1,0))/SUM(IF(v.age>60,1,0)))*100,2) as above60FeMalelPercent
+
+	from 
+	panchayat_hamlet PH,
+	user_voter_details UVD , 
+	booth_publication_voter BPV ,
+	booth B ,
+	voter V
+	where
+	PH.panchayat_id = 2 and
+	PH.hamlet_id =UVD.hamlet_id and
+	UVD.user_id = 1 and
+	UVD.hamlet_id = PH.hamlet_id and
+	UVD.voter_id = BPV.voter_id and 
+	BPV.booth_id = B.booth_id and
+	B.publication_date_id =8 and
+	BPV.voter_id = V.voter_id;*/
+
 
 }
