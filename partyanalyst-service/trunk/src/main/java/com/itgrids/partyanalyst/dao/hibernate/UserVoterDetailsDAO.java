@@ -2342,5 +2342,230 @@ IUserVoterDetailsDAO{
 	
 	
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getYoungerVoterDetailsForHamlet(Long publicationDateId ,Long id,Long userId,String type,Long ageFrom,Long ageTo)
+	{
+	  StringBuilder str = new StringBuilder();
+	  if(type.equalsIgnoreCase(IConstants.HAMLET))
+	   str.append(" select distinct model2.hamlet.hamletId, model2.hamlet.hamletName ");
+	  else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+	   str.append(" select distinct model2.ward.constituencyId, model2.ward.name ");
+	  
+	  str.append(" ,count(distinct model.voter.voterId),model.voter.gender ");
+	  str.append(" from BoothPublicationVoter model, UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId ");
+	  str.append(" and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId ");
+	  if(type.equalsIgnoreCase(IConstants.HAMLET))
+	   str.append(" and model2.hamlet.hamletId =:id ");
+	  else if(type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+	   str.append(" and model2.ward.constituencyId =:id ");
+	  str.append(" and model.voter.age between :ageFrom and :ageTo group by model.voter.gender ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("ageFrom", ageFrom);
+	  query.setParameter("ageTo", ageTo);
+	  query.setParameter("id", id);
+	  query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("userId", userId);
+	  
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getYoungerVoterDetailsForHamletBylocationIdsList(List<Long> locationIds, Long publicationDateId,Long userId,String type,Long ageFrom,Long ageTo)
+	{
+		StringBuilder str = new StringBuilder();
+		if(type.equalsIgnoreCase(IConstants.HAMLET))
+		 str.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ," );
+		else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		 str.append("select distinct model.ward.constituencyId,model.ward.name ,");
+						  
+		str.append(" count(model.voter.voterId), model.voter.gender from UserVoterDetails model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and model.user.userId =:userId and model2.booth.publicationDate.publicationDateId = :publicationDateId ");
+		str.append(" and model.voter.age between :ageFrom and :ageTo ");
+		
+		if(type.equalsIgnoreCase(IConstants.HAMLET))
+		 str.append(" and model.hamlet.hamletId in(:locationIds) and model.hamlet.hamletId is not null group by model.hamlet.hamletId,model.voter.gender order by model.hamlet.hamletName ");
+		else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		 str.append(" and model.ward.constituencyId in(:locationIds) and model.ward.constituencyId is not null group by model.ward.constituencyId,model.voter.gender order by model.ward.name ");	
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("userId", userId);	
+		query.setParameterList("locationIds", locationIds);	
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("ageFrom", ageFrom);
+		query.setParameter("ageTo", ageTo);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTotalVoterForHamletBylocationIdsList(List<Long> locationIds, Long publicationDateId,Long userId,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		if(type.equalsIgnoreCase(IConstants.HAMLET))
+		 str.append("select distinct model.hamlet.hamletId," );
+		else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		 str.append("select distinct model.ward.constituencyId,");
+						  
+		str.append(" count(model.voter.voterId) from UserVoterDetails model, BoothPublicationVoter model2 ");
+		str.append(" where model.voter.voterId = model2.voter.voterId and model.user.userId =:userId and model2.booth.publicationDate.publicationDateId = :publicationDateId ");
+		
+		if(type.equalsIgnoreCase(IConstants.HAMLET))
+		 str.append(" and model.hamlet.hamletId in(:locationIds) and model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName ");
+		else if (type.equalsIgnoreCase(IConstants.CUSTOMWARD))
+		 str.append(" and model.ward.constituencyId in(:locationIds) and model.ward.constituencyId is not null group by model.ward.constituencyId order by model.ward.name ");	
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("userId", userId);	
+		query.setParameterList("locationIds", locationIds);	
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+	}
+	
+	
+	/*@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityIdsForUser(Long hamletId , Long userId,List<?> voterIds,String male,String female,long ...ages) {
+		StringBuilder query = new StringBuilder();
+		query.append(" select distinct model.locality.localityId,model.locality.name , count( distinct model.voter.voterId), " );
+		query.append(getAgeQuery(null,"GENDER"));	
+		if(ages.length%2==0)
+				for(int i=0;i<ages.length;){				
+					query.append(getAgeQuery("AGE"+ages[i],"AGE"+ages[i+1]));
+					i=i+2;
+			}			
+			query.append(getAgeQuery("AGE"+ages[ages.length-1],null));				
+			query.append(getAllAgesQuery(ages));						
+		
+			query.append(" from UserVoterDetails model  where  model.voter.voterId in(:voterIds) and  model.user.userId = :id " +
+						" and model.locality.localityId is not null group by model.locality.localityId order by model.locality.name");
+			Query queryObject = getSession().createQuery(query.toString());
+			queryObject.setParameter("male", male);
+			queryObject.setParameter("female", female);			
+			queryObject.setParameterList("voterIds", voterIds);
+			queryObject.setParameter("id", userId);
+			for(int i=0;i<ages.length;i++)
+					queryObject.setParameter("AGE"+ages[i], ages[i]);
+			return queryObject.list();	
+	}*/
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getYoungerVotersForLocality(
+			 Long publicationDateId ,Long id,Long userId,String type,Long ageFrom,Long ageTo) {		
+			
+		StringBuilder queryString = new StringBuilder();
+		queryString.append(" select distinct model2.locality.localityId,model2.locality.name , count(distinct model.voter.voterId),model.voter.gender ");
+		queryString.append(" from BoothPublicationVoter model,UserVoterDetails model2 where  " +
+				" model.booth.publicationDate.publicationDateId = :publicationDateId and model.voter.voterId = model2.voter.voterId " +
+				" and model2.user.userId = :userId and model.voter.age between :ageFrom and :ageTo and ") ;
+		   
+		   if(type.equalsIgnoreCase(IConstants.HAMLET))
+			  queryString.append(" model2.hamlet.hamletId = :id  ");
+			else
+			  queryString.append(" model2.ward.constituencyId = :id  ");
+		   queryString.append(" group by model2.locality.localityId,model.voter.gender ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("userId", userId);	
+		query.setParameter("id", id);	
+		query.setParameter("ageFrom", ageFrom);
+		query.setParameter("ageTo", ageTo);
+		  return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getYoungVotersForHamlet(Long constituencyId,Long userId,Long publicationDateId,Long boothId,Long ageFrom,Long ageTo,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		 if(type.equalsIgnoreCase("boothHamlets"))
+			str.append("select distinct model.hamlet.hamletId,model.hamlet.hamletName ,");
+		 else if(type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("wardBooths") )
+			str.append("select distinct model2.booth.boothId,concat('Booth-',model2.booth.partNo),");
+		 
+		 str.append(" count(distinct model.voter.voterId), model.voter.gender from UserVoterDetails model,BoothPublicationVoter model2 ");
+		 str.append(" where model.voter.voterId = model2.voter.voterId and model2.booth.publicationDate.publicationDateId = :publicationDateId "); 
+		 str.append(" and model.user.userId =:userId and model.voter.age between :ageFrom and :ageTo and ");
+		 
+		 if(type.equalsIgnoreCase("boothHamlets"))
+		  str.append(" model2.booth.boothId = :boothId and model.hamlet.hamletId is not null group by model.hamlet.hamletId,model.voter.gender order by model.hamlet.hamletName " );
+		 else if(type.equalsIgnoreCase("hamletBooths"))
+		  str.append(" model.hamlet.hamletId = :boothId group by model2.booth.boothId,model.voter.gender order by model2.booth.partNo ");
+		 else if( type.equalsIgnoreCase("wardBooths"))
+		  str.append(" model.ward.constituencyId = :boothId and model2.booth.constituency.constituencyId = :constituencyId group by model2.booth.boothId,model.voter.gender order by model2.booth.partNo " );
+		 
+		Query query = getSession().createQuery(str.toString());
+		 if(type.equalsIgnoreCase("wardBooths")){
+			 query.setParameter("constituencyId", constituencyId);
+			}
+		 query.setParameter("publicationDateId", publicationDateId);
+		 query.setParameter("boothId", boothId);
+		 query.setParameter("userId", userId);
+		 query.setParameter("ageFrom", ageFrom);
+		 query.setParameter("ageTo", ageTo);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTotalYoungVotersForHamlet(Long constituencyId,Long userId,Long publicationDateId,Long boothId,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		
+		 if(type.equalsIgnoreCase("boothHamlets"))
+			str.append("select distinct model.hamlet.hamletId,");
+		 else if(type.equalsIgnoreCase("hamletBooths") || type.equalsIgnoreCase("wardBooths") )
+			str.append("select distinct model2.booth.boothId,");
+		 
+		 str.append(" count(distinct model.voter.voterId) from UserVoterDetails model,BoothPublicationVoter model2 ");
+		 str.append(" where model.voter.voterId = model2.voter.voterId and model2.booth.publicationDate.publicationDateId = :publicationDateId "); 
+		 str.append(" and model.user.userId =:userId and ");
+		 
+		 if(type.equalsIgnoreCase("boothHamlets"))
+		  str.append(" model2.booth.boothId = :boothId and model.hamlet.hamletId is not null group by model.hamlet.hamletId order by model.hamlet.hamletName " );
+		 else if(type.equalsIgnoreCase("hamletBooths"))
+		  str.append(" model.hamlet.hamletId = :boothId group by model2.booth.boothId order by model2.booth.partNo ");
+		 else if( type.equalsIgnoreCase("wardBooths"))
+		  str.append(" model.ward.constituencyId = :boothId and model2.booth.constituency.constituencyId = :constituencyId group by model2.booth.boothId order by model2.booth.partNo " );
+		 
+		Query query = getSession().createQuery(str.toString());
+		 if(type.equalsIgnoreCase("wardBooths")){
+			 query.setParameter("constituencyId", constituencyId);
+			}
+		 query.setParameter("publicationDateId", publicationDateId);
+		 query.setParameter("boothId", boothId);
+		 query.setParameter("userId", userId);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getYoungVoterAgeDetailsForHamlet(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,Long userId,Long ageFrom,Long ageTo)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.voter.voterId),model.voter.gender,model2.hamlet.hamletId");
+		str.append(" from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId and " +
+				" model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId ");
+		str.append(" and model2.hamlet.hamletId in(:locationIdsList) ");
+		
+		if(ageTo != null)
+		 str.append(" and model.voter.age between :ageFrom and :ageTo ");
+		else
+		 str.append(" and model.voter.age > :ageFrom ");
+		
+		str.append("group by model2.hamlet.hamletId,model.voter.gender ");
+		
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("locationIdsList", locationIdsList);
+		query.setParameter("userId", userId);
+		if(ageTo != null)
+		 query.setParameter("ageTo", ageTo);
+		query.setParameter("ageFrom", ageFrom);
+		
+		return query.list();
+	}
 	
 }
