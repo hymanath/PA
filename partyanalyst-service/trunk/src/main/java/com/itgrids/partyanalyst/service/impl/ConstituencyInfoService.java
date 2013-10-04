@@ -17,7 +17,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class ConstituencyInfoService implements IConstituencyInfoService{
-	private IBoothDAO boothDAO;
+
 	private IRegionServiceData regionServiceDataImp;
 	private IStaticDataService staticDataService;
 	private IPublicationDateDAO publicationDateDAO;
@@ -36,11 +36,7 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 
 
 
-	public IBoothDAO getBoothDAO() {
-		return boothDAO;
-	}
-
-
+	
 
 	public void setVotersAnalysisService(
 			IVotersAnalysisService votersAnalysisService) {
@@ -65,9 +61,6 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 		this.staticDataService = staticDataService;
 	}
 
-	public void setBoothDAO(IBoothDAO boothDAO) {
-		this.boothDAO = boothDAO;
-	}
 
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
@@ -77,22 +70,7 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 		this.regionServiceDataImp = regionServiceDataImp;
 	}
 
-	public List<SelectOptionVO> getConstituencies()
-	 {
-		 List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
-		 List<Object[]> list = new ArrayList<Object[]>();
-		 try{
-			 list = boothDAO.getConstituencies();
-			if(list != null && list.size() > 0)
-				for(Object[] params : list)
-					constituencies.add(new SelectOptionVO((Long)params[0],params[1].toString()));
-		 }
-		 catch(Exception e)
-		 {
-			//LOG.error("Exception Ocuured in getConstituencies() in suggestive Model Service", e);
-		 }
-		return constituencies;
-	 }
+	
 	
 	public List<VotersDetailsVO> getConstituencyBasicInfoById(Long constituencyId,Long publicationId,Long userId)
 	{
