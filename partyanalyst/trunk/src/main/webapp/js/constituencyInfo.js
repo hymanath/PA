@@ -1,5 +1,7 @@
 function buildConstituencyBasicInfo(results)
 	{
+ 	
+        $("#basicInfoAjaxImage").css("display","none");
 	    var mandalList = results[0].mandalList;
 		var localbodyList = results[0].localbodiesList;
 		var divEle =document.getElementById("constituencyBasicInfo");
