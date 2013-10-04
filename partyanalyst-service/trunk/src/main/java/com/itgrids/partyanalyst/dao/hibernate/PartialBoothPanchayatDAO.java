@@ -33,6 +33,24 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 	return query.list();
 	}
 	
+	public List<Long> getDistinctPartialBoothsByPanchayatIdAndPublicationDateId(Long panchayatId,Long publicationDateId) {
+		String queryString = " select distinct model.booth.boothId from PartialBoothPanchayat " +
+				"model where model.panchayat.panchayatId = :panchayatId and model.booth.publicationDate.publicationDateId =:publicationDateId " ;
+		Query query = getSession().createQuery(queryString);
+		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("publicationDateId", publicationDateId);
+	return query.list();
+	}
+	
+	public List<Object[]> getPartialBoothDetailsByPanchayatIdAndPublicationDateId(Long panchayatId,Long publicationDateId) {
+		String queryString = "select model.booth.boothId,model.booth.partNo,model.booth.location,model.booth.villagesCovered " +
+				" from PartialBoothPanchayat model where model.panchayat.panchayatId = :panchayatId and model.booth.publicationDate.publicationDateId =:publicationDateId " ;
+		Query query = getSession().createQuery(queryString);
+		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("publicationDateId", publicationDateId);
+	return query.list();
+	}
+	
 	public List<Long> getPartialBoothDetailsByPanchayatIdsAndPublicationDateId(List<Long> panchayatIds , Long publicationDateId)
 	{
 		
@@ -202,6 +220,20 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 		int result = query.executeUpdate();
 		
 		return result;
+	}
+	
+	
+	public List<Long> getPanchayatIdsForPartialPanchayat(List<Long> panchayatIds ,Long publicationDateId)
+	{
+		
+		Query query = getSession().createQuery("select distinct model.panchayat.panchayatId from PartialBoothPanchayat model " +
+				"where model.panchayat.panchayatId in(:panchayatIds) and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+		
 	}
 	
 }

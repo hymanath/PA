@@ -1327,7 +1327,7 @@ public class VotersAnalysisService implements IVotersAnalysisService{
 	
 public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publicationDateId,String reqType,Long userId ){
 		
-		List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(id,publicationDateId);
+		List<Long> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatId(id,publicationDateId);
 		
 		List<Object[]> votersCountList = null;
 		
@@ -1417,14 +1417,14 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
     public void getVotersCountForMultipleBooths(Long panchayatId,Long publicationDateId,VotersInfoForMandalVO votersInfoForMandalVO){
 		
 		
-		List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(panchayatId,publicationDateId);
+		List<Long> list = partialBoothPanchayatDAO.getDistinctPartialBoothsByPanchayatIdAndPublicationDateId(panchayatId,publicationDateId);
 		
 		List<Long> partialBoothIds = new ArrayList<Long>();
 		List<Long> boothIds = new ArrayList<Long>();
 		
 		if(list != null && list.size() >0)
-			for(PartialBoothPanchayat partialPanchayat:list)
-				partialBoothIds.add(partialPanchayat.getBooth().getBoothId());
+			for(Long boothId:list)
+				partialBoothIds.add(boothId);
 		
 		List<Object[]> boothsList = boothDAO.getBoothsInAPanchayat(panchayatId,publicationDateId);
 		
@@ -1804,7 +1804,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			
 			if(locationType.equalsIgnoreCase("panchayat"))
 			{
-				List<PartialBoothPanchayat> partialPanchayatDetails = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(locationId, publicationDateId);
+				List<Long> partialPanchayatDetails = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatId(locationId, publicationDateId);
 				
 				if(partialPanchayatDetails != null && partialPanchayatDetails.size() >0)
 					list = boothPublicationVoterDAO.getPartyAndGenderWiseVotersCountByPublicationIdInAndPanchayatWithHamlets(userId,locationId,publicationDateId);
@@ -4096,49 +4096,66 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		
 		
 		List<Object[]> panchayatis = panchayatDAO.getPanchayatsByTehsilId(tehsilId);
+		
+		List<Long> panchayatIds = new ArrayList<Long>();
+		
+		for(Object[] obj:panchayatis)
+			panchayatIds.add((Long)obj[0]);
+		
+		List<Long> partialIds = partialBoothPanchayatDAO.getPanchayatIdsForPartialPanchayat(panchayatIds, publicationDateId);
+		
 		List<VotersDetailsVO> constituencyVotersList = new ArrayList<VotersDetailsVO>();
 		for(Object[] obj:panchayatis){
+			
+			if(!partialIds.contains((Long)obj[0]))
+			{
 
-            VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
+	            VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
+				
+				getDetailsOfVotersHasAgeBetween18And25(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);
+				getDetailsOfVotersHasAgeBetween26And35(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);			
+				getDetailsOfVotersHasAgeBetween36And45(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);		
+				getDetailsOfVotersHasAgeBetween46And60(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);       
+				getDetailsOfVotersHasAgeAbove60(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);
+				
+				voterDetailsVO.setPanchayatname(obj[1].toString());
+				Long totalVoters = 0l;
+				if(voterDetailsVO.getTotalVotersFor18To25() != null )
+				 totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor18To25();
+				if(voterDetailsVO.getTotalVotersFor26To35() != null)
+					 totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor26To35();
+				if(voterDetailsVO.getTotalVotersFor36To45() != null)
+					totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor36To45();
+				if(voterDetailsVO.getTotalVotersFor46To60() != null)
+					totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor46To60();
+				if(voterDetailsVO.getTotalVotersForAbove60() != null)
+					totalVoters = totalVoters+voterDetailsVO.getTotalVotersForAbove60();
+				
+				voterDetailsVO.setTotalVoters(totalVoters);
+				
+				/*voterDetailsVO.setVotersPercentFor18To25(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentFor26To35(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentFor36To45(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentFor46To60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters));
+				voterDetailsVO.setVotersPercentForAbove60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters));
+				
+	*/
+				
+				
+				voterDetailsVO.setVotersPercentFor18To25(voterDetailsVO.getTotalVotersFor18To25() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters) :"0.00");
+				voterDetailsVO.setVotersPercentFor26To35(voterDetailsVO.getTotalVotersFor26To35() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters):"0.00");
+				voterDetailsVO.setVotersPercentFor36To45(voterDetailsVO.getTotalVotersFor36To45() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters):"0.00");
+				voterDetailsVO.setVotersPercentFor46To60(voterDetailsVO.getTotalVotersFor46To60() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters) :"0.00");
+				voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != null? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
+				
+				constituencyVotersList.add(voterDetailsVO);
+			}
 			
-			getDetailsOfVotersHasAgeBetween18And25(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);
-			getDetailsOfVotersHasAgeBetween26And35(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);			
-			getDetailsOfVotersHasAgeBetween36And45(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);		
-			getDetailsOfVotersHasAgeBetween46And60(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);       
-			getDetailsOfVotersHasAgeAbove60(null,tehsilId,(Long)obj[0],null, publicationDateId,voterDetailsVO,"panchayat",null);
-			
-			voterDetailsVO.setPanchayatname(obj[1].toString());
-			Long totalVoters = 0l;
-			if(voterDetailsVO.getTotalVotersFor18To25() != null )
-			 totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor18To25();
-			if(voterDetailsVO.getTotalVotersFor26To35() != null)
-				 totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor26To35();
-			if(voterDetailsVO.getTotalVotersFor36To45() != null)
-				totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor36To45();
-			if(voterDetailsVO.getTotalVotersFor46To60() != null)
-				totalVoters = totalVoters+voterDetailsVO.getTotalVotersFor46To60();
-			if(voterDetailsVO.getTotalVotersForAbove60() != null)
-				totalVoters = totalVoters+voterDetailsVO.getTotalVotersForAbove60();
-			
-			voterDetailsVO.setTotalVoters(totalVoters);
-			
-			/*voterDetailsVO.setVotersPercentFor18To25(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters));
-			voterDetailsVO.setVotersPercentFor26To35(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters));
-			voterDetailsVO.setVotersPercentFor36To45(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters));
-			voterDetailsVO.setVotersPercentFor46To60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters));
-			voterDetailsVO.setVotersPercentForAbove60(roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters));
-			
-*/
-			
-			
-			voterDetailsVO.setVotersPercentFor18To25(voterDetailsVO.getTotalVotersFor18To25() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor18To25()*100f/totalVoters) :"0.00");
-			voterDetailsVO.setVotersPercentFor26To35(voterDetailsVO.getTotalVotersFor26To35() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor26To35()*100f/totalVoters):"0.00");
-			voterDetailsVO.setVotersPercentFor36To45(voterDetailsVO.getTotalVotersFor36To45() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor36To45()*100f/totalVoters):"0.00");
-			voterDetailsVO.setVotersPercentFor46To60(voterDetailsVO.getTotalVotersFor46To60() != null ? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersFor46To60()*100f/totalVoters) :"0.00");
-			voterDetailsVO.setVotersPercentForAbove60(voterDetailsVO.getTotalVotersForAbove60() != null? roundTo2DigitsFloatValue((float)voterDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
-			
-			constituencyVotersList.add(voterDetailsVO);
+		
 		}
+		
+		if(partialIds != null && partialIds.size() > 0)
+			constituencyVotersList.addAll(voterReportService.caluculateAgeWiseDetailsForPanchayatByHamlets(userId, partialIds, publicationDateId, true));
 		
 		return constituencyVotersList;
 		
@@ -4155,19 +4172,19 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		for(Object[] boothDetails:booths)
 			boothIds.add((Long)boothDetails[0]);
 		
-		List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(panchayatId, publicationDateId);
+		List<Object[]> list = partialBoothPanchayatDAO.getPartialBoothDetailsByPanchayatIdAndPublicationDateId(panchayatId, publicationDateId);
 		
 		if(list != null && list.size() >0)
-         for(PartialBoothPanchayat partialPanchayatDetails:list)        	
+         for(Object[] partialPanchayatDetails:list)        	
          {
         	 
-        	 if(!boothIds.contains(partialPanchayatDetails.getBooth().getBoothId()))
+        	 if(!boothIds.contains(partialPanchayatDetails[0]))
         	 {
 	        	 Object[] obj = new Object[4];
-	        	 obj[0] = partialPanchayatDetails.getBooth().getBoothId();
-	        	 obj[1] = partialPanchayatDetails.getBooth().getPartNo();
-	        	 obj[2] = partialPanchayatDetails.getBooth().getLocation();
-	        	 obj[3] = partialPanchayatDetails.getBooth().getVillagesCovered();
+	        	 obj[0] = partialPanchayatDetails[0];
+	        	 obj[1] = partialPanchayatDetails[1];
+	        	 obj[2] = partialPanchayatDetails[2];
+	        	 obj[3] = partialPanchayatDetails[3];
 	        	 
 	        	 booths.add(obj);
 
@@ -9674,7 +9691,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 	 
 	 /* Age wise Details */
 		public List<VotersDetailsVO> getVoterAgeWiseDetails(Long constituencyId, Long mandalId,
-				 Long panchayatId , Long boothId, Long publicationDateId, String type)
+				 Long panchayatId , Long boothId, Long publicationDateId, String type,Long userId)
 		 {
 			 try{
 				 if(type.equalsIgnoreCase("constituency"))
@@ -9682,7 +9699,19 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				 else if(type.equalsIgnoreCase("mandal") || type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY) || type.equalsIgnoreCase("localElectionBody"))
 					 return getAgeWiseVoterDetails(type, mandalId, publicationDateId,constituencyId);
 				 else if(type.equalsIgnoreCase("panchayat"))
+				 {
+					List<Long> partialBoothIds =  partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatId(panchayatId,publicationDateId);
+					
+					if(partialBoothIds != null && partialBoothIds.size() >0)
+					{
+						List<Long> panchayatIds = new ArrayList<Long>();
+						panchayatIds.add(panchayatId);
+						
+					return 	voterReportService.caluculateAgeWiseDetailsForPanchayatByHamlets(userId,panchayatIds,publicationDateId,false);
+					}
+					 
 					 return getAgeWiseVoterDetails(type, panchayatId, publicationDateId,constituencyId);
+				 }
 				 else if(type.equalsIgnoreCase("booth") )
 					 return getAgeWiseVoterDetails(type, boothId, publicationDateId,constituencyId);
 				 else if(type.equalsIgnoreCase("ward"))
@@ -10096,7 +10125,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						  return arg1.getTehsilName().trim().toUpperCase().compareTo(arg2.getTehsilName().trim().toUpperCase());
 						}
 			};	
-	public List<VotersDetailsVO> getAgewiseVotersDetaForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId, String type,Long constituencyId){
+	public List<VotersDetailsVO> getAgewiseVotersDetaForPanchayatisByTehsilId(Long tehsilId,Long publicationDateId, String type,Long constituencyId,Long userId){
 		  try{
 			 List<VotersDetailsVO> votersDetailsVOList = new ArrayList<VotersDetailsVO>();
 			 List<Object[]> panchayatiesList = panchayatDAO.getPanchayatsByTehsilId(tehsilId);
@@ -10129,14 +10158,34 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					votersDetailsVO.setVotersPercentForAbove60(votersDetailsVO.getTotalVotersForAbove60() != 0? roundTo2DigitsFloatValue((float)votersDetailsVO.getTotalVotersForAbove60()*100f/totalVoters):"0.00");
 					
 					votersDetailsVOList.add(votersDetailsVO);
-				}*/			
-
+				}*/	
+				 
+				 
+            List<Long> ids = new ArrayList<Long>();
+            
+            for (Object[] panchayat : panchayatiesList)
+				ids.add((Long)panchayat[0]);
+            
+            List<Long> partialIds = null;
+            
+            if(ids != null && ids.size() >0)
+            {            
+			  partialIds = partialBoothPanchayatDAO.getPanchayatIdsForPartialPanchayat(ids, publicationDateId);
+            }
+            
 			Map<Long,String> panchayatIds = new HashMap<Long,String>();
+			
 					for (Object[] panchayat : panchayatiesList){
-						panchayatIds.put((Long)panchayat[0], panchayat[1]!= null?panchayat[1].toString():"");
+						if(!partialIds.contains((Long)panchayat[0]))
+						 panchayatIds.put((Long)panchayat[0], panchayat[1]!= null?panchayat[1].toString():"");
 					}
-					if(panchayatIds.size() > 0)
+					if(panchayatIds.size() > 0){
+						
 						votersDetailsVOList = getAllAgesWiseVotersDetails(getReportLevelId("Panchayat"), panchayatIds, publicationDateId,"Panchayat",constituencyId);
+					}
+					
+					if(partialIds != null && partialIds.size() >0)
+						votersDetailsVOList.addAll(voterReportService.caluculateAgeWiseDetailsForPanchayatByHamlets(userId,partialIds,publicationDateId,true));
 				
 			 }
 			 return votersDetailsVOList;

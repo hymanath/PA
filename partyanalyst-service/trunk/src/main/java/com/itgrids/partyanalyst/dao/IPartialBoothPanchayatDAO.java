@@ -37,5 +37,12 @@ public interface IPartialBoothPanchayatDAO extends
 	public int updateDescriptionForPartialPanchayat(Long panchayatId,Long boothId,String description);
 	
 	public Long getBoothPanchayatDetails(Long panchayatId,Long boothId,Long hamletId);
+	
+	public List<Long> getPanchayatIdsForPartialPanchayat(List<Long> panchayatIds ,Long publicationDateId);
+	public List<Long> getDistinctPartialBoothsByPanchayatIdAndPublicationDateId(Long panchayatId,Long publicationDateId);
+	public List<Object[]> getPartialBoothDetailsByPanchayatIdAndPublicationDateId(Long panchayatId,Long publicationDateId);
+
+
+
 
 }

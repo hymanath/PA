@@ -472,5 +472,8 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getPartialBoothHamlets(Long panchayatId,Long publicationId);
 	
 	public List<Object[]> getBoothAndHamletIdsByConstituencyId(Long constituencyId,Long publicationDateId,Long userId);
+	
+	public List<Object[]> getPanchayatAgeWiseDetailsByHamletWise(Long userId , Long publicationDateId , List<Long> panchayatId);
+
 	  
 }
