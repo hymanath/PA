@@ -766,7 +766,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 					"BPV.voter.voterId = UVD.voter.voterId and " +
 					"UVD.user.userId =:userId and " +
 					"PH.hamlet.hamletId = UVD.hamlet.hamletId and " +
-					"PH.panchayat.panchayatId = :panchayatId and" +
+					"PH.panchayat.panchayatId = :panchayatId and " +
 					"BPV.booth.publicationDate.publicationDateId = :publicationDateId group by UVD.voter.gender");
 			
 			query.setParameter("userId", userId);
@@ -5393,7 +5393,16 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				"ROUND((SUM(CASE  WHEN UVD.voter.age>60 and UVD.voter.gender = 'M'  THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>60  THEN 1 ELSE 0 END))*100,2) ,"+				
 				"SUM(CASE  WHEN UVD.voter.age>60  and UVD.voter.gender = 'F'  THEN 1 ELSE 0 END) ," +				
 				"ROUND((SUM(CASE  WHEN UVD.voter.age>60 and UVD.voter.gender = 'F'  THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>60  THEN 1 ELSE 0 END))*100,2) ," + 
-				"COUNT(UVD.voter.voterId ) ,PH.panchayat.panchayatId,PH.panchayat.panchayatName " +
+				"COUNT(UVD.voter.voterId ) ,PH.panchayat.panchayatId,PH.panchayat.panchayatName ," +
+				
+				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END) ," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 THEN 1 ELSE 0 END)/COUNT(UVD.voter.voterId))*100,2) ," +
+				"SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'M' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=18 THEN 1 ELSE 0 END))*100,2) ," +
+				"SUM (CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F'THEN 1 ELSE 0 END)," +
+				"ROUND((SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=22 and UVD.voter.gender = 'F' THEN 1 ELSE 0 END)/SUM(CASE  WHEN UVD.voter.age>=18 and UVD.voter.age <=18 THEN 1 ELSE 0 END))*100,2) ," +
+
+				
 				"from PanchayatHamlet PH , BoothPublicationVoter BPV , UserVoterDetails UVD " +
 				"where " +
 				"PH.hamlet.hamletId = UVD.hamlet.hamletId and " +
