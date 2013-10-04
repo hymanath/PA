@@ -1798,7 +1798,7 @@
     </bean>
         
     <bean name="constituencyInfoService" class="com.itgrids.partyanalyst.service.impl.ConstituencyInfoService">
-     <property name="boothDAO" ref="boothDAO" />	
+   
      <property name="regionServiceDataImp" ref="regionServiceDataImp" />
      <property name="staticDataService" ref="staticDataService" />
      <property name="publicationDateDAO" ref="publicationDateDAO" />
