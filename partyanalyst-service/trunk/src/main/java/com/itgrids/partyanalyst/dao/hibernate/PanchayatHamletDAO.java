@@ -108,7 +108,7 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 	public List<Object[]> getHamletsOfPanchayats(List<Long> panchayitIds){
 		
 		
-		Query query = getSession().createQuery("select model.hamlet.hamletId,model.hamlet.hamletName from PanchayatHamlet model where model.panchayat.panchayatId in(:panchayitIds)");
+		Query query = getSession().createQuery("select model.hamlet.hamletId,model.panchayat.panchayatId from PanchayatHamlet model where model.panchayat.panchayatId in(:panchayitIds)");
 		
 		query.setParameterList("panchayitIds", panchayitIds);
 		
