@@ -36,6 +36,7 @@
  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
 	  <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
 	  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+	  <script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
 <link href="styles/assets/css/bootstrap.css" rel="stylesheet">
 <style type="text/css">
 #voterDetailsNote{
@@ -97,6 +98,60 @@ table.dataTable td {
 #mandalWiseVoterAgeTable,#mandalWiseAgeAndGenderTable,#mandalWiseAgePercentageTable{
 	width: 100% !important;
 }
+
+#partialBoothsDiv{
+	 background-attachment: scroll;
+    background-clip: border-box;
+
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+	}
+	
+	#partialBoothMainDiv ul, #partialBoothMainDiv ol, #partialBoothMainDiv li {
+    color: #000000;
+    font-weight: normal;
+    list-style-type: decimal;
+	}
+	
+#partialBoothDiv h4{
+ background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #05A8E9;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #FFFFFF;
+    font-family: arial;
+    font-size: 17px;
+    font-weight: bolder;
+    height: 25px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 5px;
+	text-align: center;
+	margin-left: 10px;
+	width: 975px; 
+}
 </style>
 <title>Age Wise Voters Details</title>
 <script type="text/javascript">
@@ -110,10 +165,33 @@ var mandalId           =  '${mandalId}';
 var panchayatId        =  '${panchayatId}';
 var buildType          =  '${buildType}';
 var name               =  '${name}';
+var mainname		   =  "${name}";
 var retrieveType       =  ${retrieveType};
 var publicationYear    =  '${publicationYear}';
 var startNumber        =  '${startNumber}';
 var agePattern         = /^(hamletLocalArea|customWardLocalArea)$/i;
+var locationnId = '';
+var pType =${type};
+
+
+partialBoothsInPanchayat();
+/* Partial Booths Panchayats List*/
+function partialBoothsInPanchayat(){
+
+	if(type =="hamletBooths" || type == "hamletLocalArea")
+		pType = "boothHamlets";
+	if(type =="boothHamlets")
+		pType = "booth";
+	if(type == "mandal")
+		locationnId= '2'+mandalId;
+	else 
+		locationnId = mandalId;
+	if(locationnId =="")
+		locationnId = '${panchayatId}';
+
+getPartialBoothsDetails(locationnId,publicationDateId,constituencyId,pType);
+
+}
 /*
 	This Condition is used for checking for Constituency level Age Wise analysis
 */
@@ -985,6 +1063,9 @@ $("#AgeWiseNoteDiv").html('<font style="font-family:verdana;font-size:12px;"> <s
 </script>
 </head>
 <body>
+<div id="partialBoothMainDiv" class="blue whitegloss" style="display:none;">
+	  <div id="partialBoothDiv"></div>
+	</div>
 <div id="errorDiv" align="center"></div>
 <div align="center">
 <div id="ageGrid" align="center"></div>
