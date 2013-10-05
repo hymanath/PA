@@ -676,6 +676,10 @@ function callAjax(param,jsObj,url){
 						{
 							buildgetSelectedCountPAnchayatsDetails(myResults);
 						}
+						else if(jsObj.task== "getConstituencyBasicCountInfo")
+						{
+							buildConstituencyBasicCountInfo(myResults);
+						}
 						
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
@@ -992,7 +996,7 @@ function panchayatMatrx(result)
 					Constituency Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
 				<td>
-					<select id="listConstituencyNames" onchange="clearAll(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyType();">
+					<select id="listConstituencyNames" onchange="clearAll(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyType();getConstituencyBasicCountInfo();">
 					<option value="0"> Select Constituency </option>
 					</select>
 				</td>		
@@ -1162,6 +1166,7 @@ To
 </div>
 </div></div>
 </c:if>
+<div id="basicCountDiv" class="widget blue" style="display:none;"></div>
 <span id="dashBoardImgLoading" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"/></span>
 <div id="votersCountRageDiv" style="overflow-x: scroll;display:none"></div>
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -3321,6 +3326,58 @@ $('#ajaxLoaderImgForNewPartyDiv').show();
 	callAjax(param,jsObj,url);
 
 }
+
+function getConstituencyBasicCountInfo()
+{
+$("#basicCountDiv").css("display","none");
+var id = $('#listConstituencyNames').val();
+if(id == 0)
+return;
+var jsObj= 
+	{	
+        constituencyId:id,
+		task:"getConstituencyBasicCountInfo"		
+	};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "<%=request.getContextPath()%>/getConstituencyBasicCountInfoAction.action?"+param;
+	callAjax(param,jsObj,url);
+}
+function buildConstituencyBasicCountInfo(results)
+{
+$("#basicCountDiv").css("display","block");
+var str='';
+var divEle = document.getElementById("basicCountDiv");
+var name = $("#listConstituencyNames option:selected").text(); 
+str+='<h4>'+name+' Constituenyc Basic Information </h4>';
+str+='<div id="basicInfoDiv" class="widget-block" style="padding:10px;">';
+if(results[0].totalmandals != 0)
+	{
+str+='<span class="btn btn-info btn-small">'+results[0].totalmandals+'</span>';
+str+='<span class="help-inline f2">Mandals &nbsp;</span>';
+	}
+	if(results[0].totalPanchayats != 0)
+	{
+str+='<span class="btn btn-info btn-small">'+results[0].totalPanchayats+'</span>';
+str+='<span class="help-inline f2">Panchayats &nbsp;</span>';
+	}
+if(results[0].noOfLocalBodies != 0)
+	{
+str+='<span class="btn btn-info btn-small">'+results[0].noOfLocalBodies+'</span>';
+str+='<span class="help-inline f2">Muncipalities &nbsp;</span>';
+	}
+	if(results[0].totalNoOfWards != 0)
+	{
+str+='<span class="btn btn-info btn-small">'+results[0].totalNoOfWards+'</span>';
+str+='<span class="help-inline f2">Wards &nbsp;</span>';
+	}
+	if(results[0].totalBooths != 0)
+	{
+str+='<span class="btn btn-info btn-small">'+results[0].totalBooths+'</span>';
+str+='<span class="help-inline f2">Booths &nbsp;</span>';
+	}
+str+='</div>';
+divEle.innerHTML = str;
+}
 function buildnewPartyEffectResults(results)
 {
 	$('#titleDiv').show();
@@ -3491,6 +3548,7 @@ function getVoterDetailsByPartNo(partno,constituencyId,startIndex)
     getSelPartyPerformanceAction();
   </c:if>
 </c:if>	   
+
 </script>
 </body>
 </html>
