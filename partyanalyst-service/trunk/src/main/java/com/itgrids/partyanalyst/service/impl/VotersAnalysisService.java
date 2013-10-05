@@ -18569,26 +18569,85 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  return resultStatus;
 	}
  }
- public List<SelectOptionVO> getPartialBoothDetails(Long id,Long publicationId,Long constituencyId,String type){
+ public List<SelectOptionVO> getPartialBoothDetails(Long userId,Long id,Long publicationId,Long constituencyId,String type){
 	 List<SelectOptionVO> partialBoothList = new ArrayList<SelectOptionVO>();
-	 List<String> values = null;
-	 
+	 List<Object[]> values = null;
+	 List<Object[]> boothArea = null;
+	 String areaType = null;
+	 Long votersCount = 0L;
+	 log.error("entered into getPartialBoothDetails() Method");
+	 try{
 	 if(type.equalsIgnoreCase("mandal")){
 		 id = new Long(id.toString().substring(1));
 		values = boothDAO.getDescriptionForMandalLevel(id,publicationId);
 	 }else if(type.equalsIgnoreCase("panchayat")){
 		values = boothDAO.getDescriptionForPanchayatLevel(id,publicationId);
-	 } else if(type.equalsIgnoreCase("booth") || type.equalsIgnoreCase("boothHamlets")){
+		if(values == null || values.size() == 0){
+			values = getPartialBoothsInPanchayat(id,publicationId,constituencyId,type);			
+		}
+	 } else if(type.equalsIgnoreCase("booth")){
 		 values = boothDAO.getDescriptionForBoothLevel(constituencyId,id);
 	 }
+	 else if(type.equalsIgnoreCase("boothHamlets")){
+		 values = boothDAO.getDescriptionForHamletLevel(publicationId,id);		 
+	 }
+		 if(values != null || values.size() > 0){
+			 
+			 if(type.equalsIgnoreCase("booth")){
+				 Long locationId = null;
+				 boothArea = boothDAO.getPanchayatByBoothId(id,publicationId);
+				 if(boothArea != null || boothArea.size()> 0){
+					 for (Object[] parms : boothArea) {
+						 locationId = Long.valueOf(parms[1].toString());
+					}
+					 if(locationId.longValue() != constituencyId.longValue())
+						 areaType = "notsame";
+				 }
+			 }
+			 else if(type.equalsIgnoreCase("panchayat")){
+				 votersCount= boothDAO.findVotersCountByPublicationIdForPartialPanchayat(userId,id,publicationId);
+			 }
+			 for(Object[] param:values){
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 selectOptionVO.setUrl(param[0].toString()!=null ? param[0].toString():"");
+				 selectOptionVO.setId(param[5].toString()!=null ? Long.valueOf(param[5].toString()):0L);
+				 selectOptionVO.setLocation(param[1].toString()!=null ?param[1].toString():"");//present panchayat
+				 selectOptionVO.setName(param[2].toString()!=null ?param[2].toString():""); // Partial mapped panchayat
+				 selectOptionVO.setValue(param[3].toString()!=null ?param[3].toString():""); // Partial mapped panchayat hamlet
+				 selectOptionVO.setPartno(param[4].toString()!=null ?param[4].toString():"");// Booth No
+				 selectOptionVO.setType(areaType !=null?areaType:"");
+				 selectOptionVO.setOrderId(Long.valueOf(votersCount.toString()));
+				 			 
+				 partialBoothList.add(selectOptionVO);
+			 }
+		 }
 	 
-	 for(String param:values){
-		 SelectOptionVO selectOptionVO = new SelectOptionVO();
-		 selectOptionVO.setUrl(param);
-		 partialBoothList.add(selectOptionVO);
+	 }catch(Exception e){		 
+		 e.printStackTrace();
+		  log.error("Exception Occured in getPartialBoothDetails() Method, Exception - "+e);
+		  partialBoothList = null;
 	 }
 	 return partialBoothList;
  }
+ 
+ public List<Object[]> getPartialBoothsInPanchayat(Long id,Long publicationId,Long constituencyId,String type){
+	 log.error("entered into getPartialBoothsInPanchayat() Method");
+	 List<Long> boothsList = null;
+	 List<Object[]> partialBoothsDetails = null;
+	 try{
+		 boothsList = boothDAO.getPartialBoothsForPanchayatLevel(id,publicationId);
+		 if(boothsList!= null || boothsList.size() > 0)
+			 partialBoothsDetails = boothDAO.getPartialBoothsDetailsOfPanchayat(boothsList,publicationId);
+		 
+	 }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getPartialBoothsInPanchayat() Method, Exception - "+e);
+		partialBoothsDetails = null;
+		
+	}
+	 return partialBoothsDetails;
+ }
+
  public void buildHamletWiseYoungerVoterDetails(List<VotersDetailsVO> resultList,List<Long> locationIds,Long publicationDateId,Long userId,String type)
  {
 	try{
