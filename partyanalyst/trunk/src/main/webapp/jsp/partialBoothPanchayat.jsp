@@ -484,11 +484,13 @@ function buildUdatePartianBoothDetails(result)
 
 function validateTheFields()
 {
+	$('#errorMsg').html('');
 	var flag = true;
 	var boothId       = $('#booth option:selected').val();
 	var description   = $('#descriptionId').val();
 	var panchayatId   = $('#partialPanchayat option:selected').val();
 	var pdescription  = $('#PartialDescription').val();
+	var phamlet = $('#hamlet option:selected').val();
 	var str = '';
 	if(boothId == 0)
 	{
@@ -504,7 +506,12 @@ function validateTheFields()
 	{
 		flag = false;
 		str += '<b style="color:red">Please select the Panchayat</b></br>';
-	}	
+	}		
+	if(phamlet == undefined)
+	{
+		flag = false;
+		str += '<b style="color:red">Please select the Hamlet</b></br>';
+	}
 	if(pdescription == '')
 	{
 		flag = false;
@@ -517,6 +524,7 @@ function validateTheFields()
 	}
 	else
 	{
+		$("#errorMsg").show();
 		$('#errorMsg').html(str);
 		$("#errorMsg").delay("2000").hide("slow");
 	}
