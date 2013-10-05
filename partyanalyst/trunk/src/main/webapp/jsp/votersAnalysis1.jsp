@@ -1092,6 +1092,33 @@ color:#2A4F97;
 	#customGroupAgeLink{margin-right: 10px;}
 	.middleNav{width:223px;}
 	#customGroupsDiv,#voterGroupsDiv,.middleNav,#forHide{display:table;}
+	
+	#partialBoothsDiv{
+	 background-attachment: scroll;
+    background-clip: border-box;
+
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+	}
+	
+	#partialBoothMainDiv ul, #partialBoothMainDiv ol, #partialBoothMainDiv li {
+    color: #000000;
+    font-weight: normal;
+    list-style-type: decimal;
+	}
 </style>
 
 </SCRIPT>
@@ -1379,10 +1406,6 @@ for  body3 start    result  -->
 	<div class="votersWidgetMainHeader"><span id="votersTitle-unused" class="votersWidgetHeader_span"> </span></div>
 	</div>
 
-<div id="partialBoothMainDiv" class="widget blue whitegloss" style="display:none;">
-	  <div id="partialBoothDiv"></div>
-	</div>
-
 <div id="votersBasicInfoBtnDiv"> 
 	<span></span>
 	<span value="Mandal Wise Voters Info" id="votersShareBtn1"></span>
@@ -1398,6 +1421,9 @@ for  body3 start    result  -->
 <div id='votersMainOuterDiv3' class="" style="display:none;border-top:none;">
 <!--<div id="votersTitle"><h2  style="width:102%;padding:10px;"></h2></div>-->
 <div id="reportLevelCountDiv1" style="clear:both;padding:10px 0px;"></div>
+<div id="partialBoothMainDiv" class="widget blue whitegloss" style="display:none;">
+	  <div id="partialBoothDiv"></div>
+	</div>
 
 <div id="votersBasicInfoMainDiv" style="display:none;">
 	<div id="votersBasicInfoMsgDiv"></div>
