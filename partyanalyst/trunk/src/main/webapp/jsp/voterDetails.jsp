@@ -65,12 +65,39 @@
 
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-
+<script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
 <title></title>
 
 </head>
 <style>
  
+ #partialBoothsDiv{
+	 background-attachment: scroll;
+    background-clip: border-box;
+
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+	}
+	
+	#partialBoothMainDiv ul, #partialBoothMainDiv ol, #partialBoothMainDiv li {
+    color: #000000;
+    font-weight: normal;
+    list-style-type: decimal;
+	}
+	
 #hamletAndBoothCount ,#voterTypeId
 {
 	margin-bottom: 10px;
@@ -137,9 +164,44 @@
     padding: 10px;
     text-align: left;
 }
-
+#partialBoothsDiv{
+border:1px solid #c0c0c0;
+border-radius:4px;
+margin-left:20px;
+width:955px
+}
+#partialBoothDiv h4{
+ background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #49AFCD;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #FFFFFF;
+    font-family: arial;
+    font-size: 17px;
+    font-weight: bolder;
+    height: 25px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 5px;
+	text-align: center;
+	margin-left: 20px;
+	width: 957px;
+}
 </style>
 <body>
+
+<div id="partialBoothMainDiv" class="blue whitegloss" style="display:none;">
+	  <div id="partialBoothDiv"></div>
+</div>
 <div id="headingDiv" align="center" >${name} Voter Details</div>
 <div id="ajaxImageDiv" align="center" style="margin-top: 50px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="mainDiv"  style="display:none;">
@@ -241,10 +303,31 @@ var hamletId="${hamletId}";
 var constituencyId = "${constituencyId}";
 var customwardId = "${customwardId}";
 var name = "${name}";
+var mainname =  "${name}";
 var pResults;
 var id;
 var limit = 100;
 var confTrue = false;
+var pId = "${panchaytId}";
+var pMaintype = "${maintype}";
+
+
+partialBoothsInPanchayat();
+/* Partial Booths Panchayats List*/
+function partialBoothsInPanchayat(){
+
+	if(maintype == "Booth" || maintype =="booth"){
+		pId = "${boothId}";	
+	}
+	else if(maintype == "hamlet" || maintype =="hamlet"){
+		pId = "${hamletId}";
+		pMaintype = "boothHamlets";
+		mainname =  name+" Hamlet" ;
+	}
+getPartialBoothsDetails(pId,publicationId,constituencyId,pMaintype)
+
+
+}
 function getVoterDetails()
 {
 	 $("#ajaxImageDiv").css('display','none');
