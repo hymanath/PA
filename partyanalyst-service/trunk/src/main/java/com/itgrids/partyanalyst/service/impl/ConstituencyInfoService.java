@@ -22,28 +22,23 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 	private IStaticDataService staticDataService;
 	private IPublicationDateDAO publicationDateDAO;
 	private IVotersAnalysisService votersAnalysisService;
-
+	private IBoothDAO boothDAO;
 	
-	//private static final Logger LOG = Logger.getLogger(ConstituencyInfoService.class);
+    //private static final Logger LOG = Logger.getLogger(ConstituencyInfoService.class);
 	
-	
-	 
-	
-
 	public IVotersAnalysisService getVotersAnalysisService() {
 		return votersAnalysisService;
 	}
-
-
-
-	
-
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
 	public void setVotersAnalysisService(
 			IVotersAnalysisService votersAnalysisService) {
 		this.votersAnalysisService = votersAnalysisService;
 	}
-
-
 
 	public IPublicationDateDAO getPublicationDateDAO() {
 		return publicationDateDAO;
@@ -166,6 +161,48 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	public List<VotersDetailsVO> getConstituencyBasicCountInfoById(Long constituencyId,Long userId)
+	{
+		List<VotersDetailsVO> resultList = new ArrayList<VotersDetailsVO>();
+		List<SelectOptionVO> subList = new ArrayList<SelectOptionVO>();
+		List<Long> mandalIds = new ArrayList<Long>();
+		List<Long> localbodies = new ArrayList<Long>();
+		Long latestPublicationId = publicationDateDAO.getLatestPublicationId();
+		try{
+			VotersDetailsVO votersDetailsVO = new VotersDetailsVO();
+			subList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);	
+			if(subList!=null && subList.size() > 0)
+			{
+				for(SelectOptionVO vo : subList)
+				{
+					if(vo.getId().toString().substring(0,1).trim().equalsIgnoreCase("2"))
+						mandalIds.add(new Long(vo.getId().toString().substring(1)));
+					else
+						localbodies.add((Long)vo.getId());	
+				}
+				
+			}
+			votersDetailsVO.setTotalmandals(new Long(mandalIds.size()));
+			votersDetailsVO.setNoOfLocalBodies(new Long(localbodies.size()));
+			if(mandalIds != null && mandalIds.size() > 0)
+			{
+				//List<SelectOptionVO> panchayatsList = staticDataService.getPanchayatiesByMandalIdsListAndConstituencyId(mandalIds,constituencyId,latestPublicationId);
+				List<Object[]> panchayatsList = boothDAO.getPanchayatiesByMandalsListAndConstituencyId(mandalIds, constituencyId, latestPublicationId);
+				if(panchayatsList !=null && panchayatsList.size() > 0)
+				votersDetailsVO.setTotalPanchayats(new Long(panchayatsList.size()));
+			}
+			else
+			votersDetailsVO.setTotalPanchayats(0l);	
+			
+			votersDetailsVO.setTotalBooths(new Long(boothDAO.getBoothIdsByConstituencyIdAndPublicationId(constituencyId,latestPublicationId).size()));
+			votersDetailsVO.setTotalNoOfWards(boothDAO.getWardsListByConstituencyId(constituencyId,latestPublicationId).size());
+			resultList.add(votersDetailsVO);
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return resultList;
