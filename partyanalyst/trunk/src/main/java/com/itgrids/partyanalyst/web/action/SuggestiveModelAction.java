@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
@@ -31,6 +34,7 @@ import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
+import com.itgrids.partyanalyst.service.impl.SuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -538,9 +542,28 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+		try{
+		for(PanchayatVO range:panchayatVOs){
+			for(PanchayatVO booth:range.getBoothsList()){
+				Collections.sort(booth.getAllSelectedCastes(),sourceSort);
+			}
+			for(PanchayatVO panchayat:range.getPanchayatList()){
+				Collections.sort(panchayat.getAllSelectedCastes(),sourceSort);
+			}
+		}
+		}catch(Exception e){
+			
+		}
 		return Action.SUCCESS;
 	}
-	
+	public static Comparator<CastVO> sourceSort = new Comparator<CastVO>()
+			{
+				  
+			  public int compare(CastVO cstVO1, CastVO cstVO2)
+				{
+				   return (cstVO1.getCastStateId().intValue()) - (cstVO2.getCastStateId().intValue());
+				}
+		  };
 	public String getLeadersData()
 	{
 		try{
