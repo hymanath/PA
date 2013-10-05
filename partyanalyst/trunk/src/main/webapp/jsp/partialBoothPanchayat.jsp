@@ -533,7 +533,7 @@ function validateTheFields()
 </script>
 <body>
 <div id="mainDiv">
-	<div style="height: 600px;">
+	<div>
 	<div id="headingDiv" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px;">Save Partial Booth Panchayat Details</div>
 	<div id="bodyDiv" style="float: left; margin-left: 258px; margin-top: 18px;">
 	<div id="successMsg" style="color: green; font-family: verdana; font-size: 14px; font-weight: bold;"></div>
@@ -553,7 +553,7 @@ function validateTheFields()
 	</div>
 	
 	<div>
-	<div id="headingDivForEdit" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px;">Edit Partial Booth Panchayat Details</div>
+	<div id="headingDivForEdit" align="center" style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px; float: left; position: static;width: 1000px;">Edit Partial Booth Panchayat Details</div>
 	<div id="bodyDivForEdit" style="float: left; margin-left: 258px; margin-top: 18px;">
 	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyListForEdit" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('edit');" style="margin-left: 100px;"/></div>
 	<div><b>Publication Date : </b><select id="publicationDateForEdit" name="publicationDate"style="margin-left: 79px;" onChange="getMandals('edit');"><option value="0">Publication Date</option></select></div>
