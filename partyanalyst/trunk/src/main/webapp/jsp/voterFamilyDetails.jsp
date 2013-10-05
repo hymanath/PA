@@ -67,6 +67,7 @@
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
 
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <script type="text/javascript">
@@ -167,10 +168,40 @@ google.load("visualization", "1", {packages:["corechart"]});
     text-align: left;
 }
 .dataTables_length{margin-bottom:5px;}
+
+#partialBoothsDiv{
+	 background-attachment: scroll;
+    background-clip: border-box;
+
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+	}
+	
+	#partialBoothMainDiv ul, #partialBoothMainDiv ol, #partialBoothMainDiv li {
+    color: #000000;
+    font-weight: normal;
+    list-style-type: decimal;
+	}
 </style>
 </head>
 
 <body>
+	<div id="partialBoothMainDiv" class="widget blue whitegloss" style="display:none;width: 920px; left: 15px;">
+	  <div id="partialBoothDiv"></div>
+	</div>
 <div id="ajaxImageDiv" style="margin-top: 100px;margin-left:383px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
 <div id="mainDiv" style="width:960px;margin-top:50px;margin-left:auto;margin-right:auto;">
 <div id ="impFamilesBasicInfoSubChartDiv" style="border:1px solid #d3d3d3;"></div>
@@ -285,6 +316,7 @@ var id = "${id}";
 var type = "${type}";
 var impFamltypename="${typename}";
 var maintype="${maintype}";
+var mainname =  "${typename}";
 var constituencyId ="${constituencyId}";
 var publicationYear = "${publicationYear}";
 var impFamiliesEditArray = new Array();
@@ -292,6 +324,19 @@ var requestFor = '${requestFor}';
 var pat= /^(hamlet|customWard)$/i;
 var requestForPattern= /^(booth|muncipalityWards)$/i;
 
+var pType ="${type}";
+
+
+partialBoothsInPanchayat();
+/* Partial Booths Panchayats List*/
+function partialBoothsInPanchayat(){
+
+	if(maintype =="hamlet" || maintype =="Hamlet"){
+		pType = "boothHamlets";
+		mainname =mainname+" Hamlet";
+	}
+ getPartialBoothsDetails(id,publicationDateId,constituencyId,pType)
+}
 
 if((maintype == 'booth'&& requestFor == 'hamletBooth') || (maintype == 'hamlet'&& requestFor == 'booth') ||(maintype == 'customWard'&& requestFor == 'booth') )
 {
