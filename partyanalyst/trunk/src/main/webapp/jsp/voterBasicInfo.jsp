@@ -66,6 +66,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 
  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
  <script type="text/javascript" src="js/highcharts/js/highchartColorPicker.js"></script>
+ <script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
 
 <style type="text/css">
 
@@ -401,6 +402,60 @@ table.dataTable thead th {
     margin-top: 10px;
     text-align: right;
 }
+
+#partialBoothsDiv{
+	 background-attachment: scroll;
+    background-clip: border-box;
+
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+	}
+	
+	#partialBoothMainDiv ul, #partialBoothMainDiv ol, #partialBoothMainDiv li {
+    color: #000000;
+    font-weight: normal;
+    list-style-type: decimal;
+	}
+#partialBoothDiv h4{
+/* background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #05A8E9;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #FFFFFF;
+    font-family: arial;
+    font-size: 17px;
+    font-weight: bolder;
+    height: 25px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 5px;
+	text-align: center;
+	margin-left: 10px;
+	width: 975px; */
+	display:none;
+}
 </style>
 
 <script type="text/javaScript" >
@@ -417,6 +472,27 @@ var typeName = "${typeName}";
 var casteChartHeading = '';
 var lclBodyId = "${lclBodyId}"
 var castePercent = [];
+
+var pType = "${type}";
+
+
+partialBoothsInPanchayat();
+/* Partial Booths Panchayats List*/
+function partialBoothsInPanchayat(){
+	if(type =="mandal" || type =="Mandal"){
+		pType = "mandal";
+	}
+	else if(type =="booth" || type =="Booth"){
+		pType = "booth";
+	}
+	else if(buildType =="hamlet" || buildType =="Hamlet"){
+		pType = "boothHamlets";
+		mainname =mainname+" Hamlet";
+	}
+ getPartialBoothsDetails(id,publicationId,constituencyId,pType);
+}
+
+
 if(type == "wardBooth")
 {
 	getBoothWiseAgeDetailsInSelectedCustomWard();
@@ -1985,11 +2061,17 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 
 </head>
 <body>
-<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+
 <div id="votersBasicInfoMainDiv">
 	
 	<div id="votersBasicInfoTitleDiv" align="center"></div>
 	
+	<div id="partialBoothMainDiv" class="widget green whitegloss" style="display: block; width: 943px; left: 15px;">
+	  <div id="partialBoothDiv"></div>
+	</div>
+		
+	<div id="ajaxImageDiv" align="center" style="margin-top: 100px;"><img src="./images/icons/goldAjaxLoad.gif" alt="Processing Image"/> </div>
+
 	<div id="votersBasicInfoMsgDiv" style="text-align: center; margin-top: 50px;"></div>
 	<div id="wardSearchDiv" style="float: right; padding: 10px;display:none;"><b>Select Ward : </b><select id="wardsList" onchange="getDetailsForSelectedWard();" style="margin-bottom: 1px;"></select></div>
 	
@@ -2015,11 +2097,11 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	<div id="assAndUnass"></div>
 	
 	<div align="center">
-	<div id="votersBasicInfoSubDiv_head" class="widget blue whitegloss" style="display: none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<div id="votersBasicInfoSubDiv_head" class="widget green whitegloss" style="display: none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
 	<h4 class="headingClass" id="votersBasicInfoSubHeading" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
 
-	<div id="votersBasicInfoSubDiv_head1" class="widget blue whitegloss" style=" color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<div id="votersBasicInfoSubDiv_head1" class="widget green whitegloss" style=" color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
 	<h4 class="headingClass" id="votersBasicInfoSubHeading1" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
 	<div id="votersBasicInfoSubDiv1" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
 	
@@ -2069,7 +2151,7 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 </div>
 
 <div align="center">
-<div id="localCastStatsTabContent_subbodyDiv" class="widget blue whitegloss "  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;display:none;">
+<div id="localCastStatsTabContent_subbodyDiv" class="widget green whitegloss "  style="display: inline-block; color: rgb(0, 0, 0); margin-left: 10px; margin-top: 36px;width: 942px;display:none;">
 <h4 class="" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id="sublevelHeading"></h4>
 <div id='localCastStatsTabContent_subbody'  class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>
 </div></div>
