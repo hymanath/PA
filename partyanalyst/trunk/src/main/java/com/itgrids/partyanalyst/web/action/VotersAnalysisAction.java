@@ -2197,7 +2197,7 @@ return Action.SUCCESS;
 		 Long publicationId = jObj.getLong("publicationId");
 		 Long constituencyId = jObj.getLong("constituencyId");
 		 String type = jObj.getString("type");
-		partialBoothList=votersAnalysisService.getPartialBoothDetails(id,publicationId,constituencyId,type);
+		partialBoothList=votersAnalysisService.getPartialBoothDetails(user.getRegistrationID(),id,publicationId,constituencyId,type);
 		 }
 		}catch (Exception e) {
 			e.printStackTrace();
