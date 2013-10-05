@@ -6140,6 +6140,12 @@
 		<result type="json" name="success">
 		<param name="root">votersDetailsVO</param>
 		</result>
+		
 		 </action>
+		 <action name="getConstituencyBasicCountInfoAction" class="constituencyInfoAction" method="getConstituencyBasicCountInfo">
+		<result type="json" name="success">
+		<param name="root">votersDetailsVO</param>
+		</result>
+		</action>
 		</package>
 </struts>      

@@ -177,5 +177,24 @@ public class ConstituencyInfoAction extends ActionSupport implements ServletRequ
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getConstituencyBasicCountInfo()
+	{
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+			Long userID = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+			votersDetailsVO = constituencyInfoService.getConstituencyBasicCountInfoById(jObj.getLong("constituencyId"),userID);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 
 }

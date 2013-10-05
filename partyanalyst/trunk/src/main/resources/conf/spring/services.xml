@@ -1803,6 +1803,7 @@
      <property name="staticDataService" ref="staticDataService" />
      <property name="publicationDateDAO" ref="publicationDateDAO" />
 	 <property name="votersAnalysisService" ref="votersAnalysisService"></property>
+	 <property name="boothDAO" ref="boothDAO" />	
     </bean>
 </beans>		
 	
