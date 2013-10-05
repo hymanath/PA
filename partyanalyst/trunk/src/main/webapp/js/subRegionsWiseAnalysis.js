@@ -815,3 +815,89 @@ var villageDataTable = new YAHOO.widget.DataTable("parliamentElecResDiv",myColum
 
 
 
+
+function getPartialBoothsDetails(id,publicationId,constituencyId,type){
+	  var jsObj=
+	  {
+		id:id,
+        publicationId:publicationId,
+        constituencyId: constituencyId,
+		type:type,
+		task:"getPartialBoothDetails"
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartialBoothDetailsAction.action?"+rparam;
+	callAjaxForResult(jsObj,url);
+}
+function callAjaxForResult(jsObj,url)
+		{
+			 var myResults;
+			 var callback = {			
+ 		               success : function( o ) {
+							try {												
+									myResults = YAHOO.lang.JSON.parse(o.responseText);
+								if(jsObj.task == "getPartialBoothDetails")
+								{
+								buildPartialBoothsDetails(myResults,jsObj);
+								}
+									
+								}catch (e) {}  
+ 		},
+ 		scope : this,
+ 		failure : function( o ) {
+ 		    //alert( "Failed to load result" + o.status + " " + o.statusText);
+        }
+ 		};
+
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
+}
+function buildPartialBoothsDetails(results,jsObj){
+
+	$("#partialBoothDiv").html('');
+	if(results.length == 0)
+	{
+		$("#partialBoothMainDiv").css("display","none");
+		return;
+	}
+	$("#partialBoothMainDiv").css("display","block");
+//	console.log(jsObj)
+var areaType=jsObj.type;
+var str='';
+ if(areaType == 'Booth' || areaType == 'booth' )
+	mainname = "Booth No - "+results[0].partno;
+	
+str+='<h4>'+mainname+' Info.</h4>';
+str+='<div id="partialBoothsDiv"><ol>';
+	for(var i in results){
+		str +='<li>';
+		if(jsObj.id != results[i].id){
+	
+			//str+='<div>'+results[i].url+'</div>';
+			if(areaType == 'Mandal' || areaType == 'mandal')
+			str+=' Some of the voters  from '+results[i].value+' Hamlet of '+results[i].name+' Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
+			else if(areaType == 'Panchayat' || areaType == 'panchayat')
+			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat. ';
+			else if(areaType == 'Hamlet' || areaType == 'hamlet')
+			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';		
+			else if(areaType == 'Booth' || areaType == 'booth' )
+			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
+			else if(areaType == 'boothHamlets' || areaType == 'boothHamlets')
+			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
+		}
+		else
+		{
+			if(areaType == 'Panchayat' || areaType == 'panchayat')
+				str+=' Some of the voters from '+results[i].value+' Hamlet of '+results[i].location+' Panchayat , were present in Booth No- '+results[i].partno+' of this Panchayat.';
+			else if(areaType == 'Hamlet' || areaType == 'hamlet')
+				str+=' Some of the voters  from '+results[i].value+' Hamlet of '+results[i].location+' Panchayat , were present in Booth No- '+results[i].partno+' of this Panchayat.';		
+			else if(areaType == 'Booth' || areaType == 'booth')
+				str+=' Some of the voters  from '+results[i].value+' Hamlet of '+results[i].name+' Panchayat , were present in this Booth.';
+			else if(areaType == 'boothHamlets' || areaType == 'boothHamlets')
+			str+=' Some of the voters  of this Hamlet , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
+		
+		}
+		str+='</li>';
+	}
+	str+='</ol></div>';
+$("#partialBoothDiv").html(str);
+}
