@@ -9,4 +9,6 @@ public interface IConstituencyInfoService {
 	
 	
 	public List<VotersDetailsVO> getConstituencyBasicInfoById(Long constituencyId,Long publicationId,Long userId);
+	
+	public List<VotersDetailsVO> getConstituencyBasicCountInfoById(Long constituencyId,Long userId);
 }
