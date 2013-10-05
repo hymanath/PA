@@ -108,7 +108,7 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 	public List<Object[]> getHamletsOfPanchayats(List<Long> panchayitIds){
 		
 		
-		Query query = getSession().createQuery("select model.hamlet.hamletId,model.panchayat.panchayatId from PanchayatHamlet model where model.panchayat.panchayatId in(:panchayitIds)");
+		Query query = getSession().createQuery("select model.hamlet.hamletId,model.hamlet.hamletName from PanchayatHamlet model where model.panchayat.panchayatId in(:panchayitIds)");
 		
 		query.setParameterList("panchayitIds", panchayitIds);
 		
@@ -155,5 +155,24 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		Query query = getSession().createQuery("select model.hamlet.hamletId, model.panchayat.panchayatId from PanchayatHamlet model where model.hamlet.township.tehsil.district.state.stateId = :stateId ");
 		query.setParameter("stateId",stateId);
 		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getHamletDetailsByPanchayatsList(List<Long> panchayatsList)
+	{
+		Query query = getSession().createQuery("select model.hamlet.hamletId, model.hamlet.hamletName from PanchayatHamlet model where model.panchayat.panchayatId in (:panchayatsList) order by model.hamlet.hamletName ");
+		query.setParameterList("panchayatsList",panchayatsList);
+		return query.list();
+	}
+	
+public List<Object[]> getAllHamletsOfPanchayats(List<Long> panchayitIds){
+		
+		
+		Query query = getSession().createQuery("select model.hamlet.hamletId,model.hamlet.hamletName from PanchayatHamlet model where model.panchayat.panchayatId in(:panchayitIds)");
+		
+		query.setParameterList("panchayitIds", panchayitIds);
+		
+		return query.list();
+		
 	}
 }

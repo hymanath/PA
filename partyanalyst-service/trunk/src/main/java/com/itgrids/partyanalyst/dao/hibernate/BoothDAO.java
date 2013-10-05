@@ -1539,24 +1539,39 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		}
 	
 			
-			public List<String> getDescriptionForMandalLevel(Long tehsilId,Long publicationId){
-		        Query query = getSession().createQuery("select pbp.description from PartialBoothPanchayat pbp where pbp.booth.publicationDate.publicationDateId = :publicationId and  pbp.booth.tehsil.tehsilId = :tehsilId and pbp.panchayat.panchayatId = pbp.booth.panchayat.panchayatId");
+			public List<Object[]> getDescriptionForMandalLevel(Long tehsilId,Long publicationId){
+		        Query query = getSession().createQuery("select pbp.description," +
+		        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,pbp.hamlet.hamletName," +
+		        		"pbp.booth.partNo,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+		        		" pbp.booth.publicationDate.publicationDateId = :publicationId and  " +
+		        		" pbp.booth.tehsil.tehsilId = :tehsilId and " +
+		        		//"pbp.panchayat.panchayatId = pbp.booth.panchayat.panchayatId and " +
+		        		" pbp.hamlet.hamletId = ph.hamlet.hamletId ");
+		        
 		        query.setParameter("publicationId", publicationId);
 		        query.setParameter("tehsilId", tehsilId);
-		        return query.list();
+		    	return query.list();
 		    }
 		   
-		    public List<String> getDescriptionForPanchayatLevel(Long panchayatId,Long publicationId){
-		        Query query = getSession().createQuery("select pbp.description from PartialBoothPanchayat pbp where pbp.booth.publicationDate.publicationDateId = :publicationId and pbp.panchayat.panchayatId = :panchayatId ");
+		    public List<Object[]> getDescriptionForPanchayatLevel(Long panchayatId,Long publicationId){
+		        Query query = getSession().createQuery("select pbp.description," +
+		        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,pbp.hamlet.hamletName," +
+		        		"pbp.booth.partNo,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+		        		" pbp.booth.publicationDate.publicationDateId = :publicationId and " +
+		        		" pbp.panchayat.panchayatId = :panchayatId and " +
+		        		" pbp.hamlet.hamletId = ph.hamlet.hamletId ");
 		        query.setParameter("publicationId", publicationId);
 		        query.setParameter("panchayatId", panchayatId);
 		        return query.list();
 		    }
 		    
-		    public List<String> getDescriptionForBoothLevel(Long panchayatId,Long boothId){
-		        Query query = getSession().createQuery("select pbp.description from PartialBoothPanchayat pbp where pbp.booth.boothId = :boothId and pbp.panchayat.panchayatId = :panchayatId ");
+		    public List<Object[]> getDescriptionForBoothLevel(Long panchayatId,Long boothId){
+		        Query query = getSession().createQuery("select pbp.description," +
+		        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,ph.hamlet.hamletName," +
+		        		"pbp.booth.partNo,pbp.booth.boothId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+		        		" pbp.booth.boothId = :boothId  and pbp.hamlet.hamletId = ph.hamlet.hamletId");
 		        query.setParameter("boothId", boothId);
-		        query.setParameter("panchayatId", panchayatId);
+		        //query.setParameter("panchayatId", panchayatId);
 		        return query.list();
 		    }
 		    
@@ -1573,4 +1588,65 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			query.setParameter("publicationDateId", publicationDateId);
 			return query.list();
 		}
+		
+		public List<Object[]> getPartialBoothsDetailsOfPanchayat(List<Long> boothsList,Long publicationId){
+			
+	        Query query = getSession().createQuery("select pbp.description,ph.panchayat.panchayatName," +
+	        		"pbp.booth.panchayat.panchayatName,pbp.hamlet.hamletName,pbp.booth.partNo," +
+	        		"pbp.booth.panchayat.panchayatId from " +
+	        		"PartialBoothPanchayat pbp,PanchayatHamlet ph  where " +
+		        	" pbp.booth.publicationDate.publicationDateId = :publicationId and " +
+		        	" pbp.booth.boothId in(:boothsList) and pbp.hamlet.hamletId = ph.hamlet.hamletId ");
+	        
+	        query.setParameter("publicationId", publicationId);
+	        query.setParameterList("boothsList", boothsList);
+	        return query.list();
+		}
+		
+	public List<Long> getPartialBoothsForPanchayatLevel(Long panchayatId,Long publicationId){
+			
+	        Query query = getSession().createQuery("select pbp.booth.boothId " +
+	        		" from PartialBoothPanchayat pbp,Booth b where " +
+	        		" pbp.booth.publicationDate.publicationDateId = :publicationId and " +
+	        		" pbp.panchayat.panchayatId = :panchayatId and pbp.booth.isPartial like '%Y%' and pbp.booth.boothId = b.boothId ");
+	        query.setParameter("publicationId", publicationId);
+	        query.setParameter("panchayatId", panchayatId);
+	        return query.list();
+		}
+	
+	public List<Object[]> getDescriptionForHamletLevel(Long publicationId,Long hamletId){
+		   Query query = getSession().createQuery("select pbp.description," +
+	        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,ph.hamlet.hamletName," +
+	        		"pbp.booth.partNo,pbp.hamlet.hamletId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+	        		" pbp.booth.publicationDate.publicationDateId = :publicationId and pbp.hamlet.hamletId = :hamletId  " +
+	        		" and pbp.hamlet.hamletId = ph.hamlet.hamletId");
+	        query.setParameter("hamletId", hamletId);
+	        query.setParameter("publicationId", publicationId);
+	        return query.list();
+
+	}
+	
+	public List<Object[]> getPanchayatByBoothId(Long boothId,Long publicationId){
+		 Query query = getSession().createQuery(" select model.boothId,model.panchayat.panchayatId from Booth model where model.boothId = (:boothId) and " +
+		 		" model.publicationDate.publicationDateId = :publicationId");
+	        query.setParameter("boothId", boothId);
+	        query.setParameter("publicationId", publicationId);
+	        return query.list();
+		
+		
+	}
+	
+	public Long findVotersCountByPublicationIdForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId)
+	{
+	StringBuilder str = new StringBuilder();
+	str.append("select count(bpv.voter.voterId) from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where ph.panchayat.panchayatId = :panchayatId and ph.hamlet.hamletId = uvd.hamlet.hamletId " +
+	" and uvd.user.userId = :userId and uvd.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId ");
+
+	Query query = getSession().createQuery(str.toString()) ;
+	query.setParameter("userId", userId);
+	query.setParameter("publicationDateId", publicationDateId);
+	query.setParameter("panchayatId", panchayatId);
+
+	return (Long)query.uniqueResult();
+	}
 }
