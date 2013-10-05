@@ -423,6 +423,34 @@ table.dataTable thead th {
  }
  h3{text-transform:uppercase;font-size:13px;}
  #buildNewSources{display:table;}
+ 
+ #partialBoothsDiv{
+	 background-attachment: scroll;
+    background-clip: border-box;
+
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+	}
+	
+	#partialBoothMainDiv ul, #partialBoothMainDiv ol, #partialBoothMainDiv li {
+    color: #000000;
+    font-weight: normal;
+    list-style-type: decimal;
+	}
+	
 </style>
 
  <script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -570,6 +598,9 @@ $("#panchayats").live("change",function(){
 
 <div id="votersBasicInfoMainDiv">
 <div id="headingDiv1" align="center"></div>
+	<div id="partialBoothMainDiv" class="widget blue whitegloss" style="display:none;">
+	  <div id="partialBoothDiv"></div>
+	</div>
 	<div id="censusReportMainDiv">
 	   <div id="censusReportDiv" class="widget blue"></div>
 	</div>
@@ -796,6 +827,7 @@ $("#panchayats").live("change",function(){
 <div id="instructionDialog" ></div>
 
 <script type="text/javascript">
+getPartialBoothsDetails(id,publicationId,constituencyId,type);
 function getvotersBasicInfo(buttonType,id,publicationId,type){
 //var ajaxImageDiv =  document.getElementById('basicInfoAjaxDiv');
 	$("#basicInfoAjaxDiv").show();
