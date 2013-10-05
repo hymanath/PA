@@ -1,20 +1,11 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
-import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
-import com.itgrids.partyanalyst.dto.VillageBoothElectionVO;
-import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
-import com.itgrids.partyanalyst.model.Booth;
-import com.itgrids.partyanalyst.model.BoothConstituencyElection;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothConstituencyElectionDAOTest extends BaseDaoTestCase{
 

@@ -755,9 +755,52 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 	{
 		System.out.println(boothDAO.getTotalVotesForSelectedBooth(1L));
 	}*/
-	public void testgetBoothIdsByConstituencyIdAndPublicationId()
+/*	public void testgetBoothIdsByConstituencyIdAndPublicationId()
 	{
-		List<Long> list = boothDAO.getBoothIdsByConstituencyIdAndPublicationId(232l, 8l);
+		List<Object[]> list = boothDAO.getDescriptionForPanchayatLevel(3l, 8l);
 		System.out.println(list.size());
+	}
+	*/
+	/*public void testgetDescriptionForPanchayatLevel()
+	{
+		List<Object[]> list = boothDAO.getDescriptionForHamletLevel(4l,33l);
+		System.out.println(list.size());
+		
+		for (Object[] parms : list) {
+			System.out.println(parms[0]); //url
+			System.out.println(parms[1]); // pre panch
+			System.out.println(parms[2]); //mappd pnch		
+			System.out.println(parms[3]); // mappd hamlet
+			System.out.println(parms[4]); //booth
+			System.out.println(parms[5]); // pr panch id
+		}
+		
+	}*/
+	/*public void testgetPartialBoothsDetailsOfPanchayat()
+	{
+		List<Long> list1 = new ArrayList<Long>();
+		list1.add(122995l);
+		List<Object[]> list = boothDAO.getPartialBoothsDetailsOfPanchayat(list1, 8l);
+		System.out.println(list.size());
+		for (Object[] parms : list) {
+			System.out.println(parms[0]); //url
+			System.out.println(parms[2]); // pre panch
+			System.out.println(parms[1]); //mappd pnch		
+			System.out.println(parms[3]); // mappd hamlet
+			System.out.println(parms[4]); //booth
+			System.out.println(parms[5]); // pr panch id
+		}
+	}*/
+	
+	public void testgetDescriptionForPanchayatLevel()
+	{
+		List<Object[]> list = boothDAO.getPanchayatByBoothId(123032l,8l);
+		System.out.println(list.size());
+		
+		for (Object[] parms : list) {
+			System.out.println(parms[0]); //url
+			System.out.println(parms[1]); // pre panch
+		}
+		
 	}
 }
