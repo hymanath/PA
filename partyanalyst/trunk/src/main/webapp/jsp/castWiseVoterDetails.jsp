@@ -57,6 +57,7 @@
   <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
 <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
 <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+<script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
@@ -64,6 +65,57 @@
 </head>
 
 <style type="text/css">
+#partialBoothsDiv{
+	 background-attachment: scroll;
+    background-clip: border-box;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    font-weight: bold;
+    margin-top: 0;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+	}
+	
+	#partialBoothMainDiv ul, #partialBoothMainDiv ol, #partialBoothMainDiv li {
+    color: #000000;
+    font-weight: normal;
+    list-style-type: decimal;
+	}
+	#partialBoothDiv h4{
+ background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #06ABEA;
+    background-image: none;
+    background-origin: padding-box;
+    background-position: 0 0;
+    background-repeat: repeat;
+    background-size: auto auto;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    color: #FFFFFF;
+    font-family: arial;
+    font-size: 17px;
+    font-weight: bolder;
+    height: 25px;
+    margin-bottom: 10px;
+    margin-right: 20px;
+    margin-top: 10px;
+    padding: 5px;
+	text-align: center;
+	margin-left: 10px;
+	width: 975px;
+}
 
 
 #amount{width:90%;text-align:center;}
@@ -252,11 +304,13 @@ table {
 var type               =  "${type}";
 var id				   =  "${id}";
 var typeName		   =  "${typeName}";
+var mainname		   =  "${typeName}";
 var constituencyId     =  "${constituencyId}";
 var publicationDateId  =  "${publicationDateId}";
 var publicationyear    =  "${importanceId}";
 var buildType          =  "${buildType}";
 var	queryType		   =  "${queryType}";
+var ptype = "${type}";
  var resultFor = '${resultFor}';
 	if(typeName.length <=0)
 		typeName = "${typename}";
@@ -280,7 +334,22 @@ var constMgmtMainObj={
 							castStatssubArray:[],
 					 };
 
+partialBoothsInPanchayat();
 getCastInfoForsubLevel(id,publicationDateId,type,resultFor);
+
+/* Partial Booths Panchayats List*/
+function partialBoothsInPanchayat(){
+
+if(type =="Hamlet" || type =="hamlet"){
+	ptype = "boothHamlets";
+	if(mainname =="")
+		mainname = typeName+" Hamlet";
+	else
+		mainname = mainname+" Hamlet";	
+	}
+getPartialBoothsDetails(id,publicationDateId,constituencyId,ptype);
+
+}
 /* This Method is used to get Updated CastInfo */
 function getLatestCastsSubcategoryWise(){
 	
@@ -1466,6 +1535,9 @@ $('#castAllRadio').live("click",function(){
 
 </script>
 <body>
+<div id="partialBoothMainDiv" class="blue whitegloss" style="display:none;">
+	  <div id="partialBoothDiv"></div>
+</div>
 <div id="errorMsgDiv"  style="margin-top: 244px; font-size: 18px; font-family: verdana; display: none;"></div>
 <div id="voterCasteAjaxImg" style=" display:block;margin-top:100px;margin-left:300px;margin-right:auto;"><img  src="./images/icons/goldAjaxLoad.gif" /></div>
 <div id="casteSelectDiv"></div>
