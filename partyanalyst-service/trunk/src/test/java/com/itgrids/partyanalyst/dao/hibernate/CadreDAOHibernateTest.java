@@ -519,9 +519,15 @@ public class CadreDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(cadreDAO.getCadreCountInALocation(1l, locationValue, "mandal"));
 	}*/
 	
-	public void testGetCadreList()
+	/*public void testGetCadreList()
 	{
 	  cadreDAO.getCadreList();	
+	}*/
+	
+	public void testGetCadreDetailsInAConstituency(Long userId, Long constituencyId)
+	{
+		List<Cadre> list = cadreDAO.getCadreDetailsInAConstituency(1l,232l);
+		System.out.println(list.size());
 	}
 }
 	
