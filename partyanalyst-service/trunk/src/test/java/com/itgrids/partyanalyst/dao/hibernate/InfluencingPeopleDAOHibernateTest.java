@@ -128,7 +128,7 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 
-	public void testConstituencyes()
+	/*public void testConstituencyes()
 	{
 		SMSSearchCriteriaVO vo = new SMSSearchCriteriaVO();
 		List<Object[]> values = influencingPeopleDAO.getInfluencingPeopleDetailsToSendSMS(" " +
@@ -138,8 +138,11 @@ public class InfluencingPeopleDAOHibernateTest extends BaseDaoTestCase {
 				"model.userAddress.district.districtId =3  order by model.firstName asc",vo);
 		System.out.println(values.size());
 	
+	}*/
+	
+	public void testGetInfluencingPeopleInAConstituencyForAUser()
+	{
+		List<InfluencingPeople> list = influencingPeopleDAO.getInfluencingPeopleInAConstituencyForAUser(1l,221l);
+		System.out.println(list.size());
 	}
-	
-	
-	
 }
