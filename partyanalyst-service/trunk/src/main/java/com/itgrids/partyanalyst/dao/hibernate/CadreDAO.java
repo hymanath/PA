@@ -1095,4 +1095,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 	{
 		return getHibernateTemplate().find(" from Cadre model ");
 	}
+	
+	public List<Cadre> getCadreDetailsInAConstituency(Long userId, Long constituencyId)
+	{
+		Query query = getSession().createQuery("Select model from Cadre model where model.currentAddress.constituency.constituencyId = :constituencyId and model.user.userId = :userId ");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+		
+	}
 }
