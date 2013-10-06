@@ -5,7 +5,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
@@ -13,6 +15,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICadreDAO;
 import com.itgrids.partyanalyst.dao.ICadreLevelDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
@@ -24,6 +27,8 @@ import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -47,10 +52,12 @@ import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CadreDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.CadreLevel;
 import com.itgrids.partyanalyst.model.Caste;
 import com.itgrids.partyanalyst.model.CasteCategory;
@@ -59,6 +66,8 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -115,8 +124,36 @@ public class MobileService implements IMobileService{
  private IVoterModificationInfoDAO voterModificationInfoDAO;
  private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
  private IPublicationDateDAO publicationDateDAO;
+ private ICadreDAO cadreDAO;
+ private IInfluencingPeoplePositionDAO influencingPeoplePositionDAO;
+ private IInfluencingPeopleDAO influencingPeopleDAO;
  
-  public IPublicationDateDAO getPublicationDateDAO() {
+  public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
+	return influencingPeopleDAO;
+}
+
+public void setInfluencingPeopleDAO(IInfluencingPeopleDAO influencingPeopleDAO) {
+	this.influencingPeopleDAO = influencingPeopleDAO;
+}
+
+public IInfluencingPeoplePositionDAO getInfluencingPeoplePositionDAO() {
+	return influencingPeoplePositionDAO;
+}
+
+public void setInfluencingPeoplePositionDAO(
+		IInfluencingPeoplePositionDAO influencingPeoplePositionDAO) {
+	this.influencingPeoplePositionDAO = influencingPeoplePositionDAO;
+}
+
+public ICadreDAO getCadreDAO() {
+	return cadreDAO;
+}
+
+public void setCadreDAO(ICadreDAO cadreDAO) {
+	this.cadreDAO = cadreDAO;
+}
+
+public IPublicationDateDAO getPublicationDateDAO() {
 	return publicationDateDAO;
 }
 
@@ -1100,7 +1137,7 @@ public List<SelectOptionVO> getConstituencyList()
 			{
 				try{
 					strTemp.append("INSERT INTO publication_date(publication_date_id,name,month,year) VALUES (");
-					strTemp.append(publicationDate.getPublicationDateId()+","+publicationDate.getName()+","+publicationDate.getMonth()+","+publicationDate.getYear()+");\n");
+					strTemp.append(publicationDate.getPublicationDateId()+",'"+publicationDate.getName()+"',"+publicationDate.getMonth()+","+publicationDate.getYear()+");\n");
 				}catch(Exception e){	LOG.error(e);	}
 			}
 			strTemp.append("\n");
@@ -1112,6 +1149,186 @@ public List<SelectOptionVO> getConstituencyList()
 	}
 	
 	LOG.info("publication date table data Completed...");
+	
+	try{
+		List<Cadre> cadreList = cadreDAO.getCadreDetailsInAConstituency(1L, constituencyId);
+		
+		if(cadreList != null && cadreList.size() > 0)
+		{
+			for(Cadre cadre : cadreList)
+			{
+				try{
+				
+					StringBuilder strTemp = new StringBuilder();
+					strTemp.append("INSERT INTO user_address(user_address_id,state_id,district_id,constituency_id,tehsil_id,hamlet_id,local_election_body_id,ward_id,booth_id,booth_part_no) VALUES (");
+					strTemp.append(cadre.getCurrentAddress().getUserAddressId()+",");
+					strTemp.append(cadre.getCurrentAddress().getState() != null ? cadre.getCurrentAddress().getState().getStateId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getDistrict() != null ? cadre.getCurrentAddress().getDistrict().getDistrictId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getConstituency() != null ? cadre.getCurrentAddress().getConstituency().getConstituencyId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getTehsil() != null ? cadre.getCurrentAddress().getTehsil().getTehsilId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getHamlet() != null ? cadre.getCurrentAddress().getHamlet().getHamletId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getLocalElectionBody() != null ? cadre.getCurrentAddress().getLocalElectionBody().getLocalElectionBodyId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getWard() != null ? cadre.getCurrentAddress().getWard().getConstituencyId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getBooth() != null ? cadre.getCurrentAddress().getBooth().getBoothId()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getBooth() != null ? cadre.getCurrentAddress().getBooth().getPartNo() : "null");
+					strTemp.append(");\n");
+					str.append(strTemp);
+				}catch(Exception e)
+				{
+					LOG.error("Exception Occured in inserting user_address table",e);
+				}
+			}
+			str.append("\n");
+			
+			LOG.info("User Address For Cadre table data Completed...");
+			
+			for(Cadre cadre : cadreList)
+			{
+				try{
+					StringBuilder strTemp = new StringBuilder();
+					strTemp.append("INSERT INTO cadre(cadre_id,firstname,lastname,relative_name,gender,date_of_birth,age,blood_group_id,no_of_family_members,no_of_voters,mobile_no,email,house_no,street_name,user_address_id,education_id,occupation_id,");
+					strTemp.append("caste_state_id,member_type,voter_id,image_path,cadre_level_id,cadre_level_value) VALUES (");
+					strTemp.append(cadre.getCadreId()+",");
+					strTemp.append("'"+cadre.getFirstName()+"',");
+					strTemp.append("'"+cadre.getLastName()+"',");
+					strTemp.append("'"+cadre.getFatherOrSpouseName()+"',");
+					strTemp.append("'"+cadre.getGender()+"',");
+					strTemp.append(cadre.getDateOfBirth() != null ? "'"+cadre.getDateOfBirth().toString()+"'," : "null,");
+					strTemp.append("null,");
+					strTemp.append(cadre.getBloodGroup() != null ? cadre.getBloodGroup().getBloodGroupId()+"," : "null,");
+					strTemp.append(cadre.getNoOfFamilyMembers() != null ? cadre.getNoOfFamilyMembers()+"," : "0,");
+					strTemp.append(cadre.getNoOfVoters() != null ? cadre.getNoOfVoters()+"," : "0,");
+					strTemp.append(cadre.getMobile() != null ? "'"+cadre.getMobile().toString()+"'," : "null,");
+					strTemp.append(cadre.getEmail() != null ? "'"+cadre.getEmail()+"'," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getHouseNo() != null ? "'"+cadre.getCurrentAddress().getHouseNo()+"'," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getStreet() != null ? "'"+cadre.getCurrentAddress().getStreet()+"'," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getUserAddressId()+",");
+					strTemp.append(cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId()+"," : "null,");
+					strTemp.append(cadre.getOccupation() != null ? cadre.getOccupation().getOccupationId()+"," : "null,");
+					strTemp.append("null,");
+					strTemp.append("'"+cadre.getMemberType()+"',");
+					strTemp.append(cadre.getVoter() != null ? cadre.getVoter().getVoterId()+"," : "null,");
+					strTemp.append(cadre.getImage() != null && cadre.getImage().trim().length() > 0 ? cadre.getImage()+"," : "null,");
+					strTemp.append(cadre.getCadreLevel() != null ? cadre.getCadreLevel().getCadreLevelID()+"," : "null,");
+					strTemp.append(cadre.getCadreLevelValue() != null ? cadre.getCadreLevelValue() : "null");
+					strTemp.append(");\n");
+					str.append(strTemp);
+				}catch(Exception e)
+				{
+					LOG.error("Exception Occured in inserting cadre table",e);
+				}
+			}
+			str.append("\n");
+			
+			LOG.info("Cadre table data Completed...");
+		}
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in Cadre Tables Inserts");
+	}
+	
+	try{
+		List<InfluencingPeoplePosition> influencingPeoplePostionsList = influencingPeoplePositionDAO.getPositionNameByUserId(1L);
+		
+		if(influencingPeoplePostionsList != null && influencingPeoplePostionsList.size() > 0)
+		{
+			for(InfluencingPeoplePosition position : influencingPeoplePostionsList)
+			{
+				try{
+					StringBuilder strTemp = new StringBuilder();
+					strTemp.append("INSERT INTO influencing_people_position(influencing_people_position_id,position_type) VALUES (");
+					strTemp.append(position.getInfluencingPeoplePositionId()+",");
+					strTemp.append(position.getPosition() != null ? "'"+position.getPosition()+"'" : "NULL");
+					strTemp.append(");\n");
+					str.append(strTemp);
+				}catch(Exception e)
+				{
+					LOG.error("Exception Occured in Creating Influencing People Position Table Data");
+					LOG.error("Exception is - ",e);
+				}
+			}
+			str.append("\n");
+			LOG.info("Influencing People Position Table Data Completed...");
+		}
+	}catch(Exception e)
+	{
+		LOG.error("Exception Ocuured in Inserting Influencing People Position Table");
+	}
+	
+	try{
+		List<InfluencingPeople> influencingPeopleList = influencingPeopleDAO.getInfluencingPeopleInAConstituencyForAUser(1L,constituencyId);
+		
+		if(influencingPeopleList != null && influencingPeopleList.size() > 0)
+		{
+			Map<String,Long> levelsMap = getCadreValuesMap();
+			for(InfluencingPeople people : influencingPeopleList)
+			{
+				try{
+					StringBuilder strTemp = new StringBuilder();
+					strTemp.append("INSERT INTO user_address(user_address_id,state_id,district_id,constituency_id,tehsil_id,hamlet_id,local_election_body_id,ward_id,booth_id,booth_part_no) VALUES (");
+					strTemp.append(people.getUserAddress().getUserAddressId()+",");
+					strTemp.append(people.getUserAddress().getState() != null ? people.getUserAddress().getState().getStateId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getDistrict() != null ? people.getUserAddress().getDistrict().getDistrictId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getConstituency() != null ? people.getUserAddress().getConstituency().getConstituencyId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getTehsil() != null ? people.getUserAddress().getTehsil().getTehsilId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getHamlet() != null ? people.getUserAddress().getHamlet().getHamletId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getLocalElectionBody() != null ? people.getUserAddress().getLocalElectionBody().getLocalElectionBodyId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getWard() != null ? people.getUserAddress().getWard().getConstituencyId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getBooth() != null ? people.getUserAddress().getBooth().getBoothId()+"," : "null,");
+					strTemp.append(people.getUserAddress().getBooth() != null ? people.getUserAddress().getBooth().getPartNo(): "null");
+					strTemp.append(");\n");
+					str.append(strTemp);
+					
+				}catch(Exception e)
+				{
+					LOG.error("Exception occured in Creating User Address table for Influencing People, Exception is - ",e);
+				}
+			}
+			
+			str.append("\n");
+			LOG.info("User Address table for Influencing people data Completed...");
+			
+			for(InfluencingPeople people : influencingPeopleList)
+			{
+				try{
+					StringBuilder strTemp = new StringBuilder();
+					strTemp.append("INSERT INTO influencing_people(influencing_people_id,firstname,lastname,relative_name,gender,mobile,email,house_no,street_name,pincode,user_address_id,occupation_id,party_id,influencing_position_id,caste_state_id,influencing_scope_id,influencing_scope_value,voter_id) VALUES (");
+					strTemp.append(people.getInfluencingPeopleId()+",");
+					strTemp.append(people.getFirstName() != null ? "'"+people.getFirstName()+"'," : "NULL,");
+					strTemp.append(people.getLastName() != null ? "'"+people.getLastName()+"'," : "NULL,");
+					strTemp.append(people.getFatherOrSpouseName() != null ? "'"+people.getFatherOrSpouseName()+"'," : "NULL,");
+					strTemp.append(people.getGender() != null ? "'"+people.getGender()+"'," : "NULL,");
+					strTemp.append(people.getPhoneNo() != null ? "'"+people.getPhoneNo()+"'," : "NULL,");
+					strTemp.append(people.getEmail() != null ? "'"+people.getEmail()+"'," : "NULL,");
+					strTemp.append(people.getUserAddress() != null && people.getUserAddress().getHouseNo() != null ? "'"+people.getUserAddress().getHouseNo() +"'," : "NULL,");
+					strTemp.append(people.getUserAddress() != null && people.getUserAddress().getStreet() != null ? "'"+people.getUserAddress().getStreet() +"'," : "NULL,");
+					strTemp.append(people.getUserAddress() != null && people.getUserAddress().getPinCode() != null ? "'"+people.getUserAddress().getPinCode() +"'," : "NULL,");
+					strTemp.append(people.getUserAddress() != null ? people.getUserAddress().getUserAddressId()+"," : "NULL,");
+					strTemp.append(people.getOccupation() != null ? people.getOccupation()+"," : "NULL,");
+					strTemp.append(people.getParty() != null ? people.getParty().getPartyId()+"," : "NULL,");
+					strTemp.append(people.getInfluencingPeoplePosition() != null ? people.getInfluencingPeoplePosition().getInfluencingPeoplePositionId()+"," : "NULL,");
+					strTemp.append("null,");
+					strTemp.append(people.getInfluencingScope() != null ? levelsMap.get(people.getInfluencingScope())+"," : "NULL,");
+					strTemp.append(people.getInfluencingScopeValue() != null ? people.getInfluencingScopeValue()+"," : "NULL,");
+					strTemp.append(people.getVoter() != null ? people.getVoter().getVoterId()+"" : "NULL");
+					strTemp.append(");\n");
+					str.append(strTemp);
+					
+				}catch(Exception e)
+				{
+					LOG.error("Exception occured in Creating User Address table for Influencing People, Exception is - ",e);
+				}
+			}
+			str.append("\n");
+			LOG.info("Influencing people table data Completed...");
+		}
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in Influencing People & User Address Table Inserting");
+		LOG.error("Exception is - ",e);
+	}
+	
+	
 	
 	try
 	{	
@@ -1149,6 +1366,25 @@ public List<SelectOptionVO> getConstituencyList()
   			LOG.error("Exception occured in getPartiesResultFromVTPRList Method, with votingTrendzId = "+votingTrendzId);
   			LOG.error("Exception is",e);
   			return 0L;
+  		}
+  	}
+  	
+  	public Map<String,Long> getCadreValuesMap()
+  	{
+  		Map<String,Long> map = new HashMap<String, Long>(0);
+  		try{
+  			List<CadreLevel> levelsList = cadreLevelDAO.getCadreLevelList();
+  			
+  			if(levelsList != null && levelsList.size() > 0)
+  			{
+  				for(CadreLevel level : levelsList)
+  				map.put(level.getLevel(),level.getCadreLevelID());
+  			}
+  			return map;
+  		}catch(Exception e)
+  		{
+  			LOG.error("Exception Occured in getCadreValuesMap(), Exception is - ",e);
+  			return map;
   		}
   	}
     
