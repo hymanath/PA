@@ -210,4 +210,6 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	
 	public List<Cadre> getCadreList();
 	
+	public List<Cadre> getCadreDetailsInAConstituency(Long userId, Long constituencyId);
+	
 }
