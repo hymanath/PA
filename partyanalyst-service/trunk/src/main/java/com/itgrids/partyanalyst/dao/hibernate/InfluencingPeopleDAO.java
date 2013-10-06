@@ -834,4 +834,13 @@ public class InfluencingPeopleDAO extends GenericDaoHibernate<InfluencingPeople,
 		
 		return queryObj.list();
 	}
+	
+	public List<InfluencingPeople> getInfluencingPeopleInAConstituencyForAUser(Long userId, Long constituencyId)
+	{
+		Query query = getSession().createQuery("Select model from InfluencingPeople model where model.userAddress.constituency.constituencyId = :constituencyId and model.user.userId = :userId ");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
 }
