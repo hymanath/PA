@@ -4294,6 +4294,9 @@ public class VoterReportService implements IVoterReportService{
 		 			Object[] obj = list.get(0);
 		 			
 		 			Long totalVoters =  Long.parseLong(obj[30].toString()) ;
+		 			
+		 			if(totalVoters == 0L)
+		 				return null;
 		 					
 		 			
 		 			votersDetailsVOList = new ArrayList<VotersDetailsVO>();
@@ -4304,9 +4307,10 @@ public class VoterReportService implements IVoterReportService{
 		 			youngVoters.setTotalVoters((Long)obj[33]);
 		 			youngVoters.setTotalVotersPercent(Long.parseLong(obj[33].toString())*100f/totalVoters);
 		 			youngVoters.setTotalMaleVoters((Long)obj[35]);
-		 			youngVoters.setTotalMaleVotersPercent((float)(Long)obj[35]*100f/((Long)obj[35] +(Long)obj[37]));
+		 			youngVoters.setTotalMaleVotersPercent(((Long)obj[35] != 0L && (Long)obj[37] != 0L)|| (Long)obj[35] != 0L ?(float)(Long)obj[35]*100f/((Long)obj[35] +(Long)obj[37]):0.00f);
 		 			youngVoters.setTotalFemaleVoters((Long)obj[37]);
-		 			youngVoters.setTotalFemaleVotersPercent((float)(Long)obj[37]*100f/((Long)obj[35] +(Long)obj[37]));
+		 			youngVoters.setTotalFemaleVotersPercent(((Long)obj[35] != 0L && (Long)obj[37] != 0L)|| (Long)obj[37] != 0L ?(float)(Long)obj[37]*100f/((Long)obj[35] +(Long)obj[37]):0.00f);
+		 			//youngVoters.setTotalVoters(totalVoters);
 		             
 		 			
 		 			VotersDetailsVO age18to22Details = new VotersDetailsVO();
@@ -4315,40 +4319,46 @@ public class VoterReportService implements IVoterReportService{
 		 			age18to22Details.setTotalVoters((Long)obj[0]);
 		 			age18to22Details.setTotalVotersPercent((float)(Long)obj[0]*100f/totalVoters);
 		 			age18to22Details.setTotalMaleVoters((Long)obj[2]);
-		 			age18to22Details.setTotalMaleVotersPercent((float)(Long)obj[2]*100f/((Long)obj[2] + (Long)obj[4]));
+		 			age18to22Details.setTotalMaleVotersPercent(((Long)obj[2] != 0L && (Long)obj[4] != 0L)||(Long)obj[2] != 0L ?(float)(Long)obj[2]*100f/((Long)obj[2] + (Long)obj[4]):0.00f);
 		 			age18to22Details.setTotalFemaleVoters((Long)obj[4]);
-		 			age18to22Details.setTotalFemaleVotersPercent((float)(Long)obj[4]*100f/((Long)obj[2] + (Long)obj[4]));
+		 			age18to22Details.setTotalFemaleVotersPercent(((Long)obj[4] != 0L && (Long)obj[2] != 0L)||(Long)obj[4] != 0L ?(float)(Long)obj[4]*100f/((Long)obj[2] + (Long)obj[4]):0.00f);
+		 			//age18to22Details.setTotalVoters(totalVoters);
+		             
 		 			
 		 			
 		             VotersDetailsVO age23To30Details = new VotersDetailsVO();
 		 			
 		             age23To30Details.setAgeRange(IConstants.AGE23to30);
 		             age23To30Details.setTotalVoters((Long)obj[6]);
-		             age23To30Details.setTotalVotersPercent((float)Long.parseLong(obj[7].toString())*100f/totalVoters);
+		             age23To30Details.setTotalVotersPercent((float)Long.parseLong(obj[6].toString())*100f/totalVoters);
 		             age23To30Details.setTotalMaleVoters((Long)obj[8]);
-		             age23To30Details.setTotalMaleVotersPercent((float)(Long)obj[8]*100f/((Long)obj[8] + (Long)obj[10] ));
+		             age23To30Details.setTotalMaleVotersPercent(((Long)obj[8] != 0L && (Long)obj[10] != 0L)||(Long)obj[8] != 0L ?(float)(Long)obj[8]*100f/((Long)obj[8] + (Long)obj[10] ):0.00f);
 		             age23To30Details.setTotalFemaleVoters((Long)obj[10]);
-		             age23To30Details.setTotalFemaleVotersPercent((float)(Long)obj[10]*100f/((Long)obj[8] + (Long)obj[10] ));
-		 			
+		             age23To30Details.setTotalFemaleVotersPercent(((Long)obj[8] != 0L && (Long)obj[10] != 0L)||(Long)obj[10] != 0L ?(float)(Long)obj[10]*100f/((Long)obj[8] + (Long)obj[10] ):0.00f);
+		             //age23To30Details.setTotalVoters(totalVoters);
+		             
 		             VotersDetailsVO age31To45Details = new VotersDetailsVO();
 		 			
 		             age31To45Details.setAgeRange(IConstants.AGE31to45);
 		             age31To45Details.setTotalVoters((Long)obj[12]);
-		             age31To45Details.setTotalVotersPercent((float)Long.parseLong(obj[13].toString())*100f/totalVoters);
+		             age31To45Details.setTotalVotersPercent((float)Long.parseLong(obj[12].toString())*100f/totalVoters);
 		             age31To45Details.setTotalMaleVoters((Long)obj[14]);
-		             age31To45Details.setTotalMaleVotersPercent((float)(Long)obj[14]*100f/((Long)obj[14]+(Long)obj[16]));
+		             age31To45Details.setTotalMaleVotersPercent(((Long)obj[14] != 0L && (Long)obj[16] != 0L)|| (Long)obj[14] !=0L ?(float)(Long)obj[14]*100f/((Long)obj[14]+(Long)obj[16]):0.00f);
 		             age31To45Details.setTotalFemaleVoters((Long)obj[16]);
-		             age31To45Details.setTotalFemaleVotersPercent((float)(Long)obj[16]*100f/((Long)obj[14]+(Long)obj[16]));
-		 			
+		             age31To45Details.setTotalFemaleVotersPercent(((Long)obj[14] != 0L && (Long)obj[16] != 0L)|| (Long)obj[16] !=0L ?(float)(Long)obj[16]*100f/((Long)obj[14]+(Long)obj[16]):0.00f);
+		            // age31To45Details.setTotalVoters(totalVoters);
+		             
 		             VotersDetailsVO age46To60Details = new VotersDetailsVO();
 		 			
 		             age46To60Details.setAgeRange(IConstants.AGE46to60);
 		             age46To60Details.setTotalVoters((Long)obj[18]);
 		             age46To60Details.setTotalVotersPercent(Long.parseLong(obj[18].toString())!=0L ?(float)Long.parseLong(obj[18].toString())*100f/totalVoters:0.00F);
 		             age46To60Details.setTotalMaleVoters((Long)obj[20]);
-		             age46To60Details.setTotalMaleVotersPercent((float)(Long)obj[20]*100f/((Long)obj[20]+(Long)obj[22]));
+		             age46To60Details.setTotalMaleVotersPercent(((Long)obj[20] != 0L && (Long)obj[22] != 0L)|| (Long)obj[20] != 0L ?(float)(Long)obj[20]*100f/((Long)obj[20]+(Long)obj[22]):0.00f);
 		             age46To60Details.setTotalFemaleVoters((Long)obj[22]);
-		             age46To60Details.setTotalFemaleVotersPercent((float)(Long)obj[22]*100f/((Long)obj[20]+(Long)obj[22]));
+		             age46To60Details.setTotalFemaleVotersPercent(((Long)obj[20] != 0L && (Long)obj[22] != 0L)|| (Long)obj[22] != 0L ?(float)(Long)obj[22]*100f/((Long)obj[20]+(Long)obj[22]):0.00f);
+		            // age46To60Details.setTotalVoters(totalVoters);
+
 		 			
 		             VotersDetailsVO above60Details = new VotersDetailsVO();
 		 			
@@ -4356,9 +4366,11 @@ public class VoterReportService implements IVoterReportService{
 		             above60Details.setTotalVoters((Long)obj[24]);
 		             above60Details.setTotalVotersPercent(Long.parseLong(obj[24].toString())*100f/totalVoters);
 		             above60Details.setTotalMaleVoters((Long)obj[26]);
-		             above60Details.setTotalMaleVotersPercent((float)(Long)obj[26]*100f/((Long)obj[26] +(Long)obj[28]));
+		             above60Details.setTotalMaleVotersPercent(((Long)obj[26] != 0L && (Long)obj[28] != 0L)|| (Long)obj[26] != 0L ? (float)(Long)obj[26]*100f/((Long)obj[26] +(Long)obj[28]):0.00f);
 		             above60Details.setTotalFemaleVoters((Long)obj[28]);
-		             above60Details.setTotalFemaleVotersPercent((float)(Long)obj[28]*100f/((Long)obj[26] +(Long)obj[28]));
+		             above60Details.setTotalFemaleVotersPercent(((Long)obj[26] != 0L && (Long)obj[28] != 0L)|| (Long)obj[28] != 0L ?(float)(Long)obj[28]*100f/((Long)obj[26] +(Long)obj[28]):0.00f);
+		            // above60Details.setTotalVoters(totalVoters);
+
 		             
 		             votersDetailsVOList.add(age18to22Details);
 		             votersDetailsVOList.add(age23To30Details);
@@ -4377,6 +4389,9 @@ public class VoterReportService implements IVoterReportService{
 	 			for(Object[] obj:list)
 	 			{
 	 				Long totalVoters =  Long.parseLong(obj[30].toString()) ;
+	 			
+		 			if(totalVoters == 0L)
+		 				return null;
 	 				
 	 				VotersDetailsVO votersDetailsVO =new VotersDetailsVO();
 	 				
@@ -4388,38 +4403,38 @@ public class VoterReportService implements IVoterReportService{
 	 				 
 	 				
 	 				votersDetailsVO.setTotalMaleVotesFor18To25((Long)obj[2]);
-	 				votersDetailsVO.setMaleVotersPercentFor18To25((Long)obj[2] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[2]*100f/((Long)obj[2] + (Long)obj[4])):"0.00");
+	 				votersDetailsVO.setMaleVotersPercentFor18To25(((Long)obj[2] != 0L && (Long)obj[4] != 0L)||(Long)obj[2] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[2]*100f/((Long)obj[2] + (Long)obj[4])):"0.00");
 	 				votersDetailsVO.setTotalFemaleVotersFor18To25((Long)obj[4]);
-	 				votersDetailsVO.setFemaleVotersPercentFor18To25((Long)obj[4] != 0L ?roundTo2DigitsFloatValue((float)(Long)obj[4]*100f/((Long)obj[2] + (Long)obj[4])):"0.00");
+	 				votersDetailsVO.setFemaleVotersPercentFor18To25(((Long)obj[2] != 0L && (Long)obj[4] != 0L)||(Long)obj[4] != 0L ?roundTo2DigitsFloatValue((float)(Long)obj[4]*100f/((Long)obj[2] + (Long)obj[4])):"0.00");
 	 				votersDetailsVO.setTotalVotersFor18To25((Long)obj[0]);
 	 				votersDetailsVO.setVotersPercentFor18To25((Long)obj[0] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[0]*100f/totalVoters):"0.00");
 	 				
 	 				votersDetailsVO.setTotalMaleVotersFor26To35((Long)obj[8]);
-	 				votersDetailsVO.setMaleVotersPercentFor26To35((Long)obj[8] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[8]*100f/((Long)obj[8] + (Long)obj[10] )):"0.00");
+	 				votersDetailsVO.setMaleVotersPercentFor26To35(((Long)obj[8] != 0L && (Long)obj[10] != 0L)||(Long)obj[8] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[8]*100f/((Long)obj[8] + (Long)obj[10] )):"0.00");
 	 				votersDetailsVO.setTotalFemaleVotersFor26To35((Long)obj[10]);
-	 				votersDetailsVO.setFemaleVotersPercentFor26To35((Long)obj[10] != 0L ?roundTo2DigitsFloatValue((float)(Long)obj[10]*100f/((Long)obj[8] + (Long)obj[10] )):"0.00");
+	 				votersDetailsVO.setFemaleVotersPercentFor26To35(((Long)obj[8] != 0L && (Long)obj[10] != 0L)||(Long)obj[10] != 0L ?roundTo2DigitsFloatValue((float)(Long)obj[10]*100f/((Long)obj[8] + (Long)obj[10] )):"0.00");
 	 				votersDetailsVO.setTotalVotersFor26To35((Long)obj[6]);
 	 				votersDetailsVO.setVotersPercentFor26To35(Long.parseLong(obj[7].toString()) != 0L ?roundTo2DigitsFloatValue((float)Long.parseLong(obj[7].toString())*100f/totalVoters):"0.00");
 	 				
 	 				votersDetailsVO.setTotalMaleVotersFor36To45((Long)obj[14]);
-	 				votersDetailsVO.setMaleVotersPercentFor36To45((Long)obj[14] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[14]*100f/((Long)obj[14]+(Long)obj[16])):"0.00");
+	 				votersDetailsVO.setMaleVotersPercentFor36To45(((Long)obj[14] != 0L && (Long)obj[16] != 0L)||(Long)obj[14] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[14]*100f/((Long)obj[14]+(Long)obj[16])):"0.00");
 	 				votersDetailsVO.setTotalFemaleVotersFor36To45((Long)obj[16]);
-	 				votersDetailsVO.setFemaleVotersPercentFor36To45((Long)obj[16] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[16]*100f/((Long)obj[14]+(Long)obj[16])):"0.00");
+	 				votersDetailsVO.setFemaleVotersPercentFor36To45(((Long)obj[14] != 0L && (Long)obj[16] != 0L)||(Long)obj[16] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[16]*100f/((Long)obj[14]+(Long)obj[16])):"0.00");
 	 				votersDetailsVO.setTotalVotersFor36To45((Long)obj[12]);					 
 	 				votersDetailsVO.setVotersPercentFor36To45(Long.parseLong(obj[13].toString()) != 0L ? roundTo2DigitsFloatValue((float)Long.parseLong(obj[13].toString())*100f/totalVoters):"0.00");
 	 				
 	 				votersDetailsVO.setTotalMaleVotersFor46To60((Long)obj[20]);
-	 				votersDetailsVO.setMaleVotersPercentFor46To60((Long)obj[20] != null ? roundTo2DigitsFloatValue((float)(Long)obj[20]*100f/((Long)obj[20]+(Long)obj[22])):"0.00");
+	 				votersDetailsVO.setMaleVotersPercentFor46To60(((Long)obj[20] != 0L && (Long)obj[20] != 0L)||(Long)obj[20] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[20]*100f/((Long)obj[20]+(Long)obj[22])):"0.00");
 	 				votersDetailsVO.setTotalFemaleVotersFor46To60((Long)obj[22]);						
-	 				votersDetailsVO.setFemaleVotersPercentFor46To60((Long)obj[22] != null ? roundTo2DigitsFloatValue((float)(Long)obj[22]*100f/((Long)obj[20]+(Long)obj[22])):"0.00");
+	 				votersDetailsVO.setFemaleVotersPercentFor46To60(((Long)obj[20] != 0L && (Long)obj[20] != 0L)||(Long)obj[22] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[22]*100f/((Long)obj[20]+(Long)obj[22])):"0.00");
 	 				votersDetailsVO.setTotalVotersFor46To60((Long)obj[18]);
 	 			    votersDetailsVO.setVotersPercentFor46To60(Long.parseLong(obj[18].toString()) != 0L ? roundTo2DigitsFloatValue((float)Long.parseLong(obj[18].toString())*100f/totalVoters):"0.00");
 	 			
 	 				
 	 				votersDetailsVO.setTotalMaleVotersForAbove60((Long)obj[26]);
-	 				votersDetailsVO.setMaleVotersPercentForAbove60((Long)obj[26] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[26]*100f/((Long)obj[26] +(Long)obj[28])):"0.00");
+	 				votersDetailsVO.setMaleVotersPercentForAbove60(((Long)obj[26]  != 0L && (Long)obj[28] != 0L )||(Long)obj[26] != 0L ? roundTo2DigitsFloatValue((float)(Long)obj[26]*100f/((Long)obj[26] +(Long)obj[28])):"0.00");
 	 				votersDetailsVO.setTotalFemaleVotersForAbove60((Long)obj[28]);
-	 				votersDetailsVO.setFemaleVotersPercentForAbove60((Long)obj[28] != 0L ?roundTo2DigitsFloatValue((float)(Long)obj[28]*100f/((Long)obj[26] +(Long)obj[28])):"0.00");
+	 				votersDetailsVO.setFemaleVotersPercentForAbove60(((Long)obj[26]  != 0L && (Long)obj[28] != 0L )||(Long)obj[28] != 0L ?roundTo2DigitsFloatValue((float)(Long)obj[28]*100f/((Long)obj[26] +(Long)obj[28])):"0.00");
 	 				votersDetailsVO.setTotalVotersForAbove60((Long)obj[24]);
 	 				votersDetailsVO.setVotersPercentForAbove60(Long.parseLong(obj[24].toString()) != 0L ?roundTo2DigitsFloatValue(Long.parseLong(obj[24].toString())*100f/totalVoters):"0.00");
 	 				votersDetailsVO.setTotalVoters(totalVoters);
