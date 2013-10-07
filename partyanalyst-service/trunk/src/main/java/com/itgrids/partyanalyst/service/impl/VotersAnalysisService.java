@@ -3110,7 +3110,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 				type="booth";
 				boothId=panchayatId;
 			}
-			getDetailsOfYoungVoters(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList);
+			getDetailsOfYoungVoters(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList,userId);
 	        getDetailsOfVotersHasAgeBetween18And25(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList,userId);		
 			getDetailsOfVotersHasAgeBetween26And35(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList,userId);			
 			getDetailsOfVotersHasAgeBetween36And45(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList,userId);		
@@ -3223,7 +3223,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			if(partialPanchayatDetails != null && partialPanchayatDetails.size() >0)
 			{
 				
-				votersListOf18To25 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationIdInHamlets(panchayatId, publicationDateId,IConstants.AGE18,IConstants.AGE22 , userId);
+				votersListOf18To25 = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationIdInHamlets(panchayatId, publicationDateId,IConstants.AGE18,IConstants.AGE25 , userId);
 				
 			}				
 			else
@@ -4258,7 +4258,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 				
 				VotersDetailsVO voterDetailsVO = new VotersDetailsVO();
 				
-				getDetailsOfYoungVoters(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth",null);
+				getDetailsOfYoungVoters(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth",null,userId);
 				getDetailsOfVotersHasAgeBetween18And25(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth",null,userId);
 				getDetailsOfVotersHasAgeBetween26And35(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth",null,userId);			
 				getDetailsOfVotersHasAgeBetween36And45(null,null,null,(Long)obj[0], publicationDateId,boothVotersList,"booth",null,userId);		
@@ -11154,12 +11154,32 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 		
 		public VotersInfoForMandalVO getPanchayatWiseVotersDetailsByPublicationBasis(String type,Long panchayatId,Long publicationId,Long constituencyId,Long userId){
       	  VotersInfoForMandalVO votersInfoForMandalVO = null;
+      	  List<Object[]> votersCountList = null;
 	            Long totalBooths = 0l;
 	            
 	          //getting total booths count
 	        	List<Long> boothsCount = boothDAO.getBoothsCountByPublicationId(type,panchayatId,publicationId,constituencyId);
 			if(boothsCount != null &&  boothsCount.size() >0)
 				totalBooths = (Long)boothsCount.get(0);
+			
+			List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(panchayatId, publicationId);
+			
+			if(list != null && list.size() >0){
+				 votersCountList = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationIdAndHamlet(panchayatId,publicationId,userId);
+
+				 if(!votersCountList.isEmpty() && votersCountList.get(0)[1] != null){
+						votersInfoForMandalVO = populateDataToVotersInfoForMandalVO(votersCountList,panchayatId,panchayatDAO.get(panchayatId).getPanchayatName(),"Panchayat");						
+						
+					}else{
+						  votersInfoForMandalVO = new VotersInfoForMandalVO();
+						  votersInfoForMandalVO.setDatapresent(false);						
+					 }
+				
+				 if(votersInfoForMandalVO != null)
+						votersInfoForMandalVO.setTotalBooths(totalBooths);
+						
+					return votersInfoForMandalVO;
+			}
 	    	
 			//getting data from intermediate table
 			votersInfoForMandalVO = getVotersDetailsByVoterReportLevelId(getReportLevelId("Panchayat"),panchayatId,publicationId, "", "",constituencyId);
@@ -11171,7 +11191,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				/*List<Object[]> votersCountList =
 				List<Object[]> votersCountList = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationId(panchayatId,publicationId);
 				*/
-				List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(panchayatId, publicationId);
+			/*	List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(panchayatId, publicationId);
 				
 				List<Object[]> votersCountList = null;
 				
@@ -11179,7 +11199,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 				{
 					 votersCountList = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationIdAndHamlet(panchayatId,publicationId,userId);
 
-				}else
+				}else*/
 					 votersCountList = boothPublicationVoterDAO.getVotersCountForPanchayatByPublicationId(panchayatId,publicationId);
 				
 				if(!votersCountList.isEmpty() && votersCountList.get(0)[1] != null){
@@ -18744,7 +18764,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	
 	public void getDetailsOfYoungVoters(
 			Long constituencyId,Long tehsilId,Long panchayatId, Long boothId, Long publicationDateId,
-			List<VotersDetailsVO> constituencyVotersList,String type,List<Long> boothsList) {		
+			List<VotersDetailsVO> constituencyVotersList,String type,List<Long> boothsList,Long userId) {		
 		
 		VotersDetailsVO voterDetailsForYoungVoters = new VotersDetailsVO();
 		List<Object[]> votersListOfYoungVoters = null;
@@ -18759,8 +18779,16 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				 votersListOfYoungVoters = boothPublicationVoterDAO.getAgewiseVoterDetailsInSpecifiedRangeByGenderAndMandalId(
 						 tehsilId, publicationDateId,IConstants.YOUNG_VOTERS_AGE_FROM, IConstants.YOUNG_VOTERS_AGE_TO,constituencyId);
 			 else if(type.equalsIgnoreCase("panchayat"))
-				 votersListOfYoungVoters = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
+			 {
+				 List<Long> partialPanchayatDetails = partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatId(panchayatId, publicationDateId);
+					
+					if(partialPanchayatDetails != null && partialPanchayatDetails.size() >0)
+						votersListOfYoungVoters = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationIdInHamlets(panchayatId, publicationDateId,IConstants.AGE18,IConstants.AGE22 , userId);
+					else				 
+				       votersListOfYoungVoters = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationId(
 					panchayatId, publicationDateId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO);
+			 }
+			
 			 else if(type.equalsIgnoreCase("booth"))
 				 votersListOfYoungVoters = boothPublicationVoterDAO.getVotersCountDetailsInSpecifiedRangeForBoothByPublicationDateId(
 						boothId, publicationDateId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO);
