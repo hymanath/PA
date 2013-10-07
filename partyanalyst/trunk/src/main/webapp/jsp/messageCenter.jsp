@@ -1102,7 +1102,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 		 <span style="font-size:13px;font-weight:bold;">Search By:</span><input type="radio" id="cadre" name="searchFor" value="cadre" class="searchType" checked>
 		   <label for="cadre">Cadre</label>
 		<input type="radio" id="influencePeople" name="searchFor" value="influencePeople" class="searchType" >
-		   <label for="influencePeople">Influence People</label>
+		   <label for="influencePeople">Influencing  People</label>
 		<input type="radio" id="voter" name="searchFor" value="voter" class="searchType">
 		   <label for="voter">Voter</label>
 	 </div>
