@@ -1,6 +1,7 @@
 function buildConstituencyBasicInfo(results)
 	{
 
+
         $("#basicInfoAjaxImage").css("display","none");
 	    var mandalList = results[0].mandalList;
 		var localbodyList = results[0].localbodiesList;
@@ -31,18 +32,20 @@ function buildConstituencyBasicInfo(results)
 	
 		str+='</td>';
 		var hamletsize = mandalList[i].selectOptionsList[j].selectOptionsList1.length;
+	  
 		if(k == 0)
 		{
-	    str+='<td rowspan="hamletsize">';
-		 for(var k1=0;k1<mandalList[i].selectOptionsList[j].selectOptionsList.length;k1++)
+		 str+='<td rowspan="'+hamletsize+'">';
+	   for(var k1=0;k1<mandalList[i].selectOptionsList[j].selectOptionsList.length;k1++)
 				{
 		 var temp1 =mandalList[i].selectOptionsList[j].selectOptionsList.length - 1; 
 		str+='<span>'+mandalList[i].selectOptionsList[j].selectOptionsList[k1].name+'</span> ';
 		if(k1!=temp1)
 		str +=',  ';
 				}
-		str+='</td>';
+	str+='</td>';	
 		}
+		
 			str+='</tr>';
 			}
 		}
