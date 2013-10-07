@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.itextpdf.text.log.Logger;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -24,11 +25,13 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 	private IVotersAnalysisService votersAnalysisService;
 	private IBoothDAO boothDAO;
 	
+	
     //private static final Logger LOG = Logger.getLogger(ConstituencyInfoService.class);
 	
 	public IVotersAnalysisService getVotersAnalysisService() {
 		return votersAnalysisService;
 	}
+	
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -144,8 +147,10 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 				localbodybooths = votersAnalysisService.getBoothsInMunicipality(new Long(localbodyId.getId().toString().substring(1)), publicationId,constituencyId);
 					else
 					{
-						if(!localbodyWards.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
+						//if(!localbodyWards.get(0).getType().equalsIgnoreCase("Greater Municipal Corp") )
 							localbodybooths = votersAnalysisService.getBoothsInMunicipality(new Long(localbodyId.getId().toString().substring(1)), publicationId,constituencyId);
+						/*else
+							localbodybooths =getBoothsForLocalEleBodyByCOnstituencyId(constituencyId,new Long(localbodyId.getId().toString().substring(1)),publicationId);*/
 						if(localbodyWards!= null && localbodyWards.size() > 0)
 							localbodyWards =  votersAnalysisService.getBoothsInCustomWardsOfALocalElectionBody(localbodyWards, constituencyId, publicationId, userId);
 				    }
