@@ -709,10 +709,13 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				areaMap.get(entry.getKey()).setOthrExpctdPrcntg(db);
 				
 				Long expVotes=0l;
+				Long totalOtherVoters = 0l;
 				for(CastVO cst:allSlctdCastes){
 					expVotes+=cst.getExpctdVotesCount();
+					if(cst.getCastCount() != null)
+					totalOtherVoters+=cst.getCastCount();
 				}
-				int otherVotes=(int) (areaMap.get(entry.getKey()).getTotalVoters()-expVotes);
+				int otherVotes=(int) (areaMap.get(entry.getKey()).getTotalVoters()-totalOtherVoters);
 				int othrExpctdVotes=(int)(otherVotes*(Double.parseDouble(db)));
 				
 				areaMap.get(entry.getKey()).setAllSelectedCastes(allSlctdCastes);
@@ -1972,8 +1975,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	      
-	     double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-	  // double difference = selectedPartyTotalPercent;
+	     //double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	     double difference = selectedPartyTotalPercent;
 	    	
 	      String locationName = "";
 	      if(locationType != null && locationType.equalsIgnoreCase("panchayat"))
@@ -4042,8 +4045,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
-			      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			      //double difference = selectedPartyTotalPercent;
+			      //double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			      double difference = selectedPartyTotalPercent;
 			    	
 			      String locationName = "";
 			      locationName = boothDAO.getBoothPartNoByBoothId(id);
@@ -4214,8 +4217,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
-			      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			      //double difference = selectedPartyTotalPercent;
+			      //double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			      double difference = selectedPartyTotalPercent;
 			    	
 			      String locationName = "";
 			      
