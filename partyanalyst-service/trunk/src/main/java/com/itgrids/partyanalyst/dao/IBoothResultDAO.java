@@ -19,4 +19,8 @@ public interface IBoothResultDAO extends GenericDao<BoothResult, Long>{
 	public List getAllPolledVotesForMandalsInAnElection(String mandalIds, String electionYear, String electionType);
 	
 	public List getMandalwiseValidVotesForAMappedConstituency(Long constituencyId, String elecYear, String elecType);
+	
+	public List<Object[]> getAfterDelimitationEffectBasedOnVoters(Long electionId,Long constituencyid);
+	
+	public List<Object[]> getBeforeDelimitationEffectBasedOnVoters(Long electionId,List<Long> boothIds);
 }

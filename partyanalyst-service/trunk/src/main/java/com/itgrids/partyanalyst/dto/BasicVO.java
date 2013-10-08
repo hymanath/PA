@@ -27,6 +27,8 @@ public class BasicVO implements Serializable{
 	private Long expCount;
 	private Long levelValue;
 	private Long levelId;
+	private BasicVO afterDelimationDetails;
+	private BasicVO beforeDelimationDetails;
 	public List<BasicVO> getSelectedCasteDetails() {
 		return selectedCasteDetails;
 	}
@@ -140,6 +142,18 @@ public class BasicVO implements Serializable{
 	}
 	public void setLevelId(Long levelId) {
 		this.levelId = levelId;
+	}
+	public BasicVO getAfterDelimationDetails() {
+		return afterDelimationDetails;
+	}
+	public void setAfterDelimationDetails(BasicVO afterDelimationDetails) {
+		this.afterDelimationDetails = afterDelimationDetails;
+	}
+	public BasicVO getBeforeDelimationDetails() {
+		return beforeDelimationDetails;
+	}
+	public void setBeforeDelimationDetails(BasicVO beforeDelimationDetails) {
+		this.beforeDelimationDetails = beforeDelimationDetails;
 	}
 	
 	

@@ -1649,4 +1649,24 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 
 	return (Long)query.uniqueResult();
 	}
+	
+		public List<Long> getTehsilsForAfterDelimation(Long constituencyId,Long year)
+		{
+			Query query = getSession().createQuery("select distinct model.tehsil.tehsilId from Booth model " +
+					" where model.constituency.constituencyId = :constituencyId " +
+					" and model.year = :year ");
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("year", year);
+			return query.list();
+		}
+		
+		public List<Long> getBoothsBeforDelimation(Long year , List<Long> tehsilIds)
+		{
+			Query query = getSession().createQuery("select distinct model.boothId from Booth model " +
+					" where model.tehsil.tehsilId in (:tehsilIds) " +
+					" and model.year = :year ");
+			query.setParameterList("tehsilIds", tehsilIds);
+			query.setParameter("year", year);
+			return query.list();
+		}
 }
