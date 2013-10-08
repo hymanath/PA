@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyElectionDistrictResultWithAllianceDAO;
@@ -220,6 +221,7 @@ public class StaticDataService implements IStaticDataService {
 	private IAreaTypeDAO areaTypeDAO;
 	private ICadreDAO cadreDAO;
 	private IPublicationDateDAO publicationDateDAO;
+	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
 	
 	public ICadreDAO getCadreDAO() {
 		return cadreDAO;
@@ -636,6 +638,15 @@ public class StaticDataService implements IStaticDataService {
 
 	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
 		this.publicationDateDAO = publicationDateDAO;
+	}
+
+	public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
+		return partialBoothPanchayatDAO;
+	}
+
+	public void setPartialBoothPanchayatDAO(
+			IPartialBoothPanchayatDAO partialBoothPanchayatDAO) {
+		this.partialBoothPanchayatDAO = partialBoothPanchayatDAO;
 	}
 
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -2520,6 +2531,7 @@ public class StaticDataService implements IStaticDataService {
 	public List<SelectOptionVO> getPanchayatiesByMandalIdsListAndConstituencyId(List<Long> mandalsList,Long constituencyId,Long publicationDateId)
 	{
 		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> pancahayatsList = null;
 		try{
 		List<Object[]> list = boothDAO.getPanchayatiesByMandalsListAndConstituencyId(mandalsList, constituencyId, publicationDateId);
 		
@@ -2537,11 +2549,13 @@ public class StaticDataService implements IStaticDataService {
 					selectOptionVO.setSelectOptionsList(new ArrayList<SelectOptionVO>(0));
 					resultList.add(selectOptionVO);
 				}
-				List<SelectOptionVO> pancahayatsList = selectOptionVO.getSelectOptionsList();
+				pancahayatsList = selectOptionVO.getSelectOptionsList();
 				pancahayatsList.add(new SelectOptionVO((Long)params[2],params[3].toString()));
 				selectOptionVO.setSelectOptionsList(pancahayatsList);
 			}
 		}
+		
+		getAllPanchayatsInAConstituency(resultList,pancahayatsList,constituencyId, publicationDateId);
 		return resultList;
 		}catch(Exception e){
 			log.error("Exception occured in getPanchayatiesByMandalIdsListAndConstituencyId() Method");
@@ -2592,6 +2606,7 @@ public class StaticDataService implements IStaticDataService {
 	public List<SelectOptionVO> getBoothsByPanchayatIdsListAndConstituencyIdInAPublication(List<Long> panchayatIdsList,Long constituencyId,Long publicationDateId)
 	{
 		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>(0);
+		List<SelectOptionVO> boothsList = null;
 		SelectOptionVO selectOptionVO = null;
 		try{
 			List<Object[]> list = boothDAO.getBoothsByPanchayatIdsListAndConstituencyIdInAPublication(panchayatIdsList, constituencyId, publicationDateId);
@@ -2606,10 +2621,11 @@ public class StaticDataService implements IStaticDataService {
 					selectOptionVO.setSelectOptionsList(new ArrayList<SelectOptionVO>(0));
 					resultList.add(selectOptionVO);
 				}
-				List<SelectOptionVO> boothsList = selectOptionVO.getSelectOptionsList();
+				boothsList = selectOptionVO.getSelectOptionsList();
 				boothsList.add(new SelectOptionVO((Long)params[2],params[3].toString()));
 				selectOptionVO.setSelectOptionsList(boothsList);
 			}
+			getPartialBoothsForPanchayats(panchayatIdsList,resultList,boothsList,constituencyId,publicationDateId);
 			return resultList;
 		}catch(Exception e){
 			return resultList;
@@ -9167,6 +9183,69 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		{
 			log.error("Exception Occured - ",e);
 			return years;
+		}
+	}
+	
+	public void getAllPanchayatsInAConstituency(List<SelectOptionVO> returnList , List<SelectOptionVO> pancahayatsList,Long constituencyId,Long publicationId)
+	{
+		
+		if(returnList != null && returnList.size() > 0)
+		{
+			List<Long> panchayatIds = new ArrayList<Long>();
+			for (SelectOptionVO mandalsList : returnList) {
+				List<SelectOptionVO> panchayatsList = mandalsList.getSelectOptionsList();
+				if(panchayatsList != null && panchayatsList.size() > 0)
+				{
+					for (SelectOptionVO selectOptionVO : panchayatsList) {
+						panchayatIds.add(selectOptionVO.getId());
+					}
+				}
+			}
+			List<Object[]> panchayatesList = partialBoothPanchayatDAO.getPanchayatesForPartialBooths(panchayatIds,publicationId,constituencyId);
+			if(panchayatesList != null && panchayatesList.size() > 0)
+			{
+				SelectOptionVO selectOptionVO = null;
+				for (Object[] parms : panchayatesList) {
+					selectOptionVO = getSelectOptionVOFromResultList(returnList,(Long)parms[0]);
+					if(selectOptionVO == null)
+					{
+						selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[0]);
+						selectOptionVO.setName(parms[1].toString());
+						selectOptionVO.setSelectOptionsList(new ArrayList<SelectOptionVO>(0));
+						returnList.add(selectOptionVO);
+					}
+					pancahayatsList = selectOptionVO.getSelectOptionsList();
+					pancahayatsList.add(new SelectOptionVO((Long)parms[2],parms[3].toString()));
+					selectOptionVO.setSelectOptionsList(pancahayatsList);
+					
+				}
+			}
+		}
+	}
+	
+//  for getting the partial booths in panchayts
+	public void getPartialBoothsForPanchayats(List<Long> panchayatIds , List<SelectOptionVO> returnList , List<SelectOptionVO> boothsList,Long constituencyId,Long publicationId)
+	{
+		List<Object[]> booths = partialBoothPanchayatDAO.getParitialBooths(panchayatIds,constituencyId,publicationId);
+		if(boothsList != null && boothsList.size() > 0)
+		{
+			SelectOptionVO selectOptionVO = null;
+			for (Object[] parms : booths) {
+				selectOptionVO = getSelectOptionVOFromResultList(returnList,(Long)parms[0]);
+				if(selectOptionVO == null)
+				{
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					selectOptionVO.setSelectOptionsList(new ArrayList<SelectOptionVO>(0));
+					returnList.add(selectOptionVO);
+				}
+				boothsList = selectOptionVO.getSelectOptionsList();
+				boothsList.add(new SelectOptionVO((Long)parms[2],parms[3].toString()));
+				selectOptionVO.setSelectOptionsList(boothsList);
+				
+			}
 		}
 	}
 	

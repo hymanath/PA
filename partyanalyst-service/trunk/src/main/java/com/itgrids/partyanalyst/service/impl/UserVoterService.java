@@ -2,7 +2,6 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +17,7 @@ import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICustomVoterGroupDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRolesDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryDAO;
@@ -25,7 +25,6 @@ import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
-import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dto.MandalInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -78,6 +77,7 @@ public class UserVoterService implements IUserVoterService{
     
     private IAreaTypeDAO areaTypeDAO;
 
+    private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
     
 	public IAreaTypeDAO getAreaTypeDAO() {
 		return areaTypeDAO;
@@ -235,6 +235,15 @@ public class UserVoterService implements IUserVoterService{
 		this.userDAO = userDAO;
 	}
 
+	public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
+		return partialBoothPanchayatDAO;
+	}
+
+	public void setPartialBoothPanchayatDAO(
+			IPartialBoothPanchayatDAO partialBoothPanchayatDAO) {
+		this.partialBoothPanchayatDAO = partialBoothPanchayatDAO;
+	}
+
 	public List<SelectOptionVO> getUserVoterCategoryList(List<Long> userIdsList)
 	{
 		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>(0);
@@ -312,29 +321,16 @@ public class UserVoterService implements IUserVoterService{
 			 }
 			 if(!locationType.equalsIgnoreCase("hamlet"))
 			 {
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE25);
-			 if(votersList != null && votersList.size() > 0)
-			   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to25,totalVoters);
-			 
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE23,IConstants.AGE30);
-			 if(votersList != null && votersList.size() > 0)
-			   getVoterDetails(categoryValues,category,votersList,IConstants.AGE23to30,totalVoters);
-			 
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE31,IConstants.AGE45);
-			 if(votersList != null && votersList.size() > 0)
-			  getVoterDetails(categoryValues,category,votersList,IConstants.AGE31to45,totalVoters);
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE46,IConstants.AGE60);
-			 if(votersList != null && votersList.size() > 0)
-			  getVoterDetails(categoryValues,category,votersList,IConstants.AGE46to60,totalVoters);
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE61,IConstants.AGE160);
-			 if(votersList != null && votersList.size() > 0)
-			  getVoterDetails(categoryValues,category,votersList,"60",totalVoters);
-			 
-			 //young Voters Implementation
-			 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO);
-			 if(votersList != null && votersList.size() > 0)
-			   getVoterDetails(categoryValues,category,votersList,IConstants.YOUNG_VOTERS,totalVoters);
-			 
+					 if("panchayat".equalsIgnoreCase(locationType)){
+						 Long count = partialBoothPanchayatDAO.checkPanchayatIsPartial(locationId, publicationId);
+						 if(count != null && count > 0){
+							 getAgeWiseAttributeDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId,category,categoryValues,totalVoters);
+						 }else{
+							 getAgeWiseAttributeDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,category,categoryValues,totalVoters);
+						 }
+					 }else{
+					   getAgeWiseAttributeDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,category,categoryValues,totalVoters);
+					 }
 			 }
 			 else if(locationType.equalsIgnoreCase("hamlet"))
 			 {
@@ -916,9 +912,17 @@ public class UserVoterService implements IUserVoterService{
 			   List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1)));
 			   locationId = (Long) list.get(0); 
 			}
-			
-			List<Object[]> votersList = boothPublicationVoterDAO.getCasteWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
-			
+			List<Object[]> votersList = null;
+			if("panchayat".equalsIgnoreCase(locationType)){
+				 Long count = partialBoothPanchayatDAO.checkPanchayatIsPartial(locationId, publicationId);
+				 if(count != null && count > 0){
+					 votersList = boothPublicationVoterDAO.getCasteWiseDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+				 }else{
+					 votersList = boothPublicationVoterDAO.getCasteWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+				 }
+			 }else{
+			    votersList = boothPublicationVoterDAO.getCasteWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId);
+			 }
 			if(votersList != null && votersList.size() > 0)
 			{
 			  votersDetailsVOsList = new ArrayList<VotersDetailsVO>(0);
@@ -1117,4 +1121,59 @@ public class UserVoterService implements IUserVoterService{
 			
 		 }
 	 
+	 public void getAgeWiseAttributeDetails(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId,Map<Long,VotersDetailsVO> category,Map<Long, Map<Long,VotersDetailsVO>> categoryValues,Long totalVoters){
+		 List<Object[]> votersList = null;
+		 
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE25);
+		 if(votersList != null && votersList.size() > 0)
+		   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to25,totalVoters);
+		 
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE23,IConstants.AGE30);
+		 if(votersList != null && votersList.size() > 0)
+		   getVoterDetails(categoryValues,category,votersList,IConstants.AGE23to30,totalVoters);
+		 
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE31,IConstants.AGE45);
+		 if(votersList != null && votersList.size() > 0)
+		  getVoterDetails(categoryValues,category,votersList,IConstants.AGE31to45,totalVoters);
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE46,IConstants.AGE60);
+		 if(votersList != null && votersList.size() > 0)
+		  getVoterDetails(categoryValues,category,votersList,IConstants.AGE46to60,totalVoters);
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE61,IConstants.AGE160);
+		 if(votersList != null && votersList.size() > 0)
+		  getVoterDetails(categoryValues,category,votersList,"60",totalVoters);
+		 
+		 //young Voters Implementation
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetails(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO);
+		 if(votersList != null && votersList.size() > 0)
+		   getVoterDetails(categoryValues,category,votersList,IConstants.YOUNG_VOTERS,totalVoters);
+		 
+	 }
+	 
+	 public void getAgeWiseAttributeDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId,Map<Long,VotersDetailsVO> category,Map<Long, Map<Long,VotersDetailsVO>> categoryValues,Long totalVoters){
+		 List<Object[]> votersList = null;
+		 
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE18,IConstants.AGE25);
+		 if(votersList != null && votersList.size() > 0)
+		   getVoterDetails(categoryValues,category,votersList,IConstants.AGE18to25,totalVoters);
+		 
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE23,IConstants.AGE30);
+		 if(votersList != null && votersList.size() > 0)
+		   getVoterDetails(categoryValues,category,votersList,IConstants.AGE23to30,totalVoters);
+		 
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE31,IConstants.AGE45);
+		 if(votersList != null && votersList.size() > 0)
+		  getVoterDetails(categoryValues,category,votersList,IConstants.AGE31to45,totalVoters);
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE46,IConstants.AGE60);
+		 if(votersList != null && votersList.size() > 0)
+		  getVoterDetails(categoryValues,category,votersList,IConstants.AGE46to60,totalVoters);
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.AGE61,IConstants.AGE160);
+		 if(votersList != null && votersList.size() > 0)
+		  getVoterDetails(categoryValues,category,votersList,"60",totalVoters);
+		 
+		 //young Voters Implementation
+		 votersList = boothPublicationVoterDAO.getAgeWiseDetailsForPartialPanchayat(userId,attributeIds,locationType,locationId,constituencyId,publicationId,IConstants.YOUNG_VOTERS_AGE_FROM,IConstants.YOUNG_VOTERS_AGE_TO);
+		 if(votersList != null && votersList.size() > 0)
+		   getVoterDetails(categoryValues,category,votersList,IConstants.YOUNG_VOTERS,totalVoters);
+		 
+	 }
 }
