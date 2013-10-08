@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -47,4 +49,7 @@ public interface IPanchayatDAO extends GenericDao<Panchayat,Long>{
 	
 	public List<Object[]> getMandalsAnaPanchayays(List<Long> mandalIds);
 	
+	public List<Object[]> getPanchayatIdsForMandals(List<Long> mandalIdsList,Set<Long> panchayatIds);
+	
+	public List<Object[]> getMandalAndPanchayatIds(Set<Long> partialPanchayatIds);
 }

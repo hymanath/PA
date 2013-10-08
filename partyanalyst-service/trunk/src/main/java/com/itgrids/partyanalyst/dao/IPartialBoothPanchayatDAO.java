@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -8,7 +9,7 @@ import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 
 public interface IPartialBoothPanchayatDAO extends 
 					GenericDao<PartialBoothPanchayat,Long>{
-	public List<Long> getPartialBoothPanchayatDetailsByPanchayatId(Long PanchayatId,Long publicationDateId);
+	public List<Long> getPartialBoothPanchayatDetailsByPanchayatId(Long PanchayatId,Long publicationId);
 	public List<PartialBoothPanchayat> getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(Long panchayatId,Long publicationDateId);
 	public List<Long> getPartialBoothDetailsByPanchayatIdsAndPublicationDateId(List<Long> panchayatIds , Long publicationDateId);
 	
@@ -45,4 +46,19 @@ public interface IPartialBoothPanchayatDAO extends
 
 
 
+	public List<Long> getPartialPanchayatIds(List<Long> boothIds,Set<Long> panchayatIds);
+	
+	public List<Object[]> getPartialPanchayats(Long constituencyId,Long publicationId);
+
+	public Long getPartialBoothPanchayatDetails(Long panchayatId,Long publicationDateId);
+	
+	public List<Object[]> getPartialBoothsDetails(Long panchayatId,Long publicationDateId);
+	
+	public List<Long> getPartialBooths(Long panchayatId,Long publicationDateId);
+	
+	public List<Long> getPartialPanchayats(Long publicationDateId,Set<Long> panchayatIds);
+	
+	public Long getPartialBoothsCount(Long panchayatId,Long publicationDateId);
+	
+	public Long checkPanchayatIsPartial(Long panchayatId,Long publicationId);
 }

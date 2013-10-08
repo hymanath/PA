@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -10,6 +11,7 @@ import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterReportVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -98,8 +100,8 @@ public interface IVoterReportService {
     public List<VotersDetailsVO> caluculateAgeWiseDetailsForPanchayatByHamlets(Long userId , List<Long> panchayatIds ,Long publicationDateId,boolean isSublevel);
 
 
-    
+    public List<VotersInfoForMandalVO> getDataForPartialPanchayats(Long constituencyId,Long mandalId,Map<Long,String> panchayatIds,Long publicationDateId,Long userId);
 
-
+    public void getPartialAndNormalPanchayats(Long publicationDateId,Long id,Map<Long,String> panchayatIds,Map<Long,String> partialPancMap);
 
 }

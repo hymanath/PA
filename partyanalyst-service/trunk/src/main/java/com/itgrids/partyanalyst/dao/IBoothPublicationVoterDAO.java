@@ -449,6 +449,7 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo);
 	  
 	  public List<Object[]> getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId);
+	  
 	  public List<Object[]> getVotersDetailsAndCountDetailsByBoothId(Long userId , Long boothId, Integer startIndex,
 				Integer maxRecords, String order, String columnName,String queryString,String queryForCategories,String queryForselect,boolean isCount);
 	  
@@ -467,15 +468,49 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getVotersCountDetailsInSpecifiedRangeForPanchayatByPublicationIdInHamlets(Long panchayatId,Long publicationDateId,Long startAge,Long endAge ,Long userId);
 
 
-	public List<Object[]>  getHamletsForPartialBooth(Long boothId);
+
+	  public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,List<Long> locationIds,Long publicationDateId,Long constituencyId);
+	  
+	  public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,List<Long> locationIds,Long publicationDateId,Long constituencyId);
+	  
+	  public List<Object[]> getVotersCountByHamletForPartialPanchayat(Long panchayatId, Long userId , Long publicationDateId,Long constituencyId);
+	  
+	  public List<Long> getAllImpFamilesCountForPartialPanchayat(Long panchayatId,Long publicationDateId,Long userId,Long constituencyId);
+		
+	  public List<Object[]>  getHamletsForPartialBooth(Long id);
+	  
+	  public List<Object[]> getPartialBoothHamlets(Long panchayatId,Long publicationId);
+	  
+	  public Long findVotersCountByPublicationIdForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId);
+	  
+	  public List<Object[]> getCastCategoryWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId);
+	  
+	  public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId);
+	  
+	  public Long getTotalCastCountForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId);
+	  
+	  public List<Object[]> getImpFamilesForPartialPanchayatByPublicationId(Long panchayatId,Long publicationDateId,Long userId);
+	  
+	  public List<Object[]> getVoterDetailsByCasteStateForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId,Long casteStateId);
 	
-	public List<Object[]> getPartialBoothHamlets(Long panchayatId,Long publicationId);
-	
-	public List<Object[]> getBoothAndHamletIdsByConstituencyId(Long constituencyId,Long publicationDateId,Long userId);
+	  public List<Object[]> getBoothAndHamletIdsByConstituencyId(Long constituencyId,Long publicationDateId,Long userId);
+	  
+	  public List<Object[]> getVoterAgeDetailsForPartialPanchayats(Long userId,Long publicationDateId,List<Long> panchayatIds);
+	  
+	  public List<Object[]> getVotersCountForMultiplePartialPanchayats(Set<Long> panchayatIds,Long publicationDateId,Long userId);
+	  
+	  public List<Object[]> getVoterAttributeDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,Long locationId,Long constituencyId,Long publicationId);
+	  
+	  public List<Object[]> getVoterAttributeDetailsForPartialPanchayatByHamlet(Long userId,List<Long> attributeIds,List<Long> locationIds,Long constituencyId,Long publicationId);
+	  
+	  public List<Object[]> getVoterAttributeDetailsForPartialPanchayat(Long userId,Long attributeId,String locationType,Set<Long> locationIds,Long constituencyId,Long publicationId);
+	  
+	  public List<Object[]> getAgeWiseDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId,Long startAge,Long endAge);
 	
 	public List<Object[]> getPanchayatAgeWiseDetailsByHamletWise(Long userId , Long publicationDateId , List<Long> panchayatId);
 
 	  
 	public List<Object[]> getYoungVotersCount(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,String locationType,Long ageFrom,Long ageTo);
 	  
+	  public List<Object[]> getCasteWiseDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 }

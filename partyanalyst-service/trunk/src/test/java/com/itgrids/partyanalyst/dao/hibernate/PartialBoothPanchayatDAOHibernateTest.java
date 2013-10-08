@@ -95,11 +95,15 @@ public class PartialBoothPanchayatDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(result);
 	}*/
 	
-	public void testupdateDescriptionForPartialPanchayat()
+	/*public void testupdateDescriptionForPartialPanchayat()
 	{
 		int result = partialBoothPanchayatDAO.updateDescriptionForPartialPanchayat(1l,122995l,"prasad");
 		System.out.println(result);
+	}*/
+	
+	public void testGetPartialBoothsCount()
+	{
+		partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(3l,8l);
+		
 	}
-	
-	
 }
