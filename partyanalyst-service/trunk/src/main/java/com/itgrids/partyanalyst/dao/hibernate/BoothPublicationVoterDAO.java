@@ -1060,6 +1060,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	 			query.setMaxResults(maxRecords);
 	 			return query.list();
 		}*/
+	  
 	  public List<Object[]> getVotersDetailsBySearchCriteria(Long publicationDateId,Long id,Integer startRecord,Integer maxRecords,String queryString,String locationType,List<Long> boothIds) {
 			
 			 Query query = getSession().createQuery("select model.voter,model.booth.boothId,model.booth.partNo,model.serialNo from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
@@ -1080,6 +1081,7 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 	 			  query.setParameter("id", id);
 	 			return query.list();
 		}*/
+	  
 	  public List<Long> getVotersCountBySearchCriteria(Long publicationDateId,Long id,String queryString,List<Long> boothIds,String locationType) {
 			
 			 Query query = getSession().createQuery("select count(model.voter.voterId) from BoothPublicationVoter model where model.booth.publicationDate.publicationDateId = :publicationDateId "+queryString) ;
@@ -1566,7 +1568,7 @@ return result;
 public List<Object[]>  getHamletsForBooth(Long id)
 {
 
-Query query = getSession().createQuery("select p.hamlet.hamletId, p.hamlet.hamletName from PanchayatHamlet p " +
+Query query = getSession().createQuery("select distinct p.hamlet.hamletId, p.hamlet.hamletName from PanchayatHamlet p " +
 		"   join  p.panchayat p1 join p1.booths b  where b.boothId = :id " ).setParameter("id", id) ;
  List<Object[]> result = query.list();
 return result;
@@ -2026,6 +2028,22 @@ public List<Object[]> getVotersCountForHamlet(Long hamletId, Long userId , Long 
 	 return query.list();
 }
 
+public List<Object[]> getVotersCountByHamletForPartialPanchayat(Long panchayatId, Long userId , Long publicationDateId,Long constituencyId)
+{
+	
+	
+	Query query = getSession().createQuery("select count(*),bpv.voter.gender from BoothPublicationVoter bpv," +
+			"UserVoterDetails uvd,PanchayatHamlet ph where ph.panchayat.panchayatId = :panchayatId and " +
+			" ph.hamlet.hamletId = uvd.hamlet.hamletId and uvd.voter.voterId = bpv.voter.voterId  and uvd.user.userId = :userId " +
+			" and bpv.booth.publicationDate.publicationDateId = :publicationDateId and bpv.booth.constituency.constituencyId = :constituencyId  group by bpv.voter.gender");
+	
+	 query.setParameter("panchayatId", panchayatId);
+	 query.setParameter("publicationDateId", publicationDateId);
+	 query.setParameter("userId", userId);
+	 query.setParameter("constituencyId", constituencyId);
+
+	 return query.list();
+}
 
 public List<Long> getTotalVotersCountForHamletByVoterIds(List<Long> voterIds,Long publicationDateId)
 {
@@ -2386,7 +2404,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 			
 		}else if(locationType.equalsIgnoreCase("hamlet")){
 			
-			str.append("model2.hamlet.hamletId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and ");
+			str.append("model2.hamlet.hamletId from BoothPublicationVoter model,UserVoterDetails model2 where model2.user.userId = :userId and model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId and model.booth.constituency.constituencyId = :constituencyId and ");
 			str.append(" model2.hamlet.hamletId  in (:locationId)  group by model2.hamlet.hamletId,");
 		}
 		str.append("  model2.casteState.caste.casteId,model.voter.gender order by model2.casteState.caste.casteName ");
@@ -2395,7 +2413,7 @@ public List getInfluencePeopleMobileDetails(Long userId,List<String> scopeId,Str
 		query.setParameter("userId", userId);
 		query.setParameter("publicationDateId", publicationDateId);
 		query.setParameterList("locationId", locationIds);
-		if(locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("localElectionBody") ||  "Local Election Body".equalsIgnoreCase(locationType)){
+		if(locationType.equalsIgnoreCase("hamlet") || locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("localElectionBody") ||  "Local Election Body".equalsIgnoreCase(locationType)){
 			query.setParameter("constituencyId", constituencyId);
 		}
 		return query.list();
@@ -4591,6 +4609,20 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 			
 		}
+		public List<Long> getAllImpFamilesCountForPartialPanchayat(Long panchayatId,Long publicationDateId,Long userId,Long constituencyId){
+		
+			Query query = getSession().createQuery("select count(uvd.voter.houseNo) from BoothPublicationVoter bpv," +
+				"UserVoterDetails uvd,PanchayatHamlet ph where ph.panchayat.panchayatId = :panchayatId and " +
+				" ph.hamlet.hamletId = uvd.hamlet.hamletId and uvd.voter.voterId = bpv.voter.voterId  and uvd.user.userId = :userId " +
+				" and bpv.booth.publicationDate.publicationDateId = :publicationDateId and bpv.booth.constituency.constituencyId = :constituencyId  group by uvd.voter.houseNo");
+		
+		   query.setParameter("panchayatId", panchayatId);
+		   query.setParameter("publicationDateId", publicationDateId);
+		   query.setParameter("userId", userId);
+		   query.setParameter("constituencyId", constituencyId);
+
+		 return query.list();
+		}
 		
 		public Long getVotersCountInAAgeRangeByHamlet(Long hamletId,Long publicationDateId,Long userId,Long ageFrom, Long ageTo,String gender)
 		{
@@ -5055,7 +5087,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				 		//"b.constituency_id = 232 and " +
 				 		"b.publication_date_id = :publicationDateId and " +
 				 		//"b.panchayat_id in(2) ");
-					    "b.panchayat_id =:panchayatId and" +
+					    "b.panchayat_id =:panchayatId and " +
 					    "b.booth_id in(:boothIds)");
 			 
 			 if(queryString.length() >0)
@@ -5101,7 +5133,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		 	query.setParameter("publicationDateId", publicationDateId);
 		 	query.setParameter("panchayatId", panchayatId);
 		 	query.setParameter("userId", userId);
-		 	query.setParameter("boothIds", boothIds);
+		 	query.setParameterList("boothIds", boothIds);
 		 	
 		 	if(!isCount){
 		 	 query.setFirstResult(startIndex);
@@ -5324,7 +5356,130 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				query.setParameter("panchayatId", panchayatId);
 				query.setParameter("publicationId", publicationId);
 				return query.list();
-			}
+			}		 
+		public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,List<Long> locationIds,Long publicationDateId,Long constituencyId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select uvd.casteState,bpv.voter.gender,count(bpv.voter.voterId),uvd.casteState.casteStateId,uvd.casteState.casteCategoryGroup.casteCategory.categoryName, " +
+              " ph.panchayat.panchayatId from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where ph.panchayat.panchayatId in (:locationId) and ph.hamlet.hamletId = uvd.hamlet.hamletId " +
+              " and uvd.user.userId = :userId and uvd.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			  " bpv.booth.constituency.constituencyId = :constituencyId   group by ph.panchayat.panchayatId, " +
+			  "  uvd.casteState.caste.casteId,bpv.voter.gender ");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameterList("locationId", locationIds);
+			query.setParameter("constituencyId", constituencyId);
+			return query.list();
+		}
+		
+		public List<Object[]> getPartyWiseCastAndGenderWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,List<Long> locationIds,Long publicationDateId,Long constituencyId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select uvd.party.shortName,bpv.voter.gender,count(bpv.voter.voterId),uvd.party.partyId, " +
+			   " ph.panchayat.panchayatId from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where " +
+			   " ph.panchayat.panchayatId in (:locationIds) and ph.hamlet.hamletId = uvd.hamlet.hamletId and uvd.user.userId = :userId " +
+			   " and uvd.voter.voterId = bpv.voter.voterId  and bpv.booth.publicationDate.publicationDateId = :publicationDateId and " +
+			   " bpv.booth.constituency.constituencyId = :constituencyId  group by ph.panchayat.panchayatId, " +
+			   " uvd.party.partyId,bpv.voter.gender ");
+			Query query =getSession().createQuery(str.toString());
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameterList("locationIds", locationIds);
+			query.setParameter("constituencyId", constituencyId);
+			
+			return query.list();
+		}
+		
+		public Long findVotersCountByPublicationIdForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select count(bpv.voter.voterId) from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where ph.panchayat.panchayatId = :panchayatId and ph.hamlet.hamletId = uvd.hamlet.hamletId " +
+              " and uvd.user.userId = :userId and uvd.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId ");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("panchayatId", panchayatId);
+			
+			return (Long)query.uniqueResult();
+		}
+		
+		public List<Object[]> getCastCategoryWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select uvd.casteState.casteCategoryGroup.casteCategory.categoryName, count(uvd.voter.voterId) from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where ph.panchayat.panchayatId = :panchayatId and ph.hamlet.hamletId = uvd.hamlet.hamletId " +
+              " and uvd.user.userId = :userId and uvd.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId and uvd.casteState.casteStateId is not null " +
+              " group by uvd.casteState.casteCategoryGroup.casteCategory.casteCategoryId order by uvd.casteState.casteCategoryGroup.casteCategory.categoryName ");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("panchayatId", panchayatId);
+			
+			return query.list();
+		}
+		
+		public List<Object[]> getCastAndGenderWiseVotersCountByPublicationIdForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId){
+			
+			StringBuilder str = new StringBuilder();
+			
+			str.append("select uvd.casteState.caste.casteName,uvd.voter.gender,count(uvd.voter.voterId),uvd.casteState.casteStateId,uvd.casteState.casteCategoryGroup.casteCategory.categoryName" +
+					" from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where ph.panchayat.panchayatId = :panchayatId and ph.hamlet.hamletId = uvd.hamlet.hamletId " +
+              " and uvd.user.userId = :userId and uvd.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId and uvd.casteState.casteStateId is not null " +
+              " group by uvd.casteState.caste.casteId,uvd.voter.gender order by uvd.casteState.caste.casteName ");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("panchayatId", panchayatId);
+			
+			return query.list();
+		}
+		
+		public Long getTotalCastCountForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select count(uvd.casteState.casteStateId) from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where ph.panchayat.panchayatId = :panchayatId and ph.hamlet.hamletId = uvd.hamlet.hamletId " +
+              " and uvd.user.userId = :userId and uvd.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId ");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("panchayatId", panchayatId);
+			
+			return (Long)query.uniqueResult();
+		}
+		
+		public List<Object[]> getImpFamilesForPartialPanchayatByPublicationId(Long panchayatId,Long publicationDateId,Long userId){
+			StringBuilder query = new StringBuilder();
+
+			query.append("select count(UVD.voter.voterId),UVD.voter.houseNo from UserVoterDetails UVD , PanchayatHamlet PH,BoothPublicationVoter bpv " +
+			"where PH.panchayat.panchayatId = :panchayatId and PH.hamlet.hamletId = UVD.hamlet.hamletId and UVD.user.userId =:userId " +
+			"and UVD.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId " +
+			"group by UVD.voter.houseNo");
+			Query queryObj = getSession().createQuery(query.toString()) ;
+			queryObj.setParameter("publicationDateId", publicationDateId);
+			queryObj.setParameter("panchayatId", panchayatId);
+			queryObj.setParameter("userId", userId);
+			  return queryObj.list();
+		}
+		
+		public List<Object[]> getVoterDetailsByCasteStateForPartialPanchayat(Long userId,Long panchayatId,Long publicationDateId,Long casteStateId)
+		{
+			StringBuilder str = new StringBuilder();
+			str.append("select distinct uvd.voter,bpv.booth.boothId,uvd.mobileNo from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd where ph.panchayat.panchayatId = :panchayatId and ph.hamlet.hamletId = uvd.hamlet.hamletId " +
+              " and uvd.user.userId = :userId and uvd.casteState.casteStateId = :casteStateId and uvd.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId ");
+			
+			Query query = getSession().createQuery(str.toString()) ;
+			query.setParameter("userId", userId);
+			query.setParameter("publicationDateId", publicationDateId);
+			query.setParameter("panchayatId", panchayatId);
+			query.setParameter("casteStateId", casteStateId);
+			
+			return query.list();
+		}
 		 
 		 
 		 public List<Object[]> getVotersCountForPanchayatByPublicationIdAndHamlet(Long panchayatId,Long publicationDateId,Long userId){
@@ -5346,6 +5501,115 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getVoterAgeDetailsForPartialPanchayats(Long userId,Long publicationDateId,List<Long> panchayatIds){
+		Query query = getSession().createQuery("select count(UVD.voter.voterId),UVD.voter.gender,UVD.voter.voterAgeRange.voterAgeRangeId,PH.panchayat.panchayatId from UserVoterDetails UVD ,  " +
+				" PanchayatHamlet PH,BoothPublicationVoter bpv where PH.panchayat.panchayatId in (:panchayatIds) and PH.hamlet.hamletId = UVD.hamlet.hamletId and " +
+				" UVD.user.userId =:userId and UVD.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId group by PH.panchayat.panchayatId," +
+				" UVD.voter.voterAgeRange.voterAgeRangeId,UVD.voter.gender") ;
+				
+		query.setParameterList("panchayatIds", panchayatIds);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getVotersCountForMultiplePartialPanchayats(Set<Long> panchayatIds,Long publicationDateId,Long userId){
+		Query query = getSession().createQuery("select count(*),UVD.voter.gender,PH.panchayat.panchayatId from UserVoterDetails UVD , PanchayatHamlet PH,BoothPublicationVoter bpv " +
+					       "where PH.panchayat.panchayatId in (:panchayatIds) and PH.hamlet.hamletId = UVD.hamlet.hamletId and " +
+					       "UVD.user.userId =:userId and UVD.voter.voterId = bpv.voter.voterId and bpv.booth.publicationDate.publicationDateId = :publicationDateId group by PH.panchayat.panchayatId,UVD.voter.gender") ;
+		  query.setParameter("publicationDateId", publicationDateId);
+		  query.setParameterList("panchayatIds", panchayatIds);
+		  query.setParameter("userId", userId);
+		  return query.list();
+    }
+	
+	public List<Object[]> getVoterAttributeDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,Long locationId,Long constituencyId,Long publicationId){
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select count(*),UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				" BoothPublicationVoter BPV,UserVoterDetails UVD,PanchayatHamlet ph where ph.panchayat.panchayatId = :locationId and UVD.hamlet.hamletId = ph.hamlet.hamletId and UVD.user.userId = :userId and " +
+				"  UVD.voter.voterId = VCV.voter.voterId and VCV.user.userId = :userId and VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId  and  " +
+				" UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds)  and UVCV.user.userId = :userId   and UVD.voter.voterId = BPV.voter.voterId    " +
+				"    and BPV.booth.publicationDate.publicationDateId = :publicationId  ");
+		
+		queryString.append("  group by UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("locationId", locationId);
+		query.setParameterList("attributeIds", attributeIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVoterAttributeDetailsForPartialPanchayatByHamlet(Long userId,List<Long> attributeIds,List<Long> locationIds,Long constituencyId,Long publicationId){
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select count(*),UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				" BoothPublicationVoter BPV,UserVoterDetails UVD where  UVD.hamlet.hamletId in (:locationIds) and UVD.user.userId = :userId and " +
+				"  UVD.voter.voterId = VCV.voter.voterId and VCV.user.userId = :userId and VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId  and  " +
+				" UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds)  and UVCV.user.userId = :userId   and UVD.voter.voterId = BPV.voter.voterId    " +
+				"    and BPV.booth.publicationDate.publicationDateId = :publicationId  ");
+		
+		queryString.append("  group by UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameterList("locationIds", locationIds);
+		query.setParameterList("attributeIds", attributeIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getVoterAttributeDetailsForPartialPanchayat(Long userId,Long attributeId,String locationType,Set<Long> locationIds,Long constituencyId,Long publicationId){
+		StringBuilder queryString = new StringBuilder();
+		Query query = getSession().createQuery("select count(*),ph.panchayat.panchayatId,UVCV.userVoterCategoryValueId,BPV.voter.gender from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				" BoothPublicationVoter BPV,UserVoterDetails UVD,PanchayatHamlet ph where ph.panchayat.panchayatId in (:locationIds) and ph.hamlet.hamletId = UVD.hamlet.hamletId and " +
+				" UVD.voter.voterId = VCV.voter.voterId and VCV.user.userId = :userId and VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
+				"  UVCV.userVoterCategory.userVoterCategoryId = :attributeId " +
+				"  and UVCV.user.userId = :userId and VCV.voter.voterId = BPV.voter.voterId  and BPV.booth.publicationDate.publicationDateId = :publicationId    " +
+		        " group by ph.panchayat.panchayatId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+		
+		query.setParameterList("locationIds", locationIds);
+		query.setParameter("attributeId", attributeId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getAgeWiseDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId,Long startAge,Long endAge){
+		StringBuilder queryString = new StringBuilder();
+	
+		queryString.append("select count(BPV.voter.voterId),BPV.voter.gender,UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,UVCV.categoryValue from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				"BoothPublicationVoter BPV,UserVoterDetails UVD,PanchayatHamlet ph where ph.panchayat.panchayatId = :locationId and ph.hamlet.hamletId = UVD.hamlet.hamletId and UVD.user.userId = :userId and " +
+				" UVD.voter.voterId = VCV.voter.voterId and VCV.user.userId = :userId and UVCV.user.userId = :userId and VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and  " +
+			"   UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds) and UVD.voter.voterId = BPV.voter.voterId    " +
+			"   and BPV.booth.publicationDate.publicationDateId = :publicationId and " +
+			"   BPV.voter.age >="+startAge+" and BPV.voter.age <="+endAge+"  group by UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,BPV.voter.gender ");
+	
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("locationId", locationId);
+		query.setParameterList("attributeIds", attributeIds);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCasteWiseDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId){
+		StringBuilder queryString = new StringBuilder();
+		queryString.append("select UVD.casteState.caste.casteId , UVD.casteState.caste.casteName ," +
+				" count(BPV.voter.voterId),BPV.voter.gender,UVCV.userVoterCategory.userVoterCategoryId,UVCV.userVoterCategoryValueId,UVCV.categoryValue  from VoterCategoryValue VCV,UserVoterCategoryValue UVCV," +
+				" BoothPublicationVoter BPV ,UserVoterDetails UVD,PanchayatHamlet ph where ph.panchayat.panchayatId = :locationId and ph.hamlet.hamletId = UVD.hamlet.hamletId and UVD.user.userId = :userId and VCV.userVoterCategoryValue.userVoterCategoryValueId = UVCV.userVoterCategoryValueId and VCV.user.userId = :userId and UVCV.user.userId = :userId and  " +
+				"  UVCV.userVoterCategory.userVoterCategoryId in (:attributeIds) and VCV.voter.voterId = UVD.voter.voterId  and UVD.voter.voterId = BPV.voter.voterId   " +
+				"   and BPV.booth.publicationDate.publicationDateId = :publicationId   ");		
+		queryString.append("  group by UVCV.userVoterCategoryValueId,UVD.casteState.caste.casteId,BPV.voter.gender ");
+		queryString.append(" order by UVCV.categoryValue, UVD.casteState.caste.casteName ");
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("locationId", locationId);
+		query.setParameterList("attributeIds", attributeIds);
+		query.setParameter("publicationId", publicationId);
 		query.setParameter("userId", userId);
 		
 		return query.list();
@@ -5529,5 +5793,4 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 		return query.list();
 	}
-
 }

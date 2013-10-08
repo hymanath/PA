@@ -1,12 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Panchayat;
 
 public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements IPanchayatDAO{
@@ -194,6 +194,21 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 				" model.tehsil.tehsilId,model.tehsil.tehsilName from Panchayat model " +
 				" where model.tehsil.tehsilId in (:mandalIds)");
 		query.setParameterList("mandalIds", mandalIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatIdsForMandals(List<Long> mandalIdsList,Set<Long> panchayatIds)
+	{
+		Query query = getSession().createQuery("select distinct(model.panchayatId),model.tehsil.tehsilId from Panchayat model where model.tehsil.tehsilId in (:mandalIdsList) and model.panchayatId not in (:panchayatIds) ");
+		query.setParameterList("mandalIdsList",mandalIdsList);
+		query.setParameterList("panchayatIds",panchayatIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getMandalAndPanchayatIds(Set<Long> partialPanchayatIds)
+	{
+		Query query = getSession().createQuery("select distinct(model.panchayatId),model.tehsil.tehsilId from Panchayat model where model.panchayatId in (:partialPanchayatIds)  ");
+		query.setParameterList("partialPanchayatIds",partialPanchayatIds);
 		return query.list();
 	}
 } 
