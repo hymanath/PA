@@ -384,13 +384,20 @@ public class ElectionDAOHibernateTest extends BaseDaoTestCase {
 		 System.out.println(id);
 	}*/
 	
-	public void testgetElectionYearsBasedOnElectionType()
+	/*public void testgetElectionYearsBasedOnElectionType()
 	{
 		List<Object[]> list = electionDAO.getElectionYearsBasedOnElectionType(1l, 5L);
 		System.out.println(list.size());
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]);
 		
+	}*/
+	
+	public void testgetElectionId()
+	{
+		Long id = electionDAO.getElectionId("2004",2l,1l);
+			System.out.println(id);
+	
 	}
 }
 

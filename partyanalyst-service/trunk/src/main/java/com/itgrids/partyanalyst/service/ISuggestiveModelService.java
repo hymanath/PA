@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyImpactVO;
@@ -54,4 +55,6 @@ public interface ISuggestiveModelService {
 	 public List<VoterCountVO> getVotersCountInPanchayats(Long constituencyId);
 	 
 	 public List<SelectOptionVO> getSelectedCountPAnchayatsDetails(Long constituencyId,Long minValue,Long maxValue);
+	 
+	 public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId);
 }

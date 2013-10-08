@@ -1587,5 +1587,33 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 	   
 	   return (Long) query.uniqueResult();
    }
-	
+   
+   public List<Object[]> getPartyWiseAfterDelimationEffectBasedOnVoters(Long electionId,Long constituencyId )
+   {
+	   Query query = getSession().createQuery("select model.nomination.party.partyId , " +
+	   		" sum(model.votesEarned) ,model.nomination.party.shortName from CandidateBoothResult model" +
+	   		" where model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId " +
+	   		" and model.boothConstituencyElection.constituencyElection.election.electionId =:electionId " +
+	   		"  " +
+	   		" group by model.nomination.party.partyId");
+		query.setParameter("electionId", electionId);
+		query.setParameter("constituencyId", constituencyId);
+		//query.setParameterList("partyIds", partyIds);
+		return query.list();
+   }
+   
+   public List<Object[]> getPartyWiseBeforDelimationEffectBasedOnVoters(Long electionId ,List<Long> boothIds)
+   {
+	   Query query = getSession().createQuery("select model.nomination.party.partyId , " +
+		   		" sum(model.votesEarned) , model.nomination.party.shortName from CandidateBoothResult model" +
+		   		" where  " +
+		   		" model.boothConstituencyElection.booth.boothId in (:boothIds) " +
+		   		" and model.boothConstituencyElection.constituencyElection.election.electionId =:electionId " +
+		   		" " +
+		   		" group by model.nomination.party.partyId");
+			query.setParameter("electionId", electionId);
+			//query.setParameterList("partyIds", partyIds);
+			query.setParameterList("boothIds", boothIds);
+			return query.list();
+   }
 }

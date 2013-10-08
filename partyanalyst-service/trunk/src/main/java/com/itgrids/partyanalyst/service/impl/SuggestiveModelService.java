@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -47,6 +49,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
@@ -102,10 +105,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IVoterModificationDAO voterModificationDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
-		
-		
+	private IBoothResultDAO boothResultDAO;		
 		
 	
+	public IBoothResultDAO getBoothResultDAO() {
+		return boothResultDAO;
+	}
+
+	public void setBoothResultDAO(IBoothResultDAO boothResultDAO) {
+		this.boothResultDAO = boothResultDAO;
+	}
+
 	public IAssemblyLocalElectionBodyWardDAO getAssemblyLocalElectionBodyWardDAO() {
 		return assemblyLocalElectionBodyWardDAO;
 	}
@@ -2762,6 +2772,37 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 										casteCount = casteCount + total;
 										panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
 									}
+									else
+									{
+										Long casteCount = 0l;
+										expCasteDetails = new ArrayList<BasicVO>();
+										for (Long casteId : expCastesIds) {
+											if(casteId > 0)
+											{
+												BasicVO casteVO = new BasicVO();
+												casteVO.setId(casteId);
+												casteVO.setName(casteNamesMap.get(casteId));
+												casteVO.setPerc(castePanchayatMap.get(casteId).get(panchayatid));
+												casteVO.setCount(0l);
+												casteVO.setExpCount(0l);
+												expCasteDetails.add(casteVO);
+												panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+												
+											}
+										}
+										BasicVO casteVO = new BasicVO();
+										casteVO.setId(0l);
+										Long total = panchayatTotalVoters - casteCount ;
+										Double expPerc = castePanchayatMap.get(0l).get(panchayatid);
+										Long expVoters = (long) (total*expPerc);
+										casteVO.setCount(total);
+										casteVO.setExpCount(expVoters);
+										casteVO.setName("OTHERS");
+										casteVO.setPerc(expPerc);
+										expCasteDetails.add(casteVO);
+										casteCount = casteCount + total;
+										panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+									}
 									
 									youthLeaderSelectionVO.setExceptdCateDetails(panchaytwiseCasteMap.get(panchayatid));
 									
@@ -5028,6 +5069,195 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		return returnList;
 	}
 	
-			 		
-			 		
+	public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId)
+	{
+		DelimitationEffectVO delimationDetails = new DelimitationEffectVO();
+		try {
+			List<DelimitationEffectVO> delimitationEffectList = null;
+			Map<String, DelimitationEffectVO> delimationEffectMap = new HashMap<String, DelimitationEffectVO>();
+			LOG.debug("Enterd into getDelimationEffectOnConstituency() method in Suggestive Model Service");
+			DelimitationEffectVO others = new DelimitationEffectVO();
+			String presentElectionYear = IConstants.PRESENT_ELECTION_YEAR;
+			String previousElectionYear = IConstants.PREVIOUS_ELECTION_YEAR;
+			delimationDetails.setPresentYear(presentElectionYear);
+			delimationDetails.setPreviousyear(previousElectionYear);
+			Long presentElectionId = electionDAO.getElectionId(presentElectionYear,2l,1l);
+			List<Object[]> afterDelimationtotalAndPolledVotesCount = boothResultDAO.getAfterDelimitationEffectBasedOnVoters(presentElectionId,constituencyId);
+			if(afterDelimationtotalAndPolledVotesCount != null && afterDelimationtotalAndPolledVotesCount.size() > 0)
+			{
+				fillVotersCountForConstituency(afterDelimationtotalAndPolledVotesCount,delimationDetails,"after");
+				
+			}
+			List<Object[]> afterDelimationPartyResult = candidateBoothResultDAO.getPartyWiseAfterDelimationEffectBasedOnVoters(presentElectionId,constituencyId);
+			if(afterDelimationPartyResult != null && afterDelimationPartyResult.size() > 0)
+			{
+				fillPartyWiseVotersCountAndPercentage(afterDelimationPartyResult,delimationDetails,partyId,delimationEffectMap,"after",others);
+			}
+			Long previousElectionId = electionDAO.getElectionId(previousElectionYear,2l,1l);
+			List<Long> tehsilIds = boothDAO.getTehsilsForAfterDelimation(constituencyId,Long.valueOf(presentElectionYear));
+			List<Long> boothIds  = boothDAO.getBoothsBeforDelimation(Long.valueOf(previousElectionYear),tehsilIds);
+			List<Object[]> beforeDelimationtotalAndPolledVotesCount = boothResultDAO.getBeforeDelimitationEffectBasedOnVoters(previousElectionId,boothIds);
+			if(beforeDelimationtotalAndPolledVotesCount != null && beforeDelimationtotalAndPolledVotesCount.size() > 0)
+			{
+				fillVotersCountForConstituency(beforeDelimationtotalAndPolledVotesCount,delimationDetails,"before");
+			}
+			List<Object[]> beforeDelimationPartyResult = candidateBoothResultDAO.getPartyWiseBeforDelimationEffectBasedOnVoters(previousElectionId,boothIds);
+			if(beforeDelimationPartyResult != null && beforeDelimationPartyResult.size() > 0)
+			{
+				fillPartyWiseVotersCountAndPercentage(beforeDelimationPartyResult,delimationDetails,partyId,delimationEffectMap,"before",others);
+				
+			}
+			Set<String> totalParties = delimationEffectMap.keySet();
+			if(totalParties != null && totalParties.size() > 0)
+			{
+			    delimitationEffectList = new ArrayList<DelimitationEffectVO>();
+				for (DelimitationEffectVO delimitationEffectVO : delimationEffectMap.values()) {
+					if(delimitationEffectVO.getPresentCount() > 0 || delimitationEffectVO.getPreviousCount() > 0)
+					{
+						DelimitationEffectVO delimitationEffect = new DelimitationEffectVO();
+						delimitationEffect.setPartyId(delimitationEffectVO.getPartyId());
+						delimitationEffect.setPartyName(delimitationEffectVO.getPartyName());
+						delimitationEffect.setPresentCount(delimitationEffectVO.getPresentCount());
+						delimitationEffect.setPresentPolledVotes(delimitationEffectVO.getPresentPolledVotes());
+						delimitationEffect.setPresentPerc(delimitationEffectVO.getPresentPerc());
+						delimitationEffect.setPreviousCount(delimitationEffectVO.getPreviousCount());
+						delimitationEffect.setPreviousPolledVotes(delimitationEffectVO.getPreviousPolledVotes());
+						delimitationEffect.setPreviousPerc(delimitationEffectVO.getPreviousPerc());
+						delimitationEffectList.add(delimitationEffect);
+					}
+					
+				}
+			}
+			delimationDetails.setDelimitationEffectVO(delimitationEffectList);
+		} catch (Exception e) {
+			LOG.error("Exception raised in getDelimationEffectOnConstituency() method in Suggestive Model Service",e);
+		}
+		return delimationDetails;		
+	}
+		
+	
+	
+	public void fillPartyWiseVotersCountAndPercentage(List<Object[]> result,DelimitationEffectVO delimationDetails,Long partyId,Map<String, DelimitationEffectVO> delimationEffectMap,String type,DelimitationEffectVO others)
+	{
+		try {
+			LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service");
+			DecimalFormat df = new DecimalFormat("#.##");
+			String parties = IConstants.STATIC_PARTIES.replace("'", "");
+			List<String> partyNames = Arrays.asList(parties.split("\\s*,\\s*"));
+			//String selectedParty = partyDAO.get(partyId).getShortName();
+			/*if(!partyNames.contains(selectedParty))
+			{
+				partyNames.add(selectedParty);
+			}*/
+			Long count = 0l;
+			DelimitationEffectVO delimitationEffectVO = null;
+			
+				for (Object[] parms : result) {
+					
+					String party = parms[2].toString();
+					delimitationEffectVO =  delimationEffectMap.get(party);
+					if(delimitationEffectVO == null)
+					{
+						delimitationEffectVO = new DelimitationEffectVO();
+						delimationEffectMap.put(party, delimitationEffectVO);
+					}
+					if(type.equalsIgnoreCase("after"))
+					{
+						if(partyNames.contains(party)){
+							delimitationEffectVO.setPresentCount((Long)parms[1]);
+							delimitationEffectVO.setPartyId((Long)parms[0]);
+							delimitationEffectVO.setPartyName(parms[2] != null ? parms[2].toString() : "");
+							if(delimationDetails.getPresentCount() > 0 && delimationDetails.getPresentPolledVotes() > 0)
+							{
+								Double percentage = Double.valueOf(df.format(Long.valueOf(delimitationEffectVO.getPresentCount())*100/(float)delimationDetails.getPresentPolledVotes()));
+								delimitationEffectVO.setPresentPerc(percentage);
+								
+							}
+						}
+						else
+						{
+							count = count + (Long)parms[1];
+							others.setPartyId(0l);
+							others.setPresentCount(count);
+							others.setPartyName("Others");
+							Double percentage = Double.valueOf(df.format(Long.valueOf(count)*100/(float)delimationDetails.getPresentPolledVotes()));
+							others.setPresentPerc(percentage);
+						
+						}
+					}
+					else
+					{
+						if(partyNames.contains(party)){
+							delimitationEffectVO.setPreviousCount((Long)parms[1]);
+							delimitationEffectVO.setPartyId((Long)parms[0]);
+							delimitationEffectVO.setPartyName(parms[2] != null ? parms[2].toString() : "");
+							if(delimationDetails.getPreviousCount() > 0 && delimationDetails.getPreviousPolledVotes() > 0)
+							{
+								Double percentage = Double.valueOf(df.format(Long.valueOf(delimitationEffectVO.getPreviousCount())*100/(float)delimationDetails.getPreviousPolledVotes()));
+								delimitationEffectVO.setPreviousPerc(percentage);
+								
+							}
+						}
+						else
+						{
+							count = count + (Long)parms[1];
+							others.setPartyId(0l);
+							others.setPreviousCount(count);
+							others.setPartyName("Others");
+							Double percentage = Double.valueOf(df.format(Long.valueOf(count)*100/(float)delimationDetails.getPreviousPolledVotes()));
+							others.setPreviousPerc(percentage);
+						
+						}
+					}
+					
+				}
+			
+			
+			if(others.getPreviousCount() > 0 || others.getPresentCount() > 0)
+			{
+				delimationEffectMap.put(others.getPartyName(), others);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service",e);
+		}
+		
+	}
+	
+	
+	public void fillVotersCountForConstituency(List<Object[]> result,DelimitationEffectVO delimationDetails,String type)
+	{
+		try {
+			LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service");
+			DecimalFormat df = new DecimalFormat("#.##");
+			if(type.equalsIgnoreCase("after"))
+			{
+				for (Object[] parms : result) {
+					delimationDetails.setPresentCount((Long)parms[0]);
+					delimationDetails.setPresentPolledVotes((Long)parms[1]);
+					if(delimationDetails.getPresentCount() >0 && delimationDetails.getPresentPolledVotes() > 0)
+					{
+						Double percentage = Double.valueOf(df.format(Long.valueOf(delimationDetails.getPresentPolledVotes())*100/(float)delimationDetails.getPresentCount()));
+						delimationDetails.setPresentPerc(percentage);
+					}
+				}
+			}
+			else
+			{
+				for (Object[] parms : result) {
+					delimationDetails.setPreviousCount((Long)parms[0]);
+					delimationDetails.setPreviousPolledVotes((Long)parms[1]);
+					if(delimationDetails.getPreviousCount() >0 && delimationDetails.getPreviousPolledVotes() > 0)
+					{
+						Double percentage = Double.valueOf(df.format(Long.valueOf(delimationDetails.getPreviousPolledVotes())*100/(float)delimationDetails.getPreviousCount()));
+						delimationDetails.setPreviousPerc(percentage);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in fillVotersCountForConstituency() method in Suggestive Model Service",e);
+		}
+		
+	}
 }

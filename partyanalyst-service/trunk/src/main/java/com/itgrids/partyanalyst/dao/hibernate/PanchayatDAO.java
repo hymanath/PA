@@ -55,7 +55,8 @@ public class PanchayatDAO extends GenericDaoHibernate<Panchayat,Long> implements
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPanchayatsBymandalId(Long mandalId)
 	{
-		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat model where model.tehsil.tehsilId =?",mandalId);	
+		return getHibernateTemplate().find("select model.panchayatId, model.panchayatName from Panchayat" +
+				"  model where model.tehsil.tehsilId =? order by model.panchayatName ",mandalId );	
 	}
 	public List<Object> getPanchayatsBymandalId1(Long mandalId)
 	{

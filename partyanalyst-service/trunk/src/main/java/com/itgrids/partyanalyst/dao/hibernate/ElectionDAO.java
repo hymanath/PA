@@ -812,6 +812,19 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return query.list();
 	}
 	
+	public Long getElectionId(String electionYear,Long elecetionType ,Long stateId)
+	{
+		Query query = getSession().createQuery("select model.electionId from Election model where " +
+				" model.electionScope.electionType.electionTypeId = :elecetionType and " +
+				" model.electionYear = :electionYear and " +
+				" model.electionScope.state.stateId = :stateId and " +
+				" model.elecSubtype = 'MAIN' ");
+		query.setParameter("electionYear", electionYear);
+		query.setParameter("elecetionType", elecetionType);
+		query.setParameter("stateId", stateId);
+		return (Long)query.uniqueResult();
+		
+	}
 	
 	
 	

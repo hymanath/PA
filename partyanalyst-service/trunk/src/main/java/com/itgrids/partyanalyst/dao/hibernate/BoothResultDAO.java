@@ -3,6 +3,8 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
+
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.model.BoothResult;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -59,6 +61,29 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 				"model.boothConstituencyElection.constituencyElection.election.electionYear = ? " +
 				"and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionType = ? " +
 				"group by model.boothConstituencyElection.booth.tehsil.tehsilId",params);
+	}
+	
+	
+	public List<Object[]> getAfterDelimitationEffectBasedOnVoters(Long electionId,Long constituencyid)
+	{
+		Query query = getSession().createQuery("select sum(model.boothConstituencyElection.booth.totalVoters), " +
+				" sum(model.validVotes) from BoothResult model where " +
+				" model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyid " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId");
+		query.setParameter("electionId", electionId);
+		query.setParameter("constituencyid", constituencyid);
+		return query.list();
+	}
+	
+	public List<Object[]> getBeforeDelimitationEffectBasedOnVoters(Long electionId,List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select sum(model.boothConstituencyElection.booth.totalVoters)," +
+				"  sum(model.validVotes) from BoothResult model where " +
+				" model.boothConstituencyElection.booth.boothId in (:boothIds) " +
+				" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId");
+		query.setParameter("electionId", electionId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
 	}
 	
 }
