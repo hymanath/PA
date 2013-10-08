@@ -6147,5 +6147,11 @@
 		<param name="root">votersDetailsVO</param>
 		</result>
 		</action>
+				 
+		<action name="getDelimationEffectAction" class="suggestiveModelAction" method="getDelimationEffect">
+			<result type="json" name="success">
+			  	<param name="root">delimitationEffectVO</param>
+			 </result>
+		 </action>
 		</package>
 </struts>      
