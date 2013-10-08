@@ -407,4 +407,6 @@ public interface IStaticDataService {
 		public List<SelectOptionVO> getElectionIdsAndYearsByElectionScopeId(Long electionScopeId, Long partyId,Long constituencyId,String constiType);
 		
 		public List<SelectOptionVO> getElecIdsAndYearsInTehsilToGetForPanchResults(Long electionType,Long tehsilId);
+		
+		public MandalVO getElectionYearsAndPartiesForSelectedConstituencyInSuggestive(Long constituencyId);
 }
