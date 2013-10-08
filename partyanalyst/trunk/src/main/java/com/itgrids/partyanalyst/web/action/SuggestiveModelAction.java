@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
 import com.itgrids.partyanalyst.dto.OptionVO;
@@ -78,11 +79,22 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private MandalVO paricipatedPartyList;
 	private List<VoterCountVO> VoterCountVOList;
 	private List<SelectOptionVO> pachayatsList;
+	private DelimitationEffectVO delimitationEffectVO;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	
 	
 	
 	
+	
+
+	public DelimitationEffectVO getDelimitationEffectVO() {
+		return delimitationEffectVO;
+	}
+
+	public void setDelimitationEffectVO(DelimitationEffectVO delimitationEffectVO) {
+		this.delimitationEffectVO = delimitationEffectVO;
+	}
+
 	public List<SelectOptionVO> getPachayatsList() {
 		return pachayatsList;
 	}
@@ -900,6 +912,18 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				pachayatsList = suggestiveModelService.getSelectedCountPAnchayatsDetails(constituencyId,minValue,maxValue);
 			}catch(Exception e){
 				log.error("Exception raised in getSelectedCountPAnchayatsDetails() method in Suggestive Model Action",e);
+			}
+			return Action.SUCCESS;
+		}
+		
+		public String getDelimationEffect()
+		{
+			try{
+				log.debug("Entered into getDelimationEffect() method in Suggestive Model Action");
+				jObj = new JSONObject(getTask());
+				delimitationEffectVO = suggestiveModelService.getDelimationEffectOnConstituency(jObj.getLong("constituencyId"),jObj.getLong("partyId"));
+			}catch(Exception e){
+				log.error("Exception raised in getDelimationEffect() method in Suggestive Model Action",e);
 			}
 			return Action.SUCCESS;
 		}
