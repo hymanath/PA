@@ -18843,7 +18843,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	 else if(type.equalsIgnoreCase("boothHamlets")){
 		 values = boothDAO.getDescriptionForHamletLevel(publicationId,id);		 
 	 }
-		 if(values != null || values.size() > 0){
+		 if(values != null && values.size() > 0){
 			 
 			 if(type.equalsIgnoreCase("booth")){
 				 Long locationId = null;
