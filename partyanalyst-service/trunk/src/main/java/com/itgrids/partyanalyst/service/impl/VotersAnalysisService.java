@@ -8596,7 +8596,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 	    	
 		 	     voterHouseInfoVO = new VoterHouseInfoVO();
 		 	     
-		 	     if(groupDetailsMap.get(voter.getVoterId()) != null)
+		 	     if((groupDetailsMap !=null) && groupDetailsMap.get(voter.getVoterId()) != null)
 		 	    	voterHouseInfoVO.setCustomGroupId(groupDetailsMap.get(voter.getVoterId()));
 		 	     
 		 	     getVoterBasicInfo1(voterHouseInfoVO,voter.getVoterId(),parameters.getPublicationId(),userId);
