@@ -588,7 +588,7 @@ function validateTheFields()
 	</div>
 	
 	<div>
-	<div id="headingDivForEdit" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px;">Manage Partial Booth Panchayat Details </div>
+	<div id="headingDivForEdit" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px; float: left; position: static;width: 1000px;">Manage Partial Booth Panchayat Details </div>
 	<div id="bodyDivForEdit" style="float: left; margin-left: 258px; margin-top: 18px;">
 	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyListForEdit" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('edit');" style="margin-left: 100px;width:191px;"/></div>
 	<div><b>Publication Date : </b><select id="publicationDateForEdit" name="publicationDate"style="margin-left: 79px;width:191px;" onChange="getMandals('edit');"><option value="0">Publication Date</option></select></div>
