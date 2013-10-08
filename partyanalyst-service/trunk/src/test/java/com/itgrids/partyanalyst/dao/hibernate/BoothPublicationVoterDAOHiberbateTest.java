@@ -846,10 +846,44 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetBoothAndHamletIdsByConstituencyId()
+	/*public void testgetBoothAndHamletIdsByConstituencyId()
 	{
 		System.out.println(boothPublicationVoterDAO.getBoothAndHamletIdsByConstituencyId(232l, 8l, 1l).size());
-	}
+	}*/
+	/*public void testgetVotersDetailsForPanchayatByPublicationId(){
+		List<Long> panchayatIds = new ArrayList<Long>();
+		
+		panchayatIds.add(1l);
+		panchayatIds.add(2l);
+		panchayatIds.add(3l);
+		panchayatIds.add(4l);
+		panchayatIds.add(5l);
+		panchayatIds.add(6l);
+		panchayatIds.add(7l);
+		panchayatIds.add(8l);
+		panchayatIds.add(9l);
+		Long start = System.currentTimeMillis();
+		System.out.println("started");
+		List<Object[]> result = boothPublicationVoterDAO.getVoterAgeDetailsForPartialPanchayats(1l, 8l, panchayatIds);
+		Long end = System.currentTimeMillis();
+		
+		for(Object[] arr:result){
+			for(Object data:arr){
+				System.out.print(data != null?data.toString():""+"---");
+			}
+			System.out.println("");
+		}
+		System.out.println((end-start)/1000 +" sec "+(end-start));
+	}*/
+	/*public void testgetVoterAttributeDetailsForPartialPanchayat(){
+List<Long> attrIds = new ArrayList<Long>();
+		
+	attrIds.add(1l);
+	attrIds.add(2l);
+	attrIds.add(3l);
+		List<Object[]> list = boothPublicationVoterDAO.getVoterAttributeDetailsForPartialPanchayatByHamlet(1l, attrIds, attrIds, 22l,8l);
+		
+	}*/
 	
 	public void testgetYoungVotersCount()
 	{

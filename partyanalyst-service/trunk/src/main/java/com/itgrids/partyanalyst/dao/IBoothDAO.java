@@ -303,6 +303,8 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	
 	public List<Object[]> getDescriptionForBoothLevel(Long panchayatId,Long boothId);
 	
+	public List<Object[]> getPartialPanchayats(Long publicationId,Long constituencyId);
+	
 	public List<Long> getPanchayatsMandalId(Long mandalId,Long constituencyId,Long publicationDateId);
 	
 	public List<Long> getPartialBoothsForPanchayatLevel(Long panchayatId,Long publicationId);
@@ -318,5 +320,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Long> getTehsilsForAfterDelimation(Long constituencyId,Long year);
 	
 	public List<Long> getBoothsBeforDelimation(Long year , List<Long> tehsilIds);
-	
+		
+	public List<Long> getBoothsInAPanchayat1(Long panchayatId,Long publicationDateId);
 }
