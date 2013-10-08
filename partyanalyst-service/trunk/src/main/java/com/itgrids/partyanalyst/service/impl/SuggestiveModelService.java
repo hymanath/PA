@@ -1138,7 +1138,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						  boothIds.add(boothId);
 						  }
 						}
-						List<Object[]> partyWiseVotesList =  candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
+						List<Object[]> partyWiseVotesList =  candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(electionId,boothIds);
 						 if(partyWiseVotesList != null && partyWiseVotesList.size() > 0)
 						 {
 							 optionVO =  processOptionVO(partyWiseVotesList,partyId,tehsilId); 
@@ -1165,7 +1165,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						  boothIds.add(boothId);
 						  }
 						}
-						List<Object[]> partyWiseVotesList =  candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
+						List<Object[]> partyWiseVotesList =  candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(electionId,boothIds);
 						 if(partyWiseVotesList != null && partyWiseVotesList.size() > 0)
 						 {
 							 optionVO =  processOptionVO(partyWiseVotesList,partyId,wardId);
@@ -1195,7 +1195,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			     boothIds.add(boothId);
 			  }
 			}
-		   List<Object[]> partyWiseVotesList =  candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(constituencyId,electionId,boothIds);
+		   List<Object[]> partyWiseVotesList =  candidateBoothResultDAO.getVotesEarnedByParyInEachBooth(electionId,boothIds);
 		   if(partyWiseVotesList != null && partyWiseVotesList.size() > 0)
 			{
 			 optionVO =  processOptionVO(partyWiseVotesList,partyId,wardId);
@@ -1791,7 +1791,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			List<Long> boothIdsList = hamletBoothElectionDAO.getBoothIdsByPanchayatId(panchayatId, electionId);
 				if(boothIdsList != null && boothIdsList.size() > 0)
 				{
-				  List<Object[]> list = candidateBoothResultDAO.getVotesEarnedByBoothIdsList(constituencyId, electionId, boothIdsList);
+				  List<Object[]> list = candidateBoothResultDAO.getVotesEarnedByBoothIdsList( electionId, boothIdsList);
 				  if(list != null && list.size() > 0)
 				  {
 					  Map<Long,Long> partyMap = null;
@@ -1962,8 +1962,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 	      
-	      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-	      
+	     double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+	  // double difference = selectedPartyTotalPercent;
 	    	
 	      String locationName = "";
 	      if(locationType != null && locationType.equalsIgnoreCase("panchayat"))
@@ -3868,7 +3868,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				   {
 					 for(PartyPositionVO partyPositionVO2:partyPositionVO1.getPartyPositionVOList())
 					 {
-						 if(partyPositionVO2.getPartyPositionVOList() != null && partyPositionVO2.getPartyPositionVOList().size() > 0)
+						 if(partyPositionVO2.getPartyPositionVOList() != null && partyPositionVO2.getPartyPositionVOList().size() > 0 && totalVotes != null && totalVotes > 0)
 						 {
 							  double percentage =  new BigDecimal((totalVotesMap.get(partyPositionVO2.getName())*100.0/totalVotes)).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
 							  partyPositionVO2.setRangePercentage(percentage);
@@ -3905,7 +3905,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					}
 						for(String localbodyName : boothIdMap.keySet())	
 						{
-						 List<Object[]> list = candidateBoothResultDAO.getVotesEarnedByBoothIdsList(constituencyId, electionId, boothIdMap.get(localbodyName));
+						 List<Object[]> list = candidateBoothResultDAO.getVotesEarnedByBoothIdsList( electionId, boothIdMap.get(localbodyName));
 						  if(list != null && list.size() > 0)
 						  {
 							    Map<Long,Map<Long,Long>> boothMap = resultMap.get(localbodyName.toString());	
@@ -4002,7 +4002,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
 			      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			      
+			      //double difference = selectedPartyTotalPercent;
 			    	
 			      String locationName = "";
 			      locationName = boothDAO.getBoothPartNoByBoothId(id);
@@ -4173,8 +4173,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
-			      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();//double difference = selectedPartyTotalPercent;
-			      
+			      double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			      //double difference = selectedPartyTotalPercent;
 			    	
 			      String locationName = "";
 			      
