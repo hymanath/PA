@@ -8293,6 +8293,44 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return mandalVO;
 	}
+	
+	public MandalVO getElectionYearsAndPartiesForSelectedConstituencyInSuggestive(Long constituencyId)
+	{
+		MandalVO mandalVO = new MandalVO();
+		Set<SelectOptionVO> elections = new HashSet<SelectOptionVO>();
+		List<SelectOptionVO> parties = new ArrayList<SelectOptionVO>();
+		List list =null;
+		Long parliamentConstiId = 0l;
+		try{
+			parliamentConstiId	= getParliamentIdByAssembly(constituencyId);
+			
+			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(constituencyId);
+			getAllElectionIds(list,elections);
+			list = boothConstituencyElectionDAO.findElectionsHappendInConstituency(parliamentConstiId);
+			getAllElectionIds(list,elections);
+			List<Object[]> partiesList = candidateBoothResultDAO.getParticipatedPartiesByAssembly(constituencyId);
+			if(partiesList != null && partiesList.size() > 0)
+			{
+				for(Object[] params : partiesList)
+				parties.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+			List listOfNames = new ArrayList(elections);
+			 Collections.sort(listOfNames);
+			 Collections.reverse(listOfNames);
+			Set mySet = new HashSet(Arrays.asList(listOfNames));
+		
+			mandalVO.setPartiesInMandal(parties);
+			mandalVO.setElectionsInMandal(mySet);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getElectionYearsAndPartiesForConstituency() method -"+e) ;
+		}
+	
+		
+		return mandalVO;
+	}
+	
 	public MandalVO getElectionYearsAndPartiesForSelectedConstituency(Long constituencyId)
 	{
 		MandalVO mandalVO = new MandalVO();
