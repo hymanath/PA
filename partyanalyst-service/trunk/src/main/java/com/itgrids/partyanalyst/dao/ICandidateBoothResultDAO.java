@@ -226,15 +226,15 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	public List<Object[]> getVotesEarnedForSelectedbooth(Long constituencyId, Long electionId,Long boothId);
 	
 	
-	public List<Object[]> getVotesEarnedByParyInEachBooth(Long constituencyId, Long electionId,List<Long> boothIds);
+	public List<Object[]> getVotesEarnedByParyInEachBooth( Long electionId,List<Long> boothIds);
 
 	public List<Object[]> findBoothResultsForMultipleBoothsAndElectionId(Set<Long> boothslist, Long electionId,Long constituencyId);
 	
-	public List<Object[]> getVotesEarnedByBoothIdsList(Long constituencyId, Long electionId,List<Long> boothIdsList);
+	public List<Object[]> getVotesEarnedByBoothIdsList(Long electionId,List<Long> boothIdsList);
 	
-	public List<Object[]> getPolledVotesByBoothIdsList(Long constituencyId,Long electionId,List<Long> boothIdsList);
+	public List<Object[]> getPolledVotesByBoothIdsList(Long electionId,List<Long> boothIdsList);
 	
-	public List<Object[]> getValidVotesForMultipleBooths(List<Long> boothslist, Long electionId,Long constituencyId);
+	public List<Object[]> getValidVotesForMultipleBooths(List<Long> boothslist, Long electionId);
 	
 	 public Long getTotalValidVotes(List<Long> boothIdsList,Long electionId,Long constituencyId);
 	 
