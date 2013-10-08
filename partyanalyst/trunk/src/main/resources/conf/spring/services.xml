@@ -211,7 +211,7 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="cadreDAO" ref="cadreDAO" />	
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
-		<!--<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>-->
+		<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
@@ -1579,6 +1579,7 @@
 	  <property name="areaTypeDAO" ref="areaTypeDAO"/>
 	  <property name="userDAO" ref="userDAO" />
 	  <property name="userRolesDAO" ref="userRolesDAO" />
+	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO" />
 	</bean>
     
     <bean name="dataValidationService" class="com.itgrids.partyanalyst.service.impl.DataValidationService">
