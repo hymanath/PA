@@ -48,4 +48,6 @@ public interface IElectionService {
 	
 	public List<SelectOptionVO> getLatestElectionYearForAStateBasedOnElectionType(Long stateId, String electionType, String subType);
 	
+	public CensusVO getCensusDetailsForAConstituency(Long constituencyId);
+	
 }
