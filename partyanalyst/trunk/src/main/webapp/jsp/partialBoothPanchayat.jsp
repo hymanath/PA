@@ -118,6 +118,10 @@ function callAjaxToGetData(jsObj,url)
 				{
 					buildSelectBoxValues(myResults,"hamlet");
 				}
+				else if(jsObj.task == "getHamlets" && jsObj.name == "edit2" )
+				{
+					buildSelectBoxValues(myResults,"hamletEdit");
+				}
 				else if(jsObj.task == "getHamlets" && jsObj.name == "edit" )
 				{
 					buildSelectBoxValuesForPanchaytEdit(myResults,"hamletEdit",jsObj.hamletId);
@@ -142,6 +146,10 @@ function buildSelectBoxValues(result,divId)
 		{
 			$('#'+divId+'').append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 		}
+	}
+	if(divId == "booth")
+	{
+		rebuldPanchayas();
 	}
 }
 
@@ -219,6 +227,18 @@ function getHamlets()
 	callAjaxToGetData(jsObj,url);
 }
 
+function getHamletsForEditSenerion()
+{
+	var jsObj=
+	{
+		panchaytId     : $('#partialPanchayatEdit option:selected').val(),
+		name           : "edit2",
+		task           : "getHamlets"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getHamletsForPanchayatAction.action?"+rparam;	
+	callAjaxToGetData(jsObj,url);
+}
 function getHamletsForEdit(panchayatId,hamletId)
 {
 	var jsObj=
@@ -382,18 +402,32 @@ function editSelectedPartialBooth(id)
 	callAjaxToGetData(jsObj,url);
 }
 
+function rebuldPanchayas()
+{
+	var selectdPanchayat = $("#panchayat option:selected").val();
+	$("#partialPanchayat option[value='"+selectdPanchayat+"']").remove();
+}
 function deleteSelectedPartialBooth(id,boothId,divId)
 {
-	var jsObj=
+	var r=confirm("Are you sure want to delete!");
+	if (r==true)
 	{
-		id       : id,
-		boothId  : boothId,
-		divId    : divId, 
-		task     : "deleteSelectedPartialBooth"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "editOrDeleteSelectedPartialBoothAction.action?"+rparam;	
-	callAjaxToGetData(jsObj,url);
+		var jsObj=
+		{
+			id       : id,
+			boothId  : boothId,
+			divId    : divId, 
+			task     : "deleteSelectedPartialBooth"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "editOrDeleteSelectedPartialBoothAction.action?"+rparam;	
+		callAjaxToGetData(jsObj,url);
+		}
+	else
+	{
+		//x="You pressed Cancel!";
+	}
+	
 }
 
 function buildDeleteStatus(result,divId)
@@ -429,7 +463,7 @@ var panchayatId;
 		//str += '<div><b>Panchayat: </b> <select id="panchayatEdit"  style="margin-left: 100px;"></select></div>';
 		//str += '<div><b>Booth: </b> <select id="BoothEdit"  style="margin-left: 138px;"></select></div>';
 		str += '<div><b>Description : </b><textarea    id="descriptionEdit" style="margin-left: 89px;">'+result[0].description+'</textarea></div>'
-		str += '<div><b>Panchayat: </b> <select id="partialPanchayatEdit"  style="margin-left: 100px;"></select></div>';
+		str += '<div><b>Panchayat: </b> <select id="partialPanchayatEdit"  style="margin-left: 100px;" onClick="getHamletsForEditSenerion();"></select></div>';
 		str += '<div><b>Hamlet: </b> <select id="hamletEdit"  style="margin-left: 125px;"></select></div>';
 		str += '<div><b>Description : </b><textarea    id="PartialDescriptionEdit" style="margin-left: 89px;">'+result[0].partialDescription+'</textarea></div>';
 		str += '<div id="updateButtonDiv" style="margin-left: 170px; margin-top: 12px; float: left;"><input type="submit" value="Update" class="btn btn-success" onClick="updateDetails('+result[0].partialBoothPanchayatId+','+panchayatId+','+result[0].boothId+','+result[0].hamletId+');"></input></div>';
@@ -521,12 +555,13 @@ function validateTheFields()
 	if(flag)
 	{
 		saveDetails();
+		$("#errorMsg").hide("slow");
 	}
 	else
 	{
 		$("#errorMsg").show();
 		$('#errorMsg').html(str);
-		$("#errorMsg").delay("2000").hide("slow");
+		
 	}
 	
 }
@@ -538,26 +573,26 @@ function validateTheFields()
 	<div id="bodyDiv" style="float: left; margin-left: 258px; margin-top: 18px;">
 	<div id="successMsg" style="color: green; font-family: verdana; font-size: 14px; font-weight: bold;"></div>
 	<div id="errorMsg" style="color: red; font-family: verdana; font-size: 12px; font-weight: bold;"></div>
-	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyList" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('add');" style="margin-left: 100px;"/></div>
-	<div><b>Publication Date : </b><select id="publicationDate" name="publicationDate"style="margin-left: 79px;" onChange="getMandals('add');"><option value="0">Publication Date</option></select></div>
-	<div><b>Mandal : </b><select id="mandal" name="mandal" style="margin-left: 141px;"onChange="getPanchayts();"><option value="0">Select Mandal</option></select></div>
-	<div><b>Panchayat : </b><select id="panchayat" name="panchayatsList" style="margin-left: 121px;" onChange="getBooths();"><option value="0">Select Panchayat</option></select></div>
-	<div><b>Booth : </b><b style="color:red">*</b><select id="booth" name="boothsList" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>
-	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;"></textarea></div>
-	<div><b>Panchayat : </b><b style="color:red">*</b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 116px;" onChange="getHamlets();"><option value="0">Select Panchayat</option></select></div>
-	<div><b>Hamlet : </b><b style="color:red">*</b><select id="hamlet" name="hamletList" style="margin-left: 140px;" multiple ><option value="0">Select Hamlet</option></select></div>
+	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyList" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('add');" style="margin-left: 100px;width: 192px;"/></div>
+	<div><b>Publication Date : </b><select id="publicationDate" name="publicationDate"style="margin-left: 79px;width: 192px;" onChange="getMandals('add');"><option value="0">Publication Date</option></select></div>
+	<div><b>Mandal : </b><select id="mandal" name="mandal" style="margin-left: 141px;width: 192px;"onChange="getPanchayts();"><option value="0">Select Mandal</option></select></div>
+	<div><b>Panchayat : </b><select id="panchayat" name="panchayatsList" style="margin-left: 121px;width: 192px;" onChange="getBooths();"><option value="0">Select Panchayat</option></select></div>
+	<div><b>Booth : </b><b style="color:red">*</b><select id="booth" name="boothsList" style="margin-left: 145px;width: 192px;" ><option value="0">Select Booth</option></select></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;width: 181px;"></textarea></div>
+	<div><b>Panchayat : </b><b style="color:red">*</b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 116px;width: 196px;" onChange="getHamlets();"><option value="0">Select Panchayat</option></select></div>
+	<div><b>Hamlet : </b><b style="color:red">*</b><select id="hamlet" name="hamletList" style="margin-left: 140px;width: 197px;" multiple ><option value="0">Select Hamlet</option></select></div>
 	<!--<div><b>Booth : </b><select id="PartialBooth" name="PartialBooth" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>-->
-	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;"></textarea></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;width: 188px;"></textarea></div>
 	<div id="submitButton" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Submit" class="btn btn-success" onClick="validateTheFields();"></input></div>
 	</div>
 	</div>
 	
 	<div>
-	<div id="headingDivForEdit" align="center" style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px; float: left; position: static;width: 1000px;">Edit Partial Booth Panchayat Details</div>
+	<div id="headingDivForEdit" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px;">Manage Partial Booth Panchayat Details </div>
 	<div id="bodyDivForEdit" style="float: left; margin-left: 258px; margin-top: 18px;">
-	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyListForEdit" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('edit');" style="margin-left: 100px;"/></div>
-	<div><b>Publication Date : </b><select id="publicationDateForEdit" name="publicationDate"style="margin-left: 79px;" onChange="getMandals('edit');"><option value="0">Publication Date</option></select></div>
-	<div><b>Mandal : </b><select id="mandalForEdit" name="mandalForEdit" style="margin-left: 141px;"><option value="0">Select Mandal</option></select></div>
+	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyListForEdit" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('edit');" style="margin-left: 100px;width:191px;"/></div>
+	<div><b>Publication Date : </b><select id="publicationDateForEdit" name="publicationDate"style="margin-left: 79px;width:191px;" onChange="getMandals('edit');"><option value="0">Publication Date</option></select></div>
+	<div><b>Mandal : </b><select id="mandalForEdit" name="mandalForEdit" style="margin-left: 141px;width:191px;"><option value="0">Select Mandal</option></select></div>
 	<div id="submitButtonForEdit" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Get" class="btn btn-success" onClick="getSelectedDetails();"></input></div>
 	<div id="tableDiv"  style="float: left; margin-left: -170px; margin-top: 43px; width: 891px;">
 	<!--<div id="deleteStatusMsg" style="color: red; float: left; margin-top: -39px; margin-left: 184px;"></div>-->
