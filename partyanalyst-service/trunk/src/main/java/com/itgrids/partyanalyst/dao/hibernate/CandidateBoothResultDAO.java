@@ -1140,6 +1140,10 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		return getHibernateTemplate().find("select distinct model.nomination.party.partyId, model.nomination.party.shortName from CandidateBoothResult model where model.boothConstituencyElection.booth.constituency.constituencyId =? order by model.nomination.party.shortName ",constituencyId);
 	}
 	
+	public List<Object[]> getParticipatedPartiesByAssembly(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select distinct model.nomination.party.partyId, model.nomination.party.shortName from CandidateBoothResult model where model.boothConstituencyElection.booth.constituency.constituencyId =? and model.nomination.constituencyElection.election.electionScope.electionType.electionTypeId = 2  order by model.nomination.party.shortName ",constituencyId);
+	}
 	
 	public List<Object[]> getParticipatedPartiesByTehsilIds(List<Long> tehsilIds)
 	{
