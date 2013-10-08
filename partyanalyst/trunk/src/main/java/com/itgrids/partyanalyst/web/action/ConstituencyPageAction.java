@@ -1727,11 +1727,11 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 			e.printStackTrace();
 		}
 		
-		String chartTitle = null,detailedChartTitle = null;
+		/*String chartTitle = null,detailedChartTitle = null;
 		String chartName = null,detailedChartName = null;
 		String domainAxisName = null,detailedDomainAxisName = null;
 		int chartHeight = jObj.getInt("chartHeight");
-		int chartWidth = jObj.getInt("chartWidth"); 
+		int chartWidth = jObj.getInt("chartWidth"); */
 		String includeOthers = (String)jObj.getString("others");
 				
 		constituencyRevenueVillagesVO = constituencyPageService.getConstituencyElecResults(jObj.getLong("constituencyId")

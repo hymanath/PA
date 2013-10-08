@@ -30,7 +30,7 @@ $.validator.addMethod("NameRequired", function(value, element) {
 if(value == '')
 return false;
 return true;
-}, "Party or Candidate Name is required");
+}, "Party or Leader Name is required");
 
 $.validator.addMethod("selectoptionisRequired", function(value, element) {
 if(value == '' || value =='0')

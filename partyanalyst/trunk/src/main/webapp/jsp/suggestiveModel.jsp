@@ -2808,6 +2808,7 @@ function showPartyPerformancePieChart(result,jsObj)
 
 //getDeletedVotersInfo();
 function casteDetailsByPanchayatId(){
+	return;
 	var constituencyId = $('#listConstituencyNames option:selected').val();
 	if($('#candidateCastes').val() != null)
 	var candidateCastes = $('#candidateCastes').val();
