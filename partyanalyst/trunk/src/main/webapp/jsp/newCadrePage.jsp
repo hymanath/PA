@@ -36,6 +36,7 @@
 
  
 <script type="text/javascript">
+  
 	var currentTask = '${windowTask}';
 	var successFlag = '${rs.resultCode}';
 	var accessValue = '${sessionScope.USER.accessValue}';
@@ -1663,7 +1664,7 @@ function refreshingParentWindow()
 			<td><s:label for="partyCommField" id="partyCommLabel"  value="%{getText('partyCommittee')}" /></td>
 			<td align="left"><s:select id="partyComiteSelect" cssClass="regionSelect" name="partyCommittee" list="#session.partyCommittees" listKey="id" listValue="name"  headerKey="0" headerValue="Select Party Committee" onchange="getPartyDesignation(this.options[this.selectedIndex].value)"></s:select></td>
 			<td><s:label for="designationCommField" id="designationCommLabel"  value="%{getText('designation')}" /><font class="requiredFont"> * </font></td>
-			<td><s:select id="comiteeDesignationSelect" name="designation" cssClass="regionSelect" list="#session.designations" listKey="id" listValue="name"  headerKey="0" headerValue="Select Designation"/></td>				
+			  <td><s:select id="comiteeDesignationSelect" name="designation" cssClass="regionSelect" list="cadreInfo.designations" listKey="id" listValue="name"  headerKey="0" headerValue="Select Designation"/></td>	 		
 		</tr>
 		<tr>
 			<td><s:label for="durationField" id="durationLabel"  value="%{getText('effectiveDate')}" /></td>
@@ -1675,7 +1676,7 @@ function refreshingParentWindow()
 							<DIV class="yui-skin-sam"><DIV id="effDateText_div" style="position:absolute;"></DIV></DIV>
 						</td>
 						<td>		
-							<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('effDateText_div','effDateText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
+							<A href="javascript:{}" title="Click To Select A Date" onclick="effectiveDateFrom()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
 						</td>
 						<td>To</td>
 						<td>
@@ -1683,7 +1684,7 @@ function refreshingParentWindow()
 							<DIV class="yui-skin-sam"><DIV id="tillDateText_div" style="position:absolute;"></DIV></DIV>
 						</td>
 						<td>		
-							<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal('tillDateText_div','tillDateText','1/2010')"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
+							<A href="javascript:{}" title="Click To Select A Date" onclick="effectiveDateTo()"><IMG src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>
 						</td>
 					</tr>	
 				</table>	
@@ -1915,6 +1916,29 @@ function callAjaxToGetParlConstis( jsObj, url){
 	    $("#"+jsObj.assemblyId).append('<option value='+assResult[i].id+'>'+assResult[i].name+'</option>');
 	}
 	
+
+function effectiveDateFrom()
+{
+  var currentDate = new Date();
+  var day = currentDate.getDate();
+  var month = currentDate.getMonth() + 1;
+  var year = currentDate.getFullYear();
+  showDateCal('effDateText_div','effDateText',month + "/" + year);
+}
+
+function effectiveDateTo()
+{
+
+  var currentDate = new Date();
+  var day = currentDate.getDate();
+  var month = currentDate.getMonth() + 1;
+  var year = currentDate.getFullYear();
+ showDateCal('tillDateText_div','tillDateText',month + "/" + year)
+ }
+
+
+
+
 </script>
 <script type="text/javaScript">
 	<c:if test="${windowTask == 'update_existing'}">
