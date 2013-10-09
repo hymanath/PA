@@ -4187,5 +4187,79 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 			return queryObject.list();
 		}
 
+	//For Assembly total count
+	 public List<Object[]> getConstituencyResult(Long constituencyId){
+		 StringBuilder query = new StringBuilder();
+		 query.append("select model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear," +
+		 		"model.totalVotes,model.validVotes from ConstituencyElectionResult model " +
+		 		"where model.constituencyElection.constituency.constituencyId = :constituencyId and " +
+		 		"model.constituencyElection.election.electionScope.electionType.electionTypeId = 2 " +
+		 		"order by model.constituencyElection.election.electionYear desc");
+		 Query queryObject = getSession().createQuery(query.toString());
+		 queryObject.setLong("constituencyId", constituencyId);
+		 return queryObject.list();
+	 }
+	 
+	//For Assembly party wise
+	 public List<Object[]> getConstituencyResultForParty(Long constituencyId){
+		 StringBuilder query = new StringBuilder();
+		 query.append("select model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear," +
+		 		"model.party.shortName,model.candidateResult.votesEarned,model.candidateResult.votesPercengate" +
+		 		" from Nomination model where " +
+		 		"model.constituencyElection.constituency.constituencyId = :constituencyId and " +
+		 		"model.constituencyElection.election.electionScope.electionType.electionTypeId = '2' " +
+		 		"group by model.constituencyElection.election.electionId,model.party.partyId order by model.candidateResult.votesEarned desc");
+		 
+		 Query queryObject = getSession().createQuery(query.toString());
+		 queryObject.setLong("constituencyId", constituencyId);
+		 return queryObject.list();
+	 }
+
+	 //For parliament boothIds in assembly region 
+	 public List<Long> getAllBoothsByConstituency(Long constituencyId,Long electionId){
+		 StringBuilder query = new StringBuilder();
+		 query.append("select model.booth.boothId from BoothConstituencyElection model where " +
+		 		" model.constituencyElection.election.electionScope.electionType.electionTypeId = :electionTypeId and " +
+		 		" model.booth.constituency.constituencyId = :constituencyId " +
+		 		" and model.constituencyElection.election.electionId = :electionId" +
+		 		"");
+		 Query queryObject = getSession().createQuery(query.toString());
+		 queryObject.setLong("constituencyId", constituencyId);
+		 queryObject.setParameter("electionTypeId", 1l);
+		 queryObject.setParameter("electionId",electionId);
+		 return queryObject.list();
+	 }
+
+	 //For Parliament totalcount
+	 public List<Object[]> getElectionResultsCount(List<Long> boothIds){
+		 StringBuilder query = new StringBuilder();
+		 query.append(" select BCE.constituencyElection.election.electionId,model.year," +
+		 		"sum(model.totalVoters) from Booth model," +
+		 		"BoothConstituencyElection BCE where model.boothId in (:boothIds) " +
+		 		"and BCE.booth.boothId = model.boothId " +
+		 		"and BCE.constituencyElection.election.electionScope.electionType.electionTypeId = 1");
+
+		 Query queryObject = getSession().createQuery(query.toString());
+		 queryObject.setParameterList("boothIds",boothIds);
+		 return queryObject.list();
+	 }
+	 
+	 //For Parliament party wise
+	 public List<Object[]> findBoothResultsForBoothsAndElectionAndAllParties(List<Long> boothIds){
+		 StringBuilder query = new StringBuilder();
+		 query.append("select distinct model.boothConstituencyElection.constituencyElection.election.electionId," +
+		 		"model.boothConstituencyElection.constituencyElection.election.electionYear," +
+		 		"model.nomination.party.shortName,sum(model.votesEarned)" +
+					" from CandidateBoothResult model where " +
+					" model.boothConstituencyElection.booth.boothId in(:boothIds) " +
+					"and model.boothConstituencyElection.constituencyElection.election.electionScope.electionType.electionTypeId = 1" +
+					"group by model.boothConstituencyElection.constituencyElection.election.electionId," +
+					"model.nomination.party.partyId " +
+					" order by sum(model.votesEarned) desc");
+		 Query queryObject = getSession().createQuery(query.toString());
+		 queryObject.setParameterList("boothIds",boothIds);
+		 return queryObject.list();
+	 }
+
 }
 

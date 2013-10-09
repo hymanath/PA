@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
@@ -59,6 +60,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
@@ -67,6 +69,7 @@ import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
+import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -105,9 +108,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private IVoterModificationDAO voterModificationDAO;
 	private IAssemblyLocalElectionBodyWardDAO assemblyLocalElectionBodyWardDAO;
 	private ILocalElectionBodyWardDAO localElectionBodyWardDAO;
+	private IVoterReportLevelDAO voterReportLevelDAO;
 	private IBoothResultDAO boothResultDAO;		
 		
-	
+	public IVoterReportLevelDAO getVoterReportLevelDAO() {
+		return voterReportLevelDAO;
+	}
+
+	public void setVoterReportLevelDAO(IVoterReportLevelDAO voterReportLevelDAO) {
+		this.voterReportLevelDAO = voterReportLevelDAO;
+	}
+
 	public IBoothResultDAO getBoothResultDAO() {
 		return boothResultDAO;
 	}
@@ -5072,6 +5083,33 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		return returnList;
 	}
 	
+	public VotersInfoForMandalVO getVotersCount(Long constituencyId,Long publicationDateId,String locationType)
+	{
+		VotersInfoForMandalVO votersInfoForMandalVO =new VotersInfoForMandalVO();
+		try {
+			LOG.debug("Enterd into getVotersCount() method in Suggestive Model Service");
+			Long reportLevelId = voterReportLevelDAO.getReportLevelIdByType(locationType);
+			List<VoterInfo> list = voterInfoDAO.getVotersCount(reportLevelId, constituencyId, publicationDateId,constituencyId);
+		
+			if(list != null && list.size() > 0)
+			{
+				for(VoterInfo voterDetails : list)
+				{
+					votersInfoForMandalVO.setTotalVoters(voterDetails.getTotalVoters().toString());
+					votersInfoForMandalVO.setMaleVoters(voterDetails.getMaleVoters());
+					votersInfoForMandalVO.setTotalMalePercentage(voterDetails.getMaleVotersPercentage().toString());
+					votersInfoForMandalVO.setFemaleVoters(voterDetails.getFemaleVoters());
+					votersInfoForMandalVO.setTotalFemalePercentage(voterDetails.getFemaleVotersPercentage().toString());
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getVotersCount() method in Suggestive Model Service",e);
+		}
+		
+		return votersInfoForMandalVO;
+	}
+
 	public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId)
 	{
 		DelimitationEffectVO delimationDetails = new DelimitationEffectVO();

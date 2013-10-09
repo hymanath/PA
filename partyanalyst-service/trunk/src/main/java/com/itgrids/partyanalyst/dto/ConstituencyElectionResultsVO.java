@@ -7,6 +7,7 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,7 @@ public class ConstituencyElectionResultsVO extends ResultStatus{
 	private List<SelectOptionVO> allElectionYears;
 	private Boolean resultsFlag;
 	private String chartName;
-	private List<SelectOptionVO> partiesList;
+	private List<SelectOptionVO> partiesList = new ArrayList<SelectOptionVO>();
 	private Set<String> participatedParties;
 	private Double censusReportPercent = 0.0;
 	

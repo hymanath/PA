@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 public interface ISuggestiveModelService {
@@ -55,6 +56,8 @@ public interface ISuggestiveModelService {
 	 public List<VoterCountVO> getVotersCountInPanchayats(Long constituencyId);
 	 
 	 public List<SelectOptionVO> getSelectedCountPAnchayatsDetails(Long constituencyId,Long minValue,Long maxValue);
+	 
+	 public VotersInfoForMandalVO getVotersCount(Long constituencyId,Long publicationDateId,String locationType);
 	 
 	 public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId);
 }
