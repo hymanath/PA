@@ -235,7 +235,7 @@ str+='<th>Polling %</th>';
 str+='<th>'+strongList[0].weakPollingPercentVOList[0].partyName+' %</th>';
 str+='<th>To Decrease</th>';
 str+='<th>Polling @'+result[0].pollingPercentage.toFixed(2)+'</th>';
-str+='<th>Lost Seats</th>';
+str+='<th>Lost Votes</th>';
 for(var i in strongList)
 	{
 str+='<tr>';
