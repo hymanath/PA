@@ -782,7 +782,7 @@ select
 		str += '<tr>';		
 		str += '<th width="72px">'+jsObj.censusText+'<br> % Range</th>';
 		str += '<th width="40px">Total Seats</th>';
-		str += '<th width="60px">AVG %</th>';
+		str += '<th width="60px">AVGP %</th>';
 		str += '</tr>';	
 		str += '</table>';
 		
@@ -796,7 +796,7 @@ select
 				str += '<tr>';				
 				str += '<th width="72px">'+jsObj.censusText+'<br> % Range</th>';
 				str += '<th width="40px">Total Seats</th>';
-				str += '<th width="60px">AVG %</th>';
+				str += '<th width="60px">AVGP %</th>';
 				str += '</tr>';	
 				str += '</table>';
 			}
@@ -1558,7 +1558,7 @@ select
 					</table>
 				</div>
 				<div id="censusPopulationRange_footer1" style="margin-left:15px;"></div>
-				<div id="censusPopulationRange_note" style="margin-left:15px;"><B>AVG % - Average Percentage</B></div>
+				<div id="censusPopulationRange_note" style="margin-left:15px;"><B>AVGP % - Average Polling Percentage</B></div>
 				
 			</div>
 			
