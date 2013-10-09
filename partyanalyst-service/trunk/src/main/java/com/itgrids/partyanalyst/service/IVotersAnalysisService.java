@@ -125,7 +125,7 @@ public interface IVotersAnalysisService {
 	public List<VotersInfoForMandalVO> getPreviousVotersCountDetailsForAllLevels(
 			 Long constituencyId,Long mandalId, Long panchayatId, Long boothId , String type,Long userId);
 	
-	public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean hamletBoothChecked);
+	public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean hamletBoothChecked,boolean localityChecked);
 	
 	public List<VotersDetailsVO> getVoterAgeWiseDetails(Long constituencyId, Long mandalId,
 			 Long panchayatId , Long boothId, Long publicationDateId, String type,Long userId);
