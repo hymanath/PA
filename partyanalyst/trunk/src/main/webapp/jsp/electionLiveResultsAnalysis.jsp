@@ -487,7 +487,7 @@ function buildPartiesSeatsFlownToOtherPartiesDiv(myResults)
 			}
 
 			str += '<tr style="text-align:center;font-family:arial;font-weight:bold">';
-			str += '<td><a href="partyPageAction.action?partyId='+myResults[i].partyId+'" style="color:#05A8E9">'+myResults[i].partyName+'</a></td>';
+			str += '<td><a href="partyPageAction.action?partyId='+myResults[i].partyId+'" style="color:#05A8E9" target="_blank">'+myResults[i].partyName+'</a></td>';
 			str += '<td align="left" width="169">';
 			str +='<table width="100">';
 			str += '<tr><td align="left" width="60">Participated </td><td width="10">: </td><td align="right" width="30">'+myResults[i].totalSeatsParticipated+'</td></tr>';
