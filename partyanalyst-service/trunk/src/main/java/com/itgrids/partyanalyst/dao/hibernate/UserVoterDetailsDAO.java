@@ -2568,4 +2568,146 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGenderWiseVotersCountForLocality(Long constituencyId,Long publicationDateId,Long userId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select count(distinct model.voter.voterId), model.voter.gender, model2.locality.localityId from BoothPublicationVoter model,UserVoterDetails model2 " +
+				" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId =:constituencyId and model2.locality is not null and " +
+				" model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId group by model2.locality.localityId,model.voter.gender ");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityIdsForHamletAndBooth(Long constituencyId,Long publicationDateId,Long userId,String tempVar)
+	{
+	  StringBuilder str = new StringBuilder();
+	  if(tempVar != null && tempVar.equalsIgnoreCase("hamletLocalities"))
+	   str.append(" select model2.hamlet.hamletId, ");
+	  else if(tempVar != null && tempVar.equalsIgnoreCase("wardLocalities"))
+	   str.append(" select model2.ward.constituencyId, ");
+	  
+	  str.append("model2.locality.localityId from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId ");
+	  str.append(" and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
+	  		" model2.user.userId =:userId and model2.locality is not null ");
+	  
+	  if(tempVar != null && tempVar.equalsIgnoreCase("hamletLocalities"))
+	   str.append(" and model2.hamlet is not null group by model2.locality.localityId ");
+	  else if(tempVar != null && tempVar.equalsIgnoreCase("wardLocalities"))
+	   str.append(" and model2.ward is not null group by model2.locality.localityId ");
+		  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("constituencyId", constituencyId);
+	  query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("userId", userId);
+	  
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getFamiliesCountForLocality(Long constituencyId,Long publicationDateId,Long userId)
+	{
+	  Query query = getSession().createQuery(" select count(distinct model.voter.houseNo),model2.locality.localityId from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId " +
+	  		" and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId and model2.locality is not null group by model2.locality.localityId ");
+	  
+	  query.setParameter("constituencyId", constituencyId);
+      query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("userId", userId);
+	  
+	  return query.list();
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityWiseVoterAgeInfo(Long constituencyId,Long publicationDateId,Long userId)
+	{
+	  Query query = getSession().createQuery(" select count(distinct model.voter.voterId),model.voter.gender," +
+	  		" model2.locality.localityId,model.voter.voterAgeRange.voterAgeRangeId from BoothPublicationVoter model,UserVoterDetails model2 " +
+	  		" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId =:constituencyId and " +
+	  		" model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId and model2.locality is not null " +
+	  		" group by model2.locality.localityId,model.voter.gender,model.voter.voterAgeRange.voterAgeRangeId ");
+	  
+	  query.setParameter("constituencyId", constituencyId);
+      query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("userId", userId);
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityWiseYoungVotersAgeInfo(Long constituencyId,Long publicationDateId,Long userId,Long ageFrom,Long ageTo)
+	{
+	
+	  StringBuilder str = new StringBuilder();
+	  str.append("select count(distinct model.voter.voterId),model.voter.gender,model2.locality.localityId from BoothPublicationVoter model,UserVoterDetails model2 " +
+	  		" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
+	  		" model2.user.userId =:userId and model2.locality is not null and ");
+	  if(ageFrom != null && ageTo != null)
+	   str.append(" model.voter.age between :ageFrom and :ageTo ");
+	  else 
+	   str.append(" model.voter.age > :ageFrom ");
+	  
+	  str.append(" group by model2.locality.localityId,model.voter.gender ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  
+	  query.setParameter("constituencyId", constituencyId);
+      query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("userId", userId);
+	  query.setParameter("ageFrom", ageFrom);
+	  if(ageTo != null)
+	   query.setParameter("ageTo", ageTo);
+	  
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityWiseFamilyDetails(Long constituencyId,Long publicationDateId,Long userId)
+	{
+	  Query query = getSession().createQuery(" select model2.locality.localityId,model.voter.houseNo,count(model.voter.voterId) from BoothPublicationVoter model,UserVoterDetails model2 " +
+	  		" where model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId " +
+	  		" and model2.user.userId =:userId and model2.locality is not null group by model2.locality.localityId,model.voter.houseNo ");
+	  
+	  query.setParameter("constituencyId", constituencyId);
+      query.setParameter("publicationDateId", publicationDateId);
+	  query.setParameter("userId", userId);
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityWiseCasteDetails(Long constituencyId,Long publicationDateId,Long userId)
+	{
+		Query query = getSession().createQuery(" select model2.locality.localityId,count(distinct model.voter.voterId),model.voter.gender,model2.casteState.casteStateId," +
+				" model2.casteState.casteCategoryGroup.casteCategory.categoryName from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId " +
+				" and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId " +
+				" and model2.locality is not null group by model2.locality.localityId,model2.casteState.casteStateId,model.voter.gender ");
+		
+		query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		  
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLocalityTotalCastes(Long constituencyId,Long publicationDateId,Long userId)
+	{
+		Query query = getSession().createQuery(" select model2.locality.localityId,count(distinct model2.casteState.casteStateId)" +
+				"  from BoothPublicationVoter model,UserVoterDetails model2 where model.voter.voterId = model2.voter.voterId " +
+				" and model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId =:userId " +
+				" and model2.locality is not null group by model2.locality.localityId ");
+		
+		query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		  
+		return query.list();
+	}
+	
 }

@@ -97,7 +97,22 @@ public class HamletBoothDAO extends GenericDaoHibernate<HamletBooth, Long> imple
 		StringBuilder str = new StringBuilder();
 		str.append(" select model.voter.gender,count(model.voter.voterId),model2.casteState.casteStateId,model2.casteState.casteCategoryGroup.casteCategory.categoryName,model3.hamletBoothId" +
 				" from BoothPublicationVoter model,UserVoterDetails model2,HamletBooth model3 where model3.booth.boothId = model.booth.boothId and model3.hamlet.hamletId = model2.hamlet.hamletId and " +
-				" model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model3.user.userId = :userId group by model2.casteState.caste.casteId,model.voter.gender ");
+				" model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId = :userId group by model3.hamletBoothId,model2.casteState.caste.casteId,model.voter.gender ");
+		Query query = getSession().createQuery(str.toString());
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCastesForHamletBooth(Long constituencyId,Long publicationDateId,Long userId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append(" select model3.hamletBoothId,count(distinct model2.casteState.casteStateId) " +
+				" from BoothPublicationVoter model,UserVoterDetails model2,HamletBooth model3 where model3.booth.boothId = model.booth.boothId and model3.hamlet.hamletId = model2.hamlet.hamletId and " +
+				" model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model2.user.userId = :userId group by model3.hamletBoothId ");
 		Query query = getSession().createQuery(str.toString());
 		
 		query.setParameter("constituencyId", constituencyId);
