@@ -172,8 +172,9 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				return null;
 			Boolean hamletChecked = jObj.getBoolean("hamletChecked");
 			Boolean hamletBoothChecked = jObj.getBoolean("hamletBoothChecked");
+			Boolean localityChecked = jObj.getBoolean("localityChecked");
 			Long userId =regVO.getRegistrationID();
-			resultStatus = votersAnalysisService.insertVotersDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId,hamletChecked,hamletBoothChecked);
+			resultStatus = votersAnalysisService.insertVotersDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId,hamletChecked,hamletBoothChecked,localityChecked);
 			return Action.SUCCESS;
 		}
 		
