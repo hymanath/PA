@@ -817,6 +817,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
 			constituencies = suggestiveModelService.getCasteAvaliableConstituencysService(userAccessConstituencyList,electionTypeId,electionYear,userId);
+			Collections.sort(constituencies);
 			return Action.SUCCESS;
 		}
 		public String getMandalsAndPanchayts()
