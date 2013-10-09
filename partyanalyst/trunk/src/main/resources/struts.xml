@@ -6153,5 +6153,12 @@
 			  	<param name="root">delimitationEffectVO</param>
 			 </result>
 		 </action>
+		
+		<action name="getVoterAgeGroupResultsAction" class="suggestiveModelAction" method="getVoterAgeGroupResults">
+		<result type="json" name="success">
+		<param name="root">votersInfoForMandalVO</param>
+		</result>
+		</action>
+		
 		</package>
 </struts>      
