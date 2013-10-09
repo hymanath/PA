@@ -695,7 +695,7 @@ function backtopage() {
 		}
         // changes made
 		if(stateId == "")
-			stateId =loctnId; 
+			stateId = '0'; 
 		var jsObj= 
 		{			
 			partyId: partyId,
