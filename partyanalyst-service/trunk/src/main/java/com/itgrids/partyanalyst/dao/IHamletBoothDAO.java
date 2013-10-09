@@ -20,4 +20,6 @@ public interface IHamletBoothDAO extends GenericDao<HamletBooth, Long>{
 	
 	public List<Object[]> getCasteWiseVoterDetailsForHamletBooth(Long constituencyId,Long publicationDateId,Long userId);
 	
+	public List<Object[]> getCastesForHamletBooth(Long constituencyId,Long publicationDateId,Long userId);
+	
 }
