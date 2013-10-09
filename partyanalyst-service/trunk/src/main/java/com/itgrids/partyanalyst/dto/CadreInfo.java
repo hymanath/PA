@@ -9,7 +9,7 @@ public class CadreInfo implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long cadreID;
 	private String cadreId;
 	private String firstName;
@@ -124,7 +124,15 @@ public class CadreInfo implements Serializable{
 	private Long cadreLevelStateId;
 	private String note;
 	private String memberShipNo;
+	private List<SelectOptionVO> designations = new ArrayList<SelectOptionVO>();
 	
+	
+	public List<SelectOptionVO> getDesignations() {
+		return designations;
+	}
+	public void setDesignations(List<SelectOptionVO> designations) {
+		this.designations = designations;
+	}
 	public Long getCadreLevelStateId() {
 		return cadreLevelStateId;
 	}
