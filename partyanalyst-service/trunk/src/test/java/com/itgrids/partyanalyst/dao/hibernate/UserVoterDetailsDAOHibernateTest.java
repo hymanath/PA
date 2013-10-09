@@ -557,10 +557,71 @@ for (Object[] objects : list) {
 		System.out.println(list.size());
 	}*/
 
-	public void testgetYoungerVotersForLocality()
+	/*public void testgetYoungerVotersForLocality()
 	{
 		List<Object[]> list = userVoterDetailsDAO.getYoungerVotersForLocality(8l, 1l, 1l, "hamlet",18l,22l);
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testGetGenderWiseVotersCountForLocality()
+	{
+		System.out.println(userVoterDetailsDAO.getGenderWiseVotersCountForLocality(232l, 8l, 1l).size());
+	}*/
+	
+	/*public void testgetLocalityIdsForHamletAndBooth()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getLocalityIdsForHamletAndBooth(232l, 8l, 1l, "hamletLocalities");
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	public void testgetFamiliesCountForLocality()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getFamiliesCountForLocality(232l, 8l, 1l);
+		if(list != null && list.size() > 0)
+		 for(Object[] params:list)
+		  System.out.println(params[0]+" "+params[1]);
 	}
+	
+	/*public void testgetLocalityWiseVoterAgeInfo()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getLocalityWiseVoterAgeInfo(232l, 8l, 1l);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]);
+	}*/
+	
+	/*public void testgetLocalityWiseYoungVotersAgeInfo()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getLocalityWiseYoungVotersAgeInfo(232l, 8l, 1l, 18l, 22l);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}*/
+
+	/*public void testgetLocalityWiseFamilyDetails()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getLocalityWiseFamilyDetails(232l, 8l, 1l);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}*/
+	
+	/*public void testgetLocalityWiseCasteDetails()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getLocalityWiseCasteDetails(232l, 8l, 1l);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]+" "+params[2]+" "+params[3]+" "+params[4]);
+	}*/
+	
+	/*public void testgetLocalityTotalCastes()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getLocalityTotalCastes(221l, 8l, 1l);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]);
+	}*/
 	
 }

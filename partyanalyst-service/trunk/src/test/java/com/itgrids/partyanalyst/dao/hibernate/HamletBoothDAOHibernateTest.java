@@ -48,9 +48,15 @@ public class HamletBoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetVoterFamilyInfoForHamletBooth()
+	/*public void testgetVoterFamilyInfoForHamletBooth()
 	{
 		System.out.println(hamletBoothDAO.getVoterFamilyInfoForHamletBooth(1l, 232l, 8l).size());
+	}*/
+	
+	public void testgetCastesForHamletBooth()
+	{
+		List<Object[]> list = hamletBoothDAO.getCastesForHamletBooth(232l, 8l, 1l);
+		System.out.println(list.size());
 	}
 
 }
