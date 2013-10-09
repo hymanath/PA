@@ -3642,7 +3642,7 @@ var YDataObjectTemp = new Object();
 	   
 	str+='<td>'+innerResults[i].totalVoters+'</td>';
 	str+='<td>'+innerResults[i].totalVotersForYoungerVoters+'</td>';
-	str+='<td>'+innerResults[i].VotersPercentForYoungerVoters+'</td>';
+	str+='<td>'+innerResults[i].votersPercentForYoungerVoters+'</td>';
 	str+='<td>'+innerResults[i].totalVotersFor18To25+'</td>';
 	str+='<td>'+innerResults[i].votersPercentFor18To25+'</td>';
 	str+='<td>'+innerResults[i].totalVotersFor26To35+'</td>';
