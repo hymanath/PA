@@ -156,8 +156,15 @@ public class ConstituencyPageAction extends ActionSupport implements
     private ResultStatus result;
     private Long parliamentCinstiId;
     private Boolean pollWidget;
+    private SelectOptionVO partyPerformenceList;
     
-    public ResultStatus getResult() {
+    public SelectOptionVO getPartyPerformenceList() {
+		return partyPerformenceList;
+	}
+	public void setPartyPerformenceList(SelectOptionVO partyPerformenceList) {
+		this.partyPerformenceList = partyPerformenceList;
+	}
+	public ResultStatus getResult() {
 		return result;
 	}
 	public void setResult(ResultStatus result) {
@@ -1943,6 +1950,18 @@ private CategoryDataset createDatasetForCandTrendz(String partyName,String compl
 		return Action.SUCCESS;
 	}
 
-  
-  
+  public String getPartiesPerformanceInDiffElection(){
+		
+		try {
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			Long constituencyId = jObj.getLong("constituencyId");
+			
+			partyPerformenceList = constituencyPageService.getConstituencyElectionResultsByConstituencyId(constituencyId);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }

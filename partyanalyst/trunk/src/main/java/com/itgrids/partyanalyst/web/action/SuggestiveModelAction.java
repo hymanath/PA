@@ -29,9 +29,11 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
+import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -81,9 +83,18 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private List<SelectOptionVO> pachayatsList;
 	private DelimitationEffectVO delimitationEffectVO;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
+	private VotersInfoForMandalVO votersInfoForMandalVO;
 	
 	
 	
+	public VotersInfoForMandalVO getVotersInfoForMandalVO() {
+		return votersInfoForMandalVO;
+	}
+
+	public void setVotersInfoForMandalVO(VotersInfoForMandalVO votersInfoForMandalVO) {
+		this.votersInfoForMandalVO = votersInfoForMandalVO;
+	}
+
 	
 	
 
@@ -925,6 +936,21 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				delimitationEffectVO = suggestiveModelService.getDelimationEffectOnConstituency(jObj.getLong("constituencyId"),jObj.getLong("partyId"));
 			}catch(Exception e){
 				log.error("Exception raised in getDelimationEffect() method in Suggestive Model Action",e);
+			}
+			return Action.SUCCESS;
+		}
+		
+		public String getVoterAgeGroupResults()
+		{
+			try{
+				log.debug("Entered into getVoterAgeGroupResults() method in Suggestive Model Action");
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+				Long publicationDateId = jObj.getLong("publicationDateId");
+				
+				votersInfoForMandalVO = suggestiveModelService.getVotersCount(constituencyId,publicationDateId,"constituency");
+			}catch(Exception e){
+				log.error("Exception raised in getVoterAgeGroupResults() method in Suggestive Model Action",e);
 			}
 			return Action.SUCCESS;
 		}
