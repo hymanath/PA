@@ -175,7 +175,10 @@ th {
     background: none repeat scroll 0 0 #D9EDF7;
     color: #454545;
 }
-
+#Castetable th{
+	background: none repeat scroll 0 0 #D9EDF7;
+    color: #454545;
+	}
 .headingCls{ color: #005580;
     font-size: 15px;
     margin-bottom: 10px;}
@@ -686,6 +689,10 @@ function callAjax(param,jsObj,url){
 						{
 							buildgetDelimationEffect(myResults);
 						}
+						else if(jsObj.task== "getCastInfo")
+						{
+						buildCasteInfo(myResults,jsObj);
+						}
 						
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
@@ -1002,7 +1009,7 @@ function panchayatMatrx(result)
 					Constituency Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
 				<td>
-					<select id="listConstituencyNames" onchange="clearAll(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyType();getConstituencyBasicCountInfo();">
+					<select id="listConstituencyNames" onchange="clearAll(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyType();getConstituencyBasicCountInfo(); getCasteBasicInfo();">
 					<option value="0"> Select Constituency </option>
 					</select>
 				</td>		
@@ -1173,6 +1180,7 @@ To
 </div></div>
 </c:if>
 <div id="basicCountDiv" class="widget blue" style="display:none;"></div>
+<div id="basicCasteInfoDiv" class="widget blue" style="display:none;"></div>
 <span id="dashBoardImgLoading" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"/></span>
 <div id="votersCountRageDiv" style="display:none"></div>
 <div id="delimationEffectDiv"></div>
@@ -3641,6 +3649,29 @@ function getVoterDetailsByPartNo(partno,constituencyId,startIndex)
 			var url = "getVoterDetailsByPartNo.action?"+param;						
 		callAjax(param,jsObj,url);;
 }
+function getCasteBasicInfo()
+{
+$("#basicCasteInfoDiv").css("display","none");
+var id = $('#listConstituencyNames').val();
+var text = $('#listConstituencyNames option:selected').text();
+if(id == 0)
+return;
+var jsObj= 
+	{	
+        constituencyId:id,
+		id:id,
+		publicationDateId:8,
+		queryType:"sub",
+		type:"constituency",
+		typename:text,
+		task:"getCastInfo"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getvotersCastInfoByConstituency.action?"+rparam;						
+	callAjax(rparam,jsObj,url);
+}
+
+
 <c:if test="${hideMainMenu}">  
   <c:if test="${castDetails}">
     

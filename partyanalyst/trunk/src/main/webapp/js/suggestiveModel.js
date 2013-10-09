@@ -424,3 +424,45 @@ $('#voterDetailsDiv').dialog({
 		});
 	}
 }
+
+function buildCasteInfo(results,jObj)
+{
+
+$("#basicCasteInfoDiv").css("display","block");
+var str='';
+var divEle = document.getElementById("basicCasteInfoDiv");
+var result = results.voterCastInfodetails
+var cast = result.voterCastInfoVOList;
+
+if(cast != null)
+	{
+
+	str+='<div class="widget-block" style="padding:10px;">';
+	str+='<h4>'+jObj.typename+' Constituency Voters By Caste </h4>';
+	str+='<table id="Castetable" class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
+	str+='<tr>';
+	str+='<th>Caste</th>';
+	str+='<th>Caste Category</th>';
+	str+='<th>Voters</th>';
+	str+='<th>Male Voters</th>';
+	str+='<th>Female Voters</th>';
+	str+='<th>Caste Percentage</th>';
+	str+='</tr>';
+
+	for(var i in cast)
+		{
+		str+='<tr>';
+		str+='<td>'+cast[i].castName+'</td>';
+		str+='<td>'+cast[i].casteCategoryName+'</td>';
+		str+='<td>'+cast[i].totalVoters+'</td>';
+		str+='<td>'+cast[i].maleVoters+'</td>';
+		str+='<td>'+cast[i].femaleVoters+'</td>';
+		str+='<td>'+cast[i].votesPercent+'</td>';
+		str+='</tr>';
+		}
+
+	str+='</table>';
+	str+='</div>';
+	}
+divEle.innerHTML =str;
+}
