@@ -1255,7 +1255,7 @@ To
 <div id="titleDiv" style="display:none;">
 <h4>PANCHAYAT WISE ELECTION RESULTS COMPARISION</h4>
 </div>
-<div id="newPartyDiv" style=" width: 988px;display:none;">
+<div id="newPartyDiv" style=" width: 988px;display:none;overflow-x:scroll;">
 </div>
 <img src="images/icons/loading.gif" id="ajaxLoaderImgForNewPartyDiv" height="25px" width="25px;" style="display:none;"/>
 
@@ -1649,6 +1649,7 @@ function getMandalsAndPanchayts()
 var madalPanchayatsArray = new Array();
 function storeMandalPanchayatValues(result)
 {
+	madalPanchayatsArray = new  Array();
 	if(result != null && result.length > 0)
 	{
 		for(var i in result)
