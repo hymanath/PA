@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.ISessionConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -53,6 +54,20 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 	private EntitlementsHelper entitlementsHelper;
 	private String fromParent;
 	
+	private Boolean partyCommittees_flag = false;
+	private Boolean cadreSkills_flag = false;
+	private Boolean partyTrainingCamps_flag = false;
+	
+	private List<SelectOptionVO>  designationsList ;
+
+	public List<SelectOptionVO> getDesignationsList() {
+		return designationsList;
+	}
+
+	public void setDesignationsList(List<SelectOptionVO> designationsList) {
+		this.designationsList = designationsList;
+	}
+
 	public List<SelectOptionVO> getBloodGroupList() {
 		return bloodGroupList;
 	}
@@ -318,6 +333,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			parliamentConstituencyList.add(new SelectOptionVO(constituencyInfoVO.getConstituencyId(),constituencyInfoVO.getConstituencyName())); 
 			
 		}
+		/*
 		// party specific input selection criteria
 		if("Party".equals(regVO.getUserType()))
 		{
@@ -346,8 +362,33 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			}else if(cadreSkillsList == null || cadreSkillsList.size() == 0)
 				isCadreSkills = false;
 		}
-		
-		return Action.SUCCESS;
+		*/
+	 if(IConstants.USER_TYPE_PARTY.equals(regVO.getUserType())) 
+		{
+			partyCommitteesList = new ArrayList<SelectOptionVO>(0);
+			partyTrainingCampsList = new ArrayList<SelectOptionVO>(0);
+			cadreSkillsList = new ArrayList<SelectOptionVO>(0);
+						
+			partyCommitteesList = cadreManagementService.getCommitteesForAParty(regVO.getParty());
+			if(partyCommitteesList.size()>0)
+				partyCommittees_flag = true;
+			partyTrainingCampsList = cadreManagementService.getPartyTrainingCamps(regVO.getParty()); 
+			if(partyTrainingCampsList.size()>0)
+				partyTrainingCamps_flag = true;
+			cadreSkillsList = cadreManagementService.getPartyCadreSkills(regVO.getParty()); 
+			if(cadreSkillsList.size()>0)
+				cadreSkills_flag = true;
+						
+			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);
+			if(windowTask.equals(IConstants.CREATE_NEW))
+				designationsList = new ArrayList<SelectOptionVO>(0);
+			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS,designationsList);
+			session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS,partyTrainingCampsList);
+			session.setAttribute(ISessionConstants.CADRE_SKILLS,cadreSkillsList);
+			
+		}
+	 	
+	return Action.SUCCESS;
 	}
 	public String getParliamentConstis(){
 		

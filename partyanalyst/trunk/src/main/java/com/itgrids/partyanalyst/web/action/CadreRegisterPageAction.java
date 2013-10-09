@@ -679,7 +679,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 				cadreSkills_flag = true;
 						
 			session.setAttribute(ISessionConstants.PARTY_COMMITTEES,partyCommitteesList);
-			if(windowTask.equals(IConstants.CREATE_NEW))
+			//if(windowTask.equals(IConstants.CREATE_NEW))
 				designationsList = new ArrayList<SelectOptionVO>(0);
 			session.setAttribute(ISessionConstants.COMMITTEE_DESIGNATIONS,designationsList);
 			session.setAttribute(ISessionConstants.PARTY_TRAINING_CAMPS,partyTrainingCampsList);
@@ -741,7 +741,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
         } else if(cadreId != null)
         {	
         	cadreInfo = cadreManagementService.getCadreCompleteInfo(new Long(cadreId));
-        	prepopulateLocations(cadreInfo);
+            prepopulateLocations(cadreInfo);
         }  
         else if(voterId != 0)
         {
@@ -988,7 +988,7 @@ public class CadreRegisterPageAction extends ActionSupport implements ServletReq
 		if(cadreInfo.getDesignation() != null)
 			designationsList = cadreManagementService.getDesignationsInCommittee(cadreInfo.getPartyCommittee());
 		
-			
+		
 	}
 
     
