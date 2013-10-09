@@ -118,6 +118,7 @@ google.load("visualization", "1", {packages:["corechart"]});
 </script>
 </head>
 <body>
+<center>
 <div style="width:998px;padding-left:5px;">
    <div style="padding-left:5px;"><div class="main-mbg">District Wise Party Performance</div></div>
    <div style="background-color:#FFFFFF;min-height:360px;">
@@ -177,5 +178,6 @@ google.load("visualization", "1", {packages:["corechart"]});
    <script type="text/javascript">
 	 getAllStates();
    </script>
+   </center>
 </body>
 </html>
