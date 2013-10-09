@@ -8870,7 +8870,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			}
 		 } 
 	  
-	  public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean hamletBoothChecked)
+	  public ResultStatus insertVotersDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean hamletBoothChecked,boolean localityChecked)
 	  {
 		  log.info(" Entered into insertVotersDataInIntermediateTables() Method, with Values - Report Level Value - "+reportLevelValue+" and Publicarion Date Id - "+publicationDateId);
 		  ResultStatus resultStatus = new ResultStatus();
@@ -9084,8 +9084,8 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  //HamletBooth
 			  if(hamletBoothChecked)
 			    getHamletBoothDataByConstituencyIdAndPublicationDateId(reportLevelValue,publicationDateId,userId);
-			  
-			  calculateAndInsertLocalityWiseVoterInfo(reportLevelValue,publicationDateId,userId);
+			  if(localityChecked)
+			    calculateAndInsertLocalityWiseVoterInfo(reportLevelValue,publicationDateId,userId);
  
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			  return resultStatus;
