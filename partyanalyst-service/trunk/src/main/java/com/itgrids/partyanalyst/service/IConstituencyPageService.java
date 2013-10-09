@@ -144,4 +144,5 @@ public interface IConstituencyPageService {
 	
 	public List<SelectOptionVO> getMandalsByConstituencyID(Long constituencyID,String delimitationType);
 	
+	public SelectOptionVO getConstituencyElectionResultsByConstituencyId(Long constituencyId);
 }

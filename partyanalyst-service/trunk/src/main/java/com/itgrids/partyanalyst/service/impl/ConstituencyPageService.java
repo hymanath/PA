@@ -10,6 +10,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -22,6 +23,8 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+
+import javassist.expr.NewArray;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -73,7 +76,6 @@ import com.itgrids.partyanalyst.dto.ConstituencyOrMandalWiseElectionVO;
 import com.itgrids.partyanalyst.dto.ConstituencyRevenueVillagesVO;
 import com.itgrids.partyanalyst.dto.ConstituencyVO;
 import com.itgrids.partyanalyst.dto.DataTransferVO;
-import com.itgrids.partyanalyst.dto.ElectionLiveResultVO;
 import com.itgrids.partyanalyst.dto.ElectionResultByLocationVO;
 import com.itgrids.partyanalyst.dto.ElectionWiseMandalPartyResultVO;
 import com.itgrids.partyanalyst.dto.HamletAndBoothVO;
@@ -93,6 +95,7 @@ import com.itgrids.partyanalyst.dto.RevenueVillageElectionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.TeshilPartyInfoVO;
 import com.itgrids.partyanalyst.dto.VillageBoothInfoVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.VotersWithDelimitationInfoVO;
 import com.itgrids.partyanalyst.model.BoothConstituencyElection;
@@ -5810,5 +5813,244 @@ public class ConstituencyPageService implements IConstituencyPageService {
 		                return (vo1.getConstituencyName()).compareTo(vo2.getConstituencyName());
 		            }
 			    }; 
+			    
+    public SelectOptionVO getConstituencyElectionResultsByConstituencyId(Long constituencyId)
+	{
+		try
+		{
+			SelectOptionVO constituencyElectionResultsList = new SelectOptionVO();
+			
+			//Assembly wise
+			List<ConstituencyElectionResultsVO> assemblyElectionResultsList = getAssemblyList(constituencyId);
+				
+			//Parliament wise
+			List<ConstituencyElectionResultsVO> parliamentElectionResultsList = getParliamentList(constituencyId);
+				 
+			//MPTC&ZPTC wise
+			List<ConstituencyElectionResultsVO> mptcZptcsList = getMptcZptcList(constituencyId);
+		 
+			 constituencyElectionResultsList.setAssemblyList(assemblyElectionResultsList);
+			 constituencyElectionResultsList.setParliamentList(parliamentElectionResultsList);
+			 constituencyElectionResultsList.setMptcZptcList(mptcZptcsList);
+			 
+			return constituencyElectionResultsList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+			    
+	    public ConstituencyElectionResultsVO checkBasicVOExist(Long electionId,List<ConstituencyElectionResultsVO> list)
+		 {
+			 try{
+				if(list == null || list.size() == 0)
+					 return null;
+				for(ConstituencyElectionResultsVO constituencyElectionResultsVO : list)
+				 if(constituencyElectionResultsVO.getElectionId().equals(electionId))
+					 return constituencyElectionResultsVO;
+				 
+				 return null;
+			 }catch (Exception e) {
+				 e.printStackTrace();
+				 return null;
+			}
+		 }
+	
+		public void sortByPartyName(List<ConstituencyElectionResultsVO> electionResultsList){
+			
+			List<String> staticPartiesList = Arrays.asList("INC","TDP","PRP","TRS","YSRC","CPI","CPM","AIMIM","BJP");
+
+			 for(ConstituencyElectionResultsVO resultsVO:electionResultsList)
+			 {
+				 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>(0);
+				 for(String partyInList :staticPartiesList)
+					{
+					 SelectOptionVO electionResultsVO = new SelectOptionVO();
+					 electionResultsVO.setName(partyInList);
+					 electionResultsVO.setValidCount(0L);
+					 electionResultsVO.setLocation("--");
+					 for(SelectOptionVO  partiesResult : resultsVO.getPartiesList())
+						{
+							if(partiesResult.getName().equalsIgnoreCase(partyInList)){
+								electionResultsVO.setValidCount(partiesResult.getTotalCount());		
+								electionResultsVO.setId(partiesResult.getId());
+								electionResultsVO.setLocation(partiesResult.getLocation());
+							}
+						}
+					 resultList.add(electionResultsVO);
+					}
+				 resultsVO.setPartiesList(resultList);
+			 }
+			
+		}
+		
+		public List<ConstituencyElectionResultsVO> getAssemblyList(Long constituencyId){
+			
+			List<ConstituencyElectionResultsVO> assemblyElectionResultsList = new ArrayList<ConstituencyElectionResultsVO>();
+			List<Object[]> result = nominationDAO.getConstituencyResult(constituencyId);
+			 if(result != null && result.size() > 0)
+			 {
+				for(Object[] param:result){
+					ConstituencyElectionResultsVO constElecResultVO = new ConstituencyElectionResultsVO();
+					 constElecResultVO.setElectionId((Long)param[0]);
+					 constElecResultVO.setElectionYear(param[1].toString()+"-AE");
+					 Double objval = new Double(param[2].toString());
+					 constElecResultVO.setTotalVotes(String.valueOf(objval.longValue()));
+					 Double val =Double.valueOf(param[3].toString());
+					 constElecResultVO.setValidVotes(val.longValue());
+					 
+					 List nominationResult = nominationDAO
+								.getCandidatesInfoForTheGivenConstituency(
+										constituencyId.toString(), param[1].toString(),
+										"Assembly");
+					 for(Object obj:nominationResult){
+							Object[] nominationResults = (Object[])obj;
+							 Double value = new Double(nominationResults[13].toString());
+							constElecResultVO.setTotalVotes(String.valueOf(value.longValue()));
+							Double val1 =Double.valueOf(nominationResults[14].toString());
+							constElecResultVO.setValidVotes(val1.longValue());
+					 }
+					 assemblyElectionResultsList.add(constElecResultVO);
+				}
+			 }
+			 
+			 List<Object[]> results = nominationDAO.getConstituencyResultForParty(constituencyId);
+			 if(results != null && results.size() > 0){
+				 ConstituencyElectionResultsVO constElecResultVO2 = null;
+				 List<String> partiesList = new ArrayList<String>(0);
+				for(Object[] param:results){
+					constElecResultVO2 = checkBasicVOExist((Long)param[0], assemblyElectionResultsList);
+					if(constElecResultVO2 != null)
+					{
+						 SelectOptionVO optionVO = new SelectOptionVO();
+						 optionVO.setName(param[2].toString());
+						 optionVO.setTotalCount(Double.valueOf(param[3].toString()).longValue());
+						 optionVO.setLocation(param[4].toString());
+						 optionVO.setId((Long)param[0]);
+						 
+							 List<SelectOptionVO> selectOptionVOList =  constElecResultVO2.getPartiesList();
+							 if(selectOptionVOList == null)
+								 selectOptionVOList = new ArrayList<SelectOptionVO>();
+							 selectOptionVOList.add(optionVO);
+							 constElecResultVO2.setPartiesList(selectOptionVOList);
+					}
+				}
+			 }
+			 
+			 sortByPartyName(assemblyElectionResultsList);
+			 
+			return assemblyElectionResultsList;
+		}
+		
+		public List<ConstituencyElectionResultsVO> getParliamentList(Long constituencyId){
+			
+			List<ConstituencyElectionResultsVO> parliamentElectionResultsList = new ArrayList<ConstituencyElectionResultsVO>();
+			 List<Long> electionIds = new ArrayList<Long>(); 
+			 List<Long> parliamentConstiList = new ArrayList<Long>(); 
+			
+			 List parliamentList = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(constituencyId);
+			 for(Object[] param:(List<Object[]>)parliamentList)
+				 parliamentConstiList.add((Long)param[0]);
+			 
+			 if(!parliamentConstiList.contains(constituencyId))
+			 parliamentConstiList.add(constituencyId);
+			 
+			 List<Object[]> elections = constituencyElectionDAO.findAllEleHappendInAConstituency(parliamentConstiList);
+			 for(Object[] election:elections)
+				 electionIds.add((Long)election[0]);
+			 
+			 for(Long electionId:electionIds){
+				 
+			 List<Long> boothIds = nominationDAO.getAllBoothsByConstituency(constituencyId,electionId);
+			 if(boothIds != null && boothIds.size()>0){
+			 List<Object[]> mainList = nominationDAO.getElectionResultsCount(boothIds);
+			 if(mainList != null && mainList.size() > 0)
+			 {
+				for(Object[] param:mainList){
+					 ConstituencyElectionResultsVO constElecResultVO = new ConstituencyElectionResultsVO();
+					 constElecResultVO.setElectionId((Long)param[0]);
+					 constElecResultVO.setElectionYear(param[1].toString()+"-PE");
+					 constElecResultVO.setTotalVotes(param[2].toString());
+					
+				 List nominationResult = nominationDAO
+							.getCandidatesInfoForTheGivenConstituency(
+									constituencyId.toString(), param[1].toString(),
+									"Assembly");
+				 for(Object obj:nominationResult){
+						Object[] nominationResults = (Object[])obj;
+						constElecResultVO.setTotalVotes(nominationResults[13].toString());
+						Double val =Double.valueOf(nominationResults[14].toString());
+				 }
+				
+			 	parliamentElectionResultsList.add(constElecResultVO);
+				}
+			 }
+			 
+			 //party wise
+			 List<Object[]> list = nominationDAO.findBoothResultsForBoothsAndElectionAndAllParties(boothIds);
+			 if(list != null && list.size() > 0){
+				 ConstituencyElectionResultsVO constElecResultVO2 = null;
+				 Long polledVotersCount = 0l;
+				for(Object[] param:list){
+					 
+					constElecResultVO2 = checkBasicVOExist((Long)param[0], parliamentElectionResultsList);
+					if(constElecResultVO2 != null)
+					{
+						 SelectOptionVO constElecResultVO1 = new SelectOptionVO();
+						 constElecResultVO1.setName(param[2].toString());
+						 constElecResultVO1.setTotalCount(Double.valueOf(param[3].toString()).longValue());
+						 constElecResultVO1.setId((Long)param[0]);
+						 constElecResultVO2.getPartiesList().add(constElecResultVO1);
+						 polledVotersCount += Double.valueOf(param[3].toString()).longValue();
+					}
+				}
+				constElecResultVO2.setValidVotes(polledVotersCount);
+			}
+			 						 
+		}
+		}
+		sortByPartyName(parliamentElectionResultsList); 
+			
+		return parliamentElectionResultsList;
+		}
+		
+		public List<ConstituencyElectionResultsVO> getMptcZptcList(Long constituencyId){
+			List<ConstituencyElectionResultsVO> mptcZptcsList = new ArrayList<ConstituencyElectionResultsVO>();
+			  List<Long> staticParties = partyDAO.getStaticParties(IConstants.STATIC_PARTIES + ",'IND'");
+			  Constituency constituency = constituencyDAO.get(constituencyId);
+			  List<SelectOptionVO> tehsilList = regionServiceDataImp.getTehsilsInConstituency(constituencyId);
+			  List<Long> tehsilIds = new ArrayList<Long>();
+			  for(SelectOptionVO tehsil:tehsilList){
+				  tehsilIds.add(new Long(tehsil.getId().toString().substring(1)));
+			  }
+			  List<Object[]> mptczptcList = electionDAO.findMptcZptcElections(constituency.getState().getStateId());
+			  for(Object[] param:mptczptcList){
+			  List<Object[]> mptcListDetails = nominationDAO.findAllMptcAndZptcElectionsInfoByelectionId((Long)param[0],tehsilIds,staticParties);
+			  ConstituencyElectionResultsVO constElecResultVO2 = new ConstituencyElectionResultsVO();
+			  Long polledVotersCount = 0l;
+			  for(Object[] params:mptcListDetails){
+				  SelectOptionVO optionVO = new SelectOptionVO();
+				  optionVO.setId((Long)params[0]);
+				  optionVO.setName(params[1].toString());
+				  optionVO.setType(params[4].toString());
+				  optionVO.setUrl(params[3].toString());
+				  optionVO.setTotalCount(Double.valueOf(params[2].toString()).longValue());
+				  
+				  List<SelectOptionVO> selectOptionVOList = constElecResultVO2.getPartiesList();
+				  if(selectOptionVOList == null)
+					selectOptionVOList = new ArrayList<SelectOptionVO>();
+					selectOptionVOList.add(optionVO);
+					constElecResultVO2.setPartiesList(selectOptionVOList);
+				    constElecResultVO2.setElectionYear(params[3].toString());
+					constElecResultVO2.setElectionType(params[4].toString());
+					polledVotersCount += Double.valueOf(params[2].toString()).longValue();
+			  }
+			  constElecResultVO2.setValidVotes(polledVotersCount);
+			  mptcZptcsList.add(constElecResultVO2);
+			  }
+			  sortByPartyName(mptcZptcsList); 
+			
+			  return mptcZptcsList;
+		}
 }
 

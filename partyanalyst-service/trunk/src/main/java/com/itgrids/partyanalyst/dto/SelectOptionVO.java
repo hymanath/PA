@@ -25,7 +25,51 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long parentUserId;
 	private Long mainAccountId;
 	private boolean flag;
+	private Long totalCount;
+	private Long validCount;
+	private List<ConstituencyElectionResultsVO> assemblyList;
+	private List<ConstituencyElectionResultsVO> parliamentList;
+	private List<ConstituencyElectionResultsVO> mptcZptcList ;
 	
+	public List<ConstituencyElectionResultsVO> getMptcZptcList() {
+		return mptcZptcList;
+	}
+
+	public void setMptcZptcList(List<ConstituencyElectionResultsVO> mptcZptcList) {
+		this.mptcZptcList = mptcZptcList;
+	}
+
+	public List<ConstituencyElectionResultsVO> getAssemblyList() {
+		return assemblyList;
+	}
+
+	public void setAssemblyList(List<ConstituencyElectionResultsVO> assemblyList) {
+		this.assemblyList = assemblyList;
+	}
+
+	public List<ConstituencyElectionResultsVO> getParliamentList() {
+		return parliamentList;
+	}
+
+	public void setParliamentList(List<ConstituencyElectionResultsVO> parliamentList) {
+		this.parliamentList = parliamentList;
+	}
+
+	public Long getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public Long getValidCount() {
+		return validCount;
+	}
+
+	public void setValidCount(Long validCount) {
+		this.validCount = validCount;
+	}
 
 	public boolean isFlag() {
 		return flag;

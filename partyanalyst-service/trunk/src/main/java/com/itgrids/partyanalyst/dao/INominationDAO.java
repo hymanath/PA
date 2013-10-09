@@ -608,4 +608,14 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 
 	public List<Object[]> getCandidatesToSubScribe(Long stateId,String name,String electionType,Integer startIndex,Integer endIndex);
 	
+	 public List<Object[]> getConstituencyResultForParty(Long constituencyId);
+	 
+	 public List<Object[]> getConstituencyResult(Long constituencyId);
+	 
+	 public List<Long> getAllBoothsByConstituency(Long constituencyId,Long electionId);
+	 
+	 public List<Object[]> findBoothResultsForBoothsAndElectionAndAllParties(List<Long> boothIds);
+	 
+	 public List<Object[]> getElectionResultsCount(List<Long> boothIds);
+	 
 }

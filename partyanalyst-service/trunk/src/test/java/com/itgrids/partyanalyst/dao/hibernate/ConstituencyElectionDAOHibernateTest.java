@@ -228,7 +228,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 	}*/
 	
 	
-	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId,List<Long> elecIds,String type){
+/*	public void segregateAllConstituencies(Long selectedNoOfYears,String electionType,String electionSubType,Long stateId,List<Long> elecIds,String type){
 		try{
 			List result = constituencyElectionDAO.getConstituenciesHavingMaxSpan(electionSubType,electionType,stateId,elecIds,type);	
 			//System.out.println(result.size());	
@@ -237,7 +237,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-	}
+	}*/
 /*	
 	@Test
 	public void testGetLatestElectionHappenedInConstituency(){
@@ -329,7 +329,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	/*public void testfindAllElectionsHappendInAConstituency()
+	public void testfindAllElectionsHappendInAConstituency()
 	{
 		List<Long> constituencyId = new ArrayList<Long>(0);
 		constituencyId.add(232l);
@@ -338,7 +338,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 		for(Object[] params : list)
 		System.out.println(params[0]+" "+params[1]);
-	}*/
+	}
 	
 	/*public void testfindLatestElectionYear()
 	{
