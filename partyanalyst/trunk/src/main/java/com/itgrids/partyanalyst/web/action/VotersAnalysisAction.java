@@ -2190,6 +2190,10 @@ return Action.SUCCESS;
 		if(user == null)
 			return ERROR;
 		Long userId = user.getRegistrationID();
+		if(user.getParentUserId()!=null)
+		{
+		  userId = user.getMainAccountId();
+		}
 		try{
 		 jObj = new JSONObject(getTask());
 		 if(jObj.getString("task").equalsIgnoreCase("getPartialBoothDetails")){
@@ -2197,11 +2201,11 @@ return Action.SUCCESS;
 		 Long publicationId = jObj.getLong("publicationId");
 		 Long constituencyId = jObj.getLong("constituencyId");
 		 String type = jObj.getString("type");
-		partialBoothList=votersAnalysisService.getPartialBoothDetails(user.getRegistrationID(),id,publicationId,constituencyId,type);
+		partialBoothList=votersAnalysisService.getPartialBoothDetails(userId,id,publicationId,constituencyId,type);
 		 }
 		}catch (Exception e) {
-			e.printStackTrace();
-			 log.error("Exception Occured in getWardsListForMuncipality() method,Exception - "+e);
+			
+			 log.error("Exception Occured in getWardsListForMuncipality() method,Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
