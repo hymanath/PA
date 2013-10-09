@@ -798,8 +798,6 @@ public class CadreManagementService {
 						Object object = (Object)localElectionBodyIdsList.get(0);
 						Long cadreLevelLocalElectionBodyId = (Long)object;
 						cadre.setCadreLevelValue(cadreLevelLocalElectionBodyId);
-					} else if("WARD".equalsIgnoreCase(level.getLevel())){
-						cadre.setCadreLevelValue(Long.parseLong(cadreInfo.getStrCadreLevelValue().substring(1)));
 					} else{
 						cadre.setCadreLevelValue(new Long(cadreInfo.getStrCadreLevelValue()));
 					}
@@ -2478,6 +2476,9 @@ public class CadreManagementService {
 						cadreInfo.setDesignationStr(cadre.getDesignation().getDesignation());
 						cadreInfo.setPartyCommitteeName(cadre.getDesignation().getPartyWorkingCommittee().getCommitteeName());
 						cadreInfo.setPartyCommittee(cadre.getDesignation().getPartyWorkingCommittee().getPartyWorkingCommitteeId());
+						
+						if(getDesignationsInCommittee(cadre.getDesignation().getPartyWorkingCommittee().getPartyWorkingCommitteeId()) != null)
+						  cadreInfo.setDesignations(getDesignationsInCommittee(cadre.getDesignation().getPartyWorkingCommittee().getPartyWorkingCommitteeId()));
 				    }
 					if(cadre.getEffectiveDate() != null)
 						cadreInfo.setEffectiveDate(sdf.format(cadre.getEffectiveDate()));
@@ -2492,7 +2493,8 @@ public class CadreManagementService {
 						log.debug("skills list size:"+cadreSkillsList.size());
 						int j=0;
 						for(CadreSkills obj: cadreSkillsList){
-							cadreSkillsIds.add(obj.getCadreSkillId().longValue());
+							//cadreSkillsIds.add(obj.getCadreSkillId().longValue());
+							cadreSkillsIds.add(obj.getPartyCadreSkills().getPartyCadreSkillId());
 							cadreSkills[j] = obj.getPartyCadreSkills().getSkill();							
 							j++;
 						}

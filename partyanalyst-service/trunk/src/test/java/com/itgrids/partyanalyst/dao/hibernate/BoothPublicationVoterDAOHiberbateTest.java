@@ -894,4 +894,8 @@ List<Long> attrIds = new ArrayList<Long>();
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
 	}
+	public void testgetVotersCountByCustomWardId(){
+		Long totalCount=(Long) boothPublicationVoterDAO.getVotersCountByCustomWardId(28876L,8L,232L,1L).get(0);
+      System.out.println(totalCount);
+	}
 }
