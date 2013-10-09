@@ -697,5 +697,7 @@ public interface IConstants {
     public static final String VOICE_SMS_API_KEY = "Nj8uWwjyzEORIuAAKCVG";
     public static final String VOICE_SMS_ACCESS_KEY ="koIDAaXxaZEfQ6EAPwyLaOuk4n574CcEBNKdBWha";
     /*SMS COUNTRY VOICE SMS END*/
+    
+    public static final String LOCALITY = "Locality";
 	
 }
