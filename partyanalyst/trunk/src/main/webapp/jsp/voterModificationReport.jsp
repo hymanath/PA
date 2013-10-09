@@ -105,7 +105,7 @@
     background: none repeat scroll 0 0 #4285F4;
     color: #FFFFFF;
 }
-#subLevelDiv{overflow-x: scroll;width:98%;}
+#subLevelDiv{width:98%;}
 #helpbutt{margin-left: 6px;}
 </style>
 <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
