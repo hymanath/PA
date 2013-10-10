@@ -874,24 +874,24 @@ str+='<div id="partialBoothsDiv"><ol>';
 	
 			//str+='<div>'+results[i].url+'</div>';
 			if(areaType == 'Mandal' || areaType == 'mandal')
-			str+=' Some of the voters  from '+results[i].value+' Hamlet of '+results[i].name+' Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
+			str+=' Some of the voters  from '+results[i].value+' Hamlet(s) of '+results[i].name+' Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
 			else if(areaType == 'Panchayat' || areaType == 'panchayat')
-			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat. ';
+			str+=' Some of the voters  from '+results[i].value+' Hamlet(s) of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat. ';
 			else if(areaType == 'Hamlet' || areaType == 'hamlet')
 			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';		
 			else if(areaType == 'Booth' || areaType == 'booth' )
-			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
+			str+=' Some of the voters  from '+results[i].value+' Hamlet(s) of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
 			else if(areaType == 'boothHamlets' || areaType == 'boothHamlets')
 			str+=' Some of the voters  from '+results[i].value+' Hamlet of this Panchayat , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
 		}
 		else
 		{
 			if(areaType == 'Panchayat' || areaType == 'panchayat')
-				str+=' Some of the voters from '+results[i].value+' Hamlet of '+results[i].location+' Panchayat , were present in Booth No- '+results[i].partno+' of this Panchayat.';
+				str+=' Some of the voters from '+results[i].value+' Hamlet(s) of '+results[i].location+' Panchayat , were present in Booth No- '+results[i].partno+' of this Panchayat.';
 			else if(areaType == 'Hamlet' || areaType == 'hamlet')
 				str+=' Some of the voters  from '+results[i].value+' Hamlet of '+results[i].location+' Panchayat , were present in Booth No- '+results[i].partno+' of this Panchayat.';		
 			else if(areaType == 'Booth' || areaType == 'booth')
-				str+=' Some of the voters  from '+results[i].value+' Hamlet of '+results[i].name+' Panchayat , were present in this Booth.';
+				str+=' Some of the voters  from '+results[i].value+' Hamlet(s) of '+results[i].name+' Panchayat , were present in this Booth.';
 			else if(areaType == 'boothHamlets' || areaType == 'boothHamlets')
 			str+=' Some of the voters  of this Hamlet , were present in Booth No- '+results[i].partno+' of '+results[i].location+' Panchayat.';
 		
