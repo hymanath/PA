@@ -1542,7 +1542,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			public List<Object[]> getDescriptionForMandalLevel(Long tehsilId,Long publicationId){
 		        Query query = getSession().createQuery("select pbp.description," +
 		        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,pbp.hamlet.hamletName," +
-		        		"pbp.booth.partNo,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+		        		"pbp.booth.partNo,pbp.booth.panchayat.panchayatId,pbp.booth.boothId,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
 		        		" pbp.booth.publicationDate.publicationDateId = :publicationId and  " +
 		        		" pbp.booth.tehsil.tehsilId = :tehsilId and " +
 		        		//"pbp.panchayat.panchayatId = pbp.booth.panchayat.panchayatId and " +
@@ -1556,7 +1556,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		    public List<Object[]> getDescriptionForPanchayatLevel(Long panchayatId,Long publicationId){
 		        Query query = getSession().createQuery("select pbp.description," +
 		        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,pbp.hamlet.hamletName," +
-		        		"pbp.booth.partNo,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+		        		"pbp.booth.partNo,pbp.booth.panchayat.panchayatId,pbp.booth.boothId,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
 		        		" pbp.booth.publicationDate.publicationDateId = :publicationId and " +
 		        		" pbp.panchayat.panchayatId = :panchayatId and " +
 		        		" pbp.hamlet.hamletId = ph.hamlet.hamletId ");
@@ -1568,7 +1568,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		    public List<Object[]> getDescriptionForBoothLevel(Long panchayatId,Long boothId){
 		        Query query = getSession().createQuery("select pbp.description," +
 		        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,ph.hamlet.hamletName," +
-		        		"pbp.booth.partNo,pbp.booth.boothId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+		        		"pbp.booth.partNo,pbp.booth.boothId,pbp.booth.boothId,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
 		        		" pbp.booth.boothId = :boothId  and pbp.hamlet.hamletId = ph.hamlet.hamletId");
 		        query.setParameter("boothId", boothId);
 		        //query.setParameter("panchayatId", panchayatId);
@@ -1601,7 +1601,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			
 	        Query query = getSession().createQuery("select pbp.description,ph.panchayat.panchayatName," +
 	        		"pbp.booth.panchayat.panchayatName,pbp.hamlet.hamletName,pbp.booth.partNo," +
-	        		"pbp.booth.panchayat.panchayatId from " +
+	        		"pbp.booth.panchayat.panchayatId,pbp.booth.boothId,pbp.booth.panchayat.panchayatId from " +
 	        		"PartialBoothPanchayat pbp,PanchayatHamlet ph  where " +
 		        	" pbp.booth.publicationDate.publicationDateId = :publicationId and " +
 		        	" pbp.booth.boothId in(:boothsList) and pbp.hamlet.hamletId = ph.hamlet.hamletId ");
@@ -1625,7 +1625,7 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	public List<Object[]> getDescriptionForHamletLevel(Long publicationId,Long hamletId){
 		   Query query = getSession().createQuery("select pbp.description," +
 	        		"pbp.booth.panchayat.panchayatName,ph.panchayat.panchayatName,ph.hamlet.hamletName," +
-	        		"pbp.booth.partNo,pbp.hamlet.hamletId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
+	        		"pbp.booth.partNo,pbp.hamlet.hamletId,pbp.booth.boothId,pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp,PanchayatHamlet ph where " +
 	        		" pbp.booth.publicationDate.publicationDateId = :publicationId and pbp.hamlet.hamletId = :hamletId  " +
 	        		" and pbp.hamlet.hamletId = ph.hamlet.hamletId");
 	        query.setParameter("hamletId", hamletId);
