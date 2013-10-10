@@ -18863,18 +18863,33 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			 else if(type.equalsIgnoreCase("panchayat")){
 				 votersCount= boothDAO.findVotersCountByPublicationIdForPartialPanchayat(userId,id,publicationId);
 			 }
-			 for(Object[] param:values){
-				 SelectOptionVO selectOptionVO = new SelectOptionVO();
-				 selectOptionVO.setUrl(param[0].toString()!=null ? param[0].toString():"");
-				 selectOptionVO.setId(param[5].toString()!=null ? Long.valueOf(param[5].toString()):0L);
-				 selectOptionVO.setLocation(param[1].toString()!=null ?param[1].toString():"");//present panchayat
-				 selectOptionVO.setName(param[2].toString()!=null ?param[2].toString():""); // Partial mapped panchayat
-				 selectOptionVO.setValue(param[3].toString()!=null ?param[3].toString():""); // Partial mapped panchayat hamlet
-				 selectOptionVO.setPartno(param[4].toString()!=null ?param[4].toString():"");// Booth No
-				 selectOptionVO.setType(areaType !=null?areaType:"");
-				 selectOptionVO.setOrderId(Long.valueOf(votersCount.toString()));
-				 			 
-				 partialBoothList.add(selectOptionVO);
+			 SelectOptionVO selectOptionVO = null;
+			 for(Object[] param:values)
+			 {
+				 selectOptionVO = checkSelectOptionVOExist((Long)param[7],(Long)param[6],partialBoothList);
+				 if(selectOptionVO == null)
+				 {
+				     selectOptionVO = new SelectOptionVO();
+				     selectOptionVO.setUrl(param[0]!=null ? param[0].toString():"");
+				     selectOptionVO.setId(param[5]!=null ? Long.valueOf(param[5].toString()):0L);
+					 selectOptionVO.setLocation(param[1]!=null ?param[1].toString():"");//present panchayat
+					 selectOptionVO.setName(param[2]!=null ?param[2].toString():""); // Partial mapped panchayat
+					 //selectOptionVO.setValue(param[3]!=null ?param[3].toString():""); // Partial mapped panchayat hamlet
+					 selectOptionVO.setPartno(param[4]!=null ?param[4].toString():"");// Booth No
+					 selectOptionVO.setType(areaType !=null?areaType:"");
+					 selectOptionVO.setOrderId(Long.valueOf(votersCount.toString()));
+					 selectOptionVO.setMainAccountId((Long)param[6]);	
+					 selectOptionVO.setParentUserId((Long)param[7]);
+					 partialBoothList.add(selectOptionVO);
+				 }
+				 
+				 String name = selectOptionVO.getValue();
+				 if(name == null && param[3] != null)
+				  name = param[3].toString();
+				 else if(param[3] != null)
+				  name += ","+param[3].toString();
+				 selectOptionVO.setValue(name);
+				 
 			 }
 		 }
 	 
@@ -18884,6 +18899,24 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  partialBoothList = null;
 	 }
 	 return partialBoothList;
+ }
+ 
+ public SelectOptionVO checkSelectOptionVOExist(Long panchayatId,Long boothId,List<SelectOptionVO> list)
+ {
+	 try{
+	  if(list == null || list.size() == 0)
+	    return null;
+	  
+	  for(SelectOptionVO optionVO:list)
+	   if(optionVO.getParentUserId().equals(panchayatId) && optionVO.getMainAccountId().equals(boothId))
+		  return optionVO;
+	  
+	  return null;
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error(" Exception Occured in checkSelectOptionVOExist() method, Exception - "+e);
+	  return null;
+	}
  }
  
  public List<Object[]> getPartialBoothsInPanchayat(Long id,Long publicationId,Long constituencyId,String type){
