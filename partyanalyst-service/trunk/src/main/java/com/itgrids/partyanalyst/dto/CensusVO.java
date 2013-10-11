@@ -168,7 +168,87 @@ public class CensusVO implements Serializable{
 	private String partyName;
 	private String votingPercent;
 	private Long totalConstituencies;
+	private List<CensusVO> censusDetailsList;
+	private String houseHoldsPercentage;
+	private String populationUnderSixPercentage;
 	
+	private Long differencePopulation;
+	private String differencePopulationPercent;
+	private Long differenceMalePopulation;
+	private String differenceMalePercent;
+	private Long differenceFemalePopulation;
+	private String differenceFemalePercent;
+	private Long differenceHouseHolds;
+	private String differenceHouseHoldsPercent;
+	private Long differenceSC;
+	private String differenceSCPercent;
+	private Long differenceST;
+	private String differenceSTPercent;
+	private Long differenceWorkingPeople;
+	private String differenceWorkingPeoplePercent;
+	private Long differenceMaleWorkingPeople;
+	private String differenceMaleWorkingPeoplePercent;
+	private Long differenceFemaleWorkingPeople;
+	private String differenceFemaleWorkingPeoplePercent;
+	private Long differenceNonWorkingPeople;
+	private String differenceNonWorkingPeoplePercent;
+	private Long differenceLessthan6Population;
+	private String differenceLessthan6Percent;
+	private Long differenceLiterates;
+	private String differenceLiteratesPercent;
+	private Long differenceMaleLiterates;
+	private String differenceMaleLiteratesPercent;
+	private Long differenceFemaleLiterates;
+	private String differenceFemaleLiteratesPercent;
+	private String stateName;
+	private String districtName;
+	
+	private CensusVO districtDetails;
+	private CensusVO stateDetails;
+	
+	
+	public String getStateName() {
+		return stateName;
+	}
+	public void setStateName(String stateName) {
+		this.stateName = stateName;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getPopulationUnderSixPercentage() {
+		return populationUnderSixPercentage;
+	}
+	public void setPopulationUnderSixPercentage(String populationUnderSixPercentage) {
+		this.populationUnderSixPercentage = populationUnderSixPercentage;
+	}
+	public CensusVO getDistrictDetails() {
+		return districtDetails;
+	}
+	public void setDistrictDetails(CensusVO districtDetails) {
+		this.districtDetails = districtDetails;
+	}
+	public CensusVO getStateDetails() {
+		return stateDetails;
+	}
+	public void setStateDetails(CensusVO stateDetails) {
+		this.stateDetails = stateDetails;
+	}
+	public String getHouseHoldsPercentage() {
+		return houseHoldsPercentage;
+	}
+	public void setHouseHoldsPercentage(String houseHoldsPercentage) {
+		this.houseHoldsPercentage = houseHoldsPercentage;
+	}
+	public List<CensusVO> getCensusDetailsList() {
+		return censusDetailsList;
+	}
+	public void setCensusDetailsList(List<CensusVO> censusDetailsList) {
+		this.censusDetailsList = censusDetailsList;
+	}
 	public Long getConstituencyId() {
 		return constituencyId;
 	}
@@ -1089,6 +1169,186 @@ public class CensusVO implements Serializable{
 	}
 	public void setPConstavgPercent(BigDecimal constavgPercent) {
 		pConstavgPercent = constavgPercent;
+	}
+	public BigDecimal getpConstavgPercent() {
+		return pConstavgPercent;
+	}
+	public void setpConstavgPercent(BigDecimal pConstavgPercent) {
+		this.pConstavgPercent = pConstavgPercent;
+	}
+	public Long getDifferencePopulation() {
+		return differencePopulation;
+	}
+	public void setDifferencePopulation(Long differencePopulation) {
+		this.differencePopulation = differencePopulation;
+	}
+	public String getDifferencePopulationPercent() {
+		return differencePopulationPercent;
+	}
+	public void setDifferencePopulationPercent(String differencePopulationPercent) {
+		this.differencePopulationPercent = differencePopulationPercent;
+	}
+	public Long getDifferenceMalePopulation() {
+		return differenceMalePopulation;
+	}
+	public void setDifferenceMalePopulation(Long differenceMalePopulation) {
+		this.differenceMalePopulation = differenceMalePopulation;
+	}
+	public String getDifferenceMalePercent() {
+		return differenceMalePercent;
+	}
+	public void setDifferenceMalePercent(String differenceMalePercent) {
+		this.differenceMalePercent = differenceMalePercent;
+	}
+	public Long getDifferenceFemalePopulation() {
+		return differenceFemalePopulation;
+	}
+	public void setDifferenceFemalePopulation(Long differenceFemalePopulation) {
+		this.differenceFemalePopulation = differenceFemalePopulation;
+	}
+	public String getDifferenceFemalePercent() {
+		return differenceFemalePercent;
+	}
+	public void setDifferenceFemalePercent(String differenceFemalePercent) {
+		this.differenceFemalePercent = differenceFemalePercent;
+	}
+	public Long getDifferenceHouseHolds() {
+		return differenceHouseHolds;
+	}
+	public void setDifferenceHouseHolds(Long differenceHouseHolds) {
+		this.differenceHouseHolds = differenceHouseHolds;
+	}
+	public String getDifferenceHouseHoldsPercent() {
+		return differenceHouseHoldsPercent;
+	}
+	public void setDifferenceHouseHoldsPercent(String differenceHouseHoldsPercent) {
+		this.differenceHouseHoldsPercent = differenceHouseHoldsPercent;
+	}
+	public Long getDifferenceSC() {
+		return differenceSC;
+	}
+	public void setDifferenceSC(Long differenceSC) {
+		this.differenceSC = differenceSC;
+	}
+	public String getDifferenceSCPercent() {
+		return differenceSCPercent;
+	}
+	public void setDifferenceSCPercent(String differenceSCPercent) {
+		this.differenceSCPercent = differenceSCPercent;
+	}
+	public Long getDifferenceST() {
+		return differenceST;
+	}
+	public void setDifferenceST(Long differenceST) {
+		this.differenceST = differenceST;
+	}
+	public String getDifferenceSTPercent() {
+		return differenceSTPercent;
+	}
+	public void setDifferenceSTPercent(String differenceSTPercent) {
+		this.differenceSTPercent = differenceSTPercent;
+	}
+	public Long getDifferenceWorkingPeople() {
+		return differenceWorkingPeople;
+	}
+	public void setDifferenceWorkingPeople(Long differenceWorkingPeople) {
+		this.differenceWorkingPeople = differenceWorkingPeople;
+	}
+	public String getDifferenceWorkingPeoplePercent() {
+		return differenceWorkingPeoplePercent;
+	}
+	public void setDifferenceWorkingPeoplePercent(
+			String differenceWorkingPeoplePercent) {
+		this.differenceWorkingPeoplePercent = differenceWorkingPeoplePercent;
+	}
+	public Long getDifferenceMaleWorkingPeople() {
+		return differenceMaleWorkingPeople;
+	}
+	public void setDifferenceMaleWorkingPeople(Long differenceMaleWorkingPeople) {
+		this.differenceMaleWorkingPeople = differenceMaleWorkingPeople;
+	}
+	public String getDifferenceMaleWorkingPeoplePercent() {
+		return differenceMaleWorkingPeoplePercent;
+	}
+	public void setDifferenceMaleWorkingPeoplePercent(
+			String differenceMaleWorkingPeoplePercent) {
+		this.differenceMaleWorkingPeoplePercent = differenceMaleWorkingPeoplePercent;
+	}
+	public Long getDifferenceFemaleWorkingPeople() {
+		return differenceFemaleWorkingPeople;
+	}
+	public void setDifferenceFemaleWorkingPeople(Long differenceFemaleWorkingPeople) {
+		this.differenceFemaleWorkingPeople = differenceFemaleWorkingPeople;
+	}
+	public String getDifferenceFemaleWorkingPeoplePercent() {
+		return differenceFemaleWorkingPeoplePercent;
+	}
+	public void setDifferenceFemaleWorkingPeoplePercent(
+			String differenceFemaleWorkingPeoplePercent) {
+		this.differenceFemaleWorkingPeoplePercent = differenceFemaleWorkingPeoplePercent;
+	}
+	public Long getDifferenceNonWorkingPeople() {
+		return differenceNonWorkingPeople;
+	}
+	public void setDifferenceNonWorkingPeople(Long differenceNonWorkingPeople) {
+		this.differenceNonWorkingPeople = differenceNonWorkingPeople;
+	}
+	public String getDifferenceNonWorkingPeoplePercent() {
+		return differenceNonWorkingPeoplePercent;
+	}
+	public void setDifferenceNonWorkingPeoplePercent(
+			String differenceNonWorkingPeoplePercent) {
+		this.differenceNonWorkingPeoplePercent = differenceNonWorkingPeoplePercent;
+	}
+	public Long getDifferenceLessthan6Population() {
+		return differenceLessthan6Population;
+	}
+	public void setDifferenceLessthan6Population(Long differenceLessthan6Population) {
+		this.differenceLessthan6Population = differenceLessthan6Population;
+	}
+	public String getDifferenceLessthan6Percent() {
+		return differenceLessthan6Percent;
+	}
+	public void setDifferenceLessthan6Percent(String differenceLessthan6Percent) {
+		this.differenceLessthan6Percent = differenceLessthan6Percent;
+	}
+	public Long getDifferenceLiterates() {
+		return differenceLiterates;
+	}
+	public void setDifferenceLiterates(Long differenceLiterates) {
+		this.differenceLiterates = differenceLiterates;
+	}
+	public String getDifferenceLiteratesPercent() {
+		return differenceLiteratesPercent;
+	}
+	public void setDifferenceLiteratesPercent(String differenceLiteratesPercent) {
+		this.differenceLiteratesPercent = differenceLiteratesPercent;
+	}
+	public Long getDifferenceMaleLiterates() {
+		return differenceMaleLiterates;
+	}
+	public void setDifferenceMaleLiterates(Long differenceMaleLiterates) {
+		this.differenceMaleLiterates = differenceMaleLiterates;
+	}
+	public String getDifferenceMaleLiteratesPercent() {
+		return differenceMaleLiteratesPercent;
+	}
+	public void setDifferenceMaleLiteratesPercent(
+			String differenceMaleLiteratesPercent) {
+		this.differenceMaleLiteratesPercent = differenceMaleLiteratesPercent;
+	}
+	public Long getDifferenceFemaleLiterates() {
+		return differenceFemaleLiterates;
+	}
+	public void setDifferenceFemaleLiterates(Long differenceFemaleLiterates) {
+		this.differenceFemaleLiterates = differenceFemaleLiterates;
+	}
+	public String getDifferenceFemaleLiteratesPercent() {
+		return differenceFemaleLiteratesPercent;
+	}
+	public void setDifferenceFemaleLiteratesPercent(
+			String differenceFemaleLiteratesPercent) {
+		this.differenceFemaleLiteratesPercent = differenceFemaleLiteratesPercent;
 	}
 	
 
