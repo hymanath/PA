@@ -24,9 +24,16 @@ public void testFindStatesByCountryIdAndCountryAccessAndStateAccess()
 	System.out.println(list.size());
 }*/
 
-public void testgetStateList()
+/*public void testgetStateList()
 {
 	stateDAO.getStateList();
+}*/
+
+public void testgetStateList()
+{
+	List list = stateDAO.getStateDetailsByconstituencyId(282l);
+	System.out.println(list);
+
 }
 
 }
