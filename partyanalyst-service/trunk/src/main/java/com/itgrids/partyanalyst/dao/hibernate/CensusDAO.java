@@ -424,4 +424,47 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		Object[] params = {stateId,districtId,townshipId,new Long(year),level};
 		return getHibernateTemplate().find(censusString + " from Census model where model.stateId = ? and model.districtId = ? and model.township.townshipId = ?  and model.year = ? and model.level = ?",params);
 	}
+	  
+	  public List<Object[]> getDistrictPopulationForDifferentYears(Long districtId , List<Long> years)
+	  {
+		  
+		  
+		  Query query = getSession().createQuery("select " +
+		  		"model.totalPopulation, model.totalMalePopulation , model.totalFemalePopulation , model.houseHolds," +
+		  		" model.populationSC , model.populationST ,model.workingPopulation , model.workingMale ," +
+		  		"model.workingFemale , model.nonWorkingPopulation ,model.populationUnderSix , model.populationLiterates , " +
+		  		"model.maleLiterates , model.femaleLiterates , model.nonWorkingPopPercentage from Census model where " +
+		  		"model.districtId = :districtId and model.level = :level and model.year in(:years) " +
+		  		"order by model.year");
+		  
+		  
+		  query.setParameter("districtId", districtId);
+		  query.setParameter("level", IConstants.DISTRICT);
+		  query.setParameterList("years", years);
+		  
+		  return query.list();
+		  
+	  }
+	  
+	  
+	  public List<Object[]> getStatePopulationForDifferentYears(Long stateId , List<Long> years)
+	  {
+		  
+		  
+		  Query query = getSession().createQuery("select " +
+		  		"model.totalPopulation, model.totalMalePopulation , model.totalFemalePopulation , model.houseHolds," +
+		  		" model.populationSC , model.populationST ,model.workingPopulation , model.workingMale ," +
+		  		"model.workingFemale , model.nonWorkingPopulation ,model.populationUnderSix , model.populationLiterates , " +
+		  		"model.maleLiterates , model.femaleLiterates , model.nonWorkingPopPercentage from Census model where " +
+		  		"model.stateId = :stateId and model.level = :level and model.year in(:years) " +
+		  		"order by model.year");
+		  
+		  
+		  query.setParameter("stateId", stateId);
+		  query.setParameter("level", IConstants.STATE);
+		  query.setParameterList("years", years);
+		  
+		  return query.list();
+		  
+	  }
 }
