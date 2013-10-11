@@ -360,20 +360,19 @@ window.open(urlStr,"addNewCadrePeople","scrollbars=yes,height=570,width=1300,lef
  <h2 style="text-align:center;color:#06ABEA;"><u>CADRE SEARCH RESULTS TO SEND SMS</u></h2>
 
 
-<!--
+
 <div style="float:right;">
-<input type="button" class="btnClass" onClick="addNewCandidate();" value="Click Here To Add Cadre"/>
+<!-- <input type="button" class="btnClass" onClick="addNewCandidate();" value="Click Here To Add Cadre"/> -->
 <input type="button" class="btnClass" onClick="closeWindow();" value="Click here to close the window"/>
 
 </div>
--->
 
 
 <div style="margin-left:173px;width:660px;padding:10px;background-color:#f3f3f3;font-weight:bold;font-family:Arial;font-size:11px;">
 <h4>Instructions to select cadre for sending voice SMS</h4>
 
  <ul>
-  <li>Select the cadre to whom you would like to send SMS and click <a href="javascript:{closeWindow();}">here</a> once you are done with the selection, to close this window.</li>
+  <li>Select the cadre to whom you would like to send SMS <!-- and click <a href="javascript:{closeWindow();}">here</a> once you are done with the selection, to close this window. --></li>
   <li>You can get new cadre registered from <a href="javascript:{addNewCandidate();}">here</a> 
 </li>
  </ul>
