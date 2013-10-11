@@ -18,6 +18,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.MandalVO;
@@ -35,9 +36,9 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
-import com.itgrids.partyanalyst.service.impl.SuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -81,11 +82,26 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private MandalVO paricipatedPartyList;
 	private List<VoterCountVO> VoterCountVOList;
 	private List<SelectOptionVO> pachayatsList;
+	private IElectionService electionService;
 	private DelimitationEffectVO delimitationEffectVO;
+	private CensusVO constituencyCensusResultVO;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	private VotersInfoForMandalVO votersInfoForMandalVO;
 	
 	
+	
+	public CensusVO getConstituencyCensusResultVO() {
+		return constituencyCensusResultVO;
+	}
+	public void setConstituencyCensusResultVO(CensusVO constituencyCensusResultVO) {
+		this.constituencyCensusResultVO = constituencyCensusResultVO;
+	}
+	public IElectionService getElectionService() {
+		return electionService;
+	}
+	public void setElectionService(IElectionService electionService) {
+		this.electionService = electionService;
+	}
 	
 	public VotersInfoForMandalVO getVotersInfoForMandalVO() {
 		return votersInfoForMandalVO;
@@ -94,10 +110,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	public void setVotersInfoForMandalVO(VotersInfoForMandalVO votersInfoForMandalVO) {
 		this.votersInfoForMandalVO = votersInfoForMandalVO;
 	}
-
 	
-	
-
 	public DelimitationEffectVO getDelimitationEffectVO() {
 		return delimitationEffectVO;
 	}
@@ -894,7 +907,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			}
 			Long constituencyId= jObj.getLong("mandalId");
 			//partyList = suggestiveModelService.getPartyDetailsByMandal(tehsilId);
-			paricipatedPartyList = staticDataService.getElectionYearsAndPartiesForSelectedConstituency(constituencyId);
+			//paricipatedPartyList = staticDataService.getElectionYearsAndPartiesForSelectedConstituency(constituencyId);
+			paricipatedPartyList = staticDataService.getElectionYearsAndPartiesForSelectedConstituencyInSuggestive(constituencyId);
 			return Action.SUCCESS;
 		}
 		
@@ -953,5 +967,24 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				log.error("Exception raised in getVoterAgeGroupResults() method in Suggestive Model Action",e);
 			}
 			return Action.SUCCESS;
+		}
+		
+		public String getCensusDetailsForAConstituency()
+		{
+			try
+			{
+				try{
+					jObj = new JSONObject(getTask());
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				
+				constituencyCensusResultVO = electionService.getCensusDetailsForAConstituency(jObj.getLong("constituencyId"));
+			
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+			  return Action.SUCCESS;
 		}
 }
