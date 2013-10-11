@@ -487,7 +487,7 @@ public class VoiceSmsAction implements ServletRequestAware{
 			 JSONArray cadreArray = jObj.getJSONArray("cadreDetails");
 			 JSONArray influencePeopleArray = jObj.getJSONArray("influencePeopleDetails");
 			 JSONArray votersArray = jObj.getJSONArray("votersDetails");
-			 JSONArray otherNumbersArray = jObj.getJSONArray("votersDetails");
+			 JSONArray otherNumbersArray = jObj.getJSONArray("otherNumbers");
 			 
 			 for(int i=0; i<cadreArray.length(); i++)
 			 {
