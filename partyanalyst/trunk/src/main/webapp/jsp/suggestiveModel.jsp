@@ -71,6 +71,11 @@ google.load("visualization", "1", {packages:["corechart"]});
 
 </script>
 <style type="text/css">	
+	
+	#populationCensusDiv table,#populationCensusDiv table th,#populationCensusDiv table td{	
+	text-align:center;
+	border:1px solid #DDDDDD;
+	}
 	select {
     background-color: #FFFFFF;
     border: 1px solid #CCCCCC;
@@ -237,6 +242,19 @@ $(document).ready(function(){
   
  </c:if>
 });
+
+function getConstituencyCensusDetails(){
+
+    var jsObj= 
+	{	
+		constituencyId:$('#listConstituencyNames').val(),
+		task:"censusDetails"
+	};
+	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCensusDetailsForAConstituency.action?"+param;
+	callAjax(param,jsObj,url);
+}
+
 function getConstituencyList(){
 
 var jsObj= 
@@ -692,6 +710,10 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task== "getCastInfo")
 						{
 						buildCasteInfo(myResults,jsObj);
+						}
+						else if(jsObj.task== "censusDetails")
+						{
+							buildPopulationCensusTable(myResults,jsObj);
 						}
 						
 					}catch (e){
@@ -1170,7 +1192,7 @@ To
 
 
 <div id="partyPerformanceBtnDiv" style="float: right;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-right: 199px; margin-top: -44px; margin-bottom: 20px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();getPollingPercentageForBooths();"/>
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-right: 199px; margin-top: -44px; margin-bottom: 20px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();getPollingPercentageForBooths();getConstituencyCensusDetails();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 <!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
@@ -1268,6 +1290,10 @@ To
 <img src="images/icons/loading.gif" id="ajaxLoaderImgForNewPartyDiv" height="25px" width="25px;" style="display:none;"/>
 
 <div id="conclusionStatements" style="margin-left:177px;margin-top:34px;"></div>
+<div id="censusMainDiv" style="background:#FFFFFF;overflow:scroll;"  >
+<div id="populationCensusDiv" class="widget blue"> </div>
+</div>
+
 </div>
 
 <form id="ExceptedCasteDetailsDiv" method="post" action="getLeadersDataAction.action" name="exceptedCasteDetailsForm">
@@ -3691,6 +3717,357 @@ var jsObj=
   </c:if>
 </c:if>	   
 
+function buildPopulationCensusTable(results,jsObj){
+$('#populationCensusDiv').html('');
+var constiName = $('#listConstituencyNames :selected').text();
+var str='';
+str +='<h4>'+constiName+' Constituency 2001 and 2011 Census Information </h4>';
+str +='<table class="table"  style="margin-top:10px;">';
+
+	str +='<tr>';
+	str +='<td style="border-left:1px solid #F1F1F1; border-top: 1px solid #F1F1F1; border-bottom: 1px solid #F1F1F1;"></td>';
+	str +='<th colspan="2">2001</th>';
+	str +='<th colspan="2">2011</th>';
+	str +='<th colspan="4">2001 to 2011 Change in Percentages</th>';
+	str +='</tr>';
+	
+	str +='<tr>';
+	str +='<td style="border-left:1px solid #F1F1F1; border-top: 1px solid #F1F1F1;"></td>';
+	str +='<th>'+constiName+'</th>';
+	str +='<th>'+constiName+'</th>';
+	str +='<th>'+constiName+'</th>';
+	str +='<th>'+constiName+'</th>';
+	str +='<th>'+constiName+'</th>';
+	str +='<th>'+constiName+'</th>';
+	str +='<th>'+results.districtName+' Dist.</th>';
+	str +='<th>'+results.stateName+' State</th>';
+	str +='</tr>';
+	str +='<tr>';
+	str +='<th>Parameter</th>';
+	str +='<th>Values</th>';
+	str +='<th>%</th>';
+	str +='<th>Values</th>';
+	str +='<th>%</th>';
+	str +='<th>Values</th>';
+	str +='<th>%</th>';
+	str +='<th>%</th>';
+	str +='<th>%</th>';
+	str +='</tr>';
+	
+	str +='<tr>';
+	str +='<td>Population</td>';
+
+		str +='<td>'+results.censusDetailsList[0].totalPopulation+'</td>';
+		str +='<td>'+results.censusDetailsList[0].totalPopulationPercentage+'</td>';
+		
+		if(results.count >1){
+			str +='<td>'+results.censusDetailsList[1].totalPopulation+'</td>';
+			str +='<td>'+results.censusDetailsList[1].totalPopulationPercentage+'</td>';
+
+
+			str +='<td>'+results.differencePopulation+'</td>';
+			str +='<td>'+results.differencePopulationPercent+'</td>';
+			str +='<td>'+results.districtDetails.differencePopulationPercent+'</td>';
+			str +='<td>'+results.stateDetails.differencePopulationPercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+
+	str +='</tr>';
+		
+	str +='<tr>';
+	str +='<td>Male</td>';
+
+		str +='<td>'+results.censusDetailsList[0].malePopulation+'</td>';
+		str +='<td>'+results.censusDetailsList[0].malePopulationPercentage+'</td>';
+	if(results.count >1){	
+		str +='<td>'+results.censusDetailsList[1].malePopulation+'</td>';
+		str +='<td>'+results.censusDetailsList[1].malePopulationPercentage+'</td>';
+
+
+		str +='<td>'+results.differenceMalePopulation+'</td>';
+		str +='<td>'+results.differenceMalePercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceMalePercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceMalePercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+		
+	str +='</tr>';
+	
+	str +='<tr>';
+	str +='<td>Female</td>';
+
+		str +='<td>'+results.censusDetailsList[0].femalePopulation+'</td>';
+		str +='<td>'+results.censusDetailsList[0].femalePopulationPercentage+'</td>';
+	if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].femalePopulation+'</td>';
+		str +='<td>'+results.censusDetailsList[1].femalePopulationPercentage+'</td>';
+
+
+		str +='<td>'+results.differenceFemalePopulation+'</td>';
+		str +='<td>'+results.differenceFemalePercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceFemalePercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceFemalePercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+
+	str +='<tr>';
+	str +='<td>Households</td>';
+
+		str +='<td>'+results.censusDetailsList[0].houseHolds+'</td>';
+		str +='<td>'+results.censusDetailsList[0].houseHoldsPercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].houseHolds+'</td>';
+		str +='<td>'+results.censusDetailsList[1].houseHoldsPercentage+'</td>';
+
+
+		str +='<td>'+results.differenceHouseHolds+'</td>';
+		str +='<td>'+results.differenceHouseHoldsPercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceHouseHoldsPercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceHouseHoldsPercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+		str +='<tr>';
+	str +='<td>SC</td>';
+
+		str +='<td>'+results.censusDetailsList[0].populationSC+'</td>';
+		str +='<td>'+results.censusDetailsList[0].populationSCPercent+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].populationSC+'</td>';
+		str +='<td>'+results.censusDetailsList[1].populationSCPercent+'</td>';
+
+
+		str +='<td>'+results.differenceSC+'</td>';
+		str +='<td>'+results.differenceSCPercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceSCPercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceSCPercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	str +='<td>ST</td>';
+
+		str +='<td>'+results.censusDetailsList[0].populationST+'</td>';
+		str +='<td>'+results.censusDetailsList[0].populationSTPercent+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].populationST+'</td>';
+		str +='<td>'+results.censusDetailsList[1].populationSTPercent+'</td>';
+
+
+		str +='<td>'+results.differenceST+'</td>';
+		str +='<td>'+results.differenceSTPercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceSTPercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceSTPercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+		str +='<td>Working People</td>';
+
+		str +='<td>'+results.censusDetailsList[0].workingPeople+'</td>';
+		str +='<td>'+results.censusDetailsList[0].workingPeoplePercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].workingPeople+'</td>';
+		str +='<td>'+results.censusDetailsList[1].workingPeoplePercentage+'</td>';
+
+
+		str +='<td>'+results.differenceWorkingPeople+'</td>';
+		str +='<td>'+results.differenceWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceWorkingPeoplePercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	
+		str +='<td>Male Working People</td>';
+
+		str +='<td>'+results.censusDetailsList[0].workingMale+'</td>';
+		str +='<td>'+results.censusDetailsList[0].totalWorkingMalePercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].workingMale+'</td>';
+		str +='<td>'+results.censusDetailsList[1].totalWorkingMalePercentage+'</td>';
+
+
+		str +='<td>'+results.differenceMaleWorkingPeople+'</td>';
+		str +='<td>'+results.differenceMaleWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceMaleWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceMaleWorkingPeoplePercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	
+		str +='<td>Female Working People</td>';
+
+		str +='<td>'+results.censusDetailsList[0].workingFemale+'</td>';
+		str +='<td>'+results.censusDetailsList[0].totalWorkingFemalePercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].workingFemale+'</td>';
+		str +='<td>'+results.censusDetailsList[1].totalWorkingFemalePercentage+'</td>';
+
+
+		str +='<td>'+results.differenceFemaleWorkingPeople+'</td>';
+		str +='<td>'+results.differenceFemaleWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceFemaleWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceFemaleWorkingPeoplePercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+		str +='<td>Non Working People</td>';
+
+		str +='<td>'+results.censusDetailsList[0].nonWorkingPeople+'</td>';
+		str +='<td>'+results.censusDetailsList[0].nonWorkingPeoplePercent+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].nonWorkingPeople+'</td>';
+		str +='<td>'+results.censusDetailsList[1].nonWorkingPeoplePercent+'</td>';
+
+
+		str +='<td>'+results.differenceNonWorkingPeople+'</td>';
+		str +='<td>'+results.differenceNonWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceNonWorkingPeoplePercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceNonWorkingPeoplePercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	
+		str +='<td>Population(Age < 6)</td>';
+
+		str +='<td>'+results.censusDetailsList[0].populationUnderSix+'</td>';
+		str +='<td>'+results.censusDetailsList[0].populationUnderSixPercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].populationUnderSix+'</td>';
+		str +='<td>'+results.censusDetailsList[1].populationUnderSixPercentage+'</td>';
+
+		str +='<td>'+results.differenceLessthan6Population+'</td>';
+		str +='<td>'+results.differenceLessthan6Percent+'</td>';
+		str +='<td>'+results.districtDetails.differenceLessthan6Percent+'</td>';
+		str +='<td>'+results.stateDetails.differenceLessthan6Percent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	
+		str +='<td>Literates</td>';
+
+		str +='<td>'+results.censusDetailsList[0].literates+'</td>';
+		str +='<td>'+results.censusDetailsList[0].literatesPercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].literates+'</td>';
+		str +='<td>'+results.censusDetailsList[1].literatesPercentage+'</td>';
+
+		str +='<td>'+results.differenceLiterates+'</td>';
+		str +='<td>'+results.differenceLiteratesPercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceLiteratesPercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceLiteratesPercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	
+		str +='<td>Male Literates</td>';
+
+		str +='<td>'+results.censusDetailsList[0].maleLiterates+'</td>';
+		str +='<td>'+results.censusDetailsList[0].maleLiteraturePercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].maleLiterates+'</td>';
+		str +='<td>'+results.censusDetailsList[1].maleLiteraturePercentage+'</td>';
+
+		str +='<td>'+results.differenceMaleLiterates+'</td>';
+		str +='<td>'+results.differenceMaleLiteratesPercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceMaleLiteratesPercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceMaleLiteratesPercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	
+		str +='<td>Female Literates</td>';
+
+		str +='<td>'+results.censusDetailsList[0].femaleLiterates+'</td>';
+		str +='<td>'+results.censusDetailsList[0].femaleLiteraturePercentage+'</td>';
+		if(results.count >1){
+		str +='<td>'+results.censusDetailsList[1].femaleLiterates+'</td>';
+		str +='<td>'+results.censusDetailsList[1].femaleLiteraturePercentage+'</td>';
+
+
+		str +='<td>'+results.differenceFemaleLiterates+'</td>';
+		str +='<td>'+results.differenceFemaleLiteratesPercent+'</td>';
+		str +='<td>'+results.districtDetails.differenceFemaleLiteratesPercent+'</td>';
+		str +='<td>'+results.stateDetails.differenceFemaleLiteratesPercent+'</td>';
+		}
+		else
+		{
+		str += ''+getEmptyTableData();
+		}
+	str +='</tr>';
+	
+	
+	str +='</tr>';
+
+
+str +='</table>';
+
+
+$('#populationCensusDiv').html(str);
+
+
+}  
+
+function getEmptyTableData(){
+var str1 ='';
+	str1 +='<td> - </td>';
+	str1 +='<td> - </td>';
+	str1 +='<td> - </td>';
+	str1 +='<td> - </td>';
+	str1 +='<td> - </td>';
+	str1 +='<td> - </td>';
+	
+return str1;
+}
 </script>
 </body>
 </html>
