@@ -50,4 +50,20 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 	{
 		return getHibernateTemplate().find(" from ConstituencyCensusDetails model where model.constituencyId = ? ",constituencyId);	
 	}
+	
+	
+	public List<ConstituencyCensusDetails> getCensusConstituencyByConstituencyIdAndYears(
+			Long constituencyId, List<Long> years)	{
+		
+		Query query = getSession().createQuery("from ConstituencyCensusDetails  model " +
+				"where model.constituencyId = :constituencyId and " +
+				"model.year in(:years) order by model.year");
+		
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("years", years);
+		
+		return query.list();
+		
+		
+	}
 }
