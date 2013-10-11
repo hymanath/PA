@@ -154,6 +154,10 @@
 		<property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO" />
 		<property name="censusParameterDAO" ref="censusParameterDAO" />
 		<property name="partyDAO" ref="partyDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="censusDAO" ref="censusDAO"></property>
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="districtDAO" ref="districtDAO" />
 	</bean>
 	
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
