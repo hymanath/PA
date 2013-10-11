@@ -34,6 +34,18 @@
 <c:if test="${electionType == 'Parliament'}"><TITLE>${electionType} Election ${year} Results Page </TITLE></c:if>
 </HEAD>
 <SCRIPT type="text/javascript">
+var locationType="";
+var	regionLabel='';
+ if(${electionType=='Assembly'})
+ {   
+     locationType='District';
+     regionLabel='District';
+ }
+else if(${electionType=='Parliament'})
+{  
+	locationType='State';
+     regionLabel='State';
+}
 var stateId = '${stateID}';
 var electionType = '${electionType}';
 var selectedYear = '${selectedElectionYear}';
@@ -190,13 +202,22 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 		 
       //static colors for parties
       var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
-
+      if(${electionType=='Assembly'})
+	 {
 	  var ctitle='';
       if(partyN != null) 
 	     ctitle = partyN+' District Wise Election Results By Seats Won'; 
 	  else
          ctitle = 'All Parties District Wise Election Results By Seats Won';
-
+	 }
+   if(${electionType=='Parliament'})
+	 {
+	  var ctitle='';
+      if(partyN != null) 
+	     ctitle = partyN+' State Wise Election Results By Seats Won'; 
+	  else
+         ctitle = 'All Parties State Wise Election Results By Seats Won';
+	 }
 	  if(staticColors != null && staticColors.length > 0)
 	  {
         new google.visualization.LineChart(districtWiseGraphEl).
@@ -281,10 +302,22 @@ function getDistrictResultsInteractiveChartSeatsWon(results,partyN)
 		 
     
 	 var ctitle='';
+	 if(${requestScope.electionType=='Assembly'})
+	 {
       if(partyN != null) 
 	     ctitle = partyN+' District Wise Election Results By Votes Percentage'; 
 	  else
          ctitle = 'All Parties District Wise Election Results By Votes Percentage'; 
+	 }
+     if(${requestScope.electionType=='Parliament'})
+	 {
+      if(partyN != null) 
+	     ctitle = partyN+' State Wise Election Results By Votes Percentage'; 
+	  else
+         ctitle = 'All Parties State Wise Election Results By Votes Percentage'; 
+	 }
+
+
 
 	   //static colors for parties
       var staticColors = setStaticColorsForInteractiveChartsForPartiesArray(partiesArray);
@@ -544,7 +577,7 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
 
 
 	var allDistrictResultsColumnDefs = [
-								{key: "district", label: "District", sortable:true},		
+								{key: "district", label:regionLabel, sortable:true},		
 								{key: "party", label: "<%=party%>", sortable:true,formatter:YAHOO.widget.DataTable.partyLink },										
 		              	 	    {key: "seatsWon", label: "<%=seatsWon%>",formatter:"number", sortable:true},
 		              	 	 	{key: "second", label: "2nd",formatter:"number", sortable:true},
@@ -570,12 +603,14 @@ function buildAllDistrictDatatable(innerObj,divID,type,partyName,districtName)
                          		  {key:"partyId",parser:"number"} ] 
                 					   
         		};
-
+        
 		var myConfigs = { 
 			    paginator : new YAHOO.widget.Paginator({ 
 		        rowsPerPage    : 23			        
 			    }),
-			    caption:"<div style='color: red;'>Districts Wise Election 		Results</div>"
+				
+                  caption:"<div style='color: red;'>"+locationType+" Wise Election Results</div>"
+
 				};
 		
 		var allDistrictResultsDataTable = new YAHOO.widget.DataTable(divID, allDistrictResultsColumnDefs, allDistrictResultsDataSource,myConfigs);
@@ -910,8 +945,8 @@ function updateResultsStatewise(distName,results)
 <TABLE cellspacing="0" cellpadding="0" border="0" >
 <TR>
 <TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo1.png" border="none" style="margin-top:7px;"/></TD><TD valign="top">
-<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName}&nbsp;${electionType} Election Results ${selectedYear}</DIV></c:if>
-<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading">${selectedYear} ${electionType} Election Results </DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:7px;" border="none"/>
+<c:if test="${electionType != 'Parliament'}"><DIV class="mainHeading">${stateName}&nbsp;${electionType} Election Results in ${requestScope.selectedElectionYear}</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="mainHeading"> ${electionType} Election Results in  ${requestScope.selectedElectionYear} </DIV></c:if></TD><TD valign="top"><IMG src="images/icons/electionResultsReport/elections_logo2.png" style="margin-top:7px;" border="none"/>
 </TD>
 </TR>
 </TABLE>
@@ -920,7 +955,7 @@ function updateResultsStatewise(distName,results)
 	<IMG src="images/icons/barloader.gif"/>
 </DIV>
 <c:if test="${electionType != 'Parliament'}"><DIV class="graphTop">District Level Overview</DIV></c:if>
-<c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">Country Level Overview</DIV></c:if>
+<c:if test="${electionType == 'Parliament'}"><DIV class="graphTop">State Level Overview</DIV></c:if>
 <DIV id="distwiseGraph">
 <DIV id="districtWiseGraph"></DIV>
 <DIV id="districtWiseSeatsGraph"></DIV>
