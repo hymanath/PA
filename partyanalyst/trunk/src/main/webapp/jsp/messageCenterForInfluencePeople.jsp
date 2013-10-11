@@ -42,7 +42,7 @@
 	padding:5px;
 	text-decoration:none;
 }
-#votersByLocationTabContentDiv_body table{ border: 1px solid #7F7F7F;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;margin-top: 20px;}
+#votersByLocationTabContentDiv_body table{ border: 1px solid #7F7F7F;border-collapse:collapse;padding:10px;width:100%;margin-top: 20px;}
 #votersByLocationTabContentDiv_body table th{
 	background-color: #CDE6FC;
     font-size: 13px;
@@ -51,16 +51,12 @@
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 5px;
-    text-align: left;
+    text-align: center;
 	color:#333333;
 	}
 	 #votersByLocationTabContentDiv_body table td{padding:2px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
 	#votersByLocationTabContentDiv_body table tr:nth-child(even){background:#EdF5FF;}
-#votersByLocationTabContentDiv_body{
-margin-left: auto; 
-margin-right: auto; 
-width: 55%;
-}
+
 
  #mainDiv{margin: 20px auto; float: none; width: 980px;}
  #voterDetailsDiv table {
@@ -165,18 +161,18 @@ function unSelectAllCheckBoxes(){
 <body>
   <u style="color:#06ABEA;"><h2 style="text-align:center;color:#06ABEA;">INFLUENCING PEOPLE SEARCH RESULTS TO SEND SMS</h2></u>
 
-<!--
+
 <div style="float:right;margin:0px 35px 12px 5px;">
-<input type="button" class="btnClass" onClick="addNewCandidate()" value="Click Here To Add Influencing People"/>
+<!--<input type="button" class="btnClass" onClick="addNewCandidate()" value="Click Here To Add Influencing People"/> -->
 <input type="button" class="btnClass" onClick="window.close();" value="Click here to close the window"/>
 </div>
--->
+
 
 <div style="margin-left:225px;width:660px;padding:10px;background-color:#f3f3f3;font-weight:bold;font-family:Arial;font-size:11px;">
 <h4>Instructions to select influencing people for sending voice SMS</h4>
 
  <ul>
-  <li>Select the influencing people to whom you would like to send SMS and click <a href="javascript:{closeWindow();}">here</a> once you are done with the selection, to close this window.</li>
+  <li>Select the influencing people to whom you would like to send SMS <!-- and click <a href="javascript:{closeWindow();}">here</a> once you are done with the selection, to close this window. --></li>
   <li>You can get new INFLUENCING PEOPLE registered from <a href="javascript:{addNewCandidate();}">here</a> 
 </li>
  </ul>
@@ -186,7 +182,7 @@ function unSelectAllCheckBoxes(){
 <span id="peopleCount" style="font-size:13px;font-weight:bold;color:#0082A3;margin-left: -445px;"></span>
  <div class="row">
 
-	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable" style="margin-top:30px;"></div>
+	<div id="votersByLocationTabContentDiv_body" class="yui-skin-sam yui-dt-sortable" style="margin-top:30px;width:900px;"></div>
 	</div>
 </div>
 
@@ -231,9 +227,23 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 			var mobileNumber = oRecord.getData("mobileNumber");
 
 			if(window.opener.selectedInfluencePeopleDetails[name] == undefined)
-		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: -1px;"/>';
+		var str ='<input type="checkbox" onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'"/>';
 	else
-		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'" style="margin-left: 29px;"/>';
+		var str ='<input type="checkbox" checked onchange="pushIntoInfluencePeopleObject(\''+name+'\',\''+mobileNumber+'\')" class="checkbox" value="'+name+'-'+mobileNumber+'"/>';
+
+		elLiner.innerHTML =str;
+	}
+	
+	YAHOO.widget.DataTable.Scope = function(elLiner, oRecord, oColumn, oData)
+	{
+
+			var locationType= oRecord.getData("locationType");
+			var name= oRecord.getData("name");
+
+	if((locationType).toLowerCase().indexOf("ward") != -1 )
+		var str ='WARD - ';
+	else
+		var str =' '+locationType+' ';
 
 		elLiner.innerHTML =str;
 	}
@@ -254,13 +264,12 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 
 
 var votersByLocBoothColumnDefs = [
-{key:"select", label: "<input type='checkbox' class='selectAll' style='margin-left:34px;'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
+{key:"select", label: "<input type='checkbox' class='selectAll' style='margin-left:-25px;'/>", width:70,formatter:YAHOO.widget.DataTable.Type},
 {key:"name", label: "Name",width:110,sortable: true},
 {key:"mobileNumber",label:"Mobile Number",width:110,sortable:false},
-{key:"locationType",label:"Area Type",width:170,sortable:false}
-/*{key:"casteIds",label:"Caste",formatter:YAHOO.widget.DataTable.Caste}*/
+{key:"locationType",label:"Influencing Level",width:170,sortable:false,formatter:YAHOO.widget.DataTable.Scope},
+{key:"casteIds",label:"Caste",formatter:YAHOO.widget.DataTable.Caste}
 ];
-
 
 //parentLocationId
 var urlStr = "searchCandidatesForVoiceSmsAction.action?publicationDateId=8&locationType="+locationType+"&locationValue="+locationId+"&parentLocationId="+parentLocationId+"&";
@@ -288,7 +297,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "resultVotersList",
 fields: [
 {key:"name"},
-"mobileNumber","locationType"],
+"mobileNumber","locationType","casteIds"],
 
 metaFields: {
 totalRecords: "totalResultsCount" // Access to value in the server response
@@ -312,7 +321,7 @@ oPayload.totalRecords = oResponse.meta.totalRecords;
 
 	if(oResponse.meta.totalRecords  == 0)
 	{
-		$('#peopleCount').html("<font style='color:red;font-weight:bold;'>No records found matching your search criteria. Changing the search criteria might help you.</font>");
+		$('#peopleCount').html("<font style='color:red;font-weight:bold;margin-left: 500px;'>No records found matching your search criteria. Changing the search criteria might help you.</font>");
 	}
 	else
 	$('#peopleCount').html("Total Count : <span>"+oResponse.meta.totalRecords +"</span>");
