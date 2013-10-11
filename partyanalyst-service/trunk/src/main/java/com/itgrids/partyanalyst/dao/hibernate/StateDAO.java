@@ -180,4 +180,10 @@ public class StateDAO extends GenericDaoHibernate<State, Long> implements IState
 		return getHibernateTemplate().find(" select model.stateId,model.stateName from State model ");
 	}
 	
+	public List<Object[]> getStateDetailsByconstituencyId(Long constituencyId){
+		
+		return getHibernateTemplate().find(" select model.state.stateId,model.state.stateName from Constituency model where model.constituencyId = ?",constituencyId);
+
+	}
+	
 }
