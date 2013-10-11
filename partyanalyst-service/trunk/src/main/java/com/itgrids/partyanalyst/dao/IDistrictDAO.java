@@ -73,4 +73,5 @@ public interface IDistrictDAO extends GenericDao<District, Long>{
 	
 	public List<Object[]> getDistrictList();
 	
+	public List<Object[]> getDistrictIdAndNameByConstituency(Long constituencyId);
 }
