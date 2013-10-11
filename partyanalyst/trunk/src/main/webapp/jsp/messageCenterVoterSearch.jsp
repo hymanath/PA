@@ -279,6 +279,11 @@ votersByLocBoothColumnDefs, votersByLocBoothDataSource, myConfigs);
 
 votersByLocBoothDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
 	oPayload.totalRecords = oResponse.meta.totalRecords;
+	if(oResponse.meta.totalRecords  == 0)
+	{
+		$('#peopleCount').html("<font style='color:red;font-weight:bold;margin-left: 130px;'>No records found matching your search criteria. Changing the search criteria might help you.</font>");
+	}
+	else
 	$('#peopleCount').html("Total Count : <span>"+oResponse.meta.totalRecords +"</span>");
 return oPayload;
 }
