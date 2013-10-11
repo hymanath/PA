@@ -979,6 +979,7 @@ input, button, select, textarea {
 		mainStr = type;
 		var name = "";
 		var value = "";
+		var selectType1 = '';
 		if(result != null)
 		{
 			
@@ -987,13 +988,15 @@ input, button, select, textarea {
 				if(jsObj.level == 2)
 				{
 					name += '<b>Panchayats</b><font class="requiredFont" style="color:red">*</font>';
+					value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'panchayats\',\'\');" class="multipleSelect" multiple>';
 				}
 				else if(jsObj.level == 3)
 				{
 					name += '<b>Booths</b><font class="requiredFont" style="color:red">*</font>';
+					value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'booths\',\'\');" class="multipleSelect" multiple>';
 				}
 				$('#multiSelectLevelsHeading').html(name);
-				value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'\',\'\');" class="multipleSelect" multiple>';
+			//	value += '<select id="selMandalList" onChange="getUserCategoersFoeSelect(\'\',\'\');" class="multipleSelect" multiple>';
 				for(var i in result)
 				{
 					value += '<option value='+result[i].id+'>'+result[i].name+'</option>';
@@ -1058,9 +1061,13 @@ input, button, select, textarea {
 		{
 			$('#selPanchayatRow').hide();
 		}
-		else if (type == "")
+		else if (type.toLowerCase() == "booths")
 		{
 			$('#selPanchayatRow').show();
+		}
+		else if (type.toLowerCase() == "panchayats")
+		{
+			$('#selPanchayatRow').hide();
 		}
 		else if (type.toLowerCase() == "booth" )
 		{
