@@ -606,7 +606,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Object[]> getDistrictForSelectedConstituency(List<Long> constituencyIds,Long stateId)
 	{
 		Query query = getSession().createQuery("select  distinct model.district.districtId,model.district.districtName from Constituency model" +
-				" where model.constituencyId in (:constituencyIds) and model.state.stateId = :stateId");
+				" where model.constituencyId in (:constituencyIds) and model.state.stateId = :stateId order by model.district.districtName ");
 		query.setParameterList("constituencyIds", constituencyIds);
 		query.setParameter("stateId", stateId);
 		return query.list();
