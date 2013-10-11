@@ -23,6 +23,15 @@
 
 <style>
 
+ 
+ #hitntsDiv{
+	font-size: 12px;
+	width:400px;
+	margin-left: -15px; 
+	text-align: justify; 
+	border: 1px solid #ECECEC; 
+	padding: 5px; 
+ }
 .radioSpecial > input[type=radio]{
 		display:none;
 	}
@@ -340,7 +349,7 @@ var selectedMobileNumbers = new Array();
 var selectedCriteria={};
 var accessType = '${accessType}';
 $(document).ready(function() {
-
+populateHints("Cadre");
 $('#reportLevel').val(8);
    $('#reportLevel').change(function(){
      if($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 4 || $(this).val() == 5 || $(this).val() == 6){
@@ -406,6 +415,8 @@ $('#reportLevel').val(8);
 					$('#constiTypeDiv').show();
 			mySearch ='cadre';
 			populateConstituencies();
+			populateHints("Cadre");
+			
 		}
 		else if($(this).val() == "influencePeople")
 		{
@@ -448,6 +459,7 @@ $('#reportLevel').val(8);
 			
 		   // $("#reportLevel option[value='3']").remove();
 			mySearch ='influencePeople';
+			populateHints("Influencing People");
 		}
 		else if($(this).val() == "voter")
 		{
@@ -479,7 +491,7 @@ $('#reportLevel').val(8);
 	});
 
 	
-		if('${verifiedNumbersCount}' == 0)
+	/*	if('${verifiedNumbersCount}' == 0)
 		{
 			$('#mainDiv').hide();
 			$('#noVerificationNumbers').html('<h5>You Do not have any verified mobile numbers.Please contact us to get your mobile number approved by us<h5>');
@@ -491,7 +503,11 @@ $('#reportLevel').val(8);
            // getVoiceSmsHistoryOfUser('hide');
 			getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
 
-		}
+		}*/
+
+		ajaxToGetRecordingDetails();
+		getSubLevelInfluenceData(1,"Andhra Pradesh","STATE","VILLAGE/WARD","",0,true);
+		
 	$('#mobileNumbersDiv').hide();
 	$('.subTab ,#tableDiv,#influenceDiv').hide();
 
@@ -553,6 +569,15 @@ $('#reportLevel').val(8);
 		$('#ConstituencyDiv').show();
 		$('#districtDiv').show();
 	});
+	
+	$('#ageCheckbox').change(function(){
+	if($('#ageCheckbox').attr('checked')) {
+			$("#ageSliderDiv").css("display","block");
+	} else {
+			$("#ageSliderDiv").css("display","none");
+	}
+	});
+	
 	
 });
 
@@ -1117,6 +1142,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 	  <div id="errorMsgAlert" style="font-family: verdana;font-size:13px;color:red;margin-left:100px;margin-bottom: 12px; margin-top: 3px;"></div>
 
 	  <div style="" id="selectedAreaType">
+	  <div id="hitntsDiv"></div>
 	  	<label  style="float:left;margin:14px;margin-left:36px;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="level" checked="checked"/>&nbsp;&nbsp;Search By Region Level</label>
 
 	    <label style="float:left;margin:14px;margin-left:-3px;"><input type="radio" name="searchBasedRadio" style="margin:0px;" value="location"/>&nbsp;&nbsp;Search By Location</label>
@@ -1268,11 +1294,11 @@ clearOptionsListForSelectElmtId("pollingStationField");
 		<input type="text" id="age2" style="width:100px;">
 	 </div>
 	 -->
-	 <div id="ageDiv" style="display:none;">
-		 <input type="checkbox" id="ageCheckbox" style="float:right;margin:18px 22px 0px 0px;" title="Consider Age"/>
+	 <div id="ageDiv" style="display:none;padding: 5px 5px 5px 0px;">
 		 <span>Age Range</span>
+		 		 <span style="margin-left: 80px;"> : <input type="checkbox" id="ageCheckbox" title="Consider Age" style="margin-top: 0px;"/> Consider Age.</span>
 		 <!-- <input type="text" id="amount" style="border: 0; color: #f6931f; font-weight: bold;width:50px;" />-->
-		 <div style="width:165px;margin-left:162px;">
+		 <div id="ageSliderDiv" style="width:165px;margin-left:162px;display:none;margin-top: 15px;">
 		   <div id="slider-range"></div>
 
 		   <span id="amount"></span>
@@ -1289,7 +1315,7 @@ clearOptionsListForSelectElmtId("pollingStationField");
 
     <div style="margin-left:100px;margin-bottom:9px;">
           <!--<button id="directSMSToVotersId" class="btn btn-success" style="" onclick="isValidateFields('direct');"> Send SMS To All Voters </button> -->
-		  <a id="showhidebtn" style="font-size:12px;" href="javascript:{}"><b>Show/Hide Search Options</b></a>
+		  <a id="showhidebtn" style="font-size:12px;" href="javascript:{}"><b>Show/Hide Advanced Search Options</b></a>
 
 	     <button id="searchCandidatesId" class="btn btn-primary" onclick="isValidateFields('search');"> Search </button> 
 		
@@ -1679,7 +1705,7 @@ function ajaxToSendVoiceSms(){
 function showSuccessMessage()
 {
 	$('#responseDetailsInnerDiv').html("Voice SMS Sent Successfully.");
-
+	$('#termsAndConditions').prop('checked', false); 
 $( "#responseDetailsDiv" ).dialog({
 				title:'SMS sent successfully.',
 				width:'auto',
@@ -1997,10 +2023,10 @@ function callAjax1(param,jsObj,url){
 	var callback = {			
 	    success : function( o ) {
 			try {	
-				debugger;
+				
 					if(o.responseText.length!=0){
 						myResults = YAHOO.lang.JSON.parse(o.responseText);	
-					}						
+					}		
 					if(jsObj.task == "getStates")
 					{
 						clearOptionsListForSelectElmtId("stateId");
@@ -2018,11 +2044,23 @@ function callAjax1(param,jsObj,url){
 					}
 					else if(jsObj.task1 == "subRegionsInConstituency")
  				    {
-						$('#mandalField').find('option').remove();
-
-						$.each(myResults,function(index,value){
-                          $('#mandalField').append('<option value="'+value.id+'">'+value.name+'</option>');
-						});
+						$('#mandalField').find('option').remove();	
+						if($('#constituencyList').val() != null && $('#reportLevel :selected').text().toLowerCase() != "ward"){	
+							$.each(myResults,function(index,value){	
+								if($('#reportLevel :selected').text().toLowerCase().indexOf("muncipality") != -1 || $('#reportLevel :selected').text().toLowerCase().indexOf("pollingstation") != -1) 
+									$('#mandalField').append('<option value="'+value.id+'">'+value.name+'</option>');							
+								else if((value.name).toLowerCase().indexOf("muncipality") == -1)
+									$('#mandalField').append('<option value="'+value.id+'">'+value.name+'</option>');
+								
+							});
+						}
+						else if($('#constituencyList').val() != null ){
+						$.each(myResults,function(index,value){	
+							if(index == 0 || (value.name).toLowerCase().indexOf("muncipality") != -1 ){				
+							  $('#mandalField').append('<option value="'+value.id+'">'+value.name+'</option>');
+							  }
+							});
+						}
 
 					}					
 					else if(jsObj.task == "subRegionsInConstituency" )
@@ -2156,6 +2194,22 @@ function callAjax1(param,jsObj,url){
 						buildRegionsSelectBoxes(myResults);
 					}else if(jsObj.task == "boothsInWard"){
 						iterateBoothNames(myResults)
+					}					
+					else if(jsObj.task == "getMandalOrMuncipalityList")
+					{
+					clearOptionsListForSelectElmtId("mandalField");
+					if($('#reportLevel :selected').text().toLowerCase() != "pollingstation" && $('#reportLevel :selected').text().toLowerCase() != "mandal  / muncipality"){
+							$.each(myResults,function(index,value){	
+							if(index == 0 || (value.name).toLowerCase().indexOf("muncipality") == -1 ){				
+							  $('#mandalField').append('<option value="'+value.id+'">'+value.name+'</option>');
+							}
+						});	
+						}
+						else{
+							$.each(myResults,function(index,value){	
+								  $('#mandalField').append('<option value="'+value.id+'">'+value.name+'</option>');
+							});							
+						}
 					}
 					
 			}catch (e) {   		
@@ -2791,7 +2845,7 @@ function getMandalOrMuncipalityList()
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getMandalOrMuncipalityListForVotersAnalysisAction.action?"+rparam;						
-		callAjax(jsObj,url);
+		callAjax1(rparam,jsObj,url);
 	}
 }
 
@@ -3003,8 +3057,8 @@ function showTermsAndConditiond()
 }
 
 function showReportsLevels(value)
-{
-	
+{ 
+	clearSelectOptions();
 	$('.selectDivs').hide();
 	$('#constiTypeDiv').hide();
 	var selectedType = $('input:radio[name=searchFor]:checked').val();
@@ -3198,14 +3252,13 @@ function sendTextSms()
 
 function getAllTheCastesOfConstituency(value)
 {
-
-
 	if($('input[name=searchFor]:checked').val() != "voter")
 		return false;
 
 	if(value == 0)
 	return;
 	else{
+	clearOptionsListForSelectElmtId("casteId");
 		var jsObj=
 			{
 				task:"getAllTheCastesOfConstituency",
@@ -3236,6 +3289,9 @@ function compareThings(castes1, castes2) {
 
 function buildCasteDetails(casteDetails)
 {
+	if(castes.length >0){
+	castes = [];
+	}
 	$('#casteId').find('option').remove();
 	$.each(casteDetails,function(index,value){
 		var caste = {"name" : value, "number" : index};
@@ -3715,6 +3771,14 @@ function getLocations(value)
 	callAjax1(rparam,jsObj,url);
 }
 
+ function populateHints(searchType){
+ $('#hitntsDiv').html('');
+ var str='<span style="color:green">Hint:</span><br>';
+ str +='<span style="color:#06ABEA;"> <span style="color:#5B5B5B;">Region Level :</span> <span>Depending on '+searchType+' Scope Level.</span></span><br>';
+ str +='<span style="color:#06ABEA;"> <span style="color:#5B5B5B;">By Location :</span>&nbsp;&nbsp; <span style="margin-left: -4px;">Depending on '+searchType+' Residence Address.</span></span>';
+ 
+  $('#hitntsDiv').html(str);
+ }
 </script>
  </body>
  </html>
