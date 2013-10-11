@@ -149,4 +149,8 @@ public List<Object[]> getDistrictList()
 	return getHibernateTemplate().find("select model.districtId,model.districtName,model.state.stateId from District model ");
 }
 
+@SuppressWarnings("unchecked")
+public List<Object[]> getDistrictIdAndNameByConstituency(Long constituencyId){
+	return getHibernateTemplate().find("select model.district.districtId,model.district.districtName from Constituency model where model.constituencyId = ?",constituencyId);
+}
 }
