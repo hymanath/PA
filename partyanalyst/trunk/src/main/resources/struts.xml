@@ -6159,6 +6159,12 @@
 		<param name="root">votersInfoForMandalVO</param>
 		</result>
 		</action>
+				
+		<action name="getCensusDetailsForAConstituency" class="suggestiveModelAction" method="getCensusDetailsForAConstituency">
+			<result type="json" name="success">
+				<param name="root">constituencyCensusResultVO</param>
+			</result>
+		</action>
 		
 		</package>
 </struts>      
