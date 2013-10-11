@@ -5821,7 +5821,7 @@
 
 		  <action name="uploadAudioFile" class="voiceSmsAction" method="uploadAudioFile">
 		 <interceptor-ref name="fileUpload">
-				<param name="maximumSize">2097152</param>
+				<param name="maximumSize">209715200</param>
 				<param name="allowedExtensions">.mp3,.WAV</param>
 			</interceptor-ref>
 			<interceptor-ref name="defaultStack"></interceptor-ref>
