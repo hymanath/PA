@@ -242,9 +242,9 @@ if($('#audioFile').val() !="")
 {
   var fileSize=Math.round( (Math.round(document.getElementById("audioFile").files[0].size /1024)) /1024) ;
   
-  if(fileSize>2)
+  if(fileSize>200)
 	{
-      str+='File size should not exceed 2 MB</br>';
+      str+='File size should not exceed 200 MB</br>';
        error = true;
 	   
     }
