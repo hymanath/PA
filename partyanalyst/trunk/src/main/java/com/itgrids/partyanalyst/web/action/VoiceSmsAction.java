@@ -538,7 +538,9 @@ public class VoiceSmsAction implements ServletRequestAware{
 			   cadreManagementService.sendSMSToSelectedMobileNumbers(user.getRegistrationID(),
 						"NO", true, jObj.getString("message"),
 						IConstants.User_Groups, otherMobileNumbers);
-			 
+			  
+			  
+			  status = "Successfully Sent..";
 			
 		}
 		catch(Exception e)

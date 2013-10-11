@@ -1678,7 +1678,7 @@ function ajaxToSendVoiceSms(){
 					  $('#cadreCount , #influencePeopleCount, #voterCount').html(0);
 					  $('#responseDetailsDiv').dialog('close');
 
-					  showSuccessMessage();
+					  showSuccessMessage('Voice');
 
 						  //  $('#successMsg').html(myResults);
 						    setTimeout("closeDialog()",5000);
@@ -1702,9 +1702,9 @@ function ajaxToSendVoiceSms(){
 
 }
 
-function showSuccessMessage()
+function showSuccessMessage(type)
 {
-	$('#responseDetailsInnerDiv').html("Voice SMS Sent Successfully.");
+	$('#responseDetailsInnerDiv').html(type+" SMS Sent Successfully.");
 	$('#termsAndConditions').prop('checked', false); 
 $( "#responseDetailsDiv" ).dialog({
 				title:'SMS sent successfully.',
@@ -2023,10 +2023,10 @@ function callAjax1(param,jsObj,url){
 	var callback = {			
 	    success : function( o ) {
 			try {	
-				
+
 					if(o.responseText.length!=0){
 						myResults = YAHOO.lang.JSON.parse(o.responseText);	
-					}		
+					}
 					if(jsObj.task == "getStates")
 					{
 						clearOptionsListForSelectElmtId("stateId");
@@ -2136,7 +2136,7 @@ function callAjax1(param,jsObj,url){
 				    { 
 						if(myResults == "Successfully Sent..")
 						{
-							selectedVotersDetails = {};
+							 selectedVotersDetails = {};
 
 							 selectedCadreDetails = {};
 
@@ -2182,7 +2182,12 @@ function callAjax1(param,jsObj,url){
 					}
 					else if(jsObj.task == "sendTextSms")
 				    {
-						//alert(123);
+						alert(myResults);
+						if(myResults == "Successfully Sent..")
+						{
+							alert("Successfully sent");
+							$('#mobileNumber,#textSmsDescription').val('');
+						}
 					}
 					else if(jsObj.task == "boothsInTehsilOrMunicipality"){
 						buildBoothResultdForOtherthanVoter(myResults);
@@ -3231,10 +3236,21 @@ function sendTextSms()
 
 			};
 
+
+
 			$("#sendTextSMSId").val(YAHOO.lang.JSON.stringify(jsObj));
 		  var uploadHandler = {
 			success: function(o) {
 				var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+
+					if(uploadResult == "Successfully Sent..")
+				    {
+                      $('#mobileNumber,#textSmsDescription').val('');
+					   showSuccessMessage('Text');
+
+				    }
+
+
 			          		
 			}
 		};
