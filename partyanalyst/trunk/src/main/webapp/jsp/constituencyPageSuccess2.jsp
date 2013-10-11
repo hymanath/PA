@@ -3205,7 +3205,7 @@ function removeCensusNotAvailableErrorMessage()
 		str += '</table>';		
 		extraInfoDiv.innerHTML = str;		
 	 }
-	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption:"Mandal Wise Election Results For ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} Constituency In "+constituencyResults.electionYear+" "});
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption:"Assembly  Wise Election Results For ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} In "+constituencyResults.electionYear+" "});
 	}
 
 	function getConstituencyElections(){
