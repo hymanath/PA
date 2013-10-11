@@ -428,15 +428,16 @@ $('#voterDetailsDiv').dialog({
 function buildCasteInfo(results,jObj)
 {
 
-$("#basicCasteInfoDiv").css("display","block");
+
 var str='';
 var divEle = document.getElementById("basicCasteInfoDiv");
 var result = results.voterCastInfodetails
 var cast = result.voterCastInfoVOList;
 
-if(cast != null)
+if(cast != null && cast.length > 0)
 	{
-
+	
+$("#basicCasteInfoDiv").css("display","block");
 	str+='<div class="widget-block" style="padding:10px;">';
 	str+='<h4>'+jObj.typename+' Constituency Voters By Caste </h4>';
 	str+='<table id="Castetable" class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
