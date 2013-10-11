@@ -54,4 +54,8 @@ public interface ICensusDAO extends GenericDao<Census, Long> {
 	
 	public List<Object[]> getCensusDetailsOfAState(Long stateId, Long year);
 	
+    public List<Object[]> getDistrictPopulationForDifferentYears(Long districtId , List<Long> years);
+    
+    public List<Object[]> getStatePopulationForDifferentYears(Long stateId , List<Long> years);
+
 }
