@@ -330,6 +330,13 @@ function clearAll(){
 	$('#panchayatWisePollingPercMainDiv').css("display","none");
 	$('#leadersTable2').css("display","none");
 	
+	$('#assemblyElectionDiv').css("display","none");
+	$('#parliamentElectionDiv').css("display","none");
+	$('#mptcZptcElectionDiv').css("display","none");
+	$("#voterAgeGroupDiv").css("display","none");
+	$("#voterAgeGroupDiv1").css("display","none");
+	$("#voterAgeGroupDiv2").css("display","none");
+	
 	$('.titleageGroupTableId1Cls').removeClass('widget').removeClass('blue');
 	$('.titleageGroupBoothTableId1Cls').removeClass('widget').removeClass('blue');
 	$('.titleageGroupTableId2Cls').removeClass('widget').removeClass('blue');
@@ -715,7 +722,18 @@ function callAjax(param,jsObj,url){
 						{
 							buildPopulationCensusTable(myResults,jsObj);
 						}
-						
+						else if(jsObj.task=="partiesPerformanceInDiffElection")
+						{
+					buildAssemblyPartiesElection(myResults,jsObj);
+					buildParliamentPartiesElection(myResults,jsObj);
+					buildMptcZptcPartiesElection(myResults,jsObj);
+						}
+						else if(jsObj.task=="getVoterAgeGroupResults"){
+							buildVoterAgeGroupResults(myResults,jsObj);
+						}
+						else if(jsObj.task=="getAgewiseVoterDetails"){
+							buildAgewiseVoterDetails(myResults,jsObj);
+						}
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
 					  $("#dashBoardImgLoading").hide();
@@ -4068,6 +4086,298 @@ var str1 ='';
 	
 return str1;
 }
+
+function getElectionResults(){
+	var constituencyId = $('#listConstituencyNames').val();
+	
+	var jsObj = {
+			constituencyId:constituencyId,
+			task:"partiesPerformanceInDiffElection"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getPartiesPerformanceInDiffElectionAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+
+function buildAssemblyPartiesElection(results,jsObj){
+	$('#assemblyElectionDiv').html('');
+	$('#assemblyElectionDiv').css('display','block');
+ var str = '';
+ $("#assemblyElectionDiv").append('<h4 id="electionDisplaySpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Assembly Election Voting Trends</h4>');
+ str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;color: black;">';
+str +='<thead class="info"><tr>';
+str +='<th>Year</th>';
+str +='<th>Total Voters</th>';
+str +='<th>Polled Voters</th>';
+str +='<th>INC</th>';
+str +='<th>% Votes (INC)</th>';
+str +='<th>TDP</th>';
+str +='<th>% Votes (TDP)</th>';
+str +='<th>PRP</th>';
+str +='<th>% Votes (PRP)</th>';
+str +='<th>OTHERS</th>';
+str +='<th>% Votes (OTHERS)</th>';
+str +='</tr></thead><tbody>';
+
+ str +='<tr>';
+	for(var j in results.assemblyList){
+		str += '<td>'+results.assemblyList[j].electionYear+'</td>';
+		str += '<td>'+results.assemblyList[j].totalVotes+'</td>';
+		str += '<td>'+results.assemblyList[j].validVotes+'</td>';
+		for(var i=0;i<=results.assemblyList[j].partiesList.length;i++){
+
+		if(i<3){
+			if(results.assemblyList[j].partiesList[i].validCount>0)
+			str += '<td>'+results.assemblyList[j].partiesList[i].validCount+'</td>';
+			else
+				str += '<td>--</td>';
+		str += '<td>'+results.assemblyList[j].partiesList[i].location+'</td>';
+		}
+
+		}
+
+		var othersCount = 0;
+		for(var k in results.assemblyList[j].partiesList){
+			othersCount += results.assemblyList[j].partiesList[k].validCount;
+			
+		}
+		var othersCountPercent = (othersCount*100)/results.assemblyList[j].validVotes;
+		str += '<td>'+othersCount+'</td>';
+		str += '<td>'+othersCountPercent.toFixed(2)+'</td>';
+		str +='</tr>';
+	}
+
+  str +='</tbody></table>';
+  $("#assemblyElectionDiv").append(str);
+ 
+}
+
+function buildParliamentPartiesElection(results,jsObj){
+	$('#parliamentElectionDiv').html('');
+	$('#parliamentElectionDiv').css('display','block');
+ var str = '';
+ $("#parliamentElectionDiv").append('<h4 id="electionDisplaySpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Parliament Election Voting Trends</h4>');
+ str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;color: black;">';
+str +='<thead class="info"><tr>';
+str +='<th>Year</th>';
+str +='<th>Total Voters</th>';
+str +='<th>Polled Voters</th>';
+str +='<th>INC</th>';
+str +='<th>% Votes (INC)</th>';
+str +='<th>TDP</th>';
+str +='<th>% Votes (TDP)</th>';
+str +='<th>PRP</th>';
+str +='<th>% Votes (PRP)</th>';
+str +='<th>OTHERS</th>';
+str +='<th>% Votes (OTHERS)</th>';
+str +='</tr></thead><tbody>';
+
+str +='<tr>';
+	for(var j in results.parliamentList){
+		str += '<td>'+results.parliamentList[j].electionYear+'</td>';
+		str += '<td>'+results.parliamentList[j].totalVotes+'</td>';
+		str += '<td>'+results.parliamentList[j].validVotes+'</td>';
+		for(var i=0;i<=results.parliamentList[j].partiesList.length;i++){
+
+		if(i<3){
+			if(results.parliamentList[j].partiesList[i].validCount>0)
+			str += '<td>'+results.parliamentList[j].partiesList[i].validCount+'</td>';
+			else
+			str += '<td>--</td>';
+		var value = (results.parliamentList[j].partiesList[i].validCount)*100/(results.parliamentList[j].totalVotes);
+		if(value>0)
+		str += '<td>'+value.toFixed(2)+'</td>';
+		else
+			str += '<td>--</td>';
+		}
+
+		}
+
+		var othersCount = 0;
+		for(var k in results.parliamentList[j].partiesList){
+			if(k>=3)
+			othersCount += results.parliamentList[j].partiesList[k].validCount;
+			
+		}
+		var othersCountPercent = (othersCount*100)/results.parliamentList[j].validVotes;
+		str += '<td>'+othersCount+'</td>';
+		str += '<td>'+othersCountPercent.toFixed(2)+'</td>';
+		str +='</tr>';
+	}
+	
+  str +='</tbody></table>';
+  $("#parliamentElectionDiv").append(str);
+}
+
+function buildMptcZptcPartiesElection(results,jsObj){
+	$('#mptcZptcElectionDiv').html('');
+	$('#mptcZptcElectionDiv').css('display','block');
+var str = '';
+$("#mptcZptcElectionDiv").append('<h4 id="electionDisplaySpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">Previous Mptc/Zptc Election Voting Trends</h4>');
+str +='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;color: black;">';
+str +='<thead class="info"><tr>';
+str +='<th>Year</th>';
+str +='<th>Total Voters</th>';
+str +='<th>Polled Voters</th>';
+str +='<th>INC</th>';
+str +='<th>% Votes (INC)</th>';
+str +='<th>TDP</th>';
+str +='<th>% Votes (TDP)</th>';
+str +='<th>PRP</th>';
+str +='<th>% Votes (PRP)</th>';
+str +='<th>OTHERS</th>';
+str +='<th>% Votes (OTHERS)</th>';
+str +='</tr></thead><tbody>';
+
+	 str +='<tr>';
+	for(var j in results.mptcZptcList){
+		str += '<td>'+results.mptcZptcList[j].electionYear+'-'+results.mptcZptcList[j].electionType+'</td>';
+		str += '<td>--</td>';
+		str += '<td>'+results.mptcZptcList[j].validVotes+'</td>';
+		for(var i=0;i<=results.mptcZptcList[j].partiesList.length;i++){
+
+		if(i<3){
+			if(results.mptcZptcList[j].partiesList[i].validCount>0)
+			str += '<td>'+results.mptcZptcList[j].partiesList[i].validCount+'</td>';
+			else
+				str += '<td>--</td>';
+		var value1 = (results.mptcZptcList[j].partiesList[i].validCount)*100/(results.mptcZptcList[j].validVotes);
+		if(value1>0)
+		str += '<td>'+value1.toFixed(2)+'</td>';
+		else
+			str += '<td>--</td>';
+		}
+
+		}
+
+		var othersCount = 0;
+		for(var k in results.mptcZptcList[j].partiesList){
+			othersCount += results.mptcZptcList[j].partiesList[k].validCount;
+			
+		}
+		var othersCountPercent = (othersCount*100)/results.mptcZptcList[j].validVotes;
+		str += '<td>'+othersCount+'</td>';
+		str += '<td>'+othersCountPercent.toFixed(2)+'</td>';
+		str +='</tr>';
+	}
+	
+  str +='</tbody></table>';
+  $("#mptcZptcElectionDiv").append(str);
+}
+
+function getVoterAgeGroupResults(){
+	var constituencyId = $('#listConstituencyNames').val();
+	
+	var jsObj = {
+			constituencyId:constituencyId,
+			locationType:"constituency",
+			publicationDateId:8,
+			task:"getVoterAgeGroupResults"
+		};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getVoterAgeGroupResultsAction.action?"+rparam;
+	callAjax(rparam,jsObj,url);
+}
+
+function getVoterDetailsForConstituency(){
+	var constituencyId = $('#listConstituencyNames').val();
+	var constituencyName = $('#listConstituencyNames option:selected').text();
+	var jsObj=
+				{					
+					constituencyId:constituencyId,
+					publicationDateId:8,
+					mandalId:'0',
+					boothId:'0',
+					panchayatId:'0',
+					name:constituencyName,
+					retrieveType:"brief",
+				    type:"constituency",
+					task:"getAgewiseVoterDetails"
+				};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getAgewiseVoterDetails.action?"+rparam;				
+		callAjax(rparam,jsObj,url);
+	}
+
+function buildVoterAgeGroupResults(results,jsObj){
+	$('#voterAgeGroupDiv').html('');
+	$("#voterAgeGroupDiv").css("display","block");
+
+	var str='';
+	 $("#voterAgeGroupDiv").append('<h4 id="electionDisplaySpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">VOTERS</h4>');
+	str+='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;color: black;"><tbody><tr>';
+	str+='<td style="background:#D9EDF7">Total Voters</td><td>'+results.totalVoters+'</td></tr>';
+	str+='<td style="background:#D9EDF7">Male</td><td>'+results.maleVoters+'</td><td>'+results.totalMalePercentage+'</td></tr>';
+	str+='<td style="background:#D9EDF7">Female</td><td>'+results.femaleVoters+'</td><td>'+results.totalFemalePercentage+'</td>';
+	str+='</tr></tbody></table>';
+
+	$("#voterAgeGroupDiv").append(str);
+}
+
+function buildAgewiseVoterDetails(results,jsObj){
+if(results != null){
+
+$('#voterAgeGroupDiv1').html('');
+$("#voterAgeGroupDiv1").css("display","block");
+var str='';
+ $("#voterAgeGroupDiv1").append('<h4 id="electionDisplaySpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">FIRST TIME VOTERS</h4>');
+str+='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;color: black;"><thead>';
+str+='<tr>';
+str+='<th rowspan="2">First Time Voters</th>';
+str+='<th colspan="2">Total Voters</th>';
+str+='<th colspan="2">Total Percentage</th>';
+str+='<th colspan="2">Voters</th>';
+str+='</tr>';
+str+='<tr>';
+str+='<th>Total Voters</th>';
+str+='<th>Total Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='</thead><tbody><tr>';
+str+='<td>18-22</td>';
+str+='<td>'+results.votersDetailsVO[0].totalVoters+'</td><td>'+results.votersDetailsVO[0].totalVotersPercent+'</td>';
+str+='<td>'+results.votersDetailsVO[0].totalMaleVoters+'</td><td>'+results.votersDetailsVO[0].totalMaleVotersPercent+'</td>';
+str+='<td>'+results.votersDetailsVO[0].totalFemaleVoters+'</td><td>'+results.votersDetailsVO[0].totalFemaleVotersPercent+'</td>';
+str+='</tr></tbody></table>';
+
+$("#voterAgeGroupDiv1").append(str);
+
+//For Age wise voter group
+$('#voterAgeGroupDiv2').html('');
+$("#voterAgeGroupDiv2").css("display","block");
+var str='';
+ $("#voterAgeGroupDiv2").append('<h4 id="electionDisplaySpan" style="margin: 0px -20px; padding: 10px 10px 10px 20px; float:left;clear:both;">VOTERS BY AGE GROUP</h4>');
+str+='<table class="table table-bordered table-striped table-hover" style="width: 104%; max-width: 104%; margin: 1px -18px;color: black;"><thead>';
+str+='<tr>';
+str+='<th rowspan="2">Age Range</th>';
+str+='<th colspan="2">Total Voters</th>';
+str+='<th colspan="2">Total Percentage</th>';
+str+='<th colspan="2">Voters</th>';
+str+='</tr>';
+str+='<tr>';
+str+='<th>Total Voters</th>';
+str+='<th>Total Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='<th>Voters</th>';
+str+='<th>Percentage</th>';
+str+='</thead><tbody><tr>';
+	for(var i=1;i<results.votersDetailsVO.length;i++){
+	str+='<td>'+results.votersDetailsVO[i].ageRange+'</td>';
+	str+='<td>'+results.votersDetailsVO[i].totalVoters+'</td><td>'+results.votersDetailsVO[i].totalVotersPercent+'</td>';
+	str+='<td>'+results.votersDetailsVO[i].totalMaleVoters+'</td><td>'+results.votersDetailsVO[i].totalMaleVotersPercent+'</td>';
+	str+='<td>'+results.votersDetailsVO[i].totalFemaleVoters+'</td><td>'+results.votersDetailsVO[i].totalFemaleVotersPercent+'</td>';
+	str+='</tr>';
+	}
+str+='</tbody></table>';
+
+$("#voterAgeGroupDiv2").append(str);
+}
+}
+
 </script>
 </body>
 </html>
