@@ -1860,18 +1860,19 @@ function showExpCasteDetailsButton()
 }
 function buildLeadersTableWithExpPercForMuncipal(results)
 {
-	$('#leadersTable1').html('')
+	//$('#leadersTable').html('')
 	if(results != null && results.length > 0)
 	{
 		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
 
 		var str = "";
-		str+='<div class="widget blue">';
+		/* str+='<div class="widget blue">';
 		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' MUNCIPALITY EXPECTED CASTE DETAILS </h4>';
-		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
-		str += '<tr>';
+		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">'; */
+		/* str += '<tr>';
 		str += '<th>Mandal</th>';
+		str += '<th></t';
 		str += '<th>Total Voters</th>';
 			for(var b in results[0].exceptdCateDetails)
 			{
@@ -1880,13 +1881,14 @@ function buildLeadersTableWithExpPercForMuncipal(results)
 				str += '<th>Excepted Votes</th>';
 			}
 
-		str += '</tr>';
+		str += '</tr>'; */
 
 		for(var i in results)
 		{
 		try{
 			str += '<tr>';
-			str += '<td>'+results[i].mandalName+'</td>';
+			str += '<td>'+results[i].mandalName+' Muncipality</td>';
+			str += '<td></td>';
 			str += '<td>'+results[i].boothTotalVoters+'</td>'; 
 			for(var k in results[i].exceptdCateDetails)
 			{
@@ -1901,10 +1903,8 @@ function buildLeadersTableWithExpPercForMuncipal(results)
 		}
 		
 		str += '</table>';
-		str += '</div>';
-		str += '</div>';
 
-		$('#leadersTable1').html(str);
+		$('#leadersListTable').append(str);
 	}
 	
 }
@@ -1999,7 +1999,7 @@ function buildLeadersTableWithExpPerc(results)
 		str+='<div class="widget blue">';
 		str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">'+constituencyName+' CONSTITUENCY PANCHAYAT LEVEL EXPECTED CASTE DETAILS </h4>';
-		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
+		str += '<table class="table table-hover table-bordered" id="leadersListTable" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
 		str += '<tr>';
 		str += '<th>Mandal</th>';
 		str += '<th>Panchayat</th>';
