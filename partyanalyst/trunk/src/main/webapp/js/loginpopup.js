@@ -193,7 +193,11 @@ function showLoginStatus(results)
 	 {
 		window.location.href = "userProfile.action";
 	 }
-     }
+    else 
+	 {
+		window.location.reload();
+	 }
+	 }
   }
 
   else
