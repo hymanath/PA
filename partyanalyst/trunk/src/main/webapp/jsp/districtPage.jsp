@@ -976,8 +976,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', end
 
 }
 
-	
+var arr=["","Parliament","Assembly","MPTC","ZPTC"];
+
 		function getAllElections(elecId, type){
+			
+            if(type=="All Elections")
+			{ 
+			document.getElementById("headingId").innerHTML = "All Parties Performance In   ${districtName} District";
+			}
+			else
+             document.getElementById("headingId").innerHTML = "All Parties Performance In   "+arr[elecId]+" of  ${districtName} District";
 		var barloaderImageEl = document.getElementById("barloaderImage");
 		barloaderImageEl.style.display = 'block';
 		var jsObj=
@@ -2057,7 +2065,8 @@ var queryString='';
 		<div id="alliancePartiesCarousel" class="yui-skin-sam" style="width:983px;float:left;clear: both;margin-left:1px;background:#ffffff;">
 			<ul>
 			<li>
-			<h3 style="margin-top:0px;font-weight:bold;font-family:verdana;font-size:18px;">All Parties Performance In Assembly-${electionYear} Of  ${districtName} District</h3>
+
+			<h3 id="headingId" style="margin-top:0px;font-weight:bold;font-family:verdana;font-size:18px;"></h3>
 				<div id="allElectionResultsInDT"  class="allianceListDiv" style="margin-top:-36px;padding-top:18px;">
 					<div id="allElectionResultsInDT_head" style="clear:both;"></div>
 					<div id="allElectionResultsInDT_body"></div>
@@ -2478,7 +2487,7 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 									
 									if(jObj.task == "saveFavouriteLink"){
 										$('.favouritelink').hide();
-                                  alert("Link added successfully");									}
+                                  	}
 								}
 							catch (e) {   
 						}  
