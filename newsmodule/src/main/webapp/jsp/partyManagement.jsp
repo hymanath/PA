@@ -2033,7 +2033,7 @@ function createNewsCategory()
 	var str = '';
 	str +='<div id="content" style="width:650px;">';
 	str +='<h2 align="center">Create A News Category</h2>';
-	str+='<table class="aligncenter"><tr><td><div id="errorMsgDiv" /></td></tr></table>';
+	str+='<table class="aligncenter"><tr><td  style="padding-bottom:10px;"><div id="errorMsgDiv" /></td></tr></table>';
 	str +='<table class="aligncenter">';
 	str +='<tr><td><b>Category Name</b><font class="requiredFont">*</font></td>';
 	str +='<td><input type="text" id="userNewsCategory" /></td></tr>';
