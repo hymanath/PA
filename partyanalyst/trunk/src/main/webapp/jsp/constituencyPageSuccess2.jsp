@@ -131,6 +131,7 @@
 	var mptcPresent = false;
 	var zptcPresent = false;
 	var userName = '${sessionScope.UserName}';
+	var captionForElectionType='';
 		
 	function setImage(img)
 	{
@@ -3205,7 +3206,11 @@ function removeCensusNotAvailableErrorMessage()
 		str += '</table>';		
 		extraInfoDiv.innerHTML = str;		
 	 }
-	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption:"Assembly  Wise Election Results For ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} In "+constituencyResults.electionYear+" "});
+	 if(constituencyResults.electionType == 'Parliament')
+	   captionForElectionType="Assembly Wise";
+	 else if(constituencyResults.electionType == 'Assembly')
+       captionForElectionType="Mandal Wise";
+	 var villageDataTable = new YAHOO.widget.DataTable("elecResDiv",myColumnDefs, myDataSource,{caption: captionForElectionType+" Election Results For ${constituencyDetails.constituencyName} ${constituencyDetails.constituencyType} In "+constituencyResults.electionYear+" "});
 	}
 
 	function getConstituencyElections(){
