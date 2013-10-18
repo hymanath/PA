@@ -513,4 +513,10 @@ public interface IBoothPublicationVoterDAO extends
 	public List<Object[]> getYoungVotersCount(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,String locationType,Long ageFrom,Long ageTo);
 	  
 	  public List<Object[]> getCasteWiseDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
+	  
+	  public List<Object[]> getAgeAndGenderWiseVotersCountInBoothsOfMuncipality(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId);
+	  
+	  public Long getAgeAndGenderWisesMuncipaltiyVotersCount(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId);
+	  
+	  public List<Object[]> getExpCasteForAgeAndGenderWisesMuncipaltiyVotersCount(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId,List<Long> casteIds);
 }

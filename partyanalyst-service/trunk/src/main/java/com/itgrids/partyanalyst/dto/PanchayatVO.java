@@ -34,8 +34,8 @@ public class PanchayatVO implements Serializable {
 	private String othrExpctdPrcntg;
 	private int otherVotes;
 	private String areaType;
-	
-	
+	private List<BasicVO> muncipalityCasteList;
+	private Long muncipaltotalVoters;
 	public Long getPanchayatId() {
 		return panchayatId;
 	}
@@ -174,6 +174,18 @@ public class PanchayatVO implements Serializable {
 	}
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
+	}
+	public List<BasicVO> getMuncipalityCasteList() {
+		return muncipalityCasteList;
+	}
+	public void setMuncipalityCasteList(List<BasicVO> muncipalityCasteList) {
+		this.muncipalityCasteList = muncipalityCasteList;
+	}
+	public Long getMuncipaltotalVoters() {
+		return muncipaltotalVoters;
+	}
+	public void setMuncipaltotalVoters(Long muncipaltotalVoters) {
+		this.muncipaltotalVoters = muncipaltotalVoters;
 	}
 	
 		

@@ -451,19 +451,38 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					   panchaytVO1.setPanchayatList(list);
 					   
 					   if(constAreaType.equalsIgnoreCase(IConstants.RURALURBAN)){
-						   String arType="urban";
-						   List<Object[]> ttlVtrsInBoothByAge=boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(constituencyId,publicationId, group.getId(), group.getPopulateId());
-						   muncipalMap=getTheMapForArea(ttlVtrsInBooths,ttlVtrsInBoothByAge);
+						   if(exptdCastesMncpl.size() > 0)
+						   {
+							  
+							    List<Long> expCasteIds =new ArrayList<Long>();
+								   
+								for(ExceptCastsVO exceptCastsVO :exptdCastesMncpl)
+								{
+									expCasteIds.add(exceptCastsVO.getCasteId());
+								}
+								   Long totalMuncipalVoters = boothPublicationVoterDAO.getAgeAndGenderWisesMuncipaltiyVotersCount(constituencyId,publicationId,group.getId(), group.getPopulateId(),userId);
+								   String name = boothDAO.getMuncipaltyName(constituencyId,publicationId);
+								   List<Object[]> casteCountDetails = boothPublicationVoterDAO.getExpCasteForAgeAndGenderWisesMuncipaltiyVotersCount(constituencyId,publicationId,group.getId(), group.getPopulateId(),userId,expCasteIds);
+								   panchaytVO1.setMuncipaltotalVoters(totalMuncipalVoters);
+								   panchaytVO1.setMuncipalityName(name +""+ " Muncipality");
+								   panchaytVO1.setMuncipalityCasteList(getResultsForMuncipality(exptdCastesMncpl,totalMuncipalVoters,casteCountDetails));
+						   	}
+						  
+							   String arType="urban";
+							   List<Object[]> ttlVtrsInBoothByAge=boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(constituencyId,publicationId, group.getId(), group.getPopulateId());
+							   muncipalMap=getTheMapForArea(ttlVtrsInBooths,ttlVtrsInBoothByAge);
+							   
+							   List<Object[]> ttlRsltsInBooths=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId(),userId);
+							   String area= "";
+							   if(ttlVtrsInBoothByAge != null && ttlVtrsInBoothByAge.size() > 0){
+							    Object[] obj=ttlVtrsInBoothByAge.get(0);
+							    area=obj[5].toString()+" "+obj[6].toString();
+							   }
+							   muncipalMap=getResults(ttlRsltsInBooths,muncipalMap,casteIds,exptdCastesMncpl,ttlBoothIds,area,arType);
+							   List<PanchayatVO> list1=new ArrayList<PanchayatVO>(muncipalMap.values());
+							   panchaytVO1.setBoothsList(list1);
 						   
-						   List<Object[]> ttlRsltsInBooths=boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(constituencyId, publicationId, group.getId(), group.getPopulateId(),userId);
-						   String area= "";
-						   if(ttlVtrsInBoothByAge != null && ttlVtrsInBoothByAge.size() > 0){
-						    Object[] obj=ttlVtrsInBoothByAge.get(0);
-						    area=obj[5].toString()+" "+obj[6].toString();
-						   }
-						   muncipalMap=getResults(ttlRsltsInBooths,muncipalMap,casteIds,exptdCastesMncpl,ttlBoothIds,area,arType);
-						   List<PanchayatVO> list1=new ArrayList<PanchayatVO>(muncipalMap.values());
-						   panchaytVO1.setBoothsList(list1);
+						   
 					   }
 				 		
 				 		
@@ -565,6 +584,103 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				e.printStackTrace();
 			}
 			return arMap;
+		}
+		
+		public List<BasicVO> getResultsForMuncipality(List<ExceptCastsVO> exptdCastes,Long totalMuncipalVoters,List<Object[]> expCasteDetails)
+		{
+			List<BasicVO> returnList = null;
+			BasicVO basicVOForOthers = new BasicVO();
+			Map<Long,Double> expCatsePercMap = null;
+			Map<Long,String> casteNamesMap = null;
+			BasicVO basicVO = null;
+			Long selectedCasteVoters = 0l;
+			Long count = 0l;
+			Map<Long,BasicVO> casteMap = new HashMap<Long, BasicVO>();
+			
+			if(exptdCastes != null && exptdCastes.size() > 0)
+			{
+				expCatsePercMap = new HashMap<Long, Double>();
+				for (ExceptCastsVO exceptCastsVO : exptdCastes) {
+					expCatsePercMap.put(exceptCastsVO.getCasteId(), exceptCastsVO.getCastePerc());
+				}
+			}
+			
+			if(expCasteDetails != null && expCasteDetails.size() > 0)
+			{
+				
+				for (Object[] parms : expCasteDetails) {
+					basicVO = new BasicVO();
+					Long casteId = (Long)parms[1];
+					if(casteMap.get(casteId) == null)
+					{
+						casteMap = new HashMap<Long, BasicVO>();
+						casteMap.put(casteId, basicVO);
+					}
+					basicVO.setId((Long)parms[1]);
+					basicVO.setCasteName(parms[0].toString());
+					basicVO.setCount((Long)parms[2]);
+				}
+			}
+			if(expCatsePercMap != null && expCatsePercMap.size() > 0)
+			{
+				returnList = new ArrayList<BasicVO>();
+				Set<Long> expCasteIds = expCatsePercMap.keySet();
+				List<Object[]> castesNamesList = casteStateDAO.getCasteListByCasteIds(new ArrayList<Long>(expCasteIds));
+				if(castesNamesList != null && castesNamesList.size() > 0)
+				{
+					casteNamesMap = new HashMap<Long, String>();
+					for (Object[] parms : castesNamesList) {
+						casteNamesMap.put((Long)parms[0], parms[1].toString());
+					}
+				}
+				for (Long expCasteId : expCasteIds) {
+					
+					if(expCasteId > 0)
+					{
+						BasicVO casteVO = casteMap.get(expCasteId);
+						basicVO = new BasicVO();
+						if(casteVO != null)
+						{
+							
+							basicVO.setId(casteVO.getId());
+							basicVO.setCasteName(casteVO.getCasteName());
+							basicVO.setCount(casteVO.getCount());
+							//basicVO.setName(casteVO.getName());
+							Double expPerc = expCatsePercMap.get(expCasteId);
+							Long expCount = (long) (basicVO.getCount() * expPerc);
+							basicVO.setExpCount(expCount);
+							basicVO.setPerc(expPerc);
+							selectedCasteVoters = selectedCasteVoters + basicVO.getCount();
+							returnList.add(basicVO);
+						}
+						else
+						{
+							basicVO.setId(expCasteId);
+							basicVO.setCasteName(casteNamesMap.get(expCasteId));
+							basicVO.setCount(0l);
+							//basicVO.setName(casteVO.getName());
+							Double expPerc = expCatsePercMap.get(expCasteId);
+							//Long expCount = (long) (basicVO.getCount() * expPerc);
+							basicVO.setExpCount(0l);
+							basicVO.setPerc(expPerc);
+							//selectedCasteVoters = selectedCasteVoters + basicVO.getCount();
+							returnList.add(basicVO);
+						}
+						
+					}
+				}
+				count = totalMuncipalVoters - selectedCasteVoters;
+				basicVOForOthers.setId(0l);
+				basicVOForOthers.setCasteName("Others");
+				basicVOForOthers.setCount(count);
+				//basicVOForOthers.setName(casteVO.getName());
+				Double expPerc = expCatsePercMap.get(0l);
+				Long expCount = (long) (count * expPerc);
+				basicVOForOthers.setExpCount(expCount);
+				basicVOForOthers.setPerc(expPerc);
+				returnList.add(basicVOForOthers);
+			}
+			return returnList;
 		}
 		public Map<Long,PanchayatVO> getResults(List<Object[]> ttlRsltsList,Map<Long,PanchayatVO> areaMap,List<Long> casteIds,List<ExceptCastsVO> exptdCastes,List<Long> ttlPanchayatIds,String area,String areaType){
 			Map<Long,List<CastVO>> castsMapOfPanchayat=new HashMap<Long, List<CastVO>>();
@@ -2412,7 +2528,403 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 }
 		 return returnList;		 
 	 }
+	 /**
+	  * This method is used for to fill the excepted caste details caste wise and panchayat wise fills in a caste map
+	  * @param expCaseList
+	  * @param castePanchayatMap
+	  * @param expPanchayatCasteDetailsMap
+	  * @param casteMap
+	  */
+	 public void fillExpCasteForEachAndEveryCasteAndPanchayat(List<ExceptCastsVO> expCaseList,Map<Long,Map<Long,Double>> castePanchayatMap,Map<Long,Double> expPanchayatCasteDetailsMap,Map<Long,Double> casteMap)
+	 {
+		 try {
+			 LOG.debug("Enterd Into fillExpCasteForEachAndEveryCasteAndPanchayat() method in SuggestiveModelService Class ");
+			 for (ExceptCastsVO exceptCastsVO : expCaseList) {
+					Long panchayatId = exceptCastsVO.getPanchayatId();
+					Long casteId = exceptCastsVO.getCasteId();
+					Double expPerc = exceptCastsVO.getCastePerc();
+					expPanchayatCasteDetailsMap = castePanchayatMap.get(casteId);
+					if(expPanchayatCasteDetailsMap == null)
+					{
+						expPanchayatCasteDetailsMap = new HashMap<Long, Double>();
+						castePanchayatMap.put(casteId, expPanchayatCasteDetailsMap);
+					}
+					casteMap.put(casteId, expPerc);
+					expPanchayatCasteDetailsMap.put(panchayatId, expPerc);
+				}
+		} catch (Exception e) {
+			 LOG.error("Exception raised in fillExpCasteForEachAndEveryCasteAndPanchayat() method in Suggestive Model Service", e);
+		}
+		
+	 }
+	 /**
+	  * This method is used for filling the panchayat ids into the VO .
+	  * @param panchayats
+	  * @param panchayaIds
+	  * @param panchayatsList
+	  */
+	 public void getAllPanchayatsInATehsil(List<SelectOptionVO> panchayats,List<Long> panchayaIds,List<Object[]> panchayatsList)
+	 {
+		 try {
+			 LOG.debug("Enterd Into getAllPanchayatsInATehsil() method in SuggestiveModelService Class ");
+			 for (Object[] parms : panchayatsList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();	
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					panchayats.add(selectOptionVO);
+					panchayaIds.add(selectOptionVO.getId());
+				}
+		} catch (Exception e) {
+			 LOG.error("Exception raised in getAllPanchayatsInATehsil() method in Suggestive Model Service", e);
+		}
+			
+	 }
 	 
+	 /**
+	  * This method is used for filling the Booths ids into the VO .
+	  * @param booths
+	  * @param boothIds
+	  * @param boothsList
+	  */
+	 public void getAllBoothsInAPanchayat(List<SelectOptionVO> booths,List<Long> boothIds,List<Object[]> boothsList)
+	 {
+		 try {
+			 LOG.debug("Enterd Into getAllBoothsInAPanchayat() method in SuggestiveModelService Class ");
+			 for (Object[] parms : boothsList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();	
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1].toString());
+					booths.add(selectOptionVO);
+					boothIds.add(selectOptionVO.getId());
+				}
+		} catch (Exception e) {
+			 LOG.error("Exception raised in getAllBoothsInAPanchayat() method in Suggestive Model Service", e);
+		}
+		 
+	 }
+	 
+	 /**
+	  * this method is used for storing the selected caste and exp caste details into th VO
+	  * @param selectedCastesInPanchayats
+	  * @param basicVOListForPanchayat
+	  * @param expCasteDetails
+	  * @param casteDetails
+	  * @param casteIdsList
+	  * @param expCaste
+	  * @param panchayatId
+	  * @param casteDetailsMap
+	  * @param casteDataMap
+	  */
+	 public void fillSelectedCastesAndExpCasteDatilsPanchayatWise(List<BasicVO> selectedCastesInPanchayats,List<BasicVO> basicVOListForPanchayat ,List<BasicVO> expCasteDetails ,List<Object[]> casteDetails,List<Long> casteIdsList,boolean expCaste,Long panchayatId,Map<Long,Map<Long,BasicVO>> casteDetailsMap,Map<Long,BasicVO> casteDataMap)
+	 {
+		 try {
+			 LOG.debug("Enterd Into fillSelectedCastesAndExpCasteDatilsPanchayatWise() method in SuggestiveModelService Class ");
+			 int count = 0;
+				for (Object[] parms : casteDetails) {
+					if(IConstants.MAX_LEVEL > count)
+					{
+						BasicVO basicVO = new BasicVO();
+						basicVO.setId((Long)parms[0]);
+						basicVO.setCount((Long)parms[2]);
+						basicVO.setName(parms[1].toString());
+						basicVO.setPerc((Double)parms[3]);
+						basicVOListForPanchayat.add(basicVO);
+						
+					}
+					
+					if(casteIdsList.contains(parms[4])){
+						BasicVO basicVO1 = new BasicVO();
+						basicVO1.setId((Long)parms[0]);
+						basicVO1.setCount((Long)parms[2]);
+						basicVO1.setName(parms[1].toString());
+						basicVO1.setPerc((Double)parms[3]);
+						
+						selectedCastesInPanchayats.add(basicVO1);
+					}
+					
+					if(expCaste)
+					{
+					casteDataMap = casteDetailsMap.get(panchayatId);
+					if(casteDataMap == null)
+					{
+						casteDataMap = new HashMap<Long, BasicVO>();
+						casteDetailsMap.put(panchayatId, casteDataMap);
+					}
+					BasicVO casteVO = casteDataMap.get((Long)parms[4]);
+					if(casteVO == null)
+					{
+						casteVO = new BasicVO();
+						casteDataMap.put((Long)parms[4], casteVO);
+					}
+					casteVO.setId((Long)parms[4]);
+					casteVO.setCount((Long)parms[2]);
+					casteVO.setName(parms[1].toString());
+					casteVO.setPerc((Double)parms[3]);
+					}
+					count ++;
+				}
+		} catch (Exception e) {
+			 LOG.error("Exception raised in fillSelectedCastesAndExpCasteDatilsPanchayatWise() method in Suggestive Model Service", e);
+		}
+		 
+	 }
+	 
+	 /**
+	  * This method is used for storing the selected caste details booth wise.
+	  * @param boothIds
+	  * @param totalVotersInBooth
+	  * @param basicVOListForBooth
+	  * @param selectedCastesInBooths
+	  * @param userid
+	  * @param publicationId
+	  * @param constituencyId
+	  * @param casteIdsList
+	  * @param casteMapForBooth
+	  * @param casteMapForBooths
+	  */
+	 public void fillSelectedCastesAndExpCasteDatilsBoothWise(List<Long> boothIds,Map<Long, Long> totalVotersInBooth ,List<BasicVO> basicVOListForBooth , List<BasicVO> selectedCastesInBooths ,Long userid,Long publicationId,Long constituencyId,List<Long> casteIdsList,Map<Long,List<BasicVO>> casteMapForBooth,Map<Long,List<BasicVO>> casteMapForBooths)
+	 {
+		 try {
+			 LOG.debug("Enterd Into fillSelectedCastesAndExpCasteDatilsBoothWise() method in SuggestiveModelService Class ");
+			 for (Long boothId : boothIds) {
+					Long totalVoter = boothPublicationVoterDAO.getTotalVoters(boothId);
+					//List<Object[]> casteDetails = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothId(boothId,publicationId,userid);
+					List<VoterCastInfoVO> casteDetails = votersAnalysisService.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userid,"booth",boothId,publicationId,constituencyId);
+					
+					Collections.sort(casteDetails, new Comparator<VoterCastInfoVO>(){
+						public int compare(VoterCastInfoVO o1, VoterCastInfoVO o2) {
+							  return o2.getTotalVoters().compareTo(o1.getTotalVoters());
+						}
+						
+					});
+					totalVotersInBooth.put(boothId, totalVoter);
+					int count = 0;
+					basicVOListForBooth = new ArrayList<BasicVO>();
+					selectedCastesInBooths = new ArrayList<BasicVO>();
+					for (VoterCastInfoVO params : casteDetails) {
+						if(IConstants.MAX_LEVEL > count)
+						{
+							BasicVO basicVO = new BasicVO();
+							
+							basicVO.setId(boothId);
+							basicVO.setName(params.getCastName());
+							basicVO.setCount(params.getFemaleVoters()+params.getMaleVoters());
+							basicVO.setPerc(Double.valueOf(params.getVotesPercent()));
+							basicVOListForBooth.add(basicVO);
+						}
+						
+						if(casteIdsList.contains(params.getCasteStateId())){
+							BasicVO basicVO = new BasicVO();
+							basicVO.setId(boothId);
+							basicVO.setName(params.getCastName());
+							basicVO.setCount(params.getFemaleVoters()+params.getMaleVoters());
+							basicVO.setPerc(Double.valueOf(params.getVotesPercent()));
+							
+							selectedCastesInBooths.add(basicVO);
+						}
+						count ++;
+						
+					}								
+					casteMapForBooth.put(boothId, basicVOListForBooth);
+					casteMapForBooths.put(boothId, selectedCastesInBooths);
+				}
+		} catch (Exception e) {
+			 LOG.error("Exception raised in fillSelectedCastesAndExpCasteDatilsBoothWise() method in Suggestive Model Service", e);
+		}
+		 
+	 }
+	 /**
+	  * This method is used for filling the YouthLeaderSelectionVO For Selected catse details in panchayawise
+	  * @param panchayatid
+	  * @param publicationId
+	  * @param botthDetailsList
+	  * @param boothyouthSelectionVO
+	  * @param casteMapForBooth
+	  * @param botthLevelList
+	  * @param botthLevelLists
+	  * @param casteMapForBooths
+	  * @param totalVotersInBooth
+	  * @param youthLeaderSelectionVO
+	  */
+	 public void fillTheYouthLeaderSelectionVOForSelectedCatseDetialsPanchayatWise(Long panchayatid,Long publicationId,List<YouthLeaderSelectionVO> botthDetailsList,YouthLeaderSelectionVO boothyouthSelectionVO,Map<Long,List<BasicVO>> casteMapForBooth,List<YouthLeaderSelectionVO> botthLevelList ,List<YouthLeaderSelectionVO> botthLevelLists,Map<Long,List<BasicVO>> casteMapForBooths,Map<Long, Long> totalVotersInBooth,YouthLeaderSelectionVO youthLeaderSelectionVO)
+	 {
+		 try {
+			 LOG.debug("Enterd Into fillTheYouthLeaderSelectionVOForSelectedCatseDetialsPanchayatWise() method in SuggestiveModelService Class ");
+			 List<Long> boothList = boothDAO.getBoothsByPanchayatId(panchayatid,publicationId);
+			 List<Object[]> boothsNamesList = boothDAO.getboothNamesByBoothIds(boothList);
+			 Map<Long,String> boothsNameMap = null;
+				 if(boothsNamesList != null && boothsNamesList.size() > 0)
+				 {
+					 boothsNameMap = new HashMap<Long, String>();
+					for (Object[] parms : boothsNamesList) {
+						boothsNameMap.put((Long)parms[0], parms[1].toString());
+					} 
+				 }
+				if(boothList != null && boothList.size() > 0)
+				{
+					botthDetailsList = new ArrayList<YouthLeaderSelectionVO>();
+					for (Long boothId : boothList) {
+						boothyouthSelectionVO = new YouthLeaderSelectionVO();
+						
+						List<BasicVO> boothCasteDate = casteMapForBooth.get(boothId);
+						if(boothCasteDate != null && boothCasteDate.size() > 0)
+						{
+							botthLevelList = new ArrayList<YouthLeaderSelectionVO>();
+							for (BasicVO basicVO : boothCasteDate) {
+								YouthLeaderSelectionVO youthSelectionVO = new YouthLeaderSelectionVO();										
+								youthSelectionVO.setCasteName(basicVO.getName());
+								youthSelectionVO.setCasteVoters(basicVO.getCount());
+								youthSelectionVO.setCasteVotersPerc(basicVO.getPerc());
+								botthLevelList.add(youthSelectionVO);
+							}
+							
+						}
+						
+						List<BasicVO> boothCasteDatails = casteMapForBooths.get(boothId);
+						botthLevelLists = new ArrayList<YouthLeaderSelectionVO>();
+						if(boothCasteDatails != null && boothCasteDatails.size() > 0)
+						{
+							for (BasicVO basicVO : boothCasteDatails) {
+								YouthLeaderSelectionVO youthSelectionVO = new YouthLeaderSelectionVO();										
+								youthSelectionVO.setCasteName(basicVO.getName());
+								youthSelectionVO.setCasteVoters(basicVO.getCount());
+								youthSelectionVO.setCasteVotersPerc(basicVO.getPerc());
+								botthLevelLists.add(youthSelectionVO);
+							}
+						}
+						boothyouthSelectionVO.setBoothId(boothId);
+						boothyouthSelectionVO.setBoothName(boothsNameMap.get(boothId));
+						boothyouthSelectionVO.setBoothTotalVoters(totalVotersInBooth.get(boothId));
+						boothyouthSelectionVO.setBoothLevelLeadersList(botthLevelList);
+						boothyouthSelectionVO.setSelectedCastesList(botthLevelLists);
+						botthDetailsList.add(boothyouthSelectionVO);
+						
+					}
+					
+					youthLeaderSelectionVO.setBoothLevelLeadersList(botthDetailsList);
+				}
+		} catch (Exception e) {
+			 LOG.error("Exception raised in fillTheYouthLeaderSelectionVOForSelectedCatseDetialsPanchayatWise() method in Suggestive Model Service", e);
+		}
+		 
+	 }
+	 /**
+	  * This method is used for filling the YouthLeaderSelectionVO For exp catse details in panchayawise
+	  * @param panchayatid
+	  * @param casteDetailsMap
+	  * @param expCasteDetails
+	  * @param expCastesIds
+	  * @param casteNamesMap
+	  * @param castePanchayatMap
+	  * @param panchaytwiseCasteMap
+	  * @param panchayatTotalVoters
+	  * @param youthLeaderSelectionVO
+	  */
+	 public void fillTheYouthLeaderSelectionVOForExpCatseDetialsPanchayatWise(Long panchayatid,Map<Long,Map<Long,BasicVO>> casteDetailsMap ,List<BasicVO> expCasteDetails , Set<Long> expCastesIds ,Map<Long,String> casteNamesMap ,Map<Long,Map<Long,Double>> castePanchayatMap,Map<Long,List<BasicVO>> panchaytwiseCasteMap ,Long panchayatTotalVoters,YouthLeaderSelectionVO youthLeaderSelectionVO)
+	 {
+		 try {
+			 LOG.debug("Enterd Into fillTheYouthLeaderSelectionVOForExpCatseDetialsPanchayatWise() method in SuggestiveModelService Class ");
+			 Map<Long,BasicVO> casteData = casteDetailsMap.get(panchayatid);
+				if(casteData != null && casteData.size() > 0)
+				{
+					Long casteCount = 0l;
+					expCasteDetails = new ArrayList<BasicVO>();
+					for (Long casteId : expCastesIds) {
+						if(casteId > 0)
+						{
+							BasicVO basicVO = casteData.get(casteId);
+							if(basicVO == null)
+							{
+								BasicVO casteVO = new BasicVO();
+								casteVO.setId(casteId);
+								casteVO.setName(casteNamesMap.get(casteId));
+								casteVO.setPerc(castePanchayatMap.get(casteId).get(panchayatid));
+								casteVO.setCount(0l);
+								casteVO.setExpCount(0l);
+								expCasteDetails.add(casteVO);
+								panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+							}
+							else
+							{
+								BasicVO casteVO = new BasicVO();
+								casteVO.setId(basicVO.getId());
+								Long total = basicVO.getCount();
+								Double expPerc = castePanchayatMap.get(casteId).get(panchayatid);
+								Long expVoters = (long) (total*expPerc);
+								casteVO.setCount(basicVO.getCount());
+								casteVO.setExpCount(expVoters);
+								casteVO.setName(basicVO.getName());
+								casteVO.setPerc(expPerc);
+								expCasteDetails.add(casteVO);
+								casteCount = casteCount + total;
+								panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+							}
+									
+							
+						}
+					}
+					BasicVO casteVO = new BasicVO();
+					casteVO.setId(0l);
+					Long total = panchayatTotalVoters - casteCount ;
+					Double expPerc = castePanchayatMap.get(0l).get(panchayatid);
+					Long expVoters = (long) (total*expPerc);
+					casteVO.setCount(total);
+					casteVO.setExpCount(expVoters);
+					casteVO.setName("OTHERS");
+					casteVO.setPerc(expPerc);
+					expCasteDetails.add(casteVO);
+					casteCount = casteCount + total;
+					panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+				}
+				else
+				{
+					Long casteCount = 0l;
+					expCasteDetails = new ArrayList<BasicVO>();
+					for (Long casteId : expCastesIds) {
+						if(casteId > 0)
+						{
+							BasicVO casteVO = new BasicVO();
+							casteVO.setId(casteId);
+							casteVO.setName(casteNamesMap.get(casteId));
+							casteVO.setPerc(castePanchayatMap.get(casteId).get(panchayatid));
+							casteVO.setCount(0l);
+							casteVO.setExpCount(0l);
+							expCasteDetails.add(casteVO);
+							panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+							
+						}
+					}
+					BasicVO casteVO = new BasicVO();
+					casteVO.setId(0l);
+					Long total = panchayatTotalVoters - casteCount ;
+					Double expPerc = castePanchayatMap.get(0l).get(panchayatid);
+					Long expVoters = (long) (total*expPerc);
+					casteVO.setCount(total);
+					casteVO.setExpCount(expVoters);
+					casteVO.setName("OTHERS");
+					casteVO.setPerc(expPerc);
+					expCasteDetails.add(casteVO);
+					casteCount = casteCount + total;
+					panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
+				}
+				
+				youthLeaderSelectionVO.setExceptdCateDetails(panchaytwiseCasteMap.get(panchayatid));
+				
+		} catch (Exception e) {
+			 LOG.error("Exception raised in fillTheYouthLeaderSelectionVOForExpCatseDetialsPanchayatWise() method in Suggestive Model Service", e);
+		}
+		
+	 }
+	 /**
+	  * This service is used for getiing top castes,selected castes and exp caste details in constituency laevel.
+	  * @param Long userid
+	  * @param Long constituencyId
+	  * @param List<Long> casteIdsList
+	  * @param Map<Long,Double> casteMap
+	  * @param List<ExceptCastsVO> expCaseList
+	  * @param boolean expCaste
+	  * @return List<YouthLeaderSelectionVO>
+	  */
 	 public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevel(Long userid,Long constituencyId,List<Long> casteIdsList,Map<Long,Double> casteMap,List<ExceptCastsVO> expCaseList,boolean expCaste)
 	 {
 		 List<YouthLeaderSelectionVO> returnList = new ArrayList<YouthLeaderSelectionVO>();
@@ -2441,13 +2953,13 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				List<BasicVO> selectedCastesInBooths = null;
 				List<BasicVO> selectedCastesInPanchayats = null;
 				List<BasicVO> expCasteDetails = null;
-				Map<Long,List<BasicVO>> expCasteMap = new HashMap<Long, List<BasicVO>>();//Map<casteId,expcastesList>
+				//Map<Long,List<BasicVO>> expCasteMap = new HashMap<Long, List<BasicVO>>();//Map<casteId,expcastesList>
 				Map<Long,List<BasicVO>> panchaytwiseCasteMap = new HashMap<Long, List<BasicVO>>();//Map<panchayatId,selectedCasteDetails>
 				Map<Long,Map<Long,BasicVO>> casteDetailsMap = new HashMap<Long, Map<Long,BasicVO>>();//Map<panchayatId,Map<casteId,casteDetails>>
 				Map<Long,BasicVO> casteDataMap = new HashMap<Long, BasicVO>();//Map<panchayatId,selectedCasteDetails>
 				Map<Long,Double> expPanchayatCasteDetailsMap = new HashMap<Long,Double>();//Map<panchayatId,expPerc>
 				Map<Long,Map<Long,Double>> castePanchayatMap = new HashMap<Long, Map<Long,Double>>();//Map<casteId,Map<panchayatId,expperc>>
-				List<BasicVO> expcastesList = null;
+				//List<BasicVO> expcastesList = null;
 				Set<Long> expCastesIds  = null;
 				DecimalFormat df = new DecimalFormat("#.##");
 				publicationId = publicationDateDAO.getLatestPublicationId();
@@ -2457,24 +2969,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				{
 					if(expCaseList != null && expCaseList.size() > 0)
 					{
-						expcastesList = new ArrayList<BasicVO>();
-						for (ExceptCastsVO exceptCastsVO : expCaseList) {
-							Long panchayatId = exceptCastsVO.getPanchayatId();
-							Long casteId = exceptCastsVO.getCasteId();
-							Double expPerc = exceptCastsVO.getCastePerc();
-							expPanchayatCasteDetailsMap = castePanchayatMap.get(casteId);
-							if(expPanchayatCasteDetailsMap == null)
-							{
-								expPanchayatCasteDetailsMap = new HashMap<Long, Double>();
-								castePanchayatMap.put(casteId, expPanchayatCasteDetailsMap);
-							}
-							casteMap.put(casteId, expPerc);
-							expPanchayatCasteDetailsMap.put(panchayatId, expPerc);
-						}
-						
+						//expcastesList = new ArrayList<BasicVO>();
+						//this method is used for to fill the excepted caste details caste wise and panchayat wise fills in a caste map
+						fillExpCasteForEachAndEveryCasteAndPanchayat( expCaseList, castePanchayatMap, expPanchayatCasteDetailsMap, casteMap);
+								
 					}
-					expCastesIds = casteMap.keySet();
+					expCastesIds = casteMap.keySet();// getting the exp caste ids .
 					
+					// Here we are processing the exp caste names with caste ids 
 					if(expCastesIds != null && expCastesIds.size() > 0)
 					{
 						List<Object[]> castNames = casteStateDAO.getCasteListByCasteIds(new ArrayList<Long>(expCastesIds));
@@ -2489,6 +2991,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					
 
 				}
+				// here we are checkinthf the tehsils are exists are not if exists then then will get all the caste and exp percentages for selected caste .
 				
 				if(tehsilIds != null && tehsilIds.size() > 0)
 				{
@@ -2498,23 +3001,18 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						{
 							panchayats = new ArrayList<SelectOptionVO>();
 							panchayaIds = new ArrayList<Long>();
-							for (Object[] parms : panchayatsList) {
-								SelectOptionVO selectOptionVO = new SelectOptionVO();	
-								selectOptionVO.setId((Long)parms[0]);
-								selectOptionVO.setName(parms[1].toString());
-								panchayats.add(selectOptionVO);
-								panchayaIds.add(selectOptionVO.getId());
-							}
+							// this method is used for filling the all panchaya ids into the VO
+							getAllPanchayatsInATehsil(panchayats,panchayaIds,panchayatsList);
 						}
 						
 						if(panchayaIds != null && panchayaIds.size() > 0)
 						{
-							List<Object[]> panchaytVotersCount = voterCastBasicInfoDAO.getToatlVotersForSelectedLevl(panchayaIds,userid,publicationId,3l,constituencyId);
+							//List<Object[]> panchaytVotersCount = voterCastBasicInfoDAO.getToatlVotersForSelectedLevl(panchayaIds,userid,publicationId,3l,constituencyId);
+							List<Object[]> panchaytVotersCount = voterInfoDAO.getTotalVotersInAPanchayat(constituencyId,publicationId,3l,panchayaIds);
 							if(panchaytVotersCount != null && panchaytVotersCount.size() > 0)
 							{
 								for (Object[] parms : panchaytVotersCount) {
-									Long total = ((Long)parms[1] + (Long)parms[2]);
-									totalVotersInPanchayat.put((Long)parms[0], total);
+									totalVotersInPanchayat.put((Long)parms[0],((Long)parms[1]));
 								}
 							}
 							else
@@ -2529,67 +3027,19 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 									if(boothsList != null && boothsList.size() > 0)
 									{
 										
-										for (Object[] parms : boothsList) {
-											SelectOptionVO selectOptionVO = new SelectOptionVO();	
-											selectOptionVO.setId((Long)parms[0]);
-											selectOptionVO.setName(parms[1].toString());
-											booths.add(selectOptionVO);
-											boothIds.add(selectOptionVO.getId());
-										}
-										
+										//This method is used for filling the Booths ids into the VO .
+										getAllBoothsInAPanchayat(booths, boothIds, boothsList);										
 									}
 								}
 								
 								List<Object[]> casteDetails = voterCastInfoDAO.getTopThreeCasteFoeSelctedLevel(panchayatId,3l,publicationId,userid);
 								if(casteDetails != null && casteDetails.size() > 0)
 								{
-									int count = 0;
 									selectedCastesInPanchayats = new ArrayList<BasicVO>();
 									basicVOListForPanchayat = new ArrayList<BasicVO>();
 									expCasteDetails = new ArrayList<BasicVO>();
-									for (Object[] parms : casteDetails) {
-										if(IConstants.MAX_LEVEL > count)
-										{
-											BasicVO basicVO = new BasicVO();
-											basicVO.setId((Long)parms[0]);
-											basicVO.setCount((Long)parms[2]);
-											basicVO.setName(parms[1].toString());
-											basicVO.setPerc((Double)parms[3]);
-											basicVOListForPanchayat.add(basicVO);
-											
-										}
-										
-										if(casteIdsList.contains(parms[4])){
-											BasicVO basicVO1 = new BasicVO();
-											basicVO1.setId((Long)parms[0]);
-											basicVO1.setCount((Long)parms[2]);
-											basicVO1.setName(parms[1].toString());
-											basicVO1.setPerc((Double)parms[3]);
-											
-											selectedCastesInPanchayats.add(basicVO1);
-										}
-										
-										if(expCaste)
-										{
-										casteDataMap = casteDetailsMap.get(panchayatId);
-										if(casteDataMap == null)
-										{
-											casteDataMap = new HashMap<Long, BasicVO>();
-											casteDetailsMap.put(panchayatId, casteDataMap);
-										}
-										BasicVO casteVO = casteDataMap.get((Long)parms[4]);
-										if(casteVO == null)
-										{
-											casteVO = new BasicVO();
-											casteDataMap.put((Long)parms[4], casteVO);
-										}
-										casteVO.setId((Long)parms[4]);
-										casteVO.setCount((Long)parms[2]);
-										casteVO.setName(parms[1].toString());
-										casteVO.setPerc((Double)parms[3]);
-										}
-										count ++;
-									}
+									// this method is used for storing the selected caste and exp caste details into th VO
+									fillSelectedCastesAndExpCasteDatilsPanchayatWise( selectedCastesInPanchayats, basicVOListForPanchayat , expCasteDetails , casteDetails, casteIdsList,expCaste, panchayatId, casteDetailsMap, casteDataMap);
 								}
 								casteMapForPanchayat.put(panchayatId, basicVOListForPanchayat);
 								casteMapForPanchayats.put(panchayatId, selectedCastesInPanchayats);
@@ -2602,49 +3052,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						{
 							if(boothIds != null && boothIds.size() > 0)
 							{
-								for (Long boothId : boothIds) {
-									Long totalVoter = boothPublicationVoterDAO.getTotalVoters(boothId);
-									//List<Object[]> casteDetails = userVoterDetailsDAO.getCasteDetailsOfVoterByBoothId(boothId,publicationId,userid);
-									List<VoterCastInfoVO> casteDetails = votersAnalysisService.getCastAndGenderWiseVotersCountByPublicationIdInALocation(userid,"booth",boothId,publicationId,constituencyId);
-									
-									Collections.sort(casteDetails, new Comparator<VoterCastInfoVO>(){
-										public int compare(VoterCastInfoVO o1, VoterCastInfoVO o2) {
-											  return o2.getTotalVoters().compareTo(o1.getTotalVoters());
-										}
-										
-									});
-									totalVotersInBooth.put(boothId, totalVoter);
-									int count = 0;
-									basicVOListForBooth = new ArrayList<BasicVO>();
-									selectedCastesInBooths = new ArrayList<BasicVO>();
-									for (VoterCastInfoVO params : casteDetails) {
-										if(IConstants.MAX_LEVEL > count)
-										{
-											BasicVO basicVO = new BasicVO();
-											
-											basicVO.setId(boothId);
-											basicVO.setName(params.getCastName());
-											basicVO.setCount(params.getFemaleVoters()+params.getMaleVoters());
-											basicVO.setPerc(Double.valueOf(params.getVotesPercent()));
-											basicVOListForBooth.add(basicVO);
-										}
-										
-										if(casteIdsList.contains(params.getCasteStateId())){
-											BasicVO basicVO = new BasicVO();
-											basicVO.setId(boothId);
-											basicVO.setName(params.getCastName());
-											basicVO.setCount(params.getFemaleVoters()+params.getMaleVoters());
-											basicVO.setPerc(Double.valueOf(params.getVotesPercent()));
-											
-											selectedCastesInBooths.add(basicVO);
-										}
-										count ++;
-										
-									}								
-									casteMapForBooth.put(boothId, basicVOListForBooth);
-									casteMapForBooths.put(boothId, selectedCastesInBooths);
-								}
-								
+								// this method is used for filling the selectd caste details booth wise
+								fillSelectedCastesAndExpCasteDatilsBoothWise(boothIds,totalVotersInBooth,basicVOListForBooth,selectedCastesInBooths,userid,publicationId,constituencyId,casteIdsList,casteMapForBooth,casteMapForBooths);
 							}
 						}
 						
@@ -2680,50 +3089,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								 }
 								if(!expCaste)
 								{
-									 List<Long> boothList = boothDAO.getBoothsByPanchayatId(panchayatid,publicationId);
-										if(boothList != null && boothList.size() > 0)
-										{
-											botthDetailsList = new ArrayList<YouthLeaderSelectionVO>();
-											for (Long boothId : boothList) {
-												boothyouthSelectionVO = new YouthLeaderSelectionVO();
-												
-												List<BasicVO> boothCasteDate = casteMapForBooth.get(boothId);
-												if(boothCasteDate != null && boothCasteDate.size() > 0)
-												{
-													botthLevelList = new ArrayList<YouthLeaderSelectionVO>();
-													for (BasicVO basicVO : boothCasteDate) {
-														YouthLeaderSelectionVO youthSelectionVO = new YouthLeaderSelectionVO();										
-														youthSelectionVO.setCasteName(basicVO.getName());
-														youthSelectionVO.setCasteVoters(basicVO.getCount());
-														youthSelectionVO.setCasteVotersPerc(basicVO.getPerc());
-														botthLevelList.add(youthSelectionVO);
-													}
-													
-												}
-												
-												List<BasicVO> boothCasteDatails = casteMapForBooths.get(boothId);
-												botthLevelLists = new ArrayList<YouthLeaderSelectionVO>();
-												if(boothCasteDatails != null && boothCasteDatails.size() > 0)
-												{
-													for (BasicVO basicVO : boothCasteDatails) {
-														YouthLeaderSelectionVO youthSelectionVO = new YouthLeaderSelectionVO();										
-														youthSelectionVO.setCasteName(basicVO.getName());
-														youthSelectionVO.setCasteVoters(basicVO.getCount());
-														youthSelectionVO.setCasteVotersPerc(basicVO.getPerc());
-														botthLevelLists.add(youthSelectionVO);
-													}
-												}
-												boothyouthSelectionVO.setBoothId(boothId);
-												boothyouthSelectionVO.setBoothName(boothDAO.get(boothId).getPartNo());
-												boothyouthSelectionVO.setBoothTotalVoters(totalVotersInBooth.get(boothId));
-												boothyouthSelectionVO.setBoothLevelLeadersList(botthLevelList);
-												boothyouthSelectionVO.setSelectedCastesList(botthLevelLists);
-												botthDetailsList.add(boothyouthSelectionVO);
-												
-											}
-											
-											youthLeaderSelectionVO.setBoothLevelLeadersList(botthDetailsList);
-										}
+									// This method is used for filling the YouthLeaderSelectionVO For Selected catse details in panchayawise
+									fillTheYouthLeaderSelectionVOForSelectedCatseDetialsPanchayatWise( panchayatid, publicationId, botthDetailsList, boothyouthSelectionVO, casteMapForBooth, botthLevelList , botthLevelLists, casteMapForBooths,totalVotersInBooth, youthLeaderSelectionVO);
 								}
 								
 								youthLeaderSelectionVO.setPanchayatTotalVoters(panchayatTotalVoters);
@@ -2734,92 +3101,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								youthLeaderSelectionVO.setSelectedCastesList(panchayatLevelLists);
 								if(expCaste)
 								{
-									Map<Long,BasicVO> casteData = casteDetailsMap.get(panchayatid);
-									if(casteData != null && casteData.size() > 0)
-									{
-										Long casteCount = 0l;
-										expCasteDetails = new ArrayList<BasicVO>();
-										for (Long casteId : expCastesIds) {
-											if(casteId > 0)
-											{
-												BasicVO basicVO = casteData.get(casteId);
-												if(basicVO == null)
-												{
-													BasicVO casteVO = new BasicVO();
-													casteVO.setId(casteId);
-													casteVO.setName(casteNamesMap.get(casteId));
-													casteVO.setPerc(castePanchayatMap.get(casteId).get(panchayatid));
-													casteVO.setCount(0l);
-													casteVO.setExpCount(0l);
-													expCasteDetails.add(casteVO);
-													panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
-												}
-												else
-												{
-													BasicVO casteVO = new BasicVO();
-													casteVO.setId(basicVO.getId());
-													Long total = basicVO.getCount();
-													Double expPerc = castePanchayatMap.get(casteId).get(panchayatid);
-													Long expVoters = (long) (total*expPerc);
-													casteVO.setCount(basicVO.getCount());
-													casteVO.setExpCount(expVoters);
-													casteVO.setName(basicVO.getName());
-													casteVO.setPerc(expPerc);
-													expCasteDetails.add(casteVO);
-													casteCount = casteCount + total;
-													panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
-												}
-														
-												
-											}
-										}
-										BasicVO casteVO = new BasicVO();
-										casteVO.setId(0l);
-										Long total = panchayatTotalVoters - casteCount ;
-										Double expPerc = castePanchayatMap.get(0l).get(panchayatid);
-										Long expVoters = (long) (total*expPerc);
-										casteVO.setCount(total);
-										casteVO.setExpCount(expVoters);
-										casteVO.setName("OTHERS");
-										casteVO.setPerc(expPerc);
-										expCasteDetails.add(casteVO);
-										casteCount = casteCount + total;
-										panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
-									}
-									else
-									{
-										Long casteCount = 0l;
-										expCasteDetails = new ArrayList<BasicVO>();
-										for (Long casteId : expCastesIds) {
-											if(casteId > 0)
-											{
-												BasicVO casteVO = new BasicVO();
-												casteVO.setId(casteId);
-												casteVO.setName(casteNamesMap.get(casteId));
-												casteVO.setPerc(castePanchayatMap.get(casteId).get(panchayatid));
-												casteVO.setCount(0l);
-												casteVO.setExpCount(0l);
-												expCasteDetails.add(casteVO);
-												panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
-												
-											}
-										}
-										BasicVO casteVO = new BasicVO();
-										casteVO.setId(0l);
-										Long total = panchayatTotalVoters - casteCount ;
-										Double expPerc = castePanchayatMap.get(0l).get(panchayatid);
-										Long expVoters = (long) (total*expPerc);
-										casteVO.setCount(total);
-										casteVO.setExpCount(expVoters);
-										casteVO.setName("OTHERS");
-										casteVO.setPerc(expPerc);
-										expCasteDetails.add(casteVO);
-										casteCount = casteCount + total;
-										panchaytwiseCasteMap.put(panchayatid, expCasteDetails);
-									}
-									
-									youthLeaderSelectionVO.setExceptdCateDetails(panchaytwiseCasteMap.get(panchayatid));
-									
+									//This method is used for filling the YouthLeaderSelectionVO For exp catse details in panchayawise
+									fillTheYouthLeaderSelectionVOForExpCatseDetialsPanchayatWise( panchayatid, casteDetailsMap , expCasteDetails ,  expCastesIds , casteNamesMap , castePanchayatMap, panchaytwiseCasteMap , panchayatTotalVoters, youthLeaderSelectionVO);
 								}
 								returnList.add(youthLeaderSelectionVO);
 							}
