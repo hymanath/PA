@@ -3536,7 +3536,7 @@ function removeCensusNotAvailableErrorMessage()
 			task:"getCensusDetailsForAConstituency"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "<%=request.getContextPath()%>/getCensusDetailsForAConstituency.action?"+rparam;
+	var url = "<%=request.getContextPath()%>/getCensusDetailsForAConstituency1.action?"+rparam;
 	callAjax(jsObj, url);
 	}
 
