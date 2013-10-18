@@ -257,14 +257,21 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 				return crossVotingConsolidateVO;
 			}	
 		}
-		
-		Nomination acNomination = acNominations.get(0);
+		Nomination acNomination = null;
+		if(acNominations != null && acNominations.size() > 0)
+		{
+		 acNomination = acNominations.get(0);
 		acCandidate.setCandidateId(acNomination.getCandidate().getCandidateId());
 		acCandidate.setCandidateName(acNomination.getCandidate().getLastname());
 		acCandidate.setImage(acNomination.getCandidate().getImage());
 		acCandidate.setRank(acNomination.getCandidateResult().getRank().toString());
 		acCandidate.setParty(acNomination.getParty().getShortName());
+		crossVotingConsolidateVO.setTotalACPolledVotesInConstituency(acNomination.getConstituencyElection().
+				getConstituencyElectionResult().getTotalVotesPolled().longValue());
+		crossVotingConsolidateVO.setTotalVotersInAC(acNomination.getConstituencyElection().getConstituencyElectionResult().
+				getTotalVotes().longValue());
 		
+		}
 		Nomination pcNomination = pcNominations.get(0);
 		pcCandidate.setCandidateId(pcNomination.getCandidate().getCandidateId());
 		pcCandidate.setCandidateName(pcNomination.getCandidate().getLastname());
@@ -272,19 +279,20 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		pcCandidate.setRank(pcNomination.getCandidateResult().getRank().toString());
 		pcCandidate.setParty(pcNomination.getParty().getShortName());
 		
-		crossVotingConsolidateVO.setTotalACPolledVotesInConstituency(acNomination.getConstituencyElection().
-				getConstituencyElectionResult().getTotalVotesPolled().longValue());
+	
 		crossVotingConsolidateVO.setTotalPCPolledVotesInConstituency(pcNomination.getConstituencyElection().
 				getConstituencyElectionResult().getTotalVotesPolled().longValue());
-		crossVotingConsolidateVO.setTotalVotersInAC(acNomination.getConstituencyElection().getConstituencyElectionResult().
-				getTotalVotes().longValue());
+		
 		crossVotingConsolidateVO.setTotalVotersInPC(pcNomination.getConstituencyElection().getConstituencyElectionResult().
 				getTotalVotes().longValue());
 		crossVotingConsolidateVO.setAcCandidateData(acCandidate);
 		crossVotingConsolidateVO.setPcCandidateData(pcCandidate);
+		if(acNominations != null && acNominations.size() > 0)
+		{
 		List<CrossVotedMandalVO> mandals = getTehsilsForConstituency(crossVotingConsolidateVO, electionYear, acId, pcId, 
 				acNomination.getNominationId(), pcNomination.getNominationId());
 		crossVotingConsolidateVO.setMandals(mandals);
+		}
 		return crossVotingConsolidateVO;
 	}
 	
@@ -1042,4 +1050,31 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
     	return returnVal;   
     }
     
+    
+    // getting Parties For Both Assembly and Parliament Elections
+    
+    public List<SelectOptionVO> getPartiesForAcAndPcElections(Long AcId, String electionYear,Long PcId)
+    {
+    	List<SelectOptionVO> partyVOs1 = new ArrayList<SelectOptionVO>();
+    	try{
+    		List<SelectOptionVO> partyVOs = getPartiesForConstituencyAndElectionYearForBoothData(AcId,electionYear);
+    		List<Long> partyIds = nominationDAO.getParticipatedPartiesInElection(PcId,electionYear);
+    		if(partyVOs != null && partyVOs.size() > 0)
+    		for(SelectOptionVO vo : partyVOs)
+    		{
+    			if(partyIds.contains(vo.getId()))
+    			{
+    				partyVOs1.add(vo);	
+    			}
+    		}
+    		return partyVOs1;	
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		log.error("Exception Occured in getPartiesForAcAndPcElections() method in crossVoting Estimation Service",e);
+    	}
+		return partyVOs1;
+    }
+ 
 }
