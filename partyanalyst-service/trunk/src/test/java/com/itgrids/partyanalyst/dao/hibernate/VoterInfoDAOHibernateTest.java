@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -175,18 +176,30 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testgetVoterCountInPanchayatLevel()
+	/*public void testgetVoterCountInPanchayatLevel()
 	{
 		List<Long> values = voterInfoDAO.getCountForSelectdCountRange(347l,8l,30000l,40000l,6l);
 		for (Long long1 : values) {
 			System.out.println(long1);
 		}
-	}
+	}*/
 	
 	/*public void testgetLatestPublicationDate()
 	{
 		Long id = voterInfoDAO.getLatestPublicationDate(347l);
 		System.out.println(id);
 	}*/
+	
+	public void testgetTotalVotersInAPanchayat()
+	{
+		List<Long> panchayatIds = new ArrayList<Long>();
+		panchayatIds.add(1l);
+		panchayatIds.add(2l);
+		panchayatIds.add(3l);
+		List<Object[]> values = voterInfoDAO.getTotalVotersInAPanchayat(232l,8l,3l,panchayatIds);
+		for (Object[] objects : values) {
+			System.out.println(objects[0] +":"+ objects[1]);
+		}
+	}
 	
 }

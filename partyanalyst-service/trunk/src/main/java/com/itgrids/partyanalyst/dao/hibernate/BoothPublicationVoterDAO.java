@@ -5793,4 +5793,108 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			
 		return query.list();
 	}
+	
+	public List<Object[]> getAgeAndGenderWiseVotersCountInBoothsOfMuncipality(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId){
+		StringBuilder str=new StringBuilder();
+		str.append("select " +
+				" model1.casteState.caste.casteName," +
+				" model1.casteState.casteStateId," +
+				" count(model.voter.voterId)," +
+				" model.booth.localBody.localElectionBodyId," +
+				" model.booth.localBody.name," +
+				" model.booth.localBody.electionType.electionType from" +
+				" BoothPublicationVoter model,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId" +
+				" and model.booth.constituency.constituencyId =:constituencyId" +
+				" and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.localBody!=null" +
+				" and model1.user.userId=:userId ");
+		
+		if(ageTo != null){
+			str.append(" and model.voter.age between :ageFrom and :ageTo");
+			}
+		else{
+			str.append(" and model.voter.age > :ageFrom");
+		}
+		
+		str.append(" group by  model1.casteState.casteStateId");
+		
+		Query qry=getSession().createQuery(str.toString());
+		qry.setParameter("constituencyId", constituencyId);
+		qry.setParameter("publicationDateId", publicationDateId);
+		qry.setParameter("userId", userId);
+		qry.setParameter("ageFrom",ageFrom);
+		
+		if(ageTo != null){
+			qry.setParameter("ageTo",ageTo);
+		}
+		
+		return qry.list();
+	}
+	
+	public Long getAgeAndGenderWisesMuncipaltiyVotersCount(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId){
+		StringBuilder str=new StringBuilder();
+		str.append("select " +
+				" count(model.voter.voterId) " +
+				" from" +
+				" BoothPublicationVoter model where " +
+				" model.booth.constituency.constituencyId =:constituencyId" +
+				" and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.localBody!=null" +
+				" ");
+		
+		if(ageTo != null){
+			str.append(" and model.voter.age >= :ageFrom and model.voter.age <= :ageTo");
+			}
+		else{
+			str.append(" and model.voter.age > :ageFrom");
+		}
+		
+		//str.append(" group by  model1.casteState.casteStateId");
+		
+		Query qry=getSession().createQuery(str.toString());
+		qry.setParameter("constituencyId", constituencyId);
+		qry.setParameter("publicationDateId", publicationDateId);
+		//qry.setParameter("userId", userId);
+		qry.setParameter("ageFrom",ageFrom);
+		
+		if(ageTo != null){
+			qry.setParameter("ageTo",ageTo);
+		}
+		
+		return (Long) qry.uniqueResult();
+	}
+	
+	public List<Object[]> getExpCasteForAgeAndGenderWisesMuncipaltiyVotersCount(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId,List<Long> casteIds){
+		StringBuilder str=new StringBuilder();
+		str.append("select " +
+				" model1.casteState.caste.casteName," +
+				" model1.casteState.casteStateId," +
+				" count(model.voter.voterId)" +
+				" from " +
+				" BoothPublicationVoter model,UserVoterDetails model1 where model.voter.voterId = model1.voter.voterId" +
+				" and model.booth.constituency.constituencyId =:constituencyId" +
+				" and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.localBody!=null" +
+				" and model1.user.userId=:userId and model1.casteState.casteStateId in (:casteIds) ");
+		
+		if(ageTo != null){
+			str.append(" and model.voter.age between :ageFrom and :ageTo");
+			}
+		else{
+			str.append(" and model.voter.age > :ageFrom");
+		}
+		
+		str.append(" group by  model1.casteState.casteStateId");
+		
+		Query qry=getSession().createQuery(str.toString());
+		qry.setParameter("constituencyId", constituencyId);
+		qry.setParameter("publicationDateId", publicationDateId);
+		qry.setParameter("userId", userId);
+		qry.setParameter("ageFrom",ageFrom);
+		qry.setParameterList("casteIds", casteIds);
+		if(ageTo != null){
+			qry.setParameter("ageTo",ageTo);
+		}
+		
+		return qry.list();
+	}
+	
+	
 }

@@ -29,6 +29,7 @@ public class BasicVO implements Serializable{
 	private Long levelId;
 	private BasicVO afterDelimationDetails;
 	private BasicVO beforeDelimationDetails;
+	private Long totalVoters;
 	public List<BasicVO> getSelectedCasteDetails() {
 		return selectedCasteDetails;
 	}
@@ -154,6 +155,12 @@ public class BasicVO implements Serializable{
 	}
 	public void setBeforeDelimationDetails(BasicVO beforeDelimationDetails) {
 		this.beforeDelimationDetails = beforeDelimationDetails;
+	}
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
 	}
 	
 	

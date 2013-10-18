@@ -368,7 +368,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(count);
 	}*/
 	
-	/*public void testupdateAllUsersPasswords()
+	public void testupdateAllUsersPasswords()
 	{	System.out.println(new Date());
 		List<User> users  =userDAO.updateAllUsersPasswords();
 		
@@ -391,7 +391,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("UPDATE user SET hash_key_txt = '"+secretKey +"',passwd_hash_txt = '"+encryptedPassword+"' WHERE user_id = "+user.getUserId()+";");
 		}
 		
-	}*/
+	}
 	
 	/*public void testCreateHashKeyAndValueForAPassword()
 	{
@@ -431,7 +431,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(ids.get(i)+","+ids.get(i));
 		}
 	}*/
-	public void testCheckSuggestionOrderNew(){
+	/*public void testCheckSuggestionOrderNew(){
 		List<String> ids = new ArrayList<String>();
 		ids.add("WOREST");
 		ids.add("VERY POOR");
@@ -443,7 +443,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		
 		
 		
-	 /* for(int z = ids.size()-2;z>=0;z--){
+	  for(int z = ids.size()-2;z>=0;z--){
 		int x = -1;
 		for(int j = 0;j<ids.size()-z-1;j++){//2009
 			for(int i = ids.size()-1;i>=z+1;i--)
@@ -451,7 +451,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 				System.out.println(ids.get(j)+","+ids.get(i));
 			}
 		}
-	  }*/
+	  }
 	  int z = 1;
 	  for(z = 1;z<ids.size();z++){
 		  for(int j = 0;j<z;j++){//2009
@@ -473,7 +473,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 				}
 			}
 		  } 
-		/* for(int z = 5;z<=ids.size()-1;z++){
+		 for(int z = 5;z<=ids.size()-1;z++){
 		  for(int j = z-2;j<z;j++){
 			  System.out.println(ids.get(z-1)+","+ids.get(j));
 				for(int i = j,l=z;i>0&&l<ids.size()-1;i--,l++)
@@ -494,6 +494,6 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		 System.out.println("-------------------");
 		for(int i = 0;i<ids.size();i++){
 			System.out.println(ids.get(i)+","+ids.get(i));
-		}*/
-	}
+		}
+	}*/
 }

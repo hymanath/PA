@@ -1681,5 +1681,22 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 	    	Object[] params={panchayatId,publicationDateId};
 	    	return getHibernateTemplate().find("select model.boothId from Booth model where model.panchayat.panchayatId = ? and model.publicationDate.publicationDateId = ? ",params);
 	    }
+		
+	public	List<Object[]> getboothNamesByBoothIds(List<Long> boothIds)
+	{
+		Query query = getSession().createQuery("select model.boothId,model.partNo " +
+				" from Booth model where model.boothId in (:boothIds)");
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	}
+	
+	public String getMuncipaltyName(Long constituencyId,Long publicationId){
+		Query query = getSession().createQuery("select distinct model.localBody.name " +
+				" from Booth model where model.constituency.constituencyId = :constituencyId and " +
+				" model.publicationDate.publicationDateId = :publicationId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return (String)query.uniqueResult();
+	}
 
 }

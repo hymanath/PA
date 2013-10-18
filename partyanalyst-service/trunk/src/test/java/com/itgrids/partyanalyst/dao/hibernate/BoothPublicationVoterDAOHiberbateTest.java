@@ -802,13 +802,13 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 	}*/
 	
 	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
-		List<Object[]> list = boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(347l, 8l, 18l, 22l,"urban",1l);
+		List<Object[]> list = boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInPanchayatOfConstituency(232l, 8l, 18l, 22l,"rural",1l);
 		for(Object[] obj:list){
 			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString());
 		}
 	}*/
 	
-	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
+/*	public void testgetAgeAndGenderWiseVoterInConstituency(){
 		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInPanchayatOfConstituency(228l, 8l,"rural");
 		for(Object[] obj:list){
 			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString());
@@ -827,12 +827,17 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString()+"--"+obj[5].toString());
 		}
 	}*/
-	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
-		List<Object[]> list = boothPublicationVoterDAO.getAgeAndGenderWiseVotersCountInBoothsOfMuncipalityOfConstituency(232l, 8l, 18l, 22l,1l);
-		for(Object[] obj:list){
-			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString()+"--"+obj[5].toString()+"--"+obj[6].toString()+"--"+obj[7].toString());
+	public void testgetAgeAndGenderWiseVoterInConstituency(){
+		List<Long> casteIds = new ArrayList<Long>();
+		casteIds.add(228l);
+		casteIds.add(202l);
+		casteIds.add(296l);
+		casteIds.add(290l);
+		List<Object[]> values = boothPublicationVoterDAO.getExpCasteForAgeAndGenderWisesMuncipaltiyVotersCount(232l, 8l, 18l, 22l,1l,casteIds);
+		for (Object[] params : values) {
+			System.out.println(params[0]+" "+params[1]+" "+params[2]);
 		}
-	}*/
+	}
 	
 	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
 		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(232l, 8l, 18l, 22l);
@@ -885,7 +890,7 @@ List<Long> attrIds = new ArrayList<Long>();
 		
 	}*/
 	
-	public void testgetYoungVotersCount()
+	/*public void testgetYoungVotersCount()
 	{
 		List<Long> locationIdsList = new ArrayList<Long>(0);
 		locationIdsList.add(844l);
@@ -897,5 +902,23 @@ List<Long> attrIds = new ArrayList<Long>();
 	public void testgetVotersCountByCustomWardId(){
 		Long totalCount=(Long) boothPublicationVoterDAO.getVotersCountByCustomWardId(28876L,8L,232L,1L).get(0);
       System.out.println(totalCount);
-	}
+	}*/
+	
+	/*public void testgetPanchayatAgeWiseDetailsByHamletWise()
+	{
+		List<Long> panchayatIds = new ArrayList<Long>();
+		panchayatIds.add(1l);
+		panchayatIds.add(2l);
+		panchayatIds.add(3l);
+		panchayatIds.add(4l);
+		panchayatIds.add(5l);
+		panchayatIds.add(6l);
+		panchayatIds.add(7l);
+		panchayatIds.add(8l);
+		panchayatIds.add(9l);
+		List<Object[]> values = boothPublicationVoterDAO.getPanchayatAgeWiseDetailsByHamletWise(1l,8l,panchayatIds);
+		for (Object[] params : values) {
+			System.out.println(params[0]+" "+params[1]+" "+params[2]);
+		}
+	}*/
 }
