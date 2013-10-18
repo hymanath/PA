@@ -6328,7 +6328,7 @@ function  buildUploadNews()
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;"/></td>';
-	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
+	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt="Click here to add more images"/></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '      <td colspan="2"> <div id="addMoreFilesDiv"></div></td>';
