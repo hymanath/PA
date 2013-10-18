@@ -207,7 +207,11 @@ public class ElectionAnalyzeService implements IElectionAnalyzeService {
 						//candidateDetailsVO.setCandidateDetails(winnerCandidate);	
 						saveMarginVotesAndPercentagesForWinners(winnerCandidateResult,successorCandidateResult);
 						//String electionYear,Long locationId,Long stateId,String electionType,Long rank,String locationType,String candidateType,Long partyId
+						if(partId != null && partId > 0)
+							details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,partId,startIndex,maxResult,order,columnName);
+						else
 						details = getAllCandidateDetails(electionYear,locationId,stateId,electionType,1L,electionLevel,resultsCategory,0L,startIndex,maxResult,order,columnName);
+						
 						candidateDetailsVO.setCandidateDetails(details.getCandidateDetails());
 						candidateDetailsVO.setTotalSearchCount(details.getTotalSearchCount());
 					}else{
