@@ -830,7 +830,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 				pConstituencyList = crossVotingEstimationService.getAllAssemblyConstituenciesForCrossVoting(assemblyIds,jObj.getLong("parliamentId"),jObj.getString("year"));
 			}
 			else if("getPariesForAssemply".equalsIgnoreCase(jObj.getString("task"))){
-				pConstituencyList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(jObj.getLong("assemblyId"),jObj.getString("year"));
+				//pConstituencyList = crossVotingEstimationService.getPartiesForConstituencyAndElectionYearForBoothData(jObj.getLong("assemblyId"),jObj.getString("year"));
+				pConstituencyList = crossVotingEstimationService.getPartiesForAcAndPcElections(jObj.getLong("assemblyId"),jObj.getString("year"), jObj.getLong("parliamentId"));
 			}			
 			
 		}catch(Exception e)

@@ -276,7 +276,7 @@ function getParty(partyId)
 
 	var elecValue =  elecYearElmt.options[elecYearElmt.selectedIndex].value;
 	var assemblyValue =  parseInt(assemblyElmt.options[assemblyElmt.selectedIndex].value);
-		
+	var parliamentValue = $("#parliamentField").val();
 	if(elecValue == -1 || assemblyValue == -1 || isNaN(assemblyValue))
 		return;
 	else
@@ -284,11 +284,12 @@ function getParty(partyId)
 		var jsObj={						
 					electionYear:elecValue,
 					assemblyVal:assemblyValue ,
+					parliamentValue : parliamentValue,
 					task:"getParty",
 					partyId:partyId
 			  }
 		
-		var bparam="assemblyValue="+jsObj.assemblyVal+"&election="+jsObj.electionYear;
+		var bparam="assemblyValue="+jsObj.assemblyVal+"&election="+jsObj.electionYear+"&parliamentValue="+jsObj.parliamentValue;
 		callAjax(jsObj,bparam);
 	}
 }

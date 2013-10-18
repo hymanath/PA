@@ -1101,10 +1101,12 @@ function getParties()
 {
 	var id   = $('#aConstituencyList option:selected').val();
 	var year = $('#electionYearField option:selected').val();
+	var pcId = $("#pConstituencyList").val();
 	var jsObj=
 	{
 			assemblyId : id,
 		year           : year,
+		parliamentId:	pcId,
 		task           : "getPariesForAssemply"
 	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -1112,6 +1114,9 @@ function getParties()
 
 	callAjax(jsObj,url);
 }
+
+
+
 function buildParties(myResults)
 {
 	if(myResults != null)
