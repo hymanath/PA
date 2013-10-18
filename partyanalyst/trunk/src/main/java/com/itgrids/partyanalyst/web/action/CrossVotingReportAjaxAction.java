@@ -139,6 +139,13 @@ public class CrossVotingReportAjaxAction extends ActionSupport implements Servle
 			System.out.println("Parties List Size $$$$$$$$$"+parliamentList.size());
 			resultObjectVO.setDataList(parliamentList);	
 		}
+		else if(electionYear != null && party == null && parliamentValue != null && assemblyValue != null)
+		{
+			System.out.println(" For Participated Parties In both Assembly and Parliament Elections");
+			parliamentList = crossVotingEstimationService.getPartiesForAcAndPcElections(new Long(assemblyValue), electionYear, new Long(parliamentValue.trim()));
+			System.out.println("Parties List Size $$$$$$$$$"+parliamentList.size());
+			resultObjectVO.setDataList(parliamentList);	
+		}
 		else if(electionYear != null && party != null && parliamentValue != null && assemblyValue != null && includeAliance != null)
 		{
 			System.out.println("IN assembly values = "+electionYear+"**"+party+"**"+parliamentValue+"**"+assemblyValue);
