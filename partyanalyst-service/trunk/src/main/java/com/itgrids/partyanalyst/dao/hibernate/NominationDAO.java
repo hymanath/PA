@@ -4260,6 +4260,12 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 queryObject.setParameterList("boothIds",boothIds);
 		 return queryObject.list();
 	 }
+	 
+	 public List<Long> getParticipatedPartiesInElection(Long pcId,String electionYear)
+	 {
+		 Object[] params = {electionYear,pcId};
+		 return getHibernateTemplate().find("select model.party.partyId from Nomination model where model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ? ",params);
+	 }
 
 }
 
