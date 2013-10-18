@@ -506,10 +506,7 @@ function getLeadersList(){
 				YAHOO.util.Connect.setForm('exceptedCasteDetailsForm',false);
 				YAHOO.util.Connect.asyncRequest('POST','getLeadersDataAction.action',uploadHandler);
 	}
-	if(constituencyType == 'RURAL-URBAN')
-	{
-		getLeadersListInRuralUrbans();
-	}
+	
 	if(constituencyType == 'RURAL-URBAN' || constituencyType == 'RURAL')
 	{
 		getVotersCountsForPanchayats();
@@ -952,8 +949,8 @@ function showSuggestedLocations(myResults,jsObj){
     //str+='<h4  style="border-radius: 4px 4px 4px 4px; margin-top: 10px; padding-bottom: 10px; margin-bottom: 10px; padding-top: 10px; color: white; background-color: rgb(6, 171, 234); height: 22px;">Order OF Priority to Target Geographically </h4>';
 	str+='<table  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;">';
 	str+='  <tr>';
-	str+='    <th>Panchayat Name</th>';
-	str+='    <th>Priority</th>';
+	str+='    <th><div style="margin-left:190px">Panchayat</div></th>';
+	str+='    <th><div style="margin-left:190px">Priority</div></th>';
 	str+='  </tr>';
 	 for(var i in myResults[0].suggestedLocations){
 	   str+='<tr>';
@@ -1123,10 +1120,10 @@ function panchayatMatrx(result)
 		
 		</tr>
 	</table>
-	<input type="button" id="expCasteButton" value="CASTE PERCENTAGES" class="btn-success" onClick="ckeckForExpCasteDetails()"  style="height: 29px; border-radius: 4px 4px 4px 4px; margin-top: -20px; margin-left: 227px;display:none;"></input>
+	<input type="button" id="expCasteButton" value="CASTE PERCENTAGES" class="btn-success" onClick="ckeckForExpCasteDetails()"  style="border-radius: 4px 4px 4px 4px; height: 21px; margin-top: -19px; margin-left: 470px;display:none;"></input>
 </div>
 <div style=" margin-bottom: 5px;float: left; margin-left: 82px;">
-<div id="ageGroupWiseId">
+<div id="ageGroupWiseId" style="display:none;">
 <div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
 <div class="pull-left"  style="margin-left: -2px; float: left; padding-top: 10px;">Young Voters :</div><div class="fromDiv">
 From
@@ -1209,8 +1206,8 @@ To
  </div>
 
 
-<div id="partyPerformanceBtnDiv" style="float: right;">
-<input type="button" id="getPartyPer" value="Submit" class="btn btn-success" style="margin-right: 199px; margin-top: -44px; margin-bottom: 20px;" onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();getPollingPercentageForBooths();getConstituencyCensusDetails();"/>
+<div id="partyPerformanceBtnDiv" style="float: left; margin-top: 17px; margin-left: 272px;">
+<input type="button" id="getPartyPer" value="Submit" class="btn btn-success"  onclick="clearAll(),casteDetailsByPanchayatId(),getLeadersList(),getAgeGroupWiseResults(),getConstituencyType(),getPanchayatWiseResultsForAllPartiesOfAConstituency();getSelPartyPerformanceAction();getPollingPercentageForBooths();getConstituencyCensusDetails();"/>
 
 <img src="images/icons/search.gif" id="ajaxImg" style="display:none;"/>
 <!--<img src="images/icons/loading.gif" id="ajaxLoaderImg" height="25px" width="25px;" style="display:none;"/>-->
@@ -2009,6 +2006,7 @@ function buildLeadersTableWithExpPercForUrban(results)
 function buildLeadersTableWithExpPerc(results)
 {
 	$('#leadersTable').html('')
+	
 	if(results != null && results.length > 0)
 	{
 		var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
@@ -2055,10 +2053,14 @@ function buildLeadersTableWithExpPerc(results)
 		str += '</div>';
 
 		$('#leadersTable').html(str);
+		if(constituencyType == 'RURAL-URBAN')
+		{
+			getLeadersListInRuralUrbans();
+		}
 	}
 	
 }
- function buildLeadersTable(results)
+function buildLeadersTable(results)
 {
 	$('#leadersTable').html('')
 	if(results != null && results.length > 0)
@@ -2998,7 +3000,6 @@ var count=0;
 		var selectedCasteIds = new Array();
 		<c:if test="${!youngVoters && !oldVoters}">
 		var k=validateAndPush();
-		
 		if(k!=0){
 			if($('#errorMsg').html()==""){
 				$('#errorMsg').html('Invalid Input..Please Give valid Input');
@@ -3112,7 +3113,7 @@ var count=0;
              };
 			 var from=valuesList['from'];
 			 var to=valuesList['to'];
-			 
+			
 			 
 			 var constituencyId = $('#listConstituencyNames option:selected').val();
 				if(constituencyId==0){
@@ -3192,7 +3193,11 @@ var count=0;
 			createTable(myResults[0],'ageGroupTableId1',myResults[0].areaType);
 			
 			if(myResults[0].boothsList!=null){
-				createBoothsTable(myResults[0],'ageGroupBoothTableId1');
+				var checked = $('input[name=expCaste]:checked').val();
+				if(checked!='expCaste')
+				{
+					createBoothsTable(myResults[0],'ageGroupBoothTableId1');
+				}
 			}
 			
 		}
@@ -3201,7 +3206,11 @@ var count=0;
 				var num=i+1;
 				createTable(myResults[i],'ageGroupTableId'+num,myResults[0].areaType);
 				if(myResults[i].boothsList!=null){
-					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num);
+					var checked = $('input[name=expCaste]:checked').val();
+					if(checked!='expCaste')
+					{
+						createBoothsTable(myResults[i],'ageGroupBoothTableId'+num);
+					}
 				}
 			}
 			
@@ -3213,7 +3222,12 @@ var count=0;
 				createTable(myResults[i],'ageGroupTableId'+num,myResults[0].areaType);
 				
 				if(myResults[i].boothsList!=null){
-					createBoothsTable(myResults[i],'ageGroupBoothTableId'+num);
+					var checked = $('input[name=expCaste]:checked').val();
+					if(checked!='expCaste')
+					{
+						createBoothsTable(myResults[i],'ageGroupBoothTableId'+num);
+					}
+					
 				}
 			}
 		}
@@ -3233,8 +3247,8 @@ var count=0;
 	}else{
 		area=" Booth"
 	}
-	
-	$('#title'+tableId).html('<h4> ${constituencyName} Constituency '+area+' Wise Voters Analysis of Age Range - '+result.ageRange+'</h4>');
+	var constituencyName = $('#listConstituencyNames option:selected').text().toUpperCase();
+	$('#title'+tableId).html('<h4> '+constituencyName+' Constituency '+area+' Wise Voters Analysis Based On Age Range - '+result.ageRange+'</h4>');
 	
 	var allSlctedCastes=[];
 	for(var i in result.panchayatList[0].allSelectedCastes){
@@ -3337,8 +3351,22 @@ var count=0;
 		str+='<td>'+result.panchayatList[i].othrExpctdPrcntg+'</td>';
 		
 		str+='</tr>';
+		
 		}
-		str+='</tbody></table>';
+		if(result.muncipalityCasteList != null)
+		{
+			str += '<tr>';
+			str += '<td>'+result.muncipalityName+'</td>';
+			str += '<td>'+result.muncipaltotalVoters+'</td>';
+			for(var p in result.muncipalityCasteList)
+			{
+				str += '<td>'+result.muncipalityCasteList[p].count+'</td>';
+				str += '<td>'+result.muncipalityCasteList[p].expCount+'</td>';
+				str += '<td>'+result.muncipalityCasteList[p].perc+'</td>';
+			}
+			str += '</tr>';
+		}	
+	str+='</tbody></table>';
 		}
 		<!---->
 		
