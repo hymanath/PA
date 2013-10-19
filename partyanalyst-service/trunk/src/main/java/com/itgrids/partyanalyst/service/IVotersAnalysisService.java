@@ -304,4 +304,12 @@ public interface IVotersAnalysisService {
 	 public List<SelectOptionVO> getPartialBoothDetails(Long userId,Long id,Long publicationId,Long constituencyId,String type);
 	 
 	 public List<SelectOptionVO> getBoothsInCustomWardsOfALocalElectionBody(List<SelectOptionVO> wardsList, Long constituencyId, Long publicationDateId, Long userId);
+	 
+	 public ResultStatus calculateAndInsertVoterCasteInfoForLocality(Long constituencyId,Long publicationDateId,Long userId,Long reportLevelId);
+	 
+	 public ResultStatus calculateAndInsertVoterCasteInfoForHamletBooth(Long constituencyId,Long publicationDateId,Long userId,Long reportLevelId);
+	 
+	 public ResultStatus insertHamletIdAndBoothIdInHamletBoothTable(final Long constituencyId,final Long publicationDateId,final Long userId);
+	 
+	 
 }

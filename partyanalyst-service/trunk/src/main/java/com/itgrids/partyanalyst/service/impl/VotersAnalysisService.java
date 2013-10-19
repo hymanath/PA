@@ -18488,7 +18488,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		 calculateTheHamletBoothVotersBasicData(constituencyId,publicationDateId,userId,reportLevelId);
 		 calculateAndInsertVoterAgeInfoForHamletBooth(constituencyId,publicationDateId,userId,reportLevelId);
 		 calculateAndInsertVoterFamilyInfoForHamletBooth(constituencyId,publicationDateId,userId,reportLevelId);
-		 calculateAndInsertVoterCasteInfoForHamletBooth(constituencyId, publicationDateId, userId, reportLevelId);
+		 //calculateAndInsertVoterCasteInfoForHamletBooth(constituencyId, publicationDateId, userId, reportLevelId);
 			 
 		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		 return resultStatus;
@@ -19331,7 +19331,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	     calculateAndInsertTheLocalityDataInVoterInfoTable(constituencyId,publicationDateId,userId,reportLevelId,hamletLocalityList,wardLocalityList);
 	     calculateAndInsertTheLocalityDataInVoterAgeInfoTable(constituencyId,publicationDateId,userId,reportLevelId);
 	     calculateAndInsertTheLocalityDataInVoterFamilyInfoTable(constituencyId,publicationDateId,userId,reportLevelId);
-	     calculateAndInsertVoterCasteInfoForLocality(constituencyId, publicationDateId, userId, reportLevelId);
+	     //calculateAndInsertVoterCasteInfoForLocality(constituencyId, publicationDateId, userId, reportLevelId);
 	     
 		 
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

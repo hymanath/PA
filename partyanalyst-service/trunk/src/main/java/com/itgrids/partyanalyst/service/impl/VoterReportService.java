@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IHamletBoothDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -145,6 +146,7 @@ public class VoterReportService implements IVoterReportService{
 	private ICadreDAO cadreDAO;
 	private ICandidateDAO candidateDAO;
     private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+    private IHamletBoothDAO hamletBoothDAO;
     
     
     public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
@@ -477,6 +479,15 @@ public class VoterReportService implements IVoterReportService{
 			this.tehsilDAO = tehsilDAO;
 		}
 
+
+	public IHamletBoothDAO getHamletBoothDAO() {
+			return hamletBoothDAO;
+		}
+
+		public void setHamletBoothDAO(IHamletBoothDAO hamletBoothDAO) {
+			this.hamletBoothDAO = hamletBoothDAO;
+		}
+
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
 	{
 		try{
@@ -691,7 +702,7 @@ public class VoterReportService implements IVoterReportService{
 		  }
 		 
 		 
-		 public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked)
+		 public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked,boolean hamletBoothChecked,boolean localityChecked)
 			{
 				
 				  ResultStatus resultStatus = new ResultStatus();
@@ -912,6 +923,19 @@ public class VoterReportService implements IVoterReportService{
 						  //InsertVoterCasteBasicInfoForALocation(IConstants.BOOTH,selectOptionVO.getId(),publicationDateId,reportLevelValue,userId);
 						   //saveCastAndGenderWiseVotersCountByPublicationIdInMultipleLocation(userId,IConstants.BOOTH,new ArrayList<Long>(boothIdsList),publicationDateId,reportLevelValue);
 					   }  
+					   
+					   if(localityChecked)
+						votersAnalysisService.calculateAndInsertVoterCasteInfoForLocality(reportLevelValue, publicationDateId, userId, voterReportLevelDAO.getReportLevelIdByType(IConstants.LOCALITY));
+					   
+					   if(hamletBoothChecked)
+					   {
+						   List<Long> boothIdList = boothDAO.getBoothIdsByConstituencyIdAndPublicationId(reportLevelValue, publicationDateId);
+							 if(boothIdList != null && boothIdList.size() > 0)
+							  hamletBoothDAO.deleteHamletBoothsByBoothIdsList(boothIdList);
+							 
+						 votersAnalysisService.insertHamletIdAndBoothIdInHamletBoothTable(reportLevelValue,publicationDateId,userId);
+						 votersAnalysisService.calculateAndInsertVoterCasteInfoForHamletBooth(reportLevelValue, publicationDateId, userId, voterReportLevelDAO.getReportLevelIdByType(IConstants.Hamlet_Booth));
+					   }
 					  
 					  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					  return resultStatus;
