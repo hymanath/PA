@@ -116,6 +116,8 @@ fieldset{
     width: 360px;
 }
 #voterInfoHamletBoothChecked,#voterInfoLocalityChecked{margin-left: 11px;}
+
+#hamletBoothChecked,#localityChecked{margin-left: 8px;}
 </style>
 </head>
 <body>
@@ -200,14 +202,17 @@ fieldset{
 		Select Publication Date<font class="requiredFont">*</font> <select id="castpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		</select>
 		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="castajaxLoad"><img src="images/icons/search.gif" /></span>
+	 <div style="margin-top: 20px;">
 		<span style="width:40px;">
 		
 		  <input type="checkbox" id="HamletChecked" value="Hamlet" style="margin-top:-5px;"> Hamlet
-	
-	</span>&nbsp;&nbsp;	<span>
-			
-				  <input type="checkbox" id="BoothChecked" value="Booth" style="margin-top:-5px;"> Booth
-				</span>
+	     </span>&nbsp;&nbsp;<span>
+		  <input type="checkbox" id="BoothChecked" value="Booth" style="margin-top:-5px;"> Booth
+		 </span>
+		 <input type="checkbox" id="hamletBoothChecked" value="Hamlet Booth" style="margin-top:-5px;"> Hamlet Booth
+		<input type="checkbox" id="localityChecked" value="Locality" style="margin-top:-5px;"> Locality
+	 </div>
+
 		<div id="voterDataInsertDiv">
 			<input type="button" class="btn btn-info" value="Submit" id="castvoterDataInsertBtn" />
 			<input type="button" class="btn btn-info" value="Delete Existing Data" id="castvoterDataDeleteBtn" />
@@ -564,9 +569,11 @@ $("#castvoterDataInsertBtn").click(function(){
 	
 var castconstituencyId = $("#castconstituencyList").val(); 
 
-var checked = $('input[type=checkbox]').is(':checked')
+var checked = $('input[type=checkbox]').is(':checked');
 var hamletChecked= $("#HamletChecked").is(':checked');
 var boothChecked= $("#BoothChecked").is(':checked');
+var hamletBoothChecked = $("#hamletBoothChecked").is(':checked');
+var localityChecked = $("#localityChecked").is(':checked');
 
 		var castpublicationDateId = $("#castpublicationDateList").val();
 		if(castconstituencyId == 0)
@@ -589,6 +596,8 @@ var boothChecked= $("#BoothChecked").is(':checked');
 		  publicationDateId : castpublicationDateId,
 		  hamletChecked:hamletChecked,
 		  boothChecked:boothChecked,
+		  hamletBoothChecked:hamletBoothChecked,
+		  localityChecked:localityChecked,
 		  task:"insertCastVotersData"
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
