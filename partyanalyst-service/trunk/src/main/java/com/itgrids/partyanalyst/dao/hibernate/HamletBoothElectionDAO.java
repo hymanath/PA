@@ -382,7 +382,7 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getBoothsByLocalBodyNElectionId(List<Long> localElectionBodyIds, Long electionId)
 	{
-		Query query = getSession().createQuery("select distinct(model.booth.boothId), model.booth.localBody.name from BoothConstituencyElection model where " +
+		Query query = getSession().createQuery("select distinct(model.booth.boothId), model.booth.localBody.name, model.booth.localBody.localElectionBodyId from BoothConstituencyElection model where " +
 				" model.booth.localBody.localElectionBodyId in( :localElectionBodyIds) and model.constituencyElection.election.electionId = :electionId ");
 		query.setParameterList("localElectionBodyIds", localElectionBodyIds);
 		query.setParameter("electionId", electionId);
