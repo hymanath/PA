@@ -212,7 +212,10 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			Long userId =  regVO.getRegistrationID();
 			Boolean hamletChecked =jObj.getBoolean("hamletChecked");
 			Boolean boothChecked=jObj.getBoolean("boothChecked");
-			resultStatus = voterReportService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId,hamletChecked,boothChecked);
+			Boolean hamletBoothChecked = jObj.getBoolean("hamletBoothChecked");
+			Boolean localityChecked = jObj.getBoolean("localityChecked");
+			
+			resultStatus = voterReportService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId,hamletChecked,boothChecked,hamletBoothChecked,localityChecked);
 			return Action.SUCCESS;
 			
 		}
@@ -363,7 +366,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			resultStatus = votersAnalysisService.deleteVotersCastDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
 			resultStatus = votersAnalysisService.deleteVotersPartyDataFromIntermediateTables(jObj.getLong("id"),jObj.getLong("publicationDateId"),userId);
 			resultStatus = voterReportService.insertVotersPartyDataToIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
-			resultStatus = voterReportService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId,false,false);
+			resultStatus = voterReportService.insertVotersCasteDataInIntermediateTables(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId,false,false,false,false);
 			return Action.SUCCESS;
 			
 		}

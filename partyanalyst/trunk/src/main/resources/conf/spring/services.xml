@@ -45,7 +45,7 @@
 		<property name="candidateDAO" ref="candidateDAO" />	
 		<property name="cadreDAO" ref="cadreDAO" />	
 		<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"></property>
-		
+		<property name="hamletBoothDAO" ref="hamletBoothDAO" />
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
