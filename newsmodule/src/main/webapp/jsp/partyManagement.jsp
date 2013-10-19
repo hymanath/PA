@@ -1897,7 +1897,7 @@ function buildUploadNewsForMultipleUsers()
 	str+='</div>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Category : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
+	str += ' <td class="tdWidth1">Select Gallary : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
@@ -6273,7 +6273,7 @@ function  buildUploadNews()
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Category : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
+	str += ' <td class="tdWidth1">Select Gallary : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
