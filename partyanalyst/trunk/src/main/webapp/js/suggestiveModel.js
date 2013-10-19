@@ -310,7 +310,7 @@ if(weakList[i].villagesCovered !="")
 str+='<td>'+weakList[i].villagesCovered+'</td>';
 else
 str+='<td>-</td>';
-str+='<td>'+weakList[0].strongPollingPercentVOList[0].partyTotalvotes+'</td>';
+str+='<td>'+weakList[i].strongPollingPercentVOList[0].partyTotalvotes+'</td>';
 str+='<td>'+weakList[i].totalVoters+'</td>';
 str+='<td>'+weakList[i].totalValidVotes+'</td>';
 str+='<td>'+weakList[i].pollingPercentage.toFixed(2)+'</td>';
