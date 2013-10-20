@@ -1653,6 +1653,7 @@
 		<property name="candidateRelatedNewsDAO" ref="candidateRelatedNewsDAO"></property>
 		<property name="districtDAO" ref="districtDAO" />	
 		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO" />	
+		<property name="transactionTemplate" ref="transactionTemplate" />
 	</bean>
 </beans>		
 	

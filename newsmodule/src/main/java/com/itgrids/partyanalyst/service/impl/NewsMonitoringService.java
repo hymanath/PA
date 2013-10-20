@@ -56,6 +56,10 @@ import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 /**
  * @author ITGRIDS
  *
@@ -81,8 +85,16 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IUserDAO userDAO;
     private IDistrictDAO districtDAO;
     private ICandidateNewsResponseDAO candidateNewsResponseDAO;
-    
+    private TransactionTemplate transactionTemplate = null;
    
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -4394,29 +4406,35 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 	return fileGalleryIdsList;
   }
   
-  public ResultStatus changePassword(String currentPWD,String newPWD,Long userId)
+  public ResultStatus changePassword(final String currentPWD,final String newPWD,final Long userId)
   {
-	  ResultStatus resultStatus = new ResultStatus();
+	  final ResultStatus resultStatus = new ResultStatus();
 	  try{
-		  
+		 
+		  transactionTemplate.execute(new TransactionCallback() {
+		  public Object doInTransaction(TransactionStatus status) {
 		String password = userDAO.checkCurrentPasswordExist(currentPWD.trim(), userId);  
-		if(password == null)
-		{
-		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-		  resultStatus.setMessage(" Invalid Current Password ");
-		  return resultStatus;
-		}
-		 User user = userDAO.get(userId);
-		 user.setPassword(newPWD.trim());
-		 userDAO.save(user);
-		 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-		  return resultStatus;
-	  }catch (Exception e) {
-		e.printStackTrace();
-		log.error("Exception Occured in changePassword() method , Exception - "+e);
-		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-		return resultStatus;
-	}
-  }
-  
+			if(password == null)
+			{
+			  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			  resultStatus.setMessage(" Invalid Current Password ");
+			  return resultStatus;
+			}
+				 User user = userDAO.get(userId);
+				 user.setPassword(newPWD.trim());
+				 userDAO.save(user);
+				 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				  return resultStatus;
+			  }
+		  });
+	  }
+		  catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in changePassword() method , Exception - "+e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+	return resultStatus;
+	  }
+
 }
