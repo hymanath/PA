@@ -307,42 +307,43 @@ $("#changePasswordDiv").dialog();
 
 
 $("#changePasswordBtn").live("click",function(){
- $("#errorMsgDiv").html('');	
+
+  $("#changePasswordInnerDiv").find("#errorMsgDiv").html('');	
  var currentPWD = $.trim($("#currentPWD").val());
  var newPWD = $.trim($("#newPWD").val());
  var confirmPWD = $.trim($("#ConfirmPWD").val());
 
  if(currentPWD.length == 0)
  {
-   $("#errorMsgDiv").html('Please Enter Current Password.').css("color","red");
+     $("#changePasswordInnerDiv").find("#errorMsgDiv").html('Please Enter Current Password.').css("color","red");
    return;
  }
 
  else if(newPWD.length==0)
  {
-  $("#errorMsgDiv").html('Please Enter New Password.').css("color","red");
+  $("#changePasswordInnerDiv").find("#errorMsgDiv").html('Please Enter New Password.').css("color","red");
    return;
  }
  else if(newPWD.length >0 && newPWD.length < 8)
  {
-  $("#errorMsgDiv").html('New Password Minimum Of 8 Characters.').css("color","red");
+  $("#changePasswordInnerDiv").find("#errorMsgDiv").html('New Password Minimum Of 8 Characters.').css("color","red");
    return;
  }
  else if(confirmPWD.length==0)
  {
-  $("#errorMsgDiv").html('Please Enter Confirm Password.').css("color","red");
+ $("#changePasswordInnerDiv").find("#errorMsgDiv").html('Please Enter Confirm Password.').css("color","red");
    return;
  }
 
  
  else if(currentPWD == newPWD)
  {
-  $("#errorMsgDiv").html('Your new password is same as existing one').css("color","red");
+   $("#changePasswordInnerDiv").find("#errorMsgDiv").html('Your new password is same as existing one').css("color","red");
    return;
  }
  else if(newPWD != confirmPWD)
  {
-  $("#errorMsgDiv").html('New and confirm passwords are not same.').css("color","red");
+   $("#changePasswordInnerDiv").find("#errorMsgDiv").html('New and confirm passwords are not same.').css("color","red");
    return;
  }
 
