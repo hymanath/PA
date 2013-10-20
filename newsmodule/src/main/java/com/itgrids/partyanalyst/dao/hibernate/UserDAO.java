@@ -497,4 +497,15 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return (String) query.uniqueResult();
 	}
 	
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getUserNameAndPassword(String userName,String password)
+	{
+		Query query = getSession().createQuery("select model.password from User model where" +
+				"  (model.userName = :userName and  model.password = :password) and ( model.userAccessType!='' or model.userAccessType is not null)");
+		query.setParameter("userName", userName);
+		query.setParameter("password", password);
+		return query.list();
+	}
+	
 }

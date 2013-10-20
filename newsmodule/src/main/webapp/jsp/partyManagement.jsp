@@ -5074,7 +5074,7 @@ var callback = {
 			else if(jsObj.task == "onOroffCategory")
 			{
 				if(myResults.resultCode==0){
-					if(jsObj.name="delete"){
+					if(jsObj.name=="delete"){
 						alert('Category Disabled Successfully..');
 					}else{
 						alert('Category Enabled Successfully..');
@@ -7042,10 +7042,14 @@ var sno=0;
 			
 				if(results[i].isDeleted=="false"){
 					str+='<td onclick="onCategory('+results[i].id+',\'delete\')" title="Delete Category"><img src="images/icons/delete.png"/></td>';
+                   
+				 str+='<td onclick="editCategory('+results[i].id+',\''+results[i].name+'\',\''+visibility+'\')"><img src="images/icons/edit.png"/></td>';
+
 				}else{
 					str+='<td onclick="onCategory('+results[i].id+',\'accept\')" title="Enable this Category"><img src="images/icons/accept.png"/></td>';
+
+					str+='<td><img src="images/icons/edit.png"/></td>';
 				}
-				str+='<td onclick="editCategory('+results[i].id+',\''+results[i].name+'\',\''+visibility+'\')"><img src="images/icons/edit.png"/></td>';
 			
 			str+='</tr>';
 		}
@@ -7061,6 +7065,10 @@ var sno=0;
  $(function() {
 	$( "#dialog" ).dialog({
 		autoOpen: false,
+	    modal: true,
+		position:'center',
+		resizable: false,
+
 	});
 });
 

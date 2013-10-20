@@ -111,4 +111,6 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public String checkCurrentPasswordExist(String password,Long userId);
 	
+	public List<String> getUserNameAndPassword(String userName,String password);
+	
 }
