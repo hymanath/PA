@@ -5936,8 +5936,9 @@ function addMoreFiles2(value)
 	//str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(\'moreFileTableId'+value+'\')"></td>';
 	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(this)"></td>';
 	str += '   </tr>';
-	str +='</table>';
 	str+='<input type="hidden" name="filesList" value="'+value+'"/>';
+	str +='</table>';
+	//str+='<input type="hidden" name="filesList" value="'+value+'"/>';
 	//$('#'+value).append(str);
 	$('#uploadFilesDiv').append(str);
 	//document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
