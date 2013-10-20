@@ -3,11 +3,8 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ITownshipDAO;
-import com.itgrids.partyanalyst.dao.columns.enums.TownshipColumnNames;
-import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.Township;
 
 public class TownshipDAO extends GenericDaoHibernate<Township, Long> implements ITownshipDAO
