@@ -47,7 +47,7 @@ font-size:20px;
 			<div class="row m_top10">
 				<div class="span2">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>State News</h4></div>
+						<div class="span12 boxHeading"><h4 style="text-transform: capitalize;">${level} News</h4></div>
 					</div>
 				</div>
 				<!---View your Constituency News Div--->
