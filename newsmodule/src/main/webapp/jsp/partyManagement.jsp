@@ -5896,7 +5896,7 @@ function buildCandidates(results)
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
-	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/plus.png" title="Click here to delete file" onclick="addMoreFiles2('+value+')"></td>';
+	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/plus.png" title="Click here to add more file" onclick="addMoreFiles2('+value+')"></td>';
 	str += '   </tr>';
 	str+='<input type="hidden" name="filesList" value="'+value+'"/>';
 	str +='</table>';
