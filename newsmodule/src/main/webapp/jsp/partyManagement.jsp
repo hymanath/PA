@@ -6806,8 +6806,8 @@ function assignNewsToCandidate()
 
 function getGalleryListForAParty()
 {
-	var fromDate = $("#fromDateId").val();
-	var toDate = $("#toDateId").val();
+	var fromDate = $("#fromDateId1").val();
+	var toDate = $("#toDateId1").val();
     var locationIdsArray = new Array();
 	var locationScope = "";
 	var jsObj={
@@ -6835,8 +6835,8 @@ function getNewsTitlesByGalleryId(divId)
 
   if(divId == "responseNewsgallaryList"){
     gallaryId = $("#responseNewsgallaryList").val();
-	toDate = $("#toDateId").val();
-	fromDate = $("#fromDateId").val();
+	toDate = $("#toDateId1").val();
+	fromDate = $("#fromDateId1").val();
    }
  $("errorMsgDiv").html('');
  if(gallaryId == 0)
