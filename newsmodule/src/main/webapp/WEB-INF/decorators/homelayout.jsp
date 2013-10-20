@@ -102,7 +102,16 @@ margin:-1px 0px 0px 0px ;
 		<div class="row">
 			<!----Logo----->
 			<div class="span4">
-				<a href="homePage.action"><img src="images/Logo.png" alt="Telugudhesam party logo" />		</a>
+			<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+				<a href="homePage.action">
+			</c:if>
+			<c:if test="${sessionScope.USER.userAccessType != 'Admin'}">
+			<a href="javascript:{}">
+            </c:if>
+			
+				<img src="images/Logo.png" alt="Telugudhesam party logo" />	
+				</a>
+
 			</div>
 			<!-----Nav main div---->
 			<div class="span8">
