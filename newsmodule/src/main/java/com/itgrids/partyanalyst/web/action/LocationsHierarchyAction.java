@@ -200,7 +200,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			Long locationId = jObj.getLong("id");
 			List<SelectOptionVO> hamletsOrWards = new ArrayList<SelectOptionVO>();
 			if(locationId !=0){
-			 //hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
+			 hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
 			}
 			setRegionsList(hamletsOrWards);
 
@@ -364,7 +364,7 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 			Long locationId = jObj.getLong("id");
 			List<SelectOptionVO> hamletsOrWards = new ArrayList<SelectOptionVO>();
 			if(locationId !=0){
-			 //hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
+			 hamletsOrWards = getRegionServiceDataImp().getHamletsOrWards(locationId, IConstants.PRESENT_YEAR);
 			}
 			 hamletsOrWards.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(hamletsOrWards);
