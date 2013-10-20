@@ -1946,8 +1946,8 @@ function buildUploadNewsForMultipleUsers()
 	str+='<tr><td></td><td><img id="candidateAjaxImg" src="images/search.jpg" style="display:none;"/></td></tr>';
 
 
-	str +='<tr><td class="tdWidth1">Select Candidate : </td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
-	str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
+	str +='<tr><td class="tdWidth1"><div style="margin-top:100px;width:155px;">Select Candidate : </div></td><td><select multiple="true" id="list1"></select><input type="button" id="button1" value="Add" class="btn"/>&nbsp;<input type="button" id="button2" value="Remove" class="btn"/><br/><select multiple="true" id="candidateList" name="candidateList" style="margin-top:5px;"></select></td></tr>';
+	//str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
 	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Visible to Public Also</font></b></input></label></td>';
