@@ -428,7 +428,7 @@ function getSource(selectOptionId){
 			{
                clearOptionsListForSelectElmtId('gallaryPhotoSelectId');
 			   createListData('gallaryPhotoSelectId',myResults);
-			   $("#gallaryPhotoSelectId").prepend("<option value='0'>Select Gallary</option>");
+			   $("#gallaryPhotoSelectId").prepend("<option value='0'>Select Gallery</option>");
 			   document.getElementById('gallaryPhotoSelectId').value = 0;
 			}else if(jsObj.task == "getCategory")
 			{ 
@@ -574,7 +574,7 @@ function getSource(selectOptionId){
 				 });*/
                clearOptionsListForSelectElmtId('gallaryId');
 			   createOptionsForSelectElmtId('gallaryId',myResults);
-			   $("#gallaryId").prepend("<option value='0'>Select Gallary</option>");
+			   $("#gallaryId").prepend("<option value='0'>Select Gallery</option>");
 			document.getElementById('gallaryId').value=0;
 
 			}
@@ -605,14 +605,14 @@ function getSource(selectOptionId){
 				 });*/
                clearOptionsListForSelectElmtId('gallarySelectId');
 			   createOptionsForSelectElmtId('gallarySelectId',myResults);
-			   $("#gallarySelectId").prepend("<option value = '0'> Select Gallary</option>")
+			   $("#gallarySelectId").prepend("<option value = '0'> Select Gallery</option>")
 					document.getElementById('gallarySelectId').value = 0;
 			}
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType == "Photo Gallary")
 			{ 
                clearOptionsListForSelectElmtId('gallaryPhotoSelectId');
 			   createOptionsForSelectElmtId('gallaryPhotoSelectId',myResults);
-			   $("#gallaryPhotoSelectId").prepend("<option value = '0'> Select Gallary</option>")
+			   $("#gallaryPhotoSelectId").prepend("<option value = '0'> Select Gallery</option>")
 					document.getElementById('gallaryPhotoSelectId').value = 0;
 			}
 
@@ -1293,7 +1293,7 @@ function validateFileUpload()
 
 	if(galId == 0)
 	{
-		str += 'Select Gallary<br>';
+		str += 'Select Gallery<br>';
 		flag = false;
 	}
 	if(fileTitle.length == 0)
@@ -1385,7 +1385,7 @@ function validateNewsFileUpload()
 	var str = '<font color="red">';
 	if(galEle == 0)
 	{
-		str += 'Select Gallary<br>';
+		str += 'Select Gallery<br>';
 		flag = false;
 	}
 	if(fileDate.length == 0)
@@ -1858,7 +1858,7 @@ function buildUploadNewsForMultipleUsers()
 
           
 		 str+='<div style="margin-left:70px;" id="gallariesDiv">';
-	     str+='<b>Select Gallary :<font class="requiredFont">*</font></b><select id="gallariesList" style="margin-left:17px"></select>';
+	     str+='<b>Select Gallery :<font class="requiredFont">*</font></b><select id="gallariesList" style="margin-left:17px"></select>';
 		 str+='</div>';
 
 		 str+='</div>';
@@ -1901,7 +1901,7 @@ function buildUploadNewsForMultipleUsers()
 	str+='</div>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Gallary : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
+	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
@@ -3804,7 +3804,7 @@ function updatePhoto(fileId,fileGallaryId)
 		</table>-->
 	<div class="span11 offset1 text-center alert" style="margin-left:30px;">
 	<input type="button" class="btn btn-success highlight" value="Create News Category" onclick="createNewsCategory()">
-	<input type="button" class="btn btn-success highlight" value="Create News Gallary" onclick="buildCreateNewsCategory()">
+	<input type="button" class="btn btn-success highlight" value="Create News Gallery" onclick="buildCreateNewsCategory()">
 	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()">
 	<input type="button" class="btn btn-success highlight" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()">
 	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
@@ -6011,7 +6011,7 @@ function validateNewsFileUpload1()
 	var str = '<font color="red">';
 	if(galEle == 0)
 	{
-		str += 'Select Gallary<br>';
+		str += 'Select Gallery<br>';
 		flag = false;
 	}
 	if(fileDate.length == 0)
@@ -6288,7 +6288,7 @@ function  buildUploadNews()
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Gallary : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
+	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
@@ -6553,7 +6553,7 @@ return '&amp;';
 function buildGallaries(divId , results)
 {
    $('#'+divId).find('option').remove();
-   $('#'+divId).append('<option value="0">Select Gallary</option>');
+   $('#'+divId).append('<option value="0">Select Gallery</option>');
 
   $.each(results,function(key , value){
    $('#'+divId).append('<option value="'+value.id+'">'+value.name+'</option>');
