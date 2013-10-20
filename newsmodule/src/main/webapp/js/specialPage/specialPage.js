@@ -872,7 +872,7 @@ function getNewsImportance()
  
 }
 function uploadVideoGallary(){
-	
+
 	var makeThis = 'private';
 	var errorDivEle = document.getElementById('galErrorMsgDivId');
 	var eFlag = false;
@@ -918,8 +918,10 @@ function uploadVideoGallary(){
 		if(this.value !='')
 		paths.push(this.value);
 		else
+		{
 			str+='Please Select Youtube Path<br>';
-
+			eFlag =true;
+		}
 	});
 	
 	if(spcheckboxIdElmt !=null && spcheckboxIdElmt.checked)
@@ -1019,15 +1021,22 @@ function uploadVideoGallary(){
 	}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
-	if(!eFlag)
+	
+	/*if(!eFlag)
 	{
 		$('html, body').animate({
          scrollTop: $("#galErrorMsgDivId").offset().top
      }, 2000);
-	}
-	if(eFlag)
+	}*/
+	if(eFlag == true)
+	{
+	$('html, body').animate({
+         scrollTop: $("#galErrorMsgDivId").offset().top
+     }, 2000);
 		return;
-
+	}
+	else
+	{
 	if(isPublic)
 		makeThis = 'public';
 	disableButton('uploadVideoBtnId');
@@ -1055,6 +1064,7 @@ function uploadVideoGallary(){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "createNewGallaryAction.action?"+rparam;
 	callAjax(jsObj,url);
+	}
 }
 
 

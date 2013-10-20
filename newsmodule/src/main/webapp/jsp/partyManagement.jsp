@@ -5925,7 +5925,7 @@ function addMoreFiles2(value)
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+divCount+''+value+'" name="sourceLanguageId" style="width:175px;" class="lang'+value+'"><option value="0">Select Language</option><option value="0">Select Language</option></select></td>';
+	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+divCount+''+value+'" name="sourceLanguageId" style="width:175px;" class="lang'+value+'"></select></td>';
 	
 	str += ' </tr>';
 	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
@@ -6073,6 +6073,8 @@ function validateNewsFileUpload1()
 			 }
 	       }
        });
+
+
 	if(fileTitle.length >50)
 	{
 		str += 'Title should be less than 50 Characters<br>';
