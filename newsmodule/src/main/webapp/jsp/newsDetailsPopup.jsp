@@ -140,7 +140,8 @@ h3 {
  padding:8px 8px 8px 8px;
  margin-left:5px;
  border-radius: 5px 5px 5px 5px;
-
+ display:inline-block;
+ font-weight: bold;
 }
 .newsParts{
   
@@ -214,6 +215,9 @@ font-size:20px;
  <div id="newDisplayInnerDiv">
    <div class="span12" style="margin-top:25px;margin-bottom:30px;">
     <div class="row">
+     
+	 <div id="ajaxImg" style="display:none;text-align: center;"><img src="images/icons/goldAjaxLoad.gif" /></div>
+
 	 <!-- left Div Start -->
 	  <div class="span8 right-panel m5-left" style="background:#ffffff;position:relative;">
 	  <div id="newsDetailsDiv"></div>
@@ -280,7 +284,7 @@ var selectedContentFile;
 
  function getContentDetails()
  {
-	//document.getElementById("contentAjaxCallImg").style.display="block";
+	$("#ajaxImg").css("display","block");
 	var jsObj =
 		{   
 		    contentId : contentId,
@@ -335,6 +339,7 @@ function callAjax(jsObj,url)
 
 function buildContentDetails()
 {
+  $("#ajaxImg").css("display","none");
   result = showContentResultList;
 	if(result == null)
 		return;
