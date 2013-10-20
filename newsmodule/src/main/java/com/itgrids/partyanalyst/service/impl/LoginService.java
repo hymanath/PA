@@ -789,12 +789,11 @@ public class LoginService implements ILoginService{
 		ResultStatus resultStatus = null;
 		try {
 			LOG.debug("entered into checkForUserNameAndPassword() method in UserService Class");
-			Long  userdetails = userDAO.checkForUserNameAndPasswordAvaliablity(username,password);
-			if(userdetails == 1)
+			List<String> passwordList = userDAO.getUserNameAndPassword(username, password);
+			if(passwordList != null && passwordList.size() > 0 && passwordList.contains(password))
 			{
 				resultStatus = new ResultStatus();
-				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-				
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);	
 			}
 			else
 			{
