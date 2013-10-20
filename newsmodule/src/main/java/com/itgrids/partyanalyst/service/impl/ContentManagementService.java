@@ -427,7 +427,8 @@ public class ContentManagementService implements IContentManagementService{
 				relatedGalleries.add(relatedGallary);
 				contentDetailsVO.setRelatedGalleries(relatedGalleries);
 				
-				List<Object> otherGalIdsResult = null;
+				//Other gallaries are not used
+				/*List<Object> otherGalIdsResult = null;
 				GallaryVO otherGallary = null;
 				List<FileVO> otherFiles = null;
 				
@@ -478,7 +479,9 @@ public class ContentManagementService implements IContentManagementService{
 						otherGalleries.add(otherGallary);
 					}
 				}
-				contentDetailsVO.setOtherGalleries(otherGalleries);
+				contentDetailsVO.setOtherGalleries(otherGalleries);*/
+				
+				
 			}
 			
 			return contentDetailsVO;
