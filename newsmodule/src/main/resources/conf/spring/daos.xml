@@ -183,10 +183,11 @@
 	<bean id="wardDAO" class="com.itgrids.partyanalyst.dao.hibernate.WardDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<!-- 
-	<bean id="townshipDAO" class="com.itgrids.partyanalyst.dao.hibernate.TownshipDAO" >
+		<bean id="townshipDAO" class="com.itgrids.partyanalyst.dao.hibernate.TownshipDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<!-- 
+
 
 	<bean id="tehsilDAO" class="com.itgrids.partyanalyst.dao.hibernate.TehsilDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />

@@ -4,6 +4,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.Township;
@@ -51,8 +53,9 @@ public interface ITownshipDAO extends GenericDao<Township, Long>{
 	public List<Township> findTownsByTownNameAndTypeAndDistrict(String townName,String townType,Long districtId,String mandal);
 	
 	@SuppressWarnings("unchecked")
-	public List findTownshipsByTehsilId(Long tehsilId);
+	
 	
 	public List<Panchayat> getPanchayathies(Long mandalID);
 	 */
+	public List findTownshipsByTehsilId(Long tehsilId);
 }
