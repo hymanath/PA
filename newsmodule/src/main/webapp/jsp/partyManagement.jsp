@@ -1612,10 +1612,14 @@ function validateNewsFileUpload()
 	errorDivEle.innerHTML = str;
 	if(flag == false)
 	{
+		 $("#uploadNewsBtnId").css("background","#51A351");
 		$('html, body').animate({
          scrollTop: $("#uploadNewsFileErrorDiv").offset().top
      }, 2000);
+	
 	}
+	else
+	 $("#uploadNewsBtnId").css("background","#BBBB51");
 	return flag;
 }
 	
@@ -1938,11 +1942,12 @@ function buildUploadNewsForMultipleUsers()
 	str += '   </tr>';
 	
 
-	str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
+	
 	str+='<tr><td></td><td><img id="candidateAjaxImg" src="images/search.jpg" style="display:none;"/></td></tr>';
 
 
 	str +='<tr><td class="tdWidth1">Select Candidate : </td><td><select multiple="true" id="list1"></select><select multiple="true" id="candidateList" name="candidateList"></select></td></tr>';
+	str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
 	str += '   <tr>';
 	str += '       <td></td>';
 	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Visible to Public Also</font></b></input></label></td>';
@@ -1975,7 +1980,7 @@ function buildUploadNewsForMultipleUsers()
 	
 	str+='<div id="uploadFilesDiv" style="margin-left:122px;"></div>';
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
-	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Upload News"  onClick="uploadNewsFromPartyPage1()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success" value="Upload News"  onClick="uploadNewsFromPartyPage1()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
 
 	
 
@@ -5940,7 +5945,7 @@ function addMoreFiles2(value)
 	str +='</table>';
 	//str+='<input type="hidden" name="filesList" value="'+value+'"/>';
 	//$('#'+value).append(str);
-	$('#uploadFilesDiv').append(str);
+	$('#'+value+'').append(str);
 	//document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
 	//document.getElementById(value).appendChild(moreDivElmt);
 	//alert("filesourceId"+value+"");
@@ -6251,7 +6256,16 @@ function validateNewsFileUpload1()
 	}
 	str += '</font>';
 	errorDivEle.innerHTML = str;
-
+	if(flag == false)
+	{
+		 $("#uploadNewsBtnId").css("background","#51A351");
+		$('html, body').animate({
+         scrollTop: $("#uploadNewsFileErrorDiv").offset().top
+     }, 2000);
+		
+	}
+	else
+	$("#uploadNewsBtnId").css("background","#BBBB51");
 	return flag;
 }
 
@@ -6367,7 +6381,7 @@ function  buildUploadNews()
 	//str+='<input type="radio" style="margin-left:55px;" onclick="otherProfiles(\'otherProNewsDiv\',\'fromPartyProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
 	str+='<div id="uploadnewsgalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Upload News" style="background-color:#57B731" onClick="uploadNewsFromPartyPage()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success " value="Upload News" style="background-color:#57B731" onClick="uploadNewsFromPartyPage()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
 	str += '</form>';
 	//str += '</fieldset>';
 	str+='</div>';
