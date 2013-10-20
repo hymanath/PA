@@ -69,16 +69,16 @@
 								
 									if(jsObj.task =="getNewsBySearch")
 									{
-										alert('in');
+										//alert('in');
 										//buildSearchedNews(myResults,jsObj);
 									}
 									if(jsObj.task =="getCandidateNames")
 									{
-										alert('in2');
+										//alert('in2');
 										//buildSearchedNews(myResults,jsObj);
 									}
 								}catch (e) {
-							      console.log(e);
+							      //console.log(e);
 								}  
  		               },
  		               scope : this,

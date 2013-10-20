@@ -94,7 +94,7 @@ function callAjax(jsObj,url)
 								}
 								if(jsObj.task =="getVideosForGallery")
 								{
-									alert('in');
+									//alert('in');
 									//buildMoreVideos(myResults,jsObj);
 								}
 								}catch (e) {

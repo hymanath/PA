@@ -131,7 +131,7 @@ function callAjax(jsObj,url)
 									buildAllVideos(myResults,jsObj);
 								}
 								}catch (e) {
-							     console.log(e);
+							     //console.log(e);
 								}  
  		               },
  		               scope : this,
