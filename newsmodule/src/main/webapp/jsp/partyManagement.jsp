@@ -1710,7 +1710,7 @@ function clearNewsUploadFileFields1()
 	$('#newsfileTitle , #newsfileDescription , #keywords , #existingFromTextNews , #ImagenewsfileId').val('');
 	$('#candidateList').find('option').remove();
 	$('#uploadFilesDiv').html('');
-
+    $("#newsDesc").val('');
 
 	 getScopes();
 	 getSource("source");
@@ -1733,7 +1733,7 @@ function clearNewsUploadFileFields()
 	//document.getElementById('publicRadioId').checked = true;
 	document.getElementById('existingFromTextNews').value = '';
 	document.getElementById('ImagenewsfileId').value = '';
-	document.getElementById('newsDesc').value = '';
+	document.getElementById('newsDescriptionId').value = '';
 	getScopes();
 }
 	
@@ -6073,8 +6073,6 @@ function validateNewsFileUpload1()
 			 }
 	       }
        });
-
-
 	if(fileTitle.length >50)
 	{
 		str += 'Title should be less than 50 Characters<br>';
