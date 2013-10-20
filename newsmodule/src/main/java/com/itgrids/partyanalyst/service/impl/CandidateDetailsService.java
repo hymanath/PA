@@ -2183,13 +2183,18 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		
 	try{
 		List<Category> category = categoryDAO.getAll();
+		
+		List<Long> deletedCategoryIds = userNewsCategoryDAO.getDeletedCategoryIds();
 		SelectOptionVO selectOptionVO = null;
 		for(Category result:category)
 		{
-			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(result.getCategoryId());
-			selectOptionVO.setName(result.getCategoryType());
-			categorySelectList.add(selectOptionVO);
+			if(!deletedCategoryIds.contains(result.getCategoryId()))
+			{
+			 selectOptionVO = new SelectOptionVO();
+			 selectOptionVO.setId(result.getCategoryId());
+			 selectOptionVO.setName(result.getCategoryType());
+			 categorySelectList.add(selectOptionVO);
+			}
 		 }
 		 
 		return categorySelectList;

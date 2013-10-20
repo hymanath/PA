@@ -56,4 +56,12 @@ public class UserNewsCategoryDAO extends GenericDaoHibernate<UserNewsCategory , 
 		return query.executeUpdate();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Long> getDeletedCategoryIds()
+	{
+		Query query = getSession().createQuery(" select distinct model.category.categoryId from UserNewsCategory model " +
+				" where model.isDelete = 'true'");
+		return query.list();
+	}
+	
 }

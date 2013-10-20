@@ -17,4 +17,6 @@ public interface IUserNewsCategoryDAO extends GenericDao<UserNewsCategory, Long>
 	
 	public Integer updateCategoryStatus(Long userId,Long categoryId,String status);
 	
+	public List<Long> getDeletedCategoryIds();
+	
 }
