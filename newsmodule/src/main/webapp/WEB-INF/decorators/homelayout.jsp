@@ -367,20 +367,23 @@ $.ajax({
 function showPasswordChangeStatus(results)
 {
  
- $("#errorMsgDiv").html('');
+ $("#changePasswordInnerDiv").find("#errorMsgDiv").html('');
 
  if(results == null)
-  $("#errorMsgDiv").html('Error Occured Try Again !').css("color","red");
+  $("#changePasswordInnerDiv").find("#errorMsgDiv").html('Error Occured Try Again !').css("color","red");
 
  else if(results.resultCode == 1 && results.message != null)
-  $("#errorMsgDiv").html(''+results.message+'').css("color","red");
+   $("#changePasswordInnerDiv").find("#errorMsgDiv").html(''+results.message+'').css("color","red");
 
  else
  {
   $("#currentPWD").val('');
   $("#newPWD").val('');
   $("#ConfirmPWD").val('');
-  $("#errorMsgDiv").html('PassWord Changed Successfully.').css("color","green");
+ $("#changePasswordInnerDiv").find("#errorMsgDiv").html('PassWord Changed Successfully.').css("color","green");
+ setTimeout(function() {
+    $("#changePasswordDiv").dialog('close');
+}, 3000);
 
  }
 
