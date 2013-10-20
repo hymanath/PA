@@ -1381,7 +1381,7 @@ function validateNewsFileUpload()
 	document.getElementById('newsfileTitle').value = fileTitle;
 	document.getElementById('newsfileDescription').value = fileDesc;
 
-	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
+	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv1');
 	var str = '<font color="red">';
 	if(galEle == 0)
 	{
@@ -1614,7 +1614,7 @@ function validateNewsFileUpload()
 	{
 		 $("#uploadNewsBtnId").css("background","#51A351");
 		$('html, body').animate({
-         scrollTop: $("#uploadNewsFileErrorDiv").offset().top
+         scrollTop: $("#uploadNewsFileErrorDiv1").offset().top
      }, 2000);
 	
 	}
@@ -1656,13 +1656,18 @@ function showNewsUploadStatus(myResult)
 
 		
 	var result = (String)(myResult);
-	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
+	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv1');
 	var str = '';
 
 	if(result.search('success') != -1)
 	{
-		clearNewsUploadFileFields();
+		
 		str += '<font color="green"><b>News Uploaded Successfully.</b>';
+		 $("#uploadNewsBtnId").css("background","#51A351");
+		$('html, body').animate({
+         scrollTop: $("#uploadNewsFileErrorDiv1").offset().top
+     }, 2000);
+		clearNewsUploadFileFields();
 	}
 	else if(result.search('fail') != -1) 
 	{
@@ -6285,7 +6290,7 @@ function  buildUploadNews()
 	//str += '<fieldset class="imgFieldset" style="width:504px;">';
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 	str += '<h2 align="center">Upload A News</h2>';
-	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv1" /></td></tr></table>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
 	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
