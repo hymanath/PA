@@ -1253,5 +1253,17 @@
       <bean id="videoCategoeryDAO" class="com.itgrids.partyanalyst.dao.hibernate.VideoCategoeryDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
+     <bean id="mobileAppUserProfileDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserProfileDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+     <bean id="mobileAppUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+     <bean id="mobileAppUserAccessDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
    
 </beans>		
