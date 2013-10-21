@@ -10,7 +10,7 @@
 <title>Partial Booth Panchayat</title>
 </head>
 <script>
-
+var panchayats = new Array();
 function getPublicationDate(type)
 {
 	var value = "";
@@ -69,6 +69,7 @@ function callAjaxToGetData(jsObj,url)
 				
 				else if(jsObj.task == "getPanchayat" && jsObj.name == "add")
 				{
+					panchayats = myResults;
 					buildSelectBoxValues(myResults,'partialPanchayat');
 					buildSelectBoxValues(myResults,'panchayat');
 				}
@@ -149,6 +150,7 @@ function buildSelectBoxValues(result,divId)
 	}
 	if(divId == "booth")
 	{
+
 		rebuldPanchayas();
 	}
 }
@@ -404,8 +406,16 @@ function editSelectedPartialBooth(id)
 
 function rebuldPanchayas()
 {
+
+	var arr =panchayats;
 	var selectdPanchayat = $("#panchayat option:selected").val();
-	$("#partialPanchayat option[value='"+selectdPanchayat+"']").remove();
+	$("#partialPanchayat option").remove();
+	for(var i in arr)
+		{
+		if(arr[i].id != selectdPanchayat)
+		 $('#partialPanchayat').append('<option value='+arr[i].id+'>'+arr[i].name+'</option>');
+		}
+	//$("#partialPanchayat option[value='"+selectdPanchayat+"']").remove();
 }
 function deleteSelectedPartialBooth(id,boothId,divId)
 {
