@@ -1508,7 +1508,7 @@ function callMarginVotes(partyId)
 							<tr>
 								<th><%=votesPcntGained%></th>
 								<td>:</td>
-								<td>${stateData.totalPercentageOfVotesWon}</td>
+								<td>${stateData.totalPercentageOfVotesWon1}</td>
 							</tr>
 							<c:if test="${stateData.allianceParties != null}">
 								<tr>
