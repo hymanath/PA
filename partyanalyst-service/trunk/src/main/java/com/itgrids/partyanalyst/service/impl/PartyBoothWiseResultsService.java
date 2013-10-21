@@ -1502,7 +1502,10 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 				{
 					Double percentage = null;
 					if(isPollingPercentage)
+					{
+						if(boothResultVO != null && boothResultVO.getPollingPercentage() != null)
 						percentage = Double.parseDouble(boothResultVO.getPollingPercentage());
+					}
 					else
 						percentage = Double.parseDouble(boothResultVO.getPercentage());
 					
@@ -1644,6 +1647,7 @@ public class PartyBoothWiseResultsService implements IPartyBoothWiseResultsServi
 						}
 					
 					if(list.size() > 0){
+						if(total > 0)
 					resultVO.setPercentage((new BigDecimal((earned*100)/total).setScale(2,BigDecimal.ROUND_HALF_UP)).toString());
 					boothsMap.put(entry.getKey(), booths);
 					}
