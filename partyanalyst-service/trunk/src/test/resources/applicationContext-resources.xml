@@ -378,6 +378,9 @@
 				<value>com.itgrids.partyanalyst.model.HamletBooth</value>
 				<value>com.itgrids.partyanalyst.model.AdvVideo</value>
 				<value>com.itgrids.partyanalyst.model.VideoCategory</value>
+				<value>com.itgrids.partyanalyst.model.MobileAppUserAccess</value>
+			    <value>com.itgrids.partyanalyst.model.MobileAppUserProfile</value>
+				<value>com.itgrids.partyanalyst.model.MobileAppUser</value>
 			</list>
 		</property>
 	</bean>
@@ -1943,6 +1946,17 @@
    </bean>
      
     <bean id="advVideoDAO" class="com.itgrids.partyanalyst.dao.hibernate.AdvVideoDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+    <bean id="mobileAppUserProfileDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserProfileDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+     <bean id="mobileAppUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+     <bean id="mobileAppUserAccessDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
