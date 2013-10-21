@@ -161,5 +161,16 @@ public class PartyElectionResultDAO extends GenericDaoHibernate<PartyElectionRes
 		
 	}*/
 	
+	@SuppressWarnings("unchecked")
+	public String getVotesPercentageByElectionAndParty(Long electionId,Long partyId) {
+		Object[] params = {electionId,partyId};
+	//	return getHibernateTemplate().find("select model.votesPercentage from PartyElectionResult model where model.election.electionId = ? and model.party.partyId = ?", params);
+		Query query = getSession().createQuery("select model.votesPercentage from PartyElectionResult model where model.election.electionId =:electionId and model.party.partyId =:partyId");
+		query.setParameter("electionId", electionId);
+		query.setParameter("partyId", partyId);
+		return (String)query.uniqueResult();
+		
+	}
+	
 	
 }

@@ -38,5 +38,7 @@ public interface IPartyElectionResultDAO extends GenericDao<PartyElectionResult,
 	public List<Object[]> getPartiesParticipatedMoreThanOnce(Long stateId, String electionType);
 	
 	//public List<Object[]> getAllPartiesParticapatedInMainElections(Long stateId);
+	
+	public String getVotesPercentageByElectionAndParty(Long electionId,Long partyId);
 
 }
