@@ -81,6 +81,17 @@ public class PartyPerformanceReportVO extends BaseObject {
 	private String reportLevel;
 	private Boolean reportSuccessOrFailure;
 	
+	private BigDecimal totalPercentageOfVotesWon1;
+	
+
+	public BigDecimal getTotalPercentageOfVotesWon1() {
+		return totalPercentageOfVotesWon1;
+	}
+
+	public void setTotalPercentageOfVotesWon1(BigDecimal totalPercentageOfVotesWon1) {
+		this.totalPercentageOfVotesWon1 = totalPercentageOfVotesWon1;
+	}
+
 	/** party positions in an election,like first pos ,second pos.... **/
 	private List<PartyPositionsVO> partyPositionsVO;
 		

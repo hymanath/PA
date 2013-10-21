@@ -1619,6 +1619,21 @@ public class StaticDataService implements IStaticDataService {
 		}
 		return null;
 	}
+	
+	public String getPartyVotesPercentage(Long electionId, Long partyId)
+	{
+		 String percentage = null;
+		try{
+		if (electionId != null && partyId != null) {
+			 percentage = partyElectionResultDAO.getVotesPercentageByElectionAndParty(electionId,partyId);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return percentage;
+	}
 
 	/*
 	 * (non-Javadoc)
