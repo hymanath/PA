@@ -105,6 +105,7 @@ span{float:left;}
 
 </style>
 <script type="text/javascript">
+var requestFrom = '${requestFrom}';
 var allOrgnisers = new Array();
 var planOrgnisers = new Array();
 var actionPlanArray = new Array();
@@ -381,7 +382,11 @@ function callAjaxToGetData(jsObj,url)
 									 $('html, body').animate({ scrollTop: $("#successmsg").offset().top }, "slow");
 									 
 										//window.opener.refreshParent();
-										 window.opener.location.href = window.opener.location.href;
+										// window.opener.location.href = window.opener.location.href;
+
+									if(requestFrom == "dashBoard")	
+                                           window.opener.$('.ImportantEvents').trigger('click') 
+											
 									
 								}
 								else if(jsObj.task == "updateCreateEvent"){

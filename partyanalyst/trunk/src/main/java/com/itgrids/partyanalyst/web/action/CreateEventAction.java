@@ -62,7 +62,16 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
     private boolean updateEvent;
     private boolean notLogged;
     private EntitlementsHelper entitlementsHelper;
+    private String requestFrom;
     
+	public String getRequestFrom() {
+		return requestFrom;
+	}
+
+	public void setRequestFrom(String requestFrom) {
+		this.requestFrom = requestFrom;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 		this.session = request.getSession();
@@ -523,7 +532,10 @@ public class CreateEventAction extends ActionSupport implements ServletRequestAw
 	
 	public String createUpdateEvent(){
 	 try{
+		 
 		 HttpSession session = request.getSession();
+		 
+		 requestFrom = request.getParameter("from");
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			
 			if(session.getAttribute(IConstants.USER) == null && 

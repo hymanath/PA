@@ -4157,12 +4157,19 @@ function buildUserImpEvents(results)
 		str+='<div id="impEventsDiv_body">';
 		str+='<span class="dashBoardCenterContentBody" style="color:#4B74C6;margin-left: 14px;">You have  '+results.userEvents.length+'  event(s) scheduled today</span>';
 		str+='	<span class="dashBoardLinks" >';
-		str+='		<a href="cadreManagementAction.action?eventScope=createEvent" title="Click Here To Create Important Events" class="indexPageAnc" onclick="" style="margin-left: 61px;font-size: 14px;" target="_blank">Create</a>';
+		//str+='		<a href="cadreManagementAction.action?eventScope=createEvent" title="Click Here To Create Important Events" class="indexPageAnc" onclick="" style="margin-left: 61px;font-size: 14px;" target="_blank">Create</a>';
+		str+='		<a href="javascript:{buildNewEventPopup();}" title="Click Here To Create Important Events" class="indexPageAnc" onclick="" style="margin-left: 61px;font-size: 14px;" target="_blank">Create</a>';
 		str+='	</span>';
 	}
 	str+='</div>';
 	$("#impEvents").html(str);
 	closeDialogue();
+}
+
+function buildNewEventPopup()
+{
+	var browser2 = window.open("createNewEvent.action?from=dashBoard","cadreCreateNewEvent","scrollbars=yes,height=600,width=700,left=150,top=100");	
+		browser2.focus();
 }
 
 function buildUserAnnouncenents(results)
