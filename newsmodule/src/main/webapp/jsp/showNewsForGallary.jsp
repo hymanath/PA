@@ -65,13 +65,13 @@ var categoryId = '${category}';
 				<div class="span2">
 				 	<div id="mainDiv"></div>
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>State News</h4></div>
+						<div class="span12 boxHeading"><h4>Gallery News</h4></div>
 					</div>				
 				</div>
 				<!---View your Constituency News Div--->
 				<div class="span7">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>Latest News Updates </h4></div>
+						<div class="span12 boxHeading"><h4>News Updates </h4></div>
 						<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;height:20px;width:500px;">
 								<font>Please wait...</font>
 								<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
