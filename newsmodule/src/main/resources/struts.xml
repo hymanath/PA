@@ -5641,6 +5641,17 @@
 		 </result>
 		 </action>
 		 
+		 <action name="showAllCategoriesAction" class="newsPaginationAction">
+		    <result name="success">/jsp/showAllCategories.jsp</result>
+		    <result name="error" type="redirect">loginPageAction.action</result>
+		 </action>
+		 
+		 <action name="getAllCategoriesAction" class="newsPaginationAction" method="getAllCategories">
+		   <result name="success" type="json">
+		 	<param name="root">selectOptionVOList</param>
+		   </result>
+		 </action>
+		 
 		</package>
 		
 		

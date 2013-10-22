@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -35,7 +36,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	private String level;
 	private static final Logger log=Logger.getLogger(NewsPaginationAction.class);
 	//private INewsByPagingService newsByPagingService;
-	
+	private List<SelectOptionVO> selectOptionVOList;
 	
 	
 	public FileVO getFileVO() {
@@ -86,6 +87,13 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	public void setNewsByPagingService(INewsByPagingService newsByPagingService) {
 		this.newsByPagingService = newsByPagingService;
 	}*/
+	
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
 	
 	public String execute()throws Exception
 	{
@@ -202,4 +210,24 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		}
 		return SUCCESS;
 	}
+	
+	public String getAllCategories()
+	{
+		try{
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+			 return ERROR;
+			String newsType = "Public"; 
+			if(user.getUserAccessType() != null && user.getUserAccessType().equalsIgnoreCase("Admin"))
+			 newsType = "";
+			selectOptionVOList = candidateDetailsService.getTotalCategoriesList(newsType);
+			
+		}catch (Exception e) {
+         e.printStackTrace();
+         log.error("Exception Occured in getAllCategories() method, Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
 }
