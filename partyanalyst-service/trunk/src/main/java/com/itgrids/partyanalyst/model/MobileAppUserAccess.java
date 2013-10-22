@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -36,6 +37,7 @@ public class MobileAppUserAccess extends BaseModel implements Serializable{
 	private String macAddress;
 	
 	private String deviceId;
+	private Date  lastAuthorisedTime ;
 	/** default constructor */
 	public MobileAppUserAccess()
 	{
@@ -74,7 +76,7 @@ public class MobileAppUserAccess extends BaseModel implements Serializable{
 	public void setMobileAppUser(MobileAppUser mobileAppUser) {
 		this.mobileAppUser = mobileAppUser;
 	}
-	@Column(name = "is_authorised", length = 25)
+	@Column(name = "is_authorised")
 	public String getIsAuthorised() {
 		return isAuthorised;
 	}
@@ -82,7 +84,7 @@ public class MobileAppUserAccess extends BaseModel implements Serializable{
 	public void setIsAuthorised(String isAuthorised) {
 		this.isAuthorised = isAuthorised;
 	}
-	@Column(name = "app_id", length = 25)
+	@Column(name = "app_id", length = 50)
 	public String getAppId() {
 		return appId;
 	}
@@ -105,6 +107,13 @@ public class MobileAppUserAccess extends BaseModel implements Serializable{
 
 	public void setDeviceId(String deviceId) {
 		this.deviceId = deviceId;
+	}
+	@Column(name = "last_authorised_time")
+	public Date getLastAuthorisedTime() {
+		return lastAuthorisedTime;
+	}
+	public void setLastAuthorisedTime(Date lastAuthorisedTime) {
+		this.lastAuthorisedTime = lastAuthorisedTime;
 	}
 	
 	

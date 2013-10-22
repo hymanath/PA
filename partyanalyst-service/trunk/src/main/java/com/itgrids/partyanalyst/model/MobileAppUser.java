@@ -52,7 +52,7 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	public void setMobileAppUserId(Long mobileAppUserId) {
 		this.mobileAppUserId = mobileAppUserId;
 	}
-	@Column(name = "user_name", length = 25)
+	@Column(name = "user_name", length = 50)
 	public String getUserName() {
 		return userName;
 	}
@@ -60,7 +60,7 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	@Column(name = "password", length = 45)
+	@Column(name = "password", length = 50)
 	public String getPassword() {
 		return password;
 	}
@@ -68,7 +68,7 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@Column(name = "unique_code", length = 45)
+	@Column(name = "unique_code", length = 50)
 	public String getUniqueCode() {
 		return uniqueCode;
 	}

@@ -71,7 +71,7 @@ public class MobileAppUserProfile extends BaseModel implements Serializable{
 	public void setMobileAppUser(MobileAppUser mobileAppUser) {
 		this.mobileAppUser = mobileAppUser;
 	}
-	@Column(name = "firstname", length = 25)
+	@Column(name = "firstname", length = 100)
 	public String getFirstName() {
 		return firstName;
 	}
@@ -79,7 +79,7 @@ public class MobileAppUserProfile extends BaseModel implements Serializable{
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	@Column(name = "lastname", length = 25)
+	@Column(name = "lastname", length = 50)
 	public String getLastName() {
 		return lastName;
 	}
@@ -87,7 +87,7 @@ public class MobileAppUserProfile extends BaseModel implements Serializable{
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	@Column(name = "gender", length = 10)
+	@Column(name = "gender")
 	public String getGender() {
 		return gender;
 	}
