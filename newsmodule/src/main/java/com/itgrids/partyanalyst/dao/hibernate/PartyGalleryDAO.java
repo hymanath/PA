@@ -551,10 +551,11 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	  		" and model2.gallery.contentType.contentType= :type and model.isDelete = 'false' and model2.isDelete = 'false' " +
 	  		" and model.gallary.isDelete = 'false' and model2.gallery.isDelete = 'false' ");
 	  
-	  str.append(" and model.isPrivate = 'false' and model2.isPrivate = 'false' and model.gallary.isPrivate = 'false' and model2.gallery.isPrivate = 'false' ");
+	  if(queryType.equalsIgnoreCase("Public"))
+		  str.append(" and model.isPrivate = 'false' and model2.isPrivate = 'false' and model.gallary.isPrivate = 'false' and model2.gallery.isPrivate = 'false' ");
+	  
 	  str.append(" group by model.file.category.categoryId order by model.file.fileDate desc, model.updateddate desc");
 		
-	  
 	  Query query = getSession().createQuery(str.toString());
 	  query.setParameter("partyId", partyId);
 	  query.setParameter("type", IConstants.NEWS_GALLARY);
