@@ -22,5 +22,9 @@ public interface ICandidateNewsResponseDAO extends GenericDao<CandidateNewsRespo
    public List<Long> getResponseNewsCount(List<Long> fileGalleryIdsList);
    
    public List<Object[]> getResponseNewsCountForAParty(Date fromDate,Date toDate,Long partyId,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,Long locationScopeId,String tempVar);
+   
+   public List<Object[]> getResponsefileGallaryDetails(List<Long> fileGallaryIdsList);
+   
+   public List<Object[]> getMainArticalIdsGallaryIdsByResponseGallaryId(List<Long> fileGallaryIdsList);
 	
 }

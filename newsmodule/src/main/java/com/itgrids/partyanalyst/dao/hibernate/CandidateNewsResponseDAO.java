@@ -146,4 +146,34 @@ public class CandidateNewsResponseDAO extends GenericDaoHibernate<CandidateNewsR
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getResponsefileGallaryDetails(List<Long> fileGallaryIdsList)
+	{
+		Query query = getSession().createQuery(" select distinct CNR.responseFileGallary.fileGallaryId,CNR.fileGallary.fileGallaryId,CRN.candidate.candidateId,CNR.responseFileGallary " +
+				" from CandidateNewsResponse CNR, CandidateRealatedNews CRN where CNR.responseFileGallary.fileGallaryId = CRN.fileGallary.fileGallaryId " +
+				"  and CNR.fileGallary.fileGallaryId in(:fileGallaryIdsList) and CNR.responseFileGallary.isDelete = 'false' and CNR.responseFileGallary.isPrivate = 'false' " +
+				" and CNR.responseFileGallary.gallary.isDelete = 'false' and CNR.responseFileGallary.gallary.isPrivate = 'false' ");
+		
+		query.setParameterList("fileGallaryIdsList", fileGallaryIdsList);
+		
+		
+		return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getMainArticalIdsGallaryIdsByResponseGallaryId(List<Long> fileGallaryIdsList)
+	{
+		Query query = getSession().createQuery(" select distinct CNR.fileGallary.fileGallaryId,CNR.responseFileGallary.fileGallaryId,CRN.candidate.candidateId,CNR.fileGallary " +
+				" from CandidateNewsResponse CNR, CandidateRealatedNews CRN where CNR.fileGallary.fileGallaryId = CRN.fileGallary.fileGallaryId " +
+				"  and CNR.responseFileGallary.fileGallaryId in(:fileGallaryIdsList)  ");
+		
+		query.setParameterList("fileGallaryIdsList", fileGallaryIdsList);
+		
+		
+		return query.list();
+		
+	}
+	
+	
 }
