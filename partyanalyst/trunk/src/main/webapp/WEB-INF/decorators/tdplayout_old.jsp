@@ -16,7 +16,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title><decorator:title default="Party Analyst"/></title>
+	<title><decorator:title default="TDP"/></title>
 	<!--<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>-->
 
 	<script type="text/javascript" src="js/jQuery/js/jquery-1.4.2.min.js"></script>
