@@ -205,6 +205,8 @@ public class ContentManagementService implements IContentManagementService{
 			
 			List<Object> list = fileGallaryDAO.getGalleryIdsOfAFile(fileId);
 			
+			List<Long> totalFileGallaryIdsList = new ArrayList<Long>(0);
+			
 			if(list != null && list.size() > 0)
 			{
 				gallaryIds = new ArrayList<Long>(0);
@@ -420,9 +422,23 @@ public class ContentManagementService implements IContentManagementService{
 					 fileVO2.setCandidateName(candidateMap.get(fileVO2.getContentId()));
 				 }
 				 
+				 totalFileGallaryIdsList.add(fileGallary.getFileGallaryId());	
+				}
+				Collections.sort(filesList,date_comparator);
+				
+				//main Artical and respond gallary
+				
+				if(totalFileGallaryIdsList != null && totalFileGallaryIdsList.size() > 0)
+				{
+					List<Object[]> responseGallaryList = candidateNewsResponseDAO.getResponsefileGallaryDetails(totalFileGallaryIdsList); 
+					if(responseGallaryList != null && responseGallaryList.size() > 0)
+					  setResponseGallaryDetails(responseGallaryList,filesList,"responseGallaryDetails");
+					
+					List<Object[]> mainArtailList = candidateNewsResponseDAO.getMainArticalIdsGallaryIdsByResponseGallaryId(totalFileGallaryIdsList);
+					if(mainArtailList != null && mainArtailList.size() > 0)
+						setResponseGallaryDetails(mainArtailList,filesList,"mainArticals");	
 					
 				}
-				Collections.sort(filesList,date_comparator);				
 				relatedGallary.setFilesList(filesList);
 				relatedGalleries.add(relatedGallary);
 				contentDetailsVO.setRelatedGalleries(relatedGalleries);
@@ -488,6 +504,131 @@ public class ContentManagementService implements IContentManagementService{
 		}catch (Exception e) {
 			log.debug("Exception occured in getSelectedContentAndRelatedGalleries() Method, Exception is - "+e);
 			return null;
+		}
+	}
+	
+	public void setResponseGallaryDetails(List<Object[]> responseGallaryList,List<FileVO> resultList,String tempVar)
+	{
+		try{
+		if(resultList != null && resultList.size() > 0)
+		{
+		  FileVO fileVO2 = null;
+		  for(Object[] params :responseGallaryList)
+		  {
+			  fileVO2 = getFileVO((Long)params[1],resultList);
+			  if(fileVO2 != null)
+			  {
+				  
+				  List<FileVO> mainArtaicalOrResponseList = null; 
+				  if(tempVar != null && tempVar.equalsIgnoreCase("responseGallaryDetails"))
+				  {
+				   mainArtaicalOrResponseList = fileVO2.getResponseGallariesList();
+				   fileVO2.setResponseExist(true);
+				  }
+				  else
+				  {
+					mainArtaicalOrResponseList = fileVO2.getMainArticalsList();
+					fileVO2.setMainArticalExist(true);
+				  }
+				  
+				 if(mainArtaicalOrResponseList == null)
+					 mainArtaicalOrResponseList = new ArrayList<FileVO>(0);
+				 
+				 FileVO fileVO = new FileVO();
+				 fileVO.setContentId((Long)params[0]);
+				 fileVO.setCandidateId((Long)params[2]);
+				 fileVO.setCandidateName(candidateDAO.get((Long)params[2]).getLastname());
+				 
+				 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				  
+				  FileGallary fileGallary = (FileGallary)params[3];
+				  
+				  if(fileGallary.getFile() == null || fileVO == null)
+					 continue;
+				  
+				  fileVO.setCount(candidateNewsResponseDAO.getResponsefileGallaryIds(fileGallary.getFileGallaryId(),null,null).size());
+				  
+				  fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle())):"");
+				  fileVO.setDescription(fileGallary.getFile().getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
+				  
+				  Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
+				  List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
+				  Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+				 
+				  List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(0);
+				  if(fileSourceLanguageList != null && fileSourceLanguageList.size() > 0)
+				  {
+					 for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageList)
+					 {
+						FileVO fileVOSourceLanguage = new FileVO();
+						fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!= null?fileSourceLanguage.getSource().getSourceId():null);
+						fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
+						fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+						fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
+						fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+						
+						List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+						Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+						for(FilePaths filePath:filePathsSet)
+						{
+						  FileVO fileVOFilePath = new FileVO();
+						  fileVOFilePath.setPath(filePath.getFilePath());
+						  fileVOFilePath.setOrderNo(filePath.getOrderNo());
+						  fileVOFilePath.setOrderName("Part-"+filePath.getOrderNo());
+						  fileVOPathsList.add(fileVOFilePath);
+						}
+						  
+						Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+						fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+						fileVOSourceLanguageList.add(fileVOSourceLanguage);
+					 }
+					 
+				  }
+				  
+				  
+				  fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+				  Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+				  fileVO.setFileVOList(fileVOSourceLanguageList);
+					
+				  fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
+						sdf.format(fileGallary.getFile().getFileDate()));
+				  fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
+				  
+				  mainArtaicalOrResponseList.add(fileVO);
+				  if(tempVar != null && tempVar.equalsIgnoreCase("responseGallaryDetails"))
+				    fileVO2.setResponseGallariesList(mainArtaicalOrResponseList);
+				  else
+					fileVO2.setMainArticalsList(mainArtaicalOrResponseList);
+			  }
+		  }
+		  
+		  
+		  
+		}
+		
+			
+			
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error(" Exception Occured ");
+		}
+	}
+	
+	public FileVO getFileVO(Long fileGallaryId,List<FileVO> resultList)
+	{
+		try{
+			if(resultList == null || resultList.size() == 0)
+			 return null;
+			
+			for(FileVO fileVO:resultList)
+			 if(fileVO.getContentId().equals(fileGallaryId))
+			  return fileVO;
+		
+		  return null;
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error(" Exception Occured in getFileVO() method, Exception - "+e);
+         return null;
 		}
 	}
 	

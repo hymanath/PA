@@ -131,7 +131,10 @@ public class FileVO extends ResultStatus implements Serializable {
 	private boolean latest;
 	private boolean eenadu;
 	private Long respondedFilesCountInGall;
-	
+	private List<FileVO> responseGallariesList = null;
+	private List<FileVO> mainArticalsList = null;
+	private boolean isResponseExist = false;
+	private boolean isMainArticalExist = false;
 	
 	public Long getRespondedFilesCountInGall() {
 		return respondedFilesCountInGall;
@@ -1125,6 +1128,38 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setToDateStr(String toDateStr) {
 		this.toDateStr = toDateStr;
+	}
+
+	public List<FileVO> getResponseGallariesList() {
+		return responseGallariesList;
+	}
+
+	public void setResponseGallariesList(List<FileVO> responseGallariesList) {
+		this.responseGallariesList = responseGallariesList;
+	}
+
+	public List<FileVO> getMainArticalsList() {
+		return mainArticalsList;
+	}
+
+	public void setMainArticalsList(List<FileVO> mainArticalsList) {
+		this.mainArticalsList = mainArticalsList;
+	}
+
+	public boolean isResponseExist() {
+		return isResponseExist;
+	}
+
+	public void setResponseExist(boolean isResponseExist) {
+		this.isResponseExist = isResponseExist;
+	}
+
+	public boolean isMainArticalExist() {
+		return isMainArticalExist;
+	}
+
+	public void setMainArticalExist(boolean isMainArticalExist) {
+		this.isMainArticalExist = isMainArticalExist;
 	}
 	
 	
