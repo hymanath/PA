@@ -35,6 +35,9 @@
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
+ <script type="text/javascript" src="js/jquery.dataTables.js"></script>
+   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+
 <style type="text/css">
  #showContentHeaderDiv{background-color: #06ABEA;
     color: #FFFFFF;
@@ -198,7 +201,7 @@ font-size:20px;
     
 }
 #paginationId{margin-bottom: 15px;margin-top: 10px;}
-#newsResponseDiv{float: none;margin-left: auto;margin-right: auto;width: 600px;}
+#newsResponseDiv{float: none;margin-left: auto;margin-right: auto;width: 900px;}
 #responseNewsGallaryDiv ul li{  margin-left: 20px;}
 #gallaryMainDiv{margin-bottom:20px;}
 #gallaryDiv{height:220px;}
@@ -208,6 +211,8 @@ font-size:20px;
 #newsPageNOSpan,#newsChangeEdition{margin-left: 15px;}
 #imgDiv{text-align: center;}
 #responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
+
+li{list-style: none outside none;}
 </style>
 </head>
 <body>
@@ -269,9 +274,9 @@ font-size:20px;
 	<h4 id="responseHeading"></h4>
 	<div id="responseNewsGallaryDiv"></div>
 		<!----pagination Div----->
-		<div class="span12 text-center">
+		<!-- <div class="span12 text-center">
 			<div id="paginationId"></div>						
-		</div>	
+		</div> -->
   </div>
 </div>
 </div>	
@@ -486,6 +491,33 @@ function buildContentDetails()
 	}
 	releatedGallary +='</ul>';
 	 $("#releatedNewsDiv").addClass("releatedNewsDiv").html(releatedGallary);
+
+
+  for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
+  if(result.relatedGalleries[0].filesList[i].isSelectedContent)
+  {
+    
+	//main artical
+	if(result.relatedGalleries[0].filesList[i].mainArticalExist)
+     buildMainArticals(result.relatedGalleries[0].filesList[i].contentId);
+	else
+	  {
+		$("#releatedNewsDiv").css("height","400");
+	    $("#gallaryMainDiv").css("display","none");
+	
+	  }
+
+    //response
+    if(result.relatedGalleries[0].filesList[i].responseExist)
+     buildResponseNews(result.relatedGalleries[0].filesList[i].contentId);
+	else
+	  {
+		$("#responseNewsGallaryDiv").html('');
+	    $("#responseHeading").html('');
+        $("#responseMainDiv").css("display","none");
+	  }
+
+   }
 }
 
 
@@ -748,9 +780,134 @@ $("#zoomImageDiv").dialog({
 				modal: true				
 	});
 }
+
+function buildMainArticals(selectedContentId)
+{
+  
+  $("#gallaryMainDiv").css("display","block");
+  $("#gallaryDiv").html('');
+  var result = showContentResultList.relatedGalleries[0].filesList;
+  var str = '';
+
+  for(var i=0;i<result.length;i++)
+  {
+	if(result[i].contentId == selectedContentId)
+	{
+      var mainArticalList = result[i].mainArticalsList;
+	  str +="<ul class='unstyled relatedproblem' style='width:220px;'>";
+	  for(var j=0;j<mainArticalList.length;j++)
+	  {
+        var source = mainArticalList[j].fileVOList[0].source;
+
+	    if(source == "Eenadu Telugu")
+         str += '<li><a class="enadu" href="javascript:{}"  onClick="getNewsDetailsByContentId('+mainArticalList[j].contentId+')">'+mainArticalList[j].title+'</a></li>';
+	    else
+         str += '<li><a href="javascript:{}"  onClick="getNewsDetailsByContentId('+mainArticalList[j].contentId+')">'+mainArticalList[j].title+'</a></li>';
+	  }
+	  str +='</ul>';
+	}
+			
+  }
+   $("#gallaryDiv").html(str);
+}
+
+function buildResponseNews(selectedContentId)
+{
+  $("#responseNewsGallaryDiv").html('');
+	$("#responseHeading").html('');
+	$("#responseMainDiv").css("display","block");
+   $("#responseHeading").html('Responses');
+   //debugger;
+   var str = '';
+   str+="<ul class='unstyled pad10'>";
+   str +='<table id="responseTab">';
+   str+='<thead>';
+   str +='<tr>';
+   str +='<th></th>';
+   str +='</tr>';
+   str+='</thead>';
+   
+   str+='<tbody>';
+   str +='<tr>';
+   str +='<td>';
+   var result = showContentResultList.relatedGalleries[0].filesList;
+   
+   for(var j=0;j<result.length;j++)
+   {
+	if(result[j].contentId == selectedContentId)
+	{
+      var results = result[j].responseGallariesList;
+	  
+	  for(var i=0;i<results.length;i++)
+	  {
+        var source = results[i].fileVOList[0].source;
+		str+="<li>";
+		if(source == "Eenadu Telugu")
+		 str+="<h3><a href='javascript:{}' class='enadu'>"+results[i].title+"</a></h3>";
+		else
+		 str+="<h3><a href='javascript:{}'>"+results[i].title+"</a></h3>";
+		str+="<div class='row-fluid'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
+		
+		var path = results[i].fileVOList[0].fileVOList[0].path;
+		
+
+		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
+		if(source == "Eenadu Telugu")
+		str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		else
+		 	str+="<p class='span8'>"+results[i].description+"</p>";
+
+		str+="</div>";
+
+		str+="<div class='row-fluid m_top10'><div class='span9'>";
+		str +='<table><tr><td>';
+		str +='<p style="margin-right: 8px; width: 200px;"><span class="text-error">Source :</span>';
+		var length = results[i].fileVOList.length;
+
+		for(var k in results[i].fileVOList)
+		{
+		  str +=''+results[i].fileVOList[k].source+'';
+		  if(length-1 != k)
+			str +=',';
+		}
+		str +='</p></td><td style="vertical-align: top;"><p style="width: 130px;"><span class="text-error">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;"><p style="width: 301px;"><span class="text-error">candidate Name :</span> '+results[i].candidateName+'</td><td style="vertical-align: top;"><p style="width: 132px; margin-left: 13px;"><span class="text-error"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span> '+results[i].count+'</p></td></tr>';
+		
+		str +='</table>';
+		str +='</div>';
+		
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>More...</a></div></li>";
+		var len = results.length;
+		
+		if(len-1 != i)
+		 str +='<hr>';
+	  }
+	  
+	}
+			
+  }
+  str +='</td>';
+  str +='</tr>';
+  str+='</tbody>';
+  str +='</table>';
+  str +='</ul>';
+  //$('#responseTab').dataTable();
+  $('#responseTab').dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 2,
+		"aLengthMenu": [[2, 30, 90, -1], [2, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null
+		] 
+		});
+
+  $("#responseNewsGallaryDiv").html(str);
+
+}
+
 getContentDetails();
-getNewsForPagination(0);
-getMainArticles();
+//getNewsForPagination(0);
+//getMainArticles();
 
 </script>
 </body>
