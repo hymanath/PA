@@ -243,6 +243,7 @@
 		<pattern>/candidateNewsDetailsAction*</pattern>
 		<pattern>/locationWiseNewsDetailsAction*</pattern>
 		<pattern>/getNewsDetailsAction*</pattern>
+		<pattern>/showAllCategoriesAction*</pattern>
     	 </decorator>
 
 </decorators>

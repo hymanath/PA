@@ -636,6 +636,7 @@ $(document).ready(function(){
 							</s:if>
 							
 								</ul>
+								<a href="javascript:{showAllCategories()}" class=" btn btn-mini pull-right " style="margin-top: -10px;">More...</a>
 							</div>
 						</div>
 					</div>
@@ -1515,6 +1516,14 @@ function getLocationList()
 
 getLocationWiseNewsDetails(scope,divEle);
 	
+}
+
+function showAllCategories()
+{
+    var urlstr = "showAllCategoriesAction.action?";
+		
+     var browser1 = window.open(urlstr,"allCategories","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
 }
 
 getLocationList();
