@@ -213,6 +213,7 @@ font-size:20px;
 #responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 
 li{list-style: none outside none;}
+#responseNewsUL{overflow-y: scroll; height: 700px;}
 </style>
 </head>
 <body>
@@ -819,7 +820,7 @@ function buildResponseNews(selectedContentId)
    $("#responseHeading").html('Responses');
    //debugger;
    var str = '';
-   str+="<ul class='unstyled pad10'>";
+   str+="<ul class='unstyled pad10' id='responseNewsUL'>";
    str +='<table id="responseTab">';
    str+='<thead>';
    str +='<tr>';
