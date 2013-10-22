@@ -700,7 +700,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				    resultMap.put("NewsGallaryForDist", nl);
 				   }
 				 }
-				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 6, newsType);
+				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 5, newsType);
 		/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 		 resultList = setToFileVO(newsGallaryresultList);
 		 resultMap.put("NewsGallary", resultList);getCategoryIdsForParty*/
@@ -6268,6 +6268,34 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
       log.error("Exception Occured in getLocationValuesByRegionScope() method, Exception - "+e);
       return null;
 	 }
+ }
+ 
+ 
+ public List<SelectOptionVO> getTotalCategoriesList(String queryType)
+ {
+	 List<SelectOptionVO> selectOptionVOList =  null;
+	try{
+	
+		List<Object[]> categoryList = partyGalleryDAO.getTotalCategories(IConstants.TDPID, queryType);
+		if(categoryList != null && categoryList.size() > 0)
+		{
+			selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			for(Object[] params :categoryList)
+			{
+			  SelectOptionVO optionVO = new SelectOptionVO();
+			  optionVO.setId((Long)params[0]);
+			  optionVO.setName(params[1] != null ?params[1].toString():" ");
+			  optionVO.setOrderId((Long)params[2]);
+			  selectOptionVOList.add(optionVO);
+			}
+		}
+		
+		return selectOptionVOList;
+	}catch (Exception e) {
+     e.printStackTrace();
+     log.error("Exception Occured in getTotalCategoriesList() method, Exception - "+e);
+     return selectOptionVOList;
+	}
  }
 		
 }
