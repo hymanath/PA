@@ -541,6 +541,28 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
 }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTotalCategories(Long partyId,String queryType)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append("select model.file.category.categoryId,model.file.category.categoryType,count(distinct model.gallary.gallaryId) from " +
+	  		" FileGallary model, PartyGallery model2 where model2.gallery.gallaryId=model.gallary.gallaryId and model2.party.partyId = :partyId " +
+	  		" and model2.gallery.contentType.contentType= :type and model.isDelete = 'false' and model2.isDelete = 'false' " +
+	  		" and model.gallary.isDelete = 'false' and model2.gallery.isDelete = 'false' ");
+	  
+	  str.append(" and model.isPrivate = 'false' and model2.isPrivate = 'false' and model.gallary.isPrivate = 'false' and model2.gallery.isPrivate = 'false' ");
+	  str.append(" group by model.file.category.categoryId order by model.file.fileDate desc, model.updateddate desc");
+		
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("partyId", partyId);
+	  query.setParameter("type", IConstants.NEWS_GALLARY);
+	  
+	  return query.list();
+	  
+	}
+	
 	//	List<Object[]> list = partyGalleryDAO.getGalleriesForCategories(872l, 0, 30, "public", 3l);
 
 	public List<Object[]> getGalleriesForCategories(long partyId,int firstResult,int maxResult,String queryType,Long catId){

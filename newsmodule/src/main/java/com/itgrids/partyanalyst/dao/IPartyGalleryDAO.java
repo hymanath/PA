@@ -74,5 +74,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	
 	public List<Object[]> getRespondedFilesCount(List<Long> gallaryIds,Long categoryId);
 	
+	public List<Object[]> getTotalCategories(Long partyId,String queryType);
 	
 }
