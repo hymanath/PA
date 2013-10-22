@@ -494,7 +494,9 @@ var linechartDataArr =[];
 					malePolledVotes:'${constituencyInfo.malePolledVotes}',
 					femalePolledVotes:'${constituencyInfo.femalePolledVotes}',
 					maleOrFemalePolledVotes:'${constituencyInfo.maleOrFemaleValidVotes}',
+					
 					paritesinfo:[]
+
 			}
 			<c:forEach var="partyInfo" items="${constituencyInfo.partyVotes}">
 				var singleParty = {
@@ -1274,9 +1276,11 @@ function getElectionYearsInMandal(id,name){
 			for(var j in allACPCElecInfo[i].constituencyInfo){
 				electionInfo += '<fieldset>';
 				electionInfo += '<legend>'+allACPCElecInfo[i].constituencyInfo[j].constituencyName+' '+allACPCElecInfo[i].electionType+' '+allACPCElecInfo[i].year+'</legend>';
+				
 				electionInfo += '<div id = "data_div_'+i+'_'+j+'" class="">';
 				electionInfo += '<div id = "data_head_div_'+i+'_'+j+'" class="commonVotersHeadDiv">Voters Info In ${mandalInfoVO.mandalName} For '+allACPCElecInfo[i].constituencyInfo[j].constituencyName+' '+allACPCElecInfo[i].electionType+'</div>';
 				electionInfo += '<div id = "data_body_div_'+i+'_'+j+'" class="commonVotersBodyDiv">';
+			
 				electionInfo += '<table class="commonVotersTableClass"><tr>';				
 
 				electionInfo += '<th> Total Voters</th>';	
@@ -1327,11 +1331,13 @@ function getElectionYearsInMandal(id,name){
 				else
 					electionInfo += '<td> - </td>';		
 				electionInfo += '</tr></table>';
+				electionInfo += '<div style="font-weight:bold;color:#3B4B58;font-family:verdana;">Hint : Male Voters - Voters In Male Booths &nbsp&nbsp Female Voters - Voters In FeMale Booths</div>';
 				electionInfo += '</div>';
 				electionInfo += '<br>';
 				electionInfo += '<div id = "div_'+i+'_'+j+'" class="dataTableSize">';
 				electionInfo += '</div>';
-				electionInfo += '</fieldset>';				
+				electionInfo += '</fieldset>';	
+		
 			}		
 			divChild.innerHTML = electionInfo;
 				
@@ -1738,7 +1744,7 @@ function buildLineChart(){
 	<c:if test='${xaxisList != null}'>
 	buildLineChart();
 	</c:if>
-	
+
 </script>
 </body>
 
