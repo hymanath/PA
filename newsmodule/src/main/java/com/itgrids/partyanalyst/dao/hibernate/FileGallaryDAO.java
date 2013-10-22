@@ -3299,5 +3299,42 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
    	 return query.list();
     }
 	
+	
+	@SuppressWarnings("unchecked")
+    public List<FileGallary> getFileGallaryByGalleryIdsList(List<Long> gallaryIdsList , Integer startIndex  , Integer endIndex,String newsType,Long categoryId,Date fromDate,Date toDate,String requestFor)
+    {
+		 StringBuffer queryObject = new StringBuffer();
+		 queryObject.append("select model.fileGallary from CandidateNewsResponse model where model.fileGallary.gallary.gallaryId in(:gallaryIdsList) and " );
+		 queryObject.append(" model.fileGallary.isDelete = 'false' and model.fileGallary.gallary.isDelete = 'false' ");
+		 if(categoryId != null && categoryId > 0)
+			 queryObject.append(" and model.fileGallary.file.category.categoryId = :categoryId ");
+		 if(newsType != null && !newsType.equalsIgnoreCase(""))
+			 queryObject.append(" and model.fileGallary.isPrivate = 'false' and model.fileGallary.gallary.isPrivate = 'false' ");
+		 
+		 if(fromDate != null)
+			  queryObject.append(" and date(model.fileGallary.file.fileDate) >= :fromDate ");
+			 
+		 if(toDate != null)
+		      queryObject.append(" and date(model.fileGallary.file.fileDate) <= :toDate ");
+				 
+			 
+		 queryObject.append(" group by model.fileGallary.file.fileId order by model.fileGallary.file.fileDate desc, model.fileGallary.updateddate desc");
+		 Query query = getSession().createQuery(queryObject.toString());
+   	 query.setParameterList("gallaryIdsList",gallaryIdsList);
+   	 if(categoryId != 0)
+   		 query.setParameter("categoryId", categoryId);
+   	 
+   	if(fromDate != null)
+   		query.setParameter("fromDate",fromDate);
+		 
+	if(toDate != null)
+	 query.setParameter("toDate",toDate);
+   	 
+	if(startIndex != null)
+   	 query.setFirstResult(startIndex);
+	if(endIndex != null)
+   	 query.setMaxResults(endIndex);
+   	 return query.list();
+    }
 	 
 }
