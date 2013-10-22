@@ -1641,6 +1641,7 @@ function callAjaxTosaveUserFavouriteLink(jObj,url){
 function hideFavouriteLink(){
 $('.favouritelink').hide();
 }
+jQuery.noConflict(true);
 </script>
 </body>
 </html>

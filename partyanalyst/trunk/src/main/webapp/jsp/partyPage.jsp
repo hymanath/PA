@@ -4666,6 +4666,7 @@ $("#developmentspopForParty").dialog({
 
 });
 });
+jQuery.noConflict(true);
 </script>
 
 </body>
