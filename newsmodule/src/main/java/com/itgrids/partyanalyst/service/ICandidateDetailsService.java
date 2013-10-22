@@ -279,5 +279,7 @@ public interface ICandidateDetailsService {
 	
 	public ResultStatus updateCategoryStatus(Long userId,Long categoryId,String name);
 	
+	 public List<SelectOptionVO> getTotalCategoriesList(String queryType);
+	
 	
 }
