@@ -75,7 +75,7 @@ margin-top:30px;
 <div  class="widget green">
 <div id="errorDiv" style="display:none;"></div>
 <div id="ConstituencyDiv" class="selectDiv">
-	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name"  onchange="getPublicationDate();"/> &nbsp;&nbsp;
+	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="userAccessConstituencyList" listKey="id" listValue="name"  onchange="getPublicationDate();"/> &nbsp;&nbsp;
 	  Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 	  <img id="publicationAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:165px;"/>
 	
