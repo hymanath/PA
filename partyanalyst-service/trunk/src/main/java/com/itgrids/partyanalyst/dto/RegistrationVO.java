@@ -70,7 +70,29 @@ public class RegistrationVO extends BaseDTO{
 	private List<RegistrationVO> registeredUsersList = new ArrayList<RegistrationVO>();
 	private Long totalCount; 
 	
+	private String uniqueCode;
 	
+	private String appId;
+	
+	
+	
+	
+	public String getUniqueCode() {
+		return uniqueCode;
+	}
+
+	public void setUniqueCode(String uniqueCode) {
+		this.uniqueCode = uniqueCode;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
 	public Long getTotalCount() {
 		return totalCount;
 	}
