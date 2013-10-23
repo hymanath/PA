@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.dto;
 
 import java.util.List;
 
-public class VoterHouseInfoVO {
+public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
 
 	private String houseNo;
 	private int numberOfPeople;
@@ -1007,6 +1007,13 @@ public class VoterHouseInfoVO {
 
 	public void setLocalEleBodyId(Long localEleBodyId) {
 		this.localEleBodyId = localEleBodyId;
+	}
+
+	public int compareTo(VoterHouseInfoVO vo) {
+		
+		if(this.cast == null || vo.getCast() == null)
+			return 1;
+		return this.cast.compareTo(vo.getCast());
 	}
 	
 	

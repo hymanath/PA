@@ -7160,6 +7160,12 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			    	  populateVotersDataToVoForSearch(votersData,votersList,categories,searchInfo,userId);
 			     }
 			    }
+			    
+			    if(searchInfo.getSortByColum().equalsIgnoreCase("cast"))
+			    	if(searchInfo.getSortBy().equalsIgnoreCase("asc"))
+			    	 Collections.sort(returnValue.getVotersList());
+			    	else
+			    	 Collections.sort(returnValue.getVotersList(),castSortDesc);
 			     
 		 }catch(Exception e){
 			 log.error("Exception rised in getVotersInfoBySearchCriteria ",e);
@@ -7167,6 +7173,18 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		 
 		 return returnValue;
 	 }
+	 
+	   public static Comparator<VoterHouseInfoVO> castSortDesc = new Comparator<VoterHouseInfoVO>()
+		{
+					  
+	      public int compare (VoterHouseInfoVO m1, VoterHouseInfoVO m2){
+	    	  
+	    	  if(m1.getCast() == null || m2.getCast() == null)
+	    		  return -1;
+	    	 
+            return m2.getCast().compareTo(m1.getCast());
+           }
+		};
 	 
 	 public void populateVotersDataToVoForSearch(List<Object[]> votersData,List<VoterHouseInfoVO> votersList,List<Long> categories,VoterHouseInfoVO searchInfo,Long userId){
 		 VoterHouseInfoVO voterHouseInfoVO = null;
