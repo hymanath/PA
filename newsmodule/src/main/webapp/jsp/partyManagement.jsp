@@ -3828,7 +3828,7 @@ function updatePhoto(fileId,fileGallaryId)
 <!-- for  body 4  result  start -->
 
 <div id="dateSelectDiv" style="display:none;">
-
+  <h2 style="text-align: center;">Update News</h2>
  <span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass dateField" id="newsFromDateId" readonly="true"/></span>
  <span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass dateField" id="newsToDateId"/></span>
  <input type="button" value="submit" onclick="buildNewsDetails()" class="btn btn-info"/>
