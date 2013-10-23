@@ -2,11 +2,15 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.List;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -132,8 +136,38 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		 if(jObj.getString("task").equalsIgnoreCase("createDataDump"))
 		 {
 			 String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+"/sqlite_dump.sql";
-			 resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"),path);
+			 JSONArray arr = jObj.getJSONArray("userData");
+			 JSONObject jSONObject= arr.getJSONObject(0);
+			 RegistrationVO regVo = new RegistrationVO();
+			 regVo.setFirstName(jSONObject.getString("firstName"));
+			 regVo.setLastName(jSONObject.getString("lastName"));
+			 regVo.setGender(jSONObject.getString("gender"));
+			 regVo.setUserName(jSONObject.getString("userName"));
+			 regVo.setPassword(jSONObject.getString("password"));
+			 regVo.setUniqueCode(jSONObject.getString("uniqueCode"));// uniqueCode
+			 regVo.setAppId(jSONObject.getString("appId"));
+			 regVo.setMobile(jSONObject.getString("deviceId"));
+			 regVo.setAddress(jSONObject.getString("macAddressId"));
+			 
+			 resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"),path,regVo);
 		 }
+		/* else if(jObj.getString("task").equalsIgnoreCase("saveMobileAppUserDetails"))
+		 {
+			 JSONArray arr = jObj.getJSONArray("userData");
+			 JSONObject jSONObject= arr.getJSONObject(0);
+			 RegistrationVO regVo = new RegistrationVO();
+			 regVo.setFirstName(jSONObject.getString("firstName"));
+			 regVo.setLastName(jSONObject.getString("lastName"));
+			 regVo.setGender(jSONObject.getString("gender"));
+			 regVo.setUserName(jSONObject.getString("userName"));
+			 regVo.setPassword(jSONObject.getString("password"));
+			 regVo.setUniqueCode(jSONObject.getString("uniqueCode"));// uniqueCode
+			 regVo.setAppId(jSONObject.getString("appId"));
+			 regVo.setMobile(jSONObject.getString("deviceId"));
+			 regVo.setAddress(jSONObject.getString("macAddressId"));
+			
+			 resultStatus = mobileService.saveUserData(regVo);
+		 }*/
 			
 		}catch (Exception e) {
 		 e.printStackTrace();
