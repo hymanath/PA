@@ -6985,6 +6985,7 @@ function createNewSource()
 {
 	//$('#sourceDetails').show();
 	var str = "";
+	str +='<h2 align="center">Create A New Source</h2>';
 	str+='<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;margin-left: 298px;">';
 	str +=  '<span>Source Name : </span><input type="text" id="sourceName"></input></br>';
 	str += "<div id='errorDiv' style='color:red'> </div>";
