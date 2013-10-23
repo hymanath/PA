@@ -479,9 +479,9 @@ $(document).ready(function(){
 						</div>
 						
 						<div style="clear:both;width:232px;margin-left:-36px;">
-							<input type="checkbox" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio"/>By Gallery
+							<input type="radio" value="gallaryRadio" id="gallaryRadioId" name="typeNewsRadio" class="gallaryCategoryRadio"/>By Gallery
 						
-							<input type="checkbox" value="categoryCheckBox" id="categoryCheckBoxId" class="categoryCheckBoxCls" style="margin-left:18px;" />By Category
+							<input type="radio" value="categoryCheckBox" id="categoryCheckBoxId" class="categoryCheckBoxCls"  name="typeNewsRadio" style="margin-left:18px;" />By Category
 						 </div>
 						 </div>
 						

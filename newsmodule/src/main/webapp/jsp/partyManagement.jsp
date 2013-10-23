@@ -212,7 +212,7 @@ h3 {
 .tdWidth {           
   font-weight:bold;
  
-  width:161px;
+  width:190px;
 }
 .tdWidth1 {           
  
