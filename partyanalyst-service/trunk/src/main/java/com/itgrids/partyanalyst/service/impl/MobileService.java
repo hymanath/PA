@@ -1454,7 +1454,7 @@ public List<SelectOptionVO> getConstituencyList()
   			MobileAppUserProfile mobileAppUserProfile = new MobileAppUserProfile();
   			mobileAppUser.setUserName(registrationVO.getUserName());
   			mobileAppUser.setPassword(registrationVO.getPassword());
-  			mobileAppUser.setUniqueCode(registrationVO.getUserType());
+  			mobileAppUser.setUniqueCode(registrationVO.getUniqueCode());
   			mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
   			mobileAppUserAccess.setMobileAppUser(mobileAppUser);
   			mobileAppUserAccess.setIsAuthorised("true");
