@@ -43,14 +43,28 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
-
+<style>
+.headingClass h4 {
+    color: #337DEB;
+    font-family: verdana,arial,sans-serif,serif;
+    font-size: 15px;
+    text-align: center;
+}
+</style>
 
 </head>
 <body>
 
 
 
-
+<div class="headingClass"><h4>
+ <c:if test="${categoryName !='totalGalaries'}">
+   Galleries in ${categoryName} Category
+ </c:if>
+ <c:if test="${categoryName =='totalGalaries'}">
+   Total Gallaries
+ </c:if>
+</h4></div>
 <div id="gallarysId" style="margin:22px 0px 31px 102px;"></div>
 <script>
 var partyId = '${candidateId}';

@@ -631,12 +631,12 @@ $(document).ready(function(){
 										<s:if test="resultMap != null && resultMap.size() > 0"> 
 										
 							    <s:iterator value="resultMap.categories" var="newsGallaryDetails" status="ctr">
-						       	<li><a href='javascript:{showAllgallaries1(<s:property value="candidateId"/>,<s:property value="categoryId"/>)}' class="muted"><i class="icon-share-alt"></i> <s:property value="categoryName"/></a></li>                          		
+						       	<li><a href='javascript:{showAllgallaries1(<s:property value="candidateId"/>,<s:property value="categoryId"/>,"<s:property value="categoryName"/>")}' class="muted"><i class="icon-share-alt"></i> <s:property value="categoryName"/></a></li>                          		
 							</s:iterator>
 							</s:if>
 							
 								</ul>
-								<a href="javascript:{showAllCategories()}" class=" btn btn-mini pull-right " style="margin-top: -10px;">More...</a>
+								<a href="javascript:{showAllCategories()}" class=" btn btn-mini pull-right " style="margin-right: 20px; margin-top: -14px; margin-bottom: 8px;">More...</a>
 							</div>
 						</div>
 					</div>
@@ -747,13 +747,13 @@ function showFilesInGallary(gallaryId)
 }
 
 function showAllgallaries(){
-	   var urlstr = "showNewsGallariesAction.action?candidateId=0&category=0";
+	   var urlstr = "showNewsGallariesAction.action?candidateId=0&category=0&categoryName=totalGalaries";
 		
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 	}
-function showAllgallaries1(partyId,catId){
-	   var urlstr = "showNewsGallariesAction.action?candidateId="+partyId+"&category="+catId;
+function showAllgallaries1(partyId,catId,categoryName){
+	   var urlstr = "showNewsGallariesAction.action?candidateId="+partyId+"&category="+catId+"&categoryName="+categoryName;
 		
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();

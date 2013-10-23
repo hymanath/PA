@@ -43,8 +43,19 @@
 
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
+<style>
+.headingClass h4 {
+    color: #337DEB;
+    font-family: verdana,arial,sans-serif,serif;
+    font-size: 15px;
+    text-align: center;
+}
+</style>
+
 </head>
 <body>
+
+<div class="headingClass"><h4>Total Categories</h4></div>
 <div id="categoryDivId" style="margin:22px 0px 31px 102px;"></div>
 <script type="text/javascript">
 
@@ -78,7 +89,7 @@
  	for(var i in results)
   	{	
 		str+='<div class="span3 thumbnail galleriesListClass" style=" background: none repeat scroll 0% 0% palegoldenrod;height:100px;margin:4px;">';
-	    str+='<h6><a href="javascript:{showAllgallaries1('+results[i].id+')}" style="text-transform: capitalize" class="galName" title="'+results[i].name+'">'+results[i].name+'</a></h6>';
+	    str+='<h6><a href="javascript:{showAllgallaries1('+results[i].id+',\''+results[i].name+'\')}" style="text-transform: capitalize" class="galName" title="'+results[i].name+'">'+results[i].name+'</a></h6>';
 		
 		str+='<span class="badge badge-info pull-right" style="margin-top:10px;"> GALLERY COUNT: '+results[i].orderId+'</span>';
 		
@@ -89,9 +100,9 @@
   $("#categoryDivId").html(str);	 
  }
 
- function showAllgallaries1(catId){
+ function showAllgallaries1(catId,categoryName){
 	 var partyId = 872;
-	   var urlstr = "showNewsGallariesAction.action?candidateId="+partyId+"&category="+catId;
+	   var urlstr = "showNewsGallariesAction.action?candidateId="+partyId+"&category="+catId+"&categoryName="+categoryName;
 		
      var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
