@@ -93,7 +93,7 @@
 			<div class="row m_top10">
 				<div class="span2">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>State News</h4>
+						<div class="span12 boxHeading"><h4>${scope} News</h4>
 						<div class="row-fluid widget">						
 						<div class="span12">
 						<table  id="showScopeSubsD">	
