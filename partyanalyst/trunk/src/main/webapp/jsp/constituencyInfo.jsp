@@ -111,6 +111,11 @@ $("#basicInfoAjaxImage").css("display","none");
 		$("#errorDiv").html("Please Select Constituency").css({'display':'block','color':'red'});
 		return;
 	}
+	if(publicationid == 0)
+	{
+		//$("#errorDiv").html("Please Select Constituency").css({'display':'block','color':'red'});
+		return;
+	}
 	$("#errorDiv").html('');
 	 var jsObj=
 			 {		
