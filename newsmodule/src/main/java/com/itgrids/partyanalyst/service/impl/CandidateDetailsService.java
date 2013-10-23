@@ -5202,13 +5202,22 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		/*List<FileGallary> fileGallaryList = fileGallaryDAO
 				.getFilesOfGallaries(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestFor);*/
 		
-		/*List<FileGallary> fileGallaryList = fileGallaryDAO
-				.getFilesByGalleryIdsList(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestFor);
 		
-		Long count = fileGallaryDAO.getAllRecordsCountInGallary(gallaryId,newsType,categoryId,fromDate,toDate).get(0);*/
-
-		List<FileGallary> fileGallaryList = fileGallaryDAO.getFileGallaryByGalleryIdsList(gallaryIdsList, startIndex, endIndex, newsType, categoryId, fromDate, toDate, requestFor);
-		Long count = (long)fileGallaryDAO.getFileGallaryByGalleryIdsList(gallaryIdsList, null, null, newsType, categoryId, fromDate, toDate, requestFor).size();
+		List<FileGallary> fileGallaryList = null;
+		Long count = 0L;
+		
+		if(requestFor != null && requestFor.equalsIgnoreCase("respondedNews"))
+		{
+		  fileGallaryList = fileGallaryDAO.getFileGallaryByGalleryIdsList(gallaryIdsList, startIndex, endIndex, newsType, categoryId, fromDate, toDate, requestFor);
+		  count = (long)fileGallaryDAO.getFileGallaryByGalleryIdsList(gallaryIdsList, null, null, newsType, categoryId, fromDate, toDate, requestFor).size();
+		}
+		else
+		{
+			fileGallaryList = fileGallaryDAO
+					.getFilesByGalleryIdsList(gallaryIdsList,startIndex,endIndex,newsType,categoryId,fromDate,toDate,requestFor);
+			
+			count = fileGallaryDAO.getAllRecordsCountInGallary(gallaryId,newsType,categoryId,fromDate,toDate).get(0);
+		}
 				
 		for(FileGallary fileGallary : fileGallaryList){
 			if(fileGallary.getFile() !=null){
