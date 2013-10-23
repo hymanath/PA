@@ -308,6 +308,7 @@ function invertSelection()
 var totalCategoriesCount = 0;
 var votersToUpdate = new Array();
 var votersCasteName = new Array();
+var votersCasteNameMap = {};
 var selectedVotersToUpdate = new Array();
 var totalNoOfVoters = 0;
 function buildSelectedVotersData(results)
@@ -325,6 +326,7 @@ function buildSelectedVotersData(results)
 	
 	votersToUpdate = new Array();
 	votersCasteName = new Array();
+	votersCasteNameMap = {};
             
 
 	 var str='';
@@ -459,16 +461,24 @@ function buildSelectedVotersData(results)
 
 			    str+='<td>';
 				 str+='<div class="row" style="width:171px;"><select class="casteClass caste'+i+j+'" id="caste'+voters[k].voterId+'" title="Select caste to the voter:'+voters[k].name+'(SNo:'+voters[k].fromSno+')" style="width:100px;">';
+
+				
 				    for(var l in results.casteGroupNameList){
+
+						 if(voters[k].voterId == "6399544" && voters[k].casteStateId == results.casteGroupNameList[l].id)
+						 {
+							 console.log(voters[k].casteStateId);
+							// console.log(results.casteGroupNameList);
+						 }
 						   if(voters[k].casteStateId != results.casteGroupNameList[l].id)
 							str+="<option value="+results.casteGroupNameList[l].id+">"+results.casteGroupNameList[l].name+"</option>";
 						   else{
 							str+="<option value="+results.casteGroupNameList[l].id+" selected='selected'>"+results.casteGroupNameList[l].name+"</option>";	
 							 votersCasteName.push(results.casteGroupNameList[l].name);
+							 votersCasteNameMap[voters[k].voterId] = results.casteGroupNameList[l].name;
 						   }
 					 }
 				 str+='</select>';
-
 				
 
 				
@@ -610,8 +620,10 @@ function buildSelectedVotersData(results)
 
 
 				for(var i =0;i<votersToUpdate.length;i++){
+
                   $('#caste'+votersToUpdate[i]).combobox();	
-				  $('#caste'+votersToUpdate[i]).next().val(votersCasteName[i]);
+				 // $('#caste'+votersToUpdate[i]).next().val(votersCasteName[i]);
+				  $('#caste'+votersToUpdate[i]).next().val(votersCasteNameMap[i]);
 				}
 		
 		  });
