@@ -1765,6 +1765,11 @@
      <property name="cadreDAO" ref="cadreDAO" />
      <property name="influencingPeoplePositionDAO" ref="influencingPeoplePositionDAO" />
      <property name="influencingPeopleDAO" ref="influencingPeopleDAO" />
+	 <property name="transactionTemplate" ref="transactionTemplate" />
+	 <property name="mobileAppUserAccessDAO" ref="mobileAppUserAccessDAO" />
+	 <property name="mobileAppUserDAO" ref="mobileAppUserDAO" />
+	 <property name="mobileAppUserProfileDAO" ref="mobileAppUserProfileDAO" />
+	 
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">

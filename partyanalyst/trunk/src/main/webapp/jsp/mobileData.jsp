@@ -68,7 +68,7 @@
 <style type="text/css">
  #mainDiv{margin: 20px auto; float: none; width: 950px;}
  #selectDiv{padding-bottom: 45px; margin-left: 26px;}
- #constituencyList{margin-left: 23px;}
+ /*#constituencyList{margin-left: 23px;}*/
  #createTempFile{margin-left: 28px;}
  #errorMsgDiv{margin-bottom: 9px; margin-top: 12px; margin-left: 26px; font-size: 12px;}
 </style>
@@ -77,13 +77,100 @@
  <div id="mainDiv">
 
   <div class="widget blue">
-   <div id="errorMsgDiv"></div>
-    <div id="selectDiv">
+   <!--<div id="errorMsgDiv"></div>
+     <div id="selectDiv">
      Constituency<s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" /> 
   
-    <input type="button" class="btn btn-info" value="create Dump File" id="createTempFile"/>
+   <input type="button" class="btn btn-info" value="create Dump File" id="createTempFile"/>
+
     <a style="margin-left: 11px;" href="${filePath}" class="btn btn-info" download>Download link</a>
+	</div>-->
+	
+	 <!--mobile Data user Details  start-->
+	
+	<div>
+    <form class="form-horizontal">
+	<div id="errorMsgDiv" style="font-family:verdana;margin-left:100px;"></div>
+	 <div class="control-group">
+    <label class="control-label" for="inputconstituency">Constituency</label>
+    <div class="controls">
+    <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" /> 
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="inputFirstName">FirstName</label>
+    <div class="controls">
+    <input type="text" id="FirstNameId" placeholder="FirstName">
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="inputLastName">LastName</label>
+    <div class="controls">
+    <input type="password" id="LastNameId" placeholder="LastName">
+    </div>
+    </div>
+    <div class="control-group">
+	 <label class="control-label" for="inputLastName">Gender</label>
+    <div class="controls">
+	<label class="radio inline">
+	<input type="radio" name="optionsRadios" id="maleRadiobtn" value="Male" checked>
+	Male
+	</label>
+	<label class="radio inline">
+	<input type="radio" name="optionsRadios" id="FemaleRadiobtn" value="Female" checked>
+	Female
+	</label>
+	 </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="inputUserName">UserName</label>
+    <div class="controls">
+    <input type="text" id="UserNameId" placeholder="UserName">
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="inputPassword">Password</label>
+    <div class="controls">
+    <input type="text" id="PasswordId" placeholder="Password">
+    </div>
+    </div>
+	   <div class="control-group">
+    <label class="control-label" for="inputuniqueCode">Unique Code</label>
+    <div class="controls">
+    <input type="text" id="uniqueCodeId" placeholder="uniqueCode">
+    </div>
+    </div>
+	
+		   <div class="control-group">
+    <label class="control-label" for="inputappId">App ID</label>
+    <div class="controls">
+    <input type="text" id="appId" placeholder="appId">
+    </div>
+    </div>
+		   <div class="control-group">
+    <label class="control-label" for="inputdeviceId">Device ID</label>
+    <div class="controls">
+    <input type="text" id="deviceId" placeholder="deviceId">
+    </div>
+    </div>
+	  <div class="control-group">
+    <label class="control-label" for="inputmacAddressId">Mac Address</label>
+    <div class="controls">
+    <input type="text" id="macAddressId" placeholder="macAddressId">
+    </div>
+    </div>
+	
+	<div  style="margin-left: 150px;">
+	   <input type="button" class="btn btn-info" value="create Dump File" id="createTempFile"/>
+	    <img src="./images/icons/search.gif" id="ajaxImg" style="display:none"/>
+	   <a id="downloadLink" style="margin-left: 11px;display:none;" href="${filePath}" class="btn btn-info" download>Download link</a>
+	<!--<input type="button" value="Submit" class="btn" id="savebtn"></button>-->
+
 	</div>
+	
+    </form>
+	</div><br/>
+	 <!--mobile Data user Details end-->
   </div>
 
 </div>
@@ -91,25 +178,110 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-
 $("#createTempFile").click(function(){
 
-	$("#errorMsgDiv").html("");
-	var constituencyId = $("#constituencyList").val();
-    if(constituencyId == 0)
+$("#errorMsgDiv").html("");
+var flag = false;
+var errorDiv= document.getElementById("errorMsgDiv");
+	
+var constituencyId = $("#constituencyList").val();  
+var dataarr =[];
+var firstName = $("#FirstNameId").val();
+var lastName = $("#LastNameId").val();
+var gender = $("input[name='optionsRadios']:checked").val();
+var userName = $("#UserNameId").val();
+var password = $("#PasswordId").val();
+var uniqueCode = $("#uniqueCodeId").val();
+var appId = $("#appId").val();
+var deviceId = $("#deviceId").val();
+var macAddressId = $("#macAddressId").val();
+
+var str = '<font color="red">';
+ if(constituencyId == 0)
 	{
-	  $("#errorMsgDiv").html("Please Select Constituency.").css("color","red");
-	  return;
+	 str += 'Please Select Constituency<br>';
+	  flag = true;
+	 
 	}
+	if(firstName == 0 || firstName == null)
+	{
+	str += 'firstName is Required<br>';
+	flag = true;
+	}
+	 if(lastName == 0 || lastName == null)
+	{
+		str += 'lastName is Required<br>';
+		flag = true;
+	}
+  if(gender == 0 || gender == null)
+	{
+		str += 'gender is Required<br>';
+		flag = true;
+	}
+  if(userName == 0 || userName == null)
+	{
+		str += 'userName is Required<br>';
+		flag = true;
+	}
+ if(password == 0 || password == null)
+	{
+		str += 'password is Required<br>';
+		flag = true;
+	}
+ if(uniqueCode == 0 || uniqueCode == null)
+	{
+		str += 'uniqueCode is Required<br>';
+		flag = true;
+	}
+ if(appId == 0 || appId == null)
+	{
+		str += 'appId is Required<br>';
+		flag = true;
+	}
+ if(deviceId == 0 || deviceId == null)
+	{
+		str += 'deviceId is Required<br>';
+		flag = true;
+	}
+ if(macAddressId == 0 || macAddressId == null)
+	{
+		str += 'macAddressId is Required<br>';
+		flag = true;
+	}
+	if(flag == true)
+	{
+errorDiv.innerHTML =str;
+return;
+	}
+else
+	{
+errorDiv.innerHTML = '';
+$("#ajaxImg").css("display","block");
+var obj = {
+firstName : firstName,
+lastName:lastName,
+gender:gender,
+userName:userName,
+password:password,
+uniqueCode:uniqueCode,
+appId:appId,
+deviceId:deviceId,
+macAddressId:macAddressId
+};
+dataarr.push(obj);
+console.log(dataarr);
+
+
 	var jsObj=
 		{
 		 constituencyId:constituencyId,
+		 userData:dataarr,
 		 task:"createDataDump"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "createDataDumpAction.action?"+rparam;						
 		callAjax(jsObj,url);	
-
+}
 	});
 });
 
@@ -122,9 +294,13 @@ function callAjax(jsObj,url)
 							try {												
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
 								if(jsObj.task == "createDataDump")
+								{
 								 showStatus(myResults);	
 								
-								}catch (e) {
+								}
+							
+							}
+									catch (e) {
 							    //alert(Exception);
 								}  
  		               },
@@ -148,10 +324,29 @@ function callAjax(jsObj,url)
 	else
 	{
 	  $("#errorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
+	  $("#ajaxImg").css("display","none");
+	$("#downloadLink").css("display","block");
 	  return;
 	}
  }
- 
+ function showUserDetailsStatus(result)
+ {
+	var str='';
+	var divEle = document.getElementById("errorMsgDiv1");
+	if(result == null || result.resultCode == 1)
+	{
+	  $("#errorMsgDiv1").html("Error Occured! Try Again.").css("color","red");
+	  return;
+	}
+	else
+	{
+	  $("#errorMsgDiv1").html("Data Saved Successfully.").css("color","green");
+	   $("#selectDiv").css("display","block");
+	  return;
+	 
+	}
+
+ }
 </script>
 
 
