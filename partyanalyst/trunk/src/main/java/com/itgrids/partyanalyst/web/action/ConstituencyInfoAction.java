@@ -145,16 +145,16 @@ public class ConstituencyInfoAction extends ActionSupport implements ServletRequ
 			return INPUT;
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
 			return ERROR;*/
-		    constituencyList = user.getUserAccessVoterConstituencies();
-		    if(constituencyList == null || constituencyList.isEmpty()){
+		  /*  constituencyList = user.getUserAccessVoterConstituencies();
+		    if(constituencyList == null || constituencyList.isEmpty()){*/
 			Long userID = user.getRegistrationID();
 			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
-			constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
-			constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
-			user.setUserAccessVoterConstituencies(constituencyList);
-		}
+		//	constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+			userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
+			//user.setUserAccessVoterConstituencies(constituencyList);
+		//}
 		return SUCCESS;
 		
 		
