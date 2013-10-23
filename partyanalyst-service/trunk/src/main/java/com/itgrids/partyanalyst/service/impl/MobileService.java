@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -30,6 +34,9 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserAccessDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -53,6 +60,8 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.hibernate.CadreDAO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
@@ -68,6 +77,9 @@ import com.itgrids.partyanalyst.model.EducationalQualifications;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
+import com.itgrids.partyanalyst.model.MobileAppUser;
+import com.itgrids.partyanalyst.model.MobileAppUserAccess;
+import com.itgrids.partyanalyst.model.MobileAppUserProfile;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
@@ -83,6 +95,7 @@ import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class MobileService implements IMobileService{
 	
@@ -127,8 +140,47 @@ public class MobileService implements IMobileService{
  private ICadreDAO cadreDAO;
  private IInfluencingPeoplePositionDAO influencingPeoplePositionDAO;
  private IInfluencingPeopleDAO influencingPeopleDAO;
+ private IMobileAppUserDAO mobileAppUserDAO;
+ private IMobileAppUserAccessDAO mobileAppUserAccessDAO;
+ private IMobileAppUserProfileDAO mobileAppUserProfileDAO;
+ private TransactionTemplate transactionTemplate;
  
-  public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
+ 
+  public TransactionTemplate getTransactionTemplate() {
+	return transactionTemplate;
+}
+
+public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+	this.transactionTemplate = transactionTemplate;
+}
+
+public IMobileAppUserDAO getMobileAppUserDAO() {
+	return mobileAppUserDAO;
+}
+
+public void setMobileAppUserDAO(IMobileAppUserDAO mobileAppUserDAO) {
+	this.mobileAppUserDAO = mobileAppUserDAO;
+}
+
+public IMobileAppUserAccessDAO getMobileAppUserAccessDAO() {
+	return mobileAppUserAccessDAO;
+}
+
+public void setMobileAppUserAccessDAO(
+		IMobileAppUserAccessDAO mobileAppUserAccessDAO) {
+	this.mobileAppUserAccessDAO = mobileAppUserAccessDAO;
+}
+
+public IMobileAppUserProfileDAO getMobileAppUserProfileDAO() {
+	return mobileAppUserProfileDAO;
+}
+
+public void setMobileAppUserProfileDAO(
+		IMobileAppUserProfileDAO mobileAppUserProfileDAO) {
+	this.mobileAppUserProfileDAO = mobileAppUserProfileDAO;
+}
+
+public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
 	return influencingPeopleDAO;
 }
 
@@ -480,11 +532,12 @@ public List<SelectOptionVO> getConstituencyList()
 	}
   }
 
-  public ResultStatus createDataDumpFileForSelectedConstituency(Long constituencyId,String path)
+  public ResultStatus createDataDumpFileForSelectedConstituency(Long constituencyId,String path,final RegistrationVO reVo)
   {
 	 LOG.info("Entered into createDataDumpFileForSelectedConstituency Method ");
 	 ResultStatus resultStatus = new ResultStatus();
 	try{
+	saveUserData(reVo);
 	File f= new File(path);	
 	BufferedWriter outPut = new BufferedWriter(new FileWriter(f));
 	StringBuilder str = new StringBuilder();
@@ -1386,6 +1439,46 @@ public List<SelectOptionVO> getConstituencyList()
   			LOG.error("Exception Occured in getCadreValuesMap(), Exception is - ",e);
   			return map;
   		}
+  	}
+  	
+  	public ResultStatus saveUserData(final RegistrationVO registrationVO)
+  	{
+  		final DateUtilService dateUtilService = new DateUtilService();
+  		ResultStatus rs = new ResultStatus();
+  		ResultStatus resultStatus = (ResultStatus) transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				ResultStatus rs = new ResultStatus();
+		try{
+			MobileAppUser mobileAppUser = new MobileAppUser();
+  			MobileAppUserAccess mobileAppUserAccess = new MobileAppUserAccess();
+  			MobileAppUserProfile mobileAppUserProfile = new MobileAppUserProfile();
+  			mobileAppUser.setUserName(registrationVO.getUserName());
+  			mobileAppUser.setPassword(registrationVO.getPassword());
+  			mobileAppUser.setUniqueCode(registrationVO.getUserType());
+  			mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
+  			mobileAppUserAccess.setMobileAppUser(mobileAppUser);
+  			mobileAppUserAccess.setIsAuthorised("true");
+  			mobileAppUserAccess.setAppId(registrationVO.getAppId());
+  			mobileAppUserAccess.setMacAddress(registrationVO.getAddress());
+  			mobileAppUserAccess.setDeviceId(registrationVO.getMobile());
+  			mobileAppUserAccess.setLastAuthorisedTime(dateUtilService.getCurrentDateAndTime());
+  			mobileAppUserAccessDAO.save(mobileAppUserAccess);
+  			mobileAppUserProfile.setFirstName(registrationVO.getFirstName());
+  			mobileAppUserProfile.setLastName(registrationVO.getLastName());
+  			mobileAppUserProfile.setMobileAppUser(mobileAppUser);
+  			mobileAppUserProfile.setGender(registrationVO.getGender().toString());
+  			mobileAppUserProfileDAO.save(mobileAppUserProfile);
+  			rs.setResultCode(ResultCodeMapper.SUCCESS);
+  			}
+  		catch (Exception e) {
+  			LOG.error("Exception Occured in saveUserData(), Exception is - ",e);
+			e.printStackTrace();
+			rs.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return rs;
+		}
+		});
+  		return resultStatus;
   	}
     
 }
