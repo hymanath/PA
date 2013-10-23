@@ -156,8 +156,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<Long> filesList;
 	private String newsDescription;
 	private String requestFor;
-	
-
+	private String categoryName;
+   
 	
 	public String getRequestFor() {
 		return requestFor;
@@ -949,6 +949,17 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		return uploadSpecialPageGalleryId;
 	}
 	
+	
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
+
+
 	public String uploadFilesForMultipleCandidates()
 	{
 		
