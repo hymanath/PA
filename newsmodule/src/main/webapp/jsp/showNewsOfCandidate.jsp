@@ -153,7 +153,7 @@
 				<!---View your Constituency News Div--->
 				<div class="span7">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>${level} Wise Latest News Updates  </h4></div>
+						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>${candidateName} Wise Latest News Updates  </h4></div>
 						<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;height:20px;width:500px;">
 							<font>Please wait...</font>
 							<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
@@ -268,7 +268,6 @@ function callAjax(jsObj,url)
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
 function buildPaginatedNewsOfCandidate(results,jsObj){
-
 	$("#pagedNewsId").html('');
 	if(results == null)
 	{
@@ -353,6 +352,7 @@ function getCandidates(){
 
 function getCandiNews(){
 	var candidateId=$('#candidatesListId option:selected').val();
+	var candidateName=$('#candidatesListId option:selected').text();
 	$('.errorDiv').html('');
 	if(candidateId==0){
 		$('.errorDiv').html('<span class="text-error" style="margin-left:10px;">Please Select Candidate</span>');
@@ -422,7 +422,7 @@ function getCandiNews(){
 	    }
 	  }
 	}
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&tempVarable=true&";
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&candidateName="+candidateName+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&tempVarable=true&";
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
