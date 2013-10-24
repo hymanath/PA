@@ -282,6 +282,8 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getTotalCategoriesList(String queryType);
 	 
 	 public List<SelectOptionVO> getAllCategories();
+	 
+	 public List<SelectOptionVO> getGallariesInCategory(Long categoryId);
 	
 	
 }

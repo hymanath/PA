@@ -1044,6 +1044,8 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			if(gallaryVO.getCategoryId() != null && gallaryVO.getCategoryId() > 0)
 				gallary.setCategory(categoryDAO.get(gallaryVO.getCategoryId()));
 			
+			gallary.setIsNewsPortal(IConstants.TRUE);
+			
 			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
 				
 				List<Object[]> list = partyGalleryDAO.getPartyGallaryByPartyId(gallaryVO.getCandidateId(), gallaryVO.getContentType(), gallaryVO.getGallaryName());

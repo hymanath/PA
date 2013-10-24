@@ -6326,5 +6326,23 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
       return null;
 	 }
  }
+ 
+ public List<SelectOptionVO> getGallariesInCategory(Long categoryId)
+ {
+	try{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);	
+				
+		List<Object[]> list = gallaryDAO.getGallariesForSelectedCategory(categoryId);
+		if(list != null && list.size() > 0)
+		 for(Object[] params:list)
+			selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():" "));
 		
+		return selectOptionVOList;
+	}catch (Exception e) {
+		e.printStackTrace();
+	    log.error(" Exception Occured in getGallariesInCategory() method, Exception - "+e);
+	    return null;
+	}
+	 
+ }
 }
