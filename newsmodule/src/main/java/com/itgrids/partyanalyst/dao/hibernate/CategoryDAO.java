@@ -37,4 +37,14 @@ public class CategoryDAO extends GenericDaoHibernate<Category, Long> implements 
 		Query query = getSession().createQuery(" select max(model.orderNo) from Category model ");
 		return (Long) query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllCategories()
+	{
+		Query query = getSession().createQuery(" select distinct model.categoryId,model.categoryType from Category model " +
+				" order by model.categoryType ");
+		
+		return query.list();
+	}
+	
 }
