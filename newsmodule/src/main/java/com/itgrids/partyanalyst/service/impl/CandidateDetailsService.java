@@ -5867,16 +5867,23 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				Category category = new Category();
 				category.setCategoryType(name.trim());
 				category.setOrderNo(orderNo);
+				category.setUserId(userId);
+				category.setIsPrivate(visibility);
+				category.setIsDelete(IConstants.FALSE);
+				category.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+				category.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+				
 				category = categoryDAO.save(category);
 				
-				UserNewsCategory userNewsCategory = new UserNewsCategory();
+				/*UserNewsCategory userNewsCategory = new UserNewsCategory();
 				userNewsCategory.setIsPrivate(visibility);
 				userNewsCategory.setIsDelete("false");
 				userNewsCategory.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 				userNewsCategory.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 				userNewsCategory.setUser(userDAO.get(userId));
 				userNewsCategory.setCategory(category);
-				userNewsCategoryDAO.save(userNewsCategory);
+				userNewsCategoryDAO.save(userNewsCategory);*/
+				
 				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				return resultStatus;
 				
@@ -5892,14 +5899,15 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		public List<CategoryVO> getAllCategoriesOfUser(Long userId){
 			List<CategoryVO> categoriesList=new ArrayList<CategoryVO>();
 			try{
-				List<Object[]> categories=userNewsCategoryDAO.allCategoriesOfUser(userId);
-				if(categories.size()>0){
+				//List<Object[]> categories=userNewsCategoryDAO.allCategoriesOfUser(userId);
+				List<Object[]> categories = categoryDAO.getCategoriesByUserId(userId);
+				if(categories != null && categories.size()>0){
 					for(Object[] param:categories){
 						CategoryVO co=new CategoryVO();
 						co.setId(Long.valueOf(param[0].toString()).longValue());
-						co.setName(param[1].toString());
-						co.setIsDeleted(param[2].toString());
-						co.setVisibility(param[3].toString());
+						co.setName(param[1] != null?param[1].toString():"");
+						co.setIsDeleted(param[2] != null?param[2].toString():"");
+						co.setVisibility(param[3] != null?param[3].toString():"");
 						categoriesList.add(co);
 					}
 				}
@@ -5934,15 +5942,18 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 						
 					}
 					
-					int updated=userNewsCategoryDAO.updateCategory(userId, categoryId, cateName, visibility);
+					/*int updated=userNewsCategoryDAO.updateCategory(userId, categoryId, cateName, visibility);
 				
-					int updateNow=userNewsCategoryDAO.updateCategoryName(userId, categoryId, cateName);
-					if(updated>0){
-						rs.setResultCode(ResultCodeMapper.SUCCESS);
-					}else{
-						rs.setResultCode(ResultCodeMapper.FAILURE);
-						rs.setExceptionMsg("Exception Raised..Please Try again later");
-					}
+					int updateNow=userNewsCategoryDAO.updateCategoryName(userId, categoryId, cateName);*/
+					
+					Category category = categoryDAO.get(categoryId);
+					category.setCategoryType(cateName.trim());
+					category.setIsPrivate(visibility);
+					category.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+					categoryDAO.save(category);
+					
+					rs.setResultCode(ResultCodeMapper.SUCCESS);
+					
 					return rs;
 					}
 					
@@ -5959,7 +5970,10 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				status="false";
 			}
 				try{
-					int del=userNewsCategoryDAO.updateCategoryStatus(userId, categoryId, status);
+					
+					//int del=userNewsCategoryDAO.updateCategoryStatus(userId, categoryId, status);
+					int del = categoryDAO.updateCategoryByUserId(userId, categoryId, status);
+					
 				}catch (Exception e) {
 						System.out.println(e);
 						res.setResultCode(ResultCodeMapper.FAILURE);

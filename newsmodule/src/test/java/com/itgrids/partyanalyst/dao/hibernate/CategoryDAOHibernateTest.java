@@ -44,4 +44,6 @@ public class CategoryDAOHibernateTest extends BaseDaoTestCase{
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]);
 	}*/
+	
+
 }

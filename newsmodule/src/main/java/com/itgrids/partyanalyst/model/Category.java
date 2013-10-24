@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,13 +29,22 @@ public class Category extends BaseModel implements java.io.Serializable{
 	private Long orderNo;
 	private Set<File> files = new HashSet<File>(0);
 	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
+	private Long userId;
+	private String isDelete;
+	private String isPrivate;
+	private Date createdDate;
+	private Date updateddate;
 	
 	public Category(){
 		
 	}
-	public Category(String categoryType,Long orderNo){
+	public Category(String categoryType,Long orderNo,String isDelete,String isPrivate,Date createdDate,Date updateddate){
 		this.categoryType=categoryType;
 		this.orderNo=orderNo;
+		this.createdDate = createdDate;
+		this.updateddate = updateddate;
+		this.isPrivate = isPrivate;
+		this.isDelete = isDelete;
 		
 	}
 	
@@ -78,5 +88,45 @@ public class Category extends BaseModel implements java.io.Serializable{
 	public void setGallaries(Set<Gallary> gallaries) {
 		this.gallaries = gallaries;
 	}
+	
+	@Column(name = "user_id",length = 15)
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	
+	@Column(name = "is_delete",length = 10)
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+	
+	@Column(name = "is_private",length = 10)
+	public String getIsPrivate() {
+		return isPrivate;
+	}
+	public void setIsPrivate(String isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	
+	@Column(name = "created_date",length = 10)
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	@Column(name = "updated_date",length = 10)
+	public Date getUpdateddate() {
+		return updateddate;
+	}
+	public void setUpdateddate(Date updateddate) {
+		this.updateddate = updateddate;
+	}
+	
 	
 }
