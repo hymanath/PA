@@ -1906,6 +1906,10 @@ function buildUploadNewsForMultipleUsers()
 	str+='</div>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
 	str += '   <tr>';
+	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="category" name="category" onchange="getGallariesForSelectedCategory()"><option value="0">Select Category</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
 	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
     str += '   <tr>';
@@ -1932,10 +1936,10 @@ function buildUploadNewsForMultipleUsers()
 	str += '</TD>';
 	str += '</TR>';
 	
-	str += '   </tr>';
+	/*str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
-	str += '   </tr>';
+	str += '   </tr>';*/
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Importance : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance"><option value="0">Select NewsImportance</option></select></td>';
@@ -1994,7 +1998,7 @@ function buildUploadNewsForMultipleUsers()
 
 	str+='</div></div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
-	getPartyGallariesForUplaod("News Gallary");
+	//getPartyGallariesForUplaod("News Gallary");
 	
 	 getScopes();
 	 getSource("source");
@@ -5109,6 +5113,12 @@ var callback = {
               clearOptionsListForSelectElmtId('categoriesForGallary');
 			  createOptionsForSelectElement('categoriesForGallary',myResults);
 			}
+
+			else if(jsObj.task == "getGallariesInCategory")
+			{
+			  clearOptionsListForSelectElmtId('gallaryId');
+			  createOptionsForSelectElement('gallaryId',myResults);
+			}
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
 		}  
@@ -6311,6 +6321,10 @@ function  buildUploadNews()
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv1" /></td></tr></table>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
+	str += '   </tr>';
+	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="category" name="category" onchange="getGallariesForSelectedCategory()"><option value="0">Select Category</option></select></td>';
+	str += '   </tr>';
 	str += '   <tr>';
 	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';
@@ -6342,10 +6356,10 @@ function  buildUploadNews()
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" ><option value="0">Select Language</option></select></td>';
-	str += '   </tr>';
+	/*str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
-	str += '   </tr>';
+	str += '   </tr>';*/
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Importance : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" ><option value="0">Select NewsImportance</option></select></td>';
@@ -6410,7 +6424,7 @@ function  buildUploadNews()
 	//str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
-	getPartyGallariesForUplaod("News Gallary");
+	//getPartyGallariesForUplaod("News Gallary");
 	
 	 getScopes();
 	 getSource("source");
@@ -7153,6 +7167,27 @@ function getAllCategoriesForGallary()
 	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getCategoriesListAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+
+function getGallariesForSelectedCategory()
+{
+
+  $("#uploadNewsFileErrorDiv1").html('');
+  var categoryId = $("#category").val();
+  if(categoryId == 0)
+  {
+    $("#uploadNewsFileErrorDiv1").html('Please Select Category.').css("color","red");
+     return;
+  }
+
+   var jsObj=
+	{
+	    categoryId:categoryId,
+		task  : "getGallariesInCategory"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getGallariesByCategoryIdAction.action?"+rparam;						
 	callAjax1(jsObj,url);
 }
 
