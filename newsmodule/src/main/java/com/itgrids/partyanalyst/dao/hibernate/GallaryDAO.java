@@ -148,4 +148,14 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGallariesForSelectedCategory(Long categoryId)
+	{
+	  Query query = getSession().createQuery(" select distinct model.gallaryId, model.name from Gallary model where model.category.categoryId =:categoryId " +
+	  		"order by model.name ");
+	  
+	  query.setParameter("categoryId", categoryId);
+	  return query.list();
+	}
+	
 }

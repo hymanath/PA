@@ -49,6 +49,7 @@ public class Gallary implements Serializable{
 	private Set<PartyGallery> partyGallery = new HashSet<PartyGallery>(0);
 	private Set<SpecialPageGallery> specialPageGalleries = new HashSet<SpecialPageGallery>(0);
 	private Category category;
+	private String isNewsPortal;
 	
 	/* default constructor*/
 	
@@ -58,7 +59,7 @@ public class Gallary implements Serializable{
 	/* full constructor */
 	
 	public Gallary(String name,String description,Date createdDate,
-			Date updateddate,ContentType contentType,String isDelete,String isPrivate,Category category){
+			Date updateddate,ContentType contentType,String isDelete,String isPrivate,Category category,String isNewsPortal){
 		this.name = name;
 		this.description = description;
 		this.createdDate = createdDate;
@@ -67,6 +68,7 @@ public class Gallary implements Serializable{
 		this.isDelete = isDelete;
 		this.isPrivate = isPrivate;
 		this.category = category;
+		this.isNewsPortal = isNewsPortal;
 	}
 
 	@Id
@@ -198,6 +200,15 @@ public class Gallary implements Serializable{
 
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+
+	@Column(name = "is_news_portal", length = 10)
+	public String getIsNewsPortal() {
+		return isNewsPortal;
+	}
+
+	public void setIsNewsPortal(String isNewsPortal) {
+		this.isNewsPortal = isNewsPortal;
 	}
 	
 
