@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -112,14 +111,14 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		this.candidateDetailsService = candidateDetailsService;
 	}
 	public String getNewsByPaging(){
-		  Log.debug("Entered into getNewsByPaging() method of NewsPaginationAction");
+		  log.debug("Entered into getNewsByPaging() method of NewsPaginationAction");
         session = request.getSession();
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
 		try{
 			  jObj = new JSONObject(getTask());
 			}catch (Exception e) {
 			  e.printStackTrace();
-			  Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+			  log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
 			}
 		Long partyId=jObj.getLong("partyId");
 		int first=jObj.getInt("firstResult");
@@ -190,7 +189,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			  jObj = new JSONObject(getTask());
 			}catch (Exception e) {
 			  e.printStackTrace();
-			  Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+			  log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
 			}
 		
 		try{
@@ -228,6 +227,17 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
          log.error("Exception Occured in getAllCategories() method, Exception - "+e);
 		}
 		return Action.SUCCESS;
+	}
+	
+	public String getCategoriesList()
+	{
+	  try{
+		selectOptionVOList = candidateDetailsService.getAllCategories();  
+	  }catch (Exception e) {
+		 e.printStackTrace();
+	         log.error("Exception Occured in getAllCategories() method, Exception - "+e);
+	 }
+	  return Action.SUCCESS;
 	}
 	
 }

@@ -6309,5 +6309,22 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
      return selectOptionVOList;
 	}
  }
+ 
+ public List<SelectOptionVO> getAllCategories()
+ {
+	 try{
+		 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);	
+		 List<Object[]> list = categoryDAO.getAllCategories();
+		 if(list != null && list.size() > 0)
+		  for(Object[] params:list)
+			selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():" "));
+		 
+		 return selectOptionVOList;
+	 }catch (Exception e) {
+      e.printStackTrace();
+      log.error(" Exception Occured in getAllCategories() method, Exception - "+e);
+      return null;
+	 }
+ }
 		
 }
