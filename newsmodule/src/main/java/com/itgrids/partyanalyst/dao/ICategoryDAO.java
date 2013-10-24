@@ -17,5 +17,8 @@ public interface ICategoryDAO extends GenericDao<Category, Long>{
 	
 	public List<Object[]> getAllCategories();
 	
+	public List<Object[]> getCategoriesByUserId(Long userId);
+	
+	public Integer updateCategoryByUserId(Long userId,Long categoryId,String status);
 
 }
