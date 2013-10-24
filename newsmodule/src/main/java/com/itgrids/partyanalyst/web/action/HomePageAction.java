@@ -83,7 +83,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String gallaryIds;
 	private String categoryIds;
 	private boolean tempVarable;
+	private String candidateName;
 	
+	public String getCandidateName() {
+		return candidateName;
+	}
+	public void setCandidateName(String candidateName) {
+		this.candidateName = candidateName;
+	}
 	public List<FileVO> getResponseFilesList() {
 		return responseFilesList;
 	}
