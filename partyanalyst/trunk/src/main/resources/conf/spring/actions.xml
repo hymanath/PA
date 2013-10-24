@@ -98,15 +98,15 @@
 		<property name="influencingPeopleService" ref="influencingPeopleService" />
 	</bean>
 	
-	<bean id="partyPerformanceReportAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceReportAction"
+	<!--<bean id="partyPerformanceReportAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceReportAction"
 		singleton="false" >
 		<property name="partyService" ref="partyService" />
-	</bean>
+	</bean>-->
 	
-	<bean id="partyPerformanceJasperAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceJasperAction"
+	<!--<bean id="partyPerformanceJasperAction" class="com.itgrids.partyanalyst.web.action.PartyPerformanceJasperAction"
 		singleton="false" >
 	</bean>
-	
+	-->
 	<bean id="problemPostControlAction" class="com.itgrids.partyanalyst.web.action.ProblemPostControlAction"
 		singleton="false" >
 	</bean>
@@ -138,9 +138,9 @@
 		<property name="candidateSearchService" ref="candidateSearchService" />
 	</bean>
 	
-	<bean id="getSearchResultsAction" class="com.itgrids.partyanalyst.web.action.GetSearchResultsAction" singleton="false">
+	<!--<bean id="getSearchResultsAction" class="com.itgrids.partyanalyst.web.action.GetSearchResultsAction" singleton="false">
 		<property name="constituencySearchService" ref="constituencySearchService" />
-	</bean>
+	</bean>-->
 	
 	<bean id="partyResultsAction" class="com.itgrids.partyanalyst.web.action.PartyResultsAction" singleton="false">
 		<property name="partyResultService" ref="partyResultService" />
@@ -333,8 +333,8 @@
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
-	<bean id="userGroupsMainAction" class="com.itgrids.partyanalyst.web.action.UserGroupsMainAction" singleton="false">		
-	</bean>
+	<!--<bean id="userGroupsMainAction" class="com.itgrids.partyanalyst.web.action.UserGroupsMainAction" singleton="false">		
+	</bean>-->
 	
 	<bean id="cadreManagementAction" class="com.itgrids.partyanalyst.web.action.CadreManagementAction" singleton="false">
 		<property name="userCadreManagementService" ref="userCadreManagementService"></property>
@@ -833,9 +833,9 @@
 		<property name="staticDataService" ref="staticDataService" />
 	    <property name="regionServiceDataImp" ref="regionServiceDataImp"/>	
 	</bean>
-	<bean id="candidateProfilePhotosAction" class="com.itgrids.partyanalyst.web.action.candidateProfilePhotosAction" singleton="false">
+	<!--<bean id="candidateProfilePhotosAction" class="com.itgrids.partyanalyst.web.action.candidateProfilePhotosAction" singleton="false">
 		
-	</bean>
+	</bean>-->
 	
 	<bean id="manageUserMessageCreditsAction" class="com.itgrids.partyanalyst.web.action.ManageUserMessageCreditsAction" singleton="false">	
 		<property name="registrationService" ref="registrationService" />
@@ -1195,7 +1195,8 @@
 	</bean>
 		
 	<bean id="surveyAnalysisAction" class="com.itgrids.partyanalyst.web.action.SurveyAnalysisAction" singleton="false">
-		<property name="surveyAnalysisService" ref="surveyAnalysisService" />	
+		<property name="surveyAnalysisService" ref="surveyAnalysisService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />	
 	</bean>
 
 	<bean id="assigningSurveyToUserAction" class="com.itgrids.partyanalyst.web.action.AssigningSurveyToUserAction" singleton="false">
@@ -1211,13 +1212,13 @@
 		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
-	<bean id="surveyFormSaveAction" class="com.itgrids.partyanalyst.web.action.SurveyFormSaveAction" singleton="false">
+	<!--<bean id="surveyFormSaveAction" class="com.itgrids.partyanalyst.web.action.SurveyFormSaveAction" singleton="false">
 		<property name="surveyAnalysisService" ref="surveyAnalysisService" />
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="staticDataService" ref="staticDataService" />
-	</bean>
+	</bean>-->
 	
 	<bean id="newhomePageAction" class="com.itgrids.partyanalyst.web.action.NewHomePageAction" singleton="false">	
 	<property name="staticDataService" ref="staticDataService" />

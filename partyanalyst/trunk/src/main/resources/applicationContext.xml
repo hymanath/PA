@@ -9,6 +9,8 @@
 	<import resource="conf/spring/persistence.xml" />
 	<import resource="conf/spring/daos.xml" />
 	<import resource="conf/spring//interceptors.xml" />
+	<import resource="conf/spring/webserviceComponents.xml" />
+	
 </beans>
 	
 

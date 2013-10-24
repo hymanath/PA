@@ -1819,5 +1819,9 @@
 	 <property name="votersAnalysisService" ref="votersAnalysisService"></property>
 	 <property name="boothDAO" ref="boothDAO" />	
     </bean>
+    
+    <bean name="webServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerService" >
+      <property name="loginService" ref="loginService"></property>
+    </bean>
 </beans>		
 	
