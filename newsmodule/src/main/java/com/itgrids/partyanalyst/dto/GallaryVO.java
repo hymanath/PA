@@ -36,6 +36,7 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	private List<FileVO> responseGallaryList = new ArrayList<FileVO>(0);
 	private int resGallTotRecordsCount;
 	private int count;
+	private Long categoryId;
 	
 	
 	public Long getPageId() {
@@ -164,5 +165,12 @@ public class GallaryVO extends ResultStatus implements Serializable{
 	public void setCount(int count) {
 		this.count = count;
 	}
+	public Long getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+	
 	
 }
