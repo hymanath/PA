@@ -240,4 +240,20 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	  return Action.SUCCESS;
 	}
 	
+	public String ajaxHandler()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			
+		if(jObj.getString("task").equalsIgnoreCase("getGallariesInCategory"))
+			selectOptionVOList = candidateDetailsService.getGallariesInCategory(jObj.getLong("categoryId"));	 
+			 
+		}catch (Exception e) {
+			e.printStackTrace();
+	         log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }

@@ -5658,6 +5658,11 @@
 		   </result>
 		 </action>
 		 
+		 <action name="getGallariesByCategoryIdAction" class="newsPaginationAction" method="ajaxHandler">
+		    <result name="success" type="json">
+		 	<param name="root">selectOptionVOList</param>
+		   </result>
+		 </action>
 		</package>
 		
 		
