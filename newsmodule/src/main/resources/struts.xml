@@ -5652,6 +5652,12 @@
 		   </result>
 		 </action>
 		 
+		 <action name="getCategoriesListAction" class="newsPaginationAction" method="getCategoriesList">
+		    <result name="success" type="json">
+		 	<param name="root">selectOptionVOList</param>
+		   </result>
+		 </action>
+		 
 		</package>
 		
 		

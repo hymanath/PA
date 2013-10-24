@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
 
@@ -30,8 +32,16 @@ public class CategoryDAOHibernateTest extends BaseDaoTestCase{
 		int res=userNewsCategoryDAO.updateCategoryName(1l, 10l, "sasi");
 		System.out.println(res);
 	}*/
-	public void testUpdateCategory(){
+	/*public void testUpdateCategory(){
 		int res=userNewsCategoryDAO.updateCategoryStatus(1l, 10l, "true");
 		System.out.println("deleted:"+res);
-	}
+	}*/
+	
+	/*public void testgetAllCategories()
+	{
+		List<Object[]> list = categoryDAO.getAllCategories();
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]);
+	}*/
 }
