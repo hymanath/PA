@@ -48,6 +48,8 @@ public class Gallary implements Serializable{
 	private Set<FileGallary> fileGallary = new HashSet<FileGallary>(0);
 	private Set<PartyGallery> partyGallery = new HashSet<PartyGallery>(0);
 	private Set<SpecialPageGallery> specialPageGalleries = new HashSet<SpecialPageGallery>(0);
+	private Category category;
+	
 	/* default constructor*/
 	
 	public Gallary(){
@@ -56,7 +58,7 @@ public class Gallary implements Serializable{
 	/* full constructor */
 	
 	public Gallary(String name,String description,Date createdDate,
-			Date updateddate,ContentType contentType,String isDelete,String isPrivate){
+			Date updateddate,ContentType contentType,String isDelete,String isPrivate,Category category){
 		this.name = name;
 		this.description = description;
 		this.createdDate = createdDate;
@@ -64,6 +66,7 @@ public class Gallary implements Serializable{
 		this.contentType = contentType;
 		this.isDelete = isDelete;
 		this.isPrivate = isPrivate;
+		this.category = category;
 	}
 
 	@Id
@@ -183,6 +186,18 @@ public class Gallary implements Serializable{
 
 	public void setSpecialPageGalleries(Set<SpecialPageGallery> specialPageGalleries) {
 		this.specialPageGalleries = specialPageGalleries;
+	}
+    
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="category_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
 	}
 	
 

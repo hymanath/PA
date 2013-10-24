@@ -27,6 +27,7 @@ public class Category extends BaseModel implements java.io.Serializable{
 	private String categoryType;
 	private Long orderNo;
 	private Set<File> files = new HashSet<File>(0);
+	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
 	
 	public Category(){
 		
@@ -67,6 +68,15 @@ public class Category extends BaseModel implements java.io.Serializable{
 	}
 	public void setFiles(Set<File> files) {
 		this.files = files;
+	}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<Gallary> getGallaries() {
+		return gallaries;
+	}
+	public void setGallaries(Set<Gallary> gallaries) {
+		this.gallaries = gallaries;
 	}
 	
 }
