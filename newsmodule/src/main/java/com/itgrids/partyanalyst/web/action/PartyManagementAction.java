@@ -398,6 +398,7 @@ public String execute()
 			if(jObj.getString("createOrUpdate").trim().equalsIgnoreCase("Create"))
 			{
 				gallaryVO.setContentType(jObj.getString("contentType"));
+				gallaryVO.setCategoryId(jObj.getLong("categoryId"));
 			}
 			if(jObj.getString("createOrUpdate").trim().equalsIgnoreCase("Update"))
 			{

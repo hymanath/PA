@@ -47,6 +47,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.util.IConstants;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.dao.ICategoryDAO;
 
 public class PartyDetailsService implements IPartyDetailsService {/*
 	
@@ -76,6 +77,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
+	private ICategoryDAO categoryDAO;
 	/*
 	private IFileTypeDAO fileTypeDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
@@ -348,7 +350,17 @@ public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}	
-/*
+	
+	
+   public ICategoryDAO getCategoryDAO() {
+		return categoryDAO;
+	}
+
+	public void setCategoryDAO(ICategoryDAO categoryDAO) {
+		this.categoryDAO = categoryDAO;
+	}
+
+	/*
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
@@ -1029,6 +1041,9 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			UserGallary userGallary = null;
 			gallary.setName(gallaryVO.getGallaryName());
 			gallary.setDescription(gallaryVO.getDescription());
+			if(gallaryVO.getCategoryId() != null && gallaryVO.getCategoryId() > 0)
+				gallary.setCategory(categoryDAO.get(gallaryVO.getCategoryId()));
+			
 			if (createOrUpdate.trim().equalsIgnoreCase("Create")) {
 				
 				List<Object[]> list = partyGalleryDAO.getPartyGallaryByPartyId(gallaryVO.getCandidateId(), gallaryVO.getContentType(), gallaryVO.getGallaryName());
