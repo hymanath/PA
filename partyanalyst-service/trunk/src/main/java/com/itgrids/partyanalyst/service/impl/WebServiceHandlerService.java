@@ -30,7 +30,6 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		log.debug("Entered into the checkForUserAuthentication  method in WebServiceHandlerService");
 		try
 		{
-			return loginService.checkUserCredentials(userName,passWord);
 			
 		}catch(Exception e)
 		{
