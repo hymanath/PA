@@ -325,7 +325,7 @@ function callAjax(jsObj,url)
 	{
 	  $("#errorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
 	  $("#ajaxImg").css("display","none");
-	$("#downloadLink").css("display","block");
+	 $("#downloadLink").css("display","block").css("display","inline-block");
 	  return;
 	}
  }
