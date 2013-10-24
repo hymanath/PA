@@ -2022,7 +2022,10 @@ function buildCreateNewsCategory()
 	//str += '<fieldset class="imgFieldset" style="width:449px;">';
 	str += '<h2 align="center">Create A News Gallary</h2>';
 	str+='<table class="aligncenter"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
-	str += '<table class="aligncenter"><tr><td><b><font>Gallary Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
+	str += '<table class="aligncenter">';
+    
+    str +='<tr><td><b><font>Category Name<font class="requiredFont">*</font></font></b></td><td><select id="categoriesForGallary" name="categoriesForGallary"></td></tr>';
+	str +='<tr><td><b><font>Gallary Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
 
 	str += '<tr><td><b><font>Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
@@ -2035,6 +2038,8 @@ function buildCreateNewsCategory()
 	//str += '</fieldset>';
 	str+='</div>';
 	document.getElementById("newsGallaryDiv").innerHTML = str;
+
+	getAllCategoriesForGallary();
 }
 
 function createNewsCategory()
@@ -2123,6 +2128,7 @@ function getDistricts2(stateId){
 	var isPublic = document.getElementById('newsPublicRadio').checked;
 	var partyId = 872;
 	var makeThis = 'true';
+	var categoryId = $("#categoriesForGallary").val();
 
 	var errorDivEle = document.getElementById('newsErrorMsgDivId');
 	var eFlag = false;
@@ -2150,6 +2156,12 @@ function getDistricts2(stateId){
 		str += 'Description should be less than 300 Characters<br>';
 		eFlag = true;
 	}
+
+	if(categoryId == 0)
+	{
+      str +='Please Select Any Category.';
+      eFlag = true;
+	}
 	
 	str += '</font>';
 	errorDivEle.innerHTML = str;
@@ -2176,6 +2188,7 @@ function getDistricts2(stateId){
 			createOrUpdate:'Create',
 			partyId : partyId,
 			contentType : 'News Gallary',
+			categoryId:categoryId,
 			task : "createNewGallary"
 		};
 
@@ -5090,6 +5103,12 @@ var callback = {
 					alert('Sorry Unable to Process the request..Please try again later');
 				}
 			}
+
+			else if(jsObj.task == "getTotalCategories")
+			{
+              clearOptionsListForSelectElmtId('categoriesForGallary');
+			  createOptionsForSelectElement('categoriesForGallary',myResults);
+			}
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
 		}  
@@ -7126,6 +7145,16 @@ function buildUpdateStatus(result)
     buildNewsDetails();
 }
 
+function getAllCategoriesForGallary()
+{
+ var jsObj=
+	{
+		task  : "getTotalCategories"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCategoriesListAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
 
 </script>
 </body>
