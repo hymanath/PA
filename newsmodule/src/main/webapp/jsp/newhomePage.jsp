@@ -1116,7 +1116,8 @@ function getCandidates(){
 
 function getCandidatesNews(){
 	var candidateId=$('#candidatesListId option:selected').val();
-	 $(".errorDiv").html('');
+	var candidateName=$('#candidatesListId option:selected').text();
+	$(".errorDiv").html('');
 	if(candidateId==0){
 		$('.errorDiv').html('<span class="text-error">Please Select Candidate</span>');
 		return;
@@ -1195,7 +1196,7 @@ function getCandidatesNews(){
 	  }
 	}
 
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&tempVarable=true&";
+	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&candidateName="+candidateName+"&fromDate="+fromDate+"&toDate="+toDate+"&gallaryIds="+selectedGallaryIds+"&categoryIds="+categoryIds+"&tempVarable=true&";
 		
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();

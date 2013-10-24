@@ -118,10 +118,10 @@ function callAjax(jsObj,url)
 		str+="<li style='width: 200px;'>";
 		str+="<h6 id='titleNameId' title='"+results[i].name+"' style='cursor:default;'>"+results[i].name+"</h6>";
 		str+="<div>";
-		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getAllVideosOfAGallary("+results[i].ids+")'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}' onclick='getAllVideosOfAGallary("+results[i].ids+",\""+results[i].description+"\")'>";
 		str+="<img id='myImg' style='width:100%' src=http://img.youtube.com/vi/"+results[i].path+"/0.jpg ></a>";
 		//str+="<p class='span8'>"+results[i].description+"</p>";
-		str+="<span class='label' onclick='getAllVideosOfAGallary("+results[i].ids+")' style='cursor:pointer;'> Total Videos :"+results[i].totalResultsCount+"</span>";
+		str+="<span class='label' onclick='getAllVideosOfAGallary("+results[i].ids+",\""+results[i].description+"\")' style='cursor:pointer;'> Total Videos :"+results[i].totalResultsCount+"</span>";
 		str+="</div>";
 		//str+="<div class='row-fluid m_top10'><div class='span9'><p class='text-error'>Source : "+results[i].source+"</p></div>";
 		//str+="<div class='span2'><a href='#'></div></li>";
@@ -172,9 +172,9 @@ function getVideosByContentId(galId){
 		callAjax(jsObj, url);
 }
 
-function getAllVideosOfAGallary(gallaryId){		
+function getAllVideosOfAGallary(gallaryId,gallaryDescription){		
 	
-	   var urlstr = "showAllVideosOfAGallaryAction.action?gallaryId="+gallaryId+"";
+	   var urlstr = "showAllVideosOfAGallaryAction.action?gallaryId="+gallaryId+"&gallaryDescription="+gallaryDescription+"";
 		
      var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();

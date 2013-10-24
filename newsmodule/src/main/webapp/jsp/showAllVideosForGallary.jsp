@@ -34,14 +34,14 @@
 				<div class="span2">
 				 	<div id="mainDiv"></div>
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>state news</h4></div>
+						<div class="span12 boxHeading"><h4>videos</h4></div>
 						
 					</div>				
 				</div>
 				<!---View your Constituency News Div--->
 				<div class="span7">
 					<div class="row-fluid widget">
-						<div class="span12 boxHeading"><h4>Latest Updates News</h4></div>
+						<div class="span12 boxHeading"><h4>${gallaryDescription}</h4></div>
 						<div class="span12" id="newsDisplayDiv">
 						<div id="pagedNewsId"></div>
 						<div class="span12 text-center">
