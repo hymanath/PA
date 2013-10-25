@@ -352,7 +352,9 @@ function getCandidates(){
 
 function getCandiNews(){
 	var candidateId=$('#candidatesListId option:selected').val();
-	var candidateName=$('#candidatesListId option:selected').text();
+	var candidateName1=$('#candidatesListId option:selected').text();
+	var trimValue = candidateName1.split("(").pop();
+	var candidateName = candidateName1.replace('('+trimValue, '');//for tring numbers
 	$('.errorDiv').html('');
 	if(candidateId==0){
 		$('.errorDiv').html('<span class="text-error" style="margin-left:10px;">Please Select Candidate</span>');
