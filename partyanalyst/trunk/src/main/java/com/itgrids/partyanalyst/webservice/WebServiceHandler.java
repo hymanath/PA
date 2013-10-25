@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 
 @Component
@@ -17,8 +18,21 @@ public class WebServiceHandler {
 	
 	@Autowired
 	private IWebServiceHandlerService  webServiceHandlerService;
+	private ResultStatus resultStatus;
 	
 	
+
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+
 
 	public IWebServiceHandlerService getWebServiceHandlerService() {
 		return webServiceHandlerService;
@@ -56,9 +70,17 @@ public class WebServiceHandler {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String checkForUserAuthentication(@PathParam("userId") String userId , @PathParam("macId") String macId )
     {
-		if(userId.equalsIgnoreCase("userId" ) && macId.equalsIgnoreCase("macId"))
+		try{
+		 resultStatus = webServiceHandlerService.checkUserAuthenticationAndUpdateAuthorisedTime(userId, macId);
+		if(resultStatus.getResultCode() == 0)
 		 return "true";
 		else
 			return "false";
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "false";
+		}
     }
 }

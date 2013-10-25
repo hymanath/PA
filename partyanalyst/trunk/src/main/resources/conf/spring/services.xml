@@ -1822,6 +1822,7 @@
     
     <bean name="webServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerService" >
       <property name="loginService" ref="loginService"></property>
+      <property name="mobileService" ref="mobileService"></property>
     </bean>
 </beans>		
 	
