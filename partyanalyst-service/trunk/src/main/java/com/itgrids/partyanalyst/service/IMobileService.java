@@ -14,5 +14,7 @@ public interface IMobileService {
  public List<SelectOptionVO> getConstituencyList();
  
  public ResultStatus saveUserData(final RegistrationVO registrationVO);
+ 
+	public ResultStatus checkAuthenticateUserAndUpdateLastAuthorisedTime(String userId,String macAddressId);
 
 }

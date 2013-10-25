@@ -1480,5 +1480,32 @@ public List<SelectOptionVO> getConstituencyList()
 		});
   		return resultStatus;
   	}
+  	
+  	
+  	public ResultStatus checkAuthenticateUserAndUpdateLastAuthorisedTime(String userId,String macAddressId)
+  	{
+  		ResultStatus resultStatus = new ResultStatus();
+  		try{
+  			DateUtilService dateUtilService = new DateUtilService();
+  			List<Object> list = mobileAppUserAccessDAO.getAuthorisedRecords(userId,macAddressId);
+  			if(list != null && list.size() > 0)
+  			{
+  				
+  				MobileAppUserAccess mobileAppUserAccess = mobileAppUserAccessDAO.get((Long)list.get(0));
+  				mobileAppUserAccess.setLastAuthorisedTime(dateUtilService.getCurrentDateAndTime());
+  				mobileAppUserAccessDAO.save(mobileAppUserAccess);
+  				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+  			
+  			}
+  			else
+  				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+  				
+  		}
+  		catch(Exception e) {
+			e.printStackTrace();
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+  	}
     
 }
