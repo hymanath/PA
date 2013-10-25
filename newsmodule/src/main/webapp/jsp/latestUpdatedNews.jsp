@@ -63,6 +63,7 @@ font-size:20px;
 				<div class="span7">
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading" style="text-transform: capitalize;"><h4>News Details </h4></div>
+						<div id="latestNewsAjaxDiv" style="display:none;text-align: center;"><img src="images/icons/goldAjaxLoad.gif"  style="margin-top: 15px;"/></div>
 							<div id="latestNewsDiv"></div>
 						<!----pagination Div----->
 						<div class="span12 text-center">
@@ -114,7 +115,7 @@ $(document).ready(function(){
 getNewsForPagination(0);
 function getNewsForPagination(startIndex)
  {
-	
+	$("#latestNewsAjaxDiv").css("display","block");
 var jObj=
 	{
 		
@@ -158,6 +159,7 @@ function callAjax(jsObj,url)
 
 function buildPaginatedNews(results,jsObj)
 {
+	$("#latestNewsAjaxDiv").css("display","none");
 	var str="";
 	str+="<ul class='unstyled pad10'>";
 	for(var i in results){

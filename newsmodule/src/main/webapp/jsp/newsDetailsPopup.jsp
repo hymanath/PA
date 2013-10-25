@@ -844,9 +844,9 @@ function buildResponseNews(selectedContentId)
         var source = results[i].fileVOList[0].source;
 		str+="<li>";
 		if(source == "Eenadu Telugu")
-		 str+="<h3><a href='javascript:{}' class='enadu'>"+results[i].title+"</a></h3>";
+		 str+="<h3><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' style='cursor: pointer;' class='enadu'>"+results[i].title+"</a></h3>";
 		else
-		 str+="<h3><a href='javascript:{}'>"+results[i].title+"</a></h3>";
+		 str+="<h3><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' style='cursor: pointer;'>"+results[i].title+"</a></h3>";
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{}'>";
 		
