@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.service.impl;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 
 public class WebServiceHandlerService implements IWebServiceHandlerService {
@@ -10,9 +12,24 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private static final Logger log = Logger.getLogger(WebServiceHandlerService.class);
 	
 	private ILoginService loginService;
+	
+	private IMobileService mobileService;
+	
 
 	
 	
+	public IMobileService getMobileService() {
+		return mobileService;
+	}
+
+
+
+	public void setMobileService(IMobileService mobileService) {
+		this.mobileService = mobileService;
+	}
+
+
+
 	public ILoginService getLoginService() {
 		return loginService;
 	}
@@ -38,6 +55,19 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return "error";
 	}
+	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId)
+	{
+		try{
+		return mobileService.checkAuthenticateUserAndUpdateLastAuthorisedTime(userId, macAdressId);
+		}
+		catch(Exception e)
+		{
+			log.error("Exception raised in checkUserAuthenticationAndUpdateAuthorisedTime  method in WebServiceHandlerService");
+			return null;
+		}
+		
+	}
+	
 
 
 }
