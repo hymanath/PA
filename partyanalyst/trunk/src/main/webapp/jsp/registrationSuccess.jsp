@@ -1,4 +1,0 @@
-
-
-    Registration Successful
-    

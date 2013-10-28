@@ -1,7 +1,0 @@
-Hai,
-
-	
-	${user.yourName} has requested to display the tweets for his favorite party/candidate: - ${user.partyOrCandidateName} 
-	Twitter ID: ${user.twitterId}.
-	Please verify this information
-	
