@@ -1,4 +1,0 @@
-
-<p>	Nara Chandrababu Naidu (born April 20, 1951) was the chief minister of Andhra Pradesh during 1995-2004. He holds the record of being the longest serving chief minister of A. P.He is currently the leader of the Telugu Desam Party, the second largest party in Andhra Pradesh.</p>
-<p>Mr. N. Chandrababu Naidu was born in the Naravaripally village of Chittoor district on 20th April, 1950. He did his Masters in Economics from the Sri Venkateswara University, Tirupati. He was working towards a Ph.D. degree at the same university, when he took to politics.Naidu is married to Mrs. Bhuvaneswari and has a son Lokesh. </p>
-		
