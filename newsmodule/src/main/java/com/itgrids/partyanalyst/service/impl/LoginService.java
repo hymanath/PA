@@ -825,7 +825,8 @@ public class LoginService implements ILoginService{
 				 else
 					 regVo.setUserType("");
 				 regVo.setName("Welcome "+userdetails.getFirstName()+" "+userdetails.getLastName());
-				 
+				 regVo.setAccessValue(userdetails.getAccessValue());
+				 regVo.setAccessType(userdetails.getAccessType());
 			}
 		} catch (Exception e) {
 			LOG.error("exception raised in getUserByUserNameAndPassword() method in UserService Class", e);
