@@ -57,4 +57,11 @@ public interface IDelimitationConstituencyDAO extends GenericDao<DelimitationCon
 	public List<Object[]> getConstituenciesByDistrictIDs(Long districtId);
 	
 	public List getMandalsOfConstituency(Long constituencyId);*/
+	
+	public List<Object[]> getConstituenciesForDistrict(Long districtId);
+	
+	public List<Object[]> getConstituenciesByDistrictId(Long districtId);
+	
+	public List getConstituenciesByDistrictId(Long districtId,
+			String areaType);
 }
