@@ -113,7 +113,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateParty</value>
 				<value>com.itgrids.partyanalyst.model.UserNewsCategory</value>
 				<value>com.itgrids.partyanalyst.model.User</value>
-				
+				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
 			</list>
 		</property>
 	</bean>
@@ -142,5 +142,15 @@
 	<bean id="delimitationConstituencyMandalDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyMandalDAO">
 	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	
+	<bean id="delimitationConstituencyDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	<bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO">
+	 <property name="sessionFactory" ref="sessionFactory" />	
+	</bean>
+	
+	
 	<!--End Add new DAOs here -->
 </beans>
