@@ -2259,7 +2259,8 @@ function buildResults(results,divId){
         for(var j in results)
 	    {
 		  var tempId = ""+results[j].id+""; 
-		  if(results[j].id != 0 && locationScopeId == 8 && tempId.substring(0,1) == "1")
+		  if(results[j].id != 0 && (locationScopeId == 8 || locationScopeId == 6)){
+		  if(locationScopeId == 8 && tempId.substring(0,1) == "1")
 		  {
 		    var option = document.createElement('option');
 		    option.value=results[j].id;
@@ -2272,7 +2273,7 @@ function buildResults(results,divId){
 		     }  
 		  }
          
-		 if(results[j].id != 0 && locationScopeId == 6 && tempId.substring(0,1) == "2")
+		 if(locationScopeId == 6 && tempId.substring(0,1) == "2")
 		  {
 		    var option = document.createElement('option');
 		    option.value=results[j].id;
@@ -2284,8 +2285,9 @@ function buildResults(results,divId){
 			   elmt.add(option); // IE only
 		     }  
 		  }
+		}
 
-         else
+         else if(results[j].id != 0)
 		  {
 		    var option = document.createElement('option');
 		    option.value=results[j].id;
