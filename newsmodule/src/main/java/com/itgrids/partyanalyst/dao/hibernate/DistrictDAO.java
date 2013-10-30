@@ -139,4 +139,26 @@ public List<Object[]> getAllDistrictInfoDetails(){
 		query.setParameterList("districtIdsList", districtIdsList);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictNamesByStateId(Long stateId)
+	{
+	  Query query = getSession().createQuery(" select distinct model.districtId,model.districtName from District model where model.state.stateId =:stateId " +
+	  		" order by model.districtName ");
+	  
+	  query.setParameter("stateId", stateId);
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStateByDistrictID(Long districtID){
+		return getHibernateTemplate().find("Select model.state.stateId, model.state.stateName from District model where model.districtId=? order by model.state.stateName",districtID);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictIdAndNameByDistrictId(Long districtId){
+		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.districtId = ? order by model.districtName",districtId);
+	}
+	
 }
