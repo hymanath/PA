@@ -183,4 +183,9 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{/*
 	
 */
 	public String getLocationsById(String locationType,Long locationValue);
+	
+	public List<Object[]> getStateDistrictConstituencyIdsByBoothId(Long boothId);
+	
+	public List<Long> getConstituencyIdForWard(Long wardId);
+	
 }
