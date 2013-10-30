@@ -13,6 +13,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -36,7 +37,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	private static final Logger log=Logger.getLogger(NewsPaginationAction.class);
 	//private INewsByPagingService newsByPagingService;
 	private List<SelectOptionVO> selectOptionVOList;
-	
+	private LocationVO locationVO;
 	
 	public FileVO getFileVO() {
 		return fileVO;
@@ -94,6 +95,12 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		this.selectOptionVOList = selectOptionVOList;
 	}
 	
+	public LocationVO getLocationVO() {
+		return locationVO;
+	}
+	public void setLocationVO(LocationVO locationVO) {
+		this.locationVO = locationVO;
+	}
 	public String execute()throws Exception
 	{
 		session = request.getSession();
@@ -243,10 +250,24 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	public String ajaxHandler()
 	{
 		try{
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+			 return ERROR;
+			
 			jObj = new JSONObject(getTask());
 			
 		if(jObj.getString("task").equalsIgnoreCase("getGallariesInCategory"))
-			selectOptionVOList = candidateDetailsService.getGallariesInCategory(jObj.getLong("categoryId"));	 
+			selectOptionVOList = candidateDetailsService.getGallariesInCategory(jObj.getLong("categoryId"));
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getLocationScope"))
+		{
+		  String accessType = user.getAccessType();
+		  Long accessValue = new Long(user.getAccessValue());
+		  locationVO = candidateDetailsService.getLocationListForSelectedUser(accessType, accessValue, user.getRegistrationID());
+		  
+		}
+		 
 			 
 		}catch (Exception e) {
 			e.printStackTrace();
