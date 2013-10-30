@@ -184,4 +184,26 @@ IDelimitationConstituencyMandalDAO {
 		query.setParameter("year", year);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStateDistrictConstituencyIdByMandalId(Long mandalId)
+	{
+	  Query query = getSession().createQuery(" select model.delimitationConstituency.constituency.constituencyId,model.tehsil.district.state.stateId,model.tehsil.district.districtId," +
+	  		" model.tehsil.tehsilId from DelimitationConstituencyMandal model where model.tehsil.tehsilId =:mandalId ");
+	  query.setParameter("mandalId", mandalId);
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConstituencyIdByTehsilId(Long tehsilId,Long year) 
+	{
+	  Query query = getSession().createQuery(" select distinct model.delimitationConstituency.constituency.constituencyId from DelimitationConstituencyMandal model " +
+	  		" where model.tehsil.tehsilId =:tehsilId and model.delimitationConstituency.year =:year ");
+	 
+	  query.setParameter("tehsilId", tehsilId);
+	  query.setParameter("year", year);
+	  
+	  return query.list();
+	}
+	
 }
