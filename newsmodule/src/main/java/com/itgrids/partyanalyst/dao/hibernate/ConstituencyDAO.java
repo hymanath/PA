@@ -530,4 +530,55 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		query.setParameterList("constituencyIdsList", constituencyIdsList);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictsByConstituencyIds(List<Long> constituencyIdsList)
+	{
+	 
+		Query query = getSession().createQuery(" select distinct model.district.districtId,model.district.districtName from Constituency model " +
+				" where model.constituencyId in (:constituencyIdsList) order by model.district.districtName ");
+		
+		query.setParameterList("constituencyIdsList", constituencyIdsList);
+	    return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStateByConstituencyId(Long constituencyId){  
+		return getHibernateTemplate().find("select model.state.stateId, model.state.stateName  from Constituency model where model.constituencyId = ?",constituencyId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictByConstituencyId(List<Long> constituencyIdsList)
+	{
+	  Query query = getSession().createQuery(" select distinct model.district.districtId,model.district.districtName from Constituency model " +
+	  		" where model.constituencyId in (:constituencyIdsList) ");
+	  
+	  query.setParameterList("constituencyIdsList", constituencyIdsList);
+	  return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituencyByConstituencyIdsList(List<Long> constituencyIdsList,Long districtId)
+	{
+	  Query query = getSession().createQuery(" select distinct model.constituencyId,model.name from Constituency model " +
+	  		" where model.constituencyId in (:constituencyIdsList) and model.district.districtId =:districtId order by model.name ");
+	  
+	  query.setParameterList("constituencyIdsList", constituencyIdsList);
+	  query.setParameter("districtId", districtId);
+	  return query.list();
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getStateDistrictConstituencyIds(Long constituencyID){  
+		return getHibernateTemplate().find("select model.state.stateId, model.district.districtId  from Constituency model where model.constituencyId = ?",constituencyID);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getConstituencyIdByTehsilId(Long mandalId)
+	{
+		Query query = getSession().createQuery(" select distinct model.constituencyId from Constituency model where model.tehsil.tehsilId =:mandalId ");
+		query.setParameter("mandalId", mandalId);
+		return query.list();
+	}
 }
