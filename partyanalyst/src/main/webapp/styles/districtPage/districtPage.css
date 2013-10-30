@@ -1,0 +1,538 @@
+
+.yui-skin-sam .yui-dt table{
+	border:2px solid #9696C0;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+	
+.detailsDiv
+{
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-right:30px;
+	margin-left:30px;
+	text-align:left;
+}
+.detailsHead
+{
+	font-weight:bold;
+	color:#1C4B7A;
+	text-decoration:underline;
+	font-size:15px;
+	padding:5px 5px 5px 0px;
+	margin-bottom: 5px;
+}
+.detailsBody
+{
+	padding:5px;
+	background-color:#F1F5F7;
+}				
+#districtAncSpan
+{
+	padding:10px;
+	font-size:12px;
+}
+.districtAnc
+{
+	color:#73787E;
+	text-decoration:none;
+}	
+.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc 
+{
+	background:none;
+}
+
+.yui-skin-sam thead {
+
+	background-color:#C4DEFF;
+	color:#3F546F;
+}
+.candidateDetailsStyle{
+	background-color:#EFF3F7;
+	border-color:#96B4D3;
+	border-style:solid;
+	border-width:1px 1px 1px 1px;
+	margin-bottom:5px;margin-left:0;
+	margin-top:0;
+	padding:4px;
+	color:#247CD4;
+	font-size:13px;
+	font-weight:bold;
+}
+.yui-skin-sam .yui-dt th, .yui-skin-sam .yui-dt th a {
+	font-weight:bold;
+	text-decoration:none;
+	vertical-align:bottom;
+}
+.counterSize{
+	color:red;
+	font-size:14px;
+}
+
+#alliancePartiesCarousel .yui-carousel-element li
+{
+	height:400px;
+	width:994px;
+}
+
+#alliancePartiesCarousel .yui-carousel-item-selected 
+{
+	border:1px solid #CCCCCC;
+}
+
+.allianceListDiv
+{
+	padding-top:20px;
+}
+
+/* New page styles*/
+
+#districtPageMainDiv
+{
+	background-color:#FFFFFF;
+	padding-top:10px;
+}
+
+#districtPageLayout_top,#districtPageLayout_right,#districtPageLayout_center
+{
+	background-color:#FFFFFF;
+	height:100%;
+	text-align:left;
+	padding-left:10px;
+}
+
+#districtPageLayout_center
+{
+	margin-left:15px;
+}
+
+#districtPageHead
+{
+	padding-top:20px;
+}
+
+.districtPageRoundedHeaders_center
+{
+	background-image:url("../../images/icons/districtPage/header_body.png");
+	/*background-color:#72CAED;*/
+	font-weight:bold;
+	padding:11px;
+	height:14px;
+}
+
+#mandalsDiv_main,#delimitMandalsDiv_main
+{
+	text-align:left;
+	width:272px;
+}
+
+#newConstDiv_main
+{
+	text-align:left;
+	width:276px;
+}
+#mandalsDiv_body
+{
+	border-left:1px solid #ffffff;
+	border-right:1px solid #ffffff;
+	border-bottom:1px solid #ffffff;
+	width:313px;
+	overflow:auto;
+	height:310px;
+}
+
+#districtPageRoundedFooter_center
+{
+	background-image:url("../../images/icons/districtPage/bottomLine.gif");
+	padding:2px 2px 2px 65px;
+	width:100%;
+}	
+
+.mandalNamesDiv
+{
+	padding:5px;
+}
+
+.mandalNameSpan
+{
+	margin-left:5px;
+}
+
+#delimitMandalsDiv_main
+{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+/*
+#delimitMandalsDiv_body
+{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	width:268px;
+	overflow:auto;
+	height:100px;
+	width:279px;
+}
+
+#newConstDiv_body
+{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	width:272px;
+	overflow:auto;
+	height:100px;
+}*/
+
+#stateCensusDiv_body
+{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	overflow:auto;
+}
+
+#districtMap
+{
+	height:500px;
+}
+
+#partiesPerformanceGraphDistrict
+{
+	margin-top:20px;
+}
+
+/*#districtMap_body
+{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	overflow:auto;
+	height:440px;
+}*/
+
+/*#zptc_body,#mptc_body
+{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	overflow:auto;
+	height:300px;
+}*/
+
+#mpMla_main
+{
+	margin-bottom:30px;
+	padding-left:25px;
+	text-align:left;
+	padding-right:25px;
+}
+
+#mp_main_div,#mla_main_div
+{
+	width:903px;
+	margin-bottom:30px;
+}
+
+#mp_body,#mla_body
+{
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	border-bottom:1px solid #E0E0D6;
+	overflow:auto;
+	height:auto;
+	padding:15px;
+}
+
+#mp_body table
+{
+	/*width:100%;*/
+	width:91%;
+}
+
+#mptc_zptc_div_main a
+{
+	color:#4B74C6;
+	text-decoration:none;
+}
+
+#mptc_zptc_div_main a:hover
+{
+	text-decoration:underline;
+}
+#muncipality_corporation_div_main
+{		
+	width:910px;
+}
+
+
+.datatableClass table
+{
+	width:100%;
+	border-collapse:collapse;
+	border-color:#ADADAD;
+}
+
+
+
+.comparedResultsOuter
+{
+	border:1px solid #808080;
+	margin-top:10px;
+	background-color:#FFFFFF;
+}
+
+.resultsHeadClass
+{
+	background:transparent url(../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png) repeat-x scroll 0 -200px;
+	color:#4B74C6;
+	font-weight:bold;
+	padding:5px;
+	text-align:left;
+}
+
+.yuiCloseImg
+{
+	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") no-repeat scroll 0 -300px transparent;		
+	cursor:pointer;
+	height:15px;
+	position:absolute;
+	right:6px;
+	top:16px;
+	width:25px;
+	background-color:silver;
+}
+.button {
+	background:#335291 none repeat scroll 0 0;
+	color:#FFFFFF;
+	padding:5px;
+	/*width:184px;*/
+	width:278px;
+	margin-top:5px;
+	margin-bottom:5px;	
+}
+#graphElectionTypeLabel
+{
+	color:#606060;
+	margin-left:10px;
+	font-size:12px;
+	font-weight:bold;
+}
+#allElectionResultsInDT_body
+{
+	margin-top:5px;
+	
+}
+
+.datatableClass th
+{
+	background-image:url("../../images/icons/districtPage/header_body.png");
+	color:#4B74C6;
+	padding:6px;
+}
+
+.datatableClass td
+{
+	padding:5px;
+	color:#112B37;
+}
+
+.districtPage_headerAnc
+{
+	text-decoration:none;
+	color:#4B74C6;
+}
+
+.localBodiesElectionHead
+{
+	color:#AF5C24;
+	font-size:12px;
+	font-weight:bold;
+	padding:5px;
+}
+
+#districtNewsDiv_outer
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+}
+
+#district_Politician_news
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+}
+
+#districtPeopleConnect_main
+{
+	/*margin-left:10px;
+	margin-right:20px*/
+}
+
+/*#districtPeopleConnect_body
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	height:313px
+}*/
+
+#connectPeoplePopup_outer .yui-panel
+{
+	border:5px solid #808080;
+	-moz-border-radius:5px 5px 5px 5px;
+}
+
+#connectPeoplePopup_outer .underlay 
+{
+	display:none;
+}
+
+#allConnectPeople_Head
+{
+	color:#2D5773;
+	font-size:12px;
+	font-weight:bold;
+	text-align:left;
+}
+
+.connectButton
+{
+	background-color:#2D5773;
+	border:medium none;
+	color:#FFFFFF;
+	cursor:pointer;
+	font-weight:bold;
+	margin:0 10px;
+	padding:5px;
+}
+
+.cancelButton
+{
+	background-color:#FFFFFF;
+	border:medium none;
+	color:#1A809A;
+	cursor:pointer;
+	font-weight:bold;
+}
+
+#connectButtonDiv
+{
+	padding-top:10px;
+	padding-bottom:10px;
+}
+
+.connectPeople_body_name
+{
+	color:#094776;
+	font-size:12px;
+	/*font-weight:bold;*/
+}
+
+.connectPeople_body_constituency
+{
+	color:#754815;
+	font-size:11px;
+	/*font-weight:bold;*/
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+.connectPeople_body_status
+{
+	font-size:10px;	
+	padding-top:5px;
+	padding-bottom:5px;
+	font-style:italic;
+}
+
+
+#connectPeoplePopup_outer .yui-panel .hd 
+{
+	color:#403131;
+	font-size:11px;
+	padding:2px 10px;
+}
+
+#connectUserMsgFieldSet
+{
+	border:none;
+	margin:0;
+	padding:0;
+}
+
+#allConnectPeople_body
+{
+	border-bottom:1px solid #ADADAD;
+	height:400px;
+	overflow:auto;	
+}
+
+.allConnectPeopleDataDiv_main
+{
+	border-bottom:1px solid #ADADAD;
+}
+
+.errorStr
+{
+	color:#584D47;
+	font-size:14px;
+	padding:5px;
+	font-family:verdana;
+
+}
+
+.allConnectPeople_Head_content
+{
+	background-color:#E3EDF0;
+	border-bottom:1px solid #99B0B9;
+	padding:1px 3px;
+	font-size:11px;
+}
+
+.allConnectPeople_Head_botton_center_div
+{	
+	background-image:url("../../images/icons/cadreReport/bg_center.png");
+	height:20px;
+}
+
+.allConnectPeople_Head_botton_center_span
+{
+	color:#FFFFFF;
+	font-size:11px;
+	padding:0 5px;
+	position:relative;
+	top:3px;
+	cursor:pointer;
+}
+
+#problemPostingDiv
+{
+	width:320px;
+}
+
+.ConnectStatusButtonClass
+{
+	-moz-border-radius:5px 5px 5px 5px;
+	background-color:#E0E7E9;
+	color:#3D4143;
+	font-weight:bold;
+	cursor:pointer;
+}
+
+.playerInnerBox_gsvb .player_gsvb {
+height:189px;
+padding-right:0px;
+width:254px;
+}
+
+

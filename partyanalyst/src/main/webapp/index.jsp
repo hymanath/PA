@@ -1,0 +1,1 @@
+<%@page import="com.itgrids.partyanalyst.utils.IConstants"%><% String host = IConstants.DEPLOYED_HOST;	if(host.equalsIgnoreCase("tdpserver"))	  response.sendRedirect("newhomePageAction.action");	else      response.sendRedirect("homePage.action");%>

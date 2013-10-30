@@ -1,0 +1,401 @@
+	
+
+	#CadreManagementHeaderMain
+	{
+		background-image:url("../../images/icons/cadreReport/cadrePageHeader.JPG");
+		background-repeat:no-repeat;		
+		height:229px;
+		margin-bottom:10px;
+		margin-top:10px;		
+		width:910px;
+		padding: 10px;
+	}
+	#cadreMgmtDesc
+	{		
+		font-size: 14px;
+		text-align: left;
+		color: #000000;
+		margin-top: 45px;
+		margin-left: 390px;		
+	}
+	#cadreMgmtDesc LI
+	{
+		list-style-type:none;	
+		list-style-image:url('../../images/icons/constituencyManagement/listIcon.jpg');
+		padding:2px;
+	}
+	
+	#cadreManagementMainDiv
+	{
+		/*background-color:#EFEFEF;*/
+		height:920px;
+		margin-left:25px;
+		margin-right:25px;
+		text-align:left;
+	}
+
+	#cadreSMSGroupsMainDiv
+	{
+		height:97%;
+		width:auto;
+		background-color:#FFFFFF;		
+	}
+	
+	#cadreDetailsMainDiv
+	{
+		height:100%;
+		width:100%;
+		background-color:#F9FCFF;
+	}	
+
+	#cadreTeamsMainDiv
+	{
+		height:99%;		
+		width:99%;
+	}
+
+	#cadreEventsCalMainDiv
+	{
+		height:100%;
+		width:100%;
+		/*background-color:#CBDCE8;*/
+	}
+
+	#cadreDatesYUICalDiv
+	{
+		width:97%;
+	}
+
+	#cadreImpDatesDiv
+	{
+		float:left;
+		height:200px;
+		width:99%;
+		/*background-color:#F9FCFF;*/
+		overflow:auto;
+		border:2px solid #839DB7;
+	}
+	#cadreImpEventsDiv
+	{
+		float:right;
+		height:200px;
+		width:99%;
+		/*background-color:#F9FCFF;*/
+		border:2px solid #839DB7;
+	}
+
+	#cadreImpDatesHeadDiv, #cadreImpEventsHeadDiv, #cadreSMSHeadDiv, #cadreGroupsHeadDiv
+	{
+		padding:5px;
+		color:#1E4864;
+		font-weight:bold;
+		background-color:#839DB7;
+		height:20px;
+		background-image:url(../../images/icons/contHeading.png);
+		background-repeat:repeat-x;
+	}
+	
+	#cadreImpDatesBodyDiv, #cadreImpEventsBodyDiv
+	{
+		height:170px;
+		overflow:auto;		
+	}
+	
+	#cadreSMSMainDiv
+	{
+		height:48%;		
+		margin-top:5px;
+		background-color:#F9FCFF;		
+		border:2px solid #95A6B7;
+	}
+	#cadreGroupsMainDiv
+	{
+		height:50%;
+		background-color:#F9FCFF;				
+		border:2px solid #95A6B7;
+	}
+
+	
+	#cadreSMSBodyDiv,#cadreGroupsBodyDiv
+	{
+		height:90px;
+		line-height:20px;
+		padding:5px;
+		text-align:justify;
+	}
+    
+	#cadreSMSFooterDiv,#cadreGroupsFooterDiv
+	{
+		padding:5px;
+		text-align:right;		
+	}
+	
+	.yui-skin-sam .yui-calendar
+	{
+		width:100%;
+	}
+	#cadreEventsCalMainDiv .yui-calcontainer 
+	{
+		float:none;
+	}
+	
+	.yui-skin-sam .yui-panel .bd, .yui-skin-sam .yui-panel .ft
+	{
+		background-color:#FFFFFF;
+	}
+	.cadreInfoDiv
+	{
+		padding:5px;
+		font-size:12px;
+	}
+
+	#regionLevelCadreDiv
+	{		
+		border:2px solid #95A6B7;
+		height:98%;
+	}
+	#cadreStrengthAreasDiv {
+    margin-right: 10px;
+    margin-top: 49px;
+    text-align: right;
+    }
+	#regionLevelCadreDivHead
+	{
+		background-color:#839DB7;
+		color:#1E4864;
+		padding:7px;
+		font-weight:bold;
+		text-align:left;
+		background-image:url(../../images/icons/contHeading.png);
+		background-repeat:repeat-x;
+	}
+	#regionLevelCadreDivBody
+	{
+		height:250px;
+		padding:6px;
+	}
+
+	.ancLink
+	{
+		background-color:#80B4E8;
+		background-image:url("../../images/icons/indexPage/swasthic_body.png");
+		background-repeat:repeat-x;
+		border:1px solid #ADADAD;
+		color:#244565;
+		font-weight:bold;
+		padding:5px;
+		text-decoration:none;
+	}
+
+	#sendSMSAnc
+	{
+		background-color:#80B4E8;
+		background-image:url("../../images/icons/indexPage/swasthic_body.png");
+		background-repeat:repeat-x;
+		border:1px solid #ADADAD;
+		color:#244565;
+		font-weight:bold;
+		padding:5px;
+		text-decoration:none;
+	}
+	#newEventSpan
+	{
+		float:right;
+		margin-right:5px;
+
+	}
+	#cadreEventsDetailsDivMain
+	{
+		margin-right:10px;
+		text-align:right;
+		padding:7px;
+	}
+	.impInfoSpan
+	{
+		font-size:12px;
+		padding:5px;
+	}
+
+	.yui-skin-sam .yui-calendar td.calcell.highlight1 
+	{
+		background-color:#39e7de;
+	}
+	.yui-skin-sam .yui-calendar td.calcell.highlight2 
+	{
+		background-color:#4b83e3;
+	}
+	.yui-skin-sam .yui-calendar td.calcell.highlight3 
+	{
+		background-color:#c88033;
+	}
+
+	.tinyDateCal
+	{
+		position:absolute;
+	}
+	.timeSelect
+	{
+		margin-right:5px;
+		padding:2px;
+	}
+	#actionDetailsDiv
+	{
+		background-color:#EEF4FF;
+	}
+
+	.yui-layout-hd
+	{
+		color:#1E4864;
+		font-size:12px;
+		text-decoration:underline;
+	}
+	.yui-skin-sam .yui-accordion-item-label
+	{
+		color:#1E4864;
+	}
+
+	.yui-accordion-item .yui-widget-bd 
+	{
+		background-color:#FFFFFF;
+	}
+
+	.yui-layout .yui-layout-unit div.yui-layout-hd h2 
+	{
+		font-family:georgia;
+		font-size:20px;
+	}
+	
+	.yui-skin-sam .yui-calendar td.calcell.today 
+	{
+		background-color:none;
+	}
+	.yui-skin-sam .yui-calendar td.calcell.today a 
+	{
+		background-color:none;
+	}
+	.yui-skin-sam .yui-calendar td.calcellhover a
+	{
+		background-color:none;
+	}
+	.eventSummaryDiv
+	{
+		cursor:pointer;
+		font-size:12px;
+		padding:3px;
+		color:#44505C;
+	}
+	.selectedCadresDateEvent th
+	{
+		color:#2B4E70;
+		width:150px;
+	}
+	.selectedCadresDateEvent td
+	{
+		color:#4F5051;
+	}
+
+	.selectedDateEvent th
+	{
+		padding:5px;
+		color:#2B4E70;
+		width:150px;
+	}
+	.selectedDateEvent td
+	{
+		padding:5px;
+		color:#4F5051;
+	}
+	.eventActionPlanDiv
+	{
+		padding:2px;
+	}
+	.ImpDateDetailDiv
+	{
+		background-color:#EAECF0;
+		border:2px solid #DBE2F0;
+		cursor:pointer;
+		font-size:12px;
+		margin-top:5px;
+		padding:5px;
+	}
+	.ImpDateDetailDivHead
+	{
+
+	}
+	.ImpDateDetailDivBody
+	{
+		position:absolute;
+		width:585px;
+		margin-top:5px;
+		border:2px solid #DBE2F0;
+		background-color:#FAFAFA;
+		display:none;
+	}
+	
+	.cadreLevelSelect
+	{
+		width:150px;
+		padding:2px;
+	}
+	.cadreLevelDivClass
+	{
+		position:relative;
+		overflow:hidden;
+		z-index:99;
+		background-color:#FFFFFF;
+		display:none;		
+		height:30px;
+		border:1px solid #EFEFEF;
+		margin-top:10px;
+	}	
+	.actioncadreLevelDivClass
+	{
+		position:relative;
+		overflow:hidden;
+		z-index:1;
+		background-color:#FFFFFF;
+		display:none;		
+		height:30px;
+		border:1px solid #EFEFEF;
+		margin-top:10px;
+	}
+	.cadreLevelDivId_Head
+	{
+		text-align:right;
+		padding:5px;
+		/*background:transparent url(images/YUI-images/yui-images-2.8/sprite.png) repeat-x scroll 0 -200px;*/
+	}
+	.cadresDivForPanel
+	{
+		padding:5px;
+		background-color:#EBF5FF;
+		margin-bottom:5px;
+	}
+	.cadresCloseSpan
+	{
+		float:right;
+		margin-right:10px;
+		cursor:pointer;		
+		font-weight:bold;
+		padding:4px;
+	}
+	.buttonSpan
+	{
+		background-color:#DBE4E9;
+		cursor:pointer;
+		padding:5px;	
+	}
+	#errorMessageDIV .yui-panel
+	{
+		border:1px solid #808080;
+	}
+	#smsErrorDiv
+	{
+		background-color:#FFFFFF;
+	}
+	.errorMessage
+	{
+		font-weight:bold;
+		color:red;	
+	}
+	

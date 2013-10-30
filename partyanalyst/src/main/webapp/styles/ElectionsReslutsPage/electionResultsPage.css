@@ -1,0 +1,256 @@
+@CHARSET "ISO-8859-1";
+.mainHeading {
+	background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
+	border:0px solid #AEE2FF;
+	color:#000000;
+	font-family:MS Sans-serif;
+	font-size:17px;
+	font-weight:bold;
+	margin-bottom:15px;
+	margin-top:15px;
+	padding:5px;			
+	height:20px;
+	text-align:center;
+}
+.basicDetailsTable
+{
+	border: none;
+	color: #006221;	
+}
+.basicDetailsTable th
+{
+	text-align:left;
+	color: #006221;
+}
+.basicDetailsDiv
+{
+	margin-bottom:10px;
+	width:900px;
+}
+.basicDetailsHeadingDiv
+{
+	background-image:url(../../images/icons/electionResultsReport/overview_Image.png);
+	color:#FFFFFF;
+	font-family:MS Sans-serif;
+	font-size:15px;
+	font-weight:bold;
+	height:26px;
+	margin-bottom:10px;
+	padding-top:4px;
+	text-align:center;
+	width:150px;
+}
+.graphTop
+{
+	background-image:url(../../images/icons/electionResultsReport/Graybg.png);
+	color:#FFFFFF;
+	font-family:'Asap',Arial;
+	font-size:18px;
+	font-weight:bold;
+	height:30px;
+	width:1000px;	
+	border-radius:5px 5px 0px 0px;
+	-moz-border-radius:5px 5px 0px 0px;
+	text-shadow:0 1px 0 #151515;
+	padding-top:5px;
+	margin-top:20px;
+}
+#statewiseGraph
+{
+	background:#f5f5f5 none repeat scroll 0 0;	
+	border-left:1px solid #d3d3d3;
+	border-right:1px solid #d3d3d3;	
+	border-bottom:1px solid #d3d3d3;	
+	width:998px;		
+	margin-bottom:10px;
+}
+.graphBottom
+{
+	background-image:url(../../images/icons/electionResultsReport/bottom_image.png);
+	height:15px;	
+	width:900px;
+	border-bottom:0px none none;
+	margin-bottom:10px;	
+	display:none;
+}
+#distwiseGraph
+{
+	background:#f5f5f5 none repeat scroll 0 0;	
+	border-left:1px solid #d3d3d3;
+	border-right:1px solid #d3d3d3;
+	border-bottom:1px solid #d3d3d3;
+	color:#606060;	
+	padding-top:5px;
+	text-align:left;
+	width:998px;
+	margin-bottom:10px;	
+
+}
+#toolsDiv
+{
+	border-left:1px solid #d3d3d3;
+	border-right:1px solid #d3d3d3;
+	border-bottom:1px solid #d3d3d3;
+	height:250px;
+	width:998px;
+	margin-bottom:5px;
+	background:#f5f5f5;
+	
+	
+}
+.toolsTable
+{
+	border-collapse:collapse;
+	cell-spacing:0;
+	cell-padding:0;	
+}
+.td
+{
+	valign:top;
+}
+.toolsDisplay
+{
+
+	border:1px solid #d3d3d3;
+	color:#006221;
+	font-family:Ms sans-serif;
+	height:200px;
+	padding:10px;
+	width:200px;
+	margin:10px;
+	border-radius:10px;
+	-moz-border-radius:10px;
+	
+	background: #deefff; /* Old browsers */
+background: -moz-linear-gradient(top,  #deefff 0%, #98bede 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#deefff), color-stop(100%,#98bede)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #deefff 0%,#98bede 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #deefff 0%,#98bede 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #deefff 0%,#98bede 100%); /* IE10+ */
+background: linear-gradient(top,  #deefff 0%,#98bede 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#deefff', endColorstr='#98bede',GradientType=0 ); /* IE6-9 */
+}
+
+.toolsTable  td:nth-child(odd) .toolsDisplay{
+background: #e4efc0; /* Old browsers */
+background: -moz-linear-gradient(top,  #e4efc0 0%, #abbd73 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e4efc0), color-stop(100%,#abbd73)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* IE10+ */
+background: linear-gradient(top,  #e4efc0 0%,#abbd73 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e4efc0', endColorstr='#abbd73',GradientType=0 ); /* IE6-9 */
+
+}
+	
+.toolsDisplay * input{margin-right:5px;}	
+.toolsDisplay * table{font-family:Arial;font-size:11px;}	
+.toolsDisplay h3{
+	border-bottom:1px dotted #006221;
+	font-family:Trebuchet MS;
+	font-size:15px;
+	font-weight:bold;
+	margin-top:0;
+}
+.link {
+color:#247CD4;
+font-size:15px;
+font-weight:bold;
+text-decoration:none;
+}
+.p
+{
+	font-family:Trebuchet MS;
+	font-size:15px;	
+	text-align:left;
+}
+
+.viewChartsForResults {
+	background-image:url(../../images/icons/electionResultsReport/Bluebg.png);
+	color:#fff;
+	font-family:Verdana;
+	font-size:12px;
+	font-weight:lighter;
+	margin-left:10px;
+	padding:5px;
+	text-decoration:none;
+	margin:10px;
+	border-radius:5px;
+	-moz-border-radius:5px;
+}
+.viewChartsForResults:hover{ background:#3d3d3d !important;text-decoration:none !important;}
+#withoutAllianceDiv_Datatable table
+{
+	width:100%;
+}
+#districtWiseWithoutAllianceDiv_Datatable table
+{
+	width:100%;
+}
+
+#electionPageAjaxImgDiv
+{
+	border:1px solid #ADADAD;
+	font-size:12px;
+	font-weight:bold;
+	width:300px;
+	margin-bottom:10px;
+}
+.alliancePcColor
+{
+	color:red;
+}
+#note
+{
+	text-align:left;
+	font-family:verdana;
+	font-size:13px;	
+	color:#606060;
+}
+#distResultsViewOptionsDiv
+{
+	margin-left:150px;
+	margin-right:150px;	
+	padding:5px;
+	border:1px solid #B7D3FC;
+	width:600px;
+	background:#EBE4F2;
+		
+}
+.selectBoxStyle
+{
+	color:#808080;	
+	width:150px;		 
+}
+#graphImage .yui-carousel-item-selected {
+border:0px none;
+margin:1px;
+}
+#graphImage .yui-carousel-element li
+{
+	height:200px;
+}
+.viewChartsForResults1
+{
+	padding:5px;
+	text-decoration:none;
+	background-image:url(../../images/icons/electionResultsReport/linkBtn1.png);
+	color:#FFFFFF;
+	border-left:1px solid #333333;
+	border-right:1px solid #333333;	
+	font-size:12px;
+	font-weight: bold;
+}
+
+#stateRegionsDiv
+{
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: right;
+}
+
+
+
+

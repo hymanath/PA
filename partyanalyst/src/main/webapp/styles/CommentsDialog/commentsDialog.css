@@ -1,0 +1,53 @@
+.commentsInputTable
+{
+	background-color:#E8EDF4;
+	height:auto;	
+	border-top:1px solid #335291;
+	border-left:1px solid #335291;
+	border-bottom:3px solid #335291;
+	border-right:3px solid #335291;
+	padding:5px;	
+}
+.commentsInputTd {
+    border: 1px solid white;
+    font-size: 13px;
+	font-weight: bold;
+    padding: 6px;
+}
+.yui-skin-sam .yui-dt-paginator {
+	color:#505050;
+	display:block;
+	font-weight:normal;
+	font-size:12px;
+	margin:6px 5px;
+	padding:0;
+	text-align:center;
+	white-space:nowrap;
+}
+.yui-skin-sam .yui-dt table {
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:13px;
+	width:100%;
+}
+.button
+{
+	background-attachment:scroll;
+	background-color:#335291;
+	background-image:none;
+	background-position:0 0;
+	background-repeat:repeat;
+	color:#FFFFFF;
+	width:50px;
+}
+#alertMessage {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.ui-widget {
+    font-family: Verdana,Sans MS,sans-serif;
+    font-size: 0.9em;
+}

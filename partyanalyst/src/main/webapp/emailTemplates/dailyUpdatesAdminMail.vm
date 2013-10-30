@@ -1,0 +1,27 @@
+
+   Hi Admin group,<br/>
+   <p>Below is the status for job details.</p><br/>
+   <div>Mails send from date and time  ${dailyUpdatesVO.from} to date and time  ${dailyUpdatesVO.to}</div>
+  <div style='font-weight:bold;'>Updates From</div>
+    <b>Party :</b> 
+   #foreach( $party in $updatesFrom.parties )
+    $party, 
+   #end
+   <br />
+   <b>Candidate :</b> 
+   #foreach( $candidate in $updatesFrom.candidates )
+    $candidate, 
+   #end
+    <br />
+	<b>Special Pages :</b> 
+   #foreach( $specialPg in $updatesFrom.specialPgs )
+    $specialPg, 
+   #end
+    <br />
+  <div style='font-weight:bold;'>Updates sent to Users</div>
+  
+ 
+  #foreach($mapEntry in $userDetails.entrySet())
+   <name>$mapEntry.key</name>
+   <value>$mapEntry.value</value> <br/>
+  #end

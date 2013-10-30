@@ -1,0 +1,260 @@
+table.stateResultsTable
+{
+	font-family: verdana,arial,sans-serif;
+	font-size:11px;
+	color:#333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+table.stateResultsTable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #CFDCE4;
+}
+table.stateResultsTable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+#districtInfoDiv
+{
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-right:30px;
+}
+#districtInfoDivHead
+{
+	font-weight:bold;
+	color:#1C4B7A;
+	text-decoration:underline;
+	font-size:15px;
+	padding:5px 5px 5px 0px;
+}
+#districtInfoDivBody
+{
+	padding:5px;
+	background-color:#F1F5F7;
+}				
+#districtAncSpan
+{
+	padding:10px;
+}
+.districtAnc
+{
+	color:#1C4B7A;
+}	
+
+.yui-skin-sam .yui-dt table
+{
+	border:medium none LemonChiffon;
+	border-collapse:separate;
+	color:DarkOliveGreen;
+	font-family:verdana;
+	font-size:inherit;
+	font-weight:bold;
+	margin:0;
+	padding:0;
+	text-align:center;
+}
+.detailedAnalysisAnc
+{
+	color:green;
+	font-family:Trebuchet MS;
+	font-size:13px;
+	font-weight:bold;
+}	
+
+/* State Page New Layout Styles*/
+
+#statePage_header
+{
+	background-color:#FFFFFF;
+	padding:10px;
+}
+
+#statePageHeading 
+{
+	background-image:url("../../images/icons/electionResultsAnalysisReport/mid.png");
+	background-repeat:repeat-x;
+	color:#1C4B7A;
+	font-size:15px;
+	font-weight:bold;
+	height:30px;
+}
+
+#stateNameSpan
+{
+	padding-left:30px;
+	padding-right:30px;
+	position:relative;
+	top:7px;
+}
+
+#statePage_main
+{
+	background-color:#EFF1F3;
+}
+
+#statePage_layout_right,#statePage_layout_center,#statePage_electinoResults_nav_div
+{
+	background-color:#FFFFFF;
+	height:100%;
+}
+
+#electionTypesList_head
+{
+	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 transparent;
+	border-right:1px solid #ADADAD;
+	color:#1C4B7A;
+	font-weight:bold;
+	height:15px;
+	padding:10px;
+	text-align:left;
+}
+
+#stateElectionTypesList
+{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+.electionTypeListDiv
+{
+	background-color:#4B74C6;
+	margin-top:2px;
+	color:#E3E5E8;
+	padding:13px;
+	font-weight:bold;	
+	background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
+	cursor:pointer;
+	text-align:left;
+}
+
+.electionTypeListDivSelected
+{
+	background-color:#4B74C6;
+	margin-top:2px;
+	color:#E3E5E8;
+	padding:13px;
+	font-weight:bold;	
+	background-image:url("../../images/icons/indexPage/reportGroupHeader_selected.png");
+	cursor:pointer;
+	text-align:left;
+}
+
+#electionTypesNYearsList .yui-carousel-element li
+{
+	height:210px;
+}
+
+#electionTypesNYearsList .yui-carousel-item-selected 
+{
+border:1px solid #CCCCCC;
+}
+
+.electionResultsDiv
+{
+	background-color:#FFFFFF;
+	height:200px;
+	width:230px;
+}
+
+.electionResultsDiv_head
+{
+	background-image:url("../../images/icons/indexPage/reportNameHeader.png");
+	background-repeat:repeat-y;
+	color:#E3E5E8;
+	font-weight:bold;
+	padding:7px;
+}
+
+.electionResultsDiv_body
+{
+	height:155px;
+}
+
+.electionResultsDiv_footer
+{
+	margin-right:15px;
+	text-align:right;
+}
+
+.viewAncs
+{
+	text-decoration:none;
+	color:#73787E;
+	font-weight:bold;
+}
+
+
+
+#maskDiv
+{
+	height:1200px;
+	position:fixed;
+	width:1000px;
+	opacity:0.6;
+	
+	filter:alpha(opacity=60);
+	background-color:#adadad;
+	z-index:2;
+}
+
+#statePage_layout_center
+{
+	z-index:0;
+}
+
+.stateInformation_head
+{
+	color:#8B4724;
+	font-size:13px;
+	font-weight:bold;
+	padding-top:10px;
+	text-decoration:underline;
+}
+
+#stateInformation_body
+{
+	padding:0px 5px 0 15px;
+}
+
+.stateDetailsTable th
+{
+	color:#18325A;
+	padding:5px;
+	
+}
+
+.stateDetailsTable td
+{
+	color:#1C4B7A;
+	padding:5px;
+	
+}
+
+#stateMap_main
+{
+	padding-top:20px;
+}
+
+.partyResultsTable th
+{
+	background-color:#CEDCE4;
+	color:#25495E;
+	padding:5px;
+	text-align:left;
+}
+
+.partyResultsTable td
+{
+	background-color:#F1F4F6;
+	color:#474B51;
+	text-align:left;
+}
