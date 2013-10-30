@@ -1321,4 +1321,12 @@
 	<bean id="userGroupsDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserGroupsDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

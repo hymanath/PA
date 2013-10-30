@@ -5663,6 +5663,12 @@
 		 	<param name="root">selectOptionVOList</param>
 		   </result>
 		 </action>
+		 
+		 <action name="getLocationScopeAction" class="newsPaginationAction" method="ajaxHandler">
+		  <result name="success" type="json">
+		 	<param name="root">locationVO</param>
+		   </result>
+		 </action>
 		</package>
 		
 		
