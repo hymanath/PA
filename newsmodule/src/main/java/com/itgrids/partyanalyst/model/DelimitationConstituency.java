@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,10 +13,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * 
@@ -33,7 +37,7 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 	//private Long constituencyNO;
 	//private DelimitationYear delimitationYear;
 	//private CensusYear censusYear;
-	//private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
+	private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
 	//private Set<DelimitationConstituencyTown> delimitationConstituencyTown = new HashSet<DelimitationConstituencyTown>(0);
 	public DelimitationConstituency(){
 		
@@ -49,13 +53,13 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 			Long delimitationConstituencyID,
 			Constituency constituency,
 			Long year,
-			Long constituencyNO//,Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
-			){
+			Long constituencyNO,Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses) {
+			
 		this.delimitationConstituencyID = delimitationConstituencyID;
 		this.constituency = constituency;
 		this.year = year;
 		//this.constituencyNO = constituencyNO;
-		//this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
+		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
 	}
 
 	@Id
@@ -89,7 +93,7 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 	}
 	public void setConstituencyNO(Long constituencyNO) {
 		this.constituencyNO = constituencyNO;
-	}
+	}*/
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "delimitationConstituency")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -102,7 +106,7 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	/* @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="delimitation_year_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)

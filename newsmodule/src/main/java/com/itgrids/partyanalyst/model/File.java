@@ -65,7 +65,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	
 	private String comment;
 	private User user;
-
+    private UserAddress userAddress;
 	
 
 	/** default constructor */
@@ -326,5 +326,19 @@ public class File extends BaseModel implements java.io.Serializable {
 	public void setNewsDescription(String newsDescription) {
 		this.newsDescription = newsDescription;
 	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_address_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public UserAddress getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(UserAddress userAddress) {
+		this.userAddress = userAddress;
+	}
+	
+	
 
 }
