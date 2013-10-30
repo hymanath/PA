@@ -1,0 +1,316 @@
+#pageHeading
+{
+   background: none repeat scroll 0 0 #05A8E9;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: bold;
+    height: 34px;
+    margin-left: 250px;
+}
+
+#telanganaMap_body 
+{
+background: none repeat scroll 0 0 #F5F5F5;
+border-bottom:1px solid #E0E0D6;
+border-left:1px solid #E0E0D6;
+border-right:1px solid #E0E0D6;	
+text-align:center;
+padding:10px;
+height:407px;
+}
+
+#partiesPerformanceGraphDistrict 
+{	
+    background: none repeat scroll 0 0 #F5F5F5;
+	margin:35px 15px 15px 15px;
+	border:1px solid #E0E0D6;
+}
+
+.districtAnc 
+{
+color:#73787E;
+text-decoration:none;
+}
+.districtAncNew 
+{
+color:GoldenRod;
+}
+#biElectionPageLayout_center
+{
+	margin:auto;
+	width:700px;
+}
+#biElectionPageLayout_right
+{
+	margin:auto;
+}
+.regionsList li a
+{
+	color:#3388C1;
+	cursor:pointer;
+	text-decoration:none;
+}
+
+.frameBody
+{
+   background: none repeat scroll 0 0 #F5F5F5;
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+	overflow:auto;
+}
+
+#biElectionDistricts_main, #mandalsDiv_main
+{
+	text-align:left;
+	width:230px;
+}
+
+#presentMandalsDiv_main
+{
+	margin-top:35px;
+	width:230px;
+}
+
+#biElectionDistricts_body
+{
+	height:429px;	
+	width:228px;
+}
+
+#biElectionDistricts_body a
+{
+	text-decoration:none;
+}
+
+#biElectionDistricts_body a:hover
+{
+	text-decoration:underline;
+}
+
+#distConstTable td
+{
+	padding:2px;
+}
+
+#presentMandalsDiv_body
+{
+	height:325px;	
+	width:228px;
+}
+
+#partiesPerformanceCarousel .yui-carousel-element li 
+{
+	height:700px;
+	width:920px;
+}
+
+#partiesPerformanceCarousel .yui-carousel-item-selected  
+{
+	border:none;	
+}
+
+.dataAnc
+{
+	color:#4B74C6;
+	text-decoration:none;
+}
+
+#mp_body table 
+{
+	background: none repeat scroll 0 0 #F5F5F5;
+	border:1px solid #adadad;
+}
+
+#mandalVotingTrendzDataDiv
+{
+	margin-top:25px;
+}
+
+#mandalVotingTrendzDataDiv_head
+{
+	color:#4B74C6;
+	font-weight:bold;
+	padding:10px;
+	text-decoration:underline;
+}
+
+#mandalVotingTrendzDataDiv_body
+{
+	overflow:auto;
+}
+
+#mandalVotingTrendzDataDiv fieldset
+{
+	border:2px solid #ADADAD;
+}
+
+#mandalVotingTrendzDataDiv legend
+{
+	background-color:#4B74C6;
+	color:#FFFFFF;
+	font-weight:bold;
+	padding:5px;
+}
+
+.elecTypeMandalsVoting_table th
+{
+	padding:5px;
+	color:GoldenRod;
+}
+
+.mandalResultsTable 
+{
+	border-collapse:collapse;
+	border-color:#adadad;
+}
+
+.mandalResultsTable th
+{
+	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat scroll 0 0 #D8D8DA;
+	padding:5px;
+}
+
+.mandalResultsTable td
+{
+	padding:8px;
+}
+
+#mandalDetailsChart_main
+{
+	margin-bottom:30px;
+}
+
+#mandalDetailsChart_body
+{
+	padding-bottom:20px;
+	padding-top:20px;
+}
+
+.mandalNameDivClass a
+{
+	padding:2px 15px 2px 15px;
+	text-decoration:none;
+	font-weight:bold;
+}
+.viewAncs {
+	color:#73787E;
+	font-weight:bold;
+	text-decoration:none;
+}
+#tableHead{
+	color:#73787E;
+	font-family:verdana;
+}
+
+.carouselTitleSpan
+{
+	color:#234475;
+	float:left;
+	font-weight:bold;
+	margin-top:2px;
+	padding:5px;
+}
+
+#mp_main_div, #mla_main_div
+{
+	width:920px;
+}
+
+#votingTrendzInfoMain
+{
+	background-color:#FFFFFF;
+}
+}
+#zptcPartyTrendsDetailsDiv table
+{
+	border:2px solid #9696C0;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	width:100%;
+}
+#mptcPartyTrendsDetailsDiv table
+{
+	border:2px solid #9696C0;
+	border-collapse:separate;
+	border-spacing:0;
+	font-family:arial;
+	font-size:12px;
+	margin:0;
+	padding:0;
+	width:100%;
+} 
+#indPartyDescription
+{
+	text-align:left;
+	font-weight:bold;
+	font-size:12px;
+	color:#707070;
+	margin:5px;
+}
+.selectWidth
+{
+	width:150px;
+}
+.alert
+{
+	font-size:12px;
+	font-weight:bold;
+	color:red;
+	padding:5px;
+}
+.districtAncNew1
+{
+	color:#62662B;
+}
+
+#totalZptcCountResultDiv,#totalMptcCountResultDiv  
+{
+	color:red;
+	font-size:14px;
+}
+
+
+/* TV9 Styles*/
+
+.districtAnc  {
+color:#12161B;
+font-weight:bold;
+text-decoration:none;
+font-size:15px;
+}
+
+.districtAncNew
+{
+	color:#764B00;
+	font-size:13px;
+	font-weight:bold;
+}
+
+#biElectionDistricts_body  {
+height:500px;
+width:228px;
+}
+
+#telanganaMap_body {
+height:480px;
+}
+
+.districtAncNew1  {
+color:#282B03;
+font-weight:bold;
+}
+
+.districtPageRoundedHeaders_center
+{
+	color:#091835;
+	font-size:13px;
+	font-weight:bold;
+   
+	padding:10px;
+}

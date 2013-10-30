@@ -1,0 +1,99 @@
+body,h1,h2,h3,p,quote,small,form,input,ul,li,ol,label{
+	margin:0px;
+	padding:0px;
+}
+
+h2.tut{
+	color:white;
+	font-family:"Myriad Pro",Arial,Helvetica,sans-serif;
+	font-size:16px;
+	padding:12px 0 0 58px;
+	text-transform:uppercase;
+	
+	text-shadow:2px 1px 6px #333;
+	font-weight: bold;
+}
+
+#twitter-ticker{
+	color:#000000;
+	display:block;
+	clear:both;
+	-moz-border-radius:10px 10px 6px 6px;
+	-khtml-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius:6px;
+
+	text-align:left;
+}
+
+
+
+#twitIcon{
+	position:absolute;
+	top:-25px;
+	left:-10px;
+	width:64px;
+	height:64px;
+}
+
+#top-bar{
+	height:45px;
+	background:url(../../images/socialNetwork/top_bar.png) repeat-x;
+	border-bottom:1px solid white;
+	position:relative;
+	margin-bottom:8px;
+	
+	-moz-border-radius:6px 6px 0 0;
+}
+
+.tweet{
+	padding:5px;
+	margin:0 8px 8px;
+	overflow:hidden;
+	margin:5px -20px;
+border-bottom:1px solid #efefef;
+padding:5px 20px;
+width:95%;
+}
+
+.tweet .avatar,
+.tweet .user,
+.tweet .time{
+	float:left;
+}
+
+.tweet .time{
+	text-transform:uppercase;
+	font-size:10px;
+	color:#AAAAAA;
+	white-space:nowrap;
+	padding-left: 35px;
+	font-weight: bold;
+}
+
+
+.tweet .avatar img{
+	width:36px;
+	height:36px;
+	border:2px solid #eeeeee;
+	margin:0 5px 5px 0;
+}
+
+.tweet .txt{
+	clear:both;
+	padding-left: 45px;
+	font-weight: normal;
+	top: 200 px;
+	 color: black;
+}
+
+.tweet .user{
+	font-weight:bold;
+}
+
+
+
+#loading{
+	margin:100px 95px;
+}
+

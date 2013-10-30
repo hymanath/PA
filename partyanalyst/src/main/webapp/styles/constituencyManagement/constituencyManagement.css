@@ -1,0 +1,643 @@
+
+/*------- New Layout Styles --------*/
+
+#constituencyMgmt_main_header
+{
+	padding:10px;
+	margin-bottom:10px;
+	background-image:url("../../images/icons/constituencyManagement/pageheader.jpg");
+	background-repeat:no-repeat;
+	height:200px;
+	text-align:left;
+	
+}
+
+#constituencyMgmt_text
+{
+	color:#73787E;
+	line-height:18px;
+	text-align:justify;
+	word-spacing:3px;
+}
+
+#constituencyMgmt_head_label
+{	
+	color:#82B75E;
+	font-family:arial narrow;
+	font-size:25px;
+	font-weight:normal;
+	margin-left:450px;	
+	width:250px;
+}
+
+.containerHeadLabelDivClass
+{
+	background-image:url("../../images/icons/constituencyManagement/header_body_blue.png");
+	background-repeat:repeat;
+	color:#1A496E;
+	font-weight:bold;
+	padding:8px;
+	text-align:left;
+	
+}
+
+#constMgmtDesc
+{
+	text-align:left;
+	color:#FFFFFF;
+	font-size:14px;
+	margin-left:440px;
+	text-align:left;
+}
+#constMgmtDesc LI
+{
+	list-style-type:none;	
+	list-style-image:url('../../images/icons/constituencyManagement/listIcon.jpg');
+	padding:2px;
+}
+
+.containerBodyDivClass
+{	
+	border-left:1px solid #75A0C2;
+	border-right:1px solid #75A0C2;
+	border-bottom:1px solid #75A0C2;
+	min-height:100px;
+	
+}
+
+#political_changes_data_head
+{
+	color:#73787E;
+	line-height:18px;
+	padding:10px;
+	text-align:justify;
+	word-spacing:2px;
+}
+
+#constituencyMgmt_head_footer
+{
+	background-image: url("../../images/icons/constituencyManagement/bar.png");	
+	height:2px;
+	width:250px;
+	margin-left:200px;
+}
+.NEW
+{
+	background-color:#FEF200;
+	border:1px solid #000000;
+	height:10px;
+	width:10px;
+}
+.CLASSIFY
+{
+	background-color:#B2D233;
+	border:1px solid #000000;
+	height:10px;
+	width:10px;
+}
+.ASSIGNED
+{
+	background-color:#A94A9C;
+	border:1px solid #000000;
+	height:10px;
+	width:10px;
+}
+.PROGRESS
+{
+	background-color:#FFC50C;
+	border:1px solid #000000;
+	height:10px;
+	width:10px;
+}
+.PENDING
+{
+	background-color:#B29D40;
+	border:1px solid #000000;
+	height:10px;
+	width:10px;
+}
+.FIXED
+{
+	background-color:#F25822;
+	border:1px solid #000000;
+	height:10px;
+	width:10px;
+}
+.tableBorder
+{
+	border:1px solid #000000;
+	margin-bottom: 25px;
+}
+.tinyDateCal
+{
+	position:absolute;
+}
+#problems_Options
+{
+	text-align:left;	
+	padding:10px;
+}
+.textBoxStyle
+{
+	font-size: 13px;
+	/*color: #55FF55;*/
+	color:#000000;
+	font-weight: bold;	
+}
+.yui-skin-sam .yui-dt caption 
+{
+	color:#1A496E;
+	font-size:13px;	
+	font-weight:bold;
+	line-height:1;
+	padding:1em 0;
+	text-align:left;
+}
+.yui-skin-sam .yui-dt table
+{
+	border:1px solid #7F7F7F;
+	border-collapse:separate;	
+	font-family:arial;
+	font-size:inherit;
+	margin:10px;	
+	width:90%;
+	color:black;
+}
+.button {
+	background:none repeat scroll 0 0 #335291;
+	color:#FFFFFF;	
+	padding:5px;	
+	font-weight:bold;
+}
+.linkButton  {
+/*background-color:#483D8B;*/
+
+/*background-image:url("../../images/icons/electionResultsReport/linkBtn.png");*/
+border-left:1px solid #9999CC;
+border-right:1px solid #9999CC;
+color:#FFFFFF;
+font-size:12px;
+font-weight:bold;
+margin-left:10px;
+padding:5px;
+text-decoration:none;background-color :#0066cc;
+	border-radius :5px;
+}
+
+.probStatsCountTable th
+{
+	color:#73787E;
+}
+
+.widgetHeaders
+{
+	text-align:left;color:#663300;font-size:12px;font-weight:bold;text-decoration:underline;
+}
+
+.widgetDescPara
+{
+	color:#73787E;
+	line-height:20px;
+	text-align:justify;
+	word-spacing:3px;	
+	font-size:12px;
+	font-family:verdana,arial,sans-serif;
+}
+.errorMessage
+{
+		text-align:left;
+		padding: 5px;
+		color: red;
+		font-weight: bold;	
+}
+.confirmationMessage
+{
+	text-align:left;
+	padding: 5px;
+	color: green;
+	font-weight: bold;
+}
+
+legend {
+		background-color:#9696C0;
+		color:#FFFFFF;
+		font-family:status-bar;
+		font-size:11px;
+		font-weight:bold;
+		padding:5px;
+}
+
+fieldset {
+	border:4px solid #F6DFC9;
+	margin-bottom:10px;
+}
+#postedPersonTable
+{
+  color:highlight;
+  font-family:verdana;
+  text-align:center;
+  width:100%;
+}
+#probDetailsTable
+{
+  color:Gray;
+  font-family:verdana;
+  text-align:center;
+  width:100%;		  
+}
+#assignedDepartmentTable showProblems
+{
+  color:Navy;
+  font-family:verdana;
+  text-align:center;
+  width:100%;
+}
+.selectWidth
+		{
+			width:140px;
+		}
+
+.politicalChangesFieldBoxesWidth
+{
+	width:142px;
+}
+
+.politicalChangesCalendarImage
+{
+	height:24px;
+	width:22px;
+}
+.influencingPeoplePosition
+{
+	font-size:10.7px;
+	margin-left:366px;
+	margin-top:10px;
+	text-align:right;
+}
+
+#errorMessageDIV .yui-panel
+{
+	border:1px solid #808080;
+}
+
+#smsErrorDiv
+{
+	background-color:#FFFFFF;
+}
+#influencingPeopleDtDiv
+{
+	overflow:auto;
+}
+.yui-skin-sam .yui-panel .hd 
+{
+	border-bottom:1px solid #CCCCCC;
+	text-align:left;
+}
+
+/* ---  Local user groups styles --- */
+
+#local_user_group_main
+{
+	margin-bottom:10px;
+}
+
+#local_user_group_body
+{
+	background-color:#E4EDF0;
+}
+
+/*
+#usergroupsCategoryViewDiv , #userGroupsDetailsViewDiv
+{
+	height:200px;
+}*/
+
+#usergroupsCategoryViewDiv_outer
+{
+	padding-left:20px;
+}
+
+#usergroupsCategoryViewDiv_outer .yui-accordion-item-icon 
+{
+	background:url("../../images/icons/indexPage/listIcon.png") no-repeat scroll 0 0 transparent;
+	margin-top:5px;
+}
+
+#usergroupsCategoryViewDiv_outer .yui-accordion 
+{
+	border:0 none;
+}
+
+#usergroupsCategoryViewDiv_outer .yui-accordion-item .yui-widget-hd
+{
+	border:0px none;
+}
+
+#userGroupsDetailsViewDiv
+{
+	position:relative;
+}
+
+.groupHeaders
+{
+	background-color:#EEF2F5;
+	color:#0F2B3A;
+	font-size:13px;
+	font-weight:bold;
+	position:relative;
+}
+
+#userGroupDetails_Body
+{
+	padding-top:10px;
+}
+
+#userGroupDetails_Body table
+{
+	width:95%;
+}
+
+/* ---  Local user groups styles End --- */
+
+/* --  New Layout Styles -- */
+
+#constituencyManagement_mainTabContainer
+{
+	margin-top:10px;
+	margin-bottom:10px;
+}
+
+#constituencyManagement_mainTabContainer #tabs
+{
+	border:1px solid #75A0C2;
+}
+
+#constituencyManagement_mainTabContainer .ui-widget-header 
+{
+	background-image:url("../../images/icons/constituencyManagement/header_body_blue.png");
+	border:1px solid #75A0C2;
+}
+
+#constituencyManagement_mainTabContainer .ui-tabs .ui-tabs-nav li 
+{
+	margin-right:0.5em;
+	background-color:#FFFFFF;
+	background-image:none;
+}
+
+#constituencyManagement_mainTabContainer .ui-tabs .ui-tabs-nav li.ui-tabs-selected 
+{
+	background-color:#E4EDF0;
+	background-image:none;
+}
+
+#constituencyManagement_mainTabContainer .ui-tabs .ui-tabs-nav li a
+{
+	color:#1A496E;
+	font-weight:bold;
+}
+
+#constituencyManagement_mainTabContainer .ui-tabs .ui-tabs-panel
+{
+	background-color:#E4EDF0;
+	padding:1px 5px;
+}
+
+#regionScope_main
+{	
+	position:relative;
+}
+
+.region_available_head td
+{
+	padding:5px;
+	color:#494237;
+	font-weight:bold;
+	font-size:10px;
+}
+
+.regionsHead_center
+{
+	padding:5px;
+	background-image:url("../../images/icons/electionResultsAnalysisReport/mid.png");
+	color:#4B74C6;
+	font-weight:bold;
+	font-size: 10px;
+}
+
+.regionsHead_center_label
+{
+	padding-left:1px;
+	padding-top:6px;	
+	display:block;	
+}
+
+#region_unavailable
+{
+	border-top:1px solid #A99276;
+	margin-top:5px;
+	padding-top:5px;
+}
+
+#region_unavailable_head
+{
+	background-color:#DEE8EF;
+	color:#4B74C6;
+	font-size:10px;
+	font-weight:bold;
+	padding:5px;
+}
+
+.zeroPeoplePara
+{
+	color:#39434A;
+	font-size:10px;
+	padding:5px;
+}
+
+#influencePeopleScopeWiseOverView_main
+{
+	position:relative;
+}
+
+#influencePeopleScopeWiseOverView_body
+{
+	padding-left:5px;
+	padding-top:10px;
+}
+
+.scopeWise_head
+{
+	background-color:#F5EFEA;
+	color:#77471D;
+	font-weight:bold;
+	padding:3px;
+	text-align:left;
+}
+
+.scopeWise_data_main
+{
+	margin-bottom:10px;
+}
+
+#influencePeopleDetail_main
+{
+	position:relative;
+}
+
+.influenceDetailData_main
+{
+	padding:10px;
+}
+
+.influenceDetailData_body
+{
+	/*background-color:#EAF1F5;*/
+	margin-left:5px;
+	margin-right:5px;
+	padding:5px;
+	display:none;
+}
+
+.influenceDetailData_table 
+{
+	border-collapse:collapse;
+}
+
+.influenceDetailData_table th
+{
+	padding:5px;
+	color:#455162;
+	font-size:10px;
+}
+
+.influenceDetailData_table td
+{
+	padding:5px;
+	color:#77471D;
+}
+
+.scopeWise_head_table td
+{
+	font-size:10px;
+}
+
+.regionCountAnc
+{
+	text-decoration:none;
+}
+
+.zeroRegionsData_main
+{
+	border-top:1px solid #A99276;
+	margin-top:5px;
+	padding-top:5px;	
+}
+
+.zeroRegionsData_head
+{
+	background-color:#DEE8EF;
+	color:#4B74C6;
+	font-size:10px;
+	font-weight:bold;
+	padding:5px;
+}
+
+.availableRegionsData_main
+{
+	margin-top:5px;
+	padding-top:5px;
+}
+
+.availableRegionsData_head
+{
+	background-color:#DEE8EF;
+	color:#4B74C6;
+	font-size:10px;
+	font-weight:bold;
+	padding:5px;
+}
+
+.zeroRegionsData_body, .availableRegionsData_body
+{
+	padding-bottom:10px;
+	padding-top:10px;
+}
+
+.influencePeopleRegionsList
+{
+	margin:5px;
+	padding:5px;
+	text-align:right;
+	background-color:#DEE8EF;
+}
+
+#localGroupsDetail_main
+{
+	position:relative;
+}
+
+.regionScope_main
+{
+	position:relative;
+	margin-bottom:10px;
+}
+
+.zeroRegionsData_body
+{
+	max-height:250px;
+	height: expression( this.scrollHeight > 300 ? "300px" : "auto" );
+	overflow:auto;
+}
+
+.regions_overview_data
+{
+	padding:5px;
+}
+
+.regions_overview_data table th
+{
+	font-size:11px;
+	color:#77471D;
+}
+
+.regions_overview_data table td
+{
+	color:#77471D;
+	font-size:10px;
+}
+
+/*.differentViewsDivClass
+{
+	background-color:#F5EFEA;
+	padding:5px;
+	position:relative;
+	text-align:left;
+}*/
+
+.differentViewsDivClass table th
+{
+	color:#77471D;
+	text-align:left;
+}
+
+.differentViewsDivClass table td
+{
+	color:#494237;
+	font-size:11px;
+}
+
+#localGroupsChartDiv_Outer,#influencePeopleChartDiv_Outer
+{
+	width:893px;
+}
+
+#influencePeopleRegionWisOverView_Outer,#influencePeopleScopeWiseOverView_Outer,#localGroupsRegionWisOverView_Outer
+{
+	width: 281px;
+}
+
+#influencePeopleDetail_Outer,#localGroupsDetail_Outer
+{
+	 width: 595px;
+}

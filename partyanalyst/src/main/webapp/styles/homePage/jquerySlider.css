@@ -1,0 +1,309 @@
+/* Sudo Slider */
+
+.slider ul, .slider ul li, .sliderul, .sliderli{
+	margin:0;
+	padding:0;
+	list-style:none;
+	}
+.slider ul li, .sliderli{ 
+	/* 
+		define width and height of list item (slide)
+		entire slider area will adjust according to the parameters provided here
+		comment the height out, if autoheight is on. 
+	*/ 
+	width:390px;
+/* 	height:241px; */
+	overflow:hidden; 
+	position:relative;
+}	
+.slider, .slider2 {
+	width:390px;
+	overflow:hidden; 
+}
+.graphic, .prevBtn, .nextBtn{
+	 margin:0;
+	 padding:0;
+	 display:none;
+	 overflow:hidden;
+	 text-indent:-8000px;
+ }
+ 
+ .prevBtn, .nextBtn { 
+	display:none;
+	width:30px;
+	height:77px;
+	position:absolute;
+	left:-30px;
+	top:71px;
+	z-index:1000;
+	background:url(../../images/icons/homePage_new/btn_prev.gif) no-repeat 0 0;	
+	cursor:pointer;
+}	
+.nextBtn{ 
+	left:696px;
+}														
+.nextBtn { 
+	background:url(../../images/icons/homePage_new/btn_next.gif) no-repeat 0 0;	
+}	
+#wrapper .prevBtn{ 
+	left:-35px;
+}	
+		
+/* numeric controls */	
+ol {
+	margin:1em 0;
+	padding:0;
+	height:28px;	
+}
+ol li{
+	margin:0 10px 0 0; 
+	padding:0;
+	float:left;
+	list-style:none;
+	height:28px;
+	line-height:28px;
+}
+ol li a{
+	float:left;
+	height:28px;
+	line-height:28px;
+	border:1px solid #ccc;
+	background:#DAF3F8;
+	color:#555;
+	padding:0 10px;
+	text-decoration:none;
+}
+ol li.current a{
+	background:#5DC9E1;
+	color:#fff;
+}
+ol li a:focus, .prevBtn a:focus, .nextBtn a:focus{outline:none;}
+
+/* // Sudo Slider */
+
+body {
+	font:80% Trebuchet MS, Arial, Helvetica, Sans-Serif;
+	color:#333;
+	line-height:180%;
+	margin:0;
+	padding:0;
+}
+
+h1, h2, h3, h4, h5
+{
+	margin: 0 0 15px 0;
+	padding: 0;
+	color: #690;
+	font-weight: normal;
+}
+h1
+{
+	font-size: 200%;
+	letter-spacing: -2px
+}
+
+p
+{
+	margin: 0 0 15px 0;
+	padding: 0;
+	line-height:21px;
+
+}
+
+a
+{
+	color: #690;
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+a:hover
+{
+	color: #333;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+img{
+	border:none;
+}
+pre{
+	margin-top:-16px;
+	display:block;
+	font:12px "Courier New", Courier, monospace;
+	padding:10px;
+	border:1px solid #bae2f0;
+	background:#e3f4f9;	
+	width:442px;
+}	
+			
+.graphic, .prevBtn, .nextBtn {
+	margin:0;
+	padding:0;
+	display:none;
+	overflow:hidden;
+	text-indent:-8000px;
+}
+			
+#container {	
+	margin:0 auto;
+	position:relative;
+	text-align:left;
+	width:696px;
+	background:#fff;		
+	margin-bottom:2em;
+}	
+#header {
+	line-height:80px;
+}				
+#content {
+	position:relative;
+}			
+
+
+
+
+#simplemodal-overlay {background-color:#000; cursor:wait;}
+
+/* Container */
+#simplemodal-container {color:#bbb; background-color:#333; border:4px solid #444; }
+#simplemodal-container a.modalCloseImg {background:url(../images/x.png) no-repeat top right; width:100%; height:100%; display:inline; z-index:3200; position:absolute; top:-15px; right:-16px; cursor:pointer;}
+
+
+ /* Tabs */
+div.tabs {
+	height:30px;
+	width:696px;
+	margin-bottom: -6px;
+}
+.tabs a div.tabbox {
+	float:left;
+	width:230px;
+	border:1px solid gray;
+	background:lightblue;
+	text-align:center;
+}
+.tabs a {
+	color:black;
+	text-decoration:none;
+	cursor:pointer;
+}
+.tabs a.current {
+	text-decoration:underline;
+}
+.tabs a.current div.tabbox {
+	border-bottom:none;
+}
+/* // Sudo Slider */
+
+#slider15 li {
+	width:350px;
+}
+.slide15container .prevBtn,.slide15container .nextBtn { 
+	top:21px;
+}	
+
+.caption {
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:700px;
+	height:25px;
+	text-align:center;
+	color:black;
+	background:white;
+	background:transparent;
+	background:rgba(255,255,255,0.7);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#a3ffffff,endColorstr=#a3ffffff); /* I just hate IE, but this works */
+	zoom: 1; /* Part of the IE fix */
+}
+
+/* The tabs in the index.html page */
+div.tabs {
+	height:30px;
+	width:696px;
+	margin-bottom: -6px;
+}
+.tabs a div.tabbox {
+	float:left;
+	width:230px;
+	border:1px solid gray;
+	background:lightblue;
+	text-align:center;
+}
+.tabs a {
+	color:black;
+	text-decoration:none;
+	cursor:pointer;
+}
+.tabs a.current {
+	text-decoration:underline;
+}
+.tabs a.current div.tabbox {
+	border-bottom:none;
+}
+/* // Sudo Slider */
+
+#wrapper{
+width: 701px;
+margin: 0 auto;
+}
+.box{
+background: #fff;
+width:692px;
+position:relative;
+}
+.slide {
+margin:10px;
+}
+.boxholder{
+clear: both;
+padding: 5px;
+background: #8DC70B;
+}
+.tab{
+float: left;
+height: 32px;
+width: 140px;
+margin: 0 47px 0 0;
+text-align: center;
+background: #8DC70B url(../images/tab.jpg) no-repeat;
+}
+.lasttab {
+margin:0;
+}
+.tabtxt{
+margin: 0;
+color: #fff;
+font-size: 12px;
+font-weight: bold;
+padding: 9px 0 0 0;
+}
+#wrapper .tab a{
+font-size:15px;
+color: #fff;
+text-decoration: none;
+}
+#wrapper .tab a:hover{
+color: #DFE44F;
+}
+
+#wrapper .tab a.current {
+text-decoration:underline;
+}
+
+
+.showoff {
+	width:696px;
+	position:relative; /* Fixing fade in IE6 and IE7 */
+}
+.showoff img{border:none;}
+.showoff ul, .showoff li{
+	margin:0;
+	padding:0;
+	list-style:none;
+}
+.showoff li { 
+	width:696px;
+	overflow:hidden; 
+}

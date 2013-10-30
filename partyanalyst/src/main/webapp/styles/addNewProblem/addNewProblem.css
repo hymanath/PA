@@ -1,0 +1,82 @@
+.problemDetailsTable td
+	{
+		text-align:left;
+		
+		
+	}
+.personDetailsTable
+{
+	text-align:left;
+		
+}
+.requiredFont
+	{
+		color:red;
+		margin-left:5px;
+	}
+.accessDivMain
+	{
+		padding-bottom:20px;
+	}
+.accessDivHead
+	{	
+		
+		color:#664141;
+	}
+.accessDivBody
+	{
+		padding-top:10px;
+	}
+.selectWidth
+{	
+	width:350px;		 
+}
+.tinyDateCal
+{
+	position:absolute;
+}
+.yui-skin-sam .yui-calcontainer {
+	background-color:#F2F2F2;
+	border:1px solid #808080;
+	font-size:10px;
+	padding:10px;
+	width:150px;
+}
+.cadreReportHeader {
+	background-image:url("../../images/icons/cadreReport/bg_center.png");
+	background-repeat:repeat-x;
+	color:#FFFFFF;
+	font-size:14px;
+	font-weight:bold;
+	height:24px;
+	width:150px;
+	padding-top:1px;	
+	text-align:center;
+}
+fieldset {
+	border:4px solid #CFD6DF;
+	margin-bottom:10px;
+	padding:10px;	
+}
+legend {
+background-color:#567AAF;
+color:#FFFFFF;
+font-size:12px;
+padding:5px;
+}
+.bodyStyle
+{
+	background-color:#f2f2f2;
+	font-family:verdana;
+	font-size:12px;
+}
+.button {
+	background-attachment:scroll;
+	background-color:#335291;
+	background-image:none;
+	background-position:0 0;
+	background-repeat:repeat;
+	color:#FFFFFF;
+	width:50px;
+	float:left;
+}

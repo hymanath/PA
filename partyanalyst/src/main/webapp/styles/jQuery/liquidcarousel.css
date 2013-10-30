@@ -1,0 +1,40 @@
+#liquid {
+	background:#313b31 url('../../images/icons/jQuery/bodybackground.png') repeat-y scroll 50% 0;
+	border:2px solid #19301C;
+	-moz-border-radius:10px 10px 10px 10px;
+	-webkit-border-radius:10px 10px 10px 10px;
+	border-radius:10px 10px 10px 10px;
+	padding:10px 0;
+}
+#liquid .previous {
+	background-image:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/layout_sprite.png");
+	background-position:30px 122px;
+	cursor:pointer;
+	display:block;
+	float:left;
+	height:22px;
+	margin:0;
+	padding:0;
+	width:25px;
+}
+#liquid .next {
+	background-image:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/layout_sprite.png");
+	background-position:25px 83px;
+	cursor:pointer;
+	display:block;
+	float:left;
+	height:22px;
+	margin:0;
+	padding:0;
+	width:25px;
+}
+#liquid ul li {
+	width:126px;
+	padding:0 2px;
+	margin:0;
+}
+#liquid ul li a img {
+	-moz-box-shadow: 5px 5px 3px #222;
+   	-webkit-box-shadow: 5px 5px 3px #222;
+   	box-shadow: 5px 5px 3px #222;
+}

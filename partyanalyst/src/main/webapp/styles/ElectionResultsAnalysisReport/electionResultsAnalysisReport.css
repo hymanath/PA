@@ -1,0 +1,341 @@
+.mainHeading {
+	background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
+	color:#000000;
+	font-family:MS Sans-serif;
+	font-size:15px;
+	font-weight:bold;	
+	text-align: center;
+	text-decoration:underline;
+	width:650px;	
+	padding: 5px;
+	height:20px;
+}
+#sideHeader
+{
+	margin-left:10px;
+	margin-right: 10px;
+	margin-top: 15px;
+	margin-bottom:10px;	
+}
+.sideHeading
+{
+	background-image:url(../../images/icons/electionResultsAnalysisReport/2.png);
+	border:0 solid #AEE2FF;
+	color:#FFFFFF;
+	font-family:MS Sans-serif;
+	font-size:15px;
+	font-weight:bold;
+	height:22px;
+	padding:5px;
+	text-align:center;
+	width:220px;
+}
+#pageHeading
+{ 
+	margin-bottom:15px;
+	margin-top:15px;		
+}
+.tools
+{
+	text-align:left;
+	border:1px solid;	
+	margin-top:10px;
+}
+.toolHead
+{
+	margin-left:10px;
+	margin-right:10px;
+}
+.toolHeading
+{
+	background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
+	color:#000000;
+	font-family:MS Sans-serif;
+	font-size:15px;
+	font-weight:bold;	
+	text-align: center;
+	text-decoration:underline;
+	width:220px;	
+	padding: 5px;
+	height:21px;		
+}
+.inputsTable TH
+{
+	background-color:#F1F4F6;
+	color:#25495E;
+	padding:5px;
+	text-align:left;
+	width:25%;
+}
+
+.inputsTable TD
+{
+	background-color:#F1F4F6;
+	color:#474B51;
+	text-align:left;
+	width:25%;
+}
+.inputsTable CAPTION
+{
+	background-color:#CEDCE4;
+	text-align:left;
+	height:25px;
+	padding:5px;
+}
+.selectWidth
+{
+	width:155px;
+}
+.toolBody
+{
+	border-left: 1px solid #DBDCDB;
+	border-right: 1px solid #DBDCDB;
+	border-bottom: 1px solid #DBDCDB;
+	width:224px;
+	padding:5px;
+	margin-bottom:10px;
+}
+#basicDetails
+{
+	margin-left:15px;
+	margin-right:15px;
+	margin-top:10px;
+	margin-bottom:10px;	
+}
+#headingDiv
+{
+	background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
+	color:#4B74C6;
+	font-size:12px;
+	font-weight:bold;	
+	text-align: left;	
+	width:630px;	
+	padding: 5px;
+	height:20px;
+	margin:0px;
+}
+.analysisDetails
+{
+	margin-top: 10px;
+	margin-left: 15px;
+	margin-right:15px;	
+}
+.analysisDetailsTable 
+{
+	margin-top:0px;
+	margin-left:5px;
+	margin-right:5px;
+	width:625px;
+	
+}
+.head
+{
+	background-color:#EBEBEB;
+	border-bottom:1px solid #DBDCDB;
+	border-right: 1px solid #DBDCDB;
+	padding:5px; 
+}
+.middle
+{
+	background-color:#EAEAE9;
+	color:#474B51;
+	text-align:center;
+	border-bottom:1px solid #DBDCDB;
+	border-right: 1px solid #DBDCDB;
+	padding:5px;
+}
+.edge
+{
+	background-color:#EAEAE9;
+	color:#474B51;
+	text-align:center;
+	border-bottom:1px solid #DBDCDB;	
+	padding:5px;
+}
+.edgeH
+{
+	background-color:#EBEBEB;	
+	text-align:center;
+	border-bottom:1px solid #DBDCDB;	
+	padding:5px;
+	
+}
+#tablerDetails
+{
+	border-bottom:1px solid #DBDCDB;
+	border-left:1px solid #DBDCDB;
+	border-right:1px solid #DBDCDB;
+	margin-bottom:10px;
+}	
+.wonLostPosHeading
+{
+	background-image:url(../../images/icons/electionResultsAnalysisReport/2.png);
+	border:0 solid #AEE2FF;
+	color:#FBAD2B;
+	font-family:MS Sans-serif;
+	font-size:15px;
+	font-weight:bold;
+	height:22px;
+	width: 620px;
+	padding:5px;
+	text-align:center;
+}
+.wonLostPosTable
+{
+	text-align:left;
+	margin-top: 10px;	
+	font-size:12px;
+	margin-left:5px;
+}
+.wonLostPosTable TH
+{
+	color:#6C5846;
+}
+.wonLostPosTable TD
+{
+	color:#4A515A;
+	padding:2px;
+}
+
+.wonLostPosTable a
+{
+	color:#DF7401;
+}
+
+.multipleClassificationsTable
+{
+	margin:10px;
+	font-size:12px;
+}
+.multipleClassificationsTable TH
+{
+	text-align:center;
+	padding:5px;
+	color:#73787E;
+}	
+.multipleClassificationsTable TD
+{
+	text-align:center;
+	padding:5px;
+}	
+
+.multipleClassificationsTable a
+{
+	color:#DF7401;
+}
+
+
+#basicDetails .yui-carousel-element li
+{
+	height:220px;
+	width:630px;
+}
+#basicDetails .yui-carousel-item-selected {
+border:0px none;
+margin:1px;
+}
+#electionPageAjaxImgDiv
+{
+	border:1px solid #ADADAD;
+	font-size:12px;
+	font-weight:bold;
+	width:300px;
+	margin-bottom:10px;
+}
+ 
+
+.votesMarginHead
+{
+	padding:5px;
+	cursor:pointer;
+	font-size:12px;
+	font-weight:bold;
+}
+
+.votesMarginBody
+{
+	padding-left:30px;
+	font-size:12px;
+}
+
+.votesMarginReasonsDiv
+{
+	padding:5px;
+}
+
+.votesMarginTable 
+{
+	padding-top:20px;
+}
+
+.votesMarginTable th
+{
+	padding:1px;	
+	color:#4A515A;
+}
+
+.votesMarginTable td
+{
+	padding:3px;	
+	color:#4A515A;
+	text-align:center;
+}
+
+.votesMarginTable a
+{
+	color:#DF7401;
+}
+
+.marginBodyDivClass
+{
+	font-weight:bold;
+	padding-left:50px;
+	text-align:left;
+}
+
+.votesMarginDataTable td
+{
+	padding:3px;
+	text-align:left;
+	font-weight:normal;
+}
+
+.votesMargin_Body_Main
+{
+	padding-top:20px;
+}
+ /* -- New Styles --*/
+.positionAnalysisBodyClass
+{
+	text-align:left;
+	overflow:hidden;
+	padding-left:10px;
+	padding-top:10px;
+}
+
+.analysisCategoryBody
+{
+	border-bottom:1px solid #D2D6DB;
+	border-left:1px solid #D2D6DB;
+	border-right:1px solid #D2D6DB;
+	width:306px;
+	overflow:hidden;
+	padding-top:5px;
+}
+
+.reasonsAnalysis th
+{
+	color:#313C4B;
+	padding:5px;
+}
+
+.reasonsAnalysis td
+{
+	padding:5px;
+	color:#4A515A;
+}
+
+.reasonsAnalysis a
+{
+	color:#DF7401;
+}

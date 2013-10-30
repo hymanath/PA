@@ -1,0 +1,71 @@
+
+#localBodyElectiondiv_main
+{
+	padding:10px;
+}
+
+#localBodyDetailsTable
+{
+	border-collapse:collapse;
+	border-color:#ADADAD;
+	width:100%
+}
+
+.productFeatureBody
+{
+	border-bottom:1px solid #E0E0D6;
+	border-left:1px solid #E0E0D6;
+	border-right:1px solid #E0E0D6;
+}
+
+#localBodyElectionResults_body_heading
+{
+	font-weight:bold;
+	padding-right:20px;
+	text-align:right;
+}
+
+#liquid
+{
+	background:url("../../js/yahoo/yui-js-2.8/build/assets/skins/sam/sprite.png") repeat-x scroll 0 0 transparent;
+	border:2px solid #E0E0D6;
+	-moz-border-radius:0px;
+	border-bottom:none;
+}
+
+.slider, .slider2 
+{
+	width:646px;
+}
+
+.slider ul li, .sliderli 
+{
+	width:646px;
+}
+
+#wardResultsSlider
+{
+	border-bottom:2px solid #E0E0D6;
+	border-left:2px solid #E0E0D6;
+	border-right:2px solid #E0E0D6;
+	height:300px;
+}
+
+#problemPostingDiv legend , #problemViewingDiv legend 
+{
+	background-color:none;
+	/*background:transparent url(../../images/YUI-images/yui-images-2.8/sprite.png) repeat-x scroll 0 -200px;
+	border:2px solid #DFDFDF;
+	color:#795870;*/
+	background-image:url(../../images/icons/constituencyPage/background_head_blue.png);
+	background-repeat:repeat;	
+	color:#FFFFFF;	
+}
+
+legend
+{
+	background-color:#567AAF;
+	color:#FFFFFF;
+	font-size:12px;
+	padding:3px;
+}

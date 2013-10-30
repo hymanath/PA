@@ -1,0 +1,135 @@
+.Connect-Visitor{
+width:600px;
+border:1px solid #cccccc;
+display:inline-block;
+text-align:center;
+padding-bottom:10px;
+
+background: #f2f9fe; /* Old browsers */
+background: -moz-linear-gradient(top,  #f2f9fe 0%, #d6f0fd 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#f2f9fe), color-stop(100%,#d6f0fd)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #f2f9fe 0%,#d6f0fd 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #f2f9fe 0%,#d6f0fd 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #f2f9fe 0%,#d6f0fd 100%); /* IE10+ */
+background: linear-gradient(top,  #f2f9fe 0%,#d6f0fd 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f9fe', endColorstr='#d6f0fd',GradientType=0 ); /* IE6-9 */
+
+}
+.Connect-Visitor h5{margin:0px;font:bold 16px Arial;text-shadow:-2px 0px 0px #000;color:#fff;background:SlateBlue;padding:3px;}
+.Connect-Visitor .RegisterNow{padding:10px 30px;}
+.Connect-Visitor .RegisterNow a{ text-decoration:none;
+width:100px;
+margin:5px;
+float:left;
+position:relative;
+padding:10px;
+}
+.Connect-Visitor .RegisterNow a:hover{background:#fff835;}
+.Connect-Visitor .RegisterNow a img{border:none;width:35px;}
+.Connect-Visitor .RegisterNow a span{width:90px;display:block;font:bold 13px Arial;color:#3d3d3d;}
+
+.joinus{
+padding:7px 35px;text-align:center;margin:10px;color:#d3d3d3;border-radius:10px;box-shadow:0px 0px 5px #888;
+text-decoration:none;font:bold 14px Arial;
+display:inline-block;
+background: #1e5799; /* Old browsers */
+background: -moz-linear-gradient(top,  #1e5799 0%, #2989d8 50%, #207cca 51%, #7db9e8 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1e5799), color-stop(50%,#2989d8), color-stop(51%,#207cca), color-stop(100%,#7db9e8)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* IE10+ */
+background: linear-gradient(top,  #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1e5799', endColorstr='#7db9e8',GradientType=0 ); /* IE6-9 */
+
+}
+.joinus:hover{background:#3d3d3d;}
+
+.Connect-Member{width:600px;
+border:1px solid #cccccc;
+display:table;
+clear:both;
+text-align:center;
+padding-bottom:10px;
+background: snow; /* Old browsers */
+background: -moz-linear-gradient(top, snow 0%, #87CBF2 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%, #87CBF2)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  snow 0%, #87CBF2 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  snow 0%, #87CBF2 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  snow 0%, #87CBF2 100%); /* IE10+ */
+background: linear-gradient(top,  snow 0%, #87CBF2 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='snow', endColorstr='#87CBF2',GradientType=0 ); /* IE6-9 */
+}
+
+.Connect-Member h4{
+	display: inline-block;
+    float: left;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: normal;
+    margin: 0;
+    padding: 5px;
+    text-align: left;
+}
+
+.memberfilter{display:inline-block;width:550px;float:right;padding:10px;}
+.memberfilter a{text-decoration:none;background:none;padding:5px 20px;font:13px Arial;}
+.memberfilter a:hover,.memberfilter a.activefilter{border-radius:10px;background:#3C8FD3;color:#fff;box-shadow:0px 0px 5px #888;margin-right:15px;}
+
+.memberslist{display:inline-block;clear:both;list-style-type:none;background:#fff;width:525px;padding:0px 25px;margin:0px;}
+.memberslist li{float:left;margin:5px;background:#00FFFF;position:relative;border:1px solid #cccccc;cursor:pointer;}
+.memberslist li .membercard{display:none;position:absolute;top:-108px;left:0px;width:200px;height:85px;background:lavenderBlush;text-align:left;font:13px Arial;
+border-radius:5px;border:5px solid #3d3d3d;
+}
+.memberslist li .membercard:after{content:"";width:0px;height:0px;border:10px solid transparent;border-left:10px solid #3d3d3d;border-top:10px solid #3d3d3d;
+position:absolute;
+left:20%;
+top:102%;
+
+}
+.ConnectNow{font-weight:normal;display:block;width:50%;border-radius:5px;font:13px Arial;padding:5px 20px;position:relative;}
+.ConnectNow:hover{font-weight:normal;}
+ .sociallinks:hover{font-weight:normal;}
+.memberslist li .membercard h3{margin:0px;background:mediumVioletRed;color:#fff;padding:5px;height:14px;font-size:14px;}
+.memberslist li:hover{background:#fff;}
+.memberslist li:hover .membercard{display:block;}
+.memberslist li .membercard a{text-decoration:none;}
+.statuslink{position:relative;margin-top:15px;display:inline-block;float:right;padding:3px 25px;background:#f3f3f3;border-radius:5px;text-decoration:none;font:13px Arial;}
+.membermsg{display:block;height:50px;overflow:hidden;padding:5px;}
+.sociallinks{margin:5px;font-weight:normal;}
+.statuson:before{
+    border-radius: 10px;
+       content: "";
+    height: 10px;
+    left: 5px;
+    position: absolute;
+    width: 10px;
+	top:5px;
+	background: #b3dced; /* Old browsers */
+background: -moz-radial-gradient(center, ellipse cover,  #b3dced 0%, #29b8e5 50%, #bce0ee 100%); /* FF3.6+ */
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#b3dced), color-stop(50%,#29b8e5), color-stop(100%,#bce0ee)); /* Chrome,Safari4+ */
+background: -webkit-radial-gradient(center, ellipse cover,  #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* Chrome10+,Safari5.1+ */
+background: -o-radial-gradient(center, ellipse cover,  #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* Opera 12+ */
+background: -ms-radial-gradient(center, ellipse cover,  #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* IE10+ */
+background: radial-gradient(center, ellipse cover,  #b3dced 0%,#29b8e5 50%,#bce0ee 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b3dced', endColorstr='#bce0ee',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}	
+	
+.statusoff:before{
+    border-radius: 10px;
+       content: "";
+    height: 10px;
+    left: 5px;
+    position: absolute;
+    width: 10px;
+	top:5px;
+	background:#3d3d3d;
+	}
+.connectsymbol{font-size:25px;position:absolute;left:0px;top:-2px;}
+.memberCardViewAll{
+	position:relative;width:200px;height:165px;background:transparent;text-align:left;font:13px Arial;
+	border-radius:5px;border:5px solid #3d3d3d; display:inline-block; margin:7px;
+}
+.memberCardViewAll  h3 img{background:#fff;border-radius:5px;margin-top:8px;border:3px solid #ffff00;}
+.memberCardViewAll h3{margin:0px;background:lightSteelBlue;color:#fff;padding:3px;height:100px;}
+.memberCardViewAll h3 span{float:right;margin-top:8px;}
+.memberCardViewAll a{text-decoration:none;}

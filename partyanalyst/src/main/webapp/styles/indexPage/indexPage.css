@@ -1,0 +1,499 @@
+body
+{
+	font-family:"lucida grande",tahoma,verdana,arial,sans-serif;
+	font-size:11px;
+	margin:0px;
+	padding:0px;
+	direction:ltr;
+	background-color:#EAEDEF;
+}
+
+#contenttable
+{
+	padding:0px;
+}
+
+a:hover
+{
+	text-decoration:underline;
+}
+
+.indexLayoutContainer
+{
+	width:960px;
+	background-color:#FFFFFF;
+	margin:auto;
+	overflow:hidden;
+	padding:0px;
+}
+
+#indexheader
+{
+	height:110px;
+	background-image:url(../../images/icons/indexPage/index_header_main.png);
+
+}
+
+#headerTable
+{
+	width:100%;
+}
+
+/*#loginarea, #searchBox
+{
+	float:right;
+}*/
+
+#loginarea
+{
+	color:#FFFFFF;		
+	padding-top:10px;
+}
+
+/*
+#searchBox
+{
+	padding-left:25px;
+}*/
+
+.loginStatusAnc
+{
+	color:#FFFFFF;
+	text-decoration:none;
+}
+
+
+#indexHomeImg
+{
+	border:0px;
+	cursor:pointer;
+	padding-top:2px;
+	padding-right:5px;
+	float:left;
+}
+
+#indexContent
+{
+	min-height:600px;
+	height:expression(document.body.clientWidth < 600 ? "600px": "auto" );
+}
+
+#indexNavContainer
+{
+	height:30px;
+	border-bottom:1px solid black;
+	border-top:1px solid black;
+}
+
+#indexNavContainer .yuimenubar
+{
+	line-height:3;
+	border:none;
+}
+
+#indexNavContainer .yuimenu
+{
+	line-height:2;
+}
+
+#indexNavContainer .yuimenubaritemlabel
+{
+	border:none;
+	font-weight:bold;
+}
+
+#indexNavContainer .yuimenuitemlabel  
+{
+	padding:2px 20px;
+}
+
+#indexNavContainer .yuimenubaritem-selected
+{	
+	background:none;
+	background-image:url(../../images/icons/indexPage/nav_button.gif);	
+}
+
+#indexNavContainer .yuimenubarnav .yuimenubaritemlabel-selected
+{
+	color:#FFFFFF;
+}
+
+/*#indexNavContainer .yuimenuitem-selected
+{
+	background-color:#FFFFFF;
+	background:transparent url(../../../../assets/skins/sam/sprite.png) repeat-x scroll 0 0;
+}*/
+
+#indexNavContainer .yuimenubarnav .yuimenubaritemlabel-hassubmenu 
+{
+	background:none;
+}
+#index_footer
+{
+	height:105px;
+}
+
+#index_inner_footer
+{
+	background-image:url("../../images/icons/homePage/homePageFooter.png");
+	background-repeat:repeat-x;
+	color:#FFFFFF;
+	padding:10px 15px;
+}
+
+/*********************
+	Dashboard Styles
+**********************/
+
+#dashboard_main
+{
+	background-color:#EFF1F3;
+	margin:auto;
+	overflow:hidden;
+	padding:0;
+	width:960px;
+	text-align:left;
+}
+
+#dashBoardCenterlayout_header
+{
+	
+}
+
+.leftSwasthicImage
+{
+	background-image:url("../../images/icons/indexPage/swasthic_left.png");
+	width:35px;
+	height:35px;
+}
+
+.rightSwasthicImage
+{
+	background-image:url("../../images/icons/indexPage/swasthic_right.png");
+	width:35px;
+	height:35px;
+}
+
+.centerSwasthicImage
+{
+	background-image:url(../../images/icons/electionResultsAnalysisReport/mid.png);
+	height:30px;
+}
+
+
+#dashboard_main_table
+{
+	width:100%;
+}
+
+
+#dashBoardLeftlayoutDiv
+{
+	background-color:#FFFFFF;
+	height:535px;
+}
+
+#dashBoardCenterlayoutDiv
+{
+	background-color:#FFFFFF;
+	height:100%;
+}
+
+#dashboard_reportsNav_main
+{
+	height:100%;
+	margin-top:2px;
+}
+
+#pa_reportsList_main
+{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+#pa_reportsList_main li
+{
+	background-color:#4B74C6;
+	margin-top:2px;
+}
+
+.reports_carousel_div_class
+{
+	height:100%;
+	width:230px;
+	background-color:#FFFFFF;
+}
+
+.welcomeUserFont
+{
+	font-size:14px;
+	font-weight:bold;
+	color:#355A7A;
+	padding:3px;
+}
+
+#todayDate
+{
+	color:#355A7A;
+	font-size:10px;
+	font-weight:bold
+}
+
+.pa_reports_head
+{
+	background-image:url("../../images/icons/indexPage/reportNameHeader.png");
+	background-repeat:repeat-y;
+	padding:7px;
+	color:#E3E5E8;
+	font-weight:bold;	
+}
+
+.pa_reports_body
+{
+	color:#73787E;
+	line-height:15px;
+	padding:9px;
+	text-align:justify;
+}
+
+.reportGroupClass
+{
+	color:#E3E5E8;
+	padding:13px;
+	font-weight:bold;
+	background-image:url("../../images/icons/indexPage/reportGroupHeader.png");
+	cursor:pointer;
+}
+
+.reportGroupClassSelected
+{
+	background-color:#4B74C6;
+	background-image:url("../../images/icons/indexPage/reportGroupHeader_selected.png");
+	color:#E3E5E8;
+	cursor:pointer;
+	font-weight:bold;
+	margin-top:2px;
+	padding:13px;
+	text-align:left;
+}
+
+#dashboard_centerContent
+{
+	height:350px;
+}
+
+#pa_reports_carousel .yui-carousel-item-selected  
+{
+	border:1px solid #CCCCCC;
+}
+
+#pa_reports_carousel .yui-carousel-element li
+{
+	height:300px;
+}
+
+.viewReportAnc
+{
+color:#4B74C6;
+font-weight:bold;
+text-decoration:none;
+}
+
+.dashBoardCenterContentHeader
+{
+	font-weight:bold;
+	color:#4B74C6;
+	font-size:13px;
+	text-decoration:underline;
+}
+
+.dashBoardCenterContentBody
+{
+	color:#73787E;
+}
+
+#dashBoardCenterlayout_body
+{
+	height:410px;
+	padding:10px;
+}
+
+.contentSeparatorDiv
+{
+	height:100%;
+	border:1px solid #cdcdcd;
+}
+
+#dashboardRightLayoutList
+{
+	list-style-type:none;
+	list-style-image:url("../../images/icons/indexPage/listIcon.png");
+}
+
+#dashboardRightLayoutList li
+{
+	padding:5px;
+	font-weight:bold;
+	color:#4B74C6;
+}
+
+#humanImgDiv
+{
+	padding-left:25px;
+	height:215px;
+}
+
+.dashBoardContentList
+{
+	list-style-type:none;
+	list-style-image:url("../../images/icons/indexPage/listIcon.png");
+}
+
+.dashBoardContentList li
+{
+	color:#73787E;
+	padding:2px;
+}
+
+.dashBoardLinks
+{
+	color:#73787E;
+	padding-left:5px;
+	padding-right:5px;
+}
+
+#noticeBoard
+{
+	background-image:url("../../images/icons/indexPage/notice_board.png");
+	background-repeat:no-repeat;
+	height:149px;
+	margin-left:10px;
+	margin-top:120px;
+	padding:38px 0 7px 5px;
+	width:175px;
+	
+}
+
+#noticeBoard_head 
+{
+	color:#2B374E;
+	font-size:13px;
+	font-weight:bold;
+	padding-left:40px;
+	padding-top:5px;
+	text-decoration:underline;
+}
+
+#usergroups_main
+{
+	width:205px;
+	margin-top:20px;	
+}
+
+#usergroups_head
+{
+	color:#4B74C6;
+	font-weight:bold;
+	padding:7px;
+	text-decoration:underline;
+}
+.profileAnc
+{
+	color:#73787E;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+#usergroups_body
+{
+	padding:5px 5px 5px 0px;
+}
+
+#uploadPhotoImage 
+{
+	background-attachment:scroll;
+	background-image:url("../../images/icons/indexPage/total_index_icons.jpg");
+	background-position:1px -9px;
+	background-repeat:no-repeat;
+	padding:7px 22px 13px 12px;
+}
+
+#staticDataView_main
+{
+	height:240px;
+}
+
+
+#staticDataView_main .yui-accordion 
+{
+	border:none;
+	margin-left:20px;	
+	width:190px;
+}
+
+#staticDataView_main .yui-accordion-item-icon 
+{
+	background:none;
+	background-image:url(../../images/icons/indexPage/listIcon.png);
+	background-repeat:no-repeat;
+	margin-top:5px;
+}
+
+#staticDataView_main .yui-accordion-item .yui-widget-hd 
+{
+	border:none;
+	background:none;
+}
+
+#staticDataView_main .yui-accordion-item-label 
+{
+	color:#73787E;
+}
+
+.regionsList
+{
+	list-style-image:url("../../images/icons/districtPage/listIcon.png");
+}
+
+.regionsList li
+{
+	padding:2px;
+}
+
+.regionsList li a
+{
+	color:#3388C1;
+	cursor:pointer;
+	text-decoration:none;
+}
+
+.regionsList li a:hover
+{
+	text-decoration:underline;
+}
+
+.regionsListDiv
+{
+	height:135px;
+	overflow:auto;
+}
+
+#copyRightTextDiv
+{
+	color:#0C3044;
+	word-spacing:4px;
+	line-height:16px;
+}
+
+.indexPageAnc
+{
+	color:#7C684E;
+	font-weight:bold;
+	text-decoration:none;
+}
+
+.indexPageAnc:hover
+{	
+	text-decoration:underline;
+}

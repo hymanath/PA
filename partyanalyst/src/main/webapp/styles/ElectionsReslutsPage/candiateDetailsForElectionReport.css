@@ -1,0 +1,68 @@
+@CHARSET "ISO-8859-1";
+.optionsTable
+{
+	cellspacing:0px;
+	cellpadding:0px;
+	margin-top:10px;
+	font-famly:MS Sans-serif;
+	font-weight:bold;
+	text-color:red;			
+}
+.td
+{
+	color:#808080;
+}
+.optionsDiv
+{
+	text-align:left;
+	background-color: #EFF3F7; 
+	border:1px solid;
+	text-align:left;
+	border-top:1px solid #96B4D3;
+	border-left:1px solid #96B4D3;
+	border-bottom:3px solid #96B4D3;
+	border-right:3px solid #96B4D3;	
+}
+.selectBoxStyle
+{
+	color:#808080;	
+	width:150px;	 
+}
+H3
+{
+	color:#006221;
+	background-image:url(../../images/icons/electionResultsReport/heading.png);
+	font-family:MS Sans-serif;
+	font-size:17px;
+	font-weight:bold;
+	height:25px;
+	margin-bottom:15px;
+	margin-top:0;
+	padding:10px;
+	text-align:center;
+	width:450px;
+	border-left:1px solid #CCCCCC;
+	border-right:1px solid #CCCCCC;
+}
+.paraText
+{
+	color:#505050;
+	font-family:Lucida Grande;
+	font-size:15px;
+	padding:5px;
+}
+.errorMessage
+{
+	color:red;
+	font-weight:bold;
+	font-size:16px;
+	text-align:left;
+}
+#electionPageAjaxImgDiv
+{
+	border:1px solid #ADADAD;
+	font-size:12px;
+	font-weight:bold;
+	width:300px;
+	margin-bottom:10px;
+}
