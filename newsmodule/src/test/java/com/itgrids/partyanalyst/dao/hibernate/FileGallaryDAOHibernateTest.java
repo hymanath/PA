@@ -22,7 +22,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		fileGallaryDAO.getAll();
 	}*/
 
-	public void testgetFileGallaryByGalleryIdsList()
+	/*public void testgetFileGallaryByGalleryIdsList()
 	{
 		List<Long> gallaryIdsList = new ArrayList<Long>(0);
 		gallaryIdsList.add(27l);
@@ -31,6 +31,16 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	  System.out.println(list.size());
 	  
 	  
+	}*/
+	
+	public void testgetAllTheNewsForAUserBasedOnUserAddressId()
+	{
+		List<Object[]> list = fileGallaryDAO.getAllTheNewsForAUserBasedOnUserAddressId(1L, null, null, 5L, 1L);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		{
+			System.out.println(params[0]+" "+params[1]);
+		}
 	}
 	
 }
