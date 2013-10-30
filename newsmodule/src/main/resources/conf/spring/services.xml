@@ -166,6 +166,7 @@
 	<bean name="staticDataService" class="com.itgrids.partyanalyst.service.impl.StaticDataService" >
 	<property name="constituencyDAO" ref="constituencyDAO" />
 	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />		
+	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 	
 	<!-- <property name="electionDAO" ref="electionDAO" />  
 		<property name="partyDAO" ref="partyDAO" />
@@ -1598,7 +1599,13 @@
 		<property name="candidatePartyDAO" ref="candidatePartyDAO"></property>
 		<property name="userNewsCategoryDAO" ref="userNewsCategoryDAO" />
 		<property name="userCandidateRelationDAO" ref="userCandidateRelationDAO" />
-			
+		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
+		<property name="countryDAO" ref="countryDAO" />
+		<property name="userAddressDAO" ref="userAddressDAO" />
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
