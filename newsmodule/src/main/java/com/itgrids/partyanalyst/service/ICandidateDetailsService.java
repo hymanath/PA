@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -49,7 +50,7 @@ public interface ICandidateDetailsService {
 	
 	
 	*/
-	public List<FileVO> getDistrictDetailsByStateId(Long stateId);
+	public List<FileVO> getDistrictDetailsByStateId(Long stateId,String accessType,Long accessValue);
 	
 	public ResultStatus uploadAFile(FileVO fileVO);
 	public List<FileVO> getScopesForNewSearch();
@@ -57,7 +58,7 @@ public interface ICandidateDetailsService {
 	public List<SelectOptionVO> getLanguage();
 	public List<SelectOptionVO> getCategory();
 	public List<SelectOptionVO> getNewsImportance();
-	public List<FileVO> getStateDetails();
+	public List<FileVO> getStateDetails(String accessType,Long accessValue);
 	public List<SelectOptionVO> getCandidateGallaries(Long registrationId,String contentType);
 	public List<SelectOptionVO> getCandidatesOfAUser(Long userId);
 	/*public List<SelectOptionVO> getCandidateGallarySelectList(Long candidateId,String contentType);
@@ -284,6 +285,9 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getAllCategories();
 	 
 	 public List<SelectOptionVO> getGallariesInCategory(Long categoryId);
+	 
+	 public LocationVO getLocationListForSelectedUser(String userAccessType,Long accessValue,Long userId);
 	
+	 public List<SelectOptionVO> getConstituencyList(Long districtId,String accessType,Long accessValue);
 	
 }

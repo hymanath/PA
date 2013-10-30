@@ -69,7 +69,7 @@ public interface IStaticDataService {/*
 		public CandidateDetailsVO getLatestConstituenciesForAssemblyAndParliamentForAllElectionYears(Long electionType,Long stateId);
 	*/
 		public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
-		//public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
+		public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
 /*
 		public List<PartyResultVO> getPartyVotesPercentageInAConstituency(Long constituencyId,String all,String[] choices);
 		
