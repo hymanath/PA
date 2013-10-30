@@ -4,6 +4,9 @@
  */
 
 package com.itgrids.partyanalyst.model;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.itgrids.partyanalyst.model.BaseModel;
 
 
@@ -16,11 +19,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  * PartyWorkingCommittee entity. 
@@ -51,6 +56,8 @@ public class UserAddress implements java.io.Serializable {
 	private LocalElectionBody localElectionBody;
 	private Constituency ward;
 	private Booth booth;
+	private Set<File> files = new HashSet<File>(0); 
+	
 	/*private Cadre cadreCurrentAddress; 
 	private Cadre cadrePermanentAddress;
 	private InfluencingPeople influencingPeople;
@@ -254,8 +261,16 @@ public class UserAddress implements java.io.Serializable {
 	public void setBooth(Booth booth) {
 		this.booth = booth;
 	}
-	
-	
+    
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "userAddress")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<File> getFiles() {
+		return files;
+	}
+
+	public void setFiles(Set<File> files) {
+		this.files = files;
+	}
 	
 	
 }
