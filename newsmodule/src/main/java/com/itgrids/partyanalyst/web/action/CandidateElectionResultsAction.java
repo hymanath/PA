@@ -1470,6 +1470,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String getCandidatesPhotoGallaryDetail(){
 		try  {
+			
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+			 return ERROR;
+			
+			String accessType = regVO.getAccessType();
+			Long accessValue = new Long(regVO.getAccessValue());
+			
 			jObj = new JSONObject(getTask());
 			/*if(jObj.getString("task").equalsIgnoreCase("getCandidatePhotoGallaryDetail"))
 			{
@@ -1513,11 +1522,11 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getStates"))
 			{
-				fileVO = candidateDetailsService.getStateDetails();
+				fileVO = candidateDetailsService.getStateDetails(accessType,accessValue);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("getDistrictsByStateId"))
 			{
-				fileVO = candidateDetailsService.getDistrictDetailsByStateId(jObj.getLong("stateId"));
+				fileVO = candidateDetailsService.getDistrictDetailsByStateId(jObj.getLong("stateId"),accessType,accessValue);
 			}/*
 			else if(jObj.getString("task").equalsIgnoreCase("searchNewsDetails"))
 			{    
@@ -1676,6 +1685,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getCategory"))
 		 {
 			selectOptionList = candidateDetailsService.getCategory();
+			selectOptionList.add(new SelectOptionVO(0L,"Select"));
 		 }/*
 		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
 		{

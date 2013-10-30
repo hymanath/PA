@@ -17,8 +17,10 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegionalMappingInfoVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.excel.booth.BoothInfo;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -46,6 +48,8 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	private List<SelectOptionVO> parliamentConstituencies;
 	private List<Object> constituencies;
 	//CadreManagementService cadreManagementService;
+	
+	private ICandidateDetailsService candidateDetailsService;
 	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;		
@@ -159,6 +163,14 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 	public void setConstituencies(List<Object> constituencies) {
 		this.constituencies = constituencies;
 	}
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
+	}
 
 	public String getLocationsById(){
 		
@@ -247,6 +259,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		session = request.getSession();
 		String param = null;
 		param = getTask();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		 return ERROR;
+		
+		String accessType = user.getAccessType();
+		Long accessValue = new Long(user.getAccessValue());
 		
 		try {
 			jObj = new JSONObject(param);
@@ -314,9 +332,13 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		}else if(jObj.getString("task").equalsIgnoreCase("constituenciesInDistrict"))
 		{
 			//to fetch all assembly constituencies in district
+			
 			Long districtId = jObj.getLong("id");
-			List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByDistrictID(districtId);
-			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
+			//List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByDistrictID(districtId);
+			
+			List<SelectOptionVO> constituencies = candidateDetailsService.getConstituencyList(districtId, accessType, accessValue);
+			
+			//constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
 			setRegionsList(constituencies);
 			if(jObj.getString("address").equalsIgnoreCase("OfficialAdd") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
@@ -402,9 +424,12 @@ public class LocationsHierarchyAction extends ActionSupport implements ServletRe
 		{
 			//to get all constituenciesByAreaTypeInDistrict  
 			Long locationId = jObj.getLong("id");
-			String areaType = jObj.getString("areaType");
+			/*String areaType = jObj.getString("areaType");
 			List<SelectOptionVO> constituencies = getRegionServiceDataImp().getConstituenciesByAreaTypeInDistrict(locationId, areaType);
 			constituencies.add(0, new SelectOptionVO(0l,"Select Location"));
+			setRegionsList(constituencies);*/
+			
+			List<SelectOptionVO> constituencies = candidateDetailsService.getConstituencyList(locationId, accessType, accessValue);
 			setRegionsList(constituencies);
 			if(jObj.getString("address").equalsIgnoreCase("cadreLevel") && jObj.getString("taskType").equalsIgnoreCase("cadreReg"))
 			{
