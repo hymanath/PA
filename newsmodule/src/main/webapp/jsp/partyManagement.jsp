@@ -2285,6 +2285,19 @@ function buildResults(results,divId){
 		     }  
 		  }
 
+         else
+		  {
+		    var option = document.createElement('option');
+		    option.value=results[j].id;
+		    option.text=results[j].name;
+            try{
+			   elmt.add(option,null); // standards compliant
+		     }
+		     catch(ex){
+			   elmt.add(option); // IE only
+		     }  
+		  }
+
 		}
 		 
 	  }
