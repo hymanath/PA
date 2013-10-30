@@ -191,4 +191,23 @@ IDelimitationConstituencyDAO {
 				"order by model.delimitationConstituency.year desc,model.tehsil.tehsilName ", constituencyId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesForDistrict(Long districtId){
+		return getHibernateTemplate().find("select distinct model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name",districtId);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getConstituenciesByDistrictId(Long districtId){
+		return getHibernateTemplate().find("select model.constituency.constituencyId,model.constituency.name from DelimitationConstituency model where " +
+				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name",districtId);
+	}
+	
+	public List getConstituenciesByDistrictId(Long districtId,
+			String areaType) {
+		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.areaType from DelimitationConstituency model where " +
+				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name ", districtId);
+	}
+	
 }
