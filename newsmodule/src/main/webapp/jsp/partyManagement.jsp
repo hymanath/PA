@@ -703,6 +703,11 @@ function getSource(selectOptionId){
 					}
 				}
 
+		else if(jsObj.task == "getLocationScope")
+		{
+		 showUserAccessLocationScopeList(myResults);
+		}
+
 		
      	}
 		catch(e)
@@ -2006,6 +2011,8 @@ function buildUploadNewsForMultipleUsers()
 	 getNewsImportance();
 	 getCategory();
 	 //getCandidatesofUser();
+
+	  getScopeForUser();
 	  getCandidates();
 	  $('#partiesList').trigger('change');
 }
@@ -2218,7 +2225,8 @@ function getScopes(){
 function buildResults(results,divId){
 	$('#'+divId).find('option').remove();
 
-
+  var locationScopeId = $("#scopeDiv").val(); 
+ 
   var elmt = document.getElementById(divId);
          if(divId=='scopeDiv' || divId == "scopeDivForEdit")
 		 {
@@ -2245,7 +2253,43 @@ function buildResults(results,divId){
 		{
 			elmt.add(option1); // IE only
 		}
-		for(var i in results)
+
+	  if(divId == "mandalDiv")
+	  {
+        for(var j in results)
+	    {
+		  var tempId = ""+results[j].id+""; 
+		  if(results[j].id != 0 && locationScopeId == 8 && tempId.substring(0,1) == "1")
+		  {
+		    var option = document.createElement('option');
+		    option.value=results[j].id;
+		    option.text=results[j].name;
+            try{
+			   elmt.add(option,null); // standards compliant
+		     }
+		     catch(ex){
+			   elmt.add(option); // IE only
+		     }  
+		  }
+         
+		 if(results[j].id != 0 && locationScopeId == 6 && tempId.substring(0,1) == "2")
+		  {
+		    var option = document.createElement('option');
+		    option.value=results[j].id;
+		    option.text=results[j].name;
+            try{
+			   elmt.add(option,null); // standards compliant
+		     }
+		     catch(ex){
+			   elmt.add(option); // IE only
+		     }  
+		  }
+
+		}
+		 
+	  }
+	  else{
+	  for(var i in results)
 	  {
 		var option = document.createElement('option');
 		if(divId =="scopeDiv" || divId == "scopeDivForEdit")
@@ -2282,6 +2326,8 @@ function buildResults(results,divId){
 		}
 		}
 	  }
+	  }
+
  
 }
 function buildResultsForElectType(results){
@@ -6431,6 +6477,9 @@ function  buildUploadNews()
 	 getLanguage("language");
 	 getNewsImportance();
 	 getCategory();
+
+	 getScopeForUser();
+
 	 $(document).ready(function(){
 	 	$("#source").change(function () {
 	
@@ -7190,6 +7239,188 @@ function getGallariesForSelectedCategory()
 	var url = "getGallariesByCategoryIdAction.action?"+rparam;						
 	callAjax1(jsObj,url);
 }
+
+
+function getScopeForUser(){
+  
+ var jsObj =
+		{ 
+            time : timeST,
+			divId:"scopeDiv",
+  		    task:"getLocationScope"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationScopeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+
+function showUserAccessLocationScopeList(results)
+{
+  
+  
+  var id = results.scopeId;
+ 
+  $("#scopeDiv").val(id);
+  //$("#scopeDiv option:selected").val(id);
+  if(id==0)
+  {
+   var val ='';
+  val +='<table>';
+  val +='  <tr><td></td>';
+  val +='  </tr>';
+  val +='</table>';
+  document.getElementById("showScopeSubs").innerHTML = val;
+    
+  }
+  else if(id==1)
+  {
+    var str ='';
+  str +='<table>';
+  str +='  <tr><td></td>';
+  str +='  </tr>';
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+  }
+
+  else if(id==2)
+  {
+   var str ='';
+  str +='<table>';
+  str +='  <tr>';
+  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
+  str +='  </tr>';
+  
+  /*str +='  <tr>';
+  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"></select></td>';
+  str +='  </tr>';*/
+
+  str +='</table>';
+   document.getElementById("showScopeSubs").innerHTML = str;
+   buildSelectOptionVOList(results.stateList,'stateDiv',1);
+   //buildSelectOptionVOList(results.districtList,'districtDiv',null);
+
+  }
+
+  else if(id == 3)
+  {
+
+    var str ='';
+    str +='<table>';
+    str +='  <tr>';
+    str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
+    str +='  </tr>';
+    str +='  <tr>';
+    str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"></select></td>';
+    str +='  </tr>';
+		
+	/*str +='  <tr>';
+    str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" ></select></td>';
+    str +='  </tr>';*/
+
+   
+
+    str +='</table>';
+    document.getElementById("showScopeSubs").innerHTML = str;
+    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
+    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
+	//buildSelectOptionVOList(results.constituencyList,'constituencyDiv',null);
+	
+  }
+  
+
+
+  else if(id == 4)
+  {
+
+    var str ='';
+    str +='<table>';
+    str +='  <tr>';
+    str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
+    str +='  </tr>';
+    str +='  <tr>';
+    str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"></select></td>';
+    str +='  </tr>';
+		
+	str +='  <tr>';
+    str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" ></select></td>';
+    str +='  </tr>';
+
+   /* str +='  <tr>';
+    str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="selectWidthPadd"><select id="mandalDiv"    onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"></select></td>';
+    str +='  </tr>';*/
+
+    str +='</table>';
+    document.getElementById("showScopeSubs").innerHTML = str;
+    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
+    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
+	buildSelectOptionVOList(results.constituencyList,'constituencyDiv',results.constituencyId);
+	//buildSelectOptionVOList(results.mandalList,'mandalDiv',null);
+  }
+  
+  
+  
+}
+
+
+
+	
+	
+
+function buildSelectOptionVOList(optionsList,elmt,populatedId)
+{
+	
+ if(!elmt || optionsList == null)
+  return;
+ 
+ var divEle = document.getElementById(elmt);
+  var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+  if(populatedId == null)
+  {
+	try
+	{
+		divEle.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		divEle.add(option); // IE only
+	}
+  }
+
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			divEle.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			divEle.add(option); // IE only
+		}
+	}
+
+	if(populatedId != null)
+     divEle.value = populatedId;
+	 
+
+
+}
+
 
 </script>
 </body>
