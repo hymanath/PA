@@ -6,12 +6,14 @@ import java.util.List;
 import org.apache.commons.lang.WordUtils;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -29,7 +31,7 @@ public class StaticDataService implements IStaticDataService {
 	//private ITehsilDAO tehsilDAO;
 	//private IHamletDAO hamletDAO;
 	//private IConstituencyElectionDAO constituencyElectionDAO;
-	//private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	//private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	//private IUserDAO userDAO;
@@ -112,13 +114,13 @@ public class StaticDataService implements IStaticDataService {
 			IConstituencyElectionDAO constituencyElectionDAO) {
 		this.constituencyElectionDAO = constituencyElectionDAO;
 	}*/
-	/*public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
 		return delimitationConstituencyAssemblyDetailsDAO;
 	}
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
-	}*/
+	}
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
@@ -5469,7 +5471,7 @@ public class StaticDataService implements IStaticDataService {
 
 	}
 */
-	/*public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(
+	public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(
 			Long parliamentConstituencyId) {
 		
 		ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
@@ -5489,7 +5491,7 @@ public class StaticDataService implements IStaticDataService {
 				.getName());
 		
 		return constituencyInfoVO;
-	}*/
+	}
 /*
 	public NavigationVO findHirarchiForNavigation(Long locationId,
 			String locationType) {

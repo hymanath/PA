@@ -32,6 +32,9 @@ import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ICountryDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
@@ -51,11 +54,13 @@ import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserNewsCategoryDAO;
 import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -74,9 +79,11 @@ import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
-import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserNewsCategory;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IConstants;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -118,6 +125,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IFilePathsDAO filePathsDAO;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private IUserDAO userDAO;
+	private IRegionServiceData regionServiceDataImp;
+	private IStaticDataService staticDataService;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
 	//private IContentTypeDAO contentTypeDAO;
 	//private IUserGallaryDAO userGallaryDAO;
@@ -149,7 +159,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	//private IPartySubscriptionsDAO partySubscriptionsDAO;
 	//private IUserPartyRelationDAO userPartyRelationDAO;	
 	
-
+    private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+    private ICountryDAO countryDAO;
+    private IUserAddressDAO userAddressDAO;
 	
 	public ICandidatePartyDAO getCandidatePartyDAO() {
 		return candidatePartyDAO;
@@ -420,6 +432,56 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	public void setUserNewsCategoryDAO(IUserNewsCategoryDAO userNewsCategoryDAO) {
 		this.userNewsCategoryDAO = userNewsCategoryDAO;
 	}
+	
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+	
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public ICountryDAO getCountryDAO() {
+		return countryDAO;
+	}
+
+	public void setCountryDAO(ICountryDAO countryDAO) {
+		this.countryDAO = countryDAO;
+	}
+    
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
 
 	public ResultStatus uploadAFile(final FileVO fileVO)
 	{
@@ -430,6 +492,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
+				
+			
+			//userAddress Table
+			 UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()));	
+			
+				
 			File file = new File();
 			FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
 			FilePaths filePaths = new FilePaths();
@@ -477,6 +545,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			  file.setUser(userDAO.get(fileVO.getUserId()));
 			   file.setNewsDescription(fileVO.getNewsDescription());
 			 //  file.setUser(userDAO.get(1L));
+			   
+			   file.setUserAddress(userAddress);
 				file = fileDAO.save(file);
 			
 				//file = fileDAO.save(file);
@@ -631,6 +701,107 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
 		}
+	}
+	
+	public UserAddress saveFileLocationInUserAddress(Long locationId,Long locationValue)
+	{
+	 try{
+		 
+		 if(locationId == 0L || locationId == null)
+			return null;
+		 UserAddress userAddress = new UserAddress(); 
+		 userAddress.setCountry(countryDAO.get(1L));
+		
+		if(locationId == 2L)
+		  userAddress.setState(stateDAO.get(locationValue));
+		
+		else if(locationId == 3L)
+		{
+		  List<Object[]> list = districtDAO.getStateByDistrictID(locationValue);
+		  if(list != null)
+		   userAddress.setState(stateDAO.get((Long) list.get(0)[0]));
+		   userAddress.setDistrict(districtDAO.get(locationValue));
+		}
+		else if(locationId == 4L)
+		{
+			List<Object[]> list = constituencyDAO.getStateDistrictConstituencyIds(locationValue);
+			userAddress.setState(stateDAO.get((Long) list.get(0)[0]));
+			userAddress.setDistrict(districtDAO.get((Long) list.get(0)[1]));
+			userAddress.setConstituency(constituencyDAO.get(locationValue));
+		}
+		
+		else if(locationId == 5L)
+		{
+			
+			List<Object[]> list = delimitationConstituencyMandalDAO.getStateDistrictConstituencyIdByMandalId(Long.parseLong(locationValue.toString().substring(1)));
+			if(list != null && list.size() > 0)
+			{
+				userAddress.setState(stateDAO.get((Long)list.get(0)[1]));
+				userAddress.setDistrict(districtDAO.get((Long)list.get(0)[2]));	
+				userAddress.setConstituency(constituencyDAO.get((Long)list.get(0)[0]));
+				userAddress.setTehsil(tehsilDAO.get((Long)list.get(0)[3]));
+				
+			}
+		}
+		
+		else if(locationId == 6L)
+		{
+			locationValue = Long.parseLong(locationValue.toString().substring(1));
+			Long tehsilId = hamletDAO.get(locationValue).getTownship().getTehsil().getTehsilId();
+			
+			List<Long> constituencyIdsList = delimitationConstituencyMandalDAO.getConstituencyIdByTehsilId(tehsilId, Long.parseLong(IConstants.PRESENT_ELECTION_YEAR));
+			
+			if(constituencyIdsList != null && constituencyIdsList.size() > 0)
+				userAddress.setConstituency(constituencyDAO.get(constituencyIdsList.get(0)));
+				
+			userAddress.setState(stateDAO.get(hamletDAO.get(locationValue).getTownship().getTehsil().getDistrict().getState().getStateId()));
+			userAddress.setDistrict(districtDAO.get(hamletDAO.get(locationValue).getTownship().getTehsil().getDistrict().getDistrictId()));	
+			userAddress.setTehsil(tehsilDAO.get(hamletDAO.get(locationValue).getTownship().getTehsil().getTehsilId()));
+			userAddress.setHamlet(hamletDAO.get(locationValue));
+		}
+		
+		else if(locationId == 7L)
+		{
+			Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.valueOf(locationValue.toString().substring(1))).get(0);
+			userAddress.setState(stateDAO.get(assemblyLocalElectionBodyDAO.get(Long.valueOf(locationValue.toString().substring(1))).getConstituency().getState().getStateId()));
+			userAddress.setDistrict(districtDAO.get(assemblyLocalElectionBodyDAO.get(Long.valueOf(locationValue.toString().substring(1))).getConstituency().getDistrict().getDistrictId()));
+			userAddress.setConstituency(constituencyDAO.get(assemblyLocalElectionBodyDAO.get(Long.valueOf(locationValue.toString().substring(1))).getConstituency().getConstituencyId()));
+			userAddress.setLocalElectionBody(localElectionBodyDAO.get(localEleBodyId));
+		}
+		
+		else if(locationId == 8L)
+		{
+			locationValue = Long.parseLong(locationValue.toString().substring(1));
+			Long assemBlyLocalEleId = (Long)assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(constituencyDAO.get(locationValue).getLocalElectionBody().getLocalElectionBodyId()).get(0);
+			userAddress.setConstituency(constituencyDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getConstituencyId()));
+			userAddress.setState(stateDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getDistrict().getState().getStateId()));
+			userAddress.setDistrict(districtDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getDistrict().getDistrictId()));	
+			userAddress.setTehsil(tehsilDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getTehsilId()));
+			userAddress.setWard(constituencyDAO.get(locationValue));
+		}
+		
+		else if(locationId == 9L)
+		{
+		  List<Object[]> list = boothDAO.getStateDistrictConstituencyIdsByBoothId(locationValue);
+		  if(list != null && list.size() >0)
+		  {
+			  userAddress.setState(stateDAO.get((Long)list.get(0)[0]));
+			  userAddress.setDistrict(districtDAO.get((Long)list.get(0)[1]));	
+			  userAddress.setConstituency(constituencyDAO.get((Long)list.get(0)[2]));
+			  userAddress.setTehsil(tehsilDAO.get((Long)list.get(0)[3]));  
+			  userAddress.setBooth(boothDAO.get(locationValue));
+		  }
+		}
+		
+		 
+		userAddress = userAddressDAO.save(userAddress);
+		 return userAddress;
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error(" Exception Occured in saveFileLocationInUserAddress() method, Exception - "+e);
+	  return null;
+	 }
+	 	
 	}
 	
 	public Long getLocationScopeValue(Long scope,String locationValue)
@@ -820,7 +991,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 
 	*/
-	public List<FileVO> getDistrictDetailsByStateId(Long stateId)
+	/*public List<FileVO> getDistrictDetailsByStateId(Long stateId)
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 	try{
@@ -839,9 +1010,100 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			e.printStackTrace();
 			return retValue;
 		}
+	}*/
+	
+	public List<FileVO> getDistrictDetailsByStateId(Long stateId,String accessType,Long accessValue)
+	{   
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	try{
+		List<Object[]> districtList = null;
+		if(accessType.equalsIgnoreCase("STATE"))
+		{
+		 List list  = districtDAO.getDistrictIdAndNameByState(stateId); 
+		 if(list != null && list.size() > 0)
+			 districtList = (List<Object[]>)list;
+		}
+		
+		if(accessType.equalsIgnoreCase("DISTRICT"))
+		  districtList = districtDAO.getDistrictIdAndNameByDistrictId(accessValue);	
+		
+		else if(accessType.equalsIgnoreCase("MLA"))
+		{
+		 List<Long> constituencyIdsList = new ArrayList<Long>(0);
+		 constituencyIdsList.add(accessValue);
+		 districtList = constituencyDAO.getDistrictByConstituencyId(constituencyIdsList);
+		}
+		
+		else if(accessType.equalsIgnoreCase("MP"))
+		{
+			 List<Long> assemBlyIdsList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsListByParliamId(accessValue);
+			 if(assemBlyIdsList != null && assemBlyIdsList.size() > 0)
+			  districtList = constituencyDAO.getDistrictByConstituencyId(assemBlyIdsList);
+		}
+		
+    	for(Object[] param : districtList)
+		{
+			FileVO fileVO = new FileVO();
+			fileVO.setIds((Long)param[0]);
+			fileVO.setNames(param[1].toString());
+			retValue.add(fileVO);
+		 }
+		 
+		return retValue;
+		}
+	catch(Exception e){
+			e.printStackTrace();
+			return retValue;
+		}
 	}
 	
-	public List<FileVO> getStateDetails()
+	
+	public List<FileVO> getStateDetails(String accessType,Long accessValue)
+	{   
+		 List<FileVO> retValue = new ArrayList<FileVO>();
+	try{
+		//List<com.itgrids.partyanalyst.model.State> states = stateDAO.getAll();
+		List<Object[]> stateList = null;
+		
+		if(accessType.equalsIgnoreCase("STATE"))
+		{
+			State state = stateDAO.get(accessValue);
+			if(state != null)
+			{
+				FileVO fileVO = new FileVO();
+				fileVO.setIds(state.getStateId());
+				fileVO.setNames(state.getStateName()!= null?state.getStateName():" ");
+				retValue.add(fileVO);
+			}
+		}
+		
+		else if(accessType.equalsIgnoreCase("DISTRICT"))
+		  stateList = districtDAO.getStateByDistrictID(accessValue);
+			
+		else if(accessType.equalsIgnoreCase("MLA") || accessType.equalsIgnoreCase("MP"))
+		  stateList = constituencyDAO.getStateByConstituencyId(accessValue);
+		
+		if(stateList != null && stateList.size() > 0)
+		{
+		  for(Object[] params:stateList)
+		  {
+			 FileVO fileVO = new FileVO();
+			 fileVO.setIds((Long)params[0]);
+			 fileVO.setNames(params[1]!= null?params[1].toString():" ");
+			 retValue.add(fileVO);  
+		  }
+		}
+		
+		 
+		return retValue;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return retValue;
+		}
+	}
+	
+	/*public List<FileVO> getStateDetails()
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
 	try{
@@ -860,7 +1122,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			e.printStackTrace();
 			return retValue;
 		}
-	}
+	}*/
 	/*
 	public CandidateVO getCandidateDetails(Long candidateId){
 		CandidateVO candidateVO = new CandidateVO();
@@ -6359,4 +6621,344 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	}
 	 
  }
+ 
+/* public LocationVO getLocationListForSelectedUser(String accessType,Long accessValue,Long userId)
+ {
+	 LocationVO locationVO = new LocationVO();
+	 
+	 List<SelectOptionVO> stateList = null;
+	 List<SelectOptionVO> districtList = null;
+	 List<SelectOptionVO> constituencyList = null;
+	 List<SelectOptionVO> mandalList = null;
+	 
+	 try{
+		 locationVO.setPopulatedId(accessValue);
+		if(accessType.equalsIgnoreCase("MLA"))
+		{
+		
+		 locationVO.setScopeId(4L);
+		 
+		 stateList = new ArrayList<SelectOptionVO>(0);
+		 districtList = new ArrayList<SelectOptionVO>(0);
+		 constituencyList = new ArrayList<SelectOptionVO>(0);
+		 mandalList = new ArrayList<SelectOptionVO>(0);
+		 
+		 List stateDistrictConstituency = constituencyDAO.getStateDistrictConstituency(accessValue);
+		 Object[] objVO = (Object[])stateDistrictConstituency.get(0);
+          
+		 stateList.add(new SelectOptionVO((Long)objVO[0],objVO[1]!= null?objVO[1].toString():""));
+		 districtList.add(new SelectOptionVO((Long)objVO[2],objVO[3]!= null?objVO[3].toString():""));
+		 constituencyList.add(new SelectOptionVO(accessValue,WordUtils.capitalize(objVO[4].toString().toLowerCase())));
+		 
+		 mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);
+		 
+		 locationVO.setStateId((Long)objVO[0]);
+		 locationVO.setDistrictId((Long)objVO[2]);
+		 locationVO.setConstituencyId(accessValue);
+		 
+		 
+		}
+		else if(accessType.equalsIgnoreCase("MP"))
+		{
+			
+			//locationVO.setScopeId(4L);
+			locationVO.setScopeId(2L);
+			
+			 stateList = new ArrayList<SelectOptionVO>(0);
+			 districtList = new ArrayList<SelectOptionVO>(0);
+			 constituencyList = new ArrayList<SelectOptionVO>(0);
+			 mandalList = new ArrayList<SelectOptionVO>(0);
+			 
+			 List<Long> assemblyConstituenyIds = new ArrayList<Long>(0);
+			
+			List state = constituencyDAO.getStateForParliamentConstituency(accessValue);
+			if(state!=null && state.size()==1){
+				Object[] object = (Object[]) state.get(0);
+				stateList.add(new SelectOptionVO((Long)object[0],object[1]!=null?object[1].toString():""));
+				
+				locationVO.setStateId((Long)object[0]);
+				
+			}
+			
+			ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+			
+			constituencyList = constituencyInfoVO.getAssembyConstituencies();
+			if(constituencyList != null && constituencyList.size() > 0)
+				 for(SelectOptionVO optionVO:constituencyList)
+				  assemblyConstituenyIds.add(optionVO.getId());
+			
+			List<SelectOptionVO> constituencies = constituencyInfoVO.getAssembyConstituencies();
+			if(constituencies != null && constituencies.size() > 0)
+				 for(SelectOptionVO optionVO:constituencies)
+				  assemblyConstituenyIds.add(optionVO.getId());
+			
+			
+			if(assemblyConstituenyIds != null && assemblyConstituenyIds.size() > 0)
+			{
+			 List<Object[]> districtsList = constituencyDAO.getDistrictsByConstituencyIds(assemblyConstituenyIds);
+			 if(districtsList != null && districtsList.size() > 0)
+			  for(Object[] params:districtsList)
+				districtList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):" "));
+			 
+			 for(Long constituencyId:assemblyConstituenyIds)
+			 {
+			  List<SelectOptionVO> mandalsTempList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+			  if(mandalsTempList != null && mandalsTempList.size() > 0)
+			   for(SelectOptionVO optionVO:mandalsTempList)
+			    mandalList.add(new SelectOptionVO(optionVO.getId(),optionVO.getName()));
+			 }
+			 
+			}
+			
+		}
+		else if(accessType.equalsIgnoreCase("STATE"))
+		{
+			locationVO.setScopeId(2L);
+			
+			 stateList = new ArrayList<SelectOptionVO>(0);
+			 districtList = new ArrayList<SelectOptionVO>(0);
+			
+			State state = stateDAO.get(accessValue);
+			String name = "";
+			if (state != null)
+			 name = state.getStateName();
+			stateList.add(new SelectOptionVO(accessValue,name));
+			
+			
+			List<Object[]> distinctList = districtDAO.getDistrictNamesByStateId(accessValue);
+			if(distinctList != null && distinctList.size() >0)
+			  for(Object[] params :distinctList)	
+			districtList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):""));
+			
+			locationVO.setStateId(accessValue);
+			
+			
+			
+		}
+		else if(accessType.equalsIgnoreCase("DISTRICT"))
+		{
+			locationVO.setScopeId(3L);
+			
+			 stateList = new ArrayList<SelectOptionVO>(0);
+			 districtList = new ArrayList<SelectOptionVO>(0);
+			 constituencyList = new ArrayList<SelectOptionVO>(0);
+			
+			List stateDistrictConstituency = districtDAO.getStateDistrictByDistrictID(accessValue);
+			Object[] objVO = (Object[])stateDistrictConstituency.get(0);
+            
+			stateList.add(new SelectOptionVO((Long)objVO[0],objVO[1] != null?objVO[1].toString():" "));
+			districtList.add(new SelectOptionVO(accessValue,objVO[2] != null?objVO[2].toString():" "));
+			
+			List<Object[]> constituenciesList = delimitationConstituencyDAO.getConstituenciesForDistrict(accessValue);
+			if(constituenciesList != null && constituenciesList.size() > 0)
+			 for(Object[] params:constituenciesList)
+			  constituencyList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):" "));
+			
+			locationVO.setStateId((Long)objVO[0]);
+			locationVO.setDistrictId(accessValue);
+			
+			
+		}
+		locationVO.setStateList(stateList);
+		locationVO.setDistrictList(districtList);
+		locationVO.setConstituencyList(constituencyList);
+		locationVO.setMandalList(mandalList);
+		
+	  return locationVO;
+	  
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error("Exception Occured in getLocationListForSelectedUser() method, Exception - "+e);
+	  return null;
+	}
+ }*/
+ 
+ public LocationVO getLocationListForSelectedUser(String accessType,Long accessValue,Long userId)
+ {
+	 LocationVO locationVO = new LocationVO();
+	 
+	 List<SelectOptionVO> stateList = null;
+	 List<SelectOptionVO> districtList = null;
+	 List<SelectOptionVO> constituencyList = null;
+	 List<SelectOptionVO> mandalList = null;
+	 
+	 try{
+		 locationVO.setPopulatedId(accessValue);
+		if(accessType.equalsIgnoreCase("MLA"))
+		{
+		
+		 locationVO.setScopeId(2L);
+		 
+		 stateList = new ArrayList<SelectOptionVO>(0);
+		 /*districtList = new ArrayList<SelectOptionVO>(0);
+		 constituencyList = new ArrayList<SelectOptionVO>(0);
+		 mandalList = new ArrayList<SelectOptionVO>(0);*/
+		 
+		 List stateDistrictConstituency = constituencyDAO.getStateDistrictConstituency(accessValue);
+		 Object[] objVO = (Object[])stateDistrictConstituency.get(0);
+          
+		 stateList.add(new SelectOptionVO((Long)objVO[0],objVO[1]!= null?objVO[1].toString():""));
+		 /*districtList.add(new SelectOptionVO((Long)objVO[2],objVO[3]!= null?objVO[3].toString():""));
+		 constituencyList.add(new SelectOptionVO(accessValue,WordUtils.capitalize(objVO[4].toString().toLowerCase())));
+		 
+		 mandalList = regionServiceDataImp.getSubRegionsInConstituency(accessValue, IConstants.PRESENT_YEAR, null);*/
+		 
+		 locationVO.setStateId((Long)objVO[0]);
+		 //locationVO.setDistrictId((Long)objVO[2]);
+		 //locationVO.setConstituencyId(accessValue);
+		 
+		 
+		}
+		else if(accessType.equalsIgnoreCase("MP"))
+		{
+			
+			//locationVO.setScopeId(4L);
+			locationVO.setScopeId(2L);
+			
+			 stateList = new ArrayList<SelectOptionVO>(0);
+			/* districtList = new ArrayList<SelectOptionVO>(0);
+			 constituencyList = new ArrayList<SelectOptionVO>(0);
+			 mandalList = new ArrayList<SelectOptionVO>(0);
+			 
+			 List<Long> assemblyConstituenyIds = new ArrayList<Long>(0);*/
+			
+			List state = constituencyDAO.getStateForParliamentConstituency(accessValue);
+			if(state!=null && state.size()==1){
+				Object[] object = (Object[]) state.get(0);
+				stateList.add(new SelectOptionVO((Long)object[0],object[1]!=null?object[1].toString():""));
+				
+				locationVO.setStateId((Long)object[0]);
+				
+			}
+			
+			/*ConstituencyInfoVO constituencyInfoVO = new ConstituencyInfoVO();
+			constituencyInfoVO = staticDataService.getLatestAssemblyConstituenciesForParliament(accessValue);
+			
+			constituencyList = constituencyInfoVO.getAssembyConstituencies();
+			if(constituencyList != null && constituencyList.size() > 0)
+				 for(SelectOptionVO optionVO:constituencyList)
+				  assemblyConstituenyIds.add(optionVO.getId());
+			
+			List<SelectOptionVO> constituencies = constituencyInfoVO.getAssembyConstituencies();
+			if(constituencies != null && constituencies.size() > 0)
+				 for(SelectOptionVO optionVO:constituencies)
+				  assemblyConstituenyIds.add(optionVO.getId());
+			
+			
+			if(assemblyConstituenyIds != null && assemblyConstituenyIds.size() > 0)
+			{
+			 List<Object[]> districtsList = constituencyDAO.getDistrictsByConstituencyIds(assemblyConstituenyIds);
+			 if(districtsList != null && districtsList.size() > 0)
+			  for(Object[] params:districtsList)
+				districtList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):" "));
+			 
+			 for(Long constituencyId:assemblyConstituenyIds)
+			 {
+			  List<SelectOptionVO> mandalsTempList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);
+			  if(mandalsTempList != null && mandalsTempList.size() > 0)
+			   for(SelectOptionVO optionVO:mandalsTempList)
+			    mandalList.add(new SelectOptionVO(optionVO.getId(),optionVO.getName()));
+			 }
+			 
+			}*/
+			
+		}
+		else if(accessType.equalsIgnoreCase("STATE"))
+		{
+			locationVO.setScopeId(2L);
+			
+			 stateList = new ArrayList<SelectOptionVO>(0);
+			/* districtList = new ArrayList<SelectOptionVO>(0);*/
+			
+			State state = stateDAO.get(accessValue);
+			String name = "";
+			if (state != null)
+			 name = state.getStateName();
+			stateList.add(new SelectOptionVO(accessValue,name));
+			
+			
+			/*List<Object[]> distinctList = districtDAO.getDistrictNamesByStateId(accessValue);
+			if(distinctList != null && distinctList.size() >0)
+			  for(Object[] params :distinctList)	
+			districtList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):""));*/
+			
+			locationVO.setStateId(accessValue);
+			
+			
+			
+		}
+		else if(accessType.equalsIgnoreCase("DISTRICT"))
+		{
+			locationVO.setScopeId(2L);
+			
+			 stateList = new ArrayList<SelectOptionVO>(0);
+			 /*districtList = new ArrayList<SelectOptionVO>(0);
+			 constituencyList = new ArrayList<SelectOptionVO>(0);*/
+			
+			List stateDistrictConstituency = districtDAO.getStateDistrictByDistrictID(accessValue);
+			Object[] objVO = (Object[])stateDistrictConstituency.get(0);
+            
+			stateList.add(new SelectOptionVO((Long)objVO[0],objVO[1] != null?objVO[1].toString():" "));
+			/*districtList.add(new SelectOptionVO(accessValue,objVO[2] != null?objVO[2].toString():" "));
+			
+			List<Object[]> constituenciesList = delimitationConstituencyDAO.getConstituenciesForDistrict(accessValue);
+			if(constituenciesList != null && constituenciesList.size() > 0)
+			 for(Object[] params:constituenciesList)
+			  constituencyList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):" "));*/
+			
+			locationVO.setStateId((Long)objVO[0]);
+			//locationVO.setDistrictId(accessValue);
+			
+			
+		}
+		locationVO.setStateList(stateList);
+		//locationVO.setDistrictList(districtList);
+		//locationVO.setConstituencyList(constituencyList);
+		//locationVO.setMandalList(mandalList);
+		
+	  return locationVO;
+	  
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error("Exception Occured in getLocationListForSelectedUser() method, Exception - "+e);
+	  return null;
+	}
+ }
+ 
+ 
+ public List<SelectOptionVO> getConstituencyList(Long districtId,String accessType,Long accessValue)
+ {
+	try{
+		List<SelectOptionVO> selectOptionVOsList = new ArrayList<SelectOptionVO>(0);
+		List<Object[]> constituencyList = null;
+		List<Long> assemBlyIdsList = new ArrayList<Long>(0);
+		
+		if(accessType.equalsIgnoreCase("STATE") || accessType.equalsIgnoreCase("DISTRICT"))
+		 constituencyList = delimitationConstituencyDAO.getConstituenciesByDistrictId(districtId);
+		
+		else if(accessType.equalsIgnoreCase("MLA"))
+			assemBlyIdsList.add(accessValue);
+		
+		else if(accessType.equalsIgnoreCase("MP"))
+			assemBlyIdsList = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsListByParliamId(accessValue);
+			
+		if(assemBlyIdsList != null && assemBlyIdsList.size() > 0)
+		 constituencyList = constituencyDAO.getConstituencyByConstituencyIdsList(assemBlyIdsList,districtId);
+		
+		if(constituencyList != null && constituencyList.size() > 0)
+		 for(Object[] params:constituencyList)
+		  selectOptionVOsList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():" "));	 
+			
+		return selectOptionVOsList;
+		
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 log.error("Exception Occured in getConstituencyList() method, Exception - "+e);
+	 return null;
+	}
+ }
+ 
+ 
+ 
 }
