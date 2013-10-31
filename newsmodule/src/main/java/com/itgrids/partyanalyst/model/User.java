@@ -124,7 +124,7 @@ public class User extends BaseModel implements Serializable{
 	private String passwdHashTxt;
 	private String hashKeyTxt;
 	private String userAccessType;
-	
+	private Set<NewsReport> newsReport = new HashSet<NewsReport>(0);
 	public User(){}
 	 public User(String firstName,  String lastName, String userName,String userType,String password)
 	 {
@@ -980,6 +980,14 @@ public class User extends BaseModel implements Serializable{
 	public void setCandidateParty(Set<CandidateParty> candidateParty) {
 		this.candidateParty = candidateParty;
 	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<NewsReport> getNewsReport() {
+		return newsReport;
+	}
+	public void setNewsReport(Set<NewsReport> newsReport) {
+		this.newsReport = newsReport;
+	}
 	
 
 	/*
@@ -992,5 +1000,6 @@ public class User extends BaseModel implements Serializable{
 	public void setCustomVoterGroups(Set<CustomVoterGroup> customVoterGroups) {
 		this.customVoterGroups = customVoterGroups;
 	}*/
+	
 	
 }

@@ -1329,4 +1329,10 @@
 	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="reportFilesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ReportFilesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="newsReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsReportDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
