@@ -264,7 +264,7 @@ font-size:18px;
 #pGallaryDescId,#photofileDescId,#pVGallaryDescId,#fileDescId,#profileDescId,#newsCateDesc,#newsfileDescription,#fileDescription,#galDescId{background : #ffffff !important;margin-top: 8px;width: 214px;}
 #contenttable {
   
-    background: #fff;
+    background: #fff !important;
 	margin-left:auto;
 	margin-right:auto;
 	padding-left:auto;
@@ -319,7 +319,7 @@ padding: 0 20px;
 #dateErrorMessage{color:red;font-weight:bold;}
 #toDateLabelId,#fromDateLabelId{display:inline-block;}
 #toDateLabelId{margin-left: 15px;}
-#assignNewsInnerDiv{margin-left: 151px; margin-top: 0px; width: 600px; clear: both;}
+#assignNewsInnerDiv,#newsReportInnerDiv{margin-left: 151px; margin-top: 0px; width: 600px; clear: both;}
 #assignNewsRadioDiv{margin-bottom: 16px; margin-top: 8px;}
 #assignNewsResradio{margin-top: 0px; margin-right: 4px;}
 #assignNewsCandidateRadio{margin-top: 0px; margin-right: 6px; margin-left: 13px;}
@@ -330,6 +330,44 @@ padding: 0 20px;
 #assignNewsbtn{margin-left: 137px; margin-top: 8px;}
 #errorMessageDiv{text-align: center; color: red; margin-top: -10px; margin-bottom: 17px;}
 #dateSelectDiv{text-align: center; margin-bottom: 21px; margin-top: 26px;}
+#mainheading{background: none repeat scroll 0 0 #00ccff;
+    border: 1px solid #D3D3D3;
+    color: #ffffff;
+    padding: 5px;
+    text-align: center;
+}
+table td{
+border:none !important;
+}
+.pagerRow 
+{
+ /*border: solid 1px red;
+	background: none repeat scroll 0 0 #DFF0D8;*/
+    color: #000000;
+    font-family: verdana;
+    font-size: 16px;
+    font-weight: bold;
+	
+}
+
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
+
+@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
+@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
+}
+
 </style>
 </head>
 <script type="text/javascript">
@@ -1779,6 +1817,7 @@ function showNewsGallaey()
 {
 	  $("#newsGallaryDiv").css("display","block");
 	  $("#newsAssignGallaryDiv").css("display","none");
+	  $("#profileManagementMainOuterDiv5").css("display","none");
   if(!formValidation()){
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
@@ -2840,6 +2879,7 @@ function showVideoGallaey1()
 if(!formValidation()){
   $("#profileManagementHeaderDiv2").css("display","block");
   $("#videoGallaryDiv").css("display","block");
+  $("#profileManagementMainOuterDiv5").css("display","none");
 document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
@@ -3785,7 +3825,7 @@ function updatePhoto(fileId,fileGallaryId)
 	<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Update News</a></li>
 
 	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>
-
+	<li><a value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: blue;">Create Report </a></li>
     </ul>
 	
 </div>
@@ -3932,13 +3972,50 @@ function updatePhoto(fileId,fileGallaryId)
 		<div class="span10 offset1 text-center alert">NEWS</div>
 	
 </div>
-		<div id='newsGallaryDiv' class="divInfo">
+<div id='newsGallaryDiv' class="divInfo">
 	 </div>		
 
 <!-- for  body 4  result  end -->
 
 <div id="ajaxImg" style="display:none;margin-left:300px;margin-top:30px;"><img src="images/icons/goldAjaxLoad.gif"></img></div>
+</div>
+<!-- for  body 5  result  start -->
+<<div id='profileManagementMainOuterDiv5' style="display:none">
+	<div id='profileManagementHeaderDiv5' class="row-fluid">
 
+		<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
+			  <tr>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
+				   </td>
+				   <td width="98%">
+					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
+					   <span style="text-decoration: none;" class="headerLabelSpan2">News</span>
+					 </div>
+				   </td>
+				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
+				   </td>
+			 </tr>
+		</table>-->
+		<div class="span10 offset1 text-center alert">Report</div>
+	
+</div>
+
+
+
+
+
+
+
+
+
+
+		<div id='newsReportDiv' class="divInfo">
+		
+	 </div>		
+<!--<div id='locationWiseNewsDiv' class="divInfo">
+</div>
+-->
+<!-- for  body 5  result  end -->
 <script>
 var newsDetails;
 var bvalue = false;
@@ -4017,23 +4094,17 @@ $(".dateField").live("click", function(){
 		}
      });
 
+
 $(document).on("click",'#fromDateId1 , #toDateId1', function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
 		changeMonth: true,
         changeYear: true, 
-		maxDate: new Date(),
-	    onSelect: function(dateText, inst) { 
-			isDatesValid1();
-			if($('input:radio[name=newsType]:checked').val() == "party")
- 				   checkAllValuesAndSendAjaxForNews();
-			else if($('input:radio[name=newsType]:checked').val() == "candidate")
-                   checkAllValuesAndSendAjax();
-	}
-		
+		maxDate: new Date()
+	    
 	}).datepicker("show");
 });
-
+	
 $(document).on("click",'#fromDateId , #toDateId', function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
@@ -4450,6 +4521,7 @@ function showTheNewsToUpdate()
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
+  $("#profileManagementMainOuterDiv5").css("display","none");
   $('#profileManagementMainOuterDiv4').show();
  /* $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -4593,6 +4665,9 @@ var callback = {
 			}else if(jsObj.task == "saveFileComment"){
 
 				alert("Your comment is saved successfully.");
+			}
+			else if(jsObj.task == "getNews"){ 
+               buildLocationWiseNews(myResults);
 			}
 		
 }
@@ -6869,6 +6944,7 @@ function assignNewsToCandidate()
   $("#profileManagementHeaderDiv3").css("display","none");
   $("#videoGallaryDiv").css("display","none");
   $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
   
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
@@ -7254,8 +7330,6 @@ function getGallariesForSelectedCategory()
 	var url = "getGallariesByCategoryIdAction.action?"+rparam;						
 	callAjax1(jsObj,url);
 }
-
-
 function getScopeForUser(){
   
  var jsObj =
@@ -7434,6 +7508,184 @@ function buildSelectOptionVOList(optionsList,elmt,populatedId)
 	 
 
 
+}
+
+
+function createReport()
+{
+
+ $("#newsReportDiv").css("display","block");
+  $("#newsGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","none");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","block");
+   $("#profileManagementHeaderDiv5").css("display","none");
+  
+  var str = '';
+  str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
+  str +='<h2 style="text-align: center;"> News Report</h2>';
+  str +='<div id="newsReporterrorMessageDiv"></div>';
+  str +='<div id="newsReportInnerDiv">';
+
+  str +='<label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId1" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>';
+  str +='<label id="toDateLabelId">ToDate :<input type="text" id="toDateId1" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>';
+   str+='<table>';
+   str+='<tr>';
+  str+='<td>News Description </td><td><textarea maxlength="330" name="fileDescription" rows="3" cols="20" id="newsreportfileDescription"></textarea></td>';
+   str+='</tr>';
+   str+='<tr>';
+  str +='<td>Select Level</td><td><select id="regionlevel"><option value="1">All</option><option value="2">STATE</option><option value="3">DISTRICT</option><option value="4">CONSTITUENCY</option></select></td>';
+    str+='</tr>';
+	  str+='<tr>';
+  str +='<td>Select News</td><td><select id="newsPriority"><option value="0">All</option><option value="1">Low</option><option value="2">Medium</option><option value="3">High</option></select></td>';
+    str+='</tr>';
+	   str+='</table>';
+  str +='</div>';
+
+
+  str +='<input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNews()"/>';
+  str+='<img id="newsReportAjaxImg" src="images/search.jpg" style="display:none;"/>';
+  str+='</table>';
+  str +='<div id="locationWiseNewsDiv" class="divInfo">';
+  str +='</div>';
+  str +='</div>';
+
+  str +='</div>';
+
+  $("#newsReportDiv").html(str);
+$("#fromDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
+$("#fromDateId1").datepicker("setDate", new Date());
+$("#toDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
+$("#toDateId1").datepicker("setDate", new Date());
+
+}
+function getNews()
+{
+
+$("#newsReportAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
+	var fromDate = $("#fromDateId1").val();
+	var toDate = $("#toDateId1").val();
+	var regionLevel = $("#regionlevel").val();
+	var importance = $("#newsPriority").val();
+    var jsObj = {
+			task: 'getNews',
+			fromDate:fromDate,
+			toDate:toDate,
+			regionLevel:regionLevel,
+			importance:importance
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getAllNewsForAUserAction.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+
+
+function saveNewsReport()
+{
+$("#savenewsAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
+   var fileGallaryIds = [];
+      $(".find-table").each(function() {
+      
+		  if($(this).is(":checked")){
+		fileGallaryIds.push($(this).val());
+	   }
+    });
+	if(fileGallaryIds == "")
+	{
+		alert('Select atleast one file');
+		$("#savenewsAjaxImg").css("display","none");
+		return;
+	}
+	var newsreportfileDescription = $("#newsreportfileDescription").val();
+	console.log(fileGallaryIds);
+    var jsObj = {
+			fileGallaryIds:fileGallaryIds,
+			description:newsreportfileDescription,
+			task: 'saveNews',
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "saveNewsUserAction.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+function buildLocationWiseNews(results)
+{
+	
+
+	var str='';
+	var divEle = document.getElementById("locationWiseNewsDiv");
+	if(results != null && results != '')
+	{
+		$("#newsReportAjaxImg").css("display","none");
+		for(var i in results)
+		{
+			str+='<div id="mainDiv">';
+			str+='<h4 id="mainheading">'+results[i].scope+' Wise </h4>';
+			for(var j=0; j< results[i].fileVOList.length;j++)
+			{
+			
+			str+='<h4 >'+ results[i].fileVOList[j].locationName+' </h4>';
+			str+='<div style="border:1px solid #d3d3d3;">';
+			str+='<table class="table">'
+			str+='<tr>';
+			
+			str+='<th>check</th>';
+			str+='<th>Source</th>';
+			str+='<th>Language</th>';
+			str+='<th>File Date</th>';
+			str+='<th>Candidate Name</th>';
+			str+='<th>Location Name</th>';
+			str+='</tr>';
+			
+			for(var k=0;k<results[i].fileVOList[j].fileVOList.length;k++)
+			{
+				var source = results[i].fileVOList[j].fileVOList[k].source.trim();
+		
+				str+='<tr >';
+				str+='<td><input type="checkbox" class="find-table" value='+results[i].fileVOList[j].fileVOList[k].contentId+'></td>';
+				str+='<td colspan="5" >';
+				if(source == "Eenadu Telugu")
+				{
+				str+="<span class='enadu fontStyle pagerRow' style='font-weight:bold;'><a href='javascript:{getNewsDetailsByContentId("+results[i].fileVOList[j].fileVOList[k].contentId+")}'>"+results[i].fileVOList[j].fileVOList[k].fileTitle1+"</a></span>"
+				//str+=' <div class="pagerRow">'+results[i].fileVOList[j].fileVOList[k].fileTitle1+'</div>';
+				}
+				else
+			{
+			str+="<h4 style='text-transform: capitalize;color: #005580;'><a  href='javascript:{getNewsDetailsByContentId("+results[i].fileVOList[j].fileVOList[k].contentId+")}'>"+results[i].fileVOList[j].fileVOList[k].fileTitle1+"</a></h4>";
+			}
+			    str+='</td>';
+				str+='</tr>';
+				str+='<tr>';
+				str+='<td></td>';
+				str+='<td>';
+				str+='<span>'+results[i].fileVOList[j].fileVOList[k].source+'</span>';
+				str+='</td>';
+				str+='<td>';
+				str+='<span>'+results[i].fileVOList[j].fileVOList[k].language+' </span></td>';
+				str+='<td>';
+				str+='<span>'+results[i].fileVOList[j].fileVOList[k].fileDate+' </span></td>';
+				str+='<td>';
+				str+='<span>'+results[i].fileVOList[j].fileVOList[k].candidateName+' </span></td>';
+				str+='<td>';
+				str+='<span>'+results[i].fileVOList[j].fileVOList[k].locationName+' </span></td>';
+				str+='</tr>';
+			
+			}
+	
+			str+='</table>'
+			str+='</div>';
+		}
+			
+	}
+	str +='<br/><input type="button" value="submit" class="btn btn-info" id="savenewsReport" onclick="saveNewsReport()"/>';
+	str+='<img style="display: none;" src="images/search.jpg" id="savenewsAjaxImg">';
+	}
+	divEle.innerHTML =str;
 }
 
 

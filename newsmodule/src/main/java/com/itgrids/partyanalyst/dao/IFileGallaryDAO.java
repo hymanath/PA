@@ -307,6 +307,11 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
     public List<FileGallary> getFileGallaryByGalleryIdsList(List<Long> gallaryIdsList , Integer startIndex  , Integer endIndex,String newsType,Long categoryId,Date fromDate,Date toDate,String requestFor);
     
     public List<Object[]> getAllTheNewsForAUserBasedOnUserAddressId(Long userId,Date fromDate,Date toDate,Long regionLevel,Long importanceId);
+    
+    public List<Object[]> getNewsByLocationWise(Long locationValue,Long locationScope,Long userId);
+  	
+  	public List<Object[]> getAllTheNewsForAUserBasedByUserId(Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue);
+      
  
 }
 

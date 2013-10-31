@@ -28,9 +28,12 @@ import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
+import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
+import com.itgrids.partyanalyst.dao.IReportFilesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
@@ -47,9 +50,12 @@ import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.NewsFlag;
 import com.itgrids.partyanalyst.model.NewsImportance;
+import com.itgrids.partyanalyst.model.NewsReport;
+import com.itgrids.partyanalyst.model.ReportFiles;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
@@ -86,7 +92,34 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IDistrictDAO districtDAO;
     private ICandidateNewsResponseDAO candidateNewsResponseDAO;
     private TransactionTemplate transactionTemplate = null;
+    private IUserAddressDAO userAddressDAO;
+   private INewsReportDAO newsReportDAO;
+   private IReportFilesDAO reportFilesDAO ;
    
+	public INewsReportDAO getNewsReportDAO() {
+	return newsReportDAO;
+}
+
+public void setNewsReportDAO(INewsReportDAO newsReportDAO) {
+	this.newsReportDAO = newsReportDAO;
+}
+
+public IReportFilesDAO getReportFilesDAO() {
+	return reportFilesDAO;
+}
+
+public void setReportFilesDAO(IReportFilesDAO reportFilesDAO) {
+	this.reportFilesDAO = reportFilesDAO;
+}
+
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
 	}
@@ -3111,7 +3144,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	
 */
 	
-public List<FileVO> getNewsForAuser(FileVO inputs){
+	public List<FileVO> getNewsForAuser(FileVO inputs){
 	      log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
 	       List<FileVO> fileVOList = new ArrayList<FileVO>();
 	    	try{
@@ -4436,5 +4469,253 @@ public List<FileVO> getNewsForAuser(FileVO inputs){
 			}
 	return resultStatus;
 	  }
+ 
+	  public List<FileVO> setData(List<Long> locationList,Long regionVal,Long userID) {
+		  List<FileVO> result = new ArrayList<FileVO>();
+		  List<Long> fileGalIds = new ArrayList<Long>();
+		  String locationScope ="";
+		  if(regionVal == 2)
+			  locationScope = IConstants.STATE;
+		  else if(regionVal == 3)
+			  locationScope = IConstants.DISTRICT;
+		  else if(regionVal == 4)
+			 locationScope = IConstants.CONSTITUENCY;
+		  	int i=0;
+			try{
+				for(Long locationVal : locationList)
+				{
+				List<Object[]> list = fileGallaryDAO.getNewsByLocationWise(locationVal,regionVal,userID);
+				Map<Long,String> candidateMap = new HashMap<Long, String>();//<filegalId,CandidateName>
+				for(Object[] id : list)
+				fileGalIds.add((Long)id[1]);
+				if(fileGalIds != null && fileGalIds.size() > 0)
+				{
+				List<Object[]> candidateNamesList = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalIds);
+				if(candidateNamesList != null && candidateNamesList.size() > 0)
+				 for(Object[] params:candidateNamesList)
+					candidateMap.put((Long)params[0], params[1] != null?params[1].toString():"");
+				 }
+				
+				FileVO fileVO = new FileVO();
+				if(i == 0)
+				{
+				fileVO.setLocationScopeValue(locationScope);
+				fileVO.setRegionValue(regionVal);
+				}
+				fileVO.setLocationName(candidateDetailsService.getLocationDetails(regionVal,locationVal));
+				fileVO.setLocationId(locationVal);
+				
+				if(list != null && list.size() > 0)
+				{
+					List<FileVO> subList = new ArrayList<FileVO>();
+					for(Object[] params : list)
+					{
+						FileVO fileVO2 = new FileVO();
+						File file =(File) params[0];
+						fileVO2.setContentId((Long)params[1]);
+						fileVO2.setFileTitle1(file.getFileTitle());
+						fileVO2.setFileDescription1(file.getFileDescription());
+						String fileDate = file.getFileDate().toString();
+			    		String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+			    		fileVO2.setFileDate(dateObj!=null?dateObj:"");
+			    		Set<FileSourceLanguage> set = file.getFileSourceLanguage();
+			    		String sourceString = "";
+			    		String language = "";
+						for(FileSourceLanguage source:set)
+						{
+							if(source.getSource() != null && (source.getSource().getSource() != null && !source.getSource().getSource().equals("")))
+							sourceString+=source.getSource().getSource()+" ";
+							if(source.getLanguage() != null && (source.getLanguage().getLanguage() != null && !source.getLanguage().getLanguage().equals("")))
+							language+=source.getLanguage().getLanguage()+" ";
+						}
+						fileVO2.setSource(sourceString);
+						fileVO2.setLanguage(language);
+						fileVO2.setCandidateName(candidateMap.get((Long)params[1]));
+						fileVO2.setLocationName(candidateDetailsService.getLocationDetails(regionVal,locationVal));
+					    subList.add(fileVO2);
+					    
+					}
+					fileVO.setFileVOList(subList);
+				}
+				
+				result.add(fileVO);
+				i++;
+				}
+			}
+		catch (Exception e) {
+		e.printStackTrace();
+		}
+			return result;
+	}
+	  
+	  
+	  public List<FileVO> getAllNewsDetails(FileVO fileVO)
+	  {
+		  List<FileVO> resultList = new ArrayList<FileVO>();
+		  List<Long> locationIds = new ArrayList<Long>();
+		  Long locationVal = 0l;
+		  String locationScope = null;
+		  try{
+			  Date fromDate = null;
+			  Date toDate = null;
+			  List<Object[]> list = null;
+			  SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+				if(fileVO.getFromDateStr() != null)
+					fromDate = format.parse(fileVO.getFromDateStr() );
+				 
+				if(fileVO.getToDateStr() != null)
+					toDate = format.parse(fileVO.getToDateStr());
+			
+				list = fileGallaryDAO.getAllTheNewsForAUserBasedByUserId(fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue());
+				resultList = setDataForAllLocations(list,fileVO.getUserId());
+			
+		  }
+		  catch (Exception e) {
+			log.error("Exception Occured in getAllNewsDetails() method , Exception - "+e);
+			e.printStackTrace();
+		}
+		return resultList;
+	  }
+	 
+	  
+	  public List<FileVO> setDataForAllLocations(List<Object[]> list,Long userID)
+	  {
+		  List<FileVO> result = new ArrayList<FileVO>();
+		  List<Long> fileGalIds = new ArrayList<Long>();
+		  Map<Long,String> candidateMap = new HashMap<Long, String>();//<filegalId,CandidateName>
+		  Map<Long,Map<Long,List<FileVO>>> regionWiseMap = new HashMap<Long, Map<Long,List<FileVO>>>();//<region,Map<location,filesList>>
+		  try
+		  {
+			  if(list != null && list.size() > 0)
+			  {
+				
+				for(Object[] id : list)
+				fileGalIds.add((Long)id[1]);
+				if(fileGalIds != null && fileGalIds.size() > 0)
+				{
+				List<Object[]> candidateNamesList = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalIds);
+				if(candidateNamesList != null && candidateNamesList.size() > 0)
+				 for(Object[] params:candidateNamesList)
+					candidateMap.put((Long)params[0], params[1] != null?params[1].toString():"");
+				 }
+			  }
+				for(Object[] params : list)
+				{
+					File file = (File)params[0];
+					if(file.getRegionScopes() != null && file.getRegionScopes().getRegionScopesId() != null)
+					{
+					Map<Long,List<FileVO>> locationMap = regionWiseMap.get(file.getRegionScopes().getRegionScopesId());
+					if(locationMap == null)
+					{
+						locationMap = new HashMap<Long, List<FileVO>>();
+						regionWiseMap.put(file.getRegionScopes().getRegionScopesId(), locationMap);
+					}
+					
+					List<FileVO> filesList = locationMap.get(file.getLocationValue());
+					FileVO fileVO = new FileVO();
+					if(filesList == null)
+					{
+						filesList = new ArrayList<FileVO>();
+						locationMap.put(file.getLocationValue(), filesList);
+					}
+					fileVO.setContentId((Long)params[1]);
+					fileVO.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())));
+					fileVO.setFileDescription1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())));
+					String fileDate = file.getFileDate().toString();
+		    		String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+		    		fileVO.setFileDate(dateObj!=null?dateObj:"");
+		    		Set<FileSourceLanguage> set = file.getFileSourceLanguage();
+		    		String sourceString = "";
+		    		String language = "";
+					for(FileSourceLanguage source:set)
+					{
+						if(source.getSource() != null && (source.getSource().getSource() != null && !source.getSource().getSource().equals("")))
+						sourceString+=source.getSource().getSource()+" ";
+						if(source.getLanguage() != null && (source.getLanguage().getLanguage() != null && !source.getLanguage().getLanguage().equals("")))
+						language+=source.getLanguage().getLanguage()+" ";
+					}
+					fileVO.setSource(sourceString);
+					fileVO.setLanguage(language);
+					if(candidateMap == null || candidateMap.get((Long)params[1]) == null)
+					fileVO.setCandidateName("TDP");		
+					else
+					fileVO.setCandidateName(candidateMap.get((Long)params[1]));
+					fileVO.setLocationName(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(),file.getLocationValue()));
+					filesList.add(fileVO);
+					}
+			}
+				if(regionWiseMap != null)
+				for(Long regionVal : regionWiseMap.keySet())
+				{
+					FileVO fileVO = new FileVO();
+					String regionScope ="";
+					fileVO.setRegionValue(regionVal);
+					if(regionVal == 2)
+						regionScope = IConstants.STATE;
+					if(regionVal == 3)
+						regionScope = IConstants.DISTRICT;
+					if(regionVal == 4)
+						regionScope = IConstants.CONSTITUENCY;
+					fileVO.setScope(regionScope);
+					List<FileVO> locationsList = new ArrayList<FileVO>();
+					Map<Long,List<FileVO>> locationMap  =  regionWiseMap.get(regionVal);
+					if(locationMap != null)
+					for(Long locationId : locationMap.keySet())
+					{
+						FileVO fileVO2 = new FileVO();
+						List<FileVO> filesList = locationMap.get(locationId);
+						fileVO2.setLocationId(locationId);
+						fileVO2.setLocationName(candidateDetailsService.getLocationDetails(regionVal,locationId));
+						fileVO2.setFileVOList(filesList);
+						locationsList.add(fileVO2);
+					}
+					fileVO.setFileVOList(locationsList);
+					result.add(fileVO);	
+				}
+			}
+		  catch (Exception e) {
+			e.printStackTrace();
+		  }
+		return result;
+	  }
+	  
+	  public ResultStatus saveNewsReport(final List<Long> fileGallaryIds,final Long userId,final String decription)
+	  {
+		  final ResultStatus resultStatus = new ResultStatus();
+		  try{
+			 
+			  transactionTemplate.execute(new TransactionCallback() {
+			  public Object doInTransaction(TransactionStatus status) {
+		  DateUtilService currentDate = new DateUtilService();
+		
+			
+			NewsReport newsReport = new NewsReport();
+			newsReport.setDescription(decription);
+			newsReport.setUser(userDAO.get(userId));
+			newsReport.setCreatedDate(currentDate.getCurrentDateAndTime());
+			newsReport = newsReportDAO.save(newsReport);
+			ReportFiles reportFiles = new ReportFiles();
+			for(Long ID : fileGallaryIds)
+			{
+			reportFiles.setFileGallary(fileGallaryDAO.get(ID));
+			reportFiles.setNewsReport(newsReport);
+			reportFilesDAO.save(reportFiles);
+			
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+			  }
+			  });
+		
+		  }	 
+		catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		    e.printStackTrace();
+		}
+		
+		return resultStatus;
+	  }
+	  
+	
 
 }

@@ -3362,5 +3362,47 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	 return query.list();
 
 	 }
+	 public List<Object[]> getNewsByLocationWise(Long locationValue,Long locationScope,Long userId)
+		{
+			Query query = getSession().createQuery("select model.file,model.fileGallaryId from FileGallary model where model.file.regionScopes.regionScopesId = :locationScope " +
+					"and model.file.locationValue =:locationValue and model.file.user.userId = :userId and model.file.userAddress.userAddressId != null ");
+			query.setParameter("locationScope", locationScope);
+			query.setParameter("locationValue", locationValue);
+			query.setParameter("userId", userId);
+			return query.list();
+			
+		}
+		
+		
+		 public List<Object[]> getAllTheNewsForAUserBasedByUserId(Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue)
+		 {
+			 StringBuilder str = new StringBuilder();
+			 str.append("select distinct model.file,model.fileGallaryId from FileGallary model where model.isDelete ='"+IConstants.FALSE+"' ");
+			 str.append("and model.file.user.userId = :userId ");
+			 if(importanceId != 0)
+			 str.append("and model.file.newsImportance.newsImportanceId = :importanceId ");
+			 if(regionValue != 1)
+			 str.append("and model.file.regionScopes.regionScopesId = :regionValue ") ; 
+			 if(fromDate != null)
+				 str.append("and date(model.file.fileDate) >= :fromDate ");
+			 if(toDate != null)
+				 str.append("and date(model.file.fileDate) <= :toDate "); 
+			 str.append("order by model.file.fileDate desc ");
+			 Query query = getSession().createQuery(str.toString());
+			 query.setParameter("userId", userId);
+			 if(fromDate != null)
+			 query.setParameter("fromDate", fromDate);
+			 if(toDate != null)
+			 query.setParameter("toDate", toDate);
+			 if(importanceId != 0)
+			 query.setParameter("importanceId", importanceId);
+			 if(regionValue != 1)
+				 query.setParameter("regionValue", regionValue);
+			 query.setFirstResult(0);
+			 query.setMaxResults(300);
+			return query.list();
+			 
+		}
+		 
 	 
 }

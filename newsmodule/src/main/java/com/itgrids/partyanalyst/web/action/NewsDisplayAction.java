@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -515,5 +516,51 @@ public class NewsDisplayAction implements ServletRequestAware{
 		// TODO: handle exception
 	}
 	   return Action.SUCCESS;  
+   }
+   
+   public String getNewsForAUser()
+   {
+	   try{
+		   jObj = new JSONObject(getTask());
+		  session = request.getSession();
+		  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+		  if(regVo == null)
+			  return Action.ERROR;
+		  Long userId = regVo.getRegistrationID();
+		  FileVO fileVO = new FileVO();
+		  fileVO.setUserId(userId);
+		  fileVO.setFromDateStr(jObj.getString("fromDate"));
+		  fileVO.setToDateStr(jObj.getString("toDate"));
+		  fileVO.setLatest(true);
+		  fileVO.setRegionValue(jObj.getLong("regionLevel"));
+		  fileVO.setImportanceId(jObj.getLong("importance"));
+		  returnVal = newsMonitoringService.getAllNewsDetails(fileVO);
+		  
+	   }
+	   catch (Exception e) {
+		   e.printStackTrace();
+	}
+	return Action.SUCCESS;
+   }
+   
+   public String saveNewsForAUser()
+   {
+	   try{
+		   List<Long> fileGallaryIds = new ArrayList<Long>();
+		   jObj = new JSONObject(getTask());
+			  session = request.getSession();
+			  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			  if(regVo == null)
+				  return Action.ERROR;
+			  Long userId = regVo.getRegistrationID();  
+			  JSONArray arr = jObj.getJSONArray("fileGallaryIds");
+			  for(int i=0;i<arr.length();i++)
+				  fileGallaryIds.add(new Long(arr.get(i).toString())); 
+			  resultStatus = newsMonitoringService.saveNewsReport(fileGallaryIds,userId,jObj.getString("description"));
+	   }
+	   catch (Exception e) {
+		e.printStackTrace();
+	}
+	return Action.SUCCESS;
    }
 }

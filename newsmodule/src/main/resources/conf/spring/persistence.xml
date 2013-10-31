@@ -95,6 +95,8 @@
 				<value>com.itgrids.partyanalyst.model.CandidateParty</value>
 				<value>com.itgrids.partyanalyst.model.UserNewsCategory</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
+				<value>com.itgrids.partyanalyst.model.NewsReport</value>
+				<value>com.itgrids.partyanalyst.model.ReportFiles</value>
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>

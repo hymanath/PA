@@ -1662,6 +1662,9 @@
 		<property name="districtDAO" ref="districtDAO" />	
 		<property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO" />	
 		<property name="transactionTemplate" ref="transactionTemplate" />
+		<property name="userAddressDAO" ref="userAddressDAO" />
+		<property name="newsReportDAO" ref="newsReportDAO" />
+		<property name="reportFilesDAO" ref="reportFilesDAO" />
 	</bean>
 </beans>		
 	
