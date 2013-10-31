@@ -7619,9 +7619,10 @@ function buildLocationWiseNews(results)
 
 	var str='';
 	var divEle = document.getElementById("locationWiseNewsDiv");
+	$("#newsReportAjaxImg").css("display","none");
 	if(results != null && results != '')
 	{
-		$("#newsReportAjaxImg").css("display","none");
+		
 		for(var i in results)
 		{
 			str+='<div id="mainDiv">';
