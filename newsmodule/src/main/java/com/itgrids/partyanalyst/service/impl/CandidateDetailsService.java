@@ -696,7 +696,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		return resultStatus;
 		}catch (Exception e) {
-			log.error("Exception encountered, Check log for Details - "+e);
+			log.error("Exception encountered, Check log for Details - ",e);
 			resultStatus.setExceptionEncountered(e);
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			return resultStatus;
@@ -798,7 +798,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 return userAddress;
 	 }catch (Exception e) {
 	  e.printStackTrace();
-	  log.error(" Exception Occured in saveFileLocationInUserAddress() method, Exception - "+e);
+	  log.error(" Exception Occured in saveFileLocationInUserAddress() method, Exception - ",e);
 	  return null;
 	 }
 	 	
@@ -821,7 +821,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			return null;
 		}catch (Exception e) {
-			log.error("Error Occured in getLocationScopeVlaue() method - "+e); 
+			log.error("Error Occured in getLocationScopeVlaue() method - ",e); 
 			return null;
 		}
 	}
@@ -885,7 +885,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 return resultMap;
 				 }
 		 catch (Exception e) {
-			 log.error("Exception occured - "+e);
+			 log.error("Exception occured - ",e);
 			 return null;
 		 }
 	}//18111
@@ -5515,7 +5515,7 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 		}
 	 }catch (Exception e) {
 		 e.printStackTrace();
-		 log.error(" Exception Occured in getFilesOfAGallary() method, Exception - "+e);
+		 log.error(" Exception Occured in getFilesOfAGallary() method, Exception - ",e);
 	}
 		
 		return returnList;		
@@ -5637,7 +5637,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - ",e);
 			 return fileVOsList;
 		}
 	}
@@ -5745,7 +5745,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in setfileGallaryDetails() method, Exception - "+e);
+			log.error("Exception Occured in setfileGallaryDetails() method, Exception - ",e);
 			
 		}
 	}
@@ -5774,7 +5774,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - ",e);
 			 return fileVOsList;
 		}
 	}
@@ -5878,7 +5878,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				}
 				return gallarySelectList;
 			}catch (Exception e) {
-				log.error("Exception Occured in getCandidateGallarySelectList() method - "+e);
+				log.error("Exception Occured in getCandidateGallarySelectList() method - ",e);
 				return null;
 			}
 		}
@@ -6002,7 +6002,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		  }
 		 return fileVOList;
 	}catch (Exception e) {
-				log.debug("Exception Occured in getCandidatesNews() Method, Exception - "+e);
+				log.debug("Exception Occured in getCandidatesNews() Method, Exception - ",e);
 				return fileVOList;
 		}
 	}
@@ -6063,7 +6063,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 return fileVOsList;
 		 }catch (Exception e) {
 			 e.printStackTrace();
-			 log.error("Exception Occured in getNewsBetweenSelectedDates() method, Exception - "+e);
+			 log.error("Exception Occured in getNewsBetweenSelectedDates() method, Exception - ",e);
 			 return fileVOsList;
 		}
 	 }
@@ -6151,7 +6151,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				log.error("Exception Occured in createUserNewsCategory() method, Exception - "+e);
+				log.error("Exception Occured in createUserNewsCategory() method, Exception - ",e);
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
 			}
@@ -6176,7 +6176,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				
 			}catch (Exception e) {
 				e.printStackTrace();
-				log.error("Exception Occured in getAllCategoriesOfUser() ,Exception-"+e);
+				log.error("Exception Occured in getAllCategoriesOfUser() ,Exception-",e);
 			}
 			
 			
@@ -6309,7 +6309,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				return selectOptionVOList;
 			}catch (Exception e) {
 				e.printStackTrace();
-				log.error("Exception Occured in getCandidateRelatedGallaries() method, Exception - "+e);
+				log.error("Exception Occured in getCandidateRelatedGallaries() method, Exception - ",e);
 				return null;
 			}
 		}
@@ -6336,7 +6336,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				return selectOptionVOList;
 			}catch (Exception e) {
 				e.printStackTrace();
-				log.error("Exception Occured in getCandidateRelatedCategories() method, Exception - "+e);
+				log.error("Exception Occured in getCandidateRelatedCategories() method, Exception - ",e);
 				return null;
 			}
 		}
@@ -6356,7 +6356,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		  return selectOptionVOList;
 		}catch (Exception e) {
 		   e.printStackTrace();
-		   log.error("Exception Occured in getGallariesForSelectedCategory() method, Exception - "+e);
+		   log.error("Exception Occured in getGallariesForSelectedCategory() method, Exception - ",e);
 		   return null;
 		 }
 	}
@@ -6375,7 +6375,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
     		
     	}catch (Exception e) {
     		e.printStackTrace();
-    		log.error("Exception Occured in getNewsTitlesForACandidateByGalleryId() method, Exception - "+e);
+    		log.error("Exception Occured in getNewsTitlesForACandidateByGalleryId() method, Exception - ",e);
     		return null;
 		}
     }
@@ -6395,7 +6395,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
     	  
       }catch (Exception e) {
     	e.printStackTrace();
-    	log.error("Exception Occured in getNewsForACandidateByCategoryId() method, Exception - "+e);
+    	log.error("Exception Occured in getNewsForACandidateByCategoryId() method, Exception - ",e);
     	return null;
 	}
     }
@@ -6423,7 +6423,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
     	 return selectOptionVOList;
     	}catch (Exception e) {
     	 e.printStackTrace();
-    	 log.error("Exception Occured in getGalleryListForAParty() method, Exception - "+e);
+    	 log.error("Exception Occured in getGalleryListForAParty() method, Exception - ",e);
     	 return null;
 		}
     }
@@ -6446,7 +6446,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		   return selectOptionVOList;
 	   }catch (Exception e) {
 		 e.printStackTrace();
-		 log.error("Exception Occured in getNewsByGalleryId() method, Exception - "+e);
+		 log.error("Exception Occured in getNewsByGalleryId() method, Exception - ",e);
 		 return null;
 	}
    }
@@ -6487,7 +6487,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		   return resultStatus;
 	   }catch (Exception e) {
 			 e.printStackTrace();
-			 log.error("Exception Occured in assignResToCandidateOrAGallary() method, Exception - "+e);
+			 log.error("Exception Occured in assignResToCandidateOrAGallary() method, Exception - ",e);
 			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			 return resultStatus;
 		}
@@ -6511,7 +6511,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		
 		}catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - "+e);
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - ",e);
 			 return fileVOsList;
 		}
 }
@@ -6553,7 +6553,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 return selectOptionVOList;
 	 }catch (Exception e) {
       e.printStackTrace();
-      log.error("Exception Occured in getLocationValuesByRegionScope() method, Exception - "+e);
+      log.error("Exception Occured in getLocationValuesByRegionScope() method, Exception - ",e);
       return null;
 	 }
  }
@@ -6581,7 +6581,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		return selectOptionVOList;
 	}catch (Exception e) {
      e.printStackTrace();
-     log.error("Exception Occured in getTotalCategoriesList() method, Exception - "+e);
+     log.error("Exception Occured in getTotalCategoriesList() method, Exception - ",e);
      return selectOptionVOList;
 	}
  }
@@ -6598,7 +6598,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 return selectOptionVOList;
 	 }catch (Exception e) {
       e.printStackTrace();
-      log.error(" Exception Occured in getAllCategories() method, Exception - "+e);
+      log.error(" Exception Occured in getAllCategories() method, Exception - ",e);
       return null;
 	 }
  }
@@ -6616,7 +6616,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		return selectOptionVOList;
 	}catch (Exception e) {
 		e.printStackTrace();
-	    log.error(" Exception Occured in getGallariesInCategory() method, Exception - "+e);
+	    log.error(" Exception Occured in getGallariesInCategory() method, Exception - ",e);
 	    return null;
 	}
 	 
@@ -6921,7 +6921,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	  
 	 }catch (Exception e) {
 	  e.printStackTrace();
-	  log.error("Exception Occured in getLocationListForSelectedUser() method, Exception - "+e);
+	  log.error("Exception Occured in getLocationListForSelectedUser() method, Exception - ",e);
 	  return null;
 	}
  }
@@ -6954,7 +6954,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		
 	}catch (Exception e) {
 	 e.printStackTrace();
-	 log.error("Exception Occured in getConstituencyList() method, Exception - "+e);
+	 log.error("Exception Occured in getConstituencyList() method, Exception - ",e);
 	 return null;
 	}
  }
