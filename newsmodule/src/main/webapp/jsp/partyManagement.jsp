@@ -4669,6 +4669,10 @@ var callback = {
 			else if(jsObj.task == "getNews"){ 
                buildLocationWiseNews(myResults);
 			}
+			else if(jsObj.task == "saveNews")
+			{
+			showReportFileNewsStatus(myResults);
+			}
 		
 }
 		catch(e)
@@ -7530,9 +7534,9 @@ function createReport()
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
   str +='<h2 style="text-align: center;"> News Report</h2>';
-  str +='<div id="newsReporterrorMessageDiv"></div>';
-  str +='<div id="newsReportInnerDiv">';
 
+  str +='<div id="newsReportInnerDiv">';
+  str +='<div id="newsReporterrorMessageDiv"></div>';
   str +='<label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId1" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>';
   str +='<label id="toDateLabelId">ToDate :<input type="text" id="toDateId1" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>';
    str+='<table>';
@@ -7588,22 +7592,43 @@ $("#newsReportAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
 
 function saveNewsReport()
 {
-$("#savenewsAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
-   var fileGallaryIds = [];
-      $(".find-table").each(function() {
+
+
+var newsreportfileDescription = $("#newsreportfileDescription").val();
+var fileGallaryIds = [];
+   $(".find-table").each(function() {
       
 		  if($(this).is(":checked")){
 		fileGallaryIds.push($(this).val());
 	   }
     });
+   var str = '<font color="red">';
+   var flag =false;
 	if(fileGallaryIds == "")
 	{
-		alert('Select atleast one file');
-		$("#savenewsAjaxImg").css("display","none");
-		return;
+		str +='Select atleast one file<br/>';
+		flag =true;
 	}
-	var newsreportfileDescription = $("#newsreportfileDescription").val();
-	console.log(fileGallaryIds);
+	
+	 if(newsreportfileDescription == 0)
+	{
+		str +='description is required<br/>';
+		flag = true;
+	}
+	
+	newsReporterrorMessageDiv.innerHTML = str;
+	 if(flag == true)
+	{
+		$('html, body').animate({
+         scrollTop: $("#newsReporterrorMessageDiv").offset().top
+     }, 2000);
+		
+	return;
+	}
+	else
+	{
+	$("#savenewsAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
+	newsReporterrorMessageDiv.innerHTML = '';
     var jsObj = {
 			fileGallaryIds:fileGallaryIds,
 			description:newsreportfileDescription,
@@ -7612,17 +7637,15 @@ $("#savenewsAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "saveNewsUserAction.action?"+rparam;
 	callnewAjax(jsObj,url);
+	}
 }
 function buildLocationWiseNews(results)
 {
-	
-
 	var str='';
 	var divEle = document.getElementById("locationWiseNewsDiv");
 	$("#newsReportAjaxImg").css("display","none");
 	if(results != null && results != '')
 	{
-		
 		for(var i in results)
 		{
 			str+='<div id="mainDiv">';
@@ -7688,7 +7711,23 @@ function buildLocationWiseNews(results)
 	}
 	divEle.innerHTML =str;
 }
-
+function showReportFileNewsStatus(result)
+{
+	$("#savenewsAjaxImg").css("display","none");
+	if(result.resultCode == 0)
+	{
+	 $("#newsreportfileDescription").val('');
+	 $("#newsReporterrorMessageDiv").html('Saved successfully..').css('color','green');
+	}
+	else
+	{
+  $("#newsReporterrorMessageDiv").html('Error Occured! Try Again..').css('color','red');
+   }
+ $('html, body').animate({
+         scrollTop: $("#newsReporterrorMessageDiv").offset().top
+     }, 2000);
+		 return;
+}
 
 </script>
 </body>
