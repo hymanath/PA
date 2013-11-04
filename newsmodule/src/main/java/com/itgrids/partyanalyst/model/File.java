@@ -61,9 +61,12 @@ public class File extends BaseModel implements java.io.Serializable {
 	//private Set<ProblemFiles> problemFiles = new HashSet<ProblemFiles>(0);
 	//private Set<NewsProblem> newsProblems = new HashSet<NewsProblem>();
 	private String newsDescription;
+	private Set<FileKeyword> fileKeywords =new HashSet<FileKeyword>(0);
 	
 	
 	private String comment;
+	
+
 	private User user;
     private UserAddress userAddress;
 	
@@ -339,6 +342,14 @@ public class File extends BaseModel implements java.io.Serializable {
 		this.userAddress = userAddress;
 	}
 	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "file")
+	public Set<FileKeyword> getFileKeywords() {
+		return fileKeywords;
+	}
+
+	public void setFileKeywords(Set<FileKeyword> fileKeywords) {
+		this.fileKeywords = fileKeywords;
+	}
 	
 
 }

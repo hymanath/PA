@@ -50,16 +50,19 @@ public class Gallary implements Serializable{
 	private Set<SpecialPageGallery> specialPageGalleries = new HashSet<SpecialPageGallery>(0);
 	private Category category;
 	private String isNewsPortal;
+	private Set<GallaryKeyword> gallarykeywords = new HashSet<GallaryKeyword>(0);
 	
 	/* default constructor*/
 	
+	
+
 	public Gallary(){
 	}
 	
 	/* full constructor */
 	
 	public Gallary(String name,String description,Date createdDate,
-			Date updateddate,ContentType contentType,String isDelete,String isPrivate,Category category,String isNewsPortal){
+			Date updateddate,ContentType contentType,String isDelete,String isPrivate,Category category,String isNewsPortal, Set<GallaryKeyword> gallarykeywords){
 		this.name = name;
 		this.description = description;
 		this.createdDate = createdDate;
@@ -69,6 +72,7 @@ public class Gallary implements Serializable{
 		this.isPrivate = isPrivate;
 		this.category = category;
 		this.isNewsPortal = isNewsPortal;
+		this.gallarykeywords=gallarykeywords;
 	}
 
 	@Id
@@ -211,5 +215,13 @@ public class Gallary implements Serializable{
 		this.isNewsPortal = isNewsPortal;
 	}
 	
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "gallary")
+	public Set<GallaryKeyword> getGallarykeywords() {
+		return gallarykeywords;
+	}
+
+	public void setGallarykeywords(Set<GallaryKeyword> gallarykeywords) {
+		this.gallarykeywords = gallarykeywords;
+	}
 
 }
