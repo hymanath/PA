@@ -114,6 +114,12 @@
 				<value>com.itgrids.partyanalyst.model.UserNewsCategory</value>
 				<value>com.itgrids.partyanalyst.model.User</value>
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
+				<value>com.itgrids.partyanalyst.model.NewsReport</value>
+				<value>com.itgrids.partyanalyst.model.ReportFiles</value>
+				<value>com.itgrids.partyanalyst.model.Keyword</value>
+				<value>com.itgrids.partyanalyst.model.GallaryKeyword</value>
+				<value>com.itgrids.partyanalyst.model.FileKeyword</value>
+				<value>com.itgrids.partyanalyst.model.MainCategory</value>
 			</list>
 		</property>
 	</bean>
@@ -150,7 +156,30 @@
 	<bean id="delimitationConstituencyAssemblyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyAssemblyDetailsDAO">
 	 <property name="sessionFactory" ref="sessionFactory" />	
 	</bean>
+	<bean id="userAddressDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="reportFilesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ReportFilesDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="newsReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsReportDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+		</bean>
+	<bean id="keywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.KeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
+	<bean id="mainCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MainCategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fileKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="gallaryKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<!--End Add new DAOs here -->
 </beans>
