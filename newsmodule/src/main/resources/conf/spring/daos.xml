@@ -1335,4 +1335,20 @@
 	<bean id="newsReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsReportDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="keywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.KeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="mainCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.MainCategoryDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fileKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="gallaryKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		
