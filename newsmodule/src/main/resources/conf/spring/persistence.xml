@@ -97,6 +97,11 @@
 				<value>com.itgrids.partyanalyst.model.DelimitationConstituencyAssemblyDetails</value>
 				<value>com.itgrids.partyanalyst.model.NewsReport</value>
 				<value>com.itgrids.partyanalyst.model.ReportFiles</value>
+				<value>com.itgrids.partyanalyst.model.Keyword</value>
+				<value>com.itgrids.partyanalyst.model.GallaryKeyword</value>
+				<value>com.itgrids.partyanalyst.model.FileKeyword</value>
+				<value>com.itgrids.partyanalyst.model.MainCategory</value>
+						
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>
