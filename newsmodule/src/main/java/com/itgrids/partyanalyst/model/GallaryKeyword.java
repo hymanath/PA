@@ -36,7 +36,7 @@ public class GallaryKeyword extends BaseModel implements java.io.Serializable{
 	private Keyword keyword;
 	private Date createdDate;
 	private Date updatedDate;
-	private String createdBy;
+	private Long createdBy;
 	
 	
 	public GallaryKeyword() {
@@ -44,7 +44,7 @@ public class GallaryKeyword extends BaseModel implements java.io.Serializable{
 	}
 
 	/** full constructor */
-	public GallaryKeyword(Long gallaryKeywordId, Gallary gallary,  Keyword keyword,Date createdDate, Date updatedDate,String createdBy) {
+	public GallaryKeyword(Long gallaryKeywordId, Gallary gallary,  Keyword keyword,Date createdDate, Date updatedDate,Long createdBy) {
 		this.gallaryKeywordId = gallaryKeywordId;
 		this.gallary = gallary;
 		this.keyword = keyword;	
@@ -108,15 +108,15 @@ public class GallaryKeyword extends BaseModel implements java.io.Serializable{
 		this.updatedDate = updatedDate;
 	}
 
-	
-	@Column(name = "created_by", length = 10)
-	public String getCreatedBy() {
+	@Column(name = "created_by", length = 15)
+	public Long getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
 	}
+
 	
 	
 	
