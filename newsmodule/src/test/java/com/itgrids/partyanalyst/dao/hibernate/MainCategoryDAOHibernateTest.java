@@ -7,12 +7,17 @@ import com.itgrids.partyanalyst.dao.IMainCategoryDAO;
 
 public class MainCategoryDAOHibernateTest extends BaseDaoTestCase{
 		
-	IMainCategoryDAO MainCategoryDAO;
+	private IMainCategoryDAO mainCategoryDAO;
 
-		public void setMainCategoryDAO(
-				IMainCategoryDAO MainCategoryDAO) {
-			this.MainCategoryDAO = MainCategoryDAO;
-		}
+	public void setMainCategoryDAO(IMainCategoryDAO mainCategoryDAO) {
+		this.mainCategoryDAO = mainCategoryDAO;
+	}
+
+
+public void test()
+{
+	mainCategoryDAO.getAll();
+}
 	}
 
 

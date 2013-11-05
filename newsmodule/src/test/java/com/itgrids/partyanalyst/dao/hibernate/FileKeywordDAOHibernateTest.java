@@ -7,11 +7,15 @@ import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
 public class FileKeywordDAOHibernateTest extends BaseDaoTestCase{
 	
 	
-	IFileKeywordDAO FileKeywordDAO;
+	
+	private IFileKeywordDAO fileKeywordDAO;
 
-	public void setFileKeywordDAO(
-			IFileKeywordDAO FileKeywordDAO) {
-		this.FileKeywordDAO = FileKeywordDAO;
+	public void setFileKeywordDAO(IFileKeywordDAO fileKeywordDAO) {
+		this.fileKeywordDAO = fileKeywordDAO;
 	}
 
-}
+     public void test()
+     {
+	    fileKeywordDAO.getAll();
+     }
+	}
