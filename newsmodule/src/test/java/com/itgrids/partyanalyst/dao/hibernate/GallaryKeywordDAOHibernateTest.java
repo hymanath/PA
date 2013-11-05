@@ -8,12 +8,17 @@ import com.itgrids.partyanalyst.dao.IGallaryKeywordDAO;
 public class GallaryKeywordDAOHibernateTest extends BaseDaoTestCase{
 	
 	
-	IGallaryKeywordDAO GallaryKeywordDAO;
+	private IGallaryKeywordDAO gallaryKeywordDAO;
 
-	public void setFileKeywordDAO(
-			IGallaryKeywordDAO GallaryKeywordDAO) {
-		this.GallaryKeywordDAO = GallaryKeywordDAO;
+
+	public void setGallaryKeywordDAO(IGallaryKeywordDAO gallaryKeywordDAO) {
+		this.gallaryKeywordDAO = gallaryKeywordDAO;
 	}
+
+    public void test()
+    {
+	  gallaryKeywordDAO.getAll();
+    }
 
 }
 
