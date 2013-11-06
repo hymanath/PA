@@ -51,7 +51,7 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private ResultStatus result;
 	private List<GallaryVO> gallaryList;
 	private List<FileVO> fileVO;
-	private List<SelectOptionVO> selectOptionList;
+	private List<SelectOptionVO> selectOptionList,keywordsList;
 	private ServletContext context;
 	private String userImageContentType;
 	private String fileTitle;
@@ -342,6 +342,14 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	public void setElectionId(Long electionId) {
 		this.electionId = electionId;
 	}
+	
+   public List<SelectOptionVO> getKeywordsList() {
+		return keywordsList;
+	}
+
+	public void setKeywordsList(List<SelectOptionVO> keywordsList) {
+		this.keywordsList = keywordsList;
+	}
 
 public String execute()
  {
@@ -351,7 +359,10 @@ public String execute()
 	{
 	// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
 		 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
+		 {
+			 keywordsList = candidateDetailsService.getTotalKeyWords();
 	  return Action.SUCCESS;
+		 }
 	 else
 		 return "error";
 	}

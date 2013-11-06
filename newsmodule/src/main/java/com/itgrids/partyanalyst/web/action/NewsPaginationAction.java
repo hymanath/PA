@@ -11,12 +11,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
-
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.util.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -36,8 +36,9 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	private String level;
 	private static final Logger log=Logger.getLogger(NewsPaginationAction.class);
 	//private INewsByPagingService newsByPagingService;
-	private List<SelectOptionVO> selectOptionVOList;
+	private List<SelectOptionVO> selectOptionVOList,keywordsList;
 	private LocationVO locationVO;
+	private String keyword;
 	
 	public FileVO getFileVO() {
 		return fileVO;
@@ -100,6 +101,20 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	}
 	public void setLocationVO(LocationVO locationVO) {
 		this.locationVO = locationVO;
+	}
+	
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	
+	public List<SelectOptionVO> getKeywordsList() {
+		return keywordsList;
+	}
+	public void setKeywordsList(List<SelectOptionVO> keywordsList) {
+		this.keywordsList = keywordsList;
 	}
 	public String execute()throws Exception
 	{
@@ -254,6 +269,9 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 			if(user == null)
 			 return ERROR;
+			String newsType = "Public";
+			if(user.getUserAccessType().equalsIgnoreCase("Admin"))
+			 newsType = "";
 			
 			jObj = new JSONObject(getTask());
 			
@@ -267,6 +285,12 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		  locationVO = candidateDetailsService.getLocationListForSelectedUser(accessType, accessValue, user.getRegistrationID());
 		  
 		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getKeyWordNews"))
+		 fileVOList = candidateDetailsService.getNewsForSelectedKeyword(jObj.getString("keyword"),IConstants.TDPID,newsType,jObj.getInt("startIndex"),jObj.getInt("maxIndex"));
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getTotalKeyWords"))
+		 keywordsList = candidateDetailsService.getTotalKeyWords();
 		 
 			 
 		}catch (Exception e) {

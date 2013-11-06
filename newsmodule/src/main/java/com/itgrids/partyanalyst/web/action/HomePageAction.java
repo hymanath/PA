@@ -84,6 +84,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String categoryIds;
 	private boolean tempVarable;
 	private String candidateName;
+	private List<SelectOptionVO> keywordsList;
 	
 	public String getCandidateName() {
 		return candidateName;
@@ -457,6 +458,14 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	public void setTempVarable(boolean tempVarable) {
 		this.tempVarable = tempVarable;
 	}
+	
+	
+	public List<SelectOptionVO> getKeywordsList() {
+		return keywordsList;
+	}
+	public void setKeywordsList(List<SelectOptionVO> keywordsList) {
+		this.keywordsList = keywordsList;
+	}
 	public String execute()
 	{	
         request.setAttribute("notLogged",notLogged);
@@ -477,6 +486,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		responseFilesList=candidateDetailsService.getLatestResponsedNews();
 		
 		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
+		
+		
+		
+		keywordsList = candidateDetailsService.getTotalKeyWords(IConstants.TDPID,newsType);
 		
 		return Action.SUCCESS;
 	}
