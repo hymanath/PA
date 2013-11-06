@@ -35,7 +35,7 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 	private String type;
 	private String description;
 	private Date createdDate;
-	private String createdBy;
+	private Long createdBy;
 	private Set<GallaryKeyword> gallarykeywords = new HashSet<GallaryKeyword>(0);
 	
 	
@@ -44,7 +44,7 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 	}
 
 	/** full constructor */
-	public Keyword(Long keywordId, String type,  String description,Date createdDate, String createdBy,Set<GallaryKeyword> gallarykeywords) {
+	public Keyword(Long keywordId, String type,  String description,Date createdDate, Long createdBy,Set<GallaryKeyword> gallarykeywords) {
 		this.keywordId = keywordId;
 		this.type = type;
 		this.description = description;	
@@ -64,7 +64,7 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 		this.keywordId = keywordId;
 	}
     
-	@Column(name = "type", length = 10)
+	@Column(name = "type", length = 150)
 	public String getType() {
 		return type;
 	}
@@ -73,7 +73,7 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 		this.type = type;
 	}
 
-	@Column(name = "description", length = 50)
+	@Column(name = "description", length = 200)
 	public String getDescription() {
 		return description;
 	}
@@ -93,11 +93,11 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 	}
    
 	@Column(name = "created_by", length = 10)
-	public String getCreatedBy() {
+	public Long getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
 	}
 	
