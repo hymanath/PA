@@ -5679,6 +5679,23 @@
 		   </result> 
 		</action>
 		
+		  <action name="getKeyWordNewsAction" class="newsPaginationAction" method="ajaxHandler">
+		  <result name="success" type="json">
+		 	<param name="root">fileVOList</param>
+		   </result>
+		 </action> 
+		 
+		 <action name="keywordsRelatedNewsAction" class="newsPaginationAction">
+		  <result name="success">/jsp/keywordsRelatedNews.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		 </action>
+		 
+		  <action name="getTotalKeyWordsAction" class="newsPaginationAction" method="ajaxHandler">
+		  <result name="success" type="json">
+		 	<param name="root">keywordsList</param>
+		   </result>
+		 </action> 
+		 
 		</package>
 		
 		

@@ -1606,6 +1606,9 @@
 		<property name="countryDAO" ref="countryDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
+		<property name="keywordDAO" ref="keywordDAO" />
+		<property name="gallaryKeywordDAO" ref="gallaryKeywordDAO" />
+		<property name="fileKeywordDAO" ref="fileKeywordDAO" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
