@@ -620,6 +620,7 @@ public interface IConstants {
 	public static final long TDPID = 872l;
 	
 	public final static  long MLC_ELECTION_SCOPE_ID = 7L;
-
+    
+	public final static long DEFAULT_GALLARY_ID = 1L;
 	
 }
