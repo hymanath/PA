@@ -135,6 +135,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<FileVO> mainArticalsList = null;
 	private boolean isResponseExist = false;
 	private boolean isMainArticalExist = false;
+	private List<String> keyWordsList;
 	
 	public Long getRespondedFilesCountInGall() {
 		return respondedFilesCountInGall;
@@ -1160,6 +1161,14 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setMainArticalExist(boolean isMainArticalExist) {
 		this.isMainArticalExist = isMainArticalExist;
+	}
+
+	public List<String> getKeyWordsList() {
+		return keyWordsList;
+	}
+
+	public void setKeyWordsList(List<String> keyWordsList) {
+		this.keyWordsList = keyWordsList;
 	}
 	
 	
