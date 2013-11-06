@@ -76,4 +76,6 @@ public interface IPartyGalleryDAO extends GenericDao<PartyGallery,Long>{
 	
 	public List<Object[]> getTotalCategories(Long partyId,String queryType);
 	
+	public List<String> getTotalKeywordsForKeywordSearch(Long partyId,String newsType);
+	
 }

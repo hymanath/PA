@@ -312,6 +312,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
   	
   	public List<Object[]> getAllTheNewsForAUserBasedByUserId(Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue);
       
+    public List<FileGallary> getNewsForSelectedKeyWord(String keyWord,Long partyId,String newsType,Integer startIndex,Integer maxIndex);
  
 }
 
