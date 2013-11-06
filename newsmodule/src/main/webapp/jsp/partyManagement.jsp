@@ -14,7 +14,7 @@
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-  <!--  <script src="http://code.jquery.com/jquery-1.8.2.js"></script>-->
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
     <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js">
@@ -45,6 +45,15 @@
 <!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+<!-- keywords -->
+    <link rel="stylesheet" type="text/css" href="styles/autoSuggest.css"> 
+	<script type="text/javascript" src="js/jquery.autoSuggest.js"></script>
+	<script type="text/javascript" src="js/jquery.autoSuggest.minified.js"></script>
+	<script type="text/javascript" src="js/jquery.autoSuggest.packed.js"></script>
+
+<!-- keywords -->
+
 <style type="text/css">
 
 .nav-tabs > li{
@@ -371,6 +380,9 @@ font-size:20px;
 </style>
 </head>
 <script type="text/javascript">
+
+
+
 var gGallaryId;
 		var timeST = new Date().getTime();
 		var sizeOfArray;
@@ -1250,6 +1262,20 @@ function uploadAFile()
 		if(photoprivateRadioId == false)
 		document.getElementById('PhotopublicRadioId').checked= 'true';*/
 
+		$("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+
+    var keywordStr = "";
+	$(".as-selections li").each(function(){
+              keywordStr +=$(this).text()+",";
+				
+            });
+   
+   var length = keywordStr.length;
+    keywordStr = keywordStr.substr(0,length-2); 
+	$("#keywordListId").val(keywordStr);
+
+
 		var uploadHandler = {
 				upload: function(o) {
 					$("#uploadphotogalAjax").hide();
@@ -1278,9 +1304,24 @@ function uploadAFile()
 	document.getElementById('newsprivateRadioId').checked = 'true';
 		if(newsprivateRadioId == false)
 	document.getElementById('newsPublicRadioId').checked = 'true';
+
+    
+    var keywordStr = "";
+	$(".as-selections li").each(function(){
+              keywordStr +=$(this).text()+",";
+				
+            });
+   
+   var length = keywordStr.length;
+    keywordStr = keywordStr.substr(0,length-2); 
+	$("#keywordListId").val(keywordStr);
+    
 		var uploadHandler = {
 				upload: function(o) {
 					$("#uploadnewsgalAjax").hide();
+
+					
+
 					uploadResult = o.responseText;
 					showNewsUploadStatus(uploadResult);	
 					enableButton('uploadNewsBtnId');
@@ -1410,8 +1451,8 @@ function validateNewsFileUpload()
 	var fileVal = document.getElementById("newsfileId").value;
 	var source = document.getElementById("source").value;
 	var languageId = document.getElementById("language").value;
-	var keywords = document.getElementById("keywords").value;
-	var galEle = document.getElementById("gallaryId").value;
+	//var keywords = document.getElementById("keywords").value;
+	//var galEle = document.getElementById("gallaryId").value;
 	var fileDate = document.getElementById("existingFromTextNews").value;
 	var scope = document.getElementById("scopeDiv").value;
 	
@@ -1426,11 +1467,11 @@ function validateNewsFileUpload()
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv1');
 	var str = '<font color="red">';
-	if(galEle == 0)
+	/*if(galEle == 0)
 	{
 		str += 'Select Gallery<br>';
 		flag = false;
-	}
+	}*/
 	if(fileDate.length == 0)
 	{
 		str +='File Date is Required<br>';
@@ -1507,11 +1548,11 @@ function validateNewsFileUpload()
 		str += 'Language is Required.<br>';
 		flag = false;
 	}
-	if(keywords.length >200)
+	/*if(keywords.length >200)
 	{
 		str += 'Keywords should be less than 200 Characters<br>';
 		flag = false;
-	}
+	}*/
 	if(scope == 0 )
 	{
 		str += 'Location Scope is Required.';
@@ -1737,6 +1778,9 @@ function showNewsUploadStatus1(myResult)
 	{
 		clearNewsUploadFileFields1();
 		str += '<font color="green"><b>News Uploaded Successfully.</b>';
+        
+		//$(".as-selections").
+
 	}
 	else if(result.search('fail') != -1) 
 	{
@@ -1949,13 +1993,22 @@ function buildUploadNewsForMultipleUsers()
 	   
 	str+='</div>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
-	str += '   <tr>';
+	
+	/*str += '   <tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" onchange="getGallariesForSelectedCategory()"><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
-	str += '   </tr>';
+	str += '   </tr>';*/
+
+    //keyworda Start
+	str +='<tr>';
+	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
+	str +='</tr>';
+
+
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="160"></input></td>'; 
@@ -1966,9 +2019,11 @@ function buildUploadNewsForMultipleUsers()
 	str += '       <td class="tdWidth1">News Description : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="330"></textarea></td>';
 	str += '   </tr>';
-	str += '   <tr>';
+	
+	/*str += '   <tr>';
 	str += '       <td class="tdWidth1">Keywords : </td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200"></input></td></tr>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200"></input></td></tr>'; */
+
 	str += '<TR>';
 	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" />';
@@ -2035,7 +2090,7 @@ function buildUploadNewsForMultipleUsers()
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
 	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success" value="Upload News"  onClick="uploadNewsFromPartyPage1()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
 
-	
+	str +='<input type="hidden" id="keywordListId" name="keywordList"/>';
 
 	str += '</form>';
 	//str += '</fieldset>';
@@ -2054,6 +2109,10 @@ function buildUploadNewsForMultipleUsers()
 	  getScopeForUser();
 	  getCandidates();
 	  $('#partiesList').trigger('change');
+
+  //keywords
+  $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
 }
 
 
@@ -4016,7 +4075,19 @@ function updatePhoto(fileId,fileGallaryId)
 </div>
 -->
 <!-- for  body 5  result  end -->
+
+
+
 <script>
+var keywordsArray = new Array();
+<c:forEach var="keywords" items="${keywordsList}">
+   var obj = {value:${keywords.id},
+			name:"${keywords.name}"}
+
+		keywordsArray.push(obj);
+</c:forEach>
+
+
 var newsDetails;
 var bvalue = false;
 var noOfRowsPerPage = 10;
@@ -6021,6 +6092,18 @@ function buildCandidates(results)
 	document.getElementById('newsprivateRadioId').checked = 'true';
 		if(newsprivateRadioId == false)
 	document.getElementById('newsPublicRadioId').checked = 'true';
+
+    var keywordStr = "";
+	$(".as-selections li").each(function(){
+              keywordStr +=$(this).text()+",";
+				
+            });
+   
+   var length = keywordStr.length;
+    keywordStr = keywordStr.substr(0,length-2); 
+	$("#keywordListId").val(keywordStr);
+
+	
 		var uploadHandler = {
 				upload: function(o) {
 					uploadResult = o.responseText;
@@ -6167,8 +6250,8 @@ function validateNewsFileUpload1()
 	//var fileVal = document.getElementById("newsfileId").value;
 	//var source = document.getElementById("source").value;
 	//var languageId = document.getElementById("language").value;
-	var keywords = document.getElementById("keywords").value;
-	var galEle = document.getElementById("gallaryId").value;
+	//var keywords = document.getElementById("keywords").value;
+	//var galEle = document.getElementById("gallaryId").value;
 	var fileDate = document.getElementById("existingFromTextNews").value;
 	var scope = document.getElementById("scopeDiv").value;
 	
@@ -6183,11 +6266,11 @@ function validateNewsFileUpload1()
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
-	if(galEle == 0)
+	/*if(galEle == 0)
 	{
 		str += 'Select Gallery<br>';
 		flag = false;
-	}
+	}*/
 	if(fileDate.length == 0)
 	{
 		str +='File Date is Required<br>';
@@ -6277,11 +6360,11 @@ function validateNewsFileUpload1()
 		str += 'Language is Required.<br>';
 		flag = false;
 	}*/
-	if(keywords.length >200)
+	/*if(keywords.length >200)
 	{
 		str += 'Keywords should be less than 200 Characters<br>';
 		flag = false;
-	}
+	}*/
 
 	if($("#candidateList > option:selected").length == 0)
 	{
@@ -6461,13 +6544,24 @@ function  buildUploadNews()
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv1" /></td></tr></table>';
 	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
-	str += '   </tr>';
+	
+    
+	//keyworda Start
+	str +='<tr>';
+	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" name="keywordList" id="keywordListId1"/></td>';
+	str +='</tr>';
+
+
+	/*str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" onchange="getGallariesForSelectedCategory()"><option value="0">Select Category</option></select></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
-	str += '   </tr>';
+	str += '   </tr>';*/
+
+
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
 	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="160" ></input></td>'; 
@@ -6476,9 +6570,12 @@ function  buildUploadNews()
 	str += '       <td class="tdWidth1">News Description : <font class="requiredFont">*</font></td>';
 	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="330"></textarea></td>';
 	str += '   </tr>';
-	str += '   <tr>';
+	
+	/* str += '   <tr>';
 	str += '       <td class="tdWidth1">Keywords : </td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" ></input></td></tr>';
+	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" ></input></td></tr>'; */
+
+
 	str += '<TR>';
 	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
 	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" />';
@@ -6560,6 +6657,9 @@ function  buildUploadNews()
 	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
 	str+='<div id="uploadnewsgalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
 	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success " value="Upload News" style="background-color:#57B731" onClick="uploadNewsFromPartyPage()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+
+    str +='<input type="hidden" id="keywordListId" name="keywordList"/>';
+
 	str += '</form>';
 	//str += '</fieldset>';
 	str+='</div>';
@@ -6570,9 +6670,14 @@ function  buildUploadNews()
 	 getSource("source");
 	 getLanguage("language");
 	 getNewsImportance();
-	 getCategory();
+	 //getCategory();
 
 	 getScopeForUser();
+
+   //keywords
+   $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+
 
 	 $(document).ready(function(){
 	 	$("#source").change(function () {
@@ -7383,7 +7488,7 @@ function showUserAccessLocationScopeList(results)
   str +='<table>';
   str +='  <tr>';
   str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
+  str +='	   <td class="selectWidthPadd"><select name="locationValue" id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
   str +='  </tr>';
   
   /*str +='  <tr>';
@@ -7728,6 +7833,19 @@ function showReportFileNewsStatus(result)
      }, 2000);
 		 return;
 }
+
+var data = {items:keywordsArray};
+
+
+$(document).ready(function(){
+	$(function(){
+    $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+
+  });
+});
+
+
 
 </script>
 </body>
