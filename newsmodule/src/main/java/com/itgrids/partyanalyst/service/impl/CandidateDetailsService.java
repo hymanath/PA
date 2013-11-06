@@ -750,7 +750,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 			Map<String,Long> existingKeywordsMap = new HashMap<String, Long>(0);	//<keywordName,keywordId>
-			Map<String,List<Long>> gallaryKeywordsMap = new HashMap<String, List<Long>>(0); //<keywordName,gallaryIdsList>
 			Map<String,Long> totalKeywordsMap = new HashMap<String, Long>(0);//<type,keywordId>
 			
 			
@@ -782,7 +781,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				 totalKeywordsMap.put(params[1] != null?params[1].toString():" ",(Long)params[0]);
 			
 			
-			//getgallaryMapped keywords and save the unmapped keywords in gallarykeyword table
+			//get gallaryMapped keywords and save the unmapped keywords in gallarykeyword table with defaultgallaryId
 			List<String> gallaryMappedKeywordsList = gallaryKeywordDAO.getGallaryMappedKeywordsList(fileVO.getKeyWordsList());
 			 for(String keyword:totalKeywordsMap.keySet())
 			  if(!gallaryMappedKeywordsList.contains(keyword))
@@ -796,26 +795,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				  gallaryKeywordDAO.save(gallaryKeyword);  
 			  }
 			
-			
-			List<Object[]> gallaryKeywordList = gallaryKeywordDAO.getGallaryKeywords(fileVO.getKeyWordsList());
-			if(gallaryKeywordList != null && gallaryKeywordList.size() > 0)
-			 for(Object[] params:gallaryKeywordList)
-			 {
-			  List<Long> gallaryIdsList = gallaryKeywordsMap.get(params[1].toString());
-			  if(gallaryIdsList == null)
-			  {
-				  gallaryIdsList = new ArrayList<Long>(0);
-				  gallaryKeywordsMap.put(params[1] != null?params[1].toString():" ",gallaryIdsList);
-			  }
-			  if(!gallaryIdsList.contains((Long)params[0]))
-			  {
-				 gallaryIdsList.add((Long)params[0]);
-				 gallaryKeywordsMap.put(params[1] != null?params[1].toString():" ",gallaryIdsList);
-			  }
-			 }
-			
-			//for(String keywordStr: fileVO.getKeyWordsList())
-			//{
 			 
 			  UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()));
 			  
@@ -933,51 +912,60 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						}
 						}
 				}
-				  
-			for(String keywordStr: fileVO.getKeyWordsList())
-		    {	
-			  List<Long> gallaryList = gallaryKeywordsMap.get(keywordStr);
-			  if(gallaryList != null && gallaryList.size() > 0)
-			  {
-				for(Long gallaryId:gallaryList)
+
+				List<Object[]> gallaryKeywordList = gallaryKeywordDAO.getGallaryKeywords(fileVO.getKeyWordsList());
+				Map<Long,List<Long>> gallaryKeywordMap = new HashMap<Long, List<Long>>(0);
+				if(gallaryKeywordList != null && gallaryKeywordList.size() > 0)
+				 for(Object[] params :gallaryKeywordList)
+				 {
+				  	List<Long> keywordIdsList = gallaryKeywordMap.get((Long)params[0]);
+				  	if(keywordIdsList == null)
+				  	{
+				  		keywordIdsList = new ArrayList<Long>(0);
+				  		gallaryKeywordMap.put((Long)params[0], keywordIdsList);
+				  	}
+				  	if(!keywordIdsList.contains((Long)params[2]))
+				  	{
+				  	  keywordIdsList.add((Long)params[2]);
+				  	gallaryKeywordMap.put((Long)params[0], keywordIdsList);
+				  	}
+				  	
+				 }
+				
+				if(gallaryKeywordMap != null && gallaryKeywordMap.size() > 0)
 				{
-				  FileGallary fileGallary = new FileGallary();
-				  fileGallary.setGallary(gallaryDAO.get(gallaryId));
-				  fileGallary.setFile(file);
-				  fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
-				  fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-				  fileGallary.setIsDelete(IConstants.FALSE);
+				  for(Long gallaryId :gallaryKeywordMap.keySet())
+				  {
+					FileGallary fileGallary = new FileGallary();
+					fileGallary.setGallary(gallaryDAO.get(gallaryId));
+					fileGallary.setFile(file);
+					fileGallary.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+					fileGallary.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+					fileGallary.setIsDelete(IConstants.FALSE);
+					if(fileVO.getVisibility().equalsIgnoreCase("public"))
+					 fileGallary.setIsPrivate(IConstants.FALSE);
+					else
+					 fileGallary.setIsPrivate(IConstants.PRIVATE);
+					fileGallary = fileGallaryDAO.save(fileGallary);
 					
-				  if(fileVO.getVisibility().equalsIgnoreCase("public"))
-					fileGallary.setIsPrivate(IConstants.FALSE);
-				  else
-					fileGallary.setIsPrivate(IConstants.TRUE);
-				  fileGallary = fileGallaryDAO.save(fileGallary);
-				  
-				  if(fileVO.getCandidateId() != null){
-						
-	                    CandidateRealatedNews candidateRelatedNews = new CandidateRealatedNews();
-						
-						candidateRelatedNews.setCandidate(candidateDAO.get(fileVO.getCandidateId()));
-						candidateRelatedNews.setFileGallary(fileGallary);
-						
-						candidateRelatedNewsDAO.save(candidateRelatedNews);	
+					if(fileVO.getCandidateId() != null){
+					 CandidateRealatedNews candidateRealatedNews = new CandidateRealatedNews();
+					 candidateRealatedNews.setCandidate(candidateDAO.get(fileVO.getCandidateId()));
+					 candidateRealatedNews.setFileGallary(fileGallary);
+					 candidateRelatedNewsDAO.save(candidateRealatedNews);
 					}
-				  
-				  if(fileVO.getResponseFileIds() != null && fileVO.getResponseFileIds().size() >0)
-						
-					for(Long responseFileGallaryId:fileVO.getResponseFileIds())
-					{
-							CandidateNewsResponse candidateNewsresponse = new CandidateNewsResponse();
-							
-							candidateNewsresponse.setFileGallary(fileGallaryDAO.get(responseFileGallaryId));
-							candidateNewsresponse.setResponseFileGallary(fileGallary);
-							
-							candidateNewsResponseDAO.save(candidateNewsresponse);						
-							
-					}  
-				  
-				  if(fileVO.getUploadOtherProfileGalleryIds()!=null && fileVO.getUploadOtherProfileGalleryIds().size()>0)
+					
+					if(fileVO.getResponseFileIds() != null && fileVO.getResponseFileIds().size() > 0){
+					  for(Long responseFileGallaryId:fileVO.getResponseFileIds())
+					  {
+						 CandidateNewsResponse candidateNewsResponse = new CandidateNewsResponse();
+						 candidateNewsResponse.setFileGallary(fileGallary);
+						 candidateNewsResponse.setResponseFileGallary(fileGallaryDAO.get(responseFileGallaryId));
+						 candidateNewsResponseDAO.save(candidateNewsResponse);
+					  }
+					}
+					
+					if(fileVO.getUploadOtherProfileGalleryIds()!=null && fileVO.getUploadOtherProfileGalleryIds().size()>0)
 					{
 						for(int i=0;i<fileVO.getUploadOtherProfileGalleryIds().size();i++)
 						{
@@ -998,19 +986,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 							}
 						}
 				   }
-				  
+				
+				  }
 				}
-			  //}
-			  
-			  //file keyword
+						
+			for(String keywordStr: fileVO.getKeyWordsList())
+			{
 			  FileKeyword fileKeyword = new FileKeyword();
 			  fileKeyword.setFile(file);
 			  fileKeyword.setKeyword(keywordDAO.get(totalKeywordsMap.get(keywordStr)));
 			  fileKeywordDAO.save(fileKeyword);
 			  
-			}
-		   }
-				
+			}		
+			
 		}
 		});
 		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
