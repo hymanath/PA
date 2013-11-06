@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
@@ -157,7 +158,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String newsDescription;
 	private String requestFor;
 	private String categoryName;
-   
+    private String keywordList; 
 	
 	public String getRequestFor() {
 		return requestFor;
@@ -958,6 +959,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+    
+	public String getKeywordList() {
+		return keywordList;
+	}
+
+
+	public void setKeywordList(String keywordList) {
+		this.keywordList = keywordList;
+	}
 
 
 	public String uploadFilesForMultipleCandidates()
@@ -1079,7 +1089,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				fileVO.setVisibility(getVisibility());
 				fileVO.setGallaryId(getGallaryId());
 				//fileVO.setKeywords(getKeywords());
-				fileVO.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(getKeywords())));
+				//fileVO.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(getKeywords())));
 				fileVO.setCategoryId(getCategory());
 				fileVO.setNewsImportanceId(getNewsimportance());
 				fileVO.setLocationScope(getLocationScope());
@@ -1149,6 +1159,20 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				
 				fileVO.setFileVOForDiaplyImage(displayFileVO);
 				fileVO.setNewsDescription(escapeUnicode(StringEscapeUtils.unescapeHtml(newsDescription)));
+				
+				
+				//keywords saving
+				if(keywordList != null)
+				{
+				  String[] keywords = StringUtils.split(keywordList,",");
+				  List<String> keywordsList = new ArrayList<String>(0);
+				  for(String keyword:keywords)
+					if(!keyword.trim().equals(""))  
+				   keywordsList.add(keyword.trim().substring(1));
+				  
+				  fileVO.setKeyWordsList(keywordsList);
+				  
+				}
 				
 			}
 			
@@ -1263,7 +1287,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			//fileVO.setContentType(fileType);
 			fileVO.setVisibility(getVisibility());
 			fileVO.setGallaryId(getGallaryId());
-			fileVO.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(getKeywords())));
+			//fileVO.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(getKeywords())));
 			//fileVO.setKeywords(getKeywords());
 			fileVO.setSourceId(getSource());
 			fileVO.setLanguegeId(getLanguage());
@@ -1380,6 +1404,21 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				  filepaths.add(fileVO.getFileVOForDiaplyImage().getDisplayImagePath());  
 				
 				 }      
+			
+			//keywords saving
+			
+			if(keywordList != null)
+			{
+			  String[] keywords = StringUtils.split(keywordList,",");
+			  List<String> keywordsList = new ArrayList<String>(0);
+			  for(String keyword:keywords)
+				if(!keyword.trim().equals(""))
+			      keywordsList.add(keyword.trim().substring(1));
+			  
+			  fileVO.setKeyWordsList(keywordsList);
+			  
+			}
+				 
 			result = candidateDetailsService.uploadAFile(fileVO);
 			
 			if(result.getResultCode() == ResultCodeMapper.SUCCESS){
@@ -1685,7 +1724,6 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getCategory"))
 		 {
 			selectOptionList = candidateDetailsService.getCategory();
-			selectOptionList.add(new SelectOptionVO(0L,"Select"));
 		 }/*
 		else if(jObj.getString("task").equalsIgnoreCase("updateProfileDiscription"))
 		{
