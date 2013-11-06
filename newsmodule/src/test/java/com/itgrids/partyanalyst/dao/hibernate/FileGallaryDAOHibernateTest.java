@@ -33,7 +33,7 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 	  
 	}*/
 	
-	public void testgetAllTheNewsForAUserBasedOnUserAddressId()
+	/*public void testgetAllTheNewsForAUserBasedOnUserAddressId()
 	{
 		List<Object[]> list = fileGallaryDAO.getAllTheNewsForAUserBasedOnUserAddressId(1L, null, null, 5L, 1L);
 		System.out.println(list.size());
@@ -41,6 +41,14 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		{
 			System.out.println(params[0]+" "+params[1]);
 		}
+	}*/
+	
+	public void testgetNewsForSelectedKeyWord()
+	{
+		List<FileGallary> list = fileGallaryDAO.getNewsForSelectedKeyWord("11", 872L, "", null, null);
+		System.out.println(list.size());
+		for(FileGallary fileGallary:list)
+		 System.out.println(fileGallary.getFileGallaryId()+" "+fileGallary.getFile().getFileId());
 	}
 	
 }
