@@ -852,5 +852,21 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			
 			return query.list();
 		}
+		
+		@SuppressWarnings("unchecked")
+		public List<String> getTotalKeywordsForKeywordSearch(Long partyId,String newsType)
+		{
+		  StringBuilder str = new StringBuilder();
+		  str.append(" select distinct model.file.keywords from FileGallary model, PartyGallery model2 " +
+		  		" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and " +
+		  		" model.isDelete = 'false' and model.gallary.isDelete = 'false' and model2.isDelete = 'false' and model2.gallery.isDelete = 'false' ");
+		 
+		  if(!newsType.equalsIgnoreCase("") || newsType.equalsIgnoreCase("Public"))
+			str.append(" model.isPrivate = 'false' and model2.isPrivate = 'false' and model.gallary.isPrivate = 'false' and model2.gallery.isPrivate = 'false' ");
+			  
+		  Query query = getSession().createQuery(str.toString());
+		  query.setParameter("partyId", partyId);
+		  return query.list();
+		}
 
 	}

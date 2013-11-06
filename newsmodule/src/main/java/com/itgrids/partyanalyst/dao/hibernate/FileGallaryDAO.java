@@ -3405,4 +3405,25 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		}
 		 
 	 
+	 @SuppressWarnings("unchecked")
+	 public List<FileGallary> getNewsForSelectedKeyWord(String keyWord,Long partyId,String newsType,Integer startIndex,Integer maxIndex)
+	 {
+		  StringBuilder str = new StringBuilder();
+		  str.append(" select model from FileGallary model, PartyGallery model2 where model.gallary.gallaryId = model2.gallery.gallaryId and " +
+		  		" model2.party.partyId =:partyId and model.file.keywords like '%"+keyWord+"%' and model.isDelete = 'false' and model2.isDelete = 'false' " +
+		  				" and model.gallary.isDelete = 'false' and model2.gallery.isDelete = 'false' ");
+		  if(!newsType.equalsIgnoreCase("") || newsType.equalsIgnoreCase("Public"))
+		   str.append(" and model.isPrivate = 'false' and model2.isPrivate = 'false' and model.gallary.isPrivate = 'false' and model2.gallery.isPrivate = 'false' ");
+		  
+		  Query query = getSession().createQuery(str.toString());
+		  query.setParameter("partyId", partyId);
+		 
+		  if(startIndex != null)
+		    query.setFirstResult(startIndex);
+		  if(maxIndex != null)
+		    query.setMaxResults(maxIndex);
+		  
+		  return query.list();
+	}
+	 
 }
