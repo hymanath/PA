@@ -289,5 +289,12 @@ public interface ICandidateDetailsService {
 	 public LocationVO getLocationListForSelectedUser(String userAccessType,Long accessValue,Long userId);
 	
 	 public List<SelectOptionVO> getConstituencyList(Long districtId,String accessType,Long accessValue);
+	 
+	 public List<SelectOptionVO> getTotalKeyWords(Long partyId,String newsType);
+	 
+	 public List<FileVO> getNewsForSelectedKeyword(String keyWord,Long partyId,String newsType,Integer startIndex,Integer maxIndex);
+	 
+	 public List<SelectOptionVO> getTotalKeyWords();
+	 
 	
 }
