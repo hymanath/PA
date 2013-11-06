@@ -37,12 +37,20 @@ public class PartyGalleryDAOHibernateTest extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testgetTotalCategories()
+	/*public void testgetTotalCategories()
 	{
 		List<Object[]> list = partyGalleryDAO.getTotalCategories(872l, "");
 		System.out.println(list.size());
 		for(Object[] params :list)
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
+	}*/
+	
+	public void testgetTotalKeywordsForKeywordSearch()
+	{
+		List<String> keywordsList = partyGalleryDAO.getTotalKeywordsForKeywordSearch(872L, "");
+		System.out.println(keywordsList.size());
+		for(String keyword :keywordsList)
+		 System.out.println(keyword);
 	}
 	
 }
