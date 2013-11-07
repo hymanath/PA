@@ -2041,6 +2041,10 @@ function buildUploadNewsForMultipleUsers()
 	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
 	str +='</tr>';
 
+	str +='<tr>';
+	str += '       <td class="tdWidth1"></td>';
+	str += '  <td class="selectWidthPadd"><div style="margin-top: 2px; margin-bottom: 14px;">After entering the keyword comma(,) is mandatory</div></td>';
+	str +='</tr>';
 
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
@@ -6585,6 +6589,10 @@ function  buildUploadNews()
 	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList" id="keywordListId1"/></td>';
 	str +='</tr>';
 
+    str +='<tr>';
+	str += '       <td class="tdWidth1"></td>';
+	str += '  <td class="selectWidthPadd"><div style="margin-top: 2px; margin-bottom: 14px;">After entering the keyword comma(,) is mandatory</div></td>';
+	str +='</tr>';
 
 	/*str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
