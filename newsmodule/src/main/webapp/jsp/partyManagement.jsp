@@ -1779,7 +1779,6 @@ function showNewsUploadStatus1(myResult)
 		clearNewsUploadFileFields1();
 		str += '<font color="green"><b>News Uploaded Successfully.</b>';
         
-		//$(".as-selections").
 
 	}
 	else if(result.search('fail') != -1) 
@@ -1804,6 +1803,8 @@ function clearNewsUploadFileFields1()
 	$('#uploadFilesDiv').html('');
     $("#newsDesc").val('');
 
+    newKeywordsInserting();
+
 	 getScopes();
 	 getSource("source");
 	 getLanguage("language");
@@ -1812,13 +1813,43 @@ function clearNewsUploadFileFields1()
 	// getCandidatesofUser();
 }
 
+
+function newKeywordsInserting()
+{
+  //keywords
+  var tempKeywordArray = new Array();
+    if(keywordsArray != null && keywordsArray.length > 0)
+	  for(var i in keywordsArray)
+	   tempKeywordArray.push(keywordsArray[i].name);
+	
+
+	 $(".as-selections li").each(function(){
+		var name = $.trim($(this).text()).substring(1);
+        if(tempKeywordArray.indexOf(""+name+"") == -1)
+		{
+		   var obj = {value:0,name:""+name+""};
+		   keywordsArray.push(obj);
+		}
+
+	 });
+        
+	data = {items:keywordsArray};
+
+     $(".multiKeywordList").html('');
+	 $(".multiKeywordList").html('<input type="text" name="keywordList1" id="keywordListId1"/>');
+
+	 $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+
+}
+
 function clearNewsUploadFileFields()
 {
 	$("#addMoreFilesDiv").html('');
 	$("#otherProNewsDiv").html('');
 	document.getElementById('newsfileTitle').value = '';
 	document.getElementById('newsfileDescription').value = '';
-	document.getElementById('keywords').value = '';
+	//document.getElementById('keywords').value = '';
 	//document.getElementById('existingFromText').value = '';
 	document.getElementById('source').value = '';
 	document.getElementById('newsfileId').value = '';
@@ -1827,6 +1858,8 @@ function clearNewsUploadFileFields()
 	document.getElementById('ImagenewsfileId').value = '';
 	document.getElementById('newsDescriptionId').value = '';
 	getScopes();
+
+	newKeywordsInserting();
 }
 	
 function clearUploadFileFields()
@@ -2005,7 +2038,7 @@ function buildUploadNewsForMultipleUsers()
     //keyworda Start
 	str +='<tr>';
 	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
+	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
 	str +='</tr>';
 
 
@@ -4039,7 +4072,7 @@ function updatePhoto(fileId,fileGallaryId)
 <div id="ajaxImg" style="display:none;margin-left:300px;margin-top:30px;"><img src="images/icons/goldAjaxLoad.gif"></img></div>
 </div>
 <!-- for  body 5  result  start -->
-<<div id='profileManagementMainOuterDiv5' style="display:none">
+<div id='profileManagementMainOuterDiv5' style="display:none">
 	<div id='profileManagementHeaderDiv5' class="row-fluid">
 
 		<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -6549,7 +6582,7 @@ function  buildUploadNews()
 	//keyworda Start
 	str +='<tr>';
 	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" name="keywordList" id="keywordListId1"/></td>';
+	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList" id="keywordListId1"/></td>';
 	str +='</tr>';
 
 
