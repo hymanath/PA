@@ -77,6 +77,12 @@ public interface INewsMonitoringService {/*
 	
 	public ResultStatus saveNewsReport(final List<Long> fileGallaryIds,final Long userId,final String decription);
 	
+	public ResultStatus updateGallaryKeyword(List<Long> gallaryIds,List<Long> keywords,Long userId)  ;
+	
+	public List<SelectOptionVO> getKeywords(Long userId,Boolean flag);
+	
+	public ResultStatus updateExistingGallaryKeyword(List<Long> gallaryIds,List<Long> keywords,Long userId);
+	
 }
 
 

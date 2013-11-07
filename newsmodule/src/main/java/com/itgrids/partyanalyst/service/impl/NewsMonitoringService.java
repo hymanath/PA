@@ -24,8 +24,11 @@ import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IGallaryKeywordDAO;
+import com.itgrids.partyanalyst.dao.IKeywordDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
@@ -36,6 +39,7 @@ import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
+import com.itgrids.partyanalyst.dao.hibernate.FileGallaryDAO;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
@@ -48,6 +52,7 @@ import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
+import com.itgrids.partyanalyst.model.GallaryKeyword;
 import com.itgrids.partyanalyst.model.NewsFlag;
 import com.itgrids.partyanalyst.model.NewsImportance;
 import com.itgrids.partyanalyst.model.NewsReport;
@@ -93,12 +98,40 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private ICandidateNewsResponseDAO candidateNewsResponseDAO;
     private TransactionTemplate transactionTemplate = null;
     private IUserAddressDAO userAddressDAO;
-   private INewsReportDAO newsReportDAO;
-   private IReportFilesDAO reportFilesDAO ;
+	private INewsReportDAO newsReportDAO;
+	private IReportFilesDAO reportFilesDAO ;
+    private IGallaryKeywordDAO gallaryKeywordDAO;
+    private IKeywordDAO keywordDAO;
+    private IFileKeywordDAO fileKeywordDAO;
+    
    
+	public IFileKeywordDAO getFileKeywordDAO() {
+		return fileKeywordDAO;
+	}
+
+	public void setFileKeywordDAO(IFileKeywordDAO fileKeywordDAO) {
+		this.fileKeywordDAO = fileKeywordDAO;
+	}
+
+	public IKeywordDAO getKeywordDAO() {
+		return keywordDAO;
+	}
+
+	public void setKeywordDAO(IKeywordDAO keywordDAO) {
+		this.keywordDAO = keywordDAO;
+	}
+
+	public IGallaryKeywordDAO getGallaryKeywordDAO() {
+	return gallaryKeywordDAO;
+  }
+
+	public void setGallaryKeywordDAO(IGallaryKeywordDAO gallaryKeywordDAO) {
+		this.gallaryKeywordDAO = gallaryKeywordDAO;
+	}
+
 	public INewsReportDAO getNewsReportDAO() {
 	return newsReportDAO;
-}
+	}
 
 public void setNewsReportDAO(INewsReportDAO newsReportDAO) {
 	this.newsReportDAO = newsReportDAO;
@@ -4686,7 +4719,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			 
 			  transactionTemplate.execute(new TransactionCallback() {
 			  public Object doInTransaction(TransactionStatus status) {
-		  DateUtilService currentDate = new DateUtilService();
+		     DateUtilService currentDate = new DateUtilService();
 		
 			
 			NewsReport newsReport = new NewsReport();
@@ -4715,7 +4748,184 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		
 		return resultStatus;
 	  }
-	  
+	  /** This method is used to get unmapped keywords(from gallaryKeyword)**/
+	  public List<SelectOptionVO> getKeywords(Long userId,Boolean flag)
+	  {
+		List<SelectOptionVO> result =new ArrayList<SelectOptionVO>();
+		List<Object[]> list = null;
+		try{
+			if(flag == false)
+		    list = gallaryKeywordDAO.getUnAssignedKeyWords(userId);  
+		    if(flag == true)
+			list = gallaryKeywordDAO.getGallaryMapedKeyWords(userId); 
+			if(list != null && list.size() > 0)
+			for(Object[] params : list)
+				result.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+		}
+		catch (Exception e) {
+		log.error("Exception Occured in getKeywords() method in NewsMonitoringService", e);
+		}
+		return result;
+		
+	  }
+	  /** This method is used to Map Keyword to Gallary**/ 
+	 public ResultStatus updateGallaryKeyword(List<Long> gallaryIds,List<Long> keywords,Long userId) 
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 GallaryKeyword gallaryKeyword = new GallaryKeyword();
+		 DateUtilService date = new DateUtilService();
+		 try{
+			 if(keywords != null && keywords.size() > 0)
+				gallaryKeywordDAO.DeleteKeyWords(keywords,userId);
+			 if(gallaryIds != null && gallaryIds.size() > 0)
+			 for(Long gallaryId : gallaryIds)
+			 {
+				 if(keywords != null && keywords.size() > 0)
+				 for(Long keyword : keywords)
+				 {
+					gallaryKeyword.setGallary(gallaryDAO.get(gallaryId));
+					gallaryKeyword.setKeyword(keywordDAO.get(keyword));
+					gallaryKeyword.setCreatedDate(date.getCurrentDateAndTime());
+					gallaryKeyword.setUpdatedDate(date.getCurrentDateAndTime());
+					gallaryKeyword.setCreatedBy(userId);
+					gallaryKeywordDAO.save(gallaryKeyword);
+					resultStatus.setResultCode(ResultCodeMapper.SUCCESS); 
+				 }
+				 
+			 }
+			 
+			List<Long> fileIds =fileKeywordDAO.getFilesForEachKeyWord(keywords);
+			UpdateDefaultGallariesInFileGallary(fileIds,gallaryIds);
+			
+		 }
+		 catch (Exception e) {
+			 resultStatus.setResultCode(ResultCodeMapper.FAILURE); 
+			 e.printStackTrace();
+		}
+		return resultStatus;
+	 }
+	  /** This method is used to delete default gallries and update files and gallaries in fileGallary**/
+	public ResultStatus UpdateDefaultGallariesInFileGallary(List<Long> fileIds,List<Long> gallaryIds)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		DateUtilService date = new DateUtilService();
+		try{
+			FileGallary fileGallary = new FileGallary();
+			if(fileIds != null && fileIds.size() > 0)
+			fileGallaryDAO.deleteDefaultGallaries(fileIds);
+			if(gallaryIds != null && gallaryIds.size() > 0)
+			{
+			for(Long gallaryId : gallaryIds)
+			{
+				for(Long fileId :fileIds)
+				{
+					Long fileGalId = fileGallaryDAO.checkFileGallaryExist(gallaryId,fileId);
+					if(fileGalId == null)
+					{
+					fileGallary.setGallary(gallaryDAO.get(gallaryId));
+					fileGallary.setFile(fileDAO.get(fileId));
+					fileGallary.setIsPrivate(IConstants.FALSE);
+					fileGallary.setIsDelete(IConstants.FALSE);
+					fileGallary.setCreatedDate(date.getCurrentDateAndTime());
+					fileGallary.setUpdateddate(date.getCurrentDateAndTime());
+					fileGallaryDAO.save(fileGallary);
+					}
+				}
+			}
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			}
+		}
+		catch (Exception e) {
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		e.printStackTrace();
+		}
+		return resultStatus;
+	}
 	
-
+	public ResultStatus updateExistingGallaryKeyword(List<Long> gallaryIds,List<Long> keywords,Long userId)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		Map<Long,List<Long>> existingGallariesMap = new HashMap<Long, List<Long>>(0);//Map<keyWord,gallaryIds>
+		DateUtilService date = new DateUtilService();
+		try{
+			List<Object[]> list = gallaryKeywordDAO.getGallaryMapedKeyWords(userId,keywords);
+			//List<Long> fileIds =fileKeywordDAO.getFilesForEachKeyWord(keywords);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params: list)
+				{
+					List<Long> galIds = existingGallariesMap.get((Long)params[1]);
+					 if(galIds == null)
+					 {
+						 galIds = new ArrayList<Long>(0);
+						 existingGallariesMap.put((Long)params[1],galIds);
+					 }
+					  if(!galIds.contains((Long)params[0]))
+						  galIds.add((Long)params[0]);
+				}
+			
+			}
+			for(Long gallaryId : gallaryIds)
+			{
+				for(Long keyword : keywords)
+				{
+					List<Long> gallaries = existingGallariesMap.get(keyword);
+					if(gallaries != null)
+						for(Long galId : gallaries)
+						{
+							Long gallaryKeywordId = gallaryKeywordDAO.getGallaryKeywordId(keyword, galId);
+							if(gallaryKeywordId != null)
+							{
+							GallaryKeyword gallaryKeyword = gallaryKeywordDAO.get(gallaryKeywordId);
+							gallaryKeyword.setGallary(gallaryDAO.get(gallaryId));
+							gallaryKeyword.setUpdatedDate(date.getCurrentDateAndTime());
+							gallaryKeywordDAO.save(gallaryKeyword);
+							}
+						}
+				}
+			}
+	
+			//UpdateGallariesInFileGallary(fileIds,gallaryIds);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return resultStatus;
+	}
+	
+	 /* *//** This method is used to delete default gallries and update files and gallaries in fileGallary**//*
+		public ResultStatus UpdateGallariesInFileGallary(List<Long> fileIds,List<Long> gallaryIds)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+			DateUtilService date = new DateUtilService();
+			try{
+				
+				if(gallaryIds != null && gallaryIds.size() > 0)
+				{
+				for(Long gallaryId : gallaryIds)
+				{
+					for(Long fileId :fileIds)
+					{
+						Long fileGalId = fileGallaryDAO.checkFileGallaryExist(gallaryId,fileId);
+						if(fileGalId != null)
+						{
+						FileGallary fileGallary = fileGallaryDAO.get(fileGalId);
+						fileGallary.setGallary(gallaryDAO.get(gallaryId));
+						fileGallary.setUpdateddate(date.getCurrentDateAndTime());
+						fileGallaryDAO.save(fileGallary);
+						}
+					}
+				}
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				}
+			}
+			catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			e.printStackTrace();
+			}
+			return resultStatus;
+		}
+*/
 }

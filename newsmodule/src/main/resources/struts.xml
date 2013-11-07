@@ -5678,7 +5678,6 @@
 		    	<param name="root">resultStatus</param>
 		   </result> 
 		</action>
-		
 		  <action name="getKeyWordNewsAction" class="newsPaginationAction" method="ajaxHandler">
 		  <result name="success" type="json">
 		 	<param name="root">fileVOList</param>
@@ -5696,6 +5695,16 @@
 		   </result>
 		 </action> 
 		 
+		 <action name="updateGallaryKeywordAction" class="newsDisplayAction"  method="updateGallaryKeyword">
+		   <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result> 
+		</action>
+		 <action name="getKeywordsAction" class="newsDetailsAction" method="ajaxHandler">
+		   <result type="json" name="success">
+		    	<param name="root">selectOptionVOList</param>
+		   </result> 
+		</action>
 		</package>
 		
 		

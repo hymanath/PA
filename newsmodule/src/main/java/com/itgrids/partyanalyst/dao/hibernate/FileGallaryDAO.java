@@ -3425,5 +3425,21 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		  
 		  return query.list();
 	}
+	 public Integer deleteDefaultGallaries(List<Long> fileIds)
+	 {
+		 Query query = getSession().createQuery("delete from FileGallary model where model.file.fileId in (:fileIds) and model.gallary.gallaryId = 1 ");
+		 query.setParameterList("fileIds", fileIds);
+		return query.executeUpdate();
+	 }
+	 
+	 public Long checkFileGallaryExist(Long gallaryId,Long fileId)
+	 {
+
+		 Query query = getSession().createQuery("select model.fileGallaryId from FileGallary model where model.gallary.gallaryId =:gallaryId and model.file.fileId=:fileId ");
+		 query.setParameter("gallaryId", gallaryId); 
+		 query.setParameter("fileId", fileId);
+		return (Long) query.uniqueResult(); 
+	 }
+ 
 	 
 }

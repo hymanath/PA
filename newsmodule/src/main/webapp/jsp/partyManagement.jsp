@@ -380,9 +380,6 @@ font-size:20px;
 </style>
 </head>
 <script type="text/javascript">
-
-
-
 var gGallaryId;
 		var timeST = new Date().getTime();
 		var sizeOfArray;
@@ -484,6 +481,10 @@ function getSource(selectOptionId){
 			{ 
                clearOptionsListForSelectElmtId('category');
 			   createOptionsForSelectElmtId('category',myResults);
+			   clearOptionsListForSelectElmtId('keywordCategory');
+			   createOptionsForSelectElmtId('keywordCategory',myResults);
+			   clearOptionsListForSelectElmtId('keywordCategory1');
+			   createOptionsForSelectElmtId('keywordCategory1',myResults);
 			}
 			else if(jsObj.task == "partyVideoGallariesForUplaod")
 			{
@@ -752,12 +753,15 @@ function getSource(selectOptionId){
 						$('#errorDiv').css('color','green');
 					}
 				}
-
 		else if(jsObj.task == "getLocationScope")
 		{
 		 showUserAccessLocationScopeList(myResults);
 		}
-
+	   else if(jsObj.task == "getKeywords" || jsObj.task == "getGallaryMapedKeywords")
+			{
+				buildKeyWords(myResults,jsObj);
+			}
+		
 		
      	}
 		catch(e)
@@ -1902,6 +1906,7 @@ function showNewsGallaey()
   $("#profileManagementHeaderDiv3").css('display','block');
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
+  document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
 
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   /*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -2980,6 +2985,7 @@ document.getElementById("profileManagementMainOuterDiv1").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
+document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
 
 /*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
@@ -3922,6 +3928,9 @@ function updatePhoto(fileId,fileGallaryId)
 
 	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>
 	<li><a value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: blue;">Create Report </a></li>
+		<li><a value="KeyWords" id="createReportId" onclick=" getUnassignedKeyWords();" style="cursor:pointer;color: blue;">KeyWords</a>
+		
+		</li>
     </ul>
 	
 </div>
@@ -4079,42 +4088,25 @@ function updatePhoto(fileId,fileGallaryId)
 <div id='profileManagementMainOuterDiv5' style="display:none">
 	<div id='profileManagementHeaderDiv5' class="row-fluid">
 
-		<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">News</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>-->
 		<div class="span10 offset1 text-center alert">Report</div>
 	
 </div>
-
-
-
-
-
-
-
-
-
-
-		<div id='newsReportDiv' class="divInfo">
+<div id='newsReportDiv' class="divInfo">
 		
 	 </div>		
-<!--<div id='locationWiseNewsDiv' class="divInfo">
 </div>
--->
+
+	 <!-- for  body 5  result  end -->
+<div id='profileManagementMainOuterDiv6' style="display:none">
+	<div id='profileManagementHeaderDiv6' class="row-fluid">
+	<div class="span10 offset1 text-center alert">KeyWords</div>
+	</div>
+<div id='keyWordsMainDiv' class="divInfo">
+		
+	 </div>	
+</div>	 
+
 <!-- for  body 5  result  end -->
-
-
-
 <script>
 var keywordsArray = new Array();
 <c:forEach var="keywords" items="${keywordsList}">
@@ -4631,6 +4623,7 @@ function showTheNewsToUpdate()
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
   $("#profileManagementMainOuterDiv5").css("display","none");
   $('#profileManagementMainOuterDiv4').show();
+  document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
  /* $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -4780,6 +4773,14 @@ var callback = {
 			else if(jsObj.task == "saveNews")
 			{
 			showReportFileNewsStatus(myResults);
+			}
+			else if(jsObj.task == "updateGallaryKeyword")
+			{
+				showStatusForupdateGallaryKeyword(myResults);
+			}
+		else if(jsObj.task == "updatexistingKeyword")
+			{
+				showStatusForupdateGallaryKeyword1(myResults);
 			}
 		
 }
@@ -5367,6 +5368,13 @@ var callback = {
 			  clearOptionsListForSelectElmtId('gallaryId');
 			  createOptionsForSelectElement('gallaryId',myResults);
 			}
+			else if(jsObj.task == "getGallariesInCategory1")
+			{
+			
+			  buildGallariesForCategory(myResults,jsObj);
+			 
+			}
+			
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
 		}  
@@ -7095,7 +7103,7 @@ function assignNewsToCandidate()
   $("#videoGallaryDiv").css("display","none");
   $("#dateSelectDiv").css("display","none");
   $("#profileManagementMainOuterDiv5").css("display","none");
-  
+  $("#profileManagementMainOuterDiv6").css("display","none");
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
   str +='<h2 style="text-align: center;">Assign News</h2>';
@@ -7470,8 +7478,7 @@ function getGallariesForSelectedCategory()
     $("#uploadNewsFileErrorDiv1").html('Please Select Category.').css("color","red");
      return;
   }
-
-   var jsObj=
+	 var jsObj=
 	{
 	    categoryId:categoryId,
 		task  : "getGallariesInCategory"
@@ -7675,8 +7682,8 @@ function createReport()
   $("#videoGallaryDiv").css("display","none");
   $("#dateSelectDiv").css("display","none");
   $("#profileManagementMainOuterDiv5").css("display","block");
-   $("#profileManagementHeaderDiv5").css("display","none");
-  
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","none");
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
   str +='<h2 style="text-align: center;"> News Report</h2>';
@@ -7886,8 +7893,298 @@ $(document).ready(function(){
   });
 });
 
+function getUnassignedKeyWords()
+{
+	
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","none");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","block");
+  $("#profileManagementHeaderDiv6").css("display","none");
+    var str ='';
+	str+='<div class="container well">';
 
+	str+='<div class="row clearfix">';
+	str+='<legend class="text-center ">Map KeyWords To Gallaries</legend>';
+	str+='<div id="keywordErrorMsgDivId" ></div>';
+	str+='<div class="row-fluid"><div class="span6 well well-small " id="keywordsDiv">';
+	str+=' </div>';
+	str+='<div class="span6"> '; 
+	str+='<div class="row-fluid">';
+	str+='<div class="span12 well well-small ">';
+    str+='<label><strong>Select Category Name</strong></label>';
+    str+=' <select class="input-block-level"  id="keywordCategory"  onchange="getGallariesForSelectedCategory1(\'keywordCategory\')">';
+	str+='</select>';
+    str+='</div>';
+    str+='<div class="span12 well well-small " id="categorygallary" style="display:none;">';
+    str+='<label><strong>List oF (Category) Gallarys</strong></label>';
+	str+='</div>';
+	str+='</div></div>';
+    str+='</div>';
+	str+='<div class="form-actions text-center">';
+	str+=' <button type="submit " class="btn btn-success btn-large" onclick="updateGallaryKeyword();">Submit</button>';
+	str+='<img style="display:none;" src="images/search.jpg" id="keywordAjaxImg">';
+	str+='</div>';
+	str+='</div>';
 
+	str+='</div>';
+	
+		str+='<div class="container well" style="display:none;">';
+		str+='<div class="row clearfix">';
+	str+='<legend class="text-center ">Update KeyWord</legend>';
+	str+='<div id="keywordErrorMsgDivId1" ></div>';
+    str+='<div class="row-fluid"><div class="span6 well well-small " id="gallaryMapedkeywordsDiv">';
+	str+=' </div>';
+	str+='<div class="span6"> '; 
+	str+='<div class="row-fluid">';
+	str+='<div class="span12 well well-small ">';
+     str+='<label><strong>Select Category Name</strong></label>';
+     str+=' <select class="input-block-level" id="keywordCategory1" onchange="getGallariesForSelectedCategory1(\'keywordCategory1\')">';
+	 str+='</select>';
+    str+='</div>';
+    str+='<div class="span12 well well-small " id="categorygallary1" style="display:none;">';
+	str+='</div>';
+	str+='</div></div>';
+    str+='</div>';
+	str+='<div class="form-actions text-center">';
+	str+=' <button type="submit " class="btn btn-success btn-large" onclick="updateExistingKeyword();">Submit</button>';
+	str+='<img style="display:none;" src="images/search.jpg" id="keywordAjaxImg1">';
+	str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	document.getElementById("keyWordsMainDiv").innerHTML = str;
+	getCategory();
+	getKeyWords();
+	getMappedKeyWords();
+}
+
+function getKeyWords()
+{
+	 var jsObj={
+		
+		task:'getKeywords'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getKeywordsAction.action?"+rparam;
+	callAjax(jsObj, url);
+	 
+ 
+}
+function getMappedKeyWords()
+{
+	 var jsObj={
+		
+		task:'getGallaryMapedKeywords'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getKeywordsAction.action?"+rparam;
+	callAjax(jsObj, url);
+	 
+ 
+}
+
+function getGallariesForSelectedCategory1(selEle)
+{
+ if(selEle == "keywordCategory")
+  $("#categorygallary").css("display","block");
+  if(selEle == "keywordCategory1")
+  $("#categorygallary1").css("display","block");;
+  var categoryId = $('#'+selEle+'').val();
+ var jsObj=
+	{
+	    categoryId:categoryId,
+		selEle : selEle,
+		task  : "getGallariesInCategory1"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getGallariesByCategoryIdAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+}
+
+function updateGallaryKeyword()
+{
+var keywordsArr =[]; 
+var gallariesArr = [];
+$(".keywords").each(function() {
+		 if($(this).is(":checked")){
+		
+		keywordsArr.push($(this).val());
+	   }
+    });
+	$(".gallary").each(function() {
+		 if($(this).is(":checked")){
+		gallariesArr.push($(this).val());
+	   }
+    });
+	var keywordCategory = $("#keywordCategory").val();
+	 var flag =false;
+	 var str='<font color="red">';
+	var keywordErrorMsgDivId = document.getElementById('keywordErrorMsgDivId');
+	
+	if(keywordCategory == 0)
+	{
+	str +='Select Category<br/>';
+		flag =true;
+	}
+	else if(gallariesArr == "")
+	{
+		str +='Select atleast one Gallary<br/>';
+		flag =true;
+	}
+	else if(keywordsArr == "")
+	{
+		str +='Select atleast one keyWord<br/>';
+		flag =true;
+	}
+	if(flag == true)
+	{
+	keywordErrorMsgDivId.innerHTML = str;
+	return;
+	}
+	else
+	keywordErrorMsgDivId.innerHTML = '';
+	$("#keywordAjaxImg").css("display","inline-block");
+		var jsObj = {
+			gallariesArr:gallariesArr,
+			keywordsArr:keywordsArr,
+			task: 'updateGallaryKeyword',
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "updateGallaryKeywordAction.action?"+rparam;
+	callnewAjax(jsObj,url);
+
+}
+function updateExistingKeyword()
+{
+var keywordsArr =[]; 
+var gallariesArr = [];
+var keywordCategory = $("#keywordCategory1").val();
+var keywordErrorMsgDivId = document.getElementById("keywordErrorMsgDivId1");
+ $(".existingkeywords").each(function() {
+		 if($(this).is(":checked")){
+		 keywordsArr.push($(this).val());
+	   }
+    });
+	$(".gallary1").each(function() {
+		 if($(this).is(":checked")){
+		 gallariesArr.push($(this).val());
+	   }
+    });
+	var flag =false;
+	 var str='<font color="red">';
+	
+	if(keywordCategory == 0)
+	{
+	str +='Select Category<br/>';
+		flag =true;
+	}
+	else if(gallariesArr == "")
+	{
+		str +='Select atleast one Gallary<br/>';
+		flag =true;
+	}
+	else if(keywordsArr == "")
+	{
+		str +='Select atleast one keyWord<br/>';
+		flag =true;
+	}
+	if(flag == true)
+	{
+	keywordErrorMsgDivId.innerHTML = str;
+	return;
+	}
+	else
+	keywordErrorMsgDivId.innerHTML = '';
+$("#keywordAjaxImg1").css("display","inline-block");
+		var jsObj = {
+			gallariesArr:gallariesArr,
+			keywordsArr:keywordsArr,
+			task: 'updatexistingKeyword',
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "updateGallaryKeywordAction.action?"+rparam;
+	callnewAjax(jsObj,url);
+	
+}
+function buildKeyWords(result,jobj)
+{
+	var task = jobj.task;
+	var str='';
+	var divEle = '';
+	if(task == 'getKeywords')
+    divEle = document.getElementById("keywordsDiv");
+	else
+	divEle = document.getElementById("gallaryMapedkeywordsDiv");
+	if(result.length > 0)
+	{
+
+			if(task == 'getKeywords')
+	str+=' <label><strong>Select Multiple Keywords and Map to Gallary</strong></label>';
+		else
+	str+=' <label><strong>Select Multiple Keywords and Update Gallary</strong></label>';
+	for(var i in result)
+	{
+			if(task == 'getKeywords')
+	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="keywords" style="margin-top:1px;"/>'+result[i].name+'</label>&nbsp;';
+	else
+	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="existingkeywords" style="margin-top:1px;"/>'+result[i].name+'</label>&nbsp;';
+	}
+	}
+		divEle.innerHTML = str;
+}
+function buildGallariesForCategory(result,jobj)
+{
+    var divId = jobj.selEle;
+	var str='';
+	var divEle1 = '';
+	if(divId == "keywordCategory")
+    divEle1 = document.getElementById("categorygallary");
+	else
+	 divEle1 = document.getElementById("categorygallary1");
+	if(result.length > 0)
+	{
+	str+=' <label><strong>Select Multiple Gallaries</strong></label>';
+	for(var i in result)
+	{
+		if(divId == "keywordCategory")
+	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="gallary"/>' +result[i].name+ '</label>&nbsp;';
+	else
+	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="gallary1"/>' +result[i].name+ '</label>&nbsp;';
+	}
+	}
+		divEle1.innerHTML = str;
+}
+function showStatusForupdateGallaryKeyword(result)
+{
+	$("#keywordAjaxImg").css("display","none");
+	if(result.resultCode == 0)
+	{
+	 $("#keywordErrorMsgDivId").html('Updated successfully..').css('color','green');
+	 getKeyWords();
+	}
+	else
+	$("#keywordErrorMsgDivId").html('Error Occured! Try Again..').css('color','red');
+  return;
+}
+function showStatusForupdateGallaryKeyword1(result)
+{
+	$("#keywordAjaxImg1").css("display","none");
+	if(result.resultCode == 0)
+	{
+	 $("#keywordErrorMsgDivId1").html('Updated successfully..').css('color','green');
+	
+	}
+	else
+	$("#keywordErrorMsgDivId1").html('Error Occured! Try Again..').css('color','red');
+  return;
+}
 </script>
 </body>
 </html>
