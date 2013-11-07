@@ -351,9 +351,15 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			 String name=jObj.getString("name");
 			 resultStatus = candidateDetailsService.updateCategoryStatus(userId,categoryId,name);
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getKeywords"))
+		 {
+			 selectOptionVOList =  newsMonitoringService.getKeywords(userId,false);
+		 }
 			 
-			 
-		 
+		 else if(jObj.getString("task").equalsIgnoreCase("getGallaryMapedKeywords"))
+		 {
+			 selectOptionVOList =  newsMonitoringService.getKeywords(userId,true);
+		 }
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);

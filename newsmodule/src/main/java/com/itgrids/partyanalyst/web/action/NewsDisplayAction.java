@@ -563,4 +563,32 @@ public class NewsDisplayAction implements ServletRequestAware{
 	}
 	return Action.SUCCESS;
    }
+   
+   public String updateGallaryKeyword()
+   {
+	   try{
+		  jObj = new JSONObject(getTask());
+		  session = request.getSession();
+		  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+		  if(regVo == null)
+			  return Action.ERROR;
+		   Long userId = regVo.getRegistrationID();  
+		   List<Long> gallaryIds = new ArrayList<Long>();
+		   List<Long> keywords = new ArrayList<Long>();
+		   JSONArray arr = jObj.getJSONArray("gallariesArr");
+		   JSONArray arr1 = jObj.getJSONArray("keywordsArr");
+		   for(int i=0;i<arr.length();i++)
+			   gallaryIds.add(new Long(arr.get(i).toString())); 
+		   for(int i=0;i<arr1.length();i++)
+			   keywords.add(new Long(arr1.get(i).toString()));
+		   if(jObj.getString("task").equalsIgnoreCase("updateGallaryKeyword"))
+		   resultStatus = newsMonitoringService.updateGallaryKeyword(gallaryIds,keywords,userId);
+		   else if(jObj.getString("task").equalsIgnoreCase("updatexistingKeyword"))
+			   resultStatus = newsMonitoringService.updateExistingGallaryKeyword(gallaryIds,keywords,userId); 
+	   }
+	   catch (Exception e) {
+		e.printStackTrace();
+	}
+	return Action.SUCCESS;
+   }
 }

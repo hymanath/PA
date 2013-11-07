@@ -1668,6 +1668,10 @@
 		<property name="userAddressDAO" ref="userAddressDAO" />
 		<property name="newsReportDAO" ref="newsReportDAO" />
 		<property name="reportFilesDAO" ref="reportFilesDAO" />
-	</bean>
+		<property name="gallaryKeywordDAO" ref="gallaryKeywordDAO" />
+		<property name="keywordDAO" ref="keywordDAO" />
+		<property name="fileKeywordDAO" ref="fileKeywordDAO" />
+		
+</bean>
 </beans>		
 	

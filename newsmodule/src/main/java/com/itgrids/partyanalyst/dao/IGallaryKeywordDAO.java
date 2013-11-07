@@ -12,4 +12,14 @@ public interface IGallaryKeywordDAO extends GenericDao<GallaryKeyword, Long>{
 	
 	public List<String> getGallaryMappedKeywordsList(List<String> keywordsList);
 
+	public List<Object[]> getUnAssignedKeyWords(Long userId);
+	
+	public Integer DeleteKeyWords(List<Long> keyWords,Long userId);
+	
+	public List<Object[]> getGallaryMapedKeyWords(Long userId);
+	
+	public List<Object[]> getGallaryMapedKeyWords(Long userId,List<Long> keyWords);
+	
+	public Long getGallaryKeywordId(Long keyWord,Long gallaryId);
+
 }

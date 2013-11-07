@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
@@ -275,7 +276,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			
 			jObj = new JSONObject(getTask());
 			
-		if(jObj.getString("task").equalsIgnoreCase("getGallariesInCategory"))
+		if(jObj.getString("task").equalsIgnoreCase("getGallariesInCategory") || jObj.getString("task").equalsIgnoreCase("getGallariesInCategory1"))
 			selectOptionVOList = candidateDetailsService.getGallariesInCategory(jObj.getLong("categoryId"));
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getLocationScope"))
@@ -291,8 +292,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getTotalKeyWords"))
 		 keywordsList = candidateDetailsService.getTotalKeyWords();
-		 
-			 
+		
 		}catch (Exception e) {
 			e.printStackTrace();
 	         log.error("Exception Occured in ajaxHandler() method, Exception - "+e);
