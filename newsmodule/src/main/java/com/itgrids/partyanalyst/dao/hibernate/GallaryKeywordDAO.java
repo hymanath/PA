@@ -19,7 +19,7 @@ public class GallaryKeywordDAO extends GenericDaoHibernate<GallaryKeyword, Long>
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getGallaryKeywords(List<String> keywordsList)
 	{
-	  Query query = getSession().createQuery(" select model.gallary.gallaryId,model.keyword.type from GallaryKeyword model " +
+	  Query query = getSession().createQuery(" select distinct model.gallary.gallaryId,model.keyword.type,model.keyword.keywordId from GallaryKeyword model " +
 	  		" where model.keyword.type in (:keywordsList) ");
 	  
 	  query.setParameterList("keywordsList", keywordsList);
