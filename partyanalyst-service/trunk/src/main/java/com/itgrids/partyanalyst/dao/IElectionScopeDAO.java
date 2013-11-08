@@ -58,5 +58,7 @@ public interface IElectionScopeDAO extends GenericDao<ElectionScope, Long>{
 	public List<ElectionScope> findByTypeIdStateId(Long typeId,Long stateID);
 	
 	public List<Object[]> getDistinctStatesFromElectionScope();
+	
+	public List<ElectionScope> getAllElectionScopes();
 
 }
