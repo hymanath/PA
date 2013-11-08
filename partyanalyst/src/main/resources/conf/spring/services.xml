@@ -1769,6 +1769,7 @@
 	 <property name="mobileAppUserAccessDAO" ref="mobileAppUserAccessDAO" />
 	 <property name="mobileAppUserDAO" ref="mobileAppUserDAO" />
 	 <property name="mobileAppUserProfileDAO" ref="mobileAppUserProfileDAO" />
+	 <property name="electionScopeDAO" ref="electionScopeDAO" />
 	 
     </bean>
     
