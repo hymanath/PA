@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyHierarchyInfoDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
+import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
@@ -74,6 +75,7 @@ import com.itgrids.partyanalyst.model.CasteCategoryGroup;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyHierarchyInfo;
 import com.itgrids.partyanalyst.model.EducationalQualifications;
+import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
@@ -144,9 +146,17 @@ public class MobileService implements IMobileService{
  private IMobileAppUserAccessDAO mobileAppUserAccessDAO;
  private IMobileAppUserProfileDAO mobileAppUserProfileDAO;
  private TransactionTemplate transactionTemplate;
+ private IElectionScopeDAO electionScopeDAO;
  
- 
-  public TransactionTemplate getTransactionTemplate() {
+  public IElectionScopeDAO getElectionScopeDAO() {
+	return electionScopeDAO;
+}
+
+public void setElectionScopeDAO(IElectionScopeDAO electionScopeDAO) {
+	this.electionScopeDAO = electionScopeDAO;
+}
+
+public TransactionTemplate getTransactionTemplate() {
 	return transactionTemplate;
 }
 
@@ -713,6 +723,28 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("Election Type data Completed...");
 	
+	try{
+		
+	List<ElectionScope> electionScopeList = electionScopeDAO.getAllElectionScopes();
+	if(electionScopeList != null && electionScopeList.size() > 0)
+	{
+	  for(ElectionScope electionScope : electionScopeList)
+	  {
+		str.append("INSERT INTO election_scope(election_scope_id,election_type_id,state_id,country_id) VALUES (");
+		str.append(electionScope.getElectionScopeId()+",");
+		str.append(electionScope.getElectionType() != null ? electionScope.getElectionType().getElectionTypeId()+"," : "NULL,");
+		str.append(electionScope.getState() != null ? electionScope.getState().getStateId()+"," : "NULL,");
+		str.append(electionScope.getCountry().getCountryId());
+		str.append(");\n");
+	  }
+	}
+	str.append("\n");
+	LOG.info("Election Scope data Completed...");
+	}catch(Exception e)
+	{
+		LOG.info("Exception Ocuured in Election Scope data inserting...");
+	}
+		
 	/*List<Object[]> hamletsAndMandalsList = hamletDAO.gethamletsInAState(constituencyDAO.get(constituencyId).getState().getStateId());
 	List<Object[]> hamletsAndPanchayatsList = panchayatHamletDAO.gethamletsInAState(constituencyDAO.get(constituencyId).getState().getStateId());
 	Map<Long,Long> hamletsAndPanchayatsMap = new LinkedHashMap<Long,Long>();
@@ -1253,7 +1285,7 @@ public List<SelectOptionVO> getConstituencyList()
 					strTemp.append(cadre.getNoOfVoters() != null ? cadre.getNoOfVoters()+"," : "0,");
 					strTemp.append(cadre.getMobile() != null ? "'"+cadre.getMobile().toString()+"'," : "null,");
 					strTemp.append(cadre.getEmail() != null ? "'"+cadre.getEmail()+"'," : "null,");
-					strTemp.append(cadre.getCurrentAddress().getHouseNo() != null ? "'"+cadre.getCurrentAddress().getHouseNo()+"'," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getHouseNo() != null ? "'#"+cadre.getCurrentAddress().getHouseNo()+"'," : "null,");
 					strTemp.append(cadre.getCurrentAddress().getStreet() != null ? "'"+cadre.getCurrentAddress().getStreet()+"'," : "null,");
 					strTemp.append(cadre.getCurrentAddress().getUserAddressId()+",");
 					strTemp.append(cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId()+"," : "null,");

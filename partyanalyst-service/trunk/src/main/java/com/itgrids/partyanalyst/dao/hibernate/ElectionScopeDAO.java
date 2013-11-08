@@ -119,6 +119,13 @@ public class ElectionScopeDAO extends GenericDaoHibernate<ElectionScope, Long> i
 		return getHibernateTemplate().find("select distinct model.state.stateId,model.state.stateName from " +
 				" ElectionScope model");
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ElectionScope> getAllElectionScopes()
+	{
+		Query query = getSession().createQuery("Select model from ElectionScope model");
+		return query.list();
+	}
 }
  
 
