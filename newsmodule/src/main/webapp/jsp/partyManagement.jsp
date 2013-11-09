@@ -330,7 +330,7 @@ padding: 0 20px;
 #dateErrorMessage{color:red;font-weight:bold;}
 #toDateLabelId,#fromDateLabelId{display:inline-block;}
 #toDateLabelId{margin-left: 15px;}
-#assignNewsInnerDiv,#newsReportInnerDiv{margin-left: 151px; margin-top: 0px; width: 600px; clear: both;}
+#assignNewsInnerDiv{margin-left: 151px; margin-top: 0px; width: 600px; clear: both;}
 #assignNewsRadioDiv{margin-bottom: 16px; margin-top: 8px;}
 #assignNewsResradio{margin-top: 0px; margin-right: 4px;}
 #assignNewsCandidateRadio{margin-top: 0px; margin-right: 6px; margin-left: 13px;}
@@ -378,7 +378,7 @@ font-size:20px;
     font-weight: normal;
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
-
+#newsReportInnerDiv{width:400px;margin-left:auto;margin-right:auto;}
 </style>
 </head>
 <script type="text/javascript">
@@ -2049,7 +2049,7 @@ function buildUploadNewsForMultipleUsers()
 	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';*/
 
-    //keyworda Start
+      //keyworda Start
 	str +='<tr>';
 	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
@@ -7731,7 +7731,7 @@ function createReport()
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
   var str = '';
-  str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
+  str +='<div class="container well">';
   str +='<h2 style="text-align: center;"> News Report</h2>';
 
   str +='<div id="newsReportInnerDiv">';
@@ -7750,13 +7750,13 @@ function createReport()
     str+='</tr>';
 	   str+='</table>';
   str +='</div>';
-
-
+ str+='</table>';
+ str+='<div class="form-actions text-center">';
   str +='<input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNews()"/>';
   str+='<img id="newsReportAjaxImg" src="images/search.jpg" style="display:none;"/>';
-  str+='</table>';
-  str +='<div id="locationWiseNewsDiv" class="divInfo">';
-  str +='</div>';
+    str +='</div>';
+  str +='<div id="locationWiseNewsDiv" class="divInfo" style="display:none;">';
+
   str +='</div>';
 
   str +='</div>';
@@ -7772,6 +7772,7 @@ function getNews()
 {
 
 $("#newsReportAjaxImg").css({ 'display': 'inline-block' });
+$("#locationWiseNewsDiv").css("display","none");
 	var fromDate = $("#fromDateId1").val();
 	var toDate = $("#toDateId1").val();
 	var regionLevel = $("#regionlevel").val();
@@ -7838,7 +7839,7 @@ var fileGallaryIds = [];
 	callnewAjax(jsObj,url);
 	}
 }
-function buildLocationWiseNews(results)
+/*function buildLocationWiseNews(results)
 {
 	var str='';
 	var divEle = document.getElementById("locationWiseNewsDiv");
@@ -7910,7 +7911,7 @@ function buildLocationWiseNews(results)
 	str+='<img style="display: none;" src="images/search.jpg" id="savenewsAjaxImg">';
 	}
 	divEle.innerHTML =str;
-}
+}*/
 function showReportFileNewsStatus(result)
 {
 	$("#savenewsAjaxImg").css("display","none");
