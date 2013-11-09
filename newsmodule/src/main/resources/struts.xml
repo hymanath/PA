@@ -5705,6 +5705,16 @@
 		    	<param name="root">selectOptionVOList</param>
 		   </result> 
 		</action>
+		 <action name="getGallariesAction" class="newsDetailsAction" method="ajaxHandler">
+		   <result type="json" name="success">
+		    	<param name="root">gallaryIds</param>
+		   </result> 
+		</action>
+		<action name="getAllNewsReportsForAUser" class="newsDisplayAction"  method="getAllNewsReports">
+		   <result type="json" name="success">
+		    	<param name="root">fileVOs</param>
+		   </result> 
+		</action>
 		</package>
 		
 		

@@ -18,8 +18,10 @@ public interface IGallaryKeywordDAO extends GenericDao<GallaryKeyword, Long>{
 	
 	public List<Object[]> getGallaryMapedKeyWords(Long userId);
 	
-	public List<Object[]> getGallaryMapedKeyWords(Long userId,List<Long> keyWords);
-	
 	public Long getGallaryKeywordId(Long keyWord,Long gallaryId);
+	
+	public List<Long> getGallaryMapedKeyWords(Long userId,Long keyWord);
+	
+	public Integer deleteGallaries(Long keyWord,Long userId,List<Long> gallaryIds);
 
 }

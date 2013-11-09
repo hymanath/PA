@@ -59,12 +59,12 @@ public class GallaryKeywordDAO extends GenericDaoHibernate<GallaryKeyword, Long>
 		 
 	}
 	
-	public List<Object[]> getGallaryMapedKeyWords(Long userId,List<Long> keyWords)
+	public List<Long> getGallaryMapedKeyWords(Long userId,Long keyWord)
 	{
-		Query query = getSession().createQuery("select model.gallary.gallaryId,model.keyword.keywordId from GallaryKeyword model where model.createdBy = :userId and " +
-				"model.keyword.keywordId in(:keyWords)");
+		Query query = getSession().createQuery("select model.gallary.gallaryId from GallaryKeyword model where model.createdBy = :userId and " +
+				"model.keyword.keywordId = :keyWord");
 		query.setParameter("userId", userId);
-		query.setParameterList("keyWords", keyWords);
+		query.setParameter("keyWord", keyWord);
 		
 		return query.list();
 		
@@ -82,15 +82,13 @@ public class GallaryKeywordDAO extends GenericDaoHibernate<GallaryKeyword, Long>
 		
 		 
 	}
-	/*public List<Object[]> getUnAssignedKeyWords(Long userId)
+	public Integer deleteGallaries(Long keyWord,Long userId,List<Long> gallaryIds)
 	{
-		Query query = getSession().createQuery("select distinct k.keywordId,k.type from Keyword k,GallaryKeyword gk where k.createdBy = :userId and " +
-				"k.keywordId not in(select gk1.keyword.keywordId from GallaryKeyword gk1 where gk1.createdBy = :userId) and k.createdBy = gk.keyword.createdBy");
-		query.setParameter("userId", userId);
-		return query.list();
-		
-		
-	}*/
-	
+		 Query query = getSession().createQuery("delete from GallaryKeyword model where model.gallary.gallaryId in (:gallaryIds) and model.keyword.keywordId =:keyWord and model.createdBy = :userId ");
+		 query.setParameterList("gallaryIds", gallaryIds);
+		 query.setParameter("userId", userId);
+		 query.setParameter("keyWord", keyWord);
+		 return query.executeUpdate();
+	 }
 
 }

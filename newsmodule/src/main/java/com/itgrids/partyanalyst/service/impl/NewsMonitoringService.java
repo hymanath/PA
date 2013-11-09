@@ -4660,15 +4660,25 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		    		Set<FileSourceLanguage> set = file.getFileSourceLanguage();
 		    		String sourceString = "";
 		    		String language = "";
+		    		List<FileVO> sourceList = new ArrayList<FileVO>();
 					for(FileSourceLanguage source:set)
 					{
+						FileVO filesource = new FileVO();
 						if(source.getSource() != null && (source.getSource().getSource() != null && !source.getSource().getSource().equals("")))
+						{
 						sourceString+=source.getSource().getSource()+" ";
+						filesource.setSource(source.getSource().getSource());
+						}
 						if(source.getLanguage() != null && (source.getLanguage().getLanguage() != null && !source.getLanguage().getLanguage().equals("")))
+						{
 						language+=source.getLanguage().getLanguage()+" ";
+						filesource.setLanguage(source.getLanguage().getLanguage());
+						}
+						sourceList.add(filesource);
 					}
 					fileVO.setSource(sourceString);
 					fileVO.setLanguage(language);
+					fileVO.setFileVOList(sourceList);
 					if(candidateMap == null || candidateMap.get((Long)params[1]) == null)
 					fileVO.setCandidateName("TDP");		
 					else
@@ -4720,9 +4730,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			  transactionTemplate.execute(new TransactionCallback() {
 			  public Object doInTransaction(TransactionStatus status) {
 		     DateUtilService currentDate = new DateUtilService();
-		
-			
-			NewsReport newsReport = new NewsReport();
+		    NewsReport newsReport = new NewsReport();
 			newsReport.setDescription(decription);
 			newsReport.setUser(userDAO.get(userId));
 			newsReport.setCreatedDate(currentDate.getCurrentDateAndTime());
@@ -4800,6 +4808,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		 }
 		 catch (Exception e) {
 			 resultStatus.setResultCode(ResultCodeMapper.FAILURE); 
+			 log.error("Exception Occured in updateGallaryKeyword() method", e);
 			 e.printStackTrace();
 		}
 		return resultStatus;
@@ -4837,95 +4846,81 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		catch (Exception e) {
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		log.error("Exception Occured in UpdateDefaultGallariesInFileGallary() method", e);
 		e.printStackTrace();
 		}
 		return resultStatus;
 	}
-	
-	public ResultStatus updateExistingGallaryKeyword(List<Long> gallaryIds,List<Long> keywords,Long userId)
+	/* this method is used to update gallaries for a keyword */
+	public ResultStatus updateExistingGallaryKeyword(List<Long> checkedgallaryIds,List<Long> uncheckedgallaryIds,Long keyword,Long userId)
 	{
 		ResultStatus resultStatus = new ResultStatus();
-		Map<Long,List<Long>> existingGallariesMap = new HashMap<Long, List<Long>>(0);//Map<keyWord,gallaryIds>
 		DateUtilService date = new DateUtilService();
 		try{
-			List<Object[]> list = gallaryKeywordDAO.getGallaryMapedKeyWords(userId,keywords);
-			//List<Long> fileIds =fileKeywordDAO.getFilesForEachKeyWord(keywords);
-			if(list != null && list.size() > 0)
+			if(uncheckedgallaryIds != null && uncheckedgallaryIds.size() > 0)
+			gallaryKeywordDAO.deleteGallaries(keyword,userId,uncheckedgallaryIds);
+			for(Long gallaryId : checkedgallaryIds)
 			{
-				for(Object[] params: list)
-				{
-					List<Long> galIds = existingGallariesMap.get((Long)params[1]);
-					 if(galIds == null)
-					 {
-						 galIds = new ArrayList<Long>(0);
-						 existingGallariesMap.put((Long)params[1],galIds);
-					 }
-					  if(!galIds.contains((Long)params[0]))
-						  galIds.add((Long)params[0]);
-				}
+				Long gallaryKeywordId = gallaryKeywordDAO.getGallaryKeywordId(keyword, gallaryId);
 			
-			}
-			for(Long gallaryId : gallaryIds)
-			{
-				for(Long keyword : keywords)
+				if(gallaryKeywordId == null)
 				{
-					List<Long> gallaries = existingGallariesMap.get(keyword);
-					if(gallaries != null)
-						for(Long galId : gallaries)
-						{
-							Long gallaryKeywordId = gallaryKeywordDAO.getGallaryKeywordId(keyword, galId);
-							if(gallaryKeywordId != null)
-							{
-							GallaryKeyword gallaryKeyword = gallaryKeywordDAO.get(gallaryKeywordId);
-							gallaryKeyword.setGallary(gallaryDAO.get(gallaryId));
-							gallaryKeyword.setUpdatedDate(date.getCurrentDateAndTime());
-							gallaryKeywordDAO.save(gallaryKeyword);
-							}
-						}
+					GallaryKeyword gallaryKeyword = new GallaryKeyword();
+					gallaryKeyword.setKeyword(keywordDAO.get(keyword));
+					gallaryKeyword.setGallary(gallaryDAO.get(gallaryId));
+					gallaryKeyword.setCreatedDate(date.getCurrentDateAndTime());
+					gallaryKeyword.setUpdatedDate(date.getCurrentDateAndTime());
+					gallaryKeyword.setCreatedBy(userId);
+					gallaryKeywordDAO.save(gallaryKeyword);
 				}
+				
 			}
 	
-			//UpdateGallariesInFileGallary(fileIds,gallaryIds);
-			
 		}
 		catch(Exception e)
 		{
+			log.error("Exception Occured in updateExistingGallaryKeyword() method", e);
 			e.printStackTrace();
 		}
 		return resultStatus;
 	}
-	
-	 /* *//** This method is used to delete default gallries and update files and gallaries in fileGallary**//*
-		public ResultStatus UpdateGallariesInFileGallary(List<Long> fileIds,List<Long> gallaryIds)
-		{
-			ResultStatus resultStatus = new ResultStatus();
-			DateUtilService date = new DateUtilService();
-			try{
-				
-				if(gallaryIds != null && gallaryIds.size() > 0)
-				{
-				for(Long gallaryId : gallaryIds)
-				{
-					for(Long fileId :fileIds)
-					{
-						Long fileGalId = fileGallaryDAO.checkFileGallaryExist(gallaryId,fileId);
-						if(fileGalId != null)
-						{
-						FileGallary fileGallary = fileGallaryDAO.get(fileGalId);
-						fileGallary.setGallary(gallaryDAO.get(gallaryId));
-						fileGallary.setUpdateddate(date.getCurrentDateAndTime());
-						fileGallaryDAO.save(fileGallary);
-						}
-					}
-				}
-				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-				}
-			}
-			catch (Exception e) {
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			e.printStackTrace();
-			}
-			return resultStatus;
+	public List<Long> getGallaryId(Long userId,Long keyword)
+	{
+		List<Long> gallaryIds = new ArrayList<Long>();
+		try{
+			gallaryIds = gallaryKeywordDAO.getGallaryMapedKeyWords(userId,keyword);
 		}
-*/
+		catch (Exception e) {
+			log.error("Exception Occured in getGallaryId() method", e);
+		e.printStackTrace();
+		}
+		return gallaryIds;
+	}
+	
+	public List<FileVO> getNewsReports(Long userId)
+	{
+		List<FileVO> resultList = new ArrayList<FileVO>();
+		try{
+			List<Object[]> list = newsReportDAO.getNewsReports(userId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					FileVO fileVO = new FileVO();
+					fileVO.setNewsImportanceId((Long)params[0]);
+					fileVO.setDescription(params[1].toString());
+					String dateObj = params[2].toString().substring(8,10)+'-'+params[2].toString().substring(5,7)+'-'+params[2].toString().substring(0,4);
+		    		fileVO.setIdentifiedDateOn(dateObj!=null?dateObj:"");
+					resultList.add(fileVO);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getNewsReports() method", e);
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+
 }

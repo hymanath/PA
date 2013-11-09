@@ -494,6 +494,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 			{
 				returnVal = newsMonitoringService.getAllSourceLanguageDetails();
 			}
+		   
 	   }catch(Exception e){
 		   e.printStackTrace();
 	   }
@@ -573,22 +574,57 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  if(regVo == null)
 			  return Action.ERROR;
 		   Long userId = regVo.getRegistrationID();  
-		   List<Long> gallaryIds = new ArrayList<Long>();
-		   List<Long> keywords = new ArrayList<Long>();
-		   JSONArray arr = jObj.getJSONArray("gallariesArr");
-		   JSONArray arr1 = jObj.getJSONArray("keywordsArr");
-		   for(int i=0;i<arr.length();i++)
-			   gallaryIds.add(new Long(arr.get(i).toString())); 
-		   for(int i=0;i<arr1.length();i++)
-			   keywords.add(new Long(arr1.get(i).toString()));
+		 
 		   if(jObj.getString("task").equalsIgnoreCase("updateGallaryKeyword"))
+		   {
+			   List<Long> gallaryIds = new ArrayList<Long>();
+			   List<Long> keywords = new ArrayList<Long>();
+			   JSONArray arr = jObj.getJSONArray("gallariesArr");
+			   JSONArray arr1 = jObj.getJSONArray("keywordsArr");
+			   for(int i=0;i<arr.length();i++)
+				   gallaryIds.add(new Long(arr.get(i).toString())); 
+			   for(int i=0;i<arr1.length();i++)
+				   keywords.add(new Long(arr1.get(i).toString()));
 		   resultStatus = newsMonitoringService.updateGallaryKeyword(gallaryIds,keywords,userId);
+		   }
 		   else if(jObj.getString("task").equalsIgnoreCase("updatexistingKeyword"))
-			   resultStatus = newsMonitoringService.updateExistingGallaryKeyword(gallaryIds,keywords,userId); 
+		   {
+			   List<Long> checkedgallaryIds = new ArrayList<Long>();
+			   List<Long> uncheckedgallaryIds = new ArrayList<Long>();
+			   JSONArray checked = jObj.getJSONArray("checkedgallariesArr");
+			   JSONArray unchecked = jObj.getJSONArray("unCheckedgallariesArr");
+			   for(int i=0;i<checked.length();i++)
+				   checkedgallaryIds.add(new Long(checked.get(i).toString())); 
+			   for(int i=0;i<unchecked.length();i++)
+				   uncheckedgallaryIds.add(new Long(unchecked.get(i).toString()));
+			   //resultStatus = newsMonitoringService.updateExistingGallaryKeyword(checkedgallaryIds,uncheckedgallaryIds,jObj.getLong("keyWord"),userId); 
+			   resultStatus = newsMonitoringService.updateExistingGallaryKeyword(checkedgallaryIds,uncheckedgallaryIds,jObj.getLong("keyWord"),userId);
+		   }
 	   }
 	   catch (Exception e) {
 		e.printStackTrace();
 	}
 	return Action.SUCCESS;
+   }
+   public String getAllNewsReports()
+   {
+	   try{
+		jObj =new JSONObject(getTask());
+		 session = request.getSession();
+		  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+		  if(regVo == null)
+			  return Action.ERROR;
+		   Long userId = regVo.getRegistrationID();  
+		   	if(regVo.getUserAccessType().equalsIgnoreCase("Admin"))
+		   		userId = 0l;
+			if(jObj.getString("task").trim().equalsIgnoreCase("getAllNewsReports"))
+		    {
+		    	fileVOs = newsMonitoringService.getNewsReports(userId);
+		    }
+	   }
+	   catch (Exception e) {
+		   e.printStackTrace();
+	}
+	   return Action.SUCCESS;
    }
 }
