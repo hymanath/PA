@@ -41,6 +41,8 @@
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+<script type="text/javascript" src="js/partyManagement.js"></script>
+
 <!-- JQuery files (End) -->
 <!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -387,6 +389,7 @@ var gGallaryId;
 var sourceObj = null;
 var languagesObj = null;
 var fileCount=0;
+
 function showPhotoGallary1()
 {
 if(!formValidation()){
@@ -757,11 +760,17 @@ function getSource(selectOptionId){
 		{
 		 showUserAccessLocationScopeList(myResults);
 		}
-	   else if(jsObj.task == "getKeywords" || jsObj.task == "getGallaryMapedKeywords")
+	   else if(jsObj.task == "getKeywords")
 			{
 				buildKeyWords(myResults,jsObj);
 			}
-		
+			else if(jsObj.task == "getGallaryMapedKeywords")
+			{
+				clearOptionsListForSelectElmtId('keywords');
+			    createOptionsForSelectElement('keywords',myResults);
+
+			}
+			
 		
      	}
 		catch(e)
@@ -1907,7 +1916,7 @@ function showNewsGallaey()
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
-
+ $("#profileManagementMainOuterDiv7").css("display","none");
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   /*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -2986,7 +2995,7 @@ document.getElementById("profileManagementMainOuterDiv2").style.display = 'block
 document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
-
+ $("#profileManagementMainOuterDiv7").css("display","none");
 /*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -3928,6 +3937,9 @@ function updatePhoto(fileId,fileGallaryId)
 
 	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>
 	<li><a value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: blue;">Create Report </a></li>
+	<li><a value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: blue;">View Report</a>
+		
+		</li>
 		<li><a value="KeyWords" id="createReportId" onclick=" getUnassignedKeyWords();" style="cursor:pointer;color: blue;">KeyWords</a>
 		
 		</li>
@@ -4097,6 +4109,8 @@ function updatePhoto(fileId,fileGallaryId)
 </div>
 
 	 <!-- for  body 5  result  end -->
+	 
+<!-- for  body 6  result  start -->
 <div id='profileManagementMainOuterDiv6' style="display:none">
 	<div id='profileManagementHeaderDiv6' class="row-fluid">
 	<div class="span10 offset1 text-center alert">KeyWords</div>
@@ -4106,7 +4120,18 @@ function updatePhoto(fileId,fileGallaryId)
 	 </div>	
 </div>	 
 
-<!-- for  body 5  result  end -->
+<!-- for  body 6  result  end -->
+<!-- for  body 7  result  start -->
+<div id='profileManagementMainOuterDiv7' style="display:none">
+	<div id='profileManagementHeaderDiv7' class="row-fluid">
+	<div class="span10 offset1 text-center alert">News Report</div>
+	</div>
+<div id='newsReportsMainDiv' class="divInfo">
+		
+	 </div>	
+</div>	 
+
+<!-- for  body 7  result  end -->
 <script>
 var keywordsArray = new Array();
 <c:forEach var="keywords" items="${keywordsList}">
@@ -4116,7 +4141,7 @@ var keywordsArray = new Array();
 		keywordsArray.push(obj);
 </c:forEach>
 
-
+var keywordGallaries;
 var newsDetails;
 var bvalue = false;
 var noOfRowsPerPage = 10;
@@ -4624,6 +4649,7 @@ function showTheNewsToUpdate()
   $("#profileManagementMainOuterDiv5").css("display","none");
   $('#profileManagementMainOuterDiv4').show();
   document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
+   $("#profileManagementMainOuterDiv7").css("display","none");
  /* $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -4782,6 +4808,15 @@ var callback = {
 			{
 				showStatusForupdateGallaryKeyword1(myResults);
 			}
+			
+			else if(jsObj.task == "getGallaries")
+			{
+				keywordGallaries = myResults;
+			}
+			else if(jsObj.task == "getAllNewsReports")
+			{
+				buildAllNewsReports(myResults);
+			}
 		
 }
 		catch(e)
@@ -4800,6 +4835,15 @@ if(jsObj.task == "Update")
 //conn.initHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8', true);  anil 
 }
  conn.asyncRequest('GET', url, callback);
+}
+function buildkeywordGallaries(result)
+{
+	if(result != null && result.length > 0)
+	for(var i in result)
+		{
+	keywordGallaries.push(result[i]);
+	}
+	alert(keywordGallaries);
 }
 function buildAllNewsDetails(results)
 {
@@ -7104,6 +7148,7 @@ function assignNewsToCandidate()
   $("#dateSelectDiv").css("display","none");
   $("#profileManagementMainOuterDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
+   $("#profileManagementMainOuterDiv7").css("display","none");
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
   str +='<h2 style="text-align: center;">Assign News</h2>';
@@ -7684,6 +7729,7 @@ function createReport()
   $("#profileManagementMainOuterDiv5").css("display","block");
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
+  $("#profileManagementMainOuterDiv7").css("display","none");
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
   str +='<h2 style="text-align: center;"> News Report</h2>';
@@ -7725,7 +7771,7 @@ $("#toDateId1").datepicker("setDate", new Date());
 function getNews()
 {
 
-$("#newsReportAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
+$("#newsReportAjaxImg").css({ 'display': 'inline-block' });
 	var fromDate = $("#fromDateId1").val();
 	var toDate = $("#toDateId1").val();
 	var regionLevel = $("#regionlevel").val();
@@ -7780,7 +7826,7 @@ var fileGallaryIds = [];
 	}
 	else
 	{
-	$("#savenewsAjaxImg").css({ 'display': 'block',  'display': 'inline-block' });
+	$("#savenewsAjaxImg").css({'display': 'inline-block' });
 	newsReporterrorMessageDiv.innerHTML = '';
     var jsObj = {
 			fileGallaryIds:fileGallaryIds,
@@ -7860,6 +7906,7 @@ function buildLocationWiseNews(results)
 			
 	}
 	str +='<br/><input type="button" value="submit" class="btn btn-info" id="savenewsReport" onclick="saveNewsReport()"/>';
+	
 	str+='<img style="display: none;" src="images/search.jpg" id="savenewsAjaxImg">';
 	}
 	divEle.innerHTML =str;
@@ -7908,6 +7955,7 @@ function getUnassignedKeyWords()
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","block");
   $("#profileManagementHeaderDiv6").css("display","none");
+    $("#profileManagementMainOuterDiv7").css("display","none");
     var str ='';
 	str+='<div class="container well">';
 
@@ -7923,10 +7971,12 @@ function getUnassignedKeyWords()
     str+=' <select class="input-block-level"  id="keywordCategory"  onchange="getGallariesForSelectedCategory1(\'keywordCategory\')">';
 	str+='</select>';
     str+='</div>';
+	str+='</div></div>';
+	str+='<div class="row-fluid">';
     str+='<div class="span12 well well-small " id="categorygallary" style="display:none;">';
     str+='<label><strong>List oF (Category) Gallarys</strong></label>';
 	str+='</div>';
-	str+='</div></div>';
+	str+='</div>';
     str+='</div>';
 	str+='<div class="form-actions text-center">';
 	str+=' <button type="submit " class="btn btn-success btn-large" onclick="updateGallaryKeyword();">Submit</button>';
@@ -7936,22 +7986,28 @@ function getUnassignedKeyWords()
 
 	str+='</div>';
 	
-		str+='<div class="container well" style="display:none;">';
+		str+='<div class="container well">';
 		str+='<div class="row clearfix">';
 	str+='<legend class="text-center ">Update KeyWord</legend>';
 	str+='<div id="keywordErrorMsgDivId1" ></div>';
     str+='<div class="row-fluid"><div class="span6 well well-small " id="gallaryMapedkeywordsDiv">';
+	 str+='<label><strong>Select KeyWord</strong></label>';
+     str+=' <select class="input-block-level" id="keywords">';
+	 str+='</select>';
 	str+=' </div>';
 	str+='<div class="span6"> '; 
 	str+='<div class="row-fluid">';
 	str+='<div class="span12 well well-small ">';
      str+='<label><strong>Select Category Name</strong></label>';
-     str+=' <select class="input-block-level" id="keywordCategory1" onchange="getGallariesForSelectedCategory1(\'keywordCategory1\')">';
+     str+=' <select class="input-block-level" id="keywordCategory1" onchange="getGallaryId();getGallariesForSelectedCategory1(\'keywordCategory1\');">';
 	 str+='</select>';
     str+='</div>';
-    str+='<div class="span12 well well-small " id="categorygallary1" style="display:none;">';
-	str+='</div>';
 	str+='</div></div>';
+	str+='<div class="row-fluid">';
+    str+='<div class="span12 well well-small " id="categorygallary1" style="display:none;">';
+	
+	str+='</div>';
+	str+='</div>';
     str+='</div>';
 	str+='<div class="form-actions text-center">';
 	str+=' <button type="submit " class="btn btn-success btn-large" onclick="updateExistingKeyword();">Submit</button>';
@@ -8063,19 +8119,17 @@ $(".keywords").each(function() {
 }
 function updateExistingKeyword()
 {
-var keywordsArr =[]; 
-var gallariesArr = [];
+var checkedgallariesArr = [];
+var unCheckedgallariesArr = [];
 var keywordCategory = $("#keywordCategory1").val();
 var keywordErrorMsgDivId = document.getElementById("keywordErrorMsgDivId1");
- $(".existingkeywords").each(function() {
-		 if($(this).is(":checked")){
-		 keywordsArr.push($(this).val());
-	   }
-    });
+ var selectedkeyWord = $("#keywords").val();
 	$(".gallary1").each(function() {
-		 if($(this).is(":checked")){
-		 gallariesArr.push($(this).val());
-	   }
+		 if($(this).is(":checked"))
+		 checkedgallariesArr.push($(this).val());
+		 else
+		 unCheckedgallariesArr.push($(this).val());
+	  
     });
 	var flag =false;
 	 var str='<font color="red">';
@@ -8085,14 +8139,14 @@ var keywordErrorMsgDivId = document.getElementById("keywordErrorMsgDivId1");
 	str +='Select Category<br/>';
 		flag =true;
 	}
-	else if(gallariesArr == "")
+	else if(checkedgallariesArr == "")
 	{
 		str +='Select atleast one Gallary<br/>';
 		flag =true;
 	}
-	else if(keywordsArr == "")
+	else if(selectedkeyWord == 0)
 	{
-		str +='Select atleast one keyWord<br/>';
+		str +='Select keyWord<br/>';
 		flag =true;
 	}
 	if(flag == true)
@@ -8102,10 +8156,11 @@ var keywordErrorMsgDivId = document.getElementById("keywordErrorMsgDivId1");
 	}
 	else
 	keywordErrorMsgDivId.innerHTML = '';
-$("#keywordAjaxImg1").css("display","inline-block");
+    $("#keywordAjaxImg1").css("display","inline-block");
 		var jsObj = {
-			gallariesArr:gallariesArr,
-			keywordsArr:keywordsArr,
+			checkedgallariesArr:checkedgallariesArr,
+			unCheckedgallariesArr:unCheckedgallariesArr,
+			keyWord:selectedkeyWord,
 			task: 'updatexistingKeyword',
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -8115,26 +8170,15 @@ $("#keywordAjaxImg1").css("display","inline-block");
 }
 function buildKeyWords(result,jobj)
 {
-	var task = jobj.task;
+	
 	var str='';
-	var divEle = '';
-	if(task == 'getKeywords')
-    divEle = document.getElementById("keywordsDiv");
-	else
-	divEle = document.getElementById("gallaryMapedkeywordsDiv");
+	var divEle = document.getElementById("keywordsDiv");
 	if(result.length > 0)
 	{
-
-			if(task == 'getKeywords')
 	str+=' <label><strong>Select Multiple Keywords and Map to Gallary</strong></label>';
-		else
-	str+=' <label><strong>Select Multiple Keywords and Update Gallary</strong></label>';
 	for(var i in result)
 	{
-			if(task == 'getKeywords')
-	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="keywords" style="margin-top:1px;"/>'+result[i].name+'</label>&nbsp;';
-	else
-	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="existingkeywords" style="margin-top:1px;"/>'+result[i].name+'</label>&nbsp;';
+	str+='<label class="label label-success "><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="keywords" />&nbsp;'+result[i].name+'</label>&nbsp;';
 	}
 	}
 		divEle.innerHTML = str;
@@ -8154,9 +8198,15 @@ function buildGallariesForCategory(result,jobj)
 	for(var i in result)
 	{
 		if(divId == "keywordCategory")
-	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="gallary"/>' +result[i].name+ '</label>&nbsp;';
+	str+='<label class="label label-success"> <input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="gallary"/> &nbsp;' +result[i].name+ '</label>&nbsp;';
 	else
-	str+='<label class="label label-success checkbox"><input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="gallary1"/>' +result[i].name+ '</label>&nbsp;';
+		{
+	
+	if($.inArray(result[i].id, keywordGallaries) != -1 )
+	str+='<label class="label label-important"> <input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="gallary1" checked="checked"/>&nbsp;' +result[i].name+ '</label>&nbsp;';
+	else
+	str+='<label class="label label-important"> <input type="checkbox" value='+result[i].id+' id='+result[i].id+' class="gallary1"/> &nbsp;' +result[i].name+ '</label>&nbsp;';
+		}
 	}
 	}
 		divEle1.innerHTML = str;
@@ -8185,6 +8235,89 @@ function showStatusForupdateGallaryKeyword1(result)
 	$("#keywordErrorMsgDivId1").html('Error Occured! Try Again..').css('color','red');
   return;
 }
+
+function getGallaryId()
+{
+	var keyword = $("#keywords option:selected").val();
+	var jsObj = {
+			keyword:keyword,
+			task: 'getGallaries',
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getGallariesAction.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+
+function getNewsReports ()
+{
+
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","none");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","none");
+  $("#profileManagementHeaderDiv6").css("display","none");
+  $("#profileManagementMainOuterDiv7").css("display","block");
+   $("#profileManagementHeaderDiv7").css("display","none");
+    var str ='';
+	str+='<div class="container well">';
+	str+='<div class="row clearfix">';
+	str+='<div class="row-fluid"><div class="span12 well well-small " id="reportsDiv">';
+	str+=' </div>';
+    str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	document.getElementById("newsReportsMainDiv").innerHTML = str;
+	getReports();
+}
+function getReports()
+{
+var jsObj = {
+			
+			task: 'getAllNewsReports',
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getAllNewsReportsForAUser.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+
+function buildAllNewsReports(result)
+{
+	var str='';
+	str+='<h2 style="text-align:center;">News Reports</h2>';
+	
+	if(result==null || result=='')
+	{
+	str+='<span style="text-align:center;">There are no News reports available</span>';
+	$("#reportsDiv").html(str);
+	return;
+	}
+	else
+	
+	str+='<table  class="table table-striped">';
+	str+='<tr>';
+	str+='<th>NewsReport</th>';
+	str+='<th>Created Date</th>';
+	str+='<th></th>';
+	str+='</tr>';
+	for(var i in result)
+	{
+	str+='<tr>';
+	str+='<td>' +result[i].description+'</td>';
+	str+='<td>' +result[i].identifiedDateOn+'</td>';
+	str+='<td><input id="reportFiles" class="btn btn-info" type="button" onclick="getReportFiles()" value="View"></td>';
+	str+='</tr>';
+	}
+	str+='</table>';
+	$("#reportsDiv").html(str);
+}
+
 </script>
 </body>
 </html>
