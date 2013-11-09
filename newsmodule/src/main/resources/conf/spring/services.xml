@@ -1609,6 +1609,7 @@
 		<property name="keywordDAO" ref="keywordDAO" />
 		<property name="gallaryKeywordDAO" ref="gallaryKeywordDAO" />
 		<property name="fileKeywordDAO" ref="fileKeywordDAO" />
+		<property name="mainCategoryDAO" ref="mainCategoryDAO" />
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
@@ -1671,6 +1672,7 @@
 		<property name="gallaryKeywordDAO" ref="gallaryKeywordDAO" />
 		<property name="keywordDAO" ref="keywordDAO" />
 		<property name="fileKeywordDAO" ref="fileKeywordDAO" />
+		<property name="mainCategoryDAO" ref="mainCategoryDAO" />
 		
 </bean>
 </beans>		

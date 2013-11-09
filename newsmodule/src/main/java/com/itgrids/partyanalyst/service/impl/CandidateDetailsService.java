@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IGallaryKeywordDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IKeywordDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IMainCategoryDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
@@ -134,7 +135,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IRegionServiceData regionServiceDataImp;
 	private IStaticDataService staticDataService;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
-	
+	 private IMainCategoryDAO mainCategoryDAO;
+	    
 	//private IContentTypeDAO contentTypeDAO;
 	//private IUserGallaryDAO userGallaryDAO;
 
@@ -173,6 +175,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private IFileKeywordDAO fileKeywordDAO;
 	
     
+	public IMainCategoryDAO getMainCategoryDAO() {
+		return mainCategoryDAO;
+	}
+
+	public void setMainCategoryDAO(IMainCategoryDAO mainCategoryDAO) {
+		this.mainCategoryDAO = mainCategoryDAO;
+	}
+
 	public IFileKeywordDAO getFileKeywordDAO() {
 		return fileKeywordDAO;
 	}
@@ -6417,7 +6427,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 }
 	
 	 
-		public ResultStatus createUserNewsCategory(String name, String visibility, Long userId)
+		public ResultStatus createUserNewsCategory(String name, String visibility, Long userId,Long mainCategoryId)
 		{
 			ResultStatus resultStatus = new ResultStatus();
 			try{
@@ -6442,7 +6452,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				category.setIsDelete(IConstants.FALSE);
 				category.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 				category.setUpdateddate(dateUtilService.getCurrentDateAndTime());
-				
+				if(mainCategoryId != null && mainCategoryId > 0)
+				category.setMaincategory(mainCategoryDAO.get(mainCategoryId));
 				category = categoryDAO.save(category);
 				
 				/*UserNewsCategory userNewsCategory = new UserNewsCategory();
