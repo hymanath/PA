@@ -2237,17 +2237,19 @@ function createUserNewsCategory()
 {
    $("#errorMsgDiv").html('');
    var name = $("#userNewsCategory").val();
-	if($.trim(name) == "" || name.length == 0)
-	{
-	  $("#errorMsgDiv").html('Category Name is Required.').css('color','red');
-	  return;
-	}
-	var mainCategory = $("#mainCategory").val();
+   var mainCategory = $("#mainCategory").val();
+   
 	if(mainCategory == 0)
 	{
 	  $("#errorMsgDiv").html('select Category').css('color','red');
 	  return;
 	}
+	if($.trim(name) == "" || name.length == 0)
+	{
+	  $("#errorMsgDiv").html('Category Name is Required.').css('color','red');
+	  return;
+	}
+	
    var isPublic = document.getElementById("categoryPublicRadio").checked;
    var makeThis = 'true';
    if(isPublic)
@@ -6659,7 +6661,6 @@ function  buildUploadNews()
 	str += '       <td class="tdWidth1"></td>';
 	str += '  <td class="selectWidthPadd"><div style="margin-top: 2px; margin-bottom: 14px;">After entering the keyword comma(,) is mandatory</div></td>';
 	str +='</tr>';
-
 	/*str += '   </tr>';
 	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd"><select id="category" name="category" onchange="getGallariesForSelectedCategory()"><option value="0">Select Category</option></select></td>';
