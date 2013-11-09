@@ -7,10 +7,10 @@ function buildLocationWiseNews(results)
 	{
 	$("#locationWiseNewsDiv").css("display","block");
 		str+='<label class="checkbox inline">';
-		str+='<input type="checkbox" id="selectAll" value="Select All" onclick="selectAllCheckBox();"> Select All';
+		str+='<input type="checkbox" id="selectAll" value="Select All" onclick="selectAllCheckBox();">Select All';
 		str+='</label>';
 		str+='<label class="checkbox inline">';
-		str+='<input type="checkbox" id="unselectAll" value="Un Select All" onclick="unselectAllCheckBox();">Un Select All';
+		str+='<input type="checkbox" id="unselectAll" value="Unselect All" onclick="unselectAllCheckBox();">Unselect All';
 		str+='</label>';
 		for(var i in results)
 		{
