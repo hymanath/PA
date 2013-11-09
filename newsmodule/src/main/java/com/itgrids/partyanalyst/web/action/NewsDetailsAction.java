@@ -327,7 +327,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 }
 		 
 		 else if(jObj.getString("task").equalsIgnoreCase("createUserNewsCategory"))
-			resultStatus = candidateDetailsService.createUserNewsCategory(jObj.getString("name"),jObj.getString("visibility"),userId);
+			resultStatus = candidateDetailsService.createUserNewsCategory(jObj.getString("name"),jObj.getString("visibility"),userId,jObj.getLong("mainCategory"));
 		 
 		 else if(jObj.getString("task").equalsIgnoreCase("getCandidateRelatedGallaries"))
 		 {
@@ -367,10 +367,15 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 {
 			 selectOptionVOList =  newsMonitoringService.getKeywords(userId,true);
 		 }
-		 else if(jObj.getString("task").equalsIgnoreCase("getGallaries"));
+		 else if(jObj.getString("task").equalsIgnoreCase("getGallaries"))
 		 {
 			 gallaryIds =  newsMonitoringService.getGallaryId(userId,jObj.getLong("keyword"));
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getMainCategories"))
+		 {
+			 selectOptionVOList =  newsMonitoringService.getMainCategories();
+		 }
+		
 		}catch (Exception e) {
 			e.printStackTrace();
 			Log.error("Exception Occured in ajaxHandler() method, Exception - "+e);

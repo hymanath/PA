@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryKeywordDAO;
 import com.itgrids.partyanalyst.dao.IKeywordDAO;
+import com.itgrids.partyanalyst.dao.IMainCategoryDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
@@ -103,8 +104,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IGallaryKeywordDAO gallaryKeywordDAO;
     private IKeywordDAO keywordDAO;
     private IFileKeywordDAO fileKeywordDAO;
+    private IMainCategoryDAO mainCategoryDAO;
     
    
+	public IMainCategoryDAO getMainCategoryDAO() {
+		return mainCategoryDAO;
+	}
+
+	public void setMainCategoryDAO(IMainCategoryDAO mainCategoryDAO) {
+		this.mainCategoryDAO = mainCategoryDAO;
+	}
+
 	public IFileKeywordDAO getFileKeywordDAO() {
 		return fileKeywordDAO;
 	}
@@ -4918,6 +4928,22 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		catch(Exception e)
 		{
 			log.error("Exception Occured in getNewsReports() method", e);
+			e.printStackTrace();
+		}
+		return resultList;
+	}
+	
+	public List<SelectOptionVO> getMainCategories()
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> list =mainCategoryDAO.getCategories();
+			if(list != null && list.size() > 0)
+				for(Object[] params : list)
+			resultList.add(new SelectOptionVO((Long) params[0],params[1].toString()));
+		}
+		catch (Exception e) {
+			log.error("Exception Occured in getMainCategories() method", e);
 			e.printStackTrace();
 		}
 		return resultList;

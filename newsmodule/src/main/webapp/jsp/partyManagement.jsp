@@ -770,6 +770,13 @@ function getSource(selectOptionId){
 			    createOptionsForSelectElement('keywords',myResults);
 
 			}
+			else if(jsObj.task == "getMainCategories")
+			{
+				clearOptionsListForSelectElmtId('mainCategory');
+			    createOptionsForSelectElement('mainCategory',myResults);
+
+			}
+			
 			
 		
      	}
@@ -2049,7 +2056,7 @@ function buildUploadNewsForMultipleUsers()
 	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
 	str += '   </tr>';*/
 
-      //keyworda Start
+       //keyworda Start
 	str +='<tr>';
 	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
 	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
@@ -2210,6 +2217,7 @@ function createNewsCategory()
 	str +='<h2 align="center">Create A News Category</h2>';
 	str+='<table class="aligncenter"><tr><td  style="padding-bottom:10px;"><div id="errorMsgDiv" /></td></tr></table>';
 	str +='<table class="aligncenter">';
+	str +='<tr><td class="tdWidth1">MainCategories :<font class="requiredFont">*</font></td><td class="selectWidthPadd"><select id="mainCategory" name="mainCategory" id="mainCategoryList"></select></td>';
 	str +='<tr><td><b>Category Name</b><font class="requiredFont">*</font></td>';
 	str +='<td><input type="text" id="userNewsCategory" /></td></tr>';
 	str +='</table>';
@@ -2222,7 +2230,7 @@ function createNewsCategory()
 	str +='</div>';
 	str +='</div>';
 	$("#newsGallaryDiv").html(str);
-
+getMainCategories();
 }
 
 function createUserNewsCategory()
@@ -2234,7 +2242,12 @@ function createUserNewsCategory()
 	  $("#errorMsgDiv").html('Category Name is Required.').css('color','red');
 	  return;
 	}
-
+	var mainCategory = $("#mainCategory").val();
+	if(mainCategory == 0)
+	{
+	  $("#errorMsgDiv").html('select Category').css('color','red');
+	  return;
+	}
    var isPublic = document.getElementById("categoryPublicRadio").checked;
    var makeThis = 'true';
    if(isPublic)
@@ -2242,6 +2255,7 @@ function createUserNewsCategory()
    
    var jsObj =
 		{ 
+			mainCategory:mainCategory,
             name : name,
 		    visibility : makeThis,
 			task : "createUserNewsCategory"
@@ -8317,6 +8331,19 @@ function buildAllNewsReports(result)
 	}
 	str+='</table>';
 	$("#reportsDiv").html(str);
+}
+
+function getMainCategories()
+{
+var jsObj={
+	
+		task:'getMainCategories'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedGallariesAction.action?"+rparam;
+	callAjax(jsObj, url);
+
+
 }
 
 </script>

@@ -87,6 +87,8 @@ public interface INewsMonitoringService {/*
 	
 	public List<FileVO> getNewsReports(Long userId);
 	
+	public List<SelectOptionVO> getMainCategories();
+	
 }
 
 
