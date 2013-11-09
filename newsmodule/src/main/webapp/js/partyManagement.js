@@ -6,6 +6,12 @@ function buildLocationWiseNews(results)
 	if(results != null && results != '')
 	{
 	$("#locationWiseNewsDiv").css("display","block");
+		str+='<label class="checkbox inline">';
+		str+='<input type="checkbox" id="selectAll" value="Select All" onclick="selectAllCheckBox();"> Select All';
+		str+='</label>';
+		str+='<label class="checkbox inline">';
+		str+='<input type="checkbox" id="unselectAll" value="Un Select All" onclick="unselectAllCheckBox();">Un Select All';
+		str+='</label>';
 		for(var i in results)
 		{
 		str+='<div class="container">';
@@ -25,13 +31,13 @@ function buildLocationWiseNews(results)
 				{
 			
 				str+="<h4 class='media-heading'><span class='enadu fontStyle pagerRow' style='font-weight:bold;'>";
-				str+='<input type="checkbox" class="find-table" value='+results[i].fileVOList[j].fileVOList[k].contentId+'>&nbsp;';
+				str+='<input type="checkbox" class="find-table newscheckbox" value='+results[i].fileVOList[j].fileVOList[k].contentId+'>&nbsp;';
 				str+="<a href='javascript:{getNewsDetailsByContentId("+results[i].fileVOList[j].fileVOList[k].contentId+")}'>"+results[i].fileVOList[j].fileVOList[k].fileTitle1+"</a></span></h4>";
 				}
 				else
 				{
 				str+="<h4 class='media-heading' style='text-transform: capitalize;color: #005580;'>";
-				str+='<input type="checkbox" class="find-table" value='+results[i].fileVOList[j].fileVOList[k].contentId+'>&nbsp;';
+				str+='<input type="checkbox" class="find-table newscheckbox" value='+results[i].fileVOList[j].fileVOList[k].contentId+'>&nbsp;';
 				str+="<a  href='javascript:{getNewsDetailsByContentId("+results[i].fileVOList[j].fileVOList[k].contentId+")}'>"+results[i].fileVOList[j].fileVOList[k].fileTitle1+"</a></h4><br/>";
 				}
 			
@@ -65,4 +71,19 @@ function buildLocationWiseNews(results)
 		 str+='<img style="display: none;" src="images/search.jpg" id="savenewsAjaxImg"></div>';
 		 $("#locationWiseNewsDiv").html(str);
 	}
+}
+
+function selectAllCheckBox()
+{
+	$("#unselectAll").attr("checked", false);
+	$(".newscheckbox").each(function() {
+	 $(this).attr("checked", true);
+    });
+}
+function unselectAllCheckBox()
+{
+$("#selectAll").attr("checked", false);
+$(".newscheckbox").each(function() {
+	 $(this).attr("checked", false);
+    });
 }
