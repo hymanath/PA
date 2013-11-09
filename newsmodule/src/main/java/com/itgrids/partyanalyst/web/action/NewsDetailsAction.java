@@ -62,9 +62,16 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	private String tempVarForParty;
 	private String requestFor;
 	private List<CategoryVO> categoriesList;
+	private List<Long> gallaryIds;
 	
 	
 	
+	public List<Long> getGallaryIds() {
+		return gallaryIds;
+	}
+	public void setGallaryIds(List<Long> gallaryIds) {
+		this.gallaryIds = gallaryIds;
+	}
 	public String getRequestFor() {
 		return requestFor;
 	}
@@ -359,6 +366,10 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 else if(jObj.getString("task").equalsIgnoreCase("getGallaryMapedKeywords"))
 		 {
 			 selectOptionVOList =  newsMonitoringService.getKeywords(userId,true);
+		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getGallaries"));
+		 {
+			 gallaryIds =  newsMonitoringService.getGallaryId(userId,jObj.getLong("keyword"));
 		 }
 		}catch (Exception e) {
 			e.printStackTrace();

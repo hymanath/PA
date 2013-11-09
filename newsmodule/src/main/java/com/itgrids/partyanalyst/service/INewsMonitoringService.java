@@ -81,7 +81,11 @@ public interface INewsMonitoringService {/*
 	
 	public List<SelectOptionVO> getKeywords(Long userId,Boolean flag);
 	
-	public ResultStatus updateExistingGallaryKeyword(List<Long> gallaryIds,List<Long> keywords,Long userId);
+	public ResultStatus updateExistingGallaryKeyword(List<Long> checkedgallaryIds,List<Long> uncheckedgallaryIds,Long keyword,Long userId);
+	
+	public List<Long> getGallaryId(Long userId,Long keyword);
+	
+	public List<FileVO> getNewsReports(Long userId);
 	
 }
 
