@@ -25,7 +25,7 @@ public class GallaryKeywordDAOHibernateTest extends BaseDaoTestCase{
 		GallaryKeywordDAO.getAll();
 	}*/
 	
-	public void testgetGallaryKeywords()
+	/*public void testgetGallaryKeywords()
 	{
 		List<String> keywordsList = new ArrayList<String>(0);
 		keywordsList.add("type1");
@@ -34,6 +34,14 @@ public class GallaryKeywordDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(keywordList.size());
 		for(Object[] params:keywordList)
 		 System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	public void test()
+	{
+		List<Long> gallaryIds = new ArrayList<Long>();
+		gallaryIds.add(3805l);
+		Integer val = gallaryKeywordDAO.deleteGallaries(17l,1l,gallaryIds);
+		System.out.println(val);
 	}
 
 }
