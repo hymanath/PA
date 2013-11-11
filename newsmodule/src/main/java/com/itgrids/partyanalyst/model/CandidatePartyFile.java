@@ -35,7 +35,7 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	private Party party; 
 	private Date createdDate;
 	private Date updateddate;
-	private Set<CandidatePartyKeyword> candidatePartyKeywords = new HashSet<CandidatePartyKeyword>(0); 
+	
 	
 	public CandidatePartyFile(){}
 	
@@ -100,16 +100,5 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 		this.updateddate = updateddate;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidatePartyFile")
-	public Set<CandidatePartyKeyword> getCandidatePartyKeywords() {
-		return candidatePartyKeywords;
-	}
-
-	public void setCandidatePartyKeywords(
-			Set<CandidatePartyKeyword> candidatePartyKeywords) {
-		this.candidatePartyKeywords = candidatePartyKeywords;
-	}
-	
-	
 
 }
