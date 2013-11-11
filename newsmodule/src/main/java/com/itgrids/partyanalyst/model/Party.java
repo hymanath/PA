@@ -68,7 +68,7 @@ public class Party implements java.io.Serializable {
 	//private Set<UserPartyRelation> userPartyRelations = new HashSet<UserPartyRelation>(0);
 	//private Set<UserVoterDetails> uservoterdetails = new HashSet<UserVoterDetails>(0);
 	private Set<CandidateParty> candidateParty = new HashSet<CandidateParty>(0);
-
+	private Set<PartyFileKeyword> partyFileKeywords = new HashSet<PartyFileKeyword>(0);
 	
 	// Constructors
 	
@@ -397,6 +397,17 @@ public class Party implements java.io.Serializable {
 	public void setCandidateParty(Set<CandidateParty> candidateParty) {
 		this.candidateParty = candidateParty;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "party")
+	public Set<PartyFileKeyword> getPartyFileKeywords() {
+		return partyFileKeywords;
+	}
+
+	public void setPartyFileKeywords(Set<PartyFileKeyword> partyFileKeywords) {
+		this.partyFileKeywords = partyFileKeywords;
+	}
+	
+	
 
 
 }
