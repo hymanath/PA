@@ -1360,4 +1360,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="candidatePartyKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidatePartyFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyFileDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

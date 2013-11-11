@@ -6,6 +6,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -38,8 +40,8 @@ public class PartyFileKeyword extends BaseModel implements Serializable{
 	}
    
 	@Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "party_file_keyword_id", unique = true, nullable = false)
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	public Long getPartyFileKeywordId() {
 		return partyFileKeywordId;
 	}

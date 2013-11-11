@@ -122,6 +122,9 @@
 				<value>com.itgrids.partyanalyst.model.MainCategory</value>
 				<value>com.itgrids.partyanalyst.model.PartyFileKeyword</value>
 				<value>com.itgrids.partyanalyst.model.CandidateFileKeyword</value>
+				<value>com.itgrids.partyanalyst.model.CandidatePartyKeyword</value>
+				<value>com.itgrids.partyanalyst.model.CandidatePartyFile</value>
+				
 			</list>
 		</property>
 	</bean>
@@ -188,6 +191,14 @@
 	</bean>
 	
 	<bean id="candidateFileKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateFileKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidatePartyKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidatePartyFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyFileDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	

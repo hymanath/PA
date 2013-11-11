@@ -103,6 +103,9 @@
 				<value>com.itgrids.partyanalyst.model.MainCategory</value>
 				<value>com.itgrids.partyanalyst.model.PartyFileKeyword</value>
 				<value>com.itgrids.partyanalyst.model.CandidateFileKeyword</value>
+				<value>com.itgrids.partyanalyst.model.CandidatePartyKeyword</value>
+				<value>com.itgrids.partyanalyst.model.CandidatePartyFile</value>
+				
 						
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
