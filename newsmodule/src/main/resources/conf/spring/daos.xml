@@ -1351,4 +1351,13 @@
 	<bean id="gallaryKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.GallaryKeywordDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="partyFileKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyFileKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateFileKeywordDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateFileKeywordDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
