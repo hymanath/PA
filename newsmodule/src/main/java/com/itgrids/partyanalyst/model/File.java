@@ -62,6 +62,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	//private Set<NewsProblem> newsProblems = new HashSet<NewsProblem>();
 	private String newsDescription;
 	private Set<FileKeyword> fileKeywords =new HashSet<FileKeyword>(0);
+	private String isDeleted;
 	
 	
 	private String comment;
@@ -370,6 +371,15 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setPartyFileKeywords(Set<PartyFileKeyword> partyFileKeywords) {
 		this.partyFileKeywords = partyFileKeywords;
+	}
+
+	@Column(name ="is_deleted",length = 1,nullable=true,updatable=true)
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 	
 	
