@@ -101,6 +101,8 @@
 				<value>com.itgrids.partyanalyst.model.GallaryKeyword</value>
 				<value>com.itgrids.partyanalyst.model.FileKeyword</value>
 				<value>com.itgrids.partyanalyst.model.MainCategory</value>
+				<value>com.itgrids.partyanalyst.model.PartyFileKeyword</value>
+				<value>com.itgrids.partyanalyst.model.CandidateFileKeyword</value>
 						
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>

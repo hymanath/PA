@@ -6,6 +6,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
+import com.itgrids.partyanalyst.model.File;
 
 
 public class PartyGalleryDAOHibernateTest extends BaseDaoTestCase {
@@ -45,12 +46,25 @@ public class PartyGalleryDAOHibernateTest extends BaseDaoTestCase {
 		 System.out.println(params[0]+" "+params[1]+" "+params[2]);
 	}*/
 	
-	public void testgetTotalKeywordsForKeywordSearch()
+	/*public void testgetTotalKeywordsForKeywordSearch()
 	{
 		List<String> keywordsList = partyGalleryDAO.getTotalKeywordsForKeywordSearch(872L, "");
 		System.out.println(keywordsList.size());
 		for(String keyword :keywordsList)
 		 System.out.println(keyword);
+	}*/
+	
+	public void testgetAllNewsDetailsForDistrict()
+	{
+		List<Long> districtIds = new ArrayList<Long>(0);
+		districtIds.add(10L);
+		List<Object[]> list = partyGalleryDAO.getAllNewsDetailsForDistrict(872l, 0, 10, "", 3L, districtIds);
+		System.out.println(list.size());
+		for(Object[] params:list)
+		{
+			File file = (File)params[0];
+			System.out.println(file.getFileId() );
+		}
 	}
 	
 }
