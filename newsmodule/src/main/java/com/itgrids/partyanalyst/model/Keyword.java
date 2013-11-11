@@ -37,6 +37,8 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 	private Date createdDate;
 	private Long createdBy;
 	private Set<GallaryKeyword> gallarykeywords = new HashSet<GallaryKeyword>(0);
+	private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
+    private Set<PartyFileKeyword> partyFileKeywords = new HashSet<PartyFileKeyword>(0);
 	
 	
 	public Keyword() {
@@ -109,6 +111,26 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 	public void setGallaryKeywords(Set<GallaryKeyword> gallarykeywords) {
 		this.gallarykeywords = gallarykeywords;
 	}
+
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "keyword")
+	public Set<CandidateFileKeyword> getCandidateFileKeywords() {
+		return candidateFileKeywords;
+	}
+
+	public void setCandidateFileKeywords(
+			Set<CandidateFileKeyword> candidateFileKeywords) {
+		this.candidateFileKeywords = candidateFileKeywords;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "keyword")
+	public Set<PartyFileKeyword> getPartyFileKeywords() {
+		return partyFileKeywords;
+	}
+
+	public void setPartyFileKeywords(Set<PartyFileKeyword> partyFileKeywords) {
+		this.partyFileKeywords = partyFileKeywords;
+	}
+	
 	
 
 }

@@ -39,6 +39,7 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	private Source source;
 	private SourceLanguage language;
 	private Set<FilePaths> filePaths = new HashSet<FilePaths>(0);
+	private String newsDetailedDescription;
 	
 	
 	@Id
@@ -93,6 +94,14 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	}
 	public void setFilePaths(Set<FilePaths> filePaths) {
 		this.filePaths = filePaths;
+	}
+	
+	@Column(name="news_detailed_description")
+	public String getNewsDetailedDescription() {
+		return newsDetailedDescription;
+	}
+	public void setNewsDetailedDescription(String newsDetailedDescription) {
+		this.newsDetailedDescription = newsDetailedDescription;
 	}
 	
 	
