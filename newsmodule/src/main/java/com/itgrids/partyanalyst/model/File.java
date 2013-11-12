@@ -75,6 +75,7 @@ public class File extends BaseModel implements java.io.Serializable {
     private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
     private Set<PartyFileKeyword> partyFileKeywords = new HashSet<PartyFileKeyword>(0);
 	
+    private Font font;
 
 	/** default constructor */
 	public File() {
@@ -409,6 +410,18 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "font_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
 	}
 	
 

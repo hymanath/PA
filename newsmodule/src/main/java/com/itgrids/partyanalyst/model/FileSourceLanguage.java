@@ -40,7 +40,7 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	private SourceLanguage language;
 	private Set<FilePaths> filePaths = new HashSet<FilePaths>(0);
 	private String newsDetailedDescription;
-	
+	 private Font font;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -104,5 +104,15 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 		this.newsDetailedDescription = newsDetailedDescription;
 	}
 	
-	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "font_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
 }
