@@ -124,6 +124,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateFileKeyword</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePartyKeyword</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePartyFile</value>
+				<value>com.itgrids.partyanalyst.model.Font</value>
 				
 			</list>
 		</property>
@@ -199,6 +200,10 @@
 	</bean>
 	
 	<bean id="candidatePartyFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyFileDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="fontDAO" class="com.itgrids.partyanalyst.dao.hibernate.FontDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
