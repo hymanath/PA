@@ -32,6 +32,7 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	private static final long serialVersionUID = -3590360726983582784L;
 	private Long candidatePartyFileId;
 	private Candidate candidate;
+	private File file;
 	private Party party; 
 	private Date createdDate;
 	private Date updateddate;
@@ -39,12 +40,13 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	
 	public CandidatePartyFile(){}
 	
-	public CandidatePartyFile(Candidate candidate,Party party,Date createdDate,Date updateddate){
+	public CandidatePartyFile(Candidate candidate,Party party,Date createdDate,Date updateddate,File file){
 		
 		this.candidate = candidate;
 		this.party = party;
 		this.createdDate = createdDate;
 		this.updateddate = updateddate;
+		this.file = file;
 	}
 
 	@Id
@@ -100,5 +102,16 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 		this.updateddate = updateddate;
 	}
 
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="file_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
 
 }
