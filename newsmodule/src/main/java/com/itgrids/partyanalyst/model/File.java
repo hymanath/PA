@@ -63,7 +63,9 @@ public class File extends BaseModel implements java.io.Serializable {
 	private String newsDescription;
 	private Set<FileKeyword> fileKeywords =new HashSet<FileKeyword>(0);
 	private String isDeleted;
-	
+	private String isPrivate;
+	private Date createdDate;
+	private Date updateddate;
 	
 	private String comment;
 	
@@ -381,8 +383,33 @@ public class File extends BaseModel implements java.io.Serializable {
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
 	}
+
+	@Column(name ="is_private",length = 1,nullable=true,updatable=true)
+	public String getIsPrivate() {
+		return isPrivate;
+	}
 	
+	public void setIsPrivate(String isPrivate) {
+		this.isPrivate = isPrivate;
+	}
 	
+	@Column(name = "created_date")
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@Column(name = "updated_date")
+	public Date getUpdateddate() {
+		return updateddate;
+	}
+
+	public void setUpdateddate(Date updateddate) {
+		this.updateddate = updateddate;
+	}
 	
 
 }
