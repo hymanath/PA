@@ -65,7 +65,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	private String isDeleted;
 	private String isPrivate;
 	private Date createdDate;
-	private Date updateddate;
+	private Date updatedDate;
 	
 	private String comment;
 	
@@ -403,12 +403,12 @@ public class File extends BaseModel implements java.io.Serializable {
 	}
 
 	@Column(name = "updated_date")
-	public Date getUpdateddate() {
-		return updateddate;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUpdateddate(Date updateddate) {
-		this.updateddate = updateddate;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 	
 
