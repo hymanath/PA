@@ -105,7 +105,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidateFileKeyword</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePartyKeyword</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePartyFile</value>
-				
+				<value>com.itgrids.partyanalyst.model.Font</value>
 						
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
