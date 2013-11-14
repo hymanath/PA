@@ -32,6 +32,7 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	private String email;
 	private Set<MobileAppUserProfile> mobileAppUserProfile = new HashSet<MobileAppUserProfile>(0);
 	private Set<MobileAppUserAccess> mobileAppUserAccess = new HashSet<MobileAppUserAccess>(0);
+	private Set<MobileAppUserAccessKey> mobileAppUserAccessKey = new HashSet<MobileAppUserAccessKey>(0);
 	/** default constructor */
 	public MobileAppUser()
 	{
@@ -111,6 +112,15 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mobileAppUser")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<MobileAppUserAccessKey> getMobileAppUserAccessKey() {
+		return mobileAppUserAccessKey;
+	}
+	public void setMobileAppUserAccessKey(
+			Set<MobileAppUserAccessKey> mobileAppUserAccessKey) {
+		this.mobileAppUserAccessKey = mobileAppUserAccessKey;
 	}
 
 	

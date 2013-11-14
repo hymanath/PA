@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.MobileAppUser;
 public interface IMobileAppUserDAO extends GenericDao<MobileAppUser, Long>{
 
 	public List<Object> checkUniqueCode(String uniqueCode);
+	
+	public List<Object[]> getUserList();
 }

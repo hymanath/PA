@@ -36,6 +36,7 @@ import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
@@ -81,6 +82,7 @@ import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccess;
+import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.model.MobileAppUserProfile;
 import com.itgrids.partyanalyst.model.Occupation;
 import com.itgrids.partyanalyst.model.PublicationDate;
@@ -97,6 +99,7 @@ import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class MobileService implements IMobileService{
@@ -147,8 +150,28 @@ public class MobileService implements IMobileService{
  private IMobileAppUserProfileDAO mobileAppUserProfileDAO;
  private TransactionTemplate transactionTemplate;
  private IElectionScopeDAO electionScopeDAO;
- 
-  public IElectionScopeDAO getElectionScopeDAO() {
+private IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO  ;
+	
+private ISmsService smsCountrySmsService;
+
+public ISmsService getSmsCountrySmsService() {
+	return smsCountrySmsService;
+}
+
+public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+	this.smsCountrySmsService = smsCountrySmsService;
+}
+
+public IMobileAppUserAccessKeyDAO getMobileAppUserAccessKeyDAO() {
+	return mobileAppUserAccessKeyDAO;
+}
+
+public void setMobileAppUserAccessKeyDAO(
+		IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO) {
+	this.mobileAppUserAccessKeyDAO = mobileAppUserAccessKeyDAO;
+}
+
+public IElectionScopeDAO getElectionScopeDAO() {
 	return electionScopeDAO;
 }
 
@@ -1539,5 +1562,45 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 		return resultStatus;
   	}
-    
+  	
+  	public ResultStatus sendSmsToMobileAppUser(String mobileNo,Long mobileAppuserId,String accessKey,Long userID)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		DateUtilService date = new DateUtilService();
+		try{
+			String message = "your Access key for your App : "+accessKey+"";
+			String [] phoneNumbers = {mobileNo.toString()};
+			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
+			MobileAppUserAccessKey mobileAppUserAccessKey = new MobileAppUserAccessKey();
+			mobileAppUserAccessKey.setCreatedBy(userID);
+			mobileAppUserAccessKey.setCreationTime(date.getCurrentDateAndTime());
+			mobileAppUserAccessKey.setIsUsed("false");
+			mobileAppUserAccessKey.setMobileAppUser(mobileAppUserDAO.get(mobileAppuserId));
+			mobileAppUserAccessKey.setAccessKey(accessKey);
+			mobileAppUserAccessKeyDAO.save(mobileAppUserAccessKey);
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		}
+		catch (Exception e) {
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		e.printStackTrace();
+		} 
+		return resultStatus;
+	}
+	public List<SelectOptionVO> getMobileAppUsers()
+	
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> list = mobileAppUserDAO.getUserList();
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				resultList.add(new SelectOptionVO((Long)params[0],params[1].toString()));	
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
 }
