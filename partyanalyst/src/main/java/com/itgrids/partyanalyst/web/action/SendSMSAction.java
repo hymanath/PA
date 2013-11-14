@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.LocationwiseProblemStatusInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -27,8 +28,25 @@ public class SendSMSAction extends ActionSupport implements ServletRequestAware 
 	private static final Logger log = Logger.getLogger(SendSMSAction.class);
 	private ISmsService smsCountrySmsService;
 	private Long remainingSms;
+	private ResultStatus resultStatus;
+	private HttpSession session;
 	
-	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public HttpSession getSession() {
+		return session;
+	}
+
+	public void setSession(HttpSession session) {
+		this.session = session;
+	}
+
 	public ISmsService getSmsCountrySmsService() {
 		return smsCountrySmsService;
 	}
@@ -94,5 +112,4 @@ public class SendSMSAction extends ActionSupport implements ServletRequestAware 
 		}
 	
 	
-
 }

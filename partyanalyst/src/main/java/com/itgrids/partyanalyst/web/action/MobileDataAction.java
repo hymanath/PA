@@ -31,9 +31,17 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private IMobileService mobileService;
 	private ResultStatus resultStatus;
 	public static final Logger LOG = Logger.getLogger(MobileDataAction.class);
-	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> constituencyList,userList;
 	private String filePath;
 	
+	public List<SelectOptionVO> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<SelectOptionVO> userList) {
+		this.userList = userList;
+	}
+
 	public String getFilePath() {
 		return filePath;
 	}
@@ -175,5 +183,31 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		return Action.SUCCESS;
 	}
+	public String sendSmsToMobileAppUserAccessKey()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			Long userID = user.getRegistrationID();
+			resultStatus = mobileService.sendSmsToMobileAppUser(jObj.getString("mobileNo"),jObj.getLong("mobileAppuserId"),jObj.getString("accessKey"),userID);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 	
+	public String getMobileAppUsers()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			userList= mobileService.getMobileAppUsers();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
+
 }
