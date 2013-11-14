@@ -1,10 +1,20 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.List;
+
+import net.sf.cglib.core.EmitUtils;
+
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
+import com.itgrids.partyanalyst.dto.EmailDetailsVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.ILoginService;
+import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 
 public class WebServiceHandlerService implements IWebServiceHandlerService {
@@ -14,10 +24,65 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private ILoginService loginService;
 	
 	private IMobileService mobileService;
-	
 
+	private ISmsService smsCountrySmsService;
+	private IMailService mailService;
 	
+	private IMobileAppUserProfileDAO mobileAppUserProfileDAO;
 	
+	private IMobileAppUserDAO mobileAppUserDAO;
+	
+	public IMobileAppUserDAO getMobileAppUserDAO() {
+		return mobileAppUserDAO;
+	}
+
+
+
+	public void setMobileAppUserDAO(IMobileAppUserDAO mobileAppUserDAO) {
+		this.mobileAppUserDAO = mobileAppUserDAO;
+	}
+
+
+
+	public IMobileAppUserProfileDAO getMobileAppUserProfileDAO() {
+		return mobileAppUserProfileDAO;
+	}
+
+
+
+	public void setMobileAppUserProfileDAO(
+			IMobileAppUserProfileDAO mobileAppUserProfileDAO) {
+		this.mobileAppUserProfileDAO = mobileAppUserProfileDAO;
+	}
+
+
+
+	public IMailService getMailService() {
+		return mailService;
+	}
+
+
+
+	public void setMailService(IMailService mailService) {
+		this.mailService = mailService;
+	}
+
+
+
+	public ISmsService getSmsCountrySmsService() {
+		return smsCountrySmsService;
+	}
+
+
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+		this.smsCountrySmsService = smsCountrySmsService;
+	}
+
+
+
+
+
 	public IMobileService getMobileService() {
 		return mobileService;
 	}
@@ -68,6 +133,55 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		
 	}
 	
+	public ResultStatus sendSmsToUser(String uniquecode)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			List<Object> mobileAppUserId = mobileAppUserDAO.checkUniqueCode(uniquecode);
+			if(mobileAppUserId == null || mobileAppUserId .size() == 0)
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			if(mobileAppUserId != null)
+			{
+			List<Object[]> list =mobileAppUserProfileDAO.getMobileNoByUniquecode(uniquecode);
+			if(list == null && list.size() == 0)
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			if(list != null && list.size() > 0)
+			{
+			for(Object[] params : list)
+			{
+			if(params[0] == null)
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			else
+			{
+			String[] mobile = {params[0].toString()};
+			String userName = "";
+			String lastName = "";
+			String firstName = "";
+			if(params[2] == null)
+			lastName = "";
+			if(params[1] == null)
+				firstName = "";
+			 userName = params[1].toString()+" " +params[2].toString();
+			String smsText = "Your Request For forgot password is received.we will send Access key to this mobile shortly.";
+			resultStatus = smsCountrySmsService.sendSmsFromAdmin(smsText,true,mobile);
+			
+			if(userName != null && userName !="")
+			mailService.sendEmailToAdminGroupForAccessKey(userName);
+			}
+			}
+			}
+			}
+		
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return resultStatus;
+		}
+		return resultStatus;
+	
+	}
+	
+
 
 
 }

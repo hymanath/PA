@@ -6,5 +6,7 @@ public interface IWebServiceHandlerService {
 	
 	public String checkForUserAuthentication(String userName , String passWord);
 	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId);
+	
+	public ResultStatus sendSmsToUser(String uniquecode);
 
 }

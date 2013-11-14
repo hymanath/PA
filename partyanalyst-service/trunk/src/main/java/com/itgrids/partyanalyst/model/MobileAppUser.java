@@ -27,6 +27,9 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	
 	private String password;
 	private String uniqueCode;
+	
+	private String mobileNo;
+	private String email;
 	private Set<MobileAppUserProfile> mobileAppUserProfile = new HashSet<MobileAppUserProfile>(0);
 	private Set<MobileAppUserAccess> mobileAppUserAccess = new HashSet<MobileAppUserAccess>(0);
 	/** default constructor */
@@ -94,6 +97,20 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	
 	public void setMobileAppUserAccess(Set<MobileAppUserAccess> mobileAppUserAccess) {
 		this.mobileAppUserAccess = mobileAppUserAccess;
+	}
+	@Column(name = "mobile_no", length = 25)
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	@Column(name = "email", length = 50)
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	

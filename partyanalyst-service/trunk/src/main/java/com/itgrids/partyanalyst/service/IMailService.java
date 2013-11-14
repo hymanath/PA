@@ -30,4 +30,6 @@ public interface IMailService {
 	public Session getSessionObject(String host);
 	
 	public ResultStatus sendEmailToAdminGroup(EmailDetailsVO emailDetailsVo,String requestFrom);
+	
+	public ResultStatus sendEmailToAdminGroupForAccessKey(String userName);
 }
