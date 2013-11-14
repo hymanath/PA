@@ -36,6 +36,7 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	private Party party; 
 	private Date createdDate;
 	private Date updateddate;
+	private Long spokenBy;
 	
 	
 	public CandidatePartyFile(){}
@@ -113,5 +114,16 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	public void setFile(File file) {
 		this.file = file;
 	}
+
+	@Column(name="spoken_by")
+	public Long getSpokenBy() {
+		return spokenBy;
+	}
+
+	public void setSpokenBy(Long spokenBy) {
+		this.spokenBy = spokenBy;
+	}
+	
+	
 
 }
