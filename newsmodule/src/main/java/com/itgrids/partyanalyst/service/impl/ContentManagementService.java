@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
@@ -55,8 +56,16 @@ public class ContentManagementService implements IContentManagementService{
 	private IDistrictDAO districtDAO;
 	private IConstituencyDAO constituencyDAO;
 	private ITehsilDAO tehsilDAO;
-	 
+	private IFileDAO fileDAO;
 	
+	public IFileDAO getFileDAO() {
+		return fileDAO;
+	}
+
+	public void setFileDAO(IFileDAO fileDAO) {
+		this.fileDAO = fileDAO;
+	}
+
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
 	}
@@ -180,6 +189,184 @@ public class ContentManagementService implements IContentManagementService{
 		this.tehsilDAO = tehsilDAO;
 	}
 
+	/**
+	 * This Method will give the Selected File Details, their related files and Other Galleries Details
+	 * @param contentId Long
+	 * @param requestFrom String
+	 * @param requestPageId Long
+	 * @return {@link ContentDetailsVO}
+	 * @author Kamalakar Dandu
+	 */
+	public ContentDetailsVO getSelectedContentAndRelatedGalleries1(
+			Long contentId, String requestFrom, Long requestPageId,
+			String isCustomer)	{
+		log.debug("Entered into getSelectedContentAndRelatedGalleries() Method");
+		try{
+			ContentDetailsVO contentDetailsVO = new ContentDetailsVO();
+			List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
+			List<GallaryVO> relatedGalleries = new ArrayList<GallaryVO>(0);
+			GallaryVO relatedGallary = new GallaryVO();
+			List<FileVO> filesList = new ArrayList<FileVO>(0);
+			Long fileId = (Long)fileGallaryDAO.getFileIdByFileGallaryId(contentId);
+				String contentType = null;
+				FileVO fileVO = null;
+				List<Long> fileIds = new ArrayList<Long>();
+				fileIds.add(fileId);
+				List<File> file= fileDAO.getAllFilesByFileIds(fileIds);
+				for(File fileVal:file){
+					fileVO = new FileVO();
+					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+					if(fileVal == null)
+						continue;
+					if(contentType !=null && contentType.equalsIgnoreCase(IConstants.PHOTO_GALLARY))
+					{
+						Set<FileSourceLanguage> fileSourceLanguageSet = fileVal.getFileSourceLanguage();
+						 List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
+						Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+						for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
+							 
+							 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+							 List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
+							  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
+							 
+							 for(FilePaths filePath : filePathsList){
+								 fileVO = new FileVO();
+								 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+								 FileVO fileVOSourceLanguage = new FileVO();
+								 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+								 fileVOSourceLanguage.setMultipleNews(1);
+								 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+								 /*if(contentReq && contentId.longValue() == fileGallary.getFileGallaryId().longValue())
+									{
+										fileVO.setIsSelectedContent(true);
+										contentReq = false;
+									}*/
+								 
+								   
+								    fileVO.setTitle(fileVal.getFileTitle() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileTitle())):"");
+									fileVO.setDescription(fileVal.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileDescription())):"");
+									/*fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
+									fileVO.setContentId(falseContentIdForPhotoGal);
+									falseContentIdForPhotoGal = falseContentIdForPhotoGal+1L;*/
+							
+									
+									/*List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());		
+									if(editionDets != null && editionDets.size() > 0)
+									{
+									  fileVO.setPageNo((Long)editionDets.get(0)[0]);
+									  Long edition = (Long)editionDets.get(0)[1];
+									  if(edition.equals(1L))
+										  fileVO.setNewsEdition("Main Edition");
+									  else
+										 fileVO.setNewsEdition("District/Sub Edition");
+									}*/
+								 
+								 FileVO fileVOPath = new FileVO();
+								 fileVOPath.setPath(filePath.getFilePath());
+								 //fileVOPath.setDescription(fileSourceLanguage.getNewsDetailedDescription());
+								 fileVOPath.setOrderNo(filePath.getOrderNo());
+								 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+								 fileVOPathsList.add(fileVOPath);
+								 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+								 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription());
+								 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+								 fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+								 fileVO.setFileVOList(fileVOSourceLanguageList);
+								 fileVO.setFileDate(fileVal.getFileDate() == null ? null :
+										sdf.format(fileVal.getFileDate()));
+								 fileVO.setReqFileDate(fileVal.getFileDate());
+									filesList.add(fileVO);
+							 }
+						}
+					}
+					else{
+						fileVO.setFileId(fileVal.getFileId());
+						fileVO.setCandidateId(0l);
+						fileVO.setComments(fileVal.getComment());
+						
+						if(fileVal.getRegionScopes() != null)
+							fileVO.setLocationScopeValue(fileVal.getRegionScopes().getScope());
+						
+						fileVO.setTitle(fileVal.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileTitle())):"");
+						fileVO.setDescription(fileVal.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileDescription())):"");
+						//fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
+						fileVO.setContentId(fileVal.getFileId());
+						//fileVO.setGallaryName(fileGallary.getGallary().getName());
+						fileVO.setNewsDescription(fileVal.getNewsDescription() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getNewsDescription())):"");
+						
+						Long locationScopeId = fileVal.getRegionScopes().getRegionScopesId();
+						fileVO.setLocationId(locationScopeId);
+						fileVO.setLocationName(getLocationBasedOnScopeId(locationScopeId, fileVal.getLocationValue()));
+						
+						List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+						Set<FileSourceLanguage> fileSourceLanguageSet = fileVal.getFileSourceLanguage();
+						
+						for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+							FileVO fileVOSourceLanguage = new FileVO();
+							 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
+							 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+							 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
+							 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+							 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+							 
+							 List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());		
+								if(editionDets != null && editionDets.size() > 0)
+								{
+								 
+								fileVOSourceLanguage.setPageNo(Long.parseLong(editionDets.get(0)[0].toString()));
+								  Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+								  if(edition.equals(1L))
+									  fileVOSourceLanguage.setNewsEdition("Main Edition");
+								  else
+									  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+								}
+							 
+							 
+							 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+							 
+							 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+							 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
+							 Long tempPartNo = 1L;
+							 for(FilePaths filePath : filePathsSet){
+								 FileVO fileVOPath = new FileVO();
+								 fileVOPath.setPath(filePath.getFilePath());
+								 //fileVOPath.setDescription(fileSourceLanguage.getNewsDetailedDescription());
+								 fileVOPath.setOrderNo(filePath.getOrderNo());
+								 //fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+								 fileVOPath.setOrderName("Part-"+tempPartNo);
+								 tempPartNo = tempPartNo+1;
+								 fileVOPathsList.add(fileVOPath);
+							 }
+							 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+							 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription());
+							 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+							 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+						 }
+						fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+						 Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+						 fileVO.setFileVOList(fileVOSourceLanguageList);
+						 
+						
+						fileVO.setFileDate(fileVal.getFileDate() == null ? null :
+							sdf.format(fileVal.getFileDate()));
+						 fileVO.setReqFileDate(fileVal.getFileDate());
+						filesList.add(fileVO);
+						fileGalleryIdsList.add(fileVal.getFileId());
+					}
+					fileVO.setCandidateName("");
+				}
+				relatedGallary.setFilesList(filesList);
+				relatedGalleries.add(relatedGallary);
+				contentDetailsVO.setRelatedGalleries(relatedGalleries);
+				
+			
+			return contentDetailsVO;
+		}catch (Exception e) {
+			log.debug("Exception occured in getSelectedContentAndRelatedGalleries() Method, Exception is - "+e);
+			return null;
+		}
+	}
+	
 	/**
 	 * This Method will give the Selected File Details, their related files and Other Galleries Details
 	 * @param contentId Long

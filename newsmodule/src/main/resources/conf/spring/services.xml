@@ -1644,6 +1644,7 @@
 		<property name="districtDAO" ref="districtDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />	
+		<property name="fileDAO" ref="fileDAO" />
 	</bean>
 	
 	
