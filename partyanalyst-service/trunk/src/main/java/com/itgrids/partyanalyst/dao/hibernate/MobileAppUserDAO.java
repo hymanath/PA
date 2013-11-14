@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
@@ -11,5 +13,9 @@ public class MobileAppUserDAO extends GenericDaoHibernate<MobileAppUser, Long> i
 		super(MobileAppUser.class);
 		
 	}
-
+	
+	public List<Object> checkUniqueCode(String uniqueCode)
+	{
+		return getHibernateTemplate().find("select model.mobileAppUserId from MobileAppUser model where model.uniqueCode = ?",uniqueCode);
+	}
 }
