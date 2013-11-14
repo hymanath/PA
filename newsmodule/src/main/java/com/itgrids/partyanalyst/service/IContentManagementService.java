@@ -22,5 +22,7 @@ public interface IContentManagementService {
 	public List<FileVO> getResponseTrackingNews(Long responseFileGallaryId);
 	
 	public void setFileGalaryDetailsByFileGallaryIdsList(List<Long> fileGallaryIdsList,List<FileVO> fileVOResultList);
-	
+	public ContentDetailsVO getSelectedContentAndRelatedGalleries1(
+			Long contentId, String requestFrom, Long requestPageId,
+			String isCustomer);
 }

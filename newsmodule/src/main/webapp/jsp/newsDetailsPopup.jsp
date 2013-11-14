@@ -39,6 +39,10 @@
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
 <style type="text/css">
+.span8 {
+    width: -moz-available;
+}
+
  #showContentHeaderDiv{background-color: #06ABEA;
     color: #FFFFFF;
     float: none;
@@ -250,7 +254,7 @@ li{list-style: none outside none;}
 	<!-- left Div End -->
 
 	<!-- right Div End -->
-    <div class="span3" style=" width: 250px;">
+   <!-- <div class="span3" style=" width: 250px;">
 	
 	<div class="left-panel" id="gallaryMainDiv" style="display:none;">
 	    <h3>Main Article</h3>
@@ -264,13 +268,13 @@ li{list-style: none outside none;}
 	    <h3 id="gallaryNameId" style="text-transform:capitalize;">Other News in this Gallery</h3>
 	   <div id="releatedNewsDiv"></div>
 	  </div>
-	</div>
+	</div>-->
 	<!-- right Div End -->
   </div>
  </div>
  </div>
 
-  <div id="responseMainDiv">
+  <div id="responseMainDiv" style="display:none;">
   <div class="widget blue" id="newsResponseDiv">
 	<h4 id="responseHeading"></h4>
 	<div id="responseNewsGallaryDiv"></div>
@@ -359,11 +363,11 @@ function buildContentDetails()
 	var totSize = null;
 	var source = "";
 	var totSize = null;
+	var detailedDesDiv = null;
     $("#newsDescriptionDiv").html('');
 	$("#newsDescriptionHeadingDiv").html('');
    for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
-	{
+		{
 	   source = result.relatedGalleries[0].filesList[i].fileVOList[0].source;
 	   if(result.relatedGalleries[0].filesList[i].gallaryName != null && result.relatedGalleries[0].filesList[i].gallaryName != ""){
 		$('#gallaryNameId').html('');
@@ -371,10 +375,12 @@ function buildContentDetails()
 		}
 	   if (result.relatedGalleries[0].filesList[i].newsDescription != null && result.relatedGalleries[0].filesList[i].newsDescription != "")
 	   {  
-		  if(source == "Eenadu Telugu") $('#newsDescriptionDiv').addClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
-		  else
+		  if(source == "Eenadu Telugu"){ 
+		  $('#newsDescriptionDiv').addClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
+		  }else{
 	       $('#newsDescriptionDiv').removeClass("enadu").html(result.relatedGalleries[0].filesList[i].newsDescription);
 		   $("#newsDescriptionHeadingDiv").html("Detailed News: ");
+		  }
 	   }
 	   
 
@@ -386,7 +392,8 @@ function buildContentDetails()
 		preContentId = result.relatedGalleries[0].filesList[i].contentId;
 		curPos = i+1;
 		totSize = result.relatedGalleries[0].filesList.length;
-
+		detailedDesDiv = result.relatedGalleries[0].filesList[0].fileVOList[i].description;
+		
 		if(source == "Eenadu Telugu")
 		{
 			str +='<div id="showContentHeaderDiv"><span class="enadu">'+titleStr+' </span> ('+curPos+' of '+totSize+')</div>';
@@ -426,22 +433,30 @@ function buildContentDetails()
 			 str +='</tr>';
 
 			 str+='</table>';
-		str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
-		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="width:950px;height:850px;" src="'+pathStr+'" /></div>';
 		if(source == "Eenadu Telugu")
 		{
+			if(descriptionStr != null)
 			str +='<div><span>Description: </span><b class="enadu">'+descriptionStr+'<b>';
 		}
 		else
 		{
+			if(descriptionStr != null)
 			str +='<div><span>Description: </span><b>'+descriptionStr+'<b>';
 		}
+
+		if(pathStr != null)
+		str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
+
+		if(detailedDesDiv!=null)
+		str +='<div id="detailedDescriptionDiv" style="margin-bottom: 15px;"><span>Detailed Description:</span><span id="descriptionChangeSpan">'+detailedDesDiv+'</span></div>';
+
+		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="width:950px;height:850px;" src="'+pathStr+'" /></div>';
+	
 		
-		str +='<button class="btn btn-info" onclick="getZoomImage()" style="float:right;"> Zoom Image </button> </div>';
+		str +='<div><button id="zoomImageId" class="btn btn-info" onclick="getZoomImage()" style="float:right;"> Zoom Image </button> </div>';
 	}
 
 	for(var i=0;i<result.relatedGalleries[0].filesList.length;i++)
-		if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 		{
 		   selectedContentFile = result.relatedGalleries[0].filesList[i];
 		   str +='<div id="buildNewSourceParts">';
@@ -553,14 +568,23 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 
 	 if(document.getElementById("newsPageNOSpan") != null && selectedContentFile.fileVOList[m].pageNo != null)
 		document.getElementById("newsPageNOSpan").innerHTML = ''+selectedContentFile.fileVOList[m].pageNo+'';
+		
+	 if(document.getElementById("descriptionChangeSpan") != null)
+	  document.getElementById("descriptionChangeSpan").innerHTML = ''+selectedContentFile.fileVOList[m].description+'';
 
-	  
-	  
-	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
+	 if(document.getElementById("imgDiv") != null)
+	  $("#imgDiv").html("<div class='' id='imgDiv' style='text-align:center;'><img alt='"+selectedContentFile.title+"' title='"+selectedContentFile.description+"' style='max-width:600px;max-length:800px;' src='"+selectedContentFile.fileVOList[0].fileVOList[0].path+"'></img></div>");
+		
+	if(selectedContentFile.fileVOList[m].fileVOList.length>0){
+		$("#imgDiv").css("display","block");
+		$("#zoomImageId").css("display","block");
+		var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
 		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="width:950px;height:850px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" /></div>';
-	  
-	  document.getElementById("imgDiv").innerHTML = str;
-	
+	}else{
+		$("#zoomImageId").css("display","none");
+		$("#imgDiv").css("display","none");
+		document.getElementById("imgDiv").innerHTML = str;
+	}
 	   str = '<center><table><tr>';
 
 	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)

@@ -111,7 +111,7 @@ ServletRequestAware, ServletResponseAware, ServletContextAware{
 		
 		if(jObj.getString("task").equalsIgnoreCase("getSelectedContent"))
 		{
-			contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleries(
+			contentDetailsVO = contentManagementService.getSelectedContentAndRelatedGalleries1(
 					jObj.getLong("contentId"),jObj.getString("requestFrom"),jObj.getLong("requestPageId"),"false");
 			
 			
