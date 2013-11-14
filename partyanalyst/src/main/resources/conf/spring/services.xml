@@ -1770,6 +1770,9 @@
 	 <property name="mobileAppUserDAO" ref="mobileAppUserDAO" />
 	 <property name="mobileAppUserProfileDAO" ref="mobileAppUserProfileDAO" />
 	 <property name="electionScopeDAO" ref="electionScopeDAO" />
+	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
+	
+      <property name="mobileAppUserAccessKeyDAO" ref="mobileAppUserAccessKeyDAO"></property>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
@@ -1827,7 +1830,8 @@
       <property name="mobileAppUserProfileDAO" ref="mobileAppUserProfileDAO" />
       <property name="mailService" ref="mailService" />
       <property name="mobileAppUserDAO" ref="mobileAppUserDAO"></property>
-       
+      <property name="mobileAppUserAccessKeyDAO" ref="mobileAppUserAccessKeyDAO"></property>
+     
     </bean>
 </beans>		
 	

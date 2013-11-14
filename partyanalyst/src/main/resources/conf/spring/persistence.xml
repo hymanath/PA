@@ -362,6 +362,7 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppUserAccess</value>
 			    <value>com.itgrids.partyanalyst.model.MobileAppUserProfile</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppUser</value>
+				<value>com.itgrids.partyanalyst.model.MobileAppUserAccessKey</value>
 			</list>
 			
 		</property>

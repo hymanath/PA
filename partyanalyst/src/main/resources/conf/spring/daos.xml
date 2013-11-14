@@ -1264,6 +1264,8 @@
      <bean id="mobileAppUserAccessDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
-   
+     <bean id="mobileAppUserAccessKeyDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessKeyDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
    
 </beans>		

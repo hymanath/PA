@@ -55,6 +55,7 @@
  <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
  <script type="text/javascript" src="js/jtransform/jquery.custom_radio_checkbox.js" ></script>
  <script type="text/javascript" src="js/googleAnalytics/googleChartsColourPicker.js"></script>
+ <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 
  <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
 
@@ -172,7 +173,32 @@
 	</div><br/>
 	 <!--mobile Data user Details end-->
   </div>
-
+ <div class="widget blue">
+  <form class="form-horizontal">
+  <div class="control-group">
+    <label class="control-label" for="inputconstituency">User</label>
+    <div class="controls">
+    <select theme="simple" cssClass="selectWidth" label="Select Your user" name="userList" id="userList" /> 
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="inputMobileNo">MobileNo</label>
+    <div class="controls">
+    <input type="text" id="MobileNoId" placeholder="MobileNo">
+    </div>
+    </div>
+    <div class="control-group">
+    <label class="control-label" for="inputAccessKey">AccessKey</label>
+    <div class="controls">
+    <input type="password" id="AccessKeyId" placeholder="AccessKey">
+    </div>
+    </div>
+	<div  style="margin-left: 150px;">
+	   <input type="button" class="btn btn-info" value="SentSMS" id="SentSMSId" onclick="sendSmsToUser();"/>
+	  
+	</div><br/>
+   </form>
+ </div>
 </div>
 
 <script type="text/javascript">
@@ -298,6 +324,9 @@ function callAjax(jsObj,url)
 								 showStatus(myResults);	
 								
 								}
+								else if(jsObj.task == "getUsers")
+								   clearOptionsListForSelectElmtId('userList');
+								  createOptionsForSelectElmtId('userList',myResults);;
 							
 							}
 									catch (e) {
@@ -347,6 +376,35 @@ function callAjax(jsObj,url)
 	}
 
  }
+ 
+ function getMobileAppUsers()
+ {
+ var jsObj=
+		{
+		 
+		 task:"getUsers"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getMobileAppUsersAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+ }
+ function sendSmsToUser()
+ {
+ var accessKey = $("#AccessKeyId").val();
+ var mobileNo =$("#MobileNoId").val();
+ var mobileAppuser = $("#userList").val();
+ var jsObj=
+		{
+		 mobileNo:mobileNo,
+		 mobileAppuserId:mobileAppuser,
+		 accessKey:accessKey,
+		 task:"sendSms"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "sendSmsToMobileAppUsersAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+ }
+getMobileAppUsers();
 </script>
 
 

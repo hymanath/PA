@@ -6165,6 +6165,15 @@
 				<param name="root">constituencyCensusResultVO</param>
 			</result>
 		</action>
-		
+		<action name="getMobileAppUsersAction" class="mobileDataAction" method="getMobileAppUsers">
+			<result type="json" name="success">
+				<param name="root">userList</param>
+			</result>
+		</action>
+		<action name="sendSmsToMobileAppUsersAction" class="mobileDataAction" method="sendSmsToMobileAppUserAccessKey">
+			<result type="json" name="success">
+				<param name="root">resultStatus</param>
+			</result>
+		</action>
 		</package>
 </struts>      
