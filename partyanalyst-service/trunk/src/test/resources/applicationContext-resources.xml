@@ -381,6 +381,7 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppUserAccess</value>
 			    <value>com.itgrids.partyanalyst.model.MobileAppUserProfile</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppUser</value>
+				<value>com.itgrids.partyanalyst.model.MobileAppUserAccessKey</value>
 			</list>
 		</property>
 	</bean>
@@ -1960,6 +1961,8 @@
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
-
+  <bean id="mobileAppUserAccessKeyDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessKeyDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
    
 </beans>

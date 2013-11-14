@@ -8,5 +8,5 @@ public interface IWebServiceHandlerService {
 	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId);
 	
 	public ResultStatus sendSmsToUser(String uniquecode);
-
+	public ResultStatus updatePassword(String uniqueCode,String pwd,String accessKey);
 }

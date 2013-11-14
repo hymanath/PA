@@ -699,5 +699,9 @@ public interface IConstants {
     /*SMS COUNTRY VOICE SMS END*/
     
     public static final String LOCALITY = "Locality";
+    
+    public static final String ADMINGROUPMOBILE = "9676696760,9246837788,9246827788,9966542524";
+   
+
 	
 }
