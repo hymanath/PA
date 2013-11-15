@@ -156,40 +156,39 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		ResultStatus resultStatus = new ResultStatus();
 		try{
 			List<Object> mobileAppUserId = mobileAppUserDAO.checkUniqueCode(uniquecode);
+			
 			if(mobileAppUserId == null || mobileAppUserId .size() == 0)
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			
 			if(mobileAppUserId != null)
 			{
-			List<Object[]> list =mobileAppUserProfileDAO.getMobileNoByUniquecode(uniquecode);
-			if(list == null && list.size() == 0)
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			if(list != null && list.size() > 0)
-			{
-			for(Object[] params : list)
-			{
-			if(params[0] == null)
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
-			else
-			{
-			String[] mobile = {params[0].toString()};
-			String[] admingroupMobileNos = {IConstants.ADMINGROUPMOBILE};
-			String userName = "";
-			String lastName = "";
-			String firstName = "";
-			if(params[2] == null)
-			lastName = "";
-			if(params[1] == null)
-				firstName = "";
-			 userName = params[1].toString()+" " +params[2].toString();
-			String smsText = "Your Request For forgot password is received.we will send Access key to this mobile shortly.";
-			String smsText1 = "Hi Admin Group," +userName+ " requested for forgot access key,verify him and send a request key as soon as possible.";
-			resultStatus = smsCountrySmsService.sendSmsFromAdmin(smsText,true,mobile);
-			smsCountrySmsService.sendSmsFromAdmin(smsText1,true,admingroupMobileNos);
-			if(userName != null && userName !="")
-			mailService.sendEmailToAdminGroupForAccessKey(userName);
-			}
-			}
-			}
+				List<Object[]> list =mobileAppUserProfileDAO.getMobileNoByUniquecode(uniquecode);
+				
+				if(list == null || list.size() == 0)
+					resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					{
+						if(params[0] == null)
+							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						else
+						{
+							String[] mobile = {params[0].toString()};
+							String[] admingroupMobileNos = {IConstants.ADMINGROUPMOBILE};
+							String name = params[1].toString()+" " +params[2].toString();
+							String smsText = "Dear "+name+" your Request For forgot password is received. We will send Access key to this Mobile shortly.";
+							String smsText1 = "Hi Admin Group,"+name+" requested for forgot access key, verify him and send a Access key as soon as possible.";
+							
+							resultStatus = smsCountrySmsService.sendSmsFromAdmin(smsText,true,mobile);
+							smsCountrySmsService.sendSmsFromAdmin(smsText1,true,admingroupMobileNos);
+							
+							if(name != null && name !="")
+								mailService.sendEmailToAdminGroupForAccessKey(name);
+						}
+					}
+				}
 			}
 		
 		}
