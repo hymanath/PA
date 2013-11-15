@@ -83,4 +83,51 @@ public class WebServiceHandler {
 			return "false";
 		}
     }
+	
+
+
+	@GET
+	@Path("/requestForForgotPwdAccessKey/{uniqueCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String sendSms(@PathParam("uniqueCode")String uniqueCode)
+	{
+		String message = "";
+		try{
+			 resultStatus = webServiceHandlerService.sendSmsToUser(uniqueCode);
+			 if(resultStatus.getResultCode() == 0)
+				 message = "OK : your Access key will be delivered shortly.";
+			if(resultStatus.getResultCode() == 1)
+				message = "FAIL : Mobile For this user not available, contact Our Support centre.";
+			if(resultStatus.getResultCode() == 121)
+				message = "FAIL : Register User Not avilable,Contact our Support center.";
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+				return "message";
+			}
+		return message;
+	}
+	
+	@GET
+    @Path("/validateUserAccessKey/{uniqueCode}/{pwd}/{accessKey}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String validateUserAccessKeyAndUpdatePwd(@PathParam("uniqueCode") String uniqueCode , @PathParam("pwd") String pwd, @PathParam("accessKey") String accessKey)
+    {
+		try{
+		 resultStatus = webServiceHandlerService.updatePassword(uniqueCode,pwd,accessKey);
+		if(resultStatus.getResultCode() == 0)
+		 return "Update Successfully";
+		else
+			return "Failure";
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+    }
+	
+
+
 }
