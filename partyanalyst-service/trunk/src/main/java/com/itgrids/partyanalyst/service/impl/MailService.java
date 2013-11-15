@@ -583,16 +583,16 @@ public class MailService implements IMailService{
 	    	text+="" +userName+ " requested for forgot access key,verify him and send a request key as soon as possible.";
 	    	text+="</div>";
 	        text+="<div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
-	        String emails = "a.dakavaram@gmail.com, kamalakardandu@gmail.com,srikanth.itgrids.hyd@gmail.com,padamsantoshkumar@gmail.com,tsrao4@gmail.com,ajay.itgrids.hyd@gmail.com";
+	        String emails = "a.dakavaram@gmail.com,kamalakardandu@gmail.com,srikanth.itgrids.hyd@gmail.com";
 	        
 	        String emailArr[] = emails.split(",");
 	        for(String email : emailArr)
 	        {
-	        emailDetailsVo.setContent(text);
-	        emailDetailsVo.setSubject(subject);
-	        emailDetailsVo.setToAddress(email.toString());
-	        emailDetailsVo.setFromAddress(IConstants.LOCALFROMEMAILID);
-			rs = sendEmail(emailDetailsVo);
+		        emailDetailsVo.setContent(text);
+		        emailDetailsVo.setSubject(subject);
+		        emailDetailsVo.setToAddress(email.toString());
+		        emailDetailsVo.setFromAddress(IConstants.LOCALFROMEMAILID);
+				rs = sendEmail(emailDetailsVo);
 	        }
 			
 		}
