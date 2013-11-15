@@ -208,7 +208,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		try{
 			
 			List<Object[]> list = mobileAppUserAccessKeyDAO.checkUniqueCodeByAccesskey(uniqueCode,accessKey);
-			if(list == null)
+			if(list == null || list.size() == 0)
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			if(list != null && list.size() > 0)
 			{
