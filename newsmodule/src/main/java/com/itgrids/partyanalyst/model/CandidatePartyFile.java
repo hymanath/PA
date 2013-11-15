@@ -39,13 +39,14 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	private Date createdDate;
 	private Date updateddate;
 	private Long mediaId;
-	private Benefit benefit;
+	private Benefit sourceBenefit;
+	private Benefit destinationBenefit;
 	
 	
 	public CandidatePartyFile(){}
 	
 	public CandidatePartyFile(Candidate sourceCandidate,Candidate destinationCandidate,Party sourceParty,Party destinationParty,
-			Date createdDate,Date updateddate,File file,Benefit benefit,Long mediaId){
+			Date createdDate,Date updateddate,File file,Benefit sourceBenefit,Benefit destinationBenefit,Long mediaId){
 		
 		this.sourceCandidate = sourceCandidate;
 		this.destinationCandidate = destinationCandidate;
@@ -54,8 +55,9 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 		this.createdDate = createdDate;
 		this.updateddate = updateddate;
 		this.file = file;
-		this.benefit = benefit;
+		this.sourceBenefit = sourceBenefit;
 		this.mediaId = mediaId;
+		this.destinationBenefit = destinationBenefit;
 	}
 
 	@Id
@@ -155,17 +157,29 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	public void setFile(File file) {
 		this.file = file;
 	}
-
+    
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="benefit_id")
+	@JoinColumn(name="source_benefit_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Benefit getBenefit() {
-		return benefit;
+	public Benefit getSourceBenefit() {
+		return sourceBenefit;
 	}
 
-	public void setBenefit(Benefit benefit) {
-		this.benefit = benefit;
+	public void setSourceBenefit(Benefit sourceBenefit) {
+		this.sourceBenefit = sourceBenefit;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="destination_benefit_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Benefit getDestinationBenefit() {
+		return destinationBenefit;
+	}
+
+	public void setDestinationBenefit(Benefit destinationBenefit) {
+		this.destinationBenefit = destinationBenefit;
 	}
 
 }
