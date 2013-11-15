@@ -174,11 +174,12 @@
 	 <!--mobile Data user Details end-->
   </div>
  <div class="widget blue">
-  <form class="form-horizontal">
+  <form class="form-horizontal" style="margin-top:10px;">
+  <div id="errorMsgDiv1" style="font-family:verdana;margin-left:100px;"></div>
   <div class="control-group">
     <label class="control-label" for="inputconstituency">User</label>
     <div class="controls">
-    <select theme="simple" cssClass="selectWidth" label="Select Your user" name="userList" id="userList" /> 
+    <select theme="simple" cssClass="selectWidth" label="Select Your user" name="userList" id="userList" > </select>
     </div>
     </div>
     <div class="control-group">
@@ -194,8 +195,8 @@
     </div>
     </div>
 	<div  style="margin-left: 150px;">
-	   <input type="button" class="btn btn-info" value="SentSMS" id="SentSMSId" onclick="sendSmsToUser();"/>
-	  
+	   <input type="button" class="btn btn-info" value="SendSMS" id="SentSMSId" onclick="sendSmsToUser();"/>
+	   <img src="./images/icons/search.gif" id="ajaxImg1" style="display:none"/>
 	</div><br/>
    </form>
  </div>
@@ -325,9 +326,15 @@ function callAjax(jsObj,url)
 								
 								}
 								else if(jsObj.task == "getUsers")
+								{
 								   clearOptionsListForSelectElmtId('userList');
 								  createOptionsForSelectElmtId('userList',myResults);;
 							
+							}
+							else if(jsObj.task == "sendSms")
+							{
+							 showStatusForSms(myResults);	
+							}
 							}
 									catch (e) {
 							    //alert(Exception);
@@ -345,6 +352,7 @@ function callAjax(jsObj,url)
  function showStatus(result)
  {
 	$("#errorMsgDiv").html("");
+	$("#ajaxImg").css("display","none");
 	if(result == null || result.resultCode == 1)
 	{
 	  $("#errorMsgDiv").html("Error Occured! Try Again.").css("color","red");
@@ -353,11 +361,29 @@ function callAjax(jsObj,url)
 	else
 	{
 	  $("#errorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
-	  $("#ajaxImg").css("display","none");
+	  
 	 $("#downloadLink").css("display","block").css("display","inline-block");
 	  return;
 	}
  }
+ function showStatusForSms(result)
+ {
+	$("#errorMsgDiv1").html("");
+	 $("#ajaxImg1").css("display","none");
+	
+	if(result == null || result.resultCode == 1)
+	{
+	  $("#errorMsgDiv1").html("Error Occured! Try Again.").css("color","red");
+	  return;
+	}
+	else
+	{
+	  $("#errorMsgDiv1").html("sms send successfully").css("color","green");
+	 
+	  return;
+	}
+ }
+ 
  function showUserDetailsStatus(result)
  {
 	var str='';
@@ -390,9 +416,39 @@ function callAjax(jsObj,url)
  }
  function sendSmsToUser()
  {
+
+$("#errorMsgDiv1").html("");
+var flag = false;
+var errorDiv= document.getElementById("errorMsgDiv1");
  var accessKey = $("#AccessKeyId").val();
  var mobileNo =$("#MobileNoId").val();
  var mobileAppuser = $("#userList").val();
+  var str = '<font color="red">';
+/*if(mobileAppuser == 0)
+	{
+	 str += 'Please Select User<br>';
+	  flag = true;
+	 
+	}*/
+	if(mobileNo == 0 || mobileNo == null)
+	{
+	str += 'mobileNo is Required<br>';
+	flag = true;
+	}
+	if(accessKey == 0 || accessKey == null)
+	{
+	str += 'accessKey is Required<br>';
+	flag = true;
+	}
+ if(flag == true)
+	{
+errorDiv.innerHTML =str;
+return;
+	}
+else
+	{
+$("#ajaxImg1").css("display","inline-block");
+errorDiv.innerHTML = '';
  var jsObj=
 		{
 		 mobileNo:mobileNo,
@@ -403,6 +459,7 @@ function callAjax(jsObj,url)
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "sendSmsToMobileAppUsersAction.action?"+rparam;						
 		callAjax(jsObj,url);	
+		}
  }
 getMobileAppUsers();
 </script>
