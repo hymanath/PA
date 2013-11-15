@@ -125,7 +125,8 @@
 				<value>com.itgrids.partyanalyst.model.CandidatePartyKeyword</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePartyFile</value>
 				<value>com.itgrids.partyanalyst.model.Font</value>
-				
+				<value>com.itgrids.partyanalyst.model.Benefit</value>
+				<value>com.itgrids.partyanalyst.model.CandidatePartyCategory</value>
 			</list>
 		</property>
 	</bean>
@@ -205,6 +206,18 @@
 	
 	<bean id="fontDAO" class="com.itgrids.partyanalyst.dao.hibernate.FontDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="nominationDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominationDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="benefitDAO" class="com.itgrids.partyanalyst.dao.hibernate.BenefitDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidatePartyCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyCategoryDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
 	<!--End Add new DAOs here -->
