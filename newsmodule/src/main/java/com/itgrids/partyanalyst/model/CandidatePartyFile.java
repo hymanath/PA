@@ -31,23 +31,31 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 
 	private static final long serialVersionUID = -3590360726983582784L;
 	private Long candidatePartyFileId;
-	private Candidate candidate;
+	private Candidate sourceCandidate;
+	private Candidate destinationCandidate;
 	private File file;
-	private Party party; 
+	private Party sourceParty; 
+	private Party destinationParty;
 	private Date createdDate;
 	private Date updateddate;
-	private Long spokenBy;
+	private Long mediaId;
+	private Benefit benefit;
 	
 	
 	public CandidatePartyFile(){}
 	
-	public CandidatePartyFile(Candidate candidate,Party party,Date createdDate,Date updateddate,File file){
+	public CandidatePartyFile(Candidate sourceCandidate,Candidate destinationCandidate,Party sourceParty,Party destinationParty,
+			Date createdDate,Date updateddate,File file,Benefit benefit,Long mediaId){
 		
-		this.candidate = candidate;
-		this.party = party;
+		this.sourceCandidate = sourceCandidate;
+		this.destinationCandidate = destinationCandidate;
+		this.sourceParty = sourceParty;
+		this.destinationParty = destinationParty;
 		this.createdDate = createdDate;
 		this.updateddate = updateddate;
 		this.file = file;
+		this.benefit = benefit;
+		this.mediaId = mediaId;
 	}
 
 	@Id
@@ -60,29 +68,62 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	public void setCandidatePartyFileId(Long candidatePartyFileId) {
 		this.candidatePartyFileId = candidatePartyFileId;
 	}
-
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="candidate_id")
+	@JoinColumn(name="source_candidate_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Candidate getCandidate() {
-		return candidate;
+	public Candidate getSourceCandidate() {
+		return sourceCandidate;
 	}
 
-	public void setCandidate(Candidate candidate) {
-		this.candidate = candidate;
+	public void setSourceCandidate(Candidate sourceCandidate) {
+		this.sourceCandidate = sourceCandidate;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="party_id")
+	@JoinColumn(name="destination_candidate_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Party getParty() {
-		return party;
+	public Candidate getDestinationCandidate() {
+		return destinationCandidate;
 	}
 
-	public void setParty(Party party) {
-		this.party = party;
+	public void setDestinationCandidate(Candidate destinationCandidate) {
+		this.destinationCandidate = destinationCandidate;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="source_party_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Party getSourceParty() {
+		return sourceParty;
+	}
+
+	public void setSourceParty(Party sourceParty) {
+		this.sourceParty = sourceParty;
+	}
+    
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="destination_party_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Party getDestinationParty() {
+		return destinationParty;
+	}
+
+	public void setDestinationParty(Party destinationParty) {
+		this.destinationParty = destinationParty;
+	}
+   
+	@Column(name = "media_id", length=15)
+	public Long getMediaId() {
+		return mediaId;
+	}
+
+	public void setMediaId(Long mediaId) {
+		this.mediaId = mediaId;
 	}
 
 	@Column(name = "created_date", length = 10)
@@ -115,15 +156,16 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 		this.file = file;
 	}
 
-	@Column(name="spoken_by")
-	public Long getSpokenBy() {
-		return spokenBy;
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="benefit_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Benefit getBenefit() {
+		return benefit;
 	}
 
-	public void setSpokenBy(Long spokenBy) {
-		this.spokenBy = spokenBy;
+	public void setBenefit(Benefit benefit) {
+		this.benefit = benefit;
 	}
-	
-	
 
 }

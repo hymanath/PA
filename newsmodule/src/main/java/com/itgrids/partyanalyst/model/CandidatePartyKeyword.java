@@ -27,15 +27,15 @@ public class CandidatePartyKeyword extends BaseModel implements Serializable{
 	
 	private static final long serialVersionUID = -5559210717151124245L;
 	private Long candidatePartyKeywordId;
-	//private CandidatePartyFile candidatePartyFile;
+	private CandidatePartyFile candidatePartyFile;
 	private Keyword keyword;
-	private File file;
+	
 	
 	public CandidatePartyKeyword(){}
 	
-	public CandidatePartyKeyword(File file,Keyword keyword)
+	public CandidatePartyKeyword(CandidatePartyFile candidatePartyFile,Keyword keyword)
 	{
-		this.file = file;
+		this.candidatePartyFile = candidatePartyFile;
 		this.keyword = keyword;
 	}
 
@@ -49,17 +49,17 @@ public class CandidatePartyKeyword extends BaseModel implements Serializable{
 	public void setCandidatePartyKeywordId(Long candidatePartyKeywordId) {
 		this.candidatePartyKeywordId = candidatePartyKeywordId;
 	}
-
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="file_id")
+	@JoinColumn(name="candidate_party_file_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public File getFile() {
-		return file;
+	public CandidatePartyFile getCandidatePartyFile() {
+		return candidatePartyFile;
 	}
 
-	public void setFile(File file) {
-		this.file = file;
+	public void setCandidatePartyFile(CandidatePartyFile candidatePartyFile) {
+		this.candidatePartyFile = candidatePartyFile;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
