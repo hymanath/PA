@@ -78,8 +78,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateParty> candidateParty = new HashSet<CandidateParty>(0);
 	private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
 	
-	private Set<CandidatePartyFile> candidatePartyFiles = new HashSet<CandidatePartyFile>(0);
- 
+	//private Set<CandidatePartyFile> candidatePartyFiles = new HashSet<CandidatePartyFile>(0);
 	// Constructors
 
 	
@@ -413,14 +412,14 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 		this.candidateFileKeywords = candidateFileKeywords;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
 	public Set<CandidatePartyFile> getCandidatePartyFiles() {
 		return candidatePartyFiles;
 	}
 
 	public void setCandidatePartyFiles(Set<CandidatePartyFile> candidatePartyFiles) {
 		this.candidatePartyFiles = candidatePartyFiles;
-	}
+	}*/
 	
 	
 	
