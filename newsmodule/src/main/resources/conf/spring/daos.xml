@@ -1368,4 +1368,16 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="fontDAO" class="com.itgrids.partyanalyst.dao.hibernate.FontDAO">
+	    <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="benefitDAO" class="com.itgrids.partyanalyst.dao.hibernate.BenefitDAO">
+	   <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidatePartyCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyCategoryDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
