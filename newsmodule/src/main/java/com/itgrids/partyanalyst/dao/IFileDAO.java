@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -15,5 +16,7 @@ public interface IFileDAO extends GenericDao<File, Long> {
 	public List<File> getAllFilesByFileIds(List<Long> fileIds);
 	
 	public Integer updateProblemFileDetailsByFileId(Long fileId, String fileTitle, String fileDescription);
+	
+	public List<File> getFilesByCategoryId(Long categoryId,Integer startIndex ,Integer endIndex,String newsType,Date fromDate,Date toDate);
 	
 }

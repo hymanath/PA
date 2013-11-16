@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -51,5 +52,35 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		query.setParameter(2, fileId);
 		
 		return query.executeUpdate();
+	}
+	
+	public List<File> getFilesByCategoryId(Long categoryId,Integer startIndex ,Integer endIndex,String newsType,Date fromDate,Date toDate)
+	{
+		StringBuilder str= new StringBuilder();
+		
+		str.append("select model from File model where model.category.categoryId=:categoryId and model.isDeleted ='N'");
+		 if(newsType != null && !newsType.equalsIgnoreCase(""))
+			 str.append(" and model.isPrivate = 'N' ");
+		 if(fromDate != null)
+			 str.append(" and date(model.fileDate) >= :fromDate ");
+			 
+		 if(toDate != null)
+			 str.append(" and date(model.fileDate) <= :toDate ");
+				 
+		 Query query = getSession().createQuery(str.toString());
+		query.setParameter("categoryId", categoryId);
+		if(startIndex != null)
+		query.setFirstResult(startIndex);
+		if(endIndex != null)
+		query.setMaxResults(endIndex);
+		if(newsType != null && !newsType.equalsIgnoreCase(""))
+		query.setParameter("newsType", newsType);
+		if(fromDate != null)
+	   		query.setParameter("fromDate",fromDate);
+			 
+		if(toDate != null)
+		 query.setParameter("toDate",toDate);
+	   	 
+		return query.list();	
 	}
 }
