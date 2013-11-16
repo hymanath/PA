@@ -1831,7 +1831,9 @@
       <property name="mailService" ref="mailService" />
       <property name="mobileAppUserDAO" ref="mobileAppUserDAO"></property>
       <property name="mobileAppUserAccessKeyDAO" ref="mobileAppUserAccessKeyDAO"></property>
-     
+      <property name="voiceSmsService" ref="voiceSmsService"></property>
+      <property name="voiceRecordingDetailsDAO" ref="voiceRecordingDetailsDAO"/>
+	
     </bean>
 </beans>		
 	

@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.webservice;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -9,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 
@@ -19,8 +22,20 @@ public class WebServiceHandler {
 	@Autowired
 	private IWebServiceHandlerService  webServiceHandlerService;
 	private ResultStatus resultStatus;
+	private List<BasicVO> basicVO;
 	
-	
+
+	public List<BasicVO> getBasicVO() {
+		return basicVO;
+	}
+
+
+
+	public void setBasicVO(List<BasicVO> basicVO) {
+		this.basicVO = basicVO;
+	}
+
+
 
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -127,7 +142,51 @@ public class WebServiceHandler {
 			return "Failure";
 		}
     }
-	
+	@GET
+    @Path("/getUserVoiceRecordedFiles/{uniqueCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getUserVoiceRecordedFiles(@PathParam("uniqueCode") String uniqueCode)
 
+    {
+		try{
+			basicVO = webServiceHandlerService.getUserVoiceRecordedFiles(uniqueCode);
+		 if(basicVO.size() == 0)
+			return " FAIL : Register User Not avilable,Contact our Support center.";
+		 if(basicVO.size() > 0)
+			 return " OK :Recordings are avilable";
+		 else
+			 return " FAIL : Failure"; 
+				
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+    }
+	@GET
+    @Path("/sendVoiceSMS/{uniqueCode}/{mobileNos}/{fileId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String sendVoiceSMS(@PathParam("uniqueCode") String uniqueCode , @PathParam("mobileNos") String mobileNos, @PathParam("fileId") String fileId)
+
+    {
+		String returnString ="";
+		try{
+			returnString = webServiceHandlerService.sendVoiceSMS(uniqueCode,mobileNos,fileId);
+		 if(returnString.equalsIgnoreCase("data not found"))
+			return " FAIL : Register User Not avilable,Contact our Support center.";
+		 if(returnString.equalsIgnoreCase("Successfully Sent.."))
+			 return " OK : your messages Delivered Successfully";
+		 else
+			 return " FAIL : you dont have credits to send voice sms"; 
+				
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+    }
+	
 
 }
