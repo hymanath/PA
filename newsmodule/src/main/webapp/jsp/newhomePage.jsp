@@ -264,9 +264,9 @@ $(document).ready(function(){
 							</s:if>
 										
 											</div>
-											</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
-										<a data-slide="next" href="#myCarousel" class="right">›</a>--->
+										</div>
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>--->
 									</div>
 									
 								
@@ -314,11 +314,12 @@ $(document).ready(function(){
 										  <a data-slide="next" href="#myCarousel" class="right">></a>
 										  
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
-										<a data-slide="next" href="#myCarousel" class="right">›</a>---->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>---->
 									</div>
 					<!----------------------->
 								</div>
+							</div>
 							<!------- Video tab end ------>
 						</div>
 					</div>
@@ -398,8 +399,8 @@ $(document).ready(function(){
 							</s:if>
 										
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
-										<a data-slide="next" href="#myCarousel" class="right">›</a>--->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>--->
 									</div>
 									
 								</div>
@@ -447,8 +448,8 @@ $(document).ready(function(){
 										  <a data-slide="next" href="#myCarousel" class="right">></a>
 										  
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
-										<a data-slide="next" href="#myCarousel" class="right">›</a>---->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>---->
 									</div>
 					<!----------------------->
 								</div>
