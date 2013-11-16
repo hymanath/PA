@@ -11,6 +11,7 @@ public class BasicVO implements Serializable{
 	private Long id;
 	private Long count;
 	private String name;
+	private String description;
 	private String mandalName;
 	private String casteName;
 	private Double perc;
@@ -161,6 +162,12 @@ public class BasicVO implements Serializable{
 	}
 	public void setTotalVoters(Long totalVoters) {
 		this.totalVoters = totalVoters;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

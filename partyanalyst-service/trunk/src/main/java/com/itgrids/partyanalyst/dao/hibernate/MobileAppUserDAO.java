@@ -23,4 +23,8 @@ public class MobileAppUserDAO extends GenericDaoHibernate<MobileAppUser, Long> i
 	{
 		return getHibernateTemplate().find("select model.mobileAppUserId,model.userName from MobileAppUser model");
 	}
+	public List<Object> getUserId(String uniqueCode)
+	{
+		return getHibernateTemplate().find("select model.user.userId from MobileAppUser model where model.uniqueCode = ?",uniqueCode);
+	}
 }

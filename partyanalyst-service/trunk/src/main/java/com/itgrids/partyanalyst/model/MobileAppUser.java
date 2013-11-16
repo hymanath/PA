@@ -11,11 +11,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "mobile_app_user")
@@ -30,6 +34,8 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	
 	private String mobileNo;
 	private String email;
+	
+	private User user;
 	private Set<MobileAppUserProfile> mobileAppUserProfile = new HashSet<MobileAppUserProfile>(0);
 	private Set<MobileAppUserAccess> mobileAppUserAccess = new HashSet<MobileAppUserAccess>(0);
 	private Set<MobileAppUserAccessKey> mobileAppUserAccessKey = new HashSet<MobileAppUserAccessKey>(0);
@@ -39,12 +45,13 @@ public class MobileAppUser extends BaseModel implements Serializable{
 		
 	}
 	/** full constructor */
-	public MobileAppUser(Long mobileAppUserId,String userName,String password,String uniqueCode)
+	public MobileAppUser(Long mobileAppUserId,String userName,String password,String uniqueCode, User user)
 	{
 	this.mobileAppUserId = mobileAppUserId;
 	this.userName = userName;
 	this.password = password;
 	this.uniqueCode = uniqueCode;
+	this.user =user;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -121,6 +128,16 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	public void setMobileAppUserAccessKey(
 			Set<MobileAppUserAccessKey> mobileAppUserAccessKey) {
 		this.mobileAppUserAccessKey = mobileAppUserAccessKey;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	

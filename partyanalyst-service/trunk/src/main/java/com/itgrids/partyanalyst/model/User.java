@@ -127,6 +127,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<UpdationDetails> updatedBy = new HashSet<UpdationDetails>(0);
 	private Set<SurveyAccessUsers> surveyAccessUsers = new HashSet<SurveyAccessUsers>(0);
 	private Set<DemoRequestActions> demoRequestActions = new HashSet<DemoRequestActions>(0);
+	private Set<MobileAppUser> mobileAppUser = new HashSet<MobileAppUser>(0);
 	
 	public User(){}
 	 
@@ -1036,6 +1037,15 @@ public class User extends BaseModel implements Serializable{
 
 	public void setDemoRequestActions(Set<DemoRequestActions> demoRequestActions) {
 		this.demoRequestActions = demoRequestActions;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Set<MobileAppUser> getMobileAppUser() {
+		return mobileAppUser;
+	}
+
+	public void setMobileAppUser(Set<MobileAppUser> mobileAppUser) {
+		this.mobileAppUser = mobileAppUser;
 	}
 	
 	
