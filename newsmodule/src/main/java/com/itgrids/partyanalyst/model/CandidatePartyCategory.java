@@ -27,14 +27,14 @@ public class CandidatePartyCategory extends BaseModel implements Serializable{
 	
 	private static final long serialVersionUID = -1969776487788436316L;
 	private Long candidatePartyCategoryId;
-	private Category category;
+	private Gallary gallary;
 	private CandidatePartyFile candidatePartyFile;
 	
 	public CandidatePartyCategory(){}
 	
-	public CandidatePartyCategory(Category category,CandidatePartyFile candidatePartyFile){
+	public CandidatePartyCategory(Gallary gallary,CandidatePartyFile candidatePartyFile){
 		
-		this.category = category;
+		this.gallary = gallary;
 		this.candidatePartyFile = candidatePartyFile;
 	}
     
@@ -49,16 +49,17 @@ public class CandidatePartyCategory extends BaseModel implements Serializable{
 		this.candidatePartyCategoryId = candidatePartyCategoryId;
 	}
    
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="category_id")
+	@JoinColumn(name="gallary_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Category getCategory() {
-		return category;
+	public Gallary getGallary() {
+		return gallary;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
+	public void setGallary(Gallary gallary) {
+		this.gallary = gallary;
 	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
