@@ -313,7 +313,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				result ="data not found";
 			else
 			{
-			audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+(Long)userId.get(0)+"/"+FilePath);
+			audioFilePath.append(IConstants.LIVE_VOICE_RECORDINGS_URL+"/"+(Long)userId.get(0)+"/"+FilePath);
 				
 			//audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
 			result = voiceSmsService.sendVoiceSMS(audioFilePath.toString(),(Long)userId.get(0),mobileNos,null,smsText,null);
