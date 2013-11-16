@@ -296,5 +296,8 @@ public interface ICandidateDetailsService {
 	 
 	 public List<SelectOptionVO> getTotalKeyWords();
 	 
+	 public List<FileVO> getFilesOfACategory(Long gallaryId,Integer startIndex,Integer endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr);
+	
+	 public List<SelectOptionVO> getAllNewsGallaries();
 	
 }

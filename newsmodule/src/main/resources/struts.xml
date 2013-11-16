@@ -5715,6 +5715,11 @@
 		    	<param name="root">fileVOs</param>
 		   </result> 
 		</action>
+		 <action name="getFilesInACategory" class="candidateElectionResultsAction" method="getFilesInACategory">
+        <result type="json" name="success">
+		    	<param name="root">fileVO</param>
+		   </result>        
+        </action>
 		</package>
 		
 		

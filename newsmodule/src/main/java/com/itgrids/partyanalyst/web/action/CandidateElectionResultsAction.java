@@ -2650,6 +2650,27 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			return Action.SUCCESS;
 				
 	  }
+		public String getFilesInACategory(){				
+			session = request.getSession();
+		    RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+			Long  gallaryId = Long.parseLong(request.getParameter("gallaryId"));
+			int startIndex = Integer.parseInt(request.getParameter("startIndex"));
+			int endIndex = Integer.parseInt(request.getParameter("endIndex"));
+			Long  categoryId = Long.parseLong(request.getParameter("categoryId"));
+			String requestedFor=request.getParameter("requestedFor");
+			String newsType = "Public";
+			String fromDate = request.getParameter("fromDate");
+			String toDate = request.getParameter("toDate");
+			
+			if(user.getUserAccessType()!=null)
+				 if(user.getUserAccessType().equals("Admin"))
+					 newsType = "";   			
+			fileVO = candidateDetailsService.getFilesOfACategory(gallaryId,startIndex,endIndex,newsType,categoryId,fromDate,toDate);
+			
+			return Action.SUCCESS;
+				
+	  }
+		
 		
 		
 	public String showAllFilesOfAGallary()

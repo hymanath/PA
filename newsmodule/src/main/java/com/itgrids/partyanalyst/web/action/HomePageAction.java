@@ -133,15 +133,28 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	}
 
 
-	private List<SelectOptionVO> latestGallariesList;
+	private List<SelectOptionVO> latestGallariesList,categoriesList,newsGallariesList;
 	
 	private Long onlineRegId;
 	
+	public List<SelectOptionVO> getNewsGallariesList() {
+		return newsGallariesList;
+	}
+	public void setNewsGallariesList(List<SelectOptionVO> newsGallariesList) {
+		this.newsGallariesList = newsGallariesList;
+	}
 	public List<SelectOptionVO> getStates() {
 		return states;
 	}
 	public void setStates(List<SelectOptionVO> states) {
 		this.states = states;
+	}
+	
+	public List<SelectOptionVO> getCategoriesList() {
+		return categoriesList;
+	}
+	public void setCategoriesList(List<SelectOptionVO> categoriesList) {
+		this.categoriesList = categoriesList;
 	}
 	public List<SelectOptionVO> getLatestGallariesList() {
 		return latestGallariesList;
@@ -490,7 +503,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 		
 		keywordsList = candidateDetailsService.getTotalKeyWords(IConstants.TDPID,newsType);
-		
+		categoriesList = candidateDetailsService.getAllCategories(); 
+		newsGallariesList = candidateDetailsService.getAllNewsGallaries(); 
 		return Action.SUCCESS;
 	}
 	public String getMoreVideos(){

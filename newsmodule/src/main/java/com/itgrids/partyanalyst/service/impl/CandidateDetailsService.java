@@ -5763,7 +5763,34 @@ public ResultStatus saveCandidateVoterDetails(Long CandidateId, Long voterId) {
 	
 }
 */
- 
+public List<FileVO>	getFilesOfACategory(Long gallaryId,Integer startIndex,Integer endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr)
+{
+	List<FileVO> returnList = new ArrayList<FileVO>();
+	
+	try{
+		List<File> fileList = null;
+		Long count = 0L;
+		Date fromDate = null;
+		Date toDate = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+		 fromDate = format.parse(fromDateStr);
+		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+			toDate = format.parse(toDateStr);
+		fileList=fileDAO.getFilesByCategoryId(categoryId,startIndex,endIndex,newsType,fromDate,toDate);
+		
+		if(fileList != null && fileList.size() > 0)
+		{
+			setDataToFileVo(fileList,returnList);
+			
+		}
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+		return null;
+	}
+	return returnList;
+}
  public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr,String requestFor){
 		
 		List<FileVO> returnList = new ArrayList<FileVO>();
@@ -7343,4 +7370,65 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 }
  }
  
+ public void setDataToFileVo(List<File> filesList,List<FileVO> returnList)
+ {
+	 try{
+	
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	 for(File file : filesList)
+	 {
+ 
+	FileVO filevo = new FileVO();
+	filevo.setFileId(file.getFileId());
+	//filevo.setFileGallaryId(fileGallary.getFileGallaryId());
+	filevo.setFileName1(file.getFileTitle() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
+	filevo.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):""));
+	if(file.getFileDate() != null)
+	filevo.setFileDate(new SimpleDateFormat("yyyy-MM-dd").format(file.getFileDate()));
+	//filevo.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)fileGallary.getFileGallaryId()).size());
+	
+	if(file.getCategory() != null){
+		filevo.setCategoryId(file.getCategory().getCategoryId());
+		filevo.setCategoryName(file.getCategory().getCategoryType());
+	}
+	
+	filevo.setFilePath1(file.getFilePath());
+	
+	Set<FileSourceLanguage> set = file.getFileSourceLanguage();
+	
+	String sourceString = "";
+	for(FileSourceLanguage source:set)
+		if(source.getSource() != null)
+		sourceString+=source.getSource().getSource()+" ";
+	
+	filevo.setFileType(sourceString);
+	
+	
+	returnList.add(filevo);
+	returnList.get(0).setTotalResultsCount(new Long(filesList.size()));
+	 }
+	 }
+	 catch (Exception e) {
+			e.printStackTrace();
+	 }
+ }
+ public List<SelectOptionVO> getAllNewsGallaries()
+ {
+	 List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(); 
+	 try{
+ 
+	 List<Object[]> list = gallaryDAO.getAllGallaries(com.itgrids.partyanalyst.utils.IConstants.NEWS_GALLARY);
+	 if(list != null && list.size() > 0)
+		{
+		 for(Object[] params : list)
+			 result.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
+		}
+		}
+	 catch (Exception e) {
+		e.printStackTrace();
+	}
+	return result;
+ }
+	
+	
 }

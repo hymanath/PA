@@ -264,7 +264,7 @@ $(document).ready(function(){
 							</s:if>
 										
 											</div>
-										</div>
+											</div>
 										<!---<a data-slide="prev" href="#myCarousel" class="left ">‹</a>
 										<a data-slide="next" href="#myCarousel" class="right">›</a>--->
 									</div>
@@ -319,7 +319,6 @@ $(document).ready(function(){
 									</div>
 					<!----------------------->
 								</div>
-							</div>
 							<!------- Video tab end ------>
 						</div>
 					</div>
@@ -642,13 +641,13 @@ $(document).ready(function(){
 					</div>
 					<div class="span4">
 						<div class="row-fluid widget">
-							<div class="span12 boxHeading"><h4>Galleries</h4></div>
+							<div class="span12 boxHeading"><h4>Main Category Wise News</h4></div>
 							<div class="span12">
 								<ul class="unstyled pad10">
-								<c:forEach var="gallary" items="${latestGallariesList}">
-								<li><a class="muted" href="javascript:{showFilesInGallary(${gallary.id})}"><i class="icon-share-alt"></i>${gallary.name}</a></li>        
+								<c:forEach var="category" items="${categoriesList}">
+								<li><a class="muted" href="javascript:{showFilesInGallary(${category.id})}"><i class="icon-share-alt"></i>${category.name}</a></li>        
                                </c:forEach>
-							   <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right " style="margin-top: -10px;">More...</a>
+							 <!--  <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right " style="margin-top: -10px;">More...</a>-->
 									
 								</ul>
 							</div>
@@ -738,13 +737,21 @@ function showMoreVideoGallaries(){
 //getAllConstituenciesInStateByType(2, 1, 'constituency');
 getCandidates();
 
-function showFilesInGallary(gallaryId)
+function showFilesInGallary(categoryId)
 {
- var urlstr = "showAllFilesOfAGallary.action?gallaryId="+gallaryId+"&category=0&requestFor=null";
+ var urlstr = "showAllFilesOfAGallary.action?gallaryId=0&category="+categoryId+"&requestFor=null";
 		
      var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
+
+/*function showFilesInGallary(categoryId)
+{
+ var urlstr = "showAllFilesOfAGallary.action?gallaryId="+categoryId+"&category=0&requestFor=null";
+		
+     var browser1 = window.open(urlstr,"showAllFilesOfAGallary","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}*/
 
 function showAllgallaries(){
 	   var urlstr = "showNewsGallariesAction.action?candidateId=0&category=0&categoryName=totalGalaries";

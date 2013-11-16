@@ -107,7 +107,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 								<div id="errorMsgDiv"></div>
 		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
-			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails()" class="btn btn-info"/>
+			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails1()" class="btn btn-info"/>
 							</ul>
 						</div>
 					</div>
@@ -130,8 +130,8 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 <script>
 
 var requestedFor = '${requestFor}';
-showAllFilesofAGallry(0,10,galalryId,1,requestedFor);
-
+//showAllFilesofAGallry(0,10,galalryId,1,requestedFor);
+showAllFilesofACategory(0 , 10 , categoryId,1,requestedFor,galalryId);
 function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue,requestedFor)
 {
 $('#imageForMail').css("display","block");
@@ -154,8 +154,156 @@ $('#imageForMail').css("display","block");
 	});
 
 }
+function showAllFilesofACategory(startIndex , endIndex , categoryId,selectedvalue,requestedFor,gallaryId)
+{
+$('#imageForMail').css("display","block");
+   $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	});
+
+	$.ajax({
+	  type:'POST',
+	  url: 'getFilesInACategory.action',
+	  dataType: 'json',
+	 data: {startIndex:startIndex,endIndex:endIndex,categoryId:categoryId,gallaryId:gallaryId,requestedFor:requestedFor,fromDate:"",toDate:""},
+		 
+	  success: function(results){ 
+		   buildFilesInCategoryDetails(results,selectedvalue);
+	 },
+	  error:function() { 
+	  }
+	});
+
+}
+function getSelectedNewsDetails1()
+{
+	$("#errorMsgDiv").html('');
+	
+	var fromDate = $("#existingFromText").val();
+	var toDate = $("#existingToText").val();
+	if(fromDate=="" && toDate == "")
+	{
+		$("#errorMsgDiv").html('Please Select From And To Dates');
+		return;
+	}
+	else if(fromDate =="")
+	{
+	  $("#errorMsgDiv").html('Please Select From Date');
+		return;
+	}
+	else if(toDate =="")
+	{
+	  $("#errorMsgDiv").html('Please Select To Date');
+		return;
+	}
+	
+
+	$('#imageForMail').css("display","block");
+   $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	});
+
+	$.ajax({
+	  type:'POST',
+	  url: 'getFilesInACategory.action',
+	  dataType: 'json',
+	 data: {startIndex:0,endIndex:10,gallaryId:galalryId,categoryId:categoryId,fromDate:fromDate,toDate:toDate},
+		 
+	  success: function(results){ 
+		   buildFilesInCategoryDetails(results,1);
+	 },
+	  error:function() { 
+	  }
+	});
 
 
+}
+function buildFilesInCategoryDetails(results,selectedvalue)
+{   
+	var totalPages;
+	$('#imageForMail').css("display","none");
+	$("#newsDisplayDiv").html('');
+  if(results == null || results.length == 0)
+  {
+    $("#light-pagination").html('');
+    $("#newsDisplayDiv").html('No Data Found.');
+	return;
+  }
+	
+	/*if(requestedFor=="respondedNews"){
+		totalPages = Math.ceil(results[0].respondedFilesCountInGall / 10);
+	}
+	else{
+		totalPages = Math.ceil(results[0].totalResultsCount / 10);
+	}*/
+	totalPages = Math.ceil(results[0].totalResultsCount / 10);
+  $('#light-pagination').pagination({
+	pages:totalPages,
+	currentPage:selectedvalue,	 
+	cssStyle: 'light-theme'
+  });
+   var str='';
+
+   str+='<div class="span12">';
+   str+='<ul class="unstyled pad10">';
+   for(var i in results)
+   {
+	   str+='<li>';
+	//alert(results[i].fileType.trim());
+	str+='<div class="">';
+	var source = results[i].fileType.trim();
+	if(source.indexOf("Eenadu Telugu") != -1)
+	{
+		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
+	}
+	else
+	{
+		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
+	}
+		
+			str+='<div class="row-fluid">';
+			//	str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}" class="thumbnail span4">';
+				 if(results[i].filePath1 != null && results[i].filePath1 == "") 
+					str+='<img style="width:100%" src="'+results[i].filePath1+'" >';
+                  else
+					  str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
+				str+='</a>';
+				if(source.indexOf("Eenadu Telugu") != -1)
+				{
+					str+='<p class="span8 enadu">'+results[i].fileDescription1+'</p>';
+				}
+				else
+				{
+					str+='<p class="span8">'+results[i].fileDescription1+'</p>';
+				}
+				
+			str+='</div>';
+			str+='<div class="row-fluid m_top10">';
+				str+='<div class="span9" style="width:550px;">';
+					str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+results[i].fileType+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
+			/*if(results[i].responseCount > 0)
+				str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></p></td>';*/
+				
+				str+='</tr></table></div>';
+				str+='<br><div class="span2" style="float:right;">';
+				
+					//str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">Details...</a>';
+					
+				str+='</div>';
+			str+='</div>';
+	str+='</div>';
+	str+='</li>';
+   }
+    str+='</ul>';
+   str+='</div>';
+document.getElementById("newsDisplayDiv").innerHTML = str;
+
+ $('html,body').animate({
+        scrollTop: $("#mainDiv").offset().top},
+        'slow');
+}
 function buildFilesInGallaryDetails(results,selectedvalue)
 {   
 	var totalPages;
@@ -310,6 +458,8 @@ function getSelectedNewsDetails()
 
 
 }
+
+
   $(".dateField").live("click", function(){
  $(this).datepicker({
 		dateFormat: "dd/mm/yy",
