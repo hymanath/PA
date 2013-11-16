@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 import net.sf.cglib.core.EmitUtils;
 
@@ -9,16 +11,23 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
+import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
+import com.itgrids.partyanalyst.dao.hibernate.VoiceRecordingDetailsDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
+
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class WebServiceHandlerService implements IWebServiceHandlerService {
@@ -36,7 +45,35 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	
 	private IMobileAppUserDAO mobileAppUserDAO;
 	private IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO ;
+
+	private IVoiceSmsService voiceSmsService;
+	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
 	
+	public IVoiceRecordingDetailsDAO getVoiceRecordingDetailsDAO() {
+		return voiceRecordingDetailsDAO;
+	}
+
+
+
+	public void setVoiceRecordingDetailsDAO(
+			IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO) {
+		this.voiceRecordingDetailsDAO = voiceRecordingDetailsDAO;
+	}
+
+
+
+	public IVoiceSmsService getVoiceSmsService() {
+		return voiceSmsService;
+	}
+
+
+
+	public void setVoiceSmsService(IVoiceSmsService voiceSmsService) {
+		this.voiceSmsService = voiceSmsService;
+	}
+
+
+
 	public IMobileAppUserAccessKeyDAO getMobileAppUserAccessKeyDAO() {
 		return mobileAppUserAccessKeyDAO;
 	}
@@ -231,5 +268,63 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return resultStatus;
 		
 	}
+	public List<BasicVO> getUserVoiceRecordedFiles(String uniqueCode)
+	{
+		 List<BasicVO> result = new ArrayList<BasicVO>();
+		try{
+			List<Object> userId = mobileAppUserDAO.checkUniqueCode(uniqueCode);
+				if(userId == null || userId .size() == 0)
+					return result;
+				else
+				{
+					List<Object[]> list = voiceRecordingDetailsDAO.getAllTheRecordingDetailsOfUser((Long)userId.get(0));
+						
+					if(list == null || list.size() == 0)
+							return null;
+					else
+					 for(Object[] params : list)
+						{
+						 BasicVO basicVO = new BasicVO();
+						 basicVO.setId((Long)params[2]);
+						 basicVO.setName(params[0].toString());
+						 basicVO.setDescription(params[1].toString());
+						 result.add(basicVO);		
+						}
+				}
+				
+		  }
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return result;
+		}
+		return result;
+	}
+	public String sendVoiceSMS(String uniqueCode,String mobileNos,String FilePath)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		String result = "";
+		String smsText = "Hi";
+		StringBuffer audioFilePath = new StringBuffer();
+		
+		try{
+			List<Object> userId = mobileAppUserDAO.checkUniqueCode(uniqueCode);
+			if(userId == null || userId .size() == 0)
+				result ="data not found";
+			else
+			{
+			audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+(Long)userId.get(0)+"/"+FilePath);
+				
+			//audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
+			result = voiceSmsService.sendVoiceSMS(audioFilePath.toString(),(Long)userId.get(0),mobileNos,null,smsText,null);
+			}
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 }
+

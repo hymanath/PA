@@ -323,7 +323,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 		try {
 			
 			StringBuilder result = new StringBuilder();
-			if(voiceSmsResponseDetailsVO.getAllmobileNumbers() != null)
+			if(voiceSmsResponseDetailsVO != null && voiceSmsResponseDetailsVO.getAllmobileNumbers() != null)
 		    for(Long number : voiceSmsResponseDetailsVO.getAllmobileNumbers()) {
 		        result.append(number);
 		        result.append(",");
