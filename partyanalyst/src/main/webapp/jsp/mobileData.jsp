@@ -107,7 +107,7 @@
     <div class="control-group">
     <label class="control-label" for="inputLastName">LastName</label>
     <div class="controls">
-    <input type="password" id="LastNameId" placeholder="LastName">
+    <input type="text" id="LastNameId" placeholder="LastName">
     </div>
     </div>
     <div class="control-group">
@@ -191,7 +191,7 @@
     <div class="control-group">
     <label class="control-label" for="inputAccessKey">AccessKey</label>
     <div class="controls">
-    <input type="password" id="AccessKeyId" placeholder="AccessKey">
+    <input type="text" id="AccessKeyId" placeholder="AccessKey">
     </div>
     </div>
 	<div  style="margin-left: 150px;">
