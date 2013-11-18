@@ -40,6 +40,9 @@ public class FilePaths extends BaseModel implements Serializable {
 	private String filePath;
 	private FileType fileType;
 	private Long orderNo;
+	private Integer edition;
+	private Integer pageNo;
+	private Integer newsLength;
 	
 	 //set presentdate date
 	private Date lastUpdatedDate=new DateUtilService().getCurrentDateAndTime();
@@ -109,6 +112,30 @@ public class FilePaths extends BaseModel implements Serializable {
 	}
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
+	}
+	
+	@Column(name = "edition")
+	public Integer getEdition() {
+		return edition;
+	}
+	public void setEdition(Integer edition) {
+		this.edition = edition;
+	}
+	
+	@Column(name = "page_no")
+	public Integer getPageNo() {
+		return pageNo;
+	}
+	public void setPageNo(Integer pageNo) {
+		this.pageNo = pageNo;
+	}
+	
+	@Column(name = "news_length")
+	public Integer getNewsLength() {
+		return newsLength;
+	}
+	public void setNewsLength(Integer newsLength) {
+		this.newsLength = newsLength;
 	}
 	
 }

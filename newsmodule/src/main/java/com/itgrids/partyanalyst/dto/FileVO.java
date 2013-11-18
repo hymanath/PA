@@ -136,6 +136,16 @@ public class FileVO extends ResultStatus implements Serializable {
 	private boolean isResponseExist = false;
 	private boolean isMainArticalExist = false;
 	private List<String> keyWordsList;
+	private List<FileSourceVO> fileSourceVOList;
+	private List<Long> sourceCandidatesList;
+	private List<Long> sourcePartyList;
+	private List<Long> destinationCandidateLIst;
+	private List<Long> destinationPartyList;
+	private Long sourceBenefitId;
+	private Long destinationBenefitId;
+	private CandidatePartyNewsVO candidatePartyNewsVOList;
+	private Integer newsEditionId;
+	
 	
 	public Long getRespondedFilesCountInGall() {
 		return respondedFilesCountInGall;
@@ -1170,7 +1180,81 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setKeyWordsList(List<String> keyWordsList) {
 		this.keyWordsList = keyWordsList;
 	}
+
+	public List<FileSourceVO> getFileSourceVOList() {
+		return fileSourceVOList;
+	}
+
+	public void setFileSourceVOList(List<FileSourceVO> fileSourceVOList) {
+		this.fileSourceVOList = fileSourceVOList;
+	}
+
+	public List<Long> getSourceCandidatesList() {
+		return sourceCandidatesList;
+	}
+
+	public void setSourceCandidatesList(List<Long> sourceCandidatesList) {
+		this.sourceCandidatesList = sourceCandidatesList;
+	}
+
+	public List<Long> getSourcePartyList() {
+		return sourcePartyList;
+	}
+
+	public void setSourcePartyList(List<Long> sourcePartyList) {
+		this.sourcePartyList = sourcePartyList;
+	}
+
+	public List<Long> getDestinationCandidateLIst() {
+		return destinationCandidateLIst;
+	}
+
+	public void setDestinationCandidateLIst(List<Long> destinationCandidateLIst) {
+		this.destinationCandidateLIst = destinationCandidateLIst;
+	}
+
+	public List<Long> getDestinationPartyList() {
+		return destinationPartyList;
+	}
+
+	public void setDestinationPartyList(List<Long> destinationPartyList) {
+		this.destinationPartyList = destinationPartyList;
+	}
+
+	public Long getSourceBenefitId() {
+		return sourceBenefitId;
+	}
+
+	public void setSourceBenefitId(Long sourceBenefitId) {
+		this.sourceBenefitId = sourceBenefitId;
+	}
+
+	public Long getDestinationBenefitId() {
+		return destinationBenefitId;
+	}
+
+	public void setDestinationBenefitId(Long destinationBenefitId) {
+		this.destinationBenefitId = destinationBenefitId;
+	}
+
+	public CandidatePartyNewsVO getCandidatePartyNewsVOList() {
+		return candidatePartyNewsVOList;
+	}
+
+	public void setCandidatePartyNewsVOList(
+			CandidatePartyNewsVO candidatePartyNewsVOList) {
+		this.candidatePartyNewsVOList = candidatePartyNewsVOList;
+	}
+
+	public Integer getNewsEditionId() {
+		return newsEditionId;
+	}
+
+	public void setNewsEditionId(Integer newsEditionId) {
+		this.newsEditionId = newsEditionId;
+	}
+
 	
-	
+
 
 }

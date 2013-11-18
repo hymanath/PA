@@ -41,6 +41,7 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	private Set<FilePaths> filePaths = new HashSet<FilePaths>(0);
 	private String newsDetailedDescription;
 	 private Font font;
+	 private Integer edition;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -115,4 +116,13 @@ public class FileSourceLanguage extends BaseModel implements Serializable {
 	public void setFont(Font font) {
 		this.font = font;
 	}
+	@Column(name = "edition")
+	public Integer getEdition() {
+		return edition;
+	}
+	public void setEdition(Integer edition) {
+		this.edition = edition;
+	}
+	
+	
 }

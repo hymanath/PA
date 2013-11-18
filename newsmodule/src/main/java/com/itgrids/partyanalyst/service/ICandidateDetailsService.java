@@ -299,5 +299,10 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getFilesOfACategory(Long gallaryId,Integer startIndex,Integer endIndex,String newsType,Long categoryId,String fromDateStr,String toDateStr);
 	
 	 public List<SelectOptionVO> getAllNewsGallaries();
-	
+	 public ResultStatus uploadAFileForCandidateParty(final FileVO fileVO);
+	 
+	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long partyId);
+	 
+	 public List<SelectOptionVO> getBenefitList();
+	 
 }

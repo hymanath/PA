@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -57,7 +58,18 @@ public class ContentManagementService implements IContentManagementService{
 	private IConstituencyDAO constituencyDAO;
 	private ITehsilDAO tehsilDAO;
 	private IFileDAO fileDAO;
+	private ICandidatePartyFileDAO candidatePartyFileDAO;
 	
+	
+	public ICandidatePartyFileDAO getCandidatePartyFileDAO() {
+		return candidatePartyFileDAO;
+	}
+
+	public void setCandidatePartyFileDAO(
+			ICandidatePartyFileDAO candidatePartyFileDAO) {
+		this.candidatePartyFileDAO = candidatePartyFileDAO;
+	}
+
 	public IFileDAO getFileDAO() {
 		return fileDAO;
 	}
@@ -207,86 +219,27 @@ public class ContentManagementService implements IContentManagementService{
 			List<GallaryVO> relatedGalleries = new ArrayList<GallaryVO>(0);
 			GallaryVO relatedGallary = new GallaryVO();
 			List<FileVO> filesList = new ArrayList<FileVO>(0);
-			Long fileId = (Long)fileGallaryDAO.getFileIdByFileGallaryId(contentId);
 				String contentType = null;
 				FileVO fileVO = null;
 				List<Long> fileIds = new ArrayList<Long>();
-				fileIds.add(fileId);
+				fileIds.add(contentId);
 				List<File> file= fileDAO.getAllFilesByFileIds(fileIds);
 				for(File fileVal:file){
 					fileVO = new FileVO();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 					if(fileVal == null)
 						continue;
-					if(contentType !=null && contentType.equalsIgnoreCase(IConstants.PHOTO_GALLARY))
-					{
-						Set<FileSourceLanguage> fileSourceLanguageSet = fileVal.getFileSourceLanguage();
-						 List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguageSet);
-						Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
-						for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageList){
-							 
-							 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
-							 List<FilePaths> filePathsList = new ArrayList<FilePaths>(filePathsSet);
-							  Collections.sort(filePathsList,CandidateDetailsService.filePathsSort);
-							 
-							 for(FilePaths filePath : filePathsList){
-								 fileVO = new FileVO();
-								 List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
-								 FileVO fileVOSourceLanguage = new FileVO();
-								 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
-								 fileVOSourceLanguage.setMultipleNews(1);
-								 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
-								 /*if(contentReq && contentId.longValue() == fileGallary.getFileGallaryId().longValue())
-									{
-										fileVO.setIsSelectedContent(true);
-										contentReq = false;
-									}*/
-								 
-								   
-								    fileVO.setTitle(fileVal.getFileTitle() !=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileTitle())):"");
-									fileVO.setDescription(fileVal.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileDescription())):"");
-									/*fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
-									fileVO.setContentId(falseContentIdForPhotoGal);
-									falseContentIdForPhotoGal = falseContentIdForPhotoGal+1L;*/
-							
-									
-									/*List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());		
-									if(editionDets != null && editionDets.size() > 0)
-									{
-									  fileVO.setPageNo((Long)editionDets.get(0)[0]);
-									  Long edition = (Long)editionDets.get(0)[1];
-									  if(edition.equals(1L))
-										  fileVO.setNewsEdition("Main Edition");
-									  else
-										 fileVO.setNewsEdition("District/Sub Edition");
-									}*/
-								 
-								 FileVO fileVOPath = new FileVO();
-								 fileVOPath.setPath(filePath.getFilePath());
-								 //fileVOPath.setDescription(fileSourceLanguage.getNewsDetailedDescription());
-								 fileVOPath.setOrderNo(filePath.getOrderNo());
-								 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
-								 fileVOPathsList.add(fileVOPath);
-								 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
-								 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription());
-								 fileVOSourceLanguageList.add(fileVOSourceLanguage);
-								 fileVO.setMultipleSource(fileVOSourceLanguageList.size());
-								 fileVO.setFileVOList(fileVOSourceLanguageList);
-								 fileVO.setFileDate(fileVal.getFileDate() == null ? null :
-										sdf.format(fileVal.getFileDate()));
-								 fileVO.setReqFileDate(fileVal.getFileDate());
-									filesList.add(fileVO);
-							 }
-						}
-					}
-					else{
+
+					
 						fileVO.setFileId(fileVal.getFileId());
 						fileVO.setCandidateId(0l);
 						fileVO.setComments(fileVal.getComment());
 						
 						if(fileVal.getRegionScopes() != null)
 							fileVO.setLocationScopeValue(fileVal.getRegionScopes().getScope());
-						
+						if(fileVal.getFont() != null){
+							fileVO.setEenadu(true);
+						}
 						fileVO.setTitle(fileVal.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileTitle())):"");
 						fileVO.setDescription(fileVal.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileDescription())):"");
 						//fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
@@ -309,7 +262,7 @@ public class ContentManagementService implements IContentManagementService{
 							 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
 							 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
 							 
-							 List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());		
+							 /*List<Object[]> editionDets = newsDetailsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());		
 								if(editionDets != null && editionDets.size() > 0)
 								{
 								 
@@ -320,7 +273,7 @@ public class ContentManagementService implements IContentManagementService{
 								  else
 									  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
 								}
-							 
+							 */
 							 
 							 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
 							 
@@ -330,6 +283,15 @@ public class ContentManagementService implements IContentManagementService{
 							 for(FilePaths filePath : filePathsSet){
 								 FileVO fileVOPath = new FileVO();
 								 fileVOPath.setPath(filePath.getFilePath());
+								 if(filePath.getPageNo() != null)
+								 fileVOPath.setPageNo(filePath.getPageNo().longValue());
+								 if(filePath.getEdition() != null){
+									 Long edition = filePath.getEdition().longValue();
+									  if(edition.equals(1L))
+										  fileVOSourceLanguage.setNewsEdition("Main Edition");
+									  else
+										  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+								 }
 								 //fileVOPath.setDescription(fileSourceLanguage.getNewsDetailedDescription());
 								 fileVOPath.setOrderNo(filePath.getOrderNo());
 								 //fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
@@ -339,6 +301,8 @@ public class ContentManagementService implements IContentManagementService{
 							 }
 							 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
 							 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription());
+							 if(fileSourceLanguage.getFont() != null)
+							 fileVOSourceLanguage.setEenadu(true);
 							 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
 							 fileVOSourceLanguageList.add(fileVOSourceLanguage);
 						 }
@@ -352,8 +316,19 @@ public class ContentManagementService implements IContentManagementService{
 						 fileVO.setReqFileDate(fileVal.getFileDate());
 						filesList.add(fileVO);
 						fileGalleryIdsList.add(fileVal.getFileId());
-					}
-					fileVO.setCandidateName("");
+						String candidate = "";
+						List<String> candidates = candidatePartyFileDAO.getCandidateNamesByFileId(contentId);
+					      if(candidates != null && candidates.size() > 0){
+					    	 for(String person:candidates)
+					    	  candidate = candidate+","+person;
+					      }
+					      
+					      if(candidate != null && candidate.length() > 0)
+						    fileVO.setCandidateName(candidate.substring(1));
+					      else{
+					    	  fileVO.setCandidateName("");  
+					      }
+					      fileVO.setIsSelectedContent(true);
 				}
 				relatedGallary.setFilesList(filesList);
 				relatedGalleries.add(relatedGallary);
@@ -362,7 +337,7 @@ public class ContentManagementService implements IContentManagementService{
 			
 			return contentDetailsVO;
 		}catch (Exception e) {
-			log.debug("Exception occured in getSelectedContentAndRelatedGalleries() Method, Exception is - "+e);
+			log.debug("Exception occured in getSelectedContentAndRelatedGalleries() Method, Exception is - ",e);
 			return null;
 		}
 	}

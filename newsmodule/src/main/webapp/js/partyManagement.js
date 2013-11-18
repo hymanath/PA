@@ -154,6 +154,15 @@ function callAjax(jsObj,url)
 			  	$('#candidateAjaxImg').hide();
 			 buildPartyCandidates(myResults);
 		 }
+
+		 else if (jsObj.task == "getCandidatesListByPartyId")
+		 {
+			  	//$('#candidateAjaxImg').hide();
+			 buildCandidatesForKeywords(myResults,jsObj.type);
+			 //clearOptionsListForSelectElmtId('mainCategory');
+			 //createOptionsForSelectElement('mainCategory',myResults);
+		 }
+
 		 else if(jsObj.task == "getPartyPhotoGallaryDetail")
 			{
                buildCandidatePhotoGallary(myResults);
@@ -310,10 +319,15 @@ function callAjax(jsObj,url)
 				/*$('#existingFromText').attr({
 				   id : this.id + '_' + 1 
 				 });*/
-               clearOptionsListForSelectElmtId('gallaryId');
-			   createOptionsForSelectElmtId('gallaryId',myResults);
-			   $("#gallaryId").prepend("<option value='0'>Select Gallery</option>");
-			document.getElementById('gallaryId').value=0;
+               clearOptionsListForSelectElmtId(''+jsObj.type);
+			   createOptionsForSelectElmtId(''+jsObj.type,myResults);
+			                    $('#'+jsObj.type).multiselect();
+
+  $('#'+jsObj.type).multiselect({
+	  noneSelectedText:"Select Category"});
+		$('#'+jsObj.type).multiselect('refresh');
+		$('#'+jsObj.type).multiselect('create');
+			
 
 			}
 			
@@ -460,8 +474,16 @@ function callAjax(jsObj,url)
 			    createOptionsForSelectElement('mainCategory',myResults);
 
 			}
-			
-			
+			else if(jsObj.task == "getCandidatesByPartyIds")
+			{
+			 buildCandidateList(myResults);
+			   
+			}
+			else if(jsObj.task == "saveCandidate")
+			 showCandidateSaveStatus(myResults,jsObj);
+
+			else if(jsObj.task == "getBenefitList")
+			 buildBenefitsList(myResults);
 		
      	}
 		catch(e)
@@ -921,13 +943,14 @@ function getCompleteGallaries(gallaryId){
    });
 }
 
-function getPartyGallariesForUplaod(contentType)
+function getPartyGallariesForUplaod(contentType,type)
 {
 	var partyId=872;
 	var jsObj =
 		{ 
             partyId : partyId,
 			contentType : contentType,
+			type:type,
 		   	task : "partyGallariesForUplaod"
 		};
 
@@ -2395,7 +2418,7 @@ function buildStatesForAssParl(type)
 		 str +='<table style="margin-left:45px;">';
 		 str +='  <tr>';
 		 str +='	   <td class="tdWidth1" style="width:153px;">State : <font class="requiredFont">*</font></td>';
-		 str +='	   <td><select id="stateDiv" class="selectWidth" name="locationValue" onchange="buildAssmblParlElecYears(\''+type+'\');"/></td>';
+		 str +='	   <td><select id="stateDiv" style="margin-left:5px;width: 137px;"  class="selectWidth" name="locationValue" onchange="buildAssmblParlElecYears(\''+type+'\');"/></td>';
 		 str +='  </tr>';
 		 str +='</table>';
 		 document.getElementById("assemblyStates").innerHTML = str;
@@ -2433,7 +2456,7 @@ function buildStatesForAssParl(type)
     buildAssmblParlElecYears('Parliament');
  }
 
-function getLocations(id){
+/*function getLocations(id){
 
    if(id==0)
   {
@@ -2603,7 +2626,176 @@ function getLocations(id){
    document.getElementById("showScopeSubs").innerHTML = str;
    getStatesForSpecialPage();
   }
+}*/
+
+
+function getLocations(id){
+
+   var str = '';
+  if(id==0 || id == 1)
+   $("#showScopeSubs").html(str);
+    
+  else if(id==2)
+  {
+
+   str += '<div class="span2">';
+   str += ' <label>State</label>';
+   str += ' <select class="input-block-level" name="locationValue" style="margin-left:5px;width: 137px;"  id="stateDiv"></select>';
+   str +='</div>';
+
+   $("#showScopeSubs").html(str);
+   getStatesForSpecialPage();
+  }
+  else if(id==3)
+  {
+   
+   str += '<div class="span2">';
+   str += ' <label>State</label>';
+   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>District</label>';
+   str += ' <select class="input-block-level" name="locationValue" id="districtDiv"><option value="0">Select Location</option></select>';
+   str +='</div>';
+   
+   $("#showScopeSubs").html(str);
+   getStatesForSpecialPage();
+  }
+  else if(id==4)
+  {
+   
+   str += '<div class="span2">';
+   str += ' <label>State</label>';
+   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>District</label>';
+   str += ' <select class="input-block-level" id="districtDiv" onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+  
+   str += '<div class="span2">';
+   str += ' <label>Assembly Consti</label>';
+   str += ' <select class="input-block-level" name="locationValue" id="constituencyDiv"><option value="0">Select Location</option></select>';
+   str +='</div>';
+
+   $("#showScopeSubs").html(str);
+  
+   getStatesForSpecialPage();
+  }
+  else if(id==5 || id==7)
+  {
+   if(id==5)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==7)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+   
+   str += '<div class="span2">';
+   str += ' <label>State</label>';
+   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>District</label>';
+   str += ' <select class="input-block-level" id="districtDiv" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+  
+   str += '<div class="span2">';
+   str += ' <label>Assembly Consti</label>';
+   str += ' <select class="input-block-level" id="constituencyDiv" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+   
+   str += '<div class="span2">';
+   str += ' <label>Mndl/Munic/Corp/GMC</label>';
+   str += ' <select class="input-block-level" name="locationValue" id="mandalDiv"><option value="0">Select Location</option></select>';
+   str +='</div>';
+
+   $("#showScopeSubs").html(str);
+  
+   getStatesForSpecialPage();
+  }
+  else if(id==6 || id==8)
+  {
+   if(id==6)
+   {
+     areaType1 = "URBAN" ;
+     areaType2 = "RURAL" ;
+   }
+   if(id==8)
+   {
+     areaType1 = "RURAL" ;
+     areaType2 = "URBAN" ;
+   }
+
+   str += '<div class="span2">';
+   str += ' <label>State</label>';
+   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>District</label>';
+   str += ' <select class="input-block-level" id="districtDiv" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+  
+   str += '<div class="span2">';
+   str += ' <label>Assembly Consti</label>';
+   str += ' <select class="input-block-level" id="constituencyDiv" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+   
+   str += '<div class="span2">';
+   str += ' <label>Mndl/Munic/Corp/GMC</label>';
+   str += ' <select class="input-block-level" id="mandalDiv" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>Village/Ward/Division</label>';
+   str += ' <select class="input-block-level" id="villageDiv" name="locationValue"><option value="0">Select Location</option></select>';
+   str +='</div>';
+   $("#showScopeSubs").html(str);
+   
+   getStatesForSpecialPage();
+  }
+  else if(id==9)
+  {
+
+   str += '<div class="span2">';
+   str += ' <label>State</label>';
+   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>District</label>';
+   str += ' <select class="input-block-level" id="districtDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+  
+   str += '<div class="span2">';
+   str += ' <label>Assembly Consti</label>';
+   str += ' <select class="input-block-level" id="constituencyDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>Mndl/Munic/Corp/GMC</label>';
+   str += ' <select class="input-block-level" id="mandalDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select>';
+   str +='</div>';
+
+   str += '<div class="span2">';
+   str += ' <label>Village/Ward/Division</label>';
+   str += ' <select class="input-block-level" id="villageDiv" name="locationValue"><option value="0">Select Location</option></select>';
+   str +='</div>';
+   $("#showScopeSubs").html(str);
+    
+   getStatesForSpecialPage();
+  }
 }
+
+
 function addMoreFiles()
 {
 	var moreDivElmt = document.createElement("addMoreFilesDiv");
@@ -3797,7 +3989,7 @@ function buildkeywordGallaries(result)
 		{
 	keywordGallaries.push(result[i]);
 	}
-	alert(keywordGallaries);
+	//alert(keywordGallaries);
 }
 function buildAllNewsDetails(results)
 {
@@ -4531,7 +4723,7 @@ function getLocations1(id){
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -4562,11 +4754,11 @@ function getLocations1(id){
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="clearAllElmts(5,2);getAllDetails1(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='</table>';
@@ -4597,11 +4789,11 @@ function getLocations1(id){
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,2);getAllDetails1(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,3);getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
@@ -4625,14 +4817,14 @@ function getLocations1(id){
   str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);getAllDetails1(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Constituency : <font class="requiredFont">*</font></td>';
+  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
   //str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
   //str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" class="selectWidth" style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
-   str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
+   str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
   str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDivForEdit\').options[document.getElementById(\'constituencyDivForEdit\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
   str +='  </tr>';
@@ -5145,7 +5337,7 @@ function buildCandidates(results)
    
    var length = keywordStr.length;
     keywordStr = keywordStr.substr(0,length-2); 
-	$("#keywordListId").val(keywordStr);
+	$("#keywordId").val(keywordStr);
 
 	
 		var uploadHandler = {
@@ -5159,6 +5351,325 @@ function buildCandidates(results)
 		
 		YAHOO.util.Connect.setForm('uploadForm1',true);
 		YAHOO.util.Connect.asyncRequest('POST','uploadFilesForMultipleCandidates.action',uploadHandler);
+	}
+	else
+		return;
+}
+
+
+function validateUploadFileDetails()
+{
+   
+   $("#uploadNewsFileErrorDiv").html('');
+   var flag = true;
+   var fileTitle = $.trim($("#newsfileTitle").val());
+   var fileDesc  = $.trim($("#newsfileDescription").val());
+   var fileDate = $("#newsdatedatepic").val();
+   var scope = document.getElementById("scopeDiv").value;
+   
+   fileTitle = removeAllUnwantedCharacters1(fileTitle);	
+   fileDesc = removeAllUnwantedCharacters1(fileDesc);
+	document.getElementById('newsfileTitle').value = fileTitle;
+	document.getElementById('newsfileDescription').value = fileDesc;
+
+	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
+	var str = '<font color="red">';
+	
+	if(fileTitle.length == 0)
+	{
+		str += ' Title is Required.<br>';
+		flag = false;
+	}
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required<br>';
+		flag = false;
+	}
+	
+	var tempFlag = false;
+	$(".completeDetailedDescCls").each(function() {
+
+     var key = $(this).attr('key');
+	 var desc = $.trim($("#completeDesc"+key+"").val());
+	 if(desc.length == 0)
+	  tempFlag = true;
+	});
+
+
+	if(tempFlag)	
+	{
+	  $('.newsFile').each(function() {
+		  var key = $(this).attr('key');
+           if($.trim($(this).val()).length == 0)
+	       {
+		     str+='News Description Or File Required.';
+		     flag = false;
+			 return false;
+	       }
+      });
+	}
+
+
+	 $('.pageno').each(function() {
+           if($.trim($(this).val()).length == 0)
+	       {
+		     str += ' Page Number is Required.<br>';
+		     flag = false;
+			 return false;
+	       }
+       });
+	$('.pageno').each(function() {
+           if($.trim($(this).val()).length > 0)
+	       {
+		     if(isNaN($.trim($(this).val()))){
+				 str += ' Page Number must be Integer.<br>';
+				 flag = false;
+				 return false;
+			 }
+	       }
+       });
+	   $('.newslength').each(function() {
+           if($.trim($(this).val()).length == 0)
+	       {
+		     str += ' News Length is Required.<br>';
+		     flag = false;
+			 return false;
+	       }
+       });
+	$('.newslength').each(function() {
+           if($.trim($(this).val()).length > 0)
+	       {
+		     if(isNaN($.trim($(this).val()))){
+				 str += ' News Length must be number.<br>';
+				 flag = false;
+				 return false;
+			 }
+	       }
+       });
+	if(fileTitle.length >50)
+	{
+		str += 'Title should be less than 50 Characters<br>';
+		flag = false;
+	}
+	if(fileDesc.length == 0)
+	{
+		str += 'Description is Required.<br>';
+		flag = false;
+	}
+	if(fileDesc.length > 200)
+	{
+		str += 'Description Should not exceed 200 Characters.<br>';
+		flag = false;
+	}
+	
+	
+	if(scope == 0 )
+	{
+		str += 'Location Scope is Required.';
+		flag = false;
+	}
+	if(scope == 2)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		if(stateVal == 0)
+		{
+		str += 'State Name is Required.';
+		flag = false;
+		}
+	}
+	if(scope == 3)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		if(stateVal == 0)
+		{
+		str += 'State Name is Required.<br>';
+		flag = false;
+		}
+		if(districtVal == 0)
+		{
+		str += 'District Name is Required.';
+		flag = false;
+		}
+	}
+	if(scope == 4)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		if(stateVal == 0)
+		{
+		str += 'State Name is Required.<br>';
+		flag = false;
+		}
+		if(districtVal == 0)
+		{
+		str += 'District Name is Required.<br>';
+		flag = false;
+		}
+		if(constituencyVal == 0)
+		{
+		str += 'Constituency Name is Required.';
+		flag = false;
+		}
+	}
+	if(scope == 5)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		var mandalVal=document.getElementById('mandalDiv').value;
+		if(stateVal == 0)
+		{
+		str += 'State Name is Required.<br>';
+		flag = false;
+		}
+		if(districtVal == 0)
+		{
+		str += 'District Name is Required.<br>';
+		flag = false;
+		}
+		if(constituencyVal == 0)
+		{
+		str += 'Constituency Name is Required.<br>';
+		flag = false;
+		}
+		if(mandalVal == 0)
+		{
+		str += 'Mandal Name is Required.';
+		flag = false;
+		}
+	}
+	if(scope == 6 || scope == 8 || scope == 9)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		var mandalVal=document.getElementById('mandalDiv').value;
+		var villageVal=document.getElementById('villageDiv').value;
+		if(stateVal == 0)
+		{
+		str += 'State Name is Required.<br>';
+		flag = false;
+		}
+		if(districtVal == 0)
+		{
+		str += 'District Name is Required.<br>';
+		flag = false;
+		}
+		if(constituencyVal == 0)
+		{
+		str += 'Constituency Name is Required.<br>';
+		flag = false;
+		}
+		if(mandalVal == 0)
+		{
+		str += 'Mandal Name is Required.<br>';
+		flag = false;
+		}
+		if(villageVal == 0)
+		{
+		str += 'Villiage Name is Required.';
+		flag = false;
+		}
+	}
+	if(scope == 7)
+	{
+		var stateVal=document.getElementById('stateDiv').value;
+		var districtVal=document.getElementById('districtDiv').value;
+		var constituencyVal=document.getElementById('constituencyDiv').value;
+		var mandalVal=document.getElementById('mandalDiv').value;
+		
+		if(stateVal == 0)
+		{
+		str += 'State Name is Required.<br>';
+		flag = false;
+		}
+		if(districtVal == 0)
+		{
+		str += 'District Name is Required.<br>';
+		flag = false;
+		}
+		if(constituencyVal == 0)
+		{
+		str += 'Constituency Name is Required.<br>';
+		flag = false;
+		}
+		if(mandalVal == 0)
+		{
+		str += 'Mandal Name is Required.';
+		flag = false;
+		}
+		
+	}
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	if(flag == false)
+	{
+		 $("#uploadNewsBtnId").css("background","#51A351");
+		$('html, body').animate({
+         scrollTop: $("#uploadNewsFileErrorDiv").offset().top
+     }, 2000);
+		
+	}
+	else
+	$("#uploadNewsBtnId").css("background","#BBBB51");
+	return flag;
+}
+
+
+function uploadFile()
+{
+	
+ if(validateUploadFileDetails())
+ {
+	 
+  
+  var newsprivateRadioId = document.getElementById('newsprivateRadioId').checked;
+		if(newsprivateRadioId == true)
+	document.getElementById('newsprivateRadioId').checked = 'true';
+		if(newsprivateRadioId == false)
+	document.getElementById('newsPublicRadioId').checked = 'true';
+  
+	setSourceDestinationPartyCandidateIds();
+
+    /*var keywordStr = "";
+	$(".as-selections li").each(function(){
+              keywordStr +=$(this).text()+",";
+				
+            });
+   
+   var length = keywordStr.length;
+    keywordStr = keywordStr.substr(0,length-2); 
+	$("#keywordId").val(keywordStr);*/
+	
+	$('.destinationKeywords').each(function() {
+		var key = $(this).attr("key");	
+		var str = '';
+			var $ul = $(this).closest('ul');
+			  $ul.find('li').each(function(){
+			  str +=''+$(this).text()+',';
+			});	
+		  var length = str.length;
+		  if(length > 0)
+		   str = str.substring(0,length-2);
+		
+           $("#"+key+"Hidden").val(str);
+        });
+    
+ 
+ disableButton('uploadNewsBtnId');
+ var uploadHandler = {
+				upload: function(o) {
+					uploadResult = o.responseText;
+					showNewsUploadStatus1(uploadResult);	
+					enableButton('uploadNewsBtnId');
+				}
+			};
+
+		
+		YAHOO.util.Connect.setForm('uploadForm1',true);
+		YAHOO.util.Connect.asyncRequest('POST','uploadFilesForPartyAndCandidatesKeywords.action',uploadHandler);
 	}
 	else
 		return;
@@ -5781,6 +6292,8 @@ function buildPartyCandidates(results)
 
 }
 
+
+
 function showUserNewsCategoryStatus(results)
 {
 	
@@ -6014,3 +6527,71 @@ var jsObj={
 
 }
 
+function buildCandidatesForKeywords(results,type)
+{
+	
+             $("#"+type+" option").remove();
+            $.each(results,function(index , value){
+		$('#'+type).append('<option value="'+value.id+'">'+value.name+'</option>');
+
+	});
+ 
+}
+
+function showCandidateSaveStatus(result,jsObj)
+{
+  $("#errorMsgDiv").html('');
+  if(result == null || result.resultCode == 1)
+  {
+   $("#errorMsgDiv").html('Error occured! try again.').css("color","red");
+   return;
+  }
+
+  else if(result.resultCode == 0 && result.message == null)
+  {
+   $("#errorMsgDiv").html('Candidate Saved Successfully.').css("color","green");
+   $("#newCandidateName").val('');
+   $("#partySelectNewList").val(0);
+   return;
+  }
+}
+
+function  getBenefitList()
+{
+  var jsObj = {
+			 task : "getBenefitList"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getBenefitListAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function buildBenefitsList(result)
+{
+
+  $("#sourceBenfitsDiv").html('');
+  var str = '';
+  str +='<label>Benefits</label>';
+  if(result != null && result.length > 0)
+   for(var i in result)
+   {
+    str +='<label class="btn">';
+	str +='<input type="checkbox" class="checkbox" name="sourceBenefitId" value="'+result[i].id+'">';
+	str +=''+result[i].name+'</label>';
+   }
+  $("#sourceBenfitsDiv").html(str);
+}
+
+function getCandidatePartyBenefitsDiv()
+{
+  $("#candidatePartyBenefitsDiv").dialog({ stack: false,
+							    height: 530,
+								width: 900,
+								position:[130,130],								
+								modal: true,
+								title:'News Details',
+								overlay: { opacity: 0.5, background: 'black'}
+								});
+	$("#candidatePartyBenefitsDiv").dialog();
+}

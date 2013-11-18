@@ -9,6 +9,8 @@ import com.itgrids.partyanalyst.model.CandidateParty;
 public interface ICandidatePartyDAO extends GenericDao<CandidateParty, Long>{
 	
 	public List<Object[]> getCandidatesOfAParty(Long partyId);
+	
+	public List<Object[]> getCandidatesListByPartyIdsList(List<Long> partyIdsList);
 
 
 }

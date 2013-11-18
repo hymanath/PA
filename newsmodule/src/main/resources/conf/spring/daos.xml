@@ -1379,5 +1379,8 @@
 	<bean id="candidatePartyCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidatePartyCategoryDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="newsResponseDAO" class="com.itgrids.partyanalyst.dao.hibernate.NewsResponseDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 </beans>		

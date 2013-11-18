@@ -56,11 +56,27 @@
 
 <!-- keywords -->
 <link  rel="stylesheet" type="text/css" href="styles/partyManagement/partyManagement.css"/>
-
-
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 
 <style type="text/css">
-
+@font-face
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
+@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
+}
+ 
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
 
 </style>
 </head>
@@ -72,6 +88,41 @@ var gGallaryId;
 var sourceObj = null;
 var languagesObj = null;
 var fileCount=0;
+var fileImgCount=0;
+
+var partyIdsListArray = new Array();
+var candidateIdsListArray = new Array();
+var tempPartyIdsArray = new Array();
+
+var sourcePartyArray = new Array();
+var destinationPartyArray = new Array();
+var sourceCandidatesArray = new Array();
+var destinationCandidatesArray = new Array();
+
+var sourceCandidateIdsArray = new Array();
+var destinationCandidateIdsArray = new Array();
+var tempCount = 0;
+var keywordHiddenTempCount = 0;
+
+
+var fileSourceMainArray = {
+	
+ fileSourceSubArray:[]
+
+}
+	  
+var fileSourceSubArray = {
+
+	filePaths:[],
+    source:'',
+	language:'',
+	edition:'',
+	pageNumber:'',
+	newsLength:'',
+	newsDescriptionInDetailed:'',
+	fontCheckBox:''
+
+};
 
 function showPhotoGallary1()
 {
@@ -263,6 +314,10 @@ return;
 	<input type="button" class="btn btn-success highlight" value="Create News Gallery" onclick="buildCreateNewsCategory()">
 	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()">
 	<input type="button" class="btn btn-success highlight" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()">
+    
+	<input type="button" class="btn btn-success highlight" value="News" onclick="uploadNewsForPartyAndCandidate()">
+
+
 	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 		<input type="button" class="btn btn-success highlight" value="Create New Source" onclick="createNewSource()">
 	</c:if>
@@ -346,6 +401,8 @@ return;
 		
 	 </div>	
 </div>	 
+
+<div id="createCandidateDiv"><div id="createCandidateInnerDiv"></div></div>
 
 <!-- for  body 7  result  end -->
 <script>
@@ -854,8 +911,8 @@ if(count == 0)
 if(/Eenadu Telugu/i.test(str))
 {
  count = count+1; 
-$('#sourceTelugu').css("display","none");
-$('#sourceEnglish').css("display","block");
+//$('#sourceTelugu').css("display","none");
+//$('#sourceEnglish').css("display","block");
 if(!$('#newsfileTitle').hasClass('enadu'))
 {
 $('#newsfileTitle').addClass('enadu');
@@ -864,8 +921,8 @@ $('#newsDesc').addClass('enadu');
 }
 }else{
 	count = 0;
-$('#sourceTelugu').css("display","block");
-$('#sourceEnglish').css("display","none");
+//$('#sourceTelugu').css("display","block");
+//$('#sourceEnglish').css("display","none");
 if($('#newsfileTitle').hasClass('enadu'))
 {
 $('#newsfileTitle').removeClass('enadu');
@@ -1550,7 +1607,7 @@ function getScopeForUser(){
  
 }
 
-function showUserAccessLocationScopeList(results)
+function showUserAccessLocationScopeList1(results)
 {
   
   
@@ -1584,7 +1641,7 @@ function showUserAccessLocationScopeList(results)
   str +='<table>';
   str +='  <tr>';
   str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select name="locationValue" id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
+  str +='	   <td class="selectWidthPadd"><select style="margin-left:5px;width: 137px;" name="locationValue" id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
   str +='  </tr>';
   
   /*str +='  <tr>';
@@ -1606,7 +1663,7 @@ function showUserAccessLocationScopeList(results)
     str +='<table>';
     str +='  <tr>';
     str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
+    str +='	   <td class="selectWidthPadd"><select id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
     str +='  </tr>';
     str +='  <tr>';
     str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
@@ -1637,7 +1694,7 @@ function showUserAccessLocationScopeList(results)
     str +='<table>';
     str +='  <tr>';
     str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
+    str +='	   <td class="selectWidthPadd"><select id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
     str +='  </tr>';
     str +='  <tr>';
     str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
@@ -1645,7 +1702,7 @@ function showUserAccessLocationScopeList(results)
     str +='  </tr>';
 		
 	str +='  <tr>';
-    str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
+    str +='	   <td class="tdWidth1">Assembly Consti : <font class="requiredFont">*</font></td>';
     str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" ></select></td>';
     str +='  </tr>';
 
@@ -1663,6 +1720,83 @@ function showUserAccessLocationScopeList(results)
   }
   
   
+  
+}
+
+
+
+function showUserAccessLocationScopeList(results)
+{
+  
+ 
+  var id = results.scopeId;
+  var str = '';
+
+  $("#scopeDiv").val(id);
+  
+  if(id==0 || id==1)
+   str +='';
+
+  else if(id==2)
+  {
+    str += '<div class="span2">';
+    str += ' <label>State</label>';
+    str += ' <select class="input-block-level" name="locationValue" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+	str +='</div>';
+	document.getElementById("showScopeSubs").innerHTML = str;
+
+    buildSelectOptionVOList(results.stateList,'stateDiv',1);
+  }
+
+  else if(id == 3)
+  {
+   
+    str += '<div class="span2">';
+    str += ' <label>State</label>';
+    str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+	str +='</div>';
+
+	str += '<div class="span2">';
+    str += ' <label>District</label>';
+    str += ' <select class="input-block-level" name="locationValue" id="districtDiv" ></select>';
+	str +='</div>';
+
+    document.getElementById("showScopeSubs").innerHTML = str;
+
+    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
+    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
+
+  }
+  
+
+
+  else if(id == 4)
+  {
+  
+    str += '<div class="span2">';
+    str += ' <label>State</label>';
+    str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+	str +='</div>';
+
+	str += '<div class="span2">';
+    str += ' <label>District</label>';
+    str += ' <select class="input-block-level" id="districtDiv"></select>';
+	str +='</div>';
+
+	str += '<div class="span2">';
+    str += ' <label>Assembly Consti</label>';
+    str += ' <select class="input-block-level" id="constituencyDiv" name="locationValue"></select>';
+	str +='</div>';
+    
+	document.getElementById("showScopeSubs").innerHTML = str;
+
+    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
+    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
+	buildSelectOptionVOList(results.constituencyList,'constituencyDiv',results.constituencyId);
+	
+  }
+  
+   
   
 }
 
@@ -1917,6 +2051,7 @@ var fileGallaryIds = [];
 }*/
 function showReportFileNewsStatus(result)
 {
+	
 	$("#savenewsAjaxImg").css("display","none");
 	if(result.resultCode == 0)
 	{
@@ -2122,7 +2257,951 @@ $(".keywords").each(function() {
 
 }
 
+function uploadNewsForPartyAndCandidate()
+{
+  var tempPartyId = 872;
+   var str ='';
+   
+   
+        str += '<form name="uploadForm1" action="uploadFilesForPartyAndCandidatesKeywords.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
+		str+='<div class="container">';
+         str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
+		
+		str+='<div class="span12">    <legend class="boxHeading text-center">Upload A News   </legend>    <div class="container ">';
+		str+='<legend class="">News Basic Information</legend>';
+		str+='<div class="row-fluid">    ';   
+		str+='<div class="span4">';
+		str+='        <label><strong>Title<span class="requiredFont">*</span></strong></label>  ';
+		str+='       <input type="text" class="input-block-level" id="newsfileTitle" placeholder="Enter News Title" name="fileTitle" size="25" maxlength="160">   ';    
+		str+='  <span class="help-block"> <input type="checkbox" value="true" id="sourceTelugu" name="titleCheckBox" onclick="changeLanguage();">&nbsp;Please check if title is from eenadu.net</span>       </div>       <div class="span3 ">         <label><strong>News Date<span class="requiredFont">*</span><strong></strong></strong></label>  ';
+		str+='       <input type="text" id="newsdatedatepic"  class="input-block-level" readonly="true" name="fileDate" size="20">               </div>       <div class="span2">         <label><strong>News Importance<span class="requiredFont">*</span><strong></strong></strong></label>         <select id="newsimportance" name="newsimportance" class="input-block-level"><option value="3">High</option><option value="1">Low</option><option value="2">Medium</option></select>  </div>';
 
+
+		str+='<div class="span3 ">         <label><strong>Image To Display<strong></strong></strong></label>';
+		str+='                <input type="file" name="imageForDisplay" ></div>    </div>    <div class="row-fluid">'; 
+		str+='<div class="span3" style="margin-left: 12px;"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Mark This News As Public</font></b></label></div>'; 
+        str+='<div class="span3"><label class="radio"><input type="radio" id="newsprivateRadioId" name="visibility" value="private"><b><font>Mark This News As Private</font></b></label></div>'; 
+		str+='<div class="span12 ">         <label><strong>News Description<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea maxlength="330" name="fileDescription" rows="2" cols="20" class="input-block-level" id="newsfileDescription"></textarea>       </div>';
+		str+='    </div></div></div>';
+
+		str+='<div class="container">';
+
+		str+='<div class="row-fluid"> ';
+
+		str+='    <div class="sapn12 ">  ';  
+		str+='         <legend>From - Who</legend>';
+		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
+		str+='    <div class="span5 well well-small ">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str+='</div>';
+
+		str+='    <div class="span5 well well-small">';
+		str+='<label><strong>Select Candidate</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList[0].candidateId" id="candidateListForParty">';
+		str+='    <option value="0">Select Candidate</option>';
+		str+='</select>';
+		
+		
+		str+='</div>';
+		str+='    <div class="span2 well well-small">';
+		str+='   <label><strong>Rating</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList[0].benefitId">';
+        str +='      <option value="1">Positive</option><option value="2">Negative</option><option value="3">Neutral</option>';
+        str +='   </select>';
+		
+		str+='    </div>';
+				   
+		str+='</div></div>  ';
+
+		str+='<div class=" well well-small"> <a class="btn btn-danger" onclick="addNewFrom();" href="javascript:void(0);">Click to add another From - Who</a></div><legend>To - Whom</legend>';
+		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
+		str+='    <div class="span2 well well-small ">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		
+		str+='</div>';
+
+		str+='    <div class="span4 well well-small">';
+		str+='<label><strong>Select Candidate</strong></label><select id="candidateListForPartyForNewsTo" name="candidatePartyNewsVOList.destinationVOList[0].candidateId" class="input-block-level">';
+		str+='    <option value="0">Select Candidate</option>';
+		str+='</select>';
+		
+		str+='</div>';
+		str+='<div class="span4 well well-small">';
+		str+='<label><strong>Select Categories</strong></label><select key="keywordIdHiddenCat0" style="width: 252px;" id="whomegallaryId" >';
+		str+='    <option>Select Category</option>';
+		str+='</select>';
+		
+		str+='    </span>';
+		str+='</div>';
+
+		str+='    <div class="span2 well well-small">';
+		str+='   <label><strong>Rating</strong></label><select name="candidatePartyNewsVOList.destinationVOList[0].benefitId" class="input-block-level">';
+        str+='      <option value="1">Positive</option><option value="2">Negative</option><option value="3">Neutral</option>';
+		str+='</select>';
+
+		str+='    </div>';
+		str+='<div class="span12 well well-small" style="margin-left: 0px;">';
+		str+='<label><strong>Enter Keywords</strong></label><input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId">';
+		str+='<span class="help-block">Enter multiple keywords with comma separator Ex : padayatra,scam,';
+		str+='    </span>';
+		str+='</div>';
+		str +='<input type="hidden" id="keywordId0Hidden" name="candidatePartyNewsVOList.destinationVOList[0].keywordsList" />';
+        str +='<input type="hidden" id="keywordIdHiddenCat0" name="candidatePartyNewsVOList.destinationVOList[0].categoryIdsStr" />';		   	   
+		str+='</div></div>';
+		
+				   
+		str+='<div class=" well well-small">     <a href="javascript:void(0);" onclick="addWhome();" class="btn btn-danger">Click to add another To - Whom</a></div>';
+
+		str+='</div>   ';
+		str+=' </div>';
+		str+='</div>';
+
+		str+='<div class="row-fluid"><div id="formdata" style="display:none;"></div></div><div class="container"><legend class="">&nbsp;Add News From Different Sources</legend><div class="row-fluid ">';
+		str+='    <div class="span12">';
+		str+='        <div class="row-fluid">';
+		str+='<div class="container ">';
+		str+='        <div class="span4">';
+		str+='        <label><strong>File Path</strong></label>';
+			   
+		str+='<br/><input type="file" name="fileSourceVOList[0].sourceFileList[0].fileImage" class="btn">';
+		
+
+		str+='        </div>';
+
+		str+='<div class="span2 ">';
+		str+='        <label><strong>News<br> Edition</strong><span class="requiredFont">*</span></label>';
+		str+='        <select id="newsedition0" name="fileSourceVOList[0].sourceFileList[0].newsEdition"  class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span1">';
+		str+='        <label><strong>Page Number</strong><span class="requiredFont">*</span></label>';
+		str+='        <input type="text" id="pageno0" name="fileSourceVOList[0].sourceFileList[0].pageNo" onKeyup="IsNumeric(this.value);" class="input-block-level">';
+
+		str+='        </div>';
+		str+='<div class="span1 ">';
+		str+='        <label><strong>News Length</strong><font class="requiredFont">*</font></label>';
+		str+='        <input type="text" id="newslength0" name="fileSourceVOList[0].sourceFileList[0].newsLength" onKeyup="IsNumeric1(this.value);" class="input-block-level">';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+		str+='        <label><strong>File Source</strong></label>';
+		str+='        <select  id="filesourceId0" style="margin-top:25px;" name="fileSourceVOList[0].fileSourceId"  class="input-block-level m_top20"><option value="0">Select Source</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+		str+='        <label><strong>News Language</strong></label>';
+		str+='        <select id="sourceLangId0" style="margin-top:25px;" name="fileSourceVOList[0].sourceLangId" class="input-block-level m_top20"><option value="0">Select Language</option></select></select>';
+
+		str+='        </div>';
+		str+='</div>';
+		str+='<div id="source0newfile"></div>';
+		str+='<div class="container m_top5">';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level" id="newsfileDescription"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+
+		str+='        </div>';
+			 
+		str+='</div>';
+		str+='</div>';
+		str+='<div class="">';
+		str+='      <a href="javascript:void(0);" onclick="addNewFilePart(0);" class="btn btn-success span6">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
+        str+='<div id="addNewSourceToExisting"></div>';
+
+
+		str+='<div class="row-fluid">';
+		str+='      <a style="margin-top:-30px" class="offset6 span6 btn btn-danger" onclick="addNewFileSource();" href="javascript:void(0);">Click here to  <span class="label ">Add <i class="icon-plus-sign icon-white"></i></span> another source</a></div></div>';
+		str+='<div class="row-fluid"><div class="container m_top10"><legend class="">Select News Loaction</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
+		str += '<select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"></select></div>';
+        str +='<div id="showScopeSubs"></div>';
+		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Save changes" class="btn btn-success btn-large">                         </div></div></div>';
+        str+='</form>';
+   
+  
+    str +='<input type="hidden" name="profileType" value="party_profile">';
+	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
+	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';  
+   
+
+  
+	
+	document.getElementById("newsGallaryDiv").innerHTML = str;
+	getPartyGallariesForUplaod("News Gallary","whomegallaryId");
+
+	$("#newsdatedatepic").datepicker({ dateFormat: 'dd/mm/yy' });
+    $("#newsdatedatepic").datepicker("setDate", new Date());
+	
+	 getScopes();
+	 getSource("filesourceId0");
+	getLanguage('sourceLangId0');
+	 getNewsImportance();
+
+
+	  getScopeForUser();
+
+
+	 getBenefitList();
+
+$("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+
+  
+  $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+
+		$("#KeywordPartiesListForNewsTo").multiselect({
+	  noneSelectedText:"Select Party"});
+		$("#KeywordPartiesListForNewsTo").multiselect('refresh');
+		$("#KeywordPartiesListForNewsTo").multiselect('create');
+
+
+}
+var addSource = 0;
+function addNewFileSource(){
+        addSource = addSource+1;
+        var str ='';
+        str+='<div id="newfilesourceremov'+addSource+'" class="row-fluid ">';
+		str+='    <div class="span12">';
+		str+='        <div class="row-fluid">';
+		str+='<div class="container ">';
+		str+='        <div class="span4">';
+		str+='        <label><strong>File Path</strong></label>';
+			   
+		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn">';
+		
+
+		str+='        </div>';
+
+		str+='<div class="span2 ">';
+		str+='        <label><strong>News<br> Edition</strong><span class="requiredFont">*</span></label>';
+		str+='        <select  name="fileSourceVOList['+addSource+'].sourceFileList[0].newsEdition"  class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span1">';
+		str+='        <label><strong>Page Number</strong><span class="requiredFont">*</span></label>';
+		str+='        <input type="text" name="fileSourceVOList['+addSource+'].sourceFileList[0].pageNo" onKeyup="IsNumeric(this.value);" class="input-block-level">';
+
+		str+='        </div>';
+		str+='<div class="span1 ">';
+		str+='        <label><strong>News Length</strong><font class="requiredFont">*</font></label>';
+		str+='        <input type="text"  name="fileSourceVOList['+addSource+'].sourceFileList[0].newsLength" onKeyup="IsNumeric1(this.value);" class="input-block-level">';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+		str+='        <label><strong>File Source</strong></label>';
+		str+='        <select id="'+addSource+'addfilenewSource" style="margin-top:25px;" name="fileSourceVOList['+addSource+'].fileSourceId"  class="input-block-level m_top20"><option value="0">Select Source</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+		str+='        <label><strong>News Language</strong><i class="icon-trash" title="Click here to remove this source" onclick="removeThisFileSource(\'newfilesourceremov'+addSource+'\')" style="margin-left: 20px;"></i></label>';
+		str+='        <select  id="'+addSource+'addfilenewLanguage" style="margin-top:25px;"  name="fileSourceVOList['+addSource+'].sourceLangId" class="input-block-level m_top20"><option value="0">Select Language</option></select></select>';
+
+		str+='        </div>';
+		str+='</div>';
+		str+='<div id="source'+addSource+'newfile"></div>';
+		str+='<div class="container m_top5">';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level" ></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+
+		str+='        </div>';
+			 
+		str+='</div>';
+		str+='</div>';
+		str+='<div class="">';
+		str+='      <a href="javascript:void(0);" onclick="addNewFilePart('+addSource+');" class="btn btn-success span6">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
+        $("#addNewSourceToExisting").append(str);
+		getSource(addSource+'addfilenewSource');
+	getLanguage(addSource+'addfilenewLanguage');
+}
+var addFile = 0;
+function addNewFilePart(id){
+     addFile = addFile+1;
+        var str ='';
+        str+='<div id ="'+addFile+'newpart'+id+'" class="container ">';
+		str+='        <div class="span4">';
+				
+		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn">';
+
+		str+='        </div>';
+
+		str+='<div class="span2 ">';
+				
+		str+='        <select name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].newsEdition" class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span1">';
+			  
+		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].pageNo" class="input-block-level">';
+
+		str+='        </div>';
+		str+='<div class="span1 ">';
+			   
+		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].newsLength"  class="input-block-level">';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+			   
+		str+='        <a href="javascript:void(0);" onclick="removeThisFile(\''+addFile+'newpart'+id+'\')" class="btn btn-block"><i class="icon-trash"></i> Delete This Row</a>';
+
+		str+='        </div>';
+
+		str+='</div>';
+		
+		$("#source"+id+"newfile").append(str);
+}
+var who = 0;  
+function addNewFrom(){
+ who = who+1;
+ var str ='';
+ str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
+		str+='    <div class="span5 well well-small ">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str+='</div>';
+
+		str+='    <div class="span5 well well-small">';
+		str+='<label><strong>Select Candidate</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].candidateId" id="candidateListForParty'+who+'">';
+		str+='    <option value="0">Select Candidate</option>';
+		str+='</select>';
+		
+		
+		str+='</div>';
+		str+='    <div class="span2 well well-small">';
+		str+='   <label><strong>Rating</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].benefitId">';
+        str +='      <option value="1">Positive</option><option value="2">Negative</option><option value="3">Neutral</option>';
+        str +='   </select>';
+		
+		str+='    </div>';
+		str+='<div style="margin-left: 0px;" class="span12"><p>If you want to delete this block please click on this Button <a href="javascript:void(0);" onclick="deletethisDiv(\'whocandidate'+who+'\');" class="btn"><i class="icon-trash"></i> Delete This Block</a>    </p></div>	';	   
+		str+='</div>  ';
+		
+
+$( "#whoTalkedMainDIV").append(str);
+}
+function deletethisDiv(id){
+ if(confirm("Do you want to delete this Party/Candidate?")){
+    $("#"+id).remove();
+  }
+}
+var whome = 0;
+function addWhome(){
+
+ whome = whome+1;
+var str ='';
+
+	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
+		str+='    <div class="span2 well well-small ">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		
+		str+='</div>';
+
+		str+='    <div class="span4 well well-small">';
+		str+='<label><strong>Select Candidate</strong></label><select id="candidateListForPartyForNewsTo'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].candidateId" class="input-block-level">';
+		str+='    <option value="0">Select Candidate</option>';
+		str+='</select>';
+		
+		str+='</div>';
+		str+='<div class="span4 well well-small">';
+		str+='<label><strong>Select Categories</strong></label><select key="keywordIdHiddenCat'+whome+'" style="width: 252px;" id="'+whome+'whomegallaryId" >';
+		str+='    <option>Select Category</option>';
+		str+='</select>';
+		
+		str+='    </span>';
+		str+='</div>';
+
+		str+='    <div class="span2 well well-small">';
+		str+='   <label><strong>Rating</strong></label><select name="candidatePartyNewsVOList.destinationVOList['+whome+'].benefitId" class="input-block-level">';
+        str+='      <option value="1">Positive</option><option value="2">Negative</option><option value="3">Neutral</option>';
+		str+='</select>';
+
+		str+='    </div>';
+		str+='<div class="span12 well well-small" style="margin-left: 0px;">';
+		str+='<label><strong>Enter Keywords</strong></label><input type="text" class="input-block-level keyword'+whome+' destinationKeywords" key="keywordId'+whome+'" id="'+whome+'keywordId">';
+
+		str+='</div>';
+		str +='<input type="hidden" id="keywordId'+whome+'Hidden" name="candidatePartyNewsVOList.destinationVOList['+whome+'].keywordsList" />';
+        str +='<input type="hidden" id="keywordIdHiddenCat'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].categoryIdsStr" />';		   
+		str+='<div style="margin-left: 0px;" class="span12"><p>If you want to delete this block please click on this Button <a href="javascript:void(0);" onclick="deletethisDiv(\'whomecandidate'+whome+'\');" class="btn"><i class="icon-trash"></i> Delete This Block</a>    </p></div>	   </div>';
+
+
+$( "#whomeTalkedMainDIV").append(str);
+
+
+$("#"+whome+"keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+getPartyGallariesForUplaod("News Gallary",whome+"whomegallaryId");
+}
+var o = 0;
+function addNewFileToUpload(id){
+   o = o+1;
+   $("#multifile"+id).append('<div id="removeThisFil'+o+'"><table><tr><td><input type="file" name="fileSourceVOList['+id+'].fileImage"  size="25"  /></td><td><a class="btn btn-small btn-block" style="width: 17px;" href="javascript:void(0)" onclick="removeThisFile(\'removeThisFil'+o+'\');"> <i class="icon-minus-sign"></i></a></td></tr></table></div>');
+
+}
+function removeThisFile(id){
+ if(confirm("Do you want to delete this row?")){
+  $("#"+id).remove();
+  }
+}
+var t =0;
+function addNewSourceToDiv(){
+t=t+1;
+var str='';
+str += '        <tr id="newFileSourceFile'+t+'">';
+str += '            <td><input  type="file" name="fileSourceVOList['+t+'].fileImage"  size="25"  /><div id="multifile'+t+'"></div>';
+str += '<a href="javascript:void(0)" onclick="addNewFileToUpload('+t+');" style="width: 100px; margin-left: 51px; margin-top: 11px;" class="btn btn-small btn-block"> <i class="icon-plus-sign"></i></a></td>';
+str += '            <td><select id="filesourceId'+t+'" name="fileSourceVOList['+t+'].fileSourceId" class="input-small"><option value="0">Select Source</option></select></td>';
+str += '            <td><select id="sourceLangId'+t+'" name="fileSourceVOList['+t+'].sourceLangId" class="input-small"><option value="0">Select Language</option></select></td>';
+str += '            <td><select id="newsedition'+t+'" name="fileSourceVOList['+t+'].newsEdition" class="input-small"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
+str += '            <td><input type="text" id="pageno'+t+'" name="fileSourceVOList['+t+'].pageNo" class="pageno input-small"  onKeyup="IsNumeric(this.value);"></input></td>';
+str += '            <td><input type="text" id="newslength'+t+'" class="newslength input-small" name="fileSourceVOList['+t+'].newsLength" onKeyup="IsNumeric1(this.value);"></input></td>';
+str += '            <td><textarea  id="completeDesc'+t+'" name="fileSourceVOList['+t+'].completeDesc" class="completeDescCls'+t+' input-block-level"></textarea></td>';
+str += '            <td><a onclick="removeThisFileSource(\'newFileSourceFile'+t+'\');" href="javascript:void(0)" style="width: 17px;" class="btn btn-small btn-block"> <i class="icon-minus-sign"></i></a></td>';
+str += '               </tr>';
+
+$('#uploadFilesTable > tbody:last').append(str);
+  getSource("filesourceId"+t);
+	getLanguage('sourceLangId'+t);
+}
+function removeThisFileSource(id){
+  if(confirm("Do you want to delete this Source?")){
+  $("#"+id).remove();
+  }
+}
+function addMoreFilesForPartyCandidate()
+{
+	var moreDivElmt = document.createElement("addMoreFilesDiv");
+	var str ='';
+	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+fileCount+'" class="moreFileDivCls" key="'+fileCount+'">';
+	str += ' <tr>';
+	str +='<td>File Path</td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="fileSourceVOList['+fileCount+'].fileImage" class="newsFileId'+fileCount+'" size="25"  /></td>';
+    str +='<td><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreImagesForPartyCandidate(\''+fileCount+'\')" title="Click here to add more images" alt="Click here to add more images"></td>';
+
+	str += ' </tr>';
+    
+	str +='<tr>';
+	str +='<td colspan="2"><div id="moreFilePathsImagesDiv'+fileCount+'"></div></td>';
+	str +='</tr>';
+
+	str += ' <tr>';
+	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
+	str += ' <td class="selectWidthPadd"><select id="filesourceId'+fileCount+'" name="fileSourceVOList['+fileCount+'].fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td>';
+	str += ' </tr>';
+	str += ' <tr>';
+	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
+	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+fileCount+'" name="fileSourceVOList['+fileCount+'].sourceLangId" style="width:175px;"><option value="0">Select Language</option></select></td>';
+	
+	str += ' </tr>';
+	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="newsedition'+fileCount+'" name="fileSourceVOList['+fileCount+'].newsEdition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="fileSourceVOList['+fileCount+'].pageNo" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength" name="fileSourceVOList['+fileCount+'].newsLength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
+
+	/*str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';*/
+	str += '   </tr>';
+    
+	str +='<tr>';
+	str +='<td>News description in details : </td>';
+	str +='<td><textarea rows="3" columns = "20" id="completeDesc'+fileCount+'" name="fileSourceVOList['+fileCount+'].completeDesc" class="completeDescCls'+fileCount+'"></textarea></td>';
+	str +='<td><input type="checkbox" id="newsDescCheck'+fileCount+'" name="fileSourceVOList['+fileCount+'].newsDescCheck" value="true" class="newsDescCheckId" key="'+fileCount+'" /><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';
+	str +='</tr>';
+
+	str +='</table>';
+	moreDivElmt.innerHTML = str;
+	document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
+	getSource("filesourceId"+fileCount+"");
+	getLanguage('sourceLangId'+fileCount+'');
+	fileCount++;
+}
+
+function addMoreImagesForPartyCandidate(count)
+{
+  
+  
+  var divElmt = document.createElement("moreFilePathsImagesDiv"+count+"");
+  var str = '';
+  str +='<table id="moreFilePathsId'+count+''+fileImgCount+'">';
+  str += '<tr>';
+  str += '<td>File Path : </td>';
+  str += '<td><input type="file" class="newsFileId'+count+'" size="50" name="fileSourceVOList['+count+'].fileImage"/></td>';
+  str += '<td><img onclick="deleteFileImagePaths(\''+count+''+fileImgCount+'\');" title="Click here to delete file" src="images/minus.png" style="background: #fff; border-radius: 11px; padding: 4px;"></td>';
+  str +='<tr>';
+  str +='</table>';
+  divElmt.innerHTML = str;
+  document.getElementById("moreFilePathsImagesDiv"+count+"").appendChild(divElmt);
+  
+  fileImgCount++;
+}
+
+function deleteFileImagePaths(imgId)
+{
+ 
+ $('#moreFilePathsId'+imgId+'').html('');
+}
+
+function getPartyCandidatesList()
+{
+	
+  if(partyIdsListArray != null && partyIdsListArray.length > 0)
+  {
+    
+	 buildPartyKeywordsDiv();
+
+	 var partyIds = new Array();
+	 for(var i=0;i<partyIdsListArray.length;i++)
+	  partyIds.push(partyIdsListArray[i].id);
+
+	 var jsObj={
+		partyIds:partyIds,
+		task:'getCandidatesByPartyIds'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidatesByPartyIdsAction.action?"+rparam;
+	callAjax(jsObj, url);
+  }
+}
+
+function buildCandidateList(result)
+{
+	
+	$("#candidateListForParty").find('option').remove();
+ if(result != null && result.length > 0)
+ {
+    $.each(result,function(index,value){
+			$("#candidateListForParty").append($("<option></option>").attr("value",value.id).text(value.name));
+	});
+	
+
+ }
+
+}
+
+
+function buildPartyKeywordsDiv()
+{
+  
+  $('#partyKeywordsDiv').html('');
+  var divElmt = document.createElement("partyKeywordsDiv");
+  var str = '';
+  str +='<table>';
+  
+  
+  for(var i=0;i<partyIdsListArray.length;i++)
+  {
+   str += '<tr>';
+   str +='<td>'+partyIdsListArray[i].name+'</td>';
+   str += '  <td class="selectWidthPadd"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
+   str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteSelectedParty(\'party'+partyIdsListArray[i].id+'\')"></td>';
+   str += '</tr>';
+   str +='<input type="hidden" value="'+partyIdsListArray[i].id+'" name="partyKeywordsList"/>';
+  }
+  
+  str +='</table>';
+  divElmt.innerHTML = str;
+  
+ 
+
+  document.getElementById("partyKeywordsDiv").appendChild(divElmt);
+   $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+}
+
+
+
+
+
+
+
+
+function buildCandidateKeywordsList()
+{
+  
+  $('#candidateKeywordsDiv').html('');
+  var divElmt = document.createElement("candidateKeywordsDiv");
+  var str = '';
+  str +='<table id="moreFilePathsId'+count+''+fileImgCount+'">';
+  
+  
+  for(var i=0;i<candidateIdsListArray.length;i++)
+  {
+   str += '<tr>';
+   str +='<td>'+candidateIdsListArray[i].name+'</td>';
+   str += '  <td class="selectWidthPadd"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
+   str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" ></td>';
+   str += '</tr>';
+   str +='<input type="hidden" value="'+candidateIdsListArray[i].id+'" name="candidateKeywordsList"/>';
+  }
+  
+  str +='</table>';
+  divElmt.innerHTML = str;
+  
+  document.getElementById("candidateKeywordsDiv").appendChild(divElmt);
+   $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+   /*//sourceCandidateIdsArray
+   
+   var divElmt = document.createElement("newsFromCanListLabel");
+   var str = '';
+  
+  for(var i=0;i<candidateIdsListArray.length;i++)
+  {
+	if(sourceCandidateIdsArray.indexOf(candidateIdsListArray[i].id) == -1)
+	{
+	 str +='<label class="btn" id="sourceCan'+candidateIdsListArray[i].id+'" class="sourceCandidateImgCls">';
+	 str +=''+candidateIdsListArray[i].name+'';
+	 str +='<img src="images/closeImg.png" key="'+candidateIdsListArray[i].id+'" class="candidateCloseImg"/>';
+	 str +='</label>';
+	 sourceCandidateIdsArray.push(candidateIdsListArray[i].id);
+	}
+  }
+  divElmt.innerHTML = str;
+ document.getElementById("newsFromCanListLabel").appendChild(divElmt);*/
+  
+}
+
+function buildSourceCandidateKeywordsList(){
+
+ var divElmt = document.createElement("newsFromCanListLabel");
+   var str = '';
+
+ if(sourceCandidatesArray != null && sourceCandidatesArray.length > 0)
+  for(var i=0;i<sourceCandidatesArray.length;i++)
+  {
+	if(sourceCandidateIdsArray.indexOf(sourceCandidatesArray[i].id) == -1)
+	{
+	 str +='<label class="btn" id="sourceCan'+sourceCandidatesArray[i].id+'" class="sourceCandidateImgCls">';
+	 str +=''+sourceCandidatesArray[i].name+'';
+	 str +='<img src="images/closeImg.png" key="'+sourceCandidatesArray[i].id+'" class="candidateCloseImg"/>';
+	 str +='</label>';
+	 sourceCandidateIdsArray.push(sourceCandidatesArray[i].id);
+	}
+  }
+  divElmt.innerHTML = str;
+ document.getElementById("newsFromCanListLabel").appendChild(divElmt);
+
+}
+
+function buildDestinationCandidateKeywordsList(){
+
+ var divElmt = document.createElement("newsToCanListLabel");
+   var str = '';
+  if(destinationCandidatesArray != null && destinationCandidatesArray.length > 0)
+  for(var i=0;i<destinationCandidatesArray.length;i++)
+  {
+	if(destinationCandidateIdsArray.indexOf(destinationCandidatesArray[i].id) == -1)
+	{
+	 str +='<label class="btn" id="destinationCan'+destinationCandidatesArray[i].id+'" class="destinationCandidateImgCls">';
+	 str +=''+destinationCandidatesArray[i].name+'';
+	 str +='<img src="images/closeImg.png" key="'+destinationCandidatesArray[i].id+'" class="destinationCandidateCloseImg" id="descCan'+destinationCandidatesArray[i].id+'"/>';
+	 str +='</label>';
+	 destinationCandidateIdsArray.push(destinationCandidatesArray[i].id);
+	}
+  }
+  divElmt.innerHTML = str;
+ document.getElementById("newsToCanListLabel").appendChild(divElmt);
+
+}
+
+
+
+function deleteSelectedParty(id)
+{
+	
+
+ $("#"+id+"").closest('table').html('');
+}
+
+function getCandidatesListByPartyId(partyId,type)
+{
+   
+		var jsObj = {
+			partyId :partyId,
+			type:type,
+			task : "getCandidatesListByPartyId"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;					
+	
+   callAjax(jsObj,url);
+}
+
+
+
+function setSourceDestinationPartyCandidateIds()
+{
+
+ if(sourcePartyArray != null && sourcePartyArray.length > 0)
+ {
+   var str = '';
+   for(var i in sourcePartyArray)
+    str +=sourcePartyArray[i]+",";
+
+   var length = str.length;
+    str = str.substr(0,length-1); 
+
+	$("#sourcePartyListId").val(str);
+ }
+
+ if(destinationPartyArray != null && destinationPartyArray.length > 0)
+ {
+   var str = '';
+   for(var i in destinationPartyArray)
+    str +=destinationPartyArray[i]+",";
+
+   var length = str.length;
+    str = str.substr(0,length-1); 
+
+	$("#destinationPartyListId").val(str);
+ }
+
+ if(sourceCandidatesArray != null && sourceCandidatesArray.length > 0)
+ {
+   var str = '';
+   for(var i in sourceCandidatesArray)
+    str +=sourceCandidatesArray[i].id+",";
+
+   var length = str.length;
+    str = str.substr(0,length-1); 
+
+	$("#sourceCandidatesListId").val(str);
+ }
+
+ if(destinationCandidatesArray != null && destinationCandidatesArray.length > 0)
+ {
+   var str = '';
+   for(var i in destinationCandidatesArray)
+    str +=destinationCandidatesArray[i].id+",";
+
+   var length = str.length;
+    str = str.substr(0,length-1); 
+
+	$("#destinationCandidateListId").val(str);
+ }
+
+}
+
+$(document).ready(function(){
+	
+ $(".newsDescCheckId").live("click",function(){
+	 
+	var key = $(this).attr("key");	
+	
+	if($(this).is(':checked'))
+	 $("#completeDesc"+key+"").addClass('enadu');
+	else
+     $("#completeDesc"+key+"").removeClass('enadu');
+ 
+ });
+
+
+//news From
+$("#newsFromCanCheckboxId").live("click",function(){
+
+  if($(this).is(':checked'))
+	{
+     $("#newsFromCandidateDiv").css("display","block");
+	  $("#newsFromPartyDiv").css("display","none");
+	 $("#newsFromPartyCheckboxId").attr("checked",false);
+	 $("#newsFromBothCheckboxId").attr("checked",false);
+	}
+  else
+	$("#newsFromCandidateDiv").css("display","none");
+});
+
+$("#newsFromPartyCheckboxId").live("click",function(){
+	
+  if($(this).is(':checked'))
+	{
+	 $("#newsFromPartyDiv").css("display","block");
+     $("#newsFromCandidateDiv").css("display","none");
+	 $("#newsFromCanCheckboxId").attr("checked",false);
+	 $("#newsFromBothCheckboxId").attr("checked",false);
+
+	}
+  else
+	$("#newsFromPartyDiv").css("display","none");
+
+});
+
+$("#newsFromBothCheckboxId").live("click",function(){
+	
+  if($(this).is(':checked'))
+	{
+	
+	 $("#newsFromCandidateDiv").css("display","block");
+	 $("#newsFromPartyDiv").css("display","block");
+
+	 $("#newsFromCanCheckboxId").attr("checked",false);
+	 $("#newsFromPartyCheckboxId").attr("checked",false);
+	}
+  else{
+	 $("#newsFromCandidateDiv").css("display","none");
+	$("#newsFromPartyDiv").css("display","none");
+  }
+
+});
+
+
+//news to
+$("#newsToCanCheckboxId").live("click",function(){
+  if($(this).is(':checked'))
+	{
+	 $("#newsToCandidateDiv").css("display","block");
+	 $("#newsToPartyDiv").css("display","none");
+     $("#newsToPartyCheckboxId").attr("checked",false);
+     $("#newsToBothChechboxId").attr("checked",false);
+
+	}
+  else
+	$("#newsToCandidateDiv").css("display","none");
+});
+
+$("#newsToPartyCheckboxId").live("click",function(){
+	
+  if($(this).is(':checked'))
+	{
+	 $("#newsToPartyDiv").css("display","block");
+	 $("#newsToCandidateDiv").css("display","none");
+     $("#newsToCanCheckboxId").attr("checked",false);
+     $("#newsToBothChechboxId").attr("checked",false);
+	}
+  else
+	$("#newsToPartyDiv").css("display","none");
+
+});
+
+$("#newsToBothChechboxId").live("click",function(){
+	
+  if($(this).is(':checked'))
+	{
+	
+	 $("#newsToCandidateDiv").css("display","block");
+	 $("#newsToPartyDiv").css("display","block");
+	 $("#newsToCanCheckboxId").attr("checked",false);
+     $("#newsToPartyCheckboxId").attr("checked",false);
+	}
+  else{
+	 $("#newsToCandidateDiv").css("display","none");
+	$("#newsToPartyDiv").css("display","none");
+  }
+
+});
+
+//candidate creation
+$(".createNewCandidate").live("click",function(){
+	
+	
+		$("#createCandidateDiv").dialog({
+            modal: true,
+            title: "<b>Create New Candidate</b>",
+			width: 500,
+            height: 300
+           
+        });
+  
+    $("#createCandidateInnerDiv").html('');
+   var str = '';
+   str +='<div>';
+   str +='<div id="errorMsgDiv"></div>';
+   str +='<table style="margin-top: 24px;"><tr>';
+   str +='<td>Select Party</td>';
+   str +='<td><select id="partySelectNewList">';
+   str +='<option value="0">Select</option><option value="163">BJP</option>';
+   str +='<option value="265">CPI</option><option value="269">CPM</option>';
+   str +='<option value="362">INC</option><option value="990">MIM</option>';
+   str +='<option value="872">TDP</option><option value="886">TRS</option>';
+   str +='<option value="1117">YSRCP</option>';
+   str +='</select></td></tr>';
+
+   str +='<tr><td>Candidate Name</td>';
+   str +='<td><input type="text" id="newCandidateName"/></td></tr></table>';
+   str +='<input type="button" value="submit" class="btn" id="createCandidateId"/>';
+   str +='</div>';
+   $("#createCandidateInnerDiv").html(str);
+});
+
+
+//candidate creation
+
+$("#createCandidateId").live("click",function(){
+    
+	$("#errorMsgDiv").html('');
+	var partyId = $("#partySelectNewList").val();
+	var candidateName = $.trim($("#newCandidateName").val());
+    if(partyId == 0)
+	{
+	  $("#errorMsgDiv").html("Please Select Party");
+	  return;
+	}
+	if(candidateName.length == 0)
+	{
+	 $("#errorMsgDiv").html("Please Select Candidate");
+	  return;
+	}
+
+	var jsObj =
+		{ 
+            partyId : partyId,
+			candidateName:candidateName,
+			task:"saveCandidate"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveCandidateAndPartyAction.action?"+rparam;						
+	callAjax(jsObj,url);
+		
+});
+
+$(".candidateCloseImg").live("click",function(){
+ var key = $(this).attr("key");
+ 
+ $("#sourceCan"+key+"").removeClass("btn");
+ $("#sourceCan"+key+"").html('');
+ 
+ if(sourceCandidateIdsArray.indexOf(key) != -1)
+ {
+   sourceCandidateIdsArray = jQuery.removeFromArray(key, sourceCandidateIdsArray);
+   sourceCandidatesArray.splice( $.inArray(key, sourceCandidatesArray), 1 );
+ }
+ 
+
+});
+
+$(".destinationCandidateCloseImg").live("click",function(){
+ var key = $(this).attr("key");
+
+ $("#destinationCan"+key+"").removeClass("btn");
+ $("#destinationCan"+key+"").html('');
+
+ if(destinationCandidateIdsArray.indexOf(key) != -1)
+ {
+   destinationCandidateIdsArray = jQuery.removeFromArray(key, destinationCandidateIdsArray);
+   destinationCandidatesArray.splice( $.inArray(key, destinationCandidatesArray), 1 );
+ }
+
+});
+
+
+jQuery.removeFromArray = function(value, arr) {
+return jQuery.grep(arr, function(elem, index) {
+return elem !== value;
+});
+};
+
+
+	
+});//End ready
+function testValues(){
+  
+   $('.destinationKeywords').each(function() {
+   var str = '';
+			var $ul = $(this).closest('ul');
+			  $ul.find('li').each(function(){
+			  str +=''+$(this).text()+',';
+			  //alert($(this).text());
+			});	
+           
+        });
+}
 </script>
 </body>
 </html>

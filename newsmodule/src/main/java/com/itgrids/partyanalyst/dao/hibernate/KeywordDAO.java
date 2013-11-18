@@ -50,5 +50,13 @@ public class KeywordDAO extends GenericDaoHibernate<Keyword, Long> implements IK
 		query.setParameterList("keywordList", keywordList);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getKeywordIdByKeyword(String keywordName)
+	{
+	 Query query = getSession().createQuery("select model.keywordId from Keyword model where model.type =:keywordName ");
+	 query.setParameter("keywordName", keywordName);
+	 return query.list();
+	}
 
 }

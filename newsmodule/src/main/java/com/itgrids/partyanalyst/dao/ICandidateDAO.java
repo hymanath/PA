@@ -7,6 +7,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.Candidate;
@@ -75,4 +77,11 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{/*
 	public List<Long> getinfluencingPeopleVoterId(Long voterId);
 	
 	public List<Long> findCandidatePeopleDetails(List<Long> voterIds);
-*/}
+*/
+
+	public List<Object[]> getCandidateListByPartyId(Long partyId);
+	
+	public List<Long> getCandidateIdByPartyIdAndCandidateName(Long partyId,String candidateName);
+	
+
+}
