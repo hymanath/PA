@@ -2379,12 +2379,12 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='        </div>';
 		str+='<div class="span1">';
 		str+='        <label><strong>Page Number</strong><span class="requiredFont">*</span></label>';
-		str+='        <input type="text" id="pageno0" name="fileSourceVOList[0].sourceFileList[0].pageNo" onKeyup="IsNumeric(this.value);" class="input-block-level">';
+		str+='        <input type="text" id="pageno0" name="fileSourceVOList[0].sourceFileList[0].pageNo" onKeyup="IsNumeric(this.value);" class="input-block-level pagenoCls">';
 
 		str+='        </div>';
 		str+='<div class="span1 ">';
 		str+='        <label><strong>News Length</strong><font class="requiredFont">*</font></label>';
-		str+='        <input type="text" id="newslength0" name="fileSourceVOList[0].sourceFileList[0].newsLength" onKeyup="IsNumeric1(this.value);" class="input-block-level">';
+		str+='        <input type="text" id="newslength0" name="fileSourceVOList[0].sourceFileList[0].newsLength" onKeyup="IsNumeric1(this.value);" class="input-block-level newsLengthCls">';
 
 		str+='        </div>';
 		str+='<div class="span2 ">';
@@ -2485,12 +2485,12 @@ function addNewFileSource(){
 		str+='        </div>';
 		str+='<div class="span1">';
 		str+='        <label><strong>Page Number</strong><span class="requiredFont">*</span></label>';
-		str+='        <input type="text" name="fileSourceVOList['+addSource+'].sourceFileList[0].pageNo" onKeyup="IsNumeric(this.value);" class="input-block-level">';
+		str+='        <input type="text" name="fileSourceVOList['+addSource+'].sourceFileList[0].pageNo" onKeyup="IsNumeric(this.value);" class="input-block-level pagenoCls">';
 
 		str+='        </div>';
 		str+='<div class="span1 ">';
 		str+='        <label><strong>News Length</strong><font class="requiredFont">*</font></label>';
-		str+='        <input type="text"  name="fileSourceVOList['+addSource+'].sourceFileList[0].newsLength" onKeyup="IsNumeric1(this.value);" class="input-block-level">';
+		str+='        <input type="text"  name="fileSourceVOList['+addSource+'].sourceFileList[0].newsLength" onKeyup="IsNumeric1(this.value);" class="input-block-level newsLengthCls">';
 
 		str+='        </div>';
 		str+='<div class="span2 ">';
@@ -2545,12 +2545,12 @@ function addNewFilePart(id){
 		str+='        </div>';
 		str+='<div class="span1">';
 			  
-		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].pageNo" class="input-block-level">';
+		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].pageNo" class="input-block-level pagenoCls">';
 
 		str+='        </div>';
 		str+='<div class="span1 ">';
 			   
-		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].newsLength"  class="input-block-level">';
+		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].newsLength"  class="input-block-level newsLengthCls">';
 
 		str+='        </div>';
 		str+='<div class="span2 ">';
@@ -2709,11 +2709,11 @@ function addMoreFilesForPartyCandidate()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="fileSourceVOList['+fileCount+'].pageNo" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="fileSourceVOList['+fileCount+'].pageNo" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength" name="fileSourceVOList['+fileCount+'].newsLength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength newsLengthCls" name="fileSourceVOList['+fileCount+'].newsLength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 
 	/*str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';*/
 	str += '   </tr>';
