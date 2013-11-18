@@ -1243,9 +1243,9 @@ function validateNewsFileUpload()
 			 }
 	       }
        });
-	if(fileTitle.length >50)
+	if(fileTitle.length >1000)
 	{
-		str += 'Title should be less than 50 Characters<br>';
+		str += 'Title should be less than 1000 Characters<br>';
 		flag = false;
 	}
 	if(fileDesc.length == 0)
@@ -1253,9 +1253,9 @@ function validateNewsFileUpload()
 		str += 'Description is Required.<br>';
 		flag = false;
 	}
-	if(fileDesc.length > 200)
+	if(fileDesc.length > 2000)
 	{
-		str += 'Description Should not exceed 200 Characters.<br>';
+		str += 'Description Should not exceed 2000 Characters.<br>';
 		flag = false;
 	}
 	if(fileVal.length == 0)
