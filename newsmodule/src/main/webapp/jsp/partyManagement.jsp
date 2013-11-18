@@ -310,8 +310,8 @@ return;
 			 </tr>
 		</table>-->
 	<div class="span11 offset1 text-center alert" style="margin-left:30px;">
-	<input type="button" class="btn btn-success highlight" value="Create News Category" onclick="createNewsCategory()">
-	<input type="button" class="btn btn-success highlight" value="Create News Gallery" onclick="buildCreateNewsCategory()">
+	<!-- <input type="button" class="btn btn-success highlight" value="Create News Category" onclick="createNewsCategory()"> -->
+	<input type="button" class="btn btn-success highlight" value="Create News Category" onclick="buildCreateNewsCategory()">
 	<!-- <input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()">
 	<input type="button" class="btn btn-success highlight" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()"> -->
     

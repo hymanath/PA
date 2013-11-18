@@ -3317,7 +3317,7 @@ public List<SelectOptionVO> getCandidatesOfAParty(Long partyId)
 	if(list != null && list.size() > 0)
 	{
 		cadidatesList = new ArrayList<SelectOptionVO>(0);
-		cadidatesList.add(new SelectOptionVO(0L,"Select"));
+		
 		SelectOptionVO selectOptionVO = null;
 		for(Object[] params : list)
 		{

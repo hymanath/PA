@@ -6550,6 +6550,7 @@ function buildCandidatesForKeywords(results,type)
 {
 	
              $("#"+type+" option").remove();
+			 $('#'+type).append('<option value="0">Select Candidate</option>');
             $.each(results,function(index , value){
 		$('#'+type).append('<option value="'+value.id+'">'+value.name+'</option>');
 
