@@ -32,6 +32,13 @@ public class NewsResponse  implements Serializable{
 	private File file;
 	private CandidatePartyFile candidatePartyFile;
 	
+	public NewsResponse(){};
+	public NewsResponse(File file,CandidatePartyFile candidatePartyFile)
+	{
+	 this.file = file;
+	 this.candidatePartyFile = candidatePartyFile;
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="news_response_id", unique=true, nullable=false)
