@@ -27,4 +27,14 @@ public class CandidatePartyDAO extends GenericDaoHibernate<CandidateParty, Long>
 		return query.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidatesListByPartyIdsList(List<Long> partyIdsList)
+	{
+	  Query query = getSession().createQuery(" select distinct model.candidate.candidateId, model.candidate.lastname from " +
+	  		" CandidateParty model where model.party.partyId in(:partyIdsList) ");
+	  
+	  query.setParameterList("partyIdsList", partyIdsList);
+	  return query.list();
+	}
 }

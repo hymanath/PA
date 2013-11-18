@@ -375,6 +375,18 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 {
 			 selectOptionVOList =  newsMonitoringService.getMainCategories();
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getCandidatesByPartyIds"))
+		 {
+			 List<Long> partyIds = new ArrayList<Long>(0);
+			 JSONArray partyIdsArray = jObj.getJSONArray("partyIds");
+			 //JSONArray partyIdsArray = (JSONArray) JSONSerializer.toJSON(jObj.getString("partyIds"));
+					 
+			 if(partyIdsArray != null && partyIdsArray.length() > 0)
+			  for(int i=0;i<partyIdsArray.length();i++)
+				  partyIds.add(Long.parseLong(partyIdsArray.get(i).toString()));
+				  
+			  selectOptionVOList = newsMonitoringService.getCandidatesByPartyIdsList(partyIds);
+		 }
 		
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -672,6 +684,26 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		  Log.error("Exception Occured in changePassword() method, Exception - "+e);
 	}
 	  return Action.SUCCESS;
+  }
+  
+  
+  public String saveCandidatesAndParty()
+  {
+	  
+	try{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		 return ERROR;
+		
+		jObj = new JSONObject(getTask());
+		resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"));	
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 Log.error(" Exception Occured in saveCandidatesAndParty() method, Exception - "+e);
+	 
+	}
+	return Action.SUCCESS;
   }
    
    

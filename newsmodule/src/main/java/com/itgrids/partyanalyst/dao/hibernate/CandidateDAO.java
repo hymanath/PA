@@ -4,7 +4,10 @@
  */
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -280,4 +283,27 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	return query.list();
 	}
 	
-*/}
+*/
+	
+ @SuppressWarnings("unchecked")
+ public List<Object[]> getCandidateListByPartyId(Long partyId)
+ {
+	 Query query = getSession().createQuery(" select model.candidateId,model.lastname from Candidate model where model.party.partyId =:partyId order by model.lastname ");
+	 query.setParameter("partyId", partyId);
+	 return query.list();
+			 
+ }
+ 
+ @SuppressWarnings("unchecked")
+ public List<Long> getCandidateIdByPartyIdAndCandidateName(Long partyId,String candidateName)
+ {
+	 Query query = getSession().createQuery(" select distinct model.candidateId from Candidate model where model.party.partyId =:partyId " +
+	 		" and model.lastname =:candidateName ");
+	 
+	 query.setParameter("partyId", partyId);
+	 query.setParameter("candidateName", candidateName);
+	 
+	 return query.list();
+ }
+
+}

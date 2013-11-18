@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.NewsImportance;
 public interface INewsImportanceDAO extends GenericDao<NewsImportance, Long>{
 	public List<Object[]> getNewsImportanceDetails();
 	public List<Object[]> getNewsImportanceDetailsWithOutOrderBy();
+	
+	public List<NewsImportance> getNewsImportanceList();
 }

@@ -89,6 +89,10 @@ public interface INewsMonitoringService {/*
 	
 	public List<SelectOptionVO> getMainCategories();
 	
+	public List<SelectOptionVO> getCandidatesByPartyIdsList(List<Long> partyIdsList);
+	
+	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName);
+	
 }
 
 

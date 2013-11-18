@@ -244,6 +244,7 @@
 		<pattern>/locationWiseNewsDetailsAction*</pattern>
 		<pattern>/getNewsDetailsAction*</pattern>
 		<pattern>/showAllCategoriesAction*</pattern>
+		<pattern>/keywordsRelatedNewsAction*</pattern>
     	 </decorator>
 
 </decorators>

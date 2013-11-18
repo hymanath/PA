@@ -34,13 +34,16 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CandidateCommentsVO;
+import com.itgrids.partyanalyst.dto.CandidatePartyNewsVO;
 import com.itgrids.partyanalyst.dto.CandidateVO;
 import com.itgrids.partyanalyst.dto.CommentVO;
 import com.itgrids.partyanalyst.dto.ContentDetailsVO;
 import com.itgrids.partyanalyst.dto.CustomPageVO;
 import com.itgrids.partyanalyst.dto.ElectionGoverningBodyVO;
+import com.itgrids.partyanalyst.dto.FileSourceVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
+import com.itgrids.partyanalyst.dto.KeywordsVO;
 import com.itgrids.partyanalyst.dto.PdfGenerationVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -134,6 +137,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<Integer> pageno;
 	private List<String> newslength;
 	private Long fileId ;
+	private Boolean titleCheckBox;
 
 
 	private INewsMonitoringService  newsMonitoringService;
@@ -159,7 +163,32 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String requestFor;
 	private String categoryName;
     private String keywordList; 
+    private List<FileSourceVO> fileSourceVOList;
+    private List<KeywordsVO> keywordsVOList;
+    private String sourceCandidateList;
+    private String sourcePartyList;
+    private String destinationCandidateList;
+    private String destinationPartyList;
+    private Long subCategoryId; 
+    private Long sourceBenefitId;
+    private Long destinationBenefitId;
+    private CandidatePartyNewsVO candidatePartyNewsVOList;
+    private Long responseFileId;
+    
+    
 	
+
+	public CandidatePartyNewsVO getCandidatePartyNewsVOList() {
+		return candidatePartyNewsVOList;
+	}
+
+
+	public void setCandidatePartyNewsVOList(
+			CandidatePartyNewsVO candidatePartyNewsVOList) {
+		this.candidatePartyNewsVOList = candidatePartyNewsVOList;
+	}
+
+
 	public String getRequestFor() {
 		return requestFor;
 	}
@@ -382,13 +411,22 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.newsMonitoringService = newsMonitoringService;
 	}
 
+	public Boolean getTitleCheckBox() {
+		return titleCheckBox;
+	}
+
+
+	public void setTitleCheckBox(Boolean titleCheckBox) {
+		this.titleCheckBox = titleCheckBox;
+	}
+    
 
 	private File imageForDisplay;
 	private String imageForDisplayContentType;
 	private String imageForDisplayFileName;
     private  IThumbnailService thumbnailService;
     private String pdfPath;
-   private String pdfName;
+    private String pdfName;
 
 	public String getPdfName() {
 	return pdfName;
@@ -968,6 +1006,102 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	public void setKeywordList(String keywordList) {
 		this.keywordList = keywordList;
 	}
+    
+
+	public List<FileSourceVO> getFileSourceVOList() {
+		return fileSourceVOList;
+	}
+
+
+	public void setFileSourceVOList(List<FileSourceVO> fileSourceVOList) {
+		this.fileSourceVOList = fileSourceVOList;
+	}
+
+	public List<KeywordsVO> getKeywordsVOList() {
+		return keywordsVOList;
+	}
+
+
+	public void setKeywordsVOList(List<KeywordsVO> keywordsVOList) {
+		this.keywordsVOList = keywordsVOList;
+	}
+
+	public String getSourceCandidateList() {
+		return sourceCandidateList;
+	}
+
+
+	public void setSourceCandidateList(String sourceCandidateList) {
+		this.sourceCandidateList = sourceCandidateList;
+	}
+
+
+	public String getSourcePartyList() {
+		return sourcePartyList;
+	}
+
+
+	public void setSourcePartyList(String sourcePartyList) {
+		this.sourcePartyList = sourcePartyList;
+	}
+
+
+	public String getDestinationCandidateList() {
+		return destinationCandidateList;
+	}
+
+
+	public void setDestinationCandidateList(String destinationCandidateList) {
+		this.destinationCandidateList = destinationCandidateList;
+	}
+
+
+	public String getDestinationPartyList() {
+		return destinationPartyList;
+	}
+
+
+	public void setDestinationPartyList(String destinationPartyList) {
+		this.destinationPartyList = destinationPartyList;
+	}
+
+	public Long getSubCategoryId() {
+		return subCategoryId;
+	}
+
+
+	public void setSubCategoryId(Long subCategoryId) {
+		this.subCategoryId = subCategoryId;
+	}
+
+	public Long getSourceBenefitId() {
+		return sourceBenefitId;
+	}
+
+
+	public void setSourceBenefitId(Long sourceBenefitId) {
+		this.sourceBenefitId = sourceBenefitId;
+	}
+
+
+	public Long getDestinationBenefitId() {
+		return destinationBenefitId;
+	}
+
+
+	public void setDestinationBenefitId(Long destinationBenefitId) {
+		this.destinationBenefitId = destinationBenefitId;
+	}
+
+
+	public Long getResponseFileId() {
+		return responseFileId;
+	}
+
+
+	public void setResponseFileId(Long responseFileId) {
+		this.responseFileId = responseFileId;
+	}
 
 
 	public String uploadFilesForMultipleCandidates()
@@ -1199,6 +1333,236 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 		
+	}
+	
+	
+	public String uploadFilesForPartyAndCandidatesKeywords()
+	{
+	 try{
+	  
+	  String fileName = null;
+	  String filePath = null;
+	  String fileNames = null;
+	  FileVO fileVO = new FileVO();
+	  
+	  session = request.getSession();
+	  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		fileVO.setUserId(regVO.getRegistrationID());
+	  
+	  String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		
+	  if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
+	  else
+		filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
+	  
+	   String fileType = null;
+	  
+		Long systime = System.currentTimeMillis();
+		Random random = new Random();
+		
+		FileVO displayFileVO = new FileVO();
+		
+		
+            if (imageForDisplayContentType != null && imageForDisplay != null
+					&& imageForDisplayFileName != null) {
+            	
+            	fileType = imageForDisplayContentType.substring(imageForDisplayContentType.indexOf("/")+1, imageForDisplayContentType.length());
+            			
+				String imageName = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+				String path1 = IWebConstants.UPLOADED_FILES+"/"+imageName;
+				
+				displayFileVO.setDisplayImageName(imageName);
+				displayFileVO.setDisplayImageContentType(imageForDisplayContentType);
+				displayFileVO.setDisplayImagePath(path1);
+				fileVO.setFileVOForDiaplyImage(displayFileVO);
+				
+				
+			}
+			
+			if(fileVO.getFileVOForDiaplyImage () != null){
+				
+				File fileToCreate = new File(filePath, displayFileVO.getDisplayImageName());
+				FileUtils.copyFile(imageForDisplay, fileToCreate);
+				
+			}
+		
+		
+		fileVO.setName(fileName);
+		fileVO.setTitle(getFileTitle() != null?escapeUnicode(StringEscapeUtils.unescapeHtml(getFileTitle())):null);
+		fileVO.setDescription(getFileDescription() != null?escapeUnicode(StringEscapeUtils.unescapeHtml(getFileDescription())):null);
+		fileVO.setVisibility(getVisibility());
+		fileVO.setNewsImportanceId(getNewsimportance());
+		fileVO.setLocationScope(getLocationScope());
+		fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
+		fileVO.setFileDate(getFileDate());
+		fileVO.setFileId(responseFileId);
+		if(getTitleCheckBox() != null)
+		 fileVO.setEenadu(getTitleCheckBox());
+		
+		
+		
+		if(fileSourceVOList != null && fileSourceVOList.size()  > 0)
+		{
+		  List<FileSourceVO> fileSourceVOResultList = new ArrayList<FileSourceVO>(0);
+		  for(FileSourceVO fileSourceVO :fileSourceVOList)
+		  {
+			if(fileSourceVO != null)
+			{
+			  
+			  FileSourceVO fileSourceVO2 = new FileSourceVO();
+			  fileSourceVO2.setFileSourceId(fileSourceVO.getFileSourceId());
+			  //fileSourceVO2.setNewsEdition(fileSourceVO.getNewsEdition());
+			  fileSourceVO2.setSourceLangId(fileSourceVO.getSourceLangId());
+			 // fileSourceVO2.setPageNo(fileSourceVO.getPageNo());
+			  //fileSourceVO2.setNewsLength(fileSourceVO.getNewsLength());
+			  fileSourceVO2.setCompleteDesc(fileSourceVO.getCompleteDesc());
+			  fileSourceVO2.setNewsDescCheck(fileSourceVO.getNewsDescCheck());
+			  if(fileSourceVO.getSourceFileList() != null && fileSourceVO.getSourceFileList().size() > 0){
+				  List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+				  for(FileSourceVO newsPart:fileSourceVO.getSourceFileList()){
+					  
+					  if(newsPart != null && newsPart.getFileImageContentType() != null){
+						  if(newsPart.getFileImageContentType().contains("text/plain"))
+						  {
+						    String[] str = newsPart.getFileImageContentType().split(",");
+						    if(str != null)
+						    {
+							   for(int i=0;i<str.length;i++)
+							   {
+								 fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+								 fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+								 String path = IWebConstants.UPLOADED_FILES+"/"+fileNames;
+								 File fileToCreate = new File(filePath, fileNames);
+									FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
+								 FileVO fileVO2 = new FileVO();
+								 fileVO2.setDisplayImageContentType(str[i]);
+								 fileVO2.setDisplayImageName(fileNames);
+								 fileVO2.setDisplayImagePath(path);
+								 fileVO2.setFileType(fileType);
+								 //fileVO2.setFileId(newsPart.getNewsEdition().longValue());//setting editionId
+								 fileVO2.setPageNo(newsPart.getPageNo());//pageno
+								 fileVO2.setNewsEditionId(newsPart.getNewsEdition());//edition
+								 fileVO2.setImportanceId(newsPart.getNewsLength());//news length
+								 fileVOsList.add(fileVO2);
+							    }  
+						     }
+						  }else{
+							 String[] str ;
+							 str = newsPart.getFileImageContentType().split(",");
+							 if(str !=null)
+							 {
+								for(int i=0;i<str.length;i++)
+								{
+								  fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+								  fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+								  String path = IWebConstants.UPLOADED_FILES+"/"+fileNames;
+								  File fileToCreate = new File(filePath, fileNames);
+									FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
+								  FileVO fileVO2 = new FileVO();
+								  fileVO2.setDisplayImageContentType(str[i]);
+								  fileVO2.setDisplayImageName(fileNames);
+								  fileVO2.setFileType(fileType);
+								  fileVO2.setDisplayImagePath(path);
+								  //fileVO2.setFileId(newsPart.getNewsEdition().longValue());//setting editionId
+								  fileVO2.setPageNo(newsPart.getPageNo());
+								  fileVO2.setNewsEditionId(newsPart.getNewsEdition());//edition
+								  fileVO2.setImportanceId(newsPart.getNewsLength());//newsLength
+								  fileVOsList.add(fileVO2);
+								  
+								}
+							 }
+						   }  
+					  }
+				  }
+				  fileSourceVO2.setFileVOsList(fileVOsList);
+			  }
+			  fileSourceVOResultList.add(fileSourceVO2);
+			  
+			  
+			}
+			
+		  }
+		  fileVO.setFileSourceVOList(fileSourceVOResultList); 
+		  
+		}
+		//fileVO.setSourceBenefitId(sourceBenefitId);
+		//fileVO.setDestinationBenefitId(destinationBenefitId);
+		
+		fileVO.setGallaryId(subCategoryId);
+		
+		/*if(sourceCandidateList != null && !sourceCandidateList.equalsIgnoreCase(""))
+		{
+		  List<Long> sourceCandidatesList = new ArrayList<Long>(0);
+		  String[] sourceCanList = sourceCandidateList.split(",");  
+		  if(sourceCanList != null)
+		   for(int i=0;i<sourceCanList.length;i++)
+			 sourceCandidatesList.add(Long.parseLong(sourceCanList[i]));
+		  fileVO.setSourceCandidatesList(sourceCandidatesList);
+		}
+		
+		if(sourcePartyList != null)
+		{
+		  List<Long> sourcePartiesList = new ArrayList<Long>(0);
+		  String[] str = sourcePartyList.split(",");
+		  if(str != null)
+			for(int i=0;i<str.length;i++)
+			 sourcePartiesList.add(Long.parseLong(str[i]));
+		  fileVO.setSourcePartyList(sourcePartiesList);
+		}
+		
+		if(destinationCandidateList != null)
+		{
+			List<Long> destinationCandidatesList = new ArrayList<Long>(0);
+			  String[] destinationCanList = destinationCandidateList.split(",");  
+			  if(destinationCanList != null)
+			   for(int i=0;i<destinationCanList.length;i++)
+				   destinationCandidatesList.add(Long.parseLong(destinationCanList[i]));
+			  fileVO.setDestinationCandidateLIst(destinationCandidatesList);
+		}
+		
+		if(destinationPartyList != null)
+		{
+		  List<Long> destinationPartiesList = new ArrayList<Long>(0);
+		  String[] str = destinationPartyList.split(",");
+		  if(str != null)
+			for(int i=0;i<str.length;i++)
+				destinationPartiesList.add(Long.parseLong(str[i]));
+		  fileVO.setDestinationPartyList(destinationPartiesList);
+		}
+		
+		
+		if(keywordList != null)
+		{
+		  String[] keywords = StringUtils.split(keywordList,",");
+		  List<String> keywordsList = new ArrayList<String>(0);
+		  for(String keyword:keywords)
+			if(!keyword.trim().equals(""))
+		      keywordsList.add(keyword.trim().substring(1));
+		  
+		  fileVO.setKeyWordsList(keywordsList);
+		  
+		}*/
+		
+		
+		
+	    fileVO.setCandidatePartyNewsVOList(candidatePartyNewsVOList);
+		
+		result = candidateDetailsService.uploadAFileForCandidateParty(fileVO);
+		if(result.getResultCode() == ResultCodeMapper.SUCCESS){
+			log.debug("fileuploades is sucess Method");
+			inputStream = new StringBufferInputStream(SUCCESS);
+		}
+		else
+			inputStream = new StringBufferInputStream("fail");
+		
+		 
+	 }catch (Exception e) {
+      e.printStackTrace();
+      log.error(" Exception Occured in uploadFilesForPartyAndCandidatesKeywords() method, Exception - "+e);
+	 }
+	 return Action.SUCCESS;
 	}
 	
 	
@@ -2752,7 +3116,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		   
 			jObj = new JSONObject(getTask());			
 			candidatesList = candidateDetailsService.getCandidatesOfAParty(jObj.getLong("partyId"));
-			
+			//candidatesList = candidateDetailsService.getCandidatesByPartyIdFromCandidateTable(jObj.getLong("partyId"));
 		}catch(Exception e)
 		{
 			e.printStackTrace();			
@@ -2834,6 +3198,18 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			return null;			
 		   }
 
+	}
+	
+	public String getBenefitList()
+	{
+	 try{
+		 jObj = new JSONObject(getTask());
+		 selectOptionList = candidateDetailsService.getBenefitList();
+		 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	 }
+	 return Action.SUCCESS;
 	}
 
 }

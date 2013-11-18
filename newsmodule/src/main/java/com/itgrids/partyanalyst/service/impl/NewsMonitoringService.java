@@ -18,7 +18,9 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
@@ -33,14 +35,19 @@ import com.itgrids.partyanalyst.dao.IMainCategoryDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileGallaryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.NominationDAO;
+import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
@@ -48,6 +55,7 @@ import com.itgrids.partyanalyst.dto.NewsDetailsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -105,6 +113,10 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IKeywordDAO keywordDAO;
     private IFileKeywordDAO fileKeywordDAO;
     private IMainCategoryDAO mainCategoryDAO;
+    private INominationDAO nominationDAO;
+    private ICandidatePartyDAO candidatePartyDAO;
+    private ICandidateDAO candidateDAO;
+    private IPartyDAO partyDAO;
     
    
 	public IMainCategoryDAO getMainCategoryDAO() {
@@ -315,6 +327,37 @@ public void setReportFilesDAO(IReportFilesDAO reportFilesDAO) {
 	public void setCandidateNewsResponseDAO(
 			ICandidateNewsResponseDAO candidateNewsResponseDAO) {
 		this.candidateNewsResponseDAO = candidateNewsResponseDAO;
+	}
+	
+	public INominationDAO getNominationDAO() {
+		return nominationDAO;
+	}
+
+	public void setNominationDAO(INominationDAO nominationDAO) {
+		this.nominationDAO = nominationDAO;
+	}
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+
+	public ICandidatePartyDAO getCandidatePartyDAO() {
+		return candidatePartyDAO;
+	}
+
+	public void setCandidatePartyDAO(ICandidatePartyDAO candidatePartyDAO) {
+		this.candidatePartyDAO = candidatePartyDAO;
 	}
 
 	/* 
@@ -4948,5 +4991,65 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		return resultList;
 	}
+	
+	public List<SelectOptionVO> getCandidatesByPartyIdsList(List<Long> partyIdsList)
+	{
+	  try{
+		  List<SelectOptionVO> selectOptionVOsList = new ArrayList<SelectOptionVO>(0);
+		  
+		  List<Object[]> nominationCandidates = nominationDAO.getCandidatesListByPartyIdsList(partyIdsList);
+		  List<Object[]> candidatePartyCandidates = candidatePartyDAO.getCandidatesListByPartyIdsList(partyIdsList);
+		  
+		  if(nominationCandidates != null && nominationCandidates.size() > 0)
+		   for(Object[] params:nominationCandidates)
+		   {
+			 SelectOptionVO optionVO = new SelectOptionVO();
+			 optionVO.setId((Long)params[0]);
+			 if(params[1] != null && params[1].toString().substring(0, 1).equalsIgnoreCase("."))
+			  optionVO.setName(params[1].toString());
+			 else
+			  optionVO.setName(params[1] != null?params[1].toString():" ");
+			 selectOptionVOsList.add(optionVO);
+			 
+		   }
+		   
+		  if(candidatePartyCandidates != null && candidatePartyCandidates.size() > 0)
+		   for(Object[] params: candidatePartyCandidates)
+			  selectOptionVOsList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():"")); 
+		  
+		  return selectOptionVOsList;
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getCandidatesByPartyIdsList() method, Exception - "+e);
+		return null;
+	  }
+	}
+	
+	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+	  try{
+		  
+		  List<Long> candidateIdsList = candidateDAO.getCandidateIdByPartyIdAndCandidateName(partyId, candidateName);
+		  if(candidateIdsList != null && candidateIdsList.size() > 0)
+		  {
+			  resultStatus.setMessage("Candidate is already exist.");
+			  return resultStatus;
+		  }
+		  Candidate candidate = new Candidate();
+		  candidate.setParty(partyDAO.get(partyId));
+		  candidate.setLastname(candidateName);
+		  candidateDAO.save(candidate);
+		  
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  return resultStatus;
+	  }catch (Exception e) {
+		e.printStackTrace();
+		log.error(" Exception Occured in saveCandidatesAndParty() method, Exception - "+e);
+		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  return resultStatus;
+	  }
+	}
+	
 
 }

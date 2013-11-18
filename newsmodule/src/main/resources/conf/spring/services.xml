@@ -1610,6 +1610,15 @@
 		<property name="gallaryKeywordDAO" ref="gallaryKeywordDAO" />
 		<property name="fileKeywordDAO" ref="fileKeywordDAO" />
 		<property name="mainCategoryDAO" ref="mainCategoryDAO" />
+		<property name="fontDAO" ref="fontDAO" />
+		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
+		<property name="candidatePartyKeywordDAO" ref="candidatePartyKeywordDAO" />
+		<property name="partyDAO" ref="partyDAO" />
+		<property name="benefitDAO" ref="benefitDAO" />
+		<property name="newsResponseDAO" ref="newsResponseDAO" />
+		<property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
+		
+		
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
@@ -1645,6 +1654,7 @@
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="tehsilDAO" ref="tehsilDAO" />	
 		<property name="fileDAO" ref="fileDAO" />
+		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
 	</bean>
 	
 	
@@ -1674,7 +1684,10 @@
 		<property name="keywordDAO" ref="keywordDAO" />
 		<property name="fileKeywordDAO" ref="fileKeywordDAO" />
 		<property name="mainCategoryDAO" ref="mainCategoryDAO" />
-		
+		<property name="nominationDAO" ref="nominationDAO" />
+		<property name="candidatePartyDAO" ref="candidatePartyDAO" /> 
+		<property name="candidateDAO" ref="candidateDAO" />
+		<property name="partyDAO" ref="partyDAO" />
 </bean>
 </beans>		
 	

@@ -25,10 +25,14 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBenefitDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyKeywordDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -43,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IFileTypeDAO;
+import com.itgrids.partyanalyst.dao.IFontDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryKeywordDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
@@ -51,7 +56,9 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMainCategoryDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsImportanceDAO;
+import com.itgrids.partyanalyst.dao.INewsResponseDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
@@ -62,15 +69,22 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserNewsCategoryDAO;
+import com.itgrids.partyanalyst.dto.CandidatePartyDestinationVO;
+import com.itgrids.partyanalyst.dto.CandidatePartyNewsVO;
 import com.itgrids.partyanalyst.dto.CategoryVO;
+import com.itgrids.partyanalyst.dto.FileSourceVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Benefit;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateNewsResponse;
 import com.itgrids.partyanalyst.model.CandidateParty;
+import com.itgrids.partyanalyst.model.CandidatePartyCategory;
+import com.itgrids.partyanalyst.model.CandidatePartyFile;
+import com.itgrids.partyanalyst.model.CandidatePartyKeyword;
 import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 import com.itgrids.partyanalyst.model.Category;
 import com.itgrids.partyanalyst.model.File;
@@ -82,12 +96,12 @@ import com.itgrids.partyanalyst.model.GallaryKeyword;
 import com.itgrids.partyanalyst.model.Keyword;
 import com.itgrids.partyanalyst.model.NewsDetails;
 import com.itgrids.partyanalyst.model.NewsImportance;
+import com.itgrids.partyanalyst.model.NewsResponse;
 import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.UserAddress;
-import com.itgrids.partyanalyst.model.UserNewsCategory;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -136,6 +150,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IStaticDataService staticDataService;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	 private IMainCategoryDAO mainCategoryDAO;
+	 private INewsResponseDAO newsResponseDAO;
 	    
 	//private IContentTypeDAO contentTypeDAO;
 	//private IUserGallaryDAO userGallaryDAO;
@@ -173,8 +188,23 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private IKeywordDAO keywordDAO;
     private IGallaryKeywordDAO gallaryKeywordDAO; 
     private IFileKeywordDAO fileKeywordDAO;
+    private IFontDAO fontDAO;
+    private ICandidatePartyFileDAO candidatePartyFileDAO;
+    private ICandidatePartyKeywordDAO candidatePartyKeywordDAO;
+    private IPartyDAO partyDAO;
+    private IBenefitDAO benefitDAO;
+    private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
 	
     
+	public ICandidatePartyCategoryDAO getCandidatePartyCategoryDAO() {
+		return candidatePartyCategoryDAO;
+	}
+
+	public void setCandidatePartyCategoryDAO(
+			ICandidatePartyCategoryDAO candidatePartyCategoryDAO) {
+		this.candidatePartyCategoryDAO = candidatePartyCategoryDAO;
+	}
+
 	public IMainCategoryDAO getMainCategoryDAO() {
 		return mainCategoryDAO;
 	}
@@ -527,8 +557,47 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		this.gallaryKeywordDAO = gallaryKeywordDAO;
 	}
 
-	
+	public IFontDAO getFontDAO() {
+		return fontDAO;
+	}
 
+	public void setFontDAO(IFontDAO fontDAO) {
+		this.fontDAO = fontDAO;
+	}
+	public ICandidatePartyFileDAO getCandidatePartyFileDAO() {
+		return candidatePartyFileDAO;
+	}
+
+	public void setCandidatePartyFileDAO(
+			ICandidatePartyFileDAO candidatePartyFileDAO) {
+		this.candidatePartyFileDAO = candidatePartyFileDAO;
+	}
+
+	public ICandidatePartyKeywordDAO getCandidatePartyKeywordDAO() {
+		return candidatePartyKeywordDAO;
+	}
+
+	public void setCandidatePartyKeywordDAO(
+			ICandidatePartyKeywordDAO candidatePartyKeywordDAO) {
+		this.candidatePartyKeywordDAO = candidatePartyKeywordDAO;
+	}
+	
+	public IBenefitDAO getBenefitDAO() {
+		return benefitDAO;
+	}
+
+	public void setBenefitDAO(IBenefitDAO benefitDAO) {
+		this.benefitDAO = benefitDAO;
+	}
+
+	public IPartyDAO getPartyDAO() {
+		return partyDAO;
+	}
+
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+	
 	/*public ResultStatus uploadAFile(final FileVO fileVO)
 	{
 		
@@ -749,6 +818,397 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}*/
 	
+	
+
+	
+
+	public ResultStatus uploadAFileForCandidateParty(final FileVO fileVO)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			log.debug("Entered into uploadAFileForCandidateParty() method in Candidate Details Service()");
+			
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+			 
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
+			UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()));
+			
+			File file = new File();
+			
+			file.setFileTitle(fileVO.getTitle());
+			file.setFileDescription(fileVO.getDescription());
+			file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
+			file.setLocationValue(Long.parseLong(fileVO.getLocationValue()));
+			if(fileVO.getNewsImportanceId() != null && fileVO.getNewsImportanceId() > 0)
+			 file.setNewsImportance(newsImportanceDAO.get(fileVO.getNewsImportanceId()));
+			
+			if(fileVO.getFileVOForDiaplyImage() != null)
+			{
+			  file.setFileName(fileVO.getFileVOForDiaplyImage().getDisplayImageName());
+			  file.setFilePath(fileVO.getFileVOForDiaplyImage().getDisplayImagePath() !=null?fileVO.getFileVOForDiaplyImage().getDisplayImagePath().trim():null);	
+			}
+			
+			if(fileVO.getFileDate() != null)
+			{
+			 try{
+				 file.setFileDate(sdf.parse(fileVO.getFileDate())); 
+			 }catch (Exception e) {
+			  e.printStackTrace();
+			  log.error(e);
+			}
+			}
+			
+			file.setUserAddress(userAddress);
+			file.setUser(userDAO.get(fileVO.getUserId()));
+			
+			if(fileVO.isEenadu())
+			 file.setFont(fontDAO.get(1));
+			
+			file.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			file.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			
+			if(!fileVO.getVisibility().equalsIgnoreCase("public"))
+			 file.setIsPrivate("Y");
+			
+			file = fileDAO.save(file);
+			
+			
+			
+			if(fileVO.getFileSourceVOList() != null && fileVO.getFileSourceVOList().size() > 0)
+			{
+			  for(FileSourceVO fileSourceVO :fileVO.getFileSourceVOList())
+			  {
+				FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
+				fileSourceLanguage.setFile(file);
+				if(fileSourceVO.getNewsDescCheck() != null && fileSourceVO.getNewsDescCheck().equalsIgnoreCase("true"))
+				 fileSourceLanguage.setFont(fontDAO.get(1));
+				
+				fileSourceLanguage.setNewsDetailedDescription(fileSourceVO.getCompleteDesc());
+				fileSourceLanguage.setLanguage(sourceLanguageDAO.get(fileSourceVO.getSourceLangId()));
+				fileSourceLanguage.setSource(sourceDAO.get(fileSourceVO.getFileSourceId()));
+				
+				
+				fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+				
+				if(fileSourceVO.getFileVOsList() != null && fileSourceVO.getFileVOsList().size() > 0)
+				{
+				 Long orderNo = 1L;
+				 for(FileVO filePathFileVO :fileSourceVO.getFileVOsList())
+				 {
+					 FilePaths filePaths = new FilePaths();
+					 
+					 filePaths.setFilePath(filePathFileVO.getDisplayImagePath() !=null?filePathFileVO.getDisplayImagePath().trim():null);
+					 filePaths.setOrderNo(orderNo);
+					 filePaths.setHaveThumnails(IConstants.FALSE);
+					 filePaths.setEdition(filePathFileVO.getNewsEditionId());
+					 if(filePathFileVO.getPageNo() != null)
+					 filePaths.setPageNo(filePathFileVO.getPageNo().intValue());
+					 if(filePathFileVO.getImportanceId() != null)
+					 filePaths.setNewsLength(filePathFileVO.getImportanceId().intValue());
+					 if(filePathFileVO.getFileType()!=null)
+					  filePaths.setFileType(fileTypeDAO.getFileType(filePathFileVO.getFileType()).get(0));
+					 
+					 filePaths.setFileSourceLanguage(fileSourceLanguage);
+					 filePathsDAO.save(filePaths); 
+					 orderNo++;
+				 }
+				}
+				
+			  }
+			}
+			
+			//keywords saving
+			if(fileVO.getCandidatePartyNewsVOList() != null)
+			{
+			  List<String> keywordsList = new ArrayList<String>(0);
+			    CandidatePartyNewsVO newsVO = fileVO.getCandidatePartyNewsVOList();
+				if(newsVO.getDestinationVOList() != null && newsVO.getDestinationVOList().size() > 0)
+				 for(CandidatePartyDestinationVO destinationVO :newsVO.getDestinationVOList())	
+				 {
+				  String keywords = destinationVO.getKeywordsList();
+				  if(keywords != null && !keywords.equalsIgnoreCase(""))
+				  {
+					String[] str = keywords.split(",");
+					if(str != null)
+					 for(String keyword:str)
+					  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+""))
+						  keywordsList.add(keyword.substring(1));
+				  }
+				 }
+			 
+			    if(keywordsList != null && keywordsList.size() > 0)
+			    {
+				  List<String> existingKeywords = keywordDAO.getExistingKeywordsByKeywordsList(keywordsList);
+				  for(String keyword:keywordsList)
+				   if(!existingKeywords.contains(keyword) && !keyword.equalsIgnoreCase(" "))
+				   {
+					 Keyword keyword2 = new Keyword(); 
+					 keyword2.setType(keyword);
+					 keyword2.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+					 keyword2.setCreatedBy(fileVO.getUserId());
+					 keywordDAO.save(keyword2);
+				   }
+			    }
+			}
+			
+			
+			if(fileVO.getCandidatePartyNewsVOList() != null)
+			{
+				boolean sourcePresent = false;
+				boolean destinationPresent = false;
+				 CandidatePartyNewsVO newsVO = fileVO.getCandidatePartyNewsVOList();
+				for(CandidatePartyDestinationVO  source:newsVO.getSourceVOList()){
+					if(sourcePresent)
+						break;
+					if(source != null){
+						if((source.getPartyId()!= null &&  source.getPartyId() > 0) || (source.getCandidateId()!= null &&  source.getCandidateId() > 0)){
+							sourcePresent = true;
+						}
+					}
+				}
+				for(CandidatePartyDestinationVO  destination:newsVO.getDestinationVOList()){
+					if(destination != null){
+						if(destinationPresent)
+							break;
+						if(destination != null){
+							if((destination.getPartyId()!= null &&  destination.getPartyId() > 0) || (destination.getCandidateId()!= null &&  destination.getCandidateId() > 0)  || (destination.getCategoryIdsStr()!= null &&  destination.getCategoryIdsStr().trim().length() > 0)){
+								destinationPresent = true;
+							}
+						}
+					}
+				}
+			    if(sourcePresent && destinationPresent)
+				    saveSourceAndDestination(file,newsVO,fileVO.getFileId());
+			    else if(destinationPresent)
+				{
+				  for(CandidatePartyDestinationVO destinationVO :newsVO.getDestinationVOList())
+				  {
+				   if(destinationVO != null){
+					CandidatePartyFile candidatePartyFile = new CandidatePartyFile();
+					candidatePartyFile.setFile(file);
+					
+					candidatePartyFile.setDestinationBenefit(benefitDAO.get(destinationVO.getBenefitId()));
+					if(destinationVO.getPartyId() != null && destinationVO.getPartyId() > 0)
+					 candidatePartyFile.setDestinationParty(partyDAO.get(destinationVO.getPartyId()));
+					if(destinationVO.getCandidateId() != null && destinationVO.getCandidateId() > 0)
+					 candidatePartyFile.setDestinationCandidate(candidateDAO.get(destinationVO.getCandidateId()));
+					
+					 candidatePartyFile.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+					 candidatePartyFile.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+					 
+					 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
+					 if(fileVO.getFileId() != null){
+						 NewsResponse newsResponse = new NewsResponse();
+						 newsResponse.setFile(fileDAO.get(fileVO.getFileId()));
+						 newsResponse.setCandidatePartyFile(candidatePartyFile);
+						 newsResponseDAO.save(newsResponse);
+					 }
+					 //saving categories
+					 if(destinationVO.getCategoryIdsStr() != null && destinationVO.getCategoryIdsStr().trim().length() > 0)
+					 {
+						 String[] str = destinationVO.getCategoryIdsStr().split(",");
+						 if(str != null)
+						    {
+							  for(String categoryId: str)
+							  {
+								 if(categoryId != null && categoryId.trim().length() > 0){
+									CandidatePartyCategory candidatePartyCategory = new CandidatePartyCategory();
+									candidatePartyCategory.setGallary(gallaryDAO.get(Long.valueOf(categoryId.trim())));
+									candidatePartyCategory.setCandidatePartyFile(candidatePartyFile);
+									candidatePartyCategoryDAO.save(candidatePartyCategory);
+								 }
+							  }
+						    }
+					 }
+					 
+					 //keywords saving
+					  if(destinationVO.getKeywordsList() != null && !destinationVO.getKeywordsList().equalsIgnoreCase(""))
+					  {
+					    String[] str = destinationVO.getKeywordsList().split(",");
+					    if(str != null)
+					    {
+						  for(String keyword:str)
+						  {
+						    if(keyword != null && !keyword.equalsIgnoreCase(""))
+						    {
+						     CandidatePartyKeyword candidatePartyKeyword = new CandidatePartyKeyword();
+						     candidatePartyKeyword.setCandidatePartyFile(candidatePartyFile);
+						     candidatePartyKeyword.setKeyword(keywordDAO.get(keywordDAO.getKeywordIdByKeyword(keyword.substring(1)).get(0)));
+						     candidatePartyKeywordDAO.save(candidatePartyKeyword);
+						    }
+						   }
+					  	 }
+					   }
+				  }
+				  }
+				}
+				else if(sourcePresent)
+				{
+					for(CandidatePartyDestinationVO  source:newsVO.getSourceVOList()){
+						if(source != null){
+							CandidatePartyFile candidatePartyFile = new CandidatePartyFile();
+							candidatePartyFile.setFile(file);
+							
+							candidatePartyFile.setSourceBenefit(benefitDAO.get(source.getBenefitId()));
+							if(source.getMediaId() != null && source.getMediaId() > 0)
+							 candidatePartyFile.setMediaId(newsVO.getMediaId());
+							else
+							{
+							  if(source.getPartyId() != null)
+							  candidatePartyFile.setSourceParty(partyDAO.get(source.getPartyId()));
+							  if(source.getCandidateId() != null && source.getCandidateId() > 0)	
+							   candidatePartyFile.setSourceCandidate(candidateDAO.get(source.getCandidateId()));
+							}
+							 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
+							if(fileVO.getFileId() != null){
+								 NewsResponse newsResponse = new NewsResponse();
+								 newsResponse.setFile(fileDAO.get(fileVO.getFileId()));
+								 newsResponse.setCandidatePartyFile(candidatePartyFile);
+								 newsResponseDAO.save(newsResponse);
+							 }
+						}
+					}
+					
+				}
+				
+			  
+			}
+			
+			}
+			});
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+			}catch (Exception e) {
+				log.error("Exception encountered in uploadAFileForCandidateParty() method, Exception - "+e);
+				resultStatus.setExceptionEncountered(e);
+				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				return resultStatus;
+			}
+	}
+	
+	public void saveSourceAndDestination(File file,CandidatePartyNewsVO newsVO,Long responseId){
+
+		
+		List<CandidatePartyDestinationVO> sourceList = newsVO.getSourceVOList();
+		List<CandidatePartyDestinationVO> destinationList = newsVO.getDestinationVOList();
+		for(CandidatePartyDestinationVO  source:sourceList){
+			if(source != null){
+				for(CandidatePartyDestinationVO  destination:destinationList){
+					if(destination != null){
+						CandidatePartyFile candidatePartyFile = new CandidatePartyFile();
+						candidatePartyFile.setFile(file);
+						
+						candidatePartyFile.setSourceBenefit(benefitDAO.get(source.getBenefitId()));
+						if(source.getMediaId() != null && source.getMediaId() > 0)
+						 candidatePartyFile.setMediaId(source.getMediaId());
+						else
+						{
+						 if(source.getPartyId() != null && source.getPartyId() > 0)
+						   candidatePartyFile.setSourceParty(partyDAO.get(source.getPartyId()));
+						  if(source.getCandidateId() != null && source.getCandidateId() > 0)	
+						   candidatePartyFile.setSourceCandidate(candidateDAO.get(source.getCandidateId()));
+						}
+						
+						candidatePartyFile.setDestinationBenefit(benefitDAO.get(destination.getBenefitId()));
+						 if(destination.getPartyId() != null && destination.getPartyId() > 0)
+						    candidatePartyFile.setDestinationParty(partyDAO.get(destination.getPartyId()));
+						if(destination.getCandidateId() != null && destination.getCandidateId() > 0)
+						   candidatePartyFile.setDestinationCandidate(candidateDAO.get(destination.getCandidateId()));
+						
+						 candidatePartyFile.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+						 candidatePartyFile.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+						 
+						 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
+						 if(responseId != null){
+							 NewsResponse newsResponse = new NewsResponse();
+							 newsResponse.setFile(fileDAO.get(responseId));
+							 newsResponse.setCandidatePartyFile(candidatePartyFile);
+							 newsResponseDAO.save(newsResponse);
+						 }
+						 //saving categories
+						 if(destination.getCategoryIdsStr() != null && destination.getCategoryIdsStr().trim().length() > 0)
+						 {
+							 String[] str = destination.getCategoryIdsStr().split(",");
+							 if(str != null)
+							    {
+								  for(String categoryId: str)
+								  {
+									 if(categoryId != null && categoryId.trim().length() > 0){
+										CandidatePartyCategory candidatePartyCategory = new CandidatePartyCategory();
+										candidatePartyCategory.setGallary(gallaryDAO.get(Long.valueOf(categoryId.trim())));
+										candidatePartyCategory.setCandidatePartyFile(candidatePartyFile);
+										candidatePartyCategoryDAO.save(candidatePartyCategory);
+									 }
+								  }
+							    }
+						 }
+						 
+						 //keywords saving
+						  if(destination.getKeywordsList() != null && !destination.getKeywordsList().equalsIgnoreCase(""))
+						  {
+						    String[] str = destination.getKeywordsList().split(",");
+						    if(str != null)
+						    {
+							  for(String keyword:str)
+							  {
+							    if(keyword != null && !keyword.equalsIgnoreCase("") && !"".equalsIgnoreCase(keyword.substring(1)) && keyword.substring(1).length() > 0)
+							    {
+							     CandidatePartyKeyword candidatePartyKeyword = new CandidatePartyKeyword();
+							     candidatePartyKeyword.setCandidatePartyFile(candidatePartyFile);
+							     candidatePartyKeyword.setKeyword(keywordDAO.get(keywordDAO.getKeywordIdByKeyword(keyword.substring(1)).get(0)));
+							     candidatePartyKeywordDAO.save(candidatePartyKeyword);
+							    }
+							   }
+						  	 }
+						   }
+					}
+				}
+			}
+		}
+		
+	  
+		
+	}
+	
+	public INewsResponseDAO getNewsResponseDAO() {
+		return newsResponseDAO;
+	}
+
+	public void setNewsResponseDAO(INewsResponseDAO newsResponseDAO) {
+		this.newsResponseDAO = newsResponseDAO;
+	}
+
+	public void saveCandidatePartyDetailsInCandidatePartyFileTable(List<Long> candidateOrPartyIds,File file,String type,String spokenBy,Long benefitId)
+	{
+	 try{
+		if(candidateOrPartyIds != null && candidateOrPartyIds.size() > 0)
+		{
+		  for(Long id: candidateOrPartyIds)
+		  {
+			  CandidatePartyFile candidatePartyFile = new CandidatePartyFile();
+			  candidatePartyFile.setFile(file);
+			  candidatePartyFile.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			  candidatePartyFile.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+			 /* if(type.equalsIgnoreCase("party"))
+			    candidatePartyFile.setParty(partyDAO.get(id));
+			  else
+				candidatePartyFile.setCandidate(candidateDAO.get(id));
+			  if(spokenBy!= null && spokenBy.equalsIgnoreCase("fromSource"))
+			   candidatePartyFile.setSpokenBy(1L);*/
+			  
+			  /*if(benefitId != null && benefitId > 0)
+				  candidatePartyFile.setBenefit(benefitDAO.get(benefitId));*/
+			  
+			  candidatePartyFileDAO.save(candidatePartyFile);   
+		  }
+		}
+		 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error("Exception Occured in saveCandidatePartyDetailsInCandidatePartyFileTable() method, Exception - "+e);
+	 }
+	}
 	
 	public ResultStatus uploadAFile(final FileVO fileVO)
 	{
@@ -1237,16 +1697,19 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		        Date date= (Date)obj[2];
 		        String source =(String) obj[3];
 		        String flag =(String) obj[4];
-		        long partyId =(Long) obj[5];
+		        long partyId =((Integer)(obj[5])).longValue();
 		        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		        String newDate = formatter.format(date);
+		        if(f.getFont() != null){
+		        	v.setEenadu(true);
+		        }
 		        v.setSource(source);
 		        v.setContentId(id);
 		        v.setCandidateId(partyId);
 		        v.setFileDate(newDate);
              v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle())));
              v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription())));
-             v.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)obj[1]).size());
+             v.setResponseCount(0);
              v.setDisplayImageName(f.getFileName());
 				 v.setDisplayImagePath(f.getFilePath());
 				 v.setImagePathInUpperCase(flag);
@@ -2789,7 +3252,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<SelectOptionVO> newsImportanceSelectList = new ArrayList<SelectOptionVO>(0);
 		
 	try{
-		List<NewsImportance> newsImportance = newsImportanceDAO.getAll();
+		//List<NewsImportance> newsImportance = newsImportanceDAO.getAll();
+		List<NewsImportance> newsImportance = newsImportanceDAO.getNewsImportanceList();
+		
 		SelectOptionVO selectOptionVO = null;
 		for(NewsImportance result:newsImportance)
 		{
@@ -7429,6 +7894,43 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	}
 	return result;
  }
+	 
+ public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long partyId)
+ {
+ 	try
+ 	{
+ 	List<SelectOptionVO> candidateList = new ArrayList<SelectOptionVO>(0);
+ 	List<Object[]> list = candidateDAO.getCandidateListByPartyId(partyId);
+ 	if(list != null && list.size() > 0)
+ 	 for(Object[] params:list)
+ 		candidateList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
+ 	return candidateList;
+ 	
+ 	}catch(Exception e)
+ 	{
+ 		e.printStackTrace();
+ 		log.error("Exception Occured in getCandidatesByPartyIdFromCandidateTable() method, Exception - "+e);
+ 		return null;
+ 	}
+ }
+ 
+ public List<SelectOptionVO> getBenefitList()
+ {
+	 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+	 try{
 	
-	
+	  List<Benefit> benefitsList = benefitDAO.getBenifitsList();
+	  if(benefitsList != null && benefitsList.size() > 0)
+		for(Benefit benefit: benefitsList)
+			selectOptionVOList.add(new SelectOptionVO(benefit.getBenefitId(),benefit.getName()));
+	  
+	  return selectOptionVOList;
+		 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error(" Exception Occured in getBenefitList() method, Exception - "+e);
+	  return null;
+	 }
+ }
+ 
 }

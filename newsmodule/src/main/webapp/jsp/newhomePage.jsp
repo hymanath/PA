@@ -50,6 +50,9 @@
 
 	<script src="js/partyWiseNewsDisplay.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
+
+<script src="js/combobox.js" type="text/javascript"></script>
+
 <style type="text/css">
 @font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
 @font-face {
@@ -171,6 +174,26 @@ width: 92px;
     -moz-text-decoration-style: solid;
     background-color: #EEEEEE;
 }
+
+
+.ui-autocomplete {
+		max-height: 200px;
+		overflow-y: auto;
+		/* prevent horizontal scrollbar */
+		overflow-x: hidden;
+       max-width:200px;
+		/* add padding to account for vertical scrollbar */
+		padding-right: 20px;
+	}
+	/* IE 6 doesn't support max-height
+	 * we use height instead, but this forces the menu to always be this tall
+	 */
+	* html .ui-autocomplete {
+		height: 200px;
+	}
+
+	.ui-autocomplete-input { border-radius:3px;margin: 0; height:25px; position:relative; width:120px; -moz-border-radius:0px 0px 0px 0px;border:1px solid #CCCCCC;margin: 0 5px 8px;}
+
 </style>
 <script>
 $(document).ready(function(){
@@ -214,7 +237,7 @@ $(document).ready(function(){
                              <div ${ctr.first ? 'class="item active"' : 'class="item"'} style="top: 10px;">
                           
 						  
-						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu') || #newsGallaryDetails.eenadu}"> 
 							<span class="enadu"><a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <s:property value="fileTitle1"/> </a></span>
 						 </s:if>
 						 <s:else>
@@ -233,7 +256,7 @@ $(document).ready(function(){
 										<c:if test="${newsGallaryDetails.displayImagePath == null}">
 											<a class="thumbnail span4" style="height:120px;"href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"/></a>
 										</c:if>
-										<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+										<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu') || #newsGallaryDetails.eenadu}"> 
                                        <p class="span8 enadu"><s:property value="description"/></p>
 						               </s:if>
 						               <s:else>
@@ -265,8 +288,8 @@ $(document).ready(function(){
 										
 											</div>
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
-										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>--->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âº</a>--->
 									</div>
 									
 								
@@ -314,8 +337,8 @@ $(document).ready(function(){
 										  <a data-slide="next" href="#myCarousel" class="right">></a>
 										  
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
-										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>---->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âº</a>---->
 									</div>
 					<!----------------------->
 								</div>
@@ -353,7 +376,7 @@ $(document).ready(function(){
                              <div ${ctr.first ? 'class="item active"' : 'class="item"'} style="top: 10px;">
                           
 						  
-						  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+						  <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu') || #newsGallaryDetails.eenadu}"> 
 							<span class="enadu"><a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <s:property value="fileTitle1"/> </a></span>						 </s:if>
 						 <s:else>
 							<h4 style="text-transform: capitalize;"><a  style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <s:property value="fileTitle1"/> </a></h4>
@@ -369,7 +392,7 @@ $(document).ready(function(){
 											<a class="thumbnail span4" style="height:120px;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"/></a>
 										</c:if>
 
-										 <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
+										 <s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu') || #newsGallaryDetails.eenadu}"> 
 										   <p class="span8 enadu"><s:property value="description"/></p>
 										 </s:if>
 										  <s:else>
@@ -399,8 +422,8 @@ $(document).ready(function(){
 							</s:if>
 										
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
-										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>--->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âº</a>--->
 									</div>
 									
 								</div>
@@ -448,8 +471,8 @@ $(document).ready(function(){
 										  <a data-slide="next" href="#myCarousel" class="right">></a>
 										  
 										</div>
-										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹</a>
-										<a data-slide="next" href="#myCarousel" class="right">ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</a>---->
+										<!---<a data-slide="prev" href="#myCarousel" class="left ">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¹</a>
+										<a data-slide="next" href="#myCarousel" class="right">ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Âº</a>---->
 									</div>
 					<!----------------------->
 								</div>
@@ -552,6 +575,23 @@ $(document).ready(function(){
 						<button id="sendButton" class="btn btn-warning btn-mini" onclick="addCssStyle(),handleSubmit()" style="margin-bottom: 15px; margin-left: 35px;font-weight:bold;" > View News</button> 
 						</div>
 						
+					
+                    <!--DIV for Constituency Select Filter
+						<h4 id="" style="text-align:center;font-weight:bold;background:#F9F9F9;color:#337DEB;">View Keyword News</h4>
+						<div class="">
+						<div id="errorMsgDiv"></div>
+						 <div>Enter Keyword : <select id="keywordSelect" class="keywordClass">
+						 <c:forEach var="keywords" items="${keywordsList}">
+						   <option value='${keywords.name}'>${keywords.name}</option>
+						 </c:forEach>
+
+						 </select></div>
+												
+						
+						<button id="keywordButton" class="btn btn-warning btn-mini"  style="margin-bottom: 15px; margin-left: 35px;font-weight:bold;" > View News</button> 
+						</div>-->
+						
+
 					</div>
 					
 					
@@ -833,7 +873,11 @@ function callHomePageAjax11(jsObj,url){
 							{	
 								buildVideoGallery(myResults);
 								
-							}	
+							}
+							else if(jsObj.task == "getTotalKeyWords")
+							{
+							  showKeyWordsList(myResults);	
+							}
 							
 						}catch(e)
 						{   
@@ -1537,7 +1581,66 @@ function showAllCategories()
      browser1.focus();
 }
 
+
+
+function showKeyWordsList(optionsList)
+{
+ if(optionsList == null)
+  return;
+ 
+ var divEle = document.getElementById("keywordSelect");
+  var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+  
+	try
+	{
+		divEle.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		divEle.add(option); // IE only
+	}
+  
+
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].name;
+		option.text=optionsList[i].name;
+		try
+		{
+			divEle.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			divEle.add(option); // IE only
+		}
+	}
+
+ 	
+}
+
 getLocationList();
+
+
+$(document).ready(function(){
+
+  $('.keywordClass').combobox();
+
+  $("#keywordButton").click(function(){
+	
+	var keyword = $("#keywordSelect").val();
+	
+
+ var urlstr = "keywordsRelatedNewsAction.action?keyword="+keyword+"&";
+		
+ var browser1 = window.open(urlstr,""+keyword+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+
+});
+});
+
 </script>
 </body>
 
