@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.WSResultVO;
 
 public interface IWebServiceHandlerService {
 	
@@ -15,5 +16,7 @@ public interface IWebServiceHandlerService {
 	
 	public String sendVoiceSMS(String uniqueCode,String mobileNos,String audioFilePath);
 	
-	public List<BasicVO> getUserVoiceRecordedFiles(String uniqueCode);
+	public List<WSResultVO> getUserVoiceRecordedFiles(String uniqueCode);
+	
+	public ResultStatus sendSMS(String uniqueCode,String mobileNos,String message);
 }

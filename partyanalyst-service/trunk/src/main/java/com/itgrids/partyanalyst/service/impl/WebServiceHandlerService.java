@@ -329,6 +329,32 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 		return result;
 	}
+	
+	public ResultStatus sendSMS(String uniqueCode,String mobileNos,String message)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			List<Object> mobileAppUserId = mobileAppUserDAO.checkUniqueCode(uniqueCode);
+			
+			if(mobileAppUserId == null || mobileAppUserId .size() == 0)
+				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+			else
+			{
+				if(!message.toString().equalsIgnoreCase("") && (mobileNos != null && !mobileNos.toString().equalsIgnoreCase("")))
+				{
+					String[] mobilenoarr = mobileNos.split(",");
+					resultStatus = smsCountrySmsService.sendSmsFromAdmin(message, true, mobilenoarr);
+				}
+			
+			}
+		}
+		catch (Exception e) {
+			log.error("Exception Occured in sendSMS()",e);
+			e.printStackTrace();
+		}
+		return resultStatus;
+	}
 
 }
 
