@@ -341,7 +341,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			else
 			{
-				if(!message.toString().equalsIgnoreCase("") && (mobileNos != null && !mobileNos.toString().equalsIgnoreCase("")))
+				if(!(message.toString().equals("\"\"") && mobileNos.toString().equals("\"\"")))
 				{
 					String[] mobilenoarr = mobileNos.split(",");
 					resultStatus = smsCountrySmsService.sendSmsFromAdmin(message, true, mobilenoarr);
