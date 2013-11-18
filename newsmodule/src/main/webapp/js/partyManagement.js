@@ -1639,7 +1639,10 @@ function showNewsGallaey()
   
   $("#profileManagementHeaderDiv3").css("display","block");
   $("#dateSelectDiv").css("display","none");
-  buildUploadNewsForMultipleUsers();
+  //buildUploadNewsForMultipleUsers();
+  
+  uploadNewsForPartyAndCandidate();
+  
   }
 }
 
