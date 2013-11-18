@@ -98,6 +98,16 @@
     <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" /> 
     </div>
     </div>
+		 <div class="control-group">
+    <label class="control-label" for="inputconstituency">User</label>
+    <div class="controls">
+    <select id="usersId" cssClass="selectWidth" >
+										<c:forEach var="allUsers" varStatus="stat" items="${allRegisteredUsersData.listOfUsers}">		
+											<option value="${allUsers.id}"> ${allUsers.name} </option>	
+										</c:forEach>
+									</select>
+    </div>
+    </div>
     <div class="control-group">
     <label class="control-label" for="inputFirstName">FirstName</label>
     <div class="controls">
@@ -141,7 +151,18 @@
     <input type="text" id="uniqueCodeId" placeholder="uniqueCode">
     </div>
     </div>
-	
+	  <div class="control-group">
+    <label class="control-label" for="inputmobileNo">MobileNo</label>
+    <div class="controls">
+    <input type="text" id="mobileNoId" placeholder="mobileNo">
+    </div>
+    </div>
+	  <div class="control-group">
+    <label class="control-label" for="inputemail">email</label>
+    <div class="controls">
+    <input type="text" id="emailId" placeholder="email">
+    </div>
+    </div>
 		   <div class="control-group">
     <label class="control-label" for="inputappId">App ID</label>
     <div class="controls">
@@ -222,11 +243,19 @@ var uniqueCode = $("#uniqueCodeId").val();
 var appId = $("#appId").val();
 var deviceId = $("#deviceId").val();
 var macAddressId = $("#macAddressId").val();
-
+var userId = $("#usersId").val();
+var mobileNo =$("#mobileNoId").val();
+var email =$("#emailId").val(); 
 var str = '<font color="red">';
  if(constituencyId == 0)
 	{
 	 str += 'Please Select Constituency<br>';
+	  flag = true;
+	 
+	}
+	if(userId == 0)
+	{
+	 str += 'Please Select User<br>';
 	  flag = true;
 	 
 	}
@@ -258,6 +287,16 @@ var str = '<font color="red">';
  if(uniqueCode == 0 || uniqueCode == null)
 	{
 		str += 'uniqueCode is Required<br>';
+		flag = true;
+	}
+	if(mobileNo == 0 || mobileNo == null)
+	{
+		str += 'mobileNo is Required<br>';
+		flag = true;
+	}
+	if(email == 0 || email == null)
+	{
+		str += 'email is Required<br>';
 		flag = true;
 	}
  if(appId == 0 || appId == null)
@@ -293,10 +332,13 @@ password:password,
 uniqueCode:uniqueCode,
 appId:appId,
 deviceId:deviceId,
-macAddressId:macAddressId
+macAddressId:macAddressId,
+userId:userId,
+email:email,
+mobileNo:mobileNo,
 };
 dataarr.push(obj);
-console.log(dataarr);
+
 
 
 	var jsObj=

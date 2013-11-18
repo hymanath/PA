@@ -1771,8 +1771,8 @@
 	 <property name="mobileAppUserProfileDAO" ref="mobileAppUserProfileDAO" />
 	 <property name="electionScopeDAO" ref="electionScopeDAO" />
 	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
-	
-      <property name="mobileAppUserAccessKeyDAO" ref="mobileAppUserAccessKeyDAO"></property>
+	 <property name="mobileAppUserAccessKeyDAO" ref="mobileAppUserAccessKeyDAO"></property>
+     <property name="userDAO" ref="userDAO" />
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
