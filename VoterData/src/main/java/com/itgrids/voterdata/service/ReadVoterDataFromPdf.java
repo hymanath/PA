@@ -135,9 +135,9 @@ public class ReadVoterDataFromPdf {
                     PDFTextStripper stripper = new PDFTextStripper();
                     // Add text to the StringBuilder from the PDF
                     sb.append(stripper.getText(pd));
-                    //System.out.println("File text:"+stripper.getText(pd));
+                    System.out.println("File text:"+stripper.getText(pd));
                     sb = formatText(sb);
-                                       
+                    outwriter.write(sb.toString());                   
                     String [] fileName = input.getName().split("-");
                     // Matcher refers to the actual text where the pattern will be found
                     Matcher m = p.matcher(sb);

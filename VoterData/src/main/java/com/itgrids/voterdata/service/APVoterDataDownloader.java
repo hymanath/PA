@@ -44,7 +44,7 @@ public class APVoterDataDownloader {
         
         int numOfDistricts = district.getOptions().size();
         
-        int d = 6;
+        int d = 19;
         //for (; d<=numOfDistricts; d++) {
             district.selectByValue(String.valueOf(d));
             Select constituency = new Select(driver.findElement(By.name("ddlAC")));
@@ -56,14 +56,14 @@ public class APVoterDataDownloader {
             } else {
                 i = 1;
             }
-            i= 57;
+            i= 233;
             //for(; i<=numOfconstituencies; i++){
                 constituency.selectByValue(String.valueOf(i));
                 String constituencyName = constituency.getFirstSelectedOption().getText();
                 System.out.println("Constituency Name:" + constituencyName);
                 WebElement submit = driver.findElement(By.id("btnGetPollingStations"));
                 submit.click();
-                WebElement boothTable = driver.findElement(By.xpath("//*[@id=\"GridView2\"]"));
+                WebElement boothTable = driver.findElement(By.xpath("//*[@id=\"GridView1\"]"));
                 int boothCount = boothTable.findElements(By.tagName("tr")).size() - 1;
                 System.out.println("boothCount:"+boothCount);
                 WebElement downloadLink = null;
@@ -106,14 +106,14 @@ public class APVoterDataDownloader {
                 	int no = j + 2;
                    
                     if (no < 10) {
-                        downloadLink =  driver.findElement(By.id("GridView2_ctl0"+no+"_lnkEnglish"));
+                        downloadLink =  driver.findElement(By.id("GridView1_ctl0"+no+"_lnkEnglish"));
                     } else {
-                        downloadLink =  driver.findElement(By.id("GridView2_ctl"+no+"_lnkEnglish"));
+                        downloadLink =  driver.findElement(By.id("GridView1_ctl"+no+"_lnkEnglish"));
                     }
                     downloadLink.click();
 
-                    String boothName = driver.findElement(By.xpath("//*[@id=\"GridView2\"]/tbody/tr["+no+"]/td[2]")).getText();
-                    String boothNo = driver.findElement(By.xpath("//*[@id=\"GridView2\"]/tbody/tr["+no+"]/td[1]")).getText();
+                    String boothName = driver.findElement(By.xpath("//*[@id=\"GridView1\"]/tbody/tr["+no+"]/td[2]")).getText();
+                    String boothNo = driver.findElement(By.xpath("//*[@id=\"GridView1\"]/tbody/tr["+no+"]/td[1]")).getText();
                     File downloadedFile = new File(IConstants.DOWNLOAD_DIRECTORY+"/"+"PDFGeneration.aspx");
                     final File downloadedFilePart = new File(IConstants.DOWNLOAD_DIRECTORY+"/"+"PDFGeneration.aspx.part");
 
@@ -139,7 +139,5 @@ public class APVoterDataDownloader {
             //}
         //}
         driver.quit();
-
-
     }
 }
