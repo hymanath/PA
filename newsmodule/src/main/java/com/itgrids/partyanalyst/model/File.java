@@ -124,7 +124,7 @@ public class File extends BaseModel implements java.io.Serializable {
 		this.filePath = filePath;
 	}
 
-	@Column(name = "file_title", length = 200)
+	@Column(name = "file_title", length = 1000)
 	public String getFileTitle() {
 		return fileTitle;
 	}
@@ -133,7 +133,7 @@ public class File extends BaseModel implements java.io.Serializable {
 		this.fileTitle = fileTitle;
 	}
 
-	@Column(name = "file_description", length = 500)
+	@Column(name = "file_description", length = 2000)
 	public String getFileDescription() {
 		return fileDescription;
 	}
