@@ -2394,7 +2394,7 @@ function uploadNewsForPartyAndCandidate()
 		str+='</div>';
 		str+='<div id="source0newfile"></div>';
 		str+='<div class="container m_top5">';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level" id="newsfileDescription"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level" id="aaanewsfileDescription"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -2496,7 +2496,7 @@ function addNewFileSource(){
 		str+='</div>';
 		str+='<div id="source'+addSource+'newfile"></div>';
 		str+='<div class="container m_top5">';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level" ></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level" ></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -2507,6 +2507,15 @@ function addNewFileSource(){
         $("#addNewSourceToExisting").append(str);
 		getSource(addSource+'addfilenewSource');
 	getLanguage(addSource+'addfilenewLanguage');
+}
+function changeToEEnadutxt(ck,id){
+   
+   if($('#'+ck).is(':checked')){
+     $('#'+id).addClass('enadu');
+	 
+   }else{
+		 $('#'+id).removeClass('enadu');
+   }
 }
 var addFile = 0;
 function addNewFilePart(id){
