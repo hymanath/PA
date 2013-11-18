@@ -13,10 +13,12 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IMobileService;
+import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -33,7 +35,25 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	public static final Logger LOG = Logger.getLogger(MobileDataAction.class);
 	private List<SelectOptionVO> constituencyList,userList;
 	private String filePath;
+	private IRegistrationService registrationService;
+	private EntitlementVO allRegisteredUsersData;
 	
+	public IRegistrationService getRegistrationService() {
+		return registrationService;
+	}
+
+	public void setRegistrationService(IRegistrationService registrationService) {
+		this.registrationService = registrationService;
+	}
+
+	public EntitlementVO getAllRegisteredUsersData() {
+		return allRegisteredUsersData;
+	}
+
+	public void setAllRegisteredUsersData(EntitlementVO allRegisteredUsersData) {
+		this.allRegisteredUsersData = allRegisteredUsersData;
+	}
+
 	public List<SelectOptionVO> getUserList() {
 		return userList;
 	}
@@ -128,7 +148,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
         constituencyList = mobileService.getConstituencyList();
         if(constituencyList != null)
          constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
-        
+        allRegisteredUsersData = registrationService.getAllRegisterdUsers();
 		}catch (Exception e) {
 		 e.printStackTrace();
 		 LOG.error("Exception Occured in execute() method, Exception - "+e);
@@ -156,7 +176,9 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setAppId(jSONObject.getString("appId"));
 			 regVo.setMobile(jSONObject.getString("deviceId"));
 			 regVo.setAddress(jSONObject.getString("macAddressId"));
-			 
+			 regVo.setRegistrationID(jSONObject.getLong("userId"));
+			 regVo.setMobile(jSONObject.getString("mobileNo"));
+			 regVo.setEmail(jSONObject.getString("email"));
 			 resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"),path,regVo);
 		 }
 		/* else if(jObj.getString("task").equalsIgnoreCase("saveMobileAppUserDetails"))

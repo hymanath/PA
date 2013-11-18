@@ -1280,6 +1280,7 @@
     
      <bean id="mobileDataAction" class="com.itgrids.partyanalyst.web.action.MobileDataAction" singleton="false">
       <property name="mobileService" ref="mobileService" />
+      <property name="registrationService" ref="registrationService"/>
     </bean>
     
     <bean id="messageCenterAction" class="com.itgrids.partyanalyst.web.action.MessageCenterAction" singleton="false">
