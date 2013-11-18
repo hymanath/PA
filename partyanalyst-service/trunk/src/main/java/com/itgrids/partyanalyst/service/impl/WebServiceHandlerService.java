@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -268,9 +269,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return resultStatus;
 		
 	}
-	public List<BasicVO> getUserVoiceRecordedFiles(String uniqueCode)
+	public List<WSResultVO> getUserVoiceRecordedFiles(String uniqueCode)
 	{
-		 List<BasicVO> result = new ArrayList<BasicVO>();
+		 List<WSResultVO> result = new ArrayList<WSResultVO>();
 		try{
 			List<Object> userId = mobileAppUserDAO.checkUniqueCode(uniqueCode);
 				if(userId == null || userId .size() == 0)
@@ -282,14 +283,17 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					if(list == null || list.size() == 0)
 							return null;
 					else
-					 for(Object[] params : list)
-						{
-						 BasicVO basicVO = new BasicVO();
-						 basicVO.setId((Long)params[2]);
-						 basicVO.setName(params[0].toString());
-						 basicVO.setDescription(params[1].toString());
-						 result.add(basicVO);		
-						}
+					{
+						 for(Object[] params : list)
+						 {
+							 WSResultVO wsResultVO = new WSResultVO();
+							 wsResultVO.setId((Long)params[2]);
+							 wsResultVO.setName(params[0].toString());
+							 wsResultVO.setDescription(params[1].toString());
+							 wsResultVO.setLocation(IConstants.LIVE_VOICE_RECORDINGS_URL+"/"+params[2].toString()+"/"+params[0]);
+							 result.add(wsResultVO);		
+						 }
+					}
 				}
 				
 		  }
