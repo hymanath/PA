@@ -199,7 +199,8 @@ return;
     <a value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()" style="cursor:pointer">Photo Gallery</a>
     </li>-->
     <!--<li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer;color: blue;">Video Gallery</a></li>-->
-    <li class="active"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: blue;">News Gallery</a></li>
+    <li class="active" id="newsGallaryLiId"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: blue;">News Gallery</a></li>
+	<li id="addResponseToNewsLiId"><a value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Add Response To News</a></li>
 	<!--<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Update News</a></li>
 
 	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>-->
@@ -315,7 +316,7 @@ return;
 	<!-- <input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()">
 	<input type="button" class="btn btn-success highlight" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()"> -->
     
-	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="uploadNewsForPartyAndCandidate()">
+	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="uploadNewsForPartyAndCandidate(null)">
 
 
 	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
@@ -427,7 +428,7 @@ $(document).ready(function(){
 });
 
 
-	showNewsGallaey();
+	showNewsGallaey(null);
 
 	$(".nav-tabs li a").click(function()
 			{
@@ -2257,17 +2258,22 @@ $(".keywords").each(function() {
 
 }
 
-function uploadNewsForPartyAndCandidate()
+function uploadNewsForPartyAndCandidate(fileId)
 {
   var tempPartyId = 872;
    var str ='';
-   
-   
+     
         str += '<form name="uploadForm1" action="uploadFilesForPartyAndCandidatesKeywords.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 		str+='<div class="container">';
          str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
 		
-		str+='<div class="span12">    <legend class="boxHeading text-center">Upload A News   </legend>    <div class="container ">';
+		str+='<div class="span12"> ';
+		if(fileId == null || fileId == '')
+		 str +='<legend class="boxHeading text-center">Upload A News   </legend> ';
+		else
+		 str +='<legend class="boxHeading text-center">Adding Response To Selected News</legend> ';
+		 
+		str +='<div class="container ">';
 		str+='<legend class="">News Basic Information</legend>';
 		str+='<div class="row-fluid">    ';   
 		str+='<div class="span4">';
@@ -2411,13 +2417,17 @@ function uploadNewsForPartyAndCandidate()
 		str += '<select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"></select></div>';
         str +='<div id="showScopeSubs"></div>';
 		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Save changes" class="btn btn-success btn-large">                         </div></div></div>';
-        str+='</form>';
+       
+	   if(fileId > 0)
+        str +='<input type="hidden" name="responseFileId" value="'+fileId+'">';  	
+	  
+	  str+='</form>';
    
   
     str +='<input type="hidden" name="profileType" value="party_profile">';
 	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
 	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';  
-   
+    
 
   
 	
