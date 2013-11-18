@@ -11,7 +11,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.itgrids.partyanalyst.dto.BasicVO;
+
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
@@ -181,5 +181,28 @@ public class WebServiceHandler {
 		}
     }
 	
+	@GET
+    @Path("/sendSMS/{uniqueCode}/{mobileNos}/{message}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String sendSMS(@PathParam("uniqueCode") String uniqueCode , @PathParam("mobileNos") String mobileNos, @PathParam("message") String message)
 
+    {
+		
+		try{
+			resultStatus = webServiceHandlerService.sendSMS(uniqueCode,mobileNos,message);
+			 if(resultStatus.getResultCode() == 0)
+				 message = "OK :your sms send successfully";
+			if(resultStatus.getResultCode() == 1)
+				 message =  "FAIL : Fail to send sms";
+			if(resultStatus.getResultCode() == 121)
+				 message =  "FAIL : Register User Not avilable,Contact our Support center.";
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+		return message;
+	
+    }
 }
