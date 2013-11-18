@@ -1509,7 +1509,7 @@ function showNewsUploadStatus1(myResult)
 		who = 0;
 		whome = 0;
 		//errorDivEle.innerHTML = str;
-		uploadNewsForPartyAndCandidate();
+		uploadNewsForPartyAndCandidate(null);
 		
        setTimeout(showSuccessMsg,3000);
 	 
@@ -1631,7 +1631,7 @@ function formValidation()
 	
 }
 	
-function showNewsGallaey()
+function showNewsGallaey(fileId)
 {
 	  $("#newsGallaryDiv").css("display","block");
 	  $("#newsAssignGallaryDiv").css("display","none");
@@ -1657,7 +1657,7 @@ function showNewsGallaey()
   $("#dateSelectDiv").css("display","none");
   //buildUploadNewsForMultipleUsers();
   
-  uploadNewsForPartyAndCandidate();
+  uploadNewsForPartyAndCandidate(fileId);
   
   }
 }
@@ -4028,30 +4028,35 @@ else{
 	str+='<table id="newsDetailsTable">';
 	str+='<thead>';
 	 str+='<tr>';
-	  str+='<th>CATEGORY</th>';
-	  str+='<th>GALLARY</th>';
+	  
+	  /*str+='<th>CATEGORY</th>';
+	  str+='<th>GALLARY</th>';*/
+	  
 	  str+='<th>SOURCE</th>';
 	  str+='<th>TITLE</th>';
 	  str+='<th>DESCRIPTION</td>';
 	  str+='<th>IMPACT AREA </th>';
 	  str+='<th>AREA NAME</th>';
 	  str+='<th>NEWS DATE</th>';
-	  str+='<th>EDIT/DELETE</th>';
+	  str+='<th>Add Response</th>';
 	 // str+='<td>DELETE</td>';
 	  str+='</thead>';
 	 str+='</tr>';
 	 for(var i in results)
 	 {
 		 str+='<tr>';
-		    str+='<td>'+results[i].categoryType+'</td>';
-	        str+='<td>'+results[i].gallaryName+'</td>';
-	        str+='<td>'+results[i].source+'</td>';
-			if(results[i].source.indexOf("Eenadu Telugu") != -1)
+		    /*str+='<td>'+results[i].categoryType+'</td>';
+	        str+='<td>'+results[i].gallaryName+'</td>';*/
+	        
+			str+='<td>'+results[i].source+'</td>';
+			//if(results[i].source.indexOf("Eenadu Telugu") != -1)
+			if(results[i].eenaduTeluguFontStr != null && results[i].eenaduTeluguFontStr == "Eenadu Telugu")
 		     str+='<td><span class="enadu">'+results[i].fileTitle1+'</span></td>';
 			else
 	         str+='<td>'+results[i].fileTitle1+'</td>';
 
-			if(results[i].source.indexOf("Eenadu Telugu") != -1)
+			//if(results[i].source.indexOf("Eenadu Telugu") != -1)
+			if(results[i].eenaduTeluguFontStr != null && results[i].eenaduTeluguFontStr == "Eenadu Telugu")
 		     str+='<td><span class="enadu">'+results[i].description+'</span></td>';
 			else
 			 str+='<td>'+results[i].description+'</td>';
@@ -4062,8 +4067,12 @@ else{
 			else
 				str+='<td></td>';
 	        str+='<td>'+results[i].fileDateAsString+'</td>';
-			str+='<td><a type="button"  title="Click here to edit" href="javascript:{editNewsDetails('+results[i].fileId+',\''+results[i].source+'\');}"><i class="icon-pencil"></i></a>';
-			str+='<a type="button" title="Click here to delete" href="javascript:{updateDeleteNews(\'Delete\','+results[i].fileId+');}" ><i class="icon-remove-sign"></i></a></td>';
+			
+			/*str+='<td><a type="button"  title="Click here to edit" href="javascript:{editNewsDetails('+results[i].fileId+',\''+results[i].source+'\');}"><i class="icon-pencil"></i></a>';
+			str+='<a type="button" title="Click here to delete" href="javascript:{updateDeleteNews(\'Delete\','+results[i].fileId+');}" ><i class="icon-remove-sign"></i></a></td>';*/
+			
+			str +='<td><a type="button"  title="Click here to add response" href="javascript:{addNewsResponseDetails('+results[i].fileId+');}">Add Response</td>';
+			
  		str+='</tr>';
            
 	 }
@@ -4088,6 +4097,13 @@ else{
   //console.log(oSettings);
 	//});
 }
+
+
+function addNewsResponseDetails(fileId)
+{
+ showNewsGallaey(fileId);
+}
+
 function editNewsDetails(fileId,source){
 
 
