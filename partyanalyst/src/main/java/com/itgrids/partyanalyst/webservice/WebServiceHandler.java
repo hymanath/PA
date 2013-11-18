@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 
 @Component
@@ -22,20 +23,15 @@ public class WebServiceHandler {
 	@Autowired
 	private IWebServiceHandlerService  webServiceHandlerService;
 	private ResultStatus resultStatus;
-	private List<BasicVO> basicVO;
+	private List<WSResultVO> wSResultVO;
 	
-
-	public List<BasicVO> getBasicVO() {
-		return basicVO;
+	public List<WSResultVO> getwSResultVO() {
+		return wSResultVO;
 	}
 
-
-
-	public void setBasicVO(List<BasicVO> basicVO) {
-		this.basicVO = basicVO;
+	public void setwSResultVO(List<WSResultVO> wSResultVO) {
+		this.wSResultVO = wSResultVO;
 	}
-
-
 
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -145,23 +141,20 @@ public class WebServiceHandler {
 	@GET
     @Path("/getUserVoiceRecordedFiles/{uniqueCode}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getUserVoiceRecordedFiles(@PathParam("uniqueCode") String uniqueCode)
+	public List<WSResultVO> getUserVoiceRecordedFiles(@PathParam("uniqueCode") String uniqueCode)
 
     {
 		try{
-			basicVO = webServiceHandlerService.getUserVoiceRecordedFiles(uniqueCode);
-		 if(basicVO.size() == 0)
-			return " FAIL : Register User Not avilable,Contact our Support center.";
-		 if(basicVO.size() > 0)
-			 return " OK :Recordings are avilable";
-		 else
-			 return " FAIL : Failure"; 
-				
+			wSResultVO = webServiceHandlerService.getUserVoiceRecordedFiles(uniqueCode);
+		 if(wSResultVO == null && wSResultVO.size() == 0)
+			return null;
+		 else 
+			return wSResultVO;
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			return "Failure";
+			return null;
 		}
     }
 	@GET
