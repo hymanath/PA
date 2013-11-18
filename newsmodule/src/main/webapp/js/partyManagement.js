@@ -1225,7 +1225,7 @@ function validateNewsFileUpload()
 			 }
 	       }
        });
-	   $('.newslength').each(function() {
+	   $('.newsLengthCls').each(function() {
            if($.trim($(this).val()).length == 0)
 	       {
 		     str += ' News Length is Required.<br>';
@@ -1233,7 +1233,7 @@ function validateNewsFileUpload()
 			 return false;
 	       }
        });
-	$('.newslength').each(function() {
+	$('.newsLengthCls').each(function() {
            if($.trim($(this).val()).length > 0)
 	       {
 		     if(isNaN($.trim($(this).val()))){
@@ -2838,11 +2838,11 @@ function addMoreFiles()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="pageno" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength newsLengthCls" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';
 	str += '   </tr>';
 	str +='</table>';
@@ -5445,7 +5445,7 @@ function validateUploadFileDetails()
 	}
 
 
-	 $('.pageno').each(function() {
+	   $('.pagenoCls').each(function() {
            if($.trim($(this).val()).length == 0)
 	       {
 		     str += ' Page Number is Required.<br>';
@@ -5453,7 +5453,7 @@ function validateUploadFileDetails()
 			 return false;
 	       }
        });
-	$('.pageno').each(function() {
+	$('.pagenoCls').each(function() {
            if($.trim($(this).val()).length > 0)
 	       {
 		     if(isNaN($.trim($(this).val()))){
@@ -5463,7 +5463,7 @@ function validateUploadFileDetails()
 			 }
 	       }
        });
-	   $('.newslength').each(function() {
+	   $('.newsLengthCls').each(function() {
            if($.trim($(this).val()).length == 0)
 	       {
 		     str += ' News Length is Required.<br>';
@@ -5471,7 +5471,7 @@ function validateUploadFileDetails()
 			 return false;
 	       }
        });
-	$('.newslength').each(function() {
+	$('.newsLengthCls').each(function() {
            if($.trim($(this).val()).length > 0)
 	       {
 		     if(isNaN($.trim($(this).val()))){
@@ -5738,11 +5738,11 @@ function uploadFile()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength newsLengthCls" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/plus.png" title="Click here to add more file" onclick="addMoreFiles2('+value+')"></td>';
 	str += '   </tr>';
 	str+='<input type="hidden" name="filesList" value="'+value+'"/>';
@@ -5780,11 +5780,11 @@ function addMoreFiles2(value)
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength newsLengthCls" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
 	//str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(\'moreFileTableId'+value+'\')"></td>';
 	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(this)"></td>';
 	str += '   </tr>';
@@ -6200,12 +6200,12 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno" name="pageno" size="25" class="pageno" maxlength="200" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno" name="pageno" size="25" class="pageno pagenoCls" maxlength="200" onKeyup="IsNumeric(this.value);"></input></td>';
 	str += '    <td id="Err4Numer">Only Numbers</td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength" name="newslength" class="newslength" size="25" maxlength="200" onKeyup="IsNumeric1(this.value);"></input></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength" name="newslength" class="newslength newsLengthCls" size="25" maxlength="200" onKeyup="IsNumeric1(this.value);"></input></td>';
 	str += '   <td id="Err4Numer1">Only Numbers</td>';
 	str += '   </tr>';
 	str += '   <tr>';
