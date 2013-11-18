@@ -1263,6 +1263,10 @@ public List<SelectOptionVO> getConstituencyList()
 		
 		if(cadreList != null && cadreList.size() > 0)
 		{
+			List<Long> cadreIdsList = new ArrayList<Long>(0);
+			for(Cadre cadre : cadreList)
+				cadreIdsList.add(cadre.getCadreId());
+			Map<Long,Long> cadreCasteMap = getCadreCasteMap(cadreIdsList);
 			for(Cadre cadre : cadreList)
 			{
 				try{
@@ -1603,4 +1607,18 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 		return resultList;
 	}
+
+  	public Map<Long,Long> getCadreCasteMap(List<Long> cadreIdsList)
+  	{
+  		Map<Long,Long> cadreCasteMap = new HashMap<Long, Long>(0);
+  		try{
+  			
+  			return cadreCasteMap;
+  		}catch(Exception e)
+  		{
+  			LOG.error("Exception Occured in getCadreCasteMap Method");
+  			LOG.error("Exception is ",e);
+  			return cadreCasteMap;
+  		}
+  	}
 }
