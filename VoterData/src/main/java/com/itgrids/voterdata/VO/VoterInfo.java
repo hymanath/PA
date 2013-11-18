@@ -14,7 +14,17 @@ public class VoterInfo {
     private String boothNo;
     private String constituencyId;
     private Long sNo;
-    public String getConstituencyId() {
+    private String dupVoterId;
+    
+    public String getDupVoterId() {
+		return dupVoterId;
+	}
+
+	public void setDupVoterId(String dupVoterId) {
+		this.dupVoterId = dupVoterId;
+	}
+
+	public String getConstituencyId() {
 		return constituencyId;
 	}
 
