@@ -198,18 +198,18 @@ return;
     <!--<li>
     <a value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()" style="cursor:pointer">Photo Gallery</a>
     </li>-->
-    <li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer;color: blue;">Video Gallery</a></li>
+    <!--<li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer;color: blue;">Video Gallery</a></li>-->
     <li class="active"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: blue;">News Gallery</a></li>
-	<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Update News</a></li>
+	<!--<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Update News</a></li>
 
-	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>
+	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>-->
 	<li><a value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: blue;">Create Report </a></li>
 	<li><a value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: blue;">View Report</a>
 		
 		</li>
-		<li><a value="KeyWords" id="createReportId" onclick=" getUnassignedKeyWords();" style="cursor:pointer;color: blue;">KeyWords</a>
+		<!--<li><a value="KeyWords" id="createReportId" onclick=" getUnassignedKeyWords();" style="cursor:pointer;color: blue;">KeyWords</a>
 		
-		</li>
+		</li>-->
     </ul>
 	
 </div>
