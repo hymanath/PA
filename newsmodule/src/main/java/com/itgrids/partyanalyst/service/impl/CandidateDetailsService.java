@@ -1625,8 +1625,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					 return null;*/
 				   if(newsDetails != null && newsDetails.size() > 0)
 				   {
-					 int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
-					 nl = buildFileVo(newsDetails,count);
+					// int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
+					 nl = buildFileVo(newsDetails,0);
 					 resultMap.put("NewsGallary", nl);
 				   }
 				 
@@ -1641,10 +1641,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				 */
 				 if(newsDetailsForDist != null && newsDetailsForDist.size() > 0)
 				 {
-				   int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,newsType,3l,distIds);
+				   //int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,newsType,3l,distIds);
 				 
 				   if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
-					  nl = buildFileVo(newsDetailsForDist,count1);
+					  nl = buildFileVo(newsDetailsForDist,0);
 							
 				    resultMap.put("NewsGallaryForDist", nl);
 				   }
