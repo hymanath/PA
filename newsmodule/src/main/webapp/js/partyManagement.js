@@ -1501,22 +1501,38 @@ function showNewsUploadStatus1(myResult)
 
 	if(result.search('success') != -1)
 	{
-		clearNewsUploadFileFields1();
-		str += '<font color="green"><b>News Uploaded Successfully.</b>';
+		//clearNewsUploadFileFields1();
+		//str += '<font color="green"><b>News Uploaded Successfully.</b>';
         
-
+		addSource = 0;
+		addFile = 0;
+		who = 0;
+		whome = 0;
+		//errorDivEle.innerHTML = str;
+		uploadNewsForPartyAndCandidate();
+		
+       setTimeout(showSuccessMsg,3000);
+	 
 	}
 	else if(result.search('fail') != -1) 
 	{
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
+		$("#uploadNewsFileErrorDiv").html(str);
 	}
 	else
 	{
 		str += '<font color="red"><b>'+result+'</b>';
+		$("#uploadNewsFileErrorDiv").html(str);
 	}
-	errorDivEle.innerHTML = str;
+	//errorDivEle.innerHTML = str;
 
 	
+}
+
+function showSuccessMsg()
+{
+
+ $("#uploadNewsFileErrorDiv").html('<font color="green"><b>News Uploaded Successfully.</b></font>');
 }
 
 function clearNewsUploadFileFields1()
