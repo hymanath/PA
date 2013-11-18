@@ -117,7 +117,7 @@ public class ReadDataFromPdfForKarnataka {
                     pd = PDDocument.load(input);
                     PDFTextStripper stripper = new PDFTextStripper();
                     sb.append(stripper.getText(pd));
-                    //System.out.println("File text:"+stripper.getText(pd));
+                    System.out.println("File text:"+stripper.getText(pd));
                     sb = formatText(sb);
                     sb.delete(sb.indexOf("Deletions List"),sb.length());
                     //outwriter.write(sb.toString());                

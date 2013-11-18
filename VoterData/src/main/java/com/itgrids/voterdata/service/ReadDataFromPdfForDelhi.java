@@ -25,9 +25,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.util.PDFTextStripper;
 
 import com.itgrids.voterdata.VO.VoterInfo;
-import com.itgrids.voterdata.util.IConstants;
 
-public class ReadDataFromPdfForAP2009 {
+public class ReadDataFromPdfForDelhi {
 	
 		static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
 		static final String DB_URL = "jdbc:mysql://localhost/dakavara_pa";
@@ -61,10 +60,6 @@ public class ReadDataFromPdfForAP2009 {
     
     public static Integer saveVotersData(List<VoterInfo> votersInfoList)
     {
-    	Random random = new Random();
-    	boolean executeAgain = false;
-    	List<VoterInfo> tempList = new ArrayList<VoterInfo>(0);
-    	
     	try{
     		Class.forName("com.mysql.jdbc.Driver");
     		conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -80,29 +75,7 @@ public class ReadDataFromPdfForAP2009 {
     			stmt.executeUpdate(insertQuery);
     			}catch(Exception e)
     			{
-    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+") In Booth - "+info.getBoothNo()+" -- S.No - "+info.getsNo());
-    				System.out.println("Exception is -"+e);
-    				if(IConstants.CONSIDER_DUPLICATES && e.getMessage().contains("VoterID_Booth"))
-    				{
-    					executeAgain = true;
-    					info.setDupVoterId(info.getVoterId());
-    					info.setVoterId("ABC"+random.nextInt(10000000));
-    					tempList.add(info);
-    				}
-    			}
-    		}
-    		
-    		for(VoterInfo info : tempList)
-    		{
-    			try{
-    			String insertQuery = "INSERT INTO voter_temp(voter_id, name, sex, age, house_no, guardian_name, relation, constituency_id, " +
-    				" constituency_name, booth_id, booth_name,sno,dup_voter_id) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
-    				"','"+info.getAge()+"','"+info.getHouseNumber()+"','"+info.getGuardianName()+"','"+info.getGuardianRelation()+
-    				"','"+info.getConstituencyId()+"','"+info.getConstituency()+"','"+info.getBoothNo()+"','"+info.getBoothName().replaceAll(".pdf","")+"',"+info.getsNo()+",'"+info.getDupVoterId()+"')";
-    			stmt.executeUpdate(insertQuery);
-    			}catch(Exception e)
-    			{
-    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+") In Booth - "+info.getBoothNo()+" -- S.No - "+info.getsNo());
+    				System.out.println("Exception Occured While Saving the Voter ID -"+info.getVoterId()+"("+info.getVoterName()+") In Booth - "+info.getBoothNo());
     				System.out.println("Exception is -"+e);
     			}
     		}
@@ -125,14 +98,13 @@ public class ReadDataFromPdfForAP2009 {
         PDDocument pd = null;
         int totalVotersCount = 0;
         int i = 0;
-        Pattern p = Pattern.compile("([\\s0-9]*)\\r\\nElector's Name:\\r\\nSex:\\r\\nAge:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([a-zA-Z\\s]*)\\r\\n");
+        Pattern p = Pattern.compile("Sex :([\\sa-zA-Z]*)\\r\\nAge :([\\s0-9]*)\\r\\nHouse No :\\r\\nName :\\r\\n([\\s0-9]*)([\\sA-Z\\d\\-]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n(Husband's Name|Father's Name|Mother's Name|Other's Name)([A-Za-z\\.\\s\\r\\n]*)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\\\]*)");
         try {
                 File inputDir = new File(args[0]);
                 String voterInfo = "";
                 StringBuilder sb2 = new StringBuilder();
                 File resultFile  = new File(args[0]+"/VoterData.txt");
                 BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
-                Random random = new Random();
                 
                 for (File input : inputDir.listFiles(new FilenameFilter() {
                     public boolean accept(File file, String filename) {
@@ -146,70 +118,26 @@ public class ReadDataFromPdfForAP2009 {
                     sb.append(stripper.getText(pd));
                     //System.out.println("File text:"+stripper.getText(pd));
                     sb = formatText(sb);
+                    //sb.delete(sb.indexOf("Deletions List"),sb.length());
                     outwriter.write(sb.toString());                
                     String [] fileName = input.getName().split("-");
-                    System.out.println("Reading ... "+input.getName());
                     Matcher m = p.matcher(sb);
                     VoterInfo voter = null;
                     List<VoterInfo> voterInfoList = new ArrayList<VoterInfo>(10);
                     
                     while (m.find()) 
                     {
-                        try{
-                    	i++;
+                        i++;
                         voter = new VoterInfo();
-                        String serialNo = m.group(1).replaceAll("\\r\\n","").trim();
-                        if(serialNo.contains(" "))
-                        {
-                        	serialNo = serialNo.split(" ")[1].trim();
-                        }
-                        voter.setsNo(Long.valueOf(serialNo));
-                        voter.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
-                        voter.setGuardianRelation(m.group(5).replaceAll("'s Name:","").replaceAll("\\r\\n","").trim());
-                        voter.setHouseNumber(m.group(6).replaceAll("\\r\\n","").trim());
-                        voter.setAge(m.group(7).replaceAll("\\r\\n","").trim());
                         
-                        if(m.group(8).replaceAll("\\r\\n","").trim().contains("Female"))
-                        	voter.setSex("Female");
-                        else
-                        	voter.setSex("Male");
-                        
-                        String voterName = m.group(3).trim();
-                        if(voterName.contains("\r\n"))
-                        {
-                        	String[] str = voterName.split("\r\n");
-                        	if(str.length == 3)
-                    		{
-                        		if(str[0].endsWith(" "))
-                        		{
-                        			voter.setVoterName(str[0].trim()+" "+str[1].trim());
-                            		voter.setGuardianName(str[2].trim());
-                        		}
-                        		else
-                        		{
-                        			voter.setVoterName(str[0].trim());
-                            		voter.setGuardianName(str[1].trim()+" "+str[2].trim());
-                        		}
-                    		}
-                        	else if(str.length == 4)
-                        	{
-                        		voter.setVoterName(str[0].trim()+" "+str[1].trim());
-                        		voter.setGuardianName(str[2].trim()+" "+str[3].trim());
-                        	}
-                        	else if(str.length == 2)
-                        	{
-                        		voter.setVoterName(m.group(3).replaceAll("\\r\\n"," ").trim());
-                                voter.setGuardianName(m.group(4).replaceAll("\\r\\n"," ").trim());
-                        	}
-                        }
-                        else
-                        {
-                        	voter.setVoterName(m.group(3).replaceAll("\\r\\n"," ").trim());
-                            voter.setGuardianName(m.group(4).replaceAll("\\r\\n"," ").trim());
-                        }
-                        
-                        if(voter.getVoterId() == null)
-                        	voter.setVoterId("ABC"+random.nextInt(10000000));
+                        voter.setSex(m.group(1).replaceAll("\\r\\n","").trim());
+                        voter.setAge(m.group(2).replaceAll("\\r\\n","").trim());
+                        voter.setsNo(Long.valueOf(m.group(3).replaceAll("\\r\\n","").trim()));
+                        voter.setVoterId(m.group(4).replaceAll("\\r\\n","").trim());
+                        voter.setVoterName(m.group(5).replaceAll("\\r\\n","").trim());
+                        voter.setGuardianRelation(m.group(6).replaceAll("'s Name","").replaceAll("\\r\\n","").trim());
+                        voter.setGuardianName(m.group(7).replaceAll("\\r\\n","").trim());
+                        voter.setHouseNumber(m.group(8).split("\r\n")[0].replaceAll("\\r\\n","").trim());
                         
                         voter.setConstituencyId(fileName[0]);
                         voter.setConstituency(fileName[1]);
@@ -221,14 +149,11 @@ public class ReadDataFromPdfForAP2009 {
                         voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
                         System.out.println(voterInfo);
                         sb2.append(voterInfo+"\n");
-                    }catch (Exception e) {
-                    	e.printStackTrace();
-                    }
                     }
                     if (pd != null) {
                         pd.close();
                     }
-                    saveVotersData(voterInfoList);  
+                    //saveVotersData(voterInfoList);  
             }
             outwriter.write(sb2.toString());
             System.out.println("Total No of Voters:" + totalVotersCount);
@@ -244,14 +169,7 @@ public class ReadDataFromPdfForAP2009 {
     		String str = builder.toString();
     		str = str.replaceAll("Age", "\r\nAge");
     		str = str.replaceAll("'s \r\nName ", "'s Name\r\n");
-    		str = str.replaceAll("Photo as in \r\nCorrection \r\nList\r\n", "");
-    		str = str.replaceAll("Husband's Name:", "\r\nHusband's Name:");
-    		str = str.replaceAll("Father's Name:", "\r\nFather's Name:");
-    		str = str.replaceAll("Mother's Name:", "\r\nMother's Name:");
-    		str = str.replaceAll("Other's Name:", "\r\nOther's Name:");
-    		str = str.replaceAll(" Female", "\r\nFemale");
-    		str = str.replaceAll(" Male", "\r\nMale");
-    		str = str.replaceAll(" \r\nElector's Name:", "\r\nElector's Name:");
+    		//str = str.replaceAll("Photo\r\n Not \r\n Available\r\n", "");
     		return new StringBuilder(str);
     	}catch (Exception e) {
     		e.printStackTrace();
