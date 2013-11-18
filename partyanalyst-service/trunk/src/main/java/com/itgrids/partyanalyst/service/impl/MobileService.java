@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
@@ -151,7 +152,16 @@ public class MobileService implements IMobileService{
  private TransactionTemplate transactionTemplate;
  private IElectionScopeDAO electionScopeDAO;
 private IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO  ;
-	
+private IUserDAO userDAO;
+
+public IUserDAO getUserDAO() {
+	return userDAO;
+}
+
+public void setUserDAO(IUserDAO userDAO) {
+	this.userDAO = userDAO;
+}
+
 private ISmsService smsCountrySmsService;
 
 public ISmsService getSmsCountrySmsService() {
@@ -1514,6 +1524,9 @@ public List<SelectOptionVO> getConstituencyList()
   			mobileAppUser.setUserName(registrationVO.getUserName());
   			mobileAppUser.setPassword(registrationVO.getPassword());
   			mobileAppUser.setUniqueCode(registrationVO.getUniqueCode());
+  			mobileAppUser.setUser(userDAO.get(registrationVO.getRegistrationID()));
+  			mobileAppUser.setEmail(registrationVO.getEmail());
+  			mobileAppUser.setMobileNo(registrationVO.getMobile());
   			mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
   			mobileAppUserAccess.setMobileAppUser(mobileAppUser);
   			mobileAppUserAccess.setIsAuthorised("true");
@@ -1526,6 +1539,7 @@ public List<SelectOptionVO> getConstituencyList()
   			mobileAppUserProfile.setLastName(registrationVO.getLastName());
   			mobileAppUserProfile.setMobileAppUser(mobileAppUser);
   			mobileAppUserProfile.setGender(registrationVO.getGender().toString());
+  			
   			mobileAppUserProfileDAO.save(mobileAppUserProfile);
   			rs.setResultCode(ResultCodeMapper.SUCCESS);
   			}
