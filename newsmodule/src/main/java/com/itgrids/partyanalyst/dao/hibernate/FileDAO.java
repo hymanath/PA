@@ -83,4 +83,27 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	   	 
 		return query.list();	
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<File> getTotalFilesList(Long userId,Date fromDate,Date toDate)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select model from File model where model.user.userId =:userId ");
+	   if(fromDate != null)
+		  str.append(" and date(model.fileDate) >= :fromDate ");
+	   if(toDate != null)
+		  str.append(" and date(model.fileDate) <= :toDate ");
+	   		 
+	   str.append(" order by model.fileDate desc ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  query.setParameter("userId", userId);
+	  if(fromDate != null)
+	   query.setParameter("fromDate", fromDate);
+	  if(toDate != null)
+	   query.setParameter("toDate", toDate);
+	  return query.list();
+	 
+	}
+	
 }

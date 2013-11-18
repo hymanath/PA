@@ -145,6 +145,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long destinationBenefitId;
 	private CandidatePartyNewsVO candidatePartyNewsVOList;
 	private Integer newsEditionId;
+	private String eenaduTeluguFontStr;
 	
 	
 	public Long getRespondedFilesCountInGall() {
@@ -1254,7 +1255,13 @@ public class FileVO extends ResultStatus implements Serializable {
 		this.newsEditionId = newsEditionId;
 	}
 
-	
+	public String getEenaduTeluguFontStr() {
+		return eenaduTeluguFontStr;
+	}
+
+	public void setEenaduTeluguFontStr(String eenaduTeluguFontStr) {
+		this.eenaduTeluguFontStr = eenaduTeluguFontStr;
+	}
 
 
 }
