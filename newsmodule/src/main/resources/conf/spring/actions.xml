@@ -79,4 +79,9 @@
 	<bean id="createReportAction" class="com.itgrids.partyanalyst.web.action.CreateReportAction" singleton="false">
 	 	<property name="reportService" ref="reportService"/>
 	</bean>
+	
+	<bean id="categoryNewsAction" class="com.itgrids.partyanalyst.web.action.CategoryNewsAction" singleton="false">
+	 	<property name="candidateDetailsService" ref="candidateDetailsService"/>
+	</bean>
+	
 	</beans>

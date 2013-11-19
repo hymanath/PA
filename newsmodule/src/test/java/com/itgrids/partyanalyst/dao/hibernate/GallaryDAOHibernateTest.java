@@ -19,12 +19,21 @@ public class GallaryDAOHibernateTest extends BaseDaoTestCase{
 		gallaryDAO.getAll();
 	}*/
 	
-	public void testGetGallariesForSelectedCategory()
+	/*public void testGetGallariesForSelectedCategory()
 	{
 		List<Object[]> list = gallaryDAO.getGallariesForSelectedCategory(12L);
 		System.out.println(list.size());
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	public void testgetLatestGalleries()
+	{
+		List<Object[]> list = gallaryDAO.getGallaries();
+		for(Object[] params:list)
+			 System.out.println(params[0]+" "+params[1]);
 	}
+	
+	
 
 }

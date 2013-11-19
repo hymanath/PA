@@ -37,6 +37,7 @@ public class FileSourceLanguageDAO extends GenericDaoHibernate<FileSourceLanguag
 		 		" where model.file.fileId = ? ",fileId);
 	 }
 	 
+	 
 	 public List<Object[]> getSourceDetailsByFileIds(Set<Long> fileIds)
 	 {
 		 Query query = getSession().createQuery("select distinct model.file.fileId,model.source.source from FileSourceLanguage model where model.file.fileId in(:fileIds) ");
@@ -53,4 +54,13 @@ public class FileSourceLanguageDAO extends GenericDaoHibernate<FileSourceLanguag
 		 
 		 return query.list();
 	 }
+	 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getFileSourceType(List<Long> fileIds)
+	{
+		Query query = getSession().createQuery("select model.file.fileId ," +
+				" model.source.source from FileSourceLanguage model where model.file.fileId in (:fileIds)");
+		query.setParameterList("fileIds", fileIds);
+		return query.list();
+	}
 }

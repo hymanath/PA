@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -307,5 +308,11 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr);
 	 
 	 public List<SelectOptionVO> getCandidateRelatedSubCategoriesByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType);
+	 
+	 public List<SelectOptionVO> getLatestGalleries();
+	 
+	 public List<FileVO> getSelectedGallaryDetails(int startIndex,int maxIndex,Long gallaryId);
+	 
+	 public List<GallaryVO> getAllGalariyes();
 	 
 }
