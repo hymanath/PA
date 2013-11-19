@@ -49,9 +49,9 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		  {
 			  StringBuilder str = new StringBuilder();
 				str.append(" select distinct model.candidatePartyFile.file from CandidatePartyCategory model where (model.candidatePartyFile.sourceCandidate.candidateId =:candidateId) or (model.candidatePartyFile.destinationCandidate.candidateId =:candidateId)");
-				str.append(" and (model.candidatePartyFile.file.isDeleted='N') or (model.candidatePartyFile.file.isDeleted is null)");
+				str.append(" and (model.candidatePartyFile.file.isDeleted !='Y') or (model.candidatePartyFile.file.isDeleted is null)");
 				if(queryType.equals("Public"))
-				  str.append(" and (model.candidatePartyFile.file.isPrivate='N') or (model.candidatePartyFile.file.isPrivate is null)");
+				  str.append(" and (model.candidatePartyFile.file.isPrivate !='Y') or (model.candidatePartyFile.file.isPrivate is null)");
 						
 				else if(queryType.equals("Private"))
 				  str.append("  and model.candidatePartyFile.file.isPrivate='Y'");
@@ -62,7 +62,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				 str.append(" and date(model.candidatePartyFile.file.fileDate) <= :toDate");
 			
 				if(categoryIdsList != null && categoryIdsList.size() > 0)
-				str.append(" and model.gallary.gallaryId in ( :categoryIdsList) ");
+				str.append(" and model.gallary.gallaryId in (:categoryIdsList)");
 					
 				 str.append(" order by model.candidatePartyFile.file.fileDate desc ");
 				Query query = getSession().createQuery(str.toString());

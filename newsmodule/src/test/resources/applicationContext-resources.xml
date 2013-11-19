@@ -127,6 +127,7 @@
 				<value>com.itgrids.partyanalyst.model.Font</value>
 				<value>com.itgrids.partyanalyst.model.Benefit</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePartyCategory</value>
+				<value>com.itgrids.partyanalyst.model.NewsResponse</value>
 				<value>com.itgrids.partyanalyst.model.ReportFiles</value>
 			</list>
 		</property>
