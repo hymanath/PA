@@ -965,6 +965,15 @@ function callHomePageAjax11(jsObj,url){
 								  clearOptionsListForSelectElmtId('categoryGallarySelect');
 								 createOptionsForSelectElmtId('categoryGallarySelect',myResults);
 								}
+								else if(jsObj.task == "getLocationNewsDetails")
+								{
+								 if(jsObj.scope == "District")
+									divId = "userAccessDistrictList";
+								 if(jsObj.scope == "Constituency")
+									 divId = "userAccessConstituencyList";
+								 clearOptionsListForSelectElmtId(divId);
+								 createOptionsForSelectElmtId(divId,myResults);
+								}
 
 								
 								else if(jsObj.task == "showTopFiveGallaries")
@@ -1710,7 +1719,8 @@ function getLocationList()
 			//getAllConstituenciesInStateByType(2, 1, 'constituency');
 		} 
 
-getLocationWiseNewsDetails(scope,divEle);
+getLocationNewsDetails(value);
+//getLocationWiseNewsDetails(scope,divEle);
 	
 }
 
@@ -1722,7 +1732,16 @@ function showAllCategories()
      browser1.focus();
 }
 
-
+function getLocationNewsDetails(value){
+	var jsObj =
+		{   
+		    scope:value,
+			task:"getLocationNewsDetails"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationNewsDetailsAction.action?"+rparam;					callAjax(jsObj,url); 
+}
 
 function showKeyWordsList(optionsList)
 {
