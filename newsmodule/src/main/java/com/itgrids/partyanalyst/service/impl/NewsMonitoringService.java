@@ -3891,6 +3891,56 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		return candidates;
 	}
+	public List<SelectOptionVO> getCandidatesNewsCount(){
+		List<SelectOptionVO> candidates=new ArrayList<SelectOptionVO>();
+		try{
+		Map<Long,Long> candidateNewsCountmap = new HashMap<Long, Long>();
+		List<Object[]> list1=candidatePartyFileDAO.getSourceCandidates();
+		List<Object[]> list2=candidatePartyFileDAO.getDestinationCandidates();
+		if(list1!=null){
+			for(Object[] params:list1){
+				Long count = candidateNewsCountmap.get(params[1]);
+				if(count == null)
+				candidateNewsCountmap.put((Long)params[1], (Long)params[0]) ;	
+				else
+				candidateNewsCountmap.put((Long)params[1], (Long)params[0]+count) ;	
+				}
+		}
+		if(list2 != null && list2.size() > 0)
+		{
+			for(Object[] params1 : list2)
+			{
+				Long count = candidateNewsCountmap.get(params1[1]);
+				if(count == null)
+				candidateNewsCountmap.put((Long)params1[1], (Long)params1[0]) ;	
+				else
+				candidateNewsCountmap.put((Long)params1[1], (Long)params1[0]+count) ;		
+			}
+		}
+		if(candidateNewsCountmap != null)
+		for(Long candidateId : candidateNewsCountmap.keySet())
+		{
+			SelectOptionVO selectOptionVO=new SelectOptionVO();
+			selectOptionVO.setId(candidateId);
+			Long newsCount = candidateNewsCountmap.get(candidateId);
+			String name = "";
+			String candidateName = candidateDAO.getCandidateName(candidateId);
+			if(candidateName.toString().substring(0, 1).equalsIgnoreCase("."))
+				name +=candidateName.toString().substring(1);
+			else
+				name +=candidateName.toString();
+			name += " ("+newsCount+")";
+			selectOptionVO.setName(name);
+			candidates.add(selectOptionVO);	
+		}
+	}
+	catch (Exception e) {
+		e.printStackTrace();
+	}
+		
+		return candidates;
+	}
+	
 	
 	
 	public List<CandidateNewsCountVO> getNewsCountForACandidate(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String tempVar,String locationScope)

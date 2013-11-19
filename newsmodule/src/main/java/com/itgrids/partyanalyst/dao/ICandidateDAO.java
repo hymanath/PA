@@ -83,5 +83,7 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{/*
 	
 	public List<Long> getCandidateIdByPartyIdAndCandidateName(Long partyId,String candidateName);
 	
+	 public String getCandidateName(Long candidateId);
+	
 
 }

@@ -34,4 +34,17 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		  query.setParameterList("fileIds", fileIds);
 		  return query.list();
 	  }
+	 public List<Object[]> getSourceCandidates(){
+			Query query = getSession().createQuery("select distinct count(model.file.fileId),model.sourceCandidate.candidateId,model.sourceCandidate.lastname from CandidatePartyFile model where " +
+					"(model.file.isDeleted != 'Y') or (model.file.isDeleted is null) and (model.file.isPrivate != 'Y') or (model.file.isPrivate is null) group by model.sourceCandidate.candidateId order by model.sourceCandidate.lastname ");
+			
+			return query.list();
+		}
+	 public List<Object[]> getDestinationCandidates(){
+			Query query = getSession().createQuery("select distinct count(model.file.fileId),model.destinationCandidate.candidateId,model.destinationCandidate.lastname from CandidatePartyFile model where " +
+					"(model.file.isDeleted != 'Y') or (model.file.isDeleted is null) and (model.file.isPrivate != 'Y') or (model.file.isPrivate is null) group by model.destinationCandidate.candidateId order by model.destinationCandidate.lastname ");
+			
+			return query.list();
+		}
+	 
 }
