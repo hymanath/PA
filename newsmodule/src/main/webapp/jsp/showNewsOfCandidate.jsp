@@ -201,10 +201,10 @@ var tempVarable = '${tempVarable}';
 
 
 //getNewsForPagination(0);
-getNewsForPagination1(0);
+getNewsForPagination(0);
 //getCandidates();
 
-function getNewsForPagination(num){
+/*function getNewsForPagination(num){
 	var jsObj={
 		candidateId:candidateId,
 		firstRecord:num,
@@ -219,8 +219,8 @@ function getNewsForPagination(num){
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getCandidateNewsInHomePageAction.action?"+rparam;
 	callAjax(jsObj, url);
-}
-function getNewsForPagination1(num){
+}*/
+function getNewsForPagination(num){
 	var jsObj={
 		candidateId:candidateId,
 		firstRecord:num,
