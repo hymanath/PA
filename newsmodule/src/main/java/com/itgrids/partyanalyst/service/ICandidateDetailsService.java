@@ -28,7 +28,7 @@ public interface ICandidateDetailsService {
  
 	public List<SelectOptionVO> getGallariesForSelectedCategories(List<Long> categoryIdsList,Long candidateId);
  
- 
+	
 	
 	/*
 	
@@ -304,5 +304,8 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long partyId);
 	 
 	 public List<SelectOptionVO> getBenefitList();
+	 public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String gallaryIdsStr,String categoryIdsStr);
+	 
+	 public List<SelectOptionVO> getCandidateRelatedSubCategoriesByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType);
 	 
 }

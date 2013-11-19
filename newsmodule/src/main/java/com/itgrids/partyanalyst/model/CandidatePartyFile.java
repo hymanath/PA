@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,7 +43,7 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	private Benefit sourceBenefit;
 	private Benefit destinationBenefit;
 	
-	
+    private Set<NewsResponse> newsResponse = new HashSet<NewsResponse>(0);
 	public CandidatePartyFile(){}
 	
 	public CandidatePartyFile(Candidate sourceCandidate,Candidate destinationCandidate,Party sourceParty,Party destinationParty,
@@ -181,5 +182,14 @@ public class CandidatePartyFile extends BaseModel implements Serializable{
 	public void setDestinationBenefit(Benefit destinationBenefit) {
 		this.destinationBenefit = destinationBenefit;
 	}
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "candidatePartyFile")
+	public Set<NewsResponse> getNewsResponse() {
+		return newsResponse;
+	}
+
+	public void setNewsResponse(Set<NewsResponse> newsResponse) {
+		this.newsResponse = newsResponse;
+	}
+	
 
 }
