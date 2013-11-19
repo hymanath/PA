@@ -379,6 +379,15 @@
 								  createOptionsForSelectElmtId(''+jsObj.divEle+'',myResults);	
 								 
 								}
+								else if(jsObj.task == "getLocationNewsDetails")
+								{    
+									if(jsObj.scope == "District")
+										divId = "userAccessDistrictList";
+									 if(jsObj.scope == "Constituency")
+										 divId = "userAccessConstituencyList";
+									 clearOptionsListForSelectElmtId(divId);
+									 createOptionsForSelectElmtId(divId,myResults);
+								}
 							}catch (e) { 
 							     $("#votersEditSaveAjaxImg").hide();
 							     $("#votersEditSaveButtnImg").removeAttr("disabled");
@@ -565,8 +574,11 @@ function showTotalNews(myResult,jsObj){
 	if(myResult[i].fileType == 'Party'){
 		str+='<li >';
 		str+='<div class="">';
-		var source = myResult[i].source.trim();
-		if(source == "Eenadu Telugu")
+		var font = myResult[i].font;
+		var source = null;
+		if(myResult[i].source != null && !myResult[i].source == "")
+		source = myResult[i].source.trim();
+		if(font != null)
 		{
 			str+='<h4  style="text-transform: capitalize;" class="enadu"> <a style="cursor:pointer;color: #005580;" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">'+myResult[i].fileTitle1+'</a></h4>';
 		}
@@ -586,7 +598,7 @@ function showTotalNews(myResult,jsObj){
 		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width:100%"  onerror="imgError(this);"/>';
 		str+='</a>';
 	}
-		if(source == "Eenadu Telugu")
+		if(font != null)
 		{
 			str+='<p class="span8 enadu"  style="text-align: left;">'+myResult[i].description+'</p>';
 		}
@@ -598,7 +610,11 @@ function showTotalNews(myResult,jsObj){
 		str+='</div>';
 		str+='<div class="row-fluid m_top10">';
 		str+='<div class="span9" style="width: 550px;">';
-		str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+myResult[i].source+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
+		str+='<table><tr>';
+		if(myResult[i].source != null)
+			str+='<td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+myResult[i].source+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
+		else
+			str+='<td style="width:260px;font-weight:bold;"></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
 		if(myResult[i].responseCount > 0)
 			str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">'+myResult[i].responseCount+'</span></p></td>';
 		str+='</tr></table></div> <br>';
