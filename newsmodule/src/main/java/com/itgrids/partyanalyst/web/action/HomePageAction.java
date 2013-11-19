@@ -595,6 +595,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			//candidatesList=newsMonitoringService.getCandidates();
 			//candidatesList = newsMonitoringService.getCandidatesByRemovingDots();
 			candidatesList=newsMonitoringService.getCandidatesNewsCount();
+			
 			for(SelectOptionVO vo:candidatesList)
 				candidatesMap.put(vo.getId(), vo.getName());
 			
