@@ -7835,7 +7835,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	  return null;
 	 }
  }
- 
+
+	
  public void setDataToFileVo(List<File> filesList,List<FileVO> returnList)
  {
 	 try{
@@ -7934,4 +7935,180 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 }
  }
  
+ public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String gallaryIdsStr,String categoryIdsStr){
+	 List<FileVO> fileVOList = null;
+ try{
+	 Date fromDate = null;
+	 Date toDate = null;
+	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	 if(fromDateStr != null && !fromDateStr.equalsIgnoreCase("") && !fromDateStr.equalsIgnoreCase("null"))
+		fromDate = format.parse(fromDateStr);
+	 if(toDateStr != null && !toDateStr.equalsIgnoreCase("") && !toDateStr.equalsIgnoreCase("null"))
+		 toDate = format.parse(toDateStr);
+	 
+	 List<Long> gallaryIdsList = new ArrayList<Long>(0);
+	 List<Long> categoryIdsList = new ArrayList<Long>(0);
+	 StringTokenizer str = null;
+	 if(gallaryIdsStr!=null && !gallaryIdsStr.equalsIgnoreCase("") && !gallaryIdsStr.equalsIgnoreCase("null"))
+	 {
+	   str = new StringTokenizer(gallaryIdsStr,",");
+	   while(str.hasMoreTokens())
+		   gallaryIdsList.add(Long.parseLong(str.nextToken()));
+	 }
+	 
+	 if(categoryIdsStr != null && !categoryIdsStr.equalsIgnoreCase("") && !categoryIdsStr.equalsIgnoreCase("null"))
+	 {
+		 str = new StringTokenizer(categoryIdsStr,","); 
+		 while (str.hasMoreTokens()) 
+			categoryIdsList.add(Long.parseLong(str.nextToken()));
+	 }
+	 List<File> filesList = candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,categoryIdsList);
+	
+	 if(filesList != null && filesList.size() > 0)
+	 {
+			fileVOList = new ArrayList<FileVO>(0);
+	 setfileDetails(filesList, fileVOList);
+	 fileVOList.get(0).setCount(candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,categoryIdsList).size());
+	 }
+	 return fileVOList;
+}catch (Exception e) {
+			log.debug("Exception Occured in getCandidatesNews() Method, Exception - ",e);
+			return fileVOList;
+	}
+}
+ public void setfileDetails(List<File> fileList,List<FileVO> fileVOsList)
+	{
+		try{
+			List<Long> fileIdsList = new ArrayList<Long>(0);
+			if(fileList != null && fileList.size() > 0)
+			for(File file : fileList)
+			 {
+			/*	int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size();
+				if(count>0)
+					return;*/
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				
+				//fileIdsList.add(file.getFileId());
+					
+				FileVO fileVO = new FileVO(); 
+				fileVO.setContentId(file.getFileId());
+				fileVO.setFileId(file.getFileId());
+				fileVO.setTitle(file.getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle().toString())):"");
+				fileVO.setDescription(file.getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
+				
+				Long locationScopeId = file.getRegionScopes().getRegionScopesId();
+				if(locationScopeId.equals(2L))
+				 fileVO.setLocationName(stateDAO.get(file.getLocationValue()).getStateName());
+				else if(locationScopeId.equals(3L))
+				 fileVO.setLocationName(districtDAO.get(file.getLocationValue()).getDistrictName());
+				else if(locationScopeId.equals(4L))
+				 fileVO.setLocationName(constituencyDAO.get(file.getLocationValue()).getName());
+				else if(locationScopeId.equals(5L))
+				 fileVO.setLocationName(tehsilDAO.get(file.getLocationValue()).getTehsilName());
+				
+				fileVO.setLocationId(file.getLocationValue());
+				
+				fileVO.setFilePath1(file.getFilePath());
+				int responseCount = 0 ;
+				//fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
+				responseCount = newsResponseDAO.getCandidateNewsResponseFileIds(file.getFileId()).size();
+				
+				fileVO.setResponseCount(responseCount);
+				if(file.getFont() != null)
+				fileVO.setFontId(file.getFont().getFontId());
+				Set<FileSourceLanguage> fileSourceLanguages = file.getFileSourceLanguage();
+				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
+				Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
+				
+				List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(0);
+				if(fileSourceLanguageList != null && fileSourceLanguageList.size() > 0)
+				{
+					for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageList)
+					{
+					   FileVO fileVOSourceLanguage = new FileVO();
+					   fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
+					   fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+					   fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
+					   fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+					   fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+						
+						List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+						Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+						for(FilePaths filePath : filePathsSet)
+						{
+							FileVO fileVOPath = new FileVO();
+							fileVOPath.setPath(filePath.getFilePath());
+							fileVOPath.setOrderNo(filePath.getOrderNo());
+							fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+							fileVOPathsList.add(fileVOPath);
+						}
+					   Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+					   fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+					   fileVOSourceLanguageList.add(fileVOSourceLanguage);
+						
+					}
+				}
+				
+				fileVO.setMultipleSource(fileVOSourceLanguageList.size());
+				Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
+				fileVO.setFileVOList(fileVOSourceLanguageList);
+				 
+				
+				fileVO.setFileDate(file.getFileDate() == null ? null :
+					sdf.format(file.getFileDate()));
+				 fileVO.setReqFileDate(file.getFileDate());
+				 
+				 fileVOsList.add(fileVO);
+			 }
+			/*if(fileIdsList != null && fileIdsList.size() > 0)
+			{
+			 Map<Long,String> candidateNamesMap = new HashMap<Long, String>(0);
+			// List<Object[]> list = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileIdsList);
+			 if(list != null && list.size() > 0)
+			  for(Object[] params:list)
+				 candidateNamesMap.put((Long)params[0], params[1] != null?params[1].toString():" ");
+			 
+			 for(FileVO fileVO:fileVOsList)
+			  fileVO.setCandidateName(candidateNamesMap.get(fileVO.getContentId()));
+			 
+			}*/
+			
+			if(fileVOsList != null && fileVOsList.size() > 0)
+			{
+			 Collections.sort(fileVOsList,dateSort);
+			 Collections.reverse(fileVOsList);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in setfileGallaryDetails() method, Exception - ",e);
+			
+		}
+	} 
+ 
+ public List<SelectOptionVO> getCandidateRelatedSubCategoriesByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType)
+	{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		try{
+			Date fromDate = null;
+			Date toDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+			 fromDate = format.parse(fromDateStr);
+			if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+			 toDate = format.parse(toDateStr);
+		//	List<Object[]> list = partyGalleryDAO.getCandidateRelatedGallaries(candidateId, partyId, fromDate, toDate, queryType);
+			List<Object[]> list = candidatePartyCategoryDAO.getCandidateRelatedCategories(candidateId,fromDate, toDate, queryType);
+			if(list != null && list.size() > 0)
+			  for(Object[] params : list)
+			   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));
+			
+			return selectOptionVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getCandidateRelatedGallaries() method, Exception - ",e);
+			return null;
+		}
+	}
+
 }

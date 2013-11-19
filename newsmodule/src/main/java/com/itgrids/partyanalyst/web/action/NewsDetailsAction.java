@@ -334,11 +334,18 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			 String newsType ="public";
 			 //if(regVO.getUserAccessType() != null && regVO.getUserAccessType().equalsIgnoreCase("Admin"))
 				// newsType = "";
-			 selectOptionVOList = candidateDetailsService.getCandidateRelatedGallaries(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.TDPID,newsType);
+			selectOptionVOList = candidateDetailsService.getCandidateRelatedGallaries(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.TDPID,newsType);
+			 
+			 
 		 }
 		 
 		 else if(jObj.getString("task").equalsIgnoreCase("getCandidateRelatedCategories"))
 			selectOptionVOList = candidateDetailsService.getCandidateRelatedCategories(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),IConstants.TDPID);
+		 else if(jObj.getString("task").equalsIgnoreCase("getCandidateRelatedsubCategories"))
+		 {
+			 String newsType ="public";
+			 selectOptionVOList = candidateDetailsService.getCandidateRelatedSubCategoriesByCandidateId(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),newsType);
+		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("getGallariesForSelectedCategory"))
 		 {
 			 List<Long> categoryIdsList = new ArrayList<Long>(0);
