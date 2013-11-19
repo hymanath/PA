@@ -58,9 +58,9 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	{
 		StringBuilder str= new StringBuilder();
 		
-		str.append("select model from File model where model.category.categoryId=:categoryId and model.isDeleted ='N'");
+		str.append("select model from File model where model.category.categoryId=:categoryId and (model.isDeleted !='Y') or (model.isDeleted is null)");
 		 if(newsType != null && !newsType.equalsIgnoreCase(""))
-			 str.append(" and model.isPrivate = 'N' ");
+			 str.append(" and (model.isPrivate != 'Y') or (model.isPrivate is null)");
 		 if(fromDate != null)
 			 str.append(" and date(model.fileDate) >= :fromDate ");
 			 
