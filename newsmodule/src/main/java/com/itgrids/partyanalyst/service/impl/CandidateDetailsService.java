@@ -8096,6 +8096,39 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 return new ArrayList<FileVO>(fileMap.values());
  }
  
+ public List<SelectOptionVO> getLocationValuesByRegionScope1(String regionScope, String queryType)
+ {
+	 List<SelectOptionVO> selectOptionVOList = null;
+	 try{
+		 List<Object[]> locationList = null;
+		 Long regionScopeId = regionScopesDAO.getRegionScopeIdByScope(regionScope);
+
+		  if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.CONSTITUENCY)){
+			List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId2(regionScopeId,queryType,872L);
+			if(locationValuesList != null && locationValuesList.size() >0)
+			locationList = constituencyDAO.getConstituencyNameByConstituencyIdsList(locationValuesList);
+		  }else if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.DISTRICT)){
+			List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId1(regionScopeId,queryType,872L);
+			if(locationValuesList != null && locationValuesList.size() >0)
+			locationList = districtDAO.getDistrictNamesByDistrictIdsList(locationValuesList); 
+		  } 
+		 
+		 if(locationList != null && locationList.size() > 0)
+		 {
+			selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			selectOptionVOList.add(new SelectOptionVO(0L,"Select"));
+			for(Object[] params: locationList)
+			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):" "));
+		 }
+		 
+		 return selectOptionVOList;
+	 }catch (Exception e) {
+      e.printStackTrace();
+      log.error("Exception Occured in getLocationValuesByRegionScope() method, Exception - ",e);
+      return null;
+	 }
+ }
+
  public List<GallaryVO> getAllGalariyes()
  {
 	 List<GallaryVO> returnlist = null;
