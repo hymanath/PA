@@ -77,7 +77,7 @@ font-family:eFont;src: url('img/eenadu.ttf');
 font-family: eFont;
 font-size:20px;
 }
-
+#candidateListForPartyImg{margin-left:300px;}
 </style>
 </head>
 <script type="text/javascript">
@@ -2330,6 +2330,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
 		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
 		str+='</div>';
 
 		str+='    <div class="span5 well well-small">';
@@ -2352,7 +2353,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
 		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
-		
+		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyForNewsToImg" />';
 		str+='</div>';
 
 		str+='    <div class="span4 well well-small">';
@@ -2603,6 +2604,7 @@ function addNewFrom(){
  str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
 		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str +='<img src="images/search.jpg" id="candidateListForParty'+who+'Img" style="display:none;"/>';
 		str+='</div>';
 
 		str+='    <div class="span5 well well-small">';
@@ -2638,7 +2640,7 @@ var str ='';
 	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
 		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
-		
+		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
 		str+='</div>';
 
 		str+='    <div class="span4 well well-small">';
@@ -2963,7 +2965,7 @@ function deleteSelectedParty(id)
 
 function getCandidatesListByPartyId(partyId,type)
 {
-   
+    $("#"+type+"Img").css("display","block");
 		var jsObj = {
 			partyId :partyId,
 			type:type,
