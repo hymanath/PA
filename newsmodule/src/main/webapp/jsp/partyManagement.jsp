@@ -2398,7 +2398,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='        <div class="span4">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
-		str+='<br/><input type="file" name="fileSourceVOList[0].sourceFileList[0].fileImage" class="btn">';
+		str+='<br/><input type="file" name="fileSourceVOList[0].sourceFileList[0].fileImage" class="btn fileImgCls" key="aaanewsfileDescription">';
 		
 
 		str+='        </div>';
@@ -2431,7 +2431,8 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='</div>';
 		str+='<div id="source0newfile"></div>';
 		str+='<div class="container m_top5">';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level" id="aaanewsfileDescription"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -2504,7 +2505,7 @@ function addNewFileSource(){
 		str+='        <div class="span4">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
-		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn">';
+		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls" key="'+addSource+'aaanewsfileDescription">';
 		
 
 		str+='        </div>';
@@ -2537,7 +2538,8 @@ function addNewFileSource(){
 		str+='</div>';
 		str+='<div id="source'+addSource+'newfile"></div>';
 		str+='<div class="container m_top5">';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level" ></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -2565,7 +2567,7 @@ function addNewFilePart(id){
         str+='<div id ="'+addFile+'newpart'+id+'" class="container ">';
 		str+='        <div class="span4">';
 				
-		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn">';
+		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn addFileImgCls">';
 
 		str+='        </div>';
 
