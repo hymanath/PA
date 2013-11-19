@@ -11,6 +11,8 @@ public class BoothVO {
 	private int missedVotes = 0;
 	private int maleVoters = 0;
 	private int femaleVoters = 0;
+	private int otherVoters = 0;
+	private int startingSerialNo = 0;
 	private int endingSerialNo = 0;
 	private List<Integer> missedVotesList;
 	private boolean isVotesMissed = false;
@@ -101,6 +103,18 @@ public class BoothVO {
 	}
 	public void setEndingSerialNo(int endingSerialNo) {
 		this.endingSerialNo = endingSerialNo;
+	}
+	public int getOtherVoters() {
+		return otherVoters;
+	}
+	public void setOtherVoters(int otherVoters) {
+		this.otherVoters = otherVoters;
+	}
+	public int getStartingSerialNo() {
+		return startingSerialNo;
+	}
+	public void setStartingSerialNo(int startingSerialNo) {
+		this.startingSerialNo = startingSerialNo;
 	}
 	
 }
