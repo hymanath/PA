@@ -322,6 +322,12 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
   	
   	public Long getNewsDetailsBetweenSelectedDatesCount(Date fromDate,Date toDate);
       
- 
+  	public List<Long> getLocationValuesByRegionScopeId1(Long regionScopeId, String queryType,Long partyId);
+  	
+  	public List<Long> getLocationValuesByRegionScopeId2(Long regionScopeId, String queryType,Long partyId);
+  	
+  	public List<File> getNewsCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr);
+  	
+  	public Long getNewsTotalCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr);
 }
 
