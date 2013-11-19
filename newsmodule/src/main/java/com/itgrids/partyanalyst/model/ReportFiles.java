@@ -33,7 +33,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class ReportFiles extends BaseModel implements Serializable{
 	private Long reportFilesId;
 	private NewsReport newsReport;
-	private FileGallary fileGallary;
+	private File file;
 public ReportFiles()
 {
 	
@@ -42,7 +42,7 @@ public ReportFiles(Long reportFilesId,NewsReport newsReport,FileGallary fileGall
 {
 this.reportFilesId = reportFilesId;
 this.newsReport = newsReport;
-this.fileGallary = fileGallary;
+this.file = file;
 
 }
 @Id
@@ -64,15 +64,16 @@ public NewsReport getNewsReport() {
 public void setNewsReport(NewsReport newsReport) {
 	this.newsReport = newsReport;
 }
+
 @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-@JoinColumn(name = "file_gallary_id")
+@JoinColumn(name = "file_id")
 @LazyToOne(LazyToOneOption.NO_PROXY)
 @org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-public FileGallary getFileGallary() {
-	return fileGallary;
+public File getFile() {
+	return file;
 }
-public void setFileGallary(FileGallary fileGallary) {
-	this.fileGallary = fileGallary;
+public void setFile(File file) {
+	this.file = file;
 }
 
 

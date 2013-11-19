@@ -105,5 +105,73 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	  return query.list();
 	 
 	}
-	
+		
+	 public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue)
+	 {
+		 StringBuilder str = new StringBuilder();
+		 str.append("select distinct model from File model where model.isDeleted !='Y' ");
+		 if(!"Admin".equalsIgnoreCase(userType))
+		 str.append("and model.user.userId = :userId ");
+		 if(importanceId != 0)
+		 str.append("and model.newsImportance.newsImportanceId = :importanceId ");
+		 if(regionValue != 1)
+		 str.append("and model.regionScopes.regionScopesId = :regionValue ") ; 
+		 if(fromDate != null)
+			 str.append("and date(model.fileDate) >= :fromDate ");
+		 if(toDate != null)
+			 str.append("and date(model.fileDate) <= :toDate "); 
+		 str.append("order by model.fileDate desc ");
+		 Query query = getSession().createQuery(str.toString());
+		 if(!"Admin".equalsIgnoreCase(userType))
+		 query.setParameter("userId", userId);
+		 if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		 if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		 if(importanceId != 0)
+		 query.setParameter("importanceId", importanceId);
+		 if(regionValue != 1)
+			 query.setParameter("regionValue", regionValue);
+		 query.setFirstResult(0);
+		 query.setMaxResults(300);
+		return query.list();
+		 
+	}
+	 
+	 public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds)
+	 {
+		 StringBuilder str = new StringBuilder();
+		 str.append("select distinct model from File model where model.isDeleted !='Y' ");
+		 if(!"Admin".equalsIgnoreCase(userType))
+		 str.append("and model.user.userId = :userId ");
+		 if(regionValue.longValue() == 1l){
+		   str.append("and model.userAddress.state.stateId = :location ");
+		 }else if(regionValue.longValue() == 2l){
+		   str.append("and model.userAddress.district.districtId = :location ");
+		 }else if(regionValue.longValue() == 3l){
+		   str.append("and model.userAddress.constituency.constituencyId in (:location) ");
+		 }else if(regionValue.longValue() == 4l){
+		   str.append("and model.userAddress.constituency.constituencyId = :location ");
+		 }
+		 if(fromDate != null)
+			 str.append("and date(model.fileDate) >= :fromDate ");
+		 if(toDate != null)
+			 str.append("and date(model.fileDate) <= :toDate "); 
+		 str.append("order by model.fileDate desc ");
+		 Query query = getSession().createQuery(str.toString());
+		 if(!"Admin".equalsIgnoreCase(userType))
+		 query.setParameter("userId", userId);
+		 if(fromDate != null)
+		 query.setParameter("fromDate", fromDate);
+		 if(toDate != null)
+		 query.setParameter("toDate", toDate);
+		 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 4l)
+			 query.setParameter("location", location);
+		 if(regionValue.longValue() == 3l)
+			 query.setParameterList("location", locationIds);
+		 query.setFirstResult(0);
+		 query.setMaxResults(300);
+		return query.list();
+		 
+	}
 }

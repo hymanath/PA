@@ -168,4 +168,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public List<Long> getConstituencyIdByTehsilId(Long mandalId);
 	
+	public List<Object[]> getConstituencyConstituencyId(Long constituencyId);
+	
 }

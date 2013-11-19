@@ -165,7 +165,7 @@ function buildPaginatedNews(results,jsObj)
 	for(var i in results){
 		str+="<li style='margin-top: 35px;'>";
 		var source = results[i].fileVOList[0].source.trim();
-		if(source == "Eenadu Telugu")
+		if(results[i].flagSet != null)
 		{
 			str+="<span class='enadu fontStyle' style='font-weight:bold;'><a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></span>";
 		}
@@ -181,7 +181,7 @@ function buildPaginatedNews(results,jsObj)
 		var source = results[i].fileVOList[0].source;
 		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
-		if(source == "Eenadu Telugu")
+		if(results[i].flagSet != null)
 		{
 			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
 		}

@@ -24,28 +24,15 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	 
+	 <script src="js/cufon/cufon.js" type="text/javascript"></script>
+     <script src="js/cufon/Eenadu_400.font.js" type="text/javascript"></script>
 <style type="text/css">
-	@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
-	@font-face {
-	    font-family: "eFont";
-	    font-style: normal;
-	    font-weight: normal;
-	    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
-	}
-	 .enadu
-	{
-	font-family: eFont;
-	font-size:20px;
-	}
 	.well {
 	  margin-bottom: 7px;
 	  padding-top: 10px;
 	  padding-bottom: 10px;
 	}
-	#newsDiv{
-	  font-weight: bold;
-	}
+	
 </style>
 </head>
 <body>
@@ -54,6 +41,7 @@
   </div>
   
   <script type="text/javascript">
+  
   function callAjax()
 	{
 		 var myResults;
@@ -83,16 +71,16 @@
 		str+='<div class="btn btn-large btn-block btn-info" style="margin-bottom: 8px;"><b>ANDHRA PRADESH STATE</b></div>';
 		 for( var i in myResults.mainArticalsList){
 			  str+='<div class="row-fluid"><div class="span12 well"><div class="media"><div class="media-body"><hgroup>';
-			  if(myResults.mainArticalsList[i].names != null){
-				str+='<h4 class="media-heading enadu">'+myResults.mainArticalsList[i].title+'</h4>';
+			  if(myResults.mainArticalsList[i].eenadu){
+				str+='<h4 class="media-heading"><enadu>'+myResults.mainArticalsList[i].title+'</enadu></h4>';
 			  }else{
 				str+='<h4 class="media-heading">'+myResults.mainArticalsList[i].title+'</h4>';
 			  }												  
 				str+='<h5 style="border-bottom:1px solid #333"><span class="label">'+myResults.mainArticalsList[i].source+'</span> <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
 				str+='</hgroup>';
 
-			  if(myResults.mainArticalsList[i].names != null){
-				 str+='<p class="enadu">'+myResults.mainArticalsList[i].description+'</p>';	
+			  if(myResults.mainArticalsList[i].eenadu){
+				 str+='<p ><enadu>'+myResults.mainArticalsList[i].description+'</enadu></p>';	
 			  }else{
 					str+='<p>'+myResults.mainArticalsList[i].description+'</p>';
 			  }
@@ -106,16 +94,16 @@
 		str+='<div class="btn btn-large btn-block btn-info" style="margin-bottom: 8px;"><b>'+myResults.fileVOList[i].locationName+' District</b></div>';
 		 for(var j in myResults.fileVOList[i].fileVOList){
 			  str+='<div class="row-fluid"><div class="span12 well"><div class="media"><div class="media-body"><hgroup>';
-			  if(myResults.fileVOList[i].fileVOList[j].names != null){
-				str+='<h4 class="media-heading enadu">'+myResults.fileVOList[i].fileVOList[j].title+'</h4>';
+			  if(myResults.fileVOList[i].fileVOList[j].eenadu){
+				str+='<h4 class="media-heading "><enadu>'+myResults.fileVOList[i].fileVOList[j].title+'</enadu></h4>';
 			  }else{
 				str+='<h4 class="media-heading">'+myResults.fileVOList[i].fileVOList[j].title+'</h4>';
 			  }												  
 				str+='<h5 style="border-bottom:1px solid #333"><span class="label">'+myResults.fileVOList[i].fileVOList[j].source+'</span> <i class="pull-right">'+myResults.fileVOList[i].fileVOList[j].scope+': '+myResults.fileVOList[i].fileVOList[j].locationName+'</i></h5>';
 				str+='</hgroup>';
 
-			  if(myResults.fileVOList[i].fileVOList[j].names != null){
-				str+='<p class="enadu">'+myResults.fileVOList[i].fileVOList[j].description+'</p>';	
+			  if(myResults.fileVOList[i].fileVOList[j].eenadu){
+				str+='<p ><enadu>'+myResults.fileVOList[i].fileVOList[j].description+'</enadu></p>';	
 			  }else{
 					str+='<p>'+myResults.fileVOList[i].fileVOList[j].description+'</p>';
 			  }
@@ -124,6 +112,7 @@
 	   }
 	  }
 	  document.getElementById("newsDiv").innerHTML =str;
+	   Cufon.set('fontSize', '28px').replace('enadu');
  }
   callAjax();
   </script>

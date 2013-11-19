@@ -20,7 +20,7 @@
 
 		<div id="constituencyPageRightMapDiv1" class="contentDivClass" style="height:90%;">
 			<div style="margin-top:5px;margin-bottom:20px;">
-				<font color="red" size="3px" style="margin-left: 140px;"><b>Sorry! you didn,t have access privileges to view this content </b></font><br><br>
+				<font color="red" size="3px" style="margin-left: 140px;"><b>Sorry! you didn't have access privileges to view this content </b></font><br><br>
 			</div>
 														
 		</div>	

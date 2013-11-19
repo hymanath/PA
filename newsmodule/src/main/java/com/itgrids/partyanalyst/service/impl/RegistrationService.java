@@ -532,6 +532,8 @@ public class RegistrationService implements IRegistrationService{
 				public Object doInTransaction(TransactionStatus status) {
 					User user = null;
 					user = new User();
+					user.setAccessType(regVo.getAccessType());
+					user.setAccessValue(regVo.getAccessValue());
 					
 					 user.setFirstName(regVo.getFirstName());
 					 user.setLastName(regVo.getLastName());
@@ -541,7 +543,7 @@ public class RegistrationService implements IRegistrationService{
 					user.setUserAccessType(regVo.getUserAccessType());
 					if(userType.equalsIgnoreCase("Admin"))
 					 user.setUserType("subuser");
-					 else 
+					else 
 					user.setUserType(userType);
 					user = userDAO.save(user);
 					

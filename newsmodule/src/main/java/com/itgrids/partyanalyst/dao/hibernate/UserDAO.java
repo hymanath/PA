@@ -508,4 +508,9 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
+	public List<String> getUserType(Long userId){
+		Query query = getSession().createQuery("select model.userAccessType from User model where model.userId = :userId");
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }

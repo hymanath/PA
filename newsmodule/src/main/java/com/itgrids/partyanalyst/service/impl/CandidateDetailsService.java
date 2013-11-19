@@ -6436,13 +6436,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
 		try{
 		
-		 List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,newsType);
-		 if(fileGallaryList != null && fileGallaryList.size() > 0)
+		 List<File> fileList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex);
+		 if(fileList != null && fileList.size() > 0)
 		 {
-			 setfileGallaryDetails(fileGallaryList, fileVOsList);
+			 setfileDetails(fileList, fileVOsList);
 		 }
 		 
-		 fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetails(null, null, contenttype,partyId,newsType).size());
+		 fileVOsList.get(0).setCount(fileGallaryDAO.getRecentlyUploadedNewsDetailsCount().intValue());
 		 return fileVOsList;
 		 
 		
@@ -6454,112 +6454,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	}
 	
 	
-	public void setfileGallaryDetails(List<FileGallary> fileGallaryList,List<FileVO> fileVOsList)
-	{
-		try{
-			
-			List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
-			for(FileGallary fileGallary : fileGallaryList)
-			 {
-			/*	int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size();
-				if(count>0)
-					return;*/
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					if(fileGallary.getFile() == null)
-						continue;
-					
-				fileGalleryIdsList.add(fileGallary.getFileGallaryId());
-					
-				FileVO fileVO = new FileVO(); 
-				fileVO.setContentId(fileGallary.getFileGallaryId());
-				fileVO.setFileId(fileGallary.getFile().getFileId());
-				fileVO.setTitle(fileGallary.getFile().getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileTitle().toString())):"");
-				fileVO.setDescription(fileGallary.getFile().getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileGallary.getFile().getFileDescription())):"");
-				
-				Long locationScopeId = fileGallary.getFile().getRegionScopes().getRegionScopesId();
-				if(locationScopeId.equals(2L))
-				 fileVO.setLocationName(stateDAO.get(fileGallary.getFile().getLocationValue()).getStateName());
-				else if(locationScopeId.equals(3L))
-				 fileVO.setLocationName(districtDAO.get(fileGallary.getFile().getLocationValue()).getDistrictName());
-				else if(locationScopeId.equals(4L))
-				 fileVO.setLocationName(constituencyDAO.get(fileGallary.getFile().getLocationValue()).getName());
-				else if(locationScopeId.equals(5L))
-				 fileVO.setLocationName(tehsilDAO.get(fileGallary.getFile().getLocationValue()).getTehsilName());
-				
-				fileVO.setLocationId(fileGallary.getFile().getLocationValue());
-				
-				fileVO.setFilePath1(fileGallary.getFile().getFilePath());
-				
-				fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
-				Set<FileSourceLanguage> fileSourceLanguages = fileGallary.getFile().getFileSourceLanguage();
-				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
-				Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
-				
-				List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(0);
-				if(fileSourceLanguageList != null && fileSourceLanguageList.size() > 0)
-				{
-					for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageList)
-					{
-					   FileVO fileVOSourceLanguage = new FileVO();
-					   fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
-					   fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
-					   fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
-					   fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
-					   fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
-						
-						List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
-						Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
-						for(FilePaths filePath : filePathsSet)
-						{
-							FileVO fileVOPath = new FileVO();
-							fileVOPath.setPath(filePath.getFilePath());
-							fileVOPath.setOrderNo(filePath.getOrderNo());
-							fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
-							fileVOPathsList.add(fileVOPath);
-						}
-					   Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
-					   fileVOSourceLanguage.setFileVOList(fileVOPathsList);
-					   fileVOSourceLanguageList.add(fileVOSourceLanguage);
-						
-					}
-				}
-				
-				fileVO.setMultipleSource(fileVOSourceLanguageList.size());
-				Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
-				fileVO.setFileVOList(fileVOSourceLanguageList);
-				 
-				
-				fileVO.setFileDate(fileGallary.getFile().getFileDate() == null ? null :
-					sdf.format(fileGallary.getFile().getFileDate()));
-				 fileVO.setReqFileDate(fileGallary.getFile().getFileDate());
-				 
-				fileVOsList.add(fileVO);
-			 }
-			if(fileGalleryIdsList != null && fileGalleryIdsList.size() > 0)
-			{
-			 Map<Long,String> candidateNamesMap = new HashMap<Long, String>(0);
-			 List<Object[]> list = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalleryIdsList);
-			 if(list != null && list.size() > 0)
-			  for(Object[] params:list)
-				 candidateNamesMap.put((Long)params[0], params[1] != null?params[1].toString():" ");
-			 
-			 for(FileVO fileVO:fileVOsList)
-			  fileVO.setCandidateName(candidateNamesMap.get(fileVO.getContentId()));
-			 
-			}
-			
-			if(fileVOsList != null && fileVOsList.size() > 0)
-			{
-			 Collections.sort(fileVOsList,dateSort);
-			 Collections.reverse(fileVOsList);
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception Occured in setfileGallaryDetails() method, Exception - ",e);
-			
-		}
-	}
+	
 	
 	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType)
 	{
@@ -6808,7 +6703,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 if(fileGallariesList != null && fileGallariesList.size() > 0)
 		 {
 			fileVOList = new ArrayList<FileVO>(0);
-			setfileGallaryDetails(fileGallariesList, fileVOList);
+			//setfileGallaryDetails(fileGallariesList, fileVOList);
 			fileVOList.get(0).setCount(candidateRelatedNewsDAO.getFileGallaryListByCandidateId(candidateId, null, null, type,fromDate,toDate,gallaryIdsList,categoryIdsList).size());
 		  }
 		 return fileVOList;
@@ -6864,16 +6759,15 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			if(toDateStr != null)
 				toDate = format.parse(toDateStr);
 			
-			List<FileGallary> fileGallaryList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults, IConstants.NEWS_GALLARY, IConstants.TDPID, newsType);
-			if(fileGallaryList != null && fileGallaryList.size() > 0)
+			List<File> fileList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults);
+			if(fileList != null && fileList.size() > 0)
 			{
-				setfileGallaryDetails(fileGallaryList, fileVOsList);
-			    fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, null, null, IConstants.NEWS_GALLARY, IConstants.TDPID, newsType).size());
+				setfileDetails(fileList, fileVOsList);
+			    fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDatesCount(fromDate, toDate).intValue());
 			}
 			
 			 return fileVOsList;
 		 }catch (Exception e) {
-			 e.printStackTrace();
 			 log.error("Exception Occured in getNewsBetweenSelectedDates() method, Exception - ",e);
 			 return fileVOsList;
 		}
@@ -7314,7 +7208,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			List<FileGallary> fileGallaryList = partyGalleryDAO.getLatestNewsResPonses(startIndex, maxIndex);
 		 if(fileGallaryList != null && fileGallaryList.size() > 0)
 		 {
-			 setfileGallaryDetails(fileGallaryList, fileVOsList);
+			 //setfileGallaryDetails(fileGallaryList, fileVOsList);
 		 }
 		 
 		 fileVOsList.get(0).setCount(partyGalleryDAO.getLatestNewsResPonses(null, null).size());
@@ -7796,25 +7690,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 }
  }
  
- public List<FileVO> getNewsForSelectedKeyword(String keyWord,Long partyId,String newsType,Integer startIndex,Integer maxIndex)
- {
-	 List<FileVO> fileVOList = null;
-	 try{
-		 List<FileGallary> fileGallariesList = fileGallaryDAO.getNewsForSelectedKeyWord(keyWord, partyId, newsType, startIndex, maxIndex);
-		 if(fileGallariesList != null && fileGallariesList.size() > 0)
-		 {
-			fileVOList = new ArrayList<FileVO>(0);
-			setfileGallaryDetails(fileGallariesList, fileVOList);
-			fileVOList.get(0).setCount(fileGallaryDAO.getNewsForSelectedKeyWord(keyWord, partyId, newsType, null, null).size()); 
-		 }
-		 
-		return fileVOList;
-	 }catch (Exception e) {
-	  e.printStackTrace();
-	  log.error(" Exception Occured in getNewsForSelectedKeyword() method, Exception - "+e); 
-	  return fileVOList;
-	}
- }
+
  
  public List<SelectOptionVO> getTotalKeyWords()
  {
@@ -7879,61 +7755,85 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			e.printStackTrace();
 	 }
  }
- public List<SelectOptionVO> getAllNewsGallaries()
- {
-	 List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(); 
-	 try{
  
-	 List<Object[]> list = gallaryDAO.getAllGallaries(com.itgrids.partyanalyst.utils.IConstants.NEWS_GALLARY);
-	 if(list != null && list.size() > 0)
-		{
-		 for(Object[] params : list)
-			 result.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
-		}
-		}
-	 catch (Exception e) {
-		e.printStackTrace();
-	}
-	return result;
- }
-	 
- public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long partyId)
+ public List<FileVO> getNewsForSelectedKeyword(String keyWord,Long partyId,String newsType,Integer startIndex,Integer maxIndex)
  {
- 	try
- 	{
- 	List<SelectOptionVO> candidateList = new ArrayList<SelectOptionVO>(0);
- 	List<Object[]> list = candidateDAO.getCandidateListByPartyId(partyId);
- 	if(list != null && list.size() > 0)
- 	 for(Object[] params:list)
- 		candidateList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
- 	return candidateList;
- 	
- 	}catch(Exception e)
- 	{
- 		e.printStackTrace();
- 		log.error("Exception Occured in getCandidatesByPartyIdFromCandidateTable() method, Exception - "+e);
- 		return null;
- 	}
- }
- 
- public List<SelectOptionVO> getBenefitList()
- {
-	 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+	 List<FileVO> fileVOList = null;
 	 try{
-	
-	  List<Benefit> benefitsList = benefitDAO.getBenifitsList();
-	  if(benefitsList != null && benefitsList.size() > 0)
-		for(Benefit benefit: benefitsList)
-			selectOptionVOList.add(new SelectOptionVO(benefit.getBenefitId(),benefit.getName()));
-	  
-	  return selectOptionVOList;
+		 List<FileGallary> fileGallariesList = fileGallaryDAO.getNewsForSelectedKeyWord(keyWord, partyId, newsType, startIndex, maxIndex);
+		 if(fileGallariesList != null && fileGallariesList.size() > 0)
+		 {
+			fileVOList = new ArrayList<FileVO>(0);
+			//setfileGallaryDetails(fileGallariesList, fileVOList);
+			fileVOList.get(0).setCount(fileGallaryDAO.getNewsForSelectedKeyWord(keyWord, partyId, newsType, null, null).size()); 
+		 }
 		 
+		return fileVOList;
 	 }catch (Exception e) {
 	  e.printStackTrace();
-	  log.error(" Exception Occured in getBenefitList() method, Exception - "+e);
-	  return null;
-	 }
+	  log.error(" Exception Occured in getNewsForSelectedKeyword() method, Exception - "+e); 
+	  return fileVOList;
+	}
  }
+ 
+
+	 public List<SelectOptionVO> getAllNewsGallaries()
+	 {
+		 List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(); 
+		 try{
+	 
+		 List<Object[]> list = gallaryDAO.getAllGallaries(com.itgrids.partyanalyst.utils.IConstants.NEWS_GALLARY);
+		 if(list != null && list.size() > 0)
+			{
+			 for(Object[] params : list)
+				 result.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
+			}
+			}
+		 catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	 }
+		 
+	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long partyId)
+	 {
+	 	try
+	 	{
+	 	List<SelectOptionVO> candidateList = new ArrayList<SelectOptionVO>(0);
+	 	List<Object[]> list = candidateDAO.getCandidateListByPartyId(partyId);
+	 	if(list != null && list.size() > 0)
+	 	 for(Object[] params:list)
+	 		candidateList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
+	 	return candidateList;
+	 	
+	 	}catch(Exception e)
+	 	{
+	 		e.printStackTrace();
+	 		log.error("Exception Occured in getCandidatesByPartyIdFromCandidateTable() method, Exception - "+e);
+	 		return null;
+	 	}
+	 }
+	 
+	 public List<SelectOptionVO> getBenefitList()
+	 {
+		 List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		 try{
+		
+		  List<Benefit> benefitsList = benefitDAO.getBenifitsList();
+		  if(benefitsList != null && benefitsList.size() > 0)
+			for(Benefit benefit: benefitsList)
+				selectOptionVOList.add(new SelectOptionVO(benefit.getBenefitId(),benefit.getName()));
+		  
+		  return selectOptionVOList;
+			 
+		 }catch (Exception e) {
+		  e.printStackTrace();
+		  log.error(" Exception Occured in getBenefitList() method, Exception - "+e);
+		  return null;
+		 }
+	 }
+	 
+
  
  public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String gallaryIdsStr,String categoryIdsStr){
 	 List<FileVO> fileVOList = null;
@@ -7979,8 +7879,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
  public void setfileDetails(List<File> fileList,List<FileVO> fileVOsList)
 	{
 		try{
-			List<Long> fileIdsList = new ArrayList<Long>(0);
-			if(fileList != null && fileList.size() > 0)
+			
+			List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
 			for(File file : fileList)
 			 {
 			/*	int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size();
@@ -7988,34 +7888,37 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					return;*/
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				
-				//fileIdsList.add(file.getFileId());
+					
+				fileGalleryIdsList.add(file.getFileId());
 					
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId(file.getFileId());
 				fileVO.setFileId(file.getFileId());
 				fileVO.setTitle(file.getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle().toString())):"");
 				fileVO.setDescription(file.getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
-				
-				Long locationScopeId = file.getRegionScopes().getRegionScopesId();
-				if(locationScopeId.equals(2L))
-				 fileVO.setLocationName(stateDAO.get(file.getLocationValue()).getStateName());
-				else if(locationScopeId.equals(3L))
-				 fileVO.setLocationName(districtDAO.get(file.getLocationValue()).getDistrictName());
-				else if(locationScopeId.equals(4L))
-				 fileVO.setLocationName(constituencyDAO.get(file.getLocationValue()).getName());
-				else if(locationScopeId.equals(5L))
-				 fileVO.setLocationName(tehsilDAO.get(file.getLocationValue()).getTehsilName());
-				
-				fileVO.setLocationId(file.getLocationValue());
-				
+				if(file.getRegionScopes() != null){
+					Long locationScopeId = file.getRegionScopes().getRegionScopesId();
+					if(locationScopeId.equals(2L))
+					 fileVO.setLocationName(stateDAO.get(file.getLocationValue()).getStateName());
+					else if(locationScopeId.equals(3L))
+					 fileVO.setLocationName(districtDAO.get(file.getLocationValue()).getDistrictName());
+					else if(locationScopeId.equals(4L))
+					 fileVO.setLocationName(constituencyDAO.get(file.getLocationValue()).getName());
+					else if(locationScopeId.equals(5L))
+					 fileVO.setLocationName(tehsilDAO.get(file.getLocationValue()).getTehsilName());
+					
+					fileVO.setLocationId(file.getLocationValue());
+				}
+				if(file.getFont() != null){
+					fileVO.setFlagSet(file.getFont().getName());//setting font name
+					fileVO.setProblemFileId(file.getFont().getFontId().longValue());
+					fileVO.setFontId(file.getFont().getFontId());
+				}
 				fileVO.setFilePath1(file.getFilePath());
 				int responseCount = 0 ;
 				//fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
 				responseCount = newsResponseDAO.getCandidateNewsResponseFileIds(file.getFileId()).size();
-				
 				fileVO.setResponseCount(responseCount);
-				if(file.getFont() != null)
-				fileVO.setFontId(file.getFont().getFontId());
 				Set<FileSourceLanguage> fileSourceLanguages = file.getFileSourceLanguage();
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
 				Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
@@ -8058,12 +7961,12 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					sdf.format(file.getFileDate()));
 				 fileVO.setReqFileDate(file.getFileDate());
 				 
-				 fileVOsList.add(fileVO);
+				fileVOsList.add(fileVO);
 			 }
-			/*if(fileIdsList != null && fileIdsList.size() > 0)
+			/*if(fileGalleryIdsList != null && fileGalleryIdsList.size() > 0)
 			{
 			 Map<Long,String> candidateNamesMap = new HashMap<Long, String>(0);
-			// List<Object[]> list = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileIdsList);
+			 List<Object[]> list = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalleryIdsList);
 			 if(list != null && list.size() > 0)
 			  for(Object[] params:list)
 				 candidateNamesMap.put((Long)params[0], params[1] != null?params[1].toString():" ");
@@ -8071,20 +7974,20 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 for(FileVO fileVO:fileVOsList)
 			  fileVO.setCandidateName(candidateNamesMap.get(fileVO.getContentId()));
 			 
-			}*/
+			}
 			
 			if(fileVOsList != null && fileVOsList.size() > 0)
 			{
 			 Collections.sort(fileVOsList,dateSort);
 			 Collections.reverse(fileVOsList);
-			}
+			}*/
 			
 		}catch (Exception e) {
 			e.printStackTrace();
 			log.error("Exception Occured in setfileGallaryDetails() method, Exception - ",e);
 			
 		}
-	} 
+	}
  
  public List<SelectOptionVO> getCandidateRelatedSubCategoriesByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType)
 	{
@@ -8110,5 +8013,4 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			return null;
 		}
 	}
-
-}
+ }

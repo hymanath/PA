@@ -1,7 +1,10 @@
 
 package com.itgrids.partyanalyst.service;
 
+import java.util.List;
+
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IStaticDataService {/*
 
@@ -42,7 +45,7 @@ public interface IStaticDataService {/*
 	//>>>>>District Related Methods Start
 		public DistrictWisePartyResultVO getDistrictWiseElectionReport(Long electionScopeId, Long districtId);
 		
-		public List<SelectOptionVO> getDistricts(Long stateId);
+		
 		
 		public CandidateDetailsVO getElectionResultsForADistrictForAllYears(Long districtId);
 		
@@ -70,6 +73,7 @@ public interface IStaticDataService {/*
 	*/
 		public ConstituencyInfoVO getConstituenciesByElectionTypeAndStateId(Long electionTypeId , Long stateID);
 		public ConstituencyInfoVO getLatestAssemblyConstituenciesForParliament(Long parliamentConstituencyId);
+		public List<SelectOptionVO> getDistricts(Long stateId);
 /*
 		public List<PartyResultVO> getPartyVotesPercentageInAConstituency(Long constituencyId,String all,String[] choices);
 		

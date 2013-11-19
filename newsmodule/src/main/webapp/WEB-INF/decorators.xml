@@ -92,6 +92,7 @@
 		<pattern>/localAreaWiseVotersInfoAction*</pattern>
 		<pattern>/newsDetailsPopupAction.action*</pattern>
 		<pattern>/selectedNewsDetailsAction.action*</pattern>
+		<pattern>/createReportAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">

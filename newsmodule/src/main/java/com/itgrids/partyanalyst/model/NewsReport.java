@@ -32,6 +32,7 @@ public class NewsReport extends BaseModel implements Serializable{
 	private String description;
 	private User user;
 	private Date createdDate;
+	private String reportKey;
 	private Set<ReportFiles> reportFiles = new HashSet<ReportFiles>(0);
 	public NewsReport()
 	{
@@ -85,6 +86,13 @@ public class NewsReport extends BaseModel implements Serializable{
 
 	public void setReportFiles(Set<ReportFiles> reportFiles) {
 		this.reportFiles = reportFiles;
+	}
+	@Column(name = "report_key")
+	public String getReportKey() {
+		return reportKey;
+	}
+	public void setReportKey(String reportKey) {
+		this.reportKey = reportKey;
 	}
 
 }

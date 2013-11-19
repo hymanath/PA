@@ -18,8 +18,17 @@
  margin-left:150px;
  
 }
-
+.accesslvl{
+ margin-left: 181px;
+ margin-bottom:15px;
+}
+#districtDIV,#parliamentDIV,#assemblyDIV{
+  display:none;
+}
 </style>
+<script>
+
+</script>
 </head>
 <body>
 		
@@ -87,6 +96,58 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 </div>
 
 </div>
+<div id="subuserAddressDiv" style="display:none;">
+ <div class="accesslvl">
+    <div id="accesslvlerr" style=" margin-left:-24px;"></div>
+	<b style="color:red;font-size:20px">*&nbsp;</b>
+	<select id="selectLocLvl" name="accesslevel" onchange="showLoc();">
+	  <option value="0">Select Access Level</option>
+	  <option value="1">State</option>
+	  <option value="2">District</option>
+	  <option value="3">Parliament Constituency</option>
+	  <option value="4">Assembly Constituency</option>
+	  
+	</select>
+ </div>
+  <!--<div class="accesslvl">
+	<b style="color:red;font-size:20px">*&nbsp;</b>
+	<select>
+	  <option value="0">Select Access Level</option>
+	  <option value="1">State</option>
+	  <option value="2">District</option>
+	  <option value="3">Parliament Constituency</option>
+	  <option value="4">Assembly Constituency</option>
+	  
+	</select>
+ </div>
+<div class="controls" style="margin-bottom: 15px; width: 300px;margin-left:355px" align="center">
+
+ <label for="assemblyRadio" style="width: 100px;font-weight:bold;"> 
+	<input type="radio" name="electionType" id="assemblyRadio"  style="margin-top: 0px;" value="2" onclick="getConstituenciesForDistrict();" checked="true" /> 
+	 Assebly
+ </label>
+ 
+ <label for="parliamentRadio" style="width: 100px; float: right; margin-top: -25px; margin-left: 90px;font-weight:bold;" >  
+	<input type="radio" name="electionType" id="parliamentRadio"  style="margin-top: 0px;margin-right: 5px;" value="1" onclick="getConstituenciesForDistrict();"/>
+	Parliament
+ </label>
+ 
+</div>-->
+
+<span id="locationErr">
+  </span>
+
+<div id="districtDIV" class="controls" style="margin-bottom:15px;">
+ <b style="color:red;font-size:20px;">*</b> &nbsp; <s:select name="districtId"  list="districtsList"   theme="simple" listKey="id" listValue="name"/>
+</div> 
+<div id="parliamentDIV" class="controls" style="margin-bottom:15px;">
+ <b style="color:red;font-size:20px;">*</b> &nbsp;<s:select name="parliamentId"  list="parliamantConstis.constituencies"   theme="simple" listKey="id" listValue="name"/>
+</div> 
+<div id="assemblyDIV" class="controls" style="margin-bottom:15px;">
+ <b style="color:red;font-size:20px;">*</b> &nbsp; <s:select name="assemblyId"  list="constituencyInfoVO.constituencies"   theme="simple" listKey="id" listValue="name"/>
+</div>
+
+</div>
  <div class="control-group">
 <div class="controls">
 
@@ -112,6 +173,58 @@ var r={
 var emailflag = true;
 </script>	
 <script>
+function showLoc(){
+  var id = $("#selectLocLvl").val();
+  if(id == 0 || id == 1 )
+  {
+    showHide(false,false,false);
+  }else if(id == 2){
+    showHide(true,false,false);
+  }else if(id == 3){
+    showHide(false,true,false);
+  }else if(id == 4){
+    showHide(false,false,true);
+  }
+}
+function showHide(dist,parl,assem){
+    if(dist){ 
+	  $("#districtDIV").show();
+	}else{
+	  $("#districtDIV").hide();
+	}
+	if(parl){ 
+	  $("#parliamentDIV").show();
+	}else{
+	  $("#parliamentDIV").hide();
+	}
+	if(assem){ 
+	  $("#assemblyDIV").show();
+	}else{
+	  $("#assemblyDIV").hide();
+	}  
+}
+function getConstituenciesForDistrict(){
+	var assemblyRadioValue = document.getElementById("assemblyRadio");
+	var parliamentRadioValue = document.getElementById("parliamentRadio");
+
+	var electiontypeId = 0;
+	if(assemblyRadioValue.checked == true ){
+		electiontypeId= assemblyRadioValue.value;
+	}
+	else if(parliamentRadioValue.checked == true ){
+		electiontypeId= parliamentRadioValue.value;
+	}
+	var jsObj = {
+		electionTypeId : electiontypeId,
+		stateId : 1,
+		task:"getCosntituencesByElectionType"	
+	}
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getConstituenciesByElectionType.action?"+rparam;		
+	callAJAX(jsObj,url);
+}
+
 
 function validateEmail()
 {   
@@ -175,6 +288,9 @@ function callAJAX(jsObj,url){
 					{
 						showDetails(results);
 					}
+					else if(jsObj.task == "getCosntituencesByElectionType"){
+						buildConstituenciesList(results);
+					}
 
 					
 			}catch (e) {   		
@@ -190,6 +306,41 @@ function callAJAX(jsObj,url){
 	YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
+function buildConstituenciesList(result){
+
+		var elmt = document.getElementById("constituencyList");
+		clearOptionsListForSelectElmtId("constituencyList")
+		
+		
+		for(var i in result.constituencies)
+		{
+			
+			var option=document.createElement('option');
+				option.value=result.constituencies[i].id;
+			
+			option.text=result.constituencies[i].name;
+			try{
+				elmt.add(option,null);	
+			}catch (ex){
+				elmt.add(option);
+			}
+		}
+	
+}
+	
+function clearOptionsListForSelectElmtId(elmtId)
+{
+	var elmt = document.getElementById(elmtId);
+
+	if(!elmt)
+		return;
+	
+	var len=elmt.length;			
+	for(i=len-1;i>=0;i--)
+	{
+		elmt.remove(i);
+	}	
+}
 function showDetails(results)
 {  
 	var textEle = document.getElementById("emailField");
@@ -276,6 +427,21 @@ function validateFirstName()
 		resultDIVEle.innerHTML = "";
 		
 }
+
+function validateLocation(){
+
+var textEle = document.getElementById("constituencyList");
+var resultDIVEle = document.getElementById("locationErr");
+	resultDIVEle.innerHTML = "";
+	if(textEle.value == 0 )
+	{		
+		resultDIVEle.innerHTML = "<span class='errorClass'> Select Constituency </span>";
+		return;
+	}
+	else
+		resultDIVEle.innerHTML = "";
+
+}
 function isPwdSpclChar(){
 
    var pwd = document.getElementById("passwordField").value;
@@ -315,10 +481,14 @@ function validateUserType()
 	var usrEle = document.getElementById("userTypeId");
 	var usrEleErr=document.getElementById("usrTypeId");
 	usrEleErr.innerHTML = "";
-    if(usrEle.value== 'Select User'){
+	$('#subuserAddressDiv').css("display","none");
+    if(usrEle.value== 0){
 		usrEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Select User Type.</span>";
 	    return false;
-	}     
+	}
+	else if(usrEle.value== 2){
+	$('#subuserAddressDiv').css("display","block");
+	}	
 	else
 	 return true;
 }
@@ -350,7 +520,14 @@ function validatefields()
 	    
 		flag = false;
 	}
-	
+	if($("#userTypeId").val() == 2){
+	  if($("#selectLocLvl").val() == 0){
+	    $("#accesslvlerr").html("Please Select Access Level ").css("color","red");
+		flag = false;
+      }else{
+         $("#accesslvlerr").html("");
+      }	  
+	}
 	return flag;
 }
 

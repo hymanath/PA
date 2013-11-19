@@ -5722,7 +5722,7 @@
 		    	<param name="root">fileVOs</param>
 		   </result> 
 		</action>
-		 <action name="getFilesInACategory" class="candidateElectionResultsAction" method="getFilesInACategory">
+				 <action name="getFilesInACategory" class="candidateElectionResultsAction" method="getFilesInACategory">
            <result type="json" name="success">
 		    	<param name="root">fileVO</param>
 		   </result>        
@@ -5744,7 +5744,20 @@
 		    	<param name="root">selectOptionList</param>
 		   </result>
 		</action>
-		
+		<action name="getConstituenciesByElectionType" class="anonymousUserAction" method="getConstituenciesByElectionType">
+			<result type="json" name="success">
+				<param name="root">constituencyInfoVO</param>				
+			</result>		
+		</action>
+		<action name="createReportAction" class="createReportAction">
+		    <result name="success">/jsp/createReport.jsp</result>
+		    <result name="notLogged" type="redirect">loginPageAction.action</result>
+		 </action>
+		 <action name="createReportAction1" class="createReportAction">
+		   <result name="success" type="json">
+		 	<param name="root">news</param>
+		   </result>
+		 </action>
 		</package>
 		
 		

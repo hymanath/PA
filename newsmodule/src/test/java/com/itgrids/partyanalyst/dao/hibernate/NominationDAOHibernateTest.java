@@ -24,7 +24,7 @@ public class NominationDAOHibernateTest extends BaseDaoTestCase{
 	{
 		List<Long> partyIdsList = new ArrayList<Long>(0);
 		partyIdsList.add(163L);
-		List<Object[]> list = nominationDAO.getCandidatesListByPartyIdsList(partyIdsList);
+		List<Object[]> list = null;//nominationDAO.getCandidatesListByPartyIdsList(partyIdsList);
 		System.out.println(list.size());
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]);

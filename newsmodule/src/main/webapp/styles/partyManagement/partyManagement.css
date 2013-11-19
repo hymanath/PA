@@ -322,3 +322,9 @@ font-size:20px;
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
 #newsReportInnerDiv{width:400px;margin-left:auto;margin-right:auto;}
+.reporttypeclass{
+   margin-top: -3px;
+}
+.regionClass{
+  display:none;
+}

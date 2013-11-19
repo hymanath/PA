@@ -167,11 +167,11 @@
 	<property name="constituencyDAO" ref="constituencyDAO" />
 	<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />		
 	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
-	
+	<property name="districtDAO" ref="districtDAO" />
 	<!-- <property name="electionDAO" ref="electionDAO" />  
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
-		<property name="districtDAO" ref="districtDAO" />
+		
 		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="townshipDAO" ref="townshipDAO" />
@@ -579,6 +579,7 @@
 		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
 		<property name="boothDAO" ref="boothDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
 			
 	</bean>
 	<!-- 
@@ -1657,6 +1658,11 @@
 		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
 	</bean>
 	
+	<bean name="reportService" class="com.itgrids.partyanalyst.service.impl.ReportService" >
+		<property name="reportFilesDAO" ref="reportFilesDAO" />
+		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
+		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
+	</bean>	
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
 		<property name="fileGallaryDAO" ref="fileGallaryDAO"/>
@@ -1684,10 +1690,12 @@
 		<property name="keywordDAO" ref="keywordDAO" />
 		<property name="fileKeywordDAO" ref="fileKeywordDAO" />
 		<property name="mainCategoryDAO" ref="mainCategoryDAO" />
+		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
 		<property name="nominationDAO" ref="nominationDAO" />
 		<property name="candidatePartyDAO" ref="candidatePartyDAO" /> 
 		<property name="candidateDAO" ref="candidateDAO" />
 		<property name="partyDAO" ref="partyDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO"  ref="delimitationConstituencyAssemblyDetailsDAO" />
 </bean>
 </beans>		
 	

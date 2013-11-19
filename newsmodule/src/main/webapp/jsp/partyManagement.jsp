@@ -376,8 +376,44 @@ return;
 	
 </div>
 <div id='newsReportDiv' class="divInfo">
-		
-	 </div>		
+ <div class="container well">
+  <h2 style="text-align: center;"> News Report</h2>
+  <div id="newsReportInnerDiv">
+    <div id="newsReporterrorMessageDiv"></div>
+    <label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId1" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>
+    <label id="toDateLabelId">ToDate :<input type="text" id="toDateId1" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>
+    <table>
+      <tr>
+        <td>Report Description </td><td><textarea maxlength="330" name="fileDescription" rows="3" cols="20" id="newsreportfileDescription"></textarea></td>
+      </tr>
+	  <!--  <tr><td></td><td><input type="radio" class="reporttypeclass" onclick="showHideLocationLvl('level');" checked="checked" value="byLocationLvl" name="byLocationLvl"></input> By Location Level&nbsp;&nbsp;<input class="reporttypeclass" type="radio" onclick="showHideLocationLvl('location');" value="byLocation" name="byLocationLvl"></input> By Location</td></tr>-->
+      <tr class="regionLvlClass">
+        <td>Select Level</td><td><select id="regionlevel"><option value="1">All</option><option value="2">STATE</option><option value="3">DISTRICT</option><option value="4">CONSTITUENCY</option></select></td>
+      </tr>
+	  <tr class="regionClass regSelReport">
+        <td>Select Level</td><td><select id="reportRegionLevel" onchange="showCorrespondingLocations();"><option value="1">STATE</option><option value="2">DISTRICT</option><option value="3">PARLIAMENT CONSTITUENCY</option><option value="4">ASSEMBLY CONSTITUENCY</option></select></td>
+      </tr>
+	  <tr class="regionClass districtSelReport">
+        <td>Select District</td><td><s:select name="districtSelReport" id="districtSelReportId" list="districtsList" theme="simple" listKey="id" listValue="name"/></td>
+      </tr>
+	  <tr class="regionClass parliamSelReport">
+        <td>Select Parliament</td><td><s:select name="parliamSelReport" id="parliamSelReportId" list="parlConstiList" theme="simple" listKey="id" listValue="name"/></td>
+      </tr>
+	  <tr class="regionClass assembSelReport">
+        <td>Select Assembly</td><td><s:select name="assembSelReport" id="assembSelReportId" list="assemConstiList" theme="simple" listKey="id" listValue="name"/></td>
+      </tr>
+	  <tr>
+        <td>Select News</td><td><select id="newsPriority"><option value="0">All</option><option value="1">Low</option><option value="2">Medium</option><option value="3">High</option></select></td>
+      </tr>
+	</table>
+  </div>
+  <div class="form-actions text-center">
+    <input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNews()"/>
+    <img id="newsReportAjaxImg" src="images/search.jpg" style="display:none;"/>
+  </div>
+  <div id="locationWiseNewsDiv" class="divInfo" style="display:none;"></div>
+ </div>
+</div>			
 </div>
 
 	 <!-- for  body 5  result  end -->
@@ -1868,38 +1904,7 @@ function createReport()
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
-  var str = '';
-  str +='<div class="container well">';
-  str +='<h2 style="text-align: center;"> News Report</h2>';
-
-  str +='<div id="newsReportInnerDiv">';
-  str +='<div id="newsReporterrorMessageDiv"></div>';
-  str +='<label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId1" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>';
-  str +='<label id="toDateLabelId">ToDate :<input type="text" id="toDateId1" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>';
-   str+='<table>';
-   str+='<tr>';
-  str+='<td>News Description </td><td><textarea maxlength="330" name="fileDescription" rows="3" cols="20" id="newsreportfileDescription"></textarea></td>';
-   str+='</tr>';
-   str+='<tr>';
-  str +='<td>Select Level</td><td><select id="regionlevel"><option value="1">All</option><option value="2">STATE</option><option value="3">DISTRICT</option><option value="4">CONSTITUENCY</option></select></td>';
-    str+='</tr>';
-	  str+='<tr>';
-  str +='<td>Select News</td><td><select id="newsPriority"><option value="0">All</option><option value="1">Low</option><option value="2">Medium</option><option value="3">High</option></select></td>';
-    str+='</tr>';
-	   str+='</table>';
-  str +='</div>';
- str+='</table>';
- str+='<div class="form-actions text-center">';
-  str +='<input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNews()"/>';
-  str+='<img id="newsReportAjaxImg" src="images/search.jpg" style="display:none;"/>';
-    str +='</div>';
-  str +='<div id="locationWiseNewsDiv" class="divInfo" style="display:none;">';
-
-  str +='</div>';
-
-  str +='</div>';
-
-  $("#newsReportDiv").html(str);
+  
 $("#fromDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
 $("#fromDateId1").datepicker("setDate", new Date());
 $("#toDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
@@ -1915,12 +1920,38 @@ $("#locationWiseNewsDiv").css("display","none");
 	var toDate = $("#toDateId1").val();
 	var regionLevel = $("#regionlevel").val();
 	var importance = $("#newsPriority").val();
+	/*var reportRegionLevel = $("#reportRegionLevel").val();
+	var reportRegionLevelVal = 0;
+	 var type="";
+	if($("#byLevelChecked").is(':checked')){
+	  type = "byLevel";
+	}else{
+	  type = "byRegion";
+	  if(reportRegionLevel == 2){
+		  reportRegionLevelVal = $("#districtSelReportId option:selected").val();
+	  }else if(reportRegionLevel == 3){
+		  reportRegionLevelVal = $("#parliamSelReportId option:selected").val();
+	  }else if(reportRegionLevel == 4){
+		  reportRegionLevelVal = $("#assembSelReportId option:selected").val();
+	  }
+	} */
+	/*var jsObj = {
+			task: 'getNews',
+			fromDate:fromDate,
+			toDate:toDate,
+			regionLevel:regionLevel,
+			importance:importance,
+			reportRegionLevel:reportRegionLevel,
+			reportRegionLevelVal:reportRegionLevelVal,
+			type:type
+	};*/
     var jsObj = {
 			task: 'getNews',
 			fromDate:fromDate,
 			toDate:toDate,
 			regionLevel:regionLevel,
 			importance:importance
+			
 	};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getAllNewsForAUserAction.action?"+rparam;
@@ -3220,6 +3251,53 @@ function testValues(){
 			});	
            
         });
+}
+function getReportFiles(id){
+	  var win=window.open('createReportAction.action?reportId='+id, '_blank');
+	   win.focus();
+	}
+function showHideLocationLvl(key){
+if(key == 'level'){
+   $(".regionLvlClass").show();
+   $('.regionClass').each(function() {
+          $(this).hide();
+   });
+}else if(key == 'location'){
+   $(".regionLvlClass").hide();
+	 $(".regSelReport").show();
+   showCorrespondingLocations();
+}
+}
+
+function showCorrespondingLocations(){
+ var loc = $("#reportRegionLevel").val();
+ if(loc == 1){
+  showHideLocations(false,false,false);
+ }else if(loc == 2){
+  showHideLocations(true,false,false);
+ }else if(loc == 3){
+  showHideLocations(false,true,false);
+ }else if(loc == 4){
+  showHideLocations(false,false,true);
+ }
+}
+
+function showHideLocations(dist,pc,ac){
+ if(dist){
+  $(".districtSelReport").show();
+ }else{
+  $(".districtSelReport").hide();
+ }
+ if(pc){
+  $(".parliamSelReport").show();
+ }else{
+  $(".parliamSelReport").hide();
+ }
+ if(ac){
+  $(".assembSelReport").show();
+ }else{
+  $(".assembSelReport").hide();
+ }
 }
 </script>
 </body>

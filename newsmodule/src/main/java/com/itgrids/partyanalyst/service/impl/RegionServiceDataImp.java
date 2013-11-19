@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -47,10 +48,11 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IBoothDAO boothDAO;
 	private ITownshipDAO townshipDAO;
+	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	
 	/*private IModuleRegionScopesDAO moduleRegionScopesDAO;
 	private IModuleDetailsDAO moduleDetailsDAO;
-	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	
 	private IRegionScopesProblemTypeDAO regionScopesProblemTypeDAO;
 	
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
@@ -59,6 +61,15 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	
 	public IStateDAO getStateDAO() {
 		return stateDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	public ITownshipDAO getTownshipDAO() {
@@ -1133,33 +1144,99 @@ public class RegionServiceDataImp implements IRegionServiceData {
 			regionName = constituency.getName();
 		}		
 		return regionName;
-	}
+	}*/
 	
-	public List<SelectOptionVO> getParliamentConstituenciesByDistrict(Long districtId)
+	public List<Object> getAllAccessLocByDistrict(Long districtId)
 	{
-		List<SelectOptionVO> regionList = null; 
-		SelectOptionVO optionVO = null;
+		List<Object> returnVal = new ArrayList<Object>();
+		List<SelectOptionVO> regionList = new ArrayList<SelectOptionVO>(); 
+		List<SelectOptionVO> assemblyList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
 		
 		List list = delimitationConstituencyAssemblyDetailsDAO.findParliamentConstituenciesByDistrictId(districtId, IConstants.DELIMITATION_YEAR);
-		
-		if(list != null && list.size() > 0)
+		List<Object[]> conList = delimitationConstituencyDAO.getLatestConstituenciesByElectionTypeAndYearInADistrict(2l,districtId, IConstants.DELIMITATION_YEAR);
+		List<Object[]> distList = districtDAO.getDistrictIdAndNameByDistrictId(districtId);
+		populateDataToVo((List<Object[]>)list,regionList);
+		populateDataToVo(conList,assemblyList);
+		populateDataToVo(distList,districtList);
+
+		returnVal.add(districtList);
+		returnVal.add(regionList);
+		returnVal.add(assemblyList);
+		return returnVal;
+	}
+	
+	private void populateDataToVo(List<Object[]> data,List<SelectOptionVO> list){
+		SelectOptionVO optionVO = null;
+		if(data != null && data.size() > 0)
 		{
-			regionList = new ArrayList<SelectOptionVO>();
-			
-			for (Object[] params:(List<Object[]>)list) {
+			for (Object[] params:data) {
 				optionVO = new SelectOptionVO();
 				optionVO.setId((Long)params[0]);
 				optionVO.setName(WordUtils.capitalize(params[1].toString().toLowerCase()));
 				
-				regionList.add(optionVO);
+				list.add(optionVO);
 			}
 		}
-		
-		return regionList;
+	}
+	public List<Object> getAllAccessLocByAssConsti(Long constiId)
+	{
+		List<Object> returnVal = new ArrayList<Object>();
+		List<SelectOptionVO> regionList = new ArrayList<SelectOptionVO>(); 
+		List<SelectOptionVO> assemblyList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
+		SelectOptionVO vo = null;
+		List<Object[]> data = (List<Object[]>)constituencyDAO.getConstituencyInfoByConstituencyIdElectionYearAndElectionType(constiId);
+		if(data != null && data.size() > 0){
+			Object[] value = data.get(0);
+			vo = new SelectOptionVO();
+			vo.setId((Long)value[0]);
+			vo.setName(WordUtils.capitalize(value[1].toString().toLowerCase()));
+			assemblyList.add(vo);
+			vo = new SelectOptionVO();
+			vo.setId((Long)value[2]);
+			vo.setName(WordUtils.capitalize(value[3].toString().toLowerCase()));
+			districtList.add(vo);
+		}
+		 data = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(constiId);
+		populateDataToVo(data,regionList);
+		returnVal.add(districtList);
+		returnVal.add(regionList);
+		returnVal.add(assemblyList);
+		return returnVal;
 	}
 	
-	
-	public List<SelectOptionVO> getUserStateList(String accessType,Long accessValue)
+	public List<Object> getAllAccessLocByParlConsti(Long constiId)
+	{
+		List<Object> returnVal = new ArrayList<Object>();
+		List<SelectOptionVO> regionList = new ArrayList<SelectOptionVO>(); 
+		List<SelectOptionVO> assemblyList = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
+		SelectOptionVO optionVO = null;
+		List<Long> assemblyIds = new ArrayList<Long>();
+		List<Object[]> data = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyByParliamId(constiId);
+		if(data != null && data.size() > 0){
+			for (Object[] params:data) {
+				optionVO = new SelectOptionVO();
+				optionVO.setId((Long)params[0]);
+				assemblyIds.add((Long)params[0]);
+				optionVO.setName(WordUtils.capitalize(params[1].toString().toLowerCase()));
+				
+				assemblyList.add(optionVO);
+			}
+		}
+		  data = constituencyDAO.getConstituencyConstituencyId(constiId);
+		populateDataToVo(data,regionList);
+		if(assemblyIds.size() >0){
+			data = constituencyDAO.getDistrictByConstituencyId(assemblyIds);
+			populateDataToVo(data,districtList);
+		}
+		returnVal.add(districtList);
+		returnVal.add(regionList);
+		returnVal.add(assemblyList);
+		return returnVal;
+	}
+	/*public List<SelectOptionVO> getUserStateList(String accessType,Long accessValue)
 	{
 		try
 		{

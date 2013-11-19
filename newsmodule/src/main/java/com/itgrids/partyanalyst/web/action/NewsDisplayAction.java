@@ -535,6 +535,9 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  fileVO.setLatest(true);
 		  fileVO.setRegionValue(jObj.getLong("regionLevel"));
 		  fileVO.setImportanceId(jObj.getLong("importance"));
+		  //fileVO.setFileType(jObj.getString("type"));
+		 // fileVO.setLocationId(jObj.getLong("reportRegionLevel"));
+		 // fileVO.setLocationVal(jObj.getLong("reportRegionLevelVal"));
 		  returnVal = newsMonitoringService.getAllNewsDetails(fileVO);
 		  
 	   }

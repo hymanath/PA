@@ -21,6 +21,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -29,6 +30,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -76,6 +78,10 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private String profileType;
 	private String profileId;
 	private String profileGalleryType;
+	private List<SelectOptionVO> districtsList;
+	private List<SelectOptionVO> parlConstiList;
+	private List<SelectOptionVO> assemConstiList;
+	private IRegionServiceData regionServiceDataImp;
 	
 	public String getProfileType() {
 		return profileType;
@@ -351,6 +357,38 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 		this.keywordsList = keywordsList;
 	}
 
+	public List<SelectOptionVO> getParlConstiList() {
+		return parlConstiList;
+	}
+
+	public void setParlConstiList(List<SelectOptionVO> parlConstiList) {
+		this.parlConstiList = parlConstiList;
+	}
+
+	public List<SelectOptionVO> getAssemConstiList() {
+		return assemConstiList;
+	}
+
+	public void setAssemConstiList(List<SelectOptionVO> assemConstiList) {
+		this.assemConstiList = assemConstiList;
+	}
+
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+
+public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
 public String execute()
  {
 	session = request.getSession();
@@ -360,7 +398,29 @@ public String execute()
 	// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
 		 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
 		 {
+			 
 			 keywordsList = candidateDetailsService.getTotalKeyWords();
+			 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || registrationVO.getAccessType().equalsIgnoreCase("STATE")){
+				 ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+				 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+				 districtsList =  staticDataService.getDistricts(1l);
+				 parlConstiList = parliamantConstis.getConstituencies();
+				 assemConstiList = constituencyInfoVO.getConstituencies();
+			 }else{
+				 List<Object> assessLocs = null;
+				 if(registrationVO.getAccessType().equalsIgnoreCase("DISTRICT")){
+					 assessLocs = regionServiceDataImp.getAllAccessLocByDistrict(Long.valueOf(registrationVO.getAccessValue().trim()));	 
+				 }else if(registrationVO.getAccessType().equalsIgnoreCase("MLA")){
+					 assessLocs =  regionServiceDataImp.getAllAccessLocByAssConsti(Long.valueOf(registrationVO.getAccessValue().trim()));
+				 }else if(registrationVO.getAccessType().equalsIgnoreCase("MP")){
+					 assessLocs = regionServiceDataImp.getAllAccessLocByParlConsti(Long.valueOf(registrationVO.getAccessValue().trim()));
+				 }
+				 if(assessLocs != null && assessLocs.size() == 3){
+					 districtsList =  (List<SelectOptionVO>)assessLocs.get(0);
+					 parlConstiList = (List<SelectOptionVO>)assessLocs.get(1);
+					 assemConstiList =(List<SelectOptionVO>)assessLocs.get(2);
+				 }
+			 }
 	  return Action.SUCCESS;
 		 }
 	 else

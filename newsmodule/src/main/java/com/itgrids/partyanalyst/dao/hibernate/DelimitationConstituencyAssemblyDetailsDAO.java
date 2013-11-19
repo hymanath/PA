@@ -100,7 +100,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		Query queryObject = getSession().createQuery(query.toString());
 		queryObject.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
 		return queryObject.list();
-	}
+	}*/
 	
 	@SuppressWarnings("unchecked")
 	public List findParliamentConstituenciesByDistrictId(Long districtId,Long year)
@@ -109,7 +109,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		return getHibernateTemplate().find("select distinct model.delimitationConstituency.constituency.constituencyId, model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model " +
 				"where model.constituency.district.districtId = ? and model.delimitationConstituency.year = ?",params);
 	}
-	public List<Object[]> findDistrictsOfParliamentConstituencies(Long parliamentId){
+	/*public List<Object[]> findDistrictsOfParliamentConstituencies(Long parliamentId){
 		return getHibernateTemplate().find("select distinct model.constituency.district.districtId, model.constituency.district.districtName " +
 				"from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.constituency.constituencyId = ? " +
 				"and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1) group by " +
@@ -184,6 +184,28 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	
 	@SuppressWarnings("unchecked")
 	public List<Long> getAssemblyConstituencyIdsListByParliamId(Long parliamentConstituencyId) 
+	{
+		Object[] params = {parliamentConstituencyId};
+		return getHibernateTemplate().find("select distinct model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ",params);
+	}
+	
+	public List<Object[]> findLatestParliamentByAssembly(Long assemblyId){
+		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId,model.delimitationConstituency.constituency.name " +
+				" from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId = ?",assemblyId);
+	}
+	
+	public List<Object[]> getAssemblyConstituencyByParliamId(Long parliamentConstituencyId) 
+	{
+		Object[] params = {parliamentConstituencyId};
+		return getHibernateTemplate().find("select distinct model.constituency.constituencyId,model.constituency.name from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.constituencyId = ? and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ",params);
+	}
+	
+	public List<Long> getAssemblyConstituencyIdsByParliamId(Long parliamentConstituencyId) 
 	{
 		Object[] params = {parliamentConstituencyId};
 		return getHibernateTemplate().find("select distinct model.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where " +
