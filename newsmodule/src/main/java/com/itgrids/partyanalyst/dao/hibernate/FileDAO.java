@@ -125,9 +125,9 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		 if(!"Admin".equalsIgnoreCase(userType))
 		 query.setParameter("userId", userId);
 		 if(fromDate != null)
-		 query.setParameter("fromDate", fromDate);
+		 query.setDate("fromDate", fromDate);
 		 if(toDate != null)
-		 query.setParameter("toDate", toDate);
+		 query.setDate("toDate", toDate);
 		 if(importanceId != 0)
 		 query.setParameter("importanceId", importanceId);
 		 if(regionValue != 1)
