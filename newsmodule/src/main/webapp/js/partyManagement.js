@@ -158,6 +158,7 @@ function callAjax(jsObj,url)
 
 		 else if (jsObj.task == "getCandidatesListByPartyId")
 		 {
+		   $("#"+jsObj.type+"Img").css("display","none");
 			  	//$('#candidateAjaxImg').hide();
 			 buildCandidatesForKeywords(myResults,jsObj.type);
 			 //clearOptionsListForSelectElmtId('mainCategory');
