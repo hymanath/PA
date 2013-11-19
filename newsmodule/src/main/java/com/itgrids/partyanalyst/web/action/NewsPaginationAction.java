@@ -217,6 +217,8 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		
 		try{
 			fileVOList=new ArrayList<FileVO>();
+			if(jObj.getString("task").equalsIgnoreCase("getCandidatesNewsInHomePage"))
+			{
 			Long candidateId=jObj.getLong("candidateId");
 			int frstRcrd=jObj.getInt("firstRecord");
 			int maxRcrd=jObj.getInt("maxRecords");
@@ -225,9 +227,22 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			String toDate = jObj.getString("toDate");
 			String gallaryIdsStr = jObj.getString("gallaryIds"); 
 			String categoryIdsStr = jObj.getString("categoryIds");
-			//fileVOList=candidateDetailsService.getCandidatesNews(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,gallaryIdsStr,categoryIdsStr);
-			fileVOList=candidateDetailsService.getCandidatesNewsForHomePage(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,gallaryIdsStr,categoryIdsStr);
-			
+			fileVOList=candidateDetailsService.getCandidatesNews(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,gallaryIdsStr,categoryIdsStr);
+			//fileVOList=candidateDetailsService.getCandidatesNewsForHomePage(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,gallaryIdsStr,categoryIdsStr);
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getCandidatesNewsInHomePagePopup"))
+			{
+				Long candidateId=jObj.getLong("candidateId");
+				int frstRcrd=jObj.getInt("firstRecord");
+				int maxRcrd=jObj.getInt("maxRecords");
+				String type=jObj.getString("type");
+				String fromDate = jObj.getString("fromDate");
+				String toDate = jObj.getString("toDate");
+				
+				String categoryIdsStr = jObj.getString("categoryIds");
+				//fileVOList=candidateDetailsService.getCandidatesNews(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,gallaryIdsStr,categoryIdsStr);
+				fileVOList=candidateDetailsService.getCandidatesNewsForHomePage(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,categoryIdsStr);	
+			}
 		}
 		catch (Exception e) {
 			log.debug("Exception in HomePageAction's getCandidatesNews -"+e);

@@ -7835,7 +7835,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 
 
  
- public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String gallaryIdsStr,String categoryIdsStr){
+ public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr){
 	 List<FileVO> fileVOList = null;
  try{
 	 Date fromDate = null;
@@ -7849,12 +7849,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 List<Long> gallaryIdsList = new ArrayList<Long>(0);
 	 List<Long> categoryIdsList = new ArrayList<Long>(0);
 	 StringTokenizer str = null;
-	 if(gallaryIdsStr!=null && !gallaryIdsStr.equalsIgnoreCase("") && !gallaryIdsStr.equalsIgnoreCase("null"))
-	 {
-	   str = new StringTokenizer(gallaryIdsStr,",");
-	   while(str.hasMoreTokens())
-		   gallaryIdsList.add(Long.parseLong(str.nextToken()));
-	 }
+	 
 	 
 	 if(categoryIdsStr != null && !categoryIdsStr.equalsIgnoreCase("") && !categoryIdsStr.equalsIgnoreCase("null"))
 	 {
