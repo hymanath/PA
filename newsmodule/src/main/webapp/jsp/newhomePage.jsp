@@ -714,36 +714,6 @@ $(document).ready(function(){
 					</div>
 				</div>
 			<!-------- Row-2 end -------------->
-			<!------------- Row-3 --------->
-				<div class="row m_top10">
-					<div class="span12">
-						<div class="row-fluid widget">
-							<div class="span12 boxHeading"><h4>Latest Videos</h4></div>
-								<div class="row-fluid ">
-									<div class="span12 pad10 ">
-										<ul class="unstyled">
-										<s:iterator value="fileList" var="newsGallaryDetails" status="ctr">
-											<li><a class="thumbnail span2" style="width: 144px;" href="javascript:{openVideo('<s:property value="filePath1"/>')}">
-											<img style="width: 140px; height: 100px;" src='http://img.youtube.com/vi/<s:property value="filePath1"/>/0.jpg' title='<s:property value="description"/>'/></a>
-											</li>
-										</s:iterator>
-										
-									<!--
-									<li><a href="javascript:{}" onclick="openVideo('EUW4YcbUumk');" class="thumbnail span2"><img  src="http://img.youtube.com/vi/EUW4YcbUumk/0.jpg"></a></li>
-								 -->
-										</ul>
-										<!--<a href="#" class="pull-right btn btn-mini" style="margin-top:75px;">More</a>-->
-										<button class="btn btn-mini pull-right" style="margin-top: 75px; margin-left: 15px;" onclick="window.location='showMoreVideos.action'">More...</button>
-									</div>
-								</div>
-						</div>
-					</div>
-				</div>
-				<div id="video_dialog">
-					<div id="videos"></div>
-					<!--<span class="btn" onclick="showMoreVideoGallaries()">More Videos</span>-->
-				</div>
-			<!-------- Row-3 end -------------->
 		<div id="showContentDiv">
 	 <div id="contentAjaxCallImg" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"></div>
 	 <div id="showContentDivInnerDiv"></div>
