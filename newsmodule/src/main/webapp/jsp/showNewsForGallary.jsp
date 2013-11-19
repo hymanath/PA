@@ -131,7 +131,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 
 var requestedFor = '${requestFor}';
 //showAllFilesofAGallry(0,10,galalryId,1,requestedFor);
-showAllFilesofACategory(0 , 10, categoryId,1,requestedFor,galalryId);
+showAllFilesofACategory(0 , 10 , categoryId,1,requestedFor,galalryId);
 function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue,requestedFor)
 {
 $('#imageForMail').css("display","block");
@@ -156,6 +156,7 @@ $('#imageForMail').css("display","block");
 }
 function showAllFilesofACategory(startIndex , endIndex , categoryId,selectedvalue,requestedFor,gallaryId)
 {
+
 $('#imageForMail').css("display","block");
    $.ajaxSetup({
 	   jsonp: null,
@@ -222,7 +223,7 @@ function getSelectedNewsDetails1()
 }
 function buildFilesInCategoryDetails(results,selectedvalue)
 {   
-
+	
 	var totalPages;
 	$('#imageForMail').css("display","none");
 	$("#newsDisplayDiv").html('');
@@ -239,7 +240,7 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 	else{
 		totalPages = Math.ceil(results[0].totalResultsCount / 10);
 	}*/
-	totalPages = Math.ceil(results[0].totalResultsCount / 10);
+	totalPages = Math.ceil(results[0].totalResultsCount /10);
   $('#light-pagination').pagination({
 	pages:totalPages,
 	currentPage:selectedvalue,	 
@@ -255,7 +256,7 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 	//alert(results[i].fileType.trim());
 	str+='<div class="">';
 	var source = results[i].fileType.trim();
-	var fontId =  results[i].fontId;
+	var fontId = results[i].fontId;
 	if(fontId == 1)
 	{
 		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].fileName1+'</a></h4>';
@@ -392,6 +393,7 @@ document.getElementById("newsDisplayDiv").innerHTML = str;
 
 function callAjaxToGetTheResults(selectedvalue)
 {
+	
 	var startIndex = 0;
 	var endIndex = 10; 
 	var selectedvalue1 = 0;
@@ -403,7 +405,8 @@ function callAjaxToGetTheResults(selectedvalue)
 		startIndex = selectedvalue1*10;
 	}
 
-	showAllFilesofAGallry(startIndex,endIndex,galalryId,selectedvalue,requestedFor)
+//	showAllFilesofAGallry(startIndex,endIndex,galalryId,selectedvalue,requestedFor)
+showAllFilesofACategory(startIndex,endIndex,categoryId,selectedvalue,requestedFor,galalryId)
 }
 
 
