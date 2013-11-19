@@ -7,6 +7,7 @@ import org.apache.commons.lang.WordUtils;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
@@ -14,6 +15,7 @@ import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -23,7 +25,7 @@ public class StaticDataService implements IStaticDataService {
 	//private IElectionDAO electionDAO;
 	//private IPartyDAO partyDAO;
 	//private IElectionScopeDAO electionScopeDAO;
-	//private IDistrictDAO districtDAO;
+	  private IDistrictDAO districtDAO;
 	//private IStateDAO stateDAO;
 	//private IElectionAllianceDAO electionAllianceDAO;
 	private IConstituencyDAO constituencyDAO;
@@ -65,12 +67,7 @@ public class StaticDataService implements IStaticDataService {
 	public void setElectionScopeDAO(IElectionScopeDAO electionScopeDAO) {
 		this.electionScopeDAO = electionScopeDAO;
 	}
-	public IDistrictDAO getDistrictDAO() {
-		return districtDAO;
-	}
-	public void setDistrictDAO(IDistrictDAO districtDAO) {
-		this.districtDAO = districtDAO;
-	}
+	
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
@@ -88,6 +85,12 @@ public class StaticDataService implements IStaticDataService {
 	}
 	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
 		this.constituencyDAO = constituencyDAO;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 	/*public ITownshipDAO getTownshipDAO() {
 		return townshipDAO;
@@ -1058,7 +1061,7 @@ public class StaticDataService implements IStaticDataService {
 	 * 
 	 * @see
 	 * com.itgrids.partyanalyst.service.IStaticDataService#getDistricts(java
-	 * .lang.Long) Method to get all districts in a state
+	 * .lang.Long) Method to get all districts in a state*/
 	 
 	public List<SelectOptionVO> getDistricts(Long stateId) {
 		List<District> list = districtDAO.findByStateId(stateId);
@@ -1070,7 +1073,7 @@ public class StaticDataService implements IStaticDataService {
 		return districts;
 	}
 
-	public List<State> getAllStates() {
+	/*public List<State> getAllStates() {
 		return stateDAO.getAll();
 	}
 

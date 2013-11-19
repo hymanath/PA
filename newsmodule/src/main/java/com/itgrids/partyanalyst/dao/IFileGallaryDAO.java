@@ -257,7 +257,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 
 
 	
-	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType);
+	public List<File> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults);
 	
 	public Object getFileIdByFileGallaryId(Long fileGallaryId);
 	
@@ -291,7 +291,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
     
     public List<Long> getAllRecordsCountInGallary(Long gallaryId,String newsType,Long categoryId,Date fromDate,Date toDate);
     
-    public List<FileGallary> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType);
+    public List<File> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults);
     public List<Object[]> getGalleriesByCategoryIds(List<Long> categoryIdsList,Long partyId,Long candidateId);
     
     public List<Object[]> getAllFilesOfAGallaryByGallaryId(Long gallaryId , Date fromDate , Date toDate);
@@ -310,13 +310,17 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
     
     public List<Object[]> getNewsByLocationWise(Long locationValue,Long locationScope,Long userId);
   	
-	public List<Object[]> getAllTheNewsForAUserBasedByUserId(Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue);
+	//public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userIds,Date fromDate,Date toDate,Long importanceId,Long regionValue);
     
     public List<FileGallary> getNewsForSelectedKeyWord(String keyWord,Long partyId,String newsType,Integer startIndex,Integer maxIndex);
   	
   	 public Integer deleteDefaultGallaries(List<Long> fileIds);
   	 
   	 public Long checkFileGallaryExist(Long gallaryId,Long fileId);
+  	 
+  	public Long getRecentlyUploadedNewsDetailsCount();
+  	
+  	public Long getNewsDetailsBetweenSelectedDatesCount(Date fromDate,Date toDate);
       
  
 }

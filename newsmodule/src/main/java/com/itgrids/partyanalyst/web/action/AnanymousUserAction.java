@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +11,11 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IRegistrationService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -42,9 +45,59 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	private Long result;
 	private Boolean savedSuccessfully;
 	private String userType;
+	private String constituencyId;
+	private String electionType; // parliament Type or assembly Type
 	private List<SelectOptionVO> userTypeList;
+	private List<SelectOptionVO> constituenciesList;
+	private IStaticDataService staticDataService;
+	private ConstituencyInfoVO constituencyInfoVO = null;
+	private ConstituencyInfoVO parliamantConstis;
+	private List<SelectOptionVO> districtsList;
+	private Long districtId;
+	private Long parliamentId;
+	private Long assemblyId;
+	private Long accesslevel;
 	
-	
+	public String getElectionType() {
+		return electionType;
+	}
+
+	public void setElectionType(String electionType) {
+		this.electionType = electionType;
+	}
+
+	public String getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(String constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public ConstituencyInfoVO getConstituencyInfoVO() {
+		return constituencyInfoVO;
+	}
+
+	public void setConstituencyInfoVO(ConstituencyInfoVO constituencyInfoVO) {
+		this.constituencyInfoVO = constituencyInfoVO;
+	}
+
+	public List<SelectOptionVO> getConstituenciesList() {
+		return constituenciesList;
+	}
+
+	public void setConstituenciesList(List<SelectOptionVO> constituenciesList) {
+		this.constituenciesList = constituenciesList;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public List<SelectOptionVO> getUserTypeList() {
 		return userTypeList;
 	}
@@ -230,6 +283,53 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		this.userType = userType;
 	}
 
+	public ConstituencyInfoVO getParliamantConstis() {
+		return parliamantConstis;
+	}
+
+	public void setParliamantConstis(ConstituencyInfoVO parliamantConstis) {
+		this.parliamantConstis = parliamantConstis;
+	}
+
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	public Long getParliamentId() {
+		return parliamentId;
+	}
+
+	public void setParliamentId(Long parliamentId) {
+		this.parliamentId = parliamentId;
+	}
+
+	public Long getAssemblyId() {
+		return assemblyId;
+	}
+
+	public void setAssemblyId(Long assemblyId) {
+		this.assemblyId = assemblyId;
+	}
+
+	public Long getAccesslevel() {
+		return accesslevel;
+	}
+
+	public void setAccesslevel(Long accesslevel) {
+		this.accesslevel = accesslevel;
+	}
 
 	public String execute()
 	{
@@ -252,7 +352,7 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 	{
 		String userType = "";
 		String type = "";
-		String registeredUserType="";
+		//String registeredUserType="";
 		HttpSession session = request.getSession();
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user != null)
@@ -261,10 +361,25 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			userType = user.getUserType();
 			type     = user.getUserAccessType();
 			if(getUserType() != null){
-			if(getUserType().equalsIgnoreCase("1"))
-				regVO.setUserAccessType("Admin");
-			if(getUserType().equalsIgnoreCase("2"))
-				regVO.setUserAccessType("SubUser");
+			    if(getUserType().equalsIgnoreCase("1")){
+				  regVO.setUserAccessType("Admin");
+			    }
+				if(getUserType().equalsIgnoreCase("2")){
+					regVO.setUserAccessType("SubUser");
+					if(accesslevel.longValue() == 1l){
+						regVO.setAccessType("STATE");
+						regVO.setAccessValue("1");
+					}else if(accesslevel.longValue() == 2l){
+						regVO.setAccessType("DISTRICT");
+						regVO.setAccessValue(districtId.toString());
+					}else if(accesslevel.longValue() == 3l){
+						regVO.setAccessType("MP");
+						regVO.setAccessValue(parliamentId.toString());
+					}else if(accesslevel.longValue() == 4l){
+						regVO.setAccessType("MLA");
+						regVO.setAccessValue(assemblyId.toString());
+					}
+				}
 			}
 		}
 		if(!type.equalsIgnoreCase("admin"))
@@ -272,9 +387,16 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			return Action.ERROR;
 		}
 		if(regVO.getEmail() != null)
-        savedSuccessfully = registrationService.saveDataIntoUser(regVO,userType);
+			savedSuccessfully = registrationService.saveDataIntoUser(regVO,userType);
 		else
-		savedSuccessfully = false;	
+			savedSuccessfully = false;
+		constituencyInfoVO = new ConstituencyInfoVO();		
+		constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+		//constituencyInfoVO.getConstituencies().add(0,new SelectOptionVO(0L,"Select Assembly Constituency"));
+		parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+		//parliamantConstis.getConstituencies().add(0,new SelectOptionVO(0L,"Select Parliament Constituency"));
+		districtsList =  staticDataService.getDistricts(1l);
+		//districtsList.add(0,new SelectOptionVO(0L,"Select District"));
 		userTypeList = new ArrayList<SelectOptionVO>();		
 		userTypeList.add(0,new SelectOptionVO(0l,"Select User Type"));
 		userTypeList.add(1,new SelectOptionVO(1l,"Admin"));
@@ -297,5 +419,26 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		return SUCCESS;
 	}
 
-
+	public String getConstituenciesByElectionType(){
+		
+		log.debug(" entered into AnanymousUserAction getConstituenciesByElectionType method : ");
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		constituencyInfoVO= new ConstituencyInfoVO();
+		if(user == null)
+			return Action.ERROR;
+			
+		try{
+				jObj = new JSONObject(getTask());
+				if(jObj.getString("task").equalsIgnoreCase("getCosntituencesByElectionType")){
+				Long electionId = Long.valueOf(jObj.getString("electionTypeId"));
+				Long stateId = Long.valueOf(jObj.getString("stateId"));
+					constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(electionId,stateId);
+				}
+				
+			}catch(Exception e){
+			log.debug(" exception occured in AnanymousUserAction getConstituenciesByElectionType method : ",e);
+		}			
+		return Action.SUCCESS;
+	}
 }

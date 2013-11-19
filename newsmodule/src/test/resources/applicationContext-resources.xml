@@ -127,6 +127,7 @@
 				<value>com.itgrids.partyanalyst.model.Font</value>
 				<value>com.itgrids.partyanalyst.model.Benefit</value>
 				<value>com.itgrids.partyanalyst.model.CandidatePartyCategory</value>
+				<value>com.itgrids.partyanalyst.model.ReportFiles</value>
 			</list>
 		</property>
 	</bean>
@@ -223,6 +224,8 @@
 	<bean id="fileDAO" class="com.itgrids.partyanalyst.dao.hibernate.FileDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="reportFilesFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.ReportFilesDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--End Add new DAOs here -->
 </beans>

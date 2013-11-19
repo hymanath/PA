@@ -2756,27 +2756,24 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 
 	
 	@SuppressWarnings("unchecked")
-	public List<FileGallary> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
+	public List<File> getRecentlyUploadedNewsDetails(Integer starIndex, Integer maxResults)
 	{
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(" select model from FileGallary model, PartyGallery model2 ");
-		stringBuilder.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
-		stringBuilder.append("  and model.isDelete = 'false'  and model.gallary.isDelete = 'false' ");
-		if(!newsType.equals(""))
-			stringBuilder.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false'");
-		stringBuilder.append(" order by model.updateddate desc  ");
+		Query query = getSession().createQuery("select distinct model from File model where model.isDeleted != 'Y' and model.isPrivate != 'Y' order by model.fileDate desc,model.updatedDate desc");
 		
-		Query query = getSession().createQuery(stringBuilder.toString());
-		
-		query.setParameter("contentType", contentType);
-		query.setParameter("partyId", partyId);
-
 		if(starIndex != null)
 		 query.setFirstResult(starIndex);
 		if(maxResults != null)
 		query.setMaxResults(maxResults);
 		
 		return query.list();
+		
+	}
+	public Long getRecentlyUploadedNewsDetailsCount()
+	{
+		Query query = getSession().createQuery("select count(distinct model.fileId) from File model where model.isDeleted != 'Y'  and model.isPrivate != 'Y' ");
+		
+		
+		return (Long)query.uniqueResult();
 		
 	}
 	
@@ -3145,25 +3142,20 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	 
 	 
 	 @SuppressWarnings("unchecked")
-	 public List<FileGallary> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
+	 public List<File> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults)
 	 {
 			StringBuilder stringBuilder = new StringBuilder();
-			stringBuilder.append(" select model from FileGallary model, PartyGallery model2 ");
-			stringBuilder.append(" where model.gallary.gallaryId = model2.gallery.gallaryId and model2.party.partyId =:partyId and model.gallary.contentType.contentType =:contentType ");
-			stringBuilder.append("  and model.isDelete = 'false'  and model.gallary.isDelete = 'false' ");
-			if(!newsType.equals(""))
-				stringBuilder.append(" and model.isPrivate = 'false' and model.gallary.isPrivate = 'false'");
-			if(fromDate != null)
-				stringBuilder.append(" and date(model.file.fileDate) >= :fromDate ");
-			if(toDate != null)
-				stringBuilder.append(" and date(model.file.fileDate) <= :toDate ");
 			
-			stringBuilder.append(" order by model.updateddate desc  ");
+			stringBuilder.append("select distinct model from File model where model.isDeleted != 'Y' and model.isPrivate != 'Y' ");
+			
+			if(fromDate != null)
+				stringBuilder.append(" and date(model.fileDate) >= :fromDate ");
+			if(toDate != null)
+				stringBuilder.append(" and date(model.fileDate) <= :toDate ");
+			
+			stringBuilder.append(" order by date(model.fileDate) desc,model.updatedDate desc");
 			
 			Query query = getSession().createQuery(stringBuilder.toString());
-			
-			query.setParameter("contentType", contentType);
-			query.setParameter("partyId", partyId);
 			
 			if(fromDate != null)
 			 query.setParameter("fromDate", fromDate);
@@ -3177,6 +3169,29 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			query.setMaxResults(maxResults);
 			
 			return query.list();
+			
+	 }
+	 
+	 public Long getNewsDetailsBetweenSelectedDatesCount(Date fromDate,Date toDate)
+	 {
+			StringBuilder stringBuilder = new StringBuilder();
+			
+			stringBuilder.append("select distinct count(model.fileId) from File model where model.isDeleted != 'Y' and model.isPrivate != 'Y' ");
+			
+			if(fromDate != null)
+				stringBuilder.append(" and date(model.fileDate) >= :fromDate ");
+			if(toDate != null)
+				stringBuilder.append(" and date(model.fileDate) <= :toDate ");
+			
+			Query query = getSession().createQuery(stringBuilder.toString());
+			
+			if(fromDate != null)
+			 query.setParameter("fromDate", fromDate);
+			
+			if(toDate != null)
+				query.setParameter("toDate", toDate);
+			
+			return (Long)query.uniqueResult();
 			
 	 }
 	 
@@ -3373,36 +3388,6 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			
 		}
 		
-		
-		 public List<Object[]> getAllTheNewsForAUserBasedByUserId(Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue)
-		 {
-			 StringBuilder str = new StringBuilder();
-			 str.append("select distinct model.file,model.fileGallaryId from FileGallary model where model.isDelete ='"+IConstants.FALSE+"' ");
-			 str.append("and model.file.user.userId = :userId ");
-			 if(importanceId != 0)
-			 str.append("and model.file.newsImportance.newsImportanceId = :importanceId ");
-			 if(regionValue != 1)
-			 str.append("and model.file.regionScopes.regionScopesId = :regionValue ") ; 
-			 if(fromDate != null)
-				 str.append("and date(model.file.fileDate) >= :fromDate ");
-			 if(toDate != null)
-				 str.append("and date(model.file.fileDate) <= :toDate "); 
-			 str.append("order by model.file.fileDate desc ");
-			 Query query = getSession().createQuery(str.toString());
-			 query.setParameter("userId", userId);
-			 if(fromDate != null)
-			 query.setParameter("fromDate", fromDate);
-			 if(toDate != null)
-			 query.setParameter("toDate", toDate);
-			 if(importanceId != 0)
-			 query.setParameter("importanceId", importanceId);
-			 if(regionValue != 1)
-				 query.setParameter("regionValue", regionValue);
-			 query.setFirstResult(0);
-			 query.setMaxResults(300);
-			return query.list();
-			 
-		}
 		 
 	 
 	 @SuppressWarnings("unchecked")

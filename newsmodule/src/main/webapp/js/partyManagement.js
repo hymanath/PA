@@ -20,14 +20,15 @@ function buildLocationWiseNews(results)
 			{
 			for(var k=0;k<results[i].fileVOList[j].fileVOList.length;k++)
 			{
-		var source = results[i].fileVOList[j].fileVOList[k].source.trim();
+		var source = results[i].fileVOList[j].fileVOList[k].source;
+		var eenadu = results[i].fileVOList[j].fileVOList[k].eenadu;
 		str+=' <div class="row-fluid">';
         str+='<div class="span12 well">';
         str+='<div class="media">';
         str+=' <div class="media-body">';
         str+='<hgroup>';
 		
-		if(source == "Eenadu Telugu")
+		if(eenadu || source == "Eenadu Telugu")
 				{
 			
 				str+="<h4 class='media-heading'><span class='enadu fontStyle pagerRow' style='font-weight:bold;'>";
@@ -6542,7 +6543,7 @@ function buildAllNewsReports(result)
 	str+='<tr>';
 	str+='<td>' +result[i].description+'</td>';
 	str+='<td>' +result[i].identifiedDateOn+'</td>';
-	str+='<td><input id="reportFiles" class="btn btn-info" type="button" onclick="getReportFiles()" value="View"></td>';
+	str+='<td><input id="reportFiles" class="btn btn-info" type="button" onclick="getReportFiles('+result[i].newsImportanceId+')" value="View"></td>';
 	str+='</tr>';
 	}
 	str+='</table>';

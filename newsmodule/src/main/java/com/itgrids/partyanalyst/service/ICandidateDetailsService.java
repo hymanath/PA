@@ -13,7 +13,7 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.File;
 
 public interface ICandidateDetailsService {
 	
@@ -270,7 +270,7 @@ public interface ICandidateDetailsService {
 	
 	public List<FileVO> getCandidateNewsResponseNews(Integer startIndex,Integer maxIndex);
 	
-	public void setfileGallaryDetails(List<FileGallary> fileGallaryList,List<FileVO> fileVOsList);
+	public void setfileDetails(List<File> fileList,List<FileVO> fileVOsList);
 	
 	public List<SelectOptionVO> getLocationValuesByRegionScope(String regionScope, String queryType);
 	

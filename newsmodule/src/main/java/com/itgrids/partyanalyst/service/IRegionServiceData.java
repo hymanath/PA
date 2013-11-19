@@ -86,4 +86,7 @@ public interface IRegionServiceData {
 	public List<SelectOptionVO> getMandals(List<SelectOptionVO> list);*/
 	
 	public List<SelectOptionVO> getHamletsOrWards(Long locationId, String year);
+	public List<Object> getAllAccessLocByDistrict(Long districtId);
+	public List<Object> getAllAccessLocByAssConsti(Long constiId);
+	public List<Object> getAllAccessLocByParlConsti(Long constiId);
 }

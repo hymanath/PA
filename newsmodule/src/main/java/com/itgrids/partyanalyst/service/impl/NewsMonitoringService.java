@@ -16,14 +16,19 @@ import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
@@ -43,11 +48,7 @@ import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
-import com.itgrids.partyanalyst.dao.hibernate.FileGallaryDAO;
-import com.itgrids.partyanalyst.dao.hibernate.NominationDAO;
-import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
@@ -69,17 +70,11 @@ import com.itgrids.partyanalyst.model.ReportFiles;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.User;
-import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
-
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
-import org.springframework.transaction.support.TransactionTemplate;
 /**
  * @author ITGRIDS
  *
@@ -113,11 +108,12 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IKeywordDAO keywordDAO;
     private IFileKeywordDAO fileKeywordDAO;
     private IMainCategoryDAO mainCategoryDAO;
+    private ICandidatePartyFileDAO candidatePartyFileDAO;
     private INominationDAO nominationDAO;
     private ICandidatePartyDAO candidatePartyDAO;
     private ICandidateDAO candidateDAO;
     private IPartyDAO partyDAO;
-    
+    private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
    
 	public IMainCategoryDAO getMainCategoryDAO() {
 		return mainCategoryDAO;
@@ -358,6 +354,24 @@ public void setReportFilesDAO(IReportFilesDAO reportFilesDAO) {
 
 	public void setCandidatePartyDAO(ICandidatePartyDAO candidatePartyDAO) {
 		this.candidatePartyDAO = candidatePartyDAO;
+	}
+
+	public ICandidatePartyFileDAO getCandidatePartyFileDAO() {
+		return candidatePartyFileDAO;
+	}
+
+	public void setCandidatePartyFileDAO(
+			ICandidatePartyFileDAO candidatePartyFileDAO) {
+		this.candidatePartyFileDAO = candidatePartyFileDAO;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 
 	/* 
@@ -3859,7 +3873,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		List<SelectOptionVO> candidates=new ArrayList<SelectOptionVO>();
 		
 		//List<Object[]> list1=candidateRelatedNewsDAO.getCandidates();
-		List<Object[]> list1=candidateRelatedNewsDAO.getCandidatesWithCount();
+		List<Object[]> list1=candidatePartyFileDAO.getCandidatesNewsCount();
 		if(list1!=null){
 		for(Object[] params:list1){
 			SelectOptionVO selectOptionVO=new SelectOptionVO();
@@ -4018,7 +4032,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			if(fileGallaryList != null && fileGallaryList.size() > 0)
 			{
 				fileVOsList = new ArrayList<FileVO>(0);
-				candidateDetailsService.setfileGallaryDetails(fileGallaryList, fileVOsList);
+				//candidateDetailsService.setfileGallaryDetails(fileGallaryList, fileVOsList);
 				fileVOsList.get(0).setCount(candidateRelatedNewsDAO.getLocationWiseFileGalleryList(candidateId, fromDate, toDate, locationScopeId, null, null,galleryIdsList,categoryIdsList).size());
 			}
 			return fileVOsList;
@@ -4499,7 +4513,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		if(fileGalleryIdsList != null && fileGalleryIdsList.size() > 0)
 		{
 		 List<FileGallary> fileGallaries = fileGallaryDAO.getFileGallariesByFileGallaryIdsList(fileGalleryIdsList.subList(vo.getStartIndex() ,(vo.getMaxIndex()+vo.getStartIndex()) > fileGalleryIdsList.size() ? fileGalleryIdsList.size() : (vo.getMaxIndex()+vo.getStartIndex())));
-		 candidateDetailsService.setfileGallaryDetails(fileGallaries, fileVOList);
+		 //candidateDetailsService.setfileGallaryDetails(fileGallaries, fileVOList);
 		 		 
 		 
 		 fileVOList.get(0).setCount(fileGalleryIdsList.size());
@@ -4785,50 +4799,70 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  try{
 			  Date fromDate = null;
 			  Date toDate = null;
-			  List<Object[]> list = null;
+			  List<File> list = null;
 			  SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 				if(fileVO.getFromDateStr() != null)
 					fromDate = format.parse(fileVO.getFromDateStr() );
 				 
 				if(fileVO.getToDateStr() != null)
 					toDate = format.parse(fileVO.getToDateStr());
-			
-				list = fileGallaryDAO.getAllTheNewsForAUserBasedByUserId(fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue());
+			    List<String> userType =  userDAO.getUserType(fileVO.getUserId());
+			    List<Long> userIds = new ArrayList<Long>();
+			    userIds.add(fileVO.getUserId());
+			    String type = "";
+			    if(userType != null && userType.size() > 0){
+			    	type = userType.get(0);
+			    }
+			   // if("byLevel".equalsIgnoreCase(fileVO.getFileType())){
+				   list = fileDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue());
+			    /*}else{
+			    	List<Long> ids = null;
+			    	if(fileVO.getLocationId().longValue() == 3l){
+			    		ids = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByParliamId(fileVO.getLocationVal());
+			    	}
+			       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids);
+			    }*/
 				resultList = setDataForAllLocations(list,fileVO.getUserId());
 			
 		  }
 		  catch (Exception e) {
-			log.error("Exception Occured in getAllNewsDetails() method , Exception - "+e);
+			log.error("Exception Occured in getAllNewsDetails() method , Exception - ",e);
 			e.printStackTrace();
 		}
 		return resultList;
 	  }
 	 
 	  
-	  public List<FileVO> setDataForAllLocations(List<Object[]> list,Long userID)
+	  public List<FileVO> setDataForAllLocations(List<File> list,Long userID)
 	  {
 		  List<FileVO> result = new ArrayList<FileVO>();
-		  List<Long> fileGalIds = new ArrayList<Long>();
-		  Map<Long,String> candidateMap = new HashMap<Long, String>();//<filegalId,CandidateName>
+		  List<Long> fileIds = new ArrayList<Long>();
+		  //Map<Long,String> candidateMap = new HashMap<Long, String>();//<filegalId,CandidateName>
 		  Map<Long,Map<Long,List<FileVO>>> regionWiseMap = new HashMap<Long, Map<Long,List<FileVO>>>();//<region,Map<location,filesList>>
 		  try
 		  {
-			  if(list != null && list.size() > 0)
+			 /* if(list != null && list.size() > 0)
 			  {
 				
-				for(Object[] id : list)
-				fileGalIds.add((Long)id[1]);
-				if(fileGalIds != null && fileGalIds.size() > 0)
+				for(File file : list){
+					fileIds.add(file.getFileId());
+				}
+				if(fileIds != null && fileIds.size() > 0)
 				{
-				List<Object[]> candidateNamesList = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileGalIds);
+				List<Object[]> candidateNamesList = candidateRelatedNewsDAO.getCandidateNameByFileGalleryIdsList(fileIds);
 				if(candidateNamesList != null && candidateNamesList.size() > 0)
 				 for(Object[] params:candidateNamesList)
 					candidateMap.put((Long)params[0], params[1] != null?params[1].toString():"");
 				 }
+			  }*/
+			  Set<Long> canfileIds = new HashSet<Long>();
+			  for(File file : list){
+				  canfileIds.add(file.getFileId());
 			  }
-				for(Object[] params : list)
+			  Map<Long,String> candidateNames = getCandidateNames(canfileIds);
+				for(File file : list)
 				{
-					File file = (File)params[0];
+					
 					if(file.getRegionScopes() != null && file.getRegionScopes().getRegionScopesId() != null)
 					{
 					Map<Long,List<FileVO>> locationMap = regionWiseMap.get(file.getRegionScopes().getRegionScopesId());
@@ -4845,7 +4879,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 						filesList = new ArrayList<FileVO>();
 						locationMap.put(file.getLocationValue(), filesList);
 					}
-					fileVO.setContentId((Long)params[1]);
+					fileVO.setContentId(file.getFileId());
 					fileVO.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())));
 					fileVO.setFileDescription1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())));
 					String fileDate = file.getFileDate().toString();
@@ -4870,17 +4904,19 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 						}
 						sourceList.add(filesource);
 					}
+					if(file.getFont() != null){
+						fileVO.setEenadu(true);
+					}
 					fileVO.setSource(sourceString);
 					fileVO.setLanguage(language);
 					fileVO.setFileVOList(sourceList);
-					if(candidateMap == null || candidateMap.get((Long)params[1]) == null)
-					fileVO.setCandidateName("TDP");		
-					else
-					fileVO.setCandidateName(candidateMap.get((Long)params[1]));
+					
+					fileVO.setCandidateName(candidateNames.get(file.getFileId()) != null?candidateNames.get(file.getFileId()):"");
 					fileVO.setLocationName(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(),file.getLocationValue()));
 					filesList.add(fileVO);
 					}
 			}
+				 
 				if(regionWiseMap != null)
 				for(Long regionVal : regionWiseMap.keySet())
 				{
@@ -4915,8 +4951,28 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  }
 		return result;
 	  }
-	  
-	  public ResultStatus saveNewsReport(final List<Long> fileGallaryIds,final Long userId,final String decription)
+	  public Map<Long,String> getCandidateNames(Set<Long> fileIds){
+		  Map<Long,String> candidateNames = new HashMap<Long,String>();
+		 try{
+		  if(fileIds != null && fileIds.size() > 0){
+			
+			List<Object[]> candidates = candidatePartyFileDAO.getCandidateNamesByFileIds(fileIds);
+		      if(candidates != null && candidates.size() > 0){
+		    	 for(Object[] person:candidates){
+		    		 if(candidateNames.get((Long)person[0]) != null){
+		    			 candidateNames.put((Long)person[0], candidateNames.get((Long)person[0])+", "+person[1].toString());
+		    		 }else{
+		    			 candidateNames.put((Long)person[0],person[1].toString());
+		    		 }
+		    	 }  
+		      } 
+		  }
+		 }catch(Exception e){
+			 log.error("Exception Occured in getCandidateNames method in NewsMonitoringService", e);
+		 }
+		  return candidateNames;
+	  }
+	  public ResultStatus saveNewsReport(final List<Long> fileIds,final Long userId,final String decription)
 	  {
 		  final ResultStatus resultStatus = new ResultStatus();
 		  try{
@@ -4930,9 +4986,9 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			newsReport.setCreatedDate(currentDate.getCurrentDateAndTime());
 			newsReport = newsReportDAO.save(newsReport);
 			ReportFiles reportFiles = new ReportFiles();
-			for(Long ID : fileGallaryIds)
+			for(Long ID : fileIds)
 			{
-			reportFiles.setFileGallary(fileGallaryDAO.get(ID));
+			reportFiles.setFile(fileDAO.get(ID));
 			reportFiles.setNewsReport(newsReport);
 			reportFilesDAO.save(reportFiles);
 			

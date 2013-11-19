@@ -178,7 +178,7 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Object[] params = {electionTypeId, stateID};
 		return getHibernateTemplate().find("select model.constituencyId , model.name from Constituency model" +
 				" where model.electionScope.electionType.electionTypeId = ?" +
-				" and model.state.stateId=? order by model.name",params);
+				" and model.state.stateId=? and model.deformDate is null order by model.name",params);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -579,6 +579,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	{
 		Query query = getSession().createQuery(" select distinct model.constituencyId from Constituency model where model.tehsil.tehsilId =:mandalId ");
 		query.setParameter("mandalId", mandalId);
+		return query.list();
+	}
+	
+	public List<Object[]> getConstituencyConstituencyId(Long constituencyId)
+	{
+		Query query = getSession().createQuery("select model.constituencyId, model.name from Constituency model where model.constituencyId = :constituencyId");
+		query.setParameter("constituencyId",constituencyId);
 		return query.list();
 	}
 }

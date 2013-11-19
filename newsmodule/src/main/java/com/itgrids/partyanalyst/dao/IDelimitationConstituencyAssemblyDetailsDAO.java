@@ -13,7 +13,7 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	public List<Constituency> findAssemblyConstituenciesByDelimitationConstituencyId(Long delimitationConstituencyId);*/
 	
 	public List findAssembliesConstituencies(Long parliamentConstituencyId);
-	
+	public List findParliamentConstituenciesByDistrictId(Long districtId,Long year);
 	/*public List findLatestParliamentForAssembly(Long assemblyId);
 	
 	@SuppressWarnings("unchecked")
@@ -33,7 +33,7 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	
 	public List<Long> findAssembliesConstituenciesForAListOfParliamentConstituency(List<Long> parliamentConstituencyIds);
 	
-	public List findParliamentConstituenciesByDistrictId(Long districtId,Long year);
+	
 	
 	public List findParliamentForAssemblyForTheMaxOfGivenYear(Long assemblyId);
 	
@@ -55,4 +55,9 @@ public interface IDelimitationConstituencyAssemblyDetailsDAO extends GenericDao<
 	
 	public List<Long> getAssemblyConstituencyIdsListByParliamId(Long parliamentConstituencyId);
 	
+	public List<Object[]> findLatestParliamentByAssembly(Long assemblyId);
+	
+	public List<Object[]> getAssemblyConstituencyByParliamId(Long parliamentConstituencyId) ;
+	
+	public List<Long> getAssemblyConstituencyIdsByParliamId(Long parliamentConstituencyId) ;
 }

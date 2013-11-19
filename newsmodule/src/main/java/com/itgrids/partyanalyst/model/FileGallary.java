@@ -50,7 +50,6 @@ public class FileGallary implements Serializable{
 	private Set<CandidateNewsResponse> candidateNews = new HashSet<CandidateNewsResponse>(0);
 	private Set<CandidateNewsResponse> CandidateNewsResponse = new HashSet<CandidateNewsResponse>(0);
 
-	private Set<ReportFiles> reportFiles = new HashSet<ReportFiles>(0);
 
 
 	private NewsFlag newsFlags;
@@ -193,17 +192,6 @@ public class FileGallary implements Serializable{
 			Set<CandidateNewsResponse> candidateNewsResponse) {
 		CandidateNewsResponse = candidateNewsResponse;
 	}
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fileGallary")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<ReportFiles> getReportFiles() {
-		return reportFiles;
-	}
-
-	public void setReportFiles(Set<ReportFiles> reportFiles) {
-		this.reportFiles = reportFiles;
-	}
-
-	
 	
 	
 			

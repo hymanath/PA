@@ -19,6 +19,7 @@
 		<property name="partyDetailsService" ref="partyDetailsService" />
 	    <property name="candidateDetailsService" ref="candidateDetailsService" />
 	    <property name="staticDataService" ref="staticDataService" />
+	    <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	<bean id="locationsHierarchyAction" class="com.itgrids.partyanalyst.web.action.LocationsHierarchyAction" singleton="false">
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
@@ -40,6 +41,7 @@
 	</bean>
 	<bean id="anonymousUserAction" class="com.itgrids.partyanalyst.web.action.AnanymousUserAction" singleton="false">
 		<property name="registrationService" ref="registrationService" />
+		<property name="staticDataService" ref="staticDataService" />
 	</bean>
 	
 	<bean id="homePageAction" class="com.itgrids.partyanalyst.web.action.HomePageAction" singleton="false">
@@ -74,4 +76,7 @@
 	 <property name="candidateDetailsService" ref="candidateDetailsService"/>
 	</bean>	
 	
+	<bean id="createReportAction" class="com.itgrids.partyanalyst.web.action.CreateReportAction" singleton="false">
+	 	<property name="reportService" ref="reportService"/>
+	</bean>
 	</beans>
