@@ -867,10 +867,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			file.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 			file.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+			file.setIsDeleted("N");
 			
 			if(!fileVO.getVisibility().equalsIgnoreCase("public"))
 			 file.setIsPrivate("Y");
-			
+			else
+				file.setIsPrivate("N");	
 			file = fileDAO.save(file);
 			
 			
@@ -1080,7 +1082,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			return resultStatus;
 			}catch (Exception e) {
-				log.error("Exception encountered in uploadAFileForCandidateParty() method, Exception - "+e);
+				log.error("Exception encountered in uploadAFileForCandidateParty() method, Exception - ",e);
 				resultStatus.setExceptionEncountered(e);
 				resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 				return resultStatus;
