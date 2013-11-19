@@ -114,7 +114,7 @@
 							</tr>
 						</table>
 						
-						<button id="sendButton" class="btn btn-warning" onclick="addCssStyle(),getNewsForLocation()" style="margin-bottom: 15px; font-weight:bold;" > View News</button> 
+						<button id="sendButton" class="btn btn-warning" onclick="addCssStyle(),getNewsForPagination(0)" style="margin-bottom: 15px; font-weight:bold;" > View News</button> 
 						</div>
 				</div>
 						</div>
@@ -156,7 +156,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 								<div id="errorMsgDiv"></div>
 		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
-			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails()" class="btn btn-info"/>
+			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getNewsForPagination(0)" class="btn btn-info"/>
 							</ul>
 						</div>
 					</div>
@@ -187,15 +187,28 @@ function hideDivs(){
 		$('#showScopeSubsC').css("display","none");
 		//getAllConstituenciesInDistrictByType(1);
 
-		getLocationWiseNewsDetails(scope,"userAccessDistrictList");
+		getLocationNewsDetails(scope);
+		//getLocationWiseNewsDetails(scope,"userAccessDistrictList");
 	}
 	if(scope == "Constituency"){
 		$('#showScopeSubsC').css("display","block");
 		$('#showScopeSubsD').css("display","none");
 
+		getLocationNewsDetails(scope);
 		//getAllConstituenciesInStateByType(2, 1, 'constituency');
-		getLocationWiseNewsDetails(scope,"userAccessConstituencyList");
+		//getLocationWiseNewsDetails(scope,"userAccessConstituencyList");
 	}
+}
+
+function getLocationNewsDetails(value){
+	var jsObj =
+		{   
+		    scope:value,
+			task:"getLocationNewsDetails"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationNewsDetailsAction.action?"+rparam;					callsAjax(jsObj,url); 
 }
 
 function getNewsForLocation()
@@ -300,6 +313,30 @@ function getNewsForLocation()
 		
 	}).datepicker("show");
 });
+
+function getNewsForPagination(num)
+ {
+	var locValue = $("#userAccessConstituencyList").val();
+	if(locValue == null)
+		locValue = locationValue;
+	$('#imageForMail').css("display","block");
+	var fromDtr = $('#existingFromText').val();
+	var toDtr = $('#existingToText').val();
+	var jsObj =
+	{   
+		locationId:locValue,
+		startRecord:num,
+		maxRecord:10,
+		queryType:scope,
+		fromDate:fromDtr,
+		toDate:toDtr,
+		task:"getPartyWiseNewsToDisplay"
+	};
+	 
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getPartyWiseNewsDetailsForALocation.action?"+rparam;						
+	callsAjax(jsObj,url);  
+ }
 </script>	
 </body>
 </html>
