@@ -201,4 +201,26 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 		return Action.SUCCESS;
 	}
 	
+	public String getPartyWiseNewsDetails1(){	
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		 try{	 
+			 jObj = new JSONObject(getTask());
+		   }catch(Exception e){
+				 e.printStackTrace(); 
+		   }
+		 
+		 Long locationId = jObj.getLong("locationId");
+		 Integer startRecord = jObj.getInt("startRecord");
+		 Integer maxRecord = jObj.getInt("maxRecord");
+		 String queryType = jObj.getString("queryType"); 
+		/* if(regVO.getUserAccessType()!=null)
+			 if(regVO.getUserAccessType().equals("Admin"))
+				 queryType = "";*/
+		 String fromDate = jObj.getString("fromDate");
+		 String toDate = jObj.getString("toDate");
+		newsCountByCategoryList = partyDetailsService.getNewsCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
+
+		return Action.SUCCESS;
+	}
 }

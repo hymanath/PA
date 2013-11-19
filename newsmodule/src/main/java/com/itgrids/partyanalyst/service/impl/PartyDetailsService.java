@@ -2410,6 +2410,57 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 	 	
 	return filesList;
 }
+
+	public List<FileVO> getNewsCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,String fromDateStr,String toDateStr){
+		List<FileVO> result = new ArrayList<FileVO>();
+		try{
+			FileVO file = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			Date fromDate = null;
+			Date toDate = null;
+		 
+	     if(fromDateStr!= null && !fromDateStr.equalsIgnoreCase(""))
+	    	 fromDate = format.parse(fromDateStr);
+	     if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+	       toDate = format.parse(toDateStr);
+	    	
+		List<File> newsDetails = fileGallaryDAO.getNewsCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
+		Long newsDetailsCount = fileGallaryDAO.getNewsTotalCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
+		for(File param:newsDetails)
+		{
+			 file =new FileVO();
+			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			 String newDate = formatter.format(param.getFileDate());
+			 file.setContentId(param.getFileId());
+			 file.setCandidateId(872l);
+			 if(param.getFont()!=null)
+				 file.setFont(new Long(param.getFont().getFontId()));
+			 
+			 Set<FileSourceLanguage> set = param.getFileSourceLanguage();
+			 String sourceString = "";
+			 for(FileSourceLanguage source:set)
+					if(source.getSource() != null)
+					sourceString+=source.getSource().getSource()+",";
+			 
+			 sourceString = sourceString.substring(0, sourceString.length()-1);
+			 file.setSource(sourceString);
+			 
+			 file.setFileTitle1(param.getFileTitle()!= null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(param.getFileTitle())):"");
+			 file.setDescription(param.getFileDescription() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(param.getFileDescription())):"");
+			 file.setDisplayImageName(param.getFileName());
+			 file.setDisplayImagePath(param.getFilePath());
+			 file.setImagePathInUpperCase("TDP.png");
+			 file.setFileDate(newDate);
+			 file.setFileType("Party");
+			 //file.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)obj[1]).size());
+			 file.setTotalResultsCount(newsDetailsCount);
+			 result.add(file);
+		}
+		}catch (Exception e) {
+			System.out.println("Exception occured in getNewsCountForALocation1"+e);
+		}
+		return result;
+	}
 }
 	
 
