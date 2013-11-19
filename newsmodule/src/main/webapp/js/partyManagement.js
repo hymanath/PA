@@ -1251,7 +1251,7 @@ function validateNewsFileUpload()
 	}
 	if(fileDesc.length == 0)
 	{
-		str += 'Description is Required.<br>';
+		str += 'News Description is Required.<br>';
 		flag = false;
 	}
 	if(fileDesc.length > 2000)
@@ -1261,7 +1261,7 @@ function validateNewsFileUpload()
 	}
 	if(fileVal.length == 0)
 	{
-		str += 'File is Required.<br>';
+		str += 'File Path is Required.<br>';
 		flag = false;
 	}
 	if(source.length == 0)
@@ -5416,36 +5416,31 @@ function validateUploadFileDetails()
 		str += ' Title is Required.<br>';
 		flag = false;
 	}
+	if(fileDesc.length == 0)
+	{
+		str += 'News Description is Required.<br>';
+		flag = false;
+	}
 	if(fileDate.length == 0)
 	{
 		str +='File Date is Required<br>';
 		flag = false;
 	}
 	
-	var tempFlag = false;
-	$(".completeDetailedDescCls").each(function() {
-
-     var key = $(this).attr('key');
-	 var desc = $.trim($("#completeDesc"+key+"").val());
-	 if(desc.length == 0)
-	  tempFlag = true;
-	});
-
-
-	if(tempFlag)	
-	{
-	  $('.newsFile').each(function() {
-		  var key = $(this).attr('key');
-           if($.trim($(this).val()).length == 0)
-	       {
-		     str+='News Description Or File Required.';
-		     flag = false;
-			 return false;
-	       }
+	 $('.fileImgCls').each(function() {
+		 if($.trim($(this).val()).length == 0)
+		{
+		  var key =  $(this).attr('key');
+		  var desc = $.trim($("#"+key+"").val());
+	      if(desc.length == 0)
+	      { 
+		    str+='Detailed News Description Or File Path is Required.<br>';
+		    flag = false;
+		    return false;
+		  }
+		}		 
+		   
       });
-	}
-
-
 	   $('.pagenoCls').each(function() {
            if($.trim($(this).val()).length == 0)
 	       {
@@ -5458,10 +5453,20 @@ function validateUploadFileDetails()
            if($.trim($(this).val()).length > 0)
 	       {
 		     if(isNaN($.trim($(this).val()))){
-				 str += ' Page Number must be Integer.<br>';
+			  str += ' Page Number must be number.<br>';
 				 flag = false;
-				 return false;
+			}
+			else
+            {
+			 var pageNoTemp = ""+$.trim($(this).val())+"";
+			 if(pageNoTemp.indexOf(".") != -1)
+			 {
+			  str += ' Page Number must be Integer.<br>';
+			  flag = false;
 			 }
+
+			}			
+			 
 	       }
        });
 	   $('.newsLengthCls').each(function() {
@@ -5480,21 +5485,33 @@ function validateUploadFileDetails()
 				 flag = false;
 				 return false;
 			 }
+			 else{
+			 var newsLengthTemp = $.trim($(this).val());
+			 if(newsLengthTemp.indexOf(".") != -1)
+			 {
+			  str += ' News Length must be Integer.<br>';
+			  flag = false;
+			 }
+
+			 }
 	       }
        });
-	if(fileTitle.length >50)
+	 $('.addFileImgCls').each(function() {
+           if($.trim($(this).val()).length == 0)
+	       {
+		     str += ' File is Required.<br>';
+		     flag = false;
+			 return false;
+	       }
+       });
+	if(fileTitle.length >1000)
 	{
-		str += 'Title should be less than 50 Characters<br>';
+		str += 'Title should be less than 1000 Characters<br>';
 		flag = false;
 	}
-	if(fileDesc.length == 0)
+	if(fileDesc.length > 2000)
 	{
-		str += 'Description is Required.<br>';
-		flag = false;
-	}
-	if(fileDesc.length > 200)
-	{
-		str += 'Description Should not exceed 200 Characters.<br>';
+		str += 'News Description Should not exceed 2000 Characters.<br>';
 		flag = false;
 	}
 	
