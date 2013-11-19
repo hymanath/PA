@@ -6239,6 +6239,7 @@ public List<FileVO>	getFilesOfACategory(Long gallaryId,Integer startIndex,Intege
 	
 	try{
 		List<File> fileList = null;
+		List<File> fileList1 = null;
 		Long count = 0L;
 		Date fromDate = null;
 		Date toDate = null;
@@ -6248,12 +6249,13 @@ public List<FileVO>	getFilesOfACategory(Long gallaryId,Integer startIndex,Intege
 		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
 			toDate = format.parse(toDateStr);
 		fileList=fileDAO.getFilesByCategoryId(categoryId,startIndex,endIndex,newsType,fromDate,toDate);
-		
+		fileList1 = fileDAO.getFilesByCategoryId(categoryId,null,null,newsType,fromDate,toDate);
 		if(fileList != null && fileList.size() > 0)
 		{
 			setDataToFileVo(fileList,returnList);
 			
 		}
+		returnList.get(0).setTotalResultsCount(new Long(fileList1.size()));
 	}
 	catch (Exception e) {
 		e.printStackTrace();
@@ -7733,7 +7735,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	if(file.getFileDate() != null)
 	filevo.setFileDate(new SimpleDateFormat("yyyy-MM-dd").format(file.getFileDate()));
 	//filevo.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)fileGallary.getFileGallaryId()).size());
-	
+	if(file.getFont() != null)
+	filevo.setFontId(file.getFont().getFontId());
 	if(file.getCategory() != null){
 		filevo.setCategoryId(file.getCategory().getCategoryId());
 		filevo.setCategoryName(file.getCategory().getCategoryType());
@@ -7752,7 +7755,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	
 	
 	returnList.add(filevo);
-	returnList.get(0).setTotalResultsCount(new Long(filesList.size()));
+	
 	 }
 	 }
 	 catch (Exception e) {

@@ -131,7 +131,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 
 var requestedFor = '${requestFor}';
 //showAllFilesofAGallry(0,10,galalryId,1,requestedFor);
-showAllFilesofACategory(0 , 10 , categoryId,1,requestedFor,galalryId);
+showAllFilesofACategory(0 , 10, categoryId,1,requestedFor,galalryId);
 function showAllFilesofAGallry(startIndex , endIndex , gallaryId,selectedvalue,requestedFor)
 {
 $('#imageForMail').css("display","block");
@@ -222,6 +222,7 @@ function getSelectedNewsDetails1()
 }
 function buildFilesInCategoryDetails(results,selectedvalue)
 {   
+
 	var totalPages;
 	$('#imageForMail').css("display","none");
 	$("#newsDisplayDiv").html('');
@@ -254,13 +255,14 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 	//alert(results[i].fileType.trim());
 	str+='<div class="">';
 	var source = results[i].fileType.trim();
-	if(source.indexOf("Eenadu Telugu") != -1)
+	var fontId =  results[i].fontId;
+	if(fontId == 1)
 	{
-		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
+		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].fileName1+'</a></h4>';
 	}
 	else
 	{
-		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
+		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].fileName1+'</a></h4>';
 	}
 		
 			str+='<div class="row-fluid">';
@@ -270,7 +272,7 @@ function buildFilesInCategoryDetails(results,selectedvalue)
                   else
 					  str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
 				str+='</a>';
-				if(source.indexOf("Eenadu Telugu") != -1)
+				if(fontId == 1)
 				{
 					str+='<p class="span8 enadu">'+results[i].fileDescription1+'</p>';
 				}
