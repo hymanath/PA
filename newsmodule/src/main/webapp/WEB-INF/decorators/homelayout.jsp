@@ -162,8 +162,8 @@ margin:-1px 0px 0px 0px ;
 						<!--  <li class=""><a href="aboutUs.action">About Us</a></li>-->
 						 <li class="outerLi" id="newsTabId">
 						  <a href="newsDetailsAction.action" class="innerA">News</a></li>
-						  <li class="outerLi" id="videosTabId">
-						  <a href="showMoreVideos.action" class="innerA">Videos</a></li>
+						 <!-- <li class="outerLi" id="videosTabId">
+						  <a href="showMoreVideos.action" class="innerA">Videos</a></li>-->
 						 
 						   <li class="outerLi" id="reportsTabId">
 								<a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate" class="innerA">Reports</a>
