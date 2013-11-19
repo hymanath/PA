@@ -512,7 +512,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 				 newsType = "";      
 		latestGallariesList = candidateDetailsService.getLatestgallaries();
 		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
-		fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID,newsType);
+		//fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID,newsType);
 		responseFilesList=candidateDetailsService.getLatestResponsedNews();
 		
 		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
