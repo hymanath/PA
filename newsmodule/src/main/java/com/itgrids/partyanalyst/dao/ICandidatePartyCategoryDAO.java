@@ -12,4 +12,11 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	public List<Object[]> getCandidateRelatedCategories(Long candidateId,Date fromDate, Date toDate,String newsType);
 	 public List<File> getFileListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> categoryIdsList);
 
+	public List<Object[]> getSelectdGalleryNews(int startIndex,int maxIndex,Long gallaryId);
+	
+	public List<Object[]> getLatestGallerices();
+	
+	public Long getCountForNewsInASelectedGallery(Long gallaryId);
+	
+	public List<Object[]> getAllCategoryes();
 }

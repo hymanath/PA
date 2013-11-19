@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -74,6 +75,7 @@ import com.itgrids.partyanalyst.dto.CandidatePartyNewsVO;
 import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileSourceVO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -8009,5 +8011,109 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			log.error("Exception Occured in getCandidateRelatedGallaries() method, Exception - ",e);
 			return null;
 		}
+		
+
 	}
+ 
+ 
+ public List<SelectOptionVO> getLatestGalleries()
+ {
+	 List<SelectOptionVO> returnList = null;
+	 
+	 List<Object[]> gallarysList = candidatePartyCategoryDAO.getLatestGallerices();
+	 if(gallarysList != null && gallarysList.size() > 0)
+	 {
+		 returnList = new ArrayList<SelectOptionVO>();
+		 for (Object[] parms : gallarysList) {
+			 SelectOptionVO selectOptionVO = new SelectOptionVO();
+			 selectOptionVO.setId((Long)parms[0]);
+			 selectOptionVO.setName(parms[1].toString());
+			 returnList.add(selectOptionVO);
+		}
+	 }
+	 return returnList;
+ }
+ 
+ public List<FileVO> getSelectedGallaryDetails(int startIndex,int maxIndex,Long gallaryId)
+ {
+	 List<FileVO> returnList = null;
+	 List<Long> fileIds = null;
+	 Map<Long,String> fileSourceMap = null;
+	 LinkedHashMap<Long,FileVO> fileMap = null;
+	 Long count = candidatePartyCategoryDAO.getCountForNewsInASelectedGallery(gallaryId);
+	 List<Object[]> gallarysList = candidatePartyCategoryDAO.getSelectdGalleryNews(startIndex,maxIndex,gallaryId);
+	 if(gallarysList != null && gallarysList.size() > 0)
+	 {
+		 
+		 fileIds = new ArrayList<Long>();
+		 fileMap = new LinkedHashMap<Long, FileVO>();
+		 for (Object[] parms : gallarysList) {
+			 FileVO fileVO = new FileVO();
+			 
+			 fileVO.setTitle(parms[0] != null ? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(parms[0].toString())):"");
+			 fileVO.setDescription(parms[1] != null ? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(parms[1].toString())):"");
+			 fileVO.setFileDate(parms[2] != null ? parms[2].toString() : "");
+			 fileVO.setFileName1(parms[3] != null ? parms[3].toString() : "");
+			 fileVO.setCount(count.intValue());
+			 fileVO.setFileId((Long)parms[4]);
+			 fileVO.setFontId( parms[5] != null ? (Integer)parms[5] :0);
+			 fileIds.add(fileVO.getFileId());
+			 fileMap.put(fileVO.getFileId(), fileVO);
+			 
+		}
+	 }
+	 List<Object[]> fileSoureces = fileSourceLanguageDAO.getFileSourceType(fileIds);
+	 if(fileSoureces != null && fileSoureces.size() > 0)
+	 {
+		 fileSourceMap = new HashMap<Long, String>();
+		 for (Object[] parms : fileSoureces) {
+			 if(fileSourceMap.get((Long)parms[0]) == null)
+			 {			 
+				 fileSourceMap.put((Long)parms[0], parms[1].toString());
+			 }
+			 else
+			 {
+				 fileSourceMap.put((Long)parms[0], fileSourceMap.get((Long)parms[0])+" , "+parms[1].toString());
+			 }
+			
+		}
+	 }
+	 
+	 Set<Long> fileSet = fileMap.keySet();
+	 if(fileSet != null && fileSet.size() > 0)
+	 {
+		 returnList = new ArrayList<FileVO>();
+		 for (Long fileId : fileSet) {
+			 FileVO fileVO = fileMap.get(fileId);
+			 fileVO.setSource(fileSourceMap.get(fileId));
+			 returnList.add(fileVO);
+		}
+	 }
+	 
+	 return new ArrayList<FileVO>(fileMap.values());
+ }
+ 
+ public List<GallaryVO> getAllGalariyes()
+ {
+	 List<GallaryVO> returnlist = null;
+	 List<Object[]> gallarysList = candidatePartyCategoryDAO.getAllCategoryes();
+	 if(gallarysList != null && gallarysList.size() > 0)
+	 {
+		 returnlist = new ArrayList<GallaryVO>();
+		 for (Object[] parms : gallarysList) {
+			 GallaryVO gallaryVO = new GallaryVO();
+			 gallaryVO.setGallaryId(parms[0] != null ? (Long)parms[0] :0l);
+			 gallaryVO.setGallaryName(parms[1] != null ? parms[1].toString() : "");
+			 gallaryVO.setDescription(parms[2] != null ? parms[2].toString() : "");
+			 if(parms[3] != null)
+			 {
+				 Long count = (Long)parms[3];
+				 gallaryVO.setCount(count.intValue());
+			 }
+			
+			 returnlist.add(gallaryVO);
+		}
+	 }
+	 return returnlist;
+ }
  }

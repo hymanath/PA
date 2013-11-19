@@ -1093,9 +1093,9 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 			log.debug("Entered into getCandidateGallarySelectList() Method");
 
 			List<SelectOptionVO> gallarySelectList = null;
-			List<Object[]> list = partyGalleryDAO.getGallariesByPartyId(
-					partyId, contentType);
-
+			/*List<Object[]> list = partyGalleryDAO.getGallariesByPartyId(
+					partyId, contentType);*/
+			List<Object[]> list = 	gallaryDAO.getGallaries();
 			if (list != null && list.size() > 0) {
 				gallarySelectList = new ArrayList<SelectOptionVO>(0);
 				SelectOptionVO selectOptionVO = null;

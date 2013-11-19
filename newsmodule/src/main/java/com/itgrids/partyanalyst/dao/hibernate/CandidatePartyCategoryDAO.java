@@ -83,4 +83,44 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				 query.setMaxResults(maxResult);
 				 return query.list();
 		  }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSelectdGalleryNews(int startIndex,int maxIndex,Long gallaryId)
+	{
+		Query query = getSession().createQuery("select distinct  model.candidatePartyFile.file.fileTitle ," +
+				" model.candidatePartyFile.file.fileDescription , " +
+				" model.candidatePartyFile.file.fileDate ,  " +
+				" model.candidatePartyFile.file.filePath ," +
+				" model.candidatePartyFile.file.fileId ," +
+				" model.candidatePartyFile.file.font.fontId from CandidatePartyCategory model " +
+				" where model.gallary.gallaryId = :gallaryId");
+		query.setParameter("gallaryId", gallaryId);
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		return query.list(); 
+	}
+	
+	
+	public Long getCountForNewsInASelectedGallery(Long gallaryId)
+	{
+		Query query = getSession().createQuery("select count( distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model " +
+				" where model.gallary.gallaryId = :gallaryId");
+		query.setParameter("gallaryId", gallaryId);
+		return (Long)query.uniqueResult();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getLatestGallerices()
+	{
+		Query query = getSession().createQuery("select distinct model.gallary.gallaryId, " +
+				" model.gallary.name from CandidatePartyCategory model order by model.candidatePartyCategoryId desc ");
+		query.setFirstResult(0);
+		query.setMaxResults(5);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAllCategoryes()
+	{
+		return getHibernateTemplate().find("select distinct model.gallary.gallaryId , model.gallary.name ,model.gallary.description , count(model.candidatePartyFile.file.fileId) from CandidatePartyCategory model group by model.gallary.gallaryId");
+	}
 }

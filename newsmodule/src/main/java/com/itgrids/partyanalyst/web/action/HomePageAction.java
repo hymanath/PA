@@ -86,6 +86,23 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private String candidateName;
 	private List<SelectOptionVO> keywordsList;
 	
+	
+	private List<SelectOptionVO> gallariesList = new ArrayList<SelectOptionVO>();
+	private List<FileVO> galleriesDetails = new ArrayList<FileVO>();
+	
+	
+	public List<SelectOptionVO> getGallariesList() {
+		return gallariesList;
+	}
+	public void setGallariesList(List<SelectOptionVO> gallariesList) {
+		this.gallariesList = gallariesList;
+	}
+	public List<FileVO> getGalleriesDetails() {
+		return galleriesDetails;
+	}
+	public void setGalleriesDetails(List<FileVO> galleriesDetails) {
+		this.galleriesDetails = galleriesDetails;
+	}
 	public String getCandidateName() {
 		return candidateName;
 	}
@@ -505,6 +522,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		keywordsList = candidateDetailsService.getTotalKeyWords(IConstants.TDPID,newsType);
 		categoriesList = candidateDetailsService.getAllCategories(); 
 		newsGallariesList = candidateDetailsService.getAllNewsGallaries(); 
+		
+		gallariesList = candidateDetailsService.getLatestGalleries();
 		return Action.SUCCESS;
 	}
 	public String getMoreVideos(){
@@ -610,5 +629,21 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	/*public String getSelectdGalleryDetails()
+	{
+		try {
+			session = request.getSession();
+	        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+	        if(user == null)
+	         return ERROR;
+	        jObj = new JSONObject(getTask());
+	        Long galleryId = jObj.getLong("galleryId");
+	        galleriesDetails = candidateDetailsService.getSelectedGallaryDetails(galleryId);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;
+	}*/
 	
 }

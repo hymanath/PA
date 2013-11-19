@@ -5758,6 +5758,24 @@
 		 	<param name="root">news</param>
 		   </result>
 		 </action>
+		
+		
+		 <action name="showCategoryAction" class="categoryNewsAction">
+		  <result name="success">/jsp/showCategorys.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		 </action>
+		 
+		<action name="getSelectdGalleryDetailsAction" class="categoryNewsAction" method="getSelectdGalleryDetails">
+		   <result type="json" name="success">
+		    	<param name="root">galleriesDetails</param>
+		   </result>
+		</action>
+		
+		<action name="getAllGalaroyesDetailsAction" class="categoryNewsAction" method="getAllGalaroyesDetails">
+		   <result type="json" name="success">
+		    	<param name="root">gallaryVOLIst</param>
+		   </result>
+		</action>
 		</package>
 		
 		

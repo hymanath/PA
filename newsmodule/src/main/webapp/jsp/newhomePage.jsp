@@ -664,7 +664,7 @@ $(document).ready(function(){
 						</div>
 					</div>
 					<!-------->
-					<div class="span4">
+					<!--<div class="span4">
 						<div class="row-fluid widget">
 							<div class="span12 boxHeading"><h4>Category Wise News</h4></div>
 							<div class="span12">
@@ -675,6 +675,23 @@ $(document).ready(function(){
 						       	<li><a href='javascript:{showAllgallaries1(<s:property value="candidateId"/>,<s:property value="categoryId"/>,"<s:property value="categoryName"/>")}' class="muted"><i class="icon-share-alt"></i> <s:property value="categoryName"/></a></li>                          		
 							</s:iterator>
 							</s:if>
+							
+								</ul>
+								<a href="javascript:{showAllCategories()}" class=" btn btn-mini pull-right " style="margin-right: 20px; margin-top: -14px; margin-bottom: 8px;">More...</a>
+							</div>
+						</div>
+					</div>-->
+						<div class="span4">
+						<div class="row-fluid widget">
+							<div class="span12 boxHeading"><h4>Category Wise News</h4></div>
+							<div class="span12">
+								<ul class="unstyled pad10">
+									<s:if test="gallariesList != null && gallariesList.size() > 0"> 
+											
+									<s:iterator value="gallariesList" var="newsGallaryDetails" status="ctr">
+									<li><a href='javascript:{showTopFiveGallaries(<s:property value="id"/>)}' class="muted"><i class="icon-share-alt"></i> <s:property value="name"/></a></li>                          		
+									</s:iterator>
+									</s:if>
 							
 								</ul>
 								<a href="javascript:{showAllCategories()}" class=" btn btn-mini pull-right " style="margin-right: 20px; margin-top: -14px; margin-bottom: 8px;">More...</a>
@@ -979,6 +996,11 @@ function callHomePageAjax11(jsObj,url){
 								 createOptionsForSelectElmtId('categoryGallarySelect',myResults);
 								}
 
+								
+								else if(jsObj.task == "showTopFiveGallaries")
+								{
+									openSelectedGallaryDetails(myResults);
+								}
 								}catch (e) {
 							     
 								}  
@@ -1156,6 +1178,26 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
 
 }
 
+
+function showTopFiveGallaries(id)
+{
+	/* var jsObj={
+		galleryId : id,
+		task:'showTopFiveGallaries'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getSelectdGalleryDetailsAction.action"+rparam;
+	callAjax(jsObj, url); */
+	 var urlstr = "showCategoryAction.action?galleryId="+id;
+		
+     var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
+}
+
+function openSelectedGallaryDetails(myResults)
+{
+	alert(myResults.length);
+}
 function getCandidates(){
 	var jsObj={
 		task:'getCandidateNamesInHomePage'
@@ -1704,7 +1746,7 @@ getLocationWiseNewsDetails(scope,divEle);
 
 function showAllCategories()
 {
-    var urlstr = "showAllCategoriesAction.action?";
+    var urlstr = "showAllCategoriesAction.action?keyword=categoery";
 		
      var browser1 = window.open(urlstr,"allCategories","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
