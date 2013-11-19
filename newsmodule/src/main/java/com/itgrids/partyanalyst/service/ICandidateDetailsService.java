@@ -315,4 +315,5 @@ public interface ICandidateDetailsService {
 	 
 	 public List<GallaryVO> getAllGalariyes();
 	 
+	 public List<SelectOptionVO> getLocationValuesByRegionScope1(String regionScope, String queryType);
 }
