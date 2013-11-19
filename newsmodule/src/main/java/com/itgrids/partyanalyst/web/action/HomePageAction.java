@@ -547,7 +547,9 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			candidatesMap = new HashMap<Long, String>(0);
 			
 		//	candidatesList=newsMonitoringService.getCandidates();
-			candidatesList=newsMonitoringService.getCandidatesByRemovingDots();
+			//candidatesList=newsMonitoringService.getCandidatesByRemovingDots();
+			candidatesList=newsMonitoringService.getCandidatesNewsCount();
+			
 			
 			for(SelectOptionVO vo:candidatesList)
 				candidatesMap.put(vo.getId(), vo.getName());
@@ -573,6 +575,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			
 			//candidatesList=newsMonitoringService.getCandidates();
 			candidatesList = newsMonitoringService.getCandidatesByRemovingDots();
+		
 			for(SelectOptionVO vo:candidatesList)
 				candidatesMap.put(vo.getId(), vo.getName());
 			
