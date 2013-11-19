@@ -3426,5 +3426,81 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		return (Long) query.uniqueResult(); 
 	 }
  
+	 @SuppressWarnings("unchecked")
+		public List<Long> getLocationValuesByRegionScopeId1(Long regionScopeId, String queryType,Long partyId)
+		{
+		 StringBuilder str = new StringBuilder();
+			str.append(" select distinct model.userAddress.district.districtId from File model where " +
+					"model.regionScopes.regionScopesId =:regionScopesId and model.isDeleted != 'Y' and " +
+					"model.isPrivate != 'Y' ");
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("regionScopesId", regionScopeId);
+			return query.list();
+		}
+	 
+	 @SuppressWarnings("unchecked")
+		public List<Long> getLocationValuesByRegionScopeId2(Long regionScopeId, String queryType,Long partyId)
+		{
+		 StringBuilder str = new StringBuilder();
+			str.append("select distinct model.userAddress.constituency.constituencyId from File model where " +
+					"model.regionScopes.regionScopesId =:regionScopesId and model.isDeleted != 'Y' and " +
+					"model.isPrivate != 'Y' ");
+			Query query = getSession().createQuery(str.toString());
+			query.setParameter("regionScopesId", regionScopeId);
+			return query.list();
+		}
+	 
+	 @SuppressWarnings("unchecked")
+	public List<File> getNewsCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr)
+	 {
+		 StringBuilder str = new StringBuilder();
+		  	str.append("select model from File model ");
+		 if(queryType.equalsIgnoreCase("District"))
+			 str.append(" where model.userAddress.district.districtId = :locationId ");
+		 if(queryType.equalsIgnoreCase("Constituency"))
+			 str.append(" where model.userAddress.constituency.constituencyId = :locationId "); 
+		 if(fromDateStr != null)
+			 str.append(" and date(model.fileDate) >= :fromDateStr");
+	 	 if(toDateStr != null)
+	 		 str.append(" and date(model.fileDate) <= :toDateStr");
+	 	 
+	 	 str.append(" order by model.fileDate desc");
+	 	 Query query = getSession().createQuery(str.toString());
+		 query.setParameter("locationId", locationId);
+		 if(fromDateStr != null)
+			 query.setParameter("fromDateStr", fromDateStr);
+	 	 if(toDateStr != null)
+	 		query.setParameter("toDateStr", toDateStr);
+	 	 
+		    query.setFirstResult(startRecord);
+		    query.setMaxResults(maxRecord);
+		  
+		 return query.list();
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+		public Long getNewsTotalCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr)
+		 {
+			 StringBuilder str = new StringBuilder();
+				 str.append("select count(*) from File model ");
+			 if(queryType.equalsIgnoreCase("District"))
+				 str.append(" where model.userAddress.district.districtId = :locationId ");
+			 if(queryType.equalsIgnoreCase("Constituency"))
+				 str.append(" where model.userAddress.constituency.constituencyId = :locationId "); 
+			 if(fromDateStr != null)
+				 str.append(" and date(model.fileDate) >= :fromDateStr");
+		 	 if(toDateStr != null)
+		 		 str.append(" and date(model.fileDate) <= :toDateStr");
+		 	 
+		 	 str.append(" order by model.fileDate desc");
+		 	 Query query = getSession().createQuery(str.toString());
+			 query.setParameter("locationId", locationId);
+			 if(fromDateStr != null)
+				 query.setParameter("fromDateStr", fromDateStr);
+		 	 if(toDateStr != null)
+		 		query.setParameter("toDateStr", toDateStr);
+		 	 
+			 return (Long)query.uniqueResult();
+		 }
 	 
 }
