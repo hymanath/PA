@@ -7870,7 +7870,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 {
 			fileVOList = new ArrayList<FileVO>(0);
 	 setfileDetails(filesList, fileVOList);
-	 fileVOList.get(0).setCount(candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,categoryIdsList).size());
+	 fileVOList.get(0).setCount(candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, null, null, type,fromDate,toDate,categoryIdsList).size());
 	 }
 	 return fileVOList;
 }catch (Exception e) {
