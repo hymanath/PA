@@ -16,7 +16,7 @@
    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-    <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+ <!-- <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js">
 	</script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
@@ -28,7 +28,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script> -->
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	 <SCRIPT type="text/javascript" src="js/specialPage/specialPage.js"></SCRIPT>
 	<!-- YUI Skin Sam -->
@@ -36,6 +36,45 @@
 <script type="text/javascript" src="js/problemCompleteDetails.js"></script>
 	
 <!-- JQuery files (Start) -->
+
+<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+	<script type="text/javascript" src="js/voterAnalysis/showGallaries.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+
+	<!-- YUI Dependency files (End) -->
+
 
 <script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
 
@@ -78,6 +117,34 @@ font-family: eFont;
 font-size:20px;
 }
 #candidateListForPartyImg{margin-left:300px;}
+
+#profileManagementMainOuterDiv4 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#profileManagementMainOuterDiv4 table tr:nth-child(even){background:#EdF5FF;}
+#profileManagementMainOuterDiv4 table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#profileManagementMainOuterDiv4 table th{
+background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	color:#333333;
+	}
+
+
+#profileManagementMainOuterDiv4
+{
+	font-family : arial;
+	font-size: 13px;
+    margin-top: 20px;
+	padding: 10px 10px 10px 15px;
+}
+#profileManagementMainOuterDiv4 table th a{
+color:#333333;
+}
+.newsLinkCls{ color: #0088CC;}
 </style>
 </head>
 <script type="text/javascript">
@@ -103,6 +170,7 @@ var sourceCandidateIdsArray = new Array();
 var destinationCandidateIdsArray = new Array();
 var tempCount = 0;
 var keywordHiddenTempCount = 0;
+var responseFileIdsArray = new Array();
 
 
 var fileSourceMainArray = {
@@ -338,8 +406,9 @@ return;
   <h2 style="text-align: center;">Update News</h2>
  <span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass dateField" id="newsFromDateId" readonly="true"/></span>
  <span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass dateField" id="newsToDateId"/></span>
- <input type="button" value="submit" onclick="buildNewsDetails()" class="btn btn-info"/>
-
+ <input type="button" value="submit" onclick="getTotalNewsWithPagination();" class="btn btn-info" style="margin-right: 20px;"/>
+ <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>
+ <div id="errorMsgNewsDiv"></div>
 </div>
 
 <div id='profileManagementMainOuterDiv4' style="display:none">
@@ -2453,8 +2522,8 @@ function uploadNewsForPartyAndCandidate(fileId)
         str +='<div id="showScopeSubs"></div>';
 		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Save changes" class="btn btn-success btn-large">                         </div></div></div>';
        
-	   if(fileId > 0)
-        str +='<input type="hidden" name="responseFileId" value="'+fileId+'">';  	
+	   if(fileId != null)
+        str +='<input type="hidden" name="responseFileIdsStr" value="'+fileId+'">';  	
 	  
 	  str+='</form>';
    

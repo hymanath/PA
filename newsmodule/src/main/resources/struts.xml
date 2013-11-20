@@ -5782,6 +5782,12 @@
 		    	<param name="root">gallaryVOLIst</param>
 		   </result>
 		</action>
+		
+		<action name="getTotalNewsAction" class="newsDisplayAction" method="getTotalNews">
+		  <result type="json" name="success">
+		    	<param name="root">savedDetails</param>
+		   </result>
+		</action>
 		</package>
 		
 		

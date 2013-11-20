@@ -19,7 +19,7 @@ public class FileDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetTotalFilesList()
 	{
-		System.out.println(fileDAO.getTotalFilesList(1L, null, null).size());
+		System.out.println(fileDAO.getTotalFilesList(1L, null, null, null, null).size());
 	}
 
 }
