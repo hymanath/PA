@@ -209,7 +209,7 @@ function buildNewsDetails(results)
 	   if(results[i].latest == true )
 			str+='<h6 style="color:red;text-align:center;">THIS IS LATEST RESPONSE</h6>';
 
-       if(results[i].eenadu == true )
+       if(results[i].fontId == 1 )
 	       str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  class="enadu">'+results[i].fileTitle1+'</span></div>';
 	   else
 		   str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  href="javascript:{}">'+results[i].fileTitle1+'</span></div>';
@@ -218,7 +218,7 @@ function buildNewsDetails(results)
 		str+='<div id="LocationDiv"><span style="font-weight:bold;color:blue;margin-left:10px;">Location Name:</span> '+results[i].locationName+'</div>';
 		
        if(results[i].fileDescription1 != null && results[i].fileDescription1 != "")
-       if(results[i].eenadu == true )
+       if(results[i].fontId == 1  )
 	      str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;"><span class="enadu">'+results[i].fileDescription1+'</span></div>';
 	    else
 		  str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;">'+results[i].fileDescription1+'</div>';
