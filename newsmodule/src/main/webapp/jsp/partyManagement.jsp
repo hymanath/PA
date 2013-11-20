@@ -386,7 +386,7 @@ return;
       <tr>
         <td>Report Description </td><td><textarea maxlength="330" name="fileDescription" rows="3" cols="20" id="newsreportfileDescription"></textarea></td>
       </tr>
-	  <!--  <tr><td></td><td><input type="radio" class="reporttypeclass" onclick="showHideLocationLvl('level');" checked="checked" value="byLocationLvl" name="byLocationLvl"></input> By Location Level&nbsp;&nbsp;<input class="reporttypeclass" type="radio" onclick="showHideLocationLvl('location');" value="byLocation" name="byLocationLvl"></input> By Location</td></tr>-->
+	    <tr><td></td><td><input type="radio" class="reporttypeclass" onclick="showHideLocationLvl('level');" checked="checked" value="byLocationLvl" name="byLocationLvl"></input> By Location Level&nbsp;&nbsp;<input class="reporttypeclass" type="radio" onclick="showHideLocationLvl('location');" value="byLocation" name="byLocationLvl"></input> By Location</td></tr>
       <tr class="regionLvlClass">
         <td>Select Level</td><td><select id="regionlevel"><option value="1">All</option><option value="2">STATE</option><option value="3">DISTRICT</option><option value="4">CONSTITUENCY</option></select></td>
       </tr>
@@ -1920,22 +1920,24 @@ $("#locationWiseNewsDiv").css("display","none");
 	var toDate = $("#toDateId1").val();
 	var regionLevel = $("#regionlevel").val();
 	var importance = $("#newsPriority").val();
-	/*var reportRegionLevel = $("#reportRegionLevel").val();
+	var reportRegionLevel = $("#reportRegionLevel").val();
 	var reportRegionLevelVal = 0;
 	 var type="";
 	if($("#byLevelChecked").is(':checked')){
 	  type = "byLevel";
 	}else{
 	  type = "byRegion";
-	  if(reportRegionLevel == 2){
+	  if(reportRegionLevel == 1){
+	      reportRegionLevelVal = 1;
+	  }else if(reportRegionLevel == 2){
 		  reportRegionLevelVal = $("#districtSelReportId option:selected").val();
 	  }else if(reportRegionLevel == 3){
 		  reportRegionLevelVal = $("#parliamSelReportId option:selected").val();
 	  }else if(reportRegionLevel == 4){
 		  reportRegionLevelVal = $("#assembSelReportId option:selected").val();
 	  }
-	} */
-	/*var jsObj = {
+	} 
+	var jsObj = {
 			task: 'getNews',
 			fromDate:fromDate,
 			toDate:toDate,
@@ -1944,15 +1946,15 @@ $("#locationWiseNewsDiv").css("display","none");
 			reportRegionLevel:reportRegionLevel,
 			reportRegionLevelVal:reportRegionLevelVal,
 			type:type
-	};*/
-    var jsObj = {
+	};
+   /* var jsObj = {
 			task: 'getNews',
 			fromDate:fromDate,
 			toDate:toDate,
 			regionLevel:regionLevel,
 			importance:importance
 			
-	};
+	};*/
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getAllNewsForAUserAction.action?"+rparam;
 	callnewAjax(jsObj,url);

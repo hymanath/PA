@@ -71,6 +71,10 @@ function buildLocationWiseNews(results)
 		 str +='<br/><div class="form-actions text-center"><input type="button" value="submit" class="btn btn-info" id="savenewsReport" onclick="saveNewsReport()"/>';
 		 str+='<img style="display: none;" src="images/search.jpg" id="savenewsAjaxImg"></div>';
 		 $("#locationWiseNewsDiv").html(str);
+	}else{
+		
+		$("#locationWiseNewsDiv").html("<span style='margin-left:353px;'>No News Exists With Your Search Criteria</span>");
+		$("#locationWiseNewsDiv").show();
 	}
 }
 

@@ -6462,34 +6462,39 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	
 	
 	
-	 public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType)
-	{
-		List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
-		try{
-		
-		
-		 List<Object[]> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNews(startIndex, maxIndex, contenttype,partyId,newsType);
-		 if(fileGallaryList != null && fileGallaryList.size() > 0)
-		 {
-			 for(Object[] params : fileGallaryList)
-			 {
-				FileVO fileVO = new FileVO(); 
-				fileVO.setContentId((Long)params[0]);
-				fileVO.setFileTitle1(params[1]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(params[1].toString())):"");
-				fileVO.setSource(params[2] != null? params[2].toString():"");
-				fileVOsList.add(fileVO);
-			 }
-		 }
-		 
-		 return fileVOsList;
-		 
-		
-		}catch (Exception e) {
-			e.printStackTrace();
-			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - ",e);
-			 return fileVOsList;
-		}
-	}
+	public List<FileVO> getRecentlyUploadedNewsTitles(int startIndex,int maxIndex,String contenttype,Long partyId,String newsType)
+    {
+        List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+        try{
+       
+       
+         List<Object[]> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNews(startIndex, maxIndex, contenttype,partyId,newsType);
+         if(fileGallaryList != null && fileGallaryList.size() > 0)
+         {
+             for(Object[] params : fileGallaryList)
+             {
+                FileVO fileVO = new FileVO();
+                fileVO.setContentId((Long)params[0]);
+                fileVO.setFileTitle1(params[1]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(params[1].toString())):"");
+                //fileVO.setSource(params[2] != null? params[2].toString():"");
+                if(params[2] != null){
+                  fileVO.setSource("Eenadu Telugu");
+                }else{
+                     fileVO.setSource("others");
+                }
+                fileVOsList.add(fileVO);
+             }
+         }
+         
+         return fileVOsList;
+         
+       
+        }catch (Exception e) {
+            log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - ",e);
+             return fileVOsList;
+        }
+    }
+
 	 public List<FileVO> getAllVideosList(Long partyId,int firstResult,int maxResult,String queryType)
 	 {
 	 	List<FileVO> fileList = null;

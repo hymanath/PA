@@ -2776,8 +2776,18 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		return (Long)query.uniqueResult();
 		
 	}
-	
-	@SuppressWarnings("unchecked")
+	 public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
+	    {
+	        StringBuilder queryObject = new StringBuilder();
+	        queryObject.append(" select model.fileId,model.fileTitle,model.font.fontId from File model" );
+	        queryObject.append(" where model.isDeleted != 'Y' and model.isPrivate != 'Y' order by model.fileDate desc,model.updatedDate desc");
+	        Query query = getSession().createQuery(queryObject.toString());
+	          query.setFirstResult(starIndex);
+	         query.setMaxResults(maxResults);
+	        return query.list();
+	       
+	    }
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getRecentlyUploadedNews(Integer starIndex, Integer maxResults,String contentType,Long partyId,String newsType)
 	{
 		StringBuilder queryObject = new StringBuilder();
@@ -2794,7 +2804,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		 query.setMaxResults(maxResults);
 		return query.list();
 		
-	}
+	}*/
 	
 	public FileGallary getSelectedNewsDetails(Long fileGallaryId)
 	{
