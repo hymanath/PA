@@ -983,7 +983,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					}
 				}
 			    if(sourcePresent && destinationPresent)
-				    saveSourceAndDestination(file,newsVO,fileVO.getFileId());
+				    saveSourceAndDestination(file,newsVO,fileVO.getResponseFileIdsStr());
 			    else if(destinationPresent)
 				{
 				  for(CandidatePartyDestinationVO destinationVO :newsVO.getDestinationVOList())
@@ -1002,11 +1002,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					 candidatePartyFile.setUpdateddate(dateUtilService.getCurrentDateAndTime());
 					 
 					 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
-					 if(fileVO.getFileId() != null){
+					 
+					/* if(fileVO.getFileId() != null){
 						 NewsResponse newsResponse = new NewsResponse();
 						 newsResponse.setFile(fileDAO.get(fileVO.getFileId()));
 						 newsResponse.setCandidatePartyFile(candidatePartyFile);
 						 newsResponseDAO.save(newsResponse);
+					 }*/
+					 
+					 if(fileVO.getResponseFileIdsStr() != null && fileVO.getResponseFileIdsStr().length() > 0)
+					 {
+					  String[] fileIdsStr = fileVO.getResponseFileIdsStr().split(",");
+					  if(fileIdsStr != null)
+					  {
+						for(String responseFileId: fileIdsStr)
+						{
+							NewsResponse newsResponse = new NewsResponse();
+							newsResponse.setFile(fileDAO.get(Long.parseLong(responseFileId)));
+							newsResponse.setCandidatePartyFile(candidatePartyFile);
+							newsResponseDAO.save(newsResponse);	
+						}
+					  }
 					 }
 					 //saving categories
 					 if(destinationVO.getCategoryIdsStr() != null && destinationVO.getCategoryIdsStr().trim().length() > 0)
@@ -1065,11 +1081,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 							   candidatePartyFile.setSourceCandidate(candidateDAO.get(source.getCandidateId()));
 							}
 							 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
-							if(fileVO.getFileId() != null){
+							 
+							/*if(fileVO.getFileId() != null){
 								 NewsResponse newsResponse = new NewsResponse();
 								 newsResponse.setFile(fileDAO.get(fileVO.getFileId()));
 								 newsResponse.setCandidatePartyFile(candidatePartyFile);
 								 newsResponseDAO.save(newsResponse);
+							 }*/
+							 
+							 if(fileVO.getResponseFileIdsStr() != null && fileVO.getResponseFileIdsStr().length() > 0)
+							 {
+							  String[] fileIdsStr = fileVO.getResponseFileIdsStr().split(",");
+							  if(fileIdsStr != null)
+							  {
+								for(String responseFileId: fileIdsStr)
+								{
+									NewsResponse newsResponse = new NewsResponse();
+									newsResponse.setFile(fileDAO.get(Long.parseLong(responseFileId)));
+									newsResponse.setCandidatePartyFile(candidatePartyFile);
+									newsResponseDAO.save(newsResponse);	
+								}
+							  }
 							 }
 						}
 					}
@@ -1091,7 +1123,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			}
 	}
 	
-	public void saveSourceAndDestination(File file,CandidatePartyNewsVO newsVO,Long responseId){
+	public void saveSourceAndDestination(File file,CandidatePartyNewsVO newsVO,String responseFileIds){
 
 		
 		List<CandidatePartyDestinationVO> sourceList = newsVO.getSourceVOList();
@@ -1124,11 +1156,26 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						 candidatePartyFile.setUpdateddate(dateUtilService.getCurrentDateAndTime());
 						 
 						 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
-						 if(responseId != null){
+						 /*if(responseId != null){
 							 NewsResponse newsResponse = new NewsResponse();
 							 newsResponse.setFile(fileDAO.get(responseId));
 							 newsResponse.setCandidatePartyFile(candidatePartyFile);
 							 newsResponseDAO.save(newsResponse);
+						 }*/
+						 
+						 if(responseFileIds != null && responseFileIds.length() > 0)
+						 {
+						   String[] fileIdsStr = responseFileIds.split(",");
+						   if(fileIdsStr != null)
+						   {
+							 for(String responseFileId :fileIdsStr)
+							 {
+								 NewsResponse newsResponse = new NewsResponse();
+								 newsResponse.setFile(fileDAO.get(Long.parseLong(responseFileId)));
+								 newsResponse.setCandidatePartyFile(candidatePartyFile);
+								 newsResponseDAO.save(newsResponse);
+							 }
+						   }
 						 }
 						 //saving categories
 						 if(destination.getCategoryIdsStr() != null && destination.getCategoryIdsStr().trim().length() > 0)
