@@ -6387,14 +6387,16 @@ public List<FileVO>	getFilesOfACategory(Long gallaryId,Integer startIndex,Intege
  
  public List<FileVO> getLatestResponsedNews(){
 	 List<FileVO> fileVoList=new ArrayList<FileVO>();
-	 List<Object[]> fileGalList=partyGalleryDAO.getLatestNewsResponses();
+	// List<Object[]> fileGalList=partyGalleryDAO.getLatestNewsResponses();
+	 List<Object[]> fileGalList=newsResponseDAO.getLatestNewsResponses();
 	 
 	 for(Object[] objs:fileGalList){
 		 FileVO file=new FileVO();
-		 file.setFileGallaryId((Long)objs[0]);
+		 file.setFileId((Long)objs[0]);
 		 file.setTitle(objs[1]!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(objs[1].toString())):"");
 		 file.setFileDate(objs[2]!=null?objs[2].toString():"");
-		 file.setSource(objs[3]!=null?objs[3].toString():"");
+		// file.setSource(objs[3]!=null?objs[3].toString():"");
+		 file.setFontId((objs[3]!=null?(Integer)objs[3]:0));
 		 fileVoList.add(file);
 	 }
 	 return fileVoList;

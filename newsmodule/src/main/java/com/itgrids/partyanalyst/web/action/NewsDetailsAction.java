@@ -434,8 +434,8 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			jObj = new JSONObject(getTask());
 			
 			Long resonseContentId = jObj.getLong("resonseContentId");
-			fileVOsList = contentManagementService.getResponseTrackingNews(resonseContentId);
-			
+			//fileVOsList = contentManagementService.getResponseTrackingNews(resonseContentId);
+			fileVOsList = contentManagementService.getResponseTrackingNews1(resonseContentId);
 			}catch (Exception e) {
 				e.printStackTrace();
 				Log.error("Exception Occured in getCompleteDetailsOfANewsResponse() method, Exception - "+e);
