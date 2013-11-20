@@ -4863,21 +4863,20 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    if(userType != null && userType.size() > 0){
 			    	type = userType.get(0);
 			    }
-			   // if("byLevel".equalsIgnoreCase(fileVO.getFileType())){
+			    if("byLevel".equalsIgnoreCase(fileVO.getFileType())){
 				   list = fileDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue());
-			    /*}else{
+			    }else{
 			    	List<Long> ids = null;
 			    	if(fileVO.getLocationId().longValue() == 3l){
 			    		ids = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByParliamId(fileVO.getLocationVal());
 			    	}
 			       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids);
-			    }*/
+			    }
 				resultList = setDataForAllLocations(list,fileVO.getUserId());
 			
 		  }
 		  catch (Exception e) {
 			log.error("Exception Occured in getAllNewsDetails() method , Exception - ",e);
-			e.printStackTrace();
 		}
 		return resultList;
 	  }
@@ -4973,12 +4972,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 					FileVO fileVO = new FileVO();
 					String regionScope ="";
 					fileVO.setRegionValue(regionVal);
-					if(regionVal == 2)
-						regionScope = IConstants.STATE;
-					if(regionVal == 3)
-						regionScope = IConstants.DISTRICT;
-					if(regionVal == 4)
-						regionScope = IConstants.CONSTITUENCY;
+					if(regionVal != null)
+					regionScope = getRegionLvl(regionVal.intValue());
 					fileVO.setScope(regionScope);
 					List<FileVO> locationsList = new ArrayList<FileVO>();
 					Map<Long,List<FileVO>> locationMap  =  regionWiseMap.get(regionVal);
@@ -4997,10 +4992,26 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				}
 			}
 		  catch (Exception e) {
-			e.printStackTrace();
+			  log.error("Exception Occured in setDataForAllLocations method in NewsMonitoringService", e);
 		  }
 		return result;
 	  }
+	  
+	  public String getRegionLvl(int id){
+		  switch (id) {
+           
+          case 2:  return IConstants.STATE;          
+          case 3:  return IConstants.DISTRICT;
+          case 4:  return IConstants.CONSTITUENCY;          
+          case 5:  return "MANDAL";
+          case 6:  return "VILLAGE";          
+          case 7:  return "MUNICIPAL-CORP-GMC";
+          case 8:  return "WARD";          
+          case 9:  return "BOOTH";
+          default: return "";
+		  }
+	  }
+	  
 	  public Map<Long,String> getCandidateNames(Set<Long> fileIds){
 		  Map<Long,String> candidateNames = new HashMap<Long,String>();
 		 try{
