@@ -956,8 +956,9 @@ public class ContentManagementService implements IContentManagementService{
 			fileVO.setFileTitle1(file.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
 			fileVO.setFileDescription1(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
 			fileVO.setNewsDescription(file.getNewsDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getNewsDescription())):"");
-			fileVO.setFileDate(file.getFileDate().toString());
+			fileVO.setFileDate(file.getFileDate() != null ? file.getFileDate().toString():"");
 			fileVO.setCandidateName(candidateByGaleryId.get(file.getFileId()!=null?file.getFileId():""));
+			if(file.getRegionScopes() != null && file.getRegionScopes().getScope() != null)
 			fileVO.setLocationName(boothDAO.getLocationsById(file.getRegionScopes().getScope(),file.getLocationValue()).toString()+" ( "+file.getRegionScopes().getScope()+" )");
 			if(file.getFont() != null)
 			fileVO.setFontId(file.getFont().getFontId());
@@ -980,14 +981,18 @@ public class ContentManagementService implements IContentManagementService{
 				 List<Object[]> editionDets = filePathsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
 				if(editionDets != null && editionDets.size() > 0)
 				{
-				 if(editionDets.get(0) != null)
+				 for(Object[] params : editionDets)
 				 {
-				  fileVOSourceLanguage.setPageNo(Long.parseLong(editionDets.get(0)[0].toString()));
-				  Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+					 if(params[0] != null)
+				  fileVOSourceLanguage.setPageNo(Long.parseLong(params[0].toString()));
+					 if(params[1] != null)
+					 {
+				  Long edition = Long.parseLong(params[1].toString());
 				  if(edition.equals(1L))
 					  fileVOSourceLanguage.setNewsEdition("Main Edition");
 				  else
 					  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+					 }
 				 }
 				}
 				 
