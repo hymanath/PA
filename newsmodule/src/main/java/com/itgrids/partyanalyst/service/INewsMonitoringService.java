@@ -95,6 +95,8 @@ public interface INewsMonitoringService {/*
 	
 	public List<SelectOptionVO> getCandidatesNewsCount();
 	
+	public FileVO getTotalNews(FileVO inputs);
+
 }
 
 

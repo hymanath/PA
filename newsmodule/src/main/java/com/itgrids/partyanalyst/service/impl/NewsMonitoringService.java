@@ -3244,7 +3244,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	
 */
 	
-/*	public List<FileVO> getNewsForAuser(FileVO inputs){
+	public List<FileVO> getNewsForAuser(FileVO inputs){
 	      log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
 	       List<FileVO> fileVOList = new ArrayList<FileVO>();
 	    	try{
@@ -3418,62 +3418,47 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		e.printStackTrace();
 	    	}
 	    	  return fileVOList;
-	      }*/
+	      }
 	
 	
-	public List<FileVO> getNewsForAuser(FileVO inputs){
-	      log.debug("Enter into getNewsForRegisterUsers Method of NewsMonitoringService ");
-	       List<FileVO> fileVOList = new ArrayList<FileVO>();
+	public FileVO getTotalNews(FileVO inputs){
+	      log.debug("Enter into getTotalNews() Method of NewsMonitoringService ");
+	      
+	      FileVO resultVO = new FileVO();
+	      List<FileVO> fileVOList = null;
 	    	try{
 	    		
-	    		Date fromDate = null;
-	    		Date toDate = null;
-	    		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+	    	 Date fromDate = null;
+	    	 Date toDate = null;
+	    	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 	    		
-	    	 // List<Object[]> fileList = fileGallaryDAO.getNewsForRegisterUsers1(inputs);
+	    	 if(inputs.getFromDateStr() != null && !inputs.getFromDateStr().equalsIgnoreCase(""))
+	    	   fromDate = format.parse(inputs.getFromDateStr());
 	    		
-	    		if(inputs.getFromDateStr() != null && !inputs.getFromDateStr().equalsIgnoreCase(""))
-	    		 fromDate = format.parse(inputs.getFromDateStr());
+	    	 if(inputs.getToDateStr() != null && !inputs.getToDateStr().equalsIgnoreCase(""))
+		       toDate = format.parse(inputs.getToDateStr());
 	    		
-	    		if(inputs.getToDateStr() != null && !inputs.getToDateStr().equalsIgnoreCase(""))
-		    	 toDate = format.parse(inputs.getToDateStr());
-	    		
-	    		 //List<Object[]> fileList = fileGallaryDAO.getAllTheNewsForAUser(inputs.getUserId(),fromDate,toDate);
-	    		 
-	    		 List<File> filesList = fileDAO.getTotalFilesList(inputs.getUserId(), fromDate, toDate);
+	    	 List<File> filesList = fileDAO.getTotalFilesList(inputs.getUserId(), fromDate, toDate,inputs.getStartIndex(),inputs.getMaxResult());
 	    	  
 	    	if(filesList != null && filesList.size() > 0)
-	    	  for(File file:filesList){
-	    		  
+	    	{
+	    	   fileVOList = new ArrayList<FileVO>();
+	    	   for(File file:filesList)
+	    	   {
+	    		 FileVO fileVO = new FileVO();
+	    		 fileVO.setFileId(file.getFileId());
+	    		 fileVO.setTitle(file.getFileTitle() != null? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
+	    		 fileVO.setDescription(file.getFileDescription() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())): " ");
 	    		 
-	    		  FileVO  fileVO = new FileVO();
-	    		  
-             
-	    		  fileVO.setKeywords(file.getKeywords()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getKeywords())):"");
-	    		  fileVO.setFileDate(file.getFileDate() != null?file.getFileDate().toString():" ");
-	    		  
-	    		  if(file.getFileDate() != null)
-	    		  {
+	    		 if(file.getFileDate() != null)
+	    		 {
 	    		   String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
 	    		   fileVO.setFileDateAsString(dateString);
-	    		  }
-	    		  fileVO.setComments(file.getComment());
+	    		 }
 	    		  
-	    		  fileVO.setDisplayImagePath(file.getFilePath());
-	    		  //fileVO.setVisibility(obj[2].toString());
+	    		 if(file.getRegionScopes() != null)
+	    		   fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
 	    		  
-	    		  if(file.getRegionScopes() != null)
-	    		    fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
-	    		  
-	    		  if(file.getLocationValue() != null)
-	    		    fileVO.setLocationValue(file.getLocationValue().toString());
-	    		  
-	    		  fileVO.setFileId(file.getFileId());
-	    		  fileVO.setName(file.getFileName());
-	    		  fileVO.setPath(file.getFilePath());
-	    		  fileVO.setNewsDescription(file.getNewsDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getNewsDescription())):"");
-	    		  fileVO.setFileTitle1(file.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
-	    		  fileVO.setDescription(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
 	    		  String fileDate = file.getFileDate().toString();
 	    		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
 	    		  fileVO.setFileDate(dateObj!=null?dateObj:"");
@@ -3481,84 +3466,35 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		  if(file.getFont() != null && file.getFont().getFontId().equals(1))
 	    		   fileVO.setEenaduTeluguFontStr("Eenadu Telugu");
 	    		  
-	    		  //fileVO.setFileGallaryId((Long)obj[3]);
-	    		  //fileVO.setGallaryName(obj[4].toString());
-	    		  
+	    		  String fileSourceStr = "";
 	    		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
-	    		  List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>(); 
-	    		  Set<String> sourceSet = new HashSet<String>();
-	 			  Set<String> languageSet = new HashSet<String>();
-	 			 StringBuilder sourceVal =new StringBuilder();
-				 StringBuilder languageVal =new StringBuilder();
-					 for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
-						 if(inputs.getSourceId() == null && inputs.getLanguegeId() == null)
-						 {
-							  setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
-							  if(fileSourceLanguage.getSource() != null)
-							  sourceSet.add(fileSourceLanguage.getSource().getSource());
-							  if(fileSourceLanguage.getLanguage() != null)
-							  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
-						 }
-						 else if(inputs.getLanguegeId() != null){
-							 if(inputs.getLanguegeId().intValue() == fileSourceLanguage.getLanguage().getLanguageId().intValue())
-							 {
-								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList);
-								 if(fileSourceLanguage.getSource() != null)
-								 sourceSet.add(fileSourceLanguage.getSource().getSource());
-								 if(fileSourceLanguage.getLanguage() != null)
-								 languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
-							 }
-						 }
-						 else if(inputs.getSourceId() != null){
-							 if(inputs.getSourceId().intValue() == fileSourceLanguage.getSource().getSourceId().intValue())
-							 { 
-								 setSourceLanguageAndPaths(fileSourceLanguage,fileVOSourceLanguageList); 
-								 if(fileSourceLanguage.getSource() != null)
-								 sourceSet.add(fileSourceLanguage.getSource().getSource());
-								 if(fileSourceLanguage.getLanguage() != null)
-								  languageSet.add(fileSourceLanguage.getLanguage().getLanguage());
-							 }
-						 }
-						 
-					 }
-					 for(String source:sourceSet){
-						 sourceVal.append(source);
-						 sourceVal.append("-");
-					 }
-		             for(String language:languageSet){
-		            	 languageVal.append(language);
-		            	 languageVal.append("-");
-					 }
-		             if(sourceVal != null && sourceVal.length() > 0)
-		             sourceVal.deleteCharAt(sourceVal.length() - 1);
-		             if(languageVal != null && languageVal.length() > 0)
-		             languageVal.deleteCharAt(languageVal.length() - 1);
-				fileVO.setMultipleSource(fileVOSourceLanguageList.size());
-				Collections.sort(fileVOSourceLanguageList,CandidateDetailsService.sourceSort);
-				fileVO.setFileVOList(fileVOSourceLanguageList);
-				
-				
-	    		  fileVO.setSource(sourceVal!=null?sourceVal.toString():"");
-	    		  fileVO.setLanguage(languageVal!=null?languageVal.toString():"");
-	    		  fileVO.setCategoryId(file.getCategory()!=null?file.getCategory().getCategoryId():null);
-	    		  fileVO.setCategoryType(file.getCategory()!=null?file.getCategory().getCategoryType():"N/A");
-	    		  fileVO.setNewsImportanceId(file.getNewsImportance()!=null?file.getNewsImportance().getNewsImportanceId():null);
-	    		  fileVO.setImportance(file.getNewsImportance()!=null?file.getNewsImportance().getImportance():"");
-	    		  fileVO.setLocationScope(file.getRegionScopes()!=null?file.getRegionScopes().getRegionScopesId():null);
+	    		  if(fileSourceLanguageSet != null && fileSourceLanguageSet.size() > 0)
+	    		   for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageSet)
+	    			   fileSourceStr +=fileSourceLanguage.getSource().getSource()+",";
+	    		  
+	    		  if(fileSourceStr.length() > 0)
+	    			  fileSourceStr = fileSourceStr.substring(0, fileSourceStr.length()-1);
+	    		  
+	    		  fileVO.setSource(fileSourceStr);
+	    		  
 	    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
 	    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
 	    		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
 	    		  if(file.getRegionScopes()!=null)
 	    		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
 	    		  
+	    		  
 	    		  fileVOList.add(fileVO);
+	    	     }
+	    	   resultVO.setFileVOList(fileVOList);
+	    	   resultVO.setCount(fileDAO.getTotalFilesList(inputs.getUserId(), fromDate, toDate, null, null).size());
 	    	  }
 	    	}
 	    	catch(Exception e){
 	    		log.error("Exception rised in  getNewsForRegisterUsers Method of NewsMonitoringService", e);
 	    		e.printStackTrace();
 	    	}
-	    	  return fileVOList;
+	    	  return resultVO;
 	      }
 	
 	
