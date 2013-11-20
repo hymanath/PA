@@ -85,7 +85,7 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<File> getTotalFilesList(Long userId,Date fromDate,Date toDate)
+	public List<File> getTotalFilesList(Long userId,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex)
 	{
 	  StringBuilder str = new StringBuilder();
 	  str.append(" select model from File model where model.user.userId =:userId ");
@@ -102,6 +102,11 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	   query.setParameter("fromDate", fromDate);
 	  if(toDate != null)
 	   query.setParameter("toDate", toDate);
+	  if(startIndex != null)
+	   query.setFirstResult(startIndex);
+	  
+	  if(maxIndex != null)
+		query.setMaxResults(maxIndex);
 	  return query.list();
 	 
 	}

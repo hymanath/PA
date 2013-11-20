@@ -148,6 +148,8 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String eenaduTeluguFontStr;
 	private Long font;
 	private Integer fontId;
+	private String responseFileIdsStr;
+	
 	public Integer getFontId() {
 		return fontId;
 	}
@@ -1279,5 +1281,13 @@ public class FileVO extends ResultStatus implements Serializable {
 		this.eenaduTeluguFontStr = eenaduTeluguFontStr;
 	}
 
+	public String getResponseFileIdsStr() {
+		return responseFileIdsStr;
+	}
+
+	public void setResponseFileIdsStr(String responseFileIdsStr) {
+		this.responseFileIdsStr = responseFileIdsStr;
+	}
+    
 
 }
