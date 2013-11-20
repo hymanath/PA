@@ -185,7 +185,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getEditionAndPageNoByFileSourceId(Long fileSourceLanguageId)
 	{
-		Query query = getSession().createQuery(" select model.pageNo, model.edition from FilePaths model where " +
+		Query query = getSession().createQuery("select model.pageNo, model.edition from FilePaths model where " +
 				" model.fileSourceLanguage.fileSourceLanguageId =:fileSourceLanguageId ");
 		query.setParameter("fileSourceLanguageId", fileSourceLanguageId);
 		return query.list();

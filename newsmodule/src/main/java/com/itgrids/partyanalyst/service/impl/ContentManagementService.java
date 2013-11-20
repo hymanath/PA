@@ -979,22 +979,18 @@ public class ContentManagementService implements IContentManagementService{
 				 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
 				 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
 				 List<Object[]> editionDets = filePathsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
-				if(editionDets != null && editionDets.size() > 0)
-				{
-				 for(Object[] params : editionDets)
-				 {
-					 if(params[0] != null)
-				  fileVOSourceLanguage.setPageNo(Long.parseLong(params[0].toString()));
-					 if(params[1] != null)
+				 if(editionDets != null && editionDets.size() > 0)
+					{
+					 if(editionDets.get(0) != null)
 					 {
-				  Long edition = Long.parseLong(params[1].toString());
-				  if(edition.equals(1L))
-					  fileVOSourceLanguage.setNewsEdition("Main Edition");
-				  else
-					  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+					  fileVOSourceLanguage.setPageNo(Long.parseLong(editionDets.get(0)[0].toString()));
+					  Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+					  if(edition.equals(1L))
+						  fileVOSourceLanguage.setNewsEdition("Main Edition");
+					  else
+						  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
 					 }
-				 }
-				}
+					}
 				 
 				 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
 				 

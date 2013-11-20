@@ -322,7 +322,7 @@ function showAnotherSource(sourceId , i)
 
 		 // str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
 
-
+	if(showContentResultList[i].fileVOList[j].fileVOList[0] != null)
 		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'" style="" alt="news image not available"></img>';
 		str+='</div>';
 
