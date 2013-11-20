@@ -19,7 +19,7 @@ public interface IFileDAO extends GenericDao<File, Long> {
 	
 	public List<File> getFilesByCategoryId(Long categoryId,Integer startIndex ,Integer endIndex,String newsType,Date fromDate,Date toDate);
 	
-	public List<File> getTotalFilesList(Long userId,Date fromDate,Date toDate);
+	public List<File> getTotalFilesList(Long userId,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex);
 	
 	public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds);
 }
