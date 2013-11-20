@@ -174,6 +174,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
     private Long destinationBenefitId;
     private CandidatePartyNewsVO candidatePartyNewsVOList;
     private Long responseFileId;
+    private String responseFileIdsStr;
     
     
 	
@@ -420,6 +421,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.titleCheckBox = titleCheckBox;
 	}
     
+
+	public String getResponseFileIdsStr() {
+		return responseFileIdsStr;
+	}
+
+
+	public void setResponseFileIdsStr(String responseFileIdsStr) {
+		this.responseFileIdsStr = responseFileIdsStr;
+	}
+
 
 	private File imageForDisplay;
 	private String imageForDisplayContentType;
@@ -1545,7 +1556,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		  
 		}*/
 		
-		
+		fileVO.setResponseFileIdsStr(responseFileIdsStr);
 		
 	    fileVO.setCandidatePartyNewsVOList(candidatePartyNewsVOList);
 		
