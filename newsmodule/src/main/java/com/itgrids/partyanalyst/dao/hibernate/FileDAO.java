@@ -179,4 +179,14 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		return query.list();
 		 
 	}
+	 public List<File> getAllLatestFilesByFileIds(List<Long> fileIds){
+			
+			Query query = getSession().createQuery("select model from File model where model.fileId in(:fileIds) order by model.fileDate desc");
+			
+			query.setParameterList("fileIds", fileIds);
+			
+			return query.list();
+			
+			
+		}
 }

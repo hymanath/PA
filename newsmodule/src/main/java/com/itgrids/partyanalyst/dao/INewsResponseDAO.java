@@ -8,6 +8,9 @@ import com.itgrids.partyanalyst.model.NewsResponse;
 
 public interface INewsResponseDAO  extends GenericDao<NewsResponse,Long>{
 	
-	public List<Long> getCandidateNewsResponseFileIds(Long fileId);
-
+	public List<Long> getCandidateNewsResponseFileIdsByFileID(Long fileId);
+	
+	 public List<Object[]> getLatestNewsResponses();
+	 public List<Long> getCandidateNewsResponseFileIds(Long fileId);
+	
 }

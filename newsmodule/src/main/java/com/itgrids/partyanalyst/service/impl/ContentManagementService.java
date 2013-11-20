@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.hsqldb.lib.HashSet;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -21,9 +22,11 @@ import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
+import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.INewsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INewsFlagDAO;
+import com.itgrids.partyanalyst.dao.INewsResponseDAO;
 import com.itgrids.partyanalyst.dao.IPartyGalleryDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -59,8 +62,26 @@ public class ContentManagementService implements IContentManagementService{
 	private ITehsilDAO tehsilDAO;
 	private IFileDAO fileDAO;
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
+	private INewsResponseDAO newsResponseDAO;
+	private IFilePathsDAO filePathsDAO;
 	
 	
+	public IFilePathsDAO getFilePathsDAO() {
+		return filePathsDAO;
+	}
+
+	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
+		this.filePathsDAO = filePathsDAO;
+	}
+
+	public INewsResponseDAO getNewsResponseDAO() {
+		return newsResponseDAO;
+	}
+
+	public void setNewsResponseDAO(INewsResponseDAO newsResponseDAO) {
+		this.newsResponseDAO = newsResponseDAO;
+	}
+
 	public ICandidatePartyFileDAO getCandidatePartyFileDAO() {
 		return candidatePartyFileDAO;
 	}
@@ -909,6 +930,100 @@ public class ContentManagementService implements IContentManagementService{
 		
 	}
 	
+	
+	
+	public List<FileVO> getResponseTrackingNews1(Long fileId)
+	{
+		
+		try{
+		
+			List<FileVO> resultList = new ArrayList<FileVO>();
+			List<Long> responseids =newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileId);
+			List<File> fileList =  fileDAO.getAllLatestFilesByFileIds(responseids);
+			Set<Long> fileIds = new java.util.HashSet<Long>();
+			 for(Long id : responseids){
+				 fileIds.add(id);
+			  }
+			List<Object[]> candidateNames = candidatePartyFileDAO.getCandidateNamesByFileIds(fileIds);		
+			Map<Long,String> candidateByGaleryId = new HashMap<Long, String>();		
+			for (Object[] objects : candidateNames) {
+				candidateByGaleryId.put((Long)objects[0],objects[1].toString());
+			}			
+		for(File file:fileList)
+		{
+			FileVO fileVO = new FileVO();
+		
+			fileVO.setFileTitle1(file.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
+			fileVO.setFileDescription1(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
+			fileVO.setNewsDescription(file.getNewsDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getNewsDescription())):"");
+			fileVO.setFileDate(file.getFileDate().toString());
+			fileVO.setCandidateName(candidateByGaleryId.get(file.getFileId()!=null?file.getFileId():""));
+			fileVO.setLocationName(boothDAO.getLocationsById(file.getRegionScopes().getScope(),file.getLocationValue()).toString()+" ( "+file.getRegionScopes().getScope()+" )");
+			if(file.getFont() != null)
+			fileVO.setFontId(file.getFont().getFontId());
+			List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
+			Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+			
+			boolean isTelugu = false;
+			
+			for(FileSourceLanguage fileSourceLanguage : fileSourceLanguageSet){
+				
+				if(fileSourceLanguage.getSource().getSource().equalsIgnoreCase("Eenadu Telugu"))
+					isTelugu = true;
+					
+				FileVO fileVOSourceLanguage = new FileVO();
+				 fileVOSourceLanguage.setSource(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSource():null);
+				 fileVOSourceLanguage.setSourceId(fileSourceLanguage.getSource()!=null?fileSourceLanguage.getSource().getSourceId():null);
+				 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
+				 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
+				 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
+				 List<Object[]> editionDets = filePathsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
+				if(editionDets != null && editionDets.size() > 0)
+				{
+				 if(editionDets.get(0) != null)
+				 {
+				  fileVOSourceLanguage.setPageNo(Long.parseLong(editionDets.get(0)[0].toString()));
+				  Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+				  if(edition.equals(1L))
+					  fileVOSourceLanguage.setNewsEdition("Main Edition");
+				  else
+					  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+				 }
+				}
+				 
+				 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
+				 
+				 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
+				 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
+				 
+				 for(FilePaths filePath : filePathsSet){
+					 FileVO fileVOPath = new FileVO();
+					 fileVOPath.setPath(filePath.getFilePath());
+					 fileVOPath.setOrderNo(filePath.getOrderNo());
+					 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+					 fileVOPathsList.add(fileVOPath);
+				 }
+				 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
+				 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
+				 fileVOSourceLanguageList.add(fileVOSourceLanguage);
+			 }
+			
+			fileVO.setEenadu(isTelugu);
+			 fileVO.setFileVOList(fileVOSourceLanguageList);
+			 
+			 resultList.add(fileVO);
+		}
+		
+		return resultList;			
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+			
+		}
+		
+	}
 	/*
 	public ContentDetailsVO getSelectedContentAndRelatedGalleriesInPopup(
 			Long contentId, String requestFrom, Long requestPageId,

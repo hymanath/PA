@@ -1656,6 +1656,8 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />	
 		<property name="fileDAO" ref="fileDAO" />
 		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
+		<property name="filePathsDAO" ref="filePathsDAO" />
+		<property name="newsResponseDAO" ref="newsResponseDAO" />
 	</bean>
 	
 	<bean name="reportService" class="com.itgrids.partyanalyst.service.impl.ReportService" >
