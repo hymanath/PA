@@ -206,8 +206,8 @@ function buildNewsDetails(results)
 
 	 // alert(results[i].eenadu == true);  
 	   str+='<div class="alert" id="newsDisplayDiv'+i+'" style="border:2px solid #5e5e5e;padding:4px;margin:3px 0px 0px 76px;;width:807px;background-color:#ffffff;">';
-	   if(results[i].latest == true )
-			str+='<h6 style="color:red;text-align:center;">THIS IS LATEST RESPONSE</h6>';
+	 /*  if(results[i].latest == true )
+			str+='<h6 style="color:red;text-align:center;">THIS IS LATEST RESPONSE</h6>';*/
 
        if(results[i].fontId == 1 )
 	       str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  class="enadu">'+results[i].fileTitle1+'</span></div>';
@@ -224,7 +224,7 @@ function buildNewsDetails(results)
 		  str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;">'+results[i].fileDescription1+'</div>';
 
         if(results[i].newsDescription != null && results[i].newsDescription != "")  
-		if(results[i].eenadu == true )			
+		if(results[i].fontId == 1 )			
 	       str+='<div id="" class="breadcrumb" style="color:#000000;"><span class="enadu">'+results[i].newsDescription+'</span></div>';
 		else
 			str+='<div id="" class="breadcrumb" style="color:#000000;"><span>'+results[i].newsDescription+'</span></div>';
