@@ -35,7 +35,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private List<FileVO> returnVal;
 	private DateUtilService dateUtilService = new DateUtilService();
 	private ResultStatus resultStatus;
-	private FileVO savedDetails;
+	private FileVO savedDetails,fileVO;
 	private List<FileVO> fileVOs;
 	public FileVO getSavedDetails() {
 		return savedDetails;
@@ -91,6 +91,14 @@ public class NewsDisplayAction implements ServletRequestAware{
 	
 	public List<FileVO> getFileVOs() {
 		return fileVOs;
+	}
+
+	public FileVO getFileVO() {
+		return fileVO;
+	}
+
+	public void setFileVO(FileVO fileVO) {
+		this.fileVO = fileVO;
 	}
 
 	public void setFileVOs(List<FileVO> fileVOs) {
@@ -501,6 +509,39 @@ public class NewsDisplayAction implements ServletRequestAware{
 	   
 	   return Action.SUCCESS;
 	   
+   }
+   
+   public String getTotalNews()
+   {
+	 try{
+	 
+		 session = request.getSession();
+		 RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+		 if(regVO == null)
+		  return null;
+		 
+		 
+		 FileVO fileVO = new FileVO();
+		 fileVO.setUserId(regVO.getRegistrationID());
+		 
+		 Integer startIndex = Integer.parseInt(request.getParameter("startIndex"));
+		 Integer maxIndex = Integer.parseInt(request.getParameter("results"));
+		 
+		 String fromDate = request.getParameter("fromDate");
+		 String toDate = request.getParameter("toDate");
+		 
+		 fileVO.setFromDateStr(fromDate);
+		 fileVO.setToDateStr(toDate);
+		 fileVO.setStartIndex(startIndex);
+		 fileVO.setMaxResult(maxIndex);
+		   
+		 savedDetails = newsMonitoringService.getTotalNews(fileVO);
+		 
+	 }catch (Exception e) {
+	  e.printStackTrace();
+	  log.error(" Exception Occured in getTotalNews() method, Exception - "+e);
+	}
+	 return Action.SUCCESS;
    }
    
    public String saveSourceDetails()
