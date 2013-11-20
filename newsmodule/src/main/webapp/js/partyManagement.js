@@ -3813,6 +3813,8 @@ function checkAllValuesAndSendAjax()
 
 function showTheNewsToUpdate()
 {
+  responseFileIdsArray = new Array();
+  $("#selectedNewsCount").html('0');
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
@@ -4115,10 +4117,18 @@ function addToNewsResponse()
 {
   $("#errorMsgNewsDiv").html('');
   var fileIdStr = "";
-  $(".newsResponseCheckId").each(function(){
+  if(responseFileIdsArray.length > 0)
+  {
+   for(var i in responseFileIdsArray)
+    fileIdStr +=''+responseFileIdsArray[i]+',';
+  }
+  
+  
+  /*$(".newsResponseCheckId").each(function(){
     if($(this).is(':checked'))
      fileIdStr +=""+$(this).attr('value')+",";
-  });
+  });*/
+
   var length = fileIdStr.length;
   if(length > 0)
   {
@@ -6681,16 +6691,25 @@ function getCandidatePartyBenefitsDiv()
 function getTotalNewsWithPagination()
 {
  
+ responseFileIdsArray = new Array();
+ 
  $("#errorMsgNewsDiv").html('');
  $("#profileManagementMainOuterDiv4").addClass("yui-skin-sam yui-dt-sortable");
  $("#profileManagementMainOuterDiv4").css({'margin-left': 'auto', 'margin-right': 'auto', 'float':' none', 'width': '950px'});
+  
+ var length = responseFileIdsArray.length;
+ $("#selectedNewsCount").html(''+length+'');
  
  YAHOO.widget.DataTable.checkBox = function(elLiner, oRecord, oColumn, oData) 
 	{
 	    var str='';
 		var name = oData;
 		var fileId = oRecord.getData("fileId");
-		str +="<input type='checkbox' class='newsResponseCheckId' value='"+fileId+"'/><input type='hidden' class='selectedBoothId' value='"+fileId+"'/>";
+		
+		if(responseFileIdsArray.indexOf(""+fileId+"") != -1)
+		 str +="<input type='checkbox' class='newsResponseCheckId' value='"+fileId+"' checked='checked'/>";
+		else
+		 str +="<input type='checkbox' class='newsResponseCheckId' value='"+fileId+"' />";
 		elLiner.innerHTML=str;
 					
 	};
@@ -6731,7 +6750,7 @@ function getTotalNewsWithPagination()
   var toDate = $("#newsToDateId").val();
   
   var newsColumns = [
-           {key:"ADD RESPONSE",label:"Add Response",formatter:YAHOO.widget.DataTable.checkBox},
+           {key:"ADD RESPONSE",label:"ADD RESPONSE",formatter:YAHOO.widget.DataTable.checkBox},
 		   {key:"source", label:"SOURCE"},
            {key:"title", label:"TITLE",formatter:YAHOO.widget.DataTable.title},
 		   {key:"description", label:"DESCRIPTION",formatter:YAHOO.widget.DataTable.description},

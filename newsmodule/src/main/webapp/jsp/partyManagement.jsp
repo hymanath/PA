@@ -145,6 +145,12 @@ background-color: #CDE6FC;
 color:#333333;
 }
 .newsLinkCls{ color: #0088CC;}
+#totalSelectedNewsCount{float: none;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    width: 901px;font-weight:bold;}
+#selectedNewsCount{color:red;}
 </style>
 </head>
 <script type="text/javascript">
@@ -409,6 +415,8 @@ return;
  <input type="button" value="submit" onclick="getTotalNewsWithPagination();" class="btn btn-info" style="margin-right: 20px;"/>
  <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>
  <div id="errorMsgNewsDiv"></div>
+ 
+ <div id="totalSelectedNewsCount">Total Selected News Count: <span id="selectedNewsCount"></span></div>
 </div>
 
 <div id='profileManagementMainOuterDiv4' style="display:none">
@@ -2362,6 +2370,13 @@ $(".keywords").each(function() {
 
 function uploadNewsForPartyAndCandidate(fileId)
 {
+
+ if(fileId != null)
+ {
+  $("#addResponseToNewsLiId").removeClass("active");
+  $("#newsGallaryLiId").addClass("active");
+ }
+
   var tempPartyId = 872;
    var str ='';
      
@@ -3312,6 +3327,18 @@ return elem !== value;
 });
 };
 
+
+$(".newsResponseCheckId").live("click",function(){
+ var fileId = $(this).attr('value');
+  if($(this).is(':checked') && responseFileIdsArray.indexOf(fileId) == -1)
+   responseFileIdsArray.push(fileId);
+  else{
+   if(responseFileIdsArray.indexOf(fileId) != -1)
+    responseFileIdsArray = jQuery.removeFromArray(fileId, responseFileIdsArray);
+  }
+   var length = responseFileIdsArray.length;
+ $("#selectedNewsCount").html(''+length+''); 
+});
 
 	
 });//End ready
