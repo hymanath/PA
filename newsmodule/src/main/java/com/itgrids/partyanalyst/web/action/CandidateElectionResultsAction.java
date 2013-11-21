@@ -3126,8 +3126,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	 try{
 		   
 			jObj = new JSONObject(getTask());			
-			candidatesList = candidateDetailsService.getCandidatesOfAParty(jObj.getLong("partyId"));
-			//candidatesList = candidateDetailsService.getCandidatesByPartyIdFromCandidateTable(jObj.getLong("partyId"));
+			//candidatesList = candidateDetailsService.getCandidatesOfAParty(jObj.getLong("partyId"));
+			candidatesList = candidateDetailsService.getCandidatesByPartyIdFromCandidateTable(jObj.getLong("partyId"));
 		}catch(Exception e)
 		{
 			e.printStackTrace();			
