@@ -2,9 +2,12 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
-import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
+import org.appfuse.dao.BaseDaoTestCase;
 
-public class CandidatePartyCategoryDAOHibernateTest extends BenefitDAOHibernateTest{
+import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
+import com.itgrids.partyanalyst.model.File;
+
+public class CandidatePartyCategoryDAOHibernateTest extends BaseDaoTestCase{
 	
 	private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
 
@@ -34,9 +37,12 @@ public class CandidatePartyCategoryDAOHibernateTest extends BenefitDAOHibernateT
 	
 	public void testgetLatestGallerices()
 	{
-		List<Object[]> values = candidatePartyCategoryDAO.getAllCategoryes();
+		/*List<Object[]> values = candidatePartyCategoryDAO.getAllCategoryes();
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1] + ":"+ parms[2] );
-		}
+		}*/
+		
+		List<File> files= candidatePartyCategoryDAO.getFileListByCandidateId(30238l, 0, 10, "", null, null, null);
+		System.out.println(files.size());
 	}
 }
