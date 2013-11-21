@@ -14,16 +14,25 @@ public class NewsReportDAO extends GenericDaoHibernate<NewsReport, Long> impleme
 		super(NewsReport.class);
 	
 	}
-	public List<Object[]> getNewsReports(Long userId)
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getNewsReports(Long userId,Integer startIndex,Integer maxIndex)
 	{
 		
 		StringBuilder str = new StringBuilder();
 		str.append("select model.newsReportId,model.description,model.createdDate from NewsReport model ");
 		if(userId != null && userId != 0)
 		str.append("where user.userId=:userId");
+		str.append(" order by model.createdDate desc ");
+		
 		Query query = getSession().createQuery(str.toString());
 		if(userId != null && userId != 0)
 		query.setParameter("userId", userId);
+		
+		if(startIndex != null)
+		 query.setFirstResult(startIndex);
+		if(maxIndex != null)
+		 query.setMaxResults(maxIndex);
+		
 		return query.list();
 		
 	}

@@ -85,7 +85,7 @@ public interface INewsMonitoringService {/*
 	
 	public List<Long> getGallaryId(Long userId,Long keyword);
 	
-	public List<FileVO> getNewsReports(Long userId);
+	public FileVO getNewsReports(Long userId,Integer startIndex,Integer maxIndex);
 	
 	public List<SelectOptionVO> getMainCategories();
 	
