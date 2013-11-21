@@ -4,6 +4,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.Party;
@@ -60,4 +62,6 @@ public interface IPartyDAO extends GenericDao<Party, Long>{/*
 	public List<Object[]> getParticipatedPartiesInMandalByElectionId(Long tehsilId,Long electionId);
 	
 	public List<Long> getStaticParties(String shortNames);
-*/}
+*/
+	public List<Object[]> getPartiesList();	
+}
