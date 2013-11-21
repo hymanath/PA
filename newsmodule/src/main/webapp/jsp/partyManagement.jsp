@@ -151,6 +151,8 @@ color:#333333;
     text-align: left;
     width: 901px;font-weight:bold;}
 #selectedNewsCount{color:red;}
+.createNewCandidate{width: 20px; height: 20px;cursor:pointer;}
+.m_topN65{margin-top: -24px;}
 </style>
 </head>
 <script type="text/javascript">
@@ -1344,7 +1346,9 @@ function assignNewsToCandidate()
 
   str +='<div id="candidateShowHideDiv" style="display:none;">';
   str += '<label>Select Party : <font class="requiredFont">*</font>';
-  str += ' <select id="partiesList" name="party" onchange="getCandidatesByPartyId()"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option><option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></label>';
+  str += ' <select id="partiesList" name="party" onchange="getCandidatesByPartyId()">';
+  //str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option><option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
+  str +='</select></label>';
 	
 
   str +='<label>Select Candidate : <font class="requiredFont">*</font><select id="candidatesLists"></select></label>';
@@ -2415,16 +2419,19 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\')">';
+		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
+		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
 		str+='</div>';
 
 		str+='    <div class="span5 well well-small">';
-		str+='<label><strong>Select Candidate</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList[0].candidateId" id="candidateListForParty">';
+		str+='<label><strong>Select Candidate</strong></label>';
+		str +='<span class="btn btn-mini pull-right m_topN65"><img partylistid="partiesList" key="candidateListForParty" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
+		str +='<select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList[0].candidateId" id="candidateListForParty">';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
-		
-		
+				
 		str+='</div>';
 		str+='    <div class="span2 well well-small">';
 		str+='   <label><strong>Rating</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList[0].benefitId">';
@@ -2438,12 +2445,16 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class=" well well-small"> <a class="btn btn-danger" onclick="addNewFrom();" href="javascript:void(0);">Click to add another From - Who</a></div><legend>To - Whom</legend>';
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')">';
+		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
+		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyForNewsToImg" />';
 		str+='</div>';
 
 		str+='    <div class="span4 well well-small">';
-		str+='<label><strong>Select Candidate</strong></label><select id="candidateListForPartyForNewsTo" name="candidatePartyNewsVOList.destinationVOList[0].candidateId" class="input-block-level">';
+		str+='<label><strong>Select Candidate</strong></label>';
+		str +='<span class="btn btn-mini pull-right m_topN65"><img src="images/user.png" title="Click Here To Create New Candidate" class="createCandidateCls createNewCandidate" key="candidateListForPartyForNewsTo" partyListId="partiesListForWhome" ></span>';
+		str +='<select id="candidateListForPartyForNewsTo" name="candidatePartyNewsVOList.destinationVOList[0].candidateId" class="input-block-level">';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
 		
@@ -2566,6 +2577,8 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 
 	 getBenefitList();
+	 getPartiesList("partiesList","partiesListForWhome");
+	 
 
 $("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
 
@@ -2689,15 +2702,18 @@ function addNewFrom(){
  var str ='';
  str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\')">';
+		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
+		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForParty'+who+'Img" style="display:none;"/>';
 		str+='</div>';
 
 		str+='    <div class="span5 well well-small">';
-		str+='<label><strong>Select Candidate</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].candidateId" id="candidateListForParty'+who+'">';
+		str+='<label><strong>Select Candidate</strong></label>';
+		str +='<span class="btn btn-mini pull-right m_topN65"><img src="images/user.png" title="Click Here To Create New Candidate" class="createCandidateCls createNewCandidate" key="candidateListForParty'+who+'" partylistid="partiesList'+who+'"></span>';
+		str +='<select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].candidateId" id="candidateListForParty'+who+'" >';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
-		
 		
 		str+='</div>';
 		str+='    <div class="span2 well well-small">';
@@ -2711,6 +2727,9 @@ function addNewFrom(){
 		
 
 $( "#whoTalkedMainDIV").append(str);
+
+getPartiesList("partiesList"+who+"",null);
+
 }
 function deletethisDiv(id){
  if(confirm("Do you want to delete this Party/Candidate?")){
@@ -2725,15 +2744,19 @@ var str ='';
 
 	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')">';
+		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
+		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
 		str+='</div>';
 
 		str+='    <div class="span4 well well-small">';
-		str+='<label><strong>Select Candidate</strong></label><select id="candidateListForPartyForNewsTo'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].candidateId" class="input-block-level">';
+		str+='<label><strong>Select Candidate</strong></label>';
+		str +='<span class="btn btn-mini pull-right m_topN65"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
+		str +='<select id="candidateListForPartyForNewsTo'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].candidateId" class="input-block-level" >';
 		str+='    <option value="0">Select Candidate</option>';
 		str+='</select>';
-		
+		//str +='<span style="display: inline-block;"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
 		str+='</div>';
 		str+='<div class="span4 well well-small">';
 		str+='<label><strong>Select Categories</strong></label><select key="keywordIdHiddenCat'+whome+'" style="width: 252px;" id="'+whome+'whomegallaryId" >';
@@ -2763,6 +2786,8 @@ $( "#whomeTalkedMainDIV").append(str);
 
 $("#"+whome+"keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
 getPartyGallariesForUplaod("News Gallary",whome+"whomegallaryId");
+getPartiesList("partiesListForWhome"+whome+"",null);
+
 }
 var o = 0;
 function addNewFileToUpload(id){
@@ -3239,24 +3264,39 @@ $(".createNewCandidate").live("click",function(){
         });
   
     $("#createCandidateInnerDiv").html('');
+	
+	var key = $(this).attr("key");
+	var partyListId = $(this).attr("partyListId");
+	
    var str = '';
    str +='<div>';
    str +='<div id="errorMsgDiv"></div>';
    str +='<table style="margin-top: 24px;"><tr>';
    str +='<td>Select Party</td>';
    str +='<td><select id="partySelectNewList">';
-   str +='<option value="0">Select</option><option value="163">BJP</option>';
+   
+   /*str +='<option value="0">Select</option><option value="163">BJP</option>';
    str +='<option value="265">CPI</option><option value="269">CPM</option>';
    str +='<option value="362">INC</option><option value="990">MIM</option>';
    str +='<option value="872">TDP</option><option value="886">TRS</option>';
-   str +='<option value="1117">YSRCP</option>';
+   str +='<option value="1117">YSRCP</option>';*/
+   
    str +='</select></td></tr>';
 
    str +='<tr><td>Candidate Name</td>';
-   str +='<td><input type="text" id="newCandidateName"/></td></tr></table>';
-   str +='<input type="button" value="submit" class="btn" id="createCandidateId"/>';
+   str +='<td><input type="text" id="newCandidateName"/></td></tr>';
+   str +='<tr>';
+   str +='<td>Designation</td>';
+   str +='<td><select id="designationsList"></select></td>';
+   str +='</tr>';
+   str +='</table>';
+   str +='<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>';
    str +='</div>';
    $("#createCandidateInnerDiv").html(str);
+   
+   getPartiesList("partySelectNewList",null);
+   getDesignationList("designationsList");
+   
 });
 
 
@@ -3267,6 +3307,8 @@ $("#createCandidateId").live("click",function(){
 	$("#errorMsgDiv").html('');
 	var partyId = $("#partySelectNewList").val();
 	var candidateName = $.trim($("#newCandidateName").val());
+	var designationId = $("#designationsList").val();
+	
     if(partyId == 0)
 	{
 	  $("#errorMsgDiv").html("Please Select Party");
@@ -3277,11 +3319,21 @@ $("#createCandidateId").live("click",function(){
 	 $("#errorMsgDiv").html("Please Select Candidate");
 	  return;
 	}
-
+	if(designationId == 0)
+	{
+	 $("#errorMsgDiv").html("Please Select Designation");
+	  return;
+	}
+  var candidateListId = $(this).attr("key");
+  var partyListId = $(this).attr("partyListId");
+	
 	var jsObj =
 		{ 
             partyId : partyId,
 			candidateName:candidateName,
+			candidateListId:candidateListId,
+			partyListId:partyListId,
+			designationId:designationId,
 			task:"saveCandidate"
 		};
 
@@ -3401,6 +3453,18 @@ function showHideLocations(dist,pc,ac){
   $(".assembSelReport").hide();
  }
 }
+
+function getDesignationList(designationList)
+{
+  var jsObj={
+		designationList:designationList,
+		task:'getDesignationsList'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getDesignationsListAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
 </script>
 </body>
 </html>

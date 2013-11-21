@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" %> 
+<%@ taglib prefix="s" uri="/struts-tags" %>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -34,6 +36,11 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<style>
+#partyList{margin-left: 48px; width: 220px;}
+#designationId{margin-left: 10px; width: 220px;}
+</style>
+
 <script>
 $('document').ready(function(){
 $('#candidateName').val('');
@@ -49,6 +56,9 @@ function insertCandidateDetails()
  }
  else if($('#partyList').val() <=0)
 	alert("Party Name is Required");
+	
+else if($("#designationId").val() == 0)
+ alert("Please Select Designation.");	
  
  else{
 	var jsObj =
@@ -57,6 +67,7 @@ function insertCandidateDetails()
             education: $('#education').val(),
             gender:$('#gender').val(),
 			partyId : $('#partyList').val(),
+			designationId: $("#designationId").val(),
 			task:"insertMLCCandidateDetails"
 		};
 	
@@ -120,8 +131,8 @@ YAHOO.util.Connect.asyncRequest('POST', url, callback);
 	<option value="F">Female</option>
   </select></div>
   <div>
-  Select Party :
-  <select id="partyList" style="margin-left: 48px; width: 220px;">
+  Select Party : <s:select id="partyList" list="partiesList" theme="simple" listKey="id" listValue="name"></s:select>
+  <!-- <select id="partyList" style="margin-left: 48px; width: 220px;">
 	  <option value="0">Select Party</option>
 	  <option value="163">BJP</option>
 	  <option value="265">CPI</option>
@@ -131,8 +142,12 @@ YAHOO.util.Connect.asyncRequest('POST', url, callback);
 	  <option value="872">TDP</option>
 	  <option value="886">TRS</option>
 	  <option value="1117">YSRCP</option>
-  </select>
-  <div>
+  </select> -->
+ </div>
+ <div>
+ Select Designation : <s:select id="designationId" list="selectOptionVOList" theme="simple" listKey="id" listValue="name"></s:select>
+ </div>
+ 
 <a class="btn btn-primary" style="margin-left:198px;" href="javascript:{insertCandidateDetails();}">Insert</a>
 <div id="successDiv"></div>
 
