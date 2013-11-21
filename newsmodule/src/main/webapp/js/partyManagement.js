@@ -6567,13 +6567,15 @@ function getNewsReports ()
     var str ='';
 	str+='<div class="container well">';
 	str+='<div class="row clearfix">';
-	str+='<div class="row-fluid"><div class="span12 well well-small " id="reportsDiv">';
+	str+='<div class="row-fluid"><div class="span12 well-small " id="reportsDiv">';
 	str+=' </div>';
     str+='</div>';
 	str+='</div>';
 	str+='</div>';
 	document.getElementById("newsReportsMainDiv").innerHTML = str;
-	getReports();
+	//getReports();
+	
+	getNewsReport();
 }
 function getReports()
 {
@@ -6867,5 +6869,82 @@ function builddesignationsList(results,jsObj)
     for(var i in results)
 	 $("#"+jsObj.designationList+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
   }
+}
+
+function getNewsReport()
+{
+  
+  YAHOO.widget.DataTable.viewReport = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var name = oData;
+		var newsReportId = oRecord.getData("newsImportanceId");
+		str +='<input type="button" value="View" onclick="getReportFiles('+newsReportId+')" class="btn btn-info" id="reportFiles">';
+		elLiner.innerHTML=str;
+					
+	};
+	
+	YAHOO.widget.DataTable.generatePDF = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var name = oData;
+		var newsReportId = oRecord.getData("newsImportanceId");
+		
+		str +='<input  class="btn btn-info" type="button" onclick="generateKey('+newsReportId+',\'generatedUrl'+newsReportId+'\')" value="Generate Url" />';
+		elLiner.innerHTML=str;
+					
+	};
+	
+	YAHOO.widget.DataTable.textAreaPDF = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var name = oData;
+		var newsReportId = oRecord.getData("newsImportanceId");
+		str +='<textarea id=\'generatedUrl'+newsReportId+'\'></textarea>';
+		elLiner.innerHTML=str;
+					
+	};
+  
+  var newsReportColumns = [
+   {key:"description",label:"NewsReport"},
+   {key:"identifiedDateOn",label:"Created Date"},
+   {key:"viewReport",label:"View Report",formatter:YAHOO.widget.DataTable.viewReport},
+   {key:"",label:"Generate Url For Creating Pdf",formatter:YAHOO.widget.DataTable.generatePDF},
+   {key:"",label:"",formatter:YAHOO.widget.DataTable.textAreaPDF},
+   
+  ];
+  
+   var newsDataSource = new YAHOO.util.DataSource("getAllNewsReportsForAUser.action?");
+  newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+  newsDataSource.responseSchema = {
+  resultsList: "fileVOList",
+   fields: [
+             {key:"newsImportanceId", parser:"number"},
+			        "description","identifiedDateOn"],
+
+    metaFields: {
+    totalRecords: "count" // Access to value in the server response
+     },
+  };
+  
+  
+  var myConfigs = {
+initialRequest: "sort=description&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"description", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 10 
+			    })  // Enables pagination
+};
+
+var newsDataTable = new YAHOO.widget.DataTable("reportsDiv",
+newsReportColumns, newsDataSource, myConfigs);
+
+newsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+  
+}
+  
 }
 
