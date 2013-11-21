@@ -1,5 +1,5 @@
 .nav-tabs > li{
-font-weight:bold;
+font-weight:normal;
 }
 #fromDateId1,#toDateId1,#fromDateId,#toDateId,#existingFromTextNews{
 cursor: text;
@@ -250,7 +250,7 @@ padding: 0 20px;
     background-image: url("chrome://browser/skin/newtab/noise.png"), linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.2));
 }
 .aligncenter{margin-left:auto;margin-right:auto;}
-.nav-tabs > li > a:hover,.nav-tabs > li > a:focus{border-color:none;background-color:#5caceb;color:#fff;}
+.nav-tabs > li > a:hover,.nav-tabs > li > a:focus{border-color:none;background-color:#fff;color:#fff;}
 #list1,#candidateList{width: 260px;}
 #errorMsgDiv{ font-size: 12px;}
 
@@ -322,9 +322,3 @@ font-size:20px;
     src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
 }
 #newsReportInnerDiv{width:400px;margin-left:auto;margin-right:auto;}
-.reporttypeclass{
-   margin-top: -3px;
-}
-.regionClass{
-  display:none;
-}
