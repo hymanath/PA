@@ -7925,6 +7925,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
  public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr){
 	 List<FileVO> fileVOList = null;
  try{
+	 List<File> filesList = null;
 	 Date fromDate = null;
 	 Date toDate = null;
 	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -7944,13 +7945,18 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 while (str.hasMoreTokens()) 
 			categoryIdsList.add(Long.parseLong(str.nextToken()));
 	 }
-	 List<File> filesList = candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,categoryIdsList);
-	
+	 if(categoryIdsList != null && categoryIdsList.size() > 0)
+	  filesList = candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,categoryIdsList);
+	 else
+		 filesList = candidatePartyFileDAO.getCandidateFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate); 
 	 if(filesList != null && filesList.size() > 0)
 	 {
 			fileVOList = new ArrayList<FileVO>(0);
-	 setfileDetails(filesList, fileVOList);
+	 setfileDetails(filesList, fileVOList); 
+	 if(categoryIdsList != null && categoryIdsList.size() > 0)
 	 fileVOList.get(0).setCount(candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, null, null, type,fromDate,toDate,categoryIdsList).size());
+	 else
+		 fileVOList.get(0).setCount(candidatePartyFileDAO.getCandidateFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate).size());	 
 	 }
 	 return fileVOList;
 }catch (Exception e) {

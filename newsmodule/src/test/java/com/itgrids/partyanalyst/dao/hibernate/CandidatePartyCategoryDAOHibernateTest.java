@@ -42,7 +42,11 @@ public class CandidatePartyCategoryDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(parms[0] +":"+ parms[1] + ":"+ parms[2] );
 		}*/
 		
-		List<File> files= candidatePartyCategoryDAO.getFileListByCandidateId(30238l, 0, 10, "", null, null, null);
+		List<File> files= candidatePartyCategoryDAO.getFileListByCandidateId(12631l, 0, 10, "", null, null, null);
 		System.out.println(files.size());
+		for(File f: files)
+		{
+			System.out.println(f.getFileId());
+		}
 	}
 }
