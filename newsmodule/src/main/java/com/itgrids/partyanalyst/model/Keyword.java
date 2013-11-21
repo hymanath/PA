@@ -84,7 +84,7 @@ public class Keyword extends BaseModel implements java.io.Serializable{
 		this.description = description;
 	}
 
-	@Temporal(TemporalType.DATE)
+	//@Temporal(TemporalType.DATE)
 	@Column(name = "created_date", length = 10)
 	public Date getCreatedDate() {
 		return createdDate;
