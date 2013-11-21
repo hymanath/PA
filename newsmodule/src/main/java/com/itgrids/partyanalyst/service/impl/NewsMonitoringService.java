@@ -5154,13 +5154,16 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		return gallaryIds;
 	}
 	
-	public List<FileVO> getNewsReports(Long userId)
+	public FileVO getNewsReports(Long userId,Integer startIndex,Integer maxIndex)
 	{
-		List<FileVO> resultList = new ArrayList<FileVO>();
+		
+		FileVO resultFileVO = new FileVO();
+		
 		try{
-			List<Object[]> list = newsReportDAO.getNewsReports(userId);
+			List<Object[]> list = newsReportDAO.getNewsReports(userId,startIndex,maxIndex);
 			if(list != null && list.size() > 0)
 			{
+				List<FileVO> resultList = new ArrayList<FileVO>();
 				for(Object[] params : list)
 				{
 					FileVO fileVO = new FileVO();
@@ -5170,6 +5173,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		    		fileVO.setIdentifiedDateOn(dateObj!=null?dateObj:"");
 					resultList.add(fileVO);
 				}
+				resultFileVO.setFileVOList(resultList);
+				resultFileVO.setCount(newsReportDAO.getNewsReports(userId,null,null).size());
 			}
 		}
 		catch(Exception e)
@@ -5177,7 +5182,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			log.error("Exception Occured in getNewsReports() method", e);
 			
 		}
-		return resultList;
+		return resultFileVO;
 	}
 	
 	public List<SelectOptionVO> getMainCategories()

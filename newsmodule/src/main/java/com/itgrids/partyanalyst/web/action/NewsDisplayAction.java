@@ -663,7 +663,7 @@ public class NewsDisplayAction implements ServletRequestAware{
    public String getAllNewsReports()
    {
 	   try{
-		jObj =new JSONObject(getTask());
+		//jObj =new JSONObject(getTask());
 		 session = request.getSession();
 		  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
 		  if(regVo == null)
@@ -671,10 +671,10 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   Long userId = regVo.getRegistrationID();  
 		   	//if(regVo.getUserAccessType().equalsIgnoreCase("Admin"))
 		   		//userId = 0l;
-			if(jObj.getString("task").trim().equalsIgnoreCase("getAllNewsReports"))
-		    {
-		    	fileVOs = newsMonitoringService.getNewsReports(userId);
-		    }
+			//if(jObj.getString("task").trim().equalsIgnoreCase("getAllNewsReports"))
+		    //{
+		    	fileVO = newsMonitoringService.getNewsReports(userId,Integer.parseInt(request.getParameter("startIndex")),Integer.parseInt(request.getParameter("results")));
+		    //}
 	   }
 	   catch (Exception e) {
 		   log.error("Exception rised in getAllNewsReports() ",e);
