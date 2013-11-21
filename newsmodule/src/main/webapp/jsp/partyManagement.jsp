@@ -98,6 +98,9 @@
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
+
 <style type="text/css">
 @font-face
 {
@@ -153,6 +156,9 @@ color:#333333;
 #selectedNewsCount{color:red;}
 .createNewCandidate{width: 20px; height: 20px;cursor:pointer;}
 .m_topN65{margin-top: -24px;}
+form{
+border:1px solid #C5C5C5;
+}
 </style>
 </head>
 <script type="text/javascript">
@@ -220,6 +226,155 @@ return;
 }
 
 
+function isKeywordExist(){
+	$('#statusDiv1').html('');
+	var keyValue = $('#newKeyword').val();
+	if(keyValue.trim().length ==0){
+		$('#statusDiv1').html('<span style="color:red;">Please enter keyword name.</span>');
+		return;
+	}	
+	 $.ajax({
+		type: "GET",
+		url: "isKeywordExistAction.action",
+		data: { keyword :keyValue,task:"addNewKeyword" }
+		})
+		.done(function(msg) {
+		var status = msg.toLowerCase();
+		if(status.indexOf("successfully") !=-1){
+			$('#newKeyword').val('');
+			$('#statusDiv1').html('<span style="color:green;font-weight:bold;">'+msg+'</span>');
+			}
+		else
+			$('#statusDiv1').html('<span style="color:red;font-weight:bold;">'+msg+'</span>');
+	});
+}
+function mergeKeywords(){
+    $('#statusDiv2').html('');
+    var selected_values = $("#keywordsList").multiselect("getChecked").map(function(){
+       return this.value;    
+    }).get();
+    
+    var keywordsList="";
+	var aliasName = $('#aliasKeyword').val();
+
+    for(var i in selected_values){
+    keywordsList = keywordsList+""+selected_values[i]+",";
+    }	
+
+    if(keywordsList.length == 0){
+	$('#statusDiv2').html('<span style="color:red;">Please select atleast one keyword.</span>');
+	return;
+	}	
+	else if(aliasName.trim().length == 0)
+	{
+	$('#statusDiv2').html('<span style="color:red;">Please enter new keyword name .</span>');
+	return;
+	}
+
+     $.ajax({
+    	type: "GET",
+		url: "isKeywordExistAction.action",
+		data: { keywords :keywordsList,newKeyword:$('#aliasKeyword').val(),task:"mergeKeywords" }
+		})
+		.done(function( msg ) {
+		var status = msg.toLowerCase();
+		if(status.indexOf("success") !=-1){
+		$('#aliasKeyword').val('');
+			reFreshKeywordList();
+			$('#statusDiv2').html('<span style="color:green;font-weight:bold;">'+msg+'</span>');
+		}
+		else{
+			$('#statusDiv2').html('<span style="color:red;font-weight:bold;">'+msg+'</span>');
+		}
+			
+      });
+}
+
+function reFreshKeywordList(){
+ $.ajax({
+    	type: "GET",
+		url: "getKeywordsListAction.action",
+		data: { task:"getKeywordsList" }
+		})
+		.done(function( result ) {
+			//console.log(result);
+		$('#keywordsList').find('option').remove();
+		$.each(result,function(index,value){
+			$('#keywordsList').append('<option value="'+value.id+'">'+value.name+'</option>');
+		});
+		
+			$("#keywordsList").multiselect({	
+					multiple: true,
+					selectedList: 10,
+					hide: "explode"	
+			}).multiselectfilter({
+				header:"Select Keyword"    
+			});
+		});
+}
+function createPartyKeywordDiv(){
+
+ $("#newsReportDiv").css("display","block");
+  $("#newsGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","none");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","none");
+  $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDiv8").css("display","block");
+  $('#statusDiv1').html('');
+  $('#statusDiv2').html('');
+ }
+
+function getNewsReports(){
+ $("#newsReportDiv").css("display","block");
+  $("#newsGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","none");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","none");
+  $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDiv8").css("display","none");
+  		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
+}
+
+function clearDivsForGallary(){
+ $("#newsReportDiv").css("display","block");
+  $("#newsGallaryDiv").css("display","block");
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","block");
+  $("#profileManagementHeaderDiv3").css("display","block");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","none");
+  $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDiv8").css("display","none");
+  		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
+
+}
+
+
 </script>
 
 <body>
@@ -230,7 +385,7 @@ return;
   <div id="editNewsInner"></div>
 </div>
 
-<div id='profileManagementMainOuterDiv'>
+<div id='profileManagementMainOuterDiv' style="margin-top:-40px;">
 
 <div id='profileManagementHeaderDiv'>
 	<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -270,25 +425,70 @@ return;
 		</table>-->
 		
 	
-	    <ul class="nav nav-tabs" style="margin-left:Auto;margin-right:Auto;width:940px;">
-    <!--<li>
-    <a value="Photo Gallery" id="photoGalleryId" onClick="showPhotoGallary1()" style="cursor:pointer">Photo Gallery</a>
-    </li>-->
-    <!--<li> <a value="Video Gallery" id="videoGalleryId" onClick="showVideoGallaey1()" style="cursor:pointer;color: blue;">Video Gallery</a></li>-->
+<!-- <ul class="nav nav-tabs" style="margin-left:Auto;margin-right:Auto;width:940px;">
     <li class="active" id="newsGallaryLiId"><a value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: blue;">News Gallery</a></li>
 	<li id="addResponseToNewsLiId"><a value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Add Response To News</a></li>
-	<!--<li><a value="Update News" id="newsEditId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: blue;">Update News</a></li>
-
-	<li><a value="Assign News" id="assignNewsId" onClick="assignNewsToCandidate()" style="cursor:pointer;color: blue;">Assign News</a></li>-->
 	<li><a value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: blue;">Create Report </a></li>
 	<li><a value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: blue;">View Report</a>
 		
-		</li>
-		<!--<li><a value="KeyWords" id="createReportId" onclick=" getUnassignedKeyWords();" style="cursor:pointer;color: blue;">KeyWords</a>
+		</li>	
 		
-		</li>-->
-    </ul>
+		<li><a value="viewReport" id="viewReports" onclick=" createPartyKeywordDiv();" style="cursor:pointer;color: blue;">Party Management</a>
+		
+		</li>
+    </ul> -->
 	
+				<!---Tab Header --Menu--->
+				<ul class="nav nav-tabs" id="myTab">
+					<!-- <li class="active">
+					<a data-toggle="tab" value="News Gallery" id="newsGalleryId" onClick="showNewsGallaey()" style="cursor:pointer;color: #005580;">News Gallery</a>
+					
+					</li> -->
+					
+					
+					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >News Gallery <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();buildCreateNewsCategory();" >Create News Category</a>
+							</li>
+							<li>
+								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();uploadNewsForPartyAndCandidate(null);">Upload News</a>
+							</li>
+							<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+								<li>
+									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
+								</li>
+							</c:if>
+						</ul>
+					</li>
+					
+					<li class="">
+					<!-- <a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()">Add Response To News</a> --> 
+					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: #005580;">Add Response To News</a>
+					</li>
+					
+					<li class="">
+					<!-- <a data-toggle="tab" href="#CreateReport">Create Report</a> -->
+					<a data-toggle="tab" value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: #005580;">Create Report </a>
+					</li>
+					<li class="">
+					<!-- <a data-toggle="tab" href="#ViewReport">View Report</a>-->
+					<a data-toggle="tab" value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: #005580;">View Report</a>
+					</li>
+					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >Keyword Management <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>
+								<li><a data-toggle="tab" id="newKeywordBtn" style="cursor:pointer;color: #005580;" onclick="createPartyKeywordDiv();">Create New Keyword</a></li>
+							</li>
+							<li>
+								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createPartyKeywordDiv();reFreshKeywordList();"> Merge Keywords </a>
+							</li>
+						</ul>
+					</li>
+					
+				</ul>
+				
+				<!----Tab Header Menu End--->
 </div>
 </div>
 </div>
@@ -386,20 +586,17 @@ return;
 				   </td>
 			 </tr>
 		</table>-->
-	<div class="span11 offset1 text-center alert" style="margin-left:30px;">
-	<!-- <input type="button" class="btn btn-success highlight" value="Create News Category" onclick="createNewsCategory()"> -->
+<!--	<div class="span11 offset1 text-center alert" style="margin-left:30px;">
+
 	<input type="button" class="btn btn-success highlight" value="Create News Category" onclick="buildCreateNewsCategory()">
-	<!-- <input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()">
-	<input type="button" class="btn btn-success highlight" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()"> -->
-    
 	<input type="button" class="btn btn-success highlight" value="Upload News" onclick="uploadNewsForPartyAndCandidate(null)">
 
 
 	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 		<input type="button" class="btn btn-success highlight" value="Create New Source" onclick="createNewSource()">
 	</c:if>
-	<!--<a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a>-->
 	</div>
+	-->
 </div>
 		<div id='newsGallaryDiv' class="divInfo">
 	 </div>		
@@ -520,6 +717,47 @@ return;
 
 <div id="createCandidateDiv"><div id="createCandidateInnerDiv"></div></div>
 
+<div id='keyWordsMainDiv' class="divInfo">
+		
+</div>
+<div id="alterKeywords">
+	<div id='profileManagementMainOuterDiv8' style="display:none">
+
+		<div id='keywordsDiv' class="divInfo">
+
+
+		<div id="newKeywordDiv" align="center">
+		<h2 align="center">Create A New Keyword</h2>
+			<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;border:1px solid #CCCCCC;padding:15px;">
+				<div id="statusDiv1" align="center" style="margin-bottom: 10px;"></div>
+				
+							Enter Keyword <span style="margin-left: 15px;">:</span> <input type="text" id="newKeyword" style="margin-top: 10px;"/>
+							<br>
+							<button class="btn btn-success" onclick="isKeywordExist();" style="margin-left: 55px;">Create New Keyword </button>
+			</div>
+		</div>
+		
+		
+		<div id="mergeKeywordDiv" align="center" style="display:none;">
+		<h2 align="center">Merge Keywords </h2>
+		<div style="border:1px solid #CCCCCC;margin-top:25px;padding:15px;width: 600px;">
+				<div id="statusDiv2" align="center" style="margin-bottom: 10px;"></div>
+				
+						<div id="keywordLists" style="width: 550px; margin-left: 60px;">
+						  	Select Keywords <span style="margin-left: 15px;">:</span>
+							<select  style="width:400px;" id="keywordsList"> <select>
+						</div>
+						<div style="width: 400px; margin-left: -108px;">
+							Enter New Keyword <span>:</span> <input type="text" id="aliasKeyword" style="margin-top: 10px;"/>
+						</div>
+							<button class="btn btn-success" onclick="mergeKeywords();" style="margin-left: 90px;"> Merge Keywords </button>
+		</div>
+	
+		</div>	
+	</div>
+</div>
+			
+</div>
 <!-- for  body 7  result  end -->
 <script>
 var keywordsArray = new Array();
@@ -538,6 +776,21 @@ var modifiedRecord = 0;
 $(document).ready(function() {
 
 $(document).ready(function(){
+
+	
+	$('#newKeywordBtn').click(function(){	
+		$('#newKeywordDiv').css("display","block");
+		$('#mergeKeywordDiv').css("display","none");
+		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');		
+	});
+
+	$('#mergeKeywordBtn').click(function(){
+		$('#newKeywordDiv').css("display","none");
+		$('#mergeKeywordDiv').css("display","block");
+		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
+	});
 
 	$('#partyManagementTabId').addClass('menuActive');
 });
@@ -1325,6 +1578,9 @@ function assignNewsToCandidate()
   $("#profileManagementMainOuterDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
    $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDiv8").css("display","none");
+  		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
   var str = '';
   str +='<div id="content" style="width:650px;" class="assignNewsDivCls">';
   str +='<h2 style="text-align: center;">Assign News</h2>';
@@ -1985,6 +2241,9 @@ function createReport()
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDiv8").css("display","none");
+  		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
   
 $("#fromDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
 $("#fromDateId1").datepicker("setDate", new Date());
@@ -2210,6 +2469,9 @@ function getUnassignedKeyWords()
   $("#profileManagementMainOuterDiv6").css("display","block");
   $("#profileManagementHeaderDiv6").css("display","none");
     $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDiv8").css("display","none");
+  		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
     var str ='';
 	str+='<div class="container well">';
 
@@ -2393,29 +2655,39 @@ function uploadNewsForPartyAndCandidate(fileId)
 		 str +='<legend class="boxHeading text-center">Upload A News   </legend> ';
 		else
 		 str +='<legend class="boxHeading text-center">Adding Response To Selected News</legend> ';
-		 
-		str +='<div class="container ">';
-		str+='<legend class="">News Basic Information</legend>';
-		str+='<div class="row-fluid">    ';   
-		str+='<div class="span4">';
-		str+='        <label><strong>Title<span class="requiredFont">*</span></strong></label>  ';
-		str+='       <input type="text" class="input-block-level" id="newsfileTitle" placeholder="Enter News Title" name="fileTitle" size="25" maxlength="160">   ';    
-		str+='  <span class="help-block"> <input type="checkbox" value="true" id="sourceTelugu" name="titleCheckBox" onclick="changeLanguage();">&nbsp;Please check if title is from eenadu.net</span>       </div>       <div class="span3 ">         <label><strong>News Date<span class="requiredFont">*</span><strong></strong></strong></label>  ';
-		str+='       <input type="text" id="newsdatedatepic"  class="input-block-level" readonly="true" name="fileDate" size="20">               </div>       <div class="span2">         <label><strong>News Importance<span class="requiredFont">*</span><strong></strong></strong></label>         <select id="newsimportance" name="newsimportance" class="input-block-level"><option value="3">High</option><option value="1">Low</option><option value="2">Medium</option></select>  </div>';
 
+			str+='<div class="well" style="background:#E8E8F2;width: 905px; margin-left: -10px;" >';
+	str+='	<legend class="">&nbsp; Basic Information of News  </legend>';
+	str+='	<div class="row-fluid">       ';
+	str+='<div class="span6">';
+				str+='<label><strong>News Title<span class="requiredFont">*</span></strong></label>  ';
+				str+='<input type="text" maxlength="160" size="25" name="fileTitle" placeholder="Enter Title Of the News" id="newsfileTitle" class="input-block-level">       ';
+				str+='<span class="help-block"> <input type="checkbox" onclick="changeLanguage();" name="titleCheckBox" id="sourceTelugu" value="true">&nbsp;If you Collecting News From EENADU.NET Please Select This Check Box</span>       ';
+			str+='</div>       ';
+			str+='<div class="span3 ">         ';
+				str+='<label><strong>News Date<span class="requiredFont">*</span><strong></strong></strong></label>  ';
+				str+='<input type="text" size="20" name="fileDate" readonly="true" class="dateField" placeholder="Select News Date" id="existingFromTextNews">         ';
+				str+='<span class="help-block"> Select Date of News</span> ';
+			str+='</div>       ';
+			str+='<div class="span3 ">         ';
+				str+='<label><strong>News Importance<span class="requiredFont">*</span><strong></strong></strong></label>   ';      
+				str+='<select name="newsimportance" id="newsimportance"><option value="3">High</option><option value="1">Low</option><option value="2">Medium</option></select>';
+				str+='<span class="help-block"> &nbsp;Please select News Importance</span>       ';
+			str+='</div>    ';
+		str+='</div> ';
 
-		str+='<div class="span3 ">         <label><strong>Image To Display<strong></strong></strong></label>';
-		str+='                <input type="file" name="imageForDisplay" ></div>    </div>    <div class="row-fluid">'; 
-		str+='<div class="span3" style="margin-left: 12px;"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Mark This News As Public</font></b></label></div>'; 
-        str+='<div class="span3"><label class="radio"><input type="radio" id="newsprivateRadioId" name="visibility" value="private"><b><font>Mark This News As Private</font></b></label></div>'; 
-		str+='<div class="span12 ">         <label><strong>News Description<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea maxlength="330" name="fileDescription" rows="2" cols="20" class="input-block-level" id="newsfileDescription"></textarea>       </div>';
-		str+='    </div></div></div>';
-
+		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Discription<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="330"></textarea>     </div>';
+		str+='<div class="span4 ">      ';
+		str+='<label><strong>Image To Display<span class="requiredFont">*</span></strong></label>';
+		 str+='<input type="file" class="m_top10"></div>    </div>';
+		
+	str+='</div></div>';
+	
 		str+='<div class="container">';
 
 		str+='<div class="row-fluid"> ';
 
-		str+='    <div class="sapn12 ">  ';  
+		str+='    <div class="sapn12"> <div id="myID" style="background:#E8E8F2;position: inherit; margin-top: 400px; padding: 25px;""> ';  
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
@@ -2485,15 +2757,15 @@ function uploadNewsForPartyAndCandidate(fileId)
 				   
 		str+='<div class=" well well-small">     <a href="javascript:void(0);" onclick="addWhome();" class="btn btn-danger">Click to add another To - Whom</a></div>';
 
-		str+='</div>   ';
+		str+='</div>   </div>';
 		str+=' </div>';
 		str+='</div>';
 
-		str+='<div class="row-fluid"><div id="formdata" style="display:none;"></div></div><div class="container"><legend class="">&nbsp;Add News From Different Sources</legend><div class="row-fluid ">';
+		str+='<div class="row-fluid"><div id="formdata" style="display:none;"></div></div><div class="container" style="background:#E8E8F2;margin-top: 25px;padding:15px;width: 920px;" ><legend class="">&nbsp;Add News From Different Sources</legend><div class="row-fluid ">';
 		str+='    <div class="span12">';
 		str+='        <div class="row-fluid">';
 		str+='<div class="container ">';
-		str+='        <div class="span4">';
+		str+='        <div class="span4" style="width: 290px;">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
 		str+='<br/><input type="file" name="fileSourceVOList[0].sourceFileList[0].fileImage" class="btn fileImgCls" key="aaanewsfileDescription">';
@@ -2501,7 +2773,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='        </div>';
 
-		str+='<div class="span2 ">';
+		str+='<div class="span2 " style="margin-left: -5px;">';
 		str+='        <label><strong>News<br> Edition</strong><span class="requiredFont">*</span></label>';
 		str+='        <select id="newsedition0" name="fileSourceVOList[0].sourceFileList[0].newsEdition"  class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
 
@@ -2530,20 +2802,20 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div id="source0newfile"></div>';
 		str+='<div class="container m_top5">';
 		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription" style="width: 900px;"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
 		str+='</div>';
 		str+='</div>';
 		str+='<div class="">';
-		str+='      <a href="javascript:void(0);" onclick="addNewFilePart(0);" class="btn btn-success span6">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
+		str+='      <a href="javascript:void(0);" onclick="addNewFilePart(0);" class="btn btn-success span5" style="margin-left: 15px;">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
         str+='<div id="addNewSourceToExisting"></div>';
 
 
 		str+='<div class="row-fluid">';
-		str+='      <a style="margin-top:-30px" class="offset6 span6 btn btn-danger" onclick="addNewFileSource();" href="javascript:void(0);">Click here to  <span class="label ">Add <i class="icon-plus-sign icon-white"></i></span> another source</a></div></div>';
-		str+='<div class="row-fluid"><div class="container m_top10"><legend class="">Select News Loaction</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
+		str+='      <a style="margin-top:-30px" class="offset6 span5 btn btn-danger" onclick="addNewFileSource();" href="javascript:void(0);" style="margin-top: -60px;">Click here to  <span class="label ">Add <i class="icon-plus-sign icon-white"></i></span> another source</a></div></div>';
+		str+='<div class="row-fluid"><div class="container m_top10" style="background:#E8E8F2;padding:15px;width: 920px;"><legend class="">Select News Location</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
 		str += '<select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"></select></div>';
         str +='<div id="showScopeSubs"></div>';
 		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Save changes" class="btn btn-success btn-large">                         </div></div></div>';
@@ -2602,7 +2874,7 @@ function addNewFileSource(){
 		str+='    <div class="span12">';
 		str+='        <div class="row-fluid">';
 		str+='<div class="container ">';
-		str+='        <div class="span4">';
+		str+='        <div class="span4" style="width: 290px;">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
 		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls" key="'+addSource+'aaanewsfileDescription">';
@@ -2639,7 +2911,7 @@ function addNewFileSource(){
 		str+='<div id="source'+addSource+'newfile"></div>';
 		str+='<div class="container m_top5">';
 		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 915px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
