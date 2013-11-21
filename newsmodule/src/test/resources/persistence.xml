@@ -29,6 +29,8 @@
 		<class>com.itgrids.partyanalyst.model.NewsImportance</class>  
 		<class>com.itgrids.partyanalyst.model.ContentNotes</class>
 		<class>com.itgrids.partyanalyst.model.NewsFlag</class>
+		<class>com.itgrids.partyanalyst.model.CandidatePartyKeyword</class>
+		<class>com.itgrids.partyanalyst.model.CandidatePartyFile</class>
 		
 	    <properties> 
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
