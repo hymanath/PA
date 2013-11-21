@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -957,11 +958,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				  for(String keyword:keywordsList)
 				   if(!existingKeywords.contains(keyword) && !keyword.equalsIgnoreCase(" "))
 				   {
-					 Keyword keyword2 = new Keyword(); 
+					 /*Keyword keyword2 = new Keyword(); 
 					 keyword2.setType(keyword);
 					 keyword2.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 					 keyword2.setCreatedBy(fileVO.getUserId());
-					 keywordDAO.save(keyword2);
+					 keywordDAO.save(keyword2);*/
+					   saveKeyword(fileVO.getUserId(),keyword);
 				   }
 			    }
 			}
@@ -1295,13 +1297,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				Long isExistKeyword = existingKeywordsMap.get(keywordStr);
 				if(isExistKeyword == null)
 				{
-				  Keyword keyword = new Keyword();
+				 /*Keyword keyword = new Keyword();
 				  keyword.setType(keywordStr);
 				  //keyword.setDescription(keywordStr);
 				  keyword.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 				  keyword.setCreatedBy(fileVO.getUserId());
 				  keyword = keywordDAO.save(keyword);
-				  
+				  */
+					Keyword keyword = saveKeyword(fileVO.getUserId(),keywordStr);
 				}
 			}
 			
@@ -8270,5 +8273,171 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	}
  }
  
+  
+ public String isKeywordExist(Long userId,String keyword){
+	 log.debug("");
+	 String status = null;
+	 try{
+		List<Object[]> keywordsList = keywordDAO.getKeyWordIdByName(keyword);
+		if(keywordsList != null && keywordsList.size() > 0){
+			status = " "+keyword+" keyword is already exist.Please enter new Keyword. ";				
+		}
+		else
+		{
+			Keyword keyword1 = saveKeyword(userDAO.get(userId).getUserId(),keyword);
+			  status = " "+keyword+" keyword was Successfully saved.";
+		}
+		
+	 }catch (Exception e) {
+		log.error("",e);
+	}
+	 return status;
+ }
  
+ public String mergeSelectedKeywords(final Long userId,final List<Long> keywordsList,final String newKeyword1){
+	 
+	 
+	 log.debug("Entered into mergeSelectedKeywords() in CandidateDetailsService class. ");
+	 String status = "failure";
+	 try{
+		 Object vo1 = transactionTemplate.execute(new TransactionCallback() {
+			 
+			public Object doInTransaction(TransactionStatus status1) {
+				@SuppressWarnings("unused")
+				List<Long> keywordIds  = null;
+				List<Object[]> keywordsDetails = keywordDAO.getKeyWordIdByName(newKeyword1);
+				Keyword newKeyword = null;
+				SelectOptionVO vo = new SelectOptionVO();
+				
+				if(keywordsDetails.size() == 0){
+					newKeyword = saveKeyword(userId,newKeyword1);
+					keywordIds = updateKeywordList(newKeyword,userId,keywordsList);		
+			   }
+				else{
+					for (Object[] parms : keywordsDetails) {						
+						keywordIds = updateKeywordList(keywordDAO.get(Long.valueOf(parms[0].toString())),userId,keywordsList);
+					}					
+				}
+				vo.setLocationValuesList(keywordIds);
+				
+				return vo;				
+			}
+			
+		});
+
+		 if(vo1 != null){
+			 
+			 SelectOptionVO vo2 = (SelectOptionVO) vo1;
+			 List<Long> keywordsDetails = vo2.getLocationValuesList();
+			 
+			 if(keywordsDetails != null && keywordsDetails.size() > 0){
+				 
+				 for (Long keywordId : keywordsDetails) {
+					 try{
+					 candidatePartyKeywordDAO.removeKeywordsList(keywordId);
+					 }catch(Exception e){}
+				}
+				
+			  status = " "+newKeyword1 + " was successfully updated. ";
+			 }
+			 else 
+				 status = " Error occured while updating keywords.";
+		 }
+		 
+				
+	 
+	 }catch (Exception e) {
+		log.error("Exception ocuured in mergeSelectedKeywords() in CandidateDetailsService class :",e);
+		status = "Error occured while updating Keyword details.";
+	}
+	 
+	 return status;
+ }
+ 
+ private List<Long> updateKeywordList(Keyword newKeyword,Long userId,List<Long> keywordsList){
+	 
+	 final Map<Long,List<CandidatePartyKeyword>> candidateKeys = new HashMap<Long,List<CandidatePartyKeyword>>();
+	 List<Long> keywordIds = new ArrayList<Long>();
+	 try{
+	 List<CandidatePartyKeyword> candidateKeywordsDetails = null;
+	 
+		for (Long keywordId : keywordsList) {
+			 
+			 candidateKeywordsDetails = candidatePartyKeywordDAO.getCandidatePartyKeywordList(keywordId);
+			 
+			 if(candidateKeywordsDetails !=null && candidateKeywordsDetails.size() > 0){
+				candidateKeys.put(keywordId, candidateKeywordsDetails);	
+			 }
+		 }
+		 
+		 for (Long key : candidateKeys.keySet()) {
+			 
+			   List<CandidatePartyKeyword> candidateFileDetails = candidateKeys.get(key);
+			   
+			   if(candidateFileDetails !=null && candidateFileDetails.size() > 0){
+				   
+				   for (CandidatePartyKeyword parms : candidateFileDetails) {
+		
+					   parms.setCandidatePartyFile(parms.getCandidatePartyFile());
+					   parms.setKeyword(newKeyword);
+						   
+					   candidatePartyKeywordDAO.save(parms);									  
+				   }
+			   }
+			   keywordIds.add(key);
+		 }
+		 	 		
+		 List<Long> candidatePartyFileIds = candidatePartyKeywordDAO.getCandidateFileIds(newKeyword.getKeywordId());
+		 Set<Long> candidatePartyFileId = new HashSet<Long>();
+		 candidatePartyFileId.addAll(candidatePartyFileIds);
+		 candidatePartyFileIds.clear();
+		 candidatePartyFileIds.addAll(candidatePartyFileId);
+		 
+		 List<CandidatePartyKeyword> candidateList = null;
+		 
+		 for (Long parms : candidatePartyFileIds) {
+			 candidateList = candidatePartyKeywordDAO.getCandidatePartyKeywordListByUserwise(parms,newKeyword.getKeywordId());
+		
+			 Long count = 0L;
+			 for (CandidatePartyKeyword params : candidateList) {
+				 count = count+1;
+					 if(count >1){
+						 try{
+						 candidatePartyKeywordDAO.removeDublicateData(params.getCandidatePartyKeywordId(),newKeyword.getKeywordId());
+						 //candidatePartyKeywordDAO.remove(params.getCandidatePartyKeywordId());
+						 }catch(Exception e){
+							 							 
+						 }
+					 }
+			}
+		 
+		 }
+
+	
+	 }catch(Exception e){
+		 keywordIds.clear();
+	 }
+	 
+	 return keywordIds;
+ }
+private Keyword saveKeyword(Long userId, String keyword1){
+	 log.error("entered into saveKeyword() in CandidateDetailsService class. ");
+	 try{
+		 Keyword keyword = new Keyword();
+		 
+		 keyword.setType(keyword1.toString() != null ? keyword1.toString():"");
+		 keyword.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+		 keyword.setCreatedBy(userId);
+		
+		 keyword = keywordDAO.save(keyword);
+		 
+		 return keyword;	 
+		 
+	 }catch (Exception e) {		 
+	  log.error("Exception ocuured in saveKeyword() in CandidateDetailsService class :",e);	
+	 return null;
+	 }
+ }
+
+
  }
