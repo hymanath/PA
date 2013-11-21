@@ -121,10 +121,10 @@ font-size:20px;
 }
 #candidateListForPartyImg{margin-left:300px;}
 
-#profileManagementMainOuterDiv4 table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-#profileManagementMainOuterDiv4 table tr:nth-child(even){background:#EdF5FF;}
-#profileManagementMainOuterDiv4 table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#profileManagementMainOuterDiv4 table th{
+#profileManagementMainOuterDiv4 table,#reportsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#profileManagementMainOuterDiv4 table tr:nth-child(even),#reportsDiv table tr:nth-child(even){background:#EdF5FF;}
+#profileManagementMainOuterDiv4 table td,#reportsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#profileManagementMainOuterDiv4 table th,#reportsDiv table th{
 background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -137,7 +137,7 @@ background-color: #CDE6FC;
 	}
 
 
-#profileManagementMainOuterDiv4
+#profileManagementMainOuterDiv4,#reportsDiv
 {
 	font-family : arial;
 	font-size: 13px;

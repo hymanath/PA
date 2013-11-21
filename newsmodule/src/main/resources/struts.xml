@@ -5738,7 +5738,7 @@
 		</action>
 		<action name="getAllNewsReportsForAUser" class="newsDisplayAction"  method="getAllNewsReports">
 		   <result type="json" name="success">
-		    	<param name="root">fileVOs</param>
+		    	<param name="root">fileVO</param>
 		   </result> 
 		</action>
 				 <action name="getFilesInACategory" class="candidateElectionResultsAction" method="getFilesInACategory">
