@@ -37,7 +37,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	private String level;
 	private static final Logger log=Logger.getLogger(NewsPaginationAction.class);
 	//private INewsByPagingService newsByPagingService;
-	private List<SelectOptionVO> selectOptionVOList,keywordsList;
+	private List<SelectOptionVO> selectOptionVOList,keywordsList,partiesList;
 	private LocationVO locationVO;
 	private String keyword;
 	
@@ -116,6 +116,13 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 	}
 	public void setKeywordsList(List<SelectOptionVO> keywordsList) {
 		this.keywordsList = keywordsList;
+	}
+	
+	public List<SelectOptionVO> getPartiesList() {
+		return partiesList;
+	}
+	public void setPartiesList(List<SelectOptionVO> partiesList) {
+		this.partiesList = partiesList;
 	}
 	public String execute()throws Exception
 	{
@@ -309,6 +316,13 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		
 		else if(jObj.getString("task").equalsIgnoreCase("getTotalKeyWords"))
 		 keywordsList = candidateDetailsService.getTotalKeyWords();
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getPartyList"))
+		 partiesList = candidateDetailsService.getPartiesList();
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getDesignationsList"))
+		 selectOptionVOList = candidateDetailsService.getDesignationsList();
+		 
 		
 		}catch (Exception e) {
 			e.printStackTrace();

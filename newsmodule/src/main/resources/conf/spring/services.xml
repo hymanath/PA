@@ -1618,7 +1618,7 @@
 		<property name="benefitDAO" ref="benefitDAO" />
 		<property name="newsResponseDAO" ref="newsResponseDAO" />
 		<property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
-		
+		<property name="designationDAO" ref="designationDAO" />
 		
 	</bean>
 	
@@ -1698,6 +1698,7 @@
 		<property name="candidateDAO" ref="candidateDAO" />
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO"  ref="delimitationConstituencyAssemblyDetailsDAO" />
+		<property name="designationDAO" ref="designationDAO" />
 </bean>
 </beans>		
 	

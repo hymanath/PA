@@ -5788,6 +5788,19 @@
 		    	<param name="root">savedDetails</param>
 		   </result>
 		</action>
+		
+		<action name="getPartiesListAction" class="newsPaginationAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		    	<param name="root">partiesList</param>
+		  </result>
+		</action>
+		
+		<action name="getDesignationsListAction" class="newsPaginationAction" method="ajaxHandler">
+		  <result type="json" name="success">
+		    	<param name="root">selectOptionVOList</param>
+		  </result>
+		</action>
+		
 		</package>
 		
 		
