@@ -63,11 +63,17 @@
 	                         }
 	               };
 
-	YAHOO.util.Connect.asyncRequest('POST', "createReportAction1.action?reportId=${reportId}", callback);
+	YAHOO.util.Connect.asyncRequest('POST', "createReportAction1.action?reportId=${reportId}&key=${key}", callback);
 }
  function buildData(myResults){
-  var str ="";	
-  if(myResults.mainArticalsList != null  && myResults.mainArticalsList.length > 0){
+  var str ="";
+  if(myResults.name == "Invalid User"){
+	  str+="<div style='padding-left:263px;padding-top: 207px;'><font style='color:red;'><b>You Didn't Have Access To View This Report</b></font></div>"; 
+  }else if(myResults.name == "Invalid Key"){
+	  str+="<div style='padding-left:166px;padding-top: 207px;'><font style='color:red;'><b>Generated Url Expired, Please Regenerate A New Url To Access This Report</b></font></div>"; 
+  }
+  else{
+	  if(myResults.mainArticalsList != null  && myResults.mainArticalsList.length > 0){
 		str+='<div class="btn btn-large btn-block btn-info" style="margin-bottom: 8px;"><b>ANDHRA PRADESH STATE</b></div>';
 		 for( var i in myResults.mainArticalsList){
 			  str+='<div class="row-fluid"><div class="span12 well"><div class="media"><div class="media-body"><hgroup>';
@@ -111,6 +117,7 @@
 		 }
 	   }
 	  }
+ }
 	  document.getElementById("newsDiv").innerHTML =str;
 	   Cufon.set('fontSize', '28px').replace('enadu');
  }

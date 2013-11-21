@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -5067,7 +5068,6 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		 catch (Exception e) {
 			 resultStatus.setResultCode(ResultCodeMapper.FAILURE); 
 			 log.error("Exception Occured in updateGallaryKeyword() method", e);
-			 e.printStackTrace();
 		}
 		return resultStatus;
 	 }
@@ -5105,7 +5105,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		catch (Exception e) {
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		log.error("Exception Occured in UpdateDefaultGallariesInFileGallary() method", e);
-		e.printStackTrace();
+		
 		}
 		return resultStatus;
 	}
@@ -5138,7 +5138,6 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		catch(Exception e)
 		{
 			log.error("Exception Occured in updateExistingGallaryKeyword() method", e);
-			e.printStackTrace();
 		}
 		return resultStatus;
 	}
@@ -5150,7 +5149,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		catch (Exception e) {
 			log.error("Exception Occured in getGallaryId() method", e);
-		e.printStackTrace();
+		
 		}
 		return gallaryIds;
 	}
@@ -5176,7 +5175,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		catch(Exception e)
 		{
 			log.error("Exception Occured in getNewsReports() method", e);
-			e.printStackTrace();
+			
 		}
 		return resultList;
 	}
@@ -5192,7 +5191,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		}
 		catch (Exception e) {
 			log.error("Exception Occured in getMainCategories() method", e);
-			e.printStackTrace();
+			
 		}
 		return resultList;
 	}
@@ -5224,8 +5223,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  
 		  return selectOptionVOsList;
 	  }catch (Exception e) {
-		e.printStackTrace();
-		log.error("Exception Occured in getCandidatesByPartyIdsList() method, Exception - "+e);
+		log.error("Exception Occured in getCandidatesByPartyIdsList() method, Exception - ",e);
 		return null;
 	  }
 	}
@@ -5250,12 +5248,26 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		  return resultStatus;
 	  }catch (Exception e) {
-		e.printStackTrace();
-		log.error(" Exception Occured in saveCandidatesAndParty() method, Exception - "+e);
+		
+		log.error(" Exception Occured in saveCandidatesAndParty() method, Exception - ",e);
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		  return resultStatus;
 	  }
 	}
 	
-
+    public String generateUrlForNewsReport(Long reportId,Long userId,String path){
+    	String url = "invalid";
+    	try{
+    		Long count = newsReportDAO.checkValidUserForReport(userId, reportId);
+	    	if(count > 0){
+	    		String key = UUID.randomUUID().toString();
+	    		newsReportDAO.updateNewKey(key,reportId);
+	    		url = path+"key="+key;
+	    	}
+    	}catch(Exception e){
+    		log.error(" Exception Occured in generateUrlForNewsReport method, Exception - ",e);
+    		url = "exception";
+    	}
+    	return url;
+    }
 }

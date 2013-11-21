@@ -5772,7 +5772,7 @@
 		    <result name="success">/jsp/createReport.jsp</result>
 		    <result name="notLogged" type="redirect">loginPageAction.action</result>
 		 </action>
-		 <action name="createReportAction1" class="createReportAction">
+		 <action name="createReportAction1" class="createReportAction" method="prepareReport">
 		   <result name="success" type="json">
 		 	<param name="root">news</param>
 		   </result>
@@ -5813,7 +5813,12 @@
 		    	<param name="root">selectOptionVOList</param>
 		  </result>
 		</action>
-		
+				
+		<action name="generateReportKeyAction" class="newsDisplayAction" method="generateUrlForReport">
+		  <result type="json" name="success">
+		    	<param name="root">reportUrl</param>
+		   </result>
+		</action>
 		</package>
 		
 		

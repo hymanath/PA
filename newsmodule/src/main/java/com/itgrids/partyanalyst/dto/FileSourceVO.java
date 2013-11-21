@@ -2,7 +2,10 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.Formatter;
 import java.util.List;
+
+import org.apache.commons.lang.StringEscapeUtils;
 
 public class FileSourceVO implements Serializable{
 
@@ -49,7 +52,11 @@ public class FileSourceVO implements Serializable{
 		return completeDesc;
 	}
 	public void setCompleteDesc(String completeDesc) {
-		this.completeDesc = completeDesc;
+		if(completeDesc == null){
+		 this.completeDesc = completeDesc;
+		}else{
+			this.completeDesc =  escapeUnicode(StringEscapeUtils.unescapeHtml(completeDesc));
+		}
 	}
 	
 	
@@ -97,5 +104,16 @@ public class FileSourceVO implements Serializable{
 		this.sourceFileList = sourceFileList;
 	}
 	
-	
+	public String escapeUnicode(String input) {
+		  StringBuilder b = new StringBuilder(input.length());
+		  Formatter f = new Formatter(b);
+		  for (char c : input.toCharArray()) {
+		    if (c < 128) {
+		      b.append(c);
+		    } else {
+		      f.format("\\u%04x", (int) c);
+		    }
+		  }
+		  return b.toString();
+		}
 }

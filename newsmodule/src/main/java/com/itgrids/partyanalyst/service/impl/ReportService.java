@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -21,6 +22,8 @@ public class ReportService implements IReportService {
 	private IReportFilesDAO reportFilesDAO;
 	private ICandidateDetailsService candidateDetailsService;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
+	private INewsReportDAO newsReportDAO;
+	
 	private static final org.apache.log4j.Logger LOG = Logger.getLogger(ReportService.class);
 			
 	public IReportFilesDAO getReportFilesDAO() {
@@ -49,13 +52,39 @@ public class ReportService implements IReportService {
 		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
 	}
 
+	public INewsReportDAO getNewsReportDAO() {
+		return newsReportDAO;
+	}
+
+	public void setNewsReportDAO(INewsReportDAO newsReportDAO) {
+		this.newsReportDAO = newsReportDAO;
+	}
+
 	public FileVO getReportData(Long reportId,Long userId,String key){
 		FileVO returnVo = new FileVO();
 	 try{
-		List<Object[]> stateLvlNews = reportFilesDAO.getStateLvlReportDetails(reportId, userId);
-		List<Object[]> districtLvlNews = reportFilesDAO.getOtherLvlReportDetails(reportId, userId);
-		//List<Long> stateLvlFontDetails = reportFilesDAO.getStateLvlReportFontDetails(reportId, userId);
-		//List<Long> districtLvlFontDetails = reportFilesDAO.getOtherLvlReportFontDetails(reportId, userId);
+		 List<Object[]> stateLvlNews = null;
+		 List<Object[]> districtLvlNews = null;
+		 if(key == null || key.trim().length() == 0){
+		   Long count = newsReportDAO.checkValidUserForReport(userId, reportId);
+		   if(count > 0){
+			   stateLvlNews = reportFilesDAO.getStateLvlReportDetails(reportId, userId);
+			   districtLvlNews = reportFilesDAO.getOtherLvlReportDetails(reportId, userId);
+		   }else{
+			   returnVo.setName("Invalid User");
+		   }
+		 }else{
+			 Long count = newsReportDAO.checkValidReportKey(key);
+			 if(count > 0){
+			   stateLvlNews = reportFilesDAO.getStateLvlReportDetailsByKey(reportId, key);
+			   districtLvlNews = reportFilesDAO.getOtherLvlReportDetailsByKey(reportId,key);
+			   newsReportDAO.updateKey(key);
+			 }else{
+				 returnVo.setName("Invalid Key");
+				 return returnVo;
+			 }
+		 }
+		
 		Map<Long,FileVO> newsMap = new HashMap<Long,FileVO>();
 		FileVO file = null;
 		if(stateLvlNews != null && stateLvlNews.size() > 0){

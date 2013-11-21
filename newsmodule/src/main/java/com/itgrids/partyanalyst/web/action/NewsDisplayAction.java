@@ -37,6 +37,8 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private ResultStatus resultStatus;
 	private FileVO savedDetails,fileVO;
 	private List<FileVO> fileVOs;
+	private String reportUrl;
+	
 	public FileVO getSavedDetails() {
 		return savedDetails;
 	}
@@ -103,6 +105,14 @@ public class NewsDisplayAction implements ServletRequestAware{
 
 	public void setFileVOs(List<FileVO> fileVOs) {
 		this.fileVOs = fileVOs;
+	}
+
+	public String getReportUrl() {
+		return reportUrl;
+	}
+
+	public void setReportUrl(String reportUrl) {
+		this.reportUrl = reportUrl;
 	}
 
 	public String getNews(){
@@ -227,7 +237,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 			System.out.println("todayDate = "+now);
 			return now;
 		} catch (ParseException e) {
-			e.printStackTrace();
+			log.error("Exception rised in getCurrentDate() ",e);
 			return null;
 		}
 	}
@@ -241,7 +251,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 	   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	   return sdf.parse(sdf.format(cal.getTime()));
 	 } catch (ParseException e) {
-			e.printStackTrace();
+		 log.error("Exception rised in getStartDayOfWeek() ",e);
 			return null;
 		}
   }
@@ -255,7 +265,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		   return sdf.parse(sdf.format(cal.getTime()));
 		 } catch (ParseException e) {
-				e.printStackTrace();
+			 log.error("Exception rised in getStartDayOfMonth() ",e);
 				return null;
 			}
 	  }
@@ -504,7 +514,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 			}
 		   
 	   }catch(Exception e){
-		   e.printStackTrace();
+		   log.error("Exception rised in getAllNewsForAUser() ",e);
 	   }
 	   
 	   return Action.SUCCESS;
@@ -538,7 +548,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		 savedDetails = newsMonitoringService.getTotalNews(fileVO);
 		 
 	 }catch (Exception e) {
-	  e.printStackTrace();
+	  
 	  log.error(" Exception Occured in getTotalNews() method, Exception - "+e);
 	}
 	 return Action.SUCCESS;
@@ -555,7 +565,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   String name = jObj.getString("name");
 		   resultStatus = newsMonitoringService.storeSourceDetails(name);
 	} catch (Exception e) {
-		// TODO: handle exception
+		log.error("Exception rised in saveSourceDetails() ",e);
 	}
 	   return Action.SUCCESS;  
    }
@@ -583,7 +593,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  
 	   }
 	   catch (Exception e) {
-		   e.printStackTrace();
+		   log.error("Exception rised in getNewsForAUser() ",e);
 	}
 	return Action.SUCCESS;
    }
@@ -604,7 +614,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 			  resultStatus = newsMonitoringService.saveNewsReport(fileGallaryIds,userId,jObj.getString("description"));
 	   }
 	   catch (Exception e) {
-		e.printStackTrace();
+		   log.error("Exception rised in saveNewsForAUser() ",e);
 	}
 	return Action.SUCCESS;
    }
@@ -646,7 +656,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   }
 	   }
 	   catch (Exception e) {
-		e.printStackTrace();
+		   log.error("Exception rised in updateGallaryKeyword() ",e);
 	}
 	return Action.SUCCESS;
    }
@@ -659,15 +669,32 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  if(regVo == null)
 			  return Action.ERROR;
 		   Long userId = regVo.getRegistrationID();  
-		   	if(regVo.getUserAccessType().equalsIgnoreCase("Admin"))
-		   		userId = 0l;
+		   	//if(regVo.getUserAccessType().equalsIgnoreCase("Admin"))
+		   		//userId = 0l;
 			if(jObj.getString("task").trim().equalsIgnoreCase("getAllNewsReports"))
 		    {
 		    	fileVOs = newsMonitoringService.getNewsReports(userId);
 		    }
 	   }
 	   catch (Exception e) {
-		   e.printStackTrace();
+		   log.error("Exception rised in getAllNewsReports() ",e);
+	}
+	   return Action.SUCCESS;
+   }
+   public String generateUrlForReport()
+   {
+	   try{
+		jObj =new JSONObject(getTask());
+		 session = request.getSession();
+		  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+		  if(regVo == null)
+			  return Action.ERROR;
+		   Long userId = regVo.getRegistrationID();  
+		   String url = request.getRequestURL().toString().replace("generateReportKeyAction.action","createReportAction.action?");
+		   reportUrl = newsMonitoringService.generateUrlForNewsReport(jObj.getLong("reportId"), userId,url);
+	   }
+	   catch (Exception e) {
+		   log.error("Exception rised in generateUrlForReport() ",e);
 	}
 	   return Action.SUCCESS;
    }

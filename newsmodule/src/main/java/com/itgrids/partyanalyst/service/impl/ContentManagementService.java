@@ -321,7 +321,7 @@ public class ContentManagementService implements IContentManagementService{
 								 fileVOPathsList.add(fileVOPath);
 							 }
 							 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
-							 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription());
+							 fileVOSourceLanguage.setDescription(fileSourceLanguage.getNewsDetailedDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileSourceLanguage.getNewsDetailedDescription())):"");
 							 if(fileSourceLanguage.getFont() != null)
 							 fileVOSourceLanguage.setEenadu(true);
 							 fileVOSourceLanguage.setFileVOList(fileVOPathsList);

@@ -1664,6 +1664,7 @@
 		<property name="reportFilesDAO" ref="reportFilesDAO" />
 		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
 		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
+		<property name="newsReportDAO" ref="newsReportDAO" />
 	</bean>	
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
@@ -1700,5 +1701,8 @@
 		<property name="delimitationConstituencyAssemblyDetailsDAO"  ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="designationDAO" ref="designationDAO" />
 </bean>
+<bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
+</bean>
+
 </beans>		
 	

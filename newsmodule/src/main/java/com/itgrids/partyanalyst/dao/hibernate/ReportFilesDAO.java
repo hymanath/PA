@@ -19,16 +19,19 @@ public class ReportFilesDAO extends GenericDaoHibernate<ReportFiles, Long> imple
 		
 		Query query = getSession().createQuery("select distinct(rf.file.fileId),rf.file.fileTitle,rf.file.fileDescription," +
 				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue,rf.file.font.fontId from ReportFiles rf " +
-				" where rf.newsReport.newsReportId = :newsReportId  and rf.file.regionScopes.regionScopesId = 2");
+				" where rf.newsReport.newsReportId = :newsReportId  and rf.newsReport.user.userId = :userId and rf.file.regionScopes.regionScopesId = 2");
 		query.setParameter("newsReportId", newsReportId);
+		query.setParameter("userId", userId);
 		
 		return query.list();
 	}
-    public List<Long> getStateLvlReportFontDetails(Long newsReportId,Long userId){
+    public List<Object[]> getStateLvlReportDetailsByKey(Long newsReportId,String key){
 		
-		Query query = getSession().createQuery("select distinct(rf.file.fileId) from ReportFiles rf " +
-				" where rf.newsReport.newsReportId = :newsReportId  and rf.file.regionScopes.regionScopesId = 2 and rf.file.font.fontId is not null ");
-		query.setParameter("newsReportId", newsReportId);
+    	Query query = getSession().createQuery("select distinct(rf.file.fileId),rf.file.fileTitle,rf.file.fileDescription," +
+				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue,rf.file.font.fontId from ReportFiles rf " +
+				" where  rf.newsReport.reportKey = :key  and rf.file.regionScopes.regionScopesId = 2");
+		
+		query.setParameter("key", key);
 		
 		return query.list();
 	}
@@ -38,17 +41,22 @@ public class ReportFilesDAO extends GenericDaoHibernate<ReportFiles, Long> imple
 				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue, " +
 				" rf.file.userAddress.district.districtId,rf.file.userAddress.district.districtName, " +
 				" rf.file.regionScopes.scope,rf.file.font.fontId from ReportFiles rf where rf.newsReport.newsReportId = :newsReportId" +
-				"   and rf.file.regionScopes.regionScopesId != 2 order by rf.file.userAddress.district.districtId ");
+				"     and rf.newsReport.user.userId = :userId  and rf.file.regionScopes.regionScopesId != 2 order by rf.file.userAddress.district.districtId ");
 		query.setParameter("newsReportId", newsReportId);
+		query.setParameter("userId", userId);
 		
 		return query.list();
 	}
     
- public List<Long> getOtherLvlReportFontDetails(Long newsReportId,Long userId){
+ public List<Object[]> getOtherLvlReportDetailsByKey(Long newsReportId,String key){
 		
-		Query query = getSession().createQuery("select distinct(rf.file.fileId) from ReportFiles rf where rf.newsReport.newsReportId = :newsReportId" +
-				"   and rf.file.regionScopes.regionScopesId != 2   and rf.file.font.fontId is not null ");
-		query.setParameter("newsReportId", newsReportId);
+	 Query query = getSession().createQuery("select distinct(rf.file.fileId),rf.file.fileTitle,rf.file.fileDescription," +
+				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue, " +
+				" rf.file.userAddress.district.districtId,rf.file.userAddress.district.districtName, " +
+				" rf.file.regionScopes.scope,rf.file.font.fontId from ReportFiles rf where " +
+				"   rf.newsReport.reportKey = :key and rf.file.regionScopes.regionScopesId != 2 order by rf.file.userAddress.district.districtId ");
+		
+		query.setParameter("key", key);
 		
 		return query.list();
 	}

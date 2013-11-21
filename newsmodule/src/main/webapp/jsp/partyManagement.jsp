@@ -3696,6 +3696,20 @@ function getReportFiles(id){
 	  var win=window.open('createReportAction.action?reportId='+id, '_blank');
 	   win.focus();
 	}
+	
+function generateKey(reportId,id){
+   var jsObj =
+		{ 
+            reportId : reportId,
+			id:id,
+			task:"generateKeyForReport"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "generateReportKeyAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
 function showHideLocationLvl(key){
 if(key == 'level'){
    $(".regionLvlClass").show();

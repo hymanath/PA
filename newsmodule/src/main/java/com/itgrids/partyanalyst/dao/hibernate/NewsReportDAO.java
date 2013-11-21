@@ -28,5 +28,31 @@ public class NewsReportDAO extends GenericDaoHibernate<NewsReport, Long> impleme
 		
 	}
 	
-
+   public Long checkValidUserForReport(Long userId,Long reportId){
+	   Query query = getSession().createQuery("select count(model.newsReportId) from NewsReport model where " +
+	   		" model.user.userId = :userId and model.newsReportId = :reportId ");
+	   query.setParameter("userId", userId);
+	   query.setParameter("reportId", reportId);
+	   return (Long)query.uniqueResult();
+   }
+   
+   public Long checkValidReportKey(String key){
+	   Query query = getSession().createQuery("select count(model.newsReportId) from NewsReport model where " +
+	   		" model.reportKey = :key ");
+	   query.setParameter("key", key);
+	   return (Long)query.uniqueResult();
+   }
+   
+   public void updateKey(String key){
+	   Query query = getSession().createQuery("update NewsReport model set model.reportKey ='' where model.reportKey = :key ");
+		   query.setParameter("key", key);
+		   query.executeUpdate();
+   }
+   
+   public void updateNewKey(String key,Long reportId){
+	   Query query = getSession().createQuery("update NewsReport model set model.reportKey = :key where model.newsReportId = :reportId ");
+		   query.setParameter("key", key);
+		   query.setParameter("reportId", reportId);
+		   query.executeUpdate();
+   }
 }

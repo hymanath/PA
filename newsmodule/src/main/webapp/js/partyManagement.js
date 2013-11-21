@@ -158,8 +158,11 @@ function callAjax(jsObj,url)
 		 {
 			  	$('#candidateAjaxImg').hide();
 			 buildPartyCandidates(myResults);
+		 }else if (jsObj.task == "generateKeyForReport")
+		 {
+		   $('#'+jsObj.id).text(myResults);
+		   $('#'+jsObj.id).show();
 		 }
-
 		 else if (jsObj.task == "getCandidatesListByPartyId")
 		 {
 		   $("#"+jsObj.type+"Img").css("display","none");
@@ -6597,7 +6600,8 @@ function buildAllNewsReports(result)
 	str+='<tr>';
 	str+='<th>NewsReport</th>';
 	str+='<th>Created Date</th>';
-	str+='<th></th>';
+	str+='<th>View Report</th>';
+	str+='<th>Generate Url For Creating Pdf</th>';
 	str+='</tr>';
 	for(var i in result)
 	{
@@ -6605,6 +6609,8 @@ function buildAllNewsReports(result)
 	str+='<td>' +result[i].description+'</td>';
 	str+='<td>' +result[i].identifiedDateOn+'</td>';
 	str+='<td><input id="reportFiles" class="btn btn-info" type="button" onclick="getReportFiles('+result[i].newsImportanceId+')" value="View"></td>';
+	str+='<td><input  class="btn btn-info" type="button" onclick="generateKey('+result[i].newsImportanceId+',\'generatedUrl'+i+'\')" value="Generate Url"></td>';
+	str+='<td><textarea id="generatedUrl'+i+'"></textarea></td>';
 	str+='</tr>';
 	}
 	str+='</table>';
