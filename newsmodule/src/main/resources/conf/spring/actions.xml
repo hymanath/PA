@@ -84,4 +84,8 @@
 	 	<property name="candidateDetailsService" ref="candidateDetailsService"/>
 	</bean>
 	
+	<bean id="newsAnalysisAction" class="com.itgrids.partyanalyst.web.action.NewsAnalysisAction" singleton="false">
+	 	<property name="newsAnalysisService" ref="newsAnalysisService"/>
+	</bean>
+	
 	</beans>

@@ -10,9 +10,9 @@ public interface IReportFilesDAO extends GenericDao<ReportFiles, Long>{
    
 	public List<Object[]> getStateLvlReportDetails(Long newsReportId,Long userId);
 	
-	public List<Long> getStateLvlReportFontDetails(Long newsReportId,Long userId);
+	public List<Object[]> getStateLvlReportDetailsByKey(Long newsReportId,String key);
 	
 	public List<Object[]> getOtherLvlReportDetails(Long newsReportId,Long userId);
 	
-	public List<Long> getOtherLvlReportFontDetails(Long newsReportId,Long userId);
+	public List<Object[]> getOtherLvlReportDetailsByKey(Long newsReportId,String key);
 }

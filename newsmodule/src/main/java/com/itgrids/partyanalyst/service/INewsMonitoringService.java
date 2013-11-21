@@ -97,6 +97,7 @@ public interface INewsMonitoringService {/*
 	
 	public FileVO getTotalNews(FileVO inputs);
 	
+	public String generateUrlForNewsReport(Long reportId,Long userId,String path);
 }
 
 

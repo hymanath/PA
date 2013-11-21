@@ -63,16 +63,25 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	public String execute(){
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+		if(user == null && key == null){
+			return "notLogged";
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String prepareReport(){
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
 		Long userId = null;
 		if(user != null){
 			userId = user.getRegistrationID();
 		}
 		if(user == null && key == null){
-			//return "notLogged";
+			news = new FileVO();
+			news.setName("Invalid User");
+			return Action.SUCCESS;
 		}
 		 news = reportService.getReportData(reportId, userId, key);
 		return Action.SUCCESS;
 	}
-	
-	
 }

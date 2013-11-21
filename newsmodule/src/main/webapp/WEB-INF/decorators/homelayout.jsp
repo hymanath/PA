@@ -173,7 +173,7 @@ margin:-1px 0px 0px 0px ;
 									</ul>
 							</li>
 							  
-						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage Party Profile</a></li>
+						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
 							  
 							 
 						   
