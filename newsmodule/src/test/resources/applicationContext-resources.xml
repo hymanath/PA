@@ -129,6 +129,7 @@
 				<value>com.itgrids.partyanalyst.model.CandidatePartyCategory</value>
 				<value>com.itgrids.partyanalyst.model.NewsResponse</value>
 				<value>com.itgrids.partyanalyst.model.ReportFiles</value>
+				<value>com.itgrids.partyanalyst.model.Designation</value>
 			</list>
 		</property>
 	</bean>
@@ -228,5 +229,18 @@
 	<bean id="reportFilesFileDAO" class="com.itgrids.partyanalyst.dao.hibernate.ReportFilesDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="partyDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="designationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DesignationDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="candidateDAO" class="com.itgrids.partyanalyst.dao.hibernate.CandidateDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<!--End Add new DAOs here -->
 </beans>

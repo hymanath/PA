@@ -490,6 +490,12 @@ function callAjax(jsObj,url)
 
 			else if(jsObj.task == "getBenefitList")
 			 buildBenefitsList(myResults);
+			 
+			else if(jsObj.task == "getPartyList")
+			 buildPartyList(myResults,jsObj);
+			
+			else if(jsObj.task == "getDesignationsList")
+			 builddesignationsList(myResults,jsObj);
 		
      	}
 		catch(e)
@@ -6644,8 +6650,21 @@ function showCandidateSaveStatus(result,jsObj)
    $("#errorMsgDiv").html('Candidate Saved Successfully.').css("color","green");
    $("#newCandidateName").val('');
    $("#partySelectNewList").val(0);
+   var partyId = $("#"+jsObj.partyListId+"").val();
+   
+   if(partyId != null && partyId > 0)
+     getCandidatesListByPartyId(partyId,""+jsObj.candidateListId+"");
+   
+   //$("#"+jsObj.candidateListId+"").
+   
    return;
   }
+  else{
+   $("#errorMsgDiv").html('Candidate is already exist.').css("color","green");
+   
+   return;
+  }
+  
 }
 
 function  getBenefitList()
@@ -6794,3 +6813,50 @@ return oPayload;
   
 }
 }
+
+function getPartiesList(partySelectBoxId,partiesListForWhome)
+{
+ var jsObj={
+		partySelectBoxId:partySelectBoxId,
+		partiesListForWhome:partiesListForWhome,
+		task:'getPartyList'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getPartiesListAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+
+function buildPartyList(results,jsObj)
+{
+  $("#"+jsObj.partySelectBoxId+"").find('option').remove();
+  $("#"+jsObj.partySelectBoxId+"").append('<option value="0">Select Party</option>');
+  
+  if(jsObj.partiesListForWhome != null)
+  {
+   $("#"+jsObj.partiesListForWhome+"").find('option').remove();
+   $("#"+jsObj.partiesListForWhome+"").append('<option value="0">Select Party</option>');
+  }
+  
+  if(results != null)
+  {
+   for(var i in results)
+    $("#"+jsObj.partySelectBoxId+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+  
+   if(jsObj.partiesListForWhome != null)
+	for(var i in results)
+    $("#"+jsObj.partiesListForWhome+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+  }
+}
+
+function builddesignationsList(results,jsObj)
+{
+  $("#"+jsObj.designationList+"").find('option').remove();
+  $("#"+jsObj.designationList+"").append('<option value="0">Select Designation</option>');
+  
+  if(results != null && results.length > 0)
+  {
+    for(var i in results)
+	 $("#"+jsObj.designationList+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+  }
+}
+
