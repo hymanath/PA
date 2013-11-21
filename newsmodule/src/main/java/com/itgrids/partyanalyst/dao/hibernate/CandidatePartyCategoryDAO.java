@@ -48,10 +48,10 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 public List<File> getFileListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> categoryIdsList)
 		  {
 			  StringBuilder str = new StringBuilder();
-				str.append(" select distinct model.candidatePartyFile.file from CandidatePartyCategory model where (model.candidatePartyFile.sourceCandidate.candidateId =:candidateId) or (model.candidatePartyFile.destinationCandidate.candidateId =:candidateId)");
-				str.append(" and (model.candidatePartyFile.file.isDeleted !='Y') or (model.candidatePartyFile.file.isDeleted is null)");
-				if(queryType.equals("Public"))
-				  str.append(" and (model.candidatePartyFile.file.isPrivate !='Y') or (model.candidatePartyFile.file.isPrivate is null)");
+				str.append(" select distinct (model.candidatePartyFile.file) from CandidatePartyCategory model where (model.candidatePartyFile.sourceCandidate.candidateId = :candidateId or model.candidatePartyFile.destinationCandidate.candidateId = :candidateId)");
+				str.append(" and (model.candidatePartyFile.file.isDeleted !='Y' or model.candidatePartyFile.file.isDeleted is null)");
+				if(queryType.equals("Public") || queryType.equals(""))
+				  str.append(" and (model.candidatePartyFile.file.isPrivate !='Y' or model.candidatePartyFile.file.isPrivate is null)");
 						
 				else if(queryType.equals("Private"))
 				  str.append("  and model.candidatePartyFile.file.isPrivate='Y'");
@@ -83,7 +83,6 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				 query.setMaxResults(maxResult);
 				 return query.list();
 		  }
-	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSelectdGalleryNews(int startIndex,int maxIndex,Long gallaryId)
 	{

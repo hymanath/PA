@@ -17,9 +17,9 @@ public class BenefitDAOHibernateTest extends BaseDaoTestCase{
 		benefitDAO.getAll();	
 	}*/
 	
-	public void testGetBenifitsList()
+	/*public void testGetBenifitsList()
 	{
 		System.out.println(benefitDAO.getBenifitsList().size());
-	}
+	}*/
 	
 }
