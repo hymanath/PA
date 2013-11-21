@@ -249,7 +249,7 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType);
 	 
 	 public List<SelectOptionVO> getCandidatesOfAParty(Long partyId);
-	 public String insertMLCCandidateDetails(Long partyId ,String candidateName ,String  education , String gender,Long userId);
+	 public String insertMLCCandidateDetails(Long partyId ,String candidateName ,String  education , String gender,Long userId,Long designationId);
 
 	 public ResultStatus createUserNewsCategory(String name, String visibility, Long userId,Long mainCategoryId);
 
@@ -316,4 +316,10 @@ public interface ICandidateDetailsService {
 	 public List<GallaryVO> getAllGalariyes();
 	 
 	 public List<SelectOptionVO> getLocationValuesByRegionScope1(String regionScope, String queryType);
+	 
+	 public List<SelectOptionVO> getPartiesList();
+	 
+	 public List<SelectOptionVO> getDesignationsList();
+	 
+	 
 }

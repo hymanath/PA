@@ -91,12 +91,12 @@ public interface INewsMonitoringService {/*
 	
 	public List<SelectOptionVO> getCandidatesByPartyIdsList(List<Long> partyIdsList);
 	
-	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName);
+	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId);
 	
 	public List<SelectOptionVO> getCandidatesNewsCount();
 	
 	public FileVO getTotalNews(FileVO inputs);
-
+	
 }
 
 
