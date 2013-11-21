@@ -321,5 +321,8 @@ public interface ICandidateDetailsService {
 	 
 	 public List<SelectOptionVO> getDesignationsList();
 	 
+	 public String isKeywordExist(Long userId,String keyword);
+	 
+	 public String mergeSelectedKeywords(Long userId,List<Long> keywordsList,String newKeyword);
 	 
 }
