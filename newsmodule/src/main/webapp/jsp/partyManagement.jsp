@@ -1274,7 +1274,22 @@ $(".assignNewsRadioCls").live("click",function(){
 
 var count = 0;
 function changeLanguage(){
-var str='';
+//alert(123456);
+	if($("#sourceTelugu").is(':checked') == true)
+	{
+		$('#newsfileTitle').addClass('enadu');
+		$('#newsfileDescription').addClass('enadu');
+		//$('#newsDesc').addClass('enadu');
+		//$('#aaanewsfileDescription').addClass('enadu');
+	}
+	else
+	{
+		$('#newsfileTitle').removeClass('enadu');
+		$('#newsfileDescription').removeClass('enadu');
+		//$('#newsDesc').removeClass('enadu');
+		//$('#aaanewsfileDescription').removeClass('enadu');
+	}
+/* var str='';
 if(count == 0)
 	str='Eenadu Telugu';	
 if(/Eenadu Telugu/i.test(str))
@@ -1299,7 +1314,7 @@ $('#newsfileDescription').removeClass('enadu');
 $('#newsDesc').removeClass('enadu');
 }
 }
-
+ */
 
 }
 
@@ -2927,7 +2942,6 @@ function changeToEEnadutxt(ck,id){
    
    if($('#'+ck).is(':checked')){
      $('#'+id).addClass('enadu');
-	 
    }else{
 		 $('#'+id).removeClass('enadu');
    }
