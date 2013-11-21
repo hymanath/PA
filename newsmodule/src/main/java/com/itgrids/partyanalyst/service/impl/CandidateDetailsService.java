@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
+import com.itgrids.partyanalyst.dao.IDesignationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
@@ -196,8 +197,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private IPartyDAO partyDAO;
     private IBenefitDAO benefitDAO;
     private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
+    private IDesignationDAO designationDAO;
 	
     
+	public IDesignationDAO getDesignationDAO() {
+		return designationDAO;
+	}
+
+	public void setDesignationDAO(IDesignationDAO designationDAO) {
+		this.designationDAO = designationDAO;
+	}
+
 	public ICandidatePartyCategoryDAO getCandidatePartyCategoryDAO() {
 		return candidatePartyCategoryDAO;
 	}
@@ -6833,7 +6843,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 	 }
 	 
-	 public String insertMLCCandidateDetails(final Long partyId ,final String candidateName ,final String  education , final String gender , final Long userId)
+	 public String insertMLCCandidateDetails(final Long partyId ,final String candidateName ,final String  education , final String gender , final Long userId,final Long designationId)
 	 {
 		 
 		 try
@@ -6846,6 +6856,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 candidate.setLastname(candidateName);
 			 candidate.setEducation(education);
 			 candidate.setGender(gender);
+			 candidate.setDesignation(designationDAO.get(designationId));
 			 
 			 candidate = candidateDAO.save(candidate);
 			
@@ -7864,7 +7875,19 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 	List<Object[]> list = candidateDAO.getCandidateListByPartyId(partyId);
 	 	if(list != null && list.size() > 0)
 	 	 for(Object[] params:list)
-	 		candidateList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
+	 	 {
+	 		//candidateList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():""));
+	 		SelectOptionVO optionVO = new SelectOptionVO();
+	 		optionVO.setId((Long)params[0]);
+	 		String name="";
+	 		if(params[1] != null)
+	 		 name += params[1].toString();
+	 		if(params[2] != null)
+	 		 name += " ("+params[2].toString()+")";
+	 		optionVO.setName(name);
+	 		candidateList.add(optionVO);
+	 		
+	 	 }
 	 	return candidateList;
 	 	
 	 	}catch(Exception e)
@@ -8206,4 +8229,46 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 }
 	 return returnlist;
  }
+ 
+ public List<SelectOptionVO> getPartiesList()
+ {
+	 try{
+		 List<SelectOptionVO> selectOptionVOList = null;
+		 List<Object[]> list = partyDAO.getPartiesList();
+		 if(list != null && list.size() > 0)
+		 {
+			selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+			for(Object[] params:list)
+			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!= null?params[1].toString():" "));
+		 }
+		 
+		return selectOptionVOList; 
+	 }catch (Exception e) {
+		e.printStackTrace();
+		log.error("Exception Occured in getPartiesList() method, Exception - "+e);
+		return null;
+	}
+ }
+ 
+ public List<SelectOptionVO> getDesignationsList()
+ {
+	try{
+	 List<SelectOptionVO> selectOptionVOList = null;
+	 List<Object[]> list = designationDAO.getDesignationsList();
+	 if(list != null && list.size() > 0)
+	 {
+	   selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+	   for(Object[] params: list)
+	    selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():" "));
+	 }
+	return selectOptionVOList;
+	
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 log.error(" Exception Occured in getDesignationsList() method, Exception - "+e);
+	 return null;
+	}
+ }
+ 
+ 
  }

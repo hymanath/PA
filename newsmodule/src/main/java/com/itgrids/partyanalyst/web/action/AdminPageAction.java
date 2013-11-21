@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,6 +10,7 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,6 +24,8 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	private String task;
 	private JSONObject jObj;
 	private String result;
+	private List<SelectOptionVO> selectOptionVOList,partiesList;
+	
 	
 	public String getResult() {
 		return result;
@@ -55,7 +60,21 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
-
+	
+	public List<SelectOptionVO> getSelectOptionVOList() {
+		return selectOptionVOList;
+	}
+	public void setSelectOptionVOList(List<SelectOptionVO> selectOptionVOList) {
+		this.selectOptionVOList = selectOptionVOList;
+	}
+	
+	public List<SelectOptionVO> getPartiesList() {
+		return partiesList;
+	}
+	public void setPartiesList(List<SelectOptionVO> partiesList) {
+		this.partiesList = partiesList;
+	}
+	
 	public String execute()
 	{
 		session = request.getSession();	
@@ -73,7 +92,10 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	   
 	   if(user == null)
 		return ERROR;
-	   else		   
+	   
+	   selectOptionVOList = candidateDetailsService.getDesignationsList();
+	   partiesList = candidateDetailsService.getPartiesList();
+	   
 	    return Action.SUCCESS;
 		
 	}
@@ -94,8 +116,9 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			String candidateName = jObj.getString("candidateName");
 			String education = jObj.getString("education");
 			String gender = jObj.getString("gender");
+			Long designationId = jObj.getLong("designationId"); 
 			
-			 result   = candidateDetailsService.insertMLCCandidateDetails(partyId ,candidateName ,  education , gender,user.getRegistrationID());
+			 result   = candidateDetailsService.insertMLCCandidateDetails(partyId ,candidateName ,  education , gender,user.getRegistrationID(),designationId);
 			
 			if(result.equalsIgnoreCase("success"))
 				return Action.SUCCESS;
