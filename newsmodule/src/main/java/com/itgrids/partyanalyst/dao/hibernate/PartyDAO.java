@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.model.Party;
@@ -81,4 +84,11 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 		
 		return getHibernateTemplate().find("from Party model where model.partyId = ?", partyId);
 	}	*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPartiesList()
+	{
+	  Query query = getSession().createQuery(" select model.partyId,model.shortName from Party model order by model.shortName");
+	  return query.list();
+	}
 }

@@ -77,6 +77,8 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	private Set<CandidateParty> candidateParty = new HashSet<CandidateParty>(0);
 	private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
+	private Designation designation;
+	
 	
 	//private Set<CandidatePartyFile> candidatePartyFiles = new HashSet<CandidatePartyFile>(0);
 	// Constructors
@@ -410,6 +412,18 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setCandidateFileKeywords(
 			Set<CandidateFileKeyword> candidateFileKeywords) {
 		this.candidateFileKeywords = candidateFileKeywords;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="designation_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Designation getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(Designation designation) {
+		this.designation = designation;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
