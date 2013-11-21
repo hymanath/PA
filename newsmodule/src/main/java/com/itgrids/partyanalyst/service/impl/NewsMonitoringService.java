@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDesignationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
@@ -114,7 +115,17 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private ICandidateDAO candidateDAO;
     private IPartyDAO partyDAO;
     private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+    private IDesignationDAO designationDAO;
    
+    
+	public IDesignationDAO getDesignationDAO() {
+		return designationDAO;
+	}
+
+	public void setDesignationDAO(IDesignationDAO designationDAO) {
+		this.designationDAO = designationDAO;
+	}
+
 	public IMainCategoryDAO getMainCategoryDAO() {
 		return mainCategoryDAO;
 	}
@@ -5219,12 +5230,12 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  }
 	}
 	
-	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName)
+	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 	  try{
 		  
-		  List<Long> candidateIdsList = candidateDAO.getCandidateIdByPartyIdAndCandidateName(partyId, candidateName);
+		  List<Long> candidateIdsList = candidateDAO.getCandidateIdByPartyIdAndCandidateName(partyId, candidateName,designationId);
 		  if(candidateIdsList != null && candidateIdsList.size() > 0)
 		  {
 			  resultStatus.setMessage("Candidate is already exist.");
@@ -5233,6 +5244,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  Candidate candidate = new Candidate();
 		  candidate.setParty(partyDAO.get(partyId));
 		  candidate.setLastname(candidateName);
+		  candidate.setDesignation(designationDAO.get(designationId));
 		  candidateDAO.save(candidate);
 		  
 		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
