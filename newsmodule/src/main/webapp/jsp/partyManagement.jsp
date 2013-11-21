@@ -333,26 +333,6 @@ function createPartyKeywordDiv(){
   $('#statusDiv2').html('');
  }
 
-function getNewsReports(){
- $("#newsReportDiv").css("display","block");
-  $("#newsGallaryDiv").css("display","none");
-  $("#newsAssignGallaryDiv").css("display","none");
-  $("#newsAssignGallaryDiv").html('');
-  $("#profileManagementMainOuterDiv4").css("display","none");
-  $("#profileManagementHeaderDiv2").css("display","none");
-  $("#profileManagementMainOuterDiv3").css("display","none");
-  $("#profileManagementHeaderDiv3").css("display","none");
-  $("#videoGallaryDiv").css("display","none");
-  $("#dateSelectDiv").css("display","none");
-  $("#profileManagementMainOuterDiv5").css("display","none");
-  $("#profileManagementHeaderDiv5").css("display","none");
-  $("#profileManagementMainOuterDiv6").css("display","none");
-  $("#profileManagementMainOuterDiv7").css("display","none");
-  $("#profileManagementMainOuterDiv8").css("display","none");
-  		$('#statusDiv1').html('');
-		$('#statusDiv2').html('');
-}
-
 function clearDivsForGallary(){
  $("#newsReportDiv").css("display","block");
   $("#newsGallaryDiv").css("display","block");

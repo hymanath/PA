@@ -6561,6 +6561,9 @@ function getNewsReports ()
   $("#profileManagementHeaderDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","block");
    $("#profileManagementHeaderDiv7").css("display","none");
+   $("#profileManagementMainOuterDiv8").css("display","none");
+  		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
     var str ='';
 	str+='<div class="container well">';
 	str+='<div class="row clearfix">';
