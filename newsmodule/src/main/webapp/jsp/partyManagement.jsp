@@ -449,7 +449,7 @@ function clearDivsForGallary(){
 					
 					<li class="">
 					<!-- <a data-toggle="tab" href="#CreateReport">Create Report</a> -->
-					<a data-toggle="tab" value="create Report" id="createReportId" onClick="createReport()" style="cursor:pointer;color: #005580;">Create Report </a>
+					<a data-toggle="tab" value="create Report" id="createReportId" onClick="getNewsReports()" style="cursor:pointer;color: #005580;">Create Report </a>
 					</li>
 					<li class="">
 					<!-- <a data-toggle="tab" href="#ViewReport">View Report</a>-->
@@ -2651,17 +2651,17 @@ function uploadNewsForPartyAndCandidate(fileId)
 		else
 		 str +='<legend class="boxHeading text-center">Adding Response To Selected News</legend> ';
 
-			str+='<div class="well" style="background:#E8E8F2;width: 905px; margin-left: -10px;" >';
+			str+='<div class="well" style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 15px 15px;" >';
 	str+='	<legend class="">&nbsp; Basic Information of News  </legend>';
 	str+='	<div class="row-fluid">       ';
 	str+='<div class="span6">';
 				str+='<label><strong>News Title<span class="requiredFont">*</span></strong></label>  ';
 				str+='<input type="text" maxlength="160" size="25" name="fileTitle" placeholder="Enter Title Of the News" id="newsfileTitle" class="input-block-level">       ';
-				str+='<span class="help-block"> <input type="checkbox" onclick="changeLanguage();" name="titleCheckBox" id="sourceTelugu" value="true">&nbsp;If you Collecting News From EENADU.NET Please Select This Check Box</span>       ';
+				str+='<span class="help-block"> <input type="checkbox" onclick="changeLanguage();" name="title">&nbsp;Please check if title is from eenadu.net</span>       ';
 			str+='</div>       ';
 			str+='<div class="span3 ">         ';
 				str+='<label><strong>News Date<span class="requiredFont">*</span><strong></strong></strong></label>  ';
-				str+='<input type="text" size="20" name="fileDate" readonly="true" class="dateField" placeholder="Select News Date" id="existingFromTextNews">         ';
+				str+='<input type="text" size="20" name="fileDate" readonly="true" class="dateField" placeholder="Select News Date" id="newsdatedatepic" style="cursor:text;">         ';
 				str+='<span class="help-block"> Select Date of News</span> ';
 			str+='</div>       ';
 			str+='<div class="span3 ">         ';
@@ -2682,7 +2682,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='<div class="row-fluid"> ';
 
-		str+='    <div class="sapn12"> <div id="myID" style="background:#E8E8F2;position: inherit; margin-top: 400px; padding: 25px;""> ';  
+		str+='    <div class="sapn12"> <div id="myID" style="border:1px solid #ADC248;position: inherit; margin-top: 355px;border-radius:5px; padding:5px 15px 15px 15px;width:906px;"> ';  
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
@@ -2709,7 +2709,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 				   
 		str+='</div></div>  ';
 
-		str+='<div class=" well well-small"> <a class="btn btn-danger" onclick="addNewFrom();" href="javascript:void(0);">Click to add another From - Who</a></div><legend>To - Whom</legend>';
+		str+='<div class=" well well-small" style="margin-bottom: 0px;"> <a class="btn btn-danger" onclick="addNewFrom();" href="javascript:void(0);">Click to add another From - Who</a></div><legend>To - Whom</legend>';
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
 		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')">';
@@ -2756,7 +2756,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+=' </div>';
 		str+='</div>';
 
-		str+='<div class="row-fluid"><div id="formdata" style="display:none;"></div></div><div class="container" style="background:#E8E8F2;margin-top: 25px;padding:15px;width: 920px;" ><legend class="">&nbsp;Add News From Different Sources</legend><div class="row-fluid ">';
+		str+='<div class="row-fluid"><div id="formdata" style="display:none;"></div></div><div class="container" style="margin-top: 10px;margin-left:0px;border-radius:5px;padding:5px 15px 15px 15px;width: 906px;border:1px solid #ADC248;" ><legend class="">&nbsp;Add News From Different Sources</legend><div class="row-fluid ">';
 		str+='    <div class="span12">';
 		str+='        <div class="row-fluid">';
 		str+='<div class="container ">';
@@ -2797,7 +2797,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div id="source0newfile"></div>';
 		str+='<div class="container m_top5">';
 		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription" style="width: 900px;"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription" style="width: 900px;"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if title is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -2810,7 +2810,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='<div class="row-fluid">';
 		str+='      <a style="margin-top:-30px" class="offset6 span5 btn btn-danger" onclick="addNewFileSource();" href="javascript:void(0);" style="margin-top: -60px;">Click here to  <span class="label ">Add <i class="icon-plus-sign icon-white"></i></span> another source</a></div></div>';
-		str+='<div class="row-fluid"><div class="container m_top10" style="background:#E8E8F2;padding:15px;width: 920px;"><legend class="">Select News Location</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
+		str+='<div class="row-fluid"><div class="container m_top10" style="padding:5px 15px 15px 15px;width: 920px;border:1px solid #ADC248;margin-left:0px;border-radius:5px;width:906px;"><legend class="">Select News Location</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
 		str += '<select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"></select></div>';
         str +='<div id="showScopeSubs"></div>';
 		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Save changes" class="btn btn-success btn-large">                         </div></div></div>';
@@ -2859,7 +2859,7 @@ $("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProp
 		$("#KeywordPartiesListForNewsTo").multiselect('refresh');
 		$("#KeywordPartiesListForNewsTo").multiselect('create');
 
-
+$('#newsdatedatepic').val('');
 }
 var addSource = 0;
 function addNewFileSource(){
@@ -2869,7 +2869,7 @@ function addNewFileSource(){
 		str+='    <div class="span12">';
 		str+='        <div class="row-fluid">';
 		str+='<div class="container ">';
-		str+='        <div class="span4" style="width: 290px;">';
+		str+='        <div class="span4" style="width: 275px;">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
 		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls" key="'+addSource+'aaanewsfileDescription">';
@@ -2906,7 +2906,7 @@ function addNewFileSource(){
 		str+='<div id="source'+addSource+'newfile"></div>';
 		str+='<div class="container m_top5">';
 		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 915px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 875px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -2931,7 +2931,7 @@ function addNewFilePart(id){
      addFile = addFile+1;
         var str ='';
         str+='<div id ="'+addFile+'newpart'+id+'" class="container ">';
-		str+='        <div class="span4">';
+		str+='        <div class="span4" style="width: 275px;">';
 				
 		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn addFileImgCls">';
 
