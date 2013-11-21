@@ -2258,7 +2258,7 @@ $("#locationWiseNewsDiv").css("display","none");
 	var reportRegionLevel = $("#reportRegionLevel").val();
 	var reportRegionLevelVal = 0;
 	 var type="";
-	if($("#byLevelChecked").is(':checked')){
+	if($("#byLocationLvl").is(':checked')){
 	  type = "byLevel";
 	}else{
 	  type = "byRegion";
