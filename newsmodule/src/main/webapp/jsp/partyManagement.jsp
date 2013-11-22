@@ -2698,6 +2698,9 @@ function uploadNewsForPartyAndCandidate(fileId)
 			str+='</div>    ';
 		str+='</div> ';
 
+		str+='<div class="span3" style="margin-left: 12px;"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Mark This News As Public</font></b></label></div>';
+		str+='<div class="span3"><label class="radio"><input type="radio" id="newsprivateRadioId" name="visibility" value="private"><b><font>Mark This News As Private</font></b></label></div>';
+
 		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Discription<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="330"></textarea>     </div>';
 		str+='<div class="span4 ">      ';
 		str+='<label><strong>Image To Display<span class="requiredFont">*</span></strong></label>';
