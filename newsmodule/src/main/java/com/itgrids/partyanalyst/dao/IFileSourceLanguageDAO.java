@@ -18,4 +18,8 @@ public interface IFileSourceLanguageDAO extends GenericDao<FileSourceLanguage, L
 	public List<Object[]> getSourceDetailsByFileIds(Set<Long> fileIds);
 	
 	public List<Object[]> getFileSourceType(List<Long> fileIds);
+	
+	public List<Object[]> getEditionPartNoDetailsByFileIds(Set<Long> fileIds);
+	
+	public List<Object[]> getCandidateNamesByFileIds(Long fileId);
 }
