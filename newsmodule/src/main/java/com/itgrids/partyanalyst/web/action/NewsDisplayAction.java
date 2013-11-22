@@ -573,7 +573,7 @@ public class NewsDisplayAction implements ServletRequestAware{
    public String getNewsForAUser()
    {
 	   try{
-		   jObj = new JSONObject(getTask());
+		   //jObj = new JSONObject(getTask());
 		  session = request.getSession();
 		  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
 		  if(regVo == null)
@@ -581,15 +581,28 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  Long userId = regVo.getRegistrationID();
 		  FileVO fileVO = new FileVO();
 		  fileVO.setUserId(userId);
-		  fileVO.setFromDateStr(jObj.getString("fromDate"));
+		  
+		  /*fileVO.setFromDateStr(jObj.getString("fromDate"));
 		  fileVO.setToDateStr(jObj.getString("toDate"));
 		  fileVO.setLatest(true);
 		  fileVO.setRegionValue(jObj.getLong("regionLevel"));
 		  fileVO.setImportanceId(jObj.getLong("importance"));
 		  fileVO.setFileType(jObj.getString("type"));
 		  fileVO.setLocationId(jObj.getLong("reportRegionLevel"));
-		  fileVO.setLocationVal(jObj.getLong("reportRegionLevelVal"));
-		  returnVal = newsMonitoringService.getAllNewsDetails(fileVO);
+		  fileVO.setLocationVal(jObj.getLong("reportRegionLevelVal"));*/
+		  
+		  fileVO.setFromDateStr(request.getParameter("fromDate"));
+		  fileVO.setToDateStr(request.getParameter("toDate"));
+		  fileVO.setRegionValue(Long.parseLong(request.getParameter("regionLevel")));
+		  fileVO.setImportanceId(Long.parseLong(request.getParameter("importance")));
+		  fileVO.setFileType(request.getParameter("type"));
+		  fileVO.setLocationId(Long.parseLong(request.getParameter("reportRegionLevel")));
+		  fileVO.setLocationVal(Long.parseLong(request.getParameter("reportRegionLevelVal")));
+		  fileVO.setLatest(true);
+		  fileVO.setStartIndex(Integer.parseInt(request.getParameter("startIndex")));
+		  fileVO.setMaxResult(Integer.parseInt(request.getParameter("results")));
+		  
+		  savedDetails = newsMonitoringService.getAllNewsDetails(fileVO);
 		  
 	   }
 	   catch (Exception e) {

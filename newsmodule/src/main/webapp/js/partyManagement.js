@@ -6948,3 +6948,123 @@ return oPayload;
   
 }
 
+function getNewsDetailsForNewsReportGeneration()
+{
+
+  //$("#newsReportAjaxImg").css({ 'display': 'inline-block' });
+$("#locationWiseNewsDiv").css("display","block");
+$("#newsReportBtnDiv").css("display","block");
+$("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
+
+	var fromDate = $("#fromDateId1").val();
+	var toDate = $("#toDateId1").val();
+	var regionLevel = $("#regionlevel").val();
+	var importance = $("#newsPriority").val();
+	var reportRegionLevel = $("#reportRegionLevel").val();
+	var reportRegionLevelVal = 0;
+	 var type="";
+	if($("#byLevelChecked").is(':checked')){
+	  type = "byLevel";
+	}else{
+	  type = "byRegion";
+	  if(reportRegionLevel == 1){
+	      reportRegionLevelVal = 1;
+	  }else if(reportRegionLevel == 2){
+		  reportRegionLevelVal = $("#districtSelReportId option:selected").val();
+	  }else if(reportRegionLevel == 3){
+		  reportRegionLevelVal = $("#parliamSelReportId option:selected").val();
+	  }else if(reportRegionLevel == 4){
+		  reportRegionLevelVal = $("#assembSelReportId option:selected").val();
+	  }
+	}
+
+   $("#reportGenaratorNewsDiv").css("display","block");	
+ $("#reportGenaratorSpanCLS").html('0');	
+
+   YAHOO.widget.DataTable.title = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var isEenaduTelugu = oRecord.getData("eenaduTeluguFontStr");
+		var fileId = oRecord.getData("contentId");
+		var title = oRecord.getData("fileTitle1");
+		
+		if(isEenaduTelugu != null && isEenaduTelugu == "Eenadu Telugu")
+		  str +="<span class='enadu'><a href='javascript:{}' onclick='getNewsDetailsByContentId("+fileId+")' class='newsLinkCls'>"+title+"</a></span>";
+		  else
+		  str +="<span><a href='javascript:{}' onclick='getNewsDetailsByContentId("+fileId+")' class='newsLinkCls'>"+title+"</a></span>";
+		  
+		elLiner.innerHTML=str;
+					
+	};
+	
+	YAHOO.widget.DataTable.newsCheckBox = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		
+		var fileId = oRecord.getData("contentId");
+		if(newsReportFileIdsArray.indexOf(""+fileId+"") != -1)
+		 str +='<input type="checkbox" value="'+fileId+'" class="createReporcCheckBoxCls" checked="checked" />';
+		 else
+		  str +='<input type="checkbox" value="'+fileId+'" class="createReporcCheckBoxCls" />';
+		  
+		elLiner.innerHTML=str;
+					
+	};
+	
+	YAHOO.widget.DataTable.location = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		
+		var locationName = oRecord.getData("locationName");
+		var location = oRecord.getData("locationScopeValue");
+		str +=''+locationName+'&nbsp;&nbsp;'+location+'';
+		  
+		elLiner.innerHTML=str;
+					
+	};
+
+  var newsColumns = [
+   {key:"",label:"",formatter:YAHOO.widget.DataTable.newsCheckBox},
+   {key:"source",label:"Source"},
+   {key:"fileTitle1",label:"Title",formatter:YAHOO.widget.DataTable.title},
+   {key:"fileDate",label:"File Date"},
+   {key:"candidateName",label:"Candidate Name"},
+   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location},
+  ];
+  
+  
+  var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&type="+type+"");
+  newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+  newsDataSource.responseSchema = {
+  resultsList: "fileVOList",
+   fields: [
+             {key:"contentId", parser:"number"},
+			        "fileTitle1","source","fileDate","candidateName","locationName","locationScopeValue"],
+
+    metaFields: {
+    totalRecords: "count" // Access to value in the server response
+     },
+  };
+  
+  
+  var myConfigs = {
+initialRequest: "sort=candidateName&dir=asc&startIndex=0&results=100", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"candidateName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 100 
+			    })  // Enables pagination
+};
+
+var newsDataTable = new YAHOO.widget.DataTable("locationWiseNewsDiv",
+newsColumns, newsDataSource, myConfigs);
+
+newsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+  
+}
+  
+  
+}
+

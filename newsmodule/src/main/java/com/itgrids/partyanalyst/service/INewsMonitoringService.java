@@ -73,7 +73,7 @@ public interface INewsMonitoringService {/*
 	
 	public ResultStatus changePassword(final String currentPWD,final String newPWD,final Long userId);
 		
-	public List<FileVO> getAllNewsDetails(FileVO fileVO);
+	public FileVO getAllNewsDetails(FileVO fileVO);
 	
 	public ResultStatus saveNewsReport(final List<Long> fileGallaryIds,final Long userId,final String decription);
 	
