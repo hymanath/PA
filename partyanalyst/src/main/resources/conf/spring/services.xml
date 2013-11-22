@@ -1773,6 +1773,8 @@
 	 <property name="smsCountrySmsService" ref="smsCountrySmsService" />
 	 <property name="mobileAppUserAccessKeyDAO" ref="mobileAppUserAccessKeyDAO"></property>
      <property name="userDAO" ref="userDAO" />
+     <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+     <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
