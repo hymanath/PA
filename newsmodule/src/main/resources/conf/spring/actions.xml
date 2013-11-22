@@ -86,6 +86,10 @@
 	
 	<bean id="newsAnalysisAction" class="com.itgrids.partyanalyst.web.action.NewsAnalysisAction" singleton="false">
 	 	<property name="newsAnalysisService" ref="newsAnalysisService"/>
+	 	<property name="staticDataService" ref="staticDataService"/>
 	</bean>
+	
+	
+	
 	
 	</beans>
