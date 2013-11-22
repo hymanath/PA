@@ -111,7 +111,8 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	 
 	}
 		
-	 public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue)
+	 @SuppressWarnings("unchecked")
+	public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,Integer startIndex,Integer maxIndex)
 	 {
 		 StringBuilder str = new StringBuilder();
 		 str.append("select distinct model from File model where model.isDeleted !='Y' ");
@@ -137,13 +138,16 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		 query.setParameter("importanceId", importanceId);
 		 if(regionValue != 1)
 			 query.setParameter("regionValue", regionValue);
-		 query.setFirstResult(0);
-		 query.setMaxResults(300);
+		 if(startIndex != null)
+		   query.setFirstResult(startIndex);
+		 if(maxIndex != null)
+		 query.setMaxResults(maxIndex);
 		return query.list();
 		 
 	}
 	 
-	 public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds)
+	 @SuppressWarnings("unchecked")
+	public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,Integer startIndex,Integer maxIndex)
 	 {
 		 StringBuilder str = new StringBuilder();
 		 str.append("select distinct model from File model where model.isDeleted !='Y' ");
@@ -174,8 +178,10 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 			 query.setParameter("location", location);
 		 if(regionValue.longValue() == 3l)
 			 query.setParameterList("location", locationIds);
-		 query.setFirstResult(0);
-		 query.setMaxResults(300);
+		 if(startIndex != null)
+		   query.setFirstResult(startIndex);
+		 if(maxIndex != null)
+		   query.setMaxResults(maxIndex);
 		return query.list();
 		 
 	}
