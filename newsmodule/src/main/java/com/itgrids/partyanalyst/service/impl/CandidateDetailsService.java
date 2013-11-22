@@ -7802,7 +7802,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	filevo.setFileDescription1(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):""));
 	if(file.getFileDate() != null)
 	filevo.setFileDate(new SimpleDateFormat("yyyy-MM-dd").format(file.getFileDate()));
-	//filevo.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)fileGallary.getFileGallaryId()).size());
+	filevo.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID((Long)file.getFileId()).size());
 	if(file.getFont() != null)
 	filevo.setFontId(file.getFont().getFontId());
 	if(file.getCategory() != null){
@@ -8146,6 +8146,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 fileVO.setCount(count.intValue());
 			 fileVO.setFileId((Long)parms[4]);
 			 fileVO.setFontId( parms[5] != null ? (Integer)parms[5] :0);
+			 fileVO.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileVO.getFileId()).size());
 			 fileIds.add(fileVO.getFileId());
 			 fileMap.put(fileVO.getFileId(), fileVO);
 			 
