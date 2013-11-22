@@ -1700,6 +1700,8 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="delimitationConstituencyAssemblyDetailsDAO"  ref="delimitationConstituencyAssemblyDetailsDAO" />
 		<property name="designationDAO" ref="designationDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="stateDAO" ref="stateDAO" />
 </bean>
 <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
     	<property name="partyDAO" ref="partyDAO" />

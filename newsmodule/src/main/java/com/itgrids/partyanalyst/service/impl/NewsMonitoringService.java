@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IContentNotesDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDesignationDAO;
@@ -48,6 +49,7 @@ import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
 import com.itgrids.partyanalyst.dao.ISourceDAO;
 import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
@@ -60,6 +62,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Category;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
@@ -117,8 +120,25 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IPartyDAO partyDAO;
     private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
     private IDesignationDAO designationDAO;
+    private IConstituencyDAO constituencyDAO;
+    private IStateDAO stateDAO;
+    
    
     
+	/**
+	 * @param stateDAO the stateDAO to set
+	 */
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	/**
+	 * @param constituencyDAO the constituencyDAO to set
+	 */
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
 	public IDesignationDAO getDesignationDAO() {
 		return designationDAO;
 	}
@@ -5274,7 +5294,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  }
 	}
 	
-	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId)
+	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 	  try{
@@ -5289,6 +5309,31 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  candidate.setParty(partyDAO.get(partyId));
 		  candidate.setLastname(candidateName);
 		  candidate.setDesignation(designationDAO.get(designationId));
+		  if(loctionId == 1)
+		  {
+			 Object[] stateAndDisrictValues = constituencyDAO.getStateAndDistrictDetails(locationValue).get(0);
+			 Long pcId = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstituencyByParlimentId(locationValue).get(0);
+			 if(stateAndDisrictValues != null)
+			 {
+				 candidate.setState(stateDAO.get((Long)stateAndDisrictValues[0])) ;
+				 candidate.setDistrict(districtDAO.get((Long)stateAndDisrictValues[1]));
+				 candidate.setAssembly(constituencyDAO.get(locationValue));
+			 }
+			 if(pcId > 0)
+			 {
+				 candidate.setParliament(constituencyDAO.get(pcId)); 
+			 }
+		  }
+		  else
+		  {
+			  Long stateId = constituencyDAO.getPcConstituency(locationValue).get(0);
+			  if(stateId > 0)
+			  {
+				  candidate.setState(stateDAO.get(stateId));
+				  candidate.setParliament(constituencyDAO.get(locationValue)); 
+			  }
+		  }
+		  
 		  candidateDAO.save(candidate);
 		  
 		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
