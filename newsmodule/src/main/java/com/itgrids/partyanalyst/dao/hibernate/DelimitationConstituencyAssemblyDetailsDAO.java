@@ -213,4 +213,12 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ",params);
 	}
 	
+	public List<Object[]> getAllAssemblyConstituencyByParliamId() 
+	{
+		
+		return getHibernateTemplate().find("select distinct model.constituency.constituencyId,model.delimitationConstituency.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where " +
+				"model.delimitationConstituency.constituency.state.stateId = 1 and model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ");
+	}
+	
 }

@@ -8444,6 +8444,44 @@ private Keyword saveKeyword(Long userId, String keyword1){
 	 return null;
 	 }
  }
-
+public void testgetCandidatesListByPartyIdsList()
+{
+	List<Object[]> data1 = nominationDAO.getTestCandidatesParticipatedInAssemblyAndParlimentElections();
+	
+	System.out.println(data1.size());
+	for(Object[] c:data1){
+		Candidate can = candidateDAO.get((Long)c[0]);
+		can.setDesignation(designationDAO.get(1l));
+		//can.setDesignation(designationDAO.get(2l));
+		can.setParty(partyDAO.get((Long)c[1]));
+		can.setParliament(constituencyDAO.get((Long)c[2]));
+		//can.setAssembly(constituencyDAO.get((Long)c[2]));
+		//can.setDistrict(districtDAO.get((Long)c[3]));
+		can.setState(stateDAO.get(1l));
+		candidateDAO.save(can);
+		constituencyDAO.flushAndclearSession();
+		
+	}
+	List<Object[]> data2 = nominationDAO.getTestCandidatesParticipatedInAssemblyAndParlimentElectionsAss();
+	List<Object[]> list = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstituencyByParliamId();
+	Map<Long,Long> consti = new HashMap<Long,Long>();
+	for(Object[] dat:list){
+		consti.put((Long)dat[0], (Long)dat[1]);
+	}
+	for(Object[] c:data2){
+		Candidate can = candidateDAO.get((Long)c[0]);
+		//can.setDesignation(designationDAO.get(1l));
+		can.setDesignation(designationDAO.get(2l));
+		can.setParty(partyDAO.get((Long)c[1]));
+		if(consti.get((Long)c[2]) != null)
+		can.setParliament(constituencyDAO.get(consti.get((Long)c[2])));
+		can.setAssembly(constituencyDAO.get((Long)c[2]));
+		can.setDistrict(districtDAO.get((Long)c[3]));
+		can.setState(stateDAO.get(1l));
+		candidateDAO.save(can);
+		constituencyDAO.flushAndclearSession();
+		
+	}
+}
 
  }

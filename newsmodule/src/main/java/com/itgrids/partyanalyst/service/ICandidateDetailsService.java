@@ -325,4 +325,6 @@ public interface ICandidateDetailsService {
 	 
 	 public String mergeSelectedKeywords(Long userId,List<Long> keywordsList,String newKeyword);
 	 
+	 public void testgetCandidatesListByPartyIdsList();
+	 
 }

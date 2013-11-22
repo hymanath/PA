@@ -3749,6 +3749,34 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	  return query.list();
 	}
 	
-
+	public List<Object[]> getTestCandidatesParticipatedInAssemblyAndParlimentElections()
+	{
+		
+		Query query = getSession().createQuery("select distinct  model1.candidate.candidateId  , model1.party.partyId,model1.constituencyElection.constituency.constituencyId " +
+				"from Nomination model1 where model1.constituencyElection.election.electionDate in(select max(model2.constituencyElection.election.electionDate) from " +
+				"Nomination model2 where model1.candidate.candidateId = model2.candidate.candidateId " +
+				"and model1.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2)) " +
+				"and model1.constituencyElection.constituency.state.stateId = 1 and model1.constituencyElection.election.electionScope.electionType.electionTypeId = 1  group by model1.candidate.candidateId  order by model1.candidate.lastname");
+		
+	
+	    return query.list();
+		
+		
+	}
+	
+	public List<Object[]> getTestCandidatesParticipatedInAssemblyAndParlimentElectionsAss()
+	{
+		
+		Query query = getSession().createQuery("select distinct  model1.candidate.candidateId  , model1.party.partyId ,model1.constituencyElection.constituency.constituencyId,model1.constituencyElection.constituency.district.districtId " +
+				"from Nomination model1 where model1.constituencyElection.election.electionDate in(select max(model2.constituencyElection.election.electionDate) from " +
+				"Nomination model2 where model1.candidate.candidateId = model2.candidate.candidateId " +
+				"and model1.constituencyElection.election.electionScope.electionType.electionTypeId in(1,2)) " +
+				"and model1.constituencyElection.election.electionScope.state.stateId = 1 and model1.constituencyElection.election.electionScope.electionType.electionTypeId = 2  group by model1.candidate.candidateId  order by model1.candidate.lastname");
+		
+	
+	    return query.list();
+		
+		
+	}
 }
 

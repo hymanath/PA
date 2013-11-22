@@ -58,6 +58,11 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private String gender;
 	private String image;
 	private Party party;
+	private State state;
+	private District district;
+	private Constituency assembly;
+	private Constituency parliament;
+	
 	private Set<Nomination> nominations = new HashSet<Nomination>(0);
 	//private Set<UserCandidateRelation> userCandidateRelations = new HashSet<UserCandidateRelation>(0);
 	private Set<Gallary> gallaries = new HashSet<Gallary>(0);
@@ -424,6 +429,54 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 
 	public void setDesignation(Designation designation) {
 		this.designation = designation;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public State getState() {
+		return state;
+	}
+
+	public void setState(State state) {
+		this.state = state;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="district_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public District getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(District district) {
+		this.district = district;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="assembly_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getAssembly() {
+		return assembly;
+	}
+
+	public void setAssembly(Constituency assembly) {
+		this.assembly = assembly;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="parliament_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getParliament() {
+		return parliament;
+	}
+
+	public void setParliament(Constituency parliament) {
+		this.parliament = parliament;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
