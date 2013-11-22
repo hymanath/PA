@@ -2909,7 +2909,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='    </div>';
 		str+='<div class="span12 well well-small" style="margin-left: 0px;">';
-		str+='<label><strong>Enter Keywords</strong></label><input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId">';
+		str+='<label><strong>Enter Keywords</strong></label><div id="keywordDiv"><input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId"></div>';
 		str+='<span class="help-block">Enter multiple keywords with comma separator Ex : padayatra,scam,';
 		str+='    </span>';
 		str+='</div>';
