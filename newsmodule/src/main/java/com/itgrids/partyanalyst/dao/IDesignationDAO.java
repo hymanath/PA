@@ -9,5 +9,7 @@ import com.itgrids.partyanalyst.model.Designation;
 public interface IDesignationDAO extends GenericDao<Designation, Long>{
 	
 	public List<Object[]> getDesignationsList();
+	
+	public Long getDesignation(String designation);
 
 }
