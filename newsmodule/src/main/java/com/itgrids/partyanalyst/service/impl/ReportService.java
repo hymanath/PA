@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -13,8 +12,6 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
-import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
-import com.itgrids.partyanalyst.dto.FileSourceVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IReportService;
