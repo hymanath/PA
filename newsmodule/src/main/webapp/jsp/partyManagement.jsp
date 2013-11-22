@@ -449,7 +449,7 @@ function clearDivsForGallary(){
 					
 					<li class="">
 					<!-- <a data-toggle="tab" href="#CreateReport">Create Report</a> -->
-					<a data-toggle="tab" value="create Report" id="createReportId" onClick="getNewsReports()" style="cursor:pointer;color: #005580;">Create Report </a>
+					<a data-toggle="tab" value="create Report" id="createReportId" onClick="createReport();" style="cursor:pointer;color: #005580;">Create Report </a>
 					</li>
 					<li class="">
 					<!-- <a data-toggle="tab" href="#ViewReport">View Report</a>-->
