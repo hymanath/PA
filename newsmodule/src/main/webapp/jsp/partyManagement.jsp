@@ -2221,7 +2221,7 @@ function buildSelectOptionVOList(optionsList,elmt,populatedId)
 
 function createReport()
 {
-
+  $("#locationWiseNewsDiv").html("");
  $("#newsReportDiv").css("display","block");
   $("#newsGallaryDiv").css("display","none");
   $("#newsAssignGallaryDiv").css("display","none");
