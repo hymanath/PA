@@ -576,13 +576,13 @@ for (Object[] objects : list) {
 		 System.out.println(params[0]+" "+params[1]);
 	}*/
 	
-	public void testgetFamiliesCountForLocality()
+	/*public void testgetFamiliesCountForLocality()
 	{
 		List<Object[]> list = userVoterDetailsDAO.getFamiliesCountForLocality(232l, 8l, 1l);
 		if(list != null && list.size() > 0)
 		 for(Object[] params:list)
 		  System.out.println(params[0]+" "+params[1]);
-	}
+	}*/
 	
 	/*public void testgetLocalityWiseVoterAgeInfo()
 	{
@@ -623,5 +623,21 @@ for (Object[] objects : list) {
 		for(Object[] params:list)
 		 System.out.println(params[0]+" "+params[1]);
 	}*/
+	
+	/*public void testGetCadreCaste()
+	{
+		List<Long> cadreIdsList = new ArrayList<Long>(0);
+		cadreIdsList.add(1l);
+		cadreIdsList.add(2l);
+		List<Object[]> list = userVoterDetailsDAO.getCadreCaste(cadreIdsList);
+		System.out.println(list.size());
+		
+	}*/
+	
+	public void testGetHamletBoothInfo()
+	{
+		List<Object[]> list = userVoterDetailsDAO.getHamletBoothInfo(282l,1l);
+		System.out.println(list.size());
+	}
 	
 }

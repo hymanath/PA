@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
+import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 
 public class PartialBoothPanchayatDAOHibernateTest extends BaseDaoTestCase{
 
@@ -101,9 +102,15 @@ public class PartialBoothPanchayatDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(result);
 	}*/
 	
-	public void testGetPartialBoothsCount()
+	/*public void testGetPartialBoothsCount()
 	{
 		partialBoothPanchayatDAO.getPartialBoothPanchayatDetailsByPanchayatIdAndPublicationDateId(3l,8l);
 		
+	}*/
+	
+	public void testGetPartialBoothsInAConstituency()
+	{
+		List<PartialBoothPanchayat> list = partialBoothPanchayatDAO.getPartialBoothsInAConstituency(282l);
+		System.out.println(list.size());
 	}
 }

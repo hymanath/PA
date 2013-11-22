@@ -143,4 +143,17 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 			System.out.println(long1);
 		}
 	}*/
+	
+	public void testGetAssemblyConstituencyAndMandalsInAState()
+	{
+		List<Object[]> list = delimitationConstituencyMandalDAO.getAssemblyConstituencyAndMandalsInAState(1l);
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj.toString());
+		}
+	}
 }
