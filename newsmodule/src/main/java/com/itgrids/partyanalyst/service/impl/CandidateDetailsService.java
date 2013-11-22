@@ -7956,7 +7956,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 if(categoryIdsList != null && categoryIdsList.size() > 0)
 	 fileVOList.get(0).setCount(candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, null, null, type,fromDate,toDate,categoryIdsList).size());
 	 else
-		 fileVOList.get(0).setCount(candidatePartyFileDAO.getCandidateFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate).size());	 
+		 fileVOList.get(0).setCount(candidatePartyFileDAO.getCandidateFileListByCandidateId(candidateId, null, null, type,fromDate,toDate).size());	 
 	 }
 	 return fileVOList;
 }catch (Exception e) {
