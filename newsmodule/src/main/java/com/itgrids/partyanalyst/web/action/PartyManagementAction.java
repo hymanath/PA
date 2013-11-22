@@ -393,6 +393,7 @@ public String execute()
  {
 	session = request.getSession();
 	RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
+	//candidateDetailsService.testgetCandidatesListByPartyIdsList();
 	if (registrationVO != null) 
 	{
 	// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
