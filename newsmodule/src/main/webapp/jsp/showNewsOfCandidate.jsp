@@ -330,7 +330,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		}
 		str +='</p></td><td><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td>';
 	if(results[i].responseCount > 0)
-		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+results[i].responseCount+'</p></td>';
+		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><a href="showNewsResponseAction.action?responseContentId ='+results[i].contentId+' "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+results[i].responseCount+'</a></p></td>';
 		
 		str +='</tr></table>';
 		str +='</div>';

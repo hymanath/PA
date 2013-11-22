@@ -271,7 +271,7 @@ public class ContentManagementService implements IContentManagementService{
 						Long locationScopeId = fileVal.getRegionScopes().getRegionScopesId();
 						fileVO.setLocationId(locationScopeId);
 						fileVO.setLocationName(getLocationBasedOnScopeId(locationScopeId, fileVal.getLocationValue()));
-						
+						fileVO.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileVal.getFileId()).size());
 						List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 						Set<FileSourceLanguage> fileSourceLanguageSet = fileVal.getFileSourceLanguage();
 						
@@ -978,7 +978,7 @@ public class ContentManagementService implements IContentManagementService{
 				 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
 				 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
 				 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
-				 List<Object[]> editionDets = filePathsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
+				/* List<Object[]> editionDets = filePathsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
 				 if(editionDets != null && editionDets.size() > 0)
 					{
 					 if(editionDets.get(0) != null)
@@ -990,7 +990,7 @@ public class ContentManagementService implements IContentManagementService{
 					  else
 						  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
 					 }
-					}
+					}*/
 				 
 				 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
 				 
@@ -1002,6 +1002,14 @@ public class ContentManagementService implements IContentManagementService{
 					 fileVOPath.setPath(filePath.getFilePath());
 					 fileVOPath.setOrderNo(filePath.getOrderNo());
 					 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
+					 if(filePath.getEdition() != null){
+						 Long edition = filePath.getEdition().longValue();
+						  if(edition.equals(1L))
+							  fileVOSourceLanguage.setNewsEdition("Main Edition");
+						  else
+							  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+					 }
+					 fileVOSourceLanguage.setPageNo(new Long(filePath.getPageNo()));
 					 fileVOPathsList.add(fileVOPath);
 				 }
 				 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);

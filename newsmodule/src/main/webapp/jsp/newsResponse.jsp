@@ -196,6 +196,7 @@ function callAjax(jsObj,url)
 
 function buildNewsDetails(results)
 {
+	
 	showContentResultList = results;
 
    var str='';
@@ -244,8 +245,10 @@ function buildNewsDetails(results)
         if(i != 0)
         str+='<div style="float: left; margin-top: 60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png" "></img></a></div>';
 		
-
+		if(results[i].fileVOList[0].fileVOList[0] != null)
 		str+='<img  src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="" alt="news image not available"></img>';
+		else
+		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" ></img>';
 		str+='</div>';
 
 		if(results[i].fileVOList[0].fileVOList.length > 1)
