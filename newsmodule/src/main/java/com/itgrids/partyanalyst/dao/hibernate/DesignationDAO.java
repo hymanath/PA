@@ -23,4 +23,11 @@ public class DesignationDAO extends GenericDaoHibernate<Designation, Long> imple
       return query.list();
     }
 	
+	public Long getDesignation(String designation)
+	{
+		Query query = getSession().createQuery("select model.designationId from Designation model where model.designation = :designation");
+		query.setParameter("designation", designation);
+		return (Long)query.uniqueResult();
+	}
+	
 }

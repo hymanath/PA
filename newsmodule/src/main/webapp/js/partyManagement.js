@@ -499,6 +499,30 @@ function callAjax(jsObj,url)
 			
 			else if(jsObj.task == "getDesignationsList")
 			 builddesignationsList(myResults,jsObj);
+			 
+			else if(jsObj.task == "createNewDesignation")
+			{
+				if(myResults.resultCode == 0)
+				{
+					$('#statusDivForDesignation').html('<b style="color:green">Designation created successfully</b>');
+				}
+				else
+				{
+					$('#statusDivForDesignation').html('<b style="color:red">Designation already exists</b>');
+				}
+			}
+			else if(jsObj.task == "createNewParty")
+			{
+				if(myResults.resultCode == 0)
+				{
+					$('#statusForParty').html('<b style="color:green">Party created successfully</b>');
+				}
+				else
+				{
+					$('#statusForParty').html('<b style="color:red">Party already exists</b>');
+				}
+			}
+			 
 		
      	}
 		catch(e)
@@ -3835,7 +3859,8 @@ function showTheNewsToUpdate()
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsEditId").css({"background":"none repeat scroll 0 0 #F61D50"});*/
-  
+  $("#newDesignationDiv").css("display","none");
+  $("#newPartyCreationDiv").css("display","none");
   $("#dateSelectDiv").css("display","block");
   $("#newsFromDateId").val('');
   $("#newsToDateId").val('');
@@ -6562,6 +6587,8 @@ function getNewsReports ()
   $("#profileManagementMainOuterDiv7").css("display","block");
    $("#profileManagementHeaderDiv7").css("display","none");
    $("#profileManagementMainOuterDiv8").css("display","none");
+   $("#newDesignationDiv").css("display","none");
+  $("#newPartyCreationDiv").css("display","none");
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
     var str ='';

@@ -5831,6 +5831,19 @@
 		    	<param name="root">reportUrl</param>
 		   </result>
 		</action>
+		
+		<action name="savePartyDetailsAction" class="newsAnalysisAction" method="savePartyDetails">
+		  <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action> 
+		
+		  <action name="saveDesignationDetailsAction" class="newsAnalysisAction" method="saveDesignation">
+			  <result type="json" name="success">
+			    	<param name="root">resultStatus</param>
+			   </result>
+		</action>
+		
 		</package>
 		
 		

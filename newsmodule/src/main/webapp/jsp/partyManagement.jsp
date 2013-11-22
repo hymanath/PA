@@ -332,10 +332,58 @@ function createPartyKeywordDiv(){
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","block");
+  $("#newDesignationDiv").css("display","none");
+  $("#newPartyCreationDiv").css("display","none");
   $('#statusDiv1').html('');
   $('#statusDiv2').html('');
  }
 
+ function createDesignationDiv()
+ {
+	  $("#newsReportDiv").css("display","block");
+	  $("#newsGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").html('');
+	  $("#profileManagementMainOuterDiv4").css("display","none");
+	  $("#profileManagementHeaderDiv2").css("display","none");
+	  $("#profileManagementMainOuterDiv3").css("display","none");
+	  $("#profileManagementHeaderDiv3").css("display","none");
+	  $("#videoGallaryDiv").css("display","none");
+	  $("#dateSelectDiv").css("display","none");
+	  $("#profileManagementMainOuterDiv5").css("display","none");
+	  $("#profileManagementHeaderDiv5").css("display","none");
+	  $("#profileManagementMainOuterDiv6").css("display","none");
+	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDiv8").css("display","none");
+	  $("#newDesignationDiv").css("display","block");
+	  $("#newPartyCreationDiv").css("display","none");
+	  $('#statusDiv1').html('');
+	  $('#statusDiv2').html('');
+ }
+ 
+ function createPartyDiv()
+ {
+	  $("#newsReportDiv").css("display","block");
+	  $("#newsGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").html('');
+	  $("#profileManagementMainOuterDiv4").css("display","none");
+	  $("#profileManagementHeaderDiv2").css("display","none");
+	  $("#profileManagementMainOuterDiv3").css("display","none");
+	  $("#profileManagementHeaderDiv3").css("display","none");
+	  $("#videoGallaryDiv").css("display","none");
+	  $("#dateSelectDiv").css("display","none");
+	  $("#profileManagementMainOuterDiv5").css("display","none");
+	  $("#profileManagementHeaderDiv5").css("display","none");
+	  $("#profileManagementMainOuterDiv6").css("display","none");
+	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDiv8").css("display","none");
+	  $("#newDesignationDiv").css("display","none");
+	  $("#newPartyCreationDiv").css("display","block");
+	  $('#statusDiv1').html('');
+	  $('#statusDiv2').html('');
+ }
+ 
 function clearDivsForGallary(){
  $("#newsReportDiv").css("display","block");
   $("#newsGallaryDiv").css("display","block");
@@ -352,12 +400,58 @@ function clearDivsForGallary(){
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","none");
-  		$('#statusDiv1').html('');
-		$('#statusDiv2').html('');
+  $('#statusDiv1').html('');
+  $('#statusDiv2').html('');
+  $("#newDesignationDiv").css("display","none");
+  $("#newPartyCreationDiv").css("display","none");
 
 }
 
+function createNewDesignation()
+{
+	if($('#designationId').val() == ""){
+		$('#statusDivForDesignation').html('<b style="color:red">Please Enter Desgination Description</b>');
+		//$('#statusDivForDesignation').delay(1000);
+		//$('#statusDivForDesignation').show();
+		//$('#statusDivForDesignation').hide();
+	}
+	else
+	{
+		var jsObj={
+		designation :$('#designationId').val(),
+		time:timeST,
+		task:"createNewDesignation"
+		};
 
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveDesignationDetailsAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	  
+}
+
+function createNewParty()
+{
+	if($('#partyShortName').val() == "" || $('#partyLongName').val() == ""){
+		$('#statusForParty').html('<b style="color:red">Please Enter Party Details</b>');
+		//$('#statusForParty').delay(1000);
+		//$('#statusForParty').show();
+		//$('#statusForParty').hide();
+	}
+	else
+	{
+		var jsObj={
+		partyLongName  : $('#partyLongName').val(),
+		partyShortName : $('#partyShortName').val(),
+		time:timeST,
+		task:"createNewParty"
+		};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "savePartyDetailsAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+}
 </script>
 
 <body>
@@ -465,6 +559,18 @@ function clearDivsForGallary(){
 							</li>
 							<li>
 								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createPartyKeywordDiv();reFreshKeywordList();"> Merge Keywords </a>
+							</li>
+						</ul>
+					</li>
+					
+					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >Actions<b class="caret"></b></a>
+					
+						<ul class="dropdown-menu">
+							<li>
+								<li><a data-toggle="tab" id="newKeywordBtn" style="cursor:pointer;color: #005580;" onclick="createPartyDiv();">Create  Party</a></li>
+							</li>
+							<li>
+								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createDesignationDiv();"> Create Designation </a>
 							</li>
 						</ul>
 					</li>
@@ -732,6 +838,8 @@ function clearDivsForGallary(){
 		</div>
 		
 		
+		
+		
 		<div id="mergeKeywordDiv" align="center" style="display:none;">
 		<h2 align="center">Merge Keywords </h2>
 		<div style="border:1px solid #CCCCCC;margin-top:25px;padding:15px;width: 600px;">
@@ -752,6 +860,35 @@ function clearDivsForGallary(){
 </div>
 			
 </div>
+
+<!-- updared by prasad for Actions Div-->
+<div id="newDesignationDiv" align="center">
+	<h2 align="center">Create A New Designation</h2>
+	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;border:1px solid #CCCCCC;padding:15px;">
+	<div id="statusDivForDesignation" align="center" style="margin-bottom: 10px;"></div>
+				
+	Enter Designation <span style="margin-left: 15px;">:</span> <input type="text" id="designationId" style="margin-top: 10px;"/>
+	<br>
+	<button class="btn btn-success" onclick="createNewDesignation();" style="margin-left: 55px;">Create New Designation </button>
+</div>
+</div>
+
+
+<div id="newPartyCreationDiv" align="center">
+	<h2 align="center">Create A New Party</h2>
+	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;border:1px solid #CCCCCC;padding:15px;">
+	<div id="statusForParty" align="center" style="margin-bottom: 10px;"></div>
+		
+	Enter Long Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyLongName" style="margin-top: 10px;"/>
+	<br>
+	Enter Short Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyShortName" style="margin-top: 10px;"/>
+	</br>
+	<button class="btn btn-success" onclick="createNewParty();" style="margin-left: 55px;">Create New Party </button>
+	</div>
+</div>
+
+<!-- updared by prasad for Actions Div-->
+
 <!-- for  body 7  result  end -->
 <script>
 var keywordsArray = new Array();
@@ -2258,7 +2395,8 @@ $("#fromDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
 $("#fromDateId1").datepicker("setDate", new Date());
 $("#toDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
 $("#toDateId1").datepicker("setDate", new Date());
-
+$("#newDesignationDiv").css("display","none");
+$("#newPartyCreationDiv").css("display","none");
 $("#newsReporterrorMessageDiv").html('');
 $("#reportGenaratorNewsDiv").css("display","none");
 $("#locationWiseNewsDiv").html('');

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.INewsAnalysisService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -32,7 +33,22 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	private IStaticDataService staticDataService;
 	private List<SelectOptionVO> districtsList,parlConstiList,assemConstiList;
 	private HttpSession session ; 
+	private ResultStatus resultStatus;
 	
+	/**
+	 * @return the resultStatus
+	 */
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	/**
+	 * @param resultStatus the resultStatus to set
+	 */
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -165,6 +181,43 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		return Action.SUCCESS;
 	}
 	
+	
+	public String saveDesignation()
+	{
+		try {
+			LOG.debug("Entered into saveDesignation method in NewsAnalysisAction Ation");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return Action.ERROR;
+			
+			jObj = new JSONObject(getTask());
+			String designationString = jObj.getString("designation");
+			resultStatus = newsAnalysisService.saveDesignationDetails(designationString);
+		} catch (Exception e) {
+			LOG.error("Exception raised in saveDesignation method in NewsAnalysisAction Ation");
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String savePartyDetails()
+	{
+		try {
+			LOG.debug("Entered into savePartyDetails method in NewsAnalysisAction Ation");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return Action.ERROR;
+			
+			jObj = new JSONObject(getTask());
+			String partyLongName = jObj.getString("partyLongName");
+			String partyShortName = jObj.getString("partyShortName");
+			resultStatus = newsAnalysisService.savePartyDetails(partyShortName,partyLongName);
+		} catch (Exception e) {
+			LOG.error("Exception raised in savePartyDetails method in NewsAnalysisAction Ation");
+		}
+		return Action.SUCCESS;
+	}
 
 	
 }

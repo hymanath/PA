@@ -1702,6 +1702,9 @@
 		<property name="designationDAO" ref="designationDAO" />
 </bean>
 <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
+    	<property name="partyDAO" ref="partyDAO" />
+    	<property name="transactionTemplate" ref="transactionTemplate" />
+    	<property name="designationDAO" ref="designationDAO" />
 </bean>
 
 </beans>		

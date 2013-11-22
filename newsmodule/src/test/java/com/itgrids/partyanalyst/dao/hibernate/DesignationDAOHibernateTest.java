@@ -17,8 +17,13 @@ public class DesignationDAOHibernateTest extends BaseDaoTestCase{
 	  designationDAO.getAll();
 	}*/
 
-	public void testGetDesignationsList()
+	/*public void testGetDesignationsList()
 	{
 	  System.out.println(designationDAO.getDesignationsList().size());
+	}*/
+	
+	public void testgetDesignation()
+	{
+		System.out.println(designationDAO.getDesignation("MP23"));
 	}
 }
