@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.DelimitationConstituencyMandal;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DelimitationConstituencyMandalDAO extends GenericDaoHibernate<DelimitationConstituencyMandal, Long> implements
 IDelimitationConstituencyMandalDAO {
@@ -225,6 +226,19 @@ IDelimitationConstituencyMandalDAO {
 				" and model.delimitationConstituency.year = :year");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("year", year);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getAssemblyConstituencyAndMandalsInAState(Long stateId)
+	{
+		Query query = getSession().createQuery("select model.delimitationConstituency.constituency.constituencyId, model.tehsil.tehsilId, model.isPartial from DelimitationConstituencyMandal model " +
+				" where model.delimitationConstituency.constituency.state.stateId = :stateId and model.delimitationConstituency.constituency.electionScope.electionType.electionType = :electionType and " +
+				" model.delimitationConstituency.constituency.deformDate is null and model.delimitationConstituency.year = :year order by model.delimitationConstituency.constituency.constituencyId, model.tehsil.tehsilId ");
+		
+		query.setParameter("stateId",stateId);
+		query.setParameter("electionType",IConstants.ASSEMBLY_ELECTION_TYPE);
+		query.setParameter("year",2009l);
 		return query.list();
 	}
 }
