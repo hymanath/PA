@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -12,6 +13,8 @@ import org.apache.log4j.Logger;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
+import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
+import com.itgrids.partyanalyst.dto.FileSourceVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IReportService;
@@ -102,6 +105,13 @@ public class ReportService implements IReportService {
 				file.setScope("STATE");
 				file.setLocationName("Andhra Pradesh");
 				
+				List<Object[]> candidateDetails = fileSourceLanguageDAO.getCandidateNamesByFileIds((Long)news[0]);
+				String name="";
+				for(Object[] param:candidateDetails){
+					name +=param[1].toString();
+				}
+				file.setCandidateName(name);
+				
 				if(news[6] != null)
 				  file.setEenadu(true);
 				stateLvlList.add(file);
@@ -130,6 +140,13 @@ public class ReportService implements IReportService {
 				file.setLocationVal((Long)news[5]);
 				file.setName(news[7].toString());
 				
+				List<Object[]> candidateDetails = fileSourceLanguageDAO.getCandidateNamesByFileIds((Long)news[0]);
+				String name="";
+				for(Object[] param:candidateDetails){
+					name +=param[1].toString()+",";
+				}
+				file.setCandidateName(name.substring(0,name.length()-1));
+				
 				file.setScope(news[8] != null?news[8].toString():"");
 				if(news[9] != null)
 					  file.setEenadu(true);
@@ -139,18 +156,89 @@ public class ReportService implements IReportService {
 			}
 			returnVo.setFileVOList(new ArrayList<FileVO>(distLvlList.values()));//setting all news in all districts
 		}
-		List<Object[]> sourceDetails = fileSourceLanguageDAO.getSourceDetailsByFileIds(newsMap.keySet());
-		for(Object[] source:sourceDetails){
-			FileVO vo = newsMap.get((Long)source[0]);
-			if(vo != null){
-				if(vo.getSource() != null && vo.getSource().trim().length() > 0){
-					vo.setSource(vo.getSource()+","+source[1].toString());
-				}else{
-					vo.setSource(source[1].toString());
-				}
-			   if("Eenadu Telugu".equalsIgnoreCase(vo.getSource()))
-				  vo.setNames("true");
-			}
+		
+		List<Object[]> sourceDetails1 = fileSourceLanguageDAO.getEditionPartNoDetailsByFileIds(newsMap.keySet());
+		
+		Map<Long,Map<Long,Map<Long,String>>> map = new HashMap<Long, Map<Long,Map<Long,String>>>(0);//<fileId,<sourceId,<editionId,pageNoStr>>>
+		Map<Long,String> sourceNameMap = new HashMap<Long, String>(0);
+		
+		if(sourceDetails1 != null && sourceDetails1.size() > 0)
+		{
+		  for(Object[] params: sourceDetails1)
+		  {
+			  Map<Long,Map<Long,String>> sourceMap1 = map.get((Long)params[0]);
+			  if(sourceMap1 == null)
+			  {
+				  sourceMap1 = new HashMap<Long, Map<Long,String>>(0);
+				  map.put((Long)params[0], sourceMap1);
+			  }
+			  
+			  Map<Long,String> editionMap = sourceMap1.get((Long)params[1]);
+			  if(editionMap == null)
+			  {
+				  editionMap = new HashMap<Long, String>();
+				  sourceMap1.put((Long)params[1], editionMap);
+			  }
+			  String pageNo = "";
+			  if(editionMap.size()>0)
+			   pageNo = editionMap.get(new Long((Integer)params[3]));
+			  if(pageNo == null || pageNo.length() == 0)
+				  pageNo = params[4].toString();
+			  else
+				 pageNo +=","+params[4].toString();
+			  
+			  editionMap.put(new Long((Integer)params[3]), pageNo);
+			  
+			  String name = sourceNameMap.get((Long)params[1]);
+			  if(name == null)
+				 sourceNameMap.put((Long)params[1], params[2].toString());
+			  
+		  }
+		}
+		
+		if(returnVo.getFileVOList() != null && returnVo.getFileVOList().size() > 0)
+		{
+		  for(FileVO fileVO :returnVo.getFileVOList())
+		   if(fileVO.getFileVOList() != null && fileVO.getFileVOList().size() > 0)
+			 for(FileVO fileVO2 :fileVO.getFileVOList())
+			  {
+				 Map<Long,Map<Long,String>> map1 = map.get(fileVO2.getFileId()); 
+				 if(map1 != null)
+				  for(Long sourceId :map1.keySet())
+				  {
+					String tempString = "";
+					tempString += sourceNameMap.get(sourceId);
+					String mainPaper = "";
+					String districtPaper = "";
+					
+					Map<Long,String> map2 = map1.get(sourceId);
+					if(map2 != null)
+					  for(Long id:map2.keySet())
+					  {
+					    String pageNO = map2.get(id);
+					    if(pageNO != null)
+					    {
+						  if(id.equals(1L))
+							 mainPaper += pageNO;
+						  else
+							 districtPaper += pageNO;  
+					    }
+					  }
+					if(mainPaper.length() > 0)
+						tempString += "(Main:"+mainPaper+")";
+					if(districtPaper.length() > 0)
+						tempString +="(District: "+districtPaper+")";
+					
+					if(fileVO2.getKeyWordsList() == null)
+					{
+						List<String> keywordList = new ArrayList<String>(0);
+						keywordList.add(tempString);
+						fileVO2.setKeyWordsList(keywordList);
+					}
+					else
+						fileVO2.getKeyWordsList().add(tempString);
+				  }
+			  }
 		}
 	 }catch(Exception e){
 		 LOG.error("Exception rised in getReportData ",e);

@@ -104,15 +104,30 @@
 				str+='<h4 class="media-heading "><enadu>'+myResults.fileVOList[i].fileVOList[j].title+'</enadu></h4>';
 			  }else{
 				str+='<h4 class="media-heading">'+myResults.fileVOList[i].fileVOList[j].title+'</h4>';
-			  }												  
-				str+='<h5 style="border-bottom:1px solid #333"><span class="label">'+myResults.fileVOList[i].fileVOList[j].source+'</span> <i class="pull-right">'+myResults.fileVOList[i].fileVOList[j].scope+': '+myResults.fileVOList[i].fileVOList[j].locationName+'</i></h5>';
-				str+='</hgroup>';
+			  }	
+	var str1="";
+	if(myResults.fileVOList[i].fileVOList[j].keyWordsList != null)
+	for(var k=0;k<myResults.fileVOList[i].fileVOList[j].keyWordsList.length;k++){
+	    var sourceVal = myResults.fileVOList[i].fileVOList[j].keyWordsList[k];
+		var n=sourceVal.indexOf("(");
+		var sourceVal1 = sourceVal.substring(0,n);
+		var n1=sourceVal.lastIndexOf(")");
+		var sourceVal3=sourceVal.substring(n,n1+1);
+		sourceVal3 = sourceVal3.replace(')(',' & ');
+		if(sourceVal1 != "" && sourceVal3 != "")
+		str1+='<span class="btn btn-small"><span class="badge">'+sourceVal1+ '</span>&nbsp;'+sourceVal3+ '</span>&nbsp;&nbsp;';
+		else
+		str1+='<span class="btn btn-small"><span class="badge">'+sourceVal+ '</span>&nbsp;</span>&nbsp;&nbsp;';
+	}
+			  str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right">'+myResults.fileVOList[i].fileVOList[j].scope+': '+myResults.fileVOList[i].fileVOList[j].locationName+'</i></h5>';
+			   str+='</hgroup>';
 
 			  if(myResults.fileVOList[i].fileVOList[j].eenadu){
 				str+='<p ><enadu>'+myResults.fileVOList[i].fileVOList[j].description+'</enadu></p>';	
 			  }else{
 					str+='<p>'+myResults.fileVOList[i].fileVOList[j].description+'</p>';
 			  }
+			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp; '+myResults.fileVOList[i].fileVOList[j].candidateName+'</span>';
 			  str+='</div></div></div></div>';
 		 }
 	   }
