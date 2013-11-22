@@ -1550,6 +1550,8 @@ function showNewsUploadStatus1(myResult)
 		//errorDivEle.innerHTML = str;
 		uploadNewsForPartyAndCandidate(null);
 		
+		getKeywordList();
+		
        setTimeout(showSuccessMsg,3000);
 	 
 	}
@@ -7093,5 +7095,31 @@ return oPayload;
 }
   
   
+}
+
+function getKeywordList(){
+ $.ajax({
+    	type: "GET",
+		url: "getKeywordsListAction.action",
+		data: { task:"getKeywordsList" }
+		})
+		.done(function( result ) {
+		if(result != null && result.length > 0)
+		{
+		 keywordsArray = new Array();
+		 $.each(result,function(index,keywords){
+			//$('#keywordsList').append('<option value="'+value.id+'">'+value.name+'</option>');
+			var obj = {value: keywords.id,
+			name:''+keywords.name+''}
+			keywordsArray.push(obj);
+		});
+		 var data = {items:keywordsArray};
+		 $("#keywordDiv").html('');
+		 $("#keywordDiv").html('<input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId">');
+		 
+         $("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});		 
+		}
+		
+		});
 }
 
