@@ -88,7 +88,7 @@ public class PartyDAO extends GenericDaoHibernate<Party, Long> implements IParty
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPartiesList()
 	{
-	  Query query = getSession().createQuery(" select model.partyId,model.shortName from Party model order by model.shortName");
+	  Query query = getSession().createQuery(" select model.partyId,model.shortName from Party model where model.isNewsPortal = 'Y' order by model.shortName");
 	  return query.list();
 	}
 }
