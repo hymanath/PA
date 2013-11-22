@@ -815,7 +815,38 @@ function createNewParty()
 	 </div>	
 </div>	 
 
-<div id="createCandidateDiv"><div id="createCandidateInnerDiv"></div></div>
+<div id="createCandidateDiv" style="display:none;">
+
+<div id="errorMsgDiv"></div>
+<table style="margin-top: 24px;"><tr>
+<td>Select Party</td>
+<td><select id="partySelectNewList">
+</select></td></tr>
+
+<tr><td>Candidate Name</td>
+<td><input type="text" id="newCandidateName"/></td></tr>
+<tr>
+<td>Designation</td>
+<td><select id="designationsList"></select></td>
+</tr>
+<tr>
+<td>Location</td>
+<td><select id="locationId" onChange="getTypeOfConstituency(this.value);"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
+</tr>  
+<tr style="display:none;" id="pcConstituencyRow">
+<td>Constituency</td>
+<td>
+<s:select name="parliamSelReport"  id="parliamSelReportId" list="parlConstiList" theme="simple" listKey="id" listValue="name"/></td>
+</tr>
+<tr style="display:none;" id="acConstituencyRow">
+<td>Constituency</td>
+<td>
+<s:select name="assembSelReport"  id="assembSelReportId" list="assemConstiList" theme="simple" listKey="id" listValue="name"/></td>
+</tr>
+</table>
+<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
+
+</div>
 
 <div id='keyWordsMainDiv' class="divInfo">
 		
@@ -891,6 +922,25 @@ function createNewParty()
 
 <!-- for  body 7  result  end -->
 <script>
+
+function getTypeOfConstituency(value)
+{	
+	if(value == 1)
+	{
+		$('#pcConstituencyRow').hide();
+		$('#acConstituencyRow').show();
+	}
+	else if(value == 2)
+	{
+		$('#pcConstituencyRow').show();
+		$('#acConstituencyRow').hide();
+	}
+	else
+	{
+		$('#pcConstituencyRow').hide();
+		$('#acConstituencyRow').hide();
+	}
+}
 var keywordsArray = new Array();
 <c:forEach var="keywords" items="${keywordsList}">
    var obj = {value:${keywords.id},
@@ -922,7 +972,8 @@ $(document).ready(function(){
 		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
 	});
-
+	$("#newDesignationDiv").css("display","none");
+    $("#newPartyCreationDiv").css("display","none");
 	$('#partyManagementTabId').addClass('menuActive');
 });
 
@@ -2909,7 +2960,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='    </div>';
 		str+='<div class="span12 well well-small" style="margin-left: 0px;">';
-		str+='<label><strong>Enter Keywords</strong></label><div id="keywordDiv"><input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId"></div>';
+		str+='<label><strong>Enter Keywords</strong></label><input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId">';
 		str+='<span class="help-block">Enter multiple keywords with comma separator Ex : padayatra,scam,';
 		str+='    </span>';
 		str+='</div>';
@@ -3693,7 +3744,7 @@ $(".createNewCandidate").live("click",function(){
             modal: true,
             title: "<b>Create New Candidate</b>",
 			width: 500,
-            height: 300
+            height: 350
            
         });
   
@@ -3702,19 +3753,12 @@ $(".createNewCandidate").live("click",function(){
 	var key = $(this).attr("key");
 	var partyListId = $(this).attr("partyListId");
 	
-   var str = '';
+   /* var str = '';
    str +='<div>';
    str +='<div id="errorMsgDiv"></div>';
    str +='<table style="margin-top: 24px;"><tr>';
    str +='<td>Select Party</td>';
    str +='<td><select id="partySelectNewList">';
-   
-   /*str +='<option value="0">Select</option><option value="163">BJP</option>';
-   str +='<option value="265">CPI</option><option value="269">CPM</option>';
-   str +='<option value="362">INC</option><option value="990">MIM</option>';
-   str +='<option value="872">TDP</option><option value="886">TRS</option>';
-   str +='<option value="1117">YSRCP</option>';*/
-   
    str +='</select></td></tr>';
 
    str +='<tr><td>Candidate Name</td>';
@@ -3723,10 +3767,14 @@ $(".createNewCandidate").live("click",function(){
    str +='<td>Designation</td>';
    str +='<td><select id="designationsList"></select></td>';
    str +='</tr>';
+   str +='<tr>';
+   str +='<td>Location</td>';
+   str +='<td><select id="locationId"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>';
+   str +='</tr>';
    str +='</table>';
    str +='<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>';
    str +='</div>';
-   $("#createCandidateInnerDiv").html(str);
+   $("#createCandidateInnerDiv").html(str); */
    
    getPartiesList("partySelectNewList",null);
    getDesignationList("designationsList");
@@ -3760,7 +3808,15 @@ $("#createCandidateId").live("click",function(){
 	}
   var candidateListId = $(this).attr("key");
   var partyListId = $(this).attr("partyListId");
-	
+  var locationValue = "";
+	if($('#locationId option:selected').val() == 1)
+	{
+		locationValue = $('#assembSelReportId option:selected').val();
+	}
+	else if($('#locationId option:selected').val() == 2)
+	{
+		locationValue = $('#parliamSelReportId option:selected').val();
+	}
 	var jsObj =
 		{ 
             partyId : partyId,
@@ -3768,6 +3824,8 @@ $("#createCandidateId").live("click",function(){
 			candidateListId:candidateListId,
 			partyListId:partyListId,
 			designationId:designationId,
+			locationId : $('#locationId option:selected').val(),
+			locationValue : locationValue,
 			task:"saveCandidate"
 		};
 
