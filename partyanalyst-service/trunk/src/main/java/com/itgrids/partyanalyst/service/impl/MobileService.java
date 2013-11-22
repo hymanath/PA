@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +26,7 @@ import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyHierarchyInfoDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
 import com.itgrids.partyanalyst.dao.IElectionScopeDAO;
@@ -42,6 +42,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IOccupationDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -62,7 +63,6 @@ import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
-import com.itgrids.partyanalyst.dao.hibernate.CadreDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -86,6 +86,8 @@ import com.itgrids.partyanalyst.model.MobileAppUserAccess;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.model.MobileAppUserProfile;
 import com.itgrids.partyanalyst.model.Occupation;
+import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
+import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
@@ -151,8 +153,29 @@ public class MobileService implements IMobileService{
  private IMobileAppUserProfileDAO mobileAppUserProfileDAO;
  private TransactionTemplate transactionTemplate;
  private IElectionScopeDAO electionScopeDAO;
-private IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO  ;
-private IUserDAO userDAO;
+ private IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO  ;
+ private IUserDAO userDAO;
+ private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
+ private ISmsService smsCountrySmsService;
+ private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+
+public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
+	return partialBoothPanchayatDAO;
+}
+
+public void setPartialBoothPanchayatDAO(
+		IPartialBoothPanchayatDAO partialBoothPanchayatDAO) {
+	this.partialBoothPanchayatDAO = partialBoothPanchayatDAO;
+}
+
+public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+	return delimitationConstituencyMandalDAO;
+}
+
+public void setDelimitationConstituencyMandalDAO(
+		IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+	this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+}
 
 public IUserDAO getUserDAO() {
 	return userDAO;
@@ -161,8 +184,6 @@ public IUserDAO getUserDAO() {
 public void setUserDAO(IUserDAO userDAO) {
 	this.userDAO = userDAO;
 }
-
-private ISmsService smsCountrySmsService;
 
 public ISmsService getSmsCountrySmsService() {
 	return smsCountrySmsService;
@@ -846,11 +867,16 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("Panchayat table data Completed...");
 	
-	List<Object[]> partyList = partyDAO.getPartyShortName();
+	List<Party> partyList = partyDAO.getAll();
 	if(partyList != null && partyList.size() > 0)
 	{
-	 for(Object[] params:partyList)
-	  str.append("INSERT INTO party(party_id,short_name) VALUES ('"+(Long)params[0]+"','"+params[1].toString()+"');\n");
+	 for(Party party : partyList)
+	 {
+	  str.append("INSERT INTO party(party_id,short_name,party_recognization,state_id) VALUES ('"+party.getPartyId()+"','"+party.getShortName()+"',");
+	  str.append(party.getPartyRecognization() != null ? "'"+party.getPartyRecognization()+"'," : "'',");
+	  str.append(party.getState() != null ? party.getState().getStateId().toString() : "null");
+	  str.append(");\n");
+	 }
 	}
 	
 	str.append("\n");
@@ -1280,7 +1306,6 @@ public List<SelectOptionVO> getConstituencyList()
 			for(Cadre cadre : cadreList)
 			{
 				try{
-				
 					StringBuilder strTemp = new StringBuilder();
 					strTemp.append("INSERT INTO user_address(user_address_id,state_id,district_id,constituency_id,tehsil_id,hamlet_id,local_election_body_id,ward_id,booth_id,booth_part_no) VALUES (");
 					strTemp.append(cadre.getCurrentAddress().getUserAddressId()+",");
@@ -1327,7 +1352,7 @@ public List<SelectOptionVO> getConstituencyList()
 					strTemp.append(cadre.getCurrentAddress().getUserAddressId()+",");
 					strTemp.append(cadre.getEducation() != null ? cadre.getEducation().getEduQualificationId()+"," : "null,");
 					strTemp.append(cadre.getOccupation() != null ? cadre.getOccupation().getOccupationId()+"," : "null,");
-					strTemp.append("null,");
+					strTemp.append(cadreCasteMap.get(cadre.getCadreId()) != null ? cadreCasteMap.get(cadre.getCadreId()).toString()+"," :"null,");
 					strTemp.append("'"+cadre.getMemberType()+"',");
 					strTemp.append(cadre.getVoter() != null ? cadre.getVoter().getVoterId()+"," : "null,");
 					strTemp.append(cadre.getImage() != null && cadre.getImage().trim().length() > 0 ? cadre.getImage()+"," : "null,");
@@ -1443,13 +1468,123 @@ public List<SelectOptionVO> getConstituencyList()
 			}
 			str.append("\n");
 			LOG.info("Influencing people table data Completed...");
+			
+			try{
+				StringBuilder strTemp = new StringBuilder();
+				strTemp.append("INSERT INTO user_notes_status(user_notes_status_id,status) VALUES (1,'New');\n");
+				strTemp.append("INSERT INTO user_notes_status(user_notes_status_id,status) VALUES (2,'Progress');\n"); 
+				strTemp.append("INSERT INTO user_notes_status(user_notes_status_id,status) VALUES (3,'Pending');\n"); 
+				strTemp.append("INSERT INTO user_notes_status(user_notes_status_id,status) VALUES (4,'Completed');\n"); 
+				
+				str.append(strTemp);
+			}catch(Exception e)
+			{
+				LOG.error("Exception Occured in inserting User notes status records.");
+				LOG.error("Exception is - ",e);
+			}
+			
+			str.append("\n");
+			LOG.info("User notes status table data Completed...");
+			
+			try{
+				LOG.info("Hamlet Booth table data started...");
+				List<Object[]> hamletBoothList = userVoterDetailsDAO.getHamletBoothInfo(constituencyId,1L);
+				if(hamletBoothList != null && hamletBoothList.size() > 0)
+				{
+					int hbIndex = 0;
+					StringBuilder strTemp = new StringBuilder();
+					for(Object[] params : hamletBoothList)
+					{
+						try{
+						strTemp.append("INSERT INTO hamlet_booth(hamlet_booth_id, hamlet_id, booth_id, publication_date_id) VALUES (");
+						strTemp.append(++hbIndex+",");
+						strTemp.append(params[0].toString()+",");
+						strTemp.append(params[1].toString()+",");
+						strTemp.append(params[2].toString()+");\n");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					str.append(strTemp);
+					str.append("\n");
+					LOG.info("Hamlet Booth table data Completed...");
+				}
+			}catch(Exception e)
+			{
+				LOG.error("Exception Occured in inserting Hamlet Booth Table.");
+				LOG.error("Exception is - ",e);
+			}
+			
+			str.append("\n");
+			LOG.info("Hamlet Booth table data Completed...");
 		}
 	}catch(Exception e)
 	{
-		LOG.error("Exception Occured in Influencing People & User Address Table Inserting");
+		LOG.error("Exception Occured in User Notes Status Table Inserting");
 		LOG.error("Exception is - ",e);
 	}
 	
+	try{
+		LOG.debug("Tehsil Constituency Table Inserting Started");
+		List<Object[]> tehsilConstituencyList = delimitationConstituencyMandalDAO.getAssemblyConstituencyAndMandalsInAState(constituencyDAO.get(constituencyId).getState().getStateId());
+		
+		if(tehsilConstituencyList != null && tehsilConstituencyList.size() > 0)
+		{
+			StringBuilder strTemp = new StringBuilder();
+			int tcIndex = 0;
+			for(Object[] params : tehsilConstituencyList)
+			{
+			try{
+				strTemp.append("INSERT INTO tehsil_constituency(tehsil_constituency_id,constituency_id,tehsil_id,is_partial) VALUES (");
+				strTemp.append(++tcIndex+",");
+				strTemp.append(params[0].toString()+",");
+				strTemp.append(params[1].toString()+",");
+				strTemp.append(params[1].toString().equalsIgnoreCase("1") ? "'N'" : "'Y'");
+				strTemp.append(");\n");
+				}catch(Exception e){
+					LOG.error(e);
+				}
+			}
+			str.append(strTemp);
+			str.append("\n");
+			LOG.info("Tehsil Constituency Table data Completed...");
+		}
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in Tehsil Constituency Table Inserting");
+		LOG.error("Exception is - ",e);
+	}
+	
+	try{
+		LOG.debug("Partial Booth Panchayat Table Inserting Started");
+		List<PartialBoothPanchayat> pbpList = partialBoothPanchayatDAO.getPartialBoothsInAConstituency(constituencyId);
+		
+		if(pbpList !=null && pbpList.size() > 0)
+		{
+			StringBuilder strTemp = new StringBuilder();
+			for(PartialBoothPanchayat partialBoothPanchayat : pbpList)
+			{
+				try{
+					strTemp.append("INSERT INTO partial_booth_panchayat(partial_booth_panchayat_id,panchayat_id,booth_id,description,hamlet_id) VALUES (");
+					strTemp.append(partialBoothPanchayat.getPartialBoothPanchayatId()+",");
+					strTemp.append(partialBoothPanchayat.getPanchayat() != null ? partialBoothPanchayat.getPanchayat().getPanchayatId().toString()+"," : "NULL,");
+					strTemp.append(partialBoothPanchayat.getBooth() != null ? partialBoothPanchayat.getBooth().getBoothId().toString()+"," : "NULL,");
+					strTemp.append(partialBoothPanchayat.getDescription() != null ? "'"+partialBoothPanchayat.getDescription()+"'," : "'',");
+					strTemp.append(partialBoothPanchayat.getHamlet() != null ? partialBoothPanchayat.getHamlet().getHamletId() : "NULL");
+					strTemp.append(");\n");
+				}catch(Exception e)
+				{
+					LOG.error(e);
+				}
+			}
+		}
+		
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in Partial Booth Panchayat Table Inserting");
+		LOG.error("Exception is - ",e);
+	}
 	
 	
 	try
@@ -1626,7 +1761,14 @@ public List<SelectOptionVO> getConstituencyList()
   	{
   		Map<Long,Long> cadreCasteMap = new HashMap<Long, Long>(0);
   		try{
-  			
+  			List<Object[]> list = userVoterDetailsDAO.getCadreCaste(cadreIdsList);
+  			if(list != null && list.size() > 0)
+  			{
+  				for(Object[] params : list)
+  				{
+  					cadreCasteMap.put((Long)params[0],(Long)params[1]);
+  				}
+  			}
   			return cadreCasteMap;
   		}catch(Exception e)
   		{
