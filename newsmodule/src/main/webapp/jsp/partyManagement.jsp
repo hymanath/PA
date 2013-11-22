@@ -121,10 +121,10 @@ font-size:20px;
 }
 #candidateListForPartyImg{margin-left:300px;}
 
-#profileManagementMainOuterDiv4 table,#reportsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-#profileManagementMainOuterDiv4 table tr:nth-child(even),#reportsDiv table tr:nth-child(even){background:#EdF5FF;}
-#profileManagementMainOuterDiv4 table td,#reportsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#profileManagementMainOuterDiv4 table th,#reportsDiv table th{
+#profileManagementMainOuterDiv4 table,#reportsDiv table,#locationWiseNewsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#profileManagementMainOuterDiv4 table tr:nth-child(even),#reportsDiv table tr:nth-child(even),#locationWiseNewsDiv table tr:nth-child(even){background:#EdF5FF;}
+#profileManagementMainOuterDiv4 table td,#reportsDiv table td,#locationWiseNewsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#profileManagementMainOuterDiv4 table th,#reportsDiv table th,#locationWiseNewsDiv table th{
 background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -137,7 +137,7 @@ background-color: #CDE6FC;
 	}
 
 
-#profileManagementMainOuterDiv4,#reportsDiv
+#profileManagementMainOuterDiv4,#reportsDiv,#locationWiseNewsDiv
 {
 	font-family : arial;
 	font-size: 13px;
@@ -159,6 +159,8 @@ color:#333333;
 form{
 border:1px solid #C5C5C5;
 }
+#reportGenaratorSpanCLS{color:red;}
+#newsReportBtnDiv{text-align: center;}
 </style>
 </head>
 <script type="text/javascript">
@@ -185,6 +187,7 @@ var destinationCandidateIdsArray = new Array();
 var tempCount = 0;
 var keywordHiddenTempCount = 0;
 var responseFileIdsArray = new Array();
+var newsReportFileIdsArray = new Array();
 
 
 var fileSourceMainArray = {
@@ -664,10 +667,21 @@ function clearDivsForGallary(){
 	</table>
   </div>
   <div class="form-actions text-center">
-    <input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNews()"/>
+    <input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNewsDetailsForNewsReportGeneration()"/>
     <img id="newsReportAjaxImg" src="images/search.jpg" style="display:none;"/>
   </div>
+   <div id="reportGenaratorNewsDiv" style="display:none;">
+    <p style="margin-left: 20px; margin-bottom: 7px;"><b>Total Selected News Count: </b><span id="reportGenaratorSpanCLS"></span></p>
+	 
+	 <!-- <label class="checkbox inline"><input type="checkbox" id="newsReportSelectAllCheckBox" value="Select All" />Select All</label>
+	 <label class="checkbox inline"><input type="checkbox" id="newsReportUnSelectAllCheckBox" value="Unselect All" />Unselect All</label> -->
+	 
+	 <label class="checkbox inline"><input type="button" id="newsReportSelectAllCheckBox" value="Select All"  class="btn"/></label>
+	 <label class="checkbox inline"><input type="button" id="newsReportUnSelectAllCheckBox" value="Unselect All" class="btn"/></label>
+	 
+	</div>
   <div id="locationWiseNewsDiv" class="divInfo" style="display:none;"></div>
+  <div id="newsReportBtnDiv" style="display:none;"><input type="button" value="Generate Report" class="btn btn-info" id="savenewsReport" onclick="saveNewsReport()"/></div>
  </div>
 </div>			
 </div>
@@ -2245,6 +2259,11 @@ $("#fromDateId1").datepicker("setDate", new Date());
 $("#toDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
 $("#toDateId1").datepicker("setDate", new Date());
 
+$("#newsReporterrorMessageDiv").html('');
+$("#reportGenaratorNewsDiv").css("display","none");
+$("#locationWiseNewsDiv").html('');
+$("#newsReportBtnDiv").css("display","none");
+
 }
 function getNews()
 {
@@ -2301,7 +2320,8 @@ function saveNewsReport()
 
 
 var newsreportfileDescription = $("#newsreportfileDescription").val();
-var fileGallaryIds = [];
+
+/*var fileGallaryIds = [];
    $(".find-table").each(function() {
       
 		  if($(this).is(":checked")){
@@ -2313,6 +2333,13 @@ var fileGallaryIds = [];
 	if(fileGallaryIds == "")
 	{
 		str +='Select atleast one file<br/>';
+		flag =true;
+	}*/
+	var str = '<font color="red">';
+	var flag =false;
+	if(newsReportFileIdsArray.length == 0)
+	{
+	  str +='Select atleast one file<br/>';
 		flag =true;
 	}
 	
@@ -2336,7 +2363,7 @@ var fileGallaryIds = [];
 	$("#savenewsAjaxImg").css({'display': 'inline-block' });
 	newsReporterrorMessageDiv.innerHTML = '';
     var jsObj = {
-			fileGallaryIds:fileGallaryIds,
+			fileGallaryIds:newsReportFileIdsArray,
 			description:newsreportfileDescription,
 			task: 'saveNews',
 	};
@@ -3656,6 +3683,59 @@ $(".newsResponseCheckId").live("click",function(){
   }
    var length = responseFileIdsArray.length;
  $("#selectedNewsCount").html(''+length+''); 
+});
+
+
+
+$("#newsReportSelectAllCheckBox").live("click",function(){
+  
+    $(".createReporcCheckBoxCls").attr("checked","checked");
+       $(".createReporcCheckBoxCls").each(function(){
+            var fileId = $(this).attr("value"); 
+            if($(this).is(":checked"))
+			{
+			  if(newsReportFileIdsArray.indexOf(""+fileId+"") == -1)
+              newsReportFileIdsArray.push(fileId);
+            }
+            else
+            {
+			  if(newsReportFileIdsArray.indexOf(""+fileId+"") != -1)
+			  newsReportFileIdsArray = jQuery.removeFromArray(fileId, newsReportFileIdsArray);
+			}
+ 
+          var length = newsReportFileIdsArray.length;
+          $("#reportGenaratorSpanCLS").html(''+length+''); 
+      });
+  
+});
+
+$("#newsReportUnSelectAllCheckBox").live("click",function(){
+  
+   
+      $(".createReporcCheckBoxCls").attr("checked",false);
+	  newsReportFileIdsArray = new Array();
+	  $("#reportGenaratorSpanCLS").html('0'); 
+    
+   
+ 
+});
+
+
+$(".createReporcCheckBoxCls").live("click",function(){
+ var fileId = $(this).attr("value"); 
+ if($(this).is(":checked"))
+ {
+   if(newsReportFileIdsArray.indexOf(""+fileId+"") == -1)
+    newsReportFileIdsArray.push(fileId);
+ }
+ else
+ {
+  if(newsReportFileIdsArray.indexOf(""+fileId+"") != -1)
+   newsReportFileIdsArray = jQuery.removeFromArray(fileId, newsReportFileIdsArray);
+  }
+ 
+ var length = newsReportFileIdsArray.length;
+ $("#reportGenaratorSpanCLS").html(''+length+''); 
 });
 
 	
