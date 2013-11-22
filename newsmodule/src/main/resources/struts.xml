@@ -5819,6 +5819,18 @@
 		    	<param name="root">reportUrl</param>
 		   </result>
 		</action>
+		
+		
+		<action name="newsAnalysisAction" class="newsAnalysisAction">
+		  <result name="success">/jsp/newsAnalysis.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		 </action>
+		 
+		<action name="getAnalysedDataAction" class="newsAnalysisAction" method="getAnalysedData">
+		  <result type="json" name="success">
+		    	<param name="root">reportUrl</param>
+		   </result>
+		</action>
 		</package>
 		
 		

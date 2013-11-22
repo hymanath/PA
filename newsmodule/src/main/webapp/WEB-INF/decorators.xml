@@ -93,6 +93,7 @@
 		<pattern>/newsDetailsPopupAction.action*</pattern>
 		<pattern>/selectedNewsDetailsAction.action*</pattern>
 		<pattern>/createReportAction*</pattern>
+		
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -247,6 +248,7 @@
 		<pattern>/showAllCategoriesAction*</pattern>
 		<pattern>/keywordsRelatedNewsAction*</pattern>
 		<pattern>/showCategoryAction*</pattern>
+		<pattern>/newsAnalysisAction*</pattern>
     	 </decorator>
 
 </decorators>
