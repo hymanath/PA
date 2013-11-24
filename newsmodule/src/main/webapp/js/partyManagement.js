@@ -1282,9 +1282,9 @@ function validateNewsFileUpload()
 			 }
 	       }
        });
-	if(fileTitle.length >1000)
+	if(fileTitle.length >800)
 	{
-		str += 'Title should be less than 1000 Characters<br>';
+		str += 'Title should be less than 800 Characters<br>';
 		flag = false;
 	}
 	if(fileDesc.length == 0)
@@ -1292,9 +1292,9 @@ function validateNewsFileUpload()
 		str += 'News Description is Required.<br>';
 		flag = false;
 	}
-	if(fileDesc.length > 2000)
+	if(fileDesc.length > 1800)
 	{
-		str += 'Description Should not exceed 2000 Characters.<br>';
+		str += 'Description Should not exceed 1800 Characters.<br>';
 		flag = false;
 	}
 	if(fileVal.length == 0)
@@ -1833,13 +1833,13 @@ function buildUploadNewsForMultipleUsers()
 
     str += '   <tr>';
 	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="160"></input></td>'; 
+	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="800"></input></td>'; 
 	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceTelugu"><img id="" src="images/letter-t-video.png"  style="height:35px;width:35px;" alt="Select Telugu language" title="Eenadu Telugu Language"/></a> </td>';
 	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpg" style="height:35px;width:35px;" title="English Language"></img></a></td>';
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">News Description : <font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="330"></textarea></td>';
+	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="1800"></textarea></td>';
 	str += '   </tr>';
 	
 	/*str += '   <tr>';

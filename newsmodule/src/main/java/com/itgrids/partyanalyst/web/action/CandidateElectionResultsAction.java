@@ -1410,7 +1410,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setFileDate(getFileDate());
 		fileVO.setFileId(responseFileId);
 		if(getTitleCheckBox() != null)
-		 fileVO.setEenadu(getTitleCheckBox());
+		 fileVO.setEenadu(true);
 		
 		
 		

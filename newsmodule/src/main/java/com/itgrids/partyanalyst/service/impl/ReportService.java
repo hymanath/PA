@@ -142,8 +142,10 @@ public class ReportService implements IReportService {
 				for(Object[] param:candidateDetails){
 					name +=param[1].toString()+",";
 				}
-				file.setCandidateName(name.substring(0,name.length()-1));
-				
+				if(name != null && name.length() > 0)
+				 file.setCandidateName(name.substring(0,name.length()-1));
+				else
+					file.setCandidateName("");
 				file.setScope(news[8] != null?news[8].toString():"");
 				if(news[9] != null)
 					  file.setEenadu(true);
@@ -180,10 +182,12 @@ public class ReportService implements IReportService {
 			  if(editionMap.size()>0)
 			   pageNo = editionMap.get(new Long((Integer)params[3]));
 			  if(pageNo == null || pageNo.length() == 0)
+				  if(params[4] != null)
 				  pageNo = params[4].toString();
 			  else
+				  if(params[4] != null)
 				 pageNo +=","+params[4].toString();
-			  
+			  if(params[3] != null)
 			  editionMap.put(new Long((Integer)params[3]), pageNo);
 			  
 			  String name = sourceNameMap.get((Long)params[1]);

@@ -2872,8 +2872,8 @@ function uploadNewsForPartyAndCandidate(fileId)
 	str+='	<div class="row-fluid">       ';
 	str+='<div class="span6">';
 				str+='<label><strong>News Title<span class="requiredFont">*</span></strong></label>  ';
-				str+='<input type="text" maxlength="160" size="25" name="fileTitle" placeholder="Enter Title Of the News" id="newsfileTitle" class="input-block-level">       ';
-				str+='<span class="help-block"> <input type="checkbox" onclick="changeLanguage();" name="title">&nbsp;Please check if title is from eenadu.net</span>       ';
+				str+='<input type="text"  maxlength="800" size="25" name="fileTitle" placeholder="Enter Title Of the News" id="newsfileTitle" class="input-block-level">       ';
+				str+='<span class="help-block"> <input type="checkbox" id="sourceTelugu" onclick="changeLanguage();" name="titleCheckBox">&nbsp;Please check if title is from eenadu.net</span>       ';
 			str+='</div>       ';
 			str+='<div class="span3 ">         ';
 				str+='<label><strong>News Date<span class="requiredFont">*</span><strong></strong></strong></label>  ';
@@ -2890,7 +2890,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="span3" style="margin-left: 12px;"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Mark This News As Public</font></b></label></div>';
 		str+='<div class="span3"><label class="radio"><input type="radio" id="newsprivateRadioId" name="visibility" value="private"><b><font>Mark This News As Private</font></b></label></div>';
 
-		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Discription<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="330"></textarea>     </div>';
+		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Discription<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea>     </div>';
 		str+='<div class="span4 ">      ';
 		str+='<label><strong>Image To Display<span class="requiredFont">*</span></strong></label>';
 		 str+='<input type="file" class="m_top10"></div>    </div>';
@@ -3016,7 +3016,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div id="source0newfile"></div>';
 		str+='<div class="container m_top5">';
 		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription" style="width: 900px;"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if title is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea  name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription" style="width: 900px;"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if title is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
@@ -3078,7 +3078,6 @@ $("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProp
 		$("#KeywordPartiesListForNewsTo").multiselect('refresh');
 		$("#KeywordPartiesListForNewsTo").multiselect('create');
 
-$('#newsdatedatepic').val('');
 }
 var addSource = 0;
 function addNewFileSource(){
@@ -3125,7 +3124,7 @@ function addNewFileSource(){
 		str+='<div id="source'+addSource+'newfile"></div>';
 		str+='<div class="container m_top5">';
 		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
-		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea maxlength="330" id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 875px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 875px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
 			 
