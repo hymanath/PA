@@ -81,8 +81,11 @@
 				str+='<h4 class="media-heading"><enadu>'+myResults.mainArticalsList[i].title+'</enadu></h4>';
 			  }else{
 				str+='<h4 class="media-heading">'+myResults.mainArticalsList[i].title+'</h4>';
-			  }												  
+			  }	if(myResults.mainArticalsList[i].source != null)											  
 				str+='<h5 style="border-bottom:1px solid #333"><span class="label">'+myResults.mainArticalsList[i].source+'</span> <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
+				else{
+					str+='<h5 style="border-bottom:1px solid #333"> <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
+				}
 				str+='</hgroup>';
 
 			  if(myResults.mainArticalsList[i].eenadu){

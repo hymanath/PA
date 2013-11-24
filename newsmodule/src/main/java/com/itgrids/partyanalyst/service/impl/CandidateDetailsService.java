@@ -896,7 +896,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			  {
 				FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
 				fileSourceLanguage.setFile(file);
-				if(fileSourceVO.getNewsDescCheck() != null && fileSourceVO.getNewsDescCheck().equalsIgnoreCase("on"))
+				if(fileSourceVO.getNewsDescCheck() != null)
 				 fileSourceLanguage.setFont(fontDAO.get(1));
 				
 				fileSourceLanguage.setNewsDetailedDescription(fileSourceVO.getCompleteDesc());
