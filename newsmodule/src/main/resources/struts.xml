@@ -5844,6 +5844,12 @@
 			   </result>
 		</action>
 		
+		<action name="filterCandidateNames" class="newsPaginationAction" method="filterCandidatesByName">
+		  <result type="json" name="success">
+		    	<param name="root">selectOptionVOList</param>
+		   </result>
+		</action>
+		
 		</package>
 		
 		

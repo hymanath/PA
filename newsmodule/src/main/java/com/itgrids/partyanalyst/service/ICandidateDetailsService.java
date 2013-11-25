@@ -327,4 +327,6 @@ public interface ICandidateDetailsService {
 	 
 	 public void testgetCandidatesListByPartyIdsList();
 	 
+	 public List<SelectOptionVO> getFilteredCandidates(Long stateId,String partyId,String designationId,String locationType,String locationId,String text);
+	 
 }
