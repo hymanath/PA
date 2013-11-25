@@ -1689,8 +1689,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					 return null;*/
 				   if(newsDetails != null && newsDetails.size() > 0)
 				   {
-					// int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID, startIndex,maxResults,newsType,1l,2l);
-					 nl = buildFileVo(newsDetails,0);
+					 int count=partyGalleryDAO.getCountOfNewsFiles(IConstants.TDPID,newsType,1l,2l);
+					 nl = buildFileVo(newsDetails,count);
 					 resultMap.put("NewsGallary", nl);
 				   }
 				 
@@ -1698,34 +1698,34 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				 
 			 if(level.equalsIgnoreCase("district")||level.equalsIgnoreCase("")){
 				 List<Long> distIds = districtDAO.getAllDistrictByStateIds(1l);
-				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l, startIndex,maxResults,newsType,3l,distIds);
+				 List <Object[]> newsDetailsForDist =  partyGalleryDAO.getAllNewsDetailsForDistrict(872l,startIndex,maxResults,newsType,3l,distIds);
 				 
 				/* if(newsDetailsForDist == null || newsDetailsForDist.isEmpty() )
 					 return null;
 				 */
 				 if(newsDetailsForDist != null && newsDetailsForDist.size() > 0)
 				 {
-				   //int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID, startIndex,maxResults,newsType,3l,distIds);
-				 
+				   int count1=partyGalleryDAO.getCountOfNewsFilesForDistrict(IConstants.TDPID,newsType,3l,distIds);			 
+					 
 				   if(newsDetailsForDist != null && !newsDetailsForDist.isEmpty()){
-					  nl = buildFileVo(newsDetailsForDist,0);
+					  nl = buildFileVo(newsDetailsForDist,count1);
 							
 				    resultMap.put("NewsGallaryForDist", nl);
 				   }
 				 }
-				 List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 5, newsType);
+				 //List <Object[]> categoryList= partyGalleryDAO.getCategoryIdsForParty(IConstants.TDPID, 0, 5, newsType);
 		/* newsGallaryresultList = fileGallaryDAO.getHomePageNewsDetails(startIndex, maxResults);
 		 resultList = setToFileVO(newsGallaryresultList);
 		 resultMap.put("NewsGallary", resultList);getCategoryIdsForParty*/
 				 
-				 if(categoryList != null && !categoryList.isEmpty()){
+				/* if(categoryList != null && !categoryList.isEmpty()){
 				 List<FileVO> fo=buildFileVoForCategory(categoryList);
 		
 				 resultMap.put("categories", fo);
+				 }*/
 				 }
-				 }
-		 return resultMap;
-				 }
+			 return resultMap;
+		 }
 		 catch (Exception e) {
 			 log.error("Exception occured - ",e);
 			 return null;
@@ -1749,45 +1749,76 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			 return nl;
 		 }
 		 
-	 public List<FileVO>  buildFileVo(List<Object[]> newsDetails,int count)
-	 {
+		 public List<FileVO>  buildFileVo(List<Object[]> newsDetails,int count)
+		 { 
+			 List<FileVO> nl = new ArrayList<FileVO>();
+			 Set<Long> fileIds = new HashSet<Long>();
+			
+			 for(Object[] obj : newsDetails){
+				  fileIds.add((Long)obj[0]);
+			  }
+			  Map<Long,String> sourceNames = getSourceNames(fileIds);
+			  
+			    for(Object[] obj : newsDetails )
+			    {  		       
+				    FileVO v =new FileVO();
+				    long id = (Long)obj[0];
+				    Date date= null;
+				    String newDate =null;
+			        if(obj[1] != null)
+				    {
+				      date= (Date)obj[1];
+				      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                      newDate = formatter.format(date);
+				    }
+                    v.setFileDate(newDate != null ? newDate : "");
+	   
+			        v.setContentId(id);
+			        if(obj[4] != null){
+			        	v.setEenadu(true);
+			        }
+			    	v.setSource(sourceNames.get(id) != null?sourceNames.get(id):"");			       
+	                v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String) obj[2])));
+	                v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String)obj[3])));
+	                v.setResponseCount(0);
+	                v.setDisplayImageName((String)obj[5]);
+					v.setDisplayImagePath((String)obj[6]);
+					 v.setFileType("Party");
+					 v.setCount(count);
+					 nl.add(v);
+			    	
+			    }
+			 
+	     return nl;
+		 } 
+		 public Map<Long,String> getSourceNames(Set<Long> fileIds){
+			  Map<Long,String> sourceNames = new HashMap<Long,String>();
+			 try{
+			  if(fileIds != null && fileIds.size() > 0){
+				
+				List<Object[]> sources = fileSourceLanguageDAO.getSourceDetailsByFileIds(fileIds);
+				
+			      if(sources != null && sources.size() > 0){
+			    	 for(Object[] name:sources){
+			    		 String source = sourceNames.get((Long)name[0]);
+			    		 if(source == null)
+			    			 sourceNames.put((Long)name[0], name[1].toString());
+			    		 else
+			    		 {
+			    			 String source1 = source+", "+name[1].toString() ;
+			    			 sourceNames.put((Long)name[0],source1.toString());
+			    		 }
+			    		 
+			    	 }  
+			      } 
+			  }
+			 }catch(Exception e){
+				 log.error("Exception Occured in getSourceNames method in NewsMonitoringService", e);
+			 }
+			  return sourceNames;
+		  }
 		 
-		 List<FileVO> nl= new ArrayList<FileVO>();
-		 
-		    for(Object[] obj : newsDetails )
-		    {  FileVO v =new FileVO();
-		    	File f =(File)obj[0];
-             long id = (Long)obj[1];
-		        Date date= (Date)obj[2];
-		        String source =(String) obj[3];
-		        String flag =(String) obj[4];
-		        long partyId =((Integer)(obj[5])).longValue();
-		        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		        String newDate = formatter.format(date);
-		        if(f.getFont() != null){
-		        	v.setEenadu(true);
-		        }
-		        v.setSource(source);
-		        v.setContentId(id);
-		        v.setCandidateId(partyId);
-		        v.setFileDate(newDate);
-             v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileTitle())));
-             v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(f.getFileDescription())));
-             v.setResponseCount(0);
-             v.setDisplayImageName(f.getFileName());
-				 v.setDisplayImagePath(f.getFilePath());
-				 v.setImagePathInUpperCase(flag);
-				 v.setFileType("Party");
-				 v.setCount(count);
-             nl.add(v);
-		    	
-		    }
-		 
-     return nl;
-	 }
-	 
-	
-
+	  		 
 	public List<FileVO> getScopesForNewSearch()
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();

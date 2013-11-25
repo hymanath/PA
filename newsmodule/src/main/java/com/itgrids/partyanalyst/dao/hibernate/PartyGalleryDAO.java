@@ -337,59 +337,20 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	}
 	public List<Object[]> getAllNewsDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
 		   
-	     StringBuilder query = new StringBuilder();
-			query.append("select model,model.fileId,model.fileDate,fs.source.source,'TDP.png',872  from File model , FileSourceLanguage fs  where "+
-				"  model.fileId = fs.file.fileId ");
-				
+	     StringBuilder query = new StringBuilder("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath from File model where ");
+			query.append(" ");			
 			if(queryType.equalsIgnoreCase("Public"))
-					query.append("  and model.isPrivate != 'Y'   ");
-			
-			
-			query.append(" and model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue ");
-			query.append("group by model.fileId order by model.fileDate desc,model.updatedDate desc ");
-			Query queryObject = getSession().createQuery(query.toString());
-			
-			
+					query.append(" model.isPrivate != 'Y'  and ");
+			query.append(" model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue and model.isDeleted != 'Y' ");
+			query.append("  order by model.fileDate desc,model.updatedDate desc ");
+			Query queryObject = getSession().createQuery(query.toString());			
 			queryObject.setLong("locationValue", stateId);
 			queryObject.setParameterList("locId", districtIds);
-			
-			
-			
 			queryObject.setFirstResult(firstResult);
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
 }
-	/*public List<Object[]> getAllNewsDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
-		   
-	     StringBuilder query = new StringBuilder();
-				query.append("select model.file,model.fileGallaryId,model.file.fileDate,fs.source.source,model2.party.partyFlag,model2.party.partyId from FileGallary model , PartyGallery model2 , FileSourceLanguage fs  where "+
-					" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId  and  model2.party.partyId = :partyId "+
-					" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete ");
-			if(queryType.equalsIgnoreCase("Public"))
-			   query.append(" and model.isPrivate = :isPrivate and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
-			
-			if(queryType.equalsIgnoreCase("Private"))
-			  query.append(" and model.isPrivate = :isPrivate and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
-			  query.append(" and model.file.locationValue in (:locId)  and model.file.regionScopes.regionScopesId = :locationValue ");
-            //query.append("or  (model.file.regionScopes.regionScopesId = :constituencyScopeId and " );
-			//query.append(" model.file.locationValue = :constituencyVal) " );
-			query.append("group by model.file.fileId order by model.file.fileDate desc ");
-			Query queryObject = getSession().createQuery(query.toString());
-			
-			queryObject.setLong("partyId", partyId);
-			queryObject.setLong("locationValue", stateId);
-			queryObject.setParameterList("locId", districtIds);
-
-			queryObject.setString("type", IConstants.NEWS_GALLARY);
-			queryObject.setString("isDelete", "false");
-			if(!queryType.equals(""))
-			queryObject.setString("isPrivate", "false");
-			queryObject.setFirstResult(firstResult);
-			queryObject.setMaxResults(maxResult);
-				
-							
-			return queryObject.list(); 
-}*/
+	
 	public List<Object[]> getAllVideosDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
 		   
 	     StringBuilder query = new StringBuilder();
@@ -419,33 +380,16 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			queryObject.setMaxResults(3);
 			return queryObject.list(); 
 }
-	public int getCountOfNewsFilesForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
+	public int getCountOfNewsFilesForDistrict(Long partyId,String queryType,long stateId ,List<Long> districtIds){
 		   
-	     StringBuilder query = new StringBuilder();
-				query.append("select count(model.file.fileId) from FileGallary model , PartyGallery model2 , FileSourceLanguage fs  where "+
-					" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId  and  model2.party.partyId = :partyId "+
-					" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete ");
-				
-			if(queryType.equalsIgnoreCase("Public"))
-			   query.append(" and model.isPrivate = :isPrivate and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
-			
-			if(queryType.equalsIgnoreCase("Private"))
-			  query.append(" and model.isPrivate = :isPrivate and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
-			  query.append(" and model.file.locationValue in (:locId)  and model.file.regionScopes.regionScopesId = :locationValue ");
-          //query.append("or  (model.file.regionScopes.regionScopesId = :constituencyScopeId and " );
-			//query.append(" model.file.locationValue = :constituencyVal) " );
-			query.append(" group by model2.party.partyId ");
-			Query queryObject = getSession().createQuery(query.toString());
-			
-			queryObject.setLong("partyId", partyId);
-			queryObject.setLong("locationValue", stateId);
-			queryObject.setParameterList("locId", districtIds);
-
-			queryObject.setString("type", IConstants.NEWS_GALLARY);
-			queryObject.setString("isDelete", "false");
-			if(!queryType.equalsIgnoreCase(""))
-			queryObject.setString("isPrivate", "false");
-							
+	     StringBuilder query = new StringBuilder("select distinct count(*) from File model where ");		
+	  			if(queryType.equalsIgnoreCase("Public"))
+	  					query.append(" model.isPrivate != 'Y'  and ");
+	  			query.append(" model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue and model.isDeleted != 'Y' ");
+	  			query.append("  order by model.fileDate desc,model.updatedDate desc ");
+	  			Query queryObject = getSession().createQuery(query.toString());			
+	  			queryObject.setLong("locationValue", stateId);
+	  			queryObject.setParameterList("locId", districtIds);						
 			return ((Long)queryObject.uniqueResult()).intValue(); 
 }
 
@@ -467,23 +411,14 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	public List<Object[]> getAllNewsDetailsForState(Long partyId,int firstResult,int maxResult,String queryType,long stateId , long scopeId){
 		   
 	     StringBuilder query = new StringBuilder();
-			query.append("select model,model.fileId,model.fileDate,fs.source.source,'TDP.png',872  from File model , FileSourceLanguage fs  where "+
-				"  model.fileId = fs.file.fileId ");
-				
+			query.append("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath from File model where ");		
 			if(queryType.equalsIgnoreCase("Public"))
-					query.append("  and model.isPrivate != 'Y'   ");
-			
-			
-			query.append(" and model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId ");
-			query.append("group by model.fileId order by model.fileDate desc,model.updatedDate desc ");
-			Query queryObject = getSession().createQuery(query.toString());
-			
-			
+					query.append("  model.isPrivate != 'Y' and ");	
+			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.isDeleted !='Y' ");
+			query.append(" order by model.fileDate desc,model.updatedDate desc ");
+			Query queryObject = getSession().createQuery(query.toString());		
 			queryObject.setLong("locationValue", stateId);
 			queryObject.setLong("locId", scopeId);
-			
-			
-			
 			queryObject.setFirstResult(firstResult);
 			queryObject.setMaxResults(maxResult);									
 			return queryObject.list(); 
@@ -513,29 +448,16 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 			queryObject.setMaxResults(3);									
 			return queryObject.list(); 
 }
-	public int getCountOfNewsFiles(Long partyId,int firstResult,int maxResult,String queryType,long stateId , long scopeId){
-		 StringBuilder query = new StringBuilder();
-			query.append("select count(distinct model.file.fileId) from FileGallary model , PartyGallery model2 , FileSourceLanguage fs  where "+
-				" model2.gallery.gallaryId=model.gallary.gallaryId and fs.file.fileId=model.file.fileId  and  model2.party.partyId = :partyId "+
-				" and model2.gallery.contentType.contentType= :type  and model.isDelete = :isDelete  ");
-				query.append(" ");
-				
+	public int getCountOfNewsFiles(Long partyId,String queryType,long stateId , long scopeId){
+		  StringBuilder query = new StringBuilder();
+			query.append("select distinct count(*) from File model where ");		
 			if(queryType.equalsIgnoreCase("Public"))
-				query.append(" and model.isPrivate = :isPrivate and  model.gallary.isPrivate='false' and model.isPrivate ='false'  ");
-						
-			else if(queryType.equalsIgnoreCase("Private"))
-				query.append("  and model.isPrivate = :isPrivate and ( (model.gallary.isPrivate='true') or(model.gallary.isPrivate='false' and model.isPrivate ='true') ) ");
-			query.append(" and model.file.locationValue = :locationValue and model.file.regionScopes.regionScopesId = :locId ");
-			query.append(" group by model2.party.partyId ");
-			Query queryObject = getSession().createQuery(query.toString());
-			
-			queryObject.setLong("partyId", partyId);
+					query.append("  model.isPrivate != 'Y' and ");	
+			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.isDeleted != 'Y'");
+			query.append(" order by model.fileDate desc,model.updatedDate desc ");
+			Query queryObject = getSession().createQuery(query.toString());		
 			queryObject.setLong("locationValue", stateId);
 			queryObject.setLong("locId", scopeId);
-			queryObject.setString("type", IConstants.NEWS_GALLARY);
-			queryObject.setString("isDelete", "false");
-			if(!queryType.equals(""))
-			queryObject.setString("isPrivate", "false");
 			
 		return ((Long)queryObject.uniqueResult()).intValue();
 	}
