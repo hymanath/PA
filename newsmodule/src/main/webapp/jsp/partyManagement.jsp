@@ -2970,7 +2970,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='  ';
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-top: -15px; margin-bottom: 5px; margin-left: -5px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')">';
+		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-bottom: 5px; margin-left: -5px; float: left; position: absolute; margin-top: 30px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyForNewsToImg" />';
@@ -3269,7 +3269,7 @@ var str ='';
 
 	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="margin-top: -25px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="float:left;position:absolute;margin-top: 30px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
