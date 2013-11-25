@@ -2893,7 +2893,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Discription<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea>     </div>';
 		str+='<div class="span4 ">      ';
 		str+='<label><strong>Image To Display<span class="requiredFont">*</span></strong></label>';
-		 str+='<input type="file" class="m_top10"></div>    </div>';
+		 str+='<input type="file" class="m_top10" name="imageForDisplay"></div>    </div>';
 		
 	str+='</div></div>';
 	
