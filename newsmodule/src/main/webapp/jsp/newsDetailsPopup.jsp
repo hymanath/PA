@@ -452,9 +452,9 @@ function buildContentDetails()
 			}
 		if(detaildesc != null){
 		   if(detaildescsource)
-		     str +='<div id="detaildescoffile">Detail Description :<span class="enadu">'+detaildesc+'</span></div>';
+		     str +='<div id="detaildescoffile"><b>Detail Description :</b><span class="enadu">'+detaildesc+'</span></div>';
 		   else
-		     str +='<div id="detaildescoffile">'+detaildesc+'</div>';
+		     str +='<div id="detaildescoffile"><b>Detail Description :</b>'+detaildesc+'</div>';
 		}else{
 		     str +='<div id="detaildescoffile"></div>';
 		}
@@ -592,9 +592,9 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 		var detaildescsource = selectedContentFile.fileVOList[m].eenadu;
 		if(detaildesc != null){
 		   if(detaildescsource)
-		     stra1 +='<div>Detail Description :<span class="enadu">'+detaildesc+'</span></div>';
+		     stra1 +='<div><b>Detail Description :</b><span class="enadu">'+detaildesc+'</span></div>';
 		   else
-		     stra1 +='<div>'+detaildesc+'</div>';
+		     stra1 +='<div><b>Detail Description :</b>'+detaildesc+'</div>';
 		}else{
 
 		}
