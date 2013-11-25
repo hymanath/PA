@@ -6868,6 +6868,7 @@ function getPartiesList(partySelectBoxId,partiesListForWhome)
 
 function buildPartyList(results,jsObj)
 {
+//debugger;
   $("#"+jsObj.partySelectBoxId+"").find('option').remove();
   $("#"+jsObj.partySelectBoxId+"").append('<option value="0">Select Party</option>');
   
@@ -7339,7 +7340,7 @@ else if(divId ==4){
 	$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
 }
 */
-
+debugger;
 var divSourceId;
 var divId = divId1; 
 if(divId1 != 11 && divId1 != 22){
