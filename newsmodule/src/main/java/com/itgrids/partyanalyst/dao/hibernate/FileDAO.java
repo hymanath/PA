@@ -90,7 +90,7 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	{
 		StringBuilder str= new StringBuilder();
 		
-		str.append("select distinct count(model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.gallary.category.categoryId=:categoryId and (model.candidatePartyFile.file.isDeleted !='Y') ");
+		str.append("select  count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.gallary.category.categoryId=:categoryId and (model.candidatePartyFile.file.isDeleted !='Y') ");
 		 if(newsType != null && !newsType.equalsIgnoreCase(""))
 			 str.append(" and (model.candidatePartyFile.file.isPrivate != 'Y') ");
 		 if(fromDate != null)
