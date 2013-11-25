@@ -320,14 +320,14 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		StringBuffer query = new StringBuffer();
 		query.append(" select model.candidateId,model.lastname from Candidate model where ");
 		query.append(" model.party.partyId = :partyId and model.designation.designationId = :designationId and ");
-		
+		if(locationId != 0){
 		if(locationType.equalsIgnoreCase("district"))
 			query.append(" model.district.districtId =:locationId and ");		
 		else if(locationType.equalsIgnoreCase("Assembly Constituency"))
-			query.append(" model.constituency.constituencyId =:locationId and ");
+			query.append(" model.assembly.constituencyId =:locationId and ");
 		else if(locationType.equalsIgnoreCase("Parliament Constituency"))
-			query.append(" model.constituency.constituencyId =:locationId and ");
-		
+			query.append(" model.parliament.constituencyId =:locationId and ");
+		}
 		query.append(" model.lastname like '%"+searchString+"%' ");
 		
 		Query queryObj = getSession().createQuery(query.toString());
@@ -335,7 +335,7 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		queryObj.setParameter("partyId", partyId);
 		queryObj.setParameter("designationId", designationId);
 		//queryObj.setParameter("searchString", searchString);
-		if(locationId != 0)
+		if((locationType.equalsIgnoreCase("district") || locationType.equalsIgnoreCase("Assembly Constituency") || locationType.equalsIgnoreCase("Parliament Constituency")) && locationId != 0)
 			queryObj.setParameter("locationId", locationId);
 		return queryObj.list();
 

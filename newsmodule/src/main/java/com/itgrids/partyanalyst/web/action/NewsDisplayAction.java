@@ -544,6 +544,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		 fileVO.setToDateStr(toDate);
 		 fileVO.setStartIndex(startIndex);
 		 fileVO.setMaxResult(maxIndex);
+		 fileVO.setImportance(regVO.getUserAccessType());
 		   
 		 savedDetails = newsMonitoringService.getTotalNews(fileVO);
 		 
@@ -595,7 +596,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  fileVO.setToDateStr(request.getParameter("toDate"));
 		  fileVO.setRegionValue(Long.parseLong(request.getParameter("regionLevel")));
 		  fileVO.setImportanceId(Long.parseLong(request.getParameter("importance")));
-		  fileVO.setFileType(request.getParameter("type"));
+		  fileVO.setFileType(request.getParameter("reqType"));
 		  fileVO.setLocationId(Long.parseLong(request.getParameter("reportRegionLevel")));
 		  fileVO.setLocationVal(Long.parseLong(request.getParameter("reportRegionLevelVal")));
 		  fileVO.setLatest(true);

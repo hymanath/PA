@@ -787,7 +787,7 @@ function createNewParty()
       <tr>
         <td>Report Description </td><td><textarea maxlength="330" name="fileDescription" rows="3" cols="20" id="newsreportfileDescription"></textarea></td>
       </tr>
-	    <tr><td></td><td><input type="radio" class="reporttypeclass" onclick="showHideLocationLvl('level');" checked="checked" value="byLocationLvl" name="byLocationLvl"></input> By Location Level&nbsp;&nbsp;<input class="reporttypeclass" type="radio" onclick="showHideLocationLvl('location');" value="byLocation" name="byLocationLvl"></input> By Location</td></tr>
+	    <tr><td></td><td><input type="radio" class="reporttypeclass" id="byLevelChecked" onclick="showHideLocationLvl('level');" checked="checked" value="byLocationLvl" name="byLocationLvl"></input> By Location Level&nbsp;&nbsp;<input class="reporttypeclass" type="radio" onclick="showHideLocationLvl('location');" value="byLocation" name="byLocationLvl"></input> By Location</td></tr>
       <tr class="regionLvlClass">
         <td>Select Level</td><td><select id="regionlevel"><option value="1">All</option><option value="2">STATE</option><option value="3">DISTRICT</option><option value="4">CONSTITUENCY</option></select></td>
       </tr>
@@ -2564,13 +2564,13 @@ var newsreportfileDescription = $("#newsreportfileDescription").val();
 	var flag =false;
 	if(newsReportFileIdsArray.length == 0)
 	{
-	  str +='Select atleast one file<br/>';
+	  str +='Select atleast one news<br/>';
 		flag =true;
 	}
 	
 	 if(newsreportfileDescription == 0)
 	{
-		str +='description is required<br/>';
+		str +='Description is required<br/>';
 		flag = true;
 	}
 	
@@ -2926,10 +2926,10 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="span3" style="margin-left: 12px;"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Mark This News As Public</font></b></label></div>';
 		str+='<div class="span3"><label class="radio"><input type="radio" id="newsprivateRadioId" name="visibility" value="private"><b><font>Mark This News As Private</font></b></label></div>';
 
-		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Discription<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea>     </div>';
+		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Description<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea>     </div>';
 		str+='<div class="span4 ">      ';
-		str+='<label><strong>Image To Display<span class="requiredFont">*</span></strong></label>';
-		 str+='<input type="file" class="m_top10" name="imageForDisplay"></div>    </div>';
+		str+='<label><strong>Image To Display</strong></label>';
+		 str+='<input type="file" class="m_top10" name="imageForDisplay"><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>    </div>';
 		
 	str+='</div></div>';
 	
@@ -3055,7 +3055,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='</div>';
 		str+='<div id="source0newfile"></div>';
 		str+='<div class="container m_top5">';
-		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
+		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory. File must be .jpeg or .jpg or .png or .gif formats only.</span>';
 		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea  name="fileSourceVOList[0].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" id="aaanewsfileDescription" style="width: 900px;"></textarea><span class="help-block">&nbsp;&nbsp;&nbsp;<input style="margin-top: -1px;" name="fileSourceVOList[0].newsDescCheck" onclick="changeToEEnadutxt(\'newsdetdescchk\',\'aaanewsfileDescription\');" id="newsdetdescchk" type="checkbox"/>&nbsp;Please check if title is from eenadu.net</span>       </div>';
 
 		str+='        </div>';
@@ -3163,7 +3163,7 @@ function addNewFileSource(){
 		str+='</div>';
 		str+='<div id="source'+addSource+'newfile"></div>';
 		str+='<div class="container m_top5">';
-		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory.</span>';
+		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory. File must be .jpeg or .jpg or .png or .gif formats only.</span>';
 		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea id="'+addSource+'aaanewsfileDescription" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 875px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="'+addSource+'newsdetdescchk" onclick="changeToEEnadutxt(\''+addSource+'newsdetdescchk\',\''+addSource+'aaanewsfileDescription\');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please check if detailed news description is from eenadu.net</span>       </div>';
 
 		str+='        </div>';

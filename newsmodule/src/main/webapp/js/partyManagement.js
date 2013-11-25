@@ -5729,6 +5729,49 @@ function validateUploadFileDetails()
 		}
 		
 	}
+	  try{
+	    var invalidImg = false;
+	    $('.addFileImgCls').each(function() {
+		  if($.trim($(this).val()).length > 0){
+            var extension = $(this).val().substring($(this).val().lastIndexOf(".")).toLowerCase();
+			 if(invalidImg)
+			 return false;
+			if(!(extension == '.jpeg' || extension == '.jpg' || extension == '.png' || extension == '.gif')){
+			  str += 'News Files must be  .jpeg or .jpg or .png or .gif formats only';
+			  invalidImg = true;
+			  flag = false;
+			}
+			}
+			
+        });
+		 $('.fileImgCls').each(function() {
+		  if($.trim($(this).val()).length > 0){
+            var extension = $(this).val().substring($(this).val().lastIndexOf(".")).toLowerCase();
+			 if(invalidImg)
+			 return false;
+			if(!(extension == '.jpeg' || extension == '.jpg' || extension == '.png' || extension == '.gif')){
+			  str += 'News Files must be  .jpeg or .jpg or .png or .gif formats only';
+			  invalidImg = true;
+			  flag = false;
+			}
+			}
+			
+        });
+		 $('.m_top10').each(function() {
+		  if($.trim($(this).val()).length > 0){
+            var extension = $(this).val().substring($(this).val().lastIndexOf(".")).toLowerCase();
+			 if(invalidImg)
+			 return false;
+			if(!(extension == '.jpeg' || extension == '.jpg' || extension == '.png' || extension == '.gif')){
+			  str += 'News Files must be  .jpeg or .jpg or .png or .gif formats only';
+			  invalidImg = true;
+			  flag = false;
+			}
+			}
+			
+        });
+	   }catch(e){
+	   }
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 	if(flag == false)
@@ -6992,11 +7035,11 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
 	var importance = $("#newsPriority").val();
 	var reportRegionLevel = $("#reportRegionLevel").val();
 	var reportRegionLevelVal = 0;
-	 var type="";
+	 var reqType="";
 	if($("#byLevelChecked").is(':checked')){
-	  type = "byLevel";
+		reqType = "byLevel";
 	}else{
-	  type = "byRegion";
+		reqType = "byRegion";
 	  if(reportRegionLevel == 1){
 	      reportRegionLevelVal = 1;
 	  }else if(reportRegionLevel == 2){
@@ -7063,13 +7106,13 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
   ];
   
   
-  var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&type="+type+"");
+  var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&reqType="+reqType+"");
   newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
   newsDataSource.responseSchema = {
   resultsList: "fileVOList",
    fields: [
              {key:"contentId", parser:"number"},
-			        "fileTitle1","source","fileDate","candidateName","locationName","locationScopeValue"],
+			        "fileTitle1","source","eenaduTeluguFontStr","fileDate","candidateName","locationName","locationScopeValue"],
 
     metaFields: {
     totalRecords: "count" // Access to value in the server response
@@ -7078,7 +7121,7 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
   
   
   var myConfigs = {
-initialRequest: "sort=candidateName&dir=asc&startIndex=0&results=100", // Initial request for first page of data
+initialRequest: "&sort=candidateName&dir=asc&startIndex=0&results=100", // Initial request for first page of data
 dynamicData: true, // Enables dynamic server-driven data
 sortedBy : {key:"candidateName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
    paginator : new YAHOO.widget.Paginator({ 
