@@ -8514,4 +8514,24 @@ public void testgetCandidatesListByPartyIdsList()
 	}
 }
 
+	public List<SelectOptionVO> getFilteredCandidates(Long stateId,String partyId,String designationId,String locationType,String locationId,String searchString){
+		log.debug("entered into getFilteredCandidates() in CandidateDetailsService class . ");
+		List<SelectOptionVO> candidateList= new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> candidatesList = candidateDAO.getFilteredCandidateListByName(Long.valueOf(partyId.toString()),Long.valueOf(designationId),Long.valueOf(locationId.toString()),locationType,searchString);
+			if(candidatesList != null && candidatesList.size() > 0){
+				for (Object[] params : candidatesList) {
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(Long.valueOf(params[0].toString()));
+					vo.setName(params[1].toString());
+					candidateList.add(vo);
+				}			
+			}
+			
+		}catch (Exception e) {
+			log.error("Exception occured in getFilteredCandidates() in CandidateDetailsService class",e);
+			candidateList = null;
+		}	
+		return candidateList;
+	}
  }

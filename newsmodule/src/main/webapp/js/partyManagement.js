@@ -1951,14 +1951,14 @@ function buildCreateNewsCategory()
 	str += 	 '</tr>';
 	str += 	'</table>';*/
 	//str += '<fieldset class="imgFieldset" style="width:449px;">';
-	str += '<h2 align="center">Create A News Gallary</h2>';
+	str += '<h2 align="center" style="margin-left: 80px;"> Create A New Category</h2>';
 	str+='<table class="aligncenter"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
 	str += '<table class="aligncenter">';
     
-    str +='<tr><td><b><font>Category Name<font class="requiredFont">*</font></font></b></td><td><select id="categoriesForGallary" name="categoriesForGallary"></td></tr>';
-	str +='<tr><td><b><font>Gallary Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
+    str +='<tr><td><b><font>Main Category <font class="requiredFont">*</font></font></b></td><td><select id="categoriesForGallary" name="categoriesForGallary"></td></tr>';
+	str +='<tr><td><b><font>Category Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
 
-	str += '<tr><td><b><font>Description<font class="requiredFont">*</font></font><b></td>';
+	str += '<tr><td><b><font> Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
 	str += '<table class="aligncenter"><tr><td><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
 	str += '<tr><td><label class="radio"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
@@ -7123,3 +7123,294 @@ function getKeywordList(){
 		});
 }
 
+
+function buildSearchDiv(divId1,elmtId){
+
+var divSourceId;
+var divId = divId1; 
+if(divId1 != 11 && divId1 != 22){
+divSourceId = (divId1 + "").charAt(0);
+divId = (divId1 + "").charAt(1);
+console.log(divSourceId);
+}
+$("#errDiv"+divId1+"").html('');
+	var partyName = '';
+	var partyId =0;
+	var elemtValue = elmtId;
+	if(elmtId ==0){
+	elmtId ="";
+	}
+
+if(divId == 11){
+	 partyName = $("#partiesList :selected").text();
+	 partyId = $("#partiesList").val();
+	if($('#partiesList').val() ==0){
+	$("#errDiv"+divId+"").html('Please select party.');
+	return;
+	}
+}
+else if(divId == 22){
+	partyName = $("#partiesListForWhome :selected").text();
+	partyId = $("#partiesListForWhome").val();
+	 
+	if(partyId ==0){
+	$("#errDiv"+divId+"").html('Please select party.');
+	return;
+	}
+}
+
+else if(divSourceId == 4){
+	partyName = $("#partiesListForWhome"+elmtId+" :selected").text();
+	partyId = $("#partiesListForWhome"+elmtId+"").val();
+	 
+	if(partyId ==0){
+	$("#errDiv4"+divId+"").html('Please select party.');
+	return;
+	}
+}
+
+else if(divSourceId == 3){
+
+	partyName = $("#partiesList"+elmtId+" :selected").text();
+	partyId = $("#partiesList"+elmtId+"").val();
+	 
+	if(partyId ==0){
+	$("#errDiv3"+divId+"").html('Please select party.');
+	return;
+	}
+}
+
+		$("#searchDiv").dialog({
+            modal: true,
+            title: "<b>Search Candidate</b>",
+			width: 500,
+            height: 300
+           
+        });
+
+	
+	$("#searchDiv").append("<div id='searchInnerDiv' align='center'></div>")
+	$('#searchInnerDiv').html('');
+	var str='';
+	str +='<div id="searchErrDiv'+divId+'" style="font-weight:bold;color:red;"></div>';
+	str +='<table>';
+	str +='<tr>';
+	str +='<td>Party Name : </td>';
+	str +='<td>'+partyName+' </td>';
+	//str +='<td><select id="partySelectNewList'+divId+'"></select></td>';
+	str +='</tr>';
+	str +='<tr>'
+	str +='<td>Designation : </td>';
+	str +='<td><select id="designationsList'+divId+'"></select></td>';
+	str +='</tr>'
+	str +='<tr>'	
+	str +='<td style="width: 160px;"> <input type="button" class="btn btn-info" id="searchId'+divId+'" onclick="showORhideSearchOptions('+divId+')" value="Advanced Search" style="margin-top: -10px;" /></td>'	
+	str +='<td> <select id="locationList'+divId+'" onchange="buildLocationDiv('+divId+');">';
+	str +='<option value="0"> Select Location</option>';
+	str +='<option value="1">District</option>';
+	str +='<option value="2">Assembly Constituency</option>';
+	str +='<option value="3">Parliament Constituency</option>';
+	str+='</select></td>'	
+	str +='</tr>'
+	str +='</table>'
+	
+	str +='<div id="distiDiv'+divId+'" style="display:none;"><table>'
+	str +='<tr>'
+	str +='<td style="width: 160px;"> District Name:</td>'
+	str +='<td> <select id="districtId'+divId+'" ></select> </td>'
+	str +='</tr>'	
+	str +='</table></div>'	
+	
+	str +='<div id="assConstiDiv'+divId+'" style="display:none;"> <table>'
+	str +='<tr>'
+	str +='<td style="width: 160px;"> Constituency Name:</td>'
+	str +='<td> <select id="assemConstId'+divId+'" ></select> </td>'
+	str +='</tr>'	
+	str +='</table> </div>'	
+	
+	str +='<div id="parliConstiDiv'+divId+'" style="display:none;"><table>'
+	str +='<tr>'
+	str +='<td style="width: 160px;"> Constituency Name:</td>'
+	str +='<td> <select id="parlConstId'+divId+'" ></select> </td>'
+	str +='</tr>'	
+	str +='</table> </div>'
+	
+	str +='<table>'
+	str +='<tr>'
+	str +='<td style="width: 160px;">Candidate Name : </td>';
+	str +='<td><input type="text" id="candidateId'+divId+'" name="candidateName" onkeyUp="getCandidateNames('+divId+','+partyId+');"/></td>';
+	str +='</tr>'
+	str +='</table>';
+	
+
+
+if(divSourceId == 3)
+	str +='<button class="btn btn-success" onclick="updateDetails(3'+divId+','+elemtValue+');"> Save </button>';
+else if(divSourceId == 4)
+	str +='<button class="btn btn-success" onclick="updateDetails(4'+divId+','+elemtValue+');"> Save </button>';
+else
+	str +='<button class="btn btn-success" onclick="updateDetails('+divId+','+elemtValue+');"> Save </button>';
+	$('#searchInnerDiv').html(str);	
+	
+	$("#locationList"+divId+"").attr("disabled","disabled");
+
+	//getPartiesList("partySelectNewList"+divId,null);
+    getDesignationList("designationsList"+divId);
+}
+
+var candidates = {};
+function getCandidateNames(divId,partyId){
+
+var content = $("#candidateId"+divId+"").val();
+var designationId = $("#designationsList"+divId+"").val();
+var locationTypeId = $("#locationList"+divId+"").val();
+var locationType = '';
+var locationId = 0;
+$("#searchErrDiv"+divId+"").html('');
+if(designationId ==0){
+	$("#searchErrDiv"+divId+"").html('Please select designation.');
+	return;
+}
+
+if(counts != 1){
+locationType = $("#locationList"+divId+" option:selected").text();
+	if(designationId ==0){
+	$("#searchErrDiv"+divId+"").html('Please select Location.');
+	return;
+	}
+	if(locationTypeId == 1)
+		locationId = $("#districtId"+divId+"").val();
+		
+	else if(locationTypeId == 2)
+		locationId = $("#assemConstId"+divId+"").val();
+		
+	else if(locationTypeId == 3)
+		locationId = $("#parlConstId"+divId+"").val();
+		
+}
+
+ $.ajax({
+     type: "POST",
+     url: "filterCandidateNames.action",
+     data: {  
+		 partyId:partyId, 
+		 designationId:designationId,
+		 locationType:locationType,
+		 locationId:locationId,
+		 content:content,
+		 task:"filterCandidateNames" 
+		}
+    })
+    .done(function( result ) {
+	$("#searchErrDiv"+divId+"").html('');
+	 var candidatesList = new Array();
+	 if(result.length > 0)	 
+		 for(var i in result)
+			candidatesList.push(result[i].name);
+			 for(var i in result)
+			 {
+			 candidates[result[i].name] = result[i].id;
+			 }
+			
+			//console.log(candidates);
+			
+	 $("#candidateId"+divId+"").autocomplete({
+        source:candidatesList
+        });
+	 });
+
+ //var id = candidates[];
+}
+
+function updateDetails(divId1,elmntId){
+
+
+/*
+if(divId ==1){
+	$("#candidateListForParty").val(id);
+}
+else if(divId ==2){
+	$("#candidateListForPartyForNewsTo").val(id);
+}
+else if(divId ==3){
+	$("#candidateListForParty"+elmntId+"").val(id);
+}
+else if(divId ==4){
+	$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
+}
+*/
+
+var divSourceId;
+var divId = divId1; 
+if(divId1 != 11 && divId1 != 22){
+divSourceId = (divId1 + "").charAt(0);
+divId = (divId1 + "").charAt(1);
+}
+var candiId = $("#candidateId"+divId+"").val();
+
+var id = candidates[candiId];
+
+if(divId == 11){
+$("#candidateListForParty").val(id);
+}
+else if(divId == 22){
+	$("#candidateListForPartyForNewsTo").val(id);
+}
+
+else if(divSourceId == 3){
+$("#candidateListForParty"+elmntId+"").val(id);
+}
+
+else if(divSourceId == 4){
+	$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
+}
+
+
+$('#searchDiv').dialog('close');
+}
+
+function buildLocationDiv(divId){
+var locationType = $("#locationList"+divId).val();
+
+	if(locationType == 1){
+		$("#distiDiv"+divId+"").css("display","block");
+		$("#assConstiDiv"+divId+"").css("display","none");
+		$("#parliConstiDiv"+divId+"").css("display","none");
+		buildSelectBox("#districtId"+divId+"",districtsArr,"district");
+	}
+	else if(locationType == 2){
+		$("#assConstiDiv"+divId+"").css("display","block");
+		$("#distiDiv"+divId+"").css("display","none");
+		$("#parliConstiDiv"+divId+"").css("display","none");
+		buildSelectBox("#assemConstId"+divId+"",assemblyConstiArr,"Constituency");
+	}
+	else if(locationType == 3){
+		$("#parliConstiDiv"+divId+"").css("display","block");
+		$("#distiDiv"+divId+"").css("display","none");
+		$("#assConstiDiv"+divId+"").css("display","none");
+		buildSelectBox("#parlConstId"+divId+"",parliamentConstiArr,"Constituency");
+	}
+}
+
+function buildSelectBox(elmtId,result,location){
+ $(""+elmtId+"").find("option").remove();
+ $(""+elmtId+"").append("<option value='0'> Select "+location+"</option>");
+ $.each( result, function( index, myResult ){
+    $(""+elmtId+"").append("<option value="+myResult.id+">"+myResult.name+"</option>");
+}); 
+
+
+}
+
+var counts = 1;
+function showORhideSearchOptions(divId){
+	if(counts == 1){
+	$("#locationList"+divId+"").attr("disabled",false);
+	counts = counts-1;
+	}
+	else{
+	$("#locationList"+divId+"").attr("disabled","disabled");
+	counts = counts+1;
+	}
+	
+}

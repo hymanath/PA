@@ -387,4 +387,22 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			return Action.SUCCESS;		
 	}
 	
+	public String filterCandidatesByName(){
+		
+		
+		try{
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+
+			if(request.getParameter("task").equalsIgnoreCase("filterCandidateNames"))
+				selectOptionVOList = candidateDetailsService.getFilteredCandidates(user.getStateId(),request.getParameter("partyId"),request.getParameter("designationId"),request.getParameter("locationType"),request.getParameter("locationId"),request.getParameter("content"));
+			
+		}catch (Exception e) {
+			log.debug("exception occured in checkIsKeywordExist(),newsPaginationAction class",e); 
+		}
+		
+		return Action.SUCCESS;
+	}
 }
