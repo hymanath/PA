@@ -74,6 +74,7 @@
 	<bean id="adminPageAction" class="com.itgrids.partyanalyst.web.action.AdminPageAction" singleton="false">
 	 <!-- <property name="regionServiceDataImp" ref="regionServiceDataImp" /> -->
 	 <property name="candidateDetailsService" ref="candidateDetailsService"/>
+	 <property name="staticDataService" ref="staticDataService"/>
 	</bean>	
 	
 	<bean id="createReportAction" class="com.itgrids.partyanalyst.web.action.CreateReportAction" singleton="false">

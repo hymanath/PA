@@ -6846,7 +6846,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 	 }
 	 
-	 public String insertMLCCandidateDetails(final Long partyId ,final String candidateName ,final String  education , final String gender , final Long userId,final Long designationId)
+	 public String insertMLCCandidateDetails(final Long partyId ,final String candidateName ,final String  education , final String gender , final Long userId,final Long designationId,final Long locationId,final Long locationValue)
 	 {
 		 
 		 try
@@ -6860,17 +6860,46 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 candidate.setEducation(education);
 			 candidate.setGender(gender);
 			 candidate.setDesignation(designationDAO.get(designationId));
+			 if(locationId == 1)
+			 {
+				 Object[] stateAndDisrictValues = constituencyDAO.getStateAndDistrictDetails(locationValue).get(0);
+				 Long pcId = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstituencyByParlimentId(locationValue).get(0);
+				 if(stateAndDisrictValues != null)
+				 {
+					 candidate.setState(stateDAO.get((Long)stateAndDisrictValues[0])) ;
+					 candidate.setDistrict(districtDAO.get((Long)stateAndDisrictValues[1]));
+					 candidate.setAssembly(constituencyDAO.get(locationValue));
+				 }
+				 if(pcId > 0)
+				 {
+					 candidate.setParliament(constituencyDAO.get(pcId)); 
+				 }
+			 }
+			 else if(locationId == 2)
+			 {
+				 Long stateId = constituencyDAO.getPcConstituency(locationValue).get(0);
+				  if(stateId > 0)
+				  {
+					  candidate.setState(stateDAO.get(stateId));
+					  candidate.setParliament(constituencyDAO.get(locationValue)); 
+				  }
+			 }
+			 else 
+			 {
+				 candidate.setState(stateDAO.get(1l));
+			 }
+			 candidate.setParty(partyDAO.get(partyId));
 			 
 			 candidate = candidateDAO.save(candidate);
 			
-			 CandidateParty candidateParty = new CandidateParty();
+			 /*CandidateParty candidateParty = new CandidateParty();
 			 
 			 candidateParty.setCandidateId(candidate.getCandidateId());
 			 candidateParty.setPartyId(partyId);
 			 candidateParty.setElectionTypeId(IConstants.MLC_ELECTION_SCOPE_ID);
 			 candidateParty.setUserId(userId);
 			 
-			 candidatePartyDAO.save(candidateParty);
+			 candidatePartyDAO.save(candidateParty);*/
 			}
 		});
 			 
