@@ -9,9 +9,11 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.jfree.util.Log;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -26,7 +28,47 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	private String result;
 	private List<SelectOptionVO> selectOptionVOList,partiesList;
 	
+	private IStaticDataService staticDataService;
+	private List<SelectOptionVO> parlConstiList,assemConstiList;
 	
+	
+	
+	/**
+	 * @return the parlConstiList
+	 */
+	public List<SelectOptionVO> getParlConstiList() {
+		return parlConstiList;
+	}
+	/**
+	 * @param parlConstiList the parlConstiList to set
+	 */
+	public void setParlConstiList(List<SelectOptionVO> parlConstiList) {
+		this.parlConstiList = parlConstiList;
+	}
+	/**
+	 * @return the assemConstiList
+	 */
+	public List<SelectOptionVO> getAssemConstiList() {
+		return assemConstiList;
+	}
+	/**
+	 * @param assemConstiList the assemConstiList to set
+	 */
+	public void setAssemConstiList(List<SelectOptionVO> assemConstiList) {
+		this.assemConstiList = assemConstiList;
+	}
+	/**
+	 * @return the staticDataService
+	 */
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	/**
+	 * @param staticDataService the staticDataService to set
+	 */
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
 	public String getResult() {
 		return result;
 	}
@@ -81,7 +123,8 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
 		if(user == null)
 			return ERROR;
-		else
+		
+		
 		return Action.SUCCESS;
 	}
 	
@@ -95,7 +138,12 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 	   
 	   selectOptionVOList = candidateDetailsService.getDesignationsList();
 	   partiesList = candidateDetailsService.getPartiesList();
-	   
+	   ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+	   ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+	   // districtsList =  staticDataService.getDistricts(1l);
+	   parlConstiList = parliamantConstis.getConstituencies();
+	   assemConstiList = constituencyInfoVO.getConstituencies();
+		 
 	    return Action.SUCCESS;
 		
 	}
@@ -117,8 +165,9 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			String education = jObj.getString("education");
 			String gender = jObj.getString("gender");
 			Long designationId = jObj.getLong("designationId"); 
-			
-			 result   = candidateDetailsService.insertMLCCandidateDetails(partyId ,candidateName ,  education , gender,user.getRegistrationID(),designationId);
+			Long locationId = jObj.getLong("locationId");
+			Long locationValue = jObj.getLong("locationValue");
+			 result   = candidateDetailsService.insertMLCCandidateDetails(partyId ,candidateName ,  education , gender,user.getRegistrationID(),designationId,locationId,locationValue);
 			
 			if(result.equalsIgnoreCase("success"))
 				return Action.SUCCESS;

@@ -5324,7 +5324,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				 candidate.setParliament(constituencyDAO.get(pcId)); 
 			 }
 		  }
-		  else
+		  else if(loctionId == 2)
 		  {
 			  Long stateId = constituencyDAO.getPcConstituency(locationValue).get(0);
 			  if(stateId > 0)
@@ -5332,6 +5332,10 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				  candidate.setState(stateDAO.get(stateId));
 				  candidate.setParliament(constituencyDAO.get(locationValue)); 
 			  }
+		  }
+		  else 
+		  {
+			 candidate.setState(stateDAO.get(1l));
 		  }
 		  
 		  candidateDAO.save(candidate);
