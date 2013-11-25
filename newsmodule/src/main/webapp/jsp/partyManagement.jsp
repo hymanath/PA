@@ -13,10 +13,6 @@
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-
    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
@@ -168,40 +164,6 @@ border:1px solid #C5C5C5;
 </style>
 </head>
 <script type="text/javascript">
-
-var districtsArr = new Array();
-var assemblyConstiArr = new Array();
-var parliamentConstiArr = new Array();
-
-<c:forEach var="districts" items="${districtsList}">
-	var districtList ={
-	id:"${districts.id}",
-	name:"${districts.name}"
-	}
-	districtsArr.push(districtList);
-</c:forEach>
-
-<c:forEach var="assemConstiList" items="${assemConstiList}">
-	var assemblyConstiList ={
-	id:"${assemConstiList.id}",
-	name:"${assemConstiList.name}"
-	}
-	assemblyConstiArr.push(assemblyConstiList);
-	
-</c:forEach>
-
-<c:forEach var="parlConstiList" items="${parlConstiList}">
-	var parliamentConstiList ={
-	id:"${parlConstiList.id}",
-	name:"${parlConstiList.name}"
-	}
-	parliamentConstiArr.push(parliamentConstiList);
-</c:forEach>
-
-/*console.log(districtsArr.length);
-console.log(parliamentConstiArr.length);
-console.log(assemblyConstiArr.length);
-*/
 var gGallaryId;
 		var timeST = new Date().getTime();
 		var sizeOfArray;
@@ -561,10 +523,24 @@ function createNewParty()
 					</li> -->
 					
 					
-					<li class="active"><a data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();uploadNewsForPartyAndCandidate(null);" style="cursor:pointer;color: #005580;" > Upload News</a>	
+					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >News Gallery <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>
+								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();buildCreateNewsCategory();" >Create News Category</a>
+							</li>
+							<li>
+								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();uploadNewsForPartyAndCandidate(null);">Upload News</a>
+							</li>
+							<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+								<li>
+									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
+								</li>
+							</c:if>
+						</ul>
 					</li>
 					
 					<li class="">
+					<!-- <a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()">Add Response To News</a> --> 
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: #005580;">Add Response To News</a>
 					</li>
 					
@@ -573,6 +549,7 @@ function createNewParty()
 					<a data-toggle="tab" value="create Report" id="createReportId" onClick="createReport();" style="cursor:pointer;color: #005580;">Create Report </a>
 					</li>
 					<li class="">
+					<!-- <a data-toggle="tab" href="#ViewReport">View Report</a>-->
 					<a data-toggle="tab" value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: #005580;">View Report</a>
 					</li>
 					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >Keyword Management <b class="caret"></b></a>
@@ -583,19 +560,6 @@ function createNewParty()
 							<li>
 								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createPartyKeywordDiv();reFreshKeywordList();"> Merge Keywords </a>
 							</li>
-						</ul>
-					</li>
-					
-					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >Attributes <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li>
-								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();buildCreateNewsCategory();" >Create News Category</a>
-							</li>
-							<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-								<li>
-									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
-								</li>
-							</c:if>
 						</ul>
 					</li>
 					
@@ -2941,7 +2905,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label style="margin-bottom: -10px;"><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-left: 210px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\')">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
@@ -2949,8 +2913,6 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='    <div class="span5 well well-small">';
 		str+='<label><strong>Select Candidate</strong></label>';
-		str+='<div id="searchDiv"></div>';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 260px;"> <a onclick="buildSearchDiv(11,0);"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
 		str +='<span class="btn btn-mini pull-right m_topN65"><img partylistid="partiesList" key="candidateListForParty" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
 		str +='<select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList[0].candidateId" id="candidateListForParty">';
 		str+='    <option value="0">Select Candidate</option>';
@@ -2967,18 +2929,16 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='</div></div>  ';
 
 		str+='<div class=" well well-small" style="margin-bottom: 0px;"> <a class="btn btn-danger" onclick="addNewFrom();" href="javascript:void(0);">Click to add another From - Who</a></div><legend>To - Whom</legend>';
-		str+='  ';
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-top: -15px; margin-bottom: 5px; margin-left: -5px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyForNewsToImg" />';
 		str+='</div>';
 
 		str+='    <div class="span4 well well-small">';
-		str+='<label><strong>Select Candidate</strong></label> ';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 190px;"> <a onclick="buildSearchDiv(22,0);"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
+		str+='<label><strong>Select Candidate</strong></label>';
 		str +='<span class="btn btn-mini pull-right m_topN65"><img src="images/user.png" title="Click Here To Create New Candidate" class="createCandidateCls createNewCandidate" key="candidateListForPartyForNewsTo" partyListId="partiesListForWhome" ></span>';
 		str +='<select id="candidateListForPartyForNewsTo" name="candidatePartyNewsVOList.destinationVOList[0].candidateId" class="input-block-level">';
 		str+='    <option value="0">Select Candidate</option>';
@@ -3226,7 +3186,7 @@ function addNewFrom(){
  var str ='';
  str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label style="float: left;"><strong>Select Party</strong></label><span id="errDiv3'+who+'" style="margin-top: -25px; color: red; margin-left: 125px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\')">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForParty'+who+'Img" style="display:none;"/>';
@@ -3234,7 +3194,6 @@ function addNewFrom(){
 
 		str+='    <div class="span5 well well-small">';
 		str+='<label><strong>Select Candidate</strong></label>';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 260px;"> <a onclick="buildSearchDiv(3'+who+','+who+');"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
 		str +='<span class="btn btn-mini pull-right m_topN65"><img src="images/user.png" title="Click Here To Create New Candidate" class="createCandidateCls createNewCandidate" key="candidateListForParty'+who+'" partylistid="partiesList'+who+'"></span>';
 		str +='<select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].candidateId" id="candidateListForParty'+who+'" >';
 		str+='    <option value="0">Select Candidate</option>';
@@ -3269,7 +3228,7 @@ var str ='';
 
 	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="margin-top: -25px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')">';
+		str+='<label><strong>Select Party</strong></label><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
@@ -3277,7 +3236,6 @@ var str ='';
 
 		str+='    <div class="span4 well well-small">';
 		str+='<label><strong>Select Candidate</strong></label>';
-		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 190px;"> <a onclick="buildSearchDiv(4'+whome+','+whome+');"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
 		str +='<span class="btn btn-mini pull-right m_topN65"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
 		str +='<select id="candidateListForPartyForNewsTo'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].candidateId" class="input-block-level" >';
 		str+='    <option value="0">Select Candidate</option>';
