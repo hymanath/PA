@@ -177,10 +177,13 @@ function buildFilesInGallaryDetails(results,selectedvalue)
 		
 	str+='<div class="row-fluid">';
 		str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
-		if(results[i].fileName1 != null && results[i].fileName1 == "") 
-		str+='<img style="width:100%" src="'+results[i].fileName1+'" >';
+		if(results[i].fileName1 != null && results[i].fileName1 == "")
+		{
+			str+='<img style="width:100%" src="'+results[i].fileName1+'" onerror="imgError(this)">';
+		}		
+		
 		else
-		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
+		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" onerror="imgError(this)">';
 		str+='</a>';
 		
 		if(fontId > 0)
@@ -221,7 +224,11 @@ document.getElementById("newsDisplayDiv").innerHTML = str;
         'slow');
 }
 
-
+function imgError(image) {
+    image.onerror = "";
+    image.src = "images/TDP.PNG";
+    return true;
+}
 function callAjaxToGetTheResults(selectedvalue)
 {
 	var startIndex = 0;
