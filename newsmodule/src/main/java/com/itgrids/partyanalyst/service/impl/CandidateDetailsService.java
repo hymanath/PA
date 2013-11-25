@@ -6330,7 +6330,7 @@ public List<FileVO>	getFilesOfACategory(Long gallaryId,Integer startIndex,Intege
 	
 	try{
 		List<File> fileList = null;
-		List<File> fileList1 = null;
+		
 		Long count = 0L;
 		Date fromDate = null;
 		Date toDate = null;
@@ -6340,13 +6340,13 @@ public List<FileVO>	getFilesOfACategory(Long gallaryId,Integer startIndex,Intege
 		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
 			toDate = format.parse(toDateStr);
 		fileList=fileDAO.getFilesByCategoryId(categoryId,startIndex,endIndex,newsType,fromDate,toDate);
-		fileList1 = fileDAO.getFilesByCategoryId(categoryId,null,null,newsType,fromDate,toDate);
+		 count = fileDAO.getFilesByCategoryIdCount(categoryId,newsType,fromDate,toDate);
 		if(fileList != null && fileList.size() > 0)
 		{
 			setDataToFileVo(fileList,returnList);
 			
 		}
-		returnList.get(0).setTotalResultsCount(new Long(fileList1.size()));
+		returnList.get(0).setTotalResultsCount(count);
 	}
 	catch (Exception e) {
 		e.printStackTrace();

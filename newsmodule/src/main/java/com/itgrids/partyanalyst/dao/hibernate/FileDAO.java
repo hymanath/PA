@@ -58,46 +58,75 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	{
 		StringBuilder str= new StringBuilder();
 		
-		str.append("select model from File model where model.category.categoryId=:categoryId and (model.isDeleted !='Y') or (model.isDeleted is null)");
+		str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model where model.gallary.category.categoryId=:categoryId and (model.candidatePartyFile.file.isDeleted !='Y') ");
 		 if(newsType != null && !newsType.equalsIgnoreCase(""))
-			 str.append(" and (model.isPrivate != 'Y') or (model.isPrivate is null)");
+			 str.append(" and (model.candidatePartyFile.file.isPrivate != 'Y') ");
 		 if(fromDate != null)
-			 str.append(" and date(model.fileDate) >= :fromDate ");
+			 str.append(" and date(model.candidatePartyFile.file.fileDate) >= :fromDate ");
 			 
 		 if(toDate != null)
-			 str.append(" and date(model.fileDate) <= :toDate ");
+			 str.append(" and date(model.candidatePartyFile.file.fileDate) <= :toDate ");
+		 
+		 str.append(" order by date(model.candidatePartyFile.file.fileDate) desc,model.candidatePartyFile.file.updatedDate desc");
 				 
 		 Query query = getSession().createQuery(str.toString());
 		query.setParameter("categoryId", categoryId);
-		if(startIndex != null)
-		query.setFirstResult(startIndex);
-		if(endIndex != null)
-		query.setMaxResults(endIndex);
-		if(newsType != null && !newsType.equalsIgnoreCase(""))
-		query.setParameter("newsType", newsType);
+		
 		if(fromDate != null)
 	   		query.setParameter("fromDate",fromDate);
 			 
 		if(toDate != null)
 		 query.setParameter("toDate",toDate);
 	   	 
+		if(startIndex != null)
+			query.setFirstResult(startIndex);
+			if(endIndex != null)
+			query.setMaxResults(endIndex);
+			
 		return query.list();	
+	}
+	
+	public Long getFilesByCategoryIdCount(Long categoryId,String newsType,Date fromDate,Date toDate)
+	{
+		StringBuilder str= new StringBuilder();
+		
+		str.append("select distinct count(model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.gallary.category.categoryId=:categoryId and (model.candidatePartyFile.file.isDeleted !='Y') ");
+		 if(newsType != null && !newsType.equalsIgnoreCase(""))
+			 str.append(" and (model.candidatePartyFile.file.isPrivate != 'Y') ");
+		 if(fromDate != null)
+			 str.append(" and date(model.candidatePartyFile.file.fileDate) >= :fromDate ");
+			 
+		 if(toDate != null)
+			 str.append(" and date(model.candidatePartyFile.file.fileDate) <= :toDate ");
+		  
+		 Query query = getSession().createQuery(str.toString());
+		query.setParameter("categoryId", categoryId);
+		
+		if(fromDate != null)
+	   		query.setParameter("fromDate",fromDate);
+			 
+		if(toDate != null)
+		 query.setParameter("toDate",toDate);
+	   	 
+		
+			
+		return (Long)query.uniqueResult();	
 	}
 	
 	@SuppressWarnings("unchecked")
 	public List<File> getTotalFilesList(Long userId,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex)
 	{
 	  StringBuilder str = new StringBuilder();
-	  str.append(" select model from File model where model.user.userId =:userId ");
+	  str.append(" select model from File model where model.isDeleted != 'Y' ");
 	   if(fromDate != null)
 		  str.append(" and date(model.fileDate) >= :fromDate ");
 	   if(toDate != null)
 		  str.append(" and date(model.fileDate) <= :toDate ");
 	   		 
-	   str.append(" order by model.fileDate desc ");
+	   str.append(" order by date(model.fileDate) desc,model.updatedDate desc ");
 	  
 	  Query query = getSession().createQuery(str.toString());
-	  query.setParameter("userId", userId);
+	  
 	  if(fromDate != null)
 	   query.setParameter("fromDate", fromDate);
 	  if(toDate != null)
@@ -108,6 +137,27 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	  if(maxIndex != null)
 		query.setMaxResults(maxIndex);
 	  return query.list();
+	 
+	}
+	
+	public Long getTotalFilesListCount(Date fromDate,Date toDate)
+	{
+	  StringBuilder str = new StringBuilder();
+	  str.append(" select count(*) from File model where model.isDeleted != 'Y' ");
+	   if(fromDate != null)
+		  str.append(" and date(model.fileDate) >= :fromDate ");
+	   if(toDate != null)
+		  str.append(" and date(model.fileDate) <= :toDate ");
+	   		 
+	   str.append(" order by date(model.fileDate) desc,model.updatedDate desc ");
+	  
+	  Query query = getSession().createQuery(str.toString());
+	  
+	  if(fromDate != null)
+	   query.setParameter("fromDate", fromDate);
+	  if(toDate != null)
+	   query.setParameter("toDate", toDate);
+	  return (Long)query.uniqueResult();
 	 
 	}
 		

@@ -3519,7 +3519,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		  fileVOList.add(fileVO);
 	    	     }
 	    	   resultVO.setFileVOList(fileVOList);
-	    	   resultVO.setCount(fileDAO.getTotalFilesList(inputs.getUserId(), fromDate, toDate, null, null).size());
+	    	   resultVO.setCount(fileDAO.getTotalFilesListCount(fromDate, toDate).intValue());
 	    	  }
 	    	}
 	    	catch(Exception e){
@@ -4926,7 +4926,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		    		String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
 		    		fileVO.setFileDate(dateObj!=null?dateObj:"");
 		    		
-		    		if(file.getFont() != null && file.getFont().equals(1))
+		    		if(file.getFont() != null)
 		    		 fileVO.setEenaduTeluguFontStr("Eenadu Telugu");
 		    		
 		    		Set<FileSourceLanguage> set = file.getFileSourceLanguage();
