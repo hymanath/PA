@@ -2941,7 +2941,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label style="margin-bottom: -10px;"><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-left: 210px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\')">';
+		str+='<label style="margin-bottom: -10px;"><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-left: 210px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
@@ -2970,7 +2970,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='  ';
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-bottom: 5px; margin-left: -5px; float: left; position: absolute; margin-top: 30px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\')">';
+		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-bottom: 5px; margin-left: -5px; float: left; position: absolute; margin-top: 30px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\',22)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyForNewsToImg" />';
@@ -3226,7 +3226,7 @@ function addNewFrom(){
  var str ='';
  str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label style="float: left;"><strong>Select Party</strong></label><span id="errDiv3'+who+'" style="margin-top: -25px; color: red; margin-left: 125px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\')">';
+		str+='<label style="float: left;"><strong>Select Party</strong></label><span id="errDiv3'+who+'" style="margin-top: -25px; color: red; margin-left: 125px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\',3'+who+')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForParty'+who+'Img" style="display:none;"/>';
@@ -3269,7 +3269,7 @@ var str ='';
 
 	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="float:left;position:absolute;margin-top: 30px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\')">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="float:left;position:absolute;margin-top: 30px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\',4'+whome+')">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
@@ -3600,8 +3600,33 @@ function deleteSelectedParty(id)
  $("#"+id+"").closest('table').html('');
 }
 
-function getCandidatesListByPartyId(partyId,type)
+function getCandidatesListByPartyId(partyId,type,divId1)
 {
+	var divSourceId;
+	var divId = divId1; 
+	if(divId1 != 11 && divId1 != 22){
+		divSourceId = (divId1 + "").charAt(0);
+		divId = (divId1 + "").charAt(1);
+	}
+	var candiId = $("#candidateId"+divId+"").val();
+
+	var id = candidates[candiId];
+
+	if(divId == 11){
+	$("#errDiv11").html('');
+	}
+	else if(divId == 22){
+		$("#errDiv22").html('');
+	}
+
+	else if(divSourceId == 3){
+	$("#errDiv3"+divId+"").html('');
+	}
+
+	else if(divSourceId == 4){
+		$("#errDiv4"+divId+"").html('');
+	}
+
     $("#"+type+"Img").css("display","block");
 		var jsObj = {
 			partyId :partyId,
