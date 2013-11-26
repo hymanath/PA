@@ -43,7 +43,7 @@ font-size:20px;
 }
 
 #existingFromText,#existingToText{width:155px; cursor: text;}
-#errorMsgDiv{font-size:12px;}
+#errorMsgDiv{font-size:12px;margin-left: 0px; margin-bottom: 0px;}
 .fontStyle{color:#000;font-size:21px;}
 #responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 </style>
@@ -89,7 +89,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 								<div id="errorMsgDiv"></div>
 		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
-			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails()" class="btn btn-info"/>
+			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails(0)" class="btn btn-info"/>
 											
 							</ul>
 						</div>
@@ -121,6 +121,7 @@ var jObj=
 		
 	  firstResult:startIndex,
 	  maxResult:10,
+	  searchBy:"all",
 	  task:"getLatestNews"
 
 	};
@@ -142,6 +143,11 @@ function callAjax(jsObj,url)
 			{
 				buildPaginatedNews(myResults,jsObj);
 			}	
+			else if(jsObj.task == "getSelectedNewsBetweenDates")
+			{
+				buildPaginatedNews(myResults,jsObj);
+			
+			}
 			}catch (e)
 			{
 							     
@@ -159,6 +165,7 @@ function callAjax(jsObj,url)
 
 function buildPaginatedNews(results,jsObj)
 {
+	$("#latestNewsDiv").html('');
 	$("#latestNewsAjaxDiv").css("display","none");
 	var str="";
 	str+="<ul class='unstyled pad10'>";
@@ -224,7 +231,8 @@ function buildPaginatedNews(results,jsObj)
 		$("#paginationId").pagination({
 			items: itemsCount,
 			itemsOnPage: maxResults,
-			cssStyle: 'light-theme'
+			cssStyle: 'light-theme',
+			searchType:jsObj.searchBy
 		});
 	}
 }
@@ -234,7 +242,7 @@ function imgError(image) {
     return true;
 }
 
-function getSelectedNewsDetails()
+function getSelectedNewsDetails(startIndex)
 {
 	$("#errorMsgDiv").html('');
 	
@@ -255,16 +263,30 @@ function getSelectedNewsDetails()
 	  $("#errorMsgDiv").html('Please Select To Date');
 		return;
 	}
-	/* else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	else if (Date.parse(fromDate) > Date.parse(toDate)) {
       $("#errorMsgDiv").html('Invalid Date Selection.');
       return;
-	}  */
+	}
 
+	  var jObj=
+	{
+	  fromDate:fromDate,
+	  toDate:toDate,
+	  firstResult:startIndex,
+	  maxResult:10,
+	  searchBy:"betweenDates",
+	  task:"getSelectedNewsBetweenDates"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getSelectedNewsBetweenDatesAction.action?"+rparam;
+	callAjax(jObj,url);
 	
+	
+	/*
 	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
 	
     var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-    browser1.focus();
+    browser1.focus();*/
 }
   $(".dateField").live("click", function(){
  $(this).datepicker({
