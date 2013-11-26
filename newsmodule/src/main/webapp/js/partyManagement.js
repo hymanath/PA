@@ -1494,9 +1494,11 @@ function showUploadStatus(myResult)
 }
 function removeAllUnwantedCharacters1(str)
 {
-   var strng = str.replace(/[\\\%\&\#\"+"]/g," ");
-  
-   return replaceEnterKey(strng,"  ");
+  // var strng = str.replace(/[\\\%\&\#\"+"]/g," "); commented by srishailam
+	
+	/*var strng = str.replace(/[\\\&\#\"+"]/g," ");  
+    return replaceEnterKey(strng,"  ");*/
+	return str;
 } 
 
 function showNewsUploadStatus(myResult)
@@ -7383,7 +7385,7 @@ else if(divId ==4){
 	$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
 }
 */
-debugger;
+//debugger;
 var divSourceId;
 var divId = divId1; 
 if(divId1 != 11 && divId1 != 22){
