@@ -1835,7 +1835,7 @@
       <property name="mobileAppUserAccessKeyDAO" ref="mobileAppUserAccessKeyDAO"></property>
       <property name="voiceSmsService" ref="voiceSmsService"></property>
       <property name="voiceRecordingDetailsDAO" ref="voiceRecordingDetailsDAO"/>
-	
+	  <property name="webServiceBaseUrlDAO" ref="webServiceBaseUrlDAO"/>
     </bean>
 </beans>		
 	
