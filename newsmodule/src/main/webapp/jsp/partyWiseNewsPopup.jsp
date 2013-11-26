@@ -153,7 +153,7 @@ About Gmail - email from Google
 
 Video chat with a friend, or give someone a ring all from your inbox. See more reasons to switch or check out our newest features. <p>
 								</li>-->
-								<div id="errorMsgDiv"></div>
+				<div id="errorMsgDiv" style="float: right; margin-right: 94px; margin-top: 10px; width: 106px; margin-bottom: 10px;"></div>
 		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
 			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getNewsForPagination(0)" class="btn btn-info"/>
@@ -216,14 +216,14 @@ function getNewsForLocation()
 	 $("#existingFromText").val('');
 	 $("#existingToText").val('');
 	var scopes = scope;
-			if(scopes == "District"){				
-				scopeIdVal = document.getElementById("userAccessDistrictList").value;	
-				locationName = $('#userAccessDistrictList option:selected').text();
-			}
-			if(scopes == "Constituency"){
-				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
-				locationName = $('#userAccessConstituencyList option:selected').text();
-			}
+	if(scopes == "District"){				
+		scopeIdVal = document.getElementById("userAccessDistrictList").value;	
+		locationName = $('#userAccessDistrictList option:selected').text();
+	}
+	if(scopes == "Constituency"){
+		scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
+		locationName = $('#userAccessConstituencyList option:selected').text();
+	}
 	if(scopeIdVal != '0'){
 	$('#boxHeading1').html('');
 	$('#boxHeading1').css("padding-top","9px");
@@ -316,7 +316,7 @@ function getNewsForLocation()
 
 function getNewsForPagination(num)
  {
-	var locValue = $("#userAccessConstituencyList").val();
+	var locValue = $("#userAccessDistrictList option:selected").val();
 	if(locValue == null)
 		locValue = locationValue;
 	$('#imageForMail').css("display","block");
