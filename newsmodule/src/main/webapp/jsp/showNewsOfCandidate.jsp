@@ -306,8 +306,9 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 				
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
-		
-		var path = results[i].fileVOList[0].fileVOList[0].path;
+		var path = "images/TDP.PNG";
+		 if(results[i].fileVOList.length > 0 && results[i].fileVOList[0].fileVOList.length > 0)
+		 path = results[i].fileVOList[0].fileVOList[0].path;
 		//var source = results[i].fileVOList[0].source;
 		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
