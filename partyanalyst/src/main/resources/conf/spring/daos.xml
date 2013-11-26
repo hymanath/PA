@@ -1258,14 +1258,18 @@
    </bean>
    
      <bean id="mobileAppUserDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserDAO">
-    <property name="sessionFactory" ref="sessionFactory" />
-   </bean>
+    	<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
    
      <bean id="mobileAppUserAccessDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessDAO">
-    <property name="sessionFactory" ref="sessionFactory" />
-   </bean>
+    	<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
      <bean id="mobileAppUserAccessKeyDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessKeyDAO">
-    <property name="sessionFactory" ref="sessionFactory" />
+    	<property name="sessionFactory" ref="sessionFactory" />
+   	</bean>
+   
+    <bean id="webServiceBaseUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebServiceBaseUrlDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
 </beans>		
