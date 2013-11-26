@@ -3906,10 +3906,19 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		e.printStackTrace();
 	}
 		
+		Collections.sort(candidates, sortcandidates);
 		return candidates;
 	}
 	
 	
+	 public static Comparator<SelectOptionVO> sortcandidates = new Comparator<SelectOptionVO>()
+			 {
+				  
+			  public int compare(SelectOptionVO newsCountVO, SelectOptionVO newsCountVO2)
+				{
+				   return (newsCountVO.getName()).compareTo(newsCountVO2.getName());
+				}
+		    };
 	
 	public List<CandidateNewsCountVO> getNewsCountForACandidate(String fromDateStr,String toDateStr,List<Long> categoryIdsList,List<Long> galleryIdsList,List<Long> locationIdsList,String tempVar,String locationScope)
 	{
