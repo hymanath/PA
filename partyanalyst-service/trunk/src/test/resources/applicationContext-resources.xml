@@ -382,11 +382,16 @@
 			    <value>com.itgrids.partyanalyst.model.MobileAppUserProfile</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppUser</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppUserAccessKey</value>
+				<value>com.itgrids.partyanalyst.model.WebServiceBaseUrl</value>
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="webServiceBaseUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebServiceBaseUrlDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="queryTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.QueryTempDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
