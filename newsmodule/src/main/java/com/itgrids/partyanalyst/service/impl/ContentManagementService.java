@@ -270,7 +270,8 @@ public class ContentManagementService implements IContentManagementService{
 						
 						Long locationScopeId = fileVal.getRegionScopes().getRegionScopesId();
 						fileVO.setLocationId(locationScopeId);
-						fileVO.setLocationName(getLocationBasedOnScopeId(locationScopeId, fileVal.getLocationValue()));
+						//fileVO.setLocationName(getLocationBasedOnScopeId(locationScopeId, fileVal.getLocationValue()));
+						fileVO.setLocationName(candidateDetailsService.getLocationDetails(locationScopeId,fileVal.getLocationValue()));
 						fileVO.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileVal.getFileId()).size());
 						List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 						Set<FileSourceLanguage> fileSourceLanguageSet = fileVal.getFileSourceLanguage();
