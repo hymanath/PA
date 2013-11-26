@@ -3477,46 +3477,50 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    	   fileVOList = new ArrayList<FileVO>();
 	    	   for(File file:filesList)
 	    	   {
-	    		 FileVO fileVO = new FileVO();
-	    		 fileVO.setFileId(file.getFileId());
-	    		 fileVO.setTitle(file.getFileTitle() != null? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
-	    		 fileVO.setDescription(file.getFileDescription() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())): " ");
-	    		 
-	    		 if(file.getFileDate() != null)
-	    		 {
-	    		   String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
-	    		   fileVO.setFileDateAsString(dateString);
-	    		 }
-	    		  
-	    		 if(file.getRegionScopes() != null)
-	    		   fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
-	    		  
-	    		  String fileDate = file.getFileDate().toString();
-	    		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
-	    		  fileVO.setFileDate(dateObj!=null?dateObj:"");
-	    		  
-	    		  if(file.getFont() != null && file.getFont().getFontId().equals(1))
-	    		   fileVO.setEenaduTeluguFontStr("Eenadu Telugu");
-	    		  
-	    		  String fileSourceStr = "";
-	    		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
-	    		  if(fileSourceLanguageSet != null && fileSourceLanguageSet.size() > 0)
-	    		   for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageSet)
-	    			   fileSourceStr +=fileSourceLanguage.getSource().getSource()+",";
-	    		  
-	    		  if(fileSourceStr.length() > 0)
-	    			  fileSourceStr = fileSourceStr.substring(0, fileSourceStr.length()-1);
-	    		  
-	    		  fileVO.setSource(fileSourceStr);
-	    		  
-	    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
-	    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
-	    		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
-	    		  if(file.getRegionScopes()!=null)
-	    		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
-	    		  
-	    		  
-	    		  fileVOList.add(fileVO);
+		    		   try{
+			    		 FileVO fileVO = new FileVO();
+			    		 fileVO.setFileId(file.getFileId());
+			    		 fileVO.setTitle(file.getFileTitle() != null? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())):"");
+			    		 fileVO.setDescription(file.getFileDescription() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())): " ");
+			    		 
+			    		 if(file.getFileDate() != null)
+			    		 {
+			    		   String dateString =file.getFileDate().getDate()+"/"+(file.getFileDate().getMonth()+1)+"/"+(file.getFileDate().getYear()+1900);
+			    		   fileVO.setFileDateAsString(dateString);
+			    		 }
+			    		  
+			    		 if(file.getRegionScopes() != null)
+			    		   fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
+			    		  
+			    		  String fileDate = file.getFileDate().toString();
+			    		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+			    		  fileVO.setFileDate(dateObj!=null?dateObj:"");
+			    		  
+			    		  if(file.getFont() != null && file.getFont().getFontId().equals(1))
+			    		   fileVO.setEenaduTeluguFontStr("Eenadu Telugu");
+			    		  
+			    		  String fileSourceStr = "";
+			    		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
+			    		  if(fileSourceLanguageSet != null && fileSourceLanguageSet.size() > 0)
+			    		   for(FileSourceLanguage fileSourceLanguage:fileSourceLanguageSet)
+			    			   fileSourceStr +=fileSourceLanguage.getSource().getSource()+",";
+			    		  
+			    		  if(fileSourceStr.length() > 0)
+			    			  fileSourceStr = fileSourceStr.substring(0, fileSourceStr.length()-1);
+			    		  
+			    		  fileVO.setSource(fileSourceStr);
+			    		  
+			    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
+			    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
+			    		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
+			    		  if(file.getRegionScopes()!=null)
+			    		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
+			    		  
+			    		  
+			    		  fileVOList.add(fileVO);
+		    		   }catch (Exception e) {
+						log.error("exception raised in getNewsForRegisterUsers  Method of NewsMonitoringService at inner loop",e);
+					}
 	    	     }
 	    	   resultVO.setFileVOList(fileVOList);
 	    	   resultVO.setCount(fileDAO.getTotalFilesListCount(fromDate, toDate).intValue());
