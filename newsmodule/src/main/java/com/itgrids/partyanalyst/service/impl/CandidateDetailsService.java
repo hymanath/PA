@@ -852,7 +852,18 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription());
 			file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
-			file.setLocationValue(Long.parseLong(fileVO.getLocationValue()));
+			Long regionScopeId = regionScopesDAO.get(fileVO.getLocationScope()).getRegionScopesId();
+			
+			if(regionScopeId == 5 || regionScopeId == 6 || regionScopeId == 8 ){
+				file.setLocationValue(Long.parseLong(fileVO.getLocationValue().substring(1)));			
+			}
+			else if(regionScopeId == 7){
+				Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.valueOf(fileVO.getLocationValue().toString().substring(1))).get(0);
+				file.setLocationValue(localElectionBodyDAO.get(localEleBodyId).getLocalElectionBodyId());				
+			}
+			else
+				file.setLocationValue(Long.parseLong(fileVO.getLocationValue()));
+			
 			if(fileVO.getNewsImportanceId() != null && fileVO.getNewsImportanceId() > 0)
 			 file.setNewsImportance(newsImportanceDAO.get(fileVO.getNewsImportanceId()));
 			
