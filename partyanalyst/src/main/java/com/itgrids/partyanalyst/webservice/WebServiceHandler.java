@@ -72,7 +72,7 @@ public class WebServiceHandler {
 	@Produces(MediaType.TEXT_PLAIN)
 	public String getMobileAppAuthorizationURL()
     {
-		return "http://192.168.4.21:8080/PartyAnalyst/WebService/appAuthorization";
+		return "http://www.partyanalyst.com/WebService/appAuthorization";
     }
 	
 	
