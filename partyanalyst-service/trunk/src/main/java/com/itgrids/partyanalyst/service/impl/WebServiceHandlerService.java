@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
+import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.EmailDetailsVO;
@@ -46,7 +47,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	
 	private IMobileAppUserDAO mobileAppUserDAO;
 	private IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO ;
-
+	private IWebServiceBaseUrlDAO webServiceBaseUrlDAO;
 	private IVoiceSmsService voiceSmsService;
 	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
 	
@@ -54,114 +55,84 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		return voiceRecordingDetailsDAO;
 	}
 
+	public IWebServiceBaseUrlDAO getWebServiceBaseUrlDAO() {
+		return webServiceBaseUrlDAO;
+	}
 
+	public void setWebServiceBaseUrlDAO(IWebServiceBaseUrlDAO webServiceBaseUrlDAO) {
+		this.webServiceBaseUrlDAO = webServiceBaseUrlDAO;
+	}
 
 	public void setVoiceRecordingDetailsDAO(
 			IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO) {
 		this.voiceRecordingDetailsDAO = voiceRecordingDetailsDAO;
 	}
 
-
-
 	public IVoiceSmsService getVoiceSmsService() {
 		return voiceSmsService;
 	}
-
-
 
 	public void setVoiceSmsService(IVoiceSmsService voiceSmsService) {
 		this.voiceSmsService = voiceSmsService;
 	}
 
-
-
 	public IMobileAppUserAccessKeyDAO getMobileAppUserAccessKeyDAO() {
 		return mobileAppUserAccessKeyDAO;
 	}
-
-
 
 	public void setMobileAppUserAccessKeyDAO(
 			IMobileAppUserAccessKeyDAO mobileAppUserAccessKeyDAO) {
 		this.mobileAppUserAccessKeyDAO = mobileAppUserAccessKeyDAO;
 	}
 
-
-
 	public IMobileAppUserDAO getMobileAppUserDAO() {
 		return mobileAppUserDAO;
 	}
-
-
 
 	public void setMobileAppUserDAO(IMobileAppUserDAO mobileAppUserDAO) {
 		this.mobileAppUserDAO = mobileAppUserDAO;
 	}
 
-
-
 	public IMobileAppUserProfileDAO getMobileAppUserProfileDAO() {
 		return mobileAppUserProfileDAO;
 	}
-
-
 
 	public void setMobileAppUserProfileDAO(
 			IMobileAppUserProfileDAO mobileAppUserProfileDAO) {
 		this.mobileAppUserProfileDAO = mobileAppUserProfileDAO;
 	}
 
-
-
 	public IMailService getMailService() {
 		return mailService;
 	}
-
-
 
 	public void setMailService(IMailService mailService) {
 		this.mailService = mailService;
 	}
 
-
-
 	public ISmsService getSmsCountrySmsService() {
 		return smsCountrySmsService;
 	}
-
-
 
 	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
 		this.smsCountrySmsService = smsCountrySmsService;
 	}
 
-
-
-
-
 	public IMobileService getMobileService() {
 		return mobileService;
 	}
-
-
 
 	public void setMobileService(IMobileService mobileService) {
 		this.mobileService = mobileService;
 	}
 
-
-
 	public ILoginService getLoginService() {
 		return loginService;
 	}
 
-
-
 	public void setLoginService(ILoginService loginService) {
 		this.loginService = loginService;
 	}
-
-
 
 	public String checkForUserAuthentication(String userName , String passWord)
 	{
@@ -354,6 +325,22 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			e.printStackTrace();
 		}
 		return resultStatus;
+	}
+	
+	public String getBaseUrlForApp(String appName)
+	{
+		try{
+			String url = webServiceBaseUrlDAO.getBaseURLForAnApp(appName);
+			
+			if(url == null || url.isEmpty())
+				return "FAIL:URL not found"; 
+			else
+				return url.trim();
+		}catch(Exception e)
+		{
+			log.error("Exception Occured, Exception is - "+e);
+			return "FAIL:URL not found"; 
+		}
 	}
 
 }
