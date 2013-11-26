@@ -27,7 +27,12 @@
 				selectOnClick: true,
 				onPageClick: function(pageNumber, event) {
 					var num=(pageNumber-1)*10;
-					getNewsForPagination(num);
+					//getNewsForPagination(num);
+					if(options.searchType == "betweenDates")
+						getSelectedNewsDetails(num);					
+					else
+						getNewsForPagination(num);
+					
 					// Callback triggered when a page is clicked
 					// Page number is given as an optional parameter
 				},
