@@ -19,11 +19,19 @@ public class CandidateDAOHibernateTest extends BaseDaoTestCase{
 	  candidateDAO.getAll();
 	}*/
 	
-	public void testgetCandidateListByPartyId()
+/*	public void testgetCandidateListByPartyId()
 	{
 	 List<Object[]> list = candidateDAO.getCandidateListByPartyId(872L);
 	 System.out.println(list.size());
 	 
-	}
+	}*/
 
+	public void testgetFilteredCandidateListByName()
+	{
+		
+		List<Object[]> list = candidateDAO.getFilteredCandidateListByName(872L,2L,7L,"District","ya");
+		System.out.println(list.size());
+		for(Object[] params:list)
+		 System.out.println(params[0]+" "+params[1]);
+	}
 }
