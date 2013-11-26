@@ -8,6 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ public class WebServiceHandler {
 	private IWebServiceHandlerService  webServiceHandlerService;
 	private ResultStatus resultStatus;
 	private List<WSResultVO> wSResultVO;
+	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
 	
 	public List<WSResultVO> getwSResultVO() {
 		return wSResultVO;
@@ -73,6 +75,21 @@ public class WebServiceHandler {
 	public String getMobileAppAuthorizationURL()
     {
 		return "http://www.partyanalyst.com/WebService/appAuthorization";
+    }
+	
+	@GET
+    @Path("/getBaseUrlForApp/{appName}")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String getBaseUrlForApp(@PathParam("appName") String appName)
+    {
+		try{
+			return webServiceHandlerService.getBaseUrlForApp(appName);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured, Exception is - "+e);
+			return "FAIL:URL not found"; 
+		}
     }
 	
 	
