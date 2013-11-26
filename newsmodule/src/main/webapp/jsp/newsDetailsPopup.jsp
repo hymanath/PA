@@ -430,7 +430,8 @@ function buildContentDetails()
              
 			 if(result.relatedGalleries[0].filesList[i].candidateName != null && result.relatedGalleries[0].filesList[i].candidateName != "")
 			  str +='<td><b style="margin-left: 15px;">Candidate </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].candidateName+'</font></span></td>';
-
+			if(result.relatedGalleries[0].filesList[i].responseCount > 0)
+			str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><a href="showNewsResponseAction.action?responseContentId ='+result.relatedGalleries[0].filesList[i].contentId+' "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+result.relatedGalleries[0].filesList[i].responseCount +'</a></p></td>';
 			 str +='</tr>';
 
 			 str+='</table>';
