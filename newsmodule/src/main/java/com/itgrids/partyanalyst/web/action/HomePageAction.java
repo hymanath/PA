@@ -1,9 +1,15 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -580,6 +586,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		
 		return SUCCESS;
 	}
+	public static boolean ASC = true;
 	public String showNewsOfCandidatePage(){
 		session = request.getSession();
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
@@ -589,7 +596,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		if(log.isDebugEnabled())
 			log.debug("In HomePageAction's getCandidates");
 		try {
-			candidatesMap=new HashMap<Long, String>();
+			candidatesMap=new TreeMap<Long, String>();
 			candidatesList=new ArrayList<SelectOptionVO>();
 			
 			//candidatesList=newsMonitoringService.getCandidates();
@@ -598,6 +605,10 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			
 			for(SelectOptionVO vo:candidatesList)
 				candidatesMap.put(vo.getId(), vo.getName());
+			
+			 
+			candidatesMap = sortByComparator(candidatesMap,ASC);
+			
 			
 			
 		} catch (Exception e) {
@@ -608,6 +619,38 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
        }
 	}
 	
+	private static Map<Long, String> sortByComparator(Map<Long, String> unsortMap, final boolean order)
+    {
+
+        List<Entry<Long, String>> list = new LinkedList<Entry<Long, String>>(unsortMap.entrySet());
+
+        // Sorting the list based on values
+        Collections.sort(list, new Comparator<Entry<Long, String>>()
+        {
+            public int compare(Entry<Long, String> o1,
+                    Entry<Long, String> o2)
+            {
+                if (order)
+                {
+                    return o1.getValue().compareTo(o2.getValue());
+                }
+                else
+                {
+                    return o2.getValue().compareTo(o1.getValue());
+
+                }
+            }
+        });
+
+        // Maintaining insertion order with the help of LinkedList
+        Map<Long, String> sortedMap = new LinkedHashMap<Long, String>();
+        for (Entry<Long, String> entry : list)
+        {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+
+        return sortedMap;
+    }
 	public String ajaxHandler()
 	{
 		try{
