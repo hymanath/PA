@@ -2931,13 +2931,13 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<label><strong>Image To Display</strong></label>';
 		 str+='<input type="file" class="m_top10" name="imageForDisplay"><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>    </div>';
 		
-	str+='</div></div>';
+	str+='</div></div></div>';
 	
 		str+='<div class="container">';
 
 		str+='<div class="row-fluid"> ';
 
-		str+='    <div class="sapn12"> <div id="myID" style="border:1px solid #ADC248;position: inherit; margin-top: 355px;border-radius:5px; padding:5px 15px 15px 15px;width:906px;"> ';  
+		str+='    <div class="sapn12"> <div id="myID" style="border:1px solid #ADC248;position: inherit; border-radius:5px; padding:5px 15px 15px 15px;width:906px;"> ';  
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
@@ -3015,7 +3015,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+=' </div>';
 		str+='</div>';
 
-		str+='<div class="row-fluid"><div id="formdata" style="display:none;"></div></div><div class="container" style="margin-top: 10px;margin-left:0px;border-radius:5px;padding:5px 15px 15px 15px;width: 906px;border:1px solid #ADC248;" ><legend class="">&nbsp;Add News From Different Sources</legend><div class="row-fluid ">';
+		str+='<div class="row-fluid"><div id="formdata" style="display:none;"></div></div><div class="container" style="margin-top: 10px;margin-left:14px;border-radius:5px;padding:5px 15px 15px 15px;width: 906px;border:1px solid #ADC248;" ><legend class="">&nbsp;Add News From Different Sources</legend><div class="row-fluid ">';
 		str+='    <div class="span12">';
 		str+='        <div class="row-fluid">';
 		str+='<div class="container ">';
@@ -3069,7 +3069,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='<div class="row-fluid">';
 		str+='      <a style="margin-top:-30px" class="offset6 span5 btn btn-danger" onclick="addNewFileSource();" href="javascript:void(0);" style="margin-top: -60px;">Click here to  <span class="label ">Add <i class="icon-plus-sign icon-white"></i></span> another source</a></div></div>';
-		str+='<div class="row-fluid"><div class="container m_top10" style="padding:5px 15px 15px 15px;width: 920px;border:1px solid #ADC248;margin-left:0px;border-radius:5px;width:906px;"><legend class="">Select News Location</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
+		str+='<div class="row-fluid"><div class="container m_top10" style="padding:5px 15px 15px 15px;width: 920px;border:1px solid #ADC248;margin-left:14px;border-radius:5px;width:906px;"><legend class="">Select News Location</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
 		str += '<select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"></select></div>';
         str +='<div id="showScopeSubs"></div>';
 		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Save changes" class="btn btn-success btn-large">                         </div></div></div>';
