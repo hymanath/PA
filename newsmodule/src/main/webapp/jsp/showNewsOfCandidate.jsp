@@ -160,7 +160,9 @@
 							<font>Please wait...</font>
 							<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
 						</div>
-						<div id="pagedNewsId"></div>
+						<div id="pagedNewsId">
+							<img  src="images/icons/goldAjaxLoad.gif" style="height: 15px; width: 150px; margin-left: 229px; margin-top: 26px;" width="18" height="11"/>
+						</div>
 						<!----pagination Div----->
 						<div class="span12 text-center">
 							<div id="paginationId"></div>
