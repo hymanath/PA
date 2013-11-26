@@ -1581,6 +1581,13 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			userAddress.setState(stateDAO.get((Long) list.get(0)[0]));
 			userAddress.setDistrict(districtDAO.get((Long) list.get(0)[1]));
 			userAddress.setConstituency(constituencyDAO.get(locationValue));
+			List<Object[]> parliamentConsti = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(locationValue);
+			if(parliamentConsti != null && parliamentConsti.size() > 0){
+				Object[] parliament = parliamentConsti.get(0);
+				if(parliament[0] != null){
+					userAddress.setParliamentConstituency(constituencyDAO.get((Long)parliament[0]));
+				}
+			}
 		}
 		
 		else if(locationId == 5L)
