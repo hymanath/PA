@@ -2066,6 +2066,8 @@ function buildLeadersTableWithExpPerc(results)
 		for(var i in results)
 		{
 		try{
+			if(results[i].panchayatTotalVoters != null )
+			{
 			str += '<tr>';
 			str += '<td>'+results[i].mandalName+'</td>'; 
 			str += '<td>'+results[i].panchayatName+'</td>'; 
@@ -2078,6 +2080,7 @@ function buildLeadersTableWithExpPerc(results)
 			}
 			
 			str += '</tr>';
+			}
 			}catch(e){
 			}
 		}
