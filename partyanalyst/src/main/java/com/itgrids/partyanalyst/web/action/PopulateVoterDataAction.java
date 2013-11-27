@@ -472,4 +472,23 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 		}
 		
 		
+		public String getModifiedVotersBetweenTwoPublications()
+		{
+		  try{
+			  HttpSession session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
+				if(regVo == null)
+					return null;
+			 jObj = new JSONObject(getTask());
+			 resultStatus = votersAnalysisService.getModifiedVotersBetweenTwoPublications(jObj.getLong("constituencyId"),jObj.getLong("fromPublicationId"),jObj.getLong("toPublication"));
+			  
+		  }catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in getModifiedVotersBetweenTwoPublications() method, Exception - "+e);
+		  }
+		  return Action.SUCCESS;
+		}
+		
+		
+		
 }

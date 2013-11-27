@@ -6180,5 +6180,12 @@
 				<param name="root">latestPublicationId</param>
 			</result>
 		</action>
+		
+		<action name="getModifiedVotersBetweenTwoPublicationsAction" class="populateVoterDataAction" method="getModifiedVotersBetweenTwoPublications">
+		  <result type="json" name="success">
+			<param name="root">resultStatus</param>
+		  </result>
+		</action>
+		
 		</package>
 </struts>      
