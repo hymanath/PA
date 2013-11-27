@@ -87,9 +87,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private CensusVO constituencyCensusResultVO;
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	private VotersInfoForMandalVO votersInfoForMandalVO;
+	private Long latestPublicationId;
 	
-	
-	
+	public Long getLatestPublicationId() {
+		return latestPublicationId;
+	}
+	public void setLatestPublicationId(Long latestPublicationId) {
+		this.latestPublicationId = latestPublicationId;
+	}
 	public CensusVO getConstituencyCensusResultVO() {
 		return constituencyCensusResultVO;
 	}
@@ -437,7 +442,11 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.VOTER_ANALYSIS))
 			return Action.ERROR;
 		else
+		{
+			
 			return Action.SUCCESS;
+		}
+			
 	}
 	
 	public String getPartyPerformanceForSelectedLocation()
@@ -986,5 +995,17 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				e.printStackTrace();
 			}
 			  return Action.SUCCESS;
+		}
+		
+		public String getLatestPublicationByConstituency()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				latestPublicationId = suggestiveModelService.getLatestPublicationByConstituency(jObj.getLong("constituencyId"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			 return Action.SUCCESS;
 		}
 }

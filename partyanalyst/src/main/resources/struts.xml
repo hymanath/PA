@@ -6175,5 +6175,10 @@
 				<param name="root">resultStatus</param>
 			</result>
 		</action>
+		<action name="getLatestPublicationByConstituencyAction" class="suggestiveModelAction" method="getLatestPublicationByConstituency">
+			<result type="json" name="success">
+				<param name="root">latestPublicationId</param>
+			</result>
+		</action>
 		</package>
 </struts>      

@@ -216,6 +216,7 @@
 		<property name="cadreDAO" ref="cadreDAO" />	
 		<property name="publicationDateDAO" ref="publicationDateDAO"/>
 		<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
+		 <property name="voterInfoDAO" ref="voterInfoDAO" />
 	</bean>
 	
 	<bean name="partyService" class="com.itgrids.partyanalyst.service.impl.PartyService" >
@@ -1823,6 +1824,7 @@
      <property name="publicationDateDAO" ref="publicationDateDAO" />
 	 <property name="votersAnalysisService" ref="votersAnalysisService"></property>
 	 <property name="boothDAO" ref="boothDAO" />	
+	 <property name="voterInfoDAO" ref="voterInfoDAO" />
     </bean>
     
     <bean name="webServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.WebServiceHandlerService" >

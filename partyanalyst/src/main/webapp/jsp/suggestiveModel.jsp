@@ -236,11 +236,13 @@ html{overflow-x: hidden;}
 
 <script type="text/javascript" >
 var constituencyType ;
+var latestPublicationId;
 $(document).ready(function(){
  <c:if test="${!hideMainMenu}">
   getConstituencyList();
   
  </c:if>
+	 getLatestPublicationId();
 });
 
 function getConstituencyCensusDetails(){
@@ -584,14 +586,32 @@ function getConstituencyType()
 		</c:if>
 		if(constituencyId == 0)
 		return;
+		
 		var jsObj=
 				{
 					constituencyId : constituencyId,
-					publicationId  : 8,
+					publicationId  : latestPublicationId,
 					task           : "getConstituencyType"
 				}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 			var url = "<%=request.getContextPath()%>/getReportLevelDetails.action?"+rparam;	
+
+		callAjax(rparam,jsObj,url);
+}
+
+function getLatestPublicationId()
+	{
+	    var constituencyId = $("#listConstituencyNames option:selected").val();
+		if(constituencyId == 0)
+		return;
+		var jsObj=
+				{
+					constituencyId : constituencyId,
+				
+					task           : "getLatestPublication"
+				}
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "<%=request.getContextPath()%>/getLatestPublicationByConstituencyAction.action?"+rparam;	
 
 		callAjax(rparam,jsObj,url);
 }
@@ -731,6 +751,12 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task=="getAgewiseVoterDetails"){
 							buildAgewiseVoterDetails(myResults,jsObj);
 						}
+						else if(jsObj.task=="getLatestPublication")
+						{
+							latestPublicationId = myResults;
+							buildDataFunction(myResults);
+						
+						}
 					}catch (e){
 					//alert("Invalid JSON result" + e);   
 					  $("#dashBoardImgLoading").hide();
@@ -744,6 +770,13 @@ function callAjax(param,jsObj,url){
 			    };
 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 	}
+
+function buildDataFunction(LatestpublicationId)
+{
+	getConstituencyType();
+	getCasteBasicInfo();
+}
+
 
 function buildUserAssignedVotersCastes(results){
 	var candidateCastesEl = document.getElementById("candidateCastes");
@@ -1046,7 +1079,7 @@ function panchayatMatrx(result)
 					Constituency Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
 				<td>
-					<select id="listConstituencyNames" onchange="clearAll(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyType();getConstituencyBasicCountInfo(); getCasteBasicInfo();">
+					<select id="listConstituencyNames" onchange="clearAll(),getLatestPublicationId(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyBasicCountInfo();">
 					<option value="0"> Select Constituency </option>
 					</select>
 				</td>		
@@ -1330,6 +1363,7 @@ To
 -->
 <script>
 var noOfClicks = 0;
+
 $(document).ready(function(){
 
 $("#pageUpBtn").live("click",function(){
@@ -2875,7 +2909,7 @@ var jsObj=
 	{	
 		constituencyId:constituencyId,
 		candidateCastes:candidateCastes,
-		publicationId:8,
+		publicationId:latestPublicationId,
 		task:"getCasteDetails"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3732,7 +3766,7 @@ var jsObj=
 	{	
         constituencyId:id,
 		id:id,
-		publicationDateId:8,
+		publicationDateId:latestPublicationId,
 		queryType:"sub",
 		type:"constituency",
 		typename:text,
@@ -4299,7 +4333,7 @@ function getVoterAgeGroupResults(){
 	var jsObj = {
 			constituencyId:constituencyId,
 			locationType:"constituency",
-			publicationDateId:8,
+			publicationDateId:latestPublicationId,
 			task:"getVoterAgeGroupResults"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -4313,7 +4347,7 @@ function getVoterDetailsForConstituency(){
 	var jsObj=
 				{					
 					constituencyId:constituencyId,
-					publicationDateId:8,
+					publicationDateId:latestPublicationId,
 					mandalId:'0',
 					boothId:'0',
 					panchayatId:'0',
