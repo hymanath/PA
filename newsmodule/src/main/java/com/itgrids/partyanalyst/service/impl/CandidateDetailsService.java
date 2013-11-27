@@ -8396,11 +8396,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				
 				if(keywordsDetails.size() == 0){
 					newKeyword = saveKeyword(userId,newKeyword1);
-					keywordIds = updateKeywordList(newKeyword,userId,keywordsList);		
+					keywordIds = updateKeywordList(newKeyword,userId,keywordsList);	
+					vo.setPopulateId(0L);
 			   }
 				else{
 					for (Object[] parms : keywordsDetails) {						
 						keywordIds = updateKeywordList(keywordDAO.get(Long.valueOf(parms[0].toString())),userId,keywordsList);
+						vo.setPopulateId(Long.valueOf(parms[0].toString()));
 					}					
 				}
 				vo.setLocationValuesList(keywordIds);
@@ -8419,7 +8421,12 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 
 				 for (Long keywordId : keywordsDetails) {
 					 try{
-					 candidatePartyKeywordDAO.removeKeywordsList(keywordId);
+						 if(vo2.getPopulateId() != 0){
+							 if(vo2.getPopulateId() != keywordId)
+								 candidatePartyKeywordDAO.removeKeywordsList(keywordId);
+						 }
+							 else
+								 candidatePartyKeywordDAO.removeKeywordsList(keywordId);
 					 }catch(Exception e){}
 				}
 				
@@ -8453,8 +8460,11 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 if(candidateKeywordsDetails !=null && candidateKeywordsDetails.size() > 0){
 				candidateKeys.put(keywordId, candidateKeywordsDetails);	
 			 }
+			 keywordIds.add(keywordId);
 		 }
 		 
+		if(candidateKeys != null && candidateKeys.size() >0){			
+		
 		 for (Long key : candidateKeys.keySet()) {
 			 
 			   List<CandidatePartyKeyword> candidateFileDetails = candidateKeys.get(key);
@@ -8469,7 +8479,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					   candidatePartyKeywordDAO.save(parms);									  
 				   }
 			   }
-			   keywordIds.add(key);
+			  // keywordIds.add(key);
 		 }
 		 	 		
 		 List<Long> candidatePartyFileIds = candidatePartyKeywordDAO.getCandidateFileIds(newKeyword.getKeywordId());
@@ -8497,6 +8507,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			}
 		 
 		 }
+		 
+		}
 
 	
 	 }catch(Exception e){
