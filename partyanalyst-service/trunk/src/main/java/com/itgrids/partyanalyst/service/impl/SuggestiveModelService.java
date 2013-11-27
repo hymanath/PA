@@ -389,7 +389,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			try {
 				List<Object[]> constituencyType=constituencyDAO.getConstituencyType(constituencyId);
 				String constAreaType=constituencyType.get(0)[1].toString();
-				Long publicationId = 8l;
+				Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 				String mncplName="";
 				List<Object[]> ttlVtrsInPnchyt=new ArrayList<Object[]>();
 				List<Object[]> ttlVtrsInBooths=new ArrayList<Object[]>();
@@ -2293,7 +2293,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 Map<Long,Long> casteCountsMap = new HashMap<Long, Long>();//Map<caste,castevoters>
 		 YouthLeaderSelectionVO youthLeaderSelectionVO = new YouthLeaderSelectionVO();
 		 try{
-			 publicationId = publicationDateDAO.getLatestPublicationId();
+			 //publicationId = publicationDateDAO.getLatestPublicationId();
+			 publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 			 List<Long> list = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(constituencyId, publicationId);
 			 if(list == null || list.size() == 0)
 			  return null;
@@ -2962,7 +2963,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				//List<BasicVO> expcastesList = null;
 				Set<Long> expCastesIds  = null;
 				DecimalFormat df = new DecimalFormat("#.##");
-				publicationId = publicationDateDAO.getLatestPublicationId();
+				//publicationId = publicationDateDAO.getLatestPublicationId();
+				publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 				List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId,publicationId);
 				
 				if(expCaste)
@@ -3570,7 +3572,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 List castes;
 			 List<Long> constituencyIds = new ArrayList<Long>();
 			 constituencyIds.add(constituencyId);
-			 Long publicationId = publicationDateDAO.getLatestPublicationId();
+			 Long publicationId = getLatestPublicationByConstituency(constituencyId);
+			// Long publicationId = publicationDateDAO.getLatestPublicationId();
 			 try{
 				 if(constituencyId !=null){
 					 casteList = new ArrayList<SelectOptionVO>();
@@ -5019,7 +5022,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 {
 				 List<VoterDataVO> returnList = new ArrayList<VoterDataVO>();
 				 String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
-				 Long publicationId = publicationDateDAO.getLatestPublicationId();
+				// Long publicationId = publicationDateDAO.getLatestPublicationId();
+				 Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 				 if(constituencyType.equalsIgnoreCase(IConstants.RURAL )|| constituencyType.equalsIgnoreCase(IConstants.RURALURBAN))
 				 {
 					
@@ -5082,7 +5086,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						Map<Long,String> wardsNameMap = new HashMap<Long, String>();//Map<wardId,wardname>
 						Map<Long,String> boothsNameMap = new HashMap<Long, String>();//Map<boothId,boothName>
 						Map<Long,Long> boothwiseTotalVotersMap = new HashMap<Long, Long>();//Map<boothId,totalvoters>
-						Long publicationDateId = publicationDateDAO.getLatestPublicationId();
+						Long publicationDateId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+						//Long publicationDateId = publicationDateDAO.getLatestPublicationId();
 						Long assemblyLocalBodiId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyIdByConstituency(constituencyId);
 						DecimalFormat deciamlFormat = new DecimalFormat("#.##");
 						List<BasicVO> basicVOListForBooth = null; 
@@ -5367,7 +5372,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 List<Long> boothIds = boothConstituencyElectionDAO.getBoothIdsByConstituencyId(constituenycId,electionId);
 					 List<Object[]> totalVotersInBooth =boothDAO.getTotalVotesForBooth(boothIds);
 					 List<Object[]> panchayatnames = hamletBoothElectionDAO.getPanchayatNamesByBoothIds(boothIds);
-					 latestPublictaionId = publicationDateDAO.getLatestPublicationId();
+					 //latestPublictaionId = publicationDateDAO.getLatestPublicationId();
+					 latestPublictaionId = voterInfoDAO.getLatestPublicationDate(constituenycId);
 					 List<Object[]> addedVotersCount = voterModificationDAO.getAddedVotersByBoothIds(boothIds,latestPublictaionId,constituenycId);
 					 List<Object[]> constituencyInfo = constituencyElectionResultDAO.findTotalVotesAndPolledVotesAndVotesPercentage(electionId,constituenycId);
 					 if(constituencyInfo != null && constituencyInfo.size() > 0)
@@ -5514,7 +5520,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 {
 				 List<VoterVO> result = new ArrayList<VoterVO>();
 				 try{
-					Long latestPublictaionId = publicationDateDAO.getLatestPublicationId();
+				//	Long latestPublictaionId = publicationDateDAO.getLatestPublicationId();
+					 Long latestPublictaionId = voterInfoDAO.getLatestPublicationDate(ConstituencyId);
 					List<Object[]> list = voterModificationDAO.getAddedVotersDetailsByPartNo(partNo,latestPublictaionId,ConstituencyId,startIndex,maxIndex); 
 					if(list != null && list.size() > 0)
 						for(Object[] params : list)
@@ -5887,5 +5894,20 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			LOG.error("Exception raised in fillVotersCountForConstituency() method in Suggestive Model Service",e);
 		}
 		
+	}
+	
+	public Long getLatestPublicationByConstituency(Long constituencyId)
+	{
+		Long publicationID = 0l;
+		try{
+		 //publicationID = publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
+			publicationID = voterInfoDAO.getLatestPublicationDate(constituencyId);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in getLatestPublicationByConstituency() method in Suggestive Model Service",e);
+			e.printStackTrace();
+		}
+		return publicationID;
 	}
 }
