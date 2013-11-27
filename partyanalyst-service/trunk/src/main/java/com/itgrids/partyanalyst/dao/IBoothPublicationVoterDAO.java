@@ -519,4 +519,9 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getAgeAndGenderWisesMuncipaltiyVotersCount(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId);
 	  
 	  public List<Object[]> getExpCasteForAgeAndGenderWisesMuncipaltiyVotersCount(Long constituencyId,Long publicationDateId,Long ageFrom,Long ageTo,Long userId,List<Long> casteIds);
+	  
+	  public List<Object[]> getAddedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId);
+	  
+	  public List<Object[]> getDeletedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId);
+	  
 }
