@@ -7,6 +7,7 @@ import com.itextpdf.text.log.Logger;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.service.IConstituencyInfoService;
@@ -24,6 +25,7 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 	private IPublicationDateDAO publicationDateDAO;
 	private IVotersAnalysisService votersAnalysisService;
 	private IBoothDAO boothDAO;
+	private IVoterInfoDAO voterInfoDAO;
 	
 	
     //private static final Logger LOG = Logger.getLogger(ConstituencyInfoService.class);
@@ -32,6 +34,14 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 		return votersAnalysisService;
 	}
 	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
 	public IBoothDAO getBoothDAO() {
 		return boothDAO;
 	}
@@ -176,7 +186,9 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 		List<SelectOptionVO> subList = new ArrayList<SelectOptionVO>();
 		List<Long> mandalIds = new ArrayList<Long>();
 		List<Long> localbodies = new ArrayList<Long>();
-		Long latestPublicationId = publicationDateDAO.getLatestPublicationId();
+		//Long latestPublicationId = publicationDateDAO.getLatestPublicationId();
+		//Long latestPublicationId = publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
+		Long latestPublicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 		try{
 			VotersDetailsVO votersDetailsVO = new VotersDetailsVO();
 			subList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);	

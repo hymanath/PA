@@ -76,6 +76,7 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IUserStateAccessInfoDAO;
 import com.itgrids.partyanalyst.dao.IVillageBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartiesInElection;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.CandidateDetailsVO;
@@ -222,7 +223,17 @@ public class StaticDataService implements IStaticDataService {
 	private ICadreDAO cadreDAO;
 	private IPublicationDateDAO publicationDateDAO;
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+	private IVoterInfoDAO voterInfoDAO;
 	
+	
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
 	public ICadreDAO getCadreDAO() {
 		return cadreDAO;
 	}
@@ -9142,7 +9153,8 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			electionYearslist = new ArrayList<SelectOptionVO>();
 			/*List<Long> electionIds = nominationDAO.getElectionYearsByScopeNPartyNconstiId(
 					electionScopeId,partyId,constituencyId);*/
-			 Long publicationId = publicationDateDAO.getLatestPublicationId();
+			 //Long publicationId = publicationDateDAO.getLatestPublicationId();
+			Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 			 List<Long> electionIds=new ArrayList<Long>();
 			 if(constiType.equalsIgnoreCase("rural")||constiType.equalsIgnoreCase("rural-urban")){
 				 mandalIds = boothDAO.getTehsildByConstituency(constituencyId, publicationId);

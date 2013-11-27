@@ -60,4 +60,6 @@ public interface ISuggestiveModelService {
 	 public VotersInfoForMandalVO getVotersCount(Long constituencyId,Long publicationDateId,String locationType);
 	 
 	 public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId);
+	 
+	 public Long getLatestPublicationByConstituency(Long constituencyId);
 }
