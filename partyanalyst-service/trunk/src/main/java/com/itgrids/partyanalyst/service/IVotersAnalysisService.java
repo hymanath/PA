@@ -311,5 +311,6 @@ public interface IVotersAnalysisService {
 	 
 	 public ResultStatus insertHamletIdAndBoothIdInHamletBoothTable(final Long constituencyId,final Long publicationDateId,final Long userId);
 	 
+	 public ResultStatus getModifiedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId);
 	 
 }

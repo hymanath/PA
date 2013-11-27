@@ -110,6 +110,7 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.BoothVoterVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.BoothPublicationVoter;
@@ -6414,6 +6415,94 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 			return resultStatus;
 		}
 	}
+	
+	
+	public ResultStatus getModifiedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId)
+	{
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+		
+	List<VoterModificationVO> resultList = new ArrayList<VoterModificationVO>(0);
+	List<Object[]> addedVotersList = boothPublicationVoterDAO.getAddedVotersBetweenTwoPublications(constituencyId, fromPublicationDateId, toPublicationDateId);
+	
+	if(addedVotersList != null && addedVotersList.size() > 0)
+	 setVotersList(resultList, addedVotersList, IConstants.STATUS_ADDED, toPublicationDateId, constituencyId);
+	
+	List<Object[]> deletedVotersList = boothPublicationVoterDAO.getDeletedVotersBetweenTwoPublications(constituencyId, fromPublicationDateId, toPublicationDateId);
+	if(deletedVotersList != null && deletedVotersList.size() > 0)
+	 setVotersList(resultList, deletedVotersList, IConstants.STATUS_DELETED, toPublicationDateId, constituencyId);
+		
+	
+	if(resultList != null && resultList.size() > 0)
+	 resultStatus = saveVoterModificationDetails(resultList);
+	
+	return resultStatus;
+	}catch(Exception e)
+	{
+	log.error("Exception occured in getModifiedVotersBetweenTwoPublications() Method");
+	log.error("Exception is - "+e);
+	return resultStatus;
+	}
+	}
+	
+	public void setVotersList(List<VoterModificationVO> resultList,List<Object[]> list,String status,Long publicationDateId,Long constituencyId)
+	{
+		try{
+		
+		Long voterStatusId = voterStatusDAO.getVoterStatusIdByStatus(status);
+		if(list != null && list.size() > 0)
+		{
+		  for(Object[] params: list)
+		  {
+			VoterModificationVO modificationVO = new VoterModificationVO();
+			modificationVO.setId((Long)params[1]);
+			modificationVO.setPartNo((Long)params[0]);
+			modificationVO.setPresentPublicationId(publicationDateId);
+			modificationVO.setStatus(status);
+			modificationVO.setConstituencyId(constituencyId);
+			modificationVO.setLocationId(voterStatusId);
+			resultList.add(modificationVO);
+		  }
+		}
+			
+		}catch (Exception e) {
+		 e.printStackTrace();
+		 log.error(" Exception Occured in setVotersList() method, Exception - "+e);
+		}
+	}
+	
+	public ResultStatus saveVoterModificationDetails(final List<VoterModificationVO> resultList)
+	{
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				protected void doInTransactionWithoutResult(TransactionStatus status) 
+				{
+				 if(resultList != null && resultList.size() > 0)
+				 {
+				  for(VoterModificationVO modificationVO :resultList)
+				  {
+					 VoterModification modification = new VoterModification();
+					 modification.setVoterId(modificationVO.getId());
+					 modification.setConstituencyId(modificationVO.getConstituencyId());
+					 modification.setPublicationDateId(modificationVO.getPresentPublicationId());
+					 modification.setStatus(modificationVO.getStatus());
+					 modification.setPartNo(modificationVO.getPartNo());
+					 modification.setVoterStatusId(modificationVO.getLocationId());
+					 voterModificationDAO.save(modification);
+				  }
+				 }
+					
+				}});
+		 return resultStatus;
+		}catch (Exception e) {
+		  e.printStackTrace();
+		  log.error(" Exception Occured in saveVoterModificationDetails() method, Exception - "+e);
+		  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		  return resultStatus;
+		}
+	}
+	
 	
 	public Map<Long,List<Long>> getModifiedVotersMapByStatusInAConstituency(Long constituencyId, Long publicationDateId, String status)
 	{

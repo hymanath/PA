@@ -85,7 +85,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 	//}
 	
 		
-		public void testGetVotersCasteDetailsForAgeRange(){
+		/*public void testGetVotersCasteDetailsForAgeRange(){
 			Long starttime = System.currentTimeMillis();
 			List<Long> list = new ArrayList<Long>();
 			list.add(122978l);list.add(
@@ -144,14 +144,24 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 			Long endtime = System.currentTimeMillis();
 			System.out.println("End: "+endtime);
 			System.out.println((endtime-starttime)/1000);
-			/*for(Object[] caste : castInfo){
+			for(Object[] caste : castInfo){
 				for(Object value : caste){
 					System.out.print(value+"  ");
 				}
 				System.out.println("");
-			}*/
+			}
 		  }
 			Long mainendtime = System.currentTimeMillis();
 			System.out.println("mainDiff: "+(mainendtime-mainstarttime)/1000);
-		}
+		}*/
+	
+	
+	public void testGetAddedVotersBetweenTwoPublications()
+	{
+	  
+	  //List<Object[]> list = boothPublicationVoterDAO.getAddedVotersBetweenTwoPublications(232L, 7L, 8L);
+		List<Object[]> list = boothPublicationVoterDAO.getDeletedVotersBetweenTwoPublications(232L, 7L, 8L);
+	  System.out.println(list.size());
+	}
+	
 	}
