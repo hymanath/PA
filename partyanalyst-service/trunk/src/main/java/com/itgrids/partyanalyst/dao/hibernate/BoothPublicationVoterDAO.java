@@ -5897,4 +5897,33 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	}
 	
 	
+	public List<Object[]> getAddedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId)
+	{
+	  Query query = getSession().createSQLQuery(" select B.part_no,BPV.voter_id from booth_publication_voter BPV,Booth B " +
+	  		" where BPV.booth_id = B.booth_id and B.publication_date_id =:toPublicationDateId " +
+	  		"  and B.constituency_id =:constituencyId and BPV.voter_id not in (select BPV2.voter_id from booth_publication_voter BPV2,Booth B2 " +
+	  		" where BPV2.booth_id = B2.booth_id and " +
+	  		"  B2.constituency_id = :constituencyId and B2.publication_date_id =:fromPublicationDateId) ");
+	  
+	  query.setParameter("constituencyId", constituencyId);
+	  query.setParameter("fromPublicationDateId", fromPublicationDateId);
+	  query.setParameter("toPublicationDateId", toPublicationDateId);
+	  
+	  return query.list();
+	}
+	
+	public List<Object[]> getDeletedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId)
+	{
+		Query query = getSession().createSQLQuery(" select B.part_no,BPV.voter_id from booth_publication_voter BPV, booth B where BPV.booth_id = B.booth_id " +
+				" and B.publication_date_id =:fromPublicationDateId and B.constituency_id =:constituencyId and BPV.voter_id not in (select BPV2.voter_id from booth_publication_voter BPV2," +
+				" Booth B2 where BPV2.booth_id = B2.booth_id and B2.constituency_id =:constituencyId and B2.publication_date_id = :toPublicationDateId ) ");
+		
+		query.setParameter("constituencyId", constituencyId);
+		  query.setParameter("fromPublicationDateId", fromPublicationDateId);
+		  query.setParameter("toPublicationDateId", toPublicationDateId);
+		return query.list();
+	}
+	
+	
+	
 }
