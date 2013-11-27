@@ -316,7 +316,15 @@ function getNewsForLocation()
 
 function getNewsForPagination(num)
  {
-	var locValue = $("#userAccessDistrictList option:selected").val();
+	var locValue = "";
+	if(scope  == "District")
+	{
+		locValue = $("#userAccessDistrictList option:selected").val();
+	}
+	else
+	{
+		locValue = $("#userAccessConstituencyList option:selected").val();
+	}
 	if(locValue == null)
 		locValue = locationValue;
 	$('#imageForMail').css("display","block");
