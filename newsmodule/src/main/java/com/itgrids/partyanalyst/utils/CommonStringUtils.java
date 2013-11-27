@@ -11,6 +11,7 @@ public class CommonStringUtils {
 			}*/
 			textValue = textValue.replaceAll("\uFFFD", "");
 			textValue = textValue.replaceAll("&#65533;", "");
+			textValue = textValue.replaceAll("\r\n", "<br>");
 		}
 		return textValue;
 	}
