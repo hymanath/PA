@@ -6455,8 +6455,8 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 		  for(Object[] params: list)
 		  {
 			VoterModificationVO modificationVO = new VoterModificationVO();
-			modificationVO.setId((Long)params[1]);
-			modificationVO.setPartNo((Long)params[0]);
+			modificationVO.setId(Long.parseLong(params[1].toString()));
+			modificationVO.setPartNo(Long.parseLong(params[0].toString()));
 			modificationVO.setPresentPublicationId(publicationDateId);
 			modificationVO.setStatus(status);
 			modificationVO.setConstituencyId(constituencyId);
