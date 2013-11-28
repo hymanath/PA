@@ -21,7 +21,8 @@
 	.headingDiv{
 		background: none repeat scroll 0 0 #06ABEA;border-radius: 4px;color: #FFFFFF;
 		font-family: arial;font-size: 17px;font-weight: bold;padding: 3px;text-align: center;
-		width: 440px; margin-bottom: 15px;
+		width: 440px; margin-bottom: 15px; margin-left: auto;
+        margin-right: auto;float:none;
 	}
 	.voterManagementInnerDiv p{font-size: 13px;}
 	#voterDataInsertId{font-weight:bold;}
@@ -32,6 +33,18 @@
 	table{font-size:13px;}
 	table th{font-weight:normal;}
 	#minResults,#maxResults{width:186px;}
+
+#voterModificationFromPublicationId,#votermodificationConstituencyId,#voterModificationToPublicationId{width: 200px;}
+
+#voterModificationErrorDiv{text-align: center; font-size: 13px;}
+ .requiredFont{
+ color:red;
+ font-size:12px;
+ }
+ #voterDataInsertDiv{margin-top: 24px;}
+ #ConstituencyDiv{padding-bottom: 21px;
+    padding-top: 20px;}
+#voterModificationErrorDiv{margin-top:3px;}
 	</style>
 </head>
 <body>
@@ -150,6 +163,45 @@
 </div>
 
 
+<!-- voters Modification Info Div -->
+<div id="voterManagementMainDiv" class="span8">
+<div class="headingDiv" style="width:450px;">Populate voters Modification Info To Intermediate Tables</div>
+ <fieldset>
+    <div id="voterModificationErrorDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+	<center>
+     <table cellpadding="4">
+	  <tr>
+	    <td>Constituency</td>
+		<td>:</td>
+		<td><s:select theme="simple" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votermodificationConstituencyId" list="constituencyList" listKey="id" listValue="name"/></td>
+	  </tr>
+	  <tr>
+	   <td>From Publication Date</td>
+	   <td>:</td>
+	   <td><select id="voterModificationFromPublicationId" class="selectWidth" style="width:200px;height:25px;" name="publicationDateList" >
+		</select></td>
+	  </tr>
+	  <tr>
+	  <td>To Publication Date</td>
+	  <td>:</td>
+	  <td><select id="voterModificationToPublicationId" class="selectWidth" style="width:200px;height:25px;" name="publicationDateList" >
+		</select></td>
+	  </tr>
+	 </table>
+     
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="votermodificationBtn" />
+			<!-- <input type="button" class="btn btn-info" value="Delete Existing Data" id="votermodificationvoterDataDeleteBtn" /> -->
+			<img src="./images/icons/search.gif" style="display:none;margin-left: 10px;" id="votermodificationImage" />
+		</div>
+		</center>
+	</div>
+ </fieldset>
+</div>	
+<!-- voters Modification Info Div End -->
+
+
 <script type="text/javascript">
 
 function callAjax(jsObj, url){
@@ -178,6 +230,11 @@ function callAjax(jsObj, url){
 							{
 								showdeleteVoterModifiedDataStatus(myResults);
 							}
+							else if(jsObj.task == "getModifiedVotersBetweenTwoPublications")
+							 showVoterModificationSaveStatus(myResults);
+
+							else if(jsObj.task == "getPublicationDatesForVotingModificationBetweenDates")
+								buildpublicationDateListForVoterModification(myResults,jsObj);
 							
 						}
 						catch(e)
@@ -488,6 +545,116 @@ function removeSelectElements(selectedElmt)
 				return;
 		}
 	}
+
+
+$(document).ready(function(){
+
+$("#votermodificationConstituencyId").change(function(){
+   
+	 var id = $("#votermodificationConstituencyId").val();
+	 var selectElmt = "voterModificationFromPublicationId";
+	 var toDate = "voterModificationToPublicationId";
+	 
+	 $("#voterModificationErrorDiv").html('');
+	  if(id == 0)
+	  {
+	   $("#voterModificationErrorDiv").html('Please Select Constituency.').css("color","red");
+		return;
+	  }
+	
+	// $("#castajaxLoad").css('display','block');
+	 var jsObj=
+	 {
+		selected:id,
+		selectElmt:selectElmt,
+		toDate:toDate,
+		task:"getPublicationDatesForVotingModificationBetweenDates"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+
+	});
+
+
+$("#votermodificationBtn").click(function(){
+	 
+	 $("#voterModificationErrorDiv").html('');
+	 var fromDate = $("#voterModificationFromPublicationId").val();
+	 var toDate = $("#voterModificationToPublicationId").val();
+	 var constituencyId = $("#votermodificationConstituencyId").val();
+	 var flag = false;
+	 var str = '<font color="red">';
+	 
+	 if(constituencyId == 0)
+	 {
+	  str +='Please Select Constituency.<br>';
+	  flag = true;
+	 }
+	 if(fromDate == 0 )
+	 {
+	  str +='Please Select From Date.<br>';
+	  flag = true;
+	 }
+	 if(toDate == 0)
+	 {
+	  str +='Please Select To Date.<br>';
+	  flag = true;
+	 }
+	 if(flag)
+	 { 
+	  $("#voterModificationErrorDiv").html(str);
+	  return;
+	 }
+	 
+	 $("#votermodificationImage").css("display","inline-block");
+	 var jsObj=
+	 {
+		fromPublicationId:fromDate,
+		constituencyId:constituencyId,
+		toPublication:toDate,
+		task:"getModifiedVotersBetweenTwoPublications"
+	 };
+	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	 var url = "getModifiedVotersBetweenTwoPublicationsAction.action?"+rparam;	
+	 callAjax(jsObj,url);
+	 
+	 
+	});
+	
+});
+
+
+function showVoterModificationSaveStatus(result)
+{
+$("#votermodificationImage").css("display","none");
+$("#voterModificationErrorDiv").html('');
+  if(result.resultCode == 0)
+  {
+	$("#voterModificationErrorDiv").html('Data Inserted successufully').css("color","green");
+ }
+ else
+  $("#voterModificationErrorDiv").html('Error Occured try Again.').css("color","red");
+}
+
+
+function buildpublicationDateListForVoterModification(result,jsObj)
+{
+ 
+ $("#voterModificationFromPublicationId").find('option').remove();
+ $("#voterModificationToPublicationId").find('option').remove();
+ 
+ 
+ if(result != null && result.length > 0)
+ {
+   for(var i in result)
+   {
+    $("#voterModificationFromPublicationId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+	$("#voterModificationToPublicationId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+   }
+ }
+}
+
 </script>
 </body>
 </html>

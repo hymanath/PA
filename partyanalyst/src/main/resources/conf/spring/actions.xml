@@ -1062,6 +1062,7 @@
 		
 	<bean id="voterDataManageAction" class="com.itgrids.partyanalyst.web.action.VoterDataManageAction" singleton="false">
 		<property name="votersAnalysisService" ref="votersAnalysisService" />
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
 	</bean>	
 		
 	<bean id="votersEditSubAction" class="com.itgrids.partyanalyst.web.action.VotersEditSubAction" singleton="false">
