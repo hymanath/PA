@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,7 +13,9 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -32,6 +35,9 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 	private ResultStatus resultStatus;
 	private HttpSession session;
 	private List<SelectOptionVO> constituenciesListForVoterChanges;
+	private List<SelectOptionVO> allConstituenciesList = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> constituencyList;
+	private ICrossVotingEstimationService crossVotingEstimationService;
 	
 	public List<SelectOptionVO> getConstituenciesListForVoterChanges() {
 		return constituenciesListForVoterChanges;
@@ -143,6 +149,31 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		this.session = session;
 	}
 
+	public List<SelectOptionVO> getAllConstituenciesList() {
+		return allConstituenciesList;
+	}
+
+	public void setAllConstituenciesList(List<SelectOptionVO> allConstituenciesList) {
+		this.allConstituenciesList = allConstituenciesList;
+	}
+
+	public List<SelectOptionVO> getConstituencyList() {
+		return constituencyList;
+	}
+
+	public void setConstituencyList(List<SelectOptionVO> constituencyList) {
+		this.constituencyList = constituencyList;
+	}
+
+	public ICrossVotingEstimationService getCrossVotingEstimationService() {
+		return crossVotingEstimationService;
+	}
+
+	public void setCrossVotingEstimationService(
+			ICrossVotingEstimationService crossVotingEstimationService) {
+		this.crossVotingEstimationService = crossVotingEstimationService;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -161,6 +192,18 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		publicationDateList = votersAnalysisService.getAllPublicationDates();
 		
 		constituenciesListForVoterChanges = votersAnalysisService.getConstituenciesToBeMappedForVoterChanges();
+		
+		
+		allConstituenciesList = user.getUserAccessVoterConstituencies();
+		if(constituencyList == null || constituencyList.isEmpty()){
+			Long userID = user.getRegistrationID();
+			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			allConstituenciesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
+		}
+		constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
+		constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
+		
 		
 		return ActionSupport.SUCCESS;
 	}

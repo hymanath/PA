@@ -118,10 +118,7 @@ fieldset{
 #voterInfoHamletBoothChecked,#voterInfoLocalityChecked{margin-left: 11px;}
 
 #hamletBoothChecked,#localityChecked{margin-left: 8px;}
-#voterModificationFromPublicationId{width: 200px; height: 25px; margin-bottom: 11px; margin-top: 11px; margin-left: 6px;}
-#votermodificationConstituencyId{margin-left: 54px;  width: 200px;}
-#voterModificationToPublicationId{width: 200px; margin-left: 22px;}
-#voterModificationErrorDiv{text-align: center; font-size: 13px;}
+
 </style>
 </head>
 <body>
@@ -296,30 +293,6 @@ fieldset{
 </div>	
 
 <!-- ConstituencyHierarchyInfo Div End -->
-
-<!-- voters Modification Info Div -->
-<div id="voterDataOuterDiv">
-<div class="headingDiv" style="width:450px;">Populate voters Modification Info To Intermediate Tables</div>
- <fieldset>
-    <div id="voterModificationErrorDiv"></div>
-	<div id="ConstituencyDiv" class="selectDiv">
-		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votermodificationConstituencyId" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
-
-		<br>From Publication Date<font class="requiredFont">*</font> <select id="voterModificationFromPublicationId" class="selectWidth" style="width:200px;height:25px;" name="publicationDateList" >
-		</select>
-		<br>To Publication Date<font class="requiredFont">*</font> <select id="voterModificationToPublicationId" class="selectWidth" style="width:200px;height:25px;" name="publicationDateList" >
-		</select>
-		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="votermodificationImage1"><img src="images/icons/search.gif" /></span>
-
-		<div id="voterDataInsertDiv">
-			<input type="button" class="btn btn-info" value="Submit" id="votermodificationBtn" />
-			<!-- <input type="button" class="btn btn-info" value="Delete Existing Data" id="votermodificationvoterDataDeleteBtn" /> -->
-			<img src="./images/icons/search.gif" style="display:none;margin-left: 10px;" id="votermodificationImage" />
-		</div>
-	</div>
- </fieldset>
-</div>	
-<!-- voters Modification Info Div End -->
 
 </div>
 
@@ -871,81 +844,7 @@ $("#constituencyHierarchyId").change(function(){
 	 callAjax(jsObj,url);
 	 
    });
-   
-   
-   $("#votermodificationConstituencyId").change(function(){
-   
-	 var id = $("#votermodificationConstituencyId").val();
-	 var selectElmt = "voterModificationFromPublicationId";
-	 var toDate = "voterModificationToPublicationId";
-	 
-	 $("#voterModificationErrorDiv").html('');
-	  if(id == 0)
-	  {
-	   $("#voterModificationErrorDiv").html('Please Select Constituency.');
-		return;
-	  }
-	
-	// $("#castajaxLoad").css('display','block');
-	 var jsObj=
-	 {
-		selected:id,
-		selectElmt:selectElmt,
-		toDate:toDate,
-		task:"getPublicationDatesForVotingModificationBetweenDates"
-	 };
-	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
-	 callAjax(jsObj,url);
-
-	});
-
-	
-	$("#votermodificationBtn").click(function(){
-	 
-	 $("#voterModificationErrorDiv").html('');
-	 var fromDate = $("#voterModificationFromPublicationId").val();
-	 var toDate = $("#voterModificationToPublicationId").val();
-	 var constituencyId = $("#votermodificationConstituencyId").val();
-	 var flag = false;
-	 var str = '<font color="red">';
-	 
-	 if(constituencyId == 0)
-	 {
-	  str +='Please Select Constituency.<br>';
-	  flag = true;
-	 }
-	 if(fromDate == 0 )
-	 {
-	  str +='Please Select From Date.<br>';
-	  flag = true;
-	 }
-	 if(toDate == 0)
-	 {
-	  str +='Please Select To Date.<br>';
-	  flag = true;
-	 }
-	 if(flag)
-	 { 
-	  $("#voterModificationErrorDiv").html(str);
-	  return;
-	 }
-	 
-	 $("#votermodificationImage").css("display","inline-block");
-	 var jsObj=
-	 {
-		fromPublicationId:fromDate,
-		constituencyId:constituencyId,
-		toPublication:toDate,
-		task:"getModifiedVotersBetweenTwoPublications"
-	 };
-	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "getModifiedVotersBetweenTwoPublicationsAction.action?"+rparam;	
-	 callAjax(jsObj,url);
-	 
-	 
-	});
-
+  
 
 function callAjax(jsObj,url)
 		{
@@ -965,8 +864,7 @@ function callAjax(jsObj,url)
 									
 									buildPublicationDateList1(myResults,jsObj.selectElmt);
 								}
-								else if(jsObj.task == "getPublicationDatesForVotingModificationBetweenDates")
-								 buildpublicationDateListForVoterModification(myResults,jsObj);
+								
 								
 								else if(jsObj.task == "getPublicationDateForParty")
 								{
@@ -1046,8 +944,7 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "deleteConstituencyBasicData")
 								 showConstituencyHierarchyDeleteDataStatus(myResults);
 								
-								else if(jsObj.task == "getModifiedVotersBetweenTwoPublications")
-								 showVoterModificationSaveStatus(myResults);
+								
 								
 							}
 								catch (e) {
@@ -1230,24 +1127,7 @@ function showDeleteVoterDataStatus(result)
 }
 
 
-function buildpublicationDateListForVoterModification(result,jsObj)
-{
- 
- $("#voterModificationFromPublicationId").find('option').remove();
- $("#voterModificationToPublicationId").find('option').remove();
- 
- $("#voterModificationFromPublicationId").append('<option value="0">Select</option>');
- $("#voterModificationToPublicationId").append('<option value="0">Select</option>');
- 
- if(result != null && result.length > 0)
- {
-   for(var i in result)
-   {
-    $("#voterModificationFromPublicationId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-	$("#voterModificationToPublicationId").append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
-   }
- }
-}
+
 
 
 function buildPublicationList(results)
@@ -1406,17 +1286,7 @@ function showConstituencyHierarchyDeleteDataStatus(result)
 	$("#conHierErrorMsgDiv").html('Error Occured try Again.').css("color","red");
 }
 
-function showVoterModificationSaveStatus(results)
-{
-$("#votermodificationImage").css("display","none");
-$("#votermodificationerrorMsgDiv").html('');
-  if(result.resultCode == 0)
-  {
-	$("#votermodificationerrorMsgDiv").html('Data Deleted successufully').css("color","green");
- }
- else
-  $("#votermodificationerrorMsgDiv").html('Error Occured try Again.').css("color","red");
-}
+
 
 </script>
 </body>
