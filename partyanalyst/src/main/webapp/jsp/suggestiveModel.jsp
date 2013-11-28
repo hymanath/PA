@@ -1171,7 +1171,7 @@ To
 <div style="clear:both;" class="fromToDivTemplateClass fromToDivClass" id="fromToDivId0">
 <div class="pull-left"  style="margin-left: -2px; float: left; padding-top: 10px;">Old Voters :</div><div class="fromDiv" style="margin-left: 74px;">
 From
-<div class="inputDiv" ><input type="text" id="fromTxt" class="fromInput" style="width: 25px; height: 12px;" value="60"/></div>
+<div class="inputDiv" ><input type="text" id="fromTxt" class="fromInput" style="width: 25px; height: 12px;" value="61"/></div>
 </div>
 <div class="toDiv">
 To
