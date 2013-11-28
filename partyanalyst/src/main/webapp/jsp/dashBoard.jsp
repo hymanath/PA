@@ -2185,7 +2185,7 @@ function getOlderVoterDetails()
 	$('#candidateCastes2 :selected').each(function(i, selected){ 
 	   casteIds+=','+$(this).val();
    });
-	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=60&toAge=120&constituencyId="+constituencyId+"&casteIds="+casteIds+"&oldVoters=true&constituencyName="+constituencyName+"");
+	window.open("suggestiveModelAction.action?hideMainMenu=true&fromAge=61&toAge=120&constituencyId="+constituencyId+"&casteIds="+casteIds+"&oldVoters=true&constituencyName="+constituencyName+"");
 }
 function getYoungerVoterDetails()
 {
