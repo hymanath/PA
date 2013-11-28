@@ -110,6 +110,8 @@ public class APVoterDataDownloader {
                     } else {
                         downloadLink =  driver.findElement(By.id("GridView1_ctl"+no+"_lnkEnglish"));
                     }
+                    
+                    System.out.println("Downloding Booth - "+(no-1)+" Pdf");
                     downloadLink.click();
 
                     String boothName = driver.findElement(By.xpath("//*[@id=\"GridView1\"]/tbody/tr["+no+"]/td[2]")).getText();
