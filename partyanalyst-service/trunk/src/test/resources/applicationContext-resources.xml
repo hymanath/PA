@@ -383,6 +383,7 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppUser</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppUserAccessKey</value>
 				<value>com.itgrids.partyanalyst.model.WebServiceBaseUrl</value>
+					<value>com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies</value>
 			</list>
 		</property>
 	</bean>
@@ -1969,5 +1970,7 @@
   <bean id="mobileAppUserAccessKeyDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppUserAccessKeyDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
-   
+      <bean id="voterDataAvailableConstituenciesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterDataAvailableConstituenciesDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>
