@@ -364,6 +364,7 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppUser</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppUserAccessKey</value>
 				<value>com.itgrids.partyanalyst.model.WebServiceBaseUrl</value>
+				<value>com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies</value>
 			</list>
 			
 		</property>
