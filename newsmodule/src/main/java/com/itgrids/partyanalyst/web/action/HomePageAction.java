@@ -509,7 +509,8 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
         if(user == null)
          return ERROR;
-        
+        if(user.getUserAccessType() != null && user.getUserAccessType().equalsIgnoreCase("subuser"))
+        	return "input";
         if(user.getUserAccessType() != null && !user.getUserAccessType().equalsIgnoreCase("Admin"))
         	return "noAccess";
         String newsType = "Public"; 
