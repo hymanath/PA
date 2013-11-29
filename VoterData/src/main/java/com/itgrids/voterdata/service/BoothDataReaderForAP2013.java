@@ -57,9 +57,15 @@ public class BoothDataReaderForAP2013 {
                     String str1 = "Male Female Total\r\n";
                     String str2 = ":\r\n:\r\n:";
                     
+                    String str3 = "Revenue Division :";
+                    String str4 = "Roll Identification :";
+                    
                     int startNo = sb.indexOf(str1)+str1.length()+1;
                     String sbStr = sb.substring(startNo, sb.indexOf(str2,startNo)).trim();
-                                        
+                    
+                    int mdstartNo = sb.indexOf(str3)+str3.length()+1;
+                    String sbStr2 = sb.substring(mdstartNo, sb.indexOf(str4,mdstartNo)).trim();
+                    
                     if(sbStr.contains("\r\n"))
                     	sbStr = sbStr.substring(sb.indexOf("\r\n")+1);
                     
@@ -68,6 +74,7 @@ public class BoothDataReaderForAP2013 {
                     sbStr = sbStr.replaceAll("\\r\\n","").trim();
                     sbStr = sbStr.replaceAll("  "," ").trim();
                     String[] voters = sbStr.split(" ");
+                    String[] mdArr = sbStr2.split("\r\n");
                     
                     constituencyId = fileName[0];
                     BoothVO boothVO = new BoothVO();
@@ -82,9 +89,10 @@ public class BoothDataReaderForAP2013 {
                     boothVO.setPartNo(fileName[2].trim());
                     boothVO.setConstituencyId(constituencyId);
                     boothVO.setConstituencyName(fileName[1].trim());
+                    boothVO.setMandalName(mdArr[2].trim());
                     
-                    boothSB.append("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo()+"\n");
-                    System.out.println("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo());
+                    boothSB.append("Mandal - "+boothVO.getMandalName()+"\tBooth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo()+"\n");
+                    System.out.println("Mandal - "+boothVO.getMandalName()+"\tBooth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\tOthers - "+boothVO.getOtherVoters()+"\tStartind Serial No - "+boothVO.getStartingSerialNo()+"\tEnding Serail No - "+boothVO.getEndingSerialNo());
                     boothsInfoList.add(boothVO);
                     if (pd != null) {
                         pd.close();
