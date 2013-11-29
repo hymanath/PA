@@ -1271,5 +1271,7 @@
     <bean id="webServiceBaseUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebServiceBaseUrlDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
-   
+    <bean id="voterDataAvailableConstituenciesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterDataAvailableConstituenciesDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>		
