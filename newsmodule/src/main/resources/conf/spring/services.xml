@@ -1665,6 +1665,8 @@
 		<property name="candidateDetailsService" ref="candidateDetailsService"></property>
 		<property name="fileSourceLanguageDAO" ref="fileSourceLanguageDAO" />
 		<property name="newsReportDAO" ref="newsReportDAO" />
+		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
+		<property name="filePathsDAO" ref="filePathsDAO" />
 	</bean>	
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
