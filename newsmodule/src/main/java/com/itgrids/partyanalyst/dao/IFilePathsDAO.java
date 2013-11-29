@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -17,4 +18,6 @@ public interface IFilePathsDAO extends GenericDao<FilePaths, Long> {
 	public List<Object[]> getFilePathsBasedOnFileSource(List<Long> sourceIds);
 	
 	public List<Object[]> getEditionAndPageNoByFileSourceId(Long fileSourceLanguageId);
+	
+	public List<Object[]> getSourceIdsAndPageNos(Set<Long> fileIdsList);
 }

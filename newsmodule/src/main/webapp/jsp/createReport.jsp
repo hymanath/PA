@@ -81,8 +81,25 @@
 				str+='<h4 class="media-heading"><enadu>'+myResults.mainArticalsList[i].title+'</enadu></h4>';
 			  }else{
 				str+='<h4 class="media-heading">'+myResults.mainArticalsList[i].title+'</h4>';
-			  }	if(myResults.mainArticalsList[i].source != null)											  
-				str+='<h5 style="border-bottom:1px solid #333"><span class="label">'+myResults.mainArticalsList[i].source+'</span> <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
+			  }	
+	
+	var str1="";
+	if(myResults.mainArticalsList[i].keyWordsList != null)
+	for(var k=0;k<myResults.mainArticalsList[i].keyWordsList.length;k++){
+	    var sourceVal = myResults.mainArticalsList[i].keyWordsList[k];
+		var n=sourceVal.indexOf("(");
+		var sourceVal1 = sourceVal.substring(0,n);
+		var n1=sourceVal.lastIndexOf(")");
+		var sourceVal3=sourceVal.substring(n,n1+1);
+		sourceVal3 = sourceVal3.replace(')(',' & ');
+		if(sourceVal1 != "" && sourceVal3 != "")
+		str1+='<span class="btn btn-small"><span class="badge">'+sourceVal1+ '</span>&nbsp;'+sourceVal3+ '</span>&nbsp;&nbsp;';
+		else
+		str1+='<span class="btn btn-small"><span class="badge">'+sourceVal+ '</span>&nbsp;</span>&nbsp;&nbsp;';
+	}
+			  
+				if(myResults.mainArticalsList[i].keyWordsList != null)
+				str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
 				else{
 					str+='<h5 style="border-bottom:1px solid #333"> <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
 				}
@@ -93,7 +110,8 @@
 			  }else{
 					str+='<p>'+myResults.mainArticalsList[i].description+'</p>';
 			  }
-			   
+			  if(myResults.mainArticalsList[i].candidateName!=null)
+			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp;'+myResults.mainArticalsList[i].candidateName+'</span>';
 			  str+='</div></div></div></div>';
 		 }
 		
@@ -130,7 +148,8 @@
 			  }else{
 					str+='<p>'+myResults.fileVOList[i].fileVOList[j].description+'</p>';
 			  }
-			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp; '+myResults.fileVOList[i].fileVOList[j].candidateName+'</span>';
+			  if(myResults.fileVOList[i].fileVOList[j].candidateName!=null)
+			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp;'+myResults.fileVOList[i].fileVOList[j].candidateName+'</span>';
 			  str+='</div></div></div></div>';
 		 }
 	   }

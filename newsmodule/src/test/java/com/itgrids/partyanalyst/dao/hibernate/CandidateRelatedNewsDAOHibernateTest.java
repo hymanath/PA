@@ -5,16 +5,24 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
+import org.hsqldb.lib.HashSet;
 
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
+import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public class CandidateRelatedNewsDAOHibernateTest extends BaseDaoTestCase{
 
 	ICandidateRelatedNewsDAO candidateRelatedNewsDAO;
-
+	IFileSourceLanguageDAO fileSourceLanguageDAO;
+	 
+	public void setFileSourceLanguageDAO(
+			IFileSourceLanguageDAO fileSourceLanguageDAO) {
+		this.fileSourceLanguageDAO = fileSourceLanguageDAO;
+	}
 	public void setCandidateRelatedNewsDAO(
 			ICandidateRelatedNewsDAO candidateRelatedNewsDAO) {
 		this.candidateRelatedNewsDAO = candidateRelatedNewsDAO;
@@ -102,4 +110,16 @@ public class CandidateRelatedNewsDAOHibernateTest extends BaseDaoTestCase{
 		
 		
 	}*/
+	
+	public void testgetEditionPartNoDetailsByFileIds(){
+		Set<Long> fileGalleryIdsList = new java.util.HashSet<Long>();
+		fileGalleryIdsList.add(10l);
+		fileGalleryIdsList.add(12l);
+		fileGalleryIdsList.add(13l);
+		fileGalleryIdsList.add(14l);
+		List<Object[]> list = (List<Object[]>)fileSourceLanguageDAO.getEditionPartNoDetailsByFileIds(fileGalleryIdsList);
+		for(Object[] param:list){
+			System.out.println(param[0]+" "+param[1]+" "+param[2]);
+		}
+	}
 }
