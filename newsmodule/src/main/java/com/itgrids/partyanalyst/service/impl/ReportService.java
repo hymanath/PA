@@ -9,6 +9,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
+import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
@@ -23,9 +25,28 @@ public class ReportService implements IReportService {
 	private ICandidateDetailsService candidateDetailsService;
 	private IFileSourceLanguageDAO fileSourceLanguageDAO;
 	private INewsReportDAO newsReportDAO;
+	private ICandidatePartyFileDAO candidatePartyFileDAO;
+	private IFilePathsDAO filePathsDAO;
 	
 	private static final org.apache.log4j.Logger LOG = Logger.getLogger(ReportService.class);
 			
+	public IFilePathsDAO getFilePathsDAO() {
+		return filePathsDAO;
+	}
+
+	public void setFilePathsDAO(IFilePathsDAO filePathsDAO) {
+		this.filePathsDAO = filePathsDAO;
+	}
+
+	public ICandidatePartyFileDAO getCandidatePartyFileDAO() {
+		return candidatePartyFileDAO;
+	}
+
+	public void setCandidatePartyFileDAO(
+			ICandidatePartyFileDAO candidatePartyFileDAO) {
+		this.candidatePartyFileDAO = candidatePartyFileDAO;
+	}
+
 	public IReportFilesDAO getReportFilesDAO() {
 		return reportFilesDAO;
 	}
@@ -102,13 +123,6 @@ public class ReportService implements IReportService {
 				file.setScope("STATE");
 				file.setLocationName("Andhra Pradesh");
 				
-				List<Object[]> candidateDetails = fileSourceLanguageDAO.getCandidateNamesByFileIds((Long)news[0]);
-				String name="";
-				for(Object[] param:candidateDetails){
-					name +=param[1].toString();
-				}
-				file.setCandidateName(name);
-				
 				if(news[6] != null)
 				  file.setEenadu(true);
 				stateLvlList.add(file);
@@ -137,15 +151,6 @@ public class ReportService implements IReportService {
 				file.setLocationVal((Long)news[5]);
 				file.setName(news[7].toString());
 				
-				List<Object[]> candidateDetails = fileSourceLanguageDAO.getCandidateNamesByFileIds((Long)news[0]);
-				String name="";
-				for(Object[] param:candidateDetails){
-					name +=param[1].toString()+",";
-				}
-				if(name != null && name.length() > 0)
-				 file.setCandidateName(name.substring(0,name.length()-1));
-				else
-					file.setCandidateName("");
 				file.setScope(news[8] != null?news[8].toString():"");
 				if(news[9] != null)
 					  file.setEenadu(true);
@@ -156,91 +161,150 @@ public class ReportService implements IReportService {
 			returnVo.setFileVOList(new ArrayList<FileVO>(distLvlList.values()));//setting all news in all districts
 		}
 		
-		List<Object[]> sourceDetails1 = fileSourceLanguageDAO.getEditionPartNoDetailsByFileIds(newsMap.keySet());
+		List<Object[]> SourceIds = fileSourceLanguageDAO.getFileSourceByFileIds(newsMap.keySet());
 		
-		Map<Long,Map<Long,Map<Long,String>>> map = new HashMap<Long, Map<Long,Map<Long,String>>>(0);//<fileId,<sourceId,<editionId,pageNoStr>>>
 		Map<Long,String> sourceNameMap = new HashMap<Long, String>(0);
-		
-		if(sourceDetails1 != null && sourceDetails1.size() > 0)
-		{
-		  for(Object[] params: sourceDetails1)
-		  {
-			  Map<Long,Map<Long,String>> sourceMap1 = map.get((Long)params[0]);
-			  if(sourceMap1 == null)
-			  {
-				  sourceMap1 = new HashMap<Long, Map<Long,String>>(0);
-				  map.put((Long)params[0], sourceMap1);
-			  }
-			  
-			  Map<Long,String> editionMap = sourceMap1.get((Long)params[1]);
-			  if(editionMap == null)
-			  {
-				  editionMap = new HashMap<Long, String>();
-				  sourceMap1.put((Long)params[1], editionMap);
-			  }
-			  String pageNo = "";
-			  if(editionMap.size()>0)
-			   pageNo = editionMap.get(new Long((Integer)params[3]));
-			  if(pageNo == null || pageNo.length() == 0)
-				  if(params[4] != null)
-				  pageNo = params[4].toString();
-			  else
-				  if(params[4] != null)
-				 pageNo +=","+params[4].toString();
-			  if(params[3] != null)
-			  editionMap.put(new Long((Integer)params[3]), pageNo);
-			  
-			  String name = sourceNameMap.get((Long)params[1]);
+		Map<Long,Map<Long,Map<Long,String>>> resultMap = new HashMap<Long, Map<Long,Map<Long,String>>>(0);//<fileIs,sourceId,editionId,pageNo>
+		if(SourceIds != null && SourceIds.size() > 0)
+		 for(Object[] params: SourceIds)
+		 {
+			Map<Long,Map<Long,String>> map = resultMap.get((Long)params[0]); 
+			if(map == null)
+			{
+				map = new HashMap<Long, Map<Long,String>>(0);
+				resultMap.put((Long)params[0], map);
+			}
+			Map<Long,String> map2 = map.get((Long)params[1]);
+			if(map2 == null)
+			{
+				map2 = new HashMap<Long, String>(0);
+				map.put((Long)params[1], map2);
+			}
+			
+			String name = sourceNameMap.get((Long)params[1]);
 			  if(name == null)
-				 sourceNameMap.put((Long)params[1], params[2].toString());
+				sourceNameMap.put((Long)params[1], params[2].toString());
 			  
-		  }
+			  
+		 }
+		
+		List<Object[]> list = filePathsDAO.getSourceIdsAndPageNos(newsMap.keySet());
+		if(list != null && list.size() > 0)
+		{
+		 for(Object[] params:list)
+		 {
+			 Map<Long,Map<Long,String>> map = resultMap.get((Long)params[0]); 
+			 if(map != null && map.size() > 0)
+			 {
+				 Map<Long,String> map2 = map.get((Long)params[1]);
+				 if(map2 != null)
+				 {
+					 String pageNo = map2.get(new Long((Integer)params[2]));
+					 if(pageNo == null)
+						 map2.put(new Long((Integer)params[2]), params[3].toString());
+					 else
+					 {
+						 pageNo +=","+params[3].toString();
+						 map2.put(new Long((Integer)params[2]), pageNo);
+					 }
+				 }
+			 }
+		 }
 		}
 		
-		if(returnVo.getFileVOList() != null && returnVo.getFileVOList().size() > 0)
+		Map<Long,List<String>> fileSourceMap = new HashMap<Long, List<String>>(0);
+		
+		if(resultMap != null && resultMap.size() > 0)
 		{
-		  for(FileVO fileVO :returnVo.getFileVOList())
-		   if(fileVO.getFileVOList() != null && fileVO.getFileVOList().size() > 0)
-			 for(FileVO fileVO2 :fileVO.getFileVOList())
+			for(Long fileId: resultMap.keySet())
+			{
+			  Map<Long,Map<Long,String>> map = resultMap.get(fileId);
+			  if(map != null && map.size() > 0)
 			  {
-				 Map<Long,Map<Long,String>> map1 = map.get(fileVO2.getFileId()); 
-				 if(map1 != null)
-				  for(Long sourceId :map1.keySet())
+				
+				for(Long sourceId :map.keySet())
+				{
+					String source = "";
+					String mainEditionStr = "";
+					String districtStr = "";
+				  source += sourceNameMap.get(sourceId);
+				  Map<Long,String> map2 = map.get(sourceId);
+				  
+				  if(map2 != null)
 				  {
-					String tempString = "";
-					tempString += sourceNameMap.get(sourceId);
-					String mainPaper = "";
-					String districtPaper = "";
-					
-					Map<Long,String> map2 = map1.get(sourceId);
-					if(map2 != null)
-					  for(Long id:map2.keySet())
-					  {
-					    String pageNO = map2.get(id);
-					    if(pageNO != null)
-					    {
-						  if(id.equals(1L))
-							 mainPaper += pageNO;
-						  else
-							 districtPaper += pageNO;  
-					    }
-					  }
-					if(mainPaper.length() > 0)
-						tempString += "(Main:"+mainPaper+")";
-					if(districtPaper.length() > 0)
-						tempString +="(District: "+districtPaper+")";
-					
-					if(fileVO2.getKeyWordsList() == null)
+					for(Long edition: map2.keySet())
 					{
-						List<String> keywordList = new ArrayList<String>(0);
-						keywordList.add(tempString);
-						fileVO2.setKeyWordsList(keywordList);
+					 if(edition.equals(1L))
+						mainEditionStr += map2.get(edition)+",";
+					 else
+						 districtStr += map2.get(edition)+",";
 					}
-					else
-						fileVO2.getKeyWordsList().add(tempString);
+					if(mainEditionStr.length() > 0)
+					  source += " (Main Edition: "+mainEditionStr.substring(0,mainEditionStr.length()-1)+")";
+					if(districtStr.length() > 0)
+						source += "(District Edition: "+districtStr.substring(0,districtStr.length()-1)+")";
 				  }
+				  
+				  List<String> sourceList = fileSourceMap.get(fileId);
+				  if(sourceList == null)
+				  {
+					  sourceList = new ArrayList<String>(0);
+					  fileSourceMap.put(fileId, sourceList);
+				  }
+				  
+				  sourceList.add(source);
+				  fileSourceMap.put(fileId, sourceList);
+				  
+				}
 			  }
+			}
 		}
+		
+		List<Object[]> candidateDetails = candidatePartyFileDAO.getCandidateNamesByFileIds(newsMap.keySet());
+		String name="";
+		Map<Long,String> candidateNames = new HashMap<Long, String>();
+		for(Object[] val:candidateDetails){
+			if(candidateNames.containsKey(val[0]))
+				name += val[1].toString()+", ";
+			else
+				name = val[1].toString()+", ";
+			candidateNames.put((Long)val[0],name);
+		}
+		
+		if(districtLvlNews != null && districtLvlNews.size() > 0)
+		{
+			if(returnVo.getFileVOList() != null && returnVo.getFileVOList().size() > 0)
+				for(FileVO fileVo:returnVo.getFileVOList())
+				{
+					if(fileVo.getFileVOList() != null && fileVo.getFileVOList().size() > 0)
+						for(FileVO fileVo2:fileVo.getFileVOList())
+						{
+							List<String> keyWordsList = fileSourceMap.get(fileVo2.getFileId());
+							fileVo2.setKeyWordsList(keyWordsList);
+							//for candidateNames
+							if(name != null && name.length() > 0)
+								fileVo2.setCandidateName((candidateNames.get(fileVo2.getFileId())).substring(0,(candidateNames.get(fileVo2.getFileId())).length()-2));
+							else
+								fileVo2.setCandidateName("");
+						}
+				}
+		}
+		
+		if(stateLvlNews != null && stateLvlNews.size() > 0)
+		{
+			if(returnVo.getMainArticalsList()!=null && returnVo.getMainArticalsList().size()>0)
+				for(FileVO fileVO :returnVo.getMainArticalsList())
+				{
+					List<String> keyWordsList = fileSourceMap.get(fileVO.getFileId());
+					fileVO.setKeyWordsList(keyWordsList);
+					//for candidateNames
+					if(name != null && name.length() > 0)
+						fileVO.setCandidateName((candidateNames.get(fileVO.getFileId())).substring(0,(candidateNames.get(fileVO.getFileId())).length()-2));
+					else
+						fileVO.setCandidateName("");
+				}
+		}
+		
 	 }catch(Exception e){
 		 LOG.error("Exception rised in getReportData ",e);
 	 }

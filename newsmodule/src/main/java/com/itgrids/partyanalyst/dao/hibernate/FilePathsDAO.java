@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -191,5 +192,16 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		return query.list();
 		
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSourceIdsAndPageNos(Set<Long> fileIdsList)
+	{
+		Query query = getSession().createQuery(" select model.fileSourceLanguage.file.fileId,model.fileSourceLanguage.source.sourceId," +
+				" model.edition,model.pageNo from FilePaths model where model.fileSourceLanguage.file.fileId in (:fileIdsList) ");
+		
+		query.setParameterList("fileIdsList",fileIdsList);
+		return query.list();
+	}
+	
 	
 }

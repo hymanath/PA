@@ -75,10 +75,11 @@ public class FileSourceLanguageDAO extends GenericDaoHibernate<FileSourceLanguag
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getCandidateNamesByFileIds(Long fileId){
-		Query query = getSession().createQuery("select model.sourceCandidate.candidateId,model.sourceCandidate.lastname from CandidatePartyFile model where " +
-				"model.file.fileId = :fileId ");
-		query.setParameter("fileId", fileId);
+	public List<Object[]> getFileSourceByFileIds(Set<Long> fileIds)
+	{
+		Query query = getSession().createQuery("select fs.file.fileId,fs.source.sourceId,fs.source.source from " +
+				"FileSourceLanguage fs where fs.file.fileId in (:fileIds)" );
+		query.setParameterList("fileIds", fileIds);
 		return query.list();
 	}
 	
