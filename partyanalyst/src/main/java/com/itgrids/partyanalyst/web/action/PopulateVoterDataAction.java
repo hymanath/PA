@@ -152,7 +152,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 				allConstituenciesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 			}
-			constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
+			//constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
+			constituencyList = votersAnalysisService.getConstituenciesFromVoterDataAvaliableConstituencies();
 			constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
 			return SUCCESS;
 		}
