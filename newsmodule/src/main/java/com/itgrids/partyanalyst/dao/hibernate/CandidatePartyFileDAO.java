@@ -80,5 +80,14 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 			 return query.list();
 	  }
 	 
+	 public List<Long> getFilesIdsByCandidateFileId(List<Long> candidateFileId)
+	 {
+		 	 
+		 Query query = getSession().createQuery("select distinct (model.file.fileId) from CandidatePartyFile model " +
+			 		" where model.candidatePartyFileId in (:candidateFileId)" );
+		 query.setParameterList("candidateFileId", candidateFileId);
+		 return query.list();
+	 }
+	 
 	 
 }

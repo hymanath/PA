@@ -11,6 +11,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.model.FilePaths;
+import com.itgrids.partyanalyst.model.FileSourceLanguage;
 
 public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements IFilePathsDAO {
 
@@ -192,7 +193,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		return query.list();
 		
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSourceIdsAndPageNos(Set<Long> fileIdsList)
 	{
@@ -203,5 +204,13 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		return query.list();
 	}
 	
+	
+	
+	public List<FilePaths> getFileDetailsForSelected(List<Long> fileIds)
+	{
+		Query query = getSession().createQuery("select model from FilePaths model  where model.fileSourceLanguage.file.fileId in (:fileIds)");
+		query.setParameterList("fileIds", fileIds);
+		return query.list();
+	}
 	
 }

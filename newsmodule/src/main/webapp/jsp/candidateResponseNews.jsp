@@ -90,7 +90,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 								<div id="errorMsgDiv"></div>
 		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
-			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails()" class="btn btn-info"/>
+			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails(0)" class="btn btn-info"/>
 											
 							</ul>
 						</div>
@@ -105,7 +105,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 
 getNewsForPagination(0);
 function getNewsForPagination(startIndex)
- {
+{
 	
 var jObj=
 	{
@@ -132,7 +132,11 @@ function callAjax(jsObj,url)
 			if(jsObj.task == "getLatestResponsefiles")
 			{
 				buildPaginatedNews(myResults,jsObj);
-			}	
+			}
+			if(jsObj.task == "getLatestResponsefilesForSelectedNews")
+			{
+				buildPaginatedNews(myResults,jsObj);
+			}			
 			}catch (e)
 			{
 							     
@@ -150,12 +154,17 @@ function callAjax(jsObj,url)
 
 function buildPaginatedNews(results,jsObj)
 {
+	$("#latestNewsDiv").html("");
 	var str="";
-	str+="<ul class='unstyled pad10'>";
-	for(var i in results){
+	
+	if(results != null)
+	{
+		str+="<ul class='unstyled pad10'>";
+		for(var i in results){
 		str+="<li>";
-		var source = results[i].fileVOList[0].source.trim();
-		if(source == "Eenadu Telugu")
+		
+		var source = results[i].fontId;
+		if(source == 1)
 		{
 		str+="<span class='enadu fontStyle' style='font-weight:bold;cursor: pointer;'  onclick='getNewsDetailsByContentId("+results[i].contentId+")'>"+results[i].title+"</span>";
 		}
@@ -168,10 +177,10 @@ function buildPaginatedNews(results,jsObj)
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
 		
 		var path = results[i].filePath1;
-		var source = results[i].fileVOList[0].source;
+		//var source = results[i].fontId;
 		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
-		if(source == "Eenadu Telugu")
+		if(source == 1)
 		{
 			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
 		}
@@ -184,15 +193,14 @@ function buildPaginatedNews(results,jsObj)
 
 		str+="<div class='row-fluid m_top10'><div class='span10'>";
 		str +='<table style="width:100%;"><tr><td tyle="width:32%;">';
-		str +='<p style="margin-left: 5px;"><span class="text-error" style="font-weight:bold;">Source :</span>';
-		var length = results[i].fileVOList.length;
-
-		for(var j in results[i].fileVOList)
+		str +='<p style="margin-left: 5px;"><span class="text-error" style="font-weight:bold;">Source : '+results[i].source+'</span>';
+		var length = results[i].count;
+/* 		for(var j in results[i].fileVOList)
 		{
-		  str +=''+results[i].fileVOList[j].source+'';
+		  str +=''+results[i].source+'';
 		  if(length-1 != j)
 			str +=',';
-		}
+		} */
 		str +='</p></td><td style="vertical-align: top;width:37%;"><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;width:33%;"><p ><span class="text-error" style="font-weight: bold; margin-left: 15px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /> </span>'+results[i].responseCount+'</p></td></tr>';
 		
 		str +='</table>';
@@ -215,6 +223,14 @@ function buildPaginatedNews(results,jsObj)
 			cssStyle: 'light-theme'
 		});
 	}
+	
+	}
+	else
+	{
+		$("#latestNewsDiv").html("No data avaliable");
+		$('#paginationId').html('');
+	}
+	
 }
 function imgError(image) {
     image.onerror = "";
@@ -222,7 +238,7 @@ function imgError(image) {
     return true;
 }
 
-function getSelectedNewsDetails()
+function getSelectedNewsDetails(startIndex)
 {
 	$("#errorMsgDiv").html('');
 	
@@ -247,12 +263,23 @@ function getSelectedNewsDetails()
       $("#errorMsgDiv").html('Invalid Date Selection.');
       return;
 	}  */
+	var jObj=
+	{
+		
+	  firstResult : startIndex,
+	  maxResult   : 10,
+	  fromDate    : fromDate,
+	  toDate      : toDate,
+	  task        : "getLatestResponsefilesForSelectedNews"
 
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "latestUpdatedNewsAction.action?"+rparam;
+	callAjax(jObj,url);
+	//var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
 	
-	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
-	
-    var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-    browser1.focus();
+    //var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+   // browser1.focus();
 }
   $(".dateField").live("click", function(){
  $(this).datepicker({

@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.hsqldb.lib.HashSet;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -65,7 +65,7 @@ public class ContentManagementService implements IContentManagementService{
 	private INewsResponseDAO newsResponseDAO;
 	private IFilePathsDAO filePathsDAO;
 	
-	
+
 	public IFilePathsDAO getFilePathsDAO() {
 		return filePathsDAO;
 	}
@@ -933,19 +933,47 @@ public class ContentManagementService implements IContentManagementService{
 	
 	
 	
-	public List<FileVO> getResponseTrackingNews1(Long fileId)
+	public List<FileVO> getResponseTrackingNews1(Long fileId,String type)
 	{
 		
 		try{
-		
 			List<FileVO> resultList = new ArrayList<FileVO>();
 			List<Long> responseids =newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileId);
-			List<File> fileList =  fileDAO.getAllLatestFilesByFileIds(responseids);
+			List<Long> fileIdsList = candidatePartyFileDAO.getFilesIdsByCandidateFileId(responseids);
+			Map<Long,Long> respomcesMap = new HashMap<Long, Long>();
 			Set<Long> fileIds = new java.util.HashSet<Long>();
-			 for(Long id : responseids){
+			 for(Long id : fileIdsList){
 				 fileIds.add(id);
 			  }
-			List<Object[]> candidateNames = candidatePartyFileDAO.getCandidateNamesByFileIds(fileIds);		
+			 fileIds.add(fileId);
+			 List<File> fileList = null;
+			 if(type.equalsIgnoreCase("main"))
+			 {
+				 fileList =  fileDAO.getAllLatestFilesByFileIds(new ArrayList<Long>(fileIds));
+			 }
+			 else
+			 {
+				  fileList =  fileDAO.getAllLatestFilesByFileIds(new ArrayList<Long>(fileIdsList)); 
+			 }
+			 List<Object[]> subNewsResponces = newsResponseDAO.getResponceCountForFiles(fileIdsList);
+			 if(subNewsResponces != null && subNewsResponces.size() > 0)
+			 {
+				 for (Object[] objects : subNewsResponces) {
+					 respomcesMap.put((Long)objects[0], (Long)objects[1]);
+				}
+				 
+			 }
+			 List<Object[]> candidateNames = null;
+			 if(type.equalsIgnoreCase("main"))
+			 {
+				  candidateNames = candidatePartyFileDAO.getCandidateNamesByFileIds(fileIds);
+			 }
+			 else
+			 {
+				
+				 candidateNames = candidatePartyFileDAO.getCandidateNamesByFileIds(new HashSet<Long>(fileIdsList));
+			 }
+					
 			Map<Long,String> candidateByGaleryId = new HashMap<Long, String>();		
 			for (Object[] objects : candidateNames) {
 				candidateByGaleryId.put((Long)objects[0],objects[1].toString());
@@ -979,10 +1007,10 @@ public class ContentManagementService implements IContentManagementService{
 				 fileVOSourceLanguage.setLanguage(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguage():null);
 				 fileVOSourceLanguage.setLanguegeId(fileSourceLanguage.getLanguage()!=null?fileSourceLanguage.getLanguage().getLanguageId():null);
 				 fileVOSourceLanguage.setFileSourceLanguageId(fileSourceLanguage.getFileSourceLanguageId());
-				/* List<Object[]> editionDets = filePathsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
+				 List<Object[]> editionDets = filePathsDAO.getEditionAndPageNoByFileSourceId(fileSourceLanguage.getFileSourceLanguageId());
 				 if(editionDets != null && editionDets.size() > 0)
 					{
-					 if(editionDets.get(0) != null)
+					 /*if(editionDets.get(0) != null)
 					 {
 					  fileVOSourceLanguage.setPageNo(Long.parseLong(editionDets.get(0)[0].toString()));
 					  Long edition = Long.parseLong(editionDets.get(0)[1].toString());
@@ -990,14 +1018,61 @@ public class ContentManagementService implements IContentManagementService{
 						  fileVOSourceLanguage.setNewsEdition("Main Edition");
 					  else
 						  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
-					 }
-					}*/
+					 }*/
+					 Long count = 0l;
+					 for (Object[] objects : editionDets) {
+						 String editionStr = "";
+						 count ++;
+						 
+						  //Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+						  if(objects[1].equals(1L))
+						  {
+							  editionStr = "Main Edition";
+						  }
+							  
+						  else
+						  {
+							  editionStr = "District/Sub Edition";
+						  }
+							 
+						  if(count == 1)
+						  {
+							  fileVOSourceLanguage.setNewsEdition(editionStr);
+							  fileVOSourceLanguage.setPageNoStr(objects[0].toString());
+						  }
+						 
+						  else
+						  {
+							 /* String editionChannel = "";
+							  if(fileVOSourceLanguage.getNewsEdition() == "Main Edition")
+							  {
+								  editionChannel = 
+							  }
+							  else
+							  {
+								  editionChannel = fileVOSourceLanguage.getNewsEdition();
+							  }*/
+							  fileVOSourceLanguage.setNewsEdition(fileVOSourceLanguage.getNewsEdition() + "("+(fileVOSourceLanguage.getPageNo())+")"+ ","+ editionStr + "("+(objects[0].toString()+")"));
+							  fileVOSourceLanguage.setPageNoStr(fileVOSourceLanguage.getPageNoStr()+ "," +objects[0].toString());
+						  }
+						  
+							  
+					}
+					}
 				 
 				 List<FileVO> fileVOPathsList = new ArrayList<FileVO>();
 				 
 				 Set<FilePaths> filePathsSet = fileSourceLanguage.getFilePaths();
 				 fileVOSourceLanguage.setMultipleNews(filePathsSet.size());
-				 
+				 Long count = 0l;
+				 boolean flagForMain = true;
+				 boolean flagForSub = true;
+				 String mainString = "";
+				 String subString  = "";
+				 String mainPageNos =  "";
+				  String subPaeNos = "";
+				 // String PagaNoStringForMain = "";
+				  //String pageNoStringForSub = "";
 				 for(FilePaths filePath : filePathsSet){
 					 FileVO fileVOPath = new FileVO();
 					 fileVOPath.setPath(filePath.getFilePath());
@@ -1005,13 +1080,95 @@ public class ContentManagementService implements IContentManagementService{
 					 fileVOPath.setOrderName("Part-"+filePath.getOrderNo());
 					 if(filePath.getEdition() != null){
 						 Long edition = filePath.getEdition().longValue();
-						  if(edition.equals(1L))
+						 /* if(edition.equals(1L))
 							  fileVOSourceLanguage.setNewsEdition("Main Edition");
 						  else
-							  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");
+							  fileVOSourceLanguage.setNewsEdition("District/Sub Edition");*/
+						 String editionStr = "";
+						 count ++;
+						 
+						  //Long edition = Long.parseLong(editionDets.get(0)[1].toString());
+						  if(edition.equals(1L))
+						  {
+							  editionStr = "Main Edition";
+						  }
+							  
+						  else
+						  {
+							  editionStr = "District/Sub Edition";
+						  }
+							 
+						  if(filePathsSet.size() == 1)
+						  {
+							  fileVOSourceLanguage.setNewsEdition(editionStr);
+							  fileVOSourceLanguage.setPageNoStr(filePath.getPageNo().toString());
+						  }
+						
+						 
+						  else
+						  {
+							  
+							  
+							  if(editionStr.equalsIgnoreCase("Main Edition"))
+							  {
+								
+								 if(flagForMain)
+								 {
+									 mainPageNos  = filePath.getPageNo().toString();
+									 flagForMain = false;
+									 //PagaNoStringForMain = filePath.getPageNo().toString();
+								 }
+									   
+								 else
+								 {
+									 mainPageNos  = "" + mainPageNos +","+ filePath.getPageNo().toString() +"";
+									// PagaNoStringForMain = PagaNoStringForMain +","+ filePath.getPageNo().toString();
+								 }
+								 
+							  }
+							  else
+							  {
+									 if(flagForSub)
+									 {
+										 subPaeNos   = filePath.getPageNo().toString();
+										 flagForSub = false;
+										// pageNoStringForSub = filePath.getPageNo().toString();
+									 }
+									 else
+									 {
+										 subPaeNos = "" + subPaeNos +","+ filePath.getPageNo().toString() +"";
+									 }
+									 
+								 
+								  
+								  
+							  }
+							  
+							 if(mainPageNos != "")
+							 {
+								 mainString = "Main Edition" + "(" +mainPageNos + ")";
+							 }
+							 if(subPaeNos != "")
+							 {
+								 subString  = "District/Sub Edition" + "(" +subPaeNos + ")";;
+							 }
+							 // fileVOSourceLanguage.setNewsEdition(fileVOSourceLanguage.getNewsEdition() +"("+ (fileVOSourceLanguage.getPageNoStr()) +")"+ " "+ editionStr + "("+(filePath.getPageNo()+ ")"));
+							 
+							 fileVOSourceLanguage.setNewsEdition(mainString +"  "+ subString);
+							 //fileVOSourceLanguage.setPageNoStr(fileVOSourceLanguage.getPageNoStr()+ "," +filePath.getPageNo().toString());
+							 fileVOSourceLanguage.setPageNoStr(mainPageNos +","+subPaeNos);
+							 fileVOSourceLanguage.setComments("yes");
+							 
+							 
+						  }
 					 }
 					 fileVOSourceLanguage.setPageNo(new Long(filePath.getPageNo()));
 					 fileVOPathsList.add(fileVOPath);
+					 if(respomcesMap.get(file.getFileId()) != null)
+					 {
+						 fileVOSourceLanguage.setFileId(file.getFileId()) ;
+						 fileVOSourceLanguage.setFileDateAsString("YES");
+					 }
 				 }
 				 Collections.sort(fileVOPathsList,CandidateDetailsService.sortData);
 				 fileVOSourceLanguage.setFileVOList(fileVOPathsList);
@@ -1511,5 +1668,133 @@ public class ContentManagementService implements IContentManagementService{
 		return locationName;
 		 
 	 }
+	
+	/*public List<FileVO> getResponseTrackingNews1(Long fileId)
+	{
+		List<FileVO> returnList = null;
+		try{
+			log.debug("Entered into getResponseTrackingNews1() method");
+			Map<Long,String> fileMap = null;// Map<fileId,type>
+			Map<Long,String> candidateMap = null;//Map<fileId,candidateName>
+			Map<Long,FileVO> fileDetailsMap = null;//Map<fileId,fileDetails>
+			FileVO subNewsFileVO = null;
+			// here we are gwtting responce id for the selected files
+			List<Long> respondentIds =newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileId);
+			//here we are getting the file ids whih have been given responce
+			List<Long> fileIdsList = candidatePartyFileDAO.getFilesIdsByCandidateFileId(respondentIds);
+			if(fileIdsList != null && fileIdsList.size() > 0)
+			{
+				fileMap = new HashMap<Long, String>();
+				fileMap.put(fileId, "main");
+				List<Long> fileIds =new ArrayList<Long>(); 
+				fileIds.add(fileId);
+				for (Long fileResponceId : fileIdsList) {
+					fileIds.add(fileResponceId);
+					fileMap.put(fileResponceId, "sub");
+				}
+				
+				// here we are getting the all details of file fore  selected as well as responce given files
+				List<FilePaths> fileDetails = filePathsDAO.getFileDetailsForSelected(fileIds);
+				if(fileDetails != null && fileDetails.size() > 0)
+				{
+					returnList = new ArrayList<FileVO>();
+					// here we are getting the candidate names which has given respoce to that news
+					List<Object[]> candidateNames = candidatePartyFileDAO.getCandidateNamesByFileIds(fileMap.keySet());	
+					if(candidateNames != null && candidateNames.size() > 0)
+					{
+						candidateMap = new HashMap<Long, String>();
+						for (Object[] parms : candidateNames) {
+							candidateMap.put((Long)parms[0], parms[1].toString());
+						}
+					}
+					FileVO fileVO = new FileVO();
+					List<FileVO> subFileList = new ArrayList<FileVO>();
+					fileDetailsMap = new HashMap<Long, FileVO>(); 
+					for (FilePaths filePaths : fileDetails) {
+						
+						String source = fileMap.get(filePaths.getFileSourceLanguage().getFile().getFileId());
+						
+						if(source.equalsIgnoreCase("main"))
+						{
+							fileVO.setFileType("main");
+							FileVO mainNewsVO = new FileVO();
+							mainNewsVO.setFileType("main");
+						    filleFileVO(filePaths,mainNewsVO,candidateMap);
+							fileVO.setMainNewsVO(mainNewsVO);
+						}
+						else
+						{
+							//fileVO..setFileType("sub");
+							
+							
+							if(fileDetailsMap.get(filePaths.getFileSourceLanguage().getFile().getFileId()) == null)
+							{
+								subNewsFileVO = new FileVO();
+								subNewsFileVO.setFileType("sub");
+								filleFileVO(filePaths,subNewsFileVO,candidateMap);
+								subFileList.add(subNewsFileVO);
+								fileVO.setFileVOList(subFileList);
+							}
+							else
+							{
+								
+							}
+							
+						}
+						
+						
+						
+						
+					}
+					returnList.add(fileVO);
+				}
+			}
+		}catch (Exception e) {
+			log.error("Exception Occured in getResponseTrackingNews1() method, Exception - "+e);
+		}
+		
+		return returnList;
+				
+	}
+	
+	public void filleFileVO(FilePaths filePaths , FileVO fileVO , Map<Long,String> candidateMap)
+	{
+		if(filePaths.getFileSourceLanguage().getFile() != null)
+		{
+			fileVO.setFileId(filePaths.getFileSourceLanguage().getFile().getFileId());
 			
+			fileVO.setTitle(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(filePaths.getFileSourceLanguage().getFile().getFileTitle())));
+			fileVO.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(filePaths.getFileSourceLanguage().getFile().getFileDescription())));
+			fileVO.setNewsDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(filePaths.getFileSourceLanguage().getFile().getNewsDescription())));
+			fileVO.setSource(filePaths.getFileSourceLanguage().getFile().getSourceObj() != null ?filePaths.getFileSourceLanguage().getFile().getSourceObj().getSource():"");
+			fileVO.setFileDate(filePaths.getFileSourceLanguage().getFile().getFileDate() != null ? filePaths.getFileSourceLanguage().getFile().getFileDate().toString():"");
+			fileVO.setCandidateName(candidateMap.get(filePaths.getFileSourceLanguage().getFile().getFileId()));
+			fileVO.setLocationName(boothDAO.getLocationsById(filePaths.getFileSourceLanguage().getFile().getRegionScopes().getScope(),filePaths.getFileSourceLanguage().getFile().getLocationValue()).toString()+" ( "+filePaths.getFileSourceLanguage().getFile().getRegionScopes().getScope()+" )");
+			fileVO.setFontId(filePaths.getFileSourceLanguage().getFile().getFont() != null ?filePaths.getFileSourceLanguage().getFile().getFont().getFontId() : 0);
+			if(filePaths != null )
+			{
+				if(filePaths.getEdition() != null && filePaths.getEdition() == 1)
+				{
+					fileVO.setNewsEdition("Main Edtion");
+				}
+				else
+				{
+					fileVO.setNewsEdition("District Edtion");
+				}
+				
+				if(filePaths.getPageNo() != null)
+				{
+					fileVO.setPageNo(filePaths.getPageNo().longValue());
+				}
+				else
+				{
+					fileVO.setPageNo(0l);
+				}
+				
+				fileVO.setImagePathInUpperCase(filePaths.getFilePath());
+			}
+			
+		}
+	}
+			*/
 }

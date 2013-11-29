@@ -78,7 +78,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Date reqFileDate;
 	private Long regionValue;
 	private FileVO fileVOForDiaplyImage;
-	
+	private FileVO mainNewsVO;
 
 	private String displayImageName;
 	private String displayImageContentType;
@@ -149,6 +149,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long font;
 	private Integer fontId;
 	private String responseFileIdsStr;
+	private String PageNoStr;
 	
 	public Integer getFontId() {
 		return fontId;
@@ -1288,6 +1289,34 @@ public class FileVO extends ResultStatus implements Serializable {
 	public void setResponseFileIdsStr(String responseFileIdsStr) {
 		this.responseFileIdsStr = responseFileIdsStr;
 	}
-    
 
+	/**
+	 * @return the mainNewsVO
+	 */
+	public FileVO getMainNewsVO() {
+		return mainNewsVO;
+	}
+
+	/**
+	 * @param mainNewsVO the mainNewsVO to set
+	 */
+	public void setMainNewsVO(FileVO mainNewsVO) {
+		this.mainNewsVO = mainNewsVO;
+	}
+
+	/**
+	 * @return the pageNoStr
+	 */
+	public String getPageNoStr() {
+		return PageNoStr;
+	}
+
+	/**
+	 * @param pageNoStr the pageNoStr to set
+	 */
+	public void setPageNoStr(String pageNoStr) {
+		PageNoStr = pageNoStr;
+	}
+
+	
 }

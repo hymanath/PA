@@ -329,4 +329,6 @@ public interface ICandidateDetailsService {
 	 
 	 public List<SelectOptionVO> getFilteredCandidates(Long stateId,String partyId,String designationId,String locationType,String locationId,String text);
 	 
+	 public List<FileVO> getCandidateNewsResponseNewsForSelectdDates(Integer startIndex,Integer maxIndex,String fromDate,String toDate);
+	 
 }

@@ -4,9 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
  <title> TDP News Portal </title>
-   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 
-   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+   <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
 
  
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
@@ -107,6 +107,10 @@ font-size:20px;
  margin-left:5px;
  border-radius: 5px 5px 5px 5px;
 
+ 
+}
+.ui-widget-header {
+    font-weight: bold !important;
 }
 </style>
 
@@ -177,7 +181,11 @@ function callAjax(jsObj,url)
 			{
 				showContentResultList = myResults;
 				totalRecords = myResults.length;
-               buildNewsDetails(myResults);	
+                buildNewsDetails(myResults,"newsDetailsDiv","main");	
+			}
+			else if(jsObj.task == "getCompleteDetailsOfANewsResponseSub")
+			{
+				buildNewsDetails(myResults,jsObj.divId,"sub");
 			}
 			
 		 }
@@ -194,14 +202,25 @@ function callAjax(jsObj,url)
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
 }
 
-function buildNewsDetails(results)
+function buildNewsDetails(results,divId,type)
 {
 	
 	showContentResultList = results;
 
    var str='';
-
-   str+='<div>';
+   var count = 0;
+   if(type == "main")
+   {
+		str+='<div id="newsDisplayForMainDiv">';
+   }
+   else
+   {
+		count++;
+		$('#newsDisplayForSubDiv'+count+'').html('');
+	    str+='<div id="newsDisplayForSubDiv'+count+'" style="float: left; width: auto; min-height: 96px; max-height: none; height: auto; margin-left: -82px;">';
+		str += '<span><a onClick="closeTheDiv(\'newsDisplayForSubDiv'+count+'\')">close</a></span>';
+   }
+   
    for(var i in results)
    {  
 
@@ -216,8 +235,12 @@ function buildNewsDetails(results)
 		   str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  href="javascript:{}">'+results[i].fileTitle1+'</span></div>';
 		
 		str+='<div id="candidateNameDiv"><span style="font-weight:bold;color:blue;">Candidate Name:</span> '+results[i].candidateName+'</div>';
-		str+='<div id="LocationDiv"><span style="font-weight:bold;color:blue;margin-left:10px;">Location Name:</span> '+results[i].locationName+'</div>';
+		str+='<div id="LocationDiv"><span style="font-weight:bold;color:blue;">Location Name:</span> '+results[i].locationName+'</div>';
 		
+		/* if(results[i].fileVOList[0].fileDateAsString != null)
+		{
+			str += '<div style="float: right; margin-top: -39px;"><a class="btn btn-info" onCLick="openResponcePage('+results[i].fileVOList[0].fileId+',\'newsDisplayDiv'+i+'\');">View resopnce</a></div>';
+		} */
        if(results[i].fileDescription1 != null && results[i].fileDescription1 != "")
        if(results[i].fontId == 1  )
 	      str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;"><span class="enadu">'+results[i].fileDescription1+'</span></div>';
@@ -234,9 +257,19 @@ function buildNewsDetails(results)
 		 str+='<div id="imageDiv'+i+'" style="text-align:center;">';
 
          str+='<div id="mainDiv'+i+'" style="text-align:center;">';
-		str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ results[i].fileVOList[0].source+'</span>';
-		str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ results[i].fileVOList[0].newsEdition+'</span>';
-		str+='<span class="label label-success">PAGE NO:'+ results[i].fileVOList[0].pageNo+'</span>';
+		if(results[i].fileVOList[0].source != null)
+		{
+			str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ results[i].fileVOList[0].source+'</span>';
+		}
+		if(results[i].fileVOList[0].newsEdition != null)
+		{
+			str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ results[i].fileVOList[0].newsEdition+'</span>';
+		}
+		if(results[i].fileVOList[0].pageNoStr != null && results[i].fileVOList[0].comments == null)
+		{
+			str+='<span class="label label-success">PAGE NO:'+ results[i].fileVOList[0].pageNoStr+'</span>';
+		}
+		
 		str+='<span style="float:right;" class="label label-success">File Date:'+results[i].fileDate+'</span></div>';
 
         if(i != results.length-1 )
@@ -246,7 +279,7 @@ function buildNewsDetails(results)
         str+='<div style="float: left; margin-top: 60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png" "></img></a></div>';
 		
 		if(results[i].fileVOList[0].fileVOList[0] != null)
-		str+='<img  src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="" alt="news image not available"></img>';
+		str+='<img  src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="" ></img>';
 		else
 		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" ></img>';
 		str+='</div>';
@@ -258,7 +291,7 @@ function buildNewsDetails(results)
 			str+='<div style="margin-left:100px;margin-top:39px;width:700px;height:143px;" id="otherNews'+i+'">';
 
 			for(var k=1;k<results[i].fileVOList[0].fileVOList.length ;k++){
-				str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+results[i].fileVOList[0].fileVOList[k].path+'" alt="news image not available"></img><br>';
+				str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+results[i].fileVOList[0].fileVOList[k].path+'" ></img><br>';
 
 			str+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+results[i].fileVOList[0].fileSourceLanguageId+','+results[i].fileVOList[0].fileVOList[k].orderNo+',\''+results[i].fileVOList[0].fileVOList[k].path+'\','+i+')};"> Part - '+k+'</a></span></div>';
 			}
@@ -285,16 +318,40 @@ function buildNewsDetails(results)
 
 	   str+='</div>';
 
-   }
+       }
+	   
     str+='</div>';
 
-   $('#newsDetailsDiv').html(str);
+   $('#'+divId+'').append(str);
+   /* if(type == "sub")
+	   {
+			$('#newsdisplayforsubdiv1').dialog({
+				width : 950,
+				height : 750
+			});
+	   } */
 var finalIndex = results.length-1;
     $('html, body').animate({
             scrollTop: $("#newsDisplayDiv"+finalIndex).offset().top
     }, 2000);
 }
-
+function openResponcePage(id,divId)
+{
+	var jObj=
+	{
+	  resonseContentId : id,
+	  divId            : divId,
+	  task             : "getCompleteDetailsOfANewsResponseSub"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getCompleteDetailsOfANewsResponse.action?"+rparam;
+	callAjax(jObj,url);
+}
+function closeTheDiv(id)
+{
+	$('#'+id+'').remove();
+	//$('#'+id+'').modal();
+}
 function showAnotherSource(sourceId , i)
 {
 
@@ -326,7 +383,7 @@ function showAnotherSource(sourceId , i)
 		 // str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
 
 	if(showContentResultList[i].fileVOList[j].fileVOList[0] != null)
-		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'" style="" alt="news image not available"></img>';
+		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'" style="" ></img>';
 		str+='</div>';
 
 		str+='</div>';
@@ -393,7 +450,7 @@ function showNextnews(sourceId , orderNo  , path , i)
         str+='<div style="float: left; margin-top:60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png"></img></a></div>';
 
 
-		str+='<img src="'+path+'" style="" alt="news image not available"></img>';
+		str+='<img src="'+path+'" style="" ></img>';
 
 
 		//str+='</div>';

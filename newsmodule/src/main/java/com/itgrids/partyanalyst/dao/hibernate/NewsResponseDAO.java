@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INewsResponseDAO;
+import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.NewsResponse;
 
 
@@ -18,7 +20,7 @@ public class NewsResponseDAO extends GenericDaoHibernate<NewsResponse,Long> impl
 	public List<Long> getCandidateNewsResponseFileIdsByFileID(Long fileId)
 	{
 		
-		return getHibernateTemplate().find("select distinct(model.candidatePartyFile.candidatePartyFileId) from NewsResponse model where model.file.fileId = ?",fileId);
+		return getHibernateTemplate().find("select distinct model.candidatePartyFile.candidatePartyFileId from NewsResponse model where model.file.fileId = ?",fileId);
 	}
 	public List<Long> getCandidateNewsResponseFileIds(Long fileId)
 	{
@@ -36,6 +38,62 @@ public class NewsResponseDAO extends GenericDaoHibernate<NewsResponse,Long> impl
 		 return queryObj.list();
 		 
 	 }
+	 
+	 public List<File> getLatestFileDetails(int startIndex,int maxIndex)
+	 {
+		 Query query = getSession().createQuery("select distinct model.file from NewsResponse model");
+		 query.setFirstResult(startIndex);
+		 query.setMaxResults(maxIndex);
+		 return query.list();
+	 }
+	 
+	 public List<File> getLatestFileDetailsForBtDates(int startIndex,int maxIndex,Date fromDate,Date toDate)
+	 {
+		 Query query = getSession().createQuery("select distinct model.file from NewsResponse model " +
+		 		" where date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate");
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
+		 query.setFirstResult(startIndex);
+		 query.setMaxResults(maxIndex);
+		 return query.list();
+	 }
+	 public Long getCountForNesResponce()
+	 {
+		 Query query = getSession().createQuery("select count(distinct model.file.fileId) from NewsResponse model ");
+		 
+		 
+		 return (Long)query.uniqueResult();
+	 }
+	 
+	 public List<Long> getNewsResponceIds(int startIndex,int maxIndex)
+	 {
+		 Query query = getSession().createQuery("select distinct model.file.fileId from NewsResponse model");
+		 query.setFirstResult(startIndex);
+		 query.setMaxResults(maxIndex);
+		 return query.list();
+	 }
+	 
+	 public List<Long> getNewsResponceIdsForBtDates(int startIndex,int maxIndex,Date fromDate,Date toDate)
+	 {
+		 Query query = getSession().createQuery("select distinct model.file.fileId from NewsResponse model " +
+		 		" where date(model.file.fileDate) >= :fromDate and date(model.file.fileDate) <= :toDate ");
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
+		 query.setFirstResult(startIndex);
+		 query.setMaxResults(maxIndex);
+		 return query.list();
+	 }
+	 
+	 public List<Object[]> getResponceCountForFiles(List<Long> fileIds)
+	 {
+		 Query query = getSession().createQuery("select  model.file.fileId,count(model.file.fileId) from NewsResponse model where model.file.fileId in (:fileIds) group by model.file.fileId");
+		 query.setParameterList("fileIds", fileIds);
+		 
+		 return  query.list();
+		 
+	 }
+	 
+	
 	
 	
 }

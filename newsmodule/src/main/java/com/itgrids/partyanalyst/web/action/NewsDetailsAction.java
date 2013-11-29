@@ -313,6 +313,10 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 {
 			 fileVOsList = candidateDetailsService.getCandidateNewsResponseNews(jObj.getInt("firstResult"), jObj.getInt("maxResult")); 
 		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getLatestResponsefilesForSelectedNews"))
+		 {
+			 fileVOsList = candidateDetailsService.getCandidateNewsResponseNewsForSelectdDates(jObj.getInt("firstResult"), jObj.getInt("maxResult"),jObj.getString("fromDate"),jObj.getString("toDate")); 
+		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("getResponseGallaryDetails"))
 			  gallaryVO = contentManagementService.getResponseGallariesForSelectedGallary(jObj.getLong("fileGallaryId"), jObj.getInt("firstResult"), jObj.getInt("maxResult"));
 		 else if(jObj.getString("task").equalsIgnoreCase("getMainArticleDetails"))
@@ -435,7 +439,14 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			
 			Long resonseContentId = jObj.getLong("resonseContentId");
 			//fileVOsList = contentManagementService.getResponseTrackingNews(resonseContentId);
-			fileVOsList = contentManagementService.getResponseTrackingNews1(resonseContentId);
+			if(jObj.getString("task").equalsIgnoreCase("getCompleteDetailsOfANewsResponse"))
+			{
+				fileVOsList = contentManagementService.getResponseTrackingNews1(resonseContentId,"main");
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("getCompleteDetailsOfANewsResponseSub"))
+			{
+				fileVOsList = contentManagementService.getResponseTrackingNews1(resonseContentId,"sub");
+			}
 			}catch (Exception e) {
 				e.printStackTrace();
 				Log.error("Exception Occured in getCompleteDetailsOfANewsResponse() method, Exception - "+e);
