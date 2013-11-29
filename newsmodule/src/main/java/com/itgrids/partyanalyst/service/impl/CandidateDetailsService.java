@@ -7351,29 +7351,100 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
    }
    
-   public List<FileVO> getCandidateNewsResponseNews(Integer startIndex,Integer maxIndex)
-	{
-	   List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+   public List<FileVO> getCandidateNewsResponseNewsForSelectdDates(Integer startIndex,Integer maxIndex,String fromDateStr,String toDateStr)
+   {
+	   List<FileVO> fileVOsList = null;
 		try{
-		
+		Map<Long,Long> responceCountMap = null;
 		// List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,newsType);
-			List<FileGallary> fileGallaryList = partyGalleryDAO.getLatestNewsResPonses(startIndex, maxIndex);
+		//List<FileGallary> fileGallaryList = partyGalleryDAO.getLatestNewsResPonses(startIndex, maxIndex);
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		Date fromDate = format.parse(fromDateStr);
+		Date toDate = format.parse(toDateStr);
+	     List<File> fileGallaryList = newsResponseDAO.getLatestFileDetailsForBtDates(startIndex,maxIndex,fromDate,toDate);
+		 Long count = newsResponseDAO.getCountForNesResponce();
+		 List<Long> fileIds = newsResponseDAO.getNewsResponceIdsForBtDates(startIndex,maxIndex,fromDate,toDate);
+		 List<Object[]> responceListCount = newsResponseDAO.getResponceCountForFiles(fileIds);
+		 if(responceListCount != null && responceListCount.size() > 0)
+		 {
+			 responceCountMap = new HashMap<Long, Long>();
+			 for (Object[] objects : responceListCount) {
+				 responceCountMap.put((Long)objects[0], (Long)objects[1]);
+			}
+		 }
 		 if(fileGallaryList != null && fileGallaryList.size() > 0)
 		 {
-			 //setfileGallaryDetails(fileGallaryList, fileVOsList);
+			 fileVOsList = new ArrayList<FileVO>();
+			 fillFileVOForResponceDisplay(fileGallaryList,count, responceCountMap, fileVOsList);
 		 }
 		 
-		 fileVOsList.get(0).setCount(partyGalleryDAO.getLatestNewsResPonses(null, null).size());
+		 //fileVOsList.get(0).setCount(partyGalleryDAO.getLatestNewsResPonses(null, null).size());
 		 return fileVOsList;
 		 
 		
 		}catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - ",e);
-			 return fileVOsList;
-		}
-}
+				 return fileVOsList;
+			}
+	   
+   }
    
+   public List<FileVO> getCandidateNewsResponseNews(Integer startIndex,Integer maxIndex)
+   {
+	   List<FileVO> fileVOsList = null;
+		try{
+		Map<Long,Long> responceCountMap = null;
+		// List<FileGallary> fileGallaryList = fileGallaryDAO.getRecentlyUploadedNewsDetails(startIndex, maxIndex, contenttype,partyId,newsType);
+		//List<FileGallary> fileGallaryList = partyGalleryDAO.getLatestNewsResPonses(startIndex, maxIndex);
+	     List<File> fileGallaryList = newsResponseDAO.getLatestFileDetails(startIndex, maxIndex);
+		 Long count = newsResponseDAO.getCountForNesResponce();
+		 List<Long> fileIds = newsResponseDAO.getNewsResponceIds(startIndex,maxIndex);
+		 List<Object[]> responceListCount = newsResponseDAO.getResponceCountForFiles(fileIds);
+		 if(responceListCount != null && responceListCount.size() > 0)
+		 {
+			 responceCountMap = new HashMap<Long, Long>();
+			 for (Object[] objects : responceListCount) {
+				 responceCountMap.put((Long)objects[0], (Long)objects[1]);
+			}
+		 }
+		 if(fileGallaryList != null && fileGallaryList.size() > 0)
+		 {
+			 fileVOsList = new ArrayList<FileVO>();
+			 fillFileVOForResponceDisplay(fileGallaryList,count, responceCountMap, fileVOsList);
+		 }
+		 
+		 //fileVOsList.get(0).setCount(partyGalleryDAO.getLatestNewsResPonses(null, null).size());
+		 return fileVOsList;
+		 
+		
+		}catch (Exception e) {
+			//e.printStackTrace();
+			log.error("Exception Occured in getRecentlyUploadedNews() method, Exception - ",e);
+				 return fileVOsList;
+			}
+	}
+   
+   public void fillFileVOForResponceDisplay(List<File> fileGallaryList,Long count,Map<Long,Long> responceCountMap,List<FileVO> fileVOsList)
+   {
+	   for (File file : fileGallaryList) {
+			 if(file != null)
+			 {
+				 FileVO fileVO = new FileVO();
+				 fileVO.setContentId(file.getFileId());
+				 fileVO.setTitle(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())));
+				 fileVO.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())));
+				 fileVO.setFilePath1(file.getFilePath());
+				 fileVO.setFileDate(file.getFileDate().toString());
+				 fileVO.setSource(file.getSourceObj() != null ? file.getSourceObj().getSource() : "");
+				 fileVO.setFontId(file.getFont() != null ?  file.getFont().getFontId():0);
+				 fileVO.setCount(count.intValue());
+				 fileVO.setResponseCount(responceCountMap.get(file.getFileId()).intValue());
+				 fileVOsList.add(fileVO);
+			 }
+			
+		}
+   }
    public static Comparator<FileVO> dateSort = new Comparator<FileVO>()
 			{
 								  

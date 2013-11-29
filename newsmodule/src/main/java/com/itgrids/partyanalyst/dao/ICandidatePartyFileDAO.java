@@ -18,5 +18,7 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	public List<Object[]> getDestinationCandidates();
 	
 	public List<File> getCandidateFileListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate);
+	
+	public List<Long> getFilesIdsByCandidateFileId(List<Long> candidateFileId);
 	 
 }

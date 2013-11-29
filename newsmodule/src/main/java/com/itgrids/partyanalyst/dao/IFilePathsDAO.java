@@ -20,4 +20,6 @@ public interface IFilePathsDAO extends GenericDao<FilePaths, Long> {
 	public List<Object[]> getEditionAndPageNoByFileSourceId(Long fileSourceLanguageId);
 	
 	public List<Object[]> getSourceIdsAndPageNos(Set<Long> fileIdsList);
+	
+	public List<FilePaths> getFileDetailsForSelected(List<Long> fileIds);
 }

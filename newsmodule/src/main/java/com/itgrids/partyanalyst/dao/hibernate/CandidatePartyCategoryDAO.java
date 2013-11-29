@@ -120,6 +120,6 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllCategoryes()
 	{
-		return getHibernateTemplate().find("select distinct model.gallary.gallaryId , model.gallary.name ,model.gallary.description , count(model.candidatePartyFile.file.fileId) from CandidatePartyCategory model group by model.gallary.gallaryId");
+		return getHibernateTemplate().find("select  model.gallary.gallaryId , model.gallary.name ,model.gallary.description , count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model group by model.gallary.gallaryId");
 	}
 }

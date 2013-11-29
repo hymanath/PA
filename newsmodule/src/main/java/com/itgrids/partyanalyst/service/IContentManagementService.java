@@ -26,5 +26,5 @@ public interface IContentManagementService {
 			Long contentId, String requestFrom, Long requestPageId,
 			String isCustomer);
 	
-	public List<FileVO> getResponseTrackingNews1(Long fileId);
+	public List<FileVO> getResponseTrackingNews1(Long fileId,String type);
 }
