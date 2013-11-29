@@ -4,20 +4,26 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "voter_data_available_constituencies")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class VoterDataAvailableConstituencies extends BaseModel implements Serializable{
 	private Long voterDataAvailableConstituenciesId;
-	private Long constituencyId;
+	private Constituency constituency;
 	private Long publicationDateId;
 	
 	
@@ -25,10 +31,10 @@ public class VoterDataAvailableConstituencies extends BaseModel implements Seria
 	{
 		
 	}
-	public VoterDataAvailableConstituencies(Long voterDataAvailableConstituenciesId,Long constituencyId,Long publicationDateId)
+	public VoterDataAvailableConstituencies(Long voterDataAvailableConstituenciesId,Constituency constituency,Long publicationDateId)
 	{
 		this.voterDataAvailableConstituenciesId = voterDataAvailableConstituenciesId;
-		this.constituencyId = constituencyId;
+		this.constituency = constituency;
 		this.publicationDateId =publicationDateId;
 	}
 	@Id
@@ -41,17 +47,21 @@ public class VoterDataAvailableConstituencies extends BaseModel implements Seria
 			Long voterDataAvailableConstituenciesId) {
 		this.voterDataAvailableConstituenciesId = voterDataAvailableConstituenciesId;
 	}
-	@Column(name = "constituency_id", length = 15)
-	public Long getConstituencyId() {
-		return constituencyId;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "constituency_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Constituency getConstituency() {
+		return constituency;
 	}
-	public void setConstituencyId(Long constituencyId) {
-		this.constituencyId = constituencyId;
+	public void setConstituency(Constituency constituency) {
+		this.constituency = constituency;
 	}
 	@Column(name = "publication_date_id", length = 15)
 	public Long getPublicationDateId() {
 		return publicationDateId;
 	}
+	
 	public void setPublicationDateId(Long publicationDateId) {
 		this.publicationDateId = publicationDateId;
 	}

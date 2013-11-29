@@ -76,6 +76,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<ConstituencyUrbanPercentage> constituencyUrbanPercentage = new HashSet<ConstituencyUrbanPercentage>(0);
 	private Set<User> users = new HashSet<User>(0);
 	private Set<CustomVoterGroup> customVoterGroups = new HashSet<CustomVoterGroup>(0);
+	private Set<VoterDataAvailableConstituencies> voterDataAvailableConstituencies = new HashSet<VoterDataAvailableConstituencies>(0);
 
 	
 	// Constructors
@@ -419,6 +420,16 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 
 	public void setCustomVoterGroups(Set<CustomVoterGroup> customVoterGroups) {
 		this.customVoterGroups = customVoterGroups;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<VoterDataAvailableConstituencies> getVoterDataAvailableConstituencies() {
+		return voterDataAvailableConstituencies;
+	}
+
+	public void setVoterDataAvailableConstituencies(
+			Set<VoterDataAvailableConstituencies> voterDataAvailableConstituencies) {
+		this.voterDataAvailableConstituencies = voterDataAvailableConstituencies;
 	}
 
 	
