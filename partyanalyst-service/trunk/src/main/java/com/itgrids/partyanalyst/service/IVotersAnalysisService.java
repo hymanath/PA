@@ -313,4 +313,6 @@ public interface IVotersAnalysisService {
 	 
 	 public ResultStatus getModifiedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId);
 	 
+	 public List<SelectOptionVO> getConstituenciesFromVoterDataAvaliableConstituencies();
+	 
 }

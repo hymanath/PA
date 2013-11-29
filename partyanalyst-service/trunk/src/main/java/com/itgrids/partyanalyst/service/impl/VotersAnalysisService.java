@@ -79,6 +79,7 @@ import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterDataAvailableConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
@@ -233,9 +234,19 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IDelimitationConstituencyDAO delimitationConstituencyDAO;
     private IUserAddressDAO userAddressDAO;
     private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+    private IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO;
    private IHamletBoothDAO hamletBoothDAO;
     
-    public IUserAddressDAO getUserAddressDAO() {
+    public IVoterDataAvailableConstituenciesDAO getVoterDataAvailableConstituenciesDAO() {
+	return voterDataAvailableConstituenciesDAO;
+}
+
+public void setVoterDataAvailableConstituenciesDAO(
+		IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO) {
+	this.voterDataAvailableConstituenciesDAO = voterDataAvailableConstituenciesDAO;
+}
+
+	public IUserAddressDAO getUserAddressDAO() {
 		return userAddressDAO;
 	}
 
@@ -8668,7 +8679,30 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 		}
 		
 	 }
-	 
+	 public List<SelectOptionVO> getConstituenciesFromVoterDataAvaliableConstituencies()
+	 {
+		 List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>(0);
+		 
+		 SelectOptionVO list = null;
+		 try{
+			List<Object[]> constituencies = voterDataAvailableConstituenciesDAO.getConstituencies();
+			if(constituencies!=null && constituencies.size() > 0)
+			{
+				for(Object[] params : constituencies)
+				{
+					list = new SelectOptionVO((Long)params[0],params[1].toString());
+					resultList.add(list);
+				}
+			}
+			return resultList;
+		 }
+		 catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getConstituenciesFromBoothPublicationVoter() method -"+e);
+			return resultList;
+		}
+		
+	 }
 	 public VoterHouseInfoVO getUserVoterCategories(Long userId){
 		 VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
 		  try{
