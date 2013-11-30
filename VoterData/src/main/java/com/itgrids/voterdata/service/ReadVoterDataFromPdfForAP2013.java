@@ -16,6 +16,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,6 +65,9 @@ public class ReadVoterDataFromPdfForAP2013 {
     		conn = DriverManager.getConnection(DB_URL,USER,PASS);
     		stmt = conn.createStatement();
     		
+    		votersInfoList = checkForVoterList(votersInfoList);
+    		votersInfoList = checkForSpecialCharacters(votersInfoList);
+    		
     		for(VoterInfo info : votersInfoList)
     		{
     			try{
@@ -93,27 +97,6 @@ public class ReadVoterDataFromPdfForAP2013 {
     	}
     }
     
-    /*public static List<VoterInfo> checkForVoterList(List<VoterInfo> votersInfoList)
-    {
-    	try{
-    		List<VoterInfo> votersList = new ArrayList<VoterInfo>(0);
-    		
-    		if(votersInfoList != null && votersInfoList.size() > 0)
-    		{
-    			for(VoterInfo info : votersInfoList)
-    			{
-    				if(info.getAge() !)
-    			}
-    		}
-    		
-    		return votersList;
-    	}catch(Exception e)
-    	{
-    		System.out.println("Exception Occured in checkForVoterList Method, So Same Voter List is returned");
-    		System.out.println(e);
-    		return votersInfoList;
-    	}
-    }*/
     
     
     public static void main(String args[]) throws IOException {
@@ -121,8 +104,10 @@ public class ReadVoterDataFromPdfForAP2013 {
         int totalVotersCount = 0;
         int i = 0;
         
-        //Pattern p2 = Pattern.compile("([\\s0-9a-zA-Z]*)\\r\\nElector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n([A-Za-z\\.\\s\\r\\n]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\s\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\\\]*)\\r\\n([\\s0-9]*)\\r\\n([a-zA-Z]*)\\r\\n");
         Pattern p = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
+        Pattern p1 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n\\s([0-9]*)");
+        Pattern p2 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
+        Pattern p3 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
         
         try {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(new File(args[0] + "/" + "VotersList.txt")));
@@ -153,9 +138,13 @@ public class ReadVoterDataFromPdfForAP2013 {
                     String [] fileName = input.getName().split("-");
                     
                     Matcher m = p.matcher(sb);
+                    Matcher m1 = p1.matcher(sb);
+                    Matcher m2 = p2.matcher(sb);
+                    Matcher m3 = p3.matcher(sb);
+                    
                     VoterInfo voter = null;
-                    long lastSno = 0L;
                     List<VoterInfo> voterInfoList = new ArrayList<VoterInfo>(10);
+                    List<Long> serialNosList = new ArrayList<Long>(0);
                     
                     while (m.find()) 
                     {
@@ -187,13 +176,134 @@ public class ReadVoterDataFromPdfForAP2013 {
                         	e.printStackTrace();
                         }
                     }
+                    
+                    voterInfoList = checkForVoterList(voterInfoList);
+                    serialNosList.addAll(getSerialNoList(voterInfoList));
+                    saveVotersData(voterInfoList);
+                    voterInfoList = new ArrayList<VoterInfo>(0);
+                    
+                    while (m1.find()) 
+                    {
+                	try{
+                		long serialNo = new Long(m1.group(1).replaceAll("\\r\\n","").trim());
+                		if(!serialNosList.contains(serialNo))
+                		{
+                			voter = new VoterInfo();
+                			i++;
+	                		voter.setsNo(serialNo);
+	                		voter.setSex(m1.group(2).replaceAll("\\r\\n","").trim());
+	                		voter.setVoterId(m1.group(3).replaceAll("\\r\\n","").trim());
+	                		voter.setGuardianRelation(m1.group(4).replaceAll("\\r\\n","").trim().replaceAll("'s Name:",""));
+	                		voter.setAge(m1.group(7).replaceAll("\\r\\n","").trim());
+	                		voter.setHouseNumber("0-00");
+	                		voter.setVoterName(m1.group(5).replaceAll("\\r\\n","").trim());
+	                		voter.setGuardianName(m1.group(6).replaceAll("\\r\\n","").trim());
+	                    	
+	                		voter.setConstituency(fileName[1]);
+	                        voter.setBoothNo(fileName[2]);
+	                        voter.setBoothName(fileName[3]);
+	                        voter.setConstituencyId(fileName[0]);
+	                        totalVotersCount++;
+	                        voterInfoList.add(voter);
+	                        voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\t Serial No -- "+voter.getsNo()+"\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
+	                        System.out.println(voterInfo);
+	                        sb2.append(voterInfo+"\n");
+	                        writer.write(voterInfo+"\n");
+                		}
+                		}catch(Exception e){
+                			e.printStackTrace();
+                	}
+                    }
+                    
+                    voterInfoList = checkForVoterList(voterInfoList);
+                    serialNosList.addAll(getSerialNoList(voterInfoList));
+                    saveVotersData(voterInfoList);
+                    voterInfoList = new ArrayList<VoterInfo>(0);
+                    
+                    while (m2.find()) 
+                    {
+                	try{
+                		long serialNo = new Long(m2.group(1).replaceAll("\\r\\n","").trim());
+                		if(!serialNosList.contains(serialNo))
+                		{
+                			voter = new VoterInfo();
+                    		i++;
+	                		voter.setsNo(serialNo);
+	                		
+	                		voter.setVoterId(m2.group(2).replaceAll("\\r\\n","").trim());
+	                		voter.setGuardianRelation(m2.group(3).replaceAll("\\r\\n","").trim().replaceAll("'s Name:",""));
+	                		voter.setAge(m2.group(7).replaceAll("\\r\\n","").trim());
+	                		voter.setHouseNumber(m2.group(6).replaceAll("\\r\\n","").trim());
+	                		voter.setVoterName(m2.group(4).replaceAll("\\r\\n","").trim());
+	                		voter.setGuardianName(m2.group(5).replaceAll("\\r\\n","").trim());
+	                    	
+	                    	if(voter.getGuardianRelation().equalsIgnoreCase("Husband"))
+	                    		voter.setSex("Female");
+	                    	else
+	                    		voter.setSex("Male");
+	                    	
+	                		voter.setConstituency(fileName[1]);
+	                        voter.setBoothNo(fileName[2]);
+	                        voter.setBoothName(fileName[3]);
+	                        voter.setConstituencyId(fileName[0]);
+	                        totalVotersCount++;
+	                        voterInfoList.add(voter);
+	                        voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\t Serial No -- "+voter.getsNo()+"\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
+	                        System.out.println(voterInfo);
+	                        sb2.append(voterInfo+"\n");
+	                        writer.write(voterInfo+"\n");
+                		}
+                		}catch(Exception e){
+                			e.printStackTrace();
+                	}
+                    }
+                    
+                    voterInfoList = checkForVoterList(voterInfoList);
+                    serialNosList.addAll(getSerialNoList(voterInfoList));
+                    saveVotersData(voterInfoList);
+                    voterInfoList = new ArrayList<VoterInfo>(0);
+                    
+                    while (m3.find()) 
+                    {
+                	try{
+                		long serialNo = new Long(m3.group(1).replaceAll("\\r\\n","").trim());
+                		if(!serialNosList.contains(serialNo))
+                		{
+                			voter = new VoterInfo();
+                    		i++;
+	                		voter.setsNo(serialNo);
+	                		voter.setSex(m3.group(2).replaceAll("\\r\\n","").trim());
+	                		voter.setVoterId(m3.group(3).replaceAll("\\r\\n","").trim());
+	                		voter.setGuardianRelation(m3.group(4).replaceAll("\\r\\n","").trim().replaceAll("'s Name:",""));
+	                		voter.setAge(m3.group(7).replaceAll("\\r\\n","").trim());
+	                		voter.setHouseNumber(m3.group(6).replaceAll("\\r\\n","").trim());
+	                		voter.setVoterName(m3.group(5).replaceAll("\\r\\n","").trim());
+	                		voter.setGuardianName("N/A");
+	                    	
+	                		voter.setConstituency(fileName[1]);
+	                        voter.setBoothNo(fileName[2]);
+	                        voter.setBoothName(fileName[3]);
+	                        voter.setConstituencyId(fileName[0]);
+	                        totalVotersCount++;
+	                        voterInfoList.add(voter);
+	                        voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\t Serial No -- "+voter.getsNo()+"\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
+	                        System.out.println(voterInfo);
+	                        sb2.append(voterInfo+"\n");
+	                        writer.write(voterInfo+"\n");
+                		}
+                		}catch(Exception e){
+                			e.printStackTrace();
+                	}
+                    }
+                    saveVotersData(voterInfoList);
                     if (pd != null) {
                         pd.close();
                     }
-                    saveVotersData(voterInfoList);  
+                      
             }
             outwriter.write(sb2.toString());
             System.out.println("Total No of Voters:" + totalVotersCount);
+            System.out.println(new Date());
             writer.close();
             outwriter.close();
         } catch (Exception e) {
@@ -234,6 +344,149 @@ public class ReadVoterDataFromPdfForAP2013 {
     	}catch (Exception e) {
     		e.printStackTrace();
     		return builder;
+    	}
+    }
+    
+    public static List<VoterInfo> checkForVoterList(List<VoterInfo> votersInfoList)
+    {
+    	try{
+    		List<VoterInfo> votersList = new ArrayList<VoterInfo>(0);
+    		
+    		if(votersInfoList != null && votersInfoList.size() > 0)
+    		{
+    			List<String> genderList = new ArrayList<String>();
+    			genderList.add("Male");
+    			genderList.add("Female");
+    			
+    			List<String> relationsList = new ArrayList<String>();
+    			relationsList.add("Mother");
+    			relationsList.add("Father");
+    			relationsList.add("Husband");
+    			relationsList.add("Other");
+    			
+    			StringBuilder str = new StringBuilder();
+    			
+    			for(VoterInfo info : votersInfoList)
+    			{
+    				try{
+    				boolean flag = true;
+    				int age = Integer.valueOf(info.getAge().trim());
+    				
+    				String voterId = info.getVoterId().trim().replaceAll("'", "");
+    				String name = info.getVoterName().trim().replaceAll("'", "");
+    				String sex = info.getSex().trim().replaceAll("'", "");
+    				String houseNo = info.getHouseNumber().trim().replaceAll("'", "");
+    				String relativeName = info.getGuardianName().trim().replaceAll("'", "");
+    				String relation = info.getGuardianRelation().trim().replaceAll("'", "");
+    				
+    				if(voterId == null || voterId.length() == 0 || voterId.equalsIgnoreCase("null"))
+    				{
+    					flag = false;
+    					str.append(printVoter(info));
+    				}
+    				
+    				if(name == null || name.length() == 0 || name.equalsIgnoreCase("null"))
+    				{
+    					flag = false;
+    					str.append(printVoter(info));
+    				}
+    				
+    				if(sex == null || sex.length() == 0 || sex.equalsIgnoreCase("null") || !genderList.contains(info.getSex().trim()))
+    				{
+    					flag = false;
+    					str.append(printVoter(info));
+    				}
+    				
+    				if(info.getAge() == null || info.getAge().trim().length() == 0 || info.getAge().trim().equalsIgnoreCase("null")
+    						|| age < 18 || age > 200)
+    				{
+    					flag = false;
+    					str.append(printVoter(info));
+    				}
+    				
+    				if(houseNo == null || houseNo.length() == 0 || houseNo.equalsIgnoreCase("null") || houseNo.length() > 100)
+    				{
+    					flag = false;
+    					str.append(printVoter(info));
+    				}
+    				
+    				if(relativeName == null || relativeName.length() == 0 || relativeName.equalsIgnoreCase("null"))
+    				{
+    					flag = false;
+    					str.append(printVoter(info));
+    				}
+    				
+    				if(relation == null || relation.length() == 0 || relation.equalsIgnoreCase("null") || !relationsList.contains(relation))
+    				{
+    					flag = false;
+    					str.append(printVoter(info));
+    				}
+    				//System.out.println(str);
+    				if(flag)
+    					votersList.add(info);
+    				}catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    		
+    		return votersList;
+    	}catch(Exception e)
+    	{
+    		System.out.println("Exception Occured in checkForVoterList Method, So Same Voter List is returned");
+    		System.out.println(e);
+    		return votersInfoList;
+    	}
+    }
+    
+    public static String printVoter(VoterInfo info)
+    {
+    	try{
+    		//String str = "Booth - "+info.getBoothNo()+"\tSerial No - "+info.getsNo()+"\tName - "+info.getVoterName()+"\tHouse No - "+info.getHouseNumber()+"\tGender - "+info.getSex()+"\tAge - "+info.getAge()+"\tVoter Id - "+info.getVoterId()+"\tRelative Name - "+info.getGuardianName()+"\tRelation - "+info.getGuardianRelation()
+    			//	+"\tBooth Name - "+info.getBoothName()+"\tConstituency Id - "+info.getConstituencyId()+"\tConstituency - "+info.getConstituency();
+    		//System.out.println(str+"\n");
+    		return "";
+    	}catch(Exception e){
+    		e.printStackTrace();
+    		return "";
+    	}
+    }
+    
+    public static List<Long> getSerialNoList(List<VoterInfo> list)
+    {
+    	List<Long> serialNoList = new ArrayList<Long>(0);
+    	try{
+    		for(VoterInfo info : list)
+    			serialNoList.add(info.getsNo());
+    		return serialNoList;
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		return serialNoList;
+    	}
+    }
+    
+    public static List<VoterInfo> checkForSpecialCharacters(List<VoterInfo> list)
+    {
+    	try{
+    		for(VoterInfo info : list)
+    		{
+    			try{
+    			info.setVoterId(info.getVoterId().replaceAll("'", ""));
+    			info.setVoterName(info.getVoterName().replaceAll("'", ""));
+    			info.setHouseNumber(info.getHouseNumber().replaceAll("'", ""));
+    			info.setGuardianName(info.getGuardianName().replaceAll("'", ""));
+    			info.setBoothName(info.getBoothName().replaceAll("'", ""));
+    			}catch(Exception e)
+    			{
+    				e.printStackTrace();
+    			}
+    		}
+    		return list;
+    	}catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		return list;
     	}
     }
     
