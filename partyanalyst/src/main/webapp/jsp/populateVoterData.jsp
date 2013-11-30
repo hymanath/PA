@@ -329,7 +329,7 @@ $(document).ready(function(){
 		{
 				
 			id:constituencyId,
-			task:"getPublicationList"
+			task:"getPublicationListforVoterData"
 		}
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -915,7 +915,7 @@ function callAjax(jsObj,url)
 									showVoterModificationDataStatus(myResults);
 								}
 
-								else if(jsObj.task == "getPublicationList")
+								else if(jsObj.task == "getPublicationList" || jsObj.task == "getPublicationListforVoterData")
 								{
 									if(jsObj.subtask != null && 
 										jsObj.subtask == 'voterBasicInfo')

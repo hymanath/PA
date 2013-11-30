@@ -387,6 +387,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 				return null;
 			
 			publicationNamesList = votersAnalysisService.getPublicationListForVoterData(jObj.getLong("id"));
+			if(jObj.getString("task").equalsIgnoreCase("getPublicationListforVoterData"))
+			publicationNamesList = votersAnalysisService.getPublicationListForVoterDataByConstituency(jObj.getLong("id"));
 			publicationNamesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 			
 			return Action.SUCCESS;
