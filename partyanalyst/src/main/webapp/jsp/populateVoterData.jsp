@@ -317,7 +317,7 @@ $(document).ready(function(){
 
 	$('#errorMsgDiv').html('');
 	$('#voterDataConstituencyList').change(function(){
-
+var selectElmt = "publicationDateList";
 	   var constituencyId = $('#voterDataConstituencyList').val();
 	   if(constituencyId == 0)
 	   {
@@ -327,13 +327,13 @@ $(document).ready(function(){
 	   $('#ajaxLoad').css('display','block');
 	  var jsObj=
 		{
-				
-			id:constituencyId,
+			selectElmt:selectElmt,	
+			selected:constituencyId,
 			task:"getPublicationListforVoterData"
 		}
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getPublicationListForVoterDataAction.action?"+rparam;						
+		var url = "voterAnalysisAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
 		
 
