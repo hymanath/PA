@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies;
 
 public interface IVoterDataAvailableConstituenciesDAO extends GenericDao<VoterDataAvailableConstituencies,Long>{
 	public List<Object[]> getConstituencies();
+	
+	public List<Object[]> getPublicationDatesBasedOnConstituency(Long constituencyId);
 }
