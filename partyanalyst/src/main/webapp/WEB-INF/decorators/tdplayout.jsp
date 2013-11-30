@@ -17,7 +17,7 @@
 
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-	<title><decorator:title default="TDP"/></title>
+	<title><decorator:title default="Party Analyst"/></title>
 	<!--<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.0.1/bootstrap.min.js"></script>-->
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -189,7 +189,7 @@ margin-top:10px;
 			<a href="#" class="parent"><span>ANALYSIS</span></a>
             <div  style="z-index:1;text-align:left;">
 			<ul>
-                <li><a onmousedown="return false;" class="parent">
+                <li><a href="#" class="parent">
 					<span>Election Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
@@ -205,9 +205,10 @@ margin-top:10px;
 						</div>
                 </li>
                 <li>
-					<a onmousedown="return false;" class="parent"><span>Politician Analysis</span></a>
+					<a href="#" class="parent"><span>Politician Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
+								<li><a href="suggestiveModelAction.action"><span>Suggestive Model</span></a></li>
 								<li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
 								<li><a href="crossVotingReportInputAction.action"><span>Cross Voting Report</span></a></li>
 								<li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
@@ -224,7 +225,7 @@ margin-top:10px;
 		<li id="mangntId"><a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
             <div  style="z-index:1;text-align:left;">
 				<ul>
-					<li><a onmousedown="return false;" class="parent"><span>Problem Management</span></a>
+					<li><a href="#" class="parent"><span>Problem Management</span></a>
 						<div>
 							<ul>
 								<li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
@@ -245,7 +246,7 @@ margin-top:10px;
 		</li>
 		
 		
-		<li><a id="stateBtn"  href="statePageAction.action?stateId=1"><span>STATE</span></a>
+		<li><a href="statePageAction.action?stateId=1"><span>STATE</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			  <ul>		
 				<li><a href="statePageAction.action?stateId=1"><span>Andhra Pradesh</span></a></li>

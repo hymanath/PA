@@ -219,6 +219,7 @@ a.tdp-text-error:hover {
 					<a onmousedown="return false;" class="parent"><span>Politician Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
+								<li><a href="suggestiveModelAction.action"><span>Suggestive Model</span></a></li>
 								<li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
 								<li><a href="crossVotingReportInputAction.action"><span>Cross Voting Report</span></a></li>
 								<li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
