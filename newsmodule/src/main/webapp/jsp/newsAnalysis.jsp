@@ -1,659 +1,263 @@
-function callAjax(jsObj,url)
-	{
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>  
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-		var callback =
-		{			
-			success : function( o )
-			{
-				try
-				{ 
-					myResults = YAHOO.lang.JSON.parse(o.responseText); 
-					if (jsObj.task == "getPartyList")
-					{
-						buildSelectOptionVoforMuntiple(myResults,"whomPartysList","partyList","Party");	
-					}
-					else if (jsObj.task == "getCandidatesOfAParty")
-					{
-						fillSelectOptionsVO(myResults,jsObj.divId,"Party");	
-					}
-					else if (jsObj.task == "getBenefitList")
-					{
-						buildSelectOptionVoforMuntiple(myResults,"whomBenfitsList","benifitsList"," Benifits");	
-					}
-					else if (jsObj.task == "getKeywordsList")
-					{
-						buildKeywords(myResults);	
-					}
-					else if (jsObj.task == "partyGallariesForUplaod")
-					{
-						buildCategoriesList(myResults);	
-					}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>News Analysis</title>
+	<meta name="" content="">
+	<!-- Bootstrap -->
+	
+	<!-------PT-sans font---->
+	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+	
+	<style>
+	.content_widget {background-color: #FFFFFF; border: 1px solid #E5E5E5; height: 100%; padding: 10px;}
+	.m_topN21{margin-top:-21px;}
+	.m_left0{margin-left: 0px !important;}
+	
+	.ui-multiselect {
+    padding: 2px 0 2px 4px;
+    text-align: left;
+    width: 250px !important;
+	height:33px !important;
+	}
+	
+	.ui-multiselect-menu {
+    display: none;
+    padding: 3px;
+    position: absolute;
+    text-align: left;
+    z-index: 10000;
+	}
+	
+	.badge-50 , .label-50{
+		background-color: rgba(158, 158, 158, 0.5);
+	}
+	
+	.label-success-50, .badge-success-50 {
+    background-color: rgba(255, 0, 0, 0.1) !important;
+    color: #333333 !important;}
+	.tabel-bordered{border-color:3px solid #ffcc00;}
+	.analysisResult thead tr th{background:#ffcc00;}
+	.tabel tr, .tabel td {border-top: 1px solid #FFCC00;}
+	</style>
+	
+</head>
+<body>
+
+		<!----Container---->
+		<div class="container">
+			<!--------- Row-1 -------->
+			<div class="row-fluid">
+				<div class="span12 content_widget">
+				<legend class="boxHeading text-center">News Analysis</legend>
+				
+					<div class="row-fluid">
+						<div class="span6">
+							<label class="help-inline"><strong>From Date :</strong></label>
+							<input type="text"  id="fromDateId" readonly="readonly">						
+						</div>
+						<div class="span6">
+							<label class="help-inline"><strong>To Date :</strong></label>
+							<input type="text" id="todateId" readonly="readonly">						
+						</div>
+					</div>
 					
-					else if (jsObj.task == "getSource")
-					{
-						fillSelectOptionsVO(myResults,jsObj.divId,"Source");	
-					}else if(jsObj.task == "getAnalysedData"){
-					  if(myResults.buildMethod == "first"){
-					    buildSearchDataTableForLvlOne(myResults);
-					  }else if(myResults.buildMethod == "second"){
-						buildSearchDataTableForLvlTwo(myResults);
-					  }else if(myResults.buildMethod == "third"){
-						buildSearchDataTableForLvlThree(myResults);
-					  }
-					}
+					<!------Who Div---->
+					<div class="row-fluid label label-success-50">
+						<div class="span1 btn-block btn btn-large">
+							<h4 class=" text-center ">Who</h4>					
+						</div>
+						<div class="span3">
+							<label>Select Party</label>
+							<select class="input-block-level" id="partyList"onchange="getCandidatesOfSelectedParty(this.value,'candidateId');">	
+								<option value=0>Select Party</option>
+							</select>							
+						</div>
+						<div class="span3">
+							<label>Select Candidate</label>
+							<select class="input-block-level" id="candidateId">	
+								<option value=0>Select Candidate</option>
+							</select>						
+						</div>
+						<div class="span3">
+							<label>Benifits</label>
+							<select class="input-block-level" id="benifitsList">	
+								<option value=0>Select Benifits</option>
+							</select>					
+						</div>
+						<div class="span2">
+							<label>Analyse By Candidate</label>
+							 <input type="checkbox" id="analyseCandidateSource" />				
+						</div>
+					</div><!------Who Div END---->
+					
+					<!------Whom Div---->
+					<div class="row-fluid label label-success-50  m_top10">
+						<div class="span1 btn-block btn btn-large">
+							<h4 class=" text-center ">Whom</h4>					
+						</div>
+						<div class="span3">
+							<label>Select Party</label>
+							<select class="input-block-level" id="whomPartysList" onchange="getCandidatesOfSelectedParty(this.value,'whomCandidatesList');">	
+								<option value=0>Select Party</option>
+							</select>						
+						</div>
+						<div class="span3">
+							<label>Select Candidate</label>
+							<select class="input-block-level" id="whomCandidatesList">	
+								<option value=0>Select Candidate</option>
+							</select>						
+						</div>
+						<div class="span3">
+							<label>Benifits</label>
+							<select class="input-block-level" id="whomBenfitsList">	
+								<option value=0>Select Benifits</option>
+							</select>						
+						</div>
+						<div class="span2">
+							<label>Analyse By Candidate</label>
+							 <input type="checkbox" id="analyseCandidateDesti" />				
+						</div>
+					</div><!------Whom Div END---->
+					
+					<label class="checkbox inline">
+						<input type="checkbox" value="option1" id="keywordscheckId" onClick="unCheckCandidateCheckBox();"> <strong>Search By Keywords</strong>
+					</label>	
+					<label class="checkbox inline">
+						<input type="checkbox" value="option1" id="candidateCheckId" onClick="unCheckKeywordsCheckBox();" style=""><strong>Search By Categoery</strong>
+					</label>	
+					
+					
+					<div class="row-fluid">
+						<div class="span4" id="keywordsDiv" style="display:none;">
+							<label><span id="keywordCategTitle">Select Key Word</span></label>
+							<select Class="input-block-level" id="keywordsList"  readonly="readonly"></select>
+												
+						</div>
+					</div>
+					
+					<div class="row-fluid m_top10 " >
+						
+						
+						
+						<div class="span4">
+							<label>Select Source</label>
+							<select  id="newsSourceId"></select>
+												
+						</div>
+					
+					
+					
+						
+						<div class="span4">
+							<label>Select News Level</label>
+							<select id="locationLevelId" onChange="getRespectedLocationValues(this.value);">
+							<option value="0">Select Location</option>
+							<option value="1">District</option>
+							<option value="2">PARLIAMENT CONSTITUENCY</option>
+							<option value="3">ASSEMBLY CONSTITUENCY</option>
+							</select>
+												
+						</div>
+						
+						<div class="span4">
+							
+							<div  class="LocationLevelId">
+							<label>Select Location</label>
+							<select>
+							<option>Select Location</option>
+							</select>
+							</div>
+							
+							<div style="display:none;" class="districtSelReport"><label>Select District</label>
+							<s:select name="districtSelReport" id="districtSelReportId" list="districtsList" theme="simple" listKey="id" listValue="name" headervalue="Select District"/></div>
+							<div style="display:none;" class="parliamSelReport"><label>Select Constituency</label>
+							<s:select name="parliamSelReport" id="parliamSelReportId" list="parlConstiList" theme="simple" listKey="id" listValue="name"/>
+							</div>
+							<div style="display:none;" class="assembSelReport"><label>Select Constituency</label>
+							<s:select name="assembSelReport" id="assembSelReportId" list="assemConstiList" theme="simple" listKey="id" listValue="name"/>
+							</div>
+												
+						</div>
+						
+						<!--<div class="span4">
+							<label>Select News Location</label>
+							<select></select>
+												
+						</div>-->
 				
-				}
-				catch(e)
-				{   
-				 
-				}  
-			},
-			scope : this,
-			failure : function( o )
-			{
-				
-			}
-		};
-
-		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
-	
-	function buildSearchDataTableForLvlOne(result){
-	 var str ="";
-     if(result.subList != null && result.subList.length > 0){
-	   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
-	   str+="  <thead><tr>";
-	   for(var title in result.levels){
-	    str+="    <th>"+result.levels[title]+"</th>";
-	   }
-	   str+="    <th>Count</th>";
-	   str+="  </tr></thead>";
-	   str+="  <tbody>";
-	   
-	     for(var i in result.subList){//List<Location>
-			  if(result.subListPresent){
-			   str+="<tr><td rowspan='"+result.subList[i].rowSpan+"'>"+result.subList[i].name+"</td>";
-			  }
-		       for(var j in result.subList[i].subList){//List<Candidate>
-			        if(result.subList[i].subListPresent){
-						if(j == 0){
-						  if(result.subListPresent){
-						    str+="<td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
-						  }else{
-						    str+="<tr><td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
-						  }
-						}else{
-						   str+="<tr><td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
-						}
-				    }
-				    for(var k in result.subList[i].subList[j].subList){//List<Source>
-				       if(result.subList[i].subList[j].subListPresent){
-						  if(k == 0){
-							  if(result.subList[i].subListPresent || result.subListPresent){
-								str+="<td rowspan='"+result.subList[i].subList[j].subList[k].rowSpan+"'>"+result.subList[i].subList[j].subList[k].name+"</td>";
-							  }else{
-								str+="<tr><td rowspan='"+result.subList[i].subList[j].subList[k].rowSpan+"'>"+result.subList[i].subList[j].subList[k].name+"</td>";
-							  }
-						  }else{
-						      str+="<tr><td rowspan='"+result.subList[i].subList[j].subList[k].rowSpan+"'>"+result.subList[i].subList[j].subList[k].name+"</td>";
-						  }
-                       }else if(!(result.subList[i].subListPresent || result.subListPresent)){
-                          str+="<tr>";
-                       }					  
-					   for(var l in result.subList[i].subList[j].subList[k].subList){//List<CatKey>
-					        var obj = result.subList[i].subList[j].subList[k].subList[l];
-						  if(l == 0){
-						    str+="<td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
-						  }else{
-						    str+="<tr><td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
-						  }
-					   }
-					  
-				    }
-				  
-			   }
-		 
-	   }
-	   str+="  </tbody>";
-	   str+="</table>";
-	   $("#responseTable").html(str);
-	 }else{
-	   $("#responseTable").html("<span style='margin-left:340px'>No News Exists With Your Search Criteria</span>");
-	 } 
-    }
-    function buildSearchDataTableForLvlTwo(result){
-         var str ="";
-     if(result.subList != null && result.subList.length > 0){
-	   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
-	   str+="  <thead><tr>";
-	   for(var title in result.levels){
-	    str+="    <th>"+result.levels[title]+"</th>";
-	   }
-	   str+="    <th>Count</th>";
-	   str+="  </tr></thead>";
-	   str+="  <tbody>";
-	   
-	   for(var i in result.subList){//List<Location>
-		  if(result.subListPresent){
-		   str+="<tr><td rowspan='"+result.subList[i].rowSpan+"'>"+result.subList[i].name+"</td>";
-		  }
-		 else{
-		  str+="<tr>";
-		 }
-		 for(var j in result.subList[i].subList){//List<Source>
-		 var obj = result.subList[i].subList[j];
-		  if(result.subList[i].subListPresent){
-			  if(j == 0){
-				str+="<td>"+result.subList[i].subList[j].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
-			  }else{
-				str+="<tr><td>"+result.subList[i].subList[j].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
-			  }
-		  }else{
-		      if(j == 0){
-				str+="<td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
-			  }else{
-				str+="<tr><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
-			  }
-		  }
-	    }
-	   }
-	   str+="  </tbody>";
-	   str+="</table>";
-	   $("#responseTable").html(str);
-	 }else{
-	   $("#responseTable").html("No News Exists With Your Search Criteria");
-	 }
-    }	
-	function buildSearchDataTableForLvlThree(result){
-     var str ="";
-     if(result.subList != null && result.subList.length > 0){
-	   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
-	   str+="  <thead><tr>";
-	   for(var title in result.levels){
-	    str+="    <th>"+result.levels[title]+"</th>";
-	   }
-	   str+="    <th>Count</th>";
-	   str+="  </tr></thead>";
-	   str+="  <tbody>";
-	   
-	     for(var i in result.subList){//List<Location>
-			  if(result.subListPresent){
-			   str+="<tr><td rowspan='"+result.subList[i].rowSpan+"'>"+result.subList[i].name+"</td>";
-			  }
-			for(var j in result.subList[i].subList){//List<Candidate>
-			   if(result.subList[i].subListPresent){
-				  if(j == 0){
-					  if(result.subListPresent){
-						str+="<td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
-					  }else{
-						str+="<tr><td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
-					  }
-				  }else{
-					  str+="<tr><td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
-				  }
-			   }else if(!(result.subListPresent)){
-				  str+="<tr>";
-			   }
-			   for(var k in result.subList[i].subList[j].subList){//List<Source>
-			       var obj = result.subList[i].subList[j].subList[k];
-				  if(result.subList[i].subList[j].subListPresent){
-					  if(k == 0){
-						str+="<td>"+result.subList[i].subList[j].subList[k].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News' onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].subList[k].total+"</a></td></tr>";
-					  }else{
-						str+="<tr><td>"+result.subList[i].subList[j].subList[k].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].subList[k].total+"</a></td></tr>";
-					  }
-				  }else{
-					  if(k == 0){
-						str+="<td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].subList[k].total+"</a></td></tr>";
-					  }else{
-						str+="<tr><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\");'>"+result.subList[i].subList[j].subList[k].total+"</a></td></tr>";
-					  }
-				  }
-			  }					   				  
-			}
-	   }
-	   str+="  </tbody>";
-	   str+="</table>";
-	   $("#responseTable").html(str);
-	 }else{
-	   $("#responseTable").html("No News Exists With Your Search Criteria");
-	 }
-    }	
-	function getPartiesList()
-	{
-		var jsObj=
-			{
-				partySelectBoxId:"partiesList",
-				partiesListForWhome:"partiesListForWhome",
-				task:'getPartyList'
-			};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-		var url = "getPartiesListAction.action?"+rparam;
-		callAjax(jsObj, url);
-	}
-	
-	function buildSelectOptionVoforMuntiple(results,divId1,divId2,name)
-	{
-		$('#'+divId1+'').find('option').remove();
-		$('#'+divId1+'').append('<option value="0">Select '+name+'</option>');
-		$('#'+divId2+'').find('option').remove();
-		$('#'+divId2+'').append('<option value="0">Select '+name+'</option>');
-		if(results != null)
-		{
-			for(var i in results)
-			{
-				$('#'+divId1+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
-				$('#'+divId2+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
-			}
-			
-		}
-	}
-	
-	function getCandidatesOfSelectedParty(partyId,divId)
-	{
-		$('#list1').find('option').remove();
-		$('#candidateAjaxImg').show();
+					</div>
+					<!-------Submit Button------>
+					<div class="form-actions text-center">
+						<button class="btn btn-success" type="submit" onClick="getAnalysisData();">Submit</button>
+					</div><!-------Submit Button END------>
+					<div id="responseTable" style="overflow-x:scroll;"></div>
+				</div>	
+			</div>
+			<!--------- Row-1 End -------->
+			</div><!----Container END---->
+		    
+			<!-----Footer---->
+			<!--<div class="container- fluid">
+				<footer>
+					<p class="text-center">&copy; Telugudesham Party 2013</p>
+				</footer>
+			</div>-->
 		
-			var jsObj = {
-				partyId :partyId,
-				divId   : divId,
-				task : "getCandidatesOfAParty"	
-			};
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getCandidatesOfAParty.action?"+rparam;
-		callAjax(jsObj,url);
-	}
+		<!------JS------>
+	<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.carousel.js"></script>
+	 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
 	
-	function  getBenefitList()
-	{
-	  var jsObj = {
-				 task : "getBenefitList"	
-			};
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getBenefitListAction.action?"+rparam;						
-		callAjax(jsObj,url);
-	}
-	
-	function  getKeyWorsList()
-	{
-	  var jsObj = {
-				 task : "getKeywordsList"	
-			};
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getKeywordsListAction.action?"+rparam;						
-		callAjax(jsObj,url);
-	}
-	
-	function fillSelectOptionsVO(results,divId,type)
-	{
-		$('#'+divId+'').find('option').remove();
-		if(!(type == "Source"))
-		{
-			$('#'+divId+'').append('<option value="0">Select '+type+'</option>');
-		}			
-		if(results != null)
-		{
-			for(var i in results)
-			{
-				$('#'+divId+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
-			}
-			
-		}
-		if(type == "Source")
-		{
-			$("#newsSourceId").multiselect({	
-					multiple: true,
-					selectedList: 1,
-					hide: "explode"	
-			}).multiselectfilter({
-				//header:"Select Source"    
-			});
-		}
-		
-	}
-	
-	function unCheckCandidateCheckBox()
-	{
-		$('#candidateCheckId').attr('checked', false); 
-		if($('#keywordscheckId').is(':checked')){
-			$('#keywordCategTitle').html("Select Keyword");
-			getKeyWorsList();
-			$('#keywordsDiv').show();
-		}else{
-		  $('#keywordsDiv').hide();
-		}
-	}
-	
-	function unCheckKeywordsCheckBox()
-	{
-		$('#keywordscheckId').attr('checked', false); 
-		if($('#candidateCheckId').is(':checked')){
-			$('#keywordCategTitle').html("Select Category");
-			getPartyGallariesForUplaod();
-			$('#keywordsDiv').show();
-		}else{
-		   $('#keywordsDiv').hide();
-		}
-	}
-	
-	function getKeyWorsList()
-	{
-		$.ajax({
-		type: "GET",
-		url: "getKeywordsListAction.action",
-		data: { task:"getKeywordsList" }
-		})
-		.done(function( result ) {
-		$('#keywordsList').find('option').remove();
-		//$('#keywordsList').append('<option value="0">Select Keyword</option>');
-		$.each(result,function(index,value){
-			$('#keywordsList').append('<option value="'+value.id+'">'+value.name+'</option>');
-		});
-		
-			$("#keywordsList").multiselect({	
-					multiple: true,
-					selectedList: 10,
-					hide: "explode"	
-			}).multiselectfilter({
-				header:"Select Keyword"    
-			});
-		});
-	}
-	function getPartyGallariesForUplaod()
-	{
-		var partyId=872;
-		var jsObj =
-			{ 
-				partyId : partyId,
-				contentType : "News Gallary",
-				type:"whomegallaryId",
-				task : "partyGallariesForUplaod"
-			};
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getPartyGallariesForUplaodPhotoAction.action?"+rparam;
-		callAjax(jsObj,url);
-	}
-	
-	function buildCategoriesList(result)
-	{
-		$('#keywordsList').find('option').remove();
-		//$('#keywordsList').append('<option value="0">Select Categoery</option>');
-		$.each(result,function(index,value){
-			$('#keywordsList').append('<option value="'+value.id+'">'+value.name+'</option>');
-		});
-		
-			$("#keywordsList").multiselect({	
-					multiple: true,
-					selectedList: 1,
-					hide: "explode"	
-			}).multiselectfilter({
-				header:"Select Keyword"    
-			});
-	}
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>			
 
-function getSource()
-{
-	var timeST = new Date().getTime();	
-	
-		var jsObj = {
-			time : timeST,
-			selectOptionId :"filesourceId0",
-			divId : "newsSourceId",
-			task : "getSource"	
-		};
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getEventsGallariesForUplaodAction.action?"+rparam;						
-	callAjax(jsObj,url);
-	
-}
+	<!-- YUI Dependency files (Start) -->
+	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+	<script src="js/yahoo/resize-min.js"></script> 
+	<script src="js/yahoo/layout-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+	<script type="text/javascript" src="js/json/json-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<!-- Skin CSS files resize.css must load before layout.css --> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
-function getRespectedLocationValues(loc)
-{
-	 if(loc == 1){
-		showHideLocations(true,false,false);
-	 }else if(loc == 2){
-		showHideLocations(false,true,false);
-	 }else if(loc == 3){
-		showHideLocations(false,false,true);
-	 }else {
-		$(".LocationLevelId").show();
-		$(".districtSelReport").hide();
-		$(".parliamSelReport").hide();
-		$(".assembSelReport").hide();
-	 }
-}
-function showHideLocations(dist,pc,ac)
-{
-	 if(dist){
-	  $(".districtSelReport").show();
-	  $(".LocationLevelId").hide();
-	  //buildMultiSelectBox("districtSelReport");
-	 }else{
-	  $(".districtSelReport").hide();
-	 }
-	 if(pc){
-	  $(".parliamSelReport").show();
-	  $(".LocationLevelId").hide();
-	  //buildMultiSelectBox("parliamSelReport");
-	 }else{
-	  $(".parliamSelReport").hide();
-	 }
-	 if(ac){
-	  $(".assembSelReport").show();
-	  $(".LocationLevelId").hide();
-	  //buildMultiSelectBox("assembSelReport");
-	 }else{
-	  $(".assembSelReport").hide();
-	 }
-}
-
-function buildMultiSelectBox(divId)
-{	
-	$('.'+divId+'').multiselect({	
-					multiple: true,
-					selectedList: 10,
-					hide: "explode"	
-			}).multiselectfilter({
-				//header:"Select Keyword"    
-			});
+	<!-- YUI Dependency files (End) -->
 	
-}
-
-$(document).ready(function(){
-
-	$('#todateId').datepicker({
-		dateFormat: "dd/mm/yy",
-		changeMonth: true,
-		changeYear: true,
-		maxDate: new Date()
-	});
-	$('#fromDateId').datepicker({
-		dateFormat: "dd/mm/yy",
-		changeMonth: true,
-		changeYear: true,
-		maxDate: new Date()
-	});
-	
-
-		$('#reportsTabId').addClass('menuActive');
-		
-	getPartiesList();
-	getBenefitList();
-	getSource();
-		
-	$('#districtSelReportId').multiselect({	
-			multiple: true,
-			selectedList: 1,
-			hide: "explode"	
-	}).multiselectfilter({
-		//header:"Select District"    
-	});
-			
-	$('#parliamSelReportId').multiselect({	
-			multiple: true,
-			selectedList: 1,
-			hide: "explode"	
-	}).multiselectfilter({
-		//header:"Select Keyword"    
-	});
-	
-	$('#assembSelReportId').multiselect({	
-			multiple: true,
-			selectedList: 1,
-			hide: "explode"	
-	}).multiselectfilter({
-		//header:"Select Keyword"    
-	});
-
-});
-
-function getAnalysisData()
-{
-	var fromdate = $("#fromDateId").val();
-	var todate   = $("#todateId").val();
-	var whoPartyId   = $("#partyList option:selected").val();
-	var whomPartyId   = $("#whomPartysList option:selected").val();
-	var whoCandidateId   = $("#candidateId option:selected").val();
-	var whomCandidateId   = $("#whomCandidatesList option:selected").val();
-	var whoBenfitId   = $("#benifitsList option:selected").val();
-	var whomBenfitId   = $("#whomBenfitsList option:selected").val();
-	var locationLevelId = $("#locationLevelId option:selected").val();
-	var locationLevelValue = "";
-	var selectedLocationvalues = "";
-	if(locationLevelId == 0)
-	{
-		locationLevelValue = 0;
-	}
-	else if(locationLevelId == 1)
-	{
-		selectedLocationvalues = $("#districtSelReportId").multiselect("getChecked").map(function(){
-			return this.value;    
-		}).get();
-	}
-	else if(locationLevelId == 2)
-	{
-		selectedLocationvalues = $("#parliamSelReportId").multiselect("getChecked").map(function(){
-			return this.value;    
-		}).get();
-	}
-	else if(locationLevelId == 3)
-	{
-		selectedLocationvalues = $("#assembSelReportId").multiselect("getChecked").map(function(){
-			return this.value;    
-		}).get();
-	}
-	for(var i in selectedLocationvalues)
-	{
-		locationLevelValue = locationLevelValue+""+selectedLocationvalues[i]+",";
-	}
-	
-	var selected_values = $("#newsSourceId").multiselect("getChecked").map(function(){
-	return this.value;    
-	}).get();
-	var newsSourceId = "";
-	for(var i in selected_values){
-	newsSourceId = newsSourceId+""+selected_values[i]+",";
-	}
-	
-	var KeyWordsList = "";
-	
-	if($('#keywordscheckId').is(':checked') || $('#candidateCheckId').is(':checked'))
-	{
-		var selected_values = $("#keywordsList").multiselect("getChecked").map(function(){
-		return this.value;    
-		}).get();
-		for(var i in selected_values){
-		KeyWordsList = KeyWordsList+""+selected_values[i]+",";
-		}
-	}
-	if(KeyWordsList.length > 0){
-	  KeyWordsList = KeyWordsList.substring(0, KeyWordsList.length - 1);
-	}
-	if(newsSourceId.length > 0){
-	  newsSourceId = newsSourceId.substring(0, newsSourceId.length - 1);
-	}
-	if(locationLevelValue.length > 0){
-	  locationLevelValue = locationLevelValue.substring(0, locationLevelValue.length - 1);
-	}
-	
-	var checkedType = "";
-	var analyseCandidate = "";
-	if($('#keywordscheckId').is(':checked')){
-	  checkedType ="keyword";
-	}
-	if($('#candidateCheckId').is(':checked')){
-	  checkedType ="category";
-	}
-	if($('#analyseCandidateSource').is(':checked')){
-	  analyseCandidate ="source";
-	}
-	else if($('#analyseCandidateDesti').is(':checked')){
-	  analyseCandidate ="destination";
-	}
-	var timeST = new Date().getTime();	
-	
-		var jsObj = {
-			time : timeST,
-			fromdate :fromdate,
-			todate : todate,
-			whoPartyId : whoPartyId,
-			whomPartyId : whomPartyId,
-			whoCandidateId : whoCandidateId,
-			whomCandidateId : whomCandidateId,
-			whoBenfitId : whoBenfitId,
-			whomBenfitId : whomBenfitId,
-			locationLevelId : locationLevelId,
-			locationLevelValue : locationLevelValue,
-			newsSourceId : newsSourceId,
-			KeyWordsList : KeyWordsList,
-			checkedType:checkedType,
-			analyseCandidate:analyseCandidate,
-			task : "getAnalysedData"	
-		};
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAnalysedDataAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}
-
-function getClickedNews(sourceCandId,destiCandId,sourcePartyId,destiPartyId,locationLvl,locationId,sourceId,categoryId,keywordId,benifitsFor){
- var startDate = $("#fromDateId").val();
-	var endDate   = $("#todateId").val();
-	if(sourceCandId == "null"){
-	  sourceCandId ='';
-	}
-	if(destiCandId == "null"){
-     destiCandId = '';
-    }
-	if(sourcePartyId == "null"){
-	 sourcePartyId = '';
-	}
-	if(destiPartyId == "null"){
-	 destiPartyId = '';
-	}
-	if(locationLvl == "null"){
-	 locationLvl = '';
-	}
-	if(locationId == "null"){
-	 locationId = '';
-	}
-	if(sourceId == "null"){
-	 sourceId = '';
-	}
-	if(categoryId == "null"){
-	 categoryId = '';
-	}
-	if(keywordId == "null"){
-	 keywordId = '';
-	}
-	if(benifitsFor == "null"){
-	 benifitsFor = '';
-	}
- var browser1 = window.open("getNewsAction.action?sourceCandId="+sourceCandId+"&destiCandId="+destiCandId+"&sourcePartyId="+sourcePartyId+"&destiPartyId="+destiPartyId+"&locationLvl="+locationLvl+"&locationId="+locationId+"&sourceId="+sourceId+"&categoryId="+categoryId+"&keywordId="+keywordId+"&benifitsFor="+benifitsFor+"&startDate="+startDate+"&endDate="+endDate,"SearchNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-     browser1.focus();
-}
+	<SCRIPT type="text/javascript" src="js/newsAnalysis/newsAnalysis.js"></SCRIPT>
+</body>
+</html>
