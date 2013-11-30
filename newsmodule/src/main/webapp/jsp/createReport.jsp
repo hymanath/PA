@@ -110,7 +110,7 @@
 			  }else{
 					str+='<p>'+myResults.mainArticalsList[i].description+'</p>';
 			  }
-			  if(myResults.mainArticalsList[i].candidateName!=null)
+			  if(myResults.mainArticalsList[i].candidateName!=null && myResults.mainArticalsList[i].candidateName.trim().length > 0)
 			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp;'+myResults.mainArticalsList[i].candidateName+'</span>';
 			  str+='</div></div></div></div>';
 		 }
@@ -148,7 +148,7 @@
 			  }else{
 					str+='<p>'+myResults.fileVOList[i].fileVOList[j].description+'</p>';
 			  }
-			  if(myResults.fileVOList[i].fileVOList[j].candidateName!=null)
+			  if(myResults.fileVOList[i].fileVOList[j].candidateName!=null && myResults.fileVOList[i].fileVOList[j].candidateName.trim().length > 0)
 			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp;'+myResults.fileVOList[i].fileVOList[j].candidateName+'</span>';
 			  str+='</div></div></div></div>';
 		 }

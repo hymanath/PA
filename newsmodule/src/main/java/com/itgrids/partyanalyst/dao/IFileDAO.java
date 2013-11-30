@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.model.File;
 
 public interface IFileDAO extends GenericDao<File, Long> {
@@ -23,7 +24,13 @@ public interface IFileDAO extends GenericDao<File, Long> {
 	
 	public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,Integer startIndex,Integer maxIndex);
 	
-	 public List<File> getAllLatestFilesByFileIds(List<Long> fileIds);
+	public List<File> getAllLatestFilesByFileIds(List<Long> fileIds);
+	 
+	public List<Object[]> getNewsBySearchCriteria(String query,AnalysisVO vo);
+	 
+	public List<Object[]> getSelectedNewsBySearchCriteria(String query,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex);
+	
+	public Long getSelectedNewsCountBySearchCriteria(String query,Date fromDate,Date toDate);
 	 
 	 public Long getTotalFilesListCount(Date fromDate,Date toDate);
 	 

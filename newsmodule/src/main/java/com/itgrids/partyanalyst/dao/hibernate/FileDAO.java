@@ -7,6 +7,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFileDAO;
+import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.model.File;
 
 public class FileDAO extends GenericDaoHibernate<File, Long> implements
@@ -283,4 +284,37 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		  return query.list();
 		 
 		}
+	 
+	 public List<Object[]> getNewsBySearchCriteria(String query,AnalysisVO vo){
+		 Query queryObj = getSession().createQuery(query);
+		 if(vo.getFromDate() != null){
+			 queryObj.setDate("fromDate", vo.getFromDate());
+		 }
+         if(vo.getToDate() != null){
+        	 queryObj.setDate("toDate", vo.getToDate());
+		 }
+			return queryObj.list();	
+	 }
+	 
+	 public List<Object[]> getSelectedNewsBySearchCriteria(String query,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex){
+		 Query queryObj = getSession().createQuery(query);
+		 if(fromDate != null)
+		  queryObj.setDate("fromDate", fromDate);
+		 if(toDate != null)
+		  queryObj.setDate("toDate", toDate);
+		 if(startIndex != null)
+			 queryObj.setFirstResult(startIndex);
+		 if(maxIndex != null)
+			queryObj.setMaxResults(maxIndex);
+			return queryObj.list();	
+	 }
+	 
+	 public Long getSelectedNewsCountBySearchCriteria(String query,Date fromDate,Date toDate){
+		 Query queryObj = getSession().createQuery(query);
+		 if(fromDate != null)
+		  queryObj.setDate("fromDate", fromDate);
+		 if(toDate != null)
+		  queryObj.setDate("toDate", toDate);
+			return (Long)queryObj.uniqueResult();	
+	 }
 }

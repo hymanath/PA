@@ -282,7 +282,7 @@ public class ReportService implements IReportService {
 							List<String> keyWordsList = fileSourceMap.get(fileVo2.getFileId());
 							fileVo2.setKeyWordsList(keyWordsList);
 							//for candidateNames
-							if(name != null && name.length() > 0)
+							if(name != null && name.length() > 0 && candidateNames.get(fileVo2.getFileId()) != null)
 								fileVo2.setCandidateName((candidateNames.get(fileVo2.getFileId())).substring(0,(candidateNames.get(fileVo2.getFileId())).length()-2));
 							else
 								fileVo2.setCandidateName("");
@@ -298,7 +298,7 @@ public class ReportService implements IReportService {
 					List<String> keyWordsList = fileSourceMap.get(fileVO.getFileId());
 					fileVO.setKeyWordsList(keyWordsList);
 					//for candidateNames
-					if(name != null && name.length() > 0)
+					if(name != null && name.length() > 0 && candidateNames.get(fileVO.getFileId()) != null)
 						fileVO.setCandidateName((candidateNames.get(fileVO.getFileId())).substring(0,(candidateNames.get(fileVO.getFileId())).length()-2));
 					else
 						fileVO.setCandidateName("");

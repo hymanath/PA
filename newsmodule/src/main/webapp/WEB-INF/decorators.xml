@@ -249,6 +249,8 @@
 		<pattern>/keywordsRelatedNewsAction*</pattern>
 		<pattern>/showCategoryAction*</pattern>
 		<pattern>/newsAnalysisAction*</pattern>
+		<pattern>/getNewsAction*</pattern>
+		
     	 </decorator>
 
 </decorators>

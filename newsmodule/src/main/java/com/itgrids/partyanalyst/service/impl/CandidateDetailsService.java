@@ -8274,18 +8274,26 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
  
  public List<FileVO> getSelectedGallaryDetails(int startIndex,int maxIndex,Long gallaryId)
  {
-	 List<FileVO> returnList = null;
-	 List<Long> fileIds = null;
-	 Map<Long,String> fileSourceMap = null;
-	 LinkedHashMap<Long,FileVO> fileMap = null;
-	 Long count = candidatePartyCategoryDAO.getCountForNewsInASelectedGallery(gallaryId);
-	 List<Object[]> gallarysList = candidatePartyCategoryDAO.getSelectdGalleryNews(startIndex,maxIndex,gallaryId);
-	 if(gallarysList != null && gallarysList.size() > 0)
-	 {
+	 List<Long> fileIds = new ArrayList<Long>();
+	 LinkedHashMap<Long,FileVO> fileMap = new LinkedHashMap<Long, FileVO>();
+	 try{
+		 Long count = candidatePartyCategoryDAO.getCountForNewsInASelectedGallery(gallaryId);
+		
+		 List<Object[]> gallarysList = candidatePartyCategoryDAO.getSelectdGalleryNews(startIndex,maxIndex,gallaryId);
+		 populateNewsDataToVO(gallarysList,fileIds,fileMap,count);
 		 
-		 fileIds = new ArrayList<Long>();
-		 fileMap = new LinkedHashMap<Long, FileVO>();
-		 for (Object[] parms : gallarysList) {
+		 return new ArrayList<FileVO>(fileMap.values());
+	 }catch(Exception e){
+		 return new ArrayList<FileVO>();
+	 }
+ }
+ 
+ public void populateNewsDataToVO(List<Object[]> newsList,List<Long> fileIds,LinkedHashMap<Long,FileVO> fileMap,Long count){
+	 Map<Long,String> fileSourceMap = null;
+	 List<FileVO> returnList = null;
+	 if(newsList != null && newsList.size() > 0)
+	 {
+		 for (Object[] parms : newsList) {
 			 FileVO fileVO = new FileVO();
 			 
 			 fileVO.setTitle(parms[0] != null ? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(parms[0].toString())):"");
@@ -8301,7 +8309,9 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 
 		}
 	 }
-	 List<Object[]> fileSoureces = fileSourceLanguageDAO.getFileSourceType(fileIds);
+	 List<Object[]> fileSoureces = null;
+	  if(fileIds != null && fileIds.size() > 0)
+	  fileSoureces = fileSourceLanguageDAO.getFileSourceType(fileIds);
 	 if(fileSoureces != null && fileSoureces.size() > 0)
 	 {
 		 fileSourceMap = new HashMap<Long, String>();
@@ -8328,10 +8338,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 returnList.add(fileVO);
 		}
 	 }
-	 
-	 return new ArrayList<FileVO>(fileMap.values());
  }
- 
  public List<SelectOptionVO> getLocationValuesByRegionScope1(String regionScope, String queryType)
  {
 	 List<SelectOptionVO> selectOptionVOList = null;
@@ -8436,16 +8443,16 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 try{
 		List<Object[]> keywordsList = keywordDAO.getKeyWordIdByName(keyword);
 		if(keywordsList != null && keywordsList.size() > 0){
-			status = " "+keyword+" keyword is already exist.Please enter new Keyword. ";				
+			status = " "+keyword+" Keyword Already Exist.Please Enter New Keyword. ";				
 		}
 		else
 		{
 			Keyword keyword1 = saveKeyword(userDAO.get(userId).getUserId(),keyword);
-			  status = " "+keyword+" keyword was Successfully saved.";
+			  status = " "+keyword+" Keyword Was Successfully Created.";
 		}
 		
 	 }catch (Exception e) {
-		log.error("",e);
+		log.error("Exception rised in isKeywordExist ",e);
 	}
 	 return status;
  }
@@ -8572,7 +8579,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 						 candidatePartyKeywordDAO.removeDublicateData(params.getCandidatePartyKeywordId(),newKeyword.getKeywordId());
 						 //candidatePartyKeywordDAO.remove(params.getCandidatePartyKeywordId());
 						 }catch(Exception e){
-							 							 
+							 log.error("Exception ocuured while deleting duplicate candidatePartyKeyword :",e);					 
 						 }
 					 }
 			}

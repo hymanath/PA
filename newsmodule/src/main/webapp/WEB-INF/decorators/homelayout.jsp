@@ -166,11 +166,11 @@ margin:-1px 0px 0px 0px ;
 						  <a href="showMoreVideos.action" class="innerA">Videos</a></li>-->
 						 
 						   <li class="outerLi" id="reportsTabId">
-								<a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate" class="innerA">Reports</a>
-									<ul>
+								<a href="newsAnalysisAction.action" class="innerA">Analysis</a>
+									 <!--<ul>
 										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span>Candidate News Report</span></a></li>
 										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=opponent"><span>Opponent Party Critics Report</span></a></li>
-									</ul>
+									</ul> -->
 							</li>
 							  
 						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>

@@ -5825,11 +5825,23 @@
 		<action name="newsAnalysisAction" class="newsAnalysisAction">
 		  <result name="success">/jsp/newsAnalysis.jsp</result>
 		  <result name="error" type="redirect">loginPageAction.action</result>
+		  <result name="input" type="redirect">partyManagementAction.action</result>
 		 </action>
 		 
 		<action name="getAnalysedDataAction" class="newsAnalysisAction" method="getAnalysedData">
 		  <result type="json" name="success">
-		    	<param name="root">reportUrl</param>
+		    	<param name="root">result</param>
+		   </result>
+		</action>
+		
+		<action name="getNewsAction" class="newsAnalysisAction" method="viewSelectedAnalysedNews">
+		  <result name="success">/jsp/viewAnalysedNews.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		 
+		 <action name="getAnalysedNewsAction" class="newsAnalysisAction" method="getAnalysedNews">
+		   <result type="json" name="success">
+		    	<param name="root">analysedNewsDetails</param>
 		   </result>
 		</action>
 		
