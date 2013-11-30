@@ -117,6 +117,7 @@ public class ReadVoterDataFromPdfForAP2013 {
                 StringBuilder sb2 = new StringBuilder();
                 File resultFile  = new File(args[0]+"/VoterData.txt");
                 BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
+                Long startTime = new Date().getTime();
                 
                 for (File input : inputDir.listFiles(new FilenameFilter() {
                     @Override
@@ -303,7 +304,7 @@ public class ReadVoterDataFromPdfForAP2013 {
             }
             outwriter.write(sb2.toString());
             System.out.println("Total No of Voters:" + totalVotersCount);
-            System.out.println(new Date());
+            System.out.println("Total Time Taken in Minutes -"+((new Date().getTime())-startTime)/1000*60);
             writer.close();
             outwriter.close();
         } catch (Exception e) {
@@ -477,6 +478,12 @@ public class ReadVoterDataFromPdfForAP2013 {
     			info.setHouseNumber(info.getHouseNumber().replaceAll("'", ""));
     			info.setGuardianName(info.getGuardianName().replaceAll("'", ""));
     			info.setBoothName(info.getBoothName().replaceAll("'", ""));
+    			
+    			info.setVoterId(info.getVoterId().replaceAll("\\", ""));
+    			info.setVoterName(info.getVoterName().replaceAll("\\", ""));
+    			info.setHouseNumber(info.getHouseNumber().replaceAll("\\", ""));
+    			info.setGuardianName(info.getGuardianName().replaceAll("\\", ""));
+    			info.setBoothName(info.getBoothName().replaceAll("\\", ""));
     			}catch(Exception e)
     			{
     				e.printStackTrace();
