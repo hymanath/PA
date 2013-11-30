@@ -245,4 +245,42 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 			
 			
 		}
+	 
+	 
+	 @SuppressWarnings("unchecked")
+		public List<File> getTotalFilesListByLocation(Long userId,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex,Long locationVal,Long scopeId)
+		{
+		  StringBuilder str = new StringBuilder();
+		  str.append(" select model from File model where model.isDeleted != 'Y' ");
+		  if((locationVal != null && locationVal > 0) && (scopeId == 3))
+			 str.append(" and model.userAddress.district.districtId =:locationVal ");	
+		  if((locationVal != null && locationVal > 0) && (scopeId == 4))
+			   str.append(" and model.userAddress.constituency.constituencyId =:locationVal ");	
+		  if(scopeId != null && scopeId > 0)
+			   str.append(" and model.regionScopes.regionScopesId=:scopeId ");	  
+		  if(userId > 0)
+			  str.append(" and model.user.userId=:userId ");	    
+		   if(fromDate != null)
+			  str.append(" and date(model.fileDate) >= :fromDate ");
+		   if(toDate != null)
+			  str.append(" and date(model.fileDate) <= :toDate ");
+		   str.append(" order by date(model.fileDate) desc,model.updatedDate desc ");
+		   Query query = getSession().createQuery(str.toString());
+		   if(fromDate != null)
+		   query.setParameter("fromDate", fromDate);
+		  if(toDate != null)
+		   query.setParameter("toDate", toDate);
+		  if(locationVal !=null && locationVal > 0)
+			   query.setParameter("locationVal", locationVal);  
+		  if(scopeId !=null && scopeId > 0)
+			query.setParameter("scopeId", scopeId);  
+		  if(userId > 0)
+			query.setParameter("userId", userId);   
+		  if(startIndex != null)
+		   query.setFirstResult(startIndex);
+		  if(maxIndex != null)
+			query.setMaxResults(maxIndex);
+		  return query.list();
+		 
+		}
 }

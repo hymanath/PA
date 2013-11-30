@@ -13,13 +13,13 @@
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery-ui.css" />
+  <script src="js/jquery-1.9.1.js"></script>
+  <script src="js/ui/1.10.3/jquery-ui.js"></script>
 
-   <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+   <link rel="stylesheet" href="js/ui/1.9.0-themes-base/jquery-ui.css" />
+    <script src="js/jquery-1.8.2.js"></script>
+    <script src="js/ui/1.9.0-themes-base/jquery-ui.js"></script>
  <!-- <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js">
 	</script> 
@@ -139,9 +139,14 @@ background-color: #CDE6FC;
     text-align: left;
 	color:#333333;
 	}
+#profileManagementMainOuterDiv4{
+	font-family : arial;
+	font-size: 13px;
+  margin-top:-20px;
+	padding: 10px 10px 10px 15px;
+}
 
-
-#profileManagementMainOuterDiv4,#reportsDiv,#locationWiseNewsDiv
+#reportsDiv,#locationWiseNewsDiv
 {
 	font-family : arial;
 	font-size: 13px;
@@ -157,6 +162,10 @@ color:#333333;
     margin-right: auto;
     text-align: left;
     width: 901px;font-weight:bold;}
+	/*#selectLevel{float: none;
+    margin-left: auto;
+    margin-right: auto;
+	width: 901px;font-weight:bold;}*/
 #selectedNewsCount{color:red;}
 .createNewCandidate{width: 20px; height: 20px;cursor:pointer;}
 .m_topN65{margin-top: -24px;}
@@ -732,33 +741,50 @@ function createNewParty()
 
 <!-- for  body 4  result  start -->
 
-<div id="dateSelectDiv" style="display:none;">
-  <h2 style="text-align: center;">Update News</h2>
- <span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass dateField" id="newsFromDateId" readonly="true"/></span>
+<div id="dateSelectDiv" style="display:none;" class="container well">
+
+  <legend class="boxHeading text-center">Update News  </legend>
+  <div style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 15px 15px;" class="well">
+   <div class="row-fluid" style="background-color:#f5f5f5;">
+   <div class="span3" style="margin-left:240px;"><label><strong>Start Date<span class="requiredFont">*</span></strong></label><input type="text" name="fromDate" class="inpit-block-level  dateField" id="newsFromDateId" readonly="true"/></div>
+   <div class="span3" style="margin-left:3px;"><label><strong>End Date<span class="requiredFont">*</span></strong></label><input type="text" name="toDate" readonly="true" class="inpit-block-level  dateField" id="newsToDateId"/></div>
+  
+  </div>
+  
+  <div id="selectLevel" class="row-fluid" style="background-color:#f5f5f5;">
+   <div class="span4" style="margin-left:200px;"><label><strong>Select Level</strong></label><select id="responseRegionLevel" onchange="showCorrespondingLocations1();"><option value="1">ALL</option><option value="2">DISTRICT</option><option value="3">PARLIAMENT CONSTITUENCY</option><option value="4">ASSEMBLY CONSTITUENCY</option></select>
+  <span class="help-block"><input type="checkbox"  class="userCheckbox"/> &nbsp;<b><font style="color:#000">Check to view news uploaded by me only</font></b></span>  </div>
+	<div class="regionClass districtSelReport1 span2" style="display:none;margin-left:-29px;">
+    <label><strong> Select District</strong></label> <s:select name="districtSelReport" id="districtSelReportId1" list="districtsList" theme="simple" listKey="id" listValue="name"/>
+    </div>
+	<div class="regionClass parliamSelReport1 span2"  style="display:none;margin-left:-29px;">
+   <label><strong>Select Parliament</strong></label><s:select name="parliamSelReport" id="parliamSelReportId1" list="parlConstiList" theme="simple" listKey="id" listValue="name"/>
+      </div>
+	  <div class="regionClass assembSelReport1 span2"  style="display:none;margin-left:-29px;">
+    <label><strong>Select Assembly </strong></label><s:select name="assembSelReport" id="assembSelReportId1" list="assemConstiList" theme="simple" listKey="id" listValue="name"/>
+   </div>
+
+   </div>
+   </div>
+   <br/>
+     <div class="span4" style="float:right;">
+    <input type="button" value="submit" onclick="getTotalNewsWithPagination();" class="btn btn-info"/>
+ <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>
+ </div>
+ <br/>
+ <!--<span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass dateField" id="newsFromDateId" readonly="true"/></span>
  <span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass dateField" id="newsToDateId"/></span>
  <input type="button" value="submit" onclick="getTotalNewsWithPagination();" class="btn btn-info" style="margin-right: 20px;"/>
- <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>
- <div id="errorMsgNewsDiv"></div>
+ <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>-->
  
+ <div id="errorMsgNewsDiv"></div>
+
  <div id="totalSelectedNewsCount">Total Selected News Count: <span id="selectedNewsCount"></span></div>
-</div>
+
 
 <div id='profileManagementMainOuterDiv4' style="display:none">
 	<div id='profileManagementHeaderDiv4' class="row-fluid">
 
-		<!--<table width="100%" cellspacing="0" cellpadding="0" border="0">
-			  <tr>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_left.jpg"> 
-				   </td>
-				   <td width="98%">
-					 <div style="text-decoration: none;" class="productFeatureHeaderBackground_center2">
-					   <span style="text-decoration: none;" class="headerLabelSpan2">News</span>
-					 </div>
-				   </td>
-				   <td width="1%"><img height="40" width="25" src="images/icons/homePage_new/blue_header_top_right.jpg">
-				   </td>
-			 </tr>
-		</table>-->
 		<div class="span10 offset1 text-center alert">NEWS</div>
 	
 </div>
@@ -768,6 +794,7 @@ function createNewParty()
 <!-- for  body 4  result  end -->
 
 <div id="ajaxImg" style="display:none;margin-left:300px;margin-top:30px;"><img src="images/icons/goldAjaxLoad.gif"></img></div>
+</div>
 </div>
 <!-- for  body 5  result  start -->
 <div id='profileManagementMainOuterDiv5' style="display:none">
@@ -1035,9 +1062,11 @@ $(".dateField").live("click", function(){
 		dateFormat: "dd/mm/yy",
 		changeMonth: true,
       changeYear: true,
-		maxDate: new Date()
+		maxDate: new Date(),
+	
 		
 	}).datepicker("show");
+
 });
 
 
@@ -4078,7 +4107,36 @@ function showHideLocations(dist,pc,ac){
   $(".assembSelReport").hide();
  }
 }
+function showCorrespondingLocations1(){
+ var loc = $("#responseRegionLevel").val();
+ if(loc == 1){
+  showHideLocationsForResponse(false,false,false);
+ }else if(loc == 2){
+  showHideLocationsForResponse(true,false,false);
+ }else if(loc == 3){
+  showHideLocationsForResponse(false,true,false);
+ }else if(loc == 4){
+  showHideLocationsForResponse(false,false,true);
+ }
+}
 
+function showHideLocationsForResponse(dist,pc,ac){
+ if(dist){
+  $(".districtSelReport1").show();
+ }else{
+  $(".districtSelReport1").hide();
+ }
+ if(pc){
+  $(".parliamSelReport1").show();
+ }else{
+  $(".parliamSelReport1").hide();
+ }
+ if(ac){
+  $(".assembSelReport1").show();
+ }else{
+  $(".assembSelReport1").hide();
+ }
+}
 function getDesignationList(designationList)
 {
   var jsObj={
@@ -4089,7 +4147,13 @@ function getDesignationList(designationList)
 	var url = "getDesignationsListAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
+function populateDate()
+{
 
+$(".dateField").datepicker();
+$(".dateField").datepicker("setDate", new Date());
+
+}
 </script>
 </body>
 </html>
