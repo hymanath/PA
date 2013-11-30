@@ -24,18 +24,18 @@ import org.hibernate.annotations.NotFoundAction;
 public class VoterDataAvailableConstituencies extends BaseModel implements Serializable{
 	private Long voterDataAvailableConstituenciesId;
 	private Constituency constituency;
-	private Long publicationDateId;
+	private PublicationDate publicationDate;
 	
 	
 	public VoterDataAvailableConstituencies()
 	{
 		
 	}
-	public VoterDataAvailableConstituencies(Long voterDataAvailableConstituenciesId,Constituency constituency,Long publicationDateId)
+	public VoterDataAvailableConstituencies(Long voterDataAvailableConstituenciesId,Constituency constituency,PublicationDate publicationDate)
 	{
 		this.voterDataAvailableConstituenciesId = voterDataAvailableConstituenciesId;
 		this.constituency = constituency;
-		this.publicationDateId =publicationDateId;
+		this.publicationDate =publicationDate;
 	}
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -57,13 +57,16 @@ public class VoterDataAvailableConstituencies extends BaseModel implements Seria
 	public void setConstituency(Constituency constituency) {
 		this.constituency = constituency;
 	}
-	@Column(name = "publication_date_id", length = 15)
-	public Long getPublicationDateId() {
-		return publicationDateId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "publication_date_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public PublicationDate getPublicationDate() {
+		return publicationDate;
 	}
-	
-	public void setPublicationDateId(Long publicationDateId) {
-		this.publicationDateId = publicationDateId;
+	public void setPublicationDate(PublicationDate publicationDate) {
+		this.publicationDate = publicationDate;
 	}
 	
 	

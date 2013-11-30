@@ -20,6 +20,10 @@ public class VoterDataAvailableConstituenciesDAO extends GenericDaoHibernate<Vot
 		return getHibernateTemplate().find("select distinct model.constituency.constituencyId,model.constituency.name from VoterDataAvailableConstituencies model");
 	}
 
-	
+	public List<Object[]> getPublicationDatesBasedOnConstituency(Long constituencyId)
+	{
+		return getHibernateTemplate().find("select distinct model.publicationDate.publicationDateId,model.publicationDate.date from VoterDataAvailableConstituencies model where " +
+				"model.constituency.constituencyId = ? order by model.publicationDate.year desc)", constituencyId);
+	}
 
 }

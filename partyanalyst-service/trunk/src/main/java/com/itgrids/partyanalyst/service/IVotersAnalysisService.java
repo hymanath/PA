@@ -315,4 +315,6 @@ public interface IVotersAnalysisService {
 	 
 	 public List<SelectOptionVO> getConstituenciesFromVoterDataAvaliableConstituencies();
 	 
+	 public List<SelectOptionVO> getPublicationListForVoterDataByConstituency(Long constituencyId);
+	 
 }
