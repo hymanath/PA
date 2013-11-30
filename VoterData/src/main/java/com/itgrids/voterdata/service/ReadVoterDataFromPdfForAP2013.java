@@ -479,11 +479,11 @@ public class ReadVoterDataFromPdfForAP2013 {
     			info.setGuardianName(info.getGuardianName().replaceAll("'", ""));
     			info.setBoothName(info.getBoothName().replaceAll("'", ""));
     			
-    			info.setVoterId(info.getVoterId().replaceAll("\\", ""));
+    			/*info.setVoterId(info.getVoterId().replaceAll("\\", ""));
     			info.setVoterName(info.getVoterName().replaceAll("\\", ""));
     			info.setHouseNumber(info.getHouseNumber().replaceAll("\\", ""));
     			info.setGuardianName(info.getGuardianName().replaceAll("\\", ""));
-    			info.setBoothName(info.getBoothName().replaceAll("\\", ""));
+    			info.setBoothName(info.getBoothName().replaceAll("\\", ""));*/
     			}catch(Exception e)
     			{
     				e.printStackTrace();
