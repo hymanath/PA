@@ -3459,7 +3459,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	      FileVO resultVO = new FileVO();
 	      List<FileVO> fileVOList = null;
 	    	try{
-	    		
+	    	Long scopeval = 0l;	
 	    	 Date fromDate = null;
 	    	 Date toDate = null;
 	    	 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -3469,9 +3469,18 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		
 	    	 if(inputs.getToDateStr() != null && !inputs.getToDateStr().equalsIgnoreCase(""))
 		       toDate = format.parse(inputs.getToDateStr());
-	    		
-	    	 List<File> filesList = fileDAO.getTotalFilesList(inputs.getUserId(), fromDate, toDate,inputs.getStartIndex(),inputs.getMaxResult());
-	    	  
+	    		if(inputs.getScope().equalsIgnoreCase("ALL"))
+	    			scopeval = 0l;
+	    		else if(inputs.getScope().equalsIgnoreCase("DISTRICT"))
+	    			scopeval = 3l;
+	    		else if(inputs.getScope().equalsIgnoreCase("PARLIAMENT CONSTITUENCY") || inputs.getScope().equalsIgnoreCase("ASSEMBLY CONSTITUENCY"))
+	    			scopeval = 4l;
+	    	// List<File> filesList = fileDAO.getTotalFilesList(inputs.getUserId(), fromDate, toDate,inputs.getStartIndex(),inputs.getMaxResult());
+	    		if(inputs.getIsSelectedContent() == true)
+	    			inputs.setUserId(inputs.getUserId());
+	    		else
+	    			inputs.setUserId(0l);	
+	    	 List<File> filesList = fileDAO.getTotalFilesListByLocation(inputs.getUserId(), fromDate, toDate,inputs.getStartIndex(),inputs.getMaxResult(),inputs.getLocationId(),scopeval); 
 	    	if(filesList != null && filesList.size() > 0)
 	    	{
 	    	   fileVOList = new ArrayList<FileVO>();

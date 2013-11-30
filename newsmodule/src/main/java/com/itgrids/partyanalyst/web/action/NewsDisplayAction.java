@@ -545,7 +545,9 @@ public class NewsDisplayAction implements ServletRequestAware{
 		 fileVO.setStartIndex(startIndex);
 		 fileVO.setMaxResult(maxIndex);
 		 fileVO.setImportance(regVO.getUserAccessType());
-		   
+		 fileVO.setLocationId(new Long(request.getParameter("locationVal")));
+		 fileVO.setScope(request.getParameter("scope"));
+		 fileVO.setIsSelectedContent(Boolean.valueOf(request.getParameter("checkedVal")));
 		 savedDetails = newsMonitoringService.getTotalNews(fileVO);
 		 
 	 }catch (Exception e) {

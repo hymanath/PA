@@ -3868,7 +3868,9 @@ function showTheNewsToUpdate()
   $("#dateSelectDiv").css("display","block");
   $("#newsFromDateId").val('');
   $("#newsToDateId").val('');
+   populateDate();
   getTotalNewsWithPagination();
+ 
  // buildNewsDetails();
 
 }
@@ -6849,10 +6851,22 @@ function getTotalNewsWithPagination()
 		elLiner.innerHTML=str;
 					
 	};
- 
+	var checkedVal = false;
+	if($(".userCheckbox").is(':checked'))
+	checkedVal = true;
+  var locationVal =0;
   var fromDate = $("#newsFromDateId").val();
   var toDate = $("#newsToDateId").val();
   
+  var scope = $("#responseRegionLevel  option:selected").text();
+  if(scope == 'STATE')
+	 locationVal = 0;
+  else if(scope == 'DISTRICT')
+	locationVal = $("#districtSelReportId1").val();
+  else if(scope == 'PARLIAMENT CONSTITUENCY')
+	 locationVal = $("#parliamSelReportId1").val();
+   else if(scope == 'ASSEMBLY CONSTITUENCY')
+	 locationVal = $("#assembSelReportId1").val();
   var newsColumns = [
            {key:"ADD RESPONSE",label:"ADD RESPONSE",formatter:YAHOO.widget.DataTable.checkBox},
 		   {key:"source", label:"SOURCE"},
@@ -6863,7 +6877,7 @@ function getTotalNewsWithPagination()
 		   {key:"fileDateAsString", label:"NEWS DATE"}
   ];
   
-  var newsDataSource = new YAHOO.util.DataSource("getTotalNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&");
+  var newsDataSource = new YAHOO.util.DataSource("getTotalNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&locationVal="+locationVal+"&scope="+scope+"&checkedVal="+checkedVal+"&");
   newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
   newsDataSource.responseSchema = {
   resultsList: "fileVOList",
