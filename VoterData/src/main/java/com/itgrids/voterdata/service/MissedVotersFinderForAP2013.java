@@ -190,7 +190,7 @@ public class MissedVotersFinderForAP2013 {
             	System.out.println(sb3.toString());
             	outwriter2.write(sb3.toString());
             	outwriter2.close();
-            	ConvertVoterDataFromPdfToText.saveVotersData(missedVotersList);
+            	ReadVoterDataFromPdfForAP2013.saveVotersData(missedVotersList);
             }
             	
         } catch (Exception e) {
@@ -219,7 +219,7 @@ public class MissedVotersFinderForAP2013 {
                     sb = ReadVoterDataFromPdfForAP2013.formatText2(sb);
                     //outwriter.write(sb.toString());
                     
-                    if(IConstants.PATTERN == 1)//House_no Missed Pattern
+                    if(false)//House_no Missed Pattern
                     {
                     	Pattern p = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n\\s([0-9]*)");
                     	Matcher m = p.matcher(sb);
@@ -251,7 +251,7 @@ public class MissedVotersFinderForAP2013 {
                         }
                     }
                     
-                    else if(IConstants.PATTERN == 2)//Sex Field Missed Pattern
+                    else if(false)//Sex Field Missed Pattern
                     {
                     	Pattern p = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
                     	Matcher m = p.matcher(sb);
@@ -286,7 +286,7 @@ public class MissedVotersFinderForAP2013 {
                         }
                     }
                     
-                    else if(IConstants.PATTERN == 3)//Relative Name Field Missed Pattern
+                    else if(false)//Relative Name Field Missed Pattern
                     {
                     	Pattern p = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
                     	Matcher m = p.matcher(sb);
@@ -318,7 +318,7 @@ public class MissedVotersFinderForAP2013 {
                         }
                     }
                     
-                    else if(IConstants.PATTERN == 4)//Common Pattern
+                    else if(true)//Common Pattern
                     {
                     	for(Integer sno : boothVO.getMissedVotesList())
                         {
