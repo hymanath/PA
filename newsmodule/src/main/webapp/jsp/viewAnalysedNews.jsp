@@ -1,0 +1,236 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.ResourceBundle;" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title> TDP News Portal </title>
+
+<!-- YUI Dependency files (Start) -->
+	
+	
+	
+  
+  <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/> 
+
+<link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
+ <script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>
+	<link rel="stylesheet" type="text/css" href="pagination/simplePagination.css">
+	<script type="text/javascript" src="pagination/pagination1.js"></script>
+   
+<style>
+@font-face   
+{
+font-family:eFont;src: url('img/eenadu.ttf');
+ }
+ .enadu
+{
+font-family: eFont;
+font-size:20px;
+}
+@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
+@font-face {
+    font-family: "eFont";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
+}
+
+#existingFromText,#existingToText{width:155px;cursor: text;}
+#errorMsgDiv{font-size:12px;}
+#responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
+</style>
+
+</head>
+<body>
+
+<!--<div class="span2">
+<div id="mainDiv"></div>
+<div class="row-fluid widget">
+<div class="span12 boxHeading"><h4>Gallery News</h4></div>
+</div>				
+</div>-->
+<!--<div id="gallarysId" style="margin:22px 0px 31px 102px;"></div>-->
+<div style="" id="mainDiv">
+<div class="span12">
+<div class="row-fluid widget">
+<div class="span12 boxHeading" align="center"><h4>News Updates </h4></div>
+<div id="imageForMail"  class = "span3"  style="display:none;font-weight:bold;color: #0174DF;height:20px;width:500px;">
+<font>Please wait...</font>
+<img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
+</div>
+<div class="span12" id="newsDisplayDiv">						
+</div>
+<div class="pagination-holder clearfix">
+<div id="light-pagination" class="pagination"></div>
+</div>
+<div class="pagination-holder clearfix">
+<div id="light-pagination" class="pagination"></div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        var sourceCandId = '${sourceCandId}';
+	    var destiCandId = '${destiCandId}';
+		var sourcePartyId = '${sourcePartyId}';
+		var destiPartyId = '${destiPartyId}';
+		var locationLvl = '${locationLvl}';
+		var locationId = '${locationId}';
+		var sourceId = '${sourceId}';
+		var categoryId = '${categoryId}';
+		var keywordId = '${keywordId}';
+		var  benifitsFor = '${benifitsFor}';
+		var startDate = '${startDate}';
+		var endDate = '${endDate}';
+getAllGallaries(0,10);
+            
+function getAllGallaries(startIndex,endIndex)
+{
+   $.ajaxSetup({
+	   jsonp: null,
+	   jsonpCallback: null
+	}); 
+
+	$.ajax({
+	  type:'POST',
+	  url: 'getAnalysedNewsAction.action',
+	  dataType: 'json',
+	  data: {startValue:startIndex,
+	         endValue:endIndex,
+		    sourceCandId:sourceCandId,
+			destiCandId:destiCandId,
+			sourcePartyId:sourcePartyId,
+			destiPartyId:destiPartyId,
+			locationLvl:locationLvl,
+			locationId:locationId,
+			sourceId:sourceId,
+			categoryId:categoryId,
+			keywordId:keywordId,
+			 benifitsFor:benifitsFor,
+			startDate:startDate,
+			endDate:endDate
+	  },
+		 
+	  success: function(results){ 
+		   buildFilesInGallaryDetails(results,0);
+	 },
+	  error:function() { 
+	  }
+	});
+
+}
+
+
+function buildFilesInGallaryDetails(results,selectedvalue)
+{   
+	var totalPages;
+	var requestedFor = "";
+	$('#imageForMail').css("display","none");
+	$("#newsDisplayDiv").html('');
+  if(results == null || results.length == 0)
+  {
+    $("#light-pagination").html('');
+    $("#newsDisplayDiv").html('No Data Found.');
+	return;
+  }
+	
+	if(requestedFor=="respondedNews"){
+		totalPages = Math.ceil(results[0].respondedFilesCountInGall / 10);
+	}
+	else{
+		totalPages = Math.ceil(results[0].count / 10);
+		//totalPages = 1;
+	}
+   $('#light-pagination').pagination({
+	pages:totalPages,
+	currentPage:selectedvalue,	 
+	cssStyle: 'light-theme'
+  }); 
+   var str='';
+
+   str+='<div class="span12">';
+   str+='<ul class="unstyled pad10">';
+   for(var i in results)
+   {
+	str+='<li>';
+	str+='<div class="">';
+	/* var source = '';
+	for (var t in results[i].fileTypesList)
+	{
+		 source = results[i].fileTypesList[t];
+	} */
+	//var source = results[i].fileType.trim();
+	var fontId = results[i].fontId;
+	if(fontId >  0)
+	{
+		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
+	}
+	else
+	{
+		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
+	}
+		
+	str+='<div class="row-fluid">';
+		str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
+		if(results[i].fileName1 != null && results[i].fileName1 == "") 
+		str+='<img style="width:100%" src="'+results[i].fileName1+'" >';
+		else
+		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
+		str+='</a>';
+		
+		if(fontId > 0)
+		{
+			str+='<p class="span8 enadu">'+results[i].description+'</p>';
+		}
+		else
+		{
+			str+='<p class="span8">'+results[i].description+'</p>';
+		}
+		str+='</div>';
+		str+='<div class="row-fluid m_top10">';
+		str+='<div class="span9" style="width:550px;">';
+		str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">';
+		
+			str += ''+results[i].source+'';
+		
+		str += '</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
+		/* if(results[i].responseCount > 0)
+		str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></p></td>'; */
+		
+		str+='</tr></table></div>';
+		//str+='<br><div class="span2" style="float:right;">';
+		
+		//str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">Details...</a>';
+			
+		//str+='</div>';
+	str+='</div>'; 
+	str+='</div>';
+	str+='</li>';
+   }
+    str+='</ul>';
+   str+='</div>';
+document.getElementById("newsDisplayDiv").innerHTML = str;
+
+ $('html,body').animate({
+        scrollTop: $("#mainDiv").offset().top},
+        'slow');
+}
+
+
+function callAjaxToGetTheResults(selectedvalue)
+{
+	var startIndex = 0;
+	var endIndex = 10; 
+	var selectedvalue1 = 0;
+	if(selectedvalue == "1")
+		startIndex = 0;
+	else{
+		selectedvalue1 = selectedvalue - 1;
+		startIndex = selectedvalue1*10;
+	}
+	getAllGallaries(startIndex,endIndex)
+}
+
+</script>
+
+</body>

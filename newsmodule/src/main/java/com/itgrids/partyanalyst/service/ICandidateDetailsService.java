@@ -5,6 +5,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -326,9 +327,11 @@ public interface ICandidateDetailsService {
 	 public String mergeSelectedKeywords(Long userId,List<Long> keywordsList,String newKeyword);
 	 
 	 public void testgetCandidatesListByPartyIdsList();
-	 
+
 	 public List<SelectOptionVO> getFilteredCandidates(Long stateId,String partyId,String designationId,String locationType,String locationId,String text);
 	 
 	 public List<FileVO> getCandidateNewsResponseNewsForSelectdDates(Integer startIndex,Integer maxIndex,String fromDate,String toDate);
+		 
+	 public void populateNewsDataToVO(List<Object[]> newsList,List<Long> fileIds,LinkedHashMap<Long,FileVO> fileMap,Long count);
 	 
 }

@@ -1704,12 +1704,14 @@
 		<property name="designationDAO" ref="designationDAO" />
 		<property name="constituencyDAO" ref="constituencyDAO" />
 		<property name="stateDAO" ref="stateDAO" />
-</bean>
-<bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
-    	<property name="partyDAO" ref="partyDAO" />
-    	<property name="transactionTemplate" ref="transactionTemplate" />
-    	<property name="designationDAO" ref="designationDAO" />
-</bean>
+   </bean>
+   <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
+       <property name="partyDAO" ref="partyDAO" />
+       <property name="transactionTemplate" ref="transactionTemplate" />
+       <property name="designationDAO" ref="designationDAO" />
+       <property name="fileDAO" ref="fileDAO" />
+       <property name="candidateDetailsService" ref="candidateDetailsService" />
+   </bean>
 
 </beans>		
 	

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +11,10 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
+import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.NewsAnalysisVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -33,8 +37,23 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	private IStaticDataService staticDataService;
 	private List<SelectOptionVO> districtsList,parlConstiList,assemConstiList;
 	private HttpSession session ; 
+	private NewsAnalysisVO result;
+	private Long sourceCandId;
+	private Long destiCandId;
+	private Long sourcePartyId;
+	private Long destiPartyId;
+	private Long locationLvl;
+	private Long locationId;
+	private Long sourceId;
+	private Long categoryId;
+	private Long keywordId;
+	private String  benifitsFor;
+	private String startDate;
+	private String endDate;
+	private Integer startValue;
+	private Integer endValue;
+	private List<FileVO> analysedNewsDetails;
 	private ResultStatus resultStatus;
-	
 	/**
 	 * @return the resultStatus
 	 */
@@ -100,10 +119,147 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	public void setNewsAnalysisService(INewsAnalysisService newsAnalysisService) {
 		this.newsAnalysisService = newsAnalysisService;
 	}
-	
-	
+
+	public NewsAnalysisVO getResult() {
+		return result;
+	}
+
+	public void setResult(NewsAnalysisVO result) {
+		this.result = result;
+	}
+
+	public Long getDestiCandId() {
+		return destiCandId;
+	}
+
+	public void setDestiCandId(Long destiCandId) {
+		this.destiCandId = destiCandId;
+	}
+
+	public Long getSourcePartyId() {
+		return sourcePartyId;
+	}
+
+	public void setSourcePartyId(Long sourcePartyId) {
+		this.sourcePartyId = sourcePartyId;
+	}
+
+	public Long getDestiPartyId() {
+		return destiPartyId;
+	}
+
+	public void setDestiPartyId(Long destiPartyId) {
+		this.destiPartyId = destiPartyId;
+	}
+
+	public Long getLocationLvl() {
+		return locationLvl;
+	}
+
+	public void setLocationLvl(Long locationLvl) {
+		this.locationLvl = locationLvl;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public Long getSourceId() {
+		return sourceId;
+	}
+
+	public void setSourceId(Long sourceId) {
+		this.sourceId = sourceId;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public Long getKeywordId() {
+		return keywordId;
+	}
+
+	public void setKeywordId(Long keywordId) {
+		this.keywordId = keywordId;
+	}
+
+	public String getBenifitsFor() {
+		return benifitsFor;
+	}
+
+	public void setBenifitsFor(String benifitsFor) {
+		this.benifitsFor = benifitsFor;
+	}
+
+	public Long getSourceCandId() {
+		return sourceCandId;
+	}
+
+	public void setSourceCandId(Long sourceCandId) {
+		this.sourceCandId = sourceCandId;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public Integer getStartValue() {
+		return startValue;
+	}
+
+	public void setStartValue(Integer startValue) {
+		this.startValue = startValue;
+	}
+
+	public Integer getEndValue() {
+		return endValue;
+	}
+
+	public void setEndValue(Integer endValue) {
+		this.endValue = endValue;
+	}
+
+	public List<FileVO> getAnalysedNewsDetails() {
+		return analysedNewsDetails;
+	}
+
+	public void setAnalysedNewsDetails(List<FileVO> analysedNewsDetails) {
+		this.analysedNewsDetails = analysedNewsDetails;
+	}
+
 	public String execute()
 	{
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO == null){
+			return Action.ERROR;
+		}else if(regVO.getUserAccessType() == null){
+		  return "fail";
+		}else if(!regVO.getUserAccessType().equalsIgnoreCase("Admin")){
+        	return "input";
+		}
+		
 		ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
 		 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
 		 districtsList =  staticDataService.getDistricts(1l);
@@ -122,9 +278,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 			if(regVO == null)
 				return Action.ERROR;
 			jObj = new JSONObject(getTask());
-			List<Long> keywordsList = new ArrayList<Long>();
-			List<Long> newsSourceList = new ArrayList<Long>();
-			List<Long> locationValuesList = new ArrayList<Long>();
+			
 			String fromdate = jObj.getString("fromdate");
 			String todate = jObj.getString("todate");
 			Long whoPartyId = jObj.getLong("whoPartyId");
@@ -134,49 +288,69 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 			Long whoBenfitId = jObj.getLong("whoBenfitId");
 			Long whomBenfitId = jObj.getLong("whomBenfitId");
 			Long locationLevelId = jObj.getLong("locationLevelId");
+			String checkedType = jObj.getString("checkedType");
+			String analyseCandidate = jObj.getString("analyseCandidate");
 			String locationLevelValue = jObj.getString("locationLevelValue");
-			if(locationLevelValue.trim().length() > 0)
-			{
-				String[] options = locationLevelValue.split(",");
-				if(options.length > 1)
-				{
-					for (String value : options) {
-						locationValuesList.add(Long.valueOf(value.trim()));
-					}
-				}
-			}
+			AnalysisVO vo = new AnalysisVO();
 			
 			
 			
 			String newsSourceId = jObj.getString("newsSourceId");
 			if(newsSourceId.trim().length() > 0)
 			{
-				String[] newsSourceIdObj = newsSourceId.split(",");
-				if(newsSourceIdObj.length > 1)
-				{
-					for (String value : newsSourceIdObj) {
-						newsSourceList.add(Long.valueOf(value.trim()));
-					}
-				}
+				vo.setSourceIds(newsSourceId.trim());
+				vo.setSourcePresent(true);
+			}
+			if(whoCandidateId.longValue() > 0){
+				vo.setSourceCand(true);
+				vo.setSourceCandidateId(whoCandidateId);
+			}else if(whoPartyId.longValue() > 0){
+				vo.setSourceParty(true);
+				vo.setSourcePartyId(whoPartyId);
+			}
+			if(whomCandidateId.longValue() > 0){
+				vo.setDestiCand(true);
+				vo.setDestiCandidateId(whomCandidateId);
+			}else if(whomPartyId.longValue() > 0){
+				vo.setDestiParty(true);
+				vo.setDestiPartyId(whomPartyId);
 			}
 			
-			
-			
-			String KeyWordsList = jObj.getString("KeyWordsList");
-			if(KeyWordsList.trim().length() >0)
+			String keyWordsList = jObj.getString("KeyWordsList");
+			if(keyWordsList.trim().length() >0)
 			{
-				String[] KeyWordsListObj = KeyWordsList.split(",");
-				if(KeyWordsListObj.length > 1)
-				{
-					for (String value : KeyWordsListObj) {
-						keywordsList.add(Long.valueOf(value.trim()));
-					}
+				if(checkedType.equalsIgnoreCase("keyword")){
+					vo.setByKeyword(true);
+					vo.setGallaryKeyWordIds(keyWordsList.trim());
+				}else if(checkedType.equalsIgnoreCase("category")){
+					vo.setByCategory(true);
+					vo.setGallaryKeyWordIds(keyWordsList.trim());
 				}
 			}
-			
-			
+			if(analyseCandidate.trim().length() > 0){
+				if(analyseCandidate.trim().equalsIgnoreCase("source")){
+					vo.setBySourceCand(true);
+				}else if(analyseCandidate.trim().equalsIgnoreCase("destination")){
+					vo.setByDestiCand(true);
+				}
+			}
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromdate != null && fromdate.trim().length() >0){
+				Date fromDate = format.parse(fromdate.trim());
+				vo.setFromDate(fromDate);
+			}
+			if(todate != null && todate.trim().length() >0){
+				Date toDate = format.parse(todate.trim());
+				vo.setToDate(toDate);
+			}
+			if(locationLevelId > 0 && locationLevelValue.trim().length() > 0){
+				vo.setLocationPresent(true);
+				vo.setLocationLvl(locationLevelId);
+				vo.setLocationValues(locationLevelValue.trim());
+			}
+			result = newsAnalysisService.analyseNewsWithSelectedParameters(vo);
 		} catch (Exception e) {
-			LOG.error("Exception raised in getAnalysedData method in NewsAnalysisAction Ation");
+			LOG.error("Exception raised in getAnalysedData method in NewsAnalysisAction Action",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -218,6 +392,45 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
 	}
-
+	public String viewSelectedAnalysedNews(){
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+        if(user == null){
+        	return ERROR;
+        }
+        
+        return Action.SUCCESS;
+	}
+	
+    public String getAnalysedNews(){
+    	try {
+    		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    		NewsAnalysisVO vo = new NewsAnalysisVO();
+    		 vo.setSourceCandId(getSourceCandId());
+    		 vo.setDestiCandId(getDestiCandId());
+    		 vo.setSourcePartyId(getSourcePartyId());
+    		 vo.setDestiPartyId(getDestiPartyId());
+    		 vo.setLocationLvl(getLocationLvl());
+    		 vo.setLocationId(getLocationId());
+    		 vo.setSourceId(getSourceId());
+    		 vo.setCategoryId(getCategoryId());
+    		 vo.setKeywordId(getKeywordId());
+    		 vo.setBenifitsFor(getBenifitsFor());
+    		 Date fromDate = (getStartDate()!=null && getStartDate().trim().length() > 0)?format.parse(getStartDate()):null;
+    		 Date toDate = (getEndDate()!=null && getEndDate().trim().length() >0)?format.parse(getEndDate()):null;
+    		 Integer startIndex = null;
+    		 Integer maxIndex = null;
+    		 if(startValue != null && startValue > 0){
+    			 startIndex = startValue;
+    		 }
+    		 if(endValue != null && endValue > 0){
+    			 maxIndex = endValue;
+    		 }
+    		 analysedNewsDetails = newsAnalysisService.getSelectedNews(vo, fromDate, toDate, startIndex, maxIndex);
+    	}catch (Exception e) {
+			LOG.error("Exception raised in getAnalysedNews method",e);
+		}
+    	return Action.SUCCESS;
+    }
 	
 }

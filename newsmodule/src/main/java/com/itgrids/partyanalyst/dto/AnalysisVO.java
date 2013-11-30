@@ -22,10 +22,19 @@ public class AnalysisVO  implements Serializable{
 	private boolean byCategory;
 	private String ids;
 	private String sourceIds;
-	private String locationLvl;
 	private String locationValues;
 	private boolean sourceCandPartyWise;
 	private boolean destCandPartyWise;
+	private boolean locationPresent;
+	private boolean sourcePresent;
+	private Long locationLvl;
+	private boolean sourceCand;
+	private boolean destiCand;
+	private boolean sourceParty;
+	private boolean destiParty;
+	private boolean bySourceCand;
+	private boolean byDestiCand;
+	private String gallaryKeyWordIds;
 	
 	public Date getFromDate() {
 		return fromDate;
@@ -99,12 +108,6 @@ public class AnalysisVO  implements Serializable{
 	public void setSourceIds(String sourceIds) {
 		this.sourceIds = sourceIds;
 	}
-	public String getLocationLvl() {
-		return locationLvl;
-	}
-	public void setLocationLvl(String locationLvl) {
-		this.locationLvl = locationLvl;
-	}
 	public String getLocationValues() {
 		return locationValues;
 	}
@@ -123,5 +126,66 @@ public class AnalysisVO  implements Serializable{
 	public void setDestCandPartyWise(boolean destCandPartyWise) {
 		this.destCandPartyWise = destCandPartyWise;
 	}
+	public boolean isLocationPresent() {
+		return locationPresent;
+	}
+	public void setLocationPresent(boolean locationPresent) {
+		this.locationPresent = locationPresent;
+	}
+	public boolean isSourcePresent() {
+		return sourcePresent;
+	}
+	public void setSourcePresent(boolean sourcePresent) {
+		this.sourcePresent = sourcePresent;
+	}
+	public Long getLocationLvl() {
+		return locationLvl;
+	}
+	public void setLocationLvl(Long locationLvl) {
+		this.locationLvl = locationLvl;
+	}
+	public boolean isSourceCand() {
+		return sourceCand;
+	}
+	public void setSourceCand(boolean sourceCand) {
+		this.sourceCand = sourceCand;
+	}
+	public boolean isDestiCand() {
+		return destiCand;
+	}
+	public void setDestiCand(boolean destiCand) {
+		this.destiCand = destiCand;
+	}
+	public boolean isSourceParty() {
+		return sourceParty;
+	}
+	public void setSourceParty(boolean sourceParty) {
+		this.sourceParty = sourceParty;
+	}
+	public boolean isDestiParty() {
+		return destiParty;
+	}
+	public void setDestiParty(boolean destiParty) {
+		this.destiParty = destiParty;
+	}
+	public boolean isBySourceCand() {
+		return bySourceCand;
+	}
+	public void setBySourceCand(boolean bySourceCand) {
+		this.bySourceCand = bySourceCand;
+	}
+	public boolean isByDestiCand() {
+		return byDestiCand;
+	}
+	public void setByDestiCand(boolean byDestiCand) {
+		this.byDestiCand = byDestiCand;
+	}
+	public String getGallaryKeyWordIds() {
+		return gallaryKeyWordIds;
+	}
+	public void setGallaryKeyWordIds(String gallaryKeyWordIds) {
+		this.gallaryKeyWordIds = gallaryKeyWordIds;
+	}
+	
 	
 }
