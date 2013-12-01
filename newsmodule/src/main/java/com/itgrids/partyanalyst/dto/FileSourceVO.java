@@ -55,7 +55,7 @@ public class FileSourceVO implements Serializable{
 		if(completeDesc == null){
 		 this.completeDesc = completeDesc;
 		}else{
-			this.completeDesc =  escapeUnicode(StringEscapeUtils.unescapeHtml(completeDesc));
+			this.completeDesc =  escapeUnicode(StringEscapeUtils.unescapeJava(completeDesc));
 		}
 	}
 	

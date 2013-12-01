@@ -5481,10 +5481,10 @@ function validateUploadFileDetails()
    var fileDate = $("#newsdatedatepic").val();
    var scope = document.getElementById("scopeDiv").value;
    
-   fileTitle = removeAllUnwantedCharacters1(fileTitle);	
-   fileDesc = removeAllUnwantedCharacters1(fileDesc);
-	document.getElementById('newsfileTitle').value = fileTitle;
-	document.getElementById('newsfileDescription').value = fileDesc;
+   //fileTitle = removeAllUnwantedCharacters1(fileTitle);	
+   //fileDesc = removeAllUnwantedCharacters1(fileDesc);
+	//document.getElementById('newsfileTitle').value = fileTitle;
+	//document.getElementById('newsfileDescription').value = fileDesc;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
