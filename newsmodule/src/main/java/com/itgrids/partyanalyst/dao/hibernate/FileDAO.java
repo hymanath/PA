@@ -257,8 +257,10 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 			 str.append(" and model.userAddress.district.districtId =:locationVal ");	
 		  if((locationVal != null && locationVal > 0) && (scopeId == 4))
 			   str.append(" and model.userAddress.constituency.constituencyId =:locationVal ");	
-		  if(scopeId != null && scopeId > 0)
-			   str.append(" and model.regionScopes.regionScopesId=:scopeId ");	  
+		  if((locationVal != null && locationVal > 0) && (scopeId == 5))
+			   str.append(" and model.userAddress.parliamentConstituency.constituencyId =:locationVal ");	
+		  //if(scopeId != null && scopeId > 0)
+			  // str.append(" and model.regionScopes.regionScopesId=:scopeId ");	  
 		  if(userId > 0)
 			  str.append(" and model.user.userId=:userId ");	    
 		   if(fromDate != null)
@@ -270,11 +272,9 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		   if(fromDate != null)
 		   query.setParameter("fromDate", fromDate);
 		  if(toDate != null)
-		   query.setParameter("toDate", toDate);
-		  if(locationVal !=null && locationVal > 0)
-			   query.setParameter("locationVal", locationVal);  
-		  if(scopeId !=null && scopeId > 0)
-			query.setParameter("scopeId", scopeId);  
+		   query.setParameter("toDate", toDate);  
+		  if((locationVal != null && locationVal > 0) && (scopeId !=null && scopeId > 0))
+			  query.setParameter("locationVal", locationVal);  
 		  if(userId > 0)
 			query.setParameter("userId", userId);   
 		  if(startIndex != null)
@@ -317,4 +317,35 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		  queryObj.setDate("toDate", toDate);
 			return (Long)queryObj.uniqueResult();	
 	 }
+	 public Long getTotalFilesListCountByLocation(Long userId,Date fromDate,Date toDate,Long locationVal,Long scopeId)
+		{
+		  StringBuilder str = new StringBuilder();
+		  str.append(" select count(distinct model.fileId) from File model where model.isDeleted != 'Y' ");
+		  if((locationVal != null && locationVal > 0) && (scopeId == 3))
+			 str.append(" and model.userAddress.district.districtId =:locationVal ");	
+		  if((locationVal != null && locationVal > 0) && (scopeId == 4))
+			   str.append(" and model.userAddress.constituency.constituencyId =:locationVal ");	
+		  if((locationVal != null && locationVal > 0) && (scopeId == 5))
+			   str.append(" and model.userAddress.parliamentConstituency.constituencyId =:locationVal ");	
+		  //if(scopeId != null && scopeId > 0)
+			  // str.append(" and model.regionScopes.regionScopesId=:scopeId ");	  
+		  if(userId > 0)
+			  str.append(" and model.user.userId=:userId ");	    
+		   if(fromDate != null)
+			  str.append(" and date(model.fileDate) >= :fromDate ");
+		   if(toDate != null)
+			  str.append(" and date(model.fileDate) <= :toDate ");
+		   str.append(" order by date(model.fileDate) desc,model.updatedDate desc ");
+		   Query query = getSession().createQuery(str.toString());
+		   if(fromDate != null)
+		   query.setParameter("fromDate", fromDate);
+		  if(toDate != null)
+		   query.setParameter("toDate", toDate);  
+		  if((locationVal != null && locationVal > 0) && (scopeId !=null && scopeId > 0))
+			  query.setParameter("locationVal", locationVal);  
+		  if(userId > 0)
+			query.setParameter("userId", userId);   
+		  return (Long)query.uniqueResult();
+		 
+		}
 }

@@ -54,6 +54,9 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	private Integer endValue;
 	private List<FileVO> analysedNewsDetails;
 	private ResultStatus resultStatus;
+	private Long sourceBenifitId;
+	private Long destiBenifitId;
+	
 	/**
 	 * @return the resultStatus
 	 */
@@ -248,6 +251,22 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		this.analysedNewsDetails = analysedNewsDetails;
 	}
 
+	public Long getSourceBenifitId() {
+		return sourceBenifitId;
+	}
+
+	public void setSourceBenifitId(Long sourceBenifitId) {
+		this.sourceBenifitId = sourceBenifitId;
+	}
+
+	public Long getDestiBenifitId() {
+		return destiBenifitId;
+	}
+
+	public void setDestiBenifitId(Long destiBenifitId) {
+		this.destiBenifitId = destiBenifitId;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -294,7 +313,8 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 			AnalysisVO vo = new AnalysisVO();
 			
 			
-			
+			vo.setSourceBenifitId(whoBenfitId);
+			vo.setDestiBenifitId(whomBenfitId);
 			String newsSourceId = jObj.getString("newsSourceId");
 			if(newsSourceId.trim().length() > 0)
 			{
@@ -328,7 +348,12 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 				}
 			}
 			if(analyseCandidate.trim().length() > 0){
-				if(analyseCandidate.trim().equalsIgnoreCase("source")){
+				
+				if(analyseCandidate.trim().equalsIgnoreCase("sourceDesti")){
+					vo.setBySourceCand(true);
+					vo.setByDestiCand(true);
+				}
+				else if(analyseCandidate.trim().equalsIgnoreCase("source")){
 					vo.setBySourceCand(true);
 				}else if(analyseCandidate.trim().equalsIgnoreCase("destination")){
 					vo.setByDestiCand(true);
@@ -416,6 +441,8 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
     		 vo.setCategoryId(getCategoryId());
     		 vo.setKeywordId(getKeywordId());
     		 vo.setBenifitsFor(getBenifitsFor());
+    		 vo.setDestiBenifitId(getDestiBenifitId());
+    		 vo.setDestiBenifitId(getDestiBenifitId());
     		 Date fromDate = (getStartDate()!=null && getStartDate().trim().length() > 0)?format.parse(getStartDate()):null;
     		 Date toDate = (getEndDate()!=null && getEndDate().trim().length() >0)?format.parse(getEndDate()):null;
     		 Integer startIndex = null;
