@@ -83,7 +83,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 return getSourceDestinationCategoryPresentQuery(analysisVO);
 			 }else if(analysisVO.isByKeyword()){
 				 return getSourceDestinationKeywordPresentQuery(analysisVO);
-			 }else if(!analysisVO.isByCategory() && !analysisVO.isByKeyword() && !analysisVO.isSourceCand() && !analysisVO.isSourceParty() && !analysisVO.isDestiCand() && !analysisVO.isDestiParty() && (analysisVO.isSourcePresent() || analysisVO.isLocationPresent() || analysisVO.getFromDate() != null || analysisVO.getToDate() != null )){
+			 }else if(!analysisVO.isByDestiCand() && !analysisVO.isBySourceCand() && !analysisVO.isByCategory() && !analysisVO.isByKeyword() && !analysisVO.isSourceCand() && !analysisVO.isSourceParty() && !analysisVO.isDestiCand() && !analysisVO.isDestiParty() && (analysisVO.isSourcePresent() || analysisVO.isLocationPresent() || analysisVO.getFromDate() != null || analysisVO.getToDate() != null )){
 				 return getOnlySourceDestinationPresent(analysisVO); 
 			 }else{
 				 return getSourceDestinationPresentIncludeCandidateParty(analysisVO);
@@ -108,10 +108,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		query.append("  count(distinct cpc.candidatePartyFile.file.fileId) ,");
 		if(vo.isBySourceCand()){
 			query.append(" cpc.candidatePartyFile.sourceCandidate.candidateId,cpc.candidatePartyFile.sourceCandidate.lastname, ");
-		}else if(vo.isByDestiCand()){
-			query.append(" cpc.candidatePartyFile.destinationCandidate.candidateId,cpc.candidatePartyFile.destinationCandidate.lastname, ");
+		}else{
+			query.append(" cast(null as char),cast(null as char),");
 		}
-		if(!vo.isBySourceCand() && !vo.isByDestiCand()){
+		if(vo.isByDestiCand()){
+			query.append(" cpc.candidatePartyFile.destinationCandidate.candidateId,cpc.candidatePartyFile.destinationCandidate.lastname, ");
+		}else{
 			query.append(" cast(null as char),cast(null as char),");
 		}
 		if(vo.isLocationPresent()){
@@ -157,6 +159,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
 				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpc.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpc.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
 			   query.append(" and fsl.source.sourceId in ("+vo.getSourceIds()+") and cpc.gallary.gallaryId in ("+vo.getGallaryKeyWordIds()+") group by ");
 			   
 			   
@@ -170,7 +178,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			   
 			   if(vo.isBySourceCand()){
 					query.append(" cpc.candidatePartyFile.sourceCandidate.candidateId, ");
-				}else if(vo.isByDestiCand()){
+				}
+			   if(vo.isByDestiCand()){
 					query.append(" cpc.candidatePartyFile.destinationCandidate.candidateId, ");
 				}
 			   query.append(" fsl.source.sourceId ,cpc.gallary.gallaryId ");
@@ -193,10 +202,17 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						if(vo.getToDate() != null){
 							query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
 						}
+						if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+							query.append(" and cpc.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+						}
+		                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+		                	 query.append(" and cpc.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+						}
 				query.append("  and cpc.gallary.gallaryId in ("+vo.getGallaryKeyWordIds()+") group by  ");
 				if(vo.isBySourceCand()){
 					query.append(" cpc.candidatePartyFile.sourceCandidate.candidateId, ");
-				}else if(vo.isByDestiCand()){
+				}
+				if(vo.isByDestiCand()){
 					query.append(" cpc.candidatePartyFile.destinationCandidate.candidateId, ");
 				}
 				query.append(" fsl.source.sourceId ,cpc.gallary.gallaryId");
@@ -220,6 +236,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						if(vo.getToDate() != null){
 							query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
 						}
+						if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+							query.append(" and cpc.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+						}
+		                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+		                	 query.append(" and cpc.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+						}
 						query.append(" group by ");
 						if(vo.isLocationPresent()){
 							if(vo.getLocationLvl().longValue() == 1){
@@ -232,7 +254,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						}
 						if(vo.isBySourceCand()){
 							query.append(" cpc.candidatePartyFile.sourceCandidate.candidateId, ");
-						}else if(vo.isByDestiCand()){
+						}
+						if(vo.isByDestiCand()){
 							query.append(" cpc.candidatePartyFile.destinationCandidate.candidateId, ");
 						}
 						query.append("  cpc.gallary.gallaryId");
@@ -246,10 +269,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		query.append("  count(distinct cpk.candidatePartyFile.file.fileId) ,");
 		if(vo.isBySourceCand()){
 			query.append(" cpk.candidatePartyFile.sourceCandidate.candidateId,cpk.candidatePartyFile.sourceCandidate.lastname, ");
-		}else if(vo.isByDestiCand()){
-			query.append(" cpk.candidatePartyFile.destinationCandidate.candidateId,cpk.candidatePartyFile.destinationCandidate.lastname, ");
+		}else{
+			query.append(" cast(null as char),cast(null as char),");
 		}
-		if(!vo.isBySourceCand() && !vo.isByDestiCand()){
+		
+		if(vo.isByDestiCand()){
+			query.append(" cpk.candidatePartyFile.destinationCandidate.candidateId,cpk.candidatePartyFile.destinationCandidate.lastname, ");
+		}else{
 			query.append(" cast(null as char),cast(null as char),");
 		}
 		if(vo.isLocationPresent()){
@@ -293,6 +319,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
 				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
 			   query.append(" and fsl.source.sourceId in ("+vo.getSourceIds()+") and cpk.keyword.keywordId in ("+vo.getGallaryKeyWordIds()+") group by ");
 			   
 			   
@@ -306,7 +338,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			   
 			   if(vo.isBySourceCand()){
 					query.append(" cpk.candidatePartyFile.sourceCandidate.candidateId, ");
-				}else if(vo.isByDestiCand()){
+				}
+               if(vo.isByDestiCand()){
 					query.append(" cpk.candidatePartyFile.destinationCandidate.candidateId, ");
 				}
 			   query.append(" fsl.source.sourceId ,cpk.keyword.keywordId ");
@@ -329,10 +362,17 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
 				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
 				query.append("  and cpk.keyword.keywordId in ( "+vo.getGallaryKeyWordIds()+") group by  ");
 				 if(vo.isBySourceCand()){
 						query.append(" cpk.candidatePartyFile.sourceCandidate.candidateId, ");
-					}else if(vo.isByDestiCand()){
+					}
+				 if(vo.isByDestiCand()){
 						query.append(" cpk.candidatePartyFile.destinationCandidate.candidateId, ");
 					}
 				 query.append(" fsl.source.sourceId ,cpk.keyword.keywordId ");
@@ -366,6 +406,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
 				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
 			   query.append("  group by ");
 			   
 			   if(vo.getLocationLvl().longValue() == 1){
@@ -377,7 +423,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				}
 			   if(vo.isBySourceCand()){
 					query.append(" cpk.candidatePartyFile.sourceCandidate.candidateId, ");
-				}else if(vo.isByDestiCand()){
+				}
+			   if(vo.isByDestiCand()){
 					query.append(" cpk.candidatePartyFile.destinationCandidate.candidateId, ");
 				}
 			   query.append(" cpk.keyword.keywordId ");
@@ -400,11 +447,18 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
 				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
 				query.append(" group by ");
 				
 				    if(vo.isBySourceCand()){
 						query.append(" cpk.candidatePartyFile.sourceCandidate.candidateId, ");
-					}else if(vo.isByDestiCand()){
+					}
+				    if(vo.isByDestiCand()){
 						query.append(" cpk.candidatePartyFile.destinationCandidate.candidateId, ");
 					}
 				    
@@ -511,10 +565,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		query.append("select  count(distinct cpf.file.fileId),");
 		if(vo.isBySourceCand()){
 			query.append(" cpf.sourceCandidate.candidateId,cpf.sourceCandidate.lastname, ");
-		}else if(vo.isByDestiCand()){
+		}else{
+			query.append("cast(null as char),cast(null as char),");
+		} 
+		if(vo.isByDestiCand()){
 			query.append(" cpf.destinationCandidate.candidateId,cpf.destinationCandidate.lastname, ");
-		}
-		if(!vo.isBySourceCand() && !vo.isByDestiCand()){
+		}else{
 			query.append("cast(null as char),cast(null as char),");
 		}
 		if(vo.isSourcePresent()){
@@ -552,6 +608,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpf.file.fileDate) <= :toDate ");
 				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
 			   query.append(" group by ");
 			   
 			   if(vo.getLocationLvl().longValue() == 1){
@@ -563,7 +625,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				}
 			   if(vo.isBySourceCand()){
 					query.append(" cpf.sourceCandidate.candidateId, ");
-				}else if(vo.isByDestiCand()){
+				}
+			   if(vo.isByDestiCand()){
 					query.append(" cpf.destinationCandidate.candidateId, ");
 				}
 			   query.append(" fsl.source.sourceId  ");
@@ -586,10 +649,17 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpf.file.fileDate) <= :toDate ");
 				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
 				query.append("   group by  ");
 				 if(vo.isBySourceCand()){
 						query.append(" cpf.sourceCandidate.candidateId, ");
-					}else if(vo.isByDestiCand()){
+					}
+				 if(vo.isByDestiCand()){
 						query.append(" cpf.destinationCandidate.candidateId, ");
 					}
 				query.append(" fsl.source.sourceId ");
@@ -628,6 +698,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			if(vo.getToDate() != null){
 				query.append(" and date(file.fileDate) <= :toDate ");
 			}
+			if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+				query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+			}
+             if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+            	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+			}
 		   query.append(" group by ");
 		  
 		   if(vo.getLocationLvl().longValue() == 1){
@@ -639,7 +715,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			}
 		   if(vo.isBySourceCand()){
 				query.append(" ,cpf.sourceCandidate.candidateId ");
-			}else if(vo.isByDestiCand()){
+			}
+		   if(vo.isByDestiCand()){
 				query.append(" ,cpf.destinationCandidate.candidateId ");
 			}
 		}else{
@@ -648,7 +725,10 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				query.append("select count(distinct cpf.file.fileId) ");
 				if(vo.isBySourceCand()){
 					query.append(" ,cpf.sourceCandidate.candidateId,cpf.sourceCandidate.lastname ");
-				}else if(vo.isByDestiCand()){
+				}else{
+					query.append(" ,cast(null as char),cast(null as char) ");
+				}
+				if(vo.isByDestiCand()){
 					query.append(" ,cpf.destinationCandidate.candidateId,cpf.destinationCandidate.lastname ");
 				}else{
 					query.append(" ,cast(null as char),cast(null as char) ");
@@ -670,9 +750,19 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(vo.getToDate() != null){
 					query.append(" and date(cpf.file.fileDate) <= :toDate ");
 				}
-				if(vo.isBySourceCand()){
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+                 if(vo.isBySourceCand() && vo.isByDestiCand()){
+                	 query.append(" group by cpf.sourceCandidate.candidateId,cpf.destinationCandidate.candidateId ");
+                 }
+                 else if(vo.isBySourceCand()){
 					query.append(" group by cpf.sourceCandidate.candidateId ");
-				}else if(vo.isByDestiCand()){
+				}
+                 else if(vo.isByDestiCand()){
 					query.append(" group by cpf.destinationCandidate.candidateId ");
 				}
 			}else{
@@ -694,8 +784,9 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		List<String> levels = new ArrayList<String>();
 		returnVal.setLevels(levels);
 		returnVal.setBuildMethod("first");
-		Map<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>> newsCountsMap = new HashMap<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>>();
-		//  loc      cand     sour     cat/keyword
+		Map<Long,Map<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>>> newsCountsMap = new HashMap<Long,Map<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>>>();
+		//  loc    soucand   destcand  sour    cat/keyword
+		Map<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>> sourceCandidateMap = null;
 		Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>> candidateMap = null;
 		Map<Long,Map<Long,NewsAnalysisVO>> sourceMap = null;
 		Map<Long,NewsAnalysisVO> categKeywordMap = null;
@@ -704,54 +795,63 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		Map<Long,String> candidateNamesMap = new HashMap<Long,String>();
 		Map<Long,String> sourceNamesMap = new HashMap<Long,String>();
 		
+		boolean soucandidateLvl = true;
 		boolean candidateLvl = true;
 		boolean sourceLvl = true;
 		boolean categKeyLvl = true;
+		boolean soucandidateSubLvl = false;
 		boolean candidateSubLvl = false;
 		boolean sourceSubLvl = false;
 		
 	    List<Object[]>	newsList = fileDAO.getNewsBySearchCriteria(query,vo);
-		// 0 count 1 candidateId 2 candidateName 3 locationId 4 locationName 5 sourceId 6 sourceName 7 gallaryId 8 gallaryName 9 benifits
+		// 0 count 1 soucandidateId 2 soucandidateName 3 desticandidateId 4 desticandidateName 5 locationId 6 locationName 7 sourceId 8 sourceName 9 gallaryId 10 gallaryName 11 benifits
 	    
 	    for(Object[] news:newsList){
-	    	candidateMap = newsCountsMap.get((Long)news[3]);
+	    	sourceCandidateMap = newsCountsMap.get((Long)news[5]);
+			if(sourceCandidateMap == null){
+				sourceCandidateMap = new HashMap<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>>();
+				newsCountsMap.put((Long)news[5],sourceCandidateMap);
+				if(news[6] != null)
+				 locationNamesMap.put((Long)news[5],news[6].toString());
+			}
+	    	candidateMap = sourceCandidateMap.get((Long)news[1]);
 			if(candidateMap == null){
 			    candidateMap = new HashMap<Long,Map<Long,Map<Long,NewsAnalysisVO>>>();
-				newsCountsMap.put((Long)news[3],candidateMap);
-				if(news[4] != null)
-				 locationNamesMap.put((Long)news[3],news[4].toString());
+			    sourceCandidateMap.put((Long)news[1],candidateMap);
+				if(news[2] != null)
+				 candidateNamesMap.put((Long)news[1],news[2].toString());
 			}
-			sourceMap = candidateMap.get((Long)news[1]);
+			sourceMap = candidateMap.get((Long)news[3]);
 			if(sourceMap == null){
 			    sourceMap = new HashMap<Long,Map<Long,NewsAnalysisVO>>();
-				candidateMap.put((Long)news[1],sourceMap);
-				if(news[2] != null)
-				candidateNamesMap.put((Long)news[1],news[2].toString());
+				candidateMap.put((Long)news[3],sourceMap);
+				if(news[4] != null)
+				candidateNamesMap.put((Long)news[3],news[4].toString());
 			}
-			categKeywordMap = sourceMap.get((Long)news[5]);
+			categKeywordMap = sourceMap.get((Long)news[7]);
 			if(categKeywordMap == null){
 			    categKeywordMap = new HashMap<Long,NewsAnalysisVO>();
-				sourceMap.put((Long)news[5],categKeywordMap);
-				if(news[6] != null)
-				sourceNamesMap.put((Long)news[5],news[6].toString());
+				sourceMap.put((Long)news[7],categKeywordMap);
+				if(news[8] != null)
+				sourceNamesMap.put((Long)news[7],news[8].toString());
 			}
-			countVO = categKeywordMap.get((Long)news[7]);
+			countVO = categKeywordMap.get((Long)news[9]);
 			if(countVO == null){
 			    countVO = new NewsAnalysisVO();
-			    countVO.setLocationId((Long)news[3]);
-			    countVO.setSourceId((Long)news[5]);
+			    countVO.setLocationId((Long)news[5]);
+			    countVO.setSourceId((Long)news[7]);
 			    countVO.setLocationLvl(vo.getLocationLvl());
 			    if(vo.isByCategory()){
-			      countVO.setCategoryId((Long)news[7]);
+			      countVO.setCategoryId((Long)news[9]);
 			    }
 			    if(vo.isByKeyword()){
-			      countVO.setKeywordId((Long)news[7]);
+			      countVO.setKeywordId((Long)news[9]);
 			    }
 			    if(vo.isBySourceCand()){
 			    	countVO.setSourceCandId((Long)news[1]);
 			    }
 			    if(vo.isByDestiCand()){
-			    	countVO.setDestiCandId((Long)news[1]);
+			    	countVO.setDestiCandId((Long)news[3]);
 			    }
 			    if(vo.isSourceCand()){
 			    	countVO.setSourceCandId(vo.getSourceCandidateId());
@@ -763,8 +863,10 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				}else if(vo.isDestiParty()){
 					countVO.setDestiPartyId(vo.getDestiPartyId());
 				}
-			    countVO.setName(news[8] != null?news[8].toString():"");
-				categKeywordMap.put((Long)news[7],countVO);
+				countVO.setSourceBenifitId(vo.getSourceBenifitId());
+				countVO.setDestiBenifitId(vo.getDestiBenifitId());
+			    countVO.setName(news[10] != null?news[10].toString():"");
+				categKeywordMap.put((Long)news[9],countVO);
 			}
 			/*if(((Long)news[9]).intValue() == 1){
 				countVO.setPositiveCount((Long)news[0]);
@@ -789,18 +891,34 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	    	NewsAnalysisVO location = new NewsAnalysisVO();	    	
 	    	location.setName(locationNamesMap.get(key));
 	    	locationList.add(location);
-	    	List<NewsAnalysisVO> candidateList = new ArrayList<NewsAnalysisVO>();
-	    	location.setSubList(candidateList);
-	    	candidateMap = newsCountsMap.get(key);
-	    	Set<Long> candidateKeys = candidateMap.keySet();
-	    	if(candidateLvl){
-	    		if(!(candidateKeys.size() == 1 && candidateKeys.contains(null))){
-	    			levels.add("Candidate");
-	    			candidateSubLvl = true;
+	    	List<NewsAnalysisVO> sourceCandidateList = new ArrayList<NewsAnalysisVO>();
+	    	location.setSubList(sourceCandidateList);
+	    	sourceCandidateMap = newsCountsMap.get(key);
+	    	Set<Long> sourcandidateKeys = sourceCandidateMap.keySet();
+	    	if(soucandidateLvl){
+	    		if(!(sourcandidateKeys.size() == 1 && sourcandidateKeys.contains(null))){
+	    			levels.add("Who");
+	    			soucandidateSubLvl = true;
 	    	    }
-	    		candidateLvl = false;
+	    		soucandidateLvl = false;
 	    	}
-	    	location.setSubListPresent(candidateSubLvl);
+	    	location.setSubListPresent(soucandidateSubLvl);
+	      for(Long soucandidateKey:sourcandidateKeys){	
+	    		NewsAnalysisVO sourCandidate = new NewsAnalysisVO();	    	
+	    		sourCandidate.setName(candidateNamesMap.get(soucandidateKey));
+	    		sourceCandidateList.add(sourCandidate);
+		    	List<NewsAnalysisVO> candidateList = new ArrayList<NewsAnalysisVO>();
+		    	sourCandidate.setSubList(candidateList);
+		    	candidateMap = sourceCandidateMap.get(soucandidateKey);
+		    	Set<Long> candidateKeys = candidateMap.keySet();
+		    	if(candidateLvl){
+		    		if(!(candidateKeys.size() == 1 && candidateKeys.contains(null))){
+		    			levels.add("Whome");
+		    			candidateSubLvl = true;
+		    	    }
+		    		candidateLvl = false;
+		    	}
+		    	sourCandidate.setSubListPresent(candidateSubLvl);  
 	    	for(Long candidateKey:candidateKeys){
 	    		
 	    		NewsAnalysisVO candidate = new NewsAnalysisVO();
@@ -830,6 +948,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			    	Set<Long> categKeywordKeys = categKeywordMap.keySet();
 			    	location.setRowSpan(location.getRowSpan()+categKeywordMap.size());
 			    	candidate.setRowSpan(candidate.getRowSpan()+categKeywordMap.size());
+			    	sourCandidate.setRowSpan(sourCandidate.getRowSpan()+categKeywordMap.size());
 			    	if(categKeyLvl){
 			    		if(!(categKeywordKeys.size() == 1 && categKeywordKeys.contains(null))){
 			    			levels.add("Category/Keyword");
@@ -841,7 +960,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			    	
 			    }
 		    }
-	    	
+	      }
 	    }
 	    
 		return returnVal;
@@ -919,7 +1038,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		return returnVal;
 	}
 	
-	public NewsAnalysisVO getDataForSourceDestinationPresentIncludeCandidateParty(String query,AnalysisVO vo){
+	/*public NewsAnalysisVO getDataForSourceDestinationPresentIncludeCandidateParty(String query,AnalysisVO vo){
 		NewsAnalysisVO returnVal = new NewsAnalysisVO();
 		List<String> levels = new ArrayList<String>();
 		returnVal.setLevels(levels);
@@ -981,13 +1100,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			    countVO.setName(news[6] != null?news[6].toString():"");
 			    sourceMap.put((Long)news[5],countVO);
 			}
-			/*if(((Long)news[9]).intValue() == 1){
+			if(((Long)news[9]).intValue() == 1){
 				countVO.setPositiveCount((Long)news[0]);
 			}else if(((Long)news[9]).intValue() == 2){
 				countVO.setNegativeCount((Long)news[0]);
 			}else{
 				countVO.setNeutralCount((Long)news[0]);
-			}*/
+			}
 			countVO.setTotal(countVO.getTotal()+(Long)news[0]);
 	    }
 	   
@@ -1041,8 +1160,160 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	    }
 	    
 		return returnVal;
+	}*/
+	public NewsAnalysisVO getDataForSourceDestinationPresentIncludeCandidateParty(String query,AnalysisVO vo){
+		NewsAnalysisVO returnVal = new NewsAnalysisVO();
+		List<String> levels = new ArrayList<String>();
+		returnVal.setLevels(levels);
+		returnVal.setBuildMethod("third");
+		Map<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>> newsCountsMap = new HashMap<Long,Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>>>();
+		//  loc   soucand   destcand   sour
+		Map<Long,Map<Long,Map<Long,NewsAnalysisVO>>> souCandidateMap = null;
+		Map<Long,Map<Long,NewsAnalysisVO>> candidateMap = null;
+		Map<Long,NewsAnalysisVO> sourceMap = null;
+		NewsAnalysisVO countVO = null;
+		Map<Long,String> locationNamesMap = new HashMap<Long,String>();
+		Map<Long,String> candidateNamesMap = new HashMap<Long,String>();
+		//Map<Long,String> sourceNamesMap = new HashMap<Long,String>();
+		
+		boolean souCandidateLvl = true;
+		boolean candidateLvl = true;
+		boolean sourceLvl = true;
+		boolean souCandidateSubLvl = false;
+		boolean candidateSubLvl = false;
+		boolean sourceSubLvl = false;
+		
+	    List<Object[]>	newsList = fileDAO.getNewsBySearchCriteria(query,vo);
+	 // 0 count  1 source candidateId 2 source candidateName  3 candidateId 4 candidateName 5 locationId 6 locationName 7 sourceId 8 sourceName  9 benifits
+	    for(Object[] news:newsList){
+	    	souCandidateMap = newsCountsMap.get((Long)news[5]);
+			if(souCandidateMap == null){
+				souCandidateMap = new HashMap<Long,Map<Long,Map<Long,NewsAnalysisVO>>>();
+				newsCountsMap.put((Long)news[5],souCandidateMap);
+				if(news[6] != null)
+				 locationNamesMap.put((Long)news[5],news[6].toString());
+			}
+			candidateMap = souCandidateMap.get((Long)news[1]);
+			if(candidateMap == null){
+				candidateMap = new HashMap<Long,Map<Long,NewsAnalysisVO>>();
+				souCandidateMap.put((Long)news[1],candidateMap);
+				if(news[2] != null)
+				candidateNamesMap.put((Long)news[1],news[2].toString());
+			}
+			sourceMap = candidateMap.get((Long)news[3]);
+			if(sourceMap == null){
+				sourceMap = new HashMap<Long,NewsAnalysisVO>();
+				candidateMap.put((Long)news[3],sourceMap);
+				if(news[4] != null)
+				 candidateNamesMap.put((Long)news[3],news[4].toString());
+			}
+			countVO = sourceMap.get((Long)news[7]);
+			if(countVO == null){
+			    countVO = new NewsAnalysisVO();
+			    countVO.setLocationId((Long)news[5]);
+			    countVO.setLocationLvl(vo.getLocationLvl());
+			    countVO.setSourceId((Long)news[7]);
+			    if(vo.isBySourceCand()){
+			    	countVO.setSourceCandId((Long)news[1]);
+			    }
+			    if(vo.isByDestiCand()){
+			    	countVO.setDestiCandId((Long)news[3]);
+			    }
+			    if(vo.isSourceCand()){
+			    	countVO.setSourceCandId(vo.getSourceCandidateId());
+				}else if(vo.isSourceParty()){
+					countVO.setSourcePartyId(vo.getSourcePartyId());
+				}
+				if(vo.isDestiCand()){
+					countVO.setDestiCandId(vo.getDestiCandidateId());
+				}else if(vo.isDestiParty()){
+					countVO.setDestiPartyId(vo.getDestiPartyId());
+				}
+				countVO.setSourceBenifitId(vo.getSourceBenifitId());
+				countVO.setDestiBenifitId(vo.getDestiBenifitId());
+			    countVO.setName(news[8] != null?news[8].toString():"");
+			    sourceMap.put((Long)news[7],countVO);
+			}
+			/*if(((Long)news[9]).intValue() == 1){
+				countVO.setPositiveCount((Long)news[0]);
+			}else if(((Long)news[9]).intValue() == 2){
+				countVO.setNegativeCount((Long)news[0]);
+			}else{
+				countVO.setNeutralCount((Long)news[0]);
+			}*/
+			countVO.setTotal(countVO.getTotal()+(Long)news[0]);
+	    }
+	    
+	    Set<Long> locationKeys = newsCountsMap.keySet();
+	    if(locationKeys.size() == 1 && locationKeys.contains(null)){
+	    	
+	    }else{
+	    	levels.add("Location");
+	    	returnVal.setSubListPresent(true);
+	    }
+	    List<NewsAnalysisVO> locationList = new ArrayList<NewsAnalysisVO>();
+	    returnVal.setSubList(locationList);
+	    for(Long key:locationKeys){
+	    	NewsAnalysisVO location = new NewsAnalysisVO();	    	
+	    	location.setName(locationNamesMap.get(key));
+	    	locationList.add(location);
+	    	List<NewsAnalysisVO> souCandidateList = new ArrayList<NewsAnalysisVO>();
+	    	location.setSubList(souCandidateList);
+	    	souCandidateMap = newsCountsMap.get(key);
+	    	Set<Long> souCandidateKeys = souCandidateMap.keySet();
+	    	if(souCandidateLvl){
+	    		if(!(souCandidateKeys.size() == 1 && souCandidateKeys.contains(null))){
+	    			levels.add("Who");
+	    			souCandidateSubLvl = true;
+	    	    }
+	    		souCandidateLvl = false;
+	    	}
+	    	location.setSubListPresent(souCandidateSubLvl);
+	    	for(Long souCandidateKey:souCandidateKeys){
+	    		
+	    		NewsAnalysisVO souCandidate = new NewsAnalysisVO();
+	    		souCandidate.setName(candidateNamesMap.get(souCandidateKey));
+	    		souCandidateList.add(souCandidate);
+		    	List<NewsAnalysisVO> candidateList = new ArrayList<NewsAnalysisVO>();
+		    	souCandidate.setSubList(candidateList);
+		    	candidateMap = souCandidateMap.get(souCandidateKey);
+		    	Set<Long> candidateKeys = candidateMap.keySet();
+		    	if(candidateLvl){
+		    		if(!(candidateKeys.size() == 1 && candidateKeys.contains(null))){
+		    			levels.add("Whome");
+		    			candidateSubLvl = true;	
+		    	    }
+		    		candidateLvl = false;
+		    	}
+		    	souCandidate.setSubListPresent(candidateSubLvl);
+		    	for(Long candidateKey:candidateKeys){
+		    		NewsAnalysisVO candidate = new NewsAnalysisVO();
+		    		
+		    		candidate.setName(candidateNamesMap.get(candidateKey));
+		    		candidateList.add(candidate);
+			    	
+			    	
+		    		sourceMap = candidateMap.get(candidateKey);
+			    	Set<Long> sourceKeys = sourceMap.keySet();
+			    	if(sourceLvl){
+			    		if(!(sourceKeys.size() == 1 && sourceKeys.contains(null))){
+			    			levels.add("Source");
+			    			sourceSubLvl = true;
+			    	    }
+			    		sourceLvl = false;
+			    	}
+			    	candidate.setSubListPresent(sourceSubLvl);
+			    	candidate.setRowSpan(candidate.getRowSpan()+sourceMap.size());
+			    	location.setRowSpan(location.getRowSpan()+sourceMap.size());
+			    	souCandidate.setRowSpan(souCandidate.getRowSpan()+sourceMap.size());
+			    	candidate.setSubList(new ArrayList<NewsAnalysisVO>(sourceMap.values()));
+			    }
+		    }
+	    	
+	    }
+	    
+		return returnVal;
 	}
-	
 	public List<FileVO> getSelectedNews(NewsAnalysisVO vo,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex){
 	  try{
 		StringBuilder query = new StringBuilder();
@@ -1059,6 +1330,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		if((vo.getSourceCandId()!= null && vo.getSourceCandId() > 0) || (vo.getDestiCandId() != null && vo.getDestiCandId() > 0) || (vo.getSourcePartyId() != null && vo.getSourcePartyId() > 0 ) || (vo.getDestiPartyId() != null && vo.getDestiPartyId() >0 )){
 			query.append(",CandidatePartyFile cpf ");
 			cpfQuery.append(" and model.fileId = cpf.file.fileId  ");
+			if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+				cpfQuery.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+			}
+             if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+            	 cpfQuery.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+			}
 		}
 		if(vo.getSourceId() != null && vo.getSourceId() > 0){
 			query.append(",FileSourceLanguage fsl ");
@@ -1067,10 +1344,22 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		if(vo.getCategoryId() != null && vo.getCategoryId() > 0){
 			query.append(",CandidatePartyCategory cpc ");
 			cpcQuery.append(" and model.fileId = cpc.candidatePartyFile.file.fileId  ");
+			if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+				cpcQuery.append(" and cpc.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+			}
+             if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+            	 cpcQuery.append(" and cpc.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+			}
 		}
 		if(vo.getKeywordId() != null && vo.getKeywordId() > 0){
 			query.append(",CandidatePartyKeyword cpk ");
 			cpkQuery.append(" and model.fileId = cpk.candidatePartyFile.file.fileId  ");
+			if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+				cpkQuery.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+			}
+             if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+            	 cpkQuery.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+			}
 		}
 		query.append(" where model.isDeleted != 'Y' and model.isPrivate != 'Y' ");
 		query.append(cpfQuery);

@@ -38,7 +38,7 @@
 	}
 	
 	.label-success-50, .badge-success-50 {
-    background-color: rgba(255, 0, 0, 0.1) !important;
+    background-color: #d3d3d3 !important;
     color: #333333 !important;}
 	.tabel-bordered{border-color:3px solid #ffcc00;}
 	.analysisResult thead tr th{background:#ffcc00;}
@@ -58,11 +58,13 @@
 					<div class="row-fluid">
 						<div class="span6">
 							<label class="help-inline"><strong>From Date :</strong></label>
-							<input type="text"  id="fromDateId" readonly="readonly">						
+							<input type="text"  id="fromDateId" readonly="readonly">
+                            <span title="Clear From Date" style="cursor: pointer;" onclick="clearDate('fromDateId');" class="icon-remove-sign"></span>							
 						</div>
 						<div class="span6">
 							<label class="help-inline"><strong>To Date :</strong></label>
-							<input type="text" id="todateId" readonly="readonly">						
+							<input type="text" id="todateId" readonly="readonly">	
+                            <span title="Clear To Date" style="cursor: pointer;" onclick="clearDate('todateId');" class="icon-remove-sign"></span>							
 						</div>
 					</div>
 					
@@ -90,7 +92,7 @@
 							</select>					
 						</div>
 						<div class="span2">
-							<label>Analyse By Candidate</label>
+							<label>Analyse By Who</label>
 							 <input type="checkbox" id="analyseCandidateSource" />				
 						</div>
 					</div><!------Who Div END---->
@@ -119,7 +121,7 @@
 							</select>						
 						</div>
 						<div class="span2">
-							<label>Analyse By Candidate</label>
+							<label>Analyse By Whome</label>
 							 <input type="checkbox" id="analyseCandidateDesti" />				
 						</div>
 					</div><!------Whom Div END---->
@@ -193,7 +195,8 @@
 					</div>
 					<!-------Submit Button------>
 					<div class="form-actions text-center">
-						<button class="btn btn-success" type="submit" onClick="getAnalysisData();">Submit</button>
+						<button class="btn btn-success" type="submit" onClick="getAnalysisData();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
+						<div id="errormessageDiv" style="display:none;color:red;">Please Select Atleast One Option To Analyse</div>
 					</div><!-------Submit Button END------>
 					<div id="responseTable" style="overflow-x:scroll;"></div>
 				</div>	

@@ -37,4 +37,6 @@ public interface IFileDAO extends GenericDao<File, Long> {
 	 public Long getFilesByCategoryIdCount(Long categoryId,String newsType,Date fromDate,Date toDate);
 	 
 	 public List<File> getTotalFilesListByLocation(Long userId,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex,Long locationVal,Long scopeId);
+	 
+	 public Long getTotalFilesListCountByLocation(Long userId,Date fromDate,Date toDate,Long locationVal,Long scopeId);
 }

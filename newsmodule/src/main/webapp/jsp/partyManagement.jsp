@@ -143,7 +143,7 @@ background-color: #CDE6FC;
 	font-family : arial;
 	font-size: 13px;
   margin-top:-20px;
-	padding: 10px 10px 10px 15px;
+	padding: 10px 10px 10px 0px;
 }
 
 #reportsDiv,#locationWiseNewsDiv
@@ -744,31 +744,32 @@ function createNewParty()
 <div id="dateSelectDiv" style="display:none;" class="container well">
 
   <legend class="boxHeading text-center">Update News  </legend>
-  <div style="border:1px solid #ADC248;width: 905px; margin-left: -10px;padding:5px 15px 15px 15px;" class="well">
+  <div style="border:1px solid #ADC248;width: 905px;padding:5px 15px 15px 15px;" class="well">
    <div class="row-fluid" style="background-color:#f5f5f5;">
-   <div class="span3" style="margin-left:240px;"><label><strong>Start Date<span class="requiredFont">*</span></strong></label><input type="text" name="fromDate" class="inpit-block-level  dateField" id="newsFromDateId" readonly="true"/></div>
-   <div class="span3" style="margin-left:3px;"><label><strong>End Date<span class="requiredFont">*</span></strong></label><input type="text" name="toDate" readonly="true" class="inpit-block-level  dateField" id="newsToDateId"/></div>
+   <div class="span3" style="margin-left:240px;"><label style="float: left;"><strong>Start Date<span class="requiredFont">*</span></strong></label><input type="text" name="fromDate" class="inpit-block-level  dateField" id="newsFromDateId" readonly="true"/></div>
+   <div class="span3" style="margin-left:3px;"><label style="float: left;"><strong>End Date<span class="requiredFont">*</span></strong></label><input type="text" name="toDate" readonly="true" class="inpit-block-level  dateField" id="newsToDateId"/></div>
   
   </div>
   
   <div id="selectLevel" class="row-fluid" style="background-color:#f5f5f5;">
-   <div class="span4" style="margin-left:200px;"><label><strong>Select Level</strong></label><select id="responseRegionLevel" onchange="showCorrespondingLocations1();"><option value="1">ALL</option><option value="2">DISTRICT</option><option value="3">PARLIAMENT CONSTITUENCY</option><option value="4">ASSEMBLY CONSTITUENCY</option></select>
-  <span class="help-block"><input type="checkbox"  class="userCheckbox"/> &nbsp;<b><font style="color:#000">Check to view news uploaded by me only</font></b></span>  </div>
+   <div class="span4" style="margin-left:200px;"><label style="float: left;margin-left: 40px;"><strong>Select Level</strong></label><select id="responseRegionLevel" onchange="showCorrespondingLocations1();"><option value="1">ALL</option><option value="2">DISTRICT</option><option value="3">PARLIAMENT CONSTITUENCY</option><option value="4">ASSEMBLY CONSTITUENCY</option></select>
+  <span class="help-block" style="margin-left:11px;"><input type="checkbox"  class="userCheckbox"/> &nbsp;<b><font style="color:#000">View News Uploaded By Me Only</font></b></span>  </div>
 	<div class="regionClass districtSelReport1 span2" style="display:none;margin-left:-29px;">
-    <label><strong> Select District</strong></label> <s:select name="districtSelReport" id="districtSelReportId1" list="districtsList" theme="simple" listKey="id" listValue="name"/>
+    <label style="float: left;"><strong> Select District</strong></label> <s:select name="districtSelReport" id="districtSelReportId1" list="districtsList" theme="simple" listKey="id" listValue="name"/>
     </div>
 	<div class="regionClass parliamSelReport1 span2"  style="display:none;margin-left:-29px;">
-   <label><strong>Select Parliament</strong></label><s:select name="parliamSelReport" id="parliamSelReportId1" list="parlConstiList" theme="simple" listKey="id" listValue="name"/>
+   <label style="float: left;"><strong>Select Parliament</strong></label><s:select name="parliamSelReport" id="parliamSelReportId1" list="parlConstiList" theme="simple" listKey="id" listValue="name"/>
       </div>
 	  <div class="regionClass assembSelReport1 span2"  style="display:none;margin-left:-29px;">
-    <label><strong>Select Assembly </strong></label><s:select name="assembSelReport" id="assembSelReportId1" list="assemConstiList" theme="simple" listKey="id" listValue="name"/>
+    <label style="float: left;"><strong>Select Assembly </strong></label><s:select name="assembSelReport" id="assembSelReportId1" list="assemConstiList" theme="simple" listKey="id" listValue="name"/>
    </div>
 
    </div>
+   <input type="button" value="submit" onclick="getTotalNewsWithPagination();" class="btn btn-info"/>
    </div>
    <br/>
      <div class="span4" style="float:right;">
-    <input type="button" value="submit" onclick="getTotalNewsWithPagination();" class="btn btn-info"/>
+    
  <input type="button" value="Add Response" onclick="addToNewsResponse()" class="btn btn-info"/>
  </div>
  <br/>
@@ -4150,9 +4151,15 @@ function getDesignationList(designationList)
 function populateDate()
 {
 
-$(".dateField").datepicker();
-$(".dateField").datepicker("setDate", new Date());
-
+//$(".dateField").datepicker();
+//$(".dateField").datepicker("setDate", new Date());
+$(".dateField").datepicker({
+		 dateFormat: "dd/mm/yy",
+		 changeMonth: true,
+         changeYear: true,
+		 maxDate: new Date()	
+	});
+	$('.dateField').datepicker('setDate', new Date());
 }
 </script>
 </body>

@@ -3473,8 +3473,11 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    			scopeval = 0l;
 	    		else if(inputs.getScope().equalsIgnoreCase("DISTRICT"))
 	    			scopeval = 3l;
-	    		else if(inputs.getScope().equalsIgnoreCase("PARLIAMENT CONSTITUENCY") || inputs.getScope().equalsIgnoreCase("ASSEMBLY CONSTITUENCY"))
+	    		else if(inputs.getScope().equalsIgnoreCase("ASSEMBLY CONSTITUENCY"))
 	    			scopeval = 4l;
+	    		else if(inputs.getScope().equalsIgnoreCase("PARLIAMENT CONSTITUENCY"))
+	    			scopeval = 5l;
+	    		
 	    	// List<File> filesList = fileDAO.getTotalFilesList(inputs.getUserId(), fromDate, toDate,inputs.getStartIndex(),inputs.getMaxResult());
 	    		if(inputs.getIsSelectedContent() == true)
 	    			inputs.setUserId(inputs.getUserId());
@@ -3533,6 +3536,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    	     }
 	    	   resultVO.setFileVOList(fileVOList);
 	    	   resultVO.setCount(fileDAO.getTotalFilesListCount(fromDate, toDate).intValue());
+	    	   resultVO.setCount(fileDAO.getTotalFilesListCountByLocation(inputs.getUserId(), fromDate, toDate,inputs.getLocationId(),scopeval).intValue());
 	    	  }
 	    	}
 	    	catch(Exception e){

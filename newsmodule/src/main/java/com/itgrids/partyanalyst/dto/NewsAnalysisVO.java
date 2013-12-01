@@ -30,6 +30,8 @@ public class NewsAnalysisVO implements Serializable {
 	 private String name;
 	 private String buildMethod;
 	 private Integer rowSpan = 0;
+	 private Long sourceBenifitId;
+	 private Long destiBenifitId;
 	 
 	public Long getPositiveCount() {
 		return positiveCount;
@@ -188,6 +190,22 @@ public class NewsAnalysisVO implements Serializable {
 
 	public void setRowSpan(Integer rowSpan) {
 		this.rowSpan = rowSpan;
+	}
+
+	public Long getSourceBenifitId() {
+		return sourceBenifitId;
+	}
+
+	public void setSourceBenifitId(Long sourceBenifitId) {
+		this.sourceBenifitId = sourceBenifitId;
+	}
+
+	public Long getDestiBenifitId() {
+		return destiBenifitId;
+	}
+
+	public void setDestiBenifitId(Long destiBenifitId) {
+		this.destiBenifitId = destiBenifitId;
 	}
 
 	

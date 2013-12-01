@@ -85,12 +85,12 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Benefit;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CandidateNewsResponse;
-import com.itgrids.partyanalyst.model.CandidateParty;
 import com.itgrids.partyanalyst.model.CandidatePartyCategory;
 import com.itgrids.partyanalyst.model.CandidatePartyFile;
 import com.itgrids.partyanalyst.model.CandidatePartyKeyword;
 import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 import com.itgrids.partyanalyst.model.Category;
+import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FileKeyword;
@@ -1581,13 +1581,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			userAddress.setState(stateDAO.get((Long) list.get(0)[0]));
 			userAddress.setDistrict(districtDAO.get((Long) list.get(0)[1]));
 			userAddress.setConstituency(constituencyDAO.get(locationValue));
-			List<Object[]> parliamentConsti = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(locationValue);
-			if(parliamentConsti != null && parliamentConsti.size() > 0){
-				Object[] parliament = parliamentConsti.get(0);
-				if(parliament[0] != null){
-					userAddress.setParliamentConstituency(constituencyDAO.get((Long)parliament[0]));
-				}
-			}
+			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(locationValue));
 		}
 		
 		else if(locationId == 5L)
@@ -1599,6 +1593,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				userAddress.setState(stateDAO.get((Long)list.get(0)[1]));
 				userAddress.setDistrict(districtDAO.get((Long)list.get(0)[2]));	
 				userAddress.setConstituency(constituencyDAO.get((Long)list.get(0)[0]));
+				userAddress.setParliamentConstituency(getParliamentConstiForAssembly((Long)list.get(0)[0]));
 				userAddress.setTehsil(tehsilDAO.get((Long)list.get(0)[3]));
 				
 			}
@@ -1613,6 +1608,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			if(constituencyIdsList != null && constituencyIdsList.size() > 0)
 				userAddress.setConstituency(constituencyDAO.get(constituencyIdsList.get(0)));
+			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(constituencyIdsList.get(0)));
 				
 			userAddress.setState(stateDAO.get(hamletDAO.get(locationValue).getTownship().getTehsil().getDistrict().getState().getStateId()));
 			userAddress.setDistrict(districtDAO.get(hamletDAO.get(locationValue).getTownship().getTehsil().getDistrict().getDistrictId()));	
@@ -1625,7 +1621,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.valueOf(locationValue.toString().substring(1))).get(0);
 			userAddress.setState(stateDAO.get(assemblyLocalElectionBodyDAO.get(Long.valueOf(locationValue.toString().substring(1))).getConstituency().getState().getStateId()));
 			userAddress.setDistrict(districtDAO.get(assemblyLocalElectionBodyDAO.get(Long.valueOf(locationValue.toString().substring(1))).getConstituency().getDistrict().getDistrictId()));
-			userAddress.setConstituency(constituencyDAO.get(assemblyLocalElectionBodyDAO.get(Long.valueOf(locationValue.toString().substring(1))).getConstituency().getConstituencyId()));
+			Long assId = assemblyLocalElectionBodyDAO.get(Long.valueOf(locationValue.toString().substring(1))).getConstituency().getConstituencyId();
+			userAddress.setConstituency(constituencyDAO.get(assId));
+			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(assId));
 			userAddress.setLocalElectionBody(localElectionBodyDAO.get(localEleBodyId));
 		}
 		
@@ -1633,7 +1631,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		{
 			locationValue = Long.parseLong(locationValue.toString().substring(1));
 			Long assemBlyLocalEleId = (Long)assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(constituencyDAO.get(locationValue).getLocalElectionBody().getLocalElectionBodyId()).get(0);
-			userAddress.setConstituency(constituencyDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getConstituencyId()));
+			Long assId = assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getConstituencyId();
+			userAddress.setConstituency(constituencyDAO.get(assId));
+			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(assId));
 			userAddress.setState(stateDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getDistrict().getState().getStateId()));
 			userAddress.setDistrict(districtDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getDistrict().getDistrictId()));	
 			userAddress.setTehsil(tehsilDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getTehsilId()));
@@ -1648,6 +1648,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			  userAddress.setState(stateDAO.get((Long)list.get(0)[0]));
 			  userAddress.setDistrict(districtDAO.get((Long)list.get(0)[1]));	
 			  userAddress.setConstituency(constituencyDAO.get((Long)list.get(0)[2]));
+			  userAddress.setParliamentConstituency(getParliamentConstiForAssembly((Long)list.get(0)[2]));
 			  userAddress.setTehsil(tehsilDAO.get((Long)list.get(0)[3]));  
 			  userAddress.setBooth(boothDAO.get(locationValue));
 		  }
@@ -1657,13 +1658,28 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		userAddress = userAddressDAO.save(userAddress);
 		 return userAddress;
 	 }catch (Exception e) {
-	  e.printStackTrace();
 	  log.error(" Exception Occured in saveFileLocationInUserAddress() method, Exception - ",e);
 	  return null;
 	 }
 	 	
 	}
 	
+	public Constituency getParliamentConstiForAssembly(Long assemblyId){
+		Constituency pariament = null;
+		try{
+		List<Object[]> parliamentConsti = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentByAssembly(assemblyId);
+		if(parliamentConsti != null && parliamentConsti.size() > 0){
+			Object[] parliament = parliamentConsti.get(0);
+			if(parliament[0] != null){
+				pariament = constituencyDAO.get((Long)parliament[0]);
+				
+			}
+		}
+		}catch(Exception e){
+			log.error(" Exception Occured in getParliamentConstiForAssembly method, Exception - ",e);
+		}
+		return pariament;
+	}
 	public Long getLocationScopeValue(Long scope,String locationValue)
 	{
 		try{
@@ -8299,7 +8315,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 fileVO.setTitle(parms[0] != null ? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(parms[0].toString())):"");
 			 fileVO.setDescription(parms[1] != null ? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(parms[1].toString())):"");
 			 fileVO.setFileDate(parms[2] != null ? parms[2].toString() : "");
-			 fileVO.setFileName1(parms[3] != null ? parms[3].toString() : "");
+			 fileVO.setFileName1(parms[3] != null ? parms[3].toString() : null);
 			 fileVO.setCount(count.intValue());
 			 fileVO.setFileId((Long)parms[4]);
 			 fileVO.setFontId( parms[5] != null ? (Integer)parms[5] :0);

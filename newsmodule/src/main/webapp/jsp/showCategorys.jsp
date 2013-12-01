@@ -90,12 +90,10 @@ font-size:20px;
 </div>
 <div class="span12" id="newsDisplayDiv">						
 </div>
-<div class="pagination-holder clearfix">
-<div id="light-pagination" class="pagination"></div>
-</div>
-<div class="pagination-holder clearfix">
-<div id="light-pagination" class="pagination"></div>
-</div>
+
+
+<div id="paginationId"></div>
+
 </div>
 </div>
 </div>
@@ -117,7 +115,7 @@ function getAllGallaries(startIndex,endIndex,galleryId)
 	  data: {startIndex:startIndex,endIndex:endIndex,gallaryId:galleryId},
 		 
 	  success: function(results){ 
-		   buildFilesInGallaryDetails(results,0);
+		   buildFilesInGallaryDetails(results,0,startIndex,endIndex);
 	 },
 	  error:function() { 
 	  }
@@ -126,7 +124,7 @@ function getAllGallaries(startIndex,endIndex,galleryId)
 }
 
 
-function buildFilesInGallaryDetails(results,selectedvalue)
+function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 {   
 	var totalPages;
 	var requestedFor = "";
@@ -134,23 +132,11 @@ function buildFilesInGallaryDetails(results,selectedvalue)
 	$("#newsDisplayDiv").html('');
   if(results == null || results.length == 0)
   {
-    $("#light-pagination").html('');
     $("#newsDisplayDiv").html('No Data Found.');
 	return;
   }
 	
-	if(requestedFor=="respondedNews"){
-		totalPages = Math.ceil(results[0].respondedFilesCountInGall / 10);
-	}
-	else{
-		totalPages = Math.ceil(results[0].count / 10);
-		//totalPages = 1;
-	}
-   $('#light-pagination').pagination({
-	pages:totalPages,
-	currentPage:selectedvalue,	 
-	cssStyle: 'light-theme'
-  }); 
+ 
    var str='';
 
    str+='<div class="span12">';
@@ -217,12 +203,21 @@ function buildFilesInGallaryDetails(results,selectedvalue)
    }
     str+='</ul>';
    str+='</div>';
-document.getElementById("newsDisplayDiv").innerHTML = str;
+   $("#newsDisplayDiv").html(str);
+   var itemsCount=results[0].count;
 
- $('html,body').animate({
-        scrollTop: $("#mainDiv").offset().top},
-        'slow');
-}
+   var maxResults=endValue;
+   if(index==0){
+   	$("#paginationId").pagination({
+   		items: itemsCount,
+   		itemsOnPage: maxResults,
+   		cssStyle: 'light-theme'
+   	});
+   }
+    $('html,body').animate({
+           scrollTop: $("#mainDiv").offset().top},
+           'slow');
+   }
 
 function imgError(image) {
     image.onerror = "";
