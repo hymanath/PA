@@ -150,7 +150,16 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Integer fontId;
 	private String responseFileIdsStr;
 	private String PageNoStr;
+	private String userType;
 	
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
 	public Integer getFontId() {
 		return fontId;
 	}

@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		IFileDAO {
@@ -283,6 +284,22 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 			query.setMaxResults(maxIndex);
 		  return query.list();
 		 
+		}
+	 
+	 public Integer deleteFile(Long fileId)
+	 {
+		 Query query = getSession().createQuery(" update File model set model.isDeleted = 'Y' where model.fileId =:fileId ");
+		 query.setParameter("fileId", fileId);
+		 return query.executeUpdate();
+		 
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+		public List<File> getFile(Long fileId)
+		{
+			return getHibernateTemplate().find("select model from File model where  model.fileId=?",fileId); 
+			
+			
 		}
 	 
 	 public List<Object[]> getNewsBySearchCriteria(String query,AnalysisVO vo){
