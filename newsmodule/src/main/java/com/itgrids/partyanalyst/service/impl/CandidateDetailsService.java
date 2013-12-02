@@ -6884,24 +6884,29 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 
 	 
-	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType)
+	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType, String level)
 	 {
 		 List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
 		 try{
 			 Date fromDate = null;
 			 Date toDate = null;
+			 Long scopeID = 0l;
 			 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 			if(fromDateStr != null)
 				fromDate = format.parse(fromDateStr);
 			 
 			if(toDateStr != null)
 				toDate = format.parse(toDateStr);
+			if(level.equalsIgnoreCase("state"))
+				scopeID = 2l;
+			else if(level.equalsIgnoreCase("district"))
+				scopeID = 3l;
 			
-			List<File> fileList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults);
+			List<File> fileList = fileGallaryDAO.getNewsDetailsBetweenSelectedDates(fromDate, toDate, starIndex, maxResults, scopeID);
 			if(fileList != null && fileList.size() > 0)
 			{
 				setfileDetails(fileList, fileVOsList);
-			    fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDatesCount(fromDate, toDate).intValue());
+			    fileVOsList.get(0).setCount(fileGallaryDAO.getNewsDetailsBetweenSelectedDatesCount(fromDate, toDate, scopeID).intValue());
 			}
 			
 			 return fileVOsList;

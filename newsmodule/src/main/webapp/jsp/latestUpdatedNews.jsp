@@ -90,6 +90,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
 			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails(0)" class="btn btn-info"/>
+			<input type="button" value="Cancel" id="newsCancelBtn" onclick="cancelAll1()" class="btn btn-info"/>
 											
 							</ul>
 						</div>
@@ -250,7 +251,7 @@ function getSelectedNewsDetails(startIndex)
 	var toDate = $("#existingToText").val();
 	if(fromDate=="" && toDate == "")
 	{
-		$("#errorMsgDiv").html('Please Select From And To Dates');
+		getNewsForPagination(0);
 		return;
 	}
 	else if(fromDate =="")
@@ -274,6 +275,7 @@ function getSelectedNewsDetails(startIndex)
 	  toDate:toDate,
 	  firstResult:startIndex,
 	  maxResult:10,
+	  level:0,
 	  searchBy:"betweenDates",
 	  task:"getSelectedNewsBetweenDates"
 	};
@@ -300,6 +302,12 @@ function getSelectedNewsDetails(startIndex)
 		
 	}).datepicker("show");
 });
+function cancelAll1()
+{
+	$("#errorMsgDiv").html('');
+	document.getElementById('existingFromText').value = '';
+	document.getElementById('existingToText').value = '';
+}
 </script>
 </body>
 </html>

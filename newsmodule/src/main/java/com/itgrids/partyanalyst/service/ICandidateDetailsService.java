@@ -247,7 +247,7 @@ public interface ICandidateDetailsService {
 	 
 	 public List<FileVO> getLatestResponsedNews();
 	 
-	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType);
+	 public List<FileVO> getNewsBetweenSelectedDates(String fromDateStr,String toDateStr,Integer starIndex, Integer maxResults, String newsType,String level);
 	 
 	 public List<SelectOptionVO> getCandidatesOfAParty(Long partyId);
 	 public String insertMLCCandidateDetails(Long partyId ,String candidateName ,String  education , String gender,Long userId,Long designationId,Long locationId,Long LocationValue);
