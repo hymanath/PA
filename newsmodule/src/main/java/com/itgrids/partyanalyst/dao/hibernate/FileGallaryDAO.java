@@ -3152,7 +3152,7 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	 
 	 
 	 @SuppressWarnings("unchecked")
-	 public List<File> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults)
+	 public List<File> getNewsDetailsBetweenSelectedDates(Date fromDate,Date toDate, Integer starIndex, Integer maxResults, Long scopeId)
 	 {
 			StringBuilder stringBuilder = new StringBuilder();
 			
@@ -3162,6 +3162,8 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 				stringBuilder.append(" and date(model.fileDate) >= :fromDate ");
 			if(toDate != null)
 				stringBuilder.append(" and date(model.fileDate) <= :toDate ");
+			if(scopeId > 0)
+			stringBuilder.append(" and model.regionScopes.regionScopesId = :scopeId ");
 			
 			stringBuilder.append(" order by date(model.fileDate) desc,model.updatedDate desc");
 			
@@ -3177,12 +3179,14 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			 query.setFirstResult(starIndex);
 			if(maxResults != null)
 			query.setMaxResults(maxResults);
+			if(scopeId > 0)
+			query.setLong("scopeId", scopeId);
 			
 			return query.list();
 			
 	 }
 	 
-	 public Long getNewsDetailsBetweenSelectedDatesCount(Date fromDate,Date toDate)
+	 public Long getNewsDetailsBetweenSelectedDatesCount(Date fromDate,Date toDate, long scopeId)
 	 {
 			StringBuilder stringBuilder = new StringBuilder();
 			
@@ -3192,7 +3196,9 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 				stringBuilder.append(" and date(model.fileDate) >= :fromDate ");
 			if(toDate != null)
 				stringBuilder.append(" and date(model.fileDate) <= :toDate ");
-			
+			if(scopeId > 0)
+				stringBuilder.append(" and model.regionScopes.regionScopesId = :scopeId ");
+				
 			Query query = getSession().createQuery(stringBuilder.toString());
 			
 			if(fromDate != null)
@@ -3200,7 +3206,8 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			
 			if(toDate != null)
 				query.setParameter("toDate", toDate);
-			
+			if(scopeId > 0)
+				query.setLong("scopeId", scopeId);
 			return (Long)query.uniqueResult();
 			
 	 }

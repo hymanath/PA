@@ -34,7 +34,7 @@ font-size:20px;
 
 
 #existingFromText,#existingToText{width:155px; cursor: text;}
-#errorMsgDiv{font-size:12px;}
+#errorMsgDiv{font-size:12px; margin-left:0px;margin-bottom: 1px;}
 .fontStyle{color:#000;font-size:21px;}
 #responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
 </style>
@@ -85,6 +85,7 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 		       <p> From Date: <input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20"/></p>	
 			   <p>To Date: <input type="text" id="existingToText" class="dateField" readonly="true" name="fileDate" size="20"/></p>
 			<input type="button" value="Get News" id="selectedNewsDetBtn" onclick="getSelectedNewsDetails()" class="btn btn-info"/>
+			<input type="button" value="Cancel" id="newsCancelBtn" onclick="cancelAll()" class="btn btn-info"/>
 
 							</ul>
 						</div>
@@ -100,8 +101,9 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	<script>
 	
-	
-		getNewsForPagination(0);
+	getNewsForPagination(0);
+		
+      
 
 function getNewsForPagination(pageNo){
 	var level="${level}";
@@ -125,18 +127,22 @@ var jsObj = {
 function callAjax(jsObj,url)
 {
 	var myResults;
-
 	var callback = {			
  		success : function( o ) 
 		{
 		try {												
 			myResults = YAHOO.lang.JSON.parse(o.responseText);					
+			
 			if(jsObj.task == "getNewsByPaging")
 			{
 				$('#imageForMail').css("display","none");
 				buildPaginatedNews(myResults,jsObj);
-			}	
-			}catch (e)
+			}
+		    else if(jsObj.task == "getSelectedNewsBetweenDates")
+			{
+				 buildPaginatedNews1(myResults,jsObj);
+			}
+		}catch (e)
 			{
 							     
 			}  
@@ -150,6 +156,7 @@ function callAjax(jsObj,url)
 
  	YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
+
 function buildPaginatedNews(results,jsObj){
 	var str="";
 	str+="<ul class='unstyled pad10'>";
@@ -215,29 +222,42 @@ function getSelectedNewsDetails()
 	var toDate = $("#existingToText").val();
 	if(fromDate=="" && toDate == "")
 	{
-		$("#errorMsgDiv").html('Please Select From And To Dates');
+		getNewsForPagination(0);
 		return;
 	}
-	else if(fromDate =="")
+	else if(fromDate =="" || toDate== "")
 	{
-	  $("#errorMsgDiv").html('Please Select From Date');
+	  $("#errorMsgDiv").html('Please Select Date');
 		return;
 	}
-	else if(toDate =="")
-	{
-	  $("#errorMsgDiv").html('Please Select To Date');
-		return;
-	}
+	
 	/* else if (Date.parse(fromDate) > Date.parse(toDate)) {
       $("#errorMsgDiv").html('Invalid Date Selection.');
       return;
 	}  */
-	
-	var urlstr = "selectedNewsDetailsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&";
-	
-    var browser1 = window.open(urlstr,"newsDetails"+fromDate+"And"+toDate+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-    browser1.focus();
+	else
+   getNewsForPagination1(0);
 }
+function getNewsForPagination1(startIndex){
+
+    var level="${level}";
+    var fromDate = $("#existingFromText").val();
+	var toDate = $("#existingToText").val();
+	var jsObj={
+		partyId:872,
+	    firstResult:startIndex,
+		maxResult:10,
+		fromDate:fromDate,
+	    toDate:toDate,
+		scopeId:2,
+		level:level,
+		task:'getSelectedNewsBetweenDates'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "selectedNewsDetailsBetweenDatesAction.action?"+rparam;
+	callAjax(jsObj, url);
+	$('#imageForMail').css("display","block");
+}	 
 
 $(".dateField").live("click", function(){
  $(this).datepicker({
@@ -250,7 +270,106 @@ $(".dateField").live("click", function(){
 		}		
 	}).datepicker("show");
 });
+function buildPaginatedNews1(results,jsObj)
+{
+	 $('#imageForMail').css("display","none");	
+	 $('#paginationId').css("display","block"); 
+	 $("#pagedNewsId").html('');
+	if(results == null || results.length == 0)
+	{
+        $('#paginationId').css("display","none"); 
+		$("#pagedNewsId").html('<p style="margin-left: 25px;">No Data Found.</p>');
+		return;
+	}
 	
-	</script>
+	var str="";
+	str+="<ul class='unstyled pad10'>";
+	for(var i in results){
+		str+="<li>";
+		var source = results[i].fileVOList[0].source.trim();
+		if(results[i].flagSet != null)
+		{
+			str+="<h4 class='enadu' style='color:#0088CC;'> <a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></h4>";
+		}
+		else
+		{
+				str+="<h4 style='text-transform: capitalize;color:#0088CC;'><a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></h4>";
+		}
+		
+		str+="<div class='row-fluid'>";
+		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
+		var path = "";
+		if(results[i].fileVOList[0].fileVOList != null && results[i].fileVOList[0].fileVOList.length > 0)
+		{
+		 path = results[i].fileVOList[0].fileVOList[0].path;
+		}
+		else
+		 path = "";
+		
+		 var source = results[i].fileVOList[0].source;
+		
+		 str+="<img id='myImg1' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
+	
+		if(results[i].flagSet != null)
+		{
+			str+="<p class='span8 enadu'>"+results[i].description+"</p>";
+		}
+		else
+		{
+			str+="<p class='span8'>"+results[i].description+"</p>";
+		}
+		
+		str+="</div>";
+
+		str+="<div class='row-fluid m_top10'><div class='span9'>";
+		str +='<table><tr><td>';
+		str +='<p style="margin-right: 12px; width: 260px;"><span class="text-error" style="margin-left: 5px;font-weight: bold;">Source :</span>';
+		var length = results[i].fileVOList.length;
+
+		for(var j in results[i].fileVOList)
+		{
+		  str +=''+results[i].fileVOList[j].source+'';
+		  if(length-1 != j)
+			str +=',';
+		}
+		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td>';
+	if(results[i].responseCount > 0)
+		str+='<td style="vertical-align: top;padding-left: 50px;"><p><span class="text-error" style="font-weight: bold;">Respone Count :</span> '+results[i].responseCount+'</p></td>';
+		
+		str +='</tr></table>';
+		str +='</div>';
+		
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		var len = results.length;
+		
+		if(len-1 != i)
+		 str +='<hr>';
+	}
+	
+	var itemsCount=results[0].count;
+	
+	var maxResults=jsObj.maxResult;
+	str+="</ul>";
+
+	$("#pagedNewsId").html(str);
+	
+	if(jsObj.firstResult==0){
+		$("#paginationId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			searchType:'betweenDates1',
+			cssStyle: 'light-theme'
+		});
+	}
+}
+function cancelAll()
+{
+	$("#errorMsgDiv").html('');
+	document.getElementById('existingFromText').value = '';
+	document.getElementById('existingToText').value = '';
+}
+
+		
+</script>
 </body>
 </html>

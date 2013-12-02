@@ -327,7 +327,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			 String newsType ="public";
 			 if(regVO.getUserAccessType() != null && regVO.getUserAccessType().equalsIgnoreCase("Admin"))
 				 newsType = "";
-			 fileVOsList = candidateDetailsService.getNewsBetweenSelectedDates(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getInt("firstResult"),jObj.getInt("maxResult"),newsType);
+			 fileVOsList = candidateDetailsService.getNewsBetweenSelectedDates(jObj.getString("fromDate"),jObj.getString("toDate"),jObj.getInt("firstResult"),jObj.getInt("maxResult"),newsType,jObj.getString("level"));
 		 }
 		 
 		 else if(jObj.getString("task").equalsIgnoreCase("createUserNewsCategory"))

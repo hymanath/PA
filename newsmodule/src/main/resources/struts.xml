@@ -5476,6 +5476,12 @@
 		 <result>/jsp/selectedNewsDetails.jsp</result>
 		</action>
 		
+		<action name="selectedNewsDetailsBetweenDatesAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		  <param name="root">fileVOsList</param>
+		 </result>
+		</action>
+		
 		<action name="getSelectedNewsBetweenDatesAction" class="newsDetailsAction" method="ajaxHandler">
 		 <result type="json" name="success">
 		  <param name="root">fileVOsList</param>
