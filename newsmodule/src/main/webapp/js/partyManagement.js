@@ -7122,7 +7122,7 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
   ];
   
   
-  var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&reqType="+reqType+"");
+  var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&reqType="+reqType+"&");
   newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
   newsDataSource.responseSchema = {
   resultsList: "fileVOList",
