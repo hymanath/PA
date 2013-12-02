@@ -3459,6 +3459,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	      FileVO resultVO = new FileVO();
 	      List<FileVO> fileVOList = null;
 	    	try{
+	    	List<String> userType = userDAO.getUserType(inputs.getUserId());	
 	    	Long scopeval = 0l;	
 	    	 Date fromDate = null;
 	    	 Date toDate = null;
@@ -3521,7 +3522,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    			  fileSourceStr = fileSourceStr.substring(0, fileSourceStr.length()-1);
 			    		  
 			    		  fileVO.setSource(fileSourceStr);
-			    		  
+			    		  fileVO.setUserType(userType.get(0).toString());
 			    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
 			    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
 			    		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
@@ -3534,6 +3535,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 						log.error("exception raised in getNewsForRegisterUsers  Method of NewsMonitoringService at inner loop",e);
 					}
 	    	     }
+	    	  // resultVO.setUserType(userType.get(0).toString());
 	    	   resultVO.setFileVOList(fileVOList);
 	    	   resultVO.setCount(fileDAO.getTotalFilesListCount(fromDate, toDate).intValue());
 	    	   resultVO.setCount(fileDAO.getTotalFilesListCountByLocation(inputs.getUserId(), fromDate, toDate,inputs.getLocationId(),scopeval).intValue());
@@ -5391,4 +5393,113 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
     	}
     	return url;
     }
+    
+    public ResultStatus deleteNews(Long fileId,Long userId)
+    {
+    	ResultStatus resultStatus = new ResultStatus();
+    	try{
+    		List<String> userType = userDAO.getUserType(userId);
+    		if(userType.get(0).equalsIgnoreCase("Admin"))
+    		{
+    		fileDAO.deleteFile(fileId);
+    		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+    		}
+    		else
+    			resultStatus.setResultCode(ResultCodeMapper.FAILURE);	
+    		
+    	}
+    	catch (Exception e) {
+    	log.error(" Exception Occured in deleteNews method, Exception - ",e);
+		e.printStackTrace();
+		}
+		return resultStatus;
+    }
+    
+    public FileVO getInfoForFile(Long fileId,Long userId)
+    {
+    	FileVO result = new FileVO();
+    	try{
+    		List<File> file = fileDAO.getFile(fileId);
+    		if(file != null && file.size() > 0)
+    			result = getDataForPrePopulate(file,userId);
+    	}
+    	catch (Exception e) {
+		e.printStackTrace();
+		}
+		return result;
+    	
+    }
+    
+    
+	  public FileVO getDataForPrePopulate(List<File> list,Long userID)
+	  {
+		  FileVO result = new FileVO();
+		  List<Long> fileIds = new ArrayList<Long>();
+		  try
+		  {
+			  Set<Long> canfileIds = new HashSet<Long>();
+			  for(File file : list){
+				  canfileIds.add(file.getFileId());
+			  }
+			  Map<Long,String> candidateNames = getCandidateNames(canfileIds);
+			  List<FileVO> resultList = new ArrayList<FileVO>();
+				for(File file : list)
+				{
+					FileVO fileVO = new FileVO();
+					fileVO.setContentId(file.getFileId());
+					fileVO.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())));
+					fileVO.setFileDescription1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())));
+					String fileDate = file.getFileDate().toString();
+		    		String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+		    		fileVO.setFileDate(dateObj!=null?dateObj:"");
+		    		fileVO.setNewsImportanceId(file.getNewsImportance().getNewsImportanceId());
+		    		fileVO.setImportance(file.getNewsImportance().getImportance());
+		    		if(file.getFont() != null)
+		    		 fileVO.setEenaduTeluguFontStr("Eenadu Telugu");
+		    		Set<FileSourceLanguage> set = file.getFileSourceLanguage();
+		    		//source setting
+		    		String fileSourceStr = "";
+		    		if(set != null && set.size() > 0)
+		    		 for(FileSourceLanguage sourceLanguage:set)
+		    		  fileSourceStr +=sourceLanguage.getSource().getSource()+",";
+		    		 if(fileSourceStr != null && fileSourceStr.length() > 0)
+		    		 fileSourceStr = fileSourceStr.substring(0, fileSourceStr.length()-1);
+		    	     fileVO.setSource(fileSourceStr);
+		    		String sourceString = "";
+		    		String language = "";
+		    		List<FileVO> sourceList = new ArrayList<FileVO>();
+					for(FileSourceLanguage source:set)
+					{
+						FileVO filesource = new FileVO();
+						if(source.getSource() != null && (source.getSource().getSource() != null && !source.getSource().getSource().equals("")))
+						{
+						filesource.setSource(source.getSource().getSource());
+						}
+						if(source.getLanguage() != null && (source.getLanguage().getLanguage() != null && !source.getLanguage().getLanguage().equals("")))
+						{
+						filesource.setLanguage(source.getLanguage().getLanguage());
+						}
+						sourceList.add(filesource);
+					}
+					if(file.getFont() != null){
+						fileVO.setEenadu(true);
+					}
+					//fileVO.setSource(sourceString);
+					//fileVO.setLanguage(language);
+					fileVO.setFileVOList(sourceList);
+					fileVO.setCandidateName(candidateNames.get(file.getFileId()) != null?candidateNames.get(file.getFileId()):"");
+					fileVO.setLocationScopeValue(getRegionLvl(file.getRegionScopes().getRegionScopesId().intValue()));
+					fileVO.setLocationName(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(),file.getLocationValue()));
+					fileVO.setLocationId(file.getLocationValue());
+					resultList.add(fileVO);
+				}
+					result.setFileVOList(resultList);
+			
+		}
+		  catch (Exception e) {
+			  log.error("Exception Occured in getDataForPrePopulate method in NewsMonitoringService", e);
+		  }
+		return result;
+	  }
+	  
 }
