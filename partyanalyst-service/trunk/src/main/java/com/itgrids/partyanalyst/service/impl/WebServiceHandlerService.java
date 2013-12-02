@@ -261,7 +261,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							 wsResultVO.setId((Long)params[2]);
 							 wsResultVO.setName(params[0].toString());
 							 wsResultVO.setDescription(params[1].toString());
-							 wsResultVO.setLocation(IConstants.LIVE_VOICE_RECORDINGS_URL+"/"+params[2].toString()+"/"+params[0]);
+							 wsResultVO.setLocation(IConstants.LIVE_VOICE_RECORDINGS_URL+params[2].toString()+"/"+params[0]);
 							 result.add(wsResultVO);		
 						 }
 					}
