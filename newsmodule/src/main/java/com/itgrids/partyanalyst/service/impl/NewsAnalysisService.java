@@ -1361,7 +1361,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
             	 cpkQuery.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
 			}
 		}
-		query.append(" where model.isDeleted != 'Y' and model.isPrivate != 'Y' ");
+		query.append(" where model.isDeleted != 'Y'  ");
 		query.append(cpfQuery);
 		query.append(fslQuery);
 		query.append(cpcQuery);
