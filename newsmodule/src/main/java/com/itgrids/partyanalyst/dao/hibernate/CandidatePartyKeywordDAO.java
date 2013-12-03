@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -7,6 +8,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.ICandidatePartyKeywordDAO;
 import com.itgrids.partyanalyst.model.CandidatePartyKeyword;
+import com.itgrids.partyanalyst.model.File;
 
 public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidatePartyKeyword, Long> implements ICandidatePartyKeywordDAO{
 
@@ -78,4 +80,163 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 		return query.list();
 		
 	}
+	
+	 @SuppressWarnings("unchecked")
+		public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> keywordIds,Integer startIndex,Integer maxIndex)
+		 {
+			 StringBuilder str = new StringBuilder();
+			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(importanceId != 0)
+			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
+			 if(regionValue != 1)
+			 str.append("and model.candidatePartyFile.file.regionScopes.regionScopesId = :regionValue ") ; 
+			 if(keywordIds !=null && keywordIds.size() > 0)
+			 str.append("and model.keyword.keywordId in (:keywordIds) ") ; 
+			 if(fromDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) >= :fromDate ");
+			 if(toDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) <= :toDate "); 
+			 str.append("order by model.candidatePartyFile.file.fileDate desc ");
+			 Query query = getSession().createQuery(str.toString());
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 query.setParameter("userId", userId);
+			 if(fromDate != null)
+			 query.setDate("fromDate", fromDate);
+			 if(toDate != null)
+			 query.setDate("toDate", toDate);
+			 if(importanceId != 0)
+			 query.setParameter("importanceId", importanceId);
+			 if(regionValue != 1)
+				 query.setParameter("regionValue", regionValue);
+			 if(keywordIds !=null && keywordIds.size() > 0)
+				 query.setParameterList("keywordIds", keywordIds);
+			 if(startIndex != null)
+			   query.setFirstResult(startIndex);
+			 if(maxIndex != null)
+			 query.setMaxResults(maxIndex);
+			return query.list();
+			 
+		}
+	 
+	 @SuppressWarnings("unchecked")
+		public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds,Integer startIndex,Integer maxIndex)
+		 {
+			 StringBuilder str = new StringBuilder();
+			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(regionValue.longValue() == 1l){
+			   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			 }else if(regionValue.longValue() == 2l){
+			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
+			 }else if(regionValue.longValue() == 3l){
+			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:location) ");
+			 }else if(regionValue.longValue() == 4l){
+			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId = :location ");
+			 }
+			 if(keywordIds !=null && keywordIds.size() > 0)
+				 str.append("and model.keyword.keywordId in (:keywordIds) ") ;
+			 if(fromDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) >= :fromDate ");
+			 if(toDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) <= :toDate "); 
+			 str.append("order by model.candidatePartyFile.file.fileDate desc ");
+			 Query query = getSession().createQuery(str.toString());
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 query.setParameter("userId", userId);
+			 if(fromDate != null)
+			 query.setParameter("fromDate", fromDate);
+			 if(toDate != null)
+			 query.setParameter("toDate", toDate);
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 4l)
+				 query.setParameter("location", location);
+			 if(regionValue.longValue() == 3l)
+				 query.setParameterList("location", locationIds);
+			 if(keywordIds !=null && keywordIds.size() > 0)
+				 query.setParameterList("keywordIds", keywordIds);
+			 if(startIndex != null)
+			   query.setFirstResult(startIndex);
+			 if(maxIndex != null)
+			   query.setMaxResults(maxIndex);
+			return query.list();
+			 
+		}
+	 
+	 @SuppressWarnings("unchecked")
+		public Long getAllTheNewsCountForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> keywordIds)
+		 {
+			 StringBuilder str = new StringBuilder();
+			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(importanceId != 0)
+			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
+			 if(regionValue != 1)
+			 str.append("and model.candidatePartyFile.file.regionScopes.regionScopesId = :regionValue ") ; 
+			 if(keywordIds !=null && keywordIds.size() > 0)
+			 str.append("and model.keyword.keywordId in (:keywordIds) ") ; 
+			 if(fromDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) >= :fromDate ");
+			 if(toDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) <= :toDate "); 
+			 str.append("order by model.candidatePartyFile.file.fileDate desc ");
+			 Query query = getSession().createQuery(str.toString());
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 query.setParameter("userId", userId);
+			 if(fromDate != null)
+			 query.setDate("fromDate", fromDate);
+			 if(toDate != null)
+			 query.setDate("toDate", toDate);
+			 if(importanceId != 0)
+			 query.setParameter("importanceId", importanceId);
+			 if(regionValue != 1)
+				 query.setParameter("regionValue", regionValue);
+			 if(keywordIds !=null && keywordIds.size() > 0)
+				 query.setParameterList("keywordIds", keywordIds);
+			
+			return (Long) query.uniqueResult();
+			 
+		}
+	 
+	 @SuppressWarnings("unchecked")
+		public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds)
+		 {
+			 StringBuilder str = new StringBuilder();
+			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(regionValue.longValue() == 1l){
+			   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			 }else if(regionValue.longValue() == 2l){
+			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
+			 }else if(regionValue.longValue() == 3l){
+			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:location) ");
+			 }else if(regionValue.longValue() == 4l){
+			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId = :location ");
+			 }
+			 if(keywordIds !=null && keywordIds.size() > 0)
+				 str.append("and model.keyword.keywordId in (:keywordIds) ") ;
+			 if(fromDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) >= :fromDate ");
+			 if(toDate != null)
+				 str.append("and date(model.candidatePartyFile.file.fileDate) <= :toDate "); 
+			 str.append("order by model.candidatePartyFile.file.fileDate desc ");
+			 Query query = getSession().createQuery(str.toString());
+			 if(!"Admin".equalsIgnoreCase(userType))
+			 query.setParameter("userId", userId);
+			 if(fromDate != null)
+			 query.setParameter("fromDate", fromDate);
+			 if(toDate != null)
+			 query.setParameter("toDate", toDate);
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 4l)
+				 query.setParameter("location", location);
+			 if(regionValue.longValue() == 3l)
+				 query.setParameterList("location", locationIds);
+			 if(keywordIds !=null && keywordIds.size() > 0)
+				 query.setParameterList("keywordIds", keywordIds);
+			 return (Long) query.uniqueResult();
+			 
+		}
 }

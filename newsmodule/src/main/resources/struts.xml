@@ -5868,8 +5868,17 @@
 		    	<param name="root">selectOptionVOList</param>
 		   </result>
 		</action>
+		<action name="deleteNewsAction" class="newsDisplayAction" method="deleteNewsFromFile">
+		  <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action>
 		
-		</package>
-		
+		   <action name="getTotalKeyWordsAction" class="newsPaginationAction" method="ajaxHandler">
+		    <result type="json" name="success">
+		    	<param name="root">keywordsList</param>
+		   </result>
+			</action>
+        </package>
 		
 </struts>      

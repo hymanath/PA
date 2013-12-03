@@ -522,9 +522,19 @@ function callAjax(jsObj,url)
 					$('#statusForParty').html('<b style="color:red">Party already exists</b>');
 				}
 			}
-			 
-		
-     	}
+			 else if(jsObj.task == "getTotalKeyWords")
+			{ 
+			
+               clearOptionsListForSelectElmtId(''+jsObj.type);
+			   createOptionsForSelectElmtId(''+jsObj.type,myResults);
+			   $('#'+jsObj.type).multiselect();
+
+  $('#'+jsObj.type).multiselect({
+	  noneSelectedText:"Select Keyword"});
+		$('#'+jsObj.type).multiselect('refresh');
+		$('#'+jsObj.type).multiselect('create');
+			}
+		}
 		catch(e)
 		{   
 		 //alert("Invalid JSON result" + e);   
@@ -6797,7 +6807,7 @@ function getCandidatePartyBenefitsDiv()
 
 function getTotalNewsWithPagination()
 {
- 
+
  responseFileIdsArray = new Array();
  
  $("#errorMsgNewsDiv").html('');
@@ -6853,6 +6863,43 @@ function getTotalNewsWithPagination()
 		elLiner.innerHTML=str;
 					
 	};
+	 YAHOO.widget.DataTable.Edit = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var name = oData;
+		var fileId =  oRecord.getData("fileId");
+		var userType = oRecord.getData("userType");
+		
+		if(userType == "Admin")
+		{
+		str +='<input  class="btn btn-info" type="button" onclick="editFile('+fileId+')" value="Edit" />';
+
+		}
+		//str +='<input  class="btn btn-info" type="button" onclick="generateKey('+newsReportId+',\'generatedUrl'+newsReportId+'\')" value="Generate Url" />';
+		elLiner.innerHTML=str;
+					
+	};
+	
+
+	 
+	YAHOO.widget.DataTable.Delete = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+	    var str='';
+		var name = oData;
+		var fileId =  oRecord.getData("fileId");
+		var userType = oRecord.getData("userType");
+		
+		if(userType == "Admin")
+		{
+		str +='<input  class="btn btn-info" type="button" onclick="deleteFileFromNewsReport('+fileId+')" value="Delete" />';
+		}
+	//	var newsReportId = oRecord.getData("newsImportanceId");
+		//str +='<textarea id=\'generatedUrl'+newsReportId+'\'></textarea>';
+		elLiner.innerHTML=str;
+					
+	};
+
 	var checkedVal = false;
 	if($(".userCheckbox").is(':checked'))
 	checkedVal = true;
@@ -6869,6 +6916,7 @@ function getTotalNewsWithPagination()
 	 locationVal = $("#parliamSelReportId1").val();
    else if(scope == 'ASSEMBLY CONSTITUENCY')
 	 locationVal = $("#assembSelReportId1").val();
+
   var newsColumns = [
            {key:"ADD RESPONSE",label:"ADD RESPONSE",formatter:YAHOO.widget.DataTable.checkBox},
 		   {key:"source", label:"SOURCE"},
@@ -6876,7 +6924,11 @@ function getTotalNewsWithPagination()
 		   {key:"description", label:"DESCRIPTION",formatter:YAHOO.widget.DataTable.description},
 		   {key:"locationScopeValue", label:"IMPACT AREA"},
 		   {key:"locationValue", label:"AREA NAME"},
-		   {key:"fileDateAsString", label:"NEWS DATE"}
+		   {key:"fileDateAsString", label:"NEWS DATE"},
+		   {key:"Edit",label:"Edit",formatter:YAHOO.widget.DataTable.Edit},
+           {key:"Delete",label:"Delete",formatter:YAHOO.widget.DataTable.Delete}
+
+
   ];
   
   var newsDataSource = new YAHOO.util.DataSource("getTotalNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&locationVal="+locationVal+"&scope="+scope+"&checkedVal="+checkedVal+"&");
@@ -6885,7 +6937,8 @@ function getTotalNewsWithPagination()
   resultsList: "fileVOList",
    fields: [
              {key:"fileId", parser:"number"},
-			        "eenaduTeluguFontStr","descEenadu","source","title", "description", "locationScopeValue","locationValue", "fileDateAsString"],
+			        "eenaduTeluguFontStr","source","title", "description", "locationScopeValue","locationValue", "fileDateAsString","userType"],
+			        
 
     metaFields: {
     totalRecords: "count" // Access to value in the server response
@@ -7042,7 +7095,6 @@ return oPayload;
 function getNewsDetailsForNewsReportGeneration()
 {
 
-  //$("#newsReportAjaxImg").css({ 'display': 'inline-block' });
 $("#locationWiseNewsDiv").css("display","block");
 $("#newsReportBtnDiv").css("display","block");
 $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
@@ -7068,7 +7120,12 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
 		  reportRegionLevelVal = $("#assembSelReportId option:selected").val();
 	  }
 	}
-
+	var reportGallary1 = [];
+	var keywordGallary1 = [];
+	if($("#byCategory").is(':checked'))
+	reportGallary1 = reportGallary;
+	if($("#byKeyword").is(':checked'))
+		keywordGallary1 = keywordGallary;
    $("#reportGenaratorNewsDiv").css("display","block");	
  $("#reportGenaratorSpanCLS").html('0');	
 
@@ -7123,8 +7180,8 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
    {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location},
   ];
   
-  
-  var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&reqType="+reqType+"&");
+
+  var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&reqType="+reqType+"&reportGallary="+reportGallary1+"&keywordGallary="+keywordGallary1+"&");
   newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
   newsDataSource.responseSchema = {
   resultsList: "fileVOList",
@@ -7155,8 +7212,6 @@ oPayload.totalRecords = oResponse.meta.totalRecords;
 return oPayload;
   
 }
-  
-  
 }
 
 function getKeywordList(){
@@ -7475,4 +7530,19 @@ function showORhideSearchOptions(divId){
 	counts = counts+1;
 	}
 	
+}
+function deleteFileFromNewsReport(fileId)
+{
+	
+	var confirmFile = confirm('Do you want to delete file');
+	if(confirmFile)
+	{
+	var jsObj={
+		fileId:fileId,
+		task:'deleteFile'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "deleteNewsAction.action?"+rparam;
+	callAjax(jsObj, url);
+	}
 }

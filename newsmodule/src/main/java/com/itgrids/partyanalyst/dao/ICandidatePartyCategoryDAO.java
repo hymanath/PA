@@ -19,4 +19,12 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	public Long getCountForNewsInASelectedGallery(Long gallaryId);
 	
 	public List<Object[]> getAllCategoryes();
+	
+	public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> gallaryIds,Integer startIndex,Integer maxIndex);
+	
+	public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds,Integer startIndex,Integer maxIndex);
+	
+	public Long getAllTheNewsCountForAUserBasedByUserIdCount(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> gallaryIds);
+	
+	public Long getAllTheNewsCountForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds);
 }
