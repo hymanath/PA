@@ -2435,6 +2435,8 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 file.setCandidateId(872l);
 			 if(param.getFont()!=null)
 				 file.setFont(new Long(param.getFont().getFontId()));
+			 if(param.getDescFont()!=null)
+				 file.setDescEenadu(true);
 			 
 			 Set<FileSourceLanguage> set = param.getFileSourceLanguage();
 			 String sourceString = "";

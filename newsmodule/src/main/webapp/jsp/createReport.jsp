@@ -105,7 +105,7 @@
 				}
 				str+='</hgroup>';
 
-			  if(myResults.mainArticalsList[i].eenadu){
+			  if(myResults.mainArticalsList[i].descEenadu){
 				 str+='<p ><enadu>'+myResults.mainArticalsList[i].description+'</enadu></p>';	
 			  }else{
 					str+='<p>'+myResults.mainArticalsList[i].description+'</p>';
@@ -143,7 +143,7 @@
 			  str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right">'+myResults.fileVOList[i].fileVOList[j].scope+': '+myResults.fileVOList[i].fileVOList[j].locationName+'</i></h5>';
 			   str+='</hgroup>';
 
-			  if(myResults.fileVOList[i].fileVOList[j].eenadu){
+			  if(myResults.fileVOList[i].fileVOList[j].descEenadu){
 				str+='<p ><enadu>'+myResults.fileVOList[i].fileVOList[j].description+'</enadu></p>';	
 			  }else{
 					str+='<p>'+myResults.fileVOList[i].fileVOList[j].description+'</p>';

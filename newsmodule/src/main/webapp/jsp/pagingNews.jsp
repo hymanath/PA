@@ -163,6 +163,7 @@ function buildPaginatedNews(results,jsObj){
 	for(var i in results){
 		str+="<li>";
 		var source = results[i].eenadu;
+		var descSource = results[i].descEenadu;
 		if(source)
 		{
 			str+="<span class='enadu fontStyle' style='font-weight:bold;'> <a href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].fileTitle1+"</a></span>";
@@ -175,7 +176,7 @@ function buildPaginatedNews(results,jsObj){
 		str+="<div class='row-fluid'>";
 		str+="<a class='thumbnail span4' style='width: 146px;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>";
 		str+="<img id='myImg' style='width:100%' src="+results[i].displayImagePath+" onerror='imgError(this)'></a>";
-		if(source)
+		if(descSource)
 		{
 			str+="<p class='span8 enadu fontStyle'>"+results[i].description+"</p>";
 		}

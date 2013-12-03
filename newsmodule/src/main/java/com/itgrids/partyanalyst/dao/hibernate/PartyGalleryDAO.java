@@ -337,7 +337,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	}
 	public List<Object[]> getAllNewsDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
 		   
-	     StringBuilder query = new StringBuilder("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath from File model where ");
+	     StringBuilder query = new StringBuilder("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath,model.descFont.fontId from File model where ");
 			query.append(" ");			
 			if(queryType.equalsIgnoreCase("Public"))
 					query.append(" model.isPrivate != 'Y'  and ");
@@ -411,7 +411,7 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	public List<Object[]> getAllNewsDetailsForState(Long partyId,int firstResult,int maxResult,String queryType,long stateId , long scopeId){
 		   
 	     StringBuilder query = new StringBuilder();
-			query.append("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath from File model where ");		
+			query.append("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath,model.descFont.fontId from File model where ");		
 			if(queryType.equalsIgnoreCase("Public"))
 					query.append("  model.isPrivate != 'Y' and ");	
 			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.isDeleted !='Y' ");

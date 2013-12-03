@@ -242,7 +242,7 @@ function buildNewsDetails(results,divId,type)
 			str += '<div style="float: right; margin-top: -39px;"><a class="btn btn-info" onCLick="openResponcePage('+results[i].fileVOList[0].fileId+',\'newsDisplayDiv'+i+'\');">View resopnce</a></div>';
 		} */
        if(results[i].fileDescription1 != null && results[i].fileDescription1 != "")
-       if(results[i].fontId == 1  )
+       if(results[i].descEenadu)
 	      str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;"><span class="enadu">'+results[i].fileDescription1+'</span></div>';
 	    else
 		  str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;">'+results[i].fileDescription1+'</div>';

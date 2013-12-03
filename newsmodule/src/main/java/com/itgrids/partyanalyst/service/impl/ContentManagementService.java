@@ -261,6 +261,9 @@ public class ContentManagementService implements IContentManagementService{
 						if(fileVal.getFont() != null){
 							fileVO.setEenadu(true);
 						}
+						if(fileVal.getDescFont() != null){
+							fileVO.setDescEenadu(true);
+						}
 						fileVO.setTitle(fileVal.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileTitle())):"");
 						fileVO.setDescription(fileVal.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileDescription())):"");
 						//fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
@@ -991,6 +994,8 @@ public class ContentManagementService implements IContentManagementService{
 			fileVO.setLocationName(boothDAO.getLocationsById(file.getRegionScopes().getScope(),file.getLocationValue()).toString()+" ( "+file.getRegionScopes().getScope()+" )");
 			if(file.getFont() != null)
 			fileVO.setFontId(file.getFont().getFontId());
+			if(file.getDescFont() != null)
+			fileVO.setDescEenadu(true);
 			List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 			Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();
 			

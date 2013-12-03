@@ -152,6 +152,7 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 	} */
 	//var source = results[i].fileType.trim();
 	var fontId = results[i].fontId;
+	var descFont = results[i].descEenadu;
 	if(fontId >  0)
 	{
 		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
@@ -172,7 +173,7 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" onerror="imgError(this)">';
 		str+='</a>';
 		
-		if(fontId > 0)
+		if(descFont)
 		{
 			str+='<p class="span8 enadu">'+results[i].description+'</p>';
 		}
