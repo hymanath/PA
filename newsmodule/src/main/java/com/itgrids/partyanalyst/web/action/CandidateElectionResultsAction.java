@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IThumbnailService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.IWebConstants;
 import com.opensymphony.xwork2.Action;
@@ -1363,11 +1365,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	  
 	  String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 		
-	  if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
-			filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
+	 /* if(request.getRequestURL().toString().contains(IConstants.PARTYANALYST_SITE))
+		  filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator;
 	  else
-		filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;
-	  
+		filePath = context.getRealPath("/")+IConstants.UPLOADED_FILES + pathSeperator;*/
+	  DateUtilService dateService = new DateUtilService();
+	  Date date = dateService.getCurrentDateAndTime();
+	  Calendar cal = Calendar.getInstance();
+	  cal.setTime(date);
+	  String currentDate = cal.get(Calendar.YEAR)+""+(cal.get(Calendar.MONDAY)+1);
+	  filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator+currentDate+pathSeperator;
 	   String fileType = null;
 	  
 		Long systime = System.currentTimeMillis();
