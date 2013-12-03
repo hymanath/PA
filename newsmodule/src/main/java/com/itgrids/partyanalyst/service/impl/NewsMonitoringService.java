@@ -3511,6 +3511,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    		  
 			    		  if(file.getFont() != null && file.getFont().getFontId().equals(1))
 			    		   fileVO.setEenaduTeluguFontStr("Eenadu Telugu");
+			    		  if(file.getDescFont() !=null)
+				    		   fileVO.setDescEenadu(true);
 			    		  
 			    		  String fileSourceStr = "";
 			    		  Set<FileSourceLanguage> fileSourceLanguageSet = file.getFileSourceLanguage();

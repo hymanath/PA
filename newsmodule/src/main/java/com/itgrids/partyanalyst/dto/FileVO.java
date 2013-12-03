@@ -130,6 +130,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private Long pageNo;
 	private boolean latest;
 	private boolean eenadu;
+	private boolean descEenadu;
 	private Long respondedFilesCountInGall;
 	private List<FileVO> responseGallariesList = null;
 	private List<FileVO> mainArticalsList = null;
@@ -152,6 +153,14 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String PageNoStr;
 	private String userType;
 	
+	public boolean isDescEenadu() {
+		return descEenadu;
+	}
+
+	public void setDescEenadu(boolean descEenadu) {
+		this.descEenadu = descEenadu;
+	}
+
 	public String getUserType() {
 		return userType;
 	}

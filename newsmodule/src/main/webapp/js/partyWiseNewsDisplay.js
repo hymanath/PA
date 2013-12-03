@@ -575,6 +575,7 @@ function showTotalNews(myResult,jsObj){
 		str+='<li >';
 		str+='<div class="">';
 		var font = myResult[i].font;
+		var descFont = myResult[i].descEenadu;
 		var source = null;
 		if(myResult[i].source != null && !myResult[i].source == "")
 		source = myResult[i].source.trim();
@@ -598,7 +599,7 @@ function showTotalNews(myResult,jsObj){
 		str+='<img src="images/'+myResult[i].imagePathInUpperCase+'" style="width:100%;height: 100%;"  onerror="imgError(this);"/>';
 		str+='</a>';
 	}
-		if(font != null)
+		if(descFont)
 		{
 			str+='<p class="span8 enadu"  style="text-align: left;">'+myResult[i].description+'</p>';
 		}

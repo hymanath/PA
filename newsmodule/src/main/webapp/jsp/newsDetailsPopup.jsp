@@ -358,6 +358,7 @@ function buildContentDetails()
 	var curPos = null;
 	var totSize = null;
 	var source = "";
+	var descSource = "";
 	var totSize = null;
 	var detaildesc = null;
 	var detaildescsource = null;
@@ -367,6 +368,7 @@ function buildContentDetails()
 	if(result.relatedGalleries[0].filesList[i].isSelectedContent)
 	{
 	   source = result.relatedGalleries[0].filesList[i].eenadu;
+	   descSource = result.relatedGalleries[0].filesList[i].descEenadu;
 	   if(result.relatedGalleries[0].filesList[i].gallaryName != null && result.relatedGalleries[0].filesList[i].gallaryName != ""){
 		$('#gallaryNameId').html('');
 	   	$('#gallaryNameId').html('Other News in Gallery: '+(result.relatedGalleries[0].filesList[i].gallaryName));
@@ -435,7 +437,7 @@ function buildContentDetails()
 			 str +='</tr>';
 
 			 str+='</table>';
-			   if(source)
+			   if(descSource)
 				{
 					str +='<div><span>Description: </span><b class="enadu">'+descriptionStr+'</b>';
 				}

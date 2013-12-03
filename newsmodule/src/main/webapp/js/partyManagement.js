@@ -4104,8 +4104,9 @@ else{
 			else
 	         str+='<td>'+results[i].fileTitle1+'</td>';
 
-			//if(results[i].source.indexOf("Eenadu Telugu") != -1)
-			if(results[i].eenaduTeluguFontStr != null && results[i].eenaduTeluguFontStr == "Eenadu Telugu")
+			
+			//if(results[i].eenaduTeluguFontStr != null && results[i].eenaduTeluguFontStr == "Eenadu Telugu")
+			if(results[i].descEenadu)
 		     str+='<td><span class="enadu">'+results[i].description+'</span></td>';
 			else
 			 str+='<td>'+results[i].description+'</td>';
@@ -6842,8 +6843,9 @@ function getTotalNewsWithPagination()
 	    var str='';
 		var name = oData;
 		var isEenaduTelugu = oRecord.getData("eenaduTeluguFontStr");
+		var descEenadu = oRecord.getData("descEenadu");
 		var description = oRecord.getData("description");
-		if(isEenaduTelugu != null && isEenaduTelugu == "Eenadu Telugu")
+		if(descEenadu)
 		  str +="<span class='enadu'>"+description+"</span>";
 		  else
 		  str +="<span>"+description+"</span>";
@@ -6883,7 +6885,7 @@ function getTotalNewsWithPagination()
   resultsList: "fileVOList",
    fields: [
              {key:"fileId", parser:"number"},
-			        "eenaduTeluguFontStr","source","title", "description", "locationScopeValue","locationValue", "fileDateAsString"],
+			        "eenaduTeluguFontStr","descEenadu","source","title", "description", "locationScopeValue","locationValue", "fileDateAsString"],
 
     metaFields: {
     totalRecords: "count" // Access to value in the server response

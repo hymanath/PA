@@ -889,6 +889,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			if(fileVO.isEenadu())
 			 file.setFont(fontDAO.get(1));
 			
+			if(fileVO.isDescEenadu())
+			 file.setDescFont(fontDAO.get(1));
+			
 			file.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 			file.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
 			file.setIsDeleted("N");
@@ -1811,7 +1814,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			        if(obj[4] != null){
 			        	v.setEenadu(true);
 			        }
-			    	v.setSource(sourceNames.get(id) != null?sourceNames.get(id):"");			       
+			        if(obj[7] != null){
+			        	v.setDescEenadu(true);
+			        }
+			    	v.setSource(sourceNames.get(id) != null?sourceNames.get(id):"");
 	                v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String) obj[2])));
 	                v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String)obj[3])));
 	                v.setResponseCount(0);
@@ -7459,6 +7465,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 fileVO.setFileDate(file.getFileDate().toString());
 				 fileVO.setSource(file.getSourceObj() != null ? file.getSourceObj().getSource() : "");
 				 fileVO.setFontId(file.getFont() != null ?  file.getFont().getFontId():0);
+				 if(file.getDescFont() != null)
+				 fileVO.setDescEenadu(true);
 				 fileVO.setCount(count.intValue());
 				 fileVO.setResponseCount(responceCountMap.get(file.getFileId()).intValue());
 				 fileVOsList.add(fileVO);
@@ -7975,6 +7983,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	filevo.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID((Long)file.getFileId()).size());
 	if(file.getFont() != null)
 	filevo.setFontId(file.getFont().getFontId());
+	if(file.getDescFont() != null)
+		filevo.setDescEenadu(true);
 	if(file.getCategory() != null){
 		filevo.setCategoryId(file.getCategory().getCategoryId());
 		filevo.setCategoryName(file.getCategory().getCategoryType());
@@ -8172,6 +8182,9 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					fileVO.setProblemFileId(file.getFont().getFontId().longValue());
 					fileVO.setFontId(file.getFont().getFontId());
 				}
+				if(file.getDescFont() != null){
+					fileVO.setDescEenadu(true);
+				}
 				fileVO.setFilePath1(file.getFilePath());
 				int responseCount = 0 ;
 				//fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
@@ -8324,6 +8337,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 fileVO.setCount(count.intValue());
 			 fileVO.setFileId((Long)parms[4]);
 			 fileVO.setFontId( parms[5] != null ? (Integer)parms[5] :0);
+			 if(parms[6] != null)
+			 fileVO.setDescEenadu(true);
 			 fileVO.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileVO.getFileId()).size());
 			 fileIds.add(fileVO.getFileId());
 			 fileMap.put(fileVO.getFileId(), fileVO);

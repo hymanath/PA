@@ -140,6 +140,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<String> newslength;
 	private Long fileId ;
 	private Boolean titleCheckBox;
+	private Boolean descCheckBox;
 
 
 	private INewsMonitoringService  newsMonitoringService;
@@ -180,6 +181,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
     
     
 	
+
+	public Boolean getDescCheckBox() {
+		return descCheckBox;
+	}
+
+
+	public void setDescCheckBox(Boolean descCheckBox) {
+		this.descCheckBox = descCheckBox;
+	}
+
 
 	public CandidatePartyNewsVO getCandidatePartyNewsVOList() {
 		return candidatePartyNewsVOList;
@@ -1419,6 +1430,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		if(getTitleCheckBox() != null)
 		 fileVO.setEenadu(true);
 		
+		if(getDescCheckBox() != null)
+		 fileVO.setDescEenadu(true);
 		
 		
 		if(fileSourceVOList != null && fileSourceVOList.size()  > 0)

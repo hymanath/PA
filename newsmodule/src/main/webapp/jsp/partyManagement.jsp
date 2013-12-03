@@ -1526,16 +1526,25 @@ function changeLanguage(){
 	if($("#sourceTelugu").is(':checked') == true)
 	{
 		$('#newsfileTitle').addClass('enadu');
-		$('#newsfileDescription').addClass('enadu');
+		//$('#newsfileDescription').addClass('enadu');
 		//$('#newsDesc').addClass('enadu');
 		//$('#aaanewsfileDescription').addClass('enadu');
 	}
 	else
 	{
 		$('#newsfileTitle').removeClass('enadu');
-		$('#newsfileDescription').removeClass('enadu');
+		//$('#newsfileDescription').removeClass('enadu');
 		//$('#newsDesc').removeClass('enadu');
 		//$('#aaanewsfileDescription').removeClass('enadu');
+	}
+
+	if($("#sourceDescTelugu").is(':checked') == true)
+	{
+		$('#newsfileDescription').addClass('enadu');
+	}
+	else
+	{
+		$('#newsfileDescription').removeClass('enadu');
 	}
 /* var str='';
 if(count == 0)
@@ -2956,7 +2965,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="span3" style="margin-left: 12px;"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Mark This News As Public</font></b></label></div>';
 		str+='<div class="span3"><label class="radio"><input type="radio" id="newsprivateRadioId" name="visibility" value="private"><b><font>Mark This News As Private</font></b></label></div>';
 
-		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Description<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea>     </div>';
+		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Description<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea><span class="help-block"> <input type="checkbox" id="sourceDescTelugu" onclick="changeLanguage();" name="descCheckBox">&nbsp;Please check if description is from eenadu.net</span>       </div>';
 		str+='<div class="span4 ">      ';
 		str+='<label><strong>Image To Display</strong></label>';
 		 str+='<input type="file" class="m_top10" name="imageForDisplay"><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>    </div>';

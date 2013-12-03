@@ -91,7 +91,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				" model.candidatePartyFile.file.fileDate ,  " +
 				" model.candidatePartyFile.file.filePath ," +
 				" model.candidatePartyFile.file.fileId ," +
-				" model.candidatePartyFile.file.font.fontId from CandidatePartyCategory model " +
+				" model.candidatePartyFile.file.font.fontId,model.candidatePartyFile.file.descFont.fontId from CandidatePartyCategory model " +
 				" where model.gallary.gallaryId = :gallaryId");
 		query.setParameter("gallaryId", gallaryId);
 		query.setFirstResult(startIndex);

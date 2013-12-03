@@ -299,6 +299,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		str+="<li i style='margin-top: 30px;'>";
 		var source = results[i].fileVOList[0].source.trim();
 		var fontId = results[i].fontId;
+		var descEenadu = results[i].descEenadu;
 		if(fontId == 1)
 		  str+="<h4 class='enadu' style='font-size:23px;'><a style='color: #005580;' href='javascript:{getNewsDetailsByContentId("+results[i].contentId+")}'>"+results[i].title+"</a></h4>";
 		else
@@ -312,7 +313,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		//var source = results[i].fileVOList[0].source;
 		
 		str+="<img id='myImg' style='width:100%' src="+path+" onerror='imgError(this)'></a>";
-		if(fontId == 1)
+		if(descEenadu)
 		  str+="<p class='span8 enadu' style='color:#000;'>"+results[i].description+"</p>";
 		else
 		 str+="<p class='span8'>"+results[i].description+"</p>";

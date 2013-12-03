@@ -125,6 +125,8 @@ public class ReportService implements IReportService {
 				
 				if(news[6] != null)
 				  file.setEenadu(true);
+				if(news[7] != null)
+					  file.setDescEenadu(true);
 				stateLvlList.add(file);
 			}
 			returnVo.setMainArticalsList(stateLvlList);//setting state level news
@@ -154,6 +156,8 @@ public class ReportService implements IReportService {
 				file.setScope(news[8] != null?news[8].toString():"");
 				if(news[9] != null)
 					  file.setEenadu(true);
+				if(news[10] != null)
+					  file.setDescEenadu(true);
 				file.setLocationName(candidateDetailsService.getLocationDetails((Long)news[4],(Long)news[5]));
 				
 				vo.getFileVOList().add(file);
