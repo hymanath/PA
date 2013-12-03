@@ -384,7 +384,7 @@ function callAjax(jsObj,url)
 		
 			$("#keywordsList").multiselect({	
 					multiple: true,
-					selectedList: 10,
+					selectedList: 1,
 					hide: "explode"	
 			}).multiselectfilter({
 				header:"Select Keyword"    
