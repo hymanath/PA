@@ -24,8 +24,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyKeywordDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -52,6 +54,7 @@ import com.itgrids.partyanalyst.dao.ISourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.hibernate.FileDAO;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -122,9 +125,28 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IDesignationDAO designationDAO;
     private IConstituencyDAO constituencyDAO;
     private IStateDAO stateDAO;
-    
+    private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
+   private ICandidatePartyKeywordDAO candidatePartyKeywordDAO;
    
     
+	public ICandidatePartyKeywordDAO getCandidatePartyKeywordDAO() {
+	return candidatePartyKeywordDAO;
+}
+
+public void setCandidatePartyKeywordDAO(
+		ICandidatePartyKeywordDAO candidatePartyKeywordDAO) {
+	this.candidatePartyKeywordDAO = candidatePartyKeywordDAO;
+}
+
+	public ICandidatePartyCategoryDAO getCandidatePartyCategoryDAO() {
+		return candidatePartyCategoryDAO;
+	}
+
+	public void setCandidatePartyCategoryDAO(
+			ICandidatePartyCategoryDAO candidatePartyCategoryDAO) {
+		this.candidatePartyCategoryDAO = candidatePartyCategoryDAO;
+	}
+
 	/**
 	 * @param stateDAO the stateDAO to set
 	 */
@@ -4847,6 +4869,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  List<Long> locationIds = new ArrayList<Long>();
 		  Long locationVal = 0l;
 		  String locationScope = null;
+		
 		  try{
 			  Date fromDate = null;
 			  Date toDate = null;
@@ -4865,20 +4888,46 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    	type = userType.get(0);
 			    }
 			    if("byLevel".equalsIgnoreCase(fileVO.getFileType())){
+			    	
+			    	if(fileVO.getGallaryIds() != null && fileVO.getGallaryIds().size() > 0)
+			    	{
+			    		 list =candidatePartyCategoryDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getGallaryIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
+			    	     resultFileVO.setCount(candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdCount(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getGallaryIds()).intValue());
+			    	}
+			    	else if(fileVO.getKeywordIds() != null && fileVO.getKeywordIds().size() > 0)
+			    	{
+			    		 list =candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getKeywordIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
+			    		 
+			    	     resultFileVO.setCount(candidatePartyKeywordDAO.getAllTheNewsCountForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getKeywordIds()).intValue());	
+			    	}
+			    	else
+			    	{
 				   list = fileDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getStartIndex(),fileVO.getMaxResult());
-				   resultFileVO.setCount(fileDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),null,null).size());
+				   resultFileVO.setCount(fileDAO.getAllTheNewsCountForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue()).intValue());
+			    	}
 			    }else{
 			    	List<Long> ids = null;
 			    	if(fileVO.getLocationId().longValue() == 3l){
 			    		ids = delimitationConstituencyAssemblyDetailsDAO.getAssemblyConstituencyIdsByParliamId(fileVO.getLocationVal());
 			    	}
+			    	if(fileVO.getGallaryIds() != null && fileVO.getGallaryIds().size() > 0)
+			    	{
+			    		 list = candidatePartyCategoryDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
+					       
+					       resultFileVO.setCount(candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds()).intValue());	
+			    	}
+			    	else if(fileVO.getKeywordIds() != null && fileVO.getKeywordIds().size() > 0)
+			    	{
+			    		 list = candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
+					       
+					 resultFileVO.setCount(candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds()).intValue());	
+			    	}
+			    	else
 			       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getStartIndex(),fileVO.getMaxResult());
 			       
-			       resultFileVO.setCount(fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,null,null).size());
+			       resultFileVO.setCount(fileDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids).intValue());
 			    }
 				resultList = setDataForAllLocations(list,fileVO.getUserId());
-				
-				
 				if(resultList != null && resultList.size() > 0)
 				{
 				  List<FileVO> tempFileVOList = new ArrayList<FileVO>(0);

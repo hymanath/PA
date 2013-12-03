@@ -578,10 +578,20 @@ public class NewsDisplayAction implements ServletRequestAware{
 	   try{
 		   //jObj = new JSONObject(getTask());
 		  session = request.getSession();
+		  String[] categoryarr = null;
+		  String[] keywordarr  = null;
 		  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
 		  if(regVo == null)
 			  return Action.ERROR;
 		  Long userId = regVo.getRegistrationID();
+		  List<Long> gallaryIds = new ArrayList<Long>();
+		  List<Long> keywordIds = new ArrayList<Long>();
+		  String category= request.getParameter("reportGallary");
+		  if(!category.equals(""))
+		  categoryarr = category.toString().split(",");
+		  String keyword= request.getParameter("keywordGallary");
+		  if(!keyword.equals(""))
+		  keywordarr = keyword.toString().split(",");
 		  FileVO fileVO = new FileVO();
 		  fileVO.setUserId(userId);
 		  
@@ -593,7 +603,7 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  fileVO.setFileType(jObj.getString("type"));
 		  fileVO.setLocationId(jObj.getLong("reportRegionLevel"));
 		  fileVO.setLocationVal(jObj.getLong("reportRegionLevelVal"));*/
-		  
+		
 		  fileVO.setFromDateStr(request.getParameter("fromDate"));
 		  fileVO.setToDateStr(request.getParameter("toDate"));
 		  fileVO.setRegionValue(Long.parseLong(request.getParameter("regionLevel")));
@@ -602,6 +612,21 @@ public class NewsDisplayAction implements ServletRequestAware{
 		  fileVO.setLocationId(Long.parseLong(request.getParameter("reportRegionLevel")));
 		  fileVO.setLocationVal(Long.parseLong(request.getParameter("reportRegionLevelVal")));
 		  fileVO.setLatest(true);
+		  if(categoryarr != null && categoryarr.length > 0)
+		  {
+			  for(int i=0;i<categoryarr.length;i++)
+				  gallaryIds.add(new Long(categoryarr[i]));
+		  
+		  }
+		  if(keywordarr != null && keywordarr.length > 0)
+		  {
+			  for(int j=0;j<keywordarr.length;j++)
+				  keywordIds.add(new Long(keywordarr[j])); 
+		  }
+		  if(gallaryIds != null && gallaryIds.size() > 0)
+		  fileVO.setGallaryIds(gallaryIds);
+		  if(keywordIds != null && keywordIds.size() > 0)
+		  fileVO.setKeywordIds(keywordIds);
 		  fileVO.setStartIndex(Integer.parseInt(request.getParameter("startIndex")));
 		  fileVO.setMaxResult(Integer.parseInt(request.getParameter("results")));
 		  
@@ -713,5 +738,23 @@ public class NewsDisplayAction implements ServletRequestAware{
 		   log.error("Exception rised in generateUrlForReport() ",e);
 	}
 	   return Action.SUCCESS;
+   }
+   
+   public String deleteNewsFromFile()
+   {
+	   try{
+		   jObj =new JSONObject(getTask());
+			 session = request.getSession();
+			  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			  if(regVo == null)
+				  return Action.ERROR;
+			   Long userId = regVo.getRegistrationID();  
+			 
+			   resultStatus = newsMonitoringService.deleteNews(jObj.getLong("fileId"),userId);  
+	   }
+	   catch (Exception e) {
+		e.printStackTrace();
+	}
+	return Action.SUCCESS;
    }
 }

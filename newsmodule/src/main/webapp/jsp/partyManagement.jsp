@@ -174,10 +174,13 @@ border:1px solid #C5C5C5;
 }
 #reportGenaratorSpanCLS{color:red;}
 #newsReportBtnDiv{text-align: center;}
+.ui-multiselect{margin-top:10px;width:222px !important;}
 </style>
 </head>
 <script type="text/javascript">
 
+var reportGallary = new Array();
+var keywordGallary = new Array();
 var districtsArr = new Array();
 var assemblyConstiArr = new Array();
 var parliamentConstiArr = new Array();
@@ -235,7 +238,6 @@ var tempCount = 0;
 var keywordHiddenTempCount = 0;
 var responseFileIdsArray = new Array();
 var newsReportFileIdsArray = new Array();
-
 
 var fileSourceMainArray = {
 	
@@ -834,7 +836,21 @@ function createNewParty()
 	  <tr>
         <td>Select News</td><td><select id="newsPriority"><option value="0">All</option><option value="1">Low</option><option value="2">Medium</option><option value="3">High</option></select></td>
       </tr>
-	</table>
+	   <tr><td></td>
+	 <td>
+	 <input type="checkbox" class="createReporcCheckBoxCls" value="byCategory"  id="byCategory"  onclick="showHideLocationLvl1('category');" />&nbsp;By Category&nbsp;&nbsp;
+	<input type="checkbox" class="createReporcCheckBoxCls" value="bykeyword"  id="byKeyword" onclick="showHideLocationLvl1('keyword');"  />&nbsp; By Keywords&nbsp;&nbsp;
+	  </tr>
+      <tr class="categoryClass">
+    <td>Select Categories</td><td><select key="reportGallaryId" style="width: 222px;margin-top:10px;" id="reportGallaryId">
+		<option>Select Category</option>
+		</select>
+	  </td>
+      </tr>
+	 <tr class="keywordClass" style="display:none;">
+        <td>Select Keyword</td><td><select  key="reportKeywordId" id="reportKeywordId" style="width: 222px;margin-top:10px;"><option>Select Keyword</option></select></td>
+      </tr>
+      </table>
   </div>
   <div class="form-actions text-center">
     <input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNewsDetailsForNewsReportGeneration()"/>
@@ -2527,11 +2543,11 @@ $("#newsReporterrorMessageDiv").html('');
 $("#reportGenaratorNewsDiv").css("display","none");
 $("#locationWiseNewsDiv").html('');
 $("#newsReportBtnDiv").css("display","none");
-
+$("#byCategory").attr("checked", false);
+$("#byKeyword").attr("checked", false);
 }
 function getNews()
 {
-
 $("#newsReportAjaxImg").css({ 'display': 'inline-block' });
 $("#locationWiseNewsDiv").css("display","none");
 	var fromDate = $("#fromDateId1").val();
@@ -2539,6 +2555,7 @@ $("#locationWiseNewsDiv").css("display","none");
 	var regionLevel = $("#regionlevel").val();
 	var importance = $("#newsPriority").val();
 	var reportRegionLevel = $("#reportRegionLevel").val();
+	
 	var reportRegionLevelVal = 0;
 	 var type="";
 	if($("#byLocationLvl").is(':checked')){
@@ -2555,6 +2572,7 @@ $("#locationWiseNewsDiv").css("display","none");
 		  reportRegionLevelVal = $("#assembSelReportId option:selected").val();
 	  }
 	} 
+
 	var jsObj = {
 			task: 'getNews',
 			fromDate:fromDate,
@@ -2563,16 +2581,11 @@ $("#locationWiseNewsDiv").css("display","none");
 			importance:importance,
 			reportRegionLevel:reportRegionLevel,
 			reportRegionLevelVal:reportRegionLevelVal,
+			keywordsArr:keywordsArr,
+			categoryArr:categoryArr,
 			type:type
 	};
-   /* var jsObj = {
-			task: 'getNews',
-			fromDate:fromDate,
-			toDate:toDate,
-			regionLevel:regionLevel,
-			importance:importance
-			
-	};*/
+ 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
 	var url = "getAllNewsForAUserAction.action?"+rparam;
 	callnewAjax(jsObj,url);
@@ -4073,7 +4086,26 @@ function generateKey(reportId,id){
 	var url = "generateReportKeyAction.action?"+rparam;						
 	callAjax(jsObj,url);
 }
+function showHideLocationLvl1(key)
+{
 
+if(key == 'keyword')
+	{
+	
+	$("#byCategory").attr("checked", false);
+	$(".categoryClass").hide();
+	$(".keywordClass").show();
+	getTotalKeyWords("reportKeywordId");
+
+	}
+	else
+	{
+getPartyGallariesForUplaod("News Gallary","reportGallaryId");
+$("#byKeyword").attr("checked", false);
+$(".categoryClass").show();
+$(".keywordClass").hide();
+	}
+}
 function showHideLocationLvl(key){
 if(key == 'level'){
    $(".regionLvlClass").show();
@@ -4147,6 +4179,7 @@ function showHideLocationsForResponse(dist,pc,ac){
   $(".assembSelReport1").hide();
  }
 }
+
 function getDesignationList(designationList)
 {
   var jsObj={
@@ -4157,6 +4190,7 @@ function getDesignationList(designationList)
 	var url = "getDesignationsListAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
+
 function populateDate()
 {
 
@@ -4169,6 +4203,19 @@ $(".dateField").datepicker({
 		 maxDate: new Date()	
 	});
 	$('.dateField').datepicker('setDate', new Date());
+}
+function getTotalKeyWords()
+{
+
+	var jsObj =
+		{ 
+		    type :"reportKeywordId",
+        	task : "getTotalKeyWords"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getTotalKeyWordsAction.action?"+rparam;
+	callAjax(jsObj,url);
 }
 </script>
 </body>

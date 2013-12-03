@@ -152,7 +152,25 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String responseFileIdsStr;
 	private String PageNoStr;
 	private String userType;
+	private List<Long> gallaryIds;
+	private List<Long> keywordIds;
 	
+	public List<Long> getGallaryIds() {
+		return gallaryIds;
+	}
+
+	public void setGallaryIds(List<Long> gallaryIds) {
+		this.gallaryIds = gallaryIds;
+	}
+
+	public List<Long> getKeywordIds() {
+		return keywordIds;
+	}
+
+	public void setKeywordIds(List<Long> keywordIds) {
+		this.keywordIds = keywordIds;
+	}
+
 	public boolean isDescEenadu() {
 		return descEenadu;
 	}
