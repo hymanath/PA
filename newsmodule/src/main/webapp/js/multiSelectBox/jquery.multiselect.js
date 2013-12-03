@@ -210,13 +210,13 @@
 
     // updates the button text. call refresh() to rebuild
     update: function() {
-      var o = this.options;
+	  var o = this.options;
       var $inputs = this.inputs;
       var $checked = $inputs.filter(':checked');
       var numChecked = $checked.length;
       var value;
-      
 
+      
       if(this.inputs.eq(0).attr('id') != undefined){
 	    if(true){
 		    var str = '';
@@ -254,6 +254,7 @@
         else if(this.inputs.eq(0).attr('id').indexOf("KeywordPartiesList") >0)
 		{
             
+
 			sourcePartyArray = new Array();
             $checked.each(function(index,value){
 				
@@ -269,7 +270,7 @@
 		}
 		else if(this.inputs.eq(0).attr('id').indexOf("candidateListForPartyForNewsTo") >0)
 		{
-            
+           
 			
             destinationCandidatesArray = new Array();
 			$checked.each(function(index,value){
@@ -284,11 +285,35 @@
 			buildDestinationCandidateKeywordsList();
 
 		}
+
+		 if(this.inputs.eq(0).attr('id').indexOf("reportGallaryId") >0)
+		{
+			reportGallary = new Array();
+			$checked.each(function(index,value){
+			    var id = this.id;
+				var name = $("#"+id+"").closest('label').find('span').text();
+				var obj = {id:this.value,name:name};
+				//reportGallary.push(obj);
+			reportGallary.push(this.value);
+			});
+			console.log(reportGallary);
+			//buildReportGallary();
+		}
+		 if(this.inputs.eq(0).attr('id').indexOf("reportKeywordId") >0)
+		{
+		    keywordGallary = new Array();
+			$checked.each(function(index,value){
+			    var id = this.id;
+				var name = $("#"+id+"").closest('label').find('span').text();
+				var obj = {id:this.value,name:name};
+				keywordGallary.push(this.value);
+		});
+		console.log(keywordGallary);
+			}
 		else if(this.inputs.eq(0).attr('id').indexOf("candidateListForParty") >0)
 		{
            
-			
-            sourceCandidatesArray = new Array();
+		    sourceCandidatesArray = new Array();
 			$checked.each(function(index,value){
 				
 				
