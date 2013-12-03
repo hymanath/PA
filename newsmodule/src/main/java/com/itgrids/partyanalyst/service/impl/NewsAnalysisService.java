@@ -603,7 +603,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				   query.append(" and cpf.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
 				}
 				if(vo.getFromDate() != null){
-					query.append(" and date(cpf.fileDate) >= :fromDate ");
+					query.append(" and date(cpf.file.fileDate) >= :fromDate ");
 				}
 				if(vo.getToDate() != null){
 					query.append(" and date(cpf.file.fileDate) <= :toDate ");
