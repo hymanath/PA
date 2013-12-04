@@ -334,7 +334,7 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		}
 		str +='</p></td><td><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td>';
 	if(results[i].responseCount > 0)
-		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><a href="showNewsResponseAction.action?responseContentId ='+results[i].contentId+' "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+results[i].responseCount+'</a></p></td>';
+		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><a href="javascript:{populateNewsResponseWindow('+results[i].fileId+')}; "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+results[i].responseCount+'</a></p></td>';
 		
 		str +='</tr></table>';
 		str +='</div>';
@@ -1088,6 +1088,13 @@ else if(categoryIds =="null" || categoryIds =="")
  }
 }
 
+function populateNewsResponseWindow(contentId){
+
+var urlstr = 'showNewsResponseAction.action?responseContentId ='+contentId;
+var browser1 = window.open(urlstr,"newsDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+browser1.focus();
+
+}
 
 getCandidateDetails1();
 </script>	
