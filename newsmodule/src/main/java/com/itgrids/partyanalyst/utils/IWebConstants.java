@@ -33,7 +33,7 @@ public interface IWebConstants {
 	public static final String FREE_USER_ROLE = "hasFreeUserRole";
 	
 	public static final String CHART_URL_IN_SERVER = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\charts\\";
-	public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
+	public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\TDP\\";
 	/*public static final String CHART_URL_IN_SERVER = "/home/dakavara/public_html/charts/";
 	public static final String STATIC_CONTENT_FOLDER_URL = "/home/dakavara/public_html/";*/ 
 }
