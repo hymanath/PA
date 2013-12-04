@@ -93,11 +93,11 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testGetGenderWiseVoterModificationByPublicationId()
+	public void testGetGenderWiseVoterModificationByPublicationId()
 	{
 		List<Long> locationValuesList = new ArrayList<Long>(0);
-		locationValuesList.add(232l);
-		String locationType = "localElectionBody";
+		locationValuesList.add(309l);
+		String locationType = "constituency";
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select count(distinct model.voter.voterId),model.status,model.voter.gender ");
 		 
@@ -114,7 +114,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 			else if(locationType.equalsIgnoreCase("ward"))
 				queryStr.append(" ,model2.localBodyWard.constituencyId ");
 		
-		List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, 232l, 83l,queryStr.toString());
+		List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, 309l, 9l,queryStr.toString(),"Added",8l);
 		
 		System.out.println(list.size());
 		if(list != null && list.size() > 0)
@@ -144,7 +144,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 				
 				
 		}
-	}*/
+	}
 	
 	/*public void testGetAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation()
 	{
@@ -299,7 +299,7 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 		int count = voterModificationDAO.updateVoterStatus(voterModificationIdsList, 3l);
 		System.out.println(count);
 	}*/
-	public void testUpdateVoterStatusInVoterModification()
+	/*public void testUpdateVoterStatusInVoterModification()
 	{
 		try{
 			List<Long> constituenciesList = voterModificationDAO.getAvailableConstituenciesInAPublication(8l);
@@ -438,5 +438,5 @@ public class VoterModificationDAOHibernateTest extends BaseDaoTestCase{
 			return list;
 		}
 		
-	}
+	}*/
 }

@@ -1413,25 +1413,29 @@ public class VoterModificationService implements IVoterModificationService{
 					}
 					  
 				  }
-				  
+				 List<Long> previousPublications = publicationDateDAO.getPreviousPublicationIds(publicationDateId) ;
+				 Long previousPublicationId = publicationDateId;
+				 if(previousPublications != null && previousPublications.size() > 0){
+					 previousPublicationId = previousPublications.get(0);
+				 }
 			  if(constituencyIdsList != null && constituencyIdsList.size() > 0)
-				  saveGenderWiseVoterModifInfoInIntermediateTables("constituency", constituencyIdsList, constituencyId, publicationDateId);
+				  saveGenderWiseVoterModifInfoInIntermediateTables("constituency", constituencyIdsList, constituencyId, publicationDateId,previousPublicationId);
 			  
 			  if(mandalIdsList != null && mandalIdsList.size() > 0)
-				  saveGenderWiseVoterModifInfoInIntermediateTables("mandal", mandalIdsList, constituencyId, publicationDateId);
+				  saveGenderWiseVoterModifInfoInIntermediateTables("mandal", mandalIdsList, constituencyId, publicationDateId,previousPublicationId);
 			  
 			  if(localEleBodyIdsList != null && localEleBodyIdsList.size() > 0)
-				  saveGenderWiseVoterModifInfoInIntermediateTables("localElectionBody", localEleBodyIdsList, constituencyId, publicationDateId);
+				  saveGenderWiseVoterModifInfoInIntermediateTables("localElectionBody", localEleBodyIdsList, constituencyId, publicationDateId,previousPublicationId);
 			  
 			  if(panchayatIdsList != null && panchayatIdsList.size() > 0)
-				  saveGenderWiseVoterModifInfoInIntermediateTables("panchayat", panchayatIdsList, constituencyId, publicationDateId);
+				  saveGenderWiseVoterModifInfoInIntermediateTables("panchayat", panchayatIdsList, constituencyId, publicationDateId,previousPublicationId);
 			  
 			  /*if(boothIdsList != null && boothIdsList.size() > 0)
 				  saveGenderWiseVoterModifInfoInIntermediateTables("booth", boothIdsList, constituencyId, publicationDateId);*/
 			  
-			  if(wardIdsList != null && wardIdsList.size() > 0)
-				  saveGenderWiseVoterModifInfoInIntermediateTables("ward", wardIdsList, constituencyId, publicationDateId);
-			  
+			  /*if(wardIdsList != null && wardIdsList.size() > 0)
+				  saveGenderWiseVoterModifInfoInIntermediateTables("ward", wardIdsList, constituencyId, publicationDateId,previousPublicationId);
+			  */
 			 resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			 return resultStatus;
 		 }catch (Exception e) {
@@ -1442,21 +1446,21 @@ public class VoterModificationService implements IVoterModificationService{
 		}
 	 }
 	 
-	 public ResultStatus saveGenderWiseVoterModifInfoInIntermediateTables(String locationType, List<Long> locationValuesList, Long constituencyId, Long publicationDateId)
+	 public ResultStatus saveGenderWiseVoterModifInfoInIntermediateTables(String locationType, List<Long> locationValuesList, Long constituencyId, Long publicationDateId,Long previousPublicationId)
 	 {
 		 ResultStatus resultStatus = new ResultStatus();
 		 try{
 			 for(Long locationVal:locationValuesList){
 				 List<Long> value = new ArrayList<Long>();
 				 value.add(locationVal);
-			 List<VoterModificationGenderInfoVO> modificationGenderInfoVO = getGenderWiseVoterModificationsByPublicationId(locationType, value, constituencyId, publicationDateId);
+			 List<VoterModificationGenderInfoVO> modificationGenderInfoVO = getGenderWiseVoterModificationsByPublicationId(locationType, value, constituencyId, publicationDateId,previousPublicationId);
 			 
 			 if(modificationGenderInfoVO == null || modificationGenderInfoVO.size() == 0)
 				 modificationGenderInfoVO =  setDefaultValuesForGenderwiseVoterModification(locationVal,locationType);
 				 
 			 saveGenderWiseVoterModifInfoInVoterModificationInfoTable(modificationGenderInfoVO,constituencyId,publicationDateId,locationType);
 			 
-			 List<VoterModificationAgeRangeVO> ageRangeVOs = getVotersAddedAndDeletedCountAgeWiseByPublicationId(locationType, value, constituencyId, publicationDateId);
+			 List<VoterModificationAgeRangeVO> ageRangeVOs = getVotersAddedAndDeletedCountAgeWiseByPublicationId(locationType, value, constituencyId, publicationDateId,previousPublicationId);
 			 saveAgeWiseAddedAndDeletedVotersCountInVoterAgeInfo(ageRangeVOs,constituencyId, publicationDateId,locationType);
 			 }
 			
@@ -1470,7 +1474,7 @@ public class VoterModificationService implements IVoterModificationService{
 		 
 	 }
 	 
-	 public List<VoterModificationGenderInfoVO> getGenderWiseVoterModificationsByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId)
+	 public List<VoterModificationGenderInfoVO> getGenderWiseVoterModificationsByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId,Long previousPublicationId)
 	 {
 		 LOG.debug("Entered into getGenderWiseVoterModificationsByPublicationId() Method");
 		 List<VoterModificationGenderInfoVO> result = new ArrayList<VoterModificationGenderInfoVO>(0);
@@ -1490,11 +1494,19 @@ public class VoterModificationService implements IVoterModificationService{
 					queryStr.append(" ,model2.booth.localBody.localElectionBodyId ");
 				else if(locationType.equalsIgnoreCase("ward"))
 					queryStr.append(" ,model2.booth.localBodyWard.constituencyId ");
-				
-			 
-			 List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId,queryStr.toString());
-			 
-				
+			 List<Object[]> list = new ArrayList<Object[]>();
+			 if(!(locationType.equalsIgnoreCase("booth") || locationType.equalsIgnoreCase("ward"))){
+				 List<Object[]> listDel = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId,queryStr.toString(),"Deleted",previousPublicationId);
+				 if(listDel != null && listDel.size() > 0){
+					 list.addAll(listDel);
+				 }
+				 List<Object[]> listOthers = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId,queryStr.toString(),"Added",publicationDateId);
+				 if(listOthers != null && listOthers.size() > 0){
+					 list.addAll(listOthers);
+				 }	 
+			 }else{
+				 list = voterModificationDAO.getGenderWiseVoterModificationByPublicationId(locationType, locationValuesList, constituencyId, publicationDateId,queryStr.toString(),"",publicationDateId);
+			 }
 			 
 			 if(list != null && list.size() > 0)
 			 {
@@ -1631,7 +1643,7 @@ public class VoterModificationService implements IVoterModificationService{
 	 //AgeWise
 	 
 	 
-	 public List<VoterModificationAgeRangeVO> getVotersAddedAndDeletedCountAgeWiseByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId)
+	 public List<VoterModificationAgeRangeVO> getVotersAddedAndDeletedCountAgeWiseByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId,Long previousPublicationId)
 	 {
 		 LOG.debug("Entered into getVotersAddedAndDeletedCountAgeWiseByPublicationId() Method");
 		 List<VoterModificationAgeRangeVO> result = new ArrayList<VoterModificationAgeRangeVO>(0);
@@ -1666,7 +1678,20 @@ public class VoterModificationService implements IVoterModificationService{
 					else if(locationType.equalsIgnoreCase("ward"))
 						queryStr.append(" ,model2.booth.localBodyWard.constituencyId ");
 				 
-				 List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(locationType, locationValuesList, constituencyId, publicationDateId, ageFrom, ageTo,queryStr.toString());
+				 List<Object[]> list = new ArrayList<Object[]>();
+				 if(!(locationType.equalsIgnoreCase("booth") || locationType.equalsIgnoreCase("ward"))){
+					 List<Object[]> listDel = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(locationType, locationValuesList, constituencyId, publicationDateId, ageFrom, ageTo,queryStr.toString(),"Deleted",previousPublicationId);
+					 if(listDel != null && listDel.size() > 0){
+						 list.addAll(listDel);
+					 }
+					 List<Object[]> listOthers = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(locationType, locationValuesList, constituencyId, publicationDateId, ageFrom, ageTo,queryStr.toString(),"Added",publicationDateId);
+					 if(listOthers != null && listOthers.size() > 0){
+						 list.addAll(listOthers);
+					 }	 
+				 }else{
+					 list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(locationType, locationValuesList, constituencyId, publicationDateId, ageFrom, ageTo,queryStr.toString(),"",publicationDateId);
+				 }
+				 // list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(locationType, locationValuesList, constituencyId, publicationDateId, ageFrom, ageTo,queryStr.toString());
 				 
 				 if(list != null && list.size() > 0)
 				 {
