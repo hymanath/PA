@@ -335,12 +335,12 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getGenderWiseVoterModificationByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId, String queryString)
+	public List<Object[]> getGenderWiseVoterModificationByPublicationId(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId, String queryString,String status,Long prevPubId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(queryString );
 		str.append("  from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo ");
+		str.append(" model.publicationDate.publicationDateId = :publicationDateId  and model2.booth.publicationDate.publicationDateId = :prevPubId ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
 			str.append(" and model2.booth.constituency.constituencyId in (:locationValuesList) ");
@@ -355,11 +355,20 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.booth.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
 		
+		if(status.equalsIgnoreCase("Deleted")){
+			str.append(" and model.voterStatus.voterStatusId = 2  ");
+			
+		}else if(status.equalsIgnoreCase("Added")){
+			str.append(" and model.voterStatus.voterStatusId = 1 ");
+		}
 		str.append(" group by model.voterStatus.voterStatusId,model.voter.gender ");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameterList("locationValuesList",locationValuesList);
+		
+		query.setParameter("prevPubId",prevPubId);
+		
 		
 		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body") ||
 				locationType.equalsIgnoreCase("ward"))
@@ -369,12 +378,12 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId,Long ageFrom, Long ageTo, String queryStr)
+	public List<Object[]> getAgeWiseAddedAndDeletedVotersCountByPublicationDateIdInALocation(String locationType,List<Long> locationValuesList,Long constituencyId,Long publicationDateId,Long ageFrom, Long ageTo, String queryStr,String status,Long prevPubId)
 	{
 		StringBuilder str = new StringBuilder();
 		str.append(queryStr);
 		str.append("  from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
-		str.append(" model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo and ");
+		str.append(" model.publicationDate.publicationDateId = :publicationDateId  and model2.booth.publicationDate.publicationDateId = :prevPubId and ");
 		
 		if(ageTo == null)
 			str.append(" model.voter.age > :ageFrom ");
@@ -393,13 +402,20 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 			str.append(" and model2.booth.localBody.localElectionBodyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
 		else if(locationType.equalsIgnoreCase("ward"))
 			str.append(" and model2.booth.localBodyWard.constituencyId in (:locationValuesList) and model2.booth.constituency.constituencyId = :constituencyId ");
-		
+		if(status.equalsIgnoreCase("Deleted")){
+			str.append(" and model.voterStatus.voterStatusId = 2  ");
+			
+		}else if(status.equalsIgnoreCase("Added")){
+			str.append(" and model.voterStatus.voterStatusId = 1 ");
+		}
 		str.append(" group by model.voterStatus.voterStatusId,model.voter.gender");
 		
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameterList("locationValuesList",locationValuesList);
 		query.setParameter("ageFrom",ageFrom);
+		
+		query.setParameter("prevPubId",prevPubId);
 		
 		if(ageTo != null)
 			query.setParameter("ageTo",ageTo);
