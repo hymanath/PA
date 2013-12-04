@@ -303,7 +303,7 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getAllNewsGallaries();
 	 public ResultStatus uploadAFileForCandidateParty(final FileVO fileVO);
 	 
-	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long partyId);
+	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long userId,Long partyId);
 	 
 	 public List<SelectOptionVO> getBenefitList();
 	 public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr);
