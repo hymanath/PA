@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDesignationDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IFileKeywordDAO;
@@ -105,6 +106,7 @@ import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.Source;
 import com.itgrids.partyanalyst.model.SourceLanguage;
 import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -173,7 +175,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	
 	//private ISpecialPageGalleryDAO specialPageGalleryDAO;
 	//private IMessageToPartyDAO messageToPartyDAO;
-	//private IElectionDAO electionDAO;
+	private IElectionDAO electionDAO;
 	//private IElectionGoverningBodyDAO electionGoverningBodyDAO;
 //	private ICandidatePageCustomPagesDAO candidatePageCustomPagesDAO;
 	//private ICustomPageTypeDAO customPageTypeDAO;
@@ -201,6 +203,14 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private IDesignationDAO designationDAO;
 	
     
+	public IElectionDAO getElectionDAO() {
+		return electionDAO;
+	}
+
+	public void setElectionDAO(IElectionDAO electionDAO) {
+		this.electionDAO = electionDAO;
+	}
+
 	public IDesignationDAO getDesignationDAO() {
 		return designationDAO;
 	}
@@ -8050,12 +8060,61 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		return result;
 	 }
 		 
-	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long partyId)
+	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long userId,Long partyId)
 	 {
 	 	try
 	 	{
 	 	List<SelectOptionVO> candidateList = new ArrayList<SelectOptionVO>(0);
-	 	List<Object[]> list = candidateDAO.getCandidateListByPartyId(partyId);
+	 	User user = userDAO.get(userId);
+	 	StringBuffer query = new StringBuffer();
+	 	if(user.getAccessType().equalsIgnoreCase("STATE"))	 		
+	 		query = query.append(" and model.state.stateId = "+user.getAccessValue());
+	 	else if(user.getAccessType().equalsIgnoreCase("DISTRICT")){
+
+			List<Long> assmblyConstIds = new ArrayList<Long>(0);
+			List<Long> parliamentConstIds = new ArrayList<Long>(0);
+			
+	 		List latestElectionYear = electionDAO.findLatestElectionYearHappenedInState(user.getStateId(),IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN);
+	 		List result = constituencyDAO.findConstituencyByDistrictElectionTypeAndYear(user.getDistrictId(),IConstants.ASSEMBLY_ELECTION_TYPE,latestElectionYear.get(0).toString());
+
+			for (Object constituency : result) {
+				Object[] param = (Object[]) constituency;
+				assmblyConstIds.add((Long) param[0]);				
+				List list = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentForAssembly(Long.parseLong(param[0].toString()));
+				for (Object constituencies : list) {
+					Object[] params = (Object[]) constituencies;
+					if(!parliamentConstIds.contains(Long.valueOf(params[0].toString())))
+						parliamentConstIds.add(Long.valueOf(params[0].toString()));
+				}
+			}
+
+	 		query .append(" and (model.assembly.constituencyId in (");
+	 		
+			for (int i = 0; i < assmblyConstIds.size(); i++) {
+				query.append(assmblyConstIds.get(i));
+				if(i < assmblyConstIds.size()-1)
+					query.append(", ");
+			}
+			
+			query .append(" ) or ");
+			
+			
+			query .append("  model.parliament.constituencyId in ( ");
+			
+			for (int i = 0; i < parliamentConstIds.size(); i++) {
+				query.append(parliamentConstIds.get(i));
+				if(i < parliamentConstIds.size()-1)
+					query.append(", ");
+			}
+			
+			query .append(" ))");
+	 	}
+	 	else if(user.getAccessType().equalsIgnoreCase("MLA"))
+	 		query.append(" and model.assembly.constituencyId = "+user.getAccessValue());
+	 	else if(user.getAccessType().equalsIgnoreCase("MP"))
+	 		query.append(" and model.parliament.constituencyId = "+user.getAccessValue());
+	 	
+	 	List<Object[]> list = candidateDAO.getCandidateListByPartyId(query.toString(),partyId);
 	 	if(list != null && list.size() > 0)
 	 	 for(Object[] params:list)
 	 	 {
