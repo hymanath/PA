@@ -213,7 +213,7 @@ function buildPaginatedNews(results,jsObj)
 		}
 		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
 		if(results[i].responseCount > 0)
-		str+='<td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;padding-left: 20px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></td>';
+		str+='<td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;padding-left: 20px;"><a href="javascript:{populateNewsResponseWindow('+results[i].contentId+')};"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></a></td>';
 		
 		str +='</tr></table>';
 		str +='</div>';
@@ -249,6 +249,7 @@ function getSelectedNewsDetails(startIndex)
 	
 	var fromDate = $("#existingFromText").val();
 	var toDate = $("#existingToText").val();
+	/*
 	if(fromDate=="" && toDate == "")
 	{
 		getNewsForPagination(0);
@@ -268,7 +269,43 @@ function getSelectedNewsDetails(startIndex)
       $("#errorMsgDiv").html('Invalid Date Selection.');
       return;
 	}
-
+*/
+// STARTING : validations updated by srishailam
+	   var arrr = fromDate.split("/");
+			var fromDat=arrr[0];
+			var frommonth=arrr[1];
+			var fromyear=arrr[2];
+	   var arr = toDate.split("/");
+			var toDat=arr[0];
+			var tomonth=arr[1];
+			var toyear=arr[2];
+	if(!fromDate){
+			document.getElementById('errorMsgDiv').innerHTML='Please select from Date. ';
+			return false;
+		}
+	if(!toDate){
+			document.getElementById('errorMsgDiv').innerHTML='Please select to Date. ';
+			return false;
+		}
+	if(fromyear>toyear){
+		document.getElementById('errorMsgDiv').innerHTML='Invalid Date Selection. ';
+		return false;
+	}
+	 if(frommonth>tomonth){
+		   if(fromyear == toyear){
+			document.getElementById('errorMsgDiv').innerHTML='Invalid Date Selection. ';
+			return false;
+		}
+		
+	}
+	
+	if(fromDat>toDat){	
+		if(frommonth == tomonth && fromyear == toyear){			
+			document.getElementById('errorMsgDiv').innerHTML='Invalid Date Selection.';
+			return false;		
+		   }
+	}
+	
 	  var jObj=
 	{
 	  fromDate:fromDate,
@@ -307,6 +344,14 @@ function cancelAll1()
 	$("#errorMsgDiv").html('');
 	document.getElementById('existingFromText').value = '';
 	document.getElementById('existingToText').value = '';
+}
+
+function populateNewsResponseWindow(contentId){
+
+var urlstr = 'showNewsResponseAction.action?responseContentId ='+contentId;
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+browser1.focus();
+
 }
 </script>
 </body>
