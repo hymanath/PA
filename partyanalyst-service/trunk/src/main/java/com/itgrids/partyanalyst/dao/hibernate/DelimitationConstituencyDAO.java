@@ -189,5 +189,15 @@ IDelimitationConstituencyDAO {
 		query.setParameterList("constituencyIDs", constituencyIDs);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DelimitationConstituency> findLatestDelimitationConstituencyByConstituencyIDs(List<Long> constituencyIDs){
+		String queryString = "from DelimitationConstituency model where model.constituency.constituencyId in (:constituencyIDs) and " +
+				" model.year = (select max(model2.year) from DelimitationConstituency model2 where model2.constituency.constituencyId in (:constituencyIDs)) " +
+				" order by model.year desc";
+		Query query  = getSession().createQuery(queryString);
+		query.setParameterList("constituencyIDs", constituencyIDs);
+		return query.list();
+	}
 		
 }
