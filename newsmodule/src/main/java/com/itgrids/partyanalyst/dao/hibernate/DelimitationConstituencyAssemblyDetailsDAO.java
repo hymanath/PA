@@ -38,12 +38,12 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 				"(select max(model1.year) from DelimitationConstituency model1) order by model.constituency.name ",params);
 	}
 	
-	/*public List findLatestParliamentForAssembly(Long assemblyId){
+	public List findLatestParliamentForAssembly(Long assemblyId){
 		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId," +
 				"model.delimitationConstituency.constituency.name from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
 				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId = ?",assemblyId);
 	} 
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List findParliamentConstituenciesForAAssemblyConstituency(Long constituencyId){
 		return getHibernateTemplate().find("select model.delimitationConstituency.constituency.constituencyId,model.delimitationConstituency.constituency.electionScope.electionType.electionTypeId," +
