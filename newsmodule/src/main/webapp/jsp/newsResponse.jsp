@@ -211,7 +211,7 @@ function buildNewsDetails(results,divId,type)
    var count = 0;
    if(type == "main")
    {
-		str+='<div id="newsDisplayForMainDiv">';
+		str+='<div id="newsDisplayForMainDiv" align="center">';
    }
    else
    {
@@ -225,7 +225,7 @@ function buildNewsDetails(results,divId,type)
    {  
 
 	 // alert(results[i].eenadu == true);  
-	   str+='<div class="alert" id="newsDisplayDiv'+i+'" style="border:2px solid #5e5e5e;padding:4px;margin:3px 0px 0px 76px;;width:807px;background-color:#ffffff;">';
+	   str+='<div class="alert" id="newsDisplayDiv'+i+'" style="border:2px solid #5e5e5e;padding:4px;margin:3px 0px 0px 76px;;width:807px;background-color:#ffffff;text-align:left;">';
 	 /*  if(results[i].latest == true )
 			str+='<h6 style="color:red;text-align:center;">THIS IS LATEST RESPONSE</h6>';*/
 
@@ -234,7 +234,11 @@ function buildNewsDetails(results,divId,type)
 	   else
 		   str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  href="javascript:{}">'+results[i].fileTitle1+'</span></div>';
 		
-		str+='<div id="candidateNameDiv"><span style="font-weight:bold;color:blue;">Candidate Name:</span> '+results[i].candidateName+'</div>';
+		var canidateName = results[i].candidateName;
+		if(canidateName == null)
+			str+='<div id="candidateNameDiv"><span style="font-weight:bold;color:blue;margin-right:20px;">Candidate Name:</span> --- </div>';
+		else
+			str+='<div id="candidateNameDiv"><span style="font-weight:bold;color:blue;">Candidate Name:</span> '+results[i].candidateName+'</div>';
 		str+='<div id="LocationDiv"><span style="font-weight:bold;color:blue;">Location Name:</span> '+results[i].locationName+'</div>';
 		
 		/* if(results[i].fileVOList[0].fileDateAsString != null)
