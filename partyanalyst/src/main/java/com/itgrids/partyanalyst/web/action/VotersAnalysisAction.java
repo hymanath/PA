@@ -638,8 +638,8 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 				|| jObj.getString("task").equalsIgnoreCase("getPublicationDatesForVotingModificationBetweenDates") || jObj.getString("task").equalsIgnoreCase("getPublicationListforVoterData") )
 		{
 			Long selectedId = jObj.getLong("selected");
-			//namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
-			namesList = votersAnalysisService.getPublicationListForVoterDataByConstituency(selectedId);
+			namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
+			//namesList = votersAnalysisService.getPublicationListForVoterDataByConstituency(selectedId);
 			namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
 		}
 		else if(jObj.getString("task").equalsIgnoreCase("getWards"))
@@ -2208,6 +2208,27 @@ return Action.SUCCESS;
 		}catch (Exception e) {
 			
 			 log.error("Exception Occured in getWardsListForMuncipality() method,Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPublicationDates()
+	{
+		try{
+			 jObj = new JSONObject(getTask());
+		 if(jObj.getString("task").equalsIgnoreCase("getPublicationDate") || jObj.getString("task").equalsIgnoreCase("getPublicationDateForCast")
+					||jObj.getString("task").equalsIgnoreCase("getPublicationDateForParty")
+					||jObj.getString("task").equalsIgnoreCase("getPublicationDateForModification") || jObj.getString("task").equalsIgnoreCase("getPublicationDateForVotingTrendz") 
+					|| jObj.getString("task").equalsIgnoreCase("getPublicationDatesForVotingModificationBetweenDates") || jObj.getString("task").equalsIgnoreCase("getPublicationListforVoterData") )
+			{
+				Long selectedId = jObj.getLong("selected");
+				//namesList = votersAnalysisService.publicationDetailsBasedOnConstituency(selectedId);
+				namesList = votersAnalysisService.getPublicationListForVoterDataByConstituency(selectedId);
+				namesList.add(0, new SelectOptionVO(0L,"Select Publication Date"));
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 		return Action.SUCCESS;
 	}
