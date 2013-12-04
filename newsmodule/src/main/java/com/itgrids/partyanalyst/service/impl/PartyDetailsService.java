@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INewsResponseDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -78,6 +79,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private IRegionScopesDAO regionScopesDAO;
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
 	private ICategoryDAO categoryDAO;
+	private INewsResponseDAO newsResponseDAO;
 	/*
 	private IFileTypeDAO fileTypeDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
@@ -360,6 +362,14 @@ public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
 		this.categoryDAO = categoryDAO;
 	}
 
+	public INewsResponseDAO getNewsResponseDAO() {
+		return newsResponseDAO;
+	}
+
+	public void setNewsResponseDAO(INewsResponseDAO newsResponseDAO) {
+		this.newsResponseDAO = newsResponseDAO;
+	}
+	
 	/*
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
@@ -2454,6 +2464,19 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 file.setImagePathInUpperCase("TDP.png");
 			 file.setFileDate(newDate);
 			 file.setFileType("Party");
+			 
+			 List<Long> fileId = new ArrayList<Long>();
+		     fileId.add(Long.valueOf(param.getFileId().toString()));
+		     List<Object[]> responseCount = newsResponseDAO.getResponceCountForFiles(fileId);
+		     
+             if(responseCount.size() > 0 && responseCount != null){
+             	for (Object[] parmas : responseCount) {
+             		file.setResponseCount(Integer.parseInt(parmas[1].toString()));
+             	}       
+             }
+             else
+            	 file.setResponseCount(0);
+             
 			 //file.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId((Long)obj[1]).size());
 			 file.setTotalResultsCount(newsDetailsCount);
 			 result.add(file);

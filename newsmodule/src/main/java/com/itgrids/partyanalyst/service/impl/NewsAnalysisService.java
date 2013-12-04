@@ -1324,7 +1324,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		StringBuilder cpcQuery = new StringBuilder();
 		StringBuilder cpkQuery = new StringBuilder();
 		queryData.append("select distinct  model.fileTitle ,model.fileDescription ," +
-				" model.fileDate ,model.filePath ,model.fileId ,model.font.fontId  " +
+				" model.fileDate ,model.filePath ,model.fileId ,model.font.fontId,model.descFont.fontId  " +
 				" from File model  ");		
 		queryCount.append("select distinct count(model.fileId) from File model ");
 		if((vo.getSourceCandId()!= null && vo.getSourceCandId() > 0) || (vo.getDestiCandId() != null && vo.getDestiCandId() > 0) || (vo.getSourcePartyId() != null && vo.getSourcePartyId() > 0 ) || (vo.getDestiPartyId() != null && vo.getDestiPartyId() >0 )){
