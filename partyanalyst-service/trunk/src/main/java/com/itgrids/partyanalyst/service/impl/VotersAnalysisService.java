@@ -18275,7 +18275,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			}
 			
 		}
-		List<DelimitationConstituency> delimitationConstituencys = delimitationConstituencyDAO.findDelimitationConstituencyByConstituencyIDs(constituencyIds);
+		List<DelimitationConstituency> delimitationConstituencys = delimitationConstituencyDAO.findLatestDelimitationConstituencyByConstituencyIDs(constituencyIds);
 		for(DelimitationConstituency delimitationConstituency:delimitationConstituencys){
 		delimitationConstituencyIDs.add(delimitationConstituency.getDelimitationConstituencyID());
 		
