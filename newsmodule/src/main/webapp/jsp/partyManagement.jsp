@@ -3096,7 +3096,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='        </div>';
 		str+='<div class="span2 ">';
 		str+='        <label><strong>File Source</strong></label>';
-		str+='        <select  id="filesourceId0" style="margin-top:25px;" name="fileSourceVOList[0].fileSourceId"  class="input-block-level m_top20"><option value="0">Select Source</option></select>';
+		str+='        <select  id="filesourceId0" style="margin-top:25px;" name="fileSourceVOList[0].fileSourceId"  class="input-block-level m_top20 fileNewSourceCls"><option value="0">Select Source</option></select>';
 
 		str+='        </div>';
 		str+='<div class="span2 ">';
@@ -3204,7 +3204,7 @@ function addNewFileSource(){
 		str+='        </div>';
 		str+='<div class="span2 ">';
 		str+='        <label><strong>File Source</strong></label>';
-		str+='        <select id="'+addSource+'addfilenewSource" style="margin-top:25px;" name="fileSourceVOList['+addSource+'].fileSourceId"  class="input-block-level m_top20"><option value="0">Select Source</option></select>';
+		str+='        <select id="'+addSource+'addfilenewSource" style="margin-top:25px;" name="fileSourceVOList['+addSource+'].fileSourceId"  class="input-block-level m_top20 fileNewSourceCls"><option value="0">Select Source</option></select>';
 
 		str+='        </div>';
 		str+='<div class="span2 ">';
