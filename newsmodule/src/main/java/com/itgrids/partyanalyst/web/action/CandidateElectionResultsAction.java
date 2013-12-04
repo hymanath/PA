@@ -1400,7 +1400,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
             	fileType = imageForDisplayContentType.substring(imageForDisplayContentType.indexOf("/")+1, imageForDisplayContentType.length());
             			
 				String imageName = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
-				String path1 = IWebConstants.UPLOADED_FILES+"/"+imageName;
+				String path1 = IWebConstants.UPLOADED_FILES+ "/"+currentDate+"/"+imageName;
 				
 				displayFileVO.setDisplayImageName(imageName);
 				displayFileVO.setDisplayImageContentType(imageForDisplayContentType);
@@ -1464,7 +1464,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 							   {
 								 fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
 								 fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
-								 String path = IWebConstants.UPLOADED_FILES+"/"+fileNames;
+								 String path = IWebConstants.UPLOADED_FILES+ "/"+currentDate+"/"+fileNames;
 								 File fileToCreate = new File(filePath, fileNames);
 									FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
 								 FileVO fileVO2 = new FileVO();
@@ -1488,7 +1488,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 								{
 								  fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
 								  fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
-								  String path = IWebConstants.UPLOADED_FILES+"/"+fileNames;
+								  String path = IWebConstants.UPLOADED_FILES+ "/"+currentDate+ "/"+fileNames;
 								  File fileToCreate = new File(filePath, fileNames);
 									FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
 								  FileVO fileVO2 = new FileVO();
@@ -3143,11 +3143,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	
 	public String getCandidatesOfAParty() throws Exception
 	{
+		 HttpSession session = request.getSession();
+		 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 	 try{
 		   
 			jObj = new JSONObject(getTask());			
 			//candidatesList = candidateDetailsService.getCandidatesOfAParty(jObj.getLong("partyId"));
-			candidatesList = candidateDetailsService.getCandidatesByPartyIdFromCandidateTable(jObj.getLong("partyId"));
+			candidatesList = candidateDetailsService.getCandidatesByPartyIdFromCandidateTable(user.getRegistrationID(),jObj.getLong("partyId"));
 		}catch(Exception e)
 		{
 			e.printStackTrace();			
