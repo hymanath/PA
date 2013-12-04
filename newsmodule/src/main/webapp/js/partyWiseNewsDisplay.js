@@ -616,8 +616,13 @@ function showTotalNews(myResult,jsObj){
 			str+='<td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+myResult[i].source+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
 		else
 			str+='<td style="width:260px;font-weight:bold;"></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
+
 		if(myResult[i].responseCount > 0)
-			str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">'+myResult[i].responseCount+'</span></p></td>';
+			str+='<td style="font-weight:bold;padding-left: 20px;width:200px;"><p class="text-error" ><a href="javascript:{populateNewsResponseWindow('+myResult[i].contentId+')}; "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+myResult[i].responseCount+'</span></a></p></td>';
+		else
+			str+='<td style="font-weight:bold;padding-left: 20px;width:200px;"></td>';
+			
+			//str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">'+myResult[i].responseCount+'</span></p></td>';
 		str+='</tr></table></div> <br>';
 		str+='<div class="span2 " style="width: 500px;">';
 		str+='<a onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">';
@@ -706,5 +711,12 @@ function createOptions(jsObj,myResults)
 			$('#userAccessConstituencyList').val(option.value);
 		}
 	}
+
+}
+function populateNewsResponseWindow(contentId){
+
+var urlstr = 'showNewsResponseAction.action?responseContentId ='+contentId;
+var browser1 = window.open(urlstr,"newsDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+browser1.focus();
 
 }
