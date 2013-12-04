@@ -174,4 +174,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	
 	public List<Long> getPcConstituency(Long constituencyId);
 	
+	public List findConstituencyByDistrictElectionTypeAndYear(Long districtId, String electionType,String electionYear);
 }
