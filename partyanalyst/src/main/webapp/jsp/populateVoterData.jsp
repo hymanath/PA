@@ -333,7 +333,7 @@ var selectElmt = "publicationDateList";
 		}
 	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "voterAnalysisAjaxAction.action?"+rparam;						
+		var url = "populatevoterAnalysisAjaxAction.action?"+rparam;						
 		callAjax(jsObj,url);
 		
 
@@ -380,7 +380,7 @@ var selectElmt = "publicationDateList";
 		task:"getPublicationDateForVotingTrendz"
 	 };
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 var url = "populatevoterAnalysisAjaxAction.action?"+rparam;	
 	 callAjax(jsObj,url);
 	});
 
@@ -402,7 +402,7 @@ var selectElmt = "publicationDateList";
 		task:"getPublicationDate"
 	 };
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 var url = "populatevoterAnalysisAjaxAction.action?"+rparam;	
 	 callAjax(jsObj,url);
 
 	});
@@ -424,7 +424,7 @@ var selectElmt = "publicationDateList";
 		task:"getPublicationDateForCast"
 	 };
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 var url = "populatevoterAnalysisAjaxAction.action?"+rparam;	
 	 callAjax(jsObj,url);
 
 	});
@@ -446,7 +446,7 @@ var selectElmt = "publicationDateList";
 		task:"getPublicationDateForParty"
 	 };
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 var url = "populatevoterAnalysisAjaxAction.action?"+rparam;	
 	 callAjax(jsObj,url);
 
 	});
@@ -468,7 +468,7 @@ var selectElmt = "publicationDateList";
 		task:"getPublicationDateForModification"
 	 };
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "voterAnalysisAjaxAction.action?"+rparam;	
+	 var url = "populatevoterAnalysisAjaxAction.action?"+rparam;	
 	 callAjax(jsObj,url);
 
 	});

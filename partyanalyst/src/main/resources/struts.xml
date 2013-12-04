@@ -6186,6 +6186,10 @@
 			<param name="root">resultStatus</param>
 		  </result>
 		</action>
-		
+		 <action name="populatevoterAnalysisAjaxAction" class="votersAnalysisAction" method="getPublicationDates">
+           <result type="json" name="success">
+           		<param name="root">namesList</param>
+        	</result>
+        </action>
 		</package>
 </struts>      
