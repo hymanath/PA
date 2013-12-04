@@ -5491,7 +5491,7 @@ function validateUploadFileDetails()
    var fileDesc  = $.trim($("#newsfileDescription").val());
    var fileDate = $("#newsdatedatepic").val();
    var scope = document.getElementById("scopeDiv").value;
-   
+   var sourceArr = new Array();
    //fileTitle = removeAllUnwantedCharacters1(fileTitle);	
    //fileDesc = removeAllUnwantedCharacters1(fileDesc);
 	//document.getElementById('newsfileTitle').value = fileTitle;
@@ -5585,6 +5585,21 @@ function validateUploadFileDetails()
 			 }
 	       }
        });
+
+	$('.fileNewSourceCls').each(function() {
+
+		 var sourceId = $(this).val();			   
+		   if(sourceArr.indexOf(sourceId) != -1){
+				str += ' File Sources must be different (Ex: Eenadu,Sakshi...etc).<br>';
+				 flag = false;
+				 return false;
+			}
+			else
+				sourceArr.push($(this).val());
+
+       });
+	   
+	   
 	 $('.addFileImgCls').each(function() {
            if($.trim($(this).val()).length == 0)
 	       {
@@ -6721,14 +6736,15 @@ var jsObj={
 
 
 }
-
+var candidatesList =[];
 function buildCandidatesForKeywords(results,type)
 {
-	
+	candidatesList = new Array();
              $("#"+type+" option").remove();
 			 $('#'+type).append('<option value="0">Select Candidate</option>');
             $.each(results,function(index , value){
 		$('#'+type).append('<option value="'+value.id+'">'+value.name+'</option>');
+		candidatesList.push(value.id);
 
 	});
  
@@ -7248,7 +7264,7 @@ var divId = divId1;
 if(divId1 != 11 && divId1 != 22){
 divSourceId = (divId1 + "").charAt(0);
 divId = (divId1 + "").charAt(1);
-console.log(divSourceId);
+
 }
 $("#errDiv"+divId1+"").html('');
 	var partyName = '';
@@ -7467,21 +7483,38 @@ var candiId = $("#candidateId"+divId+"").val();
 
 var id = candidates[candiId];
 
-if(divId == 11){
-$("#candidateListForParty").val(id);
-}
-else if(divId == 22){
-	$("#candidateListForPartyForNewsTo").val(id);
-}
+if(candidatesList.indexOf(id) == -1){
 
-else if(divSourceId == 3){
-$("#candidateListForParty"+elmntId+"").val(id);
-}
+	if(divId == 11){
+		$('#candidateListForParty').append('<option value="' + id + '">' + candiId + '</option>');
+	}
+	else if(divId == 22){
+		$("#candidateListForPartyForNewsTo").append('<option value="' + id + '">' + candiId + '</option>');
+	}
 
-else if(divSourceId == 4){
-	$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
-}
+	else if(divSourceId == 3){
+		$("#candidateListForParty"+elmntId+"").append('<option value="' + id + '">' + candiId + '</option>');
+	}
 
+	else if(divSourceId == 4){
+		$("#candidateListForPartyForNewsTo"+elmntId+"").append('<option value="' + id + '">' + candiId + '</option>');
+	}
+
+}
+	if(divId == 11){
+	$("#candidateListForParty").val(id);
+	}
+	else if(divId == 22){
+		$("#candidateListForPartyForNewsTo").val(id);
+	}
+
+	else if(divSourceId == 3){
+	$("#candidateListForParty"+elmntId+"").val(id);
+	}
+
+	else if(divSourceId == 4){
+		$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
+	}
 
 $('#searchDiv').dialog('close');
 }
