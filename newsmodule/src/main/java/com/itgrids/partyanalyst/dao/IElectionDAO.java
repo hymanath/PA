@@ -4,6 +4,8 @@
  */
 package com.itgrids.partyanalyst.dao;
 
+import java.util.List;
+
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.model.Election;
@@ -150,9 +152,9 @@ public interface IElectionDAO extends GenericDao<Election, Long>{/*
 	public List findLatestElectionYearHappenedInState(Long stateId,String electionType);
 	
 	public List getLatestElectionYearForAStateBasedOnElectionType(Long stateId, String electionType, String subType);
-	
+	*/
 	public List findLatestElectionYearHappenedInState(Long stateId,String electionType,String electionSubType);
-	
+	/*
 	public List<Election> findByElectionScopeId(Long electionScopeId);
 	
 	public List<Object[]> getPreviousElectionIdAndYear(Long electionId);
