@@ -1718,7 +1718,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	 {
 		 try{
 		 Map<String ,List<FileVO>> resultMap = new HashMap<String,List<FileVO>>();
-		 List<FileGallary> photoGallaryresultList = new ArrayList<FileGallary>();
+/*		 List<FileGallary> photoGallaryresultList = new ArrayList<FileGallary>();
 		 List<FileGallary> newsGallaryresultList = new ArrayList<FileGallary>();
 		 List<FileGallary> singleNewsGallaryresultList = null;
 		 List<FileGallary> singleVodeosGallaryresultList = null;
@@ -1727,7 +1727,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		 List<FileVO> vedioresultList = new ArrayList<FileVO>();
 		 List<FileVO> newsresultList = new ArrayList<FileVO>();
 		 
-
+*/
 		 		List<FileVO> nl;
 		 		if(level.equalsIgnoreCase("state")||level.equalsIgnoreCase(""))
 		 		{ 
@@ -1827,15 +1827,28 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			        if(obj[7] != null){
 			        	v.setDescEenadu(true);
 			        }
+			     
 			    	v.setSource(sourceNames.get(id) != null?sourceNames.get(id):"");
 	                v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String) obj[2])));
 	                v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String)obj[3])));
-	                v.setResponseCount(0);
+	                
+	                List<Long> fileId = new ArrayList<Long>();
+			        fileId.add(Long.valueOf(obj[0].toString()));
+			        List<Object[]> responseCount = newsResponseDAO.getResponceCountForFiles(fileId);
+			        
+	                if(responseCount.size() > 0 && responseCount != null){
+	                	for (Object[] parmas : responseCount) {
+	                		v.setResponseCount(Integer.parseInt(parmas[1].toString()));
+						}	                
+	                }
+	                else
+	                	v.setResponseCount(0);
 	                v.setDisplayImageName((String)obj[5]);
 					v.setDisplayImagePath((String)obj[6]);
-					 v.setFileType("Party");
-					 v.setCount(count);
-					 nl.add(v);
+					v.setFileType("Party");
+					v.setCount(count);
+					
+					nl.add(v);
 			    	
 			    }
 			 
