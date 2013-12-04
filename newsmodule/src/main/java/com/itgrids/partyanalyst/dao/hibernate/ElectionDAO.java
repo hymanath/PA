@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -570,7 +572,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and "+
 				"model.isPartial is null",params);
 	}
-	
+	*/
 	@SuppressWarnings("unchecked")
 	public List findLatestElectionYearHappenedInState(Long stateId,String electionType,String electionSubType) {
 		
@@ -579,7 +581,7 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		return getHibernateTemplate().find("select max(model.electionYear) from Election model where model.electionScope.state.stateId = ? and model.electionScope.electionType.electionType = ? and "+
 				"model.elecSubtype = ? and model.isPartial is null or model.isPartial = ?",params);
 	}
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List getLatestElectionYearForAStateBasedOnElectionType(Long stateId, String electionType, String subType)
     {
