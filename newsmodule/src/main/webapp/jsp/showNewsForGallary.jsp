@@ -288,7 +288,7 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 				str+='<div class="span9" style="width:550px;">';
 					str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+results[i].fileType+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
 			if(results[i].responseCount > 0)
-				str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><a href="showNewsResponseAction.action?responseContentId ='+results[i].fileId+' "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></a></p></td>';
+				str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><a href="javascript:{populateNewsResponseWindow('+results[i].fileId+')}; " "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></a></p></td>';
 				
 				str+='</tr></table></div>';
 				str+='<br><div class="span2" style="float:right;">';
@@ -478,6 +478,13 @@ function getSelectedNewsDetails()
 		
 	}).datepicker("show");
 });
+function populateNewsResponseWindow(contentId){
+
+var urlstr = 'showNewsResponseAction.action?responseContentId ='+contentId;
+var browser1 = window.open(urlstr,"newsDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+browser1.focus();
+
+}
 </script>
 </body>
 </html>
