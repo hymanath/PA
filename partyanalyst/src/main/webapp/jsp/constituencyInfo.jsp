@@ -29,7 +29,7 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
+
 	<script type="text/javascript" src="js/voterAnalysis/showGallaries1.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
@@ -47,7 +47,7 @@
 
 	<!-- YUI Dependency files (End) -->
 		<script type="text/javascript"  src="js/constituencyInfo.js"></script>	
-		<script type="text/javascript" src="js/voterAnalysis/voterAnalysis1.js"></script>
+		
 <style>
 #mainDiv{
 margin-left:auto;
@@ -76,7 +76,7 @@ margin-top:30px;
 <div id="errorDiv" style="display:none;"></div>
 <div id="ConstituencyDiv" class="selectDiv">
 	 Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="userAccessConstituencyList" listKey="id" listValue="name"  onchange="getPublicationDate();"/> &nbsp;&nbsp;
-	  Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+	  Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" onchange="getConstituencyBasicInfo();" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 	  <img id="publicationAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;margin-right:165px;"/>
 	
 		</select>
@@ -204,6 +204,25 @@ function callAjax(jsObj,url)
 	$('#publicationDateList').trigger("change");
 	
 
+}
+function getPublicationDate()
+	{
+	var constituencyID = document.getElementById("constituencyList");
+	var name=constituencyID.options[constituencyID.selectedIndex].name;
+	var value=constituencyID.options[constituencyID.selectedIndex].value;
+	var choice=false;
+	var locationAlertEl =  document.getElementById("locationAlertMsg");
+	
+	var jsObj=
+	{
+		selected:value,
+		task:"getPublicationDate"
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "voterAnalysisAjaxAction.action?"+rparam;	
+
+	$('#publicationAjaxImage').css('display','block');
+	callAjax(jsObj,url);
 }
 </script>
 
