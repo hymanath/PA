@@ -5,6 +5,7 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.util.IConstants;
 
 public class ConstituencyDAOHibernateTest extends BaseDaoTestCase{
 
@@ -37,9 +38,18 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase{
 	  System.out.println(constituencyDAO.getStateByConstituencyId(232l).size());	
 	}*/
 	
-	public void testgetStateAndDistrictDetails()
+	/*public void testgetStateAndDistrictDetails()
 	{
 		List<Object[]> values = constituencyDAO.getStateAndDistrictDetails(232l);
+		for(Object[] params:values)
+			 System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	
+	public void testfindConstituencyByDistrictElectionType()
+	{
+		List<Object[]> values = constituencyDAO.findConstituencyByDistrictElectionTypeAndYear(19L,IConstants.ASSEMBLY_ELECTION_TYPE,"2009");
+		System.out.println(values.size());
 		for(Object[] params:values)
 			 System.out.println(params[0]+" "+params[1]);
 	}
