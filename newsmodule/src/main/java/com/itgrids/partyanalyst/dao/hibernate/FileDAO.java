@@ -35,7 +35,7 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	
 	public List<File> getAllFilesByFileIds(List<Long> fileIds){
 		
-		Query query = getSession().createQuery("select model from File model where model.fileId in(:fileIds)");
+		Query query = getSession().createQuery("select model from File model where model.fileId in(:fileIds) and model.isDeleted != 'Y'");
 		
 		query.setParameterList("fileIds", fileIds);
 		
@@ -239,7 +239,7 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	}
 	 public List<File> getAllLatestFilesByFileIds(List<Long> fileIds){
 			
-			Query query = getSession().createQuery("select model from File model where model.fileId in(:fileIds) order by model.fileDate");
+			Query query = getSession().createQuery("select model from File model where model.fileId in(:fileIds) and model.isDeleted != 'Y' order by model.fileDate");
 			
 			query.setParameterList("fileIds", fileIds);
 			

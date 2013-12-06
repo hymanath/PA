@@ -18,7 +18,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	}
 	  public List<String> getCandidateNamesByFileId(Long fileId){
 		  
-		  Query query = getSession().createQuery("select distinct model.sourceCandidate.lastname from CandidatePartyFile model where model.file.fileId =:fileId ");
+		  Query query = getSession().createQuery("select distinct model.sourceCandidate.lastname from CandidatePartyFile model where model.file.fileId =:fileId  and model.file.isDeleted != 'Y'");
 		  query.setParameter("fileId", fileId);
 		  return query.list();
 	  }
@@ -32,7 +32,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	
 	 public List<Object[]> getCandidateNamesByFileIds(Set<Long> fileIds){
 		  
-		  Query query = getSession().createQuery("select distinct model.file.fileId,model.sourceCandidate.lastname from CandidatePartyFile model where model.file.fileId in(:fileIds) ");
+		  Query query = getSession().createQuery("select distinct model.file.fileId,model.sourceCandidate.lastname from CandidatePartyFile model where model.file.fileId in(:fileIds) and model.file.isDeleted != 'Y'");
 		  query.setParameterList("fileIds", fileIds);
 		  return query.list();
 	  }
@@ -84,7 +84,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	 {
 		 	 
 		 Query query = getSession().createQuery("select distinct (model.file.fileId) from CandidatePartyFile model " +
-			 		" where model.candidatePartyFileId in (:candidateFileId)" );
+			 		" where model.candidatePartyFileId in (:candidateFileId) and model.file.isDeleted != 'Y'" );
 		 query.setParameterList("candidateFileId", candidateFileId);
 		 return query.list();
 	 }

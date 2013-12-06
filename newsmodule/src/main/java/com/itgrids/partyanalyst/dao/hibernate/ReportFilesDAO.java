@@ -19,7 +19,7 @@ public class ReportFilesDAO extends GenericDaoHibernate<ReportFiles, Long> imple
 		
 		Query query = getSession().createQuery("select distinct(rf.file.fileId),rf.file.fileTitle,rf.file.fileDescription," +
 				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue,rf.file.font.fontId,rf.file.descFont.fontId from ReportFiles rf " +
-				" where rf.newsReport.newsReportId = :newsReportId  and rf.newsReport.user.userId = :userId and rf.file.regionScopes.regionScopesId = 2");
+				" where rf.newsReport.newsReportId = :newsReportId  and rf.newsReport.user.userId = :userId and rf.file.regionScopes.regionScopesId = 2 and rf.file.isDeleted != 'Y'");
 		query.setParameter("newsReportId", newsReportId);
 		query.setParameter("userId", userId);
 		
@@ -29,7 +29,7 @@ public class ReportFilesDAO extends GenericDaoHibernate<ReportFiles, Long> imple
 		
     	Query query = getSession().createQuery("select distinct(rf.file.fileId),rf.file.fileTitle,rf.file.fileDescription," +
 				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue,rf.file.font.fontId,rf.file.descFont.fontId from ReportFiles rf " +
-				" where  rf.newsReport.reportKey = :key  and rf.file.regionScopes.regionScopesId = 2");
+				" where  rf.newsReport.reportKey = :key  and rf.file.regionScopes.regionScopesId = 2 and rf.file.isDeleted != 'Y'");
 		
 		query.setParameter("key", key);
 		
@@ -41,7 +41,7 @@ public class ReportFilesDAO extends GenericDaoHibernate<ReportFiles, Long> imple
 				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue, " +
 				" rf.file.userAddress.district.districtId,rf.file.userAddress.district.districtName, " +
 				" rf.file.regionScopes.scope,rf.file.font.fontId,rf.file.descFont.fontId from ReportFiles rf where rf.newsReport.newsReportId = :newsReportId" +
-				"     and rf.newsReport.user.userId = :userId  and rf.file.regionScopes.regionScopesId != 2 order by rf.file.userAddress.district.districtId ");
+				"     and rf.newsReport.user.userId = :userId  and rf.file.regionScopes.regionScopesId != 2 and rf.file.isDeleted != 'Y' order by rf.file.userAddress.district.districtId ");
 		query.setParameter("newsReportId", newsReportId);
 		query.setParameter("userId", userId);
 		
@@ -54,7 +54,7 @@ public class ReportFilesDAO extends GenericDaoHibernate<ReportFiles, Long> imple
 				" rf.file.newsDescription,rf.file.regionScopes.regionScopesId,rf.file.locationValue, " +
 				" rf.file.userAddress.district.districtId,rf.file.userAddress.district.districtName, " +
 				" rf.file.regionScopes.scope,rf.file.font.fontId,rf.file.descFont.fontId from ReportFiles rf where " +
-				"   rf.newsReport.reportKey = :key and rf.file.regionScopes.regionScopesId != 2 order by rf.file.userAddress.district.districtId ");
+				"   rf.newsReport.reportKey = :key and rf.file.regionScopes.regionScopesId != 2 and rf.file.isDeleted != 'Y' order by rf.file.userAddress.district.districtId ");
 		
 		query.setParameter("key", key);
 		

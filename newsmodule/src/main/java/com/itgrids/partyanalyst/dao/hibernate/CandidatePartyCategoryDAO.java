@@ -22,7 +22,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			 StringBuilder str = new StringBuilder();
 			 str.append(" select distinct model.gallary.gallaryId,model.gallary.name from CandidatePartyCategory model where (model.candidatePartyFile.sourceCandidate.candidateId =:candidateId) or (model.candidatePartyFile.destinationCandidate.candidateId =:candidateId)");
 			
-			 str.append(" and model.gallary.isDelete = 'false' ");
+			 str.append(" and model.gallary.isDelete = 'false' and model.candidatePartyFile.file.isDeleted != 'Y' ");
 			 if(!newsType.equals(""))
 				str.append(" and model.gallary.isPrivate = 'false' "); 
 			 
@@ -92,7 +92,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				" model.candidatePartyFile.file.filePath ," +
 				" model.candidatePartyFile.file.fileId ," +
 				" model.candidatePartyFile.file.font.fontId,model.candidatePartyFile.file.descFont.fontId from CandidatePartyCategory model " +
-				" where model.gallary.gallaryId = :gallaryId");
+				" where model.gallary.gallaryId = :gallaryId and model.candidatePartyFile.file.isDeleted != 'Y' ");
 		query.setParameter("gallaryId", gallaryId);
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
@@ -103,7 +103,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	public Long getCountForNewsInASelectedGallery(Long gallaryId)
 	{
 		Query query = getSession().createQuery("select count( distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model " +
-				" where model.gallary.gallaryId = :gallaryId");
+				" where model.gallary.gallaryId = :gallaryId and model.candidatePartyFile.file.isDeleted != 'Y' ");
 		query.setParameter("gallaryId", gallaryId);
 		return (Long)query.uniqueResult();
 	}
@@ -120,7 +120,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getAllCategoryes()
 	{
-		return getHibernateTemplate().find("select  model.gallary.gallaryId , model.gallary.name ,model.gallary.description , count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model group by model.gallary.gallaryId");
+		return getHibernateTemplate().find("select  model.gallary.gallaryId , model.gallary.name ,model.gallary.description , count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted != 'Y' group by model.gallary.gallaryId");
 	}
 	
 	

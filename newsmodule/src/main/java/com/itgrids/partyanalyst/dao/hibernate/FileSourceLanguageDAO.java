@@ -78,7 +78,7 @@ public class FileSourceLanguageDAO extends GenericDaoHibernate<FileSourceLanguag
 	public List<Object[]> getFileSourceByFileIds(Set<Long> fileIds)
 	{
 		Query query = getSession().createQuery("select fs.file.fileId,fs.source.sourceId,fs.source.source from " +
-				"FileSourceLanguage fs where fs.file.fileId in (:fileIds)" );
+				"FileSourceLanguage fs where fs.file.fileId in (:fileIds) and fs.file.isDeleted != 'Y'" );
 		query.setParameterList("fileIds", fileIds);
 		return query.list();
 	}

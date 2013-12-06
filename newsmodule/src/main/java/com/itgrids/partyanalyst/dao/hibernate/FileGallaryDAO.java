@@ -3471,11 +3471,11 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 	public List<File> getNewsCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr)
 	 {
 		 StringBuilder str = new StringBuilder();
-		  	str.append("select model from File model ");
+		  	str.append("select model from File model where  model.isDeleted != 'Y' ");
 		 if(queryType.equalsIgnoreCase("District"))
-			 str.append(" where model.userAddress.district.districtId = :locationId ");
+			 str.append(" and model.userAddress.district.districtId = :locationId ");
 		 if(queryType.equalsIgnoreCase("Constituency"))
-			 str.append(" where model.userAddress.constituency.constituencyId = :locationId "); 
+			 str.append(" and model.userAddress.constituency.constituencyId = :locationId "); 
 		 if(fromDateStr != null)
 			 str.append(" and date(model.fileDate) >= :fromDateStr");
 	 	 if(toDateStr != null)
@@ -3499,11 +3499,11 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		public Long getNewsTotalCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr)
 		 {
 			 StringBuilder str = new StringBuilder();
-				 str.append("select count(*) from File model ");
+				 str.append("select count(*) from File model where  model.isDeleted != 'Y' ");
 			 if(queryType.equalsIgnoreCase("District"))
-				 str.append(" where model.userAddress.district.districtId = :locationId ");
+				 str.append(" and model.userAddress.district.districtId = :locationId ");
 			 if(queryType.equalsIgnoreCase("Constituency"))
-				 str.append(" where model.userAddress.constituency.constituencyId = :locationId "); 
+				 str.append(" and model.userAddress.constituency.constituencyId = :locationId "); 
 			 if(fromDateStr != null)
 				 str.append(" and date(model.fileDate) >= :fromDateStr");
 		 	 if(toDateStr != null)
