@@ -198,7 +198,7 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 	public List<Object[]> getSourceIdsAndPageNos(Set<Long> fileIdsList)
 	{
 		Query query = getSession().createQuery(" select model.fileSourceLanguage.file.fileId,model.fileSourceLanguage.source.sourceId," +
-				" model.edition,model.pageNo from FilePaths model where model.fileSourceLanguage.file.fileId in (:fileIdsList) ");
+				" model.edition,model.pageNo from FilePaths model where model.fileSourceLanguage.file.fileId in (:fileIdsList) and model.fileSourceLanguage.file.isDeleted != 'Y'");
 		
 		query.setParameterList("fileIdsList",fileIdsList);
 		return query.list();

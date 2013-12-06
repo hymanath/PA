@@ -20,7 +20,7 @@ public class NewsResponseDAO extends GenericDaoHibernate<NewsResponse,Long> impl
 	public List<Long> getCandidateNewsResponseFileIdsByFileID(Long fileId)
 	{
 		
-		return getHibernateTemplate().find("select distinct model.candidatePartyFile.candidatePartyFileId from NewsResponse model where model.file.fileId = ?",fileId);
+		return getHibernateTemplate().find("select distinct model.candidatePartyFile.candidatePartyFileId from NewsResponse model where model.file.fileId = ? and  model.file.isDeleted != 'Y' and  model.candidatePartyFile.file.isDeleted != 'Y'",fileId);
 	}
 	public List<Long> getCandidateNewsResponseFileIds(Long fileId)
 	{
@@ -29,8 +29,8 @@ public class NewsResponseDAO extends GenericDaoHibernate<NewsResponse,Long> impl
 	}
 	 public List<Object[]> getLatestNewsResponses(){
 		 Query queryObj=getSession().createQuery("select distinct(model.file.fileId),model.file.fileTitle,model.file.fileDate,model.file.font.fontId" +
-		 		" from NewsResponse model where (model.candidatePartyFile.file.isPrivate !='Y') or (model.candidatePartyFile.file.isPrivate is null)" +
-		 		" and (model.file.isDeleted !='Y') or (model.file.isDeleted is null)" +
+		 		" from NewsResponse model where (model.candidatePartyFile.file.isPrivate !='Y' or model.candidatePartyFile.file.isPrivate is null)" +
+		 		" and (model.file.isDeleted !='Y' or model.file.isDeleted is null) and (model.candidatePartyFile.file.isDeleted !='Y' or model.candidatePartyFile.file.isDeleted is null)" +
 		 		" group by model.file.fileId order by  model.file.fileId desc"); 
 		 queryObj.setFirstResult(0);
 		 queryObj.setMaxResults(5);
@@ -86,7 +86,7 @@ public class NewsResponseDAO extends GenericDaoHibernate<NewsResponse,Long> impl
 	 
 	 public List<Object[]> getResponceCountForFiles(List<Long> fileIds)
 	 {
-		 Query query = getSession().createQuery("select  model.file.fileId,count(model.file.fileId) from NewsResponse model where model.file.fileId in (:fileIds) group by model.file.fileId");
+		 Query query = getSession().createQuery("select  model.file.fileId,count(model.file.fileId) from NewsResponse model where model.file.fileId in (:fileIds) and model.file.isDeleted != 'Y' group by model.file.fileId");
 		 query.setParameterList("fileIds", fileIds);
 		 
 		 return  query.list();
