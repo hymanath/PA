@@ -467,7 +467,7 @@ CPM</a>
 </td>
 <td>
 <div class="selectHeading">
-	<span class="selectDivStyle">Madhya Pradesh Constituencies </span>
+	<span class="selectDivStyle">Madhya Pradesh &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Constituencies </span>
 	<p style="padding:5px;">Know About Your Assembly Constituency</p>
 <select class="selectBoxWidth" id="selectedConstituencyInSpecialPage" name="constituency">
 <option value="0">Select Constituency</option>
