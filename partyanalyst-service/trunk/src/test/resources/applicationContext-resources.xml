@@ -383,7 +383,10 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppUser</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppUserAccessKey</value>
 				<value>com.itgrids.partyanalyst.model.WebServiceBaseUrl</value>
-					<value>com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies</value>
+				<value>com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies</value>
+				<value>com.itgrids.partyanalyst.model.Flag</value>
+				<value>com.itgrids.partyanalyst.model.VoterFlag</value>
+					
 			</list>
 		</property>
 	</bean>
@@ -1971,6 +1974,12 @@
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
       <bean id="voterDataAvailableConstituenciesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterDataAvailableConstituenciesDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+    <bean id="voterFlagDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterFlagDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+     <bean id="flagDAO" class="com.itgrids.partyanalyst.dao.hibernate.FlagDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
 </beans>
