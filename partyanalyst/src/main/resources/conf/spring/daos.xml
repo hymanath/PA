@@ -1274,4 +1274,10 @@
     <bean id="voterDataAvailableConstituenciesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterDataAvailableConstituenciesDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+     <bean id="voterFlagDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterFlagDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+     <bean id="flagDAO" class="com.itgrids.partyanalyst.dao.hibernate.FlagDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>		
