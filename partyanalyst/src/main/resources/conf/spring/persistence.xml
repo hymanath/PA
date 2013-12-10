@@ -365,6 +365,8 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppUserAccessKey</value>
 				<value>com.itgrids.partyanalyst.model.WebServiceBaseUrl</value>
 				<value>com.itgrids.partyanalyst.model.VoterDataAvailableConstituencies</value>
+				<value>com.itgrids.partyanalyst.model.Flag</value>
+				<value>com.itgrids.partyanalyst.model.VoterFlag</value>
 			</list>
 			
 		</property>
