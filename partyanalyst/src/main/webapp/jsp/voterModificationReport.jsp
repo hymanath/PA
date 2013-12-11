@@ -322,6 +322,38 @@ $("document").ready(function(){
 	
 });
 
+function genereatePdf()
+{
+	var constituencyId = ${constituencyId};
+	var publicationId  = ${toPublicationDateId};
+	createPdfs(constituencyId,publicationId);
+}
+function createPdfs(constituencyId,toPublicationDateId)
+{
+	$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	var jObj=
+	{
+	constituencyId : constituencyId,
+	locationType : "constituency",
+	locationValue : constituencyId,
+	publicationId : toPublicationDateId,
+	task:"createPdfs"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "createPdfAction.action?"+rparam;
+
+	callAjax(jObj,url);
+}
+function buildPdf(result)
+{
+	var str = '';
+	var url = result.url;
+	//url.replace(new RegExp(/\\/g),"/");
+	str +='<input type="button" style="float: right; margin-top: -20px; margin-right: 10px;" id="pdfGeneraion" href="javascript:{}" onClick = "genereatePdf();" value="Generate Pdf" class="btn btn-info">'
+	str +='<a  id="viewPdfId" href="'+url+'" style="float: right; height: 16px; font-family: tahoma; font-size: small; font-weight: 100; margin-top: -20px; margin-right: 10px;"	target="_blank" id="pdfView"   class="btn btn-info">View Pdf</a>';
+	$('#pdfDiv').html(str);
+}
+
 </script>
 </body>
 </html>

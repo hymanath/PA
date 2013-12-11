@@ -1525,6 +1525,12 @@
 		<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 		<property name="constituencyHierarchyInfoDAO" ref="constituencyHierarchyInfoDAO" />
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
+		<property name="voterModifiationPdfsGenerations" ref="voterModifiationPdfsGenerations" />
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+	</bean>
+	
+	<bean name="voterModifiationPdfsGenerations" class="com.itgrids.partyanalyst.service.impl.VoterModifiationPdfsGenerations">
+		
 	</bean>
 	
 	<bean name="thumbnailService" class="com.itgrids.partyanalyst.service.impl.ThumbnailService">
