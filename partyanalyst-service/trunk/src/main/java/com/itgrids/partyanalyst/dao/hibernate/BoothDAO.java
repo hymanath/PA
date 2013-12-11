@@ -1698,5 +1698,41 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		query.setParameter("publicationId", publicationId);
 		return (String)query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getTehsilsForConstituency(Long constituencyId,Long publicationDateId)
+	{
+		Object[] parms = {constituencyId,publicationDateId};
+		return getHibernateTemplate().find("select distinct model.tehsil.tehsilId,model.tehsil.tehsilName from Booth model where model.constituency.constituencyId = ? and model.publicationDate.publicationDateId = ? ",parms);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatsForConstituency(List<Long> mandalIds,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select distinct model.panchayat.panchayatId , model.panchayat.panchayatName , model.tehsil.tehsilId from Booth model where model.tehsil.tehsilId in (:mandalIds) and model.publicationDate.publicationDateId = :publicationDateId");
+		
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameterList("mandalIds", mandalIds);
+		return query.list();
+	}
+	
+    public List<Object[]> getPanchayatMandalDetails(Long constituencyId,Long publicationId){
+	Query query = getSession().createQuery("select distinct model.panchayat.panchayatId , model.panchayat.panchayatName , model.tehsil.tehsilId,model.tehsil.tehsilName from Booth model where model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId order by model.tehsil.tehsilName ");
+
+	query.setParameter("publicationId", publicationId);
+	query.setParameter("constituencyId", constituencyId);
+
+	return query.list();
+	}
+
+	public List<Object[]> getMunicDetails(Long constituencyId,Long publicationId){
+	Query query = getSession().createQuery("select distinct model.localBody.localElectionBodyId ,model.localBody.name ,model.localBody.electionType.electionType from Booth model where model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId =:constituencyId");
+
+	query.setParameter("publicationId", publicationId);
+	query.setParameter("constituencyId", constituencyId);
+
+	return query.list();
+	}
+
 
 }

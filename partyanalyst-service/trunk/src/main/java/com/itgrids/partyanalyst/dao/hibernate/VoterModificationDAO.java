@@ -540,7 +540,7 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 			str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and ");
 	     */
 	     
-			str.append(" select model.voter.voterId,model.voter.name,model.voter.gender, model.voter.age, model.voter.relativeName, model.voter.relationshipType, ");
+			str.append(" select distinct model.voter.voterId,model.voter.name,model.voter.gender, model.voter.age, model.voter.relativeName, model.voter.relationshipType, ");
 			str.append(" model2.booth.boothId, model2.booth.partNo, model2.booth.villagesCovered, ");
 			str.append(" model.status, model.publicationDate.publicationDateId,model.publicationDate.name,model.voter.houseNo,model.voter.voterIDCardNo,model.voter.houseNo,model2.booth.villagesCovered ");
 			str.append(" from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
@@ -751,6 +751,46 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		query.setMaxResults(maxIndex);
 		return query.list();
 	}
+	
+	 public List<Object[]> getAddedVotersInAPublicationForMunicipality(Long publicationId,Long constituencyId){
+	        Query query = getSession().createQuery("select bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName,bpv.booth.localBody.localElectionBodyId,bpv.booth.localBody.electionType.electionType" +
+	                ",bpv.booth.partNo,bpv.voter.voterIDCardNo,bpv.voter.name,bpv.voter.houseNo,bpv.voter.gender,bpv.voter.age,bpv.voter.relativeName,bpv.voter.relationshipType from VoterModification vm,BoothPublicationVoter bpv " +
+	                " where vm.publicationDate.publicationDateId = :publicationId and vm.constituency.constituencyId = :constituencyId and vm.voterStatus.voterStatusId = 1 and vm.voter.voterId = bpv.voter.voterId and " +
+	                "  bpv.booth.localBody.localElectionBodyId is not null and bpv.booth.constituency.constituencyId = :constituencyId and bpv.booth.publicationDate.publicationDateId = :publicationId    ");
+	        query.setParameter("publicationId", publicationId);
+	        query.setParameter("constituencyId", constituencyId);
+	        return query.list();
+	    }
+	    public List<Object[]> getAddedVotersInAPublicationForMandal(Long publicationId,Long constituencyId){
+	        Query query = getSession().createQuery("select bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName,bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName " +
+	                ",bpv.booth.partNo,bpv.voter.voterIDCardNo,bpv.voter.name,bpv.voter.houseNo,bpv.voter.gender,bpv.voter.age,bpv.voter.relativeName,bpv.voter.relationshipType from VoterModification vm,BoothPublicationVoter bpv " +
+	                " where vm.publicationDate.publicationDateId = :publicationId and vm.constituency.constituencyId = :constituencyId and vm.voterStatus.voterStatusId = 1 and vm.voter.voterId = bpv.voter.voterId and " +
+	                "  bpv.booth.localBody.localElectionBodyId is null and bpv.booth.constituency.constituencyId = :constituencyId and bpv.booth.publicationDate.publicationDateId = :publicationId    ");
+	        query.setParameter("publicationId", publicationId);
+	        query.setParameter("constituencyId", constituencyId);
+	        return query.list();
+	    }
+	   
+	    public List<Object[]> getDeletedVotersInAPublicationForMunicipality(Long prevPublicationId,Long publicationId,Long constituencyId){
+	        Query query = getSession().createQuery("select bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName,bpv.booth.localBody.localElectionBodyId,bpv.booth.localBody.electionType.electionType" +
+	                ",bpv.booth.partNo,bpv.voter.voterIDCardNo,bpv.voter.name,bpv.voter.houseNo,bpv.voter.gender,bpv.voter.age,bpv.voter.relativeName,bpv.voter.relationshipType from VoterModification vm,BoothPublicationVoter bpv " +
+	                " where vm.publicationDate.publicationDateId = :publicationId and vm.constituency.constituencyId = :constituencyId and vm.voterStatus.voterStatusId = 2 and vm.voter.voterId = bpv.voter.voterId and " +
+	                "  bpv.booth.localBody.localElectionBodyId is not null and bpv.booth.constituency.constituencyId = :constituencyId and bpv.booth.publicationDate.publicationDateId = :prevPublicationId    ");
+	        query.setParameter("publicationId", publicationId);
+	        query.setParameter("constituencyId", constituencyId);
+	        query.setParameter("prevPublicationId",prevPublicationId);
+	        return query.list();
+	    }
+	    public List<Object[]> getDeletedVotersInAPublicationForMandal(Long prevPublicationId,Long publicationId,Long constituencyId){
+	        Query query = getSession().createQuery("select bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName,bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName " +
+	                ",bpv.booth.partNo,bpv.voter.voterIDCardNo,bpv.voter.name,bpv.voter.houseNo,bpv.voter.gender,bpv.voter.age,bpv.voter.relativeName,bpv.voter.relationshipType from VoterModification vm,BoothPublicationVoter bpv " +
+	                " where vm.publicationDate.publicationDateId = :publicationId and vm.constituency.constituencyId = :constituencyId and vm.voterStatus.voterStatusId = 2 and vm.voter.voterId = bpv.voter.voterId and " +
+	                "  bpv.booth.localBody.localElectionBodyId is null and bpv.booth.constituency.constituencyId = :constituencyId and bpv.booth.publicationDate.publicationDateId = :prevPublicationId    ");
+	        query.setParameter("publicationId", publicationId);
+	        query.setParameter("constituencyId", constituencyId);
+	        query.setParameter("prevPublicationId", prevPublicationId);
+	        return query.list();
+	    }
 	
 	
 }

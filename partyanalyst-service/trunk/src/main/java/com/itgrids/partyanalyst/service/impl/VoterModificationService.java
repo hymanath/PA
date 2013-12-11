@@ -1,21 +1,36 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyHierarchyInfoDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -29,12 +44,17 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
+import com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyHierarchyInfoVO;
+import com.itgrids.partyanalyst.dto.PanchayatAddedOrDeletedVO;
+import com.itgrids.partyanalyst.dto.PdfVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterAdderdOrDeletedRengesInfoVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -44,6 +64,7 @@ import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.model.VoterModificationAgeInfo;
 import com.itgrids.partyanalyst.model.VoterModificationInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IVoterModifiationPdfsGenerations;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -73,7 +94,51 @@ public class VoterModificationService implements IVoterModificationService{
 	private IRegionServiceData regionServiceDataImp;
 	private IConstituencyHierarchyInfoDAO constituencyHierarchyInfoDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IVoterModifiationPdfsGenerations voterModifiationPdfsGenerations;
+	private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 14,
+		      Font.BOLD);
+	private static Font catFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 11,
+		      Font.BOLD);
+   /* private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+		      Font.NORMAL, BaseColor.RED);
+    private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
+		      Font.BOLD);
+	private static Font smallBold = new Font(Font.FontFamily.TIMES_ROMAN, 12,
+		      Font.BOLD);
+	  */
 	
+	
+	/**
+	 * @return the voterModifiationPdfsGenerations
+	 */
+	public IVoterModifiationPdfsGenerations getVoterModifiationPdfsGenerations() {
+		return voterModifiationPdfsGenerations;
+	}
+
+	/**
+	 * @return the delimitationConstituencyDAO
+	 */
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	/**
+	 * @param delimitationConstituencyDAO the delimitationConstituencyDAO to set
+	 */
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+	/**
+	 * @param voterModifiationPdfsGenerations the voterModifiationPdfsGenerations to set
+	 */
+	public void setVoterModifiationPdfsGenerations(
+			IVoterModifiationPdfsGenerations voterModifiationPdfsGenerations) {
+		this.voterModifiationPdfsGenerations = voterModifiationPdfsGenerations;
+	}
+
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
@@ -1656,11 +1721,24 @@ public class VoterModificationService implements IVoterModificationService{
 				 try{
 				 voterModificationAgeRangeVO = new VoterModificationAgeRangeVO();
 				 voterModificationAgeRangeVO.setRange(ageRange);
-				 String[] ages = ageRange.split("-");
-				 Long ageFrom = new Long(ages[0].trim());
+				 Long ageFrom = null;
 				 Long ageTo = null;
-				 if(!ages[1].trim().equalsIgnoreCase("Above"))
-					 ageTo = Long.valueOf(ages[1].trim());
+				 if(ageRange.equalsIgnoreCase("Young Voters"))
+				 {
+					// System.out.println("yes");
+					 ageFrom = 18l;
+					 ageTo   = 22l;
+				 }
+				 else
+				 {
+					 String[] ages = ageRange.split("-");
+					 ageFrom = new Long(ages[0].trim());
+					  ageTo = null;
+					 if(!ages[1].trim().equalsIgnoreCase("Above"))
+						 ageTo = Long.valueOf(ages[1].trim());
+				 }
+				
+				
 					 
 				 StringBuilder queryStr = new StringBuilder();
 				 queryStr.append(" select count(model.voter.voterId),model.voterStatus.status,model.voter.gender ");
@@ -2280,8 +2358,9 @@ public class VoterModificationService implements IVoterModificationService{
 		 else{
 			 
 			 Long ageRangeId = voterModificationVO.getAgeRangeId();
-			 
-			 if(ageRangeId.longValue() == 2)
+			 if(ageRangeId.longValue() == 1)
+				 queryStr.append("and model.voter.age >= 18 and  model.voter.age <= 22");
+			 else if(ageRangeId.longValue() == 2)
 				 queryStr.append("and model.voter.age >= 18 and  model.voter.age <= 25");
 			 else if(ageRangeId.longValue() == 3)
 				 queryStr.append("and model.voter.age >= 26 and  model.voter.age <= 35");
@@ -3051,5 +3130,914 @@ public class VoterModificationService implements IVoterModificationService{
 		 
 	 }
 	 
+	 /**
+	  * This service is used for getting added and deleted voters cout by panchayat lavel and added count or deleted copunt based on range
+	  * @param Long constituencyId
+	  * @param Long publicationDateId
+	  * @return List<VoterAdderdOrDeletedRengesInfoVO> 
+	  * @date 06-12-2013
+	  */
+	 public List<VoterAdderdOrDeletedRengesInfoVO> getReportForVotersAddedOrDeletedVotersForSelectdConstituency(Long constituencyId,Long publicationDateId,String reprtType)
+	 {
+		 List<VoterAdderdOrDeletedRengesInfoVO> returnList = null;
+		 VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO = null;
+		 List<VoterAdderdOrDeletedRengesInfoVO> addedVotersListForVO = null;
+		 List<VoterAdderdOrDeletedRengesInfoVO> deletedVotersListForVO = null;
+		 List<VoterAdderdOrDeletedRengesInfoVO> addedRurlUrbanVotersListForVO = null;
+		 List<VoterAdderdOrDeletedRengesInfoVO> deletedRurlUrbanVotersListForVO = null;
+		 List<PanchayatAddedOrDeletedVO> panchayWiseAddedDeletedList = null;
+		 try {
+			LOG.debug("Entered into  getReportForVotersAddedOrDeletedVotersForSelectdConstituency() in  VoterModificationService Service");
+			Map<Long,Long> panchayatAddedCountMap = null;//Map<panchayatId,addedcount>
+			Map<Long,Long> panchayatDeletedCountMap = null;//Map<panchayatId,Deletedcount>
+			Map<Long,Long> ruralUrbanAddedCountMap = null;//Map<ruralUrbanId,addedCount>
+			Map<Long,Long> ruralUrbanDeletedCountMap = null;//Map<ruralUrbanId,deletedCount>
+			Map<Long,List<Long>> constituencyMandalMap = null;//Map<constituencyId,mandalIds>
+			Map<Long,List<Long>> mandalPanchayatMap = null;//Map<mandalIs,panchayatIds>
+			Map<Long,String> mandalNameMap = null;//Map<mandalId,MandalName>
+			Map<Long,String> panchayatNameMap = null;//Map<panchayatId,panchayatName>
+			Map<Long,Long> panchayatMandalMap = null;//Map<panchayatId,tehsilId>
+			List<Long> mandalIds = null;
+			List<Long> panchayatIds = null;
+			
+			List<Object[]> mandalList = boothDAO.getTehsilsForConstituency(constituencyId,publicationDateId);
+			if(mandalList != null && mandalList.size() > 0)
+			{
+				constituencyMandalMap = new HashMap<Long, List<Long>>();
+				mandalNameMap = new HashMap<Long, String>();
+				mandalIds = new ArrayList<Long>();
+				for (Object[] parms : mandalList) {
+					mandalIds.add((Long)parms[0]);
+					mandalNameMap.put((Long)parms[0], parms[1].toString());
+				}
+				constituencyMandalMap.put(constituencyId, mandalIds);
+				
+			}
+			if(mandalIds != null)
+			{
+				List<Object[]> panchayatsList = boothDAO.getPanchayatsForConstituency(mandalIds,publicationDateId);
+				if(panchayatsList != null && panchayatsList.size() > 0)
+				{
+					mandalPanchayatMap = new HashMap<Long, List<Long>>();
+					panchayatNameMap = new HashMap<Long, String>();
+					panchayatMandalMap = new HashMap<Long, Long>();
+					for (Object[] parms : panchayatsList) {
+						
+						panchayatIds = mandalPanchayatMap.get((Long)parms[2]);
+						if(panchayatIds == null)
+						{
+							panchayatIds = new ArrayList<Long>();
+							mandalPanchayatMap.put((Long)parms[2], panchayatIds);
+							panchayatMandalMap.put((Long)parms[0], (Long)parms[2]);
+						}
+						panchayatIds.add((Long)parms[0]);
+						panchayatNameMap.put((Long)parms[0], parms[1].toString());
+					}
+					
+				}
+			}
+			if(reprtType.equalsIgnoreCase("panchayatWise"))
+			{
+				panchayWiseAddedDeletedList = new ArrayList<PanchayatAddedOrDeletedVO>();
+				voterAdderdOrDeletedRengesInfoVO = new VoterAdderdOrDeletedRengesInfoVO();
+				getAddedAndDeletedVotersByPanchayatLevel(constituencyId,publicationDateId,panchayatNameMap,mandalNameMap,panchayWiseAddedDeletedList,panchayatMandalMap);
+			}
+			else
+			{
+				returnList = new ArrayList<VoterAdderdOrDeletedRengesInfoVO>();
+				voterAdderdOrDeletedRengesInfoVO = new VoterAdderdOrDeletedRengesInfoVO();
+				String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
+				 if(constituencyType.equalsIgnoreCase("RURAL-URBAN"))
+				 {
+					 List<Object[]> addedVotersListForRuralUrban   = voterModificationInfoDAO.getVotersAddedOrDeletedInfoByPanchayatLevel(constituencyId,5l,publicationDateId,1l);
+					 if(addedVotersListForRuralUrban != null && addedVotersListForRuralUrban.size() > 0)
+					 {
+						 ruralUrbanAddedCountMap = new HashMap<Long, Long>();
+						 addedRurlUrbanVotersListForVO = new ArrayList<VoterAdderdOrDeletedRengesInfoVO>();
+						 for (Object[] parms : addedVotersListForRuralUrban)
+						 {
+							 ruralUrbanAddedCountMap.put((Long)parms[0], (Long)parms[1]);
+						 }
+						 fillAddedOrDeletedVoterDetails(constituencyMandalMap,ruralUrbanAddedCountMap,mandalNameMap,mandalPanchayatMap,addedRurlUrbanVotersListForVO,"add",constituencyId,"RURAL-URBAN");
+					 }
+					 List<Object[]> deletedVotersListRuralUrban = voterModificationInfoDAO.getVotersAddedOrDeletedInfoByPanchayatLevel(constituencyId,5l,publicationDateId,2l);
+					 if(deletedVotersListRuralUrban != null && deletedVotersListRuralUrban.size() > 0)
+					 {
+						 ruralUrbanDeletedCountMap = new HashMap<Long, Long>();
+						 deletedRurlUrbanVotersListForVO = new ArrayList<VoterAdderdOrDeletedRengesInfoVO>();
+						 for (Object[] parms : deletedVotersListRuralUrban)
+						 {
+							 ruralUrbanDeletedCountMap.put((Long)parms[0], (Long)parms[1]);
+						 } 
+						 fillAddedOrDeletedVoterDetails(constituencyMandalMap,ruralUrbanDeletedCountMap,mandalNameMap,mandalPanchayatMap,deletedRurlUrbanVotersListForVO,"delete",constituencyId,"RURAL-URBAN");
+					 }
+				 }
+				
+				List<Object[]> addedVotersList   = voterModificationInfoDAO.getVotersAddedOrDeletedInfoByPanchayatLevel(constituencyId,3l,publicationDateId,1l);
+				if(addedVotersList != null && addedVotersList.size() > 0)
+				{
+					panchayatAddedCountMap = new HashMap<Long, Long>();
+					addedVotersListForVO = new ArrayList<VoterAdderdOrDeletedRengesInfoVO>();
+					for (Object[] parms : addedVotersList) {
+						panchayatAddedCountMap.put((Long)parms[0], (Long)parms[1]);
+					}
+					fillAddedOrDeletedVoterDetails(constituencyMandalMap,panchayatAddedCountMap,mandalNameMap,mandalPanchayatMap,addedVotersListForVO,"add",constituencyId,"RURAL");
+				}
+				List<Object[]> deletedVotersList = voterModificationInfoDAO.getVotersAddedOrDeletedInfoByPanchayatLevel(constituencyId,3l,publicationDateId,2l);
+				if(deletedVotersList != null && deletedVotersList.size() > 0)
+				{
+					panchayatDeletedCountMap = new HashMap<Long, Long>();
+					deletedVotersListForVO = new ArrayList<VoterAdderdOrDeletedRengesInfoVO>();
+					for (Object[] parms : deletedVotersList) {
+						panchayatDeletedCountMap.put((Long)parms[0], (Long)parms[1]);
+					}
+					fillAddedOrDeletedVoterDetails(constituencyMandalMap,panchayatDeletedCountMap,mandalNameMap,mandalPanchayatMap,deletedVotersListForVO,"delete",constituencyId,"RURAL");
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Eceprtion occured in  getReportForVotersAddedOrDeletedVotersForSelectdConstituency() in  VoterModificationService Service",e);
+		}
+		 voterAdderdOrDeletedRengesInfoVO.setPanchayWiseAddedDeletedList(panchayWiseAddedDeletedList);
+		 voterAdderdOrDeletedRengesInfoVO.setRuralUrbanAddedVoterDetails(addedRurlUrbanVotersListForVO);
+		 voterAdderdOrDeletedRengesInfoVO.setRuralUrbanDeletedVoterDetails(deletedRurlUrbanVotersListForVO);
+		 voterAdderdOrDeletedRengesInfoVO.setAddedVoeterDetails(addedVotersListForVO);
+		 voterAdderdOrDeletedRengesInfoVO.setDeletedVoterDetails(deletedVotersListForVO);
+		 returnList.add(voterAdderdOrDeletedRengesInfoVO);
+		// createTable4(returnList);
+		 return returnList;
+	 }
 	 
-}
+	 /**
+	  * This service is used for filling the VoterAdderdOrDeletedRengesInfoVO.
+	  * @param constituencyMandalMap
+	  * @param panchayatAddedCountMap
+	  * @param mandalNameMap
+	  * @param mandalPanchayatMap
+	  * @param addedVotersListForVO
+	  * @param type
+	  * @param constituencyId
+	  * @param areaType
+	  * @Date 06-12-2013
+	  */
+	 public void fillAddedOrDeletedVoterDetails(Map<Long,List<Long>> constituencyMandalMap,Map<Long,Long> panchayatAddedCountMap,Map<Long,String> mandalNameMap, Map<Long,List<Long>> mandalPanchayatMap,List<VoterAdderdOrDeletedRengesInfoVO> addedVotersListForVO,String type,Long constituencyId,String areaType)
+	 {
+		 if(areaType.equalsIgnoreCase("RURAL"))
+		 {
+			 List<Long> mandalIds = constituencyMandalMap.get(constituencyId);
+			 if(mandalIds != null && mandalIds.size() > 0)
+			 {
+				 for (Long mandalId : mandalIds) {
+					 VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO = new VoterAdderdOrDeletedRengesInfoVO();
+					 voterAdderdOrDeletedRengesInfoVO.setName(mandalNameMap.get(mandalId));
+					 voterAdderdOrDeletedRengesInfoVO.setId(mandalId);
+					 List<Long> panchayatIds =  mandalPanchayatMap.get(mandalId);
+					 if(type.equalsIgnoreCase("Add"))
+					 {
+						 voterAdderdOrDeletedRengesInfoVO.setNoChangesAddedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt1To50AddedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt51To100AddedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt101To150AddedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt151To200Addedcount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt201To300AddedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setAbove300AddedCount(0l);
+						 Long count = 0l;
+						 for (Long panchayatId : panchayatIds) {
+							count = panchayatAddedCountMap.get(panchayatId);
+							justfiyTheAddedVoterDetails(count,voterAdderdOrDeletedRengesInfoVO);
+						}
+					 }
+					 else
+					 {
+						 voterAdderdOrDeletedRengesInfoVO.setNoChangesDeletedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt1To50DeletedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt51To100DeletedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt101To150DeletedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt151To200DeletedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setBt201To300DeletedCount(0l);
+						 voterAdderdOrDeletedRengesInfoVO.setAbove300DeletedCount(0l);
+						 Long count = 0l;
+						 for (Long panchayatId : panchayatIds) {
+							count = panchayatAddedCountMap.get(panchayatId);
+							justfiyTheDeletedVoterDetails(count,voterAdderdOrDeletedRengesInfoVO);
+						}
+						 
+					 }
+					 addedVotersListForVO.add(voterAdderdOrDeletedRengesInfoVO);
+				}
+			 }
+		 }
+		 else
+		 {
+			 Set<Long> ruralUrbanId = panchayatAddedCountMap.keySet();
+			 for (Long id : ruralUrbanId) {
+				 VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO = new VoterAdderdOrDeletedRengesInfoVO();
+				 voterAdderdOrDeletedRengesInfoVO.setName(constituencyDAO.get(constituencyId).getName() + " Muncipality");
+				 voterAdderdOrDeletedRengesInfoVO.setId(id);
+				 if(type.equalsIgnoreCase("Add"))
+				 {
+					 voterAdderdOrDeletedRengesInfoVO.setNoChangesAddedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt1To50AddedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt51To100AddedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt101To150AddedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt151To200Addedcount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt201To300AddedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setAbove300AddedCount(0l);
+					 Long count = panchayatAddedCountMap.get(id);
+					 justfiyTheAddedVoterDetails(count,voterAdderdOrDeletedRengesInfoVO);
+				 }
+				 else
+				 {
+					 voterAdderdOrDeletedRengesInfoVO.setNoChangesDeletedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt1To50DeletedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt51To100DeletedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt101To150DeletedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt151To200DeletedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setBt201To300DeletedCount(0l);
+					 voterAdderdOrDeletedRengesInfoVO.setAbove300DeletedCount(0l);
+					 Long count = panchayatAddedCountMap.get(id);
+					 justfiyTheDeletedVoterDetails(count,voterAdderdOrDeletedRengesInfoVO);
+					
+				 } 
+				 addedVotersListForVO.add(voterAdderdOrDeletedRengesInfoVO);
+			}
+			 
+		 }
+		 
+	 }
+	 
+	/**
+	 * This service is used for justify the count details for added voters
+	 * @param count
+	 * @param voterAdderdOrDeletedRengesInfoVO
+	 * @Date 06-12-2013
+	 */
+	 public void justfiyTheAddedVoterDetails(Long count, VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO)
+	 {
+		 if(count !=null)
+		 {
+			 if(count == 0)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setNoChangesAddedCount(voterAdderdOrDeletedRengesInfoVO.getNoChangesAddedCount() + 1);
+			 }
+			 else if(count >= 1 && count <=50)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt1To50AddedCount(voterAdderdOrDeletedRengesInfoVO.getBt1To50AddedCount() + 1);
+			 }
+			 else if(count >= 51 && count <= 100)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt51To100AddedCount(voterAdderdOrDeletedRengesInfoVO.getBt51To100AddedCount() + 1);
+				
+			 }
+			 else if(count >= 101 && count <= 150)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt101To150AddedCount(voterAdderdOrDeletedRengesInfoVO.getBt101To150AddedCount() + 1);
+				 
+			 }
+			 else if(count >= 151 && count <= 200)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt151To200Addedcount(voterAdderdOrDeletedRengesInfoVO.getBt151To200Addedcount() + 1);
+			 }
+			 else if(count >= 201 && count <= 300)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt201To300AddedCount(voterAdderdOrDeletedRengesInfoVO.getBt201To300AddedCount() + 1);
+			 }
+			 else
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setAbove300AddedCount(voterAdderdOrDeletedRengesInfoVO.getAbove300AddedCount() + 1); 
+			 }
+		 }
+		
+		 
+	 }
+	 /**
+	  * This service is used for justify the count details for deleted voters
+	  * @param count
+	  * @param voterAdderdOrDeletedRengesInfoVO
+	  * @Date 06-12-2013
+	  */
+	 public void justfiyTheDeletedVoterDetails(Long count, VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO)
+	 {
+		 if(count !=null)
+		 {
+			 if(count == 0)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setNoChangesDeletedCount(voterAdderdOrDeletedRengesInfoVO.getNoChangesDeletedCount() + 1);
+			 }
+			 else if(count >= 1 && count <=50)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt1To50DeletedCount(voterAdderdOrDeletedRengesInfoVO.getBt1To50DeletedCount() + 1);
+			 }
+			 else if(count >= 51 && count <= 100)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt51To100DeletedCount(voterAdderdOrDeletedRengesInfoVO.getBt51To100DeletedCount() + 1);
+				
+			 }
+			 else if(count >= 101 && count <= 150)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt101To150DeletedCount(voterAdderdOrDeletedRengesInfoVO.getBt101To150DeletedCount() + 1);
+				 
+			 }
+			 else if(count >= 151 && count <= 200)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt151To200DeletedCount(voterAdderdOrDeletedRengesInfoVO.getBt151To200DeletedCount()+ 1);
+			 }
+			 else if(count >= 201 && count <= 300)
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setBt201To300DeletedCount(voterAdderdOrDeletedRengesInfoVO.getBt201To300DeletedCount() + 1);
+			 }
+			 else
+			 {
+				 voterAdderdOrDeletedRengesInfoVO.setAbove300DeletedCount(voterAdderdOrDeletedRengesInfoVO.getAbove300DeletedCount() + 1); 
+			 }
+		 }
+		
+		 
+	 }
+	 /**
+	  * This service is used for getting the added , deleted and total voter for panchayat level
+	  * @param constituencyId
+	  * @param publicationId
+	  * @param panchayatNameMap
+	  * @param mandalNameMap
+	  * @param panchayWiseAddedDeletedList
+	  * @param panchayatMandalMap
+	  * @date 06-12-2013
+	  */
+	 public void getAddedAndDeletedVotersByPanchayatLevel(Long constituencyId,Long publicationId,Map<Long,String> panchayatNameMap,Map<Long,String> mandalNameMap,List<PanchayatAddedOrDeletedVO> panchayWiseAddedDeletedList,Map<Long,Long> panchayatMandalMap)
+	 {
+		 try {
+			 LOG.debug("Entered into  getAddedAndDeletedVotersByPanchayatLevel() in  VoterModificationService Service");
+			 Map<Long,Long> addedCountMap = null;
+			 Map<Long,Long> deleteCountMap = null;
+			 List<Object[]> panchayatAddedDeletedList = voterModificationInfoDAO.getPanchayatWiseAddedAndDeletedVoters(constituencyId,publicationId,3l);
+			 if(panchayatAddedDeletedList != null && panchayatAddedDeletedList.size() > 0)
+			 {
+				 addedCountMap  = new HashMap<Long, Long>();
+				 deleteCountMap = new HashMap<Long, Long>();
+				 for (Object[] parms : panchayatAddedDeletedList) {
+					 if((Long)parms[2] == 1)
+					 {
+						 addedCountMap.put((Long)parms[0], (Long)parms[1]);
+					 }
+					 else
+					 {
+						 deleteCountMap.put((Long)parms[0], (Long)parms[1]);
+					 }
+				}
+			 }
+			 Set<Long> panchayatIds = panchayatNameMap.keySet();
+			 if(panchayatIds != null && panchayatIds.size() > 0)
+			 {
+				 for (Long panchayatId : panchayatIds) {
+					 PanchayatAddedOrDeletedVO panchayatAddedOrDeletedVO = new PanchayatAddedOrDeletedVO();
+					 panchayatAddedOrDeletedVO.setAddedCount(addedCountMap.get(panchayatId));
+					 panchayatAddedOrDeletedVO.setDeletedCount(deleteCountMap.get(panchayatId));
+					 panchayatAddedOrDeletedVO.setTotal(panchayatAddedOrDeletedVO.getAddedCount() + panchayatAddedOrDeletedVO.getDeletedCount());
+					 panchayatAddedOrDeletedVO.setPanchayatId(panchayatId);
+					 panchayatAddedOrDeletedVO.setPanchayatName(panchayatNameMap.get(panchayatId));
+					 panchayatAddedOrDeletedVO.setMandalId(panchayatMandalMap.get(panchayatId));
+					 panchayatAddedOrDeletedVO.setMandalName(mandalNameMap.get(panchayatAddedOrDeletedVO.getMandalId()));
+					 panchayWiseAddedDeletedList.add(panchayatAddedOrDeletedVO);
+				}
+			 }
+			 
+		} catch (Exception e) {
+			LOG.error("Eceprtion occured in  getAddedAndDeletedVotersByPanchayatLevel() in  VoterModificationService Service",e);
+		}
+	 }
+	 
+	 public PdfVO getAddedVotersInAPublication(Long constituency, Long prevPubliationId,Long presentPublicationId)
+	 {
+		  
+		 PdfVO PdfVO = new PdfVO();
+		 Long constiId = constituency;
+		 List<VoterVO> voters = new ArrayList<VoterVO>();
+		 List<VoterVO> delVoters = new ArrayList<VoterVO>();
+		 // getting added voters for all mandals
+		 List<Object[]> addedVotersList1 = voterModificationDAO.getAddedVotersInAPublicationForMandal(presentPublicationId, constiId);
+		 // // getting added voters for all muncipalites
+		 List<Object[]> addedVotersList2 = voterModificationDAO.getAddedVotersInAPublicationForMunicipality(presentPublicationId, constiId);
+		 // getting deleted voters for all mandals
+		 List<Object[]> addedVotersList3 = voterModificationDAO.getDeletedVotersInAPublicationForMandal(prevPubliationId,presentPublicationId, constiId);
+		// getting deleted voters for all muncipalites
+		 List<Object[]> addedVotersList4 = voterModificationDAO.getDeletedVotersInAPublicationForMunicipality(prevPubliationId,presentPublicationId, constiId);
+		 // getting voters count panchayat wise for previous publication
+		 List<Object[]> perviousVotersCount = voterInfoDAO.getVotersCountInPunchayatAndLocalElecBody(constiId,prevPubliationId);
+		// getting voters count panchayat wise for present publication
+		 List<Object[]> presentVotersCount = voterInfoDAO.getVotersCountInPunchayatAndLocalElecBody(constiId,presentPublicationId);
+		 // getiing mandal and panchayat names for previous publication
+		 List<Object[]> panchayatDetails = boothDAO.getPanchayatMandalDetails(constiId, prevPubliationId);
+		 // getiing muncipality details for previous publication
+		 List<Object[]> localBodyDetails = boothDAO.getMunicDetails(constiId, prevPubliationId);
+		 // contains panchayt wise added voters details by age range
+		 LinkedHashMap<Long,VotersDetailsVO> panchayatAddedList = new LinkedHashMap<Long,VotersDetailsVO>();
+		// contains muncipality wise added voters details by age range
+		 LinkedHashMap<Long,VotersDetailsVO> municAddedList = new LinkedHashMap<Long,VotersDetailsVO>();
+		// contains panchayt wise deleted voters details by age range
+		 LinkedHashMap<Long,VotersDetailsVO> panchayatDelList = new LinkedHashMap<Long,VotersDetailsVO>();
+		// contains muncipality wise deleted voters details by age range
+		 LinkedHashMap<Long,VotersDetailsVO> municDelList = new LinkedHashMap<Long,VotersDetailsVO>();
+		 //compete added voters details by age range
+		 List<VotersDetailsVO> added = new ArrayList<VotersDetailsVO>();
+		//compete deletd voters details by age range
+		 List<VotersDetailsVO> deleted = new ArrayList<VotersDetailsVO>();
+		 // contails total added and deleted count and percentage by panchayat or muncipality wise
+		 List<VotersDetailsVO> complete = new ArrayList<VotersDetailsVO>();
+		 //contails panchayt wise total added deleted count
+		 LinkedHashMap<Long,VotersDetailsVO> totalAddedPanc = new LinkedHashMap<Long,VotersDetailsVO>();
+		 //contails muncipality wise total added deleted count
+		 LinkedHashMap<Long,VotersDetailsVO> totalAddedMunc = new LinkedHashMap<Long,VotersDetailsVO>();
+		 Map<Long,Long> pancVotersCount = new HashMap<Long,Long>();
+		 Map<Long,Long> mandVotersCount = new HashMap<Long,Long>();
+		 Map<Long,Long> presentPancVotersCount = new HashMap<Long,Long>();
+		 Map<Long,Long> presentMandVotersCount = new HashMap<Long,Long>();
+		 LinkedHashMap<Long,VotersDetailsVO> addedPancpercMap = new LinkedHashMap<Long,VotersDetailsVO>();
+		 LinkedHashMap<Long,VotersDetailsVO> deletedPancpercMap = new LinkedHashMap<Long,VotersDetailsVO>();
+		 LinkedHashMap<Long,VoterModificationAgeRangeVO> votersMap = new LinkedHashMap<Long,VoterModificationAgeRangeVO>();
+		 votersMap.put(1l, new VoterModificationAgeRangeVO());
+		 votersMap.put(2l, new VoterModificationAgeRangeVO());
+		 votersMap.put(3l, new VoterModificationAgeRangeVO());
+		 votersMap.put(4l, new VoterModificationAgeRangeVO());
+		 votersMap.put(5l, new VoterModificationAgeRangeVO());
+		 votersMap.put(6l, new VoterModificationAgeRangeVO());
+		 // fillintg the panchat wise voters and mandal wise voters count for previous publication
+		 populatePreviousVotersCount(pancVotersCount,mandVotersCount,perviousVotersCount);
+		// fillintg the panchat wise voters and mandal wise voters count for present publication
+		 populatePreviousVotersCount(presentPancVotersCount,presentMandVotersCount,presentVotersCount);
+		 // populating added vootes counts,age wise count panchayat wise
+		 populateData(addedVotersList1,panchayatAddedList,voters,"added",totalAddedPanc,votersMap);
+		 // populating added vootes counts,age wise count muncipality wise
+		 populateData(addedVotersList2,municAddedList,voters,"added",totalAddedMunc,votersMap);
+
+		 added.addAll(panchayatAddedList.values());
+		 added.addAll(municAddedList.values());
+		// populating deleted vootes counts,age wise count panchayat wise
+		 populateData(addedVotersList3,panchayatDelList,delVoters,"deleted",totalAddedPanc,votersMap);
+		// populating deleted vootes counts,age wise count muncipality wise
+		 populateData(addedVotersList4,municDelList,delVoters,"deleted",totalAddedMunc,votersMap);
+		 deleted.addAll(panchayatDelList.values());
+		 deleted.addAll(municDelList.values());
+		 // calucating percentage of voters added and deleted for panchayat wise
+		 populatePercentage(totalAddedPanc,pancVotersCount,presentPancVotersCount);
+		 // calucating percentage of voters added and deleted for muncipality wise
+		 populatePercentage(totalAddedMunc,mandVotersCount,presentMandVotersCount);
+		 // calucating range percentage of voters added and deleted for panchayat wise
+		 populateAddedDelPancPercDetails(panchayatDetails,addedPancpercMap,deletedPancpercMap,totalAddedPanc);
+		 // calucating range percentage of voters added and deleted for muncipality wise
+		 populateAddDeletedMunicPercDetails(localBodyDetails,addedPancpercMap,deletedPancpercMap,totalAddedMunc);
+		 complete.addAll(totalAddedPanc.values());
+		 complete.addAll(totalAddedMunc.values());
+		 
+		 
+		 PdfVO.setAddedVoterDetails(voters);
+		 PdfVO.setDeletedVoterDetils(delVoters);
+		 PdfVO.setAddedVoterDetailsVoList(added);
+		 PdfVO.setDeletedVoterDetailsVoList(deleted);
+		 PdfVO.setCompleteVoterDetailsVoList(complete);
+		 PdfVO.setAddedDetaildByPerc(new ArrayList<VotersDetailsVO>(addedPancpercMap.values()));
+		 PdfVO.setDeletedDetaildByPerc(new ArrayList<VotersDetailsVO>(deletedPancpercMap.values()));
+		 PdfVO.setAgeRangeVOList(new ArrayList<VoterModificationAgeRangeVO>(votersMap.values()));
+		 return PdfVO;
+		}
+	
+	 public void populatePreviousVotersCount(Map<Long,Long> pancVotersCount,Map<Long,Long> mandVotersCount,List<Object[]> perviousVotersCount)
+	 {
+		 for(Object[] count:perviousVotersCount)
+		 {
+			 if(count[2] != null && ((Long)count[2]).longValue() == 3 )
+			 {
+			  pancVotersCount.put((Long)count[1],(Long)count[0]);
+			 }
+			 else
+			 {
+			  mandVotersCount.put((Long)count[1],(Long)count[0]);
+			 }
+		 }
+	}
+
+	
+
+	 public void populateData(List<Object[]> votersList,Map<Long,VotersDetailsVO> panchayatList,List<VoterVO> voters,String type,Map<Long,VotersDetailsVO> totalAdded,LinkedHashMap<Long,VoterModificationAgeRangeVO> votersMap){
+		 VoterVO vo = null;
+		 for(Object[] voter:votersList){
+		 VotersDetailsVO panchayat = panchayatList.get((Long)voter[2]);
+		 if(panchayat == null){
+		 panchayat = new VotersDetailsVO();
+		 panchayat.setPanchayatname(voter[3] != null?voter[3].toString():"");
+		 panchayat.setTehsilName(voter[1] != null?voter[1].toString():"");
+		 panchayatList.put((Long)voter[2], panchayat);
+
+		 }
+		 VotersDetailsVO c = totalAdded.get((Long)voter[2]);
+		 if(c == null){
+		 c = new VotersDetailsVO();
+		 c.setPanchayatname(voter[3] != null?voter[3].toString():"");
+		 c.setTehsilName(voter[1] != null?voter[1].toString():"");
+		 totalAdded.put((Long)voter[2], c);
+		 }
+		 if("added".equalsIgnoreCase(type)){
+		 c.setMaleVotersCountBetween18To25(c.getMaleVotersCountBetween18To25()+1);
+		 }else if("deleted".equalsIgnoreCase(type)){
+		 c.setTotalMaleVotesFor18To25(c.getTotalMaleVotesFor18To25()+1);
+		 }
+		 c.setTotalMaleVotersFor26To35(c.getTotalMaleVotersFor26To35()+1);
+		 long age = ((Long)voter[9]).longValue();
+		 panchayat.setMaleVotersCountBetween18To25(panchayat.getMaleVotersCountBetween18To25()+1);
+		 if(age >= 18 && age <= 22){
+		 panchayat.setTotalMaleVotersForYoungerVoters(panchayat.getTotalMaleVotersForYoungerVoters()+1);
+		 VoterModificationAgeRangeVO vmVo = votersMap.get(1l);
+		 if("added".equalsIgnoreCase(type)){
+		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+		 }else{
+		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+		 }
+		 }
+		 else if(age >= 23 && age <= 25){
+		 panchayat.setTotalMaleVotesFor18To25(panchayat.getTotalMaleVotesFor18To25()+1);
+		 VoterModificationAgeRangeVO vmVo = votersMap.get(2l);
+		 if("added".equalsIgnoreCase(type)){
+		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+		 }else{
+		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+		 }
+		 }
+		 else if(age >= 26 && age <= 35){
+		 panchayat.setTotalMaleVotersFor26To35(panchayat.getTotalMaleVotersFor26To35()+1);
+		 VoterModificationAgeRangeVO vmVo = votersMap.get(3l);
+		 if("added".equalsIgnoreCase(type)){
+		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+		 }else{
+		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+		 }
+		 }
+		 else if(age >= 36 && age <= 45){
+		 panchayat.setTotalMaleVotersFor36To45(panchayat.getTotalMaleVotersFor36To45()+1);
+		 VoterModificationAgeRangeVO vmVo = votersMap.get(4l);
+		 if("added".equalsIgnoreCase(type)){
+		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+		 }else{
+		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+		 }
+		 }
+		 else if(age >= 46 && age <= 60){
+		 panchayat.setTotalMaleVotersFor46To60(panchayat.getTotalMaleVotersFor46To60()+1);
+		 VoterModificationAgeRangeVO vmVo = votersMap.get(5l);
+		 if("added".equalsIgnoreCase(type)){
+		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+		 }else{
+		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+		 }
+		 }
+		 else if(age >60){
+		 panchayat.setTotalMaleVotersForAbove60(panchayat.getTotalMaleVotersForAbove60()+1);
+		 VoterModificationAgeRangeVO vmVo = votersMap.get(6l);
+		 if("added".equalsIgnoreCase(type)){
+		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+		 }else{
+		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+		 }
+		 }
+		 vo = new VoterVO();
+		 vo.setTownShip(voter[1] != null?voter[1].toString():"");
+		 vo.setPanchayatName(voter[3] != null?voter[3].toString():"");
+		 vo.setBoothName(voter[4] != null?voter[4].toString():"");
+		 vo.setVoterIDCardNo(voter[5] != null?voter[5].toString():"");
+		 vo.setFirstName(voter[6] != null?voter[6].toString():"");
+		 vo.setHouseNo(voter[7] != null?"#"+voter[7].toString():"");
+		 vo.setGender(voter[8] != null?voter[8].toString():"");
+		 vo.setAge((Long)voter[9]);
+		 vo.setRelativeFirstName(voter[10] != null?voter[10].toString():"");
+		 vo.setRelationshipType(voter[11] != null?voter[11].toString():"");
+		 voters.add(vo);
+		 }
+		 }
+
+
+		
+		
+		public void populatePercentage(LinkedHashMap<Long,VotersDetailsVO> totalAddedDel,Map<Long,Long> votersCount,Map<Long,Long> presentVotersCount){
+			DecimalFormat df = new DecimalFormat("###.##");
+			for(Long id:totalAddedDel.keySet()){
+				VotersDetailsVO vo = totalAddedDel.get(id);
+				Long totalVoters = votersCount.get(id);
+				if(totalVoters != null && totalVoters.longValue() >0){
+					vo.setVotersPercentFor18To25(df.format(vo.getMaleVotersCountBetween18To25()*100/totalVoters.doubleValue()));
+					vo.setVotersPercentFor26To35(df.format(vo.getTotalMaleVotesFor18To25()*100/totalVoters.doubleValue()));
+				}
+				vo.setTotalVoters(presentVotersCount.get(id));
+			}
+		}
+
+	public void populateAddedDelPancPercDetails(List<Object[]> panchayatDetails,Map<Long,VotersDetailsVO> addedPancpercMap,Map<Long,VotersDetailsVO> deletedPancpercMap,LinkedHashMap<Long,VotersDetailsVO> totalAddedPanc){
+			for(Object[] panchayat:panchayatDetails){
+				VotersDetailsVO addedMandal = addedPancpercMap.get((Long)panchayat[2]);
+				if(addedMandal == null){
+					addedMandal = new VotersDetailsVO();
+					addedMandal.setName(panchayat[3].toString());
+					addedPancpercMap.put((Long)panchayat[2], addedMandal);
+				}
+				VotersDetailsVO deletedMandal = deletedPancpercMap.get((Long)panchayat[2]);
+				if(deletedMandal == null){
+					deletedMandal = new VotersDetailsVO();
+					deletedMandal.setName(panchayat[3].toString());
+					deletedPancpercMap.put((Long)panchayat[2], deletedMandal);
+				}
+				VotersDetailsVO panchayatVo = totalAddedPanc.get((Long)panchayat[0]);
+				if(panchayatVo == null){
+					addedMandal.setTotalMaleVotesFor18To25(addedMandal.getTotalMaleVotesFor18To25()+1);
+					deletedMandal.setTotalMaleVotesFor18To25(deletedMandal.getTotalMaleVotesFor18To25()+1);
+				}else{
+					if(panchayatVo.getVotersPercentFor18To25() != null){
+						Double pancPerc = new Double(panchayatVo.getVotersPercentFor18To25());
+						if(pancPerc == 0){
+							addedMandal.setTotalMaleVotesFor18To25(addedMandal.getTotalMaleVotesFor18To25()+1);
+						}else if(pancPerc > 0 && pancPerc<= 3){
+							addedMandal.setTotalMaleVotersFor26To35(addedMandal.getTotalMaleVotersFor26To35()+1);
+						}else if(pancPerc > 3 && pancPerc<= 5){
+							addedMandal.setTotalFemaleVotersForAbove60(addedMandal.getTotalFemaleVotersForAbove60()+1);
+						}else if(pancPerc > 5 && pancPerc<= 10){
+							addedMandal.setTotalVotersForYoungerVoters(addedMandal.getTotalVotersForYoungerVoters()+1);
+						}else if(pancPerc > 10 && pancPerc<= 20){
+							addedMandal.setTotalMaleVotersFor36To45(addedMandal.getTotalMaleVotersFor36To45()+1);
+						}else if(pancPerc > 20 && pancPerc<= 40){
+							addedMandal.setTotalMaleVotersFor46To60(addedMandal.getTotalMaleVotersFor46To60()+1);
+						}else if(pancPerc > 40){
+							addedMandal.setTotalMaleVotersForAbove60(addedMandal.getTotalMaleVotersForAbove60()+1);
+						}
+					}else{
+						addedMandal.setTotalMaleVotesFor18To25(addedMandal.getTotalMaleVotesFor18To25()+1);
+					}
+					if(panchayatVo.getVotersPercentFor26To35() != null){
+						Double pancPerc = new Double(panchayatVo.getVotersPercentFor26To35());
+						if(pancPerc == 0){
+							deletedMandal.setTotalMaleVotesFor18To25(deletedMandal.getTotalMaleVotesFor18To25()+1);
+						}else if(pancPerc > 0 && pancPerc<= 3){
+							deletedMandal.setTotalMaleVotersFor26To35(deletedMandal.getTotalMaleVotersFor26To35()+1);
+						}else if(pancPerc > 3 && pancPerc<= 5){
+							deletedMandal.setTotalFemaleVotersForAbove60(deletedMandal.getTotalFemaleVotersForAbove60()+1);
+						}else if(pancPerc > 5 && pancPerc<= 10){
+							deletedMandal.setTotalVotersForYoungerVoters(deletedMandal.getTotalVotersForYoungerVoters()+1);
+						}else if(pancPerc > 10 && pancPerc<= 20){
+							deletedMandal.setTotalMaleVotersFor36To45(deletedMandal.getTotalMaleVotersFor36To45()+1);
+						}else if(pancPerc > 20 && pancPerc<= 40){
+							deletedMandal.setTotalMaleVotersFor46To60(deletedMandal.getTotalMaleVotersFor46To60()+1);
+						}else if(pancPerc > 40){
+							deletedMandal.setTotalMaleVotersForAbove60(deletedMandal.getTotalMaleVotersForAbove60()+1);
+						}
+					}else{
+						deletedMandal.setTotalMaleVotesFor18To25(deletedMandal.getTotalMaleVotesFor18To25()+1);
+					}
+				}
+			}
+		}
+	    public void populateAddDeletedMunicPercDetails(List<Object[]> localBodyDetails,Map<Long,VotersDetailsVO> addedPancpercMap,Map<Long,VotersDetailsVO> deletedPancpercMap,LinkedHashMap<Long,VotersDetailsVO> totalAddedMunc ){
+	    	for(Object[] panchayat:localBodyDetails){
+				VotersDetailsVO addedMandal = addedPancpercMap.get((Long)panchayat[0]);
+				if(addedMandal == null){
+					addedMandal = new VotersDetailsVO();
+					addedMandal.setName(panchayat[1].toString()+" "+panchayat[2].toString());
+					addedPancpercMap.put((Long)panchayat[0], addedMandal);
+				}
+				VotersDetailsVO deletedMandal = deletedPancpercMap.get((Long)panchayat[0]);
+				if(deletedMandal == null){
+					deletedMandal = new VotersDetailsVO();
+					deletedMandal.setName(panchayat[1].toString()+" "+panchayat[2].toString());
+					deletedPancpercMap.put((Long)panchayat[0], deletedMandal);
+				}
+				VotersDetailsVO panchayatVo = totalAddedMunc.get((Long)panchayat[0]);
+				if(panchayatVo == null){
+					addedMandal.setTotalMaleVotesFor18To25(addedMandal.getTotalMaleVotesFor18To25()+1);
+					deletedMandal.setTotalMaleVotesFor18To25(deletedMandal.getTotalMaleVotesFor18To25()+1);
+				}else{
+					if(panchayatVo.getVotersPercentFor18To25() != null){
+						Double pancPerc = new Double(panchayatVo.getVotersPercentFor18To25());
+						if(pancPerc == 0){
+							addedMandal.setTotalMaleVotesFor18To25(addedMandal.getTotalMaleVotesFor18To25()+1);
+						}else if(pancPerc > 0 && pancPerc <= 3){
+							addedMandal.setTotalMaleVotersFor26To35(addedMandal.getTotalMaleVotersFor26To35()+1);
+						}else if(pancPerc > 3 && pancPerc <= 5){
+							addedMandal.setTotalFemaleVotersForAbove60(addedMandal.getTotalFemaleVotersForAbove60()+1);
+						}else if(pancPerc > 5 && pancPerc <= 10){
+							addedMandal.setTotalVotersForYoungerVoters(addedMandal.getTotalVotersForYoungerVoters()+1);
+						}else if(pancPerc > 10 && pancPerc<= 20){
+							addedMandal.setTotalMaleVotersFor36To45(addedMandal.getTotalMaleVotersFor36To45()+1);
+						}else if(pancPerc > 20 && pancPerc<= 40){
+							addedMandal.setTotalMaleVotersFor46To60(addedMandal.getTotalMaleVotersFor46To60()+1);
+						}else if(pancPerc > 40){
+							addedMandal.setTotalMaleVotersForAbove60(addedMandal.getTotalMaleVotersForAbove60()+1);
+						}
+					}else{
+						addedMandal.setTotalMaleVotesFor18To25(addedMandal.getTotalMaleVotesFor18To25()+1);
+					}
+					if(panchayatVo.getVotersPercentFor26To35() != null){
+						Double pancPerc = new Double(panchayatVo.getVotersPercentFor26To35());
+						if(pancPerc == 0){
+							deletedMandal.setTotalMaleVotesFor18To25(deletedMandal.getTotalMaleVotesFor18To25()+1);
+						}else if(pancPerc > 0 && pancPerc<= 3){
+							deletedMandal.setTotalMaleVotersFor26To35(deletedMandal.getTotalMaleVotersFor26To35()+1);
+						}else if(pancPerc > 3 && pancPerc<= 5){
+							deletedMandal.setTotalFemaleVotersForAbove60(deletedMandal.getTotalFemaleVotersForAbove60()+1);
+						}else if(pancPerc > 5 && pancPerc <= 10){
+							deletedMandal.setTotalVotersForYoungerVoters(deletedMandal.getTotalVotersForYoungerVoters()+1);
+						}else if(pancPerc > 10 && pancPerc<= 20){
+							deletedMandal.setTotalMaleVotersFor36To45(deletedMandal.getTotalMaleVotersFor36To45()+1);
+						}else if(pancPerc > 20 && pancPerc<= 40){
+							deletedMandal.setTotalMaleVotersFor46To60(deletedMandal.getTotalMaleVotersFor46To60()+1);
+						}else if(pancPerc > 40){
+							deletedMandal.setTotalMaleVotersForAbove60(deletedMandal.getTotalMaleVotersForAbove60()+1);
+						}
+					}else{
+						deletedMandal.setTotalMaleVotesFor18To25(deletedMandal.getTotalMaleVotesFor18To25()+1);
+					}
+				}
+			}
+		}	
+		
+		   public SelectOptionVO createPdf(Long constituencyId,Long publicatIonId,String locationType,Long locationValue,String queryType,String path)
+		   {
+			    
+			    SelectOptionVO selectOptionVO = new SelectOptionVO();
+			    
+			    try {
+			    	LOG.info("Enterd into createPdf () in VoterModification Service");
+			    	Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+			    	String constituenyName = values[0].toString().toUpperCase();
+			    	String districtName = values[1].toString().toUpperCase();
+			    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+				    Document document = new Document();
+				   // Random randomGenerator = new Random();
+				   // int no = randomGenerator.nextInt(10000);
+				    //String fileSeparator = System.getProperty("file.separator");
+				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+				    String FILE = path+filePath;
+				    File file  = new File(FILE);
+				    file.createNewFile();
+				    selectOptionVO.setUrl(filePath);
+				  	try {
+				  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+				  	} catch (FileNotFoundException e) {
+				  		e.printStackTrace();
+				  	} catch (DocumentException e) {
+				  		e.printStackTrace();
+				  	}
+				  	Long previousPublicationId = getPerviousPublicationId(publicatIonId);
+				  	String presentPublicationName = publicationDateDAO.get(publicatIonId).getName().toUpperCase();
+				  	String previousPublicationName = publicationDateDAO.get(previousPublicationId).getName().toUpperCase();
+				  	document.open();
+				  	addTitlePage(document,constituenyName,presentPublicationName,previousPublicationName);
+				  	
+				  	PdfVO pdfVO = getAddedVotersInAPublication(constituencyId,previousPublicationId,publicatIonId);
+					List<VoterAgeRangeVO> voterAgeRangeVOList = getVoterInfoByPublicationDateList( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId);
+		  			if(voterAgeRangeVOList != null && voterAgeRangeVOList.size() > 0)
+		  			{
+		  				voterModifiationPdfsGenerations.buildVoterModifivationReport(voterAgeRangeVOList,document,constituenyName);
+		  			}
+				  	VoterModificationGenderInfoVO voterModificationGenderInfoVO = getGenderWiseVoterModificationsBetweenPublications( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId, queryType);
+				  	if(voterModificationGenderInfoVO != null)
+				  	{
+				  		voterModifiationPdfsGenerations.buildGenderWiseVoterModifivationReport(voterModificationGenderInfoVO,document,constituenyName);
+				  	}
+		  			//List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList =  getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId, queryType);
+		  			List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList =  pdfVO.getAgeRangeVOList();
+		  			if(voterModificationAgeRangeVOList != null && voterModificationAgeRangeVOList.size() > 0)
+		  			{
+		  				voterModifiationPdfsGenerations.buildVoterModifivationReportByAgeRange(voterModificationAgeRangeVOList,document,constituenyName);
+		  			}
+				  	/*List<VoterModificationGenderInfoVO> listForGender = getGenderWiseVoterModificationsForEachPublication( locationType, locationValue, constituencyId, fromPublicationDateId, toPublicationDateId, queryType);
+				  	if(listForGender != null && listForGender.size() > 0)
+				  	{
+				  		buildAddedDeletedVotesByGender(listForGender,document,constituenyName);
+				  	}*/
+				   VoterModificationVO voterModificationVO  = getSubLevelsVoterModificationDetailsByLocationValue(
+							 locationType,  locationValue,  constituencyId,
+							 previousPublicationId,  publicatIonId);
+				    if(voterModificationVO != null)
+				    {
+			  		List<VoterModificationVO> list = voterModificationVO.getModifiedVotersList();
+			  		   voterModifiationPdfsGenerations.buildAddedDeletedVotesByMundal(list,document,constituenyName);
+				    }
+				    List<VoterAdderdOrDeletedRengesInfoVO> returnList = getReportForVotersAddedOrDeletedVotersForSelectdConstituency(constituencyId,publicatIonId,"");
+				   // PdfVO pdfVO = getAddedVotersInAPublication(constituencyId,previousPublicationId,publicatIonId);
+				 
+				    if(returnList != null && returnList.size() > 0)
+				    {
+					   					  
+				    	voterModifiationPdfsGenerations.createTableForAddedVoters(document,returnList,constituenyName);
+				    	voterModifiationPdfsGenerations.deletedVotersDetails(document,returnList,constituenyName);
+					  
+				    }
+				    if(pdfVO != null)
+				    {
+					  
+				    	
+				    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetails(document,pdfVO,constituenyName);
+				    	 List<VotersDetailsVO> addedList   = pdfVO.getCompleteVoterDetailsVoList();
+				    	 if(addedList != null && addedList.size() > 0)
+				    	 {
+				    		 Collections.sort(addedList,sortData);
+				    	 }
+				    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetailsByList(document,addedList,constituenyName,"add");
+				    	 List<VotersDetailsVO> deletedList = pdfVO.getCompleteVoterDetailsVoList();
+				    	 
+				    	 if(deletedList != null && deletedList.size() > 0)
+				    	 {
+				    		 Collections.sort(deletedList,deletedDatesortData);
+				    	 }
+				    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetailsByList(document,deletedList,constituenyName,"delete");
+				    	 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyPrecReport("add",document,pdfVO,constituenyName);
+				    	 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyPrecReport("delete",document,pdfVO,constituenyName);
+				    	 voterModifiationPdfsGenerations.agewiseAddedDeletedVoterDetails("add",document,pdfVO,constituenyName);
+				    	 voterModifiationPdfsGenerations.agewiseAddedDeletedVoterDetails("delete",document,pdfVO,constituenyName);
+				    	 voterModifiationPdfsGenerations.totalAddedOrDeletedVoterDetails("add",document,pdfVO,constituenyName);
+				    	 voterModifiationPdfsGenerations.totalAddedOrDeletedVoterDetails("delete",document,pdfVO,constituenyName);
+				    	 
+				    	 
+				    }
+				  
+				   
+				   document.close();
+				   selectOptionVO.setName("success");
+				} catch (Exception e) {
+					selectOptionVO.setName("fail");
+					LOG.error("Exception occured in createPdf () in VoterModification Service",e);
+				}
+			    
+			   return selectOptionVO;
+			   
+		  }
+		  
+		  public Long getPerviousPublicationId(Long publicationDateId)
+		  {
+			  List<Long> previousPublications = publicationDateDAO.getPreviousPublicationIds(publicationDateId) ;
+			  Long previousPublicationId = publicationDateId;
+			  if(previousPublications != null && previousPublications.size() > 0)
+			  {
+			    previousPublicationId = previousPublications.get(0);
+		      }
+			  return previousPublicationId;
+		  }
+		  
+		  public static Comparator<VotersDetailsVO> sortData = new Comparator<VotersDetailsVO>()
+	      {
+	   
+	        public int compare(VotersDetailsVO resultList1, VotersDetailsVO resultList2)
+	        {
+	        	return (Double.valueOf(resultList2.getVotersPercentFor18To25())).compareTo(Double.valueOf(resultList1.getVotersPercentFor18To25()));
+	           
+	        	
+	        }
+	      };
+				
+	      public static Comparator<VotersDetailsVO> deletedDatesortData = new Comparator<VotersDetailsVO>()
+	      {
+	   
+	        public int compare(VotersDetailsVO resultList1, VotersDetailsVO resultList2)
+	        {
+	        	return (Double.valueOf(resultList2.getVotersPercentFor26To35())).compareTo(Double.valueOf(resultList1.getVotersPercentFor26To35()));
+	           
+	        	
+	        }
+	      };
+	      
+	      @SuppressWarnings("unused")
+		  private static void addTitlePage(Document document,String constituencyName,String presentPublicationName,String previousPublicationName)
+	    	    throws DocumentException {
+	    	    Paragraph preface = new Paragraph();
+	    	    // We add one empty line
+	    	    //addEmptyLine(preface, 1);
+	    	    // Lets write a big header
+	    	    preface.setAlignment(Element.ALIGN_CENTER);
+	    	    preface.add(new Paragraph(constituencyName.toUpperCase()  +" CONSTITUENCY VOTER MODIFICATION REPORT " , catFont));
+	    	    preface.add(new Paragraph(previousPublicationName+ " TO " +presentPublicationName+"" , catFont1));
+	    	    document.add(preface);
+	    	    //addEmptyLine(preface, 1);
+	    	    // Will create: Report generated by: _name, _date
+	    	    // preface.add(new Paragraph("Report generated by: " + System.getProperty("user.name") + ", " + new Date(), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	    	    //smallBold));
+	    	    //addEmptyLine(preface, 3);
+	    	    ////preface.add(new Paragraph("This document describes something which is very important ",
+	    	    //     smallBold));
+
+	    	    // addEmptyLine(preface, 8);
+
+	    	    // preface.add(new Paragraph("This document is a preliminary version and not subject to your license agreement or any other agreement with vogella.com ;-).",
+	    	    //    redFont));
+
+	    	   
+	    	    // Start a new page
+	    	    // document.newPage();
+	    	  }
+	      
+		     /* private static void addEmptyLine(Paragraph paragraph, int number)
+		      {
+		    	    for (int i = 0; i < number; i++)
+		    	    {
+		    	       paragraph.add(new Paragraph(" "));
+		    	    }
+		      }*/
+
+	}
+
+	
+	

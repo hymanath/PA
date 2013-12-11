@@ -82,5 +82,13 @@ public interface IVoterModificationDAO extends GenericDao<VoterModification,Long
 	
 	public List<Object[]> getAddedVotersDetailsByPartNo(Long partNo,Long publicationId,Long constituencyId,Integer startIndex,Integer maxIndex);
 	
+	public List<Object[]> getDeletedVotersInAPublicationForMandal(Long prevPublicationId,Long publicationId,Long constituencyId);
+	 
+	public List<Object[]> getDeletedVotersInAPublicationForMunicipality(Long prevPublicationId,Long publicationId,Long constituencyId);
+	
+	public List<Object[]> getAddedVotersInAPublicationForMandal(Long publicationId,Long constituencyId);
+	
+	public List<Object[]> getAddedVotersInAPublicationForMunicipality(Long publicationId,Long constituencyId);
+	
 
 }

@@ -3,11 +3,13 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterAdderdOrDeletedRengesInfoVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
-import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public interface IVoterModificationService {
 	
@@ -53,5 +55,9 @@ public interface IVoterModificationService {
 	 public ResultStatus insertConstituencyBasicData(Long constituencyId,Long publicationId,Long userId);
 	 
 	 public ResultStatus deleteConstituencyBasicData(Long constituencyId,Long publicationDateId,Long userId);
+	 
+	 public List<VoterAdderdOrDeletedRengesInfoVO> getReportForVotersAddedOrDeletedVotersForSelectdConstituency(Long constituencyId,Long publicationDateId,String reportType);
+	 
+	 public SelectOptionVO createPdf(Long constituencyId,Long publicatIonId,String locationType, Long locationValue ,String queryType,String path);
 	 
 }
