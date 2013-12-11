@@ -4571,6 +4571,12 @@
 			</result> 
 		</action>
 		
+		<action name="createPdfAction" class="voterModificationReportAction" method="createPdf" >
+			<result type="json" name="success">
+				<param name="root">selectOptionVO</param>
+			</result> 
+		</action>
+		
 		<action name="saveCandidateDetailsAction" class="assigningCandidatesToVoterAction" method="ajaxHandler">
 			<result type="json" name="success">
 				<param name="root">selectOptionVO</param>				
@@ -4813,6 +4819,11 @@
 			</result> 
 		</action>
 		
+		<action name="getAddedOrDeletedVotersListAction" class="voterModificationReportAction" method="getAddedOrDeletedVotersList">
+		<result type="json" name="success">
+				<param name="root">voterAdderdOrDeletedRengesInfoVOList</param>				
+			</result> 
+		</action>
 		
         <action name="getVoterDetailsForEditAction" class="sendUpdatesBySMSAction" method="saveVoterEditData">
 		<result type="json" name="success">

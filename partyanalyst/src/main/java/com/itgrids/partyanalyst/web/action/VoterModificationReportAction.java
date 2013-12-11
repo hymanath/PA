@@ -11,6 +11,8 @@ import org.jfree.util.Log;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterAdderdOrDeletedRengesInfoVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
@@ -18,6 +20,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.impl.StaticDataService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -49,7 +52,36 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	private String toPublicationName;
 	private StaticDataService staticDataService;
 	private String locationTypeVariable;
+	private SelectOptionVO selectOptionVO;
+	private List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdOrDeletedRengesInfoVOList;
 	
+	
+	
+	/**
+	 * @return the selectOptionVO
+	 */
+	public SelectOptionVO getSelectOptionVO() {
+		return selectOptionVO;
+	}
+	/**
+	 * @param selectOptionVO the selectOptionVO to set
+	 */
+	public void setSelectOptionVO(SelectOptionVO selectOptionVO) {
+		this.selectOptionVO = selectOptionVO;
+	}
+	/**
+	 * @return the voterAdderdOrDeletedRengesInfoVOList
+	 */
+	public List<VoterAdderdOrDeletedRengesInfoVO> getVoterAdderdOrDeletedRengesInfoVOList() {
+		return voterAdderdOrDeletedRengesInfoVOList;
+	}
+	/**
+	 * @param voterAdderdOrDeletedRengesInfoVOList the voterAdderdOrDeletedRengesInfoVOList to set
+	 */
+	public void setVoterAdderdOrDeletedRengesInfoVOList(
+			List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdOrDeletedRengesInfoVOList) {
+		this.voterAdderdOrDeletedRengesInfoVOList = voterAdderdOrDeletedRengesInfoVOList;
+	}
 	public StaticDataService getStaticDataService() {
 		return staticDataService;
 	}
@@ -427,6 +459,44 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 		
 		return Action.SUCCESS;
 		
+	}
+	
+	public String getAddedOrDeletedVotersList()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long publicationId = jObj.getLong("publicationId");
+			if(jObj.getString("task").equalsIgnoreCase("getAddedOrDeletedVoterDetails"))
+			{
+				voterAdderdOrDeletedRengesInfoVOList = voterModificationService.getReportForVotersAddedOrDeletedVotersForSelectdConstituency(constituencyId,publicationId,"");
+			}
+			else
+			{
+				voterAdderdOrDeletedRengesInfoVOList = voterModificationService.getReportForVotersAddedOrDeletedVotersForSelectdConstituency(constituencyId,publicationId,"panchayatWise");
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String createPdf()
+	{
+		try {
+			jObj = new JSONObject(getTask());
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long publicationId = jObj.getLong("publicationId");
+			String locationType =  jObj.getString("locationType");
+			Long locationValue = jObj.getLong("locationValue");
+			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL ;
+			selectOptionVO = voterModificationService.createPdf(constituencyId,publicationId,locationType,locationValue,"intermediate" ,path);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return Action.SUCCESS;
 	}
 	
 }

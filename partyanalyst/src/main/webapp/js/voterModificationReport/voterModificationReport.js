@@ -69,6 +69,21 @@ $(document).ready(function() {
 
 } );
 
+getAddedOrDeletedVoterDetails();
+function getAddedOrDeletedVoterDetails()
+{
+	 var jObj=
+		{
+			constituencyId : 232,
+			publicationId  : 8,
+			task:"getAddedOrDeletedVoterDetails"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "getAddedOrDeletedVotersListAction.action?"+rparam;	
+
+	callAjax(jObj,url);
+}
+
 function getPublicationDate()
 	{
 			var value=constituencyId;
@@ -247,6 +262,20 @@ function getPublicationDate()
 								{
 									setTimeout($.unblockUI, 200);
 									buildGenderOrAddedVotersTable(myResults,jsObj);
+								}
+								else if(jsObj.task == "createPdfs")
+								{
+									$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+									if(myResults.name == 'success')
+									{
+										$.unblockUI();
+										buildPdf(myResults);
+									}
+									else
+									{
+										$.unblockUI();
+										alert("Error occured while creating the pdf");
+									}
 									
 								}
 									
@@ -479,7 +508,19 @@ function showVoterInfo(results,jsObj)
 	if(jsObj.locationType == 'panchayat' || jsObj.locationType == 'booth')
 		str +='<div style="float: right;margin-right: 10px;"><input type="button" style="" id="boothWiseCompleteInfo" href="javascript:{}" value="Booth Wise Relocated Info" class="btn btn-info"></div>';
 	else 
+	{
+		
 		str +='<input type="button" style="float: right;" id="boothWiseVoterModificationInfo" href="javascript:{}" value="Booth Wise Voter Details" class="btn btn-info">';
+		
+		if(jsObj.locationType == 'constituency')
+		{
+			str += '<div id="pdfDiv">';
+			str +='<input type="button" style="float: right; margin-top: -20px; margin-right: 10px;" id="pdfGeneraion" href="javascript:{}" onClick = "genereatePdf();" value="Generate Pdf" class="btn btn-info">';
+			str += '</div>';
+			
+		}
+	}
+		
 	str +='</h2>';
 	str +='</div>';	
 	if(results != null)
