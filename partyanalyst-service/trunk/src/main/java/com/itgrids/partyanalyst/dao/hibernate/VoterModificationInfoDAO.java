@@ -177,4 +177,33 @@ public class VoterModificationInfoDAO extends GenericDaoHibernate<VoterModificat
 		return query.list();
 	}
 	
+	public List<Object[]> getVotersAddedOrDeletedInfoByPanchayatLevel(Long constituencyId,Long reportLevelId,Long publicationId,Long voterStatusId)
+	{
+		Query query = getSession().createQuery("select distinct model.reportLevelValue,model.totalVoters " +
+				" from VoterModificationInfo model where model.constituencyId = :constituencyId " +
+				" and model.publicationDate.publicationDateId = :publicationId  and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId and " +
+				" model.voterStatus.voterStatusId = :voterStatusId");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("voterStatusId", voterStatusId);
+		return query.list();
+	}
+	
+	public List<Object[]> getPanchayatWiseAddedAndDeletedVoters(Long constituencyId,Long publicationId,Long reportLevelId)
+	{
+		Query query = getSession().createQuery("select distinct model.reportLevelValue,model.totalVoters,model.voterStatus.voterStatusId " +
+				" from VoterModificationInfo model where model.constituencyId = :constituencyId " +
+				" and model.publicationDate.publicationDateId = :publicationId  and " +
+				" model.voterReportLevel.voterReportLevelId = :reportLevelId  " );
+				
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("reportLevelId", reportLevelId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
+	
+	
 }
