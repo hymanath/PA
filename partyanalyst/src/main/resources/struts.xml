@@ -4179,7 +4179,10 @@
 			<result name="success">/jsp/votersCategoery.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 	</action>
-		
+	<action name="votersFlagAction" class="votersEditAction">
+			<result name="success">/jsp/votersFlag.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+	</action>
 
 		
 		<action name="connectToUserInPublicProfileAction" class="userProfileAction" method="connectToSelectedUser">
@@ -6200,6 +6203,25 @@
 		 <action name="populatevoterAnalysisAjaxAction" class="votersAnalysisAction" method="getPublicationDates">
            <result type="json" name="success">
            		<param name="root">namesList</param>
+        	</result>
+        </action>
+        	<action name="votersFlagAction" class="votersEditAction">
+			<result name="success">/jsp/votersFlag.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+			</action>
+        <action name="saveflagDetailsAction" class="votersEditAction" method="saveflagDetails">
+           <result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>
+        </action>
+          <action name="getflagDetailsAction" class="votersEditAction" method="getAllFlags">
+           <result type="json" name="success">
+           		<param name="root">voterDetails</param>
+        	</result>
+        </action>
+         <action name="deleteflagDetailsAction" class="votersEditAction" method="deleteFlag">
+           <result type="json" name="success">
+           		<param name="root">result</param>
         	</result>
         </action>
 		</package>

@@ -117,6 +117,7 @@
 		<pattern>/demoRequestDataUpdateAction*</pattern>
 		<pattern>/addDemoRequestActions*</pattern>
 		<pattern>/moreVideosAction*</pattern>
+		<pattern>/votersFlagAction.action*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
