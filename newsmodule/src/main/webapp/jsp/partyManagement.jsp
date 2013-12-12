@@ -142,7 +142,7 @@ background-color: #CDE6FC;
 #profileManagementMainOuterDiv4{
 	font-family : arial;
 	font-size: 13px;
-  margin-top:-20px;
+    margin-top:-20px;
 	padding: 10px 10px 10px 0px;
 }
 
@@ -175,6 +175,12 @@ border:1px solid #C5C5C5;
 #reportGenaratorSpanCLS{color:red;}
 #newsReportBtnDiv{text-align: center;}
 .ui-multiselect{margin-top:10px;width:222px !important;}
+
+.yui-skin-sam .yui-pg-container {
+    display: block;
+    margin: 13px 312px;
+    white-space: nowrap;
+}
 </style>
 </head>
 <script type="text/javascript">
