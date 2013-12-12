@@ -1543,5 +1543,49 @@ public String saveLocality()
 		   }
 		   return Action.SUCCESS;
 	   }
+	   public String saveflagDetails()
+	   {
+		  try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			   RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			   if(user == null)
+					return "error";
+			  Long userId = null;
+			  userId = user.getRegistrationID();
+			  result = voterReportService.saveFlagDetails(jObj.getString("name"),jObj.getString("description"),jObj.getString("color"),userId,jObj.getLong("flagId"));
+				
+		  }
+		  catch (Exception e) {
+			  LOG.error("Exception Raised in saveflagDetails() method in VotersEditAction Class",e);
+		}
+		  return Action.SUCCESS;
+	   }
+	   
+	   public String getAllFlags()
+	   {
+		   try{
+				jObj = new JSONObject(getTask());
+				voterDetails = voterReportService.getAllFlags();
+		   }
+			  catch (Exception e) {
+				e.printStackTrace();
+			}
+			  return Action.SUCCESS;
+	   }
+	   
+	   public String deleteFlag()
+	   {
+		   try{
+				jObj = new JSONObject(getTask());
+				result = voterReportService.deleteFlag(jObj.getLong("flagId"));
+				
+		   }
+		   catch(Exception e)
+		   {
+			   LOG.error("Exception Raised in deleteFlag() method in VotersEditAction Class",e);
+		   }
+		   return Action.SUCCESS;
+	   }
 
    }

@@ -524,7 +524,7 @@ width: 860px;}
     
     width: 926px;}
 	#localCastDetailsDiv p,#partyWiseDetailsDiv p{font-size:13px;font-weight:bold;}
-	#createNewGroupId:hover{background:#F61D50;color:#FFF;}
+	#createNewGroupId:hover,#flagId:hover{background:#F61D50;color:#FFF;}
 	#openProblemEditFormId{cursor:pointer;}
 	.descriptionInnerDiv{margin-left: 6px; font-size: 13px; line-height: 1.7em;}
 	.descriptionInnerDiv span{margin-right: 5px;}
@@ -1224,6 +1224,7 @@ $('.castDivs').hover(
 <div id="categoeryCreationDiv" style="float:right;">
 	
 	<a href="javascript:{}" class="btn" id="createNewGroupId" onclick="openNewWindow();">Create Custom Groups</a>
+	<a href="javascript:{}" class="btn" id="flagId" onclick="openFlagWindow();">Flag Maintanence</a>
 </div>
 <div id="AlertMsg"></div>
 <div id="ConstituencyDiv" class="selectDiv">
@@ -2076,6 +2077,12 @@ function openNewWindow(){
 	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();
 }
+function openFlagWindow(){
+	var urlStr="votersFlagAction.action";
+	var updateBrowser = window.open(urlStr,"createflag","scrollbars=yes,height=600,width=850,left=200,top=200");	
+	updateBrowser.focus();
+}
+
 function showHideDiv(){
   $('#newsDiv').toggle('slow');
  }
