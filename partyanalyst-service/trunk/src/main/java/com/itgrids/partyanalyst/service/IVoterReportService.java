@@ -103,5 +103,11 @@ public interface IVoterReportService {
     public List<VotersInfoForMandalVO> getDataForPartialPanchayats(Long constituencyId,Long mandalId,Map<Long,String> panchayatIds,Long publicationDateId,Long userId);
 
     public void getPartialAndNormalPanchayats(Long publicationDateId,Long id,Map<Long,String> panchayatIds,Map<Long,String> partialPancMap);
+    
+    public ResultStatus saveFlagDetails(String name,String desc,String color,Long userId,Long flagId);
+    
+    public List<VoterVO> getAllFlags();
+    
+    public ResultStatus deleteFlag(Long flagId);
 
 }

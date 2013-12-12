@@ -27,6 +27,7 @@ import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
+import com.itgrids.partyanalyst.dao.IFlagDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
@@ -39,12 +40,14 @@ import com.itgrids.partyanalyst.dao.IQueryTempDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoterBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
@@ -75,6 +78,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.CasteState;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Flag;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
@@ -148,8 +152,35 @@ public class VoterReportService implements IVoterReportService{
     private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
     private IHamletBoothDAO hamletBoothDAO;
     
+    private IFlagDAO flagDAO;
+    private IUserDAO userDAO;
+    private IVoterFlagDAO voterFlagDAO;
     
-    public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
+    public IVoterFlagDAO getVoterFlagDAO() {
+		return voterFlagDAO;
+	}
+
+	public void setVoterFlagDAO(IVoterFlagDAO voterFlagDAO) {
+		this.voterFlagDAO = voterFlagDAO;
+	}
+
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+
+	public IFlagDAO getFlagDAO() {
+		return flagDAO;
+	}
+
+	public void setFlagDAO(IFlagDAO flagDAO) {
+		this.flagDAO = flagDAO;
+	}
+
+	public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
 		return partialBoothPanchayatDAO;
 	}
 
@@ -4633,5 +4664,80 @@ public class VoterReportService implements IVoterReportService{
 					  panchayatIds.remove(partialPanc);
 				  }
 				}
+		  }
+		  
+		  public ResultStatus saveFlagDetails(String name,String desc,String color,Long userId,Long flagId)
+		  {
+			  ResultStatus resultStatus = new ResultStatus();
+			  try{
+				  if(flagId == 0)
+				  {
+				  List<Object> flagName = flagDAO.checkFlagName(name);
+				  if(flagName != null && flagName.size() > 0 )
+				  {
+					  resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+					  return resultStatus;
+				  }
+				  }
+				     Flag flag = null; 
+					  if(flagId == 0)//create Flag
+					 flag = new Flag();
+					  else
+					 flag = flagDAO.get(flagId);//update Flag
+					 flag.setName(name);
+					 flag.setDescription(desc);
+					 if(color.matches(".*\\d+.*"))
+					 flag.setColor("#"+color);
+					 else
+						 flag.setColor(color); 
+					 flag.setUser(userDAO.get(userId));
+					 flagDAO.save(flag);
+					  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			
+			  }
+			  catch (Exception e) {
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			return resultStatus;
+		  }
+		  
+		  public List<VoterVO> getAllFlags()
+		  {
+			  List<VoterVO> result = new ArrayList<VoterVO>();
+			  try{
+				List<Flag> flag = flagDAO.getAllFlags();  
+				if(flag != null)
+					for(Flag obj : flag)
+					{
+						VoterVO voterVO = new VoterVO();
+						voterVO.setFirstName(obj.getName());
+						voterVO.setDescription(obj.getDescription());
+						if(obj.getColor().contains("#"))
+						voterVO.setColor(obj.getColor().substring(1));	
+						else
+							voterVO.setColor(obj.getColor());	
+						voterVO.setStatusId(obj.getFlagId());
+						result.add(voterVO);
+					}
+			  }
+			  catch (Exception e) {
+				  LOG.error("Exception Occured in getAllFlags() method" , e);
+			}
+			return result;
+		  }
+		  
+		  public ResultStatus deleteFlag(Long flagId)
+		  {
+			  ResultStatus resultStatus = new ResultStatus();
+			  try{
+				 voterFlagDAO.deleteVoterFlag(flagId);
+				flagDAO.deleteFlag(flagId);
+				resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			  }
+			  catch (Exception e) {
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				  LOG.error("Exception Occured in deleteFlag() method" , e);
+			}
+			return resultStatus;
 		  }
 }
