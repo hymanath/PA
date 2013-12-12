@@ -9,7 +9,7 @@
    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
 
  
-<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
+    <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
@@ -284,8 +284,8 @@ function buildNewsDetails(results,divId,type)
 		
 		if(results[i].fileVOList[0].fileVOList[0] != null)
 		str+='<img  src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="" ></img>';
-		else
-		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" ></img>';
+		/* else
+		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" ></img>'; */
 		str+='</div>';
 
 		if(results[i].fileVOList[0].fileVOList.length > 1)
@@ -364,18 +364,19 @@ function showAnotherSource(sourceId , i)
 	   var index = 0;
 	for(var j =0;j<showContentResultList[i].fileVOList.length;j++)
 	{
-          
 		  if(showContentResultList[i].fileVOList[j].sourceId == sourceId ){
-
 
           str+='<div id="mainDiv'+i+'" style="text-align:center;">';
 
 		  str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>';
-
-          str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ showContentResultList[i].fileVOList[0].newsEdition+'</span>';
-
-		  str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[0].pageNo+'</span>';
-
+		  if(showContentResultList[i].fileVOList[j].newsEdition != null)
+		  {
+			str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ showContentResultList[i].fileVOList[j].newsEdition+'</span>';
+          }
+		  if(showContentResultList[i].fileVOList[j].pageNoStr != null && showContentResultList[i].fileVOList[j].comments == null)
+		  {
+			str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[j].pageNoStr+'</span>';
+		  }
 		str+='<span style="float:right;" class="label label-success">File Date:'+showContentResultList[i].fileDate+'</span></div>';
 
 		 if(i != totalRecords -1)
@@ -386,8 +387,8 @@ function showAnotherSource(sourceId , i)
 
 		 // str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
 
-	if(showContentResultList[i].fileVOList[j].fileVOList[0] != null)
-		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[0].path+'" style="" ></img>';
+	if(showContentResultList[i].fileVOList[j].fileVOList[j] != null)
+		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[j].path+'" style="" ></img>';
 		str+='</div>';
 
 		str+='</div>';
