@@ -6669,7 +6669,7 @@ function getNewsReports ()
     var str ='';
 	str+='<div class="container well">';
 	str+='<div class="row clearfix">';
-	str+='<div class="row-fluid"><div class="span12 well-small " id="reportsDiv">';
+	str+='<div class="row-fluid"><div class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt yui-dt-paginator yui-pg-container" id="reportsDiv">';
 	str+=' </div>';
     str+='</div>';
 	str+='</div>';
