@@ -1057,7 +1057,7 @@ public class ContentManagementService implements IContentManagementService{
 							  {
 								  editionChannel = fileVOSourceLanguage.getNewsEdition();
 							  }*/
-							  fileVOSourceLanguage.setNewsEdition(fileVOSourceLanguage.getNewsEdition() + "("+(fileVOSourceLanguage.getPageNo())+")"+ ","+ editionStr + "("+(objects[0].toString()+")"));
+							  fileVOSourceLanguage.setNewsEdition(fileVOSourceLanguage.getNewsEdition() + "("+("PAGE NO" +fileVOSourceLanguage.getPageNo())+")"+ ","+ editionStr + "("+(objects[0].toString()+")"));
 							  fileVOSourceLanguage.setPageNoStr(fileVOSourceLanguage.getPageNoStr()+ "," +objects[0].toString());
 						  }
 						  
@@ -1151,11 +1151,11 @@ public class ContentManagementService implements IContentManagementService{
 							  
 							 if(mainPageNos != "")
 							 {
-								 mainString = "Main Edition" + "(" +mainPageNos + ")";
+								 mainString = "Main Edition" + "(PAGE NO " +mainPageNos + ")";
 							 }
 							 if(subPaeNos != "")
 							 {
-								 subString  = "District/Sub Edition" + "(" +subPaeNos + ")";;
+								 subString  = "District/Sub Edition" + "(PAGE NO " +subPaeNos + ")";;
 							 }
 							 // fileVOSourceLanguage.setNewsEdition(fileVOSourceLanguage.getNewsEdition() +"("+ (fileVOSourceLanguage.getPageNoStr()) +")"+ " "+ editionStr + "("+(filePath.getPageNo()+ ")"));
 							 
