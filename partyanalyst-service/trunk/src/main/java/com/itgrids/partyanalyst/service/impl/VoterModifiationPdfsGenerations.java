@@ -395,7 +395,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(c1);*/
 		 	  	
-		 	  	table.setHeaderRows(1);
+		 	  	
 		 	  	List<VotersDetailsVO> voterDetails = pdfVO.getCompleteVoterDetailsVoList();
 		 	  	if(voterDetails != null && voterDetails.size() > 0)
 		 	  	{
@@ -475,6 +475,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	}
 		 	  	float[] widths = new float[] {1f ,1f,1f,1f, 1f ,1f,1f};
 		 	  	table.setWidths(widths);
+		 	  	table.setHeaderRows(3);
 		 	  	document.add(table);
 			}
 		    catch (Exception e)
@@ -729,7 +730,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
 		 	  	table.addCell(c1);
-		 	  	table.setHeaderRows(1);
+		 	  	
 		 	  	List<VoterVO> voters = null;
 		 	  	if(type.equalsIgnoreCase("add"))
 		 	  	{
@@ -784,13 +785,14 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	     
 		 	  		}
 
-		 	  	float[] widths = new float[] { 1f, 1.5f ,1f,1.5f,1.5f,1f,1f,0.7f,1.5f,1.5f};
+		 	  	float[] widths = new float[] { 1.2f, 1.5f ,1f,1.5f,1.5f,1f,1f,0.7f,1.5f,1.8f};
 		 	  	table.setWidths(widths);
+		 	  	table.setHeaderRows(10);
 		 	  	document.add(table);
 		 	  	document.newPage();
 			}
 		    catch (Exception e) {
-				LOG.debug("Exception raised in totalAddedOrDeletedVoterDetails() method in VoterModifiationPdfsGenerations Class");
+				LOG.debug("Exception raised in totalAddedOrDeletedVoterDetails() method in VoterModifiationPdfsGenerations Class",e);
 			}
 	  	
 	  }
@@ -870,7 +872,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
 		 	  	table.addCell(c1);
-		 	  	table.setHeaderRows(1);
+		 	  	//table.setHeaderRows(1);
 
 		 	  	List<VotersDetailsVO> voters = null;
 		 	  	if(type.equalsIgnoreCase("add"))
@@ -926,6 +928,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	}
 		 	  	float[] widths = new float[] {1f, 1f ,1.5f,1f,1f, 1f ,1f,1f,1f};
 		 	  	table.setWidths(widths);
+		 	  	table.setHeaderRows(5);
 		 	  	document.add(table);
 			}
 		    catch (Exception e)
