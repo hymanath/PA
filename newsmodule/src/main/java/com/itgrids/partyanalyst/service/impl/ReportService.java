@@ -244,9 +244,9 @@ public class ReportService implements IReportService {
 						 districtStr += map2.get(edition)+",";
 					}
 					if(mainEditionStr.length() > 0)
-					  source += " (Main Edition: "+mainEditionStr.substring(0,mainEditionStr.length()-1)+")";
+					  source += " (Main Edition: PAGE NO "+mainEditionStr.substring(0,mainEditionStr.length()-1)+")";
 					if(districtStr.length() > 0)
-						source += "(District Edition: "+districtStr.substring(0,districtStr.length()-1)+")";
+						source += "(District Edition: PAGE NO "+districtStr.substring(0,districtStr.length()-1)+")";
 				  }
 				  
 				  List<String> sourceList = fileSourceMap.get(fileId);
