@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -281,5 +282,12 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			return (Long) query.uniqueResult();
 			 
 		}
-	 
+	  @SuppressWarnings("unchecked")
+		public List<Object[]> getCategorysCountByFileId(Set<Long> fileIds)
+		{
+			 Query query = getSession().createQuery("select distinct model.candidatePartyFile.file.fileId, model.gallary.category.categoryType" +
+			 		" from CandidatePartyCategory model where model.candidatePartyFile.file.fileId in (:fileIds) ");
+			 query.setParameterList("fileIds", fileIds);
+			 return query.list();
+		 }
 }

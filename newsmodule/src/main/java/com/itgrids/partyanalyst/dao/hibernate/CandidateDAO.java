@@ -5,6 +5,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -341,4 +342,12 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 
 	}
 
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getCandidateNames(Set<Long> candidateIds)
+	 {
+		 Query query = getSession().createQuery(" select distinct model.candidateId,model.lastname from Candidate model where" +
+		 		"  model.candidateId in (:candidateIds) ");
+		 query.setParameterList("candidateIds", candidateIds);
+		 return query.list();
+	 }
 }

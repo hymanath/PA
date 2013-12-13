@@ -89,5 +89,12 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 return query.list();
 	 }
 	 
-	 
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getKeywordsCountByFileIds(Set<Long> fileIds)
+	{
+		 Query query = getSession().createQuery("select distinct model.candidatePartyFile.file.fileId, model.keyword.type from CandidatePartyKeyword model " +
+		 		"where model.candidatePartyFile.file.fileId in (:fileIds)" );
+		 query.setParameterList("fileIds", fileIds);
+		 return query.list();
+	 }
 }
