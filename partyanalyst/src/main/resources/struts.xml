@@ -6224,5 +6224,19 @@
            		<param name="root">result</param>
         	</result>
         </action>
+        	<action name="mobileAppUserMgmtAction" class="mobileAppUserMgmtAction">
+			<result name="success">/jsp/mobileAppUserMgmt.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+			</action>
+			  <action name="getMobileAppUsersDataAction" class="mobileAppUserMgmtAction" method="getMobileAppUserData">
+           <result type="json" name="success">
+           		<param name="root">resultList</param>
+        	</result>
+        </action>
+          <action name="enableOrdisableAccessAction" class="mobileAppUserMgmtAction" method="enableOrdisableAccess">
+           <result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+        </action>
 		</package>
 </struts>      
