@@ -21,4 +21,5 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	
 	public List<Long> getFilesIdsByCandidateFileId(List<Long> candidateFileId);
 	 
+	public List<Object[]> getKeywordsCountByFileIds(Set<Long> fileIds);
 }
