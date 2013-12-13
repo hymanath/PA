@@ -191,8 +191,16 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 		str += '</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
 		 if(results[i].responseCount > 0)
 		str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><a href="javascript:{populateNewsResponseWindow('+results[i].fileId+')}; "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></a></p></td>'; 
+		str+='</tr>';
+		if(results[i].candidateName != null && results[i].candidateName != "")
+		str+='<tr><td colspan="2" style="font-weight:bold;"><p class="text-error" >Candidate(s) involved : <span style="font-weight:normal;color:black;">'+results[i].candidateName+'</span></p></td></tr>';
 		
-		str+='</tr></table></div>';
+		if(results[i].keywords != null && results[i].keywords != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Keyword(s) : <span style="font-weight:normal;color:black;">'+results[i].keywords+'</span></p></td></tr>';
+		if(results[i].categoryName != null && results[i].categoryName != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ results[i].categoryName+'</span></p></td></tr>';
+		
+		str+='</table></div>';
 		//str+='<br><div class="span2" style="float:right;">';
 		
 		//str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">Details...</a>';
