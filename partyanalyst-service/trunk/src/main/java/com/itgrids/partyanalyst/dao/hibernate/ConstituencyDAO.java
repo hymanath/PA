@@ -670,4 +670,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		return query.list();
 		
 	}
+	
+	public List<Object[]> getRuralAndRuralUrbanConstiencies(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery(" select model.constituencyId,model.name from Constituency model " +
+				" where model.constituencyId in (:constituencyIds) and model.areaType != null and  model.areaType != 'URBAN'");
+		
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
 }

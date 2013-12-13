@@ -3233,7 +3233,8 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			getDetailsOfVotersHasAgeAbove60(constituencyId,tehsilId,panchayatId,boothId, publicationDateId,constituencyVotersList,type,boothsList,userId);
      
 			Long totalVoters = 0L;
-			for(VotersDetailsVO vtersDetailsVO:constituencyVotersList){				
+			for(VotersDetailsVO vtersDetailsVO:constituencyVotersList){			
+				if(!vtersDetailsVO.getAgeRange().equalsIgnoreCase("Young Voters"))
 				totalVoters +=vtersDetailsVO.getTotalVoters();
 			}
 			
@@ -10133,7 +10134,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 	 					votersDetailsVO.setTotalFemaleVoters(ageInfo.getFemaleVoters());
 	 					votersDetailsVO.setTotalFemaleVotersPercent(ageInfo.getFemaleVotersPercentage() != null ?new Float(ageInfo.getFemaleVotersPercentage()):0.0f);
 	 					votersDetailsVO.setTotalMaleVoters(ageInfo.getMaleVoters());
-	 					
+	 					//if(!votersDetailsVO.getAgeRange().equalsIgnoreCase("Young Voters"))
 	 					votersDetailsVOList.add(votersDetailsVO);
 	 					
 	 			}
@@ -11720,7 +11721,7 @@ public List<VotersDetailsVO> getAgewiseVotersDetForBoothsByWardId(Long id,Long p
 									new Long(mandalId.toString().substring(1).trim()));
 							
 							votersCountDetails = boothConstituencyElectionDAO.getVotersCountInAMandalBooth(
-											voterVO.getElectionId(),(Long) list.get(0), "localElec",null,constituencyId,null);
+									        voterVO.getElectionId(),(Long) list.get(0), "localElec",null,constituencyId,null);
 						}else{
                             List<Long> constituencyIdsList = new ArrayList<Long>(0);
 							
@@ -20096,5 +20097,38 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		}
 	}
 	
+	
+	public List<SelectOptionVO> getConstituencyList1(List<SelectOptionVO> userAccessConstituencyList)
+	{
+		List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>(0);
+		List<Long> constituencyIds = new ArrayList<Long>();
+			try{		
+			for (SelectOptionVO selectOptionVO : userAccessConstituencyList) 
+		    {
+					Long constituenciesId = selectOptionVO.getId();
+					constituencyIds.add(constituenciesId);
+			}
+		
+			List<Object[]> constituencyId =  constituencyDAO.getRuralAndRuralUrbanConstiencies(constituencyIds);
+			SelectOptionVO selectOptionVO = null;
+			if(constituencyId != null && constituencyId.size() > 0)
+			{
+				for(Object[] param : constituencyId)
+				{					
+					selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)param[0]);
+					selectOptionVO.setName(param[1].toString());
+					constituencyList.add(selectOptionVO);
+				}
+			}
+			Collections.sort(constituencyList);
+			return constituencyList;
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getConstituencyList1() Method, Exception - "+e);
+			return constituencyList;
+		}
+	}
 		
 }

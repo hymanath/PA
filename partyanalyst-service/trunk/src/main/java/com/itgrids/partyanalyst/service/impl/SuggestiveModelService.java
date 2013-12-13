@@ -5657,14 +5657,16 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			{
 				//String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
 				List<Long> pachayatIds  = voterInfoDAO.getCountForSelectdCountRange(constituencyId,publicatiobId,minValue,maxValue,3l);
-				List<Object[]> panchayatList = panchayatDAO.getPanchayatsByPanchayatIdsList(pachayatIds);
-				if(panchayatList != null && panchayatList.size() > 0)
+				//List<Object[]> panchayatList = panchayatDAO.getPanchayatsByPanchayatIdsList(pachayatIds);
+				List<Object[]> panchayatList1= panchayatDAO.getPanchayatsByPanchayatIdsListAlongMandal(pachayatIds);
+				if(panchayatList1 != null && panchayatList1.size() > 0)
 				{
 					returnList = new ArrayList<SelectOptionVO>();
-					for (Object[] parms : panchayatList) {
+					for (Object[] parms : panchayatList1) {
 						SelectOptionVO selectOptionVO = new SelectOptionVO();
 						selectOptionVO.setId((Long)parms[0]);
 						selectOptionVO.setName(parms[1].toString());
+						selectOptionVO.setLocation(parms[2].toString());
 						returnList.add(selectOptionVO);
 					}
 				}

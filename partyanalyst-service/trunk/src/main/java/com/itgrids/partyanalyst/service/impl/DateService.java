@@ -3,9 +3,12 @@ package com.itgrids.partyanalyst.service.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import com.itgrids.partyanalyst.service.IDateService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class DateService implements IDateService {
@@ -150,4 +153,28 @@ public class DateService implements IDateService {
 		}
 		return convertedDated;	
 	}
+	
+	public int calculateMyAge(int year, int month, int day) {
+		Calendar birthCal = new GregorianCalendar(year, month, day);
+		DateUtilService dateUtilService = new DateUtilService();
+		Date currentDate = dateUtilService.getCurrentDateAndTime();
+		Calendar nowCal = Calendar.getInstance();
+		nowCal.setTime(currentDate);
+		 
+		int age = nowCal.get(Calendar.YEAR) - birthCal.get(Calendar.YEAR);
+		 
+		boolean isMonthGreater = birthCal.get(Calendar.MONTH) > nowCal
+		.get(Calendar.MONTH);
+		 
+		boolean isMonthSameButDayGreater = birthCal.get(Calendar.MONTH) == nowCal
+		.get(Calendar.MONTH)
+		&& birthCal.get(Calendar.DAY_OF_MONTH) > nowCal
+		.get(Calendar.DAY_OF_MONTH);
+		 
+		if (isMonthGreater || isMonthSameButDayGreater) {
+		age=age-1;
+		}
+		return age;
+		}
+
 }
