@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +44,7 @@ import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.PartyGallery;
 import com.itgrids.partyanalyst.model.UserGallary;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
 import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.util.IConstants;
@@ -80,6 +82,7 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
 	private ICategoryDAO categoryDAO;
 	private INewsResponseDAO newsResponseDAO;
+	private ICandidateDetailsService candidateDetailsService;
 	/*
 	private IFileTypeDAO fileTypeDAO;
 	private ISourceLanguageDAO sourceLanguageDAO;
@@ -188,8 +191,18 @@ public class PartyDetailsService implements IPartyDetailsService {/*
 		this.partyManifestoDAO = partyManifestoDAO;
 	}
 */
+	
 	public IElectionTypeDAO getElectionTypeDAO() {
 		return electionTypeDAO;
+	}
+
+	public ICandidateDetailsService getCandidateDetailsService() {
+		return candidateDetailsService;
+	}
+
+	public void setCandidateDetailsService(
+			ICandidateDetailsService candidateDetailsService) {
+		this.candidateDetailsService = candidateDetailsService;
 	}
 
 	public void setElectionTypeDAO(IElectionTypeDAO electionTypeDAO) {
@@ -2436,6 +2449,13 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 	    	
 		List<File> newsDetails = fileGallaryDAO.getNewsCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
 		Long newsDetailsCount = fileGallaryDAO.getNewsTotalCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
+		Set<Long> fileIds = new HashSet<Long>();
+		for(File param:newsDetails){
+			fileIds.add(param.getFileId());
+		}
+		Map<Long,String> candidateNames = candidateDetailsService.getCandidateNames(fileIds);
+		Map<Long,String> keywordsCount = candidateDetailsService.getKeywordsCountByFileId(fileIds);
+		Map<Long,String> categorysCount = candidateDetailsService.getCategorysCountByFileId(fileIds);
 		for(File param:newsDetails)
 		{
 			 file =new FileVO();
@@ -2464,7 +2484,9 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 file.setImagePathInUpperCase("TDP.png");
 			 file.setFileDate(newDate);
 			 file.setFileType("Party");
-			 
+			 file.setCategoryName(categorysCount.get(file.getContentId())!=null ? categorysCount.get(file.getContentId()) : "");
+			 file.setKeywords(keywordsCount.get(file.getContentId())!=null ? keywordsCount.get(file.getContentId()) : "");
+			 file.setCandidateName(candidateNames.get(file.getContentId())!=null ? candidateNames.get(file.getContentId()) : "");
 			 List<Long> fileId = new ArrayList<Long>();
 		     fileId.add(Long.valueOf(param.getFileId().toString()));
 		     List<Object[]> responseCount = newsResponseDAO.getResponceCountForFiles(fileId);

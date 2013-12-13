@@ -245,6 +245,9 @@ public class ContentManagementService implements IContentManagementService{
 				List<Long> fileIds = new ArrayList<Long>();
 				fileIds.add(contentId);
 				List<File> file= fileDAO.getAllFilesByFileIds(fileIds);
+				Set<Long> fileIdValues = new HashSet<Long>(fileIds);
+				Map<Long,String> categorysCount = candidateDetailsService.getCategorysCountByFileId(fileIdValues);
+				Map<Long,String> keywordsCount = candidateDetailsService.getKeywordsCountByFileId(fileIdValues);
 				for(File fileVal:file){
 					fileVO = new FileVO();
 					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -264,6 +267,8 @@ public class ContentManagementService implements IContentManagementService{
 						if(fileVal.getDescFont() != null){
 							fileVO.setDescEenadu(true);
 						}
+						fileVO.setKeywords(keywordsCount.get(fileVal.getFileId())!=null ? keywordsCount.get(fileVal.getFileId()) : "");
+						fileVO.setCategoryName(categorysCount.get(fileVal.getFileId())!=null ? categorysCount.get(fileVal.getFileId()) : "");
 						fileVO.setTitle(fileVal.getFileTitle()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileTitle())):"");
 						fileVO.setDescription(fileVal.getFileDescription()!=null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(fileVal.getFileDescription())):"");
 						//fileVO.setContentType(fileGallary.getGallary().getContentType().getContentType());
