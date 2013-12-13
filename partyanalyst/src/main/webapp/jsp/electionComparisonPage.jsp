@@ -180,7 +180,11 @@ var yearsPopulation={
 		}
 		function storeYears(results){
 			yearsArray = new Array();
-
+			var yearsObj1= {
+				 electionId:0,
+				 years:"Select Year"													
+			};
+			yearsArray.push(yearsObj1);
 					for(var i in results)
 					{
 						var yearsObj= {
@@ -325,7 +329,7 @@ var yearsPopulation={
 				message+='<br/>';
 				errorFlag=1;
 			} 
-			if(document.getElementById("electionYearSelect1").value==0){
+			if(document.getElementById("electionYearSelect1").value==0 || document.getElementById("electionYearSelect2").value==0){
 				message+='<%=electionYearMsg %>';
 				message+='<br/>';
 				errorFlag=1;

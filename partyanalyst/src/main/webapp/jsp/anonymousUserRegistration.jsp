@@ -201,7 +201,7 @@ if(request.getParameter("tempVar")!=null){
 	height: 28px;
     padding-left: 8px;
     font: 12px/22px Arial,Helvetica,sans-serif;
-	width:222px;
+	width:190px;
 	}
  #headerDiv{
    -moz-border-radius: 9px 9px 9px 9px;
@@ -339,6 +339,7 @@ if(request.getParameter("tempVar")!=null){
  padding-left: 8px;
  font: 12px/22px Arial,Helvetica,sans-serif;
  padding-left:10px;font-weight:lighter;
+ width: 190px;
 }
 
 #registrationForm input[type="checkbox"] {
@@ -891,7 +892,7 @@ function validateFirstName()
 	    return false;
 	}
 	if(fstEle.value.match(r[spvar])){
-		fstEleErr.innerHTML = "<font color='red'>Should Not Contain Special Characters</font>";
+		fstEleErr.innerHTML = "<span class='errorClass'>Should Not Contain Special Characters</span>";
 	    return false;
 	}
 	else 

@@ -2101,7 +2101,7 @@ var urlStr="allVotersInAcasteAction.action?hamletId="+hamletId+"&mainId="+id+"&p
 	<h4 class="headingClass" id="votersBasicInfoSubHeading" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
 	<div id="votersBasicInfoSubDiv" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
 
-	<div id="votersBasicInfoSubDiv_head1" class="widget green whitegloss" style=" color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
+	<div id="votersBasicInfoSubDiv_head1" class="widget green whitegloss" style=" display:none; color: rgb(0, 0, 0); margin-left: 10px; width: 942px;">
 	<h4 class="headingClass" id="votersBasicInfoSubHeading1" style="margin: 0px -20px; padding: 10px 10px 10px 20px;" id=""></h4>
 	<div id="votersBasicInfoSubDiv1" class="yui-skin-sam yui-dt-sortable table table-bordered table-striped table-hover" ></div>	</div></div>
 	

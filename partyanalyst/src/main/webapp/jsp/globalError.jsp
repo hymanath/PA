@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+<%@page import="com.itgrids.partyanalyst.utils.IConstants"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -20,7 +22,18 @@
 
 		<div id="constituencyPageRightMapDiv1" class="contentDivClass" style="height:90%;">
 			<div style="margin-top:5px;margin-bottom:20px;">
-				<font color="red" size="3px"><b>Sorry! we are unable to process your request to continue <a href="http://www.partyanalyst.com">click here</a></b></font><br><br>
+				<font color="red" size="3px"><b>Sorry! we are unable to process your request to continue
+				<c:choose>       
+			      <c:when test="${fn:contains(theString, 'tdpserver')}">
+			      <c:set var="theString" value='<%=IConstants.DEPLOYED_HOST%>'/>
+				     <a href="newhomePageAction.action">Click here</a>
+			     </c:when>
+				 <c:otherwise>
+			     	<a href="homePage.action">Click here</a>
+				 </c:otherwise>
+			</c:choose>
+			</b>
+				</font><br><br>
 			</div>
 			<div style="background:none repeat scroll 0 0 #CEDCF3;border:1px solid #9ABAED;">
 			<table width="100%">

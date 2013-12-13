@@ -171,7 +171,8 @@ public class PartialBoothPanchayatAction extends ActionSupport implements Servle
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regVO.getRegistrationID(),electionYear,electionTypeId);
-		userAccessConstituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		//userAccessConstituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
+		userAccessConstituencyList = votersAnalysisService.getConstituencyList1(userAccessConstituencyList);
 		//userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		//constituencies = suggestiveModelService.getConstituenciesForUserAccessByStateId(userAccessConstituencyList,electionTypeId,electionYear);
 		userAccessConstituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));

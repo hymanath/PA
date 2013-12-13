@@ -799,6 +799,7 @@ $(document).ready(function() {
 	*/
 	function getCategoeryValues()
 	{
+		$('#groupValueCreationErr').html('');
 		var categoryId = $('#selectType').val();
 		//var categoryValue = $('#catrgoeryValue').val();
 		var jsObj =
@@ -1009,8 +1010,9 @@ $(document).ready(function() {
 				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
 				str += '<span>please enter Group Value</span></br>';
 				flag = false;
+				
 			}
-			if(categoryname.length > 0)
+			else if(categoryname.length > 0)
 			{
 				if(/[^a-z A-Z]/.test(categoryname))
 				{
@@ -1018,6 +1020,7 @@ $(document).ready(function() {
 					$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
 					str += '<span>Group Value Accepts Only Characters</span></br>';
 					flag = false;
+					
 				}
 				
 			}
@@ -1028,26 +1031,30 @@ $(document).ready(function() {
 				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
 				str += '<span>please enter Order No</span></br>';
 				flag = false;
+				
 			}
 			
-			if(isNaN(orderNo) == true)
+			else if(isNaN(orderNo) == true)
 			{
 				/* $('#groupValueCreationErr').html('<span>Order No Accepts Only Numbers</span>');
 				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
 				str += '<span>Order No Accepts Only Numbers</span></br>';
 				flag = false;
+				
 			}
-			if($.trim(orderNo) < 1)
+			else if($.trim(orderNo) < 1)
 			{
 					str += '<span>Please Enter a Valid Order Number.</span></br>';
 				flag = false;
+				
 			}
-			if($.trim(orderNo).length > 2)
+			else if($.trim(orderNo).length > 2)
 			{
 				/* $('#groupValueCreationErr').html('<span>Order No Accepts Only Two Digits</span>');
 				$('#groupValueCreationErr').show().delay("2000").hide('slow'); */
 				str += '<span>Order No Accepts Only Two Digits</span></br>';
 				flag = false;
+				
 			}
 			/* if(categoryname.length > 0)
 			{
@@ -1061,12 +1068,20 @@ $(document).ready(function() {
 			} */
 			
 		}
-		});
+		
+		if(flag == false)
+		{
+			$('#groupValueCreationErr').html(str);
+			return false;
+		}
+	});
+		
 		if(!checkForDuplicateGroupValues())
 		{
 			str += '<span>Group Name is Already Exists</span></br>';
 			flag = false;
 		}
+
 		if(!ckeckForDuplicateOrderIds())
 		{
 			str += '<span>Order No is Already Exists</span></br>';
@@ -1110,6 +1125,7 @@ $(document).ready(function() {
 		$('.categoerysList').each(function () {
 		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
 		var categoryname = $(this).closest("tr").find(".groupValueId").val();
+        if(categoryname != '' && categoryname >0)
 		groupName.push($.trim(categoryname));
 		});
 		for(var i = 0 ; i < groupName.length ; i++)
@@ -1138,6 +1154,7 @@ $(document).ready(function() {
 		$('.categoerysList').each(function () {
 		var categoryCheckVal  = $(this).closest("tr").find(".selectedValuesChk").is(':checked');
 		var orderId = $(this).closest("tr").find(".orderId").val();
+		if(orderId != '' && orderId > 0)
 		orderIdsArray.push($.trim(orderId));
 		});
 		for(var i = 0 ; i < orderIdsArray.length ; i++)
