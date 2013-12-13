@@ -834,7 +834,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(c1);
 		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Tehsil",BIGFONT));
+		 	  	c1 = new PdfPCell(new Phrase("Panchayat",BIGFONT));
 		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(c1);
