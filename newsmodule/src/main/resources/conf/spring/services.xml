@@ -23,6 +23,7 @@
 	    <property name="candidateNewsResponseDAO" ref="candidateNewsResponseDAO" /> 
 	    <property name="categoryDAO" ref="categoryDAO" /> 
 	    <property name="newsResponseDAO" ref="newsResponseDAO" /> 
+	    <property name="candidateDetailsService" ref="candidateDetailsService" /> 
 	</bean>
 	
 	<!--<bean name="voterReportService" class="com.itgrids.partyanalyst.service.impl.VoterReportService" >
