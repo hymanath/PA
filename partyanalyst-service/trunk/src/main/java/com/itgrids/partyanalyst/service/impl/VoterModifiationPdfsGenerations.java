@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.util.List;
 import org.apache.log4j.Logger;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -10,6 +11,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+
 import com.itgrids.partyanalyst.dto.PdfVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterAdderdOrDeletedRengesInfoVO;
@@ -839,7 +841,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(c1);
 
-		 	  	 c1 = new PdfPCell(new Phrase("First Time Voters",BIGFONT));
+		 	  	 c1 = new PdfPCell(new Phrase("First Time Voters(18-22)",BIGFONT));
 		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(c1);
