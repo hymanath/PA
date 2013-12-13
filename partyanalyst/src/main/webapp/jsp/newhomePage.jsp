@@ -288,7 +288,7 @@ Quick Links</h2>
 											
 											<li><a tabindex="-1" href="partyPageAction.action?partyId=1117"><img src="images/party_flags/YSRC.png" class="thumbnail"  alt="YSRC Party" /> <h6>Yuvajana Sramika Raithu Congress [YSRC]</h6></a></li>
 								
-											<li><a tabindex="-1" href="partyPageAction.action?partyId=163"><img src="images/party_flags/BJP.png" class="thumbnail" alt="BJP Party" /><h6> Bharath Janathadal Party [BJP]</h6></a></li>
+											<li><a tabindex="-1" href="partyPageAction.action?partyId=163"><img src="images/party_flags/BJP.png" class="thumbnail" alt="BJP Party" /><h6> Bharatiya Janata Party [BJP]</h6></a></li>
 											
 											<li><a tabindex="-1" href="partyPageAction.action?partyId=886"><img src="images/party_flags/TRS.png" class="thumbnail"  alt="TRS Party" /> <h6>Telangana Rastra Samithi [TRS]</h6></a></li>
 											
