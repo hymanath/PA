@@ -211,11 +211,20 @@ function buildPaginatedNews(results,jsObj)
 		  if(length-1 != j)
 			str +=',';
 		}
-		str +='</p></td><td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
+		str +='</p></td><td style="vertical-align: top;width:150px;"><p><span class="text-error" style="font-weight:bold;">Date : </span > '+results[i].fileDate+'</p></td>';
 		if(results[i].responseCount > 0)
 		str+='<td style="vertical-align: top;"><p><span class="text-error" style="font-weight:bold;padding-left: 20px;"><a href="javascript:{populateNewsResponseWindow('+results[i].contentId+')};"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span > '+results[i].responseCount+'</p></a></td>';
-		
-		str +='</tr></table>';
+		str+='</tr>';
+		if(results[i].candidateName != null && results[i].candidateName != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Candidate(s) involved : <span style="font-weight:normal;color:black;">'+results[i].candidateName+'</span></p></td></tr>';
+	
+		if(results[i].keywords != null && results[i].keywords != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Keyword(s) : <span style="font-weight:normal;color:black;">'+results[i].keywords+'</span></p></td></tr>';
+		if(results[i].categoryName != null && results[i].categoryName != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ results[i].categoryName+'</span></p></td></tr>';
+	
+
+		str +='</table>';
 		str +='</div>';
 		
 		str+="<br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";

@@ -191,8 +191,17 @@ function buildPaginatedNews(results,jsObj){
 		str+="<td style='font-weight:bold;padding-left: 20px;width:200px;'><p class='text-error' ><a href='javascript:{populateNewsResponseWindow("+results[i].contentId+")}; '><img alt='response count' title='Response Count' src='images/responseCountIcon.png' id='responseNewsCountImg' /><span style='font-weight:normal;color:black;'>"+results[i].responseCount+"</span></a></p></td>";
 	if(results[i].responseCount == 0)
 		str+="<td style='font-weight:bold;padding-left: 20px;width:200px;'></td>";
-		
-		str+="</tr></table></div><br><br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+	
+		str+="</tr>";
+	if(results[i].candidateName != null && results[i].candidateName != "")
+		str+="<tr><td colspan='3' style='font-weight:bold;width: 135px;'><p class='text-error'>Candidate(s) involved : <span style='font-weight:normal;color:black;'>"+ results[i].candidateName+"</span></p></td></tr>";
+	if(results[i].keywords != null && results[i].keywords != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Keyword(s) : <span style="font-weight:normal;color:black;">'+results[i].keywords+'</span></p></td></tr>';
+	if(results[i].categoryName != null && results[i].categoryName != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ results[i].categoryName+'</span></p></td></tr>';
+	
+
+		str+="</table></div><br><br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
@@ -337,7 +346,17 @@ function buildPaginatedNews1(results,jsObj)
 	if(results[i].responseCount > 0)
 		str+='<td style="vertical-align: top;padding-left: 50px;"><p><span class="text-error" style="font-weight: bold;">Respone Count :</span> '+results[i].responseCount+'</p></td>';
 		
-		str +='</tr></table>';
+		str+="</tr>";
+	if(results[i].candidateName != null && results[i].candidateName != "")
+		str+="<tr><td colspan='3' style='font-weight:bold;width: 135px;'><p class='text-error'>Candidate(s) involved : <span style='font-weight:normal;color:black;'>"+ results[i].candidateName+"</span></p></td></tr>";
+	str +='<tr>';
+	if(results[i].keywords != null && results[i].keywords != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Keyword(s) : <span style="font-weight:normal;color:black;">'+results[i].keywords+'</span></p></td></tr>';
+	if(results[i].categoryName != null && results[i].categoryName != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ results[i].categoryName+'</span></p></td></tr>';
+	str +='</tr>';
+
+		str +='</table>';
 		str +='</div>';
 		
 		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";

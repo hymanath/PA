@@ -269,8 +269,12 @@ $(document).ready(function(){
 													<table><tr><td style="width:200px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;"> ${newsGallaryDetails.source}</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">${newsGallaryDetails.fileDate}</span></p></td>
 													<s:if test="#newsGallaryDetails.responseCount >0">
 													<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">${newsGallaryDetails.responseCount} </span></p></td>
-													</s:if>									
-													</tr></table>
+													</s:if>		
+													</tr>
+													<s:if test="#newsGallaryDetails.candidateName != null && #newsGallaryDetails.candidateName !=''">
+													<tr><td colspan="2"  style="font-weight:bold;"><p class="text-error" >Candidate(s) involved : <span style="font-weight:normal;color:black;">${newsGallaryDetails.candidateName} </span></p></td></tr>
+													</s:if>
+													</table>
 													</div></br>
 													<div class="span2 " style="float:right"><br>
 														<a href="newsPaginationAction.action?level=state">
@@ -401,7 +405,11 @@ $(document).ready(function(){
 													<s:if test="#newsGallaryDetails.responseCount >0">
 													<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">${newsGallaryDetails.responseCount} </span></p></td>
 													</s:if>
-													</tr></table>
+													</tr>
+													<s:if test="#newsGallaryDetails.candidateName != null && #newsGallaryDetails.candidateName !=''">
+													<tr><td colspan="2"  style="font-weight:bold;"><p class="text-error" >Candidate(s) involved : <span style="font-weight:normal;color:black;">${newsGallaryDetails.candidateName} </span></p></td></tr>
+													</s:if>
+													</table>
 													</div></br>
 													<div class="span2 " style="float:right"><br>
 														<a href="newsPaginationAction.action?level=district">
@@ -1184,7 +1192,7 @@ function getCandidatesNews(){
 	var candidateId=$('#candidatesListId option:selected').val();
 	var candidateName1=$('#candidatesListId option:selected').text();
 	var trimValue = candidateName1.split("(").pop();
-	var candidateName = candidateName1.replace('('+trimValue, '');//for tring numbers
+	var candidateName = candidateName1.replace('('+trimValue, '');//for string numbers
 	$(".errorDiv").html('');
 	if(candidateId==0){
 		$('.errorDiv').html('<span class="text-error">Please Select Candidate</span>');

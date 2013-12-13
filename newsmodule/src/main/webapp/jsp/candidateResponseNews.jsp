@@ -202,6 +202,13 @@ function buildPaginatedNews(results,jsObj)
 			str +=',';
 		} */
 		str +='</p></td><td style="vertical-align: top;width:37%;"><p><span class="text-error" style="margin-left: 45px;font-weight: bold;">Date :</span> '+results[i].fileDate+'</p></td><td style="vertical-align: top;width:33%;"><p ><span class="text-error" style="font-weight: bold; margin-left: 15px;"><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /> </span>'+results[i].responseCount+'</p></td></tr>';
+		if(results[i].candidateName != null && results[i].candidateName != "")
+		str +='<td colspan="2" style="vertical-align: top;width:37%;"><p><span class="text-error" style="font-weight: bold;">Candidate(s) involved :</span> '+results[i].candidateName+'</p></td>';
+		
+		if(results[i].keywords != null && results[i].keywords != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Keyword(s) : <span style="font-weight:normal;color:black;">'+results[i].keywords+'</span></p></td></tr>';
+		if(results[i].categoryName != null && results[i].categoryName != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ results[i].categoryName+'</span></p></td></tr>';
 		
 		str +='</table>';
 		str +='</div>';

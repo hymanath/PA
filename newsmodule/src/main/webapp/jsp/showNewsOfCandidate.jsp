@@ -321,8 +321,8 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 		
 		str+="</div>";
 
-		str+="<div class='span9' style='width:550px;'>";
-		str +='<table><tr><td>';
+		str+="<div class='span9' style='width:680px;'>";
+		str +='<table><tr><td style="width: 430px;">';
 		str +='<p style="margin-left: 5px;width: 230px;"><span class="text-error" style="font-weight:bold;">Source :</span>';
 		var length = results[i].fileVOList.length;
 
@@ -336,10 +336,20 @@ function buildPaginatedNewsOfCandidate(results,jsObj){
 	if(results[i].responseCount > 0)
 		str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><a href="javascript:{populateNewsResponseWindow('+results[i].fileId+')}; "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+results[i].responseCount+'</a></p></td>';
 		
-		str +='</tr></table>';
+		str +='</tr>';
+	if(results[i].candidateName != null && results[i].candidateName != "")
+		str +='<tr><td colspan="2"><p><span class="text-error" style="font-weight: bold;">Candidate(s) involved :</span> '+results[i].candidateName+'</p></td></tr>';
+	
+	if(results[i].keywords != null && results[i].keywords != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Keyword(s) : <span style="font-weight:normal;color:black;">'+results[i].keywords+'</span></p></td></tr>';
+	if(results[i].categoryName != null && results[i].categoryName != "")
+		str+='<tr><td colspan="3" style="margin-left: 45px;font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ results[i].categoryName+'</span></p></td></tr>';
+	
+
+		str +='</table>';
 		str +='</div>';
 		
-		str+="<br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="<br><br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
