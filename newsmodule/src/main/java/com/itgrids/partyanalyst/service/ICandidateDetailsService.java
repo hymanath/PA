@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.CategoryVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -333,5 +334,10 @@ public interface ICandidateDetailsService {
 	 public List<FileVO> getCandidateNewsResponseNewsForSelectdDates(Integer startIndex,Integer maxIndex,String fromDate,String toDate);
 		 
 	 public void populateNewsDataToVO(List<Object[]> newsList,List<Long> fileIds,LinkedHashMap<Long,FileVO> fileMap,Long count);
+
+	 public Map<Long,String> getCandidateNames(Set<Long> fileIds);
 	 
+	 public Map<Long,String> getKeywordsCountByFileId(Set<Long> fileIds);
+	 
+	 public Map<Long,String> getCategorysCountByFileId(Set<Long> fileIds);
 }
