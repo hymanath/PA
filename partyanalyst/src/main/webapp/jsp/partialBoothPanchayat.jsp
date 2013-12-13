@@ -541,7 +541,12 @@ function validateTheFields()
 		flag = false;
 		str += '<b style="color:red">Please select the booth</b></br>';
 	}
-	if(description == '')
+	if(description == '' || pdescription == '')
+	{
+		flag = false;
+		str += '<b style="color:red">Please enter the description</b></br>';
+	}
+	else if(description.trim().length == 0 || pdescription.trim().length == 0)
 	{
 		flag = false;
 		str += '<b style="color:red">Please enter the description</b></br>';
@@ -555,13 +560,7 @@ function validateTheFields()
 	{
 		flag = false;
 		str += '<b style="color:red">Please select the Hamlet</b></br>';
-	}
-	if(pdescription == '')
-	{
-		flag = false;
-		str += '<b style="color:red">Please enter the description</b></br>';
-	}
-	
+	}	
 	if(flag)
 	{
 		saveDetails();
@@ -574,6 +573,42 @@ function validateTheFields()
 		
 	}
 	
+}
+function validateTheFieldsForEdit()
+{
+	$('#errorMsgForEdit').html('');
+	$('#tableDiv').html('');
+	var constituencyId = $('#constituencyListForEdit option:selected').val();
+	var publicationIdForEdit = $('#publicationDateForEdit option:selected').val();
+	var mandalId = $('#mandalForEdit option:selected').val();
+	var str = '';
+	var flag = true;
+    if(constituencyId == 0)
+	{
+		flag = false;
+		str += '<b style="color:red">Please select the Constituency</b></br>';
+	}
+	if(publicationIdForEdit == 0)
+	{
+       flag = false;
+	   str += '<b style="color:red">Please select the Publication Date</b></br>';
+	}
+	if(mandalId == 0)
+	{
+        flag = false;
+	    str += '<b style="color:red">Please select the Mandal</b></br>';
+	}
+	if(flag)
+	{
+		getSelectedDetails();
+		$("#errorMsgForEdit").hide("slow");
+	}
+	else
+	{
+		$("#errorMsgForEdit").show();
+		$('#errorMsgForEdit').html(str);
+		
+	}
 }
 </script>
 <body>
@@ -588,11 +623,11 @@ function validateTheFields()
 	<div><b>Mandal : </b><select id="mandal" name="mandal" style="margin-left: 141px;width: 192px;"onChange="getPanchayts();"><option value="0">Select Mandal</option></select></div>
 	<div><b>Panchayat : </b><select id="panchayat" name="panchayatsList" style="margin-left: 121px;width: 192px;" onChange="getBooths();"><option value="0">Select Panchayat</option></select></div>
 	<div><b>Booth : </b><b style="color:red">*</b><select id="booth" name="boothsList" style="margin-left: 145px;width: 192px;" ><option value="0">Select Booth</option></select></div>
-	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;width: 181px;"></textarea></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="description" id="descriptionId" style="margin-left: 105px;width: 181px;resize:none;" rows="2" cols="20" maxlength="200"></textarea></div>
 	<div><b>Panchayat : </b><b style="color:red">*</b><select id="partialPanchayat" name="partialPanchayatsList" style="margin-left: 116px;width: 196px;" onChange="getHamlets();"><option value="0">Select Panchayat</option></select></div>
 	<div><b>Hamlet : </b><b style="color:red">*</b><select id="hamlet" name="hamletList" style="margin-left: 140px;width: 197px;" multiple ><option value="0">Select Hamlet</option></select></div>
 	<!--<div><b>Booth : </b><select id="PartialBooth" name="PartialBooth" style="margin-left: 145px;"><option value="0">Select Booth</option></select></div>-->
-	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;width: 188px;"></textarea></div>
+	<div><b>Description : </b><b style="color:red">*</b><textarea name="PartialDescription" id="PartialDescription" style="margin-left: 106px;width: 188px;resize:none;" rows="2" cols="20" maxlength="200"></textarea></div>
 	<div id="submitButton" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Submit" class="btn btn-success" onClick="validateTheFields();"></input></div>
 	</div>
 	</div>
@@ -600,10 +635,11 @@ function validateTheFields()
 	<div>
 	<div id="headingDivForEdit" align="center"  style="margin-top: 25px; background-color: #06ABEA; height: 31px; color: white; font-family: verdana; padding-top: 10px; font-size: 21px; border-radius: 4px 4px 4px 4px; float: left; position: static;width: 1000px;">Manage Partial Booth Panchayat Details </div>
 	<div id="bodyDivForEdit" style="float: left; margin-left: 258px; margin-top: 18px;">
+	<div id="errorMsgForEdit" style="color: red; font-family: verdana; font-size: 12px; font-weight: bold;"></div>
 	<div><b>Constituency : </b><s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="userAccessConstituencyList" id="constituencyListForEdit" list="userAccessConstituencyList" listKey="id" listValue="name"  class="selectWidth" onChange="getPublicationDate('edit');" style="margin-left: 100px;width:191px;"/></div>
 	<div><b>Publication Date : </b><select id="publicationDateForEdit" name="publicationDate"style="margin-left: 79px;width:191px;" onChange="getMandals('edit');"><option value="0">Publication Date</option></select></div>
 	<div><b>Mandal : </b><select id="mandalForEdit" name="mandalForEdit" style="margin-left: 141px;width:191px;"><option value="0">Select Mandal</option></select></div>
-	<div id="submitButtonForEdit" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Get" class="btn btn-success" onClick="getSelectedDetails();"></input></div>
+	<div id="submitButtonForEdit" style="float: left; margin-left: 200px; margin-bottom: 10px;"><input type="submit" value="Get" class="btn btn-success" onClick="validateTheFieldsForEdit();"></input></div>
 	<div id="tableDiv"  style="float: left; margin-left: -170px; margin-top: 43px; width: 891px;">
 	<!--<div id="deleteStatusMsg" style="color: red; float: left; margin-top: -39px; margin-left: 184px;"></div>-->
 	</div>	

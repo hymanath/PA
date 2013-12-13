@@ -12,6 +12,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import com.itgrids.partyanalyst.service.IDateService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,12 +47,15 @@ public class CadreRegisterAction extends ActionSupport implements
 	private HttpServletRequest request;
 	private HttpSession session;
 	private ServletContext context;
-
+    private IDateService dateService;
 	private CadreManagementService cadreManagementService;
 	private final static Logger log = Logger.getLogger(CadreRegisterAction.class);
 
 	public void setCadreManagementService(CadreManagementService cadreManagementService) {
 		this.cadreManagementService = cadreManagementService;
+	}
+	public void setdateService(IDateService dateService) {
+		this.dateService = dateService;
 	}
 
 	private CadreInfo cadreInfo = new CadreInfo();
@@ -1055,6 +1059,13 @@ public class CadreRegisterAction extends ActionSupport implements
 		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 		String familyMbrsCount = cadreInfo.getNoOfFamilyMembers().trim(); 
 		String votersCount = cadreInfo.getNoOfVoters().trim();
+		String  date1 = cadreInfo.getDateOfBirth();
+		String year = date1.substring(6, 10);
+		String day= date1.substring(0, 2);
+		String month= date1.substring(3,5);
+		int year1 = Integer.parseInt(year);
+		int day1 = Integer.parseInt(day);
+		int month1 = Integer.parseInt(month)-1;
 		//System.out.println(cadreInfo.getMemberType());
 		if(cadreInfo.getMemberType().equalsIgnoreCase("Active") && cadreInfo.getStrCadreLevelValue().isEmpty())
 		{
@@ -1066,8 +1077,17 @@ public class CadreRegisterAction extends ActionSupport implements
 			{
 				addFieldError("dateOfBirth", "Please Enter Date Of Birth");
 			}
+			else if(cadreInfo.getDobOption().equalsIgnoreCase("Date Of Birth") && cadreInfo.getDateOfBirth() != null)
+			{
+				int age=dateService.calculateMyAge(year1,month1,day1); 
+				if(age<18)
+				addFieldError("dateOfBirth", "Age must be greater than 18");
+			}
 			else if(cadreInfo.getDobOption().equalsIgnoreCase("Age") && cadreInfo.getAge() != null && cadreInfo.getDobOption().trim().isEmpty()){
 				 addFieldError("age", "please Enter Age");
+			}
+			else if(cadreInfo.getDobOption().equalsIgnoreCase("Age") && cadreInfo.getAge() != null && Integer.parseInt(cadreInfo.getAge()) < 18){
+				addFieldError("dateOfBirth", "Age must be greater than 18");
 			}
 		}
 		if(familyMbrsCount.isEmpty() && !(votersCount.isEmpty()))

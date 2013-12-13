@@ -321,7 +321,7 @@ l2s_load();  document.getElementById('l2s_trk').style.visibility='hidden'; //-->
                 </li>
           <li><a href="userGroupAction.action"><span>User Groups</span></a></li>
         <li><a href="callCenterAction.action"><span>Call Center</span></a></li>
-		<li><a href="votersAnalysisNewAction.action"><span>Constituency Analysis</span></a></li>
+		<li><a href="votersAnalysisNewAction.action"><span>Voters Analysis</span></a></li>
 		<li><a href="votersSearchAction.action"><span>Voters Search & Report</span></a></li>
 		<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
 	    <li><a href="suggestiveModelAction.action"><span>Suggestive Model</span></a></li>

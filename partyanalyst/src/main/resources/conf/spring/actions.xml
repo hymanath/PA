@@ -253,6 +253,7 @@
 	
 	<bean id="cadreRegisterAction" class ="com.itgrids.partyanalyst.web.action.CadreRegisterAction" singleton="false">
 		<property name="cadreManagementService" ref="cadreManagementService" />
+		<property name="dateService" ref="dateService" />
 	</bean> 
 
 	

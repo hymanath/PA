@@ -434,8 +434,10 @@ window.open(urlStr,"addNewCadrePeople","scrollbars=yes,height=570,width=1300,lef
                        window.opener.selectedMobileNumbers.push("91"+mobileNumber);
 
 			});
-
+            
 		}	
+		else{
+			unSelectAllCheckBoxes();}
 	  });
 
        getCadresResults2('search');

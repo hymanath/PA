@@ -4255,8 +4255,8 @@ function changeToEditableField()
 			</div>
 		</div>
 		<div id="cadreSMSMainDiv">
-			<div id="cadreSMSHeadDiv" style="font-size:12px;">Cadre Info</div>
-			<div id="cadreSMSBodyDiv" style="font-size:12px;font-family:verdana;margin-bottom: 15px;">Cadre Info feature enables the user to add new people into the Cadre, Searching existing Cadres And send SMS to the cadres, based on the location and cadre level.</div>
+			<div id="cadreSMSHeadDiv" style="font-size:12px;">Manage Cadre</div>
+			<div id="cadreSMSBodyDiv" style="font-size:12px;font-family:verdana;margin-bottom: 15px;">Manage Cadre feature enables the user to add new people into the Cadre, Searching existing Cadres And send SMS to the cadres, based on the location and cadre level.</div>
 			<div id="cadreSMSFooterDiv" style="font-size:11px;">
 				<span><a href="cadreRegisterPageAction.action?cadreId=0&windowTask=new" id="sendSMSAnc">Add Cadre</a></span>
 				<span><a href="javascript:{}" id="sendSMSAnc" onclick="buildSearchPagePopup('Search')">Cadre Search</a></span>

@@ -4103,7 +4103,7 @@ function impFamilesStaticTable(myresults,jsObj)
 	var type = jsObj.type;	
 	str+='<div class="impFamilesMainDiv row" >';
 	
-	$("#impFamiliesTitle").html(" "+jsObj.typename+" Family Wise Statistics in "+publicationYear+"");
+	$("#impFamiliesTitle").html("Family Wise Voters Information of "+jsObj.typename+" in "+publicationYear+"");
 		
 	str += '<div class="span3"><ul class="FamiliyList"> <li> <div style="width:68%;float:left;">Total Voters </div> <span style="clear:left;">: '+myresults.totalVoters+'</span></li>';
 		if(myresults.totalFamalies==null){
@@ -4622,7 +4622,10 @@ function buildVoterDetailsTable(result,type,retrieveType){
 	}
 	for(var i in result.votersDetailsVO){
 	str+='<tr>';
-	str+='<td>'+result.votersDetailsVO[i].ageRange+'</td>';
+	if(result.votersDetailsVO[i].ageRange == 'Young Voters')
+	   str+='<td>'+result.votersDetailsVO[i].ageRange+' (18-22)'+'</td>';
+	else
+      str+='<td>'+result.votersDetailsVO[i].ageRange+'</td>';
 	str+='<td>'+result.votersDetailsVO[i].totalVoters+'</td>';
 	if(result.votersDetailsVO[i].totalVotersPercent != null){
 		if(result.votersDetailsVO[i].totalVotersPercent.toFixed(2).split(".", 1) == greatestValue)

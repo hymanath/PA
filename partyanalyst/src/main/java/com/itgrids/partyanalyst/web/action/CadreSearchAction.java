@@ -311,7 +311,7 @@ public class CadreSearchAction extends ActionSupport implements ServletRequestAw
 			obj2.setName(name);			
 			stateList.add(obj2);
 			districtList = staticDataService.getDistricts(accessValue);
-			districtList.add(0,new SelectOptionVO(0l,"Select District"));	
+			districtList.add(0,new SelectOptionVO(0l,"Select Location"));	
 			
 		}else if("DISTRICT".equals(accessType)){
 						

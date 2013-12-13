@@ -1887,7 +1887,7 @@ function buildgetSelectedCountPAnchayatsDetails(result)
 		for(var i in result)
 		{
 			str += '<tr>';
-			str += '<td>'+result[i].name+'</td>';
+			str += '<td>'+result[i].name+'('+result[i].location+')</td>';
 			str += '</tr>';
 		}
 		str += '</table>';

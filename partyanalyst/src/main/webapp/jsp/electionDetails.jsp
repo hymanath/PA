@@ -4167,7 +4167,7 @@ function navigateToMinisterPage(){
 
 <div id="topStoriesDIV">
    <DIV class="graphTop"> Highlights Of ${year} 
-   <c:if test="${electionType != 'Parliament'}">${stateName}&nbsp;</c:if>&nbsp;${electionType}&nbsp;Elections</DIV>
+   <c:if test="${electionType != 'Parliament'}">&nbsp;${stateName}&nbsp;</c:if>&nbsp;${electionType}&nbsp;Elections</DIV>
    <div class="topStories">
        <div id="topStoriesMenu" style="width:100%;">
           <div id="topStoriesSelect" style="padding-top:10px;padding-bottom:5px;align:left;">
