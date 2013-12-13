@@ -613,7 +613,7 @@ function showTotalNews(myResult,jsObj){
 		str+='<div class="span9" style="width: 550px;">';
 		str+='<table><tr>';
 		if(myResult[i].source != null)
-			str+='<td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+myResult[i].source+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
+			str+='<td style="width:730px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+myResult[i].source+'</span></p></td><td style="font-weight:bold;width:200px;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
 		else
 			str+='<td style="width:260px;font-weight:bold;"></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+myResult[i].fileDate+'</span></p></td>';
 
@@ -621,9 +621,17 @@ function showTotalNews(myResult,jsObj){
 			str+='<td style="font-weight:bold;padding-left: 20px;width:200px;"><p class="text-error" ><a href="javascript:{populateNewsResponseWindow('+myResult[i].contentId+')}; "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+myResult[i].responseCount+'</span></a></p></td>';
 		else
 			str+='<td style="font-weight:bold;padding-left: 20px;width:200px;"></td>';
-			
-			//str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">'+myResult[i].responseCount+'</span></p></td>';
-		str+='</tr></table></div> <br>';
+		str+='</tr>';	
+		if(myResult[i].candidateName != null && myResult[i].candidateName != "")
+			str+='<tr><td colspan="2" style="font-weight:bold;"><p class="text-error" >Candidate(s) involved : <span style="font-weight:normal;color:black;">'+myResult[i].candidateName+'</span></p></td></tr>';
+	
+	if(myResult[i].keywords != null && myResult[i].keywords != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Keyword(s) : <span style="font-weight:normal;color:black;">'+myResult[i].keywords+'</span></p></td></tr>';
+	if(myResult[i].categoryName != null && myResult[i].categoryName != "")
+		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ myResult[i].categoryName+'</span></p></td></tr>';
+	
+
+		str+='</table></div> <br>';
 		str+='<div class="span2 " style="width: 500px;">';
 		str+='<a onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">';
 		str+='<button class="btn btn-mini pull-right btn-info" type="button">Details...</button>';
