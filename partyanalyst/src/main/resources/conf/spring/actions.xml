@@ -1331,5 +1331,9 @@
 	      	<property name="votersAnalysisService" ref="votersAnalysisService" />
 	      	<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />	
 	</bean>
+	<bean id="mobileAppUserMgmtAction" class="com.itgrids.partyanalyst.web.action.MobileAppUserMgmtAction" singleton="false">
+	      <property name="mobileService" ref="mobileService" />  
+	</bean>
+	
 </beans>	
 	
