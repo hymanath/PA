@@ -10,5 +10,8 @@ import com.itgrids.partyanalyst.model.MobileAppUserAccess;
 public interface IMobileAppUserAccessDAO extends GenericDao<MobileAppUserAccess, Long>{
 	
 	public List<Object> getAuthorisedRecords(String uniqueCode,String macAddressId);
+	public List<Object[]> getMobileAppUserdetails();
+	
+	public List<Long> getMobileAppUserAccessIds(List<Long> mobileAppUserIds);
 	
 }

@@ -20,5 +20,9 @@ public interface IMobileService {
 	public ResultStatus sendSmsToMobileAppUser(String mobileNo,Long mobileAppuserId,String accessKey,Long userID);
 	
 	public List<SelectOptionVO> getMobileAppUsers();
+	
+ 	public List<RegistrationVO> getMobileAppUserDetails();
+ 	
+	public ResultStatus enableOrdisableAccessByUniqueCode(List<Long> uniqueCodes,String type);
 
 }
