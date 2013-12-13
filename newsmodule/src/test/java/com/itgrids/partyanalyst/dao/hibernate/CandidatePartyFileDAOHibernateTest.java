@@ -39,7 +39,7 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetCandidateNamesByFileIds(){
+	/*public void testgetCandidateNamesByFileIds(){
 		Set<Long> fileIds = new java.util.HashSet<Long>();
 		//fileIds.add(41l);
 		fileIds.add(42l);
@@ -47,7 +47,14 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 		for(Object[] param:file){
 			System.out.println(param[0]+","+param[1]);
 		}
+	}*/
+	
+	public void testgetKeywordsCountByFileIds(){
+		Set<Long> fileIds = new java.util.HashSet<Long>();
+		fileIds.add(82l);
+		fileIds.add(81l);
+		List<Object[]> val = candidatePartyFileDAO.getKeywordsCountByFileIds(fileIds);
+		for(Object[] p:val)
+			System.out.println(p[0]+"-"+p[1]);
 	}
-	
-	
 }
