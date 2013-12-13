@@ -1805,7 +1805,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				  fileIds.add((Long)obj[0]);
 			  }
 			  Map<Long,String> sourceNames = getSourceNames(fileIds);
-			  
+			  Map<Long,String> candidateNames = getCandidateNames(fileIds);
+			  Map<Long,String> keywordsCount = getKeywordsCountByFileId(fileIds);
+			  Map<Long,String> categorysCount = getCategorysCountByFileId(fileIds);
 			    for(Object[] obj : newsDetails )
 			    {  		       
 				    FileVO v =new FileVO();
@@ -1827,7 +1829,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			        if(obj[7] != null){
 			        	v.setDescEenadu(true);
 			        }
-			     
+			        v.setCategoryName(categorysCount.get(id)!=null ? categorysCount.get(id) : "");
+			        v.setKeywords(keywordsCount.get(id)!=null ? keywordsCount.get(id) : "");
+			        v.setCandidateName(candidateNames.get(id) != null ? candidateNames.get(id) : "");
 			    	v.setSource(sourceNames.get(id) != null?sourceNames.get(id):"");
 	                v.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String) obj[2])));
 	                v.setDescription(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString((String)obj[3])));
@@ -1880,8 +1884,52 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			 }
 			  return sourceNames;
 		  }
+		 public Map<Long,String> getCandidateNames(Set<Long> fileIds)
+		 {
+			  Map<Long,String> candidateNames = new HashMap<Long,String>();  //<fileId,CandName>
+			  try
+			  {
+				  if(fileIds != null && fileIds.size() > 0)
+				  {
+					List<Object[]> candidates = fileSourceLanguageDAO.getCandidateDetailsByFileIds(fileIds);
+					Map<Long,Set<Long>> map = new HashMap<Long, Set<Long>>();   //<fileId,CandIds>
+					Map<Long,String> cadidateNameMap = new HashMap<Long, String>();//candidateId,Name
+					Set<Long> candidateIds = null;
+					Set<Long> candidateIdsList = new HashSet<Long>();
+					for(Object[] param:candidates)
+					{
+						candidateIds = new HashSet<Long>();
+						candidateIds.add((Long)param[1]);
+						candidateIds.add((Long)param[2]);
+						Set<Long> candIds = map.get((Long)param[0]);
+						if(candIds != null && candIds.size()>0)
+							candidateIds.addAll(candIds);
+						map.put((Long)param[0], candidateIds);
+						
+						candidateIdsList.addAll(candidateIds);
+					}
+					List<Object[]> candidates1 = candidateDAO.getCandidateNames(candidateIdsList);
+					for(Object[] param:candidates1)
+						cadidateNameMap.put((Long)param[0], param[1].toString());
+				
+				    if(map.size() > 0)
+					   for(Long fileId:map.keySet())
+					   {
+						   Set<Long> candIds = map.get(fileId);
+						   String candidateName1 = "";
+						   for(Long candId:candIds)
+							   if(candId != null)
+							   candidateName1 += cadidateNameMap.get(candId)+", ";
+						   
+						   candidateNames.put(fileId, candidateName1.substring(0, candidateName1.length()-2));
+					   }
+				 }
+			 }catch(Exception e){
+				 log.error("Exception Occured in getCandidateNames method in NewsMonitoringService", e);
+			 }
+			  return candidateNames;
+		  }
 		 
-	  		 
 	public List<FileVO> getScopesForNewSearch()
 	{   
 		 List<FileVO> retValue = new ArrayList<FileVO>();
@@ -7477,6 +7525,12 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
    
    public void fillFileVOForResponceDisplay(List<File> fileGallaryList,Long count,Map<Long,Long> responceCountMap,List<FileVO> fileVOsList)
    {
+		Set<Long> fileIds = new HashSet<Long>();
+		for(File file:fileGallaryList){
+			fileIds.add(file.getFileId());
+		}
+		Map<Long,String> candidateNames = getCandidateNames(fileIds);
+		Map<Long,String> keywordsCount = getKeywordsCountByFileId(fileIds);
 	   for (File file : fileGallaryList) {
 			 if(file != null)
 			 {
@@ -7491,6 +7545,9 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 if(file.getDescFont() != null)
 				 fileVO.setDescEenadu(true);
 				 fileVO.setCount(count.intValue());
+				 fileVO.setKeywords(keywordsCount.get(file.getFileId())!= null ? keywordsCount.get(file.getFileId()) : "");
+				 fileVO.setCandidateName(candidateNames.get(file.getFileId())!=null?candidateNames.get(file.getFileId()):"");
+				 if(responceCountMap.get(file.getFileId()) != null)
 				 fileVO.setResponseCount(responceCountMap.get(file.getFileId()).intValue());
 				 fileVOsList.add(fileVO);
 			 }
@@ -7993,6 +8050,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 try{
 	
 		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		Set<Long> fileIds = new HashSet<Long>();
+		for(File file:filesList){
+			fileIds.add(file.getFileId());
+		}
+		Map<Long,String> candidateNames = getCandidateNames(fileIds);
+		Map<Long,String> keywordsCount = getKeywordsCountByFileId(fileIds);
+		Map<Long,String> categorysCount = getCategorysCountByFileId(fileIds);
 	 for(File file : filesList)
 	 {
  
@@ -8012,7 +8076,9 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		filevo.setCategoryId(file.getCategory().getCategoryId());
 		filevo.setCategoryName(file.getCategory().getCategoryType());
 	}
-	
+	filevo.setCategoryName(categorysCount.get(file.getFileId())!=null ? categorysCount.get(file.getFileId()) : "");
+	filevo.setKeywords(keywordsCount.get(file.getFileId())!=null ? keywordsCount.get(file.getFileId()) : "");
+	filevo.setCandidateName(candidateNames.get(file.getFileId())!=null ? candidateNames.get(file.getFileId()) : "");
 	filevo.setFilePath1(file.getFilePath());
 	
 	Set<FileSourceLanguage> set = file.getFileSourceLanguage();
@@ -8221,6 +8287,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		try{
 			
 			List<Long> fileGalleryIdsList = new ArrayList<Long>(0);
+			Set<Long> fileIds = new HashSet<Long>();
+			for(File file:fileList){
+				fileIds.add(file.getFileId());
+			}
+			Map<Long,String> categorysCount = getCategorysCountByFileId(fileIds);
+			Map<Long,String> keywordsCount = getKeywordsCountByFileId(fileIds);
+			Map<Long,String> candidateNames = getCandidateNames(fileIds);
 			for(File file : fileList)
 			 {
 			/*	int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size();
@@ -8234,6 +8307,9 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				FileVO fileVO = new FileVO(); 
 				fileVO.setContentId(file.getFileId());
 				fileVO.setFileId(file.getFileId());
+				fileVO.setCategoryName(categorysCount.get(file.getFileId())!=null ? categorysCount.get(file.getFileId()) : "");
+				fileVO.setKeywords(keywordsCount.get(file.getFileId())!=null ? keywordsCount.get(file.getFileId()) : "");
+				fileVO.setCandidateName(candidateNames.get(file.getFileId())!=null ? candidateNames.get(file.getFileId()) : "");
 				fileVO.setTitle(file.getFileTitle() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle().toString())):"");
 				fileVO.setDescription(file.getFileDescription() != null ?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())):"");
 				if(file.getRegionScopes() != null){
@@ -8399,6 +8475,13 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 List<FileVO> returnList = null;
 	 if(newsList != null && newsList.size() > 0)
 	 {
+		 Set<Long> fileIdList = new HashSet<Long>();
+			for(Object[] file:newsList){
+				fileIdList.add((Long)file[4]);
+			}
+			Map<Long,String> candidateNames = getCandidateNames(fileIdList);
+			Map<Long,String> keywordsCount = getKeywordsCountByFileId(fileIdList);
+			Map<Long,String> categorysCount = getCategorysCountByFileId(fileIdList);
 		 for (Object[] parms : newsList) {
 			 FileVO fileVO = new FileVO();
 			 
@@ -8411,6 +8494,9 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 fileVO.setFontId( parms[5] != null ? (Integer)parms[5] :0);
 			 if(parms[6] != null)
 			 fileVO.setDescEenadu(true);
+			 fileVO.setCategoryName(categorysCount.get((Long)parms[4])!=null ? categorysCount.get((Long)parms[4]) : "");
+			 fileVO.setKeywords(keywordsCount.get((Long)parms[4])!=null ? keywordsCount.get((Long)parms[4]) : "");
+			 fileVO.setCandidateName(candidateNames.get((Long)parms[4])!=null ? candidateNames.get((Long)parms[4]) : "");
 			 fileVO.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileVO.getFileId()).size());
 			 fileIds.add(fileVO.getFileId());
 			 fileMap.put(fileVO.getFileId(), fileVO);
@@ -8780,5 +8866,31 @@ public void testgetCandidatesListByPartyIdsList()
 			candidateList = null;
 		}	
 		return candidateList;
+	}
+	
+	public Map<Long,String> getKeywordsCountByFileId(Set<Long> fileIds){
+		Map<Long,String> keywordsCount = new HashMap<Long, String>();
+		List<Object[]> fileKeywords = candidatePartyFileDAO.getKeywordsCountByFileIds(fileIds);
+		for(Object[] param:fileKeywords){
+			String count = keywordsCount.get((Long)param[0]);
+			if(count != null && count != "")
+				keywordsCount.put((Long)param[0], count+","+param[1]);
+			else
+				keywordsCount.put((Long)param[0], param[1].toString());
+		}
+		return keywordsCount;
+	}
+	
+	public Map<Long,String> getCategorysCountByFileId(Set<Long> fileIds){
+		Map<Long,String> categorysCount = new HashMap<Long, String>();
+		List<Object[]> fileKeywords = candidatePartyCategoryDAO.getCategorysCountByFileId(fileIds);
+		for(Object[] param:fileKeywords){
+			String count = categorysCount.get((Long)param[0]);
+			if(count != null && count != "")
+				categorysCount.put((Long)param[0], count+","+param[1]);
+			else
+				categorysCount.put((Long)param[0], param[1].toString());
+		}
+		return categorysCount;
 	}
  }
