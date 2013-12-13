@@ -22,4 +22,5 @@ public interface IDateService {
 	
 	public String timeStampConversionToYYMMDD(String idate);
 	
+	public int calculateMyAge(int year, int month, int day);
 }
