@@ -1,14 +1,20 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedWriter;
+
 import java.io.File;
 import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -1776,5 +1782,130 @@ public List<SelectOptionVO> getConstituencyList()
   			LOG.error("Exception is ",e);
   			return cadreCasteMap;
   		}
+  	}
+  	
+  	
+  	public List<RegistrationVO> getMobileAppUserDetails()
+  	{
+  		List<RegistrationVO> result = new ArrayList<RegistrationVO>();
+  		try{
+  			/*firstName
+  			lastName
+  			userId
+  			user.firstName
+  			user.lastName
+  			uniqueCode
+  			isAuthorised
+  			lastAuthorisedTime
+  			mobileAppUserId*/
+  			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  			DateUtilService date = new DateUtilService();
+  			Calendar cal = Calendar.getInstance();
+	        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+  			List<Object[]> list = mobileAppUserAccessDAO.getMobileAppUserdetails();
+  			if(list != null && list.size() > 0)
+  			{
+  				for(Object[] params : list)
+  				{
+  					long sec = 0;
+  					long min = 0;
+  					long hr = 0;
+  					long day = 0;
+  					
+  					RegistrationVO registrationVO = new RegistrationVO();
+  					String firstName = params[0]!=null ?params[0].toString():"";
+  					String lastName = params[1]!=null ?params[1].toString():"";
+  					registrationVO.setName(firstName +" "+lastName);
+  					registrationVO.setRegistrationID((Long)params[2]);
+  					String ufirstName = params[3]!=null ?params[3].toString():"";
+  					String ulastName = params[4]!=null ?params[4].toString():"";
+  					registrationVO.setUserName(ufirstName +" "+ulastName);
+  					registrationVO.setUniqueCode(params[5]!=null?params[5].toString():"");
+  					if(params[6].toString().equalsIgnoreCase("true"))
+  					registrationVO.setAccessValue("YES");
+  					else
+  						registrationVO.setAccessValue("Denied");
+  					
+  					Date pastTime = (Date)formatter.parse(params[7].toString());;
+  					Date currentTime =date.getCurrentDateAndTime();
+  					cal.setTime(pastTime);
+  					long t1 =cal.getTimeInMillis();
+  					cal.setTime(currentTime);
+  					long diff = Math.abs(cal.getTimeInMillis() - t1);
+  					long diffInsec = diff/1000;
+  					if(diffInsec < 60)
+  					{
+  						sec = diffInsec;
+  						if(sec == 1)
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+") second ago":"");
+  						else
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+") seconds ago":"");
+  					}
+  					else if(diffInsec > 60 && diffInsec < 3600)	
+  					{
+  						min = diffInsec/60;
+  						if(min == 1)
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+min+" minute ago)":"");
+  						else 
+  							registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+min+" minutes ago)":"");
+  					}
+  					else if(diffInsec > 3600 && diffInsec < 86400)	
+  					{
+  						hr = diffInsec/3600;
+  						if(hr == 1)
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+hr+" hour ago)":"");
+  						else
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+hr+" hours ago)":"");	
+  					}
+  					else if(diff > 86400)	
+  					{
+  						day = diffInsec/86400;
+  						if(day == 1)
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+day+" day ago)":"");
+  						else
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+day+" days ago)":"");	
+  					}
+  					registrationVO.setAppId(params[8]!=null?params[8].toString():"");
+  					result.add(registrationVO);
+  					
+  					
+  				}
+  			}
+  		}
+  		catch (Exception e) {
+  			LOG.error("Exception Occured in getMobileAppUserDetails Method");
+  			LOG.error("Exception is ",e);
+		}
+		return result;
+  	}
+  	
+  	public ResultStatus enableOrdisableAccessByUniqueCode(List<Long> uniqueCodes,String type)
+  	{
+  		ResultStatus resultStatus = new ResultStatus();
+  		try{
+  			DateUtilService date = new DateUtilService();
+  			MobileAppUserAccess mobileAppUserAccess	= null;
+  			List<Long> mobileAppUserAccessIds = mobileAppUserAccessDAO.getMobileAppUserAccessIds(uniqueCodes);
+  			
+  			if(mobileAppUserAccessIds != null && mobileAppUserAccessIds.size() > 0)
+  				for(Long id : mobileAppUserAccessIds)
+  				{
+  					mobileAppUserAccess = mobileAppUserAccessDAO.get(id);
+  					if(type.equalsIgnoreCase("enable"))
+  						mobileAppUserAccess.setIsAuthorised("true");
+  					else
+  					 mobileAppUserAccess.setIsAuthorised("false");
+  					 mobileAppUserAccess.setLastAuthorisedTime(date.getCurrentDateAndTime());
+  					 mobileAppUserAccessDAO.save(mobileAppUserAccess);
+  					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+  				}
+  		
+  		}
+  		catch (Exception e) {
+  			LOG.error("Exception Occured in enableOrdisableAccessByUniqueCode Method");
+  			LOG.error("Exception is ",e);
+  			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			}
+		return resultStatus;
   	}
 }
