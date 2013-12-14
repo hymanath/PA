@@ -8178,6 +8178,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						Long assemblyLclEleBdyId = 0l;
 						List<Long> wardIds = null;
 						List<PartyVotesEarnedVO> partyVotesEarnedVOList = new ArrayList<PartyVotesEarnedVO>(0);
+						List<PartyVotesEarnedVO> returnVOList = new ArrayList<PartyVotesEarnedVO>(0);
 						try{
 							List<Object[]> list = null;
 							List<Object[]> localEleclist = null;
@@ -8431,9 +8432,14 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 											
 										}
 										
-									}else									
-										votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
-									
+									}else{	
+										if(!(elecType.equalsIgnoreCase("ZPTC") || elecType.equalsIgnoreCase("MPTC")) ){
+										   votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
+										}else if((elecType.equalsIgnoreCase("ZPTC") || elecType.equalsIgnoreCase("MPTC")) && tehsilIds != null && tehsilIds.size() > 0 ){
+											votesEarnedVOs = constituencyPageService.getPanchayatWiseElectionsForTehsilforPreviousEle(boothIdStr,(Long)params[0],elecType,tehsilIds);
+										}
+											
+									}
 									for(PartyVotesEarnedVO partyVoters : votesEarnedVOs)
 										polledVotes += partyVoters.getVotesEarned();
 									
@@ -8515,8 +8521,15 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 								
 							}
 								
-
-							return partyVotesEarnedVOList;
+                            if(partyVotesEarnedVOList != null){
+                            	for(PartyVotesEarnedVO vo:partyVotesEarnedVOList){
+                            		if(vo.getPolledVotes() != null && vo.getPolledVotes() > 0){
+                            			returnVOList.add(vo);
+                            		}
+                            	}
+                            }
+							
+							return returnVOList;
 						}catch (Exception e) {
 							e.printStackTrace();
 							log.error("Exception Occured in getPreviousElectionVotingTrends() Method, Exception - "+e);
@@ -9152,23 +9165,40 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  
 			 // List<Long> wardsList = new ArrayList<Long>();
 			  if(localBodiesList != null && localBodiesList.size() >0){
-				  
-				List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(
-						localBodiesList, publicationDateId,reportLevelValue);
-				
-				if(wards != null && wards.size() >0){
-					
-					for(Object[] ward:wards)
-					if(ward[0] != null){
-						wardsList.add(new SelectOptionVO((Long)ward[0],ward[1].toString()));
-					}		
+				  List<Long> ghmcLocalElecBodies = new ArrayList<Long>();
+				  List<Long> otherLocalElecBodies = new ArrayList<Long>();
+				  List<Object[]> localElecBodyTypes = localElectionBodyDAO.getLocalElectionBodyType(new HashSet<Long>(localBodiesList));
+				for(Object[] localElecBody:localElecBodyTypes){
+					if(((Long)localElecBody[0]).longValue() != 7){
+						otherLocalElecBodies.add((Long)localElecBody[1]);
+					  }else{
+						  ghmcLocalElecBodies.add((Long)localElecBody[1]);
+					  }
 				}
-				  
+				if(ghmcLocalElecBodies.size() > 0){
+					  List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(
+							  ghmcLocalElecBodies, publicationDateId,reportLevelValue);
+					
+					if(wards != null && wards.size() >0){
+						
+						for(Object[] ward:wards)
+						if(ward[0] != null){
+							wardsList.add(new SelectOptionVO((Long)ward[0],ward[1].toString()));
+						}		
+					}
+				}
+				if(otherLocalElecBodies.size() > 0){
+					try{
+						voterReportService.saveVoterFamilyInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue);
+						voterReportService.saveVoterInfoForCustomWards(otherLocalElecBodies, userId, publicationDateId,reportLevelValue);
+						voterReportService.saveVoterAgeInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue);
+					}catch(Exception e){
+						log.error("Exception Occured in insertVoterInfoDataToIntermediateTables() otherLocalElecBodies population, Exception is -",e);
+					}
+				}
+				
 			  }
-			  
-			  
-			  
-			 
+
 			  if(localBodiesList != null && localBodiesList.size() > 0)
 			  {
 				  calculateAndInsertVoterAgeInfo(IConstants.LOCALELECTIONBODY, reportLevelValue, publicationDateId, userId, localBodiesList,false);
@@ -9265,7 +9295,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			  return resultStatus;
 		  }catch (Exception e) {
-			  log.error("Exception Occured in insertVoterInfoDataToIntermediateTables(), Exception is -"+e);
+			  log.error("Exception Occured in insertVoterInfoDataToIntermediateTables(), Exception is -",e);
 			  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			  return resultStatus;
 		  }

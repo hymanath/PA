@@ -216,7 +216,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		
 	}
 	*/
-	public void testGetTotalaVotesByBoothIds()
+	/*public void testGetTotalaVotesByBoothIds()
 	{
 		List<Long> boothIds1 = new ArrayList<Long>(0);
 		
@@ -229,7 +229,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> data = boothDAO.getTotalaVotesByBoothIds(boothIds1);
 		if(!data.isEmpty())
 		System.out.println(data.get(0));
-	}
+	}*/
 	
 	/*public void testgetPanchayatiesCount()
 	{
@@ -773,9 +773,21 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetMuncipaltyName()
+	/*public void testgetMuncipaltyName()
 	{
 		String name = boothDAO.getMuncipaltyName(232l,8l);
 		System.out.println(name);
+	}*/
+	
+	public void testGetWardDetailsByLocalEleBodyId(){
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(83l);
+		List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(ids, 8l, 232l);
+		for(Object[] ward:wards){
+			for(Object detail:ward){
+				System.out.print(detail.toString()+"---");
+			}
+			System.out.println("");
+		}
 	}
 }

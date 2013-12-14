@@ -193,4 +193,5 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 		
 	public List<Object[]> getRuralAndRuralUrbanConstiencies(List<Long> constituencyIds);
 	
+	public String getConstituencyAreaType(Long constituencyId);
 }

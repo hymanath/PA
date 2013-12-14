@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,11 +44,15 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
@@ -84,14 +89,17 @@ import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.model.PartialBoothPanchayat;
 import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.QueryTemp;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
+import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterPartyInfo;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
@@ -151,11 +159,14 @@ public class VoterReportService implements IVoterReportService{
 	private ICandidateDAO candidateDAO;
     private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
     private IHamletBoothDAO hamletBoothDAO;
+    private IVoterFamilyInfoDAO voterFamilyInfoDAO;
+    private IVoterFamilyRangeDAO voterFamilyRangeDAO;
+    private IVoterAgeRangeDAO voterAgeRangeDAO;
+    private IVoterAgeInfoDAO voterAgeInfoDAO;
     
     private IFlagDAO flagDAO;
     private IUserDAO userDAO;
     private IVoterFlagDAO voterFlagDAO;
-    
     public IVoterFlagDAO getVoterFlagDAO() {
 		return voterFlagDAO;
 	}
@@ -187,16 +198,38 @@ public class VoterReportService implements IVoterReportService{
 	public void setPartialBoothPanchayatDAO(
 			IPartialBoothPanchayatDAO partialBoothPanchayatDAO) {
 		this.partialBoothPanchayatDAO = partialBoothPanchayatDAO;
+	}	
+	
+	public IVoterFamilyInfoDAO getVoterFamilyInfoDAO() {
+		return voterFamilyInfoDAO;
 	}
-    
-	
-	
+
+	public void setVoterFamilyInfoDAO(IVoterFamilyInfoDAO voterFamilyInfoDAO) {
+		this.voterFamilyInfoDAO = voterFamilyInfoDAO;
+	}
+
+	public IVoterAgeInfoDAO getVoterAgeInfoDAO() {
+		return voterAgeInfoDAO;
+	}
+
+	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
+		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
+
 	public IInfluencingPeopleDAO getInfluencingPeopleDAO() {
 		return influencingPeopleDAO;
 	}
 
 	public void setInfluencingPeopleDAO(IInfluencingPeopleDAO influencingPeopleDAO) {
 		this.influencingPeopleDAO = influencingPeopleDAO;
+	}
+
+	public IVoterAgeRangeDAO getVoterAgeRangeDAO() {
+		return voterAgeRangeDAO;
+	}
+
+	public void setVoterAgeRangeDAO(IVoterAgeRangeDAO voterAgeRangeDAO) {
+		this.voterAgeRangeDAO = voterAgeRangeDAO;
 	}
 
 	public ICadreDAO getCadreDAO() {
@@ -519,6 +552,14 @@ public class VoterReportService implements IVoterReportService{
 			this.hamletBoothDAO = hamletBoothDAO;
 		}
 
+	    public IVoterFamilyRangeDAO getVoterFamilyRangeDAO() {
+			return voterFamilyRangeDAO;
+		}
+
+		public void setVoterFamilyRangeDAO(IVoterFamilyRangeDAO voterFamilyRangeDAO) {
+			this.voterFamilyRangeDAO = voterFamilyRangeDAO;
+		}
+
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
 	{
 		try{
@@ -733,7 +774,7 @@ public class VoterReportService implements IVoterReportService{
 		  }
 		 
 		 
-		 public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked,boolean hamletBoothChecked,boolean localityChecked)
+		 public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked,boolean hamletBoothChecked,boolean localityChecked,boolean wardChecked)
 			{
 				
 				  ResultStatus resultStatus = new ResultStatus();
@@ -967,7 +1008,19 @@ public class VoterReportService implements IVoterReportService{
 						 votersAnalysisService.insertHamletIdAndBoothIdInHamletBoothTable(reportLevelValue,publicationDateId,userId);
 						 votersAnalysisService.calculateAndInsertVoterCasteInfoForHamletBooth(reportLevelValue, publicationDateId, userId, voterReportLevelDAO.getReportLevelIdByType(IConstants.Hamlet_Booth));
 					   }
-					  
+					  if(wardChecked && localBodiesList.size() >0){
+						  List<Long> localElecIds = new ArrayList<Long>(); 
+						  Set<Long> localElecBodyIds = localBodiesList.keySet();
+						  List<Object[]> electionTypesList = localElectionBodyDAO.getLocalElectionBodyType(localElecBodyIds);
+						  for(Object[] electionType:electionTypesList){ 
+						    if(((Long)electionType[0]).longValue() != 7){
+						 	  localElecIds.add((Long)electionType[1]);
+						    }
+						  }
+						  if(localElecIds.size() > 0){
+							  insertCasteDataForCustomWards(localElecIds,userId,publicationDateId,reportLevelValue);
+						  }
+					  }
 					  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					  return resultStatus;
 				  }catch (Exception e) {
@@ -3272,7 +3325,8 @@ public class VoterReportService implements IVoterReportService{
 				  List<SelectOptionVO> panchayatsList = new ArrayList<SelectOptionVO>(0);
 				  List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>(0);
 				  List<SelectOptionVO> wardsList = new ArrayList<SelectOptionVO>(0);
-				  List<Long>panchayatIdsList = new ArrayList<Long>(0);
+				  List<SelectOptionVO> ghmcWardsList = new ArrayList<SelectOptionVO>(0);
+				  List<Long> panchayatIdsList = new ArrayList<Long>(0);
 				  List<Long> localBodiesList = new ArrayList<Long>(0);
 				  List<Long> assemblylocalBodiesList = new ArrayList<Long>(0);
 				  List<Long> boothIdsList = new ArrayList<Long>(0);
@@ -3338,6 +3392,7 @@ public class VoterReportService implements IVoterReportService{
 					 List<Long> localElebodyIds = new ArrayList<Long>();
 					 List<Long> localElebodyIds1 = new ArrayList<Long>();
 					 List<Object[]> wards = null;
+					 List<Object[]> ghmcWards = null;
 					 List<Object[]> localEleIds = localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(assemblylocalBodiesList);
 					  if(localEleIds != null && localEleIds.size() > 0)
 					  {
@@ -3350,7 +3405,7 @@ public class VoterReportService implements IVoterReportService{
 						  }
 					  }
 					  if(localElebodyIds1 != null && localElebodyIds1.size() > 0)
-					 wards = boothDAO.getWardsByLocalElecBodyIds(localElebodyIds1, publicationDateId,reportLevelValue);
+						  ghmcWards = boothDAO.getWardsByLocalElecBodyIds(localElebodyIds1, publicationDateId,reportLevelValue);
 					  if(localElebodyIds != null && localElebodyIds.size() > 0)
 					 wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(localElebodyIds, publicationDateId,userId);  
 					  if(wards != null && wards.size() >0)
@@ -3358,6 +3413,12 @@ public class VoterReportService implements IVoterReportService{
 						  for(Object[] ward:wards)
 							  if(ward[0] != null)
 								  wardsList.add(new SelectOptionVO((Long)ward[0],ward[1].toString()));
+					 }
+					  if(ghmcWards != null && ghmcWards.size() >0)
+					  {
+						  for(Object[] ward:ghmcWards)
+							  if(ward[0] != null)
+								  ghmcWardsList.add(new SelectOptionVO((Long)ward[0],ward[1].toString()));
 					 }
 					  
 				  }
@@ -3375,8 +3436,10 @@ public class VoterReportService implements IVoterReportService{
 				  }
 	              
 				 for(SelectOptionVO selectOptionVO:wardsList)
-	            	   calculateAndInsertVoterBasicInfoForALocation(IConstants.WARD,selectOptionVO.getId(),0l,reportLevelValue,userId);
-				  
+	            	   calculateAndInsertVoterBasicInfoForALocation(IConstants.WARD,selectOptionVO.getId(),0l,reportLevelValue,userId);				 
+				 for(SelectOptionVO selectOptionVO:ghmcWardsList)
+	            	   calculateAndInsertVoterBasicInfoForALocation("GhmcWard",selectOptionVO.getId(),0l,reportLevelValue,userId);
+				
 				 for(SelectOptionVO selectOptionVO : boothsList)
 					  if(!boothIdsList.contains(selectOptionVO.getId()))
 						  boothIdsList.add(selectOptionVO.getId());
@@ -3433,6 +3496,10 @@ public class VoterReportService implements IVoterReportService{
 					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,locationValue,userId ,IConstants.CUSTOMWARD);
 				else if(locationType.equalsIgnoreCase(IConstants.HAMLET))
 					result = votersAnalysisService.getPreviousVotersCountDetailsForHamlet(constituencyId,0l,0l,0l ,locationValue,userId ,IConstants.HAMLET);
+				else if(locationType.equalsIgnoreCase("GhmcWard")){
+					result = votersAnalysisService.getPreviousVotersCountDetailsForAllLevels(constituencyId,0l,0l,locationValue,"ward",userId);
+				    locationType = IConstants.WARD;
+				}
 				if(result != null && result.size() > 0)
 				{	
 					int orderNo = result.size();
@@ -3594,26 +3661,22 @@ public class VoterReportService implements IVoterReportService{
 							  
 								  calculateAndInsertVotingTrendzInfoForALocation(IConstants.LOCALELECTIONBODY,localbodyId,reportLevelValue,reportLevelValue,publicationDateId);
 						  }
-						 /* if(assemblylocalBodiesList != null && assemblylocalBodiesList.size() > 0)
+						  if(assemblylocalBodiesList != null && assemblylocalBodiesList.size() > 0)
 						  {
+							 
 							 List<Long> localElebodyIds = new ArrayList<Long>();
-							 List<Long> localElebodyIds1 = new ArrayList<Long>();
 							 List<Object[]> wards = null;
 							 List<Object[]> localEleIds = localElectionBodyDAO.getLocationTypeForLocalEleBodyByLocalEleBodyId(assemblylocalBodiesList);
 							  if(localEleIds != null && localEleIds.size() > 0)
 							  {
 								  for(Object[] params : localEleIds)
 								  {
-									  if(params[0].toString().equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || (params[0].toString().equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE)))
-											localElebodyIds.add((Long) params[1]);
-									  else
-										  localElebodyIds1.add((Long)params[1]); 
+									  if(!(params[0].toString().equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE) || (params[0].toString().equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))))
+										  localElebodyIds.add((Long)params[1]); 
 								  }
 							  }
-							  if(localElebodyIds1 != null && localElebodyIds1.size() > 0)
-							 wards = boothDAO.getWardsByLocalElecBodyIds(localElebodyIds1, publicationDateId,reportLevelValue);
 							  if(localElebodyIds != null && localElebodyIds.size() > 0)
-							 wards = userVoterDetailsDAO.getWardsBYLocalElectionBodyId(localElebodyIds, publicationDateId,userId);  
+							 wards = boothDAO.getWardsByLocalElecBodyIds(localElebodyIds, publicationDateId,reportLevelValue);
 							  if(wards != null && wards.size() >0)
 							  {
 								  for(Object[] ward:wards)
@@ -3621,7 +3684,7 @@ public class VoterReportService implements IVoterReportService{
 										  wardsList.add(new SelectOptionVO((Long)ward[0],ward[1].toString()));
 							 }
 							  
-						  }*/
+						  }
 						  
 						 if(assemblylocalBodiesList.size() > 0)
 						  {
@@ -3635,8 +3698,8 @@ public class VoterReportService implements IVoterReportService{
 							  
 						  }
 			              
-						/* for(SelectOptionVO selectOptionVO:wardsList)
-							 calculateAndInsertVotingTrendzInfoForALocation(IConstants.WARD,selectOptionVO.getId(),0l,reportLevelValue,userId);*/
+						 for(SelectOptionVO selectOptionVO:wardsList)
+							 calculateAndInsertVotingTrendzInfoForALocation(IConstants.WARD,selectOptionVO.getId(),0l,reportLevelValue,userId);
 						  
 						 for(SelectOptionVO selectOptionVO : boothsList)
 							  if(!boothIdsList.contains(selectOptionVO.getId()))
@@ -3677,6 +3740,8 @@ public class VoterReportService implements IVoterReportService{
 							result = votersAnalysisService.getPreviousElectionVotingTrends(locationValue, publicationId,constituencyId ,IConstants.MANDAL);
 						else if(locationType.equalsIgnoreCase(IConstants.PANCHAYAT) || locationType.equalsIgnoreCase(IConstants.BOOTH))
 							result = votersAnalysisService.getPreviousElectionVotingTrends(locationValue,publicationId, constituencyId,locationType);
+						else if(locationType.equalsIgnoreCase(IConstants.WARD))
+							result = votersAnalysisService.getPreviousElectionVotingTrends(locationValue,publicationId, constituencyId,"ward");
 					
 						
 						
@@ -3685,6 +3750,7 @@ public class VoterReportService implements IVoterReportService{
 							int orderNo = result.size();
 							for(PartyVotesEarnedVO data :result)
 							{
+							  if(data.getPolledVotes() != null && data.getPolledVotes() > 0){
 								try{
 									partyVotesEarnedVO = new PartyVotesEarnedVO();
 									partyVotesEarnedVO.setConstituencyId(constituencyId);
@@ -3705,6 +3771,7 @@ public class VoterReportService implements IVoterReportService{
 								}catch(Exception e){
 									LOG.error("Exception Occured - ",e);
 								}
+							  }
 							}
 						}
 					}
@@ -3736,6 +3803,10 @@ public class VoterReportService implements IVoterReportService{
 							votingTrendz.setElectionType(electionTypeDAO.get(4l));
 						else if(partyVotesEarnedVO.getReqType().contains("MUNCIPALITY"))
 							votingTrendz.setElectionType(electionTypeDAO.get(5l));
+						else if(partyVotesEarnedVO.getReqType().contains("CORPORATION"))
+							votingTrendz.setElectionType(electionTypeDAO.get(6l));
+						else if(partyVotesEarnedVO.getReqType().contains("Greater Municipal Corp"))
+							votingTrendz.setElectionType(electionTypeDAO.get(7l));
 						votingTrendz.setYear(new Long(partyVotesEarnedVO.getElectionYear()));
 						votingTrendz.setTotalBooths(new Long(partyVotesEarnedVO.getTotalBooths()));
 						votingTrendz.setTotalVotes(partyVotesEarnedVO.getTotalVotes());
@@ -4739,5 +4810,324 @@ public class VoterReportService implements IVoterReportService{
 				  LOG.error("Exception Occured in deleteFlag() method" , e);
 			}
 			return resultStatus;
+		  }		  
+		  public void insertCasteDataForCustomWards(List<Long> localElectionBodyIds,Long userId,Long publicationDateId,Long constituencyId){
+			try{  
+			  for(Long localElectionBodyId:localElectionBodyIds){
+				  Map<Long,Long> totalVotersCount = new HashMap<Long,Long>();//Map<wardId,totalVotersCount>
+				  Map<Long,VoterCastInfoVO> casteBasicInfoMap = new HashMap<Long,VoterCastInfoVO>();//Map<wardId,>
+				  Map<Long,Long> totalCastsAssignedCount = new HashMap<Long,Long>();//Map<wardId,casteAssignedCount>
+				  Map<Long,Map<Long,VoterCastInfoVO>> casteInfoMap = new HashMap<Long,Map<Long,VoterCastInfoVO>>();//Map<wardId,Map<casteStateId,casteInfoVO>>
+				  Map<Long,VoterCastInfoVO> casteStateMap = null;
+				  VoterCastInfoVO vo = null;
+				  //getting total voters count in all wards
+				  List<Object[]>  totalVotersCountList = boothPublicationVoterDAO.getCustomWardWiseTotalVotersCount(localElectionBodyId,userId,publicationDateId,constituencyId);
+				  
+				  //getting caste group wise voters count in all wards
+				  // 0wardId 1categoryName 2count
+				  List<Object[]>  casteGroupCountList =  boothPublicationVoterDAO.getCasteGroupContsByCustomWardWise(userId,localElectionBodyId,publicationDateId,constituencyId);
+				  
+				 //getting caste gender wise caste count in all wards
+				 // 0wardId 1casteStateId 2gender 3count
+				  List<Object[]>  genderWiseCasteCountList =  boothPublicationVoterDAO.getCasteWiseGenderWiseContsByCustomWardWise(userId,localElectionBodyId,publicationDateId,constituencyId);
+				  
+                  for(Object[] count:totalVotersCountList){
+                	  totalVotersCount.put((Long)count[1], (Long)count[0]);
+                  }
+                  for(Object[] genderWiseCount:genderWiseCasteCountList){
+                	  casteStateMap = casteInfoMap.get((Long)genderWiseCount[0]);
+                	  if(casteStateMap == null){
+                		  casteStateMap = new HashMap<Long,VoterCastInfoVO>();
+                		  casteInfoMap.put((Long)genderWiseCount[0],casteStateMap);
+                		  totalCastsAssignedCount.put((Long)genderWiseCount[0], 0l);
+                	  }
+                	  vo = casteStateMap.get((Long)genderWiseCount[1]);
+                	  if(vo == null){
+                		  vo = new VoterCastInfoVO();
+                		  casteStateMap.put((Long)genderWiseCount[1],vo);
+                	  }
+                	  vo.setTotalVoters(vo.getTotalVoters()+(Long)genderWiseCount[3]);
+                	  totalCastsAssignedCount.put((Long)genderWiseCount[0], totalCastsAssignedCount.get((Long)genderWiseCount[0])+(Long)genderWiseCount[3]);
+                	  String gender = genderWiseCount[2].toString();
+                	  if(gender.equalsIgnoreCase("M") || gender.equalsIgnoreCase("Male")){
+                		  vo.setMaleVoters(vo.getMaleVoters()+(Long)genderWiseCount[3]);
+                	  }else{
+                		  vo.setFemaleVoters(vo.getFemaleVoters()+(Long)genderWiseCount[3]);
+                	  }
+                  }
+                  
+                  for(Object[] casteGroupCount:casteGroupCountList){
+                	  vo = casteBasicInfoMap.get((Long)casteGroupCount[0]);
+                	  if(vo == null){
+                		  vo = new VoterCastInfoVO();
+                		  if(casteInfoMap.get((Long)casteGroupCount[0]) != null)
+                		  vo.setTotalCasts(casteInfoMap.get((Long)casteGroupCount[0]).size());
+                		  if( totalCastsAssignedCount.get((Long)casteGroupCount[0]) != null ){
+                			  vo.setCasteAssignedVoters(totalCastsAssignedCount.get((Long)casteGroupCount[0]));
+                			  if(totalVotersCount.get((Long)casteGroupCount[0]) != null){
+                			    vo.setCasteNotAssignedVoters(totalVotersCount.get((Long)casteGroupCount[0])-totalCastsAssignedCount.get((Long)casteGroupCount[0]));
+                			  }
+                		  }
+                		  List<SelectOptionVO> castCategoryWiseVotersList = new ArrayList<SelectOptionVO>();
+                		  castCategoryWiseVotersList.add(new SelectOptionVO());
+                		  castCategoryWiseVotersList.add(new SelectOptionVO());
+                		  castCategoryWiseVotersList.add(new SelectOptionVO());
+                		  castCategoryWiseVotersList.add(new SelectOptionVO());
+                		  vo.setCastCategoryWiseVotersList(castCategoryWiseVotersList);
+                		  casteBasicInfoMap.put((Long)casteGroupCount[0], vo);
+                	  }
+                	  String casteGroup = casteGroupCount[1].toString();
+                	  if(casteGroup.equalsIgnoreCase("OC")){
+                		  vo.getCastCategoryWiseVotersList().get(0).setTotalCount((Long)casteGroupCount[2]);
+                	  }else if(casteGroup.equalsIgnoreCase("BC")){
+                		  vo.getCastCategoryWiseVotersList().get(1).setTotalCount((Long)casteGroupCount[2]);
+                	  }else if(casteGroup.equalsIgnoreCase("SC")){
+                		  vo.getCastCategoryWiseVotersList().get(2).setTotalCount((Long)casteGroupCount[2]);
+                	  }else if(casteGroup.equalsIgnoreCase("ST")){
+                		  vo.getCastCategoryWiseVotersList().get(3).setTotalCount((Long)casteGroupCount[2]);
+                	  }
+                  }
+                  Constituency constituency = constituencyDAO.get(constituencyId);
+                  VoterReportLevel level = voterReportLevelDAO.get(6l);
+                  saveDataToVoterCastBasicInfo(casteBasicInfoMap,constituency,publicationDateId,level,userId);
+                  saveVotersCasteInfo(casteInfoMap,totalCastsAssignedCount,constituency,publicationDateId,level,userId);
+			  }
+			}catch(Exception e){
+				LOG.error("Exception raised in  insertCasteDataForCustomWards  method " , e) ;
+			}
 		  }
+		  public void saveDataToVoterCastBasicInfo(Map<Long,VoterCastInfoVO> casteBasicInfoMap,Constituency constituency,Long publicationId,VoterReportLevel level,Long userId){
+        	  Set<Long> wardIds = casteBasicInfoMap.keySet();
+        	  VoterCastInfoVO vo = null;
+			  for(Long wardId:wardIds){
+				  VoterCastBasicInfo voterCastBasicInfo = new VoterCastBasicInfo();
+				  voterCastBasicInfo.setVoterReportLevel(level);
+				  voterCastBasicInfo.setReportLevelValue(wardId);
+				  voterCastBasicInfo.setUserId(userId);
+				  vo = casteBasicInfoMap.get(wardId);
+				  if(vo != null){
+					  voterCastBasicInfo.setTotalCastes(new Long(vo.getTotalCasts())) ;
+					  voterCastBasicInfo.setCasteAssignedVoters(vo.getCasteAssignedVoters());
+					  voterCastBasicInfo.setCasteNotAssignedVoters(vo.getCasteNotAssignedVoters());
+					  if(vo.getCastCategoryWiseVotersList() != null){
+						  voterCastBasicInfo.setOcVoters(vo.getCastCategoryWiseVotersList().get(0).getTotalCount());
+						  voterCastBasicInfo.setBcVoters(vo.getCastCategoryWiseVotersList().get(1).getTotalCount());
+						  voterCastBasicInfo.setScVoters(vo.getCastCategoryWiseVotersList().get(2).getTotalCount());
+						  voterCastBasicInfo.setStVoters(vo.getCastCategoryWiseVotersList().get(3).getTotalCount());
+						  voterCastBasicInfo.setPublicationDateId(publicationId);
+						  voterCastBasicInfo.setConstituency(constituency);
+						  voterCastBasicInfoDAO.save(voterCastBasicInfo);
+					  }
+				  }
+        	  }
+          }
+		  
+		  public void saveVotersCasteInfo(Map<Long,Map<Long,VoterCastInfoVO>> casteInfoMap,Map<Long,Long> totalCastsAssignedCount,Constituency constituency,Long publicationId,VoterReportLevel level,Long userId){
+			  DecimalFormat df = new DecimalFormat("###.##");
+			  Set<Long> wardIds = casteInfoMap.keySet();
+			  VoterCastInfoVO vo = null;
+			  Map<Long,VoterCastInfoVO> casteStateMap = null;
+			  for(Long wardId:wardIds){
+				  Long totalVoters = totalCastsAssignedCount.get(wardId);
+				  casteStateMap = casteInfoMap.get(wardId);
+				  Set<Long> casteStateIds = casteStateMap.keySet();
+				  for(Long casteStateId:casteStateIds){
+					  vo = casteStateMap.get(casteStateId);
+					  VoterCastInfo voterCastInfo = new VoterCastInfo();
+					  voterCastInfo.setVoterReportLevel(level);
+					  voterCastInfo.setReportLevelValue(wardId);
+					  voterCastInfo.setUserId(userId);
+					  voterCastInfo.setCasteState(casteStateDAO.get(casteStateId));
+					  voterCastInfo.setCasteVoters(vo.getTotalVoters());
+					  voterCastInfo.setCasteMaleVoters(vo.getMaleVoters());
+					  voterCastInfo.setCasteFemaleVoters(vo.getFemaleVoters());
+					  voterCastInfo.setPublicationDateId(publicationId);
+					  voterCastInfo.setConstituency(constituency);
+					  if(totalVoters != null && totalVoters >0){
+						  voterCastInfo.setCastePercentage(new Double(df.format(vo.getTotalVoters()*100/totalVoters.doubleValue())));
+					  }
+					  voterCastInfoDAO.save(voterCastInfo);
+				  }
+			  }
+		  }
+		  
+		  public void saveVoterInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId){
+			  DecimalFormat df = new DecimalFormat("###.##");
+			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(6l);
+			  PublicationDate publicationDate = publicationDateDAO.get(publicationId);
+			  for(Long localElectionBodyId:localElecBodyIds){
+				  // 0 count 1wardId 2female 3male
+			   List<Object[]> wardWiseVotersCountList = boothPublicationVoterDAO.getCustomWardWiseTotalMaleFemaleVotersCount(localElectionBodyId, userId, publicationId, constituencyId);
+			   for(Object[] wardVoterCount:wardWiseVotersCountList){
+				   VoterInfo voterInfo = new VoterInfo();
+					voterInfo.setTotalVoters((Long)wardVoterCount[0]);
+					voterInfo.setMaleVoters((Long)wardVoterCount[3]);
+					voterInfo.setFemaleVoters((Long)wardVoterCount[2]);
+					Long totalFamilies = voterFamilyInfoDAO.getTotalFamiliesCount(constituencyId, publicationId, 6l, (Long)wardVoterCount[1]);
+					if(totalFamilies != null)
+					 voterInfo.setTotalFamilies(totalFamilies);
+					else
+						voterInfo.setTotalFamilies(0l);
+					voterInfo.setTotalVotersPercentage(0d);
+					voterInfo.setMaleVotersPercentage(new Double(df.format((Long)wardVoterCount[3]*100/((Long)wardVoterCount[0]).doubleValue())));
+					voterInfo.setFemaleVotersPercentage(new Double(df.format((Long)wardVoterCount[2]*100/((Long)wardVoterCount[0]).doubleValue())));
+					
+					voterInfo.setReportLevelValue((Long)wardVoterCount[1]);
+					voterInfo.setVoterReportLevel(voterReportLevel);
+					voterInfo.setPublicationDate(publicationDate);
+					voterInfo.setConstituencyId(constituencyId);
+					voterInfoDAO.save(voterInfo);
+			   }
+			  }
+			  voterDAO.flushAndclearSession();
+		  }
+		  
+		  public void saveVoterFamilyInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId){
+			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(6l);
+			  PublicationDate publicationDate = publicationDateDAO.get(publicationId);
+			  for(Long localElectionBodyId:localElecBodyIds){
+				  Map<Long,Long> totalFamilies = new HashMap<Long,Long>();
+				  Map<Long,Long> famlies0to3 = new HashMap<Long,Long>();
+				  Map<Long,Long> famlies4to6 = new HashMap<Long,Long>();
+				  Map<Long,Long> famlies7to10 = new HashMap<Long,Long>();
+				  Map<Long,Long> above10 = new HashMap<Long,Long>();
+				  // 0 count 1wardId
+			     List<Object[]> wardWiseFamilyCountList = boothPublicationVoterDAO.getCustomWardWiseFamilyVotersCount(localElectionBodyId, userId, publicationId, constituencyId);
+			     for(Object[] familyCount:wardWiseFamilyCountList){
+				   Long count = (Long)familyCount[0];
+				   if(count != null){
+					  
+					  if(totalFamilies.get((Long)familyCount[1]) != null){
+						  totalFamilies.put((Long)familyCount[1], totalFamilies.get((Long)familyCount[1])+1l);
+					  }else{
+						  totalFamilies.put((Long)familyCount[1],1l);
+					  }
+					  if(count.longValue() <= 3 ){
+						  if(famlies0to3.get((Long)familyCount[1]) != null){
+							  famlies0to3.put((Long)familyCount[1], famlies0to3.get((Long)familyCount[1])+1l);
+						  }else{
+							  famlies0to3.put((Long)familyCount[1],1l);
+						  }
+					  }else if(count.longValue() > 3 && count.longValue() <= 6){
+						  if(famlies4to6.get((Long)familyCount[1]) != null){
+							  famlies4to6.put((Long)familyCount[1], famlies4to6.get((Long)familyCount[1])+1l);
+						  }else{
+							  famlies4to6.put((Long)familyCount[1],1l);
+						  }
+					  }else if(count.longValue() > 6 && count.longValue() <= 10){
+						  if(famlies7to10.get((Long)familyCount[1]) != null){
+							  famlies7to10.put((Long)familyCount[1], famlies7to10.get((Long)familyCount[1])+1l);
+						  }else{
+							  famlies7to10.put((Long)familyCount[1],1l);
+						  }
+					  }else if(count.longValue() > 10 ){
+						  if(above10.get((Long)familyCount[1]) != null){
+							  above10.put((Long)familyCount[1], above10.get((Long)familyCount[1])+1l);
+						  }else{
+							  above10.put((Long)familyCount[1],1l);
+						  }
+					  }
+				  }
+			    }
+			     saveVoterFamilyInfo(constituencyId,publicationDate,voterReportLevel,totalFamilies,famlies0to3,1l);
+			     saveVoterFamilyInfo(constituencyId,publicationDate,voterReportLevel,totalFamilies,famlies4to6,2l);
+			     saveVoterFamilyInfo(constituencyId,publicationDate,voterReportLevel,totalFamilies,famlies7to10,3l);
+			     saveVoterFamilyInfo(constituencyId,publicationDate,voterReportLevel,totalFamilies,above10,4l);
+			     voterDAO.flushAndclearSession();
+			  }
+		  }
+		  
+		  public void saveVoterFamilyInfo(Long constituencyId,PublicationDate publicationDate,VoterReportLevel voterReportLevel,Map<Long,Long> totalFamilies,Map<Long,Long> rangeFamilies,Long range){
+			  DecimalFormat df = new DecimalFormat("###.##");
+			  for(Long wardId:rangeFamilies.keySet()){ 
+				    VoterFamilyInfo familyInfo = new VoterFamilyInfo();
+					familyInfo.setVoterReportLevel(voterReportLevel);
+					familyInfo.setReportLevelValue(wardId);
+					familyInfo.setVoterFamilyRange(voterFamilyRangeDAO.get(range));
+					familyInfo.setTotalFamilies(rangeFamilies.get(wardId));
+					familyInfo.setFamiliesPercentage(new Double(df.format(rangeFamilies.get(wardId)*100/(totalFamilies.get(wardId)).doubleValue())));
+					familyInfo.setPublicationDate(publicationDate);
+					familyInfo.setConstituencyId(constituencyId);
+					
+					voterFamilyInfoDAO.save(familyInfo);
+					
+			   }
+		  }
+		  public void saveVoterAgeInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId){
+			  Map<Long,Long> votersCountMap = new HashMap<Long,Long>();
+			  DecimalFormat df = new DecimalFormat("###.##");
+			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(6l);
+			  PublicationDate publicationDate = publicationDateDAO.get(publicationId);
+			  List<Object[]> totalCountList = voterInfoDAO.getVotersCountInCustomWards(constituencyId, publicationId);
+			  for(Object[]count:totalCountList){
+				  votersCountMap.put((Long)count[0], (Long)count[1]);
+			  }
+			  for(Long localElectionBodyId:localElecBodyIds){
+				  Map<Long,Map<Long,VoterAgeInfo>> voterAgeInfoMap = new HashMap<Long,Map<Long,VoterAgeInfo>>();
+				  
+				  List<VoterAgeInfo> voterAgeInfoList = new ArrayList<VoterAgeInfo>();
+				  // 0count 1gender 2 agerange 3wardid
+				  List<Object[]> wardWiseAgeCountList = boothPublicationVoterDAO.getCustomWardAgeCount(localElectionBodyId, userId, publicationId, constituencyId);
+				  // 0count 1gender 2 agerange 3wardid
+				  List<Object[]>  wardWiseYoungVotersCountList = boothPublicationVoterDAO.getCustomWard18To22AgeCount(localElectionBodyId, userId, publicationId, constituencyId);
+				  populateAgeInfoToVo(wardWiseYoungVotersCountList,voterAgeInfoMap,voterAgeInfoList,voterReportLevel,publicationDate,constituencyId);
+				  populateAgeInfoToVo(wardWiseAgeCountList,voterAgeInfoMap,voterAgeInfoList,voterReportLevel,publicationDate,constituencyId);
+				  
+				  for(VoterAgeInfo voterAgeInfo:voterAgeInfoList){
+					 Long totalVoters =  votersCountMap.get(voterAgeInfo.getReportLevelValue());
+					 if(voterAgeInfo.getMaleVoters() == null){
+						 voterAgeInfo.setMaleVoters(0l);
+					 }
+					 if(voterAgeInfo.getFemaleVoters() == null){
+						 voterAgeInfo.setFemaleVoters(0l);
+					 }
+					 if(voterAgeInfo.getTotalVoters() != null){
+						 if(totalVoters != null && totalVoters > 0){
+							 voterAgeInfo.setTotalVotersPercentage(new Double(df.format(voterAgeInfo.getTotalVoters()*100/totalVoters.doubleValue())));
+							 voterAgeInfo.setMaleVotersPercentage(new Double(df.format(voterAgeInfo.getMaleVoters()*100/voterAgeInfo.getTotalVoters().doubleValue())));
+							 voterAgeInfo.setFemaleVotersPercentage(new Double(df.format(voterAgeInfo.getFemaleVoters()*100/voterAgeInfo.getTotalVoters().doubleValue())));
+						 }
+					 }
+					 voterAgeInfoDAO.save(voterAgeInfo);
+					 voterDAO.flushAndclearSession();
+				  }
+			  }
+			  
+		  }
+		  
+		  public void populateAgeInfoToVo( List<Object[]> wardWiseAgeCountList,Map<Long,Map<Long,VoterAgeInfo>> voterAgeInfoMap,List<VoterAgeInfo> voterAgeInfoList,VoterReportLevel voterReportLevel,PublicationDate publicationDate,Long constituencyId){
+			  Map<Long,VoterAgeInfo> rangeMap = null;
+			  VoterAgeInfo voterAgeInfo = null;
+			  for(Object[] wardWiseAgeCount:wardWiseAgeCountList){
+				  Long ageRange = new Long(wardWiseAgeCount[2].toString());
+		    	  rangeMap = voterAgeInfoMap.get((Long)wardWiseAgeCount[3]);
+		    	  if(rangeMap == null){
+		    		  rangeMap = new HashMap<Long,VoterAgeInfo>();
+		    		  voterAgeInfoMap.put((Long)wardWiseAgeCount[3],rangeMap);
+		    	  }
+		    	  voterAgeInfo = rangeMap.get(ageRange);
+		    	  if(voterAgeInfo == null){
+		    		  voterAgeInfo = new VoterAgeInfo();
+		    		  voterAgeInfo.setVoterReportLevel(voterReportLevel);
+		    		  voterAgeInfo.setPublicationDate(publicationDate);
+		    		  voterAgeInfo.setReportLevelValue((Long)wardWiseAgeCount[3]);
+		    		  voterAgeInfo.setTotalVoters(0l);
+		    		  voterAgeInfo.setFemaleVoters(0l);
+		    		  voterAgeInfo.setMaleVoters(0l);
+		    		  voterAgeInfo.setVoterAgeRange(voterAgeRangeDAO.get(ageRange));
+		    		  voterAgeInfo.setConstituencyId(constituencyId);
+		    		  rangeMap.put(ageRange,voterAgeInfo);
+		    		  voterAgeInfoList.add(voterAgeInfo);
+		    	  }
+		    	  if(wardWiseAgeCount[1].toString().equalsIgnoreCase("M")){
+		    		  voterAgeInfo.setMaleVoters((Long)wardWiseAgeCount[0]);
+		    	  }else{
+		    		  voterAgeInfo.setFemaleVoters((Long)wardWiseAgeCount[0]);
+		    	  }
+		    	
+		    	    voterAgeInfo.setTotalVoters(voterAgeInfo.getTotalVoters()+(Long)wardWiseAgeCount[0]);
+		    	 
+		      }
+		  }
+				
 }

@@ -636,8 +636,29 @@ for (Object[] objects : list) {
 	
 	public void testGetHamletBoothInfo()
 	{
-		List<Object[]> list = userVoterDetailsDAO.getHamletBoothInfo(282l,1l);
+		List<Object[]> list = userVoterDetailsDAO.getHamletBoothInfo(228l,1l);
 		System.out.println(list.size());
+		if(list != null && list.size() > 0)
+		{
+			int hbIndex = 0;
+			StringBuilder strTemp = new StringBuilder();
+			for(Object[] params : list)
+			{
+				try{
+				strTemp.append("INSERT INTO hamlet_booth(hamlet_booth_id, hamlet_id, booth_id, publication_date_id) VALUES (");
+				strTemp.append(++hbIndex+",");
+				strTemp.append(params[0].toString()+",");
+				strTemp.append(params[1].toString()+",");
+				strTemp.append(params[2].toString()+");\n");
+				}catch(Exception e)
+				{
+					
+				}
+			}
+			
+			System.out.println(strTemp.toString());
+			
+		}
 	}
 	
 }

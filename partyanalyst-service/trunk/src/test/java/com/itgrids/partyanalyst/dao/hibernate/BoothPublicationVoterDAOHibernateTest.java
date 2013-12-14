@@ -156,12 +156,71 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		}*/
 	
 	
-	public void testGetAddedVotersBetweenTwoPublications()
+	/*public void testGetAddedVotersBetweenTwoPublications()
 	{
 	  
 	  //List<Object[]> list = boothPublicationVoterDAO.getAddedVotersBetweenTwoPublications(232L, 7L, 8L);
 		List<Object[]> list = boothPublicationVoterDAO.getDeletedVotersBetweenTwoPublications(232L, 7L, 8L);
 	  System.out.println(list.size());
-	}
+	}*/
 	
+		/*public void testGetWardWiseTotalVotersCount(){
+			List<Object[]> countList = boothPublicationVoterDAO.getCustomWardWiseTotalVotersCount(83l, 1l, 8l, 232l);
+			for(Object[] count:countList){
+				System.out.print(count[0].toString()+"--"+count[1].toString());
+				System.out.println("");
+			}
+			
+		}*/
+	
+		/* public void testGetCasteGroupContsByCustomWardWise(){
+			List<Object[]> countList = boothPublicationVoterDAO.getCasteGroupContsByCustomWardWise(1l,83l, 8l,232l);
+			for(Object[] count:countList){
+				System.out.print(count[0].toString()+"--"+count[1].toString()+"--"+count[2].toString());
+				System.out.println("");
+			}
+			
+		}*/
+		 
+		/* public void testGetCasteWiseGenderWiseContsByCustomWardWise(){
+				List<Object[]> countList = boothPublicationVoterDAO.getCasteWiseGenderWiseContsByCustomWardWise(1l,83l, 8l,232l);
+				for(Object[] count:countList){
+					System.out.print(count[0].toString()+"--"+count[1].toString()+"--"+count[2].toString()+"--"+count[3].toString());
+					System.out.println("");
+				}
+				
+			}*/
+		 /*public void testGetCustomWardWiseTotalMaleFemaleVotersCount(){
+				List<Object[]> countList = boothPublicationVoterDAO.getCustomWardWiseTotalMaleFemaleVotersCount(83l,1l, 8l,232l);
+				for(Object[] count:countList){
+					System.out.print(count[0].toString()+"--"+count[1].toString()+"--"+count[2].toString()+"--"+count[3].toString());
+					System.out.println("");
+				}
+				
+			}*/
+	     /*public void testGetCustomWardWiseFamilyVotersCount(){
+		  List<Object[]> countList = boothPublicationVoterDAO.getCustomWardWiseFamilyVotersCount(83l,1l, 8l,232l);
+			for(Object[] count:countList){
+				System.out.print(count[0].toString()+"--"+count[1].toString());
+				System.out.println("");
+			}
+		
+	    }*/
+	   /* public void testGetCustomWardAgeCount(){
+		  List<Object[]> countList = boothPublicationVoterDAO.getCustomWardAgeCount(83l,1l, 8l,232l);
+			for(Object[] count:countList){
+				System.out.print(count[0].toString()+"--"+count[1].toString()+"--"+count[2].toString()+"--"+count[3].toString());
+				System.out.println("");
+			}
+		
+	    }*/
+	    public void testGetCustomWard18To22AgeCount(){
+			  List<Object[]> countList = boothPublicationVoterDAO.getCustomWard18To22AgeCount(83l,1l, 8l,232l);
+				for(Object[] count:countList){
+					System.out.print(count[0].toString()+"--"+count[1].toString()+"--"+count[2].toString()+"--"+count[3].toString());
+					System.out.println("");
+				}
+			
+		    }
+	    
 	}
