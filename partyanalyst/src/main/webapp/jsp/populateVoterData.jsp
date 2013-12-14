@@ -212,6 +212,7 @@ fieldset{
 		 </span>
 		 <input type="checkbox" id="hamletBoothChecked" value="Hamlet Booth" style="margin-top:-5px;"> Hamlet Booth
 		<input type="checkbox" id="localityChecked" value="Locality" style="margin-top:-5px;"> Locality
+		<input type="checkbox" id="customWardCheckedBox" value="Locality" style="margin-top:-5px;"> Custom Ward
 	 </div>
 
 		<div id="voterDataInsertDiv">
@@ -575,6 +576,7 @@ var hamletChecked= $("#HamletChecked").is(':checked');
 var boothChecked= $("#BoothChecked").is(':checked');
 var hamletBoothChecked = $("#hamletBoothChecked").is(':checked');
 var localityChecked = $("#localityChecked").is(':checked');
+var wardChecked = $("#customWardCheckedBox").is(':checked');
 
 		var castpublicationDateId = $("#castpublicationDateList").val();
 		if(castconstituencyId == 0)
@@ -599,6 +601,7 @@ var localityChecked = $("#localityChecked").is(':checked');
 		  boothChecked:boothChecked,
 		  hamletBoothChecked:hamletBoothChecked,
 		  localityChecked:localityChecked,
+		  wardChecked:wardChecked,
 		  task:"insertCastVotersData"
 		};
 		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);

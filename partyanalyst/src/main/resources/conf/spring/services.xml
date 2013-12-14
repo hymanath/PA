@@ -46,10 +46,14 @@
 		<property name="cadreDAO" ref="cadreDAO" />	
 		<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"></property>
 		<property name="hamletBoothDAO" ref="hamletBoothDAO" />
+		<property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
+		<property name="voterFamilyRangeDAO" ref="voterFamilyRangeDAO" />	
+		<property name="voterAgeRangeDAO" ref="voterAgeRangeDAO" />	
 		<property name="userDAO" ref="userDAO" />
 		<property name="flagDAO" ref="flagDAO" />
 		<property name="voterFlagDAO" ref="voterFlagDAO" />
-		
+		<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
+					
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
@@ -1787,6 +1791,7 @@
      <property name="userDAO" ref="userDAO" />
      <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
      <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
+     <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
