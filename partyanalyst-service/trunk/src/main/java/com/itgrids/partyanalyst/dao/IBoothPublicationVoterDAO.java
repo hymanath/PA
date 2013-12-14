@@ -524,4 +524,17 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getDeletedVotersBetweenTwoPublications(Long constituencyId,Long fromPublicationDateId, Long toPublicationDateId);
 	  
+	  public List<Object[]> getCustomWardWiseTotalVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
+	  
+	  public List<Object[]>  getCasteGroupContsByCustomWardWise(Long userId,Long localElectionBodyId,Long publicationDateId,Long constituencyId);
+	  
+	  public List<Object[]>  getCasteWiseGenderWiseContsByCustomWardWise(Long userId,Long localElectionBodyId,Long publicationDateId,Long constituencyId);
+	  
+	  public List<Object[]> getCustomWardWiseTotalMaleFemaleVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
+	  
+	  public List<Object[]> getCustomWardWiseFamilyVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
+	  
+	  public List<Object[]> getCustomWardAgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
+	  
+	  public List<Object[]> getCustomWard18To22AgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
 }

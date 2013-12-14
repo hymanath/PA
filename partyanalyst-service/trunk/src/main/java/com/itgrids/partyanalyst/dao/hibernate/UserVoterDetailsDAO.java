@@ -2730,4 +2730,15 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId",userId);
 		return query.list();
 	}
+	public List<Object[]> getWardIdsByLocalEleBodyIdPublicationId(Long constituencyId,Long userId,Long publicationDateId,Long localEleBodyId)
+	{
+		Query query = getSession().createQuery(" select distinct model.ward.constituencyId,model.ward.name,model.ward.localElectionBody.localElectionBodyId from UserVoterDetails model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
+				" model.user.userId =:userId and model2.booth.constituency.constituencyId =:constituencyId and model2.booth.publicationDate.publicationDateId =:publicationDateId and model.ward is not null and model.ward.localElectionBody.localElectionBodyId =:localEleBodyId ");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("localEleBodyId", localEleBodyId);
+		return query.list();
+	}
 }

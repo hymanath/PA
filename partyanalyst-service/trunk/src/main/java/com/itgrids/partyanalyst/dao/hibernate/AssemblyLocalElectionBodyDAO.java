@@ -240,4 +240,11 @@ public class AssemblyLocalElectionBodyDAO extends GenericDaoHibernate<AssemblyLo
 		query.setParameter("constituencyId", constituencyId);
 		return (Long) query.uniqueResult();
 	}
+	
+	public List<Object[]> getAssemblyLocationElectionBodyList(Long constituencyId){
+		Query query = getSession().createQuery("Select model.assemblyLocalElectionBodyId,model.localElectionBody.localElectionBodyId,model.constituency.constituencyId,model.localElectionBody.electionType.electionTypeId  " +
+				" from AssemblyLocalElectionBody model where model.constituency.constituencyId =:constituencyId and model.localElectionBody.electionType.electionTypeId in(5,6,7)");
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 }

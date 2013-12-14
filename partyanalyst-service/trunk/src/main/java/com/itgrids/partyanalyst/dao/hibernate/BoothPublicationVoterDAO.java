@@ -5924,6 +5924,101 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
+	public List<Object[]> getCustomWardWiseTotalVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId)
+	{  
+		
+		Query query = getSession().createQuery("select count(distinct bpv.voter.voterId),uvd.ward.constituencyId from BoothPublicationVoter bpv,UserVoterDetails uvd  where " +
+				" bpv.booth.publicationDate.publicationDateId = :publicationId and  bpv.booth.constituency.constituencyId = :constituencyId " +
+				" and bpv.booth.localBody.localElectionBodyId = :localElectionBodyId and bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId " +
+				" and uvd.ward.constituencyId is not null group by uvd.ward.constituencyId ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 	
+	public List<Object[]>  getCasteGroupContsByCustomWardWise(Long userId,Long localElectionBodyId,Long publicationDateId,Long constituencyId){
+		Query query = getSession().createQuery("select uvd.ward.constituencyId,uvd.casteState.casteCategoryGroup.casteCategory.categoryName, " +
+				"count(distinct bpv.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd where bpv.booth.publicationDate.publicationDateId = :publicationDateId and bpv.booth.localBody.localElectionBodyId = :localElectionBodyId " +
+				"  and bpv.booth.constituency.constituencyId = :constituencyId and bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId and uvd.ward.constituencyId is not null " +
+				" and uvd.casteState.casteCategoryGroup.casteCategory.categoryName is not null group by uvd.ward.constituencyId,uvd.casteState.casteCategoryGroup.casteCategory.casteCategoryId ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+		
+	}
 	
+	public List<Object[]>  getCasteWiseGenderWiseContsByCustomWardWise(Long userId,Long localElectionBodyId,Long publicationDateId,Long constituencyId){
+		Query query = getSession().createQuery("select uvd.ward.constituencyId,uvd.casteState.casteStateId,uvd.voter.gender, " +
+				"count(distinct bpv.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd where bpv.booth.publicationDate.publicationDateId = :publicationDateId and bpv.booth.localBody.localElectionBodyId = :localElectionBodyId " +
+				"  and bpv.booth.constituency.constituencyId = :constituencyId and bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId and uvd.ward.constituencyId is not null " +
+				" and uvd.casteState.casteStateId is not null and uvd.voter.gender is not null group by uvd.ward.constituencyId,uvd.casteState.casteStateId,uvd.voter.gender ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCustomWardWiseTotalMaleFemaleVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId)
+	{  
+		
+		Query query = getSession().createQuery("select count(distinct bpv.voter.voterId),uvd.ward.constituencyId,SUM( CASE WHEN bpv.voter.gender='F' THEN 1 ELSE 0 END) as femalecount" +
+				" ,SUM( CASE WHEN bpv.voter.gender='M' THEN 1 ELSE 0 END) as malecount from BoothPublicationVoter bpv,UserVoterDetails uvd  where " +
+				" bpv.booth.publicationDate.publicationDateId = :publicationId and  bpv.booth.constituency.constituencyId = :constituencyId " +
+				" and bpv.booth.localBody.localElectionBodyId = :localElectionBodyId and bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId " +
+				" and uvd.ward.constituencyId is not null group by uvd.ward.constituencyId ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCustomWardWiseFamilyVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId)
+	{  
+		
+		Query query = getSession().createQuery("select count(distinct bpv.voter.voterId),uvd.ward.constituencyId " +
+				"  from BoothPublicationVoter bpv,UserVoterDetails uvd  where " +
+				" bpv.booth.publicationDate.publicationDateId = :publicationId and  bpv.booth.constituency.constituencyId = :constituencyId " +
+				" and bpv.booth.localBody.localElectionBodyId = :localElectionBodyId and bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId " +
+				" and uvd.ward.constituencyId is not null group by uvd.ward.constituencyId,bpv.voter.houseNo ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCustomWardAgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId)
+	{  
+		
+		Query query = getSession().createQuery("select count(distinct bpv.voter.voterId),bpv.voter.gender,bpv.voter.voterAgeRange.voterAgeRangeId,uvd.ward.constituencyId " +
+				"  from BoothPublicationVoter bpv,UserVoterDetails uvd  where " +
+				" bpv.booth.publicationDate.publicationDateId = :publicationId and  bpv.booth.constituency.constituencyId = :constituencyId " +
+				" and bpv.booth.localBody.localElectionBodyId = :localElectionBodyId and bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId " +
+				" and uvd.ward.constituencyId is not null and bpv.voter.voterAgeRange.voterAgeRangeId is not null group by uvd.ward.constituencyId,bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	public List<Object[]> getCustomWard18To22AgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId)
+	{  
+		Query query = getSession().createQuery("select count(distinct bpv.voter.voterId),bpv.voter.gender,1,uvd.ward.constituencyId " +
+				"  from BoothPublicationVoter bpv,UserVoterDetails uvd  where " +
+				" bpv.booth.publicationDate.publicationDateId = :publicationId and  bpv.booth.constituency.constituencyId = :constituencyId " +
+				" and bpv.booth.localBody.localElectionBodyId = :localElectionBodyId and bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId and bpv.voter.age >=18 and bpv.voter.age <=22 " +
+				" and uvd.ward.constituencyId is not null group by uvd.ward.constituencyId,bpv.voter.gender ");
+		query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }

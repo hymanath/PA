@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyHierarchyInfoVO;
 import com.itgrids.partyanalyst.dto.PanchayatAddedOrDeletedVO;
@@ -2947,7 +2949,7 @@ public class VoterModificationService implements IVoterModificationService{
 		  List<Object[]> wardsList = null;
 		  String electionType = localElectionBodyDAO.get(localElectionBodyIdsList.get(0)).getElectionType().getElectionType();
 		  if(electionType != null && electionType.equalsIgnoreCase(IConstants.GHMC))
-		   wardsList = boothPublicationVoterDAO.getMuncipalityWardsCount(hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), muncipalityIdsList);	
+		   wardsList = boothPublicationVoterDAO.getMuncipalityWardsCount(hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), localElectionBodyIdsList);	
 		  else
 		   wardsList = userVoterDetailsDAO.getWardsCountByMuncipalityIdsList(localElectionBodyIdsList, hierarchyInfoVO.getConstituencyId(), hierarchyInfoVO.getPublicationDateId(), hierarchyInfoVO.getUserId());
 			  
@@ -4155,5 +4157,4 @@ public class VoterModificationService implements IVoterModificationService{
 	 	 }
 	}
 
-	
 	

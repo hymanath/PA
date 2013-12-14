@@ -25,7 +25,7 @@ public interface IVoterReportService {
 	
 	public ResultStatus deletevotermodificationFromIntermediateTables(Long constituencyId,Long publicationId);
 	
-	public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked,boolean hamletBoothChecked,boolean localityChecked);
+	public ResultStatus insertVotersCasteDataInIntermediateTables(Long reportLevelValue, Long publicationDateId,Long userId,boolean hamletChecked,boolean boothChecked,boolean hamletBoothChecked,boolean localityChecked,boolean wardChecked);
 	
 	 public ResultStatus deleteVoterModifiedData(Long constituencyId,Long publicationDateId);
 	 
@@ -110,4 +110,9 @@ public interface IVoterReportService {
     
     public ResultStatus deleteFlag(Long flagId);
 
+    public void saveVoterInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
+    
+    public void saveVoterFamilyInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
+    
+    public void saveVoterAgeInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
 }

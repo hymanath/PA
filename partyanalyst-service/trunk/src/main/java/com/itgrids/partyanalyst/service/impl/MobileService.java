@@ -11,9 +11,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.TimeZone;
 
 import org.apache.log4j.Logger;
@@ -21,6 +23,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBloodGroupDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -164,6 +167,7 @@ public class MobileService implements IMobileService{
  private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
  private ISmsService smsCountrySmsService;
  private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
+ private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 
 public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
 	return partialBoothPanchayatDAO;
@@ -582,6 +586,15 @@ public IBloodGroupDAO getBloodGroupDAO() {
 	this.constituencyHierarchyInfoDAO = constituencyHierarchyInfoDAO;
   }
 
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+
 public List<SelectOptionVO> getConstituencyList()
   {
 	  List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
@@ -848,7 +861,7 @@ public List<SelectOptionVO> getConstituencyList()
 	str.append("\n");
 	
 	LOG.info("Local Election Body data Completed...");
-	
+
 	List<Occupation> occupationList = occupationDAO.getOccupationList();
 	if(occupationList != null && occupationList.size() > 0)
 	{
@@ -963,7 +976,7 @@ public List<SelectOptionVO> getConstituencyList()
 			str.append("\n");
 		  }catch(Exception e)
 			{
-				LOG.error("Exception occured in voter_caste_info with voter_caste_info_id = "+castInfo.getVoterCastInfoId()+" Exception is - "+e);
+				LOG.error("Exception occured in voter_caste_info with voter_caste_info_id = "+castInfo.getVoterCastInfoId()+" Exception is - ",e);
 			}
 	  }
 	
@@ -1106,7 +1119,7 @@ public List<SelectOptionVO> getConstituencyList()
 					str.append(strTemp);
 				}catch(Exception e)
 				{
-					LOG.error("Exception occured in inserting voters Data with voter ID - "+params[0]+" Exception - "+e);
+					LOG.error("Exception occured in inserting voters Data with voter ID - "+params[0]+" Exception - ",e);
 				}
 			}
 			str.append("\n");
@@ -1591,21 +1604,85 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error("Exception Occured in Partial Booth Panchayat Table Inserting");
 		LOG.error("Exception is - ",e);
 	}
-	
+	//Added by mahesh
+	try{
+		
+		String constituencyType = constituencyDAO.getConstituencyAreaType(constituencyId);
+		if(constituencyType != null && !constituencyType.equalsIgnoreCase("RURAL")){
+			LOG.debug("Assembly Local Election Body,ward,ward_booth Table Inserting Started");
+			List<Object[]> assemblyLocalElectionBodieList = assemblyLocalElectionBodyDAO.getAssemblyLocationElectionBodyList(constituencyId);
+			if(assemblyLocalElectionBodieList != null && assemblyLocalElectionBodieList.size() > 0)
+			{
+				int id = 0;
+				Set<Long> wardIds = new HashSet<Long>();
+			  for(Object[] params:assemblyLocalElectionBodieList){
+				 str.append("INSERT INTO assembly_local_election_body(assembly_local_election_body_id,local_election_body_id,constituency_id) " +
+				 		"VALUES ('"+(Long)params[0]+"','"+(Long)params[1]+"','"+(Long)params[2]+"');\n");
+				 Long electionTypeId = (Long)params[3];
+				 if(electionTypeId.longValue() == 7){
+					 Map<Long,String> wards = new HashMap<Long,String>();
+					 List<Object[]> wardDetails = boothDAO.getWardDetailsByLocalEleBodyId((Long)params[1], latestPublicationId, constituencyId);
+					 for(Object[] ward:wardDetails){
+						 id=id+1;
+						 wards.put((Long)ward[0], ward[1].toString()+"("+ward[2].toString()+")");
+						 str.append("INSERT INTO ward_booth(ward_booth_id,ward_id,booth_id,publication_date_id) " +
+							 		"VALUES ('"+id+"','"+(Long)ward[0]+"','"+(Long)ward[4]+"','"+latestPublicationId+"');\n");
+					 
+					 }
+					 if(wards.size() > 0){
+						for(Long key:wards.keySet()){
+						 str.append("INSERT INTO ward(ward_id,name,local_election_body_id) " +
+							 		"VALUES ('"+key+"','"+wards.get(key)+"','"+(Long)params[1]+"');\n");
+						}
+					}
+				 }else{
+					 List<Object[]> wardDetails = userVoterDetailsDAO.getWardIdsByLocalEleBodyIdPublicationId(constituencyId,1l,latestPublicationId,(Long)params[1]);
+					 
+					 for(Object[] ward:wardDetails){
+						 wardIds.add((Long)ward[0]);
+						 str.append("INSERT INTO ward(ward_id,name,local_election_body_id) " +
+							 		"VALUES ('"+(Long)ward[0]+"','"+ward[1].toString()+"','"+(Long)ward[2]+"');\n");
+					 }
+				 }
+			  }
+			  if(wardIds.size() > 0){
+				  List<Object[]> wardBooths = userVoterDetailsDAO.getBoothsForCustomWardIdsList(new ArrayList<Long>(wardIds),constituencyId,latestPublicationId,1l);
+				  for(Object[] booth:wardBooths){
+					  id=id+1;
+					  str.append("INSERT INTO ward_booth(ward_booth_id,ward_id,booth_id,publication_date_id) " +
+						 		"VALUES ('"+id+"','"+(Long)booth[0]+"','"+(Long)booth[1]+"','"+latestPublicationId+"');\n");
+				  
+				  }
+			  }
+			}
+			str.append("\n");
+			
+			LOG.info("Assembly Local Election Body,ward,ward_booth data Completed...");
+			
+		}
+		
+		
+	}catch(Exception e)
+	{
+		LOG.error("Exception Occured in Assembly Local Election Body,ward,ward_booth Table Inserting ",e);
+	}
+	//End 
 	
 	try
 	{	
 		outPut.write(str.toString());
 		outPut.close();
 		resultStatus.setResultCode(0);
+		System.gc();
 	}catch(Exception e)
 	{
 		LOG.error("Exception ocuured in writing output - exception is ",e);
+		System.gc();
 	}
 	 return resultStatus;
 	}catch (Exception e) {
-	 e.printStackTrace();
-	 LOG.error("Exception Occured in createDataDumpFileForSelectedConstituency() method, Exception - "+e);
+		System.gc();
+	 LOG.error("Exception Occured in createDataDumpFileForSelectedConstituency() method, Exception - ",e);
 	 resultStatus.setResultCode(1);
 	 return resultStatus;
 	}

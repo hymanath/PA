@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -46,4 +47,5 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	
 	public List<Object[]> getLocationElectionBodyList();
 	
+	public List<Object[]> getLocalElectionBodyType(Set<Long> localElectionBodyIds);
 }

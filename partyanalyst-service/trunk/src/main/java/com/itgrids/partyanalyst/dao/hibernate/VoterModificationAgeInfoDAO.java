@@ -63,4 +63,5 @@ public class VoterModificationAgeInfoDAO extends GenericDaoHibernate<VoterModifi
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
+
 }

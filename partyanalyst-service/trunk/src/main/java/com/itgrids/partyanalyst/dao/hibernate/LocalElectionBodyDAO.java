@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -151,4 +152,9 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 	  		",model.tehsil.tehsilId,model.district.districtId,model.noOfWards from LocalElectionBody model ");
   }
 
+  public List<Object[]> getLocalElectionBodyType(Set<Long> localElectionBodyIds){
+	  Query query = getSession().createQuery("select model.electionType.electionTypeId,model.localElectionBodyId from LocalElectionBody model where model.localElectionBodyId in(:localElectionBodyIds)");
+	  query.setParameterList("localElectionBodyIds", localElectionBodyIds);
+	  return query.list();
+  }
 }
