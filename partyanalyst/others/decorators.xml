@@ -185,6 +185,17 @@
 		<pattern>/surveyorProfileSaveAction*</pattern>
 		<pattern>/voterDataToolsAction*</pattern>
 		<pattern>/electionResultsAnalysisAction*</pattern>
+		<pattern>/inflencingPeopleWindowAction*</pattern>
+		<pattern>/suggestiveModelAction*</pattern>
+		<pattern>/mobileDataAction*</pattern>
+		<pattern>/messageCenterAction*</pattern>
+		<pattern>/uploadAudioFile*</pattern>
+		<pattern>/getvoiceSmsReportAction*</pattern>
+		<pattern>/updateCustomerContactsAction*</pattern>
+		<pattern>/searchInfluencePeopleForSmsAction*</pattern>		
+		<pattern>/subUserRegPageAction*</pattern>
+		<pattern>/partialBoothPanchayatAction*</pattern>
+		<pattern>/constituencyInfoAction*</pattern>
        </decorator>
        
        <decorator name="tdpHome_old" page="tdplayout_old.jsp">
