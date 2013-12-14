@@ -26,8 +26,7 @@ import com.itgrids.partyanalyst.service.IVoterModifiationPdfsGenerations;
  * 
  * This Class is used for generating pdfs for voter modification report in constituency level
  * @author Prasad Thiragabathina
- * @
- *
+ * 
  */
 public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGenerations{
 
@@ -49,165 +48,21 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	    try
 	    {
 	    	LOG.info("Enterd into createTableForAddedVoters() method in VoterModifiationPdfsGenerations Class");
-	    	PdfPTable table = new PdfPTable(8);
-	    	document.add( new Paragraph(" ") );
-	    	document.add( new Paragraph(" ") );
-	 	  	PdfPCell cell;
-	 	  	cell = new PdfPCell(new Phrase("Range Wise Voter Additions In Panchayats",BIGFONT));
-	 	  	cell.setColspan(8);
-	 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(cell);
-	 	  	
-	 	  	PdfPCell c1 = new PdfPCell(new Phrase("Mandal",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(c1);
-
-	 	  	c1 = new PdfPCell(new Phrase("1 - 50",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(c1);
-
-	 	  	c1 = new PdfPCell(new Phrase("51-100",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(c1);
-	 	  	
-	 	  	c1 = new PdfPCell(new Phrase("101 - 150",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(c1);
-	 	  	c1 = new PdfPCell(new Phrase("151 - 200",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(c1);
-	 	  	
-	 	  	c1 = new PdfPCell(new Phrase("201 - 300",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-	 	  	table.addCell(c1);
-	 	  	
-	 	  	c1 = new PdfPCell(new Phrase("Above 300",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
-	 	  	table.addCell(c1);
-	 	  	
-	 	  	c1 = new PdfPCell(new Phrase("No Changes",BIGFONT));
-	 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
-	 	  	table.addCell(c1);
-	 	  	table.setHeaderRows(1);
-	 	  	
-	 	  	for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO : returnList) {
-	 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdRengesInfoVOList = voterAdderdOrDeletedRengesInfoVO.getAddedVoeterDetails();
-	 	  		for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderdRengesInfoVOList) {
-	 	  			PdfPCell c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getName(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString(),SMALLFONT));
-	 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	  			table.addCell(c2);
-	 	  			/*table.addCell(voterAdderdOrDeletedRengesInfoVO2.getName());
-	 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString());
-	 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString());
-	 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString());
-	 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString());
-	 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString());
-	 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString());
-	 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString());*/
-	 	  		}
-	 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderRengesInfoVOListForRuralUrban = voterAdderdOrDeletedRengesInfoVO.getRuralUrbanAddedVoterDetails();
-	 	  		if(voterAdderRengesInfoVOListForRuralUrban != null)
-	 	  		{
-	 	  			for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderRengesInfoVOListForRuralUrban) {
-	 	  				PdfPCell c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getName(),SMALLFONT));
-	 	  				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString(),SMALLFONT));
-	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString(),SMALLFONT));
-	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString(),SMALLFONT));
-	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString(),SMALLFONT));
-	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString(),SMALLFONT));
-	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString(),SMALLFONT));
-	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString(),SMALLFONT));
-	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 		  			table.addCell(c2);
-	 	  				/*table.addCell(voterAdderdOrDeletedRengesInfoVO2.getName());
-	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString());
-	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString());
-	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString());
-	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString());
-	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString());
-	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString());
-	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString());*/
-	 	  			}
-	 	  		}
-	 	  	}	
-	 	  	float[] widths = new float[] {1f, 1f ,1f,1f,1f, 1f ,1f,1f};
-	 	  	table.setWidths(widths);
-	 	  	document.add(table);
-		} 
-	    catch (Exception e)
-		{
-			LOG.debug("Exception raised in createTableForAddedVoters() method in VoterModifiationPdfsGenerations Class",e);
-		}
-	  	
-	  }
-	  /**
-	   * Range Wise Voter Deletions In Panchayats
-	   * @param document
-	   * @param returnList 
-	   * @param constituenyName
-	   * @date 10-12-2013
-	   */
-	  public void deletedVotersDetails(Document document,List<VoterAdderdOrDeletedRengesInfoVO> returnList,String constituenyName)
-	  {
-	     
-		    try
-		    {
-		    	LOG.info("Enterd into deletedVotersDetails() method in VoterModifiationPdfsGenerations Class");
-		    	PdfPTable table = new PdfPTable(8);
-		 	  	document.add( new Paragraph(" ") );
-		 	  	document.add( new Paragraph(" ") );
-		 	  	PdfPCell cell;
-		 	  	cell = new PdfPCell(new Phrase("Range Wise Voter Deletions In Panchayats",BIGFONT));
+	    	
+	    	
+	    	java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdList = returnList.get(0).getAddedVoeterDetails();
+	    	if(voterAdderdList != null)
+	    	{
+	    		PdfPTable table = new PdfPTable(8);
+		    	document.add( new Paragraph(" ") );
+		    	document.add( new Paragraph(" ") );
+	    		PdfPCell cell;
+		 	  	cell = new PdfPCell(new Phrase("Range Wise Voter Additions In Panchayats",BIGFONT));
 		 	  	cell.setColspan(8);
 		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(cell);
-		 	  									
-
+		 	  	
 		 	  	PdfPCell c1 = new PdfPCell(new Phrase("Mandal",BIGFONT));
 		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
@@ -247,87 +102,248 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
 		 	  	table.addCell(c1);
 		 	  	table.setHeaderRows(1);
-		 	  	//table.setWidthPercentage(100);
-		 	  	for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO : returnList) {
-		 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdRengesInfoVOList = voterAdderdOrDeletedRengesInfoVO.getDeletedVoterDetails();
-		 	  		for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderdRengesInfoVOList) {
+	    		 	  	
+	 	  	for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO : returnList) {
+	 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdRengesInfoVOList = voterAdderdOrDeletedRengesInfoVO.getAddedVoeterDetails();
+	 	  		if(voterAdderdRengesInfoVOList != null && voterAdderdRengesInfoVOList.size() > 0)
+	 	  		{
+	 	  			for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderdRengesInfoVOList) {
 		 	  			PdfPCell c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getName(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString(),SMALLFONT));
+		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString(),SMALLFONT));
+		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString(),SMALLFONT));
+		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString(),SMALLFONT));
+		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString(),SMALLFONT));
+		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString(),SMALLFONT));
+		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString(),SMALLFONT));
+		 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
-		 	  			
 		 	  			/*table.addCell(voterAdderdOrDeletedRengesInfoVO2.getName());
-		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString());
-		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString());
-		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString());
-		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString());
-		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString());
-		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString());
-		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString());*/
+		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString());
+		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString());
+		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString());
+		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString());
+		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString());
+		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString());
+		 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString());*/
 		 	  		}
-		 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderRengesInfoVOListForRuralUrban = voterAdderdOrDeletedRengesInfoVO.getRuralUrbanDeletedVoterDetails();
-		 	  		if(voterAdderRengesInfoVOListForRuralUrban != null)
-		 	  		{
-		 	  			for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderRengesInfoVOListForRuralUrban) {
-		 	  				PdfPCell c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getName(),SMALLFONT));
-		 	  				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString(),SMALLFONT));
-		 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString(),SMALLFONT));
-		 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString(),SMALLFONT));
-		 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString(),SMALLFONT));
-		 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString(),SMALLFONT));
-		 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString(),SMALLFONT));
-		 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString(),SMALLFONT));
-		 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 		  			table.addCell(c2);
-		 	  				/*table.addCell(voterAdderdOrDeletedRengesInfoVO2.getName());
-		 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString());
-		 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString());
-		 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString());
-		 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString());
-		 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString());
-		 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString());
-		 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString());*/
-		 	  			}
-		 	  		}
-		 	  	}		    
-		 	  	float[] widths = new float[] {1f, 1f ,1f,1f,1f, 1f ,1f,1f};
-		 	  	table.setWidths(widths);
-		 	  	document.add(table);
-			}
+	 	  		}
+	 	  		
+	 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderRengesInfoVOListForRuralUrban = voterAdderdOrDeletedRengesInfoVO.getRuralUrbanAddedVoterDetails();
+	 	  		if(voterAdderRengesInfoVOListForRuralUrban != null)
+	 	  		{
+	 	  			for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderRengesInfoVOListForRuralUrban) {
+	 	  				PdfPCell c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getName(),SMALLFONT));
+	 	  				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString(),SMALLFONT));
+	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString(),SMALLFONT));
+	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString(),SMALLFONT));
+	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString(),SMALLFONT));
+	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString(),SMALLFONT));
+	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString(),SMALLFONT));
+	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString(),SMALLFONT));
+	 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 		  			table.addCell(c2);
+	 	  				/*table.addCell(voterAdderdOrDeletedRengesInfoVO2.getName());
+	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50AddedCount().toString());
+	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100AddedCount().toString());
+	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150AddedCount().toString());
+	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200Addedcount().toString());
+	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300AddedCount().toString());
+	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300AddedCount().toString());
+	 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesAddedCount().toString());*/
+	 	  			}
+	 	  		}
+	 	  	 }
+	 	  	float[] widths = new float[] {1f, 1f ,1f,1f,1f, 1f ,1f,1f};
+	 	  	table.setWidths(widths);
+	 	  	document.add(table);
+	    	}
+	 	  	
+		} 
+	    catch (Exception e)
+		{
+			LOG.debug("Exception raised in createTableForAddedVoters() method in VoterModifiationPdfsGenerations Class",e);
+		}
+	  	
+	  }
+	  /**
+	   * Range Wise Voter Deletions In Panchayats
+	   * @param document
+	   * @param returnList 
+	   * @param constituenyName
+	   * @date 10-12-2013
+	   */
+	  public void deletedVotersDetails(Document document,List<VoterAdderdOrDeletedRengesInfoVO> returnList,String constituenyName)
+	  {
+	     
+		    try
+		    {
+		    	LOG.info("Enterd into deletedVotersDetails() method in VoterModifiationPdfsGenerations Class");
+		    	java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderd = returnList.get(0).getDeletedVoterDetails();
+		    	if(voterAdderd != null)
+		    	{
+		    		PdfPTable table = new PdfPTable(8);
+			 	  	document.add( new Paragraph(" ") );
+			 	  	document.add( new Paragraph(" ") );
+			 	  	
+			 	  	PdfPCell cell;
+			 	  	cell = new PdfPCell(new Phrase("Range Wise Voter Deletions In Panchayats",BIGFONT));
+			 	  	cell.setColspan(8);
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
+			 	  									
+
+			 	  	PdfPCell c1 = new PdfPCell(new Phrase("Mandal",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+
+			 	  	c1 = new PdfPCell(new Phrase("1 - 50",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+
+			 	  	c1 = new PdfPCell(new Phrase("51-100",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("101 - 150",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	c1 = new PdfPCell(new Phrase("151 - 200",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("201 - 300",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Above 300",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("No Changes",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
+			 	  	table.addCell(c1);
+			 	  	table.setHeaderRows(1);
+			 	  	//table.setWidthPercentage(100);
+			 	  	for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO : returnList) {
+			 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdRengesInfoVOList = voterAdderdOrDeletedRengesInfoVO.getDeletedVoterDetails();
+			 	  		for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderdRengesInfoVOList) {
+			 	  			PdfPCell c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getName(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			
+			 	  			/*table.addCell(voterAdderdOrDeletedRengesInfoVO2.getName());
+			 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString());
+			 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString());
+			 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString());
+			 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString());
+			 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString());
+			 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString());
+			 	  			table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString());*/
+			 	  		}
+			 	  		java.util.List<VoterAdderdOrDeletedRengesInfoVO> voterAdderRengesInfoVOListForRuralUrban = voterAdderdOrDeletedRengesInfoVO.getRuralUrbanDeletedVoterDetails();
+			 	  		if(voterAdderRengesInfoVOListForRuralUrban != null)
+			 	  		{
+			 	  			for (VoterAdderdOrDeletedRengesInfoVO voterAdderdOrDeletedRengesInfoVO2 : voterAdderRengesInfoVOListForRuralUrban) {
+			 	  				PdfPCell c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getName(),SMALLFONT));
+			 	  				c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString(),SMALLFONT));
+			 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString(),SMALLFONT));
+			 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString(),SMALLFONT));
+			 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString(),SMALLFONT));
+			 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString(),SMALLFONT));
+			 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString(),SMALLFONT));
+			 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 		  			c2 = new PdfPCell(new Phrase(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString(),SMALLFONT));
+			 		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 		  			table.addCell(c2);
+			 	  				/*table.addCell(voterAdderdOrDeletedRengesInfoVO2.getName());
+			 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt1To50DeletedCount().toString());
+			 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt51To100DeletedCount().toString());
+			 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt101To150DeletedCount().toString());
+			 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt151To200DeletedCount().toString());
+			 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getBt201To300DeletedCount().toString());
+			 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getAbove300DeletedCount().toString());
+			 	  				table.addCell(voterAdderdOrDeletedRengesInfoVO2.getNoChangesDeletedCount().toString());*/
+			 	  			}
+			 	  		}
+			 	  	}		    
+			 	  	float[] widths = new float[] {1f, 1f ,1f,1f,1f, 1f ,1f,1f};
+			 	  	table.setWidths(widths);
+			 	  	document.add(table);
+				}
+		    }
+		    	
 		    catch (Exception e)
 			{
 				LOG.debug("Exception raised in deletedVotersDetails() method in VoterModifiationPdfsGenerations Class");
@@ -477,7 +493,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	}
 		 	  	float[] widths = new float[] {1f ,1f,1f,1f, 1f ,1f,1f};
 		 	  	table.setWidths(widths);
-		 	  	table.setHeaderRows(3);
+		 	  	table.setHeaderRows(2);
 		 	  	document.add(table);
 			}
 		    catch (Exception e)
@@ -789,7 +805,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 
 		 	  	float[] widths = new float[] { 1.2f, 1.5f ,1f,1.5f,1.5f,1f,1f,0.7f,1.5f,1.8f};
 		 	  	table.setWidths(widths);
-		 	  	table.setHeaderRows(10);
+		 	  	table.setHeaderRows(2);
 		 	  	document.add(table);
 		 	  	document.newPage();
 			}
@@ -930,7 +946,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	}
 		 	  	float[] widths = new float[] {1f, 1f ,1.5f,1f,1f, 1f ,1f,1f,1f};
 		 	  	table.setWidths(widths);
-		 	  	table.setHeaderRows(5);
+		 	  	table.setHeaderRows(2);
 		 	  	document.add(table);
 			}
 		    catch (Exception e)
@@ -950,15 +966,18 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	   */
 	  public void buildAddedDeletedVotesByMundal(List<VoterModificationVO> list,Document document,String constituenyName)
 	  {
+		    List<SelectOptionVO> selectOptionVOList = list.get(0).getSelectOptionVOsList();
+	    	Long size = 7L + selectOptionVOList.size();
 		    try
 		    {
 		    	LOG.info("Enterd into buildAddedDeletedVotesByMundal() method in VoterModifiationPdfsGenerations Class");
-		    	PdfPTable table = new PdfPTable(9);
+		    	
+		    	PdfPTable table = new PdfPTable(size.intValue());
 		    	document.add( new Paragraph(" ") );
 		    	document.add( new Paragraph(" ") );
-		 	  	
+		    	
 		 	  	PdfPCell cellHeading = new PdfPCell(new Phrase("Mandal/Muncipality Wise Newly Added/Deleted Voters Info",BIGFONT));;
-		 	  	cellHeading.setColspan(9);
+		 	  	cellHeading.setColspan(size.intValue());
 		 	  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(cellHeading);
@@ -970,7 +989,7 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	table.addCell(cell); 
 		 	  	
 		 	  	cell = new PdfPCell(new Phrase("Voters",BIGFONT));
-		 	  	cell.setColspan(2);
+		 	  	cell.setColspan(selectOptionVOList.size());
 		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
 		 	  	table.addCell(cell);
@@ -994,17 +1013,46 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	table.addCell(cell);
 
 		 	  	
-		 	    
+		 	  	PdfPCell c1 ;
+		 	  	if(list != null && list.size() > 0);
+		 	  	{
+		 	  			if(selectOptionVOList != null && selectOptionVOList.size() > 0)
+		 	  			{
+		 	  				Long count = 0l;
+		 	  				for (SelectOptionVO selectOptionVO : selectOptionVOList) {
+		 	  					count ++;
+		 	  					if(count == 1)
+		 	  					{
+		 	  						//table.addCell(selectOptionVO.getId().toString());
+		 	  						c1 = new PdfPCell(new Phrase(selectOptionVO.getName().toString(),BIGFONT));
+		 	  						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 	  						c1.setBackgroundColor(BaseColor.YELLOW);
+		 	  			  			table.addCell(c1);
+		 	  					}
+		 	  					
+		 	  					else
+		 	  					{
+		 	  						c1 = new PdfPCell(new Phrase(selectOptionVO.getName().toString(),BIGFONT));
+		 	  						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 	  						c1.setBackgroundColor(BaseColor.YELLOW);
+		 	  			  			table.addCell(c1);
+		 	  			  		    //table.addCell(selectOptionVO.getId().toString());
+		 	  					}
+		 	  					
+		 					}
+		 	  			}
+		 	  		
+		 	  		/*c1 = new PdfPCell(new Phrase("Electoral Roll 2014 - Draft",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
 
-		 	  	PdfPCell c1 = new PdfPCell(new Phrase("Electoral Roll 2014 - Draft",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-
-		 	  	c1 = new PdfPCell(new Phrase("Electoral Roll 2013 - Final",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
+			 	  	c1 = new PdfPCell(new Phrase("Electoral Roll 2013 - Final",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);*/
+		 	  	}
+		 	  	
 		 	  	
 		 	  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
 		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -1040,16 +1088,16 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  	if(list != null && list.size() > 0);
 		 	  	{
 		 	  		for (VoterModificationVO votersDetailsVO : list) {
-		 	  			List<SelectOptionVO> selectOptionVOList = votersDetailsVO.getSelectOptionVOsList();
+		 	  			List<SelectOptionVO> selectOptionVOList1 = votersDetailsVO.getSelectOptionVOsList();
 		 	  			PdfPCell c2 = new PdfPCell(new Phrase(votersDetailsVO.getName(),SMALLFONT));
 		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 	  			table.addCell(c2);
 		 	  			
 		 	  			//table.addCell(votersDetailsVO.getName());
-		 	  			if(selectOptionVOList != null && selectOptionVOList.size() > 0)
+		 	  			if(selectOptionVOList1 != null && selectOptionVOList1.size() > 0)
 		 	  			{
 		 	  				Long count = 0l;
-		 	  				for (SelectOptionVO selectOptionVO : selectOptionVOList) {
+		 	  				for (SelectOptionVO selectOptionVO : selectOptionVOList1) {
 		 	  					count ++;
 		 	  					if(count == 1)
 		 	  					{
@@ -1096,14 +1144,22 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		 	  			table.addCell(votersDetailsVO.getFemaleVotersDeleted().toString());*/
 		 	  		}
 		 	  	}
-		 	  	float[] widths = new float[] { 1f, 1.5f ,1.5f,1f,1.2f, 1f ,1.2f,1f,1.2f};
+		 	  	float[] widths = null;
+		 	  	if(size == 8)
+		 	  	{
+		 	  		 widths = new float[] { 1f, 1.5f ,1f,1.2f, 1f ,1.2f,1f,1.2f};
+		 	  	}else
+		 	  	{
+		 	  		 widths = new float[] { 1f, 1.5f ,1.5f,1f,1.2f, 1f ,1.2f,1f,1.2f};
+		 	  	}
+		 	  	
 		 	  	table.setWidths(widths);
 		 	  	document.add(table);	 	  	
 		 	  	
 			}
 		    catch (Exception e)
 			{
-				LOG.debug("Exception raised in buildAddedDeletedVotesByMundal() method in VoterModifiationPdfsGenerations Class");
+				LOG.debug("Exception raised in buildAddedDeletedVotesByMundal() method in VoterModifiationPdfsGenerations Class",e);
 			}
 	  	
 	  }
@@ -1718,6 +1774,111 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		  catch (Exception e)
 		  {
 			LOG.debug("Exception raised in buildAddedOrDeletedVotersbyPrecReport() method in VoterModifiationPdfsGenerations Class",e);
+		  }
+	  	
+	  }
+	  
+	  /**
+	   * Percentage Wise Voters Additions In Panchayats
+	   * @param type
+	   * @param document
+	   * @param pdfVO
+	   * @param constituencyName
+	   * @Date 10-12-2013
+	   */
+	  public void buildAddedOrDeletedVotersbyBoothWiseReport(String type,Document document,PdfVO pdfVO, String constituenyName,String constituencyType)
+	  {
+		 
+		  try
+		  {
+		        LOG.info("Enterd into buildAddedOrDeletedVotersbyBoothWiseReport() method in VoterModifiationPdfsGenerations Class");
+		        PdfPTable table = new PdfPTable(2);
+		        document.add( new Paragraph(" ") );
+		        document.add( new Paragraph(" ") );
+		        String name = "";
+		         
+			  	if(type.equalsIgnoreCase("add"))
+			  	{
+			  		
+			  		PdfPCell cellHeading = null;
+			  		name = pdfVO.getBoothWiseAddedList().get(0).getCastName();
+			  		if(constituencyType.equalsIgnoreCase("URBAN"))
+			  		{
+			  			 cellHeading = new PdfPCell(new Phrase("Booth Wise Added Voters in "+name.toUpperCase()+"",BIGFONT));;
+			  		}
+			  		else
+			  		{
+			  			cellHeading = new PdfPCell(new Phrase("Booth Wise Added Voters in  "+name.toUpperCase()+" ",BIGFONT));;
+			  		}
+			  		cellHeading.setColspan(2);
+				  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cellHeading);
+			  	}
+			  	else
+			  	{
+			  		PdfPCell cellHeading = null;
+			  		name = pdfVO.getBoothWiseDeletedList().get(0).getCastName();
+			  		if(constituencyType.equalsIgnoreCase("URBAN"))
+			  		{
+			  			 cellHeading = new PdfPCell(new Phrase("Booth Wise Deleted Voters in "+name.toUpperCase()+"",BIGFONT));;
+			  		}
+			  		else
+			  		{
+			  			cellHeading = new PdfPCell(new Phrase("Booth Wise Deleted Voters in  "+name.toUpperCase()+" ",BIGFONT));;
+			  		}
+			  		
+				  	cellHeading.setColspan(2);
+				  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cellHeading);
+			  	}
+			  	
+			  	
+			  	PdfPCell cell;
+			  	
+			  	
+			  	
+			  	cell = new PdfPCell(new Phrase("Booth",BIGFONT));
+			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setBackgroundColor(BaseColor.YELLOW);
+			  	table.addCell(cell);
+			  	
+			  	
+			  	
+			  	cell = new PdfPCell(new Phrase("Voters",BIGFONT));
+			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setBackgroundColor(BaseColor.YELLOW);
+			  	table.addCell(cell);
+
+			  	List<VotersDetailsVO> votersDetailsVOList = null;
+			  	if(type.equalsIgnoreCase("add"))
+			  	{
+			  		votersDetailsVOList = pdfVO.getBoothWiseAddedList();
+			  	}
+			  	else
+			  	{
+			  		votersDetailsVOList = pdfVO.getBoothWiseDeletedList();
+			  	}
+			  	for (VotersDetailsVO votersDetailsVO : votersDetailsVOList) {
+			  		
+			  		PdfPCell c2 = new PdfPCell(new Phrase(votersDetailsVO.getName().toString(),SMALLFONT));
+			  		c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+					table.addCell(c2);
+		  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getTotalVoters().toString(),SMALLFONT));
+		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  			table.addCell(c2);
+				}
+			  	//table.setWidthPercentage(100);		
+			  	float[] widths = new float[] { 1f, 1f };
+			  	table.setWidths(widths);
+			  	table.setHeaderRows(2);
+			  	document.add(table);
+			  	
+		  }
+		  catch (Exception e)
+		  {
+			LOG.debug("Exception raised in buildAddedOrDeletedVotersbyBoothWiseReport() method in VoterModifiationPdfsGenerations Class",e);
 		  }
 	  	
 	  }

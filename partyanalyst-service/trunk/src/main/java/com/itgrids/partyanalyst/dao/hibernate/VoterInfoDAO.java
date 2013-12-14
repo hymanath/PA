@@ -319,4 +319,40 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		return query.list();
 		}
 
+	public List<Object[]> getVoterInfoByPublicationDateIdsNew(Long reportLevelId, Long reportLevelValue, List<Long> publicationDateIds)
+	{
+		/*Query query = getSession().createQuery("select model.totalVoters, model.maleVoters, model.femaleVoters,model.publicationDate.name " +
+				"  from VoterInfo model where model.voterReportLevel.voterReportLevelId = :reportLevelId " +
+				" and model.reportLevelValue = :reportLevelValue and model.publicationDate.publicationDateId in (:publicationDateId) ");
+		*/
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) ,model.booth.publicationDate.publicationDateId, model.booth.publicationDate.name " +
+				"  from BoothPublicationVoter model where model.booth.constituency.constituencyId = :reportLevelValue " +
+				"   and model.booth.publicationDate.publicationDateId in (:publicationDateId) group by model.booth.publicationDate.publicationDateId ");
+		
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameterList("publicationDateId", publicationDateIds);
+		return query.list();
+	}
+	public List<Object[]> getVoterInfoByPublicationDateIdsNewMaleCount(Long reportLevelId, Long reportLevelValue, List<Long> publicationDateIds)
+	{
+		
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) ,model.booth.publicationDate.publicationDateId, model.booth.publicationDate.name " +
+				"  from BoothPublicationVoter model where model.booth.constituency.constituencyId = :reportLevelValue and model.voter.gender = 'M'" +
+				"   and model.booth.publicationDate.publicationDateId in (:publicationDateId) group by model.booth.publicationDate.publicationDateId ");
+		
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameterList("publicationDateId", publicationDateIds);
+		return query.list();
+	}
+	public List<Object[]> getVoterInfoByPublicationDateIdsNewFemaleCount(Long reportLevelId, Long reportLevelValue, List<Long> publicationDateIds)
+	{
+		
+		Query query = getSession().createQuery("select count(distinct model.voter.voterId) ,model.booth.publicationDate.publicationDateId, model.booth.publicationDate.name " +
+				"  from BoothPublicationVoter model where model.booth.constituency.constituencyId = :reportLevelValue and model.voter.gender = 'F'" +
+				"   and model.booth.publicationDate.publicationDateId in (:publicationDateId) group by model.booth.publicationDate.publicationDateId ");
+		
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameterList("publicationDateId", publicationDateIds);
+		return query.list();
+	}
 }

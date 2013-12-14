@@ -36,4 +36,6 @@ public interface IVoterModifiationPdfsGenerations {
 	 public void buildAddedOrDeletedVotersbyPrecReport(String type,Document document,PdfVO pdfVO, String constituenyName);
 	 
 	 public void panchayatWiseAddedDeletedVoterDetailsByList(Document document,List<VotersDetailsVO> voterDetails,String constituenyName,String type);
+	 
+	 public void buildAddedOrDeletedVotersbyBoothWiseReport(String type,Document document,PdfVO pdfVO, String constituenyName,String constituencyType);
 }
