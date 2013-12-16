@@ -1914,9 +1914,9 @@ public List<SelectOptionVO> getConstituencyList()
   					{
   						sec = diffInsec;
   						if(sec == 1)
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+") second ago":"");
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+" second ago)":"");
   						else
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+") seconds ago":"");
+  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+" seconds ago)":"");
   					}
   					else if(diffInsec > 60 && diffInsec < 3600)	
   					{
