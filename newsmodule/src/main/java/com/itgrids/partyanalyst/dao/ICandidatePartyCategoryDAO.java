@@ -30,4 +30,6 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	public Long getAllTheNewsCountForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds);
 	
 	public List<Object[]> getCategorysCountByFileId(Set<Long> fileIds);
+	
+	public List<Object[]> getCategoriesList(List<Long> fileIds);
 }

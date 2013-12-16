@@ -29,4 +29,6 @@ public interface ICandidatePartyKeywordDAO extends GenericDao<CandidatePartyKeyw
 	public Long getAllTheNewsCountForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> keywordIds);
 	
 	public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds);
+	
+	public List<Object[]> getKeyWords(List<Long> fileIds);
 }

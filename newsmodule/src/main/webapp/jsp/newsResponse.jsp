@@ -28,6 +28,7 @@
 	 
 	<!-- YUI Skin Sam -->
 
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <style>
 .ui-tooltip, .arrow:after {
     background: black;
@@ -182,6 +183,7 @@ function callAjax(jsObj,url)
 				showContentResultList = myResults;
 				totalRecords = myResults.length;
                 buildNewsDetails(myResults,"newsDetailsDiv","main");	
+                //buildResult(myResults,"newsDetailsDiv","main");	
 			}
 			else if(jsObj.task == "getCompleteDetailsOfANewsResponseSub")
 			{
@@ -223,11 +225,9 @@ function buildNewsDetails(results,divId,type)
    
    for(var i in results)
    {  
-
-	 // alert(results[i].eenadu == true);  
+ 
 	   str+='<div class="alert" id="newsDisplayDiv'+i+'" style="border:2px solid #5e5e5e;padding:4px;margin:3px 0px 0px 76px;;width:807px;background-color:#ffffff;text-align:left;">';
-	 /*  if(results[i].latest == true )
-			str+='<h6 style="color:red;text-align:center;">THIS IS LATEST RESPONSE</h6>';*/
+
 
        if(results[i].fontId == 1 )
 	       str+='<div id="titleDiv" style="color:#5e5e5e;font-weight:bold;text-align:center;"><span  class="enadu">'+results[i].fileTitle1+'</span></div>';
@@ -240,11 +240,10 @@ function buildNewsDetails(results,divId,type)
 		else
 			str+='<div id="candidateNameDiv"><span style="font-weight:bold;color:blue;">Candidate Name:</span> '+results[i].candidateName+'</div>';
 		str+='<div id="LocationDiv"><span style="font-weight:bold;color:blue;">Location Name:</span> '+results[i].locationName+'</div>';
-		
-		/* if(results[i].fileVOList[0].fileDateAsString != null)
-		{
+		 if(results[i].fileVOList[0].fileDateAsString != null)
+		 {
 			str += '<div style="float: right; margin-top: -39px;"><a class="btn btn-info" onCLick="openResponcePage('+results[i].fileVOList[0].fileId+',\'newsDisplayDiv'+i+'\');">View resopnce</a></div>';
-		} */
+		 } 
        if(results[i].fileDescription1 != null && results[i].fileDescription1 != "")
        if(results[i].descEenadu)
 	      str+='<div id="descriptionDiv" class="alert alert-info" style="color:#000000;background-color:#ffffff;"><span class="enadu">'+results[i].fileDescription1+'</span></div>';
@@ -324,17 +323,17 @@ function buildNewsDetails(results,divId,type)
 
        }
 	   
-    str+='</div>';
+  str+='</div>';
+  $('#'+divId+'').append(str);
 
-   $('#'+divId+'').append(str);
-   /* if(type == "sub")
-	   {
-			$('#newsdisplayforsubdiv1').dialog({
-				width : 950,
-				height : 750
-			});
-	   } */
-var finalIndex = results.length-1;
+  if(type == "sub")
+  {
+	 $('#newsDisplayForSubDiv'+count+'').dialog({
+		width : 850,
+		height : 750
+	 });
+  } 
+ var finalIndex = results.length-1;
     $('html, body').animate({
             scrollTop: $("#newsDisplayDiv"+finalIndex).offset().top
     }, 2000);
@@ -375,17 +374,15 @@ function showAnotherSource(sourceId , i)
           }
 		  if(showContentResultList[i].fileVOList[j].pageNoStr != null && showContentResultList[i].fileVOList[j].comments == null)
 		  {
-			str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[j].pageNoStr+'</span>';
+		  str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[j].pageNoStr+'</span>';
 		  }
-		str+='<span style="float:right;" class="label label-success">File Date:'+showContentResultList[i].fileDate+'</span></div>';
+		  str+='<span style="float:right;" class="label label-success">File Date:'+showContentResultList[i].fileDate+'</span></div>';
 
 		 if(i != totalRecords -1)
 		str+='<div style="float: right; margin-top: 60px;"><a  class="nextLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to next news"><img src="images/arrow-down_blue.png"></img></a></div>';
 
         if(i != 0)
         str+='<div style="float: left; margin-top: 60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png"></img></a></div>';
-
-		 // str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
 
 	if(showContentResultList[i].fileVOList[j].fileVOList[j] != null)
 		str+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[j].path+'" style="" ></img>';
@@ -424,6 +421,7 @@ function showAnotherSource(sourceId , i)
 
 }
 
+
 function showNextnews(sourceId , orderNo  , path , i)
 {
 	var str='';
@@ -434,36 +432,25 @@ function showNextnews(sourceId , orderNo  , path , i)
 		if(showContentResultList[i].fileVOList[j].fileSourceLanguageId == sourceId)
 		{
 
-        //str+='<div id="mainDiv'+i+'" style="text-align:center;">';
+		// str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>';
 
-		 // str+='<span class="label" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>'
+         //str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ showContentResultList[i].fileVOList[0].newsEdition+'</span>';
 
-		  str+='<div style="height:24px;"><span class="label label-success" style="float:left;">SOURCE:'+ showContentResultList[i].fileVOList[j].source+'</span>';
-
-         str+='<span class="label label-success" style="margin-right:138px;">EDITION:'+ showContentResultList[i].fileVOList[0].newsEdition+'</span>';
-
-		 str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[0].pageNo+'</span>';
+		 //str+='<span class="label label-success">PAGE NO:'+ showContentResultList[i].fileVOList[0].pageNo+'</span>';
 
 
-		str+='<span style="float:right;" class="label label-success">File Date:'+showContentResultList[i].fileDate+'</span></div>';
+		 //str+='<span style="float:right;" class="label label-success">File Date:'+showContentResultList[i].fileDate+'</span></div>';
 
       
-	    if(i != totalRecords -1)
-		str+='<div style="float: right; margin-top: 60px;"><a  class="nextLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to next news"><img src="images/arrow-down_blue.png"></img></a></div>';
+	     if(i != totalRecords -1)
+		 str+='<div style="float: right; margin-top: 60px;"><a  class="nextLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to next news"><img src="images/arrow-down_blue.png"></img></a></div>';
 
-        if(i != 0)
-        str+='<div style="float: left; margin-top:60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png"></img></a></div>';
-
-
-		str+='<img src="'+path+'" style="" ></img>';
+         if(i != 0)
+         str+='<div style="float: left; margin-top:60px;"><a  class="previousLink" data-nextdiv="'+i+'" href="javascript:void(0)" title="Click here to go to previous news"><img src="images/arrow-up_blue.png"></img></a></div>';
 
 
-		//str+='</div>';
+		    str+='<img src="'+path+'" style="" ></img>';
 
-
-
-				//str+='<span text-error"="" class="class=">SOURCE:</span>'+showContentResultList[i].fileVOList[j].source+'';
-			//str+='<img src="'+path+'"></img>';
 
 			$("#mainDiv"+i).html(str);
 
@@ -474,19 +461,7 @@ function showNextnews(sourceId , orderNo  , path , i)
 			for(var k = 0;k<showContentResultList[i].fileVOList[j].fileVOList.length;k++)
 			{
 
-			if(showContentResultList[i].fileVOList[j].fileVOList[k].orderNo != orderNo){/*
-
-			str1+='<div>';
-
-			str1+='<img src="'+showContentResultList[i].fileVOList[j].fileVOList[k].path+'" style="height:100px;width:100px;"></img>';
-			str1+='</div>';
-
-
-			str1+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+showContentResultList[i].fileVOList[j].fileSourceLanguageId+','+showContentResultList[i].fileVOList[j].fileVOList[k].orderNo+',\''+showContentResultList[i].fileVOList[j].fileVOList[k].path+'\','+i+');}">'+showContentResultList[i].fileVOList[j].fileVOList[k].orderName+'</a></span>';
-
-			str1+='</div>';*/
-
-
+			if(showContentResultList[i].fileVOList[j].fileVOList[k].orderNo != orderNo){
 
             str1+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+showContentResultList[i].fileVOList[j].fileVOList[k].path+'" alt="news image not available"></img><br>';
 
@@ -494,7 +469,6 @@ function showNextnews(sourceId , orderNo  , path , i)
 
 				}
 			}			
-
 			$('#otherNews'+i).html(str1);
 		}
 
@@ -664,7 +638,270 @@ function buildNewsDetails1(result)
 	 $("#releatedNewsDiv").addClass("releatedNewsDiv").html(releatedGallary);
 }
 
+function buildResult(results,divId,type)
+{
+	
+	showContentResultList = results;
 
+   var str='';
+   var count = 0;
+   if(type == "main")
+   {
+		str+='<div id="newsDisplayForMainDiv" class="container content_widget">';
+   }
+   else
+   {
+		count++;
+		$('#newsDisplayForSubDiv'+count+'').html('');
+	    str+='<div id="newsDisplayForSubDiv'+count+'" class="container">';
+		str += '<span><a onClick="closeTheDiv(\'newsDisplayForSubDiv'+count+'\')">close</a></span>';
+   }
+  
+   for(var i in results)
+   {  
+		 if(i == 0)
+		 {
+		   
+		   str+='<div class="" id="newsDisplayDiv'+i+'" >';
+		   str += '<div class="row-fluid ">'
+		   str += '<div class="span12 widget ">'
+		   if(results[i].fontId == 1 )
+		   {
+				str+='<div class="boxHeading " id="titleDiv">';
+				str+='<h4><span class="enadu">'+results[i].fileTitle1+'</span></h4>';str+='</div>';
+		   }
+		   else
+		   {
+				str+='<div class="boxHeading" id="titleDiv">';
+				str+='<h4>'+results[i].fileTitle1+'</h4>';				
+				str+='</div>';
+		   }
+		
+			var canidateName = results[i].candidateName;
+			
+			str += '<div class="accordion-inner">';
+			str += '<div class="m_top5">';
+			if(canidateName == null)
+			{
+				str+='<a class="btn"><span>'+results[i].locationName+'</span></a>';
+			}
+			else
+			{
+				str+='<a class="btn"><span>'+results[i].candidateName+'</span></a>';
+				str+='<a class="btn"><span>'+results[i].locationName+'</span></a>';
+			}
+		
+			if(results[i].fileVOList[0].source != null)
+			{
+				str+='<a class="btn"><span>'+ results[i].fileVOList[0].source+'</span></a>';
+			}
+			if(results[i].fileVOList[0].newsEdition != null)
+			{
+				str+='<a class="btn"><span>'+ results[i].fileVOList[0].newsEdition+'</span></a>';
+			}
+			if(results[i].fileVOList[0].pageNoStr != null && results[i].fileVOList[0].comments == null)
+			{
+				str += '<a class="btn"><span>'+ results[i].fileVOList[0].pageNoStr+'</span></a>';
+			}
+			str += '<a class="btn"><span>'+results[i].fileDate+'</span></a>';
+			str += '</div>';
+			/* if(results[i].fileVOList[0].fileDateAsString != null)
+			{
+				str += '<div style="float: right; margin-top: -39px;"><a class="btn btn-info" onCLick="openResponcePage('+results[i].fileVOList[0].fileId+',\'newsDisplayDiv'+i+'\');">View resopnce</a></div>';
+			} */
+		   if(results[i].fileDescription1 != null && results[i].fileDescription1 != "")
+		   if(results[i].descEenadu)
+		   {
+				str += '<div class=" m_top20" id="descriptionDiv">';
+				str += '<p><span class="enadu">'+results[i].fileDescription1+'</span></p>';
+				str +='</div>';
+		   }
+		   else
+		   {
+				str += '<div class="m_top20" id="descriptionDiv">';
+				str += '<p>'+results[i].fileDescription1+'</p>';
+				str +='</div>';
+		   }
+			if(results[i].newsDescription != null && results[i].newsDescription != "")  
+			if(results[i].fontId == 1 )			
+			   str+='<div id="" class="breadcrumb" style="color:#000000;"><span class="enadu">'+results[i].newsDescription+'</span></div>';
+			else
+				str+='<div id="" class="breadcrumb" style="color:#000000;"><span>'+results[i].newsDescription+'</span></div>';			
+			str += '</div>';
+			str += '</div>';
+			str += '</div>';
+			str+='<div id="imageDiv'+i+'">';
+			str+='<div id="mainDiv'+i+'" style="text-align:center;">';
+			str += '<div>';
+			if(results[i].fileVOList[0].fileVOList[0] != null)
+			str+='<img  src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="" ></img>';
+			str+='</div>';
+
+			if(results[i].fileVOList[0].fileVOList.length > 1)
+			{
+				
+
+				str+='<div style="margin-left:100px;margin-top:39px;width:700px;height:143px;" id="otherNews'+i+'">';
+
+				for(var k=1;k<results[i].fileVOList[0].fileVOList.length ;k++){
+					str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+results[i].fileVOList[0].fileVOList[k].path+'" ></img><br>';
+
+				str+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+results[i].fileVOList[0].fileSourceLanguageId+','+results[i].fileVOList[0].fileVOList[k].orderNo+',\''+results[i].fileVOList[0].fileVOList[k].path+'\','+i+')};"> Part - '+k+'</a></span></div>';
+				}
+
+				str+='</div>';
+
+			}
+			str+='</div>';
+			if(results[i].fileVOList.length > 1)
+			{
+				str += '<div class="row-fluid">';
+				str+='<div style="text-align:center;margin:6px;background-color:#5e5e5e;color:#ffffff;" id="otherSourcesDiv" class="breadcrumb span11 offset1">';
+				str+='<h6>Same News In Other Sources</h6>';
+				 
+				str+='<div id="otherSources'+i+'">';
+				for(var l=1;l<results[i].fileVOList.length ;l++)
+				{
+					str+='<span><a href="javascript:{showAnotherSource('+results[i].fileVOList[l].sourceId+','+i+')}" class="btn btn-success" >'+results[i].fileVOList[l].source+'</a></span>';
+				}
+				str+='</div>';
+				str+='</div>';
+				str+='</div>';
+			}
+			str+='</div>';
+			str+='</div>';
+			str += '<div class="row-fluid ">';
+			str += '<div id="accordion2" class="accordion span11 offset1 m_top10">';
+		}
+		
+		else
+		{
+		   str+='<div class="accordion-group " id="newsDisplayDiv'+i+'" >';
+		   if(results[i].fontId == 1 )
+		   {
+				str+='<div class="accordion-heading boxHeading " >';
+				str+='<h4><a class="enadu accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+1+'>'+results[i].fileTitle1+'</a></h4>';str+='</div>';
+		   }
+		   else
+		   {
+				str+='<div class="accordion-heading boxHeading" >';
+				str+='<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapse'+i+'">'+results[i].fileTitle1+'</a>';				
+				str+='</div>';
+		   }
+			str += '<div class="accordion-body collapse" id="collapse'+i+'">';
+			var canidateName = results[i].candidateName;
+			str += '<div class="accordion-inner">';
+			if(canidateName == null)
+			{
+				str+='<a class="btn"><span>'+results[i].locationName+'</span></a>';
+			}
+			else
+			{
+				str+='<a class="btn"><span>'+results[i].candidateName+'</span></a>';
+				str+='<a class="btn"><span>'+results[i].locationName+'</span></a>';
+			}
+			
+			if(results[i].fileVOList[0].source != null)
+			{
+				str+='<a class="btn"><span>'+ results[i].fileVOList[0].source+'</span></a>';
+			}
+			if(results[i].fileVOList[0].newsEdition != null)
+			{
+				str+='<a class="btn"><span>'+ results[i].fileVOList[0].newsEdition+'</span></a>';
+			}
+			if(results[i].fileVOList[0].pageNoStr != null && results[i].fileVOList[0].comments == null)
+			{
+				str += '<a class="btn"><span>'+ results[i].fileVOList[0].pageNoStr+'</span></a>';
+			}
+			str += '<a class="btn"><span>'+results[i].fileDate+'</span></a>';
+			str += '</div>';
+			/* if(results[i].fileVOList[0].fileDateAsString != null)
+			{
+				str += '<div style="float: right; margin-top: -39px;"><a class="btn btn-info" onCLick="openResponcePage('+results[i].fileVOList[0].fileId+',\'newsDisplayDiv'+i+'\');">View resopnce</a></div>';
+			} */
+		   if(results[i].fileDescription1 != null && results[i].fileDescription1 != "")
+		   if(results[i].descEenadu)
+		   {
+				str += '<div class="m_top10" id="descriptionDiv">';
+				str += '<p><span class="enadu">'+results[i].fileDescription1+'</span></p>';
+				str +='</div>';
+		   }
+		   else
+		   {
+				str += '<div class="m_top10" id="descriptionDiv">';
+				str += '<p>'+results[i].fileDescription1+'</p>';
+				str +='</div>';
+		   }
+			if(results[i].newsDescription != null && results[i].newsDescription != "")  
+			if(results[i].fontId == 1 )			
+			   str+='<div id="" class="breadcrumb" style="color:#000000;"><span class="enadu">'+results[i].newsDescription+'</span></div>';
+			else
+				str+='<div id="" class="breadcrumb" style="color:#000000;"><span>'+results[i].newsDescription+'</span></div>';
+
+
+			 str+='<div id="imageDiv'+i+'" style="text-align:center;">';
+
+			 str+='<div id="mainDiv'+i+'" style="text-align:center;">';
+			
+			str += '<div>';
+			if(results[i].fileVOList[0].fileVOList[0] != null)
+			str+='<img  src="'+results[i].fileVOList[0].fileVOList[0].path+'" style="" ></img>';
+			str+='</div>';
+
+			if(results[i].fileVOList[0].fileVOList.length > 1)
+			{
+				
+
+				str+='<div style="margin-left:100px;margin-top:39px;width:700px;height:143px;" id="otherNews'+i+'">';
+
+				for(var k=1;k<results[i].fileVOList[0].fileVOList.length ;k++){
+					str+='<div style="float:left;margin:7px;"><img style="height:100px;width:100px;" src="'+results[i].fileVOList[0].fileVOList[k].path+'" ></img><br>';
+
+				str+='<span style="margin-left:22px;"><a href="javascript:{showNextnews('+results[i].fileVOList[0].fileSourceLanguageId+','+results[i].fileVOList[0].fileVOList[k].orderNo+',\''+results[i].fileVOList[0].fileVOList[k].path+'\','+i+')};"> Part - '+k+'</a></span></div>';
+				}
+
+				str+='</div>';
+
+			}
+			str+='</div>';
+			if(results[i].fileVOList.length > 1)
+			{
+				str += '<div class="row-fluid">';
+				str+='<div  id="otherSourcesDiv" class="breadcrumb">';
+				str+='<h6>Same News In Other Sources</h6>';
+				 
+				str+='<div id="otherSources'+i+'">';
+				for(var l=1;l<results[i].fileVOList.length ;l++)
+				{
+					str+='<span><a href="javascript:{showAnotherSource('+results[i].fileVOList[l].sourceId+','+i+')}" class="btn btn-success" >'+results[i].fileVOList[l].source+'</a></span>';
+				}
+				str+='</div>';
+				str+='</div>';
+				str+='</div>';
+
+			}
+			str += '</div>';
+			str += '</div>';
+			str += '</div>';
+		}	
+   }
+	 str += '</div>';  
+	 str += '</div>';  
+    if(type == "main")  
+	{
+		str+='</div>';
+	}
+    else
+	{
+		str+='</div>';
+	}
+
+   $('#'+divId+'').append(str);
+   var finalIndex = results.length-1;
+   $('html, body').animate({
+            scrollTop: $("#newsDisplayDiv"+finalIndex).offset().top
+    }, 2000);
+}
 </script>
  </head>
 

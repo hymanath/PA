@@ -155,6 +155,8 @@ public class FileVO extends ResultStatus implements Serializable {
 	private List<Long> gallaryIds;
 	private List<Long> keywordIds;
 	
+	private List<String> keywordsList;
+	private List<String> categoriesList;
 	public List<Long> getGallaryIds() {
 		return gallaryIds;
 	}
@@ -1352,6 +1354,34 @@ public class FileVO extends ResultStatus implements Serializable {
 	 */
 	public void setPageNoStr(String pageNoStr) {
 		PageNoStr = pageNoStr;
+	}
+
+	/**
+	 * @return the keywordsList
+	 */
+	public List<String> getKeywordsList() {
+		return keywordsList;
+	}
+
+	/**
+	 * @param keywordsList the keywordsList to set
+	 */
+	public void setKeywordsList(List<String> keywordsList) {
+		this.keywordsList = keywordsList;
+	}
+
+	/**
+	 * @return the categoriesList
+	 */
+	public List<String> getCategoriesList() {
+		return categoriesList;
+	}
+
+	/**
+	 * @param categoriesList the categoriesList to set
+	 */
+	public void setCategoriesList(List<String> categoriesList) {
+		this.categoriesList = categoriesList;
 	}
 
 	

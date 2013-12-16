@@ -8506,8 +8506,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 List<Object[]> fileSoureces = null;
 	  if(fileIds != null && fileIds.size() > 0)
 	  fileSoureces = fileSourceLanguageDAO.getFileSourceType(fileIds);
-	 if(fileSoureces != null && fileSoureces.size() > 0)
-	 {
+	  if(fileSoureces != null && fileSoureces.size() > 0)
+	  {
 		 fileSourceMap = new HashMap<Long, String>();
 		 for (Object[] parms : fileSoureces) {
 			 if(fileSourceMap.get((Long)parms[0]) == null)
@@ -8521,7 +8521,40 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			
 		}
 	 }
+	  
+	  List<Object[]> keyWordsList = candidatePartyKeywordDAO.getKeyWords(fileIds);
+	  List<Object[]> galleriesList = candidatePartyCategoryDAO.getCategoriesList(fileIds);
+	  Map<Long,List<String>> keyWordsMap = new HashMap<Long, List<String>>();
+	  Map<Long,List<String>> categoerysMap = new HashMap<Long, List<String>>();
+	  List<String> keysList = null;
+	  List<String> categoerysList = null;
+	  if(keyWordsList != null && keyWordsList.size() > 0)
+	  {
+		 for (Object[] parms : keyWordsList)
+		 {
+			
+			if(keyWordsMap.get((Long)parms[0]) == null)
+			{
+				keysList = new ArrayList<String>();
+				 keyWordsMap.put((Long)parms[0], keysList);
+			}
+			keysList.add(parms[1].toString());
+			
+		 } 
+	  }
 	 
+	  if(galleriesList != null && galleriesList.size() > 0)
+	  {
+		  for (Object[] parms : galleriesList)
+		  {
+			  if(categoerysMap.get((Long)parms[0]) == null)
+			  {
+				  categoerysList = new ArrayList<String>();
+				  categoerysMap.put((Long)parms[0], categoerysList);
+			  }
+			  categoerysList.add(parms[1].toString());
+		  } 
+	  }
 	 Set<Long> fileSet = fileMap.keySet();
 	 if(fileSet != null && fileSet.size() > 0)
 	 {
@@ -8529,6 +8562,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 for (Long fileId : fileSet) {
 			 FileVO fileVO = fileMap.get(fileId);
 			 fileVO.setSource(fileSourceMap.get(fileId));
+			 fileVO.setKeywordsList(keyWordsMap.get(fileId));
+			 fileVO.setCategoriesList(categoerysMap.get(fileId));
 			 returnList.add(fileVO);
 		}
 	 }
