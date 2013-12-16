@@ -63,7 +63,7 @@
  <script type="text/javascript" src="js/highcharts/js/highcharts3.js"></script>
  <script type="text/javascript" src="js/validationTools/validationTools.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
-
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 <title>Party Analyst</title>
 
 <style type="text/css">
@@ -208,12 +208,33 @@ function buildStatus(result)
 	$("#errorDiv").html('');
 	if(result.resultCode == 0)
 	{
- getMobileAppUsersData();
+    getMobileAppUsersData();
 	}
 	else
 	$("#errorDiv").html('Error Occured,Try again');
 }
+
+/*function getUserDetails(userId)
+{
+		var jsObj=
+		{
+		 userId:userId,
+		 type:type,
+		 task:"changeAccess"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "enableOrdisableAccessAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+}
+
+function openWindow(userId)
+{
+	var urlstr ='mobileAppUserInfo.action?userId="+userId+"&';
+	var browser1 = window.open(urlstr,"userDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+		browser1.focus();
+}*/
  getMobileAppUsersData();
  </script>
 </body>
 </html>
+
