@@ -177,6 +177,72 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 			str+='<p class="span8">'+results[i].description+'</p>';
 		}
 		str+='</div>';
+		if(results[i].categoriesList != null)
+		{
+			
+			str += '<div><p class="text-error" style="font-weight:bold;">Categorie(s) : <span style="font-weight:normal;color:black;">';
+			var categ = "";
+			var count = 0;
+			for(var m in results[i].categoriesList)
+			{
+			count++;
+			var length = results[i].categoriesList.length;
+			if(results[i].categoriesList[m] == 1)
+			{
+				categ += ''+results[i].categoriesList[m]+'';
+			}
+			else 
+			{
+				if(count == length)
+				{
+					categ += ''+results[i].categoriesList[m]+'';
+				}
+				else
+				{
+					categ += ''+results[i].categoriesList[m]+', ';
+				}
+				
+			}
+			
+			}
+			str += ''+categ+'</span></p>';
+			str += '</div>';
+		
+		}
+			
+		if(results[i].keywordsList != null)
+		{
+			str += '<div><p class="text-error" style="font-weight:bold;">Keyword(s) : <span style="font-weight:normal;color:black;">';
+		
+			var keyword = "";
+			var count = 0;
+			for(var n in results[i].keywordsList)
+			{
+				count++;
+				var length = results[i].keywordsList.length;
+				if(results[i].keywordsList[n] == 1)
+				{
+					keyword += ''+results[i].keywordsList[n]+'';
+				}
+				else 
+				{
+					if(count == length)
+					{
+						keyword += ''+results[i].keywordsList[n]+'';
+					}
+					else
+					{
+						keyword += ''+results[i].keywordsList[n]+', ';
+					}
+					
+				}
+				
+			}
+			str += ''+keyword+'</span></p>';
+			str += '</div>';
+		}
+		
+		
 		str+='<div class="row-fluid m_top10">';
 		str+='<div class="span9" style="width:550px;">';
 		str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">';
@@ -186,8 +252,9 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 		str += '</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
 		/* if(results[i].responseCount > 0)
 		str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></p></td>'; */
-		
 		str+='</tr></table></div>';
+		
+		
 		//str+='<br><div class="span2" style="float:right;">';
 		
 		//str+='	<a type="button" class="btn btn-mini btn-info pull-right" onClick="getNewsDetailsByContentId('+results[i].fileGallaryId+')">Details...</a>';

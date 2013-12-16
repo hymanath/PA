@@ -239,4 +239,11 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 			 return (Long) query.uniqueResult();
 			 
 		}
+	 
+	 public List<Object[]> getKeyWords(List<Long> fileIds)
+	 {
+		 Query query = getSession().createQuery("select model.candidatePartyFile.file.fileId,model.keyword.type from CandidatePartyKeyword model where model.candidatePartyFile.file.fileId in (:fileIds)");
+		 query.setParameterList("fileIds", fileIds);
+		 return query.list();
+	 }
 }

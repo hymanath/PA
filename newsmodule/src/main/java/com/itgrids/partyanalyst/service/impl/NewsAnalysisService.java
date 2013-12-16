@@ -1318,11 +1318,11 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	  try{
 		StringBuilder query = new StringBuilder();
 		StringBuilder queryCount = new StringBuilder();
-		StringBuilder queryData = new StringBuilder();
-		StringBuilder cpfQuery = new StringBuilder();
-		StringBuilder fslQuery = new StringBuilder();
-		StringBuilder cpcQuery = new StringBuilder();
-		StringBuilder cpkQuery = new StringBuilder();
+		StringBuilder queryData  = new StringBuilder();
+		StringBuilder cpfQuery   = new StringBuilder();
+		StringBuilder fslQuery   = new StringBuilder();
+		StringBuilder cpcQuery   = new StringBuilder();
+		StringBuilder cpkQuery   = new StringBuilder();
 		queryData.append("select distinct  model.fileTitle ,model.fileDescription ," +
 				" model.fileDate ,model.filePath ,model.fileId ,model.font.fontId,model.descFont.fontId  " +
 				" from File model  ");		
