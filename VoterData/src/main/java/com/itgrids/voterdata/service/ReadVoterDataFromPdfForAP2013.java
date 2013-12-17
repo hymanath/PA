@@ -104,8 +104,10 @@ public class ReadVoterDataFromPdfForAP2013 {
         int totalVotersCount = 0;
         int i = 0;
         
-        Pattern p = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
-        Pattern p1 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n\\s([0-9]*)");
+        Pattern p22 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
+        Pattern p12 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
+        Pattern p = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
+        Pattern p1 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\-\\*\\~]*)\\r\\n\\s([0-9]*)");
         Pattern p2 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
         Pattern p3 = Pattern.compile("([0-9]*)\\r\\nAge:\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([A-Z\\d]*)\\r\\nElector's Name:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\nHouse No:\\r\\n([A-Za-z\\.\\s\\r\\n\\-\\*\\~]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)");
         
@@ -142,25 +144,27 @@ public class ReadVoterDataFromPdfForAP2013 {
                     Matcher m1 = p1.matcher(sb);
                     Matcher m2 = p2.matcher(sb);
                     Matcher m3 = p3.matcher(sb);
+                    Matcher m22 = p22.matcher(sb);
+                    Matcher m12 = p12.matcher(sb);
                     
                     VoterInfo voter = null;
                     List<VoterInfo> voterInfoList = new ArrayList<VoterInfo>(10);
                     List<Long> serialNosList = new ArrayList<Long>(0);
                     
-                    while (m.find()) 
+                    while (m22.find()) 
                     {
                         try{
                     	i++;
                         voter = new VoterInfo();
                         
-                        voter.setsNo(Long.valueOf(m.group(1).replaceAll("\\r\\n","").trim()));
-                        voter.setSex(m.group(2).replaceAll("\\r\\n","").trim());
-                        voter.setVoterId(m.group(3).replaceAll("\\r\\n","").trim());
-                        voter.setGuardianRelation(m.group(4).substring(0, m.group(4).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
-                        voter.setVoterName(m.group(5).replaceAll("\\r\\n","").trim());
-                        voter.setGuardianName(m.group(6).replaceAll("\\r\\n","").trim());
-                        voter.setHouseNumber(m.group(7).replaceAll("\\r\\n","").trim());
-                        voter.setAge(m.group(8).replaceAll("\\r\\n","").trim());
+                        voter.setsNo(Long.valueOf(m22.group(1).replaceAll("\\r\\n","").trim()));
+                        voter.setSex(m22.group(2).replaceAll("\\r\\n","").trim());
+                        voter.setVoterId(m22.group(3).replaceAll("\\r\\n","").trim());
+                        voter.setGuardianRelation(m22.group(4).substring(0, m22.group(4).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+                        voter.setVoterName(m22.group(5).replaceAll("\\r\\n","").trim()+" "+m22.group(6).replaceAll("\\r\\n","").trim());
+                        voter.setGuardianName(m22.group(7).replaceAll("\\r\\n","").trim()+" "+m22.group(8).replaceAll("\\r\\n","").trim());
+                        voter.setHouseNumber(m22.group(9).replaceAll("\\r\\n","").trim());
+                        voter.setAge(m22.group(10).replaceAll("\\r\\n","").trim());
                         
                         voter.setConstituency(fileName[1]);
                         voter.setBoothNo(fileName[2]);
@@ -172,6 +176,95 @@ public class ReadVoterDataFromPdfForAP2013 {
                         System.out.println(voterInfo);
                         sb2.append(voterInfo+"\n");
                         writer.write(voterInfo+"\n");
+                        }catch(Exception e)
+                        {
+                        	e.printStackTrace();
+                        }
+                    }
+                    
+                    voterInfoList = checkForVoterList(voterInfoList);
+                    serialNosList.addAll(getSerialNoList(voterInfoList));
+                    saveVotersData(voterInfoList);
+                    voterInfoList = new ArrayList<VoterInfo>(0);
+                    
+                    while (m12.find()) 
+                    {
+                        try{
+                        long serialNo = new Long(m12.group(1).replaceAll("\\r\\n","").trim());
+                        if(!serialNosList.contains(serialNo))
+                		{
+	                    	i++;
+	                        voter = new VoterInfo();
+	                        
+	                        voter.setsNo(Long.valueOf(m12.group(1).replaceAll("\\r\\n","").trim()));
+	                        voter.setSex(m12.group(2).replaceAll("\\r\\n","").trim());
+	                        voter.setVoterId(m12.group(3).replaceAll("\\r\\n","").trim());
+	                        voter.setGuardianRelation(m12.group(4).substring(0, m12.group(4).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+	                        voter.setHouseNumber(m12.group(8).replaceAll("\\r\\n","").trim());
+	                        voter.setAge(m12.group(9).replaceAll("\\r\\n","").trim());
+	                        
+	                        if(m12.group(6).endsWith(" "))
+	                        {
+		                        voter.setVoterName(m12.group(5).replaceAll("\\r\\n","").trim());
+		                        voter.setGuardianName(m12.group(6).replaceAll("\\r\\n","").trim()+" "+m12.group(7).replaceAll("\\r\\n","").trim());
+	                        }
+	                        else
+	                        {
+	                        	voter.setVoterName(m12.group(5).replaceAll("\\r\\n","").trim()+" "+m12.group(6).replaceAll("\\r\\n","").trim());
+		                        voter.setGuardianName(m12.group(7).replaceAll("\\r\\n","").trim());
+	                        }
+	                        
+	                        voter.setConstituency(fileName[1]);
+	                        voter.setBoothNo(fileName[2]);
+	                        voter.setBoothName(fileName[3]);
+	                        voter.setConstituencyId(fileName[0]);
+	                        totalVotersCount++;
+	                        voterInfoList.add(voter);
+	                        voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\t Serial No -- "+voter.getsNo()+"\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
+	                        System.out.println(voterInfo);
+	                        sb2.append(voterInfo+"\n");
+	                        writer.write(voterInfo+"\n");
+                		}
+                        }catch(Exception e)
+                        {
+                        	e.printStackTrace();
+                        }
+                    }
+                    
+                    voterInfoList = checkForVoterList(voterInfoList);
+                    serialNosList.addAll(getSerialNoList(voterInfoList));
+                    saveVotersData(voterInfoList);
+                    voterInfoList = new ArrayList<VoterInfo>(0);
+                    
+                    while (m.find()) 
+                    {
+                        try{
+                        long serialNo = new Long(m.group(1).replaceAll("\\r\\n","").trim());
+                        if(!serialNosList.contains(serialNo))
+                		{
+	                    	i++;
+	                        voter = new VoterInfo();
+	                        
+	                        voter.setsNo(Long.valueOf(m.group(1).replaceAll("\\r\\n","").trim()));
+	                        voter.setSex(m.group(2).replaceAll("\\r\\n","").trim());
+	                        voter.setVoterId(m.group(3).replaceAll("\\r\\n","").trim());
+	                        voter.setGuardianRelation(m.group(4).substring(0, m.group(4).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+	                        voter.setVoterName(m.group(5).replaceAll("\\r\\n","").trim());
+	                        voter.setGuardianName(m.group(6).replaceAll("\\r\\n","").trim());
+	                        voter.setHouseNumber(m.group(7).replaceAll("\\r\\n","").trim());
+	                        voter.setAge(m.group(8).replaceAll("\\r\\n","").trim());
+	                        
+	                        voter.setConstituency(fileName[1]);
+	                        voter.setBoothNo(fileName[2]);
+	                        voter.setBoothName(fileName[3]);
+	                        voter.setConstituencyId(fileName[0]);
+	                        totalVotersCount++;
+	                        voterInfoList.add(voter);
+	                        voterInfo = i +"\tConstituency -- " + voter.getConstituency() + "\tBooth No -- " + voter.getBoothNo() + "\t Serial No -- "+voter.getsNo()+"\tBooth Name -- " + voter.getBoothName().replaceAll(".pdf","") + "\tvoter ID -- " + voter.getVoterId() + "\tVoter Name -- " + voter.getVoterName() + "\tAge -- " + voter.getAge() + "\tSex -- " + voter.getSex() + "\tHouse No -- " + voter.getHouseNumber() + "\t Relation -- " + voter.getGuardianRelation() + "\tGuardian Name -- " + voter.getGuardianName() + "";
+	                        System.out.println(voterInfo);
+	                        sb2.append(voterInfo+"\n");
+	                        writer.write(voterInfo+"\n");
+                		}
                         }catch(Exception e)
                         {
                         	e.printStackTrace();
@@ -379,6 +472,13 @@ public class ReadVoterDataFromPdfForAP2013 {
     				String houseNo = info.getHouseNumber().trim().replaceAll("'", "");
     				String relativeName = info.getGuardianName().trim().replaceAll("'", "");
     				String relation = info.getGuardianRelation().trim().replaceAll("'", "");
+    				
+    				info.setVoterId(voterId);
+    				info.setVoterName(name);
+    				info.setSex(sex);
+    				info.setHouseNumber(houseNo);
+    				info.setGuardianName(relativeName);
+    				info.setGuardianRelation(relation);
     				
     				if(voterId == null || voterId.length() == 0 || voterId.equalsIgnoreCase("null"))
     				{
