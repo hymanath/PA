@@ -1763,7 +1763,12 @@ public List<SelectOptionVO> getConstituencyList()
   			mobileAppUser.setEmail(registrationVO.getEmail());
   			mobileAppUser.setMobileNo(registrationVO.getMobile());
   			if(registrationVO.getSuperAdminId() > 0)
+  			{
+  				mobileAppUser.setType(IConstants.MOBILE_APP_USER_TYPE);
   			mobileAppUser.setMobileAppUser(mobileAppUserDAO.get(registrationVO.getSuperAdminId()));
+  			}
+  			else
+  				mobileAppUser.setType("USER");	
   			mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
   			mobileAppUserAccess.setMobileAppUser(mobileAppUser);
   			mobileAppUserAccess.setIsAuthorised("true");
@@ -2008,7 +2013,7 @@ public List<SelectOptionVO> getConstituencyList()
 		return resultStatus;
   	}
   	
-  /*	public List<RegistrationVO> getMobileAppUserDetailInfo(Long userId)
+	public List<RegistrationVO> getMobileAppUserDetailInfo(Long userId)
   	{
   		List<RegistrationVO> result = new ArrayList<RegistrationVO>();
   		try{
@@ -2021,7 +2026,7 @@ public List<SelectOptionVO> getConstituencyList()
   			
   		}
 		return result;
-  	}*/
+  	}
   	
   	public Long saveSuperAdminInfoInMobileAppUser(final String uname,final String pwd,final String uniqueCode)
   	{
