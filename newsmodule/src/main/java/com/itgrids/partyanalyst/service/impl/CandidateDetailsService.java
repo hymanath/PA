@@ -1903,30 +1903,35 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					for(Object[] param:candidates)
 					{
 						candidateIds = new HashSet<Long>();
+						if(param[1] != null)
 						candidateIds.add((Long)param[1]);
+						if(param[2] != null)
 						candidateIds.add((Long)param[2]);
 						Set<Long> candIds = map.get((Long)param[0]);
 						if(candIds != null && candIds.size()>0)
 							candidateIds.addAll(candIds);
 						map.put((Long)param[0], candidateIds);
-						
+						if(candidateIds != null)
 						candidateIdsList.addAll(candidateIds);
 					}
-					List<Object[]> candidates1 = candidateDAO.getCandidateNames(candidateIdsList);
-					for(Object[] param:candidates1)
-						cadidateNameMap.put((Long)param[0], param[1].toString());
-				
-				    if(map.size() > 0)
-					   for(Long fileId:map.keySet())
-					   {
-						   Set<Long> candIds = map.get(fileId);
-						   String candidateName1 = "";
-						   for(Long candId:candIds)
-							   if(candId != null)
-							   candidateName1 += cadidateNameMap.get(candId)+", ";
-						   
-						   candidateNames.put(fileId, candidateName1.substring(0, candidateName1.length()-2));
-					   }
+					if(candidateIdsList != null && candidateIdsList.size() > 0){
+						List<Object[]> candidates1 = candidateDAO.getCandidateNames(candidateIdsList);
+						for(Object[] param:candidates1){
+							cadidateNameMap.put((Long)param[0], param[1].toString());
+						}
+					    if(map.size() > 0){
+						   for(Long fileId:map.keySet())
+						   {
+							   Set<Long> candIds = map.get(fileId);
+							   String candidateName1 = "";
+							   for(Long candId:candIds)
+								   if(candId != null)
+								   candidateName1 += cadidateNameMap.get(candId)+", ";
+							   
+							   candidateNames.put(fileId, candidateName1.substring(0, candidateName1.length()-2));
+						   }
+					    }
+					}
 				 }
 			 }catch(Exception e){
 				 log.error("Exception Occured in getCandidateNames method in NewsMonitoringService", e);
@@ -8577,24 +8582,49 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 List<SelectOptionVO> selectOptionVOList = null;
 	 try{
 		 List<Object[]> locationList = null;
+		 List<Object[]> list = null;
+		 List<Long> locationValuesList = new ArrayList<Long>();
 		 Long regionScopeId = regionScopesDAO.getRegionScopeIdByScope(regionScope);
-
+		 Map<Long,Long> locationCount = new HashMap<Long, Long>(0);
 		  if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-			List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId2(regionScopeId,queryType,872L);
-			if(locationValuesList != null && locationValuesList.size() >0)
-			locationList = constituencyDAO.getConstituencyNameByConstituencyIdsList(locationValuesList);
-		  }else if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.DISTRICT)){
-			List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId1(regionScopeId,queryType,872L);
-			if(locationValuesList != null && locationValuesList.size() >0)
-			locationList = districtDAO.getDistrictNamesByDistrictIdsList(locationValuesList); 
-		  } 
+			//List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId2(regionScopeId,queryType,872L);
+			 list = fileGallaryDAO.getLocationValuesCountByRegionScopeId2(regionScopeId,queryType,872L);
+		  }
+		    else if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.DISTRICT)){
+					//List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId1(regionScopeId,queryType,872L);
+		    	 list = fileGallaryDAO.getLocationValuesCountByRegionScopeId1(regionScopeId,queryType,872L);
+			} 
+			  if(list != null && list.size() > 0)
+			  for(Object[] params : list)
+			  {
+				  locationValuesList.add((Long)params[1]);  
+				 Long count = locationCount.get((Long)params[1]) ;
+				 if(count == null)
+				  locationCount.put((Long)params[1], (Long)params[0]);
+				 else
+					 locationCount.put((Long)params[1], (Long)params[0]+count); 
+			  }
+			  if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			 {
+				if(locationValuesList != null && locationValuesList.size() >0)
+				locationList = constituencyDAO.getConstituencyNameByConstituencyIdsList(locationValuesList);
+			  }
+			 else if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.DISTRICT)) 
+			 {
+				if(locationValuesList != null && locationValuesList.size() >0)
+					locationList = districtDAO.getDistrictNamesByDistrictIdsList(locationValuesList); 
+			 }
+		 
 		 
 		 if(locationList != null && locationList.size() > 0)
 		 {
 			selectOptionVOList = new ArrayList<SelectOptionVO>(0);
 			selectOptionVOList.add(new SelectOptionVO(0L,"Select"));
 			for(Object[] params: locationList)
-			 selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase()):" "));
+			{
+				Long count = locationCount.get((Long)params[0]);
+			   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1] != null?WordUtils.capitalize(params[1].toString().toLowerCase() +"(" +count+ ")"):" "));
+			}
 		 }
 		 
 		 return selectOptionVOList;

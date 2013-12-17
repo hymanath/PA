@@ -93,7 +93,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				" model.candidatePartyFile.file.filePath ," +
 				" model.candidatePartyFile.file.fileId ," +
 				" model.candidatePartyFile.file.font.fontId,model.candidatePartyFile.file.descFont.fontId from CandidatePartyCategory model " +
-				" where model.gallary.gallaryId = :gallaryId and model.candidatePartyFile.file.isDeleted != 'Y' ");
+				" where model.gallary.gallaryId = :gallaryId and model.candidatePartyFile.file.isDeleted != 'Y' order by model.candidatePartyFile.file.fileDate desc");
 		query.setParameter("gallaryId", gallaryId);
 		query.setFirstResult(startIndex);
 		query.setMaxResults(maxIndex);
