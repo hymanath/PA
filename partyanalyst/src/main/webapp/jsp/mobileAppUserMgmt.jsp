@@ -151,7 +151,7 @@ function getMobileAppUsersData()
 	 str+='<tr>';
 	 str+='<td><input type="checkbox" id="checkedEle" class="checkEle"/><input type="hidden" value='+result[i].appId+' class="uniquecodeCls"></td>';
 	 str+='<td>'+j+'</td>';
-	 str+='<td>'+result[i].name+'</td>';
+	 str+='<td><a onclick="openWindow('+result[i].appId+')">'+result[i].name+'</a></td>';
 	 str+='<td>'+result[i].userName+'</td>';
 	 str+='<td>'+result[i].uniqueCode+'</td>';
 	 str+='<td>'+result[i].accessValue+'</td>';
@@ -214,22 +214,11 @@ function buildStatus(result)
 	$("#errorDiv").html('Error Occured,Try again');
 }
 
-function getUserDetails(userId)
-{
-		var jsObj=
-		{
-		 userId:userId,
-		 type:type,
-		 task:"changeAccess"				
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "enableOrdisableAccessAction.action?"+rparam;						
-		callAjax(jsObj,url);	
-}
+
 
 function openWindow(userId)
 {
-	var urlstr ='mobileAppUserInfo.action?userId="+userId+"&';
+	var urlstr ='mobileAppUserInfo.action?userId='+userId+'&';
 	var browser1 = window.open(urlstr,"userDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
 		browser1.focus();
 }
