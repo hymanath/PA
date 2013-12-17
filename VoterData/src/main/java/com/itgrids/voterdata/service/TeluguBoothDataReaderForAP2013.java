@@ -31,7 +31,7 @@ public class TeluguBoothDataReaderForAP2013 {
         try {
 
                 File inputDir = new File(args[0]);
-                File BoothInfo  = new File(args[0]+"/BoothDataReader.txt");
+                File BoothInfo  = new File(args[0]+"/TeluguBoothDataReader.txt");
                 BufferedWriter boothInfoReader = new BufferedWriter(new FileWriter(BoothInfo));
                 StringBuilder sb = null;
                 StringBuilder boothSB = new StringBuilder();
