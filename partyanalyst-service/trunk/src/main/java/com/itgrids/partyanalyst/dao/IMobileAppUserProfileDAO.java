@@ -8,4 +8,6 @@ import com.itgrids.partyanalyst.model.MobileAppUserProfile;
 
 public interface IMobileAppUserProfileDAO extends GenericDao<MobileAppUserProfile, Long>{
 	public List<Object[]> getMobileNoByUniquecode(String uniqueCode);
+	
+	public List<Object> getMobileAppUserProfileId(Long mobileAppUserId);
 }

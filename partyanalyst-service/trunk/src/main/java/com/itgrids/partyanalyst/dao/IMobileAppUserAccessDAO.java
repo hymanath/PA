@@ -14,4 +14,6 @@ public interface IMobileAppUserAccessDAO extends GenericDao<MobileAppUserAccess,
 	
 	public List<Long> getMobileAppUserAccessIds(List<Long> mobileAppUserIds);
 	
+	public List<Object> getMobileAppUserAccesId(Long mobileAppUserId);
+	
 }

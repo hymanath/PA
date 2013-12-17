@@ -702,6 +702,8 @@ public interface IConstants {
     
     public static final String ADMINGROUPMOBILE = "9676696760,9246837788,9246827788,9966542524";
     public static final String LIVE_VOICE_RECORDINGS_URL = "http://www.partyanalyst.com/voice_recordings/";
+    public static final String MOBILE_APP_USER_TYPE = "SuperAdmin";
+    
 
 	
 }

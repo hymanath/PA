@@ -36,6 +36,10 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	private String email;
 	
 	private User user;
+	
+	private MobileAppUser mobileAppUser;
+	private String type;
+	
 	private Set<MobileAppUserProfile> mobileAppUserProfile = new HashSet<MobileAppUserProfile>(0);
 	private Set<MobileAppUserAccess> mobileAppUserAccess = new HashSet<MobileAppUserAccess>(0);
 	private Set<MobileAppUserAccessKey> mobileAppUserAccessKey = new HashSet<MobileAppUserAccessKey>(0);
@@ -45,13 +49,15 @@ public class MobileAppUser extends BaseModel implements Serializable{
 		
 	}
 	/** full constructor */
-	public MobileAppUser(Long mobileAppUserId,String userName,String password,String uniqueCode, User user)
+	public MobileAppUser(Long mobileAppUserId,String userName,String password,String uniqueCode, User user,MobileAppUser mobileAppUser,String type)
 	{
 	this.mobileAppUserId = mobileAppUserId;
 	this.userName = userName;
 	this.password = password;
 	this.uniqueCode = uniqueCode;
 	this.user =user;
+	this.mobileAppUser = mobileAppUser;
+	this.type =type;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -138,6 +144,25 @@ public class MobileAppUser extends BaseModel implements Serializable{
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="super_admin_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public MobileAppUser getMobileAppUser() {
+		return mobileAppUser;
+	}
+	public void setMobileAppUser(MobileAppUser mobileAppUser) {
+		this.mobileAppUser = mobileAppUser;
+	}
+	@Column(name = "type", length = 15)
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	

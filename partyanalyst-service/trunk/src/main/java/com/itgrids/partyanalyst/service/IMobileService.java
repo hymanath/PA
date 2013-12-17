@@ -24,5 +24,11 @@ public interface IMobileService {
  	public List<RegistrationVO> getMobileAppUserDetails();
  	
 	public ResultStatus enableOrdisableAccessByUniqueCode(List<Long> uniqueCodes,String type);
+	
+	//public List<RegistrationVO> getMobileAppUserDetailInfo(Long userId);
+	
+	public Long saveSuperAdminInfoInMobileAppUser(String uname,String pwd,String uniqueCode);
+	
+  	public List<SelectOptionVO> getSuperAdminMobileAppUsers();
 
 }
