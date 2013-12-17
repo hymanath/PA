@@ -43,12 +43,19 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetNewsForSelectedKeyWord()
+	/*public void testgetNewsForSelectedKeyWord()
 	{
 		List<FileGallary> list = fileGallaryDAO.getNewsForSelectedKeyWord("11", 872L, "", null, null);
 		System.out.println(list.size());
 		for(FileGallary fileGallary:list)
 		 System.out.println(fileGallary.getFileGallaryId()+" "+fileGallary.getFile().getFileId());
+	}*/
+	
+	public void testgetNewsForSelectedKeyWord()
+	{
+		List<Long> list= fileGallaryDAO.getLocationValuesByRegionScopeId2(4l,"",872l);
+		System.out.println(list);
+		
 	}
 	
 }

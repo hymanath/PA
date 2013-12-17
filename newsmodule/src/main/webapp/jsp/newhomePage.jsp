@@ -517,8 +517,10 @@ $(document).ready(function(){
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
 								<td id="tdWidth">
-									<s:select theme="simple" label="Candidates" name="candidates" id="candidatesListId" list="candidatesList" listKey="id" listValue="name"  headerKey="0" headerValue="Select Candidate"/> 
-								</td>
+									<s:select theme="simple" label="Candidates" name="candidates"
+								id="candidatesListId" list="candidatesList" listKey="id"
+								listValue="name" headerKey="0" headerValue="Select Candidate" />
+						</td>
 							</tr>
 						</table>
 
