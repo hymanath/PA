@@ -844,8 +844,8 @@ function createNewParty()
       </tr>
 	   <tr><td></td>
 	 <td>
-	 <input type="checkbox" class="createReporcCheckBoxCls" value="byCategory"  id="byCategory"  onclick="showHideLocationLvl1('category');" />&nbsp;By Category&nbsp;&nbsp;
-	<input type="checkbox" class="createReporcCheckBoxCls" value="bykeyword"  id="byKeyword" onclick="showHideLocationLvl1('keyword');"  />&nbsp; By Keywords&nbsp;&nbsp;
+	 <input type="checkbox" class="" value="byCategory"  id="byCategory"  onclick="showHideLocationLvl1('category');" />&nbsp;By Category&nbsp;&nbsp;
+	<input type="checkbox" class="" value="bykeyword"  id="byKeyword" onclick="showHideLocationLvl1('keyword');"  />&nbsp; By Keywords&nbsp;&nbsp;
 	  </tr>
       <tr class="categoryClass">
     <td>Select Categories</td><td><select key="reportGallaryId" style="width: 222px;margin-top:10px;" id="reportGallaryId">
@@ -1567,6 +1567,15 @@ function changeLanguage(){
 	else
 	{
 		$('#newsfileDescription').removeClass('enadu');
+	}
+	
+	if($("#newsSynopsysDescTelugu").is(':checked') == true)
+	{
+		$('#newsSynopsysDesc').addClass('enadu');
+	}
+	else
+	{
+		$('#newsSynopsysDesc').removeClass('enadu');
 	}
 /* var str='';
 if(count == 0)
@@ -2988,6 +2997,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="span4 ">      ';
 		str+='<label><strong>Image To Display</strong></label>';
 		 str+='<input type="file" class="m_top10" name="imageForDisplay"><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>    </div>';
+		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Synopsys<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsSynopsysDesc" class="input-block-level" cols="20" rows="2" name="newsSynopsysDesc" maxlength="1800"></textarea><span class="help-block"> <input type="checkbox" id="newsSynopsysDescTelugu" onclick="changeLanguage();" name="synopsysCheckBox">&nbsp;Please check if news synopsys is from eenadu.net</span>       </div>   </div>';
 		
 	str+='</div></div></div>';
 	

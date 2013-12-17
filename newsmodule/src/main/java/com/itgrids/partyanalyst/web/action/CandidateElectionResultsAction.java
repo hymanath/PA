@@ -91,6 +91,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String contentType;
 	private String fileTitle;
 	private String fileDescription;
+	private String newsSynopsysDesc;
     private HttpServletRequest servletRequest;
     private ServletContext context;
     private String problemFilepath;
@@ -141,6 +142,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Long fileId ;
 	private Boolean titleCheckBox;
 	private Boolean descCheckBox;
+	private Boolean synopsysCheckBox;
 
 
 	private INewsMonitoringService  newsMonitoringService;
@@ -181,6 +183,26 @@ public class CandidateElectionResultsAction extends ActionSupport implements
     
     
 	
+
+	public String getNewsSynopsysDesc() {
+		return newsSynopsysDesc;
+	}
+
+
+	public void setNewsSynopsysDesc(String newsSynopsysDesc) {
+		this.newsSynopsysDesc = newsSynopsysDesc;
+	}
+
+
+	public Boolean getSynopsysCheckBox() {
+		return synopsysCheckBox;
+	}
+
+
+	public void setSynopsysCheckBox(Boolean synopsysCheckBox) {
+		this.synopsysCheckBox = synopsysCheckBox;
+	}
+
 
 	public Boolean getDescCheckBox() {
 		return descCheckBox;
@@ -1421,15 +1443,19 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setName(fileName);
 		fileVO.setTitle(getFileTitle() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileTitle())):null);
 		fileVO.setDescription(getFileDescription() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileDescription())):null);
+		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.unescapeHtml(getNewsSynopsysDesc())));
 		fileVO.setVisibility(getVisibility());
 		fileVO.setNewsImportanceId(getNewsimportance());
 		fileVO.setLocationScope(getLocationScope());
 		fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 		fileVO.setFileDate(getFileDate());
 		fileVO.setFileId(responseFileId);
+		
 		if(getTitleCheckBox() != null)
 		 fileVO.setEenadu(true);
-		
+		if(getSynopsysCheckBox() != null){
+			fileVO.setSynopsysEenadu(true);
+		}
 		if(getDescCheckBox() != null)
 		 fileVO.setDescEenadu(true);
 		

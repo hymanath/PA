@@ -1491,5 +1491,9 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		}
 		
 		return resultStatus;
-	}	
+	}
+	
+	public void getProgramsWiseNews(){
+		
+	}
 }

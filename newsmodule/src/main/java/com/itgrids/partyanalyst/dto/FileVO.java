@@ -131,6 +131,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private boolean latest;
 	private boolean eenadu;
 	private boolean descEenadu;
+	private boolean synopsysEenadu;
 	private Long respondedFilesCountInGall;
 	private List<FileVO> responseGallariesList = null;
 	private List<FileVO> mainArticalsList = null;
@@ -1382,6 +1383,14 @@ public class FileVO extends ResultStatus implements Serializable {
 	 */
 	public void setCategoriesList(List<String> categoriesList) {
 		this.categoriesList = categoriesList;
+	}
+
+	public boolean isSynopsysEenadu() {
+		return synopsysEenadu;
+	}
+
+	public void setSynopsysEenadu(boolean synopsysEenadu) {
+		this.synopsysEenadu = synopsysEenadu;
 	}
 
 	
