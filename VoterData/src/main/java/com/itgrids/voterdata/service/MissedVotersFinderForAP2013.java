@@ -10,7 +10,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,7 +21,6 @@ import org.apache.pdfbox.util.PDFTextStripper;
 
 import com.itgrids.voterdata.VO.BoothVO;
 import com.itgrids.voterdata.VO.VoterInfo;
-import com.itgrids.voterdata.util.IConstants;
 
 public class MissedVotersFinderForAP2013 {
 	
@@ -44,6 +45,8 @@ public class MissedVotersFinderForAP2013 {
                 StringBuilder sb2 = new StringBuilder();
                 StringBuilder boothSB = new StringBuilder();
                 int totalMissedVotes = 0;
+                String cid = "";
+                Map<String,Integer> totalVotersMap = new HashMap<String, Integer>(0);
                 List<BoothVO> boothsInfoList = new ArrayList<BoothVO>(0);
                 Class.forName("com.mysql.jdbc.Driver");
                 conn = DriverManager.getConnection(DB_URL,USER,PASS);
@@ -81,6 +84,7 @@ public class MissedVotersFinderForAP2013 {
                     List<Integer>missedVoters = new ArrayList<Integer>(0);
                     
                     constituencyId = fileName[0];
+                    cid = constituencyId.trim();
                     BoothVO boothVO = new BoothVO();
                     boothVO.setFileName(args[0]+"\\"+input.getName());
                     boothVO.setName(fileName[3].substring(0,fileName[3].length()-4).trim());
@@ -94,6 +98,7 @@ public class MissedVotersFinderForAP2013 {
                     boothVO.setOtherVoters(boothVO.getTotalVoters() - (boothVO.getMaleVoters()+boothVO.getFemaleVoters()));
                     boothVO.setStartingSerialNo(new Integer(voters[1].trim()));
                     boothVO.setEndingSerialNo(new Integer(voters[0].trim()));
+                    totalVotersMap.put(boothVO.getPartNo(), boothVO.getEndingSerialNo());
                     
                     boothSB.append("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\t Others - "+boothVO.getOtherVoters()+"\t Start SNO - "+boothVO.getStartingSerialNo()+"\tEnd SNO - "+boothVO.getEndingSerialNo()+"\n");
                     System.out.println("Booth - "+boothVO.getPartNo()+"\tTotal - "+boothVO.getTotalVoters()+"\tMale - "+boothVO.getMaleVoters()+"\tFemale - "+boothVO.getFemaleVoters()+"\t Others - "+boothVO.getOtherVoters()+"\t Start SNO - "+boothVO.getStartingSerialNo()+"\tEnd SNO - "+boothVO.getEndingSerialNo());
@@ -163,9 +168,6 @@ public class MissedVotersFinderForAP2013 {
         		sb2.append("\n");
             }
             sb2.append("--------------------------------------------------\n");
-            outwriter.write(sb2.toString());
-            outwriter.close();
-            System.out.println(sb2.toString());
             
             List<VoterInfo> missedVotersList = getMissedVoters(boothsInfoList);
             if(missedVotersList != null && missedVotersList.size() > 0)
@@ -192,7 +194,58 @@ public class MissedVotersFinderForAP2013 {
             	outwriter2.close();
             	ReadVoterDataFromPdfForAP2013.saveVotersData(missedVotersList);
             }
+            
+            ResultSet rs = stmt.executeQuery("select booth_id,sno from voter_temp where constituency_id = '"+cid+"'" +
+            		" order by booth_id,sno");
+            
+            Map<String,List<Integer>> votersMap = new HashMap<String, List<Integer>>(0);
+            Map<String,List<Integer>> missedVotersMap = new HashMap<String, List<Integer>>(0);
+            
+            while(rs.next())
+            {
+            	if(totalVotersMap.get(rs.getString("booth_id")) != null)
+            	{
+	            	if(votersMap.get(rs.getString("booth_id")) == null)
+	            		votersMap.put(rs.getString("booth_id"), new ArrayList<Integer>(0));
+	            	
+	            	List<Integer> tempList = votersMap.get(rs.getString("booth_id"));
+	            	tempList.add(rs.getInt("sno"));
+	            	votersMap.put(rs.getString("booth_id"),tempList);
+            	}
+            }
             	
+            for(Map.Entry<String,List<Integer>> entry : votersMap.entrySet())
+            {
+            	List<Integer> vList = entry.getValue();
+            	for(int k=1;k<=totalVotersMap.get(entry.getKey());k++)
+            	{
+            		if(!vList.contains(k))
+            		{
+            			if(missedVotersMap.get(entry.getKey()) == null)
+            				missedVotersMap.put(entry.getKey(),new ArrayList<Integer>());
+            			List<Integer> tempList = missedVotersMap.get(entry.getKey());
+            			tempList.add(k);
+            			missedVotersMap.put(entry.getKey(),tempList);
+            		}
+            		
+            	}
+            		
+            }
+            sb2.append("Missed Voters After Inserting\n");
+            sb2.append("-----------------------------------------------------------\n");
+            
+            for(Map.Entry<String,List<Integer>> entry : missedVotersMap.entrySet())
+            {
+            	sb2.append("Booth - "+entry.getKey()+"\t: ");
+            	for(Integer sno : entry.getValue())
+            		sb2.append(sno.toString()+",");
+            	sb2.append("\n");
+            }
+            sb2.append("-----------------------------------------------------------\n");
+            outwriter.write(sb2.toString());
+            outwriter.close();
+            System.out.println(sb2.toString());
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
