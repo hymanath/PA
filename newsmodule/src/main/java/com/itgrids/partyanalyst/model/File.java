@@ -77,6 +77,8 @@ public class File extends BaseModel implements java.io.Serializable {
 	
     private Font font;
     private Font descFont;
+    private String synopsysDescription;
+    private Font synopsysFont;
     
 	/** default constructor */
 	public File() {
@@ -435,6 +437,27 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	public void setDescFont(Font descFont) {
 		this.descFont = descFont;
+	}
+
+	@Column(name="news_synopsys")
+	public String getSynopsysDescription() {
+		return synopsysDescription;
+	}
+
+	public void setSynopsysDescription(String synopsysDescription) {
+		this.synopsysDescription = synopsysDescription;
+	}
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "synopsys_font_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Font getSynopsysFont() {
+		return synopsysFont;
+	}
+
+	public void setSynopsysFont(Font synopsysFont) {
+		this.synopsysFont = synopsysFont;
 	}
 	
 

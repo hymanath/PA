@@ -5489,6 +5489,7 @@ function validateUploadFileDetails()
    var flag = true;
    var fileTitle = $.trim($("#newsfileTitle").val());
    var fileDesc  = $.trim($("#newsfileDescription").val());
+   var synopsysDesc  = $.trim($("#newsSynopsysDesc").val());
    var fileDate = $("#newsdatedatepic").val();
    var scope = document.getElementById("scopeDiv").value;
    var sourceArr = new Array();
@@ -5508,6 +5509,11 @@ function validateUploadFileDetails()
 	if(fileDesc.length == 0)
 	{
 		str += 'News Description is Required.<br>';
+		flag = false;
+	}
+	if(synopsysDesc.length == 0)
+	{
+		str += 'News Synopsys is Required.<br>';
 		flag = false;
 	}
 	if(fileDate.length == 0)

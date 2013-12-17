@@ -861,6 +861,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription());
+			file.setSynopsysDescription(fileVO.getFileDescription1());
 			file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
 			Long regionScopeId = regionScopesDAO.get(fileVO.getLocationScope()).getRegionScopesId();
 			
@@ -899,6 +900,9 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			if(fileVO.isEenadu())
 			 file.setFont(fontDAO.get(1));
 			
+			if(fileVO.isSynopsysEenadu())
+				 file.setSynopsysFont(fontDAO.get(1));
+				
 			if(fileVO.isDescEenadu())
 			 file.setDescFont(fontDAO.get(1));
 			
