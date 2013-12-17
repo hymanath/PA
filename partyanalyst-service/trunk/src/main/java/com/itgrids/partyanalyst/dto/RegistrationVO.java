@@ -73,10 +73,19 @@ public class RegistrationVO extends BaseDTO{
 	private String uniqueCode;
 	
 	private String appId;
+	private Long superAdminId;
 	
 	
 	
 	
+	public Long getSuperAdminId() {
+		return superAdminId;
+	}
+
+	public void setSuperAdminId(Long superAdminId) {
+		this.superAdminId = superAdminId;
+	}
+
 	public String getUniqueCode() {
 		return uniqueCode;
 	}

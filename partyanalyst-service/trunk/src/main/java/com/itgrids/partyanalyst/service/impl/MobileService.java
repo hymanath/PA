@@ -113,6 +113,7 @@ import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class MobileService implements IMobileService{
 	
@@ -1736,15 +1737,33 @@ public List<SelectOptionVO> getConstituencyList()
 			public Object doInTransaction(TransactionStatus status) {
 				ResultStatus rs = new ResultStatus();
 		try{
-			MobileAppUser mobileAppUser = new MobileAppUser();
-  			MobileAppUserAccess mobileAppUserAccess = new MobileAppUserAccess();
-  			MobileAppUserProfile mobileAppUserProfile = new MobileAppUserProfile();
+			MobileAppUser mobileAppUser = null;
+  			MobileAppUserAccess mobileAppUserAccess = null;
+  			MobileAppUserProfile mobileAppUserProfile = null;
+			List<Object> list = mobileAppUserDAO.checkUniqueCode(registrationVO.getUniqueCode());
+			if(list!= null && list.size() > 0)
+			{
+				mobileAppUser = mobileAppUserDAO.get((Long) list.get(0));
+				List<Object> accessID = mobileAppUserAccessDAO.getMobileAppUserAccesId((Long) list.get(0));
+				mobileAppUserAccess = mobileAppUserAccessDAO.get((Long) accessID.get(0));
+				List<Object> profileID = mobileAppUserProfileDAO.getMobileAppUserProfileId((Long) list.get(0));
+				mobileAppUserProfile = mobileAppUserProfileDAO.get((Long)profileID.get(0));
+			
+			}
+			else
+			{
+				mobileAppUser = new MobileAppUser();
+				mobileAppUserAccess = new MobileAppUserAccess();
+				mobileAppUserProfile = new MobileAppUserProfile();
+			}
   			mobileAppUser.setUserName(registrationVO.getUserName());
   			mobileAppUser.setPassword(registrationVO.getPassword());
   			mobileAppUser.setUniqueCode(registrationVO.getUniqueCode());
   			mobileAppUser.setUser(userDAO.get(registrationVO.getRegistrationID()));
   			mobileAppUser.setEmail(registrationVO.getEmail());
   			mobileAppUser.setMobileNo(registrationVO.getMobile());
+  			if(registrationVO.getSuperAdminId() > 0)
+  			mobileAppUser.setMobileAppUser(mobileAppUserDAO.get(registrationVO.getSuperAdminId()));
   			mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
   			mobileAppUserAccess.setMobileAppUser(mobileAppUser);
   			mobileAppUserAccess.setIsAuthorised("true");
@@ -1753,12 +1772,15 @@ public List<SelectOptionVO> getConstituencyList()
   			mobileAppUserAccess.setDeviceId(registrationVO.getMobile());
   			mobileAppUserAccess.setLastAuthorisedTime(dateUtilService.getCurrentDateAndTime());
   			mobileAppUserAccessDAO.save(mobileAppUserAccess);
+  			
+  			
   			mobileAppUserProfile.setFirstName(registrationVO.getFirstName());
   			mobileAppUserProfile.setLastName(registrationVO.getLastName());
   			mobileAppUserProfile.setMobileAppUser(mobileAppUser);
   			mobileAppUserProfile.setGender(registrationVO.getGender().toString());
-  			
   			mobileAppUserProfileDAO.save(mobileAppUserProfile);
+			
+			
   			rs.setResultCode(ResultCodeMapper.SUCCESS);
   			}
   		catch (Exception e) {
@@ -1985,4 +2007,91 @@ public List<SelectOptionVO> getConstituencyList()
 			}
 		return resultStatus;
   	}
+  	
+  /*	public List<RegistrationVO> getMobileAppUserDetailInfo(Long userId)
+  	{
+  		List<RegistrationVO> result = new ArrayList<RegistrationVO>();
+  		try{
+  			
+  			
+  		}
+  		catch(Exception e)
+  		{
+  			LOG.error("Exception Occured in getMobileAppUserDetailInfo() Method in mobile Service", e);
+  			
+  		}
+		return result;
+  	}*/
+  	
+  	public Long saveSuperAdminInfoInMobileAppUser(final String uname,final String pwd,final String uniqueCode)
+  	{
+  		Long mobileAppUserId = 0l;
+  		
+  		final DateUtilService dateUtilService = new DateUtilService();
+  		
+  		Long value = (Long) transactionTemplate.execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				Long val = 0l;
+		try{
+			List<Object> list = mobileAppUserDAO.checkUniqueCode(uniqueCode);
+			if(list != null && list.size() > 0)
+			{
+				val = -1l;
+			}
+			else
+			{
+  			MobileAppUser mobileAppUser = new MobileAppUser();
+  			mobileAppUser.setUserName(uname);
+  			mobileAppUser.setPassword(pwd);
+  			mobileAppUser.setUniqueCode(uniqueCode);
+  			mobileAppUser.setType(IConstants.MOBILE_APP_USER_TYPE);
+  			mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
+  			mobileAppUser.setMobileAppUser(mobileAppUser);
+  			mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
+  			
+			}
+			}
+		catch (Exception e) {
+			LOG.error("Exception Occured in saveUserData(), Exception is - ",e);
+		e.printStackTrace();
+		
+	}
+	return val;
+	}
+	});
+  		if(value == 0)
+  		{
+  		mobileAppUserId = (Long)mobileAppUserDAO.getMobileAppUserId(uniqueCode).get(0);	
+  		return mobileAppUserId;	
+  		}
+  		else
+  		
+  			return -1l;	
+  		
+  	}
+  	public List<SelectOptionVO> getSuperAdminMobileAppUsers()
+	
+	{
+		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+		try{
+			
+			List<Object[]> list = mobileAppUserDAO.getSuperAdminList();
+			  resultList.add(0,new SelectOptionVO(0l,"Select user"));
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					String uname = params[1] !=null?params[1] .toString():"";
+					
+				    resultList.add(new SelectOptionVO((Long)params[0],uname));	
+				  
+				}
+		
+		}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+	}
 }
