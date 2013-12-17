@@ -72,116 +72,113 @@
  /*#constituencyList{margin-left: 23px;}*/
  #createTempFile{margin-left: 28px;}
  #errorMsgDiv{margin-bottom: 9px; margin-top: 12px; margin-left: 26px; font-size: 12px;}
+ .selectWidth{width:218px !important;}
+#createMobileApp{font-size:12px;font-family:verdana;width:100%;margin-top:10px;}
 </style>
 </head>
 <body>
+<script type="text/javascript">
+var populateId ;
+</script>
  <div id="mainDiv">
 
   <div class="widget blue">
-   <!--<div id="errorMsgDiv"></div>
-     <div id="selectDiv">
-     Constituency<s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" /> 
   
-   <input type="button" class="btn btn-info" value="create Dump File" id="createTempFile"/>
-
-    <a style="margin-left: 11px;" href="${filePath}" class="btn btn-info" download>Download link</a>
-	</div>-->
 	
 	 <!--mobile Data user Details  start-->
 	
 	<div>
-    <form class="form-horizontal">
-	<div id="errorMsgDiv" style="font-family:verdana;margin-left:100px;"></div>
-	 <div class="control-group">
-    <label class="control-label" for="inputconstituency">Constituency</label>
-    <div class="controls">
+   <table id="createMobileApp">
+	<tr id="errorMsgDiv" style="font-family:verdana;margin-left:100px;"></tr>
+	<tr>
+    <td>Constituency</td><td></td>
+    <td>
     <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" /> 
-    </div>
-    </div>
-		 <div class="control-group">
-    <label class="control-label" for="inputconstituency">User</label>
-    <div class="controls">
-    <select id="usersId" cssClass="selectWidth" >
+    </td>
+   <td> User</td><td></td>
+   <td><select id="usersId" Class="selectWidth" >
 										<c:forEach var="allUsers" varStatus="stat" items="${allRegisteredUsersData.listOfUsers}">		
 											<option value="${allUsers.id}"> ${allUsers.name} </option>	
 										</c:forEach>
 									</select>
-    </div>
-    </div>
-    <div class="control-group">
-    <label class="control-label" for="inputFirstName">FirstName</label>
-    <div class="controls">
+      </td>
+   </tr>
+   <tr><td></td><td></td></tr>  <tr><td></td><td></td></tr>
+    <tr>
+    <td>FirstName</td>
+    <td></td>
+    <td>
     <input type="text" id="FirstNameId" placeholder="FirstName">
-    </div>
-    </div>
-    <div class="control-group">
-    <label class="control-label" for="inputLastName">LastName</label>
-    <div class="controls">
-    <input type="text" id="LastNameId" placeholder="LastName">
-    </div>
-    </div>
-    <div class="control-group">
-	 <label class="control-label" for="inputLastName">Gender</label>
-    <div class="controls">
-	<label class="radio inline">
-	<input type="radio" name="optionsRadios" id="maleRadiobtn" value="Male" checked>
-	Male
-	</label>
-	<label class="radio inline">
-	<input type="radio" name="optionsRadios" id="FemaleRadiobtn" value="Female" checked>
-	Female
-	</label>
-	 </div>
-    </div>
-    <div class="control-group">
-    <label class="control-label" for="inputUserName">UserName</label>
-    <div class="controls">
-    <input type="text" id="UserNameId" placeholder="UserName">
-    </div>
-    </div>
-    <div class="control-group">
-    <label class="control-label" for="inputPassword">Password</label>
-    <div class="controls">
-    <input type="text" id="PasswordId" placeholder="Password">
-    </div>
-    </div>
-	   <div class="control-group">
-    <label class="control-label" for="inputuniqueCode">Unique Code</label>
-    <div class="controls">
-    <input type="text" id="uniqueCodeId" placeholder="uniqueCode">
-    </div>
-    </div>
-	  <div class="control-group">
-    <label class="control-label" for="inputmobileNo">MobileNo</label>
-    <div class="controls">
-    <input type="text" id="mobileNoId" placeholder="mobileNo">
-    </div>
-    </div>
-	  <div class="control-group">
-    <label class="control-label" for="inputemail">email</label>
-    <div class="controls">
-    <input type="text" id="emailId" placeholder="email">
-    </div>
-    </div>
-		   <div class="control-group">
-    <label class="control-label" for="inputappId">App ID</label>
-    <div class="controls">
-    <input type="text" id="appId" placeholder="appId">
-    </div>
-    </div>
-		   <div class="control-group">
-    <label class="control-label" for="inputdeviceId">Device ID</label>
-    <div class="controls">
-    <input type="text" id="deviceId" placeholder="deviceId">
-    </div>
-    </div>
-	  <div class="control-group">
-    <label class="control-label" for="inputmacAddressId">Mac Address</label>
-    <div class="controls">
-    <input type="text" id="macAddressId" placeholder="macAddressId">
-    </div>
-    </div>
+    </td>
+    <td>
+   LastName</td> <td></td>
+     <td><input type="text" id="LastNameId" placeholder="LastName"></td></tr>
 	
+	<tr>
+	
+  
+	   <td>
+	Gender &nbsp; &nbsp; &nbsp;<input type="radio" name="optionsRadios" id="maleRadiobtn" value="Male" style="margin-top:0px;" checked> Male &nbsp;<input type="radio" name="optionsRadios" id="FemaleRadiobtn" value="Female" style="margin-top:0px;" checked>&nbsp;Female</td>
+	</tr>
+	
+    <tr>
+    <td>UserName</td>   <td></td>
+   <td>
+    <input type="text" id="UserNameId" placeholder="UserName">
+    </td>
+      <td> Password</td> <td></td>
+   
+    <td>
+    <input type="text" id="PasswordId" placeholder="Password">
+    </td></tr>
+   
+	<tr>
+   <td>Unique Code</td> <td></td>
+    <td>
+    <input type="text" id="uniqueCodeId" placeholder="uniqueCode">
+    </td>
+    
+	
+    <td>MobileNo</td><td></td>
+   <td>
+    <input type="text" id="mobileNoId" placeholder="mobileNo">
+    </td></tr>
+	<tr>
+   <td>email</td> <td></td>
+    <td>
+    <input type="text" id="emailId" placeholder="email">
+    </td>
+    
+    <td>App ID</td> <td></td>
+    <td>
+    <input type="text" id="appId" placeholder="appId">
+    </td></tr>
+   
+   <tr><td>Device ID</td> <td></td>
+    <td>
+    <input type="text" id="deviceId" placeholder="deviceId">
+    </td>
+   
+	<td>Mac Address </td><td></td>
+    <td>
+    <input type="text" id="macAddressId" placeholder="macAddressId">
+    </td>
+    </tr>
+	
+	</table>
+	<div id="superAdminDiv">
+	
+	<div id="superAdminInnerDiv"></div>
+	Super Admin 
+	<select id="superAdminusersId" Class="selectWidth" >
+										<c:forEach var="Users" varStatus="stat" items="${superAdminUsersList}">		
+											<option value="${Users.id}"> ${Users.name} </option>	
+										</c:forEach>
+									</select>
+<input type="button"  class="btn btn-success" value="create User" id="createUserId"/><br/>
+    
+	</div>
+	<br/>
 	<div  style="margin-left: 150px;">
 	   <input type="button" class="btn btn-info" value="create Dump File" id="createTempFile"/>
 	    <img src="./images/icons/search.gif" id="ajaxImg" style="display:none"/>
@@ -190,7 +187,6 @@
 
 	</div>
 	
-    </form>
 	</div><br/>
 	 <!--mobile Data user Details end-->
   </div>
@@ -246,7 +242,11 @@ var macAddressId = $("#macAddressId").val();
 var userId = $("#usersId").val();
 var mobileNo =$("#mobileNoId").val();
 var email =$("#emailId").val(); 
+var superAdminusersId =0;
+
 var str = '<font color="red">';
+if($("#superAdminusersId").val()  > 0)
+superAdminusersId = $("#superAdminusersId").val();
  if(constituencyId == 0)
 	{
 	 str += 'Please Select Constituency<br>';
@@ -336,6 +336,7 @@ macAddressId:macAddressId,
 userId:userId,
 email:email,
 mobileNo:mobileNo,
+superAdmin:superAdminusersId
 };
 dataarr.push(obj);
 
@@ -377,6 +378,17 @@ function callAjax(jsObj,url)
 							{
 							 showStatusForSms(myResults);	
 							}
+							else if(jsObj.task == "saveSuperAdmin")
+								{
+									 populateId = myResults;
+							
+									buildStatusForSuperAdmin(myResults);
+								}
+
+								else if(jsObj.task == "getSuperAdminUsersList")
+								{
+									buildSelectList(myResults);
+								}
 							}
 									catch (e) {
 							    //alert(Exception);
@@ -503,6 +515,140 @@ errorDiv.innerHTML = '';
 		callAjax(jsObj,url);	
 		}
  }
+ $("#createUserId").live("click",function()
+ {
+	$("#superAdminInnerDiv").show();
+ var str='';
+  str+='<div class="widget">';
+   str+='<form class="form-horizontal" style="margin-top:10px;">';
+  str+=' <div id="errorMsgDiv2" style="font-family:verdana;margin-left:100px;"></div>';
+   str+='<div class="control-group">';
+    str+=' <label class="control-label" for="inputuname">User Name</label>';
+     str+='<div class="controls">';
+     str+='<input type="text" placeholder="UserName" id="UserNameId1">';
+     str+='</div>';
+     str+='</div>';
+     str+='<div class="control-group">';
+     str+='<label class="control-label" for="inputPassword">Password</label>';
+     str+='<div class="controls">';
+    str+=' <input id="PasswordId1" type="text" placeholder="Password">';
+    str+=' </div>';
+    str+=' </div>';
+     str+='<div class="control-group">';
+    str+=' <label class="control-label" for="inputniqueCode">unique Code</label>';
+    str+=' <div class="controls">';
+     str+='<input type="text" placeholder="uniqueCode" id="uniqueCodeId1">';
+     str+='</div>';
+    str+=' </div>';
+	 str+='<div  style="margin-left: 150px;">';
+	   str+=' <input type="button" class="btn btn-info" value="create User" id="saveSuperAdminId"/>';
+	   str+=' <img src="./images/icons/search.gif" id="ajaxImg2" style="display:none"/>';
+	 str+='</div><br/>';
+    str+='</form>';
+  str+='</div>';
+   $("#superAdminInnerDiv").html(str);
+
+ });
+
+$("#saveSuperAdminId").live("click",function()
+{
+	var str = '<font color="red">';
+	var userName=$("#UserNameId1").val() ;
+	var password =$("#PasswordId1").val() ;
+	var uniqueCode=$("#uniqueCodeId1").val() ;
+	
+	var flag = false;
+	 if(userName == 0 || userName == null)
+	{
+		str += 'userName is Required<br>';
+		flag = true;
+	}
+ if(password == 0 || password == null)
+	{
+		str += 'password is Required<br>';
+		flag = true;
+	}
+ if(uniqueCode == 0 || uniqueCode == null)
+	{
+		str += 'uniqueCode is Required<br>';
+		flag = true;
+	}
+	if(flag == true)
+	{
+	$("#errorMsgDiv2").html(str);
+	}
+	else
+	{
+		$('#ajaxImg2').show();
+	$("#errorMsgDiv2").html('');
+ 	var jsObj=
+		{
+		 userName:userName,
+		 password:password,
+	     uniqueCode:uniqueCode,
+		 task:"saveSuperAdmin"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveSuperAdminAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+	}
+
+});
+function getSuperAdminUserList()
+{
+		var jsObj=
+		{
+		
+		 task:"getSuperAdminUsersList"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getSuperAdminUsersListAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+
+}
+function buildSelectList(results)
+{
+	$('#superAdminusersId').children().remove();
+	var selectedElmt=document.getElementById("superAdminusersId");
+	 for(var val in results)
+		{
+			var opElmt = document.createElement('option');
+			opElmt.value=results[val].id;
+			opElmt.text=results[val].name;
+
+			try
+			{
+				selectedElmt.add(opElmt,null); // standards compliant
+			}
+			catch(ex)
+			{
+				selectedElmt.add(opElmt); // IE only
+			}	
+		}
+		
+		$('#superAdminusersId').val(populateId);
+}
+function buildStatusForSuperAdmin(result)
+{
+	$("#errorMsgDiv2").html('');
+
+	if(result > 0)
+	{
+
+	$('#ajaxImg2').hide();
+	getSuperAdminUserList();
+	
+	$("#errorMsgDiv2").html('created user successfully').css("color","green");
+    $("#UserNameId1").val('');
+    $("#PasswordId1").val('');
+	$("#uniqueCodeId1").val('');
+   
+	}
+	else
+	{
+$("#errorMsgDiv2").html('user already exist').css("color","red");
+	}
+}
 getMobileAppUsers();
 </script>
 

@@ -33,11 +33,30 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private IMobileService mobileService;
 	private ResultStatus resultStatus;
 	public static final Logger LOG = Logger.getLogger(MobileDataAction.class);
-	private List<SelectOptionVO> constituencyList,userList;
+	private List<SelectOptionVO> constituencyList,userList,superAdminUsersList;
 	private String filePath;
 	private IRegistrationService registrationService;
 	private EntitlementVO allRegisteredUsersData;
+	private Long populateID;
 	
+	
+
+	public Long getPopulateID() {
+		return populateID;
+	}
+
+	public void setPopulateID(Long populateID) {
+		this.populateID = populateID;
+	}
+
+	public List<SelectOptionVO> getSuperAdminUsersList() {
+		return superAdminUsersList;
+	}
+
+	public void setSuperAdminUsersList(List<SelectOptionVO> superAdminUsersList) {
+		this.superAdminUsersList = superAdminUsersList;
+	}
+
 	public IRegistrationService getRegistrationService() {
 		return registrationService;
 	}
@@ -149,7 +168,10 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
         if(constituencyList != null)
          constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
         allRegisteredUsersData = registrationService.getAllRegisterdUsers();
-		}catch (Exception e) {
+        superAdminUsersList = mobileService.getSuperAdminMobileAppUsers();
+		}
+		
+		catch (Exception e) {
 		 e.printStackTrace();
 		 LOG.error("Exception Occured in execute() method, Exception - "+e);
 		}
@@ -179,7 +201,16 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setRegistrationID(jSONObject.getLong("userId"));
 			 regVo.setMobile(jSONObject.getString("mobileNo"));
 			 regVo.setEmail(jSONObject.getString("email"));
+			 regVo.setSuperAdminId(jSONObject.getLong("superAdmin"));
 			 resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"),path,regVo);
+		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("saveSuperAdmin"))
+		 {
+			 populateID = mobileService.saveSuperAdminInfoInMobileAppUser(jObj.getString("userName"),jObj.getString("password"),jObj.getString("uniqueCode")); 
+		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("getSuperAdminUsersList"))
+		 {
+			 superAdminUsersList = mobileService.getSuperAdminMobileAppUsers();
 		 }
 		/* else if(jObj.getString("task").equalsIgnoreCase("saveMobileAppUserDetails"))
 		 {
@@ -231,5 +262,6 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		}
 		return Action.SUCCESS;
 	}
+	
 
 }

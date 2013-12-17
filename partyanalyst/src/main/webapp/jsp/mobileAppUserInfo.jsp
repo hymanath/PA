@@ -72,11 +72,9 @@
 </head>
 <body>
  <div id="mainDiv">
-
-  <div id="userData" class="widget blue">
-</div>
-</div>
-<script type="text/javascript">
+ </div>
+ <script type="text/javascript">
+ var userId = ${userId};
 function callAjax(jsObj,url)
 {
  var myResults;
@@ -111,130 +109,18 @@ function callAjax(jsObj,url)
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  }
 
-function getMobileAppUsersData()
+function getMobileAppUsersInfo()
  {
  var jsObj=
 		{
-		 
-		 task:"getUserData"				
+		 userId:userId,
+		 task:"getUserDetailInfo"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getMobileAppUsersDataAction.action?"+rparam;						
 		callAjax(jsObj,url);	
  }
- function buildUserData(result)
- {
-	 if(result !=null && result !='')
-	 {
-	 var str='';
-	  str+='<h2 style="text-align:center;"> Mobile App Users</h2>';
-	 str+='<div style="margin-top:10px;color:#222;">';
-	
-	 str+='<input type="checkbox" id="selectAll"  style="margin-top:0px;"/>  &nbsp;Select All &nbsp;';
-	 str+='<input type="checkbox" id="unselectAll" style="margin-top:0px;"/> &nbsp;Unselect All';
-	 str+='</div>';
-	 str+='<div style="margin-top:10px;">';
-	str+='<div id="errorDiv"></div>';
-	 str+='<table class="table table-bordered" style="color:#222;">';
-	 str+='<tr>';
-	 str+='<th>Select</th>';
-	 str+='<th>SNO</th>';
-	 str+='<th>Name</th>';
-	 str+='<th>User</th>';
-	 str+='<th>Unique Code</th>';
-	 str+='<th>Access</th>';
-	  str+='<th>Last Authorised Time</th>';
-	 str+='</tr>';
-	 var j=1;
-	 for(var i in result)
-	 {
-	 str+='<tr>';
-	 str+='<td><input type="checkbox" id="checkedEle" class="checkEle"/><input type="hidden" value='+result[i].appId+' class="uniquecodeCls"></td>';
-	 str+='<td>'+j+'</td>';
-	 str+='<td>'+result[i].name+'</td>';
-	 str+='<td>'+result[i].userName+'</td>';
-	 str+='<td>'+result[i].uniqueCode+'</td>';
-	 str+='<td>'+result[i].accessValue+'</td>';
-	 str+='<td>'+result[i].dateOfBirth+'</td>';
-	
-	 str+='</tr>';
-	j++;
-	 }
-
-	 str+='</table>';
-	 str+='<input type="button" class="btn btn-success" value="Enable" onclick="EnableorDisableAccess(\'enable\')"/>&nbsp;';
-	 str+='<input type="button"  class="btn btn-success" value="Disable" onclick="EnableorDisableAccess(\'disable\')"/>';
-	 str+='<img id="AjaxImg" src="images/icons/search.gif" style="display:none;"/>';
-	  str+='</div><br/>';
-	$("#userData").html(str);
-	 }
- }
-
-function EnableorDisableAccess(type)
-{
-	$("#AjaxImg").show();
-	var mobileAppuserIds = [];
-	$(".checkEle").each(function () {
-
-	 if($(this).is(':checked'))
-		{
-	var  mobileAppuserId =$(this).closest("tr").find(".uniquecodeCls").val();
-    mobileAppuserIds.push(mobileAppuserId);
-		}
-});
-var jsObj=
-		{
-		 mobileAppuserIds:mobileAppuserIds,
-		 type:type,
-		 task:"changeAccess"				
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "enableOrdisableAccessAction.action?"+rparam;						
-		callAjax(jsObj,url);	
-}
-$("#selectAll").live("click",function()
-{
-	$("#unselectAll").attr("checked",false);
-	$(".checkEle").attr("checked",true);
-});
-$("#unselectAll").live("click",function()
-{
-	$("#selectAll").attr("checked",false);
-	$(".checkEle").attr("checked",false);
-});
-
-function buildStatus(result)
-{
-	$("#errorDiv").html('');
-	if(result.resultCode == 0)
-	{
-    getMobileAppUsersData();
-	}
-	else
-	$("#errorDiv").html('Error Occured,Try again');
-}
-
-function getUserDetails(userId)
-{
-		var jsObj=
-		{
-		 userId:userId,
-		 type:type,
-		 task:"changeAccess"				
-		};
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "enableOrdisableAccessAction.action?"+rparam;						
-		callAjax(jsObj,url);	
-}
-
-function openWindow(userId)
-{
-	var urlstr ='mobileAppUserInfo.action?userId="+userId+"&';
-	var browser1 = window.open(urlstr,"userDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-		browser1.focus();
-}
- getMobileAppUsersData();
+ getMobileAppUsersInfo();
  </script>
-</body>
-</html>
-
+ </body>
+ </html>

@@ -566,8 +566,8 @@
 									<legend class="l2">Mobile Data</legend>
 									<span class="fontStyle">
 										Create SqlLight DB For A Constituency:&nbsp;
-										<a class="alinkstyle" href="<s:url action="mobileDataAction"/>"> Create
-										<a class="alinkstyle" href="<s:url action="mobileAppUserMgmtAction"/>"> MobileAppUserMgmt
+										<a class="alinkstyle" href="<s:url action="mobileDataAction"/>"> Create<br/>
+										<a class="alinkstyle" href="<s:url action="mobileAppUserMgmtAction"/>">Mobile AppUser Mgmt
 										</a>
 									</span><br>
 									</fieldset></td>
