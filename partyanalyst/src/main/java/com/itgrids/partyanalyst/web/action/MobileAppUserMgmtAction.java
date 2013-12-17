@@ -25,7 +25,14 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 	JSONObject jObj;
 	private List<RegistrationVO> resultList;
 	private ResultStatus resultStatus;
+	private Long userId;
 	
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -91,7 +98,12 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 			if(user == null)
 			return INPUT;
-			resultList = mobileService.getMobileAppUserDetails();
+		
+			if(jObj.getString("task").equalsIgnoreCase("getUserData"))
+				resultList = mobileService.getMobileAppUserDetails();
+		 /*  else if(jObj.getString("task").equalsIgnoreCase("getUserDetailInfo"))
+				resultList = mobileService.getMobileAppUserDetailInfo(jObj.getLong("userId"));	*/
+		
 		}
 		catch (Exception e) {
 			e.printStackTrace();
