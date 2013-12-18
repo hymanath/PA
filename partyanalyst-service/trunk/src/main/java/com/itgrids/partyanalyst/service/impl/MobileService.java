@@ -72,6 +72,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -1904,8 +1905,7 @@ public List<SelectOptionVO> getConstituencyList()
   			mobileAppUserId*/
   			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   			DateUtilService date = new DateUtilService();
-  			Calendar cal = Calendar.getInstance();
-	        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+  			
   			List<Object[]> list = mobileAppUserAccessDAO.getMobileAppUserdetails();
   			if(list != null && list.size() > 0)
   			{
@@ -1932,7 +1932,9 @@ public List<SelectOptionVO> getConstituencyList()
   					
   					Date pastTime = (Date)formatter.parse(params[7].toString());;
   					Date currentTime =date.getCurrentDateAndTime();
-  					cal.setTime(pastTime);
+  					String lastAuthorisedTime = getLastAuthorisedTime(pastTime,currentTime,params[7].toString());
+  					registrationVO.setDateOfBirth(lastAuthorisedTime);
+  					/*cal.setTime(pastTime);
   					long t1 =cal.getTimeInMillis();
   					cal.setTime(currentTime);
   					long diff = Math.abs(cal.getTimeInMillis() - t1);
@@ -1968,7 +1970,7 @@ public List<SelectOptionVO> getConstituencyList()
   						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+day+" day ago)":"");
   						else
   						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+day+" days ago)":"");	
-  					}
+  					}*/
   					registrationVO.setAppId(params[8]!=null?params[8].toString():"");
   					result.add(registrationVO);
   					
@@ -1983,6 +1985,55 @@ public List<SelectOptionVO> getConstituencyList()
 		return result;
   	}
   	
+  	
+  	public String getLastAuthorisedTime(Date pastTime,Date currentTime,String time)
+  	{
+	  		String result = "";
+	  		Calendar cal = Calendar.getInstance();
+	        cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+  		    long sec = 0;
+			long min = 0;
+			long hr = 0;
+			long day = 0;
+  		    cal.setTime(pastTime);
+			long t1 =cal.getTimeInMillis();
+			cal.setTime(currentTime);
+			long diff = Math.abs(cal.getTimeInMillis() - t1);
+			long diffInsec = diff/1000;
+			if(diffInsec < 60)
+			{
+				sec = diffInsec;
+				if(sec == 1)
+					result = time+"("+sec+" second ago)";
+				else
+					result = time+"("+sec+" seconds ago)";
+			}
+			else if(diffInsec > 60 && diffInsec < 3600)	
+			{
+				min = diffInsec/60;
+				if(min == 1)
+					result = time+"("+min+" minute ago)";
+				else 
+					result = time+"("+min+" minutes ago)";
+			}
+			else if(diffInsec > 3600 && diffInsec < 86400)	
+			{
+				hr = diffInsec/3600;
+				if(hr == 1)
+					result = time+"("+hr+" hour ago)";
+				else
+					result = time+"("+hr+" hours ago)";	
+			}
+			else if(diff > 86400)	
+			{
+				day = diffInsec/86400;
+				if(day == 1)
+					result = time+"("+day+" day ago)";
+				else
+					result = time+"("+day+" days ago)";	
+			}
+			return result;
+  	}
   	public ResultStatus enableOrdisableAccessByUniqueCode(List<Long> uniqueCodes,String type)
   	{
   		ResultStatus resultStatus = new ResultStatus();
@@ -2013,11 +2064,57 @@ public List<SelectOptionVO> getConstituencyList()
 		return resultStatus;
   	}
   	
-	public List<RegistrationVO> getMobileAppUserDetailInfo(Long userId)
+	public List<RegistrationVO> getMobileAppUserDetailInfo(Long mobileAppuserId)
   	{
   		List<RegistrationVO> result = new ArrayList<RegistrationVO>();
+  		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		DateUtilService date = new DateUtilService();
   		try{
+  		List<Object[]> dataList = mobileAppUserAccessDAO.getMobileAppUserdetailsByMobileAppUserId(mobileAppuserId);	
+  		for(Object[] params : dataList)
+  		{
+  			RegistrationVO registrationVO = new RegistrationVO();
+  			String mobileUserFirstName = params[0]!=null? params[0].toString() : "";
+  			String mobileUserLastName = params[1]!=null? params[1].toString() : "";
   			
+  			registrationVO.setName(mobileUserFirstName+" "+mobileUserLastName);
+  			registrationVO.setMobile(params[2]!=null?params[2].toString() : "");
+  			registrationVO.setEmail(params[3]!=null?params[3].toString() : "");
+  		
+  			registrationVO.setUserName(params[4]!=null?params[4].toString() : "");
+  			registrationVO.setPassword(params[5]!=null?params[5].toString() : "");
+  			registrationVO.setUniqueCode(params[6]!=null?params[6].toString() : "");
+  			if(params[7].toString().equalsIgnoreCase("true"))
+				registrationVO.setAccessValue("YES");
+  			else
+  				registrationVO.setAccessValue("Denied");
+  			    Date pastTime = (Date)formatter.parse(params[8].toString());;
+				Date currentTime =date.getCurrentDateAndTime();
+				String lastAuthorisedTime = getLastAuthorisedTime(pastTime,currentTime,params[8].toString());
+				registrationVO.setDateOfBirth(lastAuthorisedTime);
+				registrationVO.setAppId(params[10] !=null ?params[10].toString():"");
+				registrationVO.setDeviceId(params[11] !=null ?params[11].toString():"");
+				registrationVO.setAddress(params[12] !=null ?params[12].toString():"");
+				registrationVO.setGender(params[13] !=null ?params[13].toString():"");
+				result.add(registrationVO);
+			}
+  		List<Object[]> dataList1 = mobileAppUserAccessDAO.getSuperAdminDetailsByMobileAppUserId(mobileAppuserId);	
+  		List<RegistrationVO> superAdminList = new ArrayList<RegistrationVO>();
+  		if(dataList1 != null && dataList1.size() > 0)
+  		{
+  			for(Object[] params1 : dataList1)
+  			{
+  			RegistrationVO regVo = new RegistrationVO();
+  			regVo.setUserName(params1[1] !=null ?params1[1].toString():"");
+  			regVo.setPassword(params1[2] !=null ?params1[2].toString():"");
+  			regVo.setUniqueCode(params1[3] !=null ?params1[3].toString():"");
+  			regVo.setAppId(params1[4] !=null ?params1[4].toString():"");
+  			regVo.setDeviceId(params1[5] !=null ?params1[5].toString():"");
+  			regVo.setAddress(params1[6] !=null ?params1[6].toString():"");
+  			superAdminList.add(regVo);
+  			}
+  			result.get(0).setRegisteredUsersList(superAdminList);
+  		}
   			
   		}
   		catch(Exception e)
