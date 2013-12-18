@@ -101,8 +101,8 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 		
 			if(jObj.getString("task").equalsIgnoreCase("getUserData"))
 				resultList = mobileService.getMobileAppUserDetails();
-		 /*  else if(jObj.getString("task").equalsIgnoreCase("getUserDetailInfo"))
-				resultList = mobileService.getMobileAppUserDetailInfo(jObj.getLong("userId"));	*/
+			else if(jObj.getString("task").equalsIgnoreCase("getUserDetailInfo"))
+				resultList = mobileService.getMobileAppUserDetailInfo(jObj.getLong("mobileAppuserId"));
 		
 		}
 		catch (Exception e) {

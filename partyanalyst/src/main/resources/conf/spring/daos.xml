@@ -1280,4 +1280,10 @@
      <bean id="flagDAO" class="com.itgrids.partyanalyst.dao.hibernate.FlagDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+      <bean id="mobileAppPingingDAO" class="com.itgrids.partyanalyst.dao.hibernate.MobileAppPingingDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+      <bean id="pingingTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.PingingTypeDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>		
