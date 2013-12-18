@@ -22,6 +22,7 @@
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script type="text/javascript" src="js/blockui.js"></script>
 <!-- JQuery Scripts files End -->
 
 <!-- JQuery Style files start -->
@@ -441,6 +442,7 @@ function buildCategoeryDetailsCountWise(result,jsObj)
 */
 function genereatePDFOrExcel(type)
 {
+	$.blockUI({ message: '<h6><img src="images/icons/goldAjaxLoad.gif"/>Please wait.....</h6>' });
 	var fromDate = $('#fromDateId').val();
 	
 	var toDate   = $('#todateId').val();
@@ -490,7 +492,17 @@ function genereatePDFOrExcel(type)
 	data: {task : JSON.stringify(jsObj)}
 	})
 	.done(function( result ) {
-		//buildCategoeryDetails(result,jsObj);
+		if(result[0].name == 'success')
+		{
+			$.unblockUI();
+			window.open(result[0].url);
+		}
+		else
+		{
+			$.unblockUI();
+			alert("Error occured while generationg the "+type+" ");
+		}
+		
      });
 }
 /*
@@ -587,7 +599,7 @@ function validateFields()
 				<span title="Clear To Date" style="cursor: pointer;" onclick="clearDate('todateId');" class="icon-remove-sign"></span>				</div>
 			<div class="span4" >
 				<label class="help-inline"><strong>Select Party :</strong></label>
-				<select  id="partyid"  style="width: 211px;"></select>	<span title="Clear To Date" style="cursor: pointer;" onclick="clearDate('partyid');" class="icon-remove-sign"></span>
+				<select  id="partyid"  style="width: 211px;"></select>	
 			</div>
 		</div>
 		
@@ -613,8 +625,10 @@ function validateFields()
 		    <div id="categoeryDetailsDistrictCountWise"></div>
 			<div id="categoeryDetailsConstituencyCountWise"></div>
 			<div id="pdfExcelDiv" style="display:none;float:right;">
-			<a class="btn btn-info" onClick="genereatePDFOrExcel('pdf');">Pdf</a>
-			<a class="btn btn-info" onClick="genereatePDFOrExcel('excel');">Excel</a>
+			<a class="btn btn-info" onClick="genereatePDFOrExcel('pdf');">View Pdf</a>
+			<!--<a class="btn btn-info" onClick="" id="viewPdf" style="display:none;">View Pdf</a>-->
+			<a class="btn btn-info" onClick="genereatePDFOrExcel('excel');">View Excel</a>
+			<!--<a class="btn btn-info" onClick="" id="viewExcel" style="display:none;">View Excel</a>-->
 			</div>
 		</div>
 		
