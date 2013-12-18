@@ -250,7 +250,7 @@
 		<pattern>/showCategoryAction*</pattern>
 		<pattern>/newsAnalysisAction*</pattern>
 		<pattern>/getNewsAction*</pattern>
-		
+		<pattern>/newsActivitiesAction*</pattern>
     	 </decorator>
 
 </decorators>

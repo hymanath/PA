@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -46,12 +47,23 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	
-	public void testfindConstituencyByDistrictElectionType()
+	/*public void testfindConstituencyByDistrictElectionType()
 	{
 		List<Object[]> values = constituencyDAO.findConstituencyByDistrictElectionTypeAndYear(19L,IConstants.ASSEMBLY_ELECTION_TYPE,"2009");
 		System.out.println(values.size());
 		for(Object[] params:values)
 			 System.out.println(params[0]+" "+params[1]);
+	}*/
+	
+	public void testgetConstituencyes()
+	{
+		List<Long> ids = new ArrayList<Long>();
+		ids.add(1l);
+		ids.add(2l);
+		List<Object[]> values= constituencyDAO.getConstituencyes(ids);
+		for (Object[] parms : values) {
+			System.out.println(parms[0] +":"+  parms[1]);
+		}
 	}
 	
 }

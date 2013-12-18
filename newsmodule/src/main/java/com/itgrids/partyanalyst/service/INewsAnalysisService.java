@@ -7,6 +7,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsAnalysisVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface INewsAnalysisService {
 	
@@ -18,4 +19,12 @@ public interface INewsAnalysisService {
 	public NewsAnalysisVO analyseNewsWithSelectedParameters(AnalysisVO analysisVO);
 	
 	public List<FileVO> getSelectedNews(NewsAnalysisVO vo,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex);
+	
+	public List<SelectOptionVO> getConstituencyesList(List<Long> districtIds);
+	
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,Long startIndex , Long maxIndex);
+	
+	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type,List<Long> districtIds );
+	
+	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String Path);
 }

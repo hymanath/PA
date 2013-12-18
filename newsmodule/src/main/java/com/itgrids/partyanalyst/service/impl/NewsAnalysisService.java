@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -8,12 +12,29 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
+import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DesignationDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
@@ -21,10 +42,12 @@ import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsAnalysisVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Designation;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsAnalysisService;
+import com.itgrids.partyanalyst.utils.CommonStringUtils;
 
 public class NewsAnalysisService implements INewsAnalysisService {
    
@@ -34,7 +57,51 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	private TransactionTemplate transactionTemplate;	
 	private DesignationDAO designationDAO;
 	private PartyDAO partyDAO;
+	private IConstituencyDAO constituencyDAO ;
+	private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
+	private IGallaryDAO gallaryDAO;
+	private static Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	private static Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
+	private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
+	private static Font catFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 11,  Font.BOLD);
 	
+	/**
+	 * @return the gallaryDAO
+	 */
+	public IGallaryDAO getGallaryDAO() {
+		return gallaryDAO;
+	}
+	/**
+	 * @param gallaryDAO the gallaryDAO to set
+	 */
+	public void setGallaryDAO(IGallaryDAO gallaryDAO) {
+		this.gallaryDAO = gallaryDAO;
+	}
+	/**
+	 * @return the candidatePartyCategoryDAO
+	 */
+	public ICandidatePartyCategoryDAO getCandidatePartyCategoryDAO() {
+		return candidatePartyCategoryDAO;
+	}
+	/**
+	 * @param candidatePartyCategoryDAO the candidatePartyCategoryDAO to set
+	 */
+	public void setCandidatePartyCategoryDAO(
+			ICandidatePartyCategoryDAO candidatePartyCategoryDAO) {
+		this.candidatePartyCategoryDAO = candidatePartyCategoryDAO;
+	}
+	/**
+	 * @return the constituencyDAO
+	 */
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+	/**
+	 * @param constituencyDAO the constituencyDAO to set
+	 */
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
 	public IFileDAO getFileDAO() {
 		return fileDAO;
 	}
@@ -1493,7 +1560,296 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		return resultStatus;
 	}
 	
-	public void getProgramsWiseNews(){
-		
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex){
+		List<SelectOptionVO> returnList = null;
+		try {
+			LOG.info("Entered into getProgramsWiseNews method in NewsAnalysisService service");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			Date fromDate = format.parse(fromDateStr);
+			Date toDate   = format.parse(toDateStr);
+			Long count = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseTotalCount(categIds,constituencyIds,fromDate,toDate);
+			List<Object[]> catgList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNews(categIds,constituencyIds,fromDate,toDate,startIndex.intValue(),maxIndex.intValue());
+			if(catgList != null && catgList.size() > 0)
+			{
+				returnList = new ArrayList<SelectOptionVO>();
+				for (Object[] parms : catgList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setValue(parms[0] != null ? parms[0].toString() :"");
+					selectOptionVO.setName(parms[1] != null ? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(parms[1].toString())) :"");
+					selectOptionVO.setType(parms[2] != null ? parms[2].toString() :"");
+					selectOptionVO.setLocation(parms[3] != null ? parms[3].toString() :"");
+					selectOptionVO.setId(parms[4] != null ? (Long)parms[4] :0l);
+					selectOptionVO.setOrderId(count);
+					returnList.add(selectOptionVO);
+					
+					
+				}
+				
+			}
+		} catch (Exception e) {
+			LOG.error("exception raised in getProgramsWiseNews method in NewsAnalysisService service",e);
+		}
+		return returnList;
+	}
+	
+	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type ,List<Long> districtIds)
+	{
+		List<SelectOptionVO> returnList = null;
+		try {
+			LOG.info("Entered into getCategoeryWiseCountDetails method in NewsAnalysisService service");
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			Date fromDate = format.parse(fromDateStr);
+			Date toDate   = format.parse(toDateStr);
+			Map<Long,Map<Long,Long>> constituencyWiseCountMap = null;//Map<constituencyId,Map<galleryId,count>
+			Map<Long,Long> countMap = null;//Map<galleryId,count>
+			Map<Long,String> constiMap = null;//Map<constituencyId,constituencyName>
+			Map<Long,String> catgeMap = null;//Map<galleyId,galleryName>
+			List<Object[]> categCountList = null;
+			if(type.equalsIgnoreCase("district"))
+			{
+				categCountList = candidatePartyCategoryDAO.getCategoeryAndDisrictWiseCount(categIds,districtIds,fromDate,toDate);
+			}
+			else
+			{
+				categCountList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseCount(categIds,constituencyIds,fromDate,toDate);
+			}
+			
+			if(categCountList != null && categCountList.size() > 0)
+			{
+				constituencyWiseCountMap = new HashMap<Long, Map<Long,Long>>();
+				constiMap = new HashMap<Long, String>();
+				catgeMap = new HashMap<Long, String>();
+				List<Object[]> galleryList = gallaryDAO.getGalleriesForIds(categIds);
+				if(galleryList != null && galleryList.size() > 0)
+				{
+					for (Object[] parms : galleryList) {
+						String catgName = catgeMap.get((Long)parms[0]);
+						if(catgName == null)
+						{
+							catgeMap.put((Long)parms[0], parms[1].toString());
+						}
+					}
+					
+				}
+				for (Object[] parms : categCountList) {
+					countMap = constituencyWiseCountMap.get((Long)parms[3]);
+					if(countMap == null)
+					{
+						countMap = new HashMap<Long, Long>();
+						constituencyWiseCountMap.put((Long)parms[3], countMap);
+						constiMap.put((Long)parms[3], parms[4].toString());
+					}
+					countMap.put((Long)parms[2], (Long)parms[1]);
+					
+				}
+				
+				Set<Long> constiIds = constituencyWiseCountMap.keySet();
+				if(constiIds != null && constiIds.size() > 0)
+				{
+					returnList = new ArrayList<SelectOptionVO>();
+					for (Long constituencyId : constiIds) {
+						SelectOptionVO selectOptionVO1 = new SelectOptionVO();
+						selectOptionVO1.setLocation(constiMap.get(constituencyId));
+						List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
+						Map<Long,Long> catgWistCountMap = constituencyWiseCountMap.get(constituencyId);
+						for (Long catgId : categIds) {
+							SelectOptionVO selectOptionVO = new SelectOptionVO();
+							Long count = catgWistCountMap.get(catgId);
+							if(count == null)
+							{
+								selectOptionVO.setId(0l);
+							}
+							else
+							{
+								selectOptionVO.setId(count);
+							}
+							selectOptionVO.setName(catgeMap.get(catgId));
+							list.add(selectOptionVO);
+						}
+						selectOptionVO1.setSelectOptionsList(list);
+						returnList.add(selectOptionVO1);
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("exception raised in getCategoeryWiseCountDetails method in NewsAnalysisService service",e);
+		}
+		return returnList;
+	}
+	
+	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String path)
+	{
+		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO = new SelectOptionVO();
+		try {
+			LOG.info("Entered into generatePdfOrExcel method in NewsAnalysisService service");
+			if(type.equalsIgnoreCase("pdf"))
+			{
+				 Document document = new Document();
+				 String filePath = "Reports"+"/"+"report.pdf";
+				 		
+				    String FILE = path+filePath;
+				    File file  = new File(FILE);
+				    file.createNewFile();
+				    selectOptionVO.setUrl(filePath);
+				  	try {
+				  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+				  	} catch (FileNotFoundException e) {
+				  		e.printStackTrace();
+				  	} catch (DocumentException e) {
+				  		e.printStackTrace();
+				  	}
+				  	document.open();
+				  	addTitlePage(document);
+				List<SelectOptionVO> list1 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds);
+				if(list1 != null && list1.size() > 0)
+				{
+					pdfGeneration(list1,document,"District");
+				}
+				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds);
+				if(list2 != null && list2.size() > 0)
+				{
+					pdfGeneration(list2,document,"Constituency");
+				}
+				document.close();
+				selectOptionVO.setName("success");
+			}
+			else
+			{
+				String filename= "Reports"+"/"+"report.xlsx";
+				selectOptionVO.setUrl(filename);
+				List<SelectOptionVO> list1 =  getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds);
+				generateXl(list1,"District",filename);
+				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds);
+				generateXl(list2,"Constituency",filename);
+				selectOptionVO.setName("success");
+			}
+			
+			
+		} catch (Exception e) {
+			selectOptionVO.setName("fail");
+			LOG.error("exception raised in generatePdfOrExcel method in NewsAnalysisService service",e);
+		}
+		returnList.add(selectOptionVO);
+		return returnList;
+	}
+	
+	public void pdfGeneration(List<SelectOptionVO> list,Document document,String type)
+	{		
+		  try
+		  {
+		        LOG.info("Enterd into pdfGeneration() method in NewsAnalysisService Class");
+		        List<SelectOptionVO> catgList = list.get(0).getSelectOptionsList();
+		        int length = catgList.size();
+		        PdfPTable table = new PdfPTable(length+1);
+		        document.add( new Paragraph(" ") );
+		        document.add( new Paragraph(" ") );
+			  	
+			  	PdfPCell cell;
+			  			  	
+			  	cell = new PdfPCell(new Phrase(type,BIGFONT));
+			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setBackgroundColor(BaseColor.YELLOW);
+			  	table.addCell(cell);
+			  	for (SelectOptionVO selectOptionVO : catgList)
+			  	{
+			  		cell = new PdfPCell(new Phrase(selectOptionVO.getName(),BIGFONT));
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				}
+			 
+			  	for (SelectOptionVO selectOptionVO : list) {
+			  		
+			  		PdfPCell c2 = new PdfPCell(new Phrase(selectOptionVO.getLocation().toString(),SMALLFONT));
+			  		c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+					table.addCell(c2);
+					List<SelectOptionVO> catgsList = selectOptionVO.getSelectOptionsList();
+					for (SelectOptionVO selectOptionVO2 : catgsList) {
+						c2 = new PdfPCell(new Phrase(selectOptionVO2.getId().toString(),SMALLFONT));
+				  		c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+						table.addCell(c2);
+					}
+		  			
+			  		
+				}	
+			  	/*List<Float> widthsList = new ArrayList<Float>();
+			  	for (int i = 0; i < length+1 ; i++) {
+			  		widthsList.add(1.0f);
+				}
+			  	float[] array = new float[widthsList.size()];
+		 	  	table.setWidths(array);*/
+			  	document.add(table);
+			  	
+		  }
+		  catch (Exception e)
+		  {
+			LOG.debug("Exception raised in pdfGeneration() method in NewsAnalysisService Class",e);
+		  }
+
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void generateXl(List<SelectOptionVO> list,String type,String filename)
+	{
+		try {
+			LOG.info("Enterd into generateXl() method in NewsAnalysisService Class");
+	        HSSFWorkbook workbook=new HSSFWorkbook();
+	        HSSFSheet sheet =  workbook.createSheet("FirstSheet");  
+	        List<SelectOptionVO> catgList = list.get(0).getSelectOptionsList();
+	        HSSFRow rowhead=   sheet.createRow((short)0);
+	        rowhead.createCell((short) 0).setCellValue(type);
+	        int count = 0;
+	        for (SelectOptionVO selectOptionVO : catgList) {
+	        	count ++;
+	        	rowhead.createCell((short)count).setCellValue(selectOptionVO.getName());
+			}
+	        int count1 = 0;
+	        for (SelectOptionVO selectOptionVO : list) {
+	        	count1++;
+	        	HSSFRow row =   sheet.createRow((short)count1);
+	        	row.createCell((short) 0).setCellValue(selectOptionVO.getLocation());
+	        	List<SelectOptionVO> list2 = selectOptionVO.getSelectOptionsList();
+	        	for (SelectOptionVO selectOptionVO2 : list2) {
+	        		row.createCell((short) 0).setCellValue(selectOptionVO2.getName());
+				}
+			}
+	        FileOutputStream fileOut =  new FileOutputStream(filename);
+	        workbook.write(fileOut);
+	        fileOut.close();
+	        System.out.println("Your excel file has been generated!");
+		} catch (Exception e) {
+			LOG.debug("Exception raised in generateXl() method in NewsAnalysisService Class",e);
+		}
+	}
+	private  void addTitlePage(Document document) throws DocumentException
+	{
+	    Paragraph preface = new Paragraph();
+	    preface.setAlignment(Element.ALIGN_CENTER);
+	    preface.add(new Paragraph("Abstract" , catFont));
+	    document.add(preface); 
+    }
+      
+	public List<SelectOptionVO> getConstituencyesList(List<Long> districtIds)
+	{
+		List<SelectOptionVO> returnList = null;
+		try {
+			LOG.info("Entered into getConstituencyesList method in NewsAnalysisService service");
+			List<Object[]> constituenccyesList = constituencyDAO.getConstituencyes(districtIds);
+			if(constituenccyesList != null && constituenccyesList.size() > 0)
+			{
+				returnList = new ArrayList<SelectOptionVO>();
+				for (Object[] parms : constituenccyesList) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)parms[0]);
+					selectOptionVO.setName(parms[1] != null ? parms[1].toString():"");
+					returnList.add(selectOptionVO);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception raised in getConstituencyesList method in NewsAnalysisService service",e);
+		}
+		return returnList;
 	}
 }

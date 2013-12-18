@@ -90,7 +90,10 @@
 	 	<property name="staticDataService" ref="staticDataService"/>
 	</bean>
 	
-	
+	<bean id="newsActivitiesAction" class="com.itgrids.partyanalyst.web.action.NewsActivitiesAction" singleton="false">
+	    <property name="newsAnalysisService" ref="newsAnalysisService"/>
+	 	<property name="staticDataService" ref="staticDataService"/>
+	</bean>
 	
 	
 	</beans>

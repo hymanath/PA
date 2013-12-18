@@ -32,6 +32,8 @@
 						getSelectedNewsDetails(num);					
 					else if(options.searchType == "betweenDates1")
 						getNewsForPagination1(num);
+					else if(options.searchType == "catgNews")
+						getCategoeryWiseNews(num);
 					else
 						getNewsForPagination(num);
 					

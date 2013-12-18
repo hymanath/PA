@@ -174,4 +174,12 @@ public class GallaryDAO extends GenericDaoHibernate<Gallary, Long> implements IG
 		return getHibernateTemplate().find("select model.gallaryId, model.name from Gallary model where model.isDelete = 'false' and model.isNewsPortal = 'true' order by model.name");
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGalleriesForIds(List<Long> galleryIds)
+	{
+		Query query = getSession().createQuery("select model.gallaryId, model.name from Gallary model where model.gallaryId in (:galleryIds)");
+		query.setParameterList("galleryIds", galleryIds);
+		return query.list();
+		
+	}
 }

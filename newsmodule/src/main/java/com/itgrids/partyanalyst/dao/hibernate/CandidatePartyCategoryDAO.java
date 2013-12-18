@@ -298,4 +298,82 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				 
 	 }
 	 
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate , int startIndex,int maxIndex)
+	 {
+		 Query query = getSession().createQuery("select model.candidatePartyFile.file.fileDate , " +
+		 		" model.candidatePartyFile.file.synopsysDescription , " +
+		 		" model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name ," +
+		 		" model.candidatePartyFile.file.synopsysFont.fontId from " +
+		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
+		 		" order by model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name , " +
+		 		" model.candidatePartyFile.file.fileDate");
+		 query.setParameterList("categIds", categIds);
+		 query.setParameterList("constituencyIds", constituencyIds);
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
+		 query.setFirstResult(startIndex);
+		 query.setMaxResults(maxIndex);
+		 return query.list();
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate )
+	 {
+		 Query query = getSession().createQuery("select model.gallary.name,count(model.gallary.name)," +
+		 		"  model.gallary.gallaryId , " +
+		 		"  model.candidatePartyFile.file.userAddress.constituency.constituencyId , " +
+		 		"  model.candidatePartyFile.file.userAddress.constituency.name from " +
+		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
+		 		" group by model.candidatePartyFile.file.userAddress.constituency.name ,model.gallary.name " );
+		 
+		 query.setParameterList("categIds", categIds);
+		 query.setParameterList("constituencyIds", constituencyIds);
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
+
+		 return query.list();
+	 }
+	
+	public Long getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate )
+	 {
+		 Query query = getSession().createQuery("select count(model.gallary.name)" +
+		 		"   from " +
+		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
+		 		"  " );
+		 
+		 query.setParameterList("categIds", categIds);
+		 query.setParameterList("constituencyIds", constituencyIds);
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
+
+		 return (Long)query.uniqueResult();
+	 }
+	
+	public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate)
+	 {
+		 Query query = getSession().createQuery("select model.gallary.name,count(model.gallary.name)," +
+		 		" model.gallary.gallaryId , " +
+		 		" model.candidatePartyFile.file.locationValue , " +
+		 		" model.candidatePartyFile.file.userAddress.district.districtName from " +
+		 		" CandidatePartyCategory model where model.candidatePartyFile.file.regionScopes. regionScopesId = 3 and" +
+		 		" model.candidatePartyFile.file.locationValue in (:districtIds) and " +
+		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
+		 		" group by model.candidatePartyFile.file.locationValue ,model.gallary.name " );
+		 
+		 query.setParameterList("categIds", categIds);
+		 query.setParameterList("districtIds", districtIds);
+		 query.setParameter("fromDate", fromDate);
+		 query.setParameter("toDate", toDate);
+
+		 return query.list();
+	 }
+	 
 }

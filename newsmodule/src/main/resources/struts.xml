@@ -5844,6 +5844,23 @@
 		  <result name="success">/jsp/viewAnalysedNews.jsp</result>
 		  <result name="error" type="redirect">loginPageAction.action</result>
 		</action>
+		
+		<action name="newsActivitiesAction" class="newsActivitiesAction">
+		  <result name="success">/jsp/newsActivities.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		
+		<action name="getConstituencyusAction" class="newsActivitiesAction" method="getConstituencyes">
+		  <result type="json" name="success">
+		    	<param name="root">assemConstiList</param>
+		   </result>
+		</action>
+		
+		<action name="getCategoeryWiseNewsAction" class="newsActivitiesAction" method="getCategoeryWiseNews">
+		  <result type="json" name="success">
+		    	<param name="root">categoeriesList</param>
+		   </result>
+		</action>
 		 
 		 <action name="getAnalysedNewsAction" class="newsAnalysisAction" method="getAnalysedNews">
 		   <result type="json" name="success">
