@@ -140,14 +140,14 @@ function getConstituencyesList()
 		
 		$('#assembSelReportId').find('option').remove();
 		$.each(result,function(index,value){
-			$('#assembSelReportId').append('<option value="'+value.id+'">'+value.name+'</option>');
-			$('#assembSelReportId').multiselect({	
+			$('#assembSelReportId').append('<option value="'+value.id+'">'+value.name+'</option>'); 
+		});
+		$('#assembSelReportId').multiselect({	
 			multiple: true,
 			selectedList: 1,
 			hide: "explode"	
 	        }).multiselectfilter({   
 	       });
-		});
      });
 }
 /*
