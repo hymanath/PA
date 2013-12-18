@@ -1578,7 +1578,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					selectOptionVO.setName(parms[1] != null ? StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(parms[1].toString())) :"");
 					selectOptionVO.setType(parms[2] != null ? parms[2].toString() :"");
 					selectOptionVO.setLocation(parms[3] != null ? parms[3].toString() :"");
-					selectOptionVO.setId(parms[4] != null ? (Long)parms[4] :0l);
+					selectOptionVO.setId(parms[4] != null ? new Long(parms[4].toString()) :0l);
 					selectOptionVO.setOrderId(count);
 					returnList.add(selectOptionVO);
 					
