@@ -44,4 +44,18 @@ public class MobileAppUserAccessDAO extends GenericDaoHibernate<MobileAppUserAcc
 	{
 		return getHibernateTemplate().find("select model.mobileAppUserAccessId from MobileAppUserAccess model where model.mobileAppUser.mobileAppUserId = ?",mobileAppUserId);
 	}
+	
+	public List<Object[]> getMobileAppUserdetailsByMobileAppUserId(Long mobileAppUserId)
+	{
+		Query query = getSession().createQuery("select model1.firstName,model1.lastName,model.mobileAppUser.mobileNo,model.mobileAppUser.email,model.mobileAppUser.userName,model.mobileAppUser.password,model.mobileAppUser.uniqueCode,model.isAuthorised,model.lastAuthorisedTime,model.mobileAppUser.mobileAppUserId,model.appId,model.deviceId,model.macAddress,model1.gender from MobileAppUserAccess model,MobileAppUserProfile model1 where model.mobileAppUser.mobileAppUserId = :mobileAppUserId and model.mobileAppUser.mobileAppUserId = model1.mobileAppUser.mobileAppUserId");
+		query.setParameter("mobileAppUserId", mobileAppUserId);
+		return query.list();
+	}
+	public List<Object[]> getSuperAdminDetailsByMobileAppUserId(Long mobileAppUserId)
+	{
+		Query query = getSession().createQuery("select model.mobileAppUser.mobileAppUserId,model.mobileAppUser.mobileAppUser.userName,model.mobileAppUser.mobileAppUser.password,model.mobileAppUser.mobileAppUser.uniqueCode,model.appId,model.deviceId,model.macAddress from MobileAppUserAccess model,MobileAppUserProfile model1 where model.mobileAppUser.mobileAppUserId = :mobileAppUserId and model.mobileAppUser.mobileAppUserId = model1.mobileAppUser.mobileAppUserId");
+		query.setParameter("mobileAppUserId", mobileAppUserId);
+		return query.list();
+	}
+	
 }

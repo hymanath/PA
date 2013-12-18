@@ -26,7 +26,16 @@ public class MobileAppUserAccessDAOHibernateTest extends BaseDaoTestCase{
 	public void testgetAuthorisedRecords()
 	{
 	DateUtilService date = new DateUtilService();
-	List<Object> list = mobileAppUserAccessDAO.getAuthorisedRecords("u1","m1");
-	System.out.println(list.get(0));
+	List<Object[]> list = mobileAppUserAccessDAO.getMobileAppUserdetailsByMobileAppUserId(48l);
+		for(Object[] params : list)
+		{
+			System.out.println(params[0] +" "+ params[1] +" "+params[2]);
+			System.out.println(params[3] +" "+ params[4] +" "+params[5]);
+			System.out.println(params[6] +" "+ params[7] +" "+params[8]);
+			System.out.println(params[9] +" "+ params[10] +" "+params[11]);
+			System.out.println(params[12] +" "+ params[13] +" "+params[14]);
+			System.out.println(params[15] +" "+ params[16]);
+			
+		}
 	}
 }

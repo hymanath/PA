@@ -75,9 +75,18 @@ public class RegistrationVO extends BaseDTO{
 	private String appId;
 	private Long superAdminId;
 	
+	private String deviceId;
 	
 	
 	
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+
 	public Long getSuperAdminId() {
 		return superAdminId;
 	}
