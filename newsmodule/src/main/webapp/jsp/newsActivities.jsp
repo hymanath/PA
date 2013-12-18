@@ -21,7 +21,6 @@
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <!-- JQuery Scripts files End -->
 
@@ -56,7 +55,10 @@ font-size:20px;
  padding:8px 8px 8px 8px;
  margin-left:5px;
  border-radius: 5px 5px 5px 5px;
-
+}
+.ui-corner-bottom {
+    border-bottom-right-radius: 4px;!important;
+    width: 219px; !important;
 }
 </style>
 <script type="text/javascript">
@@ -145,6 +147,41 @@ function getConstituencyesList()
      });
 }
 /*
+	this method is used for getting the all parties
+*/
+function getPartiesList()
+{
+	var jsObj=
+	{
+		partySelectBoxId:"partiesList",
+		partiesListForWhome:"partiesListForWhome",
+		task:'getPartyList'
+	};
+	$.ajaxSetup({
+		   jsonp: null,
+		   jsonpCallback: null
+		});
+	 $.ajax({
+		type: "POST",
+		url: "getPartiesListAction.action",
+		data: {task : JSON.stringify(jsObj)}
+		})
+		.done(function( result ) {
+		
+		$('#partyid').find('option').remove();
+		$('#partyid').append('<option value="0">Select Party</option>');
+		$.each(result,function(index,value){
+			$('#partyid').append('<option value="'+value.id+'">'+value.name+'</option>');
+			/* $('#partyid').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	        }).multiselectfilter({   
+	       }); */
+		});
+     });
+}
+/*
 this method is used for getting the all categories and filling the categories list in select box
 */
 function getPartyGallariesForUplaod()
@@ -190,13 +227,18 @@ function clearDate(id){
    $("#"+id).val('');
 }
 getPartyGallariesForUplaod();
-
+getPartiesList();
+/*
+	this function is used for making ajax cal for getting ategoery wise details for selectd constituency level
+*/
 function getCategoeryWiseNews(pageNo)
 {
 
 	var fromDate = $('#fromDateId').val();
 	
 	var toDate   = $('#todateId').val();
+	
+	var partyId  = $('#partyid option:selected').val();
 	
 	var categorieyIds = "";
 	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
@@ -224,6 +266,7 @@ function getCategoeryWiseNews(pageNo)
 		constituencyIds : constituencyIds,
 		startIndex      : pageNo,
 		maxIndex        : 10,
+		partyId         : partyId,
 		task            : "categoeryWiseNews"
 	};
 	
@@ -237,12 +280,15 @@ function getCategoeryWiseNews(pageNo)
      });
 	
 }
-
+/*
+	this function is used for building the categoery wise detals for selected constituencyes
+*/
 function buildCategoeryDetails(result,jsObj)
 {
 	if(result != null && result.length > 0)
 	{
 		var str = '';
+		str += '<div class="boxHeading"><h4>Activites</h4></div>';
 		str += '<table id="responseTable" class="table table-bordered table-hover"><thead>';
 		str += '<tr>';
 		str += '<th>Date</th>';
@@ -279,37 +325,57 @@ function buildCategoeryDetails(result,jsObj)
 				searchType:'catgNews',
 				cssStyle: 'light-theme'
 			});
-		
-			/* $('#responseTable').dataTable({
-			   "iDisplayLength": 10,
-			   "aLengthMenu": [[10, 20, 30, -1], [10, 20, 30, "All"]],
-			  "aoColumns": [null,null,null,null] 
-			}); */
 	    }
 	}
 	
-	getCategoeryWiseNewsByCount(jsObj,"constituency");
-	getCategoeryWiseNewsByCount(jsObj,"district");
+	
 }
-function getCategoeryWiseNewsByCount(jsObj,type)
+/*
+	this function is used for making the ajax call for getting ategoery wise count in onstituency and district level
+*/
+function getCategoeryWiseNewsByCount(type)
 {
-	var selected_values = $("#districtSelReportId").multiselect("getChecked").map(function(){
+	var fromDate = $('#fromDateId').val();
+	
+	var toDate   = $('#todateId').val();
+	
+	var partyId  = $('#partyid option:selected').val();
+	
+	var categorieyIds = "";
+	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var i in selected_values)
+	{
+        categorieyIds = categorieyIds+""+selected_values[i]+",";
+    }
+	
+	var constituencyIds = "";
+	var selected_values1 = $("#assembSelReportId").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var j in selected_values1)
+	{
+        constituencyIds = constituencyIds+""+selected_values1[j]+",";
+    }
+	var selected_values2 = $("#districtSelReportId").multiselect("getChecked").map(function(){
         return this.value;
     }).get();
 	var districtIds = "";
-	for(var i in selected_values)
+	for(var i in selected_values2)
 	{
-        districtIds = districtIds+""+selected_values[i]+",";
+        districtIds = districtIds+""+selected_values2[i]+",";
     }
 	var jsObj =
 	{ 
-		fromDate        : jsObj.fromDate,
-		toDate          : jsObj.toDate,
-		categorieyIds   : jsObj.categorieyIds,
-		constituencyIds : jsObj.constituencyIds,
+		fromDate        : fromDate,
+		toDate          : toDate,
+		categorieyIds   : categorieyIds,
+		constituencyIds : constituencyIds,
 		districtIds     : districtIds,
 		type            : type,
 		typeFor         : "",
+		partyId         : partyId,
 		task            : "categoeryWiseNewsCount"
 	};
 	
@@ -322,12 +388,24 @@ function getCategoeryWiseNewsByCount(jsObj,type)
 		buildCategoeryDetailsCountWise(result,jsObj);
      });
 }
+
+/*
+	this function is used for building the categoery wise count details in constituency and district level
+*/
 function buildCategoeryDetailsCountWise(result,jsObj)
 {
 	if(result != null && result.length > 0)
 	{
 		$('#pdfExcelDiv').show();
 		var str = '';
+		if(jsObj.type == "constituency")
+		{
+			str += '<div class="boxHeading m_top10"><h4>Constituency Level Activites Abstract</h4></div>';
+		}
+		else
+		{
+			str += '<div class="boxHeading m_top10"><h4>District Level Activites Abstract</h4></div>';
+		}
 		str += '<table class="table table-bordered table-hover">';
 		str += '<tr>';
 		str += '<th>Constituency</th>';
@@ -358,12 +436,16 @@ function buildCategoeryDetailsCountWise(result,jsObj)
 		
 	}
 }
-
+/*
+	this function is used for generating the pdf or excel
+*/
 function genereatePDFOrExcel(type)
 {
 	var fromDate = $('#fromDateId').val();
 	
 	var toDate   = $('#todateId').val();
+	
+	var partyId  = $('#partyid option:selected').val();
 	
 	var categorieyIds = "";
 	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
@@ -398,6 +480,7 @@ function genereatePDFOrExcel(type)
 		constituencyIds : constituencyIds,
 		districtIds     : districtIds,
 		typeFor         : type,
+		partyId         : partyId,
 		task            : "genereatePDFOrExcel"
 	};
 	
@@ -410,6 +493,74 @@ function genereatePDFOrExcel(type)
 		//buildCategoeryDetails(result,jsObj);
      });
 }
+/*
+	this function is used for validating the fields
+*/
+function validateFields()
+{
+	var partyId  = $('#partyid option:selected').val();
+	
+	var categorieyIds = "";
+	var selected_values = $("#catSelReportId").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var i in selected_values)
+	{
+        categorieyIds = categorieyIds+""+selected_values[i]+",";
+    }
+	
+	var constituencyIds = "";
+	var selected_values1 = $("#assembSelReportId").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	for(var j in selected_values1)
+	{
+        constituencyIds = constituencyIds+""+selected_values1[j]+",";
+    }
+	var selected_values2 = $("#districtSelReportId").multiselect("getChecked").map(function(){
+        return this.value;
+    }).get();
+	var districtIds = "";
+	for(var i in selected_values2)
+	{
+        districtIds = districtIds+""+selected_values2[i]+",";
+    }
+	
+	var flag = true;
+	var str = '';
+	if(partyId == 0)
+	{
+		str += '<b style="color: red; font-family: verdana; font-size: larger;">Please Select Party</b></br>';
+		flag = false;
+	}
+	if(categorieyIds == '')
+	{
+		str += '<b style="color: red; font-family: verdana; font-size: larger;">Please Select Categoery</b></br>';
+		flag = false;
+	}
+	if(constituencyIds == '')
+	{
+		str += '<b style="color: red; font-family: verdana; font-size: larger;">Please Select Constituency</b></br>';
+		flag = false;
+	}
+	if(districtIds == '')
+	{
+		str += '<b style="color: red; font-family: verdana; font-size: larger;">Please Select District</b></br>';
+		flag = false;
+	}
+	if(flag)
+	{
+		$('#errorMsgDiv').hide();
+		getCategoeryWiseNews(0);
+		getCategoeryWiseNewsByCount('constituency');
+	    getCategoeryWiseNewsByCount('district');
+	}
+	else
+	{
+		$('#errorMsgDiv').show();
+		$('#errorMsgDiv').html(str);
+	}
+}
 </script>
 
 <body>
@@ -421,15 +572,23 @@ function genereatePDFOrExcel(type)
         <legend class="boxHeading text-center">News Activities</legend>
 
 		<div class="row-fluid">
-			<div class="span6" style="margin-left: -4px;">
-			<label class="help-inline"><strong>From Date :</strong></label>
-			<input type="text"  id="fromDateId" readonly="readonly">
-			<span title="Clear From Date" style="cursor: pointer;" onclick="clearDate('fromDateId');" class="icon-remove-sign"></span>							
+			<div id="errorMsgDiv" style="margin-left: 10px; margin-bottom: 15px;display:none;"></div>
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span4" >
+				<label class="help-inline"><strong>Select From Date :</strong></label>
+				<input type="text"  id="fromDateId" readonly="readonly">
+				<span title="Clear From Date" style="cursor: pointer;" onclick="clearDate('fromDateId');" class="icon-remove-sign"></span>	
 			</div>
-			<div class="span6" style="margin-left: -104px;">
-			<label class="help-inline"><strong>To Date :</strong></label>
-			<input type="text" id="todateId" readonly="readonly">	
-			<span title="Clear To Date" style="cursor: pointer;" onclick="clearDate('todateId');" class="icon-remove-sign"></span>				</div>
+			<div class="span4" >
+				<label class="help-inline"><strong>Select To Date   :</strong></label>
+				<input type="text" id="todateId" readonly="readonly">	
+				<span title="Clear To Date" style="cursor: pointer;" onclick="clearDate('todateId');" class="icon-remove-sign"></span>				</div>
+			<div class="span4" >
+				<label class="help-inline"><strong>Select Party :</strong></label>
+				<select  id="partyid"  style="width: 211px;"></select>	<span title="Clear To Date" style="cursor: pointer;" onclick="clearDate('partyid');" class="icon-remove-sign"></span>
+			</div>
 		</div>
 		
 		<div class="row-fluid m_top10">
@@ -449,13 +608,8 @@ function genereatePDFOrExcel(type)
 			</div>
 			
 		</div>
-	    <!-------Submit Button------>
-		<div class="form-actions text-center">
-		<button class="btn btn-success" type="submit" onClick="getCategoeryWiseNews(0);">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
 		
-		</div><!-------Submit Button END------>
-		
-		<div>
+		<div class="row-fluid m_top10">
 		    <div id="categoeryDetailsDistrictCountWise"></div>
 			<div id="categoeryDetailsConstituencyCountWise"></div>
 			<div id="pdfExcelDiv" style="display:none;float:right;">
@@ -464,13 +618,23 @@ function genereatePDFOrExcel(type)
 			</div>
 		</div>
 		
+		
 		<div style="margin-top: 66px;">
 			<div id="categoeryDetails"></div>
 			<div id="paginationId"></div>
 		</div>
 		
-		</div>	
-		</div><!--------- Row-1 End -------->
+		
+	    <!-------Submit Button------>
+		<div class="form-actions text-center">
+		<button class="btn btn-success" type="submit" onClick="validateFields();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
+		
+		</div><!-------Submit Button END------>
+		
+		
+		
+    </div>	
+	</div><!--------- Row-1 End -------->
   </div><!----Container END---->
 </body>
 </html>
