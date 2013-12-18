@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -1767,12 +1768,14 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO = new SelectOptionVO();
 		FileOutputStream fileOut = null;
+		Random randomNum = new Random();
+
 		try {
 			LOG.info("Entered into generatePdfOrExcel method in NewsAnalysisService service");
 			if(type.equalsIgnoreCase("pdf"))
 			{
 				 Document document = new Document();
-				 String filePath = "Reports"+"/"+"report.pdf";
+				 String filePath = "Reports"+"/"+"report"+randomNum.nextInt(100000)+".pdf";
 				 		
 				    String FILE = path+filePath;
 				    File file  = new File(FILE);
@@ -1821,7 +1824,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			}*/
 			else
 			{
-				String filename= "Reports"+"/"+"report.xls";
+				
+				String filename= "Reports"+"/"+"report"+randomNum.nextInt(100000)+".xls";
 				String FILE = path+filename;
 				File file  = new File(FILE);
 				file.createNewFile();
