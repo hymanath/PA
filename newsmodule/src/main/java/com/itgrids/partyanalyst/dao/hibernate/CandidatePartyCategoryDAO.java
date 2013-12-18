@@ -299,80 +299,128 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate , int startIndex,int maxIndex)
+	 public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate , int startIndex,int maxIndex,Long partyId)
 	 {
-		 Query query = getSession().createQuery("select model.candidatePartyFile.file.fileDate , " +
+		 StringBuffer queryString = new StringBuffer();
+		 
+		 queryString.append("select model.candidatePartyFile.file.fileDate , " +
 		 		" model.candidatePartyFile.file.synopsysDescription , " +
 		 		" model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name ," +
 		 		" model.candidatePartyFile.file.synopsysFont.fontId from " +
 		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
-		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
-		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
-		 		" order by model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name , " +
+		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
+		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) ");
+		 if(fromDate != null && toDate != null)
+		 {
+			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate ");
+		 }
+		queryString.append(" order by model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name , " +
 		 		" model.candidatePartyFile.file.fileDate");
+		
+		 Query query = getSession().createQuery(queryString.toString());
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("constituencyIds", constituencyIds);
-		 query.setParameter("fromDate", fromDate);
-		 query.setParameter("toDate", toDate);
+		 query.setParameter("partyId", partyId);
+		 if(fromDate != null && toDate != null)
+		 {
+			 query.setParameter("fromDate", fromDate);
+			 query.setParameter("toDate", toDate);
+		 }
 		 query.setFirstResult(startIndex);
 		 query.setMaxResults(maxIndex);
 		 return query.list();
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate )
+	 public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId )
 	 {
-		 Query query = getSession().createQuery("select model.gallary.name,count(model.gallary.name)," +
+		StringBuffer queryString = new StringBuffer();
+		
+		queryString.append("select model.gallary.name,count(model.gallary.name)," +
 		 		"  model.gallary.gallaryId , " +
 		 		"  model.candidatePartyFile.file.userAddress.constituency.constituencyId , " +
 		 		"  model.candidatePartyFile.file.userAddress.constituency.name from " +
-		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
-		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
-		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
-		 		" group by model.candidatePartyFile.file.userAddress.constituency.name ,model.gallary.name " );
+		 		"  CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		"  model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null  " +
+		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) ");
+		if(fromDate != null && toDate != null )
+		{
+			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate ");
+		}
+		queryString.append("  group by model.candidatePartyFile.file.userAddress.constituency.name ,model.gallary.name ");
 		 
-		 query.setParameterList("categIds", categIds);
-		 query.setParameterList("constituencyIds", constituencyIds);
-		 query.setParameter("fromDate", fromDate);
-		 query.setParameter("toDate", toDate);
-
-		 return query.list();
+	    Query query = getSession().createQuery(queryString.toString());
+		 
+		query.setParameterList("categIds", categIds);
+		query.setParameterList("constituencyIds", constituencyIds);
+		query.setParameter("partyId", partyId);
+		if(fromDate != null && toDate != null )
+		{
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		return query.list();
 	 }
 	
-	public Long getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate )
+	 public Long getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId )
 	 {
-		 Query query = getSession().createQuery("select count(model.gallary.name)" +
-		 		"   from " +
+		 StringBuffer queryString = new StringBuffer();
+		 
+		 queryString.append("select count(model.gallary.name) from " +
 		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
-		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
-		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
-		 		"  " );
+		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
+		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)  ");
+		 if(fromDate != null && toDate != null)
+		 {
+			 queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate");
+		 }
+		 Query query = getSession().createQuery(queryString.toString());
 		 
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("constituencyIds", constituencyIds);
-		 query.setParameter("fromDate", fromDate);
-		 query.setParameter("toDate", toDate);
+		 query.setParameter("partyId", partyId);
+		 if(fromDate != null && toDate != null)
+		 {
+			 query.setParameter("fromDate", fromDate);
+			 query.setParameter("toDate", toDate);
+		 }
+		 
 
 		 return (Long)query.uniqueResult();
 	 }
 	
-	public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate)
+	 @SuppressWarnings("unchecked")
+	 public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate,Long partyId)
 	 {
-		 Query query = getSession().createQuery("select model.gallary.name,count(model.gallary.name)," +
+		 StringBuffer queryString = new StringBuffer();
+		 queryString.append("select model.gallary.name,count(model.gallary.name)," +
 		 		" model.gallary.gallaryId , " +
 		 		" model.candidatePartyFile.file.locationValue , " +
 		 		" model.candidatePartyFile.file.userAddress.district.districtName from " +
 		 		" CandidatePartyCategory model where model.candidatePartyFile.file.regionScopes. regionScopesId = 3 and" +
 		 		" model.candidatePartyFile.file.locationValue in (:districtIds) and " +
-		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.fileDate >= :fromDate " +
-		 		" and model.candidatePartyFile.file.fileDate <= :toDate and model.candidatePartyFile.file.synopsysDescription is not null" +
-		 		" group by model.candidatePartyFile.file.locationValue ,model.gallary.name " );
+		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
+		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) ");
+		 if(fromDate != null && toDate != null)
+		 {
+			 queryString.append("  and  model.candidatePartyFile.file.fileDate >= :fromDate " +
+		 		" and model.candidatePartyFile.file.fileDate <= :toDate ");
+		 }
+		 queryString.append("  group by model.candidatePartyFile.file.locationValue ,model.gallary.name");
+		 Query query = getSession().createQuery(queryString.toString());
 		 
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("districtIds", districtIds);
-		 query.setParameter("fromDate", fromDate);
-		 query.setParameter("toDate", toDate);
-
+		 query.setParameter("partyId", partyId);
+		 if(fromDate != null && toDate != null)
+		 {
+			 query.setParameter("fromDate", fromDate);
+			 query.setParameter("toDate", toDate); 
+		 }
+		 
 		 return query.list();
 	 }
 	 

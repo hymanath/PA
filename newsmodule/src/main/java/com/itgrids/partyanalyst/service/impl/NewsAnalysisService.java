@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1559,16 +1560,35 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		
 		return resultStatus;
 	}
-	
-	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex){
+	/**
+	 * Tis Service is used for building the ategoery wise news details in constituency level
+	 * @param categIds
+	 * @param constituencyIds
+	 * @param fromDateStr
+	 * @param toDateStr
+	 * @param startIndex
+	 * @param maxIndex
+	 * @return List<SelectOptionVO>
+	 * @Date 18-12-2013
+	 */
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex,Long partyid){
 		List<SelectOptionVO> returnList = null;
 		try {
 			LOG.info("Entered into getProgramsWiseNews method in NewsAnalysisService service");
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			Date fromDate = format.parse(fromDateStr);
-			Date toDate   = format.parse(toDateStr);
-			Long count = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseTotalCount(categIds,constituencyIds,fromDate,toDate);
-			List<Object[]> catgList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNews(categIds,constituencyIds,fromDate,toDate,startIndex.intValue(),maxIndex.intValue());
+			Date fromDate = null;
+			Date toDate   = null; 
+			if(fromDateStr != null && fromDateStr.trim().length() > 0)
+			{
+				 fromDate = format.parse(fromDateStr);
+			}
+			if(toDateStr != null && toDateStr.trim().length() > 0)
+			{
+				toDate   = format.parse(toDateStr);
+			}
+
+			Long count = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseTotalCount(categIds,constituencyIds,fromDate,toDate,partyid);
+			List<Object[]> catgList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNews(categIds,constituencyIds,fromDate,toDate,startIndex.intValue(),maxIndex.intValue(),partyid);
 			if(catgList != null && catgList.size() > 0)
 			{
 				returnList = new ArrayList<SelectOptionVO>();
@@ -1591,27 +1611,48 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		}
 		return returnList;
 	}
-	
-	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type ,List<Long> districtIds)
+	/**
+	 * This service is used for building the categoery wise count details for selectd constituency and district in News Activites
+	 * @param categIds
+	 * @param constituencyIds
+	 * @param fromDateStr
+	 * @param toDateStr
+	 * @param type
+	 * @param districtIds
+	 * @return List<SelectOptionVO> returnList
+	 * @Date 18-12-2013
+	 */
+	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type ,List<Long> districtIds,Long partyId)
 	{
 		List<SelectOptionVO> returnList = null;
 		try {
 			LOG.info("Entered into getCategoeryWiseCountDetails method in NewsAnalysisService service");
 			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-			Date fromDate = format.parse(fromDateStr);
-			Date toDate   = format.parse(toDateStr);
+			Date fromDate = null;
+			Date toDate   = null; 
+			if(fromDateStr != null && fromDateStr.trim().length() > 0)
+			{
+				 fromDate = format.parse(fromDateStr);
+			}
+			if(toDateStr != null && toDateStr.trim().length() > 0)
+			{
+				toDate   = format.parse(toDateStr);
+			}
 			Map<Long,Map<Long,Long>> constituencyWiseCountMap = null;//Map<constituencyId,Map<galleryId,count>
 			Map<Long,Long> countMap = null;//Map<galleryId,count>
 			Map<Long,String> constiMap = null;//Map<constituencyId,constituencyName>
 			Map<Long,String> catgeMap = null;//Map<galleyId,galleryName>
+			Map<Long,Long> categCountMap  = null ;//Map<categoeryId,totalCount>
 			List<Object[]> categCountList = null;
+			List<SelectOptionVO> countList = null;
+			SelectOptionVO selectOptionVO1 = null;
 			if(type.equalsIgnoreCase("district"))
 			{
-				categCountList = candidatePartyCategoryDAO.getCategoeryAndDisrictWiseCount(categIds,districtIds,fromDate,toDate);
+				categCountList = candidatePartyCategoryDAO.getCategoeryAndDisrictWiseCount(categIds,districtIds,fromDate,toDate,partyId);
 			}
 			else
 			{
-				categCountList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseCount(categIds,constituencyIds,fromDate,toDate);
+				categCountList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseCount(categIds,constituencyIds,fromDate,toDate,partyId);
 			}
 			
 			if(categCountList != null && categCountList.size() > 0)
@@ -1647,21 +1688,32 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				if(constiIds != null && constiIds.size() > 0)
 				{
 					returnList = new ArrayList<SelectOptionVO>();
+					categCountMap = new HashMap<Long, Long>();
 					for (Long constituencyId : constiIds) {
-						SelectOptionVO selectOptionVO1 = new SelectOptionVO();
+						selectOptionVO1 = new SelectOptionVO();
 						selectOptionVO1.setLocation(constiMap.get(constituencyId));
 						List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 						Map<Long,Long> catgWistCountMap = constituencyWiseCountMap.get(constituencyId);
 						for (Long catgId : categIds) {
 							SelectOptionVO selectOptionVO = new SelectOptionVO();
 							Long count = catgWistCountMap.get(catgId);
+							Long count1 = categCountMap.get(catgId);
 							if(count == null)
 							{
-								selectOptionVO.setId(0l);
+								count = 0l;
+								selectOptionVO.setId(count);
 							}
 							else
 							{
 								selectOptionVO.setId(count);
+							}
+							if(count1 == null)
+							{
+								categCountMap.put(catgId, count);
+							}
+							else
+							{
+								categCountMap.put(catgId, categCountMap.get(catgId)+count);
 							}
 							selectOptionVO.setName(catgeMap.get(catgId));
 							list.add(selectOptionVO);
@@ -1669,6 +1721,27 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						selectOptionVO1.setSelectOptionsList(list);
 						returnList.add(selectOptionVO1);
 					}
+					if(type.equalsIgnoreCase("constituency"))
+					{
+						Set<Long> catgSet = categCountMap.keySet();
+						if(catgSet != null && catgSet.size() > 0)
+						{
+							selectOptionVO1 = new SelectOptionVO();
+							selectOptionVO1.setLocation("Total");
+							countList = new ArrayList<SelectOptionVO>();
+							for (Long catgId : catgSet)
+							{
+								SelectOptionVO selectOptionVO = new SelectOptionVO();
+								selectOptionVO.setName(catgeMap.get(catgId));
+								selectOptionVO.setId(categCountMap.get(catgId));
+								countList.add(selectOptionVO);
+								selectOptionVO1.setSelectOptionsList(countList);
+							}
+						}
+						returnList.add(selectOptionVO1);
+					}
+					
+					
 				}
 			}
 			
@@ -1677,11 +1750,23 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		}
 		return returnList;
 	}
-	
-	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String path)
+	/**
+	 * This service is used for build the pdf or excel generation logic
+	 * @param catgIds
+	 * @param constiIds
+	 * @param districtIds
+	 * @param fromDateStr
+	 * @param toDateStr
+	 * @param type
+	 * @param path
+	 * @return List<SelectOptionVO> returnList
+	 * @Date 18-12-2013
+	 */
+	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String path,Long partyId)
 	{
 		List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
 		SelectOptionVO selectOptionVO = new SelectOptionVO();
+		FileOutputStream fileOut = null;
 		try {
 			LOG.info("Entered into generatePdfOrExcel method in NewsAnalysisService service");
 			if(type.equalsIgnoreCase("pdf"))
@@ -1702,12 +1787,12 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				  	}
 				  	document.open();
 				  	addTitlePage(document);
-				List<SelectOptionVO> list1 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds);
+				List<SelectOptionVO> list1 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds,partyId);
 				if(list1 != null && list1.size() > 0)
 				{
 					pdfGeneration(list1,document,"District");
 				}
-				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds);
+				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds,partyId);
 				if(list2 != null && list2.size() > 0)
 				{
 					pdfGeneration(list2,document,"Constituency");
@@ -1715,14 +1800,50 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				document.close();
 				selectOptionVO.setName("success");
 			}
-			else
+			/*else
 			{
-				String filename= "Reports"+"/"+"report.xlsx";
+				String filename= "Reports"+"/"+"report.xls";
+				String FILE = path+filename;
+				File file  = new File(FILE);
+				file.createNewFile();
+				HSSFWorkbook workbook=new HSSFWorkbook();
+				HSSFSheet sheet =  workbook.createSheet("District"); 
+				fileOut =  new FileOutputStream(FILE);
 				selectOptionVO.setUrl(filename);
 				List<SelectOptionVO> list1 =  getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds);
-				generateXl(list1,"District",filename);
 				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds);
-				generateXl(list2,"Constituency",filename);
+				if(list1 != null && list1.size() > 0 || list2 != null && list2.size() > 0)
+				{
+					generateXl(list1,"District",FILE,workbook,sheet,fileOut,list2);
+				}
+				workbook.write(fileOut);
+				selectOptionVO.setName("success");
+			}*/
+			else
+			{
+				String filename= "Reports"+"/"+"report.xls";
+				String FILE = path+filename;
+				File file  = new File(FILE);
+				file.createNewFile();
+				HSSFWorkbook workbook=new HSSFWorkbook();
+				selectOptionVO.setUrl(filename);
+				List<SelectOptionVO> list1 =  getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "district" , districtIds,partyId);
+				if(list1 != null && list1.size() > 0)
+				{
+					
+			        HSSFSheet sheet =  workbook.createSheet("District"); 
+			        fileOut =  new FileOutputStream(FILE);
+					generateXl(list1,"District",FILE,workbook,sheet,fileOut);
+					workbook.write(fileOut);
+				}
+				List<SelectOptionVO> list2 = getCategoeryWiseCountDetails( catgIds,  constiIds, fromDateStr ,  toDateStr, "constituency" , districtIds,partyId);
+				if(list2 != null && list2.size() > 0)
+				{
+			        HSSFSheet sheet =  workbook.createSheet("Constituency"); 
+			        fileOut =  new FileOutputStream(FILE);
+					generateXl(list2,"Constituency",FILE,workbook,sheet,fileOut);
+					workbook.write(fileOut);
+				}
 				selectOptionVO.setName("success");
 			}
 			
@@ -1731,10 +1852,27 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			selectOptionVO.setName("fail");
 			LOG.error("exception raised in generatePdfOrExcel method in NewsAnalysisService service",e);
 		}
+		finally
+		{
+			if(fileOut != null)
+			{
+				try {
+					fileOut.close();
+				} catch (IOException e) {
+				}
+			}
+			
+		}
 		returnList.add(selectOptionVO);
 		return returnList;
 	}
-	
+	/**
+	 * This service is used for building the pdf
+	 * @param list
+	 * @param document
+	 * @param type
+	 * @Date 18-12-2013
+	 */
 	public void pdfGeneration(List<SelectOptionVO> list,Document document,String type)
 	{		
 		  try
@@ -1791,12 +1929,10 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void generateXl(List<SelectOptionVO> list,String type,String filename)
+	/*public void generateXl(List<SelectOptionVO> list,String type,String filename,HSSFWorkbook workbook,HSSFSheet sheet,FileOutputStream fileOut,List<SelectOptionVO> list1)
 	{
 		try {
-			LOG.info("Enterd into generateXl() method in NewsAnalysisService Class");
-	        HSSFWorkbook workbook=new HSSFWorkbook();
-	        HSSFSheet sheet =  workbook.createSheet("FirstSheet");  
+			LOG.info("Enterd into generateXl() method in NewsAnalysisService Class"); 
 	        List<SelectOptionVO> catgList = list.get(0).getSelectOptionsList();
 	        HSSFRow rowhead=   sheet.createRow((short)0);
 	        rowhead.createCell((short) 0).setCellValue(type);
@@ -1805,20 +1941,90 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	        	count ++;
 	        	rowhead.createCell((short)count).setCellValue(selectOptionVO.getName());
 			}
-	        int count1 = 0;
+	        
+	        int count2 = 0;
+	        HSSFRow row;
 	        for (SelectOptionVO selectOptionVO : list) {
-	        	count1++;
-	        	HSSFRow row =   sheet.createRow((short)count1);
+	        	count2++;
+	        	int count1 = 0;
+	        	row =   sheet.createRow((short)count2);
 	        	row.createCell((short) 0).setCellValue(selectOptionVO.getLocation());
 	        	List<SelectOptionVO> list2 = selectOptionVO.getSelectOptionsList();
-	        	for (SelectOptionVO selectOptionVO2 : list2) {
-	        		row.createCell((short) 0).setCellValue(selectOptionVO2.getName());
+	        	for (SelectOptionVO selectOptionVO2 : list2)
+	        	{
+	        		count1++;
+	        		row.createCell((short) count1).setCellValue(selectOptionVO2.getId());
 				}
 			}
-	        FileOutputStream fileOut =  new FileOutputStream(filename);
-	        workbook.write(fileOut);
-	        fileOut.close();
-	        System.out.println("Your excel file has been generated!");
+	        
+	        List<SelectOptionVO> catgList1 = list1.get(0).getSelectOptionsList();
+	        HSSFRow rowhead1=   sheet.createRow((short)0);
+	        rowhead1.createCell((short) 0).setCellValue(type);
+	        int count12 = 0;
+	        for (SelectOptionVO selectOptionVO : catgList1) {
+	        	count12++;
+	        	rowhead.createCell((short)count12).setCellValue(selectOptionVO.getName());
+			}
+	        
+	        int count21 = 0;
+	        HSSFRow row1;
+	        for (SelectOptionVO selectOptionVO : list1) {
+	        	count21++;
+	        	int count13 = 0;
+	        	row1 =   sheet.createRow((short)count21);
+	        	row1.createCell((short) 0).setCellValue(selectOptionVO.getLocation());
+	        	List<SelectOptionVO> list2 = selectOptionVO.getSelectOptionsList();
+	        	for (SelectOptionVO selectOptionVO2 : list2)
+	        	{
+	        		count13++;
+	        		row1.createCell((short) count13).setCellValue(selectOptionVO2.getId());
+				}
+			}
+	        
+	        
+	        
+		} catch (Exception e) {
+			LOG.debug("Exception raised in generateXl() method in NewsAnalysisService Class",e);
+		}
+	}*/
+	/**
+	 * This service is used for generating xl
+	 * @param list
+	 * @param type
+	 * @param filename
+	 * @param workbook
+	 * @param sheet
+	 * @param fileOut
+	 * @Date 18-12-2013
+	 */
+	public void generateXl(List<SelectOptionVO> list,String type,String filename,HSSFWorkbook workbook,HSSFSheet sheet,FileOutputStream fileOut)
+	{
+		try {
+			LOG.info("Enterd into generateXl() method in NewsAnalysisService Class"); 
+	        List<SelectOptionVO> catgList = list.get(0).getSelectOptionsList();
+	        HSSFRow rowhead=   sheet.createRow((short)0);
+	        rowhead.createCell((short) 0).setCellValue(type);
+	        int count = 0;
+	        for (SelectOptionVO selectOptionVO : catgList) {
+	        	count ++;
+	        	rowhead.createCell((short)count).setCellValue(selectOptionVO.getName());
+			}
+	        
+	        int count2 = 0;
+	        HSSFRow row;
+	        for (SelectOptionVO selectOptionVO : list) {
+	        	count2++;
+	        	int count1 = 0;
+	        	row =   sheet.createRow((short)count2);
+	        	row.createCell((short) 0).setCellValue(selectOptionVO.getLocation());
+	        	List<SelectOptionVO> list2 = selectOptionVO.getSelectOptionsList();
+	        	for (SelectOptionVO selectOptionVO2 : list2)
+	        	{
+	        		count1++;
+	        		row.createCell((short) count1).setCellValue(selectOptionVO2.getId());
+				}
+			}      
+	        
 		} catch (Exception e) {
 			LOG.debug("Exception raised in generateXl() method in NewsAnalysisService Class",e);
 		}

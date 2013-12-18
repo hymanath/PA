@@ -192,6 +192,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				String toDateStr            = jObj.getString("toDate");
 				Long startIndex             = jObj.getLong("startIndex");
 				Long maxIndex               = jObj.getLong("maxIndex");
+				Long partyId                = jObj.getLong("partyId");
 				String[] categoeryStr       = categorieyIds.split(",");
 				String[] constituencyStr    = constituencyIds.split(",");
 				List<Long> categoeryList    = new ArrayList<Long>();
@@ -202,7 +203,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				for (String constituency : constituencyStr) {
 					constituencyList.add(Long.valueOf(constituency));
 				}
-				categoeriesList = newsAnalysisService.getProgramsWiseNews(categoeryList, constituencyList, fromDateStr, toDateStr,startIndex,maxIndex);
+				categoeriesList = newsAnalysisService.getProgramsWiseNews(categoeryList, constituencyList, fromDateStr, toDateStr,startIndex,maxIndex,partyId);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("genereatePDFOrExcel"))
 			{
@@ -212,6 +213,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				String toDateStr            = jObj.getString("toDate");
 				String districtIds          = jObj.getString("districtIds");
 				String typeFor              = jObj.getString("typeFor");
+				Long partyId                = jObj.getLong("partyId");
 				String[] categoeryStr       = categorieyIds.split(",");
 				String[] constituencyStr    = constituencyIds.split(",");
 				String[] districtStr        = districtIds.split(",");
@@ -228,7 +230,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 					districtList.add(Long.valueOf(district));
 				}
 				String path = IWebConstants.STATIC_CONTENT_FOLDER_URL;
-				categoeriesList = newsAnalysisService.generatePdfOrExcel(categoeryList,constituencyList,districtList,fromDateStr,toDateStr,typeFor,path);
+				categoeriesList = newsAnalysisService.generatePdfOrExcel(categoeryList,constituencyList,districtList,fromDateStr,toDateStr,typeFor,path,partyId);
 			}
 			else
 			{
@@ -238,6 +240,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				String toDateStr            = jObj.getString("toDate");
 				String type                 = jObj.getString("type");
 				String districtIds          = jObj.getString("districtIds");
+				Long partyId                = jObj.getLong("partyId");
 				String[] categoeryStr       = categorieyIds.split(",");
 				String[] constituencyStr    = constituencyIds.split(",");
 				String[] districtStr        = districtIds.split(",");
@@ -253,7 +256,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				for (String district : districtStr) {
 					districtList.add(Long.valueOf(district));
 				}
-				categoeriesList = newsAnalysisService.getCategoeryWiseCountDetails(categoeryList,constituencyList,fromDateStr,toDateStr,type,districtList);
+				categoeriesList = newsAnalysisService.getCategoeryWiseCountDetails(categoeryList,constituencyList,fromDateStr,toDateStr,type,districtList,partyId);
 			}
 			
 			
