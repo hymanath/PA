@@ -41,14 +41,14 @@ public class PingingType extends BaseModel implements Serializable{
 	public void setPingingTypeId(Long pingingTypeId) {
 		this.pingingTypeId = pingingTypeId;
 	}
-	@Column(name = "type", length = 15)
+	@Column(name = "type", length = 100)
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
 	}
-	@Column(name = "description", length =45)
+	@Column(name = "description", length =100)
 	public String getDescription() {
 		return description;
 	}
