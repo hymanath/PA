@@ -109,11 +109,14 @@ function getConstituencyes()
        return this.value;
      }).get();
 	 districtIds = "";
-	 for(var i in selected_values){
-         districtIds = districtIds+""+selected_values[i]+",";
-      }
-	  
-	  getConstituencyesList();
+	 if(selected_values != '')
+	 {
+		for(var i in selected_values){
+              districtIds = districtIds+""+selected_values[i]+",";
+        }
+	    getConstituencyesList();
+	 }
+	 
 }
 /*
 this method is used for making a ajax call for getting all constituencyes
