@@ -1715,6 +1715,9 @@
        <property name="designationDAO" ref="designationDAO" />
        <property name="fileDAO" ref="fileDAO" />
        <property name="candidateDetailsService" ref="candidateDetailsService" />
+       <property name="constituencyDAO" ref="constituencyDAO" />
+       <property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
+       <property name="gallaryDAO" ref="gallaryDAO" />
    </bean>
 
 </beans>		

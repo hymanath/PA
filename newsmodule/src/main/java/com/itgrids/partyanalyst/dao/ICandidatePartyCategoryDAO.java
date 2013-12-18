@@ -32,4 +32,12 @@ public interface ICandidatePartyCategoryDAO extends GenericDao<CandidatePartyCat
 	public List<Object[]> getCategorysCountByFileId(Set<Long> fileIds);
 	
 	public List<Object[]> getCategoriesList(List<Long> fileIds);
+	
+	public List<Object[]> getCategoeryAndConsttituencyWiseNews(List<Long> categIds,List<Long> constituencyIds,Date fromdate , Date toDate,int startIndex,int maxIndex);
+	
+	public List<Object[]> getCategoeryAndConsttituencyWiseCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate );
+	
+	public Long getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate );
+	
+	public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate);
 }
