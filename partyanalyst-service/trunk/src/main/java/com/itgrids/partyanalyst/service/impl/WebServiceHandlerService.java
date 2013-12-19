@@ -281,14 +281,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					return result;
 				else
 				{
+					List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Get_User_Voice_Recording_Files);
+					saveMobileAppPingIngDetails((Long)userId.get(0),(Long)pingingTypeId.get(0),null,null);
 					List<Object[]> list = voiceRecordingDetailsDAO.getAllTheRecordingDetailsOfUser((Long)userId.get(0));
 						
 					if(list == null || list.size() == 0)
 							return null;
 					else
 					{
-						List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Get_User_Voice_Recording_Files);
-						saveMobileAppPingIngDetails((Long)userId.get(0),(Long)pingingTypeId.get(0),null,null);
+						
 						 for(Object[] params : list)
 						 {
 							 WSResultVO wsResultVO = new WSResultVO();
