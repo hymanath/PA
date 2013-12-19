@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeoplePositionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
@@ -170,6 +171,15 @@ public class MobileService implements IMobileService{
  private ISmsService smsCountrySmsService;
  private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
  private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+ private IMobileAppPingingDAO mobileAppPingingDAO;
+ 
+public IMobileAppPingingDAO getMobileAppPingingDAO() {
+	return mobileAppPingingDAO;
+}
+
+public void setMobileAppPingingDAO(IMobileAppPingingDAO mobileAppPingingDAO) {
+	this.mobileAppPingingDAO = mobileAppPingingDAO;
+}
 
 public IPartialBoothPanchayatDAO getPartialBoothPanchayatDAO() {
 	return partialBoothPanchayatDAO;
@@ -2108,9 +2118,7 @@ public List<SelectOptionVO> getConstituencyList()
   			regVo.setUserName(params1[1] !=null ?params1[1].toString():"");
   			regVo.setPassword(params1[2] !=null ?params1[2].toString():"");
   			regVo.setUniqueCode(params1[3] !=null ?params1[3].toString():"");
-  			regVo.setAppId(params1[4] !=null ?params1[4].toString():"");
-  			regVo.setDeviceId(params1[5] !=null ?params1[5].toString():"");
-  			regVo.setAddress(params1[6] !=null ?params1[6].toString():"");
+  			
   			superAdminList.add(regVo);
   			}
   			result.get(0).setRegisteredUsersList(superAdminList);
@@ -2196,4 +2204,25 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 		return resultList;
 	}
+  	
+  	public List<SelectOptionVO> getPingDetails(Long mobileAppUserId)
+  	{
+  		List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+  		try{
+  			List<Object[]> list = mobileAppPingingDAO.getPingingTypeIdByType(mobileAppUserId);
+  			if(list != null && list.size() > 0)
+  				for(Object[] params : list)
+  				{
+  					SelectOptionVO selectOptionVO = new SelectOptionVO();
+  					selectOptionVO.setType(params[0] != null ?params[0].toString():"");
+  					selectOptionVO.setValue(params[1] != null ?params[1].toString():"");
+  					resultList.add(selectOptionVO);
+  				}
+  			
+  		}
+  		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return resultList;
+  	}
 }

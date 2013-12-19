@@ -8,9 +8,11 @@ import net.sf.cglib.core.EmitUtils;
 
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
+import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dao.hibernate.VoiceRecordingDetailsDAO;
@@ -21,6 +23,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
+import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.service.ILoginService;
@@ -30,6 +33,7 @@ import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 
+import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class WebServiceHandlerService implements IWebServiceHandlerService {
@@ -50,7 +54,25 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private IWebServiceBaseUrlDAO webServiceBaseUrlDAO;
 	private IVoiceSmsService voiceSmsService;
 	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
+	private IPingingTypeDAO pingingTypeDAO;
+	private IMobileAppPingingDAO mobileAppPingingDAO;
 	
+	public IPingingTypeDAO getPingingTypeDAO() {
+		return pingingTypeDAO;
+	}
+
+	public void setPingingTypeDAO(IPingingTypeDAO pingingTypeDAO) {
+		this.pingingTypeDAO = pingingTypeDAO;
+	}
+
+	public IMobileAppPingingDAO getMobileAppPingingDAO() {
+		return mobileAppPingingDAO;
+	}
+
+	public void setMobileAppPingingDAO(IMobileAppPingingDAO mobileAppPingingDAO) {
+		this.mobileAppPingingDAO = mobileAppPingingDAO;
+	}
+
 	public IVoiceRecordingDetailsDAO getVoiceRecordingDetailsDAO() {
 		return voiceRecordingDetailsDAO;
 	}
@@ -150,6 +172,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	public ResultStatus checkUserAuthenticationAndUpdateAuthorisedTime(String userId,String macAdressId)
 	{
 		try{
+		List<Object> mobileAppUserId = mobileAppUserDAO.checkUniqueCode(userId);
+		if(mobileAppUserId != null)
+		{
+		List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.App_Authorization);
+		saveMobileAppPingIngDetails((Long) mobileAppUserId.get(0),(Long)pingingTypeId.get(0),null,null);
+		}
 		return mobileService.checkAuthenticateUserAndUpdateLastAuthorisedTime(userId, macAdressId);
 		}
 		catch(Exception e)
@@ -171,6 +199,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			
 			if(mobileAppUserId != null)
 			{
+				List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Request_For_Forget_Pwd_Access_Key);
+				saveMobileAppPingIngDetails((Long) mobileAppUserId.get(0),(Long)pingingTypeId.get(0),null,null);
 				List<Object[]> list =mobileAppUserProfileDAO.getMobileNoByUniquecode(uniquecode);
 				
 				if(list == null || list.size() == 0)
@@ -222,6 +252,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			{
 				for(Object[] params : list)
 				{
+				List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Validate_User_Access_Key);	
+				saveMobileAppPingIngDetails((Long)params[0],(Long)pingingTypeId.get(0),null,null);
 				MobileAppUser mobileAppUser = mobileAppUserDAO.get((Long)params[0]);
 				mobileAppUser.setPassword(pwd);
 				mobileAppUser = mobileAppUserDAO.save(mobileAppUser);
@@ -255,6 +287,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 							return null;
 					else
 					{
+						List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Get_User_Voice_Recording_Files);
+						saveMobileAppPingIngDetails((Long)userId.get(0),(Long)pingingTypeId.get(0),null,null);
 						 for(Object[] params : list)
 						 {
 							 WSResultVO wsResultVO = new WSResultVO();
@@ -288,6 +322,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				result ="data not found";
 			else
 			{
+				List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Send_Voice_Sms);
+				saveMobileAppPingIngDetails((Long)userId.get(0),(Long)pingingTypeId.get(0),null,null);	
 			audioFilePath.append(IConstants.LIVE_VOICE_RECORDINGS_URL+"/"+(Long)userId.get(0)+"/"+FilePath);
 				
 			//audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
@@ -312,6 +348,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				resultStatus.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			else
 			{
+				List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Send_Text_Sms);
+				saveMobileAppPingIngDetails((Long)mobileAppUserId.get(0),(Long)pingingTypeId.get(0),null,null);
 				if(!(message.toString().equals("\"\"") && mobileNos.toString().equals("\"\"")))
 				{
 					String[] mobilenoarr = mobileNos.split(",");
@@ -330,6 +368,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	public String getBaseUrlForApp(String appName)
 	{
 		try{
+			
+			
 			String url = webServiceBaseUrlDAO.getBaseURLForAnApp(appName);
 			
 			if(url == null || url.isEmpty())
@@ -340,6 +380,24 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		{
 			log.error("Exception Occured, Exception is - "+e);
 			return "FAIL:URL not found"; 
+		}
+	}
+	
+	public void saveMobileAppPingIngDetails(Long mobileAppUserId,Long pingTypeId,Double longitude,Double latitude)
+	{
+		try{
+			DateUtilService date = new DateUtilService();
+			MobileAppPinging mobileAppPinging = new MobileAppPinging();
+			mobileAppPinging.setLatitude(latitude);
+			mobileAppPinging.setLongitude(longitude);
+			mobileAppPinging.setPingingType(pingingTypeDAO.get(pingTypeId));
+			mobileAppPinging.setMobileAppUser(mobileAppUserDAO.get(mobileAppUserId));
+			mobileAppPinging.setPingTime(date.getCurrentDateAndTime());
+			mobileAppPingingDAO.save(mobileAppPinging);
+		}
+		catch (Exception e) {
+			log.error("Exception Occured in saveMobileAppPingIngDetails() method of WebServiceHandlerService, Exception is - "+e);
+			e.printStackTrace();
 		}
 	}
 

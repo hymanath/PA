@@ -53,7 +53,7 @@ public class MobileAppUserAccessDAO extends GenericDaoHibernate<MobileAppUserAcc
 	}
 	public List<Object[]> getSuperAdminDetailsByMobileAppUserId(Long mobileAppUserId)
 	{
-		Query query = getSession().createQuery("select model.mobileAppUser.mobileAppUserId,model.mobileAppUser.mobileAppUser.userName,model.mobileAppUser.mobileAppUser.password,model.mobileAppUser.mobileAppUser.uniqueCode,model.appId,model.deviceId,model.macAddress from MobileAppUserAccess model,MobileAppUserProfile model1 where model.mobileAppUser.mobileAppUserId = :mobileAppUserId and model.mobileAppUser.mobileAppUserId = model1.mobileAppUser.mobileAppUserId");
+		Query query = getSession().createQuery("select model.mobileAppUser.mobileAppUserId,model.mobileAppUser.mobileAppUser.userName,model.mobileAppUser.mobileAppUser.password,model.mobileAppUser.mobileAppUser.uniqueCode from MobileAppUserAccess model,MobileAppUserProfile model1 where model.mobileAppUser.mobileAppUserId = :mobileAppUserId and model.mobileAppUser.mobileAppUserId = model1.mobileAppUser.mobileAppUserId");
 		query.setParameter("mobileAppUserId", mobileAppUserId);
 		return query.list();
 	}

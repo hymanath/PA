@@ -704,6 +704,13 @@ public interface IConstants {
     public static final String LIVE_VOICE_RECORDINGS_URL = "http://www.partyanalyst.com/voice_recordings/";
     public static final String MOBILE_APP_USER_TYPE = "SuperAdmin";
     
-
+    public static final String Get_Base_URL = "Get_Base_URL";
+    public static final String App_Authorization = "App_Authorization";
+    public static final String Request_For_Forget_Pwd_Access_Key = "Request_For_Forget_Pwd_Access_Key";
+    public static final String Validate_User_Access_Key = "Validate_User_Access_Key";
+    public static final String Get_User_Voice_Recording_Files = "Get_User_Voice_Recording_Files";
+    public static final String Send_Voice_Sms = "Send_Voice_Sms";
+    public static final String Send_Text_Sms = "Send_Text_Sms";
+    
 	
 }

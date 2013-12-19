@@ -30,5 +30,7 @@ public interface IMobileService {
 	public Long saveSuperAdminInfoInMobileAppUser(String uname,String pwd,String uniqueCode);
 	
   	public List<SelectOptionVO> getSuperAdminMobileAppUsers();
+  	
+  	public List<SelectOptionVO> getPingDetails(Long mobileAppUserId);
 
 }
