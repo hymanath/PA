@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -26,7 +27,14 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 	private List<RegistrationVO> resultList;
 	private ResultStatus resultStatus;
 	private Long userId;
+	private List<SelectOptionVO> pingDetials;
 	
+	public List<SelectOptionVO> getPingDetials() {
+		return pingDetials;
+	}
+	public void setPingDetials(List<SelectOptionVO> pingDetials) {
+		this.pingDetials = pingDetials;
+	}
 	public Long getUserId() {
 		return userId;
 	}
@@ -103,6 +111,8 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 				resultList = mobileService.getMobileAppUserDetails();
 			else if(jObj.getString("task").equalsIgnoreCase("getUserDetailInfo"))
 				resultList = mobileService.getMobileAppUserDetailInfo(jObj.getLong("mobileAppuserId"));
+			else if(jObj.getString("task").equalsIgnoreCase("getPingDetails"))
+				pingDetials = mobileService.getPingDetails(jObj.getLong("mobileAppuserId"));
 		
 		}
 		catch (Exception e) {
@@ -132,5 +142,6 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
 	
 }

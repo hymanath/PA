@@ -6252,6 +6252,10 @@
 			<result name="success">/jsp/mobileAppUserInfo.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 			</action>
-        
+          <action name="getPingDetailsAction" class="mobileAppUserMgmtAction" method="getMobileAppUserData">
+           <result type="json" name="success">
+           		<param name="root">pingDetials</param>
+        	</result>
+        </action>
 		</package>
 </struts>      
