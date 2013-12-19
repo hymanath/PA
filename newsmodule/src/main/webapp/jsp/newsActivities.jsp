@@ -332,7 +332,13 @@ function buildCategoeryDetails(result,jsObj)
 				searchType:'catgNews',
 				cssStyle: 'light-theme'
 			});
+			
+			
 	    }
+		if(jsObj.requestType == "initial")
+		{
+			$('#urlId').html('<b>NOTE : Use this url for Pdf Generation : </b><b style="color:green;">'+result[0].partno+'</b>');
+		}
 	}
 	
 	
@@ -579,6 +585,8 @@ function validateFields()
 		$('#errorMsgDiv').html(str);
 	}
 }
+
+
 </script>
 
 <body>
@@ -648,6 +656,7 @@ function validateFields()
 		<div style="margin-top: 66px;">
 			<div id="categoeryDetails"></div>
 			<div id="paginationId"></div>
+			<div  id="urlId" align="center"></div>
 		</div>
 		
 		
