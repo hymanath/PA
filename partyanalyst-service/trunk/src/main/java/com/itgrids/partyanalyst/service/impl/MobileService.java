@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -1674,12 +1675,29 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 		
 		
+		
+		
+		
 	}catch(Exception e)
 	{
 		LOG.error("Exception Occured in Assembly Local Election Body,ward,ward_booth Table Inserting ",e);
 	}
 	//End 
-	
+
+	/*user,user_profile,user_access DB Scripts Added*/
+	try{
+		DateUtilService dateUtilService = new DateUtilService();
+		int id=1;
+		 str.append("INSERT INTO user(user_id,username,password,unique_code) VALUES('"+id+"','"+reVo.getUserName()+"','"+reVo.getPassword()+"','"+reVo.getUniqueCode()+"');\n");
+		 str.append("INSERT INTO user_profile(user_profile_id,first_name,last_name,gender) VALUES('"+id+"','"+reVo.getFirstName()+"','"+reVo.getLastName()+"','"+reVo.getGender().toString()+"');\n");
+		 str.append("INSERT INTO user_access(user_access_id,user_id,is_authorised,app_id,mac_address,device_id,last_authorised_time) VALUES('"+id+"','"+id+"','"+IConstants.TRUE+"','"+reVo.getAppId()+"','"+reVo.getAddress()+"','"+reVo.getMobile()+"','"+dateUtilService.getCurrentDateAndTime()+"');\n");
+		 str.append("\n");
+		LOG.info(" user, user_profile,user_access Table data Completed... ");
+	}
+	catch (Exception e) {
+		LOG.error(" Exception Occured in user user_profile,user_access Table Inserting ",e);
+	}
+	/*user,user_profile,user_access  End*/
 	try
 	{	
 		outPut.write(str.toString());
