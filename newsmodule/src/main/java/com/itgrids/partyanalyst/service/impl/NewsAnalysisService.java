@@ -1618,7 +1618,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				toDate   = format.parse(toDateStr);
 			}
 
-			Long count = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseTotalCount(categIds,constituencyIds,fromDate,toDate,partyid);
+			List<Object[]> count = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseTotalCount(categIds,constituencyIds,fromDate,toDate,partyid);
 			List<Object[]> catgList = candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNews(categIds,constituencyIds,fromDate,toDate,startIndex.intValue(),maxIndex.intValue(),partyid);
 			if(catgList != null && catgList.size() > 0)
 			{
@@ -1630,7 +1630,10 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					selectOptionVO.setType(parms[2] != null ? parms[2].toString() :"");
 					selectOptionVO.setLocation(parms[3] != null ? parms[3].toString() :"");
 					selectOptionVO.setId(parms[4] != null ? new Long(parms[4].toString()) :0l);
-					selectOptionVO.setOrderId(count);
+					if(count != null)
+					selectOptionVO.setOrderId(Long.valueOf(count.size()));
+					else
+					 selectOptionVO.setOrderId(0l);
 					returnList.add(selectOptionVO);
 					
 					
