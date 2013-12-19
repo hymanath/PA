@@ -623,6 +623,12 @@ function validateFields()
 			</div>
 			
 		</div>
+				
+	    <!-------Submit Button------>
+		<div class="form-actions text-center">
+		<button class="btn btn-success" type="submit" onClick="validateFields();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
+		
+		</div><!-------Submit Button END------>
 		
 		<div class="row-fluid m_top10">
 		    <div id="categoeryDetailsDistrictCountWise"></div>
@@ -640,14 +646,6 @@ function validateFields()
 			<div id="categoeryDetails"></div>
 			<div id="paginationId"></div>
 		</div>
-		
-		
-	    <!-------Submit Button------>
-		<div class="form-actions text-center">
-		<button class="btn btn-success" type="submit" onClick="validateFields();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
-		
-		</div><!-------Submit Button END------>
-		
 		
 		
     </div>	
