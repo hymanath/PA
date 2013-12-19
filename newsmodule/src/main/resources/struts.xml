@@ -5897,7 +5897,7 @@
 		   </result>
 			</action>
 		 <action name="createActivitiesReportAction" class="createReportAction" method="activitiesReports">
-		    <result name="success">/jsp/createctivitiesReport.jsp</result>
+		    <result name="success">/jsp/createActivitiesReport.jsp</result>
 		 </action>
 		 
 		 <action name="createActivitiesReportAction1" class="createReportAction" method="prepareActivitiesReport">
