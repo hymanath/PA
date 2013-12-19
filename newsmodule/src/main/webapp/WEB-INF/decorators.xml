@@ -93,6 +93,7 @@
 		<pattern>/newsDetailsPopupAction.action*</pattern>
 		<pattern>/selectedNewsDetailsAction.action*</pattern>
 		<pattern>/createReportAction*</pattern>
+		<pattern>/createActivitiesReportAction*</pattern>
 		
 	</excludes>  
 	
