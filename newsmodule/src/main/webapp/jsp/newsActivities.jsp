@@ -235,9 +235,11 @@ getPartiesList();
 /*
 	this function is used for making ajax cal for getting ategoery wise details for selectd constituency level
 */
-function getCategoeryWiseNews(pageNo)
+function getCategoeryWiseNews(pageNo,requestType)
 {
-
+		if(requestType != 'initial'){
+			requestType = 'others';
+		}
 	var fromDate = $('#fromDateId').val();
 	
 	var toDate   = $('#todateId').val();
@@ -270,6 +272,7 @@ function getCategoeryWiseNews(pageNo)
 		constituencyIds : constituencyIds,
 		startIndex      : pageNo,
 		maxIndex        : 10,
+		requestType     : requestType,
 		partyId         : partyId,
 		task            : "categoeryWiseNews"
 	};
@@ -566,7 +569,7 @@ function validateFields()
 	if(flag)
 	{
 		$('#errorMsgDiv').hide();
-		getCategoeryWiseNews(0);
+		getCategoeryWiseNews(0,'initial');
 		getCategoeryWiseNewsByCount('constituency');
 	    getCategoeryWiseNewsByCount('district');
 	}

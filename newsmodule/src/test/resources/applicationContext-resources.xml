@@ -130,6 +130,8 @@
 				<value>com.itgrids.partyanalyst.model.NewsResponse</value>
 				<value>com.itgrids.partyanalyst.model.ReportFiles</value>
 				<value>com.itgrids.partyanalyst.model.Designation</value>
+				<value>com.itgrids.partyanalyst.model.ActivityReport</value>
+				<value>com.itgrids.partyanalyst.model.ActivityReportFiles</value>
 			</list>
 		</property>
 	</bean>
@@ -242,5 +244,12 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="activityReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityReportDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="activityReportFilesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityReportFilesDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<!--End Add new DAOs here -->
 </beans>

@@ -5896,6 +5896,16 @@
 		    	<param name="root">keywordsList</param>
 		   </result>
 			</action>
+		 <action name="createActivitiesReportAction" class="createReportAction" method="activitiesReports">
+		    <result name="success">/jsp/createctivitiesReport.jsp</result>
+		 </action>
+		 
+		 <action name="createActivitiesReportAction1" class="createReportAction" method="prepareActivitiesReport">
+		   <result name="success" type="json">
+		 	<param name="root">report</param>
+		   </result>
+		 </action>
+		 
         </package>
 		
 </struts>      

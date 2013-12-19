@@ -184,12 +184,15 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 		try {
 			LOG.info("Entered into getCategoeryWiseNews() method in NewsActivitiesAction Ation");
 			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(jObj.getString("task").equalsIgnoreCase("categoeryWiseNews"))
 			{
 				String categorieyIds        = jObj.getString("categorieyIds");
 				String constituencyIds      = jObj.getString("constituencyIds");
 				String fromDateStr          = jObj.getString("fromDate");
 				String toDateStr            = jObj.getString("toDate");
+				String requestType          = jObj.getString("requestType");
 				Long startIndex             = jObj.getLong("startIndex");
 				Long maxIndex               = jObj.getLong("maxIndex");
 				Long partyId                = jObj.getLong("partyId");
@@ -203,7 +206,9 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 				for (String constituency : constituencyStr) {
 					constituencyList.add(Long.valueOf(constituency));
 				}
-				categoeriesList = newsAnalysisService.getProgramsWiseNews(categoeryList, constituencyList, fromDateStr, toDateStr,startIndex,maxIndex,partyId);
+				 String[] urls = request.getRequestURL().toString().split("getCategoeryWiseNewsAction.action");
+				 String url = urls[0].concat("createActivitiesReportAction.action?");
+				categoeriesList = newsAnalysisService.getProgramsWiseNews(categoeryList, constituencyList, fromDateStr, toDateStr,startIndex,maxIndex,partyId,regVO.getRegistrationID(),url,requestType);
 			}
 			else if(jObj.getString("task").equalsIgnoreCase("genereatePDFOrExcel"))
 			{

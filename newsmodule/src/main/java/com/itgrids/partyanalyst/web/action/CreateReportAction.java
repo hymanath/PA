@@ -7,6 +7,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IReportService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,6 +22,7 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	private Long reportId;
 	private String key;
 	private FileVO news;
+	private SelectOptionVO report;
 	
 	private IReportService reportService;
 	
@@ -60,6 +62,14 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 		this.news = news;
 	}
 
+	public SelectOptionVO getReport() {
+		return report;
+	}
+
+	public void setReport(SelectOptionVO report) {
+		this.report = report;
+	}
+
 	public String execute(){
 		HttpSession session = request.getSession();
 		RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
@@ -82,6 +92,15 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 			return Action.SUCCESS;
 		}
 		 news = reportService.getReportData(reportId, userId, key);
+		return Action.SUCCESS;
+	}
+	
+	public String activitiesReports(){
+		return Action.SUCCESS;
+	}
+	
+	public String prepareActivitiesReport(){
+		report = reportService.getActivitiesReportData(key);
 		return Action.SUCCESS;
 	}
 }

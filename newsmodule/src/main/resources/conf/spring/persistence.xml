@@ -110,7 +110,8 @@
 				<value>com.itgrids.partyanalyst.model.CandidatePartyCategory</value>
 				<value>com.itgrids.partyanalyst.model.NewsResponse</value>
 				<value>com.itgrids.partyanalyst.model.Designation</value>
-						
+				<value>com.itgrids.partyanalyst.model.ActivityReportFiles</value>
+				<value>com.itgrids.partyanalyst.model.ActivityReport</value>		
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>

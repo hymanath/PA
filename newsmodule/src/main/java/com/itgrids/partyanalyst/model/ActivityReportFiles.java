@@ -1,15 +1,6 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
-/*CREATE TABLE `report_files` (
-		  `report_files_id` int(15) NOT NULL AUTO_INCREMENT,
-		  `news_report_id` int(15) DEFAULT NULL,
-		  `file_gallary_id` bigint(15) DEFAULT NULL,
-		  PRIMARY KEY (`report_files_id`),
-		  KEY `fk_report_files_file_gallary` (`file_gallary_id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=latin1$$
-*/
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,46 +19,32 @@ import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 @Entity
-@Table(name = "report_files")
+@Table(name = "activity_report_files")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class ReportFiles extends BaseModel implements Serializable{
+public class ActivityReportFiles extends BaseModel implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1077172985484828985L;
-	private Long reportFilesId;
-	private NewsReport newsReport;
+	private static final long serialVersionUID = -3678856469376961901L;
+	private Long activityReportFilesId;
+	private ActivityReport activityReport;
 	private File file;
-public ReportFiles()
+public ActivityReportFiles()
 {
 	
 }
-public ReportFiles(Long reportFilesId,NewsReport newsReport,FileGallary fileGallary)
-{
-this.reportFilesId = reportFilesId;
-this.newsReport = newsReport;
-this.file = file;
 
-}
 @Id
 @GeneratedValue(strategy=GenerationType.AUTO)
-@Column(name="report_files_id", unique=true, nullable=false)
-public Long getReportFilesId() {
-	return reportFilesId;
+@Column(name="activity_report_files_id", unique=true, nullable=false)
+public Long getActivityReportFilesId() {
+	return activityReportFilesId;
 }
-public void setReportFilesId(Long reportFilesId) {
-	this.reportFilesId = reportFilesId;
+
+public void setActivityReportFilesId(Long activityReportFilesId) {
+	this.activityReportFilesId = activityReportFilesId;
 }
-@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-@JoinColumn(name = "news_report_id")
-@LazyToOne(LazyToOneOption.NO_PROXY)
-@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
-public NewsReport getNewsReport() {
-	return newsReport;
-}
-public void setNewsReport(NewsReport newsReport) {
-	this.newsReport = newsReport;
-}
+
 
 @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 @JoinColumn(name = "file_id")
@@ -76,6 +53,19 @@ public void setNewsReport(NewsReport newsReport) {
 public File getFile() {
 	return file;
 }
+
+@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+@JoinColumn(name = "activity_report_id")
+@LazyToOne(LazyToOneOption.NO_PROXY)
+@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+public ActivityReport getActivityReport() {
+	return activityReport;
+}
+
+public void setActivityReport(ActivityReport activityReport) {
+	this.activityReport = activityReport;
+}
+
 public void setFile(File file) {
 	this.file = file;
 }
