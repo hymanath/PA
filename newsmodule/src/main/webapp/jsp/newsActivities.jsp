@@ -57,9 +57,11 @@ font-size:20px;
  margin-left:5px;
  border-radius: 5px 5px 5px 5px;
 }
-.ui-corner-bottom {
-    border-bottom-right-radius: 4px;!important;
-    width: 219px; !important;
+.ui-multiselect {
+    height: 33px !important;
+    padding: 2px 0 2px 4px;
+    text-align: left;
+    width: 221px !important;
 }
 </style>
 <script type="text/javascript">
