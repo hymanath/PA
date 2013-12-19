@@ -1560,6 +1560,10 @@ function showNewsUploadStatus1(myResult)
 		who = 0;
 		whome = 0;
 		//errorDivEle.innerHTML = str;
+		
+		 $('.ui-multiselect-menu').each(function() {
+	            $(this).remove();
+	        });
 		uploadNewsForPartyAndCandidate(null);
 		
 		getKeywordList();

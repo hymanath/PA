@@ -431,7 +431,11 @@ function buildCategoeryDetailsCountWise(result,jsObj)
 		}
 		str += '<table class="table table-bordered table-hover">';
 		str += '<tr>';
-		str += '<th>Constituency</th>';
+		if(jsObj.type == "constituency"){
+		  str += '<th>Constituency</th>';
+		}else{
+			str += '<th>District</th>';
+		}
 		for(var i in result[0].selectOptionsList)
 		{
 			str += '<th>'+result[0].selectOptionsList[i].name+'</th>';
@@ -457,6 +461,12 @@ function buildCategoeryDetailsCountWise(result,jsObj)
 			$('#categoeryDetailsDistrictCountWise').html(str);
 		}
 		
+	}else{
+	   if(jsObj.type == "constituency")
+		{
+			$('#categoeryDetailsConstituencyCountWise').html("<div class='text-center'>No News Exists With Your Search Criteria</div>");
+		}
+	
 	}
 }
 /*
@@ -585,6 +595,10 @@ function validateFields()
 	if(flag)
 	{
 		$('#errorMsgDiv').hide();
+		$('#urlId').html("");
+		$('#categoeryDetails').html("");
+		$('#categoeryDetailsDistrictCountWise').html("");
+		$('#categoeryDetailsConstituencyCountWise').html("");
 		getCategoeryWiseNews(0,'initial');
 		getCategoeryWiseNewsByCount('constituency');
 	    getCategoeryWiseNewsByCount('district');
