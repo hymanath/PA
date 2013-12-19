@@ -1648,7 +1648,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					final String categoryString = categoryIds;
 					final String key = UUID.randomUUID().toString();
 					url = url+"key="+key;
-					returnList.get(0).setLocation(url);
+					returnList.get(0).setPartno(url);
 					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 						public void doInTransactionWithoutResult(TransactionStatus status) {
 							DateUtilService dateService = new DateUtilService();
