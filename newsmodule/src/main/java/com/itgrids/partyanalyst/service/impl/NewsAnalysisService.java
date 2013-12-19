@@ -1638,6 +1638,14 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				}
 				final List<Long> fileIdsList =  candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNewsIds(categIds, constituencyIds, fromDate, toDate, partyid);
 				if(fileIdsList.size() > 0 && requestType.equalsIgnoreCase("initial")){
+					String categoryIds = "";
+					for(Long id:categIds){
+						categoryIds = categoryIds+","+id;
+					}
+					if(categoryIds.length() > 0){
+						categoryIds = categoryIds.substring(1);
+					}
+					final String categoryString = categoryIds;
 					final String key = UUID.randomUUID().toString();
 					url = url+"key="+key;
 					returnList.get(0).setLocation(url);
@@ -1648,6 +1656,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 							activityReport.setUser(userDAO.get(userId));
 							activityReport.setCreatedDate(dateService.getCurrentDateAndTime());
 							activityReport.setReportKey(key);
+							activityReport.setCategories(categoryString);
 							activityReport = activityReportDAO.save(activityReport);
 							for(Long fileId:fileIdsList){
 								ActivityReportFiles activityReportFiles = new ActivityReportFiles();
