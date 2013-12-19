@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityReportDAO;
 import com.itgrids.partyanalyst.dao.IActivityReportFilesDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
@@ -19,7 +20,6 @@ import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsActivityVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IReportService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
@@ -33,9 +33,24 @@ public class ReportService implements IReportService {
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
 	private IFilePathsDAO filePathsDAO;
 	private IActivityReportFilesDAO activityReportFilesDAO;
-	
+	private IActivityReportDAO  activityReportDAO;
 	private static final org.apache.log4j.Logger LOG = Logger.getLogger(ReportService.class);
 			
+	
+	/**
+	 * @return the activityReportDAO
+	 */
+	public IActivityReportDAO getActivityReportDAO() {
+		return activityReportDAO;
+	}
+
+	/**
+	 * @param activityReportDAO the activityReportDAO to set
+	 */
+	public void setActivityReportDAO(IActivityReportDAO activityReportDAO) {
+		this.activityReportDAO = activityReportDAO;
+	}
+
 	public IFilePathsDAO getFilePathsDAO() {
 		return filePathsDAO;
 	}
@@ -344,7 +359,13 @@ public class ReportService implements IReportService {
 		LinkedHashMap<Long,List<NewsActivityVO>> constituencyMap = null;
 		List<NewsActivityVO> newsList = null;
 		NewsActivityVO news = null;
-		List<Object[]> activitiesList = activityReportFilesDAO.getActivitiesList(key);
+		String categories = activityReportDAO.getCategoeryIds(key);
+		String[] categoriesArry = categories.split(",");
+		List<Long> cateList = new ArrayList<Long>();
+		for (String catg : categoriesArry) {
+			cateList.add(Long.valueOf(catg));
+		}
+		List<Object[]> activitiesList = activityReportFilesDAO.getActivitiesList(key,cateList);
 		for(Object[] activity:activitiesList){
 			districtyMap = newsMap.get((Long)activity[7]);
 			if(districtyMap == null){

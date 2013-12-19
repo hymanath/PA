@@ -7,5 +7,5 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.ActivityReportFiles;
 
 public interface IActivityReportFilesDAO  extends GenericDao<ActivityReportFiles, Long>{
-	public List<Object[]> getActivitiesList(String key);
+	public List<Object[]> getActivitiesList(String key,List<Long> catgIds);
 }
