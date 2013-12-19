@@ -76,7 +76,17 @@ legend {
     margin-top: 12px;
 	
 }
-
+.dataTables_length {
+   
+    padding-bottom: 15px;
+  
+}
+  input[type="text"]{  background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+    transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
+	border-radius: 4px;
+	 padding: 5px;}
 </style>
 </head>
 <body>
