@@ -407,6 +407,14 @@ function getCategoeryWiseNewsByCount(type)
 */
 function buildCategoeryDetailsCountWise(result,jsObj)
 {
+	if(jsObj.type == "constituency")
+	{
+		$('#categoeryDetailsConstituencyCountWise').html("");
+	}
+	else
+	{
+		$('#categoeryDetailsDistrictCountWise').html("");
+	}
 	if(result != null && result.length > 0)
 	{
 		$('#pdfExcelDiv').show();
