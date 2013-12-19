@@ -1669,6 +1669,7 @@
 		<property name="newsReportDAO" ref="newsReportDAO" />
 		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
 		<property name="filePathsDAO" ref="filePathsDAO" />
+		<property name="activityReportFilesDAO" ref="activityReportFilesDAO" />
 	</bean>	
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
@@ -1718,6 +1719,9 @@
        <property name="constituencyDAO" ref="constituencyDAO" />
        <property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
        <property name="gallaryDAO" ref="gallaryDAO" />
+       <property name="activityReportDAO" ref="activityReportDAO" />  
+       <property name="userDAO" ref="userDAO" />    
+       <property name="activityReportFilesDAO" ref="activityReportFilesDAO" />
    </bean>
 
 </beans>		

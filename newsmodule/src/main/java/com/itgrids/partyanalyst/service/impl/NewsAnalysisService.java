@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -35,10 +36,13 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itgrids.partyanalyst.dao.IActivityReportDAO;
+import com.itgrids.partyanalyst.dao.IActivityReportFilesDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dao.IGallaryDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DesignationDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
@@ -47,11 +51,14 @@ import com.itgrids.partyanalyst.dto.NewsAnalysisVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.ActivityReport;
+import com.itgrids.partyanalyst.model.ActivityReportFiles;
 import com.itgrids.partyanalyst.model.Designation;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsAnalysisService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class NewsAnalysisService implements INewsAnalysisService {
    
@@ -68,7 +75,9 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	private static Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
 	private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
 	private static Font catFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 11,  Font.BOLD);
-	
+	private IActivityReportDAO activityReportDAO;
+	private IUserDAO userDAO;
+	private IActivityReportFilesDAO activityReportFilesDAO;
 	/**
 	 * @return the gallaryDAO
 	 */
@@ -133,6 +142,26 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	}
 	public PartyDAO getPartyDAO() {
 		return partyDAO;
+	}
+	
+	public IActivityReportFilesDAO getActivityReportFilesDAO() {
+		return activityReportFilesDAO;
+	}
+	public void setActivityReportFilesDAO(
+			IActivityReportFilesDAO activityReportFilesDAO) {
+		this.activityReportFilesDAO = activityReportFilesDAO;
+	}
+	public IUserDAO getUserDAO() {
+		return userDAO;
+	}
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
+	public IActivityReportDAO getActivityReportDAO() {
+		return activityReportDAO;
+	}
+	public void setActivityReportDAO(IActivityReportDAO activityReportDAO) {
+		this.activityReportDAO = activityReportDAO;
 	}
 	public TransactionTemplate getTransactionTemplate() {
 		return transactionTemplate;
@@ -1574,7 +1603,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 * @return List<SelectOptionVO>
 	 * @Date 18-12-2013
 	 */
-	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex,Long partyid){
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex,Long partyid,final Long userId,String url,String requestType){
 		List<SelectOptionVO> returnList = null;
 		try {
 			LOG.info("Entered into getProgramsWiseNews method in NewsAnalysisService service");
@@ -1607,7 +1636,28 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					
 					
 				}
-				
+				final List<Long> fileIdsList =  candidatePartyCategoryDAO.getCategoeryAndConsttituencyWiseNewsIds(categIds, constituencyIds, fromDate, toDate, partyid);
+				if(fileIdsList.size() > 0 && requestType.equalsIgnoreCase("initial")){
+					final String key = UUID.randomUUID().toString();
+					url = url+"key="+key;
+					returnList.get(0).setLocation(url);
+					transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+						public void doInTransactionWithoutResult(TransactionStatus status) {
+							DateUtilService dateService = new DateUtilService();
+							ActivityReport activityReport = new ActivityReport();
+							activityReport.setUser(userDAO.get(userId));
+							activityReport.setCreatedDate(dateService.getCurrentDateAndTime());
+							activityReport.setReportKey(key);
+							activityReport = activityReportDAO.save(activityReport);
+							for(Long fileId:fileIdsList){
+								ActivityReportFiles activityReportFiles = new ActivityReportFiles();
+								activityReportFiles.setActivityReport(activityReport);
+								activityReportFiles.setFile(fileDAO.get(fileId));
+								activityReportFilesDAO.save(activityReportFiles);
+							}
+						}
+					});
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("exception raised in getProgramsWiseNews method in NewsAnalysisService service",e);

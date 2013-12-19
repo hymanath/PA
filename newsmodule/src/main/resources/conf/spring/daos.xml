@@ -1386,5 +1386,11 @@
 	<bean id="designationDAO" class="com.itgrids.partyanalyst.dao.hibernate.DesignationDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="activityReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityReportDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
+	<bean id="activityReportFilesDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityReportFilesDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

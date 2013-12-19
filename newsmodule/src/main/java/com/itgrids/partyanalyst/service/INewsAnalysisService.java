@@ -22,7 +22,7 @@ public interface INewsAnalysisService {
 	
 	public List<SelectOptionVO> getConstituencyesList(List<Long> districtIds);
 	
-	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,Long startIndex , Long maxIndex,Long partyid);
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,Long startIndex , Long maxIndex,Long partyid,Long userId,String url,String requestType);
 	
 	public List<SelectOptionVO> getCategoeryWiseCountDetails(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr,String type,List<Long> districtIds,Long partyId );
 	

@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,12 +11,14 @@ import java.util.Map;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IActivityReportFilesDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IReportService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
@@ -27,6 +31,7 @@ public class ReportService implements IReportService {
 	private INewsReportDAO newsReportDAO;
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
 	private IFilePathsDAO filePathsDAO;
+	private IActivityReportFilesDAO activityReportFilesDAO;
 	
 	private static final org.apache.log4j.Logger LOG = Logger.getLogger(ReportService.class);
 			
@@ -79,6 +84,15 @@ public class ReportService implements IReportService {
 
 	public void setNewsReportDAO(INewsReportDAO newsReportDAO) {
 		this.newsReportDAO = newsReportDAO;
+	}
+
+	public IActivityReportFilesDAO getActivityReportFilesDAO() {
+		return activityReportFilesDAO;
+	}
+
+	public void setActivityReportFilesDAO(
+			IActivityReportFilesDAO activityReportFilesDAO) {
+		this.activityReportFilesDAO = activityReportFilesDAO;
 	}
 
 	public FileVO getReportData(Long reportId,Long userId,String key){
@@ -313,5 +327,73 @@ public class ReportService implements IReportService {
 		 LOG.error("Exception rised in getReportData ",e);
 	 }
 		return returnVo;
+	}
+	
+	public SelectOptionVO getActivitiesReportData(String key){
+		SelectOptionVO returnVO = new SelectOptionVO();
+		Map<Long,String> districtNames = new HashMap<Long,String>();
+		Map<Long,String> categoryNames = new HashMap<Long,String>();
+		Map<Long,String> constituencyNames = new HashMap<Long,String>();
+		List<SelectOptionVO> categoryList = new ArrayList<SelectOptionVO>();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		returnVO.setSelectOptionsList(categoryList);
+		// 0title 1fontId 2fileDate 3districtid 4distname 5constiId 6constiname 7categoryId 8catgoryName
+		LinkedHashMap<Long,LinkedHashMap<Long,LinkedHashMap<Long,List<SelectOptionVO>>>> newsMap = new LinkedHashMap<Long,LinkedHashMap<Long,LinkedHashMap<Long,List<SelectOptionVO>>>>();//<categoryId,Map<distrctId,Map<constituencyId,news>>>
+		LinkedHashMap<Long,LinkedHashMap<Long,List<SelectOptionVO>>> districtyMap = null;
+		LinkedHashMap<Long,List<SelectOptionVO>> constituencyMap = null;
+		List<SelectOptionVO> newsList = null;
+		SelectOptionVO news = null;
+		List<Object[]> activitiesList = activityReportFilesDAO.getActivitiesList(key);
+		for(Object[] activity:activitiesList){
+			districtyMap = newsMap.get((Long)activity[7]);
+			if(districtyMap == null){
+				districtyMap = new LinkedHashMap<Long,LinkedHashMap<Long,List<SelectOptionVO>>>();
+				newsMap.put((Long)activity[7], districtyMap);
+				categoryNames.put((Long)activity[7],activity[8]!=null?activity[8].toString():"");
+			}
+			 constituencyMap = districtyMap.get((Long)activity[3]);
+			 if(constituencyMap == null){
+			      constituencyMap = new LinkedHashMap<Long,List<SelectOptionVO>>();
+			      districtyMap.put((Long)activity[3], constituencyMap);
+			      districtNames.put((Long)activity[3], activity[4]!=null?activity[4].toString():"");
+			 }
+			 newsList = constituencyMap.get((Long)activity[5]);
+			 if(newsList == null){
+				 newsList = new ArrayList<SelectOptionVO>();
+				 constituencyMap.put((Long)activity[5],newsList);
+				 constituencyNames.put((Long)activity[5], activity[6]!=null?activity[6].toString():"");
+			 }
+			 SelectOptionVO constituency = new SelectOptionVO();
+			 newsList.add(constituency);
+			 constituency.setName(activity[6]!=null?activity[6].toString():"");
+			 constituency.setValue(StringEscapeUtils.unescapeJava(activity[0].toString()));
+			 if(activity[1] != null){
+				 constituency.setType("eenadu");
+			 }
+			 constituency.setLocation(activity[2] != null ? sdf.format((Date)activity[2]):"");
+		}
+		for(Long categoryId:newsMap.keySet()){
+			SelectOptionVO category = new SelectOptionVO();
+			List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
+			category.setSelectOptionsList(districtList);
+			categoryList.add(category);
+			category.setName(categoryNames.get(categoryId));
+			districtyMap = newsMap.get(categoryId);
+			for(Long districtId:districtyMap.keySet()){
+				SelectOptionVO district = new SelectOptionVO();
+				district.setName(districtNames.get(districtId));
+				List<SelectOptionVO> constituencyList = new ArrayList<SelectOptionVO>();
+				district.setSelectOptionsList(constituencyList);
+				districtList.add(district);
+				constituencyMap = districtyMap.get(districtId);
+				for(Long constituencyId:constituencyMap.keySet()){
+					SelectOptionVO constituency = new SelectOptionVO();
+					constituency.setName(constituencyNames.get(constituencyId));
+					constituencyList.add(constituency);
+					constituency.setSelectOptionsList(constituencyMap.get(constituencyId));
+				}
+			}
+		}
+		return returnVO;
 	}
 }
