@@ -71,21 +71,21 @@
      if(myResults != null && myResults.list != null && myResults.list.length > 0){
 	  str+="<div class='container'><div class='row-fluid'><div class='span12 content_widget'>	";
 	    for(var i in myResults.list){//category list
-		    str+="<div>"+myResults.list[i].name+"</div>";
+			str+="<div class='text-center widget'><h4>"+myResults.list[i].name+"</h4></div>";
 			for(var j in myResults.list[i].list){//district list
 				 str+='<div class="row-fluid ">';
 				 str+='			<div class="span12 widget ">';
 				 str+='				<div class="boxHeading">';
-				 str+='				<h4>'+myResults.list[i].list[j].name+'</h4>	</div>';
+				 str+='				<h4>'+myResults.list[i].list[j].name+' District</h4>	</div>';
 				 for(var k in  myResults.list[i].list[j].list){	//constituency list			
 					str+='				<div class="accordion-inner">';
-					str+='					<a class="btn">'+myResults.list[i].list[j].list[k].name+'</a>';
+					str+='					<a class="btn btn-small">'+myResults.list[i].list[j].list[k].name+'</a>';
 					str+='					<div class="m_top10">';
 					for(var l in  myResults.list[i].list[j].list[k].list){//news list
 					  if(myResults.list[i].list[j].list[k].list[l].font == null){
 					    str+='			<p>'+myResults.list[i].list[j].list[k].list[l].date+' '+myResults.list[i].list[j].list[k].list[l].description+'</p>';
 					  }else{
-					    str+='			<p>'+myResults.list[i].list[j].list[k].list[l].date+'  <enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
+					    str+='			<p>'+myResults.list[i].list[j].list[k].list[l].date+'&nbsp;<enadu>'+myResults.list[i].list[j].list[k].list[l].description+'</enadu></p>';
 					  }
 					}
 					str+='					</div>';
