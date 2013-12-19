@@ -303,7 +303,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 {
 		 StringBuffer queryString = new StringBuffer();
 		 
-		 queryString.append("select model.candidatePartyFile.file.fileDate , " +
+		 queryString.append("select distinct model.candidatePartyFile.file.fileDate , " +
 		 		" model.candidatePartyFile.file.synopsysDescription , " +
 		 		" model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name ," +
 		 		" model.candidatePartyFile.file.synopsysFont.fontId from " +
@@ -373,7 +373,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 	 {
 		StringBuffer queryString = new StringBuffer();
 		
-		queryString.append("select model.gallary.name,count(model.gallary.name)," +
+		queryString.append("select model.gallary.name,count(distinct model.candidatePartyFile.file.fileId)," +
 		 		"  model.gallary.gallaryId , " +
 		 		"  model.candidatePartyFile.file.userAddress.constituency.constituencyId , " +
 		 		"  model.candidatePartyFile.file.userAddress.constituency.name from " +
@@ -385,7 +385,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate " +
 		 		" and model.candidatePartyFile.file.fileDate <= :toDate ");
 		}
-		queryString.append("  group by model.candidatePartyFile.file.userAddress.constituency.name ,model.gallary.name ");
+		queryString.append("  group by model.candidatePartyFile.file.userAddress.constituency.constituencyId ,model.gallary.gallaryId ");
 		 
 	    Query query = getSession().createQuery(queryString.toString());
 		 
@@ -400,11 +400,11 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		return query.list();
 	 }
 	
-	 public Long getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId )
+	 public List<Object[]> getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId )
 	 {
 		 StringBuffer queryString = new StringBuffer();
 		 
-		 queryString.append("select count(model.gallary.name) from " +
+		 queryString.append("select distinct  model.candidatePartyFile.file.fileId,model.gallary.gallaryId from " +
 		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
 		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
 		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)  ");
@@ -425,14 +425,14 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 }
 		 
 
-		 return (Long)query.uniqueResult();
+		 return query.list();
 	 }
 	
 	 @SuppressWarnings("unchecked")
 	 public List<Object[]> getCategoeryAndDisrictWiseCount(List<Long> categIds,List<Long> districtIds , Date fromDate , Date toDate,Long partyId)
 	 {
 		 StringBuffer queryString = new StringBuffer();
-		 queryString.append("select model.gallary.name,count(model.gallary.name)," +
+		 queryString.append("select model.gallary.name,count(distinct model.candidatePartyFile.file.fileId)," +
 		 		" model.gallary.gallaryId , " +
 		 		" model.candidatePartyFile.file.locationValue , " +
 		 		" model.candidatePartyFile.file.userAddress.district.districtName from " +
@@ -445,7 +445,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			 queryString.append("  and  model.candidatePartyFile.file.fileDate >= :fromDate " +
 		 		" and model.candidatePartyFile.file.fileDate <= :toDate ");
 		 }
-		 queryString.append("  group by model.candidatePartyFile.file.locationValue ,model.gallary.name");
+		 queryString.append("  group by model.candidatePartyFile.file.locationValue ,model.gallary.gallaryId");
 		 Query query = getSession().createQuery(queryString.toString());
 		 
 		 query.setParameterList("categIds", categIds);
