@@ -6,8 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -1686,6 +1688,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				}
 				
 				Set<Long> constiIds = constituencyWiseCountMap.keySet();
+				Set<Long> cateoeryIds = new HashSet<Long>(categIds);
 				if(constiIds != null && constiIds.size() > 0)
 				{
 					returnList = new ArrayList<SelectOptionVO>();
@@ -1695,7 +1698,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						selectOptionVO1.setLocation(constiMap.get(constituencyId));
 						List<SelectOptionVO> list = new ArrayList<SelectOptionVO>();
 						Map<Long,Long> catgWistCountMap = constituencyWiseCountMap.get(constituencyId);
-						for (Long catgId : categIds) {
+						for (Long catgId : cateoeryIds) {
 							SelectOptionVO selectOptionVO = new SelectOptionVO();
 							Long count = catgWistCountMap.get(catgId);
 							Long count1 = categCountMap.get(catgId);
@@ -1730,7 +1733,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 							selectOptionVO1 = new SelectOptionVO();
 							selectOptionVO1.setLocation("Total");
 							countList = new ArrayList<SelectOptionVO>();
-							for (Long catgId : catgSet)
+							for (Long catgId : cateoeryIds)
 							{
 								SelectOptionVO selectOptionVO = new SelectOptionVO();
 								selectOptionVO.setName(catgeMap.get(catgId));
