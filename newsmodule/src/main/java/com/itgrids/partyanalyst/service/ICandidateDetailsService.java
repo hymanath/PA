@@ -340,4 +340,6 @@ public interface ICandidateDetailsService {
 	 public Map<Long,String> getKeywordsCountByFileId(Set<Long> fileIds);
 	 
 	 public Map<Long,String> getCategorysCountByFileId(Set<Long> fileIds);
+	 	
+	 public List<SelectOptionVO> getKeywordsListCount();	 
 }

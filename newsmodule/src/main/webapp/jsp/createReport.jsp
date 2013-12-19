@@ -104,7 +104,7 @@
 					str+='<h5 style="border-bottom:1px solid #333"> <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
 				}
 				str+='</hgroup>';
-
+              str+='<span class="pull-right">'+myResults.mainArticalsList[i].fileDate+'</span>';
 			  if(myResults.mainArticalsList[i].descEenadu){
 				 str+='<p ><enadu>'+myResults.mainArticalsList[i].description+'</enadu></p>';	
 			  }else{
@@ -150,6 +150,7 @@
 			  }
 			  if(myResults.fileVOList[i].fileVOList[j].candidateName!=null && myResults.fileVOList[i].fileVOList[j].candidateName.trim().length > 0)
 			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp;'+myResults.fileVOList[i].fileVOList[j].candidateName+'</span>';
+              str+='<span class="pull-right">'+myResults.mainArticalsList[i].fileDate+'</span>';
 			  str+='</div></div></div></div>';
 		 }
 	   }

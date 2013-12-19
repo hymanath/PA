@@ -339,6 +339,8 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		else if(jObj.getString("task").equalsIgnoreCase("getDesignationsList"))
 		 selectOptionVOList = candidateDetailsService.getDesignationsList();
 		 
+		else if(jObj.getString("task").equalsIgnoreCase("getAllKeywordsByCount"))
+			keywordsList = candidateDetailsService.getKeywordsListCount();
 		
 		}catch (Exception e) {
 			e.printStackTrace();

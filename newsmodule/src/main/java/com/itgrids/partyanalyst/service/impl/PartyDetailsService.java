@@ -1075,7 +1075,7 @@ public List<FileVO> getFilesOfAGallary(Long gallaryId , int startIndex , int end
 				
 				if(list != null && list.size() > 0)
 				{
-					resultStatus.setExceptionMsg("Gallary Name is Already Exists for selected Party.");
+					resultStatus.setExceptionMsg("Category Name is Already Exists.");
 					resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 					return resultStatus;
 					

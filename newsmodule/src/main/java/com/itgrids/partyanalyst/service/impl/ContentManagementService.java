@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidateNewsResponseDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
+import com.itgrids.partyanalyst.dao.ICandidatePartyKeywordDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
@@ -62,9 +63,19 @@ public class ContentManagementService implements IContentManagementService{
 	private ITehsilDAO tehsilDAO;
 	private IFileDAO fileDAO;
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
+	private ICandidatePartyKeywordDAO candidatePartyKeywordDAO;
 	private INewsResponseDAO newsResponseDAO;
 	private IFilePathsDAO filePathsDAO;
 	
+
+	public ICandidatePartyKeywordDAO getCandidatePartyKeywordDAO() {
+		return candidatePartyKeywordDAO;
+	}
+
+	public void setCandidatePartyKeywordDAO(
+			ICandidatePartyKeywordDAO candidatePartyKeywordDAO) {
+		this.candidatePartyKeywordDAO = candidatePartyKeywordDAO;
+	}
 
 	public IFilePathsDAO getFilePathsDAO() {
 		return filePathsDAO;
@@ -359,6 +370,11 @@ public class ContentManagementService implements IContentManagementService{
 					    	  fileVO.setCandidateName("");  
 					      }
 					      fileVO.setIsSelectedContent(true);
+					    
+						List<String> keywords = candidatePartyKeywordDAO.getCandidatePartyKeywordByFileId(contentId);
+						fileVO.setKeyWordsList(keywords);
+						 
+				   
 				}
 				relatedGallary.setFilesList(filesList);
 				relatedGalleries.add(relatedGallary);
