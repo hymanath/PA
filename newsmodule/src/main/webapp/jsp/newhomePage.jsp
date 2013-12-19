@@ -265,14 +265,14 @@ $(document).ready(function(){
 
 									    </div>
 										<div class="row-fluid m_top10">
-													<div class="span9" style="width:550px;">
+													<div class="span9" style="width:460px;">
 													<table><tr><td style="width:200px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;"> ${newsGallaryDetails.source}</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">${newsGallaryDetails.fileDate}</span></p></td>
 													<s:if test="#newsGallaryDetails.responseCount >0">
 													<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">${newsGallaryDetails.responseCount} </span></p></td>
 													</s:if>		
 													</tr>
 													<s:if test="#newsGallaryDetails.candidateName != null && #newsGallaryDetails.candidateName !=''">
-													<tr><td colspan="2"  style="font-weight:bold;"><p class="text-error" >Candidate(s) involved : <span style="font-weight:normal;color:black;">${newsGallaryDetails.candidateName} </span></p></td></tr>
+													<tr><td colspan="2"  style="font-weight:bold;"><p class="text-error" >Candidate(s) Involved : <span style="font-weight:normal;color:black;">${newsGallaryDetails.candidateName} </span></p></td></tr>
 													</s:if>
 													</table>
 													</div></br>
@@ -400,14 +400,14 @@ $(document).ready(function(){
 										 </s:else>
 									    </div>
 										<div class="row-fluid m_top10">
-													<div class="span9" style="width:550px;">
+													<div class="span9" style="width:460px;">
 													<table><tr><td style="width:200px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;"> ${newsGallaryDetails.source}</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">${newsGallaryDetails.fileDate}</span></p></td>
 													<s:if test="#newsGallaryDetails.responseCount >0">
 													<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">${newsGallaryDetails.responseCount} </span></p></td>
 													</s:if>
 													</tr>
 													<s:if test="#newsGallaryDetails.candidateName != null && #newsGallaryDetails.candidateName !=''">
-													<tr><td colspan="2"  style="font-weight:bold;"><p class="text-error" >Candidate(s) involved : <span style="font-weight:normal;color:black;">${newsGallaryDetails.candidateName} </span></p></td></tr>
+													<tr><td colspan="2"  style="font-weight:bold;"><p class="text-error" >Candidate(s) Involved : <span style="font-weight:normal;color:black;">${newsGallaryDetails.candidateName} </span></p></td></tr>
 													</s:if>
 													</table>
 													</div></br>
