@@ -899,9 +899,9 @@ function showNewsGallaryCreateMsg(result)
 	if(result.resultCode == 0)
 	{
 		if(result.exceptionMsg == null)
-			str += '<font color="green"><b>Gallery Created Successfully.</b>';
+			str += '<font color="green"><b>Category Created Successfully.</b>';
 		else
-			str += '<font color="red"><b>Gallery Name is already exist.</b>';
+			str += '<font color="red"><b>Category Name is already exist.</b>';
 	}
 	else
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
@@ -1972,10 +1972,10 @@ function buildCreateNewsCategory()
 
 	str += '<tr><td><b><font> Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<table class="aligncenter"><tr><td><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
-	str += '<tr><td><label class="radio"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><label class="radio" style="display:none;"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
+	str += '<tr><td><label class="radio" style="display:none;"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
 	str+='<div id="createnewsgalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Gallary" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Category" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
 
 	str += '<div>';
 	//str += '</fieldset>';
@@ -2077,9 +2077,9 @@ function getDistricts2(stateId){
 {
 	var newsCatrgoryName = document.getElementById('newsCateName').value;
 	var newsCatrgoryDesc = document.getElementById('newsCateDesc').value;
-	var isPublic = document.getElementById('newsPublicRadio').checked;
+	//var isPublic = document.getElementById('newsPublicRadio').checked;
 	var partyId = 872;
-	var makeThis = 'true';
+	var makeThis = 'false';
 	var categoryId = $("#categoriesForGallary").val();
 
 	var errorDivEle = document.getElementById('newsErrorMsgDivId');
@@ -2126,8 +2126,8 @@ function getDistricts2(stateId){
 	if(eFlag)
 		return;
 
-	if(isPublic)
-		makeThis = 'false';
+	/*if(isPublic)
+		makeThis = 'false';*/
 	
 	newsCatrgoryName = removeAllUnwantedCharacters(newsCatrgoryName);
 	newsCatrgoryDesc = removeAllUnwantedCharacters(newsCatrgoryDesc);
@@ -3869,6 +3869,7 @@ function showTheNewsToUpdate()
   $('#profileManagementMainOuterDiv4').show();
   document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
    $("#profileManagementMainOuterDiv7").css("display","none");
+   $('#showKeywordsDiv').css("display","none");
  /* $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -4691,6 +4692,11 @@ var callback = {
 			  buildGallariesForCategory(myResults,jsObj);
 			 
 			}
+			else if(jsObj.task == "getAllKeywordsByCount")
+			{
+			  buildAllKeywords(myResults);			 
+			}
+
 			
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
@@ -6670,6 +6676,7 @@ function getNewsReports ()
    $("#profileManagementMainOuterDiv8").css("display","none");
    $("#newDesignationDiv").css("display","none");
   $("#newPartyCreationDiv").css("display","none");
+  $('#showKeywordsDiv').css("display","none");
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
     var str ='';
@@ -7585,3 +7592,39 @@ function deleteFileFromNewsReport(fileId)
 	callAjax(jsObj, url);
 	}
 }
+function buildAllKeywords(myResults)
+{
+    var str='';
+	str+='<h2 style="text-align:center;">Keywords</h2>';
+	
+	if(myResults==null || myResults=='')
+	{
+	str+='<span style="text-align:center;">There are no Keywords available</span>';
+	$("#showKeywordsDiv").html(str);
+	return;
+	}
+	else
+	
+	str+='<table  class="table table-striped">';
+	str+='<tr>';
+	str+='<th>Keywords</th>';
+	str+='<th>Count</th>';
+	str+='</tr>';
+	for(var i in myResults)
+	{
+	str+='<tr>';
+	str+='<td>' +myResults[i].name+'</td>';
+	str+="<td><a title='Click Here To See All News'href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedKeywordData(\""+myResults[i].id+"\");'>"+myResults[i].count+"</a></td>";
+	str+='</tr>';
+	}
+	str+='</table>';
+	$("#showKeywordsDiv").html(str);
+
+}
+function getClickedKeywordData(id)
+{
+	 var browser1 = window.open("getNewsAction.action?&keywordId="+id,"KeywordsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");		
+     browser1.focus();
+
+}
+		 

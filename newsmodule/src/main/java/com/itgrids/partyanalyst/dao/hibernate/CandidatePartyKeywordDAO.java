@@ -239,11 +239,25 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 			 return (Long) query.uniqueResult();
 			 
 		}
-	 
-	 public List<Object[]> getKeyWords(List<Long> fileIds)
-	 {
-		 Query query = getSession().createQuery("select model.candidatePartyFile.file.fileId,model.keyword.type from CandidatePartyKeyword model where model.candidatePartyFile.file.fileId in (:fileIds)");
-		 query.setParameterList("fileIds", fileIds);
-		 return query.list();
-	 }
+		public List<String> getCandidatePartyKeywordByFileId(Long fileId){
+			StringBuffer queryString = new StringBuffer();
+			queryString.append(" select distinct model.keyword.type from CandidatePartyKeyword model where model.candidatePartyFile.file.fileId =:fileId  ");
+			Query query = getSession().createQuery(queryString.toString());
+			 query.setParameter("fileId", fileId);
+			return query.list();
+		}
+ 
+		public List<Object[]> getTotalKeyWordsCount()
+		{
+			Query query = getSession().createQuery(" select count(distinct model.candidatePartyFile.file.fileId),model.keyword.type,model.keyword.keywordId from CandidatePartyKeyword model where  model.candidatePartyFile.file.isDeleted !='Y' group by  model.keyword.keywordId");
+			return query.list();
+		}
+		 
+		 public List<Object[]> getKeyWords(List<Long> fileIds)
+		 {
+			 Query query = getSession().createQuery("select model.candidatePartyFile.file.fileId,model.keyword.type from CandidatePartyKeyword model where model.candidatePartyFile.file.fileId in (:fileIds)");
+			 query.setParameterList("fileIds", fileIds);
+			 return query.list();
+		 }
+
 }

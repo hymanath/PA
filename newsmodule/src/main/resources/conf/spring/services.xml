@@ -1660,6 +1660,7 @@
 		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
 		<property name="filePathsDAO" ref="filePathsDAO" />
 		<property name="newsResponseDAO" ref="newsResponseDAO" />
+		<property name="candidatePartyKeywordDAO" ref="candidatePartyKeywordDAO" />
 	</bean>
 	
 	<bean name="reportService" class="com.itgrids.partyanalyst.service.impl.ReportService" >

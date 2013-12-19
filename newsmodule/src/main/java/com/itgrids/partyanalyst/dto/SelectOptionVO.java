@@ -26,6 +26,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long parentUserId;
 	private Long mainAccountId;
 	private boolean flag;
+	private Long count;
 	
 
 	public boolean isFlag() {
@@ -83,7 +84,12 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 		this.id = id;
 		this.name = name;	
 	}
-	
+	public SelectOptionVO(Long count, String name,Long id)
+	{
+		this.setCount(count);
+		this.name = name;	
+		this.id = id;
+	}
 	public SelectOptionVO(Long id, String name,String location,String villageCovered)
 	{
 		this.id = id;
@@ -221,6 +227,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setSelectOptionsList2(List<SelectOptionVO> selectOptionsList2) {
 		this.selectOptionsList2 = selectOptionsList2;
+	}
+
+	public Long getCount() {
+		return count;
+	}
+
+	public void setCount(Long count) {
+		this.count = count;
 	}
 	
 	

@@ -412,6 +412,7 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","block");
 	  $("#newPartyCreationDiv").css("display","none");
+	  $('#showKeywordsDiv').css("display","none");
 	  $('#statusDiv1').html('');
 	  $('#statusDiv2').html('');
  }
@@ -435,6 +436,7 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","none");
 	  $("#newPartyCreationDiv").css("display","block");
+	  $('#showKeywordsDiv').css("display","none");
 	  $('#statusDiv1').html('');
 	  $('#statusDiv2').html('');
  }
@@ -459,7 +461,7 @@ function clearDivsForGallary(){
   $('#statusDiv2').html('');
   $("#newDesignationDiv").css("display","none");
   $("#newPartyCreationDiv").css("display","none");
-
+  $('#showKeywordsDiv').css("display","none");
 }
 
 function createNewDesignation()
@@ -585,14 +587,18 @@ function createNewParty()
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showTheNewsToUpdate()" style="cursor:pointer;color: #005580;">Add Response To News</a>
 					</li>
 					
-					<li class="">
-					<!-- <a data-toggle="tab" href="#CreateReport">Create Report</a> -->
-					<a data-toggle="tab" value="create Report" id="createReportId" onClick="createReport();" style="cursor:pointer;color: #005580;">Create Report </a>
+                    <li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;">Reports <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li class="">
+							  <a data-toggle="tab" value="create Report" id="createReportId" onClick="createReport();" style="cursor:pointer;color: #005580;">Create Report </a>
+					       </li>
+						  <li class="">
+					         <a data-toggle="tab" value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: #005580;">View Report</a>
+					      </li>
+						</ul>
 					</li>
-					<li class="">
-					<a data-toggle="tab" value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: #005580;">View Report</a>
-					</li>
-					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >Keyword Management <b class="caret"></b></a>
+					<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" id="allKeywordsDiv" onClick="getKeywordsByCount()">Keyword Management <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li>
 								<li><a data-toggle="tab" id="newKeywordBtn" style="cursor:pointer;color: #005580;" onclick="createPartyKeywordDiv();">Create New Keyword</a></li>
@@ -602,29 +608,28 @@ function createNewParty()
 							</li>
 						</ul>
 					</li>
-					
-					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >Attributes <b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li>
-								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();buildCreateNewsCategory();" >Create News Category</a>
-							</li>
-							<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-								<li>
-									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
-								</li>
-							</c:if>
-						</ul>
-					</li>
-					
+					</c:if>					
 					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" >Actions<b class="caret"></b></a>
 					
 						<ul class="dropdown-menu">
+						<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 							<li>
 								<li><a data-toggle="tab" id="newKeywordBtn" style="cursor:pointer;color: #005580;" onclick="createPartyDiv();">Create  Party</a></li>
 							</li>
+						</c:if>
 							<li>
 								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createDesignationDiv();"> Create Designation </a>
 							</li>
+						<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+							<li>
+								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();buildCreateNewsCategory();" >Create News Category</a>
+							</li>
+						</c:if>
+						<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+						    <li>
+									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
+							</li>
+						</c:if>
 						</ul>
 					</li>
 					
@@ -937,6 +942,7 @@ function createNewParty()
 <div id='keyWordsMainDiv' class="divInfo">
 		
 </div>
+<div id='showKeywordsDiv' align="center" style="display:none; width: 400px; margin: 15px 0px 0px 440px;border:1px solid #CCCCCC;padding:15px;"></div>
 <div id="alterKeywords">
 	<div id='profileManagementMainOuterDiv8' style="display:none">
 
@@ -966,7 +972,7 @@ function createNewParty()
 						  	Select Keywords <span style="margin-left: 15px;">:</span>
 							<select  style="width:400px;" id="keywordsList"> <select>
 						</div>
-						<div style="width: 400px; margin-left: -108px;">
+						<div style="width: 400px; margin-left: 66px;">
 							Enter New Keyword <span>:</span> <input type="text" id="aliasKeyword" style="margin-top: 10px;"/>
 						</div>
 							<button class="btn btn-success" onclick="mergeKeywords();" style="margin-left: 90px;"> Merge Keywords </button>
@@ -1048,6 +1054,7 @@ $(document).ready(function(){
 	$('#newKeywordBtn').click(function(){	
 		$('#newKeywordDiv').css("display","block");
 		$('#mergeKeywordDiv').css("display","none");
+        $('#showKeywordsDiv').css("display","none");
 		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');		
 	});
@@ -1055,6 +1062,7 @@ $(document).ready(function(){
 	$('#mergeKeywordBtn').click(function(){
 		$('#newKeywordDiv').css("display","none");
 		$('#mergeKeywordDiv').css("display","block");
+		$('#showKeywordsDiv').css("display","none");
 		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
 	});
@@ -2102,7 +2110,7 @@ function createNewSource()
 	str+='<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;margin-left: 298px;">';
 	str +=  '<span>Source Name : </span><input type="text" id="sourceName"></input></br>';
 	str += "<div id='errorDiv' style='color:red'> </div>";
-	str +=  '<input type="button" value="create new Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 244px;"></input>';
+	str +=  '<input type="button" value="Create New Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 244px;"></input>';
 	
 	str+='</div>';
 	$('#newsGallaryDiv').html(str);
@@ -2545,6 +2553,7 @@ function createReport()
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","none");
+  $('#showKeywordsDiv').css("display","none");
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
   
@@ -4233,6 +4242,35 @@ function getTotalKeyWords()
 	var url = "getTotalKeyWordsAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
+function getKeywordsByCount()
+{
+  $("#newsGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","none");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","none");
+  $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#newKeywordDiv").css("display","none");
+  $("#mergeKeywordDiv").css("display","none");
+  $("#showKeywordsDiv").css("display","block");
+
+
+   var jsObj=
+	{
+		task  : "getAllKeywordsByCount"
+	}
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getKeywordsByCountAction.action?"+rparam;						
+	callAjax1(jsObj,url);
+} 
+
 </script>
 </body>
 </html>

@@ -145,6 +145,15 @@ public class ReportService implements IReportService {
 				file = new FileVO();
 				newsMap.put((Long)news[0], file);
 				file.setFileId((Long)news[0]);
+				Date date= null;
+				    String newDate =null;
+			        if(news[8] != null)
+				    {
+				      date= (Date)news[8];
+				      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                      newDate = formatter.format(date);
+				    }
+			    file.setFileDate(newDate != null ? newDate : "");
 				file.setTitle(news[1] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[1].toString())):"");
 				file.setDescription(news[2] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[2].toString())):"");
 				file.setNewsDescription(news[3] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[3].toString())):"");
@@ -176,6 +185,15 @@ public class ReportService implements IReportService {
 				file = new FileVO();
 				newsMap.put((Long)news[0], file);
 				file.setFileId((Long)news[0]);
+				Date date= null;
+			    String newDate =null;
+		        if(news[11] != null)
+			    {
+			      date= (Date)news[11];
+			      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                  newDate = formatter.format(date);
+			    }
+		    file.setFileDate(newDate != null ? newDate : "");
 				file.setTitle(news[1] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[1].toString())):"");
 				file.setDescription(news[2] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[2].toString())):"");
 				file.setNewsDescription(news[3] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[3].toString())):"");
@@ -231,7 +249,7 @@ public class ReportService implements IReportService {
 			 if(map != null && map.size() > 0)
 			 {
 				 Map<Long,String> map2 = map.get((Long)params[1]);
-				 if(map2 != null)
+				 if(map2 != null && map2.size() > 0)
 				 {
 					 String pageNo = map2.get(new Long((Integer)params[2]));
 					 if(pageNo == null)

@@ -8052,6 +8052,27 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	  return null;
 	 }
  }
+	 
+	 public List<SelectOptionVO> getKeywordsListCount()
+	 {
+		 try{
+			 List<SelectOptionVO> optionVOs = null;
+			 List<Object[]> keyWordListCount = candidatePartyKeywordDAO.getTotalKeyWordsCount();
+			 if(keyWordListCount != null && keyWordListCount.size() > 0)
+			 {
+				optionVOs = new ArrayList<SelectOptionVO>(0); 
+				for(Object[] params:keyWordListCount)
+					 optionVOs.add(new SelectOptionVO((Long)params[0],params[1] != null?params[1].toString():" ",(Long)params[2]));
+
+			 }
+			return optionVOs; 
+			 
+		 }catch (Exception e) {
+		  e.printStackTrace();
+		  log.error(" Exception Occured in getTotalKeyWords() method, Exception - "+e);
+		  return null;
+		 }
+ }
 
 	
  public void setDataToFileVo(List<File> filesList,List<FileVO> returnList)
@@ -8530,9 +8551,12 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			
 		}
 	 }
-	  
-	  List<Object[]> keyWordsList = candidatePartyKeywordDAO.getKeyWords(fileIds);
-	  List<Object[]> galleriesList = candidatePartyCategoryDAO.getCategoriesList(fileIds);
+	  List<Object[]> keyWordsList = null;
+	  List<Object[]> galleriesList = null;
+	  if(fileIds.size()>0){
+	  keyWordsList = candidatePartyKeywordDAO.getKeyWords(fileIds);
+	  galleriesList = candidatePartyCategoryDAO.getCategoriesList(fileIds);
+	  }
 	  Map<Long,List<String>> keyWordsMap = new HashMap<Long, List<String>>();
 	  Map<Long,List<String>> categoerysMap = new HashMap<Long, List<String>>();
 	  List<String> keysList = null;
