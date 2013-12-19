@@ -1792,6 +1792,7 @@
      <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
      <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
+     <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
@@ -1854,6 +1855,8 @@
       <property name="voiceSmsService" ref="voiceSmsService"></property>
       <property name="voiceRecordingDetailsDAO" ref="voiceRecordingDetailsDAO"/>
 	  <property name="webServiceBaseUrlDAO" ref="webServiceBaseUrlDAO"/>
-    </bean>
+	  <property name="pingingTypeDAO" ref="pingingTypeDAO"/>
+	  <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
+ </bean>
 </beans>		
 	

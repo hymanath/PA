@@ -26,11 +26,6 @@
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
  <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 
-<script src="js/colpick.js" type="text/javascript"></script>
- <script type="text/javascript" src="js/voterFlag.js"></script>
-<link rel="stylesheet" href="css/colpick.css" type="text/css"/>
-
-
 <style type="text/css">
   #mainDiv{margin-left: auto;
     margin-right: auto;
@@ -57,11 +52,37 @@ legend {
     padding: 0 20px;
     position: relative;
 }
+#pingDetailsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+
+
+#pingDetailsDiv table tr:nth-child(even){background:#EdF5FF;}
+
+#pingDetailsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+
+#pingDetailsDiv table th{
+	background-color: #CDE6FC;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    text-align: left;
+	color:#333333;
+	}
+	#pingTable_info,#pingTable_paginate{
+	font-family: verdana;
+    font-size: 12px;
+    margin-top: 12px;
+	
+}
+
 </style>
 </head>
 <body>
  <div id="mainDiv" class="contenttable widget">
- <div id="userDetailsDiv" style="font-family: verdana;font-size: 12px; font-weight: bold;"></div><br/>
+ <div id="userDetailsDiv" style="font-family: verdana;font-size: 12px; font-weight: bold;"></div>
+  <div id="pingDetailsDiv" class="yui-skin-sam yui-dt-sortable" style="margin-top:10px;margin-bottom:20px;"></div><br/><br/>
  </div>
  <script type="text/javascript">
  var userId = ${userId};
@@ -77,6 +98,10 @@ function callAjax(jsObj,url)
 								{
 								 buildUserData(myResults);	
 								
+								}
+								else if(jsObj.task == "getPingDetails")
+								{
+									buildPingDetails(myResults);
 								}
 								
 								
@@ -104,6 +129,18 @@ function getMobileAppUsersInfo()
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getMobileAppUsersDataAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+ }
+ function getPingIngInfo()
+ {
+
+ var jsObj=
+		{
+		 mobileAppuserId:userId,
+		 task:"getPingDetails"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getPingDetailsAction.action?"+rparam;						
 		callAjax(jsObj,url);	
  }
 
@@ -147,10 +184,50 @@ function getMobileAppUsersInfo()
 			 }
 		 $("#userDetailsDiv").html(str);
  }
-
+function buildPingDetails(results)
+{
+	
+	if(results.length > 0)
+	{
+	var str='';
+	str+='<h2 style="text-align:center;">MOBILE APP PING DETAILS</h2>';
+	str+='<table id="pingTable" cellpadding="0" cellspacing="0" border="0" width="100%">';
+	str+='<thead>';
+	 str+='   <tr>';
+	str+='<th>Ping Type</th>';
+	str+='<th>Ping Time</th>';
+	 str+='   </tr>';
+	str+='</thead>';
+	str+='<tbody>';
+	for(var i in results)
+	{
+	str+='<tr>';
+	str+='<td>'+results[i].type+'</td>';
+	str+='<td>'+results[i].value+'</td>';
+	str+='</tr>';
+	}
+	str+='</tbody>';
+	str+='</table>';
+	 $("#pingDetailsDiv").html(str);
+	
+	  	$('#pingTable').dataTable({
+		"aaSorting": [[ 1, "asc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null
+     
+	  
+    ] 
+		});
+	$("#pingTable tr").removeClass("even"); 
+	$("#pingTable tr").removeClass("odd"); 
+	}
+}
  </script>
  <script type="text/javascript">
   getMobileAppUsersInfo();
+  getPingIngInfo();
  </script>
  </body>
  </html>
