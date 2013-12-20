@@ -298,17 +298,17 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 				return Action.ERROR;
 			jObj = new JSONObject(getTask());
 			
-			String fromdate = jObj.getString("fromdate");
-			String todate = jObj.getString("todate");
-			Long whoPartyId = jObj.getLong("whoPartyId");
-			Long whomPartyId = jObj.getLong("whomPartyId");
-			Long whoCandidateId = jObj.getLong("whoCandidateId");
-			Long whomCandidateId = jObj.getLong("whomCandidateId");
-			Long whoBenfitId = jObj.getLong("whoBenfitId");
-			Long whomBenfitId = jObj.getLong("whomBenfitId");
-			Long locationLevelId = jObj.getLong("locationLevelId");
-			String checkedType = jObj.getString("checkedType");
-			String analyseCandidate = jObj.getString("analyseCandidate");
+			String fromdate           = jObj.getString("fromdate");
+			String todate             = jObj.getString("todate");
+			Long whoPartyId           = jObj.getLong("whoPartyId");
+			Long whomPartyId          = jObj.getLong("whomPartyId");
+			Long whoCandidateId       = jObj.getLong("whoCandidateId");
+			Long whomCandidateId      = jObj.getLong("whomCandidateId");
+			Long whoBenfitId          = jObj.getLong("whoBenfitId");
+			Long whomBenfitId         = jObj.getLong("whomBenfitId");
+			Long locationLevelId      = jObj.getLong("locationLevelId");
+			String checkedType        = jObj.getString("checkedType");
+			String analyseCandidate   = jObj.getString("analyseCandidate");
 			String locationLevelValue = jObj.getString("locationLevelValue");
 			AnalysisVO vo = new AnalysisVO();
 			
