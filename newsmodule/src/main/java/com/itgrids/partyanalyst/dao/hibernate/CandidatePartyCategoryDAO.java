@@ -309,7 +309,8 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 		" model.candidatePartyFile.file.synopsysFont.fontId from " +
 		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
 		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) ");
+		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
+		 		" and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
 		 {
 			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate ");
@@ -337,14 +338,17 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 query.setMaxResults(maxIndex);
 		 return query.list();
 	 }
+	 
+	 @SuppressWarnings("unchecked")
 	 public List<Long> getCategoeryAndConsttituencyWiseNewsIds(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate ,Long partyId)
 	 {
 		 StringBuffer queryString = new StringBuffer();
 		 
 		 queryString.append("select distinct model.candidatePartyFile.file.fileId  from " +
-		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
-		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) ");
+		 		"  CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		"  model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
+		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
+				"  and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
 		 {
 			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate ");
@@ -379,12 +383,16 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 		"  model.candidatePartyFile.file.userAddress.constituency.name from " +
 		 		"  CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
 		 		"  model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null  " +
-		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) ");
-		if(fromDate != null && toDate != null )
-		{
-			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate " +
-		 		" and model.candidatePartyFile.file.fileDate <= :toDate ");
-		}
+		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
+				"  and model.candidatePartyFile.file.isDeleted = 'N' ");
+		 if(fromDate != null)
+		 {
+			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate ");
+		 }
+		 if(toDate != null)
+		 {
+			queryString.append(" and model.candidatePartyFile.file.fileDate <= :toDate ");
+		 }
 		queryString.append("  group by model.candidatePartyFile.file.userAddress.constituency.constituencyId ,model.gallary.gallaryId ");
 		 
 	    Query query = getSession().createQuery(queryString.toString());
@@ -392,14 +400,18 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		query.setParameterList("categIds", categIds);
 		query.setParameterList("constituencyIds", constituencyIds);
 		query.setParameter("partyId", partyId);
-		if(fromDate != null && toDate != null )
-		{
-			query.setParameter("fromDate", fromDate);
-			query.setParameter("toDate", toDate);
-		}
+		 if(fromDate != null)
+		 {
+			 query.setParameter("fromDate", fromDate);
+		 }
+		 if(toDate != null)
+		 {
+			 query.setParameter("toDate", toDate);
+		 }
 		return query.list();
 	 }
 	
+	 @SuppressWarnings("unchecked")
 	 public List<Object[]> getCategoeryAndConsttituencyWiseTotalCount(List<Long> categIds,List<Long> constituencyIds , Date fromDate , Date toDate,Long partyId )
 	 {
 		 StringBuffer queryString = new StringBuffer();
@@ -407,20 +419,27 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 queryString.append("select distinct  model.candidatePartyFile.file.fileId,model.gallary.gallaryId from " +
 		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
 		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)  ");
-		 if(fromDate != null && toDate != null)
+		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)  " +
+				" and model.candidatePartyFile.file.isDeleted = 'N' ");
+		 if(fromDate != null)
 		 {
-			 queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate " +
-		 		" and model.candidatePartyFile.file.fileDate <= :toDate");
+			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate ");
+		 }
+		 if(toDate != null)
+		 {
+			queryString.append(" and model.candidatePartyFile.file.fileDate <= :toDate ");
 		 }
 		 Query query = getSession().createQuery(queryString.toString());
 		 
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("constituencyIds", constituencyIds);
 		 query.setParameter("partyId", partyId);
-		 if(fromDate != null && toDate != null)
+		 if(fromDate != null)
 		 {
 			 query.setParameter("fromDate", fromDate);
+		 }
+		 if(toDate != null)
+		 {
 			 query.setParameter("toDate", toDate);
 		 }
 		 
@@ -439,11 +458,15 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 		" CandidatePartyCategory model where model.candidatePartyFile.file.regionScopes. regionScopesId = 3 and" +
 		 		" model.candidatePartyFile.file.locationValue in (:districtIds) and " +
 		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
-		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) ");
-		 if(fromDate != null && toDate != null)
+		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)" +
+				" and model.candidatePartyFile.file.isDeleted = 'N' ");
+		 if(fromDate != null)
 		 {
-			 queryString.append("  and  model.candidatePartyFile.file.fileDate >= :fromDate " +
-		 		" and model.candidatePartyFile.file.fileDate <= :toDate ");
+			queryString.append(" and  model.candidatePartyFile.file.fileDate >= :fromDate ");
+		 }
+		 if(toDate != null)
+		 {
+			queryString.append(" and model.candidatePartyFile.file.fileDate <= :toDate ");
 		 }
 		 queryString.append("  group by model.candidatePartyFile.file.locationValue ,model.gallary.gallaryId");
 		 Query query = getSession().createQuery(queryString.toString());
@@ -451,10 +474,13 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 query.setParameterList("categIds", categIds);
 		 query.setParameterList("districtIds", districtIds);
 		 query.setParameter("partyId", partyId);
-		 if(fromDate != null && toDate != null)
+		 if(fromDate != null)
 		 {
 			 query.setParameter("fromDate", fromDate);
-			 query.setParameter("toDate", toDate); 
+		 }
+		 if(toDate != null)
+		 {
+			 query.setParameter("toDate", toDate);
 		 }
 		 
 		 return query.list();
