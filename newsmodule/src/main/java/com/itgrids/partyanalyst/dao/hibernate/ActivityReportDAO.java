@@ -13,7 +13,8 @@ public class ActivityReportDAO   extends GenericDaoHibernate<ActivityReport, Lon
     
     public String getCategoeryIds(String key)
     {
-    	Query query = getSession().createQuery("select model.categories from ActivityReport model where model.reportKey = :key");
+    	Query query = getSession().createQuery("select model.categories from ActivityReport model " +
+    			" where model.reportKey = :key");
     	query.setParameter("key", key);
     	return (String) query.uniqueResult();
     }
