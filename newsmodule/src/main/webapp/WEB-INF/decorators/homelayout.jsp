@@ -172,7 +172,13 @@ margin:-1px 0px 0px 0px ;
 										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=opponent"><span>Opponent Party Critics Report</span></a></li>
 									</ul> -->
 							</li>
-							  
+							 <li class="outerLi" id="programsTabId">
+								<a href="newsActivitiesAction.action" class="innerA">Activities</a>
+									 <!--<ul>
+										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span>Candidate News Report</span></a></li>
+										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=opponent"><span>Opponent Party Critics Report</span></a></li>
+									</ul> -->
+							</li> 
 						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
 							  
 							 

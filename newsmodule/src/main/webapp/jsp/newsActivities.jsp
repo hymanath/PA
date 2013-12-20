@@ -98,7 +98,7 @@ $(document).ready(function(){
 	}); 
 	
 	
-
+   $('#programsTabId').addClass('menuActive');
 });
 var districtIds = ""
 /*
