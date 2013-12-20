@@ -346,6 +346,11 @@ function buildCategoeryDetails(result,jsObj)
 			$('#urlId').html('<b>NOTE : Use this url for Pdf Generation : </b><b style="color:green;">'+result[0].partno+'</b>');
 		}
 	}
+	else
+	{
+		$("#categoeryDetails").html('<div style="color:red" class="text-center"><b>No News Exists With Your Search Criteria</b></div>');
+		$("#paginationId").html('');
+	}
 	$('#submitDataImg').hide();
 	
 	
@@ -466,13 +471,13 @@ function buildCategoeryDetailsCountWise(result,jsObj)
 			$('#categoeryDetailsDistrictCountWise').html(str);
 		}
 		
-	}else{
+	}/* else{
 	   if(jsObj.type == "constituency")
 		{
 			$('#categoeryDetailsConstituencyCountWise').html("<div class='text-center'>No News Exists With Your Search Criteria</div>");
 		}
 	
-	}
+	} */
 }
 /*
 	this function is used for generating the pdf or excel
