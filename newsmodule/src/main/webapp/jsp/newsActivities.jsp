@@ -107,6 +107,7 @@ var districtIds = ""
 function getConstituencyes()
 {
 
+	
 	var selected_values = $("#districtSelReportId").multiselect("getChecked").map(function(){
        return this.value;
      }).get();
@@ -125,6 +126,7 @@ this method is used for making a ajax call for getting all constituencyes
 */
 function getConstituencyesList()
 {
+	$('#constiDataImg').show();
 	var jsObj = {
 		districtIds : districtIds,
 		task        : "getDistricts"
@@ -151,6 +153,8 @@ function getConstituencyesList()
 	        }).multiselectfilter({   
 	       });
      });
+	 
+	 $('#constiDataImg').hide();
 }
 /*
 	this method is used for getting the all parties
@@ -342,6 +346,7 @@ function buildCategoeryDetails(result,jsObj)
 			$('#urlId').html('<b>NOTE : Use this url for Pdf Generation : </b><b style="color:green;">'+result[0].partno+'</b>');
 		}
 	}
+	$('#submitDataImg').hide();
 	
 	
 }
@@ -599,6 +604,7 @@ function validateFields()
 		$('#categoeryDetails').html("");
 		$('#categoeryDetailsDistrictCountWise').html("");
 		$('#categoeryDetailsConstituencyCountWise').html("");
+		$('#submitDataImg').show();
 		getCategoeryWiseNews(0,'initial');
 		getCategoeryWiseNewsByCount('constituency');
 	    getCategoeryWiseNewsByCount('district');
@@ -650,6 +656,7 @@ function validateFields()
 			<div  class="span4">
 			<label><strong>Select District :</strong></label>
 			<s:select name="districtSelReport" id="districtSelReportId" class="districtSelReportId" list="districtsList" theme="simple" listKey="id" listValue="name" headervalue="Select District" onChange="getConstituencyes();"/>
+			<img id="constiDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
 			</div>
 			
 			<div  class="span4">
