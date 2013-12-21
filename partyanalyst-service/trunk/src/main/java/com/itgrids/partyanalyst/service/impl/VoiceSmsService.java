@@ -462,8 +462,8 @@ public class VoiceSmsService implements IVoiceSmsService {
 			rd.close();
 			conn.disconnect();*/
 			
-			//URL url = new URL("https://voiceapi.smscountry.com/api?api_key=Nj8uWwjyzEORIuAAKCVG&access_key=koIDAaXxaZEfQ6EAPwyLaOuk4n574CcEBNKdBWha&xml=%3Crequest%20action=%22www.partyanalyst.com%22%3E%3Cfrom%3E919985420156,919985420156%3C/from%3E%3Cto%3E"+mobileNumbersString+"%3C/to%3E%3Cplay%3Ehttp://www.partyanalyst.com/voice_recordings/1/meeting_on_10th.wav%3C/play%3E%3C/request%3E");
-			URL url = new URL("https://voiceapi.smscountry.com/api?api_key="+IConstants.VOICE_SMS_API_KEY+"&access_key="+IConstants.VOICE_SMS_ACCESS_KEY+"&xml=%3Crequest%20action=%22www.partyanalyst.com%22%3E%3Cfrom%3E919985420156,919985420156%3C/from%3E%3Cto%3E"+mobileNumbersString+"%3C/to%3E%3Cplay%3E"+audioPath+"%3C/play%3E%3C/request%3E");
+			//URL url = new URL("http://voiceapi.smscountry.com/api?api_key=Nj8uWwjyzEORIuAAKCVG&access_key=koIDAaXxaZEfQ6EAPwyLaOuk4n574CcEBNKdBWha&xml=%3Crequest%20action=%22www.partyanalyst.com%22%3E%3Cfrom%3E919985420156,919985420156%3C/from%3E%3Cto%3E"+mobileNumbersString+"%3C/to%3E%3Cplay%3Ehttp://www.partyanalyst.com/voice_recordings/1/meeting_on_10th.wav%3C/play%3E%3C/request%3E");
+			URL url = new URL("http://voiceapi.smscountry.com/api?api_key="+IConstants.VOICE_SMS_API_KEY+"&access_key="+IConstants.VOICE_SMS_ACCESS_KEY+"&xml=%3Crequest%20action=%22www.partyanalyst.com%22%3E%3Cfrom%3E919985420156,919985420156%3C/from%3E%3Cto%3E"+mobileNumbersString+"%3C/to%3E%3Cplay%3E"+audioPath+"%3C/play%3E%3C/request%3E");
 
 
 			   HttpURLConnection conn = (HttpURLConnection)url.openConnection();
