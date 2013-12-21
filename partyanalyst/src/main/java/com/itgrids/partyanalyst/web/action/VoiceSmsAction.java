@@ -394,22 +394,10 @@ public class VoiceSmsAction implements ServletRequestAware{
 			if(user == null)
 				return Action.INPUT;
 			
-			String requestURL = request.getRequestURL().toString();	
-			
 			StringBuffer audioFilePath =  new StringBuffer();
-			
-			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);	
-			
-			 jObj = new JSONObject(getTask());
-
-			if(requestURL.contains(".com"))				
-			//	audioFilePath.append(""+user.getRegistrationID()+"/"+request.getParameter("audioFileName"));
-				audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+user.getRegistrationID()+"/"+jObj.getString("audioFileName"));
-			else
-				audioFilePath.append("http://122.169.253.134:8080/TDP/voice_recording/test6.wav");
-			
+			jObj = new JSONObject(getTask());
+			audioFilePath.append(IWebConstants.LIVE_VOICE_RECORDINGS_URL+"/"+user.getRegistrationID()+"/"+jObj.getString("audioFileName"));
 			JSONArray mobileNumbersArray = jObj.getJSONArray("selectedMobileNumbers");
-			
 			List<Long> allMobileNumbers = new ArrayList<Long>();
 			
 			for(int i=0; i<mobileNumbersArray.length(); i++)
@@ -417,8 +405,6 @@ public class VoiceSmsAction implements ServletRequestAware{
 				Long mobileNumber = Long.parseLong(mobileNumbersArray.get(i).toString());
 				allMobileNumbers.add(mobileNumber);
 			}
-			
-			
 			
 			List<Long> cadreMobileNumbers = new ArrayList<Long>();
 			List<Long> influenceMobileNumbers = new ArrayList<Long>();
@@ -440,18 +426,13 @@ public class VoiceSmsAction implements ServletRequestAware{
 			 for(int i=0; i<votersArray.length(); i++)
 				 votersMobileNumbers.add(Long.parseLong(votersArray.get(i).toString()));
 			 
-			 
 			 VoiceSmsResponseDetailsVO voiceSmsResponseDetailsVO = new VoiceSmsResponseDetailsVO();
 			 
 			 voiceSmsResponseDetailsVO.setCadreMobileNumbers(cadreMobileNumbers);
 			 voiceSmsResponseDetailsVO.setInfluencePeopleMobileNumbers(influenceMobileNumbers);
 			 voiceSmsResponseDetailsVO.setVotersMobileNumbers(votersMobileNumbers);
 			 voiceSmsResponseDetailsVO.setAllmobileNumbers(allMobileNumbers);
-
-			
-			 //status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),jObj.getLong("senderMobileNumber"),jObj.getString("description"),voiceSmsResponseDetailsVO);
 			 
-			//status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,request.getParameter("mobileNumbers"),Long.parseLong(request.getParameter("senderMobileNumber")),request.getParameter("description"));
 			 status = voiceSmsService.sendVoiceSMS(audioFilePath.toString() , user.getRegistrationID() ,jObj.getString("mobileNumbers"),null,jObj.getString("description"),voiceSmsResponseDetailsVO);
 		}
 		catch(Exception e)
