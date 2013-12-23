@@ -186,7 +186,7 @@ function buildPaginatedNews(results,jsObj){
 		}
 				
 		str+="</div>";
-		str+="<div class='span9'  style='width:550px;'><table><tr><td style='width:240px;font-weight:bold;'><p class='text-error' >Source : <span style='font-weight:normal;color:black;'>"+results[i].source+"</span></p></td><td style='font-weight:bold;width: 135px;'><p class='text-error'>Date : <span style='font-weight:normal;color:black;'>"+results[i].fileDate+"</span></p></td>";
+		str+="<div class='span9'  style='width:515px;'><table><tr><td style='width:240px;font-weight:bold;'><p class='text-error' >Source : <span style='font-weight:normal;color:black;'>"+results[i].source+"</span></p></td><td style='font-weight:bold;width: 135px;'><p class='text-error'>Date : <span style='font-weight:normal;color:black;'>"+results[i].fileDate+"</span></p></td>";
 	if(results[i].responseCount > 0)
 		str+="<td style='font-weight:bold;padding-left: 20px;width:200px;'><p class='text-error' ><a href='javascript:{populateNewsResponseWindow("+results[i].contentId+")}; '><img alt='response count' title='Response Count' src='images/responseCountIcon.png' id='responseNewsCountImg' /><span style='font-weight:normal;color:black;'>"+results[i].responseCount+"</span></a></p></td>";
 	if(results[i].responseCount == 0)
