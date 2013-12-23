@@ -200,7 +200,7 @@ function buildPaginatedNews(results,jsObj)
 		
 		str+="</div>";
 
-		str+="<div class='span9' style='width:550px;'>";
+		str+="<div class='span9' style='width:515px;'>";
 		str +='<table><tr><td style="width:240px;">';
 		str +='<p style="margin-right: 12px;"><span class="text-error" style="font-weight:bold;">Source : </span>';
 		var length = results[i].fileVOList.length;

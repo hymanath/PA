@@ -5510,7 +5510,13 @@ function validateUploadFileDetails()
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
-	
+  if($('#filesourceId0 option:selected').length == 0 )
+  {
+		str +='Please logout and login again, to upload news<br>';
+		flag = false;
+  }
+  else
+  {
 	if(fileTitle.length == 0)
 	{
 		str += ' Title is Required.<br>';
@@ -5818,6 +5824,7 @@ function validateUploadFileDetails()
         });
 	   }catch(e){
 	   }
+  }
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 	if(flag == false)

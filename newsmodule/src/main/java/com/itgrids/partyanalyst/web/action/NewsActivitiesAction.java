@@ -34,7 +34,7 @@ public class NewsActivitiesAction extends ActionSupport implements ServletReques
 	private INewsAnalysisService newsAnalysisService;
 	private List<SelectOptionVO> districtsList,assemConstiList;
 	private List<SelectOptionVO> categoeriesList;
-	@Override
+	
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}

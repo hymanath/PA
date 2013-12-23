@@ -8980,7 +8980,7 @@ public void testgetCandidatesListByPartyIdsList()
 		for(Object[] param:fileKeywords){
 			String count = categorysCount.get((Long)param[0]);
 			if(count != null && count != "")
-				categorysCount.put((Long)param[0], count+","+param[1]);
+				categorysCount.put((Long)param[0], count+" , " +param[1]);
 			else
 				categorysCount.put((Long)param[0], param[1].toString());
 		}
