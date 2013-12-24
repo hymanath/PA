@@ -115,4 +115,8 @@ public interface IVoterReportService {
     public void saveVoterFamilyInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
     
     public void saveVoterAgeInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
+    
+    public List<VoterVO> getVoterFlagDetailsForALocation(Long locationId,Long constitunecyId,String type,Long publicationId,String requestFor);
+    
+    
 }

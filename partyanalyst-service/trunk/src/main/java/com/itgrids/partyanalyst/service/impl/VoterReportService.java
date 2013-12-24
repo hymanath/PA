@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -14,10 +15,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
+
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -5128,6 +5132,76 @@ public class VoterReportService implements IVoterReportService{
 		    	    voterAgeInfo.setTotalVoters(voterAgeInfo.getTotalVoters()+(Long)wardWiseAgeCount[0]);
 		    	 
 		      }
+		  }
+		  
+		  public List<VoterVO> getVoterFlagDetailsForALocation(Long locationId,Long constitunecyId,String type,Long publicationId,String requestFor)
+		  {
+			  List<VoterVO> resultList = new ArrayList<VoterVO>();
+				 List<Object[]> dataList = null;
+			  try{
+				Map<Long,VoterVO>  flagMap = new HashMap<Long,VoterVO>(); 
+				if(type.equalsIgnoreCase(IConstants.MANDAL) || type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+				{
+					if((locationId.toString().substring(0, 1).toString().trim().equalsIgnoreCase("1")))
+						
+							{
+					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1)));
+					locationId = (Long) list.get(0);
+							}
+					else
+					locationId = new Long(locationId.toString().substring(1));
+					
+				}
+				if(type.equalsIgnoreCase(IConstants.HAMLET) || requestFor.equalsIgnoreCase("wardBooths"))
+				{
+				
+					dataList = voterFlagDAO.getFlagWiseVotersCountByLocationIdForHamlet(locationId,constitunecyId,type,publicationId);	
+				}
+				else
+				{
+				dataList = voterFlagDAO.getFlagWiseVotersCountByLocationId(locationId,constitunecyId,type,publicationId);
+				}
+				 if(dataList != null && dataList.size() > 0)
+				 {
+					 long i = 0;
+					
+					 for(Object[] params : dataList)
+					 {
+					
+						 VoterVO voterVO = flagMap.get((Long)params[1]);
+						 if(voterVO == null)
+						 {
+							 i++;
+								
+							 voterVO =new VoterVO();
+							 flagMap.put((Long)params[1], voterVO) ;
+						 }
+						 voterVO.setName(params[2]!=null?params[2].toString() : "");
+						 voterVO.setColor(params[3]!=null?params[3].toString().substring(1) : "");
+						 if(params[4].toString().equalsIgnoreCase("M"))
+						 {
+							
+							 voterVO.setMaleVoters( (Long)params[0]);
+						 }
+						 else if(params[4].toString().equalsIgnoreCase("F"))
+						 {
+						
+							 voterVO.setFemaleVoters((Long)params[0]);
+						 }
+						 voterVO.setTotalVoters(voterVO.getMaleVoters() +voterVO.getFemaleVoters());
+						 voterVO.setGender(params[4].toString());
+						 voterVO.setSerialNo(i);
+						
+					 }
+				 }
+				 resultList = new ArrayList<VoterVO>(flagMap.values());
+				 
+			  }
+			  catch (Exception e) {
+				e.printStackTrace();
+				LOG.error(" Exception Occured in getVoterFlagDetailsForALocation() method in VoterReport Service.....");
+			}
+			return resultList;
 		  }
 				
 }
