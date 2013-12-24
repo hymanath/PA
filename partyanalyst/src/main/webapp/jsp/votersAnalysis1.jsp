@@ -2526,7 +2526,7 @@ function showFamilyWiseDetailsForCustomVoterGroup()
 
 function getFlagWiseVotersCount(id,publicationId,type)
 {
-	
+		$("#flagWiseVotersCountDiv").html('');
 	 var subType ="";
 	var muncipalityType = $("#middleNav-Wards-list a .checkbox").closest("a").attr("data-wardid");
  if(muncipalityType != null)
