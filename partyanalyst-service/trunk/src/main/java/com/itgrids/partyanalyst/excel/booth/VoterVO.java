@@ -62,7 +62,25 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private List<Long> voterIdsList;
 	private String description;
 	private String color;
+	private Long maleVoters = 0l;
+	private Long femaleVoters = 0l;
 	
+	public Long getMaleVoters() {
+		return maleVoters;
+	}
+
+	public void setMaleVoters(Long maleVoters) {
+		this.maleVoters = maleVoters;
+	}
+
+	public Long getFemaleVoters() {
+		return femaleVoters;
+	}
+
+	public void setFemaleVoters(Long femaleVoters) {
+		this.femaleVoters = femaleVoters;
+	}
+
 	public String getDescription() {
 		return description;
 	}
