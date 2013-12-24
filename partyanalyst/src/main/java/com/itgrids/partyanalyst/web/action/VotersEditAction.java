@@ -73,11 +73,19 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	
 	private List<SelectOptionVO> hamlets;
 	
-	private List<VoterVO> votersData , voterDetails;
+	private List<VoterVO> votersData , voterDetails,flagDetails;
     private IUserVoterService userVoterService;
 	
 	private List<InfluencingPeopleBeanVO> influencingPeopleBeanVO;
 	
+	public List<VoterVO> getFlagDetails() {
+		return flagDetails;
+	}
+
+	public void setFlagDetails(List<VoterVO> flagDetails) {
+		this.flagDetails = flagDetails;
+	}
+
 	public IUserVoterService getUserVoterService() {
 		return userVoterService;
 	}
@@ -1579,6 +1587,21 @@ public String saveLocality()
 		   try{
 				jObj = new JSONObject(getTask());
 				result = voterReportService.deleteFlag(jObj.getLong("flagId"));
+				
+		   }
+		   catch(Exception e)
+		   {
+			   LOG.error("Exception Raised in deleteFlag() method in VotersEditAction Class",e);
+		   }
+		   return Action.SUCCESS;
+	   }
+	   
+	   
+	   public String getVoterFlagDetails()
+	   {
+		   try{
+				jObj = new JSONObject(getTask());
+				flagDetails = voterReportService.getVoterFlagDetailsForALocation(jObj.getLong("locationId"),jObj.getLong("constituencyId"),jObj.getString("locationType"),jObj.getLong("publicationId"),jObj.getString("subType"));
 				
 		   }
 		   catch(Exception e)
