@@ -916,7 +916,8 @@ function addToPolitician(voterId,name)
 			$('#refreshImg').show();
 
 		selectedId = id;
-       
+	
+      getFlagWiseVotersCount(id,publicationId,type);
        if(type == "hamlet" || /customWard/i.test(type)){
 		  $('#impFamiliesForBooths').show();
 		   $('#impFamiliesForBooths').prop('value','View Booth Wise Family Details');
@@ -1177,6 +1178,7 @@ function addToPolitician(voterId,name)
 		// getInfluencingPeopleCount(id,type);
 		//-- 
 		//getCounts(id,publicationId,type);
+		 // 
 		if(type != "constituency")
 		 getCountForConstituency(id,publicationId,type);
 
@@ -1188,6 +1190,7 @@ function addToPolitician(voterId,name)
 		//-- 
 		 if(type != "hamlet")
 		getPreviousElectionVotingTrends(id,publicationId,type);
+		
 		//-- 
 		callCorrespondingAjaxCall('brief');
 		 //getElectionyearsByMandalId(id,type)
@@ -1941,6 +1944,10 @@ function addToPolitician(voterId,name)
 								else if(jsObj.task == "getPartialBoothDetails")
 								{
 								buildPartialBoothDetails(myResults,jsObj);
+								}
+							else if(jsObj.task == "getFlagWiseVotersDetails")
+								{
+									buildFlagWiseVotersCount(myResults);
 								}
 							}catch (e) {
 							     $("#votersEditSaveAjaxImg").hide();
@@ -10069,4 +10076,40 @@ str+='<div id="partialBoothsDiv"><ol>';
 	}
 	str+='</ol></div>';
 $("#partialBoothDiv").html(str);
+}
+
+
+function buildFlagWiseVotersCount(results)
+{
+	
+	if(results !=null && results.length > 0)
+	{
+		$("#flagWiseVotersCountDiv").css("display","block");
+	var str='';
+	
+	str+='<h4 id="flagWisetitle" class="" >Flag Wise Voters Information Of '+mainname+' in '+publicationYear+' </h4>';
+	str+='<table class="table table-bordered" style="margin-top:10px;">';
+	str+='<tr>';
+	str+='<th>S.No</th>';
+	str+='<th>Flag Color</th>';
+	str+='<th>Flag Name</th>';
+	str+='<th> No. Of Voters</th>';
+	str+='<th> Male</th>';
+	str+='<th>Female</th>';
+	str+='</tr>';
+	
+	for(var i in results)
+	{
+	str+='<tr>';
+	str+='<td>'+results[i].serialNo+'</td>';
+	str+='<td><span style="background-color:#'+results[i].color+' ">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>';
+	str+='<td>'+results[i].name+'</td>';
+	str+='<td>'+results[i].totalVoters+'</td>';
+	str+='<td>'+results[i].maleVoters+'</td>';
+	str+='<td>'+results[i].femaleVoters+'</td>';
+	str+='</tr>';
+	}
+	str+='</table><br/>';
+	$("#flagWiseVotersCountDiv").html(str);
+	}
 }

@@ -6257,5 +6257,11 @@
            		<param name="root">pingDetials</param>
         	</result>
         </action>
+         <action name="getFlagWiseVotersCountAction" class="votersEditAction" method="getVoterFlagDetails">
+           <result type="json" name="success">
+           		<param name="root">flagDetails</param>
+        	</result>
+        </action>
+        
 		</package>
 </struts>      

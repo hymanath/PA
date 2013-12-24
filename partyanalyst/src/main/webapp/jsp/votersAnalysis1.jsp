@@ -1693,6 +1693,11 @@ for  body3 start    result  -->
  </div>
 </div>
 
+
+
+					
+<div id="flagWiseVotersCountDiv" class="widget blue whitegloss" style="color:#222222;display:none;"></div>
+
 	<!--<div  id="votersByPanchayatTabContentDiv_body" class="yui-skin-sam yui-dt-sortable"></div>-->
 	<div id="votersDiv4" class="widget blue whitegloss" style="display:inline-block;width: 96%;color:#000;position:relative;margin-top:0px;">
 					<h4 id="AgeWisetitle" class="" > </h4>
@@ -1715,6 +1720,8 @@ for  body3 start    result  -->
 </div>-->
 
 <!--<a href="javaScript:{showBasicAgewiseDetails()}">Click here to get Agewise Details</a>-->
+
+
 <span id="agewiseAjaxDiv" style="display:none;position:absolute;bottom:20px;right:2px;"><img alt="Processing Image" src="./images/icons/search.gif"></span>
 <div id="voterDetailsNote1" class=""></div>
 
@@ -2515,6 +2522,28 @@ function showFamilyWiseDetailsForCustomVoterGroup()
 	 window.open("getCustomVoterGroupsFamilyDetailsAction.action?constituencyId="+constituencyId+"&locationValue="+mandalId+"&groupName="+mainname+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
 			 reqBrowser.focus();
 	
+}
+
+function getFlagWiseVotersCount(id,publicationId,type)
+{
+	
+	 var subType ="";
+	var muncipalityType = $("#middleNav-Wards-list a .checkbox").closest("a").attr("data-wardid");
+ if(muncipalityType != null)
+	subType = "wardBooths";
+ 
+ var jsObj = {
+	      
+			locationType:type,
+			subType:subType,
+			locationId:id,
+			constituencyId:$("#constituencyList").val(),
+			publicationId:publicationId,
+			task:"getFlagWiseVotersDetails"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "<%=request.getContextPath()%>/getFlagWiseVotersCountAction.action?"+rparam;
+		callAjax(jsObj, url);
 }
 </script>
 </body>
