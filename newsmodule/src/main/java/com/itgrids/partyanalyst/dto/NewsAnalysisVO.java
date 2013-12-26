@@ -10,6 +10,7 @@ public class NewsAnalysisVO implements Serializable {
 	 */
 	private static final long serialVersionUID = -2329516280426212003L;
 
+	 private Long id;
 	 private Long positiveCount = 0l;
 	 private Long negativeCount = 0l;
 	 private Long neutralCount = 0l;
@@ -32,7 +33,55 @@ public class NewsAnalysisVO implements Serializable {
 	 private Integer rowSpan = 0;
 	 private Long sourceBenifitId;
 	 private Long destiBenifitId;
+	 private String sorceCandName;
+	 private String destCandName;
 	 
+	 
+	 
+	 
+	 
+	/**
+	 * @return the sorceCandName
+	 */
+	public String getSorceCandName() {
+		return sorceCandName;
+	}
+
+	/**
+	 * @param sorceCandName the sorceCandName to set
+	 */
+	public void setSorceCandName(String sorceCandName) {
+		this.sorceCandName = sorceCandName;
+	}
+
+	/**
+	 * @return the destCandName
+	 */
+	public String getDestCandName() {
+		return destCandName;
+	}
+
+	/**
+	 * @param destCandName the destCandName to set
+	 */
+	public void setDestCandName(String destCandName) {
+		this.destCandName = destCandName;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public Long getPositiveCount() {
 		return positiveCount;
 	}

@@ -1724,6 +1724,7 @@
        <property name="activityReportDAO" ref="activityReportDAO" />  
        <property name="userDAO" ref="userDAO" />    
        <property name="activityReportFilesDAO" ref="activityReportFilesDAO" />
+       <property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
    </bean>
 
 </beans>		

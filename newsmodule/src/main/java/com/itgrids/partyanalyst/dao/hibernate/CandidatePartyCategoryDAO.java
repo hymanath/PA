@@ -292,7 +292,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 }
 	 public List<Object[]> getCategoriesList(List<Long> fileIds)
 	 {
-		 Query query = getSession().createQuery("select model.candidatePartyFile.file.fileId , model.gallary.name from CandidatePartyCategory model where model.candidatePartyFile.file.fileId in (:fileIds)");
+		 Query query = getSession().createQuery("select distinct model.candidatePartyFile.file.fileId , model.gallary.name from CandidatePartyCategory model where model.candidatePartyFile.file.fileId in (:fileIds)");
 		 query.setParameterList("fileIds", fileIds);
 		 return query.list();
 				 
