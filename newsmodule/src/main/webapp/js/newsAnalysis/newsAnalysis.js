@@ -40,6 +40,10 @@ function callAjax(jsObj,url)
 					  }else if(myResults.buildMethod == "third"){
 						buildSearchDataTableForLvlThree(myResults);
 					  }
+					  else if(myResults.buildMethod == "six")
+					  {
+						buildSearchDataTableForLvlSix(myResults)
+					  }
 					   $("#submitDataImg").hide();
 					}
 				
@@ -117,9 +121,9 @@ function callAjax(jsObj,url)
 					   for(var l in result.subList[i].subList[m].subList[j].subList[k].subList){//List<CatKey>
 					        var obj = result.subList[i].subList[m].subList[j].subList[k].subList[l];
 						  if(l == 0){
-						    str+="<td>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+						    str+="<td>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].total+"</a></td></tr>";
 						  }else{
-						    str+="<tr><td>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+						    str+="<tr><td>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[m].subList[j].subList[k].subList[l].total+"</a></td></tr>";
 						  }
 					   }
 					  
@@ -158,15 +162,15 @@ function callAjax(jsObj,url)
 		 var obj = result.subList[i].subList[j];
 		  if(result.subList[i].subListPresent){
 			  if(j == 0){
-				str+="<td>"+result.subList[i].subList[j].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
+				str+="<td>"+result.subList[i].subList[j].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
 			  }else{
-				str+="<tr><td>"+result.subList[i].subList[j].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
+				str+="<tr><td>"+result.subList[i].subList[j].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
 			  }
 		  }else{
 		      if(j == 0){
-				str+="<td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
+				str+="<td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
 			  }else{
-				str+="<tr><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
+				str+="<tr><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].total+"</a></td></tr>";
 			  }
 		  }
 	    }
@@ -224,15 +228,15 @@ function callAjax(jsObj,url)
 						       var obj = result.subList[i].subList[j].subList[k].subList[l];
 							  if(result.subList[i].subList[j].subList[k].subListPresent){
 								  if(l == 0){
-									str+="<td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News' onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+									str+="<td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News' onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
 								  }else{
-									str+="<tr><td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+									str+="<tr><td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
 								  }
 							  }else{
 								  if(l == 0){
-									str+="<td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+									str+="<td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
 								  }else{
-									str+="<tr><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+									str+="<tr><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
 								  }
 							  }
 						  }
@@ -248,6 +252,47 @@ function callAjax(jsObj,url)
 		   $("#responseTable").html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
 		 } 
 	    }
+		
+		function buildSearchDataTableForLvlSix(result)
+		{
+			str = "";
+			$("#responseTable").html(str);
+			if(result.subList != null && result.subList.length > 0)
+			{
+				
+				str += '<table class="analysisResult table table-bordered table-striped table-hover">';
+				str += '<thead><tr>';
+				str += '<th>Who</th>';
+				str += '<th>Whom</th>';
+				str += '<th>Count</th>';
+				str += '</tr></thead><tbody>';
+				for(var i in result.subList)
+				{
+					str += '<tr>';
+					str += '<td>'+result.subList[i].sorceCandName+'</td>';
+					str += '<td>'+result.subList[i].destCandName+'</td>';
+					str += '<td><a  style="cursor: pointer;" onClick = "getClickedNews('+result.subList[i].sourceCandId+','+result.subList[i].destiCandId+','+result.subList[i].sourcePartyId+','+result.subList[i].destiPartyId+',\'\',\'\',\'\',\'\',\'\',\'\',\'\',\'\',\'2\');">'+result.subList[i].total+'</a></td>';
+					str += '</tr>';
+				}
+				str += '</tbody><table>';
+				$("#responseTable").html(str);
+			}
+		}
+		
+	/* function openForSelectdNews(sourcePartyId,destPartyId,soureCandId,destinationCandId)
+	{
+		var jsObj=
+		{
+			sourcePartyId     : sourcePartyId,
+			destPartyId       : destPartyId,
+			soureCandId       : soureCandId,
+			destinationCandId : destinationCandId,
+			task:'openForSelectdNews'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "getPartiesListAction.action?"+rparam;
+		callAjax(jsObj, url);
+	} */
 	function getPartiesList()
 	{
 		var jsObj=
@@ -659,46 +704,46 @@ function getAnalysisData()
 	callAjax(jsObj,url);
 }
 
-function getClickedNews(sourceCandId,destiCandId,sourcePartyId,destiPartyId,locationLvl,locationId,sourceId,categoryId,keywordId,benifitsFor,sourceBenifitId,destiBenifitId){
+function getClickedNews(sourceCandId,destiCandId,sourcePartyId,destiPartyId,locationLvl,locationId,sourceId,categoryId,keywordId,benifitsFor,sourceBenifitId,destiBenifitId,type){
  var startDate = $("#fromDateId").val();
 	var endDate   = $("#todateId").val();
-	if(sourceCandId == "null"){
+	if(sourceCandId == "null" || sourceCandId == null){
 	  sourceCandId ='';
 	}
-	if(destiCandId == "null"){
+	if(destiCandId == "null" || destiCandId == null){
      destiCandId = '';
     }
-	if(sourcePartyId == "null"){
+	if(sourcePartyId == "null" || sourcePartyId == null){
 	 sourcePartyId = '';
 	}
-	if(destiPartyId == "null"){
+	if(destiPartyId == "null" || destiPartyId == null){
 	 destiPartyId = '';
 	}
-	if(locationLvl == "null"){
+	if(locationLvl == "null" || locationLvl == null){
 	 locationLvl = '';
 	}
-	if(locationId == "null"){
+	if(locationId == "null" || locationId == null){
 	 locationId = '';
 	}
-	if(sourceId == "null"){
+	if(sourceId == "null" || sourceId == null){
 	 sourceId = '';
 	}
-	if(categoryId == "null"){
+	if(categoryId == "null" || categoryId == null){
 	 categoryId = '';
 	}
-	if(keywordId == "null"){
+	if(keywordId == "null" || keywordId == null){
 	 keywordId = '';
 	}
-	if(benifitsFor == "null"){
+	if(benifitsFor == "null" || benifitsFor == null){
 	 benifitsFor = '';
 	}
-	if(sourceBenifitId == "null"){
+	if(sourceBenifitId == "null" || sourceBenifitId == null){
 		sourceBenifitId = '';
 	}
-	if(destiBenifitId == "null"){
+	if(destiBenifitId == "null" || destiBenifitId == null){
 		destiBenifitId = '';
 	}
- var browser1 = window.open("getNewsAction.action?sourceCandId="+sourceCandId+"&destiCandId="+destiCandId+"&sourcePartyId="+sourcePartyId+"&destiPartyId="+destiPartyId+"&locationLvl="+locationLvl+"&locationId="+locationId+"&sourceId="+sourceId+"&categoryId="+categoryId+"&keywordId="+keywordId+"&benifitsFor="+benifitsFor+"&startDate="+startDate+"&endDate="+endDate+"&sourceBenifitId="+sourceBenifitId+"&destiBenifitId="+destiBenifitId,"SearchNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+ var browser1 = window.open("getNewsAction.action?sourceCandId="+sourceCandId+"&destiCandId="+destiCandId+"&sourcePartyId="+sourcePartyId+"&destiPartyId="+destiPartyId+"&locationLvl="+locationLvl+"&locationId="+locationId+"&sourceId="+sourceId+"&categoryId="+categoryId+"&keywordId="+keywordId+"&benifitsFor="+benifitsFor+"&startDate="+startDate+"&endDate="+endDate+"&sourceBenifitId="+sourceBenifitId+"&destiBenifitId="+destiBenifitId+"&type="+type,"SearchNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
 function clearDate(id){

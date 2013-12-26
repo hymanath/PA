@@ -56,7 +56,23 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	private ResultStatus resultStatus;
 	private Long sourceBenifitId;
 	private Long destiBenifitId;
+	private Long type;
 	
+	
+	/**
+	 * @return the type
+	 */
+	public Long getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(Long type) {
+		this.type = type;
+	}
+
 	/**
 	 * @return the resultStatus
 	 */
@@ -443,6 +459,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
     		 vo.setBenifitsFor(getBenifitsFor());
     		 vo.setDestiBenifitId(getDestiBenifitId());
     		 vo.setDestiBenifitId(getDestiBenifitId());
+    		 vo.setName(getType().toString());
     		 Date fromDate = (getStartDate()!=null && getStartDate().trim().length() > 0)?format.parse(getStartDate()):null;
     		 Date toDate = (getEndDate()!=null && getEndDate().trim().length() >0)?format.parse(getEndDate()):null;
     		 Integer startIndex = null;

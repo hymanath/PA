@@ -49,12 +49,22 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetKeywordsCountByFileIds(){
+	/*public void testgetKeywordsCountByFileIds(){
 		Set<Long> fileIds = new java.util.HashSet<Long>();
 		fileIds.add(82l);
 		fileIds.add(81l);
 		List<Object[]> val = candidatePartyFileDAO.getKeywordsCountByFileIds(fileIds);
 		for(Object[] p:val)
 			System.out.println(p[0]+"-"+p[1]);
+	}*/
+	
+	public void testgetSourcePartyCommentsOnly()
+	{
+		List<Object[]> values = candidatePartyFileDAO.getSourcePartyCommentsOnly(null,3424l);
+		for (Object[] p : values) {
+			System.out.println(p[0]+"-"+p[1]+"-"+p[2]+"-"+p[3]);
+		}
 	}
+	
+	
 }

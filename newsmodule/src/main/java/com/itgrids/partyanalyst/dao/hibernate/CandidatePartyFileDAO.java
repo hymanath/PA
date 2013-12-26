@@ -96,5 +96,330 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 		"where model.candidatePartyFile.file.fileId in (:fileIds)" );
 		 query.setParameterList("fileIds", fileIds);
 		 return query.list();
-	 }
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSourcePartyCommentsOnly(Long partyId,Long candidateId)
+	{
+		StringBuffer sb = new StringBuffer();
+		if(candidateId == null)
+		{
+			sb.append("select model.sourceParty.partyId,model.sourceParty.shortName,count(distinct model.file.fileId),cast(null as char),cast(null as char) ,  ");
+		}
+		else
+		{
+			sb.append("select  model.sourceCandidate.candidateId,model.sourceCandidate.lastname,count(distinct model.file.fileId),cast(null as char),cast(null as char) ,  ");
+		}
+		sb.append(" model.sourceParty.partyId,cast(null as char),model.sourceCandidate.candidateId,cast(null as char)  ");
+		sb.append(" from CandidatePartyFile model where ");
+		if(partyId != null)
+		{
+			sb.append("  model.sourceParty.partyId = :partyId and model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+		}
+		else
+		{
+			sb.append("   model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+		}
+		if(candidateId == null)
+		{
+			sb.append(" and model.sourceCandidate.candidateId is null ");
+		}
+		else if( candidateId == 0l)
+		{
+			sb.append(" and model.sourceCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append(" and  model.sourceCandidate.candidateId = :candidateId ");
+		}
+		if(candidateId == null ||  candidateId == 0l)
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
+		}
+		else
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(partyId != null)
+		{
+			query.setParameter("partyId", partyId);
+		}
+		if(candidateId != null && candidateId != 0l)
+		{
+			query.setParameter("candidateId", candidateId);	
+		}
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSourcePartyComments(Long partyId,Long candidateId)
+	{
+		StringBuffer sb = new StringBuffer();
+		if(candidateId == null)
+		{
+			sb.append("select model.sourceParty.partyId,model.sourceParty.shortName,count(distinct model.file.fileId),model.destinationParty.partyId,model.destinationParty.shortName  , ");
+		}
+		else
+		{
+			sb.append("select  model.sourceCandidate.candidateId,model.sourceCandidate.lastname,count(distinct model.file.fileId),model.destinationParty.partyId,model.destinationParty.shortName,   ");
+		}
+		sb.append(" model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,cast(null as char)  ");
+		sb.append(" from CandidatePartyFile model where ");
+		if(partyId != null)
+		{
+			sb.append("  model.sourceParty.partyId = :partyId and model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+		}
+		else
+		{
+			sb.append("   model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+		}
+		if(candidateId == null)
+		{
+			sb.append(" and model.sourceCandidate.candidateId is null ");
+		}
+		else if( candidateId == 0l)
+		{
+			sb.append(" and model.sourceCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append(" and  model.sourceCandidate.candidateId = :candidateId ");
+		}
+		if(candidateId == null ||  candidateId == 0l)
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
+		}
+		else
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationParty.partyId");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(partyId != null)
+		{
+			query.setParameter("partyId", partyId);
+		}
+		if(candidateId != null && candidateId != 0l)
+		{
+			query.setParameter("candidateId", candidateId);	
+		}
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSourcePartyCandidateComments(Long partyId,Long candidateId)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append("select model.sourceCandidate.candidateId,model.sourceCandidate.lastname,count(distinct model.file.fileId),model.destinationCandidate.candidateId,model.destinationCandidate.lastname,  ");
+		sb.append(" model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
+		sb.append(" from CandidatePartyFile model where ");
+		if(partyId != null)
+		{
+			sb.append("  model.sourceParty.partyId = :partyId and model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+		}
+		else
+		{
+			sb.append("   model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+		}
+		if(candidateId == null)
+		{
+			sb.append(" and model.sourceCandidate.candidateId is null ");
+		}
+		else if( candidateId == 0l)
+		{
+			sb.append(" and model.sourceCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append(" and  model.sourceCandidate.candidateId = :candidateId");
+		}
+		if(candidateId == null || candidateId == 0l)
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
+		}
+		else
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(partyId != null)
+		{
+			query.setParameter("partyId", partyId);
+		}
+		
+		if(candidateId != null && candidateId != 0l)
+		{
+			query.setParameter("candidateId", candidateId);	
+		}
+		return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDestinationPartyCommentsOnly(Long partyId,Long candidateId)
+	{
+		StringBuffer sb = new StringBuffer();
+		if(candidateId == null)
+		{
+			sb.append("select model.destinationParty.partyId,model.destinationParty.shortName,count(distinct model.file.fileId),cast(null as char),cast(null as char),  ");
+		}
+		else
+		{
+			sb.append("select  model.destinationCandidate.candidateId,model.destinationCandidate.lastname,count(distinct model.file.fileId),cast(null as char),cast(null as char),  ");
+		}
+		sb.append(" model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
+		sb.append(" from CandidatePartyFile model where " );
+		if(partyId != null)
+		{
+			sb.append(" model.destinationParty.partyId = :partyId and model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append("   model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+		}
+		if(candidateId == null)
+		{
+			sb.append(" and model.destinationCandidate.candidateId is null ");
+		}
+		else if( candidateId == 0l)
+		{
+			sb.append(" and model.destinationCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append(" and model.destinationCandidate.candidateId is not null and model.destinationCandidate.candidateId = :candidateId");
+		}
+		if(candidateId == null || candidateId == 0l)
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
+		}
+		else
+		{
+			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(partyId != null)
+		{
+			query.setParameter("partyId", partyId);
+		}
+		if(candidateId != null && candidateId != 0l)
+		{
+			query.setParameter("candidateId", candidateId);	
+		}
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDestinationPartyComments(Long partyId,Long candidateId)
+	{	
+		StringBuffer sb = new StringBuffer();
+		if(candidateId == null)
+		{
+			sb.append("select model.destinationParty.partyId,model.destinationParty.shortName,count(distinct model.file.fileId),model.sourceParty.partyId,model.sourceParty.shortName,   ");
+		}
+		else
+		{
+			sb.append("select  model.destinationCandidate.candidateId,model.destinationCandidate.lastname,count(distinct model.file.fileId),model.sourceParty.partyId,model.sourceParty.shortName ,  ");
+		}
+		sb.append("model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
+		
+		sb.append(" from CandidatePartyFile model where " );
+		if(partyId != null)
+		{
+			sb.append(" model.destinationParty.partyId = :partyId and model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append("   model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+		}
+		if(candidateId == null)
+		{
+			sb.append(" and model.destinationCandidate.candidateId is null ");
+		}
+		else if( candidateId == 0l)
+		{
+			sb.append(" and model.destinationCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append(" and model.destinationCandidate.candidateId is not null and model.destinationCandidate.candidateId = :candidateId");
+		}
+		sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
+		Query query = getSession().createQuery(sb.toString());
+		if(partyId != null)
+		{
+			query.setParameter("partyId", partyId);
+		}
+		if(candidateId != null && candidateId != 0l)
+		{
+			query.setParameter("candidateId", candidateId);	
+		}
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDestinationPartyCandidateComments(Long partyId,Long candidateId)
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append("select model.destinationCandidate.candidateId,model.destinationCandidate.lastname,count(distinct model.file.fileId),model.sourceCandidate.candidateId,model.sourceCandidate.lastname ,  ");
+		sb.append(" model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
+		sb.append(" from CandidatePartyFile model where " );
+		if(partyId != null)
+		{
+			sb.append(" model.destinationParty.partyId = :partyId and model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append("   model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+		}
+		sb.append("    ");
+		if(candidateId == null)
+		{
+			sb.append(" and model.destinationCandidate.candidateId is null ");
+		}
+		else if( candidateId == 0l)
+		{
+			sb.append(" and model.destinationCandidate.candidateId is not null");
+		}
+		else
+		{
+			sb.append(" and model.destinationCandidate.candidateId is not null and model.destinationCandidate.candidateId = :candidateId");
+		}
+		sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
+		Query query = getSession().createQuery(sb.toString());
+		if(partyId != null)
+		{
+			query.setParameter("partyId", partyId);
+		}
+		
+		if(candidateId != null && candidateId != 0l)
+		{
+			query.setParameter("candidateId", candidateId);	
+		}
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSelectedNewsBySearchCriteria(String queryStr , Integer startIndex , Integer maxIndex)
+	{
+		Query query = getSession().createQuery(queryStr.toString());
+		if(startIndex != null)
+		{
+			query.setFirstResult(startIndex);
+		}
+		if(maxIndex != null)
+		{
+			query.setMaxResults(maxIndex);
+		}
+		
+		return query.list();
+	}
+	
+	@Override
+	public Long getSelectedNewsCountBySearchCriteria(String queryStr) {
+		Query query = getSession().createQuery(queryStr.toString());
+		return (Long)query.uniqueResult();
+	}
 }
