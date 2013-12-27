@@ -150,7 +150,7 @@
 			  }
 			  if(myResults.fileVOList[i].fileVOList[j].candidateName!=null && myResults.fileVOList[i].fileVOList[j].candidateName.trim().length > 0)
 			  str+='<span class="label"><span class="badge badge-inverse" >Candidate Names:</span>&nbsp;&nbsp;'+myResults.fileVOList[i].fileVOList[j].candidateName+'</span>';
-              str+='<span class="pull-right">'+myResults.mainArticalsList[i].fileDate+'</span>';
+              str+='<span class="pull-right">'+myResults.fileVOList[i].fileVOList[j].fileDate+'</span>';
 			  str+='</div></div></div></div>';
 		 }
 	   }
