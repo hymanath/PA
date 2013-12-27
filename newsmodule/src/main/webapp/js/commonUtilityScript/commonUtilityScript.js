@@ -57,8 +57,7 @@ function createOptionsForSelectElmtIdWithSelectOption(elmtId,optionsList)
  */
 function createSelectOptionsForSelectElmtId(elmtId)
 {	
-
-	var elmt = document.getElementById(elmtId);
+  var elmt = document.getElementById(elmtId);
 	
 	if( !elmt)
 		return;
@@ -111,6 +110,7 @@ function createSelectOptionsForSelectElmtId(elmtId)
 
 function createOptionsForSelectElmtId(elmtId,optionsList)
 {	
+   
 	var elmt = document.getElementById(elmtId);
 	
 	if( !elmt || optionsList == null)
@@ -141,7 +141,7 @@ function createOptionsForSelectElmtId(elmtId,optionsList)
  */
 
 function clearOptionsListForSelectElmtId(elmtId)
-{
+{  
 	var elmt = document.getElementById(elmtId);
 
 	if(!elmt)

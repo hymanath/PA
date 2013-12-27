@@ -495,35 +495,44 @@ $(document).ready(function(){
 						<div class="">
 						
 						<div id="cadidateRadioDiv">
-						<div style="clear:both;">
-						 <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true"/>All
-						 <input type="radio" id="byDateRadio" value="byDate" name="candidateNewsRadio" class="candidateRadioCls"/>By Date<br>
-						 <!-- <input type="radio" value="gallaryRadio" id="gallaryRadioId" class="gallaryCategoryRadio" onclick="getCandidateGallaries()"/>By Gallary -->
+						  <div style="width:150px;margin-left: -19px;">
+						     <input type="radio" id="byAllRadio" value="byAll" name="candidateNewsRadio" class="candidateRadioCls" checked="true" "/>All
+						     <input type="radio" id="categoryradioBtnId" value="byCategory" name="candidateNewsRadio" class="candidateRadioCls"  style="margin-right: 3px;margin-left:8px"/>By Category
+						  </div>
+						
+						  
+						 
+						 <div style="width:150px;">
+						   <label class="" style="margin-left: -55px; margin-top: 3px;"><input type="radio" id="categoryradioBtnId" value="byKeyword" name="candidateNewsRadio" class="candidateRadioCls"  style="margin-right: 3px;margin-left:-29px"/>By Keyword
+						 </div>
+						 
+
 						</div>
 						
-							<div style="clear:both;width:150px;">
-							<!--<input type="radio" value="gallaryRadio" id="gallaryRadioId" name="typeNewsRadio" class="gallaryCategoryRadio"/>By Gallery
 						
-							<input type="radio" value="categoryCheckBox" id="categoryCheckBoxId" class="categoryCheckBoxCls"  name="candidateNewsRadio" />By Category-->
-							<input type="radio" id="categoryradioBtnId" value="byCategory" name="candidateNewsRadio" class="candidateRadioCls"/>By Category
-						 </div>
-						 </div>
-						
-						<div id="candidateNewsShowHideDatesDiv" style="display:none;width:220px;margin-left:-24px;">
-						 <input type="text" size="20" name="fileDate" readonly="true" class="dateField pull-left" id="existingFromText" placeholder="From"/>
-						 <input type="text" size="20" name="fileDate" readonly="true" class="dateField pull-right" id="existingToText" placeholder="To"/>
-						</div>
 
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
-								<td id="tdWidth">
+								<td id="tdWidth" style="width:190px;">
 									<s:select theme="simple" label="Candidates" name="candidates"
 								id="candidatesListId" list="candidatesList" listKey="id"
-								listValue="name" headerKey="0" headerValue="Select Candidate" />
+								listValue="name" headerKey="0" headerValue="Select Candidate" style="margin-left:-18px"/>
 						</td>
 							</tr>
 						</table>
+						
+						
+						 <div id="candidateNewsShowHideDatesDiv" style="display:block;width:220px;margin-left:-24px;">
+						 <span id="fromParaId">From: </span><input type="text" size="20" name="fileDate" readonly="true" class="dateField " id="existingFromText"  style="margin-left:-4px"/><br>
+						 <span id="fromParaId">To </span><span>:</span><input type="text" size="20" name="fileDate" readonly="true" class="dateField " id="existingToText"  style="margin-right:16px;margin-left:16px" />
+						 <span title="Clear From Date" onclick="clearDate();" class="icon-remove-sign"  style="margin-left: -14px; margin-top: -1px;"></span>
 
+						</div>
+						
+						
+						
+						
+                        
 						<div id="gallaryShowHideDiv" style="display:none;">
 						  <select id="gallaryId" multiple="multiple" style="width:190px;"></select>
 						</div>
@@ -538,7 +547,7 @@ $(document).ready(function(){
 						 <select id="categoryGallarySelect" multiple="multiple"></select>
 						</div>
 
-						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews1()" style="margin-bottom: 15px; margin-left: 35px;font-weight:bold;" > View News</button> 
+						<button id="sendButton" class="btn btn-warning btn-mini" onclick="getCandidatesNews1()" style="margin-bottom: 15px; margin-left: 20px;font-weight:bold;margin-top:4px" > View News</button> 
 						<div class="errorDiv"></div>
 						</div>
 
@@ -726,7 +735,16 @@ $(document).ready(function(){
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
-<script>
+<script type="text/javascript">
+
+function clearDate(){
+   $("#existingFromText").val('');
+   $("#existingToText").val('');
+}
+
+
+
+
 $(function(){
 $('#myCarousel').carousel({ interval: 4000});
 $('#myCarousel2').carousel( {interval: 5000});
@@ -803,7 +821,7 @@ function showVideoGallery(fileId)
 task="getVideoGalley"; 		
  var jsObj=
 	 {
-		task:task		
+	  task:task		
 	 };
 var url = "getvideoAGallary.action?&fileId="+fileId+"&task="+task;	
 callHomePageAjax11(jsObj,url);
@@ -960,6 +978,11 @@ function callHomePageAjax11(jsObj,url){
 								{
 								  clearOptionsListForSelectElmtId('candidateCategoryId');
 								 createOptionsForSelectElmtId('candidateCategoryId',myResults);
+								}
+								else if(jsObj.task == "getCandidateRelatedKeywords")
+								{
+								  clearOptionsListForSelectElmtId('candidateCategoryId'); //to clear the select box.
+								  createOptionsForSelectElmtId('candidateCategoryId',myResults);
 								}
 
 								else if(jsObj.task == "getGallariesForSelectedCategory")
@@ -1279,7 +1302,14 @@ function getCandidatesNews(){
      var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
+
+
+
+
+//456
+//getting candidate news
 function getCandidatesNews1(){
+ 
 	var candidateId=$('#candidatesListId option:selected').val();
 	var candidateName1=$('#candidatesListId option:selected').text();
 	var trimValue = candidateName1.split("(").pop();
@@ -1289,31 +1319,52 @@ function getCandidatesNews1(){
 		$('.errorDiv').html('<span class="text-error">Please Select Candidate</span>');
 		return;
 	}
-     var fromDate = "";
-	 var toDate = "";
-
+    
+    var categoryIds = "";
+	var keywordIds="";
+	
+	
 	 var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
-	 if(radioVal == "byDate")
-	 {
+   
+   if(radioVal == "byCategory")
+	{ 
+      categoryIds = $("#candidateCategoryId").val(); //multiselectbox options
+	  if(categoryIds == null || categoryIds == "null")
+	  {
+		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Category.</span>');
+          return;
+	  }
+
+	}
+	
+	if(radioVal == "byKeyword")
+	{ 
+    keywordIds= $("#candidateCategoryId").val();
+	if(keywordIds == null || keywordIds == "null")
+	  {
+		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Keyword.</span>');
+          return;
+	  }
+
+	}
+	
+       var fromDate = "";
+	   var toDate = "";
        fromDate = $("#existingFromText").val();
 	   toDate   = $("#existingToText").val();
 
-	   if(fromDate=="" && toDate == "")
-	    {
-		 $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select From And To Dates</span>');
-		 return;
-	    }
-	    else if(fromDate =="")
+	   
+	    if(fromDate =="" && toDate != "")
 	    {
 	     $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select From Date</span>');
 		 return;
 	    }
-	    else if(toDate =="")
+	    else if(toDate ==""&& fromDate !="")
 	    {
 	      $(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select To Date</span>');
 		  return;
 	    }
-	    else
+	    else if(fromDate !="" && toDate != "")
 	    {
 		  var fromArrayprev = fromDate.split("/");
 		  var datefrom=new Date(fromArrayprev[2], fromArrayprev[1]-1, fromArrayprev[0]);
@@ -1327,26 +1378,24 @@ function getCandidatesNews1(){
 		  }
 	    }
 
-	 }
+	 
+
 	
-
-	var categoryIds = "";
-	if(radioVal == "byCategory")
-	{
-      categoryIds = $("#candidateCategoryId").val();
-	  if(categoryIds == null || categoryIds == "null")
-	  {
-		$(".errorDiv").html('<span class="text-error" style="margin-left:10px;">Please Select Category.</span>');
-          return;
-	  }
-
-	}
-
-	 var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&candidateName="+candidateName+"&fromDate="+fromDate+"&toDate="+toDate+"&categoryIds="+categoryIds+"&tempVarable=true&";
-		
-     var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+var urlstr = "showNewsOfCandidateAction.action?candidateId="+candidateId+"&candidateName="+candidateName+"&fromDate="+fromDate+"&toDate="+toDate+"&categoryIds="+categoryIds+"&keywordIds="+keywordIds+"&tempVarable=true&";	 
+var browser1 = window.open(urlstr,"showMoreVideos","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
+
+
+
+
+
+
+
+
+
+
+
 function getResponseDetailsByContentId(contentId)
 {
 		
@@ -1458,10 +1507,17 @@ function getCandidatecategories()
 	callAjax(jsObj, url);
 
 }
+
+
+//for subcatogries.
 function getCandidateSubcategories()
 {
-   var fromDate = "";
-	var toDate = "";
+    var fromDate = ""; var toDate = ""; 
+	
+    fromDate = $("#existingFromText").val();
+    toDate = $("#existingToText").val();
+
+	
 	var candidateId = $("#candidatesListId").val();
 	$(".errorDiv").html('');
 	if(candidateId == 0)
@@ -1469,6 +1525,7 @@ function getCandidateSubcategories()
 	  $(".errorDiv").html('Please Select Candidate');
 	  return;	
 	}
+	/*
 	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
 	if(radioVal == "byDate")
 	{
@@ -1490,12 +1547,12 @@ function getCandidateSubcategories()
 	     $(".errorDiv").html('Please Select To Date');
 		 return;
 	   }
-	   /* else if (Date.parse(fromDate) > Date.parse(toDate)) {
+	   else if (Date.parse(fromDate) > Date.parse(toDate)) {
          $(".errorDiv").html('Invalid Date Selection.');
          return;
-	   }  */
-	}
-
+	   }  
+    }*/
+   
 	var jsObj={
 		fromDate:fromDate,
 		toDate:toDate,
@@ -1507,6 +1564,63 @@ function getCandidateSubcategories()
 	callAjax(jsObj, url);
 
 }
+
+
+
+
+
+
+//for keywords.
+function getCandidateKeywords()
+{
+    var fromDate = ""; var toDate = "";
+	fromDate = $("#existingFromText").val();
+    toDate = $("#existingToText").val();
+	var candidateId = $("#candidatesListId").val();
+	$(".errorDiv").html('');
+	if(candidateId == 0)
+	{
+	  $(".errorDiv").html('Please Select Candidate');
+	  return;	
+	}
+	
+	var jsObj={
+		fromDate:fromDate,
+		toDate:toDate,
+		candidateId:candidateId,
+		task:'getCandidateRelatedKeywords'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getCandidateRelatedKeywordsAction.action?"+rparam;
+	callAjax(jsObj, url);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $(document).ready(function(){
 	
 $(".dateField").live("click", function(){
@@ -1519,6 +1633,9 @@ $(".dateField").live("click", function(){
 	}).datepicker("show");
 });
 
+
+
+
 $(".candidateRadioCls").click(function(){
 	var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
 	if(radioVal=="byAll")
@@ -1526,25 +1643,34 @@ $(".candidateRadioCls").click(function(){
 	 $("#candidateFromText").val('');
 	 $("#candidateToText").val('');
 	  $("#categoryShowHideDiv").css("display","none");
-	 $("#candidateNewsShowHideDatesDiv").css("display","none");
+	
 	}
 	else if(radioVal=="byCategory")
 	{
 		 $("#candidateFromText").val('');
 		 $("#candidateToText").val('');
 		 $("#categoryShowHideDiv").css("display","block");
-	$("#candidateNewsShowHideDatesDiv").css("display","none");
+		clearOptionsListForSelectElmtId('candidateCategoryId');
+      $("#candidatesListId").val("0");
+
 	}
-	else if(radioVal=="byDate")
+
+	else if(radioVal=="byKeyword")
 	{
-	 $("#categoryShowHideDiv").css("display","none");
-     $("#candidateNewsShowHideDatesDiv").css("display","block");
+	     $("#candidateFromText").val('');
+		 $("#candidateToText").val('');
+		 $("#categoryShowHideDiv").css("display","block");
+	       clearOptionsListForSelectElmtId('candidateCategoryId');
+         $("#candidatesListId").val("0");
 	}
-
-
-});
-
-
+	
+	});
+	
+	
+	
+	
+	
+//changing the select box options.
 $("#candidatesListId").live("change",function(){
   var candidateId = $("#candidatesListId").val();
    $('.errorDiv').html('');
@@ -1577,12 +1703,28 @@ var radioVal = $('input:radio[name=candidateNewsRadio]:checked').val();
 	//getCandidatecategories();
 	getCandidateSubcategories();
   }
+  else if(radioVal=="byKeyword")
+  { 
+   
+    $("#categoryShowHideDiv").css("display","block");
+    $("#byKeyword").attr('checked', true);
+	getCandidateKeywords();
+  }
+  
   else
   {
 	$("#categoryShowHideDiv").css("display","none");
   }
 	
 });
+
+
+
+
+
+
+
+
 
 $("#gallaryRadioId").click(function(){
 	if($("#gallaryRadioId").is(":checked"))
