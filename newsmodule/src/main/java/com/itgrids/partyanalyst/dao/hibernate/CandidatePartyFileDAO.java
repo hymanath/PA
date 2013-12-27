@@ -116,11 +116,11 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		sb.append(" from CandidatePartyFile model where ");
 		if(partyId != null)
 		{
-			sb.append("  model.sourceParty.partyId = :partyId and model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+			sb.append("  model.sourceParty.partyId = :partyId and model.destinationParty.partyId is  null and model.destinationCandidate.candidateId is null ");
 		}
 		else
 		{
-			sb.append("   model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+			sb.append("   model.destinationParty.partyId is  null and model.destinationCandidate.candidateId is null ");
 		}
 		if(candidateId == null)
 		{
@@ -218,11 +218,11 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		sb.append(" from CandidatePartyFile model where ");
 		if(partyId != null)
 		{
-			sb.append("  model.sourceParty.partyId = :partyId and model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+			sb.append("  model.sourceParty.partyId = :partyId and model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is not null ");
 		}
 		else
 		{
-			sb.append("   model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is null ");
+			sb.append("   model.destinationParty.partyId is not null and model.destinationCandidate.candidateId is not null ");
 		}
 		if(candidateId == null)
 		{
@@ -273,11 +273,11 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		sb.append(" from CandidatePartyFile model where " );
 		if(partyId != null)
 		{
-			sb.append(" model.destinationParty.partyId = :partyId and model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+			sb.append(" model.destinationParty.partyId = :partyId and model.sourceParty.partyId is   null and model.sourceCandidate.candidateId is  null");
 		}
 		else
 		{
-			sb.append("   model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+			sb.append("   model.sourceParty.partyId is   null and model.sourceCandidate.candidateId is  null");
 		}
 		if(candidateId == null)
 		{
@@ -328,11 +328,11 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		sb.append(" from CandidatePartyFile model where " );
 		if(partyId != null)
 		{
-			sb.append(" model.destinationParty.partyId = :partyId and model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+			sb.append(" model.destinationParty.partyId = :partyId and model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is  null");
 		}
 		else
 		{
-			sb.append("   model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is not null");
+			sb.append("   model.sourceParty.partyId is  not null and model.sourceCandidate.candidateId is  null");
 		}
 		if(candidateId == null)
 		{
@@ -363,7 +363,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	public List<Object[]> getDestinationPartyCandidateComments(Long partyId,Long candidateId)
 	{
 		StringBuffer sb = new StringBuffer();
-		sb.append("select model.destinationCandidate.candidateId,model.destinationCandidate.lastname,count(distinct model.file.fileId),model.sourceCandidate.candidateId,model.sourceCandidate.lastname ,  ");
+		sb.append("select model.sourceCandidate.candidateId,model.sourceCandidate.lastname ,count(distinct model.file.fileId),model.destinationCandidate.candidateId,model.destinationCandidate.lastname,  ");
 		sb.append(" model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
 		sb.append(" from CandidatePartyFile model where " );
 		if(partyId != null)
