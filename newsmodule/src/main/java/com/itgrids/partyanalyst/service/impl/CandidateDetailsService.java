@@ -844,7 +844,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	
 
 	
-
+  //1111
 	public ResultStatus uploadAFileForCandidateParty(final FileVO fileVO)
 	{
 		ResultStatus resultStatus = new ResultStatus();
@@ -8270,7 +8270,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 
 
  
- public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr){
+ public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr,String keywordIdStr){
 	 List<FileVO> fileVOList = null;
  try{
 	 List<File> filesList = null;
@@ -8284,10 +8284,11 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 
 	 List<Long> gallaryIdsList = new ArrayList<Long>(0);
 	 List<Long> categoryIdsList = new ArrayList<Long>(0);
+	 List<Long> keywordIdsList =new ArrayList<Long>(0);
 	 StringTokenizer str = null;
 	 
 	 
-	 if(categoryIdsStr != null && !categoryIdsStr.equalsIgnoreCase("") && !categoryIdsStr.equalsIgnoreCase("null"))
+	/* if(categoryIdsStr != null && !categoryIdsStr.equalsIgnoreCase("") && !categoryIdsStr.equalsIgnoreCase("null"))
 	 {
 		 str = new StringTokenizer(categoryIdsStr,","); 
 		 while (str.hasMoreTokens()) 
@@ -8307,11 +8308,51 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 fileVOList.get(0).setCount(candidatePartyFileDAO.getCandidateFileListByCandidateId(candidateId, null, null, type,fromDate,toDate).size());	 
 	 }
 	 return fileVOList;
+	 
 }catch (Exception e) {
 			log.debug("Exception Occured in getCandidatesNews() Method, Exception - ",e);
 			return fileVOList;
-	}
+	}*/
+	 if(categoryIdsStr != null && !categoryIdsStr.equalsIgnoreCase("") && !categoryIdsStr.equalsIgnoreCase("null"))
+	 {
+		 str = new StringTokenizer(categoryIdsStr,","); 
+		 while (str.hasMoreTokens()) 
+			 categoryIdsList.add(Long.parseLong(str.nextToken()));
+	 }
+	 else if(keywordIdStr != null && !keywordIdStr.equalsIgnoreCase("") && !keywordIdStr.equalsIgnoreCase("null"))
+	 {
+		 str = new StringTokenizer(keywordIdStr,","); 
+		 while (str.hasMoreTokens()) 
+			keywordIdsList.add(Long.parseLong(str.nextToken()));
+	 }
+	 
+	 
+	 if (categoryIdsList != null && categoryIdsList.size() > 0)
+	    filesList = candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,categoryIdsList);
+	 else if(keywordIdsList !=null && keywordIdsList.size()>0)
+		     filesList = candidatePartyKeywordDAO.getFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate,keywordIdsList);
+     else	 
+		  filesList = candidatePartyFileDAO.getCandidateFileListByCandidateId(candidateId, firstRecord, maxRecord, type,fromDate,toDate); 
+	 
+	 if(filesList != null && filesList.size() > 0)
+	 {
+	  fileVOList = new ArrayList<FileVO>(0);
+	 setfileDetails(filesList, fileVOList); 
+	 if(categoryIdsList != null && categoryIdsList.size() > 0)
+	  fileVOList.get(0).setCount(candidatePartyCategoryDAO.getFileListByCandidateId(candidateId, null, null, type,fromDate,toDate,categoryIdsList).size());
+	 else if(keywordIdsList != null && keywordIdsList.size() > 0)
+		 fileVOList.get(0).setCount(candidatePartyKeywordDAO.getFileListByCandidateId(candidateId, null, null, type,fromDate,toDate,keywordIdsList).size());
+	 else
+		 fileVOList.get(0).setCount(candidatePartyFileDAO.getCandidateFileListByCandidateId(candidateId, null, null, type,fromDate,toDate).size());	 
+	 }
+	 return fileVOList;
+	 
+}catch (Exception e) {
+			log.debug("Exception Occured in getCandidatesNews() Method, Exception - ",e);
+			return fileVOList;
+	 
 }
+ }
  public void setfileDetails(List<File> fileList,List<FileVO> fileVOsList)
 	{
 		try{
@@ -8438,6 +8479,28 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		}
 	}
  
+/* public List<SelectOptionVO> getCandidateRelatedSubCategoriesByCandidateId(Long candidateId,String queryType)
+	{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		try{
+			
+		//	List<Object[]> list = partyGalleryDAO.getCandidateRelatedGallaries(candidateId, partyId, fromDate, toDate, queryType);
+			List<Object[]> list = candidatePartyCategoryDAO.getCandidateRelatedCategories(candidateId, queryType);
+			if(list != null && list.size() > 0)
+			  for(Object[] params : list)
+			   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));
+			
+			return selectOptionVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getCandidateRelatedGallaries() method, Exception - ",e);
+			return null;
+		}
+		
+
+	}
+ */
+ 
  public List<SelectOptionVO> getCandidateRelatedSubCategoriesByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType)
 	{
 		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
@@ -8451,6 +8514,35 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			 toDate = format.parse(toDateStr);
 		//	List<Object[]> list = partyGalleryDAO.getCandidateRelatedGallaries(candidateId, partyId, fromDate, toDate, queryType);
 			List<Object[]> list = candidatePartyCategoryDAO.getCandidateRelatedCategories(candidateId,fromDate, toDate, queryType);
+			if(list != null && list.size() > 0)
+			  for(Object[] params : list)
+			   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));
+			
+			return selectOptionVOList;
+		}catch (Exception e) {
+			e.printStackTrace();
+			log.error("Exception Occured in getCandidateRelatedGallaries() method, Exception - ",e);
+			return null;
+		}
+		
+
+	}
+ 
+ 
+ public List<SelectOptionVO> getCandidateRelatedKeywordsByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType)
+	{
+		List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>(0);
+		try{
+			Date fromDate = null;
+		Date toDate = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		if(fromDateStr != null && !fromDateStr.equalsIgnoreCase(""))
+		 fromDate = format.parse(fromDateStr);
+		if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
+		 toDate = format.parse(toDateStr);
+			
+		//	List<Object[]> list = partyGalleryDAO.getCandidateRelatedGallaries(candidateId, partyId, fromDate, toDate, queryType);
+			List<Object[]> list = candidatePartyKeywordDAO.getCandidateRelatedkeywords(candidateId,fromDate, toDate,queryType);
 			if(list != null && list.size() > 0)
 			  for(Object[] params : list)
 			   selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));

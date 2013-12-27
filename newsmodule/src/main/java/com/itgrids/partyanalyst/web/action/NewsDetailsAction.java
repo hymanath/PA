@@ -350,6 +350,17 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 			 String newsType ="public";
 			 selectOptionVOList = candidateDetailsService.getCandidateRelatedSubCategoriesByCandidateId(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),newsType);
 		 }
+		
+		 else if(jObj.getString("task").equalsIgnoreCase("getCandidateRelatedKeywords"))
+		 {
+			 String newsType ="public";
+			 selectOptionVOList = candidateDetailsService.getCandidateRelatedKeywordsByCandidateId(jObj.getLong("candidateId"),jObj.getString("fromDate"),jObj.getString("toDate"),newsType);
+		 }
+		 
+		 
+		 
+		 
+		 
 		 else if(jObj.getString("task").equalsIgnoreCase("getGallariesForSelectedCategory"))
 		 {
 			 List<Long> categoryIdsList = new ArrayList<Long>(0);
