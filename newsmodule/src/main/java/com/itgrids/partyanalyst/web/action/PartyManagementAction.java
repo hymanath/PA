@@ -81,6 +81,35 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private List<SelectOptionVO> districtsList;
 	private List<SelectOptionVO> parlConstiList;
 	private List<SelectOptionVO> assemConstiList;
+	private List<SelectOptionVO> districtsList1;
+	private List<SelectOptionVO> parlConstiList1;
+	private List<SelectOptionVO> assemConstiList1;
+	
+	
+	public List<SelectOptionVO> getDistrictsList1() {
+		return districtsList1;
+	}
+
+	public void setDistrictsList1(List<SelectOptionVO> districtsList1) {
+		this.districtsList1 = districtsList1;
+	}
+
+	public List<SelectOptionVO> getParlConstiList1() {
+		return parlConstiList1;
+	}
+
+	public void setParlConstiList1(List<SelectOptionVO> parlConstiList1) {
+		this.parlConstiList1 = parlConstiList1;
+	}
+
+	public List<SelectOptionVO> getAssemConstiList1() {
+		return assemConstiList1;
+	}
+
+	public void setAssemConstiList1(List<SelectOptionVO> assemConstiList1) {
+		this.assemConstiList1 = assemConstiList1;
+	}
+
 	private IRegionServiceData regionServiceDataImp;
 	
 	public String getProfileType() {
@@ -406,7 +435,7 @@ public String execute()
 				 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
 				 districtsList =  staticDataService.getDistricts(1l);
 				 parlConstiList = parliamantConstis.getConstituencies();
-				 assemConstiList = constituencyInfoVO.getConstituencies();
+			     assemConstiList = constituencyInfoVO.getConstituencies();
 			 }else{
 				 List<Object> assessLocs = null;
 				 if(registrationVO.getAccessType().equalsIgnoreCase("DISTRICT")){
@@ -421,7 +450,12 @@ public String execute()
 					 parlConstiList = (List<SelectOptionVO>)assessLocs.get(1);
 					 assemConstiList =(List<SelectOptionVO>)assessLocs.get(2);
 				 }
-			 }
+			}
+			 ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+			 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+			 districtsList1 =  staticDataService.getDistricts(1l);
+			 parlConstiList1 = parliamantConstis.getConstituencies();
+		     assemConstiList1 = constituencyInfoVO.getConstituencies();
 	  return Action.SUCCESS;
 		 }
 	 else

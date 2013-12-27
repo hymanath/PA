@@ -940,12 +940,12 @@ function createNewParty()
 <tr style="display:none;" id="pcConstituencyRow">
 <td>Constituency</td>
 <td>
-<s:select name="parliamSelReport"  id="parliamSelReportId" list="parlConstiList" theme="simple" listKey="id" listValue="name"/></td>
+<s:select name="parliamSelReport"  id="parliamSelReportId" list="parlConstiList1" theme="simple" listKey="id" listValue="name"/></td>
 </tr>
 <tr style="display:none;" id="acConstituencyRow">
 <td>Constituency</td>
 <td>
-<s:select name="assembSelReport"  id="assembSelReportId" list="assemConstiList" theme="simple" listKey="id" listValue="name"/></td>
+<s:select name="assembSelReport"  id="assembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
 </tr>
 </table>
 <input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
