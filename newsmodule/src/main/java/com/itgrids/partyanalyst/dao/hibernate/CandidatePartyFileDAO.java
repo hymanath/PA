@@ -38,7 +38,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	  }
 	 public List<Object[]> getSourceCandidates(){
 			Query query = getSession().createQuery("select  count(distinct model.file.fileId),model.sourceCandidate.candidateId,model.sourceCandidate.lastname from CandidatePartyFile model where " +
-					"(model.file.isDeleted != 'Y' or model.file.isDeleted is null) and (model.file.isPrivate != 'Y' or model.file.isPrivate is null) and model.sourceCandidate.candidateId != model.destinationCandidate.candidateId  group by model.sourceCandidate.candidateId order by model.sourceCandidate.lastname ");
+					"(model.file.isDeleted != 'Y' or model.file.isDeleted is null) and (model.file.isPrivate != 'Y' or model.file.isPrivate is null) and (model.destinationCandidate.candidateId is null or model.sourceCandidate.candidateId != model.destinationCandidate.candidateId)  group by model.sourceCandidate.candidateId order by model.sourceCandidate.lastname ");
 			
 			return query.list();
 		}

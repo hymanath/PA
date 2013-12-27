@@ -260,4 +260,71 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 			 return query.list();
 		 }
 
+	 
+	 public List<File> getFileListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> keywordIdsList)
+	  {
+		  StringBuilder str = new StringBuilder();
+			str.append(" select distinct (model.candidatePartyFile.file) from CandidatePartyKeyword model where (model.candidatePartyFile.sourceCandidate.candidateId = :candidateId or model.candidatePartyFile.destinationCandidate.candidateId = :candidateId)");
+			str.append(" and (model.candidatePartyFile.file.isDeleted !='Y' or model.candidatePartyFile.file.isDeleted is null)");
+			if(queryType.equals("Public") || queryType.equals(""))
+			  str.append(" and (model.candidatePartyFile.file.isPrivate !='Y' or model.candidatePartyFile.file.isPrivate is null)");
+					
+			else if(queryType.equals("Private"))
+			  str.append("  and model.candidatePartyFile.file.isPrivate='Y'");
+			
+			if(fromDate != null)
+			 str.append(" and date(model.candidatePartyFile.file.fileDate) >= :fromDate");
+			if(toDate != null)
+			 str.append(" and date(model.candidatePartyFile.file.fileDate) <= :toDate");
+		
+			if(keywordIdsList != null && keywordIdsList.size() > 0)
+			str.append(" and model.keyword.keywordId in (:keywordIdsList)");
+				
+			 str.append(" order by model.candidatePartyFile.file.fileDate desc ");
+			Query query = getSession().createQuery(str.toString());
+				 
+			 query.setLong("candidateId", candidateId);
+			
+			 if(fromDate != null)
+			  query.setParameter("fromDate", fromDate);
+			 if(toDate != null)
+			  query.setParameter("toDate", toDate);
+			 
+			 if(keywordIdsList != null && keywordIdsList.size() > 0)
+			  query.setParameterList("keywordIdsList", keywordIdsList);
+			 
+			 if(firstResult != null)
+			 query.setFirstResult(firstResult);
+			 if(maxResult != null)
+			 query.setMaxResults(maxResult);
+			 return query.list();
+	  }	 
+	 
+	 
+	 @SuppressWarnings("unchecked")
+		public List<Object[]> getCandidateRelatedkeywords(Long candidateId,Date fromDate, Date toDate,String newsType)
+		 {
+			 StringBuilder str = new StringBuilder();
+			 str.append("select distinct model.keyword.keywordId,model.keyword.type  from CandidatePartyKeyword model where (model.candidatePartyFile.sourceCandidate.candidateId=:candidateId) or (model.candidatePartyFile.destinationCandidate.candidateId=:candidateId) ");
+			 
+          str.append("and model.candidatePartyFile.file.isDeleted != 'Y' ");
+        
+			 if(fromDate != null)
+				 str.append(" and model.candidatePartyFile.file.fileDate >= :fromDate ");
+			 if(toDate != null)
+				 str.append(" and model.candidatePartyFile.file.fileDate <= :toDate ");
+          
+		  str.append(" order by model.keyword.type ");
+			 Query query = getSession().createQuery(str.toString());
+			 
+			 query.setParameter("candidateId", candidateId);
+			 if(fromDate != null)
+				  query.setParameter("fromDate", fromDate);
+				 if(toDate != null)
+				  query.setParameter("toDate", toDate);
+			 
+			 
+			 return query.list();
+		 }
+		
 }
