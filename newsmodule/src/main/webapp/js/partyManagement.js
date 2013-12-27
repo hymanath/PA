@@ -534,6 +534,8 @@ function callAjax(jsObj,url)
 		$('#'+jsObj.type).multiselect('refresh');
 		$('#'+jsObj.type).multiselect('create');
 			}
+			else if(jsObj.task == "deleteFile")
+			 buildDeleteFile(myResults,jsObj);
 		}
 		catch(e)
 		{   
@@ -4089,6 +4091,8 @@ else{
 
 
 	var str="";
+
+	str+='<div>';
 	str+='<table id="newsDetailsTable">';
 	str+='<thead>';
 	 str+='<tr>';
@@ -4142,7 +4146,7 @@ else{
            
 	 }
  	str+='</table>';
-	
+	str+='</div>';
 	$('#profileManagementMainOuterDiv4').html(str);
 
 	$(function() {
@@ -6912,7 +6916,8 @@ function getTotalNewsWithPagination()
 		
 		if(userType == "Admin")
 		{
-		str +='<input  class="btn btn-info" type="button" onclick="editFile('+fileId+')" value="Edit" />';
+			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+')"/>';
+		//str +='<input  class="btn btn-info" type="button" onclick="editFile('+fileId+')" value="Edit" />';
 
 		}
 		//str +='<input  class="btn btn-info" type="button" onclick="generateKey('+newsReportId+',\'generatedUrl'+newsReportId+'\')" value="Generate Url" />';
@@ -6932,7 +6937,8 @@ function getTotalNewsWithPagination()
 		
 		if(userType == "Admin")
 		{
-		str +='<input  class="btn btn-info" type="button" onclick="deleteFileFromNewsReport('+fileId+')" value="Delete" />';
+			str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromNewsReport('+fileId+')"/>';
+		//str +='<input  class="btn btn-info" type="button" onclick="deleteFileFromNewsReport('+fileId+')" value="Delete" />';
 		}
 	//	var newsReportId = oRecord.getData("newsImportanceId");
 		//str +='<textarea id=\'generatedUrl'+newsReportId+'\'></textarea>';
@@ -7638,4 +7644,11 @@ function getClickedKeywordData(id)
      browser1.focus();
 
 }
-		 
+function buildDeleteFile()
+{
+	$("#successMsg").html("deleted successfully..").css("color","green");
+	setTimeout(function(){
+	$('#successMsg').html('');
+	}, 3000);
+	getTotalNewsWithPagination();
+}
