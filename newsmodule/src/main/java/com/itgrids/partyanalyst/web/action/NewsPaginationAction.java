@@ -263,8 +263,11 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 				String toDate = jObj.getString("toDate");
 				
 				String categoryIdsStr = jObj.getString("categoryIds");
+				String keywordIdsStr = jObj.getString("keywordIds");
+
+				
 				//fileVOList=candidateDetailsService.getCandidatesNews(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,gallaryIdsStr,categoryIdsStr);
-				fileVOList=candidateDetailsService.getCandidatesNewsForHomePage(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,categoryIdsStr);	
+				fileVOList=candidateDetailsService.getCandidatesNewsForHomePage(candidateId, frstRcrd, maxRcrd, type,fromDate,toDate,categoryIdsStr,keywordIdsStr);	
 			}
 		}
 		catch (Exception e) {

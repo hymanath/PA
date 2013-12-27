@@ -5548,6 +5548,13 @@
 		 </result>
 		</action>
 		
+		<action name="getCandidateRelatedKeywordsAction" class="newsDetailsAction" method="ajaxHandler">
+		 <result type="json" name="success">
+		  <param name="root">selectOptionVOList</param>
+		 </result>
+		</action>
+		
+		
 		<action name="getNewsTitlesForACandidateAction" class="newsDetailsAction" method="getNewsForACandidate">
 		  <result type="json" name="success">
 		    <param name="root">selectOptionVOList</param>
