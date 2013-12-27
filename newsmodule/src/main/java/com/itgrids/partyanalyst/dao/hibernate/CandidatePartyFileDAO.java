@@ -417,7 +417,6 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		return query.list();
 	}
 	
-	@Override
 	public Long getSelectedNewsCountBySearchCriteria(String queryStr)
 	{
 		Query query = getSession().createQuery(queryStr.toString());

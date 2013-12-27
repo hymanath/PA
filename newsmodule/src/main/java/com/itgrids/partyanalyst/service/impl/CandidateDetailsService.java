@@ -6466,6 +6466,7 @@ public List<FileVO>	getFilesOfACategory(Long gallaryId,Integer startIndex,Intege
 			setDataToFileVo(fileList,returnList);
 			
 		}
+		if(returnList != null && returnList.size() > 0)
 		returnList.get(0).setTotalResultsCount(count);
 	}
 	catch (Exception e) {

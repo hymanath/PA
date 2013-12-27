@@ -1957,7 +1957,7 @@ function buildUploadNewsForMultipleUsers()
 function buildCreateNewsCategory()
 {
    var str ='';
-	str+='<div id="content" style="width:650px;">';
+	str+='<div id="content"  class="contianer well">';
 	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
 	/*str +='<table class="aligncenter">';
 	str +=  '<tr>';
@@ -1967,7 +1967,7 @@ function buildCreateNewsCategory()
 	str += 	 '</tr>';
 	str += 	'</table>';*/
 	//str += '<fieldset class="imgFieldset" style="width:449px;">';
-	str += '<h2 align="center" style="margin-left: 80px;"> Create A New Category</h2>';
+	str += '<h2 align="center" style="margin-left: 35px;margin-bottom:5px;"> Create New Category</h2>';
 	str+='<table class="aligncenter"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
 	str += '<table class="aligncenter">';
     
@@ -7134,7 +7134,7 @@ return oPayload;
 
 function getNewsDetailsForNewsReportGeneration()
 {
-
+$("#createNewsreport").css("display","block");
 $("#locationWiseNewsDiv").css("display","block");
 $("#newsReportBtnDiv").css("display","block");
 $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
@@ -7606,7 +7606,7 @@ function deleteFileFromNewsReport(fileId)
 function buildAllKeywords(myResults)
 {
     var str='';
-	str+='<h2 style="text-align:center;">Keywords</h2>';
+	str+='<h2 style="text-align:center;margin-bottom:0px;margin-top:-10px;">Keywords</h2>';
 	
 	if(myResults==null || myResults=='')
 	{
