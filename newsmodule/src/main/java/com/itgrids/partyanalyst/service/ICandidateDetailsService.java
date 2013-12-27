@@ -307,9 +307,11 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long userId,Long partyId);
 	 
 	 public List<SelectOptionVO> getBenefitList();
-	 public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr);
+	 public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr,String keywordIdStr);
 	 
 	 public List<SelectOptionVO> getCandidateRelatedSubCategoriesByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType);
+	 
+	 public List<SelectOptionVO> getCandidateRelatedKeywordsByCandidateId(Long candidateId,String fromDateStr,String toDateStr,String queryType);
 	 
 	 public List<SelectOptionVO> getLatestGalleries();
 	 
