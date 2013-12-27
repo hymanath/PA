@@ -201,7 +201,7 @@ function buildPaginatedNews(results,jsObj){
 		str+='<tr><td colspan="3" style="font-weight:bold;"><p class="text-error" >Category(s) : <span style="font-weight:normal;color:black;">'+ results[i].categoryName+'</span></p></td></tr>';
 	
 
-		str+="</table></div><br><br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="</table></div><br><br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' style='margin-top:-40px' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;
@@ -359,7 +359,7 @@ function buildPaginatedNews1(results,jsObj)
 		str +='</table>';
 		str +='</div>';
 		
-		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="<div class='span2'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")'  class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 		var len = results.length;
 		
 		if(len-1 != i)

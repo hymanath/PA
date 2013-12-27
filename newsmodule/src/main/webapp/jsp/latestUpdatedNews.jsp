@@ -227,7 +227,7 @@ function buildPaginatedNews(results,jsObj)
 		str +='</table>';
 		str +='</div>';
 		
-		str+="<br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
+		str+="<br><div class='span2' style='float:right;'><a onclick='getNewsDetailsByContentId("+results[i].contentId+")' style='margin-top:-10px' class='btn btn-mini btn-info pull-right' type='button'>Details...</a></div></li>";
 	}
 	
 	var itemsCount=results[0].count;

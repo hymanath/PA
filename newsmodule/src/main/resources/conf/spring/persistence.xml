@@ -3,7 +3,7 @@
 
 <beans>
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:comp/env/jdbc/partyAnalystDB" />
+		<property name="jndiName" value="java:comp/env/jdbc/newsPortalDB" />
 	</bean>
 
 	<bean id="sessionFactory" 
