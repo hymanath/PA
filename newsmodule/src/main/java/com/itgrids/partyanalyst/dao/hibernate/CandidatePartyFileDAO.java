@@ -112,7 +112,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			sb.append("select  model.sourceCandidate.candidateId,model.sourceCandidate.lastname,count(distinct model.file.fileId),cast(null as char),cast(null as char) ,  ");
 		}
-		sb.append(" model.sourceParty.partyId,cast(null as char),model.sourceCandidate.candidateId,cast(null as char)  ");
+		sb.append(" model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
 		sb.append(" from CandidatePartyFile model where ");
 		if(partyId != null)
 		{
@@ -263,11 +263,11 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		StringBuffer sb = new StringBuffer();
 		if(candidateId == null)
 		{
-			sb.append("select model.destinationParty.partyId,model.destinationParty.shortName,count(distinct model.file.fileId),cast(null as char),cast(null as char),  ");
+			sb.append("select cast(null as char),cast(null as char),count(distinct model.file.fileId),model.destinationParty.partyId,model.destinationParty.shortName ,  ");
 		}
 		else
 		{
-			sb.append("select  model.destinationCandidate.candidateId,model.destinationCandidate.lastname,count(distinct model.file.fileId),cast(null as char),cast(null as char),  ");
+			sb.append("select cast(null as char),cast(null as char),count(distinct model.file.fileId),  model.destinationCandidate.candidateId,model.destinationCandidate.lastname, ");
 		}
 		sb.append(" model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
 		sb.append(" from CandidatePartyFile model where " );
@@ -317,11 +317,11 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		StringBuffer sb = new StringBuffer();
 		if(candidateId == null)
 		{
-			sb.append("select model.destinationParty.partyId,model.destinationParty.shortName,count(distinct model.file.fileId),model.sourceParty.partyId,model.sourceParty.shortName,   ");
+			sb.append("select model.sourceParty.partyId,model.sourceParty.shortName,count(distinct model.file.fileId),model.destinationParty.partyId,model.destinationParty.shortName,   ");
 		}
 		else
 		{
-			sb.append("select  model.destinationCandidate.candidateId,model.destinationCandidate.lastname,count(distinct model.file.fileId),model.sourceParty.partyId,model.sourceParty.shortName ,  ");
+			sb.append("select  model.sourceParty.partyId,model.sourceParty.shortName , count(distinct model.file.fileId), model.destinationCandidate.candidateId,model.destinationCandidate.lastname,");
 		}
 		sb.append("model.sourceParty.partyId,model.destinationParty.partyId,model.sourceCandidate.candidateId,model.destinationCandidate.candidateId  ");
 		
@@ -418,7 +418,8 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	}
 	
 	@Override
-	public Long getSelectedNewsCountBySearchCriteria(String queryStr) {
+	public Long getSelectedNewsCountBySearchCriteria(String queryStr)
+	{
 		Query query = getSession().createQuery(queryStr.toString());
 		return (Long)query.uniqueResult();
 	}
