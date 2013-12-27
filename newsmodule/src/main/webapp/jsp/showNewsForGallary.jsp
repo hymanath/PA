@@ -268,7 +268,7 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 	}
 		
 			str+='<div class="row-fluid">';
-			//	str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}" class="thumbnail span4">';
+			str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}" class="thumbnail span4">';
 				 if(results[i].filePath1 != null && results[i].filePath1 == "") 
 					str+='<img style="width:100%" src="'+results[i].filePath1+'" >';
                   else
@@ -285,7 +285,7 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 				
 			str+='</div>';
 			str+='<div class="row-fluid m_top10">';
-				str+='<div class="span9" style="width:550px;">';
+				str+='<div class="span9" style="width:515px;">';
 					str+='<table><tr><td style="width:260px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;">'+results[i].fileType+'</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">'+results[i].fileDate+'</span></p></td>';
 			if(results[i].responseCount > 0)
 				str+='<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" ><a href="javascript:{populateNewsResponseWindow('+results[i].fileId+')}; " "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /><span style="font-weight:normal;color:black;">'+results[i].responseCount+'</span></a></p></td>';

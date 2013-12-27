@@ -150,7 +150,7 @@ background-color: #CDE6FC;
 {
 	font-family : arial;
 	font-size: 13px;
-    margin-top: 20px;
+    margin-top: -32px;
 	padding: 10px 10px 10px 15px;
 }
 #profileManagementMainOuterDiv4 table th a{
@@ -180,6 +180,15 @@ border:1px solid #C5C5C5;
     display: block;
     margin: 13px 312px;
     white-space: nowrap;
+}
+.form-actions{
+   margin-bottom: -11px;
+}
+.form-actions input {
+    margin: 0 12px;
+}
+h2{
+  margin-bottom: -38px;
 }
 </style>
 </head>
@@ -819,7 +828,7 @@ function createNewParty()
 </div>
 <div id='newsReportDiv' class="divInfo">
  <div class="container well">
-  <h2 style="text-align: center;"> News Report</h2>
+  <h2 style="text-align: center;margin-bottom:10px;">Create Report</h2>
   <div id="newsReportInnerDiv">
     <div id="newsReporterrorMessageDiv"></div>
     <label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId1" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>
@@ -852,7 +861,7 @@ function createNewParty()
 	 <input type="checkbox" class="" value="byCategory"  id="byCategory"  onclick="showHideLocationLvl1('category');" />&nbsp;By Category&nbsp;&nbsp;
 	<input type="checkbox" class="" value="bykeyword"  id="byKeyword" onclick="showHideLocationLvl1('keyword');"  />&nbsp; By Keywords&nbsp;&nbsp;
 	  </tr>
-      <tr class="categoryClass">
+      <tr class="categoryClass" style="display:none;">
     <td>Select Categories</td><td><select key="reportGallaryId" style="width: 222px;margin-top:10px;" id="reportGallaryId">
 		<option>Select Category</option>
 		</select>
@@ -864,11 +873,12 @@ function createNewParty()
       </table>
   </div>
   <div class="form-actions text-center">
-    <input type="button" value="submit" class="btn btn-info" id="getNewsreport" onclick="getNewsDetailsForNewsReportGeneration()"/>
+    <input type="button" value="submit" class="btn btn-info" id="getNewsreport" style="margin-left:360px;float:left;" onclick="getNewsDetailsForNewsReportGeneration()"/>
+	<input type="button" value="Generate Report" class="btn btn-info" id="createNewsreport" style="display: none;" onclick="saveNewsReport()"/>
     <img id="newsReportAjaxImg" src="images/search.jpg" style="display:none;"/>
   </div>
    <div id="reportGenaratorNewsDiv" style="display:none;">
-    <p style="margin-left: 20px; margin-bottom: 7px;"><b>Total Selected News Count: </b><span id="reportGenaratorSpanCLS"></span></p>
+    <p style="margin-left: 20px; margin-bottom: 7px; margin-top: -15px;"><b>Total Selected News Count: </b><span id="reportGenaratorSpanCLS"></span></p>
 	 
 	 <!-- <label class="checkbox inline"><input type="checkbox" id="newsReportSelectAllCheckBox" value="Select All" />Select All</label>
 	 <label class="checkbox inline"><input type="checkbox" id="newsReportUnSelectAllCheckBox" value="Unselect All" />Unselect All</label> -->
@@ -942,17 +952,17 @@ function createNewParty()
 <div id='keyWordsMainDiv' class="divInfo">
 		
 </div>
-<div id='showKeywordsDiv' align="center" style="display:none; width: 400px; margin: 15px 0px 0px 440px;border:1px solid #CCCCCC;padding:15px;"></div>
+<div id='showKeywordsDiv' align="center" style="display:none; width: 400px; margin: 15px auto 0px auto;border:1px solid #CCCCCC; padding:15px;"></div>
 <div id="alterKeywords">
 	<div id='profileManagementMainOuterDiv8' style="display:none">
 
-		<div id='keywordsDiv' class="divInfo">
+		<div id='keywordsDiv' class="container well">
 
 
 		<div id="newKeywordDiv" align="center">
-		<h2 align="center">Create A New Keyword</h2>
-			<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;border:1px solid #CCCCCC;padding:15px;">
-				<div id="statusDiv1" align="center" style="margin-bottom: 10px;"></div>
+		<h2 align="center">Create New Keyword</h2>
+			<div align="center" style="width: 400px;padding:15px;">
+				<div id="statusDiv1" align="center" style="margin-top: 25px;"></div>
 				
 							Enter Keyword <span style="margin-left: 15px;">:</span> <input type="text" id="newKeyword" style="margin-top: 10px;"/>
 							<br>
@@ -965,7 +975,7 @@ function createNewParty()
 		
 		<div id="mergeKeywordDiv" align="center" style="display:none;">
 		<h2 align="center">Merge Keywords </h2>
-		<div style="border:1px solid #CCCCCC;margin-top:25px;padding:15px;width: 600px;">
+		<div style="margin-top:25px;padding:15px;width: 600px;">
 				<div id="statusDiv2" align="center" style="margin-bottom: 10px;"></div>
 				
 						<div id="keywordLists" style="width: 550px; margin-left: 60px;">
@@ -985,28 +995,28 @@ function createNewParty()
 </div>
 
 <!-- updared by prasad for Actions Div-->
-<div id="newDesignationDiv" align="center">
-	<h2 align="center">Create A New Designation</h2>
-	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;border:1px solid #CCCCCC;padding:15px;">
-	<div id="statusDivForDesignation" align="center" style="margin-bottom: 10px;"></div>
+<div id="newDesignationDiv" align="center" class="container well">
+	<h2 align="center">Create New Designation</h2>
+	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
+	<div id="statusDivForDesignation" align="center" style="margin-bottom: 2px;margin-top:2px;"></div>
 				
 	Enter Designation <span style="margin-left: 15px;">:</span> <input type="text" id="designationId" style="margin-top: 10px;"/>
 	<br>
-	<button class="btn btn-success" onclick="createNewDesignation();" style="margin-left: 55px;">Create New Designation </button>
+	<button class="btn btn-success" onclick="createNewDesignation();">Create New Designation </button>
 </div>
 </div>
 
 
-<div id="newPartyCreationDiv" align="center">
-	<h2 align="center">Create A New Party</h2>
-	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;border:1px solid #CCCCCC;padding:15px;">
-	<div id="statusForParty" align="center" style="margin-bottom: 10px;"></div>
+<div id="newPartyCreationDiv" align="center" class="container well">
+	<h2 align="center">Create New Party</h2>
+	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
+	<div id="statusForParty" align="center" style="margin-bottom: 2px;margin-top: 2px;"></div>
 		
 	Enter Long Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyLongName" style="margin-top: 10px;"/>
 	<br>
 	Enter Short Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyShortName" style="margin-top: 10px;"/>
-	</br>
-	<button class="btn btn-success" onclick="createNewParty();" style="margin-left: 55px;">Create New Party </button>
+	</br><br>
+	<button class="btn btn-success" onclick="createNewParty();">Create New Party </button>
 	</div>
 </div>
 
@@ -2106,11 +2116,11 @@ function createNewSource()
 {
 	//$('#sourceDetails').show();
 	var str = "";
-	str +='<h2 align="center">Create A New Source</h2>';
-	str+='<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;margin-left: 298px;">';
-	str +=  '<span>Source Name : </span><input type="text" id="sourceName"></input></br>';
-	str += "<div id='errorDiv' style='color:red'> </div>";
-	str +=  '<input type="button" value="Create New Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 244px;"></input>';
+	str+='<div id="sourceDetails" class="container well">';
+	str +='<h2 align="center" style="margin-left: -59px;margin-bottom:5px;">Create New Source</h2>';
+	str += "<div id='errorDiv' align='center' style='color:red;margin-bottom:10px;'> </div>";
+	str +=  '<span style="margin-left: 310px;">Source Name : </span><input type="text" id="sourceName"></input></br>';
+	str +=  '<input type="button" value="Create New Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 358px;"></input>';
 	
 	str+='</div>';
 	$('#newsGallaryDiv').html(str);
@@ -3018,7 +3028,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label style="margin-bottom: -10px;"><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-left: 210px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11)">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
@@ -3096,7 +3106,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='    <div class="span12">';
 		str+='        <div class="row-fluid">';
 		str+='<div class="container ">';
-		str+='        <div class="span4" style="width: 290px;">';
+		str+='        <div class="span4" style="width:auto">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
 		str+='<br/><input type="file" name="fileSourceVOList[0].sourceFileList[0].fileImage" class="btn fileImgCls" key="aaanewsfileDescription">';
@@ -3104,7 +3114,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='        </div>';
 
-		str+='<div class="span2 " style="margin-left: -5px;">';
+		str+='<div class="span2 " style="margin-left: 3px;">';
 		str+='        <label><strong>News<br> Edition</strong><span class="requiredFont">*</span></label>';
 		str+='        <select id="newsedition0" name="fileSourceVOList[0].sourceFileList[0].newsEdition"  class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
 
@@ -4113,23 +4123,29 @@ function generateKey(reportId,id){
 }
 function showHideLocationLvl1(key)
 {
-
-if(key == 'keyword')
-	{
-	
-	$("#byCategory").attr("checked", false);
-	$(".categoryClass").hide();
-	$(".keywordClass").show();
-	getTotalKeyWords("reportKeywordId");
-
+   if(key == 'keyword'){
+	    if($("#byKeyword").attr("checked") == "checked"){ 
+	       $("#byCategory").attr("checked", false);
+	       $(".categoryClass").hide();
+	       $(".keywordClass").show();
+	       getTotalKeyWords("reportKeywordId");
+	    }
+	    else
+	       $(".keywordClass").hide();
 	}
 	else
 	{
-getPartyGallariesForUplaod("News Gallary","reportGallaryId");
-$("#byKeyword").attr("checked", false);
-$(".categoryClass").show();
-$(".keywordClass").hide();
+	   if($("#byCategory").attr("checked") == "checked")
+		{
+           getPartyGallariesForUplaod("News Gallary","reportGallaryId");
+           $("#byKeyword").attr("checked", false);
+           $(".categoryClass").show();
+           $(".keywordClass").hide();
+		}
+		else
+            $(".categoryClass").hide(); 
 	}
+	
 }
 function showHideLocationLvl(key){
 if(key == 'level'){
@@ -4270,7 +4286,6 @@ function getKeywordsByCount()
 	var url = "getKeywordsByCountAction.action?"+rparam;						
 	callAjax1(jsObj,url);
 } 
-
 </script>
 </body>
 </html>
