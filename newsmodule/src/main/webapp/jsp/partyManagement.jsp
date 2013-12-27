@@ -190,6 +190,9 @@ border:1px solid #C5C5C5;
 h2{
   margin-bottom: -38px;
 }
+.yui-skin-sam .yui-dt-liner{
+	padding:4px 0px;
+}
 </style>
 </head>
 <script type="text/javascript">
@@ -804,7 +807,7 @@ function createNewParty()
 
  <div id="totalSelectedNewsCount">Total Selected News Count: <span id="selectedNewsCount"></span></div>
 
-
+<div id="successMsg" style="float: left; margin-left: 60px; margin-top: 12px;"></div>
 <div id='profileManagementMainOuterDiv4' style="display:none">
 	<div id='profileManagementHeaderDiv4' class="row-fluid">
 
