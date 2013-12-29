@@ -21,8 +21,51 @@ public class FileSourceVO implements Serializable{
 	private String fileImageFileName;
 	private List<FileVO> fileVOsList;
 	private List<FileSourceVO> sourceFileList;
+	private List<SelectOptionVO> sourceList;
+	private List<SelectOptionVO> languageList;
+	private Long newsFont;
+	private Long fileSourceLangId;
+	private Long filePathId;
+	private Long count;
+	private String deleted;
 	
 	
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Long getFilePathId() {
+		return filePathId;
+	}
+	public void setFilePathId(Long filePathId) {
+		this.filePathId = filePathId;
+	}
+	public Long getFileSourceLangId() {
+		return fileSourceLangId;
+	}
+	public void setFileSourceLangId(Long fileSourceLangId) {
+		this.fileSourceLangId = fileSourceLangId;
+	}
+	public List<SelectOptionVO> getSourceList() {
+		return sourceList;
+	}
+	public void setSourceList(List<SelectOptionVO> sourceList) {
+		this.sourceList = sourceList;
+	}
+	public List<SelectOptionVO> getLanguageList() {
+		return languageList;
+	}
+	public void setLanguageList(List<SelectOptionVO> languageList) {
+		this.languageList = languageList;
+	}
+	public Long getNewsFont() {
+		return newsFont;
+	}
+	public void setNewsFont(Long newsFont) {
+		this.newsFont = newsFont;
+	}
 	public Long getFileSourceId() {
 		return fileSourceId;
 	}
@@ -103,7 +146,12 @@ public class FileSourceVO implements Serializable{
 	public void setSourceFileList(List<FileSourceVO> sourceFileList) {
 		this.sourceFileList = sourceFileList;
 	}
-	
+	public String getDeleted() {
+		return deleted;
+	}
+	public void setDeleted(String deleted) {
+		this.deleted = deleted;
+	}
 	public String escapeUnicode(String input) {
 		  StringBuilder b = new StringBuilder(input.length());
 		  Formatter f = new Formatter(b);

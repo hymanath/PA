@@ -139,6 +139,7 @@ public class FileVO extends ResultStatus implements Serializable {
 	private boolean isMainArticalExist = false;
 	private List<String> keyWordsList;
 	private List<FileSourceVO> fileSourceVOList;
+	private List<CandidatePartyNewsVO> newsCandidateDetails;
 	private List<Long> sourceCandidatesList;
 	private List<Long> sourcePartyList;
 	private List<Long> destinationCandidateLIst;
@@ -155,9 +156,20 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String userType;
 	private List<Long> gallaryIds;
 	private List<Long> keywordIds;
-	
 	private List<String> keywordsList;
 	private List<String> categoriesList;
+	private String imgToDisplayDeleted;
+	private String deleted;
+	private Long pathId;
+	
+	public List<CandidatePartyNewsVO> getNewsCandidateDetails() {
+		return newsCandidateDetails;
+	}
+
+	public void setNewsCandidateDetails(List<CandidatePartyNewsVO> newsCandidateDetails) {
+		this.newsCandidateDetails = newsCandidateDetails;
+	}
+
 	public List<Long> getGallaryIds() {
 		return gallaryIds;
 	}
@@ -1391,6 +1403,30 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setSynopsysEenadu(boolean synopsysEenadu) {
 		this.synopsysEenadu = synopsysEenadu;
+	}
+
+	public String getImgToDisplayDeleted() {
+		return imgToDisplayDeleted;
+	}
+
+	public void setImgToDisplayDeleted(String imgToDisplayDeleted) {
+		this.imgToDisplayDeleted = imgToDisplayDeleted;
+	}
+
+	public String getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(String deleted) {
+		this.deleted = deleted;
+	}
+
+	public Long getPathId() {
+		return pathId;
+	}
+
+	public void setPathId(Long pathId) {
+		this.pathId = pathId;
 	}
 
 	

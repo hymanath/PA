@@ -22,4 +22,14 @@ public interface IFilePathsDAO extends GenericDao<FilePaths, Long> {
 	public List<Object[]> getSourceIdsAndPageNos(Set<Long> fileIdsList);
 	
 	public List<FilePaths> getFileDetailsForSelected(List<Long> fileIds);
+
+	public List<Object[]> getFileDetailsByFileId(Long fileId,Long fileSourceLanguageIdList);
+	
+	public List<FilePaths> getFilePathDetailsByFileSourceLangId(Long FileSourceLangId);
+	
+	public void deleteFilePathDetailsByFilePAthsId(Long filePathId);
+	
+	public void deleteFilePathsByFileSourceLangId(Long fileSourceLangId);
+	
+	public Long getMaxfilePathsOrderNo(Long fileSourceLanguageId);
 }

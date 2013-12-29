@@ -422,4 +422,50 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		Query query = getSession().createQuery(queryStr.toString());
 		return (Long)query.uniqueResult();
 	}
+
+	 
+	 public List<CandidatePartyFile> getInvolvedCandidatesInANews(Long fileId){
+		 Query query = getSession().createQuery("select model from CandidatePartyFile model where model.file.fileId =:fileId");
+		 query.setParameter("fileId", fileId);
+		 return query.list();
+	 }
+	 
+	 public List<CandidatePartyFile> getdetailsBySourceCandiIdForFile(Long fileId,Long candidateId,String queryType){
+		 Query query = null;
+		 if(queryType.equalsIgnoreCase("source")){
+			 query =getSession().createQuery(" select model from CandidatePartyFile model where model.file.fileId =:fileId and model.sourceCandidate.candidateId = :candidateId");
+		 }
+		 else if(queryType.equalsIgnoreCase("destination")){
+			 query =getSession().createQuery(" select model from CandidatePartyFile model where model.file.fileId =:fileId and model.destinationCandidate.candidateId = :candidateId");			
+		 }
+		 query.setParameter("fileId", fileId);
+		 query.setParameter("candidateId", candidateId);
+		 return query.list();
+	 }
+	 
+	 
+	 public List<Long> getCandidatePartyFileIds(Long fileId){
+		 Query query = getSession().createQuery("select model.candidatePartyFileId from  CandidatePartyFile model where model.file.fileId = :fileId");
+		 query.setParameter("fileId", fileId);
+		 return query.list();
+	 }
+	 
+	 public void deleteCandidatePartyFiles(Long fileId){
+		 Query query = getSession().createQuery("delete from CandidatePartyFile model where model.file.fileId = :fileId");
+		 query.setParameter("fileId",fileId);
+		  query.executeUpdate();
+	 }
+	/* public int deleteCandidatePartyFileById(String queryType,Long candidateId){
+		 Query query = null;
+		 if(queryType.equalsIgnoreCase("source")){
+			 query =getSession().createQuery(" delete from CandidatePartyFile model where model.sourceCandidate.candidateId = :candidateId");
+		 }
+		 else if(queryType.equalsIgnoreCase("destination")){
+			 query =getSession().createQuery(" delete from CandidatePartyFile model where model.destinationCandidate.candidateId = :candidateId");
+			
+		 }
+		 query.setParameter("candidateId", candidateId);
+		 int i = query.executeUpdate();
+		 return (Integer) i;
+	 }*/
 }

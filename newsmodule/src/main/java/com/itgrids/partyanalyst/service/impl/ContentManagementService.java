@@ -361,7 +361,7 @@ public class ContentManagementService implements IContentManagementService{
 						List<String> candidates = candidatePartyFileDAO.getCandidateNamesByFileId(contentId);
 					      if(candidates != null && candidates.size() > 0){
 					    	 for(String person:candidates)
-					    	  candidate = candidate+","+person;
+					    	  candidate = candidate+", "+person;
 					      }
 					      
 					      if(candidate != null && candidate.length() > 0)

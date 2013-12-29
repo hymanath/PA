@@ -25,4 +25,5 @@ public interface IFileSourceLanguageDAO extends GenericDao<FileSourceLanguage, L
 	
 	public List<Object[]> getCandidateDetailsByFileIds(Set<Long> fileIds);
 	
+	public void deleteFileSourceLanguage(Long fileSourceLangId);
 }

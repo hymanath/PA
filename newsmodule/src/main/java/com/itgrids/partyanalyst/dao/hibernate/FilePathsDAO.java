@@ -11,7 +11,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.model.FilePaths;
-import com.itgrids.partyanalyst.model.FileSourceLanguage;
 
 public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements IFilePathsDAO {
 
@@ -213,4 +212,47 @@ public class FilePathsDAO extends GenericDaoHibernate<FilePaths,Long> implements
 		return query.list();
 	}
 	
+	public List<Object[]> getFileDetailsByFileId(Long fileId,Long fileSourceLanguageIdList){
+		
+		StringBuffer query = new StringBuffer();
+		
+			query.append("select model.filePath, model.edition, model.pageNo, model.newsLength,model.fileSourceLanguage.source.sourceId, ");
+			query.append(" model.fileSourceLanguage.language.languageId, model.fileSourceLanguage.newsDetailedDescription, ");
+			query.append("model.fileSourceLanguage.font.fontId,model.filePathsId from FilePaths model where ");
+			query.append("model.fileSourceLanguage.fileSourceLanguageId = :fileSourceLanguageIdList");
+			
+			Query queryObj = getSession().createQuery(query.toString());
+			queryObj.setParameter("fileSourceLanguageIdList", fileSourceLanguageIdList);
+			
+			return queryObj.list();
+
+	}
+	
+	public List<FilePaths> getFilePathDetailsByFileSourceLangId(Long fileSourceLangId){
+		
+		Query query = getSession().createQuery(" select model from FilePaths model where " +
+				" model.fileSourceLanguage.fileSourceLanguageId = :fileSourceLangId ");
+		query.setParameter("fileSourceLangId", fileSourceLangId);
+		
+		return query.list();
+	}
+	
+	public void deleteFilePathDetailsByFilePAthsId(Long filePathId){
+		Query query = getSession().createQuery(" delete from FilePaths model where model.filePathsId =:filePathId");
+		query.setParameter("filePathId", filePathId);
+		query.executeUpdate();
+	}
+	
+	public void deleteFilePathsByFileSourceLangId(Long fileSourceLangId){
+		Query query = getSession().createQuery(" delete from FilePaths model where model.fileSourceLanguage.fileSourceLanguageId =:fileSourceLangId");
+		query.setParameter("fileSourceLangId", fileSourceLangId);
+		query.executeUpdate();
+	}
+	public Long getMaxfilePathsOrderNo(Long fileSourceLanguageId){
+		
+		Query query = getSession().createQuery(" select max(model.orderNo)  from FilePaths model where model.fileSourceLanguage.fileSourceLanguageId =:fileSourceLanguageId");
+		query.setParameter("fileSourceLanguageId", fileSourceLanguageId);
+		return (Long) query.uniqueResult();
+		
+	}
 }

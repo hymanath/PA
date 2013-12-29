@@ -94,4 +94,10 @@ public class FileSourceLanguageDAO extends GenericDaoHibernate<FileSourceLanguag
 		query.setParameterList("fileIds", fileIds);
 		return query.list();
 	}
+	
+	public void deleteFileSourceLanguage(Long fileSourceLangId){
+		Query query = getSession().createQuery(" delete from FileSourceLanguage model where model.fileSourceLanguageId =:fileSourceLangId");
+		query.setParameter("fileSourceLangId", fileSourceLangId);
+		query.executeUpdate();
+	}
 }

@@ -39,4 +39,8 @@ public interface ICandidatePartyKeywordDAO extends GenericDao<CandidatePartyKeyw
 	public List<File> getFileListByCandidateId(Long candidateId,Integer firstResult,Integer maxResult,String queryType, Date fromDate, Date toDate,List<Long> keywordIdsList);
 	
 	public List<Object[]> getCandidateRelatedkeywords(Long candidateId,Date fromDate, Date toDate,String newsType);
+	
+	public List<Object[]> getCandidatePartyKeywordsByFileIds(Long candidatePartyFileId);
+	
+	public void deleteCandidatePartyKeywords(List<Long> candidatePartyFileIds);
 }

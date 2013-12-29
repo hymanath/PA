@@ -6,9 +6,9 @@ import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
 import com.itgrids.partyanalyst.dto.NewsDetailsVO;
+import com.itgrids.partyanalyst.dto.NewsEditVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.model.File;
 
 public interface INewsMonitoringService {/*
 	public List<FileVO> getNewsForRegisterUsers(FileVO inputs);
@@ -100,7 +100,7 @@ public interface INewsMonitoringService {/*
 	
 	public String generateUrlForNewsReport(Long reportId,Long userId,String path);
 	public ResultStatus deleteNews(Long fileId,Long userId);
-    public FileVO getInfoForFile(Long fileId,Long userId);
+    public NewsEditVO getInfoForFile(Long fileId,Long userId);
    
 }
 

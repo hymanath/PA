@@ -5429,13 +5429,6 @@
 			    <param name="inputName">inputStream</param>
 			</result>					
 		</action>
-		
-		<action name="uploadFilesForPartyAndCandidatesKeywords" class="candidateElectionResultsAction" method="uploadFilesForPartyAndCandidatesKeywords">
-		  <result name="success" type="stream">			   
-			    <param name="inputName">inputStream</param>
-		  </result>	
-		</action>
-		
 		<action name="getNewsContainedCandidates" class="candidateElectionResultsAction" method="getNewsContainedCandidates">			
 			<result name="success" type="json">			   
 			    <param name="root">candidatesList</param>
@@ -5903,7 +5896,15 @@
 		    	<param name="root">resultStatus</param>
 		   </result>
 		</action>
-		
+		<action name="deleteNewsAction" class="newsDisplayAction" method="deleteNewsFromFile">
+		  <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action>
+		  <action name="editNewsAction" class="editNewsAction">
+			<result name="success">/jsp/editNews.jsp</result>
+		 </action>
+		 
 		   <action name="getTotalKeyWordsAction" class="newsPaginationAction" method="ajaxHandler">
 		    <result type="json" name="success">
 		    	<param name="root">keywordsList</param>
@@ -5919,6 +5920,19 @@
 		   </result>
 		 </action>
 		 
+		 
+			
+			<action name="uploadFilesForPartyAndCandidatesKeywords" class="candidateElectionResultsAction" method="uploadFilesForPartyAndCandidatesKeywords">
+		  <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
+		</action>
+		
+		<action name="editUploadedFilesForPartyAndCandidatesKeywords" class="candidateElectionResultsAction" method="editUploadedFilesForPartyAndCandidatesKeywords">
+		  <result name="success" type="stream">			   
+			    <param name="inputName">inputStream</param>
+		  </result>	
+		</action>
         </package>
 		
 </struts>      

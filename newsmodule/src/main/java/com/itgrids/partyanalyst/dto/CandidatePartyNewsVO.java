@@ -15,6 +15,25 @@ public class CandidatePartyNewsVO implements Serializable{
 	private Long benefitId;
 	private List<CandidatePartyDestinationVO> sourceVOList;
 	private List<CandidatePartyDestinationVO> destinationVOList;
+	private List<Long> deletedFileSourceList;
+	private List<Long> deltedFileDestinationList;	
+	
+	
+	public List<Long> getDeletedFileSourceList() {
+		return deletedFileSourceList;
+	}
+
+	public void setDeletedFileSourceList(List<Long> deletedFileSourceList) {
+		this.deletedFileSourceList = deletedFileSourceList;
+	}
+
+	public List<Long> getDeltedFileDestinationLis() {
+		return deltedFileDestinationList;
+	}
+
+	public void setDeltedFileDestinationLis(List<Long> deltedFileDestinationList) {
+		this.deltedFileDestinationList = deltedFileDestinationList;
+	}
 
 	public Long getMediaId() {
 		return mediaId;
