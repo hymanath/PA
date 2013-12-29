@@ -93,7 +93,15 @@ public class NewsResponseDAO extends GenericDaoHibernate<NewsResponse,Long> impl
 		 
 	 }
 	 
+	public List<Long> getFileIds(List<Long> candidatePartyFileIds){
+		Query query = getSession().createQuery("select  distinct model.file.fileId from NewsResponse model where model.candidatePartyFile.candidatePartyFileId in (:candidatePartyFileIds)");
+		 query.setParameterList("candidatePartyFileIds", candidatePartyFileIds);
+		 return  query.list();
+	}
 	
-	
-	
+	public void deleteNewsResponses(List<Long> candidatePartyFileIds){
+		 Query query = getSession().createQuery("delete from NewsResponse model where model.candidatePartyFile.candidatePartyFileId in(:candidatePartyFileIds)");
+		 query.setParameterList("candidatePartyFileIds", candidatePartyFileIds);
+		 query.executeUpdate();
+	 }
 }

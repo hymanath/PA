@@ -199,6 +199,20 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 			return (Long) query.uniqueResult();
 			 
 		}
+	 public List<Object[]> getCandidatePartyKeywordsByFileIds(Long candidatePartyFileId){
+			StringBuffer query = new StringBuffer();
+			query.append("select model.candidatePartyKeywordId,model.keyword.keywordId from CandidatePartyKeyword model where model.candidatePartyFile.candidatePartyFileId = :candidatePartyFileId");
+			Query queryObj = getSession().createQuery(query.toString());
+			queryObj.setParameter("candidatePartyFileId", candidatePartyFileId);
+			
+			 return queryObj.list();
+
+	 }	 
+	 public void deleteCandidatePartyKeywords(List<Long> candidatePartyFileIds){
+		 Query query = getSession().createQuery("delete from CandidatePartyKeyword model where model.candidatePartyFile.candidatePartyFileId in(:candidatePartyFileIds)");
+		 query.setParameterList("candidatePartyFileIds", candidatePartyFileIds);
+		 query.executeUpdate();
+	 }
 	 
 	 @SuppressWarnings("unchecked")
 		public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds)

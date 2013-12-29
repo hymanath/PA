@@ -42,4 +42,15 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	public List<Object[]> getSelectedNewsBySearchCriteria(String queryStr , Integer startIndex , Integer maxIndex);
 	
 	public Long getSelectedNewsCountBySearchCriteria(String queryStr);
+
+	public List<CandidatePartyFile> getInvolvedCandidatesInANews(Long fileId);
+	
+	//public int deleteCandidatePartyFileById(String type,Long candidatePArtyFileId);
+	
+	public List<CandidatePartyFile> getdetailsBySourceCandiIdForFile(Long fileId,Long sourceCandId,String type);
+	
+	public List<Long> getCandidatePartyFileIds(Long fileId);
+	
+	public void deleteCandidatePartyFiles(Long fileId);
+
 }

@@ -3162,7 +3162,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="row-fluid"><div class="container m_top10" style="padding:5px 15px 15px 15px;width: 920px;border:1px solid #ADC248;margin-left:14px;border-radius:5px;width:906px;"><legend class="">Select News Location</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
 		str += '<select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"></select></div>';
         str +='<div id="showScopeSubs"></div>';
-		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Save changes" class="btn btn-success btn-large">                         </div></div></div>';
+		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Submit" class="btn btn-success btn-large">                         </div></div></div>';
        
 	   if(fileId != null)
         str +='<input type="hidden" name="responseFileIdsStr" value="'+fileId+'">';  	

@@ -1711,6 +1711,12 @@
 		<property name="stateDAO" ref="stateDAO" />
 		<property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
 		<property name="candidatePartyKeywordDAO" ref="candidatePartyKeywordDAO" />
+		<property name="filePathsDAO" ref="filePathsDAO" />
+		<property name="partyDetailsService" ref="partyDetailsService" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="boothDAO" ref="boothDAO" />		
    </bean>
    <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
        <property name="partyDAO" ref="partyDAO" />

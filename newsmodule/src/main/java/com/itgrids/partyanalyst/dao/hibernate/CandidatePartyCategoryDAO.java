@@ -282,6 +282,20 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			return (Long) query.uniqueResult();
 			 
 		}
+	 public List<Object[]> getCandidatePartyCategoryDetialsByFileId(Long candidatePartyFileId){
+			StringBuffer query = new StringBuffer();
+			query.append("select model.candidatePartyCategoryId,model.gallary.gallaryId from CandidatePartyCategory model where model.candidatePartyFile.candidatePartyFileId = :candidatePartyFileId");
+			Query queryObj = getSession().createQuery(query.toString());
+			queryObj.setParameter("candidatePartyFileId", candidatePartyFileId);
+			
+			 return queryObj.list();
+	}
+	 
+	 public void deleteCandidatePartyCategories(List<Long> candidatePartyFileIds){
+		 Query query = getSession().createQuery("delete from CandidatePartyCategory model where model.candidatePartyFile.candidatePartyFileId in(:candidatePartyFileIds)");
+		 query.setParameterList("candidatePartyFileIds", candidatePartyFileIds);
+		 query.executeUpdate();
+	 }
 	  @SuppressWarnings("unchecked")
 		public List<Object[]> getCategorysCountByFileId(Set<Long> fileIds)
 		{

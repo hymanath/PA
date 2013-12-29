@@ -143,6 +143,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private Boolean titleCheckBox;
 	private Boolean descCheckBox;
 	private Boolean synopsysCheckBox;
+	private String imgToDisplayDeleted;
 
 
 	private INewsMonitoringService  newsMonitoringService;
@@ -464,6 +465,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 
 	public void setResponseFileIdsStr(String responseFileIdsStr) {
 		this.responseFileIdsStr = responseFileIdsStr;
+	}
+
+
+	public String getImgToDisplayDeleted() {
+		return imgToDisplayDeleted;
+	}
+
+
+	public void setImgToDisplayDeleted(String imgToDisplayDeleted) {
+		this.imgToDisplayDeleted = imgToDisplayDeleted;
 	}
 
 
@@ -1474,13 +1485,14 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			  fileSourceVO2.setSourceLangId(fileSourceVO.getSourceLangId());
 			 // fileSourceVO2.setPageNo(fileSourceVO.getPageNo());
 			  //fileSourceVO2.setNewsLength(fileSourceVO.getNewsLength());
-			  fileSourceVO2.setCompleteDesc(fileSourceVO.getCompleteDesc());
+			  fileSourceVO2.setCompleteDesc(fileSourceVO.getCompleteDesc() != null?escapeUnicode(StringEscapeUtils.escapeJava(fileSourceVO.getCompleteDesc())):null);
 			  fileSourceVO2.setNewsDescCheck(fileSourceVO.getNewsDescCheck());
 			  if(fileSourceVO.getSourceFileList() != null && fileSourceVO.getSourceFileList().size() > 0){
 				  List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
 				  for(FileSourceVO newsPart:fileSourceVO.getSourceFileList()){
 					  
-					  if(newsPart != null && newsPart.getFileImageContentType() != null){
+					  if(newsPart != null){
+						if(newsPart.getFileImageContentType() != null){
 						  if(newsPart.getFileImageContentType().contains("text/plain"))
 						  {
 						    String[] str = newsPart.getFileImageContentType().split(",");
@@ -1530,7 +1542,24 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 								  
 								}
 							 }
-						   }  
+						   }
+					   }else if(fileSourceVO.getSourceFileList().size() == 1){
+						      //fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+							  //fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+							  //String path = IWebConstants.UPLOADED_FILES+ "/"+currentDate+ "/"+fileNames;
+							  //File fileToCreate = new File(filePath, fileNames);
+								//FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
+							  FileVO fileVO2 = new FileVO();
+							  fileVO2.setDisplayImageContentType(null);
+							  fileVO2.setDisplayImageName(null);
+							  fileVO2.setFileType(null);
+							  fileVO2.setDisplayImagePath(null);
+							  //fileVO2.setFileId(newsPart.getNewsEdition().longValue());//setting editionId
+							  fileVO2.setPageNo(newsPart.getPageNo());
+							  fileVO2.setNewsEditionId(newsPart.getNewsEdition());//edition
+							  fileVO2.setImportanceId(newsPart.getNewsLength());//newsLength
+							  fileVOsList.add(fileVO2);
+					   }
 					  }
 				  }
 				  fileSourceVO2.setFileVOsList(fileVOsList);
@@ -3271,4 +3300,227 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	 return Action.SUCCESS;
 	}
 
+	public String editUploadedFilesForPartyAndCandidatesKeywords()
+	{
+	 try{
+	  
+	  String fileName = null;
+	  String filePath = null;
+	  String fileNames = null;
+	  FileVO fileVO = new FileVO();
+	  
+	  session = request.getSession();
+	  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		
+		fileVO.setUserId(regVO.getRegistrationID());
+	  
+	  String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		
+	  DateUtilService dateService = new DateUtilService();
+	  Date date = dateService.getCurrentDateAndTime();
+	  Calendar cal = Calendar.getInstance();
+	  cal.setTime(date);
+	  String currentDate = cal.get(Calendar.YEAR)+""+(cal.get(Calendar.MONDAY)+1);
+	  filePath = IWebConstants.STATIC_CONTENT_FOLDER_URL + IConstants.UPLOADED_FILES + pathSeperator+currentDate+pathSeperator;
+	   String fileType = null;
+	  
+		Long systime = System.currentTimeMillis();
+		Random random = new Random();
+		
+		FileVO displayFileVO = new FileVO();
+		
+		
+            if (imageForDisplayContentType != null && imageForDisplay != null
+					&& imageForDisplayFileName != null) {
+            	
+            	fileType = imageForDisplayContentType.substring(imageForDisplayContentType.indexOf("/")+1, imageForDisplayContentType.length());
+            			
+				String imageName = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+				String path1 = IWebConstants.UPLOADED_FILES+ "/"+currentDate+"/"+imageName;
+				
+				displayFileVO.setDisplayImageName(imageName);
+				displayFileVO.setDisplayImageContentType(imageForDisplayContentType);
+				displayFileVO.setDisplayImagePath(path1);
+				fileVO.setFileVOForDiaplyImage(displayFileVO);
+			}
+			
+			if(fileVO.getFileVOForDiaplyImage () != null){
+				
+				File fileToCreate = new File(filePath, displayFileVO.getDisplayImageName());
+				FileUtils.copyFile(imageForDisplay, fileToCreate);				
+			}		
+		
+		//fileVO.setName(getFileTitle());
+		fileVO.setTitle(getFileTitle() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileTitle())):null);
+		fileVO.setDescription(getFileDescription() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileDescription())):null);
+		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.unescapeHtml(getNewsSynopsysDesc())));
+		fileVO.setVisibility(getVisibility());
+		fileVO.setNewsImportanceId(getNewsimportance());
+		fileVO.setLocationScope(getLocationScope());
+		fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : "1");
+		//fileVO.setLocationValue("1");
+		fileVO.setFileDate(getFileDate());
+		fileVO.setFileId(fileId);
+		fileVO.setImgToDisplayDeleted(getImgToDisplayDeleted());
+		if(getTitleCheckBox() != null)
+		 fileVO.setEenadu(true);
+		if(getSynopsysCheckBox() != null){
+			fileVO.setSynopsysEenadu(true);
+		}
+		if(getDescCheckBox() != null)
+		 fileVO.setDescEenadu(true);
+		
+		
+		if(fileSourceVOList != null && fileSourceVOList.size()  > 0)
+		{
+		  List<FileSourceVO> fileSourceVOResultList = new ArrayList<FileSourceVO>(0);
+		  for(FileSourceVO fileSourceVO :fileSourceVOList)
+		  {
+			if(fileSourceVO != null)
+			{
+			  
+			  FileSourceVO fileSourceVO2 = new FileSourceVO();
+			  fileSourceVO2.setFileSourceId(fileSourceVO.getFileSourceId()!= null?fileSourceVO.getFileSourceId():null);
+			  fileSourceVO2.setDeleted(fileSourceVO.getDeleted());
+			  fileSourceVO2.setSourceLangId(fileSourceVO.getSourceLangId()!= null ?fileSourceVO.getSourceLangId():null);
+			  fileSourceVO2.setFileSourceLangId(fileSourceVO.getFileSourceLangId()!= null ?fileSourceVO.getFileSourceLangId():null);
+			  fileSourceVO2.setCompleteDesc(fileSourceVO.getCompleteDesc() != null?escapeUnicode(StringEscapeUtils.escapeJava(fileSourceVO.getCompleteDesc())):null);
+			  fileSourceVO2.setNewsDescCheck(fileSourceVO.getNewsFont() != null && fileSourceVO.getNewsFont()!= 0 ? fileSourceVO.getNewsFont().toString(): null); //is description font telugu or not
+			  
+			  if(fileSourceVO.getSourceFileList() != null && fileSourceVO.getSourceFileList().size() > 0){
+				  List<FileVO> fileVOsList = new ArrayList<FileVO>(0);
+
+				  for(FileSourceVO newsPart:fileSourceVO.getSourceFileList()){
+					  FileVO fileVO2 = new FileVO();
+					  if(newsPart != null){
+						if(newsPart.getFileImageContentType() != null){
+						  if(newsPart.getFileImageContentType().contains("text/plain"))
+						  {
+						    String[] str = newsPart.getFileImageContentType().split(",");
+						    if(str != null)
+						    {
+							   for(int i=0;i<str.length;i++)
+							   {
+								 fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+								 fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+								 String path = IWebConstants.UPLOADED_FILES+ "/"+currentDate+"/"+fileNames;
+								 File fileToCreate = new File(filePath, fileNames);
+									FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
+								 //FileVO fileVO2 = new FileVO();
+								 fileVO2.setDisplayImageContentType(str[i]);
+								 fileVO2.setDisplayImageName(fileNames);
+								 fileVO2.setDisplayImagePath(path);
+								 fileVO2.setFileType(fileType);
+								 fileVO2.setPathId(newsPart.getFilePathId());
+								 fileVO2.setFileSourceLanguageId(newsPart.getFileSourceLangId()!= null?newsPart.getFileSourceLangId():null);
+								 fileVO2.setDeleted(newsPart.getDeleted());
+								 fileVO2.setPageNo(newsPart.getPageNo());//pageNo
+								 fileVO2.setNewsEditionId(newsPart.getNewsEdition());//edition
+								 fileVO2.setImportanceId(newsPart.getNewsLength());//news length
+								 fileVOsList.add(fileVO2);
+							    }  
+						     }
+						  }else{
+							 String[] str ;
+							 str = newsPart.getFileImageContentType().split(",");
+							 if(str !=null)
+							 {
+								for(int i=0;i<str.length;i++)
+								{
+								  fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+								  fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+								  String path = IWebConstants.UPLOADED_FILES+ "/"+currentDate+ "/"+fileNames;
+								  File fileToCreate = new File(filePath, fileNames);
+									FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
+								  //FileVO fileVO2 = new FileVO();
+								  fileVO2.setDisplayImageContentType(str[i]);
+								  fileVO2.setDisplayImageName(fileNames);
+								  fileVO2.setFileType(fileType);
+								  fileVO2.setDeleted(newsPart.getDeleted());
+								  fileVO2.setPathId(newsPart.getFilePathId());
+								  fileVO2.setFileSourceLanguageId(newsPart.getFileSourceLangId()!= null?newsPart.getFileSourceLangId():null);								 
+								  
+								  fileVO2.setDisplayImagePath(path);								  
+								  fileVO2.setPageNo(newsPart.getPageNo());
+								  fileVO2.setNewsEditionId(newsPart.getNewsEdition());//edition
+								  fileVO2.setImportanceId(newsPart.getNewsLength());//newsLength								 
+								  fileVOsList.add(fileVO2);
+								  
+								}
+							 }
+						   }
+					    }else if(fileSourceVO.getSourceFileList().size() == 1){
+
+							  //fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
+							  //fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;
+							  //String path = IWebConstants.UPLOADED_FILES+ "/"+currentDate+ "/"+fileNames;
+							 // File fileToCreate = new File(filePath, fileNames);
+							//	FileUtils.copyFile(newsPart.getFileImage(), fileToCreate);
+							  //FileVO fileVO2 = new FileVO();
+							  fileVO2.setDisplayImageContentType(null);
+							  fileVO2.setDisplayImageName(null);
+							  fileVO2.setFileType(null);
+							  fileVO2.setDeleted(newsPart.getDeleted());
+							  fileVO2.setPathId(newsPart.getFilePathId());
+							  fileVO2.setFileSourceLanguageId(newsPart.getFileSourceLangId()!= null?newsPart.getFileSourceLangId():null);								 
+							  
+							  fileVO2.setDisplayImagePath(null);								  
+							  fileVO2.setPageNo(newsPart.getPageNo());
+							  fileVO2.setNewsEditionId(newsPart.getNewsEdition());//edition
+							  fileVO2.setImportanceId(newsPart.getNewsLength());//newsLength								 
+							  fileVOsList.add(fileVO2);
+					    }
+					  }
+					  /*else if(fileSourceVO != null && fileSourceVO.getCompleteDesc()!= null){
+						  	
+						     fileVO2.setPathId(newsPart.getFilePathId());
+							 fileVO2.setFileSourceLanguageId(newsPart.getFileSourceLangId()!= null?newsPart.getFileSourceLangId():null);
+							 fileVO2.setDeleted(newsPart.getDeleted());
+							 fileVO2.setPageNo(newsPart.getPageNo());//pageNo
+							 fileVO2.setNewsEditionId(newsPart.getNewsEdition());//edition
+							 fileVO2.setImportanceId(newsPart.getNewsLength());//news length
+							 fileVOsList.add(fileVO2); 
+					  }
+					  else{
+						  fileVO2.setDeleted(newsPart.getDeleted()); 
+						  fileVO2.setPathId(newsPart.getFilePathId());
+						  fileVOsList.add(fileVO2);
+					  }*/
+				  }
+				  fileSourceVO2.setFileVOsList(fileVOsList);
+			  }
+			  fileSourceVOResultList.add(fileSourceVO2);
+			  
+			  
+			}
+			
+			
+		  }
+		  fileVO.setFileSourceVOList(fileSourceVOResultList); 
+		  
+		}
+		
+		fileVO.setGallaryId(subCategoryId);
+		
+		fileVO.setResponseFileIdsStr(responseFileIdsStr);
+		
+	    fileVO.setCandidatePartyNewsVOList(candidatePartyNewsVOList);
+	    
+	    result = candidateDetailsService.editUploadedFileForCandidateParty(fileVO);
+		
+	    if(result.getResultCode() == ResultCodeMapper.SUCCESS){
+			log.debug("fileuploades is sucess Method");
+			inputStream = new StringBufferInputStream(SUCCESS);
+		}
+		else
+			inputStream = new StringBufferInputStream("fail");
+		
+		 
+	 }catch (Exception e) {
+      e.printStackTrace();
+      log.error(" Exception Occured in uploadFilesForPartyAndCandidatesKeywords() method, Exception - "+e);
+	 }
+	 return Action.SUCCESS;
+	}
+	
 }

@@ -125,7 +125,7 @@ function getLanguage(fillOptionId)
 
 }
 function getSource(selectOptionId){
-	
+
 	if(sourceObj ==null)
 	{
 		var jsObj = {
@@ -148,7 +148,6 @@ function getSource(selectOptionId){
 
 function callAjax(jsObj,url)
 {
-	
 	var callback = {			
 	 success : function( o ) {
 		try
@@ -324,24 +323,18 @@ function callAjax(jsObj,url)
 			}
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType=="News Gallary")
 			{ 
-			
-				/*$('#existingFromText').attr({
-				   id : this.id + '_' + 1 
-				 });*/
+
                clearOptionsListForSelectElmtId(''+jsObj.type);
-			   createOptionsForSelectElmtId(''+jsObj.type,myResults);
-			                    $('#'+jsObj.type).multiselect();
-
-  $('#'+jsObj.type).multiselect({
-	  noneSelectedText:"Select Category"});
-		$('#'+jsObj.type).multiselect('refresh');
-		$('#'+jsObj.type).multiselect('create');
-			
-
-			}
-			
+			   createOptionsForSelectElmtsId(''+jsObj.type,myResults);
+			              $('#'+jsObj.type).multiselect();
+						  $('#'+jsObj.type).multiselect({
+							  noneSelectedText:"Select Category"});
+								$('#'+jsObj.type).multiselect('refresh');
+								$('#'+jsObj.type).multiselect('create');
+								$('#'+jsObj.type).multiselect('create');
+			}			
 			else if(jsObj.task == "getSource")
-			{ 
+			{
                sourceObj = myResults;
 			   clearOptionsListForSelectElmtId(jsObj.selectOptionId);
 			   createOptionsForSelectElmtId(jsObj.selectOptionId,sourceObj);
@@ -534,8 +527,6 @@ function callAjax(jsObj,url)
 		$('#'+jsObj.type).multiselect('refresh');
 		$('#'+jsObj.type).multiselect('create');
 			}
-			else if(jsObj.task == "deleteFile")
-			 buildDeleteFile(myResults,jsObj);
 		}
 		catch(e)
 		{   
@@ -550,6 +541,30 @@ function callAjax(jsObj,url)
   };
 
  YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
+
+function createOptionsForSelectElmtsId(elmtId,optionsList){
+var elmt = document.getElementById(elmtId);
+
+	if( !elmt || optionsList == null)
+		return;
+	
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+
+	}
 }
 function createListData(elmtId,optionsList)
 {	
@@ -749,7 +764,7 @@ function buildUploadPhotosDiv()
 
 	str += '<tr><td><b><font>Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
-	str +='<tr><td><b><font>File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId" /></td>';
+	str +='<tr><td><b><font>File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"  class="newsFile"/></td>';
 	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
 	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr>';
 	/*str += '   <TR>';
@@ -901,9 +916,9 @@ function showNewsGallaryCreateMsg(result)
 	if(result.resultCode == 0)
 	{
 		if(result.exceptionMsg == null)
-			str += '<font color="green"><b>Category Created Successfully.</b>';
+			str += '<font color="green"><b>Gallery Created Successfully.</b>';
 		else
-			str += '<font color="red"><b>Category Name is already exist.</b>';
+			str += '<font color="red"><b>Gallery Name is already exist.</b>';
 	}
 	else
 		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
@@ -1119,9 +1134,7 @@ function uploadAFile()
 
 function disableButton(id)
 {
-
-	
-	document.getElementById(id).disabled  = true;
+	//document.getElementById(id).disabled  = true;
 }
 function validateFileUpload()
 {
@@ -1547,30 +1560,20 @@ function showNewsUploadStatus(myResult)
 function showNewsUploadStatus1(myResult)
 {
 
-		
+	
 	var result = (String)(myResult);
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '';
 
 	if(result.search('success') != -1)
 	{
-		//clearNewsUploadFileFields1();
-		//str += '<font color="green"><b>News Uploaded Successfully.</b>';
-        
 		addSource = 0;
 		addFile = 0;
 		who = 0;
 		whome = 0;
-		//errorDivEle.innerHTML = str;
-		
-		 $('.ui-multiselect-menu').each(function() {
-	            $(this).remove();
-	        });
-		uploadNewsForPartyAndCandidate(null);
-		
-		getKeywordList();
-		
-       setTimeout(showSuccessMsg,3000);
+		uploadNewsForPartyAndCandidate(null);		
+		getKeywordList();		
+		setTimeout(showSuccessMsg,2000);
 	 
 	}
 	else if(result.search('fail') != -1) 
@@ -1590,8 +1593,9 @@ function showNewsUploadStatus1(myResult)
 
 function showSuccessMsg()
 {
-
- $("#uploadNewsFileErrorDiv").html('<font color="green"><b>News Uploaded Successfully.</b></font>');
+$("#uploadNewsFileErrorDiv").html('');
+ $("#uploadNewsFileErrorDiv").html('<font color="green"><b>News Updated Successfully.</b></font>');
+ setTimeout("window.close();",500);
 }
 
 function clearNewsUploadFileFields1()
@@ -1959,7 +1963,7 @@ function buildUploadNewsForMultipleUsers()
 function buildCreateNewsCategory()
 {
    var str ='';
-	str+='<div id="content"  class="contianer well">';
+	str+='<div id="content" style="width:650px;">';
 	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
 	/*str +='<table class="aligncenter">';
 	str +=  '<tr>';
@@ -1969,7 +1973,7 @@ function buildCreateNewsCategory()
 	str += 	 '</tr>';
 	str += 	'</table>';*/
 	//str += '<fieldset class="imgFieldset" style="width:449px;">';
-	str += '<h2 align="center" style="margin-left: 35px;margin-bottom:5px;"> Create New Category</h2>';
+	str += '<h2 align="center" style="margin-left: 80px;"> Create A New Category</h2>';
 	str+='<table class="aligncenter"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
 	str += '<table class="aligncenter">';
     
@@ -1978,10 +1982,10 @@ function buildCreateNewsCategory()
 
 	str += '<tr><td><b><font> Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<table class="aligncenter"><tr><td><label class="radio" style="display:none;"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
-	str += '<tr><td><label class="radio" style="display:none;"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
+	str += '<tr><td><label class="radio"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
 	str+='<div id="createnewsgalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Category" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
+	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Gallary" style="background-color:#57B731" onClick="createCategory()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
 
 	str += '<div>';
 	//str += '</fieldset>';
@@ -2083,9 +2087,9 @@ function getDistricts2(stateId){
 {
 	var newsCatrgoryName = document.getElementById('newsCateName').value;
 	var newsCatrgoryDesc = document.getElementById('newsCateDesc').value;
-	//var isPublic = document.getElementById('newsPublicRadio').checked;
+	var isPublic = document.getElementById('newsPublicRadio').checked;
 	var partyId = 872;
-	var makeThis = 'false';
+	var makeThis = 'true';
 	var categoryId = $("#categoriesForGallary").val();
 
 	var errorDivEle = document.getElementById('newsErrorMsgDivId');
@@ -2132,8 +2136,8 @@ function getDistricts2(stateId){
 	if(eFlag)
 		return;
 
-	/*if(isPublic)
-		makeThis = 'false';*/
+	if(isPublic)
+		makeThis = 'false';
 	
 	newsCatrgoryName = removeAllUnwantedCharacters(newsCatrgoryName);
 	newsCatrgoryDesc = removeAllUnwantedCharacters(newsCatrgoryDesc);
@@ -2711,8 +2715,7 @@ function getLocations(id){
 
    var str = '';
   if(id==0 || id == 1)
-   $("#showScopeSubs").html(str);
-    
+   $("#showScopeSubs").html(str);	
   else if(id==2)
   {
 
@@ -2790,7 +2793,7 @@ function getLocations(id){
    str += ' <select class="input-block-level" id="constituencyDiv" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
-   str += '<div class="span2">';
+   str += '<div class="span2" style="width: 155px;">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
    str += ' <select class="input-block-level" name="locationValue" id="mandalDiv"><option value="0">Select Location</option></select>';
    str +='</div>';
@@ -2827,7 +2830,7 @@ function getLocations(id){
    str += ' <select class="input-block-level" id="constituencyDiv" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
-   str += '<div class="span2">';
+   str += '<div class="span2" style="width: 155px;">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
    str += ' <select class="input-block-level" id="mandalDiv" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select>';
    str +='</div>';
@@ -2858,7 +2861,7 @@ function getLocations(id){
    str += ' <select class="input-block-level" id="constituencyDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
-   str += '<div class="span2">';
+   str += '<div class="span2" style="width: 155px;">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
    str += ' <select class="input-block-level" id="mandalDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select>';
    str +='</div>';
@@ -2881,7 +2884,7 @@ function addMoreFiles()
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+fileCount+'">';
 	str += ' <tr>';
 	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+fileCount+'" size="25" /></td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+fileCount+'" size="25"  class="newsFile"/></td>';
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
@@ -3875,7 +3878,6 @@ function showTheNewsToUpdate()
   $('#profileManagementMainOuterDiv4').show();
   document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
    $("#profileManagementMainOuterDiv7").css("display","none");
-   $('#showKeywordsDiv').css("display","none");
  /* $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -4091,8 +4093,6 @@ else{
 
 
 	var str="";
-
-	str+='<div>';
 	str+='<table id="newsDetailsTable">';
 	str+='<thead>';
 	 str+='<tr>';
@@ -4146,7 +4146,7 @@ else{
            
 	 }
  	str+='</table>';
-	str+='</div>';
+	
 	$('#profileManagementMainOuterDiv4').html(str);
 
 	$(function() {
@@ -4198,7 +4198,8 @@ function addToNewsResponse()
   else{
    
    $("#errorMsgNewsDiv").html('Please Select News').css("color","red");
-  }  
+  }
+  
    
 }
 
@@ -4699,11 +4700,6 @@ var callback = {
 			  buildGallariesForCategory(myResults,jsObj);
 			 
 			}
-			else if(jsObj.task == "getAllKeywordsByCount")
-			{
-			  buildAllKeywords(myResults);			 
-			}
-
 			
 			}catch (e) {   		
 		   	//alert("Invalid JSON result" + e);   
@@ -5457,38 +5453,43 @@ function buildCandidates(results)
 
  function uploadNewsFromPartyPage1()
 {
-	document.getElementById('uploadNewsBtnId');
+
+
 	if(validateNewsFileUpload1())
 	{
 		disableButton('uploadNewsBtnId');
-	var newsprivateRadioId = document.getElementById('newsprivateRadioId').checked;
-		if(newsprivateRadioId == true)
-	document.getElementById('newsprivateRadioId').checked = 'true';
-		if(newsprivateRadioId == false)
-	document.getElementById('newsPublicRadioId').checked = 'true';
+		var newsprivateRadioId = document.getElementById('newsprivateRadioId').checked;
+			if(newsprivateRadioId == true)
+		document.getElementById('newsprivateRadioId').checked = 'true';
+			if(newsprivateRadioId == false)
+		document.getElementById('newsPublicRadioId').checked = 'true';
 
     var keywordStr = "";
+	var count = 0;
 	$(".as-selections li").each(function(){
               keywordStr +=$(this).text()+",";
-				
+
+			if($(this).text() == ''){				
+				$("#"+count+"keywordId").val(keywordStr);
+				keywordStr = '';
+				count = count+1;
+			}	
             });
    
    var length = keywordStr.length;
     keywordStr = keywordStr.substr(0,length-2); 
-	$("#keywordId").val(keywordStr);
 
-	
 		var uploadHandler = {
-				upload: function(o) {
-					uploadResult = o.responseText;
-					showNewsUploadStatus1(uploadResult);	
-					enableButton('uploadNewsBtnId');
-				}
-			};
+					upload: function(o) {
+						uploadResult = o.responseText;
+						showNewsUploadStatus1(uploadResult);	
+						enableButton('uploadNewsBtnId');
+					}
+				};
 
-		
-		YAHOO.util.Connect.setForm('uploadForm1',true);
-		YAHOO.util.Connect.asyncRequest('POST','uploadFilesForMultipleCandidates.action',uploadHandler);
+			
+			YAHOO.util.Connect.setForm('uploadForm1',true);
+			YAHOO.util.Connect.asyncRequest('POST','editUploadedFilesForPartyAndCandidatesKeywords.action',uploadHandler);
 	}
 	else
 		return;
@@ -5502,7 +5503,6 @@ function validateUploadFileDetails()
    var flag = true;
    var fileTitle = $.trim($("#newsfileTitle").val());
    var fileDesc  = $.trim($("#newsfileDescription").val());
-   var synopsysDesc  = $.trim($("#newsSynopsysDesc").val());
    var fileDate = $("#newsdatedatepic").val();
    var scope = document.getElementById("scopeDiv").value;
    var sourceArr = new Array();
@@ -5513,13 +5513,7 @@ function validateUploadFileDetails()
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
-  if($('#filesourceId0 option:selected').length == 0 )
-  {
-		str +='Please logout and login again, to upload news<br>';
-		flag = false;
-  }
-  else
-  {
+	
 	if(fileTitle.length == 0)
 	{
 		str += ' Title is Required.<br>';
@@ -5528,11 +5522,6 @@ function validateUploadFileDetails()
 	if(fileDesc.length == 0)
 	{
 		str += 'News Description is Required.<br>';
-		flag = false;
-	}
-	if(synopsysDesc.length == 0)
-	{
-		str += 'News Synopsys is Required.<br>';
 		flag = false;
 	}
 	if(fileDate.length == 0)
@@ -5827,7 +5816,6 @@ function validateUploadFileDetails()
         });
 	   }catch(e){
 	   }
-  }
 	str += '</font>';
 	errorDivEle.innerHTML = str;
 	if(flag == false)
@@ -5909,7 +5897,7 @@ function uploadFile()
 	str+="<u><span style='font-weight:bold;'>Upload "+text+" Files</span></u>";
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId0'+value+'">';
 
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25"  class="newsFile"/></td></tr>';
 
 	str += ' <tr>';
 	str +='<td>File Path</td>';
@@ -5955,7 +5943,7 @@ function addMoreFiles2(value)
 	str +='<table class="moreFileTable" style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+divCount+''+value+'">';
 	str += ' <tr>';
 	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" /></td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25"  class="newsFile"/></td>';
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
@@ -6003,7 +5991,6 @@ function deleteFileDiv(element)
 }
 function getSource1(selectOptionId){
 	//$('#'+selectOptionId).find('option').remove();
-	
 	$.each(sourceObj,function(index,value){
 		$('#'+selectOptionId).append('<option value="'+sourceObj[index].id+'">'+sourceObj[index].name+'</option>');
 
@@ -6024,58 +6011,51 @@ function getLanguage1(fillOptionId)
 		
 }
 
-function validateNewsFileUpload1()
+function validateUploadFileDetails()
 {
-	var fileTitle = document.getElementById('newsfileTitle').value;
-	var fileDesc = document.getElementById('newsfileDescription').value;
-	//var fileVal = document.getElementById("newsfileId").value;
-	//var source = document.getElementById("source").value;
-	//var languageId = document.getElementById("language").value;
-	//var keywords = document.getElementById("keywords").value;
-	//var galEle = document.getElementById("gallaryId").value;
-	var fileDate = document.getElementById("existingFromTextNews").value;
-	var scope = document.getElementById("scopeDiv").value;
-	
-	//var pageNo = document.getElementById("pageno").value;
-	//var pageNo = document.getElementById("newslength").value;
-	var flag = true;
 
-	fileTitle = removeAllUnwantedCharacters1(fileTitle);	
-	fileDesc = removeAllUnwantedCharacters1(fileDesc);
-	document.getElementById('newsfileTitle').value = fileTitle;
-	document.getElementById('newsfileDescription').value = fileDesc;
-
+   $("#uploadNewsFileErrorDiv").html('');
+   var flag = true;
+   var fileTitle = $.trim($("#newsfileTitle").val());
+   var fileDesc  = $.trim($("#newsfileDescription").val());
+   var fileDate = $("#newsdatedatepic").val();
+   var scope = document.getElementById("scopeDiv").value;
+   var sourceArr = new Array();
+ 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '<font color="red">';
-	/*if(galEle == 0)
-	{
-		str += 'Select Gallery<br>';
-		flag = false;
-	}*/
-	if(fileDate.length == 0)
-	{
-		str +='File Date is Required<br>';
-		flag = false;
-	}
+	
 	if(fileTitle.length == 0)
 	{
 		str += ' Title is Required.<br>';
 		flag = false;
 	}
-
-
-		
-	 $('.newsFile').each(function() {
-           if($.trim($(this).val()).length == 0)
-	       {
-		     str+='File Required';
-		     flag = false;
-			 return false;
-	       }
-       });
-
-
-	 $('.pageno').each(function() {
+	if(fileDesc.length == 0)
+	{
+		str += 'News Description is Required.<br>';
+		flag = false;
+	}
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required<br>';
+		flag = false;
+	}
+	
+	 $('.fileImgCls').each(function() {
+		 if($.trim($(this).val()).length == 0)
+		{
+		  var key =  $(this).attr('key');
+		  var desc = $.trim($("#"+key+"").val());
+	      if(desc.length == 0)
+	      { 
+		    str+='Detailed News Description Or File Path is Required.<br>';
+		    flag = false;
+		    return false;
+		  }
+		}		 
+		   
+      });
+	   $('.pagenoCls').each(function() {
            if($.trim($(this).val()).length == 0)
 	       {
 		     str += ' Page Number is Required.<br>';
@@ -6083,17 +6063,27 @@ function validateNewsFileUpload1()
 			 return false;
 	       }
        });
-	$('.pageno').each(function() {
+	$('.pagenoCls').each(function() {
            if($.trim($(this).val()).length > 0)
 	       {
 		     if(isNaN($.trim($(this).val()))){
-				 str += ' Page Number must be Integer.<br>';
+			  str += ' Page Number must be number.<br>';
 				 flag = false;
-				 return false;
+			}
+			else
+            {
+			 var pageNoTemp = ""+$.trim($(this).val())+"";
+			 if(pageNoTemp.indexOf(".") != -1)
+			 {
+			  str += ' Page Number must be Integer.<br>';
+			  flag = false;
 			 }
+
+			}			
+			 
 	       }
        });
-	   $('.newslength').each(function() {
+	   $('.newsLengthCls').each(function() {
            if($.trim($(this).val()).length == 0)
 	       {
 		     str += ' News Length is Required.<br>';
@@ -6101,7 +6091,7 @@ function validateNewsFileUpload1()
 			 return false;
 	       }
        });
-	$('.newslength').each(function() {
+	$('.newsLengthCls').each(function() {
            if($.trim($(this).val()).length > 0)
 	       {
 		     if(isNaN($.trim($(this).val()))){
@@ -6109,50 +6099,52 @@ function validateNewsFileUpload1()
 				 flag = false;
 				 return false;
 			 }
+			 else{
+			 var newsLengthTemp = $.trim($(this).val());
+			 if(newsLengthTemp.indexOf(".") != -1)
+			 {
+			  str += ' News Length must be Integer.<br>';
+			  flag = false;
+			 }
+
+			 }
 	       }
        });
-	if(fileTitle.length >50)
-	{
-		str += 'Title should be less than 50 Characters<br>';
-		flag = false;
-	}
-	if(fileDesc.length == 0)
-	{
-		str += 'Description is Required.<br>';
-		flag = false;
-	}
-	if(fileDesc.length > 200)
-	{
-		str += 'Description Should not exceed 200 Characters.<br>';
-		flag = false;
-	}
-	/*if(fileVal.length == 0)
-	{
-		str += 'File is Required.<br>';
-		flag = false;
-	}*/
-	/*if(source.length == 0)
-	{
-		str += 'Source is Required.<br>';
-		flag = false;
-	}
-	if(languageId.length == 0)
-	{
-		str += 'Language is Required.<br>';
-		flag = false;
-	}*/
-	/*if(keywords.length >200)
-	{
-		str += 'Keywords should be less than 200 Characters<br>';
-		flag = false;
-	}*/
 
-	if($("#candidateList > option:selected").length == 0)
-	{
-		str += 'Select Candidate<br>';
-		flag = false;
+	$('.fileNewSourceCls').each(function() {
 
+		 var sourceId = $(this).val();			   
+		   if(sourceArr.indexOf(sourceId) != -1){
+				str += ' File Sources must be different (Ex: Eenadu,Sakshi...etc).<br>';
+				 flag = false;
+				 return false;
+			}
+			else
+				sourceArr.push($(this).val());
+
+       });
+	   
+	   
+	 $('.addFileImgCls').each(function() {
+           if($.trim($(this).val()).length == 0)
+	       {
+		     str += ' File is Required.<br>';
+		     flag = false;
+			 return false;
+	       }
+       });
+	if(fileTitle.length >1000)
+	{
+		str += 'Title should be less than 1000 Characters<br>';
+		flag = false;
 	}
+	if(fileDesc.length > 2000)
+	{
+		str += 'News Description Should not exceed 2000 Characters.<br>';
+		flag = false;
+	}
+	
+	
 	if(scope == 0 )
 	{
 		str += 'Location Scope is Required.';
@@ -6292,35 +6284,74 @@ function validateNewsFileUpload1()
 		}
 		
 	}
+	  try{
+	    var invalidImg = false;
+	    $('.addFileImgCls').each(function() {
+		  if($.trim($(this).val()).length > 0){
+            var extension = $(this).val().substring($(this).val().lastIndexOf(".")).toLowerCase();
+			 if(invalidImg)
+			 return false;
+			if(!(extension == '.jpeg' || extension == '.jpg' || extension == '.png' || extension == '.gif')){
+			  str += 'News Files must be  .jpeg or .jpg or .png or .gif formats only';
+			  invalidImg = true;
+			  flag = false;
+			}
+			}
+			
+        });
+		 $('.fileImgCls').each(function() {
+		  if($.trim($(this).val()).length > 0){
+            var extension = $(this).val().substring($(this).val().lastIndexOf(".")).toLowerCase();
+			 if(invalidImg)
+			 return false;
+			if(!(extension == '.jpeg' || extension == '.jpg' || extension == '.png' || extension == '.gif')){
+			  str += 'News Files must be  .jpeg or .jpg or .png or .gif formats only';
+			  invalidImg = true;
+			  flag = false;
+			}
+			}
+			
+        });
+		 $('.m_top10').each(function() {
+		  if($.trim($(this).val()).length > 0){
+            var extension = $(this).val().substring($(this).val().lastIndexOf(".")).toLowerCase();
+			 if(invalidImg)
+			 return false;
+			if(!(extension == '.jpeg' || extension == '.jpg' || extension == '.png' || extension == '.gif')){
+			  str += 'News Files must be  .jpeg or .jpg or .png or .gif formats only';
+			  invalidImg = true;
+			  flag = false;
+			}
+			}
+			
+        });
+	   }catch(e){
+	   }
 	str += '</font>';
 	errorDivEle.innerHTML = str;
+
+	
 	if(flag == false)
 	{
-		 $("#uploadNewsBtnId").css("background","#51A351");
+		//$("#uploadNewsBtnId").css("background","#51A351");
 		$('html, body').animate({
          scrollTop: $("#uploadNewsFileErrorDiv").offset().top
      }, 2000);
 		
+		$("form").submit(function (e) {
+        e.preventDefault(); 
+		});
 	}
 	else
-	$("#uploadNewsBtnId").css("background","#BBBB51");
-	return flag;
+		return flag; 
 }
-
 
 function  buildUploadNews()
 {
    var tempPartyId = 872;
    var str ='';
 	str+='<div id="content" style="width:650px;">';
-	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table class="aligncenter m_top10">';
-	str +=  '<tr>';
-	str += 	'<td><input type="button" class="btn btn-success highlight" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
-	str += '<td><input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()"></td>';
-	str += 	 '</tr>';
-	str += 	'</table>';*/
-	//str += '<fieldset class="imgFieldset" style="width:504px;">';
+
 	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
 	str += '<h2 align="center">Upload A News</h2>';
 	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv1" /></td></tr></table>';
@@ -6401,7 +6432,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path : <font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;"/></td>';
+	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;" class="newsFile"/></td>';
 	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt="Click here to add more images"/></td>';
 	str += '   </tr>';
 	str += '   <tr>';
@@ -6409,7 +6440,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   </tr>';
 
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" class="newsFile"/></td></tr>';
 
 	str += '   <tr>';
 	str += '       <td></td>';
@@ -6690,13 +6721,12 @@ function getNewsReports ()
    $("#profileManagementMainOuterDiv8").css("display","none");
    $("#newDesignationDiv").css("display","none");
   $("#newPartyCreationDiv").css("display","none");
-  $('#showKeywordsDiv').css("display","none");
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
     var str ='';
 	str+='<div class="container well">';
 	str+='<div class="row clearfix">';
-	str+='<div class="row-fluid"><div class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt yui-dt-paginator yui-pg-container" id="reportsDiv">';
+	str+='<div class="row-fluid"><div class="span12 well-small " id="reportsDiv">';
 	str+=' </div>';
     str+='</div>';
 	str+='</div>';
@@ -6867,9 +6897,9 @@ function getTotalNewsWithPagination()
 		var fileId = oRecord.getData("fileId");
 		
 		if(responseFileIdsArray.indexOf(""+fileId+"") != -1)
-		 str +="<input type='checkbox' class='newsResponseCheckId' onchange='cleareErrDiv2(); value='"+fileId+"' checked='checked'/>";
+		 str +="<input type='checkbox' class='newsResponseCheckId' value='"+fileId+"' checked='checked'/>";
 		else
-		 str +="<input type='checkbox' class='newsResponseCheckId' onchange='cleareErrDiv2();'  value='"+fileId+"' />";
+		 str +="<input type='checkbox' class='newsResponseCheckId' value='"+fileId+"' />";
 		elLiner.innerHTML=str;
 					
 	};
@@ -6898,11 +6928,10 @@ function getTotalNewsWithPagination()
 		var isEenaduTelugu = oRecord.getData("eenaduTeluguFontStr");
 		var descEenadu = oRecord.getData("descEenadu");
 		var description = oRecord.getData("description");
-
 		if(descEenadu)
 		  str +="<span class='enadu'>"+description+"</span>";
 		  else
-		  str +="<span >"+description+"</span>";
+		  str +="<span>"+description+"</span>";
 		  
 		elLiner.innerHTML=str;
 					
@@ -6916,9 +6945,7 @@ function getTotalNewsWithPagination()
 		
 		if(userType == "Admin")
 		{
-			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+')"/>';
-		//str +='<input  class="btn btn-info" type="button" onclick="editFile('+fileId+')" value="Edit" />';
-
+		str +='<input  class="btn btn-info" type="button" onclick="editFile('+fileId+')" value="Edit" />';
 		}
 		//str +='<input  class="btn btn-info" type="button" onclick="generateKey('+newsReportId+',\'generatedUrl'+newsReportId+'\')" value="Generate Url" />';
 		elLiner.innerHTML=str;
@@ -6937,8 +6964,7 @@ function getTotalNewsWithPagination()
 		
 		if(userType == "Admin")
 		{
-					str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromNewsReport('+fileId+')"/>';
-		//str +='<input  class="btn btn-info" type="button" onclick="deleteFileFromNewsReport('+fileId+')" value="Delete" />';
+		str +='<input  class="btn btn-info" type="button" onclick="deleteFile('+fileId+')" value="Delete" />';
 		}
 	//	var newsReportId = oRecord.getData("newsImportanceId");
 		//str +='<textarea id=\'generatedUrl'+newsReportId+'\'></textarea>';
@@ -6983,8 +7009,7 @@ function getTotalNewsWithPagination()
   resultsList: "fileVOList",
    fields: [
              {key:"fileId", parser:"number"},
-			        "eenaduTeluguFontStr","source","title", "descEenadu","description", "locationScopeValue","locationValue", "fileDateAsString","userType"],
-			        
+			        "eenaduTeluguFontStr","source","title", "description", "locationScopeValue","locationValue", "fileDateAsString","userType"],
 
     metaFields: {
     totalRecords: "count" // Access to value in the server response
@@ -7013,10 +7038,7 @@ return oPayload;
   
 }
 }
-function cleareErrDiv2(){
 
-	$('#errorMsgNewsDiv').css('display','none');
-}
 function getPartiesList(partySelectBoxId,partiesListForWhome)
 {
  var jsObj={
@@ -7054,15 +7076,18 @@ function buildPartyList(results,jsObj)
 
 function builddesignationsList(results,jsObj)
 {
+
   $("#"+jsObj.designationList+"").find('option').remove();
   $("#"+jsObj.designationList+"").append('<option value="0">Select Designation</option>');
-  
+
   if(results != null && results.length > 0)
   {
     for(var i in results)
 	 $("#"+jsObj.designationList+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
   }
+
 }
+
 
 function getNewsReport()
 {
@@ -7143,7 +7168,7 @@ return oPayload;
 
 function getNewsDetailsForNewsReportGeneration()
 {
-$("#createNewsreport").css("display","block");
+
 $("#locationWiseNewsDiv").css("display","block");
 $("#newsReportBtnDiv").css("display","block");
 $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
@@ -7308,16 +7333,16 @@ $("#errDiv"+divId1+"").html('');
 	}
 
 if(divId == 11){
-	 partyName = $("#partiesList :selected").text();
-	 partyId = $("#partiesList").val();
-	if($('#partiesList').val() ==0){
+	 partyName = $("#partiesList0 :selected").text();
+	 partyId = $("#partiesList0").val();
+	if($('#partiesList0').val() ==0){
 	$("#errDiv"+divId+"").html('Please select party.');
 	return;
 	}
 }
 else if(divId == 22){
-	partyName = $("#partiesListForWhome :selected").text();
-	partyId = $("#partiesListForWhome").val();
+	partyName = $("#partiesListForWhome0 :selected").text();
+	partyId = $("#partiesListForWhome0").val();
 	 
 	if(partyId ==0){
 	$("#errDiv"+divId+"").html('Please select party.');
@@ -7345,16 +7370,14 @@ else if(divSourceId == 3){
 	return;
 	}
 }
-
-		$("#searchDiv").dialog({
+	$("#searchDiv").dialog({
             modal: true,
             title: "<b>Search Candidate</b>",
 			width: 500,
             height: 300
            
         });
-
-	
+		
 	$("#searchDiv").append("<div id='searchInnerDiv' align='center'></div>")
 	$('#searchInnerDiv').html('');
 	var str='';
@@ -7370,7 +7393,7 @@ else if(divSourceId == 3){
 	str +='<td><select id="designationsList'+divId+'"></select></td>';
 	str +='</tr>'
 	str +='<tr>'	
-	str +='<td style="width: 160px;"> <input type="button" class="btn btn-info" id="searchId'+divId+'" onclick="showORhideSearchOptions('+divId+')" value="Advanced Search" style="margin-top: -10px;" /></td>'	
+	str +='<td style="width: 160px;"> <a class="btn btn-info" id="searchId'+divId+'" href="javascript:{showORhideSearchOptions('+divId+')}" >Advanced Search</a></td>'	
 	str +='<td> <select id="locationList'+divId+'" onchange="buildLocationDiv('+divId+');">';
 	str +='<option value="0"> Select Location</option>';
 	str +='<option value="1">District</option>';
@@ -7419,8 +7442,8 @@ else
 	$('#searchInnerDiv').html(str);	
 	
 	$("#locationList"+divId+"").attr("disabled","disabled");
-
 	//getPartiesList("partySelectNewList"+divId,null);
+	
     getDesignationList("designationsList"+divId);
 }
 
@@ -7490,22 +7513,6 @@ locationType = $("#locationList"+divId+" option:selected").text();
 
 function updateDetails(divId1,elmntId){
 
-
-/*
-if(divId ==1){
-	$("#candidateListForParty").val(id);
-}
-else if(divId ==2){
-	$("#candidateListForPartyForNewsTo").val(id);
-}
-else if(divId ==3){
-	$("#candidateListForParty"+elmntId+"").val(id);
-}
-else if(divId ==4){
-	$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
-}
-*/
-//debugger;
 var divSourceId;
 var divId = divId1; 
 if(divId1 != 11 && divId1 != 22){
@@ -7516,29 +7523,31 @@ var candiId = $("#candidateId"+divId+"").val();
 
 var id = candidates[candiId];
 
-if(candidatesList.indexOf(id) == -1){
+	if(candidatesList.indexOf(id) == -1){
+
+		if(divId == 11){
+			$('#candidateListForParty0').append('<option value="' + id + '">' + candiId + '</option>');
+		}
+		else if(divId == 22){
+			$("#candidateListForPartyForNewsTo0").append('<option value="' + id + '">' + candiId + '</option>');
+		}
+
+		else if(divSourceId == 3){
+			$("#candidateListForParty"+elmntId+"").append('<option value="' + id + '">' + candiId + '</option>');
+		}
+
+		else if(divSourceId == 4){
+			$("#candidateListForPartyForNewsTo"+elmntId+"").append('<option value="' + id + '">' + candiId + '</option>');
+		}
+
+	}
+
 
 	if(divId == 11){
-		$('#candidateListForParty').append('<option value="' + id + '">' + candiId + '</option>');
+	$("#candidateListForParty0").val(id);
 	}
 	else if(divId == 22){
-		$("#candidateListForPartyForNewsTo").append('<option value="' + id + '">' + candiId + '</option>');
-	}
-
-	else if(divSourceId == 3){
-		$("#candidateListForParty"+elmntId+"").append('<option value="' + id + '">' + candiId + '</option>');
-	}
-
-	else if(divSourceId == 4){
-		$("#candidateListForPartyForNewsTo"+elmntId+"").append('<option value="' + id + '">' + candiId + '</option>');
-	}
-
-}
-	if(divId == 11){
-	$("#candidateListForParty").val(id);
-	}
-	else if(divId == 22){
-		$("#candidateListForPartyForNewsTo").val(id);
+		$("#candidateListForPartyForNewsTo0").val(id);
 	}
 
 	else if(divSourceId == 3){
@@ -7550,6 +7559,7 @@ if(candidatesList.indexOf(id) == -1){
 	}
 
 $('#searchDiv').dialog('close');
+
 }
 
 function buildLocationDiv(divId){
@@ -7612,49 +7622,6 @@ function deleteFileFromNewsReport(fileId)
 	callAjax(jsObj, url);
 	}
 }
-function buildAllKeywords(myResults)
-{
-    var str='';
-	str+='<h2 style="text-align:center;margin-bottom:0px;margin-top:-10px;">Keywords</h2>';
-	
-	if(myResults==null || myResults=='')
-	{
-	str+='<span style="text-align:center;">There are no Keywords available</span>';
-	$("#showKeywordsDiv").html(str);
-	return;
-	}
-	else
-	
-	str+='<table  class="table table-striped">';
-	str+='<tr>';
-	str+='<th>Keywords</th>';
-	str+='<th>Count</th>';
-	str+='</tr>';
-	for(var i in myResults)
-	{
-	str+='<tr>';
-	str+='<td>' +myResults[i].name+'</td>';
-	str+="<td><a title='Click Here To See All News'href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedKeywordData(\""+myResults[i].id+"\");'>"+myResults[i].count+"</a></td>";
-	str+='</tr>';
-	}
-	str+='</table>';
-	$("#showKeywordsDiv").html(str);
-
-}
-function getClickedKeywordData(id)
-{
-	 var browser1 = window.open("getNewsAction.action?&keywordId="+id,"KeywordsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");		
-     browser1.focus();
-
-}
-function buildDeleteFile()
-{
-	$("#successMsg").html("deleted successfully..").css("color","green");
-	setTimeout(function(){
-	$('#successMsg').html('');
-	}, 3000);
-	getTotalNewsWithPagination();
-}
 function deleteFile(fileId)
 {
 	var jsObj={
@@ -7670,4 +7637,842 @@ function editFile(id){
 
   var browser1 = window.open("editNewsAction.action?fileId="+id,"EditNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
-}	 
+}
+
+var addSource = 0;
+function addNewFileSource(){
+
+        addSource = parseInt(addSource)+1;
+        var str ='';
+        str+='<div id="newfilesourceremov'+addSource+'" class="row-fluid ">';
+		str+='    <div class="span12">';
+		str+='        <div class="row-fluid">';
+		str+='<div class="container " style="margin-left: -1px;" align="left">';
+		str+='        <div class="span4" style="width: 275px;margin-left: 12px;">';
+		str+='        <label><strong>File Path</strong></label>';
+			   
+		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls newsFile" key="'+addSource+'aaanewsfileDescription" >';
+		
+
+		str+='        </div>';
+
+		str+='<div class="span2 ">';
+		str+='        <label><strong>News<br> Edition</strong><span class="requiredFont">*</span></label>';
+		str+='        <select  name="fileSourceVOList['+addSource+'].sourceFileList[0].newsEdition"  class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span1">';
+		str+='        <label><strong>Page Number</strong><span class="requiredFont">*</span></label>';
+		str+='        <input type="text" name="fileSourceVOList['+addSource+'].sourceFileList[0].pageNo" onKeyup="IsNumeric(this.value);" class="input-block-level pagenoCls">';
+
+		str+='        </div>';
+		str+='<div class="span1 ">';
+		str+='        <label><strong>News Length</strong><font class="requiredFont">*</font></label>';
+		str+='        <input type="text"  name="fileSourceVOList['+addSource+'].sourceFileList[0].newsLength" onKeyup="IsNumeric1(this.value);" class="input-block-level newsLengthCls">';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+		str+='        <label><strong>File Source</strong></label>';
+		str+='        <select id="'+addSource+'addfilenewSource" style="margin-top:25px;" name="fileSourceVOList['+addSource+'].fileSourceId"  class="input-block-level m_top20 fileNewSourceCls"><option value="0">Select Source</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+		str+='        <label><strong>News Language</strong><i class="icon-trash" title="Click here to remove this source" onclick="removeThisFileSource(\'newfilesourceremov'+addSource+'\')" style="margin-left: 20px;"></i></label>';
+		str+='        <select  id="'+addSource+'addfilenewLanguage" style="margin-top:25px;"  name="fileSourceVOList['+addSource+'].sourceLangId" class="input-block-level m_top20"><option value="0">Select Language</option></select></select>';
+
+		str+='        </div>';
+		str+='</div>';
+		str+='<div id="source'+addSource+'newfile"></div>';
+		str+='<div class="container m_top5">';
+		str +='<span class="help-block">&nbsp;&nbsp;&nbsp;File Path Or Detailed News Description is Mandatory. File must be .jpeg or .jpg or .png or .gif formats only.</span>';
+		str+='<div class="span12 ">         <label><strong>Detailed News Description</strong></label>         <textarea id="aaanewsfileDescription'+addSource+'" name="fileSourceVOList['+addSource+'].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls" style="width: 875px;" ></textarea> <span class="help-block">&nbsp;&nbsp;&nbsp;<input id="newsdetdescchk'+addSource+'" onclick="changeToEEnadutxt(\'newsdetdescchk'+addSource+'\',\'aaanewsfileDescription'+addSource+'\','+addSource+');" style="margin-top:-1px;" name="fileSourceVOList['+addSource+'].newsDescCheck" type="checkbox"/>&nbsp;Please chec,k if detailed news description is from eenadu.net</span>       </div>';
+
+		str+='        </div>';
+			 
+		str+='</div>';
+		str+='</div>';
+		str+='<div class="" id="addButtonDivId'+addSource+'">';
+		str+='      <a href="javascript:void(0);" onclick="addNewFilePart('+addSource+',0);" class="btn btn-success span6">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
+        $("#addNewsSourceToExisting1").append(str);
+		
+		getSource(addSource+'addfilenewSource');
+		getLanguage(addSource+'addfilenewLanguage');
+		
+}
+
+var addFile = 0;
+var id = 0;
+function addNewFilePart(id,addFile){
+
+	if(id == 0){
+		id=id;
+	//	$("#fileDescription0").removeClass("newsFile0");
+	//	$("#fileDescription0").addClass("newsFile");
+	}
+     addFile =  parseInt(addFile)+1;
+
+        var str ='';
+        str+='<div id ="'+addFile+'newpart'+id+'" class="container " style="margin-left: 12px; float: left;">';
+		str+='        <div class="span4" style="width: 275px;">';
+				
+		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn addFileImgCls newsFile">';
+
+		str+='        </div>';
+
+		str+='<div class="span2 ">';
+				
+		str+='        <select name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].newsEdition" class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
+
+		str+='        </div>';
+		str+='<div class="span1">';
+			  
+		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].pageNo" class="input-block-level pagenoCls">';
+
+		str+='        </div>';
+		str+='<div class="span1 ">';
+			   
+		str+='        <input type="text" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].newsLength"  class="input-block-level newsLengthCls">';
+
+		str+='        </div>';
+		str+='<div class="span2 ">';
+			   
+		str+='        <a href="javascript:void(0);" onclick="removeThisFile(\''+addFile+'newpart'+id+'\',innerFile,'+id+')" class="btn btn-block"><i class="icon-trash"></i> Delete This Row</a>';
+
+		str+='        </div>';
+
+		str+='</div>';
+
+		$("#source"+id+"newfile").append(str);
+		
+		$("#addButtonDivId"+id+"").html('');
+		
+		var str = '';
+		str +=' <a href="javascript:void(0);" onclick="addNewFilePart('+id+','+addFile+');" class="btn btn-success span5" style="margin-left: 15px;">Click here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source</a>';
+		$("#addButtonDivId"+id+"").html(str);
+}
+
+function zoomSelectedImg(img){
+ $("#selectedImgZoom").html("<img src='"+img+"'></img>");
+   $("#selectedImgZoom").dialog({
+				resizable:true,
+				title:'News Image',
+				height:600,
+				width:800,
+				modal: true				
+	});
+}
+
+function deleteExistingImg(id){
+
+  if(confirm("Do You Want To Delete Existing Image ?")){
+    $("#imgToDisplayDeleted"+id).val("true");
+	$("#imgToDisplayRemove"+id).html("");
+	imgToDisplayDeleted
+  }
+}
+function imgToDisplayRemove(){
+  $("#imgToDisplayRemove").html("");
+}
+
+function getCandidatesListByPartyId(partyId,type,divId1)
+{
+
+	var divSourceId;
+	var divId = divId1; 
+	if(divId1 != 11 && divId1 != 22){
+		divSourceId = (divId1 + "").charAt(0);
+		divId = (divId1 + "").charAt(1);
+	}
+	var candiId = $("#candidateId"+divId+"").val();
+
+	var id = candidates[candiId];
+
+	if(divId == 11){
+	$("#errDiv11").html('');
+	}
+	else if(divId == 22){
+		$("#errDiv22").html('');
+	}
+
+	else if(divSourceId == 3){
+	$("#errDiv3"+divId+"").html('');
+	}
+
+	else if(divSourceId == 4){
+		$("#errDiv4"+divId+"").html('');
+	}
+
+    $("#"+type+"Img").css("display","block");
+		var jsObj = {
+			partyId :partyId,
+			type:type,
+			task : "getCandidatesListByPartyId"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;					
+	
+   callAjax(jsObj,url);
+}
+
+
+var who = 0;
+ var whome = 0;
+
+ 
+function addNewFrom(who){
+
+ who = who + 1;
+ var str ='';
+ str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
+		str+='    <div class="span5 well well-small ">';
+		str+='<label style="float: left;"><strong>Select Party</strong></label><span id="errDiv3'+who+'" style="margin-top: -25px; color: red; margin-left: 125px; margin-bottom: 9px;" ></span>';
+		
+		str+='<select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\',3'+who+')">';
+		if(partyArray.length>0){
+		for(var i in partyArray)
+			str+='<option value='+partyArray[i].value+'> '+partyArray[i].name+'</option>';
+		}
+		str +='</select>';
+		
+		str +='<img src="images/search.jpg" id="candidateListForParty'+who+'Img" style="display:none;"/>';
+		str+='</div>';
+
+		str+='    <div class="span5 well well-small">';
+		str+='<label><strong>Select Candidate</strong></label>';
+		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 260px;"> <a onclick="buildSearchDiv(3'+who+','+who+');"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
+		str +='<span class="btn btn-mini pull-right m_topN65"><img src="images/user.png" title="Click Here To Create New Candidate" class="createCandidateCls createNewCandidate" key="candidateListForParty'+who+'" partylistid="partiesList'+who+'"></span>';
+		str +='<select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].candidateId" id="candidateListForParty'+who+'" >';
+		str+='    <option value="0">Select Candidate</option>';
+		str+='</select>';
+		
+		str+='</div>';
+		str+='    <div class="span2 well well-small">';
+		str+='   <label><strong>Rating</strong></label><select class="input-block-level" name="candidatePartyNewsVOList.sourceVOList['+who+'].benefitId">';
+        str +='      <option value="1">Positive</option><option value="2">Negative</option><option value="3">Neutral</option>';
+        str +='   </select>';
+		
+		str+='    </div>';
+		str+='<div style="margin-left: 0px;" class="span12"><p>If you want to delete this block please click on this Button <a href="javascript:void(0);" onclick="deletethisDiv(\'whocandidate'+who+'\');" class="btn"><i class="icon-trash"></i> Delete This Block</a>    </p></div>	';	   
+		str+='</div>  ';
+		
+
+$( "#whoTalkedMainDIV").append(str);
+
+$("#addNewFromDivBtn").html('');
+var str1 ='';
+str1 +='<a class="btn btn-danger" onclick="addNewFrom('+who+');" href="javascript:void(0);">Click to add another From - Who</a>';
+
+$("#addNewFromDivBtn").html(str1);
+getPartiesList("partiesList"+who+"",null);
+
+}
+var removCountForWho = 0;
+var removCountForWhom = 0;
+function deletethisDiv(id,divId,candiPartyfileId){
+ if(confirm("Do you want to delete this Party/Candidate?")){
+ 
+    $("#"+id).remove();
+	var str='';
+
+	if(divId =="who"){
+	str +='<input type="hidden" name="candidatePartyNewsVOList.deletedFileSourceList['+removCountForWho+']" value="'+candiPartyfileId+'"/>';
+		$("#deletedSourceCandidatePartyDivForWho").append(str);
+		removCountForWho = removCountForWho+1;
+	}
+	else if(divId == "whom"){
+
+	str +='<input type="hidden" name="sourceList['+removCountForWhom+'].fileId" value="'+candiPartyfileId+'"/>';
+		$("#deletedSourceCandidatePartyDivForWhom").append(str);
+		removCountForWhom = removCountForWhom+1;
+	}
+	
+  }
+}
+
+var whome = 0;
+function addWhome(whome){
+
+ whome = whome+1;
+var str ='';
+
+	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
+		str+='    <div class="span2 well well-small ">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="float:left;position:absolute;margin-top: 30px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\',4'+whome+')">';
+		str+='<option value="0">Select Party</option>';
+		str +='</select>';
+		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
+		str+='</div>';
+
+		str+='    <div class="span4 well well-small">';
+		str+='<label><strong>Select Candidate</strong></label>';
+		str +='<div class="btn btn-mini pull-right " style="float: right; position: absolute; margin-top: -24px; margin-left: 190px;"> <a onclick="buildSearchDiv(4'+whome+','+whome+');"><i class="icon-search" title="Click here to Search Candidates"></i> </a></div>';
+		str +='<span class="btn btn-mini pull-right m_topN65"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
+		str +='<select id="candidateListForPartyForNewsTo'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].candidateId" class="input-block-level" >';
+		str+='    <option value="0">Select Candidate</option>';
+		str+='</select>';
+		//str +='<span style="display: inline-block;"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
+		str+='</div>';
+		str+='<div class="span4 well well-small">';
+		str+='<label><strong>Select Categories</strong></label><select name="keywordIdHiddenCat'+whome+'" multiple="multiple" style="width: 252px;" id="'+whome+'whomegallaryId" >';
+		str+='    <option>Select Category</option>';
+		str+='</select>';
+		
+		str+='    </span>';
+		str+='</div>';
+
+		str+='    <div class="span2 well well-small">';
+		str+='   <label><strong>Rating</strong></label><select name="candidatePartyNewsVOList.destinationVOList['+whome+'].benefitId" class="input-block-level">';
+        str+='      <option value="1">Positive</option><option value="2">Negative</option><option value="3">Neutral</option>';
+		str+='</select>';
+
+		str+='    </div>';
+		str+='<div class="span12 well well-small" style="margin-left: 0px;">';
+		str+='<label><strong>Enter Keywords</strong></label><input type="text" class="input-block-level keyword'+whome+' destinationKeywords" key="keywordId'+whome+'" id="'+whome+'keywordId">';
+
+		str+='</div>';
+		str +='<input type="hidden" id="keywordId'+whome+'Hidden" name="candidatePartyNewsVOList.destinationVOList['+whome+'].keywordsList" />';
+        str +='<input type="hidden" id="keywordIdHiddenCat'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].categoryIdsStr" />';		   
+		str+='<div style="margin-left: 0px;" class="span12"><p>If you want to delete this block please click on this Button <a href="javascript:void(0);" onclick="deletethisDiv(\'whomecandidate'+whome+'\');" class="btn"><i class="icon-trash"></i> Delete This Block</a>    </p></div>	   </div>';
+
+
+$( "#whomeTalkedMainDIV").append(str);
+
+$("#addWhomDiv").html('');
+var str1 ='';
+str1 +='<a href="javascript:void(0);" onclick="addWhome('+whome+');" class="btn btn-danger">Click to add another To - Whom</a>';
+
+$("#addWhomDiv").html(str1);
+
+$("#"+whome+"keywordId").autoSuggest(keywordsArray, {selectedItemProp: "name", searchObjProps: "name"});
+
+getPartyGallariesForUplaod("News Gallary",whome+"whomegallaryId");
+getPartiesList("partiesListForWhome"+whome+"",null);
+
+}
+var o = 0;
+function addNewFileToUpload(id){
+   o = o+1;
+   $("#multifile"+id).append('<div id="removeThisFil'+o+'"><table><tr><td><input type="file" name="fileSourceVOList['+id+'].fileImage"  size="25"  class="newsFile"/></td><td><a class="btn btn-small btn-block" style="width: 17px;" href="javascript:void(0)" onclick="removeThisFile(\'removeThisFil'+o+'\');"> <i class="icon-minus-sign"></i></a></td></tr></table></div>');
+
+}
+
+function removeThisFile(id,removeExistSource,indexValue){
+
+ if(confirm("Do you want to delete this row?")){
+	 if(indexValue == 0){
+			//$("#fileDescription0").removeClass("newsFile");
+			//$("#fileDescription0").addClass("newsFile0");
+		}
+ 	$("#"+id).html('');	
+	if(removeExistSource != 'innerFile')
+		document.getElementById(removeExistSource).value = 'true';  
+  }
+}
+function removeAlreadyExistingSource(id,removeExistSource){
+ if(confirm("Do you want to delete this source?")){
+ 	$("#"+id).html('');	 
+	document.getElementById(removeExistSource).value = 'true';  
+  }
+}
+var t =0;
+function addNewSourceToDiv(){
+t=t+1;
+var str='';
+str += '        <tr id="newFileSourceFile'+t+'">';
+str += '            <td><input  type="file" name="fileSourceVOList['+t+'].fileImage"  size="25"  class="newsFile"/><div id="multifile'+t+'"></div>';
+str += '<a href="javascript:void(0)" onclick="addNewFileToUpload('+t+');" style="width: 100px; margin-left: 51px; margin-top: 11px;" class="btn btn-small btn-block"> <i class="icon-plus-sign"></i></a></td>';
+str += '            <td><select id="filesourceId'+t+'" name="fileSourceVOList['+t+'].fileSourceId" class="input-small"><option value="0">Select Source</option></select></td>';
+str += '            <td><select id="sourceLangId'+t+'" name="fileSourceVOList['+t+'].sourceLangId" class="input-small"><option value="0">Select Language</option></select></td>';
+str += '            <td><select id="newsedition'+t+'" name="fileSourceVOList['+t+'].newsEdition" class="input-small"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
+str += '            <td><input type="text" id="pageno'+t+'" name="fileSourceVOList['+t+'].pageNo" class="pageno input-small"  onKeyup="IsNumeric(this.value);"></input></td>';
+str += '            <td><input type="text" id="newslength'+t+'" class="newslength input-small" name="fileSourceVOList['+t+'].newsLength" onKeyup="IsNumeric1(this.value);"></input></td>';
+str += '            <td><textarea  id="completeDesc'+t+'" name="fileSourceVOList['+t+'].completeDesc" class="completeDescCls'+t+' input-block-level"></textarea></td>';
+str += '            <td><a onclick="removeThisFileSource(\'newFileSourceFile'+t+'\');" href="javascript:void(0)" style="width: 17px;" class="btn btn-small btn-block"> <i class="icon-minus-sign"></i></a></td>';
+str += '               </tr>';
+
+$('#uploadFilesTable > tbody:last').append(str);
+  getSource("filesourceId"+t);
+	getLanguage('sourceLangId'+t);
+}
+function removeThisFileSource(id){
+
+  if(confirm("Do you want to delete this Source?")){
+  $("#"+id).remove();
+  }
+}
+function addMoreFilesForPartyCandidate()
+{
+	var moreDivElmt = document.createElement("addMoreFilesDiv");
+	var str ='';
+	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+fileCount+'" class="moreFileDivCls" key="'+fileCount+'">';
+	str += ' <tr>';
+	str +='<td>File Path</td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="fileSourceVOList['+fileCount+'].fileImage" class="newsFileId'+fileCount+' newsFile" size="25"   class="newsFile"/></td>';
+    str +='<td><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreImagesForPartyCandidate(\''+fileCount+'\')" title="Click here to add more images" alt="Click here to add more images"></td>';
+
+	str += ' </tr>';
+    
+	str +='<tr>';
+	str +='<td colspan="2"><div id="moreFilePathsImagesDiv'+fileCount+'"></div></td>';
+	str +='</tr>';
+
+	str += ' <tr>';
+	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
+	str += ' <td class="selectWidthPadd"><select id="filesourceId'+fileCount+'" name="fileSourceVOList['+fileCount+'].fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td>';
+	str += ' </tr>';
+	str += ' <tr>';
+	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
+	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+fileCount+'" name="fileSourceVOList['+fileCount+'].sourceLangId" style="width:175px;"><option value="0">Select Language</option></select></td>';
+	
+	str += ' </tr>';
+	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><select id="newsedition'+fileCount+'" name="fileSourceVOList['+fileCount+'].newsEdition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="fileSourceVOList['+fileCount+'].pageNo" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
+	str += '   </tr>';
+	str += '   <tr>';
+	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
+	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength newsLengthCls" name="fileSourceVOList['+fileCount+'].newsLength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
+
+	/*str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';*/
+	str += '   </tr>';
+    
+	str +='<tr>';
+	str +='<td>News description in details : </td>';
+	str +='<td><textarea rows="3" columns = "20" id="completeDesc'+fileCount+'" name="fileSourceVOList['+fileCount+'].completeDesc" class="completeDescCls'+fileCount+'"></textarea></td>';
+	str +='<td><input type="checkbox" id="newsDescCheck'+fileCount+'" name="fileSourceVOList['+fileCount+'].newsDescCheck" value="true" class="newsDescCheckId" key="'+fileCount+'" /><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';
+	str +='</tr>';
+
+	str +='</table>';
+	moreDivElmt.innerHTML = str;
+	document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
+	getSource("filesourceId"+fileCount+"");
+	getLanguage('sourceLangId'+fileCount+'');
+	fileCount++;
+}
+
+function addMoreImagesForPartyCandidate(count)
+{
+  
+  
+  var divElmt = document.createElement("moreFilePathsImagesDiv"+count+"");
+  var str = '';
+  str +='<table id="moreFilePathsId'+count+''+fileImgCount+'">';
+  str += '<tr>';
+  str += '<td>File Path : </td>';
+  str += '<td><input type="file" class="newsFileId newsFile'+count+'" size="50" name="fileSourceVOList['+count+'].fileImage"  class="newsFile"/></td>';
+  str += '<td><img onclick="deleteFileImagePaths(\''+count+''+fileImgCount+'\');" title="Click here to delete file" src="images/minus.png" style="background: #fff; border-radius: 11px; padding: 4px;"></td>';
+  str +='<tr>';
+  divElmt.innerHTML = str;
+  document.getElementById("moreFilePathsImagesDiv"+count+"").appendChild(divElmt);
+  
+  fileImgCount++;
+}
+
+function deleteFileImagePaths(imgId)
+{
+ 
+ $('#moreFilePathsId'+imgId+'').html('');
+}
+
+function getTypeOfConstituency(value)
+{	
+	if(value == 1)
+	{
+		$('#pcConstituencyRow').hide();
+		$('#acConstituencyRow').show();
+	}
+	else if(value == 2)
+	{
+		$('#pcConstituencyRow').show();
+		$('#acConstituencyRow').hide();
+	}
+	else
+	{
+		$('#pcConstituencyRow').hide();
+		$('#acConstituencyRow').hide();
+	}
+}
+
+function validateNewsFileUpload1()
+{
+
+var fileTitle = document.getElementById('newsfileTitle').value;
+	var fileDesc = document.getElementById('newsfileDescription').value;
+	
+	var fileDate = document.getElementById("newsdatedatepic").value;
+	var scope = document.getElementById("scopeDiv").value;
+	 var sourceArr1 = new Array();
+	var flag = true;
+
+	fileTitle = removeAllUnwantedCharacters1(fileTitle);	
+	fileDesc = removeAllUnwantedCharacters1(fileDesc);
+	document.getElementById('newsfileTitle').value = fileTitle;
+	document.getElementById('newsfileDescription').value = fileDesc;
+	var synopsysDesc  = $.trim($("#newsfileSynopsys").val());
+	
+	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
+	var str = '<font color="red">';
+	
+	if(fileDate.length == 0)
+	{
+		str +='File Date is Required<br>';
+		flag = false;
+	}
+	if(fileTitle.length == 0)
+	{
+		str += ' Title is Required.<br>';
+		flag = false;
+	}
+
+	$('.fileNewSourceCls').each(function() {
+
+		 var sourceId = $(this).val();			   
+		   if(sourceArr1.indexOf(sourceId) != -1){
+				str += ' File Sources must be different (Ex: Eenadu,Sakshi...etc).<br>';
+				 flag = false;
+				 return false;
+			}
+			else
+				sourceArr1.push($(this).val());
+
+       });
+	   
+	$('.newsFile0').each(function() {
+           if($.trim($(this).val()).length == 0)
+	       {
+		   var id=$(this).attr('id');	
+		   
+		   var detalDesc = $("#aaanews"+id+"").val();
+
+			   if( detalDesc.length <= 0 || typeof(detalDesc) ==  "undefined"){
+				str+='File OR Detailed news description Required.<br>';
+				 flag = false;
+				 return false;
+			   }		 
+	       }
+       });
+	
+	$('.newsFile').each(function() {
+
+	   if($.trim($(this).val()).length == 0)
+	   {
+		 str+='File Required.<br>';
+		 flag = false;
+		 return false;
+	   }
+	});
+	
+	if(synopsysDesc.length == 0)
+	{
+		str += 'News Synopsys is Required.<br>';
+		flag = false;
+	}
+	
+	 $('.pagenoCls').each(function() {
+           if($.trim($(this).val()).length == 0)
+	       {
+		     str += ' Page Number is Required.<br>';
+		     flag = false;
+			 return false;
+	       }
+       });
+	$('.pagenoCls').each(function() {
+           if($.trim($(this).val()).length > 0)
+	       {
+		     if(isNaN($.trim($(this).val()))){
+				 str += ' Page Number must be Integer.<br>';
+				 flag = false;
+				 return false;
+			 }
+	       }
+       });
+	   $('.newsLengthCls').each(function() {
+           if($.trim($(this).val()).length == 0)
+	       {
+		     str += ' News Length is Required.<br>';
+		     flag = false;
+			 return false;
+	       }
+       });
+	$('.newsLengthCls').each(function() {
+           if($.trim($(this).val()).length > 0)
+	       {
+		     if(isNaN($.trim($(this).val()))){
+				 str += ' News Length must be number.<br>';
+				 flag = false;
+				 return false;
+			 }
+	       }
+       });
+	/* if(fileTitle.length >50)
+	{
+		str += 'Title should be less than 50 Characters<br>';
+		flag = false;
+	} */
+	if(fileDesc.length == 0)
+	{
+		str += 'Description is Required.<br>';
+		flag = false;
+	}
+	/* if(fileDesc.length > 200)
+	{
+		str += 'Description Should not exceed 200 Characters.<br>';
+		flag = false;
+	} */
+	
+	if(!locationDisabled){
+		if(scope == 0 )
+		{
+			str += 'Location Scope is Required.';
+			flag = false;
+		}
+		if(scope == 2)
+		{
+			var stateVal=document.getElementById('stateDiv').value;
+			if(stateVal == 0)
+			{
+			str += 'State Name is Required.';
+			flag = false;
+			}
+		}
+		if(scope == 3)
+		{
+			var stateVal=document.getElementById('stateDiv').value;
+			var districtVal=document.getElementById('districtDiv').value;
+			if(stateVal == 0)
+			{
+			str += 'State Name is Required.<br>';
+			flag = false;
+			}
+			if(districtVal == 0)
+			{
+			str += 'District Name is Required.';
+			flag = false;
+			}
+		}
+		if(scope == 4)
+		{
+			var stateVal=document.getElementById('stateDiv').value;
+			var districtVal=document.getElementById('districtDiv').value;
+			var constituencyVal=document.getElementById('constituencyDiv').value;
+			if(stateVal == 0)
+			{
+			str += 'State Name is Required.<br>';
+			flag = false;
+			}
+			if(districtVal == 0)
+			{
+			str += 'District Name is Required.<br>';
+			flag = false;
+			}
+			if(constituencyVal == 0)
+			{
+			str += 'Constituency Name is Required.';
+			flag = false;
+			}
+		}
+		if(scope == 5)
+		{
+			var stateVal=document.getElementById('stateDiv').value;
+			var districtVal=document.getElementById('districtDiv').value;
+			var constituencyVal=document.getElementById('constituencyDiv').value;
+			var mandalVal=document.getElementById('mandalDiv').value;
+			if(stateVal == 0)
+			{
+			str += 'State Name is Required.<br>';
+			flag = false;
+			}
+			if(districtVal == 0)
+			{
+			str += 'District Name is Required.<br>';
+			flag = false;
+			}
+			if(constituencyVal == 0)
+			{
+			str += 'Constituency Name is Required.<br>';
+			flag = false;
+			}
+			if(mandalVal == 0)
+			{
+			str += 'Mandal Name is Required.';
+			flag = false;
+			}
+		}
+		if(scope == 6 || scope == 8 || scope == 9)
+		{
+			var stateVal=document.getElementById('stateDiv').value;
+			var districtVal=document.getElementById('districtDiv').value;
+			var constituencyVal=document.getElementById('constituencyDiv').value;
+			var mandalVal=document.getElementById('mandalDiv').value;
+			var villageVal=document.getElementById('villageDiv').value;
+			if(stateVal == 0)
+			{
+			str += 'State Name is Required.<br>';
+			flag = false;
+			}
+			if(districtVal == 0)
+			{
+			str += 'District Name is Required.<br>';
+			flag = false;
+			}
+			if(constituencyVal == 0)
+			{
+			str += 'Constituency Name is Required.<br>';
+			flag = false;
+			}
+			if(mandalVal == 0)
+			{
+			str += 'Mandal Name is Required.<br>';
+			flag = false;
+			}
+			if(villageVal == 0)
+			{
+			str += 'Villiage Name is Required.';
+			flag = false;
+			}
+		}
+		if(scope == 7)
+		{
+			var stateVal=document.getElementById('stateDiv').value;
+			var districtVal=document.getElementById('districtDiv').value;
+			var constituencyVal=document.getElementById('constituencyDiv').value;
+			var mandalVal=document.getElementById('mandalDiv').value;
+			
+			if(stateVal == 0)
+			{
+			str += 'State Name is Required.<br>';
+			flag = false;
+			}
+			if(districtVal == 0)
+			{
+			str += 'District Name is Required.<br>';
+			flag = false;
+			}
+			if(constituencyVal == 0)
+			{
+			str += 'Constituency Name is Required.<br>';
+			flag = false;
+			}
+			if(mandalVal == 0)
+			{
+			str += 'Mandal Name is Required.';
+			flag = false;
+			}
+			
+		}
+	}
+	str += '</font>';
+	errorDivEle.innerHTML = str;
+	if(flag == false)
+	{ 
+		 $("#uploadNewsBtnId").css("background","#51A351");
+		$("form").submit(function (e) {
+        e.preventDefault(); 
+		});
+		$('html, body').animate({
+         scrollTop: $("#uploadNewsFileErrorDiv").offset().top
+     }, 2000);
+		
+	}
+	$('html, body').animate({
+			 scrollTop: $("#uploadNewsFileErrorDiv").offset().top
+		 }, 2000);
+return flag;
+
+}
+function changeToEEnadutxt(ck,id,sourceIndex){
+
+    if($('#'+ck).is(':checked')){
+
+		if(ck.indexOf("newsdetdescch") != -1)
+			$('#fontStatus'+sourceIndex+'').val('1');
+			
+     $('#'+id).addClass('enadu');
+
+   }else{
+
+	  if(ck.indexOf("newsdetdescch") != -1)
+				$('#fontStatus'+sourceIndex+'').val('0');
+			
+		$('#'+id).removeClass('enadu');
+   }
+}
+function getScopeForUser(){
+  
+ var jsObj =
+		{ 
+            time : timeST,
+			divId:"scopeDiv",
+  		    task:"getLocationScope"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getLocationScopeAction.action?"+rparam;						
+	callAjax(jsObj,url);
+ 
+}
+
+function changeLanguage(){
+
+	if($("#sourceTelugu").is(':checked') == true)
+	{
+		$('#newsfileTitle').addClass('enadu');
+		$('#sourceTelugu').val('true');
+			
+	}
+	else
+	{
+		$('#newsfileTitle').removeClass('enadu');	
+		$('#sourceTelugu').val(null);
+	}
+	if($("#sourceDescTelugu").is(':checked') == true){
+		$('#newsfileDescription').addClass('enadu');
+		$('#sourceDescTelugu').val('true');
+	}
+	else{
+		$('#newsfileDescription').removeClass('enadu');
+		$('#sourceDescTelugu').val(null);
+	}
+	
+	if($("#synopsysDescTelugu").is(':checked') == true){
+		$('#newsfileSynopsys').addClass('enadu');
+		$('#synopsysDescTelugu').val('true');
+	}
+	else{
+		$('#newsfileSynopsys').removeClass('enadu');
+		$('#synopsysDescTelugu').val(null);
+	}
+}
+
+function newKeywordsInserting()
+{
+  //keywords
+  var tempKeywordArray = new Array();
+    if(keywordsArray != null && keywordsArray.length > 0)
+	  for(var i in keywordsArray)
+	   tempKeywordArray.push(keywordsArray[i].name);
+	
+
+	 $(".as-selections li").each(function(){
+		var name = $.trim($(this).text()).substring(1);
+        if(tempKeywordArray.indexOf(""+name+"") == -1)
+		{
+		   var obj = {value:0,name:""+name+""};
+		   keywordsArray.push(obj);
+		}
+
+	 });
+        
+	data = {items:keywordsArray};
+
+     $(".multiKeywordList").html('');
+	 $(".multiKeywordList").html('<input type="text" name="keywordList1" id="keywordListId1"/>');
+
+	 $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+
+
+}

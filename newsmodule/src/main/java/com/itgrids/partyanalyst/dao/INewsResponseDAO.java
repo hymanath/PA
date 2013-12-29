@@ -27,4 +27,7 @@ public interface INewsResponseDAO  extends GenericDao<NewsResponse,Long>{
 	 
 	 public List<Long> getNewsResponceIdsForBtDates(int startIndex,int maxIndex,Date fromDate,Date toDate);
 	
+	 public List<Long> getFileIds(List<Long> candidatePartyFileIds);
+	 
+	 public void deleteNewsResponses(List<Long> candidatePartyFileIds);
 }

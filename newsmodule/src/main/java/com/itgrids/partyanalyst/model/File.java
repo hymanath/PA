@@ -71,6 +71,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	
 
 	private User user;
+	private User updatedBy;
     private UserAddress userAddress;
     private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
     private Set<PartyFileKeyword> partyFileKeywords = new HashSet<PartyFileKeyword>(0);
@@ -460,5 +461,15 @@ public class File extends BaseModel implements java.io.Serializable {
 		this.synopsysFont = synopsysFont;
 	}
 	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "updated_by")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public User getUpdatedBy() {
+		return updatedBy;
+	}
 
+	public void setUpdatedBy(User updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 }

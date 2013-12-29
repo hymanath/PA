@@ -344,4 +344,6 @@ public interface ICandidateDetailsService {
 	 public Map<Long,String> getCategorysCountByFileId(Set<Long> fileIds);
 	 	
 	 public List<SelectOptionVO> getKeywordsListCount();	 
+	 
+	 public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO);
 }

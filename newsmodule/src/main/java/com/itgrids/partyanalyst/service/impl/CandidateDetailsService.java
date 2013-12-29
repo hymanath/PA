@@ -1169,7 +1169,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		List<CandidatePartyDestinationVO> sourceList = newsVO.getSourceVOList();
 		List<CandidatePartyDestinationVO> destinationList = newsVO.getDestinationVOList();
 		for(CandidatePartyDestinationVO  source:sourceList){
-			if(source != null){
+			if(source != null){try {
+
 				for(CandidatePartyDestinationVO  destination:destinationList){
 					if(destination != null){
 						CandidatePartyFile candidatePartyFile = new CandidatePartyFile();
@@ -1196,12 +1197,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						 candidatePartyFile.setUpdateddate(dateUtilService.getCurrentDateAndTime());
 						 
 						 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
-						 /*if(responseId != null){
-							 NewsResponse newsResponse = new NewsResponse();
-							 newsResponse.setFile(fileDAO.get(responseId));
-							 newsResponse.setCandidatePartyFile(candidatePartyFile);
-							 newsResponseDAO.save(newsResponse);
-						 }*/
+						
 						 
 						 if(responseFileIds != null && responseFileIds.length() > 0)
 						 {
@@ -1255,7 +1251,13 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						   }
 					}
 				}
+			
+			} catch (Exception e) {
+			
 			}
+			
+			}
+			
 		}
 		
 	  
@@ -1577,7 +1579,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	{
 	 try{
 		 
-		 if(locationId == 0L || locationId == null)
+		 if(locationId == null || locationId == 0L  )
 			return null;
 		 UserAddress userAddress = new UserAddress(); 
 		 userAddress.setCountry(countryDAO.get(1L));
@@ -6891,7 +6893,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			
 		}catch (Exception e) {
 			log.debug("Exception In CandidateDetailsService getCandidatesNews Method "+e);
-			// TODO: handle exception
+			
 		}
 		return null;
 	 }
@@ -9079,4 +9081,430 @@ public void testgetCandidatesListByPartyIdsList()
 		}
 		return categorysCount;
 	}
- }
+ 
+public void saveNewSource(File file,FileSourceVO fileSourceVO){
+
+	FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
+	fileSourceLanguage.setFile(file);
+	if(fileSourceVO.getNewsDescCheck() != null)
+	 fileSourceLanguage.setFont(fontDAO.get(1));
+	
+	fileSourceLanguage.setNewsDetailedDescription(fileSourceVO.getCompleteDesc());
+	fileSourceLanguage.setLanguage(sourceLanguageDAO.get(fileSourceVO.getSourceLangId()));
+	fileSourceLanguage.setSource(sourceDAO.get(fileSourceVO.getFileSourceId()));
+	
+	
+	fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+	
+	if(fileSourceVO.getFileVOsList() != null && fileSourceVO.getFileVOsList().size() > 0)
+	{
+	 Long orderNo = 1L;
+	 for(FileVO filePathFileVO :fileSourceVO.getFileVOsList())
+	 {
+		 FilePaths filePaths = new FilePaths();
+		 
+		 filePaths.setFilePath(filePathFileVO.getDisplayImagePath() !=null?filePathFileVO.getDisplayImagePath().trim():null);
+		 filePaths.setOrderNo(orderNo);
+		 filePaths.setHaveThumnails(IConstants.FALSE);
+		 filePaths.setEdition(filePathFileVO.getNewsEditionId());
+		 if(filePathFileVO.getPageNo() != null)
+		 filePaths.setPageNo(filePathFileVO.getPageNo().intValue());
+		 if(filePathFileVO.getImportanceId() != null)
+		 filePaths.setNewsLength(filePathFileVO.getImportanceId().intValue());
+		 if(filePathFileVO.getFileType()!=null)
+		  filePaths.setFileType(fileTypeDAO.getFileType(filePathFileVO.getFileType()).get(0));
+		 
+		 filePaths.setFileSourceLanguage(fileSourceLanguage);
+		 filePathsDAO.save(filePaths); 
+		 orderNo++;
+	 }
+	}
+}
+public void saveNewKeyWords(FileVO fileVO){
+	if(fileVO.getCandidatePartyNewsVOList() != null)
+	{
+	  List<String> keywordsList = new ArrayList<String>(0);
+	    CandidatePartyNewsVO newsVO = fileVO.getCandidatePartyNewsVOList();
+		if(newsVO.getDestinationVOList() != null && newsVO.getDestinationVOList().size() > 0)
+		 for(CandidatePartyDestinationVO destinationVO :newsVO.getDestinationVOList())	
+		 {
+		  String keywords = destinationVO.getKeywordsList();
+		  if(keywords != null && !keywords.equalsIgnoreCase(""))
+		  {
+			String[] str = keywords.split(",");
+			if(str != null)
+			 for(String keyword:str)
+			  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+""))
+				  keywordsList.add(keyword.substring(1));
+		  }
+		 }
+	 
+	    if(keywordsList != null && keywordsList.size() > 0)
+	    {
+		  List<String> existingKeywords = keywordDAO.getExistingKeywordsByKeywordsList(keywordsList);
+		  for(String keyword:keywordsList)
+		   if(!existingKeywords.contains(keyword) && !keyword.equalsIgnoreCase(" "))
+		   {
+			 /*Keyword keyword2 = new Keyword(); 
+			 keyword2.setType(keyword);
+			 keyword2.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			 keyword2.setCreatedBy(fileVO.getUserId());
+			 keywordDAO.save(keyword2);*/
+			   saveKeyword(fileVO.getUserId(),keyword);
+		   }
+	    }
+	}
+}
+
+public void saveWhoAndWhomeDetails(FileVO fileVO,File file,Date createdDate){
+	if(fileVO.getCandidatePartyNewsVOList() != null)
+	{
+		boolean sourcePresent = false;
+		boolean destinationPresent = false;
+		 CandidatePartyNewsVO newsVO = fileVO.getCandidatePartyNewsVOList();
+		for(CandidatePartyDestinationVO  source:newsVO.getSourceVOList()){
+			if(sourcePresent)
+				break;
+			if(source != null){
+				if((source.getPartyId()!= null &&  source.getPartyId() > 0) || (source.getCandidateId()!= null &&  source.getCandidateId() > 0)){
+					sourcePresent = true;
+				}
+			}
+		}
+		for(CandidatePartyDestinationVO  destination:newsVO.getDestinationVOList()){
+			if(destination != null){
+				if(destinationPresent)
+					break;
+				if(destination != null){
+					if((destination.getPartyId()!= null &&  destination.getPartyId() > 0) || (destination.getCandidateId()!= null &&  destination.getCandidateId() > 0)  || (destination.getCategoryIdsStr()!= null &&  destination.getCategoryIdsStr().trim().length() > 0)){
+						destinationPresent = true;
+					}
+				}
+			}
+		}
+	    if(sourcePresent && destinationPresent)
+		    saveSourceAndDestination(file,newsVO,fileVO.getResponseFileIdsStr());
+	    else if(destinationPresent)
+		{
+		  for(CandidatePartyDestinationVO destinationVO :newsVO.getDestinationVOList())
+		  {
+		   if(destinationVO != null){
+			CandidatePartyFile candidatePartyFile = new CandidatePartyFile();
+			candidatePartyFile.setFile(file);
+			
+			candidatePartyFile.setDestinationBenefit(benefitDAO.get(destinationVO.getBenefitId()));
+			if(destinationVO.getPartyId() != null && destinationVO.getPartyId() > 0)
+			 candidatePartyFile.setDestinationParty(partyDAO.get(destinationVO.getPartyId()));
+			if(destinationVO.getCandidateId() != null && destinationVO.getCandidateId() > 0)
+			 candidatePartyFile.setDestinationCandidate(candidateDAO.get(destinationVO.getCandidateId()));
+			if(createdDate != null){
+				candidatePartyFile.setCreatedDate(createdDate);
+			}else{
+			 candidatePartyFile.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+			}
+			 candidatePartyFile.setUpdateddate(dateUtilService.getCurrentDateAndTime());
+			 
+			 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
+			 
+			/* if(fileVO.getFileId() != null){
+				 NewsResponse newsResponse = new NewsResponse();
+				 newsResponse.setFile(fileDAO.get(fileVO.getFileId()));
+				 newsResponse.setCandidatePartyFile(candidatePartyFile);
+				 newsResponseDAO.save(newsResponse);
+			 }*/
+			 
+			 if(fileVO.getResponseFileIdsStr() != null && fileVO.getResponseFileIdsStr().length() > 0)
+			 {
+			  String[] fileIdsStr = fileVO.getResponseFileIdsStr().split(",");
+			  if(fileIdsStr != null)
+			  {
+				for(String responseFileId: fileIdsStr)
+				{
+					NewsResponse newsResponse = new NewsResponse();
+					newsResponse.setFile(fileDAO.get(Long.parseLong(responseFileId)));
+					newsResponse.setCandidatePartyFile(candidatePartyFile);
+					newsResponseDAO.save(newsResponse);	
+				}
+			  }
+			 }
+			 //saving categories
+			 if(destinationVO.getCategoryIdsStr() != null && destinationVO.getCategoryIdsStr().trim().length() > 0)
+			 {
+				 String[] str = destinationVO.getCategoryIdsStr().split(",");
+				 if(str != null)
+				    {
+					  for(String categoryId: str)
+					  {
+						 if(categoryId != null && categoryId.trim().length() > 0){
+							CandidatePartyCategory candidatePartyCategory = new CandidatePartyCategory();
+							candidatePartyCategory.setGallary(gallaryDAO.get(Long.valueOf(categoryId.trim())));
+							candidatePartyCategory.setCandidatePartyFile(candidatePartyFile);
+							candidatePartyCategoryDAO.save(candidatePartyCategory);
+						 }
+					  }
+				    }
+			 }
+			 
+			 //keywords saving
+			  if(destinationVO.getKeywordsList() != null && !destinationVO.getKeywordsList().equalsIgnoreCase(""))
+			  {
+			    String[] str = destinationVO.getKeywordsList().split(",");
+			    if(str != null)
+			    {
+				  for(String keyword:str)
+				  {
+				    if(keyword != null && !keyword.equalsIgnoreCase(""))
+				    {
+				     CandidatePartyKeyword candidatePartyKeyword = new CandidatePartyKeyword();
+				     candidatePartyKeyword.setCandidatePartyFile(candidatePartyFile);
+				     candidatePartyKeyword.setKeyword(keywordDAO.get(keywordDAO.getKeywordIdByKeyword(keyword.substring(1)).get(0)));
+				     candidatePartyKeywordDAO.save(candidatePartyKeyword);
+				    }
+				   }
+			  	 }
+			   }
+		  }
+		  }
+		}
+		else if(sourcePresent)
+		{
+			for(CandidatePartyDestinationVO  source:newsVO.getSourceVOList()){
+				if(source != null){
+					CandidatePartyFile candidatePartyFile = new CandidatePartyFile();
+					candidatePartyFile.setFile(file);
+					
+					candidatePartyFile.setSourceBenefit(benefitDAO.get(source.getBenefitId()));
+					if(source.getMediaId() != null && source.getMediaId() > 0)
+					 candidatePartyFile.setMediaId(newsVO.getMediaId());
+					else
+					{
+					  if(source.getPartyId() != null)
+					  candidatePartyFile.setSourceParty(partyDAO.get(source.getPartyId()));
+					  if(source.getCandidateId() != null && source.getCandidateId() > 0)	
+					   candidatePartyFile.setSourceCandidate(candidateDAO.get(source.getCandidateId()));
+					}
+					 candidatePartyFile = candidatePartyFileDAO.save(candidatePartyFile);
+					 
+					/*if(fileVO.getFileId() != null){
+						 NewsResponse newsResponse = new NewsResponse();
+						 newsResponse.setFile(fileDAO.get(fileVO.getFileId()));
+						 newsResponse.setCandidatePartyFile(candidatePartyFile);
+						 newsResponseDAO.save(newsResponse);
+					 }*/
+					 
+					 if(fileVO.getResponseFileIdsStr() != null && fileVO.getResponseFileIdsStr().length() > 0)
+					 {
+					  String[] fileIdsStr = fileVO.getResponseFileIdsStr().split(",");
+					  if(fileIdsStr != null)
+					  {
+						for(String responseFileId: fileIdsStr)
+						{
+							NewsResponse newsResponse = new NewsResponse();
+							newsResponse.setFile(fileDAO.get(Long.parseLong(responseFileId)));
+							newsResponse.setCandidatePartyFile(candidatePartyFile);
+							newsResponseDAO.save(newsResponse);	
+						}
+					  }
+					 }
+				}
+			}
+			
+		}
+		
+	  
+	}
+}
+public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
+{
+	log.debug("Entered into editUploadedFileForCandidateParty() method in Candidate Details Service()");
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+		log.debug("Entered into uploadAFileForCandidateParty() method in Candidate Details Service()");
+		
+		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			public void doInTransactionWithoutResult(TransactionStatus status) {
+		 
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
+		UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()));
+		
+		File file = fileDAO.get(fileVO.getFileId());
+		
+		file.setFileTitle(fileVO.getTitle());
+		file.setFileDescription(fileVO.getDescription());
+		file.setSynopsysDescription(fileVO.getFileDescription1()!= null ? fileVO.getFileDescription1():null);
+		file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
+		Long regionScopeId = regionScopesDAO.get(fileVO.getLocationScope()).getRegionScopesId();
+		
+		if(regionScopeId == 5 || regionScopeId == 6 || regionScopeId == 8 ){
+			file.setLocationValue(Long.parseLong(fileVO.getLocationValue().substring(1)));			
+		}
+		else if(regionScopeId == 7){
+			Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.valueOf(fileVO.getLocationValue().toString().substring(1))).get(0);
+			file.setLocationValue(localElectionBodyDAO.get(localEleBodyId).getLocalElectionBodyId());				
+		}
+		else
+			file.setLocationValue(Long.parseLong(fileVO.getLocationValue()));
+		
+		if(fileVO.getNewsImportanceId() != null && fileVO.getNewsImportanceId() > 0)
+		 file.setNewsImportance(newsImportanceDAO.get(fileVO.getNewsImportanceId()));
+		
+		if(fileVO.getFileVOForDiaplyImage() != null)
+		{
+		  file.setFileName(fileVO.getFileVOForDiaplyImage().getDisplayImageName());
+		  file.setFilePath(fileVO.getFileVOForDiaplyImage().getDisplayImagePath() !=null?fileVO.getFileVOForDiaplyImage().getDisplayImagePath().trim():null);	
+		}else if(fileVO.getImgToDisplayDeleted()!=null && fileVO.getImgToDisplayDeleted().equalsIgnoreCase("true")){
+			file.setFileName(null);
+			  file.setFilePath(null);	
+			
+		}
+		
+		if(fileVO.getFileDate() != null)
+		{
+		 try{
+			 file.setFileDate(sdf.parse(fileVO.getFileDate())); 
+		 }catch (Exception e) {
+		  e.printStackTrace();
+		  log.error(e);
+		}
+		}
+		
+		file.setUserAddress(userAddress);
+		file.setUpdatedBy(userDAO.get(fileVO.getUserId()));
+		
+		if(fileVO.isEenadu())
+			file.setFont(fontDAO.get(1));
+		else
+			file.setFont(null);
+		if(fileVO.isDescEenadu())
+			file.setDescFont(fontDAO.get(1));
+		else 
+			file.setDescFont(null);
+		
+		if(fileVO.isSynopsysEenadu())
+			file.setSynopsysFont(fontDAO.get(1));
+		else
+			file.setSynopsysFont(null);
+		//file.setCreatedDate(dateUtilService.getCurrentDateAndTime());
+		file.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+		file.setIsDeleted("N");
+		
+		if(!fileVO.getVisibility().equalsIgnoreCase("public"))
+		 file.setIsPrivate("Y");
+		else
+			file.setIsPrivate("N");	
+		file = fileDAO.save(file);
+		
+		List<Long> candidatePartyFileIds = candidatePartyFileDAO.getCandidatePartyFileIds(file.getFileId());
+		String responseFileIds = "";
+		if(candidatePartyFileIds != null && candidatePartyFileIds.size() > 0){
+			List<Long> fileIds = newsResponseDAO.getFileIds(candidatePartyFileIds);
+			if(fileIds != null && fileIds.size() > 0){
+				for(Long fileId:fileIds){
+					responseFileIds = responseFileIds+","+fileId;
+				}
+				responseFileIds = responseFileIds.substring(1);
+				fileVO.setResponseFileIdsStr(responseFileIds);
+			}
+			newsResponseDAO.deleteNewsResponses(candidatePartyFileIds);
+			candidatePartyCategoryDAO.deleteCandidatePartyCategories(candidatePartyFileIds);
+			candidatePartyKeywordDAO.deleteCandidatePartyKeywords(candidatePartyFileIds);
+			//deleating existing who and whome
+			candidatePartyFileDAO.deleteCandidatePartyFiles(file.getFileId());
+		}
+		//newly created keywords saving
+		saveNewKeyWords(fileVO);
+		
+		//saving who,whome,categories,keywords saving
+		saveWhoAndWhomeDetails(fileVO,file,file.getCreatedDate());
+		if(fileVO.getFileSourceVOList() !=null && fileVO.getFileSourceVOList().size()>0){
+			updateUploadedFileDetails(fileVO,file);
+		}
+		}
+		});
+		
+		
+		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		return resultStatus;
+		}catch (Exception e) {
+			log.error("Exception encountered in editUploadedFileForCandidateParty() method, Exception - ",e);
+			resultStatus.setExceptionEncountered(e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+}
+	public void updateUploadedFileDetails(FileVO fileVO,File file){
+		log.debug("entered into updateUploadedFileDetails() method of CandidateDetailsService class.");
+		try {		
+			if(fileVO.getFileSourceVOList() != null && fileVO.getFileSourceVOList().size() > 0)
+			{
+			  for(FileSourceVO fileSourceVO :fileVO.getFileSourceVOList())
+			  { 
+				if(fileSourceVO != null){ 
+				 if(fileSourceVO.getFileSourceLangId() == null){
+				       saveNewSource(file,fileSourceVO);
+				 }
+			     else if(fileSourceVO.getFileSourceLangId() != null && fileSourceVO.getDeleted() != null &&  fileSourceVO.getDeleted().equalsIgnoreCase("true")){
+			    	 filePathsDAO.deleteFilePathsByFileSourceLangId(fileSourceVO.getFileSourceLangId());
+			    	 fileSourceLanguageDAO.deleteFileSourceLanguage(fileSourceVO.getFileSourceLangId());
+			     }else if(fileSourceVO.getFileSourceLangId() != null){
+			    	 FileSourceLanguage fileSourceLanguage = fileSourceLanguageDAO.get(fileSourceVO.getFileSourceLangId());
+			    	 if(fileSourceVO.getNewsDescCheck() != null)
+			    		 fileSourceLanguage.setFont(fontDAO.get(1));
+			    	 else
+			    		 fileSourceLanguage.setFont(null);
+			    	 
+			    		fileSourceLanguage.setNewsDetailedDescription(fileSourceVO.getCompleteDesc());
+			    		fileSourceLanguage.setLanguage(sourceLanguageDAO.get(fileSourceVO.getSourceLangId()));
+			    		fileSourceLanguage.setSource(sourceDAO.get(fileSourceVO.getFileSourceId()));
+			    		fileSourceLanguage = fileSourceLanguageDAO.save(fileSourceLanguage);
+			    		Long orderNo = 0L;
+			    		for(FileVO filePath:fileSourceVO.getFileVOsList()){
+			    			if(filePath.getPathId() != null){
+			    				if(filePath.getDeleted() != null && filePath.getDeleted().equalsIgnoreCase("true")){
+			    					filePathsDAO.deleteFilePathDetailsByFilePAthsId(filePath.getPathId());
+			    				}else{
+			    					FilePaths filePaths = filePathsDAO.get(filePath.getPathId());
+			    					orderNo = filePaths.getOrderNo();
+			    					saveFilePaths(filePath,fileSourceLanguage,filePaths);
+			    				}
+			    			}else{
+			    				FilePaths filePaths = new FilePaths();
+			    				orderNo = filePathsDAO.getMaxfilePathsOrderNo(fileSourceVO.getFileSourceLangId());
+			    				orderNo = orderNo+1;
+			    				filePaths.setOrderNo(orderNo);
+		    					saveFilePaths(filePath,fileSourceLanguage,filePaths);
+			    			}
+			    		}
+			    		
+			     }
+			   }
+			  }
+			}
+		} catch (Exception e) {
+			log.error("exception occured in updateUploadedFileDetails() method of CandidateDetailsService class.",e);
+		}
+	}
+	public void saveFilePaths(FileVO filePath,FileSourceLanguage fileSourceLanguage,FilePaths filePaths){
+		log.debug("entered into saveFilePaths() method of CandidateDetailsService class.");
+		try {
+				filePaths.setFileSourceLanguage(fileSourceLanguage);
+				if(filePath.getDisplayImagePath() != null)
+				 filePaths.setFilePath(filePath.getDisplayImagePath().trim());
+				 //filePaths.setOrderNo(orderNo);
+				 filePaths.setHaveThumnails(IConstants.FALSE);
+				 filePaths.setEdition(filePath.getNewsEditionId());
+				 if(filePath.getPageNo() != null)
+				 filePaths.setPageNo(filePath.getPageNo().intValue());
+				 if(filePath.getImportanceId() != null)
+				 filePaths.setNewsLength(filePath.getImportanceId().intValue());
+				 if(filePath.getFileType()!=null)
+				  filePaths.setFileType(fileTypeDAO.getFileType(filePath.getFileType()).get(0));
+				 filePaths.setFileSourceLanguage(fileSourceLanguage);
+				 filePathsDAO.save(filePaths); 
+				 
+			} catch (Exception e) {
+				log.error("exception occured in saveFilePaths() method of CandidateDetailsService class.",e);
+			}
+		
+	}
+}
