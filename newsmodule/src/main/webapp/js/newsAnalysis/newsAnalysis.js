@@ -1,3 +1,4 @@
+
 function callAjax(jsObj,url)
 	{
 
@@ -32,21 +33,30 @@ function callAjax(jsObj,url)
 					else if (jsObj.task == "getSource")
 					{
 						fillSelectOptionsVO(myResults,jsObj.divId,"Source");	
-					}else if(jsObj.task == "getAnalysedData"){
+					}else if(jsObj.task == "getAnalysedData" || jsObj.task == "getAnalysedData1"){
 					  if(myResults.buildMethod == "first"){
-					    buildSearchDataTableForLvlOne(myResults);
+					    buildSearchDataTableForLvlOne(myResults,jsObj);
 					  }else if(myResults.buildMethod == "second"){
-						buildSearchDataTableForLvlTwo(myResults);
+						buildSearchDataTableForLvlTwo(myResults,jsObj);
 					  }else if(myResults.buildMethod == "third"){
-						buildSearchDataTableForLvlThree(myResults);
+						buildSearchDataTableForLvlThree(myResults,jsObj);
 					  }
 					  else if(myResults.buildMethod == "six")
 					  {
-						buildSearchDataTableForLvlSix(myResults)
+						buildSearchDataTableForLvlSix(myResults,jsObj)
 					  }
+					  $("#submitDataImg").hide();
+					}/*else if(jsObj.task == "getAnalysedData1"){
+					  if(myResults.buildMethod == "first"){
+					    buildSearchDataTableForLvlOne(myResults,jsObj);
+					  }else if(myResults.buildMethod == "second"){
+						buildSearchDataTableForLvlTwo(myResults,jsObj);
+					  }else if(myResults.buildMethod == "third"){
+						buildSearchDataTableForLvlThree1(myResults,jsObj);
+					  }
+					 
 					   $("#submitDataImg").hide();
-					}
-				
+					}*/				
 				}
 				catch(e)
 				{   
@@ -63,8 +73,15 @@ function callAjax(jsObj,url)
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 	
- function buildSearchDataTableForLvlOne(result){
+ function buildSearchDataTableForLvlOne(result,jsObj){
 	 var str ="";
+	 var id ="";
+	 if(jsObj.task == "getAnalysedData"){
+	   id = "responseTable";
+	 }else{
+	   id = "responseTable1";
+	 }
+	 $("#"+id).css("display","block");
     if(result.subList != null && result.subList.length > 0){
 	   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
 	   str+="  <thead><tr>";
@@ -134,13 +151,21 @@ function callAjax(jsObj,url)
 	   }
 	   str+="  </tbody>";
 	   str+="</table>";
-	   $("#responseTable").html(str);
+	   $("#"+id).html(str);
 	 }else{
-	   $("#responseTable").html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
+	   $("#"+id).html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
 	 } 
    }
-    function buildSearchDataTableForLvlTwo(result){
+    function buildSearchDataTableForLvlTwo(result,jsObj){
          var str ="";
+		 var str ="";
+		 var id ="";
+		 if(jsObj.task == "getAnalysedData"){
+		   id = "responseTable";
+		 }else{
+		   id = "responseTable1";
+		 }
+		 $("#"+id).css("display","block");
      if(result.subList != null && result.subList.length > 0){
 	   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
 	   str+="  <thead><tr>";
@@ -177,12 +202,92 @@ function callAjax(jsObj,url)
 	   }
 	   str+="  </tbody>";
 	   str+="</table>";
-	   $("#responseTable").html(str);
+	   $("#"+id).html(str);
 	 }else{
-	   $("#responseTable").html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
+	   $("#"+id).html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
 	 }
     }	
-	function buildSearchDataTableForLvlThree(result){
+	function buildSearchDataTableForLvlThree(result,jsObj){
+		
+		 var str ="";
+		 var str ="";
+		 var id ="";
+		 if(jsObj.task == "getAnalysedData"){
+		   id = "responseTable";
+		 }else{
+		   id = "responseTable1";
+		 }
+		 $("#"+id).css("display","block");
+	     if(result.subList != null && result.subList.length > 0){
+		   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
+		   str+="  <thead><tr>";
+		   for(var title in result.levels){
+		    str+="    <th>"+result.levels[title]+"</th>";
+		   }
+		   str+="    <th>News Count</th>";
+		   str+="  </tr></thead>";
+		   str+="  <tbody>";
+		   
+		     for(var i in result.subList){//List<Location>
+				  if(result.subListPresent){
+				   str+="<tr><td rowspan='"+result.subList[i].rowSpan+"'>"+result.subList[i].name+"</td>";
+				  }
+			       for(var j in result.subList[i].subList){//List<SouCandidate>
+				        if(result.subList[i].subListPresent){
+							if(j == 0){
+							  if(result.subListPresent){
+							    str+="<td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
+							  }else{
+							    str+="<tr><td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
+							  }
+							}else{
+							   str+="<tr><td rowspan='"+result.subList[i].subList[j].rowSpan+"'>"+result.subList[i].subList[j].name+"</td>";
+							}
+					    }
+					    for(var k in result.subList[i].subList[j].subList){//List<Candidate>
+					       if(result.subList[i].subList[j].subListPresent){
+							  if(k == 0){
+								  if(result.subList[i].subListPresent || result.subListPresent){
+									str+="<td rowspan='"+result.subList[i].subList[j].subList[k].rowSpan+"'>"+result.subList[i].subList[j].subList[k].name+"</td>";
+								  }else{
+									str+="<tr><td rowspan='"+result.subList[i].subList[j].subList[k].rowSpan+"'>"+result.subList[i].subList[j].subList[k].name+"</td>";
+								  }
+							  }else{
+							      str+="<tr><td rowspan='"+result.subList[i].subList[j].subList[k].rowSpan+"'>"+result.subList[i].subList[j].subList[k].name+"</td>";
+							  }
+	                       }else if(!(result.subList[i].subListPresent || result.subListPresent)){
+	                          str+="<tr>";
+	                       }					  
+						   for(var l in result.subList[i].subList[j].subList[k].subList){//List<Source>
+						       var obj = result.subList[i].subList[j].subList[k].subList[l];
+							  if(result.subList[i].subList[j].subList[k].subListPresent){
+								  if(l == 0){
+									str+="<td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News' onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+								  }else{
+									str+="<tr><td>"+result.subList[i].subList[j].subList[k].subList[l].name+"</td><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+								  }
+							  }else{
+								  if(l == 0){
+									str+="<td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+								  }else{
+									str+="<tr><td><a href='javascript:void(0)' title='Click Here To See All News'  onclick='getClickedNews(\""+obj.sourceCandId+"\",\""+obj.destiCandId+"\",\""+obj.sourcePartyId+"\",\""+obj.destiPartyId+"\",\""+obj.locationLvl+"\",\""+obj.locationId+"\",\""+obj.sourceId+"\",\""+obj.categoryId+"\",\""+obj.keywordId+"\",\""+obj.benifitsFor+"\",\""+obj.sourceBenifitId+"\",\""+obj.destiBenifitId+"\",\"1\");'>"+result.subList[i].subList[j].subList[k].subList[l].total+"</a></td></tr>";
+								  }
+							  }
+						  }
+					    }
+					  
+				   }
+			 
+		   }
+		   str+="  </tbody>";
+		   str+="</table>";
+		   $("#"+id).html(str);
+		 }else{
+		   $("#"+id).html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
+		 } 
+	    }
+		/*function buildSearchDataTableForLvlThree1(result){
+		 $("#responseTable1").css("display","block");
 		 var str ="";
 	     if(result.subList != null && result.subList.length > 0){
 		   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
@@ -247,16 +352,23 @@ function callAjax(jsObj,url)
 		   }
 		   str+="  </tbody>";
 		   str+="</table>";
-		   $("#responseTable").html(str);
+		   $("#responseTable1").html(str);
 		 }else{
-		   $("#responseTable").html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
+		   $("#responseTable1").html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
 		 } 
-	    }
+	    }*/
 		
-		function buildSearchDataTableForLvlSix(result)
+		function buildSearchDataTableForLvlSix(result,jsObj)
 		{
-			str = "";
-			$("#responseTable").html(str);
+		    var str ="";
+			 var id ="";
+			 if(jsObj.task == "getAnalysedData"){
+			   id = "responseTable";
+			 }else{
+			   id = "responseTable1";
+			 }
+			 $("#"+id).css("display","block");
+			$("#"+id).html(str);
 			if(result.subList != null && result.subList.length > 0)
 			{
 				
@@ -275,8 +387,10 @@ function callAjax(jsObj,url)
 					str += '</tr>';
 				}
 				str += '</tbody><table>';
-				$("#responseTable").html(str);
-			}
+				$("#"+id).html(str);
+			}else{
+		      $("#"+id).html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
+		   } 
 		}
 		
 	/* function openForSelectdNews(sourcePartyId,destPartyId,soureCandId,destinationCandId)
@@ -588,6 +702,10 @@ $(document).ready(function(){
 
 function getAnalysisData()
 {
+    $("#responseTable").html("");
+	$("#responseTable1").html("");
+	$("#responseTable").hide();
+	$("#responseTable1").hide();
     $("#errormessageDiv").hide();
 	var fromdate = $("#fromDateId").val();
 	var todate   = $("#todateId").val();
@@ -600,6 +718,8 @@ function getAnalysisData()
 	var locationLevelId = $("#locationLevelId option:selected").val();
 	var locationLevelValue = "";
 	var selectedLocationvalues = "";
+	var advanceView = booleanVal;
+	
 	if(locationLevelId == 0)
 	{
 		locationLevelValue = 0;
@@ -698,7 +818,35 @@ function getAnalysisData()
 			analyseCandidate:analyseCandidate,
 			task : "getAnalysedData"	
 		};
-	
+		var jsObj1 = {
+			time : timeST,
+			fromdate :fromdate,
+			todate : todate,
+			whoPartyId : whomPartyId,
+			whomPartyId : whoPartyId,
+			whoCandidateId : whomCandidateId,
+			whomCandidateId : whoCandidateId,
+			whoBenfitId : whomBenfitId,
+			whomBenfitId : whoBenfitId,
+			locationLevelId : locationLevelId,
+			locationLevelValue : locationLevelValue,
+			newsSourceId : newsSourceId,
+			KeyWordsList : KeyWordsList,
+			checkedType:checkedType,
+			analyseCandidate:analyseCandidate,
+			task : "getAnalysedData1"	
+		};
+	getAnalysisData1(jsObj1);
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getAnalysedDataAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+
+function getAnalysisData1(jsObj)
+{
+    if(booleanVal){
+		return;			
+	}
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "getAnalysedDataAction.action?"+rparam;						
 	callAjax(jsObj,url);
