@@ -37,7 +37,7 @@
 </head>
 <body>
   <div class="container">
-     <div id="newsDiv"></div>
+     <div id="newsDiv"><div id="ajaximg"><img id="" width="18" height="11" style="width: 150px; height: 15px;margin-left:400px;margin-top:100px;" src="images/icons/goldAjaxLoad.gif"></div></div>
   </div>
   
   <script type="text/javascript">
@@ -54,7 +54,8 @@
 															
 								
 							}catch (e) {
-						     console.log(e);
+								if(document.getElementById('ajaximg') != null)
+								document.getElementById('ajaximg').innerHTML ="";
 							}  
 	               },
 	               scope : this,

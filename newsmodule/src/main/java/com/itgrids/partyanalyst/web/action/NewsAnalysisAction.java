@@ -390,6 +390,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 				vo.setLocationValues(locationLevelValue.trim());
 			}
 			result = newsAnalysisService.analyseNewsWithSelectedParameters(vo);
+			//newsAnalysisService.getResults(vo);
 		} catch (Exception e) {
 			LOG.error("Exception raised in getAnalysedData method in NewsAnalysisAction Action",e);
 		}

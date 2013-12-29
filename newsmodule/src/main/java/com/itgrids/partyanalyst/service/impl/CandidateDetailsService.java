@@ -9470,6 +9470,8 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 			    			}else{
 			    				FilePaths filePaths = new FilePaths();
 			    				orderNo = filePathsDAO.getMaxfilePathsOrderNo(fileSourceVO.getFileSourceLangId());
+			    				if(orderNo == null)
+			    					orderNo = 0l;
 			    				orderNo = orderNo+1;
 			    				filePaths.setOrderNo(orderNo);
 		    					saveFilePaths(filePath,fileSourceLanguage,filePaths);

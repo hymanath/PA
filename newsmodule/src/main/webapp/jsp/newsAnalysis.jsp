@@ -44,7 +44,23 @@
 	.analysisResult thead tr th{background:#ffcc00;}
 	.tabel tr, .tabel td {border-top: 1px solid #FFCC00;}
 	</style>
-	
+    <script type="text/javascript">
+	var booleanVal = false;
+	//$('#analyseCandidateDesti').attr('checked','checked');
+
+	$("#advanceView").live("click",function(){
+		if(!booleanVal){
+			booleanVal = true;
+			$('#analyseCandidateDesti').attr('checked',false);
+			$('#whomPartysList').val(0);
+			$("#advanceDiv").css("display","block");
+		}else{
+			booleanVal = false;
+			$('#analyseCandidateDesti').attr('checked',true);
+			$("#advanceDiv").css("display","none");
+		}
+	});
+	</script>
 </head>
 <body>
 
@@ -97,6 +113,7 @@
 						</div>
 					</div><!------Who Div END---->
 					
+					<div id="advanceDiv" style="display:none">
 					<!------Whom Div---->
 					<div class="row-fluid label label-success-50  m_top10">
 						<div class="span1 btn-block btn btn-large">
@@ -122,7 +139,7 @@
 						</div>
 						<div class="span2">
 							<label>Analyse By Whome</label>
-							 <input type="checkbox" id="analyseCandidateDesti" />				
+							 <input type="checkbox" id="analyseCandidateDesti" checked="true" class="srish"/>				
 						</div>
 					</div><!------Whom Div END---->
 					
@@ -193,12 +210,16 @@
 						</div>-->
 				
 					</div>
+					</div>
+
+					<div style="height: 25px; margin-top: 10px;"><button class="btn btn-success" type="submit" id="advanceView" style="float:right;">Advance Seach</button></div>
 					<!-------Submit Button------>
 					<div class="form-actions text-center">
 						<button class="btn btn-success" type="submit" onClick="getAnalysisData();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
 						<div id="errormessageDiv" style="display:none;color:red;">Please Select Atleast One Option To Analyse</div>
 					</div><!-------Submit Button END------>
-					<div id="responseTable" style="overflow-x:scroll;"></div>
+					<div id="responseTable" style="overflow-x:scroll;display:none;"></div>
+					<div id="responseTable1" style="overflow-x:scroll; margin-top: 20px;display:none;"></div>
 				</div>	
 			</div>
 			<!--------- Row-1 End -------->

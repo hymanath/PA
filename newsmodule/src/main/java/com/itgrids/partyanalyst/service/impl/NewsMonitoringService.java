@@ -6014,7 +6014,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
     	    			for (Object[] params : fileDetails) {
     	    				
     	    				FileSourceVO fileSourceVO = new FileSourceVO();
-    	    				fileSourceVO.setFilePathId(Long.valueOf(params[8]!= null?params[8].toString():"0"));
+    	    				fileSourceVO.setFilePathId(params[8]!= null?Long.valueOf(params[8].toString()):null);
     	    				fileSourceVO.setFileSourceLangId(sourceLangId);
     	    				fileSourceVO.setFileImageFileName(params[0]!= null?params[0].toString():"");
     	    				fileSourceVO.setNewsEdition(Integer.parseInt(params[1]!= null?params[1].toString():"0"));
@@ -6068,7 +6068,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
     	    			}
 				}else{
     				FileSourceVO fileSourceVO = new FileSourceVO();
-    				fileSourceVO.setFilePathId(0l);
+    				fileSourceVO.setFilePathId(null);
     				fileSourceVO.setFileSourceLangId(sourceLangId);
     				fileSourceVO.setFileImageFileName("");
     				FileSourceLanguage fileSourceLanguage = fileSourceLanguageDAO.get(sourceLangId);
