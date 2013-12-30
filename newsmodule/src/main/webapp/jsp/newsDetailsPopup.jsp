@@ -458,7 +458,7 @@ function buildContentDetails()
 			str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"></div>';
 			
 			}
-		if(detaildesc != null){
+		if(detaildesc != null && detaildesc !=''){
 		   if(detaildescsource)
 		     str +='<div id="detaildescoffile"><b>Detail Description :</b><span class="enadu">'+detaildesc+'</span></div>';
 		   else
@@ -603,7 +603,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	  var stra1='';
 	 var detaildesc =  selectedContentFile.fileVOList[m].description;
 		var detaildescsource = selectedContentFile.fileVOList[m].eenadu;
-		if(detaildesc != null){
+		if(detaildesc != null && detaildesc !=''){
 		   if(detaildescsource)
 		     stra1 +='<div><b>Detail Description :</b><span class="enadu">'+detaildesc+'</span></div>';
 		   else
