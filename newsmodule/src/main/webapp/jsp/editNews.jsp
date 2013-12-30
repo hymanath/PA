@@ -13,11 +13,12 @@
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
-  <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery1.10.3-ui.css" />
+  <!-- <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery-ui.css" /> -->
   <script src="js/jquery-1.9.1.js"></script>
   <script src="js/ui/1.10.3/jquery-ui.js"></script>
 
-   <link rel="stylesheet" href="js/ui/1.9.0-themes-base/jquery-ui.css" />
+  <!-- <link rel="stylesheet" href="js/ui/1.9.0-themes-base/jquery-ui.css" /> -->
     <script src="js/jquery-1.8.2.js"></script>
     <script src="js/ui/1.9.0-themes-base/jquery-ui.js"></script>
 
@@ -93,7 +94,14 @@
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <script type="text/javascript" src="js/editNews.js"></script>
+
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+
 <style type="text/css">
+textarea{
+resize:none;
+}
 #newsedition0{
 	width: 150px;
 }
@@ -503,8 +511,8 @@ $(".destinationCandidateCloseImg").live("click",function(){
 			<input type="hidden" class="sources" name="candidatePartyNewsVOList.sourceVOList[${status.index}].candidatePartyFileId" value="${news.sourceVOList[0].sourceVOList[status.index].candidatePartyFileId}"/>
 						
 			  <div style="margin-left: 0px;margin-top:15px;" class="row alert alert-warning" id="whocandidate${status.index}">
-					<div class="span5 well well-small " style="width: 350px;">
-						<label style="margin-bottom: -10px;"><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-left: 210px; margin-bottom: 9px;" ></span>
+					<div class="span5 well well-small " style="width: 300px;">
+						<label style="margin-bottom: -10px;"><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-left: 100px; margin-bottom: 9px;" ></span>
 						<s:select class="input-block-level" id="partiesList%{#status.index}" list="news.partyList" listKey="id" listValue="name" name="candidatePartyNewsVOList.sourceVOList[%{#status.index}].partyId" onchange="getCandidatesListByPartyId(this.value,'candidateListForParty%{#status.index}',11)" value="news.sourceVOList[0].sourceVOList[#status.index].partyId"/>
 						<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />
 						
@@ -807,13 +815,13 @@ $(".destinationCandidateCloseImg").live("click",function(){
 					
 					<s:if test="news.fileSourceVOList[#k.index].sourceFileList[#i.index].newsFont != 0">				
 					<span class="help-block">&nbsp;&nbsp;&nbsp;
-						<textarea  name="fileSourceVOList[${k.index}].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls enadu" id="aaanewsfileDescription${k.index}" style="width: 900px;" >${news.fileSourceVOList[0].sourceFileList[0].newsDescCheck}</textarea>
+						<textarea  name="fileSourceVOList[${k.index}].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls enadu" id="aaanewsfileDescription${k.index}" style="width: 900px;" >${news.fileSourceVOList[k.index].sourceFileList[i.index].newsDescCheck}</textarea>
 						
 						<input style="margin-top: -1px;" class="" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].newsDescCheck" onclick="changeToEEnadutxt('newsdetdescchk${k.index}','aaanewsfileDescription${k.index}',${k.index});" id="newsdetdescchk${k.index}" type="checkbox" checked="true"/>&nbsp;Please check if title is from eenadu.net</span>
 					</s:if>
 					<s:else>
 						<span class="help-block">&nbsp;&nbsp;&nbsp;
-						<textarea  name="fileSourceVOList[${k.index}].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls " id="aaanewsfileDescription${k.index}" style="width: 900px;" >${news.fileSourceVOList[0].sourceFileList[0].newsDescCheck}</textarea>
+						<textarea  name="fileSourceVOList[${k.index}].completeDesc" rows="2" cols="20" class="input-block-level completeDetailedDescCls " id="aaanewsfileDescription${k.index}" style="width: 900px;" >${news.fileSourceVOList[k.index].sourceFileList[i.index].newsDescCheck}</textarea>
 						
 						<input style="margin-top: -1px;" class="" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].newsDescCheck" onclick="changeToEEnadutxt('newsdetdescchk${k.index}','aaanewsfileDescription${k.index}',${k.index});" id="newsdetdescchk${k.index}" type="checkbox" />&nbsp;Please check if title is from eenadu.net</span>
 					</s:else>	
