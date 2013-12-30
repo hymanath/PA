@@ -92,6 +92,7 @@
 		<!--------- Row-1 -------->
 			<div class="row m_top10">
 				<div class="span2">
+				<div class="errorMsgDiv1"></div>
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>${scope} News</h4>
 						<div class="row-fluid widget">						
@@ -101,7 +102,7 @@
 								<td class="tdWidth1">District:<font id="requiredValue" class="requiredFont">*</font></td>
 								</tr>
 								<tr>
-								<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="addCssStyle();"></td>	 
+								<td><select id="userAccessDistrictList" class="selectWidth" name="userAccessDistrictList" onchange="addCssStyle();handleSubmit1();"></td>	 
 							</tr>
 						</table>
 						<table  id="showScopeSubsC">	
@@ -109,12 +110,12 @@
 								<td class="tdWidth1">Constituency:<font id="requiredValue" class="requiredFont">*</font></td>
 								</tr>
 								<tr>
-								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
+								<td><select id="userAccessConstituencyList" class="selectWidth" name="userAccessConstituencyList" onchange="addCssStyle();handleSubmit1();"><!-- onchange="getMandalList(this.options[this.selectedIndex].value);">-->
 								</select></td>	 
 							</tr>
 						</table>
 						
-						<button id="sendButton" class="btn btn-warning" onclick="addCssStyle(),getNewsForPagination(0)" style="margin-bottom: 15px; font-weight:bold;" > View News</button> 
+						<button id="sendButton" class="btn btn-warning" onclick="addCssStyle();handleSubmit1();" style="margin-bottom: 15px; font-weight:bold;" > View News</button> 
 						</div>
 				</div>
 						</div>
@@ -345,6 +346,47 @@ function getNewsForPagination(num)
 	var url = "getPartyWiseNewsDetailsForALocation.action?"+rparam;						
 	callsAjax(jsObj,url);  
  }
+
+ var locationName = '';
+	var scopeIdVal;
+	var scope = '${scope}';
+	var PartyName = 'TDP';
+	var partyId = 872;
+	function handleSubmit1()
+	{		
+		$('#errorMsgDiv1').html('');
+	
+	  
+		if(scope == '0'){
+			$('#errorMsgDiv1').html('<span style="margin-left: -120px;"> Please Select Scope Value </span>');
+			$('#listValue').css("border","1px solid IndianRed");
+			return false;
+		}
+		
+			if(scope == "District"){
+				scopeIdVal = document.getElementById("userAccessDistrictList").value;	
+				locationName = $('#userAccessDistrictList option:selected').text();
+			}
+			if(scope == "Constituency"){
+				scopeIdVal = document.getElementById("userAccessConstituencyList").value;	
+				locationName = $('#userAccessConstituencyList option:selected').text();
+			}
+			if(scopeIdVal == '0' || scopeIdVal == 0)
+		    {
+			 if(scope == "District")
+			  $('#errorMsgDiv1').html('<span style="margin-left: -100px;"> Please Select District. </span>');
+			 else
+			  $('#errorMsgDiv1').html('<span style="margin-left: -100px;"> Please Select Constituency. </span>');
+
+			 return;
+
+		    }
+			if(scopeIdVal != '0'){			
+			var urlStr="partyWiseNewsPopupAction.action?scope="+scope+"&locationName="+locationName+"&locationValue="+scopeIdVal+"&partyName="+PartyName+"&partyId="+partyId;			
+			var updatedBrowser = window.open(urlStr,'_blank');	
+			updatedBrowser.focus();
+			}
+	}
 </script>	
 </body>
 </html>
