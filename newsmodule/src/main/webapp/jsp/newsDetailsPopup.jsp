@@ -451,8 +451,8 @@ function buildContentDetails()
 					str +='<div><span><b>Description: </b></span>'+descriptionStr+'</div>';
 				}
 		   if(pathStr != null){
-			str +='<div id="imgDiv" class="popupcontainer"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
-			str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+titleStr+'" title="'+descriptionStr+'" style="width:950px;height:850px;" src="'+pathStr+'" /></div>';
+			str +='<div id="imgDiv" class="popupcontainer"><img  title="'+descriptionStr+'" style="max-width:600px;max-length:800px;" src="'+pathStr+'" /></div>';
+			str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img title="'+descriptionStr+'" style="width:950px;height:850px;" src="'+pathStr+'" /></div>';
 			}else{
 			 str +='<div id="imgDiv" style="display:none;" class="popupcontainer"></div>';
 			str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"></div>';
@@ -480,7 +480,7 @@ function buildContentDetails()
 	         for(var j=1;j<selectedContentFile.fileVOList[0].fileVOList.length;j++)
 	         {
 	           if(selectedContentFile.fileVOList[0].fileVOList[j].path != null)
-	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
+	            str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[0].fileSourceLanguageId+','+selectedContentFile.fileVOList[0].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[0].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60"  title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[0].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[0].fileVOList[j].orderName+'</a></td>';
 	         }
 		 
 	       str += '  </tr></table>';
@@ -588,8 +588,8 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	  var str ='';
 	  if(selectedContentFile.fileVOList[m].fileVOList != null && selectedContentFile.fileVOList[m].fileVOList.length > 0){
 	    if(selectedContentFile.fileVOList[m].fileVOList[0].path != null){
-		 str+='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
-		 str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="width:950px;height:850px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" /></div>';
+		 str+='<div class="" id="imgDiv" style="text-align:center;"><img  title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" ></img></div>';
+		 str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img title="'+selectedContentFile.description+'" style="width:950px;height:850px;" src="'+selectedContentFile.fileVOList[m].fileVOList[0].path+'" /></div>';
 	     $("#imgDiv").show();
 	    }else{
 	    	$("#imgDiv").hide();
@@ -619,7 +619,7 @@ function showNewAnotherSource(fileSourceLanguageId,type)
 	    for(var j=1;j<selectedContentFile.fileVOList[m].fileVOList.length;j++)
 	     {
 		    if(selectedContentFile.fileVOList[m].fileVOList[j].path != null)
-	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
+	         str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[m].fileSourceLanguageId+','+selectedContentFile.fileVOList[m].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[m].fileVOList[j].path+'\',\'other\')"><img  width="65" height="60"  title="'+selectedContentFile.description+'"  src="'+selectedContentFile.fileVOList[m].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[m].fileVOList[j].orderName+'</a></td>';
 			
 	     }
 		 
@@ -649,8 +649,8 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
     if(selectedContentFile.fileVOList[i].fileSourceLanguageId == fileSourceLanguageId)
 	{
 	  
-	    var str='<div class="" id="imgDiv" style="text-align:center;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+path+'"></img></div>';
-		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" style="width:950px;height:850px;" src="'+path+'" /></div>';
+	    var str='<div class="" id="imgDiv" style="text-align:center;"><img  title="'+selectedContentFile.description+'" style="max-width:600px;max-length:800px;" src="'+path+'"></img></div>';
+		str +='<div id="zoomImageDiv" class="popupcontainer" style="display:none;"><img  title="'+selectedContentFile.description+'" style="width:950px;height:850px;" src="'+path+'" /></div>';
 	  document.getElementById("imgDiv").innerHTML = str;
 	
 	   str = '<center><table><tr>';
@@ -660,7 +660,7 @@ function showNextNewsPart(fileSourceLanguageId,orderNo,path,type)
 		   if(selectedContentFile.fileVOList[i].fileVOList[j].orderNo != orderNo)
 		    {
 			   if(selectedContentFile.fileVOList[i].fileVOList[j].path != null) 
-	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60" alt="'+selectedContentFile.title+'" title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
+	             str += '<td><a style="color:#FF4500;margin:5px;" href="javascript:{}" onclick="showNextNewsPart('+selectedContentFile.fileVOList[i].fileSourceLanguageId+','+selectedContentFile.fileVOList[i].fileVOList[j].orderNo+',\''+selectedContentFile.fileVOList[i].fileVOList[j].path+'\',\'other\')"><img width="65" height="60"  title="'+selectedContentFile.description+'" src="'+selectedContentFile.fileVOList[i].fileVOList[j].path+'" /><br />&nbsp;&nbsp;'+selectedContentFile.fileVOList[i].fileVOList[j].orderName+'</a></td>';
 	         
 		    }
 		 }
