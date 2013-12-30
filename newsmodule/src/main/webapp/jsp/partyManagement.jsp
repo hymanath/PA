@@ -13,12 +13,10 @@
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
-  <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery1.10.3-ui.css" />
   <script src="js/jquery-1.9.1.js"></script>
   <script src="js/ui/1.10.3/jquery-ui.js"></script>
-
-   <link rel="stylesheet" href="js/ui/1.9.0-themes-base/jquery-ui.css" />
-    <script src="js/jquery-1.8.2.js"></script>
+    <script src="js/jquery-1.8.2.js"></script>	
     <script src="js/ui/1.9.0-themes-base/jquery-ui.js"></script>
  <!-- <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js">
@@ -2570,9 +2568,15 @@ function createReport()
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
   
-$("#fromDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
+$("#fromDateId1").datepicker({ 
+dateFormat: 'dd/mm/yy',
+maxDate : new Date()
+ });
 $("#fromDateId1").datepicker("setDate", new Date());
-$("#toDateId1").datepicker({ dateFormat: 'dd/mm/yy' });
+$("#toDateId1").datepicker({ 
+dateFormat: 'dd/mm/yy',
+maxDate : new Date()
+ });
 $("#toDateId1").datepicker("setDate", new Date());
 $("#newDesignationDiv").css("display","none");
 $("#newPartyCreationDiv").css("display","none");
@@ -3180,7 +3184,10 @@ function uploadNewsForPartyAndCandidate(fileId)
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getPartyGallariesForUplaod("News Gallary","whomegallaryId");
 
-	$("#newsdatedatepic").datepicker({ dateFormat: 'dd/mm/yy' });
+	$("#newsdatedatepic").datepicker({ 
+	dateFormat: 'dd/mm/yy',
+	maxDate : new Date()
+	});
     $("#newsdatedatepic").datepicker("setDate", new Date());
 	
 	 getScopes();
