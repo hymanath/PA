@@ -3035,7 +3035,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11)">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-bottom: 9px;float:right;" >&nbsp;</span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
