@@ -200,6 +200,7 @@ var keywordGallary = new Array();
 var districtsArr = new Array();
 var assemblyConstiArr = new Array();
 var parliamentConstiArr = new Array();
+var loginUserType = '${sessionScope.USER.userAccessType}';
 
 <c:forEach var="districts" items="${districtsList}">
 	var districtList ={
