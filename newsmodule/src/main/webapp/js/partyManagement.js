@@ -6963,20 +6963,30 @@ function getTotalNewsWithPagination()
    else if(scope == 'ASSEMBLY CONSTITUENCY')
 	 locationVal = $("#assembSelReportId1").val();
 
-  var newsColumns = [
-           {key:"ADD RESPONSE",label:"ADD RESPONSE",formatter:YAHOO.widget.DataTable.checkBox},
-		   {key:"source", label:"SOURCE"},
-           {key:"title", label:"TITLE",formatter:YAHOO.widget.DataTable.title},
-		   {key:"description", label:"DESCRIPTION",formatter:YAHOO.widget.DataTable.description},
-		   {key:"locationScopeValue", label:"IMPACT AREA"},
-		   {key:"locationValue", label:"AREA NAME"},
-		   {key:"fileDateAsString", label:"NEWS DATE"},
-		   {key:"Edit",label:"Edit",formatter:YAHOO.widget.DataTable.Edit},
-           {key:"Delete",label:"Delete",formatter:YAHOO.widget.DataTable.Delete}
-
-
-  ];
-  
+if(loginUserType !='Admin'){
+	  var newsColumns = [
+			   {key:"ADD RESPONSE",label:"ADD RESPONSE",formatter:YAHOO.widget.DataTable.checkBox},
+			   {key:"source", label:"SOURCE"},
+			   {key:"title", label:"TITLE",formatter:YAHOO.widget.DataTable.title},
+			   {key:"description", label:"DESCRIPTION",formatter:YAHOO.widget.DataTable.description},
+			   {key:"locationScopeValue", label:"IMPACT AREA"},
+			   {key:"locationValue", label:"AREA NAME"},
+			   {key:"fileDateAsString", label:"NEWS DATE"}
+	  ];
+  }
+  else{
+	   var newsColumns = [
+				   {key:"ADD RESPONSE",label:"ADD RESPONSE",formatter:YAHOO.widget.DataTable.checkBox},
+				   {key:"source", label:"SOURCE"},
+				   {key:"title", label:"TITLE",formatter:YAHOO.widget.DataTable.title},
+				   {key:"description", label:"DESCRIPTION",formatter:YAHOO.widget.DataTable.description},
+				   {key:"locationScopeValue", label:"IMPACT AREA"},
+				   {key:"locationValue", label:"AREA NAME"},
+				   {key:"fileDateAsString", label:"NEWS DATE"},
+				   {key:"Edit",label:"Edit",formatter:YAHOO.widget.DataTable.Edit},
+				   {key:"Delete",label:"Delete",formatter:YAHOO.widget.DataTable.Delete}
+		];
+  }
   var newsDataSource = new YAHOO.util.DataSource("getTotalNewsAction.action?fromDate="+fromDate+"&toDate="+toDate+"&locationVal="+locationVal+"&scope="+scope+"&checkedVal="+checkedVal+"&");
   newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
   newsDataSource.responseSchema = {
@@ -7220,16 +7230,77 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
 					
 	};
 
-  var newsColumns = [
-   {key:"",label:"",formatter:YAHOO.widget.DataTable.newsCheckBox},
-   {key:"source",label:"Source"},
-   {key:"fileTitle1",label:"Title",formatter:YAHOO.widget.DataTable.title},
-   {key:"fileDate",label:"File Date"},
-   {key:"candidateName",label:"Candidate Name"},
-   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location},
-  ];
-  
-
+	YAHOO.widget.DataTable.Edit = function(elLiner, oRecord, oColumn, oData){
+	
+	var str='';
+		
+		var locationName = oRecord.getData("locationName");
+		var location = oRecord.getData("locationScopeValue");
+		str +=''+locationName+'&nbsp;&nbsp;'+location+'';
+		  
+		elLiner.innerHTML=str;
+	}
+	
+	YAHOO.widget.DataTable.Delete = function(elLiner, oRecord, oColumn, oData){
+	
+	var str='';
+		
+		var locationName = oRecord.getData("locationName");
+		var location = oRecord.getData("locationScopeValue");
+		str +=''+locationName+'&nbsp;&nbsp;'+location+'';
+		  
+		elLiner.innerHTML=str;
+	}
+	
+	YAHOO.widget.DataTable.EditFile = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var fileId =  oRecord.getData("contentId");
+		
+		if(loginUserType == "Admin")
+		{
+			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+')"/>';
+		}
+		elLiner.innerHTML=str;					
+	}; 
+	YAHOO.widget.DataTable.DeleteFile = function(elLiner, oRecord, oColumn, oData) 
+	{
+		
+	    var str='';
+		var name = oData;
+		var fileId =  oRecord.getData("contentId");	
+		
+		if(loginUserType == "Admin")
+		{
+			str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromNewsReport('+fileId+')"/>';		
+		}
+		elLiner.innerHTML=str;					
+	};
+	
+	
+	if(loginUserType != "Admin"){
+	var newsColumns = [
+		   {key:"",label:"",formatter:YAHOO.widget.DataTable.newsCheckBox},
+		   {key:"source",label:"Source"},
+		   {key:"fileTitle1",label:"Title",width:180,formatter:YAHOO.widget.DataTable.title},
+		   {key:"fileDate",label:"File Date",width:80},
+		   {key:"candidateName",label:"Candidate Name"},
+		   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location}
+		  ];  	
+	}
+	else{
+		  var newsColumns = [
+		   {key:"",label:"",formatter:YAHOO.widget.DataTable.newsCheckBox},
+		   {key:"source",label:"Source"},
+		   {key:"fileTitle1",label:"Title",width:180,formatter:YAHOO.widget.DataTable.title},
+		   {key:"fileDate",label:"File Date",width:80},
+		   {key:"candidateName",label:"Candidate Name"},
+		   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location},
+		   {key:"",label:"Edit",formatter:YAHOO.widget.DataTable.EditFile},
+		   {key:"",label:"delete",formatter:YAHOO.widget.DataTable.DeleteFile}
+		  ];  
+	}
+	
   var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&reqType="+reqType+"&reportGallary="+reportGallary1+"&keywordGallary="+keywordGallary1+"&");
   newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
   newsDataSource.responseSchema = {
