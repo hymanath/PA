@@ -1508,6 +1508,7 @@
 		<property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"></property>
 		<property name="hamletBoothDAO" ref="hamletBoothDAO" />
 		<property name="voterDataAvailableConstituenciesDAO" ref="voterDataAvailableConstituenciesDAO" />
+		<property name="voterFlagDAO" ref="voterFlagDAO" />
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.jfree.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -50,7 +50,7 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private ResultStatus result;
 	private IStaticDataService staticDataService;
 	private List<SelectOptionVO> partyGroupList, castCategoryGroupList,userAccessStates,categoerysList;
-	
+	private Long id;
 	private List<VoterHouseInfoVO> userCategorysList;
 	private String resultStr;
 	private List<SelectOptionVO> voterCategoryValues;
@@ -71,13 +71,29 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	
 	private RegionServiceDataImp regionServiceDataImp;
 	
-	private List<SelectOptionVO> hamlets;
+	private List<SelectOptionVO> hamlets,flagsList;
 	
 	private List<VoterVO> votersData , voterDetails,flagDetails;
     private IUserVoterService userVoterService;
 	
 	private List<InfluencingPeopleBeanVO> influencingPeopleBeanVO;
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public List<SelectOptionVO> getFlagsList() {
+		return flagsList;
+	}
+
+	public void setFlagsList(List<SelectOptionVO> flagsList) {
+		this.flagsList = flagsList;
+	}
+
 	public List<VoterVO> getFlagDetails() {
 		return flagDetails;
 	}
@@ -648,7 +664,7 @@ public String saveVoterDetails(){
 			Long casteCateGroupId = jObj.getLong("casteCateGroupId");
 			resultStatus = votersAnalysisService.saveCasteName(userId,stateId,casteCateGroupId,casteName);
 		}catch (Exception e) {
-			Log.error("Exception Occured in saveCasteName() Method, Exception - ",e);
+			LOG.error("Exception Occured in saveCasteName() Method, Exception - ",e);
 		}
 		
 		return Action.SUCCESS;
@@ -671,7 +687,7 @@ public String saveLocality()
 			
 			resultStatus = votersAnalysisService.saveLocality(userId,hamlet,name,localbodyId,wardId);
 		}catch (Exception e) {
-			Log.error("Exception Occured in saveCasteName() Method, Exception - ",e);
+			LOG.error("Exception Occured in saveCasteName() Method, Exception - ",e);
 		}
 		
 		return Action.SUCCESS;
@@ -703,7 +719,7 @@ public String saveLocality()
 				votersFamilyInfo = votersAnalysisService.getMultipleFamiliesInformation(familiesList,userId);
 			
 		}catch (Exception e) {
-			Log.error("Exception Occured in getMultipleFamilesInfo() Method, Exception - ",e);
+			LOG.error("Exception Occured in getMultipleFamilesInfo() Method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -741,7 +757,7 @@ public String saveLocality()
 							userId,selectType);
 			
 		}catch (Exception e) {
-			Log.error("Exception Occured in getMultipleFamilesInfoForHamlet() Method, Exception - ",e);
+			LOG.error("Exception Occured in getMultipleFamilesInfoForHamlet() Method, Exception - ",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -805,7 +821,7 @@ public String saveLocality()
 				  return "update";
 			  }
 		}catch (Exception e) {
-			Log.error("Exception Occured in getMultipleFamilesInfoForEdit() Method, Exception - ",e);
+			LOG.error("Exception Occured in getMultipleFamilesInfoForEdit() Method, Exception - ",e);
 			return "exception";
 		}
 	}
@@ -898,7 +914,7 @@ public String saveLocality()
 			  voterHouseInfoVO1 = votersAnalysisService.getUserVoterCategories(userId);
 		  }
 		  }catch(Exception e){
-			 Log.error("Exception Occured in getVotersInfoBySearchCriteria() Method, Exception - ",e);
+			 LOG.error("Exception Occured in getVotersInfoBySearchCriteria() Method, Exception - ",e);
 		 }
 		 return Action.SUCCESS;
 	 }
@@ -1344,7 +1360,7 @@ public String saveLocality()
 					  return "update";
 				  }
 			}catch (Exception e) {
-				Log.error("Exception Occured in getMultipleFamilesInfoForEditWithSelection() Method, Exception - ",e);
+				LOG.error("Exception Occured in getMultipleFamilesInfoForEditWithSelection() Method, Exception - ",e);
 				return "exception";
 			}
 			return Action.SUCCESS;
@@ -1358,7 +1374,7 @@ public String saveLocality()
 				userAccessStates = votersAnalysisService.getAllElectionsInAConsti(2l,jObj.getLong("constituencyId"));
 				System.out.println(jObj);
 			} catch (ParseException e) {
-				Log.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
+				LOG.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
 				e.printStackTrace();
 			}
 			return Action.SUCCESS;
@@ -1381,7 +1397,7 @@ public String saveLocality()
 				}
 				System.out.println(jObj);
 			} catch (ParseException e) {
-				Log.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
+				LOG.error("Exception Occured in getElectionsInAConsti() Method, Exception - ",e);
 				e.printStackTrace();
 			}
 			return Action.SUCCESS;  
@@ -1610,5 +1626,48 @@ public String saveLocality()
 		   }
 		   return Action.SUCCESS;
 	   }
+	   public String getAllFlagsList()
+	   {
+		   try{
+				jObj = new JSONObject(getTask());
+				flagsList = voterReportService.getFlagsList(jObj.getLong("voterId"));
+		   }
+			  catch (Exception e) {
+				e.printStackTrace();
+			}
+			  return Action.SUCCESS;
+	   }
+	   
+	   public String assignVoterFlag()
+	   {
+		   try{
+			   session = request.getSession();
+			   RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			   if(user == null)
+					return "error";
+			  Long userId = null;
+			  userId = user.getRegistrationID();
+			   List<Long> checkedflagIds = new ArrayList<Long>();
+			   List<Long> uncheckedflags = new ArrayList<Long>();
+				jObj = new JSONObject(getTask());
+				JSONArray arr = jObj.getJSONArray("checkedflags");
+				JSONArray arr1 = jObj.getJSONArray("uncheckedflags");
+				if(arr.length() > 0)
+					for(int i=0;i<arr.length();i++)
+						checkedflagIds.add(new Long(arr.get(i).toString()));
+				if(arr1.length() > 0)
+					for(int j=0;j<arr1.length();j++)
+						uncheckedflags.add(new Long(arr1.get(j).toString()));
+				result = voterReportService.addFlagToVoter(jObj.getLong("voterId"),checkedflagIds,uncheckedflags,userId);
+				
+		   }
+		   catch(Exception e)
+		   {
+			   LOG.error("Exception Raised in assignVoterFlag() method in VotersEditAction Class",e);
+		   }
+		   return Action.SUCCESS;
+	   }
+	   
+	   
 
    }
