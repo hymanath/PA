@@ -54,9 +54,9 @@ import com.itgrids.partyanalyst.dao.IVoterBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
+import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
@@ -65,6 +65,7 @@ import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
+import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PanchayatHamletDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -110,6 +111,7 @@ import com.itgrids.partyanalyst.model.VoterPartyInfo;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
+import com.itgrids.partyanalyst.model.WardBooth;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -169,6 +171,8 @@ public class VoterReportService implements IVoterReportService{
     private IFlagDAO flagDAO;
     private IUserDAO userDAO;
     private IVoterFlagDAO voterFlagDAO;
+    private IWardBoothDAO wardBoothDAO;
+    
     public IVoterFlagDAO getVoterFlagDAO() {
 		return voterFlagDAO;
 	}
@@ -560,6 +564,14 @@ public class VoterReportService implements IVoterReportService{
 
 		public void setVoterFamilyRangeDAO(IVoterFamilyRangeDAO voterFamilyRangeDAO) {
 			this.voterFamilyRangeDAO = voterFamilyRangeDAO;
+		}
+
+	public IWardBoothDAO getWardBoothDAO() {
+			return wardBoothDAO;
+		}
+
+		public void setWardBoothDAO(IWardBoothDAO wardBoothDAO) {
+			this.wardBoothDAO = wardBoothDAO;
 		}
 
 	public VoterReportVO getVoterDetailsInaLocation(String range,Long rangeValue)
@@ -1012,15 +1024,23 @@ public class VoterReportService implements IVoterReportService{
 					   }
 					  if(wardChecked && localBodiesList.size() >0){
 						  List<Long> localElecIds = new ArrayList<Long>(); 
+						  List<Long> ghmcLocalElecIds = new ArrayList<Long>(); 
 						  Set<Long> localElecBodyIds = localBodiesList.keySet();
 						  List<Object[]> electionTypesList = localElectionBodyDAO.getLocalElectionBodyType(localElecBodyIds);
 						  for(Object[] electionType:electionTypesList){ 
 						    if(((Long)electionType[0]).longValue() != 7){
 						 	  localElecIds.add((Long)electionType[1]);
+						    }else{
+						    	ghmcLocalElecIds.add((Long)electionType[1]);
 						    }
 						  }
+						  if(ghmcLocalElecIds.size() > 0){
+							  saveWardBoothData(ghmcLocalElecIds,reportLevelValue,publicationDateId,"ward");
+						  }
 						  if(localElecIds.size() > 0){
-							  insertCasteDataForCustomWards(localElecIds,userId,publicationDateId,reportLevelValue);
+							  saveWardBoothData(localElecIds,reportLevelValue,publicationDateId,"cutomward");
+							  insertCasteDataForCustomWards(localElecIds,userId,publicationDateId,reportLevelValue,6l,"ward");
+							  insertCasteDataForCustomWards(localElecIds,userId,publicationDateId,reportLevelValue,10l,"wardbooth");
 						  }
 					  }
 					  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -4813,7 +4833,7 @@ public class VoterReportService implements IVoterReportService{
 			}
 			return resultStatus;
 		  }		  
-		  public void insertCasteDataForCustomWards(List<Long> localElectionBodyIds,Long userId,Long publicationDateId,Long constituencyId){
+		  public void insertCasteDataForCustomWards(List<Long> localElectionBodyIds,Long userId,Long publicationDateId,Long constituencyId,Long reportLvlId,String type){
 			try{  
 			  for(Long localElectionBodyId:localElectionBodyIds){
 				  Map<Long,Long> totalVotersCount = new HashMap<Long,Long>();//Map<wardId,totalVotersCount>
@@ -4822,17 +4842,33 @@ public class VoterReportService implements IVoterReportService{
 				  Map<Long,Map<Long,VoterCastInfoVO>> casteInfoMap = new HashMap<Long,Map<Long,VoterCastInfoVO>>();//Map<wardId,Map<casteStateId,casteInfoVO>>
 				  Map<Long,VoterCastInfoVO> casteStateMap = null;
 				  VoterCastInfoVO vo = null;
+				  List<Object[]>  totalVotersCountList = null;
+				  List<Object[]>  casteGroupCountList = null;
+				  List<Object[]>  genderWiseCasteCountList = null;
+				  if(type.equalsIgnoreCase("ward")){
 				  //getting total voters count in all wards
-				  List<Object[]>  totalVotersCountList = boothPublicationVoterDAO.getCustomWardWiseTotalVotersCount(localElectionBodyId,userId,publicationDateId,constituencyId);
+				    totalVotersCountList = boothPublicationVoterDAO.getCustomWardWiseTotalVotersCount(localElectionBodyId,userId,publicationDateId,constituencyId);
 				  
 				  //getting caste group wise voters count in all wards
 				  // 0wardId 1categoryName 2count
-				  List<Object[]>  casteGroupCountList =  boothPublicationVoterDAO.getCasteGroupContsByCustomWardWise(userId,localElectionBodyId,publicationDateId,constituencyId);
+				    casteGroupCountList =  boothPublicationVoterDAO.getCasteGroupContsByCustomWardWise(userId,localElectionBodyId,publicationDateId,constituencyId);
 				  
 				 //getting caste gender wise caste count in all wards
 				 // 0wardId 1casteStateId 2gender 3count
-				  List<Object[]>  genderWiseCasteCountList =  boothPublicationVoterDAO.getCasteWiseGenderWiseContsByCustomWardWise(userId,localElectionBodyId,publicationDateId,constituencyId);
-				  
+				    genderWiseCasteCountList =  boothPublicationVoterDAO.getCasteWiseGenderWiseContsByCustomWardWise(userId,localElectionBodyId,publicationDateId,constituencyId);
+				  }else{
+					//getting total voters count in all wardbooths
+					    totalVotersCountList = boothPublicationVoterDAO.getWardBoothWiseTotalVotersCount(localElectionBodyId,userId,publicationDateId,constituencyId);
+					  
+					  //getting caste group wise voters count in all wardbooths
+					  // 0wardboothId 1categoryName 2count
+					    casteGroupCountList =  boothPublicationVoterDAO.getCasteGroupContsByWardBoothWise(userId,localElectionBodyId,publicationDateId,constituencyId);
+					  
+					 //getting caste gender wise caste count in all wardbooths
+					 // 0wardboothId 1casteStateId 2gender 3count
+					    genderWiseCasteCountList =  boothPublicationVoterDAO.getCasteWiseGenderWiseContsByWardBoothWise(userId,localElectionBodyId,publicationDateId,constituencyId);
+					  
+				  }
                   for(Object[] count:totalVotersCountList){
                 	  totalVotersCount.put((Long)count[1], (Long)count[0]);
                   }
@@ -4890,7 +4926,7 @@ public class VoterReportService implements IVoterReportService{
                 	  }
                   }
                   Constituency constituency = constituencyDAO.get(constituencyId);
-                  VoterReportLevel level = voterReportLevelDAO.get(6l);
+                  VoterReportLevel level = voterReportLevelDAO.get(reportLvlId);
                   saveDataToVoterCastBasicInfo(casteBasicInfoMap,constituency,publicationDateId,level,userId);
                   saveVotersCasteInfo(casteInfoMap,totalCastsAssignedCount,constituency,publicationDateId,level,userId);
 			  }
@@ -4953,24 +4989,44 @@ public class VoterReportService implements IVoterReportService{
 			  }
 		  }
 		  
-		  public void saveVoterInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId){
+		  public void saveVoterInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId,Long reportLevelId,String type){
 			  DecimalFormat df = new DecimalFormat("###.##");
-			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(6l);
+			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(reportLevelId);
 			  PublicationDate publicationDate = publicationDateDAO.get(publicationId);
 			  for(Long localElectionBodyId:localElecBodyIds){
+				  List<Object[]> wardWiseVotersCountList = null;
+				  Long count = null;
 				  // 0 count 1wardId 2female 3male
-			   List<Object[]> wardWiseVotersCountList = boothPublicationVoterDAO.getCustomWardWiseTotalMaleFemaleVotersCount(localElectionBodyId, userId, publicationId, constituencyId);
+			   if(type.equalsIgnoreCase("ward")){
+				   // 0 count 1wardId 2female 3male
+				   wardWiseVotersCountList = boothPublicationVoterDAO.getCustomWardWiseTotalMaleFemaleVotersCount(localElectionBodyId, userId, publicationId, constituencyId);
+				    
+				    List<Object[]> votersInfo = boothPublicationVoterDAO.findVotersGenderWiseCountByPublicationIdInALocation("localElectionBody",localElectionBodyId,publicationId,constituencyId);
+				    count = 0l;
+				    for(Object[] info:votersInfo){
+				    	if(info[0] != null){
+				    		count = count+(Long)info[0];
+				    	}
+				    }
+			   }else{
+				   // 0 count 1wardboothId 2female 3male
+				   wardWiseVotersCountList = boothPublicationVoterDAO.getWardBoothTotalMaleFemaleVotersCount(localElectionBodyId, userId, publicationId, constituencyId);
+			   }
 			   for(Object[] wardVoterCount:wardWiseVotersCountList){
 				   VoterInfo voterInfo = new VoterInfo();
 					voterInfo.setTotalVoters((Long)wardVoterCount[0]);
 					voterInfo.setMaleVoters((Long)wardVoterCount[3]);
 					voterInfo.setFemaleVoters((Long)wardVoterCount[2]);
-					Long totalFamilies = voterFamilyInfoDAO.getTotalFamiliesCount(constituencyId, publicationId, 6l, (Long)wardVoterCount[1]);
+					Long totalFamilies = voterFamilyInfoDAO.getTotalFamiliesCount(constituencyId, publicationId, reportLevelId, (Long)wardVoterCount[1]);
 					if(totalFamilies != null)
 					 voterInfo.setTotalFamilies(totalFamilies);
 					else
 						voterInfo.setTotalFamilies(0l);
-					voterInfo.setTotalVotersPercentage(0d);
+					if(type.equalsIgnoreCase("ward") && count != null && count.longValue() > 0 && wardVoterCount[0] != null){
+					  voterInfo.setTotalVotersPercentage(new Double(df.format((Long)wardVoterCount[0]*100/count.doubleValue())));
+					}else{
+						 voterInfo.setTotalVotersPercentage(0d);
+					}
 					voterInfo.setMaleVotersPercentage(new Double(df.format((Long)wardVoterCount[3]*100/((Long)wardVoterCount[0]).doubleValue())));
 					voterInfo.setFemaleVotersPercentage(new Double(df.format((Long)wardVoterCount[2]*100/((Long)wardVoterCount[0]).doubleValue())));
 					
@@ -4984,8 +5040,8 @@ public class VoterReportService implements IVoterReportService{
 			  voterDAO.flushAndclearSession();
 		  }
 		  
-		  public void saveVoterFamilyInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId){
-			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(6l);
+		  public void saveVoterFamilyInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId,Long reportLevelId,String type){
+			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(reportLevelId);
 			  PublicationDate publicationDate = publicationDateDAO.get(publicationId);
 			  for(Long localElectionBodyId:localElecBodyIds){
 				  Map<Long,Long> totalFamilies = new HashMap<Long,Long>();
@@ -4993,8 +5049,13 @@ public class VoterReportService implements IVoterReportService{
 				  Map<Long,Long> famlies4to6 = new HashMap<Long,Long>();
 				  Map<Long,Long> famlies7to10 = new HashMap<Long,Long>();
 				  Map<Long,Long> above10 = new HashMap<Long,Long>();
+				  List<Object[]> wardWiseFamilyCountList = null;
 				  // 0 count 1wardId
-			     List<Object[]> wardWiseFamilyCountList = boothPublicationVoterDAO.getCustomWardWiseFamilyVotersCount(localElectionBodyId, userId, publicationId, constituencyId);
+			     if(type.equalsIgnoreCase("ward")){
+			        wardWiseFamilyCountList = boothPublicationVoterDAO.getCustomWardWiseFamilyVotersCount(localElectionBodyId, userId, publicationId, constituencyId);
+			     }else{
+			    	 wardWiseFamilyCountList = boothPublicationVoterDAO.getWardBoothWiseFamilyVotersCount(localElectionBodyId, userId, publicationId, constituencyId); 
+			     }
 			     for(Object[] familyCount:wardWiseFamilyCountList){
 				   Long count = (Long)familyCount[0];
 				   if(count != null){
@@ -5055,12 +5116,12 @@ public class VoterReportService implements IVoterReportService{
 					
 			   }
 		  }
-		  public void saveVoterAgeInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId){
+		  public void saveVoterAgeInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId,Long reportLevelId,String type){
 			  Map<Long,Long> votersCountMap = new HashMap<Long,Long>();
 			  DecimalFormat df = new DecimalFormat("###.##");
-			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(6l);
+			  VoterReportLevel voterReportLevel = voterReportLevelDAO.get(reportLevelId);
 			  PublicationDate publicationDate = publicationDateDAO.get(publicationId);
-			  List<Object[]> totalCountList = voterInfoDAO.getVotersCountInCustomWards(constituencyId, publicationId);
+			  List<Object[]> totalCountList = voterInfoDAO.getVotersCountInCustomWards(constituencyId, publicationId,reportLevelId);
 			  for(Object[]count:totalCountList){
 				  votersCountMap.put((Long)count[0], (Long)count[1]);
 			  }
@@ -5068,10 +5129,19 @@ public class VoterReportService implements IVoterReportService{
 				  Map<Long,Map<Long,VoterAgeInfo>> voterAgeInfoMap = new HashMap<Long,Map<Long,VoterAgeInfo>>();
 				  
 				  List<VoterAgeInfo> voterAgeInfoList = new ArrayList<VoterAgeInfo>();
-				  // 0count 1gender 2 agerange 3wardid
-				  List<Object[]> wardWiseAgeCountList = boothPublicationVoterDAO.getCustomWardAgeCount(localElectionBodyId, userId, publicationId, constituencyId);
-				  // 0count 1gender 2 agerange 3wardid
-				  List<Object[]>  wardWiseYoungVotersCountList = boothPublicationVoterDAO.getCustomWard18To22AgeCount(localElectionBodyId, userId, publicationId, constituencyId);
+				  List<Object[]> wardWiseAgeCountList = null;
+				  List<Object[]>  wardWiseYoungVotersCountList = null;
+				  if(type.equalsIgnoreCase("ward")){
+					  // 0count 1gender 2 agerange 3wardid
+					  wardWiseAgeCountList = boothPublicationVoterDAO.getCustomWardAgeCount(localElectionBodyId, userId, publicationId, constituencyId);
+					  // 0count 1gender 2 agerange 3wardid
+					  wardWiseYoungVotersCountList = boothPublicationVoterDAO.getCustomWard18To22AgeCount(localElectionBodyId, userId, publicationId, constituencyId);
+				  }else{
+					// 0count 1gender 2 agerange 3wardboothid
+					  wardWiseAgeCountList = boothPublicationVoterDAO.getWardBoothAgeCount(localElectionBodyId, userId, publicationId, constituencyId);
+					  // 0count 1gender 2 agerange 3wardboothid
+					  wardWiseYoungVotersCountList = boothPublicationVoterDAO.getWard18BoothTo22AgeCount(localElectionBodyId, userId, publicationId, constituencyId);
+				  }
 				  populateAgeInfoToVo(wardWiseYoungVotersCountList,voterAgeInfoMap,voterAgeInfoList,voterReportLevel,publicationDate,constituencyId);
 				  populateAgeInfoToVo(wardWiseAgeCountList,voterAgeInfoMap,voterAgeInfoList,voterReportLevel,publicationDate,constituencyId);
 				  
@@ -5090,8 +5160,13 @@ public class VoterReportService implements IVoterReportService{
 							 voterAgeInfo.setFemaleVotersPercentage(new Double(df.format(voterAgeInfo.getFemaleVoters()*100/voterAgeInfo.getTotalVoters().doubleValue())));
 						 }
 					 }
+					 try{
 					 voterAgeInfoDAO.save(voterAgeInfo);
 					 voterDAO.flushAndclearSession();
+					 }catch(Exception e){
+						 
+						 LOG.error("Exception occured with values "+voterAgeInfo.getVoterReportLevel()+","+voterAgeInfo.getReportLevelValue()+","+voterAgeInfo.getTotalVoters()+","+voterAgeInfo.getMaleVoters()+","+voterAgeInfo.getFemaleVoters()+","+voterAgeInfo.getFemaleVotersPercentage()+","+voterAgeInfo.getMaleVotersPercentage()+","+voterAgeInfo.getTotalVotersPercentage()+"",e);
+					 }
 				  }
 			  }
 			  
@@ -5266,5 +5341,37 @@ public class VoterReportService implements IVoterReportService{
 				}
 			return resultStatus;
 		  }
-				
+			
+		 public void saveWardBoothData(List<Long> localElecIds,Long reportLevelValue,Long publicationDateId,String type){
+			 for(Long id:localElecIds){
+			  if(type.equalsIgnoreCase("cutomward")){
+				  List<Long> wardIds = userVoterDetailsDAO.getAllWardIdsByLocalEleBodyIdPublicationId(reportLevelValue,1l,publicationDateId,id);
+				  List<Object[]> wardBooths = userVoterDetailsDAO.getBoothsForCustomWardIdsList(wardIds,reportLevelValue,publicationDateId,1l);
+				  for(Object[] booth:wardBooths){
+					  Long count = wardBoothDAO.getWardsCount((Long)booth[0], (Long)booth[1], publicationDateId);
+					  if(count == 0 || count == null){
+						  WardBooth wardBooth = new WardBooth();
+						  wardBooth.setPublicationDate(publicationDateDAO.get(publicationDateId));
+						  wardBooth.setBooth(boothDAO.get((Long)booth[1]));
+						  wardBooth.setWard(constituencyDAO.get((Long)booth[0]));
+						  wardBooth.setConstituency(constituencyDAO.get(reportLevelValue));
+						  wardBoothDAO.save(wardBooth);
+					  }
+				  }
+			  }else{
+				  List<Object[]> wardDetails = boothDAO.getWardDetailsByLocalEleBodyId(id, publicationDateId, reportLevelValue);
+					 for(Object[] ward:wardDetails){
+						 Long count = wardBoothDAO.getWardsCount((Long)ward[0],(Long)ward[4], publicationDateId);
+						  if(count == 0 || count == null){
+							  WardBooth wardBooth = new WardBooth();
+							  wardBooth.setPublicationDate(publicationDateDAO.get(publicationDateId));
+							  wardBooth.setBooth(boothDAO.get((Long)ward[4]));
+							  wardBooth.setWard(constituencyDAO.get((Long)ward[0]));
+							  wardBooth.setConstituency(constituencyDAO.get(reportLevelValue));
+							  wardBoothDAO.save(wardBooth);
+						  }
+					 }
+				 }
+			 }
+		 }
 }
