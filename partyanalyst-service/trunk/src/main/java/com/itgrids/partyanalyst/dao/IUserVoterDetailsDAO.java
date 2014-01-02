@@ -277,4 +277,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getHamletBoothInfo(Long constituencyId,Long userId);
 	
 	public List<Object[]> getWardIdsByLocalEleBodyIdPublicationId(Long constituencyId,Long userId,Long publicationDateId,Long localEleBodyId);
+	
+	public List<Long> getAllWardIdsByLocalEleBodyIdPublicationId(Long constituencyId,Long userId,Long publicationDateId,Long localEleBodyId);
 }

@@ -152,6 +152,7 @@ import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterModification;
 import com.itgrids.partyanalyst.model.VoterStatus;
 import com.itgrids.partyanalyst.model.VoterTemp;
+import com.itgrids.partyanalyst.model.WardBooth;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -9216,7 +9217,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				if(ghmcLocalElecBodies.size() > 0){
 					  List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(
 							  ghmcLocalElecBodies, publicationDateId,reportLevelValue);
-					
+					  voterReportService.saveWardBoothData(ghmcLocalElecBodies,reportLevelValue,publicationDateId,"ward");
 					if(wards != null && wards.size() >0){
 						
 						for(Object[] ward:wards)
@@ -9227,9 +9228,13 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 				}
 				if(otherLocalElecBodies.size() > 0){
 					try{
-						voterReportService.saveVoterFamilyInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue);
-						voterReportService.saveVoterInfoForCustomWards(otherLocalElecBodies, userId, publicationDateId,reportLevelValue);
-						voterReportService.saveVoterAgeInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue);
+						voterReportService.saveWardBoothData(otherLocalElecBodies,reportLevelValue,publicationDateId,"cutomward");
+						voterReportService.saveVoterFamilyInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue,6l,"ward");
+						voterReportService.saveVoterInfoForCustomWards(otherLocalElecBodies, userId, publicationDateId,reportLevelValue,6l,"ward");
+						voterReportService.saveVoterAgeInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue,6l,"ward");
+						voterReportService.saveVoterFamilyInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue,10l,"wardbooth");
+						voterReportService.saveVoterInfoForCustomWards(otherLocalElecBodies, userId, publicationDateId,reportLevelValue,10l,"wardbooth");
+						voterReportService.saveVoterAgeInfoForCustomWards(otherLocalElecBodies,userId,publicationDateId,reportLevelValue,10l,"wardbooth");
 					}catch(Exception e){
 						log.error("Exception Occured in insertVoterInfoDataToIntermediateTables() otherLocalElecBodies population, Exception is -",e);
 					}

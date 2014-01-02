@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedWriter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.text.DateFormat;
@@ -12,7 +11,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -74,7 +72,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
-import com.itgrids.partyanalyst.dto.PartyPositionVO;
+import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -173,6 +171,7 @@ public class MobileService implements IMobileService{
  private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
  private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
  private IMobileAppPingingDAO mobileAppPingingDAO;
+ private IWardBoothDAO wardBoothDAO;
  
 public IMobileAppPingingDAO getMobileAppPingingDAO() {
 	return mobileAppPingingDAO;
@@ -606,6 +605,14 @@ public IBloodGroupDAO getBloodGroupDAO() {
 	public void setAssemblyLocalElectionBodyDAO(
 			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
 		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+    
+    public IWardBoothDAO getWardBoothDAO() {
+		return wardBoothDAO;
+	}
+
+	public void setWardBoothDAO(IWardBoothDAO wardBoothDAO) {
+		this.wardBoothDAO = wardBoothDAO;
 	}
 
 public List<SelectOptionVO> getConstituencyList()
@@ -1626,7 +1633,7 @@ public List<SelectOptionVO> getConstituencyList()
 			List<Object[]> assemblyLocalElectionBodieList = assemblyLocalElectionBodyDAO.getAssemblyLocationElectionBodyList(constituencyId);
 			if(assemblyLocalElectionBodieList != null && assemblyLocalElectionBodieList.size() > 0)
 			{
-				int id = 0;
+				//int id = 0;
 				Set<Long> wardIds = new HashSet<Long>();
 			  for(Object[] params:assemblyLocalElectionBodieList){
 				 str.append("INSERT INTO assembly_local_election_body(assembly_local_election_body_id,local_election_body_id,constituency_id) " +
@@ -1636,10 +1643,10 @@ public List<SelectOptionVO> getConstituencyList()
 					 Map<Long,String> wards = new HashMap<Long,String>();
 					 List<Object[]> wardDetails = boothDAO.getWardDetailsByLocalEleBodyId((Long)params[1], latestPublicationId, constituencyId);
 					 for(Object[] ward:wardDetails){
-						 id=id+1;
+						 //id=id+1;
 						 wards.put((Long)ward[0], ward[1].toString()+"("+ward[2].toString()+")");
-						 str.append("INSERT INTO ward_booth(ward_booth_id,ward_id,booth_id,publication_date_id) " +
-							 		"VALUES ('"+id+"','"+(Long)ward[0]+"','"+(Long)ward[4]+"','"+latestPublicationId+"');\n");
+						 //str.append("INSERT INTO ward_booth(ward_booth_id,ward_id,booth_id,publication_date_id) " +
+							 		//"VALUES ('"+id+"','"+(Long)ward[0]+"','"+(Long)ward[4]+"','"+latestPublicationId+"');\n");
 					 
 					 }
 					 if(wards.size() > 0){
@@ -1658,13 +1665,20 @@ public List<SelectOptionVO> getConstituencyList()
 					 }
 				 }
 			  }
-			  if(wardIds.size() > 0){
+			  /*if(wardIds.size() > 0){
 				  List<Object[]> wardBooths = userVoterDetailsDAO.getBoothsForCustomWardIdsList(new ArrayList<Long>(wardIds),constituencyId,latestPublicationId,1l);
 				  for(Object[] booth:wardBooths){
 					  id=id+1;
 					  str.append("INSERT INTO ward_booth(ward_booth_id,ward_id,booth_id,publication_date_id) " +
 						 		"VALUES ('"+id+"','"+(Long)booth[0]+"','"+(Long)booth[1]+"','"+latestPublicationId+"');\n");
 				  
+				  }
+			  }*/
+			  List<Object[]> wardBoothDatails = wardBoothDAO.getWardBothData(latestPublicationId,constituencyId);
+			  if(wardBoothDatails != null && wardBoothDatails.size() >0){
+				  for(Object[] ward:wardBoothDatails){
+				  str.append("INSERT INTO ward_booth(ward_booth_id,ward_id,booth_id,publication_date_id) " +
+					 		"VALUES ('"+(Long)ward[0]+"','"+(Long)ward[1]+"','"+(Long)ward[2]+"','"+latestPublicationId+"');\n");
 				  }
 			  }
 			}

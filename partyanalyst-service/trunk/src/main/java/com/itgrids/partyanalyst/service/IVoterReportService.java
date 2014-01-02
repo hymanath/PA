@@ -110,11 +110,13 @@ public interface IVoterReportService {
     
     public ResultStatus deleteFlag(Long flagId);
 
-    public void saveVoterInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
+    public void saveVoterInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId,Long reportLevelId,String type);
     
-    public void saveVoterFamilyInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
+    public void saveVoterFamilyInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId,Long reportLevelId,String type);
     
-    public void saveVoterAgeInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId);
+    public void saveVoterAgeInfoForCustomWards(List<Long> localElecBodyIds,Long userId,Long publicationId,Long constituencyId,Long reportLevelId,String type);
+    
+    public void saveWardBoothData(List<Long> localElecIds,Long reportLevelValue,Long publicationDateId,String type);
     
     public List<VoterVO> getVoterFlagDetailsForALocation(Long locationId,Long constitunecyId,String type,Long publicationId,String requestFor);
     
