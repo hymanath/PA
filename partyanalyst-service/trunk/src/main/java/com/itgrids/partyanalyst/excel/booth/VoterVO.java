@@ -64,7 +64,16 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String color;
 	private Long maleVoters = 0l;
 	private Long femaleVoters = 0l;
+	private List<VoterVO> flagList = new ArrayList<VoterVO>();
 	
+	public List<VoterVO> getFlagList() {
+		return flagList;
+	}
+
+	public void setFlagList(List<VoterVO> flagList) {
+		this.flagList = flagList;
+	}
+
 	public Long getMaleVoters() {
 		return maleVoters;
 	}

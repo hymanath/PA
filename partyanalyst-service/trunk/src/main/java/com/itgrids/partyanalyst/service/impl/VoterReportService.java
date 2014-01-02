@@ -104,6 +104,7 @@ import com.itgrids.partyanalyst.model.VoterBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
+import com.itgrids.partyanalyst.model.VoterFlag;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterPartyInfo;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
@@ -121,14 +122,11 @@ public class VoterReportService implements IVoterReportService{
 	private IPanchayatDAO panchayatDAO;
 	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
-	
 	private IVoterPartyInfoDAO voterPartyInfoDAO;
 	private TransactionTemplate transactionTemplate = null;
 	private IVoterReportLevelDAO voterReportLevelDAO;
 	private IVotersAnalysisService votersAnalysisService;
-	
 	private IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
-	
 	private IVoterModificationInfoDAO voterModificationInfoDAO;
 	private ICasteStateDAO casteStateDAO;
 	private IConstituencyDAO constituencyDAO;
@@ -5202,6 +5200,71 @@ public class VoterReportService implements IVoterReportService{
 				LOG.error(" Exception Occured in getVoterFlagDetailsForALocation() method in VoterReport Service.....");
 			}
 			return resultList;
+		  }
+		  
+		  public List<SelectOptionVO> getFlagsList(Long voterId)
+		  {
+			  List<SelectOptionVO> flags = new ArrayList<SelectOptionVO>();
+			  List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+			  try{
+				List<Long> voterflagIds = voterFlagDAO.getFlagsByVoterIds(voterId); 
+				List<Object[]> list =  flagDAO.getAllFlagsList(); 
+				
+				if(list != null && list.size() > 0)
+					for(Object[] params : list)
+					{
+						flags.add(new SelectOptionVO((Long) params[0],params[1].toString()));	
+					}
+				if(voterflagIds != null && voterflagIds.size() > 0)
+				{
+					for(SelectOptionVO vo : flags)
+					{
+						if(voterflagIds.contains(vo.getId()))
+							vo.setFlag(true);
+							result.add(vo);	
+					}
+				}
+				else
+					return flags;
+				
+			  }
+			  catch (Exception e) {
+				  LOG.error(" Exception Occured in getFlags() method in VoterReport Service.....");
+			}
+			return result;
+		  }
+		  public ResultStatus addFlagToVoter(Long voterId,List<Long> checkedflagIds,List<Long> uncheckedflagIds,Long userId)
+		  {
+			  ResultStatus resultStatus = new ResultStatus();
+			  try{
+				  if(checkedflagIds != null && checkedflagIds.size() > 0)
+				  for(Long flagId : checkedflagIds)
+				  {
+					  List<Object> voterFlagID = voterFlagDAO.getvoterFlagByFlagIdAndUser(flagId,userId,voterId);
+					  if(voterFlagID == null || voterFlagID.size() == 0)
+					  {	  
+					  VoterFlag voterFlag = new VoterFlag();
+					  voterFlag.setFlag(flagDAO.get(flagId));
+					  voterFlag.setVoter(voterDAO.get(voterId));
+					  voterFlag.setUser(userDAO.get(userId));
+					  voterFlagDAO.save(voterFlag);
+					  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+					  }
+				  }
+				  
+				  for(Long flagId1 : uncheckedflagIds)
+				  {
+					  List<Object> voterFlagID = voterFlagDAO.getvoterFlagByFlagIdAndUser(flagId1,userId,voterId);
+					  if(voterFlagID != null && voterFlagID.size() > 0)
+						  voterFlagDAO.deleteVoterFlagById((Long)voterFlagID.get(0));
+				  }
+				  
+			  }
+			  catch (Exception e) {
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+				  LOG.error(" Exception Occured in addFlagToVoter() method in VoterReport Service.....");
+				}
+			return resultStatus;
 		  }
 				
 }

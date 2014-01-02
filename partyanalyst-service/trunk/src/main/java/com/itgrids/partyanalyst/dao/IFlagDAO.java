@@ -13,4 +13,6 @@ public interface IFlagDAO extends GenericDao<Flag, Long>{
 	public Integer deleteFlag(Long flagId);
 	
 	public List<Object> checkFlagName(String flagName);
+	
+	public List<Object[]> getAllFlagsList();
 }

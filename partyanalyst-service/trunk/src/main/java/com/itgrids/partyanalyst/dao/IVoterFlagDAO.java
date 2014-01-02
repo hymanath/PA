@@ -12,4 +12,13 @@ public interface IVoterFlagDAO extends GenericDao<VoterFlag, Long>{
 	public List<Object[]> getFlagWiseVotersCountByLocationId(Long locationId,Long constituencyId,String locationType,Long publicationDateId);
 	
 	public List<Object[]> getFlagWiseVotersCountByLocationIdForHamlet(Long locationId,Long constituencyId,String locationType,Long publicationDateId);
+	
+	
+	public List<Object[]> getFlagInfoByBoterIds(List<Long> voterIds);
+	
+	public List<Long> getFlagsByVoterIds(Long voterId);
+	
+	public List<Object> getvoterFlagByFlagIdAndUser(Long flagId,Long userId,Long voterId);
+	
+	public Integer deleteVoterFlagById(Long voterFlagId);
 }

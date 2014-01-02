@@ -118,5 +118,9 @@ public interface IVoterReportService {
     
     public List<VoterVO> getVoterFlagDetailsForALocation(Long locationId,Long constitunecyId,String type,Long publicationId,String requestFor);
     
+    public List<SelectOptionVO> getFlagsList(Long voterId);
+    
+    public ResultStatus addFlagToVoter(Long voterId,List<Long> checkedflagIds,List<Long> uncheckedflagIds,Long userId);
+    
     
 }
