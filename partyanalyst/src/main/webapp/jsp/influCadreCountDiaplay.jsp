@@ -107,7 +107,7 @@ function getInfluencingPeopleVotersDetails()
 {
 	
 	$("#titleDiv").append('<div id="headingDiv">'+name+' '+btnName+' Details</div>');
-	if(btnName == "Politician")
+	if(btnName == "Politician" || btnName == "flag")
 	{
 		YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 		{
@@ -233,7 +233,7 @@ function getVoterDetailsForCustomVoterGroup()
 {
 	
 	$("#titleDiv").append('<div id="headingDiv"> '+btnName+' Details</div>');
-	if(btnName == "Politician")
+	if(btnName == "Politician"  || btnName == "flag")
 	{
 		YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 		{
@@ -359,7 +359,7 @@ function getVoterDetailsForAttribute()
 {
 	
 	$("#titleDiv").append('<div id="headingDiv"> '+btnName+' Details</div>');
-	if(btnName == "Politician")
+	if(btnName == "Politician" || btnName == "flag")
 	{
 		YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 		{
