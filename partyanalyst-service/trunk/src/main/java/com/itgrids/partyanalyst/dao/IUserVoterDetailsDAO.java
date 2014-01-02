@@ -19,6 +19,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterFlag;
 
 public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>{
 
@@ -279,4 +280,8 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getWardIdsByLocalEleBodyIdPublicationId(Long constituencyId,Long userId,Long publicationDateId,Long localEleBodyId);
 	
 	public List<Long> getAllWardIdsByLocalEleBodyIdPublicationId(Long constituencyId,Long userId,Long publicationDateId,Long localEleBodyId);
+	
+	public List<VoterFlag> getFlagDetailsForSelectedHamlet(Long hamletId,
+			Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel);
+	
 }

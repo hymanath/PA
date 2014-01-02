@@ -21,4 +21,8 @@ public interface IVoterFlagDAO extends GenericDao<VoterFlag, Long>{
 	public List<Object> getvoterFlagByFlagIdAndUser(Long flagId,Long userId,Long voterId);
 	
 	public Integer deleteVoterFlagById(Long voterFlagId);
+	
+    public List<Long> getFlagCountForSelectedLevel(List<Long> boothIds ,long constituencyId,Long userId);
+    
+    public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String selLevel);
 }

@@ -12,6 +12,7 @@ import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterFlag;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class UserVoterDetailsDAO extends GenericDaoHibernate<UserVoterDetails, Long> implements 
@@ -2741,6 +2742,57 @@ IUserVoterDetailsDAO{
 		query.setParameter("localEleBodyId", localEleBodyId);
 		return query.list();
 	}
+
+	
+	@SuppressWarnings("unchecked")
+	public List<VoterFlag> getFlagDetailsForSelectedHamlet(Long hamletId,
+			Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel) {
+		
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select model from VoterFlag model,UserVoterDetails UVD where " +
+				" model.voter.voterId = UVD.voter.voterId  and UVD.user.userId = :userId  ");
+		if(selLevel.equalsIgnoreCase("hamlet"))
+		{
+			queryString.append(" and UVD.hamlet.hamletId = :hamletId");
+		}
+		else
+		{
+			queryString.append(" and UVD.ward.constituencyId = :hamletId ");
+		}
+		if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);  
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  queryString.append(" order by model.voter."+columnName+" "+order);
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setFirstResult(startIndex);	
+		query.setMaxResults(maxIndex);
+		query.setParameter("hamletId", hamletId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	
+
 	public List<Long> getAllWardIdsByLocalEleBodyIdPublicationId(Long constituencyId,Long userId,Long publicationDateId,Long localEleBodyId)
 	{
 		Query query = getSession().createQuery(" select distinct model.ward.constituencyId from UserVoterDetails model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
@@ -2752,4 +2804,5 @@ IUserVoterDetailsDAO{
 		query.setParameter("localEleBodyId", localEleBodyId);
 		return query.list();
 	}
+
 }

@@ -124,4 +124,36 @@ public class VoterFlagDAO extends GenericDaoHibernate<VoterFlag, Long> implement
 		return query.executeUpdate();
 	}
 	
+	 public List<Long> getFlagCountForSelectedLevel(List<Long> boothIds ,long constituencyId,Long userId)
+	  {
+		StringBuffer queryString = new StringBuffer();
+		queryString.append("select distinct count(model.voterFlagId) from VoterFlag model,BoothPublicationVoter BPV where" +
+		  		" model.voter.voterId = BPV.voter.voterId and model.user.userId = :userId" +
+		  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds)");		  
+		Query query = getSession().createQuery(queryString.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("userId", userId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list();
+	  }
+	
+	 @SuppressWarnings("unchecked")
+		public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String selLevel)
+		{
+			StringBuffer queryString = new StringBuffer();
+			queryString.append("select count(model.voterFlagId) from VoterFlag model, UserVoterDetails UVD where " +
+			" model.voter.voterId = UVD.voter.voterId  and UVD.user.userId = :userId  ");
+			if(selLevel.equalsIgnoreCase("hamlet"))
+			{
+				queryString.append(" and UVD.hamlet.hamletId = :hamletId");
+			}
+			else
+			{
+				queryString.append(" and UVD.ward.constituencyId = :hamletId");
+			}
+			Query query = getSession().createQuery(queryString.toString());
+			query.setParameter("hamletId", hamletId);
+			query.setParameter("userId", userId);
+			return query.list();
+		}
 }

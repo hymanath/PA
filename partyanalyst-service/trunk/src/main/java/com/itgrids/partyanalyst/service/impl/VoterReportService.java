@@ -2649,6 +2649,11 @@ public class VoterReportService implements IVoterReportService{
 					
 				}
 			}
+			List<Long> flagCount =voterFlagDAO.getFlagCountForSelectedLevel(boothids,constituencyId,userId);
+			if(flagCount !=null && flagCount.size() > 0)
+				for(Long flag : flagCount)
+					influencingPeopleBeanVO.setFlagsCount(flag.longValue());
+			
 			resultCount.add(influencingPeopleBeanVO);
 			return resultCount;
 		}
@@ -2717,7 +2722,16 @@ public class VoterReportService implements IVoterReportService{
 					resultData = storeCandidateDetails(candidateDetails,selLevel,id,totalRecords,userId);
 				}
 			}
-			
+			else if(type.equalsIgnoreCase("flag"))	
+			{
+				List<VoterFlag> flagDetails = boothPublicationVoterDAO.getFlagDetailsForSelectedlevel(boothids,constituencyId,startIndex,maxIndex,order,columnName);
+				if(flagDetails != null && flagDetails.size() > 0)
+				{
+					List<Long> flagCount = voterFlagDAO.getFlagCountForSelectedLevel(boothids ,constituencyId,userId);
+					Long totalRecords = flagCount.get(0).longValue();
+					resultData = storeFlagDetails(flagDetails,selLevel,id,totalRecords,userId);
+				}
+			}
 			
 			return resultData;
 		}
@@ -2753,6 +2767,13 @@ public class VoterReportService implements IVoterReportService{
 			{
 				for (Long candidateCount : candidatePeopleCount) {
 					influencingPeopleBeanVO.setPoliticianCount(candidateCount.longValue());
+				}
+			}
+			List<Long> flagCount = voterFlagDAO.getCountForSelectedTypeInHamlet(hamletId,userId,selLevel);
+			if(flagCount != null && flagCount.size() > 0)
+			{
+				for (Long count : flagCount) {
+					influencingPeopleBeanVO.setFlagsCount(count.longValue());
 				}
 			}
 			resultCount.add(influencingPeopleBeanVO);
@@ -2807,6 +2828,17 @@ public class VoterReportService implements IVoterReportService{
 					resultList = storeCandidateDetails(candidatepeopleData,selLevel,hamletId,totalRecods,userId);
 				}
 			}
+			else if(type.equalsIgnoreCase("flag"))
+			{
+				List<VoterFlag> flagpeopleData = userVoterDetailsDAO.getFlagDetailsForSelectedHamlet(hamletId,userId,startIndex,maxIndex,order,columnName,selLevel);
+				if(flagpeopleData != null && flagpeopleData.size() > 0)
+				{
+					List<Long> flagPeopleCount = voterFlagDAO.getCountForSelectedTypeInHamlet(hamletId,userId,selLevel);
+					Long totalRecods = flagPeopleCount.get(0).longValue();
+					resultList = storeFlagDetails(flagpeopleData,selLevel,hamletId,totalRecods,userId);
+				}
+			}
+			
 			return resultList;
 		}
 		/**
@@ -3090,6 +3122,65 @@ public class VoterReportService implements IVoterReportService{
 			return resultData;
 		}
 		
+		
+		public List<VoterVO> storeFlagDetails(List<VoterFlag> flagDetails,String type,Long id,Long totalRecords,Long userId)
+		{
+			List<VoterVO> resultData = null;
+			VoterVO voterVO = null;
+			Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+			List<Long> voterIdsList = new ArrayList<Long>(0);
+			if(flagDetails != null && flagDetails.size() > 0)
+				for (VoterFlag flag : flagDetails)
+				 voterIdsList.add(flag.getVoter().getVoterId());
+			
+			if(voterIdsList != null && voterIdsList.size() > 0)
+			{
+			 List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIdsList, userId);
+			 for(Object[] params:list)
+			  mobileNosMap.put((Long)params[0], params[1]!= null?params[1].toString():"N/A");
+			}
+				 
+			if(flagDetails != null && flagDetails.size() > 0)
+			{
+				resultData = new ArrayList<VoterVO>();
+				Long count = 1l;
+				for (VoterFlag flag : flagDetails) {
+						voterVO = new VoterVO();
+						voterVO.setVoterId((Long.valueOf(count).toString()));
+						voterVO.setFirstName(flag.getVoter().getName());
+						voterVO.setVoterIDCardNo(flag.getVoter().getVoterIDCardNo());
+						voterVO.setGender(flag.getVoter().getGender());
+						voterVO.setAge(flag.getVoter().getAge());
+						voterVO.setHouseNo(flag.getVoter().getHouseNo());
+						voterVO.setRelativeFirstName(flag.getVoter().getRelativeName());
+						if(mobileNosMap.get(flag.getVoter().getVoterId()) != null)
+						 voterVO.setMobileNo(mobileNosMap.get(flag.getVoter().getVoterId()));
+						else
+						 voterVO.setMobileNo("N/A");
+						voterVO.setTotalVoters(totalRecords);
+						++count;
+						if(type.equalsIgnoreCase("booth"))
+						{
+							Booth booth = boothDAO.get(id);
+							voterVO.setLocalArea("BOOTH - " + booth.getPartNo());
+						}
+						else if(type.equalsIgnoreCase("panchayat"))
+						{
+							voterVO.setLocalArea(panchayatDAO.get(id).getPanchayatName().toString());
+						}
+						else if(type.equalsIgnoreCase("hamlet"))
+						{
+							voterVO.setLocalArea(hamletDAO.get(id).getHamletName().toString());
+						}
+						else if(type.equalsIgnoreCase("customWard"))
+						{
+							voterVO.setLocalArea(constituencyDAO.get(id).getName().toString());
+						}
+						resultData.add(voterVO);
+				}
+			}
+			return resultData;
+		}
 		public String getRegionNameBasedOnScope(String infScope,String regionId){
 			
 			if(infScope.equalsIgnoreCase(IConstants.STATE)){
