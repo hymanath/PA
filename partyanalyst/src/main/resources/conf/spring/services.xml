@@ -53,6 +53,7 @@
 		<property name="flagDAO" ref="flagDAO" />
 		<property name="voterFlagDAO" ref="voterFlagDAO" />
 		<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
+		<property name="wardBoothDAO" ref="wardBoothDAO" />
 					
 	</bean>
 	
@@ -1794,6 +1795,7 @@
      <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
      <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
+     <property name="wardBoothDAO" ref="wardBoothDAO"/>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
