@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterDataAvailableConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
+import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationTempDAO;
@@ -235,9 +236,19 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IUserAddressDAO userAddressDAO;
     private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
     private IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO;
-   private IHamletBoothDAO hamletBoothDAO;
+    private IHamletBoothDAO hamletBoothDAO;
+    private IVoterFlagDAO voterFlagDAO;
     
-    public IVoterDataAvailableConstituenciesDAO getVoterDataAvailableConstituenciesDAO() {
+    
+    public IVoterFlagDAO getVoterFlagDAO() {
+		return voterFlagDAO;
+	}
+
+	public void setVoterFlagDAO(IVoterFlagDAO voterFlagDAO) {
+		this.voterFlagDAO = voterFlagDAO;
+	}
+
+	public IVoterDataAvailableConstituenciesDAO getVoterDataAvailableConstituenciesDAO() {
 	return voterDataAvailableConstituenciesDAO;
 }
 
@@ -904,6 +915,33 @@ public void setVoterDataAvailableConstituenciesDAO(
 						}
 					}
 				}
+				Map<Long,List<VoterVO>> flagMap = new HashMap<Long, List<VoterVO>>();
+				List<Object[]> flagDetails = voterFlagDAO.getFlagInfoByBoterIds(voterIdsList);
+				if(flagDetails != null && flagDetails.size() > 0)
+				{
+						for(Object[] params : flagDetails) {
+						List<VoterVO> list = flagMap.get((Long)params[0]);
+						VoterVO flagvo = new VoterVO();
+						if(list == null)
+						{
+							list = new ArrayList<VoterVO>();
+							flagMap.put((Long)params[0], list);
+						}
+						flagvo.setName(params[2]!=null?params[2].toString():"");
+						flagvo.setColor(params[3]!=null?params[3].toString().substring(1):"");
+						list.add(flagvo);
+						
+				}
+				}
+					if(flagMap != null)
+					for(Long voterId : flagMap.keySet())
+					{
+						voterVO  = voters.get(voterId);
+						List<VoterVO> list = flagMap.get(voterId);
+						voterVO.setFlagList(list);
+						
+					}
+				
 				if(voters != null && voters.size() > 0)
 				{
 					returnValue.get(0).setTotalVoters(totalCount);

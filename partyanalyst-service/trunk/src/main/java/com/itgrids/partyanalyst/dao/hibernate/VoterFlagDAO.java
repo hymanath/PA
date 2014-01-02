@@ -88,4 +88,40 @@ public class VoterFlagDAO extends GenericDaoHibernate<VoterFlag, Long> implement
 		query.setParameter("locationId", locationId);
 		return query.list();
 	}
+	
+	
+	public List<Object[]> getFlagInfoByBoterIds(List<Long> voterIds)
+	{
+		Query query = getSession().createQuery("select distinct model.voter.voterId,model.flag.flagId,model.flag.name,model.flag.color from VoterFlag model where model.voter.voterId in (:voterIds)");
+		query.setParameterList("voterIds", voterIds);
+		return query.list();
+		
+		
+	}
+	
+	public List<Long> getFlagsByVoterIds(Long voterId)
+	{
+		Query query = getSession().createQuery("select distinct model.flag.flagId from VoterFlag model where model.voter.voterId=:voterId");
+		query.setParameter("voterId", voterId);
+		return query.list();
+		
+		
+	}
+	
+	public List<Object> getvoterFlagByFlagIdAndUser(Long flagId,Long userId,Long voterId)
+	{
+		Query query = getSession().createQuery("select model.voterFlagId from VoterFlag model where model.voter.voterId=:voterId and  model.flag.flagId =:flagId and model.user.userId =:userId");
+		query.setParameter("flagId", flagId);
+		query.setParameter("userId", userId);
+		query.setParameter("voterId", voterId);
+		return query.list();
+	}
+	
+	public Integer deleteVoterFlagById(Long voterFlagId)
+	{
+		Query query = getSession().createQuery("delete from VoterFlag model where model.voterFlagId = :voterFlagId");
+		query.setParameter("voterFlagId", voterFlagId);
+		return query.executeUpdate();
+	}
+	
 }

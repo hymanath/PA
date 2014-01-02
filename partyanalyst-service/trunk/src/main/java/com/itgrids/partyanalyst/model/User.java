@@ -110,6 +110,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<VoiceRecordingDetails> recordingDetails = new HashSet<VoiceRecordingDetails>(0);
 	private Set<SmsResponseDetails> smsResponseDetails = new HashSet<SmsResponseDetails>(0);
 	private Set<VoiceSmsVerifiedNumbers>  voioceSmsVerifiedNumbers = new HashSet<VoiceSmsVerifiedNumbers>(0);
+	private Set<VoterFlag>  VoterFlags = new HashSet<VoterFlag>(0);
 
 	
 	
@@ -1046,6 +1047,14 @@ public class User extends BaseModel implements Serializable{
 
 	public void setMobileAppUser(Set<MobileAppUser> mobileAppUser) {
 		this.mobileAppUser = mobileAppUser;
+	}
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<VoterFlag> getVoterFlags() {
+		return VoterFlags;
+	}
+
+	public void setVoterFlags(Set<VoterFlag> voterFlags) {
+		VoterFlags = voterFlags;
 	}
 	
 	

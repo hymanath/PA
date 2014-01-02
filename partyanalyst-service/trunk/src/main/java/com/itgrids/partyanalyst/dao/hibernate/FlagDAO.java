@@ -34,5 +34,9 @@ public class FlagDAO extends GenericDaoHibernate<Flag,Long> implements IFlagDAO
 		query.setParameter("flagId", flagId);
 		return query.executeUpdate();
 	}
+	public List<Object[]> getAllFlagsList()
+	{
+		return getHibernateTemplate().find("select model.flagId,model.name from Flag model order by model.flagId desc");
+	}
 
 }

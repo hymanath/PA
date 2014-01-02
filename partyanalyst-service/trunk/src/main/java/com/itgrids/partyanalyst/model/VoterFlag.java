@@ -25,7 +25,7 @@ public class VoterFlag extends BaseModel implements Serializable {
 private Long voterFlagId;
 private Voter voter;
 private Flag flag;
-
+private User user;
 	
 	public VoterFlag()
 	{
@@ -67,5 +67,15 @@ private Flag flag;
 		this.flag = flag;
 	}
 	
-	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 }
