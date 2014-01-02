@@ -55,6 +55,17 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	private Long influencePeopleCount;
 	private Long cadreCount;
 	private Long politicianCount;
+	private Long flagsCount;
+	
+	
+	public Long getFlagsCount() {
+		return flagsCount;
+	}
+
+	public void setFlagsCount(Long flagsCount) {
+		this.flagsCount = flagsCount;
+	}
+
 	public Long getPoliticianCount() {
 		return politicianCount;
 	}

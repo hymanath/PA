@@ -11,6 +11,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterFlag;
 
 public interface IBoothPublicationVoterDAO extends
 		GenericDao<BoothPublicationVoter, Long> {
@@ -551,4 +552,5 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]>  getCasteGroupContsByWardBoothWise(Long userId,Long localElectionBodyId,Long publicationDateId,Long constituencyId);
 			
 	  public List<Object[]>  getCasteWiseGenderWiseContsByWardBoothWise(Long userId,Long localElectionBodyId,Long publicationDateId,Long constituencyId);
+	  public List<VoterFlag> getFlagDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId,Integer startIndex,Integer maxIndex,String order,String columnName);
 }

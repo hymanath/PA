@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.Voter;
+import com.itgrids.partyanalyst.model.VoterFlag;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothPublicationVoterDAO extends
@@ -6089,6 +6090,47 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+
+	
+	 public List<VoterFlag> getFlagDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId,Integer startIndex,Integer maxIndex,String order,String columnName)
+	  {
+		  StringBuffer queryString = new StringBuffer();
+		  queryString.append("select model from VoterFlag model ,BoothPublicationVoter BPV where" +
+			  		" model.voter.voterId = BPV.voter.voterId " +
+			  		" and BPV.booth.constituency.constituencyId = :constituencyId and BPV.booth.boothId in (:boothIds) ");
+		  if(columnName.equalsIgnoreCase("voterId"))
+		  {
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else if(columnName.equalsIgnoreCase("gender"))
+		  {
+			  columnName = "gender";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else if(columnName.equalsIgnoreCase("houseNo"))
+		  {
+			  columnName = "houseNo";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else if(columnName.equalsIgnoreCase("relativeFirstName"))
+		  {
+			  columnName = "relativeName";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		  else
+		  {
+			  columnName = "name";
+			  queryString.append(" order by model.voter."+columnName+" "+order);	
+		  }
+		Query query = getSession().createQuery(queryString.toString());
+		query.setFirstResult(startIndex);
+		query.setMaxResults(maxIndex);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameterList("boothIds", boothIds);
+		return query.list(); 
+	  }
+	  
+
 	public List<Object[]> getWardBoothAgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId)
 	{  
 		
@@ -6120,4 +6162,5 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+
 }
