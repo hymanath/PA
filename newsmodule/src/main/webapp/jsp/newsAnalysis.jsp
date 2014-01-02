@@ -14,6 +14,20 @@
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 	
 	<style>
+	#fromDateId,#todateId{
+	cursor: pointer;
+	}
+	#headings{
+	color:#5B5B5B;
+	font-variant: small-caps; 
+	text-transform: none; 
+	font-weight: 500; 
+	height: 20px; 
+	padding: 5px; 
+	width: 918px;
+	margin-bottom:0px;
+
+	}
 	.content_widget {background-color: #FFFFFF; border: 1px solid #E5E5E5; height: 100%; padding: 10px;}
 	.m_topN21{margin-top:-21px;}
 	.m_left0{margin-left: 0px !important;}
@@ -49,6 +63,7 @@
 	//$('#analyseCandidateDesti').attr('checked','checked');
 
 	$("#advanceView").live("click",function(){
+	$("#errormessageDiv").hide();
 		if(!booleanVal){
 			booleanVal = true;
 			$('#analyseCandidateDesti').attr('checked',false);
