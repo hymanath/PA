@@ -6262,6 +6262,20 @@
            		<param name="root">flagDetails</param>
         	</result>
         </action>
-        
+        <action name="assignVoterToFlag" class="votersEditAction">
+		
+			<result name="success">/jsp/assignVoterFlag.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+			</action>
+			  <action name="getFlags" class="votersEditAction" method="getAllFlagsList">
+           <result type="json" name="success">
+           		<param name="root">flagsList</param>
+        	</result>
+        </action>
+          <action name="assignVoterToFlagAction" class="votersEditAction" method="assignVoterFlag">
+           <result type="json" name="success">
+           		<param name="root">result</param>
+        	</result>
+        </action>
 		</package>
 </struts>      

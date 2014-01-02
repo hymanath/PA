@@ -66,6 +66,7 @@
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 <script type="text/javascript" src="js/subRegionsWiseAnalysis.js"></script>
+
 <title></title>
 
 </head>
@@ -196,6 +197,15 @@ width:955px
 	margin-left: 20px;
 	width: 957px;
 }
+.ui-dialog{
+    left: -150px;
+    margin-left: 50%;
+	top: 250px !important;	
+	margin-top:50% !important;
+
+}
+
+
 </style>
 <body>
 
@@ -261,7 +271,9 @@ width:955px
 
 
 </div>
-
+<div id="flagOuterDiv" style="display:none;">
+<div id="InnerflagDiv"></div>
+</div>
 <c:if test="${maintype == 'booth' || maintype == 'panchayat' || maintype == 'customWard' || maintype == 'hamlet'}">
 <div style="float:right;margin-top:25px;">
 	Search By:<select id="searchTypeId" onchange="$('#searchValue').val('');">
@@ -399,11 +411,16 @@ str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
 str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="openFlagWindow('+id+');">Add To Flag</a>';
+str += ' </li>';
 str += ' </ul>';
 str += ' </li>';
 str += ' </ul>';
 elLiner.innerHTML =str;
 }
+
+	
 YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	{
 		var str ='';
@@ -425,6 +442,29 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		}
 		elLiner.innerHTML =str;
 	}
+	YAHOO.widget.DataTable.Flag = function(elLiner, oRecord, oColumn, oData)
+	{
+		
+		
+		var str ='';
+		var id=oRecord.getData("voterIds");
+		var arr = oRecord.getData("flagList");
+		
+		if(arr.length > 0)
+		{
+		for(var i in arr)
+			{
+			
+			str += '<div id="flagColor'+id+'" style="background-color:#'+arr[i].color+'" onmouseover="showFlagName('+i+',this.id)" onmouseout="hideFlagName('+i+',this.id)">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+			str+='<div class="flagName'+i+'" style="display:none"><a href="#">'+arr[i].name+'</a></div>';
+			str+='<br/>';
+			}
+			elLiner.innerHTML =str;
+		}
+		
+		
+	}
+		
 YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
 	{
 	    var str='';
@@ -450,6 +490,8 @@ var votersByLocBoothColumnDefs = [
 {key:"houseNo", label: "HNO",width:55, sortable:true},
 {key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
 {key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
+{key:"Flag", label: "Flag", width:25,formatter:YAHOO.widget.DataTable.Flag},
+
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
@@ -463,7 +505,7 @@ votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [{key:"serialNo", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo","flagList"],
 
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
@@ -527,6 +569,9 @@ str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
 str += ' </li>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="openFlagWindow('+id+');">Add To Flag</a>';
+str += ' </li>';
 str += ' </ul>';
 str += ' </li>';
 str += ' </ul>';
@@ -553,6 +598,28 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		}
 		elLiner.innerHTML =str;
 	}
+	YAHOO.widget.DataTable.Flag = function(elLiner, oRecord, oColumn, oData)
+	{
+		
+		
+		var str ='';
+		var id=oRecord.getData("voterIds");
+		var arr = oRecord.getData("flagList");
+		
+		if(arr.length > 0)
+		{
+		for(var i in arr)
+			{
+			
+			str += '<div id="flagColor'+id+'" style="background-color:#'+arr[i].color+'" onmouseover="showFlagName('+i+',this.id)" onmouseout="hideFlagName('+i+',this.id)">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+			str+='<div class="flagName'+i+'" style="display:none"><a href="#">'+arr[i].name+'</a></div>';
+			str+='<br/>';
+			}
+			elLiner.innerHTML =str;
+		}
+		
+		
+	}
 YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
 	{
 	    var str='';
@@ -578,6 +645,7 @@ var votersByLocBoothColumnDefs = [
 {key:"houseNo", label: "HNO",width:55, sortable:true},
 {key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
 {key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
+{key:"Flag", label: "Flag", width:25,formatter:YAHOO.widget.DataTable.Flag},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
@@ -591,7 +659,7 @@ votersByLocBoothDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
 votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [{key:"serialNo", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo","flagList"],
 
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
@@ -627,6 +695,7 @@ oDT: votersByLocBoothDataTable
 function buildVotersByLocBoothDataTable1()
 {
 //var boothId = mainreqid;
+
 var publicationDateId = publicationId;
 $('#votersByLocationTabContentDiv_body').show();
 if(boothId == "0" || boothId == null || publicationDateId == null || publicationDateId == "0")
@@ -656,11 +725,15 @@ if(boothId == "0" || boothId == null || publicationDateId == null || publication
 		str += ' <li>';
 		str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
 		str += ' </li>';
+		str += ' <li>';
+		str += ' <a href= "javascript:{};" onclick="openFlagWindow('+id+');">Add To Flag</a>';
+		str += ' </li>';
 		str += ' </ul>';
 		str += ' </li>';
 		str += ' </ul>';
 		elLiner.innerHTML =str;
 	}
+	
 YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 	{
 		var str ='';
@@ -668,6 +741,7 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		var isInfluencePerson=oRecord.getData("isInfluencePerson");
 		var isCadere = oRecord.getData("isCadrePerson");
 		var isPolitician = oRecord.getData("isPoliticion");
+		
 		if(isInfluencePerson == true)
 		{
 			str+='<img title="InfluencingPeople" alt="InfluencePerson" src="./images/icons/influencing.png"/>';
@@ -682,6 +756,28 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		}
 		elLiner.innerHTML =str;
 	}
+	YAHOO.widget.DataTable.Flag = function(elLiner, oRecord, oColumn, oData)
+	{
+		
+		
+		var str ='';
+		var id=oRecord.getData("voterIds");
+		var arr = oRecord.getData("flagList");
+		
+		if(arr.length > 0)
+		{
+		for(var i in arr)
+			{
+			//str += '<div id="flagColor'+i+' " style="background-color:#'+arr[i].color+'" onmouseover="showFlagName('+sno+',\'flagName'+i+'\')" 
+			str += '<div id="flagColor'+id+'" style="background-color:#'+arr[i].color+'" onmouseover="showFlagName('+i+',this.id)" onmouseout="hideFlagName('+i+',this.id)">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+			str+='<div class="flagName'+i+'" style="display:none"><a href="#">'+arr[i].name+'</a></div>';
+			str+='<br/>';
+			}
+			elLiner.innerHTML =str;
+		}
+		
+		
+	}
 var votersByLocBoothColumnDefs = [
 {key:"serialNo", label: "SNo",width:15,sortable: true,formatter:"number"},
 {key:"firstName", label: "Name",width:120, sortable: true},
@@ -692,6 +788,8 @@ var votersByLocBoothColumnDefs = [
 {key:"houseNo", label: "HNO",width:55, sortable:true},
 {key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
 {key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
+{key:"Flag", label: "Flag", width:25,formatter:YAHOO.widget.DataTable.Flag},
+
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
@@ -712,7 +810,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"serialNo", parser:"number"},
-"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo"],
+"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo","flagList"],
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
 }
@@ -798,6 +896,29 @@ YAHOO.widget.DataTable.Type = function(elLiner, oRecord, oColumn, oData)
 		}
 		elLiner.innerHTML =str;
 	}
+
+	YAHOO.widget.DataTable.Flag = function(elLiner, oRecord, oColumn, oData)
+	{
+		
+		
+		var str ='';
+		var id=oRecord.getData("voterIds");
+		var arr = oRecord.getData("flagList");
+		
+		if(arr.length > 0)
+		{
+		for(var i in arr)
+			{
+			//str += '<div id="flagColor'+i+' " style="background-color:#'+arr[i].color+'" onmouseover="showFlagName('+sno+',\'flagName'+i+'\')" 
+			str += '<div id="flagColor'+id+'" style="background-color:#'+arr[i].color+'" onmouseover="showFlagName('+i+',this.id)" onmouseout="hideFlagName('+i+',this.id)">&nbsp;&nbsp;&nbsp;&nbsp;</div>';
+			str+='<div class="flagName'+i+'" style="display:none"><a href="#">'+arr[i].name+'</a></div>';
+			str+='<br/>';
+			}
+			elLiner.innerHTML =str;
+		}
+		
+		
+	}
 YAHOO.widget.DataTable.select = function(elLiner, oRecord, oColumn, oData) 
 	{
 	    var str='';
@@ -823,6 +944,7 @@ var votersByLocBoothColumnDefs = [
 {key:"houseNo", label: "HNO",width:55, sortable:true},
 {key:"relativeFirstName", label: "Guardian Name", width:120,sortable:true},
 {key:"Type", label: "Type", width:25,formatter:YAHOO.widget.DataTable.Type},
+{key:"Flag", label: "Flag", width:25,formatter:YAHOO.widget.DataTable.Flag},
 //{key:"relationshipType", label: "Relationship", sortable:true},
 {key:"mobileNo",label:"MobileNo",sortable:true},
 {key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
@@ -837,7 +959,7 @@ votersByLocBoothDataSource.responseSchema = {
 resultsList: "voterDetails",
 fields: [
 {key:"serialNo", parser:"number"},
-"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo"],
+"firstName", "gender", "age", "houseNo","relativeFirstName","voterIDCardNo","mobileNo","voterIds","influencePerson","isInfluencePerson","isPoliticion","isCadrePerson","partNo","flagList"],
 
 metaFields: {
 totalRecords: "voterDetailsCount" // Access to value in the server response
@@ -1010,9 +1132,18 @@ function callAjax(jsObj,url)
 				
 				buildVotersInFamilyWithRetrievedResults(myResults);
 			}
+			else if(jsObj.task == "getFlags")
+			{
+				buildFlags(myResults,jsObj.voterId);
+										
+			}
+			else if(jsObj.task == "assignFlags")
+				{
+				showAssignFlagsStatus(myResults,jsObj.voterId);
+				}
 			}catch (e)
 			{
-							     
+				//alert(e);			     
 			}  
  		},
  		scope : this,
@@ -2166,5 +2297,113 @@ getCountOfHamletsAndBoothsInPanchayat();
 	   checkForAttributesToDisplay('search');
 
  }
+ function showFlagName(i,id)
+ {
+ var idsr="#"+id;
+
+var id="#"+$(""+idsr+"").closest("tr").attr("id")+"";
+
+ $(id).closest("tr").find(".flagName"+i+"").css("display","block");
+
+}
+ function hideFlagName(i,id)
+ {
+	 var idsr="#"+id;
+
+	var id="#"+$(""+idsr+"").closest("tr").attr("id")+"";
+	$(id).closest("tr").find(".flagName"+i+"").css("display","none");
+ }
+
+
+ function openFlagWindow(voterId)
+ {
+	
+	/*var urlStr="assignVoterToFlag.action?id="+voterId+" ";
+	var updateBrowser = window.open(urlStr,"assignflag","scrollbars=yes,height=600,width=850,left=200,top=200");	
+	updateBrowser.focus();*/
+
+ getFlags(voterId);
+ }
+
+ function getFlags(voterId)
+  {
+	 var jsObj=
+	  {
+		voterId :voterId,
+		task:"getFlags"
+	  };
+	
+	var rparam1 ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url1 = "getFlags.action?"+rparam1;
+	callAjax(jsObj,url1);
+}
+function assignFlagsToVoter(voterId)
+  {
+
+	var checkedflags=[];
+	var uncheckedflags = [];
+	  $('.checkFlag').each(function () {
+
+		if($(this).is(':checked')){
+	
+			checkedflags.push($(this).val());
+		}
+		else
+		uncheckedflags.push($(this).val());
+	  });
+	  
+	 var jsObj=
+	  {
+		 checkedflags:checkedflags,
+		 uncheckedflags:uncheckedflags,
+		 voterId :voterId,
+		task:"assignFlags"
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "assignVoterToFlagAction.action?"+rparam;
+
+	callAjax(jsObj,url);
+}
+function buildFlags(results,voterId)
+{
+
+	jQuery.curCSS = jQuery.css;
+	$("#flagOuterDiv").css("display","block");
+		$("#flagOuterDiv").dialog({
+		width:300,
+		height:300,
+		autoOpen: false,
+		position:'center',
+		resizable: false,
+		closeOnEscape: false,
+		modal: true
+			
+});
+ $( "#flagOuterDiv" ).dialog("open");
+var str='';
+str+='<div id="errorDiv"></div>';
+for(var i in results)
+	{
+	if(results[i].flag == true)
+str+='<input type="checkbox" value='+results[i].id+' id='+results[i].id+' class="checkFlag" checked="true" />&nbsp'+results[i].name+'<br/>';
+	else
+str+='<input type="checkbox" value='+results[i].id+' id='+results[i].id+' class="checkFlag" />&nbsp'+results[i].name+'<br/>';
+	}
+str+='<br/><br/>';
+str+='<input type="button" id="assignVoter" value="Assign" onclick="assignFlagsToVoter('+voterId+');" class="btn btn-success"/>';
+str+='<br/><br/>';
+$("#InnerflagDiv").html(str);
+}
+
+function showAssignFlagsStatus(results,voterId)
+{
+	
+	if(results.resultCode == 0)
+	{
+		$("#errorDiv").html("flag assigned Successfully.....").css("color","green");
+setTimeout(function() { $("#flagOuterDiv").dialog('close') }, 2000);
+	}
+
+}
  </script>
 </body>
