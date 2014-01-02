@@ -208,17 +208,34 @@ function callAjax(jsObj,url)
 	 }
     }	
 	function buildSearchDataTableForLvlThree(result,jsObj){
-		
+	
+		 var partyName = $("#partyList :selected").text();
+		 var candidateName = $("#candidateId :selected").text();
 		 var str ="";
 		 var str ="";
 		 var id ="";
-		 if(jsObj.task == "getAnalysedData"){
-		   id = "responseTable";
-		 }else{
-		   id = "responseTable1";
-		 }
+		 var newsType1="";
+			 if(jsObj.task == "getAnalysedData"){
+				if($("#candidateId").val() != 0)
+					newsType1="News from "+candidateName;
+				else if($("#partyList").val() != 0)
+					newsType1="News from "+partyName;
+				else
+					newsType1 = "News from All Parties"
+				id = "responseTable";
+			 }else{
+				if($("#candidateId").val() != 0)
+					newsType1="News on "+candidateName;
+				else if($("#partyList").val() != 0)
+					newsType1="News on "+partyName;
+				else
+					newsType1 = "News on All Parties"
+			   id = "responseTable1";
+			 }
 		 $("#"+id).css("display","block");
 	     if(result.subList != null && result.subList.length > 0){
+		   str+="<h4 id='headings' class='btn-success'>"+newsType1+"</h4>";
+		   
 		   str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
 		   str+="  <thead><tr>";
 		   for(var title in result.levels){
@@ -283,7 +300,10 @@ function callAjax(jsObj,url)
 		   str+="</table>";
 		   $("#"+id).html(str);
 		 }else{
-		   $("#"+id).html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
+		 var str1="";
+		 str1 +="<h4 id='headings' class='btn-success'>"+newsType1+"</h4>";
+		 str1 +="<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>";
+		   $("#"+id).html(str1);
 		 } 
 	    }
 		/*function buildSearchDataTableForLvlThree1(result){
@@ -360,18 +380,30 @@ function callAjax(jsObj,url)
 		
 		function buildSearchDataTableForLvlSix(result,jsObj)
 		{
+			var partyName = $("#partyList :selected").text();
+			var candidateName = $("#candidateId :selected").text();
 		    var str ="";
-			 var id ="";
+			var id ="";
+			var newsType1="";
 			 if(jsObj.task == "getAnalysedData"){
-			   id = "responseTable";
+				if($("#candidateId :selected").val() != 0)
+					newsType1="News from "+candidateName;
+				else
+					newsType1="News from "+partyName;
+				id = "responseTable";
 			 }else{
+				if($("#candidateId :selected").val() != 0)
+					newsType1="News on "+candidateName;
+				else
+					newsType1="News on "+partyName;
 			   id = "responseTable1";
 			 }
 			 $("#"+id).css("display","block");
 			$("#"+id).html(str);
+			
 			if(result.subList != null && result.subList.length > 0)
 			{
-				
+			str+="<h4 id='headings' class='btn-success'>"+newsType1+"</h4>";
 				str += '<table class="analysisResult table table-bordered table-striped table-hover">';
 				str += '<thead><tr>';
 				str += '<th>Who</th>';
@@ -389,7 +421,10 @@ function callAjax(jsObj,url)
 				str += '</tbody><table>';
 				$("#"+id).html(str);
 			}else{
-		      $("#"+id).html("<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>");
+			var str1 = '';
+			str1 +="<h4 id='headings' class='btn-success'>"+newsType1+"</h4>";
+			str1 +="<span  style='margin-left:340px;font-weight:bold;'>No News Exists With Your Search Criteria</span>";
+		      $("#"+id).html(str1);
 		   } 
 		}
 		
@@ -793,6 +828,16 @@ function getAnalysisData()
 	else if($('#analyseCandidateDesti').is(':checked')){
 	  analyseCandidate ="destination";
 	}
+
+	if(!booleanVal){
+		if(whoPartyId == 0 ){
+			$("#errormessageDiv").show();		
+			$("#errormessageDiv").html('Please Select Atleast One Party or Candidate To Analyse');
+			return;
+		}	
+	}
+	$("#errormessageDiv").html('Please Select Atleast One Option To Analyse');
+	
 	var timeST = new Date().getTime();
 	
     if(fromdate == "" && todate=="" && whoPartyId == 0 && whomPartyId == 0 && whoCandidateId == 0 && whomCandidateId == 0 && locationLevelValue == 0 && newsSourceId == "" && KeyWordsList == "" && checkedType == "" && analyseCandidate == ""){
