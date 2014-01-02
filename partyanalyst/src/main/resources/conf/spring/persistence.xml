@@ -369,7 +369,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterFlag</value>
 				<value>com.itgrids.partyanalyst.model.PingingType</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppPinging</value>
-				
+				<value>com.itgrids.partyanalyst.model.WardBooth</value>
 			</list>
 			
 		</property>
