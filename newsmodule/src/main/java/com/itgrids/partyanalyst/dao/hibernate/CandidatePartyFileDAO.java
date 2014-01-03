@@ -101,7 +101,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getSourcePartyCommentsOnly(Long partyId,Long candidateId)
+	public List<Object[]> getSourcePartyCommentsOnly(Long partyId,Long candidateId,Date fromDate,Date toDate)
 	{
 		StringBuffer sb = new StringBuffer();
 		if(candidateId == null)
@@ -134,6 +134,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			sb.append(" and  model.sourceCandidate.candidateId = :candidateId ");
 		}
+		
+		if(fromDate != null){
+			sb.append(" and date(model.file.fileDate) >= :fromDate ");
+		}
+		if(toDate != null){
+			sb.append(" and date(model.file.fileDate) <= :toDate ");
+		}
+		
+		
 		if(candidateId == null ||  candidateId == 0l)
 		{
 			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
@@ -151,11 +160,17 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			query.setParameter("candidateId", candidateId);	
 		}
+		if(fromDate != null){
+			query.setParameter("fromDate", fromDate);
+		}
+		if(toDate != null){
+			query.setParameter("toDate",toDate);
+		}
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getSourcePartyComments(Long partyId,Long candidateId)
+	public List<Object[]> getSourcePartyComments(Long partyId,Long candidateId,Date fromDate,Date toDate)
 	{
 		StringBuffer sb = new StringBuffer();
 		if(candidateId == null)
@@ -188,6 +203,14 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			sb.append(" and  model.sourceCandidate.candidateId = :candidateId ");
 		}
+		
+		if(fromDate != null){
+			sb.append(" and date(model.file.fileDate) >= :fromDate ");
+		}
+		if(toDate != null){
+			sb.append(" and date(model.file.fileDate) <= :toDate ");
+		}
+		
 		if(candidateId == null ||  candidateId == 0l)
 		{
 			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
@@ -206,11 +229,18 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			query.setParameter("candidateId", candidateId);	
 		}
+		
+		if(fromDate != null){
+			query.setParameter("fromDate", fromDate);
+		}
+		if(toDate != null){
+			query.setParameter("toDate",toDate);
+		}
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getSourcePartyCandidateComments(Long partyId,Long candidateId)
+	public List<Object[]> getSourcePartyCandidateComments(Long partyId,Long candidateId,Date fromDate,Date toDate)
 	{
 		StringBuffer sb = new StringBuffer();
 		sb.append("select model.sourceCandidate.candidateId,model.sourceCandidate.lastname,count(distinct model.file.fileId),model.destinationCandidate.candidateId,model.destinationCandidate.lastname,  ");
@@ -236,6 +266,13 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			sb.append(" and  model.sourceCandidate.candidateId = :candidateId");
 		}
+		
+		if(fromDate != null){
+			sb.append(" and date(model.file.fileDate) >= :fromDate ");
+		}
+		if(toDate != null){
+			sb.append(" and date(model.file.fileDate) <= :toDate ");
+		}
 		if(candidateId == null || candidateId == 0l)
 		{
 			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
@@ -254,11 +291,19 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			query.setParameter("candidateId", candidateId);	
 		}
+		if(fromDate != null){
+			query.setParameter("fromDate", fromDate);
+		}
+		if(toDate != null){
+			query.setParameter("toDate", toDate);
+		}
+		
+		
 		return query.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDestinationPartyCommentsOnly(Long partyId,Long candidateId)
+	public List<Object[]> getDestinationPartyCommentsOnly(Long partyId,Long candidateId,Date fromDate,Date toDate)
 	{
 		StringBuffer sb = new StringBuffer();
 		if(candidateId == null)
@@ -291,6 +336,13 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			sb.append(" and model.destinationCandidate.candidateId is not null and model.destinationCandidate.candidateId = :candidateId");
 		}
+		
+		if(fromDate != null){
+			sb.append(" and date(model.file.fileDate) >= :fromDate ");
+		}
+		if(toDate != null){
+			sb.append(" and date(model.file.fileDate) <= :toDate ");
+		}
 		if(candidateId == null || candidateId == 0l)
 		{
 			sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
@@ -308,11 +360,18 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			query.setParameter("candidateId", candidateId);	
 		}
+		if(fromDate != null){
+			query.setParameter("fromDate", fromDate);
+		}
+		if(toDate != null){
+			query.setParameter("toDate",toDate);
+		}
+		
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDestinationPartyComments(Long partyId,Long candidateId)
+	public List<Object[]> getDestinationPartyComments(Long partyId,Long candidateId,Date fromDate,Date toDate)
 	{	
 		StringBuffer sb = new StringBuffer();
 		if(candidateId == null)
@@ -346,6 +405,13 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			sb.append(" and model.destinationCandidate.candidateId is not null and model.destinationCandidate.candidateId = :candidateId");
 		}
+		if(fromDate != null){
+			sb.append(" and date(model.file.fileDate) >= :fromDate ");
+		}
+		if(toDate != null){
+			sb.append(" and date(model.file.fileDate) <= :toDate ");
+		}
+		
 		sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
 		Query query = getSession().createQuery(sb.toString());
 		if(partyId != null)
@@ -356,11 +422,18 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			query.setParameter("candidateId", candidateId);	
 		}
+		
+		if(fromDate != null){
+			query.setParameter("fromDate", fromDate);
+		}
+		if(toDate != null){
+			query.setParameter("toDate",toDate);
+		}
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDestinationPartyCandidateComments(Long partyId,Long candidateId)
+	public List<Object[]> getDestinationPartyCandidateComments(Long partyId,Long candidateId,Date fromDate,Date toDate)
 	{
 		StringBuffer sb = new StringBuffer();
 		sb.append("select model.sourceCandidate.candidateId,model.sourceCandidate.lastname ,count(distinct model.file.fileId),model.destinationCandidate.candidateId,model.destinationCandidate.lastname,  ");
@@ -387,6 +460,12 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			sb.append(" and model.destinationCandidate.candidateId is not null and model.destinationCandidate.candidateId = :candidateId");
 		}
+		if(fromDate != null){
+			sb.append(" and date(model.file.fileDate) >= :fromDate ");
+		}
+		if(toDate != null){
+			sb.append(" and date(model.file.fileDate) <= :toDate ");
+		}
 		sb.append(" group by model.sourceCandidate.candidateId,model.destinationCandidate.candidateId,model.sourceParty.partyId,model.destinationParty.partyId");
 		Query query = getSession().createQuery(sb.toString());
 		if(partyId != null)
@@ -398,13 +477,24 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		{
 			query.setParameter("candidateId", candidateId);	
 		}
+		if(fromDate != null){
+			query.setParameter("fromDate", fromDate);
+		}
+		if(toDate != null){
+			query.setParameter("toDate",toDate);
+		}
 		return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getSelectedNewsBySearchCriteria(String queryStr , Integer startIndex , Integer maxIndex)
+	public List<Object[]> getSelectedNewsBySearchCriteria(String queryStr ,Date fromDate,Date toDate,  Integer startIndex , Integer maxIndex)
 	{
 		Query query = getSession().createQuery(queryStr.toString());
+		
+		 if(fromDate != null)
+			  query.setDate("fromDate", fromDate);
+			 if(toDate != null)
+			  query.setDate("toDate", toDate);
 		if(startIndex != null)
 		{
 			query.setFirstResult(startIndex);
@@ -417,9 +507,13 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		return query.list();
 	}
 	
-	public Long getSelectedNewsCountBySearchCriteria(String queryStr)
+	public Long getSelectedNewsCountBySearchCriteria(String queryStr,Date fromDate,Date toDate)
 	{
 		Query query = getSession().createQuery(queryStr.toString());
+		 if(fromDate != null)
+			  query.setDate("fromDate", fromDate);
+			 if(toDate != null)
+			  query.setDate("toDate", toDate);
 		return (Long)query.uniqueResult();
 	}
 

@@ -64,16 +64,29 @@
 
 	$("#advanceView").live("click",function(){
 	$("#errormessageDiv").hide();
-		if(!booleanVal){
-			booleanVal = true;
+	     if(!booleanVal){
+		   booleanVal = true;
 			$('#analyseCandidateDesti').attr('checked',false);
-			$('#whomPartysList').val(0);
+			$('#keywordscheckId').attr('checked',false);
+			$('#candidateCheckId').attr('checked',false);
+            $('#whomPartysList').val(0);
+			$('#whomCandidatesList').val(0);
+			$('#whomBenfitsList').val(0);
+			$('#locationLevelId').val(0);
+			$("#locationLevelId").change();
+		    $("#newsSourceId").multiselect("uncheckAll"); 
 			$("#advanceDiv").css("display","block");
+			$('#keywordsDiv').hide();
+			$('#analyseCandidateSource').attr('disabled',false);
+			$("#advanceView").html('Hide Advance Search options');
 		}else{
-			booleanVal = false;
+		    booleanVal = false;
 			$('#analyseCandidateDesti').attr('checked',true);
 			$("#advanceDiv").css("display","none");
-		}
+			$("#advanceView").html('Show Advance Search options');
+			$('#analyseCandidateSource').attr('checked',false);
+            $('#analyseCandidateSource').attr('disabled',true);
+            }
 	});
 	</script>
 </head>
@@ -124,7 +137,7 @@
 						</div>
 						<div class="span2">
 							<label>Analyse By Who</label>
-							 <input type="checkbox" id="analyseCandidateSource" />				
+							 <input type="checkbox" id="analyseCandidateSource" disabled="true"/>				
 						</div>
 					</div><!------Who Div END---->
 					
@@ -227,7 +240,7 @@
 					</div>
 					</div>
 
-					<div style="height: 25px; margin-top: 10px;"><button class="btn btn-success" type="submit" id="advanceView" style="float:right;">Advance Seach</button></div>
+					<div style="height: 25px; margin-top: 10px;"><button class="btn btn-success" type="submit" id="advanceView" style="float:right;">Show Advance Search Options</button></div>
 					<!-------Submit Button------>
 					<div class="form-actions text-center">
 						<button class="btn btn-success" type="submit" onClick="getAnalysisData();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
