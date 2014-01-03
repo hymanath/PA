@@ -27,21 +27,21 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	 
 	public List<Object[]> getKeywordsCountByFileIds(Set<Long> fileIds);
 	
-	public List<Object[]> getSourcePartyCommentsOnly(Long partyId,Long candidateId);
+	public List<Object[]> getSourcePartyCommentsOnly(Long partyId,Long candidateId,Date fromDate,Date toDate);
 	
-	public List<Object[]> getSourcePartyCandidateComments(Long partyId,Long candidateId);
+	public List<Object[]> getSourcePartyCandidateComments(Long partyId,Long candidateId,Date fromDate,Date toDate);
 	
-	public List<Object[]> getSourcePartyComments(Long partyId,Long candidateId);
+	public List<Object[]> getSourcePartyComments(Long partyId,Long candidateId,Date fromDate,Date toDate);
 	
-	public List<Object[]> getDestinationPartyCommentsOnly(Long partyId,Long candidateId);
+	public List<Object[]> getDestinationPartyCommentsOnly(Long partyId,Long candidateId,Date fromDate,Date toDate);
 	
-	public List<Object[]> getDestinationPartyComments(Long partyId,Long candidateId);
+	public List<Object[]> getDestinationPartyComments(Long partyId,Long candidateId,Date fromDate,Date toDate);
 	
-	public List<Object[]> getDestinationPartyCandidateComments(Long partyId,Long candidateId);
+	public List<Object[]> getDestinationPartyCandidateComments(Long partyId,Long candidateId,Date fromDate,Date toDate);
 	
-	public List<Object[]> getSelectedNewsBySearchCriteria(String queryStr , Integer startIndex , Integer maxIndex);
+	public List<Object[]> getSelectedNewsBySearchCriteria(String queryStr ,Date fromDate,Date toDate, Integer startIndex , Integer maxIndex);
 	
-	public Long getSelectedNewsCountBySearchCriteria(String queryStr);
+	public Long getSelectedNewsCountBySearchCriteria(String queryStr,Date fromDate,Date toDate);
 
 	public List<CandidatePartyFile> getInvolvedCandidatesInANews(Long fileId);
 	

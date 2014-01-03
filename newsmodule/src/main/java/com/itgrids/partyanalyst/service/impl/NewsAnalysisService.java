@@ -238,33 +238,33 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		List<Object[]> list6 = null;
 		if(vo.isSourceCand())
 		{
-		     list1 = candidatePartyFileDAO.getSourcePartyCommentsOnly(vo.getSourcePartyId(),vo.getSourceCandidateId());
-			 list2 = candidatePartyFileDAO.getSourcePartyCandidateComments(vo.getSourcePartyId(),vo.getSourceCandidateId());
-			 list3 = candidatePartyFileDAO.getSourcePartyComments(vo.getSourcePartyId(),vo.getSourceCandidateId());
+		     list1 = candidatePartyFileDAO.getSourcePartyCommentsOnly(vo.getSourcePartyId(),vo.getSourceCandidateId(),vo.getFromDate(),vo.getToDate());
+			 list2 = candidatePartyFileDAO.getSourcePartyCandidateComments(vo.getSourcePartyId(),vo.getSourceCandidateId(),vo.getFromDate(),vo.getToDate());
+			 list3 = candidatePartyFileDAO.getSourcePartyComments(vo.getSourcePartyId(),vo.getSourceCandidateId(),vo.getFromDate(),vo.getToDate());
 		}
 		else if(vo.isSourceParty())
 		{
-			 list1 = candidatePartyFileDAO.getSourcePartyCommentsOnly(vo.getSourcePartyId(),null);
-			 list2 = candidatePartyFileDAO.getSourcePartyCandidateComments(vo.getSourcePartyId(),null);
-			 list3 = candidatePartyFileDAO.getSourcePartyComments(vo.getSourcePartyId(),null);
-			 list4 = candidatePartyFileDAO.getSourcePartyCommentsOnly(vo.getSourcePartyId(),0l);
-			 list5 = candidatePartyFileDAO.getSourcePartyCandidateComments(vo.getSourcePartyId(),0l);
-			 list6 = candidatePartyFileDAO.getSourcePartyComments(vo.getSourcePartyId(),0l);
+			 list1 = candidatePartyFileDAO.getSourcePartyCommentsOnly(vo.getSourcePartyId(),null,vo.getFromDate(),vo.getToDate());
+			 list2 = candidatePartyFileDAO.getSourcePartyCandidateComments(vo.getSourcePartyId(),null,vo.getFromDate(),vo.getToDate());
+			 list3 = candidatePartyFileDAO.getSourcePartyComments(vo.getSourcePartyId(),null,vo.getFromDate(),vo.getToDate());
+			 list4 = candidatePartyFileDAO.getSourcePartyCommentsOnly(vo.getSourcePartyId(),0l,vo.getFromDate(),vo.getToDate());
+			 list5 = candidatePartyFileDAO.getSourcePartyCandidateComments(vo.getSourcePartyId(),0l,vo.getFromDate(),vo.getToDate());
+			 list6 = candidatePartyFileDAO.getSourcePartyComments(vo.getSourcePartyId(),0l,vo.getFromDate(),vo.getToDate());
 		}
 		else if(vo.isDestiCand())
 		{
-			 list1 = candidatePartyFileDAO.getDestinationPartyCommentsOnly(vo.getDestiPartyId(),vo.getDestiCandidateId());
-			 list2 = candidatePartyFileDAO.getDestinationPartyComments(vo.getDestiPartyId(),vo.getDestiCandidateId());
-			 list3 = candidatePartyFileDAO.getDestinationPartyCandidateComments(vo.getDestiPartyId(),vo.getDestiCandidateId());
+			 list1 = candidatePartyFileDAO.getDestinationPartyCommentsOnly(vo.getDestiPartyId(),vo.getDestiCandidateId(),vo.getFromDate(),vo.getToDate());
+			 list2 = candidatePartyFileDAO.getDestinationPartyComments(vo.getDestiPartyId(),vo.getDestiCandidateId(),vo.getFromDate(),vo.getToDate());
+			 list3 = candidatePartyFileDAO.getDestinationPartyCandidateComments(vo.getDestiPartyId(),vo.getDestiCandidateId(),vo.getFromDate(),vo.getToDate());
 		}
 		else
 		{
-			 list1 = candidatePartyFileDAO.getDestinationPartyCommentsOnly(vo.getDestiPartyId(),null);
-			 list2 = candidatePartyFileDAO.getDestinationPartyComments(vo.getDestiPartyId(),null);
-			 list3 = candidatePartyFileDAO.getDestinationPartyCandidateComments(vo.getDestiPartyId(),null);
-			 list4 = candidatePartyFileDAO.getDestinationPartyCommentsOnly(vo.getDestiPartyId(),0l);
-			 list5 = candidatePartyFileDAO.getDestinationPartyComments(vo.getDestiPartyId(),0l);
-			 list6 = candidatePartyFileDAO.getDestinationPartyCandidateComments(vo.getDestiPartyId(),0l);
+			 list1 = candidatePartyFileDAO.getDestinationPartyCommentsOnly(vo.getDestiPartyId(),null,vo.getFromDate(),vo.getToDate());
+			 list2 = candidatePartyFileDAO.getDestinationPartyComments(vo.getDestiPartyId(),null,vo.getFromDate(),vo.getToDate());
+			 list3 = candidatePartyFileDAO.getDestinationPartyCandidateComments(vo.getDestiPartyId(),null,vo.getFromDate(),vo.getToDate());
+			 list4 = candidatePartyFileDAO.getDestinationPartyCommentsOnly(vo.getDestiPartyId(),0l,vo.getFromDate(),vo.getToDate());
+			 list5 = candidatePartyFileDAO.getDestinationPartyComments(vo.getDestiPartyId(),0l,vo.getFromDate(),vo.getToDate());
+			 list6 = candidatePartyFileDAO.getDestinationPartyCandidateComments(vo.getDestiPartyId(),0l,vo.getFromDate(),vo.getToDate());
 		}
 		
 		return fillNewsAnalysisVOForDisplay(list1,list2,list3,list4,list5,list6);
@@ -1553,17 +1553,29 @@ public class NewsAnalysisService implements INewsAnalysisService {
 								" and model.destinationCandidate.candidateId = "+vo.getDestiCandId()+" and " +
 								" model.sourceParty.partyId = "+vo.getSourcePartyId()+" and " +
 								" model.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+			 if(fromDate != null){
+				 queryData.append(" and model.file.fileDate >=:fromDate  ");
+				}
+				if(toDate != null){
+					queryData.append(" and model.file.fileDate <=:toDate  ");
+				}
 			 System.out.println(queryData);
 			 queryCount.append("select distinct count(model.file.fileId)   " +
 						" from  CandidatePartyFile model  where model.file.isDeleted != 'Y' and model.sourceCandidate.candidateId = "+vo.getSourceCandId()+" " +
 								" and model.destinationCandidate.candidateId = "+vo.getDestiCandId()+" and " +
 								" model.sourceParty.partyId = "+vo.getSourcePartyId()+" and " +
 								" model.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+			 if(fromDate != null){
+				 queryCount.append(" and model.file.fileDate >=:fromDate  ");
+				}
+				if(toDate != null){
+					queryCount.append(" and model.file.fileDate <=:toDate  ");
+				}
 			System.out.println(queryCount);
 			List<Long> fileIds = new ArrayList<Long>();
 			fileMap = new LinkedHashMap<Long, FileVO>();
-			List<Object[]> files = candidatePartyFileDAO.getSelectedNewsBySearchCriteria(queryData.toString(), startIndex, maxIndex);
-			Long count = candidatePartyFileDAO.getSelectedNewsCountBySearchCriteria(queryCount.toString());
+			List<Object[]> files = candidatePartyFileDAO.getSelectedNewsBySearchCriteria(queryData.toString(),fromDate,toDate, startIndex, maxIndex);
+			Long count = candidatePartyFileDAO.getSelectedNewsCountBySearchCriteria(queryCount.toString(),fromDate,toDate);
 			candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, count);
 		 }
 		 else
