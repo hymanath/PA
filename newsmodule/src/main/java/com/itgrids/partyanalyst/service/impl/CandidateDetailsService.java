@@ -8186,8 +8186,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			List<Long> assmblyConstIds = new ArrayList<Long>(0);
 			List<Long> parliamentConstIds = new ArrayList<Long>(0);
 			
-	 		List latestElectionYear = electionDAO.findLatestElectionYearHappenedInState(user.getStateId(),IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN);
-	 		List result = constituencyDAO.findConstituencyByDistrictElectionTypeAndYear(user.getDistrictId(),IConstants.ASSEMBLY_ELECTION_TYPE,latestElectionYear.get(0).toString());
+	 		List latestElectionYear = electionDAO.findLatestElectionYearHappenedInState(1l,IConstants.ASSEMBLY_ELECTION_TYPE,IConstants.ELECTION_SUBTYPE_MAIN);
+	 		List result = constituencyDAO.findConstituencyByDistrictElectionTypeAndYear(Long.valueOf(user.getAccessValue().trim()),IConstants.ASSEMBLY_ELECTION_TYPE,latestElectionYear.get(0).toString());
 
 			for (Object constituency : result) {
 				Object[] param = (Object[]) constituency;
