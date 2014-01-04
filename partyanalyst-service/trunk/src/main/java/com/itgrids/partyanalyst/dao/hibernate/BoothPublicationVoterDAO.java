@@ -6162,5 +6162,22 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	@Override 
+	public List<?> getVoterDetailsByBoothAndConstituency(List<Long> boothId,
+			long constituencyId) {
+		Query query =	getSession().createQuery("select  bpv.voter as voter ,bpv.booth.boothId as boothId,bpv.serialNo as sno ,bpv.booth.publicationDate.publicationDateId as pDate , bpv.booth.publicationDate.name as name , bpv.booth.constituency.constituencyId as cId  from BoothPublicationVoter bpv where bpv.booth.boothId in(:boothId) and bpv.booth.constituency.constituencyId = :constituencyId group by  bpv.voter");
+	//	query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameterList("boothId", boothId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	@Override 
+	public List<?> getVoterDetailsByBoothAndConstituency(long boothId,long constituencyId) {
+		Query query =	getSession().createQuery("select  bpv.voter as voter ,bpv.booth.boothId as boothId,bpv.serialNo as sno ,bpv.booth.publicationDate.publicationDateId as pDate , bpv.booth.publicationDate.name as name , bpv.booth.constituency.constituencyId as cId  from BoothPublicationVoter bpv where bpv.booth.boothId = :boothId and bpv.booth.constituency.constituencyId = :constituencyId group by  bpv.voter");
+	//	query.setParameter("localElectionBodyId", localElectionBodyId);
+		query.setParameter("boothId", boothId);
+		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
 
 }
