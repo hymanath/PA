@@ -112,4 +112,33 @@
 	</servlet-mapping>
 	
 	<!-- Web services end -->
+	<!-- webservices security through basic mode validation -->
+	   <security-constraint>
+        <display-name>authenticate</display-name>
+         <web-resource-collection>
+            <web-resource-name>VoterData</web-resource-name>
+            <description/>
+            <url-pattern>/WebService/VoterData/Secure/*</url-pattern>
+			 <http-method>POST</http-method>
+			 <http-method>GET</http-method>
+         </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>ITG@ANDROID@SMS</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+       <!--<auth-method>FORM</auth-method>
+        <realm-name>file</realm-name>
+        <form-login-config>
+            <form-login-page>/WEB-INF/jsp/login.jsp</form-login-page>
+            <form-error-page>/WEB-INF/jsp/login-error.jsp</form-error-page>
+        </form-login-config> -->
+		
+      <auth-method>BASIC</auth-method>  
+    </login-config> 
+    <security-role>
+        <description/>
+        <role-name>ITG@ANDROID@SMS</role-name>
+    </security-role> 
 </web-app>
