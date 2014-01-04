@@ -538,6 +538,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getCustomWardAgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
 	  
 	  public List<Object[]> getCustomWard18To22AgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
+	 
+	
 	  
 	  public List<Object[]> getWardBoothWiseFamilyVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
 	  
@@ -553,4 +555,16 @@ public interface IBoothPublicationVoterDAO extends
 			
 	  public List<Object[]>  getCasteWiseGenderWiseContsByWardBoothWise(Long userId,Long localElectionBodyId,Long publicationDateId,Long constituencyId);
 	  public List<VoterFlag> getFlagDetailsForSelectedlevel(List<Long> boothIds , Long constituencyId,Integer startIndex,Integer maxIndex,String order,String columnName);
+	  /**
+		 * @param  List of boothIds
+		 * @param ConstituencyId
+		 * @return List<?> 
+		 */
+		public List<?> getVoterDetailsByBoothAndConstituency(List<Long> boothId,long ConstituencyId);
+		 /**
+			 * @param boothId
+			 * @param ConstituencyId
+			 * @return List<?> 
+			 */
+		public List<?> getVoterDetailsByBoothAndConstituency(long boothId,long constituencyId);
 }
