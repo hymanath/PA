@@ -34,6 +34,7 @@ public class ActivityReport extends BaseModel implements Serializable{
 	private Date createdDate;
 	private String reportKey;
 	private String categories;
+	private Party party;
 	
 	public ActivityReport()
 	{
@@ -88,6 +89,16 @@ public class ActivityReport extends BaseModel implements Serializable{
 	}
 	public void setCategories(String categories) {
 		this.categories = categories;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "party_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public Party getParty() {
+		return party;
+	}
+	public void setParty(Party party) {
+		this.party = party;
 	}
 
 }

@@ -17,6 +17,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Benefit implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6096479897711861362L;
 	private Long benefitId;
 	private String name;
 	

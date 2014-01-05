@@ -1769,7 +1769,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 * @return List<SelectOptionVO>
 	 * @Date 18-12-2013
 	 */
-	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex,Long partyid,final Long userId,String url,String requestType){
+	public List<SelectOptionVO> getProgramsWiseNews(List<Long> categIds, List<Long> constituencyIds,String fromDateStr , String toDateStr ,Long startIndex,Long maxIndex,final Long partyid,final Long userId,String url,String requestType){
 		List<SelectOptionVO> returnList = null;
 		try {
 			LOG.info("Entered into getProgramsWiseNews method in NewsAnalysisService service");
@@ -1825,6 +1825,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 							activityReport.setUser(userDAO.get(userId));
 							activityReport.setCreatedDate(dateService.getCurrentDateAndTime());
 							activityReport.setReportKey(key);
+							activityReport.setParty(partyDAO.get(partyid));
 							activityReport.setCategories(categoryString);
 							activityReport = activityReportDAO.save(activityReport);
 							for(Long fileId:fileIdsList){

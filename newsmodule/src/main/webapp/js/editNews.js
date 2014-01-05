@@ -5464,20 +5464,21 @@ function buildCandidates(results)
 			if(newsprivateRadioId == false)
 		document.getElementById('newsPublicRadioId').checked = 'true';
 
-    var keywordStr = "";
-	var count = 0;
-	$(".as-selections li").each(function(){
-              keywordStr +=$(this).text()+",";
 
-			if($(this).text() == ''){				
-				$("#"+count+"keywordId").val(keywordStr);
-				keywordStr = '';
-				count = count+1;
-			}	
-            });
-   
-   var length = keywordStr.length;
-    keywordStr = keywordStr.substr(0,length-2); 
+	$('.destinationKeywords').each(function() {
+		var key = $(this).attr("key");	
+		var str = '';
+			var $ul = $(this).closest('ul');
+			  $ul.find('li').each(function(){
+			  str +=''+$(this).text()+',';
+			});	
+		  var length = str.length;
+		  if(length > 0)
+		   str = str.substring(0,length-2);
+		
+           $("#"+key+"Hidden").val(str);
+        });
+  
 
 		var uploadHandler = {
 					upload: function(o) {

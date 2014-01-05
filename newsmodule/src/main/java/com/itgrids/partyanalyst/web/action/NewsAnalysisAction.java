@@ -460,7 +460,11 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
     		 vo.setBenifitsFor(getBenifitsFor());
     		 vo.setDestiBenifitId(getDestiBenifitId());
     		 vo.setDestiBenifitId(getDestiBenifitId());
-    		 vo.setName(getType().toString());
+    		 if(getType() != null){
+    		   vo.setName(getType().toString());
+    		 }else{
+    			 vo.setName("other");
+    		 }
     		 Date fromDate = (getStartDate()!=null && getStartDate().trim().length() > 0)?format.parse(getStartDate()):null;
     		 Date toDate = (getEndDate()!=null && getEndDate().trim().length() >0)?format.parse(getEndDate()):null;
     		 Integer startIndex = null;
