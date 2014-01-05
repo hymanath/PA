@@ -628,7 +628,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 
 			<input type="text" class="input-block-level keyword${stat.index} destinationKeywords" key="keywordId${stat.index}" id="${stat.index}keywordId"/>
 			
-			<input type="hidden" id="${stat.index}keywordId" name="candidatePartyNewsVOList.destinationVOList[${stat.index}].keywordsList" />
+			<input type="hidden" id="keywordId${stat.index}Hidden" name="candidatePartyNewsVOList.destinationVOList[${stat.index}].keywordsList" />
 
 			<script>			
 			var existingKeyList = new Array();

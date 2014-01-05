@@ -422,10 +422,12 @@ function buildCategoeryDetailsCountWise(result,jsObj)
 	if(jsObj.type == "constituency")
 	{
 		$('#categoeryDetailsConstituencyCountWise').html("");
+		$('#categoeryDetailsConstituencyCountWise').hide();
 	}
 	else
 	{
 		$('#categoeryDetailsDistrictCountWise').html("");
+		$('#categoeryDetailsDistrictCountWise').hide();
 	}
 	if(result != null && result.length > 0)
 	{
@@ -465,9 +467,11 @@ function buildCategoeryDetailsCountWise(result,jsObj)
 		if(jsObj.type == "constituency")
 		{
 			$('#categoeryDetailsConstituencyCountWise').html(str);
+			$('#categoeryDetailsConstituencyCountWise').show();
 		}
 		else
 		{
+		    $('#categoeryDetailsDistrictCountWise').show();
 			$('#categoeryDetailsDistrictCountWise').html(str);
 		}
 		
@@ -608,7 +612,9 @@ function validateFields()
 		$('#urlId').html("");
 		$('#categoeryDetails').html("");
 		$('#categoeryDetailsDistrictCountWise').html("");
+		$('#categoeryDetailsDistrictCountWise').hide();
 		$('#categoeryDetailsConstituencyCountWise').html("");
+		$('#categoeryDetailsConstituencyCountWise').hide();
 		$('#submitDataImg').show();
 		getCategoeryWiseNews(0,'initial');
 		getCategoeryWiseNewsByCount('constituency');
@@ -678,8 +684,8 @@ function validateFields()
 		</div><!-------Submit Button END------>
 		
 		<div class="row-fluid m_top10">
-		    <div id="categoeryDetailsDistrictCountWise"></div>
-			<div id="categoeryDetailsConstituencyCountWise"></div>
+		    <div id="categoeryDetailsDistrictCountWise" style="display:none;overflow-x:scroll;"></div>
+			<div id="categoeryDetailsConstituencyCountWise" style="display:none;overflow-x:scroll;"></div>
 			<div id="pdfExcelDiv" style="display:none;float:right;">
 			<a class="btn btn-info" onClick="genereatePDFOrExcel('pdf');">View Pdf</a>
 			<!--<a class="btn btn-info" onClick="" id="viewPdf" style="display:none;">View Pdf</a>-->
