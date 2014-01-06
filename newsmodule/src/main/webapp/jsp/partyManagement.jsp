@@ -201,7 +201,8 @@ var districtsArr = new Array();
 var assemblyConstiArr = new Array();
 var parliamentConstiArr = new Array();
 var loginUserType = '${sessionScope.USER.userAccessType}';
-
+var createCandPartyKey ="";
+var createCandCandKey ="";
 <c:forEach var="districts" items="${districtsList1}">
 	var districtList ={
 	id:"${districts.id}",
@@ -3036,7 +3037,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-bottom: 9px;float:right;" >&nbsp;</span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11)">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-bottom: 9px;float:right;" >&nbsp;</span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11,0)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
@@ -3065,7 +3066,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='  ';
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-bottom: 5px; margin-left: -5px; float: left; position: absolute; margin-top: 30px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\',22)">';
+		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-bottom: 5px; margin-left: -5px; float: left; position: absolute; margin-top: 30px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\',22,0)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyForNewsToImg" />';
@@ -3324,7 +3325,7 @@ function addNewFrom(){
  var str ='';
  str+='    <div id="whocandidate'+who+'" style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label style="float: left;"><strong>Select Party</strong></label><span id="errDiv3'+who+'" style="margin-top: -25px; color: red; margin-left: 125px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\',3'+who+')">';
+		str+='<label style="float: left;"><strong>Select Party</strong></label><span id="errDiv3'+who+'" style="margin-top: -25px; color: red; margin-left: 125px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList'+who+'" name="candidatePartyNewsVOList.sourceVOList['+who+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty'+who+'\',3'+who+',0)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForParty'+who+'Img" style="display:none;"/>';
@@ -3367,7 +3368,7 @@ var str ='';
 
 	    str+='    <div id="whomecandidate'+whome+'"><div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="float:left;position:absolute;margin-top: 30px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\',4'+whome+')">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv4'+whome+'" style="float:left;position:absolute;margin-top: 30px; color: red; margin-left: -5px; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesListForWhome'+whome+'" name="candidatePartyNewsVOList.destinationVOList['+whome+'].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo'+whome+'\',4'+whome+',0)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" id="candidateListForPartyForNewsTo'+whome+'Img" style="display:none;" />';
@@ -3698,7 +3699,7 @@ function deleteSelectedParty(id)
  $("#"+id+"").closest('table').html('');
 }
 
-function getCandidatesListByPartyId(partyId,type,divId1)
+function getCandidatesListByPartyId(partyId,type,divId1,val)
 {
 	var divSourceId;
 	var divId = divId1; 
@@ -3729,6 +3730,7 @@ function getCandidatesListByPartyId(partyId,type,divId1)
 		var jsObj = {
 			partyId :partyId,
 			type:type,
+			val:val,
 			task : "getCandidatesListByPartyId"	
 		};
 	
@@ -3902,8 +3904,8 @@ $("#newsToBothChechboxId").live("click",function(){
 
 //candidate creation
 $(".createNewCandidate").live("click",function(){
-	
-	
+	    createCandPartyKey ="";
+	    createCandCandKey ="";
 		$("#createCandidateDiv").dialog({
             modal: true,
             title: "<b>Create New Candidate</b>",
@@ -3914,8 +3916,9 @@ $(".createNewCandidate").live("click",function(){
   
     $("#createCandidateInnerDiv").html('');
 	
-	var key = $(this).attr("key");
-	var partyListId = $(this).attr("partyListId");
+	
+	createCandPartyKey =$(this).attr("partyListId");
+    createCandCandKey =$(this).attr("key");
 	
    /* var str = '';
    str +='<div>';
@@ -3970,8 +3973,8 @@ $("#createCandidateId").live("click",function(){
 	 $("#errorMsgDiv").html("Please Select Designation");
 	  return;
 	}
-  var candidateListId = $(this).attr("key");
-  var partyListId = $(this).attr("partyListId");
+  var candidateListId = createCandCandKey;
+  var partyListId = createCandPartyKey;
   var locationValue = "";
 	if($('#locationId option:selected').val() == 1)
 	{
@@ -3981,6 +3984,8 @@ $("#createCandidateId").live("click",function(){
 	{
 		locationValue = $('#parliamSelReportId option:selected').val();
 	}
+	
+	 
 	var jsObj =
 		{ 
             partyId : partyId,

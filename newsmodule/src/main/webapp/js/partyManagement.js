@@ -167,7 +167,7 @@ function callAjax(jsObj,url)
 		 {
 		   $("#"+jsObj.type+"Img").css("display","none");
 			  	//$('#candidateAjaxImg').hide();
-			 buildCandidatesForKeywords(myResults,jsObj.type);
+			 buildCandidatesForKeywords(myResults,jsObj.type,jsObj.val);
 			 //clearOptionsListForSelectElmtId('mainCategory');
 			 //createOptionsForSelectElement('mainCategory',myResults);
 		 }
@@ -6781,7 +6781,7 @@ var jsObj={
 
 }
 var candidatesList =[];
-function buildCandidatesForKeywords(results,type)
+function buildCandidatesForKeywords(results,type,idVal)
 {
 	candidatesList = new Array();
              $("#"+type+" option").remove();
@@ -6791,7 +6791,7 @@ function buildCandidatesForKeywords(results,type)
 		candidatesList.push(value.id);
 
 	});
- 
+   $('#'+type).val(idVal);
 }
 
 function showCandidateSaveStatus(result,jsObj)
@@ -6805,13 +6805,13 @@ function showCandidateSaveStatus(result,jsObj)
 
   else if(result.resultCode == 0 && result.message == null)
   {
-   $("#errorMsgDiv").html('Candidate Saved Successfully.').css("color","green");
+   $("#errorMsgDiv").html('Candidate Created Successfully.').css("color","green");
    $("#newCandidateName").val('');
    $("#partySelectNewList").val(0);
    var partyId = $("#"+jsObj.partyListId+"").val();
    
    if(partyId != null && partyId > 0)
-     getCandidatesListByPartyId(partyId,""+jsObj.candidateListId+"");
+     getCandidatesListByPartyId(partyId,""+jsObj.candidateListId+"","",result.id);
    
    //$("#"+jsObj.candidateListId+"").
    
