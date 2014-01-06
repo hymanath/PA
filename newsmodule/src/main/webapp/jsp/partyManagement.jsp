@@ -202,7 +202,7 @@ var assemblyConstiArr = new Array();
 var parliamentConstiArr = new Array();
 var loginUserType = '${sessionScope.USER.userAccessType}';
 
-<c:forEach var="districts" items="${districtsList}">
+<c:forEach var="districts" items="${districtsList1}">
 	var districtList ={
 	id:"${districts.id}",
 	name:"${districts.name}"
@@ -210,7 +210,7 @@ var loginUserType = '${sessionScope.USER.userAccessType}';
 	districtsArr.push(districtList);
 </c:forEach>
 
-<c:forEach var="assemConstiList" items="${assemConstiList}">
+<c:forEach var="assemConstiList" items="${assemConstiList1}">
 	var assemblyConstiList ={
 	id:"${assemConstiList.id}",
 	name:"${assemConstiList.name}"
@@ -219,7 +219,7 @@ var loginUserType = '${sessionScope.USER.userAccessType}';
 	
 </c:forEach>
 
-<c:forEach var="parlConstiList" items="${parlConstiList}">
+<c:forEach var="parlConstiList" items="${parlConstiList1}">
 	var parliamentConstiList ={
 	id:"${parlConstiList.id}",
 	name:"${parlConstiList.name}"
