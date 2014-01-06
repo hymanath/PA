@@ -5452,9 +5452,9 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  }
 	}
 	
-	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue)
+	public ResultStatus saveCandidatesAndParty(final Long partyId,final String candidateName,final Long designationId,final Long loctionId,final Long locationValue)
 	{
-		ResultStatus resultStatus = new ResultStatus();
+		final ResultStatus resultStatus = new ResultStatus();
 	  try{
 		  
 		  List<Long> candidateIdsList = candidateDAO.getCandidateIdByPartyIdAndCandidateName(partyId, candidateName,designationId);
@@ -5463,6 +5463,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			  resultStatus.setMessage("Candidate is already exist.");
 			  return resultStatus;
 		  }
+		  transactionTemplate.execute(new TransactionCallback() {
+			  public Object doInTransaction(TransactionStatus status) {
 		  Candidate candidate = new Candidate();
 		  candidate.setParty(partyDAO.get(partyId));
 		  candidate.setLastname(candidateName);
@@ -5496,16 +5498,23 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			 candidate.setState(stateDAO.get(1l));
 		  }
 		  
-		  candidateDAO.save(candidate);
-		  
+		  candidate=candidateDAO.save(candidate);
+		  if(candidate != null){
+			  resultStatus.setId(candidate.getCandidateId());
+		  }
 		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		  return resultStatus;
+			  }
+			  
+		  });
+		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 	  }catch (Exception e) {
 		
 		log.error(" Exception Occured in saveCandidatesAndParty() method, Exception - ",e);
 		resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		  return resultStatus;
 	  }
+	  return resultStatus;
 	}
 	
     public String generateUrlForNewsReport(Long reportId,Long userId,String path){

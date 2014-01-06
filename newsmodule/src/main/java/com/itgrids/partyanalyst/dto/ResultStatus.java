@@ -18,6 +18,7 @@ public class ResultStatus implements Serializable{
     private String exceptionClass;
     private String exceptionMsg;
     private String message;
+    private Long id;
     
     public String getMessage() {
 		return message;
@@ -62,6 +63,12 @@ public class ResultStatus implements Serializable{
 	}
 	public void setResultState(Long resultState) {
 		this.resultState = resultState;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
     
     
