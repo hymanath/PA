@@ -2234,6 +2234,23 @@ function buildResults(results,divId){
 		  }
 		}
 
+         else if(locationScopeId == 7){
+			
+			var option = document.createElement('option');
+
+				if((results[j].name.toLowerCase()).indexOf("muncipality") != -1){
+						option.value=results[j].id;
+						option.text=results[j].name;
+						try{
+						   elmt.add(option,null); // standards compliant
+						 }
+						 catch(ex){
+						   elmt.add(option); // IE only
+						 }  
+				}
+			
+			}
+
          else if(results[j].id != 0)
 		  {
 		    var option = document.createElement('option');
