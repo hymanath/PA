@@ -13,13 +13,22 @@ import org.apache.log4j.Logger;
 
 import com.itgrids.partyanalyst.dao.IActivityReportDAO;
 import com.itgrids.partyanalyst.dao.IActivityReportFilesDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFilePathsDAO;
 import com.itgrids.partyanalyst.dao.IFileSourceLanguageDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INewsReportDAO;
 import com.itgrids.partyanalyst.dao.IReportFilesDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
+import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsActivityVO;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IReportService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
@@ -34,9 +43,27 @@ public class ReportService implements IReportService {
 	private IFilePathsDAO filePathsDAO;
 	private IActivityReportFilesDAO activityReportFilesDAO;
 	private IActivityReportDAO  activityReportDAO;
+	private IStateDAO stateDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO; 
+	private ITehsilDAO tehsilDAO;  
+	private IHamletDAO hamletDAO;  
+	private ILocalElectionBodyDAO localElectionBodyDAO;  
+	private IBoothDAO boothDAO; 
+	
+	private IUserAddressDAO userAddressDAO;
+	
 	private static final org.apache.log4j.Logger LOG = Logger.getLogger(ReportService.class);
 			
 	
+	public IUserAddressDAO getUserAddressDAO() {
+		return userAddressDAO;
+	}
+
+	public void setUserAddressDAO(IUserAddressDAO userAddressDAO) {
+		this.userAddressDAO = userAddressDAO;
+	}
+
 	/**
 	 * @return the activityReportDAO
 	 */
@@ -110,6 +137,62 @@ public class ReportService implements IReportService {
 			IActivityReportFilesDAO activityReportFilesDAO) {
 		this.activityReportFilesDAO = activityReportFilesDAO;
 	}
+	public IStateDAO getStateDAO() {
+		return stateDAO;
+	}
+
+	public void setStateDAO(IStateDAO stateDAO) {
+		this.stateDAO = stateDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
 
 	public FileVO getReportData(Long reportId,Long userId,String key){
 		FileVO returnVo = new FileVO();
@@ -135,7 +218,10 @@ public class ReportService implements IReportService {
 				 return returnVo;
 			 }
 		 }
-		
+		if((stateLvlNews == null || stateLvlNews.size() == 0) && (districtLvlNews == null || districtLvlNews.size() == 0)){
+			returnVo.setName("All Newses Deleted");
+			 return returnVo;
+		}
 		Map<Long,FileVO> newsMap = new HashMap<Long,FileVO>();
 		FileVO file = null;
 		if(stateLvlNews != null && stateLvlNews.size() > 0){
@@ -200,13 +286,12 @@ public class ReportService implements IReportService {
 				file.setLocationId((Long)news[4]);
 				file.setLocationVal((Long)news[5]);
 				file.setName(news[7].toString());
-				
 				file.setScope(news[8] != null?news[8].toString():"");
 				if(news[9] != null)
 					  file.setEenadu(true);
 				if(news[10] != null)
 					  file.setDescEenadu(true);
-				file.setLocationName(candidateDetailsService.getLocationDetails((Long)news[4],(Long)news[5]));
+				file.setLocationName(getLocationDetails1((Long)news[4],(Long)news[5],(Long)news[12]));
 				
 				vo.getFileVOList().add(file);
 			}
@@ -436,4 +521,84 @@ public class ReportService implements IReportService {
 		}
 		return returnVO;
 	}
+	public String getLocationDetails1(Long scope,Long locationValue,Long id){
+	  try{
+		UserAddress userAddress = null;
+		String tehsil = null;
+    	String hamletName =  null;
+    	String constituency =null;
+    	String ward=null;
+		String resultStr ="";
+		String local= null;
+		String booth = null;
+	 if(scope != null)
+	 { 
+	   if(scope == 1L)
+	    {
+	    	//return countryDAO.get(1L).getCountryName();
+	    }
+	    else if(scope == 2L && locationValue != null && locationValue > 0)
+	    {
+	    	return stateDAO.get(locationValue).getStateName();
+	    }
+	    else if(scope == 3L && locationValue != null && locationValue > 0)
+	    {
+	    	return districtDAO.get(locationValue).getDistrictName();
+	    }
+	    else if(scope == 4L && locationValue != null && locationValue > 0)
+	    {
+	    	return constituencyDAO.get(locationValue).getName();
+	    }
+	    else if(scope == 5L && locationValue != null && locationValue > 0)
+	    {
+	    	userAddress = userAddressDAO.get(id);
+	    	constituency = userAddress.getConstituency().getName();
+	    	tehsil = userAddress.getTehsil().getTehsilName();
+	    	resultStr ="Constituency: "+constituency+", Mandal: "+tehsil;
+	    	return resultStr;
+	    }
+	    else if(scope == 6L && locationValue != null && locationValue > 0)	    	
+	    {
+	    	userAddress = userAddressDAO.get(id);
+	    	tehsil = userAddress.getTehsil().getTehsilName();
+	    	hamletName =  userAddress.getHamlet().getHamletName();
+	    	constituency = userAddress.getConstituency().getName();
+	    	resultStr ="Constituency: "+constituency+", Mandal: "+tehsil+", Village:"+hamletName;
+	    	return resultStr;
+	    	
+	    }
+	    else if(scope == 7L && locationValue != null && locationValue > 0)
+	    {
+	    	userAddress = userAddressDAO.get(id); 	
+	    	constituency = userAddress.getConstituency().getName();
+	    	 local=localElectionBodyDAO.get(locationValue).getName();
+	    	 resultStr ="Constituency: "+constituency+", MUNICIPAL-CORP-GMC: "+local;
+		    return resultStr;
+	    }
+	    else if(scope == 8L && locationValue != null && locationValue > 0)
+	    {
+	    	userAddress = userAddressDAO.get(id); 	
+	    	constituency = userAddress.getConstituency().getName();
+	    	local=userAddress.getLocalElectionBody().getName();
+	        ward=  constituencyDAO.get(locationValue).getName();
+	    	resultStr ="Constituency: "+constituency+", MUNICIPAL-CORP-GMC: "+local+", Ward: "+ward;
+	    	return resultStr;
+	    	
+	    }
+	    else if(scope == 9L && locationValue != null && locationValue > 0)
+	    {
+	    	userAddress = userAddressDAO.get(id); 	
+	    	booth= userAddress.getBooth().getPartNo();
+	    	resultStr ="Booth No "+booth;
+	    	return resultStr;
+	    }
+	    else  return " ";
+	 }
+	    return " ";
+	}catch(Exception e){
+		LOG.error("Exception rised in getLocationDetails1 ",e);
+		return "";
+	}
+  }
+	
 }

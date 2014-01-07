@@ -426,13 +426,13 @@ function buildContentDetails()
 			 str+='</tr>';
 			 str+='</table>';
 			  str+='<table class="tableCls">';
-             str +='<tr>';
+            
 			 if(result.relatedGalleries[0].filesList[i].locationName != null && result.relatedGalleries[0].filesList[i].locationName != "")
-			  str +='<td><b>Location </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].locationName+'</font></span></td>';
-             
+			  str +='<tr><td><b>Location </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].locationScopeValue+' : '+result.relatedGalleries[0].filesList[i].locationName+'</font></span></td></tr>';
+              str +='<tr>';
 			 if(result.relatedGalleries[0].filesList[i].candidateName != null && result.relatedGalleries[0].filesList[i].candidateName != "")
-			  str +='<td><b style="margin-left: 15px;">Candidate </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].candidateName+'</font></span></td>';
-			  if(result.relatedGalleries[0].filesList[i].keyWordsList != null && result.relatedGalleries[0].filesList[i].keyWordsList.length>0)
+			  str +='<td><b>Candidate(s) </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].candidateName+'</font></span></td>';
+			 // if(result.relatedGalleries[0].filesList[i].keyWordsList != null && result.relatedGalleries[0].filesList[i].keyWordsList.length>0)
 		     //str +='<td><b style="margin-left: 15px;">Keywords</b>  : <font color="#FF4500">'+result.relatedGalleries[0].filesList[i].keyWordsList+'</font></td>';
 			if(result.relatedGalleries[0].filesList[i].responseCount > 0)
 			str+='<td><p><span class="text-error" style="font-weight: bold; margin-left: 15px;"><a href="showNewsResponseAction.action?responseContentId ='+result.relatedGalleries[0].filesList[i].contentId+' "><img alt="response count" title="Response Count" src="images/responseCountIcon.png" id="responseNewsCountImg" /></span>'+result.relatedGalleries[0].filesList[i].responseCount +'</a></p></td>';

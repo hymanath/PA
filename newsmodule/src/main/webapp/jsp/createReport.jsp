@@ -73,6 +73,9 @@
   }else if(myResults.name == "Invalid Key"){
 	  str+="<div style='padding-left:166px;padding-top: 207px;'><font style='color:red;'><b>Generated Url Expired, Please Regenerate A New Url To Access This Report</b></font></div>"; 
   }
+  else if(myResults.name == "All Newses Deleted"){
+	  str+="<div style='padding-left:166px;padding-top: 207px;'><font style='color:red;'><b>All Newses In This Report Were Deleted By Admin</b></font></div>"; 
+  }
   else{
 	  if(myResults.mainArticalsList != null  && myResults.mainArticalsList.length > 0){
 		str+='<div class="btn btn-large btn-block btn-info" style="margin-bottom: 8px;"><b>ANDHRA PRADESH STATE</b></div>';
@@ -100,7 +103,7 @@
 	}
 			  
 				if(myResults.mainArticalsList[i].keyWordsList != null)
-				str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
+				str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right">'+myResults.mainArticalsList[i].scope+":    "+myResults.mainArticalsList[i].locationName+'</i></h5>';
 				else{
 					str+='<h5 style="border-bottom:1px solid #333"> <i class="pull-right">'+myResults.mainArticalsList[i].locationName+'</i></h5>';
 				}
@@ -141,9 +144,14 @@
 		else
 		str1+='<span class="btn btn-small"><span class="badge">'+sourceVal+ '</span>&nbsp;</span>&nbsp;&nbsp;';
 	}
-			  str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right">'+myResults.fileVOList[i].fileVOList[j].scope+': '+myResults.fileVOList[i].fileVOList[j].locationName+'</i></h5>';
+	if(myResults.fileVOList[i].fileVOList[j].scope == 'DISTRICT' || myResults.fileVOList[i].fileVOList[j].scope == 'CONSTITUENCY'){
+		  str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right">'+myResults.fileVOList[i].fileVOList[j].scope+': '+myResults.fileVOList[i].fileVOList[j].locationName+'</i></h5>';
+			   str+='</hgroup>';		 
+	}
+	else{
+			  str+='<h5 style="border-bottom:1px solid #333">'+str1+' <i class="pull-right"> '+myResults.fileVOList[i].fileVOList[j].locationName+'</i></h5>';
 			   str+='</hgroup>';
-
+	}
 			  if(myResults.fileVOList[i].fileVOList[j].descEenadu){
 				str+='<p ><enadu>'+myResults.fileVOList[i].fileVOList[j].description+'</enadu></p>';	
 			  }else{
@@ -160,7 +168,7 @@
 	  document.getElementById("newsDiv").innerHTML =str;
 	   Cufon.set('fontSize', '28px').replace('enadu');
  }
-  callAjax();
-  </script>
+callAjax();
+</script>
 </body>
 </html>

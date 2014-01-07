@@ -357,19 +357,14 @@ public class ContentManagementService implements IContentManagementService{
 						 fileVO.setReqFileDate(fileVal.getFileDate());
 						filesList.add(fileVO);
 						fileGalleryIdsList.add(fileVal.getFileId());
-						String candidate = "";
-						List<String> candidates = candidatePartyFileDAO.getCandidateNamesByFileId(contentId);
-					      if(candidates != null && candidates.size() > 0){
-					    	 for(String person:candidates)
-					    	  candidate = candidate+", "+person;
-					      }
-					      
-					      if(candidate != null && candidate.length() > 0)
-						    fileVO.setCandidateName(candidate.substring(1));
-					      else{
-					    	  fileVO.setCandidateName("");  
-					      }
-					      fileVO.setIsSelectedContent(true);
+						//String candidate ="";						
+						//List<Object[]> candidates = candidatePartyFileDAO.getCandidateNamesByFileId(contentId);
+						Map<Long,String> candidate=candidateDetailsService.getCandidateNames(fileIdValues);
+					    
+					         if(candidate != null && candidate.size() > 0)
+							    fileVO.setCandidateName(candidate.get(fileVO.getFileId()));
+						     
+					    fileVO.setIsSelectedContent(true);
 					    
 						List<String> keywords = candidatePartyKeywordDAO.getCandidatePartyKeywordByFileId(contentId);
 						fileVO.setKeyWordsList(keywords);

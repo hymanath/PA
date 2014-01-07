@@ -1671,7 +1671,16 @@
 		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
 		<property name="filePathsDAO" ref="filePathsDAO" />
 		<property name="activityReportFilesDAO" ref="activityReportFilesDAO" />
-		<property name="activityReportDAO" ref="activityReportDAO" />
+		<property name="activityReportDAO" ref="activityReportDAO" />	
+		<property name="districtDAO" ref="districtDAO" />
+		<property name="stateDAO" ref="stateDAO" />
+		<property name="constituencyDAO" ref="constituencyDAO" />
+		<property name="tehsilDAO" ref="tehsilDAO" />
+		<property name="hamletDAO" ref="hamletDAO" />
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="userAddressDAO" ref="userAddressDAO" />
+		
 	</bean>	
 	
 	<bean name="newsMonitoringService" class="com.itgrids.partyanalyst.service.impl.NewsMonitoringService">
