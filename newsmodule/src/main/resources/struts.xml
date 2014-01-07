@@ -5488,6 +5488,12 @@
 		 </result>
 		</action>
 		
+		<action name="getDesignationsAndLocationOfAParty" class="candidateElectionResultsAction" method="getCandidatesDesignationAndLoacation">
+		 <result type="json" name="success">
+		  <param name="root">candidatesList1</param>
+		 </result>
+		</action>
+	
 		<action name="uploadMLCCandidateDetailsAction" class="adminPageAction"  method="uploadMLCCandidateDetailsAction">
 			<result name="success">/jsp/uploadMLCCandidateDetails.jsp</result>
 		    <result name="error" type="redirect">loginPageAction.action</result>
@@ -5766,6 +5772,12 @@
 		</action>
 		
 		<action name="saveCandidateAndPartyAction" class="newsDetailsAction" method="saveCandidatesAndParty">
+		  <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action>
+		
+		<action name="updateCandidateAndPartyAction" class="newsDetailsAction" method="updateCandidatesAndParty">
 		  <result type="json" name="success">
 		    	<param name="root">resultStatus</param>
 		   </result>

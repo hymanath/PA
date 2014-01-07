@@ -735,5 +735,22 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 	return Action.SUCCESS;
   }
    
-   
+  public String updateCandidatesAndParty()
+  {
+	  
+	try{
+		session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null)
+		 return ERROR;
+		
+		jObj = new JSONObject(getTask());
+		resultStatus = newsMonitoringService.updateCandidatesAndParty(jObj.getLong("candidateId"),jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"));	
+	}catch (Exception e) {
+	 e.printStackTrace();
+	 Log.error(" Exception Occured in updateCandidatesAndParty() method, Exception - ",e);
+	 
+	}
+	return Action.SUCCESS;
+  } 
 }

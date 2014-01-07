@@ -9,6 +9,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private Long id;
+	private Long constituencyId;
 	private String url;
 	private String type;
 	private String value;
@@ -235,6 +236,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setCount(Long count) {
 		this.count = count;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	
 	

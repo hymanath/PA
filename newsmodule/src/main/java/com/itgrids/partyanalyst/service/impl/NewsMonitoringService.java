@@ -6210,5 +6210,53 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  }
 		return result;
 	  }
-	  
+		public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue)
+		{
+			ResultStatus resultStatus = new ResultStatus();
+		  try{
+			  Candidate candidate =  candidateDAO.get(candidateId);
+			  candidate.setParty(partyDAO.get(partyId));
+			  candidate.setLastname(candidateName);
+			  candidate.setDesignation(designationDAO.get(designationId));
+			  if(loctionId == 1)
+			  {
+				 Object[] stateAndDisrictValues = constituencyDAO.getStateAndDistrictDetails(locationValue).get(0);
+				 Long pcId = delimitationConstituencyAssemblyDetailsDAO.getAllAssemblyConstituencyByParlimentId(locationValue).get(0);
+				 if(stateAndDisrictValues != null)
+				 {
+					 candidate.setState(stateDAO.get((Long)stateAndDisrictValues[0])) ;
+					 candidate.setDistrict(districtDAO.get((Long)stateAndDisrictValues[1]));
+					 candidate.setAssembly(constituencyDAO.get(locationValue));
+				 }
+				 if(pcId > 0)
+				 {
+					 candidate.setParliament(constituencyDAO.get(pcId)); 
+				 }
+			  }
+			  else if(loctionId == 2)
+			  {
+				  Long stateId = constituencyDAO.getPcConstituency(locationValue).get(0);
+				  if(stateId > 0)
+				  {
+					  candidate.setState(stateDAO.get(stateId));
+					  candidate.setParliament(constituencyDAO.get(locationValue)); 
+					  candidate.setAssembly(null);
+				  }
+			  }
+			  else 
+			  {
+				 candidate.setState(stateDAO.get(1l));
+			  }
+			  
+			  candidateDAO.save(candidate);
+			  
+			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			  return resultStatus;
+		  }catch (Exception e) {
+			
+			log.error(" Exception Occured in updateCandidatesAndParty() method, Exception - ",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			  return resultStatus;
+		  }
+		}
 }

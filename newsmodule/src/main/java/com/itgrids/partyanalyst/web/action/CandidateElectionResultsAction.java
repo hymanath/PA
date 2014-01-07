@@ -162,6 +162,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private IContentManagementService contentManagementService;
 	private ContentDetailsVO contentDetailsVO;
 	private List<SelectOptionVO> candidatesList;
+	private SelectOptionVO candidatesList1;
 	private List<String> candidateList;
 	private List<String> responseFileIds;
 	private List<Long> filesList;
@@ -284,7 +285,15 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
 		this.candidatesList = candidatesList;
 	}
+    
+	public SelectOptionVO getCandidatesList1() {
+		return candidatesList1;
+	}
 
+
+	public void setCandidatesList1(SelectOptionVO candidatesList1) {
+		this.candidatesList1 = candidatesList1;
+	}
 
 	public List<Integer> getNewsedition() {
 		return newsedition;
@@ -3214,6 +3223,24 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		
 	}
 	
+	public String getCandidatesDesignationAndLoacation() throws Exception
+	{
+		
+		 HttpSession session = request.getSession();
+		
+	 try{
+		   
+			jObj = new JSONObject(getTask());			
+			
+			candidatesList1 = candidateDetailsService.getDesignationOfCandidateFromCandidateTable(jObj.getLong("candidateId"));
+		}catch(Exception e)
+		{
+			e.printStackTrace();			
+		}
+		
+		return Action.SUCCESS;
+		
+	}
 	public String getNewsContainedCandidates()
 	{
 		candidatesList = candidateDetailsService.getNewsContainedCandidates();

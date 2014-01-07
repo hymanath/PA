@@ -400,6 +400,8 @@ function createPartyKeywordDiv(){
   $("#profileManagementMainOuterDiv7").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","block");
   $("#newDesignationDiv").css("display","none");
+   $("#newEditCandidateDiv").css("display","none");
+  $("#newCandidateCreationDiv").css("display","none");
   $("#newPartyCreationDiv").css("display","none");
   $('#statusDiv1').html('');
   $('#statusDiv2').html('');
@@ -423,10 +425,69 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementMainOuterDiv7").css("display","none");
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","block");
+	  $("#newEditCandidateDiv").css("display","none");
+	  $("#newCandidateCreationDiv").css("display","none");
 	  $("#newPartyCreationDiv").css("display","none");
 	  $('#showKeywordsDiv').css("display","none");
 	  $('#statusDiv1').html('');
 	  $('#statusDiv2').html('');
+ }
+ 
+ function createNewCandidateDiv()
+ {
+	  
+	  $("#newsReportDiv").css("display","block");
+	  $("#newsGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").html('');
+	  $("#profileManagementMainOuterDiv4").css("display","none");
+	  $("#profileManagementHeaderDiv2").css("display","none");
+	  $("#profileManagementMainOuterDiv3").css("display","none");
+	  $("#profileManagementHeaderDiv3").css("display","none");
+	  $("#videoGallaryDiv").css("display","none");
+	  $("#dateSelectDiv").css("display","none");
+	  $("#profileManagementMainOuterDiv5").css("display","none");
+	  $("#profileManagementHeaderDiv5").css("display","none");
+	  $("#profileManagementMainOuterDiv6").css("display","none");
+	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDiv8").css("display","none");
+	  $("#newDesignationDiv").css("display","none");
+	  $("#newEditCandidateDiv").css("display","none");
+	  $("#newCandidateCreationDiv").css("display","block");
+	  $("#newPartyCreationDiv").css("display","none");
+	  $('#showKeywordsDiv').css("display","none");
+	  $('#statusDiv1').html('');
+	  $('#statusDiv2').html('');
+   getPartiesList("partySelectNewList1",null);
+   getDesignationList("designationsList1");
+ }
+ 
+ function createEditCandidateDiv()
+ {
+	  $("#newsReportDiv").css("display","block");
+	  $("#newsGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").css("display","none");
+	  $("#newsAssignGallaryDiv").html('');
+	  $("#profileManagementMainOuterDiv4").css("display","none");
+	  $("#profileManagementHeaderDiv2").css("display","none");
+	  $("#profileManagementMainOuterDiv3").css("display","none");
+	  $("#profileManagementHeaderDiv3").css("display","none");
+	  $("#videoGallaryDiv").css("display","none");
+	  $("#dateSelectDiv").css("display","none");
+	  $("#profileManagementMainOuterDiv5").css("display","none");
+	  $("#profileManagementHeaderDiv5").css("display","none");
+	  $("#profileManagementMainOuterDiv6").css("display","none");
+	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDiv8").css("display","none");
+	  $("#newDesignationDiv").css("display","none");
+	  $("#newEditCandidateDiv").css("display","block");
+	  $("#newCandidateCreationDiv").css("display","none");
+	  $("#newPartyCreationDiv").css("display","none");
+	  $('#showKeywordsDiv').css("display","none");
+	  $('#statusDiv1').html('');
+	  $('#statusDiv2').html('');
+	   getPartiesList("EditpartySelectNewList",null);
+   getDesignationList("designationsList2");
  }
  
  function createPartyDiv()
@@ -447,6 +508,8 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementMainOuterDiv7").css("display","none");
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","none");
+	  $("#newEditCandidateDiv").css("display","none");
+	  $("#newCandidateCreationDiv").css("display","none");
 	  $("#newPartyCreationDiv").css("display","block");
 	  $('#showKeywordsDiv').css("display","none");
 	  $('#statusDiv1').html('');
@@ -472,6 +535,8 @@ function clearDivsForGallary(){
   $('#statusDiv1').html('');
   $('#statusDiv2').html('');
   $("#newDesignationDiv").css("display","none");
+   $("#newEditCandidateDiv").css("display","none");
+  $("#newCandidateCreationDiv").css("display","none");
   $("#newPartyCreationDiv").css("display","none");
   $('#showKeywordsDiv').css("display","none");
 }
@@ -642,6 +707,14 @@ function createNewParty()
 									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
 							</li>
 						</c:if>
+						<!--<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+						    <li>
+									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewCandidateDiv();">Create New Candidate</a>
+							</li>
+						</c:if>-->
+						    <li>
+									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createEditCandidateDiv();">Edit Candidate</a>
+							</li>
 						</ul>
 					</li>
 					
@@ -1023,7 +1096,84 @@ function createNewParty()
 	</div>
 </div>
 
-<!-- updared by prasad for Actions Div-->
+<div id="newCandidateCreationDiv" align="center" class="container well">
+	<h2 align="center">Create New Candidate</h2>
+	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
+	<div id="statusForParty" align="center" style="margin-bottom: 2px;margin-top: 2px;"></div>
+	
+<div id="errorMsgDiv1"></div>
+	<table style="margin-top: 24px;"><tr>
+<td>Select Party</td>
+<td><select id="partySelectNewList1">
+</select></td></tr>
+
+<tr><td>Candidate Name</td>
+<td><input type="text" id="newCandidateName1"/></td></tr>
+<tr>
+<td>Designation</td>
+<td><select id="designationsList1"></select></td>
+</tr>
+<tr>
+<td>Location</td>
+<td><select id="locationId1" onChange="getTypeOfConstituency(this.value,'createassembSelReportId','createpcConstituencyRow');"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
+</tr>  
+<tr style="display:none;" id="createpcConstituencyRow">
+<td>Constituency</td>
+<td>
+<s:select name="parliamSelReport"  id="createparliamSelReportId" list="parlConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+</tr>
+<tr style="display:none;" id="createacConstituencyRow">
+<td>Constituency</td>
+<td>
+<s:select name="assembSelReport"  id="createassembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+</tr>
+</table>
+<input type="button" value="submit" class="btn" id="createCandidateId1"/>
+</div>
+</div>
+<div id="newEditCandidateDiv" align="center" class="container well">
+	<h2 align="center">Edit Candidate</h2>
+	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
+	<div id="statusForParty" align="center" style="margin-bottom: 2px;margin-top: 2px;"></div>
+	
+<div id="errorMsgDiv2" style="color:red;"></div>
+	<table style="margin-top: 24px;"><tr>
+<td>Select Party</td>
+<td><select id="EditpartySelectNewList" onchange="getEditCandidatesListByPartyId(this.value,'EditCandidateListForParty')">
+</select></td></tr>
+
+<tr><td>Candidate Name</td>
+<td><select id="EditCandidateListForParty" onchange="getTextCandidateId()" >';
+		   <option value="0">Select Candidate</option>';
+		</select></td></tr>
+		
+	<tr><td>Candidate</td>
+<td><input type="text" id="textCandidate"/></td></tr>
+
+<tr>
+<td>Designation</td>
+<td><select id="designationsList2"></select></td>
+</tr>
+<tr>
+<td>Location</td>
+<td><select id="editcandidateLocType" onChange="getTypeOfConstituencyForEdit(this.value,'editacConstituencyRow','editpcConstituencyRow');"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
+</tr>  
+<tr style="display:none;" id="editpcConstituencyRow">
+<td>Constituency</td>
+<td>
+<s:select name="parliamSelReport"  id="editparliamSelReportId" list="parlConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+</tr>
+<tr style="display:none;" id="editacConstituencyRow">
+<td>Constituency</td>
+<td>
+<s:select name="assembSelReport"  id="editassembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+</tr>
+</table>
+<input type="button" value="Update" class="btn" onclick="updateExistingCandidate();" />
+</div>
+</div>
+
+<!-- updated by prasad for Actions Div-->
 
 <!-- for  body 7  result  end -->
 <script>
@@ -1080,6 +1230,8 @@ $(document).ready(function(){
 		$('#statusDiv2').html('');
 	});
 	$("#newDesignationDiv").css("display","none");
+	 $("#newEditCandidateDiv").css("display","none");
+	$("#newCandidateCreationDiv").css("display","none");
     $("#newPartyCreationDiv").css("display","none");
 	$('#partyManagementTabId').addClass('menuActive');
 });
@@ -2019,6 +2171,27 @@ function getCandidatesByPartyId()
   callAjax(jsObj,url);
 }
 
+function getEditCandidatesByPartyId()
+{
+ 
+ $("#errorMessageDiv2").html('');
+ var partyId = $("#partiesList").val();
+ if(partyId == 0)
+ {
+   $("#errorMessageDiv2").html('Please Select Party.');
+   return;
+ }
+
+  var jsObj = {
+			partyId :partyId,
+			task : "getEditCandidatesByPartyId"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;					
+	
+  callAjax(jsObj,url);
+}
 function showAssignNewsStatus(results)
 {
 	$("#errorMessageDiv").html('');
@@ -2581,6 +2754,8 @@ maxDate : new Date()
  });
 $("#toDateId1").datepicker("setDate", new Date());
 $("#newDesignationDiv").css("display","none");
+ $("#newEditCandidateDiv").css("display","none");
+$("#newCandidateCreationDiv").css("display","none");
 $("#newPartyCreationDiv").css("display","none");
 $("#newsReporterrorMessageDiv").html('');
 $("#reportGenaratorNewsDiv").css("display","none");
@@ -3565,7 +3740,6 @@ function buildCandidateList(result)
 
 }
 
-
 function buildPartyKeywordsDiv()
 {
   
@@ -3740,7 +3914,42 @@ function getCandidatesListByPartyId(partyId,type,divId1,val)
    callAjax(jsObj,url);
 }
 
+function getEditCandidatesListByPartyId(partyId,type)
+{
 
+	var candiId = $("#candidateId").val();
+	var id = candidates[candiId];
+
+    $("#"+type+"Img").css("display","block");
+		var jsObj = {
+			partyId :partyId,
+			type:type,
+			task : "getEditCandidatesListByPartyId"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;					
+	
+   callAjax(jsObj,url);
+}
+function getTextCandidateId()
+{
+
+	var name=$("#EditCandidateListForParty option:selected").text().replace(/\(.*?\)/g, '');
+	$("#textCandidate").attr("value",name);
+	
+	 var candidateId = $('#EditCandidateListForParty option:selected').val();
+	var jsObj = {
+			candidateId :candidateId,
+			task : "getDesignationAndLocationByCandidateId"	
+		};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getDesignationsAndLocationOfAParty.action?"+rparam;					
+	
+   callAjax(jsObj,url);
+ 
+}	
 
 function setSourceDestinationPartyCandidateIds()
 {
@@ -4003,6 +4212,57 @@ $("#createCandidateId").live("click",function(){
 	callAjax(jsObj,url);
 		
 });
+$("#createCandidateId1").live("click",function(){
+   
+    
+	$("#errorMsgDiv1").html('');
+	var partyId = $("#partySelectNewList1").val();
+	var candidateName = $.trim($("#newCandidateName1").val());
+	var designationId = $("#designationsList1").val();
+	
+    if(partyId == 0)
+	{
+	  $("#errorMsgDiv1").html("Please Select Party");
+	  return;
+	}
+	if(candidateName.length == 0)
+	{
+	 $("#errorMsgDiv1").html("Please Select Candidate");
+	  return;
+	}
+	if(designationId == 0)
+	{
+	 $("#errorMsgDiv1").html("Please Select Designation");
+	  return;
+	}
+  var candidateListId = $(this).attr("key");
+  var partyListId = $(this).attr("partyListId");
+  var locationValue = "";
+	if($('#locationId1 option:selected').val() == 1)
+	{
+		locationValue = $('#assembSelReportId option:selected').val();
+	}
+	else if($('#locationId1 option:selected').val() == 2)
+	{
+		locationValue = $('#parliamSelReportId option:selected').val();
+	}
+	var jsObj =
+		{ 
+            partyId : partyId,
+			candidateName:candidateName,
+			candidateListId:candidateListId,
+			partyListId:partyListId,
+			designationId:designationId,
+			locationId : $('#locationId1 option:selected').val(),
+			locationValue : locationValue,
+			task:"saveCandidate1"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "saveCandidateAndPartyAction.action?"+rparam;						
+	callAjax(jsObj,url);
+		
+});
 
 $(".candidateCloseImg").live("click",function(){
  var key = $(this).attr("key");
@@ -4247,6 +4507,16 @@ function getDesignationList(designationList)
 	var url = "getDesignationsListAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
+function getDesignationList(designationList1)
+{
+  var jsObj={
+		designationList:designationList1,
+		task:'getDesignationsList'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getDesignationsListAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
 
 function populateDate()
 {
@@ -4292,6 +4562,10 @@ function getKeywordsByCount()
   $("#newKeywordDiv").css("display","none");
   $("#mergeKeywordDiv").css("display","none");
   $("#showKeywordsDiv").css("display","block");
+  $("#newDesignationDiv").css("display","none");
+  $("#newEditCandidateDiv").css("display","none");
+  $("#newCandidateCreationDiv").css("display","none");
+  $("#newPartyCreationDiv").css("display","none");
 
 
    var jsObj=
