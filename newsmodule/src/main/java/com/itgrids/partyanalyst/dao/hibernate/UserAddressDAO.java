@@ -19,9 +19,4 @@ public class UserAddressDAO extends GenericDaoHibernate<UserAddress, Long> imple
 		return queryObject.executeUpdate();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<UserAddress> getUserAddressList()
-	{
-		return getHibernateTemplate().find(" from UserAddress model ");
-	}
 }

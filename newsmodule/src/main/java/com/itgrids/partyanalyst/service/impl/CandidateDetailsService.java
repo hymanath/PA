@@ -1653,9 +1653,10 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			Long assId = assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getConstituencyId();
 			userAddress.setConstituency(constituencyDAO.get(assId));
 			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(assId));
-			userAddress.setState(stateDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getDistrict().getState().getStateId()));
-			userAddress.setDistrict(districtDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getDistrict().getDistrictId()));	
-			userAddress.setTehsil(tehsilDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getTehsilId()));
+			userAddress.setState(stateDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getState().getStateId()));
+			userAddress.setDistrict(districtDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getDistrict().getDistrictId()));	
+			//userAddress.setTehsil(tehsilDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getTehsil().getTehsilId()));
+			userAddress.setLocalElectionBody(localElectionBodyDAO.get(assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getLocalElectionBody().getLocalElectionBodyId()));
 			userAddress.setWard(constituencyDAO.get(locationValue));
 		}
 		
@@ -4139,7 +4140,7 @@ public List<SelectOptionVO> getCandidatesOfAParty(Long partyId)
 	    }
 	    else if(scope == 9L && locationValue != null && locationValue > 0)
 	    {
-	    	return boothDAO.get(locationValue).getPartName();
+	    	return boothDAO.get(locationValue).getPartNo();
 	    }
 	    else  return " ";
 	 }

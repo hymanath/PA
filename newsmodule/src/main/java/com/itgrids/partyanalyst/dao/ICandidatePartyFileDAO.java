@@ -13,7 +13,7 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	
 	public List<Object[]> getCandidatesNewsCount();
 	
-	public List<String> getCandidateNamesByFileId(Long fileId);
+	public List<Object[]> getCandidateNamesByFileId(Long fileId);
 	
 	public List<Object[]> getCandidateNamesByFileIds(Set<Long> fileIds);
 	

@@ -16,9 +16,9 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	public CandidatePartyFileDAO() {
 		super(CandidatePartyFile.class);
 	}
-	  public List<String> getCandidateNamesByFileId(Long fileId){
+	  public List<Object[]> getCandidateNamesByFileId(Long fileId){
 		  
-		  Query query = getSession().createQuery("select distinct model.sourceCandidate.lastname from CandidatePartyFile model where model.file.fileId =:fileId  and model.file.isDeleted != 'Y'");
+		  Query query = getSession().createQuery("select distinct model.sourceCandidate.lastname, model.destinationCandidate.lastname from CandidatePartyFile model where model.file.fileId =:fileId  and model.file.isDeleted != 'Y'");
 		  query.setParameter("fileId", fileId);
 		  return query.list();
 	  }
