@@ -363,6 +363,10 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 			if(getUserType() != null){
 			    if(getUserType().equalsIgnoreCase("1")){
 				  regVO.setUserAccessType("Admin");
+				 	
+				  regVO.setAccessType("STATE");
+				  regVO.setAccessValue("1");
+				  
 			    }
 				if(getUserType().equalsIgnoreCase("2")){
 					regVO.setUserAccessType("SubUser");
