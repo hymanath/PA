@@ -306,6 +306,8 @@ public interface ICandidateDetailsService {
 	 
 	 public List<SelectOptionVO> getCandidatesByPartyIdFromCandidateTable(Long userId,Long partyId);
 	 
+	 public SelectOptionVO getDesignationOfCandidateFromCandidateTable(Long candidateId);
+	 
 	 public List<SelectOptionVO> getBenefitList();
 	 public List<FileVO> getCandidatesNewsForHomePage(Long candidateId,int firstRecord,int maxRecord,String type,String fromDateStr, String toDateStr,String categoryIdsStr,String keywordIdStr);
 	 

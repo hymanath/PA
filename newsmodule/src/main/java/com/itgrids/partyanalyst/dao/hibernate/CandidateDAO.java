@@ -294,6 +294,14 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 	 return query.list();
 			 
  }
+ @SuppressWarnings("unchecked")
+ public List<Object[]> getDesignationsAndLocation(Long candidateId)
+ {
+	 Query query = getSession().createQuery(" select distinct model.designation.designationId,model.district.districtId,model.assembly.constituencyId,model.parliament.constituencyId from Candidate model where model.candidate.candidateId =:candidateId  order by model.designationId ");
+	 query.setParameter("candidateId", candidateId);
+	 return query.list();
+			 
+ }
  
  @SuppressWarnings("unchecked")
  public List<Long> getCandidateIdByPartyIdAndCandidateName(Long partyId,String candidateName,Long designationId)

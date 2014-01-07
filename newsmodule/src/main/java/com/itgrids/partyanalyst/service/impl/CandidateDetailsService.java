@@ -9510,4 +9510,28 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 			}
 		
 	}
+
+public SelectOptionVO getDesignationOfCandidateFromCandidateTable(Long candidateId)
+{
+	try{
+		//List<Object[]> list = candidateDAO.getDesignationsAndLocation(candidateId);
+		SelectOptionVO optionVO = new SelectOptionVO();
+		Candidate candidate = candidateDAO.get(candidateId);
+		optionVO.setId(candidate.getDesignation().getDesignationId());
+		if(candidate.getAssembly() != null){
+			optionVO.setType("Assembly");
+	 		optionVO.setConstituencyId(candidate.getAssembly().getConstituencyId());
+		}else if(candidate.getParliament() != null){
+			optionVO.setType("Parliament");
+	 		optionVO.setConstituencyId(candidate.getParliament().getConstituencyId());
+		}
+	 	return optionVO;
+
+	}
+	catch(Exception e){
+		log.error("Exception Occured in getDesignationOfCandidateFromCandidateTable() method, Exception - ",e);
+		return new SelectOptionVO();
+	}
+
+}
 }

@@ -488,9 +488,26 @@ function callAjax(jsObj,url)
 			 buildCandidateList(myResults);
 			   
 			}
+			else if(jsObj.task == "getDesignationAndLocationByCandidateId"){
+			   showDesignationDetails(myResults,jsObj);
+			}
 			else if(jsObj.task == "saveCandidate")
 			 showCandidateSaveStatus(myResults,jsObj);
+			 
+			 else if(jsObj.task == "saveCandidate1")
+			 {
+			
+			 showCandidateSaveStatus1(myResults,jsObj);
+			 }
+			  else if(jsObj.task == "updateCandidateDetails"){
+			   showCandidateEditStatus(myResults,jsObj);
+			  }
 
+			else if(jsObj.task == "getDesignationAndLocationByPartyId")
+			 {
+			getTextCandidateId();
+			 
+			 }
 			else if(jsObj.task == "getBenefitList")
 			 buildBenefitsList(myResults);
 			 
@@ -522,6 +539,8 @@ function callAjax(jsObj,url)
 					$('#statusForParty').html('<b style="color:red">Party already exists</b>');
 				}
 			}
+			else if(jsObj.task == "getEditCandidatesListByPartyId")
+			 buildCandidatesList(myResults,jsObj);
 			 else if(jsObj.task == "getTotalKeyWords")
 			{ 
 			
@@ -3885,6 +3904,7 @@ function showTheNewsToUpdate()
 {
   responseFileIdsArray = new Array();
   $("#selectedNewsCount").html('0');
+  $("#newEditCandidateDiv").css("display","none");
   document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
@@ -6689,7 +6709,8 @@ function getGallaryId()
 
 function getNewsReports ()
 {
-
+  
+  $("#newEditCandidateDiv").css("display","none");
   $("#newsAssignGallaryDiv").css("display","none");
   $("#newsAssignGallaryDiv").html('');
   $("#profileManagementMainOuterDiv4").css("display","none");
@@ -6819,6 +6840,37 @@ function showCandidateSaveStatus(result,jsObj)
   }
   else{
    $("#errorMsgDiv").html('Candidate is already exist.').css("color","green");
+   
+   return;
+  }
+  
+}
+function showCandidateSaveStatus1(result,jsObj)
+{
+ 
+ $("#errorMsgDiv1").html('');
+  if(result == null || result.resultCode == 1)
+  {
+   $("#errorMsgDiv1").html('Error occured! try again.').css("color","red");
+   return;
+  }
+
+  else if(result.resultCode == 0 && result.message == null)
+  {
+   $("#errorMsgDiv1").html('Candidate Saved Successfully.').css("color","green");
+   $("#newCandidateName1").val('');
+   $("#partySelectNewList1").val(0);
+   var partyId = $("#"+jsObj.partyListId+"").val();
+   
+   if(partyId != null && partyId > 0)
+     getCandidatesListByPartyId(partyId,""+jsObj.candidateListId+"");
+   
+   //$("#"+jsObj.candidateListId+"").
+   
+   return;
+  }
+  else{
+   $("#errorMsgDiv1").html('Candidate is already exist.').css("color","green");
    
    return;
   }
@@ -7758,4 +7810,155 @@ function editFile(id){
 
   var browser1 = window.open("editNewsAction.action?fileId="+id,"EditNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
-}	 
+}
+
+
+function buildCandidatesList(optionsList,jsObj)
+{
+var id=jsObj.type;
+ $("#"+id+" option").remove();
+var elmt = document.getElementById(id);
+var option = document.createElement('option');
+	option.value="0";
+	option.text="Select";
+	try
+	{
+		elmt.add(option,null); // standards compliant
+	}
+	catch(ex)
+	{
+		elmt.add(option); // IE only
+	}
+
+	for(var i in optionsList)
+	{
+		var option = document.createElement('option');
+		option.value=optionsList[i].id;
+		option.text=optionsList[i].name;
+		try
+		{
+			elmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			elmt.add(option); // IE only
+		}
+	}
+} 
+function showDesignationDetails(myResults,jsObj){
+ if(myResults != null){
+     $("#designationsList2").val(myResults.id);
+	 if(myResults.type == "Assembly"){
+	    $("#editcandidateLocType").val(1);
+		$("#editassembSelReportId").val(myResults.constituencyId);
+        getTypeOfConstituencyForEdit(1,'editacConstituencyRow','editpcConstituencyRow');		
+	 }else{
+	    $("#editcandidateLocType").val(2);
+		getTypeOfConstituencyForEdit(2,'editacConstituencyRow','editpcConstituencyRow');	
+		$("#editparliamSelReportId").val(myResults.constituencyId);	
+	 }
+ }
+
+}
+
+function getTypeOfConstituencyForEdit(value,ac,pc)
+{	
+	if(value == 1)
+	{
+		$('#'+pc).hide();
+		$('#'+ac).show();
+	}
+	else if(value == 2)
+	{
+		$('#'+pc).show();
+		$('#'+ac).hide();
+	}
+	else
+	{
+		$('#'+pc).hide();
+		$('#'+ac).hide();
+	}
+}
+function updateExistingCandidate(){
+    
+    
+	$("#errorMsgDiv2").html('');
+	var partyId = $("#EditpartySelectNewList").val();
+	var candidateName = $.trim($("#textCandidate").val());
+	var designationId = $("#designationsList2").val();
+	
+    if(partyId == 0)
+	{
+	  $("#errorMsgDiv2").html("Please Select Party");
+	  return;
+	}
+	if($.trim(candidateName).length == 0)
+	{
+	 $("#errorMsgDiv2").html("Please Select Candidate");
+	  return;
+	}
+	if(designationId == 0)
+	{
+	 $("#errorMsgDiv2").html("Please Select Designation");
+	  return;
+	}
+	if($('#editcandidateLocType option:selected').val() == 0){
+	  $("#errorMsgDiv2").html("Please Select Location");
+	  return;
+	}
+  var locationValue = "";
+	if($('#editcandidateLocType option:selected').val() == 1)
+	{
+		locationValue = $('#editassembSelReportId option:selected').val();
+	}
+	var candidateId = $('#EditCandidateListForParty option:selected').val();
+	if(candidateId == 0)
+	{
+	 $("#errorMsgDiv2").html("Please Select Candidate");
+	  return;
+	}
+	else if($('#editcandidateLocType option:selected').val() == 2)
+	{
+		locationValue = $('#editparliamSelReportId option:selected').val();
+	}
+	var jsObj =
+		{ 
+            partyId : partyId,
+			candidateId:candidateId,
+			candidateName:candidateName,
+			designationId:designationId,
+			locationId : $('#editcandidateLocType option:selected').val(),
+			locationValue : locationValue,
+			task:"updateCandidateDetails"
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "updateCandidateAndPartyAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
+function showCandidateEditStatus(result,jsObj)
+{
+ 
+ $("#errorMsgDiv2").html('');
+  if(result == null || result.resultCode == 1)
+  {
+   $("#errorMsgDiv2").html('Error occured! try again.').css("color","red");
+   return;
+  }
+
+  else if(result.resultCode == 0 && result.message == null)
+  {
+   $("#errorMsgDiv2").html('Candidate Updated Successfully.').css("color","green");
+   setTimeout(function(){$("#errorMsgDiv2").html('').css("color","red");},3000);
+   $("#textCandidate").val('');
+   $("#EditpartySelectNewList").val(0); 
+    $("#EditCandidateListForParty").find('option').remove();
+       $("#EditCandidateListForParty").append($("<option></option>").attr("value",0).text("Select Candidate"));
+   $("#designationsList2").val(0);
+    $("#editcandidateLocType").val(0);
+   
+   getTypeOfConstituencyForEdit(0,'editacConstituencyRow','editpcConstituencyRow');
+  
+   return;
+  }
+}
