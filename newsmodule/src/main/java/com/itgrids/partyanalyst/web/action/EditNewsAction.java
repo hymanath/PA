@@ -175,12 +175,12 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 		 	session = request.getSession();
 	        RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
 	  
-	        news = newsMonitoringService.getInfoForFile(new Long(request.getParameter("fileId")),user.getRegistrationID());
+	        news = newsMonitoringService.getInfoForFile(user.getUserAccessType(),new Long(request.getParameter("fileId")),user.getRegistrationID());
 		}   
 	 public String execute(){
 		 session = request.getSession();
 			RegistrationVO registrationVO = (RegistrationVO) session.getAttribute(IConstants.USER);
-			if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType())){
+			if(news != null){
 			//candidateDetailsService.testgetCandidatesListByPartyIdsList();
 			if (registrationVO != null) 
 			{

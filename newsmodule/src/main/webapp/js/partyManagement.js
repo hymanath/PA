@@ -2253,22 +2253,21 @@ function buildResults(results,divId){
 		  }
 		}
 
-         else if(locationScopeId == 7){
-			
-			var option = document.createElement('option');
-
-				if((results[j].name.toLowerCase()).indexOf("muncipality") != -1){
-						option.value=results[j].id;
-						option.text=results[j].name;
-						try{
-						   elmt.add(option,null); // standards compliant
-						 }
-						 catch(ex){
-						   elmt.add(option); // IE only
-						 }  
+		  else if(locationScopeId == 7){
+				
+				var option = document.createElement('option');
+					if((results[j].name.toLowerCase()).indexOf("muncipality") != -1 || (results[j].name.toLowerCase()).indexOf("greater") != -1 || (results[j].name.toLowerCase()).indexOf("corporation") != -1){
+							option.value=results[j].id;
+							option.text=results[j].name;
+							try{
+							   elmt.add(option,null); // standards compliant
+							 }
+							 catch(ex){
+							   elmt.add(option); // IE only
+							 }  
+					}
+				
 				}
-			
-			}
 
          else if(results[j].id != 0)
 		  {
@@ -7326,10 +7325,9 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
 	    var str='';
 		var fileId =  oRecord.getData("contentId");
 		
-		if(loginUserType == "Admin")
-		{
+		
 			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+')"/>';
-		}
+		
 		elLiner.innerHTML=str;					
 	}; 
 	YAHOO.widget.DataTable.DeleteFile = function(elLiner, oRecord, oColumn, oData) 
@@ -7354,7 +7352,8 @@ $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
 		   {key:"fileTitle1",label:"Title",width:180,formatter:YAHOO.widget.DataTable.title},
 		   {key:"fileDate",label:"File Date",width:80},
 		   {key:"candidateName",label:"Candidate Name"},
-		   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location}
+		   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location},
+		   {key:"",label:"Edit",formatter:YAHOO.widget.DataTable.EditFile}
 		  ];  	
 	}
 	else{

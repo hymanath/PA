@@ -5554,11 +5554,16 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		return resultStatus;
     }
     
-    public NewsEditVO getInfoForFile(Long fileId,Long userId)
+    public NewsEditVO getInfoForFile(String userType,Long fileId,Long userId)
     {
     	NewsEditVO result = new NewsEditVO();
     	try{
     		File file = fileDAO.get(fileId);
+    		if(!"Admin".equalsIgnoreCase(userType)){
+    		  if(!(file.getUser().getUserId().longValue() == userId.longValue())){
+    			  return null;
+    		  }
+    		}
     		if(file != null){
 	    		result.setFileTitle(StringEscapeUtils.unescapeJava(file.getFileTitle()));
 	    		result.setFileId(fileId);
@@ -5960,27 +5965,33 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			case 5:
 					Tehsil tehsil = tehsilDAO.get(Long.valueOf(file.getLocationValue().toString()));
 					locationName = tehsil.getTehsilName();
-					locationId =  tehsil.getTehsilId().toString();
+					locationId =  "2"+tehsil.getTehsilId().toString();
 				break;
 			case 6:
 					Hamlet hamlet = hamletDAO.get(Long.valueOf(file.getLocationValue().toString()));
 					locationName = hamlet.getPanchayatName();
-					locationId = hamlet.getHamletId().toString();
+					locationId = "2"+hamlet.getHamletId().toString();
 				break;
 			case 7:
-					LocalElectionBody localElectionBody = localElectionBodyDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					locationName = localElectionBody.getName()+" Muncipality";
-					locationId = localElectionBody.getLocalElectionBodyId().toString();
+				LocalElectionBody localElectionBody = localElectionBodyDAO.get(Long.valueOf(file.getLocationValue().toString()));					
+				locationName = localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType();
+					List<Object[]> muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetails(localElectionBody.getLocalElectionBodyId());
+					if(muncipalityDetails.size() > 0){
+						for (Object[] parms : muncipalityDetails) {
+							locationId = "1"+parms[0].toString();
+						}
+					
+					}
 				break;
 			case 8:
 					Constituency ward = constituencyDAO.get(Long.valueOf(file.getLocationValue().toString()));
 					if(ward.getLocalElectionBody().getName() !=""){
 						locationName = ward.getName();
-						locationId = ward.getConstituencyId().toString();
+						locationId = "1"+ward.getConstituencyId().toString();
 					}
 					else{
 						locationName = ward.getName()+" ("+ward.getLocalElectionBody().getName().trim()+")";
-						locationId = ward.getConstituencyId().toString();
+						locationId = "1"+ward.getConstituencyId().toString();
 					}
 				break;
 			case 9:

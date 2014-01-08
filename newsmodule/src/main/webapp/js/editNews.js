@@ -2238,21 +2238,21 @@ function buildResults(results,divId){
 		  }
 		}
 		
-		else if(locationScopeId == 7){
-			
-			var option = document.createElement('option');
-				if((results[j].name.toLowerCase()).indexOf("muncipality") != -1){
-						option.value=results[j].id;
-						option.text=results[j].name;
-						try{
-						   elmt.add(option,null); // standards compliant
-						 }
-						 catch(ex){
-						   elmt.add(option); // IE only
-						 }  
-				}
-			
-		}
+		  else if(locationScopeId == 7){
+				
+				var option = document.createElement('option');
+					if((results[j].name.toLowerCase()).indexOf("muncipality") != -1 || (results[j].name.toLowerCase()).indexOf("greater") != -1 || (results[j].name.toLowerCase()).indexOf("corporation") != -1 ){
+							option.value=results[j].id;
+							option.text=results[j].name;
+							try{
+							   elmt.add(option,null); // standards compliant
+							 }
+							 catch(ex){
+							   elmt.add(option); // IE only
+							 }  
+					}
+				
+			}
 			
          else if(results[j].id != 0)
 		  {
@@ -7668,7 +7668,7 @@ function addNewFileSource(){
 		str+='        <div class="span4" style="width: 275px;margin-left: 12px;">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
-		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls newsFile" key="'+addSource+'aaanewsfileDescription" >';
+		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls newsFile0" key="'+addSource+'aaanewsfileDescription" id="fileDescription'+addSource+'" >';
 		
 
 		str+='        </div>';
