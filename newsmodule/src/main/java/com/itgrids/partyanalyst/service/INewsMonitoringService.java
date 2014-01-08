@@ -100,7 +100,7 @@ public interface INewsMonitoringService {/*
 	
 	public String generateUrlForNewsReport(Long reportId,Long userId,String path);
 	public ResultStatus deleteNews(Long fileId,Long userId);
-    public NewsEditVO getInfoForFile(Long fileId,Long userId);
+    public NewsEditVO getInfoForFile(String userType,Long fileId,Long userId);
     
     public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue);
    

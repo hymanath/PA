@@ -710,7 +710,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 			
 			
 				<s:if test="#i.index <=0">
-				<s:if test="#k.index == 0">
+				
 					<div class="span4" style="margin-left:0px;">
 							<label style="margin-left: 15px;"><strong>File Path</strong></label>
 				<s:if test="news.fileSourceVOList[#k.index].sourceFileList[#i.index].fileImageFileName != ''">
@@ -726,14 +726,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 							
 						
 					</div>
-				</s:if>
-				<s:else>
-					<div class="span4" style="margin-left:0px;">
-							<label style="margin-left: 15px;"><strong>File Path</strong></label>
-							<br/><input type="file" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].fileImage" class="btn fileImgCls" key="aaanewsfileDescription" style="margin-left: 13px;" onchange="clearExistingImg('${k.index}imgToDisplayRemove${i.index+1}');"/>	
-					<span id="${k.index}imgToDisplayRemove${i.index+1}"><span class="icon-zoom-in" style="cursor: pointer; margin-left: -40px;" title="Click Here To View Existing Image" onclick="zoomSelectedImg('${fileSource.sourceFileList[i.index].fileImageFileName}');"></span>							
-					</div>
-				</s:else>
+
 					 
 	
 					<div class="span2 " style="margin-left: -12px;">					 
