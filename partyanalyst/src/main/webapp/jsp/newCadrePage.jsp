@@ -1563,7 +1563,7 @@ function refreshingParentWindow()
 			<td width="150"><s:label for="incomeField" id="incomeLabel"  value="%{getText('income')}" /></td>
 			<td align="left"><s:textfield id="incomeField" name="income" size="25" maxlength="8"/></td>
 			<td width="100px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="requiredFont"> * </font></td>
-			<td style="padding-left: 2px;width:210px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true"></s:radio> </td>
+			<td style="padding-left: 2px;width:210px;"><s:radio id="socialStatusField" name="socialStatus" list="#session.socialStatus" listKey="id" listValue="name" required="true" cssClass="casteCategory"></s:radio> </td>
 		</tr>
 		</table>
 	</fieldset>		
@@ -1854,7 +1854,12 @@ function callAjaxToGetParlConstis( jsObj, url){
                                 else if(jsObj.task == "getAssemblyParliamentConstiForState")
                                 {
 								    buildAssemblyParliamentConstiForState(myResults,jsObj);
-                                }								 
+                                }
+								 else if(jsObj.task == "getVoterCasteCetogoryId")
+                                {
+								    populateCasteCategory(myResults,jsObj);
+                                }
+								
 							}catch (e) {   
 							   
 							}  
@@ -1936,8 +1941,33 @@ function effectiveDateTo()
  showDateCal('tillDateText_div','tillDateText',month + "/" + year)
  }
 
-
-
+function getVoterCasteCetogoryId()
+{
+var jsObj=
+		{
+				voterId : '${voterId}',
+				task:"getVoterCasteCetogoryId",				
+						
+		}
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);					
+		var url = "<%=request.getContextPath()%>/getVoterCasteCetogoryIdAction.action?"+rparam;	
+		callAjaxToGetParlConstis(jsObj, url);
+}
+function populateCasteCategory(result,jobj)
+{
+	
+	$(".casteCategory").each(function(){
+		var str = $(this).attr("id");
+		var pattern = /[0-9]+/g;
+		var no = str.match(pattern);
+		
+		 if(no == result)
+		{
+$(this).attr("checked","checked");
+		}
+	});
+}
 
 </script>
 <script type="text/javaScript">
@@ -1946,6 +1976,7 @@ function effectiveDateTo()
               window.opener.getUpdatedData();
 		</c:if>
 	</c:if>	
+	getVoterCasteCetogoryId();
 </script>
 </body>
 </html>

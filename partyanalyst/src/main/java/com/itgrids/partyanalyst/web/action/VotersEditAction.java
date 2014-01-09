@@ -78,6 +78,15 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	
 	private List<InfluencingPeopleBeanVO> influencingPeopleBeanVO;
 	
+    private Long casteCategoryId;
+	
+	public Long getCasteCategoryId() {
+		return casteCategoryId;
+	}
+
+	public void setCasteCategoryId(Long casteCategoryId) {
+		this.casteCategoryId = casteCategoryId;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -1668,6 +1677,27 @@ public String saveLocality()
 		   return Action.SUCCESS;
 	   }
 	   
-	   
+	   public String getVoterCasteCategoryId()
+	    {
+		   
+	    	try{
+	    		jObj = new JSONObject(getTask());
+	    		HttpSession session = request.getSession();
+	    		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+	    		Long userId = null;
+	    		if(user != null && user.getRegistrationID() != null)
+	    			if(user.getParentUserId()!=null)
+	    				userId=user.getMainAccountId();
+	    			else
+	    				userId = user.getRegistrationID();
+	    		else 
+	    		  return "error";
+	    		casteCategoryId = voterReportService.getVoterCasteCategoryIdByUserId(userId,jObj.getLong("voterId"));
+	    	}
+	     catch (Exception e) {
+	    	 LOG.error("Exception rised in getParlmentAndAssemblyConstisByStateId ",e);
+		}	
+		return Action.SUCCESS;
+	    }
 
    }
