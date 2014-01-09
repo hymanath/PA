@@ -43,7 +43,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public void updateUserVoterDetails(Long voterId,Long userId,Long partyId,Long castStateId,Long localitityId, Long hamletId);
 	public List<Object[]> getHamletsIdsForUser(Long panchayatId , Long userId);
-    
+
 
 	
 	
@@ -283,5 +283,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<VoterFlag> getFlagDetailsForSelectedHamlet(Long hamletId,
 			Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel);
+	public List getCasteCategory(Long userId,Long voterId);
 	
 }

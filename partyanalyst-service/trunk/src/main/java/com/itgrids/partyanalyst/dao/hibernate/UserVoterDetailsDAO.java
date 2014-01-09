@@ -2804,5 +2804,16 @@ IUserVoterDetailsDAO{
 		query.setParameter("localEleBodyId", localEleBodyId);
 		return query.list();
 	}
+	
+	public List getCasteCategory(Long userId,Long voterId)
+	{
+		Query query = getSession().createQuery("select distinct model.casteState.casteCategoryGroup.casteCategoryGroupId from UserVoterDetails model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and " +
+				" model.user.userId =:userId and model.voter.voterId = :voterId");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("voterId", voterId);
+		
+		return query.list();	
+	}
 
 }

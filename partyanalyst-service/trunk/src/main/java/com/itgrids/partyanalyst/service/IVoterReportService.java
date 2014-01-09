@@ -123,6 +123,6 @@ public interface IVoterReportService {
     public List<SelectOptionVO> getFlagsList(Long voterId);
     
     public ResultStatus addFlagToVoter(Long voterId,List<Long> checkedflagIds,List<Long> uncheckedflagIds,Long userId);
-    
+    public Long getVoterCasteCategoryIdByUserId(Long userId,Long voterId);
     
 }
