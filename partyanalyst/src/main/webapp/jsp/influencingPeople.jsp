@@ -191,6 +191,10 @@ function callAjax(param,jsObj,url){
 					createOptionsForSelectElmtId1("position",myResults);
 	                document.getElementById("positionId").innerHTML='';
 					}
+					if(jsObj.task == "getVoterCasteCetogoryId")
+				{
+					populateCasteCategory(myResults,jsObj);
+				}
 					
 			}catch (e) {   		
 			   	//alert("Invalid JSON result" + e);   
@@ -922,7 +926,7 @@ function refreshingParentWindow()
 	</tr>			
 	<tr>
 		<td class="tdstyle" width="120px;"><s:label for="socialStatusField" id="socialStatusLabel"  value="%{getText('socialStatus')}" /><font class="required"> * </font></td>
-		<td class="tdstyle" style="padding-left: 10px;" colspan="3"><s:radio id="socialStatusField" name="cast" list="#session.socialStatus" listKey="id" listValue="name" required="true"/></td>
+		<td class="tdstyle" style="padding-left: 10px;" colspan="3"><s:radio id="socialStatusField" name="cast" list="#session.socialStatus" listKey="id" listValue="name" required="true" cssClass="casteCategory"></s:radio></td>
 	</tr>
 	<tr>
 		
@@ -1169,6 +1173,35 @@ refreshWindow();
 				row6El.style.display = ''; */
 		}
 	}
+	function getVoterCasteCetogoryId()
+{
+	
+var jsObj=
+		{
+				voterId : '${voterId}',
+				task:"getVoterCasteCetogoryId",				
+						
+		}
+	
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);					
+		var url = "<%=request.getContextPath()%>/getVoterCasteCetogoryIdAction.action?"+rparam;	
+		callAjax(rparam,jsObj,url);
+}
+function populateCasteCategory(result,jobj)
+{
+	
+	$(".casteCategory").each(function(){
+		var str = $(this).attr("id");
+		var pattern = /[0-9]+/g;
+		var no = str.match(pattern);
+		
+		 if(no == result)
+		{
+			$(this).attr("checked","checked");
+		}
+	});
+}
+getVoterCasteCetogoryId();
 </script>	
 </body>
 </html> 
