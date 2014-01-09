@@ -5465,4 +5465,28 @@ public class VoterReportService implements IVoterReportService{
 				 }
 			 }
 		 }
+		 
+		 public Long getVoterCasteCategoryIdByUserId(Long userId,Long voterId)
+		 {
+			 Long returnVal = 0l;
+			 try{
+				 Long casteCategoryId = (Long) userVoterDetailsDAO.getCasteCategory(userId,voterId).get(0);
+				 if(casteCategoryId == 1)//oc
+				  returnVal = 5l ;
+				 else if(casteCategoryId == 2)//bc
+				returnVal = 3l ;
+				 else if(casteCategoryId == 3)//sc
+						returnVal = 2l ;
+				 else if(casteCategoryId == 4)//st
+						returnVal = 1l ;
+				 else
+					 returnVal = 0l ; 
+					 
+			 }
+			 catch(Exception e)
+			 {
+				 e.printStackTrace();
+			 }
+			return returnVal;
+		 }
 }
