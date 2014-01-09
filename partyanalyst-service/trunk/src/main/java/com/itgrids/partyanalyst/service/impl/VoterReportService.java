@@ -5470,7 +5470,11 @@ public class VoterReportService implements IVoterReportService{
 		 {
 			 Long returnVal = 0l;
 			 try{
-				 Long casteCategoryId = (Long) userVoterDetailsDAO.getCasteCategory(userId,voterId).get(0);
+				List list =  userVoterDetailsDAO.getCasteCategory(userId,voterId);
+			    Long casteCategoryId = 0l;
+				if(list != null && list.size() > 0)
+				{
+				 casteCategoryId = (Long) userVoterDetailsDAO.getCasteCategory(userId,voterId).get(0);
 				 if(casteCategoryId == 1)//oc
 				  returnVal = 5l ;
 				 else if(casteCategoryId == 2)//bc
@@ -5481,6 +5485,7 @@ public class VoterReportService implements IVoterReportService{
 						returnVal = 1l ;
 				 else
 					 returnVal = 0l ; 
+				}
 					 
 			 }
 			 catch(Exception e)
