@@ -15,24 +15,29 @@ public class MobileAppUserDAO extends GenericDaoHibernate<MobileAppUser, Long> i
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object> checkUniqueCode(String uniqueCode)
 	{
 		return getHibernateTemplate().find("select model.mobileAppUserId from MobileAppUser model where model.uniqueCode = ?",uniqueCode);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getUserList()
 	{
 		return getHibernateTemplate().find("select model.mobileAppUserId,model.userName from MobileAppUser model");
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object> getUserId(String uniqueCode)
 	{
 		return getHibernateTemplate().find("select model.user.userId from MobileAppUser model where model.uniqueCode = ?",uniqueCode);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getSuperAdminList()
 	{
 		return getHibernateTemplate().find("select model.mobileAppUserId,model.userName from MobileAppUser model where model.type != 'USER'");
 	}
+	@SuppressWarnings("unchecked")
 	public List<Object> getMobileAppUserId(String uniqueCode)
 	{
 		return getHibernateTemplate().find("select model.mobileAppUserId from MobileAppUser model where model.uniqueCode = ?",uniqueCode);
