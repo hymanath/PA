@@ -73,6 +73,7 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
+import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -91,6 +92,7 @@ import com.itgrids.partyanalyst.model.ElectionScope;
 import com.itgrids.partyanalyst.model.ElectionType;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
 import com.itgrids.partyanalyst.model.InfluencingPeoplePosition;
+import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccess;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
@@ -111,6 +113,7 @@ import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
+import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -172,7 +175,16 @@ public class MobileService implements IMobileService{
  private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
  private IMobileAppPingingDAO mobileAppPingingDAO;
  private IWardBoothDAO wardBoothDAO;
+ private IWebServiceBaseUrlDAO webServiceBaseUrlDAO;
  
+public IWebServiceBaseUrlDAO getWebServiceBaseUrlDAO() {
+	return webServiceBaseUrlDAO;
+}
+
+public void setWebServiceBaseUrlDAO(IWebServiceBaseUrlDAO webServiceBaseUrlDAO) {
+	this.webServiceBaseUrlDAO = webServiceBaseUrlDAO;
+}
+
 public IMobileAppPingingDAO getMobileAppPingingDAO() {
 	return mobileAppPingingDAO;
 }
@@ -641,8 +653,22 @@ public List<SelectOptionVO> getConstituencyList()
 	 ResultStatus resultStatus = new ResultStatus();
 	try{
 	saveUserData(reVo);
-	File f= new File(path);	
-	BufferedWriter outPut = new BufferedWriter(new FileWriter(f));
+	
+	String constituencyName = constituencyDAO.get(constituencyId).getName();
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	String date = sdf.format(new Date());
+	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+	
+	File f1 = new File(path+pathSeperator+constituencyName+"_"+date+"_1.sql");
+	File f2 = new File(path+pathSeperator+constituencyName+"_"+date+"_2.sql");
+	File f3 = new File(path+pathSeperator+constituencyName+"_"+date+"_3.sql");
+	File f4 = new File(path+pathSeperator+constituencyName+"_"+date+"_4.sql");
+	
+	BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
+	BufferedWriter outPut2 = new BufferedWriter(new FileWriter(f2));
+	BufferedWriter outPut3 = new BufferedWriter(new FileWriter(f3));
+	BufferedWriter outPut4 = new BufferedWriter(new FileWriter(f4));
+	
 	StringBuilder str = new StringBuilder();
 	ResourceBundle rb = ResourceBundle.getBundle("mobileDBScripts");
 	Enumeration<String> keysList =   rb.getKeys();
@@ -687,7 +713,7 @@ public List<SelectOptionVO> getConstituencyList()
 		  str.append(booth.getLocalBody() != null ? booth.getLocalBody().getLocalElectionBodyId()+"," : "NULL,");
 		  str.append(booth.getPublicationDate() != null ? booth.getPublicationDate().getPublicationDateId()+"," : "NULL,");
 		  str.append(booth.getPanchayat() != null ? booth.getPanchayat().getPanchayatId()+"," : "NULL,");
-		  str.append(booth.getLocalBodyWard() != null ? booth.getLocalBodyWard().getConstituencyId()+"," : "NULL");
+		  str.append(booth.getLocalBodyWard() != null ? booth.getLocalBodyWard().getConstituencyId() : "NULL");
 		  str.append(");\n");
 		  }catch(Exception e)
 		  {
@@ -1121,6 +1147,11 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("booth punlication voter table data Completed...");
 	
+	outPut1.write(str.toString());
+	outPut1.close();
+	
+	str = new StringBuilder();
+	
 	try{
 		List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(constituencyId,latestPublicationId,1L);
 		
@@ -1147,6 +1178,10 @@ public List<SelectOptionVO> getConstituencyList()
 	}catch(Exception e){}
 	
 	LOG.info("voter table data Completed...");
+	outPut2.write(str.toString());
+	outPut2.close();
+	
+	str = new StringBuilder();
 	
 	try{
 		List<UserVoterDetails> userVoterList = userVoterDetailsDAO.getUserVoterDetailsOfAConstituencyForAPublication(constituencyId,latestPublicationId,1L);
@@ -1564,6 +1599,11 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error("Exception is - ",e);
 	}
 	
+	outPut3.write(str.toString());
+	outPut3.close();
+	
+	str = new StringBuilder();
+	
 	try{
 		LOG.debug("Tehsil Constituency Table Inserting Started");
 		List<Object[]> tehsilConstituencyList = delimitationConstituencyMandalDAO.getAssemblyConstituencyAndMandalsInAState(constituencyDAO.get(constituencyId).getState().getStateId());
@@ -1617,6 +1657,9 @@ public List<SelectOptionVO> getConstituencyList()
 					LOG.error(e);
 				}
 			}
+			str.append(strTemp);
+			str.append("\n");
+			LOG.info("Partial Booth Panchayat Table Inserting Completed...");
 		}
 		
 	}catch(Exception e)
@@ -1688,10 +1731,6 @@ public List<SelectOptionVO> getConstituencyList()
 			
 		}
 		
-		
-		
-		
-		
 	}catch(Exception e)
 	{
 		LOG.error("Exception Occured in Assembly Local Election Body,ward,ward_booth Table Inserting ",e);
@@ -1705,6 +1744,12 @@ public List<SelectOptionVO> getConstituencyList()
 		 str.append("INSERT INTO user(user_id,username,password,unique_code) VALUES('"+id+"','"+reVo.getUserName()+"','"+reVo.getPassword()+"','"+reVo.getUniqueCode()+"');\n");
 		 str.append("INSERT INTO user_profile(user_profile_id,first_name,last_name,gender) VALUES('"+id+"','"+reVo.getFirstName()+"','"+reVo.getLastName()+"','"+reVo.getGender().toString()+"');\n");
 		 str.append("INSERT INTO user_access(user_access_id,user_id,is_authorised,app_id,mac_address,device_id,last_authorised_time) VALUES('"+id+"','"+id+"','"+IConstants.TRUE+"','"+reVo.getAppId()+"','"+reVo.getAddress()+"','"+reVo.getMobile()+"','"+dateUtilService.getCurrentDateAndTime()+"');\n");
+		 
+		 MobileAppUser superAdmin = mobileAppUserDAO.get(reVo.getSuperAdminId());
+		 if(superAdmin != null)
+		 {
+			 str.append("INSERT INTO user(user_id,username,password,unique_code) VALUES(-1,'"+superAdmin.getUserName()+"','"+superAdmin.getPassword()+"','"+superAdmin.getUniqueCode()+"');\n");
+		 }
 		 str.append("\n");
 		LOG.info(" user, user_profile,user_access Table data Completed... ");
 	}
@@ -1712,10 +1757,65 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error(" Exception Occured in user user_profile,user_access Table Inserting ",e);
 	}
 	/*user,user_profile,user_access  End*/
+	
+	try{
+		
+		List<Locality> localityList = userVoterDetailsDAO.getAllLocatiesInAConstituency(constituencyId,latestPublicationId,1l);
+		
+		if(localityList != null && localityList.size() > 0)
+		{
+			StringBuilder strTemp = new StringBuilder();
+			LOG.info("Loaclity Table Inserting Started...");
+			for(Locality locality : localityList)
+			{
+				try{
+					strTemp.append("INSERT INTO locality(locality_id,name,hamlet_id,local_election_body_id,ward_id,constituency_id) VALUES (");
+					strTemp.append(locality.getLocalityId()+",");
+					strTemp.append(locality.getName() != null ? "'"+locality.getName()+"'," : "'',");
+					strTemp.append(locality.getHamlet() != null ? locality.getHamlet().getHamletId()+"," : "NULL,");
+					strTemp.append(locality.getLocalElectionBody() != null ? locality.getLocalElectionBody().getLocalElectionBodyId()+"," : "NULL,");
+					strTemp.append(locality.getWard() != null ? locality.getWard().getConstituencyId()+"," : "NULL,");
+					strTemp.append(constituencyId.toString()+");\n");
+					
+				}catch(Exception e)
+				{
+					LOG.error("Exception occured in inserting Locality Table");
+					LOG.error("Exception is - "+e);
+				}
+			}
+			str.append(strTemp);
+			str.append("\n");
+			LOG.info("Loaclity Table Inserting Completed...");
+		}
+	}catch(Exception e)
+	{
+		LOG.error("Exception occured in inserting Locality Table");
+		LOG.error("Exception is - "+e);
+	}
+	
+	try{
+		
+		WebServiceBaseUrl url = webServiceBaseUrlDAO.getBaseUrlDataForAnApp("IPAD");
+		
+		if(url != null)
+		{
+			LOG.info("Web Service Base URL Table Data Inserting Started...");
+			str.append("INSERT INTO webservice_base_url(webservice_base_url_id,url) VALUES (");
+			str.append(url.getWebServiceBaseUrlId()+",'");
+			str.append(url.getUrl()+"');\n");
+			str.append("\n");
+			LOG.info("Web Service Base URL Table Data Inserting Completed...");
+		}
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in Web Service Base URL Table Data Inserting");
+			LOG.error("Exception is - "+e);
+		}
+	
 	try
 	{	
-		outPut.write(str.toString());
-		outPut.close();
+		outPut4.write(str.toString());
+		outPut4.close();
 		resultStatus.setResultCode(0);
 		System.gc();
 	}catch(Exception e)
