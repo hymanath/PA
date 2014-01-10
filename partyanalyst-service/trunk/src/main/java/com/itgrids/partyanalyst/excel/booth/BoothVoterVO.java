@@ -9,13 +9,51 @@ public class BoothVoterVO implements Serializable{
 	private Long boothId;
 	private Long voterId;
 	private Long serialNo;
+	private String partNo;
+	private Long constituencyId;
+	private String voterCardNo;
+	private Long sno;
 	
+	public Long getSno() {
+		return sno;
+	}
+
+	public void setSno(Long sno) {
+		this.sno = sno;
+	}
+
+	public String getPartNo() {
+		return partNo;
+	}
+
+	public void setPartNo(String partNo) {
+		this.partNo = partNo;
+	}
+
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public String getVoterCardNo() {
+		return voterCardNo;
+	}
+
+	public void setVoterCardNo(String voterCardNo) {
+		this.voterCardNo = voterCardNo;
+	}
+
 	public BoothVoterVO(Long voterId, Long serailNo)
 	{
 		this.voterId = voterId;
 		this.serialNo = serailNo;
 	}
 	
+	public BoothVoterVO() {}
+
 	public Long getBoothId() {
 		return boothId;
 	}
