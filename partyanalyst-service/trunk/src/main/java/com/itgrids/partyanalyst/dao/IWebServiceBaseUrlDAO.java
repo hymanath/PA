@@ -6,4 +6,6 @@ import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 public interface IWebServiceBaseUrlDAO extends GenericDao<WebServiceBaseUrl,Long>{
 	
 	public String getBaseURLForAnApp(String appName);
+	
+	public WebServiceBaseUrl getBaseUrlDataForAnApp(String appName);
 }
