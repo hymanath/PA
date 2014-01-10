@@ -1796,6 +1796,7 @@
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
      <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
      <property name="wardBoothDAO" ref="wardBoothDAO"/>
+     <property name="webServiceBaseUrlDAO" ref="webServiceBaseUrlDAO"/>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
