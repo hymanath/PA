@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterFlag;
@@ -285,4 +286,5 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 			Long userId,Integer startIndex,Integer maxIndex,String order,String columnName,String selLevel);
 	public List getCasteCategory(Long userId,Long voterId);
 	
+	public List<Locality> getAllLocatiesInAConstituency(Long constituencyId,Long publicationDateId,Long userId);
 }
