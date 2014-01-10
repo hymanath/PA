@@ -202,6 +202,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setMobile(jSONObject.getString("mobileNo"));
 			 regVo.setEmail(jSONObject.getString("email"));
 			 regVo.setSuperAdminId(jSONObject.getLong("superAdmin"));
+			 regVo.setPublicationDateId(jSONObject.getLong("publicationId"));
 			 resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"),path,regVo);
 		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("saveSuperAdmin"))
