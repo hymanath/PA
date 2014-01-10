@@ -672,8 +672,8 @@ public List<SelectOptionVO> getConstituencyList()
 	StringBuilder str = new StringBuilder();
 	ResourceBundle rb = ResourceBundle.getBundle("mobileDBScripts");
 	Enumeration<String> keysList =   rb.getKeys();
-	Long latestPublicationId = boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
-	
+	//Long latestPublicationId = boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
+	Long publicationId = reVo.getPublicationDateId();
 	while(keysList.hasMoreElements())
 	{
 		str.append(rb.getString(keysList.nextElement()));

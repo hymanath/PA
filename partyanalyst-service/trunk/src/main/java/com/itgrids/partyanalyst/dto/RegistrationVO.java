@@ -77,8 +77,18 @@ public class RegistrationVO extends BaseDTO{
 	
 	private String deviceId;
 	
+	private Long publicationDateId;
 	
 	
+	
+	public Long getPublicationDateId() {
+		return publicationDateId;
+	}
+
+	public void setPublicationDateId(Long publicationDateId) {
+		this.publicationDateId = publicationDateId;
+	}
+
 	public String getDeviceId() {
 		return deviceId;
 	}
