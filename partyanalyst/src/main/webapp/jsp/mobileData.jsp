@@ -93,31 +93,40 @@ var populateId ;
 	<tr>
     <td>Constituency</td><td></td>
     <td>
-    <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" /> 
+    <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate()"/> 
     </td>
-   <td> User</td><td></td>
+   
+    <td>Publication Date</td><td></td>
+    <td>
+    <select theme="simple" Class="selectWidth" name="publicationList" id="publicationDateList"  /> 
+    </td>
+   
+   
+  
+   </tr>
+   <tr><td></td><td></td></tr>  <tr><td></td><td></td></tr>
+    <tr>
+	 <td> User</td><td></td>
    <td><select id="usersId" Class="selectWidth" >
 										<c:forEach var="allUsers" varStatus="stat" items="${allRegisteredUsersData.listOfUsers}">		
 											<option value="${allUsers.id}"> ${allUsers.name} </option>	
 										</c:forEach>
 									</select>
       </td>
-   </tr>
-   <tr><td></td><td></td></tr>  <tr><td></td><td></td></tr>
-    <tr>
     <td>FirstName</td>
     <td></td>
     <td>
     <input type="text" id="FirstNameId" placeholder="FirstName">
     </td>
-    <td>
-   LastName</td> <td></td>
-     <td><input type="text" id="LastNameId" placeholder="LastName"></td></tr>
+  </tr>
 	
 	<tr>
 	
-  
+    <td>
+   LastName</td> <td></td>
+     <td><input type="text" id="LastNameId" placeholder="LastName"></td>
 	   <td>
+	   
 	Gender &nbsp; &nbsp; &nbsp;<input type="radio" name="optionsRadios" id="maleRadiobtn" value="Male" style="margin-top:0px;" checked> Male &nbsp;<input type="radio" name="optionsRadios" id="FemaleRadiobtn" value="Female" style="margin-top:0px;" checked>&nbsp;Female</td>
 	</tr>
 	
@@ -242,6 +251,7 @@ var macAddressId = $("#macAddressId").val();
 var userId = $("#usersId").val();
 var mobileNo =$("#mobileNoId").val();
 var email =$("#emailId").val(); 
+var publicationId = $("#publicationDateList").val();
 var superAdminusersId =0;
 
 var str = '<font color="red">';
@@ -250,6 +260,12 @@ superAdminusersId = $("#superAdminusersId").val();
  if(constituencyId == 0)
 	{
 	 str += 'Please Select Constituency<br>';
+	  flag = true;
+	 
+	}
+	 if(publicationId == 0)
+	{
+	 str += 'Please Select Publication<br>';
 	  flag = true;
 	 
 	}
@@ -336,7 +352,8 @@ macAddressId:macAddressId,
 userId:userId,
 email:email,
 mobileNo:mobileNo,
-superAdmin:superAdminusersId
+superAdmin:superAdminusersId,
+publicationId:publicationId
 };
 dataarr.push(obj);
 
@@ -389,6 +406,8 @@ function callAjax(jsObj,url)
 								{
 									buildSelectList(myResults);
 								}
+								else if(jsObj.task == "getPublicationDate")
+								buildPublicationDateList(myResults);
 							}
 									catch (e) {
 							    //alert(Exception);
@@ -648,6 +667,58 @@ function buildStatusForSuperAdmin(result)
 	{
 $("#errorMsgDiv2").html('user already exist').css("color","red");
 	}
+}
+
+function getPublicationDate()
+	{
+	var constituencyID =$("#constituencyList").val();
+	
+
+	var jsObj=
+	{
+		selected:constituencyID,
+		task:"getPublicationDate"
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "voterAnalysisAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+	
+}
+
+var publicationDatesList;
+	function buildPublicationDateList(results)
+	{
+
+	$('#publicationDateList').children().remove();
+	publicationDatesList=results;
+	var selectedElmt=document.getElementById("publicationDateList");
+	
+	var  publicationIdsArray = new Array();
+
+	for(var val in results)
+	{	
+	publicationIdsArray.push(results[val].id);
+
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+
+	var largest = Math.max.apply(Math, publicationIdsArray);
+
+	$('#publicationDateList').val(largest);
+	$('#publicationDateList').trigger("change");
+
 }
 getMobileAppUsers();
 </script>
