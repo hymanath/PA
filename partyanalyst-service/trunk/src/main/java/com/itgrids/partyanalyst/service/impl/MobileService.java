@@ -695,7 +695,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("Bloo Group Data Completed.");
 	//List<Booth> boothList = boothDAO.getBoothsListByConstituencyId(constituencyId);
-	List<Booth> boothList = boothDAO.getBoothOfAConstituencyInAPublication(constituencyId, latestPublicationId);
+	List<Booth> boothList = boothDAO.getBoothOfAConstituencyInAPublication(constituencyId, publicationId);
 			
 	if(boothList != null && boothList.size() > 0)
 	{
@@ -868,7 +868,7 @@ public List<SelectOptionVO> getConstituencyList()
 	List<Object[]> hamletsAndPanchayatsList = panchayatHamletDAO.gethamletsInAState(constituencyDAO.get(constituencyId).getState().getStateId());
 	Map<Long,Long> hamletsAndPanchayatsMap = new LinkedHashMap<Long,Long>();
 	*/
-	List<Object[]> hamletsList = boothDAO.getHamletsForAConstituencyForAPublication(constituencyId,latestPublicationId);
+	List<Object[]> hamletsList = boothDAO.getHamletsForAConstituencyForAPublication(constituencyId,publicationId);
 	
 	/*if(hamletsAndPanchayatsList != null && hamletsAndPanchayatsList.size() > 0)
 	{
@@ -921,7 +921,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("Occupation data Completed...");
 	
-	List<Object[]> panchayatList = boothDAO.getPanchayatsForAConstituencyForAPublication(constituencyId,latestPublicationId);
+	List<Object[]> panchayatList = boothDAO.getPanchayatsForAConstituencyForAPublication(constituencyId,publicationId);
 	if(panchayatList != null && panchayatList.size() > 0)
 	{
 	  for(Object[] params:panchayatList)
@@ -958,7 +958,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("state table data Completed...");
 	
-	List<Object[]> tehsilList = boothDAO.getTehsilsForAConstituencyForAPublication(constituencyId,latestPublicationId);
+	List<Object[]> tehsilList = boothDAO.getTehsilsForAConstituencyForAPublication(constituencyId,publicationId);
 	if(tehsilList != null && tehsilList.size() > 0)
 	{
 	  for(Object[] params:tehsilList)
@@ -1005,7 +1005,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("voter basic info table data Completed...");
 	
-	List<VoterCastInfo> voterCasteInfoList = voterCastInfoDAO.getVoterCasteInfoList(constituencyId,latestPublicationId,1L);
+	List<VoterCastInfo> voterCasteInfoList = voterCastInfoDAO.getVoterCasteInfoList(constituencyId,publicationId,1L);
 	if(voterCasteInfoList != null && voterCasteInfoList.size() > 0)
 	{
 	  for(VoterCastInfo castInfo:voterCasteInfoList)
@@ -1031,7 +1031,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("voter caste info table data Completed...");
 	
-	List<VoterCastBasicInfo> voterCasteList = voterCastBasicInfoDAO.getVoterCastBasicInfoList(constituencyId,latestPublicationId,1L);
+	List<VoterCastBasicInfo> voterCasteList = voterCastBasicInfoDAO.getVoterCastBasicInfoList(constituencyId,publicationId,1L);
 	if(voterCasteList != null && voterCasteList.size() > 0)
 	{
 		for(VoterCastBasicInfo basicInfo:voterCasteList)
@@ -1126,7 +1126,7 @@ public List<SelectOptionVO> getConstituencyList()
 	LOG.info("voting trendz parties result table data Completed...");
 	
 	try{
-		List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(constituencyId, latestPublicationId);
+		List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(constituencyId, publicationId);
 		
 		if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
 		{
@@ -1153,7 +1153,7 @@ public List<SelectOptionVO> getConstituencyList()
 	str = new StringBuilder();
 	
 	try{
-		List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(constituencyId,latestPublicationId,1L);
+		List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(constituencyId,publicationId,1L);
 		
 		if(votersList != null && votersList.size() > 0)
 		{
@@ -1184,7 +1184,7 @@ public List<SelectOptionVO> getConstituencyList()
 	str = new StringBuilder();
 	
 	try{
-		List<UserVoterDetails> userVoterList = userVoterDetailsDAO.getUserVoterDetailsOfAConstituencyForAPublication(constituencyId,latestPublicationId,1L);
+		List<UserVoterDetails> userVoterList = userVoterDetailsDAO.getUserVoterDetailsOfAConstituencyForAPublication(constituencyId,publicationId,1L);
 		
 		if(userVoterList != null && userVoterList.size() > 0)
 		{
@@ -1214,7 +1214,7 @@ public List<SelectOptionVO> getConstituencyList()
 	LOG.info("user voter details table data Completed...");
 	
 	try{
-		List<Object[]> voterModificationList = voterModificationDAO.getVoterModificationDetailsOfAConstituencyForAPublication(constituencyId,latestPublicationId);
+		List<Object[]> voterModificationList = voterModificationDAO.getVoterModificationDetailsOfAConstituencyForAPublication(constituencyId,publicationId);
 		
 		if(voterModificationList != null && voterModificationList.size() > 0)
 		{
@@ -1241,7 +1241,7 @@ public List<SelectOptionVO> getConstituencyList()
 	LOG.info("voter modification table data Completed...");
 	
 	try{
-		List<Object[]> voterModificationInfoList = voterModificationInfoDAO.getVoterModificationInfoOfAConstituencyForAPublication(constituencyId,latestPublicationId);
+		List<Object[]> voterModificationInfoList = voterModificationInfoDAO.getVoterModificationInfoOfAConstituencyForAPublication(constituencyId,publicationId);
 		
 		if(voterModificationInfoList != null && voterModificationInfoList.size() > 0)
 		{
@@ -1268,7 +1268,7 @@ public List<SelectOptionVO> getConstituencyList()
 	LOG.info("voter modification info table data Completed...");
 	
 	try{
-		List<Object[]> voterModificationAgeInfoList = voterModificationAgeInfoDAO.getVoterModificationAgeInfoDetailsOfAConstituencyForAPublication(constituencyId,latestPublicationId);
+		List<Object[]> voterModificationAgeInfoList = voterModificationAgeInfoDAO.getVoterModificationAgeInfoDetailsOfAConstituencyForAPublication(constituencyId,publicationId);
 		
 		if(voterModificationAgeInfoList != null && voterModificationAgeInfoList.size() > 0)
 		{
@@ -1684,7 +1684,7 @@ public List<SelectOptionVO> getConstituencyList()
 				 Long electionTypeId = (Long)params[3];
 				 if(electionTypeId.longValue() == 7){
 					 Map<Long,String> wards = new HashMap<Long,String>();
-					 List<Object[]> wardDetails = boothDAO.getWardDetailsByLocalEleBodyId((Long)params[1], latestPublicationId, constituencyId);
+					 List<Object[]> wardDetails = boothDAO.getWardDetailsByLocalEleBodyId((Long)params[1], publicationId, constituencyId);
 					 for(Object[] ward:wardDetails){
 						 //id=id+1;
 						 wards.put((Long)ward[0], ward[1].toString()+"("+ward[2].toString()+")");
@@ -1699,7 +1699,7 @@ public List<SelectOptionVO> getConstituencyList()
 						}
 					}
 				 }else{
-					 List<Object[]> wardDetails = userVoterDetailsDAO.getWardIdsByLocalEleBodyIdPublicationId(constituencyId,1l,latestPublicationId,(Long)params[1]);
+					 List<Object[]> wardDetails = userVoterDetailsDAO.getWardIdsByLocalEleBodyIdPublicationId(constituencyId,1l,publicationId,(Long)params[1]);
 					 
 					 for(Object[] ward:wardDetails){
 						 wardIds.add((Long)ward[0]);
@@ -1717,11 +1717,11 @@ public List<SelectOptionVO> getConstituencyList()
 				  
 				  }
 			  }*/
-			  List<Object[]> wardBoothDatails = wardBoothDAO.getWardBothData(latestPublicationId,constituencyId);
+			  List<Object[]> wardBoothDatails = wardBoothDAO.getWardBothData(publicationId,constituencyId);
 			  if(wardBoothDatails != null && wardBoothDatails.size() >0){
 				  for(Object[] ward:wardBoothDatails){
 				  str.append("INSERT INTO ward_booth(ward_booth_id,ward_id,booth_id,publication_date_id) " +
-					 		"VALUES ('"+(Long)ward[0]+"','"+(Long)ward[1]+"','"+(Long)ward[2]+"','"+latestPublicationId+"');\n");
+					 		"VALUES ('"+(Long)ward[0]+"','"+(Long)ward[1]+"','"+(Long)ward[2]+"','"+publicationId+"');\n");
 				  }
 			  }
 			}
@@ -1760,7 +1760,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	try{
 		
-		List<Locality> localityList = userVoterDetailsDAO.getAllLocatiesInAConstituency(constituencyId,latestPublicationId,1l);
+		List<Locality> localityList = userVoterDetailsDAO.getAllLocatiesInAConstituency(constituencyId,publicationId,1l);
 		
 		if(localityList != null && localityList.size() > 0)
 		{
