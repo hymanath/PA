@@ -185,7 +185,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		 
 		 if(jObj.getString("task").equalsIgnoreCase("createDataDump"))
 		 {
-			 String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+"sqlite_dump.sql";
+			 String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB";
 			 JSONArray arr = jObj.getJSONArray("userData");
 			 JSONObject jSONObject= arr.getJSONObject(0);
 			 RegistrationVO regVo = new RegistrationVO();
