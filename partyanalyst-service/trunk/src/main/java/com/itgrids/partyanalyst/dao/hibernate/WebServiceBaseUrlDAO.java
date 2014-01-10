@@ -19,4 +19,11 @@ public class WebServiceBaseUrlDAO extends GenericDaoHibernate<WebServiceBaseUrl,
 		query.setParameter("appName",appName);
 		return (String)query.uniqueResult();
 	}
+	
+	public WebServiceBaseUrl getBaseUrlDataForAnApp(String appName)
+	{
+		Query query = getSession().createQuery("select model from WebServiceBaseUrl model where model.appName = :appName");
+		query.setParameter("appName",appName);
+		return (WebServiceBaseUrl)query.uniqueResult();
+	}
 }
