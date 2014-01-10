@@ -12,6 +12,7 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 
 
@@ -634,7 +635,7 @@ for (Object[] objects : list) {
 		
 	}*/
 	
-	public void testGetHamletBoothInfo()
+	/*public void testGetHamletBoothInfo()
 	{
 		List<Object[]> list = userVoterDetailsDAO.getHamletBoothInfo(228l,1l);
 		System.out.println(list.size());
@@ -659,6 +660,12 @@ for (Object[] objects : list) {
 			System.out.println(strTemp.toString());
 			
 		}
+	}*/
+	
+	public void testGetAllLocatiesInAConstituency()
+	{
+		List<Locality> list = userVoterDetailsDAO.getAllLocatiesInAConstituency(309l, 8l, 1l);
+		System.out.println(list.size());
 	}
 	
 }
