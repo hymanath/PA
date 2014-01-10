@@ -1862,5 +1862,7 @@
 	  <property name="pingingTypeDAO" ref="pingingTypeDAO"/>
 	  <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
  </bean>
+  <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
+  </bean>
 </beans>		
 	

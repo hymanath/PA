@@ -1335,6 +1335,9 @@
 	<bean id="mobileAppUserMgmtAction" class="com.itgrids.partyanalyst.web.action.MobileAppUserMgmtAction" singleton="false">
 	      <property name="mobileService" ref="mobileService" />  
 	</bean>
+		<bean id="predictedCasteAssignAction" class="com.itgrids.partyanalyst.web.action.PredictedCasteAssignAction" singleton="false">
+	    
+	</bean>
 	
 </beans>	
 	

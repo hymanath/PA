@@ -6277,5 +6277,9 @@
            		<param name="root">result</param>
         	</result>
         </action>
+         <action name="predictedCasteAssignAction" class="predictedCasteAssignAction">
+         <result name="success">/jsp/predictedCasteAssign.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+      </action>
 		</package>
 </struts>      
