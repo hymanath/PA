@@ -370,6 +370,7 @@
 				<value>com.itgrids.partyanalyst.model.PingingType</value>
 				<value>com.itgrids.partyanalyst.model.MobileAppPinging</value>
 				<value>com.itgrids.partyanalyst.model.WardBooth</value>
+				<value>com.itgrids.partyanalyst.model.PredictedVoterCaste</value>
 			</list>
 			
 		</property>

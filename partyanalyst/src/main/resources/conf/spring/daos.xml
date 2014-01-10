@@ -1289,4 +1289,8 @@
    <bean id="wardBoothDAO" class="com.itgrids.partyanalyst.dao.hibernate.WardBoothDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+    <bean id="predictedVoterCasteDAO" class="com.itgrids.partyanalyst.dao.hibernate.PredictedVoterCasteDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+ 
 </beans>		

@@ -279,7 +279,8 @@
 		<pattern>/advVideoActionForSave*</pattern>
 		<pattern>/partialBoothPanchayatAction*</pattern>
 		<pattern>/constituencyInfoAction*</pattern>
-			<pattern>/mobileAppUserMgmtAction*</pattern>
+		<pattern>/mobileAppUserMgmtAction*</pattern>
+		<pattern>/predictedCasteAssignAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
