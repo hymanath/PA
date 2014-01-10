@@ -10,6 +10,7 @@ import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.InfluencingPeople;
+import com.itgrids.partyanalyst.model.Locality;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterFlag;
@@ -2814,6 +2815,17 @@ IUserVoterDetailsDAO{
 		query.setParameter("voterId", voterId);
 		
 		return query.list();	
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Locality> getAllLocatiesInAConstituency(Long constituencyId,Long publicationDateId,Long userId)
+	{
+		Query query = getSession().createQuery("select distinct model.locality from UserVoterDetails model,BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and model.user.userId = :userId and " +
+				" model2.booth.constituency.constituencyId = :constituencyId and model2.booth.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("userId",userId);
+		return query.list();
 	}
 
 }
