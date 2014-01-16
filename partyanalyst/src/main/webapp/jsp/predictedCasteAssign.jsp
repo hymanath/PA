@@ -74,7 +74,7 @@ To <input type="text" id="toValue"/>
 	 
 	 var fromValue =  $.trim($("#fromValue").val());
 	 var toValue =  $.trim($("#toValue").val());
-	 $("#fromValue")
+	 
 	
 	if(fromValue.length == 0 || isNaN(fromValue))
 	 {
