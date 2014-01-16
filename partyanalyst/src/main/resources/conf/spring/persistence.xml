@@ -371,6 +371,7 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppPinging</value>
 				<value>com.itgrids.partyanalyst.model.WardBooth</value>
 				<value>com.itgrids.partyanalyst.model.PredictedVoterCaste</value>
+				<value>com.itgrids.partyanalyst.model.CasteInsertType</value>
 			</list>
 			
 		</property>

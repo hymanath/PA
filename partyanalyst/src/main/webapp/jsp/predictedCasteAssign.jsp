@@ -41,21 +41,72 @@
 <body>
  <br>
 <div id="mainDiv" class="contenttable widget"> 
+<div id="insertPredictCasteDiv" style="margin-top:10px;">
+<div id="errorDiv"></div>
+From <input type="text" id="fromValue"/>
+To <input type="text" id="toValue"/>
+<input type="button" value="Submit" class="btn btn-success" onclick="insertPredictedCaste()"/>
+
+
+</div><br/>
+<div id="casteCountDiv"></div>
 </div>
  <script type="text/javascript">
 
- function test()
+ function getCounts()
  {
 	  var jsObj=
 	  {
-		
-		task:"sampleAjax"
+		task:"getCount"
 	  };
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "sampleAjaxAction.action?"+rparam;
+	var url = "getCasteCountAction.action?"+rparam;
 
 	callAjax(jsObj,url);
 
+ }
+ function insertPredictedCaste()
+ {
+	 var flag=false;
+	 var str='<font color="red">';
+	 var errorDiv =$("#errorDiv");
+	 
+	 var fromValue =  $.trim($("#fromValue").val());
+	 var toValue =  $.trim($("#toValue").val());
+	 $("#fromValue")
+	
+	if(fromValue.length == 0 || isNaN(fromValue))
+	 {
+		flag=true;
+		str+='Enter number<br/>';
+	 }
+	else if(toValue.length == 0 || isNaN(toValue))
+	 {
+		flag=true;
+		str+='Enter number<br/>';
+	 }
+	else if(fromValue <= toValue)
+	 {
+		flag=true;
+		str+='To value less than From value<br/>';
+	 }
+	 str+='</font>';
+	 if(flag == true)
+	 $("#errorDiv").html(str);
+	 else
+	 {
+ $("#errorDiv").html('');
+ var jsObj=
+	  {
+	 fromValue:fromValue,
+		toValue:toValue,
+		task:"insertPredictedCaste"
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "insertPredictedCasteAction.action?"+rparam;
+
+	callAjax(jsObj,url);
+	 }
  }
  function callAjax(jsObj,url)
 		{
@@ -65,9 +116,9 @@
  		               success : function( o ) {
 							try {												
 									myResults = YAHOO.lang.JSON.parse(o.responseText);					
-									if(jsObj.task == "sampleAjax")
+									if(jsObj.task == "getCount")
 								{
-								
+									buildCAsteCount(myResults);
 								}
 
 
@@ -83,9 +134,31 @@
 
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
  	}
+
+	function buildCAsteCount(results)
+	{
+		var str ='';
+		if(results.length > 0)
+		{
+			str+='<table class="table">';
+			str+='<tr>';
+			str+='<th>Insert Type</th>';
+			str+='<th>Count</th>';
+			str+='</tr>';
+			for(var i in results)
+			{
+			str+='<tr>';
+			str+='<td>'+results[i].type+' </td>';
+			str+='<td>'+results[i].totalVoters+' </td>';
+			str+='</tr>';
+			}
+			str+='</table>';
+			$("#casteCountDiv").html(str);
+		}
+	}
  </script>
  <script>
- test();
+ getCounts();
  </script>
  </body>
  </html>
