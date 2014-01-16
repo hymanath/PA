@@ -2827,5 +2827,11 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId",userId);
 		return query.list();
 	}
+	
+	public List<Object[]> getCountForCasteType()
+	{
+		Query query = getSession().createQuery("select count(model.userVoterDetailsId),model.casteInsertType.type from UserVoterDetails model group by model.casteInsertType.casteInsertTypeId");
+		return query.list();
+	}
 
 }

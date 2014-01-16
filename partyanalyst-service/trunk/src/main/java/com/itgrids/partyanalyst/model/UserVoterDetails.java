@@ -33,7 +33,7 @@ public class UserVoterDetails implements java.io.Serializable{
 	private Constituency constituency;
 	private Locality locality;
 	private String mobileNo;
-	
+	private CasteInsertType casteInsertType;
 	private Hamlet hamlet;
 	
 	public UserVoterDetails(){
@@ -155,5 +155,18 @@ public class UserVoterDetails implements java.io.Serializable{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="caste_insert_type_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteInsertType getCasteInsertType() {
+		return casteInsertType;
+	}
+
+	public void setCasteInsertType(CasteInsertType casteInsertType) {
+		this.casteInsertType = casteInsertType;
+	}
+	
+	
     
 }

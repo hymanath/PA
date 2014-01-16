@@ -390,6 +390,7 @@
 				<value>com.itgrids.partyanalyst.model.MobileAppPinging</value>
 				<value>com.itgrids.partyanalyst.model.WardBooth</value>
 				<value>com.itgrids.partyanalyst.model.PredictedVoterCaste</value>
+				<value>com.itgrids.partyanalyst.model.CasteInsertType</value>
 					
 			</list>
 		</property>
@@ -1997,6 +1998,9 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
      <bean id="predictedVoterCasteDAO" class="com.itgrids.partyanalyst.dao.hibernate.PredictedVoterCasteDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+     <bean id="casteInsertTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteInsertTypeDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
 </beans>
