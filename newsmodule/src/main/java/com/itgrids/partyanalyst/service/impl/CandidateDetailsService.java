@@ -8707,11 +8707,11 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 Long regionScopeId = regionScopesDAO.getRegionScopeIdByScope(regionScope);
 		 Map<Long,Long> locationCount = new HashMap<Long, Long>(0);
 		  if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.CONSTITUENCY)){
-			//List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId2(regionScopeId,queryType,872L);
+		     //locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId2(regionScopeId,queryType,872L);
 			 list = fileGallaryDAO.getLocationValuesCountByRegionScopeId2(regionScopeId,queryType,872L);
 		  }
 		    else if(regionScope != null && regionScope.equalsIgnoreCase(IConstants.DISTRICT)){
-					//List<Long> locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId1(regionScopeId,queryType,872L);
+			     //locationValuesList = fileGallaryDAO.getLocationValuesByRegionScopeId1(regionScopeId,queryType,872L);
 		    	 list = fileGallaryDAO.getLocationValuesCountByRegionScopeId1(regionScopeId,queryType,872L);
 			} 
 			  if(list != null && list.size() > 0)

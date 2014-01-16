@@ -2179,6 +2179,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		else if(jObj.getString("task").equalsIgnoreCase("getNewsImportance"))
 		 {
 			selectOptionList = candidateDetailsService.getNewsImportance();
+			selectOptionList.add(0,new SelectOptionVO(0L,"Select News Importance"));
 		 }
 		else if(jObj.getString("task").equalsIgnoreCase("getCategory"))
 		 {

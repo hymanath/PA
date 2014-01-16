@@ -199,12 +199,14 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	}
 	 
 	 @SuppressWarnings("unchecked")
-	public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,Integer startIndex,Integer maxIndex)
+	public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,Long importanceId,Integer startIndex,Integer maxIndex)
 	 {
 		 StringBuilder str = new StringBuilder();
 		 str.append("select distinct model from File model where model.isDeleted !='Y' ");
 		 if(!"Admin".equalsIgnoreCase(userType))
 		 str.append("and model.user.userId = :userId ");
+		 if(importanceId != 0)
+			 str.append("and model.newsImportance.newsImportanceId = :importanceId ");
 		 if(regionValue.longValue() == 1l){
 		   str.append("and model.userAddress.state.stateId = :location ");
 		 }else if(regionValue.longValue() == 2l){
@@ -230,6 +232,8 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 			 query.setParameter("location", location);
 		 if(regionValue.longValue() == 3l)
 			 query.setParameterList("location", locationIds);
+		 if(importanceId != 0)
+			 query.setParameter("importanceId", importanceId);
 		 if(startIndex != null)
 		   query.setFirstResult(startIndex);
 		 if(maxIndex != null)

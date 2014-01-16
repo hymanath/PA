@@ -430,8 +430,16 @@ function buildContentDetails()
 			 str+='</table>';
 			  str+='<table class="tableCls">';
             
-			 if(result.relatedGalleries[0].filesList[i].locationName != null && result.relatedGalleries[0].filesList[i].locationName != "")
-			  str +='<tr><td><b>Location </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].locationScopeValue+' : '+result.relatedGalleries[0].filesList[i].locationName+'</font></span></td></tr>';
+			// if(result.relatedGalleries[0].filesList[i].locationName != null && result.relatedGalleries[0].filesList[i].locationName != "")
+			//  str +='<tr><td><b>Location </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].locationScopeValue+' : '+result.relatedGalleries[0].filesList[i].locationName+'</font></span></td></tr>';
+		    if(result.relatedGalleries[0].filesList[i].locationScopeValue == 'DISTRICT' || result.relatedGalleries[0].filesList[i].locationScopeValue == 'CONSTITUENCY'|| result.relatedGalleries[0].filesList[i].locationScopeValue == 'STATE'){
+		    str +='<tr><td><b>Location </b>: <font color="#FF4500"><span>'+result.relatedGalleries[0].filesList[i].locationScopeValue+': '+result.relatedGalleries[0].filesList[i].locationName+'</i></h5>';
+			str+='</hgroup>';		 
+	       }
+	       else{
+			str +='<tr><td><b>Location </b>: <font color="#FF4500"><span>'+result.relatedGalleries[0].filesList[i].locationName+'</i></h5>';
+			str+='</hgroup>';		 
+	       }
               str +='<tr>';
 			 if(result.relatedGalleries[0].filesList[i].candidateName != null && result.relatedGalleries[0].filesList[i].candidateName != "")
 			  str +='<td><b>Candidate(s) </b>: <font color="#FF4500"><span> '+result.relatedGalleries[0].filesList[i].candidateName+'</font></span></td>';

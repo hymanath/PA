@@ -121,14 +121,16 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 		}
 	 
 	 @SuppressWarnings("unchecked")
-		public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds,Integer startIndex,Integer maxIndex)
+		public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds,Long importanceId,Integer startIndex,Integer maxIndex)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(importanceId != 0)
+				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue.longValue() == 1l){
-			   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			     str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
 			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
@@ -156,6 +158,8 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 				 query.setParameterList("location", locationIds);
 			 if(keywordIds !=null && keywordIds.size() > 0)
 				 query.setParameterList("keywordIds", keywordIds);
+			 if(importanceId != 0)
+				 query.setParameter("importanceId", importanceId);
 			 if(startIndex != null)
 			   query.setFirstResult(startIndex);
 			 if(maxIndex != null)
@@ -215,14 +219,16 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-		public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds)
+		public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds,Long importanceId)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(importanceId != 0)
+				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue.longValue() == 1l){
-			   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			     str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
 			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
@@ -250,6 +256,8 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 				 query.setParameterList("location", locationIds);
 			 if(keywordIds !=null && keywordIds.size() > 0)
 				 query.setParameterList("keywordIds", keywordIds);
+			 if(importanceId != 0)
+				 query.setParameter("importanceId", importanceId);
 			 return (Long) query.uniqueResult();
 			 
 		}
