@@ -3412,7 +3412,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			  fileSourceVO2.setSourceLangId(fileSourceVO.getSourceLangId()!= null ?fileSourceVO.getSourceLangId():null);
 			  fileSourceVO2.setFileSourceLangId(fileSourceVO.getFileSourceLangId()!= null ?fileSourceVO.getFileSourceLangId():null);
 			  fileSourceVO2.setCompleteDesc(fileSourceVO.getCompleteDesc() != null?escapeUnicode(StringEscapeUtils.escapeJava(fileSourceVO.getCompleteDesc())):null);
-			  fileSourceVO2.setNewsDescCheck(fileSourceVO.getNewsFont() != null && fileSourceVO.getNewsFont()!= 0 ? fileSourceVO.getNewsFont().toString(): null); //is description font telugu or not
+			 
+			  if(fileSourceVO.getDeleted() != null)
+				  fileSourceVO2.setNewsDescCheck(fileSourceVO.getNewsFont() != null && fileSourceVO.getNewsFont()!= 0 ? fileSourceVO.getNewsFont().toString(): null); //is description font telugu or not				  
+			  else
+				  fileSourceVO2.setNewsDescCheck(fileSourceVO.getNewsDescCheck() != null ? fileSourceVO.getNewsDescCheck().toString(): null); //is description font telugu or not
+				  	
 			  
 			  if(fileSourceVO.getSourceFileList() != null && fileSourceVO.getSourceFileList().size() > 0){
 				  List<FileVO> fileVOsList = new ArrayList<FileVO>(0);

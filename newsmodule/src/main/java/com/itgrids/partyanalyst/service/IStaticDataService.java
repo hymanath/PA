@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
@@ -345,4 +346,6 @@ public interface IStaticDataService {/*
 		public List<SelectOptionVO> getPanchayatiesByMandalIdAndConstId(Long constituencyId,Long id,Long publicationDateId);
 		public List<SelectOptionVO> getAllAreaTypes();
 
-*/}
+*/
+		public List<AddressVO> getUserLocationScopeDetilsByUserid(Long userId,String accessType,String accessValue);
+}

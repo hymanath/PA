@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.WordUtils;
+import org.jfree.util.Log;
 
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IElectionTypeDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IStateDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -17,6 +21,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.ElectionType;
+import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -26,7 +31,7 @@ public class StaticDataService implements IStaticDataService {
 	//private IPartyDAO partyDAO;
 	//private IElectionScopeDAO electionScopeDAO;
 	  private IDistrictDAO districtDAO;
-	//private IStateDAO stateDAO;
+	private IStateDAO stateDAO;
 	//private IElectionAllianceDAO electionAllianceDAO;
 	private IConstituencyDAO constituencyDAO;
 	//private ITownshipDAO townshipDAO;
@@ -36,7 +41,7 @@ public class StaticDataService implements IStaticDataService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	//private IDelimitationConstituencyDAO delimitationConstituencyDAO;
-	//private IUserDAO userDAO;
+	private IUserDAO userDAO;
 	//private IPanchayatHamletDAO panchayatHamletDAO;
 	//private IPanchayatDAO panchayatDAO;
 	//private IBoothDAO boothDAO;
@@ -67,13 +72,13 @@ public class StaticDataService implements IStaticDataService {
 	public void setElectionScopeDAO(IElectionScopeDAO electionScopeDAO) {
 		this.electionScopeDAO = electionScopeDAO;
 	}
-	
+	*/
 	public IStateDAO getStateDAO() {
 		return stateDAO;
 	}
 	public void setStateDAO(IStateDAO stateDAO) {
 		this.stateDAO = stateDAO;
-	}*/
+	}
 	/*public IElectionAllianceDAO getElectionAllianceDAO() {
 		return electionAllianceDAO;
 	}
@@ -137,12 +142,15 @@ public class StaticDataService implements IStaticDataService {
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
+	
+	*/
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
 	public void setUserDAO(IUserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
+	/*
 	public IPanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
 	}
@@ -8712,4 +8720,46 @@ public class StaticDataService implements IStaticDataService {
 		
 	}
 
-*/}
+*/
+	public List<AddressVO> getUserLocationScopeDetilsByUserid(Long userId,String accessType,String accessValue){
+		Log.debug("entered into getUserLocationScopeDetilsByUserid() method in StaticDataService class.");
+		List<AddressVO> userAddress = new ArrayList<AddressVO>(); 
+		try {
+			AddressVO address = new AddressVO();
+			if(accessType.equalsIgnoreCase("STATE")){
+				State state = stateDAO.get(Long.valueOf(accessValue));
+				if(state != null){
+					address.setStateId(state.getStateId());
+				}
+			}
+			else if(accessType.equalsIgnoreCase("DISTRICT")){
+				District district = districtDAO.get(Long.valueOf(accessValue));
+				if(district != null){
+					address.setStateId(district.getState().getStateId());
+					address.setDistrictId(Long.valueOf(accessValue));
+				}
+			}
+			else if(accessType.equalsIgnoreCase("MLA")){
+				Constituency constituency = constituencyDAO.get(Long.valueOf(accessValue));
+				if(constituency != null){
+					address.setConstituencyId(constituency.getConstituencyId());
+					address.setDistrictId(constituency.getDistrict().getDistrictId());
+					address.setStateId(constituency.getDistrict().getState().getStateId());
+				}
+					
+			}
+			else if(accessType.equalsIgnoreCase("MP")){
+				Constituency constituency =  constituencyDAO.get(Long.valueOf(accessValue));
+				if(constituency != null){
+					address.setDistrictId(constituency.getDistrict().getDistrictId());
+					address.setStateId(constituency.getDistrict().getState().getStateId());
+				}
+			}
+			userAddress.add(address);
+		} catch (Exception e) {
+			userAddress = null;
+			Log.error("entered into getUserLocationScopeDetilsByUserid() method in StaticDataService class.",e);
+		}
+		return userAddress;
+	}
+}
