@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.apache.struts2.util.ServletContextAware;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyDestinationVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -48,7 +50,44 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 	private IStaticDataService staticDataService;
 	private ICandidateDetailsService candidateDetailsService;
 	
+	private List<SelectOptionVO> districtsList1;
+	private List<SelectOptionVO> parlConstiList1;
+	private List<SelectOptionVO> assemConstiList1;
+	private List<AddressVO> userDetailsVO;
 	
+	
+	public List<AddressVO> getUserDetailsVO() {
+		return userDetailsVO;
+	}
+
+	public void setUserDetailsVO(List<AddressVO> userDetailsVO) {
+		this.userDetailsVO = userDetailsVO;
+	}
+
+	public List<SelectOptionVO> getDistrictsList1() {
+		return districtsList1;
+	}
+
+	public void setDistrictsList1(List<SelectOptionVO> districtsList1) {
+		this.districtsList1 = districtsList1;
+	}
+
+	public List<SelectOptionVO> getParlConstiList1() {
+		return parlConstiList1;
+	}
+
+	public void setParlConstiList1(List<SelectOptionVO> parlConstiList1) {
+		this.parlConstiList1 = parlConstiList1;
+	}
+
+	public List<SelectOptionVO> getAssemConstiList1() {
+		return assemConstiList1;
+	}
+
+	public void setAssemConstiList1(List<SelectOptionVO> assemConstiList1) {
+		this.assemConstiList1 = assemConstiList1;
+	}
+
 	public List<SelectOptionVO> getKeywordsList() {
 		return keywordsList;
 	}
@@ -210,6 +249,16 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 							 assemConstiList =(List<SelectOptionVO>)assessLocs.get(2);
 						 }
 					 }
+					
+					 ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+					 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+					 districtsList1 =  staticDataService.getDistricts(1l);
+					 parlConstiList1 = parliamantConstis.getConstituencies();
+				     assemConstiList1 = constituencyInfoVO.getConstituencies();
+				     
+				     userDetailsVO = new ArrayList<AddressVO>();
+				     userDetailsVO =  staticDataService.getUserLocationScopeDetilsByUserid(registrationVO.getRegistrationID(),registrationVO.getAccessType(),registrationVO.getAccessValue());
+					
 			//  return Action.SUCCESS;
 				 }
 			 else

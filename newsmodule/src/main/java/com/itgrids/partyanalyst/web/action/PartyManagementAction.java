@@ -21,6 +21,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.GallaryVO;
@@ -84,8 +85,26 @@ public class PartyManagementAction extends ActionSupport implements ServletReque
 	private List<SelectOptionVO> districtsList1;
 	private List<SelectOptionVO> parlConstiList1;
 	private List<SelectOptionVO> assemConstiList1;
+	private List<SelectOptionVO> categoriesList;
+	private List<AddressVO> userDetailsVO;
 	
 	
+	public List<AddressVO> getUserDetailsVO() {
+		return userDetailsVO;
+	}
+
+	public void setUserDetailsVO(List<AddressVO> userDetailsVO) {
+		this.userDetailsVO = userDetailsVO;
+	}
+
+	public List<SelectOptionVO> getCategoriesList() {
+		return categoriesList;
+	}
+
+	public void setCategoriesList(List<SelectOptionVO> categoriesList) {
+		this.categoriesList = categoriesList;
+	}
+
 	public List<SelectOptionVO> getDistrictsList1() {
 		return districtsList1;
 	}
@@ -425,6 +444,7 @@ public String execute()
 	//candidateDetailsService.testgetCandidatesListByPartyIdsList();
 	if (registrationVO != null) 
 	{
+		
 	// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
 		 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
 		 {
@@ -456,6 +476,11 @@ public String execute()
 			 districtsList1 =  staticDataService.getDistricts(1l);
 			 parlConstiList1 = parliamantConstis.getConstituencies();
 		     assemConstiList1 = constituencyInfoVO.getConstituencies();
+		     
+		     userDetailsVO = new ArrayList<AddressVO>();
+		     userDetailsVO =  staticDataService.getUserLocationScopeDetilsByUserid(registrationVO.getRegistrationID(),registrationVO.getAccessType(),registrationVO.getAccessValue());
+			
+				
 	  return Action.SUCCESS;
 		 }
 	 else
@@ -764,4 +789,21 @@ public String execute()
 	  return Action.SUCCESS;
   }*/
   
+  
+  public String getAllCategoriesList(){
+	  session = request.getSession();
+	  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+	  categoriesList = new ArrayList<SelectOptionVO>();
+	  try {
+		  if(regVO != null){			  
+			  categoriesList = partyDetailsService.getPartyGallarySelectList(null, null);
+		  }
+
+		} catch (Exception e) {
+			categoriesList = null;
+		}	  
+	  return Action.SUCCESS;
+	  }
+
 }
+
