@@ -764,7 +764,7 @@ function buildUploadPhotosDiv()
 
 	str += '<tr><td><b><font>Description<font class="requiredFont">*</font></font><b></td>';
 	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
-	str +='<tr><td><b><font>File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"  class="newsFile"/></td>';
+	str +='<tr><td><b><font>File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId"  class="newsFile" style="width: 225px;"/></td>';
 	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
 	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr>';
 	/*str += '   <TR>';
@@ -2309,8 +2309,12 @@ function buildResults(results,divId){
 		}
 	  }
 	  }
-
- 
+/*
+if(distritcId != '' )
+	$('#districtDiv').val(distritcId);
+if(cosntiId != '' )
+	$('#constituencyDiv').val(cosntiId);
+ */
 }
 function buildResultsForElectType(results){
 
@@ -2890,9 +2894,39 @@ function getLocations(id){
     
    getStatesForSpecialPage();
   }
+  //setTimeout("setStateId();",1000);
+
+}
+/*
+function setStateId(){
+	$('#stateDiv').val(statteId);
+
+	if($("#scopeDiv").val() != 2)
+		getDistricts1(statteId);
+		
+	if((locationScop1e.toLowerCase()).indexOf("district") != -1 || (locationScop1e.toLowerCase()).indexOf("mla") != -1 || (locationScop1e.toLowerCase()).indexOf("mp") != -1){	
+		setDistricts();
+	}
 }
 
-
+function setDistricts(){
+	if(distritcId != ''){
+			//$('#districtDiv').val(distritcId);
+			if($("#scopeDiv").val() != 3)
+				getAllDetails(distritcId,'constituenciesInDistrict','','');
+			if((locationScop1e.toLowerCase()).indexOf("mla") != -1 || (locationScop1e.toLowerCase()).indexOf("mp") != -1 ){
+				setAssmbyConst();
+			}
+	}
+}
+function setAssmbyConst(){
+	if(cosntiId != ''){
+		//$('#constituencyDiv').val(cosntiId);
+		if($("#scopeDiv").val() != 4)
+			getAllDetails(cosntiId,'subRegionsInConstituency','RURAL','');
+	}
+}
+*/
 function addMoreFiles()
 {
 	var moreDivElmt = document.createElement("addMoreFilesDiv");
@@ -2900,7 +2934,7 @@ function addMoreFiles()
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+fileCount+'">';
 	str += ' <tr>';
 	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+fileCount+'" size="25"  class="newsFile"/></td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+fileCount+'" size="25"  class="newsFile" style="width: 225px;"/></td>';
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
@@ -5914,11 +5948,11 @@ function uploadFile()
 	str+="<u><span style='font-weight:bold;'>Upload "+text+" Files</span></u>";
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId0'+value+'">';
 
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25"  class="newsFile"/></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25"  class="newsFile" style="width: 225px;"/></td></tr>';
 
 	str += ' <tr>';
 	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" class="newsFile"/></td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" class="newsFile" style="width: 225px;"/></td>';
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
@@ -5960,7 +5994,7 @@ function addMoreFiles2(value)
 	str +='<table class="moreFileTable" style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+divCount+''+value+'">';
 	str += ' <tr>';
 	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25"  class="newsFile"/></td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25"  class="newsFile" style="width: 225px;"/></td>';
 	str += ' </tr>';
 	str += ' <tr>';
 	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
@@ -6449,7 +6483,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   <tr>';
 	str += '       <td class="tdWidth1">File Path : <font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;" class="newsFile"/></td>';
+	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;" class="newsFile" style="width: 225px;"/></td>';
 	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt="Click here to add more images"/></td>';
 	str += '   </tr>';
 	str += '   <tr>';
@@ -6457,7 +6491,7 @@ function  buildUploadNews()
 	str += '   </tr>';
 	str += '   </tr>';
 
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" class="newsFile"/></td></tr>';
+    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" class="newsFile" style="width: 225px;"/></td></tr>';
 
 	str += '   <tr>';
 	str += '       <td></td>';
@@ -7668,7 +7702,7 @@ function addNewFileSource(){
 		str+='        <div class="span4" style="width: 275px;margin-left: 12px;">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
-		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls newsFile0" key="'+addSource+'aaanewsfileDescription" id="fileDescription'+addSource+'" >';
+		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls newsFile0" key="'+addSource+'aaanewsfileDescription" id="fileDescription'+addSource+'" style="width: 245px;"/> <span class="icon-remove" style="cursor: pointer;float: right; position: absolute; margin-top: 15px;" title="Click Here To remove Image" onclick="clearExistingImg(\'fileDescription'+addSource+'\');"></span>';
 		
 
 		str+='        </div>';
@@ -7730,13 +7764,13 @@ function addNewFilePart(id,addFile){
 
         var str ='';
         str+='<div id ="'+addFile+'newpart'+id+'" class="container " style="margin-left: 12px; float: left;">';
-		str+='        <div class="span4" style="width: 275px;">';
+		str+='        <div class="span4" style="width: 275px;margin-right: -17px;">';
 				
-		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn addFileImgCls newsFile">';
+		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn addFileImgCls newsFile" style="width: 246px;"/>';
 
 		str+='        </div>';
 
-		str+='<div class="span2 ">';
+		str+='<div class="span2 " style="margin-left: 30px;">';
 				
 		str+='        <select name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].newsEdition" class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
 
@@ -7784,9 +7818,10 @@ function deleteExistingImg(id){
   if(confirm("Do You Want To Delete Existing Image ?")){
     $("#imgToDisplayDeleted"+id).val("true");
 	$("#imgToDisplayRemove"+id).html("");
-	imgToDisplayDeleted
+	
   }
 }
+
 function imgToDisplayRemove(){
   $("#imgToDisplayRemove").html("");
 }
@@ -7931,7 +7966,9 @@ var str ='';
 		//str +='<span style="display: inline-block;"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
 		str+='</div>';
 		str+='<div class="span4 well well-small">';
-		str+='<label><strong>Select Categories</strong></label><select name="keywordIdHiddenCat'+whome+'" multiple="multiple" style="width: 252px;" id="'+whome+'whomegallaryId" >';
+		str+='<label><strong>Select Categories</strong></label>';
+		str+='<span style="float:left;margin-left:135px;margin-top:-25px"><a title="refresh list" onclick="refreshCategories(\''+whome+'whomegallaryId\');" href="javascript:{}"><i class="icon-refresh"></i></a></span>';
+		str+='<select name="keywordIdHiddenCat'+whome+'" multiple="multiple" style="width: 252px;" id="'+whome+'whomegallaryId" >';
 		str+='    <option>Select Category</option>';
 		str+='</select>';
 		
@@ -7970,7 +8007,7 @@ getPartiesList("partiesListForWhome"+whome+"",null);
 var o = 0;
 function addNewFileToUpload(id){
    o = o+1;
-   $("#multifile"+id).append('<div id="removeThisFil'+o+'"><table><tr><td><input type="file" name="fileSourceVOList['+id+'].fileImage"  size="25"  class="newsFile"/></td><td><a class="btn btn-small btn-block" style="width: 17px;" href="javascript:void(0)" onclick="removeThisFile(\'removeThisFil'+o+'\');"> <i class="icon-minus-sign"></i></a></td></tr></table></div>');
+   $("#multifile"+id).append('<div id="removeThisFil'+o+'"><table><tr><td><input type="file" name="fileSourceVOList['+id+'].fileImage"  size="25"  class="newsFile" style="width: 225px;"/></td><td><a class="btn btn-small btn-block" style="width: 17px;" href="javascript:void(0)" onclick="removeThisFile(\'removeThisFil'+o+'\');"> <i class="icon-minus-sign"></i></a></td></tr></table></div>');
 
 }
 
@@ -7997,7 +8034,7 @@ function addNewSourceToDiv(){
 t=t+1;
 var str='';
 str += '        <tr id="newFileSourceFile'+t+'">';
-str += '            <td><input  type="file" name="fileSourceVOList['+t+'].fileImage"  size="25"  class="newsFile"/><div id="multifile'+t+'"></div>';
+str += '            <td><input  type="file" name="fileSourceVOList['+t+'].fileImage"  size="25"  class="newsFile" style="width: 225px;"/><div id="multifile'+t+'"></div>';
 str += '<a href="javascript:void(0)" onclick="addNewFileToUpload('+t+');" style="width: 100px; margin-left: 51px; margin-top: 11px;" class="btn btn-small btn-block"> <i class="icon-plus-sign"></i></a></td>';
 str += '            <td><select id="filesourceId'+t+'" name="fileSourceVOList['+t+'].fileSourceId" class="input-small"><option value="0">Select Source</option></select></td>';
 str += '            <td><select id="sourceLangId'+t+'" name="fileSourceVOList['+t+'].sourceLangId" class="input-small"><option value="0">Select Language</option></select></td>';
@@ -8025,7 +8062,7 @@ function addMoreFilesForPartyCandidate()
 	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+fileCount+'" class="moreFileDivCls" key="'+fileCount+'">';
 	str += ' <tr>';
 	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="fileSourceVOList['+fileCount+'].fileImage" class="newsFileId'+fileCount+' newsFile" size="25"   class="newsFile"/></td>';
+	str += ' <td class="selectWidthPadd"><input type="file" name="fileSourceVOList['+fileCount+'].fileImage" class="newsFileId'+fileCount+' newsFile" size="25"   class="newsFile" style="width: 225px;"/></td>';
     str +='<td><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreImagesForPartyCandidate(\''+fileCount+'\')" title="Click here to add more images" alt="Click here to add more images"></td>';
 
 	str += ' </tr>';
@@ -8080,7 +8117,7 @@ function addMoreImagesForPartyCandidate(count)
   str +='<table id="moreFilePathsId'+count+''+fileImgCount+'">';
   str += '<tr>';
   str += '<td>File Path : </td>';
-  str += '<td><input type="file" class="newsFileId newsFile'+count+'" size="50" name="fileSourceVOList['+count+'].fileImage"  class="newsFile"/></td>';
+  str += '<td><input type="file" class="newsFileId newsFile'+count+'" size="50" name="fileSourceVOList['+count+'].fileImage"  class="newsFile" style="width: 225px;"/></td>';
   str += '<td><img onclick="deleteFileImagePaths(\''+count+''+fileImgCount+'\');" title="Click here to delete file" src="images/minus.png" style="background: #fff; border-radius: 11px; padding: 4px;"></td>';
   str +='<tr>';
   divElmt.innerHTML = str;
@@ -8491,5 +8528,24 @@ function newKeywordsInserting()
 
 	 $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
 
+
+}
+function refreshCategories(id){
+	//console.log(id);
+	$.ajax({
+		type:'POST',
+		url: 'getAllCategoryListAction.action',
+		dataType: 'json',
+		data: {task:JSON.stringify({task:"getCategoryList"})},
+		success:function(result){
+			$("#"+id+"").multiselect("destroy")
+			clearAll(id);
+			 $.each( result, function( index, myResult ){
+				$("#"+id+"").append("<option value="+myResult.id+">"+myResult.name+"</option>");
+			});
+			$("#"+id+"").multiselect({
+		  noneSelectedText:"Select Category"});
+		}
+	});
 
 }

@@ -8,7 +8,8 @@
 <title> Telugudesam Party </title>
 
 <!-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script>-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
+	<script type="text/javascript" src="js/jquery.google.api/jquery.min.js"></script>
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
@@ -33,9 +34,12 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
-<script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script>
- <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<!--  <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.8.2r1/build/yahoo-dom-event/yahoo-dom-event.js&2.8.2r1/build/connection/connection-min.js&2.8.2r1/build/datasource/datasource-min.js&2.8.2r1/build/autocomplete/autocomplete-min.js&2.8.2r1/build/element/element-min.js&2.8.2r1/build/container/container-min.js&2.8.2r1/build/menu/menu-min.js&2.8.2r1/build/button/button-min.js&2.8.2r1/build/paginator/paginator-min.js&2.8.2r1/build/datatable/datatable-min.js&2.8.2r1/build/json/json-min.js&2.8.2r1/build/tabview/tabview-min.js"></script> -->
+<script type="text/javascript" src="js/jquery.google.api/jquery.2.8.2.combo.js"></script>
+ <!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> -->
+ <link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui1.10.3.css"/>
+<!-- <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script> -->
+ <script type="text/javascript" src="js/jquery.google.api/jquery-ui.js"></script>
 <style>
 #partyList{margin-left: 48px; width: 220px;}
 #designationId{margin-left: 10px; width: 220px;}
@@ -50,9 +54,11 @@ $('#partyList').val(872);
 
 function insertCandidateDetails()
 {
-
+$('#errStatusDiv').html('');
   var locationId = $('#locationId').val();
   var locationValue = "";
+  	
+	
   if(locationId == 1)
   {
 	locationValue = $('#assembSelReportId option:selected').val();
@@ -63,17 +69,24 @@ function insertCandidateDetails()
   }
   else
   {
-	alert("Please Select Location");
+   $('#errStatusDiv').html('<b style="color:red">Please Select Location</b>');	
   }
- if($('#candidateName').val() == ""){
-   alert("Candidatename is Required");
- }
- else if($('#partyList').val() <=0)
-	alert("Party Name is Required");
-	
-else if($("#designationId").val() == 0)
- alert("Please Select Designation.");	
+  if($('#candidateName').val() == ""){
+   $('#errStatusDiv').html('<b style="color:red">Candidate Name is Required</b>');
+  }
+  else if($('#partyList').val() <=0)
+	$('#errStatusDiv').html('<b style="color:red">Party Name is Required</b>');	
+  else if($("#designationId").val() == 0)
+	$('#errStatusDiv').html('<b style="color:red">Please Select Designation.</b>');
  
+  if(isValid($('#candidateName').val())){
+	$('#errStatusDiv').html('<b style="color:red">Candidate Name should not contain #,$,%,& Special charactors</b>');
+	return ; 
+  }	
+  if(isValid($('#education').val())){
+	$('#errStatusDiv').html('<b style="color:red">Education should not contain #,$,%,& Special charactors</b>');
+	return ; 
+  }
  else{
 	var jsObj =
 		{   
@@ -108,8 +121,8 @@ function callAjax(jsObj,url)
 
 
 					if(myResults == "success"){
-				 $('#successDiv').text("Candidate Details Inserted Successfully....").css(cssObj).show().delay(2000).fadeOut(400);
-				 $('#candidateName , #education').val('');
+					 $('#successDiv').text("Candidate Details Inserted Successfully....").css(cssObj).show().delay(2000).fadeOut(400);
+					 $('#candidateName , #education').val('');
 					}else{
 
 					 $('#successDiv').html('<b>Error occured .Try again...</b>');
@@ -146,15 +159,30 @@ function getRespectedLocationlevel(value)
 	}
 }
 
+function isValid(str){
+ var iChars = "#$%&";
+ var flag = false;
+	for (var i = 0; i < str.length; i++) {
+		if (iChars.indexOf(str.charAt(i)) != -1) {			
+			flag = true;
+		}
+    }
+	return flag;
+}
+function clearDiv(divId)
+{
+  document.getElementById(divId).innerHTML = "";
+}
 </script>
 </head>
 <body>
 
 
 <div style="margin-left:295px;">
-
-  <div>Enter Candidatename :<input type="text"  id="candidateName"/></div>
-  <div>Enter Education :<input type="text" style="margin-left:31px;"  id="education"/></div>
+<div id="errStatusDiv" style="height: 30px;"></div>
+<div id="reportHintDiv" style="margin-bottom:15px;" > Note: Candidate Name and Education should not contain #,$,%,& Special charactors.</div>
+  <div>Enter Candidatename :<input type="text"  id="candidateName" onkeyup="clearDiv('errStatusDiv');"/></div>
+  <div>Enter Education :<input type="text" style="margin-left:31px;"  id="education" onkeyup="clearDiv('errStatusDiv');"/></div>
   <div>Gender :
   <select type="text" id="gender" style="margin-left:78px; width: 220px;">
     <option value="M">Male</option>

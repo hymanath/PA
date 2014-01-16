@@ -35,7 +35,8 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="css/style.css">
 	<!-------PT-sans font---->
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'> -->
+	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/googleAPIStyles.css"/>
 
 	<link rel="shortcut icon" href="images/TDP.gif">
 	<style type="text/css">
@@ -151,7 +152,8 @@
 	</div>
 		<!------JS------>
 		
-	<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
+	<script type="text/javascript" src="js/jquery.google.api/jquery.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>	
 	<script>

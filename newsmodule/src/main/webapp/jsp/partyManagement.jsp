@@ -203,6 +203,11 @@ var parliamentConstiArr = new Array();
 var loginUserType = '${sessionScope.USER.userAccessType}';
 var createCandPartyKey ="";
 var createCandCandKey ="";
+var locationScop1e = '${sessionScope.USER.accessType}';
+var statteId = '${userDetailsVO[0].stateId}';
+var distritcId =  '${userDetailsVO[0].districtId}';
+var cosntiId =  '${userDetailsVO[0].constituencyId}';
+
 <c:forEach var="districts" items="${districtsList1}">
 	var districtList ={
 	id:"${districts.id}",
@@ -228,10 +233,6 @@ var createCandCandKey ="";
 	parliamentConstiArr.push(parliamentConstiList);
 </c:forEach>
 
-/*console.log(districtsArr.length);
-console.log(parliamentConstiArr.length);
-console.log(assemblyConstiArr.length);
-*/
 var gGallaryId;
 		var timeST = new Date().getTime();
 		var sizeOfArray;
@@ -299,6 +300,12 @@ return;
 function isKeywordExist(){
 	$('#statusDiv1').html('');
 	var keyValue = $('#newKeyword').val();
+	
+	if(isValid(keyValue)){
+		$('#statusDiv1').html('<b style="color:red">Keyword Name should not contain #,$,%,& Special charactors</b>');
+		return false; 
+	}
+	
 	if(keyValue.trim().length ==0){
 		$('#statusDiv1').html('<span style="color:red;">Please enter keyword name.</span>');
 		return;
@@ -326,7 +333,12 @@ function mergeKeywords(){
     
     var keywordsList="";
 	var aliasName = $('#aliasKeyword').val();
-
+	if(isValid(aliasName)){
+		$('#statusDiv2').html('<b style="color:red">New keyword should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
+	
+	
     for(var i in selected_values){
     keywordsList = keywordsList+""+selected_values[i]+",";
     }	
@@ -543,7 +555,14 @@ function clearDivsForGallary(){
 
 function createNewDesignation()
 {
-	if($('#designationId').val() == ""){
+	var designationId = $('#designationId').val();	
+
+	//designationId = replaceSpeclChars(designationId);
+	if(isValid(designationId)){
+		$('#statusDivForDesignation').html('<b style="color:red">Desgination should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
+	if( designationId == ""){
 		$('#statusDivForDesignation').html('<b style="color:red">Please Enter Desgination Description</b>');
 		//$('#statusDivForDesignation').delay(1000);
 		//$('#statusDivForDesignation').show();
@@ -552,7 +571,7 @@ function createNewDesignation()
 	else
 	{
 		var jsObj={
-		designation :$('#designationId').val(),
+		designation :designationId,
 		time:timeST,
 		task:"createNewDesignation"
 		};
@@ -566,7 +585,19 @@ function createNewDesignation()
 
 function createNewParty()
 {
-	if($('#partyShortName').val() == "" || $('#partyLongName').val() == ""){
+	var partyLongName = $('#partyLongName').val();
+	var partyShortName = $('#partyShortName').val();
+	//partyLongName =  replaceSpeclChars(partyLongName)
+	//partyShortName =  replaceSpeclChars(partyShortName)
+	if(isValid(partyLongName)){
+		$('#statusForParty').html('<b style="color:red">Party Long Name should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
+	if(isValid(partyShortName)){
+		$('#statusForParty').html('<b style="color:red">Party Short Name should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
+	if(partyShortName == "" || partyLongName == ""){
 		$('#statusForParty').html('<b style="color:red">Please Enter Party Details</b>');
 		//$('#statusForParty').delay(1000);
 		//$('#statusForParty').show();
@@ -575,10 +606,10 @@ function createNewParty()
 	else
 	{
 		var jsObj={
-		partyLongName  : $('#partyLongName').val(),
-		partyShortName : $('#partyShortName').val(),
-		time:timeST,
-		task:"createNewParty"
+			partyLongName  : partyLongName,
+			partyShortName : partyShortName,
+			time:timeST,
+			task:"createNewParty"
 		};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -905,13 +936,15 @@ function createNewParty()
 <div id='newsReportDiv' class="divInfo">
  <div class="container well">
   <h2 style="text-align: center;margin-bottom:10px;">Create Report</h2>
+  <div id="reportHintDiv" align="center" style="margin-left:-25px;"> Note: Description should not contain #,$,%,& Special charactors.</div>
+  <div id="reportErrDiv" align="center"></div>
   <div id="newsReportInnerDiv">
     <div id="newsReporterrorMessageDiv"></div>
     <label id="fromDateLabelId">From Date:<input type="text" readonly="true" id="fromDateId1" class="inputClass assignNewsDateCls fromDateCls" name="fromDate"></label>
     <label id="toDateLabelId">ToDate :<input type="text" id="toDateId1" class="inputClass assignNewsDateCls toDateCls" readonly="true" name="toDate"></label>
     <table>
       <tr>
-        <td>Report Description </td><td><textarea maxlength="330" name="fileDescription" rows="3" cols="20" id="newsreportfileDescription"></textarea></td>
+        <td>Report Description </td><td><textarea maxlength="330" name="fileDescription" rows="3" cols="20" id="newsreportfileDescription" onkeyup="clearDiv('reportErrDiv');"></textarea></td>
       </tr>
 	    <tr><td></td><td><input type="radio" class="reporttypeclass" id="byLevelChecked" onclick="showHideLocationLvl('level');" checked="checked" value="byLocationLvl" name="byLocationLvl"></input> By Location Level&nbsp;&nbsp;<input class="reporttypeclass" type="radio" onclick="showHideLocationLvl('location');" value="byLocation" name="byLocationLvl"></input> By Location</td></tr>
       <tr class="regionLvlClass">
@@ -1039,8 +1072,9 @@ function createNewParty()
 		<h2 align="center">Create New Keyword</h2>
 			<div align="center" style="width: 400px;padding:15px;">
 				<div id="statusDiv1" align="center" style="margin-top: 25px;"></div>
-				
-							Enter Keyword <span style="margin-left: 15px;">:</span> <input type="text" id="newKeyword" style="margin-top: 10px;"/>
+				<div id="keywordHintDiv"> Note: Keyword should not contain #,$,%,& Special charactors.
+	</div>
+							Enter Keyword <span style="margin-left: 15px;">:</span> <input type="text" id="newKeyword" style="margin-top: 10px;" onkeyup="clearDiv('statusDiv1');"/>
 							<br>
 							<button class="btn btn-success" onclick="isKeywordExist();" style="margin-left: 55px;">Create New Keyword </button>
 			</div>
@@ -1053,13 +1087,14 @@ function createNewParty()
 		<h2 align="center">Merge Keywords </h2>
 		<div style="margin-top:25px;padding:15px;width: 600px;">
 				<div id="statusDiv2" align="center" style="margin-bottom: 10px;"></div>
-				
+				<div id="mergeHintDiv"> Note: New Keyword should not contain #,$,%,& Special charactors.
+	</div>
 						<div id="keywordLists" style="width: 550px; margin-left: 60px;">
 						  	Select Keywords <span style="margin-left: 15px;">:</span>
 							<select  style="width:400px;" id="keywordsList"> <select>
 						</div>
 						<div style="width: 400px; margin-left: 66px;">
-							Enter New Keyword <span>:</span> <input type="text" id="aliasKeyword" style="margin-top: 10px;"/>
+							Enter New Keyword <span>:</span> <input type="text" id="aliasKeyword" style="margin-top: 10px;" onkeyup="clearDiv('statusDiv2');"/>
 						</div>
 							<button class="btn btn-success" onclick="mergeKeywords();" style="margin-left: 90px;"> Merge Keywords </button>
 		</div>
@@ -1073,10 +1108,11 @@ function createNewParty()
 <!-- updared by prasad for Actions Div-->
 <div id="newDesignationDiv" align="center" class="container well">
 	<h2 align="center">Create New Designation</h2>
-	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
-	<div id="statusDivForDesignation" align="center" style="margin-bottom: 2px;margin-top:2px;"></div>
-				
-	Enter Designation <span style="margin-left: 15px;">:</span> <input type="text" id="designationId" style="margin-top: 10px;"/>
+	<div align="center" style="width: 410px; margin: 2px 0px 2px 12px;padding:15px;">
+	<div id="statusDivForDesignation" align="center" style="margin :10px 0px 15px 13px;"></div>
+	<div id="dHintDiv" style="margin-left: 25px;"> Note: Designation should not contain #,$,%,& Special charactors.
+	</div>		
+	Enter Designation <span style="margin-left: 15px;">:</span> <input type="text" id="designationId" style="margin-top: 10px;" onkeyup="clearDiv('statusDivForDesignation');"/>
 	<br>
 	<button class="btn btn-success" onclick="createNewDesignation();">Create New Designation </button>
 </div>
@@ -1085,12 +1121,13 @@ function createNewParty()
 
 <div id="newPartyCreationDiv" align="center" class="container well">
 	<h2 align="center">Create New Party</h2>
-	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
-	<div id="statusForParty" align="center" style="margin-bottom: 2px;margin-top: 2px;"></div>
-		
-	Enter Long Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyLongName" style="margin-top: 10px;"/>
+	<div align="center" style="width: 500px; margin: 15px 0px 0px 40px;padding:15px;">
+	<div id="statusForParty" align="center" style="margin: 2px 0px 2px 55px;"></div>
+	<div id="pHintDiv"> Note: Name should not contain #,$,%,& Special charactors.
+	</div>
+	Enter Long Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyLongName" style="margin-top: 10px;" onkeyup="clearDiv('statusForParty');"/>
 	<br>
-	Enter Short Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyShortName" style="margin-top: 10px;"/>
+	Enter Short Name <span style="margin-left: 15px;">:</span> <input type="text" id="partyShortName" style="margin-top: 10px;" onkeyup="clearDiv('statusForParty');"/>
 	</br><br>
 	<button class="btn btn-success" onclick="createNewParty();">Create New Party </button>
 	</div>
@@ -1099,7 +1136,7 @@ function createNewParty()
 <div id="newCandidateCreationDiv" align="center" class="container well">
 	<h2 align="center">Create New Candidate</h2>
 	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
-	<div id="statusForParty" align="center" style="margin-bottom: 2px;margin-top: 2px;"></div>
+
 	
 <div id="errorMsgDiv1"></div>
 	<table style="margin-top: 24px;"><tr>
@@ -1131,12 +1168,13 @@ function createNewParty()
 <input type="button" value="submit" class="btn" id="createCandidateId1"/>
 </div>
 </div>
-<div id="newEditCandidateDiv" align="center" class="container well">
+<div id="newEditCandidateDiv" align="center" class="container well" >
 	<h2 align="center">Edit Candidate</h2>
-	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
+	<div align="center" style="width: 500px; margin: 15px 0px 0px 40px;padding:15px;">
 	<div id="statusForParty" align="center" style="margin-bottom: 2px;margin-top: 2px;"></div>
-	
-<div id="errorMsgDiv2" style="color:red;"></div>
+	<div id="caHintDiv" align="right"> Note: Candidate Name should not contain #,$,%,& Special charactors.
+	</div>
+<div id="errorMsgDiv2" style="color:red;margin-top:5px;margin-left:75px"></div>
 	<table style="margin-top: 24px;"><tr>
 <td>Select Party</td>
 <td><select id="EditpartySelectNewList" onchange="getEditCandidatesListByPartyId(this.value,'EditCandidateListForParty')">
@@ -1148,7 +1186,7 @@ function createNewParty()
 		</select></td></tr>
 		
 	<tr><td>Candidate</td>
-<td><input type="text" id="textCandidate"/></td></tr>
+<td><input type="text" id="textCandidate" onkeyup="clearDiv('errorMsgDiv2');"/></td></tr>
 
 <tr>
 <td>Designation</td>
@@ -1212,8 +1250,28 @@ var modifiedRecord = 0;
 $(document).ready(function() {
 
 $(document).ready(function(){
-
-	
+$('#CErrMsgDiv').html('');
+	$(".dropdown-menu > li > a").click(function(){	
+		$('#partyLongName').val('');
+		$('#partyShortName').val('');
+		$('#designationId').val('');
+		$('#newsCateName').val('');
+		$('#newsCateDesc').val('');
+		$('#sourceName').val('');
+		$('#textCandidate').val('');
+		$('#statusForParty').html('');
+		$('#statusDivForDesignation').html('');
+		$('#errorDiv').html('');
+		$('#errorMsgDiv2').html('');
+		$('#CErrMsgDiv').html('');
+		$('#reportErrDiv').html('');
+		
+		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');		
+		$('#aliasKeyword').val('');
+		$('#newKeyword').val('');
+		$('#newsreportfileDescription').val('');
+	});
 	$('#newKeywordBtn').click(function(){	
 		$('#newKeywordDiv').css("display","block");
 		$('#mergeKeywordDiv').css("display","none");
@@ -1374,7 +1432,7 @@ $(document).on("click",'#fromDateId , #toDateId', function(){
 	});
 
 
-	
+
   $(document).on('click','#button1',function(){
     $("#list1 > option:selected").each(function(){
       $(this).remove().appendTo("#candidateList");
@@ -2151,7 +2209,6 @@ function getNewsTitlesByGalleryId(divId)
 
 function getCandidatesByPartyId()
 {
- 
  $("#errorMessageDiv").html('');
  var partyId = $("#partiesList").val();
  if(partyId == 0)
@@ -2172,8 +2229,7 @@ function getCandidatesByPartyId()
 }
 
 function getEditCandidatesByPartyId()
-{
- 
+{ 
  $("#errorMessageDiv2").html('');
  var partyId = $("#partiesList").val();
  if(partyId == 0)
@@ -2194,6 +2250,7 @@ function getEditCandidatesByPartyId()
 }
 function showAssignNewsStatus(results)
 {
+
 	$("#errorMessageDiv").html('');
   if(results.resultCode == 0 && results.message != null)
   {
@@ -2272,6 +2329,11 @@ function saveNewSourceDetails()
 {
 	$('#errorDiv').html('');
 	var sourceName =  $.trim($('#sourceName').val());
+	//sourceName = replaceSpeclChars(sourceName);
+	if(isValid(sourceName)){
+		$('#errorDiv').html('<b style="color:red">Source Name should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
 	if(sourceName.length <=0){
 		$('#errorDiv').html('Source Name Should not be empty');
 		$('#errorDiv').css('color','red')
@@ -2294,8 +2356,9 @@ function createNewSource()
 	var str = "";
 	str+='<div id="sourceDetails" class="container well">';
 	str +='<h2 align="center" style="margin-left: -59px;margin-bottom:5px;">Create New Source</h2>';
-	str += "<div id='errorDiv' align='center' style='color:red;margin-bottom:10px;'> </div>";
-	str +=  '<span style="margin-left: 310px;">Source Name : </span><input type="text" id="sourceName"></input></br>';
+	str+='<div id="sHintDiv" align="center" style="margin-left: 60px;"> Note: Source Name should not contain #,$,%,& Special charactors.	</div>';
+	str += "<div id='errorDiv' align='center' style='color:red;margin:0px 0px 10px 40px;'> </div>";
+	str +=  '<span style="margin-left: 310px;">Source Name : </span><input type="text" id="sourceName" onkeyup="clearDiv(\'errorDiv\');"></input></br>';
 	str +=  '<input type="button" value="Create New Source" onClick="saveNewSourceDetails();" class="btn btn-info" style="margin-left: 358px;"></input>';
 	
 	str+='</div>';
@@ -2813,8 +2876,13 @@ $("#locationWiseNewsDiv").css("display","none");
 function saveNewsReport()
 {
 
-
+$('#reportErrDiv').html('');
 var newsreportfileDescription = $("#newsreportfileDescription").val();
+
+	if(isValid(newsreportfileDescription)){
+		$('#reportErrDiv').html('<b style="color:red">Report Description should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
 
 /*var fileGallaryIds = [];
    $(".find-table").each(function() {
@@ -2947,7 +3015,7 @@ function showReportFileNewsStatus(result)
 	if(result.resultCode == 0)
 	{
 	 $("#newsreportfileDescription").val('');
-	 $("#newsReporterrorMessageDiv").html('Saved successfully..').css('color','green');
+	 $("#newsReporterrorMessageDiv").html('Report Generated Successfully..').css('color','green');
 	}
 	else
 	{
@@ -3199,7 +3267,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Description<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsfileDescription" class="input-block-level" cols="20" rows="2" name="fileDescription" maxlength="1800"></textarea><span class="help-block"> <input type="checkbox" id="sourceDescTelugu" onclick="changeLanguage();" name="descCheckBox">&nbsp;Please check if description is from eenadu.net</span>       </div>';
 		str+='<div class="span4 ">      ';
 		str+='<label><strong>Image To Display</strong></label>';
-		 str+='<input type="file" class="m_top10" name="imageForDisplay"><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>    </div>';
+		 str+='<input type="file" class="m_top10" name="imageForDisplay" id="mainImgId" style="width: 225px;"/><span class="icon-remove" style="cursor: pointer; margin-left: 15px; margin-top: 8px;" title="Click Here To remove Image" onclick="deleteExistingImg(\'mainImgId\');"></span><div>( .jpeg or .jpg or .png or .gif formats only)</div></div>    </div>';
 		str+='<div class="row-fluid">       <div class="span8 ">         <label><strong>News Synopsys<span class="requiredFont">*</span><strong></strong></strong></label>         <textarea id="newsSynopsysDesc" class="input-block-level" cols="20" rows="2" name="newsSynopsysDesc" maxlength="1800"></textarea><span class="help-block"> <input type="checkbox" id="newsSynopsysDescTelugu" onclick="changeLanguage();" name="synopsysCheckBox">&nbsp;Please check if news synopsys is from eenadu.net</span>       </div>   </div>';
 		
 	str+='</div></div></div>';
@@ -3212,7 +3280,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='         <legend>From - Who</legend>';
 		str+='    <div id="whoTalkedMainDIV"><div style="margin-left: 0px;" class="row alert alert-warning">';
 		str+='    <div class="span5 well well-small ">';
-		str+='<label><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-bottom: 9px;float:right;" >&nbsp;</span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11,0)">';
+		str+='<label><strong>Select Party</strong></label><span id="errDiv11" style="margin-top: -25px; color: red; margin-bottom: 9px;" ></span><select class="input-block-level" id="partiesList" name="candidatePartyNewsVOList.sourceVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForParty\',11)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" >TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyImg" />';
@@ -3241,7 +3309,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='  ';
 		str+='   <div id="whomeTalkedMainDIV"> <div class="row alert alert-warning" style="margin-left: 0px;">';
 		str+='    <div class="span2 well well-small ">';
-		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-bottom: 5px; margin-left: -5px; float: left; position: absolute; margin-top: 30px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\',22,0)">';
+		str+='<label><strong>Select Party</strong></label> <span id="errDiv22" style="color: red; margin-bottom: 5px; margin-left: -5px; float: left; position: absolute; margin-top: 30px;"></span><select class="input-block-level" id="partiesListForWhome" name="candidatePartyNewsVOList.destinationVOList[0].partyId" onchange="getCandidatesListByPartyId(this.value,\'candidateListForPartyForNewsTo\',22)">';
 		//str +='<option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option>';
 		str +='</select>';
 		str +='<img src="images/search.jpg" style="display:none;" id="candidateListForPartyForNewsToImg" />';
@@ -3257,7 +3325,9 @@ function uploadNewsForPartyAndCandidate(fileId)
 		
 		str+='</div>';
 		str+='<div class="span4 well well-small">';
-		str+='<label><strong>Select Categories</strong></label><select key="keywordIdHiddenCat0" style="width: 252px;" id="whomegallaryId" >';
+		str+='<label><strong>Select Categories</strong></label>';
+		str+='<span style="float:left;margin-left:135px;margin-top:-25px"><a title="refresh list" onclick="refreshCategories(\'whomegallaryId\');" href="javascript:{}"><i class="icon-refresh"></i></a></span>';
+		str+='<select key="keywordIdHiddenCat0" style="width: 252px;" id="whomegallaryId" >';
 		str+='    <option>Select Category</option>';
 		str+='</select>';
 		
@@ -3293,12 +3363,12 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='        <div class="span4" style="width:auto">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
-		str+='<br/><input type="file" name="fileSourceVOList[0].sourceFileList[0].fileImage" class="btn fileImgCls" key="aaanewsfileDescription">';
+		str+='<br/><input type="file" name="fileSourceVOList[0].sourceFileList[0].fileImage" class="btn fileImgCls" key="aaanewsfileDescription" id="aaanewsfile0" style="width: 225px;"/><span><span class="icon-remove" style="cursor: pointer; margin-top: 15px; float: right; position: absolute;" title="Click Here To remove Image" onclick="deleteExistingImg(\'aaanewsfile0\');"></span></span>';
 		
 
 		str+='        </div>';
 
-		str+='<div class="span2 " style="margin-left: 3px;">';
+		str+='<div class="span2 " style="margin-left: 17px;">';
 		str+='        <label><strong>News<br> Edition</strong><span class="requiredFont">*</span></label>';
 		str+='        <select id="newsedition0" name="fileSourceVOList[0].sourceFileList[0].newsEdition"  class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
 
@@ -3361,10 +3431,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 	document.getElementById("newsGallaryDiv").innerHTML = str;
 	getPartyGallariesForUplaod("News Gallary","whomegallaryId");
 
-	$("#newsdatedatepic").datepicker({ 
-	dateFormat: 'dd/mm/yy',
-	maxDate : new Date()
-	});
+	$("#newsdatedatepic").datepicker({ dateFormat: 'dd/mm/yy',maxDate:new Date() });
     $("#newsdatedatepic").datepicker("setDate", new Date());
 	
 	 getScopes();
@@ -3404,12 +3471,12 @@ function addNewFileSource(){
 		str+='        <div class="span4" style="width: 275px;">';
 		str+='        <label><strong>File Path</strong></label>';
 			   
-		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls" key="'+addSource+'aaanewsfileDescription">';
+		str+='<br/><input type="file" name="fileSourceVOList['+addSource+'].sourceFileList[0].fileImage" class="btn fileImgCls" key="'+addSource+'aaanewsfileDescription" id="aaanewsfile'+addSource+'" style="width: 225px;"/> <span><span class="icon-remove" style="cursor: pointer;float: right; position: absolute; margin-top: 15px;" title="Click Here To remove Image" onclick="deleteExistingImg(\'aaanewsfile'+addSource+'\');"></span></span>';
 		
 
 		str+='        </div>';
 
-		str+='<div class="span2 ">';
+		str+='<div class="span2 "  style="margin-left: -7px;">';
 		str+='        <label><strong>News<br> Edition</strong><span class="requiredFont">*</span></label>';
 		str+='        <select  name="fileSourceVOList['+addSource+'].sourceFileList[0].newsEdition"  class="input-block-level "><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select>';
 
@@ -3462,10 +3529,10 @@ var addFile = 0;
 function addNewFilePart(id){
      addFile = addFile+1;
         var str ='';
-        str+='<div id ="'+addFile+'newpart'+id+'" class="container ">';
-		str+='        <div class="span4" style="width: 275px;">';
+        str+='<div id ="'+addFile+'newpart'+id+'" class="container " >';
+		str+='        <div class="span4" style="width: 275px;margin-right: -17px;">';
 				
-		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn addFileImgCls">';
+		str+='<input type="file" name="fileSourceVOList['+id+'].sourceFileList['+addFile+'].fileImage" class="btn addFileImgCls" style="width: 225px;"/>';
 
 		str+='        </div>';
 
@@ -3559,7 +3626,9 @@ var str ='';
 		//str +='<span style="display: inline-block;"><img partylistid="partiesListForWhome'+whome+'" key="candidateListForPartyForNewsTo'+whome+'" class="createCandidateCls createNewCandidate" title="Click Here To Create New Candidate" src="images/user.png"></span>';
 		str+='</div>';
 		str+='<div class="span4 well well-small">';
-		str+='<label><strong>Select Categories</strong></label><select key="keywordIdHiddenCat'+whome+'" style="width: 252px;" id="'+whome+'whomegallaryId" >';
+		str+='<label><strong>Select Categories</strong></label>';
+		str+='<span style="float:left;margin-left:135px;margin-top:-25px"><a title="refresh list" onclick="refreshCategories(\''+whome+'whomegallaryId\');" href="javascript:{}"><i class="icon-refresh"></i></a></span>';
+		str+='<select key="keywordIdHiddenCat'+whome+'" style="width: 252px;" id="'+whome+'whomegallaryId" >';
 		str+='    <option>Select Category</option>';
 		str+='</select>';
 		
@@ -4113,6 +4182,11 @@ $("#newsToBothChechboxId").live("click",function(){
 
 //candidate creation
 $(".createNewCandidate").live("click",function(){
+$('#errorMsgDiv').html('');
+$('#newCandidateName').val('');
+$('#partySelectNewList').val(0);
+$('#designationsList').val(0);
+$('#locationId').val(0);
 	    createCandPartyKey ="";
 	    createCandCandKey ="";
 		$("#createCandidateDiv").dialog({
@@ -4167,6 +4241,10 @@ $("#createCandidateId").live("click",function(){
 	var candidateName = $.trim($("#newCandidateName").val());
 	var designationId = $("#designationsList").val();
 	
+	if(isValid(candidateName)){
+		$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
     if(partyId == 0)
 	{
 	  $("#errorMsgDiv").html("Please Select Party");
@@ -4576,6 +4654,21 @@ function getKeywordsByCount()
 	var url = "getKeywordsByCountAction.action?"+rparam;						
 	callAjax1(jsObj,url);
 } 
+
+function replaceSpeclChars(value){
+	return value.replace(/[#$%&]/g,'');
+}
+
+function isValid(str){
+ var iChars = "#$%&";
+ var flag = false;
+	for (var i = 0; i < str.length; i++) {
+		if (iChars.indexOf(str.charAt(i)) != -1) {			
+			flag = true;
+		}
+    }
+	return flag;
+}
 </script>
 </body>
 </html>

@@ -174,9 +174,9 @@
 		<property name="partyDAO" ref="partyDAO" />
 		<property name="electionScopeDAO" ref="electionScopeDAO" />
 		
-		<property name="electionAllianceDAO" ref="electionAllianceDAO" />
+		<property name="electionAllianceDAO" ref="electionAllianceDAO" /> -->
 		<property name="stateDAO" ref="stateDAO" />
-		<property name="townshipDAO" ref="townshipDAO" />
+	<!--	<property name="townshipDAO" ref="townshipDAO" />
 		<property name="constituencyElectionDAO" ref="constituencyElectionDAO" />
 		
 		<property name="tehsilDAO" ref="tehsilDAO" />

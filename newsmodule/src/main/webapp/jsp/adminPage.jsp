@@ -12,14 +12,16 @@
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script> -->
+	<script type="text/javascript" src="js/jquery.google.api/jquery-1.9.1.js"></script>
 	<!--<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>-->
 	<link rel="stylesheet" href="css/style.css">
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 
 	<!-------PT-sans font---->
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'> -->
+	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/googleAPIStyles.css"/>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
 <style type="text/css">
@@ -32,19 +34,26 @@
 
 <body>
 	
-		<div class="row m_top10">
-		<table class="table table-hover table-bordered">
+		<!-- <div class="row m_top10" >
+		<table class="table table-bordered" >
 		<tr>
 		<td>
-		<a  class="btn btn-info" href="userRegistration.action">Registration Form</a>
+		<a  class="btn btn-info" target="_blank" href="userRegistration.action"> Registration Form</a>
 		</td>
 		<!--<td><a  class="btn btn-info" href="javascript:{}" onClick="createNewSource();">Create New Source</a></td>-->
-		<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload Party Candidates </a></td>
+		<!--<td><a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload Party Candidates </a></td>
 		</tr>
 		</table>
 		</div>
 		<div id="sourceDetails"  style="width: 400px; border: 1px solid #CCCCCC; border-radius: 4px 4px 4px 4px; padding: 4px;display:none; margin-left: 298px;"></div>
+		-->
 		
+		<div class="row m_top10" >
+			<div class="offset3 span6 text-center">
+				<a  class="btn btn-info" target="_blank" href="userRegistration.action"> Registration Form</a>
+				<a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload Party Candidates </a>
+			</div>
+		</div>
 <script type="text/javascript">
 function createNewSource()
 {

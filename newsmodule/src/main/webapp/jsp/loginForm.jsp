@@ -4,7 +4,8 @@
     pageEncoding="ISO-8859-1"%>
 
 
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
+<!-- <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> -->
+<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/yahooapi2.8.2.combo.css"/> 
 <!-- Combo-handled YUI JS files: --> 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 
