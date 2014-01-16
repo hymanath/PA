@@ -41,7 +41,8 @@
 <body>
  <br>
 <div id="mainDiv" class="contenttable widget"> 
-<div id="insertPredictCasteDiv" style="margin-top:10px;">
+<h2>INSERT PREDICTED CASTE</h2>
+<div id="insertPredictCasteDiv" style="margin-top:10px;border: 1px solid #D3D3D3;padding:10px;">
 <div id="errorDiv"></div>
 From <input type="text" id="fromValue"/>
 To <input type="text" id="toValue"/>
@@ -49,7 +50,7 @@ To <input type="text" id="toValue"/>
 
 
 </div><br/>
-<div id="casteCountDiv"></div>
+<div id="casteCountDiv"></div><br/>
 </div>
  <script type="text/javascript">
 
@@ -140,7 +141,7 @@ To <input type="text" id="toValue"/>
 		var str ='';
 		if(results.length > 0)
 		{
-			str+='<table class="table">';
+			str+='<table class="table table-bordered">';
 			str+='<tr>';
 			str+='<th>Insert Type</th>';
 			str+='<th>Count</th>';
