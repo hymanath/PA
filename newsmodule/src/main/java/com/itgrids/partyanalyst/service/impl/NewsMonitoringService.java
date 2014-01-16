@@ -4991,18 +4991,16 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    	}
 			    	if(fileVO.getGallaryIds() != null && fileVO.getGallaryIds().size() > 0)
 			    	{
-			    		 list = candidatePartyCategoryDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
-					       
-					       resultFileVO.setCount(candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds()).intValue());	
+			    		 list = candidatePartyCategoryDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds(),fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());				       
+					     resultFileVO.setCount(candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds(),fileVO.getImportanceId()).intValue());	
 			    	}
 			    	else if(fileVO.getKeywordIds() != null && fileVO.getKeywordIds().size() > 0)
 			    	{
-			    		 list = candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
-					       
-					 resultFileVO.setCount(candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds()).intValue());	
+			    	 	 list = candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds(),fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());	       
+					     resultFileVO.setCount(candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds(),fileVO.getImportanceId()).intValue());	
 			    	}
 			    	else
-			       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getStartIndex(),fileVO.getMaxResult());
+			       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());
 			       
 			       resultFileVO.setCount(fileDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids).intValue());
 			    }

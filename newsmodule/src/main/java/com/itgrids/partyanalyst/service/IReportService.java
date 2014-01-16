@@ -6,4 +6,5 @@ import com.itgrids.partyanalyst.dto.NewsActivityVO;
 public interface IReportService {
 	public FileVO getReportData(Long reportId,Long userId,String key);
 	public NewsActivityVO getActivitiesReportData(String key);
+	public String getLocationDetails1(Long scope,Long locationValue,Long id);
 }

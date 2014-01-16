@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.model.FileGallary;
 import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.service.IReportService;
 import com.itgrids.partyanalyst.service.IContentManagementService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -52,6 +53,7 @@ public class ContentManagementService implements IContentManagementService{
 	private IPartyGalleryDAO partyGalleryDAO;
 	private INewsFlagDAO newsFlagDAO;
 	private ICandidateDetailsService candidateDetailsService;
+	private IReportService reportService;
 	private ICandidateNewsResponseDAO candidateNewsResponseDAO;
 	private ICandidateDAO candidateDAO;
 	private INewsDetailsDAO newsDetailsDAO;
@@ -112,6 +114,14 @@ public class ContentManagementService implements IContentManagementService{
 
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
+	}
+
+	public IReportService getReportService() {
+		return reportService;
+	}
+
+	public void setReportService(IReportService reportService) {
+		this.reportService = reportService;
 	}
 
 	public void setCandidateDetailsService(
@@ -290,7 +300,8 @@ public class ContentManagementService implements IContentManagementService{
 						Long locationScopeId = fileVal.getRegionScopes().getRegionScopesId();
 						fileVO.setLocationId(locationScopeId);
 						//fileVO.setLocationName(getLocationBasedOnScopeId(locationScopeId, fileVal.getLocationValue()));
-						fileVO.setLocationName(candidateDetailsService.getLocationDetails(locationScopeId,fileVal.getLocationValue()));
+						long id = fileVal.getUserAddress().getUserAddressId();
+						fileVO.setLocationName(reportService.getLocationDetails1(locationScopeId,fileVal.getLocationValue(),id));
 						fileVO.setResponseCount(newsResponseDAO.getCandidateNewsResponseFileIdsByFileID(fileVal.getFileId()).size());
 						List<FileVO> fileVOSourceLanguageList = new ArrayList<FileVO>();
 						Set<FileSourceLanguage> fileSourceLanguageSet = fileVal.getFileSourceLanguage();

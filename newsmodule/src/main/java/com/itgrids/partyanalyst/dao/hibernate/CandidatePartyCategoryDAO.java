@@ -165,14 +165,16 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		}
 	 
 	 @SuppressWarnings("unchecked")
-		public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds,Integer startIndex,Integer maxIndex)
+		public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds,Long importanceId,Integer startIndex,Integer maxIndex)
 		 {
 			 StringBuilder str = new StringBuilder();
 			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(importanceId != 0)
+				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue.longValue() == 1l){
-			   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+				   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
 			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
@@ -200,6 +202,8 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				 query.setParameterList("location", locationIds);
 			 if(gallaryIds !=null && gallaryIds.size() > 0)
 				 query.setParameterList("gallaryIds", gallaryIds);
+			 if(importanceId != 0)
+				 query.setParameter("importanceId", importanceId);
 			 if(startIndex != null)
 			   query.setFirstResult(startIndex);
 			 if(maxIndex != null)
@@ -243,14 +247,16 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		}
 	 
 	 @SuppressWarnings("unchecked")
-		public Long getAllTheNewsCountForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds)
+		public Long getAllTheNewsCountForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds,Long importanceId)
 		 {
 			 StringBuilder str = new StringBuilder();
 			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
+			 if(importanceId != 0)
+				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue.longValue() == 1l){
-			   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			     str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
 			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
@@ -278,7 +284,8 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 				 query.setParameterList("location", locationIds);
 			 if(gallaryIds !=null && gallaryIds.size() > 0)
 				 query.setParameterList("gallaryIds", gallaryIds);
-			
+			if(importanceId != 0)
+				query.setParameter("importanceId", importanceId);
 			return (Long) query.uniqueResult();
 			 
 		}

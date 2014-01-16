@@ -5591,6 +5591,7 @@ function validateUploadFileDetails()
    var synopsysDesc  = $.trim($("#newsSynopsysDesc").val());
    var fileDate = $("#newsdatedatepic").val();
    var scope = document.getElementById("scopeDiv").value;
+   var newsImporatnce =document.getElementById("newsimportance").value;
    var sourceArr = new Array();
    //fileTitle = removeAllUnwantedCharacters1(fileTitle);	
    //fileDesc = removeAllUnwantedCharacters1(fileDesc);
@@ -5624,6 +5625,11 @@ function validateUploadFileDetails()
 	if(fileDate.length == 0)
 	{
 		str +='File Date is Required<br>';
+		flag = false;
+	}
+	if(newsImporatnce == 0)
+	{
+		str += ' News Importance is Required.<br>';
 		flag = false;
 	}
 	

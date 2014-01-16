@@ -1661,6 +1661,7 @@
 		<property name="filePathsDAO" ref="filePathsDAO" />
 		<property name="newsResponseDAO" ref="newsResponseDAO" />
 		<property name="candidatePartyKeywordDAO" ref="candidatePartyKeywordDAO" />
+		<property name="reportService" ref="reportService"></property>
 	</bean>
 	
 	<bean name="reportService" class="com.itgrids.partyanalyst.service.impl.ReportService" >
