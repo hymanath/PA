@@ -6281,5 +6281,16 @@
          <result name="success">/jsp/predictedCasteAssign.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
       </action>
+        <action name="getCasteCountAction" class="predictedCasteAssignAction" method="getCasteCount">
+           <result type="json" name="success">
+           		<param name="root">casteCountList</param>
+        	</result>
+        </action>
+		 <action name="insertPredictedCasteAction" class="predictedCasteAssignAction" method="insertPredictedCaste">
+           <result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+        </action>
+		
 		</package>
 </struts>      
