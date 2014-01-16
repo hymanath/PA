@@ -1323,6 +1323,10 @@ function validateNewsFileUpload()
 		str += 'News Description is Required.<br>';
 		flag = false;
 	}
+	if(isValid(fileDesc)){
+		str += 'Description should not contain #,$,%,& Special charactors<br>';
+		flag = false;		
+	}
 	if(fileDesc.length > 1800)
 	{
 		str += 'Description Should not exceed 1800 Characters.<br>';
@@ -1989,14 +1993,16 @@ function buildCreateNewsCategory()
 	str += 	'</table>';*/
 	//str += '<fieldset class="imgFieldset" style="width:449px;">';
 	str += '<h2 align="center" style="margin-left: 35px;margin-bottom:5px;"> Create New Category</h2>';
+	str +='<div id="cHintDiv" align="center"> Note: Name and description should not contain #,$,%,& Special charactors.	</div>';
+	str +='<div id="CErrMsgDiv" align="center"></div>';
 	str+='<table class="aligncenter"><tr><td><div id="newsErrorMsgDivId" /></td></tr></table>';
 	str += '<table class="aligncenter">';
     
-    str +='<tr><td><b><font>Main Category <font class="requiredFont">*</font></font></b></td><td><select id="categoriesForGallary" name="categoriesForGallary"></td></tr>';
-	str +='<tr><td><b><font>Category Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" /></td></tr>';
+    str +='<tr><td><b><font>Main Category <font class="requiredFont">*</font></font></b></td><td><select id="categoriesForGallary" name="categoriesForGallary" onChange="clearDiv(\'CErrMsgDiv\');"></td></tr>';
+	str +='<tr><td><b><font>Category Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="newsCateName" size="25" maxlength="100" onkeyup="clearDiv(\'CErrMsgDiv\');"/></td></tr>';
 
 	str += '<tr><td><b><font> Description<font class="requiredFont">*</font></font><b></td>';
-	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement"></textarea></td></tr></table>';
+	str += '<td><textarea id="newsCateDesc" cols="27" rows="3" name="requirement" onkeyup="clearDiv(\'CErrMsgDiv\');"></textarea></td></tr></table>';
 	str += '<table class="aligncenter"><tr><td><label class="radio" style="display:none;"><input type="radio" value="public" name="visibility" id="newsPublicRadio" checked="true"><b><font>Visible to Public Also</font></b></input></label></td></tr>';
 	str += '<tr><td><label class="radio" style="display:none;"><input type="radio" value="private" name="visibility" id="newsPrivateRadio"><b><font>Make This Private</font></b></input></label></td></tr></table>';
 	str+='<div id="createnewsgalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
@@ -2100,13 +2106,23 @@ function getDistricts2(stateId){
 
 	function createCategory()
 {
+	$('#CErrMsgDiv').html('');
 	var newsCatrgoryName = document.getElementById('newsCateName').value;
 	var newsCatrgoryDesc = document.getElementById('newsCateDesc').value;
 	//var isPublic = document.getElementById('newsPublicRadio').checked;
 	var partyId = 872;
 	var makeThis = 'false';
 	var categoryId = $("#categoriesForGallary").val();
-
+	
+    if(isValid(newsCatrgoryName)){
+		$('#CErrMsgDiv').html('<b style="color:red">Category Name should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
+	if(isValid(newsCatrgoryDesc)){
+		$('#CErrMsgDiv').html('<b style="color:red">Description should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
+	
 	var errorDivEle = document.getElementById('newsErrorMsgDivId');
 	var eFlag = false;
 
@@ -2189,6 +2205,7 @@ function getScopes(){
  
 }
 function buildResults(results,divId){
+
 	$('#'+divId).find('option').remove();
 
   var locationScopeId = $("#scopeDiv").val(); 
@@ -2324,8 +2341,10 @@ function buildResults(results,divId){
 		}
 	  }
 	  }
-
- 
+/*if(distritcId != '' )
+	$('#districtDiv').val(distritcId);
+if(cosntiId != '' )
+	$('#constituencyDiv').val(cosntiId);*/
 }
 function buildResultsForElectType(results){
 
@@ -2906,9 +2925,40 @@ function getLocations(id){
     
    getStatesForSpecialPage();
   }
+  // setTimeout("setStateId();",1000);
+
+}
+/*
+function setStateId(){
+	$('#stateDiv').val(statteId);
+
+	if($("#scopeDiv").val() != 2)
+		getDistricts1(statteId);
+		
+	if((locationScop1e.toLowerCase()).indexOf("district") != -1 || (locationScop1e.toLowerCase()).indexOf("mla") != -1 || (locationScop1e.toLowerCase()).indexOf("mp") != -1){	
+		setDistricts();
+	}
 }
 
+function setDistricts(){
+	if(distritcId != ''){
+			//$('#districtDiv').val(distritcId);
+			if($("#scopeDiv").val() != 3)
+				getAllDetails(distritcId,'constituenciesInDistrict','','');
+			if((locationScop1e.toLowerCase()).indexOf("mla") != -1 || (locationScop1e.toLowerCase()).indexOf("mp") != -1 ){
+				setAssmbyConst();
+			}
+	}
+}
+function setAssmbyConst(){
+	if(cosntiId != ''){
+		//$('#constituencyDiv').val(cosntiId);
+		if($("#scopeDiv").val() != 4)
+			getAllDetails(cosntiId,'subRegionsInConstituency','RURAL','');
+	}
+}
 
+*/
 function addMoreFiles()
 {
 	var moreDivElmt = document.createElement("addMoreFilesDiv");
@@ -6846,7 +6896,6 @@ function showCandidateSaveStatus(result,jsObj)
 }
 function showCandidateSaveStatus1(result,jsObj)
 {
- 
  $("#errorMsgDiv1").html('');
   if(result == null || result.resultCode == 1)
   {
@@ -7132,13 +7181,15 @@ function buildPartyList(results,jsObj)
 
 function builddesignationsList(results,jsObj)
 {
+
   $("#"+jsObj.designationList+"").find('option').remove();
   $("#"+jsObj.designationList+"").append('<option value="0">Select Designation</option>');
   
   if(results != null && results.length > 0)
-  {
-    for(var i in results)
-	 $("#"+jsObj.designationList+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+  {	
+    for(var i in results){
+		$("#"+jsObj.designationList+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+	 }
   }
 }
 
@@ -7225,7 +7276,19 @@ $("#createNewsreport").css("display","block");
 $("#locationWiseNewsDiv").css("display","block");
 $("#newsReportBtnDiv").css("display","block");
 $("#locationWiseNewsDiv").addClass("yui-skin-sam yui-dt-sortable yui-dt");
+$('#reportErrDiv').html('');
 
+var descriptionValue = $("#newsreportfileDescription").val();
+
+	if(isValid(descriptionValue)){
+		$('#reportErrDiv').html('<b style="color:red">Report Description should not contain #,$,%,& Special charactors</b>');
+		$("#createNewsreport").css("display","none");
+		$("#newsReportAjaxImg").css("display","none");
+		$("#newsReportBtnDiv").css("display","none");
+		$("#locationWiseNewsDiv").css("display","none");
+		return false;
+	}
+	
 	var fromDate = $("#fromDateId1").val();
 	var toDate = $("#toDateId1").val();
 	var regionLevel = $("#regionlevel").val();
@@ -7435,7 +7498,7 @@ var divSourceId;
 var divId = divId1; 
 if(divId1 != 11 && divId1 != 22){
 divSourceId = (divId1 + "").charAt(0);
-divId = (divId1 + "").charAt(1);
+//divId = (divId1 + "").charAt(1);
 
 }
 $("#errDiv"+divId1+"").html('');
@@ -7469,7 +7532,7 @@ else if(divSourceId == 4){
 	partyId = $("#partiesListForWhome"+elmtId+"").val();
 	 
 	if(partyId ==0){
-	$("#errDiv4"+divId+"").html('Please select party.');
+	$("#errDiv"+divId+"").html('Please select party.');
 	return;
 	}
 }
@@ -7480,7 +7543,7 @@ else if(divSourceId == 3){
 	partyId = $("#partiesList"+elmtId+"").val();
 	 
 	if(partyId ==0){
-	$("#errDiv3"+divId+"").html('Please select party.');
+	$("#errDiv"+divId+"").html('Please select party.');
 	return;
 	}
 }
@@ -7549,14 +7612,18 @@ else if(divSourceId == 3){
 	
 
 
-if(divSourceId == 3)
-	str +='<button class="btn btn-success" onclick="updateDetails(3'+divId+','+elemtValue+');"> Ok </button>';
-else if(divSourceId == 4)
-	str +='<button class="btn btn-success" onclick="updateDetails(4'+divId+','+elemtValue+');"> Ok </button>';
-else
+if(divSourceId == 3){
 	str +='<button class="btn btn-success" onclick="updateDetails('+divId+','+elemtValue+');"> Ok </button>';
+
+	}
+else if(divSourceId == 4){
+	str +='<button class="btn btn-success" onclick="updateDetails('+divId+','+elemtValue+');"> Ok </button>';
+
+	}
+else{
+	str +='<button class="btn btn-success" onclick="updateDetails('+divId+','+elemtValue+');"> Ok </button>';
+	}
 	$('#searchInnerDiv').html(str);	
-	
 	$("#locationList"+divId+"").attr("disabled","disabled");
 
 	//getPartiesList("partySelectNewList"+divId,null);
@@ -7649,7 +7716,7 @@ var divSourceId;
 var divId = divId1; 
 if(divId1 != 11 && divId1 != 22){
 divSourceId = (divId1 + "").charAt(0);
-divId = (divId1 + "").charAt(1);
+//divId = (divId1 + "").charAt(1);
 }
 var candiId = $("#candidateId"+divId+"").val();
 
@@ -7886,15 +7953,21 @@ function updateExistingCandidate(){
 	var candidateName = $.trim($("#textCandidate").val());
 	var designationId = $("#designationsList2").val();
 	
+	
     if(partyId == 0)
 	{
 	  $("#errorMsgDiv2").html("Please Select Party");
 	  return;
 	}
+
 	if($.trim(candidateName).length == 0)
 	{
 	 $("#errorMsgDiv2").html("Please Select Candidate");
 	  return;
+	}
+	if(isValid(candidateName)){
+		$('#errorMsgDiv2').html('<b style="color:red">Candidate Name should not contain #,$,%,& Special charactors</b>');
+		return false;
 	}
 	if(designationId == 0)
 	{
@@ -7960,4 +8033,32 @@ function showCandidateEditStatus(result,jsObj)
   
    return;
   }
+
+
+}
+function refreshCategories(id){
+//console.log(id);
+$.ajax({
+	type:'POST',
+	url: 'getAllCategoryListAction.action',
+	dataType: 'json',
+	data: {task:JSON.stringify({task:"getCategoryList"})},
+	success:function(result){
+		$("#"+id+"").multiselect("destroy")
+		clearAll(id);
+		 $.each( result, function( index, myResult ){
+			$("#"+id+"").append("<option value="+myResult.id+">"+myResult.name+"</option>");
+		});
+			
+		$("#"+id+"").multiselect({
+	  noneSelectedText:"Select Category"});
+	}
+});
+
+}
+
+function deleteExistingImg(id){
+
+	$("#"+id+"").val("");
+
 }

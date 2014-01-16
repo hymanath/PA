@@ -14,10 +14,13 @@
 <!-- Bootstrap Scripts files End -->
 
 <!-- JQuery Scripts files start -->
-<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
+	<script type="text/javascript" src="js/jquery.google.api/jquery.js"></script>
 <script type="text/javascript" src="js/jquery.carousel.js"></script>
-<script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-<script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+<!-- <script src="http://code.jquery.com/jquery-1.8.2.js"></script> -->
+<script type="text/javascript" src="js/jquery.google.api/jquery-1.8.2.js"></script>
+<!-- <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script> -->
+<script type="text/javascript" src="js/jquery.google.api/jquery-ui1.9.0.js"></script>
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
@@ -27,7 +30,8 @@
 
 <!-- JQuery Style files start -->
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" /> -->
+<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 

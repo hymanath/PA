@@ -11,7 +11,8 @@
 	<!-- Bootstrap -->
 	
 	<!-------PT-sans font---->
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'> -->
+	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/googleAPIStyles.css"/>
 	
 	<style>
 	#fromDateId,#todateId{
@@ -175,7 +176,7 @@
 						<input type="checkbox" value="option1" id="keywordscheckId" onClick="unCheckCandidateCheckBox();"> <strong>Search By Keywords</strong>
 					</label>	
 					<label class="checkbox inline">
-						<input type="checkbox" value="option1" id="candidateCheckId" onClick="unCheckKeywordsCheckBox();" style=""><strong>Search By Categoery</strong>
+						<input type="checkbox" value="option1" id="candidateCheckId" onClick="unCheckKeywordsCheckBox();" style=""><strong>Search By Category</strong>
 					</label>	
 					
 					
@@ -261,12 +262,16 @@
 			</div>-->
 		
 		<!------JS------>
-	<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
+	<script type="text/javascript" src="js/jquery.google.api/jquery.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.carousel.js"></script>
-	 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
-    <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
-    <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
+	 <!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" /> -->
+<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
+    <!-- <script src="http://code.jquery.com/jquery-1.8.2.js"></script> -->
+<script type="text/javascript" src="js/jquery.google.api/jquery-1.8.2.js"></script>
+    <!-- <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script> -->
+<script type="text/javascript" src="js/jquery.google.api/jquery-ui1.9.0.js"></script>
 	
 	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />

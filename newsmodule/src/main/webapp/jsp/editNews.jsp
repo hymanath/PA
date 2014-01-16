@@ -207,6 +207,10 @@ var assemblyConstiArr = new Array();
 var parliamentConstiArr = new Array();
 var sourceObj = null;
 var languagesObj = null;
+var locationScop1e = '${sessionScope.USER.accessType}';
+var statteId = '${userDetailsVO[0].stateId}';
+var distritcId =  '${userDetailsVO[0].districtId}';
+var cosntiId =  '${userDetailsVO[0].constituencyId}';
 
 <c:forEach var="districts" items="${districtsList1}">
 	var districtList ={
@@ -270,7 +274,11 @@ $('document').ready(function(){
  $("#scopeDiv").prop("disabled", "disabled");
 //candidate creation
 $(".createNewCandidate").live("click",function(){	
-	
+$('#errorMsg1Div').html('');
+$('#newCandidateName').val('');
+$('#partySelectNewList').val(0);
+$('#designationsList').val(0);
+$('#locationId').val(0);
 		$("#createCandidateDiv").dialog({
             modal: true,
             title: "<b>Create New Candidate</b>",
@@ -296,6 +304,10 @@ $("#createCandidateId").live("click",function(){
 	var candidateName = $.trim($("#newCandidateName").val());
 	var designationId = $("#designationsList").val();
 	
+	if(isValid(candidateName)){
+		$('#errorMsg1Div').html('<b style="color:red;">Candidate Name should not contain #,$,%,& Special charactors</b>');
+		return false;
+	}
     if(partyId == 0)
 	{
 	  $("#errorMsgDiv").html("Please Select Party");
@@ -383,7 +395,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 	<input type="hidden" name="fileId" value="${fileId}"/>
 	<div id="createCandidateDiv" style="display:none;">
 
-
+<div id="errorMsg1Div"> </div>
 <table style="margin-top: 24px;"><tr>
 	<td>Select Party</td>
 	<td><select id="partySelectNewList">
@@ -477,13 +489,16 @@ $(".destinationCandidateCloseImg").live("click",function(){
 					
 					<div class="span4 ">      
 						<label><strong>Image To Display</strong></label>
-						 <input type="file" onchange="imgToDisplayRemove();" class="m_top10 newsFile1" name="imageForDisplay"/>
+						 <input type="file" id="imgToDisplay0" onchange="imgToDisplayRemove();" class="m_top10 newsFile1" name="imageForDisplay" style="width: 225px;"/>
 						 <input type="hidden" id="imgToDisplayDeleted0" name="imgToDisplayDeleted" value="false"/>
 						 
 						 <s:if test="news.defaultImg != null"> 
 							<span id="imgToDisplayRemove0"><span class="icon-zoom-in" style="cursor: pointer;" title="Click Here To View Existing Image" onclick="zoomSelectedImg('${news.defaultImg}');"></span>
-							<span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" onclick="deleteExistingImg('0');"></span></span>
-						</s:if>	
+							</span>
+						</s:if>
+							<span class="icon-remove" style="cursor: pointer;" title="Click Here To Delete Existing Image" onclick="clearExistingImg('imgToDisplay0','imgToDisplayRemove0');"></span>
+							
+							
 							<div>( .jpeg or .jpg or .png or .gif formats only)</div>
 					</div>  
 
@@ -608,12 +623,14 @@ $(".destinationCandidateCloseImg").live("click",function(){
 		</div>
 		<div class="span4 well well-small">
 			<label><strong>Select Categories</strong></label>
+			<span style="float:left;margin-left:135px;margin-top:-25px"><a title="refresh list" onclick="refreshCategories('whomegallaryId0');" href="javascript:{}"><i class="icon-refresh"></i></a></span>
 			<s:select id="whomegallaryId%{#stat.index}"   multiple="true"          value="news.sourceVOList[0].destinationVOList[#stat.index].categoryIds"	name="keywordIdHiddenCat%{#stat.index}"	 list="news.sourceVOList[0].destinationVOList[#stat.index].categoriesList" listKey="id" listValue="name" />
 			<s:hidden name="candidatePartyNewsVOList.destinationVOList[%{#stat.index}].categoryIdsStr" id="keywordIdHiddenCat%{#stat.index}" value="%{news.sourceVOList[0].destinationVOList[#stat.index].categoryIdsStr}" />
 			
 			<script type="text/javascript">
 			   $('document').ready(function(){
-			          $('#whomegallaryId'+'<s:property value="%{#stat.index}"/>').multiselect();
+			          $('#whomegallaryId'+'<s:property value="%{#stat.index}"/>').multiselect({
+					noneSelectedText:"Select Category"});
 			   });
 			</script>
 		</div>
@@ -714,13 +731,18 @@ $(".destinationCandidateCloseImg").live("click",function(){
 					<div class="span4" style="margin-left:0px;">
 							<label style="margin-left: 15px;"><strong>File Path</strong></label>
 				<s:if test="news.fileSourceVOList[#k.index].sourceFileList[#i.index].fileImageFileName != ''">
-				<br/><input type="file" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].fileImage" class="btn fileImgCls" key="aaanewsfileDescription" style="margin-left: 13px;"id="fileDescription0" onchange="clearExistingImg('${k.index}imgToDisplayRemove${i.index+1}');"/>	
+				<br/><input type="file" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].fileImage" class="btn fileImgCls" key="aaanewsfileDescription" style="margin-left: 13px;width:225px;"id="fileDescription0" onchange="clearExistingImg('${k.index}imgToDisplayRemove${i.index+1}','zoomSpanId${i.index}');" style="width: 225px;"/>	
 					
 					<span id="${k.index}imgToDisplayRemove${i.index+1}">
-					<span class="icon-zoom-in" style="cursor: pointer; margin-left: -40px;" title="Click Here To View Existing Image" onclick="zoomSelectedImg('${fileSource.sourceFileList[i.index].fileImageFileName}');"></span>	
+					<span id="zoomSpanId${i.index}">
+					<span  class="icon-zoom-in" style="cursor: pointer;" title="Click Here To View Existing Image" onclick="zoomSelectedImg('${fileSource.sourceFileList[i.index].fileImageFileName}');"></span>	
+					</span>
+					
+					<span class="icon-remove" style="cursor: pointer;float: right; position: absolute;margin-top: 12px; " title="Click Here To remove Image" onclick="clearExistingImg('fileDescription0','zoomSpanId${i.index}');"></span></span>
 				</s:if>
 				<s:else>
-				<br/><input type="file" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].fileImage" class="btn fileImgCls" key="aaanewsfileDescription" style="margin-left: 13px;"id="fileDescription0"/>	
+				<br/><input type="file" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].fileImage" class="btn fileImgCls" key="aaanewsfileDescription" style="margin-left: 13px;width:225px;" id="fileDescription0"/>	
+				<span class="icon-remove" style="cursor: pointer;float: right; position: absolute;margin-top: 12px;" title="Click Here To remove Image" onclick="deleteExistingImg('fileDescription0');"></span>
 
 				</s:else>
 							
@@ -774,8 +796,8 @@ $(".destinationCandidateCloseImg").live("click",function(){
 						<div id="${k.index}newpart${i.index-1}" class="container " style="margin-left: 12px; float: left;">
 						<script> addFile = '${i.index}';</script>
 
-							<div class="span4" style="width: 275px;margin-left:0px;"> 
-								<input type="file" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].fileImage" class="btn addFileImgCls" onchange="clearExistingImg('${k.index}imgToDisplayRemove${i.index+1}');"/> 
+							<div class="span4" style="width: 275px;margin-left:0px;margin-right: -17px;"> 
+								<input type="file" name="fileSourceVOList[${k.index}].sourceFileList[${i.index}].fileImage" class="btn addFileImgCls" onchange="clearExistingImg('${k.index}imgToDisplayRemove${i.index+1}');" style="width: 225px;"/> 
 							<span id="${k.index}imgToDisplayRemove${i.index+1}"><span class="icon-zoom-in" style="cursor: pointer; margin-left: -40px;" title="Click Here To View Existing Image" onclick="zoomSelectedImg('${fileSource.sourceFileList[i.index].fileImageFileName}');"></span>
 							</div> 
 
@@ -939,8 +961,21 @@ function changeLocationValue()
 	$("#scopeDiv1").html("");
 					
  }
-function clearExistingImg(id){
-$("#"+id+"").html('');
+function clearExistingImg(id,zoomId){
+
+$("#"+zoomId+"").html('');
+$("#"+id+"").val('');
+
+}
+function isValid(str){
+ var iChars = "#$%&";
+ var flag = false;
+	for (var i = 0; i < str.length; i++) {
+		if (iChars.indexOf(str.charAt(i)) != -1) {			
+			flag = true;
+		}
+    }
+	return flag;
 }
 </script>
 </body>

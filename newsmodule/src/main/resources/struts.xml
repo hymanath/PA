@@ -5615,6 +5615,12 @@
 		  </result>
 		 </action>
 		 
+		 <action name="getAllCategoryListAction" class="partyManagementAction" method="getAllCategoriesList">
+		  <result name="success" type="json">
+		   <param name="root">categoriesList</param>
+		  </result>
+		 </action>
+		 
 		 <action name="getGalleryListForSelectedCategory" class="newsDetailsAction" method="getLocationWiseNewsDetails">
 		  <result name="success" type="json">
 		   <param name="root">galleriesList</param>
@@ -5915,6 +5921,7 @@
 		</action>
 		  <action name="editNewsAction" class="editNewsAction">
 			<result name="success">/jsp/editNews.jsp</result>
+			<result name="error">/jsp/globalError.jsp</result>			
 		 </action>
 		 
 		   <action name="getTotalKeyWordsAction" class="newsPaginationAction" method="ajaxHandler">

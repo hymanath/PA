@@ -162,10 +162,11 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 		str+='<h4 style="text-transform: capitalize;"> <a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
 	}
 		
-	str+='<div class="row-fluid">';
+
+		str+='<div class="row-fluid">';
 		str+='<a style="width: 146px;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}" class="thumbnail span4">';
-		if(results[i].fileName1 != null && results[i].fileName1 == "") 
-		str+='<img style="width:100%" src="'+results[i].fileName1+'" >';
+		if(results[i].fileName1 != null && results[i].fileName1 != "") 
+			str+='<img style="width:100%" src="'+results[i].fileName1+'" >';
 		else
 		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
 		str+='</a>';

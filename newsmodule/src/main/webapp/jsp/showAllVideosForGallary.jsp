@@ -8,19 +8,19 @@
     <link href="styles/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="styles/css/style.css">
 	<!-------PT-sans font---->
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'> -->
+	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/googleAPIStyles.css"/>
 
 
 	<!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="css/style.css">
-	<!-------PT-sans font---->
-	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 	 
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 	<link rel="stylesheet" type="text/css" href="styles/simplePagination/simplePagination.css"/> 
 
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" />
+<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" /> -->
+<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
 <style type="text/css">
 #existingFromText,#existingToText{width:155px;cursor: text;}
 #errorMsgDiv{font-size:12px;}
