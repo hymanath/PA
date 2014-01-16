@@ -287,4 +287,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List getCasteCategory(Long userId,Long voterId);
 	
 	public List<Locality> getAllLocatiesInAConstituency(Long constituencyId,Long publicationDateId,Long userId);
+	
+	public List<Object[]> getCountForCasteType();
 }
