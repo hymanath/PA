@@ -738,11 +738,11 @@ function createNewParty()
 									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
 							</li>
 						</c:if>
-						<!--<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+						<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 						    <li>
 									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewCandidateDiv();">Create New Candidate</a>
 							</li>
-						</c:if>-->
+						</c:if>
 						    <li>
 									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createEditCandidateDiv();">Edit Candidate</a>
 							</li>
@@ -889,6 +889,7 @@ function createNewParty()
 	<div class="regionClass parliamSelReport1 span2"  style="display:none;margin-left:-29px;">
    <label style="float: left;"><strong>Select Parliament</strong></label><s:select name="parliamSelReport" id="parliamSelReportId1" list="parlConstiList" theme="simple" listKey="id" listValue="name"/>
       </div>
+	  
 	  <div class="regionClass assembSelReport1 span2"  style="display:none;margin-left:-29px;">
     <label style="float: left;"><strong>Select Assembly </strong></label><s:select name="assembSelReport" id="assembSelReportId1" list="assemConstiList" theme="simple" listKey="id" listValue="name"/>
    </div>
@@ -959,9 +960,11 @@ function createNewParty()
 	  <tr class="regionClass parliamSelReport">
         <td>Select Parliament</td><td><s:select name="parliamSelReport" id="parliamSelReportId" list="parlConstiList" theme="simple" listKey="id" listValue="name"/></td>
       </tr>
+	  
 	  <tr class="regionClass assembSelReport">
         <td>Select Assembly</td><td><s:select name="assembSelReport" id="assembSelReportId" list="assemConstiList" theme="simple" listKey="id" listValue="name"/></td>
       </tr>
+	  
 	  <tr>
         <td>Select News</td><td><select id="newsPriority"><option value="0">All</option><option value="1">Low</option><option value="2">Medium</option><option value="3">High</option></select></td>
       </tr>
@@ -1041,7 +1044,7 @@ function createNewParty()
 </tr>
 <tr>
 <td>Location</td>
-<td><select id="locationId" onChange="getTypeOfConstituency(this.value);"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
+<td><select id="locationId" onChange="getTypeOfConstituency(this.value);"><option value=0>Select Location</option><option value=3>Country</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
 </tr>  
 <tr style="display:none;" id="pcConstituencyRow">
 <td>Constituency</td>
@@ -1138,7 +1141,7 @@ function createNewParty()
 	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
 
 	
-<div id="errorMsgDiv1"></div>
+<div id="errorMsgDiv1" style="color:red;"></div>
 	<table style="margin-top: 24px;"><tr>
 <td>Select Party</td>
 <td><select id="partySelectNewList1">
@@ -1152,17 +1155,17 @@ function createNewParty()
 </tr>
 <tr>
 <td>Location</td>
-<td><select id="locationId1" onChange="getTypeOfConstituency(this.value,'createassembSelReportId','createpcConstituencyRow');"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
+<td><select id="locationId1" onChange="getTypeOfConstituencyForCreate(this.value);"><option value=0>Select Location</option><option value=3>Country</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
 </tr>  
-<tr style="display:none;" id="createpcConstituencyRow">
+<tr style="display:none;" id="pcConstituencyRowForCreate">
 <td>Constituency</td>
 <td>
-<s:select name="parliamSelReport"  id="createparliamSelReportId" list="parlConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+<s:select name="parliamSelReport"  id="parliamSelReportIdForCreate" list="parlConstiList1" theme="simple" listKey="id" listValue="name"/></td>
 </tr>
-<tr style="display:none;" id="createacConstituencyRow">
+<tr style="display:none;" id="acConstituencyRowForCreate">
 <td>Constituency</td>
 <td>
-<s:select name="assembSelReport"  id="createassembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+<s:select name="assembSelReport"  id="assembSelReportIdForCreate" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
 </tr>
 </table>
 <input type="button" value="submit" class="btn" id="createCandidateId1"/>
@@ -1228,12 +1231,33 @@ function getTypeOfConstituency(value)
 		$('#pcConstituencyRow').show();
 		$('#acConstituencyRow').hide();
 	}
+	
 	else
 	{
 		$('#pcConstituencyRow').hide();
 		$('#acConstituencyRow').hide();
+	}	
+}
+
+function getTypeOfConstituencyForCreate(value)
+{	
+	if(value == 1)
+	{
+		$('#pcConstituencyRowForCreate').hide();
+		$('#acConstituencyRowForCreate').show();
+	}
+	else if(value == 2)
+	{
+		$('#pcConstituencyRowForCreate').show();
+		$('#acConstituencyRowForCreate').hide();
+	}
+	else
+	{
+		$('#pcConstituencyRowForCreate').hide();
+		$('#acConstituencyRowForCreate').hide();
 	}
 }
+
 var keywordsArray = new Array();
 <c:forEach var="keywords" items="${keywordsList}">
    var obj = {value:${keywords.id},
@@ -2850,7 +2874,11 @@ $("#locationWiseNewsDiv").css("display","none");
 	  }else if(reportRegionLevel == 3){
 		  reportRegionLevelVal = $("#parliamSelReportId option:selected").val();
 	  }else if(reportRegionLevel == 4){
-		  reportRegionLevelVal = $("#assembSelReportId option:selected").val();
+		  reportRegionLevelVal = $("#parliamSelReportIdForCreate option:selected").val();
+	  }else if(reportRegionLevel == 5){
+		  reportRegionLevelVal = $("#assembSelReportIdForCreate option:selected").val();
+	  }else if(reportRegionLevel == 6){
+		  reportRegionLevelVal = $("#countrySelReportIdForCreate option:selected").val();  
 	  }
 	} 
 
@@ -4271,7 +4299,10 @@ $("#createCandidateId").live("click",function(){
 	{
 		locationValue = $('#parliamSelReportId option:selected').val();
 	}
-	
+	else if($('#locationId option:selected').val() == 3)
+	{
+		locationValue = $('#parliamSelReportId option:selected').val();
+	}
 	 
 	var jsObj =
 		{ 
@@ -4313,17 +4344,27 @@ $("#createCandidateId1").live("click",function(){
 	 $("#errorMsgDiv1").html("Please Select Designation");
 	  return;
 	}
+	if($('#locationId1 option:selected').val() == 0){
+	  $("#errorMsgDiv1").html("Please Select Location");
+	  return;
+	}
   var candidateListId = $(this).attr("key");
   var partyListId = $(this).attr("partyListId");
   var locationValue = "";
 	if($('#locationId1 option:selected').val() == 1)
 	{
-		locationValue = $('#assembSelReportId option:selected').val();
+		locationValue = $('#assembSelReportIdForCreate option:selected').val();
 	}
 	else if($('#locationId1 option:selected').val() == 2)
 	{
-		locationValue = $('#parliamSelReportId option:selected').val();
+		locationValue = $('#parliamSelReportIdForCreate option:selected').val();
 	}
+	
+	else if($('#locationId1 option:selected').val() == 3)
+	{
+		locationValue = $('#locationId1 option:selected').val();
+	}
+	
 	var jsObj =
 		{ 
             partyId : partyId,

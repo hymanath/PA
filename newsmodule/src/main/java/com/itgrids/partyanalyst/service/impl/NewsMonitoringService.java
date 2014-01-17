@@ -5491,6 +5491,10 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				  candidate.setParliament(constituencyDAO.get(locationValue)); 
 			  }
 		  }
+		  else if(loctionId == 3)
+		  {
+			  candidate.setState(stateDAO.get(1l));
+		  }
 		  else 
 		  {
 			 candidate.setState(stateDAO.get(1l));

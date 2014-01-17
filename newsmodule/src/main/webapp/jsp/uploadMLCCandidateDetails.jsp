@@ -67,6 +67,10 @@ $('#errStatusDiv').html('');
   {
 	locationValue = $('#parliamSelReportId option:selected').val();
   }
+  else if(locationId == 3)
+  {
+	locationValue = $('#locationId option:selected').val();
+  }
   else
   {
    $('#errStatusDiv').html('<b style="color:red">Please Select Location</b>');	
@@ -152,12 +156,18 @@ function getRespectedLocationlevel(value)
 		$('.assembSelReport').show();
 		$('.parliamSelReport').hide();
 	}
-	else
+	else if(value == 2)
 	{
 		$('.parliamSelReport').show();
 		$('.assembSelReport').hide();
 	}
+	else
+	{
+		$('.assembSelReport').hide();
+		$('.parliamSelReport').hide();
+	}	
 }
+
 
 function isValid(str){
  var iChars = "#$%&";
@@ -207,6 +217,7 @@ function clearDiv(divId)
  </div>
  Select Location :  <Select id="locationId" onChange="getRespectedLocationlevel(this.value);" style="margin-left:29px; width: 220px;">
  <option value=0>Select Location</option>
+ <option value=3>Country</option>
  <option value=1>Assembly Constituency</option>
  <option value=2>Parliment Constituency</option>
  </select>
