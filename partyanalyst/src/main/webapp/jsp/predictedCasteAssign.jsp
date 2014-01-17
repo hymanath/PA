@@ -3,19 +3,16 @@
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
-
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <title> Voters </title>
-
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <!-- Then get JQuery UI -->
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script src="js/jQuery/image-crop/js/jquery.Jcrop.js" type="text/javascript"></script>
-<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
+
 <link rel="stylesheet" href="js/jQuery/image-crop/css/jquery.Jcrop.css" type="text/css" />
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
@@ -29,26 +26,25 @@
 <script src="js/colpick.js" type="text/javascript"></script>
  <script type="text/javascript" src="js/voterFlag.js"></script>
 <link rel="stylesheet" href="css/colpick.css" type="text/css"/>
- <link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
+<link rel="stylesheet" type="text/css" href="styles/userProfile/userProfilePage.css"> 
+<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 
   <style>
   #mainDiv{margin-left: auto;
     margin-right: auto;
     width: 741px;
   }
-    </style>
+  </style>
 </head>
 <body>
  <br>
 <div id="mainDiv" class="contenttable widget"> 
-<h2>INSERT PREDICTED CASTE</h2>
+<h4>INSERT PREDICTED CASTE</h4>
 <div id="insertPredictCasteDiv" style="margin-top:10px;border: 1px solid #D3D3D3;padding:10px;">
 <div id="errorDiv"></div>
 From <input type="text" id="fromValue"/>
 To <input type="text" id="toValue"/>
 <input type="button" value="Submit" class="btn btn-success" onclick="insertPredictedCaste()"/>
-
-
 </div><br/>
 <div id="casteCountDiv"></div><br/>
 </div>
