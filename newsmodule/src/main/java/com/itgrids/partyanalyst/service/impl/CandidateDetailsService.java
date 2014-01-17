@@ -9528,6 +9528,8 @@ public SelectOptionVO getDesignationOfCandidateFromCandidateTable(Long candidate
 		}else if(candidate.getParliament() != null){
 			optionVO.setType("Parliament");
 	 		optionVO.setConstituencyId(candidate.getParliament().getConstituencyId());
+		}else{
+			optionVO.setType("Country");
 		}
 	 	return optionVO;
 

@@ -7719,7 +7719,7 @@ else if(divId ==4){
 	$("#candidateListForPartyForNewsTo"+elmntId+"").val(id);
 }
 */
-//debugger;
+
 var divSourceId;
 var divId = divId1; 
 if(divId1 != 11 && divId1 != 22){
@@ -7729,7 +7729,6 @@ divSourceId = (divId1 + "").charAt(0);
 var candiId = $("#candidateId"+divId+"").val();
 
 var id = candidates[candiId];
-
 if(candidatesList.indexOf(id) == -1){
 
 	if(divId == 11){
@@ -7765,6 +7764,7 @@ if(candidatesList.indexOf(id) == -1){
 
 $('#searchDiv').dialog('close');
 }
+
 
 function buildLocationDiv(divId){
 var locationType = $("#locationList"+divId).val();
@@ -7926,10 +7926,13 @@ function showDesignationDetails(myResults,jsObj){
 	    $("#editcandidateLocType").val(1);
 		$("#editassembSelReportId").val(myResults.constituencyId);
         getTypeOfConstituencyForEdit(1,'editacConstituencyRow','editpcConstituencyRow');		
-	 }else{
+	 }else if(myResults.type == "Parliament"){
 	    $("#editcandidateLocType").val(2);
 		getTypeOfConstituencyForEdit(2,'editacConstituencyRow','editpcConstituencyRow');	
 		$("#editparliamSelReportId").val(myResults.constituencyId);	
+	 }else{
+	    getTypeOfConstituencyForEdit(0,'editacConstituencyRow','editpcConstituencyRow');
+	   $("#editcandidateLocType").val(3);
 	 }
  }
 
@@ -7960,14 +7963,18 @@ function updateExistingCandidate(){
 	var partyId = $("#EditpartySelectNewList").val();
 	var candidateName = $.trim($("#textCandidate").val());
 	var designationId = $("#designationsList2").val();
-	
+	var presentPartyId = $("#currentpartySelectNewList").val();
 	
     if(partyId == 0)
 	{
 	  $("#errorMsgDiv2").html("Please Select Party");
 	  return;
 	}
-
+	if(presentPartyId == 0)
+	{
+	  $("#errorMsgDiv2").html("Please Select Current Party");
+	  return;
+	}
 	if($.trim(candidateName).length == 0)
 	{
 	 $("#errorMsgDiv2").html("Please Select Candidate");
@@ -8001,9 +8008,14 @@ function updateExistingCandidate(){
 	{
 		locationValue = $('#editparliamSelReportId option:selected').val();
 	}
+	if($('#editcandidateLocType option:selected').val() == 3)
+	{
+		locationValue = 0;
+	}
 	var jsObj =
 		{ 
             partyId : partyId,
+			presentPartyId:presentPartyId,
 			candidateId:candidateId,
 			candidateName:candidateName,
 			designationId:designationId,
