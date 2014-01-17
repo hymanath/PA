@@ -6882,6 +6882,7 @@ function showCandidateSaveStatus(result,jsObj)
   else if(result.resultCode == 0 && result.message == null)
   {
    $("#errorMsgDiv").html('Candidate Created Successfully.').css("color","green");
+   setTimeout(function(){$("#errorMsgDiv").html('').css("color","red");},3000);
    $("#newCandidateName").val('');
    $("#partySelectNewList").val(0);
    var partyId = $("#"+jsObj.partyListId+"").val();
@@ -6911,7 +6912,8 @@ function showCandidateSaveStatus1(result,jsObj)
 
   else if(result.resultCode == 0 && result.message == null)
   {
-   $("#errorMsgDiv1").html('Candidate Saved Successfully.').css("color","green");
+   $("#errorMsgDiv1").html('Candidate created Successfully.').css("color","green");
+   setTimeout(function(){$("#errorMsgDiv1").html('').css("color","red");},3000); 
    $("#newCandidateName1").val('');
    $("#partySelectNewList1").val(0);
    var partyId = $("#"+jsObj.partyListId+"").val();

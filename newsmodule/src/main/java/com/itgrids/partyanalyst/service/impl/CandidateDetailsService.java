@@ -7044,6 +7044,10 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 					  candidate.setParliament(constituencyDAO.get(locationValue)); 
 				  }
 			 }
+			 else if(locationId == 3)
+			 {
+				 candidate.setState(stateDAO.get(1l));
+			 }
 			 else 
 			 {
 				 candidate.setState(stateDAO.get(1l));
@@ -8793,8 +8797,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 
 		return selectOptionVOList; 
 	 }catch (Exception e) {
-		e.printStackTrace();
-		log.error("Exception Occured in getPartiesList() method, Exception - "+e);
+		//e.printStackTrace();
+		log.error("Exception Occured in getPartiesList() method, Exception - ",e);
 		return null;
 	}
  }

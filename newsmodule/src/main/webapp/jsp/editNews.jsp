@@ -322,6 +322,11 @@ $("#createCandidateId").live("click",function(){
 	{
 	 $("#errorMsgDiv").html("Please Select Designation");
 	  return;
+	  if($('#locationId option:selected').val() == 0){
+	  $("#errorMsgDiv").html("Please Select Location");
+	  return;
+	}
+	  
 	}
   var candidateListId = $(this).attr("key");
   var partyListId = $(this).attr("partyListId");
@@ -334,6 +339,11 @@ $("#createCandidateId").live("click",function(){
 	{
 		locationValue = $('#parliamSelReportId option:selected').val();
 	}
+	else if($('#locationId option:selected').val() == 3)
+	{
+		locationValue = $('#locationId option:selected').val();
+	}
+	
 	var jsObj =
 		{ 
             partyId : partyId,
@@ -395,6 +405,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 	<input type="hidden" name="fileId" value="${fileId}"/>
 	<div id="createCandidateDiv" style="display:none;">
 
+<div id="errorMsgDiv" style="color:red;"></div>
 <div id="errorMsg1Div"> </div>
 <table style="margin-top: 24px;"><tr>
 	<td>Select Party</td>
@@ -409,7 +420,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 	</tr>
 	<tr>
 	<td>Location</td>
-	<td><select id="locationId" onChange="getTypeOfConstituency(this.value);"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
+	<td><select id="locationId" onChange="getTypeOfConstituency(this.value);"><option value=0>Select Location</option><option value=3>Country</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
 	</tr>  
 	<tr style="display:none;" id="pcConstituencyRow">
 	<td>Constituency</td>
@@ -977,6 +988,7 @@ function isValid(str){
     }
 	return flag;
 }
+
 </script>
 </body>
 </html>

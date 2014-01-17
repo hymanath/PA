@@ -6870,6 +6870,7 @@ function showCandidateSaveStatus(result,jsObj)
   else if(result.resultCode == 0 && result.message == null)
   {
    $("#errorMsgDiv").html('Candidate Saved Successfully.').css("color","green");
+   setTimeout(function(){$("#errorMsgDiv").html('').css("color","red");},3000); 
    $("#newCandidateName").val('');
    $("#partySelectNewList").val(0);
    var partyId = $("#"+jsObj.partyListId+"").val();
