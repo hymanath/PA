@@ -499,6 +499,7 @@ function createPartyKeywordDiv(){
 	  $('#statusDiv1').html('');
 	  $('#statusDiv2').html('');
 	   getPartiesList("EditpartySelectNewList",null);
+	   getPartiesList("currentpartySelectNewList",null);
    getDesignationList("designationsList2");
  }
  
@@ -1190,14 +1191,17 @@ function createNewParty()
 		
 	<tr><td>Candidate</td>
 <td><input type="text" id="textCandidate" onkeyup="clearDiv('errorMsgDiv2');"/></td></tr>
-
+<tr>
+<td>Select Current Party</td>
+<td><select id="currentpartySelectNewList">
+</select></td></tr>
 <tr>
 <td>Designation</td>
 <td><select id="designationsList2"></select></td>
 </tr>
 <tr>
 <td>Location</td>
-<td><select id="editcandidateLocType" onChange="getTypeOfConstituencyForEdit(this.value,'editacConstituencyRow','editpcConstituencyRow');"><option value=0>Select Location</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
+<td><select id="editcandidateLocType" onChange="getTypeOfConstituencyForEdit(this.value,'editacConstituencyRow','editpcConstituencyRow');"><option value=0>Select Location</option><option value=3>Country</option><option value=1>Assembly Constituency</option><option value=2>Parliment Constituency</option></select></td>
 </tr>  
 <tr style="display:none;" id="editpcConstituencyRow">
 <td>Constituency</td>
@@ -4031,7 +4035,7 @@ function getEditCandidatesListByPartyId(partyId,type)
 }
 function getTextCandidateId()
 {
-
+     $("#currentpartySelectNewList").val($("#EditCandidateListForParty").val());
 	var name=$("#EditCandidateListForParty option:selected").text().replace(/\(.*?\)/g, '');
 	$("#textCandidate").attr("value",name);
 	

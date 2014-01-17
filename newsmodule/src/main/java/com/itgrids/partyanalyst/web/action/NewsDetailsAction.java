@@ -745,7 +745,7 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 return ERROR;
 		
 		jObj = new JSONObject(getTask());
-		resultStatus = newsMonitoringService.updateCandidatesAndParty(jObj.getLong("candidateId"),jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"));	
+		resultStatus = newsMonitoringService.updateCandidatesAndParty(jObj.getLong("candidateId"),jObj.getLong("presentPartyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"));	
 	}catch (Exception e) {
 	 e.printStackTrace();
 	 Log.error(" Exception Occured in updateCandidatesAndParty() method, Exception - ",e);

@@ -6256,6 +6256,12 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 					  candidate.setAssembly(null);
 				  }
 			  }
+			  else if(loctionId == 3)
+			  {
+				  candidate.setState(stateDAO.get(1l));
+				  candidate.setParliament(null); 
+				  candidate.setAssembly(null);
+			  }
 			  else 
 			  {
 				 candidate.setState(stateDAO.get(1l));
