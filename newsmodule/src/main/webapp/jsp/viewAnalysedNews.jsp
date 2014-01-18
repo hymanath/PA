@@ -245,6 +245,15 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 			str += '</div>';
 		}
 		
+		if(results[i].candidateName!='' && results[i].candidateName!=undefined)
+		{   
+			str += '<div><p class="text-error" style="font-weight:bold;">Candidate(s) : <span style="font-weight:normal;color:black;">';
+		
+			var candidates = "";
+			candidates += ''+results[i].candidateName +'';
+			str += ''+candidates+'</span></p>';
+			str += '</div>';
+		}
 		
 		str+='<div class="row-fluid m_top10">';
 		str+='<div class="span9" style="width:550px;">';
