@@ -5056,9 +5056,12 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				  canfileIds.add(file.getFileId());
 			  }
 			  Map<Long,String> candidateNames = getCandidateNames(canfileIds);
+			  SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	    		 DateUtilService dateUtilService = new DateUtilService();
+	    		 Date currentDate = dateUtilService.getCurrentDateAndTime();
 				for(File file : list)
 				{
-					
+					boolean tempvar=false;
 					if(file.getRegionScopes() != null && file.getRegionScopes().getRegionScopesId() != null)
 					{
 					Map<Long,List<FileVO>> locationMap = regionWiseMap.get(file.getRegionScopes().getRegionScopesId());
@@ -5082,6 +5085,10 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		    		String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
 		    		fileVO.setFileDate(dateObj!=null?dateObj:"");
 		    		
+		           
+		    		if(fileVO.getFileDate().equals(sdf.format(currentDate)))
+		    		   tempvar= true;
+		    		fileVO.setTempvar(tempvar);
 		    		if(file.getFont() != null)
 		    		 fileVO.setEenaduTeluguFontStr("Eenadu Telugu");
 		    		
@@ -5537,10 +5544,16 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
     
     public ResultStatus deleteNews(Long fileId,Long userId)
     {
+    	Long count = fileDAO.checkFileBelongsToUser(userId,fileId);
     	ResultStatus resultStatus = new ResultStatus();
     	try{
     		List<String> userType = userDAO.getUserType(userId);
     		if(userType.get(0).equalsIgnoreCase("Admin"))
+    		{
+    		fileDAO.deleteFile(fileId);
+    		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+    		}
+    		else if( userType.get(0).equalsIgnoreCase("SubUser") && count>0)
     		{
     		fileDAO.deleteFile(fileId);
     		resultStatus.setResultCode(ResultCodeMapper.SUCCESS);

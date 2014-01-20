@@ -46,4 +46,6 @@ public interface IFileDAO extends GenericDao<File, Long> {
 	 public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds);
 	 
 	 public Long getAllTheNewsCountForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue);
+
+	 public Long checkFileBelongsToUser(Long userId,Long fileId);
 }

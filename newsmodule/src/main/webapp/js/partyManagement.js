@@ -555,6 +555,9 @@ function callAjax(jsObj,url)
 			}
 			else if(jsObj.task == "deleteFile")
 			 buildDeleteFile(myResults,jsObj);
+
+			else if(jsObj.task == "deleteFileForReport")
+			 buildDeleteFileForReport(myResults,jsObj);
 		}
 		catch(e)
 		{   
@@ -7407,27 +7410,19 @@ var descriptionValue = $("#newsreportfileDescription").val();
 	    var str='';
 		var name = oData;
 		var fileId =  oRecord.getData("contentId");	
-		
+		var fileDate = oRecord.getData("fileDate");
+        var flag = oRecord.getData("tempvar");
 		if(loginUserType == "Admin")
 		{
 			str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromNewsReport('+fileId+')"/>';		
 		}
+		if(loginUserType == "SubUser" && flag)
+		{
+			str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromReport('+fileId+')"/>';		
+		}
 		elLiner.innerHTML=str;					
 	};
 	
-	
-	if(loginUserType != "Admin"){
-	var newsColumns = [
-		   {key:"",label:"",formatter:YAHOO.widget.DataTable.newsCheckBox},
-		   {key:"source",label:"Source"},
-		   {key:"fileTitle1",label:"Title",width:180,formatter:YAHOO.widget.DataTable.title},
-		   {key:"fileDate",label:"File Date",width:80},
-		   {key:"candidateName",label:"Candidate Name"},
-		   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location},
-		   {key:"",label:"Edit",formatter:YAHOO.widget.DataTable.EditFile}
-		  ];  	
-	}
-	else{
 		  var newsColumns = [
 		   {key:"",label:"",formatter:YAHOO.widget.DataTable.newsCheckBox},
 		   {key:"source",label:"Source"},
@@ -7438,7 +7433,6 @@ var descriptionValue = $("#newsreportfileDescription").val();
 		   {key:"",label:"Edit",formatter:YAHOO.widget.DataTable.EditFile},
 		   {key:"",label:"delete",formatter:YAHOO.widget.DataTable.DeleteFile}
 		  ];  
-	}
 	
   var newsDataSource = new YAHOO.util.DataSource("getAllNewsForAUserAction.action?fromDate="+fromDate+"&toDate="+toDate+"&regionLevel="+regionLevel+"&importance="+importance+"&reportRegionLevel="+reportRegionLevel+"&reportRegionLevelVal="+reportRegionLevelVal+"&reqType="+reqType+"&reportGallary="+reportGallary1+"&keywordGallary="+keywordGallary1+"&");
   newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
@@ -7446,7 +7440,7 @@ var descriptionValue = $("#newsreportfileDescription").val();
   resultsList: "fileVOList",
    fields: [
              {key:"contentId", parser:"number"},
-			        "fileTitle1","source","eenaduTeluguFontStr","fileDate","candidateName","locationName","locationScopeValue"],
+			        "fileTitle1","source","eenaduTeluguFontStr","fileDate","candidateName","locationName","locationScopeValue","tempvar"],
 
     metaFields: {
     totalRecords: "count" // Access to value in the server response
@@ -7826,6 +7820,21 @@ function deleteFileFromNewsReport(fileId)
 	callAjax(jsObj, url);
 	}
 }
+function deleteFileFromReport(fileId)
+{
+	
+	var confirmFile = confirm('Do you want to delete file');
+	if(confirmFile)
+	{
+	var jsObj={
+		fileId:fileId,
+		task:'deleteFileForReport'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "deleteNewsAction.action?"+rparam;
+	callAjax(jsObj, url);
+	}
+}
 function buildAllKeywords(myResults)
 {
     var str='';
@@ -7868,6 +7877,14 @@ function buildDeleteFile()
 	$('#successMsg').html('');
 	}, 3000);
 	getTotalNewsWithPagination();
+}
+function buildDeleteFileForReport()
+{
+	$("#successMsg").html("deleted successfully..").css("color","green");
+	setTimeout(function(){
+	$('#successMsg').html('');
+	}, 3000);
+	getNewsDetailsForNewsReportGeneration();
 }
 function deleteFile(fileId)
 {

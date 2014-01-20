@@ -439,4 +439,13 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 			 
 		}
 		 
+	 @SuppressWarnings("unchecked")
+	public Long checkFileBelongsToUser(Long userId,Long fileId){
+		 StringBuilder str = new StringBuilder();
+		 str.append("select count(*) from File model where model.isDeleted !='Y' and model.user.userId = :userId and model.fileId=:fileId ");
+		 Query query = getSession().createQuery(str.toString());
+		 query.setParameter("userId", userId);
+		 query.setParameter("fileId", fileId);
+		 return (Long) query.uniqueResult();
+	 }
 }
