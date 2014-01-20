@@ -1018,7 +1018,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						if(destinationPresent)
 							break;
 						if(destination != null){
-							if((destination.getPartyId()!= null &&  destination.getPartyId() > 0) || (destination.getCandidateId()!= null &&  destination.getCandidateId() > 0)  || (destination.getCategoryIdsStr()!= null &&  destination.getCategoryIdsStr().trim().length() > 0)){
+							if((destination.getPartyId()!= null &&  destination.getPartyId() > 0) || (destination.getCandidateId()!= null &&  destination.getCandidateId() > 0)  || (destination.getCategoryIdsStr()!= null &&  destination.getCategoryIdsStr().trim().length() > 0) || (fileVO.getResponseFileIdsStr() != null && fileVO.getResponseFileIdsStr().trim().length() > 0) || (destination.getKeywordsList() != null && destination.getKeywordsList().trim().length() > 0) ){
 								destinationPresent = true;
 							}
 						}

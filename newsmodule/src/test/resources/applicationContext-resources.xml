@@ -132,6 +132,8 @@
 				<value>com.itgrids.partyanalyst.model.Designation</value>
 				<value>com.itgrids.partyanalyst.model.ActivityReport</value>
 				<value>com.itgrids.partyanalyst.model.ActivityReportFiles</value>
+				<value>com.itgrids.partyanalyst.model.Benefit</value>
+				
 			</list>
 		</property>
 	</bean>

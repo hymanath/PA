@@ -5081,12 +5081,18 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 					fileVO.setContentId(file.getFileId());
 					fileVO.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())));
 					fileVO.setFileDescription1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())));
-					String fileDate = file.getFileDate().toString();
-		    		String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
-		    		fileVO.setFileDate(dateObj!=null?dateObj:"");
-		    		
-		           
-		    		if(fileVO.getFileDate().equals(sdf.format(currentDate)))
+					String dateObj = null;
+					if(file.getCreatedDate() != null){
+					String fileDate = file.getCreatedDate().toString();
+		    		 dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+					}
+					String dateObj1 = null;
+					if(file.getFileDate() != null){
+						String fileDate = file.getFileDate().toString();
+			    		 dateObj1 = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
+					}
+					fileVO.setFileDate(dateObj1!=null?dateObj1:"");
+		    		if(dateObj != null && dateObj.equals(sdf.format(currentDate)))
 		    		   tempvar= true;
 		    		fileVO.setTempvar(tempvar);
 		    		if(file.getFont() != null)

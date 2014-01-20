@@ -67,9 +67,9 @@
 	$("#errormessageDiv").hide();
 	     if(!booleanVal){
 		   booleanVal = true;
-			$('#analyseCandidateDesti').attr('checked',false);
-			$('#keywordscheckId').attr('checked',false);
-			$('#candidateCheckId').attr('checked',false);
+			$('#analyseCandidateDesti').removeAttr('checked');
+			$('#keywordscheckId').removeAttr('checked');
+			$('#candidateCheckId').removeAttr('checked');
             $('#whomPartysList').val(0);
 			$('#whomCandidatesList').val(0);
 			$('#whomBenfitsList').val(0);
@@ -79,14 +79,24 @@
 			$("#advanceDiv").css("display","block");
 			$('#keywordsDiv').hide();
 			$('#analyseCandidateSource').attr('disabled',false);
+			$('#benifitsList').attr('disabled',false);
 			$("#advanceView").html('Hide Advance Search options');
 		}else{
 		    booleanVal = false;
-			$('#analyseCandidateDesti').attr('checked',true);
+			$('#analyseCandidateDesti').removeAttr('checked');
 			$("#advanceDiv").css("display","none");
 			$("#advanceView").html('Show Advance Search options');
-			$('#analyseCandidateSource').attr('checked',false);
+			$('#analyseCandidateSource').removeAttr('checked');
             $('#analyseCandidateSource').attr('disabled',true);
+            
+            $('#benifitsList').attr('disabled',true);
+            $('#benifitsList').val(0);
+			  $('#keywordscheckId').removeAttr('checked');
+			$('#candidateCheckId').removeAttr('checked');
+            $('#whomPartysList').val(0);
+			$('#whomCandidatesList').val(0);
+			$('#whomBenfitsList').val(0);
+			$('#locationLevelId').val(0);
             }
 	});
 	</script>
@@ -132,7 +142,7 @@
 						</div>
 						<div class="span3">
 							<label>Benifits</label>
-							<select class="input-block-level" id="benifitsList">	
+							<select class="input-block-level" id="benifitsList" disabled="true">	
 								<option value=0>Select Benifits</option>
 							</select>					
 						</div>
@@ -168,7 +178,7 @@
 						</div>
 						<div class="span2">
 							<label>Analyse By Whome</label>
-							 <input type="checkbox" id="analyseCandidateDesti" checked="true" class="srish"/>				
+							 <input type="checkbox" id="analyseCandidateDesti" class="srish"/>				
 						</div>
 					</div><!------Whom Div END---->
 					
