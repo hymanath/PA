@@ -83,6 +83,9 @@ font-size:20px;
 		var sourceBenifitId = '${sourceBenifitId}';
 		var destiBenifitId = '${destiBenifitId}';
 		var type = '${type}';
+		var sourceType = '${sourceType}';
+		var destiType = '${destiType}';
+		var considerParty = '${considerParty}';
 getAllGallaries(0,10);
             
 function getAllGallaries(startIndex,endIndex)
@@ -112,7 +115,10 @@ function getAllGallaries(startIndex,endIndex)
 			endDate:endDate,
 			destiBenifitId:destiBenifitId,
 			sourceBenifitId:sourceBenifitId,
-			type : type
+			type : type,
+			sourceType:sourceType,
+			destiType:destiType,
+			considerParty:considerParty
 	  },
 		 
 	  success: function(results){ 

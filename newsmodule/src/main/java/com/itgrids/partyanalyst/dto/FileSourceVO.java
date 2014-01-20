@@ -95,11 +95,7 @@ public class FileSourceVO implements Serializable{
 		return completeDesc;
 	}
 	public void setCompleteDesc(String completeDesc) {
-		if(completeDesc == null){
-		 this.completeDesc = completeDesc;
-		}else{
-			this.completeDesc =  escapeUnicode(StringEscapeUtils.unescapeJava(completeDesc));
-		}
+		 this.completeDesc = completeDesc;	
 	}
 	
 	

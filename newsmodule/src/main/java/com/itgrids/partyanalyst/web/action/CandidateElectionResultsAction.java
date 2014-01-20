@@ -1463,7 +1463,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setName(fileName);
 		fileVO.setTitle(getFileTitle() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileTitle())):null);
 		fileVO.setDescription(getFileDescription() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileDescription())):null);
-		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.unescapeHtml(getNewsSynopsysDesc())));
+		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.escapeJava(getNewsSynopsysDesc())));
 		fileVO.setVisibility(getVisibility());
 		fileVO.setNewsImportanceId(getNewsimportance());
 		fileVO.setLocationScope(getLocationScope());
@@ -3381,7 +3381,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		//fileVO.setName(getFileTitle());
 		fileVO.setTitle(getFileTitle() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileTitle())):null);
 		fileVO.setDescription(getFileDescription() != null?escapeUnicode(StringEscapeUtils.escapeJava(getFileDescription())):null);
-		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.unescapeHtml(getNewsSynopsysDesc())));
+		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.escapeJava(getNewsSynopsysDesc())));
 		fileVO.setVisibility(getVisibility());
 		fileVO.setNewsImportanceId(getNewsimportance());
 		fileVO.setLocationScope(getLocationScope());
@@ -3482,7 +3482,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 								}
 							 }
 						   }
-					    }else if(fileSourceVO.getSourceFileList().size() == 1){
+					    }else if(fileSourceVO.getSourceFileList().size() == 1 || newsPart.getDeleted().equalsIgnoreCase("true")){
 
 							  //fileType = str[i].substring(str[i].indexOf("/")+1,str[i].length());
 							  //fileNames = systime.toString()+random.nextInt(IWebConstants.FILE_RANDOM_NO)+"."+fileType;

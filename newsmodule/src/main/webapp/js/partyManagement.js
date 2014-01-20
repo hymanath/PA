@@ -7458,9 +7458,9 @@ var descriptionValue = $("#newsreportfileDescription").val();
         var flag = oRecord.getData("tempvar");
 		if(loginUserType == "Admin")
 		{
-			str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromNewsReport('+fileId+')"/>';		
+			str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromReport('+fileId+')"/>';		
 		}
-		if(loginUserType == "SubUser" && flag)
+		if(loginUserType != "Admin" && flag)
 		{
 			str+='<img src="images/icons/delete.png" style="cursor: pointer;" onclick="deleteFileFromReport('+fileId+')"/>';		
 		}
@@ -7852,7 +7852,7 @@ function showORhideSearchOptions(divId){
 function deleteFileFromNewsReport(fileId)
 {
 	
-	var confirmFile = confirm('Do you want to delete file');
+	var confirmFile = confirm('Do you want to delete news?');
 	if(confirmFile)
 	{
 	var jsObj={
@@ -7867,7 +7867,7 @@ function deleteFileFromNewsReport(fileId)
 function deleteFileFromReport(fileId)
 {
 	
-	var confirmFile = confirm('Do you want to delete file');
+	var confirmFile = confirm('Do you want to delete news?');
 	if(confirmFile)
 	{
 	var jsObj={

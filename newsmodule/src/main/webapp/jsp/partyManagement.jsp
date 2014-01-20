@@ -729,21 +729,21 @@ function createNewParty()
 							<li>
 								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createDesignationDiv();"> Create Designation </a>
 							</li>
-						<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+					
 							<li>
 								<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();buildCreateNewsCategory();" >Create News Category</a>
 							</li>
-						</c:if>
+						
 						<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 						    <li>
 									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewSource();">Create New Source</a>
 							</li>
 						</c:if>
-						<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+						
 						    <li>
 									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createNewCandidateDiv();">Create New Candidate</a>
 							</li>
-						</c:if>
+					
 						    <li>
 									<a data-toggle="tab" style="cursor:pointer;color: #005580;" onclick="clearDivsForGallary();createEditCandidateDiv();">Edit Candidate</a>
 							</li>
@@ -3437,7 +3437,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='</div>';
 		str+='</div>';
 		str+='<div class="">';
-		str+='      <a href="javascript:void(0);" onclick="addNewFilePart(0);" class="btn btn-success span5" style="margin-left: 15px;">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
+		str+='      <a href="javascript:void(0);" onclick="addNewFilePart(0);" class="btn btn-success span5" style="margin-left: 15px;">Click here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
         str+='<div id="addNewSourceToExisting"></div>';
 
 
@@ -3545,7 +3545,7 @@ function addNewFileSource(){
 		str+='</div>';
 		str+='</div>';
 		str+='<div class="">';
-		str+='      <a href="javascript:void(0);" onclick="addNewFilePart('+addSource+');" class="btn btn-success span6">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
+		str+='      <a href="javascript:void(0);" onclick="addNewFilePart('+addSource+');" class="btn btn-success span6">Click here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
         $("#addNewSourceToExisting").append(str);
 		getSource(addSource+'addfilenewSource');
 	getLanguage(addSource+'addfilenewLanguage');

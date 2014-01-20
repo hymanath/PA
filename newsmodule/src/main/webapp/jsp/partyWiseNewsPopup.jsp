@@ -322,16 +322,25 @@ function getNewsForLocation()
 function getNewsForPagination(num)
  {
 	var locValue = "";
+	var locationName1 ="";
 	if(scope  == "District")
 	{
 		locValue = $("#userAccessDistrictList option:selected").val();
+		locationName1 = $('#userAccessDistrictList option:selected').text();
 	}
 	else
 	{
 		locValue = $("#userAccessConstituencyList option:selected").val();
+		locationName1 = $('#userAccessConstituencyList option:selected').text();
+	}
+	if(locationName1 !=""){
+	  locationName = locationName1;
 	}
 	if(locValue == null)
 		locValue = locationValue;
+		if(locValue == 0)
+		return;
+		$('#boxHeading1').html('<h4>'+locationName +' '+scope +' Latest News Updates</h4>');
 	$('#imageForMail').css("display","block");
 	var fromDtr = $('#existingFromText').val();
 	var toDtr = $('#existingToText').val();

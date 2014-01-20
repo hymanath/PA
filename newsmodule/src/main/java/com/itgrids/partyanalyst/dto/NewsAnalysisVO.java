@@ -35,6 +35,9 @@ public class NewsAnalysisVO implements Serializable {
 	 private Long destiBenifitId;
 	 private String sorceCandName;
 	 private String destCandName;
+	 private String sourceType;
+	 private String destiType;
+	 private String considerParty;
 	 
 	 
 	 
@@ -256,6 +259,32 @@ public class NewsAnalysisVO implements Serializable {
 	public void setDestiBenifitId(Long destiBenifitId) {
 		this.destiBenifitId = destiBenifitId;
 	}
+
+	public String getSourceType() {
+		return sourceType;
+	}
+
+	public void setSourceType(String sourceType) {
+		this.sourceType = sourceType;
+	}
+
+	public String getDestiType() {
+		return destiType;
+	}
+
+	public void setDestiType(String destiType) {
+		this.destiType = destiType;
+	}
+
+	public String getConsiderParty() {
+		return considerParty;
+	}
+
+	public void setConsiderParty(String considerParty) {
+		this.considerParty = considerParty;
+	}
+
+	
 
 	
 }

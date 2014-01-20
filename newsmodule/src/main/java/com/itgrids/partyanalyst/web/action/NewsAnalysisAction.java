@@ -57,7 +57,9 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	private Long sourceBenifitId;
 	private Long destiBenifitId;
 	private Long type;
-	
+	private String sourceType;
+	private String destiType;
+	private String considerParty;
 	
 	/**
 	 * @return the type
@@ -283,6 +285,30 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		this.destiBenifitId = destiBenifitId;
 	}
 
+	public String getSourceType() {
+		return sourceType;
+	}
+
+	public void setSourceType(String sourceType) {
+		this.sourceType = sourceType;
+	}
+
+	public String getDestiType() {
+		return destiType;
+	}
+
+	public void setDestiType(String destiType) {
+		this.destiType = destiType;
+	}
+
+	public String getConsiderParty() {
+		return considerParty;
+	}
+
+	public void setConsiderParty(String considerParty) {
+		this.considerParty = considerParty;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -460,6 +486,9 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
     		 vo.setBenifitsFor(getBenifitsFor());
     		 vo.setDestiBenifitId(getDestiBenifitId());
     		 vo.setDestiBenifitId(getDestiBenifitId());
+    		 vo.setSourceType(getSourceType());
+    		 vo.setDestiType(getDestiType());
+    		 vo.setConsiderParty(getConsiderParty());
     		 if(getType() != null){
     		   vo.setName(getType().toString());
     		 }else{

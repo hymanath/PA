@@ -7745,7 +7745,7 @@ function addNewFileSource(){
 		str+='</div>';
 		str+='</div>';
 		str+='<div class="" id="addButtonDivId'+addSource+'">';
-		str+='      <a href="javascript:void(0);" onclick="addNewFilePart('+addSource+',0);" class="btn btn-success span6">Clik here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
+		str+='      <a href="javascript:void(0);" onclick="addNewFilePart('+addSource+',0);" class="btn btn-success span6">Click here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another file to this source                   </a></div></div>';
         $("#addNewsSourceToExisting1").append(str);
 		
 		getSource(addSource+'addfilenewSource');

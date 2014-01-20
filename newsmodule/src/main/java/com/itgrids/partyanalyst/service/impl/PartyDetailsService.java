@@ -2504,7 +2504,7 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 result.add(file);
 		}
 		}catch (Exception e) {
-			System.out.println("Exception occured in getNewsCountForALocation1"+e);
+			log.error("Exception occured in getNewsCountForALocation1",e);
 		}
 		return result;
 	}

@@ -3525,10 +3525,10 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 		{
 		 StringBuilder str = new StringBuilder();
 			str.append("select distinct count(model.fileId),model.userAddress.constituency.constituencyId from File model where " +
-					"model.regionScopes.regionScopesId =:regionScopesId and model.isDeleted != 'Y' and " +
+					" model.isDeleted != 'Y' and " +
 					"model.isPrivate != 'Y' group by model.userAddress.constituency.constituencyId");
 			Query query = getSession().createQuery(str.toString());
-			query.setParameter("regionScopesId", regionScopeId);
+			//query.setParameter("regionScopesId", regionScopeId);
 			return query.list();
 		}
 		 @SuppressWarnings("unchecked")
@@ -3536,10 +3536,10 @@ public List<Object[]> getNewsByForConstituencyWithMuncipalityWithWards(NewsCount
 			{
 			 StringBuilder str = new StringBuilder();
 				str.append(" select distinct count(model.fileId),model.userAddress.district.districtId from File model where " +
-						"model.regionScopes.regionScopesId =:regionScopesId and model.isDeleted != 'Y' and " +
+						"  model.isDeleted != 'Y' and " +
 						"model.isPrivate != 'Y' group by model.userAddress.district.districtId");
 				Query query = getSession().createQuery(str.toString());
-				query.setParameter("regionScopesId", regionScopeId);
+				//query.setParameter("regionScopesId", regionScopeId);
 				return query.list();
 			}
 	 

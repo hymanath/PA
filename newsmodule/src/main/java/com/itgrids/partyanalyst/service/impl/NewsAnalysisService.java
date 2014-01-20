@@ -197,29 +197,29 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		}
 		try{
 			if(analysisVO.isByCategory()){
-				/*if(analysisVO.isBySourceCand() || analysisVO.isByDestiCand()){
-				 return getResults(analysisVO);
-				}else{*/
+				if((analysisVO.isBySourceCand() || analysisVO.isByDestiCand()) && (analysisVO.isSourceCand() || analysisVO.isSourceParty() || analysisVO.isDestiCand() || analysisVO.isDestiParty())){
+				 return getResultsNew(analysisVO,"Category");
+				}else{
 				 return getSourceDestinationCategoryPresentQuery(analysisVO);
-				//}				 
+				}				 
 			}else if(analysisVO.isByKeyword()){
-				/*if(analysisVO.isBySourceCand() || analysisVO.isByDestiCand()){
-				  return getResultsForTwo(analysisVO);
-				}else{*/
+				if((analysisVO.isBySourceCand() || analysisVO.isByDestiCand()) && (analysisVO.isSourceCand() || analysisVO.isSourceParty() || analysisVO.isDestiCand() || analysisVO.isDestiParty())){
+				  return getResultsNew(analysisVO,"Keyword");
+				}else{
 				  return getSourceDestinationKeywordPresentQuery(analysisVO);
-				//}
+				}
 			}
-			else if(( ((analysisVO.isDestiCand() || analysisVO.isDestiParty()) && !analysisVO.isSourceCand() && !analysisVO.isSourceParty()) || ((analysisVO.isSourceCand() ||  analysisVO.isSourceParty()) && !analysisVO.isDestiCand() && !analysisVO.isDestiParty())) && !analysisVO.isByKeyword() && !analysisVO.isByCategory() && !analysisVO.isSourcePresent() && !analysisVO.isLocationPresent()){
+			else if(( ((analysisVO.isDestiCand() || analysisVO.isDestiParty()) && !analysisVO.isSourceCand() && !analysisVO.isSourceParty()) || ((analysisVO.isSourceCand() ||  analysisVO.isSourceParty()) && !analysisVO.isDestiCand() && !analysisVO.isDestiParty())) && !analysisVO.isByKeyword() && !analysisVO.isByCategory() && !analysisVO.isSourcePresent() && !analysisVO.isLocationPresent() && !analysisVO.isByDestiCand() && !analysisVO.isBySourceCand()){
 				return getSourceDestinationKeywordPresentQueryByParty(analysisVO);
 			}
 			else if(!analysisVO.isByDestiCand() && !analysisVO.isBySourceCand() && !analysisVO.isByCategory() && !analysisVO.isByKeyword() && !analysisVO.isSourceCand() && !analysisVO.isSourceParty() && !analysisVO.isDestiCand() && !analysisVO.isDestiParty() && (analysisVO.isSourcePresent() || analysisVO.isLocationPresent() || analysisVO.getFromDate() != null || analysisVO.getToDate() != null )){
 				 return getOnlySourceDestinationPresent(analysisVO); 
 			}else{
-				/*if(analysisVO.isBySourceCand() || analysisVO.isByDestiCand()){
-					return getResultsForThree(analysisVO);
-				}else{*/
+				if((analysisVO.isBySourceCand() || analysisVO.isByDestiCand()) && (analysisVO.isSourceCand() || analysisVO.isSourceParty() || analysisVO.isDestiCand() || analysisVO.isDestiParty())){
+					return getResultsNew(analysisVO,"Others");
+				}else{
 				  return getSourceDestinationPresentIncludeCandidateParty(analysisVO);
-				//}
+				}
 			}
 		}catch(Exception e){
 			LOG.error("Exception rised in analyseNewsWithSelectedParameters ",e);
@@ -456,6 +456,15 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						}else if(vo.isDestiParty()){
 						   query.append(" and cpc.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+"  ");
 						}
+						if(vo.isLocationPresent()){	
+							if(vo.getLocationLvl().longValue() == 1){
+								 query.append( " and cpc.candidatePartyFile.file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+							}else if(vo.getLocationLvl().longValue() == 2){
+								query.append(" and cpc.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+							}else if(vo.getLocationLvl().longValue() == 3){
+								query.append(" and cpc.candidatePartyFile.file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+							}
+						}
 						if(vo.getFromDate() != null){
 							query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
 						}
@@ -486,7 +495,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						}
 						query.append("  cpc.gallary.gallaryId");
 		}
-		 return getDataForCategoryOrKeywordPresent( query.toString(),vo);
+		 return getDataForCategoryOrKeywordPresent( query.toString(),vo,null,null,false,"Category");
 	}
 	
 	public NewsAnalysisVO getSourceDestinationKeywordPresentQuery(AnalysisVO vo){
@@ -691,7 +700,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				    query.append(" cpk.keyword.keywordId");
 			}
 		}
-		return getDataForCategoryOrKeywordPresent(query.toString(),vo);
+		return getDataForCategoryOrKeywordPresent(query.toString(),vo,null,null,false,"Keyword");
 	}
 	
 	public NewsAnalysisVO getOnlySourceDestinationPresent(AnalysisVO vo){
@@ -1002,10 +1011,10 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				}
 			}
 		}
-		return getDataForSourceDestinationPresentIncludeCandidateParty(query.toString(),vo);
+		return getDataForSourceDestinationPresentIncludeCandidateParty(query.toString(),vo,null,null,false);
 	}
 	
-	public NewsAnalysisVO getDataForCategoryOrKeywordPresent(String query,AnalysisVO vo){
+	public NewsAnalysisVO getDataForCategoryOrKeywordPresent(String query,AnalysisVO vo,String sourceType,String destiType,boolean considerParty,String cagetOrKey){
 		NewsAnalysisVO returnVal = new NewsAnalysisVO();
 		List<String> levels = new ArrayList<String>();
 		returnVal.setLevels(levels);
@@ -1067,6 +1076,14 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			    countVO.setLocationId((Long)news[5]);
 			    countVO.setSourceId((Long)news[7]);
 			    countVO.setLocationLvl(vo.getLocationLvl());
+			    countVO.setSourceType(sourceType);
+			    countVO.setDestiType(destiType);
+			    if(considerParty){
+			     countVO.setConsiderParty("true");
+			    }else{
+			    	countVO.setConsiderParty("false");
+			    }
+			    	
 			    if(vo.isByCategory()){
 			      countVO.setCategoryId((Long)news[9]);
 			    }
@@ -1177,7 +1194,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			    	sourCandidate.setRowSpan(sourCandidate.getRowSpan()+categKeywordMap.size());
 			    	if(categKeyLvl){
 			    		if(!(categKeywordKeys.size() == 1 && categKeywordKeys.contains(null))){
-			    			levels.add("Category/Keyword");
+			    			levels.add(cagetOrKey);
 			    	    }
 			    		categKeyLvl = false;
 			    	}
@@ -1387,7 +1404,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	    
 		return returnVal;
 	}*/
-	public NewsAnalysisVO getDataForSourceDestinationPresentIncludeCandidateParty(String query,AnalysisVO vo){
+	public NewsAnalysisVO getDataForSourceDestinationPresentIncludeCandidateParty(String query,AnalysisVO vo,String sourceType,String destiType,boolean considerParty){
 		NewsAnalysisVO returnVal = new NewsAnalysisVO();
 		List<String> levels = new ArrayList<String>();
 		returnVal.setLevels(levels);
@@ -1411,6 +1428,8 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		
 	    List<Object[]>	newsList = fileDAO.getNewsBySearchCriteria(query,vo);
 	 // 0 count  1 source candidateId 2 source candidateName  3 candidateId 4 candidateName 5 locationId 6 locationName 7 sourceId 8 sourceName  9 benifits
+	    if(newsList == null || newsList.size() == 0)
+	    	return new NewsAnalysisVO();
 	    for(Object[] news:newsList){
 	    	souCandidateMap = newsCountsMap.get((Long)news[5]);
 			if(souCandidateMap == null){
@@ -1439,6 +1458,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			    countVO.setLocationId((Long)news[5]);
 			    countVO.setLocationLvl(vo.getLocationLvl());
 			    countVO.setSourceId((Long)news[7]);
+			    countVO.setSourceType(sourceType);
+			    countVO.setDestiType(destiType);
+			    if(considerParty){
+				     countVO.setConsiderParty("true");
+				    }else{
+				    	countVO.setConsiderParty("false");
+				    }
 			    if(vo.isBySourceCand()){
 			    	countVO.setSourceCandId((Long)news[1]);
 			    }
@@ -1560,7 +1586,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 					queryData.append(" and model.file.fileDate <=:toDate  ");
 				}
 			 System.out.println(queryData);
-			 queryCount.append("select distinct count(model.file.fileId)   " +
+			 queryCount.append("select  count(distinct model.file.fileId)   " +
 						" from  CandidatePartyFile model  where model.file.isDeleted != 'Y' and model.sourceCandidate.candidateId = "+vo.getSourceCandId()+" " +
 								" and model.destinationCandidate.candidateId = "+vo.getDestiCandId()+" and " +
 								" model.sourceParty.partyId = "+vo.getSourcePartyId()+" and " +
@@ -1590,7 +1616,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				queryData.append("select distinct  model.fileTitle ,model.fileDescription ," +
 						" model.fileDate ,model.filePath ,model.fileId ,model.font.fontId,model.descFont.fontId  " +
 						" from File model  ");		
-				queryCount.append("select distinct count(model.fileId) from File model ");
+				queryCount.append("select  count(distinct model.fileId) from File model ");
 				if((vo.getSourceCandId()!= null && vo.getSourceCandId() > 0) || (vo.getDestiCandId() != null && vo.getDestiCandId() > 0) || (vo.getSourcePartyId() != null && vo.getSourcePartyId() > 0 ) || (vo.getDestiPartyId() != null && vo.getDestiPartyId() >0 )){
 					query.append(",CandidatePartyFile cpf ");
 					cpfQuery.append(" and model.fileId = cpf.file.fileId  ");
@@ -1630,18 +1656,62 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				query.append(fslQuery);
 				query.append(cpcQuery);
 				query.append(cpkQuery);
-				
-				if(vo.getSourceCandId()!= null && vo.getSourceCandId() > 0){
-					query.append(" and cpf.sourceCandidate.candidateId ="+vo.getSourceCandId()+" ");
-				}
-				if(vo.getDestiCandId()!= null && vo.getDestiCandId() > 0){
-					query.append(" and cpf.destinationCandidate.candidateId ="+vo.getDestiCandId()+" ");
-				}
-				if(vo.getSourcePartyId()!= null && vo.getSourcePartyId() > 0){
-					query.append(" and cpf.sourceParty.partyId ="+vo.getSourcePartyId()+" ");
-				}
-				if(vo.getDestiPartyId()!= null && vo.getDestiPartyId() > 0){
-					query.append(" and cpf.destinationParty.partyId ="+vo.getDestiPartyId()+" ");
+				if(vo.getConsiderParty() != null && vo.getConsiderParty().equalsIgnoreCase("true")){
+				  if(vo.getSourceType() == null || vo.getSourceType().equalsIgnoreCase("null")){
+					if(vo.getSourceCandId()!= null && vo.getSourceCandId() > 0){
+						query.append(" and cpf.sourceCandidate.candidateId ="+vo.getSourceCandId()+" ");
+					}
+					if(vo.getSourcePartyId()!= null && vo.getSourcePartyId() > 0){
+						query.append(" and cpf.sourceParty.partyId ="+vo.getSourcePartyId()+" ");
+					}
+				  }else if(vo.getSourceType().equalsIgnoreCase("party")){
+					  query.append(" and cpf.sourceCandidate.candidateId is null ");
+					  query.append(" and cpf.sourceParty.partyId ="+vo.getSourceCandId()+" ");
+				  }else if(vo.getSourceType().equalsIgnoreCase("no")){
+					  query.append(" and cpf.sourceCandidate.candidateId is null ");
+					  query.append(" and cpf.sourceParty.partyId is null  ");
+				  }else if(vo.getSourceType().equalsIgnoreCase("noSource")){
+					  if(vo.getSourceCandId() != null && vo.getSourceCandId() > 0){
+						  query.append(" and cpf.sourceCandidate.candidateId ="+vo.getSourceCandId()+" ");
+					  }
+					  if(vo.getSourcePartyId()!= null && vo.getSourcePartyId() > 0){
+							query.append(" and cpf.sourceParty.partyId ="+vo.getSourcePartyId()+" ");
+					  }
+				  }
+				  if(vo.getDestiType() == null || vo.getDestiType().equalsIgnoreCase("null")){
+						if(vo.getDestiCandId()!= null && vo.getDestiCandId() > 0){
+							query.append(" and cpf.destinationCandidate.candidateId ="+vo.getDestiCandId()+" ");
+						}
+						if(vo.getDestiPartyId()!= null && vo.getDestiPartyId() > 0){
+							query.append(" and cpf.destinationParty.partyId ="+vo.getDestiPartyId()+" ");
+						}
+				  }else if(vo.getDestiType().equalsIgnoreCase("party")){
+					  query.append(" and cpf.destinationCandidate.candidateId is null ");
+					  query.append(" and cpf.destinationParty.partyId ="+vo.getDestiCandId()+" ");
+				  }else if(vo.getDestiType().equalsIgnoreCase("no")){
+					  query.append(" and cpf.destinationCandidate.candidateId is null ");
+					  query.append(" and cpf.destinationParty.partyId is null  ");
+				  }else if(vo.getDestiType().equalsIgnoreCase("noDesti")){
+				    if(vo.getDestiCandId()!= null && vo.getDestiCandId() > 0){
+						query.append(" and cpf.destinationCandidate.candidateId ="+vo.getDestiCandId()+" ");
+					}
+					if(vo.getDestiPartyId()!= null && vo.getDestiPartyId() > 0){
+						query.append(" and cpf.destinationParty.partyId ="+vo.getDestiPartyId()+" ");
+					}
+				  }
+				}else{
+					if(vo.getSourceCandId()!= null && vo.getSourceCandId() > 0){
+						query.append(" and cpf.sourceCandidate.candidateId ="+vo.getSourceCandId()+" ");
+					}
+					if(vo.getDestiCandId()!= null && vo.getDestiCandId() > 0){
+						query.append(" and cpf.destinationCandidate.candidateId ="+vo.getDestiCandId()+" ");
+					}
+					if(vo.getSourcePartyId()!= null && vo.getSourcePartyId() > 0){
+						query.append(" and cpf.sourceParty.partyId ="+vo.getSourcePartyId()+" ");
+					}
+					if(vo.getDestiPartyId()!= null && vo.getDestiPartyId() > 0){
+						query.append(" and cpf.destinationParty.partyId ="+vo.getDestiPartyId()+" ");
+					}
 				}
 				if(vo.getLocationLvl()!= null && vo.getLocationLvl() > 0 && vo.getLocationId()!= null && vo.getLocationId() > 0){
 					if(vo.getLocationLvl() == 1){
@@ -2704,7 +2774,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 						}
 						query.append("  cpc.gallary.gallaryId");
 		}
-		 return getDataForCategoryOrKeywordPresent( query.toString(),vo);
+		 return getDataForCategoryOrKeywordPresent( query.toString(),vo,null,null,false,"Category");
 	}
 	
 	
@@ -2924,7 +2994,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				    query.append(" cpk.keyword.keywordId");
 			}
 		}
-		return getDataForCategoryOrKeywordPresent(query.toString(),vo);
+		return getDataForCategoryOrKeywordPresent(query.toString(),vo,null,null,false,"Keyword");
 	}
 	
 	public NewsAnalysisVO getSourceDestinationPresentIncludeCandidatePartyForParty(AnalysisVO vo,Object candidate,Object party,Long type){
@@ -3148,10 +3218,14 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				}
 			}
 		}
-		return getDataForSourceDestinationPresentIncludeCandidateParty(query.toString(),vo);
+		return getDataForSourceDestinationPresentIncludeCandidateParty(query.toString(),vo,null,null,false);
 	}
 	
 	public void populateToVO(NewsAnalysisVO from,NewsAnalysisVO to){
+	 if(from != null){
+		 if(from.isSubListPresent()){
+			 to.setSubListPresent(true);
+		 }
 		if(from.getBuildMethod() != null){
 			to.setBuildMethod(from.getBuildMethod());
 		}
@@ -3173,7 +3247,788 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				to.setSubList(from.getSubList());
 			}
 		}
+	 }
 	}
 
+	public NewsAnalysisVO getResultsNew(AnalysisVO vo,String type){
+	    NewsAnalysisVO returnVal = new NewsAnalysisVO();
+		//if who and whome analysis required
+		if(vo.isBySourceCand() && vo.isByDestiCand()){
+			//in who candidaie or party and whome candidate or party selected
+			if((vo.isSourceCand() || vo.isSourceParty()) && (vo.isDestiCand() || vo.isDestiParty())){
+				if(vo.isSourceCand() && vo.isDestiCand()){
+				   if(type.equalsIgnoreCase("Category")){              
+					returnVal =  getSourceDestinationCategoryPresentQuery(vo);
+				   }else if(type.equalsIgnoreCase("Keyword")){
+				    returnVal =  getSourceDestinationKeywordPresentQuery(vo);
+				   }else if(type.equalsIgnoreCase("Others")){
+				    returnVal =  getSourceDestinationPresentIncludeCandidateParty(vo);
+				   }
+				}else if(vo.isSourceCand() && vo.isDestiParty()){
+					//getting news from who candidate on only whome party not candidate
+					NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,true,false,false,false,true,false,type,null,"party");
+					//getting news from who candidate on candidates in whome party
+					NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,true,false,false,true,false,false,type,null,null);//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)	
+					 populateToVO(returnVal1,returnVal);
+			         populateToVO(returnVal2,returnVal);
+				}else if(vo.isSourceParty() && vo.isDestiCand()){
+					NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,true,false,true,false,false,type,"party",null);
+					NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,true,false,false,true,false,false,type,null,null);//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)	
+                     populateToVO(returnVal1,returnVal);
+			         populateToVO(returnVal2,returnVal);					
+				}else if(vo.isSourceParty() && vo.isDestiParty()){
+					NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,true,false,false,true,false,type,"party","party");
+					NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,false,true,false,true,false,false,type,"party",null);
+					NewsAnalysisVO returnVal3 = getAllNewsCountDetails(vo,true,false,false,false,true,false,type,null,"party");
+					NewsAnalysisVO returnVal4 = getAllNewsCountDetails(vo,true,false,false,true,false,false,type,null,null);//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)
+                     populateToVO(returnVal1,returnVal);
+			         populateToVO(returnVal2,returnVal);
+			         populateToVO(returnVal3,returnVal);
+			         populateToVO(returnVal4,returnVal);					
+				}
+			}else if(vo.isSourceCand() || vo.isSourceParty()){
+                if(vo.isSourceCand()){
+                	NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,true,false,false,false,true,false,type,null,"party");
+                	NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,true,false,false,true,false,false,type,null,null);//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)
+					NewsAnalysisVO returnVal3 = getAllNewsCountDetails(vo,true,false,false,false,false,true,type,null,"no");
+					 populateToVO(returnVal1,returnVal);
+					 populateToVO(returnVal2,returnVal);
+					 populateToVO(returnVal3,returnVal);
+				}else if(vo.isSourceParty()){
+					NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,true,false,false,true,false,type,"party","party");
+					NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,false,true,false,true,false,false,type,"party",null);
+					NewsAnalysisVO returnVal3 = getAllNewsCountDetails(vo,false,true,false,false,false,true,type,"party","no");				
+					NewsAnalysisVO returnVal4 = getAllNewsCountDetails(vo,true,false,false,false,true,false,type,null,"party");
+					NewsAnalysisVO returnVal5 = getAllNewsCountDetails(vo,true,false,false,true,false,false,type,null,null);//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)
+					NewsAnalysisVO returnVal6 = getAllNewsCountDetails(vo,true,false,false,false,false,true,type,null,"no");
+					populateToVO(returnVal1,returnVal);
+			        populateToVO(returnVal2,returnVal);
+			        populateToVO(returnVal3,returnVal);
+			        populateToVO(returnVal4,returnVal);
+			        populateToVO(returnVal5,returnVal);
+                    populateToVO(returnVal6,returnVal);
+				}
+			}else if(vo.isDestiCand() || vo.isDestiParty()){
+				if(vo.isDestiCand()){
+					NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,true,false,true,false,false,type,"party",null);
+					NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,true,false,false,true,false,false,type,null,null);//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)
+					NewsAnalysisVO returnVal3 = getAllNewsCountDetails(vo,false,false,true,true,false,false,type,"no",null);
+					populateToVO(returnVal1,returnVal);
+					populateToVO(returnVal2,returnVal);
+					populateToVO(returnVal3,returnVal);
+				}else if(vo.isDestiParty()){
+					NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,true,false,false,true,false,type,"party","party");					
+					NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,true,false,false,false,true,false,type,null,"party");//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)
+					NewsAnalysisVO returnVal3 = getAllNewsCountDetails(vo,false,false,true,false,true,false,type,"no","party");
+					NewsAnalysisVO returnVal4 = getAllNewsCountDetails(vo,false,true,false,true,false,false,type,"party",null);
+					NewsAnalysisVO returnVal5 = getAllNewsCountDetails(vo,true,false,false,true,false,false,type,null,null);//(sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination)
+					NewsAnalysisVO returnVal6 = getAllNewsCountDetails(vo,false,false,true,true,false,false,type,"no",null);
+                     populateToVO(returnVal1,returnVal);
+					 populateToVO(returnVal2,returnVal);
+					 populateToVO(returnVal3,returnVal);
+					 populateToVO(returnVal4,returnVal);
+					 populateToVO(returnVal5,returnVal);
+					 populateToVO(returnVal6,returnVal);					
+				}
+			}
+		}else if(vo.isBySourceCand()){
+			if(vo.isSourceCand()){
+				returnVal = getAllNewsCountDetails(vo,true,false,false,false,false,false,type,null,"noDesti");
+			}
+			else if(vo.isSourceParty()){
+				NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,true,false,false,false,false,type,"party","noDesti");
+				NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,true,false,false,false,false,false,type,null,"noDesti");	
+				populateToVO(returnVal1,returnVal);
+				populateToVO(returnVal2,returnVal);
+			}else{
+				NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,true,false,false,false,false,type,"party","noDesti");
+				NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,true,false,false,false,false,false,type,null,"noDesti");			
+				NewsAnalysisVO returnVal3 = getAllNewsCountDetails(vo,false,false,true,false,false,false,type,"no","noDesti");
+				populateToVO(returnVal1,returnVal);
+				populateToVO(returnVal2,returnVal);
+				populateToVO(returnVal3,returnVal);
+			}
+		}else if(vo.isByDestiCand()){
+			if(vo.isDestiCand()){
+				returnVal = getAllNewsCountDetails(vo,false,false,false,true,false,false,type,"noSource",null);
+			}
+			else if(vo.isDestiParty()){
+				NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,false,false,false,true,false,type,"noSource","party");
+				NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,false,false,false,true,false,false,type,"noSource",null);	
+                populateToVO(returnVal1,returnVal);
+				populateToVO(returnVal2,returnVal);
+			}else{
+				NewsAnalysisVO returnVal1 = getAllNewsCountDetails(vo,false,false,false,false,true,false,type,"noSource","party");
+				NewsAnalysisVO returnVal2 = getAllNewsCountDetails(vo,false,false,false,true,false,false,type,"noSource",null);		
+                NewsAnalysisVO returnVal3 = getAllNewsCountDetails(vo,false,false,false,false,false,true,type,"noSource","no");
+				populateToVO(returnVal1,returnVal);
+				populateToVO(returnVal2,returnVal);
+				populateToVO(returnVal3,returnVal);
+			}
+		}
+       return returnVal;
+	}
+	public NewsAnalysisVO getAllNewsCountDetails(AnalysisVO vo,boolean sourceCandidate,boolean sourceParty,boolean noSource,boolean destinationCandidate,boolean destinationParty,boolean noDestination,String type,String sourceType,String destiType){
+	  if(type.equalsIgnoreCase("Category")){
+	    return getNewsByCategoryWise(vo,sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination,sourceType,destiType);
+	  }else if(type.equalsIgnoreCase("Keyword")){
+	    return getSourceDestinationKeywordPresentQueryNew(vo,vo.isSourceCand(),vo.isDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination,sourceType,destiType);
+	  }else if(type.equalsIgnoreCase("Others")){
+	    return getSourceDestinationPresentIncludeCandidateParty(vo,sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination,sourceType,destiType);
+	  }
+	  else return null;
+	}
+	public NewsAnalysisVO getNewsByCategoryWise(AnalysisVO vo,boolean sourceCandidate,boolean sourceParty,boolean noSource,boolean destinationCandidate,boolean destinationParty,boolean noDestination,String sourceType,String destiType){
+		StringBuilder query = new StringBuilder();
+		// bySourceCand analyse by who candidate
+		// byDestiCand analyse by whome candidate
+		// sourcePresent ex: eendau,sakshi,andhra jyothi
+		// locationPresent ex: state ap,district ranga reddy,ac ,pc
+		// sourceCand if source candidate is selected
+		// sourceParty if source party is selected
+		// destiCand if destination candidate is selected
+		// destiParty if destination party is selected
+		query.append("select ");
+		query.append("  count(distinct cpc.candidatePartyFile.file.fileId) ,");
+        query.append(getCandidatePartyQueryForKeywordSource("cpc.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+		if(vo.isLocationPresent()){
+			if(vo.getLocationLvl().longValue() == 1){
+				 query.append(" cpc.candidatePartyFile.file.userAddress.district.districtId,cpc.candidatePartyFile.file.userAddress.district.districtName,");
+			}else if(vo.getLocationLvl().longValue() == 2){
+				query.append(" cpc.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId,cpc.candidatePartyFile.file.userAddress.parliamentConstituency.name,");
+			}else if(vo.getLocationLvl().longValue() == 3){
+				query.append(" cpc.candidatePartyFile.file.userAddress.constituency.constituencyId,cpc.candidatePartyFile.file.userAddress.constituency.name,");
+			} 
+		}else{
+			query.append(" cast(null as char),cast(null as char),");
+		}
+		if(!vo.isSourcePresent()){
+			query.append(" cast(null as char),cast(null as char),");
+		}
+		if(vo.isSourcePresent()){
+			if(vo.isLocationPresent()){
+				
+				
+			   query.append(" fsl.source.sourceId,fsl.source.source,cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc,FileSourceLanguage fsl " +
+			   		" where cpc.candidatePartyFile.file.isDeleted !='Y' and cpc.candidatePartyFile.file.fileId = fsl.file.fileId ");
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( " and fsl.file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append(" and fsl.file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append(" and fsl.file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+				}
+				if(vo.isSourceCand()){
+				    query.append(" and cpc.candidatePartyFile.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpc.candidatePartyFile.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpc.candidatePartyFile.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpc.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpc.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpc.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpc.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+			   query.append(" and fsl.source.sourceId in ("+vo.getSourceIds()+") and cpc.gallary.gallaryId in ("+vo.getGallaryKeyWordIds()+") group by ");
+			   			   
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( "  fsl.file.userAddress.district.districtId ,");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append(" fsl.file.userAddress.parliamentConstituency.constituencyId ,");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append(" fsl.file.userAddress.constituency.constituencyId , ");
+				}			   
+			   query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpc.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+			   query.append(" fsl.source.sourceId ,cpc.gallary.gallaryId ");
+			}else{
+				query.append("  fsl.source.sourceId,fsl.source.source,cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc" +
+				   		" ,FileSourceLanguage fsl where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.file.fileId = fsl.file.fileId and fsl.source.sourceId in ("+vo.getSourceIds()+") ");
+						if(vo.isSourceCand()){
+							query.append(" and cpc.candidatePartyFile.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+						}else if(vo.isSourceParty()){
+						   query.append(" and cpc.candidatePartyFile.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+						}
+						if(vo.isDestiCand()){
+						  query.append(" and cpc.candidatePartyFile.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+						}else if(vo.isDestiParty()){
+						   query.append(" and cpc.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+						}
+						query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpc.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+				
+						if(vo.getFromDate() != null){
+							query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
+						}
+						if(vo.getToDate() != null){
+							query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
+						}
+						if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+							query.append(" and cpc.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+						}
+		                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+		                	 query.append(" and cpc.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+						}
+				query.append("  and cpc.gallary.gallaryId in ("+vo.getGallaryKeyWordIds()+") group by  ");
+				query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpc.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+			  
+				query.append(" fsl.source.sourceId ,cpc.gallary.gallaryId");
+			}
+		}else{
+			query.append(" cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted !='Y' ");
+			query.append("  and cpc.gallary.gallaryId in ("+vo.getGallaryKeyWordIds()+")  ");
+			          if(vo.isSourceCand()){
+							query.append(" and cpc.candidatePartyFile.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+						}else if(vo.isSourceParty()){
+						   query.append(" and cpc.candidatePartyFile.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+						}
+						if(vo.isDestiCand()){
+						  query.append(" and cpc.candidatePartyFile.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+						}else if(vo.isDestiParty()){
+						   query.append(" and cpc.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+"  ");
+						}
+                        query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpc.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+						if(vo.isLocationPresent()){	
+							if(vo.getLocationLvl().longValue() == 1){
+								 query.append( " and cpc.candidatePartyFile.file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+							}else if(vo.getLocationLvl().longValue() == 2){
+								query.append(" and cpc.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+							}else if(vo.getLocationLvl().longValue() == 3){
+								query.append(" and cpc.candidatePartyFile.file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+							}
+						}
+						if(vo.getFromDate() != null){
+							query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
+						}
+						if(vo.getToDate() != null){
+							query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
+						}
+						if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+							query.append(" and cpc.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+						}
+		                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+		                	 query.append(" and cpc.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+						}
+						query.append(" group by ");
+						if(vo.isLocationPresent()){
+							if(vo.getLocationLvl().longValue() == 1){
+								 query.append( "  cpc.candidatePartyFile.file.userAddress.district.districtId ,");
+							}else if(vo.getLocationLvl().longValue() == 2){
+								query.append(" cpc.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId ,");
+							}else if(vo.getLocationLvl().longValue() == 3){
+								query.append(" cpc.candidatePartyFile.file.userAddress.constituency.constituencyId , ");
+							}
+						}
+						query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpc.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+			  
+						query.append("  cpc.gallary.gallaryId");
+		}
+		 return getDataForCategoryOrKeywordPresent( query.toString(),vo,sourceType,destiType,true,"Category");
+	}	
 	
+	public StringBuilder getCandidatePartyQueryForKeywordSource(String table,boolean byWho,boolean byWhome,boolean sourceCandidate,boolean sourceParty,boolean noSource,boolean destinationCandidate,boolean destinationParty,boolean noDestination){
+		StringBuilder returnQuery = new StringBuilder();
+		if(byWho){
+			if(sourceCandidate){
+				returnQuery.append(" "+table+".sourceCandidate.candidateId,"+table+".sourceCandidate.lastname, ");
+			}else if(sourceParty){
+				returnQuery.append(" "+table+".sourceParty.partyId,"+table+".sourceParty.shortName, ");
+			}else if(noSource){
+				returnQuery.append(" 0l,'', ");
+			}
+		}else{
+			returnQuery.append(" cast(null as char),cast(null as char),");
+		}
+		if(byWhome){
+			if(destinationCandidate){
+				returnQuery.append(" "+table+".destinationCandidate.candidateId,"+table+".destinationCandidate.lastname, ");
+			}else if(destinationParty){
+				returnQuery.append(" "+table+".destinationParty.partyId,"+table+".destinationParty.shortName, ");
+			}else if(noDestination){
+				returnQuery.append(" 0l,'', ");
+			}
+		}else{
+			returnQuery.append(" cast(null as char),cast(null as char),");
+		}
+		return returnQuery;
+	}
+	public StringBuilder getCandidatePartyQueryGroupByConditionForKeywordSource(String table,boolean byWho,boolean byWhome,boolean sourceCandidate,boolean sourceParty,boolean noSource,boolean destinationCandidate,boolean destinationParty,boolean noDestination){
+		StringBuilder returnQuery = new StringBuilder();
+		if(byWho){
+			if(sourceCandidate){
+				returnQuery.append(" "+table+".sourceCandidate.candidateId, ");
+			}else if(sourceParty){
+				returnQuery.append(" "+table+".sourceParty.partyId, ");
+			}
+		}
+		if(byWhome){
+			if(destinationCandidate){
+				returnQuery.append(" "+table+".destinationCandidate.candidateId, ");
+			}else if(destinationParty){
+				returnQuery.append(" "+table+".destinationParty.partyId, ");
+			}
+		}
+		return returnQuery;
+	}
+	
+	public StringBuilder getCandidatePartyQueryAndConditionForKeywordSource(String table,boolean byWho,boolean byWhome,boolean sourceCandidate,boolean sourceParty,boolean noSource,boolean destinationCandidate,boolean destinationParty,boolean noDestination){
+		StringBuilder returnQuery = new StringBuilder();
+		if(byWho){
+			if(sourceCandidate){
+				returnQuery.append(" and "+table+".sourceCandidate.candidateId is not null ");
+			}else if(sourceParty){
+				returnQuery.append(" and "+table+".sourceParty.partyId is not null and "+table+".sourceCandidate.candidateId is null ");
+			}else if(noSource){
+				returnQuery.append(" and "+table+".sourceParty.partyId is null and "+table+".sourceCandidate.candidateId is null ");
+			}
+		}
+		if(byWhome){
+			if(destinationCandidate){
+				returnQuery.append(" and "+table+".destinationCandidate.candidateId is not null ");
+			}else if(destinationParty){
+				returnQuery.append(" and "+table+".destinationParty.partyId is not null and "+table+".destinationCandidate.candidateId is null ");
+			}else if(noDestination){
+				returnQuery.append(" and "+table+".destinationParty.partyId is null and "+table+".destinationCandidate.candidateId is null ");
+			}
+		}
+		return returnQuery;
+	}
+	public NewsAnalysisVO getSourceDestinationKeywordPresentQueryNew(AnalysisVO vo,boolean byWho,boolean byWhome,boolean sourceCandidate,boolean sourceParty,boolean noSource,boolean destinationCandidate,boolean destinationParty,boolean noDestination,String sourceType,String destiType){
+		StringBuilder query = new StringBuilder();
+		query.append("select  ");
+		query.append("  count(distinct cpk.candidatePartyFile.file.fileId) ,");
+		query.append(getCandidatePartyQueryForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+		if(vo.isLocationPresent()){
+			if(vo.getLocationLvl().longValue() == 1){
+				 query.append("cpk.candidatePartyFile.file.userAddress.district.districtId,cpk.candidatePartyFile.file.userAddress.district.districtName,");
+			}else if(vo.getLocationLvl().longValue() == 2){
+				query.append(" cpk.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId,cpk.candidatePartyFile.file.userAddress.parliamentConstituency.name,");
+			}else if(vo.getLocationLvl().longValue() == 3){
+				query.append(" cpk.candidatePartyFile.file.userAddress.constituency.constituencyId,cpk.candidatePartyFile.file.userAddress.constituency.name,");
+			} 
+		}else{
+			query.append(" cast(null as char),cast(null as char),");
+		}
+		if(!vo.isSourcePresent()){
+			query.append(" cast(null as char),cast(null as char),");
+		}
+		if(vo.isSourcePresent()){
+			if(vo.isLocationPresent()){
+			   query.append(" fsl.source.sourceId,fsl.source.source,cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk,FileSourceLanguage fsl " +
+			   		" where cpk.candidatePartyFile.file.isDeleted !='Y' and cpk.candidatePartyFile.file.fileId = fsl.file.fileId ");
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( " and fsl.file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append("and fsl.file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append("and fsl.file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+				}
+		      if(vo.isSourceCand()){
+					query.append(" and cpk.candidatePartyFile.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpk.candidatePartyFile.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpk.candidatePartyFile.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpk.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+			   query.append(" and fsl.source.sourceId in ("+vo.getSourceIds()+") and cpk.keyword.keywordId in ("+vo.getGallaryKeyWordIds()+") group by ");
+			   
+			   
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( "  fsl.file.userAddress.district.districtId ,");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append(" fsl.file.userAddress.parliamentConstituency.constituencyId ,");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append(" fsl.file.userAddress.constituency.constituencyId , ");
+				}
+			   
+			   query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+			   query.append(" fsl.source.sourceId ,cpk.keyword.keywordId ");
+			}else{
+				query.append("   fsl.source.sourceId,fsl.source.source,cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk " +
+				   		" ,FileSourceLanguage fsl where cpk.candidatePartyFile.file.isDeleted !='Y' and cpk.candidatePartyFile.file.fileId = fsl.file.fileId and fsl.source.sourceId in ("+vo.getSourceIds()+") ");
+				 if(vo.isSourceCand()){
+					query.append(" and cpk.candidatePartyFile.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpk.candidatePartyFile.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpk.candidatePartyFile.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpk.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+				query.append("  and cpk.keyword.keywordId in ( "+vo.getGallaryKeyWordIds()+") group by  ");
+				 query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				 query.append(" fsl.source.sourceId ,cpk.keyword.keywordId ");
+			}
+		}else{
+			if(vo.isLocationPresent()){
+				
+				
+			   query.append(" cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk " +
+			   		" where  cpk.candidatePartyFile.file.isDeleted !='Y' and cpk.keyword.keywordId in ("+vo.getGallaryKeyWordIds()+") ");
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( " and cpk.candidatePartyFile.file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append("and cpk.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append("and cpk.candidatePartyFile.file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+				}
+				 if(vo.isSourceCand()){
+					query.append(" and cpk.candidatePartyFile.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpk.candidatePartyFile.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpk.candidatePartyFile.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpk.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+			   query.append("  group by ");
+			   
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( "  cpk.candidatePartyFile.file.userAddress.district.districtId ,");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append(" cpk.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId ,");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append(" cpk.candidatePartyFile.file.userAddress.constituency.constituencyId , ");
+				}
+			   query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+			   query.append(" cpk.keyword.keywordId ");
+			}else{
+			  query.append(" cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk where cpk.candidatePartyFile.file.isDeleted !='Y' ");
+			  query.append("  and cpk.keyword.keywordId in ("+vo.getGallaryKeyWordIds()+")  ");
+			   if(vo.isSourceCand()){
+					query.append(" and cpk.candidatePartyFile.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpk.candidatePartyFile.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpk.candidatePartyFile.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpk.candidatePartyFile.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpk.candidatePartyFile.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpk.candidatePartyFile.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpk.candidatePartyFile.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+				query.append(" group by ");
+				
+				    query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpk.candidatePartyFile",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				    
+				    query.append(" cpk.keyword.keywordId");
+			}
+		}
+		return getDataForCategoryOrKeywordPresent(query.toString(),vo,sourceType,destiType,true,"Keyword");
+	}
+    public NewsAnalysisVO getSourceDestinationPresentIncludeCandidateParty(AnalysisVO vo,boolean sourceCandidate,boolean sourceParty,boolean noSource,boolean destinationCandidate,boolean destinationParty,boolean noDestination,String sourceType,String destiType){
+		StringBuilder query = new StringBuilder();
+		query.append("select  count(distinct cpf.file.fileId),");
+		query.append(getCandidatePartyQueryForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+		if(vo.isSourcePresent()){
+			if(vo.isLocationPresent()){
+				
+				if(vo.getLocationLvl().longValue() == 1){
+					 query.append(" fsl.file.userAddress.district.districtId,fsl.file.userAddress.district.districtName,");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append(" fsl.file.userAddress.parliamentConstituency.constituencyId,fsl.file.userAddress.parliamentConstituency.name,");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append(" fsl.file.userAddress.constituency.constituencyId,fsl.file.userAddress.constituency.name,");
+				} 
+			   query.append(" fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and fsl.source.sourceId in ("+vo.getSourceIds()+") ");
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( " and fsl.file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append("and fsl.file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append("and fsl.file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+				}
+				
+				if(vo.isSourceCand()){
+					query.append(" and cpf.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpf.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpf.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpf.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpf.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+			   query.append(" group by ");
+			   
+			   if(vo.getLocationLvl().longValue() == 1){
+					 query.append( "  fsl.file.userAddress.district.districtId ,");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append(" fsl.file.userAddress.parliamentConstituency.constituencyId ,");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append(" fsl.file.userAddress.constituency.constituencyId , ");
+				}
+			   query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+			   query.append(" fsl.source.sourceId  ");
+			}else{
+				query.append("   cast(null as char),cast(null as char),fsl.source.sourceId,fsl.source.source from  " +
+				   		" FileSourceLanguage fsl,CandidatePartyFile cpf where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and fsl.source.sourceId in ("+vo.getSourceIds()+") ");
+				if(vo.isSourceCand()){
+					query.append(" and cpf.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpf.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpf.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpf.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpf.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+				}
+				query.append("   group by  ");
+				 query.append(getCandidatePartyQueryGroupByConditionForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				query.append(" fsl.source.sourceId ");
+				
+			}
+		}else if(vo.isLocationPresent()){
+			
+			if(vo.getLocationLvl().longValue() == 1){
+				 query.append(" file.userAddress.district.districtId,file.userAddress.district.districtName,");
+			}else if(vo.getLocationLvl().longValue() == 2){
+				query.append(" file.userAddress.parliamentConstituency.constituencyId,file.userAddress.parliamentConstituency.name,");
+			}else if(vo.getLocationLvl().longValue() == 3){
+				query.append(" file.userAddress.constituency.constituencyId,file.userAddress.constituency.name,");
+			} 
+		   query.append(" cast(null as char),cast(null as char) from File file,CandidatePartyFile cpf  where file.isDeleted != 'Y' and file.fileId = cpf.file.fileId ");
+		   if(vo.getLocationLvl().longValue() == 1){
+				 query.append( " and file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+			}else if(vo.getLocationLvl().longValue() == 2){
+				query.append(" and file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+			}else if(vo.getLocationLvl().longValue() == 3){
+				query.append(" and file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+			}
+		   if(vo.isSourceCand()){
+				query.append(" and cpf.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+			}else if(vo.isSourceParty()){
+			   query.append(" and cpf.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+			}
+			if(vo.isDestiCand()){
+			  query.append(" and cpf.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+			}else if(vo.isDestiParty()){
+			   query.append(" and cpf.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+			}
+			query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+			if(vo.getFromDate() != null){
+				query.append(" and date(file.fileDate) >= :fromDate ");
+			}
+			if(vo.getToDate() != null){
+				query.append(" and date(file.fileDate) <= :toDate ");
+			}
+			if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+				query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+			}
+             if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+            	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+			}
+		   query.append(" group by ");
+		  
+		   if(vo.getLocationLvl().longValue() == 1){
+				 query.append( "  file.userAddress.district.districtId");
+			}else if(vo.getLocationLvl().longValue() == 2){
+				query.append(" file.userAddress.parliamentConstituency.constituencyId");
+			}else if(vo.getLocationLvl().longValue() == 3){
+				query.append(" file.userAddress.constituency.constituencyId ");
+			}
+		    if(vo.isSourceCand()){
+				if(sourceCandidate){
+					query.append(" ,cpf.sourceCandidate.candidateId ");
+				}else if(sourceParty){
+					query.append(" ,cpf.sourceParty.partyId ");
+				}
+			}
+			if(vo.isDestiCand()){
+				if(destinationCandidate){
+					query.append(" ,cpf.destinationCandidate.candidateId ");
+				}else if(destinationParty){
+					query.append(" ,cpf.destinationParty.partyId ");
+				}
+			}
+		}else{
+			query = new StringBuilder();
+			if(vo.isSourceCand() || vo.isSourceParty() || vo.isDestiCand() || vo.isDestiParty() || vo.isBySourceCand() || vo.isByDestiCand()){
+				query.append("select count(distinct cpf.file.fileId), ");
+				query.append(getCandidatePartyQueryForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				query.append(" cast(null as char),cast(null as char),cast(null as char),cast(null as char) from  CandidatePartyFile cpf where cpf.file.isDeleted != 'Y' ");
+				if(vo.isSourceCand()){
+					query.append(" and cpf.sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+				}else if(vo.isSourceParty()){
+				   query.append(" and cpf.sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+				}
+				if(vo.isDestiCand()){
+				  query.append(" and cpf.destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+				}else if(vo.isDestiParty()){
+				   query.append(" and cpf.destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+				}
+				query.append(getCandidatePartyQueryAndConditionForKeywordSource("cpf",vo.isBySourceCand(),vo.isByDestiCand(),sourceCandidate,sourceParty,noSource,destinationCandidate,destinationParty,noDestination));
+
+				if(vo.getFromDate() != null){
+					query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+				}
+				if(vo.getToDate() != null){
+					query.append(" and date(cpf.file.fileDate) <= :toDate ");
+				}
+				if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+					query.append(" and cpf.sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+				}
+                 if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+                	 query.append(" and cpf.destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+					 
+				}
+                 query.append(" ");
+                 int count = 0;
+				if(vo.isBySourceCand() && vo.isByDestiCand()){
+				        if(sourceCandidate){
+							query.append(" group by  cpf.sourceCandidate.candidateId ");
+							count=count+1;
+						}else if(sourceParty){
+							if(count == 0)
+							    query.append(" group by cpf.sourceParty.partyId ");
+							else
+								query.append(", cpf.sourceParty.partyId ");	
+							count=count+1;
+						}
+						if(destinationCandidate){
+							if(count == 0)
+							  query.append(" group by cpf.destinationCandidate.candidateId ");
+							else
+							  query.append(", cpf.destinationCandidate.candidateId ");
+							count=count+1;
+						}else if(destinationParty){
+							if(count == 0)
+							  query.append(" group by cpf.destinationParty.partyId ");
+							else
+								query.append(" ,cpf.destinationParty.partyId ");
+							count=count+1;
+						}
+				}else{
+					if(vo.isBySourceCand()){
+						if(sourceCandidate){
+							query.append(" group by cpf.sourceCandidate.candidateId ");
+						}else if(sourceParty){
+							query.append(" group by cpf.sourceParty.partyId ");
+						}
+					}
+					else if(vo.isByDestiCand()){
+						if(destinationCandidate){
+							query.append(" group by cpf.destinationCandidate.candidateId ");
+						}else if(destinationParty){
+							query.append(" group by cpf.destinationParty.partyId ");
+						}
+					}
+				}
+			}else{
+				query.append("select count(distinct file.fileId),cast(null as char),cast(null as char),cast(null as char),cast(null as char),cast(null as char),cast(null as char) from File file where file.isDeleted != 'Y' ");
+				if(vo.getFromDate() != null && vo.getToDate() != null){
+					query.append(" and file.fileDate >= :fromDate and file.fileDate <= :toDate");
+				}else if(vo.getFromDate() != null){
+					query.append(" and file.fileDate >= :fromDate ");
+				}else if(vo.getToDate() != null){
+					query.append(" and file.fileDate <= :toDate ");
+				}
+			}
+		}
+		return getDataForSourceDestinationPresentIncludeCandidateParty(query.toString(),vo,sourceType,destiType,true);
+	}	
 }
