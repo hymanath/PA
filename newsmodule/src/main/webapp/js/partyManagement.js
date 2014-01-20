@@ -5602,7 +5602,10 @@ function validateUploadFileDetails()
 	//document.getElementById('newsfileDescription').value = fileDesc;
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
+	
 	var str = '<font color="red">';
+	var flag1 =true;
+	 
   if($('#filesourceId0 option:selected').length == 0 )
   {
 		str +='Please logout and login again, to upload news<br>';
@@ -5636,6 +5639,33 @@ function validateUploadFileDetails()
 		flag = false;
 	}
 	
+	 $('.destinationKeywords').each(function() {
+	  
+		var key = $(this).attr("key");	
+		
+		var str = '';
+			var $ul = $(this).closest('ul');
+			  $ul.find('li').each(function(){
+			  str +=''+$(this).text()+',';
+			});	
+		  var length = str.length;
+		  if(length > 0)
+		   str = str.substring(0,length-2);
+		
+		if(isValidKeyword(str) == false){
+		flag1 = false;
+		return flag1;
+		}
+		  //$("#"+key+"Hidden").val(str);
+        });
+	
+		if(flag1 == false)
+		{
+	
+		str +='Keyword Name should not contain #,$,%,& Special characters<br>';
+			flag = false;
+		}
+		
 	 $('.fileImgCls').each(function() {
 		 if($.trim($(this).val()).length == 0)
 		{
@@ -5658,6 +5688,8 @@ function validateUploadFileDetails()
 			 return false;
 	       }
        });
+	   
+	 
 	$('.pagenoCls').each(function() {
            if($.trim($(this).val()).length > 0)
 	       {
@@ -5938,7 +5970,19 @@ function validateUploadFileDetails()
 	return flag;
 }
 
+function isValidKeyword(str){
 
+ var iChars = "#$%&";
+ var flag = true;
+	for (var i = 0; i < str.length; i++) {
+		if (iChars.indexOf(str.charAt(i)) != -1) {			
+			flag = false;
+		}
+    }
+		
+	return flag;
+
+}
 function uploadFile()
 {
 	

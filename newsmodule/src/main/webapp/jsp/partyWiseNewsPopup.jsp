@@ -95,7 +95,9 @@
 		<!--------- Row-1 -------->
 			<div class="row m_top10">
 				<div class="span2">
-					<div class="row-fluid widget">
+				<div id="mainDiv"></div>
+				
+				  <div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>${scope} News</h4>
 						<div class="row-fluid widget">						
 						<div class="span12">
@@ -134,7 +136,7 @@
 							</div>
 							<div id="newsDispalyId"></div>
 						</div>
-						<div id="paginationId"></div>
+						
 						<!----pagination Div----->
 						<div class="span12 text-center">
 							<div id="paginationId"></div>

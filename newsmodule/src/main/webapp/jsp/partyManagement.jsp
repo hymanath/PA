@@ -3375,6 +3375,7 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='<div class="span12 well well-small" style="margin-left: 0px;">';
 		str+='<label><strong>Enter Keywords</strong></label><input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId">';
 		str+='<span class="help-block">Enter multiple keywords with comma separator Ex : padayatra,scam,';
+		str+='<span class="help-block">Note:Keyword should not contain #,$,%,& Special characters.';
 		str+='    </span>';
 		str+='</div>';
 		str +='<input type="hidden" id="keywordId0Hidden" name="candidatePartyNewsVOList.destinationVOList[0].keywordsList" />';
@@ -4292,6 +4293,10 @@ $("#createCandidateId").live("click",function(){
 	 $("#errorMsgDiv").html("Please Select Designation");
 	  return;
 	}
+	if($('#locationId option:selected').val() == 0){
+	  $("#errorMsgDiv").html("Please Select Location");
+	  return;
+	}
   var candidateListId = createCandCandKey;
   var partyListId = createCandPartyKey;
   var locationValue = "";
@@ -4305,7 +4310,7 @@ $("#createCandidateId").live("click",function(){
 	}
 	else if($('#locationId option:selected').val() == 3)
 	{
-		locationValue = $('#parliamSelReportId option:selected').val();
+		locationValue = $('#locationId option:selected').val();
 	}
 	 
 	var jsObj =

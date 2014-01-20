@@ -57,6 +57,7 @@ font-size:20px;
 		<!--------- Row-1 -------->
 			<div class="row m_top10">
 				<div class="span2">
+				<div id="mainDiv"></div>
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>News</h4></div>
 					</div>
@@ -238,6 +239,9 @@ function buildPaginatedNews(results,jsObj)
 	str+="</ul>";
 
 	$("#latestNewsDiv").html(str);
+		$('html,body').animate({
+        scrollTop: $("#mainDiv").offset().top},
+        'slow');
 	
 	if(jsObj.firstResult==0){
 		$("#paginationId").pagination({

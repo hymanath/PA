@@ -969,15 +969,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				if(newsVO.getDestinationVOList() != null && newsVO.getDestinationVOList().size() > 0)
 				 for(CandidatePartyDestinationVO destinationVO :newsVO.getDestinationVOList())	
 				 {
-				  String keywords = destinationVO.getKeywordsList();
-				  if(keywords != null && !keywords.equalsIgnoreCase(""))
-				  {
-					String[] str = keywords.split(",");
-					if(str != null)
-					 for(String keyword:str)
-					  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+""))
-						  keywordsList.add(keyword.substring(1));
-				  }
+					 if(destinationVO != null){
+					  String keywords = destinationVO.getKeywordsList();
+					  if(keywords != null && !keywords.equalsIgnoreCase(""))
+					  {
+						String[] str = keywords.split(",");
+						if(str != null)
+						 for(String keyword:str)
+						  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+""))
+							  keywordsList.add(keyword.substring(1));
+					  }
+				    }
 				 }
 			 
 			    if(keywordsList != null && keywordsList.size() > 0)
