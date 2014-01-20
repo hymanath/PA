@@ -558,6 +558,7 @@ function getNewsForPagination(num)
 }
 var maxResults;
 function showTotalNews(myResult,jsObj){	
+    
 	$("#newsDispalyId").html('');
 	if(myResult == null || myResult.length == 0)
 	{
@@ -645,6 +646,9 @@ function showTotalNews(myResult,jsObj){
 	str+='</ul>';
 	
 	document.getElementById('newsDispalyId').innerHTML=str;
+    $('html,body').animate({
+        scrollTop: $("#mainDiv").offset().top},
+        'slow');
 	
 	//var maxResults=jsObj.maxRecord;
 	//var itemsCount=results[0].count;

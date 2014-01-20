@@ -322,11 +322,11 @@ $("#createCandidateId").live("click",function(){
 	{
 	 $("#errorMsgDiv").html("Please Select Designation");
 	  return;
-	  if($('#locationId option:selected').val() == 0){
-	  $("#errorMsgDiv").html("Please Select Location");
-	  return;
 	}
 	  
+	if($('#locationId option:selected').val() == 0){
+	  $("#errorMsgDiv").html("Please Select Location");
+	  return;
 	}
   var candidateListId = $(this).attr("key");
   var partyListId = $(this).attr("partyListId");
@@ -670,6 +670,9 @@ $(".destinationCandidateCloseImg").live("click",function(){
 			</script>
 			
 			<span class="help-block">Enter multiple keywords with comma separator Ex : padayatra,scam,
+				</span>
+				
+				<span class="help-block">Note:Keyword should not contain #,$,%,& Special characters. 
 				</span>
 			<s:if test="#stat.index > 0">
 				<div style="margin-left: 0px;" class="span12"><p>If you want to delete this block please click on this Button  <span id="deleteForWhom"> <a href="javascript:void(0);" onclick="deletethisDiv('whomecandidate${stat.index}','whom',${news.sourceVOList[0].destinationVOList[stat.index].candidatePartyFileId});" class="btn" ><i class="icon-trash"></i> Delete This Block</a>  </span>  </p></div>
