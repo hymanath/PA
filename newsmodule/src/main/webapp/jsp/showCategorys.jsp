@@ -155,7 +155,7 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 	var descFont = results[i].descEenadu;
 	if(fontId >  0)
 	{
-		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
+		str+='<h4 style="" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].title+'</a></h4>';
 	}
 	else
 	{

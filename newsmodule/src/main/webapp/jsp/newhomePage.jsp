@@ -661,7 +661,7 @@ $(document).ready(function(){
 									 <s:iterator value="fileVOsList" var="newDetails">
 										<li>
 										<s:if test="%{#newDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
-										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="enadu muted" style='font-weight:bold;text-transform: capitalize;'><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
+										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="enadu muted" style='font-weight:bold;'><i class="icon-share-alt "></i>${newDetails.fileTitle1}</a>
 									</s:if>
 									<s:else>
 										<a href="javascript:{}" onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)" class="muted" style='text-transform: capitalize;'><i class="icon-share-alt"></i>${newDetails.fileTitle1}</a>

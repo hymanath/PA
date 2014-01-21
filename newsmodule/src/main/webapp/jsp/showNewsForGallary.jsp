@@ -261,7 +261,7 @@ function buildFilesInCategoryDetails(results,selectedvalue)
 	var descFont = results[i].descEenadu;
 	if(fontId == 1)
 	{
-		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].fileName1+'</a></h4>';
+		str+='<h4 style="" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileId+')}">'+results[i].fileName1+'</a></h4>';
 	}
 	else
 	{
@@ -353,7 +353,7 @@ function buildFilesInGallaryDetails(results,selectedvalue)
 	var source = results[i].fileType.trim();
 	if(source.indexOf("Eenadu Telugu") != -1)
 	{
-		str+='<h4 style="text-transform: capitalize;" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
+		str+='<h4 style="" class="enadu"><a style="color: #005580;" href="javascript:{getNewsDetailsByContentId('+results[i].fileGallaryId+')}">'+results[i].fileName1+'</a></h4>';
 	}
 	else
 	{
