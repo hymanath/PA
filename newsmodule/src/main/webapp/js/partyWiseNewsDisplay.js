@@ -582,7 +582,7 @@ function showTotalNews(myResult,jsObj){
 		source = myResult[i].source.trim();
 		if(font != null)
 		{
-			str+='<h4  style="text-transform: capitalize;" class="enadu"> <a style="cursor:pointer;color: #005580;" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">'+myResult[i].fileTitle1+'</a></h4>';
+			str+='<h4  style="" class="enadu"> <a style="cursor:pointer;color: #005580;" onclick="getNewsDetailsByContentId('+myResult[i].contentId+')">'+myResult[i].fileTitle1+'</a></h4>';
 		}
 		else
 		{
