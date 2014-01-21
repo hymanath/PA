@@ -177,7 +177,7 @@ function buildFilesInGallaryDetails(results,selectedvalue,index,endValue)
 		str+='<img style="width:100%"src="/TDP/images/TDP.PNG" >';
 		str+='</a>';
 		
-		if(fontId > 0)
+		if(results[i].descEenadu)
 		{
 			str+='<p class="span8 enadu">'+results[i].description+'</p>';
 		}
