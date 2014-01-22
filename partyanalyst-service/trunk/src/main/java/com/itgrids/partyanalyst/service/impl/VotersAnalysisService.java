@@ -9427,9 +9427,11 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			{
 			  for(VoterAgeRangeVO voterAgeRangeVO:ageRangeVOsList)
 			  {
+				  try{
 				  VoterAgeInfo voterAgeInfo = new VoterAgeInfo();
 					voterAgeInfo.setVoterReportLevel(voterReportLevelDAO.get(voterAgeRangeVO.getReportLevelId()));
 					voterAgeInfo.setReportLevelValue(voterAgeRangeVO.getReportLevelValue());
+					if(voterAgeRangeVO.getAgeRangeId() != null)
 					voterAgeInfo.setVoterAgeRange(voterAgeRangeDAO.get(voterAgeRangeVO.getAgeRangeId()));
 					voterAgeInfo.setPublicationDate(publicationDateDAO.get(voterAgeRangeVO.getPublicationDateId()));
 					voterAgeInfo.setTotalVoters(voterAgeRangeVO.getTotalVotersInARange());
@@ -9441,6 +9443,11 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					voterAgeInfo.setConstituencyId(voterAgeRangeVO.getConstituencyId());
 		
 					voterAgeInfoDAO.save(voterAgeInfo);
+				  }
+				  catch(Exception e)
+				  {
+					  log.error("Exception Occured in saveVoterAgeDetailsInVoterAgeInfo() Method, Exception - "+e);  
+				  }
 			}
 			}});
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
