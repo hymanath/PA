@@ -968,7 +968,7 @@ public class VoterReportService implements IVoterReportService{
 						  list4 = boothDAO.getBoothIdsInLocalBodiesForAPublication(localbodyids,publicationDateId,reportLevelValue);
 						   if(list4 != null && list4.size() > 0)
 						  {
-							  for(Object[] params : list3)
+							  for(Object[] params : list4)
 								  boothsList.add(new SelectOptionVO((Long)params[0],params[1].toString())); 
 						  }
 						   
