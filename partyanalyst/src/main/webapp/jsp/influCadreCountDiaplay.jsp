@@ -178,7 +178,7 @@ function getInfluencingPeopleVotersDetails()
 		var votersByLocBoothColumnDefs = [
 		//{key:"voterId", label: "SNo",width:20},
 		{key:"firstName", label: "Name", sortable: true},
-		{key:"position", label: "Influencing Position"},
+		{key:"position", label: "Position"},
 		{key:"cast", label: "Caste"},
 		{key:"voterIDCardNo", label: "voter ID",sortable: true,},
 		{key:"gender", label: "Gender",sortable: true},
