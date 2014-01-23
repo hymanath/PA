@@ -835,7 +835,8 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			
 			//State Level Access User
 			if(accessType.equals(IConstants.STATE)){
-				Long stateId = new Long(accessValue);
+				//Long stateId = new Long(accessValue);
+				Long stateId = Long.parseLong(accessValue);
 				constituencyManagementDataVO = getStateRegionAndSubRegionsInfluencingPeopleByUserAndLocation(userId,stateId,true,IConstants.INFLUENCING_PEOPLE,0L,"");
 			}
 			//District Level Access User
@@ -1026,8 +1027,9 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ConstituencyManagementInfluenceScopeOverviewVO> getInfluencingPeopleByInfluenceScope(Long userId){
-		
 		List<ConstituencyManagementInfluenceScopeOverviewVO> influenceScopeOverviewVOList = null;
+		try{
+		
 		boolean stateFlag = false;
 		if(userId != null){
 			
@@ -1064,7 +1066,11 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 				}
 			}
 		}
-		
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getInfluencingPeopleByInfluenceScope()");
+		}
 	 return influenceScopeOverviewVOList;
 	}
 	
@@ -2320,6 +2326,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			}
 			
 			//Add Other Category Results
+			if(localGroupsList != null && localGroupsList.size() > 0)
 			constituencyManagementDataVO.setCategoryListOverview(localGroupsList);
 			constituencyManagementDataVO.setDifferentOverviews(getOverviewsListByUserAccessType(userAccessType));
 			
