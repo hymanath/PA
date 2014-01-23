@@ -83,7 +83,8 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateParty> candidateParty = new HashSet<CandidateParty>(0);
 	private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
 	private Designation designation;
-	
+	private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
+
 	
 	//private Set<CandidatePartyFile> candidatePartyFiles = new HashSet<CandidatePartyFile>(0);
 	// Constructors
@@ -477,6 +478,17 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 
 	public void setParliament(Constituency parliament) {
 		this.parliament = parliament;
+	}
+    
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Set<DebateParticipant> getDebateParticipant() {
+		return debateParticipant;
+	}
+
+	public void setDebateParticipant(Set<DebateParticipant> debateParticipant) {
+		this.debateParticipant = debateParticipant;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
