@@ -70,7 +70,7 @@ public class DebateSmsQuestionOption extends BaseModel implements java.io.Serial
 
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "sms_question_id")
+	@JoinColumn(name = "debate_sms_question_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public DebateSmsQuestion getDebateSmsQuestion() {

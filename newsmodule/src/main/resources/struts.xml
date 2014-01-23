@@ -5947,6 +5947,11 @@
 			    <param name="inputName">inputStream</param>
 		  </result>	
 		</action>
+		
+		<action name="debateAction" class="debateAction" >
+		    <result name="success">/jsp/debate.jsp</result>
+		 </action>
+		 
         </package>
 		
 </struts>      
