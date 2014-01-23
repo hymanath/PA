@@ -1742,6 +1742,9 @@
        <property name="activityReportFilesDAO" ref="activityReportFilesDAO" />
        <property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
    </bean>
+   
+   <bean name="debateService" class="com.itgrids.partyanalyst.service.impl.DebateService">
+   </bean>
 
 </beans>		
 	

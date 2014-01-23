@@ -134,6 +134,25 @@
 				<value>com.itgrids.partyanalyst.model.ActivityReportFiles</value>
 				<value>com.itgrids.partyanalyst.model.Benefit</value>
 				
+				
+				<value>com.itgrids.partyanalyst.model.DebateSubject</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipantExpectedRole</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipantRole</value>
+				<value>com.itgrids.partyanalyst.model.DebateSmsQuestionOption</value>
+				<value>com.itgrids.partyanalyst.model.DebateSmsQuestion</value>
+				<value>com.itgrids.partyanalyst.model.DebateQuestionAnswer</value>
+				<value>com.itgrids.partyanalyst.model.DebateQuestions</value>
+				<value>com.itgrids.partyanalyst.model.DebateRoles</value>
+				<value>com.itgrids.partyanalyst.model.Characteristics</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipantCharcs</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipant</value>
+				<value>com.itgrids.partyanalyst.model.DebateObserver</value>
+				<value>com.itgrids.partyanalyst.model.Debate</value>
+				<value>com.itgrids.partyanalyst.model.TelecastType</value>
+				<value>com.itgrids.partyanalyst.model.Observer</value>
+				<value>com.itgrids.partyanalyst.model.Channel</value>
+				
+				
 			</list>
 		</property>
 	</bean>
@@ -254,4 +273,72 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<!--End Add new DAOs here -->
+	
+	<!-- Start of Debate DAOs -->
+	
+	<bean id="channelDAO" class="com.itgrids.partyanalyst.dao.hibernate.ChannelDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="observerDAO" class="com.itgrids.partyanalyst.dao.hibernate.ObserverDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="telecastTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.TelecastTypeDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateObserverDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateObserverDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateParticipantDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateParticipantDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateParticipantCharcsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateParticipantCharcsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="characteristicsDAO" class="com.itgrids.partyanalyst.dao.hibernate.CharacteristicsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateRolesDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateRolesDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateQuestionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateQuestionsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateQuestionAnswerDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateQuestionAnswerDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateSmsQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateSmsQuestionDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateSmsQuestionOptionDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateSmsQuestionOptionDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateParticipantRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateParticipantRoleDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="debateParticipantExceptedRoleDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateParticipantExceptedRoleDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="DebateSubjectDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateSubjectDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- End od Debate DAOS -->
 </beans>

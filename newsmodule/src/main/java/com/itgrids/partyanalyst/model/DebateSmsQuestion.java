@@ -1,8 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -31,7 +27,7 @@ public class DebateSmsQuestion extends BaseModel implements java.io.Serializable
 	private String question;
 	private String isDeleted;
 	private Debate debate;
-	private Set<DebateSmsQuestionOption> DebateSmsQuestionOption = new HashSet<DebateSmsQuestionOption>(0);
+	//private Set<DebateSmsQuestionOption> DebateSmsQuestionOption = new HashSet<DebateSmsQuestionOption>(0);
 
 	
 //default constructor.
@@ -84,7 +80,7 @@ public class DebateSmsQuestion extends BaseModel implements java.io.Serializable
 		this.debate = debate;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "DebateSmsQuestion")
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "DebateSmsQuestion")
    public Set<DebateSmsQuestionOption> getDebateSmsQuestionOption() {
 		return DebateSmsQuestionOption;
 	}
@@ -93,7 +89,7 @@ public class DebateSmsQuestion extends BaseModel implements java.io.Serializable
 	public void setDebateSmsQuestionOption(
 			Set<DebateSmsQuestionOption> debateSmsQuestionOption) {
 		DebateSmsQuestionOption = debateSmsQuestionOption;
-	}
+	}*/
     
     
     

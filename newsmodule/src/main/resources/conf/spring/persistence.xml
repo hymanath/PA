@@ -111,7 +111,24 @@
 				<value>com.itgrids.partyanalyst.model.NewsResponse</value>
 				<value>com.itgrids.partyanalyst.model.Designation</value>
 				<value>com.itgrids.partyanalyst.model.ActivityReportFiles</value>
-				<value>com.itgrids.partyanalyst.model.ActivityReport</value>		
+				<value>com.itgrids.partyanalyst.model.ActivityReport</value>
+				
+				<value>com.itgrids.partyanalyst.model.DebateSubject</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipantExpectedRole</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipantRole</value>
+				<value>com.itgrids.partyanalyst.model.DebateSmsQuestionOption</value>
+				<value>com.itgrids.partyanalyst.model.DebateSmsQuestion</value>
+				<value>com.itgrids.partyanalyst.model.DebateQuestionAnswer</value>
+				<value>com.itgrids.partyanalyst.model.DebateQuestions</value>
+				<value>com.itgrids.partyanalyst.model.DebateRoles</value>
+				<value>com.itgrids.partyanalyst.model.Characteristics</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipantCharcs</value>
+				<value>com.itgrids.partyanalyst.model.DebateParticipant</value>
+				<value>com.itgrids.partyanalyst.model.DebateObserver</value>
+				<value>com.itgrids.partyanalyst.model.Debate</value>
+				<value>com.itgrids.partyanalyst.model.TelecastType</value>
+				<value>com.itgrids.partyanalyst.model.Observer</value>
+				<value>com.itgrids.partyanalyst.model.Channel</value>		
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>

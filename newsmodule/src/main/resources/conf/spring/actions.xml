@@ -103,4 +103,8 @@
 	 <property name="regionServiceDataImp" ref="regionServiceDataImp"/>
 	</bean>
 	
+	<bean id="debateAction" class="com.itgrids.partyanalyst.web.action.DebateAction" singleton="false">
+	 	<property name="debateService" ref="debateService"/>
+	</bean>
+	
 	</beans>
