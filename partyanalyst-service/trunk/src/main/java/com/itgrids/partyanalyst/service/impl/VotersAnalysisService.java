@@ -13935,6 +13935,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setCast(params.getCaste());
 					voterVO.setMobileNo(params.getPhoneNo()!=null ? params.getPhoneNo() :" ");
 					voterVO.setInfluencingRange(params.getInfluencingScope());
+					voterVO.setPosition(params.getInfluencingPeoplePosition().getPosition());
 					if(params.getParty() != null){
 					  voterVO.setPartyName(params.getParty().getShortName());
 					}else{

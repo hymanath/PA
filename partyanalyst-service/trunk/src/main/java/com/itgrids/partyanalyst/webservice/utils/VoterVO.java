@@ -1,15 +1,14 @@
 package com.itgrids.partyanalyst.webservice.utils;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 
-@XmlRootElement
+
 public class VoterVO implements Serializable , Comparable<VoterVO>{
 	
 	private static final long serialVersionUID = 1L;	
@@ -45,7 +44,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 
 	private String name;
 
-	@Override
+	//@Override
 	public int compareTo(VoterVO o) {
 		// TODO Auto-generated method stub
 		return this.getAge().compareTo(o.getAge());

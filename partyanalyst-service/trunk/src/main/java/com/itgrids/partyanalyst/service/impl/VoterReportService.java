@@ -2895,6 +2895,7 @@ public class VoterReportService implements IVoterReportService{
 						voterVO.setTotalVoters(totalRecords);
 						voterVO.setInfluencingRange(influencingPeople.getInfluencingScope());
 						voterVO.setInfluencingRegion(getRegionNameBasedOnScope(influencingPeople.getInfluencingScope(),influencingPeople.getInfluencingScopeValue()));
+						voterVO.setPosition(influencingPeople.getInfluencingPeoplePosition().getPosition());
 						/*if(type.equalsIgnoreCase("booth"))
 						{
 							Booth booth = boothDAO.get(id);
