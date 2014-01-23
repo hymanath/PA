@@ -178,6 +178,7 @@ function getInfluencingPeopleVotersDetails()
 		var votersByLocBoothColumnDefs = [
 		//{key:"voterId", label: "SNo",width:20},
 		{key:"firstName", label: "Name", sortable: true},
+		{key:"position", label: "Influencing Position"},
 		{key:"cast", label: "Caste"},
 		{key:"voterIDCardNo", label: "voter ID",sortable: true,},
 		{key:"gender", label: "Gender",sortable: true},
@@ -190,6 +191,7 @@ function getInfluencingPeopleVotersDetails()
 		{key:"localArea", label: "Location"},
 		{key:"influencingRange", label: "Influencing Range"},
 		{key:"influencingRegion", label: "Influencing Region"}
+		
 		//{key:"Actions", label: "Actions", formatter:YAHOO.widget.DataTable.ActionLink}
 		//{key:"select", label: "Add as influence person", formatter:YAHOO.widget.DataTable.select}
 
@@ -200,7 +202,7 @@ function getInfluencingPeopleVotersDetails()
 		resultsList: "voterDetails",
 		fields: [
 		{key:"voterId", parser:"number"},
-		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","influencingRange","influencingRegion","cast"],
+		"firstName","voterIDCardNo", "gender", "age", "houseNo","relativeFirstName","voterIds","mobileNo","influencePerson","localArea","influencingRange","influencingRegion","cast","position"],
 		metaFields: {
 		totalRecords: "voterDetailsCount" // Access to value in the server response
 		}
