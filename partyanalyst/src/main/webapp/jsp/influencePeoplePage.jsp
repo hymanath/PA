@@ -190,7 +190,11 @@ else
 						key : "firstName"
 					}, {
 						key : "lastName"
-					}, {
+					},
+						{
+						key : "position"
+					},
+						{
 						key : "email"
 					}, {
 						key : "mobile",parser:"number"
@@ -232,7 +236,13 @@ else
 					key : "lastName",
 					label : "Second Name",
 					sortable : true
-				}, {
+				},
+						 {
+					key : "position",
+					label : "Position",
+					sortable : true
+				},
+						{
 					key : "email",
 					label : "Email",
 					sortable : true
@@ -583,6 +593,7 @@ else
 						str += '	<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}" id="checkBoxId"></input></td>';
 						str += '	<td>${people.firstName}</td>';
 						str += '	<td>${people.lastName}</td>';
+						str += '	<td>${people.position}</td>';
 						str += '	<td>${people.email}</td>';
 						str += '	<td>${people.mobile}</td>';
 						str += '	<td>${people.gender}</td>';
@@ -668,6 +679,8 @@ else
 									<td><input type="checkbox" name="influencePeopleCheck_${region.regionId}" value="${people.influencingPersonId}"></input></td>
 									<td>${people.firstName}</td>
 									<td>${people.lastName}</td>
+									<td>${people.position}</td>
+									
 									<td>${people.email}</td>
 									<td>${people.mobile}</td>
 									<td>${people.gender}</td>
