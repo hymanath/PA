@@ -8,7 +8,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.IChannelDAO;
 import com.itgrids.partyanalyst.dao.ICharacteristicsDAO;
 import com.itgrids.partyanalyst.dao.IDebateDAO;
@@ -24,10 +28,30 @@ import com.itgrids.partyanalyst.dao.IDebateSmsQuestionDAO;
 import com.itgrids.partyanalyst.dao.IDebateSmsQuestionOptionDAO;
 import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
+import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Candidate;
+import com.itgrids.partyanalyst.model.Channel;
+import com.itgrids.partyanalyst.model.Debate;
+import com.itgrids.partyanalyst.model.DebateObserver;
+import com.itgrids.partyanalyst.model.DebateParticipant;
+import com.itgrids.partyanalyst.model.DebateParticipantExpectedRole;
+import com.itgrids.partyanalyst.model.DebateParticipantRole;
+import com.itgrids.partyanalyst.model.DebateQuestionAnswer;
+import com.itgrids.partyanalyst.model.DebateQuestions;
+import com.itgrids.partyanalyst.model.DebateRoles;
+import com.itgrids.partyanalyst.model.DebateSmsQuestion;
+import com.itgrids.partyanalyst.model.DebateSmsQuestionOption;
+import com.itgrids.partyanalyst.model.DebateSubject;
+import com.itgrids.partyanalyst.model.Observer;
+import com.itgrids.partyanalyst.model.Party;
+import com.itgrids.partyanalyst.model.TelecastType;
 import com.itgrids.partyanalyst.service.IDebateService;
 
 public class DebateService implements IDebateService{
@@ -49,9 +73,23 @@ public class DebateService implements IDebateService{
 	private IDebateSmsQuestionDAO debateSmsQuestionDAO;
 	private IDebateQuestionsDAO debateQuestionsDAO ;
 	private IDebateQuestionAnswerDAO  debateQuestionAnswerDAO;
+	private TransactionTemplate transactionTemplate = null;
+	private IPartyDAO partyDAO;
+	private ICandidateDAO candidateDAO;
 	
+
 	
-	
+	public void setPartyDAO(IPartyDAO partyDAO) {
+		this.partyDAO = partyDAO;
+	}
+
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
 
 	public void setDebateDAO(IDebateDAO debateDAO) {
 		this.debateDAO = debateDAO;
@@ -144,6 +182,160 @@ public class DebateService implements IDebateService{
 		return b.toString();
 	}
 
+	/**
+	 * This Service is used for saving the debate details
+	 * @param debateDetailsVO
+	 * @return resultStatus
+	 */
+	public ResultStatus saveDebateDetails(final DebateDetailsVO debateDetailsVO)
+	{
+		final ResultStatus resultStatus = new ResultStatus();
+		try 
+		{
+			LOG.info("Enterd into saveDebateDetails method in DebateService class");
+			 transactionTemplate.execute(new TransactionCallback() {
+				  public Object doInTransaction(TransactionStatus status) {
+					
+				  if(debateDetailsVO != null)
+				  {
+					  
+					  Debate debate = new Debate();
+					  Channel channel =  channelDAO.get(debateDetailsVO.getChannelId());
+					  if(channel != null)
+					  {
+						 debate.setChannel(channel); 
+					  }
+					  TelecastType telecastType = telecastTypeDAO.get(debateDetailsVO.getTelecasteTypeId());
+					  if(telecastType != null)
+					  {
+						  debate.setTelecastType(telecastType);  
+					  }
+					  debate.setSummary(debateDetailsVO.getDebateSummery());
+					  debate.setStartTime(debateDetailsVO.getStartDate());
+					  debate.setEndTime(debateDetailsVO.getEndDate());
+					  
+					  List<SelectOptionVO> subjectsList = debateDetailsVO.getSubjectList();
+					  if(subjectsList != null && subjectsList.size() > 0)
+					  {
+						  for (SelectOptionVO selectOptionVO : subjectsList) {
+							DebateSubject debateSubject = new DebateSubject();
+							debateSubject.setSubject(selectOptionVO.getName());
+							debateSubject.setDebate(debate);
+							debateSubjectDAO.save(debateSubject);
+						}
+					  }
+					  List<SelectOptionVO> obsersList = debateDetailsVO.getObserverList();
+					  if(obsersList != null && obsersList.size() > 0)
+					  {
+						  for (SelectOptionVO selectOptionVO : obsersList) {
+							DebateObserver debateObserver = new DebateObserver();
+							Observer observer = observerDAO.get(selectOptionVO.getId());
+							debateObserver.setObserver(observer);
+							debateObserver.setDebate(debate);
+							debateObserverDAO.save(debateObserver);
+						}
+					  }
+					  
+					  List<ParticipantVO> participentList = debateDetailsVO.getParticipentsList();
+					  if(participentList != null && participentList.size() > 0)
+					  {
+						  
+						  for (ParticipantVO participantVO : participentList)
+						  {
+							  DebateParticipant debateParticipant = new DebateParticipant();
+							  Party party = partyDAO.get(participantVO.getPartyId());
+							  if(party != null)
+							  {
+								  debateParticipant.setParty(party);
+							  }
+							  Candidate candidate =candidateDAO.get(participantVO.getId());
+							  if(candidate != null)
+							  {
+								  debateParticipant.setCandidate(candidate);
+							  }
+							  debateParticipant.setDebate(debate);
+							  debateParticipant.setSummary(participantVO.getSummery());
+							  List<SelectOptionVO> rolesList = participantVO.getRoleList();
+							  if(rolesList != null && rolesList.size() > 0)
+							  {
+								  for (SelectOptionVO selectOptionVO : rolesList) {
+									DebateParticipantRole debateParticipantRole = new DebateParticipantRole();
+									debateParticipantRole.setDebateParticipant(debateParticipant);
+									DebateRoles debateRoles = debateRolesDAO.get(selectOptionVO.getId());
+									debateParticipantRole.setDebateRoles(debateRoles);
+									debateParticipantRoleDAO.save(debateParticipantRole);
+								}
+							  }
+							  List<SelectOptionVO> expRolesList = participantVO.getExpRoleList();
+							  if(expRolesList != null && expRolesList.size() > 0)
+							  {
+								  for (SelectOptionVO selectOptionVO : expRolesList) {
+									DebateParticipantExpectedRole debateParticipantExpectedRole = new DebateParticipantExpectedRole();
+									debateParticipantExpectedRole.setDebateParticipant(debateParticipant);
+									DebateRoles debateRoles = debateRolesDAO.get(selectOptionVO.getId());
+									debateParticipantExpectedRole.setDebateRoles(debateRoles);
+									debateParticipantExceptedRoleDAO.save(debateParticipantExpectedRole);
+								}
+							  }
+						}
+						  
+					 }
+					 
+					  List<SelectOptionVO> questionsList = debateDetailsVO.getQuestionsList();
+					  if(questionsList != null && questionsList.size() > 0)
+					  {
+						  for (SelectOptionVO selectOptionVO : questionsList) {
+							DebateQuestionAnswer debateQuestionAnswer = new DebateQuestionAnswer();
+							debateQuestionAnswer.setAnswer(selectOptionVO.getName());
+							debateQuestionAnswer.setDebate(debate);
+							DebateQuestions debateQuestions = debateQuestionsDAO.get(selectOptionVO.getId());
+							if(debateQuestions != null)
+							{
+								debateQuestionAnswer.setDebateQuestions(debateQuestions);
+							}
+							debateQuestionAnswerDAO.save(debateQuestionAnswer);
+						}
+					  }
+					  
+					  List<SelectOptionVO> smsQuestionsList = debateDetailsVO.getSmsQuestionList();
+					  if(smsQuestionsList != null && smsQuestionsList.size() > 0)
+					  {
+						  for (SelectOptionVO selectOptionVO : smsQuestionsList) {
+							DebateSmsQuestion debateSmsQuestion = new DebateSmsQuestion();
+							debateSmsQuestion.setDebate(debate);
+							debateSmsQuestion.setQuestion(selectOptionVO.getName());
+							debateSmsQuestion.setIsDeleted("N");
+							debateSmsQuestionDAO.save(debateSmsQuestion);
+						}
+					  }
+					  List<SelectOptionVO> smsOptionsList = debateDetailsVO.getSmaOptionsList();
+					  if(smsOptionsList != null && smsOptionsList.size() > 0)
+					  {
+						  for (SelectOptionVO selectOptionVO : smsOptionsList) {
+							DebateSmsQuestionOption debateSmsQuestionOption = new DebateSmsQuestionOption();
+							debateSmsQuestionOption.setOption(selectOptionVO.getName());
+							DebateSmsQuestion debateSmsQuestion = debateSmsQuestionDAO.get(selectOptionVO.getId());
+							if(debateSmsQuestion != null)
+							{
+								debateSmsQuestionOption.setDebateSmsQuestion(debateSmsQuestion);
+							}
+							debateSmsQuestionOption.setPercantage(selectOptionVO.getPerc());
+							debateSmsQuestionOptionDAO.save(debateSmsQuestionOption);
+						}
+					  }
+				  }
+				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+				  return resultStatus;  
+				  }
+			 });
+		} 
+		catch (Exception e)
+		{
+			LOG.error("Error occured in getDebateDetailsForSelected method in DebateService class",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		return resultStatus;
+	}
 	/**
 	 * this service is used for getting the debate details for selected debate
 	 * @param debateId
