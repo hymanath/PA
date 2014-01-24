@@ -5969,7 +5969,12 @@
 		<action name="debateAction" class="debateAction" >
 		    <result name="success">/jsp/debate.jsp</result>
 		 </action>
-		 
+		 		
+		<action name="delayAction" class="createReportAction" method="addDelay">
+		   <result name="success" type="json">
+		 	<param name="root">delaySeconds</param>
+		   </result>
+		 </action>
         </package>
 		
 </struts>      
