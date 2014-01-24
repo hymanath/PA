@@ -1750,7 +1750,7 @@
    		<property name="debateDAO" ref="debateDAO" />
    		<property name="debateSmsQuestionOptionDAO" ref="debateSmsQuestionOptionDAO" />
    		<property name="observerDAO" ref="observerDAO" />
-   		<property name="ChannelDAO" ref="ChannelDAO" />
+   		<property name="channelDAO" ref="channelDAO" />
    		<property name="telecastTypeDAO" ref="telecastTypeDAO" />
    		<property name="debateRolesDAO" ref="debateRolesDAO" />
    		<property name="debateSubjectDAO" ref="debateSubjectDAO" />

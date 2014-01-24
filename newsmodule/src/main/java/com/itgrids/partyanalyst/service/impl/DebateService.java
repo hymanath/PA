@@ -36,7 +36,7 @@ public class DebateService implements IDebateService{
 	private IDebateDAO debateDAO;
 	private IDebateSmsQuestionOptionDAO debateSmsQuestionOptionDAO;
 	private IObserverDAO observerDAO;
-	private IChannelDAO  ChannelDAO;
+	private IChannelDAO  channelDAO;
 	private ITelecastTypeDAO telecastTypeDAO;
 	private IDebateRolesDAO  debateRolesDAO;
 	private IDebateSubjectDAO debateSubjectDAO;
