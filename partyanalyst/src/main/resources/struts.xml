@@ -6296,6 +6296,11 @@
            		<param name="root">casteCategoryId</param>
         	</result>
         </action>
+          <action name="getMobileAppUserDataAction" class="mobileAppUserMgmtAction" method="getMobileAppUserPopulateData">
+           <result type="json" name="success">
+           		<param name="root">resultList</param>
+        	</result>
+        </action>
 		
 		</package>
 </struts>      

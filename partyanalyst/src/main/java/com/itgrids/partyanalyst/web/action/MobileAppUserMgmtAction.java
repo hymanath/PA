@@ -143,5 +143,21 @@ public class MobileAppUserMgmtAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 	
-	
+	public String getMobileAppUserPopulateData()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			session = request.getSession();
+			RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+			return INPUT;
+			
+		
+			resultList = mobileService.getMobileAppUserPopulateData(jObj.getLong("userId"));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }
