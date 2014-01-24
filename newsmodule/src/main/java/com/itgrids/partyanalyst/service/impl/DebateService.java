@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -30,7 +32,6 @@ import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
-import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -38,6 +39,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.model.Channel;
+import com.itgrids.partyanalyst.model.Characteristics;
 import com.itgrids.partyanalyst.model.Debate;
 import com.itgrids.partyanalyst.model.DebateObserver;
 import com.itgrids.partyanalyst.model.DebateParticipant;
@@ -73,12 +75,12 @@ public class DebateService implements IDebateService{
 	private IDebateSmsQuestionDAO debateSmsQuestionDAO;
 	private IDebateQuestionsDAO debateQuestionsDAO ;
 	private IDebateQuestionAnswerDAO  debateQuestionAnswerDAO;
-	private TransactionTemplate transactionTemplate = null;
+	private TransactionTemplate transactionTemplate;
 	private IPartyDAO partyDAO;
 	private ICandidateDAO candidateDAO;
 	
 
-	
+
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
 	}
@@ -552,4 +554,122 @@ public class DebateService implements IDebateService{
 		}
 		return debateVO;
 	}
+	
+	public ResultStatus saveNewRole(final Long userId,final String newRole){
+		LOG.info("Enterd into saveNewRole method in DebateService class");
+		ResultStatus isSaved = new ResultStatus();
+		try {
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						if(userId != null && newRole != null){
+							DebateRoles debateRoles = new DebateRoles();
+							debateRoles.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(newRole)).trim());			
+							debateRolesDAO.save(debateRoles);
+						}
+					}
+			 });
+			 
+			isSaved.setResultCode(0);
+		} catch (Exception e) {
+			isSaved.setResultCode(1);
+			LOG.error("Error occured in saveNewRole method in DebateService class",e);
+		}
+		
+		return isSaved;
+	}
+	public ResultStatus saveNewCharacteristic(final Long userId, final String newCharacteristic){
+		LOG.info("Enterd into saveNewCharacteristic() in DebateService class");
+		ResultStatus isSaved = new ResultStatus();
+		try {
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						if(userId != null && newCharacteristic != null){
+							Characteristics characteristics = new Characteristics();
+							characteristics.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(newCharacteristic)).trim());			
+							characteristicsDAO.save(characteristics);
+						}
+					}
+			});
+			 
+			isSaved.setResultCode(0);
+		} catch (Exception e) {
+			isSaved.setResultCode(1);		
+			LOG.error("Error occured in saveNewCharacteristic() in DebateService class",e);
+		}		
+		return isSaved;
+	}
+	public ResultStatus saveNewDebateQuestion(final Long userId, final String newDebateQuestion){
+		LOG.info("Enterd into saveNewDebateQuestion() in DebateService class");
+		ResultStatus isSaved = new ResultStatus();
+		try {
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+				if(userId != null && newDebateQuestion != null){
+					DebateQuestions debateQuestion = new DebateQuestions();
+					debateQuestion.setQuestion(escapeUnicode(StringEscapeUtils.unescapeHtml(newDebateQuestion)).trim());		
+					debateQuestionsDAO.save(debateQuestion);
+				 }				
+				}
+			});
+			
+			isSaved.setResultCode(0);				
+		} catch (Exception e) {
+			isSaved.setResultCode(1);
+			LOG.error("Error occured in saveNewDebateQuestion() in DebateService class",e);
+		}
+		
+		return isSaved;
+	}
+	
+	 public ResultStatus insertChannelDetails(final Long userId,final String channelName )
+	 {
+			LOG.info("Enterd into insertChannelDetails() in DebateService class");
+			ResultStatus isSaved = new ResultStatus();
+		 try
+		 {			 
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {	
+						if(userId != null && channelName != null){
+							Channel channel = new Channel();						 
+							channel.setChannelName(StringEscapeUtils.unescapeHtml(channelName).trim());						
+							channel = channelDAO.save(channel);	
+						}
+					}
+			 });
+			 
+			isSaved.setResultCode(0);
+		 }
+		 catch(Exception e)
+		 {
+			isSaved.setResultCode(1);
+			LOG.error("Error occured in insertChannelDetails() in DebateService class",e); 
+		 }	
+		  return isSaved;
+	 }
+	 
+
+	 public ResultStatus insertObserverDetails(final Long userId,final String observerName )
+	 {		 
+			LOG.info("Enterd into insertObserverDetails() in DebateService class");
+			ResultStatus isSaved = new ResultStatus();
+		 try
+		 {		 
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {	
+						if(userId != null && observerName != null){
+						Observer observer = new Observer();					 
+						observer.setObserverName(StringEscapeUtils.unescapeHtml(observerName).trim());					
+						observer= observerDAO.save(observer);
+						}
+					}
+			 });			 
+			 isSaved.setResultCode(0);		 
+		 }
+		 catch(Exception e)
+		 {
+			isSaved.setResultCode(1);
+			LOG.error("Error occured in insertObserverDetails() in DebateService class",e);	 
+		 }	
+		 return isSaved;
+	 }	 
 }
