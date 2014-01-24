@@ -253,8 +253,6 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getCandidatesOfAParty(Long partyId);
 	 public String insertMLCCandidateDetails(Long partyId ,String candidateName ,String  education , String gender,Long userId,Long designationId,Long locationId,Long LocationValue);
 
-	 public String insertChannelDetails(String channelName );
-	 public String insertObserverDetails(String observerName );
 	 public ResultStatus createUserNewsCategory(String name, String visibility, Long userId,Long mainCategoryId);
 
 	 public List<SelectOptionVO> getCandidateRelatedGallaries(Long candidateId,String fromDateStr,String toDateStr,Long partyId,String queryType);

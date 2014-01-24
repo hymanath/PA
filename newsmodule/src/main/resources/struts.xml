@@ -5512,16 +5512,6 @@
 		  <param name="root">result</param>
 		 </result>
 		</action>
-		<action name="insertChannelDetails" class="adminPageAction" method="insertChannelDetails">
-		 <result type="json" name="success">
-		  <param name="root">result</param>
-		 </result>
-		</action>
-		<action name="insertObserverDetails" class="adminPageAction" method="insertObserverDetails">
-		 <result type="json" name="success">
-		  <param name="root">result</param>
-		 </result>
-		</action>
 		
 		<action name="createUserNewsCategoryAction" class="newsDetailsAction" method="ajaxHandler">
 		  <result type="json" name="success">
@@ -5975,6 +5965,12 @@
 		 	<param name="root">delaySeconds</param>
 		   </result>
 		 </action>
+		<action name="saveDebateRelatedAttributesAction" class="debateAction" method="saveDebateRelatedAttributes">
+		   <result name="success" type="json">
+		 	<param name="root">resultStatus</param>
+		   </result>
+		 </action>
+		 
         </package>
 		
 </struts>      

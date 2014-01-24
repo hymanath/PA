@@ -27,6 +27,21 @@
 <style type="text/css">
 	#signin{clear: both;
     float: left;}
+	
+	#innerCreationDiv {
+    margin: 25px 25px 25px 200px;
+    padding: 30px 15px 15px 15px;
+	border-radius:5px;
+	border:1px solid #005C99;
+	}
+	.errDiv{
+	color: red;
+	font-weight: bold;
+	}
+	.succDiv{
+	color: Green;
+	font-weight: bold;
+	}
 </style>
 
 	
@@ -52,8 +67,27 @@
 			<div class="offset3 span6 text-center">
 				<a  class="btn btn-info" target="_blank" href="userRegistration.action"> Registration Form</a>
 				<a  class="btn btn-info" href="javascript:{uploadMLCCandidateDetails();}">Upload Party Candidates </a>
+				
+				<div class="btn-group">
+					<button type="button" class="btn btn-default btn-info dropdown-toggle" data-toggle="dropdown">
+					  Debate Actions
+					  <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" style="text-align:left">
+					  <li><a href="javascript:{}" onclick="createRole();">Create Role</a></li>
+					  <li><a href="javascript:{}" onclick="createCharacteristics();">Create Characteristics</a></li>
+					  <li><a href="javascript:{}" onclick="createDebateQuestion();">Create Question</a></li>
+					  <li><a href="javascript:{}" onclick="createObserver();">Create Observer</a></li>
+					  <li><a href="javascript:{}" onclick="createChannel();">Create Channel</a></li>
+					</ul>
+				</div>
+				
 			</div>
-		</div>
+			
+			  <div id="creationDiv" class="span10" align="center"></div> 
+
+
+
 <script type="text/javascript">
 function createNewSource()
 {
@@ -118,8 +152,152 @@ var win=window.open("uploadMLCCandidateDetailsAction.action", '_blank');
 
 }
 
+function createRole(){
+$("#creationDiv").html('');
+	var str='';
+	str +='<div id="innerCreationDiv"> ';
+	str +='<div id="RerrDiv"></div>';
+	str +='<h5 class="text-success"> Create New Debate Role </h5>';
+	str +='Role Name :  <input type="text" name="roleName" id="newRoleId"/><div><input type="button" class="btn btn-success" value="Submit" onClick="createNewRole();"/></div>';
+	str +='</div>';
+	
+	$("#creationDiv").html(str);
+}
+
+function createCharacteristics(){
+$("#creationDiv").html('');
+	var str='';
+	
+	str +='<div id="innerCreationDiv"> ';
+	str +='<div id="CerrDiv" ></div>';
+	str +='<h5 class="text-success">Create New Characteristic </h5>';
+	str +='Characteristic Name :  <input type="text" name="CharacteristicName" id="CharacteristicId"/>';
+	str +='<div><input type="button" class="btn btn-success" value="Submit"  onClick="createNewCharacteristic();"/></div>';
+	str +='</div>';
+	
+	$("#creationDiv").html(str);
+}
+
+function createDebateQuestion(){
+$("#creationDiv").html('');
+	var str='';
+	str +='<div id="innerCreationDiv">';
+	str +='<div id="QerrDiv"></div>';
+	str +='<h5 class="text-success"> Create New Debate Question </h5>';
+	str +='	Debate Question :  <input type="text" name="debateQuestion" id="debateQstinId"/><div><input type="button" class="btn btn-success" value="Submit" onClick="createNewDebateQuestion();"/></div>';
+	str +='</div>';
+	
+	$("#creationDiv").html(str);
+}
+
+function createObserver(){
+$("#creationDiv").html('');
+	var str='';
+	str +='<div id="innerCreationDiv">';
+	str +='<div id="OerrDiv"></div>';
+	str +='<h5 class="text-success"> Create New Observer </h5>';
+	str +='	Observer Name :  <input type="text" name="observerName" id="observerName"/><div><input type="button" class="btn btn-success" value="Submit" onClick="insertObserverDetails();"/></div>';
+	str +='</div>';
+	
+	$("#creationDiv").html(str);
+}
+
+function createChannel(){
+$("#creationDiv").html('');
+	var str='';
+	str +='<div id="innerCreationDiv">';
+	str +='<div id="CHerrDiv"></div>';
+	str +='<h5 class="text-success"> Create New Channel </h5>';
+	str +='	Channel Name :  <input type="text" name="channel" id="channelName"/><div><input type="button" class="btn btn-success" value="Submit" onClick="insertChannelDetails();"/></div>';
+	str +='</div>';
+	
+	$("#creationDiv").html(str);
+}					  
+
+function createNewRole(){
+
+		var role = $("#newRoleId").val();
+
+		if(role.trim().length<=0){
+			$("#RerrDiv").html(' Role  Name is Required.').addClass("errDiv");
+			return;	
+		}
+
+		createNewOne(role,"createNewRole","Role","RerrDiv");							
+}
+function createNewCharacteristic(){
+		$("#debateStatus").html('');
+		var characteristic = $("#CharacteristicId").val();
+
+		if(characteristic.trim().length<=0){
+			$("#CerrDiv").html(' Characteristic  Name is Required.').addClass("errDiv");
+			return;	
+		}
+
+		createNewOne(characteristic,"createNewCharacteristic","Characteristic","CerrDiv");
+}
+
+function createNewDebateQuestion(){
+		$("#debateStatus").html('');
+		var debateQuestion = $("#debateQstinId").val();
+
+		if(debateQuestion.trim().length<=0){
+			$("#QerrDiv").html(' Debate Question is Required.').addClass("errDiv");
+			return;	
+		}
+
+		createNewOne(debateQuestion,"createNewDebateQuestion","Debate Question","QerrDiv");
+}
+
+function insertChannelDetails(){
+
+		var channel = $("#channelName").val();
+
+		if(channel.trim().length<=0){
+			$("#CHerrDiv").html(' Channel  Name is Required.').addClass("errDiv");
+			return;	
+		}
+
+		createNewOne(channel,"createNewChannel","Channel","CHerrDiv");							
+}
+function insertObserverDetails(){
+
+		var observer = $("#observerName").val();
+
+		if(observer.trim().length<=0){
+			$("#OerrDiv").html(' Observer  Name is Required.').addClass("errDiv");
+			return;	
+		}
+
+		createNewOne(observer,"createNewObserver","Observer","OerrDiv");							
+}
 
 
+function createNewOne(name,task,type,errDiv){
+	$("#debateStatus").html('');
+	$.ajax({
+		type: "POST",
+		url:"saveDebateRelatedAttributesAction.action",
+		data:{attributeName:name,task:task}
+	}).done(function(result){
+
+			if(result != null){
+				if(result.resultCode == 0){
+					$("#"+errDiv+"").html('New '+type+' Created Successfully.').addClass("succDiv").fadeOut(3000);
+					return;
+				}else
+				{
+					$("#"+errDiv+"").html('Error occured while saving new '+type+'').addClass("errDiv");
+					return;
+				}
+			}else
+				{
+					$("#"+errDiv+"").html('Error occured while saving new '+type+'').addClass("errDiv");
+					return;
+				}
+	});
+
+}
 </script>
 </body>
 

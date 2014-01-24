@@ -163,8 +163,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	 private IMainCategoryDAO mainCategoryDAO;
 	 private INewsResponseDAO newsResponseDAO;
-	 private IChannelDAO channelDAO;
-	 private IObserverDAO observerDAO; 
+
 	//private IContentTypeDAO contentTypeDAO;
 	//private IUserGallaryDAO userGallaryDAO;
 
@@ -209,21 +208,6 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private ICandidatePartyCategoryDAO candidatePartyCategoryDAO;
     private IDesignationDAO designationDAO;
 	
-    
-	public IChannelDAO getChannelDAO() {
-		return channelDAO;
-	}
-
-	public void setChannelDAO(IChannelDAO channelDAO) {
-		this.channelDAO = channelDAO;
-	}
-	public IObserverDAO getObserverDAO() {
-		return observerDAO;
-	}
-
-	public void setObserverDAO(IObserverDAO observerDAO) {
-		this.observerDAO = observerDAO;
-	}
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
@@ -7103,65 +7087,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 
 	 }
 	
-	 public String insertChannelDetails(final String channelName )
-	 {
-		 
-		 try
-		 {
-			 
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {
-						
-			Channel channel = new Channel();
-			 
-			channel.setChannelName(channelName);
-			
-			channel = channelDAO.save(channel);
-			 
-			 }
-		});
-			 
-			  return "success";
-			 
-		 }
-		 catch(Exception e)
-		 {
-			 e.printStackTrace();
-			 return null;
-			 
-		 }		 
-		 
-	 }
-	 public String insertObserverDetails(final String observerName )
-	 {
-		 
-		 try
-		 {
-			 
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {
-						
-			Observer observer = new Observer();
-			 
-			observer.setObserverName(observerName);
-			
-			observer= observerDAO.save(observer);
-			 
-			 }
-		});
-			 
-			  return "success";
-			 
-		 }
-		 catch(Exception e)
-		 {
-			 e.printStackTrace();
-			 return null;
-			 
-		 }		 
-		 
-	 }
-	 
+	
 		public ResultStatus createUserNewsCategory(String name, String visibility, Long userId,Long mainCategoryId)
 		{
 			ResultStatus resultStatus = new ResultStatus();

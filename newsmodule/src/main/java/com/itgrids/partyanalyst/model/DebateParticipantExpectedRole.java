@@ -57,7 +57,7 @@ public void setDebateParticipant(DebateParticipant debateParticipant) {
 }
 
 @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-@JoinColumn(name = "debate_role_id")
+@JoinColumn(name = "debate_roles_id")
 @LazyToOne(LazyToOneOption.NO_PROXY)
 @org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 public DebateRoles getDebateRoles() {
