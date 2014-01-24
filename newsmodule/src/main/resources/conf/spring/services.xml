@@ -1621,7 +1621,10 @@
 		<property name="newsResponseDAO" ref="newsResponseDAO" />
 		<property name="candidatePartyCategoryDAO" ref="candidatePartyCategoryDAO" />
 		<property name="designationDAO" ref="designationDAO" />
-		<property name="electionDAO" ref="electionDAO" />		
+		<property name="electionDAO" ref="electionDAO" />
+		<property name="channelDAO" ref="channelDAO" />
+		<property name="observerDAO" ref="observerDAO" />
+		
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >

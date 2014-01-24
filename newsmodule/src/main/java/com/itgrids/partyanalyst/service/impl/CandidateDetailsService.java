@@ -37,6 +37,8 @@ import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyKeywordDAO;
 import com.itgrids.partyanalyst.dao.ICandidateRelatedNewsDAO;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
+import com.itgrids.partyanalyst.dao.IChannelDAO;
+import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -73,6 +75,8 @@ import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.IUserCandidateRelationDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserNewsCategoryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ChannelDAO;
+import com.itgrids.partyanalyst.dao.hibernate.ObserverDAO;
 import com.itgrids.partyanalyst.dto.CandidatePartyDestinationVO;
 import com.itgrids.partyanalyst.dto.CandidatePartyNewsVO;
 import com.itgrids.partyanalyst.dto.CategoryVO;
@@ -91,6 +95,8 @@ import com.itgrids.partyanalyst.model.CandidatePartyFile;
 import com.itgrids.partyanalyst.model.CandidatePartyKeyword;
 import com.itgrids.partyanalyst.model.CandidateRealatedNews;
 import com.itgrids.partyanalyst.model.Category;
+import com.itgrids.partyanalyst.model.Channel;
+import com.itgrids.partyanalyst.model.Observer;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
@@ -157,7 +163,8 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	 private IMainCategoryDAO mainCategoryDAO;
 	 private INewsResponseDAO newsResponseDAO;
-	    
+	 private IChannelDAO channelDAO;
+	 private IObserverDAO observerDAO; 
 	//private IContentTypeDAO contentTypeDAO;
 	//private IUserGallaryDAO userGallaryDAO;
 
@@ -203,6 +210,20 @@ public class CandidateDetailsService implements ICandidateDetailsService {
     private IDesignationDAO designationDAO;
 	
     
+	public IChannelDAO getChannelDAO() {
+		return channelDAO;
+	}
+
+	public void setChannelDAO(IChannelDAO channelDAO) {
+		this.channelDAO = channelDAO;
+	}
+	public IObserverDAO getObserverDAO() {
+		return observerDAO;
+	}
+
+	public void setObserverDAO(IObserverDAO observerDAO) {
+		this.observerDAO = observerDAO;
+	}
 	public IElectionDAO getElectionDAO() {
 		return electionDAO;
 	}
@@ -7082,6 +7103,64 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 		 
 	 }
 	
+	 public String insertChannelDetails(final String channelName )
+	 {
+		 
+		 try
+		 {
+			 
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						
+			Channel channel = new Channel();
+			 
+			channel.setChannelName(channelName);
+			
+			channel = channelDAO.save(channel);
+			 
+			 }
+		});
+			 
+			  return "success";
+			 
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 return null;
+			 
+		 }		 
+		 
+	 }
+	 public String insertObserverDetails(final String observerName )
+	 {
+		 
+		 try
+		 {
+			 
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						
+			Observer observer = new Observer();
+			 
+			observer.setObserverName(observerName);
+			
+			observer= observerDAO.save(observer);
+			 
+			 }
+		});
+			 
+			  return "success";
+			 
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 return null;
+			 
+		 }		 
+		 
+	 }
 	 
 		public ResultStatus createUserNewsCategory(String name, String visibility, Long userId,Long mainCategoryId)
 		{

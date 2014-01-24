@@ -97,6 +97,7 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 			ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
 	}
+	
 
 	//@Override
 	public void setServletRequest(HttpServletRequest request) {
@@ -184,4 +185,72 @@ public class AdminPageAction extends ActionSupport implements ServletRequestAwar
 		
 	}
 	
+
+
+public String insertChannelDetails()
+{
+	
+
+	try{
+		
+		 session = request.getSession();	
+		 RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		   
+		   
+		jObj = new JSONObject(getTask());
+		
+		
+		String channelName = jObj.getString("channelName");
+		
+		 result   = candidateDetailsService.insertChannelDetails(channelName );
+		
+		if(result.equalsIgnoreCase("success"))
+			return Action.SUCCESS;
+		else
+			return Action.ERROR;
+
+		
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in insertChannelDetails() method, Exception - "+e);
+			return null;
+		}
+	
 }
+
+
+public String insertObserverDetails()
+{
+	
+
+	try{
+		
+		 session = request.getSession();	
+		 RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		   
+		   
+		jObj = new JSONObject(getTask());
+		
+		
+		String observerName = jObj.getString("observerName");
+		
+		 result   = candidateDetailsService.insertObserverDetails(observerName );
+		
+		if(result.equalsIgnoreCase("success"))
+			return Action.SUCCESS;
+		else
+			return Action.ERROR;
+
+		
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+			Log.error("Exception Occured in insertObserverDetails() method, Exception - "+e);
+			return null;
+		}
+	
+}
+
+}
+
