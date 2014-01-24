@@ -24,7 +24,7 @@ public class DebateParticipantCharcs {
 
 	
 	private Integer debateParticipantCharcsId;
-	private Debate debate;
+	private DebateParticipant debateParticipant;
 	private Characteristics characteristics;
 	private Double scale;
 	
@@ -46,19 +46,17 @@ public class DebateParticipantCharcs {
 		this.debateParticipantCharcsId = debateParticipantCharcsId;
 	}
 
-
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name = "debate_id")
+	@JoinColumn(name = "debate_participant_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Debate getDebate() {
-		return debate;
+	public DebateParticipant getDebateParticipant() {
+		return debateParticipant;
 	}
 
 
-
-	public void setDebate(Debate debate) {
-		this.debate = debate;
+	public void setDebateParticipant(DebateParticipant debateParticipant) {
+		this.debateParticipant = debateParticipant;
 	}
 
 

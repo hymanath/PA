@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 
 import com.itgrids.partyanalyst.dao.IDebateQuestionAnswerDAO;
@@ -12,4 +14,10 @@ public class DebateQuestionAnswerDAO extends GenericDaoHibernate<DebateQuestionA
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDebateQuestionAndAnswerDetails(Long debateId)
+	{
+		return getHibernateTemplate().find("select model.debateQuestions.question , model.answer " +
+				" from DebateQuestionAnswer model where model.debate.debateId = ? ",debateId);
+	}
 }
