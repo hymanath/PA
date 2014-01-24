@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class DebateVO implements Serializable {
@@ -29,7 +30,8 @@ public class DebateVO implements Serializable {
 	private List<String> expRoles;
 	private List<SelectOptionVO> debateExpRolesList;
 	private List<SelectOptionVO> debateRolesList;
-	
+	private Date StartDate;
+	private Date endDate;
 	public Long getDebateId() {
 		return debateId;
 	}
@@ -144,6 +146,18 @@ public class DebateVO implements Serializable {
 	}
 	public void setDebateRolesList(List<SelectOptionVO> debateRolesList) {
 		this.debateRolesList = debateRolesList;
+	}
+	public Date getStartDate() {
+		return StartDate;
+	}
+	public void setStartDate(Date startDate) {
+		StartDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 	
 	

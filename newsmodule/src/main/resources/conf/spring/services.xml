@@ -1763,6 +1763,8 @@
    		<property name="debateSmsQuestionDAO" ref="debateSmsQuestionDAO" />
    		<property name="debateQuestionsDAO" ref="debateQuestionsDAO" />
    		<property name="debateQuestionAnswerDAO" ref="debateQuestionAnswerDAO" />
+   		<property name="partyDAO" ref="partyDAO" />
+   		<property name="candidateDAO" ref="candidateDAO" />
    </bean>
 
 </beans>		
