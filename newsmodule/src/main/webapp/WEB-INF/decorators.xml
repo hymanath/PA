@@ -253,6 +253,8 @@
 		<pattern>/getNewsAction*</pattern>
 		<pattern>/newsActivitiesAction*</pattern>
 		<pattern>/debateAction*</pattern>
+        <pattern>/uploadChannelDetailsAction*</pattern>
+		<pattern>/uploadObserverDetailsAction*</pattern>
     	 </decorator>
 
 </decorators>
