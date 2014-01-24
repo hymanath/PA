@@ -32,5 +32,7 @@ public interface IMobileService {
   	public List<SelectOptionVO> getSuperAdminMobileAppUsers();
   	
   	public List<SelectOptionVO> getPingDetails(Long mobileAppUserId);
+  	
+	public List<RegistrationVO> getMobileAppUserPopulateData(Long userId);
 
 }

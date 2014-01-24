@@ -57,5 +57,12 @@ public class MobileAppUserAccessDAO extends GenericDaoHibernate<MobileAppUserAcc
 		query.setParameter("mobileAppUserId", mobileAppUserId);
 		return query.list();
 	}
+	public List getMobileAppUserdetailsByUserId(Long mobileAppUserId)
+	{
+		Query query = getSession().createQuery("select model1.firstName,model1.lastName,model.mobileAppUser.mobileNo,model.mobileAppUser.email,model.mobileAppUser.userName,model.mobileAppUser.password,model.mobileAppUser.uniqueCode,model.appId,model.deviceId,model.macAddress,model1.gender,model.mobileAppUser.mobileAppUser.mobileAppUserId from MobileAppUserAccess model,MobileAppUserProfile model1 where model.mobileAppUser.user.userId = :mobileAppUserId and model.mobileAppUser.mobileAppUserId = model1.mobileAppUser.mobileAppUserId" +
+				"  order by model.mobileAppUser.mobileAppUserId desc");
+		query.setParameter("mobileAppUserId", mobileAppUserId);
+		return query.list();
+	}
 	
 }
