@@ -1744,6 +1744,22 @@
    </bean>
    
    <bean name="debateService" class="com.itgrids.partyanalyst.service.impl.DebateService">
+   		<property name="debateDAO" ref="debateDAO" />
+   		<property name="debateSmsQuestionOptionDAO" ref="debateSmsQuestionOptionDAO" />
+   		<property name="observerDAO" ref="observerDAO" />
+   		<property name="ChannelDAO" ref="ChannelDAO" />
+   		<property name="telecastTypeDAO" ref="telecastTypeDAO" />
+   		<property name="debateRolesDAO" ref="debateRolesDAO" />
+   		<property name="debateSubjectDAO" ref="debateSubjectDAO" />
+   		<property name="debateObserverDAO" ref="debateObserverDAO" />
+   		<property name="characteristicsDAO" ref="characteristicsDAO" />
+   		<property name="debateParticipantDAO" ref="debateParticipantDAO" />
+   		<property name="debateParticipantRoleDAO" ref="debateParticipantRoleDAO" />
+   		<property name="debateParticipantExceptedRoleDAO" ref="debateParticipantExceptedRoleDAO" />
+   		<property name="debateParticipantCharcsDAO" ref="debateParticipantCharcsDAO" />
+   		<property name="debateSmsQuestionDAO" ref="debateSmsQuestionDAO" />
+   		<property name="debateQuestionsDAO" ref="debateQuestionsDAO" />
+   		<property name="debateQuestionAnswerDAO" ref="debateQuestionAnswerDAO" />
    </bean>
 
 </beans>		
