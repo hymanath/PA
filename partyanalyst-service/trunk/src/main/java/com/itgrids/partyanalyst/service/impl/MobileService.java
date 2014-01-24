@@ -2357,4 +2357,37 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 		return resultList;
   	}
+  	
+  	public List<RegistrationVO> getMobileAppUserPopulateData(Long userId)
+  	{
+  		
+  		List<RegistrationVO> result = new ArrayList<RegistrationVO>();
+  		try{
+  		List list = mobileAppUserAccessDAO.getMobileAppUserdetailsByUserId(userId);
+  		if(list != null && list.size() > 0)
+  		{
+  		Object[] params =(Object[]) list.get(0);	
+  		RegistrationVO registrationVO = new RegistrationVO();
+  		registrationVO.setFirstName(params[0].toString());
+  		registrationVO.setLastName(params[1].toString());
+  		registrationVO.setMobile(params[2].toString());
+  		registrationVO.setEmail(params[3].toString());
+  		registrationVO.setUserName(params[4].toString());
+  		registrationVO.setPassword(params[5].toString());
+  		registrationVO.setUniqueCode(params[6].toString());
+  		registrationVO.setAppId(params[7].toString());
+  		registrationVO.setDeviceId(params[8].toString());
+  		registrationVO.setAddress(params[9].toString());
+  		registrationVO.setGender(params[10].toString());
+  		registrationVO.setSuperAdminId((Long)params[11]);
+  		result.add(registrationVO);	
+  		}
+  		
+  		}
+  		catch(Exception e)
+  		{
+  			LOG.error("Exception Occured in getMobileAppUserPopulateData()", e);
+  		}
+		return result;
+  	}
 }
