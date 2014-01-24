@@ -16,7 +16,9 @@ public class DebateVO implements Serializable {
 	private String startTime;
 	private String endTime;
 	private String date;
-	private List<SelectOptionVO> channelsList;
+	private Long channelId;
+	private String channelName;
+	private Long telecastTypeId;
 	private String telecastTime;
 	private List<SelectOptionVO> observorsList;
 	private List<SelectOptionVO> questionAnswersList;
@@ -61,12 +63,6 @@ public class DebateVO implements Serializable {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public List<SelectOptionVO> getChannelsList() {
-		return channelsList;
-	}
-	public void setChannelsList(List<SelectOptionVO> channelsList) {
-		this.channelsList = channelsList;
-	}
 	public String getTelecastTime() {
 		return telecastTime;
 	}
@@ -108,6 +104,24 @@ public class DebateVO implements Serializable {
 	}
 	public void setParticipantsList(List<ParticipantVO> participantsList) {
 		this.participantsList = participantsList;
+	}
+	public Long getChannelId() {
+		return channelId;
+	}
+	public void setChannelId(Long channelId) {
+		this.channelId = channelId;
+	}
+	public String getChannelName() {
+		return channelName;
+	}
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
+	public Long getTelecastTypeId() {
+		return telecastTypeId;
+	}
+	public void setTelecastTypeId(Long telecastTypeId) {
+		this.telecastTypeId = telecastTypeId;
 	}
 	
 	

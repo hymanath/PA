@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.dao;
 
-public interface IDebateSmsQuestionDAO {
+import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.DebateSmsQuestion;
+
+public interface IDebateSmsQuestionDAO extends GenericDao<DebateSmsQuestion, Long>{
 
 }

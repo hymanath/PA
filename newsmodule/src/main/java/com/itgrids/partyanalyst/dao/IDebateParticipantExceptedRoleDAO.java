@@ -1,5 +1,9 @@
 package com.itgrids.partyanalyst.dao;
 
-public interface IDebateParticipantExceptedRoleDAO {
+import org.appfuse.dao.GenericDao;
+
+import com.itgrids.partyanalyst.model.DebateParticipantExpectedRole;
+
+public interface IDebateParticipantExceptedRoleDAO extends GenericDao<DebateParticipantExpectedRole, Long>{
 
 }
