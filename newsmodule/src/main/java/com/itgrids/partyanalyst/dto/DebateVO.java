@@ -20,12 +20,15 @@ public class DebateVO implements Serializable {
 	private String channelName;
 	private Long telecastTypeId;
 	private String telecastTime;
-	private List<SelectOptionVO> observorsList;
+	private List<String> observorsList;
 	private List<SelectOptionVO> questionAnswersList;
 	private List<SelectOptionVO> smsPoleList;
 	private String debateSummery;
 	private List<SelectOptionVO> candidateSummery;
 	private List<ParticipantVO> participantsList;
+	private List<String> expRoles;
+	private List<SelectOptionVO> debateExpRolesList;
+	private List<SelectOptionVO> debateRolesList;
 	
 	public Long getDebateId() {
 		return debateId;
@@ -69,10 +72,11 @@ public class DebateVO implements Serializable {
 	public void setTelecastTime(String telecastTime) {
 		this.telecastTime = telecastTime;
 	}
-	public List<SelectOptionVO> getObservorsList() {
+	
+	public List<String> getObservorsList() {
 		return observorsList;
 	}
-	public void setObservorsList(List<SelectOptionVO> observorsList) {
+	public void setObservorsList(List<String> observorsList) {
 		this.observorsList = observorsList;
 	}
 	public List<SelectOptionVO> getQuestionAnswersList() {
@@ -122,6 +126,24 @@ public class DebateVO implements Serializable {
 	}
 	public void setTelecastTypeId(Long telecastTypeId) {
 		this.telecastTypeId = telecastTypeId;
+	}
+	public List<String> getExpRoles() {
+		return expRoles;
+	}
+	public void setExpRoles(List<String> expRoles) {
+		this.expRoles = expRoles;
+	}
+	public List<SelectOptionVO> getDebateExpRolesList() {
+		return debateExpRolesList;
+	}
+	public void setDebateExpRolesList(List<SelectOptionVO> debateExpRolesList) {
+		this.debateExpRolesList = debateExpRolesList;
+	}
+	public List<SelectOptionVO> getDebateRolesList() {
+		return debateRolesList;
+	}
+	public void setDebateRolesList(List<SelectOptionVO> debateRolesList) {
+		this.debateRolesList = debateRolesList;
 	}
 	
 	

@@ -28,7 +28,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long mainAccountId;
 	private boolean flag;
 	private Long count;
-	
+	private Double perc;
 
 	public boolean isFlag() {
 		return flag;
@@ -244,6 +244,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+
+	public Double getPerc() {
+		return perc;
+	}
+
+	public void setPerc(Double perc) {
+		this.perc = perc;
 	}
 	
 	
