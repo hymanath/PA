@@ -5494,12 +5494,30 @@
 		 </result>
 		</action>
 	
-		<action name="uploadMLCCandidateDetailsAction" class="adminPageAction"  method="uploadMLCCandidateDetailsAction">
+		<action name="uploadMLCCandidateDetailsAction" class="adminPageAction"  method="uploadMLCCandidateDetails">
 			<result name="success">/jsp/uploadMLCCandidateDetails.jsp</result>
 		    <result name="error" type="redirect">loginPageAction.action</result>
 		</action>
+		<action name="uploadChannelDetailsAction" class="adminPageAction" >
+			<result name="success">/jsp/uploadChannelDetails.jsp</result>
+		    <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
 		
+		<action name="uploadObserverDetailsAction" class="adminPageAction" >
+			<result name="success">/jsp/uploadObserverDetails.jsp</result>
+		    <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
 		<action name="insertMLCCandidateDetails" class="adminPageAction" method="insertMLCCandidateDetails">
+		 <result type="json" name="success">
+		  <param name="root">result</param>
+		 </result>
+		</action>
+		<action name="insertChannelDetails" class="adminPageAction" method="insertChannelDetails">
+		 <result type="json" name="success">
+		  <param name="root">result</param>
+		 </result>
+		</action>
+		<action name="insertObserverDetails" class="adminPageAction" method="insertObserverDetails">
 		 <result type="json" name="success">
 		  <param name="root">result</param>
 		 </result>
