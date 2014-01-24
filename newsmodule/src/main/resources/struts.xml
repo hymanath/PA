@@ -5971,6 +5971,14 @@
 		   </result>
 		 </action>
 		 
+		<action name="debetSavingAction" class="debateAction">
+	 			 <result>/jsp/debetSavingForm.jsp</result>
+	 	</action>
+	 	
+	 	<action name="debetAction1" class="newsDetailsAction">
+	 			 <result>/jsp/debetReport.jsp</result>
+	 	</action>
+	 	
         </package>
 		
 </struts>      

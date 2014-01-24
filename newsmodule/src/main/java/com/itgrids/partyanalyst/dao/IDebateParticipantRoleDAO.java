@@ -9,4 +9,5 @@ import com.itgrids.partyanalyst.model.DebateParticipantRole;
 public interface IDebateParticipantRoleDAO extends GenericDao<DebateParticipantRole, Long>{
 
 	public List<Object[]> getParticepentRoles(Long debateId);
+	public List<DebateParticipantRole> getDebateParticipantRoleDetails();
 }
