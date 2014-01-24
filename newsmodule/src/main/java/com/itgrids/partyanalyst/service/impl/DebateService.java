@@ -66,8 +66,10 @@ public class DebateService implements IDebateService{
 		this.observerDAO = observerDAO;
 	}
 
+	
+
 	public void setChannelDAO(IChannelDAO channelDAO) {
-		ChannelDAO = channelDAO;
+		this.channelDAO = channelDAO;
 	}
 
 	public void setTelecastTypeDAO(ITelecastTypeDAO telecastTypeDAO) {
