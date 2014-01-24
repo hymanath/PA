@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
+import com.itgrids.partyanalyst.dao.hibernate.DebateQuestionsDAO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -106,7 +107,9 @@ public class DebateService implements IDebateService{
 		this.observerDAO = observerDAO;
 	}
 
-	
+	public IChannelDAO getChannelDAO() {
+		return channelDAO;
+	}
 
 	public void setChannelDAO(IChannelDAO channelDAO) {
 		this.channelDAO = channelDAO;
@@ -553,6 +556,90 @@ public class DebateService implements IDebateService{
 			LOG.error("Error occured in getDebateDetailsForSelected method in DebateService class",e);
 		}
 		return debateVO;
+	}
+	
+	public List<SelectOptionVO> getChannelDetails()
+	{
+		List<SelectOptionVO> channelDetails = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO;
+		List<Channel> channelDetail = channelDAO.getChannelDetails();
+		for(Channel param:channelDetail){
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(param.getChannelId()));
+			selectOptionVO.setName(param.getChannelName());
+			channelDetails.add(selectOptionVO);
+		}
+		return channelDetails;
+	}
+	
+	public List<SelectOptionVO> getTelecastTimeDetails()
+	{
+		List<SelectOptionVO> telecastDetails = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO;
+		List<TelecastType> telecastTimeDetails = telecastTypeDAO.getTelecastTimeDetails();
+		for(TelecastType param:telecastTimeDetails){
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(param.getTelecastTypeId()));
+			selectOptionVO.setName(param.getName());
+			telecastDetails.add(selectOptionVO);
+		}
+		return telecastDetails;
+	}
+	
+	public List<SelectOptionVO> getObserverDetails()
+	{
+		List<SelectOptionVO> observerDetails = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO;
+		List<Observer> observerDetailsVal = observerDAO.getObserverDetails();
+		for(Observer param:observerDetailsVal){
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(param.getObserverId()));
+			selectOptionVO.setName(param.getObserverName());
+			observerDetails.add(selectOptionVO);
+		}
+		return observerDetails;
+	}
+	
+	public List<SelectOptionVO> getDebateQuestionDetails()
+	{
+		List<SelectOptionVO> debateDetails = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO;
+		List<DebateQuestions> debateDetailsVal = debateQuestionsDAO.getDebateQuestionDetails();
+		for(DebateQuestions param:debateDetailsVal){
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(param.getDebateQuestionsId()));
+			selectOptionVO.setName(param.getQuestion());
+			debateDetails.add(selectOptionVO);
+		}
+		return debateDetails;
+	}
+	
+	public List<SelectOptionVO> getDebateSmsQuestionDetails()
+	{
+		List<SelectOptionVO> debateSmsDetails = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO;
+		List<DebateSmsQuestion> debateSmsDetailsVal = debateSmsQuestionDAO.getDebateSmsQuestionDetails();
+		for(DebateSmsQuestion param:debateSmsDetailsVal){
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(param.getDebateSmsQuestionId()));
+			selectOptionVO.setName(param.getQuestion());
+			debateSmsDetails.add(selectOptionVO);
+		}
+		return debateSmsDetails;
+	}
+	
+	public List<SelectOptionVO> getDebateParticipantRoleDetails()
+	{
+		List<SelectOptionVO> debateParticipantRoleDetails = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO;
+		List<DebateParticipantRole> debateParticipantRoleDetailsVal = debateParticipantRoleDAO.getDebateParticipantRoleDetails();
+		for(DebateParticipantRole param:debateParticipantRoleDetailsVal){
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(param.getDebateParticipantRoleId()));
+			selectOptionVO.setName(param.getDebateRoles().getName());
+			debateParticipantRoleDetails.add(selectOptionVO);
+		}
+		return debateParticipantRoleDetails;
 	}
 	
 	public ResultStatus saveNewRole(final Long userId,final String newRole){

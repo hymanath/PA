@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.service;
 
-import com.itgrids.partyanalyst.dto.DebateDetailsVO;
+import java.util.List;
+
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IDebateService {
 
@@ -20,5 +22,10 @@ public interface IDebateService {
 	
 	public ResultStatus insertObserverDetails(Long userId, String newRole);
 	
-	
+	public List<SelectOptionVO> getChannelDetails();
+	public List<SelectOptionVO> getTelecastTimeDetails();
+	public List<SelectOptionVO> getObserverDetails();
+	public List<SelectOptionVO> getDebateQuestionDetails();
+	public List<SelectOptionVO> getDebateSmsQuestionDetails();
+	public List<SelectOptionVO> getDebateParticipantRoleDetails();
 }
