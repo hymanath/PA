@@ -196,6 +196,8 @@ public class ReportService implements IReportService {
 
 	public FileVO getReportData(Long reportId,Long userId,String key){
 		FileVO returnVo = new FileVO();
+		returnVo.setGallaryName(StringEscapeUtils.unescapeJava("\u0C24\u0C46\u0C32\u0C41\u0C17\u0C41\u0C26\u0C47\u0C36\u0C02"));
+		returnVo.setGallaryDescription(StringEscapeUtils.unescapeJava("\u0C2A\u0C24\u0C4D\u0C30\u0C3F\u0C15\u0C32\u0C32\u0C4B \u0C35\u0C1A\u0C4D\u0C1A\u0C3F\u0C28 \u0C35\u0C3E\u0C30\u0C4D\u0C24\u0C3E \u0C15\u0C27\u0C28\u0C3E\u0C32 \u0C2B\u0C48 \u0C1C\u0C3F\u0C32\u0C4D\u0C32\u0C3E \u0C35\u0C3E\u0C30\u0C3F \u0C38\u0C2E\u0C17\u0C4D\u0C30 \u0C28\u0C3F\u0C35\u0C47\u0C26\u0C3F\u0C15"));
 	 try{
 		 List<Object[]> stateLvlNews = null;
 		 List<Object[]> districtLvlNews = null;
@@ -236,13 +238,13 @@ public class ReportService implements IReportService {
 			        if(news[8] != null)
 				    {
 				      date= (Date)news[8];
-				      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                       newDate = formatter.format(date);
 				    }
 			    file.setFileDate(newDate != null ? newDate : "");
-				file.setTitle(news[1] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[1].toString())):"");
-				file.setDescription(news[2] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[2].toString())):"");
-				file.setNewsDescription(news[3] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[3].toString())):"");
+				file.setTitle(news[1] != null?StringEscapeUtils.unescapeJava(news[1].toString()):"");
+				file.setDescription(news[2] != null?StringEscapeUtils.unescapeJava(news[2].toString()):"");
+				file.setNewsDescription(news[3] != null?StringEscapeUtils.unescapeJava(news[3].toString()):"");
 				file.setLocationId((Long)news[4]);
 				file.setLocationVal((Long)news[5]);
 				file.setScope("STATE");
@@ -276,13 +278,13 @@ public class ReportService implements IReportService {
 		        if(news[11] != null)
 			    {
 			      date= (Date)news[11];
-			      SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			      SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                   newDate = formatter.format(date);
 			    }
 		    file.setFileDate(newDate != null ? newDate : "");
-				file.setTitle(news[1] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[1].toString())):"");
-				file.setDescription(news[2] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[2].toString())):"");
-				file.setNewsDescription(news[3] != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(news[3].toString())):"");
+				file.setTitle(news[1] != null?StringEscapeUtils.unescapeJava(news[1].toString()):"");
+				file.setDescription(news[2] != null?StringEscapeUtils.unescapeJava(news[2].toString()):"");
+				file.setNewsDescription(news[3] != null?StringEscapeUtils.unescapeJava(news[3].toString()):"");
 				file.setLocationId((Long)news[4]);
 				file.setLocationVal((Long)news[5]);
 				file.setName(news[7].toString());
@@ -418,6 +420,32 @@ public class ReportService implements IReportService {
 						{
 							List<String> keyWordsList = fileSourceMap.get(fileVo2.getFileId());
 							fileVo2.setKeyWordsList(keyWordsList);
+							String str1="";
+							if(keyWordsList != null && keyWordsList.size() > 0){
+								for(String sourceVal:keyWordsList){
+								  int n = sourceVal.indexOf("(");
+								  if(n > 0){
+									  String sourceVal1 = sourceVal.substring(0,n);
+								      int n1=sourceVal.lastIndexOf(")");
+								      if(n1 > 0){
+									      String sourceVal3=sourceVal.substring(n,n1+1);
+									      sourceVal3 = sourceVal3.replace(")("," & ");
+									      if(sourceVal1.length()>0 && sourceVal3.length()>0){
+									       str1 = str1+"<span class='btn btn-small'><span>"+sourceVal1+ "</span>"+sourceVal3+ "</span>";
+									      }else{
+									       str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+										  }
+								      }
+								      else{
+								    	  str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+								      }
+								  }
+								  else{
+									  str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+							      }
+								}	
+							}
+							fileVo2.setNames(str1);
 							//for candidateNames
 							if(name != null && name.length() > 0 && candidateNames.get(fileVo2.getFileId()) != null)
 								fileVo2.setCandidateName((candidateNames.get(fileVo2.getFileId())).substring(0,(candidateNames.get(fileVo2.getFileId())).length()-2));
@@ -434,6 +462,32 @@ public class ReportService implements IReportService {
 				{
 					List<String> keyWordsList = fileSourceMap.get(fileVO.getFileId());
 					fileVO.setKeyWordsList(keyWordsList);
+					String str1="";
+					if(keyWordsList != null && keyWordsList.size() > 0){
+						for(String sourceVal:keyWordsList){
+						  int n = sourceVal.indexOf("(");
+						  if(n > 0){
+							  String sourceVal1 = sourceVal.substring(0,n);
+						      int n1=sourceVal.lastIndexOf(")");
+						      if(n1 > 0){
+							      String sourceVal3=sourceVal.substring(n,n1+1);
+							      sourceVal3 = sourceVal3.replace(")("," & ");
+							      if(sourceVal1.length()>0 && sourceVal3.length()>0){
+							       str1 = str1+"<span class='btn btn-small'><span>"+sourceVal1+ "</span>"+sourceVal3+ "</span>";
+							      }else{
+							       str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+								  }
+						      }
+						      else{
+						    	  str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+						      }
+						  }
+						  else{
+							  str1 = str1+"<span class='btn btn-small'><span>"+sourceVal+ "</span></span>";
+					      }
+						}	
+					}
+					fileVO.setNames(str1);
 					//for candidateNames
 					if(name != null && name.length() > 0 && candidateNames.get(fileVO.getFileId()) != null)
 						fileVO.setCandidateName((candidateNames.get(fileVO.getFileId())).substring(0,(candidateNames.get(fileVO.getFileId())).length()-2));

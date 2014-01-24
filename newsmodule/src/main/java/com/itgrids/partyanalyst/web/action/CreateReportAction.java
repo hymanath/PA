@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.web.action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -18,11 +19,14 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	 * 
 	 */
 	private static final long serialVersionUID = -8200198030562751322L;
+	private static final org.apache.log4j.Logger LOG = Logger.getLogger(CreateReportAction.class);
 	private HttpServletRequest request;
 	private Long reportId;
 	private String key;
 	private FileVO news;
 	private NewsActivityVO report;
+	private boolean forPdf;
+	private Long delaySeconds;
 	
 	private IReportService reportService;
 	
@@ -70,11 +74,33 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 		this.report = report;
 	}
 
+	public boolean isForPdf() {
+		return forPdf;
+	}
+
+	public void setForPdf(boolean forPdf) {
+		this.forPdf = forPdf;
+	}
+
+	public Long getDelaySeconds() {
+		return delaySeconds;
+	}
+
+	public void setDelaySeconds(Long delaySeconds) {
+		this.delaySeconds = delaySeconds;
+	}
+
 	public String execute(){
 		HttpSession session = request.getSession();
-		RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		if(user == null && key != null){
+			forPdf = true;
+		}
 		if(user == null && key == null){
 			return "notLogged";
+		}
+		if(forPdf){
+		  news = reportService.getReportData(reportId,null, key);
 		}
 		return Action.SUCCESS;
 	}
@@ -101,6 +127,15 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	
 	public String prepareActivitiesReport(){
 		report = reportService.getActivitiesReportData(key);
+		return Action.SUCCESS;
+	}
+	
+	public String addDelay(){
+	   try{
+		Thread.sleep(delaySeconds*1000);
+	   }catch(Exception e){
+		   LOG.error("Exception rised in addDelay",e);
+	   }
 		return Action.SUCCESS;
 	}
 }
