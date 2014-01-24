@@ -162,6 +162,7 @@ public class DebateService implements IDebateService{
 			List<ParticipantVO> particepentDetailsList = null;
 			List<SelectOptionVO> scalesList = null;
 			List<SelectOptionVO> rolesList = null;
+			// here we are getting all details of debate
 			Object[] debateDetails = debateDAO.getDebateDetailsForSelectedDebate(debateId).get(0);
 			if(debateDetails != null )
 			{
@@ -174,7 +175,7 @@ public class DebateService implements IDebateService{
 				debateVO.setTelecastTime(debateDetails[6] != null ? debateDetails[6].toString() :"");
 				debateVO.setDebateSummery(debateDetails[7] != null ? debateDetails[7].toString() :"");
 			}
-			
+			// here we are getting the all details of the sma question and answer with percentage details
 			List<Object[]> debateSmsDetails = debateSmsQuestionOptionDAO.getDebateSmsQuestionsForSelectedDebate(debateId);
 			if(debateSmsDetails != null && debateSmsDetails.size() > 0)
 			{
@@ -191,7 +192,7 @@ public class DebateService implements IDebateService{
 				}
 				debateVO.setSmsPoleList(debateSmsDetailsList);
 			}
-			
+			// here we getting the all candidate details with part wise
 			List<Object[]> debatePaticepentDetails = debateParticipantDAO.getDebatePaticepantsAndSummeryDetails(debateId);
 			if(debatePaticepentDetails != null && debatePaticepentDetails.size() > 0)
 			{
@@ -206,7 +207,9 @@ public class DebateService implements IDebateService{
 				}
 				debateVO.setCandidateSummery(debatePaticepentDetailsList);
 			}
+			//here we are getting the all details of the debate particepent candidate characers
 			List<Object[]> dabateCharcsList = debateParticipantCharcsDAO.getDebateCharcsDetails(debateId);
+			// here we are getting the all particepents role details
 			List<Object[]> debateRolesList  = debateParticipantRoleDAO.getParticepentRoles(debateId);
 			if(dabateCharcsList != null && dabateCharcsList.size() > 0 && debatePaticepentDetails != null && debatePaticepentDetails.size() > 0 && debateRolesList != null && debateRolesList.size() > 0)
 			{
@@ -214,6 +217,7 @@ public class DebateService implements IDebateService{
 				Map<Long, SelectOptionVO> particepentsMap = new HashMap<Long, SelectOptionVO>();//Map<candidate,partydetails>
 				Map<Long,SelectOptionVO> charactesMap = new HashMap<Long, SelectOptionVO>();//Map<candidate,scaleDetails>
 				Map<Long,SelectOptionVO> rolesMap = new HashMap<Long, SelectOptionVO>();//Map<candidate,roledetails>
+				// here we are processing the particepent party and name wise details
 				for (Object[] parms : debatePaticepentDetails)
 				{
 					SelectOptionVO particepentDetails = particepentsMap.get((Long)parms[3]);
@@ -225,6 +229,7 @@ public class DebateService implements IDebateService{
 					particepentDetails.setName(parms[1] != null ? parms[1].toString() :"");//party
 					particepentDetails.setLocation(parms[0] != null ? parms[0].toString() :"");//candidate
 				}
+				// here we are processing the candidate charactes and scaling details
 				for (Object[] parms : dabateCharcsList)
 				{
 					SelectOptionVO charactrsDetails = charactesMap.get((Long)parms[0]);
@@ -240,7 +245,7 @@ public class DebateService implements IDebateService{
 					scalesList.add(selectOptionVO);
 					charactrsDetails.setSelectOptionsList(scalesList);
 				}
-				
+				// here we are processing the candidate role participated in debate
 				for(Object[] parms : debateRolesList)
 				{
 					SelectOptionVO roleDetails = rolesMap.get((Long)parms[0]);
@@ -256,6 +261,7 @@ public class DebateService implements IDebateService{
 					roleDetails.setSelectOptionsList(rolesList);
 				}
 				Set<Long> candidatesSet = particepentsMap.keySet();
+				// here we are processing the each candidate wise debate scaling , charactes, party etc...
 				for (Long candidateId : candidatesSet)
 				{
 					ParticipantVO participantVO = new ParticipantVO();
@@ -286,10 +292,12 @@ public class DebateService implements IDebateService{
 				}
 				debateVO.setParticipantsList(particepentDetailsList);
 			}
+			// here we are getting the debate question and answer details
 			List<Object[]> debateQuestionAnswer = debateQuestionAnswerDAO.getDebateQuestionAndAnswerDetails(debateId);
 			if(debateQuestionAnswer != null && debateQuestionAnswer.size() > 0)
 			{
 				debateQuestionDetailsList = new ArrayList<SelectOptionVO>();
+				// here we are processing the debate question with answer details
 				for (Object[] parms : debateQuestionAnswer) 
 				{
 						SelectOptionVO questionAnswer = new SelectOptionVO();
@@ -300,7 +308,7 @@ public class DebateService implements IDebateService{
 				debateVO.setQuestionAnswersList(debateQuestionDetailsList);
 				
 			}
-			
+			// here we are getting the excepeted roles for participents of tdp party
 			List<Object[]> debateExpRoles = debateParticipantExceptedRoleDAO.getPaticepentExpRoles(debateId);
 			if(debateExpRoles != null && debateExpRoles.size() > 0)
 			{
@@ -314,7 +322,7 @@ public class DebateService implements IDebateService{
 				}
 				debateVO.setDebateExpRolesList(debateExpRolesList);
 			}
-			
+			// here we are getting the main subjet of the debeate
 			List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetails(debateId);
 			if(subjectsList != null && subjectsList.size() > 0)
 			{
@@ -329,6 +337,7 @@ public class DebateService implements IDebateService{
 				}
 				debateVO.setDebateNames(debateSubjectsList);
 			}
+			// here we are getting the observers details
 			List<Object[]> debateObservers = debateObserverDAO.getObsersListForDebate(debateId);
 			if(debateObservers != null && debateObservers.size() > 0)
 			{
