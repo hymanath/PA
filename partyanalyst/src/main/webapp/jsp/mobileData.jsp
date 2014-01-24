@@ -107,7 +107,7 @@ var populateId ;
    <tr><td></td><td></td></tr>  <tr><td></td><td></td></tr>
     <tr>
 	 <td> User</td><td></td>
-   <td><select id="usersId" Class="selectWidth" >
+   <td><select id="usersId" Class="selectWidth" onchange="getMobileAppUserData();">
 										<c:forEach var="allUsers" varStatus="stat" items="${allRegisteredUsersData.listOfUsers}">		
 											<option value="${allUsers.id}"> ${allUsers.name} </option>	
 										</c:forEach>
@@ -408,7 +408,11 @@ function callAjax(jsObj,url)
 								}
 								else if(jsObj.task == "getPublicationDate")
 								buildPublicationDateList(myResults);
+								else if(jsObj.task == "populateMobileAppUserData")
+							     populateMobileAppUserData(myResults);
+						  
 							}
+							
 									catch (e) {
 							    //alert(Exception);
 								}  
@@ -720,7 +724,58 @@ var publicationDatesList;
 	$('#publicationDateList').trigger("change");
 
 }
+function getMobileAppUserData()
+{
+	var userId = $("#usersId").val();
+		var jsObj=
+		{
+			userId:userId,
+		 task:"populateMobileAppUserData"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getMobileAppUserDataAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+
+}
+function populateMobileAppUserData(result)
+{
+	if(result.length == 0 || result == null)
+	{
+	 document.getElementById('FirstNameId').value ='';
+	 document.getElementById('LastNameId').value = '';
+	 document.getElementById('UserNameId').value ='';
+	 document.getElementById('PasswordId').value = '';
+	 document.getElementById('uniqueCodeId').value = '';
+	 document.getElementById('mobileNoId').value = '';
+	 document.getElementById('emailId').value = '';
+	 document.getElementById('appId').value = '';
+	 document.getElementById('deviceId').value = '';
+	 document.getElementById('macAddressId').value = '';
+	
+	}
+	if(result.length > 0)
+	{
+	 document.getElementById('FirstNameId').value = result[0].firstName;
+	 document.getElementById('LastNameId').value = result[0].lastName;
+	 document.getElementById('UserNameId').value = result[0].userName;
+	 document.getElementById('PasswordId').value = result[0].password;
+	 document.getElementById('uniqueCodeId').value = result[0].uniqueCode;
+	 document.getElementById('mobileNoId').value = result[0].mobile;
+	 document.getElementById('emailId').value = result[0].email;
+	 document.getElementById('appId').value = result[0].appId;
+	 document.getElementById('deviceId').value = result[0].deviceId;
+	 document.getElementById('macAddressId').value = result[0].address;
+	if(result[0].gender == "Male")
+		$("#maleRadiobtn").attr("checked","checked");
+		else
+$("#FemaleRadiobtn").attr("checked","checked");
+	 document.getElementById('FirstNameId').value = result[0].firstName;
+	 $("#superAdminusersId option[value="+result[0].superAdminId+"]").attr('selected','selected');
+	}
+}
 getMobileAppUsers();
+
+
 </script>
 
 
