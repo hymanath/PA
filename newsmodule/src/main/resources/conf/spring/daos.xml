@@ -1455,7 +1455,7 @@
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
-	<bean id="DebateSubjectDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateSubjectDAO">
+	<bean id="debateSubjectDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateSubjectDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>		
