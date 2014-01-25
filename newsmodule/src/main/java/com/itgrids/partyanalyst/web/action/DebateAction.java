@@ -45,7 +45,16 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	private List<SelectOptionVO> debateQuestionList;
 	private List<SelectOptionVO> debateSmsQuestionList;
 	private List<SelectOptionVO> debateParticipantRoleList;
+	private List<SelectOptionVO> characteristicsList;
 	
+	public List<SelectOptionVO> getCharacteristicsList() {
+		return characteristicsList;
+	}
+
+	public void setCharacteristicsList(List<SelectOptionVO> characteristicsList) {
+		this.characteristicsList = characteristicsList;
+	}
+
 	public String getTask() {
 		return task;
 	}
@@ -199,6 +208,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			debateQuestionList = debateService.getDebateQuestionDetails();
 			debateSmsQuestionList = debateService.getDebateSmsQuestionDetails();
 			debateParticipantRoleList = debateService.getDebateParticipantRoleDetails();
+			characteristicsList = debateService.getCharacteristicsDetails();
 		} catch (Exception e) {
 			LOG.error("Exception occured in execute methon in DebateAction Class",e);
 		}

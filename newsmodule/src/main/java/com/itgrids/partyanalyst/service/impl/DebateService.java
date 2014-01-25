@@ -771,4 +771,18 @@ public class DebateService implements IDebateService{
 		 }	
 		 return isSaved;
 	 }	 
+	 
+	 public List<SelectOptionVO> getCharacteristicsDetails()
+	 {
+	 	List<SelectOptionVO> CharacteristicsDetails = new ArrayList<SelectOptionVO>();
+		SelectOptionVO selectOptionVO;
+		List<Characteristics> CharacteristicsDetailsVal = characteristicsDAO.getCharacteristicsDetails();
+		for(Characteristics param:CharacteristicsDetailsVal){
+			selectOptionVO = new SelectOptionVO();
+			selectOptionVO.setId(new Long(param.getCharacteristicsId()));
+			selectOptionVO.setName(param.getName());
+			CharacteristicsDetails.add(selectOptionVO);
+		}
+		return CharacteristicsDetails;
+	 }
 }
