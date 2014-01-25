@@ -70,6 +70,18 @@ $( document ).ready(function() {
 		}]
 }; */
 
+getDebateReport();
+function getDebateReport()
+{
+	    var jsObj = {
+				debateId : 107,
+				task : "saveDebateDetails"	
+		};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "retriveDebateDetailsAction.action?"+rparam;
+		callAjax(jsObj,url);
+}
 function submitForm()
 {
 	

@@ -17,7 +17,7 @@ public class DebateObserverDAO extends GenericDaoHibernate<DebateObserver, Long>
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getObsersListForDebate(Long debateId)
 	{
-		return getHibernateTemplate().find("select model.observer.observerName from DebateObserver model " +
+		return getHibernateTemplate().find("select model.observer.observerName,model.debateObserverid from DebateObserver model " +
 				" where model.debate.debateId = ? ",debateId);
 	}
 }

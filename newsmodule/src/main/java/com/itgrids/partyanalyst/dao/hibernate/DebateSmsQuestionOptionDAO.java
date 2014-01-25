@@ -17,9 +17,9 @@ public class DebateSmsQuestionOptionDAO extends GenericDaoHibernate<DebateSmsQue
 	
 	public List<Object[]> getDebateSmsQuestionsForSelectedDebate(Long debateId)
 	{
-		Query query = getSession().createQuery("select model.debateSmsQuestionOptionId , model.option,model.percantage " +
-				" model.DebateSmsQuestion.debateSmsQuestionId,model.DebateSmsQuestion.question from DebateSmsQuestionOption model " +
-				" where model.DebateSmsQuestion.debate.debateId = :debateId ");
+		Query query = getSession().createQuery("select model.debateSmsQuestionOptionId , model.option,model.percantage , " +
+				" model.debateSmsQuestion.debateSmsQuestionId,model.debateSmsQuestion.question from DebateSmsQuestionOption model " +
+				" where model.debateSmsQuestion.debate.debateId = :debateId ");
 		query.setParameter("debateId", debateId);
 		return query.list();
 	}
