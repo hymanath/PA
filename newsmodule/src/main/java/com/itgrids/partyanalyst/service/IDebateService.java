@@ -29,4 +29,5 @@ public interface IDebateService {
 	public List<SelectOptionVO> getDebateQuestionDetails();
 	public List<SelectOptionVO> getDebateSmsQuestionDetails();
 	public List<SelectOptionVO> getDebateParticipantRoleDetails();
+	public List<SelectOptionVO> getCharacteristicsDetails();
 }
