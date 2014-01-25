@@ -5991,6 +5991,13 @@
 	 			 <result>/jsp/debetReport.jsp</result>
 	 	</action>
 	 	
+	 	 <action name="updateFieldAttributesAction" class="debateAction" method="updateFieldAttributes">
+		   <result name="success" type="json">
+		 	<param name="root">channelList</param>
+		   </result>
+		 </action>
+		 
+	 	 
         </package>
 		
 </struts>      
