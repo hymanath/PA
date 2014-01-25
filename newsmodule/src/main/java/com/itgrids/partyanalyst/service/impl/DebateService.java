@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
+import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dao.hibernate.DebateQuestionsDAO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
@@ -260,6 +261,7 @@ public class DebateService implements IDebateService{
 							  }
 							  debateParticipant.setDebate(debate);
 							  debateParticipant.setSummary(participantVO.getSummery());
+							  debateParticipantDAO.save(debateParticipant);
 							  List<SelectOptionVO> rolesList = participantVO.getRoleList();
 							  if(rolesList != null && rolesList.size() > 0)
 							  {
