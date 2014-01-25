@@ -30,30 +30,149 @@ var subjCount = 2;
 var candCount = 2;
 var questionCount = 2;
 var poleCount = 2;
+
+var debateDetails={
+	endTime : '',
+	startTime : '',
+	channelId : '',
+	telecastTimeId : '',
+	observer : [],
+    subjectArray:[],
+    participant : [
+		{ 
+		  partyId: '' ,
+		  candidateId : '' ,
+		  subject    : '',
+		  presentation :'',
+		  counterAttack : '' ,
+		  bodyLanguage : '',
+		  summery     : '',
+		  participantRoles:[]
+		}],
+	questionAnswer : [
+		{
+			questionId : '',
+			answer     : ''
+		}],
+	debetSummery : '',
+	/* candidateSummery : [
+		{
+			questionId   : '',
+			candidatreId  : '',
+			summery :''
+		}], */
+	smsPole:[
+		{
+		   questionId   : '',
+		   option  : '',
+		   percentage :''
+		}]
+};
+var participantOnbj = {
+	      partyId: '' ,
+		  candidateId : '' ,
+		  subject    : '',
+		  presentation :'',
+		  counterAttack : '' ,
+		  bodyLanguage : '',
+		  summery     : '',
+		  participantRoles:[]
+};
+
+var questionAnswerObj = {
+	        questionId : '',
+			answer     : ''
+};
+/* var candidateSummeryObj = {
+	        questionId   : '',
+			candidatreId  : '',
+			summery :''
+}; */
+var smaPoleObj = {
+	        questionId   : '',
+			option  : '',
+			percentage :''
+};
+function submitForm()
+{
+	debateDetails.subjectArray = [];
+	debateDetails.participant = [];
+	debateDetails.questionAnswer = [];
+	debateDetails.smsPole = [];
+	debateDetails.observer = [];
+	$( ".subjectClass " ).each(function( index ) {
+		debateDetails.subjectArray.push($(this ).val());	
+	});
+	debateDetails.endTime         = $('#endTime').val();
+	debateDetails.startTime       = $('#startTime').val();
+	debateDetails.channelId       = $('#channel option:selected').val();
+	debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
+	debateDetails.observer.push($('#observer option:selected').val());
+	var i = 0;
+	$( ".participantDetailsClass " ).each(function( index ) {
+	     i++;
+		participantOnbj.partyId      = $('#party'+i+'').val();	
+		participantOnbj.candidateId  = $('#candidate'+i+'').val();	
+		participantOnbj.summery      = $('#candiSummery'+i+'').val();	
+		participantOnbj.subject      = $('#subject'+i+'').val();	
+		participantOnbj.presentation = $('#presentation'+i+'').val();	
+		participantOnbj.counterAttack= $('#counterAttack'+i+'').val();	
+		participantOnbj.bodyLanguage = $('#bodyLanguage'+i+'').val();
+		debateDetails.participant.push(participantOnbj);		
+	});
+	var j = 0;
+	$( ".questionAnswerClass " ).each(function( index ) {
+	j++;
+		questionAnswerObj.questionId = $('#question'+j+'').val();	
+		questionAnswerObj.answer     = $('#answer'+j+'').val();	
+		debateDetails.questionAnswer.push(questionAnswerObj);
+	});
+	/* var k = 0;
+	$( ".candidateSummeryClass " ).each(function( index ) {
+	k++;
+		candidateSummeryObj.questionId    = $('#cparty'+k+'').val();	
+		candidateSummeryObj.candidatreId  = $('#ccand'+k+'').val();	candidateSummeryObj.summery       = $('#csum'+k+'').val();
+		debateDetails.candidateSummery.push(candidateSummeryObj);
+	}); */
+	var l = 0;
+	$( ".smsPoleClass " ).each(function( index ) {
+	l++;
+		smaPoleObj.questionId  = $('#smsques1').val();	
+		smaPoleObj.option      = $('#smsoption'+l+'').val();
+		smaPoleObj.percentage  = $('#smsper'+l+'').val();
+		debateDetails.smsPole.push(smaPoleObj);	
+	});
+	
+	debateDetails.debetSummery = $('#debetSum').val();
+	
+	 var jsObj = {
+				debateDetails :debateDetails,
+				task : "saveDebateDetails"	
+		};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveDebateDetailsAction.action?"+rparam;
+		callAjax(jsObj,url); 
+	console.log(debateDetails);
+}
+	
 function addMoreSubject(){
 var str = "";
 	str += "<tr>";
     str += "<td>Subject1</td><td></td>";
     str += "<td>";
-	str += "<input type='text' Class='selectWidth' name='subject"+subjCount+"' id='subject"+subjCount+"'/>";
+	str += "<input type='text' Class='selectWidth subjectClass' name='subject"+subjCount+"' id='subject"+subjCount+"'/>";
     str += "</td>";
 	str += "</tr>";
 $('#subjectDiv').after(str);
 subjCount++;
 }
-var partiesArray = new Array();
-<c:forEach var="parties" items="${partiesList}">
-	var parties1 ={
-	id:"${parties.id}",
-	name:"${parties.name}"
-	}
-	partiesArray.push(parties1);
-</c:forEach>
+
 function addMoreCandidates(){
 
 
 var str = "";
-str += "<div id='participantInnerDiv"+candCount+"'  class='widget well span10'>";
+str += "<div id='participantInnerDiv"+candCount+"'  class='widget well span10 participantDetailsClass'>";
 str += "<div class='span3' style='margin-left: 15px;'>";
 str += "<label><strong>Party</strong></label>";
 str += "<select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
@@ -87,6 +206,12 @@ str += "<div class='span3'>";
 str += "<label><strong>Participant Roles</strong></label>";
 str += "<select theme='simple' Class='selectWidth' name='participantRoles"+candCount+"' id='participantRoles"+candCount+"' multiple='multiple' ></select>";
 str += "</div>";
+str += "<div class='span3'>";
+str += "<label>";
+str += "<strong>Summery</strong>";
+str += "</label>";
+str += "<input type='text' Class='selectWidth' name='summery' id='candiSummery"+candCount+"'/>";
+str += "</div>";
 str += "</div>";
 if(candCount == 2)
 	$('#participantInnerDiv1').after(str);
@@ -98,6 +223,7 @@ $("party"+(candCount+1)+" option[value='0']").attr('selected','selected');
 
 function addMoreQuestions(){
 var str = "";
+str += "<div class='questionAnswerClass'>";
 str += "<div class='span4'>";
 str += "<label><strong>Question </strong></label>";
 str += "<select theme='simple' Class='selectWidth' name='question"+questionCount+"' id='question"+questionCount+"'  ></select>";
@@ -106,25 +232,50 @@ str += "<div class='span4'>";
 str += "<label><strong>Answer </strong></label>";
 str += "<select theme='simple' Class='selectWidth' name='answer"+questionCount+"' id='answer"+questionCount+"'  ></select>";
 str += "</div>";
+str += "</div>";
 $('#questionDiv1').append(str);
 questionCount++;
 }
-
+/* var summeyId = 1;
+function addMoreSummery()
+{
+	summeyId ++;
+	var str = "";
+	str += '<div class="candidateSummeryClass">';
+	str += '<div class="span3">';
+	str += '<label>';
+	str += '<strong>Question </strong>';
+	str += '</label>';
+	str += '<select name="cparty"  id="cparty'+summeyId+'" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>';
+	str += '</div>';
+	str += '<div class="span3">';
+	str += '<label>';
+	str += '<strong>Candidate </strong>';
+	str += '</label>';
+	str += '<select theme="simple" Class="selectWidth" name="ccand'+summeyId+'" id="ccand'+summeyId+'"  ></select>';
+	str += '</div>';
+	str += '<div class="span4">';
+	str += '<label><strong>Summary </strong></label>';
+	str += '<input type="text" Class="selectWidth" name="csum" id="csum'+summeyId+'"/>';
+	str += '</div>';
+	str += '</div>';
+	$('#candidateSummeryId').append(str);
+} */
 function addMorePole(){
-var str = "";
-str += "<div class='span3'>";
-str += "</div>";
-str += "<div class='span3'>";
-str += "<label><strong>Option </strong></label>";
-str += "<input type='text' Class='selectWidth' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
-str += "</div>";
-str += "<div class='span4'>";
-str += "<label><strong>Percentage </strong></label>";
-str += "<input type='text' Class='selectWidth' name='smsper"+poleCount+"' id='smsper"+poleCount+"'/>";
-str += "</div>";
-
-$('#smsPole').append(str);
-poleCount++;
+	
+	var str = "";
+	str += "<div class='smsPoleClass'>";
+	str += "<div class='span5'>";
+	str += "<label><strong>Option </strong></label>";
+	str += "<input type='text' Class='selectWidth' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
+	str += "</div>";
+	str += "<div class='span5'>";
+	str += "<label><strong>Percentage </strong></label>";
+	str += "<input type='text' Class='selectWidth' name='smsper"+poleCount+"' id='smsper"+poleCount+"'/>";
+	str += "</div>";
+	str += "</div>";
+	$('#smsPole').append(str);
+	poleCount++;
 }
 
 function getCandidatesOfSelectedParty(partyId,divId)
@@ -187,27 +338,50 @@ function callAjax(jsObj,url)
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+	
+	
+var partiesArray = new Array();
+<c:forEach var="parties" items="${partiesList}">
+	var parties1 ={
+	id:"${parties.id}",
+	name:"${parties.name}"
+	}
+	partiesArray.push(parties1);
+</c:forEach>
+
 </script>
 
  <div id="mainDiv" class="container">
  <div  class="row-fluid">
   <div class="widget blue">
 	
-	<div id="debetDiv">
+   <div id="debetDiv">
+   <h4>Debate Information</h4>
    <table id="createMobileApp">
    <tbody>
 	<tr id="errorMsgDiv" style="font-family:verdana;margin-left:100px;"></tr>
 	<tr id="subjectDiv">
     <td>Subject</td><td></td>
     <td>
-	<input type="text" Class="selectWidth" name="subject1" id="subject1"/>
+	<input type="text" Class="selectWidth subjectClass" name="subject1" id="subject1"/>
     </td>
 	<td>
 	<a class="icon-remove-sign" title="Click here to add another Subject" onClick="addMoreSubject();"></a>
 	</td>
-   </tr>
-
-  <tr>
+    </tr>
+	
+	<tr>
+    <td>Channel</td> <td></td>
+    <td>
+	<s:select name="channel"  id="channel" list="channelList" theme="simple" listKey="id" listValue="name"/></td>
+    </td>
+    <td>Telecast Time</td> <td></td>
+    <td>
+	<s:select name="telecastTime"  id="telecastTime" list="telecastTimeList" theme="simple" listKey="id" listValue="name"/></td>
+    </td>
+    </tr>
+	
+    <tr>
 	<td> Start Time</td><td></td>
 	<td>
 	<input type="text" Class="selectWidth" name="startTime" id="startTime"/>
@@ -217,38 +391,27 @@ function callAjax(jsObj,url)
     <td>
     <input type="text" Class="selectWidth" name="endTime" id="endTime"/> 
     </td>
-  </tr>
-
-  <tr>
-    <td>Channel</td> <td></td>
-    <td>
-	<s:select name="channel"  id="channel" list="channelList" theme="simple" listKey="id" listValue="name"/></td>
-    </td>
-    <td>Telecast Time</td> <td></td>
-    <td>
-	<s:select name="telecastTime"  id="telecastTime" list="telecastTimeList" theme="simple" listKey="id" listValue="name"/></td>
-    </td>
-  </tr>
-   
-  <tr>
+    </tr>
+	
+    <tr>
 	<td>Observer</td> <td></td>
     <td>
     <s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="multiple"/></td>
     </td>
-  </tr>
+    </tr>
 	</tbody>
 	</table>
 	
 	</div>
 
 	<div id="participantDiv">
-		<div id="participantInnerDiv1"  class="widget well span10" style="margin-top:45px;">
-		<h4>Participant Details:</h4>
+		<div id="participantInnerDiv1"  class="widget blue well span10 participantDetailsClass" style="margin-top:45px;">
+		<h4>Participant Details And Performance:</h4>
 			<div class="span3">
 			<label>
 			<strong>Party</strong>
 			</label>
-			<s:select name="party1"  id="party1" list="partiesList" theme="simple" listKey="id" listValue="name" onChange="getCandidatesOfSelectedParty(this.value,this.id);"/>
+			<s:select name="party1"  class= "" id="party1" list="partiesList" theme="simple" listKey="id" listValue="name" onChange="getCandidatesOfSelectedParty(this.value,this.id);"/>
 			</div>
 			<div class="span3">
 			<label>
@@ -286,6 +449,12 @@ function callAjax(jsObj,url)
 			</label>
 			<select theme="simple" Class="selectWidth" name="participantRoles1" id="participantRoles1" multiple="multiple" ></select>
 			</div>
+			<div class="span3">
+			<label>
+			<strong>Summery</strong>
+			</label>
+			<input type="text" Class="selectWidth" name="summery" id="candiSummery1"/>
+			</div>
 		</div>
 
 		<div  class="span10">
@@ -296,71 +465,95 @@ function callAjax(jsObj,url)
 	<div id="questionOuterDiv" >
 	<div id="questionDiv1" class="widget well span10">
 	<h4>Questions:</h4>
-		<div class="span4">
-		<label>
+	<c:forEach  var="parties" items="${debateQuestionList}">
+		<div class="questionAnswerClass">
+		<div class="span5">
+		<!--<label>
 		<strong>Question </strong>
-		</label>
-		<s:select name="question1"  id="question1" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>
+		</label>-->
+		<!--<s:select name="question1"  id="question1" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>-->
+		<!--<b>'+debateQuestionList+'</b>-->
+		<p>${parties.name}</p>
 		</div>
-		<div class="span4">
+		<div class="span5">
 		<label>
 		<strong>Answer </strong>
 		</label>
-		<select theme="simple" Class="selectWidth" name="answer1" id="answer1"  ></select>
+		<!--<select theme="simple" Class="selectWidth" name="answer1" id="answer1"  ></select>-->
+		<input type="text" Class="selectWidth" name="answer1" id="answer1"/>
 		</div>
+		</div>
+	</c:forEach>
 	</div>
 
-		<div  class="span10">
+		<!--<div  class="span10">
 		<a title="Click here to add another Subject" onClick="addMoreQuestions();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
-		</div>
+		</div>-->
 	</div>
-
-		<div id="candidateSummery" class="widget well span10">
-			<div class="control-group form-horizontal span10">
-			<label>
-			<strong>Dabet Summery </strong></label><input type="text" id="debetSum" placeholder="DabetSummery"  name="debetSum"/>
-			</div>
+	
+		<!--<div id="candidateSummery" class="widget well span10">
+			<div id="candidateSummeryId">
+			<div class="candidateSummeryClass">
 			<div class="span3">
 			<label>
 			<strong>Question </strong>
 			</label>
-			<s:select name="cparty"  id="cparty" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>
+			<s:select name="cparty"  id="cparty1" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>
 			</div>
 			<div class="span3">
 			<label>
 			<strong>Candidate </strong>
 			</label>
-			<select theme="simple" Class="selectWidth" name="ccand" id="ccand"  ></select>
+			<select theme="simple" Class="selectWidth" name="ccand" id="ccand1"  ></select>
 			</div>
 			<div class="span4">
 			<label><strong>Summary </strong></label>
-			<input type="text" Class="selectWidth" name="csum" id="csum"/>
+			<input type="text" Class="selectWidth" name="csum" id="csum1"/>
 			</div>
-		</div>
+			</div>
+			</div>
+		</div>-->
+		<!--<div  class="span10">
+		<a title="Click here to add another Subject" onClick="addMoreSummery();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
+		</div>-->
 
 	<div id="smsPoleOuterDiv">
 		<div id="smsPole" class="widget well span10">
-		<div class="span3">
+		<div class="smsPoleClass">
 		<label>
 		<strong>Question </strong>
 		</label>
-		<s:select name="smsques1"  id="smsques1" list="debateSmsQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>
-		</div>
-		<div class="span3">
+		<!--<s:select name="smsques1"  id="smsques1" list="debateSmsQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>-->
+		<!--<input type="text" Class="selectWidth" name="smsques1" id="smsques1"/>-->
+		<textarea rows="4" cols="50" name="smsques1" id="smsques1" style="width: 618px;"></textarea> 
+		<div class="span5">
 		<label>
 		<strong>Option </strong>
 		</label>
 		<input type="text" Class="selectWidth" name="smsoption1" id="smsoption1"/>
 		</div>
-		<div class="span4">
+		<div class="span5">
 		<label><strong>Percentage </strong></label>
 		<input type="text" Class="selectWidth" name="smsper1" id="smsper1"/>
+		</div>
 		</div>
 		</div>
 
 		<div  class="span10">
 		<a title="Click here to add another Subject" onClick="addMorePole();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
 		</div>
+		
+	</div>
+	
+	<div>
+	<div id="debateSummery" class="widget well span10">
+		<div class="control-group form-horizontal span10">
+			<label>
+			<strong>Dabet Summery </strong></label>
+			<!--<input type="text" id="debetSum" placeholder="DabetSummery"  name="debetSum"/>-->
+			<textarea rows="4" cols="50" name="debetSum" id="debetSum" style="width: 618px;"></textarea>
+		</div>
+	</div>
 	</div>
 
 </div>

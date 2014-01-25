@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,13 +9,16 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
+import com.itgrids.partyanalyst.dto.ParticipantVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IDebateService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -213,6 +218,86 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				return Action.ERROR;
 			}
 			 DebateDetailsVO debateDetailsVO = new DebateDetailsVO();
+			 jObj = new JSONObject(getTask());
+			 JSONObject debateObj = jObj.getJSONObject("debateDetails");
+			 debateDetailsVO.setChannelId(debateObj.getLong("channelId"));
+			 debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
+			 String startDate = debateObj.getString("startTime");
+			 String endDate = debateObj.getString("endTime");
+			 SimpleDateFormat sdf = new SimpleDateFormat("YYYY:MM:DD");
+			 debateDetailsVO.setStartDate(sdf.parse(startDate));
+			 debateDetailsVO.setEndDate(sdf.parse(endDate));
+			 debateDetailsVO.setDebateSummery(debateObj.getString("debetSummery"));
+			 JSONArray subjectsArray = jObj.getJSONArray(debateObj.getString("subjectArray"));
+			 List<SelectOptionVO> subjectsList = new ArrayList<SelectOptionVO>();
+			 for (int i = 0; i < subjectsArray.length(); i++) {
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 selectOptionVO.setName(subjectsArray.get(i).toString());
+				 subjectsList.add(selectOptionVO);
+			 }
+			 debateDetailsVO.setSubjectList(subjectsList);
+			 JSONArray observersArray = jObj.getJSONArray(debateObj.getString("observer"));
+			 List<SelectOptionVO> observersList = new ArrayList<SelectOptionVO>();
+			 for (int i = 0; i < observersArray.length(); i++) {
+				 SelectOptionVO observerVO = new SelectOptionVO();
+				 observerVO.setId((Long)observersArray.get(i));
+				 observersList.add(observerVO);
+			 }
+			 debateDetailsVO.setObserverList(observersList);
+			 JSONArray particepentArray = jObj.getJSONArray(debateObj.getString("participant"));
+			 List<ParticipantVO> particepentList = new ArrayList<ParticipantVO>();
+			 for (int i = 0; i < particepentArray.length(); i++) 
+			 {
+				 ParticipantVO participantVO = new ParticipantVO();
+				 JSONObject particepentObj = jObj.getJSONObject(particepentArray.get(i).toString());
+				 participantVO.setId(particepentObj.getLong("candidateId"));
+				 participantVO.setPartyId(particepentObj.getLong("partyId"));
+				 participantVO.setSummery(particepentObj.getString("summery"));
+				 List<SelectOptionVO> rolesList = new ArrayList<SelectOptionVO>();
+				 JSONArray rolesArray = jObj.getJSONArray(particepentObj.getString("participantRoles"));
+				 for (int j = 0; j < rolesArray.length(); j++)
+				 {
+					 SelectOptionVO rolesVO = new SelectOptionVO();
+					 rolesVO.setId((Long)rolesArray.get(i));
+					 rolesList.add(rolesVO);
+				 }
+				 participantVO.setRoleList(rolesList);
+				 particepentList.add(participantVO);
+			 }
+			 debateDetailsVO.setParticipentsList(particepentList);
+			 
+			 JSONArray questionAnswerArray = jObj.getJSONArray(debateObj.getString("questionAnswer"));
+			 List<SelectOptionVO> questionAnswerList = new ArrayList<SelectOptionVO>();
+			 for (int i = 0; i < questionAnswerArray.length(); i++)
+			 {
+				 SelectOptionVO questionAnswerVO = new SelectOptionVO();
+				 JSONObject questionAnswerObj = jObj.getJSONObject(questionAnswerArray.get(i).toString());
+				 questionAnswerVO.setId(questionAnswerObj.getLong("questionId"));
+				 questionAnswerVO.setName(questionAnswerObj.getString("answer"));
+				 questionAnswerList.add(questionAnswerVO);
+			 }
+			 debateDetailsVO.setQuestionsList(questionAnswerList);
+			 JSONArray smsQuestion = jObj.getJSONArray(debateObj.getString("smsPole"));
+			 List<SelectOptionVO> smsQuestionList = new ArrayList<SelectOptionVO>();
+			
+			 for (int i = 0; i < smsQuestion.length(); i++)
+			 {
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 JSONObject smsQuestionObj = jObj.getJSONObject(smsQuestion.get(i).toString());
+				 selectOptionVO.setName(smsQuestionObj.getString("questionId"));
+				 smsQuestionList.add(selectOptionVO);
+			 }
+			 debateDetailsVO.setSmsQuestionList(smsQuestionList);
+			 List<SelectOptionVO> smsOptionsList = new ArrayList<SelectOptionVO>();
+			 for (int i = 0; i < smsQuestion.length(); i++)
+			 {
+				 SelectOptionVO selectOptionVO = new SelectOptionVO();
+				 JSONObject smsQuestionObj = jObj.getJSONObject(smsQuestion.get(i).toString());
+				 selectOptionVO.setName(smsQuestionObj.getString("option"));
+				 selectOptionVO.setPerc(smsQuestionObj.getDouble("percentage"));
+				 smsOptionsList.add(selectOptionVO);
+			 }
+			 debateDetailsVO.setSmaOptionsList(smsOptionsList);
 			 resultStatus = debateService.saveDebateDetails(debateDetailsVO);
 		} 
 		catch (Exception e)
@@ -241,7 +326,10 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 		}
 		return Action.SUCCESS;
 	}
-	public String saveDebateRelatedAttributes(){
+	
+	
+	public String saveDebateRelatedAttributes()
+	{
 		LOG.info(" Entered into saveDebateRelatedAttributes() in DebateAction class. ");
 		
 		HttpSession session = request.getSession();
