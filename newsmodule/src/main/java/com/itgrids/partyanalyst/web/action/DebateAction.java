@@ -371,4 +371,26 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String updateFieldAttributes(){		
+		LOG.info(" Entered into updateFieldAttributes() in DebateAction class. ");		
+		HttpSession session = request.getSession();
+		RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+		if(regVo == null)
+			return Action.ERROR;
+		try {
+				String task = request.getParameter("task");
+				
+				if(task.equalsIgnoreCase("updateChannel")){
+					channelList = debateService.getChannelDetails();
+				}
+				else if(task.equalsIgnoreCase("updateObserver")){
+					channelList = debateService.getObserverDetails();
+				}
+
+		} catch (Exception e) {
+			LOG.error(" Exception occured in updateFieldAttributes() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
 }
