@@ -288,5 +288,14 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Locality> getAllLocatiesInAConstituency(Long constituencyId,Long publicationDateId,Long userId);
 	
-	public List<Object[]> getCountForCasteType();
+	public List<Object[]> getCountForCasteType(Long userId);
+	
+	public List<Long> getMatchtedRecordsForACaste(Long userId,Long casteStateId,List<Long> voterIdsList);
+	
+	public List<Long> getUnmatchtedRecordsForACaste(Long userId,Long casteStateId,List<Long> voterIdsList);
+	
+	public Integer updateCasteInsertType(List<Long> userVoterDetailsIdsList,Long casteInsertTypeId);
+	
+	public List<Long> getAvailableVoterIdsList(Long userId,Long casteStateId,List<Long> voterIdsList);
+	
 }
