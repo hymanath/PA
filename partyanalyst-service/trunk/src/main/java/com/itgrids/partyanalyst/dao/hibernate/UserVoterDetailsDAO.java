@@ -2828,9 +2828,48 @@ IUserVoterDetailsDAO{
 		return query.list();
 	}
 	
-	public List<Object[]> getCountForCasteType()
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCountForCasteType(Long userId)
 	{
-		Query query = getSession().createQuery("select count(model.userVoterDetailsId),model.casteInsertType.type from UserVoterDetails model group by model.casteInsertType.casteInsertTypeId");
+		Query query = getSession().createQuery("select count(model.userVoterDetailsId),model.casteInsertType.type from UserVoterDetails model where model.user.userId = :userId group by model.casteInsertType.casteInsertTypeId");
+		query.setParameter("userId",userId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getMatchtedRecordsForACaste(Long userId,Long casteStateId,List<Long> voterIdsList)
+	{
+		Query query = getSession().createQuery("select model.userVoterDetailsId from UserVoterDetails model where model.user.userId = :userId and model.casteState.casteStateId = :casteStateId and model.voter.voterId in(:voterIdsList)");
+		query.setParameter("userId",userId);
+		query.setParameter("casteStateId",casteStateId);
+		query.setParameterList("voterIdsList",voterIdsList);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getUnmatchtedRecordsForACaste(Long userId,Long casteStateId,List<Long> voterIdsList)
+	{
+		Query query = getSession().createQuery("select model.userVoterDetailsId from UserVoterDetails model where model.user.userId = :userId and model.casteState.casteStateId != :casteStateId and model.voter.voterId in(:voterIdsList)");
+		query.setParameter("userId",userId);
+		query.setParameter("casteStateId",casteStateId);
+		query.setParameterList("voterIdsList",voterIdsList);
+		return query.list();
+	}
+	
+	public Integer updateCasteInsertType(List<Long> userVoterDetailsIdsList,Long casteInsertTypeId)
+	{
+		Query query = getSession().createQuery("update UserVoterDetails model set model.casteInsertType.casteInsertTypeId = :casteInsertTypeId where model.userVoterDetailsId in(:userVoterDetailsIdsList)");
+		query.setParameter("casteInsertTypeId", casteInsertTypeId);
+		query.setParameterList("userVoterDetailsIdsList", userVoterDetailsIdsList);
+		return query.executeUpdate();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> getAvailableVoterIdsList(Long userId,Long casteStateId,List<Long> voterIdsList)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId from UserVoterDetails model where model.user.userId = :userId and model.voter.voterId in(:voterIdsList)");
+		query.setParameter("userId",userId);
+		query.setParameterList("voterIdsList",voterIdsList);
 		return query.list();
 	}
 
