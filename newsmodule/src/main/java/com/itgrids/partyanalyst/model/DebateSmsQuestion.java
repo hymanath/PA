@@ -23,7 +23,11 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DebateSmsQuestion extends BaseModel implements java.io.Serializable{
 
-	private Integer debateSmsQuestionId;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -705171878533945818L;
+	private Long debateSmsQuestionId;
 	private String question;
 	private String isDeleted;
 	private Debate debate;
@@ -38,12 +42,12 @@ public class DebateSmsQuestion extends BaseModel implements java.io.Serializable
     @Id
    	@GeneratedValue(strategy = GenerationType.AUTO)
    	@Column(name = "debate_sms_question_id", unique = true, nullable = false)
-   public Integer getDebateSmsQuestionId() {
+   public Long getDebateSmsQuestionId() {
 		return debateSmsQuestionId;
 	}
 
 
-	public void setDebateSmsQuestionId(Integer debateSmsQuestionId) {
+	public void setDebateSmsQuestionId(Long debateSmsQuestionId) {
 		this.debateSmsQuestionId = debateSmsQuestionId;
 	}
 

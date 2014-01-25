@@ -20,7 +20,7 @@ public class DebateRoles extends BaseModel implements java.io.Serializable{
 
 	//debate_roles_id,name,is_deleted
 	
-	private Integer debateRolesId;
+	private Long debateRolesId;
 	private String name;
 	private String isDeleted;
 
@@ -35,11 +35,11 @@ public class DebateRoles extends BaseModel implements java.io.Serializable{
      @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "debate_roles_id", unique = true, nullable = false)
-	public Integer getDebateRolesId() {
+	public Long getDebateRolesId() {
 		return debateRolesId;
 	}
 
-	public void setDebateRolesId(Integer debateRolesId) {
+	public void setDebateRolesId(Long debateRolesId) {
 		this.debateRolesId = debateRolesId;
 	}
     

@@ -35,15 +35,15 @@ public class Debate extends BaseModel implements java.io.Serializable{
 //`debate_id`int, `start_time` TIMESTAMP ,`end_time` TIMESTAMP,`channel_id`,`telecast_type_id`,`is_deleted` ENUM,`summary` TEXT	
 	
 	//fields
-	private Integer debateId;
+	private Long debateId;
 	private Date startTime;
 	private Date endTime;
 	private Channel  channel;
 	private TelecastType telecastType;
 	private String isDeleted;
 	private String summary;
-	private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
-	private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
+	//private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
+	//private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
 
 	
 	//default constructor.
@@ -55,12 +55,12 @@ public class Debate extends BaseModel implements java.io.Serializable{
     @Id
    	@GeneratedValue(strategy = GenerationType.AUTO)
    	@Column(name = "debate_id", unique = true, nullable = false)
-	public Integer getDebateId() {
+	public Long getDebateId() {
 		return debateId;
 	}
 
 
-	public void setDebateId(Integer debateId) {
+	public void setDebateId(Long debateId) {
 		this.debateId = debateId;
 	}
 
@@ -112,7 +112,7 @@ public class Debate extends BaseModel implements java.io.Serializable{
 		this.telecastType = telecastType;
 	}
 
-
+	@Column(name="is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
 	}
@@ -122,7 +122,7 @@ public class Debate extends BaseModel implements java.io.Serializable{
 		this.isDeleted = isDeleted;
 	}
 
-
+	@Column(name="summary")
 	public String getSummary() {
 		return summary;
 	}
@@ -132,7 +132,7 @@ public class Debate extends BaseModel implements java.io.Serializable{
 		this.summary = summary;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "debate")
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "debate")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public Set<DebateObserver> getDebateObserver() {
 		return debateObserver;
@@ -152,7 +152,7 @@ public class Debate extends BaseModel implements java.io.Serializable{
 
 	public void setDebateParticipant(Set<DebateParticipant> debateParticipant) {
 		this.debateParticipant = debateParticipant;
-	}
+	}*/
 	
 	
 	

@@ -22,7 +22,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DebateParticipantRole {
 
-private Integer debateParticipantRoleId;
+private Long debateParticipantRoleId;
 private DebateParticipant debateParticipant;
 
 private DebateRoles debateRoles;
@@ -34,12 +34,12 @@ private DebateRoles debateRoles;
 	@Id
    	@GeneratedValue(strategy = GenerationType.AUTO)
    	@Column(name = "debate_participant_role_id", unique = true, nullable = false)
-public Integer getDebateParticipantRoleId() {
+public Long getDebateParticipantRoleId() {
 	return debateParticipantRoleId;
 }
 
 
-public void setDebateParticipantRoleId(Integer debateParticipantRoleId) {
+public void setDebateParticipantRoleId(Long debateParticipantRoleId) {
 	this.debateParticipantRoleId = debateParticipantRoleId;
 }
 

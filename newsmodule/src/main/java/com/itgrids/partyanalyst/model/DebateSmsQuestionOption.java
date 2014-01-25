@@ -25,10 +25,14 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DebateSmsQuestionOption extends BaseModel implements java.io.Serializable{
 
-    private Integer debateSmsQuestionOptionId;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6721208508581072864L;
+	private Long debateSmsQuestionOptionId;
 	private String option;
 	private Double percantage;
-	private DebateSmsQuestion  DebateSmsQuestion;
+	private DebateSmsQuestion debateSmsQuestion;
 	
 //default constructor.
 	
@@ -39,17 +43,17 @@ public class DebateSmsQuestionOption extends BaseModel implements java.io.Serial
     @Id
    	@GeneratedValue(strategy = GenerationType.AUTO)
    	@Column(name = "debate_sms_question_option_id", unique = true, nullable = false)
-	public Integer getDebateSmsQuestionOptionId() {
+	public Long getDebateSmsQuestionOptionId() {
 		return debateSmsQuestionOptionId;
 	}
 
-	public void setDebateSmsQuestionOptionId(Integer debateSmsQuestionOptionId) {
+	public void setDebateSmsQuestionOptionId(Long debateSmsQuestionOptionId) {
 		this.debateSmsQuestionOptionId = debateSmsQuestionOptionId;
 	}
 
 	
 	
-	@Column(name = "option", length = 50)
+	@Column(name = "options", length = 50)
 	public String getOption() {
 		return option;
 	}
@@ -74,11 +78,11 @@ public class DebateSmsQuestionOption extends BaseModel implements java.io.Serial
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public DebateSmsQuestion getDebateSmsQuestion() {
-		return DebateSmsQuestion;
+		return debateSmsQuestion;
 	}
 
 	public void setDebateSmsQuestion(DebateSmsQuestion debateSmsQuestion) {
-		DebateSmsQuestion = debateSmsQuestion;
+		this.debateSmsQuestion = debateSmsQuestion;
 	}
 	
 	

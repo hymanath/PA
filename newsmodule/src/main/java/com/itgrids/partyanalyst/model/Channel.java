@@ -24,7 +24,7 @@ public class Channel extends BaseModel implements java.io.Serializable{
 
 	
 	//fields
-	private Integer channelId;
+	private Long channelId;
 	private String channelName;
 	private String isDeleted;
 	private Set<Debate> debate = new HashSet<Debate>(0);
@@ -41,12 +41,12 @@ public class Channel extends BaseModel implements java.io.Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "channel_id", unique = true, nullable = false)
-	public Integer getChannelId() {
+	public Long getChannelId() {
 		return channelId;
 	}
 
 	
-	public void setChannelId(Integer channelId) {
+	public void setChannelId(Long channelId) {
 		this.channelId = channelId;
 	}
 

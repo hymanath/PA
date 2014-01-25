@@ -26,7 +26,7 @@ public class TelecastType extends BaseModel implements java.io.Serializable{
 
 	//telecast_type_id,name,is_deleted
 	
-	private Integer telecastTypeId;
+	private Long telecastTypeId;
 	private String name;
 	private String isDeleted;
 	private Set<Debate> debate = new HashSet<Debate>(0);
@@ -42,11 +42,11 @@ public class TelecastType extends BaseModel implements java.io.Serializable{
      @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "telecast_type_id", unique = true, nullable = false)
-	public Integer getTelecastTypeId() {
+	public Long getTelecastTypeId() {
 		return telecastTypeId;
 	}
 
-	public void setTelecastTypeId(Integer telecastTypeId) {
+	public void setTelecastTypeId(Long telecastTypeId) {
 		this.telecastTypeId = telecastTypeId;
 	}
 	

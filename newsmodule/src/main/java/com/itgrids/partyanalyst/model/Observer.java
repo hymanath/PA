@@ -24,7 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Observer extends BaseModel implements java.io.Serializable{
 
-	private Integer observerId;
+	private Long observerId;
 	private String observerName;
 	private String isDeleted;
 	private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
@@ -39,12 +39,12 @@ public class Observer extends BaseModel implements java.io.Serializable{
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
 		@Column(name = "observer_id", unique = true, nullable = false)
-		public Integer getObserverId() {
+		public Long getObserverId() {
 			return observerId;
 		}
 
 
-		public void setObserverId(Integer observerId) {
+		public void setObserverId(Long observerId) {
 			this.observerId = observerId;
 		}
 
