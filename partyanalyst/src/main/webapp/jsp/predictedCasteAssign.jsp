@@ -34,6 +34,11 @@
     margin-right: auto;
     width: 741px;
   }
+  .requiredFont
+  {
+	 color:red;
+	 font-size:12px;
+  }
   </style>
 </head>
 <body>
@@ -42,9 +47,10 @@
 <h4>INSERT PREDICTED CASTE</h4>
 <div id="insertPredictCasteDiv" style="margin-top:10px;border: 1px solid #D3D3D3;padding:10px;">
 <div id="errorDiv"></div>
-From <input type="text" id="fromValue"/>
-To <input type="text" id="toValue"/>
-<input type="button" value="Submit" class="btn btn-success" onclick="insertPredictedCaste()"/>
+Select Caste <font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Caste" name="constituencyList" id="casteStateId" list="predictionCasteList" listKey="id" listValue="name"/><BR>
+From <input type="text" style="margin-left:80px;" id="fromValue"/><BR>
+To <input type="text" style="margin-left:97px;" id="toValue"/><BR>
+<div style="margin-left:120px;"><input type="button" value="Submit" class="btn btn-success" onclick="insertPredictedCaste()"/></div>
 </div><br/>
 <div id="casteCountDiv"></div><br/>
 </div>
@@ -70,69 +76,70 @@ To <input type="text" id="toValue"/>
 	 
 	 var fromValue =  $.trim($("#fromValue").val());
 	 var toValue =  $.trim($("#toValue").val());
+	 var casteStateId = $('#casteStateId').val();
 	 
-	
-	if(fromValue.length == 0 || isNaN(fromValue))
+	 if(fromValue.length == 0 || isNaN(fromValue))
 	 {
 		flag=true;
-		str+='Enter number<br/>';
+		str+='Enter a number for From Value<br/>';
 	 }
-	else if(toValue.length == 0 || isNaN(toValue))
+	 
+	 if(toValue.length == 0 || isNaN(toValue))
 	 {
 		flag=true;
-		str+='Enter number<br/>';
+		str+='Enter a number for To Value<br/>';
 	 }
-	else if(fromValue <= toValue)
+	 
+	 if(casteStateId == null || casteStateId == 0)
 	 {
 		flag=true;
-		str+='To value less than From value<br/>';
+		str+='Please Select a Caste<br/>';
 	 }
-	 str+='</font>';
+	 str+='<BR></font>';
+
 	 if(flag == true)
-	 $("#errorDiv").html(str);
+		$("#errorDiv").html(str);
 	 else
 	 {
- $("#errorDiv").html('');
- var jsObj=
-	  {
-	 fromValue:fromValue,
-		toValue:toValue,
-		task:"insertPredictedCaste"
-	  };
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "insertPredictedCasteAction.action?"+rparam;
-
-	callAjax(jsObj,url);
+		$("#errorDiv").html('');
+		var jsObj=
+		{
+			casteStateId: casteStateId,
+			firstRecord	: fromValue,
+			maxRecords	: toValue,
+			task:"insertPredictedCaste"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "insertPredictedCasteAction.action?"+rparam;
+		callAjax(jsObj,url);
 	 }
  }
- function callAjax(jsObj,url)
-		{
-			 var myResults;
 
-			 var callback = {			
- 		               success : function( o ) {
-							try {												
-									myResults = YAHOO.lang.JSON.parse(o.responseText);					
-									if(jsObj.task == "getCount")
-								{
-									buildCAsteCount(myResults);
-								}
+function callAjax(jsObj,url)
+{
+	var myResults;
+	var callback = {			
+					success : function( o ) {
+					try 
+					{												
+						myResults = YAHOO.lang.JSON.parse(o.responseText);					
+						if(jsObj.task == "getCount")
+						{
+							buildCasteCount(myResults);
+						}
+						
+					}catch (e){
+				   
+					}  
+		   },
+		   scope : this,
+		   failure : function( o ) {}
+		   };
+	YAHOO.util.Connect.asyncRequest('POST', url, callback);
+}
 
+	function buildCasteCount(results)
 
-									}catch (e) {
-							   
-								}  
- 		               },
- 		               scope : this,
- 		               failure : function( o ) {
- 		                			//alert( "Failed to load result" + o.status + " " + o.statusText);
- 		                         }
- 		               };
-
- 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
- 	}
-
-	function buildCAsteCount(results)
 	{
 		var str ='';
 		if(results.length > 0)
