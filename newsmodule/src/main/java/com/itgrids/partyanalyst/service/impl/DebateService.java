@@ -219,7 +219,7 @@ public class DebateService implements IDebateService{
 					  debate.setSummary(debateDetailsVO.getDebateSummery());
 					  debate.setStartTime(debateDetailsVO.getStartDate());
 					  debate.setEndTime(debateDetailsVO.getEndDate());
-					  
+					  debate=debateDAO.save(debate);
 					  List<SelectOptionVO> subjectsList = debateDetailsVO.getSubjectList();
 					  if(subjectsList != null && subjectsList.size() > 0)
 					  {
@@ -305,14 +305,15 @@ public class DebateService implements IDebateService{
 					  }
 					  
 					  List<SelectOptionVO> smsQuestionsList = debateDetailsVO.getSmsQuestionList();
+					  DebateSmsQuestion debateSmsQuestion = null;
 					  if(smsQuestionsList != null && smsQuestionsList.size() > 0)
 					  {
 						  for (SelectOptionVO selectOptionVO : smsQuestionsList) {
-							DebateSmsQuestion debateSmsQuestion = new DebateSmsQuestion();
+						    debateSmsQuestion = new DebateSmsQuestion();
 							debateSmsQuestion.setDebate(debate);
 							debateSmsQuestion.setQuestion(selectOptionVO.getName());
 							debateSmsQuestion.setIsDeleted("N");
-							debateSmsQuestionDAO.save(debateSmsQuestion);
+							debateSmsQuestion = debateSmsQuestionDAO.save(debateSmsQuestion);
 						}
 					  }
 					  List<SelectOptionVO> smsOptionsList = debateDetailsVO.getSmaOptionsList();
@@ -321,11 +322,11 @@ public class DebateService implements IDebateService{
 						  for (SelectOptionVO selectOptionVO : smsOptionsList) {
 							DebateSmsQuestionOption debateSmsQuestionOption = new DebateSmsQuestionOption();
 							debateSmsQuestionOption.setOption(selectOptionVO.getName());
-							DebateSmsQuestion debateSmsQuestion = debateSmsQuestionDAO.get(selectOptionVO.getId());
-							if(debateSmsQuestion != null)
-							{
+							//DebateSmsQuestion debateSmsQuestion = debateSmsQuestionDAO.get(selectOptionVO.getId());
+							//if(debateSmsQuestion != null)
+							//{
 								debateSmsQuestionOption.setDebateSmsQuestion(debateSmsQuestion);
-							}
+							//}
 							debateSmsQuestionOption.setPercantage(selectOptionVO.getPerc());
 							debateSmsQuestionOptionDAO.save(debateSmsQuestionOption);
 						}

@@ -24,7 +24,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class DebateObserver  extends BaseModel implements Serializable{
 	
-	private Integer debateObserverid;
+	private Long debateObserverid;
 	private Debate debate;
 	private Observer observer;
 	
@@ -34,12 +34,12 @@ public class DebateObserver  extends BaseModel implements Serializable{
 	@Id
    	@GeneratedValue(strategy = GenerationType.AUTO)
    	@Column(name = "debate_observer_id", unique = true, nullable = false)
-	public Integer getDebateObserverid() {
+	public Long getDebateObserverid() {
 		return debateObserverid;
 	}
 
 
-	public void setDebateObserverid(Integer debateObserverid) {
+	public void setDebateObserverid(Long debateObserverid) {
 		this.debateObserverid = debateObserverid;
 	}
 

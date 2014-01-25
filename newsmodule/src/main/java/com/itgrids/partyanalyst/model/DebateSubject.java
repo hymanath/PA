@@ -23,7 +23,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class DebateSubject {
 
 	
-private Integer debateSubjectId;
+private Long debateSubjectId;
 private Debate debate;
 private String subject;
 
@@ -33,15 +33,15 @@ public DebateSubject(){}
 
 
 @Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "debate_subject_id", unique = true, nullable = false)
-public Integer getDebateSubjectId() {
+@GeneratedValue(strategy = GenerationType.AUTO)
+@Column(name = "debate_subject_id", unique = true, nullable = false)
+public Long getDebateSubjectId() {
 	return debateSubjectId;
 }
 
 
 
-public void setDebateSubjectId(Integer debateSubjectId) {
+public void setDebateSubjectId(Long debateSubjectId) {
 	this.debateSubjectId = debateSubjectId;
 }
 

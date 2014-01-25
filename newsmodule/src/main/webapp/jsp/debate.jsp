@@ -31,7 +31,13 @@ var candCount = 2;
 var questionCount = 2;
 var poleCount = 2;
 
-var debateDetails={
+
+$( document ).ready(function() {
+ 
+	$( "#startTime" ).datepicker();
+	$( "#endTime" ).datepicker();
+});
+/* var debateDetails={
 	endTime : '',
 	startTime : '',
 	channelId : '',
@@ -55,98 +61,104 @@ var debateDetails={
 			answer     : ''
 		}],
 	debetSummery : '',
-	/* candidateSummery : [
-		{
-			questionId   : '',
-			candidatreId  : '',
-			summery :''
-		}], */
+	
 	smsPole:[
 		{
 		   questionId   : '',
 		   option  : '',
 		   percentage :''
 		}]
-};
-var participantOnbj = {
-	      partyId: '' ,
-		  candidateId : '' ,
-		  subject    : '',
-		  presentation :'',
-		  counterAttack : '' ,
-		  bodyLanguage : '',
-		  summery     : '',
-		  participantRoles:[]
-};
-
-var questionAnswerObj = {
-	        questionId : '',
-			answer     : ''
-};
-/* var candidateSummeryObj = {
-	        questionId   : '',
-			candidatreId  : '',
-			summery :''
 }; */
-var smaPoleObj = {
-	        questionId   : '',
-			option  : '',
-			percentage :''
-};
+
 function submitForm()
 {
-	debateDetails.subjectArray = [];
-	debateDetails.participant = [];
-	debateDetails.questionAnswer = [];
-	debateDetails.smsPole = [];
-	debateDetails.observer = [];
+	
+	var debateDetails={
+	endTime : '',
+	startTime : '',
+	channelId : '',
+	telecastTimeId : '',
+	debetSummery : ''
+	}; 
+	var  observer = new Array();
+	var  subjectArray = new Array();
+	var  participant = new Array();
+	var questionAnswer = new Array();
+	var smsPole= new Array();
+	var participantObj = {
+			  partyId: '' ,
+			  candidateId : '' ,
+			  subject    : '',
+			  presentation :'',
+			  counterAttack : '' ,
+			  bodyLanguage : '',
+			  summery     : '',
+			  participantRoles:[]
+	};
+
+	var questionAnswerObj = {
+				questionId : '',
+				answer     : ''
+	};
+
+	var smaPoleObj = {
+				questionId   : '',
+				option  : '',
+				percentage :''
+	};
+
 	$( ".subjectClass " ).each(function( index ) {
-		debateDetails.subjectArray.push($(this ).val());	
+		//debateDetails.subjectArray.push($(this ).val());	
+		subjectArray.push($(this ).val());	
 	});
 	debateDetails.endTime         = $('#endTime').val();
 	debateDetails.startTime       = $('#startTime').val();
 	debateDetails.channelId       = $('#channel option:selected').val();
 	debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
-	debateDetails.observer.push($('#observer option:selected').val());
+	//debateDetails.observer.push($('#observer option:selected').val());
+	observer.push($('#observer option:selected').val());
 	var i = 0;
 	$( ".participantDetailsClass " ).each(function( index ) {
 	     i++;
-		participantOnbj.partyId      = $('#party'+i+'').val();	
-		participantOnbj.candidateId  = $('#candidate'+i+'').val();	
-		participantOnbj.summery      = $('#candiSummery'+i+'').val();	
-		participantOnbj.subject      = $('#subject'+i+'').val();	
-		participantOnbj.presentation = $('#presentation'+i+'').val();	
-		participantOnbj.counterAttack= $('#counterAttack'+i+'').val();	
-		participantOnbj.bodyLanguage = $('#bodyLanguage'+i+'').val();
-		debateDetails.participant.push(participantOnbj);		
+		participantObj.partyId      = $('#party'+i+'').val();	
+		participantObj.candidateId  = $('#candidate'+i+'').val();	
+		participantObj.summery      = $('#candiSummery'+i+'').val();	
+		participantObj.subject      = $('#subject'+i+'').val();	
+		participantObj.presentation = $('#presentation'+i+'').val();	
+		participantObj.counterAttack= $('#counterAttack'+i+'').val();	
+		participantObj.bodyLanguage = $('#bodyLanguage'+i+'').val();
+		//debateDetails.participant.push(participantObj);		
+		participant.push(participantObj);		
 	});
 	var j = 0;
 	$( ".questionAnswerClass " ).each(function( index ) {
-	j++;
+
 		questionAnswerObj.questionId = $('#question'+j+'').val();	
 		questionAnswerObj.answer     = $('#answer'+j+'').val();	
-		debateDetails.questionAnswer.push(questionAnswerObj);
+		//debateDetails.questionAnswer.push(questionAnswerObj);
+		questionAnswer.push(questionAnswerObj);
+		j++;
 	});
-	/* var k = 0;
-	$( ".candidateSummeryClass " ).each(function( index ) {
-	k++;
-		candidateSummeryObj.questionId    = $('#cparty'+k+'').val();	
-		candidateSummeryObj.candidatreId  = $('#ccand'+k+'').val();	candidateSummeryObj.summery       = $('#csum'+k+'').val();
-		debateDetails.candidateSummery.push(candidateSummeryObj);
-	}); */
+	
 	var l = 0;
 	$( ".smsPoleClass " ).each(function( index ) {
 	l++;
 		smaPoleObj.questionId  = $('#smsques1').val();	
 		smaPoleObj.option      = $('#smsoption'+l+'').val();
 		smaPoleObj.percentage  = $('#smsper'+l+'').val();
-		debateDetails.smsPole.push(smaPoleObj);	
+		//debateDetails.smsPole.push(smaPoleObj);	
+		smsPole.push(smaPoleObj);	
 	});
 	
 	debateDetails.debetSummery = $('#debetSum').val();
 	
 	 var jsObj = {
 				debateDetails :debateDetails,
+				participant   : participant,
+				observer     : observer,
+				subjectArray : subjectArray,
+				questionAnswer : questionAnswer,
+				smsPole : smsPole,
 				task : "saveDebateDetails"	
 		};
 		
@@ -156,8 +168,9 @@ function submitForm()
 	console.log(debateDetails);
 }
 	
-function addMoreSubject(){
-var str = "";
+function addMoreSubject()
+{
+    var str = "";
 	str += "<tr>";
     str += "<td>Subject1</td><td></td>";
     str += "<td>";
@@ -168,57 +181,56 @@ $('#subjectDiv').after(str);
 subjCount++;
 }
 
-function addMoreCandidates(){
+function addMoreCandidates()
+{
+	var str = "";
+	str += "<div id='participantInnerDiv"+candCount+"'  class='widget well span10 participantDetailsClass'>";
+	str += "<div class='span3' style='margin-left: 15px;'>";
+	str += "<label><strong>Party</strong></label>";
+	str += "<select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
+	for ( var i in partiesArray) {
+	str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
+	}
+	str+='</select>';
 
-
-var str = "";
-str += "<div id='participantInnerDiv"+candCount+"'  class='widget well span10 participantDetailsClass'>";
-str += "<div class='span3' style='margin-left: 15px;'>";
-str += "<label><strong>Party</strong></label>";
-str += "<select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
-for ( var i in partiesArray) {
-str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
-}
-str+='</select>';
-
-str += "</div>";
-str += "<div class='span3'>";
-str += "<label><strong>Candidate</strong></label>";
-str += "<select theme='simple' Class='selectWidth' name='candidate"+candCount+"' id='candidate"+candCount+"'  ></select>";
-str += "</div>";
-str += "<div class='span4'>";
-str += "<label><strong>Subject</strong></label>";
-str += "<input type='text' Class='selectWidth' name='subject"+candCount+"' id='subject"+candCount+"'/>";
-str += "</div>";
-str += "<div class='span3'>";
-str += "<label><strong>Presentation</strong></label>";
-str += "<input type='text' Class='selectWidth' name='presentation"+candCount+"' id='presentation"+candCount+"'/>";
-str += "</div>";
-str += "<div class='span3'>";
-str += "<label><strong>Counter Attack</strong></label>";
-str += "<input type='text' Class='selectWidth' name='counterAttack"+candCount+"' id='counterAttack"+candCount+"'/>";
-str += "</div>";
-str += "<div class='span4'>";
-str += "<label><strong>Body Language</strong></label>";
-str += "<input type='text' Class='selectWidth' name='bodyLanguage"+candCount+"' id='bodyLanguage"+candCount+"'/>";
-str += "</div>";
-str += "<div class='span3'>";
-str += "<label><strong>Participant Roles</strong></label>";
-str += "<select theme='simple' Class='selectWidth' name='participantRoles"+candCount+"' id='participantRoles"+candCount+"' multiple='multiple' ></select>";
-str += "</div>";
-str += "<div class='span3'>";
-str += "<label>";
-str += "<strong>Summery</strong>";
-str += "</label>";
-str += "<input type='text' Class='selectWidth' name='summery' id='candiSummery"+candCount+"'/>";
-str += "</div>";
-str += "</div>";
-if(candCount == 2)
-	$('#participantInnerDiv1').after(str);
-else
-	$('#participantInnerDiv'+(candCount-1)+'').after(str);
-candCount++;
-$("party"+(candCount+1)+" option[value='0']").attr('selected','selected');
+	str += "</div>";
+	str += "<div class='span3'>";
+	str += "<label><strong>Candidate</strong></label>";
+	str += "<select theme='simple' Class='selectWidth' name='candidate"+candCount+"' id='candidate"+candCount+"'  ></select>";
+	str += "</div>";
+	str += "<div class='span4'>";
+	str += "<label><strong>Subject</strong></label>";
+	str += "<input type='text' Class='selectWidth' name='subject"+candCount+"' id='subject"+candCount+"'/>";
+	str += "</div>";
+	str += "<div class='span3'>";
+	str += "<label><strong>Presentation</strong></label>";
+	str += "<input type='text' Class='selectWidth' name='presentation"+candCount+"' id='presentation"+candCount+"'/>";
+	str += "</div>";
+	str += "<div class='span3'>";
+	str += "<label><strong>Counter Attack</strong></label>";
+	str += "<input type='text' Class='selectWidth' name='counterAttack"+candCount+"' id='counterAttack"+candCount+"'/>";
+	str += "</div>";
+	str += "<div class='span4'>";
+	str += "<label><strong>Body Language</strong></label>";
+	str += "<input type='text' Class='selectWidth' name='bodyLanguage"+candCount+"' id='bodyLanguage"+candCount+"'/>";
+	str += "</div>";
+	str += "<div class='span3'>";
+	str += "<label><strong>Participant Roles</strong></label>";
+	str += "<select theme='simple' Class='selectWidth' name='participantRoles"+candCount+"' id='participantRoles"+candCount+"' multiple='multiple' ></select>";
+	str += "</div>";
+	str += "<div class='span3'>";
+	str += "<label>";
+	str += "<strong>Summery</strong>";
+	str += "</label>";
+	str += "<input type='text' Class='selectWidth' name='summery' id='candiSummery"+candCount+"'/>";
+	str += "</div>";
+	str += "</div>";
+	if(candCount == 2)
+		$('#participantInnerDiv1').after(str);
+	else
+		$('#participantInnerDiv'+(candCount-1)+'').after(str);
+	candCount++;
+	$("party"+(candCount+1)+" option[value='0']").attr('selected','selected');
 }
 
 function addMoreQuestions(){
@@ -279,65 +291,65 @@ function addMorePole(){
 }
 
 function getCandidatesOfSelectedParty(partyId,divId)
-	{
-		var numb = divId.match(/\d/g);
-		$('#candidate1').find('option').remove();
-		var jsObj = {
-				partyId :partyId,
-				selectedVal :"candidate"+numb+"",
-				task : "getCandidatesOfAParty"	
-		};
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getCandidatesOfAParty.action?"+rparam;
-		callAjax(jsObj,url);
-	}
+{
+	var numb = divId.match(/\d/g);
+	$('#candidate1').find('option').remove();
+	var jsObj = {
+			partyId :partyId,
+			selectedVal :"candidate"+numb+"",
+			task : "getCandidatesOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;
+	callAjax(jsObj,url);
+}
 
 function fillSelectOptionsVO(results,selectedVal)
+{
+	$('#'+selectedVal+'').find('option').remove();
+	$('#'+selectedVal+'').append('<option value="0">Select</option>');
+				
+	if(results != null)
 	{
-		$('#'+selectedVal+'').find('option').remove();
-		$('#'+selectedVal+'').append('<option value="0">Select</option>');
-					
-		if(results != null)
+		for(var i in results)
 		{
-			for(var i in results)
-			{
-				$('#'+selectedVal+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
-			}
-			
+			$('#'+selectedVal+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
 		}
-			
+		
 	}
+		
+}
 
 function callAjax(jsObj,url)
-	{
+{
 
-		var callback =
-		{			
-			success : function( o )
-			{
-				try
-				{ 
-					myResults = YAHOO.lang.JSON.parse(o.responseText); 
+	var callback =
+	{			
+		success : function( o )
+		{
+			try
+			{ 
+				myResults = YAHOO.lang.JSON.parse(o.responseText); 
 
-					if (jsObj.task == "getCandidatesOfAParty")
-					{
-						fillSelectOptionsVO(myResults,jsObj.selectedVal);	
-					}
-				}catch(e)
-				{   
-				 $("#submitDataImg").hide();
-				}  
-			},
-			scope : this,
-			failure : function( o )
-			{
-				
-			}
-		};
+				if (jsObj.task == "getCandidatesOfAParty")
+				{
+					fillSelectOptionsVO(myResults,jsObj.selectedVal);	
+				}
+			}catch(e)
+			{   
+			 $("#submitDataImg").hide();
+			}  
+		},
+		scope : this,
+		failure : function( o )
+		{
+			
+		}
+	};
 
-		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
+	YAHOO.util.Connect.asyncRequest('GET', url, callback);
+}
 	
 	
 var partiesArray = new Array();
@@ -465,7 +477,7 @@ var partiesArray = new Array();
 	<div id="questionOuterDiv" >
 	<div id="questionDiv1" class="widget well span10">
 	<h4>Questions:</h4>
-	<c:forEach  var="parties" items="${debateQuestionList}">
+	<s:iterator value="debateQuestionList" var="parties" status="stateIndex">
 		<div class="questionAnswerClass">
 		<div class="span5">
 		<!--<label>
@@ -473,6 +485,8 @@ var partiesArray = new Array();
 		</label>-->
 		<!--<s:select name="question1"  id="question1" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>-->
 		<!--<b>'+debateQuestionList+'</b>-->
+		
+		<input type="hidden" Class="selectWidth"  id="question<s:property value="%{#stateIndex.index}"/>" name="question1" value="${parties.id}"></input>
 		<p>${parties.name}</p>
 		</div>
 		<div class="span5">
@@ -480,10 +494,10 @@ var partiesArray = new Array();
 		<strong>Answer </strong>
 		</label>
 		<!--<select theme="simple" Class="selectWidth" name="answer1" id="answer1"  ></select>-->
-		<input type="text" Class="selectWidth" name="answer1" id="answer1"/>
+		<input type="text" Class="selectWidth" id="answer<s:property value="%{#stateIndex.index}"/>" name="answer1"/>
 		</div>
 		</div>
-	</c:forEach>
+	</s:iterator>
 	</div>
 
 		<!--<div  class="span10">
@@ -557,6 +571,7 @@ var partiesArray = new Array();
 	</div>
 
 </div>
+<a class="btn btn-success" onClick="submitForm();">Submit</a>
  </div>
  </div>
  </body>

@@ -224,11 +224,11 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			 debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
 			 String startDate = debateObj.getString("startTime");
 			 String endDate = debateObj.getString("endTime");
-			 SimpleDateFormat sdf = new SimpleDateFormat("YYYY:MM:DD");
+			 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			 debateDetailsVO.setStartDate(sdf.parse(startDate));
 			 debateDetailsVO.setEndDate(sdf.parse(endDate));
 			 debateDetailsVO.setDebateSummery(debateObj.getString("debetSummery"));
-			 JSONArray subjectsArray = jObj.getJSONArray(debateObj.getString("subjectArray"));
+			 JSONArray subjectsArray = jObj.getJSONArray("subjectArray");
 			 List<SelectOptionVO> subjectsList = new ArrayList<SelectOptionVO>();
 			 for (int i = 0; i < subjectsArray.length(); i++) {
 				 SelectOptionVO selectOptionVO = new SelectOptionVO();
@@ -236,54 +236,54 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				 subjectsList.add(selectOptionVO);
 			 }
 			 debateDetailsVO.setSubjectList(subjectsList);
-			 JSONArray observersArray = jObj.getJSONArray(debateObj.getString("observer"));
+			 JSONArray observersArray = jObj.getJSONArray("observer");
 			 List<SelectOptionVO> observersList = new ArrayList<SelectOptionVO>();
 			 for (int i = 0; i < observersArray.length(); i++) {
 				 SelectOptionVO observerVO = new SelectOptionVO();
-				 observerVO.setId((Long)observersArray.get(i));
+				 observerVO.setId(Long.valueOf(observersArray.get(i).toString()));
 				 observersList.add(observerVO);
 			 }
 			 debateDetailsVO.setObserverList(observersList);
-			 JSONArray particepentArray = jObj.getJSONArray(debateObj.getString("participant"));
+			 JSONArray particepentArray = jObj.getJSONArray("participant");
 			 List<ParticipantVO> particepentList = new ArrayList<ParticipantVO>();
 			 for (int i = 0; i < particepentArray.length(); i++) 
 			 {
 				 ParticipantVO participantVO = new ParticipantVO();
-				 JSONObject particepentObj = jObj.getJSONObject(particepentArray.get(i).toString());
+				 JSONObject particepentObj = (JSONObject) particepentArray.get(i);
 				 participantVO.setId(particepentObj.getLong("candidateId"));
 				 participantVO.setPartyId(particepentObj.getLong("partyId"));
 				 participantVO.setSummery(particepentObj.getString("summery"));
-				 List<SelectOptionVO> rolesList = new ArrayList<SelectOptionVO>();
-				 JSONArray rolesArray = jObj.getJSONArray(particepentObj.getString("participantRoles"));
+				// List<SelectOptionVO> rolesList = new ArrayList<SelectOptionVO>();
+				 /*JSONArray rolesArray = jObj.getJSONArray(particepentObj.getString("participantRoles"));
 				 for (int j = 0; j < rolesArray.length(); j++)
 				 {
 					 SelectOptionVO rolesVO = new SelectOptionVO();
 					 rolesVO.setId((Long)rolesArray.get(i));
 					 rolesList.add(rolesVO);
 				 }
-				 participantVO.setRoleList(rolesList);
+				 participantVO.setRoleList(rolesList);*/
 				 particepentList.add(participantVO);
 			 }
 			 debateDetailsVO.setParticipentsList(particepentList);
 			 
-			 JSONArray questionAnswerArray = jObj.getJSONArray(debateObj.getString("questionAnswer"));
+			 JSONArray questionAnswerArray = jObj.getJSONArray("questionAnswer");
 			 List<SelectOptionVO> questionAnswerList = new ArrayList<SelectOptionVO>();
 			 for (int i = 0; i < questionAnswerArray.length(); i++)
 			 {
 				 SelectOptionVO questionAnswerVO = new SelectOptionVO();
-				 JSONObject questionAnswerObj = jObj.getJSONObject(questionAnswerArray.get(i).toString());
+				 JSONObject questionAnswerObj = (JSONObject) questionAnswerArray.get(i);
 				 questionAnswerVO.setId(questionAnswerObj.getLong("questionId"));
 				 questionAnswerVO.setName(questionAnswerObj.getString("answer"));
 				 questionAnswerList.add(questionAnswerVO);
 			 }
 			 debateDetailsVO.setQuestionsList(questionAnswerList);
-			 JSONArray smsQuestion = jObj.getJSONArray(debateObj.getString("smsPole"));
+			 JSONArray smsQuestion = jObj.getJSONArray("smsPole");
 			 List<SelectOptionVO> smsQuestionList = new ArrayList<SelectOptionVO>();
 			
 			 for (int i = 0; i < smsQuestion.length(); i++)
 			 {
 				 SelectOptionVO selectOptionVO = new SelectOptionVO();
-				 JSONObject smsQuestionObj = jObj.getJSONObject(smsQuestion.get(i).toString());
+				 JSONObject smsQuestionObj = (JSONObject) smsQuestion.get(i);
 				 selectOptionVO.setName(smsQuestionObj.getString("questionId"));
 				 smsQuestionList.add(selectOptionVO);
 			 }
@@ -292,7 +292,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			 for (int i = 0; i < smsQuestion.length(); i++)
 			 {
 				 SelectOptionVO selectOptionVO = new SelectOptionVO();
-				 JSONObject smsQuestionObj = jObj.getJSONObject(smsQuestion.get(i).toString());
+				 JSONObject smsQuestionObj = (JSONObject) smsQuestion.get(i);
+				 //selectOptionVO.setId(smsQuestionObj.getLong("questionId"));
 				 selectOptionVO.setName(smsQuestionObj.getString("option"));
 				 selectOptionVO.setPerc(smsQuestionObj.getDouble("percentage"));
 				 smsOptionsList.add(selectOptionVO);
