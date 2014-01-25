@@ -34,63 +34,8 @@ var candCount = 2;
 var questionCount = 2;
 var poleCount = 2;
 
-	
+
 var partiesArray = new Array();
-<c:forEach var="parties" items="${partiesList}">
-	var parties1 ={
-	id:"${parties.id}",
-	name:"${parties.name}"
-	}
-	partiesArray.push(parties1);
-</c:forEach>
-
-var charsArray = new Array();
-<c:forEach var="chars" items="${characteristicsList}">
-	var chars1 ={
-	id:"${chars.id}",
-	name:"${chars.name}"
-	}
-	charsArray.push(chars1);
-</c:forEach>
-
-$( document ).ready(function() {
- 
-	$( "#startTime" ).datepicker();
-	$( "#endTime" ).datepicker();
-	getValues();
-});
-/* var debateDetails={
-	endTime : '',
-	startTime : '',
-	channelId : '',
-	telecastTimeId : '',
-	observer : [],
-    subjectArray:[],
-    participant : [
-		{ 
-		  partyId: '' ,
-		  candidateId : '' ,
-		  subject    : '',
-		  presentation :'',
-		  counterAttack : '' ,
-		  bodyLanguage : '',
-		  summery     : '',
-		  participantRoles:[]
-		}],
-	questionAnswer : [
-		{
-			questionId : '',
-			answer     : ''
-		}],
-	debetSummery : '',
-	
-	smsPole:[
-		{
-		   questionId   : '',
-		   option  : '',
-		   percentage :''
-		}]
-}; */
 
 function submitForm()
 {
@@ -107,17 +52,8 @@ function submitForm()
 	var  participant = new Array();
 	var questionAnswer = new Array();
 	var smsPole= new Array();
-	var participantObj = {
-			  partyId: '' ,
-			  candidateId : '' ,
-			  subject    : '',
-			  presentation :'',
-			  counterAttack : '' ,
-			  bodyLanguage : '',
-			  summery     : '',
-			  participantRoles:[]
-	};
-
+	
+	
 	var questionAnswerObj = {
 				questionId : '',
 				answer     : ''
@@ -128,18 +64,15 @@ function submitForm()
 				option  : '',
 				percentage :''
 	};
-
 	$( ".subjectClass " ).each(function( index ) {
-		//debateDetails.subjectArray.push($(this ).val());	
 		subjectArray.push($(this ).val());	
 	});
 	debateDetails.endTime         = $('#endTime').val();
 	debateDetails.startTime       = $('#startTime').val();
 	debateDetails.channelId       = $('#channel option:selected').val();
 	debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
-	//debateDetails.observer.push($('#observer option:selected').val());
 	observer.push($('#observer option:selected').val());
-	var i = 0;
+	/* var i = 0;
 	$( ".participantDetailsClass " ).each(function( index ) {
 	     i++;
 		participantObj.partyId      = $('#party'+i+'').val();	
@@ -149,15 +82,43 @@ function submitForm()
 		participantObj.presentation = $('#presentation'+i+'').val();	
 		participantObj.counterAttack= $('#counterAttack'+i+'').val();	
 		participantObj.bodyLanguage = $('#bodyLanguage'+i+'').val();
-		//debateDetails.participant.push(participantObj);		
 		participant.push(participantObj);		
+	}); */
+	$('.particepntDetailsRow').each(function() {
+		var participantObj = {
+			  partyId: '' ,
+			  candidateId : '' ,
+			  summery     : '',
+			  participantRoles:[],
+			  scale : [
+			  {
+				 scaleId : '',
+				 scaleTotal : ''
+			  }
+			  ]
+		};
+		
+		participantObj.partyId  = $(this).closest("tr").find('.partysClass').val();
+		participantObj.candidateId = $(this).closest("tr").find('.candidatesClass').val();
+		participantObj.summery = 'prasad';
+		for(var i=0 ;i <charsArray.length;i++)
+		{
+			var scaleObj = {
+			 scaleId : '',
+			 scaleTotal : ''
+			};
+			scaleObj.scaleId    = charsArray[i].id;
+			scaleObj.scaleTotal = $(this).closest("tr").find('.'+charsArray[i].id+'CharClass').val();
+			participantObj.scale.push(scaleObj);
+		}
+		participant.push(participantObj);	
 	});
+	console.log(participant);
 	var j = 0;
 	$( ".questionAnswerClass " ).each(function( index ) {
 
 		questionAnswerObj.questionId = $('#question'+j+'').val();	
 		questionAnswerObj.answer     = $('#answer'+j+'').val();	
-		//debateDetails.questionAnswer.push(questionAnswerObj);
 		questionAnswer.push(questionAnswerObj);
 		j++;
 	});
@@ -168,13 +129,12 @@ function submitForm()
 		smaPoleObj.questionId  = $('#smsques1').val();	
 		smaPoleObj.option      = $('#smsoption'+l+'').val();
 		smaPoleObj.percentage  = $('#smsper'+l+'').val();
-		//debateDetails.smsPole.push(smaPoleObj);	
 		smsPole.push(smaPoleObj);	
 	});
 	
 	debateDetails.debetSummery = $('#debetSum').val();
 	
-	 var jsObj = {
+	 /* var jsObj = {
 				debateDetails :debateDetails,
 				participant   : participant,
 				observer     : observer,
@@ -186,8 +146,8 @@ function submitForm()
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "saveDebateDetailsAction.action?"+rparam;
-		callAjax(jsObj,url); 
-	console.log(debateDetails);
+		callAjax(jsObj,url);  */
+	//console.log(debateDetails);
 }
 	
 function addMoreSubject()
@@ -203,10 +163,10 @@ $('#subjectDiv').after(str);
 subjCount++;
 }
 
-function addMoreCandidates(){
+/* function addMoreCandidates(){
 var str = '';
 
-str += "<tr id='row"+candCount+"'><td><select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
+str += "<tr id='row"+candCount+"' class='particepntDetailsRow'><td><select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
 	for ( var i in partiesArray) {
 	str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
@@ -224,8 +184,34 @@ str += "<tr id='row"+candCount+"'><td><select name='party"+candCount+"'  id='par
 
 $("#participantTable").append(str);
 candCount++;
-}
+} */
 
+function addMoreCandidates()
+{
+	var str ='';
+	str += "<tr id='row"+candCount+"' class='particepntDetailsRow'>";
+	str += "<td><select name='party1'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);' class='partysClass'><option value='0' selected='selected'>Select</option>";
+	for ( var i in partiesArray)
+	{
+		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
+	}
+	str+='</select></td>';
+
+	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" ></select></td>';
+		for(var i in charsArray){
+		str +='<td>';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+''+candCount+'" style="width:30px;" />';
+		str +='</td>';
+	}
+	str +='<td><select theme="simple" Class="selectWidth" name="participantRoles1" id="participantRoles'+candCount+'" multiple="multiple"></select></td>';
+	str +='<td><select theme="simple" Class="selectWidth" name="expparticipantRoles1" id="expparticipantRoles'+candCount+'" multiple="multiple"></select></td>';
+	str +='<td><a  name="row1" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+    str +='</tr>';
+    
+	$("#participantTable").append(str);
+	candCount++;
+}
+ 
 function addMoreQuestions(){
 var str = "";
 str += "<div class='questionAnswerClass'>";
@@ -241,31 +227,7 @@ str += "</div>";
 $('#questionDiv1').append(str);
 questionCount++;
 }
-/* var summeyId = 1;
-function addMoreSummery()
-{
-	summeyId ++;
-	var str = "";
-	str += '<div class="candidateSummeryClass">';
-	str += '<div class="span3">';
-	str += '<label>';
-	str += '<strong>Question </strong>';
-	str += '</label>';
-	str += '<select name="cparty"  id="cparty'+summeyId+'" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>';
-	str += '</div>';
-	str += '<div class="span3">';
-	str += '<label>';
-	str += '<strong>Candidate </strong>';
-	str += '</label>';
-	str += '<select theme="simple" Class="selectWidth" name="ccand'+summeyId+'" id="ccand'+summeyId+'"  ></select>';
-	str += '</div>';
-	str += '<div class="span4">';
-	str += '<label><strong>Summary </strong></label>';
-	str += '<input type="text" Class="selectWidth" name="csum" id="csum'+summeyId+'"/>';
-	str += '</div>';
-	str += '</div>';
-	$('#candidateSummeryId').append(str);
-} */
+
 function addMorePole(){
 	
 	var str = "";
@@ -346,30 +308,29 @@ function callAjax(jsObj,url)
 	
 function getValues(){
 	var str ='';
-	str +='<table id="participantTable" class="table table-bordered" style="width: 100%;overflow-x: scroll;">';
-	str +='<tr><th rowspan=2>Party</th><th rowspan=2>Candidate</th><th colSpan='+charsArray.length+'>Characteristics</th><th rowspan=2>Participant Roles</th><th rowspan=2>Expected Roles</th><th rowspan=2>delete</th></tr>';
-    str +='<tr>';
+	str +='<table id="participantTable" class="table table-bordered particepatedTable" style="width: 100%;overflow-x: scroll;">';
+	str +='<tr><th>Party</th><th>Candidate</th>';
 	for(var i in charsArray){
-		str +='<td><table style="border-left: hidden;">';
-		str +='<tr><th>'+charsArray[i].name+'</th></tr>';
-		str +='</table></td>';
+		str +='<th>'+charsArray[i].name+'</th>';
 	}
-	str +='</tr>';
-
-	str += "<tr id='row1'><td><select name='party1'  id='party1' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
-	for ( var i in partiesArray) {
-	str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
+	str +='<th>Participant Roles</th><th>Expected Roles</th><th>delete</th></tr>';
+   
+	str += "<tr id='row1' class='particepntDetailsRow'>";
+	str += "<td><select name='party1'  id='party1' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);' class='partysClass'><option value='0' selected='selected'>Select</option>";
+	for ( var i in partiesArray)
+	{
+		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
 	str+='</select></td>';
 
-	str +='<td><select theme="simple" Class="selectWidth" name="candidate1" id="candidate1" ></select></td>';
+	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate1" ></select></td>';
 		for(var i in charsArray){
-		str +='<td><table style="border-left: hidden;">';
-		str +='<tr><td><input type="text" Class="selectWidth" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;"/></td></tr>';
-		str +='</table></td>';
+		str +='<td>';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;" />';
+		str +='</td>';
 	}
 	str +='<td><select theme="simple" Class="selectWidth" name="participantRoles1" id="participantRoles1" multiple="multiple"></select></td>';
-	str +='<td><input type="text" Class="selectWidth" name="candiSummery1" id="candiSummery1"/></td>';
+	str +='<td><select theme="simple" Class="selectWidth" name="expparticipantRoles1" id="expparticipantRoles1" multiple="multiple"></select></td>';
 	str +='<td><a  name="row1" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
     str +='</tr></table>';
     
@@ -379,6 +340,31 @@ $("#participantInnerDiv1").append(str);
 function removeCandidate(name){
 $("#"+name+"").remove();
 }
+
+<c:forEach var="parties" items="${partiesList}">
+	var parties1 ={
+	id:"${parties.id}",
+	name:"${parties.name}"
+	}
+	partiesArray.push(parties1);
+</c:forEach>
+
+var charsArray = new Array();
+<c:forEach var="chars" items="${characteristicsList}">
+	var chars1 ={
+	id:"${chars.id}",
+	name:"${chars.name}"
+	}
+	charsArray.push(chars1);
+</c:forEach>
+
+$( document ).ready(function() {
+ 
+	$( "#startTime" ).datepicker();
+	$( "#endTime" ).datepicker();
+	getValues();
+});
+
 </script>
 
  <div id="mainDiv" class="container">
@@ -436,13 +422,13 @@ $("#"+name+"").remove();
 
 	<div id="participantDiv">
 		<div id="participantInnerDiv1"  class="widget blue well span12 participantDetailsClass scrollit" style="margin-top:45px;">
-		<h4>Participant Details And Performance:</h4>
-		
+			<h4>Participant Details And Performance:</h4>
 		</div>
-
 		<div  class="span10">
-		<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
-		</div>
+			<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="Add" id=""  style="float:right;"/></a>
+	</div>
+
+		
 	</div>
 
 	<div id="questionOuterDiv" >
@@ -451,12 +437,6 @@ $("#"+name+"").remove();
 	<s:iterator value="debateQuestionList" var="parties" status="stateIndex">
 		<div class="questionAnswerClass">
 		<div class="span5">
-		<!--<label>
-		<strong>Question </strong>
-		</label>-->
-		<!--<s:select name="question1"  id="question1" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>-->
-		<!--<b>'+debateQuestionList+'</b>-->
-		
 		<input type="hidden" Class="selectWidth"  id="question<s:property value="%{#stateIndex.index}"/>" name="question1" value="${parties.id}"></input>
 		<p>${parties.name}</p>
 		</div>
@@ -464,43 +444,14 @@ $("#"+name+"").remove();
 		<label>
 		<strong>Answer </strong>
 		</label>
-		<!--<select theme="simple" Class="selectWidth" name="answer1" id="answer1"  ></select>-->
 		<input type="text" Class="selectWidth" id="answer<s:property value="%{#stateIndex.index}"/>" name="answer1"/>
 		</div>
 		</div>
 	</s:iterator>
 	</div>
-
-		<!--<div  class="span10">
-		<a title="Click here to add another Subject" onClick="addMoreQuestions();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
-		</div>-->
 	</div>
 	
-		<!--<div id="candidateSummery" class="widget well span10">
-			<div id="candidateSummeryId">
-			<div class="candidateSummeryClass">
-			<div class="span3">
-			<label>
-			<strong>Question </strong>
-			</label>
-			<s:select name="cparty"  id="cparty1" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>
-			</div>
-			<div class="span3">
-			<label>
-			<strong>Candidate </strong>
-			</label>
-			<select theme="simple" Class="selectWidth" name="ccand" id="ccand1"  ></select>
-			</div>
-			<div class="span4">
-			<label><strong>Summary </strong></label>
-			<input type="text" Class="selectWidth" name="csum" id="csum1"/>
-			</div>
-			</div>
-			</div>
-		</div>-->
-		<!--<div  class="span10">
-		<a title="Click here to add another Subject" onClick="addMoreSummery();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
-		</div>-->
+		
 
 	<div id="smsPoleOuterDiv">
 		<div id="smsPole" class="widget well span10">
@@ -508,8 +459,6 @@ $("#"+name+"").remove();
 		<label>
 		<strong>Question </strong>
 		</label>
-		<!--<s:select name="smsques1"  id="smsques1" list="debateSmsQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>-->
-		<!--<input type="text" Class="selectWidth" name="smsques1" id="smsques1"/>-->
 		<textarea rows="4" cols="50" name="smsques1" id="smsques1" style="width: 618px;"></textarea> 
 		<div class="span5">
 		<label>
@@ -535,7 +484,6 @@ $("#"+name+"").remove();
 		<div class="control-group form-horizontal span10">
 			<label>
 			<strong>Dabet Summery </strong></label>
-			<!--<input type="text" id="debetSum" placeholder="DabetSummery"  name="debetSum"/>-->
 			<textarea rows="4" cols="50" name="debetSum" id="debetSum" style="width: 618px;"></textarea>
 		</div>
 	</div>

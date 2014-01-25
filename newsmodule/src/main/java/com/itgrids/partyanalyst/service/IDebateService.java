@@ -24,10 +24,16 @@ public interface IDebateService {
 	public ResultStatus insertObserverDetails(Long userId, String newRole);
 	
 	public List<SelectOptionVO> getChannelDetails();
+	
 	public List<SelectOptionVO> getTelecastTimeDetails();
+	
 	public List<SelectOptionVO> getObserverDetails();
+	
 	public List<SelectOptionVO> getDebateQuestionDetails();
+	
 	public List<SelectOptionVO> getDebateSmsQuestionDetails();
+	
 	public List<SelectOptionVO> getDebateParticipantRoleDetails();
+	
 	public List<SelectOptionVO> getCharacteristicsDetails();
 }
