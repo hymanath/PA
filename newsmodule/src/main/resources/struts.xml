@@ -5977,6 +5977,12 @@
 		   </result>
 		 </action>
 		 
+		<action name="retriveDebateDetailsAction" class="debateAction" method="retriveDebateDetails">
+		   <result name="success" type="json">
+		 	<param name="root">debateVO</param>
+		   </result>
+		 </action>
+		 
 		<action name="debetSavingAction" class="debateAction">
 	 			 <result>/jsp/debetSavingForm.jsp</result>
 	 	</action>

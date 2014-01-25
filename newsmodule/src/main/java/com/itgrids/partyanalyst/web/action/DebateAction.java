@@ -319,7 +319,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			{
 				return Action.ERROR;
 			}
-			debateVO = debateService.getDebateDetailsForSelected(Long.parseLong(request.getParameter("debateId")));
+			 jObj = new JSONObject(getTask());
+			debateVO = debateService.getDebateDetailsForSelected(jObj.getLong("debateId"));
 		} 
 		catch (Exception e)
 		{

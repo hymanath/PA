@@ -16,7 +16,7 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 	
 	public List<Object[]> getDebateSubjectDetails(Long debateId)
 	{
-		return getHibernateTemplate().find("select model.subject from DebateSubject model  " +
+		return getHibernateTemplate().find("select model.subject , model.debateSubjectId from DebateSubject model  " +
 				" where model.debate.debateId = ? ",debateId);
 	}
 

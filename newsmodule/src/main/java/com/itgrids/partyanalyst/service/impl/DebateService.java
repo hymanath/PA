@@ -33,7 +33,6 @@ import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
-import com.itgrids.partyanalyst.dao.hibernate.DebateQuestionsDAO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -216,16 +215,17 @@ public class DebateService implements IDebateService{
 					  {
 						  debate.setTelecastType(telecastType);  
 					  }
-					  debate.setSummary(debateDetailsVO.getDebateSummery());
+					  debate.setSummary(StringEscapeUtils.unescapeHtml(debateDetailsVO.getDebateSummery()));
 					  debate.setStartTime(debateDetailsVO.getStartDate());
 					  debate.setEndTime(debateDetailsVO.getEndDate());
+					  debate.setIsDeleted("N");
 					  debate=debateDAO.save(debate);
 					  List<SelectOptionVO> subjectsList = debateDetailsVO.getSubjectList();
 					  if(subjectsList != null && subjectsList.size() > 0)
 					  {
 						  for (SelectOptionVO selectOptionVO : subjectsList) {
 							DebateSubject debateSubject = new DebateSubject();
-							debateSubject.setSubject(selectOptionVO.getName());
+							debateSubject.setSubject(StringEscapeUtils.unescapeHtml(selectOptionVO.getName()));
 							debateSubject.setDebate(debate);
 							debateSubjectDAO.save(debateSubject);
 						}
@@ -260,7 +260,7 @@ public class DebateService implements IDebateService{
 								  debateParticipant.setCandidate(candidate);
 							  }
 							  debateParticipant.setDebate(debate);
-							  debateParticipant.setSummary(participantVO.getSummery());
+							  debateParticipant.setSummary(StringEscapeUtils.unescapeHtml(participantVO.getSummery()));
 							  debateParticipantDAO.save(debateParticipant);
 							  List<SelectOptionVO> rolesList = participantVO.getRoleList();
 							  if(rolesList != null && rolesList.size() > 0)
@@ -293,7 +293,7 @@ public class DebateService implements IDebateService{
 					  {
 						  for (SelectOptionVO selectOptionVO : questionsList) {
 							DebateQuestionAnswer debateQuestionAnswer = new DebateQuestionAnswer();
-							debateQuestionAnswer.setAnswer(selectOptionVO.getName());
+							debateQuestionAnswer.setAnswer(StringEscapeUtils.unescapeHtml(selectOptionVO.getName()));
 							debateQuestionAnswer.setDebate(debate);
 							DebateQuestions debateQuestions = debateQuestionsDAO.get(selectOptionVO.getId());
 							if(debateQuestions != null)
@@ -311,7 +311,7 @@ public class DebateService implements IDebateService{
 						  for (SelectOptionVO selectOptionVO : smsQuestionsList) {
 						    debateSmsQuestion = new DebateSmsQuestion();
 							debateSmsQuestion.setDebate(debate);
-							debateSmsQuestion.setQuestion(selectOptionVO.getName());
+							debateSmsQuestion.setQuestion(StringEscapeUtils.unescapeHtml(selectOptionVO.getName()));
 							debateSmsQuestion.setIsDeleted("N");
 							debateSmsQuestion = debateSmsQuestionDAO.save(debateSmsQuestion);
 						}
@@ -321,7 +321,7 @@ public class DebateService implements IDebateService{
 					  {
 						  for (SelectOptionVO selectOptionVO : smsOptionsList) {
 							DebateSmsQuestionOption debateSmsQuestionOption = new DebateSmsQuestionOption();
-							debateSmsQuestionOption.setOption(selectOptionVO.getName());
+							debateSmsQuestionOption.setOption(StringEscapeUtils.unescapeHtml(selectOptionVO.getName()));
 							//DebateSmsQuestion debateSmsQuestion = debateSmsQuestionDAO.get(selectOptionVO.getId());
 							//if(debateSmsQuestion != null)
 							//{
@@ -365,9 +365,10 @@ public class DebateService implements IDebateService{
 			List<SelectOptionVO> scalesList = null;
 			List<SelectOptionVO> rolesList = null;
 			// here we are getting all details of debate
-			Object[] debateDetails = debateDAO.getDebateDetailsForSelectedDebate(debateId).get(0);
-			if(debateDetails != null )
+			List<Object[]> debateDetailsList = debateDAO.getDebateDetailsForSelectedDebate(debateId);
+			if(debateDetailsList != null && debateDetailsList.size() > 0)
 			{
+				Object[] debateDetails = debateDetailsList.get(0);
 				debateVO.setDebateId(debateDetails[0] != null ? (Long)debateDetails[0]:0l);
 				debateVO.setStartTime(debateDetails[1] != null ? debateDetails[1].toString() :"");
 				debateVO.setEndTime(debateDetails[2] != null ? debateDetails[2].toString() :"");
@@ -645,7 +646,8 @@ public class DebateService implements IDebateService{
 		return debateParticipantRoleDetails;
 	}
 	
-	public ResultStatus saveNewRole(final Long userId,final String newRole){
+	public ResultStatus saveNewRole(final Long userId,final String newRole)
+	{
 		LOG.info("Enterd into saveNewRole method in DebateService class");
 		ResultStatus isSaved = new ResultStatus();
 		try {
@@ -653,7 +655,8 @@ public class DebateService implements IDebateService{
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						if(userId != null && newRole != null){
 							DebateRoles debateRoles = new DebateRoles();
-							debateRoles.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(newRole)).trim());			
+							debateRoles.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(newRole)).trim());
+							debateRoles.setIsDeleted("N");
 							debateRolesDAO.save(debateRoles);
 						}
 					}
@@ -667,7 +670,8 @@ public class DebateService implements IDebateService{
 		
 		return isSaved;
 	}
-	public ResultStatus saveNewCharacteristic(final Long userId, final String newCharacteristic){
+	public ResultStatus saveNewCharacteristic(final Long userId, final String newCharacteristic)
+	{
 		LOG.info("Enterd into saveNewCharacteristic() in DebateService class");
 		ResultStatus isSaved = new ResultStatus();
 		try {
@@ -675,7 +679,8 @@ public class DebateService implements IDebateService{
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 						if(userId != null && newCharacteristic != null){
 							Characteristics characteristics = new Characteristics();
-							characteristics.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(newCharacteristic)).trim());			
+							characteristics.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(newCharacteristic)).trim());
+							characteristics.setIsDeleted("N");
 							characteristicsDAO.save(characteristics);
 						}
 					}
@@ -688,7 +693,8 @@ public class DebateService implements IDebateService{
 		}		
 		return isSaved;
 	}
-	public ResultStatus saveNewDebateQuestion(final Long userId, final String newDebateQuestion){
+	public ResultStatus saveNewDebateQuestion(final Long userId, final String newDebateQuestion)
+	{
 		LOG.info("Enterd into saveNewDebateQuestion() in DebateService class");
 		ResultStatus isSaved = new ResultStatus();
 		try {
@@ -696,7 +702,8 @@ public class DebateService implements IDebateService{
 					public void doInTransactionWithoutResult(TransactionStatus status) {
 				if(userId != null && newDebateQuestion != null){
 					DebateQuestions debateQuestion = new DebateQuestions();
-					debateQuestion.setQuestion(escapeUnicode(StringEscapeUtils.unescapeHtml(newDebateQuestion)).trim());		
+					debateQuestion.setQuestion(escapeUnicode(StringEscapeUtils.unescapeHtml(newDebateQuestion)).trim());
+					debateQuestion.setIsDeleted("N");
 					debateQuestionsDAO.save(debateQuestion);
 				 }				
 				}
@@ -721,7 +728,8 @@ public class DebateService implements IDebateService{
 					public void doInTransactionWithoutResult(TransactionStatus status) {	
 						if(userId != null && channelName != null){
 							Channel channel = new Channel();						 
-							channel.setChannelName(StringEscapeUtils.unescapeHtml(channelName).trim());						
+							channel.setChannelName(StringEscapeUtils.unescapeHtml(channelName).trim());	
+							channel.setIsDeleted("N");
 							channel = channelDAO.save(channel);	
 						}
 					}
@@ -748,7 +756,8 @@ public class DebateService implements IDebateService{
 					public void doInTransactionWithoutResult(TransactionStatus status) {	
 						if(userId != null && observerName != null){
 						Observer observer = new Observer();					 
-						observer.setObserverName(StringEscapeUtils.unescapeHtml(observerName).trim());					
+						observer.setObserverName(StringEscapeUtils.unescapeHtml(observerName).trim());	
+						observer.setIsDeleted("N");
 						observer= observerDAO.save(observer);
 						}
 					}
