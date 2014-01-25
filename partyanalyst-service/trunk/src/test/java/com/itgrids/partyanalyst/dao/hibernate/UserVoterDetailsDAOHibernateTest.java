@@ -662,10 +662,34 @@ for (Object[] objects : list) {
 		}
 	}*/
 	
-	public void testGetAllLocatiesInAConstituency()
+	/*public void testGetAllLocatiesInAConstituency()
 	{
 		List<Locality> list = userVoterDetailsDAO.getAllLocatiesInAConstituency(309l, 8l, 1l);
 		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetmatchtedRecordsForACaste()
+	{
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		voterIdsList.add(49l);
+		List<Long> list = userVoterDetailsDAO.getMatchtedRecordsForACaste(1l,292l,voterIdsList);
+		System.out.println(list.size());
+	}*/
+	
+	/*public void testgetUnmatchtedRecordsForACaste()
+	{
+		List<Long> voterIdsList = new ArrayList<Long>(0);
+		voterIdsList.add(6637843l);
+		List<Long> list = userVoterDetailsDAO.getUnmatchtedRecordsForACaste(1l,292l,voterIdsList);
+		System.out.println(list.size());
+	}*/
+	
+	public void testUpdateCasteInsertType()
+	{
+		List<Long> userVoterDetailsIdsList = new ArrayList<Long>(0);
+		userVoterDetailsIdsList.add(467369l);
+		Integer updated = userVoterDetailsDAO.updateCasteInsertType(userVoterDetailsIdsList, 2l);
+		System.out.println(updated);
 	}
 	
 }
