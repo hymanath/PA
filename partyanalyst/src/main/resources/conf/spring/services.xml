@@ -1862,8 +1862,15 @@
 	  <property name="pingingTypeDAO" ref="pingingTypeDAO"/>
 	  <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
  </bean>
+ 
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
  	<property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+ 	<property name="predictedVoterCasteDAO" ref="predictedVoterCasteDAO" />
+ 	<property name="voterDAO" ref="voterDAO" />
+ 	<property name="casteInsertTypeDAO" ref="casteInsertTypeDAO" />
+ 	<property name="userDAO" ref="userDAO" />
+ 	<property name="casteStateDAO" ref="casteStateDAO" />
   </bean>
+  
 </beans>		
 	
