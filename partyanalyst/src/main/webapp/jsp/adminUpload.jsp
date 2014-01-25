@@ -571,6 +571,15 @@
 										</a>
 									</span><br>
 									</fieldset></td>
+
+									<td>
+									<fieldset class="f2">
+									<legend class="l2">Caste Prediction</legend>
+									<span class="fontStyle">
+										Assign Predicted Caste :&nbsp;
+										<a class="alinkstyle" href="<s:url action="predictedCasteAssignAction"/>"> Assign<br/>
+										</span><br>
+									</fieldset></td>
 								</tr>
 								<td></td>
 								</tr>
