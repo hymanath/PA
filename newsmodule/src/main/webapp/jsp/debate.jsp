@@ -15,7 +15,10 @@
 
 <body>
  <style>
- #mainDiv{
+ .scrollit {
+    overflow:scroll;
+}
+#mainDiv{
 margin-left:auto;
 margin-right:auto;
 width:900px;
@@ -31,11 +34,30 @@ var candCount = 2;
 var questionCount = 2;
 var poleCount = 2;
 
+	
+var partiesArray = new Array();
+<c:forEach var="parties" items="${partiesList}">
+	var parties1 ={
+	id:"${parties.id}",
+	name:"${parties.name}"
+	}
+	partiesArray.push(parties1);
+</c:forEach>
+
+var charsArray = new Array();
+<c:forEach var="chars" items="${characteristicsList}">
+	var chars1 ={
+	id:"${chars.id}",
+	name:"${chars.name}"
+	}
+	charsArray.push(chars1);
+</c:forEach>
 
 $( document ).ready(function() {
  
 	$( "#startTime" ).datepicker();
 	$( "#endTime" ).datepicker();
+	getValues();
 });
 /* var debateDetails={
 	endTime : '',
@@ -70,18 +92,6 @@ $( document ).ready(function() {
 		}]
 }; */
 
-getDebateReport();
-function getDebateReport()
-{
-	    var jsObj = {
-				debateId : 107,
-				task : "saveDebateDetails"	
-		};
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "retriveDebateDetailsAction.action?"+rparam;
-		callAjax(jsObj,url);
-}
 function submitForm()
 {
 	
@@ -193,56 +203,27 @@ $('#subjectDiv').after(str);
 subjCount++;
 }
 
-function addMoreCandidates()
-{
-	var str = "";
-	str += "<div id='participantInnerDiv"+candCount+"'  class='widget well span10 participantDetailsClass'>";
-	str += "<div class='span3' style='margin-left: 15px;'>";
-	str += "<label><strong>Party</strong></label>";
-	str += "<select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
+function addMoreCandidates(){
+var str = '';
+
+str += "<tr id='row"+candCount+"'><td><select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
 	for ( var i in partiesArray) {
 	str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
-	str+='</select>';
+	str+='</select></td>';
+	str +='<td><select theme="simple" Class="selectWidth" name="candidate'+candCount+'" id="candidate'+candCount+'" ></select></td>';
+	for(var i in charsArray){
+		str +='<td><table style="border-left: hidden;">';
+		str +='<tr><td><input type="text" Class="selectWidth" name="'+charsArray[i].name+''+candCount+'" id="'+charsArray[i].name+''+candCount+'"style="width:30px;"/></td></tr>';
+		str +='</table></td>';
+	}
+	str +='<td><select theme="simple" Class="selectWidth" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" multiple="multiple"></select></td>';
+	str +='<td><input type="text" Class="selectWidth" name="candiSummery'+candCount+'" id="candiSummery'+candCount+'" /></td>';
+	str +='<td><a name="row'+candCount+'" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+    str +='</tr></table>';
 
-	str += "</div>";
-	str += "<div class='span3'>";
-	str += "<label><strong>Candidate</strong></label>";
-	str += "<select theme='simple' Class='selectWidth' name='candidate"+candCount+"' id='candidate"+candCount+"'  ></select>";
-	str += "</div>";
-	str += "<div class='span4'>";
-	str += "<label><strong>Subject</strong></label>";
-	str += "<input type='text' Class='selectWidth' name='subject"+candCount+"' id='subject"+candCount+"'/>";
-	str += "</div>";
-	str += "<div class='span3'>";
-	str += "<label><strong>Presentation</strong></label>";
-	str += "<input type='text' Class='selectWidth' name='presentation"+candCount+"' id='presentation"+candCount+"'/>";
-	str += "</div>";
-	str += "<div class='span3'>";
-	str += "<label><strong>Counter Attack</strong></label>";
-	str += "<input type='text' Class='selectWidth' name='counterAttack"+candCount+"' id='counterAttack"+candCount+"'/>";
-	str += "</div>";
-	str += "<div class='span4'>";
-	str += "<label><strong>Body Language</strong></label>";
-	str += "<input type='text' Class='selectWidth' name='bodyLanguage"+candCount+"' id='bodyLanguage"+candCount+"'/>";
-	str += "</div>";
-	str += "<div class='span3'>";
-	str += "<label><strong>Participant Roles</strong></label>";
-	str += "<select theme='simple' Class='selectWidth' name='participantRoles"+candCount+"' id='participantRoles"+candCount+"' multiple='multiple' ></select>";
-	str += "</div>";
-	str += "<div class='span3'>";
-	str += "<label>";
-	str += "<strong>Summery</strong>";
-	str += "</label>";
-	str += "<input type='text' Class='selectWidth' name='summery' id='candiSummery"+candCount+"'/>";
-	str += "</div>";
-	str += "</div>";
-	if(candCount == 2)
-		$('#participantInnerDiv1').after(str);
-	else
-		$('#participantInnerDiv'+(candCount-1)+'').after(str);
-	candCount++;
-	$("party"+(candCount+1)+" option[value='0']").attr('selected','selected');
+$("#participantTable").append(str);
+candCount++;
 }
 
 function addMoreQuestions(){
@@ -303,19 +284,19 @@ function addMorePole(){
 }
 
 function getCandidatesOfSelectedParty(partyId,divId)
-{
-	var numb = divId.match(/\d/g);
-	$('#candidate1').find('option').remove();
-	var jsObj = {
-			partyId :partyId,
-			selectedVal :"candidate"+numb+"",
-			task : "getCandidatesOfAParty"	
-	};
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidatesOfAParty.action?"+rparam;
-	callAjax(jsObj,url);
-}
+	{
+		var numb = divId.match(/\d/g);
+		//$('#candidate1').find('option').remove();
+		var jsObj = {
+				partyId :partyId,
+				selectedVal :"candidate"+numb+"",
+				task : "getCandidatesOfAParty"	
+		};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getCandidatesOfAParty.action?"+rparam;
+		callAjax(jsObj,url);
+	}
 
 function fillSelectOptionsVO(results,selectedVal)
 {
@@ -334,7 +315,7 @@ function fillSelectOptionsVO(results,selectedVal)
 }
 
 function callAjax(jsObj,url)
-{
+	{
 
 	var callback =
 	{			
@@ -360,19 +341,44 @@ function callAjax(jsObj,url)
 		}
 	};
 
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
-	
-	
-var partiesArray = new Array();
-<c:forEach var="parties" items="${partiesList}">
-	var parties1 ={
-	id:"${parties.id}",
-	name:"${parties.name}"
+		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
-	partiesArray.push(parties1);
-</c:forEach>
+	
+function getValues(){
+	var str ='';
+	str +='<table id="participantTable" class="table table-bordered" style="width: 100%;overflow-x: scroll;">';
+	str +='<tr><th rowspan=2>Party</th><th rowspan=2>Candidate</th><th colSpan='+charsArray.length+'>Characteristics</th><th rowspan=2>Participant Roles</th><th rowspan=2>Expected Roles</th><th rowspan=2>delete</th></tr>';
+    str +='<tr>';
+	for(var i in charsArray){
+		str +='<td><table style="border-left: hidden;">';
+		str +='<tr><th>'+charsArray[i].name+'</th></tr>';
+		str +='</table></td>';
+	}
+	str +='</tr>';
 
+	str += "<tr id='row1'><td><select name='party1'  id='party1' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);'><option value='0' selected='selected'>Select</option>";
+	for ( var i in partiesArray) {
+	str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
+	}
+	str+='</select></td>';
+
+	str +='<td><select theme="simple" Class="selectWidth" name="candidate1" id="candidate1" ></select></td>';
+		for(var i in charsArray){
+		str +='<td><table style="border-left: hidden;">';
+		str +='<tr><td><input type="text" Class="selectWidth" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;"/></td></tr>';
+		str +='</table></td>';
+	}
+	str +='<td><select theme="simple" Class="selectWidth" name="participantRoles1" id="participantRoles1" multiple="multiple"></select></td>';
+	str +='<td><input type="text" Class="selectWidth" name="candiSummery1" id="candiSummery1"/></td>';
+	str +='<td><a  name="row1" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+    str +='</tr></table>';
+    
+$("#participantInnerDiv1").append(str);
+}
+
+function removeCandidate(name){
+$("#"+name+"").remove();
+}
 </script>
 
  <div id="mainDiv" class="container">
@@ -420,7 +426,7 @@ var partiesArray = new Array();
     <tr>
 	<td>Observer</td> <td></td>
     <td>
-    <s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="multiple"/></td>
+    <s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="true"/></td>
     </td>
     </tr>
 	</tbody>
@@ -429,56 +435,9 @@ var partiesArray = new Array();
 	</div>
 
 	<div id="participantDiv">
-		<div id="participantInnerDiv1"  class="widget blue well span10 participantDetailsClass" style="margin-top:45px;">
+		<div id="participantInnerDiv1"  class="widget blue well span12 participantDetailsClass scrollit" style="margin-top:45px;">
 		<h4>Participant Details And Performance:</h4>
-			<div class="span3">
-			<label>
-			<strong>Party</strong>
-			</label>
-			<s:select name="party1"  class= "" id="party1" list="partiesList" theme="simple" listKey="id" listValue="name" onChange="getCandidatesOfSelectedParty(this.value,this.id);"/>
-			</div>
-			<div class="span3">
-			<label>
-			<strong>Candidate</strong>
-			</label>
-			<select theme="simple" Class="selectWidth" name="candidate1" id="candidate1"  ></select>
-			</div>
-			<div class="span4">
-			<label>
-			<strong>Subject</strong>
-			</label>
-			<input type="text" Class="selectWidth" name="subject1" id="subject1"/>
-			</div>
-			<div class="span3">
-			<label>
-			<strong>Presentation</strong>
-			</label>
-			<input type="text" Class="selectWidth" name="presentation1" id="presentation1"/>
-			</div>
-			<div class="span3">
-			<label>
-			<strong>Counter Attack</strong>
-			</label>
-			<input type="text" Class="selectWidth" name="counterAttack1" id="counterAttack1"/>
-			</div>
-			<div class="span4">
-			<label>
-			<strong>Body Language</strong>
-			</label>
-			<input type="text" Class="selectWidth" name="bodyLanguage1" id="bodyLanguage1"/>
-			</div>
-			<div class="span3">
-			<label>
-			<strong>Participant Roles</strong>
-			</label>
-			<select theme="simple" Class="selectWidth" name="participantRoles1" id="participantRoles1" multiple="multiple" ></select>
-			</div>
-			<div class="span3">
-			<label>
-			<strong>Summery</strong>
-			</label>
-			<input type="text" Class="selectWidth" name="summery" id="candiSummery1"/>
-			</div>
+		
 		</div>
 
 		<div  class="span10">
