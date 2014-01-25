@@ -1,7 +1,5 @@
 package com.itgrids.partyanalyst.model;
 
-import java.io.Serializable;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,6 +21,7 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class PredictedVoterCaste  extends BaseModel implements java.io.Serializable {
 	
+	private static final long serialVersionUID = -3249300603701987127L;
 	private Long predictedVoterCasteId;
 	private Voter voter;
 	
