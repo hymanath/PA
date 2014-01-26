@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Characteristics extends BaseModel implements java.io.Serializable{
 
 
-	private Integer characteristicsId;
+	private Long characteristicsId;
 	private String name;
 	private String isDeleted;
 
@@ -29,11 +29,11 @@ public class Characteristics extends BaseModel implements java.io.Serializable{
      @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "characteristics_id", unique = true, nullable = false)
-	public Integer getCharacteristicsId() {
+	public Long getCharacteristicsId() {
 		return characteristicsId;
 	}
 
-	public void setCharacteristicsId(Integer characteristicsId) {
+	public void setCharacteristicsId(Long characteristicsId) {
 		this.characteristicsId = characteristicsId;
 	}
 

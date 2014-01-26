@@ -44,6 +44,7 @@ import com.itgrids.partyanalyst.model.Characteristics;
 import com.itgrids.partyanalyst.model.Debate;
 import com.itgrids.partyanalyst.model.DebateObserver;
 import com.itgrids.partyanalyst.model.DebateParticipant;
+import com.itgrids.partyanalyst.model.DebateParticipantCharcs;
 import com.itgrids.partyanalyst.model.DebateParticipantExpectedRole;
 import com.itgrids.partyanalyst.model.DebateParticipantRole;
 import com.itgrids.partyanalyst.model.DebateQuestionAnswer;
@@ -227,7 +228,7 @@ public class DebateService implements IDebateService{
 							DebateSubject debateSubject = new DebateSubject();
 							debateSubject.setSubject(StringEscapeUtils.unescapeHtml(selectOptionVO.getName()));
 							debateSubject.setDebate(debate);
-							debateSubjectDAO.save(debateSubject);
+							debateSubject = debateSubjectDAO.save(debateSubject);
 						}
 					  }
 					  List<SelectOptionVO> obsersList = debateDetailsVO.getObserverList();
@@ -238,7 +239,7 @@ public class DebateService implements IDebateService{
 							Observer observer = observerDAO.get(selectOptionVO.getId());
 							debateObserver.setObserver(observer);
 							debateObserver.setDebate(debate);
-							debateObserverDAO.save(debateObserver);
+							debateObserver = debateObserverDAO.save(debateObserver);
 						}
 					  }
 					  
@@ -261,7 +262,7 @@ public class DebateService implements IDebateService{
 							  }
 							  debateParticipant.setDebate(debate);
 							  debateParticipant.setSummary(StringEscapeUtils.unescapeHtml(participantVO.getSummery()));
-							  debateParticipantDAO.save(debateParticipant);
+							  debateParticipant = debateParticipantDAO.save(debateParticipant);
 							  List<SelectOptionVO> rolesList = participantVO.getRoleList();
 							  if(rolesList != null && rolesList.size() > 0)
 							  {
@@ -270,7 +271,7 @@ public class DebateService implements IDebateService{
 									debateParticipantRole.setDebateParticipant(debateParticipant);
 									DebateRoles debateRoles = debateRolesDAO.get(selectOptionVO.getId());
 									debateParticipantRole.setDebateRoles(debateRoles);
-									debateParticipantRoleDAO.save(debateParticipantRole);
+									debateParticipantRole = debateParticipantRoleDAO.save(debateParticipantRole);
 								}
 							  }
 							  List<SelectOptionVO> expRolesList = participantVO.getExpRoleList();
@@ -281,7 +282,23 @@ public class DebateService implements IDebateService{
 									debateParticipantExpectedRole.setDebateParticipant(debateParticipant);
 									DebateRoles debateRoles = debateRolesDAO.get(selectOptionVO.getId());
 									debateParticipantExpectedRole.setDebateRoles(debateRoles);
-									debateParticipantExceptedRoleDAO.save(debateParticipantExpectedRole);
+									debateParticipantExpectedRole = debateParticipantExceptedRoleDAO.save(debateParticipantExpectedRole);
+								}
+							  }
+							  List<SelectOptionVO> scalesList = participantVO.getScaleList();
+							  if(scalesList != null && scalesList.size() > 0)
+							  {
+								  for (SelectOptionVO selectOptionVO : scalesList) {
+									DebateParticipantCharcs debateParticipantCharcs = new DebateParticipantCharcs();
+									debateParticipantCharcs.setDebateParticipant(debateParticipant);
+									debateParticipantCharcs.setScale(selectOptionVO.getPerc());
+									Characteristics characteristics = characteristicsDAO.get(selectOptionVO.getId());
+									if(characteristics !=null)
+									{
+										debateParticipantCharcs.setCharacteristics(characteristics);
+									}
+									debateParticipantCharcs = debateParticipantCharcsDAO.save(debateParticipantCharcs);
+									
 								}
 							  }
 						}
@@ -300,7 +317,7 @@ public class DebateService implements IDebateService{
 							{
 								debateQuestionAnswer.setDebateQuestions(debateQuestions);
 							}
-							debateQuestionAnswerDAO.save(debateQuestionAnswer);
+							debateQuestionAnswer = debateQuestionAnswerDAO.save(debateQuestionAnswer);
 						}
 					  }
 					  
@@ -308,13 +325,13 @@ public class DebateService implements IDebateService{
 					  DebateSmsQuestion debateSmsQuestion = null;
 					  if(smsQuestionsList != null && smsQuestionsList.size() > 0)
 					  {
-						  for (SelectOptionVO selectOptionVO : smsQuestionsList) {
+						  SelectOptionVO selectOptionVO = smsQuestionsList.get(0);
 						    debateSmsQuestion = new DebateSmsQuestion();
 							debateSmsQuestion.setDebate(debate);
 							debateSmsQuestion.setQuestion(StringEscapeUtils.unescapeHtml(selectOptionVO.getName()));
 							debateSmsQuestion.setIsDeleted("N");
 							debateSmsQuestion = debateSmsQuestionDAO.save(debateSmsQuestion);
-						}
+						
 					  }
 					  List<SelectOptionVO> smsOptionsList = debateDetailsVO.getSmaOptionsList();
 					  if(smsOptionsList != null && smsOptionsList.size() > 0)
@@ -328,7 +345,7 @@ public class DebateService implements IDebateService{
 								debateSmsQuestionOption.setDebateSmsQuestion(debateSmsQuestion);
 							//}
 							debateSmsQuestionOption.setPercantage(selectOptionVO.getPerc());
-							debateSmsQuestionOptionDAO.save(debateSmsQuestionOption);
+							debateSmsQuestionOption = debateSmsQuestionOptionDAO.save(debateSmsQuestionOption);
 						}
 					  }
 				  }
@@ -784,5 +801,27 @@ public class DebateService implements IDebateService{
 			CharacteristicsDetails.add(selectOptionVO);
 		}
 		return CharacteristicsDetails;
+	 }
+	 
+	 public List<SelectOptionVO> getRolesList()
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try {
+			 LOG.info("Enterd into getRolesList() in DebateService class");
+			 List<Object[]> rolesList = debateRolesDAO.getDebateRoles();
+			 if(rolesList != null && rolesList.size() > 0)
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 for (Object[] param : rolesList) {
+					 SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId(new Long((Long)param[0]));
+						selectOptionVO.setName(param[1].toString());
+						returnList.add(selectOptionVO);
+				}
+			 }
+		} catch (Exception e) {
+			LOG.error("Error occured in getRolesList() in DebateService class",e);	
+		}
+		 return returnList ;
 	 }
 }
