@@ -46,7 +46,17 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	private List<SelectOptionVO> debateSmsQuestionList;
 	private List<SelectOptionVO> debateParticipantRoleList;
 	private List<SelectOptionVO> characteristicsList;
+	private List<SelectOptionVO> rolesList;
 	
+	
+	public List<SelectOptionVO> getRolesList() {
+		return rolesList;
+	}
+
+	public void setRolesList(List<SelectOptionVO> rolesList) {
+		this.rolesList = rolesList;
+	}
+
 	public List<SelectOptionVO> getCharacteristicsList() {
 		return characteristicsList;
 	}
@@ -209,6 +219,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			debateSmsQuestionList = debateService.getDebateSmsQuestionDetails();
 			debateParticipantRoleList = debateService.getDebateParticipantRoleDetails();
 			characteristicsList = debateService.getCharacteristicsDetails();
+			rolesList = debateService.getRolesList();
 		} catch (Exception e) {
 			LOG.error("Exception occured in execute methon in DebateAction Class",e);
 		}
@@ -263,15 +274,35 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				 participantVO.setId(particepentObj.getLong("candidateId"));
 				 participantVO.setPartyId(particepentObj.getLong("partyId"));
 				 participantVO.setSummery(particepentObj.getString("summery"));
-				// List<SelectOptionVO> rolesList = new ArrayList<SelectOptionVO>();
-				 /*JSONArray rolesArray = jObj.getJSONArray(particepentObj.getString("participantRoles"));
+				 
+				 JSONArray scalsArray = particepentObj.getJSONArray("scale");
+				 List<SelectOptionVO> scaleList = new ArrayList<SelectOptionVO>();
+				 for (int j = 0; j < scalsArray.length(); j++) {
+					 SelectOptionVO scaleVO = new SelectOptionVO();
+					 JSONObject scaleObj = (JSONObject) scalsArray.get(j);
+					 scaleVO.setId(scaleObj.getLong("scaleId"));
+					 scaleVO.setPerc(scaleObj.getDouble("scaleTotal"));
+					 scaleList.add(scaleVO);
+				 }
+				 participantVO.setScaleList(scaleList);
+				 List<SelectOptionVO> rolesList = new ArrayList<SelectOptionVO>();
+				 JSONArray rolesArray = (JSONArray) particepentObj.getJSONArray("participantRoles");
 				 for (int j = 0; j < rolesArray.length(); j++)
 				 {
 					 SelectOptionVO rolesVO = new SelectOptionVO();
-					 rolesVO.setId((Long)rolesArray.get(i));
+					 rolesVO.setId(Long.valueOf(rolesArray.get(j).toString()));
 					 rolesList.add(rolesVO);
 				 }
-				 participantVO.setRoleList(rolesList);*/
+				 participantVO.setRoleList(rolesList);
+				 List<SelectOptionVO> exprolesList = new ArrayList<SelectOptionVO>();
+				 JSONArray exprolesArray = (JSONArray) particepentObj.getJSONArray("expparticipantRoles");
+				 for (int j = 0; j < exprolesArray.length(); j++)
+				 {
+					 SelectOptionVO rolesVO = new SelectOptionVO();
+					 rolesVO.setId(Long.valueOf(exprolesArray.get(j).toString()));
+					 exprolesList.add(rolesVO);
+				 }
+				 participantVO.setExpRoleList(exprolesList);
 				 particepentList.add(participantVO);
 			 }
 			 debateDetailsVO.setParticipentsList(particepentList);

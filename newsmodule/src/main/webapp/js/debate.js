@@ -279,8 +279,7 @@ function updateAttributeField(id){
 
 function submitForm()
 {
-	if(validateFields())
-	{				
+	
 	var debateDetails={
 	endTime : '',
 	startTime : '',
@@ -293,18 +292,6 @@ function submitForm()
 	var  participant = new Array();
 	var questionAnswer = new Array();
 	var smsPole= new Array();
-	
-	
-	var questionAnswerObj = {
-				questionId : '',
-				answer     : ''
-	};
-
-	var smaPoleObj = {
-				questionId   : '',
-				option  : '',
-				percentage :''
-	};
 	$( ".subjectClass " ).each(function( index ) {
 		subjectArray.push($(this ).val());	
 	});
@@ -313,24 +300,13 @@ function submitForm()
 	debateDetails.channelId       = $('#channel option:selected').val();
 	debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
 	observer.push($('#observer option:selected').val());
-	/* var i = 0;
-	$( ".participantDetailsClass " ).each(function( index ) {
-	     i++;
-		participantObj.partyId      = $('#party'+i+'').val();	
-		participantObj.candidateId  = $('#candidate'+i+'').val();	
-		participantObj.summery      = $('#candiSummery'+i+'').val();	
-		participantObj.subject      = $('#subject'+i+'').val();	
-		participantObj.presentation = $('#presentation'+i+'').val();	
-		participantObj.counterAttack= $('#counterAttack'+i+'').val();	
-		participantObj.bodyLanguage = $('#bodyLanguage'+i+'').val();
-		participant.push(participantObj);		
-	}); */
 	$('.particepntDetailsRow').each(function() {
 		var participantObj = {
 			  partyId: '' ,
 			  candidateId : '' ,
 			  summery     : '',
 			  participantRoles:[],
+			  expparticipantRoles:[],
 			  scale : [
 			  {
 				 scaleId : '',
@@ -341,41 +317,51 @@ function submitForm()
 		
 		participantObj.partyId  = $(this).closest("tr").find('.partysClass').val();
 		participantObj.candidateId = $(this).closest("tr").find('.candidatesClass').val();
-		participantObj.summery = 'prasad';
-		for(var i=0 ;i <charsArray.length;i++)
-		{
-			var scaleObj = {
+		//console.log(charsArray);
+		 var scaleObj = {
 			 scaleId : '',
 			 scaleTotal : ''
-			};
+			}; 
+		participantObj.summery = 'prasad';
+		participantObj.scale = [];
+		for(var i=0;i <charsArray.length;i++)
+		{
+			scaleObj = {};
 			scaleObj.scaleId    = charsArray[i].id;
 			scaleObj.scaleTotal = $(this).closest("tr").find('.'+charsArray[i].id+'CharClass').val();
 			participantObj.scale.push(scaleObj);
 		}
+		var partiRoles = $(this).closest("tr").find('.partiRoleClass').val();
+		var expRoles = $(this).closest("tr").find('.expPartyClass').val();
+		//participantObj.participantRoles.push(partiRoles);
+		participantObj.participantRoles = partiRoles;
+		//participantObj.expparticipantRoles.push(expRoles);
+		participantObj.expparticipantRoles = expRoles;
 		participant.push(participantObj);	
 	});
-	console.log(participant);
+	//console.log(participant);
 	var j = 0;
 	$( ".questionAnswerClass " ).each(function( index ) {
-
+		j++;
+		var questionAnswerObj = {};
 		questionAnswerObj.questionId = $('#question'+j+'').val();	
 		questionAnswerObj.answer     = $('#answer'+j+'').val();	
 		questionAnswer.push(questionAnswerObj);
-		j++;
 	});
 	
 	var l = 0;
 	$( ".smsPoleClass " ).each(function( index ) {
 	l++;
+		var smaPoleObj = {};
 		smaPoleObj.questionId  = $('#smsques1').val();	
 		smaPoleObj.option      = $('#smsoption'+l+'').val();
 		smaPoleObj.percentage  = $('#smsper'+l+'').val();
-		smsPole.push(smaPoleObj);	
+		smsPole.push(smaPoleObj);		
 	});
 	
 	debateDetails.debetSummery = $('#debetSum').val();
 	
-	 /* var jsObj = {
+	  var jsObj = {
 				debateDetails :debateDetails,
 				participant   : participant,
 				observer     : observer,
@@ -387,11 +373,9 @@ function submitForm()
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "saveDebateDetailsAction.action?"+rparam;
-		callAjax(jsObj,url);  */
+		callAjax(jsObj,url);  
 	//console.log(debateDetails);
-	}
 }
-
 	
 function getValues(){
 	var str ='';
@@ -415,15 +399,25 @@ function getValues(){
 		str +='<td>';
 		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;" />';
 		str +='</td>';
-	}
-	str +='<td><select theme="simple" Class="selectWidth" name="participantRoles1" id="participantRoles1" multiple="multiple"></select></td>';
-	str +='<td><select theme="simple" Class="selectWidth" name="expparticipantRoles1" id="expparticipantRoles1" multiple="multiple"></select></td>';
+		}
+     	str +='<td><select theme="simple" Class="selectWidth partiRoleClass" name="participantRoles1" id="participantRoles1" multiple="multiple">';
+		for (var j in rolesArray)
+		{
+			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+		}
+		str +='</select></td>';
+		str +='<td><select theme="simple" Class="selectWidth expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" multiple="multiple">';
+		for (var j in rolesArray)
+		{
+			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+		}
+		str += '</select></td>';
+	
 	str +='<td><a  name="row1" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
     str +='</tr></table>';
     
 $("#participantInnerDiv1").append(str);
 }
-
 function removeCandidate(name){
 $("#"+name+"").remove();
 }
@@ -446,8 +440,19 @@ function addMoreCandidates()
 		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+''+candCount+'" style="width:30px;" />';
 		str +='</td>';
 	}
-	str +='<td><select theme="simple" Class="selectWidth" name="participantRoles1" id="participantRoles'+candCount+'" multiple="multiple"></select></td>';
-	str +='<td><select theme="simple" Class="selectWidth" name="expparticipantRoles1" id="expparticipantRoles'+candCount+'" multiple="multiple"></select></td>';
+	
+	str +='<td><select theme="simple" Class="selectWidth partiRoleClass" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" multiple="multiple">';
+	for (var j in rolesArray)
+	{
+		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+	}
+	str +='</select></td>';
+	str +='<td><select theme="simple" Class="selectWidth expPartyClass" name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" multiple="multiple">';
+	for (var j in rolesArray)
+	{
+		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+	}
+	str += '</select></td>';
 	str +='<td><a  name="row1" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
     str +='</tr>';
     
@@ -455,7 +460,6 @@ function addMoreCandidates()
 	candCount++;
 }
  
-
 function addMoreQuestions(){
 var str = "";
 str += "<div class='questionAnswerClass'>";
@@ -471,31 +475,6 @@ str += "</div>";
 $('#questionDiv1').append(str);
 questionCount++;
 }
-/* var summeyId = 1;
-function addMoreSummery()
-{
-	summeyId ++;
-	var str = "";
-	str += '<div class="candidateSummeryClass">';
-	str += '<div class="span3">';
-	str += '<label>';
-	str += '<strong>Question </strong>';
-	str += '</label>';
-	str += '<select name="cparty"  id="cparty'+summeyId+'" list="debateQuestionList" theme="simple" listKey="id" listValue="name" onChange=""/>';
-	str += '</div>';
-	str += '<div class="span3">';
-	str += '<label>';
-	str += '<strong>Candidate </strong>';
-	str += '</label>';
-	str += '<select theme="simple" Class="selectWidth" name="ccand'+summeyId+'" id="ccand'+summeyId+'"  ></select>';
-	str += '</div>';
-	str += '<div class="span4">';
-	str += '<label><strong>Summary </strong></label>';
-	str += '<input type="text" Class="selectWidth" name="csum" id="csum'+summeyId+'"/>';
-	str += '</div>';
-	str += '</div>';
-	$('#candidateSummeryId').append(str);
-} */
 
 function getCandidatesOfSelectedParty(partyId,divId)
 	{

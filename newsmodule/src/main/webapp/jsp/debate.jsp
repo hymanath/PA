@@ -1,3 +1,4 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" %>
@@ -54,46 +55,20 @@ var charsArray = new Array();
 	}
 	charsArray.push(chars1);
 </c:forEach>
-
+var rolesArray = new Array();
+<c:forEach var="role" items="${rolesList}">
+	var roles ={
+	id:"${role.id}",
+	name:"${role.name}"
+	}
+	rolesArray.push(roles);
+</c:forEach>
 $( document ).ready(function() {
  
 	$( "#startTime" ).datepicker();
 	$( "#endTime" ).datepicker();
 	getValues();
 });
-/* var debateDetails={
-	endTime : '',
-	startTime : '',
-	channelId : '',
-	telecastTimeId : '',
-	observer : [],
-    subjectArray:[],
-    participant : [
-		{ 
-		  partyId: '' ,
-		  candidateId : '' ,
-		  subject    : '',
-		  presentation :'',
-		  counterAttack : '' ,
-		  bodyLanguage : '',
-		  summery     : '',
-		  participantRoles:[]
-		}],
-	questionAnswer : [
-		{
-			questionId : '',
-			answer     : ''
-		}],
-	debetSummery : '',
-	
-	smsPole:[
-		{
-		   questionId   : '',
-		   option  : '',
-		   percentage :''
-		}]
-}; */
-
 
 </script>
 <body>
@@ -168,11 +143,12 @@ $( document ).ready(function() {
 			<c:forEach  var="parties" items="${debateQuestionList}" varStatus="i">
 				<div class="questionAnswerClass">
 				<div class="span5">
+				<input type="hidden" Class="selectWidth"  id="question${i.index+1}" name="question${i.index+1}" value="${parties.id}"></input>
 				<label> ${i.index+1} )${parties.name} </label>
 				</div>
 				<div class="span5" style="margin-top: -10px;">
 					Answer : <font class="requiredFont">*</font>
-				<input type="text" Class="selectWidth debateAnswr" name="answer1" id="answer1"/>	
+				<input type="text" Class="selectWidth debateAnswr" name="answer${i.index+1}" id="answer${i.index+1}"/>	
 			</div>
 
 				</div>
