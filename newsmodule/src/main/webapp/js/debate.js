@@ -169,8 +169,8 @@ function addMoreSubject(){
 //console.log(subjCount);
 var str = "";
 
-	str += "<span id='subject"+subjCount+"'><label>Subject : <font class='requiredFont'>*</font></label>";
-	str +="<input type='text' Class='subjectClass' name='subject"+subjCount+"' id='subject"+subjCount+"' style='width:650px;'/><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"subject"+subjCount+"\");'><i class='icon-remove' style='margin-left:15px;'></i></a>";
+	str += "<span id='subject"+subjCount+"'><label>Subject : <font class='requiredFont'>*</font><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"subject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
+	str +="<input type='text' Class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"' '/>";
 	str += "</br></span>";	
 	
 	$('#addedSubjectDiv').append(str);
@@ -361,7 +361,7 @@ function submitForm()
 	
 	debateDetails.debetSummery = $('#debetSum').val();
 	
-	  var jsObj = {
+		var jsObj = {
 				debateDetails :debateDetails,
 				participant   : participant,
 				observer     : observer,
@@ -370,10 +370,16 @@ function submitForm()
 				smsPole : smsPole,
 				task : "saveDebateDetails"	
 		};
+			 $("#getDebateDetails").val(YAHOO.lang.JSON.stringify(jsObj));
+					  
+			 var uploadHandler = {
+			 success: function(o) {
+			 var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
 		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "saveDebateDetailsAction.action?"+rparam;
-		callAjax(jsObj,url);  
+			 }
+			 };
+			 YAHOO.util.Connect.setForm('debateFromDiv',false);
+			 YAHOO.util.Connect.asyncRequest('POST','saveDebateDetailsAction.action',uploadHandler);
 	//console.log(debateDetails);
 }
 	
@@ -413,7 +419,7 @@ function getValues(){
 		}
 		str += '</select></td>';
 	
-	str +='<td><a  name="row1" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+	str +='<td><a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
     str +='</tr></table>';
     
 $("#participantInnerDiv1").append(str);
@@ -453,7 +459,7 @@ function addMoreCandidates()
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	str += '</select></td>';
-	str +='<td><a  name="row1" class="icon-remove-sign" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+	str +='<td><a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
     str +='</tr>';
     
 	$("#participantTable").append(str);
@@ -544,7 +550,7 @@ function callAjax(jsObj,url)
 function getSelectedDebate()
 {
 	var jsObj = {
-				debateId :1,
+				debateId :6,
 				task : "getDebateDetails"	
 		};
 		
@@ -670,6 +676,6 @@ function generateDebateReport(result)
 	str += '</div>';
 	$('#debateDetails').html(str);
 }
-getSelectedDebate();
+//getSelectedDebate();
 
 	
