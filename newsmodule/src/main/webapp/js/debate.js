@@ -622,7 +622,21 @@ function generateDebateReport(result)
 
 		str += '<tr>';
 		str += '<th style="width: 234px;">What was the role expected from TDP leader in this program!</th>';
-		str += '<td colspan='+noOfParticepents+'></td>';
+		var count = 0;
+		var expRole = '';
+		for(var i in result.debateExpRolesList)
+		{
+			count ++ ;
+			if(count == 1)
+			{
+				expRole += ''+result.debateExpRolesList[i].location+'';
+			}
+			else
+			{
+				expRole += '+' + ''+result.debateExpRolesList[i].location+'';
+			}
+		}
+		str += '<td colspan='+noOfParticepents+'>'+expRole+'</td>';
 		str += '</tr>';
 		
 		
