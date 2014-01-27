@@ -10,6 +10,18 @@
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
 <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+<script src="js/jquery-ui-themes-1.10.3.js"></script>
+<script src="js/jquery-ui-timepicker-addon.js"></script>
+<script src="js/jquery-ui-sliderAccess.js"></script>
+
+<script src="http://trentrichardson.com/examples/timepicker/jquery-ui-sliderAccess.js">
+</script>
+<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
+
+
+
 <script src="js/debate.js"></script>
   <title> Debate Information - TDP Portal </title>
  </head>
@@ -35,8 +47,62 @@ font-weight:bold;
 color:green;
 font-weight:bold;
 }
+
+
+/* css for timepicker */
+ .ui-timepicker-div .ui-widget-header {
+    margin-bottom: 8px;
+}
+.ui-timepicker-div dl {
+    text-align: left;
+}
+.ui-timepicker-div dl dt {
+    float: left;
+    clear:left;
+    padding: 0 0 0 5px;
+}
+.ui-timepicker-div dl dd {
+    margin: 0 10px 10px 45%;
+}
+.ui-timepicker-div td {
+    font-size: 90%;
+}
+.ui-tpicker-grid-label {
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+.ui-timepicker-rtl {
+    direction: rtl;
+}
+.ui-timepicker-rtl dl {
+    text-align: right;
+    padding: 0 5px 0 0;
+}
+.ui-timepicker-rtl dl dt {
+    float: right;
+    clear: right;
+}
+.ui-timepicker-rtl dl dd {
+    margin: 0 45% 10px 10px;
+}		
 </style>
 <script>
+
+
+$(function () {
+    $('#startTime').datetimepicker(
+        {
+	addSliderAccess: true,
+	sliderAccessArgs: { touchonly: false }
+});
+ $('#endTime').datetimepicker(
+        {
+	addSliderAccess: true,
+	sliderAccessArgs: { touchonly: false }
+});
+});
 
 var partiesArray = new Array();
 <c:forEach var="parties" items="${partiesList}">
@@ -64,9 +130,9 @@ var rolesArray = new Array();
 	rolesArray.push(roles);
 </c:forEach>
 $( document ).ready(function() {
- 
-	$( "#startTime" ).datepicker();
-	$( "#endTime" ).datepicker();
+
+	//$( "#startTime" ).datepicker();
+	//$( "#endTime" ).datepicker();
 	getValues();
 });
 
