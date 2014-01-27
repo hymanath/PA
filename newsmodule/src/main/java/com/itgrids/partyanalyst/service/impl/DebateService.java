@@ -379,8 +379,8 @@ public class DebateService implements IDebateService{
 			List<SelectOptionVO> debateExpRolesList = null;
 			List<String> observerList = null;
 			List<ParticipantVO> particepentDetailsList = null;
-			List<SelectOptionVO> scalesList = null;
-			List<SelectOptionVO> rolesList = null;
+			//List<SelectOptionVO> scalesList = null;
+			//List<SelectOptionVO> rolesList = null;
 			// here we are getting all details of debate
 			List<Object[]> debateDetailsList = debateDAO.getDebateDetailsForSelectedDebate(debateId);
 			if(debateDetailsList != null && debateDetailsList.size() > 0)
@@ -435,8 +435,8 @@ public class DebateService implements IDebateService{
 			{
 				particepentDetailsList = new ArrayList<ParticipantVO>();
 				Map<Long, SelectOptionVO> particepentsMap = new HashMap<Long, SelectOptionVO>();//Map<candidate,partydetails>
-				Map<Long,SelectOptionVO> charactesMap = new HashMap<Long, SelectOptionVO>();//Map<candidate,scaleDetails>
-				Map<Long,SelectOptionVO> rolesMap = new HashMap<Long, SelectOptionVO>();//Map<candidate,roledetails>
+				Map<Long,List<SelectOptionVO>> charactesMap = new HashMap<Long, List<SelectOptionVO>>();//Map<candidate,scaleDetails>
+				Map<Long,List<SelectOptionVO>> rolesMap = new HashMap<Long, List<SelectOptionVO>>();//Map<candidate,roledetails>
 				// here we are processing the particepent party and name wise details
 				for (Object[] parms : debatePaticepentDetails)
 				{
@@ -452,33 +452,33 @@ public class DebateService implements IDebateService{
 				// here we are processing the candidate charactes and scaling details
 				for (Object[] parms : dabateCharcsList)
 				{
-					SelectOptionVO charactrsDetails = charactesMap.get((Long)parms[0]);
+					List<SelectOptionVO> charactrsDetails = charactesMap.get((Long)parms[0]);
 					SelectOptionVO selectOptionVO = new SelectOptionVO();
 					if(charactrsDetails == null)
 					{
-						scalesList = new ArrayList<SelectOptionVO>();
-						charactrsDetails = new SelectOptionVO();
+						//scalesList = new ArrayList<SelectOptionVO>();
+						charactrsDetails = new ArrayList<SelectOptionVO>();
 						charactesMap.put((Long)parms[0], charactrsDetails);
 					}
 					selectOptionVO.setName(parms[4] != null ?parms[4].toString() :"");//scale
 					selectOptionVO.setPerc(parms[5] != null ?(Double)parms[5]: 0.0);//rating
-					scalesList.add(selectOptionVO);
-					charactrsDetails.setSelectOptionsList(scalesList);
+					//scalesList.add(selectOptionVO);
+					charactrsDetails.add(selectOptionVO);;
 				}
 				// here we are processing the candidate role participated in debate
 				for(Object[] parms : debateRolesList)
 				{
-					SelectOptionVO roleDetails = rolesMap.get((Long)parms[0]);
+					List<SelectOptionVO> roleDetails = rolesMap.get((Long)parms[0]);
 					SelectOptionVO selectOptionVO = new SelectOptionVO();
 					if(roleDetails == null)
 					{
-						rolesList = new ArrayList<SelectOptionVO>();
-						roleDetails = new SelectOptionVO();
+						//rolesList = new ArrayList<SelectOptionVO>();
+						roleDetails = new ArrayList<SelectOptionVO>();
 						rolesMap.put((Long)parms[0], roleDetails);
 					}
 					selectOptionVO.setName(parms[4] != null ?parms[4].toString() :"");//role
-					rolesList.add(selectOptionVO);
-					roleDetails.setSelectOptionsList(rolesList);
+					//olesList.add(selectOptionVO);
+					roleDetails.add(selectOptionVO);
 				}
 				Set<Long> candidatesSet = particepentsMap.keySet();
 				// here we are processing the each candidate wise debate scaling , charactes, party etc...
@@ -488,8 +488,8 @@ public class DebateService implements IDebateService{
 					SelectOptionVO paticiVO = particepentsMap.get(candidateId);
 					participantVO.setName(paticiVO.getLocation());
 					participantVO.setPartyName(paticiVO.getName());
-					SelectOptionVO chatesVO = charactesMap.get(candidateId);
-					List<SelectOptionVO> scopesList = chatesVO.getSelectOptionsList();
+					List<SelectOptionVO> scopesList = charactesMap.get(candidateId);
+					//List<SelectOptionVO> scopesList = chatesVO.getSelectOptionsList();
 					List<SelectOptionVO> scopeList = new ArrayList<SelectOptionVO>();
 					for (SelectOptionVO scopesVOVO : scopesList)
 					{
@@ -498,14 +498,26 @@ public class DebateService implements IDebateService{
 						scopesVO.setPerc(scopesVOVO.getPerc());
 						scopeList.add(scopesVO);
 					}
-					SelectOptionVO roleVO = rolesMap.get(candidateId);
-					List<SelectOptionVO> roleList = roleVO.getSelectOptionsList();
+					List<SelectOptionVO> roleList = rolesMap.get(candidateId);
+					//List<SelectOptionVO> roleList = roleVO.getSelectOptionsList();
 					List<SelectOptionVO> roleDetailsList = new ArrayList<SelectOptionVO>();
+					Long count = 0l;
+					StringBuffer periRole = new StringBuffer();
 					for (SelectOptionVO selectOptionVO : roleList) {
+						count ++;
 						SelectOptionVO debateRoleVO = new SelectOptionVO();
 						debateRoleVO.setName(selectOptionVO.getName());
 						roleDetailsList.add(debateRoleVO);
+						if(count == 1)
+						{
+							periRole.append(selectOptionVO.getName());
+						}
+						else
+						{
+							periRole.append( "+" + selectOptionVO.getName()); 
+						}
 					}
+					participantVO.setPrtiRoles(periRole.toString());
 					participantVO.setRoleList(roleDetailsList);
 					participantVO.setScaleList(scopeList);
 					particepentDetailsList.add(participantVO);

@@ -18,7 +18,7 @@ public class DebateParticipantCharcsDAO extends GenericDaoHibernate<DebatePartic
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDebateCharcsDetails(Long debateId)
 	{
-		return getHibernateTemplate().find("select model.debateParticipant.candidate.candidateId ,model.debateParticipant.candidate.firstname ," +
+		return getHibernateTemplate().find("select model.debateParticipant.candidate.candidateId ,model.debateParticipant.candidate.lastname ," +
 				" model.debateParticipant.party.partyId,model.debateParticipant.party.shortName ," +
 				" model.characteristics.name,model.scale from  DebateParticipantCharcs model where " +
 				" model.debateParticipant.debate.debateId = ? ",debateId);

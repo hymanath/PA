@@ -17,7 +17,7 @@ public class DebateParticipantDAO extends GenericDaoHibernate<DebateParticipant,
 
 	public List<Object[]> getDebatePaticepantsAndSummeryDetails(Long debateId)
 	{
-		Query query = getSession().createQuery("select model.candidate.firstname," +
+		Query query = getSession().createQuery("select model.candidate.lastname," +
 				" model.party.shortName,model.summary ,model.candidate.candidateId , model.party.partyId from DebateParticipant model " +
 				" where model.debate.debateId = :debateId");
 		query.setParameter("debateId", debateId);
