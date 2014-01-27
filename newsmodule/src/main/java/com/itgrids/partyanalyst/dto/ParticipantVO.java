@@ -17,6 +17,8 @@ public class ParticipantVO implements Serializable{
 	private List<SelectOptionVO> roleList;
 	private List<SelectOptionVO> expRoleList;
 	private String summery;
+	private String prtiRoles;
+	private String expRoles;
 	
 	public Long getId() {
 		return id;
@@ -66,6 +68,18 @@ public class ParticipantVO implements Serializable{
 	}
 	public void setExpRoleList(List<SelectOptionVO> expRoleList) {
 		this.expRoleList = expRoleList;
+	}
+	public String getPrtiRoles() {
+		return prtiRoles;
+	}
+	public void setPrtiRoles(String prtiRoles) {
+		this.prtiRoles = prtiRoles;
+	}
+	public String getExpRoles() {
+		return expRoles;
+	}
+	public void setExpRoles(String expRoles) {
+		this.expRoles = expRoles;
 	}
 	
 	

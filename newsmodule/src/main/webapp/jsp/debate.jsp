@@ -72,6 +72,8 @@ $( document ).ready(function() {
 
 </script>
 <body>
+
+<div id="debateDetails"></div>
 <div id="errTab" style="display:none;width:777px;margin-left:50px;">
 	<table  class="table">
 		<tr>
