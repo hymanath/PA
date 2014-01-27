@@ -1,7 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="s" uri="/struts-tags" %>  
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="s" uri="/struts-tags"%>
-<%@ page language="java" contentType="text/html; charset=utf-8" %>
 
 <html>
  <head>
@@ -139,7 +141,7 @@ $( document ).ready(function() {
 </script>
 <body>
 
-<div id="debateDetails"></div>
+<div id="debateDetails" style="font-size: 17px;font-weight: bold;line-height: 1.5;"></div>
 <div id="errTab" style="display:none;width:777px;margin-left:50px;">
 	<table  class="table">
 		<tr>
@@ -154,14 +156,14 @@ $( document ).ready(function() {
 		</tr>
 	</table>
 </div>
-<div id="debateDiv">
+<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">
 	<div class="row-fluid" >
-		<legend class="span10" style="margin-left:20px;">Debate Information : </legend>
+		<legend class="boxHeading">Debate Information : </legend>
 
 	<div class="row-fluid" >
-			<div class="span10" style="margin-left:20px;">
-				<label>Subject : <font class="requiredFont">*</font></label>
-				<input type="text" Class="subjectClass" name="subject1" id="subject1" style="width:650px;"/><a href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a>
+			<div class="span12">
+				<label>Subject : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>
+				<input type="text" Class="subjectClass span12" name="subject1" id="subject1" />
 				<div id="addedSubjectDiv"></div>				
 				
 			</div>
@@ -169,52 +171,51 @@ $( document ).ready(function() {
 	</div>
 	<div id="dialogueBoxDiv"></div>
 	<div class="row-fluid" >
-			<div class="span3" style="margin-left:20px;">
-				<label>Channel : <font class="requiredFont">*</font></label>
-				<s:select name="channel"  id="channel" list="channelList" theme="simple" listKey="id" listValue="name"/><a href="javascript:{}"  title="Click here to add another Channel" onClick="addAttribute('Channel');"><i class="icon-plus"></i></a>
+			<div class="span3" >
+				<label>Channel : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" onclick="addAttribute('Channel');" title="Click here to add another Channel" href="javascript:{}"><i class="icon-plus"></i></a></label>
+				<s:select name="channel"  id="channel" list="channelList" theme="simple" listKey="id" listValue="name"/>
 			</div>
 			<div class="span3">
-				<label>Observer : <font class="requiredFont">*</font></label>
-				    <s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="multiple"/><a href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute('Observer');"><i class="icon-plus"></i></a>
+				<label>Observer : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute('Observer');"><i class="icon-plus"></i></a></label>
+				    <s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="multiple"/>
 
 			</div>	
-			<div class="span3">
+			<div class="span2">
 				<label>Telecast Time : <font class="requiredFont">*</font></label>
-				<s:select name="telecastTime"  id="telecastTime" list="telecastTimeList" theme="simple" listKey="id" listValue="name"/>
+				<s:select name="telecastTime"   id="telecastTime" list="telecastTimeList" theme="simple" listKey="id" listValue="name" cssClass="input-block-level"/>
 			</div>
-			<div class="span3">
+			<div class="span2">
 				<label>Start Time : <font class="requiredFont">*</font></label>
-				<input type="text" Class="selectWidth" name="startTime" id="startTime"/>
+				<input type="text" class="input-block-level selectWidth" name="startTime" id="startTime"/>
 			</div>				
-			<div class="span3">
+			<div class="span2">
 				<label>End Time : <font class="requiredFont">*</font></label>
-				<input type="text" Class="selectWidth" name="endTime" id="endTime"/> 
+				<input type="text" class="input-block-level selectWidth" name="endTime" id="endTime"/> 
 			</div>	
 	</div>	
 </div>
-
-	<div id="participantDiv">
-		<div id="participantInnerDiv1"  class="widget blue well span12 participantDetailsClass scrollit" style="margin-top:45px;">
-		<h4>Participant Details And Performance:</h4>
-		
-		</div>
-
-		<div  class="span10">
-		<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
-		</div>
+	
+	<div id="participantDiv" class="row-fluid m_top10" >
+	<legend class="boxHeading">Participant Details And Performance:</legend>
+	<div id="participantInnerDiv1"  class="participantDetailsClass scrollit">
+	</div>
+	<div  class="span12">
+	<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreCandidates();"><i class="icon-plus"></i></a>
+	<!--<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>-->
+	</div>
 	</div>
 
 	<div id="debateQuestnsDiv">	
 		<div class="row-fluid" >
-			<legend class="span10" style="margin-left:20px;">Questions :</legend>
-		<div id="questionDiv1" class="widget well span10">
+			<!--<legend class="span10" style="margin-left:20px;">Questions :</legend>-->
+		<div id="questionDiv1" class="span12">
 			<c:forEach  var="parties" items="${debateQuestionList}" varStatus="i">
-				<div class="questionAnswerClass">
+				<div class="questionAnswerClass row-fluid">
 				<div class="span5">
 				<input type="hidden" Class="selectWidth"  id="question${i.index+1}" name="question${i.index+1}" value="${parties.id}"></input>
 				<label> ${i.index+1} )${parties.name} </label>
 				</div>
-				<div class="span5" style="margin-top: -10px;">
+				<div class="span7" >
 					Answer : <font class="requiredFont">*</font>
 				<input type="text" Class="selectWidth debateAnswr" name="answer${i.index+1}" id="answer${i.index+1}"/>	
 			</div>
@@ -224,42 +225,48 @@ $( document ).ready(function() {
 		</div>
 		</div>
 	</div>
-	<div id="smsQuestnsDiv">	
-		<div class="row-fluid" >
-		<legend class="span10" style="margin-left:20px;">SMS Question :</legend>
-			<div id="smsPole" class="widget well span10">
+	<div id="smsQuestnsDiv" class="row-fluid m_top10">	
+		<legend class="boxHeading">SMS Question :</legend>
+			<div id="smsPole" class="span12">
 			
-					<textarea rows="4" cols="50" name="smsques1" id="smsques1" style="width: 618px;"></textarea> 
-					<div class="span5" style="margin-left: 0px;">
+			<div class="smsPoleClass row-fluid">
+					<textarea class="input-block-level" rows="4" cols="50" name="smsques1" id="smsques1" ></textarea> 
+					
+					<div class="span6" >
 						<label>
 						<strong>Option : <font class="requiredFont">*</font></strong>
 						</label>
-						<input type="text" Class="selectWidth smsOptin" name="smsoption1" id="smsoption1"/>
+						<input type="text" Class="selectWidth smsOptin inuput-block-level" name="smsoption1" id="smsoption1"/>
 					</div>
-					<div class="span5">
+					<div class="span6">
 						<label><strong>Percentage : <font class="requiredFont">*</font></strong></label>
-						<input type="text" Class="selectWidth smsOptinPerc" name="smsper1" id="smsper1"/>
+						<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1"/>
 					</div>
 				
-				<div  class="span10">
-					<a title="Click here to add another Subject" onClick="addMorePole();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>
+				<div  class="span12">
+					<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMorePole();"><i class="icon-plus"></i></a>
 				</div>
 			</div>
-		</div>
+		  </div>
 
 	</div>
-		<div>
-	<div id="debateSummery" class="widget well span10">
-		<div class="control-group form-horizontal span10">
+	<div>
+	
+	<div id="debateSummery" class="row-fluid m_top10">
+		<legend class="boxHeading">Debate Summery :</legend>
+		<div class="control-group form-horizontal">
 			<label>
-			<strong>Dabet Summery : <font class="requiredFont">*</font></strong></label>
+			<strong>Debate Summery : <font class="requiredFont">*</font></strong></label>
 
-			<textarea rows="4" cols="50" name="debetSum" id="debetSum" style="width: 618px;"></textarea>
+			<textarea rows="4" cols="50" class="span12" name="debetSum" id="debetSum" ></textarea>
 		</div>
 		
 				<a class="btn btn-success" onClick="submitForm();">Submit</a>
 	</div>
 	</div>
+	</div>
+	<form id="debateFromDiv" method="post" action="saveDebateDetailsAction.action" name="debateFromDiv">
+	<input type="hidden" name="task" id="getDebateDetails" /></form>
 <script>
 	var subjCount = 2;
 	var candCount = 2;
