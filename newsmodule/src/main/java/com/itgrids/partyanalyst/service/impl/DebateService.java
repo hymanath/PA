@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dao.IDebateParticipantExceptedRoleDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantRoleDAO;
 import com.itgrids.partyanalyst.dao.IDebateQuestionAnswerDAO;
 import com.itgrids.partyanalyst.dao.IDebateQuestionsDAO;
+import com.itgrids.partyanalyst.dao.IDebateReportDAO;
 import com.itgrids.partyanalyst.dao.IDebateRolesDAO;
 import com.itgrids.partyanalyst.dao.IDebateSmsQuestionDAO;
 import com.itgrids.partyanalyst.dao.IDebateSmsQuestionOptionDAO;
@@ -34,6 +36,7 @@ import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.ITelecastTypeDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
@@ -51,6 +54,7 @@ import com.itgrids.partyanalyst.model.DebateParticipantExpectedRole;
 import com.itgrids.partyanalyst.model.DebateParticipantRole;
 import com.itgrids.partyanalyst.model.DebateQuestionAnswer;
 import com.itgrids.partyanalyst.model.DebateQuestions;
+import com.itgrids.partyanalyst.model.DebateReport;
 import com.itgrids.partyanalyst.model.DebateRoles;
 import com.itgrids.partyanalyst.model.DebateSmsQuestion;
 import com.itgrids.partyanalyst.model.DebateSmsQuestionOption;
@@ -58,7 +62,9 @@ import com.itgrids.partyanalyst.model.DebateSubject;
 import com.itgrids.partyanalyst.model.Observer;
 import com.itgrids.partyanalyst.model.Party;
 import com.itgrids.partyanalyst.model.TelecastType;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IDebateService;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class DebateService implements IDebateService{
 	
@@ -82,8 +88,17 @@ public class DebateService implements IDebateService{
 	private TransactionTemplate transactionTemplate;
 	private IPartyDAO partyDAO;
 	private ICandidateDAO candidateDAO;
-	
+	private IUserDAO userDAO;
+	private IDebateReportDAO debateReportDAO;
 
+	
+	public void setDebateReportDAO(IDebateReportDAO debateReportDAO) {
+		this.debateReportDAO = debateReportDAO;
+	}
+
+	public void setUserDAO(IUserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 
 	public void setPartyDAO(IPartyDAO partyDAO) {
 		this.partyDAO = partyDAO;
@@ -222,6 +237,8 @@ public class DebateService implements IDebateService{
 					  debate.setStartTime(debateDetailsVO.getStartDate());
 					  debate.setEndTime(debateDetailsVO.getEndDate());
 					  debate.setIsDeleted("N");
+					  DateUtilService currentDate = new DateUtilService();
+					  debate.setCreatedDate(currentDate.getCurrentDateAndTime());
 					  debate=debateDAO.save(debate);
 					  List<SelectOptionVO> subjectsList = debateDetailsVO.getSubjectList();
 					  if(subjectsList != null && subjectsList.size() > 0)
@@ -848,5 +865,64 @@ public class DebateService implements IDebateService{
 			LOG.error("Error occured in getRolesList() in DebateService class",e);	
 		}
 		 return returnList ;
+	 }
+	 
+	 public ResultStatus saveDebateReportForPdf(final Long userId,final Long debateId,final String description)
+	 {
+		 final ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 LOG.info("Enterd into saveDebateReportForPdf() in DebateService class");
+			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						DebateReport debateReport = new DebateReport();
+						DateUtilService currentDate = new DateUtilService();
+						debateReport.setDescription(description);
+						debateReport.setCreatedDate(currentDate.getCurrentDateAndTime());
+						Debate debate = debateDAO.get(debateId);
+						if(debate != null)
+						{
+							debateReport.setDebate(debate);
+						}
+						User user = userDAO.get(userId);
+						if(user != null)
+						{
+							debateReport.setUser(user);
+						}
+						debateReport = debateReportDAO.save(debateReport);
+						if(debateReport == null)
+						{
+							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+						}
+						else
+						{
+							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+						}
+						
+					}
+			 });
+		} catch (Exception e) {
+			LOG.error("Error occured in saveDebateReportForPdf() in DebateService class",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		}
+		 return resultStatus;
+	 }
+	 
+	 public String genearetUrl(Long reportId,Long userId,String path)
+	 {
+		 String url = "invalid";
+	    	try{
+	    		Long count = debateReportDAO.checkValidUserForReport(userId, reportId);
+		    	if(count > 0){
+		    		String key = UUID.randomUUID().toString();
+		    		DebateReport debatereport = debateReportDAO.get(reportId);
+		    		debatereport.setKey(key);
+		    		debateReportDAO.save(debatereport);
+		    		url = path+"key="+key;
+		    	}
+	    	}catch(Exception e){
+	    		LOG.error(" Exception Occured in genearetUrl method, Exception - ",e);
+	    		url = "exception";
+	    	}
+	    	return url;
 	 }
 }

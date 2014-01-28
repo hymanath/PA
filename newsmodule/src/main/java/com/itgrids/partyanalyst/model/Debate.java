@@ -42,6 +42,8 @@ public class Debate extends BaseModel implements java.io.Serializable{
 	private TelecastType telecastType;
 	private String isDeleted;
 	private String summary;
+	private Date createdDate;
+	
 	//private Set<DebateObserver> debateObserver = new HashSet<DebateObserver>(0);
 	//private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
 
@@ -130,6 +132,17 @@ public class Debate extends BaseModel implements java.io.Serializable{
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+	
+	@Column(name="created_date")
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 	}
 
 	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "debate")
