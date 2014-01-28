@@ -253,7 +253,7 @@
 		<pattern>/getNewsAction*</pattern>
 		<pattern>/newsActivitiesAction*</pattern>
 		<pattern>/debateAction*</pattern>
-		<pattern>/debetAction1*</pattern>
+		<pattern>/debateReportAction*</pattern>
 		<pattern>/debetSavingAction*</pattern>
     	 </decorator>
 

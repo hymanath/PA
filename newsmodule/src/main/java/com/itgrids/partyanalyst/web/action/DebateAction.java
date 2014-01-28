@@ -49,8 +49,18 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	private List<SelectOptionVO> rolesList;
 	private String url;
 	private List<SelectOptionVO> debateDetails;
+	private Long debateId ;
 	
 	
+	
+	public Long getDebateId() {
+		return debateId;
+	}
+
+	public void setDebateId(Long debateId) {
+		this.debateId = debateId;
+	}
+
 	public List<SelectOptionVO> getDebateDetails() {
 		return debateDetails;
 	}
@@ -460,7 +470,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
 				if(regVo == null)
 					return Action.ERROR;
-				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:MM");
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 				String fromDateStr = jObj.getString("fronDate");
 				String toDateStr  = jObj.getString("toDate");
 				debateDetails = debateService.getDebateDetailsForSelectedDates(sdf.parse(fromDateStr), sdf.parse(toDateStr));

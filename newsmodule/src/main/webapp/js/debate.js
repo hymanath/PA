@@ -561,10 +561,6 @@ function callAjax(jsObj,url)
 				{
 					fillSelectOptionsVO(myResults,jsObj.selectedVal);	
 				}
-				if (jsObj.task == "getDebateDetails")
-				{
-					generateDebateReport(myResults);	
-				}
 			}catch(e)
 			{   
 			 $("#submitDataImg").hide();
@@ -580,135 +576,22 @@ function callAjax(jsObj,url)
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 
-function getSelectedDebate()
+function getDebateDetailsBtDates()
 {
+	alert($('#fromDateId').val());
 	var jsObj = {
-				debateId :13,
-				task : "getDebateDetails"	
+				fronDate :$('#fromDateId').val(),
+				toDate   :$('#toDateId').val(),
+				task : "getDebateDetailsBtDates"	
 		};
 		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "retriveDebateDetailsAction.action?"+rparam;
+		var url = "debateDetaildBtDatesAction.action?"+rparam;
 		callAjax(jsObj,url);
 }
 
-function generateDebateReport(result)
+function openDebateReport(debateId)
 {
-	var str = '';
-	str += '<div>';
-	
-		str += '<div>';
-		str += '<p>Channel Name : '+result.channelName+'</p>';
-		str += '<p>Observer : ';
-		for(var j in result.observorsList)
-		{
-			str +=''+result.observorsList[j]+'';
-		}
-		str += '</p>';
-		str += '<p>Date : '+result.date+'</p>';
-		str += '</div>';
-	
-		str += '<div>';
-		str += '<p>Telecate Time : '+result.telecastTime+'</p>';
-		str += '<p>Subject : ';
-		for(var m in result.debateNames)
-		{
-			str += '<p>'+result.debateNames[m]+'</p>';
-		}
-		str += '</p>';
-		str += '</div>';	
-		
-		str += '<div>';
-		str += '<table class="table table-bordered">';
-		str += '<tr>';
-		str += '<th style="width: 234px;">Party</th>';
-		for(var a in result.participantsList)
-		{
-			str += '<th>'+result.participantsList[a].partyName+'</th>';
-		}
-		str += '</tr>';
-		
-		str += '<tr>';
-		str += '<th style="width: 234px;">Leader Name</th>';
-		for(var a in result.participantsList)
-		{
-			str += '<th>'+result.participantsList[a].name+'</th>';
-		}
-		str += '</tr>';
-		var size = '';
-		var noOfParticepents = result.participantsList.length;
-		for(var i in result.participantsList)
-		{
-			size = result.participantsList[i].scaleList.length;
-		}
-		for(var a = 0 ; a < size ; a++)
-		{
-			str += '<tr>';
-			str += '<th style="width: 234px;">'+result.participantsList[0].scaleList[a].name+'</th>';	
-			for(var i = 0 ; i<noOfParticepents ; i++)
-			{
-				str += '<td>'+result.participantsList[i].scaleList[a].perc+'</td>';	
-			}
-			str += '</tr>';
-		}
-		str += '<tr>';
-		str += '<th style="width: 234px;">What was the role played  by the individual in over all programme(C.P/Critic/Philospher/Bully/Nurse)</th>';
-		for(var i in result.participantsList)
-		{
-			str += '<td>'+result.participantsList[i].prtiRoles+'</td>';
-		}
-		str += '</tr>';
-
-		str += '<tr>';
-		str += '<th style="width: 234px;">What was the role expected from TDP leader in this program!</th>';
-		var count = 0;
-		var expRole = '';
-		for(var i in result.debateExpRolesList)
-		{
-			count ++ ;
-			if(count == 1)
-			{
-				expRole += ''+result.debateExpRolesList[i].location+'';
-			}
-			else
-			{
-				expRole += '+' + ''+result.debateExpRolesList[i].location+'';
-			}
-		}
-		str += '<td colspan='+noOfParticepents+'>'+expRole+'</td>';
-		str += '</tr>';
-		
-		
-		for(var i in result.questionAnswersList)
-		{
-			str += '<tr>';
-			str += '<th style="width: 234px;">'+result.questionAnswersList[i].location+'</th>';
-			str += '<td colspan='+noOfParticepents+'>'+result.questionAnswersList[i].name+'</td>';
-			str += '</tr>';
-		}
-		
-		str += '<tr>';
-		str += '<th style="width: 234px;">Summery of performane</th>';
-		str += '<td colspan='+noOfParticepents+'>'+result.debateSummery+'</td>';
-		str += '</tr>';
-		
-		var smsStr = '';
-		smsStr += '<p>'+result.smsPoleList[0].name+'</p>';
-		smsStr += '<p>';
-		for(var i in result.smsPoleList)
-		{
-			smsStr += ''+result.smsPoleList[i].type+':'+result.smsPoleList[i].perc+''
-		}
-		smsStr += '<p>';
-		str += '<tr>';
-		str += '<th style="width: 234px;">Sms Poll Question and Resumls</th>';
-		str += '<td colspan='+noOfParticepents+'>'+smsStr+'</td>';
-		str += '<tr>';
-		str += '</div>';
-		str += '</table>';
-	str += '</div>';
-	$('#debateDetails').html(str);
+	window.open("debateReportAction.action?debateId="+debateId+"");
 }
-//getSelectedDebate();
-
 	

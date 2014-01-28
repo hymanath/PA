@@ -212,6 +212,9 @@ $(function () {
 	maxDate:new Date(),
 	sliderAccessArgs: { touchonly: false }
     });
+	
+	$('#fromDateId').datepicker();
+	$('#toDateId').datepicker();
 });
 
 
@@ -422,7 +425,22 @@ $('#debateReportDiv').show();
 			<input type="hidden" name="task" id="getDebateDetails" /></form>
 	</div>
 	<div id="debateReportDiv" style="display:none">
-			debate reporrt
+			<div>
+			<div> <input type="text" id="fromDateId"></input><input type="text" id="toDateId"></input><input type="button" value="Submit" onCLick="getDebateDetailsBtDates();"></input></div>
+			</div>
+			
+			<div>
+			<table>
+			<tr>
+			<th>Subject</th>
+			<th>Date</th>
+			<th>View</th>
+			</tr>
+			<td>Subject - 1</td>
+			<td>27/01/2013</td>
+			<td><a class="btn btn-info" value="17" onClick="openDebateReport(17)">view</a></td>
+			</table>
+			</div>
 	</div>
 </div>
 

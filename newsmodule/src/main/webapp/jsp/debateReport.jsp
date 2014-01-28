@@ -18,12 +18,14 @@
 
   </style>
 <script>
+var debateId = '${debateId}';
+
 getSelectedDebate();
 
 function getSelectedDebate()
 {
 	var jsObj = {
-				debateId :17,
+				debateId :debateId,
 				task : "getDebateDetails"	
 		};
 		
