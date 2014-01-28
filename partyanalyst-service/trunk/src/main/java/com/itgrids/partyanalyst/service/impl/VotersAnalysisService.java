@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICasteCategoryGroupDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
+import com.itgrids.partyanalyst.dao.ICasteInsertTypeDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
@@ -239,9 +240,18 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterDataAvailableConstituenciesDAO voterDataAvailableConstituenciesDAO;
     private IHamletBoothDAO hamletBoothDAO;
     private IVoterFlagDAO voterFlagDAO;
+    private ICasteInsertTypeDAO casteInsertTypeDAO;
     
     
-    public IVoterFlagDAO getVoterFlagDAO() {
+    public ICasteInsertTypeDAO getCasteInsertTypeDAO() {
+		return casteInsertTypeDAO;
+	}
+
+	public void setCasteInsertTypeDAO(ICasteInsertTypeDAO casteInsertTypeDAO) {
+		this.casteInsertTypeDAO = casteInsertTypeDAO;
+	}
+
+	public IVoterFlagDAO getVoterFlagDAO() {
 		return voterFlagDAO;
 	}
 
@@ -6076,7 +6086,10 @@ public void updateVoterDetails(VoterHouseInfoVO voterHouseInfoVO,String partyCas
 				 userVoterDtls.setUser(user);
 				 userVoterDtls.setVoter(voter);
 				 if(casteStateId != null)
+				 {
 					 userVoterDtls.setCasteState(casteStateDAO.get(casteStateId));
+					 userVoterDtls.setCasteInsertType(casteInsertTypeDAO.get(1l));
+				 }
 				 if(partyId != null)
 					 userVoterDtls.setParty(partyDAO.get(partyId));
 				 if(locality !=null)
@@ -17108,9 +17121,15 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					userVoterDetails.setMobileNo(votersDetails.getMobileNo());
 					
 					if(votersDetails.getCasteStateId() != null && votersDetails.getCasteStateId().longValue() != 0)
-					 userVoterDetails.setCasteState(casteStateDAO.get(votersDetails.getCasteStateId()));
+					{
+						userVoterDetails.setCasteState(casteStateDAO.get(votersDetails.getCasteStateId()));
+						userVoterDetails.setCasteInsertType(casteInsertTypeDAO.get(1l));
+					}
 					else
+					{
 					 userVoterDetails.setCasteState(null);
+					 userVoterDetails.setCasteInsertType(null);
+					}
 					
 					if(votersDetails.getLocalitityId() != null && votersDetails.getLocalitityId().longValue() != 0)
 					 userVoterDetails.setLocality(localityDAO.get(votersDetails.getLocalitityId()));
