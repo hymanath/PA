@@ -38,6 +38,13 @@
 
 
 <style type="text/css">
+#debatesTab > thead {
+background:#CDE6FC;
+}
+#RerrDiv{
+font-weight:bold;
+color:red;
+}
 @font-face
 {
 font-family:eFont;src: url('img/eenadu.ttf');
@@ -435,10 +442,11 @@ $('#debateReportDiv').show();
 	</div>
 	<div id="debateReportDiv" style="display:none">
 			<div id="debateRport" align="center">
+			<div id="RerrDiv"></div>
 			<h4> Create Debate Report : </h4>
 				<div> 
-				From Date: <input type="text" id="fromDateId"></input><br>
-				End Date : <input type="text" id="toDateId"></input><br>
+				From Date <font class="requiredFont">*</font>: <input type="text" id="fromDateId"></input><br>
+				To Date <font class="requiredFont" style="margin-left: 15px;">*</font>: <input type="text" id="toDateId"></input><br>
 					<input type="button" value="Submit" class="btn btn-info" onCLick="getDebateDetailsBtDates();"></input>
 				</div>
 			</div>
