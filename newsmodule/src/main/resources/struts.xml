@@ -5988,8 +5988,8 @@
 	 			 <result>/jsp/debetSavingForm.jsp</result>
 	 	</action>
 	 	
-	 	<action name="debetAction1" class="debateAction">
-	 			 <result>/jsp/debetReport.jsp</result>
+	 	<action name="debateReportAction" class="debateAction">
+	 			 <result>/jsp/debateReport.jsp</result>
 	 	</action>
 	 	
 	 	 <action name="updateFieldAttributesAction" class="debateAction" method="updateFieldAttributes">
