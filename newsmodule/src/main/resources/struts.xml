@@ -5987,7 +5987,7 @@
 	 			 <result>/jsp/debetSavingForm.jsp</result>
 	 	</action>
 	 	
-	 	<action name="debetAction1" class="newsDetailsAction">
+	 	<action name="debetAction1" class="debateAction">
 	 			 <result>/jsp/debetReport.jsp</result>
 	 	</action>
 	 	
@@ -5997,6 +5997,15 @@
 		   </result>
 		 </action>
 		 
+	 	  <action name="generateKeyReportAction" class="debateAction" method="generateUrl">
+		   <result name="success" type="json">
+		 	<param name="root">url</param>
+		   </result>
+		  </action>
+		 
+	 	  <action name="genereateReportAction" class="debateAction">
+	 			 <result>/jsp/genereateDebetReport.jsp</result>
+	 	  </action>
 	 	 
         </package>
 		

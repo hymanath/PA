@@ -38,4 +38,6 @@ public interface IDebateService {
 	public List<SelectOptionVO> getCharacteristicsDetails();
 	
 	public List<SelectOptionVO> getRolesList();
+	
+	public String genearetUrl(Long reportId,Long userId,String path);
 }

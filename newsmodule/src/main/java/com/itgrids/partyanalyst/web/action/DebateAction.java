@@ -18,6 +18,7 @@ import com.itgrids.partyanalyst.dto.ParticipantVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IDebateService;
 import com.opensymphony.xwork2.Action;
@@ -47,8 +48,17 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	private List<SelectOptionVO> debateParticipantRoleList;
 	private List<SelectOptionVO> characteristicsList;
 	private List<SelectOptionVO> rolesList;
+	private String url;
 	
 	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	public List<SelectOptionVO> getRolesList() {
 		return rolesList;
 	}
@@ -429,6 +439,25 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 
 		} catch (Exception e) {
 			LOG.error(" Exception occured in updateFieldAttributes() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String generateUrl()
+	{
+		try {
+			LOG.info(" Entered into generateUrl() in DebateAction class. ");
+			 jObj = new JSONObject(getTask());
+			 HttpSession session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+				if(regVo == null)
+					return Action.ERROR;
+			Long reportId = jObj.getLong("reportId");
+			Long userId = regVo.getRegistrationID();
+			String path = request.getRequestURL().toString().replace("generateKeyReportAction.action","genereateReportAction.action?");
+			url = debateService.genearetUrl(reportId, userId, path);
+		} catch (Exception e) {
+			LOG.error(" Exception occured in generateUrl() in DebateAction class. ",e);
 		}
 		return Action.SUCCESS;
 	}
