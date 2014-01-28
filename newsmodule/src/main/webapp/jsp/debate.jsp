@@ -27,6 +27,11 @@
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
+	<script type="text/javascript" src="js/jquery.dataTables.columnFilter.js"></script>
+	
 <script src="js/debate.js"></script>
 
 
@@ -213,8 +218,12 @@ $(function () {
 	sliderAccessArgs: { touchonly: false }
     });
 	
-	$('#fromDateId').datepicker();
-	$('#toDateId').datepicker();
+	$('#fromDateId').datepicker({
+	maxDate:new Date()
+	});
+	$('#toDateId').datepicker({
+	maxDate:new Date()
+	});
 });
 
 
@@ -425,25 +434,25 @@ $('#debateReportDiv').show();
 			<input type="hidden" name="task" id="getDebateDetails" /></form>
 	</div>
 	<div id="debateReportDiv" style="display:none">
-			<div>
-			<div> <input type="text" id="fromDateId"></input><input type="text" id="toDateId"></input><input type="button" value="Submit" onCLick="getDebateDetailsBtDates();"></input></div>
+			<div id="debateRport" align="center">
+			<h4> Create Debate Report : </h4>
+				<div> 
+				From Date: <input type="text" id="fromDateId"></input><br>
+				End Date : <input type="text" id="toDateId"></input><br>
+					<input type="button" value="Submit" class="btn btn-info" onCLick="getDebateDetailsBtDates();"></input>
+				</div>
 			</div>
 			
-			<div>
-			<table>
-			<tr>
-			<th>Subject</th>
-			<th>Date</th>
-			<th>View</th>
-			</tr>
-			<td>Subject - 1</td>
-			<td>27/01/2013</td>
-			<td><a class="btn btn-info" value="17" onClick="openDebateReport(17)">view</a></td>
-			</table>
-			</div>
+			<div id="dateWiseReportDiv"></div>
 	</div>
 </div>
+<script>
+	var subjCount = 2;
+	var candCount = 2;
+	var questionCount = 2;
+	var poleCount = 2;
 
+</script>
 
 </body>
 </html>
