@@ -6,7 +6,7 @@ var poleCount = 2;
 
 
 function validateFields(){
-console.log("validating ...");
+
 $("#errTab").css("display","none");
 $("#debatErrDiv1,#debatErrDiv2,#debatErrDiv3").html('');
 var flag = true;
@@ -19,7 +19,6 @@ var observer = $("#observer").val();
 var smsQuestin =  $("#smsques1").val();
 var debetSum = $("#debetSum").val();
 var partiRol1e = $(".partiRoleClass").val();
-var expPartiRol1e = $(".expPartyClass").val();
 
 var errStr1='';
 var errStr2='';
@@ -52,7 +51,6 @@ if(observer <=0){
 }
 	$( ".partysClass" ).each(function( index ) {
 	 var partyId = $(this ).val();
-	console.log(partyId);
 		if(partyId <= 0){
 			errStr2 +='Please Select Party .<br/>';
 		}
@@ -78,11 +76,17 @@ if(observer <=0){
 	errStr2 =errStr2+' '+presErr;
 
 	if(partiRol1e.trim().length <= 0){
-			errStr2 += 'Please Enter Participant Roles.<br/>';
+			errStr2 += 'Please Select Participant Roles.<br/>';
 		}
-	if(expPartiRol1e.trim().length <= 0){
-			errStr2 += 'Please Enter Expected Participant Roles.<br/>';
+		
+	$( ".expPartyClass1" ).each(function( index ) {
+		var subject1 = $( this ).attr('id');
+		var val1 = $('#'+subject1+'').val(); 
+		//console.log(val1.length);
+		if(val1.length == 0){
+		errStr2 += 'Please Select Expected Participant Roles.<br/>';
 		}
+	});
 	$( ".participantRolesClass" ).each(function( index ) {
 	 var participantRoles = $( this ).val();
 
@@ -411,7 +415,7 @@ function getValues(){
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
 		str +='</select></td>';
-		str +='<td><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass"></input>';
+		str +='<td><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1" value="0"></input>';
 		str += '<select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
@@ -474,8 +478,8 @@ function addMoreCandidates()
 	}
 	
 	str +='</select></td><td>';
-	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass"></input>';
-	str +='<select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
+	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1" value="0"></input>';
+	str +='<select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -592,7 +596,50 @@ function callAjax(jsObj,url)
 
 function getDebateDetailsBtDates()
 {
-	   var jsObj = {
+	var startDate = $('#fromDateId').val();
+	var endDate = $('#toDateId').val();
+	$("#RerrDiv").html('');
+	$("#dateWiseReportDiv").html("");
+	if(startDate != undefined && startDate.length <=0){
+		$("#RerrDiv").html("From Date is Required.");
+		return;
+	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RerrDiv").html("To Date is Required.");
+		return;		
+	}
+	
+	var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+			
+	var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];
+			var toyear=toDateArr[2];
+	
+	if(fromyear>toyear){
+		$("#RerrDiv").html('From Date should not greater then To Date ');	
+		return;
+	}
+	 if(frommonth>tomonth){
+		   if(fromyear == toyear){
+			$("#RerrDiv").html('From Date should not greater then To Date ');		
+		return;
+		}		
+	}
+	
+	if(fromDat>toDat){	
+		if(frommonth == tomonth && fromyear == toyear){
+			$("#RerrDiv").html('From Date should not greater then End Date ');		
+			return;				
+		   }
+	}
+	
+	$("#RerrDiv").html('');
+	
+	var jsObj = {
 				fronDate :$('#fromDateId').val(),
 				toDate   :$('#toDateId').val(),
 				task : "getDebateDetailsBtDates"	
