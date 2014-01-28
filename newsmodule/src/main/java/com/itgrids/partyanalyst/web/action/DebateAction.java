@@ -245,7 +245,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			 debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
 			 String startDate = debateObj.getString("startTime");
 			 String endDate = debateObj.getString("endTime");
-			 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:MM");
 			 debateDetailsVO.setStartDate(sdf.parse(startDate));
 			 debateDetailsVO.setEndDate(sdf.parse(endDate));
 			 debateDetailsVO.setDebateSummery(debateObj.getString("debetSummery"));
@@ -287,22 +287,30 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				 participantVO.setScaleList(scaleList);
 				 List<SelectOptionVO> rolesList = new ArrayList<SelectOptionVO>();
 				 JSONArray rolesArray = (JSONArray) particepentObj.getJSONArray("participantRoles");
-				 for (int j = 0; j < rolesArray.length(); j++)
+				 if(rolesArray.length() > 0)
 				 {
-					 SelectOptionVO rolesVO = new SelectOptionVO();
-					 rolesVO.setId(Long.valueOf(rolesArray.get(j).toString()));
-					 rolesList.add(rolesVO);
+					 for (int j = 0; j < rolesArray.length(); j++)
+					 {
+						 SelectOptionVO rolesVO = new SelectOptionVO();
+						 rolesVO.setId(Long.valueOf(rolesArray.get(j).toString()));
+						 rolesList.add(rolesVO);
+					 }
+					 participantVO.setRoleList(rolesList);
 				 }
-				 participantVO.setRoleList(rolesList);
+				 
 				 List<SelectOptionVO> exprolesList = new ArrayList<SelectOptionVO>();
 				 JSONArray exprolesArray = (JSONArray) particepentObj.getJSONArray("expparticipantRoles");
-				 for (int j = 0; j < exprolesArray.length(); j++)
+				 if(exprolesArray.length() > 0)
 				 {
-					 SelectOptionVO rolesVO = new SelectOptionVO();
-					 rolesVO.setId(Long.valueOf(exprolesArray.get(j).toString()));
-					 exprolesList.add(rolesVO);
+					 for (int j = 0; j < exprolesArray.length(); j++)
+					 {
+						 SelectOptionVO rolesVO = new SelectOptionVO();
+						 rolesVO.setId(Long.valueOf(exprolesArray.get(j).toString()));
+						 exprolesList.add(rolesVO);
+					 }
+					 participantVO.setExpRoleList(exprolesList);
+					 
 				 }
-				 participantVO.setExpRoleList(exprolesList);
 				 particepentList.add(participantVO);
 			 }
 			 debateDetailsVO.setParticipentsList(particepentList);

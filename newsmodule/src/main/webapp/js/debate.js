@@ -169,7 +169,7 @@ function addMoreSubject(){
 //console.log(subjCount);
 var str = "";
 
-	str += "<span id='subject"+subjCount+"'><label>Subject : <font class='requiredFont'>*</font><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"subject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
+	str += "<span id='subject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"subject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
 	str +="<input type='text' Class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"' '/>";
 	str += "</br></span>";	
 	
@@ -244,14 +244,16 @@ function insertAttribtDetails(id){
 function addMorePole(){
 	
 	var str = "";
-	str += "<div class='smsPoleClass'>";
-	str += "<div class='span5'>";
+	str += "<div class='smsPoleClass row-fluid'>";
+	str += "<div class='row'>";
+	str += "<div class='span8'>";
 	str += "<label><strong>Option </strong></label>";
-	str += "<input type='text' Class='selectWidth smsOptin' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
+	str += "<input type='text' Class='selectWidth smsOptin span12' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
 	str += "</div>";
-	str += "<div class='span5'>";
+	str += "<div class='span3'>";
 	str += "<label><strong>Percentage </strong></label>";
 	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"'/>";
+	str += "</div>";
 	str += "</div>";
 	str += "</div>";
 	$('#smsPole').append(str);
@@ -332,11 +334,18 @@ function submitForm()
 			participantObj.scale.push(scaleObj);
 		}
 		var partiRoles = $(this).closest("tr").find('.partiRoleClass').val();
+		var partiArray = partiRoles.split(',');
 		var expRoles = $(this).closest("tr").find('.expPartyClass').val();
+		if(expRoles != '')
+		{
+			var exppartiArray = expRoles.split(',');
+			participantObj.expparticipantRoles = exppartiArray;
+		}
+		
 		//participantObj.participantRoles.push(partiRoles);
-		participantObj.participantRoles = partiRoles;
+		participantObj.participantRoles = partiArray;
 		//participantObj.expparticipantRoles.push(expRoles);
-		participantObj.expparticipantRoles = expRoles;
+		
 		participant.push(participantObj);	
 	});
 	//console.log(participant);
@@ -386,14 +395,14 @@ function submitForm()
 function getValues(){
 	var str ='';
 	str +='<table id="participantTable" class="table table-bordered particepatedTable" style="width: 100%;overflow-x: scroll;">';
-	str +='<tr><th>Party</th><th>Candidate</th>';
+	str +='<thead><tr><th>Party</th><th>Candidate</th>';
 	for(var i in charsArray){
 		str +='<th>'+charsArray[i].name+'</th>';
 	}
-	str +='<th>Participant Roles</th><th>Expected Roles</th><th>delete</th></tr>';
+	str +='<th>Participant Roles</th><th>Expected Roles</th><th>delete</th></tr></thead>';
    
 	str += "<tr id='row1' class='particepntDetailsRow'>";
-	str += "<td><select name='party1'  id='party1' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);' class='partysClass'><option value='0' selected='selected'>Select</option>";
+	str += "<td><select name='party1'  id='party1' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,1)' class='partysClass'><option value='0' selected='selected'>Select</option>";
 	for ( var i in partiesArray)
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
@@ -406,13 +415,15 @@ function getValues(){
 		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;" />';
 		str +='</td>';
 		}
-     	str +='<td><select theme="simple" Class="selectWidth partiRoleClass" name="participantRoles1" id="participantRoles1" multiple="multiple">';
+     	str +='<td><input type="hidden" id="'+1+'participantRoles" class="partiRoleClass"></input>';
+		str += '<select theme="simple" Class="selectWidth " name="participantRoles1" id="participantRoles1" key="'+1+'participantRoles">';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
 		str +='</select></td>';
-		str +='<td><select theme="simple" Class="selectWidth expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" multiple="multiple">';
+		str +='<td><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass"></input>';
+		str += '<select style="display:none;" theme="simple" Class="selectWidth expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -423,6 +434,21 @@ function getValues(){
     str +='</tr></table>';
     
 $("#participantInnerDiv1").append(str);
+
+	$('#participantRoles1').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	}).multiselectfilter({    
+	});
+
+	
+}
+
+function getExceptedRoles(id,div)
+{
+	alert(id);
+	alert(div);
 }
 function removeCandidate(name){
 $("#"+name+"").remove();
@@ -433,27 +459,32 @@ function addMoreCandidates()
 {
 	var str ='';
 	str += "<tr id='row"+candCount+"' class='particepntDetailsRow'>";
-	str += "<td><select name='party1'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id);' class='partysClass'><option value='0' selected='selected'>Select</option>";
+	str += "<td><select name='party1'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,"+candCount+");' class='partysClass'><option value='0' selected='selected'>Select</option>";
 	for ( var i in partiesArray)
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
-	str+='</select></td>';
+	str+='</select></td><td>';
 
-	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" ></select></td>';
+	
+	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" ></select></td>';
 		for(var i in charsArray){
 		str +='<td>';
 		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+''+candCount+'" style="width:30px;" />';
 		str +='</td>';
 	}
 	
-	str +='<td><select theme="simple" Class="selectWidth partiRoleClass" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" multiple="multiple">';
+	str +='<td>';
+	str +='<input type="hidden" id="'+candCount+'participantRoles" class="partiRoleClass"></input>';
+	str +='<select theme="simple" Class="selectWidth" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
-	str +='</select></td>';
-	str +='<td><select theme="simple" Class="selectWidth expPartyClass" name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" multiple="multiple">';
+	
+	str +='</select></td><td>';
+	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass"></input>';
+	str +='<select style="display:none" ;theme="simple" Class="selectWidth" name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -463,6 +494,14 @@ function addMoreCandidates()
     str +='</tr>';
     
 	$("#participantTable").append(str);
+	$('#participantRoles'+candCount+'').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	}).multiselectfilter({    
+	});
+
+	
 	candCount++;
 }
  
@@ -482,20 +521,30 @@ $('#questionDiv1').append(str);
 questionCount++;
 }
 
-function getCandidatesOfSelectedParty(partyId,divId)
+function getCandidatesOfSelectedParty(partyId,divId,id)
+{
+	if(partyId == 872)
 	{
-		var numb = divId.match(/\d/g);
-		//$('#candidate1').find('option').remove();
-		var jsObj = {
-				partyId :partyId,
-				selectedVal :"candidate"+numb+"",
-				task : "getCandidatesOfAParty"	
-		};
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getCandidatesOfAParty.action?"+rparam;
-		callAjax(jsObj,url);
+		$('#expparticipantRoles'+id+'').show();
+		$('#expparticipantRoles'+id+'').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	}).multiselectfilter({    
+	});
 	}
+	var numb = divId.match(/\d/g);
+	//$('#candidate1').find('option').remove();
+	var jsObj = {
+			partyId :partyId,
+			selectedVal :"candidate"+numb+"",
+			task : "getCandidatesOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesOfAParty.action?"+rparam;
+	callAjax(jsObj,url);
+}
 
 function fillSelectOptionsVO(results,selectedVal)
 {
@@ -550,7 +599,7 @@ function callAjax(jsObj,url)
 function getSelectedDebate()
 {
 	var jsObj = {
-				debateId :6,
+				debateId :13,
 				task : "getDebateDetails"	
 		};
 		
@@ -572,7 +621,7 @@ function generateDebateReport(result)
 			str +=''+result.observorsList[j]+'';
 		}
 		str += '</p>';
-		str += '<p>Date : '+result.startTime+'</p>';
+		str += '<p>Date : '+result.date+'</p>';
 		str += '</div>';
 	
 		str += '<div>';

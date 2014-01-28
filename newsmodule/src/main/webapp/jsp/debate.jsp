@@ -20,13 +20,14 @@
 <script src="http://trentrichardson.com/examples/timepicker/jquery-ui-sliderAccess.js">
 </script>
 <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-		<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
-
-
-
+<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <script src="js/debate.js"></script>
-  <title> Debate Information - TDP Portal </title>
- </head>
+<title> Debate Information - TDP Portal </title>
+</head>
 <style>
  .scrollit {
 overflow:scroll;
@@ -89,22 +90,36 @@ font-weight:bold;
 .ui-timepicker-rtl dl dd {
     margin: 0 45% 10px 10px;
 }		
+
+select {
+    font-size: 17px;
+    font-weight: bold;
+    width: 220px;
+}
+.ui-multiselect {
+    height: 33px !important;
+    padding: 2px 0 2px 4px;
+    text-align: left;
+    width: 221px !important;
+}
 </style>
 <script>
 
 
 $(function () {
-    $('#startTime').datetimepicker(
-        {
+    
+	$('#startTime').datetimepicker({
 	addSliderAccess: true,
 	sliderAccessArgs: { touchonly: false }
-});
- $('#endTime').datetimepicker(
-        {
+	});
+    
+	$('#endTime').datetimepicker({
 	addSliderAccess: true,
 	sliderAccessArgs: { touchonly: false }
+    });
 });
-});
+
+
 
 var partiesArray = new Array();
 <c:forEach var="parties" items="${partiesList}">
@@ -141,7 +156,7 @@ $( document ).ready(function() {
 </script>
 <body>
 
-<div id="debateDetails" style="font-size: 17px;font-weight: bold;line-height: 1.5;"></div>
+
 <div id="errTab" style="display:none;width:777px;margin-left:50px;">
 	<table  class="table">
 		<tr>
@@ -162,7 +177,7 @@ $( document ).ready(function() {
 
 	<div class="row-fluid" >
 			<div class="span12">
-				<label>Subject : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Subject : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>
 				<input type="text" Class="subjectClass span12" name="subject1" id="subject1" />
 				<div id="addedSubjectDiv"></div>				
 				
@@ -172,24 +187,24 @@ $( document ).ready(function() {
 	<div id="dialogueBoxDiv"></div>
 	<div class="row-fluid" >
 			<div class="span3" >
-				<label>Channel : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" onclick="addAttribute('Channel');" title="Click here to add another Channel" href="javascript:{}"><i class="icon-plus"></i></a></label>
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" onclick="addAttribute('Channel');" title="Click here to add another Channel" href="javascript:{}"><i class="icon-plus"></i></a></label>
 				<s:select name="channel"  id="channel" list="channelList" theme="simple" listKey="id" listValue="name"/>
 			</div>
 			<div class="span3">
-				<label>Observer : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute('Observer');"><i class="icon-plus"></i></a></label>
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Observer : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute('Observer');"><i class="icon-plus"></i></a></label>
 				    <s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="multiple"/>
 
 			</div>	
 			<div class="span2">
-				<label>Telecast Time : <font class="requiredFont">*</font></label>
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Telecast Time : <font class="requiredFont">*</font></label>
 				<s:select name="telecastTime"   id="telecastTime" list="telecastTimeList" theme="simple" listKey="id" listValue="name" cssClass="input-block-level"/>
 			</div>
 			<div class="span2">
-				<label>Start Time : <font class="requiredFont">*</font></label>
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Start Time : <font class="requiredFont">*</font></label>
 				<input type="text" class="input-block-level selectWidth" name="startTime" id="startTime"/>
 			</div>				
 			<div class="span2">
-				<label>End Time : <font class="requiredFont">*</font></label>
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">End Time : <font class="requiredFont">*</font></label>
 				<input type="text" class="input-block-level selectWidth" name="endTime" id="endTime"/> 
 			</div>	
 	</div>	
@@ -200,8 +215,8 @@ $( document ).ready(function() {
 	<div id="participantInnerDiv1"  class="participantDetailsClass scrollit">
 	</div>
 	<div  class="span12">
-	<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreCandidates();"><i class="icon-plus"></i></a>
-	<!--<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;"/></a>-->
+	<!--<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreCandidates();"><i class="icon-plus"></i></a>-->
+	<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;margin-right:20px;"/></a>
 	</div>
 	</div>
 
@@ -213,11 +228,11 @@ $( document ).ready(function() {
 				<div class="questionAnswerClass row-fluid">
 				<div class="span5">
 				<input type="hidden" Class="selectWidth"  id="question${i.index+1}" name="question${i.index+1}" value="${parties.id}"></input>
-				<label> ${i.index+1} )${parties.name} </label>
+				<label><p style="font-size: 17px;font-weight: bold;line-height: 1.5;"> ${i.index+1} )${parties.name} </p></label>
 				</div>
 				<div class="span7" >
 					Answer : <font class="requiredFont">*</font>
-				<input type="text" Class="selectWidth debateAnswr" name="answer${i.index+1}" id="answer${i.index+1}"/>	
+				<input type="text" Class="selectWidth debateAnswr input-block-level" name="answer${i.index+1}" id="answer${i.index+1}"/>	
 			</div>
 
 				</div>
@@ -229,26 +244,28 @@ $( document ).ready(function() {
 		<legend class="boxHeading">SMS Question :</legend>
 			<div id="smsPole" class="span12">
 			
-			<div class="smsPoleClass row-fluid">
+			<div class="smsPoleClass">
+			<div class="row">
 					<textarea class="input-block-level" rows="4" cols="50" name="smsques1" id="smsques1" ></textarea> 
-					
-					<div class="span6" >
+			</div>	<div class="row">
+					<div class="span8" >
 						<label>
 						<strong>Option : <font class="requiredFont">*</font></strong>
 						</label>
-						<input type="text" Class="selectWidth smsOptin inuput-block-level" name="smsoption1" id="smsoption1"/>
+						<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1"/>
 					</div>
-					<div class="span6">
+					<div class="span3">
 						<label><strong>Percentage : <font class="requiredFont">*</font></strong></label>
 						<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1"/>
 					</div>
-				
-				<div  class="span12">
-					<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMorePole();"><i class="icon-plus"></i></a>
 				</div>
+				
 			</div>
 		  </div>
 
+	</div>
+	<div  class="span1 offset10">
+	<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMorePole();"><i class="icon-plus"></i></a>
 	</div>
 	<div>
 	
@@ -261,13 +278,17 @@ $( document ).ready(function() {
 			<textarea rows="4" cols="50" class="span12" name="debetSum" id="debetSum" ></textarea>
 		</div>
 		
-				<a class="btn btn-success" onClick="submitForm();">Submit</a>
+				
+	</div>
+	
+	<div align="center">
+		<a class="btn btn-success" onClick="submitForm();">Submit</a>
 	</div>
 	</div>
 	</div>
 	<form id="debateFromDiv" method="post" action="saveDebateDetailsAction.action" name="debateFromDiv">
 	<input type="hidden" name="task" id="getDebateDetails" /></form>
-<script>
+	<script>
 	var subjCount = 2;
 	var candCount = 2;
 	var questionCount = 2;
