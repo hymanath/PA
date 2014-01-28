@@ -1,5 +1,5 @@
 function validateFields(){
-console.log("validating fields...");
+console.log("validating ...");
 $("#errTab").css("display","none");
 $("#debatErrDiv1,#debatErrDiv2,#debatErrDiv3").html('');
 var flag = true;
@@ -9,9 +9,11 @@ var startTime =$("#startTime").val();
 var endTime = $("#endTime").val();
 var observer = $("#observer").val();
 
-var party = $("#party1").val();
 var smsQuestin =  $("#smsques1").val();
 var debetSum = $("#debetSum").val();
+var partiRol1e = $(".partiRoleClass").val();
+var expPartiRol1e = $(".expPartyClass").val();
+
 var errStr1='';
 var errStr2='';
 var errStr3='';
@@ -41,13 +43,7 @@ if(endTime.trim().length <= 0){
 if(observer <=0){
 	errStr1 +='Please Select Observer .<br/>';
 }
-
-
-
-	if(party <= 0){
-			errStr2 +='Please Select Party .<br/>';
-	}
-	$( ".partyClass" ).each(function( index ) {
+	$( ".partysClass" ).each(function( index ) {
 	 var partyId = $(this ).val();
 	console.log(partyId);
 		if(partyId <= 0){
@@ -55,46 +51,31 @@ if(observer <=0){
 		}
 	});
 	
-	$( ".candidateClass" ).each(function( index ) {
+	$( ".candidatesClass" ).each(function( index ) {
 	 var candidate = $( this ).val();
 
 		if(candidate <= 0){
 			errStr2+='Please Select Candidate .<br/>';
 		}
 	});
-	
-	$( ".subjectClas" ).each(function( index ) {
-	 var subjct = $( this ).val();
 
-		if(subjct == null ||  subjct.trim().length <= 0){
-			errStr2 +='Please Enter Subject .<br/>';
-		}
-	});
-	
-	$( ".prsentationClass" ).each(function( index ) {
+	var presErr = '';
+	$( ".participntRoles" ).each(function( index ) {
 	 var prsentation = $( this ).val();
-
+		presErr = '';
 		if(prsentation == null ||  prsentation.trim().length <= 0){
-			errStr2 +='Please Enter Prsentation .<br/>';
+		presErr = 'Please Enter Presentations.<br/>';
+			
 		}
 	});
-	
-	$( ".countrAttckClass" ).each(function( index ) {
-	 var countrAttck = $( this ).val();
+	errStr2 =errStr2+' '+presErr;
 
-		if(countrAttck == null ||  countrAttck.trim().length <= 0){
-			errStr2 +='Please Enter Counter Attack .<br/>';
+	if(partiRol1e.trim().length <= 0){
+			errStr2 += 'Please Enter Participant Roles.<br/>';
 		}
-	});
-	
-	$( ".bodyLngClass" ).each(function( index ) {
-	 var bodyLng = $( this ).val();
-
-		if(bodyLng == null ||  bodyLng.trim().length <= 0){
-			errStr2 +='Please Enter body Language .<br/>';
+	if(expPartiRol1e.trim().length <= 0){
+			errStr2 += 'Please Enter Expected Participant Roles.<br/>';
 		}
-	});
-	
 	$( ".participantRolesClass" ).each(function( index ) {
 	 var participantRoles = $( this ).val();
 
@@ -103,22 +84,15 @@ if(observer <=0){
 		}
 	});
 	
-	$( ".summeryClass" ).each(function( index ) {
-	 var summery = $( this ).val();
-
-		if(summery == null || summery.trim().length <= 0){
-			errStr2 +='Please Enter Summery .<br/>';
-		}
-	});
-	
 	
 	$( ".debateAnswr" ).each(function( index ) {
 	 var debateAnswer = $( this ).val();
-
+		presErr='';
 		if(debateAnswer == null || debateAnswer.trim().length <= 0){
-			errStr3 +='Please Enter Answer for each Question.<br/>';
+			presErr +='Please Enter Answer for each Question.<br/>';
 		}
 	});
+	errStr3 +=' '+presErr;
 	if(smsQuestin == null || smsQuestin.trim().length <= 0){
 			errStr3 +='Please Enter sms Question .<br/>';
 	}
@@ -141,25 +115,27 @@ if(observer <=0){
 	if(debetSum == null || debetSum.trim().length <= 0){
 			errStr3 +='Please Enter Debate Summery .<br/>';
 	}
-if(errStr1.length >0){
-$("#debatErrDiv1").html('');
-$("#errTab").css("display","block");
-$("#debatErrDiv1").html(errStr1);
-flag = false;
-}
-if(errStr2.length >0){
-$("#debatErrDiv2").html('');
-$("#errTab").css("display","block");
-$("#debatErrDiv2").html(errStr2);
-flag = false;
-}
-if(errStr3.length >0){
-$("#debatErrDiv3").html('');
-$("#errTab").css("display","block");
-$("#debatErrDiv3").html(errStr3);
-flag = false;
+	
+	if(errStr1.trim().length >0){
+	$("#debatErrDiv1").html('');
+	$("#errTab").css("display","block");
+	$("#debatErrDiv1").html(errStr1);
+		flag = false;
+	}
 
-}
+	if(errStr2.trim().length >0){
+	$("#debatErrDiv2").html('');
+	$("#errTab").css("display","block");
+	$("#debatErrDiv2").html(errStr2);
+		flag = false;
+	}
+
+	if(errStr3.trim().length >0){
+	$("#debatErrDiv3").html('');
+	$("#errTab").css("display","block");
+	$("#debatErrDiv3").html(errStr3);
+		flag = false;
+	}
 
 return flag;
 
@@ -212,8 +188,7 @@ function insertAttribtDetails(id){
 	}
 	else
 	{
-	task = 'createNewObserver';
-	
+	task = 'createNewObserver';	
 	}
 	
 	$.ajax({
@@ -267,9 +242,10 @@ function updateAttributeField(id){
 		url:"updateFieldAttributesAction.action",
 		data:{attributeName:id,task:"update"+id+""}
 	}).done(function(result){
-		console.log(result);
+		//console.log(result);		
 		if(result != null){
 		id = id.toLowerCase();
+		$('#'+id+" option").remove();
 			$.each( result, function( index, value ){
 				$("#"+id+"").append("<option id="+result[index].id+">"+result[index].name+"</option>");
 			});
@@ -281,115 +257,119 @@ function updateAttributeField(id){
 
 function submitForm()
 {
-	
-	var debateDetails={
-	endTime : '',
-	startTime : '',
-	channelId : '',
-	telecastTimeId : '',
-	debetSummery : ''
-	}; 
-	var  observer = new Array();
-	var  subjectArray = new Array();
-	var  participant = new Array();
-	var questionAnswer = new Array();
-	var smsPole= new Array();
-	$( ".subjectClass " ).each(function( index ) {
-		subjectArray.push($(this ).val());	
-	});
-	debateDetails.endTime         = $('#endTime').val();
-	debateDetails.startTime       = $('#startTime').val();
-	debateDetails.channelId       = $('#channel option:selected').val();
-	debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
-	observer.push($('#observer option:selected').val());
-	$('.particepntDetailsRow').each(function() {
-		var participantObj = {
-			  partyId: '' ,
-			  candidateId : '' ,
-			  summery     : '',
-			  participantRoles:[],
-			  expparticipantRoles:[],
-			  scale : [
-			  {
-				 scaleId : '',
-				 scaleTotal : ''
-			  }
-			  ]
-		};
-		
-		participantObj.partyId  = $(this).closest("tr").find('.partysClass').val();
-		participantObj.candidateId = $(this).closest("tr").find('.candidatesClass').val();
-		//console.log(charsArray);
-		 var scaleObj = {
-			 scaleId : '',
-			 scaleTotal : ''
+	if(validateFields()){
+			var debateDetails={
+			endTime : '',
+			startTime : '',
+			channelId : '',
+			telecastTimeId : '',
+			debetSummery : ''
 			}; 
-		participantObj.summery = 'prasad';
-		participantObj.scale = [];
-		for(var i=0;i <charsArray.length;i++)
-		{
-			scaleObj = {};
-			scaleObj.scaleId    = charsArray[i].id;
-			scaleObj.scaleTotal = $(this).closest("tr").find('.'+charsArray[i].id+'CharClass').val();
-			participantObj.scale.push(scaleObj);
+			var  observer = new Array();
+			var  subjectArray = new Array();
+			var  participant = new Array();
+			var questionAnswer = new Array();
+			var smsPole= new Array();
+			$( ".subjectClass " ).each(function( index ) {
+				subjectArray.push($(this ).val());	
+			});
+			debateDetails.endTime         = $('#endTime').val();
+			debateDetails.startTime       = $('#startTime').val();
+			debateDetails.channelId       = $('#channel option:selected').val();
+			debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
+			observer.push($('#observer option:selected').val());
+			$('.particepntDetailsRow').each(function() {
+				var participantObj = {
+					  partyId: '' ,
+					  candidateId : '' ,
+					  summery     : '',
+					  participantRoles:[],
+					  expparticipantRoles:[],
+					  scale : [
+					  {
+						 scaleId : '',
+						 scaleTotal : ''
+					  }
+					  ]
+				};
+				
+				participantObj.partyId  = $(this).closest("tr").find('.partysClass').val();
+				participantObj.candidateId = $(this).closest("tr").find('.candidatesClass').val();
+				//console.log(charsArray);
+				 var scaleObj = {
+					 scaleId : '',
+					 scaleTotal : ''
+					}; 
+				participantObj.summery = 'prasad';
+				participantObj.scale = [];
+				for(var i=0;i <charsArray.length;i++)
+				{
+					scaleObj = {};
+					scaleObj.scaleId    = charsArray[i].id;
+					scaleObj.scaleTotal = $(this).closest("tr").find('.'+charsArray[i].id+'CharClass').val();
+					participantObj.scale.push(scaleObj);
+				}
+				var partiRoles = $(this).closest("tr").find('.partiRoleClass').val();
+				var partiArray = partiRoles.split(',');
+				var expRoles = $(this).closest("tr").find('.expPartyClass').val();
+				if(expRoles != '')
+				{
+					var exppartiArray = expRoles.split(',');
+					participantObj.expparticipantRoles = exppartiArray;
+				}
+				
+				//participantObj.participantRoles.push(partiRoles);
+				participantObj.participantRoles = partiArray;
+				//participantObj.expparticipantRoles.push(expRoles);
+				
+				participant.push(participantObj);	
+			});
+			//console.log(participant);
+			var j = 0;
+			$( ".questionAnswerClass " ).each(function( index ) {
+				j++;
+				var questionAnswerObj = {};
+				questionAnswerObj.questionId = $('#question'+j+'').val();	
+				questionAnswerObj.answer     = $('#answer'+j+'').val();	
+				questionAnswer.push(questionAnswerObj);
+			});
+			
+			var l = 0;
+			$( ".smsPoleClass " ).each(function( index ) {
+			l++;
+				var smaPoleObj = {};
+				smaPoleObj.questionId  = $('#smsques1').val();	
+				smaPoleObj.option      = $('#smsoption'+l+'').val();
+				smaPoleObj.percentage  = $('#smsper'+l+'').val();
+				smsPole.push(smaPoleObj);		
+			});
+			
+			debateDetails.debetSummery = $('#debetSum').val();
+			
+				var jsObj = {
+						debateDetails :debateDetails,
+						participant   : participant,
+						observer     : observer,
+						subjectArray : subjectArray,
+						questionAnswer : questionAnswer,
+						smsPole : smsPole,
+						task : "saveDebateDetails"	
+				};
+					 $("#getDebateDetails").val(YAHOO.lang.JSON.stringify(jsObj));
+							  
+					 var uploadHandler = {
+					 success: function(o) {
+					 var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+				
+					 }
+					 };
+					 YAHOO.util.Connect.setForm('debateFromDiv',false);
+					 YAHOO.util.Connect.asyncRequest('POST','saveDebateDetailsAction.action',uploadHandler);
+			//console.log(debateDetails);
 		}
-		var partiRoles = $(this).closest("tr").find('.partiRoleClass').val();
-		var partiArray = partiRoles.split(',');
-		var expRoles = $(this).closest("tr").find('.expPartyClass').val();
-		if(expRoles != '')
-		{
-			var exppartiArray = expRoles.split(',');
-			participantObj.expparticipantRoles = exppartiArray;
+		else{
+		console.log("error");
 		}
-		
-		//participantObj.participantRoles.push(partiRoles);
-		participantObj.participantRoles = partiArray;
-		//participantObj.expparticipantRoles.push(expRoles);
-		
-		participant.push(participantObj);	
-	});
-	//console.log(participant);
-	var j = 0;
-	$( ".questionAnswerClass " ).each(function( index ) {
-		j++;
-		var questionAnswerObj = {};
-		questionAnswerObj.questionId = $('#question'+j+'').val();	
-		questionAnswerObj.answer     = $('#answer'+j+'').val();	
-		questionAnswer.push(questionAnswerObj);
-	});
-	
-	var l = 0;
-	$( ".smsPoleClass " ).each(function( index ) {
-	l++;
-		var smaPoleObj = {};
-		smaPoleObj.questionId  = $('#smsques1').val();	
-		smaPoleObj.option      = $('#smsoption'+l+'').val();
-		smaPoleObj.percentage  = $('#smsper'+l+'').val();
-		smsPole.push(smaPoleObj);		
-	});
-	
-	debateDetails.debetSummery = $('#debetSum').val();
-	
-		var jsObj = {
-				debateDetails :debateDetails,
-				participant   : participant,
-				observer     : observer,
-				subjectArray : subjectArray,
-				questionAnswer : questionAnswer,
-				smsPole : smsPole,
-				task : "saveDebateDetails"	
-		};
-			 $("#getDebateDetails").val(YAHOO.lang.JSON.stringify(jsObj));
-					  
-			 var uploadHandler = {
-			 success: function(o) {
-			 var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
-		
-			 }
-			 };
-			 YAHOO.util.Connect.setForm('debateFromDiv',false);
-			 YAHOO.util.Connect.asyncRequest('POST','saveDebateDetailsAction.action',uploadHandler);
-	//console.log(debateDetails);
 }
 	
 function getValues(){
@@ -409,21 +389,23 @@ function getValues(){
 	}
 	str+='</select></td>';
 
-	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate1" ></select></td>';
+	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate1" >';
+	str+='<option value="0"> Select </option>';
+	str +='</select></td>';
 		for(var i in charsArray){
 		str +='<td>';
-		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;" />';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;" />';
 		str +='</td>';
 		}
      	str +='<td><input type="hidden" id="'+1+'participantRoles" class="partiRoleClass"></input>';
-		str += '<select theme="simple" Class="selectWidth " name="participantRoles1" id="participantRoles1" key="'+1+'participantRoles">';
+		str += '<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles1" id="participantRoles1" key="'+1+'participantRoles">';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
 		str +='</select></td>';
 		str +='<td><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass"></input>';
-		str += '<select style="display:none;" theme="simple" Class="selectWidth expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
+		str += '<select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -467,16 +449,18 @@ function addMoreCandidates()
 	str+='</select></td><td>';
 
 	
-	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" ></select></td>';
+	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" >';
+	str +='<option value="0"> Select </option>';
+	str +='</select></td>';
 		for(var i in charsArray){
 		str +='<td>';
-		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+''+candCount+'" style="width:30px;" />';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+''+candCount+'" style="width:30px;" />';
 		str +='</td>';
 	}
 	
 	str +='<td>';
 	str +='<input type="hidden" id="'+candCount+'participantRoles" class="partiRoleClass"></input>';
-	str +='<select theme="simple" Class="selectWidth" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
+	str +='<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -484,7 +468,7 @@ function addMoreCandidates()
 	
 	str +='</select></td><td>';
 	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass"></input>';
-	str +='<select style="display:none" ;theme="simple" Class="selectWidth" name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
+	str +='<select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
