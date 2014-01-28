@@ -8,4 +8,7 @@ public interface IDebateReportDAO extends GenericDao<DebateReport, Long>{
 
 	public Long checkValidUserForReport(Long reportId,Long userId);
 
+	public int deleteDebateReport(String key);
+	
+	public String getDebateDatils(Long userId,Long debateId);
 }

@@ -21,5 +21,23 @@ public class DebateReportDAO extends GenericDaoHibernate<DebateReport, Long> imp
 		query.setParameter("userId", userId);
 		return (Long)query.uniqueResult();
 	}
+	
+	public int deleteDebateReport(String key)
+	{
+		Query query = getSession().createQuery("delete from DebateReport model where model.key = :key");
+		query.setParameter("key", key);
+		int i = query.executeUpdate();
+		
+		return i;
+	}
+	
+	public String getDebateDatils(Long userId,Long debateId)
+	{
+		Query query = getSession().createQuery("select distinct model.key from DebateReport model " +
+				" where model.user.userId = :userId and model.debate.debateId =:debateId ");
+		query.setParameter("userId", userId);
+		query.setParameter("debateId", debateId);
+		return (String)query.uniqueResult();
+	}
 
 }

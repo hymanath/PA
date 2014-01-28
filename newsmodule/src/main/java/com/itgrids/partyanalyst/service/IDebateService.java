@@ -43,4 +43,8 @@ public interface IDebateService {
 	public String genearetUrl(Long reportId,Long userId,String path);
 	
 	public List<SelectOptionVO> getDebateDetailsForSelectedDates(Date fromDate,Date toDate);
+	
+	public String saveDebateReportForPdf(final Long userId,final Long debateId,final String description,final String path);
+	
+	public String deleteDebateReportUrl(String key);
 }

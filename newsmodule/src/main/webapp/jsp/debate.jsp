@@ -447,11 +447,7 @@ $('#debateReportDiv').show();
 	</div>
 </div>
 <script>
-	var subjCount = 2;
-	var candCount = 2;
-	var questionCount = 2;
-	var poleCount = 2;
-
+	
 </script>
 
 </body>

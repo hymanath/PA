@@ -47,10 +47,9 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	private List<SelectOptionVO> debateParticipantRoleList;
 	private List<SelectOptionVO> characteristicsList;
 	private List<SelectOptionVO> rolesList;
-	private String url;
+	private String status;
 	private List<SelectOptionVO> debateDetails;
 	private Long debateId ;
-	
 	
 	
 	public Long getDebateId() {
@@ -69,12 +68,14 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 		this.debateDetails = debateDetails;
 	}
 
-	public String getUrl() {
-		return url;
+	
+
+	public String getStatus() {
+		return status;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public List<SelectOptionVO> getRolesList() {
@@ -390,12 +391,12 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 		try 
 		{
 			LOG.info("Entered into saveDebateDetial methon in DebateAction Class");
-			session = request.getSession();
+			/*session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO == null)
 			{
 				return Action.ERROR;
-			}
+			}*/
 			 jObj = new JSONObject(getTask());
 			debateVO = debateService.getDebateDetailsForSelected(jObj.getLong("debateId"));
 		} 
@@ -488,13 +489,35 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
 				if(regVo == null)
 					return Action.ERROR;
-			Long reportId = jObj.getLong("reportId");
+			Long debateId = jObj.getLong("debateId");
+			String description = jObj.getString("description");
 			Long userId = regVo.getRegistrationID();
 			String path = request.getRequestURL().toString().replace("generateKeyReportAction.action","genereateReportAction.action?");
-			url = debateService.genearetUrl(reportId, userId, path);
+			status = debateService.saveDebateReportForPdf(userId,debateId,description, path);
 		} catch (Exception e) {
 			LOG.error(" Exception occured in generateUrl() in DebateAction class. ",e);
 		}
+		return Action.SUCCESS;
+	}
+	
+	public String deleteDebateReport()
+	{
+		try {
+			LOG.info(" Entered into deleteDebateReport() in DebateAction class. ");
+			jObj = new JSONObject(getTask());
+			 HttpSession session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+				if(regVo == null)
+					return Action.ERROR;
+			status = debateService.deleteDebateReportUrl(jObj.getString("key"));
+		} catch (Exception e) {
+			LOG.error(" Exception occured in deleteDebateReport() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String generateReport()
+	{
 		return Action.SUCCESS;
 	}
 }
