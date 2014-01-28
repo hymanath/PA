@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
@@ -40,4 +41,6 @@ public interface IDebateService {
 	public List<SelectOptionVO> getRolesList();
 	
 	public String genearetUrl(Long reportId,Long userId,String path);
+	
+	public List<SelectOptionVO> getDebateDetailsForSelectedDates(Date fromDate,Date toDate);
 }
