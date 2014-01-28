@@ -925,4 +925,38 @@ public class DebateService implements IDebateService{
 	    	}
 	    	return url;
 	 }
+	 
+	 public List<SelectOptionVO> getDebateDetailsForSelectedDates(Date fromDate,Date toDate)
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try {
+			 LOG.info("Enterd into getDebateDetailsForSelectedDates() in DebateService class");
+			 List<Object[]> debateDetails = debateSubjectDAO.getDebateDetalsForSelectedDates(fromDate,toDate);
+			 Map<Long,SelectOptionVO> debateMap = new HashMap<Long, SelectOptionVO>();//Map<debateId,debateDetails>
+			 if(debateDetails != null && debateDetails.size() > 0)
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 for (Object[] objects : debateDetails) {
+					 SelectOptionVO selectOptionVO = debateMap.get((Long)objects[0]);
+					 if(selectOptionVO == null)
+					 {
+						 selectOptionVO =  new SelectOptionVO();
+						 selectOptionVO.setId((Long)objects[0]);//debateId
+						 selectOptionVO.setName(objects[1].toString());//debate subject
+						 selectOptionVO.setType(objects[2].toString());//debate date
+						 debateMap.put((Long)objects[0], selectOptionVO);
+					 }
+					 else
+					 {
+						 selectOptionVO.setName(selectOptionVO.getName() + "/n" +objects[1].toString());
+					 }
+					 returnList.add(selectOptionVO);
+				}
+			 }
+			 
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getDebateDetailsForSelectedDates method, Exception - ",e);
+		}
+		 return returnList;
+	 }
 }

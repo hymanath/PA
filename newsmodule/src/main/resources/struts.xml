@@ -6003,6 +6003,11 @@
 		   </result>
 		  </action>
 		 
+	 	  <action name="debateDetaildBtDatesAction" class="debateAction" method="getDebateDetailsBtDates">
+		   <result name="success" type="json">
+		 	<param name="root">debateDetails</param>
+		   </result>
+		  </action>
 	 	  <action name="genereateReportAction" class="debateAction">
 	 			 <result>/jsp/genereateDebetReport.jsp</result>
 	 	  </action>

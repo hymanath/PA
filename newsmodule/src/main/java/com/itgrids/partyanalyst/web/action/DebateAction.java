@@ -48,8 +48,17 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	private List<SelectOptionVO> characteristicsList;
 	private List<SelectOptionVO> rolesList;
 	private String url;
+	private List<SelectOptionVO> debateDetails;
 	
 	
+	public List<SelectOptionVO> getDebateDetails() {
+		return debateDetails;
+	}
+
+	public void setDebateDetails(List<SelectOptionVO> debateDetails) {
+		this.debateDetails = debateDetails;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -442,6 +451,24 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 		return Action.SUCCESS;
 	}
 	
+	public String getDebateDetailsBtDates()
+	{
+		try {
+			LOG.info(" Entered into getDebateDetailsBtDates() in DebateAction class. ");
+			jObj = new JSONObject(getTask());
+			 HttpSession session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+				if(regVo == null)
+					return Action.ERROR;
+				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:MM");
+				String fromDateStr = jObj.getString("fronDate");
+				String toDateStr  = jObj.getString("toDate");
+				debateDetails = debateService.getDebateDetailsForSelectedDates(sdf.parse(fromDateStr), sdf.parse(toDateStr));
+		} catch (Exception e) {
+			LOG.error(" Exception occured in getDebateDetailsBtDates() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
 	public String generateUrl()
 	{
 		try {
