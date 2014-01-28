@@ -5958,6 +5958,7 @@
 		
 		<action name="debateAction" class="debateAction" >
 		    <result name="success">/jsp/debate.jsp</result>
+		    <result name="error" type="redirect">loginPageAction.action</result>
 		 </action>
 		 		
 		<action name="delayAction" class="createReportAction" method="addDelay">
