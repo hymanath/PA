@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
@@ -382,13 +384,20 @@ public class DebateService implements IDebateService{
 			//List<SelectOptionVO> scalesList = null;
 			//List<SelectOptionVO> rolesList = null;
 			// here we are getting all details of debate
+			//SimpleDateFormat sdf  = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm");
+			
+			//System.out.println(printFormat.format(date)); // prints 09:30:51
 			List<Object[]> debateDetailsList = debateDAO.getDebateDetailsForSelectedDebate(debateId);
 			if(debateDetailsList != null && debateDetailsList.size() > 0)
 			{
 				Object[] debateDetails = debateDetailsList.get(0);
+				Date date = parseFormat.parse("2011-04-23 09:30:51:01");
 				debateVO.setDebateId(debateDetails[0] != null ? (Long)debateDetails[0]:0l);
-				debateVO.setStartTime(debateDetails[1] != null ? debateDetails[1].toString() :"");
-				debateVO.setEndTime(debateDetails[2] != null ? debateDetails[2].toString() :"");
+				debateVO.setStartTime(debateDetails[1] != null ? printFormat.format(parseFormat.parse(debateDetails[1].toString())) :"");
+				debateVO.setEndTime(debateDetails[2] != null ? printFormat.format(parseFormat.parse(debateDetails[2].toString())) :"");
+				debateVO.setDate(debateDetails[1] != null ? debateDetails[1].toString() :"");
 				debateVO.setChannelId(debateDetails[3] != null ? (Long)debateDetails[3] :0l);
 				debateVO.setChannelName(debateDetails[4] != null ? debateDetails[4].toString() :"");
 				debateVO.setTelecastTypeId(debateDetails[5] != null ? (Long)debateDetails[5] :0l);
@@ -499,28 +508,32 @@ public class DebateService implements IDebateService{
 						scopeList.add(scopesVO);
 					}
 					List<SelectOptionVO> roleList = rolesMap.get(candidateId);
-					//List<SelectOptionVO> roleList = roleVO.getSelectOptionsList();
-					List<SelectOptionVO> roleDetailsList = new ArrayList<SelectOptionVO>();
-					Long count = 0l;
-					StringBuffer periRole = new StringBuffer();
-					for (SelectOptionVO selectOptionVO : roleList) {
-						count ++;
-						SelectOptionVO debateRoleVO = new SelectOptionVO();
-						debateRoleVO.setName(selectOptionVO.getName());
-						roleDetailsList.add(debateRoleVO);
-						if(count == 1)
-						{
-							periRole.append(selectOptionVO.getName());
+					if(roleList != null && roleList.size() > 0)
+					{
+						List<SelectOptionVO> roleDetailsList = new ArrayList<SelectOptionVO>();
+						Long count = 0l;
+						StringBuffer periRole = new StringBuffer();
+						for (SelectOptionVO selectOptionVO : roleList) {
+							count ++;
+							SelectOptionVO debateRoleVO = new SelectOptionVO();
+							debateRoleVO.setName(selectOptionVO.getName());
+							roleDetailsList.add(debateRoleVO);
+							if(count == 1)
+							{
+								periRole.append(selectOptionVO.getName());
+							}
+							else
+							{
+								periRole.append( "+" + selectOptionVO.getName()); 
+							}
 						}
-						else
-						{
-							periRole.append( "+" + selectOptionVO.getName()); 
-						}
+						participantVO.setPrtiRoles(periRole.toString());
+						participantVO.setRoleList(roleDetailsList);
 					}
-					participantVO.setPrtiRoles(periRole.toString());
-					participantVO.setRoleList(roleDetailsList);
+					
 					participantVO.setScaleList(scopeList);
 					particepentDetailsList.add(participantVO);
+					
 				}
 				debateVO.setParticipantsList(particepentDetailsList);
 			}
