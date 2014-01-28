@@ -560,6 +560,9 @@ function callAjax(jsObj,url)
 				if (jsObj.task == "getCandidatesOfAParty")
 				{
 					fillSelectOptionsVO(myResults,jsObj.selectedVal);	
+				}else if (jsObj.task == "getDebateDetailsBtDates")
+				{
+				 buildDebateBTDatesTable(myResults);
 				}
 			}catch(e)
 			{   
@@ -578,7 +581,7 @@ function callAjax(jsObj,url)
 
 function getDebateDetailsBtDates()
 {
-	alert($('#fromDateId').val());
+	//alert($('#fromDateId').val());
 	var jsObj = {
 				fronDate :$('#fromDateId').val(),
 				toDate   :$('#toDateId').val(),
@@ -594,4 +597,43 @@ function openDebateReport(debateId)
 {
 	window.open("debateReportAction.action?debateId="+debateId+"");
 }
-	
+function  buildDebateBTDatesTable(results){
+
+	var str = '';
+	if(results.length >0){
+		
+		str +='<table id="debatesTab">';
+		str +='<thead>';
+		str +='<th>Subject</th>';
+		str +='<th>Created Date</th>';
+		str +='<th>View Report</th>';
+		str +='<th>Generate URL </th>';
+		str +='<th> </th>';
+		str +='</thead>';
+		str +='<tbody>';
+
+		for(var i in results){
+		str +='<tr>';
+		str +='<td>'+results[i].name+'</td>';
+		str +='<td>'+results[i].type+'</td>';
+		str +='<td><a class="btn btn-info" value="'+results[i].id+'"';
+		str +='onClick="openDebateReport('+results[i].id+')">view</a></td>';
+		str +='<td><input type="button" class="btn btn-info" value="Generate PDF "/></td>';
+		str +='<td><textarea id="reportId'+results[i].id+'" placeholder="Generated URL..."></textarea></td>';
+		str +='</tr>';
+		}
+		str +='</tbody>';
+		str +='</table>';
+		
+		$("#dateWiseReportDiv").html(str);
+		
+		$("#debatesTab").dataTable({
+		"aaSorting": [[ 1, "desc" ]],
+		"iDisplayLength": 15,
+		"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		//"bFilter": false,"bInfo": false
+		  "aoColumns": [null,null,null,null,null]
+		});
+
+	}
+}
