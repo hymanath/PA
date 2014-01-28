@@ -943,6 +943,7 @@ public class DebateService implements IDebateService{
 						 selectOptionVO =  new SelectOptionVO();
 						 selectOptionVO.setId((Long)objects[0]);//debateId
 						 selectOptionVO.setName(objects[1].toString());//debate subject
+						 selectOptionVO.setName(escapeUnicode(StringEscapeUtils.unescapeJava(objects[1].toString())));
 						 selectOptionVO.setType(objects[2].toString());//debate date
 						 debateMap.put((Long)objects[0], selectOptionVO);
 					 }
