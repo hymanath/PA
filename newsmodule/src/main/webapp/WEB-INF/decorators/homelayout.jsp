@@ -156,7 +156,7 @@ margin:-1px 0px 0px 0px ;
 					</div>
 					<!------Menu div-------->
 					<div class="span10" style="margin-top:-15px;height:80px;width:650px;">
-						<ul class="nav1 nav-pills1 navMen pull-right headerMenu">
+						<ul class="nav1 nav-pills1 navMen pull-right headerMenu" style="width: 680px;">
 
 						<c:if test="${sessionScope.USER != null}">
 						 <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
@@ -182,7 +182,7 @@ margin:-1px 0px 0px 0px ;
 									</ul> -->
 							</li> 
 						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
-							  
+							   <li class="outerLi" id="debateTabId"><a href="debateAction.action" class="innerA"> Debate </a></li>
 							 
 						   
 						  
