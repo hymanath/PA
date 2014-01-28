@@ -1,3 +1,10 @@
+
+var subjCount = 2;
+var candCount = 2;
+var questionCount = 2;
+var poleCount = 2;
+
+
 function validateFields(){
 console.log("validating ...");
 $("#errTab").css("display","none");
@@ -563,6 +570,10 @@ function callAjax(jsObj,url)
 				}else if (jsObj.task == "getDebateDetailsBtDates")
 				{
 				 buildDebateBTDatesTable(myResults);
+				}else if (jsObj.task == "generateURL")
+				{
+					$('#'+jsObj.div).text(myResults + "&debateId="+jsObj.debateId);
+					$('#'+jsObj.div).show();
 				}
 			}catch(e)
 			{   
@@ -581,8 +592,7 @@ function callAjax(jsObj,url)
 
 function getDebateDetailsBtDates()
 {
-	//alert($('#fromDateId').val());
-	var jsObj = {
+	   var jsObj = {
 				fronDate :$('#fromDateId').val(),
 				toDate   :$('#toDateId').val(),
 				task : "getDebateDetailsBtDates"	
@@ -597,8 +607,22 @@ function openDebateReport(debateId)
 {
 	window.open("debateReportAction.action?debateId="+debateId+"");
 }
-function  buildDebateBTDatesTable(results){
 
+function generateURL(debateId,div,description)
+{
+	    var jsObj = {
+				debateId : debateId,
+				description   : description,
+				div:  div,
+				task     : "generateURL"	
+		};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "generateKeyReportAction.action?"+rparam;
+		callAjax(jsObj,url);
+}
+function  buildDebateBTDatesTable(results)
+{
 	var str = '';
 	if(results.length >0){
 		
@@ -618,7 +642,7 @@ function  buildDebateBTDatesTable(results){
 		str +='<td>'+results[i].type+'</td>';
 		str +='<td><a class="btn btn-info" value="'+results[i].id+'"';
 		str +='onClick="openDebateReport('+results[i].id+')">view</a></td>';
-		str +='<td><input type="button" class="btn btn-info" value="Generate PDF "/></td>';
+		str +='<td><input type="button" class="btn btn-info" value="Generate PDF " onCLick="generateURL('+results[i].id+',\'reportId'+results[i].id+'\',\''+results[i].name+'\')"/></td>';
 		str +='<td><textarea id="reportId'+results[i].id+'" placeholder="Generated URL..."></textarea></td>';
 		str +='</tr>';
 		}

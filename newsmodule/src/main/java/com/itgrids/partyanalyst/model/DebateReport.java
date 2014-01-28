@@ -70,7 +70,7 @@ public class DebateReport {
 		this.debate = debate;
 	}
 	
-	@Column(name = "description" , length=50)
+	@Column(name = "report_key" )
 	public String getKey() {
 		return key;
 	}

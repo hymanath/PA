@@ -1458,4 +1458,8 @@
 	<bean id="debateSubjectDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateSubjectDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	<bean id="debateReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateReportDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>		

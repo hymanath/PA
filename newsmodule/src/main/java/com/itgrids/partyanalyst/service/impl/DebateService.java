@@ -867,44 +867,56 @@ public class DebateService implements IDebateService{
 		 return returnList ;
 	 }
 	 
-	 public ResultStatus saveDebateReportForPdf(final Long userId,final Long debateId,final String description)
+	 public String saveDebateReportForPdf( Long userId, Long debateId, String description, String path)
 	 {
-		 final ResultStatus resultStatus = new ResultStatus();
+		  String string = "invalid";
 		 try {
 			 LOG.info("Enterd into saveDebateReportForPdf() in DebateService class");
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {
-						DebateReport debateReport = new DebateReport();
-						DateUtilService currentDate = new DateUtilService();
-						debateReport.setDescription(description);
-						debateReport.setCreatedDate(currentDate.getCurrentDateAndTime());
-						Debate debate = debateDAO.get(debateId);
-						if(debate != null)
+			 
+			
+						
+						String key = debateReportDAO.getDebateDatils(userId, debateId);
+						if(key == null)
 						{
-							debateReport.setDebate(debate);
-						}
-						User user = userDAO.get(userId);
-						if(user != null)
-						{
-							debateReport.setUser(user);
-						}
-						debateReport = debateReportDAO.save(debateReport);
-						if(debateReport == null)
-						{
-							resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+							DebateReport debateReport = new DebateReport();
+							DateUtilService currentDate = new DateUtilService();
+							debateReport.setDescription(escapeUnicode(StringEscapeUtils.unescapeJava(description)));
+							debateReport.setCreatedDate(currentDate.getCurrentDateAndTime());
+							Debate debate = debateDAO.get(debateId);
+							if(debate != null)
+							{
+								debateReport.setDebate(debate);
+							}
+							User user = userDAO.get(userId);
+							if(user != null)
+							{
+								debateReport.setUser(user);
+							}
+							String key1 = UUID.randomUUID().toString();
+							debateReport.setKey(key1);
+							debateReport = debateReportDAO.save(debateReport);
+							if(debateReport == null)
+							{
+								
+								string = "error";
+							}
+							else
+							{
+								string = path+"key1="+key1;
+								
+							}
 						}
 						else
 						{
-							resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+							string = path+"key="+key;
 						}
 						
-					}
-			 });
+
 		} catch (Exception e) {
 			LOG.error("Error occured in saveDebateReportForPdf() in DebateService class",e);
-			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			string = "error";
 		}
-		 return resultStatus;
+		 return string;
 	 }
 	 
 	 public String genearetUrl(Long reportId,Long userId,String path)
@@ -942,8 +954,8 @@ public class DebateService implements IDebateService{
 					 {
 						 selectOptionVO =  new SelectOptionVO();
 						 selectOptionVO.setId((Long)objects[0]);//debateId
-						 selectOptionVO.setName(objects[1].toString());//debate subject
-						 selectOptionVO.setName(escapeUnicode(StringEscapeUtils.unescapeJava(objects[1].toString())));
+						 //selectOptionVO.setName(objects[1].toString());//debate subject
+						 selectOptionVO.setName(StringEscapeUtils.unescapeJava(objects[1].toString()));
 						 selectOptionVO.setType(objects[2].toString());//debate date
 						 debateMap.put((Long)objects[0], selectOptionVO);
 					 }
@@ -959,5 +971,25 @@ public class DebateService implements IDebateService{
 			LOG.error(" Exception Occured in getDebateDetailsForSelectedDates method, Exception - ",e);
 		}
 		 return returnList;
+	 }
+	 
+	 public String deleteDebateReportUrl(String key)
+	 {
+		 String status = "";
+		 try {
+			 LOG.info("Enterd into deleteDebateReportUrl() in DebateService class");
+			 int deleteStatus = debateReportDAO.deleteDebateReport(key);
+			 if(deleteStatus == 1)
+			 {
+				 status = "deleted"; 
+			 }
+			 else
+			 {
+				 status = "error";
+			 }
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in deleteDebateReportUrl method, Exception - ",e);
+		}
+		 return status;
 	 }
 }

@@ -6000,7 +6000,7 @@
 		 
 	 	  <action name="generateKeyReportAction" class="debateAction" method="generateUrl">
 		   <result name="success" type="json">
-		 	<param name="root">url</param>
+		 	<param name="root">status</param>
 		   </result>
 		  </action>
 		 
@@ -6009,7 +6009,14 @@
 		 	<param name="root">debateDetails</param>
 		   </result>
 		  </action>
-	 	  <action name="genereateReportAction" class="debateAction">
+		  
+	 	  <action name="deleteDebateReportAction" class="debateAction" method="deleteDebateReport">
+		   <result name="success" type="json">
+		 	<param name="root">status</param>
+		   </result>
+		  </action>
+		  
+	 	  <action name="genereateReportAction" class="debateAction" method="generateReport">
 	 			 <result>/jsp/genereateDebetReport.jsp</result>
 	 	  </action>
 	 	 
