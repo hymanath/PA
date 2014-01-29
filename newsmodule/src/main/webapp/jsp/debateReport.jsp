@@ -43,7 +43,7 @@ function generateDebateReport(result)
 		str += '<p class="boxHeading">Subject : ';
 		for(var m in result.debateNames)
 		{
-			str += ''+result.debateNames[m]+'';
+			str += ''+result.debateNames[m]+'<br/>';
 		}
 		str += '</div>';
 		str += '<div class="row">';
@@ -151,7 +151,7 @@ function generateDebateReport(result)
 		smsStr += '<p>';
 		for(var i in result.smsPoleList)
 		{
-			smsStr += ''+result.smsPoleList[i].type+':'+result.smsPoleList[i].perc+''
+			smsStr += ''+result.smsPoleList[i].type+' : '+result.smsPoleList[i].perc+'%&nbsp;&nbsp;'
 		}
 		smsStr += '<p>';
 		str += '<tr>';

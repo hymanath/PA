@@ -364,7 +364,9 @@ $('#debateReportDiv').show();
 				
 				<div id="participantDiv" class="row-fluid m_top10" >
 				<legend class="boxHeading">Participant Details And Performance:</legend>
+				<div><b>Scale (5 points scale : 0 Poor - 5 Excellent)</b></div>
 				<div id="participantInnerDiv1"  class="participantDetailsClass scrollit">
+				
 				</div>
 				<div  class="span12">
 				<!--<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreCandidates();"><i class="icon-plus"></i></a>-->
@@ -424,8 +426,8 @@ $('#debateReportDiv').show();
 				<div id="debateSummery" class="row-fluid m_top10">
 					<legend class="boxHeading">Debate Summary :</legend>
 					<div class="control-group form-horizontal">
-						<label>
-						<strong>Debate Summary : <font class="requiredFont">*</font></strong></label>
+						<!--<label>
+						<strong>Debate Summary : <font class="requiredFont">*</font></strong></label>-->
 
 						<textarea placeholder="Please Enter Debate Summary ..." rows="4" cols="50" class="span12" name="debetSum" id="debetSum" ></textarea>
 					</div>
@@ -444,7 +446,7 @@ $('#debateReportDiv').show();
 	<div id="debateReportDiv" style="display:none">
 			<div id="debateRport" align="center">
 			<div id="RerrDiv"></div>
-			<h4> Create Debate Report : </h4>
+			<h4> Generate Debate Report : </h4>
 				<div> 
 				From Date <font class="requiredFont">*</font>: <input type="text" id="fromDateId"></input><br>
 				To Date <font class="requiredFont" style="margin-left: 15px;">*</font>: <input type="text" id="toDateId"></input><br>

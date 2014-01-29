@@ -50,8 +50,19 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	private String status;
 	private List<SelectOptionVO> debateDetails;
 	private Long debateId ;
+	private List<SelectOptionVO> candidatesList;
 	
 	
+	
+	
+	public List<SelectOptionVO> getCandidatesList() {
+		return candidatesList;
+	}
+
+	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
+		this.candidatesList = candidatesList;
+	}
+
 	public Long getDebateId() {
 		return debateId;
 	}
@@ -523,6 +534,19 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	
 	public String generateReport()
 	{
+		return Action.SUCCESS;
+	}
+	
+	public String getCandidatesListForDebate()
+	{
+		try {
+			LOG.info(" Entered into deleteDebateReport() in DebateAction class. ");
+			jObj = new JSONObject(getTask());
+			candidatesList = debateService.getCandidatesForDebate(jObj.getLong("partyId"));
+		} catch (Exception e) {
+			LOG.error(" Exception occured in deleteDebateReport() in DebateAction class. ",e);
+		}
+		
 		return Action.SUCCESS;
 	}
 }
