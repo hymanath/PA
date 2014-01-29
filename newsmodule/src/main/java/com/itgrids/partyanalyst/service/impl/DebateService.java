@@ -742,20 +742,31 @@ public class DebateService implements IDebateService{
 		LOG.info("Enterd into saveNewRole method in DebateService class");
 		ResultStatus isSaved = new ResultStatus();
 		try {
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {
-						if(userId != null && newRole != null){
-							DebateRoles debateRoles = new DebateRoles();
-							debateRoles.setName(escapeUnicode(StringEscapeUtils.escapeJava(newRole)).trim());
-							debateRoles.setIsDeleted("N");
-							debateRolesDAO.save(debateRoles);
+				Long count = debateRolesDAO.checkForExists(StringEscapeUtils.escapeJava(newRole));
+				if(count == 0)
+				{
+					if(userId != null && newRole != null){
+						DebateRoles debateRoles = new DebateRoles();
+						debateRoles.setName(escapeUnicode(StringEscapeUtils.escapeJava(newRole)).trim());
+						debateRoles.setIsDeleted("N");
+						debateRoles = debateRolesDAO.save(debateRoles);
+						if(debateRoles != null)
+						{
+							isSaved.setResultCode(ResultCodeMapper.SUCCESS);
+						}
+						else
+						{
+							isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 						}
 					}
-			 });
-			 
-			isSaved.setResultCode(0);
+				}
+				else
+				{
+					isSaved.setResultCode(ResultCodeMapper.FAILURE);
+				}
+	
 		} catch (Exception e) {
-			isSaved.setResultCode(1);
+			isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			LOG.error("Error occured in saveNewRole method in DebateService class",e);
 		}
 		
@@ -766,20 +777,34 @@ public class DebateService implements IDebateService{
 		LOG.info("Enterd into saveNewCharacteristic() in DebateService class");
 		ResultStatus isSaved = new ResultStatus();
 		try {
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {
-						if(userId != null && newCharacteristic != null){
-							Characteristics characteristics = new Characteristics();
-							characteristics.setName(escapeUnicode(StringEscapeUtils.escapeJava(newCharacteristic)).trim());
-							characteristics.setIsDeleted("N");
-							characteristicsDAO.save(characteristics);
-						}
+			Long count = characteristicsDAO.checkForExists(StringEscapeUtils.escapeJava(newCharacteristic));
+			if(count == 0)
+			{
+				if(userId != null && newCharacteristic != null){
+					Characteristics characteristics = new Characteristics();
+					characteristics.setName(escapeUnicode(StringEscapeUtils.escapeJava(newCharacteristic)).trim());
+					characteristics.setIsDeleted("N");
+					characteristics = characteristicsDAO.save(characteristics);
+					if(characteristics != null)
+					{
+						isSaved.setResultCode(ResultCodeMapper.SUCCESS);
 					}
-			});
+					else
+					{
+						isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+					}
+				}
+			}
+			else
+			{
+				isSaved.setResultCode(ResultCodeMapper.FAILURE);
+			}
+			
+				
 			 
-			isSaved.setResultCode(0);
+			
 		} catch (Exception e) {
-			isSaved.setResultCode(1);		
+			isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);		
 			LOG.error("Error occured in saveNewCharacteristic() in DebateService class",e);
 		}		
 		return isSaved;
@@ -789,20 +814,36 @@ public class DebateService implements IDebateService{
 		LOG.info("Enterd into saveNewDebateQuestion() in DebateService class");
 		ResultStatus isSaved = new ResultStatus();
 		try {
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {
-				if(userId != null && newDebateQuestion != null){
+			
+			Long count = debateQuestionsDAO.checkForExists(StringEscapeUtils.escapeJava(newDebateQuestion));
+			if(count == 0)
+			{
+				if(userId != null && newDebateQuestion != null)
+				{
 					DebateQuestions debateQuestion = new DebateQuestions();
 					debateQuestion.setQuestion(escapeUnicode(StringEscapeUtils.escapeJava(newDebateQuestion)).trim());
 					debateQuestion.setIsDeleted("N");
-					debateQuestionsDAO.save(debateQuestion);
-				 }				
-				}
-			});
+					debateQuestion = debateQuestionsDAO.save(debateQuestion);
+					if(debateQuestion != null)
+					{
+						isSaved.setResultCode(ResultCodeMapper.SUCCESS);
+					}
+					else
+					{
+						isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+					}
+						
+				 }
+			}
+			else
+			{
+				isSaved.setResultCode(ResultCodeMapper.FAILURE);	
+			}
+								
 			
-			isSaved.setResultCode(0);				
+						
 		} catch (Exception e) {
-			isSaved.setResultCode(1);
+			isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			LOG.error("Error occured in saveNewDebateQuestion() in DebateService class",e);
 		}
 		
@@ -815,22 +856,37 @@ public class DebateService implements IDebateService{
 			ResultStatus isSaved = new ResultStatus();
 		 try
 		 {			 
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {	
-						if(userId != null && channelName != null){
-							Channel channel = new Channel();						 
-							channel.setChannelName(StringEscapeUtils.unescapeHtml(channelName).trim());	
-							channel.setIsDeleted("N");
-							channel = channelDAO.save(channel);	
+				Long count = channelDAO.checkForExists(StringEscapeUtils.escapeJava(channelName));
+				if(count == 0)
+				{
+					if(userId != null && channelName != null)
+					{
+						Channel channel = new Channel();						 
+						channel.setChannelName(StringEscapeUtils.escapeJava(channelName).trim());	
+						channel.setIsDeleted("N");
+						channel = channelDAO.save(channel);	
+						if(channel != null)
+						{
+							isSaved.setResultCode(ResultCodeMapper.SUCCESS);
 						}
+						else
+						{
+							isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+						}
+						
 					}
-			 });
+				}
+				else
+				{
+					isSaved.setResultCode(ResultCodeMapper.FAILURE);
+				}
+				
 			 
-			isSaved.setResultCode(0);
+			
 		 }
 		 catch(Exception e)
 		 {
-			isSaved.setResultCode(1);
+			isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			LOG.error("Error occured in insertChannelDetails() in DebateService class",e); 
 		 }	
 		  return isSaved;
@@ -843,21 +899,37 @@ public class DebateService implements IDebateService{
 			ResultStatus isSaved = new ResultStatus();
 		 try
 		 {		 
-			 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-					public void doInTransactionWithoutResult(TransactionStatus status) {	
-						if(userId != null && observerName != null){
-						Observer observer = new Observer();					 
-						observer.setObserverName(StringEscapeUtils.unescapeHtml(observerName).trim());	
-						observer.setIsDeleted("N");
-						observer= observerDAO.save(observer);
-						}
+			Long count = observerDAO.checkForExists(StringEscapeUtils.escapeJava(observerName));
+			if(count == 0)
+			{
+				if(userId != null && observerName != null)
+				{
+					Observer observer = new Observer();					 
+					observer.setObserverName(StringEscapeUtils.escapeJava(observerName).trim());	
+					observer.setIsDeleted("N");
+					observer= observerDAO.save(observer);
+					if(observer != null)
+					{
+						isSaved.setResultCode(ResultCodeMapper.SUCCESS);
 					}
-			 });			 
-			 isSaved.setResultCode(0);		 
+					
+					else
+					{
+						isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
+					}
+					
+				}
+			}
+			else
+			{
+				isSaved.setResultCode(ResultCodeMapper.FAILURE);
+			}
+					 
+			 		 
 		 }
 		 catch(Exception e)
 		 {
-			isSaved.setResultCode(1);
+			isSaved.setResultCode(ResultCodeMapper.DATA_NOT_FOUND);
 			LOG.error("Error occured in insertObserverDetails() in DebateService class",e);	 
 		 }	
 		 return isSaved;
@@ -992,12 +1064,13 @@ public class DebateService implements IDebateService{
 						 selectOptionVO.setName(StringEscapeUtils.unescapeJava(objects[1].toString()));
 						 selectOptionVO.setType(sdf.format(parseFormat.parse(objects[2].toString())));//debate date
 						 debateMap.put((Long)objects[0], selectOptionVO);
+						 returnList.add(selectOptionVO);
 					 }
 					 else
 					 {
-						 selectOptionVO.setName(selectOptionVO.getName() + "/n" +objects[1].toString());
+						 selectOptionVO.setName(selectOptionVO.getName() + "<br/>" +StringEscapeUtils.unescapeJava(objects[1].toString()));
 					 }
-					 returnList.add(selectOptionVO);
+					 
 				}
 			 }
 			 

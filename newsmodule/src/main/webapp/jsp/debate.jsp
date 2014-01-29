@@ -368,7 +368,7 @@ $('#debateReportDiv').show();
 				</div>
 				<div  class="span12">
 				<!--<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreCandidates();"><i class="icon-plus"></i></a>-->
-				<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="addMore" id=""  style="float:right;margin-right:20px;"/></a>
+				<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float:right;margin-right:20px;"/></a>
 				</div>
 				</div>
 
@@ -398,9 +398,9 @@ $('#debateReportDiv').show();
 						
 						<div class="smsPoleClass">
 						<div class="row">
-								<textarea class="input-block-level" rows="4" cols="50" name="smsques1" id="smsques1" ></textarea> 
+								<textarea placeholder="Please Enter SMS Question ..."class="input-block-level" rows="4" cols="50" name="smsques1" id="smsques1" ></textarea> 
 						</div>	<div class="row">
-								<div class="span8" >
+								<div class="span7" >
 									<label>
 									<strong>Option : <font class="requiredFont">*</font></strong>
 									</label>
@@ -408,7 +408,7 @@ $('#debateReportDiv').show();
 								</div>
 								<div class="span3">
 									<label><strong>Percentage : <font class="requiredFont">*</font></strong></label>
-									<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1"/>
+									<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1"/>
 								</div>
 							</div>
 							
@@ -427,7 +427,7 @@ $('#debateReportDiv').show();
 						<label>
 						<strong>Debate Summary : <font class="requiredFont">*</font></strong></label>
 
-						<textarea rows="4" cols="50" class="span12" name="debetSum" id="debetSum" ></textarea>
+						<textarea placeholder="Please Enter Debate Summary ..." rows="4" cols="50" class="span12" name="debetSum" id="debetSum" ></textarea>
 					</div>
 					
 							

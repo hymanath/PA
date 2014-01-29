@@ -72,6 +72,7 @@ function generateDebateReport(result)
 		str += '</div>';	
 		
 		str += '<div>';
+		str += '<b>(5 points scale : 0 Poor - 5 Excellent)</b>';
 		str += '<table class="table table-bordered table-hover">';
 		str += '<tr>';
 		str += '<th style="width: 234px;">Party</th>';

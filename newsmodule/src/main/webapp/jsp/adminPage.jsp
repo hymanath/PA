@@ -158,7 +158,7 @@ $("#creationDiv").html('');
 	str +='<div id="innerCreationDiv"> ';
 	str +='<div id="RerrDiv"></div>';
 	str +='<h5 class="text-success"> Create New Debate Role </h5>';
-	str +='Role Name :  <input type="text" name="roleName" id="newRoleId"/><div><input type="button" class="btn btn-success" value="Submit" onClick="createNewRole();"/></div>';
+	str +='Role Name :  <input type="text" name="roleName" id="newRoleId"/><div><input type="button" class="btn btn-success" value="Create" onClick="createNewRole();"/></div>';
 	str +='</div>';
 	
 	$("#creationDiv").html(str);
@@ -172,7 +172,7 @@ $("#creationDiv").html('');
 	str +='<div id="CerrDiv" ></div>';
 	str +='<h5 class="text-success">Create New Characteristic </h5>';
 	str +='Characteristic Name :  <input type="text" name="CharacteristicName" id="CharacteristicId"/>';
-	str +='<div><input type="button" class="btn btn-success" value="Submit"  onClick="createNewCharacteristic();"/></div>';
+	str +='<div><input type="button" class="btn btn-success" value="Create"  onClick="createNewCharacteristic();"/></div>';
 	str +='</div>';
 	
 	$("#creationDiv").html(str);
@@ -184,7 +184,7 @@ $("#creationDiv").html('');
 	str +='<div id="innerCreationDiv">';
 	str +='<div id="QerrDiv"></div>';
 	str +='<h5 class="text-success"> Create New Debate Question </h5>';
-	str +='	Debate Question :  <input type="text" name="debateQuestion" id="debateQstinId"/><div><input type="button" class="btn btn-success" value="Submit" onClick="createNewDebateQuestion();"/></div>';
+	str +='	Debate Question :  <input type="text" name="debateQuestion" id="debateQstinId"/><div><input type="button" class="btn btn-success" value="Create" onClick="createNewDebateQuestion();"/></div>';
 	str +='</div>';
 	
 	$("#creationDiv").html(str);
@@ -196,7 +196,7 @@ $("#creationDiv").html('');
 	str +='<div id="innerCreationDiv">';
 	str +='<div id="OerrDiv"></div>';
 	str +='<h5 class="text-success"> Create New Observer </h5>';
-	str +='	Observer Name :  <input type="text" name="observerName" id="observerName"/><div><input type="button" class="btn btn-success" value="Submit" onClick="insertObserverDetails();"/></div>';
+	str +='	Observer Name :  <input type="text" name="observerName" id="observerName"/><div><input type="button" class="btn btn-success" value="Create" onClick="insertObserverDetails();"/></div>';
 	str +='</div>';
 	
 	$("#creationDiv").html(str);
@@ -208,7 +208,7 @@ $("#creationDiv").html('');
 	str +='<div id="innerCreationDiv">';
 	str +='<div id="CHerrDiv"></div>';
 	str +='<h5 class="text-success"> Create New Channel </h5>';
-	str +='	Channel Name :  <input type="text" name="channel" id="channelName"/><div><input type="button" class="btn btn-success" value="Submit" onClick="insertChannelDetails();"/></div>';
+	str +='	Channel Name :  <input type="text" name="channel" id="channelName"/><div><input type="button" class="btn btn-success" value="Create" onClick="insertChannelDetails();"/></div>';
 	str +='</div>';
 	
 	$("#creationDiv").html(str);
@@ -285,7 +285,12 @@ function createNewOne(name,task,type,errDiv){
 				if(result.resultCode == 0){
 					$("#"+errDiv+"").html('New '+type+' Created Successfully.').addClass("succDiv").fadeOut(3000);
 					return;
-				}else
+				}else if(result.resultCode == 1)
+				{
+					$("#"+errDiv+"").html(''+type+' Already Exists With This Name').addClass("errDiv");
+					return;
+				}
+				else
 				{
 					$("#"+errDiv+"").html('Error occured while saving new '+type+'').addClass("errDiv");
 					return;

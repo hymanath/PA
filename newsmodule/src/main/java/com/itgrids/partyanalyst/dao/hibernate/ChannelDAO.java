@@ -20,4 +20,12 @@ public class ChannelDAO extends GenericDaoHibernate<Channel, Long> implements IC
 		 
 		return query.list();
 	 }
+	 
+	 public Long checkForExists(String name)
+		{
+			Query query = getSession().createQuery("select count(model.channelId) from Channel model " +
+					" where model.channelName = :name");
+			query.setParameter("name", name);
+			return (Long)query.uniqueResult();
+		}
 }

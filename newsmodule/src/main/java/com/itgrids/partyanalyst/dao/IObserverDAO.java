@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.Observer;
 public interface IObserverDAO extends GenericDao<Observer, Long>{
 
 	public List<Observer> getObserverDetails();
+	
+	 public Long checkForExists(String name);
 }

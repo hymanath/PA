@@ -21,5 +21,13 @@ public class CharacteristicsDAO extends GenericDaoHibernate<Characteristics, Lon
 		 
 		return query.list();
 	 }
+	
+	public Long checkForExists(String name)
+	{
+		Query query = getSession().createQuery("select count(model.characteristicsId) from Characteristics model " +
+				" where model.name = :name");
+		query.setParameter("name", name);
+		return (Long)query.uniqueResult();
+	}
 
 }

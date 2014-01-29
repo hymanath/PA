@@ -7,7 +7,6 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IObserverDAO;
 import com.itgrids.partyanalyst.model.Observer;
-import com.itgrids.partyanalyst.model.TelecastType;
 
 public class ObserverDAO extends GenericDaoHibernate<Observer, Long> implements IObserverDAO{
 
@@ -21,4 +20,12 @@ public class ObserverDAO extends GenericDaoHibernate<Observer, Long> implements 
 		 
 		return query.list();
 	 }
+	 
+	 public Long checkForExists(String name)
+	 {
+		Query query = getSession().createQuery("select count(model.observerId) from Observer model " +
+				" where model.observerName = :name");
+		query.setParameter("name", name);
+		return (Long)query.uniqueResult();
+	}
 }
