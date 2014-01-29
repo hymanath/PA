@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.Characteristics;
 public interface ICharacteristicsDAO extends GenericDao<Characteristics, Long>{
 
 	public List<Characteristics> getCharacteristicsDetails();
+	
+	public Long checkForExists(String name);
 }

@@ -26,7 +26,7 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDebateDetalsForSelectedDates(Date fromDate,Date toDate)
 	{
-		Query query = getSession().createQuery("select model.debate.debateId,model.subject,model.debate.startTime " +
+		Query query = getSession().createQuery("select distinct model.debate.debateId,model.subject,model.debate.startTime " +
 				" from DebateSubject model where date(model.debate.startTime) >= :fromDate and date(model.debate.startTime) <= :toDate ");
 		query.setParameter("fromDate", fromDate);
 		query.setParameter("toDate", toDate);

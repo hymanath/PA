@@ -20,4 +20,12 @@ public class DebateQuestionsDAO extends GenericDaoHibernate<DebateQuestions, Lon
 			 
 			return query.list();
 		 }
+	 
+	 public Long checkForExists(String name)
+		{
+			Query query = getSession().createQuery("select count(model.debateQuestionsId) from DebateQuestions model " +
+					" where model.question = :name");
+			query.setParameter("name", name);
+			return (Long)query.uniqueResult();
+		}
 }

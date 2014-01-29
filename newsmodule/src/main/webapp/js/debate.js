@@ -165,7 +165,7 @@ subjCount++;
 }
 
 function removeSubject(id){
-console.log(id);
+
 	$("#"+id+"").html("");
 }
 
@@ -174,7 +174,7 @@ function addAttribute(type){
 	str +='<div id="innerCreationDiv">';
 	str +='<div id="CHerrDiv"></div>';
 	str +='<h5 class="text-success"> Create New '+type+'  </h5>';
-	str +='	'+type+' Name :  <input type="text" name="'+type+'" id="'+type+'Name"/><div><input type="button" class="btn btn-success" value="Submit" onClick="insertAttribtDetails(\''+type+'\');"/></div>';
+	str +='	'+type+' Name :  <input type="text" name="'+type+'" id="'+type+'Name"/><div><input type="button" class="btn btn-success" value="Create" onClick="insertAttribtDetails(\''+type+'\');"/></div>';
 	str +='</div>';
 	
 	$("#dialogueBoxDiv").html(str);
@@ -214,7 +214,12 @@ function insertAttribtDetails(id){
 						setTimeout('$("#dialogueBoxDiv").dialog("close");',1000);
 						updateAttributeField(id);
 					return;
-				}else
+				}else if(result.resultCode == 1)
+				{
+					$("#CHerrDiv").html(''+id+' Already Exists With This Name').addClass("errDiv");
+					return;
+				}
+				else
 				{
 					$("#CHerrDiv").html('Error occured while saving new '+id+'').addClass("errDiv");
 					return;
@@ -231,14 +236,17 @@ function addMorePole(){
 	
 	var str = "";
 	str += "<div class='smsPoleClass row-fluid'>";
-	str += "<div class='row'>";
-	str += "<div class='span8'>";
-	str += "<label><strong>Option </strong></label>";
+	str += "<div class='row"+poleCount+"' style='margin-left:-21px'>";
+	str += "<div class='span7'>";
+	str += "<label><strong>Option : <font class='requiredFont'>*</font></strong>";
 	str += "<input type='text' Class='selectWidth smsOptin span12' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
 	str += "</div>";
 	str += "<div class='span3'>";
-	str += "<label><strong>Percentage </strong></label>";
-	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"'/>";
+	str += "<label><strong>Percentage : <font class='requiredFont'>*</font></strong></label>";
+	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"' key='smsoption"+poleCount+"'/>";
+	str += "</div>";
+	str += "<div class='span1' style='float: left; margin-top: 30px;'>";
+	str += "<a href='javascript:{}'  title='Click here to remove another Option' onclick='removeOptins(\"row"+poleCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a>";
 	str += "</div>";
 	str += "</div>";
 	str += "</div>";
@@ -246,6 +254,10 @@ function addMorePole(){
 	poleCount++;
 }
 
+function removeOptins(divId)
+{
+	$('.'+divId+'').html('');
+}
 function updateAttributeField(id){
 	
 	$.ajax({
@@ -345,16 +357,14 @@ function submitForm()
 				questionAnswer.push(questionAnswerObj);
 			});
 			
-			var l = 0;
-			$( ".smsPoleClass " ).each(function( index ) {
-			l++;
+			$( ".smsOptinPerc " ).each(function( index ) {
 				var smaPoleObj = {};
 				smaPoleObj.questionId  = $('#smsques1').val();	
-				smaPoleObj.option      = $('#smsoption'+l+'').val();
-				smaPoleObj.percentage  = $('#smsper'+l+'').val();
+				smaPoleObj.option      = $('#'+$(this).attr('key')).val();
+				smaPoleObj.percentage  = $(this).val();
 				smsPole.push(smaPoleObj);		
 			});
-			
+			//console.log(smsPole);
 			debateDetails.debetSummery = $('#debetSum').val();
 			
 				var jsObj = {
@@ -374,7 +384,12 @@ function submitForm()
 					    $('#successMsg').show();
 						if(uploadResult.resultCode == 0)
 						{
-							$('#successMsg').html('<b style="color:green;">Saved Successfully</b>');
+							$('#successMsg').html('<b style="color:green;">Debate Created Successfully</b>');
+							$('html, body').animate({
+								 scrollTop: $("#successMsg").offset().top
+							 }, 2000);
+							 $('#successMsg').delay( 8000 )
+							 location.reload();
 						}
 						else
 						{
@@ -424,15 +439,16 @@ function getValues(){
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
 		str +='</select></td>';
-		str +='<td><div id="expReoleDiv1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1" value="0"></input>';
-		str += '<select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
+		str +='<td><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1" value="0"></input>';
+		str += '<div id="expReoleDiv1"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
 		str += '</select></div></td>';
 	
-	str +='<td><a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+	//str +='<td><!--<a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+	str +='<td></td>';
     str +='</tr></table>';
     
 $("#participantInnerDiv1").append(str);
@@ -447,11 +463,6 @@ $("#participantInnerDiv1").append(str);
 	
 }
 
-function getExceptedRoles(id,div)
-{
-	alert(id);
-	alert(div);
-}
 function removeCandidate(name){
 $("#"+name+"").remove();
 }
@@ -487,14 +498,14 @@ function addMoreCandidates()
 	}
 	
 	str +='</select></td><td>';
-	str +='<div id="expReoleDiv'+candCount+'"><input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1" value="0"></input>';
-	str +='<select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
+	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1" value="0"></input>';
+	str +='<div id="expReoleDiv'+candCount+'"><select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	str += '</select></td>';
-	str +='<td><a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
     str +='</tr>';
     
 	$("#participantTable").append(str);
@@ -711,7 +722,7 @@ function  buildDebateBTDatesTable(results)
 		str +='<td>'+results[i].type+'</td>';
 		str +='<td><a class="btn btn-info" value="'+results[i].id+'"';
 		str +='onClick="openDebateReport('+results[i].id+')">view</a></td>';
-		str +='<td><input type="button" class="btn btn-info" value="Generate PDF " onCLick="generateURL('+results[i].id+',\'reportId'+results[i].id+'\',\''+results[i].name+'\')"/></td>';
+		str +='<td><input type="button" class="btn btn-info" value="Generate URL " onCLick="generateURL('+results[i].id+',\'reportId'+results[i].id+'\',\''+results[i].name+'\')"/></td>';
 		str +='<td><textarea id="reportId'+results[i].id+'" placeholder="Generated URL..."></textarea></td>';
 		str +='</tr>';
 		}
