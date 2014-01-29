@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.HashMap;
@@ -401,20 +402,51 @@ public class DebateService implements IDebateService{
 			//List<SelectOptionVO> scalesList = null;
 			//List<SelectOptionVO> rolesList = null;
 			// here we are getting all details of debate
-			//SimpleDateFormat sdf  = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
 			SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			SimpleDateFormat printFormat = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat printFormat = new SimpleDateFormat("HH.mm");
 			
 			//System.out.println(printFormat.format(date)); // prints 09:30:51
 			List<Object[]> debateDetailsList = debateDAO.getDebateDetailsForSelectedDebate(debateId);
 			if(debateDetailsList != null && debateDetailsList.size() > 0)
 			{
 				Object[] debateDetails = debateDetailsList.get(0);
-				Date date = parseFormat.parse("2011-04-23 09:30:51:01");
+				String startTime = "";
 				debateVO.setDebateId(debateDetails[0] != null ? (Long)debateDetails[0]:0l);
-				debateVO.setStartTime(debateDetails[1] != null ? printFormat.format(parseFormat.parse(debateDetails[1].toString())) :"");
-				debateVO.setEndTime(debateDetails[2] != null ? printFormat.format(parseFormat.parse(debateDetails[2].toString())) :"");
-				debateVO.setDate(debateDetails[1] != null ? debateDetails[1].toString() :"");
+				Calendar startCal = Calendar.getInstance();
+				startCal.setTime((Date)debateDetails[1]);
+				int startHour =  startCal.get(Calendar.HOUR) ;
+				int startMinut = startCal.get(Calendar.MINUTE);
+				int startType = startCal.get(Calendar.AM_PM);
+				if(startType == 0)
+				{
+					startTime = startHour +":"+ startMinut +""+ "AM";
+				}
+				else
+				{
+					startTime = startHour +":"+ startMinut +""+ "PM";
+				}
+				String endTime = null;
+				Calendar endCal = Calendar.getInstance();
+				endCal.setTime((Date)debateDetails[2]);
+				int endHour =  endCal.get(Calendar.HOUR);
+				int endMinut = endCal.get(Calendar.MINUTE);
+				int endType = endCal.get(Calendar.AM_PM);
+				if(endType == 0)
+				{
+					endTime = endHour +":"+ endMinut +""+ "AM";
+				}
+				else
+				{
+					endTime = endHour +":"+ endMinut +""+ "PM";
+				}
+				
+				
+				debateVO.setStartTime(startTime);
+				//debateVO.setStartTime(debateDetails[1] != null ? printFormat.format(parseFormat.parse(debateDetails[1].toString())) :"");
+				//debateVO.setEndTime(debateDetails[2] != null ? printFormat.format(parseFormat.parse(debateDetails[2].toString())) :"");
+				debateVO.setEndTime(endTime);
+				debateVO.setDate(debateDetails[1] != null ? sdf.format(parseFormat.parse(debateDetails[1].toString())) :"");
 				debateVO.setChannelId(debateDetails[3] != null ? (Long)debateDetails[3] :0l);
 				debateVO.setChannelName(debateDetails[4] != null ? debateDetails[4].toString() :"");
 				debateVO.setTelecastTypeId(debateDetails[5] != null ? (Long)debateDetails[5] :0l);
@@ -948,6 +980,8 @@ public class DebateService implements IDebateService{
 			 if(debateDetails != null && debateDetails.size() > 0)
 			 {
 				 returnList = new ArrayList<SelectOptionVO>();
+				 SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
+					SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 				 for (Object[] objects : debateDetails) {
 					 SelectOptionVO selectOptionVO = debateMap.get((Long)objects[0]);
 					 if(selectOptionVO == null)
@@ -956,7 +990,7 @@ public class DebateService implements IDebateService{
 						 selectOptionVO.setId((Long)objects[0]);//debateId
 						 //selectOptionVO.setName(objects[1].toString());//debate subject
 						 selectOptionVO.setName(StringEscapeUtils.unescapeJava(objects[1].toString()));
-						 selectOptionVO.setType(objects[2].toString());//debate date
+						 selectOptionVO.setType(sdf.format(parseFormat.parse(objects[2].toString())));//debate date
 						 debateMap.put((Long)objects[0], selectOptionVO);
 					 }
 					 else

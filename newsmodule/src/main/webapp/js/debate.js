@@ -371,7 +371,16 @@ function submitForm()
 					 var uploadHandler = {
 					 success: function(o) {
 					 var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
-				
+					    $('#successMsg').show();
+						if(uploadResult.resultCode == 0)
+						{
+							$('#successMsg').html('<b style="color:green;">Saved Successfully</b>');
+						}
+						else
+						{
+							$('#successMsg').html('<b style="color:red;">Error Occured While Saving the debate information</b>');
+						}
+						
 					 }
 					 };
 					 YAHOO.util.Connect.setForm('debateFromDiv',false);
@@ -415,13 +424,13 @@ function getValues(){
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
 		str +='</select></td>';
-		str +='<td><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1" value="0"></input>';
+		str +='<td><div id="expReoleDiv1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1" value="0"></input>';
 		str += '<select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
-		str += '</select></td>';
+		str += '</select></div></td>';
 	
 	str +='<td><a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
     str +='</tr></table>';
@@ -478,7 +487,7 @@ function addMoreCandidates()
 	}
 	
 	str +='</select></td><td>';
-	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1" value="0"></input>';
+	str +='<div id="expReoleDiv'+candCount+'"><input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1" value="0"></input>';
 	str +='<select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
@@ -520,6 +529,14 @@ function getCandidatesOfSelectedParty(partyId,divId,id)
 {
 	if(partyId == 872)
 	{
+		var str  = '';
+		str +='<select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+id+'" id="expparticipantRoles'+id+'" key="'+id+'expparticipantRoles">';
+		for (var j in rolesArray)
+		{
+			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+		}
+		str += '</select>';
+		$('#expReoleDiv'+id+'').html(str);
 		$('#expparticipantRoles'+id+'').show();
 		$('#expparticipantRoles'+id+'').multiselect({	
 			multiple: true,
@@ -527,6 +544,11 @@ function getCandidatesOfSelectedParty(partyId,divId,id)
 			hide: "explode"	
 	}).multiselectfilter({    
 	});
+	}
+	else
+	{
+		$('#expReoleDiv'+id+'').html('');
+		//$('#expparticipantRoles'+id+'').remove();
 	}
 	var numb = divId.match(/\d/g);
 	//$('#candidate1').find('option').remove();
