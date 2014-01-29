@@ -8,6 +8,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title> Debate Information - TDP Portal </title>
+<!-- Bootstrap -->
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 
  <link href="Green/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<script src="Green/js/bootstrap.min.js"></script>
