@@ -373,7 +373,7 @@ $('#debateReportDiv').show();
 				</div>
 				<div  class="span12">
 				<!--<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreCandidates();"><i class="icon-plus"></i></a>-->
-				<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float:right;margin-right:20px;"/></a>
+				<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float: right; margin-bottom: 10px; margin-top: 10px;"/></a>
 				</div>
 				</div>
 
@@ -424,10 +424,10 @@ $('#debateReportDiv').show();
 				<div  class="span1 offset10">
 				<a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMorePole();"><i class="icon-plus"></i></a>
 				</div>
-				<div>
+
 				
 				<div id="debateSummery" class="row-fluid m_top10">
-					<legend class="boxHeading">Debate Summary :</legend>
+					<legend class="boxHeading">Summary :</legend>
 					<div class="control-group form-horizontal">
 						<!--<label>
 						<strong>Debate Summary : <font class="requiredFont">*</font></strong></label>-->
@@ -438,10 +438,10 @@ $('#debateReportDiv').show();
 							
 				</div>
 				
-				<div align="center">
+				<div align="center" style="margin-bottom: 15px; margin-top: 10px;">
 					<a class="btn btn-success" onClick="submitForm();">Submit</a>
 				</div>
-				</div>
+
 				</div>
 			<form id="debateFromDiv" method="post" action="saveDebateDetailsAction.action" name="debateFromDiv">
 			<input type="hidden" name="task" id="getDebateDetails" /></form>
