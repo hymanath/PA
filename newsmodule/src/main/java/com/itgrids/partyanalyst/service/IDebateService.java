@@ -47,4 +47,6 @@ public interface IDebateService {
 	public String saveDebateReportForPdf(final Long userId,final Long debateId,final String description,final String path);
 	
 	public String deleteDebateReportUrl(String key);
+	
+	public List<SelectOptionVO> getCandidatesForDebate(Long partyId);
 }

@@ -505,7 +505,7 @@ function addMoreCandidates()
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	str += '</select></td>';
-	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
     
 	$("#participantTable").append(str);
@@ -570,7 +570,7 @@ function getCandidatesOfSelectedParty(partyId,divId,id)
 	};
 	
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidatesOfAParty.action?"+rparam;
+	var url = "getCandidatesListForDebateAction.action?"+rparam;
 	callAjax(jsObj,url);
 }
 

@@ -15,7 +15,6 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
@@ -420,11 +419,27 @@ public class DebateService implements IDebateService{
 				int startType = startCal.get(Calendar.AM_PM);
 				if(startType == 0)
 				{
-					startTime = startHour +":"+ startMinut +""+ "AM";
+					if(startMinut >= 10)
+					{
+						startTime = startHour +":"+ startMinut +""+ "AM";
+					}
+					else
+					{
+						startTime = startHour +":"+ startMinut +"0"+ "AM";
+					}
+					
 				}
 				else
 				{
-					startTime = startHour +":"+ startMinut +""+ "PM";
+					if(startMinut >= 10)
+					{
+						startTime = startHour +":"+ startMinut +""+ "PM";
+					}
+					else
+					{
+						startTime = startHour +":"+ startMinut +"0"+ "PM";
+					}
+					
 				}
 				String endTime = null;
 				Calendar endCal = Calendar.getInstance();
@@ -434,11 +449,27 @@ public class DebateService implements IDebateService{
 				int endType = endCal.get(Calendar.AM_PM);
 				if(endType == 0)
 				{
-					endTime = endHour +":"+ endMinut +""+ "AM";
+					if(endMinut >= 10)
+					{
+						endTime = endHour +":"+ endMinut +""+ "AM";
+					}
+					else
+					{
+						endTime = endHour +":"+ endMinut +"0"+ "AM";
+					}
+					
 				}
 				else
 				{
-					endTime = endHour +":"+ endMinut +""+ "PM";
+					if(endMinut >= 10)
+					{
+						endTime = endHour +":"+ endMinut +""+ "PM";
+					}
+					else
+					{
+						endTime = endHour +":"+ endMinut +"0"+ "PM";
+					}
+					
 				}
 				
 				
@@ -1098,5 +1129,27 @@ public class DebateService implements IDebateService{
 			LOG.error(" Exception Occured in deleteDebateReportUrl method, Exception - ",e);
 		}
 		 return status;
+	 }
+	 
+	 public List<SelectOptionVO> getCandidatesForDebate(Long partyId)
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try {
+			 LOG.info("Enterd into getCandidatesForDebate() in DebateService class");
+			 List<Object[]> candidatesList = candidateDAO.getCandidatesForDebate(partyId);
+			 if(candidatesList != null && candidatesList.size() > 0)
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 for (Object[] parms : candidatesList) {
+					 SelectOptionVO selectOptionVO = new SelectOptionVO();
+					 selectOptionVO.setId((Long)parms[0]);
+					 selectOptionVO.setName(parms[1].toString());
+					 returnList.add(selectOptionVO);
+				}
+			 }
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getCandidatesForDebate method, Exception - ",e);
+		}
+		 return returnList;
 	 }
 }

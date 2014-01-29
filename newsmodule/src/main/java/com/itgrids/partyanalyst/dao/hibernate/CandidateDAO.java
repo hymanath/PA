@@ -358,4 +358,13 @@ public class CandidateDAO extends GenericDaoHibernate<Candidate, Long> implement
 		 query.setParameterList("candidateIds", candidateIds);
 		 return query.list();
 	 }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCandidatesForDebate(Long partyId)
+	{
+		Query query = getSession().createQuery("select distinct model.candidateId,model.lastname from Candidate model where " +
+				" model.party.partyId = :partyId and model.isDebateCandidate = 'Y'");
+		query.setParameter("partyId", partyId);
+		return query.list();
+	}
 }

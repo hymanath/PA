@@ -166,7 +166,7 @@ function generateDebateReport(result)
 		smsStr += '<p>';
 		for(var i in result.smsPoleList)
 		{
-			smsStr += ''+result.smsPoleList[i].type+':'+result.smsPoleList[i].perc+''
+			smsStr += ''+result.smsPoleList[i].type+':'+result.smsPoleList[i].perc+' &nbsp;&nbsp;'
 		}
 		smsStr += '<p>';
 		str += '<tr>';

@@ -6016,6 +6016,12 @@
 		   </result>
 		  </action>
 		  
+	 	  <action name="getCandidatesListForDebateAction" class="debateAction" method="getCandidatesListForDebate">
+		   <result name="success" type="json">
+		 	<param name="root">candidatesList</param>
+		   </result>
+		  </action>
+		  
 	 	  <action name="genereateReportAction" class="debateAction" method="generateReport">
 	 			 <result>/jsp/genereateDebetReport.jsp</result>
 	 	  </action>
