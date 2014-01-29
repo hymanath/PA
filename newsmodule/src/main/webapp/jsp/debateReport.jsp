@@ -62,11 +62,11 @@ function generateDebateReport(result)
 		str += '<div class="span3 ">';
 		if(result.telecastTime == 'Prime')
 		{
-			str += 'Telecate Time : '+result.startTime+' am to '+result.endTime+' am ';
+			str += 'Telecast Time : '+result.startTime+'  to '+result.endTime+'  ';
 		}
 		else
 		{
-			str += 'Telecate Time : '+result.startTime+' pm to '+result.endTime+' pm ';
+			str += 'Telecast Time : '+result.startTime+'  to '+result.endTime+'  ';
 		}
 		str += '</div>';	
 		str += '</div>';	
@@ -105,7 +105,7 @@ function generateDebateReport(result)
 			str += '</tr>';
 		}
 		str += '<tr>';
-		str += '<th style="width: 234px;">What was the role played  by the individual in over all programme(C.P/Critic/Philospher/Bully/Nurse)</th>';
+		str += '<th style="width: 234px;">What was the role played  by the individual in over all programme(C.P/Critic/Philosopher/Bully/Nurse)</th>';
 		for(var i in result.participantsList)
 		{
 			str += '<td>'+result.participantsList[i].prtiRoles+'</td>';
@@ -141,7 +141,7 @@ function generateDebateReport(result)
 		}
 		
 		str += '<tr>';
-		str += '<th style="width: 234px;">Summery of performane</th>';
+		str += '<th style="width: 234px;">Summary of performence</th>';
 		str += '<td colspan='+noOfParticepents+'>'+result.debateSummery+'</td>';
 		str += '</tr>';
 		
@@ -154,7 +154,7 @@ function generateDebateReport(result)
 		}
 		smsStr += '<p>';
 		str += '<tr>';
-		str += '<th style="width: 234px;">Sms Poll Question and Resumls</th>';
+		str += '<th style="width: 234px;">Sms Poll Question and Results</th>';
 		str += '<td colspan='+noOfParticepents+'>'+smsStr+'</td>';
 		str += '<tr>';
 		str += '</div>';

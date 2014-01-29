@@ -322,6 +322,7 @@ $('#debateReportDiv').show();
 				</tr>
 			</table>
 		</div>
+		<div id="successMsg" style="display:none;" align="center"></div>
 			<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">
 				<div class="row-fluid" >
 					<legend class="boxHeading">Debate Information : </legend>
@@ -421,10 +422,10 @@ $('#debateReportDiv').show();
 				<div>
 				
 				<div id="debateSummery" class="row-fluid m_top10">
-					<legend class="boxHeading">Debate Summery :</legend>
+					<legend class="boxHeading">Debate Summary :</legend>
 					<div class="control-group form-horizontal">
 						<label>
-						<strong>Debate Summery : <font class="requiredFont">*</font></strong></label>
+						<strong>Debate Summary : <font class="requiredFont">*</font></strong></label>
 
 						<textarea rows="4" cols="50" class="span12" name="debetSum" id="debetSum" ></textarea>
 					</div>

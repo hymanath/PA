@@ -274,7 +274,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			 debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
 			 String startDate = debateObj.getString("startTime");
 			 String endDate = debateObj.getString("endTime");
-			 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:MM");
+			 SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy HH:mm");
 			 debateDetailsVO.setStartDate(sdf.parse(startDate));
 			 debateDetailsVO.setEndDate(sdf.parse(endDate));
 			 debateDetailsVO.setDebateSummery(debateObj.getString("debetSummery"));
@@ -333,9 +333,14 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				 {
 					 for (int j = 0; j < exprolesArray.length(); j++)
 					 {
-						 SelectOptionVO rolesVO = new SelectOptionVO();
-						 rolesVO.setId(Long.valueOf(exprolesArray.get(j).toString()));
-						 exprolesList.add(rolesVO);
+						 
+						 if(Long.valueOf(exprolesArray.get(j).toString()) > 0l)
+						 {
+							 SelectOptionVO rolesVO = new SelectOptionVO();
+							 rolesVO.setId(Long.valueOf(exprolesArray.get(j).toString()));
+							 exprolesList.add(rolesVO);
+						 }
+						 
 					 }
 					 participantVO.setExpRoleList(exprolesList);
 					 
