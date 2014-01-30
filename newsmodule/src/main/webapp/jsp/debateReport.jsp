@@ -113,24 +113,48 @@ function generateDebateReport(result)
 		}
 		str += '</tr>';
 
-		str += '<tr>';
-		str += '<th style="width: 234px;">What was the role expected from TDP leader in this program!</th>';
-		var count = 0;
-		var expRole = '';
-		for(var i in result.debateExpRolesList)
+		
+		if(result.noTdpLeaders > 1)
 		{
-			count ++ ;
-			if(count == 1)
+			str += '<tr>';
+			str += '<th style="width: 234px;">What was the role expected from TDP leader in this program!</th>';
+			for(var i in result.participantsList)
 			{
-				expRole += ''+result.debateExpRolesList[i].location+'';
+				if(result.participantsList[i].expRoles == null)
+				{
+					str += '<td></td>';
+				}
+				else
+				{
+					str += '<td>'+result.participantsList[i].expRoles+'</td>';
+				}
+				
 			}
-			else
-			{
-				expRole += '+' + ''+result.debateExpRolesList[i].location+'';
-			}
+			str += '</tr>';
 		}
-		str += '<td colspan='+noOfParticepents+'>'+expRole+'</td>';
-		str += '</tr>';
+		else
+		{
+			str += '<tr>';
+			str += '<th style="width: 234px;">What was the role expected from TDP leader in this program!</th>';
+			var count = 0;
+			var expRole = '';
+			for(var i in result.debateExpRolesList)
+			{
+				count ++ ;
+				if(count == 1)
+				{
+					expRole += ''+result.debateExpRolesList[i].location+'';
+				}
+				else
+				{
+					expRole += '+' + ''+result.debateExpRolesList[i].location+'';
+				}
+			}
+			str += '<td colspan='+noOfParticepents+'>'+expRole+'</td>';
+			str += '</tr>';
+		}
+		
+		
 		
 		
 		for(var i in result.questionAnswersList)
