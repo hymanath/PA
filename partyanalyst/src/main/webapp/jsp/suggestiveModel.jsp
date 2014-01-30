@@ -1070,6 +1070,13 @@ function panchayatMatrx(result)
   <div class="widget blue">
   <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 485px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
+
+ <div class="well" style="float:left;width:150px;margin-top:70px;height:auto;">
+ <fieldset>
+  <legend>TOOLS</legend>
+ <input type="button" value="getFamilyWise Details" class="btn" id="familyWisebtn" onclick="redirectToFamilyInfo()">
+ </fieldset>
+  </div>
    <div id="mainDiv" align="center"  style="margin-left: 196px;">
      <div id="errorMsgDiv" >&nbsp;</div><br><br>
      <div style="width: 500px; float: left;margin-bottom: 5px;">
@@ -4441,6 +4448,11 @@ str+='</tbody></table>';
 
 $("#voterAgeGroupDiv2").append(str);
 }
+}
+function redirectToFamilyInfo()
+{ 
+  var win=window.open('familyDetailsAction.action', '_blank');
+  win.focus();
 }
 
 </script>

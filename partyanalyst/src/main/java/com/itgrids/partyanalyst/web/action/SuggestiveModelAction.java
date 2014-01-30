@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -88,7 +89,14 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 	private static final Logger log = Logger.getLogger(SuggestiveModelAction.class);
 	private VotersInfoForMandalVO votersInfoForMandalVO;
 	private Long latestPublicationId;
+	private List<VoterHouseInfoVO> familyInfo;
 	
+	public List<VoterHouseInfoVO> getFamilyInfo() {
+		return familyInfo;
+	}
+	public void setFamilyInfo(List<VoterHouseInfoVO> familyInfo) {
+		this.familyInfo = familyInfo;
+	}
 	public Long getLatestPublicationId() {
 		return latestPublicationId;
 	}
@@ -1007,5 +1015,17 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				e.printStackTrace();
 			}
 			 return Action.SUCCESS;
+		}
+		
+		public String getFamilyDetailsForConstituency()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				familyInfo = suggestiveModelService.getFamilyDetailsForConstituency(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),jObj.getLong("minVal"),jObj.getLong("maxVal"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			 return Action.SUCCESS;	
 		}
 }

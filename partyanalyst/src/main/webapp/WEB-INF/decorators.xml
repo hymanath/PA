@@ -281,6 +281,7 @@
 		<pattern>/constituencyInfoAction*</pattern>
 		<pattern>/mobileAppUserMgmtAction*</pattern>
 		<pattern>/predictedCasteAssignAction*</pattern>
+		<pattern>/familyDetailsAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
