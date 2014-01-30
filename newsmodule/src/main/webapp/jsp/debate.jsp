@@ -277,6 +277,9 @@ $('#debateReportDiv').hide();
 }
 function showDebateReportDiv(){
 $('#newDibateDiv').hide();
+$('#dateWiseReportDiv').html('');
+$('#fromDateId').val('');
+$('#toDateId').val('');
 $('#debateReportDiv').show();
 }
 </script>
