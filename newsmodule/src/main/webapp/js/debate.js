@@ -389,7 +389,7 @@ function submitForm()
 								 scrollTop: $("#successMsg").offset().top
 							 }, 2000);
 							 $('#successMsg').delay( 20000 )
-							 location.reload();
+							 location.reload(true);
 						}
 						else
 						{
