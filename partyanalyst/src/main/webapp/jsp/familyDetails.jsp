@@ -224,7 +224,7 @@ function getFamilyInfo()
 	}
 	else
 	{
-	 if(fromValue < toValue)
+	 if(toValue < fromValue)
 	{
         str+='From Value must be greter than To value<br/>';
 		flag =false;
@@ -243,8 +243,8 @@ var jsObj=
 	{	
 	        constituencyId:constituencyId,
 			publicationId:publicationId,
-			minVal:toValue,
-			maxVal:fromValue,
+			minVal:fromValue,
+			maxVal:toValue,
 		task:"getFamilyDetails"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
