@@ -236,7 +236,7 @@ function addMorePole(){
 	
 	var str = "";
 	str += "<div class='smsPoleClass row-fluid'>";
-	str += "<div class='row"+poleCount+"' style='margin-left:-21px'>";
+	str += "<div class='row"+poleCount+"' style='margin-left:-11px'>";
 	str += "<div class='span7'>";
 	str += "<label><strong>Option : <font class='requiredFont'>*</font></strong>";
 	str += "<input type='text' Class='selectWidth smsOptin span12' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
@@ -323,7 +323,7 @@ function submitForm()
 					 scaleId : '',
 					 scaleTotal : ''
 					}; 
-				participantObj.summery = 'prasad';
+				participantObj.summery = $(this).closest("tr").find('.candSummary').val();
 				participantObj.scale = [];
 				for(var i=0;i <charsArray.length;i++)
 				{
@@ -388,7 +388,7 @@ function submitForm()
 							$('html, body').animate({
 								 scrollTop: $("#successMsg").offset().top
 							 }, 2000);
-							 $('#successMsg').delay( 8000 )
+							 $('#successMsg').delay( 20000 )
 							 location.reload();
 						}
 						else
@@ -414,7 +414,7 @@ function getValues(){
 	for(var i in charsArray){
 		str +='<th>'+charsArray[i].name+'</th>';
 	}
-	str +='<th>Participant Roles</th><th>Expected Roles</th><th>delete</th></tr></thead>';
+	str +='<th>Participant Roles</th><th>Expected Roles</th><th>Summary</th><th>Delete</th></tr></thead>';
    
 	str += "<tr id='row1' class='particepntDetailsRow'>";
 	str += "<td><select name='party1'  id='party1' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,1)' class='partysClass'><option value='0' selected='selected'>Select</option>";
@@ -448,6 +448,7 @@ function getValues(){
 		str += '</select></div></td>';
 	
 	//str +='<td><!--<a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
+	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary1" ></textarea></td>';
 	str +='<td></td>';
     str +='</tr></table>';
     
@@ -505,6 +506,7 @@ function addMoreCandidates()
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	str += '</select></td>';
+	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCount+'" ></textarea></td>';
 	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
     
