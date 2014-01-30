@@ -298,4 +298,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Long> getAvailableVoterIdsList(Long userId,Long casteStateId,List<Long> voterIdsList);
 	
+	public List<Object[]> getCasteForVoter(List<Long> voterId);
+	
 }
