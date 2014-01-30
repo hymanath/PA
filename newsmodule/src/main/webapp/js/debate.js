@@ -608,7 +608,16 @@ function callAjax(jsObj,url)
 					fillSelectOptionsVO(myResults,jsObj.selectedVal);	
 				}else if (jsObj.task == "getDebateDetailsBtDates")
 				{
-				 buildDebateBTDatesTable(myResults);
+					if(myResults != null && myResults.length > 0)
+					{
+						buildDebateBTDatesTable(myResults);
+					}
+					else
+					{
+						$("#dateWiseReportDiv").html("");
+						$('#dateWiseReportDiv').html('<h4 align="center" style="color:red;">No Data Avaliable</h4>');
+					}
+				 
 				}else if (jsObj.task == "generateURL")
 				{
 					$('#'+jsObj.div).text(myResults + "&debateId="+jsObj.debateId);
