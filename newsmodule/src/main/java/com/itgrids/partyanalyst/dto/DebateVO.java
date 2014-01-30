@@ -32,6 +32,9 @@ public class DebateVO implements Serializable {
 	private List<SelectOptionVO> debateRolesList;
 	private Date StartDate;
 	private Date endDate;
+	private Long noTdpLeaders;;
+	
+	
 	public Long getDebateId() {
 		return debateId;
 	}
@@ -158,6 +161,12 @@ public class DebateVO implements Serializable {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public Long getNoTdpLeaders() {
+		return noTdpLeaders;
+	}
+	public void setNoTdpLeaders(Long noTdpLeaders) {
+		this.noTdpLeaders = noTdpLeaders;
 	}
 	
 	

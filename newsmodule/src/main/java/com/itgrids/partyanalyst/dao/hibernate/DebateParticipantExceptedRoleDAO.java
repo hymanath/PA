@@ -17,7 +17,7 @@ public class DebateParticipantExceptedRoleDAO extends GenericDaoHibernate<Debate
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getPaticepentExpRoles(Long debateId)
 	{
-		return getHibernateTemplate().find("select model.debateRoles.name,model.debateParticipant.candidate.firstname" +
+		return getHibernateTemplate().find("select model.debateRoles.name,model.debateParticipant.candidate.firstname ,model.debateParticipant.candidate.candidateId" +
 				"  from DebateParticipantExpectedRole model " +
 				" where model.debateParticipant.debate.debateId = ? ",debateId);
 	}

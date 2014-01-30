@@ -516,6 +516,22 @@ public class DebateService implements IDebateService{
 				}
 				debateVO.setCandidateSummery(debatePaticepentDetailsList);
 			}
+			// here we are getting the excepeted roles for participents of tdp party
+			List<Object[]> debateExpRoles = debateParticipantExceptedRoleDAO.getPaticepentExpRoles(debateId);
+			if(debateExpRoles != null && debateExpRoles.size() > 0)
+			{
+				debateExpRolesList = new ArrayList<SelectOptionVO>();
+				
+				for (Object[] parms : debateExpRoles)
+				{
+					SelectOptionVO debateExpRole = new SelectOptionVO();
+					debateExpRole.setName(parms[1] != null ? parms[1].toString() :"");//candidate
+					debateExpRole.setLocation(parms[0] != null ? StringEscapeUtils.unescapeJava(parms[0].toString()) :"");//role
+					debateExpRolesList.add(debateExpRole);
+				}
+				debateVO.setDebateExpRolesList(debateExpRolesList);
+			}
+						
 			//here we are getting the all details of the debate particepent candidate characers
 			List<Object[]> dabateCharcsList = debateParticipantCharcsDAO.getDebateCharcsDetails(debateId);
 			// here we are getting the all particepents role details
@@ -569,6 +585,25 @@ public class DebateService implements IDebateService{
 					//olesList.add(selectOptionVO);
 					roleDetails.add(selectOptionVO);
 				}
+				Map<Long,List<SelectOptionVO>> expRolesMap = null;
+				List<SelectOptionVO> expRoleList = null;
+				if(debateExpRoles != null && debateExpRoles.size() > 0)
+				{
+					expRolesMap = new HashMap<Long, List<SelectOptionVO>>();
+					for (Object[] parms : debateExpRoles) {
+						expRoleList = expRolesMap.get((Long)parms[2]);
+						if(expRoleList == null)
+						{
+							expRoleList = new ArrayList<SelectOptionVO>();
+							expRolesMap.put((Long)parms[2], expRoleList);
+						}
+						SelectOptionVO debateExpRole = new SelectOptionVO();
+						debateExpRole.setName(parms[1] != null ? parms[1].toString() :"");//candidate
+						debateExpRole.setLocation(parms[0] != null ? StringEscapeUtils.unescapeJava(parms[0].toString()) :"");//role
+						expRoleList.add(debateExpRole);
+					}
+				}
+				debateVO.setNoTdpLeaders(Long.valueOf(expRolesMap.size()));
 				Set<Long> candidatesSet = particepentsMap.keySet();
 				// here we are processing the each candidate wise debate scaling , charactes, party etc...
 				for (Long candidateId : candidatesSet)
@@ -610,8 +645,33 @@ public class DebateService implements IDebateService{
 						participantVO.setPrtiRoles(periRole.toString());
 						participantVO.setRoleList(roleDetailsList);
 					}
-					
+					List<SelectOptionVO> exproles = expRolesMap.get(candidateId);
+					List<SelectOptionVO> expList = null;
+					StringBuffer expRole = null;
+					if(exproles != null && exproles.size() > 0)
+					{
+						Long count = 0l;
+						expRole = new StringBuffer();
+						expList = new ArrayList<SelectOptionVO>();
+						for (SelectOptionVO expRoleVO : exproles) {
+							count ++ ;
+							SelectOptionVO scopesVO = new SelectOptionVO();
+							scopesVO.setName(expRoleVO.getLocation());
+							expList.add(scopesVO);
+							if(count == 1)
+							{
+								expRole.append(expRoleVO.getLocation());
+							}
+							else
+							{
+								expRole.append( "+" + expRoleVO.getLocation()); 
+							}
+						}
+					}
+					if(expRole != null)
+					participantVO.setExpRoles(expRole.toString());
 					participantVO.setScaleList(scopeList);
+					participantVO.setExpRoleList(expList);
 					particepentDetailsList.add(participantVO);
 					
 				}
@@ -633,20 +693,7 @@ public class DebateService implements IDebateService{
 				debateVO.setQuestionAnswersList(debateQuestionDetailsList);
 				
 			}
-			// here we are getting the excepeted roles for participents of tdp party
-			List<Object[]> debateExpRoles = debateParticipantExceptedRoleDAO.getPaticepentExpRoles(debateId);
-			if(debateExpRoles != null && debateExpRoles.size() > 0)
-			{
-				debateExpRolesList = new ArrayList<SelectOptionVO>();
-				for (Object[] parms : debateExpRoles)
-				{
-					SelectOptionVO debateExpRole = new SelectOptionVO();
-					debateExpRole.setName(parms[1] != null ? parms[1].toString() :"");//candidate
-					debateExpRole.setLocation(parms[0] != null ? StringEscapeUtils.unescapeJava(parms[0].toString()) :"");//role
-					debateExpRolesList.add(debateExpRole);
-				}
-				debateVO.setDebateExpRolesList(debateExpRolesList);
-			}
+			
 			// here we are getting the main subjet of the debeate
 			List<Object[]> subjectsList = debateSubjectDAO.getDebateSubjectDetails(debateId);
 			if(subjectsList != null && subjectsList.size() > 0)
@@ -684,20 +731,33 @@ public class DebateService implements IDebateService{
 		return debateVO;
 	}
 	
+	/**
+	 * This service is used for getting the channel details
+	 * @return List<SelectOptionVO> channelDetails
+	 */
 	public List<SelectOptionVO> getChannelDetails()
 	{
-		List<SelectOptionVO> channelDetails = new ArrayList<SelectOptionVO>();
+		List<SelectOptionVO> channelDetails = null;
 		SelectOptionVO selectOptionVO;
 		List<Channel> channelDetail = channelDAO.getChannelDetails();
-		for(Channel param:channelDetail){
-			selectOptionVO = new SelectOptionVO();
-			selectOptionVO.setId(new Long(param.getChannelId()));
-			selectOptionVO.setName(param.getChannelName());
-			channelDetails.add(selectOptionVO);
+		if(channelDetail != null && channelDetail.size() > 0)
+		{
+			channelDetails = new ArrayList<SelectOptionVO>();
+			for(Channel param:channelDetail){
+				selectOptionVO = new SelectOptionVO();
+				selectOptionVO.setId(new Long(param.getChannelId()));
+				selectOptionVO.setName(param.getChannelName());
+				channelDetails.add(selectOptionVO);
+			}
 		}
+		
 		return channelDetails;
 	}
 	
+	/**
+	 * This service is used for getting telecast details
+	 * @return List<SelectOptionVO> telecastDetails
+	 */
 	public List<SelectOptionVO> getTelecastTimeDetails()
 	{
 		List<SelectOptionVO> telecastDetails = new ArrayList<SelectOptionVO>();
@@ -712,6 +772,10 @@ public class DebateService implements IDebateService{
 		return telecastDetails;
 	}
 	
+	/**
+	 * This service is used for getting the observers 
+	 * @return List<SelectOptionVO> observerDetails
+	 */
 	public List<SelectOptionVO> getObserverDetails()
 	{
 		List<SelectOptionVO> observerDetails = new ArrayList<SelectOptionVO>();
@@ -726,6 +790,10 @@ public class DebateService implements IDebateService{
 		return observerDetails;
 	}
 	
+	/**
+	 * This service is used for getting the debate question details
+	 * @return List<SelectOptionVO> debateDetails
+	 */
 	public List<SelectOptionVO> getDebateQuestionDetails()
 	{
 		List<SelectOptionVO> debateDetails = new ArrayList<SelectOptionVO>();
