@@ -385,11 +385,12 @@ function submitForm()
 						if(uploadResult.resultCode == 0)
 						{
 							$('#successMsg').html('<b style="color:green;">Debate Created Successfully</b>');
+							//$('#successMsg').delay( 2000 );
 							$('html, body').animate({
 								 scrollTop: $("#successMsg").offset().top
 							 }, 2000);
-							 $('#successMsg').delay( 20000 )
-							 location.reload(true);
+							 
+							 setTimeout('window.location = "debateAction.action"',5000);
 						}
 						else
 						{
