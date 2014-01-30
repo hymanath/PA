@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,8 @@ import com.itgrids.partyanalyst.service.IDebateService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class DebateAction extends ActionSupport implements ServletRequestAware{
+public class DebateAction extends ActionSupport implements ServletRequestAware
+{
 	/**
 	 * 
 	 */
@@ -243,7 +246,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 
 	public String execute()
 	{
-		try {
+		try 
+		{
 			LOG.info("Entered into execute methon in DebateAction Class");
 			session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -260,13 +264,31 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			debateParticipantRoleList = debateService.getDebateParticipantRoleDetails();
 			characteristicsList = debateService.getCharacteristicsDetails();
 			rolesList = debateService.getRolesList();
-		} catch (Exception e) {
+			channelList.add(new SelectOptionVO(0l,"Select Channel"));
+			telecastTimeList.add(new SelectOptionVO(0l,"Select Telecast Time"));
+			observerList.add(new SelectOptionVO(0l,"Select Observer"));
+			
+			Collections.sort(channelList, sortList);
+			Collections.sort(telecastTimeList, sortList);
+			Collections.sort(observerList, sortList);
+		}
+		catch (Exception e) 
+		{
 			LOG.error("Exception occured in execute methon in DebateAction Class",e);
 		}
 		
 		return Action.SUCCESS;
 	}
 
+	 public static Comparator<SelectOptionVO> sortList = new Comparator<SelectOptionVO>()
+	 {
+		  
+	  public int compare(SelectOptionVO newsCountVO, SelectOptionVO newsCountVO2)
+		{
+		   return (newsCountVO.getId()).compareTo(newsCountVO2.getId());
+		}
+    };
+		    
 	public String saveDebateDetial()
 	{
 		try 
@@ -450,13 +472,16 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 					resultStatus = debateService.insertObserverDetails(regVo.getRegistrationID(),attributeValue);
 				}
 				
-		} catch (Exception e) {
+		} 
+		catch (Exception e)
+		{
 			LOG.error(" Exception occured in saveDebateRelatedAttributes() in DebateAction class. ",e);
 		}
 		return Action.SUCCESS;
 	}
 	
-	public String updateFieldAttributes(){		
+	public String updateFieldAttributes()
+	{		
 		LOG.info(" Entered into updateFieldAttributes() in DebateAction class. ");		
 		HttpSession session = request.getSession();
 		RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
@@ -480,7 +505,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	
 	public String getDebateDetailsBtDates()
 	{
-		try {
+		try 
+		{
 			LOG.info(" Entered into getDebateDetailsBtDates() in DebateAction class. ");
 			jObj = new JSONObject(getTask());
 			 HttpSession session = request.getSession();
@@ -491,14 +517,17 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				String fromDateStr = jObj.getString("fronDate");
 				String toDateStr  = jObj.getString("toDate");
 				debateDetails = debateService.getDebateDetailsForSelectedDates(sdf.parse(fromDateStr), sdf.parse(toDateStr));
-		} catch (Exception e) {
+		} 
+		catch (Exception e)
+		{
 			LOG.error(" Exception occured in getDebateDetailsBtDates() in DebateAction class. ",e);
 		}
 		return Action.SUCCESS;
 	}
 	public String generateUrl()
 	{
-		try {
+		try
+		{
 			LOG.info(" Entered into generateUrl() in DebateAction class. ");
 			 jObj = new JSONObject(getTask());
 			 HttpSession session = request.getSession();
@@ -510,7 +539,9 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 			Long userId = regVo.getRegistrationID();
 			String path = request.getRequestURL().toString().replace("generateKeyReportAction.action","genereateReportAction.action?");
 			status = debateService.saveDebateReportForPdf(userId,debateId,description, path);
-		} catch (Exception e) {
+		}
+		catch (Exception e) 
+		{
 			LOG.error(" Exception occured in generateUrl() in DebateAction class. ",e);
 		}
 		return Action.SUCCESS;
@@ -518,7 +549,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	
 	public String deleteDebateReport()
 	{
-		try {
+		try 
+		{
 			LOG.info(" Entered into deleteDebateReport() in DebateAction class. ");
 			jObj = new JSONObject(getTask());
 			 HttpSession session = request.getSession();
@@ -526,7 +558,9 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 				if(regVo == null)
 					return Action.ERROR;
 			status = debateService.deleteDebateReportUrl(jObj.getString("key"));
-		} catch (Exception e) {
+		} 
+		catch (Exception e)
+		{
 			LOG.error(" Exception occured in deleteDebateReport() in DebateAction class. ",e);
 		}
 		return Action.SUCCESS;
@@ -539,11 +573,13 @@ public class DebateAction extends ActionSupport implements ServletRequestAware{
 	
 	public String getCandidatesListForDebate()
 	{
-		try {
+		try 
+		{
 			LOG.info(" Entered into deleteDebateReport() in DebateAction class. ");
 			jObj = new JSONObject(getTask());
 			candidatesList = debateService.getCandidatesForDebate(jObj.getLong("partyId"));
-		} catch (Exception e) {
+		} catch (Exception e)
+		{
 			LOG.error(" Exception occured in deleteDebateReport() in DebateAction class. ",e);
 		}
 		
