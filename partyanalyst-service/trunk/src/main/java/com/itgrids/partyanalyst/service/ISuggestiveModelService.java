@@ -13,6 +13,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -62,4 +63,6 @@ public interface ISuggestiveModelService {
 	 public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId);
 	 
 	 public Long getLatestPublicationByConstituency(Long constituencyId);
+	 
+	 public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue);
 }

@@ -100,7 +100,25 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
 	private boolean constituency;
     private Long mandalId;
     private Long localEleBodyId;
+    private String elderCaste;
+    private String youngerCaste;
+    
 
+	public String getElderCaste() {
+		return elderCaste;
+	}
+
+	public void setElderCaste(String elderCaste) {
+		this.elderCaste = elderCaste;
+	}
+
+	public String getYoungerCaste() {
+		return youngerCaste;
+	}
+
+	public void setYoungerCaste(String youngerCaste) {
+		this.youngerCaste = youngerCaste;
+	}
 
 	public String getInfluencePartyName() {
 		return influencePartyName;

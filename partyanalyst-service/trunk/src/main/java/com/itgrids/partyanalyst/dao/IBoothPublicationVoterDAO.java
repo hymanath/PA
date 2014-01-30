@@ -567,4 +567,7 @@ public interface IBoothPublicationVoterDAO extends
 			 * @return List<?> 
 			 */
 		public List<?> getVoterDetailsByBoothAndConstituency(long boothId,long constituencyId);
+		
+		public List<Object[]> getHouseNosForBooth(Long constituencyId,Long publicationId,Long minVal,Long maxVal);
+		public List<Object[]> getFamilyWiseInfoForBooth(Long boothId,List<String> hnos);
 }

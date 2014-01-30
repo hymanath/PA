@@ -60,6 +60,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
@@ -68,6 +69,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -5911,5 +5913,118 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			e.printStackTrace();
 		}
 		return publicationID;
+	}
+	
+	public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue)
+	{
+		List<VoterHouseInfoVO> result = new ArrayList<VoterHouseInfoVO>();
+		try{
+		List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue);
+		Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
+		if(list !=null && list.size() > 0)
+		{
+			for(Object[] params : list)
+			{
+				List<String> hnos = boothHousesMap.get((Long)params[0]);
+				if(hnos == null)
+				{
+					hnos = new ArrayList<String>();
+					boothHousesMap.put((Long)params[0], hnos);
+				}
+				if(!hnos.contains(params[1].toString()))
+					hnos.add(params[1].toString());
+			}
+		}
+		for(Long boothId :boothHousesMap.keySet())
+		{
+		 
+		  
+		  List<Object[]> list1 = boothPublicationVoterDAO.getFamilyWiseInfoForBooth(boothId, boothHousesMap.get(boothId));
+		  Map<String,List<VoterHouseInfoVO>> resultmap = new HashMap<String, List<VoterHouseInfoVO>>();
+		  List<Long> voterIds = new ArrayList<Long>();
+		
+		  for(Object[] params1 :list1)
+		  {
+			  List<VoterHouseInfoVO> voterDetails = resultmap.get(params1[0].toString());
+			  Voter voter = (Voter) params1[1];
+			  VoterHouseInfoVO vo = new VoterHouseInfoVO();
+			  if(voterDetails == null)
+			  {
+				  voterDetails = new ArrayList<VoterHouseInfoVO>();
+				  resultmap.put(params1[0].toString(), voterDetails);
+			  }
+			vo.setVoterIdCardNo(voter.getVoterIDCardNo());
+			vo.setVoterId(voter.getVoterId());
+			vo.setName(voter.getName());
+			vo.setAge(voter.getAge());
+			vo.setGender(voter.getGender());
+			vo.setHouseNo(voter.getHouseNo());
+			voterIds.add(voter.getVoterId());
+			voterDetails.add(vo);
+			}
+		 Map<Long,String> voterCaste =new HashMap<Long, String>();
+		 List<Object[]> casteInfo =  userVoterDetailsDAO.getCasteForVoter(voterIds);
+			if(casteInfo != null && casteInfo.size() > 0)
+				for(Object[] casteName : casteInfo)
+				{
+					String caste = voterCaste.get((Long)casteName[0]);
+					if(caste == null)
+					voterCaste.put((Long)casteName[0],casteName[1].toString());
+					else
+					voterCaste.put((Long)casteName[0],caste);	
+				}
+		  
+		  for(String houseNo : resultmap.keySet())
+		  {
+			  VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
+			  voterHouseInfoVO.setBoothId(boothId);
+			  voterHouseInfoVO.setPartNo(boothDAO.get(boothId).getPartNo());
+			  voterHouseInfoVO.setHouseNo(houseNo);
+			  List<VoterHouseInfoVO> voterDetails = resultmap.get(houseNo.toString());
+			 
+			  voterHouseInfoVO.setCount(new Long(voterDetails.size()));
+			  voterHouseInfoVO.setElder(voterDetails.get(0).getName());
+			  voterHouseInfoVO.setElderAge((voterDetails.get(0).getAge()));
+			  voterHouseInfoVO.setElderGender(voterDetails.get(0).getGender());
+			  voterHouseInfoVO.setVoterIdCardNo(voterDetails.get(0).getVoterIdCardNo().toString());
+			  String cast = voterCaste.get(voterDetails.get(0).getVoterId());
+			  voterHouseInfoVO.setElderCaste(cast != null ? cast : " ");
+			  boolean flag = false;
+			  List<VoterHouseInfoVO> youngervoterDetails  = voterDetails;
+			 
+					for(int i=0;i<youngervoterDetails.size()-1;i++)
+					{
+						if(youngervoterDetails.get(i).getGender().equalsIgnoreCase("M"))
+						{
+							voterHouseInfoVO.setYounger(youngervoterDetails.get(i).getName());
+							voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(i).getAge());
+							voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(i).getGender());
+							voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(i).getVoterIdCardNo().toString());
+							
+							flag = true;
+						}
+					}
+					if(!flag)
+					{
+						voterHouseInfoVO.setYounger(youngervoterDetails.get(0).getName());
+						voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(0).getAge());
+						voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(0).getGender());
+						voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(0).getVoterIdCardNo().toString());
+						 
+					}
+					
+					 result.add(voterHouseInfoVO);
+		  }
+		 
+		
+		 
+		 }
+	}
+		catch(Exception e)
+		{
+			LOG.error("Exception raised in getFamilyDetailsForConstituency() method in Suggestive Model Service",e);
+			
+		}
+		return result;
 	}
 }

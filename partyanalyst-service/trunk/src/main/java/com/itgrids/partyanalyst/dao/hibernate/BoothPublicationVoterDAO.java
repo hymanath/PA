@@ -733,7 +733,8 @@ public List findVotersCastInfoByPanchayatAndPublicationDate(Long panchayatId, Lo
 			Query query = getSession()
 					.createQuery(
 							"select count(*),model.voter.gender from BoothPublicationVoter model where " +
-							"model.booth.publicationDate.publicationDateId = :publicationDateId and model.voter.age between "+startAge+" and "+endAge+
+							"model.booth.publicationDate.publicationDateId = :publicationDateId and model.voter.age 
+ "+startAge+" and "+endAge+
 							" and model.booth.boothId in(select distinct model1.booth.boothId from " +
 							" HamletBoothPublication model1 where model1.booth.publicationDate.publicationDateId = :publicationDateId " +
 							"and  model1.hamlet.hamletId in(select distinct model2.hamlet.hamletId from " +
@@ -6162,7 +6163,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("userId", userId);
 		return query.list();
 	}
-	@Override 
+	
 	public List<?> getVoterDetailsByBoothAndConstituency(List<Long> boothId,
 			long constituencyId) {
 		Query query =	getSession().createQuery("select  bpv.voter as voter ,bpv.booth.boothId as boothId,bpv.serialNo as sno ,bpv.booth.publicationDate.publicationDateId as pDate , bpv.booth.publicationDate.name as name , bpv.booth.constituency.constituencyId as cId  from BoothPublicationVoter bpv where bpv.booth.boothId in(:boothId) and bpv.booth.constituency.constituencyId = :constituencyId group by  bpv.voter");
@@ -6171,12 +6172,40 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("constituencyId", constituencyId);
 		return query.list();
 	}
-	@Override 
+	
 	public List<?> getVoterDetailsByBoothAndConstituency(long boothId,long constituencyId) {
 		Query query =	getSession().createQuery("select  bpv.voter as voter ,bpv.booth.boothId as boothId,bpv.serialNo as sno ,bpv.booth.publicationDate.publicationDateId as pDate , bpv.booth.publicationDate.name as name , bpv.booth.constituency.constituencyId as cId  from BoothPublicationVoter bpv where bpv.booth.boothId = :boothId and bpv.booth.constituency.constituencyId = :constituencyId group by  bpv.voter");
 	//	query.setParameter("localElectionBodyId", localElectionBodyId);
 		query.setParameter("boothId", boothId);
 		query.setParameter("constituencyId", constituencyId);
+		return query.list();
+	}
+	
+	public List<Object[]> getHouseNosForBooth(Long constituencyId,Long publicationId,Long minVal,Long maxVal)
+	{
+		StringBuilder str =new StringBuilder();
+		
+		str.append("select model.booth.boothId,model.voter.houseNo,count(model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and " +
+				" model.booth.publicationDate.publicationDateId = :publicationId");
+		
+		str.append(" group by model.booth.boothId,model.voter.houseNo ");
+		if(maxVal == 0)
+			str.append("having count(model.voter.voterId) > "+maxVal+" ");
+			else
+			str.append(" having count(model.voter.voterId) between "+minVal+" and "+maxVal+" ");	
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		//query.setFirstResult(0);
+		//query.setMaxResults(100);
+		return query.list();	
+	}
+	
+	public List<Object[]> getFamilyWiseInfoForBooth(Long boothId,List<String> hnos)
+	{
+		Query query = getSession().createQuery("select model.voter.houseNo,model.voter from BoothPublicationVoter model where  model.booth.boothId = :boothId and model.voter.houseNo in (:hnos) order by model.voter.age desc");
+		query.setParameter("boothId", boothId);
+		query.setParameterList("hnos", hnos);
 		return query.list();
 	}
 
