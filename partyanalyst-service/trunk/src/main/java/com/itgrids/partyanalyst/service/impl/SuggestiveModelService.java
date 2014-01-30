@@ -5983,11 +5983,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  List<VoterHouseInfoVO> voterDetails = resultmap.get(houseNo.toString());
 			 
 			  voterHouseInfoVO.setCount(new Long(voterDetails.size()));
-			  voterHouseInfoVO.setElder(voterDetails.get(0).getName());
-			  voterHouseInfoVO.setElderAge((voterDetails.get(0).getAge()));
-			  voterHouseInfoVO.setElderGender(voterDetails.get(0).getGender());
-			  voterHouseInfoVO.setVoterIdCardNo(voterDetails.get(0).getVoterIdCardNo().toString());
-			  String cast = voterCaste.get(voterDetails.get(0).getVoterId());
+			  voterHouseInfoVO.setElder(voterDetails.get(voterDetails.size()-1).getName());
+			  voterHouseInfoVO.setElderAge((voterDetails.get(voterDetails.size()-1).getAge()));
+			  voterHouseInfoVO.setElderGender(voterDetails.get(voterDetails.size()-1).getGender());
+			  voterHouseInfoVO.setVoterIdCardNo(voterDetails.get(voterDetails.size()-1).getVoterIdCardNo().toString());
+			  String cast = voterCaste.get(voterDetails.get(voterDetails.size()-1).getVoterId());
 			  voterHouseInfoVO.setElderCaste(cast != null ? cast : " ");
 			  boolean flag = false;
 			  List<VoterHouseInfoVO> youngervoterDetails  = voterDetails;
@@ -6000,7 +6000,6 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(i).getAge());
 							voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(i).getGender());
 							voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(i).getVoterIdCardNo().toString());
-							
 							flag = true;
 						}
 					}

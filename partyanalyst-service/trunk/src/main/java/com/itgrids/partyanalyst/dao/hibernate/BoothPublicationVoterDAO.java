@@ -6203,7 +6203,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	
 	public List<Object[]> getFamilyWiseInfoForBooth(Long boothId,List<String> hnos)
 	{
-		Query query = getSession().createQuery("select model.voter.houseNo,model.voter from BoothPublicationVoter model where  model.booth.boothId = :boothId and model.voter.houseNo in (:hnos) order by model.voter.age desc");
+		Query query = getSession().createQuery("select model.voter.houseNo,model.voter from BoothPublicationVoter model where  model.booth.boothId = :boothId and model.voter.houseNo in (:hnos) order by model.voter.age");
 		query.setParameter("boothId", boothId);
 		query.setParameterList("hnos", hnos);
 		return query.list();
