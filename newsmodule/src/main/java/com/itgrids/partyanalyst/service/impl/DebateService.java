@@ -603,7 +603,14 @@ public class DebateService implements IDebateService{
 						expRoleList.add(debateExpRole);
 					}
 				}
-				debateVO.setNoTdpLeaders(Long.valueOf(expRolesMap.size()));
+				if(expRolesMap != null && expRolesMap.size() > 0)
+				{
+					debateVO.setNoTdpLeaders(Long.valueOf(expRolesMap.size()));
+				}
+				else
+				{
+					debateVO.setNoTdpLeaders(0l);
+				}
 				Set<Long> candidatesSet = particepentsMap.keySet();
 				// here we are processing the each candidate wise debate scaling , charactes, party etc...
 				for (Long candidateId : candidatesSet)
@@ -645,31 +652,37 @@ public class DebateService implements IDebateService{
 						participantVO.setPrtiRoles(periRole.toString());
 						participantVO.setRoleList(roleDetailsList);
 					}
-					List<SelectOptionVO> exproles = expRolesMap.get(candidateId);
 					List<SelectOptionVO> expList = null;
-					StringBuffer expRole = null;
-					if(exproles != null && exproles.size() > 0)
+					if(expRolesMap != null && expRolesMap.size() > 0)
 					{
-						Long count = 0l;
-						expRole = new StringBuffer();
-						expList = new ArrayList<SelectOptionVO>();
-						for (SelectOptionVO expRoleVO : exproles) {
-							count ++ ;
-							SelectOptionVO scopesVO = new SelectOptionVO();
-							scopesVO.setName(expRoleVO.getLocation());
-							expList.add(scopesVO);
-							if(count == 1)
-							{
-								expRole.append(expRoleVO.getLocation());
-							}
-							else
-							{
-								expRole.append( "+" + expRoleVO.getLocation()); 
+						List<SelectOptionVO> exproles = expRolesMap.get(candidateId);
+						
+						StringBuffer expRole = null;
+						if(exproles != null && exproles.size() > 0)
+						{
+							Long count = 0l;
+							expRole = new StringBuffer();
+							expList = new ArrayList<SelectOptionVO>();
+							for (SelectOptionVO expRoleVO : exproles) {
+								count ++ ;
+								SelectOptionVO scopesVO = new SelectOptionVO();
+								scopesVO.setName(expRoleVO.getLocation());
+								expList.add(scopesVO);
+								if(count == 1)
+								{
+									expRole.append(expRoleVO.getLocation());
+								}
+								else
+								{
+									expRole.append( "+" + expRoleVO.getLocation()); 
+								}
 							}
 						}
+						if(expRole != null)
+							participantVO.setExpRoles(expRole.toString());
 					}
-					if(expRole != null)
-					participantVO.setExpRoles(expRole.toString());
+					
+					
 					participantVO.setScaleList(scopeList);
 					participantVO.setExpRoleList(expList);
 					particepentDetailsList.add(participantVO);
