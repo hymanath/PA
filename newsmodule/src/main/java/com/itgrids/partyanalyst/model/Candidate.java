@@ -490,7 +490,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	public void setDebateParticipant(Set<DebateParticipant> debateParticipant) {
 		this.debateParticipant = debateParticipant;
 	}
-	@Column(name = "is_dedate_candidate")
+	@Column(name = "is_debate_candidate")
 	public Boolean getIsDebateCandidate() {
 		return isDebateCandidate;
 	}

@@ -140,11 +140,18 @@ function generateDebateReport(result)
 			str += '<td colspan='+noOfParticepents+'>'+result.questionAnswersList[i].name+'</td>';
 			str += '</tr>';
 		}
-		
+		var summaryLength = result.candidateSummery.length + 1;
 		str += '<tr>';
-		str += '<th style="width: 234px;">Summary of performence</th>';
+		str += '<th style="width: 234px;" rowspan='+summaryLength+'>Summary of performence</th>';
 		str += '<td colspan='+noOfParticepents+'>'+result.debateSummery+'</td>';
 		str += '</tr>';
+		for(var n in result.candidateSummery)
+		{
+			str += '<tr>';
+			str += '<td colspan='+noOfParticepents+'><b>'+result.candidateSummery[n].location+' , '+result.candidateSummery[n].type+' - </b>'+result.candidateSummery[n].name +'</td>';
+			str += '</tr>';
+		}
+		
 		
 		var smsStr = '';
 		smsStr += '<p>'+result.smsPoleList[0].name+'</p>';
