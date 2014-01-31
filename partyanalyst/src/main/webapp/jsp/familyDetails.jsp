@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <title> Party Analyst - Suggestive Model</title>
-	<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	
  <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
  <script type="text/javascript" src="js/jqueryDataTable/jquery.dataTables.js"></script>
 
@@ -57,15 +57,17 @@
 	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 		<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
-	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 
+    <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
+	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+	
 
 	<!-- YUI Dependency files (End) -->
 
 
 <script type="text/javaScript" >
 google.load("visualization", "1", {packages:["corechart"]});
-
+var maxr = 6000;
 </script>
 <style type="text/css">	
 #suggestiveMainDiv{float: none;
@@ -73,6 +75,12 @@ google.load("visualization", "1", {packages:["corechart"]});
     margin-right: auto;
     width: 990px;margin-top:20px;margin-bottom:20px;}
 .requiredFont{color :red}
+	#paginationDivId{float: none;
+    margin-left: auto;
+    margin-right: auto;
+  
+    width: 800px;}
+	
 </style>
 </head>
 <body>
@@ -94,12 +102,15 @@ google.load("visualization", "1", {packages:["corechart"]});
 			<tr><td>From Value</td><td></td><td> <input type="text" id="fromValue" style="width:136px;"/> </td>
 			<td>To Value </td><td></td><td><input type="text" id="toValue" style="width:136px;"/></td></tr>		
 	</table>	
-	<input type="button" value="submit" onclick="getFamilyInfo();" class="btn btn-success"/>
+	<input type="button" value="submit" onclick="getFamilyInfo(0);" class="btn btn-success"/>
  </div>
 
   <br/> <br/>
  <div id="familyDetailsDiv" style="overflow-x: scroll; height: 500px;display:none;">
+ 
  </div>
+ 
+
  </div>
 
 </div>
@@ -138,7 +149,7 @@ function callAjax(param,jsObj,url){
 						else if(jsObj.task == "getFamilyDetails")
 						{
 							
-							buildFamilyDetails(myResults);
+							buildFamilyDetails(myResults,jsObj);
 						}
 						
 						}catch (e){
@@ -188,7 +199,7 @@ function addOptions(list,opElmt){
 		list.add(opElmt); // IE only
 		}
 }
-function getFamilyInfo()
+function getFamilyInfo(startIndex)
 {
 	var errorDiv =$("#errorDiv");
 	$("#familyDetailsDiv").css("display","none");
@@ -245,6 +256,9 @@ var jsObj=
 			publicationId:publicationId,
 			minVal:fromValue,
 			maxVal:toValue,
+			startIndex:startIndex,
+		    results:maxr,
+
 		task:"getFamilyDetails"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -269,58 +283,9 @@ function getPublicationDate()
 	callAjax(param,jsObj,url);
 }
 
-function buildFamilyDetails(results)
-{
-	
-	var str = '';
-	if(results.length > 0)
-	{
-		$("#familyDetailsDiv").css("display","block");
-	str+='<table class="table table-bordered">';
-	str+='<th>SNO</th>';
-	str+='<th>Booth</th>';
-	str+='<th>Caste</th>';
-	str+='<th>Elder Person Voter Id</th>';
-	str+='<th>Elder Person Name</th>';
-	str+='<th>Gender</th>';
-	str+='<th>Age</th>';
-	
-	str+='<th>House No</th>';
-	str+='<th>Members Count</th>';
-	str+='<th>Younger Person Voter Id</th>';
-	str+='<th>Voter Name</th>';
-	str+='<th>Younger Gender</th>';
-	str+='<th>Younger Age</th>';
-	
-	var j = 1;
-	for(var i in results)
-		{
-	str+='<tr>';	
-    str+='<td>'+j+'</td>';
-	str+='<td>'+results[i].partNo+'</td>';
-	str+='<td>'+results[i].elderCaste+'</td>';
-	str+='<td>'+results[i].voterIdCardNo+'</td>';
-	str+='<td>'+results[i].elder+'</td>';
-    str+='<td>'+results[i].elderGender+'</td>';
-	str+='<td>'+results[i].elderAge+'</td>';
-	
-	str+='<td>'+results[i].houseNo+'</td>';
-	str+='<td>'+results[i].count+'</td>';
-	str+='<td>'+results[i].voterGroup+'</td>';
-	str+='<td>'+results[i].younger+'</td>';
-	str+='<td>'+results[i].youngerGender+'</td>';
-	str+='<td>'+results[i].youngerAge+'</td>';
-	
-	str+='</tr>';
-		j++;
-		}
-	str+='</table>';
 
-	$("#familyDetailsDiv").html(str);
-	}
-}
 
-var publicationDatesList;
+    var publicationDatesList;
 	function buildPublicationDateList(results)
 	{
 	publicationDatesList=results;
@@ -352,6 +317,97 @@ var publicationDatesList;
 
 	$('#publicationDateList').val(largest);
 	$('#publicationDateList').trigger("change");
+
+}
+function buildFamilyDetails(results,jsObj)
+{
+	
+	var str = '';
+	if(results.length > 0)
+	{
+		$("#familyDetailsDiv").css("display","block");
+	str+='<table class="table table-bordered" id="familyWiseDataTable">';
+	str+='<thead>';
+	str+='<th>SNO</th>';
+	str+='<th>Booth</th>';
+	str+='<th>Caste</th>';
+	str+='<th>Elder Person Voter Id</th>';
+	str+='<th>Elder Person Name</th>';
+	str+='<th>Gender</th>';
+	str+='<th>Age</th>';
+	
+	str+='<th>House No</th>';
+	str+='<th>Members Count</th>';
+	str+='<th>Younger Person Voter Id</th>';
+	str+='<th>Voter Name</th>';
+	str+='<th>Younger Gender</th>';
+	str+='<th>Younger Age</th>';
+	str+='</thead>';
+	str+='<tbody>';
+	
+	var j = 1;
+	for(var i in results)
+		{
+	str+='<tr>';	
+    str+='<td>'+j+'</td>';
+	str+='<td>'+results[i].partNo+'</td>';
+	str+='<td>'+results[i].elderCaste+'</td>';
+	str+='<td>'+results[i].voterIdCardNo+'</td>';
+	str+='<td>'+results[i].elder+'</td>';
+    str+='<td>'+results[i].elderGender+'</td>';
+	str+='<td>'+results[i].elderAge+'</td>';
+	
+	str+='<td>'+results[i].houseNo+'</td>';
+	str+='<td>'+results[i].count+'</td>';
+	str+='<td>'+results[i].voterGroup+'</td>';
+	str+='<td>'+results[i].younger+'</td>';
+	str+='<td>'+results[i].youngerGender+'</td>';
+	str+='<td>'+results[i].youngerAge+'</td>';
+	
+	str+='</tr>';
+		j++;
+		}
+		str+='</tbody>';
+	str+='</table>';
+	str+='<div id="paginationDivId"></div>';
+	str+='<input type="button" value="Export To Excel" onclick="generateExcel();" class="btn btn-success"/>';
+	$("#familyDetailsDiv").html(str);
+	}
+	var itemsCount=results[0].totalHousesCount;
+	    var maxResults=jsObj.results;
+	   
+	     if(jsObj.startIndex==0){
+		   $("#paginationDivId").pagination({
+			items: itemsCount,
+			itemsOnPage: maxResults,
+			cssStyle: 'light-theme',
+			onPageClick: function(pageNumber, event) {
+				var num=(pageNumber-1)*10;
+				getFamilyInfo(num);
+				
+			}
+		});
+	}
+}
+</script>
+<script>
+
+var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,' , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+
+function generateExcel()
+{
+	
+		 tableToExcel('familyWiseDataTable', 'Report');
+		
 
 }
 </script>
