@@ -6190,7 +6190,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		str.append(" group by model.booth.boothId,model.voter.houseNo ");
 		if(maxVal == 0)
-			str.append("having count(model.voter.voterId) > "+maxVal+" ");
+			str.append("having count(model.voter.voterId) > "+minVal+" ");
 			else
 			str.append(" having count(model.voter.voterId) between "+minVal+" and "+maxVal+" ");	
 		Query query = getSession().createQuery(str.toString());
