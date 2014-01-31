@@ -5915,11 +5915,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		return publicationID;
 	}
 	
-	public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue)
+	public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex)
 	{
 		List<VoterHouseInfoVO> result = new ArrayList<VoterHouseInfoVO>();
 		try{
-		List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue);
+		List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,startIndex,maxIndex);
+		List<Object[]> totalList = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,null,null);
 		Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
 		if(list !=null && list.size() > 0)
 		{
@@ -6011,8 +6012,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(0).getVoterIdCardNo().toString());
 						 
 					}
+					if(totalList != null && totalList.size() > 0)
 					
 					 result.add(voterHouseInfoVO);
+					 result.get(0).setTotalHousesCount(new Long(totalList.size()));
 		  }
 		 
 		

@@ -6181,7 +6181,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
-	public List<Object[]> getHouseNosForBooth(Long constituencyId,Long publicationId,Long minVal,Long maxVal)
+	public List<Object[]> getHouseNosForBooth(Long constituencyId,Long publicationId,Long minVal,Long maxVal,Integer startIndex,Integer maxIndex)
 	{
 		StringBuilder str =new StringBuilder();
 		
@@ -6196,8 +6196,10 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationId", publicationId);
-		//query.setFirstResult(0);
-		//query.setMaxResults(100);
+		if(startIndex!=null)
+		 query.setFirstResult(startIndex);
+		if(maxIndex != null)
+		 query.setMaxResults(maxIndex);
 		return query.list();	
 	}
 	

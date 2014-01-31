@@ -64,5 +64,5 @@ public interface ISuggestiveModelService {
 	 
 	 public Long getLatestPublicationByConstituency(Long constituencyId);
 	 
-	 public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue);
+	 public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex);
 }
