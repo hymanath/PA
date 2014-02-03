@@ -20,6 +20,6 @@ public class ConstituencyHierarchyInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetConstituencyHierarchyInfoList()
 	{
-		constituencyHierarchyInfoDAO.getConstituencyHierarchyInfoList(232l, 1l);
+		constituencyHierarchyInfoDAO.getConstituencyHierarchyInfoList(232l,8l,1l);
 	}
 }
