@@ -27,10 +27,11 @@ public class ConstituencyHierarchyInfoDAO extends GenericDaoHibernate<Constituen
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ConstituencyHierarchyInfo> getConstituencyHierarchyInfoList(Long constituencyId,Long userId)
+	public List<ConstituencyHierarchyInfo> getConstituencyHierarchyInfoList(Long constituencyId,Long publicationDateId,Long userId)
 	{
-		Query query = getSession().createQuery(" from ConstituencyHierarchyInfo model where model.constituencyId =:constituencyId and model.userId =:userId ");
+		Query query = getSession().createQuery(" from ConstituencyHierarchyInfo model where model.constituencyId =:constituencyId and model.publicationDateId = :publicationDateId and model.userId =:userId ");
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
 		query.setParameter("userId", userId);
 		return query.list();
 	}
