@@ -214,6 +214,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 		return queryObj.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Long> getNONURBANConstituencyIds(Long electionTypeId,Long electionYear,Long countryId){
 		Query query = getSession().createQuery("select distinct model1.constituencyId from VoterInfo model1 where model1.voterReportLevel.reportLevel =:reportLevel " +
 				" and model1.constituencyId in ( Select model.constituency.constituencyId from DelimitationConstituency model where " +
@@ -226,10 +227,11 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<VoterInfo> getVoterInfoList(Long constituencyId)
+	public List<VoterInfo> getVoterInfoList(Long constituencyId,Long publicationDateId)
 	{
-		Query query = getSession().createQuery(" from VoterInfo model where model.constituencyId =:constituencyId ");
+		Query query = getSession().createQuery(" from VoterInfo model where model.constituencyId =:constituencyId and model.publicationDate.publicationDateId = :publicationDateId ");
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
 	
