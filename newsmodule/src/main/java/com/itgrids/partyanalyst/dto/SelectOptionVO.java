@@ -28,6 +28,9 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private Long mainAccountId;
 	private boolean flag;
 	private Long count;
+	private List<String> values;
+	private List<Long> totalCount;
+	private List<Long> positiveCount;
 	private Double perc;
 
 	public boolean isFlag() {
@@ -254,5 +257,29 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 		this.perc = perc;
 	}
 	
+	public List<String> getValues() {
+		return values;
+	}
+
+	public void setValues(List<String> values) {
+		this.values = values;
+	}
+
+	public List<Long> getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(List<Long> totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public List<Long> getPositiveCount() {
+		return positiveCount;
+	}
+
+	public void setPositiveCount(List<Long> positiveCount) {
+		this.positiveCount = positiveCount;
+	}
+
 	
 }

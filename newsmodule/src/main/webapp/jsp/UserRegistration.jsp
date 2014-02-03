@@ -163,7 +163,6 @@ onsubmit="return validatefields()" cssClass="form-horizontal text-center">
 <!------JS------>
 	
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 <script>
 
 var spvar = 'special';

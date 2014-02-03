@@ -11,8 +11,6 @@
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
@@ -24,7 +22,6 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	 
 	<!-- YUI Skin Sam -->
 <!-- YUI Dependency files (End) -->
@@ -141,7 +138,7 @@
 				</div>
 		</div>
 	 <footer class="span12" style="margin-left: 0 !important;display:none;" >
-        <p class="text-center m_top15">&copy; Telugu Desam Party 2013</p>
+        <p class="text-center m_top15">&copy; Telugu Desam Party 2014</p>
       </footer>
 		<!----<div class="row">
 			<div class="span12">
@@ -154,8 +151,7 @@
 		
 	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/jquery.google.api/jquery.js"></script>
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>	
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>	
 	<script>
 	var redirectTo = false;
 			$(document).ready(function(){	

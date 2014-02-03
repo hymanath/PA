@@ -3,7 +3,6 @@
 <head>
 	<title> TDP News Portal </title>
 	<meta name="" content="">
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
 	
     <link href="styles/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link rel="stylesheet" href="styles/css/style.css">

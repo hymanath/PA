@@ -11,8 +11,6 @@
 	<link href="css/style.css" rel="stylesheet" media="screen">
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
@@ -24,7 +22,6 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	 <script src="js/cufon/cufon.js" type="text/javascript"></script>
      <script src="js/cufon/Eenadu_400.font.js" type="text/javascript"></script>
 <style type="text/css">

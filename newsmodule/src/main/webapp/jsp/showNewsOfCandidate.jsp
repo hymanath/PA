@@ -18,7 +18,6 @@
 	
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
 	<!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>-->
@@ -27,8 +26,6 @@
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
@@ -39,8 +36,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
-	<script src="js/sendUpdatesByEmail.js"></script>
+
 	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>-->
 	
 	<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>

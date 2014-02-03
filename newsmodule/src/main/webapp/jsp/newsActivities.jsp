@@ -16,7 +16,6 @@
 <!-- JQuery Scripts files start -->
 <!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/jquery.google.api/jquery.js"></script>
-<script type="text/javascript" src="js/jquery.carousel.js"></script>
 <!-- <script src="http://code.jquery.com/jquery-1.8.2.js"></script> -->
 <script type="text/javascript" src="js/jquery.google.api/jquery-1.8.2.js"></script>
 <!-- <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script> -->

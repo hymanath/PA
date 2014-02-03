@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.Date;
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.AnalysisBasicInfoVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.dto.FileVO;
@@ -28,5 +29,11 @@ public interface INewsAnalysisService {
 	
 	public List<SelectOptionVO> generatePdfOrExcel(List<Long> catgIds,List<Long> constiIds,List<Long> districtIds,String fromDateStr,String toDateStr,String type,String Path,Long partyId);
 	
-	//public void getResults(AnalysisVO vo);
+	public SelectOptionVO getPartyWiseNewsCountForGraph(AnalysisVO analysisVO);
+	
+	public AnalysisBasicInfoVO getAnalysedNewsCount(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds);
+	
+	public List<FileVO> getAnalysedNews(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long onPartyId,String type,String benifit,Integer startIndex,Integer maxIndex,Long categoryId,Long sourceId,Long otherPartyId);
+	
+	public List<NewsAnalysisVO> getSourceCategoryCount(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,String type,String benifit,Integer startIndex,Integer maxIndex,Long otherPartyId);
 }

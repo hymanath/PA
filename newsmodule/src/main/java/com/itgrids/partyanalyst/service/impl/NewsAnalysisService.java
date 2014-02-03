@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IGallaryDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.hibernate.DesignationDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyDAO;
+import com.itgrids.partyanalyst.dto.AnalysisBasicInfoVO;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsAnalysisVO;
@@ -4030,5 +4033,1301 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			}
 		}
 		return getDataForSourceDestinationPresentIncludeCandidateParty(query.toString(),vo,sourceType,destiType,true);
-	}	
+	}
+    
+    public SelectOptionVO getPartyWiseNewsCountForGraph(AnalysisVO analysisVO){
+    	List<String> partyNames = new ArrayList<String>();
+    	Map<String,Long> totalCountMap = new HashMap<String,Long>();
+    	Map<String,Long> positiveCountMap = new HashMap<String,Long>();
+    	Map<String,Long> negativeCountMap = new HashMap<String,Long>();
+    	
+    	StringBuilder totalSourceCountquery = getQueryForGraph(analysisVO,"0","cpf0.sourceParty.partyId","select count(distinct cpf0.file.fileId) ,cpf0.sourceParty.partyId ,cpf0.sourceParty.shortName "," and cpf0.sourceParty.partyId is not null ");
+    	//StringBuilder inQuery = getQueryForGraph(analysisVO,"1",null," select cpf1.file.fileId  "," and cpf0.sourceParty.partyId is not null ");
+    	StringBuilder totalDestiCountquery = getQueryForGraph(analysisVO,"0","cpf0.destinationParty.partyId","select count(distinct cpf0.file.fileId) ,cpf0.destinationParty.partyId ,cpf0.destinationParty.shortName "," and cpf0.destinationParty.partyId is not null and (cpf0.sourceParty.partyId is null or (cpf0.sourceParty.partyId != cpf0.destinationParty.partyId ) )");
+    	StringBuilder sourcePosNegCountquery = getQueryForGraph(analysisVO,"0","cpf0.sourceParty.partyId,cpf0.sourceBenefit.benefitId","select count(distinct cpf0.file.fileId) ,cpf0.sourceParty.partyId ,cpf0.sourceParty.shortName,cpf0.sourceBenefit.benefitId,cpf0.sourceBenefit.name "," and cpf0.sourceParty.partyId is not null and cpf0.sourceBenefit.benefitId is not null and cpf0.sourceBenefit.benefitId in(1,2) ");
+    	//StringBuilder inQueryForPostivNeg = getQueryForGraph(analysisVO,"1",null," select cpf1.file.fileId  "," and cpf0.sourceParty.partyId is not null and cpf0.sourceBenefit.benefitId is not null and cpf0.sourceBenefit.benefitId in(1,2) ");
+    	StringBuilder destiPosNegCountquery = getQueryForGraph(analysisVO,"0","cpf0.destinationParty.partyId,cpf0.destinationBenefit.benefitId","select count(distinct cpf0.file.fileId) ,cpf0.destinationParty.partyId ,cpf0.destinationParty.shortName,cpf0.destinationBenefit.benefitId,cpf0.destinationBenefit.name "," and cpf0.destinationParty.partyId is not null and cpf0.destinationBenefit.benefitId is not null and cpf0.destinationBenefit.benefitId in(1,2)  and (cpf0.sourceParty.partyId is null or (cpf0.sourceParty.partyId != cpf0.destinationParty.partyId ) )");
+    	
+    	List<Object[]> totalSourceCountList = fileDAO.getNewsBySearchCriteria(totalSourceCountquery.toString(),analysisVO);
+    	List<Object[]> totalDestiCountList = fileDAO.getNewsBySearchCriteria(totalDestiCountquery.toString(),analysisVO);
+    	
+    	List<Object[]> benifitsSourceCountList = fileDAO.getNewsBySearchCriteria(sourcePosNegCountquery.toString(),analysisVO);
+    	List<Object[]> benifitsDestiCountList = fileDAO.getNewsBySearchCriteria(destiPosNegCountquery.toString(),analysisVO);
+    	
+    	populateTotalCount(totalSourceCountList,totalCountMap,partyNames);
+    	populateTotalCount(totalDestiCountList,totalCountMap,partyNames);
+    	
+    	populateBenifitCount(benifitsSourceCountList,positiveCountMap,negativeCountMap);
+    	populateBenifitCount(benifitsDestiCountList,positiveCountMap,negativeCountMap);
+    	 Collections.sort(partyNames);
+    	 SelectOptionVO vo = new SelectOptionVO();
+    	 vo.setValues(partyNames);
+    	 List<Long> positiveCount = new ArrayList<Long>();
+    	 List<Long> negativeCount = new ArrayList<Long>();
+    	 List<Long> totalCount    = new ArrayList<Long>();
+    	 for(String party:partyNames){
+    		 if(totalCountMap.get(party) != null){
+    			 totalCount.add(totalCountMap.get(party));
+    		 }else{
+    			 totalCount.add(0l);
+    		 }
+    		 if(positiveCountMap.get(party) != null){
+    			 positiveCount.add(positiveCountMap.get(party));
+    		 }else{
+    			 positiveCount.add(0l);
+    		 }
+    		 if(negativeCountMap.get(party) != null){
+    			 negativeCount.add(negativeCountMap.get(party));
+    		 }else{
+    			 negativeCount.add(0l);
+    		 }
+    	 }
+    	 vo.setTotalCount(totalCount);
+    	 vo.setPositiveCount(positiveCount);
+    	 vo.setLocationValuesList(negativeCount);
+    	 
+    	 return vo;
+    }
+    
+    public void populateTotalCount(List<Object[]> totalCountList,Map<String,Long> totalCountMap,List<String> partyNames){
+    	if(totalCountList != null && totalCountList.size() > 0){
+    		for(Object[] totalCount:totalCountList){
+    			if(!partyNames.contains(totalCount[2].toString()))
+    			  partyNames.add(totalCount[2].toString());
+    			Long count = totalCountMap.get(totalCount[2].toString());
+    			if(count == null){
+    				totalCountMap.put(totalCount[2].toString(),(Long)totalCount[0]);
+    			}else{
+    				totalCountMap.put(totalCount[2].toString(),count+(Long)totalCount[0]);
+    			}
+    		}
+    	}
+    }
+    
+    public void populateBenifitCount(List<Object[]> benifitsCountList,Map<String,Long> positiveCountMap,Map<String,Long> negativeCountMap){
+    	if(benifitsCountList != null && benifitsCountList.size() > 0){
+    		for(Object[] benifitCount:benifitsCountList){
+    			Long count = null;
+    			if(((Long)benifitCount[3]).longValue() == 1){
+	    			 count = positiveCountMap.get(benifitCount[2].toString());
+	    			if(count == null){
+	    				positiveCountMap.put(benifitCount[2].toString(),(Long)benifitCount[0]);
+	    			}else{
+	    				positiveCountMap.put(benifitCount[2].toString(),count+(Long)benifitCount[0]);
+	    			}
+    			}else{
+    				 count = negativeCountMap.get(benifitCount[2].toString());
+ 	    			if(count == null){
+ 	    				negativeCountMap.put(benifitCount[2].toString(),(Long)benifitCount[0]);
+ 	    			}else{
+ 	    				negativeCountMap.put(benifitCount[2].toString(),count+(Long)benifitCount[0]);
+ 	    			}
+    			}
+    		}
+    	}
+    }
+    
+    public StringBuilder getQueryForGraph(AnalysisVO vo,String id,String groupBy,String selectPart,String conditionsReq){
+    	// bySourceCand analyse by who candidate
+		// byDestiCand analyse by whome candidate
+		// sourcePresent ex: eendau,sakshi,andhra jyothi
+		// locationPresent ex: state ap,district ranga reddy,ac ,pc
+		// sourceCand if source candidate is selected
+		// sourceParty if source party is selected
+		// destiCand if destination candidate is selected
+		// destiParty if destination party is selected
+    	// byCategory if category present
+		 StringBuilder query = new StringBuilder();
+		     query.append(selectPart +" from CandidatePartyFile cpf"+id+"  ");
+		    //query.append("select count(distinct cpf"+id+".file.fileId) ,cpf"+id+".sourceParty.partyId ,cpf"+id+".sourceParty.shortName ");
+		    if(vo.isByCategory()){
+		    	query.append(" ,CandidatePartyCategory cpc"+id+" ");
+		    }
+		    if(vo.isByKeyword()){
+				query.append(",CandidatePartyKeyword cpk"+id+" ");
+		    }
+		    if(vo.isSourcePresent()){
+		    	query.append(",FileSourceLanguage fsl"+id+" ");
+		    }
+		    query.append(" where cpf"+id+".file.isDeleted != 'Y' and cpf"+id+".sourceParty.partyId is not null ");
+		    if(vo.isByCategory()){
+		    	query.append(" and cpf"+id+".candidatePartyFileId = cpc"+id+".candidatePartyFile.candidatePartyFileId ");
+		    }
+		    if(vo.isByKeyword()){
+				query.append(" and cpf"+id+".candidatePartyFileId = cpk"+id+".candidatePartyFile.candidatePartyFileId ");
+		    }
+		    if(vo.isSourcePresent()){
+		    	query.append(" and cpf"+id+".file.fileId = fsl"+id+".file.fileId ");
+		    }
+		    if(vo.getFromDate() != null){
+				query.append(" and cpf"+id+".file.fileDate >=:fromDate  ");
+			}
+			if(vo.getToDate() != null){
+				query.append(" and cpf"+id+".file.fileDate <=:toDate  ");
+			}
+			if(vo.isSourceCand()){
+			    query.append(" and cpf"+id+".sourceCandidate.candidateId = "+vo.getSourceCandidateId()+" ");
+			}else if(vo.isSourceParty()){
+			   query.append(" and cpf"+id+".sourceParty.partyId = "+vo.getSourcePartyId()+" ");
+			}
+			if(vo.isDestiCand()){
+			  query.append(" and cpf"+id+".destinationCandidate.candidateId = "+vo.getDestiCandidateId()+" ");
+			}else if(vo.isDestiParty()){
+			   query.append(" and cpf"+id+".destinationParty.partyId = "+vo.getDestiPartyId()+" ");
+			}
+			if(vo.getSourceBenifitId() != null && vo.getSourceBenifitId() > 0){
+				query.append(" and cpf"+id+".sourceBenefit.benefitId = "+vo.getSourceBenifitId()+" ");
+			}
+             if(vo.getDestiBenifitId() != null && vo.getDestiBenifitId() > 0){
+            	 query.append(" and cpf"+id+".destinationBenefit.benefitId = "+vo.getDestiBenifitId()+" ");
+			}
+             if(vo.isByCategory()){
+            	 query.append(" and cpc"+id+".gallary.gallaryId in ("+vo.getGallaryKeyWordIds()+")");
+             }
+             if(vo.isByKeyword()){
+            	 query.append(" and cpk"+id+".keyword.keywordId in ("+vo.getGallaryKeyWordIds()+")");
+ 		    }
+             if(vo.isSourcePresent()){
+ 		    	query.append(" and fsl"+id+".source.sourceId in ("+vo.getSourceIds()+") ");
+ 		    }
+             if(vo.isLocationPresent()){
+	             if(vo.getLocationLvl().longValue() == 1){
+					 query.append( " and cpf"+id+".file.userAddress.district.districtId in ("+vo.getLocationValues()+") ");
+				}else if(vo.getLocationLvl().longValue() == 2){
+					query.append(" and cpf"+id+".file.userAddress.parliamentConstituency.constituencyId in ("+vo.getLocationValues()+")");
+				}else if(vo.getLocationLvl().longValue() == 3){
+					query.append(" and cpf"+id+".file.userAddress.constituency.constituencyId in ("+vo.getLocationValues()+") ");
+				}
+             }
+             if(conditionsReq != null){
+            	 query.append(conditionsReq);
+             }
+             if(groupBy != null)
+               query.append(" group by "+groupBy);
+             
+             return query;
+    }
+    
+    public AnalysisBasicInfoVO getAnalysedNewsCount(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
+    	AnalysisBasicInfoVO returnVo = new AnalysisBasicInfoVO();
+    	
+    	//getting total count info
+    	StringBuilder totalCountQuery = getTotalNewsCountQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,null,null);
+    	StringBuilder totalPositiveCountQuery = getPostivNegivNewsCountQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,1L,null,null);
+    	StringBuilder totalNegativeCountQuery = getPostivNegivNewsCountQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,2L,null,null);
+    	Long totalNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    	Long totalPositiveCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalPositiveCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    	Long totalNegativeCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalNegativeCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    	NewsAnalysisVO totalCount = new NewsAnalysisVO();
+    	totalCount.setTotal(totalNewsCount);
+    	totalCount.setPositiveCount(totalPositiveCount);
+    	totalCount.setNegativeCount(totalNegativeCount);
+    	returnVo.setTotalCount(totalCount);
+    	
+    	//getting tdp own news count info
+    	if(candidateId == null || candidateId.longValue() == 0){
+    	  StringBuilder totalOwnNewsCountQuery = getPartyOwnNewsCountQuery(fromDate,toDate,partyId,locationLvl,locationIds,null,null);
+    	  Long totalOwnNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalOwnNewsCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    	  NewsAnalysisVO ownNews = new NewsAnalysisVO();
+    	  ownNews.setTotal(totalOwnNewsCount);
+    	  returnVo.setOwnNews(ownNews);
+    	}
+    	
+    	//getting media news on tdp count info
+    	StringBuilder totalMediaCountQuery = getTotalNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,null,null);
+    	StringBuilder totalPositiveNegMediaCountQuery = getPostivNegivNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds);
+    	Long totalMediaCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalMediaCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    	List<Object[]> totalPositiveNegMediaList = candidatePartyFileDAO.getNewsCount(totalPositiveNegMediaCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    	NewsAnalysisVO inMedia = new NewsAnalysisVO();
+    	inMedia.setTotal(totalMediaCount);
+    	returnVo.setInMedia(inMedia);
+    	for(Object[] positivNeg:totalPositiveNegMediaList){
+    		if(positivNeg != null && positivNeg.length > 0){
+    			if(((Long)positivNeg[1]).longValue() == 1){
+    				inMedia.setPositiveCount((Long)positivNeg[0]);
+    			}else if(((Long)positivNeg[1]).longValue() == 2){
+    				inMedia.setNegativeCount((Long)positivNeg[0]);
+    			}
+    		}
+    	}
+    	FileVO result = getAnalysisDetails(partyId,candidateId,locationLvl,locationIds,fromDate,toDate);
+    	if(result != null && result.getOtherPartyEffect() != null && result.getOtherPartyEffect().getSubList() != null && result.getOtherPartyEffect().getSubList().size() > 0){
+    		Collections.sort(result.getOtherPartyEffect().getSubList(),countCompare);
+    	}
+        if(result != null && result.getTdpPartyEffect() != null && result.getTdpPartyEffect().getSubList() != null && result.getTdpPartyEffect().getSubList().size() > 0){
+        	Collections.sort(result.getTdpPartyEffect().getSubList(),countCompare);
+    	}
+    	returnVo.setOnMe(result.getOtherPartyEffect());
+    	returnVo.setOnOtherParty(result.getTdpPartyEffect());
+    	return returnVo;
+    }
+    public StringBuilder getTotalNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	query.append("select count(distinct cpf.file.fileId) from CandidatePartyFile cpf " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	if(candidateId != null && candidateId.longValue() > 0){
+    	   
+    		query.append(" (cpf.sourceCandidate.candidateId =:candidateId or cpf.destinationCandidate.candidateId =:candidateId )"); 
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		query.append(" ( cpf.sourceParty.partyId =:partyId or cpf.destinationParty.partyId =:partyId )");
+    	}
+    	if(fromDate != null){
+ 		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+ 	    }
+ 	    if(toDate != null){
+ 		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+ 	    }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	return query;
+    }
+    public StringBuilder getPostivNegivNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	 query.append("select count(distinct cpf.file.fileId) from CandidatePartyFile cpf   " );
+     	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	if(candidateId != null && candidateId.longValue() > 0){
+    		query.append(" ((cpf.sourceCandidate.candidateId =:candidateId and cpf.sourceBenefit.benefitId = "+positiveNegivId+" ) or (cpf.destinationCandidate.candidateId =:candidateId  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ))");
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		query.append(" ( (cpf.sourceParty.partyId =:partyId  and cpf.sourceBenefit.benefitId = "+positiveNegivId+" ) or (cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ))");
+    	}
+    	   if(fromDate != null){
+ 		       query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	 	   }
+	 	   if(toDate != null){
+	 		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	 	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	return query;
+    }
+    
+    public StringBuilder addLocationString(Long locationLvl,String locationIds){
+    	StringBuilder query = new StringBuilder(); 
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		if(locationLvl.longValue() == 1){
+				 query.append( " and cpf.file.userAddress.district.districtId in ("+locationIds+") ");
+			}else if(locationLvl.longValue() == 2){
+				query.append(" and cpf.file.userAddress.parliamentConstituency.constituencyId in ("+locationIds+")");
+			}else if(locationLvl.longValue() == 3){
+				query.append(" and cpf.file.userAddress.constituency.constituencyId in ("+locationIds+") ");
+			}
+    	}
+    	return query;
+    }
+    
+    public StringBuilder getPartyOwnNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder(); 
+    	query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf   " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId ");
+	    if(fromDate != null){
+		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	    }
+	    if(toDate != null){
+		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	    }
+	    query.append(""+addLocationString(locationLvl,locationIds)+"");
+       	return query;
+    }
+    
+    
+    public StringBuilder getPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
+    	StringBuilder query = new StringBuilder();
+    	if(candidateId != null && candidateId.longValue() > 0){
+    	   query.append("select count(distinct cpf.file.fileId),cpf.destinationBenefit.benefitId from CandidatePartyFile cpf where cpf.file.isDeleted != 'Y' and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
+    	   		" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId in(1,2) "); 	   
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		 query.append(" select count(distinct cpf.file.fileId),cpf.destinationBenefit.benefitId from CandidatePartyFile cpf where cpf.file.isDeleted != 'Y' and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  " +
+	    	    " and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId in(1,2) ");
+	    	  
+    	}
+       if(fromDate != null){
+  		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+  	   }
+  	   if(toDate != null){
+  		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+  	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	
+    	query.append("group by cpf.destinationBenefit.benefitId ");
+    	return query;
+    }
+    
+    public StringBuilder getPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    		query.append(" cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  " );
+    	if(candidateId != null && candidateId.longValue() > 0){
+    		query.append(" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		query.append(" and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ");  
+    	}
+       if(fromDate != null){
+  		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+  	   }
+  	   if(toDate != null){
+  		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+  	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	return query;
+    }
+    
+    public StringBuilder getTotalNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	 query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf " );
+    	 query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	 query.append(" cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  "); 
+    	 if(candidateId != null && candidateId.longValue() > 0){
+    		query.append(" and cpf.destinationCandidate.candidateId =:candidateId ");
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		query.append(" and cpf.destinationParty.partyId =:partyId ");
+    	}
+    	   if(fromDate != null){
+ 		       query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	 	   }
+	 	   if(toDate != null){
+	 		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	 	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	return query;
+    }
+    
+    public List<FileVO> getAnalysedNews(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long onPartyId,String type,String benifit,Integer startIndex,Integer maxIndex,Long categoryId,Long sourceId,Long otherPartyId){
+    	List<Long> fileIds = new ArrayList<Long>();
+    	LinkedHashMap<Long,FileVO> fileMap = new LinkedHashMap<Long, FileVO>();
+    	if(type.equalsIgnoreCase("total")){
+    		if(benifit.equalsIgnoreCase("total")){
+    		  StringBuilder totalCountQuery = getTotalNewsCountQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,categoryId,sourceId);
+	    	  StringBuilder totalNewsQuery = getTotalNewsQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,categoryId,sourceId);
+    		  Long totalNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    		  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+    		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalNewsCount);
+    	    }else if(benifit.equalsIgnoreCase("positive")){
+    	      StringBuilder totalPositiveCountQuery = getPostivNegivNewsCountQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,1L,categoryId,sourceId);
+    		  StringBuilder totalPositiveNewsQuery = getPostivNegivNewsQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,1L,categoryId,sourceId);
+    		  Long totalPositiveCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalPositiveCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    		  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalPositiveNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+    		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalPositiveCount);
+    	    }else if(benifit.equalsIgnoreCase("negative")){
+    	      StringBuilder totalNegativeCountQuery = getPostivNegivNewsCountQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,2L,categoryId,sourceId);
+    	      StringBuilder  totalNegativeNewsQuery = getPostivNegivNewsQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,2L,categoryId,sourceId);
+    		  Long totalNegativeCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalNegativeCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    		  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalNegativeNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+    		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalNegativeCount);
+    	    }
+    	}else if(type.equalsIgnoreCase("own")){
+	    	if(candidateId == null || candidateId.longValue() == 0){
+	    		StringBuilder totalOwnNewsCountQuery = getPartyOwnNewsCountQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId);
+	    	  StringBuilder totalOwnNewsQuery = getPartyOwnNewsQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId);
+	    	  Long totalOwnNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalOwnNewsCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+	    	  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+    		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalOwnNewsCount);
+	    	}
+    	}else if(type.equalsIgnoreCase("other")){
+    		if(benifit.equalsIgnoreCase("total")){
+    			StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = tdpEffectOnOthersPartyWiseTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,null,otherPartyId,"count");
+    	    	    totalNewsQuery = tdpEffectOnOthersPartyWiseTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,null,otherPartyId,"news");
+    			}else{
+    				totalCountQuery = tdpEffectOnOtherPartiesTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,"count");
+    				totalNewsQuery = tdpEffectOnOtherPartiesTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,"news");
+    			}
+    			Long totalNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+      		  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+      		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalNewsCount);
+      	    }else if(benifit.equalsIgnoreCase("positive") || benifit.equalsIgnoreCase("negative")){
+      	    	Long benfitId= 1l;
+      	    	if(benifit.equalsIgnoreCase("negative")){
+      	    		benfitId= 2l;
+      	    	}
+      	    	StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = tdpEffectOnOthersPartyWiseBenifitNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,otherPartyId,"count");
+    				totalNewsQuery = tdpEffectOnOthersPartyWiseBenifitNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,otherPartyId,"news");
+    			}else{
+    				totalCountQuery = tdpEffectOnOtherPartiesBenifitWiseNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,"count");
+    	    		totalNewsQuery = tdpEffectOnOtherPartiesBenifitWiseNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,"news");
+    			}
+    			Long totalNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+      		  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+      		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalNewsCount);
+      	    }
+    	}else if(type.equalsIgnoreCase("onme")){
+    		if(benifit.equalsIgnoreCase("total")){
+    			StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = otherPartiesWiseEffectOnTdpTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,null,otherPartyId,"count");
+    	    	    totalNewsQuery = otherPartiesWiseEffectOnTdpTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,null,otherPartyId,"news");
+    			}else{
+    				totalCountQuery = otherPartiesOnTdpEffectTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,"count");
+    				totalNewsQuery = otherPartiesOnTdpEffectTotalNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,"news");
+    			}
+    			Long totalNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+      		  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+      		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalNewsCount);
+      	    }else if(benifit.equalsIgnoreCase("positive") || benifit.equalsIgnoreCase("negative")){
+      	    	Long benfitId= 1l;
+      	    	if(benifit.equalsIgnoreCase("negative")){
+      	    		benfitId= 2l;
+      	    	}
+      	    	StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = otherPartiesWiseEffectOnTdpBenifitNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,otherPartyId,"count");
+    				totalNewsQuery = otherPartiesWiseEffectOnTdpBenifitNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,otherPartyId,"news");
+    			}else{
+    				totalCountQuery = otherPartiesEffectOnTdpBenifitWiseNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,"count");
+    	    		totalNewsQuery = otherPartiesEffectOnTdpBenifitWiseNews(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,categoryId,sourceId,benfitId,"news");
+    			}
+    			Long totalNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+      		  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+      		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalNewsCount);
+      	    }
+    	}else if(type.equalsIgnoreCase("media")){
+    	   if(benifit.equalsIgnoreCase("total")){
+    		   StringBuilder totalMediaCountQuery = getTotalNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,categoryId,sourceId);
+	    	   StringBuilder totalMediaQuery = getTotalNewsInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,categoryId,sourceId);
+	    	   Long totalMediaCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalMediaCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+	    	   List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalMediaQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+	    	   candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalMediaCount);
+    	   }else if(benifit.equalsIgnoreCase("positive")){
+    		   StringBuilder totalPositiveMediaCountQuery = getPostivNegivNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,1l,categoryId,sourceId);
+    		   StringBuilder totalPositiveMediaNewsQuery = getPostivNegivNewsInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,1l,categoryId,sourceId);
+   	    	   Long totalPositiveMediaCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalPositiveMediaCountQuery.toString(), fromDate, toDate, partyId, candidateId); 
+   	    	   List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalPositiveMediaNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+	    	   candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalPositiveMediaCount);
+    	   }else if(benifit.equalsIgnoreCase("negative")){
+    		   StringBuilder totalNegMediaCountQuery = getPostivNegivNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,2l,categoryId,sourceId);
+    		   StringBuilder totalNegMediaNewsQuery = getPostivNegivNewsInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,2l,categoryId,sourceId);
+    		   Long totalNegMediaCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalNegMediaCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    		   List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalNegMediaNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+	    	   candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalNegMediaCount);
+    	   }
+    	}
+    	return new ArrayList<FileVO>(fileMap.values());
+    }
+    public StringBuilder getTotalNewsQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	if(candidateId != null && candidateId.longValue() > 0){
+    		query.append(" (cpf.sourceCandidate.candidateId =:candidateId or cpf.destinationCandidate.candidateId =:candidateId )"); 
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		query.append(" ( cpf.sourceParty.partyId =:partyId or cpf.destinationParty.partyId =:partyId )");
+    	}
+    	if(fromDate != null){
+ 		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+ 	    }
+ 	    if(toDate != null){
+ 		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+ 	    }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	query.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+    	return query;
+    }
+    public StringBuilder getCategorySourceQuery(Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	if(categoryId != null && categoryId.longValue() > 0){
+    		query.append(" ,CandidatePartyCategory cpc where cpf.file.isDeleted != 'Y' and cpf.candidatePartyFileId = cpc.candidatePartyFile.candidatePartyFileId and cpc.gallary.gallaryId ="+categoryId+" and ");
+    	}else if(sourceId != null && sourceId.longValue() > 0 ){
+    		query.append(" ,FileSourceLanguage fsl where cpf.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and fsl.source.sourceId ="+sourceId+"  and ");
+    	}else{
+    		query.append(" where cpf.file.isDeleted != 'Y' and ");
+    	}
+    	return query;
+    }
+    public StringBuilder getPostivNegivNewsQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf  ");
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	if(candidateId != null && candidateId.longValue() > 0){  
+           query.append(" ((cpf.sourceCandidate.candidateId =:candidateId and cpf.sourceBenefit.benefitId = "+positiveNegivId+" ) or (cpf.destinationCandidate.candidateId =:candidateId  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ))");
+    	}else if(partyId != null && partyId.longValue() > 0){
+    	   query.append(" ( (cpf.sourceParty.partyId =:partyId  and cpf.sourceBenefit.benefitId = "+positiveNegivId+" ) or (cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ))");
+    	}
+    	   if(fromDate != null){
+ 		       query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	 	   }
+	 	   if(toDate != null){
+	 		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	 	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	query.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+    	return query;
+    }
+    
+    public StringBuilder getPartyOwnNewsQuery(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder(); 
+    	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    			query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId ");
+	    if(fromDate != null){
+		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	    }
+	    if(toDate != null){
+		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	    }
+	    query.append(""+addLocationString(locationLvl,locationIds)+"");
+	    query.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+       	return query;
+    }
+    
+    
+    public StringBuilder getPostivNegivNewsInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	query.append("  cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  " );
+    	if(candidateId != null && candidateId.longValue() > 0){
+    		query.append(" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId ="+positiveNegivId+" "); 	   
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		query.append(" and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId  ="+positiveNegivId+" ");
+	    	  
+    	}
+       if(fromDate != null){
+  		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+  	   }
+  	   if(toDate != null){
+  		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+  	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	query.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+    	return query;
+    }
+    
+    public StringBuilder getTotalNewsInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long categoryId,Long sourceId){
+    	StringBuilder query = new StringBuilder();
+    	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+    	query.append("  cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null   " );
+    	if(candidateId != null && candidateId.longValue() > 0){
+    		query.append(" and cpf.destinationCandidate.candidateId =:candidateId ");
+    	}else if(partyId != null && partyId.longValue() > 0){	 
+    		query.append(" and cpf.destinationParty.partyId =:partyId ");
+    	}
+    	   if(fromDate != null){
+ 		       query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	 	   }
+	 	   if(toDate != null){
+	 		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	 	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	query.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+    	return query;
+    }
+    
+    public List<NewsAnalysisVO> getSourceCategoryCount(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,String type,String benifit,Integer startIndex,Integer maxIndex,Long otherPartyId){
+    	List<NewsAnalysisVO> returnList = new ArrayList<NewsAnalysisVO>();
+    	if(type.equalsIgnoreCase("own")){
+	    	if(candidateId == null || candidateId.longValue() == 0){
+	    	  StringBuilder totalOwnNewsCategoryCountQuery = getPartyOwnNewsCountCategoryWise(fromDate,toDate,partyId,locationLvl,locationIds);
+	    	  StringBuilder totalOwnNewsSourceCountQuery = getPartyOwnNewsCountSourceWise(fromDate,toDate,partyId,locationLvl,locationIds);
+	    	  List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsCategoryCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+	    	  List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsSourceCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+	    	  getData(categoryList,sourceList,returnList);
+	    	}
+    	}else if(type.equalsIgnoreCase("other")){
+    		if(benifit.equalsIgnoreCase("total")){
+    			StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = tdpEffectOnOthersPartyWiseTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,null,otherPartyId,"category");
+    	    	    totalNewsQuery = tdpEffectOnOthersPartyWiseTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,null,otherPartyId,"source");
+    			}else{
+    				totalCountQuery = tdpEffectOnOtherPartiesTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,"category");
+    				totalNewsQuery = tdpEffectOnOtherPartiesTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,"source");
+    			}
+    			List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        getData(categoryList,sourceList,returnList);
+      	    }else if(benifit.equalsIgnoreCase("positive") || benifit.equalsIgnoreCase("negative")){
+      	    	Long benfitId= 1l;
+      	    	if(benifit.equalsIgnoreCase("negative")){
+      	    		benfitId= 2l;
+      	    	}
+      	    	StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = tdpEffectOnOthersPartyWiseBenifitCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,otherPartyId,"category");
+    				totalNewsQuery = tdpEffectOnOthersPartyWiseBenifitCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,otherPartyId,"source");
+    			}else{
+    				totalCountQuery = tdpEffectOnOtherPartiesBenifitWiseCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,"category");
+    	    		totalNewsQuery = tdpEffectOnOtherPartiesBenifitWiseCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,"source");
+    			}
+    			List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        getData(categoryList,sourceList,returnList);
+      	    }
+    	}else if(type.equalsIgnoreCase("onme")){
+    		if(benifit.equalsIgnoreCase("total")){
+    			StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = otherPartiesWiseEffectOnTdpTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,null,otherPartyId,"category");
+    	    	    totalNewsQuery = otherPartiesWiseEffectOnTdpTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,null,otherPartyId,"source");
+    			}else{
+    				totalCountQuery = otherPartiesOnTdpEffectTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,"category");
+    				totalNewsQuery = otherPartiesOnTdpEffectTotalCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,"source");
+    			}
+    			List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        getData(categoryList,sourceList,returnList);
+      	    }else if(benifit.equalsIgnoreCase("positive") || benifit.equalsIgnoreCase("negative")){
+      	    	Long benfitId= 1l;
+      	    	if(benifit.equalsIgnoreCase("negative")){
+      	    		benfitId= 2l;
+      	    	}
+      	    	StringBuilder totalCountQuery = null;
+    			StringBuilder totalNewsQuery = null;
+    			if(otherPartyId != null && otherPartyId.longValue() > 0){
+    				totalCountQuery = otherPartiesWiseEffectOnTdpBenifitCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,otherPartyId,"category");
+    				totalNewsQuery = otherPartiesWiseEffectOnTdpBenifitCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,otherPartyId,"source");
+    			}else{
+    				totalCountQuery = otherPartiesEffectOnTdpBenifitWiseCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,"category");
+    	    		totalNewsQuery = otherPartiesEffectOnTdpBenifitWiseCountAttrWise(partyId,candidateId,locationLvl,locationIds,fromDate,toDate,benfitId,"source");
+    			}
+    			List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+ 		        getData(categoryList,sourceList,returnList);
+      	    }
+    	}else if(type.equalsIgnoreCase("media")){
+    	   if(benifit.equalsIgnoreCase("total")){
+    		   StringBuilder totalCategoryMediaCountQuery = getCategoryTotalNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds);
+	    	   StringBuilder totalSourceMediaCountQuery =   getSourceTotalNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds);
+	    	   List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalCategoryMediaCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		       List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalSourceMediaCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		       getData(categoryList,sourceList,returnList);
+    	   }else if(benifit.equalsIgnoreCase("positive")){
+    		   StringBuilder totalCategoryPositiveMediaCountQuery = getCategoryPostivNegivNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,1l);
+    		   StringBuilder totalSourcePositiveMediaNewsQuery = getSourcePostivNegivNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,1l);
+    		   List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalCategoryPositiveMediaCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		       List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalSourcePositiveMediaNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		       getData(categoryList,sourceList,returnList);
+    	   }else if(benifit.equalsIgnoreCase("negative")){
+    		   StringBuilder totalCategoryPositiveMediaCountQuery = getCategoryPostivNegivNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,2l);
+    		   StringBuilder totalSourcePositiveMediaNewsQuery = getSourcePostivNegivNewsCountInMediaQuery(fromDate,toDate,partyId,candidateId,locationLvl,locationIds,2l);
+    		   List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalCategoryPositiveMediaCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		       List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalSourcePositiveMediaNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		       getData(categoryList,sourceList,returnList);
+    	   }
+    	}
+    	return returnList;
+    }
+    
+    public void getData(List<Object[]> categoryList,List<Object[]> sourceList,List<NewsAnalysisVO> returnList){
+       NewsAnalysisVO category = populateToVO(categoryList);
+ 	   NewsAnalysisVO source = populateToVO(sourceList);
+ 	   if(category != null){
+ 		  category.setName("Category");
+ 		  Collections.sort(category.getSubList(),countCompare);
+ 		  returnList.add(category);
+ 	   }
+ 	   if(source != null){
+ 		  source.setName("Source");
+ 		 Collections.sort(source.getSubList(),countCompare);
+ 		  returnList.add(source);
+ 	   }
+    }
+    public NewsAnalysisVO populateToVO(List<Object[]> newsCountList){
+    	NewsAnalysisVO newsCount = null;
+    	if(newsCountList != null && newsCountList.size() > 0){
+    		newsCount = new NewsAnalysisVO();
+    		List<NewsAnalysisVO> list = new ArrayList<NewsAnalysisVO>();
+    		newsCount.setSubList(list);
+	    	for(Object[] news:newsCountList){
+	    		NewsAnalysisVO vo = new NewsAnalysisVO();
+	    		if(news[2] != null){
+	    		 vo.setName(news[2].toString());
+	    		}
+	    		 vo.setId((Long)news[1]);
+	    		 vo.setTotal((Long)news[0]);
+	    		 list.add(vo);
+	    	}
+    	}
+    	return newsCount;
+    }
+    public StringBuilder getPartyOwnNewsCountCategoryWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds){
+    	StringBuilder query = new StringBuilder(); 
+    	query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and  " +
+	   		"  cpc.candidatePartyFile.sourceParty.partyId =:partyId and cpc.candidatePartyFile.destinationParty.partyId =:partyId ");
+	    if(fromDate != null){
+		   query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
+	    }
+	    if(toDate != null){
+		   query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
+	    }
+	    query.append(""+addLocationStringForCategory(locationLvl,locationIds)+"");
+	    query.append(" group by cpc.gallary.gallaryId ");
+       	return query;
+    }
+    
+    public StringBuilder addLocationStringForCategory(Long locationLvl,String locationIds){
+    	StringBuilder query = new StringBuilder(); 
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		if(locationLvl.longValue() == 1){
+				 query.append( " and cpc.candidatePartyFile.file.userAddress.district.districtId in ("+locationIds+") ");
+			}else if(locationLvl.longValue() == 2){
+				query.append(" and cpc.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId in ("+locationIds+")");
+			}else if(locationLvl.longValue() == 3){
+				query.append(" and cpc.candidatePartyFile.file.userAddress.constituency.constituencyId in ("+locationIds+") ");
+			}
+    	}
+    	return query;
+    }
+    
+    public StringBuilder getPartyOwnNewsCountSourceWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds){
+    	StringBuilder query = new StringBuilder(); 
+    	query.append(" select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf where fsl.file.isDeleted != 'Y' and  " +
+	   		"  fsl.file.fileId = cpf.file.fileId  and cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId ");
+	    if(fromDate != null){
+		   query.append(" and date(fsl.file.fileDate) >= :fromDate ");
+	    }
+	    if(toDate != null){
+		   query.append(" and date(fsl.file.fileDate) <= :toDate ");
+	    }
+	    query.append(""+addLocationString(locationLvl,locationIds)+"");
+	    query.append(" group by fsl.source.sourceId ");
+       	return query;
+    }
+    
+    public StringBuilder getCategoryPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId){
+    	StringBuilder query = new StringBuilder();
+    	if(candidateId != null && candidateId.longValue() > 0){
+    	   query.append("select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null " +
+    	   		" and cpc.candidatePartyFile.destinationCandidate.candidateId =:candidateId and cpc.candidatePartyFile.destinationBenefit.benefitId is not null  and cpc.candidatePartyFile.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		 query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name  from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null  " +
+	    	    " and cpc.candidatePartyFile.destinationParty.partyId =:partyId and cpc.candidatePartyFile.destinationBenefit.benefitId is not null and cpc.candidatePartyFile.destinationBenefit.benefitId = "+positiveNegivId+" ");
+	    	  
+    	}
+       if(fromDate != null){
+  		   query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
+  	   }
+  	   if(toDate != null){
+  		   query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
+  	   }
+    	query.append(""+addLocationStringForCategory(locationLvl,locationIds)+"");
+    	query.append(" group by cpc.gallary.gallaryId ");
+    	return query;
+    }
+    
+    public StringBuilder getCategoryTotalNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
+    	StringBuilder query = new StringBuilder();
+    	if(candidateId != null && candidateId.longValue() > 0){
+    	   query.append("select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null   " +
+    	   		" and cpc.candidatePartyFile.destinationCandidate.candidateId =:candidateId ");
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		 query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null   " +
+	    	   		" and cpc.candidatePartyFile.destinationParty.partyId =:partyId ");
+    	}
+    	   if(fromDate != null){
+ 		       query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
+	 	   }
+	 	   if(toDate != null){
+	 		   query.append(" and date(cpc.candidatePartyFile.file.fileDate) <= :toDate ");
+	 	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	return query;
+    }
+    
+    public StringBuilder getSourcePostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId){
+    	StringBuilder query = new StringBuilder();
+    	if(candidateId != null && candidateId.longValue() > 0){
+    	   query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
+    	   		" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
+    	}else if(partyId != null && partyId.longValue() > 0){
+    	   query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
+	    	    " and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ");	  
+    	}
+       if(fromDate != null){
+  		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+  	   }
+  	   if(toDate != null){
+  		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+  	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	query.append(" group by fsl.source.sourceId ");
+    	return query;
+    }
+    
+    public StringBuilder getSourceTotalNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
+    	StringBuilder query = new StringBuilder();
+    	if(candidateId != null && candidateId.longValue() > 0){
+    		query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
+    	   		" and cpf.destinationCandidate.candidateId =:candidateId ");
+    	}else if(partyId != null && partyId.longValue() > 0){
+    		query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
+	    	   		" and cpf.destinationParty.partyId =:partyId ");
+    	}
+    	   if(fromDate != null){
+ 		       query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	 	   }
+	 	   if(toDate != null){
+	 		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	 	   }
+    	query.append(""+addLocationString(locationLvl,locationIds)+"");
+    	return query;
+    }
+    
+    public FileVO getAnalysisDetails(Long partyId,Long candidateId,Long locationLevelId,String locationLevelValue,Date fromdate,Date todate)
+    {
+    	FileVO result = new FileVO();
+    	
+    	try{
+    	NewsAnalysisVO tdpEffectnewsAnalysisVO = new NewsAnalysisVO();
+    	List<NewsAnalysisVO> tdpEffectonOtherPartyvos = new ArrayList<NewsAnalysisVO>();
+		
+		
+		//for tdp targeting on other parties
+    	Long tdpTotalCount = candidatePartyFileDAO.tdpEffectOnOtherPartiesTotalCount(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	List<Object[]> tdpEffectCount = candidatePartyFileDAO.tdpEffectOnOtherPartiesBenifitWiseCount(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	List<Object[]> otherPartiesTotalCount = candidatePartyFileDAO.tdpEffectOnOthersPartyWiseTotalCount(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	List<Object[]> otherPartiesEffectCount = candidatePartyFileDAO.tdpEffectOnOthersPartyWiseBenifitCount(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	
+    	tdpEffectnewsAnalysisVO.setTotal(tdpTotalCount);
+    	for(Object[] tdpEffect:tdpEffectCount){
+    		if((Long)tdpEffect[1] == 1)
+    			tdpEffectnewsAnalysisVO.setPositiveCount((Long)tdpEffect[0]);
+    		if((Long)tdpEffect[1] == 2)
+    			tdpEffectnewsAnalysisVO.setNegativeCount((Long)tdpEffect[0]);
+    	}
+    	
+    	for(Object[] otherPartiesTotalEffect:otherPartiesTotalCount){
+    		NewsAnalysisVO newsAnalysisVO1 = new NewsAnalysisVO();
+    		newsAnalysisVO1.setId((Long)otherPartiesTotalEffect[1]);
+    		newsAnalysisVO1.setName(otherPartiesTotalEffect[2].toString());
+    		newsAnalysisVO1.setTotal((Long)otherPartiesTotalEffect[0]);
+    		tdpEffectonOtherPartyvos.add(newsAnalysisVO1);
+    	}
+    	tdpEffectnewsAnalysisVO.setSubList(tdpEffectonOtherPartyvos);
+    	for(Object[] otherPartiesEffect:otherPartiesEffectCount){
+    		NewsAnalysisVO newsAnalysisVO1 = null;
+    			newsAnalysisVO1 = checkVoExistance((Long)otherPartiesEffect[2],tdpEffectnewsAnalysisVO.getSubList());
+    			if(newsAnalysisVO1 != null)
+	  			  {
+        			if((Long)otherPartiesEffect[1]==1)
+            			newsAnalysisVO1.setPositiveCount((Long)otherPartiesEffect[0]);
+            		if((Long)otherPartiesEffect[1]==2)
+        				newsAnalysisVO1.setNegativeCount((Long)otherPartiesEffect[0]);
+	  			  }
+    	}
+    	
+    	//other parties targeting on tdp party
+    	Long otherPartyTotalCount = candidatePartyFileDAO.otherPartiesOnTdpEffectTotalCount(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	List<Object[]> otherPartyEffectCount = candidatePartyFileDAO.otherPartiesEffectOnTdpBenifitWise(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	List<Object[]> tdpEffectOnOtherPartyTotalCount = candidatePartyFileDAO.otherPartiesWiseEffectOnTdpTotalCount(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	List<Object[]> tdpEffectOnOtherPartyCount = candidatePartyFileDAO.otherPartiesWiseEffectOnTdpBenifitCount(partyId,candidateId,locationLevelId,locationLevelValue,fromdate,todate);
+    	
+    	NewsAnalysisVO otherPartyEffectnewsAnalysisVO = new NewsAnalysisVO();
+    	List<NewsAnalysisVO> OtherPartyEffectonTdpvos = new ArrayList<NewsAnalysisVO>();
+    	
+    	otherPartyEffectnewsAnalysisVO.setTotal(otherPartyTotalCount);
+    	for(Object[] tdpEffect:otherPartyEffectCount){
+    		if((Long)tdpEffect[1] == 1)
+    			otherPartyEffectnewsAnalysisVO.setPositiveCount((Long)tdpEffect[0]);
+    		if((Long)tdpEffect[1] == 2)
+    			otherPartyEffectnewsAnalysisVO.setNegativeCount((Long)tdpEffect[0]);
+    	}
+
+    	for(Object[] otherPartiesTotalEffect:tdpEffectOnOtherPartyTotalCount){
+    		NewsAnalysisVO newsAnalysisVO1 = new NewsAnalysisVO();
+    		newsAnalysisVO1.setId((Long)otherPartiesTotalEffect[1]);
+    		newsAnalysisVO1.setName(otherPartiesTotalEffect[2].toString());
+    		newsAnalysisVO1.setTotal((Long)otherPartiesTotalEffect[0]);
+    		OtherPartyEffectonTdpvos.add(newsAnalysisVO1);
+    	}
+    	otherPartyEffectnewsAnalysisVO.setSubList(OtherPartyEffectonTdpvos);
+    	for(Object[] otherPartiesEffect:tdpEffectOnOtherPartyCount){
+    		NewsAnalysisVO newsAnalysisVO1 = null;
+    			newsAnalysisVO1 = checkVoExistance((Long)otherPartiesEffect[2],otherPartyEffectnewsAnalysisVO.getSubList());
+    			if(newsAnalysisVO1 != null)
+	  			  {
+        			if((Long)otherPartiesEffect[1]==1)
+            			newsAnalysisVO1.setPositiveCount((Long)otherPartiesEffect[0]);
+            		if((Long)otherPartiesEffect[1]==2)
+        				newsAnalysisVO1.setNegativeCount((Long)otherPartiesEffect[0]);
+	  			  }
+    	}
+    	result.setTdpPartyEffect(tdpEffectnewsAnalysisVO);
+    	result.setOtherPartyEffect(otherPartyEffectnewsAnalysisVO);
+    	
+    	}catch(Exception e){
+    		LOG.error("Exception rised in getAnalysisDetails ",e);
+    	}
+    	return result;
+    }
+    
+	public NewsAnalysisVO checkVoExistance(Long partyId, List<NewsAnalysisVO> list)
+	{
+		try{
+			if(list == null || list.size() == 0)
+				return null;
+			for(NewsAnalysisVO vO : list)
+				if(vO.getId() != null && vO.getId().equals(partyId))
+					return vO;
+			return null;
+		}catch (Exception e) {
+			LOG.error("Exception Occured in checkVoExistance() method, Exception - ",e);
+			return null;
+		}
+	}
+	
+	public StringBuilder addLocaionAndDateQuery(Long level,String ids,Date fromDate,Date toDate){
+		StringBuilder str = new StringBuilder();
+		if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+			 if(level.longValue() == 1)
+				 str.append(" and cpf.file.userAddress.district.districtId in( "+ids+")");
+			 if(level.longValue() == 2)
+				 str.append(" and cpf.file.userAddress.constituency.constituencyId in("+ids+")");
+			 if(level.longValue() == 3)
+				 str.append(" and cpf.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+		 }
+		 if(fromDate != null)
+			 str.append(" and date(cpf.file.fileDate) >= :fromDate");
+			if(toDate != null)
+			 str.append(" and date(cpf.file.fileDate) <= :toDate");
+			
+			return str;
+	}
+	
+	public StringBuilder tdpEffectOnOtherPartiesTotalNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,String type){
+		 StringBuilder str = new StringBuilder();
+		 if(type.equalsIgnoreCase("count")){
+				str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+			}else{
+			 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+						" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+			}
+		 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+			 if(candidateId != null && candidateId.longValue() >0){
+				str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
+			 }else if(partyId != null && partyId.longValue() >0){
+				str.append("  cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+			 }
+			 str.append(" and (cpf.destinationParty.partyId is not null or cpf.destinationCandidate.candidateId is not null ) ");
+			 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+			 if(! type.equalsIgnoreCase("count")){
+				 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+			 }
+			return str;
+	 }
+	
+	 @SuppressWarnings("unchecked")
+		public StringBuilder tdpEffectOnOtherPartiesBenifitWiseNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,Long benfitId,String type){
+			StringBuilder str = new StringBuilder();
+			if(type.equalsIgnoreCase("count")){
+				str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+			}else{
+				str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+						" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+			}
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append("  cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and (cpf.destinationParty.partyId is not null or cpf.destinationCandidate.candidateId is not null ) and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 if(! type.equalsIgnoreCase("count")){
+					 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+				 }
+				return str; 
+		 }
+		
+	 @SuppressWarnings("unchecked")
+		public StringBuilder tdpEffectOnOthersPartyWiseTotalNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 if(type.equalsIgnoreCase("count")){
+					str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+				}else{
+				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+				}
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " ); 
+			  if(candidateId != null && candidateId.longValue() >0){
+					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append("  cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and (cpf.destinationParty.partyId ="+otherPartyId+" ) ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 if(! type.equalsIgnoreCase("count")){
+					 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+				 }
+				 return str; 
+		 }
+		 
+	 @SuppressWarnings("unchecked")
+		public StringBuilder tdpEffectOnOthersPartyWiseBenifitNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 if(type.equalsIgnoreCase("count")){
+					str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+				}else{
+				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+				}
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " ); 
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.sourceCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and cpf.destinationParty.partyId ="+otherPartyId+"  and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 if(! type.equalsIgnoreCase("count")){
+					 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+				 }
+				 return str;
+		 }
+		
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesOnTdpEffectTotalNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,String type){
+			 StringBuilder str = new StringBuilder();
+			 if(type.equalsIgnoreCase("count")){
+					str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+				}else{
+				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+				}
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " ); 
+			 if(candidateId != null && candidateId.longValue() >0){
+				str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+			 }else if(partyId != null && partyId.longValue() >0){
+				str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+			 }
+			 str.append(" and (cpf.sourceParty.partyId is not null or cpf.sourceCandidate.candidateId is not null ) ");
+			 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+			 if(! type.equalsIgnoreCase("count")){
+				 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+			 }
+			 return str;
+		 }
+			 
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesEffectOnTdpBenifitWiseNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,Long benfitId,String type){
+			 StringBuilder str = new StringBuilder();
+			 if(type.equalsIgnoreCase("count")){
+					str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+				}else{
+				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+				}
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " ); 
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and (cpf.sourceParty.partyId is not null or cpf.sourceCandidate.candidateId is not null ) and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 if(! type.equalsIgnoreCase("count")){
+					 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+				 }
+				 return str;
+		 }
+				
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesWiseEffectOnTdpTotalNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 if(type.equalsIgnoreCase("count")){
+					str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+				}else{
+				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+				}
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " ); 
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and cpf.sourceParty.partyId ="+otherPartyId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 if(! type.equalsIgnoreCase("count")){
+					 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+				 }
+				 return str;
+		 }
+				 
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesWiseEffectOnTdpBenifitNews(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long categoryId,Long sourceId,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 if(type.equalsIgnoreCase("count")){
+					str.append("select count(distinct cpf.file.fileId)  from CandidatePartyFile cpf  ");
+				}else{
+				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
+				}
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId)+"  " );  
+			   if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and cpf.sourceParty.partyId ="+otherPartyId+" and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 if(! type.equalsIgnoreCase("count")){
+					 str.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+				 }
+				 return str;
+		 }
+	 
+	 public StringBuilder tdpEffectOnOtherPartiesTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,String type){
+		 StringBuilder str = new StringBuilder();
+		 
+		 str.append(getAttributeSelectQuery(type));
+			 if(candidateId != null && candidateId.longValue() >0){
+				str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
+			 }else if(partyId != null && partyId.longValue() >0){
+				str.append("  cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+			 }
+			 str.append(" and (cpf.destinationParty.partyId is not null or cpf.destinationCandidate.candidateId is not null ) ");
+			 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+			 str.append(getAttributeGroupByQuery(type));
+			return str;
+	 }
+	
+	 @SuppressWarnings("unchecked")
+		public StringBuilder tdpEffectOnOtherPartiesBenifitWiseCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,String type){
+			StringBuilder str = new StringBuilder();
+			str.append(getAttributeSelectQuery(type));
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append("  cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and (cpf.destinationParty.partyId is not null or cpf.destinationCandidate.candidateId is not null ) and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 str.append(getAttributeGroupByQuery(type));
+				return str; 
+		 }
+		
+	 @SuppressWarnings("unchecked")
+		public StringBuilder tdpEffectOnOthersPartyWiseTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 str.append(getAttributeSelectQuery(type));
+			  if(candidateId != null && candidateId.longValue() >0){
+					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append("  cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and (cpf.destinationParty.partyId ="+otherPartyId+" ) ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 str.append(getAttributeGroupByQuery(type));
+				 return str; 
+		 }
+		 
+	 @SuppressWarnings("unchecked")
+		public StringBuilder tdpEffectOnOthersPartyWiseBenifitCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 str.append(getAttributeSelectQuery(type));
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.sourceCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.sourceParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and cpf.destinationParty.partyId ="+otherPartyId+"  and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 str.append(getAttributeGroupByQuery(type));
+				 return str;
+		 }
+		
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesOnTdpEffectTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,String type){
+			 StringBuilder str = new StringBuilder();
+			 str.append(getAttributeSelectQuery(type));
+			 if(candidateId != null && candidateId.longValue() >0){
+				str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+			 }else if(partyId != null && partyId.longValue() >0){
+				str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+			 }
+			 str.append(" and (cpf.sourceParty.partyId is not null or cpf.sourceCandidate.candidateId is not null ) ");
+			 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+			 str.append(getAttributeGroupByQuery(type));
+			 return str;
+		 }
+			 
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesEffectOnTdpBenifitWiseCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,String type){
+			 StringBuilder str = new StringBuilder();
+			 str.append(getAttributeSelectQuery(type));
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and (cpf.sourceParty.partyId is not null or cpf.sourceCandidate.candidateId is not null ) and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 str.append(getAttributeGroupByQuery(type));
+				 return str;
+		 }
+				
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesWiseEffectOnTdpTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 str.append(getAttributeSelectQuery(type));
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and cpf.sourceParty.partyId ="+otherPartyId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 str.append(getAttributeGroupByQuery(type));
+				 return str;
+		 }
+				 
+	 @SuppressWarnings("unchecked")
+		public StringBuilder otherPartiesWiseEffectOnTdpBenifitCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
+			 StringBuilder str = new StringBuilder();
+			 str.append(getAttributeSelectQuery(type));
+			   if(candidateId != null && candidateId.longValue() >0){
+					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" cpf.destinationParty.partyId = :partyId and cpf.sourceParty.partyId != cpf.destinationParty.partyId ");
+				 }
+				 str.append(" and cpf.sourceParty.partyId ="+otherPartyId+" and cpf.destinationBenefit.benefitId ="+benfitId+" ");
+				 str.append(addLocaionAndDateQuery(level,ids,fromDate,toDate));
+				 str.append(getAttributeGroupByQuery(type));
+				 return str;
+		 }
+	 
+	 public StringBuilder getAttributeSelectQuery(String type){
+		 StringBuilder query = new StringBuilder();
+		 if(type.equalsIgnoreCase("category")){
+		   query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc,CandidatePartyFile cpf where    " +
+		   		" cpf.candidatePartyFileId = cpc.candidatePartyFile.candidatePartyFileId and cpf.file.isDeleted != 'Y' and ");
+		 }else if(type.equalsIgnoreCase("source")){
+			 query.append(" select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf where fsl.file.isDeleted != 'Y' and  " +
+				   		"  fsl.file.fileId = cpf.file.fileId and ");
+		 }
+		 
+		 return query;
+	 }
+	 
+	 public StringBuilder getAttributeGroupByQuery(String type){
+		 StringBuilder query = new StringBuilder();
+		 if(type.equalsIgnoreCase("category")){
+		   query.append(" group by cpc.gallary.gallaryId  ");
+		 }else if(type.equalsIgnoreCase("source")){
+			 query.append(" group by fsl.source.sourceId ");
+		 }
+		 
+		 return query;
+	 }
+	 public static Comparator<NewsAnalysisVO> countCompare =  new Comparator<NewsAnalysisVO>()
+	  {
+		  public int compare(NewsAnalysisVO vo1,NewsAnalysisVO vo2){
+			  return (vo2.getTotal().intValue() - vo1.getTotal().intValue());
+		  }
+	  };
 }

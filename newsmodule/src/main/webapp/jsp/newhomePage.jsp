@@ -15,17 +15,12 @@
 	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/googleAPIStyles.css"/>
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
-<LINK rel="stylesheet" type="text/css" href="styles/addNewProblem/addNewProblem.css">
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
- <link href="calendar.css" rel="stylesheet" type="text/css">
 
 
 <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/animation/animation-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
@@ -37,11 +32,9 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script>
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-	<script type="text/javascript" src="js/yahoo/yui-js-3.0/build/yui/yui-min.js"></script>
 	 
 	<!-- YUI Skin Sam -->
 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">
 
 	<!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script> -->
@@ -734,7 +727,6 @@ $(document).ready(function(){
 		<!------JS------>
 	<!--<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	
 <script type="text/javascript">
 
