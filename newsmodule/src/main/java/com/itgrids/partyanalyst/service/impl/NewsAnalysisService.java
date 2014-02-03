@@ -4985,9 +4985,9 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
 			 if(level.longValue() == 1)
 				 str.append(" and cpf.file.userAddress.district.districtId in( "+ids+")");
-			 if(level.longValue() == 2)
-				 str.append(" and cpf.file.userAddress.constituency.constituencyId in("+ids+")");
 			 if(level.longValue() == 3)
+				 str.append(" and cpf.file.userAddress.constituency.constituencyId in("+ids+")");
+			 if(level.longValue() == 2)
 				 str.append(" and cpf.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
 		 }
 		 if(fromDate != null)
