@@ -26,6 +26,8 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class MobileDataAction extends ActionSupport implements ServletRequestAware{
 
+	private static final long serialVersionUID = 8560512792729556421L;
+	
 	private String task;
 	private JSONObject jObj;
 	private HttpServletRequest request;
