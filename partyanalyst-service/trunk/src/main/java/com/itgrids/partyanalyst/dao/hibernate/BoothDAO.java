@@ -1748,4 +1748,9 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	public List getConstituneycId(Long boothId)
+	{
+		return getHibernateTemplate().find("select model.constituency.constituencyId from Booth model where model.boothId = ? ",boothId);
+	}
+	
 }

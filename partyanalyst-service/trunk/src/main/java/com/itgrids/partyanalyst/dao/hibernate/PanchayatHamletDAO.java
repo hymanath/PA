@@ -175,4 +175,10 @@ public class PanchayatHamletDAO extends GenericDaoHibernate<PanchayatHamlet,Long
 		return query.list();
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List getHamletByPanchayatId(Long panchayatId)
+	{
+		return getHibernateTemplate().find("select distinct model.hamlet.hamletName from PanchayatHamlet model where model.panchayat.panchayatId = ? order by model.hamlet.hamletName",panchayatId);
+	}
+	
 }
