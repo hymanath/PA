@@ -102,7 +102,25 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private Long localEleBodyId;
     private String elderCaste;
     private String youngerCaste;
+    private String tehsilName;
+    private String constituencyType;
     
+
+	public String getConstituencyType() {
+		return constituencyType;
+	}
+
+	public void setConstituencyType(String constituencyType) {
+		this.constituencyType = constituencyType;
+	}
+
+	public String getTehsilName() {
+		return tehsilName;
+	}
+
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
 
 	public String getElderCaste() {
 		return elderCaste;

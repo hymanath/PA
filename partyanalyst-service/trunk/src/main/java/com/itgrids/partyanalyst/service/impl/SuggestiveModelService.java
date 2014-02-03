@@ -5938,12 +5938,71 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		}
 		for(Long boothId :boothHousesMap.keySet())
 		{
-		 
-		  
+		Map<Long,VoterHouseInfoVO> basicInfo = new HashMap<Long,VoterHouseInfoVO>();
+		Booth booth = boothDAO.get(boothId);
+		Constituency consti = constituencyDAO.get((Long)booth.getConstituency().getConstituencyId());
+		String type = consti.getAreaType();
+		if(booth != null)
+		{
+			String tehsil ="";
+			String panchayat = "";
+			String hamlet = "";
+			String ward = "";
+			String localbody = "";
+			String hamletName = "";
+			String wardName= "";
+			VoterHouseInfoVO votervo = new VoterHouseInfoVO();
+			if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+			{
+				tehsil = booth.getTehsil().getTehsilName();
+				panchayat =booth.getPanchayat().getPanchayatName();
+				List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
+				if(hamlets != null && hamlets.size() > 0)
+					hamletName = hamlets.get(0).toString();
+			}
+			else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+			{
+				if (booth.getLocalBody() != null)
+				localbody = booth.getLocalBody().getName();
+				if(localbody != null && localbody != "")
+					tehsil = localbody +" Muncipality";
+				else
+					tehsil = booth.getTehsil().getTehsilName();	
+				panchayat =booth.getPanchayat().getPanchayatName();
+				List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
+				if(hamlets != null && hamlets.size() > 0)
+					hamletName = hamlets.get(0).toString();
+				
+			}
+			else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+			{
+				if (booth.getLocalBody() != null)
+					localbody = booth.getLocalBody().getName();
+				String electionType =consti.getElectionScope().getElectionType().getElectionType();
+					if(localbody != null && localbody != "")
+					{
+						if(electionType.equalsIgnoreCase(IConstants.GHMC))
+						tehsil = localbody +" Corporation";
+						wardName = booth.getLocalBodyWard().getName();
+					}
+					else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
+					{
+						tehsil = localbody +" Muncipality";
+					}
+				
+			}
+			votervo.setTehsilName(tehsil);
+			votervo.setPanchayatName(panchayat);
+			votervo.setHamletName(hamletName);
+			votervo.setWardName(wardName);
+			basicInfo.put(boothId, votervo);
+			
+		}		
+		
 		  List<Object[]> list1 = boothPublicationVoterDAO.getFamilyWiseInfoForBooth(boothId, boothHousesMap.get(boothId));
 		  Map<String,List<VoterHouseInfoVO>> resultmap = new HashMap<String, List<VoterHouseInfoVO>>();
 		  List<Long> voterIds = new ArrayList<Long>();
-		
+		  
 		  for(Object[] params1 :list1)
 		  {
 			  List<VoterHouseInfoVO> voterDetails = resultmap.get(params1[0].toString());
@@ -5974,9 +6033,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					else
 					voterCaste.put((Long)casteName[0],caste);	
 				}
-		  
+			
+		
 		  for(String houseNo : resultmap.keySet())
 		  {
+			  
 			  VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
 			  voterHouseInfoVO.setBoothId(boothId);
 			  voterHouseInfoVO.setPartNo(boothDAO.get(boothId).getPartNo());
@@ -5990,6 +6051,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  voterHouseInfoVO.setVoterIdCardNo(voterDetails.get(voterDetails.size()-1).getVoterIdCardNo().toString());
 			  String cast = voterCaste.get(voterDetails.get(voterDetails.size()-1).getVoterId());
 			  voterHouseInfoVO.setElderCaste(cast != null ? cast : " ");
+			  VoterHouseInfoVO basicVo = basicInfo.get(boothId);
+			  voterHouseInfoVO.setTehsilName(basicVo.getTehsilName());
+			  voterHouseInfoVO.setPanchayatName(basicVo.getPanchayatName());
+			  voterHouseInfoVO.setWardName(basicVo.getWardName());
+			  voterHouseInfoVO.setHamletName(basicVo.getHamletName());
 			  boolean flag = false;
 			  List<VoterHouseInfoVO> youngervoterDetails  = voterDetails;
 			 
@@ -6010,12 +6076,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(0).getAge());
 						voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(0).getGender());
 						voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(0).getVoterIdCardNo().toString());
-						 
 					}
-					if(totalList != null && totalList.size() > 0)
 					
-					 result.add(voterHouseInfoVO);
-					 result.get(0).setTotalHousesCount(new Long(totalList.size()));
+					result.add(voterHouseInfoVO);
+					if(totalList != null && totalList.size() > 0)
+					result.get(0).setConstituencyType(type);
+				    result.get(0).setTotalHousesCount(new Long(totalList.size()));
 		  }
 		 
 		
