@@ -6025,7 +6025,39 @@
 	 	  <action name="genereateReportAction" class="debateAction" method="generateReport">
 	 			 <result>/jsp/genereateDebetReport.jsp</result>
 	 	  </action>
-	 	 
+		<action name="partyWiseGraphAction" class="newsAnalysisAction" method="getPartyAnalysedDataForGraph">
+		   <result name="success" type="json">
+		 	<param name="root">graphData</param>
+		   </result>
+		 </action>	
+		 
+		 <action name="getAnalysedNewsCount" class="newsAnalysisAction" method="getAnalysedNewsCount">
+		   <result name="success" type="json">
+		 	<param name="root">countInfo</param>
+		   </result>
+		 </action>
+		 
+		 <action name="getAllNewsAction" class="newsAnalysisAction" method="viewAnalysedNews">
+		  <result name="success">/jsp/viewAllNews.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+			 
+		<action name="getAllAnalysedNewsAction" class="newsAnalysisAction" method="getAllAnalysedNews">
+		   <result type="json" name="success">
+		    	<param name="root">analysedNewsDetails</param>
+		   </result>
+		</action>
+	    
+	    <action name="getAllAttrNewsAction" class="newsAnalysisAction" method="viewAttributeNews">
+		  <result name="success">/jsp/attributeWiseCount.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		
+	    <action name="getAttributeWiseCountAction" class="newsAnalysisAction" method="getAttributeWiseNewsCount">
+		   <result type="json" name="success">
+		    	<param name="root">attributeCount</param>
+		   </result>
+		</action>
         </package>
 		
 </struts>      

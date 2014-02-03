@@ -562,4 +562,358 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 int i = query.executeUpdate();
 		 return (Integer) i;
 	 }*/
+	 public Long getNewsCountBySelectedCriteria(String queryString,Date fromDate,Date toDate,Long partyId,Long candidateId){
+		 Query query = getSession().createQuery(queryString);
+		 if(candidateId != null && candidateId.longValue() > 0){
+			 query.setParameter("candidateId", candidateId);
+		 }else if(partyId != null && partyId.longValue() > 0){
+			 query.setParameter("partyId", partyId);
+		 }
+		 if(fromDate != null){
+			 query.setDate("fromDate", fromDate);
+		 }
+		 if(toDate != null){
+			 query.setDate("toDate", toDate);
+		 }
+		 return (Long)query.uniqueResult();
+	 }
+	 public List<Object[]> getNewsCount(String queryString,Date fromDate,Date toDate,Long partyId,Long candidateId){
+		 Query query = getSession().createQuery(queryString);
+		 if(candidateId != null && candidateId.longValue() > 0){
+			 query.setParameter("candidateId", candidateId);
+		 }else if(partyId != null && partyId.longValue() > 0){
+			 query.setParameter("partyId", partyId);
+		 }
+		 if(fromDate != null){
+			 query.setDate("fromDate", fromDate);
+		 }
+		 if(toDate != null){
+			 query.setDate("toDate", toDate);
+		 }
+		 return query.list();
+	 }
+	 
+	 public List<Object[]> getNewsByCriteria(String queryString,Date fromDate,Date toDate,Long partyId,Long candidateId,Integer startIndex,Integer maxIndex){
+		 Query query = getSession().createQuery(queryString);
+		 if(candidateId != null && candidateId.longValue() > 0){
+			 query.setParameter("candidateId", candidateId);
+		 }else if(partyId != null && partyId.longValue() > 0){
+			 query.setParameter("partyId", partyId);
+		 }
+		 if(fromDate != null){
+			 query.setDate("fromDate", fromDate);
+		 }
+		 if(toDate != null){
+			 query.setDate("toDate", toDate);
+		 }
+		 if(startIndex != null)
+			 query.setFirstResult(startIndex);
+		 if(maxIndex != null)
+			 query.setMaxResults(maxIndex);
+		 return query.list();
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+		public Long tdpEffectOnOtherPartiesTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+			 StringBuilder str = new StringBuilder();
+				str.append("select count(distinct model.file.fileId) from CandidatePartyFile model " +
+						" where model.file.isDeleted != 'Y' " );
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" and model.sourceCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+				 }
+				 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) ");
+				 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+					 if(level.longValue() == 1)
+						 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+					 if(level.longValue() == 2)
+						 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+					 if(level.longValue() == 3)
+						 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+				 }
+				 if(fromDate != null)
+					 str.append(" and date(model.file.fileDate) >= :fromDate");
+					if(toDate != null)
+					 str.append(" and date(model.file.fileDate) <= :toDate");
+					
+				 Query query = getSession().createQuery(str.toString());
+				
+				 if(candidateId != null && candidateId.longValue() >0){
+				    query.setParameter("candidateId", candidateId);
+				 }else if(partyId != null && partyId.longValue() >0){
+					query.setParameter("partyId", partyId);
+				 }
+				 if(fromDate != null)
+					  query.setParameter("fromDate", fromDate);
+				 if(toDate != null)
+					  query.setParameter("toDate", toDate);
+				 return (Long)query.uniqueResult();
+		 }
+		 
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> tdpEffectOnOtherPartiesBenifitWiseCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+				 StringBuilder str = new StringBuilder();
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId from CandidatePartyFile model " +
+							" where model.file.isDeleted != 'Y' " );
+					 if(candidateId != null && candidateId.longValue() >0){
+						str.append(" and model.sourceCandidate.candidateId = :candidateId ");
+					 }else if(partyId != null && partyId.longValue() >0){
+						str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+					 }
+					 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
+					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+						 if(level.longValue() == 1)
+							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+						 if(level.longValue() == 2)
+							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+						 if(level.longValue() == 3)
+							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+					 }
+					    if(fromDate != null)
+						 str.append(" and date(model.file.fileDate) >= :fromDate");
+						if(toDate != null)
+						 str.append(" and date(model.file.fileDate) <= :toDate");
+						str.append(" group by model.destinationBenefit.benefitId ");
+					 Query query = getSession().createQuery(str.toString());
+					
+					 if(candidateId != null && candidateId.longValue() >0){
+					    query.setParameter("candidateId", candidateId);
+					 }else if(partyId != null && partyId.longValue() >0){
+						query.setParameter("partyId", partyId);
+					 }
+					 if(fromDate != null)
+						  query.setParameter("fromDate", fromDate);
+					 if(toDate != null)
+						  query.setParameter("toDate", toDate);
+					 return query.list();
+			 }
+			
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> tdpEffectOnOthersPartyWiseTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+				 StringBuilder str = new StringBuilder();
+					str.append("select count(distinct model.file.fileId),model.destinationParty.partyId,model.destinationParty.shortName from CandidatePartyFile model " +
+							" where model.file.isDeleted != 'Y' " );
+					 if(candidateId != null && candidateId.longValue() >0){
+						str.append(" and model.sourceCandidate.candidateId = :candidateId ");
+					 }else if(partyId != null && partyId.longValue() >0){
+						str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+					 }
+					 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) ");
+					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+						 if(level.longValue() == 1)
+							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+						 if(level.longValue() == 2)
+							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+						 if(level.longValue() == 3)
+							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+					 }
+					    if(fromDate != null)
+						 str.append(" and date(model.file.fileDate) >= :fromDate");
+						if(toDate != null)
+						 str.append(" and date(model.file.fileDate) <= :toDate");
+						str.append(" group by model.destinationParty.partyId ");
+					 Query query = getSession().createQuery(str.toString());
+					
+					 if(candidateId != null && candidateId.longValue() >0){
+					    query.setParameter("candidateId", candidateId);
+					 }else if(partyId != null && partyId.longValue() >0){
+						query.setParameter("partyId", partyId);
+					 }
+					 if(fromDate != null)
+						  query.setParameter("fromDate", fromDate);
+					 if(toDate != null)
+						  query.setParameter("toDate", toDate);
+					 return query.list();
+			 }
+			 
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> tdpEffectOnOthersPartyWiseBenifitCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+				 StringBuilder str = new StringBuilder();
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId,model.destinationParty.partyId from CandidatePartyFile model " +
+							" where model.file.isDeleted != 'Y' " );
+					 if(candidateId != null && candidateId.longValue() >0){
+						str.append(" and model.sourceCandidate.candidateId = :candidateId ");
+					 }else if(partyId != null && partyId.longValue() >0){
+						str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+					 }
+					 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
+					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+						 if(level.longValue() == 1)
+							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+						 if(level.longValue() == 2)
+							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+						 if(level.longValue() == 3)
+							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+					 }
+					    if(fromDate != null)
+						 str.append(" and date(model.file.fileDate) >= :fromDate");
+						if(toDate != null)
+						 str.append(" and date(model.file.fileDate) <= :toDate");
+						str.append(" group by model.destinationParty.partyId ");
+					 Query query = getSession().createQuery(str.toString());
+					
+					 if(candidateId != null && candidateId.longValue() >0){
+					    query.setParameter("candidateId", candidateId);
+					 }else if(partyId != null && partyId.longValue() >0){
+						query.setParameter("partyId", partyId);
+					 }
+					 if(fromDate != null)
+						  query.setParameter("fromDate", fromDate);
+					 if(toDate != null)
+						  query.setParameter("toDate", toDate);
+					 return query.list();
+			 }
+			
+		 @SuppressWarnings("unchecked")
+			public Long otherPartiesOnTdpEffectTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+				 StringBuilder str = new StringBuilder();
+					str.append("select count(distinct model.file.fileId) from CandidatePartyFile model " +
+				      " where model.file.isDeleted != 'Y' " );
+				 if(candidateId != null && candidateId.longValue() >0){
+					str.append(" and model.destinationCandidate.candidateId = :candidateId ");
+				 }else if(partyId != null && partyId.longValue() >0){
+					str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+				 }
+				 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) ");
+				 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+					 if(level.longValue() == 1)
+						 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+					 if(level.longValue() == 2)
+						 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+					 if(level.longValue() == 3)
+						 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+				 }
+				    if(fromDate != null)
+					 str.append(" and date(model.file.fileDate) >= :fromDate");
+					if(toDate != null)
+					 str.append(" and date(model.file.fileDate) <= :toDate");
+
+				 Query query = getSession().createQuery(str.toString());
+				
+				 if(candidateId != null && candidateId.longValue() >0){
+				    query.setParameter("candidateId", candidateId);
+				 }else if(partyId != null && partyId.longValue() >0){
+					query.setParameter("partyId", partyId);
+				 }
+				 if(fromDate != null)
+					  query.setParameter("fromDate", fromDate);
+				 if(toDate != null)
+					  query.setParameter("toDate", toDate);
+				 return (Long)query.uniqueResult();
+			 }
+				 
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> otherPartiesEffectOnTdpBenifitWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+				 StringBuilder str = new StringBuilder();
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId from CandidatePartyFile model " +
+						    " where model.file.isDeleted != 'Y' " );
+					 if(candidateId != null && candidateId.longValue() >0){
+						str.append(" and model.destinationCandidate.candidateId = :candidateId ");
+					 }else if(partyId != null && partyId.longValue() >0){
+						str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+					 }
+					 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
+					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+						 if(level.longValue() == 1)
+							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+						 if(level.longValue() == 2)
+							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+						 if(level.longValue() == 3)
+							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+					 }
+					    if(fromDate != null)
+						 str.append(" and date(model.file.fileDate) >= :fromDate");
+						if(toDate != null)
+						 str.append(" and date(model.file.fileDate) <= :toDate");
+						str.append(" group by model.destinationBenefit.benefitId");
+					 Query query = getSession().createQuery(str.toString());
+					
+					 if(candidateId != null && candidateId.longValue() >0){
+					    query.setParameter("candidateId", candidateId);
+					 }else if(partyId != null && partyId.longValue() >0){
+						query.setParameter("partyId", partyId);
+					 }
+					 if(fromDate != null)
+						  query.setParameter("fromDate", fromDate);
+					 if(toDate != null)
+						  query.setParameter("toDate", toDate);
+					 return query.list();
+			 }
+					
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> otherPartiesWiseEffectOnTdpTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+				 StringBuilder str = new StringBuilder();
+					str.append("select count(distinct model.file.fileId),model.sourceParty.partyId,model.sourceParty.shortName from CandidatePartyFile model " +
+							  " where model.file.isDeleted != 'Y' " );
+					 if(candidateId != null && candidateId.longValue() >0){
+						str.append(" and model.destinationCandidate.candidateId = :candidateId ");
+					 }else if(partyId != null && partyId.longValue() >0){
+						str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+					 }
+					 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) ");
+					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+						 if(level.longValue() == 1)
+							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+						 if(level.longValue() == 2)
+							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+						 if(level.longValue() == 3)
+							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+					 }
+					    if(fromDate != null)
+						 str.append(" and date(model.file.fileDate) >= :fromDate");
+						if(toDate != null)
+						 str.append(" and date(model.file.fileDate) <= :toDate");
+						str.append(" group by model.sourceParty.partyId");
+					 Query query = getSession().createQuery(str.toString());
+					
+					 if(candidateId != null && candidateId.longValue() >0){
+					    query.setParameter("candidateId", candidateId);
+					 }else if(partyId != null && partyId.longValue() >0){
+						query.setParameter("partyId", partyId);
+					 }
+					 if(fromDate != null)
+						  query.setParameter("fromDate", fromDate);
+					 if(toDate != null)
+						  query.setParameter("toDate", toDate);
+					 return query.list();
+			 }
+					 
+		 @SuppressWarnings("unchecked")
+			public List<Object[]> otherPartiesWiseEffectOnTdpBenifitCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
+				 StringBuilder str = new StringBuilder();
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId,model.sourceParty.partyId from CandidatePartyFile model " +
+						    " where model.file.isDeleted != 'Y' " );
+					 if(candidateId != null && candidateId.longValue() >0){
+						str.append(" and model.destinationCandidate.candidateId = :candidateId ");
+					 }else if(partyId != null && partyId.longValue() >0){
+						str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
+					 }
+					 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
+					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+						 if(level.longValue() == 1)
+							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
+						 if(level.longValue() == 2)
+							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
+						 if(level.longValue() == 3)
+							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+					 }
+					    if(fromDate != null)
+						 str.append(" and date(model.file.fileDate) >= :fromDate");
+						if(toDate != null)
+						 str.append(" and date(model.file.fileDate) <= :toDate");
+						str.append(" group by model.sourceParty.partyId,model.destinationBenefit.benefitId");
+					 Query query = getSession().createQuery(str.toString());
+					
+					 if(candidateId != null && candidateId.longValue() >0){
+					    query.setParameter("candidateId", candidateId);
+					 }else if(partyId != null && partyId.longValue() >0){
+						query.setParameter("partyId", partyId);
+					 }
+					 if(fromDate != null)
+						  query.setParameter("fromDate", fromDate);
+					 if(toDate != null)
+						  query.setParameter("toDate", toDate);
+					 return query.list();
+			 }
 }

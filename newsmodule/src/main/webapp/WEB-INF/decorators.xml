@@ -255,6 +255,8 @@
 		<pattern>/debateAction*</pattern>
 		<pattern>/debateReportAction*</pattern>
 		<pattern>/debetSavingAction*</pattern>
+		<pattern>/getAllNewsAction*</pattern>
+		<pattern>/getAllAttrNewsAction*</pattern>
     	 </decorator>
 
 </decorators>

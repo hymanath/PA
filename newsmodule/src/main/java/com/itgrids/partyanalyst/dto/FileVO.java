@@ -161,6 +161,8 @@ public class FileVO extends ResultStatus implements Serializable {
 	private String imgToDisplayDeleted;
 	private String deleted;
 	private Long pathId;
+	private NewsAnalysisVO tdpPartyEffect;
+	private NewsAnalysisVO otherPartyEffect;
 	
 	public List<CandidatePartyNewsVO> getNewsCandidateDetails() {
 		return newsCandidateDetails;
@@ -1427,6 +1429,22 @@ public class FileVO extends ResultStatus implements Serializable {
 
 	public void setPathId(Long pathId) {
 		this.pathId = pathId;
+	}
+
+	public NewsAnalysisVO getTdpPartyEffect() {
+		return tdpPartyEffect;
+	}
+
+	public void setTdpPartyEffect(NewsAnalysisVO tdpPartyEffect) {
+		this.tdpPartyEffect = tdpPartyEffect;
+	}
+
+	public NewsAnalysisVO getOtherPartyEffect() {
+		return otherPartyEffect;
+	}
+
+	public void setOtherPartyEffect(NewsAnalysisVO otherPartyEffect) {
+		this.otherPartyEffect = otherPartyEffect;
 	}
 
 	

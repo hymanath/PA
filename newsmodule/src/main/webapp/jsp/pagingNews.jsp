@@ -101,7 +101,6 @@ Video chat with a friend, or give someone a ring all from your inbox. See more r
 	</div>
 		<!------JS------>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	<script>
 	
 	getNewsForPagination(0);

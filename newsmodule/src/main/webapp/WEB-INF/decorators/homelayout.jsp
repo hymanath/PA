@@ -238,7 +238,7 @@ margin:-1px 0px 0px 0px ;
 <td>
 	<!-----Footer---->
 	  <footer>
-        <p class="text-center">&copy; Telugu Desam Party 2013</p>
+        <p class="text-center">&copy; Telugu Desam Party 2014</p>
       </footer>
   
   

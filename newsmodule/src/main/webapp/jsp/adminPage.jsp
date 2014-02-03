@@ -9,7 +9,6 @@
 	<!-- Bootstrap -->
 	
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
 	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<!-- <script src="http://code.jquery.com/jquery-1.9.1.js"></script> -->

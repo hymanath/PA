@@ -58,6 +58,12 @@
 	.tabel-bordered{border-color:3px solid #ffcc00;}
 	.analysisResult thead tr th{background:#ffcc00;}
 	.tabel tr, .tabel td {border-top: 1px solid #FFCC00;}
+	.requiredFont {
+    color: #FF0000;
+    font-size: 18px;
+	margin-left:3px;
+}
+
 	</style>
     <script type="text/javascript">
 	var booleanVal = false;
@@ -125,11 +131,11 @@
 					
 					<!------Who Div---->
 					<div class="row-fluid label label-success-50">
-						<div class="span1 btn-block btn btn-large">
+						<!--<div class="span1 btn-block btn btn-large">
 							<h4 class=" text-center ">Who</h4>					
-						</div>
-						<div class="span3">
-							<label>Select Party</label>
+						</div>-->
+						<div class="span2">
+							<label>Select Party<span class="requiredFont">*</span></label>
 							<select class="input-block-level" id="partyList"onchange="getCandidatesOfSelectedParty(this.value,'candidateId');">	
 								<option value=0>Select Party</option>
 							</select>							
@@ -141,6 +147,35 @@
 							</select>						
 						</div>
 						<div class="span3">
+							<label>Select News Level</label>
+							<select id="locationLevelId" class="input-block-level" onChange="getRespectedLocationValues(this.value);">
+							<option value="0">Select News Level</option>
+							<option value="1">District</option>
+							<option value="2">PARLIAMENT CONSTITUENCY</option>
+							<option value="3">ASSEMBLY CONSTITUENCY</option>
+							</select>
+												
+						</div>
+						<div class="span3">
+							
+							<div  class="LocationLevelId">
+							<label>Select Location</label>
+							<select class="input-block-level">
+							<option>Select Location</option>
+							</select>
+							</div>
+							
+							<div style="display:none;" class="districtSelReport"><label>Select District</label>
+							<s:select name="districtSelReport" cssClass="input-block-level" id="districtSelReportId" list="districtsList" theme="simple" listKey="id" listValue="name" headervalue="Select District"/></div>
+							<div style="display:none;" class="parliamSelReport"><label>Select Constituency</label>
+							<s:select name="parliamSelReport" cssClass="input-block-level" id="parliamSelReportId" list="parlConstiList" theme="simple" listKey="id" listValue="name"/>
+							</div>
+							<div style="display:none;" class="assembSelReport"><label>Select Constituency</label>
+							<s:select name="assembSelReport" cssClass="input-block-level" id="assembSelReportId" list="assemConstiList" theme="simple" listKey="id" listValue="name"/>
+							</div>
+												
+						</div>
+						<!--<div class="span3">
 							<label>Benifits</label>
 							<select class="input-block-level" id="benifitsList" disabled="true">	
 								<option value=0>Select Benifits</option>
@@ -149,12 +184,12 @@
 						<div class="span2">
 							<label>Analyse By Who</label>
 							 <input type="checkbox" id="analyseCandidateSource" disabled="true"/>				
-						</div>
+						</div>-->
 					</div><!------Who Div END---->
 					
-					<div id="advanceDiv" style="display:none">
+					
 					<!------Whom Div---->
-					<div class="row-fluid label label-success-50  m_top10">
+					<!--<div class="row-fluid label label-success-50  m_top10">
 						<div class="span1 btn-block btn btn-large">
 							<h4 class=" text-center ">Whom</h4>					
 						</div>
@@ -180,8 +215,8 @@
 							<label>Analyse By Whome</label>
 							 <input type="checkbox" id="analyseCandidateDesti" class="srish"/>				
 						</div>
-					</div><!------Whom Div END---->
-					
+					</div>--><!------Whom Div END---->
+					<!--
 					<label class="checkbox inline">
 						<input type="checkbox" value="option1" id="keywordscheckId" onClick="unCheckCandidateCheckBox();"> <strong>Search By Keywords</strong>
 					</label>	
@@ -197,50 +232,23 @@
 												
 						</div>
 					</div>
-					
+					-->
 					<div class="row-fluid m_top10 " >
 						
 						
-						
+						<!--
 						<div class="span4">
 							<label>Select Source</label>
 							<select  id="newsSourceId"></select>
 												
 						</div>
 					
-					
+					-->
 					
 						
-						<div class="span4">
-							<label>Select News Level</label>
-							<select id="locationLevelId" onChange="getRespectedLocationValues(this.value);">
-							<option value="0">Select Location</option>
-							<option value="1">District</option>
-							<option value="2">PARLIAMENT CONSTITUENCY</option>
-							<option value="3">ASSEMBLY CONSTITUENCY</option>
-							</select>
-												
-						</div>
 						
-						<div class="span4">
-							
-							<div  class="LocationLevelId">
-							<label>Select Location</label>
-							<select>
-							<option>Select Location</option>
-							</select>
-							</div>
-							
-							<div style="display:none;" class="districtSelReport"><label>Select District</label>
-							<s:select name="districtSelReport" id="districtSelReportId" list="districtsList" theme="simple" listKey="id" listValue="name" headervalue="Select District"/></div>
-							<div style="display:none;" class="parliamSelReport"><label>Select Constituency</label>
-							<s:select name="parliamSelReport" id="parliamSelReportId" list="parlConstiList" theme="simple" listKey="id" listValue="name"/>
-							</div>
-							<div style="display:none;" class="assembSelReport"><label>Select Constituency</label>
-							<s:select name="assembSelReport" id="assembSelReportId" list="assemConstiList" theme="simple" listKey="id" listValue="name"/>
-							</div>
-												
-						</div>
+						
+						
 						
 						<!--<div class="span4">
 							<label>Select News Location</label>
@@ -249,16 +257,19 @@
 						</div>-->
 				
 					</div>
-					</div>
+					
 
-					<div style="height: 25px; margin-top: 10px;"><button class="btn btn-success" type="submit" id="advanceView" style="float:right;">Show Advance Search Options</button></div>
+					<!--<div style="height: 25px; margin-top: 10px;"><button class="btn btn-success" type="submit" id="advanceView" style="float:right;">Show Advance Search Options</button></div>-->
 					<!-------Submit Button------>
 					<div class="form-actions text-center">
-						<button class="btn btn-success" type="submit" onClick="getAnalysisData();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
-						<div id="errormessageDiv" style="display:none;color:red;">Please Select Atleast One Option To Analyse</div>
+						<button class="btn btn-success" type="submit" onClick="getAnalysisDataNew();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
+						<div id="errormessageDiv" style="display:none;color:red;margin-top:5px;">Please Select Atleast One Option To Analyse</div>
 					</div><!-------Submit Button END------>
+					<!--<div id="partyGraphId" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
 					<div id="responseTable" style="overflow-x:scroll;display:none;"></div>
-					<div id="responseTable1" style="overflow-x:scroll; margin-top: 20px;display:none;"></div>
+					<div id="responseTable1" style="overflow-x:scroll; margin-top: 20px;display:none;"></div>			
+					<div id="myResult"></div>
+					<div id="myResult1"></div>
 				</div>	
 			</div>
 			<!--------- Row-1 End -------->
@@ -275,7 +286,6 @@
 	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
 	<script type="text/javascript" src="js/jquery.google.api/jquery.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/jquery.carousel.js"></script>
 	 <!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" /> -->
 <link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
     <!-- <script src="http://code.jquery.com/jquery-1.8.2.js"></script> -->
@@ -309,19 +319,17 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+	<script type="text/javascript" src="js/highcharts.js"></script>
+    
 	<!-- Skin CSS files resize.css must load before layout.css --> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css" /> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css" />
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css" /> 
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css" /> 
+ 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css" />
+	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css" />
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css" />
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css" />     
 
 	<!-- YUI Dependency files (End) -->
 	

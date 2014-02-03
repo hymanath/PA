@@ -50,9 +50,6 @@
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
-	<script type="text/javascript" src="js/voterAnalysis/showGallaries.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
@@ -61,10 +58,7 @@
  	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
 	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-	<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
+	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css">      	
 
 	<!-- YUI Dependency files (End) -->
 
