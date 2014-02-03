@@ -67,7 +67,7 @@
 
 <script type="text/javaScript" >
 google.load("visualization", "1", {packages:["corechart"]});
-var maxr = 6000;
+var maxr = 1000;
 </script>
 <style type="text/css">	
 #suggestiveMainDiv{float: none;
@@ -103,13 +103,14 @@ var maxr = 6000;
 			<td>To Value </td><td></td><td><input type="text" id="toValue" style="width:136px;"/></td></tr>		
 	</table>	
 	<input type="button" value="submit" onclick="getFamilyInfo(0);" class="btn btn-success"/>
+	<div id="showAjaxImg" style="display:none"><img src="./images/icons/search.gif"/></div>
  </div>
 
   <br/> <br/>
  <div id="familyDetailsDiv" style="overflow-x: scroll; height: 500px;display:none;">
  
  </div>
- 
+ <div id="paginationDivId" style="display:none;"></div>
 
  </div>
 
@@ -249,6 +250,8 @@ function getFamilyInfo(startIndex)
 	
 	else
 	{
+$("#paginationDivId").css("display","none");
+$("#showAjaxImg").css("display","inline-block");
 errorDiv.html('');
 var jsObj= 
 	{	
@@ -283,26 +286,20 @@ function getPublicationDate()
 	callAjax(param,jsObj,url);
 }
 
-
-
-    var publicationDatesList;
+	 var publicationDatesList;
 	function buildPublicationDateList(results)
 	{
 	publicationDatesList=results;
 	var selectedElmt=document.getElementById("publicationDateList");
 	//var selectElmt =jsObj.selectElmt;
 	removeSelectElements(selectedElmt);
-
-	var  publicationIdsArray = new Array();
-
+	var publicationIdsArray = new Array();
 	for(var val in results)
 	{	
 	publicationIdsArray.push(results[val].id);
-
 		var opElmt = document.createElement('option');
 		opElmt.value=results[val].id;
 		opElmt.text=results[val].name;
-
 		try
 		{
 			selectedElmt.add(opElmt,null); // standards compliant
@@ -314,14 +311,14 @@ function getPublicationDate()
 	}
 
 	var largest = Math.max.apply(Math, publicationIdsArray);
-
 	$('#publicationDateList').val(largest);
 	$('#publicationDateList').trigger("change");
 
 }
 function buildFamilyDetails(results,jsObj)
 {
-	
+	$("#showAjaxImg").css("display","none");
+	$("#paginationDivId").css("display","block");
 	var str = '';
 	if(results.length > 0)
 	{
@@ -329,6 +326,23 @@ function buildFamilyDetails(results,jsObj)
 	str+='<table class="table table-bordered" id="familyWiseDataTable">';
 	str+='<thead>';
 	str+='<th>SNO</th>';
+	if(results[0].constituencyType == 'RURAL')
+		{
+	str+='<th>Mandal</th>';
+	str+='<th>Panchayat</th>';
+	str+='<th>Hamlet</th>';
+		}
+		else if(results[0].constituencyType == 'RURAL-URBAN')
+		{
+	str+='<th>Mandal/Muncipality</th>';
+	str+='<th>Panchayat</th>';
+	str+='<th>Hamlet</th>';
+		}
+	else if(results[0].constituencyType == 'URBAN')
+		{
+	str+='<th>Muncipality/Corporation</th>';
+	str+='<th>Ward</th>';
+		}
 	str+='<th>Booth</th>';
 	str+='<th>Caste</th>';
 	str+='<th>Elder Person Voter Id</th>';
@@ -345,12 +359,25 @@ function buildFamilyDetails(results,jsObj)
 	str+='</thead>';
 	str+='<tbody>';
 	
-	var j = 1;
+	var j = jsObj.startIndex;
+	if(j == 0)
+	j=1;
 	for(var i in results)
 		{
 	str+='<tr>';	
     str+='<td>'+j+'</td>';
-	str+='<td>'+results[i].partNo+'</td>';
+	if(results[0].constituencyType == 'RURAL' || results[0].constituencyType == 'RURAL-URBAN')
+		{
+    str+='<td>'+results[i].tehsilName+'</td>';
+    str+='<td>'+results[i].panchayatName+'</td>';
+    str+='<td>'+results[i].hamletName+'</td>';
+		}
+   else if(results[0].constituencyType == 'URBAN')
+		{
+    str+='<td>'+results[i].tehsilName+'</td>';
+    str+='<td>'+results[i].wardName+'</td>';
+		}
+    str+='<td>'+results[i].partNo+'</td>';
 	str+='<td>'+results[i].elderCaste+'</td>';
 	str+='<td>'+results[i].voterIdCardNo+'</td>';
 	str+='<td>'+results[i].elder+'</td>';
@@ -363,13 +390,12 @@ function buildFamilyDetails(results,jsObj)
 	str+='<td>'+results[i].younger+'</td>';
 	str+='<td>'+results[i].youngerGender+'</td>';
 	str+='<td>'+results[i].youngerAge+'</td>';
-	
 	str+='</tr>';
 		j++;
 		}
 		str+='</tbody>';
 	str+='</table>';
-	str+='<div id="paginationDivId"></div>';
+	
 	str+='<input type="button" value="Export To Excel" onclick="generateExcel();" class="btn btn-success"/>';
 	$("#familyDetailsDiv").html(str);
 	}
@@ -382,7 +408,7 @@ function buildFamilyDetails(results,jsObj)
 			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*10;
+				var num=(pageNumber-1)*maxr;
 				getFamilyInfo(num);
 				
 			}
@@ -405,15 +431,11 @@ var tableToExcel = (function() {
 
 function generateExcel()
 {
-	
-		 tableToExcel('familyWiseDataTable', 'Report');
-		
-
+ tableToExcel('familyWiseDataTable', 'Report');
 }
 </script>
 <script>
  getConstituencyList();
-
 </script>
 </body>
 </html>
