@@ -383,7 +383,6 @@ function callAjax(jsObj,url)
 								if(jsObj.task == "createDataDump")
 								{
 								 showStatus(myResults);	
-								
 								}
 								else if(jsObj.task == "getUsers")
 								{
@@ -430,6 +429,7 @@ function callAjax(jsObj,url)
  {
 	$("#errorMsgDiv").html("");
 	$("#ajaxImg").css("display","none");
+	
 	if(result == null || result.resultCode == 1)
 	{
 	  $("#errorMsgDiv").html("Error Occured! Try Again.").css("color","red");
@@ -438,8 +438,8 @@ function callAjax(jsObj,url)
 	else
 	{
 	  $("#errorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
-	  
-	 $("#downloadLink").css("display","block").css("display","inline-block");
+	  $("#downloadLink").attr('href',result.message);
+	  $("#downloadLink").css("display","block").css("display","inline-block");
 	  return;
 	}
  }
