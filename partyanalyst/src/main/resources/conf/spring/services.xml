@@ -1510,6 +1510,7 @@
 		<property name="hamletBoothDAO" ref="hamletBoothDAO" />
 		<property name="voterDataAvailableConstituenciesDAO" ref="voterDataAvailableConstituenciesDAO" />
 		<property name="voterFlagDAO" ref="voterFlagDAO" />
+		<property name="casteInsertTypeDAO" ref="casteInsertTypeDAO" />
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
