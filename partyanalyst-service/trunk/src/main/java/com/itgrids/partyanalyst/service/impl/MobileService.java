@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +18,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -658,22 +662,27 @@ public List<SelectOptionVO> getConstituencyList()
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	String date = sdf.format(new Date());
 	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+	File destDir = new File(path+pathSeperator+constituencyName+"_"+date);
+	destDir.mkdir();
 	
-	File f1 = new File(path+pathSeperator+constituencyName+"_"+date+"_1.sql");
-	File f2 = new File(path+pathSeperator+constituencyName+"_"+date+"_2.sql");
-	File f3 = new File(path+pathSeperator+constituencyName+"_"+date+"_3.sql");
-	File f4 = new File(path+pathSeperator+constituencyName+"_"+date+"_4.sql");
+	File f1 = new File(path+pathSeperator+constituencyName+"_"+date+pathSeperator+"1.sql");
+	File f2 = new File(path+pathSeperator+constituencyName+"_"+date+pathSeperator+"2.sql");
+	File f3 = new File(path+pathSeperator+constituencyName+"_"+date+pathSeperator+"3.sql");
+	File f4 = new File(path+pathSeperator+constituencyName+"_"+date+pathSeperator+"4.sql");
 	
 	BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
 	BufferedWriter outPut2 = new BufferedWriter(new FileWriter(f2));
 	BufferedWriter outPut3 = new BufferedWriter(new FileWriter(f3));
 	BufferedWriter outPut4 = new BufferedWriter(new FileWriter(f4));
 	
+	FileOutputStream fos = new FileOutputStream(path+pathSeperator+constituencyName+"_"+date+".zip");
+	ZipOutputStream zos = new ZipOutputStream(fos);
+	
 	StringBuilder str = new StringBuilder();
 	ResourceBundle rb = ResourceBundle.getBundle("mobileDBScripts");
 	Enumeration<String> keysList =   rb.getKeys();
-	//Long latestPublicationId = boothDAO.getLatestPublicationDateIdForAConstituency(constituencyId);
 	Long publicationId = reVo.getPublicationDateId();
+	
 	while(keysList.hasMoreElements())
 	{
 		str.append(rb.getString(keysList.nextElement()));
@@ -769,7 +778,7 @@ public List<SelectOptionVO> getConstituencyList()
 	 
 	 LOG.info("Caste Category data Completed...");
 	 
-	 List<ConstituencyHierarchyInfo> constituencyHierarchyInfoList = constituencyHierarchyInfoDAO.getConstituencyHierarchyInfoList(constituencyId, 1L);
+	 List<ConstituencyHierarchyInfo> constituencyHierarchyInfoList = constituencyHierarchyInfoDAO.getConstituencyHierarchyInfoList(constituencyId,publicationId,1L);
 	 if(constituencyHierarchyInfoList != null && constituencyHierarchyInfoList.size() > 0)
 	 {
 		for(ConstituencyHierarchyInfo hierarchyInfo:constituencyHierarchyInfoList)
@@ -1066,7 +1075,7 @@ public List<SelectOptionVO> getConstituencyList()
 	
 	LOG.info("voter family range table data Completed...");
 	
-	List<VoterInfo> voterInfoList = voterInfoDAO.getVoterInfoList(constituencyId);
+	List<VoterInfo> voterInfoList = voterInfoDAO.getVoterInfoList(constituencyId,publicationId);
 	if(voterInfoList != null && voterInfoList.size() > 0)
 	{
 	 for(VoterInfo voterInfo:voterInfoList)
@@ -1322,7 +1331,7 @@ public List<SelectOptionVO> getConstituencyList()
 				try{
 				strTemp.append("INSERT INTO parties_voting_trendz(parties_voting_trendz_id,constituency_id,report_level_id,report_level_value,year,total_booths,total_votes,votes_polled,election_type_id,order_no");
 				for(String pstr : partiesList)
-					strTemp.append(","+pstr);
+					strTemp.append(",'"+pstr+"'");
 				strTemp.append(") VALUES (");
 				strTemp.append(votingTrendz.getVotingTrendzId()+","+votingTrendz.getConstituency().getConstituencyId()+","+votingTrendz.getVoterReportLevel().getVoterReportLevelId()+","+votingTrendz.getReportLevelValue()+","+votingTrendz.getYear()+",");
 				strTemp.append(votingTrendz.getTotalBooths()+","+votingTrendz.getTotalVotes()+","+votingTrendz.getVotesPolled()+","+votingTrendz.getElectionType().getElectionTypeId()+","+votingTrendz.getOrderNo());
@@ -1408,7 +1417,7 @@ public List<SelectOptionVO> getConstituencyList()
 				try{
 					StringBuilder strTemp = new StringBuilder();
 					strTemp.append("INSERT INTO cadre(cadre_id,firstname,lastname,relative_name,gender,date_of_birth,age,blood_group_id,no_of_family_members,no_of_voters,mobile_no,email,house_no,street_name,user_address_id,education_id,occupation_id,");
-					strTemp.append("caste_state_id,member_type,voter_id,image_path,cadre_level_id,cadre_level_value) VALUES (");
+					strTemp.append("caste_state_id,member_type,voter_id,image_path,cadre_level_id,cadre_level_value,pincode,annual_income) VALUES (");
 					strTemp.append(cadre.getCadreId()+",");
 					strTemp.append("'"+cadre.getFirstName()+"',");
 					strTemp.append("'"+cadre.getLastName()+"',");
@@ -1431,7 +1440,9 @@ public List<SelectOptionVO> getConstituencyList()
 					strTemp.append(cadre.getVoter() != null ? cadre.getVoter().getVoterId()+"," : "null,");
 					strTemp.append(cadre.getImage() != null && cadre.getImage().trim().length() > 0 ? cadre.getImage()+"," : "null,");
 					strTemp.append(cadre.getCadreLevel() != null ? cadre.getCadreLevel().getCadreLevelID()+"," : "null,");
-					strTemp.append(cadre.getCadreLevelValue() != null ? cadre.getCadreLevelValue() : "null");
+					strTemp.append(cadre.getCadreLevelValue() != null ? cadre.getCadreLevelValue()+"," : "null,");
+					strTemp.append(cadre.getCurrentAddress().getPinCode() != null ? "'"+cadre.getCurrentAddress().getPinCode()+"'," : "'',");
+					strTemp.append(cadre.getAnnualIncome() != null ? cadre.getAnnualIncome() : "null");
 					strTemp.append(");\n");
 					str.append(strTemp);
 				}catch(Exception e)
@@ -1562,7 +1573,7 @@ public List<SelectOptionVO> getConstituencyList()
 			
 			try{
 				LOG.info("Hamlet Booth table data started...");
-				List<Object[]> hamletBoothList = userVoterDetailsDAO.getHamletBoothInfo(constituencyId,1L);
+				List<Object[]> hamletBoothList = userVoterDetailsDAO.getHamletBoothInfo(constituencyId,publicationId,1L);
 				if(hamletBoothList != null && hamletBoothList.size() > 0)
 				{
 					int hbIndex = 0;
@@ -1823,6 +1834,18 @@ public List<SelectOptionVO> getConstituencyList()
 		LOG.error("Exception ocuured in writing output - exception is ",e);
 		System.gc();
 	}
+	
+	 try{
+		 
+		 for(File rf : destDir.listFiles())
+			 addToZipFile(rf.getAbsolutePath(), zos);
+		 zos.close();
+		 fos.close();
+	 }catch(Exception e)
+	 {
+		 LOG.error("Exception Occured in Zipping Files");
+	 }
+	 resultStatus.setMessage("/SQLITE_DB/"+constituencyName+"_"+date+".zip");
 	 return resultStatus;
 	}catch (Exception e) {
 		System.gc();
@@ -2390,4 +2413,25 @@ public List<SelectOptionVO> getConstituencyList()
   		}
 		return result;
   	}
+  	
+  	 public  void addToZipFile(String fileName, ZipOutputStream zos)
+  	 {
+			try {
+				File file = new File(fileName);
+				FileInputStream fis = new FileInputStream(file);
+				ZipEntry zipEntry = new ZipEntry(fileName);
+				zos.putNextEntry(zipEntry);
+
+				byte[] bytes = new byte[1024];
+				int length;
+				while ((length = fis.read(bytes)) >= 0){
+					zos.write(bytes, 0, length);
+				}
+				zos.closeEntry();
+				fis.close();
+			} catch (Exception e) {
+				LOG.error("Exception Occured in addToZipFile() Method ");
+			}
+			
+		}
 }
