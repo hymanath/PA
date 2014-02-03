@@ -10,7 +10,5 @@ public interface IConstituencyHierarchyInfoDAO extends GenericDao<ConstituencyHi
 	
 	public Integer deleteConstituencyBasicInfo(Long constituencyId,Long publicationId,Long userId);
 	
-	public List<ConstituencyHierarchyInfo> getConstituencyHierarchyInfoList(Long constituencyId,Long userId);
-	
-
+	public List<ConstituencyHierarchyInfo> getConstituencyHierarchyInfoList(Long constituencyId,Long publicationDateId,Long userId);
 }
