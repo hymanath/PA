@@ -750,7 +750,7 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 						 str.append(" and date(model.file.fileDate) >= :fromDate");
 						if(toDate != null)
 						 str.append(" and date(model.file.fileDate) <= :toDate");
-						str.append(" group by model.destinationParty.partyId ");
+						str.append(" group by model.destinationParty.partyId,model.destinationBenefit.benefitId ");
 					 Query query = getSession().createQuery(str.toString());
 					
 					 if(candidateId != null && candidateId.longValue() >0){

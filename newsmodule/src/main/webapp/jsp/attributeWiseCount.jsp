@@ -219,12 +219,15 @@
 	function getNews(id,attrType){
 	   categoryId ='';
 	   sourceId ='';
+	   keywordId ='';
 	   if(attrType == "Category"){
 	     categoryId = id;
 	   }else if(attrType == "Source"){
 	     sourceId = id;
+	   }else if(attrType == "Keyword"){
+		 keywordId = id;
 	   }
-      var browser1 = window.open("getAllNewsAction.action?sourceCandId="+sourceCandId+"&sourcePartyId="+sourcePartyId+"&locationLvl="+locationLvl+"&locationIds="+locationIds+"&startDate="+startDate+"&endDate="+endDate+"&sourceType="+sourceType+"&benifitsFor="+benifitsFor+"&destiPartyId="+destiPartyId+"&categoryId="+categoryId+"&sourceId="+sourceId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+      var browser1 = window.open("getAllNewsAction.action?sourceCandId="+sourceCandId+"&sourcePartyId="+sourcePartyId+"&locationLvl="+locationLvl+"&locationIds="+locationIds+"&startDate="+startDate+"&endDate="+endDate+"&sourceType="+sourceType+"&benifitsFor="+benifitsFor+"&destiPartyId="+destiPartyId+"&categoryId="+categoryId+"&sourceId="+sourceId+"&keywordId="+keywordId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
        browser1.focus();
 
 }	

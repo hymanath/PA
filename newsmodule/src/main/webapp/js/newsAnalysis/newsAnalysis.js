@@ -1137,19 +1137,19 @@ $("#submitDataImg").hide();
     if(result.totalCount != null && result.totalCount.total > 0){
 	 str+="<div><h4>Total News Articles </h4></div><div class='btn btn-large'>Total News : ";
 	 if(result.totalCount.total > 0){
-	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"total\")' >"+result.totalCount.total+"</a>";
+	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"total\")' >"+result.totalCount.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"total\",\"total\")' ><img src='images/analyse1.png' /></a>";
 	 }else{
 	    str+=""+result.totalCount.total+"";
 	 }
 	 str+="</div>&nbsp;&nbsp;<div class='btn btn-large'>  Positive News : ";
 	 if(result.totalCount.positiveCount > 0){
-	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"positive\")' >"+result.totalCount.positiveCount+"</a>";
+	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"positive\")' >"+result.totalCount.positiveCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"total\",\"positive\")' ><img src='images/analyse1.png' /></a>";
 	 }else{
 	    str+=""+result.totalCount.positiveCount+"";
 	 }
 	 str+="</div>&nbsp;&nbsp;<div class='btn btn-large'>  Negative News : ";
 	 if(result.totalCount.negativeCount > 0){
-	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"negative\")' >"+result.totalCount.negativeCount+"</a>";
+	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"negative\")' >"+result.totalCount.negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"total\",\"negative\")' ><img src='images/analyse1.png' /></a>";
 	 }else{
 	    str+=""+result.totalCount.negativeCount+"";
 	 }
