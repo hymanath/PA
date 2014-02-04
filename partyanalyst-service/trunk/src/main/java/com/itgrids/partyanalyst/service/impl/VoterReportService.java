@@ -5380,7 +5380,12 @@ public class VoterReportService implements IVoterReportService{
 				if(list != null && list.size() > 0)
 					for(Object[] params : list)
 					{
-						flags.add(new SelectOptionVO((Long) params[0],params[1].toString()));	
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long) params[0]);
+						selectOptionVO.setName(params[1].toString());
+						selectOptionVO.setValue(params[2].toString().substring(1));
+						//flags.add(new SelectOptionVO((Long) params[0],params[1].toString()));
+						flags.add(selectOptionVO);
 					}
 				if(voterflagIds != null && voterflagIds.size() > 0)
 				{
@@ -5388,7 +5393,7 @@ public class VoterReportService implements IVoterReportService{
 					{
 						if(voterflagIds.contains(vo.getId()))
 							vo.setFlag(true);
-							result.add(vo);	
+						    result.add(vo);	
 					}
 				}
 				else

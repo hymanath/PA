@@ -36,7 +36,7 @@ public class FlagDAO extends GenericDaoHibernate<Flag,Long> implements IFlagDAO
 	}
 	public List<Object[]> getAllFlagsList()
 	{
-		return getHibernateTemplate().find("select model.flagId,model.name from Flag model order by model.flagId desc");
+		return getHibernateTemplate().find("select model.flagId,model.name,model.color from Flag model order by model.flagId desc");
 	}
 
 }
