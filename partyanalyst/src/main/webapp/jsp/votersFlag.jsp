@@ -470,9 +470,7 @@ function showFlagStatus(result)
 else if(result.resultCode == 121)
 	{
 		$("#errorDiv").html("flag already Exist").css("color","red");
-		$("#flagName").val ('');
-		$("#flagDescription").val('') ;
-		$("#picker").val('') ;
+		
 	}
 else
 $("#errorDiv").html("");

@@ -1197,7 +1197,7 @@ function buildVoterTypeDetails(myResults,jsObj)
 	var	publicationDateId = jsObj.publicationDateId;
 	if(myResults != null)
 	{
-		 $('#voterTypeId').html('<span>Influencing People : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'InfluencePeople\' ,'+myResults[0].influencePeopleCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].influencePeopleCount+'</b></span><span style="margin-left: 10px;">Cadre : </span><span class="btnName"  onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Cadre\','+myResults[0].cadreCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].cadreCount+'</b></span><span style="margin-left: 10px;">Politican : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Politician\','+myResults[0].politicianCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].politicianCount+'</b></span><span style="margin-left: 10px;"><span>Flag : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'flag\' ,'+myResults[0].flagsCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].flagsCount+'</b></span>'); 
+		 $('#voterTypeId').html('<span>Influencing People : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'InfluencePeople\' ,'+myResults[0].influencePeopleCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].influencePeopleCount+'</b></span><span style="margin-left: 10px;">Cadre : </span><span class="btnName"  onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Cadre\','+myResults[0].cadreCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].cadreCount+'</b></span><span style="margin-left: 10px;">Politican : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'Politician\','+myResults[0].politicianCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].politicianCount+'</b></span><span style="margin-left: 10px;"><span>Flagged Voters : </span><span class="btnName" onclick="getInfluencingPeopleVotersDetails('+locationValue+',\''+maintype+'\','+publicationDateId+',\'flag\' ,'+myResults[0].flagsCount+');"><b style="color:navy; cursor: pointer;">'+myResults[0].flagsCount+'</b></span>'); 
 		
 	}
 	getVoterDetails();
@@ -2382,15 +2382,34 @@ function buildFlags(results,voterId)
  $( "#flagOuterDiv" ).dialog("open");
 var str='';
 str+='<div id="errorDiv"></div>';
+if(results.length == 0)
+	{
+	str+='<div>No Flags Existed,Please Create new Flags</div><br/>';
+	str+='<input type="button" id="assignVoter" value="Add Flag" onclick="addFlagWindow();" class="btn btn-success"/>';
+	}
+	else
+	{
+str+='<table>';
 for(var i in results)
 	{
+	str+='<tr>';
 	if(results[i].flag == true)
-str+='<input type="checkbox" value='+results[i].id+' id='+results[i].id+' class="checkFlag" checked="true" />&nbsp'+results[i].name+'<br/>';
+		{
+str+='<td><input type="checkbox" value='+results[i].id+' id='+results[i].id+' class="checkFlag" checked="true" />&nbsp'+results[i].name+' </td><td>&nbsp;<span id="flagColor'+i+'" style="background-color:#'+results[i].value+'">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>';
+	str+='</tr>';
+		}
 	else
-str+='<input type="checkbox" value='+results[i].id+' id='+results[i].id+' class="checkFlag" />&nbsp'+results[i].name+'<br/>';
+		{
+		str+='<tr>';
+str+='<td><input type="checkbox" value='+results[i].id+' id='+results[i].id+' class="checkFlag" />&nbsp'+results[i].name+'  </td><td>&nbsp;<span id="flagColor'+i+'" style="background-color:#'+results[i].value+'">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>';
+str+='</tr>';
+		}
 	}
+str+='</table>';
 str+='<br/><br/>';
+
 str+='<input type="button" id="assignVoter" value="Assign" onclick="assignFlagsToVoter('+voterId+');" class="btn btn-success"/>';
+	}
 str+='<br/><br/>';
 $("#InnerflagDiv").html(str);
 }
@@ -2404,6 +2423,11 @@ function showAssignFlagsStatus(results,voterId)
 setTimeout(function() { $("#flagOuterDiv").dialog('close') }, 2000);
 	}
 
+}
+function addFlagWindow(){
+	var urlStr="votersFlagAction.action";
+	var updateBrowser = window.open(urlStr,"createflag","scrollbars=yes,height=600,width=850,left=200,top=200");	
+	updateBrowser.focus();
 }
  </script>
 </body>
