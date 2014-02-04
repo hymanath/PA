@@ -33,7 +33,7 @@ public interface INewsAnalysisService {
 	
 	public AnalysisBasicInfoVO getAnalysedNewsCount(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds);
 	
-	public List<FileVO> getAnalysedNews(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long onPartyId,String type,String benifit,Integer startIndex,Integer maxIndex,Long categoryId,Long sourceId,Long otherPartyId);
+	public List<FileVO> getAnalysedNews(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long onPartyId,String type,String benifit,Integer startIndex,Integer maxIndex,Long categoryId,Long sourceId,Long otherPartyId,Long keywordId);
 	
 	public List<NewsAnalysisVO> getSourceCategoryCount(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,String type,String benifit,Integer startIndex,Integer maxIndex,Long otherPartyId);
 }

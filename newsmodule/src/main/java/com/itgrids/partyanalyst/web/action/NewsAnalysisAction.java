@@ -629,7 +629,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
     		 if(endValue != null && endValue > 0){
     			 maxIndex = endValue;
     		 }
-    		 analysedNewsDetails = newsAnalysisService.getAnalysedNews(fromDate,toDate,sourcePartyId,sourceCandId,locationLvl,locationIds,destiPartyId,sourceType,benifitsFor,startIndex,maxIndex,categoryId,sourceId,destiPartyId);
+    		 analysedNewsDetails = newsAnalysisService.getAnalysedNews(fromDate,toDate,sourcePartyId,sourceCandId,locationLvl,locationIds,destiPartyId,sourceType,benifitsFor,startIndex,maxIndex,categoryId,sourceId,destiPartyId,keywordId);
     	}catch (Exception e) {
 			LOG.error("Exception raised in getAllAnalysedNews method",e);
 		}

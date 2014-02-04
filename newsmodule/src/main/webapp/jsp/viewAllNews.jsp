@@ -79,6 +79,7 @@ font-size:20px;
 		var destiPartyId = '${destiPartyId}';
 		var categoryId = '${categoryId}';
 		var sourceId = '${sourceId}';
+		var keywordId = '${keywordId}';
   getAllGallaries(0,10);
             
 function getAllGallaries(startIndex,endIndex)
@@ -104,7 +105,8 @@ function getAllGallaries(startIndex,endIndex)
 			endDate:endDate,
 			sourceType : sourceType,
 			categoryId:categoryId,
-			sourceId:sourceId			
+			sourceId:sourceId,
+			keywordId:keywordId
 	  },
 		 
 	  success: function(results){ 
