@@ -25,4 +25,18 @@ public interface IVoterFlagDAO extends GenericDao<VoterFlag, Long>{
     public List<Long> getFlagCountForSelectedLevel(List<Long> boothIds ,long constituencyId,Long userId);
     
     public List<Long> getCountForSelectedTypeInHamlet(Long hamletId,Long userId,String selLevel);
+    
+    
+	
+	 public List<Object[]> getFlagVoterDetailsByLocationId(Long constituencyId,Long locationId,Long flagId,String locationType,Long publicationDateId, Integer startIndex,
+				Integer maxRecords);
+	 public List<Object[]> getFlagVoterDetailsForHamlet(Long constituencyId,Long locationId,Long flagId,String locationType,Long publicationDateId, Integer startIndex,
+				Integer maxRecords);
+	 
+	 public List getFlagVoterDetailsByLocationIdCount(Long constituencyId,Long locationId,Long flagId,String locationType,Long publicationDateId
+				);
+	 
+	 public List getFlagVoterDetailsForHamletCount(Long constituencyId,Long locationId,Long flagId,String locationType,Long publicationDateId
+				);
+	 
 }

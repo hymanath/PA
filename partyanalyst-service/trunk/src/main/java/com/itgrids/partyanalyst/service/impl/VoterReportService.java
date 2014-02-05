@@ -5355,6 +5355,9 @@ public class VoterReportService implements IVoterReportService{
 						 }
 						 voterVO.setTotalVoters(voterVO.getMaleVoters() +voterVO.getFemaleVoters());
 						 voterVO.setGender(params[4].toString());
+						 voterVO.setStatusId((Long)params[1]);
+						 voterVO.setType(type);
+						 voterVO.setLocationId(locationId);
 						 voterVO.setSerialNo(i);
 						
 					 }

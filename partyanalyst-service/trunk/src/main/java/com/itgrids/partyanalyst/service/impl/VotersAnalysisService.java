@@ -20230,5 +20230,72 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			return constituencyList;
 		}
 	}
+	
+	public List<VoterVO> getFlagVoterDetails(Long constituneycId,Long locationId,
+			Long publicationId,String type,Long flagId,Integer startIndex,Integer maxRecords,
+			Long userId)
+	{
+		List<VoterVO> resultList = new ArrayList<VoterVO>();
+		List<Object[]> dataList = null;
+		List count =null;
+		try{
+			
+			if(type.equalsIgnoreCase(IConstants.MANDAL) || type.equalsIgnoreCase(IConstants.LOCALELECTIONBODY))
+			{
+				if((locationId.toString().substring(0, 1).toString().trim().equalsIgnoreCase("1")))
+					
+						{
+				List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1)));
+				locationId = (Long) list.get(0);
+						}
+				else
+				locationId = new Long(locationId.toString().substring(1));
+				
+			}
+			if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase("wardBooths"))
+			{
+			
+				dataList =  voterFlagDAO.getFlagVoterDetailsForHamlet(constituneycId,locationId,flagId,type,publicationId, startIndex,
+						 maxRecords);
+				count = voterFlagDAO. getFlagVoterDetailsForHamletCount(constituneycId,locationId,flagId,type,publicationId
+						);
+			}
+			else
+			{
+			dataList = voterFlagDAO.getFlagVoterDetailsByLocationId(constituneycId,locationId,flagId,type,publicationId, startIndex,
+					 maxRecords);
+			count = voterFlagDAO.getFlagVoterDetailsByLocationIdCount(constituneycId,locationId,flagId,type,publicationId
+					);
+			}
+			 if(dataList != null && dataList.size() > 0)
+			 {
+				for(Object[] params : dataList)
+				{
+					Voter voter = (Voter) params[0];
+					VoterVO voterVO = new VoterVO();
+					voterVO.setName(voter.getName());
+					voterVO.setVoterId(voter.getVoterId().toString());
+					voterVO.setAge(voter.getAge());
+					voterVO.setMobileNo(voter.getMobileNo() != null ?voter.getMobileNo() : " ");
+					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
+					voterVO.setFlagName(params[2].toString());
+					voterVO.setColor(params[3].toString().substring(1));
+					voterVO.setGender(voter.getGender());
+					voterVO.setHouseNo(voter.getHouseNo());
+					voterVO.setFirstName(voter.getRelativeName());
+					resultList.add(voterVO);
+					
+					
+				}
+				if(count != null && count.size() > 0)
+					resultList.get(0).setTotalVoters((Long)count.get(0));
+			 }
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in getFlagVoterDetails () Method, Exception - "+e);
+		}
+		return resultList;
+	}
 		
 }
