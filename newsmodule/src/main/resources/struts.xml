@@ -5944,7 +5944,7 @@
 		 
 		 
 			
-			<action name="uploadFilesForPartyAndCandidatesKeywords" class="candidateElectionResultsAction" method="uploadFilesForPartyAndCandidatesKeywords">
+		<action name="uploadFilesForPartyAndCandidatesKeywords" class="candidateElectionResultsAction" method="uploadFilesForPartyAndCandidatesKeywords">
 		  <result name="success" type="stream">			   
 			    <param name="inputName">inputStream</param>
 		  </result>	

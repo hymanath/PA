@@ -1405,6 +1405,13 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	public String uploadFilesForPartyAndCandidatesKeywords()
 	{
 	 try{
+		 HttpSession session = request.getSession();
+			RegistrationVO user =(RegistrationVO) session.getAttribute("USER");
+			if(user==null)
+			{
+				inputStream = new StringBufferInputStream("sessionExpired");
+			    return "success";
+			}
 	  
 	  String fileName = null;
 	  String filePath = null;
