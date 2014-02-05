@@ -66,7 +66,25 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private Long femaleVoters = 0l;
 	private List<VoterVO> flagList = new ArrayList<VoterVO>();
 	private String position;
+	private Long locationId;
+	private String flagName;
 	
+	public String getFlagName() {
+		return flagName;
+	}
+
+	public void setFlagName(String flagName) {
+		this.flagName = flagName;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
 	public String getPosition() {
 		return position;
 	}
