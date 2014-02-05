@@ -119,6 +119,7 @@
 		<pattern>/moreVideosAction*</pattern>
 		<pattern>/votersFlagAction.action*</pattern>
 		<pattern>/mobileAppUserInfo.action*</pattern>
+		<pattern>/flaggedvoterDetailsAction*</pattern>
 		
 	</excludes>  
 	

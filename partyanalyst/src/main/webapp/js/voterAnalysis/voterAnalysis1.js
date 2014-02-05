@@ -10104,12 +10104,21 @@ function buildFlagWiseVotersCount(results)
 	str+='<td>'+results[i].serialNo+'</td>';
 	str+='<td><span style="background-color:#'+results[i].color+' ">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>';
 	str+='<td>'+results[i].name+'</td>';
-	str+='<td>'+results[i].totalVoters+'</td>';
+	str+='<td><a href="#" onclick="getFlagWiseVoterDetails('+results[i].statusId+',\''+results[i].locationId+'\',\''+results[i].type+'\')">'+results[i].totalVoters+'</a></td>';
 	str+='<td>'+results[i].maleVoters+'</td>';
 	str+='<td>'+results[i].femaleVoters+'</td>';
 	str+='</tr>';
+	
 	}
 	str+='</table><br/>';
 	$("#flagWiseVotersCountDiv").html(str);
 	}
+}
+
+function getFlagWiseVoterDetails(flagId,locationId,type)
+{
+var publicationDateId = mainpublicationId;
+var urlstr = "flaggedvoterDetailsAction.action?constituencyId="+constituencyId+"&publicationId="+publicationDateId+"&flagId="+flagId+"&locationId="+locationId+"&sort=voterId&dir=asc&startIndex=0&results=100&maintype="+type+" ";
+var browser1 = window.open(urlstr,"familyWiseDetails","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+browser1.focus();
 }

@@ -6310,6 +6310,14 @@
            		<param name="root">familyInfo</param>
         	</result>
 		</action>
-		
+		  <action name="flaggedvoterDetailsAction" class="voterFamilyInfoAction">
+          <result name="success">/jsp/flagVoterDetails.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+        </action>
+        <action name="getFlaggedvoterDetailsAction" class="votersEditAction" method="getFlagVoters">
+			  <result type="json" name="success">
+           		<param name="root">voterDetails</param>
+        	</result>
+		</action>
 		</package>
 </struts>      

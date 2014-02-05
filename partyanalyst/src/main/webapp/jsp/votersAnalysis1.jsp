@@ -2509,8 +2509,8 @@ function showCasteWiseDetailsForCustomVoterGroup()
 
 
 	window.open("customGroupWiseCasteVotersDetails.action?locationValue="+locationValue+"&areaType="+areaType+"&groupName="+mainname+"","newBrowser","width=1050,height=600,menubar=no,status=no,location=no,toolbar=no,scrollbars=yes");
-
-	 reqBrowser.focus();
+   
+    reqBrowser.focus();
 	
 }
 
