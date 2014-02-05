@@ -1699,5 +1699,31 @@ public String saveLocality()
 		}	
 		return Action.SUCCESS;
 	    }
+	   
+	   
+	   public String getFlagVoters()
+		{
+		   try{
+	    		jObj = new JSONObject(getTask());
+						session = request.getSession();
+					    RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+						Long userId =  regVO.getRegistrationID();
+						Integer startIndex =Integer.parseInt(jObj.getString("startIndex"));
+						Integer maxRecords = Integer.parseInt(jObj.getString("results"));
+						Long publicationId = jObj.getLong("publicationId");
+						Long locationId = jObj.getLong("locationId");
+						String type = jObj.getString("type");
+					    Long constiId = jObj.getLong("constituencyId");
+					    Long flagId = jObj.getLong("flagId");
+					  
+					    voterDetails = votersAnalysisService.getFlagVoterDetails(constiId,locationId,
+								publicationId,type,flagId,startIndex, maxRecords,
+								userId);
+		   }
+		   				catch (Exception e) {
+					    	 LOG.error("Exception rised in getParlmentAndAssemblyConstisByStateId ",e);
+		}	
+					    return Action.SUCCESS;
+		}
 
    }

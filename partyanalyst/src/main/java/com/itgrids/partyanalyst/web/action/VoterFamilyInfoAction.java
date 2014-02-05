@@ -50,10 +50,31 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 	private Long PanchaytId;
 	private Long hamletId;
 	private List<Long> count;
-	
 	private Long customwardId;
+	private Long flagId;
+	private Long locationId;
+	private List<VoterVO> voterDetails;
 	
-	
+	public void setVoterDetails(List<VoterVO> voterDetails) {
+		this.voterDetails = voterDetails;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public Long getFlagId() {
+		return flagId;
+	}
+
+	public void setFlagId(Long flagId) {
+		this.flagId = flagId;
+	}
+
 	public Long getCustomwardId() {
 		return customwardId;
 	}
@@ -364,4 +385,6 @@ public class VoterFamilyInfoAction  extends ActionSupport implements ServletRequ
 		
 		return Action.SUCCESS;
 	}
+	
+	
 }
