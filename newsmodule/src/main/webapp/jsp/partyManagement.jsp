@@ -33,6 +33,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script> -->
 	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
 	 <SCRIPT type="text/javascript" src="js/specialPage/specialPage.js"></SCRIPT>
+	 <SCRIPT type="text/javascript" src="js/loginpopup.js"></SCRIPT>
 	<!-- YUI Skin Sam -->
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <script type="text/javascript" src="js/problemCompleteDetails.js"></script>

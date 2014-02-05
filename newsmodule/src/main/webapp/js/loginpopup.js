@@ -6,6 +6,7 @@ function openDialogForLoginWindowForPostProblem(){
 }
 
 function openDialogForLoginWindow(){
+
 var str='';
 str+='<div id="forgot_password_window1" style="background-color: #C7CFD2;">';
 str+='<div id="forgot_password_window_inner1" style="font-size:0.8em"></div>';
@@ -52,7 +53,7 @@ $("#login_window_inner").html(str);
 				width:480,
 				top:250,
 				left:100,
-				modal: true
+			    modal: true
 				
 	});
 				
@@ -102,7 +103,34 @@ function callHomePageAjax11(jsObj,url){
 							
 							if(jsObj.task == "validateUserForLogin")
 							{	
-								/* if(myResults=="success"){
+							var url = location.href;
+							
+							if(url.indexOf("partyManagementAction") != -1)
+							{
+							if(myResults.resultCode == 0)
+								{
+									$('#ajaxcallimage').html('Login Successfull !!!');
+                                     setTimeout(function() { 
+                            $('#login_window').dialog('close');}, 2000); 							
+							
+			               //$('#uploadNewsFileErrorDiv').hide();
+							      
+								}
+								
+								else{
+									//alert('else');
+									$("#ajaxcallimage").hide();
+
+									$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
+								} 
+							
+                         							
+							}
+							
+								else
+								{
+								
+								if(myResults=="success"){
 									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
 									window.location.reload();
 								}else if(myResults=="IPFAILURE"){
@@ -116,24 +144,11 @@ function callHomePageAjax11(jsObj,url){
 									$("#ajaxcallimage").hide();
 
 									$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
-								} */
-								if(myResults.resultCode == 0)
-								{
-									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
-									if(redirectTo)
-										window.location = 'partyManagementAction.action';
-									else
-									  window.location.reload();
-								}
-								else{
-									//alert('else');
-									$("#ajaxcallimage").hide();
-
-									$("#LoginErrorMessageDiv").html('Invalid username or password! Please try again!');
 								} 
 								
+								
 							}	
-							
+							}
 						}catch(e)
 						{   
 

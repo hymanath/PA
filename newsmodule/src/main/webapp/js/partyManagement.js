@@ -1498,14 +1498,14 @@ function validateNewsFileUpload()
 	errorDivEle.innerHTML = str;
 	if(flag == false)
 	{
-		 $("#uploadNewsBtnId").css("background","#51A351");
+		 //$("#uploadNewsBtnId").css("background","#51A351");
 		$('html, body').animate({
          scrollTop: $("#uploadNewsFileErrorDiv1").offset().top
      }, 2000);
 	
 	}
 	else
-	 $("#uploadNewsBtnId").css("background","#BBBB51");
+	 //$("#uploadNewsBtnId").css("background","#BBBB51");
 	return flag;
 }
 	
@@ -1573,12 +1573,15 @@ function showNewsUploadStatus(myResult)
 function showNewsUploadStatus1(myResult)
 {
 
-		
+	
 	var result = (String)(myResult);
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	var str = '';
-
-	if(result.search('success') != -1)
+	if(result.search('sessionExpired') != -1)
+	{
+	openDialogForLoginWindow();
+	}
+	else if(result.search('success') != -1)
 	{
 		//clearNewsUploadFileFields1();
 		//str += '<font color="green"><b>News Uploaded Successfully.</b>';
@@ -5959,14 +5962,14 @@ function validateUploadFileDetails()
 	errorDivEle.innerHTML = str;
 	if(flag == false)
 	{
-		 $("#uploadNewsBtnId").css("background","#51A351");
+		 //$("#uploadNewsBtnId").css("background","#51A351");
 		$('html, body').animate({
          scrollTop: $("#uploadNewsFileErrorDiv").offset().top
      }, 2000);
 		
 	}
 	else
-	$("#uploadNewsBtnId").css("background","#BBBB51");
+	//$("#uploadNewsBtnId").css("background","#BBBB51");
 	return flag;
 }
 
@@ -5988,7 +5991,7 @@ function uploadFile()
 	
  if(validateUploadFileDetails())
  {
-	 
+	
   
   var newsprivateRadioId = document.getElementById('newsprivateRadioId').checked;
 		if(newsprivateRadioId == true)
@@ -6435,14 +6438,14 @@ function validateNewsFileUpload1()
 	errorDivEle.innerHTML = str;
 	if(flag == false)
 	{
-		 $("#uploadNewsBtnId").css("background","#51A351");
+		// $("#uploadNewsBtnId").css("background","#51A351");
 		$('html, body').animate({
          scrollTop: $("#uploadNewsFileErrorDiv").offset().top
      }, 2000);
 		
 	}
 	else
-	$("#uploadNewsBtnId").css("background","#BBBB51");
+	//$("#uploadNewsBtnId").css("background","#BBBB51");
 	return flag;
 }
 
