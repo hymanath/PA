@@ -11,7 +11,7 @@ $("#errTab").css("display","none");
 $("#debatErrDiv1,#debatErrDiv2,#debatErrDiv3").html('');
 var flag = true;
 var channel = $("#channel").val();
-var telecastTime = $("#telecastTime").val();
+//var telecastTime = $("#telecastTime").val();
 var startTime =$("#startTime").val();
 var endTime = $("#endTime").val();
 var observer = $("#observer").val();
@@ -35,9 +35,9 @@ var errStr3='';
 if(channel <=0){
 	errStr1 +='Please Select Channel .<br/>';
 }
-if(telecastTime <=0){
+/* if(telecastTime <=0){
 	errStr1 +='Please select Telecaste Time .<br/>';
-}
+} */
 	
 if(startTime.trim().length <= 0){
 	errStr1 +='Please Enter Start Time .<br/>';
@@ -299,7 +299,7 @@ function submitForm()
 			debateDetails.endTime         = $('#endTime').val();
 			debateDetails.startTime       = $('#startTime').val();
 			debateDetails.channelId       = $('#channel option:selected').val();
-			debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
+			//debateDetails.telecastTimeId  = $('#telecastTime option:selected').val();
 			observer.push($('#observer option:selected').val());
 			$('.particepntDetailsRow').each(function() {
 				var participantObj = {
@@ -683,10 +683,27 @@ function getDebateDetailsBtDates()
 	}
 	
 	$("#RerrDiv").html('');
-	
+	var partyId = $('#partySelecction').val();
+	if(partyId == undefined)
+	{
+		partyId = "null";
+	}
+	var candidateId = $('#candidateSelecction').val();
+	if(candidateId == undefined)
+	{
+		candidateId = "null";
+	}
+	var channelId = $('#channelSelecction').val();
+	if(channelId == undefined)
+	{
+		channelId = "null";
+	}
 	var jsObj = {
 				fronDate :$('#fromDateId').val(),
 				toDate   :$('#toDateId').val(),
+				channelId : channelId,
+				partyId : partyId,
+				candidateId : candidateId,
 				task : "getDebateDetailsBtDates"	
 		};
 		

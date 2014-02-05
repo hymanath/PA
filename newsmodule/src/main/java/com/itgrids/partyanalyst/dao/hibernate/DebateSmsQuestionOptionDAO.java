@@ -15,6 +15,7 @@ public class DebateSmsQuestionOptionDAO extends GenericDaoHibernate<DebateSmsQue
 		// TODO Auto-generated constructor stub
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getDebateSmsQuestionsForSelectedDebate(Long debateId)
 	{
 		Query query = getSession().createQuery("select model.debateSmsQuestionOptionId , model.option,model.percantage , " +
@@ -24,4 +25,11 @@ public class DebateSmsQuestionOptionDAO extends GenericDaoHibernate<DebateSmsQue
 		return query.list();
 	}
 
+	public List<Object[]> getSmsQuestionDetails()
+	{
+		Query query = getSession().createQuery("select model.debateSmsQuestion.debateSmsQuestionId,model.debateSmsQuestion.question ," +
+				" model.option , model.percantage from DebateSmsQuestionOption model where model.debateSmsQuestion.debate.isDeleted = 'N'");
+		
+		return query.list();
+	}
 }

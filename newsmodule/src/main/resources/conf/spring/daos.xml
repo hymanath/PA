@@ -1462,4 +1462,6 @@
 	<bean id="debateReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.DebateReportDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	
+	
 </beans>		

@@ -30,34 +30,73 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	private static final Logger LOG = Logger.getLogger(DebateAction.class); 
-	private HttpServletRequest request;
-	private HttpSession session;
-	private IDebateService debateService;
-	private String task;
-	private JSONObject jObj;
-	private String attributeName;
-	private ResultStatus resultStatus;
-	private DebateVO debateVO;
-	private List<SelectOptionVO> channelList;
-	private List<SelectOptionVO> telecastTimeList;
-	private List<SelectOptionVO> observerList;
-	private ICandidateDetailsService candidateDetailsService;
-	private List<SelectOptionVO> partiesList;
-	private List<SelectOptionVO> debateQuestionList;
-	private List<SelectOptionVO> debateSmsQuestionList;
-	private List<SelectOptionVO> debateParticipantRoleList;
-	private List<SelectOptionVO> characteristicsList;
-	private List<SelectOptionVO> rolesList;
-	private String status;
-	private List<SelectOptionVO> debateDetails;
-	private Long debateId ;
-	private List<SelectOptionVO> candidatesList;
+	private static final long 			serialVersionUID = 1L;
+	private static final Logger 		LOG = Logger.getLogger(DebateAction.class); 
+	
+	
+	private HttpServletRequest 			request;
+	private HttpSession 				session;
+
+	private JSONObject 					jObj;
+	
+	private String 						attributeName;
+	private String 						task;
+	private String 						status;
+	
+	private Long 						debateId ;
+	
+	private ResultStatus 				resultStatus;
+	
+	private DebateVO 					debateVO;
+	
+	private List<SelectOptionVO> 		channelList;
+	private List<SelectOptionVO> 		telecastTimeList;
+	private List<SelectOptionVO> 		observerList;
+	private List<SelectOptionVO> 		partiesList;
+	private List<SelectOptionVO> 		debateQuestionList;
+	private List<SelectOptionVO> 		debateSmsQuestionList;
+	private List<SelectOptionVO> 		debateParticipantRoleList;
+	private List<SelectOptionVO> 		characteristicsList;
+	private List<SelectOptionVO> 		rolesList;
+	private List<SelectOptionVO> 		candidatesList;
+	private List<SelectOptionVO> 		questionOptionsList;
+	private List<SelectOptionVO> 		partyWiseList;
+	private List<SelectOptionVO> 		candidateWiseList;
+	private List<SelectOptionVO> 		debateDetails;
+	
+	private ICandidateDetailsService 	candidateDetailsService;
+	private IDebateService 				debateService;
 	
 	
 	
 	
+	
+	
+	
+	public List<SelectOptionVO> getPartyWiseList() {
+		return partyWiseList;
+	}
+
+	public void setPartyWiseList(List<SelectOptionVO> partyWiseList) {
+		this.partyWiseList = partyWiseList;
+	}
+
+	public List<SelectOptionVO> getCandidateWiseList() {
+		return candidateWiseList;
+	}
+
+	public void setCandidateWiseList(List<SelectOptionVO> candidateWiseList) {
+		this.candidateWiseList = candidateWiseList;
+	}
+
+	public List<SelectOptionVO> getQuestionOptionsList() {
+		return questionOptionsList;
+	}
+
+	public void setQuestionOptionsList(List<SelectOptionVO> questionOptionsList) {
+		this.questionOptionsList = questionOptionsList;
+	}
+
 	public List<SelectOptionVO> getCandidatesList() {
 		return candidatesList;
 	}
@@ -267,10 +306,11 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			channelList.add(new SelectOptionVO(0l,"Select Channel"));
 			telecastTimeList.add(new SelectOptionVO(0l,"Select Telecast Time"));
 			observerList.add(new SelectOptionVO(0l,"Select Observer"));
-			
+			partiesList.add(new SelectOptionVO(0l,"Select Party"));
 			Collections.sort(channelList, sortList);
 			Collections.sort(telecastTimeList, sortList);
 			Collections.sort(observerList, sortList);
+			Collections.sort(partiesList, sortList);
 		}
 		catch (Exception e) 
 		{
@@ -304,10 +344,10 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			 jObj = new JSONObject(getTask());
 			 JSONObject debateObj = jObj.getJSONObject("debateDetails");
 			 debateDetailsVO.setChannelId(debateObj.getLong("channelId"));
-			 debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
+			 //debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
 			 String startDate = debateObj.getString("startTime");
 			 String endDate = debateObj.getString("endTime");
-			 SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy HH:mm");
+			 SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 			 debateDetailsVO.setStartDate(sdf.parse(startDate));
 			 debateDetailsVO.setEndDate(sdf.parse(endDate));
 			 debateDetailsVO.setDebateSummery(debateObj.getString("debetSummery"));
@@ -516,7 +556,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 				String fromDateStr = jObj.getString("fronDate");
 				String toDateStr  = jObj.getString("toDate");
-				debateDetails = debateService.getDebateDetailsForSelectedDates(sdf.parse(fromDateStr), sdf.parse(toDateStr));
+				//debateDetails = debateService.getDebateDetailsForSelectedDates(sdf.parse(fromDateStr), sdf.parse(toDateStr));
+				debateDetails = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(fromDateStr), sdf.parse(toDateStr),jObj.getString("channelId"),jObj.getString("partyId"),jObj.getString("candidateId"));
 		} 
 		catch (Exception e)
 		{
@@ -583,6 +624,85 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			LOG.error(" Exception occured in deleteDebateReport() in DebateAction class. ",e);
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getSmsQuestionOPtions()
+	{
+		try 
+		{
+			LOG.info(" Entered into getSmsQuestionOPtions() in DebateAction class. ");
+			questionOptionsList = debateService.getDebateSmsQuestionDetails();
+		} catch (Exception e)
+		{
+			LOG.error(" Exception occured in getSmsQuestionOPtions() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDebateScalingAnalysisForPartyWise()
+	{
+		try 
+		{
+			LOG.info(" Entered into getDebateScalingAnalysisForPartyWise() in DebateAction class. ");
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			if(regVo == null)
+			return Action.ERROR;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toate");
+			partyWiseList = debateService.getDebateAnalysisByPartyForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+		}
+		catch (Exception e)
+		{
+			LOG.error(" Exception occured in getDebateScalingAnalysisForPartyWise() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getDebateScalingAnalysisForCandidateWise()
+	{
+		try 
+		{
+			LOG.info(" Entered into getDebateScalingAnalysisForCandidateWise() in DebateAction class. ");
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			if(regVo == null)
+			return Action.ERROR;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toate");
+			candidateWiseList = debateService.getDebateAnalysisBycandidateForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+		} 
+		catch (Exception e)
+		{
+			LOG.error(" Exception occured in getDebateScalingAnalysisForCandidateWise() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String searchResultsForDebate()
+	{
+		try
+		{
+			LOG.info(" Entered into searchResultsForDebate() in DebateAction class. ");
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			if(regVo == null)
+			return Action.ERROR;
+			
+			jObj = new JSONObject(getTask());
+			debateDetails = debateService.getSearchriteriaForDebate(jObj.getString("searchString"));
+		}
+		catch (Exception e)
+		{
+			LOG.error(" Exception occured in searchResultsForDebate() in DebateAction class. ",e);
+		}
 		return Action.SUCCESS;
 	}
 }
