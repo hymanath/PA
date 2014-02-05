@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.DebateSmsQuestionOption;
 public interface IDebateSmsQuestionOptionDAO extends GenericDao<DebateSmsQuestionOption, Long>{
 
 	public List<Object[]> getDebateSmsQuestionsForSelectedDebate(Long debateId);
+	
+	public List<Object[]> getSmsQuestionDetails();
 }

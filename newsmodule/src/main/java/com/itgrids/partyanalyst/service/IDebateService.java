@@ -49,4 +49,12 @@ public interface IDebateService {
 	public String deleteDebateReportUrl(String key);
 	
 	public List<SelectOptionVO> getCandidatesForDebate(Long partyId);
+	
+	public List<SelectOptionVO> getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channelId,String partyId,String candidateId);
+	
+	public List<SelectOptionVO> getDebateAnalysisBycandidateForScaling(Date fromDate , Date toDate);
+	
+	public List<SelectOptionVO> getDebateAnalysisByPartyForScaling(Date fromDate , Date toDate);
+	
+	public List<SelectOptionVO> getSearchriteriaForDebate(String searchString);
 }

@@ -68,29 +68,32 @@ import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class DebateService implements IDebateService{
 	
-	private static final Logger LOG = Logger.getLogger(DebateService.class); 
-	private IDebateDAO debateDAO;
-	private IDebateSmsQuestionOptionDAO debateSmsQuestionOptionDAO;
-	private IObserverDAO observerDAO;
-	private IChannelDAO  channelDAO;
-	private ITelecastTypeDAO telecastTypeDAO;
-	private IDebateRolesDAO  debateRolesDAO;
-	private IDebateSubjectDAO debateSubjectDAO;
-	private IDebateObserverDAO  debateObserverDAO;
-	private ICharacteristicsDAO  characteristicsDAO;
-	private IDebateParticipantDAO debateParticipantDAO;
-	private IDebateParticipantRoleDAO debateParticipantRoleDAO;
-	private IDebateParticipantExceptedRoleDAO  debateParticipantExceptedRoleDAO;
-	private IDebateParticipantCharcsDAO  debateParticipantCharcsDAO;
-	private IDebateSmsQuestionDAO debateSmsQuestionDAO;
-	private IDebateQuestionsDAO debateQuestionsDAO ;
-	private IDebateQuestionAnswerDAO  debateQuestionAnswerDAO;
-	private TransactionTemplate transactionTemplate;
-	private IPartyDAO partyDAO;
-	private ICandidateDAO candidateDAO;
-	private IUserDAO userDAO;
-	private IDebateReportDAO debateReportDAO;
+	private static final Logger 				LOG = Logger.getLogger(DebateService.class); 
+	
+	private IDebateDAO 							debateDAO;
+	private IDebateSmsQuestionOptionDAO 		debateSmsQuestionOptionDAO;
+	private IObserverDAO 						observerDAO;
+	private IChannelDAO  						channelDAO;
+	private ITelecastTypeDAO 					telecastTypeDAO;
+	private IDebateRolesDAO  					debateRolesDAO;
+	private IDebateSubjectDAO 					debateSubjectDAO;
+	private IDebateObserverDAO  				debateObserverDAO;
+	private ICharacteristicsDAO  				characteristicsDAO;
+	private IDebateParticipantDAO 				debateParticipantDAO;
+	private IDebateParticipantRoleDAO           debateParticipantRoleDAO;
+	private IDebateParticipantExceptedRoleDAO   debateParticipantExceptedRoleDAO;
+	private IDebateParticipantCharcsDAO         debateParticipantCharcsDAO;
+	private IDebateSmsQuestionDAO 				debateSmsQuestionDAO;
+	private IDebateQuestionsDAO					debateQuestionsDAO ;
+	private IDebateQuestionAnswerDAO  			debateQuestionAnswerDAO;
+	private TransactionTemplate 				transactionTemplate;
+	private IPartyDAO 							partyDAO;
+	private ICandidateDAO 						candidateDAO;
+	private IUserDAO 							userDAO;
+	private IDebateReportDAO 					debateReportDAO;
 
+	
+	
 	
 	public void setDebateReportDAO(IDebateReportDAO debateReportDAO) {
 		this.debateReportDAO = debateReportDAO;
@@ -186,6 +189,9 @@ public class DebateService implements IDebateService{
 		this.debateQuestionAnswerDAO = debateQuestionAnswerDAO;
 	}
 
+	
+	
+	
 	/**
 	 * This service is used for telugu font saving as well as telugu font retriving
 	 * @param input
@@ -205,6 +211,7 @@ public class DebateService implements IDebateService{
 		return b.toString();
 	}
 
+	
 	/**
 	 * This Service is used for saving the debate details
 	 * @param debateDetailsVO
@@ -228,11 +235,11 @@ public class DebateService implements IDebateService{
 					  {
 						 debate.setChannel(channel); 
 					  }
-					  TelecastType telecastType = telecastTypeDAO.get(debateDetailsVO.getTelecasteTypeId());
-					  if(telecastType != null)
+					  //TelecastType telecastType = telecastTypeDAO.get(debateDetailsVO.getTelecasteTypeId());
+					 /* if(telecastType != null)
 					  {
 						  debate.setTelecastType(telecastType);  
-					  }
+					  }*/
 					  debate.setSummary(escapeUnicode(StringEscapeUtils.escapeJava(debateDetailsVO.getDebateSummery())));
 					  debate.setStartTime(debateDetailsVO.getStartDate());
 					  debate.setEndTime(debateDetailsVO.getEndDate());
@@ -380,6 +387,8 @@ public class DebateService implements IDebateService{
 		}
 		return resultStatus;
 	}
+	
+	
 	/**
 	 * this service is used for getting the debate details for selected debate
 	 * @param debateId
@@ -403,7 +412,7 @@ public class DebateService implements IDebateService{
 			// here we are getting all details of debate
 			SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
 			SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-			SimpleDateFormat printFormat = new SimpleDateFormat("HH.mm");
+			//SimpleDateFormat printFormat = new SimpleDateFormat("HH.mm");
 			
 			//System.out.println(printFormat.format(date)); // prints 09:30:51
 			List<Object[]> debateDetailsList = debateDAO.getDebateDetailsForSelectedDebate(debateId);
@@ -480,9 +489,9 @@ public class DebateService implements IDebateService{
 				debateVO.setDate(debateDetails[1] != null ? sdf.format(parseFormat.parse(debateDetails[1].toString())) :"");
 				debateVO.setChannelId(debateDetails[3] != null ? (Long)debateDetails[3] :0l);
 				debateVO.setChannelName(debateDetails[4] != null ? debateDetails[4].toString() :"");
-				debateVO.setTelecastTypeId(debateDetails[5] != null ? (Long)debateDetails[5] :0l);
-				debateVO.setTelecastTime(debateDetails[6] != null ? debateDetails[6].toString() :"");
-				debateVO.setDebateSummery(debateDetails[7] != null ? StringEscapeUtils.unescapeJava(debateDetails[7].toString()) :"");
+				//debateVO.setTelecastTypeId(debateDetails[5] != null ? (Long)debateDetails[5] :0l);
+				//debateVO.setTelecastTime(debateDetails[6] != null ? debateDetails[6].toString() :"");
+				debateVO.setDebateSummery(debateDetails[5] != null ? StringEscapeUtils.unescapeJava(debateDetails[5].toString()) :"");
 			}
 			// here we are getting the all details of the sma question and answer with percentage details
 			List<Object[]> debateSmsDetails = debateSmsQuestionOptionDAO.getDebateSmsQuestionsForSelectedDebate(debateId);
@@ -744,6 +753,8 @@ public class DebateService implements IDebateService{
 		return debateVO;
 	}
 	
+	
+	
 	/**
 	 * This service is used for getting the channel details
 	 * @return List<SelectOptionVO> channelDetails
@@ -767,6 +778,8 @@ public class DebateService implements IDebateService{
 		return channelDetails;
 	}
 	
+	
+	
 	/**
 	 * This service is used for getting telecast details
 	 * @return List<SelectOptionVO> telecastDetails
@@ -784,6 +797,8 @@ public class DebateService implements IDebateService{
 		}
 		return telecastDetails;
 	}
+	
+	
 	
 	/**
 	 * This service is used for getting the observers 
@@ -803,6 +818,8 @@ public class DebateService implements IDebateService{
 		return observerDetails;
 	}
 	
+	
+	
 	/**
 	 * This service is used for getting the debate question details
 	 * @return List<SelectOptionVO> debateDetails
@@ -821,6 +838,8 @@ public class DebateService implements IDebateService{
 		return debateDetails;
 	}
 	
+	
+	
 	public List<SelectOptionVO> getDebateSmsQuestionDetails()
 	{
 		List<SelectOptionVO> debateSmsDetails = new ArrayList<SelectOptionVO>();
@@ -835,6 +854,8 @@ public class DebateService implements IDebateService{
 		return debateSmsDetails;
 	}
 	
+	
+	
 	public List<SelectOptionVO> getDebateParticipantRoleDetails()
 	{
 		List<SelectOptionVO> debateParticipantRoleDetails = new ArrayList<SelectOptionVO>();
@@ -848,6 +869,8 @@ public class DebateService implements IDebateService{
 		}
 		return debateParticipantRoleDetails;
 	}
+	
+	
 	
 	public ResultStatus saveNewRole(final Long userId,final String newRole)
 	{
@@ -884,6 +907,8 @@ public class DebateService implements IDebateService{
 		
 		return isSaved;
 	}
+	
+	
 	public ResultStatus saveNewCharacteristic(final Long userId, final String newCharacteristic)
 	{
 		LOG.info("Enterd into saveNewCharacteristic() in DebateService class");
@@ -921,6 +946,8 @@ public class DebateService implements IDebateService{
 		}		
 		return isSaved;
 	}
+	
+	
 	public ResultStatus saveNewDebateQuestion(final Long userId, final String newDebateQuestion)
 	{
 		LOG.info("Enterd into saveNewDebateQuestion() in DebateService class");
@@ -961,6 +988,7 @@ public class DebateService implements IDebateService{
 		
 		return isSaved;
 	}
+	
 	
 	 public ResultStatus insertChannelDetails(final Long userId,final String channelName )
 	 {
@@ -1047,6 +1075,7 @@ public class DebateService implements IDebateService{
 		 return isSaved;
 	 }	 
 	 
+	 
 	 public List<SelectOptionVO> getCharacteristicsDetails()
 	 {
 	 	List<SelectOptionVO> CharacteristicsDetails = new ArrayList<SelectOptionVO>();
@@ -1060,6 +1089,7 @@ public class DebateService implements IDebateService{
 		}
 		return CharacteristicsDetails;
 	 }
+	 
 	 
 	 public List<SelectOptionVO> getRolesList()
 	 {
@@ -1082,6 +1112,7 @@ public class DebateService implements IDebateService{
 		}
 		 return returnList ;
 	 }
+	 
 	 
 	 public String saveDebateReportForPdf( Long userId, Long debateId, String description, String path)
 	 {
@@ -1135,6 +1166,7 @@ public class DebateService implements IDebateService{
 		 return string;
 	 }
 	 
+	 
 	 public String genearetUrl(Long reportId,Long userId,String path)
 	 {
 		 String url = "invalid";
@@ -1153,6 +1185,7 @@ public class DebateService implements IDebateService{
 	    	}
 	    	return url;
 	 }
+	 
 	 
 	 public List<SelectOptionVO> getDebateDetailsForSelectedDates(Date fromDate,Date toDate)
 	 {
@@ -1192,6 +1225,61 @@ public class DebateService implements IDebateService{
 		 return returnList;
 	 }
 	 
+	 
+	 public List<SelectOptionVO> getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channel,String party,String candidate)
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try {
+			 LOG.info("Enterd into getDebateDetailsForSelectedDates() in DebateService class");
+			 Long channelId = null;
+			 Long partyId = null;
+			 Long candidateId = null;
+			 if(!channel.equalsIgnoreCase("null"))
+			 {
+				 channelId = Long.valueOf(channel) ;
+			 }
+			 if(!party.equalsIgnoreCase("null"))
+			 {
+				 partyId = Long.valueOf(party) ;
+			 }
+			 if(!candidate.equalsIgnoreCase("null"))
+			 {
+				 candidateId = Long.valueOf(candidate) ;
+			 }
+			 List<Object[]> debateDetails = debateSubjectDAO.getDebateDetalsForSelectedCriteria(fromDate,toDate,channelId,partyId,candidateId);
+			 Map<Long,SelectOptionVO> debateMap = new HashMap<Long, SelectOptionVO>();//Map<debateId,debateDetails>
+			 if(debateDetails != null && debateDetails.size() > 0)
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
+					SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				 for (Object[] objects : debateDetails) {
+					 SelectOptionVO selectOptionVO = debateMap.get((Long)objects[0]);
+					 if(selectOptionVO == null)
+					 {
+						 selectOptionVO =  new SelectOptionVO();
+						 selectOptionVO.setId((Long)objects[0]);//debateId
+						 //selectOptionVO.setName(objects[1].toString());//debate subject
+						 selectOptionVO.setName(StringEscapeUtils.unescapeJava(objects[1].toString()));
+						 selectOptionVO.setType(sdf.format(parseFormat.parse(objects[2].toString())));//debate date
+						 debateMap.put((Long)objects[0], selectOptionVO);
+						 returnList.add(selectOptionVO);
+					 }
+					 else
+					 {
+						 selectOptionVO.setName(selectOptionVO.getName() + "<br/>" +StringEscapeUtils.unescapeJava(objects[1].toString()));
+					 }
+					 
+				}
+			 }
+			 
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getDebateDetailsForSelectedDates method, Exception - ",e);
+		}
+		 return returnList;
+	 }
+	 
+	 
 	 public String deleteDebateReportUrl(String key)
 	 {
 		 String status = "";
@@ -1211,6 +1299,7 @@ public class DebateService implements IDebateService{
 		}
 		 return status;
 	 }
+	 
 	 
 	 public List<SelectOptionVO> getCandidatesForDebate(Long partyId)
 	 {
@@ -1233,4 +1322,335 @@ public class DebateService implements IDebateService{
 		}
 		 return returnList;
 	 }
+	 
+	 
+	 public List<SelectOptionVO> debateAnalysisService(Long partyId,Long candidateId,String type)
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try 
+		 {
+			 LOG.info("Enterd into debateAnalysisService() in DebateService class");
+			 StringBuffer quryString = new StringBuffer();
+			 if(type.equalsIgnoreCase("party"))
+			 {
+				 quryString.append("select model.party.partyId , model.party.shortName  ");
+			 }
+			 else if(type.equalsIgnoreCase("candidate"))
+			 {
+				 quryString.append("select model.candidate.candidateId , model.candidate.lastname  ");
+			 }
+			 quryString.append(", model2.debateRoles.debateRolesId ,model2.debateRoles.name ,sum(model1.scale)");
+			 quryString.append(" from DebateParticipant model , DebateParticipantRole model2 ," +
+			 		" DebateParticipantCharcs model1  where model.debateParticipantId = model1.debateParticipant.debateParticipantId and " +
+				" model1.debateParticipant.debateParticipantId = model2.debateParticipant.debateParticipantId ");
+			 if(type.equalsIgnoreCase("party"))
+			 {
+				 quryString.append(" and  model.party.partyId = :partyId group by model2.debateRoles.debateRolesId");
+			 }
+			 else if(type.equalsIgnoreCase("candidate"))
+			 {
+				 quryString.append(" model.party.partyId = :partyId and model.candidate.candidateId = :candidateId group by model2.debateRoles.debateRolesId "); 
+			 }
+			 
+			 List<Object[]> annalysedData = debateParticipantDAO.getBasicDebateAnalysis(partyId,candidateId,type,quryString);
+			 if(annalysedData != null && annalysedData.size() > 0)
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 for (Object[] parms : annalysedData) {
+					 SelectOptionVO selectOptionVO = new SelectOptionVO();
+					 selectOptionVO.setId((Long)parms[0]);//partyId or candidate name
+					 selectOptionVO.setName(parms[1].toString());//party name or candidate name
+					 selectOptionVO.setLocation(parms[3].toString());//role name
+					 selectOptionVO.setPerc((Double)parms[4]);
+					 returnList.add(selectOptionVO);
+				}
+			 }
+		 } 
+		 catch (Exception e)
+		 {
+			LOG.error(" Exception Occured in debateAnalysisService method, Exception - ",e);
+		 }
+		 return returnList;
+	 }
+	 
+	 
+	 
+	 /**
+	  * This service is used for detting the sms question with options and percentage
+	  * @return List<SelectOptionVO> returnList
+	  */
+	 public List<SelectOptionVO> getDebateSMSQuestions()
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try 
+		 {
+			 LOG.info("Enterd into getDebateSMSQuestions() in DebateService class");
+			 List<Object[]> smsQuestionObj = debateSmsQuestionOptionDAO.getSmsQuestionDetails();
+			 Map<Long,List<SelectOptionVO>> questionMap = null;
+			 List<SelectOptionVO> questionsList = null;
+			 if(smsQuestionObj != null && smsQuestionObj.size() > 0)
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 SelectOptionVO questionAnswerVO = new SelectOptionVO();
+				 questionMap = new HashMap<Long, List<SelectOptionVO>>();
+				 for (Object[] parms : smsQuestionObj)
+				 {
+					 questionsList = questionMap.get((Long)parms[0]);
+					 SelectOptionVO selectOptionVO = new SelectOptionVO();
+					 if(questionsList == null)
+					 {
+						 questionsList = new ArrayList<SelectOptionVO>();
+						 questionMap.put((Long)parms[0], questionsList);
+					 }
+					 selectOptionVO.setId((Long)parms[0]);
+					 selectOptionVO.setName(parms[1].toString());
+					 selectOptionVO.setLocation(parms[2].toString());
+					 selectOptionVO.setPerc((Double)parms[3]);
+					 questionsList.add(selectOptionVO);
+				 }
+				 questionAnswerVO.setSelectOptionsList(questionsList);
+				 returnList.add(questionAnswerVO);
+				 
+			 }
+		 } catch (Exception e)
+		 {
+			LOG.error(" Exception Occured in getDebateSMSQuestions method, Exception - ",e);
+		 }
+		 return returnList;
+	 }
+	 
+	 
+	 /**
+	  * This Service is used for getting the avg scals for each party participated in the debate for selected dates
+	  * @param fromDate
+	  * @param toDate
+	  * @return List<SelectOptionVO> returnList
+	  */
+	 public List<SelectOptionVO> getDebateAnalysisByPartyForScaling(Date fromDate,Date toDate)
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try 
+		 {
+			 LOG.info("Enterd into getDebateAnalysisByPartyForScaling() in DebateService class");
+			 List<Object[]> scalesList = debateParticipantDAO.getDebateTotalScaleForEachParty(fromDate, toDate);
+			 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachParty(fromDate, toDate);
+			 if(scalesList != null && scalesList.size() > 0 && debateCountsList!= null && debateCountsList.size() > 0 )
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 Map<Long,Long> countMap = new HashMap<Long, Long>();//Map<partyId,debatesCount>
+				 Map<Long,Double> scalesMap = new HashMap<Long, Double>();//Map<partyId,scalesCount>
+				 Map<Long,String> partyMap = new HashMap<Long, String>();//Map<partyId,partyName>
+				 for (Object[] parms : debateCountsList)
+				 {
+					 Long debateCount = countMap.get((Long)parms[0]);
+					 if(debateCount == null)
+					 {
+						 countMap.put((Long)parms[0], (Long)parms[1]);
+						 partyMap.put((Long)parms[0], parms[2].toString());
+					 }
+				 }
+				 for (Object[] parms : scalesList)
+				 {
+					 Double scaleCount = scalesMap.get((Long)parms[0]);
+					 if(scaleCount == null)
+					 {
+						 scalesMap.put((Long)parms[0], (Double)parms[1]);
+						 
+					 }
+				 }
+				 
+				 Set<Long> partyIds = scalesMap.keySet();
+				 for (Long partyId : partyIds) {
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId(partyId);
+					Double avg = scalesMap.get(partyId)/countMap.get(partyId);
+					selectOptionVO.setPerc(avg);
+					selectOptionVO.setName(partyMap.get(partyId) != null ? partyMap.get(partyId) :"");
+					returnList.add(selectOptionVO);
+				}
+			 }
+		}
+		catch (Exception e)
+		{
+			LOG.error(" Exception Occured in getDebateAnalysisByPartyForScaling method, Exception - ",e);
+		}
+		 return returnList;
+		 
+	 }
+	 
+	 
+	 /**
+	  * This Service is used for getting candidate wise debate report for selected dates
+	  * @param fromDate
+	  * @param toDate
+	  * @return  returnList
+	  */
+	 public List<SelectOptionVO> getDebateAnalysisBycandidateForScaling(Date fromDate , Date toDate)
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try
+		 {
+			 LOG.info("Enterd into getDebateAnalysisBycandidateForScaling() in DebateService class");
+			 List<Object[]> scalesList = debateParticipantDAO.getDebateTotalScaleForEachCandidate(fromDate, toDate);
+			 List<Object[]> debateCountsList = debateParticipantDAO.getTotalDabtesCountsForEachCandidate(fromDate, toDate);
+			 if(scalesList != null && scalesList.size() > 0 && debateCountsList!= null && debateCountsList.size() > 0 )
+			 {
+				 Map<Long,List<SelectOptionVO>> scalesMap = new HashMap<Long, List<SelectOptionVO>>();//Map<partyId,candidate wise scale total>
+				 Map<Long,List<SelectOptionVO>> debateCountMap = new HashMap<Long, List<SelectOptionVO>>();//Map<partyId,candidate wise debate count>
+				 Map<Long,Double> scaleCandidateMap = new HashMap<Long, Double>();//Map<candidateId,scaleCount>
+				 Map<Long,Long> debateCandidateCount = new HashMap<Long, Long>();//Map<candidateId,debateCount>
+				 Map<Long,List<SelectOptionVO>> partyMap = new HashMap<Long, List<SelectOptionVO>>();//Map<partyId,candidatesList>
+				 Map<Long,String> candidateMap = new HashMap<Long, String>();
+				 returnList = new ArrayList<SelectOptionVO>();
+				 for (Object[] parms : scalesList)
+				 {
+					 List<SelectOptionVO> scalesCountList = scalesMap.get((Long)parms[0]);
+					 SelectOptionVO selectOptionVO = new SelectOptionVO();
+					 if(scalesCountList == null)
+					 {
+						 scalesCountList = new ArrayList<SelectOptionVO>();
+						 scalesMap.put((Long)parms[0], scalesCountList);
+					 }
+					 selectOptionVO.setId((Long)parms[0]);//partId
+					 selectOptionVO.setName(parms[1].toString());//partyName
+					 selectOptionVO.setCount((Long)parms[2]);//candidateId
+					 selectOptionVO.setLocation(parms[3].toString());//candidateName
+					 selectOptionVO.setPerc((Double)parms[4]);//scale total
+					 scaleCandidateMap.put((Long)parms[2], (Double)parms[4]);
+					 scalesCountList.add(selectOptionVO);
+				 }
+				 for (Object[] parms : debateCountsList)
+				 {
+					 List<SelectOptionVO> debateCountList =  debateCountMap.get((Long)parms[0]);
+					 SelectOptionVO selectOptionVO = new SelectOptionVO();
+					 if(debateCountList == null)
+					 {
+						 debateCountList = new ArrayList<SelectOptionVO>();
+						 debateCountMap.put((Long)parms[0], debateCountList);
+					 }
+					 selectOptionVO.setId((Long)parms[0]);//partId
+					 selectOptionVO.setName(parms[1].toString());//partyName
+					 selectOptionVO.setCount((Long)parms[2]);//candidateId
+					 selectOptionVO.setLocation(parms[3].toString());//candidateName
+					 selectOptionVO.setOrderId((Long)parms[4]);//debate count candidate wise
+					 debateCandidateCount.put((Long)parms[2], (Long)parms[4]);
+					 debateCountList.add(selectOptionVO);
+				 }
+				 
+				 List<Object[]> candidatesList = debateParticipantDAO.getCanidatesListForDebateForSelectedDates(fromDate,toDate);
+				 
+				 if(candidatesList != null && candidatesList.size() > 0)
+				 {
+					 
+					 for (Object[] parms : candidatesList)
+					 {
+						 List<SelectOptionVO> partiesList = partyMap.get((Long)parms[0]);
+						 SelectOptionVO selectOptionVO = new SelectOptionVO();
+						 if(partiesList == null)
+						 {
+							 partiesList = new ArrayList<SelectOptionVO>(); 
+							 partyMap.put((Long)parms[0], partiesList);
+						 }
+						 selectOptionVO.setId((Long)parms[0]);//partId
+						 selectOptionVO.setName(parms[1].toString());//partyName
+						 selectOptionVO.setCount((Long)parms[2]);//candidateId
+						 selectOptionVO.setLocation(parms[3].toString());//candidateName
+						 partiesList.add(selectOptionVO);
+						 candidateMap.put((Long)parms[2], parms[3].toString());
+					}
+				 }
+				 
+				 Set<Long> partyIds = partyMap.keySet();
+				 for (Long partyId : partyIds)
+				 {
+					 SelectOptionVO partyVO = new SelectOptionVO();
+					 List<SelectOptionVO> candidateList = new ArrayList<SelectOptionVO>();
+					 List<SelectOptionVO> partiesList = partyMap.get(partyId);
+					 if(partiesList != null && partiesList.size() > 0)
+					 {
+						 
+						 for (SelectOptionVO selectOptionVO : partiesList) {
+							SelectOptionVO candidateVO = new SelectOptionVO();
+							Double scaleCount = scaleCandidateMap.get(selectOptionVO.getCount());
+							Long debateCount = debateCandidateCount.get(selectOptionVO.getCount());
+							if(scaleCount == 0)
+							{
+								candidateVO.setPerc(null);
+							}
+							else
+							{
+								candidateVO.setPerc(scaleCount);
+							}
+							if(debateCount == null)
+							{
+								candidateVO.setCount(null);
+							}
+							else
+							{
+								candidateVO.setCount(debateCount);
+							}
+							candidateVO.setName(selectOptionVO.getName());//partyName
+							candidateVO.setLocation(selectOptionVO.getLocation());//candidateName
+							candidateVO.setId(selectOptionVO.getId());//partyId
+							candidateVO.setOrderId(selectOptionVO.getCount());
+							candidateList.add(candidateVO);
+						}
+					 }
+					 partyVO.setSelectOptionsList(candidateList);
+					 returnList.add(partyVO);
+				 }
+				 
+			 }	 
+				 
+			 
+		 }
+		 catch (Exception e)
+		 {
+			LOG.error(" Exception Occured in getDebateAnalysisBycandidateForScaling method, Exception - ",e);
+		 }
+		 return returnList;
+	 }
+	 
+	 /**
+	  * This Service is used for debate search critera
+	  * @param searchString
+	  * @return List<SelectOptionVO> returnList
+	  */
+	 public List<SelectOptionVO> getSearchriteriaForDebate(String searchString)
+	 {
+		 List<SelectOptionVO> returnList = null;
+		 try {
+			 LOG.info("Enterd into getSearchriteriaForDebate() in DebateService class");
+			 List<Object[]> searchResults = debateSubjectDAO.searchCriteriaForDebateSearch(searchString);
+			 Map<Long,SelectOptionVO> debateMap = new HashMap<Long, SelectOptionVO>();//Map<debateId,debateDetails>
+			 if(searchResults != null && searchResults.size() > 0)
+			 {
+				 returnList = new ArrayList<SelectOptionVO>();
+				 SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
+					SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				 for (Object[] objects : searchResults) {
+					 SelectOptionVO selectOptionVO = debateMap.get((Long)objects[0]);
+					 if(selectOptionVO == null)
+					 {
+						 selectOptionVO =  new SelectOptionVO();
+						 selectOptionVO.setId((Long)objects[0]);//debateId
+						 selectOptionVO.setName(StringEscapeUtils.unescapeJava(objects[1].toString()));// ndebate subject
+						 selectOptionVO.setType(sdf.format(parseFormat.parse(objects[2].toString())));//debate date
+						 debateMap.put((Long)objects[0], selectOptionVO);
+						 returnList.add(selectOptionVO);
+					 }
+					 else
+					 {
+						 selectOptionVO.setName(selectOptionVO.getName() + "<br/>" +StringEscapeUtils.unescapeJava(objects[1].toString()));
+					 }
+					 
+				}
+			 }
+		} catch (Exception e) {
+			LOG.error(" Exception Occured in getSearchriteriaForDebate method, Exception - ",e);
+		}
+		 return returnList;
+	 }
+		 
+	 
 }

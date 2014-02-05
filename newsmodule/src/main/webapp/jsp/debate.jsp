@@ -9,37 +9,49 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title> Debate Information - TDP Portal </title>
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+<!-- Script Files Start-->
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 
- <link href="Green/css/bootstrap.min.css" rel="stylesheet" media="screen">
-	<script src="Green/js/bootstrap.min.js"></script>
- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
-<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script src="Green/js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
 
 <script src="js/jquery-ui-themes-1.10.3.js"></script>
+
 <script src="js/jquery-ui-timepicker-addon.js"></script>
+
 <script src="js/jquery-ui-sliderAccess.js"></script>
 
-<script src="http://trentrichardson.com/examples/timepicker/jquery-ui-sliderAccess.js">
-</script>
-<link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
-<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
-<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
-	<script type="text/javascript" src="js/jquery.dataTables.columnFilter.js"></script>
+
+<script type="text/javascript" src="js/jquery.dataTables.columnFilter.js"></script>
 	
 <script src="js/debate.js"></script>
 
+<!-- Script Files End-->
 
 
+<!-- Style Files Start -->
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 
+<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
+
+<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
+
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+
+<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+
+<link href="Green/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+<!-- Style Files End -->
 <style type="text/css">
 #debatesTab > thead {
 background:#CDE6FC;
@@ -236,8 +248,158 @@ $(function () {
 	});
 });
 
+$( document ).ready(function() {
 
+	getValues();
+	getRespectiveSelection();
+	//buildDebateAnalysisDiv();
+});
 
+function buildDebateAnalysisDiv()
+{
+	var str = '';
+	str += '<div class="span3">';
+	str += '<label >Party : </label>';
+	str += '<select name="partyAnalysis"  id="partyAnalysis" onChange="getCandidatesList(this.value)">';
+	for(var i in partiesArray)
+	{
+		str += '<option value='+partiesArray[i].id+'>'+partiesArray[i].name+'</option>';
+	}
+	str += '</select>';
+	str += '</div>';
+	str += '<div class="span3">';
+	str += '<label >Candidate : </label>';
+	str += '<select id="candidateiseAnalysis">';
+	str += '<option value="0">Select Candidate</option>';
+	str += '</select>';
+	str += '</div>';
+	str += '<div class="span3">';
+	str += '<label >Debate Roles : </label>';
+	str += '<select name="roleWiseAnalysis"  id="roleWiseAnalysis" >';
+	str += '<option value="0">Select Roles </option>';
+	for(var i in rolesArray)
+	{
+		str += '<option value='+rolesArray[i].id+'>'+rolesArray[i].name+'</option>';
+	}
+	str += '</select>';
+	str += '</div>';
+	str += '<div class="span3">';
+	str += '<label >Chars : </label>';
+	str += '<select name="charsWiseAnalysis"  id="charsWiseAnalysis">';
+	str += '<option value="0">Select Chars</option>';
+	for(var i in charsArray)
+	{
+		str += '<option value='+charsArray[i].id+'>'+charsArray[i].name+'</option>';
+	}
+	str += '</select>';
+	str += '</div>';
+	str += '<div align="center"><input type="button" value="Submit" class="btn btn-success" onClick="getAnalysedData();"></input></div>';
+	$('#debateAnalysisDiv').html(str);
+}
+
+function getAnalysedData()
+{
+	var partyId = $('#partyAnalysis').val();
+	var candidateId = $('#candidateiseAnalysis').val();
+	var roleId = $('#roleWiseAnalysis').val();
+	var charsId = $('#charsWiseAnalysis').val();
+	var type = "";
+	if(charsId > 0)
+	{
+		type = "chars";
+	}
+	else if(roleId > 0)
+	{
+		type = "role";
+	}
+	else if(candidateId > 0)
+	{
+		type = "candidate";
+	}
+	else
+	{
+		type = "party";
+	}
+}
+function getCandidatesList(partyId)
+{
+	var jsObj = {
+			partyId :partyId,
+			task : "getCandidatesLIstOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesListForDebateAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+function getCandidatesForSelectedParty(partyId)
+{
+	var jsObj = {
+			partyId :partyId,
+			selectedVal :"candidateSelecction",
+			task : "getCandidatesOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesListForDebateAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+
+function getRespectiveSelection()
+{
+	
+	/* if(value == 1)
+	{
+		var str = '';
+		str += '<div class="span4" id="channelDiv"> ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel  </label>'; 
+		str +='<select id="channelSelecction">';
+		for(var i in channelsArray)
+		{
+			str +='<option value="'+channelsArray[i].id+'">'+channelsArray[i].name+'</option>';
+		}
+		str +='</select>';
+		str += '</div>';
+		$('#reportTypeSelectionDiv').html(str);
+	} */
+	/* else if(value == 2)
+	{ */
+		var str = '';
+		str += '<div class="span4" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
+		str +='<select id="partySelecction" onChange="getCandidatesForSelectedParty(this.value)">';
+		for(var i in partiesArray)
+		{
+			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
+		}
+		str +='</select>';
+		str += '</div>';
+		str += '<div class="span4" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Candidate  </label>'; 
+		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
+		str += '</div>';
+		$('#reportTypeSelectionDiv').html(str);
+	/* }
+	else if(value == 3)
+	{
+		var str = '';
+		str += '<div class="span4" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
+		str +='<select id="partySelecction" onChange="">';
+		for(var i in partiesArray)
+		{
+			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
+		}
+		str +='</select>';
+		str += '</div>';
+		$('#reportTypeSelectionDiv').html(str);
+	}
+	else
+	{
+		$('#reportTypeSelectionDiv').html('');
+	} */
+	
+}
 var partiesArray = new Array();
 <c:forEach var="parties" items="${partiesList}">
 	var parties1 ={
@@ -263,25 +425,37 @@ var rolesArray = new Array();
 	}
 	rolesArray.push(roles);
 </c:forEach>
-$( document ).ready(function() {
-
-	//$( "#startTime" ).datepicker();
-	//$( "#endTime" ).datepicker();
-	getValues();
-});
+var channelsArray = new Array();
+<c:forEach var="channel" items="${channelList}">
+	var channels ={
+	id:"${channel.id}",
+	name:"${channel.name}"
+	}
+	channelsArray.push(channels);
+</c:forEach>
 
 
 function showNewDebateDiv(){
-$('#newDibateDiv').show();
-$('#debateReportDiv').hide();
+	$('#newDibateDiv').show();
+	$('#debateReportDiv').hide();
+	$('#debateAnalysisDiv').hide();
 }
 function showDebateReportDiv(){
-$('#newDibateDiv').hide();
-$('#dateWiseReportDiv').html('');
-$('#fromDateId').val('');
-$('#toDateId').val('');
-$('#debateReportDiv').show();
+	$('#newDibateDiv').hide();
+	$('#dateWiseReportDiv').html('');
+	$('#fromDateId').val('');
+	$('#toDateId').val('');
+	$('#debateReportDiv').show();
+	$('#debateAnalysisDiv').hide();
 }
+function showDebateAnalysisDiv()
+{
+	$('#newDibateDiv').hide();
+	$('#debateReportDiv').hide();
+	$('#debateAnalysisDiv').show();
+}
+
+
 </script>
 
 
@@ -308,7 +482,10 @@ $('#debateReportDiv').show();
 					
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateReportDiv()" style="cursor:pointer;color: #005580;">View Debate Details</a>
-					</li>	                   
+					</li>	
+					<!--<li class="">
+					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Analysis</a>
+					</li>-->					
 				</ul>
 	</div>
 	
@@ -353,15 +530,15 @@ $('#debateReportDiv').show();
 								<s:select name="observer"  id="observer" list="observerList" theme="simple" listKey="id" listValue="name" multiple="multiple"/>
 
 						</div>	
-						<div class="span2">
+						<!--<div class="span2">
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Telecast Time : <font class="requiredFont">*</font></label>
 							<s:select name="telecastTime"   id="telecastTime" list="telecastTimeList" theme="simple" listKey="id" listValue="name" cssClass="input-block-level"/>
-						</div>
-						<div class="span2">
+						</div>-->
+						<div class="span3">
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Start Time : <font class="requiredFont">*</font></label>
 							<input type="text" class="input-block-level selectWidth" name="startTime" id="startTime"/>
 						</div>				
-						<div class="span2">
+						<div class="span3">
 							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">End Time : <font class="requiredFont">*</font></label>
 							<input type="text" class="input-block-level selectWidth" name="endTime" id="endTime"/> 
 						</div>	
@@ -449,19 +626,53 @@ $('#debateReportDiv').show();
 			<form id="debateFromDiv" method="post" action="saveDebateDetailsAction.action" name="debateFromDiv">
 			<input type="hidden" name="task" id="getDebateDetails" /></form>
 	</div>
-	<div id="debateReportDiv" style="display:none">
+	<div id="debateReportDiv" class="container" style="display:none">
 			<div id="debateRport" align="center">
 			<div id="RerrDiv"></div>
 			<h4> Generate Debate Report : </h4>
-				<div> 
-				From Date <font class="requiredFont">*</font>: <input type="text" id="fromDateId"></input><br>
-				To Date <font class="requiredFont" style="margin-left: 15px;">*</font>: <input type="text" id="toDateId"></input><br>
-					<input type="button" value="Submit" class="btn btn-info" onCLick="getDebateDetailsBtDates();"></input>
+				<div class="row-fluid" >
+					<div class="span4" > 
+					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">From Date  <font class="requiredFont">*</font></label> <input type="text" id="fromDateId"></input>
+					</div>
+					
+					<div class="span4" > 
+					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">To Date  <font class="requiredFont">*</font></label>  <input type="text" id="toDateId"></input>
+					</div>
+					
+					<!--<div class="span4" >
+					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Report Type   </label>
+					<select id="reportTypeSelection" onChange="getRespectiveSelection(this.value);">
+					<option value="0">Select Type</option>
+					<option value="1">Channel</option>
+					<option value="3">Party</option>
+					<option value="2">Candidate</option>
+					</select>
+				</div>-->
+				<div class="span4" >
+				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel :    </label>
+				<s:select name="channel"  id="channelSelecction" list="channelList" theme="simple" listKey="id" listValue="name"/>
 				</div>
+					
+				</div>
+				
+				<div class="row-fluid" id="reportTypeSelectionDiv"></div>
+				
+				<div align="center" style="margin-bottom: 15px; margin-top: 10px;">
+					<a class="btn btn-success" onClick="getDebateDetailsBtDates();">Submit</a>
+				</div>
+			
 			</div>
 			
 			<div id="dateWiseReportDiv"></div>
 	</div>
+	
+	<!--<div id="debateAnalysisDiv">
+		<div id="debateAnalysis" class="row-fluid m_top10">
+			<legend class="boxHeading">Debate Analysis </legend>
+		</div>
+		
+		<div><input type="button" value="Submit" class="btn"></input></div>
+	</div>-->
 </div>
 <script>
 	
