@@ -79,7 +79,7 @@ public class VoterFlagDAO extends GenericDaoHibernate<VoterFlag, Long> implement
 	 str.append(" from BoothPublicationVoter bpv, UserVoterDetails uv,VoterFlag vf,Voter v where bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationDateId and vf.voter.voterId = bpv.voter.voterId and v.voterId = vf.voter.voterId and uv.voter.voterId = bpv.voter.voterId ");
 		if(locationType != null && locationType.equalsIgnoreCase(IConstants.HAMLET))
 		 str.append(" and uv.hamlet.hamletId =:locationId");
-		else if(locationType != null && locationType.equalsIgnoreCase("wardBooth"))
+		else if(locationType != null && locationType.equalsIgnoreCase("customWard"))
 			 str.append(" and uv.ward.constituencyId =:locationId");
 		 str.append(" group by vf.flag.flagId,v.gender");
 		 
@@ -214,7 +214,7 @@ public class VoterFlagDAO extends GenericDaoHibernate<VoterFlag, Long> implement
 		 		"and uv.voter.voterId = bpv.voter.voterId and vf.flag.flagId = :flagId");
 			if(locationType != null && locationType.equalsIgnoreCase(IConstants.HAMLET))
 			 str.append(" and uv.hamlet.hamletId =:locationId");
-			else if(locationType != null && locationType.equalsIgnoreCase("wardBooth"))
+			else if(locationType != null && locationType.equalsIgnoreCase("customWard"))
 				 str.append(" and uv.ward.constituencyId =:locationId");
 			 query = getSession().createQuery(str.toString());
 			 query.setParameter("locationId", locationId);
@@ -274,7 +274,7 @@ public class VoterFlagDAO extends GenericDaoHibernate<VoterFlag, Long> implement
 			 		"and uv.voter.voterId = bpv.voter.voterId and vf.flag.flagId = :flagId");
 				if(locationType != null && locationType.equalsIgnoreCase(IConstants.HAMLET))
 				 str.append(" and uv.hamlet.hamletId =:locationId");
-				else if(locationType != null && locationType.equalsIgnoreCase("wardBooth"))
+				else if(locationType != null && locationType.equalsIgnoreCase("customWard"))
 					 str.append(" and uv.ward.constituencyId =:locationId");
 				 query = getSession().createQuery(str.toString());
 				 query.setParameter("locationId", locationId);
