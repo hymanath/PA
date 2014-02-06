@@ -5310,6 +5310,7 @@ public class VoterReportService implements IVoterReportService{
 					if((locationId.toString().substring(0, 1).toString().trim().equalsIgnoreCase("1")))
 						
 							{
+						type = IConstants.LOCALELECTIONBODY; 
 					List<Object> list = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(locationId.toString().substring(1)));
 					locationId = (Long) list.get(0);
 							}
@@ -5317,7 +5318,7 @@ public class VoterReportService implements IVoterReportService{
 					locationId = new Long(locationId.toString().substring(1));
 					
 				}
-				if(type.equalsIgnoreCase(IConstants.HAMLET) || requestFor.equalsIgnoreCase("wardBooths"))
+				if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase("customWard"))
 				{
 				
 					dataList = voterFlagDAO.getFlagWiseVotersCountByLocationIdForHamlet(locationId,constitunecyId,type,publicationId);	

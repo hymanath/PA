@@ -20252,7 +20252,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				locationId = new Long(locationId.toString());
 				
 			}
-			if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase("wardBooths"))
+			if(type.equalsIgnoreCase(IConstants.HAMLET) ||  type.equalsIgnoreCase("customWard"))
 			{
 			
 				dataList =  voterFlagDAO.getFlagVoterDetailsForHamlet(constituneycId,locationId,flagId,type,publicationId, startIndex,
