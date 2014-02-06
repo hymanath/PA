@@ -869,6 +869,10 @@ str += ' <a href= "javascript:{getInfluencePeopleOfAnUser('+id+')};">Add To Exis
 str += ' </li>';
 str += ' <li>';
 str += ' <a href= "javascript:{};" onclick="checkForVoter('+id+',\'candidate\',\''+name+'\');">Add To Politician</a>';
+str += ' <li>';
+str += ' <a href= "javascript:{};" onclick="openFlagWindow('+id+');">Add To Flag</a>';
+str += ' </li>';
+
 str += ' </li>';
 str += ' </ul>';
 str += ' </li>';
