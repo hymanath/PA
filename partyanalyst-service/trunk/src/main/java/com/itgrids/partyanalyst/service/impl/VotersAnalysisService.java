@@ -20249,7 +20249,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				locationId = (Long) list.get(0);
 						}
 				else
-				locationId = new Long(locationId.toString().substring(1));
+				locationId = new Long(locationId.toString());
 				
 			}
 			if(type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase("wardBooths"))
