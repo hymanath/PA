@@ -86,8 +86,8 @@ var maxr = 1000;
 <div id="suggestiveMainDiv" align="center">
  <div class="widget">
   <div id="errorDiv"></div>
-<div id="voterDetailsDiv" ></div>
-<div id="paginationDivId"></div>
+<div id="voterDetailsDiv" style="display:none;"></div>
+<div id="paginationDivId" style="display:none;"></div>
 </div>
 
 
@@ -148,7 +148,10 @@ var jsObj=
 
 function buildVoterDetails(results,jsObj)
 {
-
+    if(results.length > 0)
+	{
+	$("#voterDetailsDiv").css("display","block");
+	$("#paginationDivId").css("display","block");
 	var str = '';
 	str+='<div>';
 	str+='<table class="table table-bordered" style="margin-top:10px;">';
@@ -204,6 +207,7 @@ function buildVoterDetails(results,jsObj)
 		});
 
 		 }
+	}
 		 }
 
 	
