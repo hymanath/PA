@@ -74,7 +74,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private OpinionPollVO opinionPollVO;
 //	private QuestionsOptionsVO questionsAndChoicesPercentage;
 	private Long freeUserConstituencyId;
-	private List<SelectOptionVO> states,candidatesList;
+	private List<SelectOptionVO> states,candidatesList,candidatesList1;
 	//private List<SpecialPageVO> specialPageVOList;
 	//private ISpecialPageService specialPageService;
 	private String homePageLoadingFirstTime;
@@ -97,6 +97,12 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 	private List<FileVO> galleriesDetails = new ArrayList<FileVO>();
 	
 	
+	public List<SelectOptionVO> getCandidatesList1() {
+		return candidatesList1;
+	}
+	public void setCandidatesList1(List<SelectOptionVO> candidatesList1) {
+		this.candidatesList1 = candidatesList1;
+	}
 	public List<SelectOptionVO> getGallariesList() {
 		return gallariesList;
 	}
@@ -517,22 +523,62 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		 if(user.getUserAccessType()!=null)
 			 if(user.getUserAccessType().equals("Admin"))
 				 newsType = "";      
-		latestGallariesList = candidateDetailsService.getLatestgallaries();
-		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
+		//latestGallariesList = candidateDetailsService.getLatestgallaries();
+		//resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
 		//fileList  = candidateDetailsService.getVideosForSelectedParty(IConstants.TDPID,newsType);
-		responseFilesList=candidateDetailsService.getLatestResponsedNews();
+		//responseFilesList=candidateDetailsService.getLatestResponsedNews();
 		
-		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
+		//fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
 		
 		
 		
-		keywordsList = candidateDetailsService.getTotalKeyWords(IConstants.TDPID,newsType);
-		categoriesList = candidateDetailsService.getAllCategories(); 
-		newsGallariesList = candidateDetailsService.getAllNewsGallaries(); 
+		//keywordsList = candidateDetailsService.getTotalKeyWords(IConstants.TDPID,newsType);
+		//categoriesList = candidateDetailsService.getAllCategories(); 
+		//newsGallariesList = candidateDetailsService.getAllNewsGallaries(); 
 		
-		gallariesList = candidateDetailsService.getLatestGalleries();
+		//gallariesList = candidateDetailsService.getLatestGalleries();
 		return Action.SUCCESS;
 	}
+	
+	public String getResponseFileList(){
+		responseFilesList=candidateDetailsService.getLatestResponsedNews();
+		return Action.SUCCESS;
+	}
+	
+	public String getGallaryList(){
+		 gallariesList = candidateDetailsService.getLatestGalleries();
+		return Action.SUCCESS;
+	}
+	
+	public String getCategoryList(){
+		categoriesList = candidateDetailsService.getAllCategories(); 
+	return Action.SUCCESS;
+	}
+	
+	public String getLatestNews(){
+		request.setAttribute("notLogged",notLogged);
+        session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+		 String newsType = "Public"; 
+		 if(user.getUserAccessType()!=null)
+			 if(user.getUserAccessType().equals("Admin"))
+				 newsType = "";      
+		fileVOsList = candidateDetailsService.getRecentlyUploadedNewsTitles(0, 5, "News Gallary",872L,newsType);
+		return Action.SUCCESS;
+	}
+	
+	public String getNews(){
+		request.setAttribute("notLogged",notLogged);
+        session = request.getSession();
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER"); 
+		 String newsType = "Public"; 
+		 if(user.getUserAccessType()!=null)
+			 if(user.getUserAccessType().equals("Admin"))
+				 newsType = "";      
+		resultMap = candidateDetailsService.getPhotosNewsVideosUpdateForACandidate(0,10,"",newsType);
+		return Action.SUCCESS;
+	}
+	
 	public String getMoreVideos(){
 		 request.setAttribute("notLogged",notLogged);
 	        session = request.getSession();
@@ -569,12 +615,12 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 		if(log.isDebugEnabled())
 			log.debug("In HomePageAction's getCandidates");
 		try {
-			candidatesList=new ArrayList<SelectOptionVO>();
+			candidatesList1=new ArrayList<SelectOptionVO>();
 			candidatesMap = new HashMap<Long, String>(0);
 			
 		//	candidatesList=newsMonitoringService.getCandidates();
 			//candidatesList=newsMonitoringService.getCandidatesByRemovingDots();
-			candidatesList=newsMonitoringService.getCandidatesNewsCount();
+			candidatesList1=newsMonitoringService.getCandidatesNewsCount();
 			
 			
 			for(SelectOptionVO vo:candidatesList)

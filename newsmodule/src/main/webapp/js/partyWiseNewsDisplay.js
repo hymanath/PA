@@ -732,3 +732,160 @@ var browser1 = window.open(urlstr,"newsDetails","scrollbars=yes,height=600,width
 browser1.focus();
 
 }
+
+function buildNewsDisplay(resultMap){
+	setTimeout(function(){
+		$("#stateAjaxCallImg").css("display","none");
+	},4000);
+	setTimeout(function(){
+	$("#districtAjaxCallImg").css("display","none");
+	},5000);
+var str = "";
+if(resultMap != null)
+	for(var i in resultMap.NewsGallary){
+	str += "<div class='item' style='top: 10px;'>";
+	if(resultMap.NewsGallary[i].source == 'Eenadu Telugu' || resultMap.NewsGallary[i].eenadu)
+		str += "<span class='enadu'><a style='color: #005580;font-weight: bolder;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'> "+resultMap.NewsGallary[i].fileTitle1+"</a></span>";
+	else
+		str += "<h4 style='text-transform: capitalize;'> <a style='color: #005580;font-weight: bolder;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'>"+resultMap.NewsGallary[i].fileTitle1+" </a></h4>";
+	
+	str += "<div class='row-fluid'>";
+	if(resultMap.NewsGallary[i].fileType == 'Party'){
+		if(resultMap.NewsGallary[i].displayImagePath != null)
+			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}'  onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'><img style='float:left;width:150px;height:110px;' src='"+resultMap.NewsGallary[i].displayImagePath+"' onerror='imgError(this);' /></a>";
+		if(resultMap.NewsGallary[i].displayImagePath == null)
+			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'> <img style='float:left;width:150px;height:110px;' src='./images/party_flags/"+resultMap.NewsGallary[i].imagePathInUpperCase+"' onerror='imgError(this);'/></a>";
+		
+		if(resultMap.NewsGallary[i].descEenadu)
+			str += "<p class='span8 enadu'>"+resultMap.NewsGallary[i].description+"</p>";
+		else
+			str += "<p class='span8'>"+resultMap.NewsGallary[i].description+"</p>";
+	str += "</div>";
+	
+	str += "<div class='row-fluid m_top10'>";
+	str += "<div class='span9' style='width:460px;'>";
+	str += "<table><tr><td style='width:200px;font-weight:bold;'><p class='text-error' >Source : <span style='font-weight:normal;color:black;'> "+resultMap.NewsGallary[i].source+"</span></p></td><td style='font-weight:bold;'><p class='text-error' >Date : <span style='font-weight:normal;color:black;'>"+resultMap.NewsGallary[i].fileDate+"</span></p></td>";
+	if(resultMap.NewsGallary[i].responseCount >0)
+		str += "<td style='font-weight:bold;padding-left: 20px;'><p class='text-error' >Response Count : <span style='font-weight:normal;color:black;'>"+resultMap.NewsGallary[i].responseCount +"</span></p></td>";									
+	str += "</tr>";
+	if(resultMap.NewsGallary[i].candidateName != null && resultMap.NewsGallary[i].candidateName !='')
+		str += "<tr><td colspan='2'  style='font-weight:bold;'><p class='text-error' >Candidate(s) Involved : <span style='font-weight:normal;color:black;'>"+resultMap.NewsGallary[i].candidateName +"</span></p></td></tr>";
+	str += "</table>";
+	str += "</div></br>";
+	str += "<div class='span2 ' style='float:right'><br>";
+	str += "<a href='newsPaginationAction.action?level=state'>";
+	str += "<button class='btn btn-mini pull-right' type='button'  style='margin-top: -20px; margin-bottom: 15px;margin-right: 25px;'>More...</button>";
+	str += "</a>";
+	str += "</div>";
+	
+	str += "</div>";
+	}
+	str += "</div>";
+	}
+	
+$("#newsDiv").html(str);
+
+
+//For district level
+var str = "";
+if(resultMap != null)
+	for(var i in resultMap.NewsGallaryForDist){
+	str += "<div class='item' style='top: 10px;'>";
+	if(resultMap.NewsGallaryForDist[i].source == 'Eenadu Telugu' || resultMap.NewsGallaryForDist[i].eenadu)
+		str += "<span class='enadu'><a style='color: #005580;font-weight: bolder;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'> "+resultMap.NewsGallaryForDist[i].fileTitle1+"</a></span>";
+	else
+		str += "<h4 style='text-transform: capitalize;'> <a style='color: #005580;font-weight: bolder;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'>"+resultMap.NewsGallaryForDist[i].fileTitle1+" </a></h4>";
+	
+	str += "<div class='row-fluid'>";
+	if(resultMap.NewsGallaryForDist[i].fileType == 'Party'){
+		if(resultMap.NewsGallaryForDist[i].displayImagePath != null)
+			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}'  onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'><img style='float:left;width:150px;height:110px;' src='"+resultMap.NewsGallaryForDist[i].displayImagePath+"' onerror='imgError(this);' /></a>";
+		if(resultMap.NewsGallaryForDist[i].displayImagePath == null)
+			str += "<a class='thumbnail span4' style='height:120px;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'> <img style='float:left;width:150px;height:110px;' src='./images/party_flags/"+resultMap.NewsGallaryForDist[i].imagePathInUpperCase+"' onerror='imgError(this);'/></a>";
+		
+		if(resultMap.NewsGallaryForDist[i].descEenadu)
+			str += "<p class='span8 enadu'>"+resultMap.NewsGallaryForDist[i].description+"</p>";
+		else
+			str += "<p class='span8'>"+resultMap.NewsGallaryForDist[i].description+"</p>";
+	str += "</div>";
+	
+	str += "<div class='row-fluid m_top10'>";
+	str += "<div class='span9' style='width:460px;'>";
+	str += "<table><tr><td style='width:200px;font-weight:bold;'><p class='text-error' >Source : <span style='font-weight:normal;color:black;'> "+resultMap.NewsGallaryForDist[i].source+"</span></p></td><td style='font-weight:bold;'><p class='text-error' >Date : <span style='font-weight:normal;color:black;'>"+resultMap.NewsGallaryForDist[i].fileDate+"</span></p></td>";
+	if(resultMap.NewsGallaryForDist[i].responseCount >0)
+		str += "<td style='font-weight:bold;padding-left: 20px;'><p class='text-error' >Response Count : <span style='font-weight:normal;color:black;'>"+resultMap.NewsGallaryForDist[i].responseCount +"</span></p></td>";									
+	str += "</tr>";
+	if(resultMap.NewsGallaryForDist[i].candidateName != null && resultMap.NewsGallaryForDist[i].candidateName !='')
+		str += "<tr><td colspan='2'  style='font-weight:bold;'><p class='text-error' >Candidate(s) Involved : <span style='font-weight:normal;color:black;'>"+resultMap.NewsGallaryForDist[i].candidateName +"</span></p></td></tr>";
+	str += "</table>";
+	str += "</div></br>";
+	str += "<div class='span2 ' style='float:right'><br>";
+	str += "<a href='newsPaginationAction.action?level=state'>";
+	str += "<button class='btn btn-mini pull-right' type='button'  style='margin-top: -20px; margin-bottom: 15px;margin-right: 25px;'>More...</button>";
+	str += "</a>";
+	str += "</div>";
+	
+	str += "</div>";
+	}
+	str += "</div>";
+	}
+
+$("#newsDivForDistrict").html(str);
+
+}
+
+function buildCategoryNews(results){
+var	str = "";
+if(results != null)
+	for(var i in results){
+		str += "<li><a href='javascript:{showTopFiveGallaries("+results[i].id+")}' class='muted'><i class='icon-share-alt'></i>"+results[i].name+"</a></li>  ";
+	}
+
+$(".categoryNews").html(str);
+}
+
+function buildLatestNewsDiv(results){
+var str = "";
+if(results != null)
+	for(var i in results){
+	str += "<li>";
+	if(results[i].source == 'Eenadu Telugu')
+		str += "<a href='javascript:{}' onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='enadu muted' style='font-weight:bold;'><i class='icon-share-alt '></i>"+results[i].fileTitle1+"</a>";
+	else
+		str += "<a href='javascript:{}' onclick='getNewsDetailsByContentId("+results[i].contentId+")' class='muted' style='text-transform: capitalize;'><i class='icon-share-alt'></i>"+results[i].fileTitle1+"</a>";
+	str += "</li>";
+	}
+$(".latestNews").html(str);
+}
+
+function buildMainCategories(results){
+var str = "";
+if(results != null)
+	for(var i in results){
+		str += "<li><a class='muted' href='javascript:{showFilesInGallary("+results[i].id+")}'><i class='icon-share-alt'></i>"+results[i].name+"</a></li> ";
+	}
+$(".mainCategoriesList").html(str);
+}
+
+function buildResponseFileNews(results){
+var str = "";
+if(results != null)
+	for(var i in results){
+	
+		str += "<li class='thumbnail' style='margin: 3px 5px 5px;padding:5px 5px 5px 15px;'>";
+		if(results[i].fontId == 1)
+			str += "<span class='text-info enadu' onclick='getNewsDetailsByContentId("+results[i].fileId+")' style='cursor:pointer;font-weight:bold;'> "+results[i].title+"</span>";
+		else
+			str += "<h6 class='text-info' onclick='getNewsDetailsByContentId("+results[i].fileId+")' style='cursor:pointer; text-transform: capitalize;'> "+results[i].title+"</h6>";
+
+		str += "<span style='color:#ccc;'>";
+		if(results[i].fileDate != ''){
+			str += "<div><i class='smal' style='color:#3A87AD;'>Date: "+results[i].fileId+"</i></div>";
+		}
+		str += "</span>";
+		str += "</li>";
+		str += "<a href='javascript:{getResponseDetailsByContentId("+results[i].fileId+");}'  class='btn btn-mini btn-primary' style='margin-left:154px;background: none repeat scroll 0% 0% #FAA938;font-weight:bold;margin-top: -2px;'>Track</a>";
+		
+	}
+$(".responseFileNews").html(str);
+}

@@ -194,6 +194,121 @@ $(document).ready(function(){
 
 	$('#homeTabId').addClass('menuActive');
 });
+
+
+function callHomePageAjax11(jsObj,url){
+	 
+	var callback = {			
+				   success : function( o ) {
+					   
+						try
+						{
+							myResults = YAHOO.lang.JSON.parse(o.responseText);	
+							
+							if(jsObj.task == "getVideoGalley")
+							{	
+								buildVideoGallery(myResults);
+								
+							}
+							else if(jsObj.task == "getTotalKeyWords")
+							{
+							  showKeyWordsList(myResults);	
+							}
+							else if(jsObj.task == "getNewsDisplay")
+							{
+								buildNewsDisplay(myResults);
+							}
+							else if(jsObj.task == "getCategoryNews")
+							{
+								buildCategoryNews(myResults);
+							}
+							else if(jsObj.task == "getLatestNews")
+							{
+								buildLatestNewsDiv(myResults);
+							}
+							else if(jsObj.task == "getMainCategoriesList")
+							{
+								buildMainCategories(myResults);
+							}
+							else if(jsObj.task == "getResponseFileNews")
+							{
+								buildResponseFileNews(myResults);
+							}
+						}catch(e)
+						{   
+
+							//alert("Invalid JSON result" + e);   
+						}  
+				   },
+				   scope : this,
+				   failure : function( o ) {
+								//alert( "Failed to load result" + o.status + " " + o.statusText);
+							 }
+				   };
+
+	YAHOO.util.Connect.asyncRequest('GET',url, callback);
+
+
+
+}
+
+function getNewsDisplay(){
+	$("#stateAjaxCallImg").css("display","block");
+	$("#districtAjaxCallImg").css("display","block");
+task="getNewsDisplay"; 		
+ var jsObj=
+	 {
+	  task:task		
+	 };
+var url = "getNewsDisplayAction.action?task="+task;	
+callHomePageAjax11(jsObj,url);
+}
+
+function getCategoryNews(){
+task="getCategoryNews"; 		
+ var jsObj=
+	 {
+	  task:task		
+	 };
+var url = "getCategoryNewsAction.action?task="+task;	
+callHomePageAjax11(jsObj,url);
+}
+
+function getLatestNews(){
+task="getLatestNews"; 		
+ var jsObj=
+	 {
+	  task:task		
+	 };
+var url = "getLatestNewsAction.action?task="+task;	
+callHomePageAjax11(jsObj,url);
+}
+
+function getMainCategoriesList(){
+task="getMainCategoriesList"; 		
+ var jsObj=
+	 {
+	  task:task		
+	 };
+var url = "getCategoryAction.action?task="+task;	
+callHomePageAjax11(jsObj,url);
+}
+
+function responseFileNews(){
+task="getResponseFileNews"; 		
+ var jsObj=
+	 {
+	  task:task		
+	 };
+var url = "getResponseFileAction.action?task="+task;	
+callHomePageAjax11(jsObj,url);
+
+}
+responseFileNews();
+getMainCategoriesList();
+getLatestNews();
+getNewsDisplay();
+getCategoryNews();
 </script>
 </head>
 <body>
@@ -217,73 +332,15 @@ $(document).ready(function(){
 								<!-----------NEWS tab--------->
 							 <div id="News" class="tab-pane fade active in">
 								<div class="carousel slide center" id="myCarousel">
+								<div id="stateAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>
 										<ol class="carousel-indicators">
 										  <li data-slide-to="0" data-target="#myCarousel" class="active"></li>
 										  <li data-slide-to="1" data-target="#myCarousel" class=""></li>
 										  <li data-slide-to="2" data-target="#myCarousel" class=""></li> 
 										  <li data-slide-to="3" data-target="#myCarousel" class=""></li>
 										</ol>
-										<div class="carousel-inner">
-										<s:if test="resultMap != null && resultMap.size() > 0"> 
-										
-							    <s:iterator value="resultMap.NewsGallary" var="newsGallaryDetails" status="ctr">
+										<div class="carousel-inner" id="newsDiv">	    
 						       
-                             <div ${ctr.first ? 'class="item active"' : 'class="item"'} style="top: 10px;">
-                          
-						  
-						<s:if test="%{#newsGallaryDetails.source.equalsIgnoreCase('Eenadu Telugu') || #newsGallaryDetails.eenadu}"> 
-							<span class="enadu"><a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <s:property value="fileTitle1"/> </a></span>
-						 </s:if>
-						 <s:else>
-							<h4 style="text-transform: capitalize;"> <a style="color: #005580;font-weight: bolder;" href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><s:property value="fileTitle1"/> </a></h4>
-                           </s:else>
-						 
-									<div class="row-fluid">				
-									
-									<s:if test="%{#newsGallaryDetails.fileType == 'Party'}" >
-										 <c:if test="${newsGallaryDetails.displayImagePath != null}">
-											<!-- <a class="thumbnail span4" style="height:120px;" href='partyPageAction.action?partyId=<s:property value="candidateId"/>&contentId=<s:property value="contentId"/>' title='<s:property value="description"/>'><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" alt='<s:property value="fileTitle1"/> Image'/></a> -->
-
-											<a class="thumbnail span4" style="height:120px;" href='javascript:{}'  onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"><img style="float:left;width:150px;height:110px;" src="${newsGallaryDetails.displayImagePath}" onerror="imgError(this);" /></a>
-										</c:if>
-
-										<c:if test="${newsGallaryDetails.displayImagePath == null}">
-											<a class="thumbnail span4" style="height:120px;"href='javascript:{}' onclick="getNewsDetailsByContentId(<s:property value='contentId'/>)"> <img style="float:left;width:150px;height:110px;" src="./images/party_flags/${newsGallaryDetails.imagePathInUpperCase}" onerror="imgError(this);"/></a>
-										</c:if>
-										<s:if test="%{#newsGallaryDetails.descEenadu}"> 
-                                       <p class="span8 enadu"><s:property value="description"/></p>
-						               </s:if>
-						               <s:else>
-										<p class="span8"><s:property value="description"/></p>
-										</s:else>
-
-									    </div>
-										<div class="row-fluid m_top10">
-													<div class="span9" style="width:460px;">
-													<table><tr><td style="width:200px;font-weight:bold;"><p class="text-error" >Source : <span style="font-weight:normal;color:black;"> ${newsGallaryDetails.source}</span></p></td><td style="font-weight:bold;"><p class="text-error" >Date : <span style="font-weight:normal;color:black;">${newsGallaryDetails.fileDate}</span></p></td>
-													<s:if test="#newsGallaryDetails.responseCount >0">
-													<td style="font-weight:bold;padding-left: 20px;"><p class="text-error" >Response Count : <span style="font-weight:normal;color:black;">${newsGallaryDetails.responseCount} </span></p></td>
-													</s:if>		
-													</tr>
-													<s:if test="#newsGallaryDetails.candidateName != null && #newsGallaryDetails.candidateName !=''">
-													<tr><td colspan="2"  style="font-weight:bold;"><p class="text-error" >Candidate(s) Involved : <span style="font-weight:normal;color:black;">${newsGallaryDetails.candidateName} </span></p></td></tr>
-													</s:if>
-													</table>
-													</div></br>
-													<div class="span2 " style="float:right"><br>
-														<a href="newsPaginationAction.action?level=state">
-															<button class="btn btn-mini pull-right" type="button"  style="margin-top: -20px; margin-bottom: 15px;margin-right: 25px;">More...</button>
-														</a>
-													</div>
-												</div>
-									</s:if>
-									
-									</div>
-									
-							
-							</s:iterator>
-							</s:if>
-										
 											</div>
 										</div>
 									</div>
@@ -356,13 +413,15 @@ $(document).ready(function(){
 								<!-----------NEWS tab--------->
 								<div id="News" class="tab-pane fade active in">
 								<div class="carousel slide center" id="myCarousel2">
+								<div id="districtAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>
 										<ol class="carousel-indicators">
 										  <li data-slide-to="0" data-target="#myCarousel2" class="active"></li>
 										  <li data-slide-to="1" data-target="#myCarousel2" class=""></li>
 										  <li data-slide-to="2" data-target="#myCarousel2" class=""></li> 
 										  <li data-slide-to="3" data-target="#myCarousel2" class=""></li>
 										</ol>
-										<div class="carousel-inner">
+										<div class="carousel-inner" id="newsDivForDistrict">
+										<!--
 										 <s:if test="resultMap != null && resultMap.size() > 0"> 
 										
 							    <s:iterator value="resultMap.NewsGallaryForDist" var="newsGallaryDetails" status="ctr">
@@ -417,7 +476,7 @@ $(document).ready(function(){
 									
 							
 							</s:iterator>
-							</s:if>
+							</s:if>-->
 										
 										</div>
 									</div>
@@ -508,9 +567,10 @@ $(document).ready(function(){
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
 								<td id="tdWidth" style="width:190px;">
-									<s:select theme="simple" label="Candidates" name="candidates"
-								id="candidatesListId" list="candidatesList" listKey="id"
-								listValue="name" headerKey="0" headerValue="Select Candidate" style="margin-left:-18px"/>
+								<!--	<s:select theme="simple" label="Candidates" name="candidates"
+								id="candidatesListId" list="candidatesList1" listKey="id"
+								listValue="name" headerKey="0" headerValue="Select Candidate" style="margin-left:-18px"/>-->
+								<select id="candidatesListId"></select>
 						</td>
 							</tr>
 						</table>
@@ -609,8 +669,8 @@ $(document).ready(function(){
 					<div class="row-fluid widget">
 						<div class="span12 boxHeading"><h4>Hot News</h4></div>
 						<div class="span12">
-							<ul class=" nav nav-list bs-docs-sidenav" style='margin-top:10px;'>
-								<s:iterator value="responseFilesList" var ="responsefiles" status="status">
+							<ul class=" nav nav-list bs-docs-sidenav responseFileNews" style='margin-top:10px;'>
+								<!--<s:iterator value="responseFilesList" var ="responsefiles" status="status">
 								<s:if test="%{#status.index < 4}">
 								<li class='thumbnail' style='margin: 3px 5px 5px;padding:5px 5px 5px 15px;'>
 								<s:if test="%{#responsefiles.fontId==1}">
@@ -630,7 +690,7 @@ $(document).ready(function(){
 								</li>
 								<a href="javascript:{getResponseDetailsByContentId(<s:property value='fileId'/>)}" class="btn btn-mini btn-primary" style="margin-left:154px;background: none repeat scroll 0% 0% #FAA938;font-weight:bold;margin-top: -2px;">Track</a>
 								 </s:if> 
-								</s:iterator>
+								</s:iterator>-->
 								
 							</ul>
 							
@@ -648,9 +708,9 @@ $(document).ready(function(){
 						<div class="row-fluid widget">
 							<div class="span12 boxHeading"><h4>Latest News</h4></div>
 							<div class="span12">
-								<ul class="unstyled pad10">
+								<ul class="unstyled pad10 latestNews">
 									
-									<c:if test="${fileVOsList != null}">
+									<!--<c:if test="${fileVOsList != null}">
 									 <s:iterator value="fileVOsList" var="newDetails">
 										<li>
 										<s:if test="%{#newDetails.source.equalsIgnoreCase('Eenadu Telugu')}"> 
@@ -661,7 +721,7 @@ $(document).ready(function(){
 									</s:else>
 									</li>
 									 </s:iterator>
-									</c:if>
+									</c:if>-->
 
 									<a class=" btn btn-mini pull-right" href="newsDetailsAction.action" style="margin-bottom: 8px;">More...</a>
 								</ul>
@@ -690,13 +750,14 @@ $(document).ready(function(){
 						<div class="row-fluid widget">
 							<div class="span12 boxHeading"><h4>Category Wise News</h4></div>
 							<div class="span12">
-								<ul class="unstyled pad10">
-									<s:if test="gallariesList != null && gallariesList.size() > 0"> 
+								<ul class="unstyled pad10 categoryNews" >
+								
+									<!--<s:if test="gallariesList != null && gallariesList.size() > 0"> 
 											
 									<s:iterator value="gallariesList" var="newsGallaryDetails" status="ctr">
 									<li><a href='javascript:{showTopFiveGallaries(<s:property value="id"/>)}' class="muted"><i class="icon-share-alt"></i> <s:property value="name"/></a></li>                          		
 									</s:iterator>
-									</s:if>
+									</s:if>-->
 							
 								</ul>
 								<a href="javascript:{showAllCategories()}" class=" btn btn-mini pull-right " style="margin-right: 20px; margin-top: -14px; margin-bottom: 8px;">More...</a>
@@ -707,10 +768,10 @@ $(document).ready(function(){
 						<div class="row-fluid widget">
 							<div class="span12 boxHeading"><h4>Main Category Wise News</h4></div>
 							<div class="span12">
-								<ul class="unstyled pad10">
-								<c:forEach var="category" items="${categoriesList}">
+								<ul class="unstyled pad10 mainCategoriesList">
+								<!--<c:forEach var="category" items="${categoriesList}">
 								<li><a class="muted" href="javascript:{showFilesInGallary(${category.id})}"><i class="icon-share-alt"></i>${category.name}</a></li>        
-                               </c:forEach>
+                               </c:forEach>-->
 							 <!--  <a href="javascript:{showAllgallaries()}" class=" btn btn-mini pull-right " style="margin-top: -10px;">More...</a>-->
 									
 								</ul>
@@ -861,42 +922,7 @@ function buildVideoGallery(myResults)
 	$('#videos').html(str);
 }
 
-function callHomePageAjax11(jsObj,url){
-	 
-	var callback = {			
-				   success : function( o ) {
-					   
-						try
-						{
-							myResults = YAHOO.lang.JSON.parse(o.responseText);	
-							
-							if(jsObj.task == "getVideoGalley")
-							{	
-								buildVideoGallery(myResults);
-								
-							}
-							else if(jsObj.task == "getTotalKeyWords")
-							{
-							  showKeyWordsList(myResults);	
-							}
-							
-						}catch(e)
-						{   
 
-							//alert("Invalid JSON result" + e);   
-						}  
-				   },
-				   scope : this,
-				   failure : function( o ) {
-								//alert( "Failed to load result" + o.status + " " + o.statusText);
-							 }
-				   };
-
-	YAHOO.util.Connect.asyncRequest('GET',url, callback);
-
-
-
-}
 /* function getLatestNewsDetails(contentId)
 	{
 	var urlstr = "newsDetailsAction.action?contentId="+contentId+"&";
@@ -955,7 +981,7 @@ function callHomePageAjax11(jsObj,url){
 								}
 								if(jsObj.task =="getCandidateNamesInHomePage")
 								{
-									//alert('s');
+									buildCandidateNamesInHomePage(myResults,jsObj);
 								}
 								if(jsObj.task =="getCandidatesNewsInHomePage")
 								{
@@ -1937,6 +1963,12 @@ $(document).ready(function(){
 
 });
 });
+
+function buildCandidateNamesInHomePage(results,jsObj){
+	$("#candidatesListId").find('option').remove();
+		for(var i in results)
+			$("#candidatesListId").append('<option value='+results[i].id+'>'+results[i].name+'</option>');
+}
 
 </script>
 </body>
