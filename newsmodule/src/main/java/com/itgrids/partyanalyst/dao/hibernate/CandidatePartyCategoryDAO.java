@@ -131,7 +131,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			 StringBuilder str = new StringBuilder();
 			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
-			 str.append("andmodel.candidatePartyFile.file.user.userId = :userId ");
+			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue != 1)
@@ -218,7 +218,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 			 StringBuilder str = new StringBuilder();
 			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
-			 str.append("andmodel.candidatePartyFile.file.user.userId = :userId ");
+			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue != 1)
