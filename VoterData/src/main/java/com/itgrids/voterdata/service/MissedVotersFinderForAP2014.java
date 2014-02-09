@@ -267,7 +267,7 @@ public class MissedVotersFinderForAP2014 {
     	try{
     		StringBuilder sb = null;
     		PDDocument pd = null;
-    		BufferedWriter outwriter = new BufferedWriter(new FileWriter(new File("F:\\Kamal\\VD\\VotesMissedData.txt")));
+    		BufferedWriter outwriter = new BufferedWriter(new FileWriter(new File("F:\\VoterData\\VotesMissedData.txt")));
             
     		for(BoothVO boothVO : boothsInfoList)
     		{
@@ -281,7 +281,41 @@ public class MissedVotersFinderForAP2014 {
                     sb = ReadVoterDataFromPdfForAP2014.formatText1(sb);
                     outwriter.write(sb.toString());
                     
-                    if(IConstants.PATTERN == 1)//Common Pattern
+                    if(IConstants.PATTERN == 5)//Sex Missed Pattern
+                    {
+                    	Pattern p = Pattern.compile("Elector's Name:\\r\\nAge:\\r\\nHouse No:\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\nSex:\\r\\n([a-zA-Z]*)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)\\r\\n\\s([0-9]*)");
+                    	Matcher m = p.matcher(sb);
+                    	
+                    	while (m.find()) 
+                        {
+                            try{
+                            	
+                            	VoterInfo voterInfo = new VoterInfo();
+                            	
+                            	voterInfo.setsNo(Long.valueOf(m.group(8).replaceAll("\\r\\n","").trim()));
+                            	voterInfo.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setVoterName(m.group(3).replaceAll("\\r\\n","").trim());
+	                        	voterInfo.setGuardianName(m.group(4).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setGuardianRelation(m.group(1).substring(0, m.group(1).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setHouseNumber(m.group(6).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setAge(m.group(7).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setSex(m.group(5).replaceAll("\\r\\n","").trim());
+                            	
+    	                        voterInfo.setBoothNo(boothVO.getPartNo());
+                            	voterInfo.setBoothName(boothVO.getName());
+                            	voterInfo.setConstituencyId(boothVO.getConstituencyId());
+                            	voterInfo.setConstituency(boothVO.getConstituencyName());
+                            	missedList.add(voterInfo);
+                            	
+                            }catch(Exception e)
+                            {
+                            	e.printStackTrace();
+                            }
+                        }
+                    	
+                    }
+                    
+                    if(IConstants.PATTERN == 3)//Common Pattern
                     {
                     	for(Integer sno : boothVO.getMissedVotesList())
                         {
@@ -358,7 +392,7 @@ public class MissedVotersFinderForAP2014 {
                         }
                     }
                     
-                    if(IConstants.PATTERN == 2)//Common Pattern
+                    if(IConstants.PATTERN == 4)//Common Pattern
                     {
                     	for(Integer sno : boothVO.getMissedVotesList())
                         {
@@ -424,6 +458,157 @@ public class MissedVotersFinderForAP2014 {
                     			e.printStackTrace();
                     		}
                         }
+                    }
+                    
+                    if(IConstants.PATTERN == 1)//Sex Missed Pattern
+                    {
+                    	Pattern p = Pattern.compile("([0-9]*)\\r\\nElector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)\\r\\n\\s");
+                    	Matcher m = p.matcher(sb);
+                    	
+                    	while (m.find()) 
+                        {
+                            try{
+                            	VoterInfo voterInfo = new VoterInfo();
+                            	
+                            	voterInfo.setsNo(Long.valueOf(m.group(1).replaceAll("\\r\\n","").trim()));
+                            	voterInfo.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setVoterName(m.group(3).replaceAll("\\r\\n","").trim());
+	                        	voterInfo.setGuardianName(m.group(4).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setGuardianRelation(m.group(5).substring(0, m.group(5).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setHouseNumber(m.group(6).replaceAll("\\r\\n","").trim());
+                            	voterInfo.setAge(m.group(7).replaceAll("\\r\\n","").trim());
+    	                        
+                            	if(voterInfo.getGuardianRelation().equalsIgnoreCase("Husband"))
+                            		voterInfo.setSex("Female");
+                            	else
+                            		voterInfo.setSex("Male");
+                            	
+    	                        voterInfo.setBoothNo(boothVO.getPartNo());
+                            	voterInfo.setBoothName(boothVO.getName());
+                            	voterInfo.setConstituencyId(boothVO.getConstituencyId());
+                            	voterInfo.setConstituency(boothVO.getConstituencyName());
+                            	missedList.add(voterInfo);
+                            	
+                            }catch(Exception e)
+                            {
+                            	e.printStackTrace();
+                            }
+                        }
+                    	
+                    }
+                    
+                    if(IConstants.PATTERN == 2)//Common Pattern
+                    {
+                    	for(Integer sno : boothVO.getMissedVotesList())
+                        {
+                    		try{
+                        	int startIndex = sb.indexOf(new Integer(sno.intValue()-1).toString()+"\r\nElector's Name:");
+                        	int endIndex = sb.indexOf(sno.toString()+"\r\nElector's Name:");
+                        		
+                        	String reqStr = sb.substring(startIndex,endIndex).trim();
+                        	
+                        	String arr[] = reqStr.split("\\r\\n");
+                        	
+                        	if(arr[1].trim().equalsIgnoreCase("Elector's Name:") && arr[1].trim().contains("'s Name:"))
+                        	{
+                        	VoterInfo voterInfo = new VoterInfo();
+                        	voterInfo.setsNo((new Long(arr[0].trim()))+1);
+                        	voterInfo.setVoterId(arr[5].trim());
+                        	voterInfo.setGuardianRelation(arr[4].trim().replaceAll("'s Name:",""));
+                        	voterInfo.setAge(arr[arr.length-1].trim());
+                        	
+                        	if(arr[8].trim().equalsIgnoreCase("Sex:"))
+                        	{
+                        		voterInfo.setVoterName(arr[6].trim());
+	                        	voterInfo.setGuardianName(arr[7].trim());
+	                        	voterInfo.setSex(arr[9].trim());
+	                        	
+	                        	if(arr.length == 12)
+	                        		voterInfo.setHouseNumber(arr[10].trim());
+	                        	else
+	                        		voterInfo.setHouseNumber(arr[10].trim()+" "+arr[11].trim());
+                        	}
+                        	else if(arr[9].trim().equalsIgnoreCase("Sex:"))
+                        	{
+                        		voterInfo.setSex(arr[10].trim());
+                        		if(arr[6].endsWith(" "))
+                        		{
+                        			voterInfo.setVoterName(arr[6].trim()+" "+arr[7].trim());
+    	                        	voterInfo.setGuardianName(arr[8].trim());
+                        		}
+                        		else
+                        		{
+                        			voterInfo.setVoterName(arr[6].trim());
+    	                        	voterInfo.setGuardianName(arr[7].trim()+" "+arr[8].trim());
+                        		}
+                        		
+                        		if(arr.length == 13)
+	                        		voterInfo.setHouseNumber(arr[11].trim());
+	                        	else
+	                        		voterInfo.setHouseNumber(arr[11].trim()+" "+arr[12].trim());
+                        		
+                        	}
+                        	else if(arr[10].trim().equalsIgnoreCase("Sex:"))
+                        	{
+                        		voterInfo.setSex(arr[11].trim());
+                        		voterInfo.setVoterName(arr[6].trim()+" "+arr[7].trim());
+	                        	voterInfo.setGuardianName(arr[8].trim()+" "+arr[9].trim());
+	                        	
+	                        	if(arr.length == 14)
+	                        		voterInfo.setHouseNumber(arr[12].trim());
+	                        	else
+	                        		voterInfo.setHouseNumber(arr[12].trim()+" "+arr[13].trim());
+                        	}
+                        	
+                        	voterInfo.setBoothNo(boothVO.getPartNo());
+                        	voterInfo.setBoothName(boothVO.getName());
+                        	voterInfo.setConstituencyId(boothVO.getConstituencyId());
+                        	voterInfo.setConstituency(boothVO.getConstituencyName());
+                        	
+                        	missedList.add(voterInfo);
+                        	}
+                    		}catch(Exception e)
+                    		{
+                    			e.printStackTrace();
+                    		}
+                        }
+                    }
+                    
+                    if(IConstants.PATTERN == 6)//Relative Name Missed Pattern
+                    {
+                    	//Pattern p = Pattern.compile("\\s([0-9]*)\\r\\nElector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)\\r\\n([a-zA-Z]*)");
+                    	Pattern p = Pattern.compile("([0-9]*)\\r\\nElector's Name:\\r\\nSex:Age:\\r\\nHouse No:\\r\\n([A-Z\\d]*)\\r\\n([A-Za-z\\.\\s\\-\\*\\~]*)\\r\\n(Husband's Name:|Father's Name:|Mother's Name:|Other's Name:)\\r\\n([0-9\\-_/A-Za-z\\.\\?\\+\\=\\`\\/\\*\\&\\,\\:\\;\\(\\)\\\\]*)\\r\\n\\s([0-9]*)\\r\\n([a-zA-Z]*)");
+                    	Matcher m = p.matcher(sb);
+                    	
+                    	while (m.find()) 
+                        {
+                            try{
+                            	VoterInfo voterInfo = new VoterInfo();
+                            	
+                            	if(boothVO.getMissedVotesList().contains(Integer.valueOf(m.group(1).replaceAll("\\r\\n","").trim())))
+                            	{
+	                            	voterInfo.setsNo(Long.valueOf(m.group(1).replaceAll("\\r\\n","").trim()));
+	                            	voterInfo.setVoterId(m.group(2).replaceAll("\\r\\n","").trim());
+	                            	voterInfo.setVoterName(m.group(3).replaceAll("\\r\\n","").trim());
+	                            	voterInfo.setGuardianRelation(m.group(4).substring(0, m.group(4).indexOf("'s Name")).replaceAll("\\r\\n","").trim());
+	                            	voterInfo.setHouseNumber(m.group(5).replaceAll("\\r\\n","").trim());
+	                            	voterInfo.setAge(m.group(6).replaceAll("\\r\\n","").trim());
+	                            	voterInfo.setSex(m.group(7).replaceAll("\\r\\n","").trim());
+	                            	voterInfo.setGuardianName("NA");
+	                            	
+	    	                        voterInfo.setBoothNo(boothVO.getPartNo());
+	                            	voterInfo.setBoothName(boothVO.getName());
+	                            	voterInfo.setConstituencyId(boothVO.getConstituencyId());
+	                            	voterInfo.setConstituency(boothVO.getConstituencyName());
+	                            	missedList.add(voterInfo);
+                            	}
+                            	
+                            }catch(Exception e)
+                            {
+                            	e.printStackTrace();
+                            }
+                        }
+                    	
                     }
                     outwriter.close();
                     pd.close();
