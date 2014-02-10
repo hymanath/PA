@@ -253,8 +253,6 @@ function callHomePageAjax11(jsObj,url){
 }
 
 function getNewsDisplay(){
-	$("#stateAjaxCallImg").css("display","block");
-	$("#districtAjaxCallImg").css("display","block");
 task="getNewsDisplay"; 		
  var jsObj=
 	 {
@@ -332,7 +330,7 @@ getCategoryNews();
 								<!-----------NEWS tab--------->
 							 <div id="News" class="tab-pane fade active in">
 								<div class="carousel slide center" id="myCarousel">
-								<div id="stateAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>
+								
 										<ol class="carousel-indicators">
 										  <li data-slide-to="0" data-target="#myCarousel" class="active"></li>
 										  <li data-slide-to="1" data-target="#myCarousel" class=""></li>
@@ -362,26 +360,26 @@ getCategoryNews();
 										  <div class="item active">
 											<div class="row-fluid">
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 											</div>
 										  </div>
 										   <div class="item">
 											<div class="row-fluid">
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 											</div>
 										  </div>
@@ -413,7 +411,6 @@ getCategoryNews();
 								<!-----------NEWS tab--------->
 								<div id="News" class="tab-pane fade active in">
 								<div class="carousel slide center" id="myCarousel2">
-								<div id="districtAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>
 										<ol class="carousel-indicators">
 										  <li data-slide-to="0" data-target="#myCarousel2" class="active"></li>
 										  <li data-slide-to="1" data-target="#myCarousel2" class=""></li>
@@ -498,26 +495,26 @@ getCategoryNews();
 										  <div class="item active">
 											<div class="row-fluid">
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 											</div>
 										  </div>
 										   <div class="item">
 											<div class="row-fluid">
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 												<a class="thumbnail span4" href="#">
-													<img src="http://placehold.it/200x150">
+													<img src="images/200x150.gif">
 												</a>
 											</div>
 										  </div>
@@ -800,9 +797,6 @@ function clearDate(){
 
 
 $(function(){
-$('#myCarousel').carousel({ interval: 4000});
-$('#myCarousel2').carousel( {interval: 5000});
-
 	$('.acco').accordion({
 		autoHeight: false,
 		clearStyle: true
@@ -896,7 +890,7 @@ function openVideo(path)
 				
 	});
 		var str = "";
-		str += '<iframe width="500" height="396" src="http://www.youtube.com/embed/'+path+'" frameborder="0" allowfullscreen="true"></iframe></div>';
+		str += '<iframe width="500" height="396" src="" frameborder="0" allowfullscreen="true"></iframe></div>';
 		$('#videos').html(str);
 	} 
 	
@@ -916,7 +910,7 @@ function buildVideoGallery(myResults)
 	var str = '';
 	for(var i in myResults)
 	{
-		str += '<iframe  src="http://www.youtube.com/embed/'+myResults[i].filePath1+'" frameborder="0" allowfullscreen="true" class="thumbnail span2">></iframe>';
+		str += '<iframe  src="" frameborder="0" allowfullscreen="true" class="thumbnail span2">></iframe>';
 	}
 	
 	$('#videos').html(str);
