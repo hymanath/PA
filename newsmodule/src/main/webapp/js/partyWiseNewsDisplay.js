@@ -734,16 +734,13 @@ browser1.focus();
 }
 
 function buildNewsDisplay(resultMap){
-	setTimeout(function(){
-		$("#stateAjaxCallImg").css("display","none");
-	},4000);
-	setTimeout(function(){
-	$("#districtAjaxCallImg").css("display","none");
-	},5000);
 var str = "";
 if(resultMap != null)
 	for(var i in resultMap.NewsGallary){
-	str += "<div class='item' style='top: 10px;'>";
+	if(i == 0)
+	 str += "<div class='item active' style='top: 10px;'>";
+	else
+	 str += "<div class='item' style='top: 10px;'>";
 	if(resultMap.NewsGallary[i].source == 'Eenadu Telugu' || resultMap.NewsGallary[i].eenadu)
 		str += "<span class='enadu'><a style='color: #005580;font-weight: bolder;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallary[i].contentId+")'> "+resultMap.NewsGallary[i].fileTitle1+"</a></span>";
 	else
@@ -784,12 +781,14 @@ if(resultMap != null)
 	}
 	
 $("#newsDiv").html(str);
-
-
+$('#myCarousel').carousel( {interval: 5000});
 //For district level
 var str = "";
 if(resultMap != null)
 	for(var i in resultMap.NewsGallaryForDist){
+	if(i == 0)
+	str += "<div class='item active' style='top: 10px;'>";
+	else
 	str += "<div class='item' style='top: 10px;'>";
 	if(resultMap.NewsGallaryForDist[i].source == 'Eenadu Telugu' || resultMap.NewsGallaryForDist[i].eenadu)
 		str += "<span class='enadu'><a style='color: #005580;font-weight: bolder;' href='javascript:{}' onclick='getNewsDetailsByContentId("+resultMap.NewsGallaryForDist[i].contentId+")'> "+resultMap.NewsGallaryForDist[i].fileTitle1+"</a></span>";
@@ -831,6 +830,7 @@ if(resultMap != null)
 	}
 
 $("#newsDivForDistrict").html(str);
+$('#myCarousel2').carousel( {interval: 5000});
 
 }
 
