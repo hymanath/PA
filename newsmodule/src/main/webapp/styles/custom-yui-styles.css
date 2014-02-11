@@ -1,0 +1,139 @@
+#dateWiseReportDiv table {
+		-moz-border-bottom-colors: none;
+		-moz-border-left-colors: none;
+		-moz-border-right-colors: none;
+		-moz-border-top-colors: none;
+		border-bottom-color: #D3D3D3;
+		border-bottom-style: solid;
+		border-bottom-width: 1px;
+		border-collapse: collapse;
+		border-image-outset: 0 0 0 0;
+		border-image-repeat: stretch stretch;
+		border-image-slice: 100% 100% 100% 100%;
+		border-image-source: none;
+		border-image-width: 1 1 1 1;
+		border-left-color-ltr-source: physical;
+		border-left-color-rtl-source: physical;
+		border-left-color-value: #D3D3D3;
+		border-left-style-ltr-source: physical;
+		border-left-style-rtl-source: physical;
+		border-left-style-value: solid;
+		border-left-width-ltr-source: physical;
+		border-left-width-rtl-source: physical;
+		border-left-width-value: 1px;
+		border-right-color-ltr-source: physical;
+		border-right-color-rtl-source: physical;
+		border-right-color-value: #D3D3D3;
+		border-right-style-ltr-source: physical;
+		border-right-style-rtl-source: physical;
+		border-right-style-value: solid;
+		border-right-width-ltr-source: physical;
+		border-right-width-rtl-source: physical;
+		border-right-width-value: 1px;
+		border-top-color: #D3D3D3;
+		border-top-style: solid;
+		border-top-width: 1px;
+		margin-left: auto;
+		margin-right: auto;
+		padding-bottom: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 10px;
+	}
+
+
+	#dateWiseReportDiv table th{
+		background-color: #CDE6FC;
+		color: #333333;
+		font-size: 13px;
+		font-weight: bold;
+		padding-bottom: 10px;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 10px;
+		text-align: left;
+	}
+	.yui-skin-sam th.yui-dt-asc, .yui-skin-sam th.yui-dt-desc {
+		background-attachment: scroll;
+		background-clip: border-box;
+		background-color: rgba(0, 0, 0, 0);
+		background-image: url("sprite.png");
+		background-origin: padding-box;
+		background-position: 0 -100px;
+		background-repeat: repeat-x;
+		background-size: auto auto;
+	}
+	#dateWiseReportDiv table td{
+		-moz-font-feature-settings: -moz-use-system-font;
+		-moz-font-language-override: -moz-use-system-font;
+		-x-system-font: small-caption;
+		color: #676A67;
+		font-family: -moz-use-system-font;
+		font-size: -moz-use-system-font;
+		font-size-adjust: -moz-use-system-font;
+		font-stretch: -moz-use-system-font;
+		font-style: -moz-use-system-font;
+		font-variant: -moz-use-system-font;
+		font-weight: -moz-use-system-font;
+		line-height: -moz-use-system-font;
+		padding-bottom: 8px;
+		padding-left: 10px;
+		padding-right: 8px;
+		padding-top: 8px;
+	}
+	.yui-skin-sam tr.yui-dt-even td.yui-dt-asc, .yui-skin-sam tr.yui-dt-even td.yui-dt-desc {
+		background-color: #EDF5FF;
+	}
+	dateWiseReportDiv table td {
+		-moz-border-bottom-colors: none !important;
+		-moz-border-left-colors: none !important;
+		-moz-border-right-colors: none !important;
+		-moz-border-top-colors: none !important;
+		border-bottom-color: -moz-use-text-color !important;
+		border-bottom-style: none !important;
+		border-bottom-width: medium !important;
+		border-image-outset: 0 0 0 0 !important;
+		border-image-repeat: stretch stretch !important;
+		border-image-slice: 100% 100% 100% 100% !important;
+		border-image-source: none !important;
+		border-image-width: 1 1 1 1 !important;
+		border-left-color-ltr-source: physical !important;
+		border-left-color-rtl-source: physical !important;
+		border-left-color-value: -moz-use-text-color !important;
+		border-left-style-ltr-source: physical !important;
+		border-left-style-rtl-source: physical !important;
+		border-left-style-value: none !important;
+		border-left-width-ltr-source: physical !important;
+		border-left-width-rtl-source: physical !important;
+		border-left-width-value: medium !important;
+		border-right-color-ltr-source: physical !important;
+		border-right-color-rtl-source: physical !important;
+		border-right-color-value: -moz-use-text-color !important;
+		border-right-style-ltr-source: physical !important;
+		border-right-style-rtl-source: physical !important;
+		border-right-style-value: none !important;
+		border-right-width-ltr-source: physical !important;
+		border-right-width-rtl-source: physical !important;
+		border-right-width-value: medium !important;
+		border-top-color: -moz-use-text-color !important;
+		border-top-style: none !important;
+		border-top-width: medium !important;
+	}
+	.ui-multiselect{margin-top:10px;width:222px !important;}
+
+	.yui-skin-sam .yui-pg-container {
+		display: block;
+		margin: 13px 312px;
+		white-space: nowrap;
+	}
+
+	.yui-skin-sam .yui-dt-liner{
+		padding:4px 0px;
+	}
+	.yui-skin-sam tr.yui-dt-odd td.yui-dt-asc, .yui-skin-sam tr.yui-dt-odd td.yui-dt-desc {
+		background-color: #DBEAFF;
+	}
+	.yui-skin-sam .yui-dt-liner{
+		padding:4px 0px;
+	}
+	
