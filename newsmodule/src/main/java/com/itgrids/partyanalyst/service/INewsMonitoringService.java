@@ -92,7 +92,7 @@ public interface INewsMonitoringService {/*
 	
 	public List<SelectOptionVO> getCandidatesByPartyIdsList(List<Long> partyIdsList);
 	
-	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId,Long locationId,Long locationValue);
+	public ResultStatus saveCandidatesAndParty(Long partyId,String candidateName,Long designationId,Long locationId,Long locationValue,String isDebate);
 	
 	public List<SelectOptionVO> getCandidatesNewsCount();
 	
