@@ -106,6 +106,7 @@
 	<bean id="debateAction" class="com.itgrids.partyanalyst.web.action.DebateAction" singleton="false">
 	 	<property name="debateService" ref="debateService"/>
 	 	<property name="candidateDetailsService" ref="candidateDetailsService"/>
+	 	<property name="staticDataService" ref="staticDataService"/>
 	</bean>
 	
 	</beans>
