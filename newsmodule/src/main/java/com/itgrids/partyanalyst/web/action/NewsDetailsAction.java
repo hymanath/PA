@@ -726,7 +726,12 @@ public class NewsDetailsAction extends ActionSupport implements ServletRequestAw
 		 return ERROR;
 		
 		jObj = new JSONObject(getTask());
-		resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"));	
+		if(jObj.getString("task").equalsIgnoreCase("saveCandidateForDebate")){
+		resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"),"debateCandidate");
+		}
+		else{
+			resultStatus = newsMonitoringService.saveCandidatesAndParty(jObj.getLong("partyId"),jObj.getString("candidateName"),jObj.getLong("designationId"),jObj.getLong("locationId"),jObj.getLong("locationValue"),null);
+		}
 	}catch (Exception e) {
 	 e.printStackTrace();
 	 Log.error(" Exception Occured in saveCandidatesAndParty() method, Exception - "+e);
