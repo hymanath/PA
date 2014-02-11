@@ -14,6 +14,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ConstituencyInfoVO;
 import com.itgrids.partyanalyst.dto.DebateDetailsVO;
 import com.itgrids.partyanalyst.dto.DebateVO;
 import com.itgrids.partyanalyst.dto.ParticipantVO;
@@ -22,6 +23,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IDebateService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -67,34 +69,124 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	private ICandidateDetailsService 	candidateDetailsService;
 	private IDebateService 				debateService;
 	
+	private String fromDate;
+	private String toDate;
+	private int startIndex;
+	private int results;
+	private String sort;
+	private String dir ;
+	private String channel;
+	private String partyId;
+	private String candidateId;
+	private List<SelectOptionVO> districtsList1;
+	private List<SelectOptionVO> parlConstiList1;
+	private List<SelectOptionVO> assemConstiList1;
+	private IStaticDataService staticDataService;
+
 	
-	
-	
-	
-	
-	
-	public List<SelectOptionVO> getPartyWiseList() {
-		return partyWiseList;
+	public String getChannel() {
+		return channel;
 	}
 
-	public void setPartyWiseList(List<SelectOptionVO> partyWiseList) {
-		this.partyWiseList = partyWiseList;
+	public void setChannel(String channel) {
+		this.channel = channel;
 	}
 
-	public List<SelectOptionVO> getCandidateWiseList() {
-		return candidateWiseList;
+	public String getPartyId() {
+		return partyId;
 	}
 
-	public void setCandidateWiseList(List<SelectOptionVO> candidateWiseList) {
-		this.candidateWiseList = candidateWiseList;
+	public void setPartyId(String partyId) {
+		this.partyId = partyId;
 	}
 
-	public List<SelectOptionVO> getQuestionOptionsList() {
-		return questionOptionsList;
+	public String getCandidateId() {
+		return candidateId;
 	}
 
-	public void setQuestionOptionsList(List<SelectOptionVO> questionOptionsList) {
-		this.questionOptionsList = questionOptionsList;
+	public void setCandidateId(String candidateId) {
+		this.candidateId = candidateId;
+	}
+
+	public List<SelectOptionVO> getDistrictsList1() {
+		return districtsList1;
+	}
+
+	public void setDistrictsList1(List<SelectOptionVO> districtsList1) {
+		this.districtsList1 = districtsList1;
+	}
+
+	public List<SelectOptionVO> getParlConstiList1() {
+		return parlConstiList1;
+	}
+
+	public void setParlConstiList1(List<SelectOptionVO> parlConstiList1) {
+		this.parlConstiList1 = parlConstiList1;
+	}
+
+	public List<SelectOptionVO> getAssemConstiList1() {
+		return assemConstiList1;
+	}
+
+	public void setAssemConstiList1(List<SelectOptionVO> assemConstiList1) {
+		this.assemConstiList1 = assemConstiList1;
+	}
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
+	public String getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(String fromDate) {
+		this.fromDate = fromDate;
+	}
+
+	public String getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
+	}
+
+
+	public int getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(int startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	public int getResults() {
+		return results;
+	}
+
+	public void setResults(int results) {
+		this.results = results;
+	}
+
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
+	}
+
+	public String getDir() {
+		return dir;
+	}
+
+	public void setDir(String dir) {
+		this.dir = dir;
 	}
 
 	public List<SelectOptionVO> getCandidatesList() {
@@ -310,6 +402,13 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			Collections.sort(channelList, sortList);
 			Collections.sort(telecastTimeList, sortList);
 			Collections.sort(observerList, sortList);
+			
+			ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+			ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+			districtsList1 =  staticDataService.getDistricts(1l);
+			parlConstiList1 = parliamantConstis.getConstituencies();
+		    assemConstiList1 = constituencyInfoVO.getConstituencies();
+		     
 			Collections.sort(partiesList, sortList);
 		}
 		catch (Exception e) 
@@ -375,7 +474,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 				 JSONObject particepentObj = (JSONObject) particepentArray.get(i);
 				 participantVO.setId(particepentObj.getLong("candidateId"));
 				 participantVO.setPartyId(particepentObj.getLong("partyId"));
-				 participantVO.setSummery(particepentObj.getString("summery"));
+				 participantVO.setSummery(particepentObj.getString("summery")!= null && particepentObj.getString("summery").trim().length() > 0 ?particepentObj.getString("summery"):null );
 				 
 				 JSONArray scalsArray = particepentObj.getJSONArray("scale");
 				 List<SelectOptionVO> scaleList = new ArrayList<SelectOptionVO>();
@@ -548,16 +647,14 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		try 
 		{
 			LOG.info(" Entered into getDebateDetailsBtDates() in DebateAction class. ");
-			jObj = new JSONObject(getTask());
+
 			 HttpSession session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
 				if(regVo == null)
 					return Action.ERROR;
 				SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-				String fromDateStr = jObj.getString("fronDate");
-				String toDateStr  = jObj.getString("toDate");
-				//debateDetails = debateService.getDebateDetailsForSelectedDates(sdf.parse(fromDateStr), sdf.parse(toDateStr));
-				debateDetails = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(fromDateStr), sdf.parse(toDateStr),jObj.getString("channelId"),jObj.getString("partyId"),jObj.getString("candidateId"));
+				
+				debateVO = debateService.getDebateDetailsForSelectedCriteria(sdf.parse(fromDate), sdf.parse(toDate),channel,partyId,candidateId, sort,dir, startIndex, results);
 		} 
 		catch (Exception e)
 		{
