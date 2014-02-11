@@ -30,6 +30,7 @@ public class DebateVO implements Serializable {
 	private List<String> expRoles;
 	private List<SelectOptionVO> debateExpRolesList;
 	private List<SelectOptionVO> debateRolesList;
+	private Long totalCount;
 	private Date StartDate;
 	private Date endDate;
 	private Long noTdpLeaders;;
@@ -169,5 +170,11 @@ public class DebateVO implements Serializable {
 		this.noTdpLeaders = noTdpLeaders;
 	}
 	
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	
 }
