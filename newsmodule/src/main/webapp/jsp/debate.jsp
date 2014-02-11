@@ -1,226 +1,128 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-<%@ taglib prefix="s" uri="/struts-tags" %>  
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+		pageEncoding="utf-8"%>
+	<%@ taglib prefix="s" uri="/struts-tags" %>  
+	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title> Debate Information - TDP Portal </title>
-<!-- Bootstrap -->
+	<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title> Debate Information - TDP Portal </title>
+	<!-- Bootstrap -->
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 
-<!-- Script Files Start-->
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
-
-<script src="Green/js/bootstrap.min.js"></script>
-
-<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
-
-<script src="js/jquery-ui-themes-1.10.3.js"></script>
-
-<script src="js/jquery-ui-timepicker-addon.js"></script>
-
-<script src="js/jquery-ui-sliderAccess.js"></script>
-
-<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
-
-<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
-
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-
-<script type="text/javascript" src="js/jquery.dataTables.columnFilter.js"></script>
+	<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
+	<script src="js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>
 	
-<script src="js/debate.js"></script>
+		<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
+	<!-- <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script> -->
+	<script src="js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
+	
 
-<!-- Script Files End-->
+	<script src="js/jquery-ui-themes-1.10.3.js"></script>
+	<script src="js/jquery-ui-timepicker-addon.js"></script>
+	<script src="js/jquery-ui-sliderAccess.js"></script>
 
 
-<!-- Style Files Start -->
-<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 
-<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
+	<!-- <script src="http://trentrichardson.com/examples/timepicker/jquery-ui-sliderAccess.js">
+	</script> -->
+	<script src="js/jquery.google.api/trentrichardson.com.examples.timepicker.jquery-ui-sliderAccess.js"></script>
+	
+	
+	<!--  <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
+	
+	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui1.10.3.css"/>
+	
+	
+	<link rel="stylesheet" media="all" type="text/css" href="jquery-ui-timepicker-addon.css" />
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
+	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+	<link rel="stylesheet" type="text/css" href="styles/custom-yui-styles.css">	
+		<!-- YUI Skin Sam -->
+	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+	<script type="text/javascript" src="js/problemCompleteDetails.js"></script>
+		 
+		 		
+	<!-- JQuery files (Start) -->
 
-<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui.css"/>
+	<!-- YUI Dependency files (Start) -->
+		<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
+		<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
+		<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
+		<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
+		<script src="js/yahoo/resize-min.js"></script> 
+		<script src="js/yahoo/layout-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
+		<script type="text/javascript" src="js/json/json-min.js"></script>
+		<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
+		<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
+		<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
+		<script type="text/javascript" src="js/voterAnalysis/showGallaries.js"></script>
+		<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+		<!-- Skin CSS files resize.css must load before layout.css --> 
+		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
+		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
+		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
+		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
+		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
+		<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
+		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
+		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
+		<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
+		<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
+		<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
-<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
+		<!-- YUI Dependency files (End) -->
 
-<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
-
-<link href="Green/css/bootstrap.min.css" rel="stylesheet" media="screen">
-
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-
-<!-- Style Files End -->
-<style type="text/css">
-#debatesTab > thead {
-background:#CDE6FC;
-}
-#RerrDiv{
-font-weight:bold;
-color:red;
-}
-@font-face
-{
-font-family:eFont;src: url('img/eenadu.ttf');
- }
-@font-face{ font-family: 'eFont'; src: url('fonts/eenadu.eot');}
-@font-face {
-    font-family: "eFont";
-    font-style: normal;
-    font-weight: normal;
-    src: local("?"), url("fonts/eenadu_fonts/eenadu.woff") format("woff"), url("fonts/eenadu_fonts/eenadu.ttf") format("truetype"), url("fonts/eenadu_fonts/eenadu.svg") format("svg");
-}
- 
- .enadu
-{
-font-family: eFont;
-font-size:20px;
-}
-#candidateListForPartyImg{margin-left:300px;}
-
-#profileManagementMainOuterDiv4 table,#reportsDiv table,#locationWiseNewsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-#profileManagementMainOuterDiv4 table tr:nth-child(even),#reportsDiv table tr:nth-child(even),#locationWiseNewsDiv table tr:nth-child(even){background:#EdF5FF;}
-#profileManagementMainOuterDiv4 table td,#reportsDiv table td,#locationWiseNewsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#profileManagementMainOuterDiv4 table th,#reportsDiv table th,#locationWiseNewsDiv table th{
-background-color: #CDE6FC;
-    font-size: 13px;
-    font-weight: bold;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 10px;
-    text-align: left;
-	color:#333333;
+		 
+	<script src="js/debate.js"></script>
+		
+			
+	<style type="text/css">
+	#errorMsgDiv,#RerrDiv{
+		font-weight:bold;
+		margin-bottom:10px;
+		color:red;
 	}
-#profileManagementMainOuterDiv4{
-	font-family : arial;
-	font-size: 13px;
-    margin-top:-20px;
-	padding: 10px 10px 10px 0px;
-}
+	
+	#debatesTab > thead {
+	background:#CDE6FC;
+	}
 
-#reportsDiv,#locationWiseNewsDiv
-{
-	font-family : arial;
-	font-size: 13px;
-    margin-top: -32px;
-	padding: 10px 10px 10px 15px;
-}
-#profileManagementMainOuterDiv4 table th a{
-color:#333333;
-}
-.newsLinkCls{ color: #0088CC;}
-#totalSelectedNewsCount{float: none;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-    width: 901px;font-weight:bold;}
-	/*#selectLevel{float: none;
-    margin-left: auto;
-    margin-right: auto;
-	width: 901px;font-weight:bold;}*/
-#selectedNewsCount{color:red;}
-.createNewCandidate{width: 20px; height: 20px;cursor:pointer;}
-.m_topN65{margin-top: -24px;}
-form{
-border:1px solid #C5C5C5;
-}
-#reportGenaratorSpanCLS{color:red;}
-#newsReportBtnDiv{text-align: center;}
-.ui-multiselect{margin-top:10px;width:222px !important;}
-
-.yui-skin-sam .yui-pg-container {
-    display: block;
-    margin: 13px 312px;
-    white-space: nowrap;
-}
-.form-actions{
-   margin-bottom: -11px;
-}
-.form-actions input {
-    margin: 0 12px;
-}
-h2{
-  margin-bottom: -38px;
-}
-.yui-skin-sam .yui-dt-liner{
-	padding:4px 0px;
-}
-.scrollit {
-overflow:scroll;
-}
-textarea{
-resize:none;
-}
-#debatErrDiv1,#debatErrDiv2,#debatErrDiv3{
-color:red;
-font-weight:bold;
-}
-select {
-width:220px;
-}
-.errDiv{
-color:red;
-font-weight:bold;
-}
-.succDiv{
-color:green;
-font-weight:bold;
-}
+	textarea{
+	resize:none;
+	}
+	select {
+	width:220px;
+	}
+	.errDiv{
+	color:red;
+	font-weight:bold;
+	font-size:12px;
+	}
+	.succDiv{
+	color:green;
+	font-weight:bold;
+	}
+	.scrollit {
+	overflow:scroll;
+	}
 
 
-/* css for timepicker */
- .ui-timepicker-div .ui-widget-header {
-    margin-bottom: 8px;
-}
-.ui-timepicker-div dl {
-    text-align: left;
-}
-.ui-timepicker-div dl dt {
-    float: left;
-    clear:left;
-    padding: 0 0 0 5px;
-}
-.ui-timepicker-div dl dd {
-    margin: 0 10px 10px 45%;
-}
-.ui-timepicker-div td {
-    font-size: 90%;
-}
-.ui-tpicker-grid-label {
-    background: none;
-    border: none;
-    margin: 0;
-    padding: 0;
-}
-.ui-timepicker-rtl {
-    direction: rtl;
-}
-.ui-timepicker-rtl dl {
-    text-align: right;
-    padding: 0 5px 0 0;
-}
-.ui-timepicker-rtl dl dt {
-    float: right;
-    clear: right;
-}
-.ui-timepicker-rtl dl dd {
-    margin: 0 45% 10px 10px;
-}		
-
-select {
-    font-size: 17px;
-    font-weight: bold;
-    width: 220px;
-}
-.ui-multiselect {
-    height: 33px !important;
-    padding: 2px 0 2px 4px;
-    text-align: left;
-    width: 221px !important;
-}
-</style>
+	</style>
 </head>
 <script>
   
@@ -248,158 +150,91 @@ $(function () {
 	});
 });
 
+
 $( document ).ready(function() {
 
-	getValues();
-	getRespectiveSelection();
-	//buildDebateAnalysisDiv();
+		$('#pcConstituencyRow').hide();
+		$('#acConstituencyRow').hide();
+		getValues();
+		getRespectiveSelection();
+	$("#createCandidateId").live("click",function(){
+		
+		$("#errorMsgDiv").html('');
+		//var partyId = $("#partySelectNewList").val();
+		var candidateName = $.trim($("#newCandidateName").val());
+		var designationId = $("#designationsList").val();
+		candidteName = $.trim($("#newCandidateName").val());
+		if(isValid(candidateName)){
+			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special charactors</b>');
+			return false;
+		}
+	   /* if(partyId == 0)
+		{
+		  $("#errorMsgDiv").html("Please Select Party");
+		  return;
+		}*/
+		if(candidateName.length == 0)
+		{
+		 $("#errorMsgDiv").html("Please Enter Candidate Name.");
+		  return;
+		}
+		if(designationId == 0)
+		{
+		 $("#errorMsgDiv").html("Please Select Designation");
+		  return;
+		}
+		if($('#locationId option:selected').val() == 0){
+		  $("#errorMsgDiv").html("Please Select Location");
+		  return;
+		}
+
+	  var locationValue = "";
+		if($('#locationId option:selected').val() == 1)
+		{
+			locationValue = $('#assembSelReportId option:selected').val();
+		}
+		else if($('#locationId option:selected').val() == 2)
+		{
+			locationValue = $('#parliamSelReportId option:selected').val();
+		}
+		else if($('#locationId option:selected').val() == 3)
+		{
+			locationValue = $('#locationId option:selected').val();
+		}
+
+		var jsObj =
+			{ 
+				partyId : debateNewCandiPartyId,
+				candidateName:candidateName,
+				divId :partyDiv,
+				roleOptionsID :roleOptionsID,
+				designationId:designationId,
+				locationId : $('#locationId option:selected').val(),
+				locationValue : locationValue,
+				task:"saveCandidateForDebate"
+			};
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "saveCandidateAndPartyAction.action?"+rparam;						
+		callAjax(jsObj,url);
+			
+	});
+	
+	$('#myTab > li').click(function(){
+	
+	$(".subjectClass,#channel,#observer,#telecastTime").css("border","1px solid #CCCCCC");
+	$(".hasDatepicker,.partysClass,.candidatesClass").css("border","1px solid #CCCCCC");
+	$(".participntRoles,.participantsRoles,.smsOptinPerc").css("border","1px solid #CCCCCC");
+	$("#debetSum,#smsques1,.debateAnswr,.smsOptin").css("border","1px solid #CCCCCC");
+	$(".ui-state-default").removeClass("ui-state-error");
+	
+	$('#RerrDiv').html('');
+	
+	});
+	
 });
 
-function buildDebateAnalysisDiv()
-{
-	var str = '';
-	str += '<div class="span3">';
-	str += '<label >Party : </label>';
-	str += '<select name="partyAnalysis"  id="partyAnalysis" onChange="getCandidatesList(this.value)">';
-	for(var i in partiesArray)
-	{
-		str += '<option value='+partiesArray[i].id+'>'+partiesArray[i].name+'</option>';
-	}
-	str += '</select>';
-	str += '</div>';
-	str += '<div class="span3">';
-	str += '<label >Candidate : </label>';
-	str += '<select id="candidateiseAnalysis">';
-	str += '<option value="0">Select Candidate</option>';
-	str += '</select>';
-	str += '</div>';
-	str += '<div class="span3">';
-	str += '<label >Debate Roles : </label>';
-	str += '<select name="roleWiseAnalysis"  id="roleWiseAnalysis" >';
-	str += '<option value="0">Select Roles </option>';
-	for(var i in rolesArray)
-	{
-		str += '<option value='+rolesArray[i].id+'>'+rolesArray[i].name+'</option>';
-	}
-	str += '</select>';
-	str += '</div>';
-	str += '<div class="span3">';
-	str += '<label >Chars : </label>';
-	str += '<select name="charsWiseAnalysis"  id="charsWiseAnalysis">';
-	str += '<option value="0">Select Chars</option>';
-	for(var i in charsArray)
-	{
-		str += '<option value='+charsArray[i].id+'>'+charsArray[i].name+'</option>';
-	}
-	str += '</select>';
-	str += '</div>';
-	str += '<div align="center"><input type="button" value="Submit" class="btn btn-success" onClick="getAnalysedData();"></input></div>';
-	$('#debateAnalysisDiv').html(str);
-}
 
-function getAnalysedData()
-{
-	var partyId = $('#partyAnalysis').val();
-	var candidateId = $('#candidateiseAnalysis').val();
-	var roleId = $('#roleWiseAnalysis').val();
-	var charsId = $('#charsWiseAnalysis').val();
-	var type = "";
-	if(charsId > 0)
-	{
-		type = "chars";
-	}
-	else if(roleId > 0)
-	{
-		type = "role";
-	}
-	else if(candidateId > 0)
-	{
-		type = "candidate";
-	}
-	else
-	{
-		type = "party";
-	}
-}
-function getCandidatesList(partyId)
-{
-	var jsObj = {
-			partyId :partyId,
-			task : "getCandidatesLIstOfAParty"	
-	};
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidatesListForDebateAction.action?"+rparam;
-	callAjax(jsObj,url);
-}
-function getCandidatesForSelectedParty(partyId)
-{
-	var jsObj = {
-			partyId :partyId,
-			selectedVal :"candidateSelecction",
-			task : "getCandidatesOfAParty"	
-	};
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidatesListForDebateAction.action?"+rparam;
-	callAjax(jsObj,url);
-}
-
-function getRespectiveSelection()
-{
-	
-	/* if(value == 1)
-	{
-		var str = '';
-		str += '<div class="span4" id="channelDiv"> ';
-		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel  </label>'; 
-		str +='<select id="channelSelecction">';
-		for(var i in channelsArray)
-		{
-			str +='<option value="'+channelsArray[i].id+'">'+channelsArray[i].name+'</option>';
-		}
-		str +='</select>';
-		str += '</div>';
-		$('#reportTypeSelectionDiv').html(str);
-	} */
-	/* else if(value == 2)
-	{ */
-		var str = '';
-		str += '<div class="span4" > ';
-		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
-		str +='<select id="partySelecction" onChange="getCandidatesForSelectedParty(this.value)">';
-		for(var i in partiesArray)
-		{
-			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
-		}
-		str +='</select>';
-		str += '</div>';
-		str += '<div class="span4" > ';
-		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Candidate  </label>'; 
-		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
-		str += '</div>';
-		$('#reportTypeSelectionDiv').html(str);
-	/* }
-	else if(value == 3)
-	{
-		var str = '';
-		str += '<div class="span4" > ';
-		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
-		str +='<select id="partySelecction" onChange="">';
-		for(var i in partiesArray)
-		{
-			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
-		}
-		str +='</select>';
-		str += '</div>';
-		$('#reportTypeSelectionDiv').html(str);
-	}
-	else
-	{
-		$('#reportTypeSelectionDiv').html('');
-	} */
-	
-}
 var partiesArray = new Array();
 <c:forEach var="parties" items="${partiesList}">
 	var parties1 ={
@@ -433,28 +268,6 @@ var channelsArray = new Array();
 	}
 	channelsArray.push(channels);
 </c:forEach>
-
-
-function showNewDebateDiv(){
-	$('#newDibateDiv').show();
-	$('#debateReportDiv').hide();
-	$('#debateAnalysisDiv').hide();
-}
-function showDebateReportDiv(){
-	$('#newDibateDiv').hide();
-	$('#dateWiseReportDiv').html('');
-	$('#fromDateId').val('');
-	$('#toDateId').val('');
-	$('#debateReportDiv').show();
-	$('#debateAnalysisDiv').hide();
-}
-function showDebateAnalysisDiv()
-{
-	$('#newDibateDiv').hide();
-	$('#debateReportDiv').hide();
-	$('#debateAnalysisDiv').show();
-}
-
 
 </script>
 
@@ -491,20 +304,6 @@ function showDebateAnalysisDiv()
 	
 	
 	<div id="newDibateDiv">
-		<div id="errTab" style="display:none;width:777px;margin-left:50px;">
-			<table  class="table">
-				<tr>
-					<td> Errors in Debate Information : </td>
-					<td> Participant Details And Performance : </td>
-					<td> Errors in Question : </td>
-				</tr>
-				<tr>
-					<td> <div id="debatErrDiv1"></div></td>
-					<td> <div id="debatErrDiv2"></div></td>
-					<td> <div id="debatErrDiv3"></div></td>
-				</tr>
-			</table>
-		</div>
 		<div id="successMsg" style="display:none;" align="center"></div>
 			<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">
 				<div class="row-fluid" >
@@ -535,11 +334,11 @@ function showDebateAnalysisDiv()
 							<s:select name="telecastTime"   id="telecastTime" list="telecastTimeList" theme="simple" listKey="id" listValue="name" cssClass="input-block-level"/>
 						</div>-->
 						<div class="span3">
-							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Start Time : <font class="requiredFont">*</font></label>
+							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Start Date : <font class="requiredFont">*</font></label>
 							<input type="text" class="input-block-level selectWidth" name="startTime" id="startTime"/>
 						</div>				
 						<div class="span3">
-							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">End Time : <font class="requiredFont">*</font></label>
+							<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">End Date : <font class="requiredFont">*</font></label>
 							<input type="text" class="input-block-level selectWidth" name="endTime" id="endTime"/> 
 						</div>	
 				</div>	
@@ -587,14 +386,15 @@ function showDebateAnalysisDiv()
 						</div>	<div class="row">
 								<div class="span7" >
 									<label>
-									<strong>Option : <font class="requiredFont">*</font></strong>
+									<strong>Option : </strong>
 									</label>
 									<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1"/>
 								</div>
 								<div class="span3">
-									<label><strong>Percentage : <font class="requiredFont">*</font></strong></label>
-									<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1"/>
+									<label><strong>Percentage : </strong></label>							
+									<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup='isNumber("percentage","smsper1"),updatePercntage("smsper1");';/>
 								</div>
+								<div style="width: 160px; float: right; font-size: 12px; color: green;">Remaining Percent  : <span id="percCount">100</span>%</div>
 							</div>
 							
 						</div>
@@ -639,15 +439,18 @@ function showDebateAnalysisDiv()
 					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">To Date  <font class="requiredFont">*</font></label>  <input type="text" id="toDateId"></input>
 					</div>
 					
-					<!--<div class="span4" >
-					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Report Type   </label>
-					<select id="reportTypeSelection" onChange="getRespectiveSelection(this.value);">
-					<option value="0">Select Type</option>
-					<option value="1">Channel</option>
-					<option value="3">Party</option>
-					<option value="2">Candidate</option>
-					</select>
-				</div>-->
+					<!-- 
+					<div class="span4" >
+						<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Report Type   </label>
+						<select id="reportTypeSelection" onChange="getRespectiveSelection(this.value);">
+						<option value="0">Select Type</option>
+						<option value="1">Channel</option>
+						<option value="3">Party</option>
+						<option value="2">Candidate</option>
+						</select>
+					</div>
+					-->
+				
 				<div class="span4" >
 				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel :    </label>
 				<s:select name="channel"  id="channelSelecction" list="channelList" theme="simple" listKey="id" listValue="name"/>
@@ -663,20 +466,51 @@ function showDebateAnalysisDiv()
 			
 			</div>
 			
-			<div id="dateWiseReportDiv"></div>
+			<div id="dateWiseReportDiv" class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt-paginator yui-pg-container yui-dt"></div>
 	</div>
 	
-	<!--<div id="debateAnalysisDiv">
-		<div id="debateAnalysis" class="row-fluid m_top10">
-			<legend class="boxHeading">Debate Analysis </legend>
-		</div>
-		
-		<div><input type="button" value="Submit" class="btn"></input></div>
-	</div>-->
-</div>
-<script>
-	
-</script>
 
+		<div id="createCandidateDiv" style="display:none;">
+				
+				<div id="errorMsgDiv"></div>
+				<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& Special charactors.
+				</div>
+				<table style="margin-top: 24px;"><tr>
+				<td> Party Name </td>
+				<td><!-- <select id="partySelectNewList"> --><span id="presentParty"></span>
+				</select></td></tr>
+
+				<tr><td>Candidate Name</td>
+				<td><input type="text" id="newCandidateName"/></td></tr>
+				<tr>
+				<td>Designation</td>
+				<td><select id="designationsList"></select></td>
+				</tr>
+				<tr>
+				<td>Location</td>
+				<td>
+					<select id="locationId" onChange="getTypeOfConstituency(this.value);">
+						<option value=0>Select Location</option>
+						<option value=3>Country</option>
+						<option value=1>Assembly Constituency</option>
+						<option value=2>Parliment Constituency</option>
+					</select>
+				</td>
+				</tr>  
+				<tr id="pcConstituencyRow">
+				<td>Constituency</td>
+				<td>
+				<s:select name="parliamSelReport"  id="parliamSelReportId" list="parlConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+				</tr>
+				<tr id="acConstituencyRow">
+				<td>Constituency</td>
+				<td>
+				<s:select name="assembSelReport"  id="assembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
+				</tr>
+				</table>
+				<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
+
+			</div>
+</div>
 </body>
 </html>
