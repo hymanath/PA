@@ -42,7 +42,7 @@ public interface IDebateService {
 	
 	public String genearetUrl(Long reportId,Long userId,String path);
 	
-	public List<SelectOptionVO> getDebateDetailsForSelectedDates(Date fromDate,Date toDate);
+	//public List<SelectOptionVO> getDebateDetailsForSelectedDates(Date fromDate,Date toDate);
 	
 	public String saveDebateReportForPdf(final Long userId,final Long debateId,final String description,final String path);
 	
@@ -50,7 +50,7 @@ public interface IDebateService {
 	
 	public List<SelectOptionVO> getCandidatesForDebate(Long partyId);
 	
-	public List<SelectOptionVO> getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channelId,String partyId,String candidateId);
+	public DebateVO getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channel,String party,String candidate,String sortBy,String sort ,int minIndex,int maxIndex);
 	
 	public List<SelectOptionVO> getDebateAnalysisBycandidateForScaling(Date fromDate , Date toDate);
 	
