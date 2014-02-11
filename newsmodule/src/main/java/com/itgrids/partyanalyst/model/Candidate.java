@@ -84,7 +84,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 	private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
 	private Designation designation;
 	private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
-	private Boolean isDebateCandidate;
+	private String isDebateCandidate;
 	
 	//private Set<CandidatePartyFile> candidatePartyFiles = new HashSet<CandidatePartyFile>(0);
 	// Constructors
@@ -491,11 +491,11 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 		this.debateParticipant = debateParticipant;
 	}
 	@Column(name = "is_debate_candidate")
-	public Boolean getIsDebateCandidate() {
+	public String getIsDebateCandidate() {
 		return isDebateCandidate;
 	}
 
-	public void setIsDebateCandidate(Boolean isDebateCandidate) {
+	public void setIsDebateCandidate(String isDebateCandidate) {
 		this.isDebateCandidate = isDebateCandidate;
 	}
 
