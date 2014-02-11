@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -10,5 +11,5 @@ public interface IDebateSmsQuestionOptionDAO extends GenericDao<DebateSmsQuestio
 
 	public List<Object[]> getDebateSmsQuestionsForSelectedDebate(Long debateId);
 	
-	public List<Object[]> getSmsQuestionDetails();
+	public List<Object[]> getSmsQuestionDetails(Date fromDate,Date toDate);
 }
