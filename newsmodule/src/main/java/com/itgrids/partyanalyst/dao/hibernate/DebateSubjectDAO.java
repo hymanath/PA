@@ -23,7 +23,7 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 				" where model.debate.debateId = ? ",debateId);
 	}
 	
-	
+	/*
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDebateDetalsForSelectedDates(Date fromDate,Date toDate)
 	{
@@ -34,12 +34,19 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		query.setParameter("toDate", toDate);
 		return query.list();
 	}
+	*/
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getDebateDetalsForSelectedCriteria(Date fromDate,Date toDate,Long channelId,Long partyId,Long candidateId)
+	public List<Object[]> getDebateDetalsForSelectedCriteria(Date fromDate,Date toDate,Long channelId,Long partyId,Long candidateId,String sortBy,String sort,int startIndex,int maxIndex,String isCount)
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.debate.debateId,model.subject,model.debate.startTime from DebateSubject model ");
+		if(isCount != null){
+			sb.append("select count(distinct model.debate.debateId),model.subject from DebateSubject model ");
+		}
+		else{
+			sb.append("select distinct model.debate.debateId,model.subject,model.debate.startTime from DebateSubject model ");	
+		}
+		
 		if(channelId != null || candidateId != null || partyId != null)
 		{
 			sb.append(" , DebateParticipant model1 where model.debate.debateId = model1.debate.debateId and ");
@@ -79,6 +86,10 @@ public class DebateSubjectDAO extends GenericDaoHibernate<DebateSubject, Long> i
 		else if(partyId != null && partyId > 0)
 		{
 			query.setParameter("partyId", partyId);
+		}
+		if(isCount == null){
+			query.setFirstResult(startIndex);
+			query.setMaxResults(maxIndex);
 		}
 		return query.list();
 	}
