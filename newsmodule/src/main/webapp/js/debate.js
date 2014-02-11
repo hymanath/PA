@@ -3,152 +3,216 @@ var subjCount = 2;
 var candCount = 2;
 var questionCount = 2;
 var poleCount = 2;
-
+var partyDiv;
+var roleOptionsID ;
+var debateNewCandiPartyId;
 
 function validateFields(){
 
-$("#errTab").css("display","none");
-$("#debatErrDiv1,#debatErrDiv2,#debatErrDiv3").html('');
-var flag = true;
-var channel = $("#channel").val();
-//var telecastTime = $("#telecastTime").val();
-var startTime =$("#startTime").val();
-var endTime = $("#endTime").val();
-var observer = $("#observer").val();
-
-var smsQuestin =  $("#smsques1").val();
-var debetSum = $("#debetSum").val();
-var partiRol1e = $(".partiRoleClass").val();
-
-var errStr1='';
-var errStr2='';
-var errStr3='';
-
-
-	$( ".subjectClass" ).each(function( index ) {
-	 var subject = $( this ).val();
-
-		if(subject.trim().length <= 0){
-			errStr1 +='Please Enter Subject .<br/>';
-		}
-	});
-if(channel <=0){
-	errStr1 +='Please Select Channel .<br/>';
-}
-/* if(telecastTime <=0){
-	errStr1 +='Please select Telecaste Time .<br/>';
-} */
+	$(".subjectClass,#channel,#observer,#telecastTime").css("border","1px solid #CCCCCC");
+	$(".hasDatepicker,.partysClass,.candidatesClass").css("border","1px solid #CCCCCC");
+	$(".participntRoles,.participantsRoles,.smsOptinPerc").css("border","1px solid #CCCCCC");
+	$("#debetSum,#smsques1,.debateAnswr,.smsOptin").css("border","1px solid #CCCCCC");
+	$(".ui-state-default").removeClass("ui-state-error");
 	
-if(startTime.trim().length <= 0){
-	errStr1 +='Please Enter Start Time .<br/>';
-}
+	var flag = true;
+	var channel = $("#channel").val();
+	//var telecastTime = $("#telecastTime").val();
+	var startTime =$("#startTime").val();
+	var endTime = $("#endTime").val();
+	var observer = $("#observer").val();
 
-if(endTime.trim().length <= 0){
-	errStr1 +='Please Enter End Time .<br/>';
-}
-if(observer <=0){
-	errStr1 +='Please Select Observer .<br/>';
-}
-	$( ".partysClass" ).each(function( index ) {
-	 var partyId = $(this ).val();
-		if(partyId <= 0){
-			errStr2 +='Please Select Party .<br/>';
+	var smsQuestin =  $("#smsques1").val();
+	var debetSum = $("#debetSum").val();
+	var partiRol1e = $(".partiRoleClass").val();
+
+		$( ".subjectClass" ).each(function( index ) {
+		 var subject = $( this ).val();
+			if(subject.trim().length <= 0){
+				var divId = $(this ).attr("id");			
+				$("#"+divId+"").css("border","1px solid #D14719");	
+				flag = false;
+			}
+		});
+		if(channel <=0){	
+				$("#channel").css("border","1px solid #D14719");	
+			flag = false;
 		}
-	});
-	
-	$( ".candidatesClass" ).each(function( index ) {
-	 var candidate = $( this ).val();
-
-		if(candidate <= 0){
-			errStr2+='Please Select Candidate .<br/>';
+		/*if(telecastTime <=0){
+			$("#telecastTime").css("border","1px solid #D14719");
+			flag = false;
 		}
-	});
+			*/
+		if(startTime.trim().length <= 0){
+			$("#startTime").css("border","1px solid #D14719");
+			flag = false;
+		}
 
-	var presErr = '';
-	$( ".participntRoles" ).each(function( index ) {
-	 var prsentation = $( this ).val();
-		presErr = '';
-		if(prsentation == null ||  prsentation.trim().length <= 0){
-		presErr = 'Please Enter Presentations.<br/>';
+		if(endTime.trim().length <= 0){
+			$("#endTime").css("border","1px solid #D14719");
+			flag = false;
+		}
+		var fromTimeArr = startTime.substring(11).split(":");
+		var toTimeArr = endTime.substring(11).split(":");	
+		
+			var fromhours =fromTimeArr[0];
+			var frommin   = fromTimeArr[1];
+
+			var tohours = toTimeArr[0];
+			var tomin   = toTimeArr[1];
 			
-		}
-	});
-	errStr2 =errStr2+' '+presErr;
+		startTime = startTime.substring(0,startTime.length - 6);
+		endTime = endTime.substring(0,endTime.length - 6);
 
-	if(partiRol1e.trim().length <= 0){
-			errStr2 += 'Please Select Participant Roles.<br/>';
+		var fromDateArrr = startTime.split("/");			
+				var frommonth=fromDateArrr[0];
+				var fromDat=fromDateArrr[1];
+				var fromyear=fromDateArrr[2];
+				
+		var toDateArr = endTime.split("/");			
+				var tomonth=toDateArr[0];
+				var toDat=toDateArr[1];
+				var toyear=toDateArr[2];				
+		
+		if(fromyear>toyear){
+			$("#startTime,#endTime").css("border","1px solid #D14719");
+			flag = false;
+		}
+		 if(frommonth>tomonth){
+			   if(fromyear == toyear){
+				 $("#startTime,#endTime").css("border","1px solid #D14719");	
+				 flag = false;
+			}		
 		}
 		
-	$( ".expPartyClass1" ).each(function( index ) {
-		var subject1 = $( this ).attr('id');
-		var val1 = $('#'+subject1+'').val(); 
-		//console.log(val1.length);
-		if(val1.length == 0){
-		errStr2 += 'Please Select Expected Participant Roles.<br/>';
+		if(fromDat>toDat){	
+			if(frommonth == tomonth && fromyear == toyear){
+				 $("#startTime,#endTime").css("border","1px solid #D14719");	
+				 flag = false;				 
+			   }
+		}	
+		if( fromhours > tohours ){
+			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat){
+				$("#startTime,#endTime").css("border","1px solid #D14719");
+				flag = false;				
+			}					
+		}		
+		if(frommin >= tomin ){
+			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat && fromhours == tohours){
+				$("#startTime,#endTime").css("border","1px solid #D14719")	;
+				flag = false;				
+			}		
 		}
-	});
-	$( ".participantRolesClass" ).each(function( index ) {
-	 var participantRoles = $( this ).val();
-
-		if(participantRoles == null || participantRoles.trim().length <= 0){
-			errStr2 +='Please Select Participant Roles .<br/>';
+			
+		if(observer <=0){
+			$("#observer").css("border","1px solid #D14719");
+			flag = false;
 		}
-	});
-	
-	
-	$( ".debateAnswr" ).each(function( index ) {
-	 var debateAnswer = $( this ).val();
-		presErr='';
-		if(debateAnswer == null || debateAnswer.trim().length <= 0){
-			presErr +='Please Enter Answer for each Question.<br/>';
-		}
-	});
-	errStr3 +=' '+presErr;
-	if(smsQuestin == null || smsQuestin.trim().length <= 0){
-			errStr3 +='Please Enter sms Question .<br/>';
-	}
+		$( ".partysClass" ).each(function( index ) {
+		 var partyId = $(this ).val();	 
+			if(partyId <= 0){
+				var divId = $(this ).attr("id");	
+				$("#"+divId+"").css("border","1px solid #D14719");	
+				flag = false;
+			}
+		});
 		
-	$( ".smsOptin" ).each(function( index ) {
-	 var smsOption = $( this ).val();
+		$( ".candidatesClass" ).each(function( index ) {
+		 var candidate = $( this ).val();
 
-		if(smsOption == null || smsOption.trim().length <= 0){
-			errStr3 +='Please Enter SMS Option Value .<br/>';
+			if(candidate <= 0){
+				var divId = $(this ).attr("id");	
+				$("#"+divId+"").css("border","1px solid #D14719");	
+				flag = false;
+			}
+		});
+
+		$( ".participntRoles" ).each(function( index ) {
+		
+		 var prsentation = $( this ).val();
+		 var divId = $(this ).attr("id");
+				if(prsentation == null ||  prsentation.trim().length <= 0){				
+				$("#"+divId+"").css("border","1px solid #D14719");			
+				$("."+divId.replace(/\s/g, '')+"").css("border","1px solid #D14719");
+				flag = false;			
+			}
+			if(prsentation >5){		
+				$("#"+divId+"").css("border","1px solid #D14719");			
+				$("."+divId.replace(/\s/g, '')+"").css("border","1px solid #D14719");
+				flag = false;	
+			}
+
+		});
+
+		$( ".partiRoleClass" ).each(function( index ) {
+		 var participantRoles = $( this ).val();
+		 
+			if(participantRoles == null || participantRoles.trim().length <= 0){
+				var myclass=  $(this).closest('td').attr("class"); 
+				var divId = $(this ).attr("id");
+				$('.'+myclass+'').find('button').attr("id",""+divId+""+myclass+"");
+				$("#"+divId+""+myclass+"").addClass("ui-state-error");
+				flag = false;
+			}
+		});		
+		
+		$(".expPartiesRoleClass ").each(function(index){
+				var exppartiRole = $(this).val();
+									
+				if(exppartiRole == null || exppartiRole.trim().length <= 0){
+					var myclass=  $(this).closest('td').attr("class"); 
+					var divId = $(this).attr("id");
+					$('.'+myclass+'').find('button').attr("id",""+divId+""+myclass+"");		
+					$("#"+divId+"").css("border","1px solid #D14719");
+					$("#"+divId+""+myclass+"").addClass("ui-state-error");
+					flag = false;
+				}
+		});
+		$(".debateAnswr ").each(function(index){
+			var answr = $( this ).val();
+			if(answr == null || answr.trim().length <= 0){
+				var divId = $(this ).attr("id");
+				$("#"+divId+"").css("border","1px solid #D14719");
+				flag = false;
+			}
+				
+		});
+		/*if(smsQuestin == null || smsQuestin.trim().length <= 0){
+				$("#smsques1").css("border","1px solid #D14719");
+				flag = false;
+		}*/
+		if(smsQuestin.trim().length > 0){
+			$( ".smsOptin" ).each(function( index ) {
+			 var smsOption = $( this ).val();
+
+				if(smsOption == null || smsOption.trim().length <= 0){
+					var divId = $(this ).attr("id");
+					$("#"+divId+"").css("border","1px solid #D14719");
+					flag = false;
+				}
+			});
+			
+			$( ".smsOptinPerc" ).each(function( index ) {
+			 var smsOptionPerc = $( this ).val();
+			 
+				if(smsOptionPerc == null || smsOptionPerc.trim().length <= 0){
+					var divId = $(this ).attr("id");
+					$("#"+divId+"").css("border","1px solid #D14719");
+					flag = false;
+				}
+			});
+
+			if(totalPerc < 0 || totalPerc > 0 || totalPerc > 100){
+				$( ".smsOptinPerc" ).css("border","1px solid #D14719");
+				flag = false;
+			}
 		}
-	});
-	
-	$( ".smsOptinPerc" ).each(function( index ) {
-	 var smsOptionPerc = $( this ).val();
+		if(debetSum == null || debetSum.trim().length <= 0){
+				$("#debetSum").css("border","1px solid #D14719");
+				flag = false;
+		}	
 
-		if(smsOptionPerc == null || smsOptionPerc.trim().length <= 0){
-			errStr3 +='Please Enter SMS Option Percentage .<br/>';
-		}
-	});
-	if(debetSum == null || debetSum.trim().length <= 0){
-			errStr3 +='Please Enter Debate Summery .<br/>';
-	}
-	
-	if(errStr1.trim().length >0){
-	$("#debatErrDiv1").html('');
-	$("#errTab").css("display","block");
-	$("#debatErrDiv1").html(errStr1);
-		flag = false;
-	}
-
-	if(errStr2.trim().length >0){
-	$("#debatErrDiv2").html('');
-	$("#errTab").css("display","block");
-	$("#debatErrDiv2").html(errStr2);
-		flag = false;
-	}
-
-	if(errStr3.trim().length >0){
-	$("#debatErrDiv3").html('');
-	$("#errTab").css("display","block");
-	$("#debatErrDiv3").html(errStr3);
-		flag = false;
-	}
-
-return flag;
+	return flag;
 
 }
 
@@ -156,7 +220,7 @@ function addMoreSubject(){
 //console.log(subjCount);
 var str = "";
 
-	str += "<span id='subject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"subject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
+	str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
 	str +="<input type='text' Class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"' '/>";
 	str += "</br></span>";	
 	
@@ -165,8 +229,15 @@ subjCount++;
 }
 
 function removeSubject(id){
+  
+ var isConfirm = confirm("Do you want to continue ?");
+   if( isConfirm == true ){
+      	$("#"+id+"").html("");
+	  return true;
+   }else{
+	  return false;
+   }
 
-	$("#"+id+"").html("");
 }
 
 function addAttribute(type){
@@ -243,7 +314,7 @@ function addMorePole(){
 	str += "</div>";
 	str += "<div class='span3'>";
 	str += "<label><strong>Percentage : <font class='requiredFont'>*</font></strong></label>";
-	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"' key='smsoption"+poleCount+"'/>";
+	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"' key='smsoption"+poleCount+"' onKeyup='isNumber(\"percentage\",\"smsper"+poleCount+"\"),updatePercntage(\"smsper"+poleCount+"\");'/>";
 	str += "</div>";
 	str += "<div class='span1' style='float: left; margin-top: 30px;'>";
 	str += "<a href='javascript:{}'  title='Click here to remove another Option' onclick='removeOptins(\"row"+poleCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a>";
@@ -256,7 +327,14 @@ function addMorePole(){
 
 function removeOptins(divId)
 {
-	$('.'+divId+'').html('');
+var isConfirm = confirm("Are you want to delete ?")
+  if( isConfirm == true ){
+		$('.'+divId+'').html('');
+		updatePercntage();
+	  return true;
+   }else{
+	  return false;
+   }		
 }
 function updateAttributeField(id){
 	
@@ -296,6 +374,7 @@ function submitForm()
 			$( ".subjectClass " ).each(function( index ) {
 				subjectArray.push($(this ).val());	
 			});
+			
 			debateDetails.endTime         = $('#endTime').val();
 			debateDetails.startTime       = $('#startTime').val();
 			debateDetails.channelId       = $('#channel option:selected').val();
@@ -361,7 +440,7 @@ function submitForm()
 				var smaPoleObj = {};
 				smaPoleObj.questionId  = $('#smsques1').val();	
 				smaPoleObj.option      = $('#'+$(this).attr('key')).val();
-				smaPoleObj.percentage  = $(this).val();
+				smaPoleObj.percentage  = $(this).val() !="" ? $(this).val():0.0;
 				smsPole.push(smaPoleObj);		
 			});
 			//console.log(smsPole);
@@ -411,11 +490,11 @@ function submitForm()
 function getValues(){
 	var str ='';
 	str +='<table id="participantTable" class="table table-bordered particepatedTable" style="width: 100%;overflow-x: scroll;">';
-	str +='<thead><tr><th>Party</th><th>Candidate</th>';
+	str +='<thead><tr><th>Party</th><th> Candidate</th>';
 	for(var i in charsArray){
 		str +='<th>'+charsArray[i].name+'</th>';
 	}
-	str +='<th>Participant Roles</th><th>Expected Roles</th><th>Summary</th><th>Delete</th></tr></thead>';
+	str +='<th>Participant Roles</th><th>Expected Roles</th><th>Summary </th><th>delete</th></tr></thead>';
    
 	str += "<tr id='row1' class='particepntDetailsRow'>";
 	str += "<td><select name='party1'  id='party1' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,1)' class='partysClass'><option value='0' selected='selected'>Select</option>";
@@ -427,20 +506,22 @@ function getValues(){
 
 	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate1" >';
 	str+='<option value="0"> Select </option>';
-	str +='</select></td>';
+	str +='</select>';
+	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate1"></span></a></td>';
 		for(var i in charsArray){
+		var myClass1 = charsArray[i].name+"1";
 		str +='<td>';
-		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+'1" style="width:30px;" />';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');"/><div style="font-weight:normal;">(0-5)</div>';
 		str +='</td>';
 		}
-     	str +='<td><input type="hidden" id="'+1+'participantRoles" class="partiRoleClass"></input>';
+     	str +='<td class="participantRolesblock1"><input type="hidden" id="'+1+'participantRoles" class="partiRoleClass"></input>';
 		str += '<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles1" id="participantRoles1" key="'+1+'participantRoles">';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
 		str +='</select></td>';
-		str +='<td><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1" value="0"></input>';
+		str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" value="0"></input>';
 		str += '<div id="expReoleDiv1"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
@@ -466,8 +547,14 @@ $("#participantInnerDiv1").append(str);
 }
 
 function removeCandidate(name){
-$("#"+name+"").remove();
-}
+var isConfirm = confirm("Are you want to delete ?")
+  if( isConfirm == true ){
+     $("#"+name+"").remove();
+	  return true;
+   }else{
+	  return false;
+   }
+  }
 
 
 function addMoreCandidates()
@@ -484,14 +571,16 @@ function addMoreCandidates()
 	
 	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" >';
 	str +='<option value="0"> Select </option>';
-	str +='</select></td>';
-		for(var i in charsArray){
+	str +='</select>';
+	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCount+'\',\'party'+candCount+'\','+candCount+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCount+'"></span></a></td>';
+	for(var i in charsArray){
+		var myclass =charsArray[i].name+''+candCount;
 		str +='<td>';
-		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles" name="'+charsArray[i].name+'1" id="'+charsArray[i].name+''+candCount+'" style="width:30px;" />';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myclass.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myclass.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myclass.replace(/\s/g, '')+'\');"/><div style="font-weight:normal;">(0-5)</div>';
 		str +='</td>';
 	}
 	
-	str +='<td>';
+	str +='<td class="participantRolesblock'+candCount+'">';
 	str +='<input type="hidden" id="'+candCount+'participantRoles" class="partiRoleClass"></input>';
 	str +='<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
 	for (var j in rolesArray)
@@ -499,8 +588,8 @@ function addMoreCandidates()
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	
-	str +='</select></td><td>';
-	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1" value="0"></input>';
+	str +='</select></td><td class="expparticipantRolesblock'+candCount+'">';
+	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1 expPartiesRoleClass" value="0"></input>';
 	str +='<div id="expReoleDiv'+candCount+'"><select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
@@ -577,6 +666,7 @@ function getCandidatesOfSelectedParty(partyId,divId,id)
 	callAjax(jsObj,url);
 }
 
+var addedCandidteId=0;
 function fillSelectOptionsVO(results,selectedVal)
 {
 	$('#'+selectedVal+'').find('option').remove();
@@ -586,11 +676,14 @@ function fillSelectOptionsVO(results,selectedVal)
 	{
 		for(var i in results)
 		{
-			$('#'+selectedVal+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
-		}
-		
+			$('#'+selectedVal+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');	
+		}		
 	}
+	var name1 = candidteName.trim().toLowerCase();
+	var designtion = $("#designationsList option :selected").text();
 		
+	if(name1.length >0 && name1 != '')
+		$("#"+selectedVal+" option:contains("+name1+" ("+designtion.toLowerCase()+")").attr('selected', true);	
 }
 
 function callAjax(jsObj,url)
@@ -609,21 +702,30 @@ function callAjax(jsObj,url)
 					fillSelectOptionsVO(myResults,jsObj.selectedVal);	
 				}else if (jsObj.task == "getDebateDetailsBtDates")
 				{
-					if(myResults != null && myResults.length > 0)
-					{
-						buildDebateBTDatesTable(myResults);
-					}
-					else
-					{
-						$("#dateWiseReportDiv").html("");
-						$('#dateWiseReportDiv').html('<h4 align="center" style="color:red;">No Data Avaliable</h4>');
-					}
-				 
+				 buildDebateBTDatesTable(myResults);
 				}else if (jsObj.task == "generateURL")
 				{
 					$('#'+jsObj.div).text(myResults + "&debateId="+jsObj.debateId);
 					$('#'+jsObj.div).show();
+				}else if(jsObj.task == "getPartyList"){
+					buildPartyList(myResults,jsObj);
+				}else if(jsObj.task == "getDesignationsList"){
+					builddesignationsList(myResults,jsObj);
+				}else if(jsObj.task == "saveCandidateForDebate"){
+					if(myResults.resultCode == 0){
+					 $("#errorMsgDiv").html("<font style='font-weight:bold;color:green;text-transform: capitalize;'> "+myResults.message+" </font>").fadeOut(3000);
+						setTimeout('$("#createCandidateDiv").dialog("close");',2000);	
+						$('#pcConstituencyRow').hide();
+						$('#acConstituencyRow').hide();
+						$('#newCandidateName').val('');
+						$('#locationId').val(0);
+						
+						getCandidatesOfSelectedParty(jsObj.partyId,jsObj.divId,jsObj.roleOptionsID);			
+					}else{
+						$("#errorMsgDiv").html(" Exception occured While saving Debate Candidate.");
+					}
 				}
+			 		
 			}catch(e)
 			{   
 			 $("#submitDataImg").hide();
@@ -638,7 +740,118 @@ function callAjax(jsObj,url)
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
+	
+	
+function builddesignationsList(results,jsObj)
+{
 
+  $("#"+jsObj.designationList+"").find('option').remove();
+  $("#"+jsObj.designationList+"").append('<option value="0">Select Designation</option>');
+  
+  if(results != null && results.length > 0)
+  {	
+    for(var i in results){
+		$("#"+jsObj.designationList+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+	 }
+  }
+}
+function buildPartyList(results,jsObj)
+{
+
+  $("#"+jsObj.partySelectBoxId+"").find('option').remove();
+  $("#"+jsObj.partySelectBoxId+"").append('<option value="0">Select Party</option>');
+  
+  if(jsObj.partiesListForWhome != null)
+  {
+   $("#"+jsObj.partiesListForWhome+"").find('option').remove();
+   $("#"+jsObj.partiesListForWhome+"").append('<option value="0">Select Party</option>');
+  }
+  
+  if(results != null)
+  {
+   for(var i in results)
+    $("#"+jsObj.partySelectBoxId+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+  
+   if(jsObj.partiesListForWhome != null)
+	for(var i in results)
+    $("#"+jsObj.partiesListForWhome+"").append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+  }
+}
+function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidateId)
+{
+
+  YAHOO.widget.DataTable.viewReport = function(elLiner, oRecord, oColumn, oData) 
+	{
+	    var str='';
+		var name = oData;
+		var debateId = oRecord.getData("id");
+		var subjectName = oRecord.getData("name");
+
+		str +='<input type="button" class="btn btn-info" value="Generate URL " onCLick="generateURL('+debateId+',\'reportId'+debateId+'\',\''+subjectName+'\')"/>';
+		elLiner.innerHTML=str;
+					
+	};
+	
+	YAHOO.widget.DataTable.generatePDF = function(elLiner, oRecord, oColumn, oData) 
+	{
+	   var str='';
+		var name = oData;
+		var debateId = oRecord.getData("id");
+
+		str +='<a class="btn btn-info" value="'+debateId+'"';
+		str +='onClick="openDebateReport('+debateId+')">view</a>';
+		elLiner.innerHTML=str;
+					
+	};
+	
+	YAHOO.widget.DataTable.textArea = function(elLiner, oRecord, oColumn, oData) 
+	{
+	   var str='';
+		var name = oData;
+		var debateId = oRecord.getData("id");
+		str +='<textarea id="reportId'+debateId+'" placeholder="Generated URL Details..."></textarea>';
+		elLiner.innerHTML=str;
+					
+	};
+	
+  var newsReportColumns = [
+   {key:"name",label:"Subject",width:400},
+   {key:"type",label:"Created Date"},
+   {key:"viewReport",label:"View Report",formatter:YAHOO.widget.DataTable.generatePDF},
+   {key:"generatePDF",label:"Generate URL ",formatter:YAHOO.widget.DataTable.viewReport},
+   {key:"textArea",label:"Generated URL ",formatter:YAHOO.widget.DataTable.textArea}
+
+   
+  ];
+  
+   var newsDataSource = new YAHOO.util.DataSource("debateDetaildBtDatesAction.action?fromDate="+fromDate+"&toDate="+toDate+"&channel="+channelId+"&partyId="+partyId+"&candidateId="+candidateId+"&");
+  newsDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+  newsDataSource.responseSchema = {
+  resultsList: "smsPoleList",
+   fields: [{key:"id" ,parser:"number"},"name","type"],
+    metaFields: {
+    totalRecords: "totalCount" // Access to value in the server response
+     },
+  };  
+
+  var myConfigs = {
+initialRequest: "sort=name&dir=desc&startIndex=0&results=15", // Initial request for first page of data
+dynamicData: true, // Enables dynamic server-driven data
+sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
+   paginator : new YAHOO.widget.Paginator({ 
+		        rowsPerPage    : 15
+			    })  // Enables pagination
+};
+
+var newsDataTable = new YAHOO.widget.DataTable("dateWiseReportDiv",
+newsReportColumns, newsDataSource, myConfigs);
+
+newsDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
+oPayload.totalRecords = oResponse.meta.totalRecords;
+return oPayload;
+
+}
+}
 function getDebateDetailsBtDates()
 {
 	var startDate = $('#fromDateId').val();
@@ -686,18 +899,21 @@ function getDebateDetailsBtDates()
 	var partyId = $('#partySelecction').val();
 	if(partyId == undefined)
 	{
-		partyId = "null";
+		partyId = "0";
 	}
 	var candidateId = $('#candidateSelecction').val();
 	if(candidateId == undefined)
 	{
-		candidateId = "null";
+		candidateId = "0";
 	}
 	var channelId = $('#channelSelecction').val();
 	if(channelId == undefined)
 	{
-		channelId = "null";
+		channelId = "0";
 	}
+	getDebateDetailsBetwinDates($('#fromDateId').val(),$('#toDateId').val(),channelId,partyId,candidateId);
+	
+	/*
 	var jsObj = {
 				fronDate :$('#fromDateId').val(),
 				toDate   :$('#toDateId').val(),
@@ -710,6 +926,7 @@ function getDebateDetailsBtDates()
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "debateDetaildBtDatesAction.action?"+rparam;
 		callAjax(jsObj,url);
+		*/
 }
 
 function openDebateReport(debateId)
@@ -769,4 +986,288 @@ function  buildDebateBTDatesTable(results)
 		});
 
 	}
+}
+
+	function isNumber(type,id){
+	var smsQuestin =  $("#smsques1").val();
+		if(smsQuestin.trim().length > 0){
+		if(type == "percentage"){			
+					var smsOptionPerc =$( "#"+id+"").val();
+					if(isNaN(smsOptionPerc)){					
+						$("#"+id+"").css("border","1px solid #D14719");
+					}else{
+						$("#"+id+"").css("border","1px solid #CCCCCC");
+					}	
+		}else{
+			 var prsentation = $( "#"+id+"").val();
+				if(isNaN(prsentation) || prsentation >5){
+					$("#"+id+"").css("border","1px solid #D14719");	
+				}
+				else{
+					$("#"+id+"").css("border","1px solid #CCCCCC");
+				}
+		}		
+		}
+		
+	}
+
+	
+function getTypeOfConstituency(value)
+{	
+
+	if(value == 1)
+	{  
+		$('#pcConstituencyRow').hide();
+		$('#acConstituencyRow').show();
+	}
+	else if(value == 2)
+	{
+		$('#pcConstituencyRow').show();
+		$('#acConstituencyRow').hide();
+	}
+	else
+	{
+		$('#pcConstituencyRow').hide();
+		$('#acConstituencyRow').hide();
+	}
+}
+
+function isValid(str){
+ var iChars = "#$%&";
+ var flag = false;
+	for (var i = 0; i < str.length; i++) {
+		if (iChars.indexOf(str.charAt(i)) != -1) {			
+			flag = true;
+		}
+    }
+	return flag;
+}
+
+function getPartiesList(partySelectBoxId,partiesListForWhome)
+{
+ var jsObj={
+		partySelectBoxId:partySelectBoxId,
+		partiesListForWhome:partiesListForWhome,
+		task:'getPartyList'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getPartiesListAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+function getDesignationList(designationList1)
+{
+  var jsObj={
+		designationList:designationList1,
+		task:'getDesignationsList'
+	  };
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getDesignationsListAction.action?"+rparam;
+	callAjax(jsObj, url);
+}
+function showNewDebateDiv(){
+$('#newDibateDiv').show();
+$('#debateReportDiv').hide();
+}
+function showDebateReportDiv(){
+$('#newDibateDiv').hide();
+$('#debateReportDiv').show();
+}
+
+var totalPerc;
+function updatePercntage(id){
+
+	totalPerc = 100
+	var perc=parseFloat(0);
+	totalPerc = parseFloat(totalPerc);
+	$( ".smsOptinPerc " ).each(function( index ) {	
+			var perc1 = parseFloat($(this).val());
+			if(!isNaN(perc1)){
+				console.log(":      "+perc1);
+					perc = perc + perc1;
+				if(totalPerc <0)
+					perc = perc - perc1;
+			}		
+	});
+	if(perc > 100 || perc < 0){
+				$("#"+id+"").val('')
+	}
+	totalPerc = totalPerc -perc;
+	if(totalPerc >= 0){
+		$('#percCount').html('');
+		$('#percCount').html(totalPerc);
+	}
+}
+
+
+	
+	function createNewCandidate(listId,party,id){
+		$('#'+party+'').css("border","1px solid #CCCCCC");
+		$('#presentParty').html('');
+		$('#errorMsgDiv').html('');
+
+		var partyName = $('#'+party+' :selected').text();
+		var partyId = $('#'+party+'').val();
+		debateNewCandiPartyId = partyId;
+		partyDiv = party;
+		roleOptionsID = id;
+		if(partyId <= 0){
+			$('#'+party+'').css("border","1px solid #D14719");
+			return;
+		}
+
+		$('#presentParty').html(''+partyName+'');
+		$("#createCandidateDiv").dialog({
+			modal: true,
+			title: "<b>Create New Candidate</b>",
+			width: 500,
+			height: 350       
+		});   
+		
+	   //getPartiesList("partySelectNewList",null);
+	   getDesignationList("designationsList");   
+
+	}
+	
+	
+function showNewDebateDiv(){
+	$('#newDibateDiv').show();
+	$('#debateReportDiv').hide();
+}
+function showDebateReportDiv(){
+	$('#newDibateDiv').hide();
+	$('#dateWiseReportDiv').html('');
+	$('#fromDateId').val('');
+	$('#toDateId').val('');
+	$('#debateReportDiv').show();
+}
+
+function buildDebateAnalysisDiv()
+{
+	var str = '';
+	str += '<div class="span3">';
+	str += '<label >Party : </label>';
+	str += '<select name="partyAnalysis"  id="partyAnalysis" onChange="getCandidatesList(this.value)">';
+	for(var i in partiesArray)
+	{
+		str += '<option value='+partiesArray[i].id+'>'+partiesArray[i].name+'</option>';
+	}
+	str += '</select>';
+	str += '</div>';
+	str += '<div class="span3">';
+	str += '<label >Candidate : </label>';
+	str += '<select id="candidateiseAnalysis">';
+	str += '<option value="0">Select Candidate</option>';
+	str += '</select>';
+	str += '</div>';
+	str += '<div class="span3">';
+	str += '<label >Debate Roles : </label>';
+	str += '<select name="roleWiseAnalysis"  id="roleWiseAnalysis" >';
+	str += '<option value="0">Select Roles </option>';
+	for(var i in rolesArray)
+	{
+		str += '<option value='+rolesArray[i].id+'>'+rolesArray[i].name+'</option>';
+	}
+	str += '</select>';
+	str += '</div>';
+	str += '<div class="span3">';
+	str += '<label >Chars : </label>';
+	str += '<select name="charsWiseAnalysis"  id="charsWiseAnalysis">';
+	str += '<option value="0">Select Chars</option>';
+	for(var i in charsArray)
+	{
+		str += '<option value='+charsArray[i].id+'>'+charsArray[i].name+'</option>';
+	}
+	str += '</select>';
+	str += '</div>';
+	str += '<div align="center"><input type="button" value="Submit" class="btn btn-success" onClick="getAnalysedData();"></input></div>';
+	$('#debateAnalysisDiv').html(str);
+}
+
+function getAnalysedData()
+{
+	var partyId = $('#partyAnalysis').val();
+	var candidateId = $('#candidateiseAnalysis').val();
+	var roleId = $('#roleWiseAnalysis').val();
+	var charsId = $('#charsWiseAnalysis').val();
+	var type = "";
+	if(charsId > 0)
+	{
+		type = "chars";
+	}
+	else if(roleId > 0)
+	{
+		type = "role";
+	}
+	else if(candidateId > 0)
+	{
+		type = "candidate";
+	}
+	else
+	{
+		type = "party";
+	}
+}
+function getCandidatesList(partyId)
+{
+	var jsObj = {
+			partyId :partyId,
+			task : "getCandidatesLIstOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesListForDebateAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+function getCandidatesForSelectedParty(partyId)
+{
+	var jsObj = {
+			partyId :partyId,
+			selectedVal :"candidateSelecction",
+			task : "getCandidatesOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesListForDebateAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+
+function getRespectiveSelection()
+{
+	
+	
+		var str = '';
+		str += '<div class="span4" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
+		str +='<select id="partySelecction" onChange="getCandidatesForSelectedParty(this.value)">';
+		for(var i in partiesArray)
+		{
+			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
+		}
+		str +='</select>';
+		str += '</div>';
+		str += '<div class="span4" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Candidate  </label>'; 
+		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
+		str += '</div>';
+		$('#reportTypeSelectionDiv').html(str);
+	/* }
+	else if(value == 3)
+	{
+		var str = '';
+		str += '<div class="span4" > ';
+		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
+		str +='<select id="partySelecction" onChange="">';
+		for(var i in partiesArray)
+		{
+			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
+		}
+		str +='</select>';
+		str += '</div>';
+		$('#reportTypeSelectionDiv').html(str);
+	}
+	else
+	{
+		$('#reportTypeSelectionDiv').html('');
+	} */
+	
 }
