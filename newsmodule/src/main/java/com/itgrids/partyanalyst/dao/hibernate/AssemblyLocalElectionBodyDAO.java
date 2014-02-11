@@ -186,4 +186,10 @@ public List<Long> getLocalElectionBodyIdByConstituencies(List constituencyId){
 		
 		
 	}
+
+	public List<Object[]> getAssemblyLocalElectionBodyDetailsByConstiId(Long localElectionBodyId,Long assemblyId) {
+		Object[] params = {localElectionBodyId,assemblyId};
+		return getHibernateTemplate().find("select model.assemblyLocalElectionBodyId ,model.localElectionBody.name,model.localElectionBody.electionType.electionType from AssemblyLocalElectionBody " +
+				" model where model.localElectionBody.localElectionBodyId = ? and model.constituency.constituencyId =?", params);
+	}
 }

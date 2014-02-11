@@ -5971,7 +5971,11 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			Long scopeId = file.getRegionScopes().getRegionScopesId();
 			String locationName =null;
 			String locationId = null;
-			
+			String assLocElecBdyId =null;
+			Long assConstituencyId = null;
+			if(file.getUserAddress() != null && file.getUserAddress().getConstituency() != null){
+			 assConstituencyId = file.getUserAddress().getConstituency().getConstituencyId();
+			}
 			switch (scopeId.intValue()) {
 			case 2:
 					State state = stateDAO.get(Long.valueOf(file.getLocationValue().toString()));
@@ -6002,8 +6006,13 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			case 7:
 				LocalElectionBody localElectionBody = localElectionBodyDAO.get(Long.valueOf(file.getLocationValue().toString()));					
 				locationName = localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType();
-					List<Object[]> muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetails(localElectionBody.getLocalElectionBodyId());
-					if(muncipalityDetails.size() > 0){
+				List<Object[]> muncipalityDetails = null;
+				if(assConstituencyId == null){
+				  muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetails(localElectionBody.getLocalElectionBodyId());
+				}else{
+				  muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetailsByConstiId(localElectionBody.getLocalElectionBodyId(),assConstituencyId);	
+				}
+				 if(muncipalityDetails.size() > 0){
 						for (Object[] parms : muncipalityDetails) {
 							locationId = "1"+parms[0].toString();
 						}
@@ -6012,6 +6021,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				break;
 			case 8:
 					Constituency ward = constituencyDAO.get(Long.valueOf(file.getLocationValue().toString()));
+					
 					if(ward.getLocalElectionBody().getName() !=""){
 						locationName = ward.getName();
 						locationId = "1"+ward.getConstituencyId().toString();
@@ -6019,6 +6029,15 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 					else{
 						locationName = ward.getName()+" ("+ward.getLocalElectionBody().getName().trim()+")";
 						locationId = "1"+ward.getConstituencyId().toString();
+					}
+					if(assConstituencyId != null && locationId != null){
+					   List<Object[]> munciDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetailsByConstiId(ward.getLocalElectionBody().getLocalElectionBodyId(),assConstituencyId);
+					   if(munciDetails.size() > 0){
+							for (Object[] parms : munciDetails) {
+								assLocElecBdyId = "1"+parms[0].toString();
+							}
+						
+						}
 					}
 				break;
 			case 9:
@@ -6035,7 +6054,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 				SelectOptionVO selectOptionVO = new SelectOptionVO();
 				selectOptionVO.setId(scopeId);
 				selectOptionVO.setName(locationName);
-				selectOptionVO.setLocation(locationId);				
+				selectOptionVO.setLocation(locationId);	
+				selectOptionVO.setValue(assLocElecBdyId);
 				newsAreaDetails.add(selectOptionVO);
 			}
 		} catch (Exception e) {

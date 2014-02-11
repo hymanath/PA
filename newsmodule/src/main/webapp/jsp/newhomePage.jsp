@@ -236,7 +236,8 @@ function callHomePageAjax11(jsObj,url){
 							}
 						}catch(e)
 						{   
-
+							$("#stateAjaxCallImg").hide();
+							$("#districtAjaxCallImg").hide();
 							//alert("Invalid JSON result" + e);   
 						}  
 				   },
@@ -330,7 +331,7 @@ getCategoryNews();
 								<!-----------NEWS tab--------->
 							 <div id="News" class="tab-pane fade active in">
 								<div class="carousel slide center" id="myCarousel">
-								
+								<div id="stateAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>								
 										<ol class="carousel-indicators">
 										  <li data-slide-to="0" data-target="#myCarousel" class="active"></li>
 										  <li data-slide-to="1" data-target="#myCarousel" class=""></li>
@@ -411,6 +412,7 @@ getCategoryNews();
 								<!-----------NEWS tab--------->
 								<div id="News" class="tab-pane fade active in">
 								<div class="carousel slide center" id="myCarousel2">
+								<div id="districtAjaxCallImg" ><img src="images/icons/goldAjaxLoad.gif"></div>								
 										<ol class="carousel-indicators">
 										  <li data-slide-to="0" data-target="#myCarousel2" class="active"></li>
 										  <li data-slide-to="1" data-target="#myCarousel2" class=""></li>

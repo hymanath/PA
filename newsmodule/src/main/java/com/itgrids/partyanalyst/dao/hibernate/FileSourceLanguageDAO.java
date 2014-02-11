@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -99,5 +100,24 @@ public class FileSourceLanguageDAO extends GenericDaoHibernate<FileSourceLanguag
 		Query query = getSession().createQuery(" delete from FileSourceLanguage model where model.fileSourceLanguageId =:fileSourceLangId");
 		query.setParameter("fileSourceLangId", fileSourceLangId);
 		query.executeUpdate();
+	}
+	
+	public List<Object[]> getDistrictWiseUploadedNewsCount(Date fromDate,Date toDate){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select count(distinct fsl.fileSourceLanguageId),district.districtId,district.districtName from FileSourceLanguage fsl,District district where fsl.file.isDeleted != 'Y' " +
+				" and fsl.file.user.accessType ='DISTRICT' and fsl.file.user.userAccessType ='SubUser' and fsl.file.user.accessValue = district.districtId ");
+		if(fromDate != null)
+		  queryStr.append(" and date(fsl.file.createdDate) >= :fromDate ");
+		if(toDate != null)
+		  queryStr.append(" and date(fsl.file.createdDate) <= :toDate ");
+		
+		queryStr.append(" group by district.districtId order by district.districtId asc");
+		Query query = getSession().createQuery(queryStr.toString());
+		    if(fromDate != null)
+		    	query.setDate("fromDate", fromDate);
+			if(toDate != null)
+				query.setDate("toDate", toDate);
+			
+		return query.list();
 	}
 }

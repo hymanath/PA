@@ -2815,7 +2815,7 @@ function getLocations(id){
    
    str += '<div class="span2" style="width: 155px;">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" name="locationValue" id="mandalDiv"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" name="locationValue" id="mandalDiv" name="mandalId" ><option value="0">Select Location</option></select>';
    str +='</div>';
 
    $("#showScopeSubs").html(str);
@@ -2852,7 +2852,7 @@ function getLocations(id){
    
    str += '<div class="span2" style="width: 155px;">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" id="mandalDiv" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="mandalDiv"  name="mandalId" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';
@@ -2883,7 +2883,7 @@ function getLocations(id){
 
    str += '<div class="span2" style="width: 155px;">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" id="mandalDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="mandalDiv" name="mandalId"  onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';
@@ -4978,7 +4978,7 @@ function getLocations1(id){
   str +='  </tr>';
   str +='  <tr>';
   str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  name="mandalId"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
   str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division : <font class="requiredFont">*</font></td>';
@@ -5009,7 +5009,7 @@ function getLocations1(id){
   //str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" class="selectWidth" style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
    str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDivForEdit\').options[document.getElementById(\'constituencyDivForEdit\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  name="mandalId" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDivForEdit\').options[document.getElementById(\'constituencyDivForEdit\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
   str +='  </tr>';
   str +='  <tr>';

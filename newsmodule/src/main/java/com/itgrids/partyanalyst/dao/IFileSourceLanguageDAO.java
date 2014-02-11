@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -26,4 +27,6 @@ public interface IFileSourceLanguageDAO extends GenericDao<FileSourceLanguage, L
 	public List<Object[]> getCandidateDetailsByFileIds(Set<Long> fileIds);
 	
 	public void deleteFileSourceLanguage(Long fileSourceLangId);
+	
+	public List<Object[]> getDistrictWiseUploadedNewsCount(Date fromDate,Date toDate);
 }

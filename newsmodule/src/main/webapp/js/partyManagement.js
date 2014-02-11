@@ -558,9 +558,10 @@ function callAjax(jsObj,url)
 
 			else if(jsObj.task == "deleteFileForReport")
 			 buildDeleteFileForReport(myResults,jsObj);
+			 
 		}
 		catch(e)
-		{   
+		{  
 		 //alert("Invalid JSON result" + e);   
 		}  
 	 },
@@ -1733,6 +1734,7 @@ function showNewsGallaey(fileId)
   document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
   document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
  $("#profileManagementMainOuterDiv7").css("display","none");
+ $("#profileManagementMainOuterDivStatus").css("display","none");
   document.getElementById("videoGallaryDiv").innerHTML=''; 
   /*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -2889,7 +2891,7 @@ function getLocations(id){
    
    str += '<div class="span2">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" id="mandalDiv" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="mandalDiv"  name="mandalId" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';
@@ -2920,7 +2922,7 @@ function getLocations(id){
 
    str += '<div class="span2">';
    str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" id="mandalDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="mandalDiv" name="mandalId"  onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';
@@ -3054,6 +3056,7 @@ document.getElementById("profileManagementMainOuterDiv3").style.display = 'none'
 document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
 document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
  $("#profileManagementMainOuterDiv7").css("display","none");
+ $("#profileManagementMainOuterDivStatus").css("display","none");
 /*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
 $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
 $("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -3967,6 +3970,7 @@ function showTheNewsToUpdate()
   $('#profileManagementMainOuterDiv4').show();
   document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
    $("#profileManagementMainOuterDiv7").css("display","none");
+   $("#profileManagementMainOuterDivStatus").css("display","none");
    $('#showKeywordsDiv').css("display","none");
  /* $("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
   $("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
@@ -4138,11 +4142,24 @@ var callback = {
 			else if(jsObj.task == "getAllNewsReports")
 			{
 				buildAllNewsReports(myResults);
+			}else if(jsObj.task == "getUserTrackingDetails"){
+			   buildUserTracking(myResults);
+			}
+			else if(jsObj.task == "getUserTrackingExcelDetails"){
+			       if(myResults == null || myResults.name == "fail"){
+					    alert("Error occured while generationg excel ");
+						$.unblockUI();
+					  }else{
+					     $.unblockUI();
+			              window.open(myResults.url);
+					  }
 			}
 		
 }
 		catch(e)
 		{   
+		  $.unblockUI();
+		  
 		}  
 	 },
 	scope : this,
@@ -5024,7 +5041,7 @@ function getLocations1(id){
   str +='  </tr>';
   str +='  <tr>';
   str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;"  name="mandalId" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
   str +='  </tr>';
   str +='  <tr>';
   str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division : <font class="requiredFont">*</font></td>';
@@ -5055,7 +5072,7 @@ function getLocations1(id){
   //str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" class="selectWidth" style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
    str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDivForEdit\').options[document.getElementById(\'constituencyDivForEdit\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
+  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  name="mandalId" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDivForEdit\').options[document.getElementById(\'constituencyDivForEdit\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
 
   str +='  </tr>';
   str +='  <tr>';
@@ -6812,7 +6829,7 @@ function getGallaryId()
 	callnewAjax(jsObj,url);
 }
 
-function getNewsReports ()
+function getNewsReports()
 {
   
   $("#newEditCandidateDiv").css("display","none");
@@ -6829,6 +6846,7 @@ function getNewsReports ()
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementHeaderDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","block");
+  $("#profileManagementMainOuterDivStatus").css("display","none");
    $("#profileManagementHeaderDiv7").css("display","none");
    $("#profileManagementMainOuterDiv8").css("display","none");
    $("#newDesignationDiv").css("display","none");
@@ -6848,6 +6866,114 @@ function getNewsReports ()
 	//getReports();
 	
 	getNewsReport();
+}
+function showUploadStatus()
+{
+  $("#newsUploadsReports").html();
+  $("#newEditCandidateDiv").css("display","none");
+  $("#newsAssignGallaryDiv").css("display","none");
+  $("#newsAssignGallaryDiv").html('');
+  $("#profileManagementMainOuterDiv4").css("display","none");
+  $("#profileManagementHeaderDiv2").css("display","none");
+  $("#profileManagementMainOuterDiv3").css("display","none");
+  $("#profileManagementHeaderDiv3").css("display","none");
+  $("#videoGallaryDiv").css("display","none");
+  $("#dateSelectDiv").css("display","none");
+  $("#profileManagementMainOuterDiv5").css("display","none");
+  $("#profileManagementHeaderDiv5").css("display","none");
+  $("#profileManagementMainOuterDiv6").css("display","none");
+  $("#profileManagementHeaderDiv6").css("display","none");
+  $("#profileManagementMainOuterDiv7").css("display","none");
+   $("#profileManagementHeaderDiv7").css("display","none");
+   $("#profileManagementMainOuterDiv8").css("display","none");
+   $("#profileManagementMainOuterDivStatus").css("display","block");
+   $("#newDesignationDiv").css("display","none");
+  $("#newPartyCreationDiv").css("display","none");
+  $('#showKeywordsDiv').css("display","none");
+  		$('#statusDiv1').html('');
+		$('#statusDiv2').html('');
+    var str ='';
+	str+='<div style="background-color:#f5f5f5;" class="row-fluid">';
+    str+='<div style="margin-left:240px;" class="span3"><label style="float: left;"><strong>Start Date<span class="requiredFont">*</span></strong></label><input type="text" readonly="true" id="trackFromDateId" class="inpit-block-level" ></div>';
+    str+='<div style="margin-left:3px;" class="span3"><label style="float: left;"><strong>End Date<span class="requiredFont">*</span></strong></label><input type="text" id="trackToDateId" class="inpit-block-level" readonly="true" ></div>';
+    str+='</div>';
+	str+='<input type="button" id="gettrackdtlsId" class="btn btn-info" onclick="getUserTrackingDetailsReport();" value="submit">';
+	str+='<div class="container well">';
+	str+='<div class="row clearfix">';
+	str+='<div class="row-fluid"><div class="yui-skin-sam yui-dt-sortable yui-dt" id="userTrackingDetails">';
+	str+=' </div>';
+    str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	document.getElementById("newsUploadsReports").innerHTML = str;
+	
+	$("#trackFromDateId").datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+		  changeYear: true,
+			maxDate: new Date(),
+		});
+	 $("#trackToDateId").datepicker({
+			dateFormat: "dd/mm/yy",
+			changeMonth: true,
+		  changeYear: true,
+			maxDate: new Date(),	
+		});
+	$('#trackFromDateId').datepicker('setDate', new Date());
+	$('#trackToDateId').datepicker('setDate', new Date());
+	populateDate();
+
+}
+
+function getUserTrackingDetailsReport(){
+  var from = $("#trackFromDateId").val();
+  var to = $("#trackToDateId").val();
+  var jsObj = {
+			fromDate:from,
+			toDate:to,
+			task: 'getUserTrackingDetails'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getUserUploadStatusAction.action?"+rparam;
+	callnewAjax(jsObj,url);
+}
+function genereateExcelForUpload(){
+  var from = $("#trackFromDateId").val();
+  var to = $("#trackToDateId").val();
+  var jsObj = {
+			fromDate:from,
+			toDate:to,
+			task: 'getUserTrackingExcelDetails'
+	};
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+	var url = "getUserUploadExcelAction.action?"+rparam;
+	callnewAjax(jsObj,url);
+
+}
+function buildUserTracking(results){
+
+	 var newsCountColumnDefs = [ 		    	             
+		    	            
+		    	           	{key:"name", label: "DISTRICT", sortable: true},
+							{key:"count", label: "NEWS UPLOADED COUNT", sortable: true}
+		    	        ]; 
+
+    
+		var myConfigs = { 
+			    
+				};
+		
+		
+	var myDataSource = new YAHOO.util.DataSource(results);
+					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
+					myDataSource.responseschema = {
+						 fields : ["name","count"]
+					};
+
+		var newsCountDataSource = new YAHOO.widget.DataTable("userTrackingDetails", newsCountColumnDefs,myDataSource, myConfigs);
+  if(results.length > 0)
+    $("#userTrackingDetails").prepend('<div style="float: right;"><a onclick="genereateExcelForUpload();" class="btn btn-info">Export As Excel</a></div>');
+  
 }
 function getReports()
 {
@@ -6929,7 +7055,7 @@ function showCandidateSaveStatus(result,jsObj)
    return;
   }
 
-  else if(result.resultCode == 0 && result.message == null)
+  else if(result.resultCode == 0 && result.message != "Candidate is already exist.")
   {
    $("#errorMsgDiv").html('Candidate Created Successfully.').css("color","green");
    setTimeout(function(){$("#errorMsgDiv").html('').css("color","red");},3000);
