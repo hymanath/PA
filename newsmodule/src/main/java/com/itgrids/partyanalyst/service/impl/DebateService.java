@@ -287,7 +287,7 @@ public class DebateService implements IDebateService{
 								  debateParticipant.setCandidate(candidate);
 							  }
 							  debateParticipant.setDebate(debate);
-							  debateParticipant.setSummary(escapeUnicode(StringEscapeUtils.escapeJava(participantVO.getSummery())));
+							  debateParticipant.setSummary(participantVO.getSummery() != null ? escapeUnicode(StringEscapeUtils.escapeJava(participantVO.getSummery())):null);
 							  debateParticipant = debateParticipantDAO.save(debateParticipant);
 							  List<SelectOptionVO> rolesList = participantVO.getRoleList();
 							  if(rolesList != null && rolesList.size() > 0)
@@ -517,11 +517,13 @@ public class DebateService implements IDebateService{
 				debatePaticepentDetailsList = new ArrayList<SelectOptionVO>();
 				for (Object[] parms : debatePaticepentDetails)
 				{
-					SelectOptionVO paticepentSummery = new SelectOptionVO();
-					paticepentSummery.setType(parms[1] != null ? parms[1].toString() :"");//party
-					paticepentSummery.setLocation(parms[0] != null ? parms[0].toString() :"");//candidate
-					paticepentSummery.setName(parms[2] != null ? StringEscapeUtils.unescapeJava(parms[2].toString()) :"");//summery
-					debatePaticepentDetailsList.add(paticepentSummery);
+					if(parms[2] != null){
+						SelectOptionVO paticepentSummery = new SelectOptionVO();
+						paticepentSummery.setType(parms[1] != null ? parms[1].toString() :"");//party
+						paticepentSummery.setLocation(parms[0] != null ? parms[0].toString() :"");//candidate
+						paticepentSummery.setName(parms[2] != null ? StringEscapeUtils.unescapeJava(parms[2].toString()) :"");//summery					
+						debatePaticepentDetailsList.add(paticepentSummery);
+					}
 				}
 				debateVO.setCandidateSummery(debatePaticepentDetailsList);
 			}
@@ -1186,51 +1188,12 @@ public class DebateService implements IDebateService{
 	    	return url;
 	 }
 	 
-	 
-	 public List<SelectOptionVO> getDebateDetailsForSelectedDates(Date fromDate,Date toDate)
+	 public DebateVO getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channel,String party,String candidate,String sortBy,String sort ,int minIndex,int maxIndex)
 	 {
 		 List<SelectOptionVO> returnList = null;
+		 DebateVO debateVO = new DebateVO();
 		 try {
-			 LOG.info("Enterd into getDebateDetailsForSelectedDates() in DebateService class");
-			 List<Object[]> debateDetails = debateSubjectDAO.getDebateDetalsForSelectedDates(fromDate,toDate);
-			 Map<Long,SelectOptionVO> debateMap = new HashMap<Long, SelectOptionVO>();//Map<debateId,debateDetails>
-			 if(debateDetails != null && debateDetails.size() > 0)
-			 {
-				 returnList = new ArrayList<SelectOptionVO>();
-				 SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
-					SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-				 for (Object[] objects : debateDetails) {
-					 SelectOptionVO selectOptionVO = debateMap.get((Long)objects[0]);
-					 if(selectOptionVO == null)
-					 {
-						 selectOptionVO =  new SelectOptionVO();
-						 selectOptionVO.setId((Long)objects[0]);//debateId
-						 //selectOptionVO.setName(objects[1].toString());//debate subject
-						 selectOptionVO.setName(StringEscapeUtils.unescapeJava(objects[1].toString()));
-						 selectOptionVO.setType(sdf.format(parseFormat.parse(objects[2].toString())));//debate date
-						 debateMap.put((Long)objects[0], selectOptionVO);
-						 returnList.add(selectOptionVO);
-					 }
-					 else
-					 {
-						 selectOptionVO.setName(selectOptionVO.getName() + "<br/>" +StringEscapeUtils.unescapeJava(objects[1].toString()));
-					 }
-					 
-				}
-			 }
-			 
-		} catch (Exception e) {
-			LOG.error(" Exception Occured in getDebateDetailsForSelectedDates method, Exception - ",e);
-		}
-		 return returnList;
-	 }
-	 
-	 
-	 public List<SelectOptionVO> getDebateDetailsForSelectedCriteria(Date fromDate,Date toDate,String channel,String party,String candidate)
-	 {
-		 List<SelectOptionVO> returnList = null;
-		 try {
-			 LOG.info("Enterd into getDebateDetailsForSelectedDates() in DebateService class");
+			 LOG.info("Enterd into getDebateDetailsForSelectedCriteria() in DebateService class");
 			 Long channelId = null;
 			 Long partyId = null;
 			 Long candidateId = null;
@@ -1246,7 +1209,7 @@ public class DebateService implements IDebateService{
 			 {
 				 candidateId = Long.valueOf(candidate) ;
 			 }
-			 List<Object[]> debateDetails = debateSubjectDAO.getDebateDetalsForSelectedCriteria(fromDate,toDate,channelId,partyId,candidateId);
+			 List<Object[]> debateDetails = debateSubjectDAO.getDebateDetalsForSelectedCriteria(fromDate,toDate,channelId,partyId,candidateId,sortBy,sort ,minIndex,maxIndex,null);
 			 Map<Long,SelectOptionVO> debateMap = new HashMap<Long, SelectOptionVO>();//Map<debateId,debateDetails>
 			 if(debateDetails != null && debateDetails.size() > 0)
 			 {
@@ -1272,11 +1235,19 @@ public class DebateService implements IDebateService{
 					 
 				}
 			 }
-			 
+			 debateVO.setSmsPoleList(returnList);
+			 List<Object[]> debatecountDetails = debateSubjectDAO.getDebateDetalsForSelectedCriteria(fromDate,toDate,channelId,partyId,candidateId,sortBy,sort ,minIndex,maxIndex,"count");
+			 if(debatecountDetails != null && debatecountDetails.size() > 0)
+			 {
+				 for (Object[] totalDebatecount : debatecountDetails) {	 
+					 debateVO.setTotalCount(Long.valueOf(totalDebatecount[0].toString()));
+				 }
+			 }
+			
 		} catch (Exception e) {
-			LOG.error(" Exception Occured in getDebateDetailsForSelectedDates method, Exception - ",e);
+			LOG.error(" Exception Occured in getDebateDetailsForSelectedCriteria method, Exception - ",e);
 		}
-		 return returnList;
+		 return debateVO;
 	 }
 	 
 	 
