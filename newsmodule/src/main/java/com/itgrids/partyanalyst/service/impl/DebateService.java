@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -1350,19 +1351,21 @@ public class DebateService implements IDebateService{
 	  * This service is used for detting the sms question with options and percentage
 	  * @return List<SelectOptionVO> returnList
 	  */
-	 public List<SelectOptionVO> getDebateSMSQuestions()
+	 public List<SelectOptionVO> getDebateSMSQuestions(String fromDateStr , String toDateStr)
 	 {
 		 List<SelectOptionVO> returnList = null;
 		 try 
 		 {
 			 LOG.info("Enterd into getDebateSMSQuestions() in DebateService class");
-			 List<Object[]> smsQuestionObj = debateSmsQuestionOptionDAO.getSmsQuestionDetails();
+			 SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
+			 SimpleDateFormat sdf1 = new SimpleDateFormat("MM/dd/yyyy");
+			 SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			 List<Object[]> smsQuestionObj = debateSmsQuestionOptionDAO.getSmsQuestionDetails(sdf1.parse(fromDateStr),sdf1.parse(toDateStr));
 			 Map<Long,List<SelectOptionVO>> questionMap = null;
 			 List<SelectOptionVO> questionsList = null;
 			 if(smsQuestionObj != null && smsQuestionObj.size() > 0)
 			 {
 				 returnList = new ArrayList<SelectOptionVO>();
-				 SelectOptionVO questionAnswerVO = new SelectOptionVO();
 				 questionMap = new HashMap<Long, List<SelectOptionVO>>();
 				 for (Object[] parms : smsQuestionObj)
 				 {
@@ -1373,14 +1376,49 @@ public class DebateService implements IDebateService{
 						 questionsList = new ArrayList<SelectOptionVO>();
 						 questionMap.put((Long)parms[0], questionsList);
 					 }
-					 selectOptionVO.setId((Long)parms[0]);
-					 selectOptionVO.setName(parms[1].toString());
-					 selectOptionVO.setLocation(parms[2].toString());
-					 selectOptionVO.setPerc((Double)parms[3]);
+					 selectOptionVO.setId((Long)parms[0]);//questionId
+					 selectOptionVO.setName(parms[1].toString());//question
+					 selectOptionVO.setLocation(parms[2].toString());//option
+					 selectOptionVO.setPerc((Double)parms[3]);//percentage
+					 selectOptionVO.setPartno(parms[4].toString());//channel
+					 selectOptionVO.setUrl(sdf.format(parseFormat.parse(parms[5].toString())));//date
 					 questionsList.add(selectOptionVO);
 				 }
-				 questionAnswerVO.setSelectOptionsList(questionsList);
-				 returnList.add(questionAnswerVO);
+				 Set<Long> smsQuestionIds = questionMap.keySet();
+				 if(smsQuestionIds != null && smsQuestionIds.size() > 0)
+				 {
+					 for (Long smsQuestionId : smsQuestionIds)
+					 {
+						 SelectOptionVO OptionVO = new SelectOptionVO();
+						 List<SelectOptionVO> OptionList = new ArrayList<SelectOptionVO>();
+						 List<SelectOptionVO> selOptionList = questionMap.get(smsQuestionId);
+						 int i = 0;
+						 for (SelectOptionVO selectOptionVO : selOptionList)
+						 {
+							 if(selectOptionVO.getId() != null)
+							 {
+								 if(i == 0)
+								 {
+									 OptionVO.setId(selectOptionVO.getId());
+									 OptionVO.setName(StringEscapeUtils.unescapeJava(selectOptionVO.getName()));
+									 OptionVO.setPartno(selectOptionVO.getPartno());
+									 OptionVO.setUrl(selectOptionVO.getUrl());
+								 }
+								 SelectOptionVO selOptionVO = new SelectOptionVO();
+								 
+								 selOptionVO.setLocation(selectOptionVO.getLocation());
+								 selOptionVO.setPerc(selectOptionVO.getPerc());
+								 
+								 OptionList.add(selOptionVO);
+								 i++;
+							 }
+							 
+						}
+						 OptionVO.setSelectOptionsList(OptionList);
+						 returnList.add(OptionVO);
+					}
+				 }
+				
 				 
 			 }
 		 } catch (Exception e)
@@ -1434,8 +1472,9 @@ public class DebateService implements IDebateService{
 				 for (Long partyId : partyIds) {
 					SelectOptionVO selectOptionVO = new SelectOptionVO();
 					selectOptionVO.setId(partyId);
-					Double avg = scalesMap.get(partyId)/countMap.get(partyId);
-					selectOptionVO.setPerc(avg);
+					//Double avg = scalesMap.get(partyId)/countMap.get(partyId);
+					selectOptionVO.setConstituencyId(countMap.get(partyId));
+					selectOptionVO.setPerc(Double.parseDouble(new BigDecimal((scalesMap.get(partyId))/countMap.get(partyId)).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 					selectOptionVO.setName(partyMap.get(partyId) != null ? partyMap.get(partyId) :"");
 					returnList.add(selectOptionVO);
 				}
@@ -1550,7 +1589,7 @@ public class DebateService implements IDebateService{
 							}
 							else
 							{
-								candidateVO.setPerc(scaleCount);
+								candidateVO.setPerc(Double.parseDouble(new BigDecimal((scaleCount)/debateCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString()));
 							}
 							if(debateCount == null)
 							{

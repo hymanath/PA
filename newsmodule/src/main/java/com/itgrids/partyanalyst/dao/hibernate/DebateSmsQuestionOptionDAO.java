@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -25,11 +26,16 @@ public class DebateSmsQuestionOptionDAO extends GenericDaoHibernate<DebateSmsQue
 		return query.list();
 	}
 
-	public List<Object[]> getSmsQuestionDetails()
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSmsQuestionDetails(Date fromDate,Date toDate)
 	{
 		Query query = getSession().createQuery("select model.debateSmsQuestion.debateSmsQuestionId,model.debateSmsQuestion.question ," +
-				" model.option , model.percantage from DebateSmsQuestionOption model where model.debateSmsQuestion.debate.isDeleted = 'N'");
-		
+				" model.option , model.percantage,model.debateSmsQuestion.debate.channel.channelName, model.debateSmsQuestion.debate.startTime  " +
+				" from DebateSmsQuestionOption model where model.debateSmsQuestion.debate.isDeleted = 'N'" +
+				" and date(model.debateSmsQuestion.debate.startTime) >= :fromDate and " +
+				" date(model.debateSmsQuestion.debate.endTime) <= :toDate "  );
+		query.setParameter("fromDate", fromDate);
+		query.setParameter("toDate", toDate);
 		return query.list();
 	}
 }

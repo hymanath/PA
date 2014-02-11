@@ -725,6 +725,18 @@ function callAjax(jsObj,url)
 						$("#errorMsgDiv").html(" Exception occured While saving Debate Candidate.");
 					}
 				}
+				else if(jsObj.task == "smsPole")
+				{
+					buildSmsPoleDetails(myResults);
+				}
+				else if(jsObj.task == "party")
+				{
+					buildPartyDetails(myResults);
+				}
+				else if(jsObj.task == "candidate")
+				{
+					buildCandidateDetails(myResults);
+				}				
 			 		
 			}catch(e)
 			{   
@@ -741,7 +753,122 @@ function callAjax(jsObj,url)
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
 	}
 	
+
 	
+function buildSmsPoleDetails(myResults)
+{
+	$('#analysisDiv').html('');
+	if(myResults != null && myResults.length > 0)
+	{
+		 var str = '';
+		 str += '<table class="table table-bordered " id="smsPoleTable">';
+		 str +='<thead>';
+		 str += '<tr>';
+		 str += '<th>Date</th>';
+		 str += '<th>Channel</th>';
+		 str += '<th>Question</th>';
+		 str += '<th>YES</th>';
+		 str += '<th>NO</th>';
+		 str += '</tr>';
+		  str +='</thead><tbody>';
+		 for(var i in myResults)
+		 {
+			str += '<tr>';
+			str += '<td>'+myResults[i].url+'</td>';
+			str += '<td>'+myResults[i].partno+'</td>';
+			str += '<td>'+myResults[i].name+'</td>';
+			for(var j in myResults[i].selectOptionsList)
+			{
+				str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+			}
+			
+			str += '</tr>';
+		 }
+		 str += '</tbody></table>';
+		 $('#analysisDiv').html(str);
+		 
+		 $("#smsPoleTable").dataTable({
+			"aaSorting": [[ 1, "desc" ]],
+			"iDisplayLength": 15,
+			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+			"aoColumns": [null,null,null,null,null]
+		});
+
+	}
+}
+
+function buildPartyDetails(myResults)
+{
+	$('#analysisDiv').html('');
+	if(myResults != null && myResults.length > 0)
+	{
+		 var str = '';
+		 str += '<table class="table table-bordered " id="partyTable">';
+		 str +='<thead>';
+		 str += '<tr>';
+		 str += '<th>S.NO</th>';
+		 str += '<th>Party</th>';
+		 str += '<th>Scale %</th>';
+		 str += '</tr>';
+		  str +='</thead><tbody>';
+		  var count = 1;
+		 for(var i in myResults)
+		 {
+			str += '<tr>';
+			str += '<td>'+count+'</td>';
+			str += '<td>'+myResults[i].name+'</td>';
+			str += '<td>'+myResults[i].perc+'</td>';
+			str += '</tr>';
+			count++;
+		 }
+		 str += '</tbody></table>';
+		 $('#analysisDiv').html(str);
+		 
+		 $("#partyTable").dataTable({
+			"aaSorting": [[ 1, "desc" ]],
+			"iDisplayLength": 15,
+			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+			"aoColumns": [null,null,null]
+		});
+	}
+}
+
+function buildCandidateDetails(myResults)
+{
+	$('#analysisDiv').html('');
+	if(myResults != null && myResults.length > 0)
+	{
+		var str = '';
+		 for(var i in myResults)
+		 {
+			str  += '<h4>'+myResults[i].selectOptionsList[0].name+'</h4>';
+			 str += '<table class="table table-bordered " id="candidateTable">';
+			 str +='<thead>';
+			 str += '<tr>';
+			 str += '<th>S.NO</th>';
+			 str += '<th>Candidate</th>';
+			 str += '<th>Scale %</th>';
+			 str += '</tr>';
+			 str +='</thead><tbody>';
+			 var count = 1;
+			for(var j in myResults[i].selectOptionsList)
+			{
+				str += '<tr>';
+				str += '<td>'+count+'</td>';
+				str += '<td>'+myResults[i].selectOptionsList[j].location+'</td>';
+				str += '<td>'+myResults[i].selectOptionsList[j].count+'/'+myResults[i].selectOptionsList[j].perc+'</td>';
+				str += '</tr>';
+				count++;
+			}
+			
+			
+		
+			str += '</tbody></table>';
+
+		 }
+		  $('#analysisDiv').html(str);
+	}
+}
 function builddesignationsList(results,jsObj)
 {
 
@@ -852,6 +979,63 @@ return oPayload;
 
 }
 }
+function getDebateAnalysisDetails(task)
+{
+	var startDate = $('#fromDateIdForAnalysis').val();
+	var endDate = $('#toDateIdForAnalysis').val();
+	$("#RerrDivForAnalysis").html('');
+	if(startDate != undefined && startDate.length <=0){
+		$("#RerrDivForAnalysis").html("From Date is Required.");
+		return;
+	}
+	if(endDate != undefined && endDate.length <=0){	
+		$("#RerrDivForAnalysis").html("To Date is Required.");
+		return;		
+	}
+	
+	var fromDateArrr = startDate.split("/");			
+			var frommonth=fromDateArrr[0];
+			var fromDat=fromDateArrr[1];
+			var fromyear=fromDateArrr[2];
+			
+	var toDateArr = endDate.split("/");			
+			var tomonth=toDateArr[0];
+			var toDat=toDateArr[1];
+			var toyear=toDateArr[2];
+	
+	if(fromyear>toyear){
+		$("#RerrDivForAnalysis").html('From Date should not greater then To Date ');	
+		return;
+	}
+	 if(frommonth>tomonth){
+		   if(fromyear == toyear){
+			$("#RerrDivForAnalysis").html('From Date should not greater then To Date ');		
+		return;
+		}		
+	}
+	
+	if(fromDat>toDat){	
+		if(frommonth == tomonth && fromyear == toyear){
+			$("#RerrDivForAnalysis").html('From Date should not greater then End Date ');		
+			return;				
+		   }
+	}
+	
+	$("#RerrDivForAnalysis").html('');
+	
+	var jsObj = {
+				fromDate : $('#fromDateIdForAnalysis').val(),
+				toDate   : $('#toDateIdForAnalysis').val(),
+				task     : task	
+		};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getDebateAnalysisDetailsAction.action?"+rparam;
+		callAjax(jsObj,url);
+	
+}
+
+
 function getDebateDetailsBtDates()
 {
 	var startDate = $('#fromDateId').val();
@@ -1064,14 +1248,17 @@ function getDesignationList(designationList1)
 	var url = "getDesignationsListAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
-function showNewDebateDiv(){
+/* function showNewDebateDiv(){
 $('#newDibateDiv').show();
 $('#debateReportDiv').hide();
+$('#debateAnalysisDiv').hide();
 }
 function showDebateReportDiv(){
 $('#newDibateDiv').hide();
+$('#debateAnalysisDiv').hide();
 $('#debateReportDiv').show();
-}
+} */
+
 
 var totalPerc;
 function updatePercntage(id){
@@ -1132,6 +1319,7 @@ function updatePercntage(id){
 function showNewDebateDiv(){
 	$('#newDibateDiv').show();
 	$('#debateReportDiv').hide();
+	$('#debateAnalysisDiv').hide();
 }
 function showDebateReportDiv(){
 	$('#newDibateDiv').hide();
@@ -1139,8 +1327,16 @@ function showDebateReportDiv(){
 	$('#fromDateId').val('');
 	$('#toDateId').val('');
 	$('#debateReportDiv').show();
+	$('#debateAnalysisDiv').hide();
 }
 
+function showDebateAnalysisDiv(){
+	$('#newDibateDiv').hide();
+	$('#debateAnalysisDiv').show();
+	$('#debateReportDiv').hide();
+	$('#fromDateIdForAnalysis').val('');
+	$('#toDateIdForAnalysis').val('');
+}
 function buildDebateAnalysisDiv()
 {
 	var str = '';

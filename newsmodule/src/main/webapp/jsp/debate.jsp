@@ -92,7 +92,7 @@
 		
 			
 	<style type="text/css">
-	#errorMsgDiv,#RerrDiv{
+	#errorMsgDiv,#RerrDiv,#RerrDivForAnalysis{
 		font-weight:bold;
 		margin-bottom:10px;
 		color:red;
@@ -148,6 +148,13 @@ $(function () {
 	$('#toDateId').datepicker({
 	maxDate:new Date()
 	});
+	$('#fromDateIdForAnalysis').datepicker({
+	maxDate:new Date()
+	});
+	$('#toDateIdForAnalysis').datepicker({
+	maxDate:new Date()
+	});
+	
 });
 
 
@@ -296,9 +303,9 @@ var channelsArray = new Array();
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateReportDiv()" style="cursor:pointer;color: #005580;">View Debate Details</a>
 					</li>	
-					<!--<li class="">
+					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Analysis</a>
-					</li>-->					
+					</li>					
 				</ul>
 	</div>
 	
@@ -463,12 +470,38 @@ var channelsArray = new Array();
 				<div align="center" style="margin-bottom: 15px; margin-top: 10px;">
 					<a class="btn btn-success" onClick="getDebateDetailsBtDates();">Submit</a>
 				</div>
+				
+				
 			
 			</div>
 			
 			<div id="dateWiseReportDiv" class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt-paginator yui-pg-container yui-dt"></div>
 	</div>
 	
+	
+	<div id="debateAnalysisDiv" class="container text-center" style="display:none;">
+		<div id="RerrDivForAnalysis"></div>
+		<div class="row-fluid m_top10" >
+			<div class="span4 offset2" > 
+			<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">From Date  <font class="requiredFont">*</font></label> <input type="text" id="fromDateIdForAnalysis"></input>
+			</div>
+			
+			<div class="span4" > 
+			<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">To Date  <font class="requiredFont">*</font></label>  <input type="text" id="toDateIdForAnalysis"></input>
+			</div>		
+		</div>
+		<div class="row-fluid m_top10 btn-group" >
+			<div>
+				<ul class="inline">   
+					<li><a class="btn btn-info" onClick="getDebateAnalysisDetails('candidate');">Candidate</a> </li> 
+					<li><a class="btn btn-info" onClick="getDebateAnalysisDetails('party');">Party</a></li>
+					<li><a class="btn btn-info" onClick="getDebateAnalysisDetails('smsPole');">Sms Pole</a></li> 
+				</ul>
+			</div>
+		
+		</div>
+		<div id="analysisDiv"></div>
+	</div>
 
 		<div id="createCandidateDiv" style="display:none;">
 				

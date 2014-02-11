@@ -374,6 +374,30 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		return debateService;
 	}
 
+	
+	public List<SelectOptionVO> getQuestionOptionsList() {
+		return questionOptionsList;
+	}
+
+	public void setQuestionOptionsList(List<SelectOptionVO> questionOptionsList) {
+		this.questionOptionsList = questionOptionsList;
+	}
+
+	public List<SelectOptionVO> getPartyWiseList() {
+		return partyWiseList;
+	}
+
+	public void setPartyWiseList(List<SelectOptionVO> partyWiseList) {
+		this.partyWiseList = partyWiseList;
+	}
+
+	public List<SelectOptionVO> getCandidateWiseList() {
+		return candidateWiseList;
+	}
+
+	public void setCandidateWiseList(List<SelectOptionVO> candidateWiseList) {
+		this.candidateWiseList = candidateWiseList;
+	}
 
 	public String execute()
 	{
@@ -737,7 +761,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		return Action.SUCCESS;
 	}
 	
-	public String getDebateScalingAnalysisForPartyWise()
+	
+	public String getDebateAnalysisDetails()
 	{
 		try 
 		{
@@ -750,8 +775,20 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			jObj = new JSONObject(getTask());
 			String fromDateStr = jObj.getString("fromDate");
-			String toDateStr = jObj.getString("toate");
-			partyWiseList = debateService.getDebateAnalysisByPartyForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+			String toDateStr = jObj.getString("toDate");
+			if(jObj.getString("task").equalsIgnoreCase("smsPole"))
+			{
+				debateDetails = debateService.getDebateSMSQuestions(jObj.getString("fromDate"),jObj.getString("toDate"));
+			}
+			else if(jObj.getString("task").equalsIgnoreCase("candidate"))
+			{
+				debateDetails = debateService.getDebateAnalysisBycandidateForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+			}
+			else
+			{
+				debateDetails = debateService.getDebateAnalysisByPartyForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+			}
+			
 		}
 		catch (Exception e)
 		{
@@ -759,8 +796,30 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	/*public String getDebateScalingAnalysisForPartyWise()
+	{
+		try 
+		{
+			LOG.info(" Entered into getDebateScalingAnalysisForPartyWise() in DebateAction class. ");
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			if(regVo == null)
+			return Action.ERROR;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDate");
+			String toDateStr = jObj.getString("toDate");
+			partyWiseList = debateService.getDebateAnalysisByPartyForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
+		}
+		catch (Exception e)
+		{
+			LOG.error(" Exception occured in getDebateScalingAnalysisForPartyWise() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}*/
 	
-	public String getDebateScalingAnalysisForCandidateWise()
+	/*public String getDebateScalingAnalysisForCandidateWise()
 	{
 		try 
 		{
@@ -781,7 +840,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			LOG.error(" Exception occured in getDebateScalingAnalysisForCandidateWise() in DebateAction class. ",e);
 		}
 		return Action.SUCCESS;
-	}
+	}*/
 	
 	public String searchResultsForDebate()
 	{
@@ -802,4 +861,24 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
+	
+	/*public String getSmsQuestionDetails()
+	{
+		try
+		{
+			LOG.info(" Entered into searchResultsForDebate() in DebateAction class. ");
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			if(regVo == null)
+			return Action.ERROR;
+			
+			jObj = new JSONObject(getTask());
+			debateDetails = debateService.getDebateSMSQuestions(jObj.getString("fromDate"),jObj.getString("toDate"));
+		}
+		catch (Exception e)
+		{
+			LOG.error(" Exception occured in searchResultsForDebate() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}*/
 }

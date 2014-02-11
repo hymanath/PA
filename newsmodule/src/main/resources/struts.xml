@@ -6017,11 +6017,30 @@
 		  </action>
 		  
 	 	  <action name="getCandidatesListForDebateAction" class="debateAction" method="getCandidatesListForDebate">
-		   <result name="success" type="json">
-		 	<param name="root">candidatesList</param>
-		   </result>
+			   <result name="success" type="json">
+			 		<param name="root">candidatesList</param>
+			   </result>
 		  </action>
 		  
+		  
+		   <action name="getDebateAnalysisDetailsAction" class="debateAction" method="getDebateAnalysisDetails">
+			   <result name="success" type="json">
+			 		<param name="root">debateDetails</param>
+			   </result>
+		   </action>
+		   
+		   <!-- <action name="getDebateScalingAnalysisForPartyWiseAction" class="debateAction" method="getDebateScalingAnalysisForPartyWise">
+			   <result name="success" type="json">
+			 		<param name="root">partyWiseList</param>
+			   </result>
+		   </action> -->
+		  
+		   <!-- <action name="getDebateScalingAnalysisForCandidateWiseAction" class="debateAction" method="getDebateScalingAnalysisForCandidateWise">
+			   <result name="success" type="json">
+			 		<param name="root">candidateWiseList</param>
+			   </result>
+		   </action> -->
+		   
 	 	  <action name="genereateReportAction" class="debateAction" method="generateReport">
 	 			 <result>/jsp/genereateDebetReport.jsp</result>
 	 	  </action>
