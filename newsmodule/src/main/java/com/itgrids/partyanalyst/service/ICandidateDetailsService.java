@@ -348,4 +348,8 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getKeywordsListCount();	 
 	 
 	 public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO);
+	 
+	 public List<SelectOptionVO> getUsersNewsUploadStatus(Date fromDate,Date toDate);
+	 
+	 public SelectOptionVO generateExcelForUsersNewsUploadStatus(Date fromDate,Date toDate,String from,String to);
 }

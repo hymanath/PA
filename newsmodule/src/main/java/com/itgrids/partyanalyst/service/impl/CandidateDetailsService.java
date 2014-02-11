@@ -4,6 +4,7 @@
  */
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,12 +16,20 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -114,6 +123,7 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.util.IConstants;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IWebConstants;
 
 
 public class CandidateDetailsService implements ICandidateDetailsService {
@@ -854,7 +864,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 			 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
-			UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()));
+			UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
 			
 			File file = new File();
 			
@@ -1361,7 +1371,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			  }
 			
 			 
-			  UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()));
+			  UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
 			  
 			  File file = new File();
 			  FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
@@ -1576,7 +1586,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	
-	public UserAddress saveFileLocationInUserAddress(Long locationId,Long locationValue)
+	public UserAddress saveFileLocationInUserAddress(Long locationId,Long locationValue,Long mandalId)
 	{
 	 try{
 		 
@@ -1650,7 +1660,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		else if(locationId == 8L)
 		{
 			locationValue = Long.parseLong(locationValue.toString().substring(1));
-			Long assemBlyLocalEleId = (Long)assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(constituencyDAO.get(locationValue).getLocalElectionBody().getLocalElectionBodyId()).get(0);
+			Long assemBlyLocalEleId = null;
+			if(mandalId != null){
+				assemBlyLocalEleId = Long.valueOf(mandalId.toString().substring(1));
+			}else{
+			 assemBlyLocalEleId = (Long)assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyId(constituencyDAO.get(locationValue).getLocalElectionBody().getLocalElectionBodyId()).get(0);
+			}
 			Long assId = assemblyLocalElectionBodyDAO.get(assemBlyLocalEleId).getConstituency().getConstituencyId();
 			userAddress.setConstituency(constituencyDAO.get(assId));
 			userAddress.setParliamentConstituency(getParliamentConstiForAssembly(assId));
@@ -9331,7 +9346,7 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 		 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
-		UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()));
+		UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
 		
 		File file = fileDAO.get(fileVO.getFileId());
 		
@@ -9541,4 +9556,91 @@ public SelectOptionVO getDesignationOfCandidateFromCandidateTable(Long candidate
 	}
 
 }
+
+ public List<SelectOptionVO> getUsersNewsUploadStatus(Date fromDate,Date toDate){
+	 List<SelectOptionVO> returnList = new ArrayList<SelectOptionVO>();
+	 try{
+	  SelectOptionVO vo = null;
+	  List<Object[]> districtWiseCountList =  fileSourceLanguageDAO.getDistrictWiseUploadedNewsCount(fromDate, toDate);
+	  if(districtWiseCountList != null && districtWiseCountList.size() > 0){
+		  for(Object[] districtCount:districtWiseCountList){
+			  vo = new SelectOptionVO();
+			  vo.setId((Long)districtCount[1]);
+			  vo.setName(districtCount[2].toString());
+			  vo.setCount((Long)districtCount[0]);
+			  returnList.add(vo);
+		  }
+	  }
+	 }catch(Exception e){
+		 log.error("Exception Occured in getUsersNewsUploadStatus method, Exception - ",e);
+	 }
+	 return returnList;
+ }
+ 
+ public SelectOptionVO generateExcelForUsersNewsUploadStatus(Date fromDate,Date toDate,String from,String to){
+	 SelectOptionVO selectOptionVO = new SelectOptionVO();
+	 FileOutputStream fileOut = null;
+	 try{
+		 selectOptionVO.setName("success");
+		 Random randomNum = new Random();
+		 String filename= "Reports"+"/UserStatus"+"/"+"report"+randomNum.nextInt(10000000)+".xls";
+		 selectOptionVO.setUrl(filename);
+		 String FILE = IWebConstants.STATIC_CONTENT_FOLDER_URL+filename;
+		 java.io.File file  = new java.io.File(FILE);
+		 fileOut =  new FileOutputStream(FILE);
+		 file.createNewFile();
+		 List<SelectOptionVO> userStatusList = getUsersNewsUploadStatus(fromDate, toDate);
+		 HSSFWorkbook workbook=new HSSFWorkbook();
+		    HSSFFont font1= workbook.createFont();
+		    font1.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+		    font1.setItalic(false);
+		    HSSFFont font= workbook.createFont();
+		    font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+		    font.setItalic(false);
+		    font.setFontHeight((short)240);
+		    HSSFCellStyle style = workbook.createCellStyle();
+		    style.setFont(font);
+		    HSSFCellStyle style1 = workbook.createCellStyle();
+		    style1.setFont(font1);
+		 HSSFSheet sheet =  workbook.createSheet("News Status"); 
+		    sheet.setColumnWidth(1, 4800);
+			sheet.setColumnWidth(2, 4800);
+			HSSFRow rowhead=   sheet.createRow((short)0);
+		    Cell cell = rowhead.createCell(0);
+			cell.setCellValue("Cumulative News Upload Status From "+from+" To "+to);
+			cell.setCellStyle(style);
+			sheet.addMergedRegion(new CellRangeAddress(0,0,0,5));
+		 int rowCount = 2;
+		   rowhead =   sheet.createRow((short)rowCount);
+	       cell = rowhead.createCell(1);
+		  cell.setCellValue("District");
+		  cell.setCellStyle(style1);
+		  cell = rowhead.createCell(2);
+		  cell.setCellValue("Total News Articles Uploaded");
+		  cell.setCellStyle(style1);
+		 for(SelectOptionVO userStatus:userStatusList){
+			 rowCount = rowCount+1;
+			  rowhead=   sheet.createRow((short)rowCount);
+		      cell = rowhead.createCell(1);
+			  cell.setCellValue(userStatus.getName());
+			  cell = rowhead.createCell(2);
+			  cell.setCellValue(userStatus.getCount());
+			 
+		 }
+		 workbook.write(fileOut);
+		 fileOut.close();
+	 }catch(Exception e){
+		 log.error("Exception Occured in generateExcelForUsersNewsUploadStatus method, Exception - ",e);
+	 }finally{
+			if(fileOut != null){
+				 try{
+				  fileOut.close();
+				 }catch(Exception e1){
+						
+				 }
+			}
+		}
+	 
+	 return selectOptionVO;
+ }
 }

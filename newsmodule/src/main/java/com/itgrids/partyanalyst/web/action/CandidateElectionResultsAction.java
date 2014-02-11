@@ -113,6 +113,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String profileId;
 	private String profileGalleryType;
 	private Long category;
+	private Long mandalId;
 	private IPartyDetailsService partyDetailsService;
 	private Long newsimportance;
 	private List<CandidateCommentsVO> candidateCommentsVO;
@@ -1170,6 +1171,16 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	}
 
 
+	public Long getMandalId() {
+		return mandalId;
+	}
+
+
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+
+
 	public String uploadFilesForMultipleCandidates()
 	{
 		
@@ -1417,6 +1428,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	  String filePath = null;
 	  String fileNames = null;
 	  FileVO fileVO = new FileVO();
+	  fileVO.setStateId(mandalId);
 	  
 	  session = request.getSession();
 	  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -3545,7 +3557,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setResponseFileIdsStr(responseFileIdsStr);
 		
 	    fileVO.setCandidatePartyNewsVOList(candidatePartyNewsVOList);
-	    
+	    fileVO.setStateId(mandalId);
 	    result = candidateDetailsService.editUploadedFileForCandidateParty(fileVO);
 		
 	    if(result.getResultCode() == ResultCodeMapper.SUCCESS){
@@ -3563,4 +3575,47 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	 return Action.SUCCESS;
 	}
 	
+	public String getUsersNewsUploadStatus(){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date fromDate = null;
+		Date toDate = null;
+		try{
+		jObj = new JSONObject(getTask());
+		  String fromDateString = jObj.getString("fromDate");
+		  String toDateString = jObj.getString("toDate");
+		  if(fromDateString.trim().length() > 0){
+			  fromDate = sdf.parse(fromDateString);
+		  }
+		  if(toDateString.trim().length() > 0){
+			  toDate = sdf.parse(toDateString);
+		  }
+		}catch(Exception e){
+			log.error(" Exception Occured in getUsersNewsUploadStatus() method, Exception - ",e);
+		}
+		selectOptionList = candidateDetailsService.getUsersNewsUploadStatus(fromDate, toDate);
+		return Action.SUCCESS;
+	}
+	
+	public String generateExcelForUsersNewsUploadStatus(){
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date fromDate = null;
+		Date toDate = null;
+		String fromDateString = null;
+		String toDateString = null;
+		try{
+		jObj = new JSONObject(getTask());
+		  fromDateString = jObj.getString("fromDate");
+		  toDateString = jObj.getString("toDate");
+		  if(fromDateString.trim().length() > 0){
+			  fromDate = sdf.parse(fromDateString);
+		  }
+		  if(toDateString.trim().length() > 0){
+			  toDate = sdf.parse(toDateString);
+		  }
+		}catch(Exception e){
+			log.error(" Exception Occured in generateExcelForUsersNewsUploadStatus() method, Exception - ",e);
+		}
+		candidatesList1 = candidateDetailsService.generateExcelForUsersNewsUploadStatus(fromDate, toDate,fromDateString,toDateString);
+		return Action.SUCCESS;
+	}
 }

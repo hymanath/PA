@@ -734,6 +734,8 @@ browser1.focus();
 }
 
 function buildNewsDisplay(resultMap){
+	$("#stateAjaxCallImg").hide();
+	$("#districtAjaxCallImg").hide();
 var str = "";
 if(resultMap != null)
 	for(var i in resultMap.NewsGallary){

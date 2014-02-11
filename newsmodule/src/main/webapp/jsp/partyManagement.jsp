@@ -14,7 +14,7 @@
 <SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
 
   <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery1.10.3-ui.css" />
-  <script src="js/jquery-1.9.1.js"></script>
+
   <script src="js/ui/1.10.3/jquery-ui.js"></script>
     <script src="js/jquery-1.8.2.js"></script>	
     <script src="js/ui/1.9.0-themes-base/jquery-ui.js"></script>
@@ -97,7 +97,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
-
+<script type="text/javascript" src="js/blockui.js"></script>
 <style type="text/css">
 @font-face
 {
@@ -118,10 +118,10 @@ font-size:20px;
 }
 #candidateListForPartyImg{margin-left:300px;}
 
-#profileManagementMainOuterDiv4 table,#reportsDiv table,#locationWiseNewsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-#profileManagementMainOuterDiv4 table tr:nth-child(even),#reportsDiv table tr:nth-child(even),#locationWiseNewsDiv table tr:nth-child(even){background:#EdF5FF;}
-#profileManagementMainOuterDiv4 table td,#reportsDiv table td,#locationWiseNewsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#profileManagementMainOuterDiv4 table th,#reportsDiv table th,#locationWiseNewsDiv table th{
+#userTrackingDetails table,#profileManagementMainOuterDiv4 table,#reportsDiv table,#locationWiseNewsDiv table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#userTrackingDetails table tr:nth-child(even),#profileManagementMainOuterDiv4 table tr:nth-child(even),#reportsDiv table tr:nth-child(even),#locationWiseNewsDiv table tr:nth-child(even){background:#EdF5FF;}
+#userTrackingDetails table td,#profileManagementMainOuterDiv4 table td,#reportsDiv table td,#locationWiseNewsDiv table td{padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#userTrackingDetails table th,#profileManagementMainOuterDiv4 table th,#reportsDiv table th,#locationWiseNewsDiv table th{
 background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -185,6 +185,11 @@ h2{
 }
 .yui-skin-sam .yui-dt-liner{
 	padding:4px 0px;
+}
+#gettrackdtlsId{
+    margin-bottom: 5px;
+    margin-left: 440px;
+    margin-top: 7px;
 }
 </style>
 </head>
@@ -405,6 +410,7 @@ function createPartyKeywordDiv(){
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDivStatus").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","block");
   $("#newDesignationDiv").css("display","none");
    $("#newEditCandidateDiv").css("display","none");
@@ -430,6 +436,7 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementHeaderDiv5").css("display","none");
 	  $("#profileManagementMainOuterDiv6").css("display","none");
 	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDivStatus").css("display","none");
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","block");
 	  $("#newEditCandidateDiv").css("display","none");
@@ -457,6 +464,7 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementHeaderDiv5").css("display","none");
 	  $("#profileManagementMainOuterDiv6").css("display","none");
 	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDivStatus").css("display","none");
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","none");
 	  $("#newEditCandidateDiv").css("display","none");
@@ -485,6 +493,7 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementHeaderDiv5").css("display","none");
 	  $("#profileManagementMainOuterDiv6").css("display","none");
 	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDivStatus").css("display","none");
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","none");
 	  $("#newEditCandidateDiv").css("display","block");
@@ -514,6 +523,7 @@ function createPartyKeywordDiv(){
 	  $("#profileManagementHeaderDiv5").css("display","none");
 	  $("#profileManagementMainOuterDiv6").css("display","none");
 	  $("#profileManagementMainOuterDiv7").css("display","none");
+	  $("#profileManagementMainOuterDivStatus").css("display","none");
 	  $("#profileManagementMainOuterDiv8").css("display","none");
 	  $("#newDesignationDiv").css("display","none");
 	  $("#newEditCandidateDiv").css("display","none");
@@ -539,6 +549,7 @@ function clearDivsForGallary(){
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDivStatus").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","none");
   $('#statusDiv1').html('');
   $('#statusDiv2').html('');
@@ -699,6 +710,11 @@ function createNewParty()
 						  <li class="">
 					         <a data-toggle="tab" value="viewReport" id="viewReports" onclick=" getNewsReports();" style="cursor:pointer;color: #005580;">View Report</a>
 					      </li>
+					      <c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+						  <li class="">
+					         <a data-toggle="tab" value="viewReport" id="viewReports" onclick=" showUploadStatus();" style="cursor:pointer;color: #005580;">View Users News Uploading Status</a>
+					      </li>
+					      </c:if>		
 						</ul>
 					</li>
 					<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
@@ -752,7 +768,7 @@ function createNewParty()
 </div>
 </div>
 
-<div id="dialog" title="Update Category">
+<div id="dialog" title="Update Category" style="display:none;">
 <div>
 	<div style="clear:both;"><span>Name</span>: <input type="text" id="categoryNameId"/></div>
 	<div style="clear:both;"><span>Visibility</span>: 
@@ -1023,7 +1039,14 @@ function createNewParty()
 		
 	 </div>	
 </div>	 
-
+<div id='profileManagementMainOuterDivStatus' style="display:none">
+	<div id='profileManagementHeaderStatus' class="row-fluid">
+	<h2 class="span12 text-center" style="background-color: #F5F5F5;font-weight: bold;padding-bottom: 43px;">News Articles Uploaded By Users</h2>
+	</div>
+<div id='newsUploadsReports' class="divInfo">
+		
+	 </div>	
+</div>
 <div id="createCandidateDiv" style="display:none;">
 
 <div id="errorMsgDiv"></div>
@@ -2135,6 +2158,7 @@ function assignNewsToCandidate()
   $("#profileManagementMainOuterDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
    $("#profileManagementMainOuterDiv7").css("display","none");
+   $("#profileManagementMainOuterDivStatus").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","none");
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
@@ -2824,6 +2848,7 @@ function createReport()
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDivStatus").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","none");
   $('#showKeywordsDiv').css("display","none");
   		$('#statusDiv1').html('');
@@ -3009,6 +3034,7 @@ function getUnassignedKeyWords()
   $("#profileManagementMainOuterDiv6").css("display","block");
   $("#profileManagementHeaderDiv6").css("display","none");
     $("#profileManagementMainOuterDiv7").css("display","none");
+	$("#profileManagementMainOuterDivStatus").css("display","none");
   $("#profileManagementMainOuterDiv8").css("display","none");
   		$('#statusDiv1').html('');
 		$('#statusDiv2').html('');
@@ -4610,6 +4636,7 @@ function getKeywordsByCount()
   $("#profileManagementHeaderDiv5").css("display","none");
   $("#profileManagementMainOuterDiv6").css("display","none");
   $("#profileManagementMainOuterDiv7").css("display","none");
+  $("#profileManagementMainOuterDivStatus").css("display","none");
   $("#newKeywordDiv").css("display","none");
   $("#mergeKeywordDiv").css("display","none");
   $("#showKeywordsDiv").css("display","block");

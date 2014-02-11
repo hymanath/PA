@@ -891,6 +891,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 			<div id="scopeDiv1">
 			 <input type="hidden" id="locationScope1" name="locationScope" value="${news.selectOptionVOList[0].id}"/>
 			 <input type="hidden" id="locationValue1" name="locationValue" value="${news.selectOptionVOList[0].location}"/>
+			  <input type="hidden" id="locationValueMandal" name="mandalId" value="${news.selectOptionVOList[0].value}"/>
 			 </div>
 					<div class="row-fluid">    <div class="span2" style="margin-right: 50px;">    
 						<label>Location Scope    </label>

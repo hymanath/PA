@@ -33,7 +33,7 @@ public class NewsResponseDAO extends GenericDaoHibernate<NewsResponse,Long> impl
 		 		" and (model.file.isDeleted !='Y' or model.file.isDeleted is null) and (model.candidatePartyFile.file.isDeleted !='Y' or model.candidatePartyFile.file.isDeleted is null)" +
 		 		" group by model.file.fileId order by  model.file.fileId desc"); 
 		 queryObj.setFirstResult(0);
-		 queryObj.setMaxResults(5);
+		 queryObj.setMaxResults(4);
 		 
 		 return queryObj.list();
 		 

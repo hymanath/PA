@@ -6108,6 +6108,18 @@
 		   </result> 
 		</action>
 		
+		<action name="getUserUploadStatusAction" class="candidateElectionResultsAction"  method="getUsersNewsUploadStatus">
+		   <result type="json" name="success">
+		    	<param name="root">selectOptionList</param>
+		   </result> 
+		</action>
+		
+		<action name="getUserUploadExcelAction" class="candidateElectionResultsAction"  method="generateExcelForUsersNewsUploadStatus">
+		   <result type="json" name="success">
+		    	<param name="root">candidatesList1</param>
+		   </result> 
+		</action>
+		
         </package>
 		
 </struts>      
