@@ -843,6 +843,8 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 			  stringBuilder.append(" select model.partName from Booth model where model.boothId = :locationValue ");
 		  else if(locationType.equalsIgnoreCase("Village"))
 			  stringBuilder.append(" select model.hamletName from Hamlet model where model.hamletId = :locationValue ");
+		  else if(locationType.equalsIgnoreCase("MUNICIPAL-CORP-GMC"))
+			  stringBuilder.append(" select concat(model.name,' ',model.electionType.electionType) from LocalElectionBody model where model.localElectionBodyId = :locationValue ");
 		 
 		  
 		  Query queryObj = getSession().createQuery(stringBuilder.toString());
