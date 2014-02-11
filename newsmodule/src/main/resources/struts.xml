@@ -6006,7 +6006,7 @@
 		 
 	 	  <action name="debateDetaildBtDatesAction" class="debateAction" method="getDebateDetailsBtDates">
 		   <result name="success" type="json">
-		 	<param name="root">debateDetails</param>
+		 	<param name="root">debateVO</param>
 		   </result>
 		  </action>
 		  
