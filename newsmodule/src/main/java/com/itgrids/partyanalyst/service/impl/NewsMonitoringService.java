@@ -5463,7 +5463,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	  }
 	}
 	
-	public ResultStatus saveCandidatesAndParty(final Long partyId,final String candidateName,final Long designationId,final Long loctionId,final Long locationValue)
+	public ResultStatus saveCandidatesAndParty(final Long partyId,final String candidateName,final Long designationId,final Long loctionId,final Long locationValue,final String isDebate)
 	{
 		final ResultStatus resultStatus = new ResultStatus();
 	  try{
@@ -5512,12 +5512,18 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		  {
 			 candidate.setState(stateDAO.get(1l));
 		  }
+		  if(isDebate != null){
+			  candidate.setIsDebateCandidate("Y");
+		  }
+		  else
+			  candidate.setIsDebateCandidate("N");
 		  
 		  candidate=candidateDAO.save(candidate);
 		  if(candidate != null){
 			  resultStatus.setId(candidate.getCandidateId());
 		  }
 		  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		  resultStatus.setMessage(" "+candidateName+" Created Successfully...");
 		  return resultStatus;
 			  }
 			  
