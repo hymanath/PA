@@ -6288,19 +6288,18 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 				{
 					try{
 					if(voterIdsCardNosMap.get(voterTemp.getVoterId()) == null)
-					{
 						voter = new Voter();
-						voter.setVoterIDCardNo(voterTemp.getVoterId());
-						voter.setName(voterTemp.getName());
-						voter.setHouseNo(voterTemp.getHouseNo());
-						voter.setRelativeName(voterTemp.getGuardianName());
-						voter.setRelationshipType(voterTemp.getRelationShip());
-						voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
-						voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
-						voter = voterDAO.save(voter);
-					}
 					else
 						voter = voterDAO.get(voterIdsCardNosMap.get(voterTemp.getVoterId()));
+					
+					voter.setVoterIDCardNo(voterTemp.getVoterId());
+					voter.setName(voterTemp.getName());
+					voter.setHouseNo(voterTemp.getHouseNo());
+					voter.setRelativeName(voterTemp.getGuardianName());
+					voter.setRelationshipType(voterTemp.getRelationShip());
+					voter.setGender(voterTemp.getSex().equalsIgnoreCase("Male") ? IConstants.MALE : IConstants.FEMALE);
+					voter.setAge(Long.parseLong(voterTemp.getAge().trim()));
+					voter = voterDAO.save(voter);
 					
 					boothPublicationVoter = new BoothPublicationVoter();
 					boothPublicationVoter.setVoter(voter);
