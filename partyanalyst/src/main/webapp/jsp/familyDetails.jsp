@@ -67,7 +67,7 @@
 
 <script type="text/javaScript" >
 google.load("visualization", "1", {packages:["corechart"]});
-var maxr = 1000;
+//var maxr = 5000;
 </script>
 <style type="text/css">	
 #suggestiveMainDiv{float: none;
@@ -107,6 +107,7 @@ var maxr = 1000;
  </div>
 
   <br/> <br/>
+ Select Limit :  <select id="limit"><option value="1000">1000</option><option value="2000">2000</option><option value="3000">3000</option><option value="4000">4000</option><option value="5000">5000</option></select>
  <div id="familyDetailsDiv" style="overflow-x: scroll; height: 500px;display:none;">
  
  </div>
@@ -208,7 +209,7 @@ function getFamilyInfo(startIndex)
 	var publicationId = $("#publicationDateList").val();
 	var fromValue =  $.trim($("#fromValue").val());
 	var toValue =  $.trim($("#toValue").val());
-
+	var maxr = $("#limit").val();
 	var str ='<font color="red">';
 	var flag = true;
 	if(constituencyId == 0)
@@ -408,7 +409,7 @@ function buildFamilyDetails(results,jsObj)
 			itemsOnPage: maxResults,
 			cssStyle: 'light-theme',
 			onPageClick: function(pageNumber, event) {
-				var num=(pageNumber-1)*maxr;
+				var num=(pageNumber-1)*jsObj.results;
 				getFamilyInfo(num);
 				
 			}
