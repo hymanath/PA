@@ -2375,6 +2375,7 @@ function buildFlags(results,voterId)
 	$("#flagOuterDiv").css("display","block");
 		$("#flagOuterDiv").dialog({
 		width:300,
+		title:"Voter Flags",
 		height:300,
 		autoOpen: false,
 		position:'center',
@@ -2424,7 +2425,7 @@ function showAssignFlagsStatus(results,voterId)
 	if(results.resultCode == 0)
 	{
 		$("#errorDiv").html("flag assigned Successfully.....").css("color","green");
-setTimeout(function() { $("#flagOuterDiv").dialog('close') }, 2000);
+        setTimeout(function() { $("#flagOuterDiv").dialog('close') }, 2000);
 	}
 
 }

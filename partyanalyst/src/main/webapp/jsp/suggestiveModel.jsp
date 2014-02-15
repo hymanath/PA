@@ -1071,10 +1071,15 @@ function panchayatMatrx(result)
   <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 485px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
 
- <div class="well" style="float:left;width:150px;margin-top:70px;height:auto;">
+ <div class="well" style="float:left;width:200px;margin-top:70px;height:auto;">
  <fieldset>
   <legend>TOOLS</legend>
- <input type="button" value="getFamilyWise Details" class="btn" id="familyWisebtn" onclick="redirectToFamilyInfo()">
+ <input type="button" value="Get FamilyWise Details" class="btn" id="familyWisebtn" onclick="redirectToFamilyInfo()">
+
+<!-- <span>Caste Wise Info</span>-->
+ <input type="button" value="Get Mandal Wise CasteInfo" class="btn" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
+ <input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
+  <input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
  </fieldset>
   </div>
    <div id="mainDiv" align="center"  style="margin-left: 196px;">
@@ -4454,7 +4459,11 @@ function redirectToFamilyInfo()
   var win=window.open('familyDetailsAction.action', '_blank');
   win.focus();
 }
-
+function redirectToCasteInfo(type)
+{
+var win=window.open('casteReportAction.action?type='+type+'', '_blank');
+win.focus();
+}
 </script>
 </body>
 </html>
