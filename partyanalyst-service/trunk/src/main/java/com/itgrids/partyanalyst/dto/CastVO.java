@@ -29,7 +29,7 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	
 	private Long partyId;
 	
-	private List<CastVO> partiesList;
+	private List<CastVO> partiesList,casteList;
 	
 	private Map<Long,CastVO> partiesMap;
 	
@@ -40,6 +40,15 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	private int expctdVotesCount;
 	
 	private Long panchayatId;
+	private Long locationId;
+	private String locationName;
+	private Long totalVoters;
+	private String panchayat;
+	private String booth;
+	private String constituency;
+	private String tehsil;
+	private String hamlet;
+	
 	
 	public CastVO(){
 		
@@ -48,6 +57,78 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	public CastVO(String castName, String castPercentage) {
 		this.castName = castName;
 		this.castPercentage = castPercentage;
+	}
+
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+
+	public String getPanchayat() {
+		return panchayat;
+	}
+
+	public void setPanchayat(String panchayat) {
+		this.panchayat = panchayat;
+	}
+
+	public String getBooth() {
+		return booth;
+	}
+
+	public void setBooth(String booth) {
+		this.booth = booth;
+	}
+
+	public String getConstituency() {
+		return constituency;
+	}
+
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
+	}
+
+	public String getTehsil() {
+		return tehsil;
+	}
+
+	public void setTehsil(String tehsil) {
+		this.tehsil = tehsil;
+	}
+
+	public String getHamlet() {
+		return hamlet;
+	}
+
+	public void setHamlet(String hamlet) {
+		this.hamlet = hamlet;
+	}
+
+	public Long getLocationId() {
+		return locationId;
+	}
+
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
+	public Long getTotalVoters() {
+		return totalVoters;
+	}
+
+	public void setTotalVoters(Long totalVoters) {
+		this.totalVoters = totalVoters;
 	}
 
 	public String getCastName() {
@@ -199,6 +280,14 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 
 	public void setExpctdVotesCount(int expctdVotesCount) {
 		this.expctdVotesCount = expctdVotesCount;
+	}
+
+	public List<CastVO> getCasteList() {
+		return casteList;
+	}
+
+	public void setCasteList(List<CastVO> casteList) {
+		this.casteList = casteList;
 	}
 
 	
