@@ -6319,5 +6319,15 @@
            		<param name="root">voterDetails</param>
         	</result>
 		</action>
+			<action name="casteReportAction" class="casteReportAction">
+			<result name="success">/jsp/casteReport.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="getCasteDetailsAction" class="casteReportAction" method="getCasteWiseReport">
+			 <result type="json" name="success">
+           		<param name="root">casteWiseResult</param>
+        	</result>
+		</action>
+		
 		</package>
 </struts>      

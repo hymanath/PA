@@ -1339,6 +1339,10 @@
 		  <property name="castePredictionService" ref="castePredictionService" />  
 	    
 	</bean>
+	<bean id="casteReportAction" class="com.itgrids.partyanalyst.web.action.CasteReportAction" singleton="false">
+		  <property name="casteReportService" ref="casteReportService" />  
+	    
+	</bean>
 	
 </beans>	
 	

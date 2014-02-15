@@ -1872,6 +1872,14 @@
  	<property name="userDAO" ref="userDAO" />
  	<property name="casteStateDAO" ref="casteStateDAO" />
   </bean>
+   <bean name="casteReportService" class="com.itgrids.partyanalyst.service.impl.CasteReportService" >
+   <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
+   <property name="tehsilDAO" ref="tehsilDAO" />
+   <property name="casteDAO" ref="casteDAO"></property>
+   <property name="panchayatDAO" ref="panchayatDAO"></property>
+   <property name="boothDAO" ref="boothDAO" />
+   <property name="constituencyDAO" ref="constituencyDAO" />
+     </bean>
   
 </beans>		
 	

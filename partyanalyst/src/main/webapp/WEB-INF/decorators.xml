@@ -283,6 +283,8 @@
 		<pattern>/mobileAppUserMgmtAction*</pattern>
 		<pattern>/predictedCasteAssignAction*</pattern>
 		<pattern>/familyDetailsAction*</pattern>
+		<pattern>/casteReportAction*</pattern>
+		
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
