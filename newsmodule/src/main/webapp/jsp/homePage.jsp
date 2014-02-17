@@ -320,6 +320,13 @@ function handleErrorMessageForpopup()
 									
 									  window.location.href = "homePage.action";
 								}
+								else if(myResults.resultCode == 3)
+								{
+									$("#ajaxcallimage").show();
+									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
+									
+									  window.location.href = "debateAction.action";
+								}
 								else{
 									
 									$('#ajaxcallimage').html('');
