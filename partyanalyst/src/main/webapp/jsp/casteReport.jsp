@@ -435,7 +435,7 @@ var tableToExcel = (function() {
 
 function generateExcel()
 {
- tableToExcel('casteWiseDataTable', 'Report');
+ tableToExcel('CasteDetailsDiv', 'Report');
 }
 </script>
 <script>
