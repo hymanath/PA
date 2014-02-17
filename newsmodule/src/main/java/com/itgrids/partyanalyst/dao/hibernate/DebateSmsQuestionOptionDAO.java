@@ -33,7 +33,7 @@ public class DebateSmsQuestionOptionDAO extends GenericDaoHibernate<DebateSmsQue
 				" model.option , model.percantage,model.debateSmsQuestion.debate.channel.channelName, model.debateSmsQuestion.debate.startTime  " +
 				" from DebateSmsQuestionOption model where model.debateSmsQuestion.debate.isDeleted = 'N'" +
 				" and date(model.debateSmsQuestion.debate.startTime) >= :fromDate and " +
-				" date(model.debateSmsQuestion.debate.endTime) <= :toDate "  );
+				" date(model.debateSmsQuestion.debate.endTime) <= :toDate order by model.debateSmsQuestion.debateSmsQuestionId desc"  );
 		query.setParameter("fromDate", fromDate);
 		query.setParameter("toDate", toDate);
 		return query.list();
