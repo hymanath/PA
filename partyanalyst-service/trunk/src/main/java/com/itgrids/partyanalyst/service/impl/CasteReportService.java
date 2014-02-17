@@ -15,12 +15,18 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
+import com.itgrids.partyanalyst.model.Booth;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICasteReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -36,7 +42,16 @@ public class CasteReportService implements ICasteReportService{
 	private IBoothDAO boothDAO;
 	private IConstituencyDAO constituencyDAO;
 	private IUserDAO userDAO;
+	private IPanchayatHamletDAO panchayatHamletDAO ;
 	
+	public IPanchayatHamletDAO getPanchayatHamletDAO() {
+		return panchayatHamletDAO;
+	}
+
+	public void setPanchayatHamletDAO(IPanchayatHamletDAO panchayatHamletDAO) {
+		this.panchayatHamletDAO = panchayatHamletDAO;
+	}
+
 	public IUserDAO getUserDAO() {
 		return userDAO;
 	}
@@ -205,73 +220,18 @@ public class CasteReportService implements ICasteReportService{
 				});
 		}
 		
-	/*public List<CastVO> getCasteWiseInfoForBooth(List<CastVO> resultList,Long constituencyId,Long publicationId,String type,Long userId)
-	{
-		
-		
-			try{
-				Map<Long,Map<String,CastVO>>  resultMap = new HashMap<Long, Map<String,CastVO>>();
-				List<Object[]> casteList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
-				List<Long> locationIds = new ArrayList<Long>();
-				List<Long> casteStateIds = new ArrayList<Long>();
-				List<Long> panchayatIds = new ArrayList<Long>();
-				 if(casteList != null && casteList.size() > 0)
-				 {
-					  for(Object[] params : casteList)
-					 {
-						  
-						  if(!panchayatIds.contains((Long)params[5]))
-							  panchayatIds.add((Long)params[5]);
-						 if(!locationIds.contains((Long)params[3]))
-							 locationIds.add((Long)params[3]);
-						 if(!casteStateIds.contains((Long)params[2]))
-							 casteStateIds.add((Long)params[2]);
-					 }
-				}
-				 for(Long panchayatId : panchayatIds)
-				 {
-					 CastVO resultVo = new CastVO(); 
-					 resultVo.setPanchayatId(panchayatId);
-					 resultVo.setPanchayat(panchayatDAO.getPanchayatNameById(panchayatId));
-					 List<CastVO> castesList = new ArrayList<CastVO>();
-					 for(Long casteId : casteStateIds)
-					 {
-						 CastVO castvo = new CastVO();
-						 List<CastVO> locationsList = new ArrayList<CastVO>();
-						 castvo.setCastStateId(casteId);
-						 castvo.setCastName(casteDAO.get(casteId).getCasteName());
-						 castesList.add(castvo);
-						 for(Long locationId : locationIds)
-						 {
-							 CastVO locationVo = new CastVO();
-							 locationVo.setLocationId(locationId);
-							 if(type.equalsIgnoreCase(IConstants.BOOTH))
-								 locationVo.setLocationName(boothDAO.get(locationId).getPartNo());
-						         locationVo.setCastCount(0l);
-							     locationsList.add(locationVo);	
-						 }
-						 castvo.setCasteList(locationsList);
-						 sortCastVoVoList(locationsList);
-						
-					 }
-					 resultVo.setCasteList(castesList);
-					 resultList.add(resultVo); 
-					 resultList.get(0).setPartyName(constituencyDAO.get(constituencyId).getName());
-			 }
-				 for(Object[] params2 : casteList)
-				 {
-					 setValuesForaCasteInBooth(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0],(Long)params2[5]);
-					 
-				 }
-				
-			
-		}
-		catch(Exception e)
+		public void sortPanchayat(List<CastVO> panchayats)
 		{
-		log.error("Exception Occured in getCasteWiseInfo() method in CasteReportService",e);	
+			 Collections.sort(panchayats, new Comparator<CastVO>() {
+
+					public int compare(CastVO arg0,
+							CastVO arg1) {
+						
+						return arg0.getPanchayat().trim().toUpperCase().compareTo(arg1.getPanchayat().trim().toUpperCase());
+					}
+				});
 		}
-		return resultList;
-	}*/
+		
  
 	 public List<CastVO> setValuesForaCasteInBooth(List<CastVO> resultList,Long casteId,Long locationId,Long count,Long panchayatId)
 	  {
@@ -407,8 +367,9 @@ public class CasteReportService implements ICasteReportService{
 			{
 			log.error("Exception Occured in getCasteWiseInfo() method in CasteReportService",e);	
 			}
+				sortPanchayat(resultList);
 			return resultList;
 		}
-	 
+
  }
 
