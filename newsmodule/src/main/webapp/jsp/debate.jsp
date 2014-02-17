@@ -275,7 +275,7 @@ var channelsArray = new Array();
   <div id="editNewsInner"></div>
 </div>
 
-<div id='profileManagementMainOuterDiv' style="margin-top:-40px;">
+<div id='profileManagementMainOuterDiv' class="container" style="margin-top:-40px;">
 
  <!-- For Heading end -->
  
@@ -481,7 +481,7 @@ var channelsArray = new Array();
 	<c:if test="${sessionScope.USER != null}">
 	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
 	
-	<div id="debateAnalysisDiv" class="container" style="display:none;">
+	<div id="debateAnalysisDiv"  style="display:none;">
 		<div id="RerrDivForAnalysis"></div>
 		<legend class="boxHeading">Debate Analysis : </legend>
 		<div class="row-fluid m_top10 text-center" >
