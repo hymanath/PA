@@ -94,4 +94,6 @@ public interface ICandidateDAO extends GenericDao<Candidate, Long>{/*
 	
 	public List<Object[]> getCandidatesForDebate(Long partyId);
 	
+	public List<Long> getCandidateExistesOrNot(Long partyId,String name);
+	
 }

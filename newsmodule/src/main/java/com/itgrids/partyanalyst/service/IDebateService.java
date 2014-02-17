@@ -59,4 +59,6 @@ public interface IDebateService {
 	public List<SelectOptionVO> getSearchriteriaForDebate(String searchString);
 	
 	 public List<SelectOptionVO> getDebateSMSQuestions(String fromDateStr , String toDateStr);
+	 
+	 public ResultStatus createCandidate(Long partyId,String name);
 }
