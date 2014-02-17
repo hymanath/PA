@@ -660,6 +660,8 @@ public String ajaxCallForLoginPopup(){
 				
 				if(regVO.getUserAccessType().equalsIgnoreCase("subuser"))
 					resultStatus.setResultCode(2);
+				if(regVO.getUserAccessType().equalsIgnoreCase("debate"))
+					resultStatus.setResultCode(3);
 			} 
 			else
 			{
