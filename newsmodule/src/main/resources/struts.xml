@@ -6029,6 +6029,12 @@
 			   </result>
 		   </action>
 		   
+		   <action name="createCandidateAction" class="debateAction" method="createCandidate">
+			   <result name="success" type="json">
+			 		<param name="root">resultStatus</param>
+			   </result>
+		   </action>
+		   
 		   <!-- <action name="getDebateScalingAnalysisForPartyWiseAction" class="debateAction" method="getDebateScalingAnalysisForPartyWise">
 			   <result name="success" type="json">
 			 		<param name="root">partyWiseList</param>

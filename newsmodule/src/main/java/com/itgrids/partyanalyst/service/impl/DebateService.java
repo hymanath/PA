@@ -75,7 +75,6 @@ import com.itgrids.partyanalyst.model.TelecastType;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IDebateService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.utils.IWebConstants;
 
 public class DebateService implements IDebateService{
@@ -1941,6 +1940,36 @@ public class DebateService implements IDebateService{
 		}
 		 return returnList;
 	 }
-		 
+		
+	 
+	 public ResultStatus createCandidate(Long partyId,String name)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try {
+			 LOG.info("Enterd into createCandidate() in DebateService class");
+			 List<Long> candodates = candidateDAO.getCandidateExistesOrNot(partyId, name);
+			 if(candodates.size() == 0)
+			 {
+				 Candidate candidate = new Candidate();
+				 Party party = partyDAO.get(partyId);
+				 candidate.setParty(party);
+				 candidate.setLastname(name);
+				 candidate.setIsDebateCandidate("Y");
+				 candidate = candidateDAO.save(candidate);
+				 if(candidate != null)
+				 {
+					 resultStatus.setResultCode(0); 
+				 }
+			 }
+			 else
+			 {
+				 resultStatus.setResultCode(2);
+			 }
+		} catch (Exception e) {
+			resultStatus.setResultCode(1);
+			LOG.error(" Exception Occured in createCandidate method, Exception - ",e);
+		}
+		 return resultStatus;
+	 }
 	 
 }

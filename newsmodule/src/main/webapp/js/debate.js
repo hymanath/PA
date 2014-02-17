@@ -713,15 +713,15 @@ function callAjax(jsObj,url)
 					builddesignationsList(myResults,jsObj);
 				}else if(jsObj.task == "saveCandidateForDebate"){
 					if(myResults.resultCode == 0){
-					 $("#errorMsgDiv").html("<font style='font-weight:bold;color:green;text-transform: capitalize;'> "+myResults.message+" </font>").fadeOut(3000);
+					 $("#errorMsgDiv").html("<font style='font-weight:bold;color:green;text-transform: capitalize;'> Candidate Created Successfully </font>").fadeOut(3000);
 						setTimeout('$("#createCandidateDiv").dialog("close");',2000);	
-						$('#pcConstituencyRow').hide();
-						$('#acConstituencyRow').hide();
-						$('#newCandidateName').val('');
 						$('#locationId').val(0);
 						
 						getCandidatesOfSelectedParty(jsObj.partyId,jsObj.divId,jsObj.roleOptionsID);			
-					}else{
+					}else if(myResults.resultCode == 2){
+						$("#errorMsgDiv").html(" Candidate Exits With This Name");
+					}
+					else {
 						$("#errorMsgDiv").html(" Exception occured While saving Debate Candidate.");
 					}
 				}
@@ -1295,7 +1295,7 @@ function updatePercntage(id){
 			modal: true,
 			title: "<b>Create New Candidate</b>",
 			width: 500,
-			height: 350       
+			height: 220       
 		});   
 		
 	   //getPartiesList("partySelectNewList",null);

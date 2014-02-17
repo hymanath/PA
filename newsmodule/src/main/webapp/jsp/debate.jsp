@@ -157,7 +157,7 @@ $( document ).ready(function() {
 		$("#errorMsgDiv").html('');
 		//var partyId = $("#partySelectNewList").val();
 		var candidateName = $.trim($("#newCandidateName").val());
-		var designationId = $("#designationsList").val();
+		//var designationId = $("#designationsList").val();
 		candidteName = $.trim($("#newCandidateName").val());
 		if(isValid(candidateName)){
 			$('#errorMsgDiv').html('<b style="color:red;margin-left:-125px;">Candidate Name should not contain #,$,%,& Special charactors</b>');
@@ -173,17 +173,17 @@ $( document ).ready(function() {
 		 $("#errorMsgDiv").html("Please Enter Candidate Name.");
 		  return;
 		}
-		if(designationId == 0)
+		/* if(designationId == 0)
 		{
 		 $("#errorMsgDiv").html("Please Select Designation");
 		  return;
-		}
-		if($('#locationId option:selected').val() == 0){
+		} */
+		/* if($('#locationId option:selected').val() == 0){
 		  $("#errorMsgDiv").html("Please Select Location");
 		  return;
-		}
+		} */
 
-	  var locationValue = "";
+	 /*  var locationValue = "";
 		if($('#locationId option:selected').val() == 1)
 		{
 			locationValue = $('#assembSelReportId option:selected').val();
@@ -195,22 +195,18 @@ $( document ).ready(function() {
 		else if($('#locationId option:selected').val() == 3)
 		{
 			locationValue = $('#locationId option:selected').val();
-		}
+		} */
 
 		var jsObj =
 			{ 
 				partyId : debateNewCandiPartyId,
-				candidateName:candidateName,
+				name:candidateName,
 				divId :partyDiv,
-				roleOptionsID :roleOptionsID,
-				designationId:designationId,
-				locationId : $('#locationId option:selected').val(),
-				locationValue : locationValue,
 				task:"saveCandidateForDebate"
 			};
 
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "saveCandidateAndPartyAction.action?"+rparam;						
+		var url = "createCandidateAction.action?"+rparam;						
 		callAjax(jsObj,url);
 			
 	});
@@ -519,7 +515,7 @@ var channelsArray = new Array();
 
 				<tr><td>Candidate Name</td>
 				<td><input type="text" id="newCandidateName"/></td></tr>
-				<tr>
+				<!--<tr>
 				<td>Designation</td>
 				<td><select id="designationsList"></select></td>
 				</tr>
@@ -543,7 +539,7 @@ var channelsArray = new Array();
 				<td>Constituency</td>
 				<td>
 				<s:select name="assembSelReport"  id="assembSelReportId" list="assemConstiList1" theme="simple" listKey="id" listValue="name"/></td>
-				</tr>
+				</tr>-->
 				</table>
 				<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
 
