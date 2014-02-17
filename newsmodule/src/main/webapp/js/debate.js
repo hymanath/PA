@@ -764,36 +764,32 @@ function buildSmsPoleDetails(myResults)
 		 str += '<table class="table table-bordered " id="smsPoleTable">';
 		 str +='<thead>';
 		 str += '<tr>';
-		 str += '<th>Date</th>';
-		 str += '<th>Channel</th>';
-		 str += '<th>Question</th>';
+		 str += '<th>DATE</th>';
+		 str += '<th>CHANNEL</th>';
+		 str += '<th>QUESTION</th>';
 		 str += '<th>YES</th>';
 		 str += '<th>NO</th>';
 		 str += '</tr>';
 		  str +='</thead><tbody>';
 		 for(var i in myResults)
 		 {
-			str += '<tr>';
-			str += '<td>'+myResults[i].url+'</td>';
-			str += '<td>'+myResults[i].partno+'</td>';
-			str += '<td>'+myResults[i].name+'</td>';
-			for(var j in myResults[i].selectOptionsList)
+			if(myResults[i].name != "")
 			{
-				str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+				str += '<tr>';
+				str += '<td>'+myResults[i].url+'</td>';
+				str += '<td>'+myResults[i].partno+'</td>';
+				str += '<td>'+myResults[i].name+'</td>';
+				for(var j in myResults[i].selectOptionsList)
+				{
+					str += '<td>'+myResults[i].selectOptionsList[j].perc+'</td>';
+				}
+				str += '</tr>';
 			}
 			
-			str += '</tr>';
 		 }
 		 str += '</tbody></table>';
 		 $('#analysisDiv').html(str);
-		 
-		 $("#smsPoleTable").dataTable({
-			"aaSorting": [[ 1, "desc" ]],
-			"iDisplayLength": 15,
-			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
-			"aoColumns": [null,null,null,null,null]
-		});
-
+		 window.open(myResults[0].type);
 	}
 }
 
@@ -807,8 +803,8 @@ function buildPartyDetails(myResults)
 		 str +='<thead>';
 		 str += '<tr>';
 		 str += '<th>S.NO</th>';
-		 str += '<th>Party</th>';
-		 str += '<th>Scale %</th>';
+		 str += '<th>PARTY</th>';
+		 str += '<th>COUNT/SCALE</th>';
 		 str += '</tr>';
 		  str +='</thead><tbody>';
 		  var count = 1;
@@ -817,19 +813,14 @@ function buildPartyDetails(myResults)
 			str += '<tr>';
 			str += '<td>'+count+'</td>';
 			str += '<td>'+myResults[i].name+'</td>';
-			str += '<td>'+myResults[i].perc+'</td>';
+			str += '<td>'+myResults[i].constituencyId+'/'+myResults[i].perc+'</td>';
 			str += '</tr>';
 			count++;
 		 }
 		 str += '</tbody></table>';
 		 $('#analysisDiv').html(str);
 		 
-		 $("#partyTable").dataTable({
-			"aaSorting": [[ 1, "desc" ]],
-			"iDisplayLength": 15,
-			"aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
-			"aoColumns": [null,null,null]
-		});
+		window.open(myResults[0].url);
 	}
 }
 
@@ -839,18 +830,40 @@ function buildCandidateDetails(myResults)
 	if(myResults != null && myResults.length > 0)
 	{
 		var str = '';
-		 for(var i in myResults)
-		 {
-			str  += '<h4>'+myResults[i].selectOptionsList[0].name+'</h4>';
-			 str += '<table class="table table-bordered " id="candidateTable">';
-			 str +='<thead>';
-			 str += '<tr>';
-			 str += '<th>S.NO</th>';
-			 str += '<th>Candidate</th>';
-			 str += '<th>Scale %</th>';
-			 str += '</tr>';
-			 str +='</thead><tbody>';
-			 var count = 1;
+		for(var i in myResults)
+		{
+			str  += '<div class="accordion" id="accordion'+i+'">';
+			str  += '<div class="accordion-group">';
+			str  += '<div class="accordion-heading">';
+			if(i%2 ==  0)
+			{
+				str  += '<a class="accordion-toggle evenColor" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOne'+i+'" style="color: rgb(73, 175, 205); font-weight: bold; text-align: start;">';
+			}
+			else
+			{
+				str  += '<a class="accordion-toggle oddColor" data-toggle="collapse" data-parent="#accordion'+i+'" href="#collapseOne'+i+'" style="color: rgb(73, 175, 205); font-weight: bold; text-align: start;">';
+			}
+			str  += ''+myResults[i].selectOptionsList[0].name+'';
+			str  += '</a>';
+			str  += '</div>';
+			if(i == 0)
+			{
+				str  += '<div id="collapseOne'+i+'" class="accordion-body collapse in">';
+			}
+			else
+			{
+				str  += '<div id="collapseOne'+i+'" class="accordion-body collapse ">';
+			}
+			str  += '<div class="accordion-inner">';
+			str += '<table class="table table-bordered " id="candidateTable">';
+			str +='<thead>';
+			str += '<tr>';
+			str += '<th>S.NO</th>';
+			str += '<th>CANDIDATE</th>';
+			str += '<th>COUNT/SCALE</th>';
+			str += '</tr>';
+			str +='</thead><tbody>';
+			var count = 1;
 			for(var j in myResults[i].selectOptionsList)
 			{
 				str += '<tr>';
@@ -860,13 +873,14 @@ function buildCandidateDetails(myResults)
 				str += '</tr>';
 				count++;
 			}
-			
-			
-		
 			str += '</tbody></table>';
-
-		 }
-		  $('#analysisDiv').html(str);
+			str  += '</div>';
+			str  += '</div>';
+			str  += '</div>';
+			str  += '</div>';
+		}
+	    $('#analysisDiv').html(str);
+		window.open(myResults[0].url);
 	}
 }
 function builddesignationsList(results,jsObj)
@@ -942,11 +956,11 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 	};
 	
   var newsReportColumns = [
-   {key:"name",label:"Subject",width:400},
-   {key:"type",label:"Created Date"},
-   {key:"viewReport",label:"View Report",formatter:YAHOO.widget.DataTable.generatePDF},
-   {key:"generatePDF",label:"Generate URL ",formatter:YAHOO.widget.DataTable.viewReport},
-   {key:"textArea",label:"Generated URL ",formatter:YAHOO.widget.DataTable.textArea}
+   {key:"name",label:"SUBJECT",width:400},
+   {key:"type",label:"CREATED DATE"},
+   {key:"viewReport",label:"VIEW REPORT",formatter:YAHOO.widget.DataTable.generatePDF},
+   {key:"generatePDF",label:"GENERATE URL ",formatter:YAHOO.widget.DataTable.viewReport},
+   {key:"textArea",label:"URL",formatter:YAHOO.widget.DataTable.textArea}
 
    
   ];
@@ -966,7 +980,7 @@ initialRequest: "sort=name&dir=desc&startIndex=0&results=15", // Initial request
 dynamicData: true, // Enables dynamic server-driven data
 sortedBy : {key:"name", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 15
+		        rowsPerPage    : 10
 			    })  // Enables pagination
 };
 
@@ -1096,21 +1110,6 @@ function getDebateDetailsBtDates()
 		channelId = "0";
 	}
 	getDebateDetailsBetwinDates($('#fromDateId').val(),$('#toDateId').val(),channelId,partyId,candidateId);
-	
-	/*
-	var jsObj = {
-				fronDate :$('#fromDateId').val(),
-				toDate   :$('#toDateId').val(),
-				channelId : channelId,
-				partyId : partyId,
-				candidateId : candidateId,
-				task : "getDebateDetailsBtDates"	
-		};
-		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "debateDetaildBtDatesAction.action?"+rparam;
-		callAjax(jsObj,url);
-		*/
 }
 
 function openDebateReport(debateId)
@@ -1248,17 +1247,6 @@ function getDesignationList(designationList1)
 	var url = "getDesignationsListAction.action?"+rparam;
 	callAjax(jsObj, url);
 }
-/* function showNewDebateDiv(){
-$('#newDibateDiv').show();
-$('#debateReportDiv').hide();
-$('#debateAnalysisDiv').hide();
-}
-function showDebateReportDiv(){
-$('#newDibateDiv').hide();
-$('#debateAnalysisDiv').hide();
-$('#debateReportDiv').show();
-} */
-
 
 var totalPerc;
 function updatePercntage(id){
@@ -1429,8 +1417,6 @@ function getCandidatesForSelectedParty(partyId)
 
 function getRespectiveSelection()
 {
-	
-	
 		var str = '';
 		str += '<div class="span4" > ';
 		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
@@ -1446,24 +1432,4 @@ function getRespectiveSelection()
 		str +='<select id="candidateSelecction"><option value="0">Select Candidate</option></select>';
 		str += '</div>';
 		$('#reportTypeSelectionDiv').html(str);
-	/* }
-	else if(value == 3)
-	{
-		var str = '';
-		str += '<div class="span4" > ';
-		str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Party  </label>'; 
-		str +='<select id="partySelecction" onChange="">';
-		for(var i in partiesArray)
-		{
-			str +='<option value="'+partiesArray[i].id+'">'+partiesArray[i].name+'</option>';
-		}
-		str +='</select>';
-		str += '</div>';
-		$('#reportTypeSelectionDiv').html(str);
-	}
-	else
-	{
-		$('#reportTypeSelectionDiv').html('');
-	} */
-	
 }
