@@ -12,11 +12,11 @@
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 
-	<!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script> -->
+	
 	<script src="js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>
 	
 		<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"/>
-	<!-- <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script> -->
+
 	<script src="js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
 	
 
@@ -26,12 +26,10 @@
 
 
 
-	<!-- <script src="http://trentrichardson.com/examples/timepicker/jquery-ui-sliderAccess.js">
-	</script> -->
 	<script src="js/jquery.google.api/trentrichardson.com.examples.timepicker.jquery-ui-sliderAccess.js"></script>
 	
 	
-	<!--  <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
+	
 	
 	<link  rel="stylesheet" type="text/css" href="js/jquery.google.api/jquery-ui1.10.3.css"/>
 	
@@ -42,9 +40,7 @@
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
 	<link rel="stylesheet" type="text/css" href="styles/custom-yui-styles.css">	
-		<!-- YUI Skin Sam -->
-	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-	<script type="text/javascript" src="js/problemCompleteDetails.js"></script>
+		
 		 
 		 		
 	<!-- JQuery files (Start) -->
@@ -52,38 +48,21 @@
 	<!-- YUI Dependency files (Start) -->
 		<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 		<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-		<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
-		<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
 		<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
-		<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-		<script src="js/yahoo/resize-min.js"></script> 
-		<script src="js/yahoo/layout-min.js"></script> 
 		<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
 		<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
 		<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 		<script type="text/javascript" src="js/json/json-min.js"></script>
 		<script type="text/javascript" src="js/yahoo/connection-min.js"></script> 
-		<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
 		<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
-		<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-		<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 		<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 		<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-		<script type="text/javascript" src="js/voterAnalysis/voterAnalysis.js"></script>
-		<script type="text/javascript" src="js/voterAnalysis/showGallaries.js"></script>
-		<script type="text/javascript" src="js/yahoo/yui-js-2.8/calendar-min.js"></script>
+		
+		
+		
 		<!-- Skin CSS files resize.css must load before layout.css --> 
-		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css"> 
-		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css">
-		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css"> 
-		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css"> 
-		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css">
 		<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css">
 		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css">
-		<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css"> 
-		<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/calendar/assets/skins/sam/calendar.css">    
-		<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/container/assets/skins/sam/container.css"> 
-		<link rel="stylesheet" type="text/css" href="js/yahoo/yui-js-2.8/build/button/assets/skins/sam/button.css">	
 
 		<!-- YUI Dependency files (End) -->
 
@@ -119,6 +98,15 @@
 	}
 	.scrollit {
 	overflow:scroll;
+	}
+
+	.evenColor 
+	{
+		background-color: #E9E9E9;
+	}
+	.oddColor 
+	{
+		background-color: #F9F9F9;
 	}
 
 
@@ -296,20 +284,32 @@ var channelsArray = new Array();
 	
 				<!---Tab Header --Menu--->
 				<ul class="nav nav-tabs" id="myTab"  style="margin-top: 23px;">
-				
+				<c:if test="${sessionScope.USER != null}">
+				<c:if test="${sessionScope.USER.userAccessType == 'debate'}">
 					<li class="active"><a data-toggle="tab" value="Upload News" style="cursor:pointer;color: #005580;" onclick="showNewDebateDiv();" style="cursor:pointer;color: #005580;" > Create Debate </a>	
 					</li>
-					
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateReportDiv()" style="cursor:pointer;color: #005580;">View Debate Details</a>
-					</li>	
+					</li>
+				</c:if>	
+				</c:if>	
+				
+						
+				<c:if test="${sessionScope.USER != null}">
+				<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+					<li class="active">
+					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateReportDiv()" style="cursor:pointer;color: #005580;">View Debate Details</a>
+					</li>
 					<li class="">
 					<a data-toggle="tab" value="News Gallery" id="responseNewsId" onClick="showDebateAnalysisDiv()" style="cursor:pointer;color: #005580;">Debate Analysis</a>
-					</li>					
+					</li>
+				</c:if>	
+				</c:if>	
 				</ul>
 	</div>
 	
-	
+	<c:if test="${sessionScope.USER != null}">
+	<c:if test="${sessionScope.USER.userAccessType == 'debate'}">
 	<div id="newDibateDiv">
 		<div id="successMsg" style="display:none;" align="center"></div>
 			<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">
@@ -433,10 +433,22 @@ var channelsArray = new Array();
 			<form id="debateFromDiv" method="post" action="saveDebateDetailsAction.action" name="debateFromDiv">
 			<input type="hidden" name="task" id="getDebateDetails" /></form>
 	</div>
-	<div id="debateReportDiv" class="container" style="display:none">
-			<div id="debateRport" align="center">
+	</c:if>
+	</c:if>
+	<c:if test="${sessionScope.USER != null}">
+	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+	<div id="debateReportDiv" class="container" >
+	</c:if>
+	</c:if>
+	<c:if test="${sessionScope.USER != null}">
+	<c:if test="${sessionScope.USER.userAccessType == 'debate'}">
+	<div id="debateReportDiv" class="container" style="display:none;">
+	</c:if>
+	</c:if>
+			<div id="debateRport" >
 			<div id="RerrDiv"></div>
-			<h4> Generate Debate Report : </h4>
+			<legend class="boxHeading">Generate Debate Report :</legend>
+			<h4>  </h4>
 				<div class="row-fluid" >
 					<div class="span4" > 
 					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">From Date  <font class="requiredFont">*</font></label> <input type="text" id="fromDateId"></input>
@@ -445,19 +457,6 @@ var channelsArray = new Array();
 					<div class="span4" > 
 					<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">To Date  <font class="requiredFont">*</font></label>  <input type="text" id="toDateId"></input>
 					</div>
-					
-					<!-- 
-					<div class="span4" >
-						<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Report Type   </label>
-						<select id="reportTypeSelection" onChange="getRespectiveSelection(this.value);">
-						<option value="0">Select Type</option>
-						<option value="1">Channel</option>
-						<option value="3">Party</option>
-						<option value="2">Candidate</option>
-						</select>
-					</div>
-					-->
-				
 				<div class="span4" >
 				<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Channel :    </label>
 				<s:select name="channel"  id="channelSelecction" list="channelList" theme="simple" listKey="id" listValue="name"/>
@@ -475,13 +474,17 @@ var channelsArray = new Array();
 			
 			</div>
 			
-			<div id="dateWiseReportDiv" class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt-paginator yui-pg-container yui-dt"></div>
+			<div id="dateWiseReportDiv" class="span12 well-small yui-skin-sam yui-dt-sortable yui-dt-paginator yui-pg-container yui-dt" style="overflow-x: scroll;"></div>
 	</div>
 	
 	
-	<div id="debateAnalysisDiv" class="container text-center" style="display:none;">
+	<c:if test="${sessionScope.USER != null}">
+	<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
+	
+	<div id="debateAnalysisDiv" class="container" style="display:none;">
 		<div id="RerrDivForAnalysis"></div>
-		<div class="row-fluid m_top10" >
+		<legend class="boxHeading">Debate Analysis : </legend>
+		<div class="row-fluid m_top10 text-center" >
 			<div class="span4 offset2" > 
 			<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">From Date  <font class="requiredFont">*</font></label> <input type="text" id="fromDateIdForAnalysis"></input>
 			</div>
@@ -490,19 +493,20 @@ var channelsArray = new Array();
 			<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">To Date  <font class="requiredFont">*</font></label>  <input type="text" id="toDateIdForAnalysis"></input>
 			</div>		
 		</div>
-		<div class="row-fluid m_top10 btn-group" >
+		<div class="row-fluid m_top10 btn-group text-center" >
 			<div>
 				<ul class="inline">   
 					<li><a class="btn btn-info" onClick="getDebateAnalysisDetails('candidate');">Candidate</a> </li> 
 					<li><a class="btn btn-info" onClick="getDebateAnalysisDetails('party');">Party</a></li>
-					<li><a class="btn btn-info" onClick="getDebateAnalysisDetails('smsPole');">Sms Pole</a></li> 
+					<li><a class="btn btn-info" onClick="getDebateAnalysisDetails('smsPole');">SMS Poll</a></li> 
 				</ul>
 			</div>
 		
 		</div>
 		<div id="analysisDiv"></div>
 	</div>
-
+	</c:if>
+	</c:if>
 		<div id="createCandidateDiv" style="display:none;">
 				
 				<div id="errorMsgDiv"></div>

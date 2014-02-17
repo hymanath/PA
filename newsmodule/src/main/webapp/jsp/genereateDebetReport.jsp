@@ -191,19 +191,22 @@ function generateDebateReport(result)
 			str += '</tr>';
 		}
 		
-		
-		var smsStr = '';
-		smsStr += '<p>'+result.smsPoleList[0].name+'</p>';
-		smsStr += '<p>';
-		for(var i in result.smsPoleList)
+		if(result.smsPoleList[0].name != "")
 		{
-			smsStr += ''+result.smsPoleList[i].type+' : '+result.smsPoleList[i].perc+'%&nbsp;&nbsp;'
+			var smsStr = '';
+			smsStr += '<p>'+result.smsPoleList[0].name+'</p>';
+			smsStr += '<p>';
+			for(var i in result.smsPoleList)
+			{
+				smsStr += ''+result.smsPoleList[i].type+' : '+result.smsPoleList[i].perc+'%&nbsp;&nbsp;'
+			}
+			smsStr += '<p>';
+			str += '<tr>';
+			str += '<th style="width: 234px;">Sms Poll Question and Results</th>';
+			str += '<td colspan='+noOfParticepents+'>'+smsStr+'</td>';
+			str += '<tr>';
 		}
-		smsStr += '<p>';
-		str += '<tr>';
-		str += '<th style="width: 234px;">Sms Poll Question and Results</th>';
-		str += '<td colspan='+noOfParticepents+'>'+smsStr+'</td>';
-		str += '<tr>';
+		
 		str += '</div>';
 		str += '</table>';
 	str += '</div>';
