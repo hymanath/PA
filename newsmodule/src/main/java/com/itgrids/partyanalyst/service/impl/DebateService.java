@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,11 +10,19 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -66,6 +75,8 @@ import com.itgrids.partyanalyst.model.TelecastType;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IDebateService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.IWebConstants;
 
 public class DebateService implements IDebateService{
 	
@@ -1395,7 +1406,7 @@ public class DebateService implements IDebateService{
 						 int i = 0;
 						 for (SelectOptionVO selectOptionVO : selOptionList)
 						 {
-							 if(selectOptionVO.getId() != null)
+							 if(selectOptionVO.getName() != null)
 							 {
 								 if(i == 0)
 								 {
@@ -1425,9 +1436,106 @@ public class DebateService implements IDebateService{
 		 {
 			LOG.error(" Exception Occured in getDebateSMSQuestions method, Exception - ",e);
 		 }
+		 if(returnList != null && returnList.size() > 0)
+		 {
+			 String url = buildExcelForSmsPole(returnList);
+			 returnList.get(0).setType(url);
+		 }
+		 
 		 return returnList;
 	 }
 	 
+	 
+	 
+	 public String buildExcelForSmsPole(List<SelectOptionVO> returnList){
+			LOG.info("entered into buildExcelForSmsPole()in meetingService class.");
+			String filename =null;
+			try {
+				
+				if(returnList != null && returnList.size() > 0)
+				{
+					
+					Random randomNumber = new Random();
+					int number = randomNumber.nextInt(100000);
+					 filename= "Reports"+"/"+"smsPole"+number+".xls";
+					//path = "Reports"+"/"+"StateAbstract"+number+".xls";
+				    FileOutputStream fileOut = new FileOutputStream(IWebConstants.STATIC_CONTENT_FOLDER_URL+filename);
+				    
+					HSSFWorkbook workbook = new HSSFWorkbook();// creating excel sheet
+					
+					HSSFSheet worksheet = workbook.createSheet(" SMS POLL REPORT ");		// sheet 1
+					
+					generateXlReportForStateMeeting(returnList,worksheet,workbook);
+		
+					workbook.write(fileOut);
+					
+					fileOut.close();
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised while buildExcelForSmsPole()in meetingService class.",e);
+			}	
+			return filename;
+			
+
+		}
+	 
+	 public String generateXlReportForStateMeeting(List<SelectOptionVO> returnList,HSSFSheet worksheet,HSSFWorkbook workbook)
+		{
+			LOG.info("entere into  generateXlReportForStateMeeting()in meetingService class.");
+			String path = null;
+				try
+				   {
+					HSSFFont font = workbook.createFont();
+					font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+					font.setItalic(false);
+					font.setFontHeight((short)240);
+					HSSFCellStyle style = workbook.createCellStyle();
+					style.setFont(font);
+					HSSFRow  rowHead = worksheet.createRow((short) 0);
+				    Cell cell = rowHead.createCell(0);
+				    cell.setCellValue("DATE");
+				    cell.setCellStyle(style);
+					cell = rowHead.createCell(1);
+					cell.setCellStyle(style);
+					cell.setCellValue("CHANNEL");
+					cell = rowHead.createCell(2);
+					cell.setCellStyle(style);
+					cell.setCellValue("QUESTION");
+					cell = rowHead.createCell(3);
+					cell.setCellStyle(style);
+					cell.setCellValue("YES");
+					cell = rowHead.createCell(4);
+					cell.setCellStyle(style);
+					cell.setCellValue("NO");
+				    int rownum = 1;
+				    for (SelectOptionVO selectOptionVO : returnList) 
+				    {
+				    	if(selectOptionVO.getName().length() > 0)
+				    	{
+				    		HSSFRow  row= worksheet.createRow((short)rownum);
+						      
+					        row.createCell((short)0).setCellValue(selectOptionVO.getUrl());
+					        row.createCell((short)1).setCellValue(selectOptionVO.getPartno());
+					        row.createCell((short)2).setCellValue(selectOptionVO.getName());
+					        int count = 3;
+					        for(SelectOptionVO selectOptionVO1 :selectOptionVO.getSelectOptionsList())
+					        {
+					        	row.createCell((short)count).setCellValue(selectOptionVO1.getPerc());
+					        	count++;
+					        }
+					        rownum++;
+				    	}
+				    	
+				    }    
+
+				} 
+			    catch (Exception e) 
+			    {
+			    	LOG.error("Exception raised while generateXlReportForStateMeeting()in meetingService class.",e);
+			    }
+				return path;
+			}	
 	 
 	 /**
 	  * This Service is used for getting the avg scals for each party participated in the debate for selected dates
@@ -1484,10 +1592,91 @@ public class DebateService implements IDebateService{
 		{
 			LOG.error(" Exception Occured in getDebateAnalysisByPartyForScaling method, Exception - ",e);
 		}
+		 if(returnList != null && returnList.size() > 0)
+		 {
+			 String url = buildExcelForParty(returnList);
+			 returnList.get(0).setUrl(url);
+		 }
+		
 		 return returnList;
 		 
 	 }
 	 
+	 
+	 public String buildExcelForParty(List<SelectOptionVO> returnList){
+			LOG.info("entered into buildExcelForSmsPole()in meetingService class.");
+			String filename =null;
+			try {
+				
+				if(returnList != null && returnList.size() > 0)
+				{
+					
+					Random randomNumber = new Random();
+					int number = randomNumber.nextInt(100000);
+					 filename= "Reports"+"/"+"partyWise"+number+".xls";
+					//path = "Reports"+"/"+"StateAbstract"+number+".xls";
+				    FileOutputStream fileOut = new FileOutputStream(IWebConstants.STATIC_CONTENT_FOLDER_URL+filename);
+				    
+					HSSFWorkbook workbook = new HSSFWorkbook();// creating excel sheet
+					
+					HSSFSheet worksheet = workbook.createSheet(" PARTY WISE REPORT");		// sheet 1
+					
+					buildExcelForPartyWise(returnList,worksheet,workbook);
+		
+					workbook.write(fileOut);
+					
+					fileOut.close();
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised while buildExcelForSmsPole()in meetingService class.",e);
+			}	
+			return filename;
+			
+
+		}
+	 
+	 public String buildExcelForPartyWise(List<SelectOptionVO> returnList,HSSFSheet worksheet,HSSFWorkbook workbook)
+		{
+			LOG.info("entere into  generateXlReportForStateMeeting()in meetingService class.");
+			String path = null;
+				try
+				   {
+		      
+					HSSFFont font = workbook.createFont();
+					font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+					font.setItalic(false);
+					font.setFontHeight((short)240);
+					HSSFCellStyle style = workbook.createCellStyle();
+					style.setFont(font);
+					HSSFRow  rowHead = worksheet.createRow((short) 0);
+				    Cell cell = rowHead.createCell(0);
+				    cell.setCellValue("S.NO");
+				    cell.setCellStyle(style);
+					cell = rowHead.createCell(1);
+					cell.setCellValue("PARTY");
+					cell.setCellStyle(style);
+					cell = rowHead.createCell(2);
+					cell.setCellValue("COUNT/SCALE");
+					cell.setCellStyle(style);
+				    int rownum = 1;
+				    for (SelectOptionVO selectOptionVO : returnList) 
+				    {
+				    	HSSFRow  row= worksheet.createRow((short)rownum);
+				      
+				        row.createCell((short)0).setCellValue(rownum);
+				        row.createCell((short)1).setCellValue(selectOptionVO.getName());
+				        row.createCell((short)2).setCellValue(selectOptionVO.getConstituencyId()+"/"+selectOptionVO.getPerc());
+				        rownum++;
+				    }    
+
+				} 
+			    catch (Exception e) 
+			    {
+			    	LOG.error("Exception raised while generateXlReportForStateMeeting()in meetingService class.",e);
+			    }
+				return path;
+			}	
 	 
 	 /**
 	  * This Service is used for getting candidate wise debate report for selected dates
@@ -1618,8 +1807,99 @@ public class DebateService implements IDebateService{
 		 {
 			LOG.error(" Exception Occured in getDebateAnalysisBycandidateForScaling method, Exception - ",e);
 		 }
+		 if(returnList != null && returnList.size() > 0)
+		 {
+			 String url = buildExcelForCandidate(returnList);
+			 returnList.get(0).setUrl(url);
+		 }
 		 return returnList;
 	 }
+	 
+	 
+	 public String buildExcelForCandidate(List<SelectOptionVO> returnList){
+			LOG.info("entered into buildExcelForSmsPole()in meetingService class.");
+			String filename =null;
+			try {
+				
+				if(returnList != null && returnList.size() > 0)
+				{
+					
+					Random randomNumber = new Random();
+					int number = randomNumber.nextInt(100000);
+					 filename= "Reports"+"/"+"candidateWise"+number+".xls";
+					//path = "Reports"+"/"+"StateAbstract"+number+".xls";
+				    FileOutputStream fileOut = new FileOutputStream(IWebConstants.STATIC_CONTENT_FOLDER_URL+filename);
+				    
+					HSSFWorkbook workbook = new HSSFWorkbook();// creating excel sheet
+					
+					HSSFSheet worksheet = workbook.createSheet(" CANDIDATE WISE REPORT ");		// sheet 1
+					
+					buildExcelForCandidateWise(returnList,worksheet,workbook);
+		
+					workbook.write(fileOut);
+					
+					fileOut.close();
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised while buildExcelForSmsPole()in meetingService class.",e);
+			}	
+			return filename;
+			
+
+		}
+	 
+	 public String buildExcelForCandidateWise(List<SelectOptionVO> returnList,HSSFSheet worksheet,HSSFWorkbook workbook)
+		{
+			LOG.info("entere into  generateXlReportForStateMeeting()in meetingService class.");
+			String path = null;
+				try
+				   {
+					HSSFFont font = workbook.createFont();
+					font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+					font.setItalic(false);
+					font.setFontHeight((short)240);
+					HSSFCellStyle style = workbook.createCellStyle();
+					style.setFont(font);
+
+					HSSFRow  rowHead = worksheet.createRow((short) 0);
+					Cell cellHead = rowHead.createCell(0);
+					cellHead.setCellValue("S.NO");
+					cellHead.setCellStyle(style);
+					cellHead = rowHead.createCell(1);
+					cellHead.setCellValue("CANDIDATE");
+					cellHead.setCellStyle(style);
+					cellHead = rowHead.createCell(2);
+					cellHead.setCellValue("COUNT/SCALE");
+					cellHead.setCellStyle(style);
+				    int rownum = 1;
+				    for (SelectOptionVO selectOptionVO : returnList) 
+				    {
+				    	HSSFRow  row1= worksheet.createRow((short)rownum);
+				    	Cell cell = row1.createCell(0);
+				    	cell.setCellValue(selectOptionVO.getSelectOptionsList().get(0).getName());
+				    	cell.setCellStyle(style);
+				    	worksheet.addMergedRegion(new CellRangeAddress(rownum, rownum, 0, 2));
+				    	int no = 1;
+				    	for(SelectOptionVO selectOptionVO1 : selectOptionVO.getSelectOptionsList())
+				    	{
+				    		rownum++;
+				    		HSSFRow  row = worksheet.createRow((short)rownum);
+					        row.createCell((short)0).setCellValue(no);
+					        row.createCell((short)1).setCellValue(selectOptionVO1.getLocation());
+					        row.createCell((short)2).setCellValue(selectOptionVO1.getCount()+"/"+selectOptionVO1.getPerc());
+					        no++;
+				    	}
+				    	rownum++;
+				    }    
+
+				} 
+			    catch (Exception e) 
+			    {
+			    	LOG.error("Exception raised while generateXlReportForStateMeeting()in meetingService class.",e);
+			    }
+				return path;
+			}	
 	 
 	 /**
 	  * This Service is used for debate search critera
