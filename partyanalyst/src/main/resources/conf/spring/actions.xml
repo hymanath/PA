@@ -1344,5 +1344,35 @@
 	    
 	</bean>
 	
+	
+	<bean id="votersEditNewHHAction"
+		class="com.itgrids.partyanalyst.web.action.VotersEditNewHHAction"
+		singleton="false">
+			<property name="votersAnalysisService" ref="votersAnalysisService" />
+			<property name="staticDataService" ref="staticDataService" />
+			<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+			<property name="userVoterService" ref="userVoterService" />
+			<property name="voterReportService" ref="voterReportService" />
+	</bean>
+	
+	<bean id="houseHoldVotersInfoAction"
+		class="com.itgrids.partyanalyst.web.action.HouseHoldVotersInfoAction"
+		singleton="false">
+			<property name="votersAnalysisService" ref="votersAnalysisService" />
+			<property name="staticDataService" ref="staticDataService" />
+			<property name="crossVotingEstimationService" ref="crossVotingEstimationService" />
+			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
+			<property name="userVoterService" ref="userVoterService" />
+			<property name="voterReportService" ref="voterReportService" />
+	</bean>
+	
+
+	<bean id="houseHoldSurveyReportAction" class="com.itgrids.partyanalyst.web.action.HouseHoldSurveyReportAction" singleton="false">
+		  <property name="crossVotingEstimationService" ref="crossVotingEstimationService"/>
+		  <property name="votersAnalysisService" ref="votersAnalysisService"/>
+		  <property name="houseHoldSurveyReportService" ref="houseHoldSurveyReportService"/>
+	</bean>
+	
 </beans>	
 	
