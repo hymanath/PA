@@ -83,6 +83,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterDataAvailableConstituenciesDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyRelationDAO;
 import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
@@ -153,7 +154,6 @@ import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterModification;
 import com.itgrids.partyanalyst.model.VoterStatus;
 import com.itgrids.partyanalyst.model.VoterTemp;
-import com.itgrids.partyanalyst.model.WardBooth;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -241,9 +241,20 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IHamletBoothDAO hamletBoothDAO;
     private IVoterFlagDAO voterFlagDAO;
     private ICasteInsertTypeDAO casteInsertTypeDAO;
+    private IVoterFamilyRelationDAO voterFamilyRelationDAO;
     
     
-    public ICasteInsertTypeDAO getCasteInsertTypeDAO() {
+    
+    public IVoterFamilyRelationDAO getVoterFamilyRelationDAO() {
+		return voterFamilyRelationDAO;
+	}
+
+	public void setVoterFamilyRelationDAO(
+			IVoterFamilyRelationDAO voterFamilyRelationDAO) {
+		this.voterFamilyRelationDAO = voterFamilyRelationDAO;
+	}
+
+	public ICasteInsertTypeDAO getCasteInsertTypeDAO() {
 		return casteInsertTypeDAO;
 	}
 
@@ -2936,6 +2947,93 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		}
 		return voterHouseInfoVOList;
 	}
+	/**
+	 * This method will get all the voters information in a family
+	 * 
+	 * @author Samba Penugonda
+	 * @param Long  boothId ,boothId of the house
+	 * @param Long publicationDateId , the voters publication date Id
+	 * @param Long houseNo ,houseNo  of the family
+	 * @param Long userId , userId of logged in user
+	 * @return the voter details of a family
+	 * 
+	 */
+
+	public List<VoterHouseInfoVO> getFamilyInformationForHHSurvey(Long hamletId , Long boothId, Long publicationDateId,String houseNo,Long userId ,String selectType)
+	{		
+		log.debug("Entered into the getFamilyInformationForHHSurvey method");
+		
+		List<VoterHouseInfoVO> voterHouseInfoVOList = new ArrayList<VoterHouseInfoVO>();		
+		Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
+		try{
+		
+			VoterHouseInfoVO voterHouseInfoVO = null;
+			List<Voter> votersInfoList = boothPublicationVoterDAO.findFamiliesInfo(boothId, publicationDateId, houseNo);
+		    long sno = 1;
+		    
+		    List<Long> voterIds = new ArrayList<Long>();
+		    for(Voter voter : votersInfoList)
+		    	voterIds.add(voter.getVoterId());
+		    
+		    if(voterIds != null && voterIds.size() > 0)
+		    {
+		      List<Object[]> list = userVoterDetailsDAO.getVoterIdAndMobileNoByVoterIdsList(voterIds, userId);
+		      for(Object[] params:list)
+		    	  mobileNosMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
+		    }
+		    
+		    List<Long> ctgrysReqForHHSurveyList=new ArrayList<Long>();
+		    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_OCCUPATION);
+		    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_EDUCATION);
+		    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_SOCIAL_POSITIONS);
+		    
+		    	
+		    	
+		    List<Object[]> votersCategoriesList = 
+					 voterCategoryValueDAO.getVoterCategoryValuesForVotersForHHSurvey(1l,voterIds,ctgrysReqForHHSurveyList);
+			 
+		    
+		   // List<Object[]> categoriesList=voterCategoryValueDAO.getUserVoterCategoriesForHHSurvey(1l,ctgrysReqForHHSurveyList);
+		    
+		   //Map<Long, VoterHouseInfoVO> voterCastePartyDetails =  getUserCasteAndSelectedPartyVoters(voterIds,userId);
+		    	
+			for(Voter voter : votersInfoList){
+		    	voterHouseInfoVO = new VoterHouseInfoVO();
+		    	voterHouseInfoVO.setsNo(sno);
+		    	voterHouseInfoVO.setName(voter.getName());
+		    	voterHouseInfoVO.setGender(voter.getGender());
+		    	voterHouseInfoVO.setAge(voter.getAge());
+		    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
+		    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
+		    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+		    	voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
+		    	
+		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
+		    	voterHouseInfoVO.setBoothId(boothId);
+		    	if(mobileNosMap.get(voter.getVoterId()) != null)
+		    	 voterHouseInfoVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
+		    	else
+		    	 voterHouseInfoVO.setMobileNo("N/A");
+		    	voterHouseInfoVO.setBoothName(boothDAO.getPartNoByBoothId(voterHouseInfoVO.getBoothId()).get(0).toString());
+		    	//VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
+		    	
+		    	setVotersCategories(votersCategoriesList,voter,voterHouseInfoVO);
+		    	//setCastePartyDetails(voterHouseInfoVO,voterCastPartyVO);
+		    	
+		    
+		    	voterHouseInfoVOList.add(voterHouseInfoVO);
+		    	//getUserCasteAndSelectedParty(voterHouseInfoVO , voter.getVoterId(),userId);
+		    	
+		    	
+		    	sno = sno+1;
+	    }
+		
+		}catch(Exception e){
+			log.error("Exception raised in getFamilyInformationForHHSurvey method");
+			e.printStackTrace();
+		}
+		return voterHouseInfoVOList;
+	}
 	
 	/**
 	 * This method will set the voter selected categories values
@@ -2964,7 +3062,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 					 voterHouseInfoVO.setCategoriesList(categoriesList1);
 					 
 				 }
-				   category = new VoterHouseInfoVO();
+				  category = new VoterHouseInfoVO();
 	    		  categoriesList1.add(category);
 	    		  category.setCategoryValuesId((Long)voterDetails[1]);
 	    		  category.setName(voterDetails[2]!=null?voterDetails[2].toString():"");
