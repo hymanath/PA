@@ -2908,6 +2908,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		    	voterHouseInfoVO.setHouseNo(voter.getHouseNo());
 		    	voterHouseInfoVO.setGaurdian(voter.getRelativeName());
 		    	voterHouseInfoVO.setRelationship(voter.getRelationshipType());
+		    	voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
 		    	
 		    	voterHouseInfoVO.setVoterId(voter.getVoterId());
 		    	voterHouseInfoVO.setBoothId(boothId);
@@ -5749,6 +5750,7 @@ public VoterHouseInfoVO getVoterPersonalDetailsByVoterId(Long voterId,Long userI
 	 voterHouseInfoVO.setHouseNo(voterInfo.getHouseNo());
 	 voterHouseInfoVO.setGaurdian(voterInfo.getRelativeName());
 	 voterHouseInfoVO.setRelationship(voterInfo.getRelationshipType());
+	 voterHouseInfoVO.setVoterIdCardNo(voterInfo.getVoterIDCardNo());
 	
 	 if(mobileNosMap.get(voterInfo.getVoterId()) != null)	
 	  voterHouseInfoVO.setMobileNo(mobileNosMap.get(voterInfo.getVoterId()));
