@@ -19,7 +19,6 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterInfo;
 
 public interface IVotersAnalysisService {
@@ -322,5 +321,7 @@ public interface IVotersAnalysisService {
 	 public List<VoterVO> getFlagVoterDetails(Long constituneycId,Long locationId,
 				Long publicationId,String type,Long flagId,Integer startIndex,Integer maxRecords,
 				Long userId);
-	
+	 
+	 public List<VoterHouseInfoVO> getFamilyInformationForHHSurvey(Long hamletId , Long boothId, Long publicationDateId,String houseNo,Long userId ,String selectType);
+	 	
 }

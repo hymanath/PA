@@ -6,7 +6,6 @@ import java.util.List;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
-import com.itgrids.partyanalyst.model.VoterCategoryValue;
 
 public class VoterCategoryValueDAOHibernateTest  extends BaseDaoTestCase{
 
@@ -38,5 +37,6 @@ public class VoterCategoryValueDAOHibernateTest  extends BaseDaoTestCase{
 			System.out.println(parms[0]+ ":" + parms[1] + ";" +parms[2]);
 		}
 	}
+	
 	
 }
