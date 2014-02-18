@@ -114,4 +114,6 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public List<String> getUserNameAndPassword(String userName,String password);
 	
 	public List<String> getUserType(Long userId);
+	
+	public List<String> getAccessValue(Long userId);
 }

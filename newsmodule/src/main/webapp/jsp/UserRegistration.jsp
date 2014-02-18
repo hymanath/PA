@@ -486,7 +486,7 @@ function validateUserType()
 		usrEleErr.innerHTML = "<span class='errorClass'>&nbsp;Please Select User Type.</span>";
 	    return false;
 	}
-	else if(usrEle.value== 2){
+	else if(usrEle.value== 2 || usrEle.value== 4){
 	$('#subuserAddressDiv').css("display","block");
 	}	
 	else

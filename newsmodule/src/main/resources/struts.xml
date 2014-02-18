@@ -6126,6 +6126,31 @@
 		   </result> 
 		</action>
 		
+		
+		<action name="politicalFeedBackAction" class="politicalFeedBackAction">
+		  <result name="success">/jsp/politicalFeedBack.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		
+		
+		<action name="savePoliticalFeedBackAction" class="politicalFeedBackAction"  method="savePoliticalFeedForm">
+		   <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result> 
+		</action>
+		
+		<action name="getAssemblyConstituencyesAction" class="politicalFeedBackAction"  method="getAssemblyConstituencyes">
+		   <result type="json" name="success">
+		    	<param name="root">constituencysList</param>
+		   </result> 
+		</action>
+		
+		<action name="getSelectedPolitialFeedBackDetailsAction" class="politicalFeedBackAction"  method="getSelectedPolitialFeedBackDetails">
+		   <result type="json" name="success">
+		    	<param name="root">politicalFeedBackVOList</param>
+		   </result> 
+		</action>
+		
         </package>
 		
 </struts>      

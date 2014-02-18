@@ -1464,4 +1464,17 @@
 	</bean>
 	
 	
+	<bean id="parlimentPoliticalFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.ParlimentPoliticalFeedbackDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="parlimentActionItemsDAO" class="com.itgrids.partyanalyst.dao.hibernate.ParlimentActionItemsDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="assemblyPoliticalFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyPoliticalFeedbackDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	
 </beans>		

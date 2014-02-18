@@ -662,6 +662,8 @@ public String ajaxCallForLoginPopup(){
 					resultStatus.setResultCode(2);
 				if(regVO.getUserAccessType().equalsIgnoreCase("debate"))
 					resultStatus.setResultCode(3);
+				if(regVO.getUserAccessType().equalsIgnoreCase("pfb"))
+					resultStatus.setResultCode(4);
 			} 
 			else
 			{

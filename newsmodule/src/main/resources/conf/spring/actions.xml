@@ -109,4 +109,8 @@
 	 	<property name="staticDataService" ref="staticDataService"/>
 	</bean>
 	
+	<bean id="politicalFeedBackAction" class="com.itgrids.partyanalyst.web.action.PoliticalFeedBackAction" singleton="false">
+	 	<property name="politicalFeedBackService" ref="politicalFeedBackService"/>
+	</bean>
+	
 	</beans>

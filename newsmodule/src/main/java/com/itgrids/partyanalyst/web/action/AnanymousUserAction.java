@@ -368,8 +368,19 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 				  regVO.setAccessValue("1");
 				  
 			    }
-				if(getUserType().equalsIgnoreCase("2")){
-					regVO.setUserAccessType("SubUser");
+				if(getUserType().equalsIgnoreCase("2") || getUserType().equalsIgnoreCase("4") ||  getUserType().equalsIgnoreCase("3")){
+					if(getUserType().equalsIgnoreCase("2"))
+					{
+						regVO.setUserAccessType("SubUser");
+					}
+					if(getUserType().equalsIgnoreCase("4"))
+					{
+						regVO.setUserAccessType("pfb");
+					}
+					if(getUserType().equalsIgnoreCase("3"))
+					{
+						regVO.setUserAccessType("debate");
+					}
 					if(accesslevel.longValue() == 1l){
 						regVO.setAccessType("STATE");
 						regVO.setAccessValue("1");
@@ -405,6 +416,8 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		userTypeList.add(0,new SelectOptionVO(0l,"Select User Type"));
 		userTypeList.add(1,new SelectOptionVO(1l,"Admin"));
 		userTypeList.add(2,new SelectOptionVO(2l,"SubUser"));
+		userTypeList.add(3,new SelectOptionVO(3l,"debate"));
+		userTypeList.add(4,new SelectOptionVO(4l,"pfb"));
         return Action.SUCCESS;
 			
 	}

@@ -1743,6 +1743,16 @@
        <property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
    </bean>
    
+    <bean name="politicalFeedBackService" class="com.itgrids.partyanalyst.service.impl.PoliticalFeedBackService">
+     	<property name="parlimentPoliticalFeedbackDAO" ref="parlimentPoliticalFeedbackDAO" />
+     	<property name="parlimentActionItemsDAO" ref="parlimentActionItemsDAO" />
+     	<property name="assemblyPoliticalFeedbackDAO" ref="assemblyPoliticalFeedbackDAO" />
+     	<property name="constituencyDAO" ref="constituencyDAO" />
+     	<property name="userDAO" ref="userDAO" />
+     	<property name="transactionTemplate" ref="transactionTemplate" />
+     	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+   </bean>
+   
    <bean name="debateService" class="com.itgrids.partyanalyst.service.impl.DebateService">
    		<property name="debateDAO" ref="debateDAO" />
    		<property name="debateSmsQuestionOptionDAO" ref="debateSmsQuestionOptionDAO" />

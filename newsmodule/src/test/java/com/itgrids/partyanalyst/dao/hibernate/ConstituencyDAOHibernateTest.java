@@ -60,7 +60,8 @@ public class ConstituencyDAOHibernateTest extends BaseDaoTestCase{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(1l);
 		ids.add(2l);
-		List<Object[]> values= constituencyDAO.getConstituencyes(ids);
+		List<Object[]> values= constituencyDAO.getAllParlimentConstituencys();
+		System.out.println(values.size());
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+  parms[1]);
 		}
