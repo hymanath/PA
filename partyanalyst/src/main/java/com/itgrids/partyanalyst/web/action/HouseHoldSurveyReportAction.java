@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -46,9 +47,18 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private String houseNo;
 	private Long boothId;
 	private String status;
+	private List<VoterHouseInfoVO> votersFamilyInfo;
 	
 	
 	
+	public List<VoterHouseInfoVO> getVotersFamilyInfo() {
+		return votersFamilyInfo;
+	}
+
+	public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
+		this.votersFamilyInfo = votersFamilyInfo;
+	}
+
 	public String getStatus() {
 		return status;
 	}
@@ -298,6 +308,44 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		status=houseHoldSurveyReportService.saveQuestOptnsOfHH(boothId,houseNo,questionOptionsList);
 		
 		return Action.SUCCESS;
+	}
+	
+	public String getVotersFamilyDetailsForHHSurvey(){
+		try{
+			String param;
+			param = getTask();
+			jObj = new JSONObject(param);
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			//Long userId =  regVO.getRegistrationID();
+			Long userId = null;
+			if(regVO.getParentUserId()!=null)
+			{
+			  userId = regVO.getMainAccountId();
+			}
+			else
+			{
+			  userId = regVO.getRegistrationID();
+			}
+
+			if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
+			{
+				String requestFor = "";
+				try
+				{   
+					requestFor = jObj.getString("requestFor");				
+				}catch(Exception e){}
+			 
+				votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"),requestFor);
+			}
+			else
+				votersFamilyInfo = votersAnalysisService.getFamilyInformationForHHSurvey(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null);
+		}catch(Exception e){
+			//log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
+			System.out.println("Exception Raised"+e);
+		}
+		
+		return SUCCESS;
 	}
 	
 }
