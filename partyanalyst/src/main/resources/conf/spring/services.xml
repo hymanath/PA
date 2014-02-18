@@ -1511,6 +1511,7 @@
 		<property name="voterDataAvailableConstituenciesDAO" ref="voterDataAvailableConstituenciesDAO" />
 		<property name="voterFlagDAO" ref="voterFlagDAO" />
 		<property name="casteInsertTypeDAO" ref="casteInsertTypeDAO" />
+		<property name="voterFamilyRelationDAO" ref="voterFamilyRelationDAO" />
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
@@ -1881,9 +1882,9 @@
    <property name="constituencyDAO" ref="constituencyDAO" />
      </bean>
      
-     <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
-  	<property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
-  	<property name="hhSurveySubTypeDAO" ref="hhSurveySubTypeDAO"></property>
+   <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
+  	 <property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
+  	 <property name="hhSurveySubTypeDAO" ref="hhSurveySubTypeDAO"></property>
   	 <property name="hhOptionTypeDAO" ref="hhOptionTypeDAO" />
  	 <property name="transactionTemplate" ref="transactionTemplate"></property>
  	 <property name="hhOptionsDAO" ref="hhOptionsDAO"></property>
