@@ -1880,6 +1880,18 @@
    <property name="boothDAO" ref="boothDAO" />
    <property name="constituencyDAO" ref="constituencyDAO" />
      </bean>
+     
+     <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
+  	<property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
+  	<property name="hhSurveySubTypeDAO" ref="hhSurveySubTypeDAO"></property>
+  	 <property name="hhOptionTypeDAO" ref="hhOptionTypeDAO" />
+ 	 <property name="transactionTemplate" ref="transactionTemplate"></property>
+ 	 <property name="hhOptionsDAO" ref="hhOptionsDAO"></property>
+ 	 <property name="hhQuestionOptionsDAO" ref="hhQuestionOptionsDAO"></property>
+ 	 <property name="boothDAO" ref="boothDAO"></property>
+ 	 <property name="houseHoldsDAO" ref="houseHoldsDAO"></property>
+ 	 <property name="hhSurveyAnswersDAO" ref="hhSurveyAnswersDAO"></property>
+  </bean>
   
 </beans>		
 	
