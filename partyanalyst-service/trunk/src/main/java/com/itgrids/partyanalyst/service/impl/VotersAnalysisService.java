@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -54,6 +55,7 @@ import com.itgrids.partyanalyst.dao.IHamletBoothDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
+import com.itgrids.partyanalyst.dao.IHouseHoldVoterDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
@@ -100,6 +102,7 @@ import com.itgrids.partyanalyst.dto.ConstituencyManagementVO;
 import com.itgrids.partyanalyst.dto.CrossVotedMandalVO;
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.DataVerificationVO;
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
@@ -242,10 +245,19 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterFlagDAO voterFlagDAO;
     private ICasteInsertTypeDAO casteInsertTypeDAO;
     private IVoterFamilyRelationDAO voterFamilyRelationDAO;
+    private IHouseHoldVoterDAO houseHoldVoterDAO;
     
     
     
-    public IVoterFamilyRelationDAO getVoterFamilyRelationDAO() {
+    public IHouseHoldVoterDAO getHouseHoldVoterDAO() {
+		return houseHoldVoterDAO;
+	}
+
+	public void setHouseHoldVoterDAO(IHouseHoldVoterDAO houseHoldVoterDAO) {
+		this.houseHoldVoterDAO = houseHoldVoterDAO;
+	}
+
+	public IVoterFamilyRelationDAO getVoterFamilyRelationDAO() {
 		return voterFamilyRelationDAO;
 	}
 
@@ -2982,18 +2994,37 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		    	  mobileNosMap.put((Long)params[0], params[1] != null?params[1].toString():"N/A");
 		    }
 		    
-		    List<Long> ctgrysReqForHHSurveyList=new ArrayList<Long>();
+		    	List<Long> ctgrysReqForHHSurveyList=new ArrayList<Long>();
 		    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_OCCUPATION);
 		    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_EDUCATION);
 		    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_SOCIAL_POSITIONS);
 		    
 		    	
 		    	
-		    List<Object[]> votersCategoriesList = 
+		   List<Object[]> votersCategoriesList = 
 					 voterCategoryValueDAO.getVoterCategoryValuesForVotersForHHSurvey(1l,voterIds,ctgrysReqForHHSurveyList);
-			 
+		   
+		   
+		   List<Object[]> hhVoterRelations =  houseHoldVoterDAO.getVoterRelationsByVoterIds(voterIds);
+		   if(hhVoterRelations.size()>0){
+			   
+		   }
+		   List<Object[]> relationsList= voterFamilyRelationDAO.getAllRelations();
+		   List<GenericVO> relsList=new ArrayList<GenericVO>();
+		   	GenericVO defaultGvo = new GenericVO();
+		   	defaultGvo.setId(0l);
+		   	defaultGvo.setName("Select");
+		   	
+		   	relsList.add(defaultGvo);
+			
+		    for(Object[] ob:relationsList){
+		    	GenericVO gvo=new GenericVO();
+		    	gvo.setId(Long.valueOf(ob[0].toString()));
+		    	gvo.setName(ob[1].toString());
+		    	
+		    	relsList.add(gvo);
+		    }
 		    
-		   // List<Object[]> categoriesList=voterCategoryValueDAO.getUserVoterCategoriesForHHSurvey(1l,ctgrysReqForHHSurveyList);
 		    
 		   //Map<Long, VoterHouseInfoVO> voterCastePartyDetails =  getUserCasteAndSelectedPartyVoters(voterIds,userId);
 		    	
@@ -3017,6 +3048,37 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		    	voterHouseInfoVO.setBoothName(boothDAO.getPartNoByBoothId(voterHouseInfoVO.getBoothId()).get(0).toString());
 		    	//VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
 		    	
+		    	Map<Long,List<GenericVO>> categoriesMap=getCategoriesForHHSurvey();
+		    	List<GenericVO> occupationList=new ArrayList<GenericVO>();
+		    	List<GenericVO> educationList=new ArrayList<GenericVO>();
+		    	List<GenericVO> socialPositionList=new ArrayList<GenericVO>();
+		    	
+		    	GenericVO gvo = new GenericVO();
+    			gvo.setId(0l);
+    			gvo.setName("Select");
+    			occupationList.add(gvo);
+    			educationList.add(gvo);
+    			socialPositionList.add(gvo);
+		    	
+
+				for (Entry<Long, List<GenericVO>> entry : categoriesMap.entrySet())
+				{
+					//System.out.println(entry.getKey() + "/" + entry.getValue());
+					if(entry.getKey()==IConstants.HOUSE_HOLD_VOTER_OCCUPATION){
+						occupationList.addAll(entry.getValue());
+					}else if(entry.getKey()==IConstants.HOUSE_HOLD_VOTER_EDUCATION){
+						educationList.addAll(entry.getValue());
+					}else if(entry.getKey()==IConstants.HOUSE_HOLD_VOTER_SOCIAL_POSITIONS){
+						socialPositionList.addAll(entry.getValue());
+					}
+				}
+				
+				voterHouseInfoVO.setOccupationList(occupationList);
+				voterHouseInfoVO.setEducationList(educationList);
+				voterHouseInfoVO.setSocialPositionList(socialPositionList);
+				
+				voterHouseInfoVO.setFamilyRelsList(relsList);
+				
 		    	setVotersCategories(votersCategoriesList,voter,voterHouseInfoVO);
 		    	//setCastePartyDetails(voterHouseInfoVO,voterCastPartyVO);
 		    	
@@ -3034,6 +3096,46 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		}
 		return voterHouseInfoVOList;
 	}
+	
+	
+	/**
+	 * This method will give voter selected categories values Map for House Hold Survey Form
+	 *  
+	 */
+	public Map<Long,List<GenericVO>> getCategoriesForHHSurvey(){
+		List<Long> ctgrysReqForHHSurveyList=new ArrayList<Long>();
+    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_OCCUPATION);
+    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_EDUCATION);
+    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_SOCIAL_POSITIONS);
+    	
+    	List<Object[]> categoriesList=userVoterCategoryValueDAO.getCatergoryAndValues(ctgrysReqForHHSurveyList,1l);
+    	Map<Long,List<GenericVO>> categoryMap=new HashMap<Long, List<GenericVO>>();
+    	for(Object[] list:categoriesList){
+    		if(categoryMap.get(Long.valueOf(list[0].toString()))!=null){
+    			List<GenericVO> genList=categoryMap.get(Long.valueOf(list[0].toString()));
+    			GenericVO gvo = new GenericVO();
+    			gvo.setId(Long.valueOf(list[2].toString()));
+    			gvo.setName(list[3].toString());
+    			
+    			genList.add(gvo);
+    			
+    			categoryMap.put(Long.valueOf(list[0].toString()), genList);
+    			
+    		}else{
+    			GenericVO gvo = new GenericVO();
+    			gvo.setId(Long.valueOf(list[2].toString()));
+    			gvo.setName(list[3].toString());
+    			List<GenericVO> genList=new ArrayList<GenericVO>();
+    			genList.add(gvo);
+    			
+    			categoryMap.put(Long.valueOf(list[0].toString()), genList);
+    		}
+    	}
+    	
+    	return categoryMap;
+	}
+	
+	 
 	
 	/**
 	 * This method will set the voter selected categories values
@@ -3066,7 +3168,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 	    		  categoriesList1.add(category);
 	    		  category.setCategoryValuesId((Long)voterDetails[1]);
 	    		  category.setName(voterDetails[2]!=null?voterDetails[2].toString():"");
-				 
+				  category.setCategoryValueId(voterDetails[3]!=null?Long.valueOf(voterDetails[3].toString()):0l);
 			 }
 	     }
 		 

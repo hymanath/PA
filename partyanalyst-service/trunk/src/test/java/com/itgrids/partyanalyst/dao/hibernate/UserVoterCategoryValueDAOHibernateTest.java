@@ -36,12 +36,23 @@ public class UserVoterCategoryValueDAOHibernateTest  extends BaseDaoTestCase{
 		
 	}*/
 	
-	public void testDeleteCategoeryValues()
+	/*public void testDeleteCategoeryValues()
 	{
 		List<Long> categoeryIds = new ArrayList<Long>();
 		categoeryIds.add(25l);
 		categoeryIds.add(26l);
 		userVoterCategoryValueDAO.deleteCategoeryValues(categoeryIds);
+	}*/
+	
+	public void test(){
+		List<Long> categoryIds=new ArrayList<Long>();
+		categoryIds.add(7l);
+		categoryIds.add(8l);
+		categoryIds.add(9l);
+		
+		List<Object[]> list=userVoterCategoryValueDAO.getCatergoryAndValues(categoryIds,1l);
+		System.out.println(list.size());
+		
 	}
 
 }

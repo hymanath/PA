@@ -104,7 +104,53 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private String youngerCaste;
     private String tehsilName;
     private String constituencyType;
+    private List<GenericVO> occupationList;
+    private List<GenericVO> educationList;
+    private List<GenericVO> socialPositionList;
+    private Long categoryValueId;
     
+    private List<GenericVO> familyRelsList;
+    
+    
+	public List<GenericVO> getFamilyRelsList() {
+		return familyRelsList;
+	}
+
+	public void setFamilyRelsList(List<GenericVO> familyRelsList) {
+		this.familyRelsList = familyRelsList;
+	}
+
+	public Long getCategoryValueId() {
+		return categoryValueId;
+	}
+
+	public void setCategoryValueId(Long categoryValueId) {
+		this.categoryValueId = categoryValueId;
+	}
+
+	public List<GenericVO> getOccupationList() {
+		return occupationList;
+	}
+
+	public void setOccupationList(List<GenericVO> occupationList) {
+		this.occupationList = occupationList;
+	}
+
+	public List<GenericVO> getEducationList() {
+		return educationList;
+	}
+
+	public void setEducationList(List<GenericVO> educationList) {
+		this.educationList = educationList;
+	}
+
+	public List<GenericVO> getSocialPositionList() {
+		return socialPositionList;
+	}
+
+	public void setSocialPositionList(List<GenericVO> socialPositionList) {
+		this.socialPositionList = socialPositionList;
+	}
 
 	public String getConstituencyType() {
 		return constituencyType;

@@ -58,7 +58,8 @@ public class VoterCategoryValueDAO extends GenericDaoHibernate<VoterCategoryValu
 	}
 	
 	public List<Object[]> getVoterCategoryValuesForVotersForHHSurvey(Long userId,List<Long> voterIds,List<Long> categoriesList){
-		Query query = getSession().createQuery("select model.voter.voterId,model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId,model.userVoterCategoryValue.categoryValue " +
+		Query query = getSession().createQuery("select model.voter.voterId,model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId,model.userVoterCategoryValue.categoryValue, " +
+				" model.userVoterCategoryValue.userVoterCategoryValueId " +
 				" from VoterCategoryValue model where model.user.userId = :userId and model.voter.voterId in(:voterIds) " +
 				" and model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId in (:categoriesList)");
 		query.setParameterList("voterIds", voterIds);
@@ -99,18 +100,5 @@ public class VoterCategoryValueDAO extends GenericDaoHibernate<VoterCategoryValu
 		return query.list();
 		
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Object[]> getUserVoterCategoriesForHHSurvey(List<Long> userId,List<Long> categoriesList)
-	{
-		Query query = getSession().createQuery("select distinct model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId, model.userVoterCategoryValue.userVoterCategory.categoryName " +
-				" from VoterCategoryValue model where model.user.userId in(:userId) " +
-				" and model.userVoterCategoryValue.userVoterCategory.userVoterCategoryId in (:categoriesList)" +
-				" order by model.userVoterCategoryValue.userVoterCategory.categoryName ");
-		query.setParameterList("userId", userId);
-		query.setParameterList("categoriesList", categoriesList);
-		return query.list();
-	}
-	
 	
 }

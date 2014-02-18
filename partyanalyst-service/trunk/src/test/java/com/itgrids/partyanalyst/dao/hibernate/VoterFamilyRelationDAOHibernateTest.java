@@ -1,10 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.List;
+
 import org.appfuse.dao.BaseDaoTestCase;
 
-import com.itgrids.partyanalyst.dao.IHHOptionTypeDAO;
-import com.itgrids.partyanalyst.dao.IHHOptionsDAO;
-import com.itgrids.partyanalyst.dao.ISurveyQuestionDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRelationDAO;
 
 public class VoterFamilyRelationDAOHibernateTest extends BaseDaoTestCase{
@@ -19,7 +18,8 @@ public class VoterFamilyRelationDAOHibernateTest extends BaseDaoTestCase{
 
 
 	public void test(){
-		System.out.println("hhOptionsDAO");
+		List<Object[]> list=voterFamilyRelationDAO.getAllRelations();
+		System.out.println(list.size());
 	}
 
 }
