@@ -712,5 +712,9 @@ public interface IConstants {
     public static final String Send_Voice_Sms = "Send_Voice_Sms";
     public static final String Send_Text_Sms = "Send_Text_Sms";
     
+    public static final Long HOUSE_HOLD_VOTER_EDUCATION=8l;
+    public static final Long HOUSE_HOLD_VOTER_OCCUPATION=7l;
+    public static final Long HOUSE_HOLD_VOTER_SOCIAL_POSITIONS=9l;
+    
 	
 }
