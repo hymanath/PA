@@ -391,6 +391,14 @@
 				<value>com.itgrids.partyanalyst.model.WardBooth</value>
 				<value>com.itgrids.partyanalyst.model.PredictedVoterCaste</value>
 				<value>com.itgrids.partyanalyst.model.CasteInsertType</value>
+				<value>com.itgrids.partyanalyst.model.HHSurveyQuestion</value>
+		<value>com.itgrids.partyanalyst.model.HHOptions</value>
+		<value>com.itgrids.partyanalyst.model.HHQuestionOptions</value>
+		<value>com.itgrids.partyanalyst.model.HHOptionType</value>
+		<value>com.itgrids.partyanalyst.model.HHSurvey</value>
+		<value>com.itgrids.partyanalyst.model.HouseHolds</value>
+		<value>com.itgrids.partyanalyst.model.HHSurveyAnswers</value>
+		<value>com.itgrids.partyanalyst.model.HHSurveySubType</value>
 					
 			</list>
 		</property>
@@ -2001,6 +2009,39 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
      <bean id="casteInsertTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteInsertTypeDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhSurveyQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHSurveyQuestionDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="hhOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHOptionsDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhQuestionOptionsDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHQuestionOptionsDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhOptionTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHOptionTypeDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhSurveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHSurveyDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhSurveyAnswersDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHSurveyAnswersDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   
+    <bean id="houseHoldsDAO" class="com.itgrids.partyanalyst.dao.hibernate.HouseHoldsDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhSurveySubTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.hhSurveySubTypeDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
 </beans>
