@@ -382,6 +382,7 @@
 		<value>com.itgrids.partyanalyst.model.HHSurveyAnswers</value>
 		<value>com.itgrids.partyanalyst.model.HHSurveySubType</value>
 		<value>com.itgrids.partyanalyst.model.VoterFamilyRelation</value>
+		<value>com.itgrids.partyanalyst.model.HouseHoldVoter</value>
 			</list>
 			
 		</property>

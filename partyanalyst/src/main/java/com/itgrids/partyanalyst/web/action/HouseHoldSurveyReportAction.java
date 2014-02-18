@@ -49,8 +49,36 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private String status;
 	private List<VoterHouseInfoVO> votersFamilyInfo;
 	
+	private List<GenericVO> occupationList;
+	private List<GenericVO> educationList;
+	private List<GenericVO> socialPositionList;
 	
 	
+	
+	public List<GenericVO> getOccupationList() {
+		return occupationList;
+	}
+
+	public void setOccupationList(List<GenericVO> occupationList) {
+		this.occupationList = occupationList;
+	}
+
+	public List<GenericVO> getEducationList() {
+		return educationList;
+	}
+
+	public void setEducationList(List<GenericVO> educationList) {
+		this.educationList = educationList;
+	}
+
+	public List<GenericVO> getSocialPositionList() {
+		return socialPositionList;
+	}
+
+	public void setSocialPositionList(List<GenericVO> socialPositionList) {
+		this.socialPositionList = socialPositionList;
+	}
+
 	public List<VoterHouseInfoVO> getVotersFamilyInfo() {
 		return votersFamilyInfo;
 	}
@@ -340,6 +368,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			}
 			else
 				votersFamilyInfo = votersAnalysisService.getFamilyInformationForHHSurvey(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null);
+			
 		}catch(Exception e){
 			//log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
 			System.out.println("Exception Raised"+e);
