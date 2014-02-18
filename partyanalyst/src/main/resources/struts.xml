@@ -6329,5 +6329,49 @@
         	</result>
 		</action>
 		
+		<action name="votersEditNewHHAction" class="votersEditNewHHAction">
+			<result name="success">/jsp/votersEditNewForHHPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="houseHoldVotersInfoAction" class="houseHoldVotersInfoAction">
+			<result name="success">/jsp/houseHoldVotersInfoPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="houseHoldSurveyReportAction" class="houseHoldSurveyReportAction">
+        	<result name="success">/jsp/houseHoldSurveyReportPage.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+      	</action>
+      	
+      	<action name="getHouseHoldQuestionsAction" class="houseHoldSurveyReportAction" method="getHouseHoldQuestions">
+        	 <result type="json" name="success">
+           		<param name="root">questionsList</param>
+        	</result>
+      	</action>
+      	
+      	<action name="houseHoldCreationAction" class="houseHoldSurveyReportAction" method="houseHoldCreationAction">
+			<result name="success">/jsp/houseHoldsCreation.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		<action name="getSubSurveyTypes" class="houseHoldSurveyReportAction" method="getSubSurveyTypes">
+		 <result type="json" name="success">
+           		<param name="root">resultList</param>
+        	</result>
+		</action>
+		
+		<action name="saveQuestionDetails" class="houseHoldSurveyReportAction" method="saveQuestionDetails">
+		 <result type="json" name="success">
+           		<param name="root">status</param>
+        	</result>
+		</action>
+		
+		<action name="hhQstnAnswrsForm" class="houseHoldSurveyReportAction" method="saveHouseHoldQuesOptns">
+			<result type="json" name="success">
+           		<param name="root">status</param>
+        	</result>
+		</action>
+		
 		</package>
 </struts>      
