@@ -543,11 +543,20 @@ function buildVotersInFamilySearch(results,hno){
 	    {
 			var categ = oRecord.getData("familyRelsList");
 			
+			var val = oRecord.getData("voterFamilyRelId");
+			
 			var str="";
 			if(categ != null && categ.length > 0){
 			str+="<select>";
 			 for(var i in categ){
-				str+="<option value="+categ[i].id+">"+categ[i].name+"</option>";
+				
+					if(val==categ[i].id){
+						str+="<option value="+categ[i].id+" selected>"+categ[i].name+"</option>";
+					}else{
+						str+="<option value="+categ[i].id+">"+categ[i].name+"</option>";
+					}
+				
+				
 			  }
 			  str+="</select>";
 			 }
