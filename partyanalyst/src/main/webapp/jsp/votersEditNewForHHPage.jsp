@@ -408,7 +408,7 @@ function getVotersInAFamilySearch(){
 	
 			}
 	   var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-			var url = "votersFamilyDetailsAction.action?"+rparam;						
+			var url = "votersFamilyDetailsForHHSurveyAction.action?"+rparam;						
 		callAjax(jsObj,url);
 
 }
@@ -458,6 +458,20 @@ function buildVotersInFamilySearch(results,hno){
 			 }
 			  elLiner.innerHTML = val;
 	    }
+		
+		YAHOO.widget.DataTable.SocialPosition = function(elLiner, oRecord, oColumn, oData)
+	    {
+			var categ = oRecord.getData("categoriesList");
+			var val="";
+			if(categ != null && categ.length > 0){
+			 for(var i in categ){
+			    if(categ[i].categoryValuesId == 9)
+				   if(categ[i].name != null)
+				    val = categ[i].name;
+			  }
+			 }
+			  elLiner.innerHTML = val;
+	    }
 			
      var votersResultColumnDefs = [ 		    	             
 		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
@@ -469,7 +483,8 @@ function buildVotersInFamilySearch(results,hno){
 							<!--{key:"mobileNo",label:"mobileNo",sortable:true}
 							{key:"voterIdCardNo", label: "Voter Card No",sortable:true},
 							{key:"Education", label: "Education",formatter:YAHOO.widget.DataTable.Education},
-							{key:"Occupation", label: "Occupation",formatter:YAHOO.widget.DataTable.Occupation}
+							{key:"Occupation", label: "Occupation",formatter:YAHOO.widget.DataTable.Occupation},
+							{key:"Social Position", label: "SocialPosition",formatter:YAHOO.widget.DataTable.SocialPosition}
 						]; 
 
     var myConfigs = { 
@@ -686,9 +701,9 @@ function saveHouseHoldInfo(){
 		<th>Guardian Name</th>
 		<td><b>:</b></td>
 		<td>${voterHouseInfoVO.gaurdian}</td>
-		<th>Gender</th>
+		<th>Voter Card No</th>
 		<td><b>:</b></td>
-		<td>${voterHouseInfoVO.gender}</td>
+		<td>${voterHouseInfoVO.voterIdCardNo}</td>
 	</tr>
 	<tr>
 		<th>RelationShip</th>
@@ -700,11 +715,17 @@ function saveHouseHoldInfo(){
 	</tr>
 	
 	<tr>
+		<th>Mobile NO</th>
+		<td><b>:</b></td>
+		<td>${voterHouseInfoVO.mobileNo}</td>
 		<th>Caste</th>
 		<td><b>:</b></td>
 		<td>${voterHouseInfoVO.casteStateId}</td>
 	</tr>
-
+	
+		
+	
+	
 </table>
 </fieldset>
 
