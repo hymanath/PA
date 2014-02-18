@@ -3006,7 +3006,11 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		   
 		   
 		   List<Object[]> hhVoterRelations =  houseHoldVoterDAO.getVoterRelationsByVoterIds(voterIds);
+		   Map<Long,Long> hhVoterRelMap=new HashMap<Long, Long>();
 		   if(hhVoterRelations.size()>0){
+			   for(Object[] obj:hhVoterRelations){
+				   hhVoterRelMap.put(Long.valueOf(obj[0].toString()), Long.valueOf(obj[1].toString()));
+			   }
 			   
 		   }
 		   List<Object[]> relationsList= voterFamilyRelationDAO.getAllRelations();
@@ -3078,6 +3082,13 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 				voterHouseInfoVO.setSocialPositionList(socialPositionList);
 				
 				voterHouseInfoVO.setFamilyRelsList(relsList);
+				
+				if(hhVoterRelMap.get(voter.getVoterId())!=null){
+					voterHouseInfoVO.setVoterFamilyRelId(hhVoterRelMap.get(voter.getVoterId()));
+				}else{
+					voterHouseInfoVO.setVoterFamilyRelId(0l);
+				}
+				
 				
 		    	setVotersCategories(votersCategoriesList,voter,voterHouseInfoVO);
 		    	//setCastePartyDetails(voterHouseInfoVO,voterCastPartyVO);
