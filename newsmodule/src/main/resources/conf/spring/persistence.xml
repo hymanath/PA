@@ -129,7 +129,13 @@
 				<value>com.itgrids.partyanalyst.model.TelecastType</value>
 				<value>com.itgrids.partyanalyst.model.Observer</value>
 				<value>com.itgrids.partyanalyst.model.Channel</value>	
-				<value>com.itgrids.partyanalyst.model.DebateReport</value>		
+				<value>com.itgrids.partyanalyst.model.DebateReport</value>	
+				
+				<value>com.itgrids.partyanalyst.model.ParlimentPoliticalFeedback</value>	
+				<value>com.itgrids.partyanalyst.model.ParlimentActionItems</value>	
+				<value>com.itgrids.partyanalyst.model.AssemblyPoliticalFeedback</value>		
+				
+				
 				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>

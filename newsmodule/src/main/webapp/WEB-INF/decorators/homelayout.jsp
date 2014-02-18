@@ -74,17 +74,20 @@ margin:-1px 0px 0px 0px ;
 
 .nav1 li.outerLi:hover ul{display:inline-block;}
 .nav1 li.outerLi ul{position: absolute;
-      top:62px;left:-27px;z-index:100;}
-.nav1 li.outerLi:hover ul a{color:#ffffff;text-decoration:none;}
-.nav1 li.outerLi:hover ul li{padding:10px;margin:2px;list-style-type:none;background:#7FC67F;width:200px;}
-.nav1 li.outerLi:hover ul li:hover{background:#FFFF00;color:red;border:1px solid #ccc;}
-.nav1 li.outerLi:hover ul li:hover a{color:red;}
+      top:67px;left:-27px;z-index:100;}
+.nav1 li.outerLi:hover ul a{color:#000; text-decoration:none;}
+.nav1 li.outerLi:hover ul li{margin:2px; list-style-type:none; background-color:#ffff00; width:105px; padding:5px;}
+.nav1 li.outerLi:hover ul li a{padding-left:16px; }
+.nav1 li.outerLi:hover ul li:hover{color:red;border:1px solid #ccc; }
+.nav1 li.outerLi:hover ul li:hover a{color:red; }
 
 
 .menuActive{border-bottom:4px solid red;box-shadow:0px 0px 2px #ccc;border-radius:2px;}
 .requiredFont{color:red;}
 #changePasswordInnerDiv{font-size:13px;}
 #errorMsgDiv{margin-top: 5px; margin-bottom: -10px; margin-left: 134px;}
+
+.nav1 li.outerLi ul li{ line-heigth:20px!important ;backgroud-color:red; }
 </style>
 <decorator:head/>
 </head>
@@ -182,7 +185,12 @@ margin:-1px 0px 0px 0px ;
 									</ul> -->
 							</li> 
 						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
-							   <li class="outerLi" id="debateTabId"><a href="debateAction.action" class="innerA"> Debate </a></li>
+							   <li class="outerLi" id="debateTabId"><a href="#" class="innerA"> Reports </a>
+							   <ul>
+							   <li  id="debateTabId"><a href="debateAction.action" class=""> Debate </a></li>
+							   <li  id="debateTabId"><a href="politicalFeedBackAction.action" class=""> PFB </a></li>
+							   </ul>
+							   </li>
 							 
 						   
 						  

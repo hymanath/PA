@@ -327,6 +327,13 @@ function handleErrorMessageForpopup()
 									
 									  window.location.href = "debateAction.action";
 								}
+								else if(myResults.resultCode == 4)
+								{
+									$("#ajaxcallimage").show();
+									$('#ajaxcallimage').html('Login Successfull,Page is refreshing Please wait...');
+									
+									  window.location.href = "politicalFeedBackAction.action";
+								}
 								else{
 									
 									$('#ajaxcallimage').html('');
