@@ -399,6 +399,8 @@
 		<value>com.itgrids.partyanalyst.model.HouseHolds</value>
 		<value>com.itgrids.partyanalyst.model.HHSurveyAnswers</value>
 		<value>com.itgrids.partyanalyst.model.HHSurveySubType</value>
+		
+		<value>com.itgrids.partyanalyst.model.VoterFamilyRelation</value>
 					
 			</list>
 		</property>
@@ -2044,4 +2046,9 @@
     <bean id="hhSurveySubTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.hhSurveySubTypeDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   
+   <bean id="voterFamilyRelationDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterFamilyRelationDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
 </beans>
