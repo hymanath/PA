@@ -1512,6 +1512,7 @@
 		<property name="voterFlagDAO" ref="voterFlagDAO" />
 		<property name="casteInsertTypeDAO" ref="casteInsertTypeDAO" />
 		<property name="voterFamilyRelationDAO" ref="voterFamilyRelationDAO" />
+		<property name="houseHoldVoterDAO" ref="houseHoldVoterDAO" />
 	</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">

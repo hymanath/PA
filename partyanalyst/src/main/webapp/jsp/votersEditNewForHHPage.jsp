@@ -430,57 +430,143 @@ function buildVotersInFamilySearch(results,hno){
 		elLiner.innerHTML ='<a id="openProblemEditFormId" onclick=" openProblemEditFormNew('+id+','+boothId+','+publicationDateId+',\''+houseNo+'\');">'+name+'</a>';
 		
 	}
+	YAHOO.widget.DataTable.CheckVoter = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var id=oRecord.getData("voterId");
+		var boothId=oRecord.getData("boothId"); 
+		var name = oRecord.getData("name");
+		//var publicationDateId = oRecord.getData("publicationDateId");
+		var publicationDateId="${publicationDateId}";
+		var houseNo = oRecord.getData("houseNo");
+		
+		elLiner.innerHTML ='<input type="checkbox" name="voters" value='+id+'></input>';
+		
+	}
     YAHOO.widget.DataTable.Occupation = function(elLiner, oRecord, oColumn, oData)
 	    {
+			var categ = oRecord.getData("occupationList");
 			
-			var categ = oRecord.getData("categoriesList");
+			var categ1 = oRecord.getData("categoriesList");
 			var val="";
-			if(categ != null && categ.length > 0){
-			 for(var i in categ){
-			    if(categ[i].categoryValuesId == 7)
-				   if(categ[i].name != null)
-				    val = categ[i].name;
+			if(categ1 != null && categ1.length > 0){
+			 for(var i in categ1){
+			    if(categ1[i].categoryValuesId == 7)
+				   if(categ1[i].name != null)
+				    val = categ1[i].categoryValueId;
 			  }
 			 }
-			 elLiner.innerHTML = val;
+			 
+			var str="";
+			if(categ != null && categ.length > 0){
+			str+="<select>";
+			 for(var i in categ){
+			    if(categ[i].id==val){
+					str+="<option value="+categ[i].id+" selected>"+categ[i].name+"</option>";
+				}else{
+					str+="<option value="+categ[i].id+">"+categ[i].name+"</option>";
+				}
+			  }
+			  str+="</select>";
+			 }
+			 
+			 elLiner.innerHTML = str;
 			
 	    }
 	 YAHOO.widget.DataTable.Education = function(elLiner, oRecord, oColumn, oData)
 	    {
-			var categ = oRecord.getData("categoriesList");
+		
+			var categ = oRecord.getData("educationList");
+			
+			var categ1 = oRecord.getData("categoriesList");
 			var val="";
-			if(categ != null && categ.length > 0){
-			 for(var i in categ){
-			    if(categ[i].categoryValuesId == 8)
-				   if(categ[i].name != null)
-				    val = categ[i].name;
+			if(categ1 != null && categ1.length > 0){
+			 for(var i in categ1){
+			    if(categ1[i].categoryValuesId == 8)
+				   if(categ1[i].name != null)
+				    val = categ1[i].categoryValueId;
 			  }
 			 }
-			  elLiner.innerHTML = val;
+			 
+			 
+			var str="";
+			if(categ != null && categ.length > 0){
+			str+="<select>";
+			 for(var i in categ){
+			   if(categ[i].id==val){
+					str+="<option value="+categ[i].id+" selected>"+categ[i].name+"</option>";
+				}else{
+					str+="<option value="+categ[i].id+">"+categ[i].name+"</option>";
+				}
+			  }
+			  str+="</select>";
+			 }
+			 
+			 elLiner.innerHTML = str;
+			
 	    }
 		
 		YAHOO.widget.DataTable.SocialPosition = function(elLiner, oRecord, oColumn, oData)
 	    {
-			var categ = oRecord.getData("categoriesList");
+			var categ = oRecord.getData("socialPositionList");
+			
+			var categ1 = oRecord.getData("categoriesList");
 			var val="";
-			if(categ != null && categ.length > 0){
-			 for(var i in categ){
-			    if(categ[i].categoryValuesId == 9)
-				   if(categ[i].name != null)
-				    val = categ[i].name;
+			if(categ1 != null && categ1.length > 0){
+			 for(var i in categ1){
+			    if(categ1[i].categoryValuesId == 9)
+				   if(categ1[i].name != null)
+				    val = categ1[i].categoryValueId;
 			  }
 			 }
-			  elLiner.innerHTML = val;
+			  
+			
+			var str="";
+			if(categ != null && categ.length > 0){
+			str+="<select>";
+			 for(var i in categ){
+				if(categ[i].id==val){
+					str+="<option value="+categ[i].id+" selected>"+categ[i].name+"</option>";
+				}else{
+					str+="<option value="+categ[i].id+">"+categ[i].name+"</option>";
+				}
+			    
+			  }
+			  str+="</select>";
+			 }
+			 
+			 elLiner.innerHTML = str;
+			
+			
+	    }
+		
+		YAHOO.widget.DataTable.Relation = function(elLiner, oRecord, oColumn, oData)
+	    {
+			var categ = oRecord.getData("familyRelsList");
+			
+			var str="";
+			if(categ != null && categ.length > 0){
+			str+="<select>";
+			 for(var i in categ){
+				str+="<option value="+categ[i].id+">"+categ[i].name+"</option>";
+			  }
+			  str+="</select>";
+			 }
+			 
+			 elLiner.innerHTML = str;
+			
+			
 	    }
 			
-     var votersResultColumnDefs = [ 		    	             
+     var votersResultColumnDefs = [ 
+							{label:"Select Voter",formatter:YAHOO.widget.DataTable.CheckVoter},
 		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
 							<!--{key:"gender", label: "Gender", sortable: true},-->
 		    				{key:"age", label: "Age",sortable:true},
 							<!--{key:"houseNo", label: "House No",sortable:true},-->
 							{key:"gaurdian", label: "Guardian Name",sortable:true},
-							{key:"relationship", label: "Relationship",sortable:true},
+							<!--{key:"relationship", label: "Relationship",sortable:true},-->
 							<!--{key:"mobileNo",label:"mobileNo",sortable:true}
+							{key:"Relation", label: "Relation",formatter:YAHOO.widget.DataTable.Relation},
 							{key:"voterIdCardNo", label: "Voter Card No",sortable:true},
 							{key:"Education", label: "Education",formatter:YAHOO.widget.DataTable.Education},
 							{key:"Occupation", label: "Occupation",formatter:YAHOO.widget.DataTable.Occupation},
@@ -767,7 +853,7 @@ function saveHouseHoldInfo(){
 
 </div>
 </form>
-	<div id="impFamDtlsOuterPopUp">
+	<div id="impFamDtlsOuterPopUp" style="margin-left:-350px;">
 		   <div id="impFamDtlsTitle"></div>
 		   <div id="impFamDtls"  class="table table-striped"></div>
 		</div>
