@@ -110,8 +110,18 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private Long categoryValueId;
     
     private List<GenericVO> familyRelsList;
+    private Long voterFamilyRelId;
     
     
+    
+	public Long getVoterFamilyRelId() {
+		return voterFamilyRelId;
+	}
+
+	public void setVoterFamilyRelId(Long voterFamilyRelId) {
+		this.voterFamilyRelId = voterFamilyRelId;
+	}
+
 	public List<GenericVO> getFamilyRelsList() {
 		return familyRelsList;
 	}
