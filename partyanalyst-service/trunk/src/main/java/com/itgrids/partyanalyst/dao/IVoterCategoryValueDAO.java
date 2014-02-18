@@ -24,5 +24,9 @@ public interface IVoterCategoryValueDAO extends GenericDao<VoterCategoryValue, L
 	public List<Object[]> getUserVoterCategories(List<Long> userIdsList);
 	
 	public List<Object[]> checkCategoeryValues(List<Long> categoeryIds , Long userId);
+	
+	public List<Object[]> getVoterCategoryValuesForVotersForHHSurvey(Long userId,List<Long> voterIds,List<Long> categoriesList);
+	
+	//public List<Object[]> getUserVoterCategoriesForHHSurvey(List<Long> userId,List<Long> categoryIds);
 
 }
