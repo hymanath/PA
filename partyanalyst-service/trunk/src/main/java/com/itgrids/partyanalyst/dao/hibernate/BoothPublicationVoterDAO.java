@@ -385,6 +385,72 @@ public class BoothPublicationVoterDAO extends
 		return query.list();
 	}
 	
+	
+	/*public List<Object[]> addedDeletedVoters(String locationType,Long locationId,Long fromPublicationDateId,Long toPublicationDateId,Long constituencyId){
+		
+		Query query = getSession().createSQLQuery(" select count(BPV.voter_id) from booth_publication_voter BPV,Booth B " +
+		  		" where BPV.booth_id = B.booth_id and B.publication_date_id =:toPublicationDateId " +
+		  		"  and B.constituency_id =:constituencyId and BPV.voter_id not in (select BPV2.voter_id from booth_publication_voter BPV2,Booth B2 " +
+		  		" where BPV2.booth_id = B2.booth_id and " +
+		  		"  B2.constituency_id = :constituencyId and B2.publication_date_id =:fromPublicationDateId) ");
+		  
+		  query.setParameter("constituencyId", constituencyId);
+		  query.setParameter("fromPublicationDateId", fromPublicationDateId);
+		  query.setParameter("toPublicationDateId", toPublicationDateId);
+		  
+		  return query.list();
+		
+		
+		StringBuilder str = new StringBuilder();
+		StringBuilder strs = new StringBuilder();
+		str.append("select count(model.voter.voterId) from BoothPublicationVoter model," +
+				" Booth model2 " +
+				"where model.booth.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.booth.boothId = model2.boothId and ");
+		
+		if(locationType.equalsIgnoreCase("constituency")){
+			str.append(" model.booth.constituency.constituencyId = :locationId ");
+			strs.append(" bpv.booth.constituency.constituencyId = :locationId ");
+		}
+		else if(locationType.equalsIgnoreCase("mandal")){
+			str.append(" model.booth.tehsil.tehsilId = :locationId and model.booth.constituency.constituencyId = :constituencyId and model.booth.localBody is null ");
+			strs.append(" bpv.booth.tehsil.tehsilId = :locationId and model.booth.constituency.constituencyId = :constituencyId and model.booth.localBody is null ");
+		}
+		else if(locationType.equalsIgnoreCase("booth")){
+			str.append(" model.booth.boothId = :locationId ");
+			strs.append(" bpv.booth.boothId = :locationId ");
+		}
+		else if(locationType.equalsIgnoreCase("panchayat")){
+			str.append(" model.booth.panchayat.panchayatId = :locationId ");
+			strs.append(" bpv.booth.panchayat.panchayatId = :locationId ");
+		}
+		else if(locationType.equalsIgnoreCase("localElectionBody") || 
+				locationType.equalsIgnoreCase("Local Election Body")){
+			str.append(" model.booth.localBody.localElectionBodyId = :locationId  and model.booth.constituency.constituencyId = :constituencyId ");
+			strs.append(" bpv.booth.localBody.localElectionBodyId = :locationId  and model.booth.constituency.constituencyId = :constituencyId ");
+		}
+		else if(locationType.equalsIgnoreCase("ward")){
+			str.append(" model.booth.localBodyWard.constituencyId = :locationId ");
+			strs.append(" bpv.booth.localBodyWard.constituencyId = :locationId ");
+		}
+		
+		
+		str.append(" and model.voter.voterId not in(select bpv.voter.voterId from BoothPublicationVoter bpv where" +
+				" bpv.booth.boothId=model2.boothId and bpv.booth.publicationDate.publicationDateId = :topublicationDateId and ");
+		str.append(strs);
+		str.append(" ) ");
+		//str.append(" group by model.voter.gender ");
+		
+		Query query = getSession().createQuery(str.toString()) ;
+		query.setParameter("publicationDateId", fromPublicationDateId);
+		query.setParameter("topublicationDateId", toPublicationDateId);
+		query.setParameter("locationId", locationId);
+		if(locationType.equalsIgnoreCase("mandal") || locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body"))
+			query.setParameter("constituencyId", constituencyId);
+		return query.list();
+		
+	}*/
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getCastCategoryWiseVotersCountByPublicationIdInALocation(Long userId,String locationType,Long locationId,Long publicationDateId,Long constituencyId)
 	{
@@ -6208,6 +6274,15 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		Query query = getSession().createQuery("select model.voter.houseNo,model.voter,model.booth.constituency.constituencyId from BoothPublicationVoter model where  model.booth.boothId = :boothId and model.voter.houseNo in (:hnos) order by model.voter.age");
 		query.setParameter("boothId", boothId);
 		query.setParameterList("hnos", hnos);
+		return query.list();
+	}
+	
+	public List<Object[]> getConstyPublicationIdByVoterId(String voterCardNo){
+		Query query=getSession().createQuery("select model.booth.constituency.constituencyId,model.booth.boothId,model.booth.publicationDate.publicationDateId," +
+				" model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender,model.booth.constituency.district.districtId,model.voter.relativeName,model.voter.houseNo " +
+				" from BoothPublicationVoter model where model.voter.voterIDCardNo =:voterCardNo order by model.booth.publicationDate.publicationDateId desc ");
+		
+		query.setParameter("voterCardNo", voterCardNo);
 		return query.list();
 	}
 
