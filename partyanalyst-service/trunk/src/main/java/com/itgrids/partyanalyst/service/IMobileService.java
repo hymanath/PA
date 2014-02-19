@@ -37,5 +37,6 @@ public interface IMobileService {
 	public List<RegistrationVO> getMobileAppUserPopulateData(Long userId);
   	public VoterDetailsVO getVoterDetailsBasedOnVoterId(String voterCardNo);
 
-
+	
+	public ResultStatus createDataDumpFileForAConstituency(RegistrationVO reVo);
 }
