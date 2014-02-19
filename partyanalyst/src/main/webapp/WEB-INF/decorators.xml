@@ -284,9 +284,12 @@
 		<pattern>/predictedCasteAssignAction*</pattern>
 		<pattern>/familyDetailsAction*</pattern>
 		<pattern>/casteReportAction*</pattern>
+		<pattern>/voterAddressAction*</pattern>
 		<pattern>/houseHoldSurveyReportAction*</pattern>
 		<pattern>/votersEditNewHHAction*</pattern>
 		<pattern>/houseHoldCreationAction*</pattern>
+    	
+		
     	
     	 </decorator>
     	 
