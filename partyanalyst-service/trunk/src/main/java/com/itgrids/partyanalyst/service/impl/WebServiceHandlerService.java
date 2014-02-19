@@ -3,38 +3,37 @@ package com.itgrids.partyanalyst.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-
-import net.sf.cglib.core.EmitUtils;
-
 import org.apache.log4j.Logger;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppPingingDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserDAO;
 import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VoiceRecordingDetailsDAO;
-import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dto.EmailDetailsVO;
+import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
+import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
+import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
-
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+
 
 public class WebServiceHandlerService implements IWebServiceHandlerService {
 	
@@ -56,7 +55,58 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private IVoiceRecordingDetailsDAO voiceRecordingDetailsDAO;
 	private IPingingTypeDAO pingingTypeDAO;
 	private IMobileAppPingingDAO mobileAppPingingDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IUserVoterDetailsDAO userVoterDetailsDAO;
+	private IBoothDAO boothDAO;
+	private CadreManagementService cadreManagementService;
+	private CastePredictionService castePredictionService; 
 	
+	
+	
+	
+	public CastePredictionService getCastePredictionService() {
+		return castePredictionService;
+	}
+
+	public void setCastePredictionService(
+			CastePredictionService castePredictionService) {
+		this.castePredictionService = castePredictionService;
+	}
+
+	public CadreManagementService getCadreManagementService() {
+		return cadreManagementService;
+	}
+
+	public void setCadreManagementService(
+			CadreManagementService cadreManagementService) {
+		this.cadreManagementService = cadreManagementService;
+	}
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public IUserVoterDetailsDAO getUserVoterDetailsDAO() {
+		return userVoterDetailsDAO;
+	}
+
+	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
+		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
+
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
 	public IPingingTypeDAO getPingingTypeDAO() {
 		return pingingTypeDAO;
 	}
@@ -400,6 +450,195 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("Exception Occured in saveMobileAppPingIngDetails() method of WebServiceHandlerService, Exception is - "+e);
 			e.printStackTrace();
 		}
+	}
+	
+	public VoterDetailsVO getVoterDetailsBasedOnVoterId(String voterCardNo){
+		List<Object[]> dtlsList=boothPublicationVoterDAO.getConstyPublicationIdByVoterId(voterCardNo);
+		//Gives ConstyId,BoothId,PublicationId,VoterId,Name,Age,Gender
+		
+		VoterDetailsVO vo=new VoterDetailsVO();
+		
+		Object[] obj=dtlsList.get(0);
+		
+		vo.setConstituencyId(Long.valueOf(obj[0].toString()));
+		vo.setBoothId(Long.valueOf(obj[1].toString()));
+		vo.setPublicationDateId(Long.valueOf(obj[2].toString()));
+		vo.setVoterId(Long.valueOf(obj[3].toString()));	
+		vo.setVoterName(obj[4].toString());
+		vo.setAge(obj[5].toString());
+		
+		if(obj[6].toString().equalsIgnoreCase("M")){
+			vo.setGender("Male");
+		}else{
+			vo.setGender("Female");
+		}
+		
+		vo.setDistrictId(Long.valueOf(obj[7].toString()));
+		if(obj[8].toString()!=null){
+			vo.setRelativeName(obj[8].toString());
+		}else{
+			vo.setRelativeName("");
+		}
+		if(obj[9].toString()!=null){
+			vo.setHouseNo(obj[9].toString());
+		}else{
+			vo.setHouseNo("");
+		}
+		
+		
+		
+		/*List<Object[]> voterCasteData = userVoterDetailsDAO.getVoterDetailsForSurveyForm(vo.getVoterId(),1l);
+		if(voterCasteData != null && voterCasteData.size() > 0)
+		{
+			for (Object[] parms : voterCasteData) {
+				
+			  vo.setCaste(parms[1].toString());
+			  vo.setCasteStateId(((Long)parms[0]));
+			}
+		}
+		else
+		{
+			  vo.setCaste("");
+			  vo.setCasteStateId(0l);
+		}*/
+		
+		List<Booth> boothDtls=null;
+		if(vo.getBoothId()!=null){
+			boothDtls=boothDAO.getBoothDetailsByBoothId(vo.getBoothId());
+		}
+		
+		if(boothDtls!=null && boothDtls.size()>0){
+			if(boothDtls.get(0).getTehsil()!=null){
+				vo.setTehsilId(boothDtls.get(0).getTehsil().getTehsilId());
+			}
+			
+			if(boothDtls.get(0).getLocalBody()!=null){
+				vo.setLocalElectionBodyId(boothDtls.get(0).getLocalBody().getLocalElectionBodyId());
+			}
+			
+			//IF THE SELECTED CONSTITUENCY UNDER GHMC -- GETTING WARD ID AND NAME
+			if(boothDtls.get(0).getLocalBody().getElectionType().getElectionTypeId()==7){
+				vo.setWardId(boothDtls.get(0).getLocalBodyWard().getLocalElectionBodyWard().getLocalElectionBodyWardId());
+				vo.setWardName(boothDtls.get(0).getLocalBodyWard().getLocalElectionBodyWard().getWardName());
+			}
+		}
+		
+		
+		List<UserVoterDetails> uvDtls=userVoterDetailsDAO.getVoterDetailsByVoterId(vo.getVoterId(),1l);
+		
+		if(uvDtls!=null && uvDtls.size()>0){
+			UserVoterDetails uv=uvDtls.get(0);
+			
+			if(uv.getCasteState()!=null){
+				Long casteCategoryId=uv.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId();
+				Long socialCategoryId=0l;
+				if(casteCategoryId==1l){
+					socialCategoryId=5l;
+				}else if(casteCategoryId==2l){
+					socialCategoryId=3l;
+				}else if(casteCategoryId==3l){
+					socialCategoryId=2l;
+				}else if(casteCategoryId==4l){
+					socialCategoryId=1l;
+				}
+				vo.setCasteGroupId(socialCategoryId);
+				vo.setCaste(uv.getCasteState().getCaste().getCasteName());
+			}else{
+				vo.setCaste("");
+				vo.setCasteGroupId(0l);
+			}
+			
+			if(uv.getHamlet()!=null){
+				vo.setHamletId(uv.getHamlet().getHamletId());
+			}
+			
+			if(uv.getWard()!=null){
+				vo.setWardId(uv.getWard().getConstituencyId());
+			}
+			if(uv.getMobileNo()!=null){
+				vo.setMobileNo(uv.getMobileNo());
+			}
+			
+		}
+		
+		
+	
+		return vo;
+	}
+	
+	public String saveCadreFromAndroid(VoterDetailsVO voterDetails){
+		CadreInfo cadreInfoVO=new CadreInfo();
+		
+		cadreInfoVO.setAccessType("STATE");
+		cadreInfoVO.setAge(voterDetails.getAge());
+		cadreInfoVO.setCadreLevel(9l);
+		cadreInfoVO.setCadreLevelBooth(voterDetails.getBoothId().toString());
+		cadreInfoVO.setCadreLevelConstituency(voterDetails.getConstituencyId().toString());
+		cadreInfoVO.setCadreLevelDistrict(voterDetails.getDistrictId().toString());
+		cadreInfoVO.setMandal(voterDetails.getTehsilId().toString());
+		cadreInfoVO.setBooth(voterDetails.getBoothId().toString());
+		
+		if(voterDetails.getHamletId()!=null){
+			cadreInfoVO.setVillage(voterDetails.getHamletId().toString());
+		}
+		
+		cadreInfoVO.setWardId(voterDetails.getWardId());
+		cadreInfoVO.setLocalElectionBodyId(voterDetails.getLocalElectionBodyId());
+		//cadreInfoVO.setState();
+		cadreInfoVO.setConstituencyID(voterDetails.getConstituencyId());
+		cadreInfoVO.setDistrict(voterDetails.getDistrictId().toString());
+		cadreInfoVO.setDobOption("Age");
+		cadreInfoVO.setEducation(8l);
+		cadreInfoVO.setFirstName(voterDetails.getVoterName());
+		cadreInfoVO.setLastName("");
+		cadreInfoVO.setMandal(voterDetails.getTehsilId().toString());
+		cadreInfoVO.setMemberType("Active");
+		cadreInfoVO.setSocialStatus(voterDetails.getCasteGroupId());
+		cadreInfoVO.setEducation(8l);
+		cadreInfoVO.setProfession(16l);
+		cadreInfoVO.setStrCadreLevelValue(voterDetails.getBoothId().toString());
+		cadreInfoVO.setGender(voterDetails.getGender());
+		cadreInfoVO.setFirstFamilyMemberName("");
+		cadreInfoVO.setSecondFamilyMemberName("");
+		cadreInfoVO.setThirdFamilyMemberName("");
+		cadreInfoVO.setFatherOrSpouseName(voterDetails.getRelativeName());
+		cadreInfoVO.setHouseNo(voterDetails.getHouseNo());
+		
+		cadreInfoVO.setState("1");
+		cadreInfoVO.setUserID(1l);
+		cadreInfoVO.setUserType("politician");
+		cadreInfoVO.setBloodGroup(0l);
+		cadreInfoVO.setSameAsCA(true);
+		if(cadreInfoVO.getMobile()=="" || cadreInfoVO.getMobile()==null){
+			cadreInfoVO.setMobile("9999999999");
+		}else{
+			cadreInfoVO.setMobile(voterDetails.getMobileNo());
+		}
+		cadreInfoVO.setSavingFrom("Android");
+		cadreInfoVO.setVoterId(voterDetails.getVoterId());
+		//cadreInfoVO.setVillage(village)
+		
+		ResultStatus rs=cadreManagementService.saveCader(cadreInfoVO, null, "new");
+		return "SUC";
+	}
+	
+	public String updateVoterDetails(String uniqueCode,Long voterId,Long casteStateId,String mobileNumber){
+		List<UserVoterDetails> uvDtls=userVoterDetailsDAO.getVoterDetailsByVoterId(voterId,1l);
+		int mobUpdated=0;
+		int casteUpdated=0;
+		
+		if(uvDtls!=null && uvDtls.size()>0){
+			if(mobileNumber.trim()!="" && !mobileNumber.equalsIgnoreCase("null")){
+				mobUpdated=userVoterDetailsDAO.updateVoterMobileNo(mobileNumber,voterId);
+			}
+			if(!casteStateId.equals(0l)){
+				casteUpdated=userVoterDetailsDAO.updateCasteStateId(Long.valueOf(casteStateId),voterId);
+			}
+		}
+		else{
+			UserVoterDetails uvDetails=castePredictionService.insertCasteAndPhoneNumberFromAndroid(voterId,casteStateId,mobileNumber);
+		}		
+		return "SUCCESS";
 	}
 
 }

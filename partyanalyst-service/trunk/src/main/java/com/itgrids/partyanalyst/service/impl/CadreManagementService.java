@@ -639,6 +639,30 @@ public class CadreManagementService {
 				
 				currentAddress.setConstituency(constituencyDAO.get(cadreInfo.getConstituencyID()));
 				
+				
+				if(cadreInfo.getSavingFrom()!=null){
+				if(cadreInfo.getSavingFrom().equalsIgnoreCase("Android")){
+					if(cadreInfo.getVillage()!="" && cadreInfo.getVillage()!=null){
+						Boolean isHamlet = checkForHamlet(new Long(cadreInfo.getMandal()),new Long(cadreInfo.getVillage()));
+						
+						//if location details are hamlet
+						if(isHamlet)
+						    currentAddress.setHamlet(hamletDAO.get(new Long(cadreInfo.getVillage())));
+						//if location details are township
+						else
+							currentAddress.setTownship(townshipDAO.get(new Long(cadreInfo.getVillage())));
+						
+					}
+					if(cadreInfo.getMandal()!=""){
+						currentAddress.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal())));
+					}
+					if(cadreInfo.getWardId()!=null){
+						currentAddress.setWard(constituencyDAO.get(new Long(cadreInfo.getWardId())));
+					}
+					if(cadreInfo.getLocalElectionBodyId()!=null){
+						currentAddress.setLocalElectionBody(localElectionBodyDAO.get(cadreInfo.getLocalElectionBodyId()));
+					}
+				}else{
 				if (IConstants.URBAN_TYPE.equals(cadreInfo.getMandal().substring(0,1)))
 				{
 					assemblyLocalElectionBodyId1 = new Long(cadreInfo.getMandal().substring(1));
@@ -667,6 +691,8 @@ public class CadreManagementService {
 					currentAddress.setLocalElectionBody(null);
 					currentAddress.setWard(null);
 					//cadre.setTehsil(tehsilDAO.get(new Long(cadreInfo.getMandal().substring(1))));
+				}
+				}
 				}
 				if(cadreInfo.getBooth() != null && !cadreInfo.getBooth().equals("0"))
 				{

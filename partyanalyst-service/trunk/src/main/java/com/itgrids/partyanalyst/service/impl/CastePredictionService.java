@@ -201,5 +201,35 @@ public class CastePredictionService implements ICastePredictionService {
 			return resultStatus;
 		}
 	}
+	
+	public UserVoterDetails insertCasteAndPhoneNumberFromAndroid(Long voterId,Long casteStateId,String phoneNumber){
+		User user = userDAO.get(1l);
+		CasteInsertType casteInsertType=null;
+		CasteState casteState=null;
+		if(casteStateId!=null && casteStateId!=0l){
+			casteInsertType = casteInsertTypeDAO.get(1l);
+			casteState = casteStateDAO.get(casteStateId);
+		}
+		UserVoterDetails userVoterDetails=null;
+		
+		try{
+			userVoterDetails = new UserVoterDetails();
+			userVoterDetails.setUser(user);
+			if(casteStateId!=null && casteStateId!=0l){
+				userVoterDetails.setCasteInsertType(casteInsertType);
+				userVoterDetails.setCasteState(casteState);
+			}
+			if(phoneNumber.trim()!="" && !phoneNumber.equalsIgnoreCase("null")){
+				userVoterDetails.setMobileNo(phoneNumber);
+			}
+			userVoterDetails.setVoter(voterDAO.get(voterId));
+			if(userVoterDetails.getVoter() != null)
+				userVoterDetailsDAO.save(userVoterDetails);
+			}catch(Exception e)
+			{
+				System.out.println(e);
+			}
+		return userVoterDetails;
+	}
 
 }
