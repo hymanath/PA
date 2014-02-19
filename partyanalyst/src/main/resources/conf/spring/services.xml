@@ -1864,6 +1864,11 @@
 	  <property name="webServiceBaseUrlDAO" ref="webServiceBaseUrlDAO"/>
 	  <property name="pingingTypeDAO" ref="pingingTypeDAO"/>
 	  <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
+	  <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+	  <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO"/>
+	  <property name="boothDAO" ref="boothDAO"></property>
+	  <property name="cadreManagementService" ref="cadreManagementService" />
+	  <property name="castePredictionService" ref="castePredictionService" />
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
