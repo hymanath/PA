@@ -1,12 +1,23 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.excel.booth.BoothVoterVO;
+import com.itgrids.partyanalyst.model.BoothPublicationVoter;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -827,7 +838,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 			System.out.println(obj[0].toString()+"--"+obj[1].toString()+"--"+obj[2].toString()+"--"+obj[3].toString()+"--"+obj[4].toString()+"--"+obj[5].toString());
 		}
 	}*/
-	public void testgetAgeAndGenderWiseVoterInConstituency(){
+	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
 		List<Long> casteIds = new ArrayList<Long>();
 		casteIds.add(228l);
 		casteIds.add(202l);
@@ -837,7 +848,7 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		for (Object[] params : values) {
 			System.out.println(params[0]+" "+params[1]+" "+params[2]);
 		}
-	}
+	}*/
 	
 	/*public void testgetAgeAndGenderWiseVoterInConstituency(){
 		List<Object[]> list = boothPublicationVoterDAO.getTotalVotersInBoothOfMuncipalityOfConstituencyByAge(232l, 8l, 18l, 22l);
@@ -919,6 +930,195 @@ List<Long> attrIds = new ArrayList<Long>();
 		List<Object[]> values = boothPublicationVoterDAO.getPanchayatAgeWiseDetailsByHamletWise(1l,8l,panchayatIds);
 		for (Object[] params : values) {
 			System.out.println(params[0]+" "+params[1]+" "+params[2]);
+		}
+	}*/
+	
+	/*public void testGetVoterBySerialNo()
+	{
+		try{
+		File resultFile  = new File("D:\\kamal\\result.txt");
+		BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
+		StringBuilder sb = new StringBuilder();
+		List<BoothVoterVO> votersList = new ArrayList<BoothVoterVO>(0);
+		
+		Connection conn = null;
+		Statement stmt = null;
+		
+		Class.forName("com.mysql.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/dakavara_pa","root","root");
+        stmt = conn.createStatement();
+        
+        ResultSet rs = stmt.executeQuery("select sno,cid,part,serno from st where serno != 0 and voter_id is null");
+        
+        while(rs.next()) 
+        {
+        	BoothVoterVO b1 = new BoothVoterVO();
+        	b1.setSno(rs.getLong("sno")); 
+        	b1.setConstituencyId(rs.getLong("cid")); 
+        	b1.setPartNo(rs.getString("part")); 
+        	b1.setSerialNo(rs.getLong("serno")); 
+        	votersList.add(b1);
+        }
+        
+        
+		for(BoothVoterVO bv : votersList)
+		{
+			try{
+			BoothPublicationVoter bpv = boothPublicationVoterDAO.getVoterBySerialNo(bv.getConstituencyId(),bv.getPartNo(),bv.getSerialNo());
+			System.out.println("ID --> "+bv.getSno());
+			if(bpv != null)
+			{
+				bv.setVoterId(bpv.getVoter().getVoterId());
+				bv.setVoterCardNo(bpv.getVoter().getVoterIDCardNo());
+				sb.append("SNO - "+"\t"+bv.getSno()+"\tCID - \t"+bv.getConstituencyId()+"\tPart No -\t"+bv.getPartNo()+"\tSer No\t"+bv.getSerialNo()+"\tVID - \t"+bpv.getVoter().getVoterId()+"\tCard - \t"+bpv.getVoter().getVoterIDCardNo()+"\tAge - \t"+bpv.getVoter().getAge()+"\tGender - \t"+bpv.getVoter().getGender()+"\n");
+				
+				String uq = "update st set voter_id = "+bv.getVoterId()+", card_no = '"+bv.getVoterCardNo()+"' where sno = "+bv.getSno();
+				stmt.executeUpdate(uq);
+			}
+			else
+			{
+				sb.append("SNO - "+"\t"+bv.getSno()+"\tCID - \t"+bv.getConstituencyId()+"\tPart No -\t"+bv.getPartNo()+"\tSer No\t"+bv.getSerialNo()+"\tVID - \tN/A\tCard - \tN/A\tAge - \tN/A\tGender - \tN/A\n");
+			}
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		outwriter.write(sb.toString());
+        outwriter.close();
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}*/
+	
+	/*public void testGetVoterBySerialNo()
+	{
+		try{
+		File resultFile  = new File("D:\\kamal\\result.txt");
+		BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
+		StringBuilder sb = new StringBuilder();
+		List<BoothVoterVO> votersList = new ArrayList<BoothVoterVO>(0);
+		
+		Connection conn = null;
+		Connection conn2 = null;
+		Statement stmt = null;
+		
+		Class.forName("com.mysql.jdbc.Driver");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost/dakavara_pa","root","root");
+        conn2 = DriverManager.getConnection("jdbc:mysql://74.208.7.129:3372/dakavara_pa","devuser","devuser@123");
+        stmt = conn.createStatement();
+        
+        ResultSet rs = stmt.executeQuery("select sai_id,voter_id from st_temp");
+        
+        while(rs.next()) 
+        {
+        	
+        }
+		
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}*/
+	
+	public void test()
+	{
+		try{
+		List<Object[]> list = boothPublicationVoterDAO.getlist1();
+		int i = 0;
+		File resultFile = new File("F:\\Kamal\\kamal.txt");
+		BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
+		StringBuilder sb = new StringBuilder();
+
+		for(Object[] params : list)
+		{
+			List<Object[]> list2 = boothPublicationVoterDAO.getlist2((Long)params[0],params[1].toString());
+			System.out.println(++i+" -->\t"+list2.get(0)[0].toString()+"\t"+list2.get(0)[1].toString()+"\t"+list2.get(0)[2].toString()+"\t"+list2.get(0)[3].toString()+"\t"+list2.get(0)[4].toString()+"\t"+params[1].toString()+"\t"+params[2].toString());
+			sb.append(i+" -->\t"+list2.get(0)[0].toString()+"\t"+list2.get(0)[1].toString()+"\t"+list2.get(0)[2].toString()+"\t"+list2.get(0)[3].toString()+"\t"+list2.get(0)[4].toString()+"\t#"+params[1].toString()+"\t"+params[2].toString()+"\n");
+		}
+		
+		/*i = 0;
+		for(Object[] params : list)
+		{
+			List<Object[]> list2 = boothPublicationVoterDAO.getlist3((Long)params[0],params[1].toString());
+			System.out.println(++i+" -->\t"+list2.get(0)[0].toString()+"\t"+list2.get(0)[1].toString()+"\t"+list2.get(0)[2].toString()+"\t"+list2.get(0)[3].toString()+"\t"+list2.get(0)[4].toString()+"\t"+params[1].toString()+"\t"+params[2].toString());
+			sb.append(i+" -->\t"+list2.get(0)[0].toString()+"\t"+list2.get(0)[1].toString()+"\t"+list2.get(0)[2].toString()+"\t"+list2.get(0)[3].toString()+"\t"+list2.get(0)[4].toString()+"\t#"+params[1].toString()+"\t"+params[2].toString()+"\n");
+		}*/
+		outwriter.write(sb.toString());
+		outwriter.close();
+		}
+		catch (Exception e) {
+		}
+	}
+	
+	/*public void test()
+	{
+		try{
+		List<Long> cIds = new ArrayList<Long>(0);
+		cIds.add(108l);	cIds.add(109l);	cIds.add(111l);	cIds.add(112l);	cIds.add(113l);	cIds.add(114l);
+		cIds.add(116l);	cIds.add(117l);	cIds.add(120l);	cIds.add(121l);	cIds.add(122l);	cIds.add(124l);
+		cIds.add(125l);	cIds.add(127l);	cIds.add(129l);	cIds.add(133l);	cIds.add(134l);	cIds.add(135l);
+		cIds.add(136l);	cIds.add(137l);	cIds.add(138l);	cIds.add(140l); cIds.add(141l);	cIds.add(352l);
+		cIds.add(353l);	cIds.add(354l);	cIds.add(355l); cIds.add(356l);	cIds.add(357l);	cIds.add(358l);
+		cIds.add(359l);	cIds.add(360l);	cIds.add(361l);	cIds.add(368l);
+		List<String> list = new ArrayList<String>();
+		for(Long cid : cIds)
+		{
+			System.out.println("Constituency Id --> "+cid);
+			List<String> list2 = boothPublicationVoterDAO.getVoterNamesOfAConstituency(cid,8l);
+			list.addAll(list2);
+			System.out.println("List Size --> "+list.size());
+		}
+		int i = 0;
+		File resultFile = new File("F:\\Kamal\\velama.txt");
+		BufferedWriter outwriter = new BufferedWriter(new FileWriter(resultFile));
+		StringBuilder sb = new StringBuilder();
+		Map<String,Integer> countMap = new HashMap<String, Integer>(0);
+		
+		for(String name : list)
+		{
+			try{
+			System.out.println("Name --> "+name);
+			String[] arr = name.trim().split(" ");
+			for(String str : arr)
+			{
+				try{
+					System.out.println("Str --> "+str);
+				if(str.trim().length() > 0)
+				{
+					str = str.toUpperCase();
+					Integer count = countMap.get(str);
+					if(count == null)
+						count = 0;
+					count++;
+					countMap.put(str,count);
+				}
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+			}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		for(Map.Entry<String,Integer> entry : countMap.entrySet())
+		{
+			if(entry.getValue() > 50)
+			{
+				System.out.println(++i+"\t"+entry.getKey()+"\t"+entry.getValue());
+				sb.append(i+"\t"+entry.getKey()+"\t"+entry.getValue()+"\n");
+			}
+		}
+		outwriter.write(sb.toString());
+		outwriter.close();
+		}
+		catch (Exception e) {
 		}
 	}*/
 }
