@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 
@@ -252,4 +253,121 @@ public class WebServiceHandler {
 		status=webServiceHandlerService.updateVoterDetails(uniqueCode,voterId,casteStateIdl,mobileNumber);
 		return status;
 	}
+	
+	
+	
+	
+	@GET
+    @Path("/updateCadreDetails/{uniqueId}/{cadreDetails}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateCadreDetails(
+			@PathParam("uniqueId") String uniqueId,
+			@PathParam("cadreDetails") String cadreDetails)
+
+    {
+		
+		try{
+			net.sf.json.JSONObject mainObj = (net.sf.json.JSONObject) net.sf.json.JSONObject
+					.fromObject(cadreDetails);
+			
+			String voterID = mainObj.getString("voterID");
+			String casteStateId = mainObj.getString("casteStateId");
+			String cadreLevelId = mainObj.getString("cadreLevelId");
+			String mobileNo = mainObj.getString("mobileNo");
+			
+			
+			return webServiceHandlerService.updateCadreDetails(voterID,
+					Long.parseLong(casteStateId), Long.parseLong(cadreLevelId),
+					mobileNo,uniqueId);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+	
+    }
+	
+	@GET
+    @Path("/updateIPDetails/{uniqueId}/{IPDetails}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateIPDetails(
+			@PathParam("uniqueId") String uniqueId,
+			@PathParam("IPDetails") String IPDetails)
+
+    {
+		
+		try{
+			net.sf.json.JSONObject mainObj = (net.sf.json.JSONObject) net.sf.json.JSONObject
+					.fromObject(IPDetails);
+			
+			String voterID = mainObj.getString("voterID");
+			String casteStateId = mainObj.getString("casteStateId");
+			String cadreLevelId = mainObj.getString("cadreLevelId");
+			String mobileNo = mainObj.getString("mobileNo");
+			
+		   return	webServiceHandlerService.updateIPDetails(voterID,
+					Long.parseLong(casteStateId), Long.parseLong(cadreLevelId),
+					mobileNo,uniqueId);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+    }
+	
+	@GET
+    @Path("/updateFlagsDetails/{uniqueId}/{flagsDetails}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateFlagsDetails(
+			@PathParam("uniqueId") String uniqueId,
+			@PathParam("flagsDetails") String flagsDetails)
+
+    {
+		
+		try{
+			net.sf.json.JSONObject mainObj = (net.sf.json.JSONObject) net.sf.json.JSONObject
+					.fromObject(flagsDetails);
+			
+			String flagName = mainObj.getString("flagName");
+			String flagColor = mainObj.getString("flagColor");
+			String voterIds = mainObj.getString("voterIds");
+			
+			return webServiceHandlerService.updateFalgDetails(flagName,flagName,flagColor,voterIds);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+    }
+	
+	@GET
+    @Path("/updateVoterMobileNumberAndCaste/{uniqueId}/{voterID}/{casteStateId}/{mobileNo}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateVoterMobileNumberAndCaste(
+			@PathParam("uniqueId") String uniqueId,
+			@PathParam("voterID") String voterID,
+			@PathParam("casteStateId") String casteStateId,
+			@PathParam("mobileNo") String mobileNo)
+
+    {
+		
+		try{
+			
+		   return	webServiceHandlerService.updateVoterMobileNumberAndCaste(voterID,
+					Long.parseLong(casteStateId),
+					mobileNo,uniqueId);
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return "Failure";
+		}
+    }
 }

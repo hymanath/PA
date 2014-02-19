@@ -439,7 +439,7 @@ function buildVotersInFamilySearch(results,hno){
 		var publicationDateId="${publicationDateId}";
 		var houseNo = oRecord.getData("houseNo");
 		
-		elLiner.innerHTML ='<input type="checkbox" name="voters" value='+id+'></input>';
+		elLiner.innerHTML ='<input type="checkbox" name="voters" value='+id+' class="voterChkbx"></input>';
 		
 	}
     YAHOO.widget.DataTable.Occupation = function(elLiner, oRecord, oColumn, oData)
@@ -455,10 +455,12 @@ function buildVotersInFamilySearch(results,hno){
 				    val = categ1[i].categoryValueId;
 			  }
 			 }
+
+			 var voterID = oRecord.getData("voterId");
 			 
 			var str="";
 			if(categ != null && categ.length > 0){
-			str+="<select>";
+			str+="<select id='"+voterID+"occup'>";
 			 for(var i in categ){
 			    if(categ[i].id==val){
 					str+="<option value="+categ[i].id+" selected>"+categ[i].name+"</option>";
@@ -487,10 +489,10 @@ function buildVotersInFamilySearch(results,hno){
 			  }
 			 }
 			 
-			 
+			  var voterID = oRecord.getData("voterId");
 			var str="";
 			if(categ != null && categ.length > 0){
-			str+="<select>";
+			str+="<select id='"+voterID+"edctn'>";
 			 for(var i in categ){
 			   if(categ[i].id==val){
 					str+="<option value="+categ[i].id+" selected>"+categ[i].name+"</option>";
@@ -520,9 +522,11 @@ function buildVotersInFamilySearch(results,hno){
 			 }
 			  
 			
+			var voterID = oRecord.getData("voterId");
+
 			var str="";
 			if(categ != null && categ.length > 0){
-			str+="<select>";
+			str+="<select id='"+voterID+"sclCtg'>";
 			 for(var i in categ){
 				if(categ[i].id==val){
 					str+="<option value="+categ[i].id+" selected>"+categ[i].name+"</option>";
@@ -544,10 +548,12 @@ function buildVotersInFamilySearch(results,hno){
 			var categ = oRecord.getData("familyRelsList");
 			
 			var val = oRecord.getData("voterFamilyRelId");
+
+			var voterID = oRecord.getData("voterId");
 			
 			var str="";
 			if(categ != null && categ.length > 0){
-			str+="<select>";
+			str+="<select id='"+voterID+"fmlyRltn'>";
 			 for(var i in categ){
 				
 					if(val==categ[i].id){
@@ -728,7 +734,7 @@ function buildQuestionAnswers(results){
 	str+="<input type='hidden' name='boothId' value="+boothId+"></input>";
 	str+="<input type='hidden' name='houseNo' value="+houseNo+"></input>";
 	
-	str+="<span class='btn btn-info' onclick=saveHouseHoldInfo()> Save </span>";
+	str+="<span class='btn btn-info' onclick=submitQuestionDetails()> Save </span>";
 	str+="</form>"
 	str+="</div>";
 	$("#qstnAnswer").html(str);
@@ -859,9 +865,9 @@ function saveHouseHoldInfo(){
 
 </div>
 </form>
-	<div id="impFamDtlsOuterPopUp" style="margin-left:-350px;">
+	<div id="impFamDtlsOuterPopUp">
 		   <div id="impFamDtlsTitle"></div>
-		   <div id="impFamDtls"  class="table table-striped"></div>
+		   <div id="impFamDtls"  class="table table-striped span10" style="overflow:auto;"></div>
 		</div>
 </div>
 
@@ -1023,6 +1029,44 @@ function saveHouseHoldInfo(){
 		});
 		$(".yui-dt-data").append(str);
 	}
+</script>
+<script>
+var voterDtls={
+	voters:[]	
+};
+function submitQuestionDetails()
+{
+  $('.voterChkbx').each(function(index,value){
+
+	   if(this.checked)
+	   {
+		   selectedVoterDtls =
+			       {
+			         voterId:this.value,
+					 voterFamilyRelationId:$('#'+this.value+"fmlyRltn").val(),
+					 voterEdctn:$('#'+this.value+"edctn").val(),
+					 voterOccptn:$('#'+this.value+"occup").val(),
+					 voterSocialPstn: $('#'+this.value+"sclCtg").val()
+			       };
+
+				 voterDtls.voters.push(selectedVoterDtls);
+	   }
+   });
+
+	
+	 $.ajax({
+          type:'POST',
+          url: 'saveHouseHoldsVotersDetailsAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(voterDtls)},
+
+          success: function(result){ 
+          },
+          error:function() { 
+           console.log('error', arguments);
+          }
+    });
+}
 </script>
 </body>
 </html>

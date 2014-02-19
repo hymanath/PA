@@ -6398,5 +6398,13 @@
 			</result> 
 		</action>
 		
+		 <action name="saveHouseHoldsVotersDetailsAction" class="houseHoldSurveyReportAction" method="saveHouseHoldsVotersDetails">
+			<result type="json" name="success">
+				<param name="root">votersFamilyInfo</param>				
+			</result> 
+		</action>
+		
+		
+		
 		</package>
 </struts>      

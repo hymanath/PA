@@ -1,10 +1,13 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import net.sf.json.JSONSerializer;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONObject;
@@ -12,6 +15,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
+import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
@@ -375,6 +379,45 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		}
 		
 		return SUCCESS;
+	}
+	
+	public String saveHouseHoldsVotersDetails()
+	{
+		HouseHoldVotersVO houseHoldVotersDtls = new HouseHoldVotersVO();
+		
+		try {
+			
+			List<HouseHoldVotersVO> houseHoldVoters = new ArrayList<HouseHoldVotersVO>();
+			
+			jObj = new JSONObject(getTask());
+			
+			net.sf.json.JSONArray votersDetails = (net.sf.json.JSONArray) JSONSerializer
+					.toJSON(jObj.getString("voters"));
+			
+			for(int i=0;i<votersDetails.length();i++)
+			{
+				net.sf.json.JSONObject  voter =  (net.sf.json.JSONObject)votersDetails.get(i);
+				
+				HouseHoldVotersVO voterDetailsVO = new HouseHoldVotersVO();
+				
+				voterDetailsVO.setVoterId(Long.parseLong(voter.getString("voterId")));
+				voterDetailsVO.setEducationId(Long.parseLong(voter.getString("voterEdctn")));
+				voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("voterOccptn")));
+				voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("voterFamilyRelationId")));
+				
+				houseHoldVoters.add(voterDetailsVO);
+				
+			}
+				
+			houseHoldVotersDtls.setHouseHoldsVoters(houseHoldVoters);
+			//houseHoldSurveyReportService.saveHouseHoldsVotersDetails(houseHoldVotersDtls);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
 	}
 	
 }
