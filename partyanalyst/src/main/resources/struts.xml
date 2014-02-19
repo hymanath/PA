@@ -6344,6 +6344,11 @@
 			<result name="error">/jsp/loginForm.jsp</result>
       	</action>
       	
+      	<action name="houseHoldSurveyReportActionSearch" class="houseHoldSurveyReportAction">
+        	<result name="success">/jsp/houseHoldSurveyReportPageSearch.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+      	</action>
+      	
       	<action name="getHouseHoldQuestionsAction" class="houseHoldSurveyReportAction" method="getHouseHoldQuestions">
         	 <result type="json" name="success">
            		<param name="root">questionsList</param>
@@ -6387,5 +6392,11 @@
            		<param name="root">resultStatus</param>
         	</result>
 		</action>
+		<action name="getVotersForSearchedCriteriaAction" class="votersEditNewHHAction" method="getSearchedVotersForHouseHoldSurvey">
+			<result type="json" name="success">
+				<param name="root">voterDetailsSearched</param>				
+			</result> 
+		</action>
+		
 		</package>
 </struts>      
