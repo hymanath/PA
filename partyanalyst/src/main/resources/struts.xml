@@ -6378,6 +6378,14 @@
 				<param name="root">votersFamilyInfo</param>				
 			</result> 
 		</action>
-		
+			<action name="voterAddressAction" class="casteReportAction">
+			<result name="success">/jsp/voterAddress.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="getVoterAddressAction" class="casteReportAction" method="getVoterAddressDetails">
+			 <result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
 		</package>
 </struts>      

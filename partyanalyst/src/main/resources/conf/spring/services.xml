@@ -1879,15 +1879,15 @@
  	<property name="userDAO" ref="userDAO" />
  	<property name="casteStateDAO" ref="casteStateDAO" />
   </bean>
-   <bean name="casteReportService" class="com.itgrids.partyanalyst.service.impl.CasteReportService" >
+    <bean name="casteReportService" class="com.itgrids.partyanalyst.service.impl.CasteReportService" >
    <property name="userVoterDetailsDAO" ref="userVoterDetailsDAO" />
    <property name="tehsilDAO" ref="tehsilDAO" />
    <property name="casteDAO" ref="casteDAO"></property>
    <property name="panchayatDAO" ref="panchayatDAO"></property>
    <property name="boothDAO" ref="boothDAO" />
    <property name="constituencyDAO" ref="constituencyDAO" />
+   <property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
      </bean>
-     
    <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
   	 <property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
   	 <property name="hhSurveySubTypeDAO" ref="hhSurveySubTypeDAO"></property>
@@ -1899,6 +1899,6 @@
  	 <property name="houseHoldsDAO" ref="houseHoldsDAO"></property>
  	 <property name="hhSurveyAnswersDAO" ref="hhSurveyAnswersDAO"></property>
   </bean>
-  
+   
 </beans>		
 	
