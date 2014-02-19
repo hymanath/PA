@@ -684,12 +684,23 @@ for (Object[] objects : list) {
 		System.out.println(list.size());
 	}*/
 	
-	public void testUpdateCasteInsertType()
+	/*public void testUpdateCasteInsertType()
 	{
 		List<Long> userVoterDetailsIdsList = new ArrayList<Long>(0);
 		userVoterDetailsIdsList.add(467369l);
 		Integer updated = userVoterDetailsDAO.updateCasteInsertType(userVoterDetailsIdsList, 2l);
 		System.out.println(updated);
+	}*/
+	
+	/*public void test(){
+		List<UserVoterDetails> list=userVoterDetailsDAO.getVoterDetailsByVoterId(3l,1l);
+		System.out.println(list.size());
+	}*/
+	
+	public void test(){
+		List<UserVoterDetails> list=userVoterDetailsDAO.getUserVoterDetailsByVoterCardNo("RYT0981613");
+		System.out.println(list.size());
+		
 	}
 	
 }
