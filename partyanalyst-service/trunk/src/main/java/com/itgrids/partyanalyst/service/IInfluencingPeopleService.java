@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.UserGroupMembersVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 
 public interface IInfluencingPeopleService {
 	
@@ -102,5 +103,9 @@ public interface IInfluencingPeopleService {
 			Long regionId, String regionType,int startIndex,int maxIndex);
     
     public List<SmsVO> getMobileNumbersOfIds(String ids);
+    public String checkVoterExistAsInfluencePeopleByVoterId(Long voterId);
+    public String saveInfluencePeopleDetails(VoterDetailsVO voterDetails);
+
+
 	
 }

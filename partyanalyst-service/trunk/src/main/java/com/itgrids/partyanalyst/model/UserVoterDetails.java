@@ -35,7 +35,10 @@ public class UserVoterDetails implements java.io.Serializable{
 	private String mobileNo;
 	private CasteInsertType casteInsertType;
 	private Hamlet hamlet;
+	private String uniqueId;
 	
+
+
 	public UserVoterDetails(){
 	}
 	
@@ -165,6 +168,15 @@ public class UserVoterDetails implements java.io.Serializable{
 
 	public void setCasteInsertType(CasteInsertType casteInsertType) {
 		this.casteInsertType = casteInsertType;
+	}
+	
+	@Column(name="unique_id")
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
 	}
 	
 	

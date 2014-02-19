@@ -42,6 +42,8 @@ public class InfluencingPeople extends BaseModel{
 	private String fatherOrSpouseName;
 	private Hamlet hamlet;
 	private Voter voter;
+	private String uniqueId;
+	private CasteState casteState;
 	
 	public InfluencingPeople(){
 		
@@ -248,6 +250,29 @@ public class InfluencingPeople extends BaseModel{
 	public void setVoter(Voter voter) {
 	this.voter = voter;
 	}
+	
+
+	@Column(name="unique_id")
+	public String getUniqueId() {
+		return uniqueId;
+	}
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+	
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "caste_state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
+	}
+
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
+	}
+	
 
 
 }

@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
-
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -15,13 +14,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
-
 
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -54,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IVoterBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastBasicInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterDataInsertDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
@@ -67,8 +64,10 @@ import com.itgrids.partyanalyst.dao.IVotingTrendzDAO;
 import com.itgrids.partyanalyst.dao.IVotingTrendzPartiesResultDAO;
 import com.itgrids.partyanalyst.dao.IWardBoothDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
+import com.itgrids.partyanalyst.dao.hibernate.CasteStateDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PanchayatHamletDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -98,12 +97,15 @@ import com.itgrids.partyanalyst.model.PublicationDate;
 import com.itgrids.partyanalyst.model.QueryTemp;
 import com.itgrids.partyanalyst.model.State;
 import com.itgrids.partyanalyst.model.Tehsil;
+import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserAddress;
+import com.itgrids.partyanalyst.model.UserVoterDetails;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.model.VoterAgeInfo;
 import com.itgrids.partyanalyst.model.VoterBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastBasicInfo;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
+import com.itgrids.partyanalyst.model.VoterDataInsert;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterFlag;
 import com.itgrids.partyanalyst.model.VoterInfo;
@@ -172,8 +174,18 @@ public class VoterReportService implements IVoterReportService{
     private IUserDAO userDAO;
     private IVoterFlagDAO voterFlagDAO;
     private IWardBoothDAO wardBoothDAO;
-    
-    public IVoterFlagDAO getVoterFlagDAO() {
+    private IVoterDataInsertDAO voterDataInsertDAO;
+   
+
+	public IVoterDataInsertDAO getVoterDataInsertDAO() {
+		return voterDataInsertDAO;
+	}
+
+	public void setVoterDataInsertDAO(IVoterDataInsertDAO voterDataInsertDAO) {
+		this.voterDataInsertDAO = voterDataInsertDAO;
+	}
+
+	public IVoterFlagDAO getVoterFlagDAO() {
 		return voterFlagDAO;
 	}
 
@@ -5503,5 +5515,151 @@ public class VoterReportService implements IVoterReportService{
 				 e.printStackTrace();
 			 }
 			return returnVal;
+		 }
+		 
+		 public void addFlagToVoterFromMobileApp(final List<FlagVO> flagDetails,String uniqueCode) 
+		 {
+			 LOG.debug("Entered into the addFlagToVoter service method");
+			
+			
+			/* transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					protected void doInTransactionWithoutResult(TransactionStatus status) 
+					{*/
+			 for(FlagVO flag:flagDetails)
+			 {
+				 //String[] flagDtls = flag.split("-");
+				 
+				 //String[] voters = flagDtls[1].split(",");
+				 
+				 List<String> voterIDs = new ArrayList<String>();
+				 
+				 for(String voterID:flag.getVoterIDS())
+					 voterIDs.add(voterID);
+				 
+				List<Object[]> voterDetails = voterDAO.getVoterIdsByVoterIDCardNumbers(voterIDs);
+				
+				Map<String,Long> voterMap = new HashMap<String, Long>();
+				
+				for(Object[] voter:voterDetails)
+					voterMap.put(voter[0].toString(), Long.parseLong(voter[1].toString()));
+
+				List<Object> flagLst =  flagDAO.checkFlagName(flag.getFlagName());
+				
+				Long flagId  = null;
+				Flag flagDetls = null;
+				User user = userDAO.get(IConstants.ADMIN_USER_ID);
+				boolean newFlag = false;
+				
+				if(flagLst != null & flagLst.size() >0)
+				{
+					 flagId = (Long)flagLst.get(0);
+					 flagDetls = flagDAO.get(flagId);
+				
+				}else
+				{
+					newFlag = true;
+					flagDetls = new Flag();
+					
+					flagDetls.setName(flag.getFlagName());
+					flagDetls.setColor(flag.getColour());
+					
+					
+					flagDetls.setUser(user);
+					
+					flagDetls = flagDAO.save(flagDetls);
+				}
+				
+				for(String voter:voterIDs)
+				{
+					VoterFlag voterFlag = new VoterFlag();
+					
+					voterFlag.setFlag(flagDetls);
+					voterFlag.setUser(user);
+					voterFlag.setVoter(voterDAO.get(voterMap.get(voter)));
+					
+					
+					if(!newFlag)
+					{
+					 List<Long> cntList = voterFlagDAO.checkFlagExistanceForVoter(
+							flagDetls.getFlagId(), voterMap.get(voter),
+							IConstants.ADMIN_USER_ID);
+					 
+					 if(cntList == null || cntList.size()== 0 || cntList.get(0) == 0)
+					 {
+						 voterFlag =  voterFlagDAO.save(voterFlag);
+						// saveMobileVoterFlagDetails(voterFlag, mobileUserId);
+					 }
+					}else
+					{
+						voterFlag = voterFlagDAO.save(voterFlag);
+					 // saveMobileVoterFlagDetails(voterFlag, mobileUserId);
+					}
+				}
+				 
+			 }
+			 
+           /* }});*/
+			
+		 }
+		 
+		 /*public void saveMobileVoterFlagDetails(VoterFlag voterFlag,Long mobileUserId)
+		 {
+			 MobileVoterFlag mobileVoterFlag = new  MobileVoterFlag();
+			 
+			 mobileVoterFlag.setMobileTypeId(IConstants.MOBILE_TYPE_ANDROID);
+			 mobileVoterFlag.setVoterFlagId(voterFlag.getVoterFlagId());
+			 mobileVoterFlag.setMobileUserId(mobileUserId);
+			 
+			 mobileVoterFlagDAO.save(mobileVoterFlag);
+			 
+		 }*/
+		 
+		 public String updateVoterMobileNumberAndCaste(String voterID,
+					Long casteStateId,
+					String mobileNo,String uniqueId)
+		 {
+				LOG.debug("entered into updateVoterMobileNumberAndCaste() method in VoterReportService");
+
+			try {
+				List<Long> voterIds =  voterDAO.getVoterIdByVoterIDCardNumber(voterID);
+				
+				if(voterIds != null && voterIds.size() >0)
+				{
+					List<UserVoterDetails> details = userVoterDetailsDAO.getVoterDetailsByUserIdAndVoterId(voterIds.get(0),IConstants.ADMIN_USER_ID);
+					
+					if(details != null && details.size() >0)
+					{
+						
+						VoterDataInsert voterDataInsert = new VoterDataInsert();
+						
+						voterDataInsert.setMobileNumber(mobileNo);
+						voterDataInsert.setVoterId(voterIds.get(0));
+						voterDataInsert.setCasteStateId(casteStateId);
+                        voterDataInsert.setUniqueId(uniqueId);
+                        
+                        voterDataInsertDAO.save(voterDataInsert);
+						
+					}else
+					{
+						
+						UserVoterDetails userVoterDtls = new UserVoterDetails();
+						
+						userVoterDtls.setCasteState(casteStateDAO.get(casteStateId));
+						userVoterDtls.setMobileNo(mobileNo);
+						userVoterDtls.setUniqueId(uniqueId);
+						
+						userVoterDetailsDAO.save(userVoterDtls);
+						
+						
+					}
+					
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				  LOG.error(" Exception Occured in updateVoterMobileNumberAndCaste() method in VoterReport Service.....");
+				return "error";
+			}
+			return "success";
+			 
 		 }
 }

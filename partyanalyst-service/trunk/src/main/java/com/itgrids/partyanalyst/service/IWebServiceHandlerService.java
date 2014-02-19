@@ -30,4 +30,19 @@ public interface IWebServiceHandlerService {
 	public String saveCadreFromAndroid(VoterDetailsVO voterDetails);
 	
 	public String updateVoterDetails(String uniqueCode,Long voterId,Long casteStateId,String mobileNumber);
+	
+	
+	
+	public String updateCadreDetails(String voterID, Long casteStateId,
+			Long caddreLevelId, String mobileNo, String uniqueId);
+	
+	public String updateIPDetails(String voterID, Long casteStateId,
+			Long caddreLevelId, String mobileNo, String uniqueId);
+	
+	public String updateFalgDetails(String uniqueId,String flagName,String flagColor,String voterIds);
+	
+	public String updateVoterMobileNumberAndCaste(String voterID,
+			Long casteStateId,
+			String mobileNo,String uniqueId);
+
 }

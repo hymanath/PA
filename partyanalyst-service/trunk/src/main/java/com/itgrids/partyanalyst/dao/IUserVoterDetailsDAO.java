@@ -320,4 +320,7 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Object[]> getCasteForVoter(List<Long> voterIds,Long userId);
 	
+	public List<UserVoterDetails> getVoterDetailsByUserIdAndVoterId(Long voterId,Long userId);
+
+	
 }

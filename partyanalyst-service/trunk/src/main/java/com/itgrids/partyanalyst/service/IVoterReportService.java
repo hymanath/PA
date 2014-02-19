@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -124,5 +125,11 @@ public interface IVoterReportService {
     
     public ResultStatus addFlagToVoter(Long voterId,List<Long> checkedflagIds,List<Long> uncheckedflagIds,Long userId);
     public Long getVoterCasteCategoryIdByUserId(Long userId,Long voterId);
+	 public void addFlagToVoterFromMobileApp(final List<FlagVO> flagDetails,String uniqueCode);
+	 
+	 public String updateVoterMobileNumberAndCaste(String voterID,
+				Long casteStateId,
+				String mobileNo,String uniqueId);
+
     
 }

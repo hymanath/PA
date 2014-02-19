@@ -84,9 +84,13 @@ public class Cadre extends BaseModel{
 	 
 	 private String note;
 	 private String memberShipNo;
+	 private String uniqueId;
+	 private CasteState casteState;
 	 	
 	 
-	 @Id
+	 
+
+	@Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
 	 @Column(name = "cadre_id", unique = true, nullable = false)
 	 public Long getCadreId() {
@@ -549,5 +553,25 @@ public class Cadre extends BaseModel{
 	}
 	
 	
+	@Column(name="unique_id")
+	public String getUniqueId() {
+		return uniqueId;
+	}
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+	
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "caste_state_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CasteState getCasteState() {
+		return casteState;
+	}
+
+	public void setCasteState(CasteState casteState) {
+		this.casteState = casteState;
+	}
 	
  }
