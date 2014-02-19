@@ -17,6 +17,7 @@ import com.itgrids.partyanalyst.dto.EntitlementVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Job;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -206,6 +207,16 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			 regVo.setSuperAdminId(jSONObject.getLong("superAdmin"));
 			 regVo.setPublicationDateId(jSONObject.getLong("publicationId"));
 			 resultStatus = mobileService.createDataDumpFileForSelectedConstituency(jObj.getLong("constituencyId"),path,regVo);
+		 }
+		 
+		 else if(jObj.getString("task").equalsIgnoreCase("createDataDumpForCMS"))
+		 {
+			 String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB";
+			 RegistrationVO regVo = new RegistrationVO();
+			 regVo.setConstituencyId(jObj.getLong("constituencyId"));
+			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
+			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB");
+			 resultStatus = mobileService.createDataDumpFileForAConstituency(regVo);
 		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("saveSuperAdmin"))
 		 {
