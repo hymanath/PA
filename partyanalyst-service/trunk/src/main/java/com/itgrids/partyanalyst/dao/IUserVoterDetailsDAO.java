@@ -300,6 +300,12 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Object[]> getCasteForVoter(List<Long> voterId);
 	
+	public List<UserVoterDetails> getVoterDetailsByVoterId(Long voterId,Long userId);
+	
+	public Integer updateCasteStateId(Long casteStateId, Long voterId);
+	
+	public List<UserVoterDetails> getUserVoterDetailsByVoterCardNo(String voterCardNo);
+	
 	public List<Object[]> getCasteReport(Long constituencyId,Long publicationId,String type,Long userId);
 	
 }
