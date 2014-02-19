@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
@@ -27,6 +26,7 @@ public class WebServiceHandler {
 	private List<WSResultVO> wSResultVO;
 	private final static Logger LOG = Logger.getLogger(WebServiceHandler.class);
 	
+
 	public List<WSResultVO> getwSResultVO() {
 		return wSResultVO;
 	}
@@ -222,4 +222,34 @@ public class WebServiceHandler {
 		return message;
 	
     }
+	
+	@GET
+    @Path("/addCadreIPFlag/{type}/{voterId}/{flag}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String addCadreIPFlagToVoter(@PathParam("type") String type , @PathParam("voterId") String voterId, @PathParam("flag") String flag)
+    {
+		VoterDetailsVO voterDetails=new VoterDetailsVO();
+		voterDetails=webServiceHandlerService.getVoterDetailsBasedOnVoterId(voterId);
+		
+		if(type.equalsIgnoreCase("cadre")){
+			String str=webServiceHandlerService.saveCadreFromAndroid(voterDetails);
+		}
+		return null;
+	}
+	
+	@GET
+    @Path("/updateVoterDetails/{uniqueCode}/{voterId}/{casteStateId}/{mobileNumber}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateVoterDetails(@PathParam("uniqueCode") String uniqueCode ,@PathParam("voterId") Long voterId, @PathParam("casteStateId") String casteStateId, @PathParam("mobileNumber") String mobileNumber)
+    {
+		String status="";
+		Long casteStateIdl=0l;
+		if(casteStateId.equalsIgnoreCase("null")||casteStateId.trim()==""){
+			casteStateIdl=0l;
+		}else{
+			casteStateIdl=Long.valueOf(casteStateId);
+		}
+		status=webServiceHandlerService.updateVoterDetails(uniqueCode,voterId,casteStateIdl,mobileNumber);
+		return status;
+	}
 }
