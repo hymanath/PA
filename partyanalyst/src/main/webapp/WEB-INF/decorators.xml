@@ -288,9 +288,6 @@
 		<pattern>/houseHoldSurveyReportAction*</pattern>
 		<pattern>/votersEditNewHHAction*</pattern>
 		<pattern>/houseHoldCreationAction*</pattern>
-    	
-		
-    	
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
