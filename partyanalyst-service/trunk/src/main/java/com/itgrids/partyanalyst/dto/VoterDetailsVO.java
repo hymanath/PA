@@ -15,17 +15,66 @@ public class VoterDetailsVO {
 	private Long tehsilId;
 	private Long localElectionBodyId;
 	private Long districtId;
-	private String mobileNo;
+	private String contactNo;
+	private String email;
+	private Long partyId;
+	private String influencePeoplePosition;
 	private String relativeName;
+	private String mobileNo;
 	private String houseNo;
 	private String wardName;
+	//private Long mobileUserId;
+	
+	private Long casteStateId;
+	private Long cadreLevelId;
+	private String mobileNumber;
+	private String uniqueId;
+	private Long infleunceLevelId;
 	
 	
-	public String getRelativeName() {
-		return relativeName;
+	
+	
+	public Long getInfleunceLevelId() {
+		return infleunceLevelId;
 	}
-	public void setRelativeName(String relativeName) {
-		this.relativeName = relativeName;
+	public void setInfleunceLevelId(Long infleunceLevelId) {
+		this.infleunceLevelId = infleunceLevelId;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+	public Long getCadreLevelId() {
+		return cadreLevelId;
+	}
+	public void setCadreLevelId(Long cadreLevelId) {
+		this.cadreLevelId = cadreLevelId;
+	}
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+	public String getUniqueId() {
+		return uniqueId;
+	}
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+	/*public Long getMobileUserId() {
+		return mobileUserId;
+	}
+	public void setMobileUserId(Long mobileUserId) {
+		this.mobileUserId = mobileUserId;
+	}*/
+	public String getWardName() {
+		return wardName;
+	}
+	public void setWardName(String wardName) {
+		this.wardName = wardName;
 	}
 	public String getHouseNo() {
 		return houseNo;
@@ -38,6 +87,36 @@ public class VoterDetailsVO {
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	public String getInfluencePeoplePosition() {
+		return influencePeoplePosition;
+	}
+	public void setInfluencePeoplePosition(String influencePeoplePosition) {
+		this.influencePeoplePosition = influencePeoplePosition;
+	}
+	public Long getPartyId() {
+		return partyId;
+	}
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getContactNo() {
+		return contactNo;
+	}
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
 	}
 	public Long getDistrictId() {
 		return districtId;
@@ -122,12 +201,6 @@ public class VoterDetailsVO {
 	}
 	public void setPublicationDateId(Long publicationDateId) {
 		this.publicationDateId = publicationDateId;
-	}
-	public String getWardName() {
-		return wardName;
-	}
-	public void setWardName(String wardName) {
-		this.wardName = wardName;
 	}
 	
 	

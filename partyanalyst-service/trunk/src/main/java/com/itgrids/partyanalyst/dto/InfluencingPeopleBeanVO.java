@@ -56,8 +56,62 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
 	private Long cadreCount;
 	private Long politicianCount;
 	private Long flagsCount;
+	private Long tehsilId;
+	private Long wardId;
+    private Long localElectionBodyId;	
+    private Long mobileUserId;
+    private Long casteStateId;
+    private String uniqueId;
 	
 	
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
+
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+
+	public Long getWardId() {
+		return wardId;
+	}
+
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+
+	public Long getMobileUserId() {
+		return mobileUserId;
+	}
+
+	public void setMobileUserId(Long mobileUserId) {
+		this.mobileUserId = mobileUserId;
+	}
+
 	public Long getFlagsCount() {
 		return flagsCount;
 	}

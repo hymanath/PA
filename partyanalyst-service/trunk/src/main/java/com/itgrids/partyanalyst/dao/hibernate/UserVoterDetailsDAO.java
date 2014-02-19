@@ -3017,4 +3017,17 @@ IUserVoterDetailsDAO{
 		return query.list();	
 	}
 	
+	public List<UserVoterDetails> getVoterDetailsByUserIdAndVoterId(Long voterId,Long userId)
+	{
+		Query query = getSession().createQuery("select model from UserVoterDetails model " +
+				"where model.voter.voterId = :voterId and model.user.userId =:userId");
+		
+		query.setParameter("voterId", voterId);
+		query.setParameter("userId", userId);
+		
+		return query.list();
+		
+		
+	}
+	
 }

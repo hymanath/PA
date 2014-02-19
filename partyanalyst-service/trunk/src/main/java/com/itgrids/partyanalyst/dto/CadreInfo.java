@@ -128,9 +128,23 @@ public class CadreInfo implements Serializable{
 	private String savingFrom;
 	private Long wardId;
 	private Long localElectionBodyId;
+	private String uniqueId;
+	private Long casteStateId;
 	
 	
 	
+	public String getUniqueId() {
+		return uniqueId;
+	}
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
+	public Long getCasteStateId() {
+		return casteStateId;
+	}
+	public void setCasteStateId(Long casteStateId) {
+		this.casteStateId = casteStateId;
+	}
 	public Long getWardId() {
 		return wardId;
 	}

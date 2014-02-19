@@ -175,5 +175,7 @@ public interface IInfluencingPeopleDAO extends GenericDao<InfluencingPeople, Lon
 	public List<Object[]> getInfluencingPeopleDetailsToSendSMS(String query,SMSSearchCriteriaVO searchVO,String count);
 	
 	public List<InfluencingPeople> getInfluencingPeopleInAConstituencyForAUser(Long userId, Long constituencyId);
+	public List<Long> checkVoterExistAsInfluencePeopleByVoterId(Long voterId);
+
 }
 

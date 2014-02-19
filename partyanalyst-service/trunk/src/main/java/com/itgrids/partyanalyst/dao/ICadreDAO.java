@@ -212,4 +212,7 @@ public interface ICadreDAO extends GenericDao<Cadre, Long>{
 	
 	public List<Cadre> getCadreDetailsInAConstituency(Long userId, Long constituencyId);
 	
+	public List<Long> checkVoterExistAsCadrebyVoterId(Long voterId);
+
+	
 }

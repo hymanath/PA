@@ -61,7 +61,9 @@
 		<class>com.itgrids.partyanalyst.model.VoiceRecordingDetails</class>
 		<class>com.itgrids.partyanalyst.model.SmsResponseDetails</class>
 		<class>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</class>	
-		<class>com.itgrids.partyanalyst.model.SmsType</class>	
+		<class>com.itgrids.partyanalyst.model.SmsType</class>
+		<class>com.itgrids.partyanalyst.model.HouseHoldsVoter</class>
+			
 		
 		
 		

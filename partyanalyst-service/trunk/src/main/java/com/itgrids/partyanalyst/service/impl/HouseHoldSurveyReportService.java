@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -19,10 +19,15 @@ import com.itgrids.partyanalyst.dao.IHHQuestionOptionsDAO;
 import com.itgrids.partyanalyst.dao.IHHSurveyAnswersDAO;
 import com.itgrids.partyanalyst.dao.IHHSurveyQuestionDAO;
 import com.itgrids.partyanalyst.dao.IHHSurveySubTypeDAO;
+import com.itgrids.partyanalyst.dao.IHouseHoldVoterDAO;
 import com.itgrids.partyanalyst.dao.IHouseHoldsDAO;
+import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
+import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
+import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.HHOptionType;
 import com.itgrids.partyanalyst.model.HHOptions;
@@ -30,7 +35,9 @@ import com.itgrids.partyanalyst.model.HHQuestionOptions;
 import com.itgrids.partyanalyst.model.HHSurveyAnswers;
 import com.itgrids.partyanalyst.model.HHSurveyQuestion;
 import com.itgrids.partyanalyst.model.HHSurveySubType;
+import com.itgrids.partyanalyst.model.HouseHoldVoter;
 import com.itgrids.partyanalyst.model.HouseHolds;
+import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -48,7 +55,27 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	private IHouseHoldsDAO houseHoldsDAO;
 	private IHHSurveyAnswersDAO hhSurveyAnswersDAO;
 	
+	@Autowired
+	private IUserVoterCategoryValueDAO  userVoterCategoryValueDAO ;
+	 
+	@Autowired
+	private IUserDAO userDAO;
 	
+	@Autowired
+	private IVoterCategoryValueDAO voterCategoryValueDAO;
+	
+	
+	private IHouseHoldVoterDAO houseHoldVoterDAO;
+	
+
+	public IHouseHoldVoterDAO getHouseHoldVoterDAO() {
+		return houseHoldVoterDAO;
+	}
+
+	public void setHouseHoldVoterDAO(IHouseHoldVoterDAO houseHoldVoterDAO) {
+		this.houseHoldVoterDAO = houseHoldVoterDAO;
+	}
+
 	public IHHSurveyAnswersDAO getHhSurveyAnswersDAO() {
 		return hhSurveyAnswersDAO;
 	}
@@ -552,6 +579,29 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			hhModel=houseHoldsDAO.save(hhModel);
 			houseHoldId=hhModel.getHouseHoldId();
 		}
+		
+
+         List<Long> voterIDs = new ArrayList<Long>();
+         
+         voterIDs.add(6979790L);
+         
+         List<Long> voterFamilyRelationIds = new ArrayList<Long>();
+         
+         voterFamilyRelationIds.add(2L);
+         
+         
+         for(int i=0;i<voterIDs.size();i++)
+         {
+        	 HouseHoldVoter houseHoldVoter = new HouseHoldVoter();
+        	 
+        	 houseHoldVoter.setVoterId(voterIDs.get(0));
+        	 houseHoldVoter.setHouseHoldId(houseHoldId);
+        	 houseHoldVoter.setVoterFamilyRelationId(voterFamilyRelationIds.get(0));
+        	 
+        	 houseHoldVoterDAO.save(houseHoldVoter);
+        	 
+         }
+		
 		//List<Object[]> houseHoldsList=houseHoldsDAO.
 		
 		for(HHSurveyVO hsvo:questOptsList){
@@ -610,6 +660,76 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			log.error("Exception raised in the saveHouseHoldQuestionDetails service method");
 			e.printStackTrace();
 		}
+		return "success";
+	}
+	
+	public String saveHouseHoldsVotersDetails(HouseHoldVotersVO votersDetails)
+	{
+		
+		try {
+			
+			
+			Long muncipalityId=null;
+			Long panchayatId=null;
+			Long houseHoldId=null;
+			
+			List<Booth> boothDtls=boothDAO.getModelByBoothId(votersDetails.getBoothId());
+			
+			for(Booth booth:boothDtls){
+				if(booth.getLocalBody()!=null){
+					muncipalityId=booth.getLocalBody().getLocalElectionBodyId();
+				}else if(booth.getPanchayat()!=null){
+					panchayatId=booth.getPanchayat().getPanchayatId();
+				}
+			}
+			
+			
+				HouseHolds hhModel=new HouseHolds();
+				
+				hhModel.setHouseNo(votersDetails.getHouseNo());
+				hhModel.setPanchaytId(panchayatId);
+				hhModel.setLocalElectionBodyId(muncipalityId);
+				
+				hhModel=houseHoldsDAO.save(hhModel);
+				houseHoldId=hhModel.getHouseHoldId();
+				
+			
+			for(HouseHoldVotersVO voterDtls:votersDetails.getHouseHoldsVoters())
+			{
+				HouseHoldVoter voter = new HouseHoldVoter();
+				
+				voter.setVoterId(voterDtls.getVoterId());
+				voter.setVoterFamilyRelationId(voterDtls.getVoterFamilyRelationId());
+				voter.setHouseHoldId(houseHoldId);
+				
+				houseHoldVoterDAO.save(voter);
+				
+				VoterCategoryValue education = new VoterCategoryValue();
+				
+				education.setUser(userDAO.get(IConstants.ADMIN_USER_ID));
+				education.setUserVoterCategoryValue(userVoterCategoryValueDAO.get(voterDtls.getEducationId()));
+				
+				voterCategoryValueDAO.save(education);
+				
+			    VoterCategoryValue occupation = new VoterCategoryValue();
+				
+			    occupation.setUser(userDAO.get(IConstants.ADMIN_USER_ID));
+			    occupation.setUserVoterCategoryValue(userVoterCategoryValueDAO.get(voterDtls.getOccupationId()));
+			    
+			    voterCategoryValueDAO.save(occupation);
+			    
+			    VoterCategoryValue socialPosition = new VoterCategoryValue();
+				
+			    socialPosition.setUser(userDAO.get(IConstants.ADMIN_USER_ID));
+			    socialPosition.setUserVoterCategoryValue(userVoterCategoryValueDAO.get(voterDtls.getSocialPstnId()));
+			    
+			    voterCategoryValueDAO.save(socialPosition);
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return "success";
 	}
 	

@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.FlagVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -25,11 +26,13 @@ import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
+import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -60,6 +63,25 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private IBoothDAO boothDAO;
 	private CadreManagementService cadreManagementService;
 	private CastePredictionService castePredictionService; 
+	private IInfluencingPeopleService influencingPeopleService;
+	private IVoterReportService voterReportService;
+
+	public IVoterReportService getVoterReportService() {
+		return voterReportService;
+	}
+
+	public void setVoterReportService(IVoterReportService voterReportService) {
+		this.voterReportService = voterReportService;
+	}
+
+	public IInfluencingPeopleService getInfluencingPeopleService() {
+		return influencingPeopleService;
+	}
+
+	public void setInfluencingPeopleService(
+			IInfluencingPeopleService influencingPeopleService) {
+		this.influencingPeopleService = influencingPeopleService;
+	}
 	
 	
 	
@@ -639,6 +661,107 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			UserVoterDetails uvDetails=castePredictionService.insertCasteAndPhoneNumberFromAndroid(voterId,casteStateId,mobileNumber);
 		}		
 		return "SUCCESS";
+	}
+	
+	public String updateCadreDetails(String voterID, Long casteStateId,
+			Long caddreLevelId, String mobileNo, String uniqueId)	{
+		
+		log.debug("Entered into the updateCadreDetails  method in WebServiceHandlerService");
+
+		try
+		{
+			
+			VoterDetailsVO voterDetails = mobileService.getVoterDetailsBasedOnVoterId(voterID);
+			
+			voterDetails.setMobileNo(mobileNo);
+			voterDetails.setCasteStateId(casteStateId);
+			voterDetails.setCadreLevelId(caddreLevelId);
+			voterDetails.setUniqueId(uniqueId);
+			
+			   String existance = 	cadreManagementService.checkVoterExistAsCadrebyVoterId(voterDetails.getVoterId());
+			   
+			   if(existance.equalsIgnoreCase("notExist"))					
+				cadreManagementService.saveCadreFromAndroid(voterDetails);
+			
+		}catch(Exception e)
+		{
+			log.error("Exception raised in updateCadreDetails  method in WebServiceHandlerService");
+			e.printStackTrace();
+			return "error";
+		}
+		return "success";
+	}
+	
+
+	public String updateIPDetails(String voterID, Long casteStateId,
+			Long caddreLevelId, String mobileNo, String uniqueId)
+	{
+		log.debug("Entered into the updateIPDetails  method in WebServiceHandlerService");
+
+		try
+		{
+			
+			VoterDetailsVO voterDetails = mobileService.getVoterDetailsBasedOnVoterId(voterID);
+
+			
+			voterDetails.setMobileNo(mobileNo);
+			voterDetails.setCasteStateId(casteStateId);
+			voterDetails.setInfleunceLevelId(caddreLevelId);
+			voterDetails.setUniqueId(uniqueId);
+			
+			String existance = 	influencingPeopleService.checkVoterExistAsInfluencePeopleByVoterId(voterDetails.getVoterId());
+
+			  if(existance.equalsIgnoreCase("notExist"))	
+				influencingPeopleService.saveInfluencePeopleDetails(voterDetails);
+				
+			
+		}catch(Exception e)
+		{
+			log.error("Exception raised in updateIPDetails  method in WebServiceHandlerService");
+			e.printStackTrace();
+			return "error";
+		}
+		return "success";
+	}
+	
+	public String updateFalgDetails(String uniqueId,String flagName,String flagColor,String voterIds)
+	{
+		log.debug("Entered into the updateFalgDetails  method in WebServiceHandlerService");
+
+		
+
+		try {
+			String[] voterIDs = voterIds.split(",");
+			
+			List<FlagVO> flagDtls = new ArrayList<FlagVO>();
+			List<String> voters = new ArrayList<String>();
+			
+			FlagVO  flagVO = new FlagVO();
+			flagVO.setFlagName(flagName);
+			flagVO.setColour(flagColor);
+			
+			for(String voterID:voterIDs)
+				voters.add(voterID);
+			
+			flagVO.setVoterIDS(voters);
+			flagDtls.add(flagVO);
+			
+			voterReportService.addFlagToVoterFromMobileApp(flagDtls, uniqueId);
+		} catch (Exception e) {
+			
+			log.error("Exception raised in updateFalgDetails  method in WebServiceHandlerService");
+			e.printStackTrace();
+			return "error";
+		}
+		return "success";
+	}
+	
+	public String updateVoterMobileNumberAndCaste(String voterID,
+			Long casteStateId,
+			String mobileNo,String uniqueId)
+	{
+		
+		return voterReportService.updateVoterMobileNumberAndCaste(voterID,casteStateId,mobileNo,uniqueId);
 	}
 
 }

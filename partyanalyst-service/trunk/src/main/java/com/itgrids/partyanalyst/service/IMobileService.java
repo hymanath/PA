@@ -5,6 +5,7 @@ import java.util.List;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 
 public interface IMobileService {
 	
@@ -34,5 +35,7 @@ public interface IMobileService {
   	public List<SelectOptionVO> getPingDetails(Long mobileAppUserId);
   	
 	public List<RegistrationVO> getMobileAppUserPopulateData(Long userId);
+  	public VoterDetailsVO getVoterDetailsBasedOnVoterId(String voterCardNo);
+
 
 }

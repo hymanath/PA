@@ -34,6 +34,7 @@ import com.itgrids.partyanalyst.dao.ICadreProblemDetailsDAO;
 import com.itgrids.partyanalyst.dao.ICadreRoleDAO;
 import com.itgrids.partyanalyst.dao.ICadreRoleRelationDAO;
 import com.itgrids.partyanalyst.dao.ICadreSkillsDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.ICountryDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
@@ -59,12 +60,10 @@ import com.itgrids.partyanalyst.dao.ITownshipDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserRelationDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
-import com.itgrids.partyanalyst.dao.hibernate.VoterDAO;
 import com.itgrids.partyanalyst.dto.AnnouncementVO;
 import com.itgrids.partyanalyst.dto.CadreCategoryVO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CadreRegionInfoVO;
-import com.itgrids.partyanalyst.dto.GallaryVO;
 import com.itgrids.partyanalyst.dto.PartyCadreDetailsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -74,6 +73,7 @@ import com.itgrids.partyanalyst.dto.SmsResultVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.StateToHamletVO;
 import com.itgrids.partyanalyst.dto.UserCadresInfoVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.AssemblyLocalElectionBody;
 import com.itgrids.partyanalyst.model.AssignedProblemProgress;
 import com.itgrids.partyanalyst.model.BloodGroup;
@@ -106,7 +106,6 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserGroupEntitlement;
 import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserRelation;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
@@ -166,6 +165,16 @@ public class CadreManagementService {
 	private IRegionScopesDAO regionScopesDAO;
 	private TaskExecutor taskExecutor;
 	private IPanchayatHamletDAO panchayatHamletDAO;
+	private ICasteStateDAO casteStateDAO;
+	
+	public ICasteStateDAO getCasteStateDAO() {
+		return casteStateDAO;
+	}
+
+
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
 	
 	public IPanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
@@ -854,6 +863,15 @@ public class CadreManagementService {
 				
 				if(IConstants.UPDATE_EXISTING.equals(task))
 					cadre.setImage(cadre.getImage());
+				
+				
+				if(IConstants.UPDATE_EXISTING.equals(task))
+					cadre.setImage(cadre.getImage());
+				
+				if(cadreInfo.getCasteStateId() != null)
+				 cadre.setCasteState(casteStateDAO.get(cadreInfo.getCasteStateId()));
+				
+				cadre.setUniqueId(cadreInfo.getUniqueId());
 				
 				cadre = cadreDAO.save(cadre);
 					
@@ -5412,5 +5430,78 @@ public List<SelectOptionVO> getCommitteesForAParty(Long partyId)
 		}
 		return map;
 		
+	}
+	
+	public String checkVoterExistAsCadrebyVoterId(Long voterId)
+	{
+		
+		List<Long> countList = cadreDAO.checkVoterExistAsCadrebyVoterId(voterId);
+		
+		if(countList != null && countList.size() >0 && countList.get(0) >0)
+			return "exist";;
+			return "notExist";
+		
+	}
+	
+	public String saveCadreFromAndroid(VoterDetailsVO voterDetails){
+		CadreInfo cadreInfoVO=new CadreInfo();
+		
+		cadreInfoVO.setAccessType("STATE");
+		cadreInfoVO.setAge(voterDetails.getAge());
+		cadreInfoVO.setCadreLevel(voterDetails.getCadreLevelId());
+		cadreInfoVO.setCadreLevelBooth(voterDetails.getBoothId().toString());
+		cadreInfoVO.setCadreLevelConstituency(voterDetails.getConstituencyId().toString());
+		cadreInfoVO.setCadreLevelDistrict(voterDetails.getDistrictId().toString());
+		cadreInfoVO.setMandal(voterDetails.getTehsilId().toString());
+		cadreInfoVO.setBooth(voterDetails.getBoothId().toString());
+		
+		if(voterDetails.getHamletId()!=null){
+			cadreInfoVO.setVillage(voterDetails.getHamletId().toString());
+		}
+		
+		cadreInfoVO.setWardId(voterDetails.getWardId());
+		cadreInfoVO.setLocalElectionBodyId(voterDetails.getLocalElectionBodyId());
+		//cadreInfoVO.setState();
+		cadreInfoVO.setConstituencyID(voterDetails.getConstituencyId());
+		cadreInfoVO.setDistrict(voterDetails.getDistrictId().toString());
+		cadreInfoVO.setDobOption("Age");
+		cadreInfoVO.setEducation(8l);
+		cadreInfoVO.setFirstName(voterDetails.getVoterName());
+		cadreInfoVO.setLastName("");
+		cadreInfoVO.setMandal(voterDetails.getTehsilId().toString());
+		cadreInfoVO.setMemberType("Active");
+		cadreInfoVO.setSocialStatus(voterDetails.getCasteGroupId());
+		cadreInfoVO.setEducation(8l);
+		cadreInfoVO.setProfession(16l);
+		cadreInfoVO.setStrCadreLevelValue(voterDetails.getBoothId().toString());
+		cadreInfoVO.setGender(voterDetails.getGender());
+		cadreInfoVO.setFirstFamilyMemberName("");
+		cadreInfoVO.setSecondFamilyMemberName("");
+		cadreInfoVO.setThirdFamilyMemberName("");
+		cadreInfoVO.setFatherOrSpouseName(voterDetails.getRelativeName());
+		cadreInfoVO.setHouseNo(voterDetails.getHouseNo());
+		
+		cadreInfoVO.setState("1");
+		cadreInfoVO.setUserID(1l);
+		cadreInfoVO.setUserType("politician");
+		cadreInfoVO.setBloodGroup(0l);
+		cadreInfoVO.setSameAsCA(true);
+		
+		cadreInfoVO.setCasteStateId(voterDetails.getCasteStateId());
+		if(cadreInfoVO.getMobile()=="" || cadreInfoVO.getMobile()==null){
+			cadreInfoVO.setMobile(voterDetails.getMobileNo());
+		}else{
+			cadreInfoVO.setMobile(voterDetails.getMobileNo());
+		}
+		cadreInfoVO.setSavingFrom("Android");
+		cadreInfoVO.setVoterId(voterDetails.getVoterId());
+		//cadreInfoVO.setVillage(village)
+		
+		//cadreInfoVO.setMobileUserId(voterDetails.getMobileUserId());
+		
+		cadreInfoVO.setUniqueId(voterDetails.getUniqueId());
+		
+		saveCader(cadreInfoVO, null, "new");
+		return "SUC";
 	}
 }

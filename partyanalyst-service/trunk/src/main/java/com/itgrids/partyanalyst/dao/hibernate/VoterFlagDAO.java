@@ -283,4 +283,19 @@ public class VoterFlagDAO extends GenericDaoHibernate<VoterFlag, Long> implement
 				 query.setParameter("constituencyId", constituencyId);
 				 return query.list();
 			}
+			
+			 public List<Long> checkFlagExistanceForVoter(Long flagId,Long voterId,Long userId)
+			 {
+				 Query query = getSession().createQuery("select count(model.voter.voterId) from VoterFlag model " +
+				 		"where model.user.userId = :userId and " +
+				 		"model.voter.voterId = :voterId and model.flag.flagId = :flagId");
+				 
+				 query.setParameter("userId", userId);
+				 query.setParameter("voterId", voterId);
+				 query.setParameter("flagId", flagId);
+				 
+				 return query.list();
+				 
+				 
+			 }
 }

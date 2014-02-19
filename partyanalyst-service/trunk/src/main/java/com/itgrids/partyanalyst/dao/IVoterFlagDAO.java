@@ -39,4 +39,7 @@ public interface IVoterFlagDAO extends GenericDao<VoterFlag, Long>{
 	 public List getFlagVoterDetailsForHamletCount(Long constituencyId,Long locationId,Long flagId,String locationType,Long publicationDateId
 				);
 	 
+	 public List<Long> checkFlagExistanceForVoter(Long flagId,Long voterId,Long userId);
+
+	 
 }

@@ -1,8 +1,5 @@
 package com.itgrids.partyanalyst.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
 
 import org.easymock.EasyMock;
@@ -10,11 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.ICandidateDAO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Candidate;
 import com.itgrids.partyanalyst.service.impl.CandidateSearchService;
-import com.itgrids.partyanalyst.util.DummyCandidates;
-import com.itgrids.partyanalyst.util.DummyNominations;
 
 public class CandidateSearchServiceTest {
 
@@ -28,14 +22,14 @@ public class CandidateSearchServiceTest {
 		candidateSearchService.setCandidateDAO(candidateDAO);		
 	}
 	
-	@Test
+	/*@Test
 	public void checkConstituencyNamesSize(){
 		
 		EasyMock.expect(candidateDAO.getAll()).andReturn(DummyCandidates.getCandidates()).times(1);
 		EasyMock.replay(candidateDAO);
 		//Assert.assertEquals(5,candidateSearchService.getCandidateNamesAndIds().size());
 		EasyMock.verify(candidateDAO);
-	}
+	}*/
 	/*
 	@Test
 	public void checkCandidateNamesAppending(){
@@ -49,11 +43,11 @@ public class CandidateSearchServiceTest {
 		Assert.assertEquals(actualCandidateNames,DummyCandidates.getExpectedCandidateNames());
 	}*/
 
-	@Test
+	/*@Test
 	public void checkLastestYearReturnVallue(){
 		Long actualLastestYear = candidateSearchService.getLastestYear(DummyNominations.getNominations());
 		Assert.assertEquals(new Long("2009"),actualLastestYear);
-	}
+	}*/
 	
 	@Test 
 	public void checkGetCandidateFullNameWithoutMiddle(){

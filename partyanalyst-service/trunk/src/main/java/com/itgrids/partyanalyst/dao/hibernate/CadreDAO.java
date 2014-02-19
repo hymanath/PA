@@ -1105,4 +1105,14 @@ public class CadreDAO extends GenericDaoHibernate<Cadre, Long> implements ICadre
 		return query.list();
 		
 	}
+	
+	public List<Long> checkVoterExistAsCadrebyVoterId(Long voterId)
+	{
+		Query query = getSession().createQuery("select count(model.voter.voterId) from Cadre model " +
+				"where model.voter.voterId = :voterId");
+		
+		query.setParameter("voterId", voterId);
+		
+		return query.list();
+	}
 }

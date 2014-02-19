@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.BloodGroup;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Cadre;
@@ -2434,4 +2435,99 @@ public List<SelectOptionVO> getConstituencyList()
 			}
 			
 		}
+  	 
+  	public VoterDetailsVO getVoterDetailsBasedOnVoterId(String voterCardNo){
+ 		List<Object[]> dtlsList=boothPublicationVoterDAO.getConstyPublicationIdByVoterId(voterCardNo);
+ 		//Gives ConstyId,BoothId,PublicationId,VoterId,Name,Age,Gender
+ 		
+ 		VoterDetailsVO vo=new VoterDetailsVO();
+ 		
+ 		Object[] obj=dtlsList.get(0);
+ 		
+ 		vo.setConstituencyId(Long.valueOf(obj[0].toString()));
+ 		vo.setBoothId(Long.valueOf(obj[1].toString()));
+ 		vo.setPublicationDateId(Long.valueOf(obj[2].toString()));
+ 		vo.setVoterId(Long.valueOf(obj[3].toString()));	
+ 		vo.setVoterName(obj[4].toString());
+ 		vo.setAge(obj[5].toString());
+ 		
+ 		if(obj[6].toString().equalsIgnoreCase("M")){
+ 			vo.setGender("Male");
+ 		}else{
+ 			vo.setGender("Female");
+ 		}
+ 		
+ 		vo.setDistrictId(Long.valueOf(obj[7].toString()));
+ 		if(obj[8].toString()!=null){
+ 			vo.setRelativeName(obj[8].toString());
+ 		}else{
+ 			vo.setRelativeName("");
+ 		}
+ 		if(obj[9].toString()!=null){
+ 			vo.setHouseNo(obj[9].toString());
+ 		}else{
+ 			vo.setHouseNo("");
+ 		}
+ 		
+ 	
+ 		List<Booth> boothDtls=null;
+ 		if(vo.getBoothId()!=null){
+ 			boothDtls=boothDAO.getBoothDetailsByBoothId(vo.getBoothId());
+ 		}
+ 		
+ 		if(boothDtls!=null && boothDtls.size()>0){
+ 			if(boothDtls.get(0).getTehsil()!=null){
+ 				vo.setTehsilId(boothDtls.get(0).getTehsil().getTehsilId());
+ 			}
+ 			
+ 			if(boothDtls.get(0).getLocalBody()!=null){
+ 				vo.setLocalElectionBodyId(boothDtls.get(0).getLocalBody().getLocalElectionBodyId());
+ 			}
+ 			
+ 			//IF THE SELECTED CONSTITUENCY UNDER GHMC -- GETTING WARD ID AND NAME
+ 			if(boothDtls.get(0).getLocalBody() != null && boothDtls.get(0).getLocalBody().getElectionType().getElectionTypeId()==7){
+ 				vo.setWardId(boothDtls.get(0).getLocalBodyWard().getLocalElectionBodyWard().getLocalElectionBodyWardId());
+ 				vo.setWardName(boothDtls.get(0).getLocalBodyWard().getLocalElectionBodyWard().getWardName());
+ 			}
+ 		}
+ 		
+ 		
+ 		List<UserVoterDetails> uvDtls=userVoterDetailsDAO.getVoterDetailsByVoterId(vo.getVoterId(),1l);
+ 		
+ 		if(uvDtls!=null && uvDtls.size()>0){
+ 			UserVoterDetails uv=uvDtls.get(0);
+ 			
+ 			if(uv.getCasteState()!=null){
+ 				Long casteCategoryId=uv.getCasteState().getCasteCategoryGroup().getCasteCategory().getCasteCategoryId();
+ 				Long socialCategoryId=0l;
+ 				if(casteCategoryId==1l){
+ 					socialCategoryId=5l;
+ 				}else if(casteCategoryId==2l){
+ 					socialCategoryId=3l;
+ 				}else if(casteCategoryId==3l){
+ 					socialCategoryId=2l;
+ 				}else if(casteCategoryId==4l){
+ 					socialCategoryId=1l;
+ 				}
+ 				vo.setCasteGroupId(socialCategoryId);
+ 				vo.setCaste(uv.getCasteState().getCaste().getCasteName());
+ 			}else{
+ 				vo.setCaste("");
+ 				vo.setCasteGroupId(0l);
+ 			}
+ 			
+ 			if(uv.getHamlet()!=null){
+ 				vo.setHamletId(uv.getHamlet().getHamletId());
+ 			}
+ 			
+ 			if(uv.getWard()!=null){
+ 				vo.setWardId(uv.getWard().getConstituencyId());
+ 			}
+ 			if(uv.getMobileNo()!=null){
+ 				vo.setMobileNo(uv.getMobileNo());
+ 			}
+ 			
+ 		}
+ 		return vo;
+ 	}
 }
