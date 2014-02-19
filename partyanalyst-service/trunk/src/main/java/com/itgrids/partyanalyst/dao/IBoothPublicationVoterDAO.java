@@ -508,10 +508,9 @@ public interface IBoothPublicationVoterDAO extends
 	  
 	  public List<Object[]> getAgeWiseDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId,Long startAge,Long endAge);
 	
-	public List<Object[]> getPanchayatAgeWiseDetailsByHamletWise(Long userId , Long publicationDateId , List<Long> panchayatId);
+	  public List<Object[]> getPanchayatAgeWiseDetailsByHamletWise(Long userId , Long publicationDateId , List<Long> panchayatId);
 
-	  
-	public List<Object[]> getYoungVotersCount(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,String locationType,Long ageFrom,Long ageTo);
+	  public List<Object[]> getYoungVotersCount(Long constituencyId,Long publicationDateId,List<Long> locationIdsList,String locationType,Long ageFrom,Long ageTo);
 	  
 	  public List<Object[]> getCasteWiseDetailsForPartialPanchayat(Long userId,List<Long> attributeIds,String locationType,Long locationId,Long constituencyId,Long publicationId);
 	  
@@ -538,7 +537,10 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getCustomWardAgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
 	  
 	  public List<Object[]> getCustomWard18To22AgeCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
-	 
+	  
+	  //public List<Object[]> addedDeletedVoters(String locationType,Long locationId,Long fromPublicationDateId,Long toPublicationDateId,Long constituencyId);
+	  
+
 	
 	  
 	  public List<Object[]> getWardBoothWiseFamilyVotersCount(Long localElectionBodyId, Long userId,Long publicationId,Long constituencyId);
@@ -567,7 +569,10 @@ public interface IBoothPublicationVoterDAO extends
 			 * @return List<?> 
 			 */
 		public List<?> getVoterDetailsByBoothAndConstituency(long boothId,long constituencyId);
-		
+
 		public List<Object[]> getHouseNosForBooth(Long constituencyId,Long publicationId,Long minVal,Long maxVal,Integer startIndex,Integer maxIndex);
 		public List<Object[]> getFamilyWiseInfoForBooth(Long boothId,List<String> hnos);
+		
+		public List<Object[]> getConstyPublicationIdByVoterId(String voterCardNo);
+
 }
