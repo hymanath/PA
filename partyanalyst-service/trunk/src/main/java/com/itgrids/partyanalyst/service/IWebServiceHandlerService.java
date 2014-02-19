@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 
 public interface IWebServiceHandlerService {
@@ -23,4 +24,10 @@ public interface IWebServiceHandlerService {
 	public ResultStatus sendSMS(String uniqueCode,String mobileNos,String message);
 	
 	public String getBaseUrlForApp(String appName);
+	
+	public VoterDetailsVO getVoterDetailsBasedOnVoterId(String voterCardNo);
+	
+	public String saveCadreFromAndroid(VoterDetailsVO voterDetails);
+	
+	public String updateVoterDetails(String uniqueCode,Long voterId,Long casteStateId,String mobileNumber);
 }
