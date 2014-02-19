@@ -323,5 +323,7 @@ public interface IVotersAnalysisService {
 				Long userId);
 	 
 	 public List<VoterHouseInfoVO> getFamilyInformationForHHSurvey(Long hamletId , Long boothId, Long publicationDateId,String houseNo,Long userId ,String selectType);
+	 
+	 public List<VoterHouseInfoVO> getVotersOfSearchedCriteriaForHH(String voterCardNo,String voterName,Long boothId,Long publicationId);
 	 	
 }
