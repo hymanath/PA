@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
 
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -1781,6 +1782,7 @@ IUserVoterDetailsDAO{
 	}
 	
 	
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getWardsForMuncByConsIdAndUserId(Long constituencyId,Long localEleBodyId,Long publicationDateId,Long userId)
 	{
@@ -2904,9 +2906,8 @@ IUserVoterDetailsDAO{
 		query.setParameterList("voterIds",voterIds);
 		return query.list();	
 	}
-	
 	 public List<UserVoterDetails> getUserVoterDetailsByVoterCardNo(String voterCardNo){
-	
+			
 			Query query = getSession().createQuery("select model from UserVoterDetails model, BoothPublicationVoter model1 " +
 					" where model.voter.voterId = model1.voter.voterId and model.voter.voterIDCardNo=:voterCardNo order by " +
 					" model1.booth.publicationDate.publicationDateId desc ");
@@ -2917,37 +2918,92 @@ IUserVoterDetailsDAO{
 			
 			
 		}
-	 
-
-		@SuppressWarnings("unchecked")
-		public List<Object[]> getCasteReport(Long constituencyId,Long publicationId,String type,Long userId)
-		{
-			StringBuilder str = new StringBuilder();
-			str.append("select distinct count(model.voter.voterId),model.casteState.caste.casteName,model.casteState.caste.casteId, ");
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteForVoter(List<Long> voterIds,Long userId)
+	{
+		Query query = getSession().createSQLQuery("SELECT UVD.voter_id,C.caste_name FROM user_voter_details UVD,caste_state CS,caste C where UVD.caste_state_id = CS.caste_state_id and CS.caste_id = C.caste_id and " +
+				" UVD.user_id = :userId and UVD.voter_id in (:voterIds)");
+		query.setParameterList("voterIds",voterIds);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteReport(Long constituencyId,Long publicationId,String type,Long userId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct count(model.voter.voterId),model.casteState.caste.casteName,model.casteState.caste.casteId, ");
+		if(type.equalsIgnoreCase(IConstants.MANDAL))
+			str.append("bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName ");
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			str.append("bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
+		else if(type.equalsIgnoreCase(IConstants.BOOTH))
+			str.append("bpv.booth.boothId,bpv.booth.partNo,bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
+			str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
+				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
 			if(type.equalsIgnoreCase(IConstants.MANDAL))
-				str.append("bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName ");
+				str.append("  group by model.casteState.caste.casteId,bpv.booth.tehsil.tehsilId order by model.casteState.caste.casteName");
+		
 			else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
-				str.append("bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
+				str.append("  group by model.casteState.caste.casteId,bpv.booth.panchayat.panchayatId order by model.casteState.caste.casteName");
 			else if(type.equalsIgnoreCase(IConstants.BOOTH))
-				str.append("bpv.booth.boothId,bpv.booth.partNo,bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
-				str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
-					" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
-				if(type.equalsIgnoreCase(IConstants.MANDAL))
-					str.append("  group by model.casteState.caste.casteId,bpv.booth.tehsil.tehsilId order by model.casteState.caste.casteName");
-			
-				else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
-					str.append("  group by model.casteState.caste.casteId,bpv.booth.panchayat.panchayatId order by model.casteState.caste.casteName");
-				else if(type.equalsIgnoreCase(IConstants.BOOTH))
-					str.append("  group by model.casteState.caste.casteId,bpv.booth.boothId order by bpv.booth.panchayat.panchayatName, bpv.booth.boothId," +
-							" model.casteState.caste.casteName");
-			Query query = getSession().createQuery(str.toString());
-			query.setParameter("constituencyId", constituencyId);
-			query.setParameter("publicationId", publicationId);
-			query.setParameter("userId", userId);
-			
-			return query.list();
-		}
+				str.append("  group by model.casteState.caste.casteId,bpv.booth.boothId order by bpv.booth.panchayat.panchayatName, bpv.booth.boothId," +
+						" model.casteState.caste.casteName");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
 		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterHnoAndBooths(Long constituencyId,Long publicationId)
+	{
+	    StringBuilder str =new StringBuilder();
 		
+		str.append("select model.booth.boothId,model.voter.houseNo from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and " +
+				" model.booth.publicationDate.publicationDateId = :publicationId");
 		
+		str.append(" group by model.booth.boothId,model.voter.houseNo ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		//query.setFirstResult(0);
+		//query.setMaxResults(100);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getElderVoterDetails(Long boothId,String hno)
+	{
+		Query query = getSession().createQuery("select model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender from BoothPublicationVoter model where  model.booth.boothId = :boothId and model.voter.houseNo =:hno order by model.voter.age desc");
+		query.setParameter("boothId", boothId);
+		query.setParameter("hno", hno);
+		query.setFirstResult(0);
+		query.setMaxResults(1);
+		return query.list();
+	}
+	public List<Object[]> getLocationForVoter(List<Long> boothIds,String type)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select model.booth.boothId, ");
+		if(type.equalsIgnoreCase(IConstants.TEHSIL))
+		str.append("booth.tehsil.tehsilName");
+		else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+		str.append("booth.panchayat.panchayatName");		
+		str.append(" from BoothPublicationVoter model where model.booth.boothId in(:boothIds) ");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameterList("boothIds",boothIds);
+		return query.list();	
+	}
+	
+	public List<Object[]> getHamletForVoter(List<Long> voterIds,Long userId)
+	{
+		Query query = getSession().createSQLQuery("SELECT UVD.voter_id,H.hamlet_name FROM user_voter_details UVD,hamlet H where UVD.hamlet_id = H.hamlet_id and" +
+				" UVD.user_id = :userId and UVD.voter_id in (:voterIds)");
+		query.setParameterList("voterIds",voterIds);
+		query.setParameter("userId", userId);
+		return query.list();	
+	}
+	
 }
