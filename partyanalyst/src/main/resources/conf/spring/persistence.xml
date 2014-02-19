@@ -374,15 +374,17 @@
 				<value>com.itgrids.partyanalyst.model.CasteInsertType</value>
 				
 				<value>com.itgrids.partyanalyst.model.HHSurveyQuestion</value>
-		<value>com.itgrids.partyanalyst.model.HHOptions</value>
-		<value>com.itgrids.partyanalyst.model.HHQuestionOptions</value>
-		<value>com.itgrids.partyanalyst.model.HHOptionType</value>
-		<value>com.itgrids.partyanalyst.model.HHSurvey</value>
-		<value>com.itgrids.partyanalyst.model.HouseHolds</value>
-		<value>com.itgrids.partyanalyst.model.HHSurveyAnswers</value>
-		<value>com.itgrids.partyanalyst.model.HHSurveySubType</value>
-		<value>com.itgrids.partyanalyst.model.VoterFamilyRelation</value>
-		<value>com.itgrids.partyanalyst.model.HouseHoldVoter</value>
+				<value>com.itgrids.partyanalyst.model.HHOptions</value>
+				<value>com.itgrids.partyanalyst.model.HHQuestionOptions</value>
+				<value>com.itgrids.partyanalyst.model.HHOptionType</value>
+				<value>com.itgrids.partyanalyst.model.HHSurvey</value>
+				<value>com.itgrids.partyanalyst.model.HouseHolds</value>
+				<value>com.itgrids.partyanalyst.model.HHSurveyAnswers</value>
+				<value>com.itgrids.partyanalyst.model.HHSurveySubType</value>
+				<value>com.itgrids.partyanalyst.model.VoterFamilyRelation</value>
+				<value>com.itgrids.partyanalyst.model.HouseHoldVoter</value>
+				<value>com.itgrids.partyanalyst.model.VoterDataInsert</value>
+				
 			</list>
 			
 		</property>

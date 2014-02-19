@@ -54,6 +54,7 @@
 		<property name="voterFlagDAO" ref="voterFlagDAO" />
 		<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
 		<property name="wardBoothDAO" ref="wardBoothDAO" />
+		<property name="voterDataInsertDAO" ref="voterDataInsertDAO"></property>
 					
 	</bean>
 	
@@ -272,6 +273,7 @@
 		<property name="votersAnalysisService" ref="votersAnalysisService"></property>
 		<property name="townshipDAO" ref="townshipDAO"></property>
 		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"></property>
+		<property name="casteStateDAO" ref="casteStateDAO"></property>
 	</bean>
 	
 	<bean name="loginService" class="com.itgrids.partyanalyst.service.impl.LoginService" >
@@ -558,6 +560,7 @@
 		<property name="regionScopesDAO" ref="regionScopesDAO" />
 		<property name="taskExecutor" ref="taskExecutor" />	
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
+		<property name="casteStateDAO" ref="casteStateDAO" />
 	</bean>
 	
 	<bean name="boothPopulationService" class="com.itgrids.partyanalyst.service.impl.BoothPopulationService" >
@@ -1869,6 +1872,8 @@
 	  <property name="boothDAO" ref="boothDAO"></property>
 	  <property name="cadreManagementService" ref="cadreManagementService" />
 	  <property name="castePredictionService" ref="castePredictionService" />
+	  <property name="influencingPeopleService" ref="influencingPeopleService"></property>
+	  <property name="voterReportService" ref="voterReportService"/>
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -1898,6 +1903,7 @@
  	 <property name="boothDAO" ref="boothDAO"></property>
  	 <property name="houseHoldsDAO" ref="houseHoldsDAO"></property>
  	 <property name="hhSurveyAnswersDAO" ref="hhSurveyAnswersDAO"></property>
+ 	 <property name="houseHoldVoterDAO" ref="houseHoldVoterDAO"></property>
   </bean>
    
 </beans>		

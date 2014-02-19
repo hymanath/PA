@@ -1336,5 +1336,12 @@
    <bean id="houseHoldVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.HouseHoldVoterDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
- 
+   
+     <bean id="voterDataInsertDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterDataInsertDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   
+   
+   
 </beans>		
