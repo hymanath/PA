@@ -104,6 +104,8 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private String youngerCaste;
     private String tehsilName;
     private String constituencyType;
+    private String districtName;
+    private Long pinCode;
     private List<GenericVO> occupationList;
     private List<GenericVO> educationList;
     private List<GenericVO> socialPositionList;
@@ -111,9 +113,6 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     
     private List<GenericVO> familyRelsList;
     private Long voterFamilyRelId;
-    
-    
-    
 	public Long getVoterFamilyRelId() {
 		return voterFamilyRelId;
 	}
@@ -160,6 +159,22 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
 
 	public void setSocialPositionList(List<GenericVO> socialPositionList) {
 		this.socialPositionList = socialPositionList;
+	}
+
+	public String getDistrictName() {
+		return districtName;
+	}
+
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+
+	public Long getPinCode() {
+		return pinCode;
+	}
+
+	public void setPinCode(Long pinCode) {
+		this.pinCode = pinCode;
 	}
 
 	public String getConstituencyType() {
