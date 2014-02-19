@@ -69,7 +69,7 @@ public class RegistrationVO extends BaseDTO{
 	private boolean multipleAccessRestriction;
 	private List<RegistrationVO> registeredUsersList = new ArrayList<RegistrationVO>();
 	private Long totalCount; 
-	
+	private String path;
 	private String uniqueCode;
 	
 	private String appId;
@@ -549,6 +549,14 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setCadreRegiserForId(Long cadreRegiserForId) {
 		this.cadreRegiserForId = cadreRegiserForId;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	
