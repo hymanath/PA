@@ -1080,6 +1080,7 @@ function panchayatMatrx(result)
  <input type="button" value="Get Mandal Wise CasteInfo" class="btn" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
  <input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
   <input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
+    <input type="button" value="Get Voter Address" class="btn" id="voterAddressbtn" onclick="redirectToVoterAddress()" style="margin-top:10px;"/>
  </fieldset>
   </div>
    <div id="mainDiv" align="center"  style="margin-left: 196px;">
@@ -4462,6 +4463,11 @@ function redirectToFamilyInfo()
 function redirectToCasteInfo(type)
 {
 var win=window.open('casteReportAction.action?type='+type+'', '_blank');
+win.focus();
+}
+function redirectToVoterAddress()
+{
+var win=window.open('voterAddressAction.action', '_blank');
 win.focus();
 }
 </script>

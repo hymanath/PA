@@ -12,6 +12,9 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICasteReportService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,7 +30,22 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	private ICasteReportService casteReportService;
 	private static final Logger log = Logger.getLogger(CasteReportAction.class);
 	private List<CastVO> casteWiseResult;
+	private List<VoterHouseInfoVO> voterDetails;
+	private ResultStatus resultStatus;
 	
+	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+	public List<VoterHouseInfoVO> getVoterDetails() {
+		return voterDetails;
+	}
+	public void setVoterDetails(List<VoterHouseInfoVO> voterDetails) {
+		this.voterDetails = voterDetails;
+	}
 	public List<CastVO> getCasteWiseResult() {
 		return casteWiseResult;
 	}
@@ -131,6 +149,27 @@ public String getCasteWiseReport()
 	catch(Exception e)
 	{
 		log.error("Exception Occured in getCasteWiseReport() method",e);
+	}
+	return Action.SUCCESS;
+}
+public String getVoterAddressDetails()
+{
+	try{
+		Long userId = 0l;
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return INPUT;
+		else
+	    userId = user.getRegistrationID();
+		jObj = new JSONObject(getTask());
+		
+		resultStatus =  casteReportService.getVoterAddressDetails(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),userId);
+		
+	}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in getVoterAddressDetails() method",e);
 	}
 	return Action.SUCCESS;
 }
