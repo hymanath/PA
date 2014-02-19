@@ -144,9 +144,7 @@ form div label {
  
  <script type="text/javascript">
  
-     $(function() {
-
-	
+    $(function() {
 	$( "#setValue" ).autocomplete({
             source: function( request, response ) {
 			 //var userCategoryValuesId1 = document.getElementById("userCategoryValuesId1");
@@ -228,6 +226,8 @@ function callAjax(jsObj,url){
 							else if(jsObj.task == "storeCategoeryValues")
 							{
 							
+							}else if(jsObj.task == "getVotersMatched"){
+								buildTableForSearchedVoters(myResults);
 							}
 							
 							
@@ -597,7 +597,7 @@ function buildVotersInFamilySearch(results,hno){
 function openProblemEditFormNew(id,boothId,publicationDateId,houseNo)
 {
 	var urlStr="votersEditNewHHAction.action?voterId="+id+"&boothId="+boothId+"&publicationDateId="+publicationDateId+"&houseNo="+houseNo+"&selIds=7,8";
-	var updateBrowser = window.open(urlStr,"editAnnouncement","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	var updateBrowser = window.open(urlStr,"Voter Details","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();	
 }
 
@@ -817,10 +817,7 @@ function saveHouseHoldInfo(){
 		<td><b>:</b></td>
 		<td>${voterHouseInfoVO.casteStateId}</td>
 	</tr>
-	
-		
-	
-	
+
 </table>
 </fieldset>
 
@@ -868,10 +865,164 @@ function saveHouseHoldInfo(){
 		</div>
 </div>
 
+<div><span class="btn btn-info" onclick="searchVoter()">Add Voter To This Family</span></div>
 <!--<span class="btn btn-info span3 offset5" onclick="getHouseHoldInfoPage()"> Get House Hold Information </span>-->
 
 <div id="qstnAnswer" class="span10 offset3" style="border:1px solid gray"></div>
 <div class="statusMsg span12"></div>
+
+<div id="dialog">
+	<div class="span12 row">
+		<div class="span8 row-fluid"><span class="span4 ">Voter Id</span><input type="text" id="voterId" class="span4 vtrIdCls"/></div> (or)
+		<div class="span8 row-fluid"><span class="span4 ">Voter Name</span><input type="text" id="voterNameId" class="span4 vtrNameCls"/></div>
+		<div class="span8"><span class="btn btn-info" onclick="searchNow()"> Search </span></div>
+	</div>
 	
+	<div class="span12 row searchedVotersDiv"></div>
+</div>
+	
+<script>
+	function searchNow(){
+		var voterCardNo=$(".vtrIdCls").val();
+		var voterName=$(".vtrNameCls").val();
+		var publicationDateId="${publicationDateId}";
+		var boothId="${boothId}";
+		//var constituencyId = 228;
+		
+		var jsObj =
+		{
+			voterCardNo:voterCardNo,
+			voterName:voterName,
+			boothId:boothId,
+			publicationDateId:publicationDateId,
+			task:"getVotersMatched"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVotersForSearchedCriteriaAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
+	function searchVoter(){
+		 $(function() {
+			$( "#dialog" ).dialog({
+				title:"Search Voter",
+				height: 500,
+				width: 1000,
+				modal: true
+			});
+			
+		});
+		/*var urlStr="houseHoldSurveyReportActionSearch.action";
+		var updateBrowser = window.open(urlStr,"SearchVoter","scrollbars=yes,height=600,width=700,left=200,top=200");	
+		updateBrowser.focus();	*/
+	}
+	var temp;
+	function buildTableForSearchedVoters(results){
+		var str="";
+		str+="<table class='table table-bordered' searchedVotersTable>";
+			str+="<thead>";
+				str+="<tr><th>Select</th><th>Name</th><th>Serial No</th><th>Booth No</th><th>House No</th></tr>";
+				for(var i in results){
+					str+="<tr>";
+						str+="<td><input type='checkbox' name='searchedVoter' value="+results[i].voterId+"></td>";
+						str+="<td>"+results[i].name+"</td>";
+						str+="<td>"+results[i].sNo+"</td>";
+						str+="<td>"+results[i].boothName+"</td>";
+						str+="<td>"+results[i].houseNo+"</td>";
+					str+="</tr>";
+				}
+			str+="</thead>";
+		str+="</table>";
+		temp = results;
+		str+="<span onclick=addVoter() class='btn btn-info'>Add Voter</span>";
+		$(".searchedVotersDiv").html(str);
+	}
+	
+	function addVoter(){
+		var str="";
+		$('input[name="searchedVoter"]:checked').each(function() {
+			
+			for(var i in temp){
+				if(temp[i].voterId==this.value){
+					
+					var occuSelId=0;
+					var eduSelId=0;
+					var familyRelsSel=0;
+					var socialPosSel=0;
+					if(temp[i].voterFamilyRelId!=null||temp[i].voterFamilyRelId!=""){
+						familyRelsSel=temp[i].voterFamilyRelId;
+					}
+					
+					if(temp[i].categoriesList.length>0){
+					for(var j in temp[i].categoriesList){
+						if(temp[i].categoriesList[j].categoryValuesId==7){
+							occuSelId=temp[i].categoriesList[j].categoryValueId;
+						}
+						if(temp[i].categoriesList[j].categoryValuesId==8){
+							eduSelId=temp[i].categoriesList[j].categoryValueId;
+						}
+						if(temp[i].categoriesList[j].categoryValuesId==9){
+							socialPosSel=temp[i].categoriesList[j].categoryValueId;
+						}
+						
+					}
+					}
+					
+				str+="<tr>";
+					
+					str+="<td><input type='checkbox' name='searchedVoter' value="+temp[i].voterId+"></td>";
+					str+="<td>"+temp[i].name+"</td>";
+					str+="<td>"+temp[i].age+"</td>";
+					str+="<td>"+temp[i].gaurdian+"</td>";
+					
+					str+="<td><select>";
+					for(var j in temp[i].familyRelsList){
+						if(familyRelsSel==temp[i].familyRelsList[j].id){
+							str+="<option value="+temp[i].familyRelsList[j].id+" selected>"+temp[i].familyRelsList[j].name+"</option>";
+						}else{
+							str+="<option value="+temp[i].familyRelsList[j].id+">"+temp[i].familyRelsList[j].name+"</option>";
+						}
+					}
+					str+="</select></td>";
+					
+					
+					str+="<td>"+temp[i].voterIdCardNo+"</td>";
+					
+					str+="<td><select>";
+						for(var j in temp[i].educationList){
+							if(eduSelId==temp[i].educationList[j].id){
+								str+="<option value="+temp[i].educationList[j].id+" selected>"+temp[i].educationList[j].name+"</option>";
+							}else{
+								str+="<option value="+temp[i].educationList[j].id+">"+temp[i].educationList[j].name+"</option>";
+							}
+						}
+						str+="</select></td>";
+					
+					str+="<td><select>";
+						for(var j in temp[i].occupationList){
+							if(occuSelId==temp[i].occupationList[j].id){
+								str+="<option value="+temp[i].occupationList[j].id+" selected>"+temp[i].occupationList[j].name+"</option>";
+							}else{
+								str+="<option value="+temp[i].occupationList[j].id+">"+temp[i].occupationList[j].name+"</option>";
+							}
+						}
+						str+="</select></td>";
+					
+					str+="<td><select>";
+						for(var j in temp[i].socialPositionList){
+							if(socialPosSel==temp[i].socialPositionList[j].id){
+								str+="<option value="+temp[i].socialPositionList[j].id+" selected>"+temp[i].socialPositionList[j].name+"</option>";
+							}else{
+								str+="<option value="+temp[i].socialPositionList[j].id+">"+temp[i].socialPositionList[j].name+"</option>";
+							}
+						}
+						str+="</select></td>";
+				
+				str+="</tr>";
+				}
+			}
+		});
+		$(".yui-dt-data").append(str);
+	}
+</script>
 </body>
 </html>
