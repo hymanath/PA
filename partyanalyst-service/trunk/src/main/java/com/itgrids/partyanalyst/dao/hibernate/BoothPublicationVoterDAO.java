@@ -6285,5 +6285,51 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("voterCardNo", voterCardNo);
 		return query.list();
 	}
+	
+	@Override
+	public BoothPublicationVoter getVoterBySerialNo(Long constituencyId,
+			String partNo, Long serialNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public List<Object[]> getlist1()
+	{
+		Query query = getSession().createQuery("select model.booth.boothId,model.voter.houseNo,count(model.voter.voterId) from BoothPublicationVoter model where " +
+				" model.booth.constituency.constituencyId = 282 and model.booth.publicationDate.publicationDateId = 10 group by model.booth.boothId, model.voter.houseNo " +
+				" order by model.booth.boothId,model.voter.houseNo");
+		return query.list();
+	}
+	
+	public List<Object[]> getlist2(Long boothId,String houseNo)
+	{
+		Query query = getSession().createQuery("select model.booth.partNo,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age from BoothPublicationVoter model " +
+				" where model.booth.boothId = :boothId and model.voter.houseNo = :houseNo order by model.voter.age desc");
+		query.setParameter("boothId",boothId);
+		query.setParameter("houseNo",houseNo);
+		query.setFirstResult(0);
+		query.setMaxResults(1);
+		return query.list();
+	}
+	
+	public List<Object[]> getlist3(Long boothId,String houseNo)
+	{
+		Query query = getSession().createQuery("select model.booth.partNo,model.voter.voterIDCardNo,model.voter.name,model.voter.gender,model.voter.age from BoothPublicationVoter model " +
+				" where model.booth.boothId = :boothId and model.voter.houseNo = :houseNo order by model.voter.age asc");
+		query.setParameter("boothId",boothId);
+		query.setParameter("houseNo",houseNo);
+		query.setFirstResult(0);
+		query.setMaxResults(1);
+		return query.list();
+	}
+	
+	public List<String> getVoterNamesOfAConstituency(Long constituencyId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("select model.voter.name from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and model.booth.publicationDate.publicationDateId = :publicationDateId");
+		
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 
 }
