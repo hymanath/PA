@@ -93,7 +93,7 @@ var populateId ;
 	<tr>
     <td>Constituency</td><td></td>
     <td>
-    <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate()"/> 
+    <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate('publicationDateList')"/> 
     </td>
    
     <td>Publication Date</td><td></td>
@@ -198,6 +198,28 @@ var populateId ;
 	
 	</div><br/>
 	 <!--mobile Data user Details end-->
+<div id="dataDumpforCms" class="widget">
+<h4>Create Sqllite Dump For CMS</h4>
+<div id="cmserrorDiv"></div>
+<table >
+<tr>
+ <td>select Constituency </td><td></td><td> <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="cmsconstituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate('cmspublicationDateList')"/></td>
+ </tr>
+
+<tr>
+<td>Select Publication</td><td></td><td> <select theme="simple" Class="selectWidth" name="publicationList" id="cmspublicationDateList"  /> </td></tr>
+ </table>
+ <div  style="margin-left: 150px;margin-top:10px;">
+	   <input type="button" class="btn btn-info" value="create Dump File" id="cmscreateFile"/>
+	    <img src="./images/icons/search.gif" id="cmsajaxImg" style="display:block"/>
+	   <a id="cmsdownloadLink" style="margin-left: 11px;display:inline-block;" href="${filePath}" class="btn btn-info" download>Download link</a>
+	
+
+	</div>
+</div>
+
+	 <!-- dataDumpforCms  end -->
+<br/>
   </div>
  <div class="widget blue">
   <form class="form-horizontal" style="margin-top:10px;">
@@ -371,6 +393,51 @@ dataarr.push(obj);
 }
 	});
 });
+$("#cmscreateFile").click(function(){
+
+$("#cmserrorDiv").html("");
+var flag = false;
+var errorDiv= document.getElementById("cmserrorDiv");
+	
+var constituencyId = $("#cmsconstituencyList").val();  
+
+var publicationId = $("#cmspublicationDateList").val();
+
+var str = '<font color="red">';
+
+ if(constituencyId == 0)
+	{
+	 str += 'Please Select Constituency<br>';
+	  flag = true;
+	 
+	}
+	 if(publicationId == 0)
+	{
+	 str += 'Please Select Publication<br>';
+	  flag = true;
+	 
+	}
+if(flag == true)
+	{
+cmserrorDiv.innerHTML =str;
+return;
+	}
+else
+	{
+cmserrorDiv.innerHTML = '';
+$("#cmsajaxImg").css("display","block");
+	var jsObj=
+		{
+		 constituencyId:constituencyId,
+		publicationId:publicationId,
+		 task:"createDataDumpForCMS"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "createDataDumpAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+}
+	});
+
 
 function callAjax(jsObj,url)
 {
@@ -406,7 +473,7 @@ function callAjax(jsObj,url)
 									buildSelectList(myResults);
 								}
 								else if(jsObj.task == "getPublicationDate")
-								buildPublicationDateList(myResults);
+								buildPublicationDateList(myResults,jsObj);
 								else if(jsObj.task == "populateMobileAppUserData")
 							     populateMobileAppUserData(myResults);
 						  
@@ -673,13 +740,14 @@ $("#errorMsgDiv2").html('user already exist').css("color","red");
 	}
 }
 
-function getPublicationDate()
+function getPublicationDate(selectbox)
 	{
 	var constituencyID =$("#constituencyList").val();
 	
 
 	var jsObj=
 	{
+		selectbox:selectbox,
 		selected:constituencyID,
 		task:"getPublicationDate"
 	};
@@ -691,12 +759,12 @@ function getPublicationDate()
 }
 
 var publicationDatesList;
-	function buildPublicationDateList(results)
+	function buildPublicationDateList(results,jsObj)
 	{
-
-	$('#publicationDateList').children().remove();
+	var selectbox = jsObj.selectbox;
+	$('#'+selectbox+'').children().remove();
 	publicationDatesList=results;
-	var selectedElmt=document.getElementById("publicationDateList");
+	var selectedElmt=document.getElementById(selectbox);
 	
 	var  publicationIdsArray = new Array();
 
@@ -720,8 +788,8 @@ var publicationDatesList;
 
 	var largest = Math.max.apply(Math, publicationIdsArray);
 
-	$('#publicationDateList').val(largest);
-	$('#publicationDateList').trigger("change");
+	$('#'+selectbox+'').val(largest);
+	$('#'+selectbox+'').trigger("change");
 
 }
 function getMobileAppUserData()
