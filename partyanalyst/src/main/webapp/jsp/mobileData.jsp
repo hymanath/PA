@@ -211,8 +211,8 @@ var populateId ;
  </table>
  <div  style="margin-left: 150px;margin-top:10px;">
 	   <input type="button" class="btn btn-info" value="create Dump File" id="cmscreateFile"/>
-	    <img src="./images/icons/search.gif" id="cmsajaxImg" style="display:block"/>
-	   <a id="cmsdownloadLink" style="margin-left: 11px;display:inline-block;" href="${filePath}" class="btn btn-info" download>Download link</a>
+	    <img src="./images/icons/search.gif" id="cmsajaxImg" style="display:none;"/>
+	   <a id="cmsdownloadLink" style="margin-left: 11px;display:none;" href="${filePath}" class="btn btn-info">Download link</a>
 	
 
 	</div>
@@ -451,6 +451,10 @@ function callAjax(jsObj,url)
 								{
 								 showStatus(myResults);	
 								}
+								if(jsObj.task == "createDataDumpForCMS")
+								{
+								 showStatusForCMS(myResults);	
+								}
 								else if(jsObj.task == "getUsers")
 								{
 								   clearOptionsListForSelectElmtId('userList');
@@ -507,6 +511,25 @@ function callAjax(jsObj,url)
 	  $("#errorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
 	  $("#downloadLink").attr('href',result.message);
 	  $("#downloadLink").css("display","block").css("display","inline-block");
+	  return;
+	}
+ }
+
+ function showStatusForCMS(result)
+ {
+	$("#cmserrorMsgDiv").html("");
+	$("#cmsajaxImg").css("display","none");
+	
+	if(result == null || result.resultCode == 1)
+	{
+	  $("#cmserrorMsgDiv").html("Error Occured! Try Again.").css("color","red");
+	  return;
+	}
+	else
+	{
+	  $("#cmserrorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
+	  $("#cmsdownloadLink").attr('href',result.message);
+	  $("#cmsdownloadLink").css("display","inline-block");
 	  return;
 	}
  }
