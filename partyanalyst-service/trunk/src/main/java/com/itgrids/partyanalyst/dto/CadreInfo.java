@@ -125,8 +125,30 @@ public class CadreInfo implements Serializable{
 	private String note;
 	private String memberShipNo;
 	private List<SelectOptionVO> designations = new ArrayList<SelectOptionVO>();
+	private String savingFrom;
+	private Long wardId;
+	private Long localElectionBodyId;
 	
 	
+	
+	public Long getWardId() {
+		return wardId;
+	}
+	public void setWardId(Long wardId) {
+		this.wardId = wardId;
+	}
+	public Long getLocalElectionBodyId() {
+		return localElectionBodyId;
+	}
+	public void setLocalElectionBodyId(Long localElectionBodyId) {
+		this.localElectionBodyId = localElectionBodyId;
+	}
+	public String getSavingFrom() {
+		return savingFrom;
+	}
+	public void setSavingFrom(String savingFrom) {
+		this.savingFrom = savingFrom;
+	}
 	public List<SelectOptionVO> getDesignations() {
 		return designations;
 	}
