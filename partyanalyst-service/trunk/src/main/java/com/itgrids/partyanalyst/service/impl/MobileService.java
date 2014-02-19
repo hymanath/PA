@@ -651,7 +651,111 @@ public List<SelectOptionVO> getConstituencyList()
 	  return selectOptionVOList;
 	}
   }
-
+	
+	public ResultStatus createDataDumpFileForAConstituency(RegistrationVO reVo)
+	{
+		LOG.info("Entered into createDataDumpFileForAConstituency() Method ");
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			
+			Long constituencyId = reVo.getConstituencyId();
+			Long publicationId = reVo.getPublicationDateId();
+			String constituencyName = constituencyDAO.get(constituencyId).getName();
+			String path = reVo.getPath();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String date = sdf.format(new Date());
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			File destDir = new File(path+pathSeperator+constituencyName+"_"+date+"_CMS");
+			destDir.mkdir();
+			
+			File f1 = new File(path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+"1.sql");
+			File f2 = new File(path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+"2.sql");
+			
+			BufferedWriter outPut1 = new BufferedWriter(new FileWriter(f1));
+			BufferedWriter outPut2 = new BufferedWriter(new FileWriter(f2));
+			
+			FileOutputStream fos = new FileOutputStream(path+pathSeperator+constituencyName+"_"+date+"_CMS.zip");
+			ZipOutputStream zos = new ZipOutputStream(fos);
+			
+			StringBuilder str = new StringBuilder();
+			
+			try{
+				List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(constituencyId,publicationId,1L);
+				
+				if(votersList != null && votersList.size() > 0)
+				{
+					StringBuilder strTemp = null;
+					for(Object[] params : votersList)
+					{
+						try{
+							strTemp = new StringBuilder();
+							strTemp.append("INSERT INTO voter(voter_id,house_no,name,relationship_type,relative_name,gender,age,voter_id_card_no) VALUES (");
+							strTemp.append(params[0].toString()+",'"+params[1].toString()+"','"+params[2].toString()+"','"+params[3].toString()+"','"+params[4].toString()+"','");
+							strTemp.append(params[5].toString()+"',"+params[6].toString()+",'"+params[7].toString()+"'");
+							strTemp.append(");\n");
+							str.append(strTemp);
+						}catch(Exception e)
+						{
+							LOG.error("Exception occured in inserting voters Data with voter ID - "+params[0]+" Exception - ",e);
+						}
+					}
+					str.append("\n");
+				}
+			}catch(Exception e){}
+			
+			LOG.info("voter table data Completed...");
+			outPut1.write(str.toString());
+			outPut1.close();
+			
+			str = new StringBuilder();
+			try{
+				List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(constituencyId, publicationId);
+				
+				if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
+				{
+					for(Object[] params : votersAndSerialNosList)
+					{
+						try{
+							str.append("INSERT INTO booth_publication_voter(booth_publication_voter_id, booth_id, voter_id, serial_no) VALUES (");
+							str.append(params[0].toString()+","+params[1].toString()+","+params[2].toString()+",");
+							str.append(params[3] != null ? params[3].toString() : "0");
+							str.append(");\n");
+						}catch(Exception e){
+							LOG.error("Error Occured in inserting records in BoothPublicationVoter - "+e);
+						}
+					}
+					str.append("\n");
+				}
+			}catch(Exception e){}
+			
+			LOG.info("booth punlication voter table data Completed...");
+			
+			outPut2.write(str.toString());
+			outPut2.close();
+			
+			try{
+				 for(File rf : destDir.listFiles())
+					 addToZipFile(rf.getAbsolutePath(), zos);
+				 zos.close();
+				 fos.close();
+			 }catch(Exception e)
+			 {
+				 LOG.error("Exception Occured in Zipping Files");
+			 }
+			
+			resultStatus.setMessage("/SQLITE_DB/"+constituencyName+"_"+date+"_CMS.zip");
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch(Exception e)
+		{
+			LOG.error("Exception occured in createDataDumpFileForAConstituency() Method, Exception is - ",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
+	
+	
   public ResultStatus createDataDumpFileForSelectedConstituency(Long constituencyId,String path,final RegistrationVO reVo)
   {
 	 LOG.info("Entered into createDataDumpFileForSelectedConstituency Method ");
