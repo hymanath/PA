@@ -203,11 +203,11 @@ var populateId ;
 <div id="cmserrorDiv"></div>
 <table >
 <tr>
- <td>select Constituency </td><td></td><td> <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="cmsconstituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate('cmspublicationDateList')"/></td>
+ <td>select Constituency </td><td></td><td> <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="cmsconstituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate1('cmspublicationDateList')" style="margin-top:10px;"/></td>
  </tr>
 
 <tr>
-<td>Select Publication</td><td></td><td> <select theme="simple" Class="selectWidth" name="publicationList" id="cmspublicationDateList"  /> </td></tr>
+<td>Select Publication</td><td></td><td> <select theme="simple" Class="selectWidth" name="publicationList" id="cmspublicationDateList"  style="margin-top:10px;"/> </td></tr>
  </table>
  <div  style="margin-left: 150px;margin-top:10px;">
 	   <input type="button" class="btn btn-info" value="create Dump File" id="cmscreateFile"/>
@@ -757,7 +757,23 @@ function getPublicationDate(selectbox)
 		callAjax(jsObj,url);	
 	
 }
+function getPublicationDate1(selectbox)
+	{
+	var constituencyID =$("#cmsconstituencyList").val();
+	
 
+	var jsObj=
+	{
+		selectbox:selectbox,
+		selected:constituencyID,
+		task:"getPublicationDate"
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "voterAnalysisAjaxAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+	
+}
 var publicationDatesList;
 	function buildPublicationDateList(results,jsObj)
 	{
