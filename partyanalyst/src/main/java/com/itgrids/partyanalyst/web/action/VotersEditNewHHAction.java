@@ -81,9 +81,18 @@ public class VotersEditNewHHAction  extends ActionSupport implements ServletRequ
     private Long casteCategoryId;
     private Long publicationDateId;
     private String houseNo;
+    private List<VoterHouseInfoVO> voterDetailsSearched;
     
     
 	
+	public List<VoterHouseInfoVO> getVoterDetailsSearched() {
+		return voterDetailsSearched;
+	}
+
+	public void setVoterDetailsSearched(List<VoterHouseInfoVO> voterDetailsSearched) {
+		this.voterDetailsSearched = voterDetailsSearched;
+	}
+
 	public Long getPublicationDateId() {
 		return publicationDateId;
 	}
@@ -1745,5 +1754,23 @@ public String saveLocality()
 		}	
 					    return Action.SUCCESS;
 		}
+	   
+	   public String getSearchedVotersForHouseHoldSurvey(){
+		   try {
+			jObj = new JSONObject(getTask());
+			String voterCardNo=jObj.getString("voterCardNo");
+			String voterName=jObj.getString("voterName");
+			Long boothId=jObj.getLong("boothId");
+			Long publicationDateId=jObj.getLong("publicationDateId");
+			
+			voterDetailsSearched=votersAnalysisService.getVotersOfSearchedCriteriaForHH(voterCardNo,voterName,boothId,publicationDateId);
+			
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		   return Action.SUCCESS;
+	   }
 
    }
