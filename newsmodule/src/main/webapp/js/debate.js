@@ -952,7 +952,7 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 		var debateId = oRecord.getData("id");
 
 		str +='<a class="btn btn-info" value="'+debateId+'"';
-		str +='onClick="editDebateReport('+debateId+')">view</a>';
+		str +='onClick="editDebateReport('+debateId+')">Edit</a>';
 		elLiner.innerHTML=str;
 					
 	};
