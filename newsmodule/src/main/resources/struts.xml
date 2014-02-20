@@ -6062,6 +6062,18 @@
 		   </result>
 		 </action>
 		 
+		 <action name="getMultipleAnalysedNewsCount" class="newsAnalysisAction" method="getAnalysedNewsCountForMultiParties">
+		   <result name="success" type="json">
+		 	<param name="root">countInfoList</param>
+		   </result>
+		 </action>
+		 
+		 <action name="prepareExcelForNewsCount" class="newsAnalysisAction" method="prepareExelForAnalysedNewsCount">
+		   <result name="success" type="json">
+		 	<param name="root">graphData</param>
+		   </result>
+		 </action>
+		 
 		 <action name="getAllNewsAction" class="newsAnalysisAction" method="viewAnalysedNews">
 		  <result name="success">/jsp/viewAllNews.jsp</result>
 		  <result name="error" type="redirect">loginPageAction.action</result>

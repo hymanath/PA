@@ -16,13 +16,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -39,6 +44,7 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IActivityReportDAO;
 import com.itgrids.partyanalyst.dao.IActivityReportFilesDAO;
+import com.itgrids.partyanalyst.dao.ICandidateDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyCategoryDAO;
 import com.itgrids.partyanalyst.dao.ICandidatePartyFileDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -62,6 +68,7 @@ import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsAnalysisService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
+import com.itgrids.partyanalyst.utils.IWebConstants;
 
 public class NewsAnalysisService implements INewsAnalysisService {
    
@@ -82,6 +89,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	private IUserDAO userDAO;
 	private IActivityReportFilesDAO activityReportFilesDAO;
 	private ICandidatePartyFileDAO candidatePartyFileDAO;
+	private ICandidateDAO candidateDAO;
 	
 	
 	
@@ -193,6 +201,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	public void setCandidateDetailsService(
 			ICandidateDetailsService candidateDetailsService) {
 		this.candidateDetailsService = candidateDetailsService;
+	}
+	
+	public ICandidateDAO getCandidateDAO() {
+		return candidateDAO;
+	}
+	public void setCandidateDAO(ICandidateDAO candidateDAO) {
+		this.candidateDAO = candidateDAO;
 	}
 	public NewsAnalysisVO analyseNewsWithSelectedParameters(AnalysisVO analysisVO){
 		if(LOG.isInfoEnabled()){
@@ -4227,10 +4242,14 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	//getting tdp own news count info
     	if(candidateId == null || candidateId.longValue() == 0){
     	  StringBuilder totalOwnNewsCountQuery = getPartyOwnNewsCountQuery(fromDate,toDate,partyId,locationLvl,locationIds,null,null,null);
+    	  StringBuilder totalOwnNegNewsCountQuery = getPartyOwnNegativeNewsCountQuery(fromDate,toDate,partyId,locationLvl,locationIds,null,null,null);
     	  Long totalOwnNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalOwnNewsCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+    	  Long totalNegOwnNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalOwnNegNewsCountQuery.toString(), fromDate, toDate, partyId, candidateId);
     	  NewsAnalysisVO ownNews = new NewsAnalysisVO();
     	  ownNews.setTotal(totalOwnNewsCount);
+    	  ownNews.setNegativeCount(totalNegOwnNewsCount);
     	  returnVo.setOwnNews(ownNews);
+    	  
     	}
     	
     	//getting media news on tdp count info
@@ -4328,6 +4347,21 @@ public class NewsAnalysisService implements INewsAnalysisService {
        	return query;
     }
     
+    public StringBuilder getPartyOwnNegativeNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,Long categoryId,Long sourceId,Long keywordId){
+    	StringBuilder query = new StringBuilder(); 
+    	query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf   " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId and " +
+    			" cpf.destinationBenefit.benefitId = 2 ");
+	    if(fromDate != null){
+		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	    }
+	    if(toDate != null){
+		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	    }
+	    query.append(""+addLocationString(locationLvl,locationIds)+"");
+       	return query;
+    }
     
     public StringBuilder getPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder();
@@ -4416,11 +4450,19 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	    }
     	}else if(type.equalsIgnoreCase("own")){
 	    	if(candidateId == null || candidateId.longValue() == 0){
-	    		StringBuilder totalOwnNewsCountQuery = getPartyOwnNewsCountQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId,keywordId);
-	    	  StringBuilder totalOwnNewsQuery = getPartyOwnNewsQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId,keywordId);
-	    	  Long totalOwnNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalOwnNewsCountQuery.toString(), fromDate, toDate, partyId, candidateId);
-	    	  List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
-    		  candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalOwnNewsCount);
+	    	 if(benifit.equalsIgnoreCase("total")){	
+	    	    StringBuilder totalOwnNewsCountQuery = getPartyOwnNewsCountQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId,keywordId);
+	    	    StringBuilder totalOwnNewsQuery = getPartyOwnNewsQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId,keywordId);
+	    	    Long totalOwnNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalOwnNewsCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+	    	    List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+    		    candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalOwnNewsCount);
+	    	 }else if(benifit.equalsIgnoreCase("negative")){
+	    		 StringBuilder totalOwnNegNewsCountQuery = getPartyOwnNegativeNewsCountQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId,keywordId);
+	    	     StringBuilder totalOwnNegNewsQuery = getPartyOwnNegativeNewsQuery(fromDate,toDate,partyId,locationLvl,locationIds,categoryId,sourceId,keywordId);
+	    	     Long totalOwnNewsCount = candidatePartyFileDAO.getNewsCountBySelectedCriteria(totalOwnNegNewsCountQuery.toString(), fromDate, toDate, partyId, candidateId);
+	    	     List<Object[]> files = candidatePartyFileDAO.getNewsByCriteria(totalOwnNegNewsQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+    		     candidateDetailsService.populateNewsDataToVO(files, fileIds, fileMap, totalOwnNewsCount); 
+	    	 }
 	    	}
     	}else if(type.equalsIgnoreCase("other")){
     		if(benifit.equalsIgnoreCase("total")){
@@ -4580,6 +4622,23 @@ public class NewsAnalysisService implements INewsAnalysisService {
        	return query;
     }
     
+    public StringBuilder getPartyOwnNegativeNewsQuery(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,Long categoryId,Long sourceId,Long keywordId){
+    	StringBuilder query = new StringBuilder(); 
+    	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
+				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    			query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId " +
+    					" and cpf.destinationBenefit.benefitId = 2 ");
+	    if(fromDate != null){
+		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
+	    }
+	    if(toDate != null){
+		   query.append(" and date(cpf.file.fileDate) <= :toDate ");
+	    }
+	    query.append(""+addLocationString(locationLvl,locationIds)+"");
+	    query.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
+       	return query;
+    }
     
     public StringBuilder getPostivNegivNewsInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder();
@@ -4652,13 +4711,23 @@ public class NewsAnalysisService implements INewsAnalysisService {
       	    }   				
     	}else if(type.equalsIgnoreCase("own")){
 	    	if(candidateId == null || candidateId.longValue() == 0){
-	    	  StringBuilder totalOwnNewsCategoryCountQuery = getPartyOwnNewsCountCategoryWise(fromDate,toDate,partyId,locationLvl,locationIds);
-	    	  StringBuilder totalOwnNewsSourceCountQuery = getPartyOwnNewsCountSourceWise(fromDate,toDate,partyId,locationLvl,locationIds);
-	    	  StringBuilder totalOwnNewsKeywordCountQuery = getPartyOwnNewsCountKeywordWise(fromDate,toDate,partyId,locationLvl,locationIds);
-	    	  List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsCategoryCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
-	    	  List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsSourceCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
-	    	  List<Object[]> keywordList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsKeywordCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
-	    	  getData(categoryList,sourceList,returnList,keywordList);
+	    	  if(benifit.equalsIgnoreCase("total")){
+		    	  StringBuilder totalOwnNewsCategoryCountQuery = getPartyOwnNewsCountCategoryWise(fromDate,toDate,partyId,locationLvl,locationIds);
+		    	  StringBuilder totalOwnNewsSourceCountQuery = getPartyOwnNewsCountSourceWise(fromDate,toDate,partyId,locationLvl,locationIds);
+		    	  StringBuilder totalOwnNewsKeywordCountQuery = getPartyOwnNewsCountKeywordWise(fromDate,toDate,partyId,locationLvl,locationIds);
+		    	  List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsCategoryCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		    	  List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsSourceCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		    	  List<Object[]> keywordList = candidatePartyFileDAO.getNewsByCriteria(totalOwnNewsKeywordCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		    	  getData(categoryList,sourceList,returnList,keywordList);
+	    	  }else if(benifit.equalsIgnoreCase("negative")){
+	    		  StringBuilder negOwnNewsCategoryCountQuery = getPartyOwnNegNewsCountCategoryWise(fromDate,toDate,partyId,locationLvl,locationIds,"category");
+		    	  StringBuilder negOwnNewsSourceCountQuery = getPartyOwnNegNewsCountCategoryWise(fromDate,toDate,partyId,locationLvl,locationIds,"source");
+		    	  StringBuilder negOwnNewsKeywordCountQuery = getPartyOwnNegNewsCountCategoryWise(fromDate,toDate,partyId,locationLvl,locationIds,"keyword");
+		    	  List<Object[]> categoryList = candidatePartyFileDAO.getNewsByCriteria(negOwnNewsCategoryCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		    	  List<Object[]> sourceList = candidatePartyFileDAO.getNewsByCriteria(negOwnNewsSourceCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		    	  List<Object[]> keywordList = candidatePartyFileDAO.getNewsByCriteria(negOwnNewsKeywordCountQuery.toString(),fromDate,toDate,partyId,candidateId,startIndex,maxIndex);
+		    	  getData(categoryList,sourceList,returnList,keywordList);
+	    	  }
 	    	}
     	}else if(type.equalsIgnoreCase("other")){
     		if(benifit.equalsIgnoreCase("total")){
@@ -4808,6 +4877,16 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	}
     	return newsCount;
     }
+    
+    public StringBuilder getPartyOwnNegNewsCountCategoryWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,String type){
+    	StringBuilder str = new StringBuilder(); 
+		 str.append(getAttributeSelectQuery(type));
+	   		str.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId = 2 ");
+	    str.append(addLocaionAndDateQuery(locationLvl,locationIds,fromDate,toDate));
+				 str.append(getAttributeGroupByQuery(type));
+       	return str;
+    }    
+    
     public StringBuilder getPartyOwnNewsCountCategoryWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder(); 
     	query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and  " +
@@ -5481,4 +5560,229 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	    	query.append(getAttributeGroupByQuery(type));
 	    	return query;
 	    }
+	  
+	  public TreeMap<Long,String> getPartyNames(String partyIds){
+		  TreeMap<Long,String> partyNamesMap = new TreeMap<Long,String>();
+		  List<Object[]> partyNamesList = partyDAO.getPartyNames(partyIds);
+		  for(Object[] partyName:partyNamesList){
+			  partyNamesMap.put((Long)partyName[0], partyName[1].toString());
+		  }
+		  return partyNamesMap;
+	  }
+	  
+      public SelectOptionVO generateExcelForAnalysis(Date startDate,Date endDate,String ids,String[] partyIds,Long locationLevelId,String locationLevelValue,Long candidatateId){
+    	  SelectOptionVO selectOptionVO = new SelectOptionVO();
+    	    selectOptionVO.setName("success");
+    	    TreeMap<Long,String> partyNamesMap = getPartyNames(ids);
+			Random randomNum = new Random();
+			String filename= "Reports"+"/Analysis"+"/"+"report"+randomNum.nextInt(10000000)+".xls";
+			selectOptionVO.setUrl(filename);
+			String FILE = IWebConstants.STATIC_CONTENT_FOLDER_URL+filename;
+			FileOutputStream fileOut = null;
+			try{
+			File file  = new File(FILE);
+			file.createNewFile();
+			HSSFWorkbook workbook=new HSSFWorkbook();
+			HSSFFont font= workbook.createFont();
+		    font.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+		    font.setItalic(false);
+		    font.setFontHeight((short)240);
+		    HSSFCellStyle style = workbook.createCellStyle();
+		    style.setFont(font);
+		    HSSFFont font1= workbook.createFont();
+		    font1.setBoldweight(org.apache.poi.ss.usermodel.Font.BOLDWEIGHT_BOLD);
+		    font1.setItalic(false);
+		    
+		    HSSFCellStyle style1 = workbook.createCellStyle();
+		    style1.setFont(font1);
+		    fileOut =  new FileOutputStream(FILE);
+    	  for(String id:partyIds){
+				Long partyId = Long.valueOf(id);
+				String name = null;
+				if(candidatateId == null || candidatateId.longValue() == 0)
+				 name = partyNamesMap.get(partyId);
+				else 
+				 name = candidateDAO.get(candidatateId).getLastname();
+				AnalysisBasicInfoVO countInfo = getAnalysedNewsCount(startDate,endDate,partyId,candidatateId,locationLevelId,locationLevelValue);
+				if(countInfo != null && ((countInfo.getTotalCount() != null && countInfo.getTotalCount().getTotal() > 0) || (countInfo.getOwnNews() != null && countInfo.getOwnNews().getTotal() > 0) || (countInfo.getOnOtherParty() != null && countInfo.getOnOtherParty().getTotal() > 0) || (countInfo.getOnMe() != null && countInfo.getOnMe().getTotal() > 0) || (countInfo.getInMedia() != null && countInfo.getInMedia().getTotal() > 0))){
+					HSSFSheet sheet =  workbook.createSheet(name); 
+					sheet.setColumnWidth(1, 4500);
+					sheet.setColumnWidth(2, 4500);
+					sheet.setColumnWidth(3, 4500);
+					sheet.setColumnWidth(4, 4500);
+					sheet.setColumnWidth(5, 4500);
+					sheet.setColumnWidth(6, 4500);
+					
+					int rowCount = 0;
+					HSSFRow rowhead=   sheet.createRow((short)rowCount);
+					Cell cell = rowhead.createCell(0);
+					cell.setCellValue("Total News Articles");
+					cell.setCellStyle(style);
+					rowCount=rowCount+2;
+					 rowhead=   sheet.createRow((short)rowCount);
+					 cell = rowhead.createCell(1);
+					 cell.setCellValue("Total News :"+" "+countInfo.getTotalCount().getTotal());
+					 cell.setCellStyle(style1);
+					 cell = rowhead.createCell(3);
+					 cell.setCellValue("Positive News :"+" "+countInfo.getTotalCount().getPositiveCount());
+					 cell.setCellStyle(style1);
+					//rowhead.createCell((short) 4).setCellValue(countInfo.getTotalCount().getPositiveCount());
+					cell = rowhead.createCell(5);
+					cell.setCellValue("Negative News:"+" "+countInfo.getTotalCount().getNegativeCount());
+					cell.setCellStyle(style1);
+					//rowhead.createCell((short) 7).setCellValue(countInfo.getTotalCount().getNegativeCount());
+					sheet.addMergedRegion(new CellRangeAddress(0,0,0,4));//rowFrom,rowTo,colFrom,colTo
+					sheet.addMergedRegion(new CellRangeAddress(2,2,1,2));
+					sheet.addMergedRegion(new CellRangeAddress(2,2,3,4));
+					sheet.addMergedRegion(new CellRangeAddress(2,2,5,6));
+					rowCount=rowCount+3;
+					if(countInfo.getOwnNews() != null && countInfo.getOwnNews().getTotal() > 0){
+						 rowhead=   sheet.createRow((short)rowCount);
+						 cell =  rowhead.createCell(0);
+						 cell.setCellValue(name+" Own News");
+						 cell.setCellStyle(style);
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,0,4));
+						rowCount=rowCount+2;
+						rowhead=   sheet.createRow((short)rowCount);
+						cell =  rowhead.createCell(1);
+						cell.setCellValue("Total News :"+" "+countInfo.getOwnNews().getTotal());
+						cell.setCellStyle(style1);
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,1,2));
+						cell =  rowhead.createCell(3);
+						cell.setCellValue("Negative News :"+" "+countInfo.getOwnNews().getNegativeCount());
+						cell.setCellStyle(style1);
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,3,4));
+						rowCount=rowCount+3;
+					}
+					if(countInfo.getOnOtherParty() != null && countInfo.getOnOtherParty().getTotal() > 0){
+						 rowhead=   sheet.createRow((short)rowCount);
+						 cell =  rowhead.createCell(0);
+						 cell.setCellValue(name+" Targeting On Other Parties");
+						 cell.setCellStyle(style);
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,0,4));
+						rowCount=rowCount+2;
+						rowhead=   sheet.createRow((short)rowCount);
+						cell =  rowhead.createCell(1);
+						cell.setCellValue("Total News :"+" "+countInfo.getOnOtherParty().getTotal());
+						cell.setCellStyle(style1);
+						cell =  rowhead.createCell(3);
+						cell.setCellValue("Positive News :"+" "+countInfo.getOnOtherParty().getPositiveCount());
+						cell.setCellStyle(style1);
+						cell =  rowhead.createCell(5);
+						cell.setCellValue("Negative News :"+" "+countInfo.getOnOtherParty().getNegativeCount());
+						cell.setCellStyle(style1);
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,1,2));
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,3,4));
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,5,6));
+						rowCount=rowCount+2;
+						rowhead=   sheet.createRow((short)rowCount);
+						cell = rowhead.createCell(1);
+						cell.setCellValue("Other Parties");
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(2);
+						cell.setCellValue("Total News Count");
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(3);
+						cell.setCellValue("Positive Count");
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(4);
+						cell.setCellValue("Negative Count");
+						cell.setCellStyle(style1);
+						rowCount=rowCount+1;
+						for(NewsAnalysisVO vo:countInfo.getOnOtherParty().getSubList()){
+							rowhead=   sheet.createRow((short)rowCount);
+							rowhead.createCell(1).setCellValue(vo.getName());
+							rowhead.createCell(2).setCellValue(vo.getTotal());
+							rowhead.createCell(3).setCellValue(vo.getPositiveCount());
+							rowhead.createCell(4).setCellValue(vo.getNegativeCount());
+							rowCount=rowCount+1;
+						}
+						rowCount=rowCount+2;
+					}
+					if(countInfo.getOnMe() != null && countInfo.getOnMe().getTotal() > 0){
+						 rowhead=   sheet.createRow((short)rowCount);
+						 cell =  rowhead.createCell(0);
+						 cell.setCellValue("Other Parties Targeting On "+name);
+						 cell.setCellStyle(style);
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,0,4));
+						rowCount=rowCount+2;
+						rowhead=   sheet.createRow((short)rowCount);
+						cell = rowhead.createCell(1);
+						cell.setCellValue("Total News :"+" "+countInfo.getOnMe().getTotal());
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(3);
+						cell.setCellValue("Positive News :"+" "+countInfo.getOnMe().getPositiveCount());
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(5);
+						cell.setCellValue("Negative News :"+" "+countInfo.getOnMe().getNegativeCount());
+						cell.setCellStyle(style1);
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,1,2));
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,3,4));
+						sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,5,6));
+						rowCount=rowCount+2;
+						rowhead=   sheet.createRow((short)rowCount);
+						cell = rowhead.createCell(1);
+						cell.setCellValue("Other Parties");
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(2);
+						cell.setCellValue("Total News Count");
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(3);
+						cell.setCellValue("Positive Count");
+						cell.setCellStyle(style1);
+						cell = rowhead.createCell(4);
+						cell.setCellValue("Negative Count");
+						cell.setCellStyle(style1);
+						rowCount=rowCount+1;
+						for(NewsAnalysisVO vo:countInfo.getOnMe().getSubList()){
+							rowhead=   sheet.createRow((short)rowCount);
+							rowhead.createCell(1).setCellValue(vo.getName());
+							rowhead.createCell(2).setCellValue(vo.getTotal());
+							rowhead.createCell(3).setCellValue(vo.getPositiveCount());
+							rowhead.createCell(4).setCellValue(vo.getNegativeCount());
+							rowCount=rowCount+1;
+						}
+						rowCount=rowCount+2;
+					}
+				   if(countInfo.getInMedia() != null && countInfo.getInMedia().getTotal() > 0){
+					 rowhead=   sheet.createRow((short)rowCount);
+					 cell =  rowhead.createCell(0);
+					 cell.setCellValue("News On "+name+" In Media ");
+					 cell.setCellStyle(style);
+					 rowCount=rowCount+2;
+					 rowhead=   sheet.createRow((short)rowCount);
+					 cell = rowhead.createCell(1);
+					 cell.setCellValue("Total News :"+" "+countInfo.getInMedia().getTotal());
+					 cell.setCellStyle(style1);
+					 cell = rowhead.createCell(3);
+					 cell.setCellValue("Positive News :"+" "+countInfo.getInMedia().getPositiveCount());
+					 cell.setCellStyle(style1);
+					 cell = rowhead.createCell(5);
+					 cell.setCellValue("Negative News :"+" "+countInfo.getInMedia().getNegativeCount());
+					 cell.setCellStyle(style1);
+					 //rowhead.createCell((short) 7).setCellValue(countInfo.getTotalCount().getNegativeCount());
+					 sheet.addMergedRegion(new CellRangeAddress(rowCount-2,rowCount-2,0,4));//rowFrom,rowTo,colFrom,colTo
+					 sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,1,2));
+					 sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,3,4));
+					 sheet.addMergedRegion(new CellRangeAddress(rowCount,rowCount,5,6));
+					 
+				   }
+				}
+			}
+    	     workbook.write(fileOut);
+			 fileOut.close();
+			}catch(Exception e){
+			  selectOptionVO.setName("fail");
+			  LOG.error("Exception rised in generateExcelForAnalysis ",e);
+			}finally{
+				if(fileOut != null){
+					 try{
+					  fileOut.close();
+					 }catch(Exception e1){
+							
+					 }
+				}
+			}
+		  return selectOptionVO;
+	  }
 }

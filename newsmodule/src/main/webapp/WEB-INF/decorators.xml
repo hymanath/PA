@@ -94,7 +94,8 @@
 		<pattern>/selectedNewsDetailsAction.action*</pattern>
 		<pattern>/createReportAction*</pattern>
 		<pattern>/createActivitiesReportAction*</pattern>
-		
+		<pattern>/getAllNewsAction*</pattern>
+		<pattern>/getAllAttrNewsAction*</pattern>
 	</excludes>  
 	
 	<decorator name="main" page="main.jsp">
@@ -256,8 +257,6 @@
 		<pattern>/politicalFeedBackAction*</pattern>
 		<pattern>/debateReportAction*</pattern>
 		<pattern>/debetSavingAction*</pattern>
-		<pattern>/getAllNewsAction*</pattern>
-		<pattern>/getAllAttrNewsAction*</pattern>
     	 </decorator>
 
 </decorators>

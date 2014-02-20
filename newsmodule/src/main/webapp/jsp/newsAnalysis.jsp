@@ -36,7 +36,7 @@
 	.ui-multiselect {
     padding: 2px 0 2px 4px;
     text-align: left;
-    width: 250px !important;
+    width: 293px !important;
 	height:33px !important;
 	}
 	
@@ -63,7 +63,58 @@
     font-size: 18px;
 	margin-left:3px;
 }
+.accordion-heading{
+  font-weight: bold;
+}
+.ui-multiselect-filter{
+ width:100%;
+}
+ul.as-selections li {
+    float: left;
+     margin: 2px 6px 3px 0;
+}
 
+ul.as-selections1 li {
+    float: left;
+     margin: 2px 6px 3px 0;
+}
+.as-selection-item{
+    background-color: #FFFFFF;
+    border-color: #C0D9E9 #ACC3EC #ACC3EC;
+    border-image: none;
+    border-radius: 12px;
+    border-right: 1px solid #ACC3EC;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 1px #E4EDF2;
+    color: #2B3840;
+    font-family: "Lucida Grande",arial,sans-serif;
+    font-size: 13px;
+    padding: 2px 7px 2px 10px;
+}
+ li {list-style-type:none} 
+ .as-selection-item a{
+   color: #878787;
+ }
+ .partyCounts{
+    display: inline-block;
+    width: 30%;
+ }
+ .partyCountImg{
+       margin-left: 3%;
+ }
+ .evenColor{
+   background-color:#E9E9E9;
+ }
+ .oddColor{
+  background-color:#f9f9f9;
+ }
+.accordion-inner{
+ background-color: rgba(255, 255, 0, 0.1);
+}
+.as-close{
+  margin-left: 3px;
+}
 	</style>
     <script type="text/javascript">
 	var booleanVal = false;
@@ -131,24 +182,20 @@
 					
 					<!------Who Div---->
 					<div class="row-fluid label label-success-50">
+					<div class="row-fluid">
 						<!--<div class="span1 btn-block btn btn-large">
 							<h4 class=" text-center ">Who</h4>					
 						</div>-->
-						<div class="span2">
+						<div class="span4">
 							<label>Select Party<span class="requiredFont">*</span></label>
-							<select class="input-block-level" id="partyList"onchange="getCandidatesOfSelectedParty(this.value,'candidateId');">	
+							<select class="input-block-level" id="partyList" onchange="getCandidatesOfSelectedParty(this.value,'candidateId');">	
 								<option value=0>Select Party</option>
 							</select>							
 						</div>
-						<div class="span3">
-							<label>Select Candidate</label>
-							<select class="input-block-level" id="candidateId">	
-								<option value=0>Select Candidate</option>
-							</select>						
-						</div>
-						<div class="span3">
+						
+						<div class="span4">
 							<label>Select News Level</label>
-							<select id="locationLevelId" class="input-block-level" onChange="getRespectedLocationValues(this.value);">
+							<select id="locationLevelId" class="input-block-level" onChange="clearAllSelVals();getRespectedLocationValues(this.value);">
 							<option value="0">Select News Level</option>
 							<option value="1">District</option>
 							<option value="2">PARLIAMENT CONSTITUENCY</option>
@@ -156,7 +203,7 @@
 							</select>
 												
 						</div>
-						<div class="span3">
+						<div class="span4">
 							
 							<div  class="LocationLevelId">
 							<label>Select Location</label>
@@ -175,6 +222,7 @@
 							</div>
 												
 						</div>
+						
 						<!--<div class="span3">
 							<label>Benifits</label>
 							<select class="input-block-level" id="benifitsList" disabled="true">	
@@ -186,8 +234,22 @@
 							 <input type="checkbox" id="analyseCandidateSource" disabled="true"/>				
 						</div>-->
 					</div><!------Who Div END---->
-					
-					
+					<div class="row-fluid">
+					<div class="span4">
+							<label>Select Candidate</label>
+							<select class="input-block-level" id="candidateId">	
+								<option value=0>Select Candidate</option>
+							</select>						
+					</div></div>
+					<div class="row-fluid">
+					<div class="span12">
+							Hint :  Please Select Single Party To Analyse Candidate Wise						
+					</div></div>
+					</div>
+					<div id="partiesSelShowDiv">			
+					</div>
+					<div id="locationsSelShowDiv">
+					</div>
 					<!------Whom Div---->
 					<!--<div class="row-fluid label label-success-50  m_top10">
 						<div class="span1 btn-block btn btn-large">
@@ -261,8 +323,10 @@
 
 					<!--<div style="height: 25px; margin-top: 10px;"><button class="btn btn-success" type="submit" id="advanceView" style="float:right;">Show Advance Search Options</button></div>-->
 					<!-------Submit Button------>
+					
+					
 					<div class="form-actions text-center">
-						<button class="btn btn-success" type="submit" onClick="getAnalysisDataNew();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
+						<button class="btn btn-success" type="submit" onClick="getAnalysisDataNewFroMultiple();">Submit</button><img id="submitDataImg" style="display: none;margin-left:10px;" src="images/search.jpg">
 						<div id="errormessageDiv" style="display:none;color:red;margin-top:5px;">Please Select Atleast One Option To Analyse</div>
 					</div><!-------Submit Button END------>
 					<!--<div id="partyGraphId" style="min-width: 310px; height: 400px; margin: 0 auto"></div>-->
@@ -293,7 +357,7 @@
     <!-- <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script> -->
 <script type="text/javascript" src="js/jquery.google.api/jquery-ui1.9.0.js"></script>
 	
-	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselectforanalysis.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 
 	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
@@ -320,7 +384,7 @@
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
 	<script type="text/javascript" src="js/highcharts.js"></script>
-    
+    <script type="text/javascript" src="js/blockui.js"></script>
 	<!-- Skin CSS files resize.css must load before layout.css --> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css" /> 
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css" />
@@ -332,7 +396,12 @@
 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css" />     
 
 	<!-- YUI Dependency files (End) -->
-	
+	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityDateOperations.js"> </script>
 	<SCRIPT type="text/javascript" src="js/newsAnalysis/newsAnalysis.js"></SCRIPT>
+	<!--<SCRIPT type="text/javascript">
+	$(document).ready(function(){
+	   $("#myResult1").html('<div class="accordion" id="accordion2"><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">Collapsible Group Item #1</a></div><div id="collapseOne" class="accordion-body collapse in"><div class="accordion-inner">Anim pariatur cliche...</div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">Collapsible Group Item #2</a></div><div id="collapseTwo" class="accordion-body collapse"><div class="accordion-inner">Anim pariatur cliche...</div></div></div></div>');
+	});
+	</SCRIPT>-->
 </body>
 </html>
