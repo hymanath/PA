@@ -18,5 +18,6 @@ public interface IHouseHoldSurveyReportService {
 	public String saveQuestOptnsOfHH(Long boothId,String houseNo,List<HHSurveyVO> questOptsList,Long houseHoldsId);
 	public Long saveHouseHoldsVotersDetails(HouseHoldVotersVO votersDetails);
 
-	
+	public String saveMainQuestionDetails(String qtn);
+	public String saveSubQuestionDetails(Long id,String subQtn);
 }
