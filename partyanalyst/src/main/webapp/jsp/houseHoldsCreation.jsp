@@ -12,6 +12,9 @@
 textarea{
 	background-color:#fff;
 }
+#contenttable{
+	min-height:200px;
+}
 
 </style>
 
@@ -23,20 +26,39 @@ $(document).ready(function(){
 	$('#mainTypeId').change();
 });
 </script>
- 
- <div class="container" id="createQstnDiv">
-  
 
+  <div class="container" id="btnDiv">
+        
+		<div class="span" id="mainQtnDiv"><input type="button" class="btn btn-primary" style="margin:70px 50px" onClick="createMainQuestions();" value="Create Main Question"></input></div>
+
+		<div class="span" id="subQtnDiv"><input type="button" class="btn btn-primary" style="margin:70px 50px" onClick="createSubQuestions();" value="Create Sub Questions" /></div>
+
+		<div class="span" id="qtnDiv"><input type="button" class="btn btn-primary" style="margin:70px 50px" onClick="createQuestions();" value="Create Questions"></input></div>
+     
+ </div>
+<div id="mainQtnDivDialog" style="display:none">
+<div id="errorQtnDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
+<div id="statusDiv2"></div>
+    <div id="mainQtnDivId" style="margin:15px">Create MainQuestion :<font class="mandatory">*</font><input id="mainQtnId" type="text" maxlength="100"></div>
+	<input type="button" class="btn" value="Create" style="margin-left:160px" onClick="validateMainQtn();"></input>
+</div>
+
+<div id="subQtnDivDialog" style="display:none">
+<div id="errorSubQtnDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
+<div id="statusDiv2"></div>
+     <div id="subQtnDivId" style="margin:15px 70px;">Select Main Type:
+	 <s:select theme="simple" name="mainTypeId1" id="mainTypeId1" list="mainSurveyTypes" listKey="id" listValue="name"/></div>
+    <div style="margin-left:36px;">Create SubQuestion :<font class="mandatory">*</font><input id="subQtnId" type="text" maxlength="100"></div>
+	<input type="button" class="btn" value="Create" style="margin-left:160px" onClick="validateSubQtn();"></input>
+</div>
+
+ <div class="container" id="createQstnDiv" style="display:none">
    <div id="surveyQuestion">
-
      <div id="errorDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
 	 <div id="statusDiv"></div>
-
      <div class="well">
      Select Main Type:
-	 <s:select theme="simple" name="mainTypeId" id="mainTypeId" list="mainSurveyTypes" listKey="id" listValue="name"/>     
-
-	 
+	 <s:select theme="simple" name="mainTypeId" id="mainTypeId" list="mainSurveyTypes" listKey="id" listValue="name"/>     	 
 	     Select Sub Type:
 	   <select id="subTypeId">			
 	  </select>
@@ -88,20 +110,13 @@ $(document).ready(function(){
 
  </div>
 
- <script>
- $('#createQstnDiv').dialog({
-	 title:'Enter Question Details',
-	 width:800
- });
- </script>
- <script>
+<script>
  function getSubSurveyTypes(mainTypeId)
  {
 	  $.ajaxSetup({
 	   jsonp: null,
 	   jsonpCallback: null
 	});
-
 	    $.ajax({
 		  type:'POST',
 		  url: 'getSubSurveyTypes.action',
@@ -118,8 +133,7 @@ $(document).ready(function(){
  function buildSubTypeDetails(result)
  {
     $('#subTypeId').find('option').remove();
-
-$('#subTypeId').append('<option value="0">Select</option>');
+	$('#subTypeId').append('<option value="0">Select</option>');
 	 $.each(result,function(index,value){
        $('#subTypeId').append('<option value="'+value.id+'">'+value.name+'</option>');
 	 });
@@ -136,7 +150,6 @@ $('#subTypeId').append('<option value="0">Select</option>');
 
  function saveQuestionDetails()
  {
-
 	 $('#optnErrMsg').html('');
 
 	 var errorStr = '';
@@ -155,16 +168,11 @@ if($('#optionTypeId').val() != 3)
 	 }
 
 	questionDtls.commentInd   = $('#commentId').is(':checked')?"true":"false";
-
-
 	questionDtls.surveyTypeId = $('#mainTypeId').val();
 	questionDtls.surveySubTypeId = $('#subTypeId').val();
 	questionDtls.question = $('#questionId').val();
 	questionDtls.options = $('#options').val();
 	questionDtls.optnTypeId = $('#optionTypeId').val();
-
-
-
 
 	  $.ajaxSetup({
 	   jsonp: null,
@@ -183,6 +191,75 @@ if($('#optionTypeId').val() != 3)
 		  }
 	});
  }
+
+ function createQuestions(){
+    $('#createQstnDiv').dialog({
+	 title:'Enter Question Details',
+	 width:800
+   });
+ }
+
+  function createSubQuestions(){
+    $('#subQtnDivDialog').dialog({
+	 title:'Enter Question Details',
+	 width:500,
+		 height:300
+   });
+ }
+ 
+ function createMainQuestions(){
+    $('#mainQtnDivDialog').dialog({
+	 title:'Enter Question Details',
+	 width:500
+   });
+ }
+ 
+ function validateMainQtn()
+ {
+	 var mainQtnType = $('#mainQtnId').val().trim();
+	if(mainQtnType == "")
+	 {
+       $("#errorQtnDiv").html("Please enter the Question");
+	   return;
+	 }
+
+	   $.ajax({
+		  type:'POST',
+		  url: 'saveMainQuestion.action',
+		  dataType: 'json',
+		  data: {mainQtnType:mainQtnType},			 
+		  success: function(data){  
+              $('#statusMsg1').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
+		  },
+		  error:function() { 
+		  }
+ }
+
+ function validateSubQtn()
+ {
+    var mainQtnTypeId = $('#mainTypeId1 option:selected').val();
+	var subQtnType = $('#subQtnId').val().trim();
+    if(subQtnType == ""){
+       $("#errorSubQtnDiv").html("Please enter the SubQuestion");
+	   return;
+	}
+	if(mainQtnType1 == 0){
+		$("#errorSubQtnDiv").html("Please enter the MainQuestion");
+		return;
+	}
+
+	  $.ajax({
+		  type:'POST',
+		  url: 'saveSubQuestion.action',
+		  dataType: 'json',
+		  data: {mainQtnTypeId:mainQtnTypeId,subQtnType:subQtnType},			 
+		  success: function(data){  
+              $('#statusMsg2').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
+		  },
+		  error:function() { 
+		  }
+ }
+
  </script>
 </body>
 </html>
