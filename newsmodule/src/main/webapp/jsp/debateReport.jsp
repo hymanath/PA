@@ -110,7 +110,7 @@ function generateDebateReport(result)
 		str += '<th style="width: 234px;">Total</th>';
 		for(var i  in result.participantsList )
 		{
-			str += '<td>'+result.participantsList[i].id+'</td>';
+			str += '<td>'+result.participantsList[i].perc+'</td>';
 		}
 		str += '</tr>';
 		str += '<tr>';

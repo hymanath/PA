@@ -644,16 +644,16 @@ public class DebateService implements IDebateService{
 					List<SelectOptionVO> scopesList = charactesMap.get(candidateId);
 					//List<SelectOptionVO> scopesList = chatesVO.getSelectOptionsList();
 					List<SelectOptionVO> scopeList = new ArrayList<SelectOptionVO>();
-					Long total = 0l;
+					Double total = 0.00;
 					for (SelectOptionVO scopesVOVO : scopesList)
 					{
 						SelectOptionVO scopesVO = new SelectOptionVO();
 						scopesVO.setName(scopesVOVO.getName());
 						scopesVO.setPerc(scopesVOVO.getPerc());
-						total = total + (Double.valueOf(scopesVOVO.getPerc()).longValue());
+						total = total + (Double.valueOf(scopesVOVO.getPerc()));
 						scopeList.add(scopesVO);
 					}
-					participantVO.setId(total);
+					participantVO.setPerc(total);
 					List<SelectOptionVO> roleList = rolesMap.get(candidateId);
 					if(roleList != null && roleList.size() > 0)
 					{
