@@ -834,12 +834,10 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		return houseHoldId;
 	}
 	
-	public String saveMainQuestionDetails(final String qtn)
+	public String saveMainQuestionDetails(String qtn)
 	{
 		log.debug("Entered into the saveMainQuestionDetails method");
 		try {
-			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-				public void doInTransactionWithoutResult(TransactionStatus status) {
 			
 					HHSurveySubType mainQuestion = new HHSurveySubType();
 					
@@ -848,7 +846,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 					
 					mainQuestion = hhSurveySubTypeDAO.save(mainQuestion);
 					
-				}});
+				
 		} catch (Exception e) {
 			log.error("Exception raised in the saveMainQuestionDetails method");
 			e.printStackTrace();
