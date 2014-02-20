@@ -33,6 +33,10 @@ public class AssemblyPoliticalFeedback implements Serializable{
 	private String impNews;
 	private String cmPoliticalFeedback;
 	private String otherPoliticalBack;
+	private String impSource;
+	private String cmFeedBackSource;
+	private String otherFeedBackSource;
+	
 	
 	
 	 @Id
@@ -91,6 +95,31 @@ public class AssemblyPoliticalFeedback implements Serializable{
 	public void setOtherPoliticalBack(String otherPoliticalBack) {
 		this.otherPoliticalBack = otherPoliticalBack;
 	}
+	
+	@Column(name="imp_news_source")
+	public String getImpSource() {
+		return impSource;
+	}
+	public void setImpSource(String impSource) {
+		this.impSource = impSource;
+	}
+	
+	@Column(name="cm_feedback_source")
+	public String getCmFeedBackSource() {
+		return cmFeedBackSource;
+	}
+	public void setCmFeedBackSource(String cmFeedBackSource) {
+		this.cmFeedBackSource = cmFeedBackSource;
+	}
+	
+	@Column(name="other_feedback_source")
+	public String getOtherFeedBackSource() {
+		return otherFeedBackSource;
+	}
+	public void setOtherFeedBackSource(String otherFeedBackSource) {
+		this.otherFeedBackSource = otherFeedBackSource;
+	}
+	
 	
 	
 }

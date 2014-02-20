@@ -24,6 +24,14 @@ public class PoliticalFeedBackVO implements Serializable{
 	private Date updatedDate;
 	private String isDeleted;
 	private Long userId;
+	private String source;
+	private String impSource;
+	private String cmSource;
+	private String otherSource;
+	private List<SelectOptionVO> actionItemsList;
+	private String type;
+	private Long id;
+	private Long constituencyNo;
 	
 	private List<PoliticalFeedBackVO> politicalFeedBackVOList;
 
@@ -156,6 +164,70 @@ public class PoliticalFeedBackVO implements Serializable{
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getImpSource() {
+		return impSource;
+	}
+
+	public void setImpSource(String impSource) {
+		this.impSource = impSource;
+	}
+
+	public String getCmSource() {
+		return cmSource;
+	}
+
+	public void setCmSource(String cmSource) {
+		this.cmSource = cmSource;
+	}
+
+	public String getOtherSource() {
+		return otherSource;
+	}
+
+	public void setOtherSource(String otherSource) {
+		this.otherSource = otherSource;
+	}
+
+	public List<SelectOptionVO> getActionItemsList() {
+		return actionItemsList;
+	}
+
+	public void setActionItemsList(List<SelectOptionVO> actionItemsList) {
+		this.actionItemsList = actionItemsList;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getConstituencyNo() {
+		return constituencyNo;
+	}
+
+	public void setConstituencyNo(Long constituencyNo) {
+		this.constituencyNo = constituencyNo;
 	}
 	
 	

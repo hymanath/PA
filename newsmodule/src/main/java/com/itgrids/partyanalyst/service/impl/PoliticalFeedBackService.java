@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,22 +7,16 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Set;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.util.CellRangeAddress;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AssemblyPoliticalFeedbackDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ParlimentActionItemsDAO;
@@ -40,7 +33,6 @@ import com.itgrids.partyanalyst.model.ParlimentPoliticalFeedback;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IPoliticalFeedBackService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
-import com.itgrids.partyanalyst.utils.IWebConstants;
 
 public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 
@@ -52,6 +44,7 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 	private UserDAO                            			userDAO;
 	private TransactionTemplate 			            transactionTemplate;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+	private IDelimitationConstituencyDAO				delimitationConstituencyDAO;
 	
 	public void setParlimentPoliticalFeedbackDAO(
 			ParlimentPoliticalFeedbackDAO parlimentPoliticalFeedbackDAO) {
@@ -77,10 +70,15 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 	}
 	
 	
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
 	public void setDelimitationConstituencyAssemblyDetailsDAO(
 			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
 		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
+	
 	/**
 	 * This service is used for telugu font saving as well as telugu font retriving
 	 * @param input
@@ -112,53 +110,61 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 		try {
 			LOG.debug("Entered into savePoliticalFeedBack method in PoliticalFeedBackService Class");
 			 transactionTemplate.execute(new TransactionCallback() {
-				  public Object doInTransaction(TransactionStatus status) {
-					 
-				  if(politicalFeedBackVO != null)
-				  {
-					  DateUtilService dateUtilService = new DateUtilService();
-					  SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-					  ParlimentPoliticalFeedback parlimentPoliticalFeedback = new ParlimentPoliticalFeedback();
-					  parlimentPoliticalFeedback.setSummary(politicalFeedBackVO.getSummary() != null ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBackVO.getSummary())) : null);
-					  try {
-						parlimentPoliticalFeedback.setCreatedDate(sdf.parse(politicalFeedBackVO.getCreatedDate()));
-					  } catch (ParseException e) {}
-					  parlimentPoliticalFeedback.setInsertedDate(dateUtilService.getCurrentDateAndTime());
-					  parlimentPoliticalFeedback.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-					  parlimentPoliticalFeedback.setIsDeleted("N");
-					  Constituency  constituency = constituencyDAO.get(politicalFeedBackVO.getParlimentId());
-					  parlimentPoliticalFeedback.setParlimentConstituency(constituency);
-					  User user = userDAO.get(politicalFeedBackVO.getUserId());
-					  parlimentPoliticalFeedback.setUser(user);
-					  
-					  parlimentPoliticalFeedback = parlimentPoliticalFeedbackDAO.save(parlimentPoliticalFeedback);
-					  if(parlimentPoliticalFeedback != null)
-					  {
-						  for (String actionItem : politicalFeedBackVO.getActionItems())
-						  {
-							  ParlimentActionItems parlimentActionItems = new ParlimentActionItems();
-							  parlimentActionItems.setActionItem(actionItem.trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(actionItem)):null);
-							  parlimentActionItems.setParlimentPoliticalFeedback(parlimentPoliticalFeedback);
-							  parlimentActionItemsDAO.save(parlimentActionItems);
-						  }
+				    public Object doInTransaction(TransactionStatus status) {
+					if(politicalFeedBackVO.getType().equalsIgnoreCase("edit"))
+					{
+						int count = parlimentPoliticalFeedbackDAO.deleteRecord(politicalFeedBackVO.getId());
+						System.out.println(count);
+					}
+					if(politicalFeedBackVO != null)
+					{
+						  DateUtilService dateUtilService = new DateUtilService();
+						  SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+						  ParlimentPoliticalFeedback parlimentPoliticalFeedback = new ParlimentPoliticalFeedback();
+						  parlimentPoliticalFeedback.setSummary(politicalFeedBackVO.getSummary() != null ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBackVO.getSummary())) : null);
+						  try {
+							parlimentPoliticalFeedback.setCreatedDate(sdf.parse(politicalFeedBackVO.getCreatedDate()));
+						  } catch (ParseException e) {}
+						  parlimentPoliticalFeedback.setInsertedDate(dateUtilService.getCurrentDateAndTime());
+						  parlimentPoliticalFeedback.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
+						  parlimentPoliticalFeedback.setIsDeleted("N");
+						  Constituency  constituency = constituencyDAO.get(politicalFeedBackVO.getParlimentId());
+						  parlimentPoliticalFeedback.setParlimentConstituency(constituency);
+						  User user = userDAO.get(politicalFeedBackVO.getUserId());
+						  parlimentPoliticalFeedback.setUser(user);
 						  
-						  for (PoliticalFeedBackVO politicalFeedBack : politicalFeedBackVO.getPoliticalFeedBackVOList())
+						  parlimentPoliticalFeedback = parlimentPoliticalFeedbackDAO.save(parlimentPoliticalFeedback);
+						  if(parlimentPoliticalFeedback != null)
 						  {
-							  AssemblyPoliticalFeedback assemblyPoliticalFeedback = new AssemblyPoliticalFeedback();
-							  assemblyPoliticalFeedback.setParlimentPoliticalFeedback(parlimentPoliticalFeedback);
-							  assemblyPoliticalFeedback.setCmPoliticalFeedback(politicalFeedBack.getCmPoliticalFeedBack().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getCmPoliticalFeedBack())):null);
-							  assemblyPoliticalFeedback.setImpNews(politicalFeedBack.getImpNews().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getImpNews())):null);
-							  assemblyPoliticalFeedback.setOtherPoliticalBack(politicalFeedBack.getOtherPoliticalFeedBack().trim().length() > 0 ?escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getOtherPoliticalFeedBack())):null);
-							  Constituency assemblyConstituency = constituencyDAO.get(politicalFeedBack.getConstituencyId());
-							  assemblyPoliticalFeedback.setConstituency(assemblyConstituency);
-							  assemblyPoliticalFeedbackDAO.save(assemblyPoliticalFeedback);
+														  
+							  for(SelectOptionVO selectOptionVO : politicalFeedBackVO.getActionItemsList())
+							  {
+								  ParlimentActionItems parlimentActionItems = new ParlimentActionItems();
+								  parlimentActionItems.setActionItem(selectOptionVO.getName().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName().trim())):null);
+								  parlimentActionItems.setSource(selectOptionVO.getLocation().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getLocation().trim())):null);
+								  parlimentActionItems.setParlimentPoliticalFeedback(parlimentPoliticalFeedback);
+								  parlimentActionItemsDAO.save(parlimentActionItems);
+							  }
+							  for (PoliticalFeedBackVO politicalFeedBack : politicalFeedBackVO.getPoliticalFeedBackVOList())
+							  {
+								  AssemblyPoliticalFeedback assemblyPoliticalFeedback = new AssemblyPoliticalFeedback();
+								  assemblyPoliticalFeedback.setParlimentPoliticalFeedback(parlimentPoliticalFeedback);
+								  assemblyPoliticalFeedback.setCmPoliticalFeedback(politicalFeedBack.getCmPoliticalFeedBack().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getCmPoliticalFeedBack())):null);
+								  assemblyPoliticalFeedback.setImpNews(politicalFeedBack.getImpNews().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getImpNews())):null);
+								  assemblyPoliticalFeedback.setOtherPoliticalBack(politicalFeedBack.getOtherPoliticalFeedBack().trim().length() > 0 ?escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getOtherPoliticalFeedBack())):null);
+								  Constituency assemblyConstituency = constituencyDAO.get(politicalFeedBack.getConstituencyId());
+								  assemblyPoliticalFeedback.setConstituency(assemblyConstituency);
+								  assemblyPoliticalFeedback.setImpSource(politicalFeedBack.getImpSource().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getImpSource().trim())):null);
+								  assemblyPoliticalFeedback.setCmFeedBackSource(politicalFeedBack.getCmPoliticalFeedBack().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getCmPoliticalFeedBack().trim())):null);
+								  assemblyPoliticalFeedback.setOtherFeedBackSource(politicalFeedBack.getOtherPoliticalFeedBack().trim().length() > 0 ? escapeUnicode(StringEscapeUtils.escapeJava(politicalFeedBack.getOtherPoliticalFeedBack().trim())):null);
+								  assemblyPoliticalFeedbackDAO.save(assemblyPoliticalFeedback);
+								  
+							  }
 							  
+							  
+							  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+							  resultStatus.setMessage("success");
 						  }
-						  
-						  
-						  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
-						  resultStatus.setMessage("success");
-					  }
 					  
 				  }
 				  return resultStatus; 
@@ -223,18 +229,40 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 		List<SelectOptionVO> returnList = null;
 		try {
 			LOG.debug("Entered into getAssemblyListByPCId method in PoliticalFeedBackService Class");
-			
+			Map<Long,String> constiMap = null;
+			Map<Long,Long> constNosMap = null;
 			List<Object[]> constiList = delimitationConstituencyAssemblyDetailsDAO.findAssembliesConstituencies(pcId);
 			if(constiList != null && constiList.size() > 0)
 			{
-				returnList = new ArrayList<SelectOptionVO>();
-				for (Object[] objects : constiList) {
-					SelectOptionVO selectOptionVO = new SelectOptionVO();
-					selectOptionVO.setId((Long)objects[0]);
-					selectOptionVO.setName(objects[1].toString());
-					returnList.add(selectOptionVO);
-					
+				
+				constiMap = new HashMap<Long, String>();
+				
+				for (Object[] objects : constiList)
+				{
+					constiMap.put((Long)objects[0], objects[1].toString());
 				}
+				List<Object[]> constituencyNos = delimitationConstituencyDAO.findConstituencyNosByConstituencyId(new ArrayList<Long>(constiMap.keySet()));
+				if(constituencyNos != null && constituencyNos.size() > 0)
+				{
+					constNosMap = new HashMap<Long, Long>();
+					for (Object[] parms : constituencyNos) {
+						constNosMap.put((Long)parms[0], (Long)parms[1]);
+					}
+				}
+				
+				Set<Long> constiIds = constiMap.keySet();
+				if(constiIds != null && constiIds.size() > 0)
+				{
+					returnList = new ArrayList<SelectOptionVO>();
+					for (Long consituencyId : constiIds) {
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId(consituencyId);
+						selectOptionVO.setName(constiMap.get(consituencyId));
+						selectOptionVO.setCount(constNosMap.get(consituencyId));
+						returnList.add(selectOptionVO);
+					}
+				}
+				
 			}
 
 			
@@ -258,12 +286,15 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			Map<Long,PoliticalFeedBackVO> parlimentMap = null;
 			Map<Long,List<PoliticalFeedBackVO>> assemblyMap = null;
-			Map<Long,List<String>> pcActionItemsMap = null;
-			List<Long> pfbIds = null;
+			Map<Long,List<SelectOptionVO>> pcActionItemsMap = null;
+			Map<Long,Long> constNosMap = null;
+ 			List<Long> pfbIds = null;
+			List<Long> constiIds = null;
 			List<Object[]> parlimetfeedBacks = parlimentPoliticalFeedbackDAO.getParlimentPoliticalFeedBacks(sdf.parse(date), pcId);
 			if(parlimetfeedBacks != null && parlimetfeedBacks.size() > 0)
 			{
 				pfbIds = new ArrayList<Long>();
+				constiIds = new ArrayList<Long>();
 				parlimentMap = new HashMap<Long, PoliticalFeedBackVO>();
 				for (Object[] parms : parlimetfeedBacks) {
 					PoliticalFeedBackVO pcFeedBackVO = parlimentMap.get((Long)parms[0]);
@@ -273,6 +304,7 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 						 parlimentMap.put((Long)parms[0], pcFeedBackVO);
 						 pfbIds.add((Long)parms[0]);
 					}
+					constiIds.add((Long)parms[1]);
 					pcFeedBackVO.setParlimentId((Long)parms[1]);
 					pcFeedBackVO.setParlimentName(parms[2] != null ? parms[2].toString():null);
 					pcFeedBackVO.setSummary(parms[3] != null ? StringEscapeUtils.unescapeJava(parms[3].toString()) : null);
@@ -284,52 +316,42 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 				if(assemblyeiseList != null && assemblyeiseList.size() > 0)
 				{
 					assemblyMap = new HashMap<Long, List<PoliticalFeedBackVO>>();
-	 				for (Object[] parms : assemblyeiseList)
-	 				{
-	 					List<PoliticalFeedBackVO> acFeedBackList = assemblyMap.get((Long)parms[0]);
-	 					
-	 					if(acFeedBackList == null)
-	 					{
-	 						acFeedBackList = new ArrayList<PoliticalFeedBackVO>();
-	 						assemblyMap.put((Long)parms[0], acFeedBackList);
-	 					}
-	 					PoliticalFeedBackVO acFeedBackVO = new PoliticalFeedBackVO();
-	 					acFeedBackVO.setConstituencyId(parms[1] != null ? (Long)parms[1] : null);
-	 					acFeedBackVO.setAssemblyName(parms[2] != null ? parms[2].toString() : null);
-	 					acFeedBackVO.setImpNews(parms[3] != null ? StringEscapeUtils.unescapeJava(parms[3].toString()) : null);
-	 					acFeedBackVO.setCmPoliticalFeedBack(parms[4] != null ? StringEscapeUtils.unescapeJava(parms[4].toString()) : null);
-	 					acFeedBackVO.setOtherPoliticalFeedBack(parms[5] != null ? StringEscapeUtils.unescapeJava(parms[5].toString()) : null);
-						acFeedBackList.add(acFeedBackVO);
+					for (Object[] parms : assemblyeiseList) {
+						constiIds.add((Long)parms[1]);
 					}
+					
+					List<Object[]> constituencyNos = delimitationConstituencyDAO.findConstituencyNosByConstituencyId(constiIds);
+					if(constituencyNos != null && constituencyNos.size() > 0)
+					{
+						constNosMap = new HashMap<Long, Long>();
+						for (Object[] parms : constituencyNos) {
+							constNosMap.put((Long)parms[0], (Long)parms[1]);
+						}
+					}
+					fillAssemblyPoliticalFeedBackForm(assemblyeiseList,assemblyMap,constNosMap);
 
 				}
 				
 				List<Object[]> actionItesList = parlimentActionItemsDAO.getParlimentActionItems(pfbIds);
 				if(actionItesList != null && actionItesList.size() > 0)
 				{
-					pcActionItemsMap = new HashMap<Long, List<String>>();
-					for (Object[] parms : actionItesList)
-					{
-						List<String> actionItems = pcActionItemsMap.get((Long)parms[0]);
-						if(actionItems == null)
-						{
-							actionItems = new ArrayList<String>();
-							pcActionItemsMap.put((Long)parms[0], actionItems);
-						}
-						actionItems.add(parms[1] != null ? StringEscapeUtils.unescapeJava(parms[1].toString()) : null);
-					}
+					pcActionItemsMap = new HashMap<Long, List<SelectOptionVO>>();
+					fillParlimetActionItemsForm(actionItesList,pcActionItemsMap);
 				}
 			}
+			
 			
 			if(pfbIds != null && pfbIds.size() > 0)
 			{
 				returnList = new ArrayList<PoliticalFeedBackVO>();
 				for (Long pfbId : pfbIds) {
 					PoliticalFeedBackVO pcFeedBackVO = parlimentMap.get(pfbId);
+					pcFeedBackVO.setConstituencyNo(constNosMap != null ? constNosMap.get(pcFeedBackVO.getParlimentId()) : null);
+					pcFeedBackVO.setId(pfbId);
 					if(pcFeedBackVO != null)
 					{
 						pcFeedBackVO.setPoliticalFeedBackVOList(assemblyMap.get(pfbId));
-						pcFeedBackVO.setActionItems(pcActionItemsMap.get(pfbId));
+						pcFeedBackVO.setActionItemsList(pcActionItemsMap.get(pfbId));
 						returnList.add(pcFeedBackVO);
 					}
 					
@@ -346,6 +368,131 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 	
 	
 	
+	public PoliticalFeedBackVO getSelectedPoliticalFeedBackDetails(Long pfbId)
+	{
+		PoliticalFeedBackVO politicalFeedBackVO = new PoliticalFeedBackVO();
+		try {
+			LOG.debug("Entered into getSelectedPoliticalFeedBackDetails method in PoliticalFeedBackService Class");
+			List<Long> pfbIds = new ArrayList<Long>();
+			pfbIds.add(pfbId);
+			Map<Long,PoliticalFeedBackVO> parlimentMap = null;
+			Map<Long,List<PoliticalFeedBackVO>> assemblyMap = null;
+			Map<Long,List<SelectOptionVO>> pcActionItemsMap = null;
+			Map<Long,Long> constNosMap = null;
+			List<Long> constiIds = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			List<Object[]> parlimetfeedBacks = parlimentPoliticalFeedbackDAO.getParlimentPoliticalFeedBacksById(pfbId);
+			if(parlimetfeedBacks != null && parlimetfeedBacks.size() > 0)
+			{
+				constiIds = new ArrayList<Long>();
+				parlimentMap = new HashMap<Long, PoliticalFeedBackVO>();
+				for (Object[] parms : parlimetfeedBacks) {
+					PoliticalFeedBackVO pcFeedBackVO = parlimentMap.get((Long)parms[0]);
+					if(pcFeedBackVO == null)
+					{
+						 pcFeedBackVO = new PoliticalFeedBackVO();
+						 parlimentMap.put((Long)parms[0], pcFeedBackVO);
+					}
+					constiIds.add((Long)parms[1]);
+					pcFeedBackVO.setParlimentId((Long)parms[1]);
+					pcFeedBackVO.setParlimentName(parms[2] != null ? parms[2].toString():null);
+					pcFeedBackVO.setSummary(parms[3] != null ? StringEscapeUtils.unescapeJava(parms[3].toString()) : null);
+					pcFeedBackVO.setCreatedDate(parms[4] != null ?sdf.format(parseFormat.parse(parms[4].toString()))  : null);
+				}
+				List<Object[]> assemblyeiseList = assemblyPoliticalFeedbackDAO.getAssemblyPoliticalFeedBacks(pfbIds);
+				if(assemblyeiseList != null && assemblyeiseList.size() > 0)
+				{
+					assemblyMap = new HashMap<Long, List<PoliticalFeedBackVO>>();
+					assemblyMap = new HashMap<Long, List<PoliticalFeedBackVO>>();
+					for (Object[] parms : assemblyeiseList) {
+						constiIds.add((Long)parms[1]);
+					}
+					
+					List<Object[]> constituencyNos = delimitationConstituencyDAO.findConstituencyNosByConstituencyId(constiIds);
+					if(constituencyNos != null && constituencyNos.size() > 0)
+					{
+						constNosMap = new HashMap<Long, Long>();
+						for (Object[] parms : constituencyNos) {
+							constNosMap.put((Long)parms[0], (Long)parms[1]);
+						}
+					}
+					fillAssemblyPoliticalFeedBackForm(assemblyeiseList,assemblyMap,constNosMap);
+
+				}
+				
+				List<Object[]> actionItesList = parlimentActionItemsDAO.getParlimentActionItems(pfbIds);
+				if(actionItesList != null && actionItesList.size() > 0)
+				{
+					pcActionItemsMap = new HashMap<Long, List<SelectOptionVO>>();
+					fillParlimetActionItemsForm(actionItesList,pcActionItemsMap);
+				}
+				
+			}
+			
+			if(pfbIds != null && pfbIds.size() > 0)
+			{
+				
+				for (Long id : pfbIds) {
+					 politicalFeedBackVO = parlimentMap.get(id);
+					 politicalFeedBackVO.setId(pfbId);
+					if(politicalFeedBackVO != null)
+					{
+						politicalFeedBackVO.setPoliticalFeedBackVOList(assemblyMap.get(id));
+						politicalFeedBackVO.setActionItemsList(pcActionItemsMap.get(id));
+					}
+					
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getSelectedPoliticalFeedBackDetails method in PoliticalFeedBackService Class",e);
+		}
+		return politicalFeedBackVO;
+	}
+	public void fillAssemblyPoliticalFeedBackForm(List<Object[]> assemblyeiseList , Map<Long,List<PoliticalFeedBackVO>> assemblyMap,Map<Long,Long> constNosMap)
+	{
+		for (Object[] parms : assemblyeiseList)
+			{
+				List<PoliticalFeedBackVO> acFeedBackList = assemblyMap.get((Long)parms[0]);
+				
+				if(acFeedBackList == null)
+				{
+					acFeedBackList = new ArrayList<PoliticalFeedBackVO>();
+					assemblyMap.put((Long)parms[0], acFeedBackList);
+				}
+				PoliticalFeedBackVO acFeedBackVO = new PoliticalFeedBackVO();
+				acFeedBackVO.setConstituencyId(parms[1] != null ? (Long)parms[1] : null);
+				if(constNosMap != null && constNosMap.size() > 0)
+				{
+					acFeedBackVO.setConstituencyNo(constNosMap.get(acFeedBackVO.getConstituencyId()));
+				}
+				acFeedBackVO.setAssemblyName(parms[2] != null ? parms[2].toString() : null);
+				acFeedBackVO.setImpNews(parms[3] != null ? StringEscapeUtils.unescapeJava(parms[3].toString()) : null);
+				acFeedBackVO.setCmPoliticalFeedBack(parms[4] != null ? StringEscapeUtils.unescapeJava(parms[4].toString()) : null);
+				acFeedBackVO.setOtherPoliticalFeedBack(parms[5] != null ? StringEscapeUtils.unescapeJava(parms[5].toString()) : null);
+				acFeedBackVO.setImpSource(parms[6] != null ? StringEscapeUtils.unescapeJava(parms[6].toString()) : null);
+				acFeedBackVO.setCmSource(parms[7] != null ? StringEscapeUtils.unescapeJava(parms[7].toString()) : null);
+				acFeedBackVO.setOtherSource(parms[8] != null ? StringEscapeUtils.unescapeJava(parms[8].toString()) : null);
+			    acFeedBackList.add(acFeedBackVO);
+		}
+	}
+	
+	public void fillParlimetActionItemsForm(List<Object[]> actionItesList,Map<Long,List<SelectOptionVO>> pcActionItemsMap)
+	{
+		for (Object[] parms : actionItesList)
+		{
+			SelectOptionVO selectOptionVO = new SelectOptionVO();
+			List<SelectOptionVO> actionItems = pcActionItemsMap.get((Long)parms[0]);
+			if(actionItems == null)
+			{
+				actionItems = new ArrayList<SelectOptionVO>();
+				pcActionItemsMap.put((Long)parms[0], actionItems);
+			}
+			selectOptionVO.setName(parms[1] != null ? StringEscapeUtils.unescapeJava(parms[1].toString()) : null);
+			selectOptionVO.setLocation(parms[2] != null ? StringEscapeUtils.unescapeJava(parms[2].toString()) : null);
+			actionItems.add(selectOptionVO);
+		}
+	}
 	public List<SelectOptionVO> getAllParlimentConstituencys()
 	{
 		List<SelectOptionVO> returnList = null;
@@ -367,7 +514,27 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 		}
 		return returnList;
 	}
-	 public String buildExcelForPFB(List<PoliticalFeedBackVO> returnList){
+	
+	public String deletedPoliticalFeedBadk(Long id)
+	{
+		String status = null;
+		try {
+			LOG.debug("Entered into deletedPoliticalFeedBadk method in PoliticalFeedBackService Class");
+			int result = parlimentPoliticalFeedbackDAO.deletePoliticalFeedBack(id);
+			if(result == 0)
+			{
+				status = "FAIL";
+			}
+			else
+			{
+				status = "SUCCESS";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in deletedPoliticalFeedBadk method in PoliticalFeedBackService Class",e);
+		}
+		return status;
+	}
+	/* public String buildExcelForPFB(List<PoliticalFeedBackVO> returnList){
 			LOG.info("entered into buildExcelForSmsPole()in meetingService class.");
 			String filename =null;
 			try {
@@ -500,5 +667,5 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 			    }
 				return path;
 			}
-	
+	*/
 }

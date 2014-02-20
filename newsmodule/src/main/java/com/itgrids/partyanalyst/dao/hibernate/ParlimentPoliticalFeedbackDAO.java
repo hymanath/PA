@@ -27,4 +27,33 @@ public class ParlimentPoliticalFeedbackDAO extends GenericDaoHibernate<Parliment
 		query.setParameter("pcId", pcId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getParlimentPoliticalFeedBacksById(Long pcId)
+	{
+		Query query = getSession().createQuery("select distinct model.parlimentPoliticalFeedbackId , model.parlimentConstituency.constituencyId ,model.parlimentConstituency.name " +
+				"  , model.summary ,model.createdDate from ParlimentPoliticalFeedback model where " +
+				"  model.parlimentPoliticalFeedbackId = :pcId and " +
+				"  model.isDeleted = 'N'");
+		query.setParameter("pcId", pcId);
+		return query.list();
+	}
+	
+	public int deleteRecord(Long id)
+	{
+		Query query = getSession().createQuery(" delete from ParlimentPoliticalFeedback model where " +
+				" model.parlimentPoliticalFeedbackId = :id");
+		query.setParameter("id", id);
+		int resutlt = query.executeUpdate();
+		return resutlt;
+	}
+	
+	public int deletePoliticalFeedBack(Long id)
+	{
+		Query query = getSession().createQuery(" update  ParlimentPoliticalFeedback model set isDeleted = 'Y' " +
+				" where model.parlimentPoliticalFeedbackId = :id");
+		query.setParameter("id", id);
+		int resutlt = query.executeUpdate();
+		return resutlt;
+	}
 }

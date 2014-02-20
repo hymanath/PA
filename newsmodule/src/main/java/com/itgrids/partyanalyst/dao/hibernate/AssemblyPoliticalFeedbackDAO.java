@@ -19,7 +19,8 @@ public class AssemblyPoliticalFeedbackDAO extends GenericDaoHibernate<AssemblyPo
 	{
 		Query query = getSession().createQuery("select model.parlimentPoliticalFeedback.parlimentPoliticalFeedbackId ," +
 				" model.constituency.constituencyId ,model.constituency.name ,model.impNews ," +
-				" model.cmPoliticalFeedback , model.otherPoliticalBack   from AssemblyPoliticalFeedback model where " +
+				" model.cmPoliticalFeedback , model.otherPoliticalBack ,model.impSource , model.cmFeedBackSource ," +
+				" model.otherFeedBackSource  from AssemblyPoliticalFeedback model where " +
 				"   model.parlimentPoliticalFeedback.parlimentPoliticalFeedbackId in (:pfbIds)");
 		query.setParameterList("pfbIds", pfbIds);
 

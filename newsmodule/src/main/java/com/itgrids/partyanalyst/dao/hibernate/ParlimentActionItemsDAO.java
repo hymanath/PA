@@ -18,7 +18,7 @@ public class ParlimentActionItemsDAO extends GenericDaoHibernate<ParlimentAction
 	public List<Object[]> getParlimentActionItems(List<Long> pfbIds)
 	{
 		Query query = getSession().createQuery("select model.parlimentPoliticalFeedback.parlimentPoliticalFeedbackId , " +
-				" model.actionItem from ParlimentActionItems model where model.parlimentPoliticalFeedback.parlimentPoliticalFeedbackId in (:pfbIds)");
+				" model.actionItem ,model.source from ParlimentActionItems model where model.parlimentPoliticalFeedback.parlimentPoliticalFeedbackId in (:pfbIds)");
 		query.setParameterList("pfbIds", pfbIds);
 		return query.list();
 	}

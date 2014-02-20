@@ -18,4 +18,8 @@ public interface IPoliticalFeedBackService {
 	public List<PoliticalFeedBackVO> getSelectedPolitialFeedBackDetails(String date,Long pcId);
 	
 	public List<SelectOptionVO> getAllParlimentConstituencys();
+	
+	public PoliticalFeedBackVO getSelectedPoliticalFeedBackDetails(Long pfbId);
+	
+	public String deletedPoliticalFeedBadk(Long id);
 }

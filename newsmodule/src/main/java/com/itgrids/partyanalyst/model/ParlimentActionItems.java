@@ -31,7 +31,7 @@ public class ParlimentActionItems implements Serializable{
 	private Long parlimentActionItemsId;
 	private ParlimentPoliticalFeedback parlimentPoliticalFeedback;
 	private String actionItem;
-	
+	private String source;
 	
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,6 +61,14 @@ public class ParlimentActionItems implements Serializable{
 	}
 	public void setActionItem(String actionItem) {
 		this.actionItem = actionItem;
+	}
+	
+	@Column(name="source")
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
 	}
 	
 	

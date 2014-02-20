@@ -73,7 +73,7 @@ public class File extends BaseModel implements java.io.Serializable {
 	private User user;
 	private User updatedBy;
     private UserAddress userAddress;
-    private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
+    
     private Set<PartyFileKeyword> partyFileKeywords = new HashSet<PartyFileKeyword>(0);
 	
     private Font font;
@@ -361,15 +361,7 @@ public class File extends BaseModel implements java.io.Serializable {
 		this.fileKeywords = fileKeywords;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "file")
-	public Set<CandidateFileKeyword> getCandidateFileKeywords() {
-		return candidateFileKeywords;
-	}
-
-	public void setCandidateFileKeywords(
-			Set<CandidateFileKeyword> candidateFileKeywords) {
-		this.candidateFileKeywords = candidateFileKeywords;
-	}
+	
 
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY, mappedBy = "file")
 	public Set<PartyFileKeyword> getPartyFileKeywords() {

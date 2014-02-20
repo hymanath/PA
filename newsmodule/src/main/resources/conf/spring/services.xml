@@ -1728,6 +1728,7 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="boothDAO" ref="boothDAO" />		
    </bean>
+   
    <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
        <property name="partyDAO" ref="partyDAO" />
        <property name="transactionTemplate" ref="transactionTemplate" />
@@ -1750,6 +1751,7 @@
      	<property name="constituencyDAO" ref="constituencyDAO" />
      	<property name="userDAO" ref="userDAO" />
      	<property name="transactionTemplate" ref="transactionTemplate" />
+     	<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
      	<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
    </bean>
    

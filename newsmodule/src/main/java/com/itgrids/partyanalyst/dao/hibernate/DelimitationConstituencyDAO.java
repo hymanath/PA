@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -208,6 +209,15 @@ IDelimitationConstituencyDAO {
 			String areaType) {
 		return getHibernateTemplate().find("select model.constituency.constituencyId, model.constituency.name, model.constituency.areaType from DelimitationConstituency model where " +
 				"model.constituency.district.districtId =? and model.year =(Select max(model.year) from DelimitationConstituency model) order by model.constituency.name ", districtId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> findConstituencyNosByConstituencyId(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select model.constituency.constituencyId , model.constituencyNO from DelimitationConstituency model where  " +
+				"  model.constituency.constituencyId in (:constituencyIds) and model.year = 2009");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
 	}
 	
 }
