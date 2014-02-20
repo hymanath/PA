@@ -62,8 +62,17 @@ public class InfluencingPeopleBeanVO extends ResultStatus{
     private Long mobileUserId;
     private Long casteStateId;
     private String uniqueId;
+    private Long partyId;
 	
 	
+	public Long getPartyId() {
+		return partyId;
+	}
+
+	public void setPartyId(Long partyId) {
+		this.partyId = partyId;
+	}
+
 	public String getUniqueId() {
 		return uniqueId;
 	}
