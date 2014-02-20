@@ -19,6 +19,7 @@ public class ParticipantVO implements Serializable{
 	private String summery;
 	private String prtiRoles;
 	private String expRoles;
+	private Double perc;
 	
 	public Long getId() {
 		return id;
@@ -80,6 +81,12 @@ public class ParticipantVO implements Serializable{
 	}
 	public void setExpRoles(String expRoles) {
 		this.expRoles = expRoles;
+	}
+	public Double getPerc() {
+		return perc;
+	}
+	public void setPerc(Double perc) {
+		this.perc = perc;
 	}
 	
 	
