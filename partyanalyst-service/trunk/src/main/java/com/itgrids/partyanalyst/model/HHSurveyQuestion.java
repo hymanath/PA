@@ -29,7 +29,7 @@ import org.hibernate.annotations.NotFoundAction;
 public class HHSurveyQuestion extends BaseModel implements Serializable {
 	
 	  private Long surveyQuestionId;
-	  //private Long surveyId;
+	  private Long surveyId;
 	  private HHSurvey hhSurvey;
 	  //private Long optionTypeId;
 	  private HHOptionType hhoptionType;
@@ -54,7 +54,7 @@ public class HHSurveyQuestion extends BaseModel implements Serializable {
 	}
 	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinColumn(name="survey_id")
+	@JoinColumn(name="survey_id",insertable = false ,updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
 	public HHSurvey getHhSurvey() {
@@ -146,6 +146,13 @@ public class HHSurveyQuestion extends BaseModel implements Serializable {
 		this.remarks = remarks;
 	}
 	
+	@Column(name="survey_id")
+	public Long getSurveyId() {
+		return surveyId;
+	}
+	public void setSurveyId(Long surveyId) {
+		this.surveyId = surveyId;
+	}
 	
 	
 	  
