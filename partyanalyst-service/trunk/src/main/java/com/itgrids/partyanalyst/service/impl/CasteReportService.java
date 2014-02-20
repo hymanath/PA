@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -54,7 +55,16 @@ public class CasteReportService implements ICasteReportService{
 	private IConstituencyDAO constituencyDAO;
 	private IUserDAO userDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO ;
+	private ILocalElectionBodyDAO localElectionBodyDAO;
 	
+	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
+		return localElectionBodyDAO;
+	}
+
+	public void setLocalElectionBodyDAO(ILocalElectionBodyDAO localElectionBodyDAO) {
+		this.localElectionBodyDAO = localElectionBodyDAO;
+	}
+
 	public IPanchayatHamletDAO getPanchayatHamletDAO() {
 		return panchayatHamletDAO;
 	}
@@ -133,6 +143,8 @@ public class CasteReportService implements ICasteReportService{
 			{
 			Map<Long,Map<String,CastVO>>  resultMap = new HashMap<Long, Map<String,CastVO>>();
 			List<Object[]> casteList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
+			
+			
 			List<Long> locationIds = new ArrayList<Long>();
 			List<Long> casteStateIds = new ArrayList<Long>();
 			 if(casteList != null && casteList.size() > 0)
@@ -145,7 +157,24 @@ public class CasteReportService implements ICasteReportService{
 						 casteStateIds.add((Long)params[2]);
 				 }
 			}
+			 List<Long> lclIds = new ArrayList<Long>();
+				List<Long> lclCasteIds = new ArrayList<Long>();
+				List<Object[]> localbody = null;
+			 if(type.equalsIgnoreCase(IConstants.MANDAL))
+				{
+				 localbody = userVoterDetailsDAO.getLocalbodyCasteReport(constituencyId,publicationId,userId);
+				
+				for(Object[] lclbody : localbody)
+				{
+					 if(!lclIds.contains((Long)lclbody[3]) && !locationIds.contains((Long)lclbody[3]))
+						 lclIds.add((Long)lclbody[3]);
+					 if(!casteStateIds.contains((Long)lclbody[2]) && !lclCasteIds.contains((Long)lclbody[2]))
+						 lclCasteIds.add((Long)lclbody[2]);
+				}
 			
+				}
+			if(lclCasteIds != null && lclCasteIds.size() > 0)
+			 casteStateIds.addAll(lclCasteIds);
 			 for(Long casteId : casteStateIds)
 			 {
 				 CastVO resultVo = new CastVO(); 
@@ -158,22 +187,47 @@ public class CasteReportService implements ICasteReportService{
 					 CastVO locationVo = new CastVO();
 					 locationVo.setLocationId(locationId);
 					 if(type.equalsIgnoreCase(IConstants.MANDAL))
-						 locationVo.setLocationName(tehsilDAO.getTehsilNameById(locationId));
+					 locationVo.setLocationName(tehsilDAO.getTehsilNameById(locationId));
 					 else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 						 locationVo.setLocationName(panchayatDAO.getPanchayatNameById(locationId));
 					     locationVo.setCastCount(0l);
 					     locationsList.add(locationVo);	
+				 }
+				 if(type.equalsIgnoreCase(IConstants.MANDAL))
+				 {
+					 if(lclIds != null && lclIds.size() > 0)
+					 {
+						 for(Long lclId : lclIds)
+						 {
+							 CastVO lclbodyVo = new CastVO();
+							 lclbodyVo.setLocationId(lclId);
+						     lclbodyVo.setLocationName(localElectionBodyDAO.getLocalElectionBodyName(lclId) +" Muncipality");
+							 lclbodyVo.setCastCount(0l);
+							 locationsList.add(lclbodyVo);	
+							
+						 }
+					 }
 				 }
 				 sortlocationsList(locationsList);
 				 resultVo.setCasteList(locationsList);
 				 resultList.add(resultVo); 
 				 resultList.get(0).setPartyName(constituencyDAO.get(constituencyId).getName());
 			 }
+			 if(type.equalsIgnoreCase(IConstants.MANDAL))
+			 {
+			 for(Object[] lclbody : localbody)
+			 {
+				  setValuesForaCasteInLocation(resultList,(Long)lclbody[2],(Long)lclbody[3],(Long)lclbody[0]);
+				 
+			 }
+			 }
 			  for(Object[] params2 : casteList)
 			 {
 				  setValuesForaCasteInLocation(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0]);
 				 
 			 }
+			  
+			  
 			}
 		}
 		catch(Exception e)
