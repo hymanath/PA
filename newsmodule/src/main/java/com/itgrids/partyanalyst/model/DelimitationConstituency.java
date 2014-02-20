@@ -34,7 +34,7 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 	private Long delimitationConstituencyID;
 	private Constituency constituency;
 	private Long year;
-	//private Long constituencyNO;
+	private Long constituencyNO;
 	//private DelimitationYear delimitationYear;
 	//private CensusYear censusYear;
 	private Set<DelimitationConstituencyAssemblyDetails> delimitationConstituencyAssemblyDetailses = new HashSet<DelimitationConstituencyAssemblyDetails>(0);
@@ -58,7 +58,7 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 		this.delimitationConstituencyID = delimitationConstituencyID;
 		this.constituency = constituency;
 		this.year = year;
-		//this.constituencyNO = constituencyNO;
+		this.constituencyNO = constituencyNO;
 		this.delimitationConstituencyAssemblyDetailses = delimitationConstituencyAssemblyDetailses;
 	}
 
@@ -87,13 +87,13 @@ public class DelimitationConstituency extends BaseModel implements Serializable{
 	public void setYear(Long year) {
 		this.year = year;
 	}
-	/* @Column(name = "constituency_no", length = 15)
+	 @Column(name = "constituency_no", length = 15)
 	public Long getConstituencyNO() {
 		return constituencyNO;
 	}
 	public void setConstituencyNO(Long constituencyNO) {
 		this.constituencyNO = constituencyNO;
-	}*/
+	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "delimitationConstituency")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)

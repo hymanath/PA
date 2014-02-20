@@ -6151,6 +6151,21 @@
 		   </result> 
 		</action>
 		
+		
+		<action name="getSelectedPoliticalFeedBackDetailsAction" class="politicalFeedBackAction"  method="getSelectedPoliticalFeedBackDetails">
+		   <result type="json" name="success">
+		    	<param name="root">politicalFeedBackVO</param>
+		   </result> 
+		</action>
+		
+		
+		<action name="deletedPoliticalFeedBadkAction" class="politicalFeedBackAction"  method="deletedPoliticalFeedBadk">
+		   <result type="json" name="success">
+		    	<param name="root">status</param>
+		   </result> 
+		</action>
+		
+		
         </package>
 		
 </struts>      

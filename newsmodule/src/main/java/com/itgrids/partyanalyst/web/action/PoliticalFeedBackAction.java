@@ -20,14 +20,14 @@ import com.opensymphony.xwork2.ActionSupport;
 public class PoliticalFeedBackAction extends ActionSupport implements ServletRequestAware {
 
 	
-	private static final long    serialVersionUID = 1L;
-	private HttpServletRequest   request;
-	private HttpSession          session;
-	private ResultStatus         resultStatus;
-	private PoliticalFeedBackVO  politicalFeedBackVO;
-	private List<SelectOptionVO> constituencysList;
-	List<PoliticalFeedBackVO>    politicalFeedBackVOList;
-	
+	private static final long    		serialVersionUID = 1L;
+	private HttpServletRequest   		request;
+	private HttpSession          		session;
+	private ResultStatus         		resultStatus;
+	private PoliticalFeedBackVO  		politicalFeedBackVO;
+	private List<SelectOptionVO> 		constituencysList;
+	private List<PoliticalFeedBackVO>   politicalFeedBackVOList;
+	private String 						status;
 	private String 						task;
 	private JSONObject 					jObj;
 	private final static Logger LOG            = Logger.getLogger(PoliticalFeedBackAction.class); 
@@ -106,6 +106,16 @@ public class PoliticalFeedBackAction extends ActionSupport implements ServletReq
 	}
 
 
+	public String getStatus() {
+		return status;
+	}
+
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -176,6 +186,44 @@ public class PoliticalFeedBackAction extends ActionSupport implements ServletReq
 			}
 			jObj = new JSONObject(getTask());
 			politicalFeedBackVOList = politicalFeedBackService.getSelectedPolitialFeedBackDetails(jObj.getString("date"),jObj.getLong("constituencyId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured getSelectedPolitialFeedBackDetails method in PoliticalFeedBackAction Class",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getSelectedPoliticalFeedBackDetails()
+	{
+		try {
+			LOG.debug("Entered into getSelectedPolitialFeedBackDetails method in PoliticalFeedBackAction Class");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+			{
+				return Action.ERROR;
+			}
+			jObj = new JSONObject(getTask());
+			politicalFeedBackVO = politicalFeedBackService.getSelectedPoliticalFeedBackDetails(jObj.getLong("pfbId"));
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured getSelectedPolitialFeedBackDetails method in PoliticalFeedBackAction Class",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String deletedPoliticalFeedBadk()
+	{
+		try {
+			LOG.debug("Entered into getSelectedPolitialFeedBackDetails method in PoliticalFeedBackAction Class");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+			{
+				return Action.ERROR;
+			}
+			jObj = new JSONObject(getTask());
+			status = politicalFeedBackService.deletedPoliticalFeedBadk(jObj.getLong("pfbId"));
 			
 		} catch (Exception e) {
 			LOG.error("Exception Occured getSelectedPolitialFeedBackDetails method in PoliticalFeedBackAction Class",e);

@@ -105,6 +105,14 @@ function generateDebateReport(result)
 			}
 			str += '</tr>';
 		}
+		
+		str += '<tr>';
+		str += '<th style="width: 234px;">Total</th>';
+		for(var i  in result.participantsList )
+		{
+			str += '<td>'+result.participantsList[i].id+'</td>';
+		}
+		str += '</tr>';
 		str += '<tr>';
 		str += '<th style="width: 234px;">What was the role played  by the individual in over all programme(C.P/Critic/Philosopher/Bully/Nurse)</th>';
 		for(var i in result.participantsList)
@@ -113,6 +121,7 @@ function generateDebateReport(result)
 		}
 		str += '</tr>';
 
+		
 		
 		if(result.noTdpLeaders > 1)
 		{

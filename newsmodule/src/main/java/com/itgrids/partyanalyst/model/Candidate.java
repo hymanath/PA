@@ -81,7 +81,7 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 
 	private Set<NewsFlag> newsFlags = new HashSet<NewsFlag>(0);
 	private Set<CandidateParty> candidateParty = new HashSet<CandidateParty>(0);
-	private Set<CandidateFileKeyword> candidateFileKeywords = new HashSet<CandidateFileKeyword>(0);
+	
 	private Designation designation;
 	private Set<DebateParticipant> debateParticipant = new HashSet<DebateParticipant>(0);
 	private String isDebateCandidate;
@@ -410,15 +410,6 @@ public class Candidate extends BaseModel implements java.io.Serializable {
 		this.candidateParty = candidateParty;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "candidate")
-	public Set<CandidateFileKeyword> getCandidateFileKeywords() {
-		return candidateFileKeywords;
-	}
-
-	public void setCandidateFileKeywords(
-			Set<CandidateFileKeyword> candidateFileKeywords) {
-		this.candidateFileKeywords = candidateFileKeywords;
-	}
 
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="designation_id")
