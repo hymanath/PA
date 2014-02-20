@@ -6,6 +6,8 @@ import java.util.List;
 
 public class DebateDetailsVO implements Serializable {
 
+	
+	private static final long serialVersionUID = 2361429829074549521L;
 	private Long debateId;
 	private Date startDate;
 	private Date endDate;
@@ -18,6 +20,7 @@ public class DebateDetailsVO implements Serializable {
 	private List<SelectOptionVO> questionsList;
 	private List<SelectOptionVO> smsQuestionList;
 	private List<SelectOptionVO> smaOptionsList;
+	private String type;
 	
 	public Long getDebateId() {
 		return debateId;
@@ -90,6 +93,12 @@ public class DebateDetailsVO implements Serializable {
 	}
 	public void setSmaOptionsList(List<SelectOptionVO> smaOptionsList) {
 		this.smaOptionsList = smaOptionsList;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

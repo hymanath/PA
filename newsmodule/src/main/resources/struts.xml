@@ -5984,6 +5984,12 @@
 		   </result>
 		 </action>
 		 
+		
+		<action name="debateEditAction" class="debateAction" method="editDebateDetails">
+		   <result>/jsp/debetEditForm.jsp</result>
+		 </action>
+		 
+		
 		<action name="debetSavingAction" class="debateAction">
 	 			 <result>/jsp/debetSavingForm.jsp</result>
 	 	</action>

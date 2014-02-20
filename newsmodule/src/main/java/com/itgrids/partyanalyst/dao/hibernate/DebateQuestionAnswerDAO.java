@@ -17,7 +17,7 @@ public class DebateQuestionAnswerDAO extends GenericDaoHibernate<DebateQuestionA
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDebateQuestionAndAnswerDetails(Long debateId)
 	{
-		return getHibernateTemplate().find("select model.debateQuestions.question , model.answer " +
+		return getHibernateTemplate().find("select model.debateQuestions.question , model.answer ,model.debateQuestions.debateQuestionsId" +
 				" from DebateQuestionAnswer model where model.debate.debateId = ? ",debateId);
 	}
 }

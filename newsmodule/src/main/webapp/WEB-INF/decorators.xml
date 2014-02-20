@@ -253,6 +253,7 @@
 		<pattern>/newsAnalysisAction*</pattern>
 		<pattern>/getNewsAction*</pattern>
 		<pattern>/newsActivitiesAction*</pattern>
+		<pattern>/debateEditAction*</pattern>
 		<pattern>/debateAction*</pattern>
 		<pattern>/politicalFeedBackAction*</pattern>
 		<pattern>/debateReportAction*</pattern>

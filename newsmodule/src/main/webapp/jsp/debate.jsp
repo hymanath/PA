@@ -422,7 +422,7 @@ var channelsArray = new Array();
 				</div>
 				
 				<div align="center" style="margin-bottom: 15px; margin-top: 10px;">
-					<a class="btn btn-success" onClick="submitForm();">Submit</a>
+					<a class="btn btn-success" onClick="submitForm('save');">Submit</a>
 				</div>
 
 				</div>

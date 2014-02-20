@@ -239,7 +239,11 @@ public class DebateService implements IDebateService{
 					
 				  if(debateDetailsVO != null)
 				  {
-					  
+					
+					  if(debateDetailsVO.getType().equalsIgnoreCase("edit"))
+					  {
+						  debateDAO.removeDebate(debateDetailsVO.getDebateId());
+					  }
 					  Debate debate = new Debate();
 					  Channel channel =  channelDAO.get(debateDetailsVO.getChannelId());
 					  if(channel != null)
@@ -417,12 +421,14 @@ public class DebateService implements IDebateService{
 			List<String> debateSubjectsList = null;
 			List<SelectOptionVO> debateExpRolesList = null;
 			List<String> observerList = null;
+			List<SelectOptionVO> observersList = null;
 			List<ParticipantVO> particepentDetailsList = null;
 			//List<SelectOptionVO> scalesList = null;
 			//List<SelectOptionVO> rolesList = null;
 			// here we are getting all details of debate
 			SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
 			SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			SimpleDateFormat parseFormat1 = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 			//SimpleDateFormat printFormat = new SimpleDateFormat("HH.mm");
 			
 			//System.out.println(printFormat.format(date)); // prints 09:30:51
@@ -494,6 +500,8 @@ public class DebateService implements IDebateService{
 				
 				
 				debateVO.setStartTime(startTime);
+				debateVO.setStDate(parseFormat1.format(parseFormat.parse(debateDetails[1].toString())));
+				debateVO.setEdDate(parseFormat1.format(parseFormat.parse(debateDetails[2].toString())));
 				//debateVO.setStartTime(debateDetails[1] != null ? printFormat.format(parseFormat.parse(debateDetails[1].toString())) :"");
 				//debateVO.setEndTime(debateDetails[2] != null ? printFormat.format(parseFormat.parse(debateDetails[2].toString())) :"");
 				debateVO.setEndTime(endTime);
@@ -532,7 +540,9 @@ public class DebateService implements IDebateService{
 						SelectOptionVO paticepentSummery = new SelectOptionVO();
 						paticepentSummery.setType(parms[1] != null ? parms[1].toString() :"");//party
 						paticepentSummery.setLocation(parms[0] != null ? parms[0].toString() :"");//candidate
-						paticepentSummery.setName(parms[2] != null ? StringEscapeUtils.unescapeJava(parms[2].toString()) :"");//summery					
+						paticepentSummery.setName(parms[2] != null ? StringEscapeUtils.unescapeJava(parms[2].toString()) :"");//summery
+						paticepentSummery.setId(parms[3] != null ? (Long)parms[3] : 0l);//candidateId
+						paticepentSummery.setCount(parms[3] != null ? (Long)parms[3] : 0l);//partyId
 						debatePaticepentDetailsList.add(paticepentSummery);
 					}
 				}
@@ -575,6 +585,9 @@ public class DebateService implements IDebateService{
 					}
 					particepentDetails.setName(parms[1] != null ? parms[1].toString() :"");//party
 					particepentDetails.setLocation(parms[0] != null ? parms[0].toString() :"");//candidate
+					particepentDetails.setId(parms[3] != null ? (Long)parms[3] : 0l);//candidateId
+					particepentDetails.setCount(parms[4] != null ? (Long)parms[4] : 0l);//partyId
+					particepentDetails.setPartno(parms[2] != null ? StringEscapeUtils.unescapeJava(parms[2].toString()) :null);//summary
 				}
 				// here we are processing the candidate charactes and scaling details
 				for (Object[] parms : dabateCharcsList)
@@ -604,7 +617,7 @@ public class DebateService implements IDebateService{
 						rolesMap.put((Long)parms[0], roleDetails);
 					}
 					selectOptionVO.setName(parms[4] != null ?StringEscapeUtils.unescapeJava(parms[4].toString()) :"");//role
-					//olesList.add(selectOptionVO);
+					selectOptionVO.setId(parms[5] != null ? (Long)parms[5] : 0l);
 					roleDetails.add(selectOptionVO);
 				}
 				Map<Long,List<SelectOptionVO>> expRolesMap = null;
@@ -622,6 +635,7 @@ public class DebateService implements IDebateService{
 						SelectOptionVO debateExpRole = new SelectOptionVO();
 						debateExpRole.setName(parms[1] != null ? parms[1].toString() :"");//candidate
 						debateExpRole.setLocation(parms[0] != null ? StringEscapeUtils.unescapeJava(parms[0].toString()) :"");//role
+						debateExpRole.setId(parms[3] != null ? (Long)parms[3] :0l);
 						expRoleList.add(debateExpRole);
 					}
 				}
@@ -641,6 +655,9 @@ public class DebateService implements IDebateService{
 					SelectOptionVO paticiVO = particepentsMap.get(candidateId);
 					participantVO.setName(paticiVO.getLocation());
 					participantVO.setPartyName(paticiVO.getName());
+					participantVO.setPartyId(paticiVO.getCount());
+					participantVO.setId(paticiVO.getId());
+					participantVO.setSummery(paticiVO.getPartno());
 					List<SelectOptionVO> scopesList = charactesMap.get(candidateId);
 					//List<SelectOptionVO> scopesList = chatesVO.getSelectOptionsList();
 					List<SelectOptionVO> scopeList = new ArrayList<SelectOptionVO>();
@@ -660,10 +677,14 @@ public class DebateService implements IDebateService{
 						List<SelectOptionVO> roleDetailsList = new ArrayList<SelectOptionVO>();
 						Long count = 0l;
 						StringBuffer periRole = new StringBuffer();
+						List<Long> roleIds = new ArrayList<Long>();
 						for (SelectOptionVO selectOptionVO : roleList) {
 							count ++;
 							SelectOptionVO debateRoleVO = new SelectOptionVO();
 							debateRoleVO.setName(selectOptionVO.getName());
+							debateRoleVO.setId(selectOptionVO.getId());
+							roleIds.add(selectOptionVO.getId());
+							debateRoleVO.setTotalCount(roleIds);
 							roleDetailsList.add(debateRoleVO);
 							if(count == 1)
 							{
@@ -692,6 +713,7 @@ public class DebateService implements IDebateService{
 								count ++ ;
 								SelectOptionVO scopesVO = new SelectOptionVO();
 								scopesVO.setName(expRoleVO.getLocation());
+								scopesVO.setId(expRoleVO.getId());
 								expList.add(scopesVO);
 								if(count == 1)
 								{
@@ -726,6 +748,7 @@ public class DebateService implements IDebateService{
 						SelectOptionVO questionAnswer = new SelectOptionVO();
 						questionAnswer.setName(parms[1] != null ? StringEscapeUtils.unescapeJava(parms[1].toString()) :"");//Answer
 						questionAnswer.setLocation(parms[0] != null ? StringEscapeUtils.unescapeJava(parms[0].toString()) :"");//Question
+						questionAnswer.setId(parms[2] != null ? (Long)parms[2] : 0l);
 						debateQuestionDetailsList.add(questionAnswer);
 				}
 				debateVO.setQuestionAnswersList(debateQuestionDetailsList);
@@ -752,14 +775,21 @@ public class DebateService implements IDebateService{
 			if(debateObservers != null && debateObservers.size() > 0)
 			{
 				observerList = new ArrayList<String>();
+				observersList = new ArrayList<SelectOptionVO>();
 				for (Object[] parms : debateObservers) {
 					if(parms[0] != null)
 					{
+						
 						String observer = parms[0].toString();
 						observerList.add(observer);
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)parms[2]);
+						selectOptionVO.setName(observer);
+						observersList.add(selectOptionVO);
 					}
 				}
 				debateVO.setObservorsList(observerList);
+				debateVO.setObserverList(observersList);
 			}
 		}
 		catch (Exception e)
@@ -1974,5 +2004,56 @@ public class DebateService implements IDebateService{
 		}
 		 return resultStatus;
 	 }
+	 
+	 /*public DebateVO getDebateDetailsForSelectedDebate(Long debateId)
+	 {
+		 DebateVO debateVO = null;
+		try
+		{
+			LOG.info("Enterd into getDebateDetailsForSelectedDebate() in DebateService class");
+			List<Object[]> debateDetails = debateDAO.getDebateDetailsForSelectedDebate(debateId);
+			if(debateDetails != null && debateDetails.size() > 0)
+			{
+				debateVO = new DebateVO();
+				SimpleDateFormat sdf  = new SimpleDateFormat("dd-MM-yyyy");
+				SimpleDateFormat parseFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+				for (Object[] parms : debateDetails) {
+					debateVO.setDebateId((Long)parms[0]);
+					debateVO.setStartTime(sdf.format(parseFormat.parse(parms[1].toString())));
+					debateVO.setEndTime(sdf.format(parseFormat.parse(parms[2].toString())));
+					debateVO.setChannelId((Long)parms[3]);
+					debateVO.setChannelName(parms[4].toString());
+					debateVO.setDebateSummery(parms[5].toString());
+				}
+				List<Object[]> observersersList = debateObserverDAO.getObsersListForDebate(debateId);
+				if(observersersList != null && observersersList.size() > 0)
+				{
+					List<SelectOptionVO> observersList = new ArrayList<SelectOptionVO>();
+					for (Object[] objects : observersersList) {
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long)objects[1]);
+						selectOptionVO.
+						observersList.add(selectOptionVO);
+					}
+				}
+				List<Object[]> subjectDetails = debateSubjectDAO.getDebateSubjectDetails(debateId);
+				if(subjectDetails != null && subjectDetails.size() > 0)
+				{
+					List<String> subjectList = new ArrayList<String>();
+					for (Object[] parms : subjectDetails) {
+						
+						subjectList.add(parms[0].toString());
+					}
+					debateVO.setDebateNames(subjectList);
+				}
+			}
+			
+		}
+		catch (Exception e)
+		{
+			LOG.error(" Exception Occured in getDebateDetailsForSelectedDebate method, Exception - ",e);
+		}
+		return debateVO;
+	 }*/
 	 
 }
