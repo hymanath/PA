@@ -319,7 +319,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			questionDtls.setOptions(options);
 			questionDtls.setOptnTypeId(optnTypeId);
 			
-			if(jObj.getString("remarks").equalsIgnoreCase("true"))
+			if(jObj.getString("commentInd").equalsIgnoreCase("true"))
 				questionDtls.setRemarks(true);
 			else
 				questionDtls.setRemarks(false);
@@ -431,5 +431,37 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		return Action.SUCCESS;
 		
 	}
+	
+	public String saveMainQuestion()
+	{
+		try {		
+			jObj = new JSONObject(getTask());						
+			String mainQuestion = jObj.getString("mainQtnType");			
+			 houseHoldSurveyReportService.saveMainQuestionDetails(mainQuestion);	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+		
+	} 
+	
+	public String saveSubQuestion()
+	{
+		try {		
+			jObj = new JSONObject(getTask());
+			
+			Long mainQtnTypeId = jObj.getLong("mainQtnTypeId");          
+			String subQuestion = jObj.getString("subQtnType");
+		
+			houseHoldSurveyReportService.saveSubQuestionDetails(mainQtnTypeId,subQuestion);			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return Action.SUCCESS;
+		
+	} 
+	
 	
 }

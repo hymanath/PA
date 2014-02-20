@@ -641,19 +641,19 @@ function buildQuestionAnswers(results){
 	str+="<form name='QuestionAnswersForm' id='QuestionAnswersFormId' action='hhQstnAnswrsForm.action'>";
 
 	str+='<input type="hidden" name="houseHoldsId" id="houseHoldsId"/>';
-	var queLoopId = 0;
+	
 	for(var i in results){
 	str+="<div class='span12'>";
-		str+="<h4>"+results[i].mainQues+"</h4>";
+		str+="<h4>"+(parseInt(i)+1)+".  "+results[i].mainQues+"</h4>";
 		
 		for(var j in results[i].subQuestList){
-			str+="<h5>"+results[i].subQuestList[j].subQues+"</h5>";
+			str+="<h5>"+(parseInt(j)+1)+".  "+results[i].subQuestList[j].subQues+"</h5>";
 			for(var k in results[i].subQuestList[j].questionsList){
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].questionId' value="+results[i].subQuestList[j].questionsList[k].questionId+">";
 				
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].subQuestList[j].questionsList[k].optionTypeId+">";
 				
-				str+="<h6>"+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				str+="<h6>"+(parseInt(k)+1)+".  "+results[i].subQuestList[j].questionsList[k].question+"</h6>";
 				if(results[i].subQuestList[j].questionsList[k].optionTypeId!=3){
 					
 				for(var l in results[i].subQuestList[j].questionsList[k].options){
@@ -696,7 +696,7 @@ function buildQuestionAnswers(results){
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].directSubQuestList[j].questionsList[k].optionTypeId+">";
 				
 				
-				str+="<h6>"+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
+				str+="<h6>"+(parseInt(k)+1)+". "+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
 				if(results[i].directSubQuestList[j].questionsList[k].optionTypeId!=3){
 				for(var l in results[i].directSubQuestList[j].questionsList[k].options){
 					str+="<div class='span12'>"
