@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.TransactionStatus;
@@ -314,7 +316,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		List<HHSurveyVO> questList,questList1=null;
 		try {
 			hsvo.setQuestionId(hhSrvyQstn.getSurveyQuestionId());
-			hsvo.setQuestion(hhSrvyQstn.getQuestion());
+			hsvo.setQuestion(StringEscapeUtils.unescapeJava(hhSrvyQstn.getQuestion()));
 			hsvo.setQuestionCode(hhSrvyQstn.getQuestionCode());
 			hsvo.setOptsSelected(qstOptnSlctedMap.get(hhSrvyQstn.getSurveyQuestionId()));
 			List<Long> optsSlctdList=new ArrayList<Long>();
@@ -338,7 +340,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			for(HHQuestionOptions qo:options){
 				HHSurveyVO optVo=new HHSurveyVO();
 				optVo.setOptionId(qo.getHhOptions().getOptionsId());
-				optVo.setOption(qo.getHhOptions().getOptions());
+				optVo.setOption(StringEscapeUtils.unescapeJava(qo.getHhOptions().getOptions()));
 				if(optsSlctdList.contains(qo.getHhOptions().getOptionsId())){
 					optVo.setOptSelected(true);
 				}else{
@@ -434,8 +436,9 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 					HHSurveyQuestion question = new HHSurveyQuestion();
 					
 					question.setHhoptionType(hhOptionTypeDAO.get(qstnDtls.getOptnTypeId()));
-					question.setQuestion(qstnDtls.getQuestion().split("::")[0]);
+					question.setQuestion(escapeUnicode(StringEscapeUtils.unescapeHtml(qstnDtls.getQuestion().split("::")[0]).trim()));
 					question.setIsDeleted(IConstants.FALSE);
+					question.setSurveyId(1l);
 					question.setQuestionCode(qstnDtls.getQuestion().split("::")[1]);
 					question.setSurveySubTypeId(qstnDtls.getSurveySubTypeId() != 0 ? qstnDtls
 							.getSurveySubTypeId() : qstnDtls.getSurveyTypeId());
@@ -456,7 +459,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 						{
 							HHOptions options = new HHOptions();
 							
-							options.setOptions(optionDtls[i]);
+							options.setOptions(StringEscapeUtils.unescapeJava(optionDtls[i]));
 							options.setIsDelete(IConstants.FALSE);
 							options.setOrderId((long)i);
 							
@@ -478,6 +481,19 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		}
 		return "success";
 	}
+	
+	   public String escapeUnicode(String input) {
+			StringBuilder b = new StringBuilder(input.length());
+			Formatter f = new Formatter(b);
+			for (char c : input.toCharArray()) {
+				if (c < 128) {
+				  b.append(c);
+				} else {
+				  f.format("\\u%04x", (int) c);
+				}
+			}
+			return b.toString();
+		}
 	
 	public String createSurveySubCategory(String name,boolean isChild,Long parentId)
 	{
@@ -816,6 +832,46 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		}
 		
 		return houseHoldId;
+	}
+	
+	public String saveMainQuestionDetails(final String qtn)
+	{
+		log.debug("Entered into the saveMainQuestionDetails method");
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+			
+					HHSurveySubType mainQuestion = new HHSurveySubType();
+					
+					mainQuestion.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(qtn.trim())));
+					mainQuestion.setIsMain(IConstants.TRUE);
+					
+					mainQuestion = hhSurveySubTypeDAO.save(mainQuestion);
+					
+				}});
+		} catch (Exception e) {
+			log.error("Exception raised in the saveMainQuestionDetails method");
+			e.printStackTrace();
+		}
+		return "success";
+	}
+   
+	public String saveSubQuestionDetails(Long id,String subQtn)
+	{
+		log.debug("Entered into the saveSubQuestionDetails method");
+		try {
+					HHSurveySubType subQuestion = new HHSurveySubType();
+					
+					subQuestion.setName(escapeUnicode(StringEscapeUtils.unescapeHtml(subQtn.trim())));
+					subQuestion.setIsMain(IConstants.FALSE);
+					subQuestion.setParentId(id);
+					
+					subQuestion = hhSurveySubTypeDAO.save(subQuestion);
+		} catch (Exception e) {
+			log.error("Exception raised in the saveSubQuestionDetails method");
+			e.printStackTrace();
+		}
+		return "success";
 	}
 	
 }
