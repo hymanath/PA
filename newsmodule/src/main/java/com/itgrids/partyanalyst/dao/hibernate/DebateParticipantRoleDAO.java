@@ -20,7 +20,7 @@ public class DebateParticipantRoleDAO extends GenericDaoHibernate<DebateParticip
 	{
 		return getHibernateTemplate().find("select model.debateParticipant.candidate.candidateId , model.debateParticipant.candidate.lastname, " +
 				" model.debateParticipant.party.partyId , model.debateParticipant.party.shortName , " +
-				" model.debateRoles.name  from DebateParticipantRole model where model.debateParticipant.debate.debateId = ? ",debateId);
+				" model.debateRoles.name,model.debateRoles.debateRolesId  from DebateParticipantRole model where model.debateParticipant.debate.debateId = ? ",debateId);
 	}
 
 	@SuppressWarnings("unchecked")

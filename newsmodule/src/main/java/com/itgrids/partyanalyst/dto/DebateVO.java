@@ -34,8 +34,9 @@ public class DebateVO implements Serializable {
 	private Date StartDate;
 	private Date endDate;
 	private Long noTdpLeaders;;
-	
-	
+	private List<SelectOptionVO> observerList;
+	private String stDate;
+	private String edDate;
 	public Long getDebateId() {
 		return debateId;
 	}
@@ -176,5 +177,24 @@ public class DebateVO implements Serializable {
 	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 	}
+	public List<SelectOptionVO> getObserverList() {
+		return observerList;
+	}
+	public void setObserverList(List<SelectOptionVO> observerList) {
+		this.observerList = observerList;
+	}
+	public String getStDate() {
+		return stDate;
+	}
+	public void setStDate(String stDate) {
+		this.stDate = stDate;
+	}
+	public String getEdDate() {
+		return edDate;
+	}
+	public void setEdDate(String edDate) {
+		this.edDate = edDate;
+	}
+	
 	
 }

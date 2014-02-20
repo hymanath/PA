@@ -65,7 +65,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	private List<SelectOptionVO> 		partyWiseList;
 	private List<SelectOptionVO> 		candidateWiseList;
 	private List<SelectOptionVO> 		debateDetails;
-	
+
 	private ICandidateDetailsService 	candidateDetailsService;
 	private IDebateService 				debateService;
 	
@@ -410,30 +410,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			{
 				return Action.ERROR;
 			}
-			channelList = debateService.getChannelDetails();
-			telecastTimeList = debateService.getTelecastTimeDetails();
-			observerList = debateService.getObserverDetails();
-			partiesList = candidateDetailsService.getPartiesList();
-			debateQuestionList = debateService.getDebateQuestionDetails();
-			debateSmsQuestionList = debateService.getDebateSmsQuestionDetails();
-			debateParticipantRoleList = debateService.getDebateParticipantRoleDetails();
-			characteristicsList = debateService.getCharacteristicsDetails();
-			rolesList = debateService.getRolesList();
-			channelList.add(new SelectOptionVO(0l,"Select Channel"));
-			telecastTimeList.add(new SelectOptionVO(0l,"Select Telecast Time"));
-			observerList.add(new SelectOptionVO(0l,"Select Observer"));
-			partiesList.add(new SelectOptionVO(0l,"Select Party"));
-			Collections.sort(channelList, sortList);
-			Collections.sort(telecastTimeList, sortList);
-			Collections.sort(observerList, sortList);
-			
-			ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
-			ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
-			districtsList1 =  staticDataService.getDistricts(1l);
-			parlConstiList1 = parliamantConstis.getConstituencies();
-		    assemConstiList1 = constituencyInfoVO.getConstituencies();
-		     
-			Collections.sort(partiesList, sortList);
+			executeBasicDetails();
 		}
 		catch (Exception e) 
 		{
@@ -465,6 +442,8 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			}
 			 DebateDetailsVO debateDetailsVO = new DebateDetailsVO();
 			 jObj = new JSONObject(getTask());
+			 
+			 debateDetailsVO.setDebateId(debateId);
 			 JSONObject debateObj = jObj.getJSONObject("debateDetails");
 			 debateDetailsVO.setChannelId(debateObj.getLong("channelId"));
 			 //debateDetailsVO.setTelecasteTypeId(debateObj.getLong("telecastTimeId"));
@@ -474,6 +453,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 			 debateDetailsVO.setStartDate(sdf.parse(startDate));
 			 debateDetailsVO.setEndDate(sdf.parse(endDate));
 			 debateDetailsVO.setDebateSummery(debateObj.getString("debetSummery"));
+			 debateDetailsVO.setType(jObj.getString("type"));
 			 JSONArray subjectsArray = jObj.getJSONArray("subjectArray");
 			 List<SelectOptionVO> subjectsList = new ArrayList<SelectOptionVO>();
 			 for (int i = 0; i < subjectsArray.length(); i++) {
@@ -591,7 +571,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	{
 		try 
 		{
-			LOG.info("Entered into saveDebateDetial methon in DebateAction Class");
+			LOG.info("Entered into retriveDebateDetails methon in DebateAction Class");
 			/*session = request.getSession();
 			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
 			if(regVO == null)
@@ -603,7 +583,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		} 
 		catch (Exception e)
 		{
-			LOG.error("Exception occured in saveDebateDetial methon in DebateAction Class",e);
+			LOG.error("Exception occured in retriveDebateDetails methon in DebateAction Class",e);
 		}
 		return Action.SUCCESS;
 	}
@@ -796,51 +776,6 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
-	/*public String getDebateScalingAnalysisForPartyWise()
-	{
-		try 
-		{
-			LOG.info(" Entered into getDebateScalingAnalysisForPartyWise() in DebateAction class. ");
-			HttpSession session = request.getSession();
-			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
-			if(regVo == null)
-			return Action.ERROR;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			jObj = new JSONObject(getTask());
-			String fromDateStr = jObj.getString("fromDate");
-			String toDateStr = jObj.getString("toDate");
-			partyWiseList = debateService.getDebateAnalysisByPartyForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
-		}
-		catch (Exception e)
-		{
-			LOG.error(" Exception occured in getDebateScalingAnalysisForPartyWise() in DebateAction class. ",e);
-		}
-		return Action.SUCCESS;
-	}*/
-	
-	/*public String getDebateScalingAnalysisForCandidateWise()
-	{
-		try 
-		{
-			LOG.info(" Entered into getDebateScalingAnalysisForCandidateWise() in DebateAction class. ");
-			HttpSession session = request.getSession();
-			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
-			if(regVo == null)
-			return Action.ERROR;
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-			jObj = new JSONObject(getTask());
-			String fromDateStr = jObj.getString("fromDate");
-			String toDateStr = jObj.getString("toate");
-			candidateWiseList = debateService.getDebateAnalysisBycandidateForScaling(sdf.parse(fromDateStr),sdf.parse(toDateStr));;
-		} 
-		catch (Exception e)
-		{
-			LOG.error(" Exception occured in getDebateScalingAnalysisForCandidateWise() in DebateAction class. ",e);
-		}
-		return Action.SUCCESS;
-	}*/
 	
 	public String searchResultsForDebate()
 	{
@@ -882,23 +817,62 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		}
 		return Action.SUCCESS;
 	}
-	/*public String getSmsQuestionDetails()
+	public void  executeBasicDetails()
 	{
-		try
+		try 
 		{
-			LOG.info(" Entered into searchResultsForDebate() in DebateAction class. ");
-			HttpSession session = request.getSession();
-			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
-			if(regVo == null)
-			return Action.ERROR;
+			LOG.info("Entered into executeBasicDetails methon in DebateAction Class");
 			
-			jObj = new JSONObject(getTask());
-			debateDetails = debateService.getDebateSMSQuestions(jObj.getString("fromDate"),jObj.getString("toDate"));
+			channelList = debateService.getChannelDetails();
+			telecastTimeList = debateService.getTelecastTimeDetails();
+			observerList = debateService.getObserverDetails();
+			partiesList = candidateDetailsService.getPartiesList();
+			debateQuestionList = debateService.getDebateQuestionDetails();
+			debateSmsQuestionList = debateService.getDebateSmsQuestionDetails();
+			debateParticipantRoleList = debateService.getDebateParticipantRoleDetails();
+			characteristicsList = debateService.getCharacteristicsDetails();
+			rolesList = debateService.getRolesList();
+			channelList.add(new SelectOptionVO(0l,"Select Channel"));
+			telecastTimeList.add(new SelectOptionVO(0l,"Select Telecast Time"));
+			observerList.add(new SelectOptionVO(0l,"Select Observer"));
+			partiesList.add(new SelectOptionVO(0l,"Select Party"));
+			Collections.sort(channelList, sortList);
+			Collections.sort(telecastTimeList, sortList);
+			Collections.sort(observerList, sortList);
+			
+			ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
+			ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
+			districtsList1 =  staticDataService.getDistricts(1l);
+			parlConstiList1 = parliamantConstis.getConstituencies();
+		    assemConstiList1 = constituencyInfoVO.getConstituencies();
+		     
+			Collections.sort(partiesList, sortList);
 		}
-		catch (Exception e)
+		catch (Exception e) 
 		{
-			LOG.error(" Exception occured in searchResultsForDebate() in DebateAction class. ",e);
+			LOG.error("Exception occured in executeBasicDetails methon in DebateAction Class",e);
 		}
+	}
+	
+	public String editDebateDetails()
+	{
+		try 
+		{
+			LOG.info("Entered into editDebateDetails methon in DebateAction Class");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+			{
+				return Action.ERROR;
+			}
+			executeBasicDetails();
+		}
+		catch (Exception e) 
+		{
+			LOG.error("Exception occured in editDebateDetails methon in DebateAction Class",e);
+		}
+		
 		return Action.SUCCESS;
-	}*/
+	}
+
 }

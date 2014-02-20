@@ -152,7 +152,7 @@ function validateFields(){
 				var divId = $(this ).attr("id");
 				$('.'+myclass+'').find('button').attr("id",""+divId+""+myclass+"");
 				$("#"+divId+""+myclass+"").addClass("ui-state-error");
-				flag = false;
+				//flag = false;
 			}
 		});		
 		
@@ -356,7 +356,7 @@ function updateAttributeField(id){
 
 }
 
-function submitForm()
+function submitForm(type)
 {
 	if(validateFields()){
 			var debateDetails={
@@ -453,6 +453,7 @@ function submitForm()
 						subjectArray : subjectArray,
 						questionAnswer : questionAnswer,
 						smsPole : smsPole,
+						type : type,
 						task : "saveDebateDetails"	
 				};
 					 $("#getDebateDetails").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -944,7 +945,17 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 		elLiner.innerHTML=str;
 					
 	};
-	
+	YAHOO.widget.DataTable.editReport = function(elLiner, oRecord, oColumn, oData) 
+	{
+	   var str='';
+		var name = oData;
+		var debateId = oRecord.getData("id");
+
+		str +='<a class="btn btn-info" value="'+debateId+'"';
+		str +='onClick="editDebateReport('+debateId+')">view</a>';
+		elLiner.innerHTML=str;
+					
+	};
 	YAHOO.widget.DataTable.textArea = function(elLiner, oRecord, oColumn, oData) 
 	{
 	   var str='';
@@ -959,6 +970,7 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
    {key:"name",label:"SUBJECT",width:400},
    {key:"type",label:"CREATED DATE"},
    {key:"viewReport",label:"VIEW REPORT",formatter:YAHOO.widget.DataTable.generatePDF},
+   {key:"editReport",label:"EDIT",formatter:YAHOO.widget.DataTable.editReport},
    {key:"generatePDF",label:"GENERATE URL ",formatter:YAHOO.widget.DataTable.viewReport},
    {key:"textArea",label:"URL",formatter:YAHOO.widget.DataTable.textArea}
 
@@ -1115,6 +1127,12 @@ function getDebateDetailsBtDates()
 function openDebateReport(debateId)
 {
 	window.open("debateReportAction.action?debateId="+debateId+"");
+}
+
+
+function editDebateReport(debateId)
+{
+	window.open("debateEditAction.action?debateId="+debateId+"");
 }
 
 function generateURL(debateId,div,description)

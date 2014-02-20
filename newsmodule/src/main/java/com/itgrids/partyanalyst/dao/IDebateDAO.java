@@ -9,4 +9,6 @@ import com.itgrids.partyanalyst.model.Debate;
 public interface IDebateDAO extends GenericDao<Debate, Long>{
 
 	public List<Object[]> getDebateDetailsForSelectedDebate(Long debateId);
+	
+	public int removeDebate(Long debateId);
 }
