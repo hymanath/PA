@@ -56,9 +56,18 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<GenericVO> occupationList;
 	private List<GenericVO> educationList;
 	private List<GenericVO> socialPositionList;
+	private Long houseHoldsId;
 	
 	
 	
+	public Long getHouseHoldsId() {
+		return houseHoldsId;
+	}
+
+	public void setHouseHoldsId(Long houseHoldsId) {
+		this.houseHoldsId = houseHoldsId;
+	}
+
 	public List<GenericVO> getOccupationList() {
 		return occupationList;
 	}
@@ -335,9 +344,8 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	}
 	
 	public String saveHouseHoldQuesOptns(){
-		System.out.println("hello sasi");	
 		
-		status=houseHoldSurveyReportService.saveQuestOptnsOfHH(boothId,houseNo,questionOptionsList);
+		status=houseHoldSurveyReportService.saveQuestOptnsOfHH(boothId,houseNo,questionOptionsList,houseHoldsId);
 		
 		return Action.SUCCESS;
 	}
@@ -404,13 +412,17 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 				voterDetailsVO.setEducationId(Long.parseLong(voter.getString("voterEdctn")));
 				voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("voterOccptn")));
 				voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("voterFamilyRelationId")));
+				voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("voterSocialPstn")));
 				
 				houseHoldVoters.add(voterDetailsVO);
 				
 			}
 				
 			houseHoldVotersDtls.setHouseHoldsVoters(houseHoldVoters);
-			//houseHoldSurveyReportService.saveHouseHoldsVotersDetails(houseHoldVotersDtls);
+			
+			houseHoldVotersDtls.setBoothId(Long.parseLong(jObj.getString("boothId")));
+			houseHoldVotersDtls.setHouseNo(jObj.getString("houseNo"));
+			houseHoldsId = houseHoldSurveyReportService.saveHouseHoldsVotersDetails(houseHoldVotersDtls);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

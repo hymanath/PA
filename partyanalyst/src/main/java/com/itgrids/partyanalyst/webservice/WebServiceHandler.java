@@ -306,10 +306,11 @@ public class WebServiceHandler {
 			String casteStateId = mainObj.getString("casteStateId");
 			String cadreLevelId = mainObj.getString("cadreLevelId");
 			String mobileNo = mainObj.getString("mobileNo");
+			String partyId = mainObj.getString("partyId");
 			
 		   return	webServiceHandlerService.updateIPDetails(voterID,
 					Long.parseLong(casteStateId), Long.parseLong(cadreLevelId),
-					mobileNo,uniqueId);
+					mobileNo,uniqueId,Long.parseLong(partyId));
 			
 		}
 		catch(Exception e)
