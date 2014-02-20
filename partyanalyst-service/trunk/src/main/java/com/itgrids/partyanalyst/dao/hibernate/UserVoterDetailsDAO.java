@@ -3029,5 +3029,18 @@ IUserVoterDetailsDAO{
 		
 		
 	}
-	
+	public List<Object[]> getLocalbodyCasteReport(Long constituencyId,Long publicationId,Long userId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct count(model.voter.voterId),model.casteState.caste.casteName,model.casteState.caste.casteId, ");
+		str.append("bpv.booth.localBody.localElectionBodyId,bpv.booth.localBody.name");
+		str.append(" from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
+				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
+		str.append("  group by model.casteState.caste.casteId,bpv.booth.localBody.localElectionBodyId order by model.casteState.caste.casteName");
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		return query.list();
+	}
 }
