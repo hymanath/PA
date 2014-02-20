@@ -4197,6 +4197,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			 details.setLocalElectionBodyId(voterDetails.getLocalElectionBodyId());
 			 details.setCasteStateId(voterDetails.getCasteStateId());
 			 details.setUniqueId(voterDetails.getUniqueId());
+			 details.setPartyId(voterDetails.getPartyId());
 			 
 			 
 			 //details.setMobileUserId(voterDetails.getMobileUserId());
@@ -4266,6 +4267,7 @@ public class InfluencingPeopleService implements IInfluencingPeopleService{
 			influencingPeople.setCasteState(casteStateDAO.get(influencingPeopleBeanVO1.getCasteStateId()));
 			
 			influencingPeople.setUniqueId(influencingPeopleBeanVO1.getUniqueId());
+			influencingPeople.setParty(partyDAO.get(influencingPeopleBeanVO1.getPartyId()));
 			
 			influencingPeople = influencingPeopleDAO.save(influencingPeople);
 			

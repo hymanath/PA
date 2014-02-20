@@ -37,7 +37,7 @@ public interface IWebServiceHandlerService {
 			Long caddreLevelId, String mobileNo, String uniqueId);
 	
 	public String updateIPDetails(String voterID, Long casteStateId,
-			Long caddreLevelId, String mobileNo, String uniqueId);
+			Long caddreLevelId, String mobileNo, String uniqueId,Long partyId);
 	
 	public String updateFalgDetails(String uniqueId,String flagName,String flagColor,String voterIds);
 	
