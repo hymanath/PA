@@ -1742,6 +1742,7 @@
        <property name="userDAO" ref="userDAO" />    
        <property name="activityReportFilesDAO" ref="activityReportFilesDAO" />
        <property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
+       <property name="candidateDAO" ref="candidateDAO" />
    </bean>
    
     <bean name="politicalFeedBackService" class="com.itgrids.partyanalyst.service.impl.PoliticalFeedBackService">

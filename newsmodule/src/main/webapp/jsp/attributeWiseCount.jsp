@@ -72,7 +72,7 @@
 			<!--------- Row-1 -------->
 			<div class="row-fluid">
 				<div class="span12 content_widget">
-                  <div id="myResult1"><div id="ajaximg"><img id="" width="18" height="11" style="width: 150px; height: 15px;margin-left:400px;margin-top:100px;" src="images/icons/goldAjaxLoad.gif"></div></div>
+                  <div id="myResult1"><div id="ajaximg"><img id="" width="18" height="11" style="width: 150px; height: 15px;margin-top:100px;" src="images/icons/goldAjaxLoad.gif"></div></div>
 				</div>	
 			</div>
 			<!--------- Row-1 End -------->
@@ -86,7 +86,9 @@
 			</div>-->
 		
 		<!------JS------>
-	<!-- <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>-->
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
 	<script type="text/javascript" src="js/jquery.google.api/jquery.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	 <!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css" /> -->
@@ -96,21 +98,13 @@
     <!-- <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script> -->
 <script type="text/javascript" src="js/jquery.google.api/jquery-ui1.9.0.js"></script>
 	
-	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
-
-	<link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.filter.css" />
-	<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>			
-
 	<!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/yahoo-dom-event.js"></script> 
-	<script type="text/javascript" src="js/yahoo/animation-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script>
 	<script type="text/javascript" src="js/yahoo/element-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
-	<script src="js/yahoo/resize-min.js"></script> 
-	<script src="js/yahoo/layout-min.js"></script> 
+
 	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
@@ -119,20 +113,10 @@
 	<script type="text/javascript" src="js/yahoo/tabview-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datasource-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/get-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/dragdrop-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/datatable-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/paginator-min.js"></script>
-	<script type="text/javascript" src="js/highcharts.js"></script>
     
-	<!-- Skin CSS files resize.css must load before layout.css --> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/resize.css" /> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/layout.css" />
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/container.css" /> 
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/button.css" /> 
- 	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/tabview.css" />
-	<link type="text/css" rel="stylesheet" href="styles/yuiStyles/datatable.css" />
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/paginator.css" />
-	<link rel="stylesheet" type="text/css" href="styles/yuiStyles/calendar.css" />     
+   
 
 	<!-- YUI Dependency files (End) -->
 	

@@ -9,9 +9,19 @@
 	
 	
 	
-  
+ <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/style.css">
   <link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/> 
-
+<script type="text/javascript" src="js/jquery.google.api/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.accordion.css"/>
+	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.dialog.css"/>
+	<link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
+	<script type="text/javascript" src="js/jquery.google.api/jquery.2.8.2.combo.js"></script>
+	
 <link rel="stylesheet" href="js/jQuery/development-bundle/themes/base/jquery.ui.all.css" type="text/css" media="all" />
  <script type="text/javascript" src="pagination/jquery.simplePagination.js"></script>
 	<link rel="stylesheet" type="text/css" href="pagination/simplePagination.css">
@@ -38,6 +48,7 @@ font-size:20px;
 #existingFromText,#existingToText{width:155px;cursor: text;}
 #errorMsgDiv{font-size:12px;}
 #responseNewsCountImg{height: 30px; width: 40px; margin-right: 3px;cursor: pointer;}
+#paginationId{ margin-left: 30px;margin-bottom:5px;}
 </style>
 
 </head>
@@ -58,7 +69,7 @@ font-size:20px;
 <font>Please wait...</font>
 <img src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;" width="18" height="11"/>
 </div>
-<div class="span12" id="newsDisplayDiv">						
+<div class="span12" id="newsDisplayDiv" style="text-align: left;">	<div id="ajaximg"><img width="18" height="11" src="images/icons/goldAjaxLoad.gif" style="width: 150px; height: 15px;margin-left:400px;margin-top:100px;" id=""></div>					
 </div>
 
 
@@ -113,6 +124,7 @@ function getAllGallaries(startIndex,endIndex)
 		   buildFilesInGallaryDetails(results,0,startIndex,endIndex);
 	 },
 	  error:function() { 
+	     $("#newsDisplayDiv").html('');
 	  }
 	});
 
@@ -302,7 +314,13 @@ function callAjaxToGetTheResults(selectedvalue)
 	}
 	getAllGallaries(startIndex,endIndex)
 }
-
+function getNewsDetailsByContentId(contentId)
+{
+  var urlstr = "newsDetailsPopupAction.action?contentId="+contentId+"&";
+	
+    var browser1 = window.open(urlstr,"gallaryDetails"+contentId+"","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+    browser1.focus();
+}
 </script>
 
 </body>

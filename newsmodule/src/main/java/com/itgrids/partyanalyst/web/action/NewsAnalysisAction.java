@@ -1,8 +1,10 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -63,6 +65,7 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 	private String considerParty,locationIds;
 	private SelectOptionVO graphData;
 	private AnalysisBasicInfoVO countInfo;
+	private List<AnalysisBasicInfoVO> countInfoList;
 	private FileVO analysedDetails;
 	private List<NewsAnalysisVO>  attributeCount;
 	
@@ -353,6 +356,14 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		this.attributeCount = attributeCount;
 	}
 
+	public List<AnalysisBasicInfoVO> getCountInfoList() {
+		return countInfoList;
+	}
+
+	public void setCountInfoList(List<AnalysisBasicInfoVO> countInfoList) {
+		this.countInfoList = countInfoList;
+	}
+
 	public String execute()
 	{
 		session = request.getSession();
@@ -604,7 +615,93 @@ public class NewsAnalysisAction extends ActionSupport implements ServletRequestA
 		}
 		return Action.SUCCESS;
     }
-    
+    public String getAnalysedNewsCountForMultiParties(){
+    	try {
+			LOG.debug("Entered into getAnalysedNewsCountForMultiParties method in NewsAnalysisAction Ation");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return Action.ERROR;
+			countInfoList = new ArrayList<AnalysisBasicInfoVO>();  
+			jObj = new JSONObject(getTask());
+			String fromdate           = jObj.getString("fromdate");
+			String todate             = jObj.getString("todate");
+			String partyIds           = jObj.getString("partyId");
+			//Long candidateId          = jObj.getLong("candidateId");
+			Long locationLevelId      = jObj.getLong("locationLevelId");
+			String locationLevelValue = jObj.getString("locationLevelValue");
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromdate != null && fromdate.trim().length() >0){
+				startDate = format.parse(fromdate.trim());
+			}
+			if(todate != null && todate.trim().length() >0){
+				endDate = format.parse(todate.trim());
+			}
+			if(partyIds.trim().length() > 0){
+				TreeMap<Long,String> partyNamesMap = newsAnalysisService.getPartyNames(partyIds);
+				String[] ids = partyIds.split(",");
+				for(String id:ids){
+					Long partyId = Long.valueOf(id);
+					countInfo = newsAnalysisService.getAnalysedNewsCount(startDate,endDate,partyId,0l,locationLevelId,locationLevelValue);
+					if(countInfo != null && ((countInfo.getTotalCount() != null && countInfo.getTotalCount().getTotal() > 0) || (countInfo.getOwnNews() != null && countInfo.getOwnNews().getTotal() > 0) || (countInfo.getOnOtherParty() != null && countInfo.getOnOtherParty().getTotal() > 0) || (countInfo.getOnMe() != null && countInfo.getOnMe().getTotal() > 0) || (countInfo.getInMedia() != null && countInfo.getInMedia().getTotal() > 0))){
+						countInfo.setId(partyId);
+						if(partyNamesMap.get(partyId) != null){
+							countInfo.setName(partyNamesMap.get(partyId));
+						}else{
+							countInfo.setName("");
+						}
+						if(partyId.longValue() == 872l){
+						    countInfoList.add(0,countInfo);
+						}else{
+							countInfoList.add(countInfo);
+						}
+					}
+				}
+				//newsAnalysisService.generateExcelForAnalysis(startDate,endDate,partyIds,ids,locationLevelId,locationLevelValue);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in getAnalysedNewsCountForMultiParties method in NewsAnalysisAction Action",e);
+		}
+		return Action.SUCCESS;
+    }
+    public String prepareExelForAnalysedNewsCount(){
+    	try {
+			LOG.debug("Entered into prepareExelForAnalysedNewsCount method in NewsAnalysisAction Ation");
+			session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+			if(regVO == null)
+				return Action.ERROR;
+			countInfoList = new ArrayList<AnalysisBasicInfoVO>();  
+			jObj = new JSONObject(getTask());
+			String fromdate           = jObj.getString("fromdate");
+			String todate             = jObj.getString("todate");
+			String partyIds           = jObj.getString("partyId");
+			Long candidateId          = jObj.getLong("candidateId");
+			Long locationLevelId      = jObj.getLong("locationLevelId");
+			String locationLevelValue = jObj.getString("locationLevelValue");
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+			if(fromdate != null && fromdate.trim().length() >0){
+				startDate = format.parse(fromdate.trim());
+			}
+			if(todate != null && todate.trim().length() >0){
+				endDate = format.parse(todate.trim());
+			}
+			if(partyIds.trim().length() > 0){
+				
+				String[] ids = partyIds.split(",");
+				graphData = newsAnalysisService.generateExcelForAnalysis(startDate,endDate,partyIds,ids,locationLevelId,locationLevelValue,candidateId);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised in prepareExelForAnalysedNewsCount method in NewsAnalysisAction Action",e);
+		}
+		return Action.SUCCESS;
+    }
     public String viewAnalysedNews(){
 		session = request.getSession();
         RegistrationVO user = (RegistrationVO)session.getAttribute("USER");

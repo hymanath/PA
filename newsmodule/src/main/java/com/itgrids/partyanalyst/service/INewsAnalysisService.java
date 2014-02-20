@@ -2,12 +2,13 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.itgrids.partyanalyst.dto.AnalysisBasicInfoVO;
-import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsAnalysisVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface INewsAnalysisService {
@@ -36,4 +37,8 @@ public interface INewsAnalysisService {
 	public List<FileVO> getAnalysedNews(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long onPartyId,String type,String benifit,Integer startIndex,Integer maxIndex,Long categoryId,Long sourceId,Long otherPartyId,Long keywordId);
 	
 	public List<NewsAnalysisVO> getSourceCategoryCount(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,String type,String benifit,Integer startIndex,Integer maxIndex,Long otherPartyId);
+	
+	public TreeMap<Long,String> getPartyNames(String partyIds);
+	
+	public SelectOptionVO generateExcelForAnalysis(Date startDate,Date endDate,String ids,String[] partyIds,Long locationLevelId,String locationLevelValue,Long candidatateId);
 }

@@ -4,7 +4,7 @@
 		var locationIds = '';
 		var startDate = '';
 		var endDate = '';
-
+ var excelJson="";
 function callAjax(jsObj,url)
 	{
 
@@ -58,10 +58,23 @@ function callAjax(jsObj,url)
 					else if(jsObj.task == "getAnalysedDataNew"){
                       buildAnalysisDetails(myResults,jsObj);
                     }
+					else if(jsObj.task == "getMultipleAnalysedDataNew"){
+					  buildMultipleAnalysisDetails(myResults,jsObj);
+					}
+					else if(jsObj.task == "exportMultipleAnalysedDataNew"){
+					  if(myResults == null || myResults.name == "fail"){
+					    alert("Error occured while generationg excel ");
+						$.unblockUI();
+					  }else{
+					     $.unblockUI();
+			              window.open(myResults.url);
+					  }
+					}
 				}
 				catch(e)
 				{   
 				 $("#submitDataImg").hide();
+				  $.unblockUI();
 				}  
 			},
 			scope : this,
@@ -458,35 +471,50 @@ function callAjax(jsObj,url)
 	
 	function buildSelectOptionVoforMuntiple(results,divId1,divId2,name)
 	{
-		$('#'+divId1+'').find('option').remove();
-		$('#'+divId1+'').append('<option value="0">Select '+name+'</option>');
+		//$('#'+divId1+'').find('option').remove();
+		//$('#'+divId1+'').append('<option value="0">Select '+name+'</option>');
 		$('#'+divId2+'').find('option').remove();
-		$('#'+divId2+'').append('<option value="0">Select '+name+'</option>');
+		//$('#'+divId2+'').append('<option value="0">Select '+name+'</option>');
 		if(results != null)
 		{
 			for(var i in results)
 			{
-				$('#'+divId1+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
+				//$('#'+divId1+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
 				$('#'+divId2+'').append('<option value="'+results[i].id+'">'+results[i].name+'</option>');
 			}
 			
 		}
+		$('#'+divId2+'').multiselect({	
+					multiple: true,
+					selectedList: 1,
+					hide: "explode"	
+			}).multiselectfilter({
+				//header:"Select Source"    
+			});
 	}
 	
 	function getCandidatesOfSelectedParty(partyId,divId)
 	{
 		$('#list1').find('option').remove();
 		$('#candidateAjaxImg').show();
-		
-			var jsObj = {
+		var selectedPartyIds = $("#partyList").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+		if(selectedPartyIds.length == 1){
+		   var jsObj = {
 				partyId :partyId,
 				divId   : divId,
 				task : "getCandidatesOfAParty"	
 			};
 		
-		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "getCandidatesOfAParty.action?"+rparam;
-		callAjax(jsObj,url);
+			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+			var url = "getCandidatesOfAParty.action?"+rparam;
+			callAjax(jsObj,url);
+		}else{
+		  $('#candidateId').find('option').remove();
+		  $('#candidateId').append('<option value="0">Select Candidate</option>');
+		}
+			
 	}
 	
 	function  getBenefitList()
@@ -707,8 +735,8 @@ $(document).ready(function(){
 		$('#reportsTabId').addClass('menuActive');
 		
 	getPartiesList();
-	getBenefitList();
-	getSource();
+	//getBenefitList();
+	//getSource();
 		
 	$('#districtSelReportId').multiselect({	
 			multiple: true,
@@ -978,22 +1006,30 @@ function getClickedNews(sourceCandId,destiCandId,sourcePartyId,destiPartyId,loca
      browser1.focus();
 }
 
-function getNews(sourceType,benifitsFor,destid){
+function getNews(sourceType,benifitsFor,destid,partyId){
 	var destiPartyId = '';
-     if(destid != undefined){
+	var actualPartyId = sourcePartyId;
+     if(destid != undefined && destid != ''){
       destiPartyId =destid; 
      }
-var browser1 = window.open("getAllNewsAction.action?sourceCandId="+sourceCandId+"&sourcePartyId="+sourcePartyId+"&locationLvl="+locationLvl+"&locationIds="+locationIds+"&startDate="+startDate+"&endDate="+endDate+"&sourceType="+sourceType+"&benifitsFor="+benifitsFor+"&destiPartyId="+destiPartyId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	 if(partyId != undefined && partyId != ''){
+      actualPartyId =partyId; 
+     }
+var browser1 = window.open("getAllNewsAction.action?sourceCandId="+sourceCandId+"&sourcePartyId="+actualPartyId+"&locationLvl="+locationLvl+"&locationIds="+locationIds+"&startDate="+startDate+"&endDate="+endDate+"&sourceType="+sourceType+"&benifitsFor="+benifitsFor+"&destiPartyId="+destiPartyId,"viewNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 
 }
 
-function getAttributeNews(sourceType,benifitsFor,destid){
+function getAttributeNews(sourceType,benifitsFor,destid,partyId){
+    var actualPartyId = sourcePartyId;
 	var destiPartyId = '';
-     if(destid != undefined){
+     if(destid != undefined && destid != ''){
       destiPartyId =destid; 
      }
-var browser1 = window.open("getAllAttrNewsAction.action?sourceCandId="+sourceCandId+"&sourcePartyId="+sourcePartyId+"&locationLvl="+locationLvl+"&locationIds="+locationIds+"&startDate="+startDate+"&endDate="+endDate+"&sourceType="+sourceType+"&benifitsFor="+benifitsFor+"&destiPartyId="+destiPartyId,"SearchNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+	 if(partyId != undefined && partyId != ''){
+      actualPartyId =partyId; 
+     }
+var browser1 = window.open("getAllAttrNewsAction.action?sourceCandId="+sourceCandId+"&sourcePartyId="+actualPartyId+"&locationLvl="+locationLvl+"&locationIds="+locationIds+"&startDate="+startDate+"&endDate="+endDate+"&sourceType="+sourceType+"&benifitsFor="+benifitsFor+"&destiPartyId="+destiPartyId,"SearchNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 
 
@@ -1054,16 +1090,11 @@ function buildPartyWiseGraph(myResults,jsObj){
 
 
 }
-function getAnalysisDataNew(){
-  var partyId   = $("#partyList option:selected").val();
-  if(partyId == undefined || partyId == 0){
-    $("#errormessageDiv").html("Please Select Party");
-	$("#errormessageDiv").show();
-	return;
-  }else{
+function getAnalysisDataNew(partyId){
+  
    $("#errormessageDiv").html("");
    $("#errormessageDiv").hide();
-  }
+  
   var candidateId   = $("#candidateId option:selected").val();
   var fromdate = $("#fromDateId").val();
   var todate   = $("#todateId").val();
@@ -1124,17 +1155,350 @@ function getAnalysisDataNew(){
 			locationLevelValue : locationLevelValue,
 			task : "getAnalysedDataNew"	
 		};
-		
+	var jsObj1 = {
+			fromdate :fromdate,
+			todate : todate,
+			selectedName:selectedName,
+			partyId : partyId,		
+			candidateId : candidateId,
+			locationLevelId : locationLevelId,
+			locationLevelValue : locationLevelValue,
+			task : "exportMultipleAnalysedDataNew"	
+		};
+		excelJson = jsObj1;	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	    var url = "getAnalysedNewsCount.action?"+rparam;						
 	    callAjax(jsObj,url);
 }
+function getAnalysisDataNewFroMultiple(){
+  
+   $("#errormessageDiv").html("");
+   $("#errormessageDiv").hide();
+  $("#myResult1").html("");
+  var str="";
+  var isvalid = true;
+  if(checkIsDateValid('fromDateId','todateId')){
+     isvalid = false;
+     str+="From Date Should Be Less Than To Date<br/>";
+  }
+  excelJson="";
+  var candidateId   = $("#candidateId option:selected").val();
+  var fromdate = $("#fromDateId").val();
+  var todate   = $("#todateId").val();
+  var locationLevelId = $("#locationLevelId option:selected").val();
+	var locationLevelValue = "";
+	var selectedLocationvalues = "";
+	var selectedPartyIds = "";
+	var advanceView = booleanVal;
+	var selectedName = "";
+	var partyIds = "";
+	if(candidateId > 0){
+	  selectedName = $("#candidateId option:selected").text();
+	}else{
+	  selectedName = $("#partyList option:selected").text();
+	}
+	if(locationLevelId == 0)
+	{
+		locationLevelValue = 0;
+	}	
+	else if(locationLevelId == 1)
+	{
+		selectedLocationvalues = $("#districtSelReportId").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+	}
+	else if(locationLevelId == 2)
+	{
+		selectedLocationvalues = $("#parliamSelReportId").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+	}
+	else if(locationLevelId == 3)
+	{
+		selectedLocationvalues = $("#assembSelReportId").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+	}
+	for(var i in selectedLocationvalues)
+	{
+		locationLevelValue = locationLevelValue+""+selectedLocationvalues[i]+",";
+	}
+	if(locationLevelValue!=0 && locationLevelValue.length > 0){
+	 locationLevelValue = locationLevelValue.substring(0,locationLevelValue.length - 1);
+	}
+	selectedPartyIds = $("#partyList").multiselect("getChecked").map(function(){
+			return this.value;    
+		}).get();
+	if(selectedPartyIds.length == 1){
+	  getAnalysisDataNew(selectedPartyIds[0]);
+	  return;
+	}
+	if(selectedPartyIds =="" || selectedPartyIds.length == 0){
+	    str+="Please Select Party"
+		$("#errormessageDiv").html(str);
+		$("#errormessageDiv").show();
+	   return;
+    }else{
+	   $("#errormessageDiv").html("");
+	   $("#errormessageDiv").hide();
+	 }
+	 if(!isvalid){
+	    $("#errormessageDiv").html(str);
+		$("#errormessageDiv").show();
+		return;
+	 }
+	 for(var i in selectedPartyIds)
+	{
+		partyIds = partyIds+""+selectedPartyIds[i]+",";
+	}
+	if(partyIds!=0 && partyIds.length > 0){
+	 partyIds = partyIds.substring(0,partyIds.length - 1);
+	}
+	$("#submitDataImg").show();
+	sourceCandId = candidateId;
+	sourcePartyId = 0;
+	locationLvl =  locationLevelId;
+	locationIds = locationLevelValue;
+	startDate =  fromdate;
+	endDate = todate;
+			
+	var jsObj = {
+			fromdate :fromdate,
+			todate : todate,
+			selectedName:selectedName,
+			partyId : partyIds,		
+			candidateId : candidateId,
+			locationLevelId : locationLevelId,
+			locationLevelValue : locationLevelValue,
+			task : "getMultipleAnalysedDataNew"	
+		};
+		var jsObj1 = {
+			fromdate :fromdate,
+			todate : todate,
+			selectedName:selectedName,
+			partyId : partyIds,		
+			candidateId : candidateId,
+			locationLevelId : locationLevelId,
+			locationLevelValue : locationLevelValue,
+			task : "exportMultipleAnalysedDataNew"	
+		};
+		excelJson = jsObj1;
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	    var url = "getMultipleAnalysedNewsCount.action?"+rparam;						
+	    callAjax(jsObj,url);
+}
 
+function exportAsExel(){
+ $.blockUI({ message: '<h6><img src="images/icons/goldAjaxLoad.gif"/>Please wait.....</h6>' });
+  var rparam ="task="+YAHOO.lang.JSON.stringify(excelJson);
+	    var url = "prepareExcelForNewsCount.action?"+rparam;						
+	    callAjax(excelJson,url);
+}
+
+function buildMultipleAnalysisDetails(resultArray,jsObj){
+$("#submitDataImg").hide();
+   var str="";
+   if(resultArray != null && resultArray.length > 0){
+   str+="<div class='pull-right' style='margin-top: -33px;'><a onclick='exportAsExel();' class='btn btn-info'>Export As Excel</a></div>";
+   str+="<div class='accordion' id='accordion2'>";
+    for(var x in resultArray){
+	result = resultArray[x];
+	str+="<div class='accordion-group'>";
+	str+="<div class='accordion-heading'>";
+	if(x%2 == 0 ){
+      str+="<a class='accordion-toggle evenColor' data-toggle='collapse' data-parent='#accordion2' href='#collapse"+x+"'>"+result.name+"</a>";
+	}else{
+	  str+="<a class='accordion-toggle oddColor' data-toggle='collapse' data-parent='#accordion2' href='#collapse"+x+"'>"+result.name+"</a>";
+	}
+	 str+="<span class='pull-right' style='margin-top:-29px;width:75%'><span class='partyCounts'>Total News : ";
+	 if(result.totalCount.total > 0){
+	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"total\",\"\","+result.id+")' >"+result.totalCount.total+"</a>&nbsp;<a class='partyCountImg' title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"total\",\"total\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+	 }else{
+	    str+=""+result.totalCount.total+"";
+	 }
+	 str+="</span>&nbsp;&nbsp;<span class='partyCounts'>  Positive News : ";
+	 if(result.totalCount.positiveCount > 0){
+	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"positive\",\"\","+result.id+")' >"+result.totalCount.positiveCount+"</a>&nbsp;<a class='partyCountImg' title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"total\",\"positive\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+	 }else{
+	    str+=""+result.totalCount.positiveCount+"";
+	 }
+	 str+="</span>&nbsp;&nbsp;<span class='partyCounts'>  Negative News : ";
+	 if(result.totalCount.negativeCount > 0){
+	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"negative\",\"\","+result.id+")' >"+result.totalCount.negativeCount+"</a>&nbsp;<a class='partyCountImg' title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"total\",\"negative\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+	 }else{
+	    str+=""+result.totalCount.negativeCount+"";
+	 }
+	 str+="</span></span>";	
+	
+	
+    str+='</div>';
+	 str+='<div id="collapse'+x+'" class="accordion-body collapse">';
+    str+='<div class="accordion-inner">';
+
+	if(result.ownNews != null && result.ownNews.total > 0){
+	 str+="<div class='widget m_top10'  style='padding-left: 8px; padding-right: 8px;'>";
+	 str+="<legend class='boxHeading m_top10'>"+result.name+" Own News </legend><span class='btn btn-large'>Total News : ";
+	 if(result.ownNews.total > 0){
+	   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"own\",\"total\",\"\","+result.id+")' >"+result.ownNews.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"own\",\"total\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+	 }else{
+	   str+=""+result.ownNews.total+"";
+	 }
+	 str+="</span>&nbsp;&nbsp;&nbsp;<span class='btn btn-large'>Negative News:&nbsp;";
+		if(result.ownNews.negativeCount > 0){
+		  str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"own\",\"negative\",\"\","+result.id+")' >"+result.ownNews.negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"own\",\"negative\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		}else{
+		  str+=""+result.ownNews.negativeCount+"";
+		}
+		str+="</span>";
+	 str+="</div>";	
+	}
+	if(result.onOtherParty != null && result.onOtherParty.total > 0){
+		str+="<div class='widget m_top10'  style='padding-left: 8px; padding-right: 8px;'>";
+		str+="<div> <legend class='boxHeading m_top10'>"+result.name+" Targeting On Other Parties</legend>  <div class='btn btn-large ' style='float:right;margin-bottom: 15px; margin-right: 15px;'><b>Total News:&nbsp;</b>";
+		if(result.onOtherParty.total > 0){
+		  str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"other\",\"total\",\"\","+result.id+")' >"+result.onOtherParty.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"other\",\"total\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		}else{
+		  str+=""+result.onOtherParty.total+"";
+		}
+		str+="&nbsp;&nbsp;&nbsp;<span class='text-success'><b>Positive News:&nbsp;</b>";
+		if(result.onOtherParty.positiveCount > 0){
+		   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"other\",\"positive\",\"\","+result.id+")' >"+result.onOtherParty.positiveCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"other\",\"positive\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		}else{
+		  str+=""+result.onOtherParty.positiveCount+"";
+		}
+		str+="</span>&nbsp;&nbsp;&nbsp;<span class='text-error'><b>Negative News:&nbsp;</b>";
+		if(result.onOtherParty.negativeCount > 0){
+		  str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"other\",\"negative\",\"\","+result.id+")' >"+result.onOtherParty.negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"other\",\"negative\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		}else{
+		  str+=""+result.onOtherParty.negativeCount+"";
+		}
+		str+="</span>&nbsp;&nbsp;&nbsp;</div></div>";
+		str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
+			   str+="  <thead><tr>";
+			  str+="    <th>Other Parties</th>";
+			  str+="    <th>TotalNews Count</th>";
+			  str+="    <th>Positive Count</th>";
+			  str+="    <th>Negative Count</th>";
+			   str+="  </tr></thead>";
+			   str+="  <tbody>";
+			   for(var i in result.onOtherParty.subList){
+			   str+=" <tr>";
+			   str+="    <td>"+result.onOtherParty.subList[i].name+"</td>";
+			   if(result.onOtherParty.subList[i].total > 0){
+			     str+="    <td><a title='Click here to view news' href='javascript:{};' onclick='getNews(\"other\",\"total\","+result.onOtherParty.subList[i].id+","+result.id+")' >"+result.onOtherParty.subList[i].total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"other\",\"total\","+result.onOtherParty.subList[i].id+","+result.id+")' ><img src='images/analyse1.png' /></a></td>";
+			   }else{
+			     str+="    <td>"+result.onOtherParty.subList[i].total+"</td>";
+			   }
+			   if(result.onOtherParty.subList[i].positiveCount > 0){
+			     str+="    <td><a title='Click here to view news' href='javascript:{};' onclick='getNews(\"other\",\"positive\","+result.onOtherParty.subList[i].id+","+result.id+")' >"+result.onOtherParty.subList[i].positiveCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"other\",\"positive\","+result.onOtherParty.subList[i].id+","+result.id+")' ><img src='images/analyse1.png' /></a></td>";
+			   }else{
+			     str+="    <td>"+result.onOtherParty.subList[i].positiveCount+"</td>";
+			   }
+			   if(result.onOtherParty.subList[i].negativeCount > 0){
+			     str+="    <td><a title='Click here to view news' href='javascript:{};' onclick='getNews(\"other\",\"negative\","+result.onOtherParty.subList[i].id+","+result.id+")' >"+result.onOtherParty.subList[i].negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"other\",\"negative\","+result.onOtherParty.subList[i].id+","+result.id+")' ><img src='images/analyse1.png' /></a></td>";
+			   }else{
+			     str+="    <td>"+result.onOtherParty.subList[i].negativeCount+"</td>";
+			   }
+			   str+=" </tr>";
+			  }
+			   str+="  </tbody>";
+			   str+="  </table>";
+              str+="</div>";
+		}
+
+		if(result.onMe != null && result.onMe.total > 0){
+		str+="<div class='widget m_top10'  style='padding-left: 8px; padding-right: 8px;'>";
+		 str+="<div> <legend class='boxHeading m_top10'>Other Parties Targeting On "+result.name+"</legend>  <div class='btn btn-large ' style='float:right;margin-bottom: 15px; margin-right: 15px;'><b>Total News:&nbsp;</b>";
+		 if(result.onMe.total > 0){
+		   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"onme\",\"total\",\"\","+result.id+")' >"+result.onMe.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"onme\",\"total\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		 }else{
+		   str+=""+result.onMe.total+"";
+		 }
+		 str+="&nbsp;&nbsp;&nbsp;<span class='text-success'><b>Positive News:&nbsp;</b>";
+		 if(result.onMe.positiveCount > 0){
+		   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"onme\",\"positive\",\"\","+result.id+")' >"+result.onMe.positiveCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"onme\",\"positive\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		 }else{
+		   str+=""+result.onMe.positiveCount+"";
+		 }
+		 str+="</span>&nbsp;&nbsp;&nbsp;<span class='text-error'><b>Negative News:&nbsp;</b>";
+		 if(result.onMe.negativeCount > 0){
+		   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"onme\",\"negative\",\"\","+result.id+")' >"+result.onMe.negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"onme\",\"negative\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		 }else{
+		   str+=""+result.onMe.negativeCount+"";
+		 }
+		 str+="&nbsp;&nbsp;&nbsp;</span></div></div>";
+		 str+="<table class='analysisResult table table-bordered table-striped table-hover'>";
+			   str+="  <thead><tr>";
+			   str+="    <th>Other Parties</th>";
+			   str+="    <th>TotalNews Count</th>";
+			   str+="    <th>Possitive Count</th>";
+			   str+="    <th>Negative Count</th>";
+			   str+="  </tr></thead>";
+			   str+="  <tbody>";
+			   for(var i in result.onMe.subList){
+				str+=" <tr>";
+				str+="    <td>"+result.onMe.subList[i].name+"</td>";
+				if(result.onMe.subList[i].total > 0){
+				  str+="    <td><a title='Click here to view news' href='javascript:{};' onclick='getNews(\"onme\",\"total\","+result.onMe.subList[i].id+","+result.id+")' >"+result.onMe.subList[i].total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"onme\",\"total\","+result.onMe.subList[i].id+","+result.id+")' ><img src='images/analyse1.png' /></a></td>";
+				}else{
+				  str+="    <td>"+result.onMe.subList[i].total+"</td>";
+				}
+				if(result.onMe.subList[i].positiveCount > 0){
+				  str+="    <td><a title='Click here to view news' href='javascript:{};' onclick='getNews(\"onme\",\"positive\","+result.onMe.subList[i].id+","+result.id+")' >"+result.onMe.subList[i].positiveCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"onme\",\"positive\","+result.onMe.subList[i].id+","+result.id+")' ><img src='images/analyse1.png' /></a></td>";
+				}else{
+				  str+="    <td>"+result.onMe.subList[i].positiveCount+"</td>";
+				}
+				if(result.onMe.subList[i].negativeCount > 0){
+				  str+="    <td><a title='Click here to view news' href='javascript:{};' onclick='getNews(\"onme\",\"negative\","+result.onMe.subList[i].id+","+result.id+")' >"+result.onMe.subList[i].negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"onme\",\"negative\","+result.onMe.subList[i].id+","+result.id+")' ><img src='images/analyse1.png' /></a></td>";
+				}else{
+				  str+="    <td>"+result.onMe.subList[i].negativeCount+"</td>";
+				}
+				str+=" </tr>";
+			  }
+			   str+="  </tbody>";
+			   str+="  </table>";
+		  str+="  </div>";
+		}
+		if(result.inMedia != null && result.inMedia.total > 0){
+		str+="<div class='widget m_top10'  style='padding-left: 8px; padding-right: 8px;padding-bottom: 15px;'>";
+		 str+="<div> <legend class='boxHeading m_top10'>News On "+result.name+" In Media </legend></div><div class='btn btn-large'>Total News : ";
+		 if(result.inMedia.total > 0){
+		   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"media\",\"total\",\"\","+result.id+")' >"+result.inMedia.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"media\",\"total\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		 }else{
+		   str+=""+result.inMedia.total+"";
+		 }
+		 str+="</div>&nbsp;&nbsp;  <div class='btn btn-large'>Positive News : ";
+		 if(result.inMedia.positiveCount > 0){
+		   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"media\",\"positive\",\"\","+result.id+")' >"+result.inMedia.positiveCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"media\",\"positive\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		 }else{
+		   str+=""+result.inMedia.positiveCount+"";
+		 }
+		 str+="</div> &nbsp;&nbsp; <div class='btn btn-large'>Negative News : ";
+		 if(result.inMedia.negativeCount > 0){
+		   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"media\",\"negative\",\"\","+result.id+")' >"+result.inMedia.negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"media\",\"negative\",\"\","+result.id+")' ><img src='images/analyse1.png' /></a>";
+		 }else{
+		   str+=""+result.inMedia.negativeCount+"";
+		 }
+		 str+="</div>";	
+		 str+="</div>";	
+		}
+		str+="</div>";	
+		str+='</div>';
+	  str+='</div>';
+	 }
+	  
+	  str+='</div>';
+	}else{
+	  str+='<span style="margin-left:340px;font-weight:bold;">No News Exists With Your Search Criteria</span>';
+	}
+		$("#myResult1").html(str);
+	}
 function buildAnalysisDetails(result,jsObj){
 $("#submitDataImg").hide();
    var str="";
    if((result.totalCount != null && result.totalCount.total > 0) || (result.ownNews != null && result.ownNews.total > 0) || (result.onOtherParty != null && result.onOtherParty.total > 0) || (result.onMe != null && result.onMe.total > 0) || (result.inMedia != null && result.inMedia.total > 0)){
     if(result.totalCount != null && result.totalCount.total > 0){
+	str+="<div class='pull-right' style='margin-top: -33px;'><a onclick='exportAsExel();' class='btn btn-info'>Export As Excel</a></div>";
 	 str+="<div><h4>Total News Articles </h4></div><div class='btn btn-large'>Total News : ";
 	 if(result.totalCount.total > 0){
 	    str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"total\",\"total\")' >"+result.totalCount.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"total\",\"total\")' ><img src='images/analyse1.png' /></a>";
@@ -1156,13 +1520,19 @@ $("#submitDataImg").hide();
 	 str+="</div>";	
 	}
 	if(result.ownNews != null && result.ownNews.total > 0){
-	 str+="<legend class='boxHeading m_top10'>"+jsObj.selectedName+" Own News </legend><div class='btn btn-large'>Total News : ";
+	 str+="<legend class='boxHeading m_top10'>"+jsObj.selectedName+" Own News </legend><span class='btn btn-large'>Total News : ";
 	 if(result.ownNews.total > 0){
-	   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"own\",\"own\")' >"+result.ownNews.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"own\",\"own\")' ><img src='images/analyse1.png' /></a>";
+	   str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"own\",\"total\")' >"+result.ownNews.total+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"own\",\"total\")' ><img src='images/analyse1.png' /></a>";
 	 }else{
 	   str+=""+result.ownNews.total+"";
 	 }
-	 str+="</div>";	
+	 str+="</span>&nbsp;&nbsp;&nbsp;<span class='btn btn-large'>Negative News:&nbsp;";
+		if(result.ownNews.negativeCount > 0){
+		  str+="<a title='Click here to view news' href='javascript:{};' onclick='getNews(\"own\",\"negative\")' >"+result.ownNews.negativeCount+"</a>&nbsp;<a title='Click here to analyse' href='javascript:{};' onclick='getAttributeNews(\"own\",\"negative\")' ><img src='images/analyse1.png' /></a>";
+		}else{
+		  str+=""+result.ownNews.negativeCount+"";
+		}
+		str+="</span>";
 	}
 	if(result.onOtherParty != null && result.onOtherParty.total > 0){
 		
@@ -1296,3 +1666,14 @@ $("#submitDataImg").hide();
 	}
 		$("#myResult1").html(str);
 	}
+ function clearAllSelVals(){
+     $("#districtSelReportId").multiselect("getChecked").map(function(){
+			this.click();	
+	});
+	 $("#assembSelReportId").multiselect("getChecked").map(function(){
+			this.click();	
+	});
+	 $("#parliamSelReportId").multiselect("getChecked").map(function(){
+			this.click();	
+	});
+  } 
