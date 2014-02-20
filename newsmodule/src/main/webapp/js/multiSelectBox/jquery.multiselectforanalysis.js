@@ -260,7 +260,6 @@
 				   str+='</ul></div>';
 				   $("#locationsSelShowDiv").html(str);
 			    }else if(destinationId == "assembSelReportId"){
-				  //if(dataArray.length <=50){
 					   var str='';
 					   str+='<div style="width: 100%;" class="pull-left"><h4>Selected Assemblys</h4></div><div class="pull-left" style="max-height:100px;overflow-y:scroll;width:100%;"><ul class="as-selections1">';
 						for(var i in dataArray){
@@ -268,24 +267,6 @@
 						}
 					   str+='</ul></div>';
 					   $("#locationsSelShowDiv").html(str);
-					   $("#moreParlConstis").close();
-				   /*}else{
-				        var str='';
-					   str+='<div style="width: 100%;" class="pull-left"><h4>Selected Assemblys</h4></div><ul class="as-selections1">';
-						for(var i =0; i<50;i++){
-						  str+='<li id="as-assembly-selection-'+i+'" class="as-selection-item">'+dataArray[i].name+'<a class="as-close" href="javascript:void(0)" onclick="deleteThisSel('+dataArray[i].id+',\'as-assembly-selection-'+i+'\',\'assembly\');">x</a></li>';
-						}
-					   str+='</ul><br/>';
-					   str+='<div class=" pull-left" style="width: 100%; margin-left: 32px; margin-top: 5px;"><a href="javascript:{};" type="button" onclick="showRemainingConstis();" ><span>View All<span></a></div>';
-					   str+='<div id="moreParlConstis" style="display:none;"><ul class="as-selections1">';
-					   for(var i in dataArray){
-					   locVar = locVar+1;
-						  str+='<li id="as-assembly-selection-'+locVar+'t" class="as-selection-item">'+dataArray[i].name+'<a class="as-close" href="javascript:void(0)" onclick="deleteThisSel('+dataArray[i].id+',\'as-assembly-selection-'+locVar+'t\',\'assembly\',\'dilog\');">x</a></li>';
-						}
-					   str+='</ul>';
-					    str+='</div>';
-					   $("#locationsSelShowDiv").html(str);
-				   }*/
 			    }
 			   }
 			}else{
