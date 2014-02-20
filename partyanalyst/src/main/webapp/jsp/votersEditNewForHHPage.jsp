@@ -639,6 +639,8 @@ function buildQuestionAnswers(results){
 	var str="";
 	str+="<div class='span10 row'>"
 	str+="<form name='QuestionAnswersForm' id='QuestionAnswersFormId' action='hhQstnAnswrsForm.action'>";
+
+	str+='<input type="hidden" name="houseHoldsId" id="houseHoldsId"/>';
 	var queLoopId = 0;
 	for(var i in results){
 	str+="<div class='span12'>";
@@ -1032,14 +1034,20 @@ function saveHouseHoldInfo(){
 </script>
 <script>
 var voterDtls={
+	boothId:'',
 	voters:[]	
 };
 function submitQuestionDetails()
 {
+	 voterDtls.voters = [];
+	 voterDtls.boothId = "${boothId}";
+	 voterDtls.houseNo = "${houseNo}";
+
   $('.voterChkbx').each(function(index,value){
 
 	   if(this.checked)
 	   {
+			
 		   selectedVoterDtls =
 			       {
 			         voterId:this.value,
@@ -1061,11 +1069,19 @@ function submitQuestionDetails()
           data: {task:JSON.stringify(voterDtls)},
 
           success: function(result){ 
+			  setHiddenFieldInForm(result);
           },
           error:function() { 
            console.log('error', arguments);
           }
     });
+}
+
+function setHiddenFieldInForm(houseHoldsId)
+{
+	$('#houseHoldsId').val(houseHoldsId);
+	$('#voterDetailsForm').submit();
+
 }
 </script>
 </body>

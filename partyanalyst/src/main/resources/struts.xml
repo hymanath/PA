@@ -6400,7 +6400,7 @@
 		
 		 <action name="saveHouseHoldsVotersDetailsAction" class="houseHoldSurveyReportAction" method="saveHouseHoldsVotersDetails">
 			<result type="json" name="success">
-				<param name="root">votersFamilyInfo</param>				
+				<param name="root">houseHoldsId</param>				
 			</result> 
 		</action>
 		
