@@ -2204,43 +2204,13 @@ public List<SelectOptionVO> getConstituencyList()
   					Date currentTime =date.getCurrentDateAndTime();
   					String lastAuthorisedTime = getLastAuthorisedTime(pastTime,currentTime,params[7].toString());
   					registrationVO.setDateOfBirth(lastAuthorisedTime);
-  					/*cal.setTime(pastTime);
-  					long t1 =cal.getTimeInMillis();
-  					cal.setTime(currentTime);
-  					long diff = Math.abs(cal.getTimeInMillis() - t1);
-  					long diffInsec = diff/1000;
-  					if(diffInsec < 60)
-  					{
-  						sec = diffInsec;
-  						if(sec == 1)
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+" second ago)":"");
-  						else
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+sec+" seconds ago)":"");
-  					}
-  					else if(diffInsec > 60 && diffInsec < 3600)	
-  					{
-  						min = diffInsec/60;
-  						if(min == 1)
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+min+" minute ago)":"");
-  						else 
-  							registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+min+" minutes ago)":"");
-  					}
-  					else if(diffInsec > 3600 && diffInsec < 86400)	
-  					{
-  						hr = diffInsec/3600;
-  						if(hr == 1)
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+hr+" hour ago)":"");
-  						else
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+hr+" hours ago)":"");	
-  					}
-  					else if(diff > 86400)	
-  					{
-  						day = diffInsec/86400;
-  						if(day == 1)
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+day+" day ago)":"");
-  						else
-  						registrationVO.setDateOfBirth(params[7]!=null?params[7].toString()+"("+day+" days ago)":"");	
-  					}*/
+  					
+  				     if(lastAuthorisedTime.indexOf("days") > 0)
+  				     {
+  				    	String days = lastAuthorisedTime.substring(lastAuthorisedTime.indexOf("(")+1,lastAuthorisedTime.indexOf(")")).replaceAll("[a-zA-Z]", "");
+  				    	if( Long.valueOf(days.toString().trim()) >= 10)
+  				    	sendSmsToMobileAppUser(firstName +" "+lastName,params[9].toString());
+  				     }
   					registrationVO.setAppId(params[8]!=null?params[8].toString():"");
   					result.add(registrationVO);
   					
@@ -2255,7 +2225,21 @@ public List<SelectOptionVO> getConstituencyList()
 		return result;
   	}
   	
-  	
+  	public ResultStatus sendSmsToMobileAppUser(String uname,String mobileNo)
+  	{
+  		ResultStatus resultStatus = new ResultStatus();
+  		try{
+  		
+  			String message = "Dear "+uname+" ,your IPAD authorised 11 days ago ,Please authorised your IPAD now.Other wise you can't use the app after 15 days. ";
+  			String[] mobilenoarr = new String [] {mobileNo};
+  			resultStatus = smsCountrySmsService.sendSmsFromAdmin(message, true, mobilenoarr);
+  		}
+  		catch(Exception e)
+  		{
+  			LOG.error("Exception Occured in sendSmsToMobileAppUser Method");	
+  		}
+		return resultStatus;
+  	}
   	public String getLastAuthorisedTime(Date pastTime,Date currentTime,String time)
   	{
 	  		String result = "";
