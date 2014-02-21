@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" %>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
@@ -214,50 +213,59 @@ if($('#optionTypeId').val() != 3)
    });
  }
  
+ 
  function validateMainQtn()
  {
-	 var mainQtnType = $('#mainQtnId').val().trim();
-	if(mainQtnType == "")
+	var mainQtnDtls={mainQtnType:''};
+	
+	mainQtnDtls.mainQtnType = $('#mainQtnId').val().trim();
+	if(mainQtnDtls.mainQtnType == "")
 	 {
        $("#errorQtnDiv").html("Please enter the Question");
 	   return;
 	 }
-
+    
 	   $.ajax({
 		  type:'POST',
 		  url: 'saveMainQuestion.action',
 		  dataType: 'json',
-		  data: {mainQtnType:mainQtnType},			 
+		  data: {task:JSON.stringify(mainQtnDtls)},			 
 		  success: function(data){  
               $('#statusMsg1').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
 		  },
 		  error:function() { 
 		  }
+	   });
  }
-
+ 
+ 
  function validateSubQtn()
- {
-    var mainQtnTypeId = $('#mainTypeId1 option:selected').val();
-	var subQtnType = $('#subQtnId').val().trim();
-    if(subQtnType == ""){
+ {	 
+	var subQtnDtls={mainQtnTypeId:'',subQtnType:''};
+ 
+	subQtnDtls.mainQtnTypeId = $('#mainTypeId1 option:selected').val();;
+    subQtnDtls.subQtnType=$('#subQtnId').val().trim();
+	
+    if(subQtnDtls.subQtnType == ""){
        $("#errorSubQtnDiv").html("Please enter the SubQuestion");
 	   return;
 	}
-	if(mainQtnType1 == 0){
+	if(subQtnDtls.mainQtnTypeId == 0){
 		$("#errorSubQtnDiv").html("Please enter the MainQuestion");
 		return;
 	}
-
+   
 	  $.ajax({
 		  type:'POST',
 		  url: 'saveSubQuestion.action',
 		  dataType: 'json',
-		  data: {mainQtnTypeId:mainQtnTypeId,subQtnType:subQtnType},			 
+		  data: {task:JSON.stringify(subQtnDtls)},			 
 		  success: function(data){  
               $('#statusMsg2').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
 		  },
 		  error:function() { 
 		  }
+	  });
  }
 
  </script>
