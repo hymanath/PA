@@ -75,7 +75,24 @@
 </head>
 <body>
 <div id="newDibateDiv"></div>
+<div id="dialogueBoxDiv"></div>
 
+<div id="createCandidateDiv" style="display:none;">
+				
+	<div id="errorMsgDiv"></div>
+	<div id="dHintDiv"> Note: Candidate Name should not contain #,$,%,& Special charactors.
+	</div>
+	<table style="margin-top: 24px;"><tr>
+	<td> Party Name </td>
+	<td><!-- <select id="partySelectNewList"> --><span id="presentParty"></span>
+	</select></td></tr>
+
+	<tr><td>Candidate Name</td>
+	<td><input type="text" id="newCandidateName"/></td></tr>
+	</table>
+	<input type="button" value="submit" class="btn" id="createCandidateId" key="'+key+'" partyListId="'+partyListId+'"/>
+
+</div>
 <script>
 
 var debateId = '${debateId}';
@@ -185,7 +202,7 @@ var observerArray = new Array();
 </script>
 <script>
 
-
+var candCunt = 1;
 function getSelectedDebate()
 {
 	var jsObj = {
@@ -198,35 +215,6 @@ function getSelectedDebate()
 		callAjax(jsObj,url);
 }
 
-function callAjax(jsObj,url)
-{
-
-	var callback =
-	{			
-		success : function( o )
-		{
-			try
-			{ 
-				myResults = YAHOO.lang.JSON.parse(o.responseText); 
-				if (jsObj.task == "getDebateDetails")
-				{
-					if(myResults != null)
-					prepopulateDebateForm(myResults);	
-				}
-			}catch(e)
-			{   
-				$("#submitDataImg").hide();
-			}  
-		},
-		scope : this,
-		failure : function( o )
-		{
-			
-		}
-	};
-
-	YAHOO.util.Connect.asyncRequest('GET', url, callback);
-}
 
 function prepopulateDebateForm(result)
 {
@@ -267,7 +255,7 @@ function prepopulateDebateForm(result)
 	str += '<div class="span3" >';
 	str += '<label style="font-size: 17px;font-weight: bold;line-height: ';
 	str += '1.5;">Channel : <font class="requiredFont">*</font>';
-	str += '<a class="btn btn-mini pull-right" onclick="addAttribute("Channel");" title="Click here to add another Channel" href="javascript:{}"><i class="icon-plus"></i></a></label>';
+	str += '<a class="btn btn-mini pull-right" onclick="addAttribute(\'Channel\');" title="Click here to add another Channel" href="javascript:{}"><i class="icon-plus"></i></a></label>';
 	str += '<select name="channel"  id="channel">';
 	for(var i in channelsArray)
 	{
@@ -277,7 +265,7 @@ function prepopulateDebateForm(result)
 	
 	str += '</div>';
 	str += '<div class="span3">';
-	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Observer : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute("Observer");"><i class="icon-plus"></i></a></label>';
+	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Observer : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute(\'Observer\');"><i class="icon-plus"></i></a></label>';
 	str += '<select name="observer"  id="observer" >';
 	for(var i in observerArray)
 	{
@@ -306,32 +294,32 @@ function prepopulateDebateForm(result)
 		str +='<th>'+charsArray[i].name+'</th>';
 	}
 	str +='<th>Participant Roles</th><th>Expected Roles</th><th>Summary </th><th>delete</th></tr></thead>';
-	var candCount = 1;
+	
     for(var p in result.participantsList)
 	{
-		str += "<tr id='row"+candCount+"' class='particepntDetailsRow'>";
-		str += "<td><select name='party"+candCount+"'  id='party"+candCount+"' onChange='getCandidatesOfSelectedParty(this.value,this.id,1)' class='partysClass'><option value='0' selected='selected'>Select</option>";
+		str += "<tr id='row"+candCunt+"' class='particepntDetailsRow'>";
+		str += "<td><select name='party"+candCunt+"'  id='party"+candCunt+"' onChange='getCandidatesOfSelectedParty(this.value,this.id,candCunt)' class='partysClass'><option value='0' selected='selected'>Select</option>";
 		for ( var i in partiesArray)
 		{
 			str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 		}
 		str+='</select></td>';
 
-		str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate'+candCount+'" id="candidate'+candCount+'" >';
+		str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate'+candCunt+'" id="candidate'+candCunt+'" >';
 		str+='<option value="'+result.participantsList[p].id+'"> '+result.participantsList[p].name+'</option>';
 		str +='</select>';
-		str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCount+'"></span></a></td>';
+		str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a></td>';
 	    for(var i in result.participantsList[p].scaleList)
 		{
 	
-			var myClass1 = result.participantsList[p].scaleList[i].name+""+candCount+"";
+			var myClass1 = result.participantsList[p].scaleList[i].name+""+candCunt+"";
 			str +='<td>';
-			str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+''+candCount+'" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');" value="'+result.participantsList[p].scaleList[i].perc+'"/><div style="font-weight:normal;">(0-5)</div>';
+			str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+''+candCunt+'" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');" value="'+result.participantsList[p].scaleList[i].perc+'"/><div style="font-weight:normal;">(0-5)</div>';
 			str +='</td>';
 		}
-     	str +='<td class="participantRolesblock1"><input type="hidden" id="'+candCount+'participantRoles" class="partiRoleClass" value="'+result.participantsList[p].roleList[0].totalCount+'"></input>';
+     	str +='<td class="participantRolesblock1"><input type="hidden" id="'+candCunt+'participantRoles" class="partiRoleClass" value="'+result.participantsList[p].roleList[0].totalCount+'"></input>';
 		var roleArray = ""
-		str += '<select theme="simple" multiple="true"  Class="selectWidth participantsRoles" name="'+candCount+'participantRoles" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
+		str += '<select theme="simple" multiple="true"  Class="selectWidth participantsRoles" name="'+candCunt+'participantRoles" id="participantRoles'+candCunt+'" key="'+candCunt+'participantRoles">';
 		for (var j in rolesArray)
 		{
 			var flag = true;
@@ -355,8 +343,8 @@ function prepopulateDebateForm(result)
 		
 		if(result.participantsList[p].partyId == 872)
 		{
-			str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" ></input>';
-			str += '<div id="expReoleDiv'+candCount+'"><select  multiple="multiple" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="'+candCount+'expparticipantRoles" id="expparticipantRoles'+candCount+'" key ="'+candCount+'expparticipantRoles" >';
+			str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+candCunt+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" ></input>';
+			str += '<div id="expReoleDiv'+candCunt+'"><select  multiple="multiple" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="'+candCunt+'expparticipantRoles" id="expparticipantRoles'+candCunt+'" key ="'+candCunt+'expparticipantRoles" >';
 			for (var j in rolesArray)
 			{
 				var flag = true;
@@ -380,7 +368,7 @@ function prepopulateDebateForm(result)
 		else
 		{
 			str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" value="0"></input>';
-			str += '<div id="expReoleDiv'+candCount+'"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key ="'+1+'expparticipantRoles" >';
+			str += '<div id="expReoleDiv'+candCunt+'"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles'+candCunt+'" id="expparticipantRoles'+candCunt+'" key ="'+1+'expparticipantRoles" >';
 			for (var j in rolesArray)
 			{
 				str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -390,11 +378,11 @@ function prepopulateDebateForm(result)
 	
 		if(result.participantsList[p].summery != null)
 		{
-			str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary'+candCount+'" id="candSummary'+candCount+'" >'+result.participantsList[p].summery+'</textarea></td>';
+			str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary'+candCunt+'" id="candSummary'+candCunt+'" >'+result.participantsList[p].summery+'</textarea></td>';
 		}
 		else
 		{
-			str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary'+candCount+'" id="candSummary'+candCount+'" ></textarea></td>';
+			str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary'+candCunt+'" id="candSummary'+candCunt+'" ></textarea></td>';
 		}
 		if(p == 0)
 		{
@@ -402,17 +390,16 @@ function prepopulateDebateForm(result)
 		}
 		else
 		{
-			str +='<td><a class="icon-trash" style="cursor: pointer;" onclick="removeCandidate(this.name);" title="Click here to add another Subject" name="row'+candCount+'"></a></td>';
+			str +='<td><a class="icon-trash" style="cursor: pointer;" onclick="removeCandidate(this.name);" title="Click here to add another Subject" name="row'+candCunt+'"></a></td>';
 		}
 		str +='</tr>';
 		
-		candCount++;
+		candCunt++;
 	}
 	str +='</table>';
-	
 	str += '</div>';
 	str += '<div  class="span12">';
-	str += '<a title="Click here to add another Subject" onClick="addMoreCandidates();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float: right; margin-bottom: 10px; margin-top: 10px;"/></a>';
+	str += '<a title="Click here to add another Subject" onClick="addMoreCandidatesForEdit();"><input type="button"  class="btn btn-success" value="Add More" id=""  style="float: right; margin-bottom: 10px; margin-top: 10px;"/></a>';
 	str += '</div>';
 	str += '</div>';
 	str += '<div id="debateQuestnsDiv">	';
@@ -458,12 +445,20 @@ function prepopulateDebateForm(result)
 			str += '<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1" value="'+result.smsPoleList[i].type+'"/>';
 			str += '</div>';
 			str += '<div class="span3">';
-			str += '<label><strong>Percentage : </strong></label>';							
-			str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); value="'+result.smsPoleList[i].perc+'"/>';
-			str += '</div>';
+			str += '<label><strong>Percentage : </strong></label>';
+			if(result.smsPoleList[i].perc > 0)
+			{
+				str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); value="'+result.smsPoleList[i].perc+'"/>';
+				str += '</div>';
+			}
+			else
+			{
+				str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); />';
+				str += '</div>';
+			}
 			/* if(i == 0)
 			{
-				str += '<div style="width: 160px; float: right; font-size: 12px; color: green;">Remaining Percent  : <span id="percandCount">0</span>%</div>';
+				str += '<div style="width: 160px; float: right; font-size: 12px; color: green;">Remaining Percent  : <span id="percandCunt">0</span>%</div>';
 			} */
 			
 			str += '</div>';
@@ -483,7 +478,7 @@ function prepopulateDebateForm(result)
 			str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); value="'+result.smsPoleList[i].perc+'"/>';
 			str += '</div>';
 			
-			str += '<div style="width: 160px; float: right; font-size: 12px; color: green;">Remaining Percent  : <span id="percandCount">0</span>%</div>';
+			str += '<div style="width: 160px; float: right; font-size: 12px; color: green;">Remaining Percent  : <span id="percandCunt">0</span>%</div>';
 			
 			str += '</div>';
 	}
@@ -563,6 +558,61 @@ function prepopulateDebateForm(result)
 	sliderAccessArgs: { touchonly: false }
     });
 
+}
+
+function addMoreCandidatesForEdit()
+{
+	var str ='';
+	str += "<tr id='row"+candCunt+"' class='particepntDetailsRow'>";
+	str += "<td><select name='party"+candCunt+"'  id='party"+candCunt+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,"+candCunt+");' class='partysClass'><option value='0' selected='selected'>Select</option>";
+	for ( var i in partiesArray)
+	{
+		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
+	}
+	str+='</select></td><td>';
+
+	
+	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCunt+'" >';
+	str +='<option value="0"> Select </option>';
+	str +='</select>';
+	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCunt+'\',\'party'+candCunt+'\','+candCunt+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a></td>';
+	for(var i in charsArray){
+		var myclass =charsArray[i].name+''+candCunt;
+		str +='<td>';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myclass.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myclass.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myclass.replace(/\s/g, '')+'\');"/><div style="font-weight:normal;">(0-5)</div>';
+		str +='</td>';
+	}
+	
+	str +='<td class="participantRolesblock'+candCunt+'">';
+	str +='<input type="hidden" id="'+candCunt+'participantRoles" class="partiRoleClass"></input>';
+	str +='<select theme="simple" multiple="multiple" Class="selectWidth participantsRoles" name="'+candCunt+'participantRoles" id="participantRoles'+candCunt+'" key="'+candCunt+'participantRoles">';
+	for (var j in rolesArray)
+	{
+		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+	}
+	
+	str +='</select></td><td class="expparticipantRolesblock'+candCunt+'">';
+	str +='<input type="hidden" id="'+candCunt+'expparticipantRoles" class="expPartyClass  expPartyClass1 expPartiesRoleClass" value="0"></input>';
+	str +='<div id="expReoleDiv'+candCunt+'"><select  style="display:none" ;theme="simple" multiple="multiple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCunt+'" id="expparticipantRoles'+candCunt+'" key="'+candCunt+'expparticipantRoles">';
+	for (var j in rolesArray)
+	{
+		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+	}
+	str += '</select></td>';
+	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCunt+'" ></textarea></td>';
+	str +='<td><a  name="row'+candCunt+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
+    str +='</tr>';
+    
+	$("#participantTable").append(str);
+	$('#participantRoles'+candCunt+'').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	}).multiselectfilter({    
+	});
+
+	
+	candCunt++;
 }
 </script>
 </body>
