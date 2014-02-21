@@ -906,7 +906,25 @@ function saveHouseHoldInfo(){
 	
 	<div class="span12 row searchedVotersDiv"></div>
 </div>
-	
+
+<a href="javascript:{addNewPersonOfFamily()}" class="btn">Add New</a>
+<br></br>
+</div>
+<div >
+			<div class="row-fluid" style="clear:both;">
+				<div class="span1">Name</div>
+				<div class="span1">Age</div>
+				<div class="span1">Gender</div>
+				<div class="span1">Gaurdian</div>
+				<div class="span2">RelationShip</div>
+				<div class="span2">Education</div>
+				<div class="span2">Occupation</div>
+				<div class="span2">Social Category</div>
+		   </div>
+		   <div id="newprsnDetailsId"></div>
+
+</div>
+
 <script>
 	function searchNow(){
 		var voterCardNo=$(".vtrIdCls").val();
@@ -1065,32 +1083,44 @@ function submitQuestionDetails()
 	 voterDtls.houseHoldsId = 0;
 
   $('.voterChkbx').each(function(index,value){
-
 	   if(this.checked)
 	   {
 			
-		   selectedVoterDtls =
+				selectedVoterDtls =
 			       {
 			         voterId:this.value,
-					 familyRelationId:$('#'+this.value+"fmlyRltn").val(),
-					 education:$('#'+this.value+"edctn").val(),
-					 occupation:$('#'+this.value+"occup").val(),
-					 socialPosistion: $('#'+this.value+"sclCtg").val(),
-					 isNew: 'true',
-					 name:'name',
-                     age:25,
-					 relativeName:'relativeName',
-					 relationShipType:'relationShipType',
-					 gender:'gender',
-
-					 	 
+					 voterFamilyRelationId:$('#'+this.value+"fmlyRltn").val(),
+					 voterEdctn:$('#'+this.value+"edctn").val(),
+					 voterOccptn:$('#'+this.value+"occup").val(),
+					 voterSocialPstn: $('#'+this.value+"sclCtg").val(),
+					 isNew: 'false'					 	 
 			       };
 
 				 voterDtls.voters.push(selectedVoterDtls);
 	   }
    });
 
-	
+   for(var i=0;i<newPersonsCount;i++)
+   {
+		selectedVoterDtls =
+			       {
+					
+					 isNew: 'true',
+					 name:$('#newPrsnName'+i).val(),
+                     age:$('#newPrsnAge'+i).val(),
+					 gender:$('#newPrsnGndr'+i).val(),
+					 relativeName:$('#newPrsnGrdn'+i).val(),
+					 relationShipType:$('#newPrsnrltnType'+i).val(),
+					 education:$('#newPrsnEdctn'+i).val(),
+					 occupation:$('#newPrsnOctpn'+i).val(),
+					 socialPosistion: $('#newPrsnSclPstn'+i).val(),
+					 familyRelationId:$('#newPrsnrltnType'+i).val(),
+					 	 
+			       };
+
+				 voterDtls.voters.push(selectedVoterDtls);
+
+   }
 	 $.ajax({
           type:'POST',
           url: 'saveHouseHoldsVotersDetailsAction.action',
@@ -1111,6 +1141,57 @@ function setHiddenFieldInForm(houseHoldsId)
 	$('#houseHoldsId').val(houseHoldsId);
 	$('#voterDetailsForm').submit();
 
+}
+var newPersonsCount=0;
+function addNewPersonOfFamily()
+{
+		var str='';
+
+		   str+='<div class="row-fluid " id="newPersonDetails'+newPersonsCount+'">';
+			str+='<div class="span1"><input type="text"  style="width:69px;" id="newPrsnName'+newPersonsCount+'"/></div>';
+			str+='<div class="span1"><input type="text"  style="width:13px;" id="newPrsnAge'+newPersonsCount+'"/></div>';
+			str+='<div class="span1">';
+				str+='<select style="width:48px;" id="newPrsnGndr'+newPersonsCount+'">';
+				 str+='<option value="M">M</option>';
+ 				 str+='<option value="F">F</option>';
+				str+='</select>';
+			str+='</div>';
+			str+='<div class="span1"><input type="text"  style="width:65px;" id="newPrsnGrdn'+newPersonsCount+'"/></div>';
+
+			str+='<div class="span2">';
+            str+='<select style="width:100px;" id="newPrsnrltnType'+newPersonsCount+'">';  
+				<c:forEach items="${relationList}" var="relation"> 
+					str+='<option value="${relation.id}">${relation.name}</option>'; 
+				</c:forEach>
+			str+='</select>';
+            str+='</div>'; 
+
+			str+='<div class="span2">';
+            str+='<select style="width:100px;" id="newPrsnEdctn'+newPersonsCount+'">';  
+				<c:forEach items="${educationsList}" var="education"> 
+					str+='<option value="${education.id}">${education.name}</option>'; 
+				</c:forEach>
+			str+='</select>';
+            str+='</div>'; 
+
+			str+='<div class="span2">';
+            str+='<select style="width:100px;" id="newPrsnOctpn'+newPersonsCount+'">';  
+				<c:forEach items="${occupationsList}" var="occupation"> 
+					str+='<option value="${occupation.id}">${occupation.name}</option>'; 
+				</c:forEach>
+			str+='</select>';
+            str+='</div>'; 
+
+			str+='<div class="span2">';
+            str+='<select style="width:100px;" id="newPrsnSclPstn'+newPersonsCount+'">';  
+				<c:forEach items="${socialPositionsList}" var="socialPosition"> 
+					str+='<option value="${socialPosition.id}">${socialPosition.name}</option>'; 
+				</c:forEach>
+			str+='</select>';
+            str+='</div>';
+            str+='</div>';
+	$('#newprsnDetailsId').append(str);
+		     newPersonsCount++;
 }
 </script>
 </body>

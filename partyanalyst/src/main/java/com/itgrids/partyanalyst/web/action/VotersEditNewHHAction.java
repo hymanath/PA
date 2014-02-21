@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IUserVoterService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
@@ -83,8 +84,53 @@ public class VotersEditNewHHAction  extends ActionSupport implements ServletRequ
     private String houseNo;
     private List<VoterHouseInfoVO> voterDetailsSearched;
     
+    private List<SelectOptionVO> educationsList,occupationsList,socialPositionsList,relationList;
+    private IHouseHoldSurveyReportService houseHoldSurveyReportService;
+    
     
 	
+	public IHouseHoldSurveyReportService getHouseHoldSurveyReportService() {
+		return houseHoldSurveyReportService;
+	}
+
+	public void setHouseHoldSurveyReportService(
+			IHouseHoldSurveyReportService houseHoldSurveyReportService) {
+		this.houseHoldSurveyReportService = houseHoldSurveyReportService;
+	}
+
+	public List<SelectOptionVO> getEducationsList() {
+		return educationsList;
+	}
+
+	public void setEducationsList(List<SelectOptionVO> educationsList) {
+		this.educationsList = educationsList;
+	}
+
+	public List<SelectOptionVO> getOccupationsList() {
+		return occupationsList;
+	}
+
+	public void setOccupationsList(List<SelectOptionVO> occupationsList) {
+		this.occupationsList = occupationsList;
+	}
+
+	
+	public List<SelectOptionVO> getSocialPositionsList() {
+		return socialPositionsList;
+	}
+
+	public void setSocialPositionsList(List<SelectOptionVO> socialPositionsList) {
+		this.socialPositionsList = socialPositionsList;
+	}
+
+	public List<SelectOptionVO> getRelationList() {
+		return relationList;
+	}
+
+	public void setRelationList(List<SelectOptionVO> relationList) {
+		this.relationList = relationList;
+	}
+
 	public List<VoterHouseInfoVO> getVoterDetailsSearched() {
 		return voterDetailsSearched;
 	}
@@ -492,6 +538,14 @@ public class VotersEditNewHHAction  extends ActionSupport implements ServletRequ
 		
 		areaTypeList = staticDataService.getAllAreaTypes();
 		areaTypeList.add(0, new SelectOptionVO(0L,"Select AreaType"));
+		
+		
+		educationsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(8L);
+		occupationsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(7L);
+		socialPositionsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(9L);
+		relationList = houseHoldSurveyReportService.getFamilyRelationsList();
+		
+		
 		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
 /*		HttpSession session = request.getSession();
 		session = request.getSession();
