@@ -25,6 +25,7 @@ import org.apache.poi.ss.usermodel.Row;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -56,7 +57,16 @@ public class CasteReportService implements ICasteReportService{
 	private IUserDAO userDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO ;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
+	private IHamletDAO hamletDAO;
 	
+	public IHamletDAO getHamletDAO() {
+		return hamletDAO;
+	}
+
+	public void setHamletDAO(IHamletDAO hamletDAO) {
+		this.hamletDAO = hamletDAO;
+	}
+
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
 		return localElectionBodyDAO;
 	}
@@ -135,7 +145,7 @@ public class CasteReportService implements ICasteReportService{
 		List<CastVO> resultList = new ArrayList<CastVO>();
 		
 		try{
-			if(type.equalsIgnoreCase(IConstants.BOOTH))
+			if(type.equalsIgnoreCase(IConstants.BOOTH) || type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			{
 				getCasteWiseInfoForBooth1(resultList,constituencyId, publicationId, type, userId);
 			}
@@ -335,11 +345,11 @@ public class CasteReportService implements ICasteReportService{
 
 		{
 			
-			
+		         List<Object[]> casteList = null;
 				try{
 					Map<Long,Map<Long,Map<Long,CastVO>>> resulMap = new HashMap<Long, Map<Long,Map<Long,CastVO>>>();
-					List<Object[]> casteList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
-				
+				   casteList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
+				   
 					 if(casteList != null && casteList.size() > 0)
 					 {
 						  for(Object[] params : casteList)
@@ -368,12 +378,15 @@ public class CasteReportService implements ICasteReportService{
 					     }
 					}
 					 Map<Long,Long> totalCountMap = new HashMap<Long, Long>();
-					 for(Long panchayat : resulMap.keySet())
+					 for(Long superLevel : resulMap.keySet())
 					 {
 						CastVO resultVo = new CastVO();
-						resultVo.setPanchayatId(panchayat);
-						resultVo.setPanchayat(panchayatDAO.getPanchayatNameById(panchayat));
-						Map<Long,Map<Long,CastVO>> casteMap = resulMap.get(panchayat);
+						resultVo.setPanchayatId(superLevel);
+						if(type.equalsIgnoreCase(IConstants.BOOTH) || type.equalsIgnoreCase(IConstants.HAMLET))
+						resultVo.setPanchayat(panchayatDAO.getPanchayatNameById(superLevel));
+						else
+							resultVo.setPanchayat(tehsilDAO.getTehsilNameById(superLevel));
+						Map<Long,Map<Long,CastVO>> casteMap = resulMap.get(superLevel);
 						List<Long> locationIds = new ArrayList<Long>();
 						
 						for(Long casteId : casteMap.keySet())
@@ -405,9 +418,13 @@ public class CasteReportService implements ICasteReportService{
 								 
 								 CastVO locationvo = new CastVO();
 								 locationvo.setLocationId(locationId);
+								 if(type.equalsIgnoreCase(IConstants.BOOTH))
 								 locationvo.setLocationName(boothDAO.getBoothPartNoByBoothId(locationId));
+								 else if(type.equalsIgnoreCase(IConstants.HAMLET))
+								 locationvo.setLocationName(hamletDAO.get(locationId).getHamletName()); 
+								 else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+								 locationvo.setLocationName(panchayatDAO.getPanchayatNameById(locationId)); 	 
 								 locationvo.setCastCount(0l);
-								 
 								 locations.add(locationvo); 
 							 }	
 							 sortlocationsList(locations);
