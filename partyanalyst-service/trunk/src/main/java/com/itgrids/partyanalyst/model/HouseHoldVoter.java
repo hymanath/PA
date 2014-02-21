@@ -31,6 +31,7 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	private Long voterFamilyRelationId;
 	private VoterFamilyRelation voterFamilyRelation;
 	private Voter voter;
+	private HouseHolds houseHolds;
 	private Long educationId;
 	private Long occupationId;
 	private Long socialCategoryId;
@@ -96,6 +97,19 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	public void setVoterFamilyRelationId(Long voterFamilyRelationId) {
 		this.voterFamilyRelationId = voterFamilyRelationId;
 	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "house_hold_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public HouseHolds getHouseHolds() {
+		return houseHolds;
+	}
+	public void setHouseHolds(HouseHolds houseHolds) {
+		this.houseHolds = houseHolds;
+	}
+	
+	
 	
 	
 	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
