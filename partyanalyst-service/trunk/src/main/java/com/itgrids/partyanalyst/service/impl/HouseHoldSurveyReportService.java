@@ -233,7 +233,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			for(Object[] obj:list){
 				HHSurveyVO mainQstnVO=new HHSurveyVO();
 				mainQstnVO.setMainQuesId(Long.valueOf(obj[0].toString()));
-				mainQstnVO.setMainQues(obj[1].toString());
+				mainQstnVO.setMainQues(StringEscapeUtils.unescapeJava(obj[1].toString()));
 				
 				//mainQstnVO.setOptsSelected(qstOptnSlctedMap.get(obj[0].toString()));
 				
@@ -243,7 +243,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			for(Object[] obj:subQList){
 				HHSurveyVO subQstnVO=new HHSurveyVO();
 				subQstnVO.setSubQuesId(Long.valueOf(obj[0].toString()));
-				subQstnVO.setSubQues(obj[1].toString());
+				subQstnVO.setSubQues(StringEscapeUtils.unescapeJava(obj[1].toString()));
 				
 				//subQstnVO.setOptsSelected(qstOptnSlctedMap.get(obj[0].toString()));
 				
@@ -464,7 +464,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 						{
 							HHOptions options = new HHOptions();
 							
-							options.setOptions(StringEscapeUtils.unescapeJava(optionDtls[i]));
+							options.setOptions(escapeUnicode(StringEscapeUtils.unescapeHtml(optionDtls[i])));
 							options.setIsDelete(IConstants.FALSE);
 							options.setOrderId((long)i);
 							
@@ -538,7 +538,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			List<Object[]> list = hhSurveySubTypeDAO.getSubSurveyTypesByMainTypeId(mainTypeId);
 			
 			for(Object[] obj:list)
-				subTypesList.add(new GenericVO(Long.parseLong(obj[0].toString()),obj[1].toString()));
+				subTypesList.add(new GenericVO(Long.parseLong(obj[0].toString()),StringEscapeUtils.unescapeJava(obj[1].toString())));
 			
 		} catch (Exception e) {
 			log.error("Exception raised in the getSubSurveyTypesByMainTypeId service method");
@@ -557,7 +557,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			List<Object[]> list = hhSurveySubTypeDAO.getMainSurveyTypes();
 			
 			for(Object[] obj:list)
-				subTypesList.add(new GenericVO(Long.parseLong(obj[0].toString()),obj[1].toString()));
+				subTypesList.add(new GenericVO(Long.parseLong(obj[0].toString()),StringEscapeUtils.unescapeJava(obj[1].toString())));
 		
 	} catch (Exception e) {
 		log.error("Exception raised in the getSurveyTypes service method");
