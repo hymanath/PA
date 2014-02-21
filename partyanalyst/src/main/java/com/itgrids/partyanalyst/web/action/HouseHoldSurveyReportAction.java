@@ -368,18 +368,9 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			  userId = regVO.getRegistrationID();
 			}
 
-			if(jObj.getString("task").equalsIgnoreCase("gettotalimpfamlies"))
-			{
-				String requestFor = "";
-				try
-				{   
-					requestFor = jObj.getString("requestFor");				
-				}catch(Exception e){}
-			 
-				votersFamilyInfo = votersAnalysisService.getVoterHouseInfoDetails(userId,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("type"),jObj.getString("buildType"),requestFor);
-			}
-			else
-				votersFamilyInfo = votersAnalysisService.getFamilyInformationForHHSurvey(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null);
+			Long voterId=jObj.getLong("voterId");
+			
+			votersFamilyInfo = votersAnalysisService.getFamilyInformationForHHSurvey(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null,voterId);
 			
 		}catch(Exception e){
 			//log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
