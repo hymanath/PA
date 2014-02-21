@@ -1080,8 +1080,9 @@ function panchayatMatrx(result)
  <input type="button" value="Get Mandal Wise CasteInfo" class="btn" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
  <input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
  <input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
+  <input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
   <input type="button" value="Get Voter Address" class="btn" id="voterAddressbtn" onclick="redirectToVoterAddress()" style="margin-top:10px;"/>
-  <input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
+
  </fieldset>
   </div>
    <div id="mainDiv" align="center"  style="margin-left: 196px;">
