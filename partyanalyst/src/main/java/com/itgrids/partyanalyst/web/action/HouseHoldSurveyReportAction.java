@@ -406,15 +406,36 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			{
 				net.sf.json.JSONObject  voter =  (net.sf.json.JSONObject)votersDetails.get(i);
 				
-				HouseHoldVotersVO voterDetailsVO = new HouseHoldVotersVO();
+				HouseHoldVotersVO  voterDetailsVO = new HouseHoldVotersVO();
 				
-				voterDetailsVO.setVoterId(Long.parseLong(voter.getString("voterId")));
-				voterDetailsVO.setEducationId(Long.parseLong(voter.getString("voterEdctn")));
-				voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("voterOccptn")));
-				voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("voterFamilyRelationId")));
-				voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("voterSocialPstn")));
+				if(!voter.getString("isNew").equalsIgnoreCase("true"))
+				{
+					
+					voterDetailsVO.setVoterId(Long.parseLong(voter.getString("voterId")));
+					voterDetailsVO.setEducationId(Long.parseLong(voter.getString("voterEdctn")));
+					voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("voterOccptn")));
+					voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("voterFamilyRelationId")));
+					voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("voterSocialPstn")));
+					
+					
+				}else
+				{
+					voterDetailsVO.setNewPerson(true);
+					
+					voterDetailsVO.setAge(Long.parseLong(voter.getString("age")));
+					voterDetailsVO.setName(voter.getString("name"));
+					voterDetailsVO.setRelativeName(voter.getString("relativeName"));
+					voterDetailsVO.setRelationShipType(voter.getString("relationShipType"));
+					voterDetailsVO.setGender(voter.getString("gender"));
+					voterDetailsVO.setEducationId(Long.parseLong(voter.getString("education")));
+					voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("occupation")));
+					voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("socialPosistion")));
+					voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("familyRelationId")));
+					
+				}
 				
 				houseHoldVoters.add(voterDetailsVO);
+				
 				
 			}
 				
@@ -422,6 +443,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			
 			houseHoldVotersDtls.setBoothId(Long.parseLong(jObj.getString("boothId")));
 			houseHoldVotersDtls.setHouseNo(jObj.getString("houseNo"));
+			houseHoldVotersDtls.setHouseHoldsId(Long.parseLong(jObj.getString("houseHoldsId")));
 			houseHoldsId = houseHoldSurveyReportService.saveHouseHoldsVotersDetails(houseHoldVotersDtls);
 			
 		} catch (Exception e) {

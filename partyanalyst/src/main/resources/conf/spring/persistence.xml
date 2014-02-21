@@ -384,7 +384,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterFamilyRelation</value>
 				<value>com.itgrids.partyanalyst.model.HouseHoldVoter</value>
 				<value>com.itgrids.partyanalyst.model.VoterDataInsert</value>
-				
+				<value>com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails</value>
 			</list>
 			
 		</property>

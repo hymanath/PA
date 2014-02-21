@@ -1341,7 +1341,8 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
-   
-   
+    <bean id="houseHoldsFamilyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.HouseHoldsFamilyDetailsDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
    
 </beans>		
