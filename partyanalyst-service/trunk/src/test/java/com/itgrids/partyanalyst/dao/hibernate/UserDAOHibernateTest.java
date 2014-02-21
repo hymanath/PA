@@ -368,7 +368,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(count);
 	}*/
 	
-	public void testupdateAllUsersPasswords()
+	/*public void testupdateAllUsersPasswords()
 	{	System.out.println(new Date());
 		List<User> users  =userDAO.updateAllUsersPasswords();
 		
@@ -391,7 +391,7 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println("UPDATE user SET hash_key_txt = '"+secretKey +"',passwd_hash_txt = '"+encryptedPassword+"' WHERE user_id = "+user.getUserId()+";");
 		}
 		
-	}
+	}*/
 	
 	/*public void testCreateHashKeyAndValueForAPassword()
 	{
@@ -496,4 +496,172 @@ public class UserDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(ids.get(i)+","+ids.get(i));
 		}
 	}*/
+	
+	
+	
+	public void test()
+	{
+		List<String> list = new ArrayList<String>();
+		
+		list.add("po_1_Adilabad");
+		list.add("po_2_Peddapalli");
+		list.add("po_3_Karimnagar");
+		list.add("po_4_Nizamabad");
+		list.add("po_5_Zahirabad");
+		list.add("po_6_Medak");
+		list.add("po_7_Malkajgiri");
+		list.add("po_8_Secunderabad");
+		list.add("po_9_Hyderabad");
+		list.add("po_10_Chevella");
+		list.add("po_11_Mahbubnagar");
+		list.add("po_12_Nagarkurnool");
+		list.add("po_13_Nalgonda");
+		list.add("po_14_Bhongir");
+		list.add("po_15_Warangal");
+		list.add("po_16_Mahabubabad");
+		list.add("po_17_Khammam");
+		list.add("po_18_Araku");
+		list.add("po_19_Srikakulam");
+		list.add("po_20_Vizianagaram");
+		list.add("po_21_Visakhapatnam");
+		list.add("po_22_Anakapalli");
+		list.add("po_23_Kakinada");
+		list.add("po_24_Amalapuram");
+		list.add("po_25_Rajahmundry");
+		list.add("po_26_Narsapuram");
+		list.add("po_27_Eluru");
+		list.add("po_28_Machilipatnam");
+		list.add("po_29_Vijayawada");
+		list.add("po_30_Guntur");
+		list.add("po_31_Narasaraopet");
+		list.add("po_32_Bapatla");
+		list.add("po_33_Ongole");
+		list.add("po_34_Nandyal");
+		list.add("po_35_Kurnool");
+		list.add("po_36_Anantapur");
+		list.add("po_37_Hindupur");
+		list.add("po_38_Kadapa");
+		list.add("po_39_Nellore");
+		list.add("po_40_Tirupati");
+		list.add("po_41_Rajampet");
+		list.add("po_42_Chittoor");
+
+		
+		List<String> list1 = new ArrayList<String>();
+		
+		list1.add("adil@123");
+		list1.add("pedd@123");
+		list1.add("kari@123");
+		list1.add("niza@123");
+		list1.add("zahi@123");
+		list1.add("meda@123");
+		list1.add("malk@123");
+		list1.add("secu@123");
+		list1.add("hyde@123");
+		list1.add("chev@123");
+		list1.add("mahb@123");
+		list1.add("naga@123");
+		list1.add("nalg@123");
+		list1.add("bhon@123");
+		list1.add("wara@123");
+		list1.add("maha@123");
+		list1.add("kham@123");
+		list1.add("arak@123");
+		list1.add("srik@123");
+		list1.add("vizi@123");
+		list1.add("visa@123");
+		list1.add("anak@123");
+		list1.add("kaki@123");
+		list1.add("amal@123");
+		list1.add("raja@123");
+		list1.add("nars@123");
+		list1.add("elur@123");
+		list1.add("mach@123");
+		list1.add("vija@123");
+		list1.add("gunt@123");
+		list1.add("nara@123");
+		list1.add("bapa@123");
+		list1.add("ongo@123");
+		list1.add("nand@123");
+		list1.add("kurn@123");
+		list1.add("anan@123");
+		list1.add("hind@123");
+		list1.add("kada@123");
+		list1.add("nell@123");
+		list1.add("tiru@123");
+		list1.add("raja@123");
+		list1.add("chit@123");
+		
+		List<String> list2 = new ArrayList<String>();
+		
+		
+		list2.add("Adilabad");
+		list2.add("Peddapalli");
+		list2.add("Karimnagar");
+		list2.add("Nizamabad");
+		list2.add("Zahirabad");
+		list2.add("Medak");
+		list2.add("Malkajgiri");
+		list2.add("Secunderabad");
+		list2.add("Hyderabad");
+		list2.add("Chevella");
+		list2.add("Mahbubnagar");
+		list2.add("Nagarkurnool");
+		list2.add("Nalgonda");
+		list2.add("Bhongir");
+		list2.add("Warangal");
+		list2.add("Mahabubabad");
+		list2.add("Khammam");
+		list2.add("Araku");
+		list2.add("Srikakulam");
+		list2.add("Vizianagaram");
+		list2.add("Visakhapatnam");
+		list2.add("Anakapalli");
+		list2.add("Kakinada");
+		list2.add("Amalapuram");
+		list2.add("Rajahmundry");
+		list2.add("Narsapuram");
+		list2.add("Eluru");
+		list2.add("Machilipatnam");
+		list2.add("Vijayawada");
+		list2.add("Guntur");
+		list2.add("Narasaraopet");
+		list2.add("Bapatla");
+		list2.add("Ongole");
+		list2.add("Nandyal");
+		list2.add("Kurnool");
+		list2.add("Anantapur");
+		list2.add("Hindupur");
+		list2.add("Kadapa");
+		list2.add("Nellore");
+		list2.add("Tirupati");
+		list2.add("Rajampet");
+		list2.add("Chittoor");
+
+
+		
+		
+		for(int i=0;i<list.size();i++)
+		{
+			
+			String hashKey = EncryptDecrypt.getSecretKey();
+			
+			EncryptDecrypt encryptDecrypt = new EncryptDecrypt(hashKey);
+			
+			String encryPtedPassword = encryptDecrypt.encryptText(list1.get(i));
+			
+			
+			String query = "INSERT INTO `survey`.`user` (`firstname`, `username`, `mobile`, `passwd_hash_txt`, `hash_key_txt`, `user_type_id`) VALUES ('"
+					+ list2.get(i)
+					+ "', '"
+					+ list.get(i)
+					+ "', '9999999999', '"+encryPtedPassword+"', '"+hashKey+"', '9');";
+			
+			
+			System.out.println(query);
+			
+		}
+
+		
+	}
 }

@@ -31,7 +31,14 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	private Long voterFamilyRelationId;
 	private VoterFamilyRelation voterFamilyRelation;
 	private Voter voter;
+	private Long educationId;
+	private Long occupationId;
+	private Long socialCategoryId;
+	private Long houseHoldsFamilyDetailsId;
+	private HouseHoldsFamilyDetails houseHoldsFamilyDetails;
+	private String isDelete;
 	
+
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -91,4 +98,57 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	}
 	
 	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "house_holds_family_details_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public HouseHoldsFamilyDetails getHouseHoldsFamilyDetails() {
+		return houseHoldsFamilyDetails;
+	}
+	public void setHouseHoldsFamilyDetails(
+			HouseHoldsFamilyDetails houseHoldsFamilyDetails) {
+		this.houseHoldsFamilyDetails = houseHoldsFamilyDetails;
+	}
+	
+    @Column(name="education_id")
+	public Long getEducationId() {
+		return educationId;
+	}
+	public void setEducationId(Long educationId) {
+		this.educationId = educationId;
+	}
+	
+	@Column(name="occupation_id")
+	public Long getOccupationId() {
+		return occupationId;
+	}
+	public void setOccupationId(Long occupationId) {
+		this.occupationId = occupationId;
+	}
+	
+	@Column(name="social_category_id")
+	public Long getSocialCategoryId() {
+		return socialCategoryId;
+	}
+	public void setSocialCategoryId(Long socialCategoryId) {
+		this.socialCategoryId = socialCategoryId;
+	}
+	
+	@Column(name="house_holds_family_details_id")
+	public Long getHouseHoldsFamilyDetailsId() {
+		return houseHoldsFamilyDetailsId;
+	}
+	public void setHouseHoldsFamilyDetailsId(Long houseHoldsFamilyDetailsId) {
+		this.houseHoldsFamilyDetailsId = houseHoldsFamilyDetailsId;
+	}
+
+	@Column(name="is_delete")
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
+	}
+	
+
 }
