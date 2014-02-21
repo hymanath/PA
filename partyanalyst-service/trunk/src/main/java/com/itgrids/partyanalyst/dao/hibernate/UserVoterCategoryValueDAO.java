@@ -81,4 +81,20 @@ public class UserVoterCategoryValueDAO extends GenericDaoHibernate<UserVoterCate
 
         query.executeUpdate();
 	}
+	
+	
+	public List<Object[]> getValuesById(Long categoryId)
+	{
+
+		Query query = getSession()
+				.createQuery("select UVCV.userVoterCategoryValueId,UVCV.categoryValue from UserVoterCategoryValue UVCV " +
+						"where UVCV.userVoterCategory.userVoterCategoryId = :categoryId");
+		
+		query.setParameter("categoryId", categoryId);
+
+       
+		return query.list();
+	
+		
+	}
 }

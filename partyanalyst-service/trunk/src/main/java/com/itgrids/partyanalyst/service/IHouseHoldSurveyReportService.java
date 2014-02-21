@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IHouseHoldSurveyReportService {
 	public List<HHSurveyVO> getHHSurveyQuestionOptions(Long surveyId,Long boothId,String houseNo);
@@ -20,4 +21,9 @@ public interface IHouseHoldSurveyReportService {
 
 	public String saveMainQuestionDetails(String qtn);
 	public String saveSubQuestionDetails(Long id,String subQtn);
+	
+	public List<SelectOptionVO> getUserVoterCategoryValuesById(Long categoryId);
+	public List<SelectOptionVO> getFamilyRelationsList();
+
+
 }
