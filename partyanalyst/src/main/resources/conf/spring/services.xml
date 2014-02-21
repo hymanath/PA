@@ -1893,6 +1893,7 @@
    <property name="constituencyDAO" ref="constituencyDAO" />
    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
+   <property name="hamletDAO" ref="hamletDAO" />
      </bean>
    <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
   	 <property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
