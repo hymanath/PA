@@ -5972,6 +5972,12 @@
 		   </result>
 		 </action>
 		 
+		
+		<action name="deleteSelectedDEbateAction" class="debateAction" method="deleteSelectedDEbate">
+		   <result name="success" type="json">
+		 	<param name="root">status</param>
+		   </result>
+		 </action>
 		<action name="saveDebateDetailsAction" class="debateAction" method="saveDebateDetial">
 		   <result name="success" type="json">
 		 	<param name="root">resultStatus</param>

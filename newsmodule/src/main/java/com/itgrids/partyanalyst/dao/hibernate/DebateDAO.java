@@ -32,4 +32,14 @@ public class DebateDAO  extends GenericDaoHibernate<Debate, Long> implements IDe
 		return result;
 	}
 
+	
+	public int deleteFlagDebate(Long debateId)
+	{
+		Query query = getSession().createQuery("update  Debate model set model.isDeleted = 'Y' " +
+				" where model.debateId = :debateId");
+		query.setParameter("debateId", debateId);
+		int result = query.executeUpdate();
+		return result;
+	}
+
 }

@@ -874,5 +874,25 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 		
 		return Action.SUCCESS;
 	}
+	
+	public String deleteSelectedDEbate()
+	{
+		try
+		{
+			LOG.info(" Entered into createCandidate() in DebateAction class. ");
+			HttpSession session = request.getSession();
+			RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+			if(regVo == null)
+			return Action.ERROR;
+			
+			jObj = new JSONObject(getTask());
+			status = debateService.deleteSelectedDEbate(jObj.getLong("debateId"));
+		}
+		catch (Exception e)
+		{
+			LOG.error(" Exception occured in createCandidate() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
 
 }
