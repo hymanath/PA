@@ -296,13 +296,15 @@ function buildCasteDetails(results,jsObj)
 	if(results.length > 0)
 	{
 	$("#CasteDetailsDiv").css("display","block");
+	
+
+	if(jsObj.type == 'mandal')
+		{
 	str+='<h4>'+jsObj.type+'  Wise Caste details</h4>';
 
-	if(jsObj.type == 'mandal'  || jsObj.type == 'panchayat')
-		{
 	str+='<table class="table table-bordered" id="casteWiseDataTable">';
 	str+='<thead >';
-  //str+='<th style="background-color:#F6E816;">Constituency</th>';
+  
 	str+='<th style="background-color:#F6E816;">Caste</th>';
 	for(var i in results[0].casteList)
 		{
@@ -310,7 +312,7 @@ function buildCasteDetails(results,jsObj)
 		}
 	str+='</thead>';
 	str+='<tbody>';
-  //str+='<td rowspan='+results.length+'>'+results[0].partyName+'</td>';
+  
 	for(var j=0;j<results.length;j++)
 		{
 	
@@ -330,55 +332,19 @@ function buildCasteDetails(results,jsObj)
 	str+='<input type="button" value="Export To Excel" onclick="generateExcel();" class="btn btn-success"/>';
 	$("#CasteDetailsDiv").html(str);
 	}
-	if(jsObj.type == "booth")
+	if(jsObj.type == "booth"  || jsObj.type == 'panchayat' || jsObj.type == 'hamlet' )
 			{
-			buildBoothWiseCaste(results);
+			buildBoothWiseCaste(results,jsObj.type);
 		}
 	
 }
 
-/*function buildBoothWiseCaste(results)
+function buildBoothWiseCaste(results,type)
 {
 
 	var str = '';
-    str+='<table class="table table-bordered" id="casteWiseDataTable">';
-	for(var i in results)
-	{
-	
-	str+='<tr>';
-	var rspan = results[i].casteList.length + 1;
-	 str+='<td rowspan='+rspan+' style="font-weight:bold;">'+results[i].panchayat+'</td>';
-	 str+='<td style="font-weight:bold;background-color:#F6E816;">Caste</td>';
-	 var count = 1;
-	 for(var j in results[i].casteList)
-		{
-	if(j == 0)
-			{
-	 for(var k in results[i].casteList[0].casteList)
-	 str+='<td style="font-weight:bold;;background-color:#F6E816;">booth - '+ results[i].casteList[0].casteList[k].locationName+'</td>';
-	 str+='</tr>';
-			}
-		
-	      str+='<tr>';
-	      str+='<td>'+results[i].casteList[j].castName+'</td>';
-		  for(var k1 in results[i].casteList[j].casteList)
-			{
-			 str+='<td>'+results[i].casteList[j].casteList[k1].castCount+'</td>';
-			}
-	 str+='</tr>';
-		}
-	}
-  
-	str+='</table>';
-	str+='<input type="button" value="Export To Excel" onclick="generateExcel();" class="btn btn-success"/>';
-	$("#CasteDetailsDiv").html(str);
-}*/
+   str+='<h4>'+type+'  Wise Caste details</h4>';
 
-function buildBoothWiseCaste(results)
-{
-
-	var str = '';
-   
 	for(var i in results)
 	{
 		if(i==0)
@@ -396,14 +362,17 @@ function buildBoothWiseCaste(results)
 
 	if(j == 0)
 			{
-	// str+='<td>Total Voters</td>';
+	
 	 for(var k in results[i].casteList[0].casteList)
+		if(type == 'booth')
 	 str+='<td style="font-weight:bold;background-color:#F6E816;">booth - '+ results[i].casteList[0].casteList[k].locationName+'</td>';
+	 else
+		 str+='<td style="font-weight:bold;background-color:#F6E816;">'+ results[i].casteList[0].casteList[k].locationName+'</td>';
 	 str+='</tr>';
 			}
 		
 	      str+='<tr>';
-		   //str+='<td>'+results[i].casteList[j].totalVoters+'</td>';
+		 
 	      str+='<td>'+results[i].casteList[j].castName+'</td>';
 		  str+='<td>'+results[i].casteList[j].totalVoters+'</td>';
 		  for(var k1 in results[i].casteList[j].casteList)
