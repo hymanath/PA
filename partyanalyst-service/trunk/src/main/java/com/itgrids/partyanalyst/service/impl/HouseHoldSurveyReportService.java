@@ -29,10 +29,12 @@ import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyRelationDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.HHOptionType;
 import com.itgrids.partyanalyst.model.HHOptions;
@@ -43,6 +45,7 @@ import com.itgrids.partyanalyst.model.HHSurveySubType;
 import com.itgrids.partyanalyst.model.HouseHoldVoter;
 import com.itgrids.partyanalyst.model.HouseHolds;
 import com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails;
+import com.itgrids.partyanalyst.model.VoterFamilyRelation;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -61,6 +64,10 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	private IHouseHoldsDAO houseHoldsDAO;
 	private IHHSurveyAnswersDAO hhSurveyAnswersDAO;
 	private DateUtilService DateUtilService = new DateUtilService();
+	
+	
+	@Autowired
+	private IVoterFamilyRelationDAO voterFamilyRelationDAO;
 	
 	@Autowired
 	private IVoterDAO voterDAO;
@@ -745,6 +752,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								voter.setOccupationId(voterDtls.getOccupationId());
 								voter.setSocialCategoryId(voterDtls.getSocialPstnId());
 								voter.setVoterId(voterDtls.getVoterId());
+								voter.setIsDelete(IConstants.FALSE);
 								
 								houseHoldVoterDAO.save(voter);
 								
@@ -778,6 +786,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								newPerson.setOccupationId(voterDtls.getOccupationId());
 								newPerson.setSocialCategoryId(voterDtls.getSocialPstnId());
 								newPerson.setHouseHoldsFamilyDetailsId(familyDetails.getHouseHoldsFamilyDetailsId());
+								newPerson.setIsDelete(IConstants.FALSE);
 								
 								houseHoldVoterDAO.save(newPerson);
 
@@ -916,5 +925,33 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		
 		
 	}
+	
+	public List<SelectOptionVO> getUserVoterCategoryValuesById(Long categoryId)
+	{
+		List<SelectOptionVO> values = new ArrayList<SelectOptionVO>();
+		
+		List<Object[]> list = userVoterCategoryValueDAO.getValuesById(categoryId);
+		
+		
+		for(Object[] obj:list)
+			values.add(new SelectOptionVO(Long.parseLong(obj[0].toString()),obj[1].toString()));
+			
+		return values;
+	}
+	
+	public List<SelectOptionVO> getFamilyRelationsList()
+	{
+		List<SelectOptionVO> values = new ArrayList<SelectOptionVO>();
+		
+		List<VoterFamilyRelation> list = voterFamilyRelationDAO.getAll();
+		
+		
+		for(VoterFamilyRelation relation:list)
+			values.add(new SelectOptionVO(relation.getVoterFamilyRelationId(),relation.getRelation()));
+			
+		return values;
+	}
+	
+	
 	
 }
