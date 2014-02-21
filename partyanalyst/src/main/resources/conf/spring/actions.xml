@@ -1354,6 +1354,8 @@
 			<property name="regionServiceDataImp" ref="regionServiceDataImp" />
 			<property name="userVoterService" ref="userVoterService" />
 			<property name="voterReportService" ref="voterReportService" />
+		    <property name="houseHoldSurveyReportService" ref="houseHoldSurveyReportService"/>
+			
 	</bean>
 	
 	<bean id="houseHoldVotersInfoAction"
