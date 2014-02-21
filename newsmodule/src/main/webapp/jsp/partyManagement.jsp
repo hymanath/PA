@@ -946,6 +946,9 @@ function createNewParty()
 		<div class="span10 offset1 text-center alert">Report</div>
 	
 </div>
+ <form id="generateReportForm" method="post" action="saveNewsUserAction.action" name="generateReportForm" style="border:0px">
+   <div><input type="hidden" name="task" id="generateReportFormValues" /></div>
+ </form>
 <div id='newsReportDiv' class="divInfo">
  <div class="container well">
   <h2 style="text-align: center;margin-bottom:10px;">Create Report</h2>
@@ -2927,7 +2930,7 @@ $("#locationWiseNewsDiv").css("display","none");
 
 function saveNewsReport()
 {
-
+	 $("#generateReportFormValues").val("");
 $('#reportErrDiv').html('');
 var newsreportfileDescription = $("#newsreportfileDescription").val();
 
@@ -2980,22 +2983,29 @@ var newsreportfileDescription = $("#newsreportfileDescription").val();
     var jsObj = {
 			fileGallaryIds:newsReportFileIdsArray,
 			description:newsreportfileDescription,
-			task: 'saveNews',
+			task: 'saveNews'
 	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
-	var url = "saveNewsUserAction.action?"+rparam;
-	callnewAjax(jsObj,url);
+	    $("#generateReportFormValues").val(YAHOO.lang.JSON.stringify(jsObj));
+		var uploadHandlernew1 = {
+		   success : function( o ) { 
+			        var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
+	                showReportFileNewsStatus(uploadResult);
+				}									
+	   };	
+	  YAHOO.util.Connect.setForm('generateReportForm',false);
+	  YAHOO.util.Connect.asyncRequest('POST','saveNewsUserAction.action',uploadHandlernew1);
+
 	}
 }
 
 function showReportFileNewsStatus(result)
 {
-	
 	$("#savenewsAjaxImg").css("display","none");
 	if(result.resultCode == 0)
 	{
 	 $("#newsreportfileDescription").val('');
 	 $("#newsReporterrorMessageDiv").html('Report Generated Successfully..').css('color','green');
+	  $("#newsReportUnSelectAllCheckBox").trigger("click");
 	}
 	else
 	{
