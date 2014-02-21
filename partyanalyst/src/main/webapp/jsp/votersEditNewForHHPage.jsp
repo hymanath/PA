@@ -139,10 +139,7 @@ form div label {
     margin-right: auto;
     width: 600px;}
 	#voterInfoTable th{text-align:left;}
-	
-	#impFamDtls select{width:150px;}
 
-textarea { resize: none; }
  </style>
  
  <script type="text/javascript">
@@ -401,13 +398,11 @@ function getVotersInAFamilySearch(){
 	var hno="${houseNo}";
 	var publicationDateId="${publicationDateId}";
 	var id="${boothId}";
-	var voterId="${voterId}";
     var jsObj=
 			{
 					
 				hno:hno,
 				id:id,
-				voterId:voterId,
 				publicationDateId:publicationDateId,
 				task:"getVotersInAFamilySearch"
 	
@@ -646,53 +641,44 @@ function buildQuestionAnswers(results){
 	str+="<form name='QuestionAnswersForm' id='QuestionAnswersFormId' action='hhQstnAnswrsForm.action'>";
 
 	str+='<input type="hidden" name="houseHoldsId" id="houseHoldsId"/>';
-	
+	var queLoopId = 0;
 	for(var i in results){
 	str+="<div class='span12'>";
-		str+="<h4>"+(parseInt(i)+1)+".  "+results[i].mainQues+"</h4>";
+		str+="<h4>"+results[i].mainQues+"</h4>";
 		
 		for(var j in results[i].subQuestList){
-			var queLoopId = 0;
-			str+="<h5>"+(parseInt(j)+1)+".  "+results[i].subQuestList[j].subQues+"</h5>";
+			str+="<h5>"+results[i].subQuestList[j].subQues+"</h5>";
 			for(var k in results[i].subQuestList[j].questionsList){
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].questionId' value="+results[i].subQuestList[j].questionsList[k].questionId+">";
 				
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].subQuestList[j].questionsList[k].optionTypeId+">";
-				if(results[i].subQuestList[j].questionsList.length > 1)
-				{
-				  str+="<h6>"+(parseInt(k)+1)+".  "+results[i].subQuestList[j].questionsList[k].question+"</h6>";
-				}
-				else {
-                 str+="<h6>"+results[i].subQuestList[j].questionsList[k].question+"</h6>";
-				}
-				if(results[i].subQuestList[j].questionsList[k].optionTypeId!=3){
 				
-				str+="<div class='span12'>";
-				for(var l in results[i].subQuestList[j].questionsList[k].options){
+				str+="<h6>"+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				if(results[i].subQuestList[j].questionsList[k].optionTypeId!=3){
 					
+				for(var l in results[i].subQuestList[j].questionsList[k].options){
+					str+="<div class='span12'>"
 					if(results[i].subQuestList[j].questionsList[k].optionTypeId==1){
 						if(results[i].subQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}
 					}else if(results[i].subQuestList[j].questionsList[k].optionTypeId==2){
 						if(results[i].subQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}
 					}
-					
+					str+="</div>"
 				}
-				str+="</div>";
-
 				}else if(results[i].subQuestList[j].questionsList[k].optionTypeId==3){
 					str+="<div class='span12'>";
-					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){						
-						str+="<textarea cols='10' rows='2' maxlength='250' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">"+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+"</textarea>"; 						
-					}else{                       
-                        str+="<textarea cols='10' rows='2' maxlength='250' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" ></textarea>"; 
+					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){
+						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" value="+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+">";
+					}else{
+						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">";
 					}
 					
 					str+="</div>";
@@ -702,43 +688,39 @@ function buildQuestionAnswers(results){
 		}
 		
 		for(var j in results[i].directSubQuestList){
-			var queLoopId = 0;
+			//var queLoopId = 0;
 			<!--str+="<h5>"+results[i].directSubQuestList[j].subQues+"</h5>";-->
 			for(var k in results[i].directSubQuestList[j].questionsList){
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].questionId' value="+results[i].directSubQuestList[j].questionsList[k].questionId+">";
 				
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].directSubQuestList[j].questionsList[k].optionTypeId+">";
 				
-				if(results[i].directSubQuestList[j].questionsList.length > 1){
-				str+="<h6>"+(parseInt(k)+1)+". "+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
-				}
-				else{                
+				
 				str+="<h6>"+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
-				}
 				if(results[i].directSubQuestList[j].questionsList[k].optionTypeId!=3){
 				for(var l in results[i].directSubQuestList[j].questionsList[k].options){
-					str+="<div class='span12'>";
+					str+="<div class='span12'>"
 					if(results[i].directSubQuestList[j].questionsList[k].optionTypeId==1){
 						if(results[i].directSubQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}
 					}else if(results[i].directSubQuestList[j].questionsList[k].optionTypeId==2){
 						if(results[i].directSubQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}	
 					}
-					str+="</div>";
+					str+="</div>"
 				}
 				}else if(results[i].directSubQuestList[j].questionsList[k].optionTypeId==3){
 					str+="<div class='span12'>";
 					if(results[i].directSubQuestList[j].questionsList[k].optsSelected!=null){
-                       str+="<textarea cols='10' rows='2' maxlength='180' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+">"+results[i].directSubQuestList[j].questionsList[k].optsSelected.options[0].option+"</textarea>"; 
+						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" value="+results[i].directSubQuestList[j].questionsList[k].optsSelected.options[0].option+">";
 					}else{
-						str+="<textarea cols='10' rows='2' maxlength='180' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+"></textarea>";
+						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+">";
 					}
 					str+="</div>";
 				}
@@ -885,32 +867,22 @@ function saveHouseHoldInfo(){
 
 </div>
 </form>
-	<div id="impFamDtlsOuterPopUp" style="margin-left:-200px;">
+	<div id="impFamDtlsOuterPopUp">
 		   <div id="impFamDtlsTitle"></div>
-		   <div id="impFamDtls"  class="table table-striped"></div>
+		   <div id="impFamDtls"  class="table table-striped span10" style="overflow:auto;"></div>
 		</div>
 </div>
 
-<div style="text-align:center;margin:5px;"><span class="btn btn-info" onclick="searchVoter()">Add Voter To This Family</span></div>
+
+<div><span class="btn btn-info" onclick="searchVoter()">Add Voter To This Family</span></div>
 <!--<span class="btn btn-info span3 offset5" onclick="getHouseHoldInfoPage()"> Get House Hold Information </span>-->
 
-<div id="qstnAnswer" class="span12 offset1" style="border:1px solid gray"></div>
-<div class="statusMsg span12"></div>
-
-<div id="dialog">
-	<div class="span12 row searchVtrCrit" style="display:none;">
-		<div class="span8 row-fluid"><span class="span4 ">Voter Id</span><input type="text" id="voterId" class="span4 vtrIdCls"/></div> (or)
-		<div class="span8 row-fluid"><span class="span4 ">Voter Name</span><input type="text" id="voterNameId" class="span4 vtrNameCls"/></div>
-		<div class="span8"><span class="btn btn-info" onclick="searchNow()"> Search </span></div>
-	</div>
-	
-	<div class="span12 row searchedVotersDiv"></div>
+<div style="clear:both;">
+ <a href="javascript:{addNewPersonOfFamily()}" class="btn">Add New</a>
 </div>
 
-<a href="javascript:{addNewPersonOfFamily()}" class="btn">Add New</a>
-<br></br>
-</div>
-<div >
+
+	<div>
 			<div class="row-fluid" style="clear:both;">
 				<div class="span1">Name</div>
 				<div class="span1">Age</div>
@@ -919,11 +891,28 @@ function saveHouseHoldInfo(){
 				<div class="span2">RelationShip</div>
 				<div class="span2">Education</div>
 				<div class="span2">Occupation</div>
-				<div class="span2">Social Category</div>
+				<div class="span1">Social Category</div>
+				<div class="span1">Delete</div>
 		   </div>
 		   <div id="newprsnDetailsId"></div>
 
+	</div>
+
+<div id="qstnAnswer" class="span10 offset3" style="border:1px solid gray"></div>
+<div class="statusMsg span12"></div>
+
+<div id="dialog">
+	<div class="span12 row">
+		<div class="span8 row-fluid"><span class="span4 ">Voter Id</span><input type="text" id="voterId" class="span4 vtrIdCls"/></div> (or)
+		<div class="span8 row-fluid"><span class="span4 ">Voter Name</span><input type="text" id="voterNameId" class="span4 vtrNameCls"/></div>
+		<div class="span8"><span class="btn btn-info" onclick="searchNow()"> Search </span></div>
+	</div>
+	
+	<div class="span12 row searchedVotersDiv"></div>
 </div>
+
+</div>
+	
 
 <script>
 	function searchNow(){
@@ -946,7 +935,6 @@ function saveHouseHoldInfo(){
 		callAjax(jsObj,url);
 	}
 	function searchVoter(){
-		$('.searchVtrCrit').css("display","block");
 		 $(function() {
 			$( "#dialog" ).dialog({
 				title:"Search Voter",
@@ -1143,6 +1131,7 @@ function setHiddenFieldInForm(houseHoldsId)
 
 }
 var newPersonsCount=0;
+var newPersons = [];
 function addNewPersonOfFamily()
 {
 		var str='';
@@ -1182,17 +1171,39 @@ function addNewPersonOfFamily()
 			str+='</select>';
             str+='</div>'; 
 
-			str+='<div class="span2">';
+			str+='<div class="span1">';
             str+='<select style="width:100px;" id="newPrsnSclPstn'+newPersonsCount+'">';  
 				<c:forEach items="${socialPositionsList}" var="socialPosition"> 
 					str+='<option value="${socialPosition.id}">${socialPosition.name}</option>'; 
 				</c:forEach>
 			str+='</select>';
             str+='</div>';
+           
+
+			str+='<div class="span1">';
+              str+='<a href="javascript:{deleteDiv('+newPersonsCount+')}"style="margin-left:20px;"><img src="images/icons/delete.png"/></a>';
             str+='</div>';
+			 str+='</div>';
+
+
+
 	$('#newprsnDetailsId').append(str);
+		newPersons.push(newPersonsCount);
 		     newPersonsCount++;
+
 }
+
+function deleteDiv(count)
+{
+
+	var r=confirm("Are You Sure To Delete ?");
+
+	if(r)
+		$('#newPersonDetails'+count).remove();
+
+}
+
+
 </script>
 </body>
 </html>
