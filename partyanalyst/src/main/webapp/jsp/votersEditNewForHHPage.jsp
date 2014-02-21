@@ -1035,13 +1035,15 @@ function saveHouseHoldInfo(){
 <script>
 var voterDtls={
 	boothId:'',
-	voters:[]	
+	voters:[],
+	houseHoldsId:''
 };
 function submitQuestionDetails()
 {
 	 voterDtls.voters = [];
 	 voterDtls.boothId = "${boothId}";
 	 voterDtls.houseNo = "${houseNo}";
+	 voterDtls.houseHoldsId = 0;
 
   $('.voterChkbx').each(function(index,value){
 
@@ -1051,10 +1053,18 @@ function submitQuestionDetails()
 		   selectedVoterDtls =
 			       {
 			         voterId:this.value,
-					 voterFamilyRelationId:$('#'+this.value+"fmlyRltn").val(),
-					 voterEdctn:$('#'+this.value+"edctn").val(),
-					 voterOccptn:$('#'+this.value+"occup").val(),
-					 voterSocialPstn: $('#'+this.value+"sclCtg").val()
+					 familyRelationId:$('#'+this.value+"fmlyRltn").val(),
+					 education:$('#'+this.value+"edctn").val(),
+					 occupation:$('#'+this.value+"occup").val(),
+					 socialPosistion: $('#'+this.value+"sclCtg").val(),
+					 isNew: 'true',
+					 name:'name',
+                     age:25,
+					 relativeName:'relativeName',
+					 relationShipType:'relationShipType',
+					 gender:'gender',
+
+					 	 
 			       };
 
 				 voterDtls.voters.push(selectedVoterDtls);

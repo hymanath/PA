@@ -304,7 +304,7 @@ public class WebServiceHandler {
 			
 			String voterID = mainObj.getString("voterID");
 			String casteStateId = mainObj.getString("casteStateId");
-			String cadreLevelId = mainObj.getString("cadreLevelId");
+			String cadreLevelId = mainObj.getString("influencingScopeId");
 			String mobileNo = mainObj.getString("mobileNo");
 			String partyId = mainObj.getString("partyId");
 			
