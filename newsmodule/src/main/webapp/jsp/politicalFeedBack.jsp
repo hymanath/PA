@@ -787,14 +787,23 @@ function selectDatePicker()
 
 function deletedPoliticalFeedBack(id)
 {
-	var jsObj =
-	{ 
-		pfbId : id,
-		task:"deletedPoliticalFeedBack"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "deletedPoliticalFeedBadkAction.action?"+rparam;						
-	callAjax(jsObj,url);
+	var isConfirm = confirm("Are you want to delete ?")
+	if( isConfirm == true )
+	{
+		var jsObj =
+		{ 
+			pfbId : id,
+			task:"deletedPoliticalFeedBack"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "deletedPoliticalFeedBadkAction.action?"+rparam;						
+		callAjax(jsObj,url);
+    }
+	else
+	{
+	  return false;
+	}
+	
 }
 
 function removeActionItems(name){
