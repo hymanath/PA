@@ -23,6 +23,22 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return qry.list();
 	}
 	
+	public List<Object[]> getHouseHoldIdOfFamilyHeadForVoter(String houseNo){
+		Query qry=getSession().createQuery(" select model.voterId,model.voterFamilyRelationId,model.houseHoldId from HouseHoldVoter model" +
+				" where model.houseHolds.houseNo=:houseNo ");
+		qry.setParameter("houseNo", houseNo);
+		
+		return qry.list();
+	}
+	
+	public List<Object[]> getHouseHoldIdOfVoter(String houseNo){
+		Query qry=getSession().createQuery(" select model.houseHoldId from HouseHoldVoter model" +
+				" where model.houseHolds.houseNo=:houseNo ");
+		qry.setParameter("houseNo", houseNo);
+		
+		return qry.list();
+	}
+	
 	public List<HouseHoldVoter> getHouseHoldsVoterdDetailsByHouseHoldId(Long houseHoldsId)
 	{
 		Query query = getSession().createQuery("select HHV from HouseHoldVoter " +

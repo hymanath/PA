@@ -322,7 +322,7 @@ public interface IVotersAnalysisService {
 				Long publicationId,String type,Long flagId,Integer startIndex,Integer maxRecords,
 				Long userId);
 	 
-	 public List<VoterHouseInfoVO> getFamilyInformationForHHSurvey(Long hamletId , Long boothId, Long publicationDateId,String houseNo,Long userId ,String selectType);
+	 public List<VoterHouseInfoVO> getFamilyInformationForHHSurvey(Long hamletId , Long boothId, Long publicationDateId,String houseNo,Long userId ,String selectType,Long voterId);
 	 
 	 public List<VoterHouseInfoVO> getVotersOfSearchedCriteriaForHH(String voterCardNo,String voterName,Long boothId,Long publicationId);
 	 	
