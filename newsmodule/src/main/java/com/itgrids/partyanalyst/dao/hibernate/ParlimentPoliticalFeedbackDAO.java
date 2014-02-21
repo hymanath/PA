@@ -50,7 +50,7 @@ public class ParlimentPoliticalFeedbackDAO extends GenericDaoHibernate<Parliment
 	
 	public int deletePoliticalFeedBack(Long id)
 	{
-		Query query = getSession().createQuery(" update  ParlimentPoliticalFeedback model set isDeleted = 'Y' " +
+		Query query = getSession().createQuery(" update  ParlimentPoliticalFeedback model set model.isDeleted = 'Y' " +
 				" where model.parlimentPoliticalFeedbackId = :id");
 		query.setParameter("id", id);
 		int resutlt = query.executeUpdate();

@@ -800,7 +800,26 @@ public class DebateService implements IDebateService{
 	}
 	
 	
-	
+	public String deleteSelectedDEbate(Long debateId)
+	{
+		String status = null;
+		try {
+			LOG.info("Enterd into deleteSelectedDEbate method in DebateService class");
+			int result = debateDAO.deleteFlagDebate(debateId);
+			
+			if(result == 0)
+			{
+				status = "Fail";
+			}
+			else
+			{
+				status = "Success";
+			}
+		} catch (Exception e) {
+			LOG.error("Error occured in deleteSelectedDEbate method in DebateService class",e);
+		}
+		return status;
+	}
 	/**
 	 * This service is used for getting the channel details
 	 * @return List<SelectOptionVO> channelDetails

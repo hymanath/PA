@@ -744,6 +744,25 @@ function callAjax(jsObj,url)
 					if(myResults != null)
 					prepopulateDebateForm(myResults);	
 				}
+				else if (jsObj.task == "deleteDebateReport")
+				{
+					if(myResults != null)
+					{
+						if(myResults == "Success")
+						{
+							alert("Deleted Successfully");
+						}
+						else
+						{
+							alert("Error Occured While Deleting");
+						}
+						
+					}
+					else
+					{
+						alert("Error Occured While Deleting");
+					}
+				}
 			 		
 			}catch(e)
 			{   
@@ -962,6 +981,18 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
 		elLiner.innerHTML=str;
 					
 	};
+	
+	YAHOO.widget.DataTable.deleteReport = function(elLiner, oRecord, oColumn, oData) 
+	{
+	   var str='';
+		var name = oData;
+		var debateId = oRecord.getData("id");
+
+		str +='<a class="btn btn-info" value="'+debateId+'"';
+		str +='onClick="deleteDebateReport('+debateId+')">Delete</a>';
+		elLiner.innerHTML=str;
+					
+	};
 	YAHOO.widget.DataTable.textArea = function(elLiner, oRecord, oColumn, oData) 
 	{
 	   var str='';
@@ -977,6 +1008,7 @@ function getDebateDetailsBetwinDates(fromDate,toDate,channelId,partyId,candidate
    {key:"type",label:"CREATED DATE"},
    {key:"viewReport",label:"VIEW REPORT",formatter:YAHOO.widget.DataTable.generatePDF},
    {key:"editReport",label:"EDIT",formatter:YAHOO.widget.DataTable.editReport},
+   {key:"deleteReport",label:"DELETE",formatter:YAHOO.widget.DataTable.deleteReport},
    {key:"generatePDF",label:"GENERATE URL ",formatter:YAHOO.widget.DataTable.viewReport},
    {key:"textArea",label:"URL",formatter:YAHOO.widget.DataTable.textArea}
 
@@ -1141,6 +1173,26 @@ function editDebateReport(debateId)
 	window.open("debateEditAction.action?debateId="+debateId+"");
 }
 
+function deleteDebateReport(debateId)
+{
+
+	var isConfirm = confirm("Are you want to delete ?")
+	if( isConfirm == true )
+	{
+		var jsObj = {
+				debateId : debateId,
+				task     : "deleteDebateReport"	
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "deleteSelectedDEbateAction.action?"+rparam;
+		callAjax(jsObj,url);
+    }
+	else
+	{
+	  return false;
+	}
+	
+}
 function generateURL(debateId,div,description)
 {
 	    var jsObj = {
