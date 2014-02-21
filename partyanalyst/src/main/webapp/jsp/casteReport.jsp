@@ -98,10 +98,17 @@ var maxr = 1000;
 			<option value="0"> Select Publication </option>
 			</select></td>
 		</tr>
-			
-	</table>	
+	
+	</table>
+	<c:if test='${type == "panchayat"}'>
+	<div class="span4" style="margin-left: 115px;"><input type="checkbox" name="partial" id="partialCheck" value="check Partial" style="margin-top:-1px;">&nbsp;Partial Panchayat
+	<input type="button" value="submit" onclick="getCasteInfo(0);" class="btn btn-success"/>
+	<div id="showAjaxImg" style="display:none"><img src="./images/icons/search.gif"/></div></div>
+	</c:if>	
+	<c:if test='${type != "panchayat"}'>
 	<input type="button" value="submit" onclick="getCasteInfo(0);" class="btn btn-success"/>
 	<div id="showAjaxImg" style="display:none"><img src="./images/icons/search.gif"/></div>
+	</c:if>
  </div>
 
   <br/> <br/>
@@ -203,10 +210,17 @@ function addOptions(list,opElmt){
 function getCasteInfo(startIndex)
 {
 	var errorDiv =$("#errorDiv");
+	var partialchecked = false;
 	$("#CasteDetailsDiv").css("display","none");
 	var constituencyId = $("#listConstituencyNames").val();
 	var publicationId = $("#publicationDateList").val();
-	
+	if(type == "panchayat")
+	{
+	alert($('#partialCheck :checked'))
+	{
+		partialchecked =true;
+	}
+	}	
 	var str ='<font color="red">';
 	var flag = true;
 	if(constituencyId == 0)
@@ -236,6 +250,7 @@ var jsObj=
 			type:type,
 			startIndex:startIndex,
 		    results:maxr,
+			partialchecked:partialchecked,
 			task:"getCasteDetails"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
