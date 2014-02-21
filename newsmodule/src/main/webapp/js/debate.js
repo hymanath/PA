@@ -523,7 +523,7 @@ function getValues(){
 		}
 		str +='</select></td>';
 		str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" value="0"></input>';
-		str += '<div id="expReoleDiv1"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
+		str += '<div id="expReoleDiv1"><select multiple="multiple" style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -562,7 +562,7 @@ function addMoreCandidates()
 {
 	var str ='';
 	str += "<tr id='row"+candCount+"' class='particepntDetailsRow'>";
-	str += "<td><select name='party1'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,"+candCount+");' class='partysClass'><option value='0' selected='selected'>Select</option>";
+	str += "<td><select name='party"+candCount+"'  id='party"+candCount+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,"+candCount+");' class='partysClass'><option value='0' selected='selected'>Select</option>";
 	for ( var i in partiesArray)
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
@@ -583,7 +583,7 @@ function addMoreCandidates()
 	
 	str +='<td class="participantRolesblock'+candCount+'">';
 	str +='<input type="hidden" id="'+candCount+'participantRoles" class="partiRoleClass"></input>';
-	str +='<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
+	str +='<select theme="simple" multiple="multiple" Class="selectWidth participantsRoles" name="'+candCount+'participantRoles" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -591,7 +591,7 @@ function addMoreCandidates()
 	
 	str +='</select></td><td class="expparticipantRolesblock'+candCount+'">';
 	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1 expPartiesRoleClass" value="0"></input>';
-	str +='<div id="expReoleDiv'+candCount+'"><select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
+	str +='<div id="expReoleDiv'+candCount+'"><select  style="display:none" ;theme="simple" multiple="multiple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -631,10 +631,11 @@ questionCount++;
 
 function getCandidatesOfSelectedParty(partyId,divId,id)
 {
+
 	if(partyId == 872)
 	{
 		var str  = '';
-		str +='<select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+id+'" id="expparticipantRoles'+id+'" key="'+id+'expparticipantRoles">';
+		str +='<select style="display:none" ;theme="simple" multiple="multiple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+id+'" id="expparticipantRoles'+id+'" key="'+id+'expparticipantRoles">';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
@@ -737,7 +738,12 @@ function callAjax(jsObj,url)
 				else if(jsObj.task == "candidate")
 				{
 					buildCandidateDetails(myResults);
-				}				
+				}	
+				else if (jsObj.task == "getDebateDetails")
+				{
+					if(myResults != null)
+					prepopulateDebateForm(myResults);	
+				}
 			 		
 			}catch(e)
 			{   
@@ -1317,7 +1323,7 @@ function updatePercntage(id){
 		});   
 		
 	   //getPartiesList("partySelectNewList",null);
-	   getDesignationList("designationsList");   
+	   //getDesignationList("designationsList");   
 
 	}
 	
