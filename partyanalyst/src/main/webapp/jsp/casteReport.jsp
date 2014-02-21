@@ -216,7 +216,8 @@ function getCasteInfo(startIndex)
 	var publicationId = $("#publicationDateList").val();
 	if(type == "panchayat")
 	{
-	if($('#partialCheck :checked'))
+	
+	if($("#partialCheck").is(':checked'))
 	{
 		partialchecked =true;
 	}
