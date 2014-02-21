@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +140,7 @@ public class CasteReportService implements ICasteReportService{
 		this.userVoterDetailsDAO = userVoterDetailsDAO;
 	}
 
-	public List<CastVO> getCasteWiseInfo(Long constituencyId,Long publicationId,String type,Long userId)
+	public List<CastVO> getCasteWiseInfo(Long constituencyId,Long publicationId,String type,Long userId,String partialChecked)
 
 	{
 		List<CastVO> resultList = new ArrayList<CastVO>();
@@ -147,7 +148,7 @@ public class CasteReportService implements ICasteReportService{
 		try{
 			if(type.equalsIgnoreCase(IConstants.BOOTH) || type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			{
-				getCasteWiseInfoForBooth1(resultList,constituencyId, publicationId, type, userId);
+				getCasteWiseInfoForBooth1(resultList,constituencyId, publicationId, type, userId,partialChecked);
 			}
 			else
 			{
@@ -341,18 +342,57 @@ public class CasteReportService implements ICasteReportService{
 		
 	  }
 	 
-	 public List<CastVO> getCasteWiseInfoForBooth1(List<CastVO> resultList,Long constituencyId,Long publicationId,String type,Long userId)
+	 public List<CastVO> getCasteWiseInfoForBooth1(List<CastVO> resultList,Long constituencyId,Long publicationId,String type,Long userId,String partialChecked)
 
 		{
-			
+		 		 List<Object[]> castesList = new ArrayList<Object[]>();
 		         List<Object[]> casteList = null;
+		         List<Object[]> casteList1 = null;
 				try{
 					Map<Long,Map<Long,Map<Long,CastVO>>> resulMap = new HashMap<Long, Map<Long,Map<Long,CastVO>>>();
-				   casteList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
-				   
-					 if(casteList != null && casteList.size() > 0)
+					if(partialChecked.equalsIgnoreCase("true"))
+					{
+						List<Long> tehsilIds = userVoterDetailsDAO.getTehsils(constituencyId, publicationId);
+						if(tehsilIds != null && tehsilIds.size() > 0)
+						{
+							for(Long tehsilId:tehsilIds){
+								Set<String> partialIds  = new HashSet<String>();
+								List<Object[]> partialBooth = userVoterDetailsDAO.getPartialPanchayats(tehsilId,constituencyId,publicationId);
+								for(Object[] p:partialBooth){
+									if(p[0] !=null){
+										partialIds.add(p[0].toString());
+									}
+									if(p[1] !=null){
+										partialIds.add(p[1].toString());
+									}
+								}
+								String paids = "";
+								for(String panchayat:partialIds){
+									if(paids.length()==0)
+										paids =panchayat;
+									else
+										paids =paids+","+panchayat;
+								}
+								if(paids != "")
+								{
+								 casteList = userVoterDetailsDAO.getCasteReportForPartial(constituencyId,publicationId,type,userId,paids,tehsilId);
+								 casteList1 = userVoterDetailsDAO.getCasteReportForNotPartial(constituencyId,publicationId,type,userId,paids,tehsilId);
+								}
+								 if(casteList != null && casteList.size() > 0)
+									 castesList.addAll(casteList);
+									 if(casteList1 != null && casteList1.size() > 0)
+										 castesList.addAll(casteList1);
+									 }
+							
+					                }
+		                           }
+				   else
+				   {
+					   castesList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
+				   }
+					 if(castesList != null && castesList.size() > 0)
 					 {
-						  for(Object[] params : casteList)
+						  for(Object[] params : castesList)
 						 {
 							   Map<Long,Map<Long,CastVO>> casteMap = resulMap.get((Long)params[5]);
 							  if(casteMap == null)
@@ -437,7 +477,7 @@ public class CasteReportService implements ICasteReportService{
 						resultList.get(0).setPartyName(constituencyDAO.get(constituencyId).getName());
 					 }
 					 
-					 for(Object[] params2 : casteList)
+					 for(Object[] params2 : castesList)
 					 {
 						 setValuesForaCasteInBooth(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0],(Long)params2[5]);
 						 
@@ -452,329 +492,7 @@ public class CasteReportService implements ICasteReportService{
 				sortPanchayat(resultList);
 			return resultList;
 		}
-	/* public List<VoterHouseInfoVO> getVoterAddressDetails(Long constituencyId,Long publicationId,Long userId)
-	 {
-		 List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
-	  try{
-		 
-		  List<Object[]> boothHnos =userVoterDetailsDAO.getVoterHnoAndBooths(constituencyId,publicationId);
-		  Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
-		  	if(boothHnos !=null && boothHnos.size() > 0)
-				{
-					for(Object[] params : boothHnos)
-					{
-						List<String> hnos = boothHousesMap.get((Long)params[0]);
-						if(hnos == null)
-						{
-							hnos = new ArrayList<String>();
-							boothHousesMap.put((Long)params[0], hnos);
-						}
-						if(!hnos.contains(params[1].toString()))
-							hnos.add(params[1].toString());
-					}
-				} 
-		  	List<Long> voterIds = new ArrayList<Long>();
-		  	for(Long boothId :boothHousesMap.keySet())
-			{
-		  	for(String hno : boothHousesMap.get(boothId))
-		  	{
-		    List list = userVoterDetailsDAO.getElderVoterDetails(boothId,hno);
-		    if(list != null && list.size() > 0)
-		    {
-		    
-		    	Voter voter = (Voter) list.get(0);
-		    	voterIds.add(voter.getVoterId());
-		    
-		    }
-			}
-			}
-		  	 Map<Long,String> voterCaste =new HashMap<Long, String>();
-			 List<Object[]> casteInfo =  userVoterDetailsDAO.getCasteForVoter(voterIds);
-				if(casteInfo != null && casteInfo.size() > 0)
-					for(Object[] casteName : casteInfo)
-					{
-						String caste = voterCaste.get((Long)casteName[0]);
-						if(caste == null)
-						voterCaste.put((Long)casteName[0],casteName[1].toString());
-						else
-						voterCaste.put((Long)casteName[0],caste);	
-					}
-		  	for(Long boothId :boothHousesMap.keySet())
-			{
-		  		if(boothHousesMap.get(boothId) != null)
-		  		{
-		  		for(String hno : boothHousesMap.get(boothId))
-			  	{
-		    List list = userVoterDetailsDAO.getElderVoterDetails(boothId, hno);
-			  	
-		    if(list != null && list.size() > 0)
-		    {
-		   
-		    	Voter voter = (Voter) list.get(0);
-		    	VoterHouseInfoVO vo = new VoterHouseInfoVO();
-		    	vo.setVoterId(voter.getVoterId());
-		    	vo.setName(voter.getName());
-		    	vo.setAge(voter.getAge());
-		    	vo.setGender(voter.getGender());
-		    	vo.setHouseNo(voter.getHouseNo());
-		    	Booth booth = boothDAO.get(boothId);
-				Constituency consti = constituencyDAO.get((Long)booth.getConstituency().getConstituencyId());
-				String type = consti.getAreaType();
-				if(booth != null)
-				{
-					String tehsil ="";
-					String panchayat = "";
-					String hamlet = "";
-					String ward = "";
-					String localbody = "";
-					String hamletName = "";
-					String wardName= "";
-					
-					if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
-					{
-						tehsil = booth.getTehsil().getTehsilName();
-						if(booth.getPanchayat() != null)
-						{
-						panchayat =booth.getPanchayat().getPanchayatName();
-						List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
-						if(hamlets != null && hamlets.size() > 0)
-							hamletName = hamlets.get(0).toString();
-						}
-					}
-					else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
-					{
-						if (booth.getLocalBody() != null)
-						localbody = booth.getLocalBody().getName();
-						if(localbody != null && localbody != "")
-							tehsil = localbody +" Muncipality";
-						else
-							tehsil = booth.getTehsil().getTehsilName();	
-						if(booth.getPanchayat() != null)
-						{
-						panchayat =booth.getPanchayat().getPanchayatName();
-						List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
-						if(hamlets != null && hamlets.size() > 0)
-							hamletName = hamlets.get(0).toString();
-						}
-						
-					}
-					else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
-					{
-						if (booth.getLocalBody() != null)
-							localbody = booth.getLocalBody().getName();
-						String electionType =consti.getElectionScope().getElectionType().getElectionType();
-							if(localbody != null && localbody != "")
-							{
-								if(electionType.equalsIgnoreCase(IConstants.GHMC))
-								tehsil = localbody +" Corporation";
-								wardName = booth.getLocalBodyWard().getName();
-							}
-							else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
-							{
-								tehsil = localbody +" Muncipality";
-							}
-						
-					}
-					vo.setTehsilName(tehsil);
-					vo.setPanchayatName(panchayat);
-					vo.setHamletName(hamletName);
-					vo.setWardName(wardName);
-					vo.setCast(voterCaste.get(voter.getVoterId()));
-		    	
-		    	}
-				resultList.add(vo);
-		    
-			}
-		}
-	  }
-	  }
-	  }
-	  catch(Exception e)
-	  {
-			log.error("Exception Occured in getVoterAddressDetails() method in CasteReportService",e);
-	  }
-	return resultList;
-	 }*/
-	 
-	 
-	/* public ResultStatus getVoterAddressDetails (Long constituencyId,Long publicationId,Long userId)
-	 {
-		 ResultStatus resultStatus = new ResultStatus();
-		 try{
-			List<Object[]> boothHnos = userVoterDetailsDAO.getVoterHnoAndBooths(constituencyId,publicationId);
-			 
-			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
-		  	if(boothHnos !=null && boothHnos.size() > 0)
-			{
-		  		for(Object[] params : boothHnos)
-				{
-					List<String> hnos = boothHousesMap.get((Long)params[0]);
-					if(hnos == null)
-						hnos = new ArrayList<String>();
-					
-					hnos.add(params[1].toString());	
-					boothHousesMap.put((Long)params[0], hnos);
-				}
-			}
-		  	
-		  	List<Long> voterIds = new ArrayList<Long>();
-		  	for(Long boothId :boothHousesMap.keySet())
-			{
-			  	for(String hno : boothHousesMap.get(boothId))
-			  	{
-				    List<Voter> list = userVoterDetailsDAO.getElderVoterDetails(boothId,hno);
-				    if(list != null && list.size() > 0)
-				    {
-				    	Voter voter = (Voter) list.get(0);
-				    	voterIds.add(voter.getVoterId());
-				    }
-				}
-			}
-		  	
-		  	Map<Long,String> voterCaste = new HashMap<Long, String>();
-		  	List<Object[]> casteInfo =  userVoterDetailsDAO.getCasteForVoter(voterIds);
-			
-		  	if(casteInfo != null && casteInfo.size() > 0)
-			for(Object[] casteName : casteInfo)
-			{
-				String caste = voterCaste.get((Long)casteName[0]);
-				if(caste == null)
-				voterCaste.put((Long)casteName[0],casteName[1].toString());
-				else
-				voterCaste.put((Long)casteName[0],caste);	
-			}
-		 
-		    HSSFWorkbook workbook = new HSSFWorkbook();
-			HSSFSheet sheet = workbook.createSheet("Sample sheet");
-			Row header = sheet.createRow(0);
-		    header.createCell(0).setCellValue("SNO");
-			header.createCell(1).setCellValue("Voter Name");
-			header.createCell(2).setCellValue("Caste");
-		    header.createCell(3).setCellValue("Age");
-		    header.createCell(4).setCellValue("Gender");
-		    header.createCell(5).setCellValue("House No");
-		    header.createCell(6).setCellValue("Hamlet Name");
-		    header.createCell(7).setCellValue("Panchayat Name");
-		    header.createCell(8).setCellValue("Mandal Name");
-		    header.createCell(9).setCellValue("District Name");
-				   
-		    for(Long boothId :boothHousesMap.keySet())
-			{
-		  		if(boothHousesMap.get(boothId) != null)
-		  		{
-		  			int rowNum = 0;
-		  			for(String hno : boothHousesMap.get(boothId))
-		  			{
-		  				rowNum ++;
-		  				List<Voter>  list = userVoterDetailsDAO.getElderVoterDetails(boothId, hno);
-			  	
-		  				if(list != null && list.size() > 0)
-		  				{
-		  					Voter voter = (Voter) list.get(0);
-		  					Booth booth = boothDAO.get(boothId);
-		  					Constituency consti = constituencyDAO.get((Long)booth.getConstituency().getConstituencyId());
-		  					String type = consti.getAreaType();
-		  					
-		  					if(booth != null)
-		  					{
-								String tehsil ="";
-								String panchayat = "";
-								String hamlet = "";
-								String ward = "";
-								String localbody = "";
-								String hamletName = "";
-								String wardName= "";
-								String district = "";
-								
-								if(consti.getDistrict() != null)
-									district = consti.getDistrict().getDistrictName();
-						
-								if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
-								{
-									tehsil = booth.getTehsil().getTehsilName();
-									if(booth.getPanchayat() != null)
-									{
-										panchayat =booth.getPanchayat().getPanchayatName();
-										List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
-										if(hamlets != null && hamlets.size() > 0)
-											hamletName = hamlets.get(0).toString();
-									}
-								}
-								
-								else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
-								{
-									if (booth.getLocalBody() != null)
-										localbody = booth.getLocalBody().getName();
-									if(localbody != null && localbody != "")
-										tehsil = localbody +" Muncipality";
-									else
-										tehsil = booth.getTehsil().getTehsilName();	
-									if(booth.getPanchayat() != null)
-									{
-										panchayat = booth.getPanchayat().getPanchayatName();
-										List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
-										
-										if(hamlets != null && hamlets.size() > 0)
-											hamletName = hamlets.get(0).toString();
-									}
-									
-								}
-								else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
-								{
-									if (booth.getLocalBody() != null)
-										localbody = booth.getLocalBody().getName();
-									String electionType =consti.getElectionScope().getElectionType().getElectionType();
-									
-									if(localbody != null && localbody != "")
-									{
-										if(electionType.equalsIgnoreCase(IConstants.GHMC))
-										tehsil = localbody +" Corporation";
-										wardName = booth.getLocalBodyWard().getName();
-									}
-									else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
-									{
-										tehsil = localbody +" Muncipality";
-									}
-								}
-						
-					    	   Row dataRow = sheet.createRow(rowNum);
-					    	   dataRow.createCell(0).setCellValue(rowNum);
-					    	   dataRow.createCell(1).setCellValue(voter.getName());
-					    	   dataRow.createCell(2).setCellValue(voterCaste.get(voter.getVoterId()));
-					    	   dataRow.createCell(3).setCellValue(voter.getAge());
-					    	   dataRow.createCell(4).setCellValue(voter.getGender());
-					    	   dataRow.createCell(5).setCellValue(voter.getHouseNo());
-					    	   dataRow.createCell(6).setCellValue(hamletName);
-					    	   dataRow.createCell(7).setCellValue(panchayat);
-					    	   dataRow.createCell(8).setCellValue(tehsil);
-							    	   dataRow.createCell(9).setCellValue(district);
-					    	   try {
-					    	        FileOutputStream out =
-					    	                new FileOutputStream(new File("C:/Program Files/Apache Software Foundation/Tomcat 6.0/webapps/voterAddressExcel.xls"));
-					    	        workbook.write(out);
-					    	        out.close();
-					    	        System.out.println("Excel written successfully..");
-					    	         
-					    	    } catch (FileNotFoundException e) {
-					    	        e.printStackTrace();
-					    	    } catch (IOException e) {
-					    	        e.printStackTrace();
-					    	    }
-		  					}
-		  				}
-		    	   
-				   
-		  			}
-		  		}
-		  	}	
-			
-		 }
-		  		catch (Exception e) {
-					e.printStackTrace();
-				}
-	 return resultStatus;
-	 }*/
-	 
+	
 	 
 	 public ResultStatus getVoterAddressDetails (Long constituencyId,Long publicationId,Long userId)
 	 {
@@ -999,5 +717,6 @@ public class CasteReportService implements ICasteReportService{
 			log.error("Exception Occured in createExcelForVoterAddress()", e) ;
 		}
 	 }
+	
 
 }

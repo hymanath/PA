@@ -322,6 +322,10 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<UserVoterDetails> getVoterDetailsByUserIdAndVoterId(Long voterId,Long userId);
 	public List<Object[]> getLocalbodyCasteReport(Long constituencyId,Long publicationId,Long userId);
+	public List<Long> getTehsils(Long constituencyId,Long publicationId);
+	public List<Object[]> getPartialPanchayats(Long tehsilId,Long constituencyId,Long publicationId);
+	public List<Object[]> getCasteReportForPartial(Long constituencyId,Long publicationId,String type,Long userId,String partialIds,Long tehsilId);
+	public List<Object[]> getCasteReportForNotPartial(Long constituencyId,Long publicationId,String type,Long userId,String partialIds,Long tehsilId);
 
 	
 }

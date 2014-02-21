@@ -3048,4 +3048,55 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	public List<Long> getTehsils(Long constituencyId,Long publicationId)
+	{
+		Query query = getSession().createQuery("select model.tehsil.tehsilId from Booth model where model.publicationDate.publicationDateId = :publicationId and model.constituency.constituencyId = :constituencyId group by model.tehsil.tehsilName");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+		
+	}
+	public List<Object[]> getPartialPanchayats(Long tehsilId,Long constituencyId,Long publicationId)
+	{
+		Query query = getSession().createQuery("select pbp.panchayat.panchayatId,b.panchayat.panchayatId from PartialBoothPanchayat pbp,Booth b where pbp.booth.boothId = b.boothId and b.constituency.constituencyId =:constituencyId and b.publicationDate.publicationDateId =:publicationId and b.tehsil.tehsilId =:tehsilId");
+		query.setParameter("tehsilId", tehsilId);
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();	
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteReportForPartial(Long constituencyId,Long publicationId,String type,Long userId,String partialIds,Long tehsilId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct count(model.voter.voterId),model.casteState.caste.casteName,model.casteState.caste.casteId, ");
+	    str.append("bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName,bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName ");
+		str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
+				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId and bpv.booth.tehsil.tehsilId =:tehsilId and bpv.booth.panchayat.panchayatId in("+partialIds+")");
+		str.append("  group by model.casteState.caste.casteId,bpv.booth.panchayat.panchayatId order by bpv.booth.tehsil.tehsilName,bpv.booth.panchayat.panchayatId,model.casteState.caste.casteName");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		query.setParameter("tehsilId", tehsilId);
+		return query.list();
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteReportForNotPartial(Long constituencyId,Long publicationId,String type,Long userId,String partialIds,Long tehsilId)
+	{
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct count(model.voter.voterId),model.casteState.caste.casteName,model.casteState.caste.casteId, ");
+	    str.append("bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName,bpv.booth.tehsil.tehsilId,bpv.booth.tehsil.tehsilName ");
+		str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
+				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId and bpv.booth.tehsil.tehsilId =:tehsilId and bpv.booth.panchayat.panchayatId not in("+partialIds+")");
+		str.append("  group by model.casteState.caste.casteId,bpv.booth.panchayat.panchayatId order by bpv.booth.tehsil.tehsilName,bpv.booth.panchayat.panchayatId,model.casteState.caste.casteName");
+		
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId", userId);
+		query.setParameter("tehsilId", tehsilId);
+		return query.list();
+	}
 }
