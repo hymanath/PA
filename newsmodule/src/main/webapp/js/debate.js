@@ -9,12 +9,13 @@ var debateNewCandiPartyId;
 
 function validateFields(){
 
-	$(".subjectClass,#channel,#observer,#telecastTime").css("border","1px solid #CCCCCC");
-	$(".hasDatepicker,.partysClass,.candidatesClass").css("border","1px solid #CCCCCC");
-	$(".participntRoles,.participantsRoles,.smsOptinPerc").css("border","1px solid #CCCCCC");
-	$("#debetSum,#smsques1,.debateAnswr,.smsOptin").css("border","1px solid #CCCCCC");
-	$(".ui-state-default").removeClass("ui-state-error");
+	//$(".subjectClass,#channel,#observer,#telecastTime").css("border","1px solid #CCCCCC");
+	//$(".hasDatepicker,.partysClass,.candidatesClass").css("border","1px solid #CCCCCC");
+	//$(".participntRoles,.participantsRoles,.smsOptinPerc").css("border","1px solid #CCCCCC");
+	//$("#debetSum,#smsques1,.debateAnswr,.smsOptin").css("border","1px solid #CCCCCC");
+	//$(".ui-state-default").removeClass("ui-state-error");
 	
+	$(".errDiv").html('');
 	var flag = true;
 	var channel = $("#channel").val();
 	//var telecastTime = $("#telecastTime").val();
@@ -30,12 +31,12 @@ function validateFields(){
 		 var subject = $( this ).val();
 			if(subject.trim().length <= 0){
 				var divId = $(this ).attr("id");			
-				$("#"+divId+"").css("border","1px solid #D14719");	
+				$("#"+divId+"Err").html("Please enter subject.");
 				flag = false;
 			}
 		});
-		if(channel <=0){	
-				$("#channel").css("border","1px solid #D14719");	
+		if(channel <=0){		
+				$("#channelErr").html('Please Select Channel.');
 			flag = false;
 		}
 		/*if(telecastTime <=0){
@@ -44,12 +45,15 @@ function validateFields(){
 		}
 			*/
 		if(startTime.trim().length <= 0){
-			$("#startTime").css("border","1px solid #D14719");
+			$("#startTimeErr").html('Please Select Start Time.');
 			flag = false;
 		}
-
+		if(observer <=0){
+			$("#observerErr").html('Please Select Observer.');
+			flag = false;
+		}
 		if(endTime.trim().length <= 0){
-			$("#endTime").css("border","1px solid #D14719");
+			$("#endTimeErr").html("Please Select End Time.");
 			flag = false;
 		}
 		var fromTimeArr = startTime.substring(11).split(":");
@@ -76,43 +80,45 @@ function validateFields(){
 		
 		if(fromyear>toyear){
 			$("#startTime,#endTime").css("border","1px solid #D14719");
+			$("#startTimeErr").html('Start Date should be less than End Date.');
 			flag = false;
 		}
 		 if(frommonth>tomonth){
 			   if(fromyear == toyear){
-				 $("#startTime,#endTime").css("border","1px solid #D14719");	
+				 $("#startTime,#endTime").css("border","1px solid #D14719");
+				$("#startTimeErr").html('Start Date should be less than End Date.');
 				 flag = false;
 			}		
 		}
 		
 		if(fromDat>toDat){	
 			if(frommonth == tomonth && fromyear == toyear){
-				 $("#startTime,#endTime").css("border","1px solid #D14719");	
+				 $("#startTime,#endTime").css("border","1px solid #D14719");
+			$("#startTimeErr").html('Start Date should be less than End Date.');
 				 flag = false;				 
 			   }
 		}	
 		if( fromhours > tohours ){
 			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat){
 				$("#startTime,#endTime").css("border","1px solid #D14719");
+				$("#startTimeErr").html('Start Date hour and End Date hour not matching.');
 				flag = false;				
 			}					
 		}		
 		if(frommin >= tomin ){
 			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat && fromhours == tohours){
-				$("#startTime,#endTime").css("border","1px solid #D14719")	;
+				$("#startTime,#endTime").css("border","1px solid #D14719");
+				$("#startTimeErr").html('Start Date minutes and End Date minutes not matching.');
 				flag = false;				
 			}		
 		}
 			
-		if(observer <=0){
-			$("#observer").css("border","1px solid #D14719");
-			flag = false;
-		}
+		
 		$( ".partysClass" ).each(function( index ) {
 		 var partyId = $(this ).val();	 
 			if(partyId <= 0){
-				var divId = $(this ).attr("id");	
-				$("#"+divId+"").css("border","1px solid #D14719");	
+				var divId = $(this ).attr("id");		
+				$("#"+divId+"Err").html('Please select Party .');
 				flag = false;
 			}
 		});
@@ -122,7 +128,7 @@ function validateFields(){
 
 			if(candidate <= 0){
 				var divId = $(this ).attr("id");	
-				$("#"+divId+"").css("border","1px solid #D14719");	
+				$("#"+divId+"Err").html('Please select Candidate .');				
 				flag = false;
 			}
 		});
@@ -131,14 +137,15 @@ function validateFields(){
 		
 		 var prsentation = $( this ).val();
 		 var divId = $(this ).attr("id");
-				if(prsentation == null ||  prsentation.trim().length <= 0){				
-				$("#"+divId+"").css("border","1px solid #D14719");			
-				$("."+divId.replace(/\s/g, '')+"").css("border","1px solid #D14719");
+		 console.log(divId);
+		 var rolesids = divId.replace(/\s/g, '');
+			rolesids = rolesids.replace('(Scale)', '');
+				if(prsentation == null ||  prsentation.trim().length <= 0){		
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' required.');				
 				flag = false;			
 			}
-			if(prsentation >5){		
-				$("#"+divId+"").css("border","1px solid #D14719");			
-				$("."+divId.replace(/\s/g, '')+"").css("border","1px solid #D14719");
+			if(prsentation >5){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - 5.');
 				flag = false;	
 			}
 
@@ -149,10 +156,9 @@ function validateFields(){
 		 
 			if(participantRoles == null || participantRoles.trim().length <= 0){
 				var myclass=  $(this).closest('td').attr("class"); 
-				var divId = $(this ).attr("id");
-				$('.'+myclass+'').find('button').attr("id",""+divId+""+myclass+"");
-				$("#"+divId+""+myclass+"").addClass("ui-state-error");
-				//flag = false;
+				var divId = $(this ).attr("id");			
+				$("#"+divId+"Err").html('Please select participation role(s).');
+				flag = false;
 			}
 		});		
 		
@@ -162,17 +168,15 @@ function validateFields(){
 				if(exppartiRole == null || exppartiRole.trim().length <= 0){
 					var myclass=  $(this).closest('td').attr("class"); 
 					var divId = $(this).attr("id");
-					$('.'+myclass+'').find('button').attr("id",""+divId+""+myclass+"");		
-					$("#"+divId+"").css("border","1px solid #D14719");
-					$("#"+divId+""+myclass+"").addClass("ui-state-error");
+					$("#"+divId+"Err").html('Please select expected participation role(s).');
 					flag = false;
 				}
 		});
 		$(".debateAnswr ").each(function(index){
 			var answr = $( this ).val();
 			if(answr == null || answr.trim().length <= 0){
-				var divId = $(this ).attr("id");
-				$("#"+divId+"").css("border","1px solid #D14719");
+				var divId = $(this ).attr("id");				
+				$("#"+divId+"Err").html('Answer is Required.');
 				flag = false;
 			}
 				
@@ -187,7 +191,7 @@ function validateFields(){
 
 				if(smsOption == null || smsOption.trim().length <= 0){
 					var divId = $(this ).attr("id");
-					$("#"+divId+"").css("border","1px solid #D14719");
+					$("#"+divId+"Err").html('Option is Required.');
 					flag = false;
 				}
 			});
@@ -197,18 +201,18 @@ function validateFields(){
 			 
 				if(smsOptionPerc == null || smsOptionPerc.trim().length <= 0){
 					var divId = $(this ).attr("id");
-					$("#"+divId+"").css("border","1px solid #D14719");
+					$("#"+divId+"Err").html('Percentage is Required.');
 					flag = false;
 				}
 			});
 
 			if(totalPerc < 0 || totalPerc > 0 || totalPerc > 100){
-				$( ".smsOptinPerc" ).css("border","1px solid #D14719");
+				$("#errorForTotal").html('Percentage Must be 100.');
 				flag = false;
 			}
 		}
 		if(debetSum == null || debetSum.trim().length <= 0){
-				$("#debetSum").css("border","1px solid #D14719");
+				$("#debetSumErr").html('Debate Summary is Required.');
 				flag = false;
 		}	
 
@@ -220,7 +224,7 @@ function addMoreSubject(){
 //console.log(subjCount);
 var str = "";
 
-	str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
+	str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><span id='subject"+subjCount+"Err' class='errDiv' style='margin-left: 100px;'></span><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
 	str +="<input type='text' Class='subjectClass span12' name='subject"+subjCount+"' id='subject"+subjCount+"' '/>";
 	str += "</br></span>";	
 	
@@ -309,11 +313,11 @@ function addMorePole(){
 	str += "<div class='smsPoleClass row-fluid'>";
 	str += "<div class='row"+poleCount+"' style='margin-left:-11px'>";
 	str += "<div class='span7'>";
-	str += "<label><strong>Option : <font class='requiredFont'>*</font></strong>";
+	str += "<label><strong>Option : <font class='requiredFont'>*</font></strong><span id='smsoption"+poleCount+"Err' class='errDiv'></span>";
 	str += "<input type='text' Class='selectWidth smsOptin span12' name='smsoption"+poleCount+"' id='smsoption"+poleCount+"'/>";
 	str += "</div>";
 	str += "<div class='span3'>";
-	str += "<label><strong>Percentage : <font class='requiredFont'>*</font></strong></label>";
+	str += "<label><strong>Percentage : <font class='requiredFont'>*</font></strong><span id='smsper"+poleCount+"Err' class='errDiv'></span></label>";
 	str += "<input type='text' Class='selectWidth smsOptinPerc' name='smsper"+poleCount+"' id='smsper"+poleCount+"' key='smsoption"+poleCount+"' onKeyup='isNumber(\"percentage\",\"smsper"+poleCount+"\"),updatePercntage(\"smsper"+poleCount+"\");'/>";
 	str += "</div>";
 	str += "<div class='span1' style='float: left; margin-top: 30px;'>";
@@ -503,17 +507,19 @@ function getValues(){
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
-	str+='</select></td>';
+	str+='</select><span id="party1Err" class="errDiv"></span></td>';
 
 	str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate1" >';
 	str+='<option value="0"> Select </option>';
 	str +='</select>';
-	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate1"></span></a></td>';
+	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate1"></span></a> <span id="candidate1Err" class="errDiv"></span></td>';
 		for(var i in charsArray){
 		var myClass1 = charsArray[i].name+"1";
 		str +='<td>';
-		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');"/><div style="font-weight:normal;">(0-5)</div>';
-		str +='</td>';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');"/>';
+		var rolesids1 = myClass1.replace(/\s/g, '');
+			rolesids1 = rolesids1.replace('(Scale)', '');
+		str +='<div id="'+rolesids1+'Err" class="errDiv"></div></td>';
 		}
      	str +='<td class="participantRolesblock1"><input type="hidden" id="'+1+'participantRoles" class="partiRoleClass"></input>';
 		str += '<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles1" id="participantRoles1" key="'+1+'participantRoles">';
@@ -521,14 +527,14 @@ function getValues(){
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
-		str +='</select></td>';
+		str +='</select><span id="1participantRolesErr" class="errDiv"></span></td>';
 		str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" value="0"></input>';
-		str += '<div id="expReoleDiv1"><select multiple="multiple" style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
+		str += '<div id="expReoleDiv1"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles1" id="expparticipantRoles1" key ="'+1+'expparticipantRoles" >';
 		for (var j in rolesArray)
 		{
 			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 		}
-		str += '</select></div></td>';
+		str += '</select></div><span id="1expparticipantRolesErr" class="errDiv"></span></td>';
 	
 	//str +='<td><!--<a  name="row1" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);"></a></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary1" ></textarea></td>';
@@ -567,36 +573,39 @@ function addMoreCandidates()
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
-	str+='</select></td><td>';
+	str+='</select><span id="party'+candCount+'Err" class="errDiv"></span></td><td>';
 
 	
 	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCount+'" >';
 	str +='<option value="0"> Select </option>';
-	str +='</select>';
+	str +='</select> <span id="candidate'+candCount+'Err" class="errDiv"></span>';
 	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCount+'\',\'party'+candCount+'\','+candCount+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCount+'"></span></a></td>';
 	for(var i in charsArray){
 		var myclass =charsArray[i].name+''+candCount;
 		str +='<td>';
-		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myclass.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myclass.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myclass.replace(/\s/g, '')+'\');"/><div style="font-weight:normal;">(0-5)</div>';
-		str +='</td>';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myclass.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myclass.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myclass.replace(/\s/g, '')+'\');"/>';
+
+		var rolesids = myclass.replace(/\s/g, '');
+			rolesids = rolesids.replace('(Scale)', '');
+		str +='<div id="'+rolesids+'Err" class="errDiv"></div></td>';
 	}
 	
 	str +='<td class="participantRolesblock'+candCount+'">';
 	str +='<input type="hidden" id="'+candCount+'participantRoles" class="partiRoleClass"></input>';
-	str +='<select theme="simple" multiple="multiple" Class="selectWidth participantsRoles" name="'+candCount+'participantRoles" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
+	str +='<select theme="simple" Class="selectWidth participantsRoles" name="participantRoles'+candCount+'" id="participantRoles'+candCount+'" key="'+candCount+'participantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	
-	str +='</select></td><td class="expparticipantRolesblock'+candCount+'">';
+	str +='</select><span id="'+candCount+'participantRolesErr" class="errDiv"></span></td><td class="expparticipantRolesblock'+candCount+'">';
 	str +='<input type="hidden" id="'+candCount+'expparticipantRoles" class="expPartyClass  expPartyClass1 expPartiesRoleClass" value="0"></input>';
-	str +='<div id="expReoleDiv'+candCount+'"><select  style="display:none" ;theme="simple" multiple="multiple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
+	str +='<div id="expReoleDiv'+candCount+'"><select style="display:none" ;theme="simple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCount+'" id="expparticipantRoles'+candCount+'" key="'+candCount+'expparticipantRoles">';
 	for (var j in rolesArray)
 	{
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
-	str += '</select></td>';
+	str += '</select></div><span id="'+candCount+'expparticipantRolesErr" class="errDiv"></span></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCount+'" ></textarea></td>';
 	str +='<td><a  name="row'+candCount+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
