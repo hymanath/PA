@@ -142,6 +142,7 @@ form div label {
 	
 	#impFamDtls select{width:150px;}
 
+textarea { resize: none; }
  </style>
  
  <script type="text/javascript">
@@ -657,8 +658,13 @@ function buildQuestionAnswers(results){
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].questionId' value="+results[i].subQuestList[j].questionsList[k].questionId+">";
 				
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].subQuestList[j].questionsList[k].optionTypeId+">";
-				
-				str+="<h6>"+(parseInt(k)+1)+".  "+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				if(results[i].subQuestList[j].questionsList.length > 1)
+				{
+				  str+="<h6>"+(parseInt(k)+1)+".  "+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				}
+				else {
+                 str+="<h6>"+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				}
 				if(results[i].subQuestList[j].questionsList[k].optionTypeId!=3){
 				
 				str+="<div class='span12'>";
@@ -683,10 +689,10 @@ function buildQuestionAnswers(results){
 
 				}else if(results[i].subQuestList[j].questionsList[k].optionTypeId==3){
 					str+="<div class='span12'>";
-					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" value="+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+">";
-					}else{
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">";
+					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){						
+						str+="<textarea cols='10' rows='2' maxlength='250' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">"+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+"</textarea>"; 						
+					}else{                       
+                        str+="<textarea cols='10' rows='2' maxlength='250' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" ></textarea>"; 
 					}
 					
 					str+="</div>";
@@ -703,8 +709,12 @@ function buildQuestionAnswers(results){
 				
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].directSubQuestList[j].questionsList[k].optionTypeId+">";
 				
-				
+				if(results[i].directSubQuestList[j].questionsList.length > 1){
 				str+="<h6>"+(parseInt(k)+1)+". "+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
+				}
+				else{                
+				str+="<h6>"+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
+				}
 				if(results[i].directSubQuestList[j].questionsList[k].optionTypeId!=3){
 				for(var l in results[i].directSubQuestList[j].questionsList[k].options){
 					str+="<div class='span12'>";
@@ -726,9 +736,9 @@ function buildQuestionAnswers(results){
 				}else if(results[i].directSubQuestList[j].questionsList[k].optionTypeId==3){
 					str+="<div class='span12'>";
 					if(results[i].directSubQuestList[j].questionsList[k].optsSelected!=null){
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" value="+results[i].directSubQuestList[j].questionsList[k].optsSelected.options[0].option+">";
+                       str+="<textarea cols='10' rows='2' maxlength='180' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+">"+results[i].directSubQuestList[j].questionsList[k].optsSelected.options[0].option+"</textarea>"; 
 					}else{
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+">";
+						str+="<textarea cols='10' rows='2' maxlength='180' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+"></textarea>";
 					}
 					str+="</div>";
 				}
