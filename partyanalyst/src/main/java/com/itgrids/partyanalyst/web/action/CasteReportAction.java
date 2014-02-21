@@ -143,7 +143,7 @@ public String getCasteWiseReport()
 	    userId = user.getRegistrationID();
 		jObj = new JSONObject(getTask());
 		
-		casteWiseResult = casteReportService.getCasteWiseInfo(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),jObj.getString("type"),userId);
+		casteWiseResult = casteReportService.getCasteWiseInfo(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),jObj.getString("type"),userId,jObj.getString("partialchecked"));
 		
 	}
 	catch(Exception e)
