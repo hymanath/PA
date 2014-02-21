@@ -79,13 +79,13 @@ function validateFields(){
 				var toyear=toDateArr[2];				
 		
 		if(fromyear>toyear){
-			$("#startTime,#endTime").css("border","1px solid #D14719");
+			//$("#startTime,#endTime").css("border","1px solid #D14719");
 			$("#startTimeErr").html('Start Date should be less than End Date.');
 			flag = false;
 		}
 		 if(frommonth>tomonth){
 			   if(fromyear == toyear){
-				 $("#startTime,#endTime").css("border","1px solid #D14719");
+				 //$("#startTime,#endTime").css("border","1px solid #D14719");
 				$("#startTimeErr").html('Start Date should be less than End Date.');
 				 flag = false;
 			}		
@@ -93,21 +93,21 @@ function validateFields(){
 		
 		if(fromDat>toDat){	
 			if(frommonth == tomonth && fromyear == toyear){
-				 $("#startTime,#endTime").css("border","1px solid #D14719");
+				// $("#startTime,#endTime").css("border","1px solid #D14719");
 			$("#startTimeErr").html('Start Date should be less than End Date.');
 				 flag = false;				 
 			   }
 		}	
 		if( fromhours > tohours ){
 			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat){
-				$("#startTime,#endTime").css("border","1px solid #D14719");
+				//$("#startTime,#endTime").css("border","1px solid #D14719");
 				$("#startTimeErr").html('Start Date hour and End Date hour not matching.');
 				flag = false;				
 			}					
 		}		
 		if(frommin >= tomin ){
 			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat && fromhours == tohours){
-				$("#startTime,#endTime").css("border","1px solid #D14719");
+				//$("#startTime,#endTime").css("border","1px solid #D14719");
 				$("#startTimeErr").html('Start Date minutes and End Date minutes not matching.');
 				flag = false;				
 			}		
