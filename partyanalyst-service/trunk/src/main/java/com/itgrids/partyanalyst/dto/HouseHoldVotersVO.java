@@ -14,6 +14,57 @@ public class HouseHoldVotersVO {
 	private Long boothId;
 	private String houseNo;
 	
+	private Long age;
+	private String name;
+	private String relativeName;
+	private String relationShipType;
+	private String gender;
+	private boolean newPerson;
+	private String mobileNo;
+	private Long houseHoldsId;
+	
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public boolean isNewPerson() {
+		return newPerson;
+	}
+	public void setNewPerson(boolean newPerson) {
+		this.newPerson = newPerson;
+	}
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	public String getRelationShipType() {
+		return relationShipType;
+	}
+	public void setRelationShipType(String relationShipType) {
+		this.relationShipType = relationShipType;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 	public Long getBoothId() {
 		return boothId;
 	}
@@ -61,5 +112,12 @@ public class HouseHoldVotersVO {
 	}
 	public void setSocialPstnId(Long socialPstnId) {
 		this.socialPstnId = socialPstnId;
+	}
+	
+	public Long getHouseHoldsId() {
+		return houseHoldsId;
+	}
+	public void setHouseHoldsId(Long houseHoldsId) {
+		this.houseHoldsId = houseHoldsId;
 	}
 }

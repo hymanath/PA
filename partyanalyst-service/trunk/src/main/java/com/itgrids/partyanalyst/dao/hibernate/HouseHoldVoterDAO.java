@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IHouseHoldVoterDAO;
 import com.itgrids.partyanalyst.model.HouseHoldVoter;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> implements IHouseHoldVoterDAO {
@@ -20,6 +21,17 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" where model.voterId in (:voterIds)");
 		qry.setParameterList("voterIds", voterIds);
 		return qry.list();
+	}
+	
+	public List<HouseHoldVoter> getHouseHoldsVoterdDetailsByHouseHoldId(Long houseHoldsId)
+	{
+		Query query = getSession().createQuery("select HHV from HouseHoldVoter " +
+				"HHV where HHV.houseHoldId = :houseHoldsId and HHV.isDelete = :deleteStatus");	
+		
+		query.setParameter("houseHoldsId", houseHoldsId);
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		return query.list();
+		
 	}
 	
 }

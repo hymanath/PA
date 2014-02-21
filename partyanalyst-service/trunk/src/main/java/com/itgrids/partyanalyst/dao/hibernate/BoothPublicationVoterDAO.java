@@ -6286,7 +6286,6 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		return query.list();
 	}
 	
-	@Override
 	public BoothPublicationVoter getVoterBySerialNo(Long constituencyId,
 			String partNo, Long serialNo) {
 		// TODO Auto-generated method stub
