@@ -882,7 +882,7 @@ if(results != null)
 
 		str += "<span style='color:#ccc;'>";
 		if(results[i].fileDate != ''){
-			str += "<div><i class='smal' style='color:#3A87AD;'>Date: "+results[i].fileId+"</i></div>";
+			str += "<div><i class='smal' style='color:#3A87AD;'>Date: "+results[i].fileDate+"</i></div>";
 		}
 		str += "</span>";
 		str += "</li>";
