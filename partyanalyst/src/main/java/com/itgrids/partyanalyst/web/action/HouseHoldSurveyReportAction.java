@@ -282,8 +282,9 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		
 		Long bthId=jObj.getLong("boothId");
 		String hsNo=jObj.getString("houseNo");
+		Long voterId=jObj.getLong("voterId");
 		
-		questionsList=houseHoldSurveyReportService.getHHSurveyQuestionOptions(1l,bthId,hsNo);
+		questionsList=houseHoldSurveyReportService.getHHSurveyQuestionOptions(1l,bthId,hsNo,voterId);
 		
 		return Action.SUCCESS;
 	}
