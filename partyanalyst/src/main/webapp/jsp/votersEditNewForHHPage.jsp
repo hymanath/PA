@@ -225,6 +225,9 @@ function callAjax(jsObj,url){
 							}else if(jsObj.task == "getVotersInAFamilySearch")
 							{
 								buildVotersInFamilySearch(myResults.parentsList,jsObj.hno);
+								if(myResults.childrenList!=null){
+									buildChildrenTable(myResults.childrenList,jsObj.hno);
+								}
 							}
 							else if(jsObj.task == "storeCategoeryValues")
 							{
@@ -271,6 +274,98 @@ function callCandidateUpdatePageAjax(jsObj,url){
 
 }
 
+
+function buildChildrenTable(myResults,hno){
+	
+
+	var str="";
+	str+="<table class='table table-bordered'>";
+		str+="<thead>";
+			str+="<tr>";
+				str+="<td>Select</td><td>Name</td><td>Age</td><td>Guardian</td><td>Relation</td><td>Education</td><td>Occupation</td><td>Social Position</td>";
+			str+="</tr>";
+		str+="</thead>";
+		str+="<tbody>";
+	for(var i in myResults){
+					var occuSelId=0;
+					var eduSelId=0;
+					var familyRelsSel=0;
+					var socialPosSel=0;
+					
+					if(myResults[i].voterFamilyRelId!=null||myResults[i].voterFamilyRelId!=""){
+						familyRelsSel=myResults[i].voterFamilyRelId;
+					}
+					
+					if(myResults[i].categoriesList.length>0){
+					for(var j in myResults[i].categoriesList){
+						if(myResults[i].categoriesList[j].categoryValuesId==7){
+							occuSelId=myResults[i].categoriesList[j].categoryValueId;
+						}
+						if(myResults[i].categoriesList[j].categoryValuesId==8){
+							eduSelId=myResults[i].categoriesList[j].categoryValueId;
+						}
+						if(myResults[i].categoriesList[j].categoryValuesId==9){
+							socialPosSel=myResults[i].categoriesList[j].categoryValueId;
+						}
+						
+					}
+					}
+	
+		str+="<tr>";
+			str+="<td><input type='checkbox' value="+myResults[i].HHFamilyDetailsId+"></td>";
+			
+			str+="<td><input type='checkbox' value="+myResults[i].age+"></td>";
+			str+="<td><input type='checkbox' value="+myResults[i].gaurdian+"></td>";
+			str+="<td><input type='checkbox' value="+myResults[i].gaurdian+"></td>";
+			
+					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"fmlyRltn>";
+					for(var j in myResults[i].familyRelsList){
+						if(familyRelsSel==myResults[i].familyRelsList[j].id){
+							str+="<option value="+myResults[i].familyRelsList[j].id+" selected>"+myResults[i].familyRelsList[j].name+"</option>";
+						}else{
+							str+="<option value="+myResults[i].familyRelsList[j].id+">"+myResults[i].familyRelsList[j].name+"</option>";
+						}
+					}
+					str+="</select></td>";
+					
+					
+					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"edctn>";
+						for(var j in myResults[i].educationList){
+							if(eduSelId==myResults[i].educationList[j].id){
+								str+="<option value="+myResults[i].educationList[j].id+" selected>"+myResults[i].educationList[j].name+"</option>";
+							}else{
+								str+="<option value="+myResults[i].educationList[j].id+">"+myResults[i].educationList[j].name+"</option>";
+							}
+						}
+						str+="</select></td>";
+					
+					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"occup>";
+						for(var j in myResults[i].occupationList){
+							if(occuSelId==myResults[i].occupationList[j].id){
+								str+="<option value="+myResults[i].occupationList[j].id+" selected>"+myResults[i].occupationList[j].name+"</option>";
+							}else{
+								str+="<option value="+myResults[i].occupationList[j].id+">"+myResults[i].occupationList[j].name+"</option>";
+							}
+						}
+						str+="</select ></td>";
+					
+					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"sclCtg>";
+						for(var j in myResults[i].socialPositionList){
+							if(socialPosSel==myResults[i].socialPositionList[j].id){
+								str+="<option value="+myResults[i].socialPositionList[j].id+" selected>"+myResults[i].socialPositionList[j].name+"</option>";
+							}else{
+								str+="<option value="+myResults[i].socialPositionList[j].id+">"+myResults[i].socialPositionList[j].name+"</option>";
+							}
+						}
+						str+="</select></td>";
+			
+		str+="</tr>"
+	}
+		str+="</tbody>";
+		str+="</table>";
+		
+		$("#childrenTable").html(str);
+}
 
 function buildAgeWiseVoterAnalysisChart(chartInfo,jsObj){
 
@@ -886,7 +981,8 @@ function saveHouseHoldInfo(){
 </form>
 	<div id="impFamDtlsOuterPopUp">
 		   <div id="impFamDtlsTitle"></div>
-		   <div id="impFamDtls"  class="table table-striped span10" style="overflow:auto;"></div>
+		   <div id="impFamDtls"  class="table table-striped span10"></div>
+		   <div id="childrenTable"></div>
 		</div>
 </div>
 
@@ -1060,9 +1156,9 @@ function saveHouseHoldInfo(){
 								str+="<option value="+temp[i].occupationList[j].id+">"+temp[i].occupationList[j].name+"</option>";
 							}
 						}
-						str+="</select id="+temp[i].voterId+"sclCtg></td>";
+						str+="</select ></td>";
 					
-					str+="<td><select>";
+					str+="<td><select id="+temp[i].voterId+"sclCtg>";
 						for(var j in temp[i].socialPositionList){
 							if(socialPosSel==temp[i].socialPositionList[j].id){
 								str+="<option value="+temp[i].socialPositionList[j].id+" selected>"+temp[i].socialPositionList[j].name+"</option>";
