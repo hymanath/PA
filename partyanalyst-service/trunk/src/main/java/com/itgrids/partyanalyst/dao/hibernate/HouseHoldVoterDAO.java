@@ -67,7 +67,19 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	public List<HouseHoldVoter> getHouseHoldsVoterdDetailsByHouseHoldId(Long houseHoldsId)
 	{
 		Query query = getSession().createQuery("select HHV from HouseHoldVoter " +
-				"HHV where HHV.houseHoldId = :houseHoldsId and HHV.isDelete = :deleteStatus");	
+				"HHV where HHV.houseHoldId = :houseHoldsId and HHV.isDelete = :deleteStatus " +
+				"and HHV.voterId is not null");	
+		
+		query.setParameter("houseHoldsId", houseHoldsId);
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		return query.list();
+		
+	}
+	
+	public List<HouseHoldVoter> getHouseHoldsVoterdDetailsByHouseHoldId1(Long houseHoldsId)
+	{
+		Query query = getSession().createQuery("select HHV from HouseHoldVoter " +
+				"HHV where HHV.houseHoldId = :houseHoldsId and HHV.isDelete = :deleteStatus ");	
 		
 		query.setParameter("houseHoldsId", houseHoldsId);
 		query.setParameter("deleteStatus", IConstants.FALSE);
@@ -90,6 +102,17 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 				" where model.houseHoldId = :houseHoldsId");
 		
 		query.setParameter("houseHoldsId", houseHoldsId);
+		return query.list();
+	}
+	
+	public List<HouseHoldVoter> getHouseHoldVoterDetailsByFamilyMemberId(Long houseHoldFamilyMemberId)
+	{
+		
+		Query query = getSession().createQuery(" select model " +
+				"from HouseHoldVoter model " +
+				" where model.houseHoldsFamilyDetails.houseHoldsFamilyDetailsId = :houseHoldFamilyMemberId");
+		
+		query.setParameter("houseHoldFamilyMemberId", houseHoldFamilyMemberId);
 		return query.list();
 	}
 	

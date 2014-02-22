@@ -3060,7 +3060,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		    List<VoterHouseInfoVO> childrenList=new ArrayList<VoterHouseInfoVO>();
 		    
 		    if(houseHoldId!=null){
-		    	vtrsInHHList=houseHoldVoterDAO.getHouseHoldsVoterdDetailsByHouseHoldId(houseHoldId);
+		    	vtrsInHHList=houseHoldVoterDAO.getHouseHoldsVoterdDetailsByHouseHoldId1(houseHoldId);
 		    }
 		    if(vtrsInHHList.size()>0){
 		    	VoterHouseInfoVO vtrInfo=null;
