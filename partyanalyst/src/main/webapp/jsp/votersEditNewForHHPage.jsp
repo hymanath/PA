@@ -139,7 +139,10 @@ form div label {
     margin-right: auto;
     width: 600px;}
 	#voterInfoTable th{text-align:left;}
+	
+	#impFamDtls select{width:150px;}
 
+textarea { resize: none; }
  </style>
  
  <script type="text/javascript">
@@ -398,11 +401,13 @@ function getVotersInAFamilySearch(){
 	var hno="${houseNo}";
 	var publicationDateId="${publicationDateId}";
 	var id="${boothId}";
+	var voterId="${voterId}";
     var jsObj=
 			{
 					
 				hno:hno,
 				id:id,
+				voterId:voterId,
 				publicationDateId:publicationDateId,
 				task:"getVotersInAFamilySearch"
 	
@@ -611,11 +616,11 @@ getHouseHoldInfoPage();
 
 function getHouseHoldInfoPage(){
 	
-	var surveyDetails={surveyId:'',boothId:'',houseNo:''};
+	var surveyDetails={surveyId:'',boothId:'',houseNo:'',voterId:''};
 	surveyDetails.surveyId=1;
 	surveyDetails.boothId="${boothId}";
 	surveyDetails.houseNo="${houseNo}";
-	
+	surveyDetails.voterId="${voterId}";
 	 $.ajax({
           type:'POST',
           url: 'getHouseHoldQuestionsAction.action',
@@ -644,41 +649,50 @@ function buildQuestionAnswers(results){
 	var queLoopId = 0;
 	for(var i in results){
 	str+="<div class='span12'>";
-		str+="<h4>"+results[i].mainQues+"</h4>";
+		str+="<h3>"+(parseInt(i)+1)+".  "+results[i].mainQues+"</h3>";
 		
 		for(var j in results[i].subQuestList){
-			str+="<h5>"+results[i].subQuestList[j].subQues+"</h5>";
+			
+			str+="<h4>"+results[i].subQuestList[j].subQues+"</h4>";
 			for(var k in results[i].subQuestList[j].questionsList){
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].questionId' value="+results[i].subQuestList[j].questionsList[k].questionId+">";
 				
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].subQuestList[j].questionsList[k].optionTypeId+">";
-				
-				str+="<h6>"+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				if(results[i].subQuestList[j].questionsList.length > 1)
+				{
+				  str+="<h6>"+(parseInt(k)+1)+".  "+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				}
+				else {
+                 str+="<h6>"+results[i].subQuestList[j].questionsList[k].question+"</h6>";
+				}
 				if(results[i].subQuestList[j].questionsList[k].optionTypeId!=3){
-					
+				
+				str+="<div class='span12'>";
 				for(var l in results[i].subQuestList[j].questionsList[k].options){
-					str+="<div class='span12'>"
+					
 					if(results[i].subQuestList[j].questionsList[k].optionTypeId==1){
 						if(results[i].subQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}
 					}else if(results[i].subQuestList[j].questionsList[k].optionTypeId==2){
 						if(results[i].subQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].subQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].subQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}
 					}
-					str+="</div>"
+					
 				}
+				str+="</div>";
+
 				}else if(results[i].subQuestList[j].questionsList[k].optionTypeId==3){
 					str+="<div class='span12'>";
-					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" value="+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+">";
-					}else{
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">";
+					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){						
+						str+="<textarea cols='10' rows='2' maxlength='250' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">"+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+"</textarea>"; 						
+					}else{                       
+                        str+="<textarea cols='10' rows='2' maxlength='250' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" ></textarea>"; 
 					}
 					
 					str+="</div>";
@@ -688,39 +702,42 @@ function buildQuestionAnswers(results){
 		}
 		
 		for(var j in results[i].directSubQuestList){
-			//var queLoopId = 0;
 			<!--str+="<h5>"+results[i].directSubQuestList[j].subQues+"</h5>";-->
 			for(var k in results[i].directSubQuestList[j].questionsList){
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].questionId' value="+results[i].directSubQuestList[j].questionsList[k].questionId+">";
 				
 				str+="<input type='hidden' name='questionOptionsList["+queLoopId+"].optionTypeId' value="+results[i].directSubQuestList[j].questionsList[k].optionTypeId+">";
 				
-				
+				if(results[i].directSubQuestList[j].questionsList.length > 1){
+				str+="<h6>"+(parseInt(k)+1)+". "+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
+				}
+				else{                
 				str+="<h6>"+results[i].directSubQuestList[j].questionsList[k].question+"</h6>";
+				}
 				if(results[i].directSubQuestList[j].questionsList[k].optionTypeId!=3){
 				for(var l in results[i].directSubQuestList[j].questionsList[k].options){
-					str+="<div class='span12'>"
+					str+="<div class='span12'>";
 					if(results[i].directSubQuestList[j].questionsList[k].optionTypeId==1){
 						if(results[i].directSubQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='radio' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options[0].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}
 					}else if(results[i].directSubQuestList[j].questionsList[k].optionTypeId==2){
 						if(results[i].directSubQuestList[j].questionsList[k].options[l].optSelected){
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+"><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}else{
-							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
+							str+="<input type='checkbox' style='margin:5px;' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" name='questionOptionsList["+queLoopId+"].options["+l+"].optionId' value="+results[i].directSubQuestList[j].questionsList[k].options[l].optionId+" checked><span style='margin-right:5px;'>"+results[i].directSubQuestList[j].questionsList[k].options[l].option+"</span></input>";
 						}	
 					}
-					str+="</div>"
+					str+="</div>";
 				}
 				}else if(results[i].directSubQuestList[j].questionsList[k].optionTypeId==3){
 					str+="<div class='span12'>";
 					if(results[i].directSubQuestList[j].questionsList[k].optsSelected!=null){
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+" value="+results[i].directSubQuestList[j].questionsList[k].optsSelected.options[0].option+">";
+                       str+="<textarea cols='10' rows='2' maxlength='180' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+">"+results[i].directSubQuestList[j].questionsList[k].optsSelected.options[0].option+"</textarea>"; 
 					}else{
-						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+">";
+						str+="<textarea cols='10' rows='2' maxlength='180' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].directSubQuestList[j].questionsList[k].questionId+"></textarea>";
 					}
 					str+="</div>";
 				}
@@ -823,7 +840,7 @@ function saveHouseHoldInfo(){
 		<td>${voterHouseInfoVO.mobileNo}</td>
 		<th>Caste</th>
 		<td><b>:</b></td>
-		<td>${voterHouseInfoVO.casteStateId}</td>
+		<td>${voterHouseInfoVO.casteName}</td>
 	</tr>
 
 </table>
@@ -906,7 +923,7 @@ function saveHouseHoldInfo(){
 <div class="statusMsg span12"></div>
 
 <div id="dialog">
-	<div class="span12 row">
+	<div class="span12 row searchVtrCrit" style="display:none;">
 		<div class="span8 row-fluid"><span class="span4 ">Voter Id</span><input type="text" id="voterId" class="span4 vtrIdCls"/></div> (or)
 		<div class="span8 row-fluid"><span class="span4 ">Voter Name</span><input type="text" id="voterNameId" class="span4 vtrNameCls"/></div>
 		<div class="span8"><span class="btn btn-info" onclick="searchNow()"> Search </span></div>
@@ -939,6 +956,7 @@ function saveHouseHoldInfo(){
 		callAjax(jsObj,url);
 	}
 	function searchVoter(){
+		$('.searchVtrCrit').css("display","block");
 		 $(function() {
 			$( "#dialog" ).dialog({
 				title:"Search Voter",
@@ -1134,7 +1152,11 @@ function submitQuestionDetails()
 function setHiddenFieldInForm(houseHoldsId)
 {
 	$('#houseHoldsId').val(houseHoldsId);
-	$('#voterDetailsForm').submit();
+	
+	//if($('#houseHoldsId').val()!=null || $('#houseHoldsId').val()!=""){
+		saveHouseHoldInfo();
+	//}
+	
 
 }
 var newPersonsCount=0;
