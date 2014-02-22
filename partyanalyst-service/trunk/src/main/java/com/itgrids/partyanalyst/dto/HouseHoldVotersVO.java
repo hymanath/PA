@@ -22,7 +22,7 @@ public class HouseHoldVotersVO {
 	private boolean newPerson;
 	private String mobileNo;
 	private Long houseHoldsId;
-	private Long houseHoldFamilyMemberId;
+	private Long houseHoldFamilyMemberId = 0L;
 	
 	public Long getHouseHoldFamilyMemberId() {
 		return houseHoldFamilyMemberId;

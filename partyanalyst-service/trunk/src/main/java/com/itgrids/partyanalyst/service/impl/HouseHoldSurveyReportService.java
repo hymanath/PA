@@ -819,7 +819,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 							
 						
 						for(HouseHoldVotersVO voterDtls:votersDetails.getHouseHoldsVoters())
-							if(voterDtls.getHouseHoldFamilyMemberId() != null)
+							if(voterDtls.getHouseHoldFamilyMemberId() != null && voterDtls.getVoterId() != null)
 							newVoterIds.add(voterDtls.getVoterId());
 						
 						
@@ -860,18 +860,20 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								
 									
 								}
-								
-								for(Long savedVoterID:savedVoterIds)
-								{
-									HouseHoldVoter houseHoldsVoter = getMatchedHouseHoldsVoter(
-											savedVoterID,houseHoldsVoters);
-									
-									houseHoldsVoter.setIsDelete(IConstants.TRUE);
-									houseHoldVoterDAO.save(houseHoldsVoter);
-									
-									
-								}
+							
 							}
+						}
+						
+						
+						for(Long savedVoterID:savedVoterIds)
+						{
+							HouseHoldVoter houseHoldsVoter = getMatchedHouseHoldsVoter(
+									savedVoterID,houseHoldsVoters);
+							
+							houseHoldsVoter.setIsDelete(IConstants.TRUE);
+							houseHoldVoterDAO.save(houseHoldsVoter);
+							
+							
 						}
 						
 						
@@ -912,8 +914,25 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									familyDetails.setRelativeName(voterDtls.getRelativeName());									
 									familyDetails.setMobileNo(voterDtls.getMobileNo());									
 									familyDetails = houseHoldsFamilyDetailsDAO.save(familyDetails);
+									
+									List<HouseHoldVoter> houseHoldVoters = houseHoldVoterDAO
+													.getHouseHoldVoterDetailsByFamilyMemberId(familyDetails
+															.getHouseHoldsFamilyDetailsId());	
+									
+									if(houseHoldVoters != null && houseHoldVoters.size() >0)
+									{
+										HouseHoldVoter familyMember = houseHoldVoters.get(0);
 										
-									savedMemberIds.remove(voterDtls.getVoterId());
+										familyMember.setEducationId(voterDtls.getEducationId());
+										familyMember.setOccupationId(voterDtls.getOccupationId());
+										familyMember.setSocialCategoryId(voterDtls.getSocialPstnId());
+										familyMember.setVoterFamilyRelationId(voterDtls.getVoterFamilyRelationId());
+										
+										houseHoldVoterDAO.save(familyMember);
+										
+									}
+										
+									savedMemberIds.remove(voterDtls.getHouseHoldFamilyMemberId());
 										
 								}else
 								{
@@ -928,25 +947,37 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									familyDetails.setMobileNo(voterDtls.getMobileNo());	
 									familyDetails.setIsDelete(IConstants.FALSE);
 									
-									 houseHoldsFamilyDetailsDAO.save(familyDetails);
+									familyDetails = houseHoldsFamilyDetailsDAO.save(familyDetails);
+									
+									HouseHoldVoter voter = new HouseHoldVoter();
+									
+									voter.setVoterId(voterDtls.getVoterId());
+									voter.setVoterFamilyRelationId(familyDetails.getHouseHoldsFamilyDetailsId());
+									voter.setHouseHoldId(hseHoldId);
+									voter.setEducationId(voterDtls.getEducationId());
+									voter.setOccupationId(voterDtls.getOccupationId());
+									voter.setSocialCategoryId(voterDtls.getSocialPstnId());
+									voter.setHouseHoldsFamilyDetailsId(familyDetails.getHouseHoldsFamilyDetailsId());
+									
+									houseHoldVoterDAO.save(voter);
 										
 								}
 								
-								for(Long savedVoterID:savedMemberIds)
-								{
-									
-									HouseHoldsFamilyDetails familyDetails = getMatchedFamilyMemberDetails(
-											savedVoterID,
-											membersDetails);
-									
-									familyDetails.setIsDelete(IConstants.TRUE);
-									
-									
-									 houseHoldsFamilyDetailsDAO.save(familyDetails);
-									
-								}
+								
 							}
 						}
+						for(Long savedMemberId:savedMemberIds)
+						{
+							
+							HouseHoldsFamilyDetails familyDetails = getMatchedFamilyMemberDetails(
+									savedMemberId,
+									membersDetails);
+							
+							familyDetails.setIsDelete(IConstants.TRUE);
+							houseHoldsFamilyDetailsDAO.save(familyDetails);
+							
+						}
+						
                     }
 					return hseHoldId;
 				}
