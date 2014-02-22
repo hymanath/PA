@@ -873,32 +873,36 @@ function saveHouseHoldInfo(){
 		</div>
 </div>
 
-
-<div><span class="btn btn-info" onclick="searchVoter()">Add Voter To This Family</span></div>
+<!--
+<div><span class="btn btn-info" onclick="searchVoter()">Add Voter To This Family</span></div>-->
 <!--<span class="btn btn-info span3 offset5" onclick="getHouseHoldInfoPage()"> Get House Hold Information </span>-->
 
 <div style="clear:both;">
- <a href="javascript:{addNewPersonOfFamily()}" class="btn">Add New</a>
+ <a href="javascript:{addNewPersonOfFamily()}" class="btn"  style="margin:5px;">Add New Person To This Family</a>
+  <a href="javascript:{searchVoter()}" class="btn pull-right"  style="margin:5px;">Add Voter To This Family</a>
+
 </div>
 
 
-	<div>
-			<div class="row-fluid" style="clear:both;">
-				<div class="span1">Name</div>
-				<div class="span1">Age</div>
-				<div class="span1">Gender</div>
-				<div class="span1">Gaurdian</div>
-				<div class="span2">RelationShip</div>
-				<div class="span2">Education</div>
-				<div class="span2">Occupation</div>
-				<div class="span1">Social Category</div>
-				<div class="span1">Delete</div>
+	<div style="border:1px solid #000;padding:4px;border-radius:2px 2px 2px 2px;margin-bottom:5px;">
+			<div  class="row-fluid" style="clear:both;font-weight:bold;margin:6px 0 9px 34px;">
+				<div style="float:left;width:20px;margin:1px;"><input type="checkbox"/></div>
+				<div style="float:left;width:89px;">Name</div>
+				<div style="float:left;width:40px;">Age</div>
+				<div style="float:left;width:89px;">Gender</div>
+				<div style="float:left;width:89px;">Gaurdian</div>
+				<div style="float:left;width:112px;">RelationShip</div>
+				<div style="float:left;width:108px;">Education</div>
+				<div style="float:left;width:108px;">Occupation</div>
+				<div style="float:left;width:123px;"">Social Category</div>
+				<div style="float:left;width:120px;">MobileNo</div>
+				<div style="float:left;width:35px;">Delete</div>				
 		   </div>
-		   <div id="newprsnDetailsId"></div>
+		   <div id="newprsnDetailsId" style="margin-left:27px;"></div>
 
 	</div>
 
-<div id="qstnAnswer" class="span10 offset3" style="border:1px solid gray"></div>
+<div id="qstnAnswer" class="span10" style="border:1px solid gray"></div>
 <div class="statusMsg span12"></div>
 
 <div id="dialog">
@@ -1087,22 +1091,25 @@ function submitQuestionDetails()
 				 voterDtls.voters.push(selectedVoterDtls);
 	   }
    });
+   
 
-   for(var i=0;i<newPersonsCount;i++)
+
+   for(var i=0;i<newPersons.length;i++)
    {
 		selectedVoterDtls =
 			       {
 					
 					 isNew: 'true',
-					 name:$('#newPrsnName'+i).val(),
-                     age:$('#newPrsnAge'+i).val(),
-					 gender:$('#newPrsnGndr'+i).val(),
-					 relativeName:$('#newPrsnGrdn'+i).val(),
-					 relationShipType:$('#newPrsnrltnType'+i).val(),
-					 education:$('#newPrsnEdctn'+i).val(),
-					 occupation:$('#newPrsnOctpn'+i).val(),
-					 socialPosistion: $('#newPrsnSclPstn'+i).val(),
-					 familyRelationId:$('#newPrsnrltnType'+i).val(),
+					 name:$('#newPrsnName'+newPersons[i]).val().trim(),
+                     age:$('#newPrsnAge'+newPersons[i]).val(),
+					 gender:$('#newPrsnGndr'+newPersons[i]).val(),
+					 relativeName:$('#newPrsnGrdn'+newPersons[i]).val().trim(),
+					 relationShipType:$('#newPrsnrltnType'+newPersons[i]).val(),
+					 education:$('#newPrsnEdctn'+newPersons[i]).val(),
+					 occupation:$('#newPrsnOctpn'+newPersons[i]).val(),
+					 socialPosistion: $('#newPrsnSclPstn'+newPersons[i]).val(),
+					 familyRelationId:$('#newPrsnrltnType'+newPersons[i]).val(),
+					 mobileNo:$('#newPrsnMblNO'+newPersons[i]).val().trim() 
 					 	 
 			       };
 
@@ -1134,20 +1141,23 @@ var newPersonsCount=0;
 var newPersons = [];
 function addNewPersonOfFamily()
 {
+
 		var str='';
 
 		   str+='<div class="row-fluid " id="newPersonDetails'+newPersonsCount+'">';
-			str+='<div class="span1"><input type="text"  style="width:69px;" id="newPrsnName'+newPersonsCount+'"/></div>';
-			str+='<div class="span1"><input type="text"  style="width:13px;" id="newPrsnAge'+newPersonsCount+'"/></div>';
-			str+='<div class="span1">';
+
+			str+='<div style="float:left;width:20px;margin-top:5px;"><input type="checkbox" disabled="true" checked /></div>';
+			str+='<div style="float:left;width:89px;"><input type="text"  style="width:69px;" id="newPrsnName'+newPersonsCount+'"/></div>';
+			str+='<div style="float:left;width:40px;"><input type="text"  style="width:19px;" id="newPrsnAge'+newPersonsCount+'"/></div>';
+			str+='<div style="float:left;width:89px;">';
 				str+='<select style="width:48px;" id="newPrsnGndr'+newPersonsCount+'">';
 				 str+='<option value="M">M</option>';
  				 str+='<option value="F">F</option>';
 				str+='</select>';
 			str+='</div>';
-			str+='<div class="span1"><input type="text"  style="width:65px;" id="newPrsnGrdn'+newPersonsCount+'"/></div>';
+			str+='<div style="float:left;width:89px;"><input type="text"  style="width:65px;" id="newPrsnGrdn'+newPersonsCount+'"/></div>';
 
-			str+='<div class="span2">';
+			str+='<div style="float:left;width:112px;">';
             str+='<select style="width:100px;" id="newPrsnrltnType'+newPersonsCount+'">';  
 				<c:forEach items="${relationList}" var="relation"> 
 					str+='<option value="${relation.id}">${relation.name}</option>'; 
@@ -1155,7 +1165,7 @@ function addNewPersonOfFamily()
 			str+='</select>';
             str+='</div>'; 
 
-			str+='<div class="span2">';
+			str+='<div style="float:left;width:108px;">';
             str+='<select style="width:100px;" id="newPrsnEdctn'+newPersonsCount+'">';  
 				<c:forEach items="${educationsList}" var="education"> 
 					str+='<option value="${education.id}">${education.name}</option>'; 
@@ -1163,7 +1173,7 @@ function addNewPersonOfFamily()
 			str+='</select>';
             str+='</div>'; 
 
-			str+='<div class="span2">';
+			str+='<div style="float:left;width:123px;">';
             str+='<select style="width:100px;" id="newPrsnOctpn'+newPersonsCount+'">';  
 				<c:forEach items="${occupationsList}" var="occupation"> 
 					str+='<option value="${occupation.id}">${occupation.name}</option>'; 
@@ -1171,16 +1181,18 @@ function addNewPersonOfFamily()
 			str+='</select>';
             str+='</div>'; 
 
-			str+='<div class="span1">';
+			str+='<div style="float:left;width:110px;">';
             str+='<select style="width:100px;" id="newPrsnSclPstn'+newPersonsCount+'">';  
 				<c:forEach items="${socialPositionsList}" var="socialPosition"> 
 					str+='<option value="${socialPosition.id}">${socialPosition.name}</option>'; 
 				</c:forEach>
 			str+='</select>';
             str+='</div>';
+
+			str+='<div style="float:left;width:120px;"><input type="text"  style="width:99px;" id="newPrsnMblNO'+newPersonsCount+'"/></div>';
            
 
-			str+='<div class="span1">';
+			str+='<div style="float:left;width:35px;">';
               str+='<a href="javascript:{deleteDiv('+newPersonsCount+')}"style="margin-left:20px;"><img src="images/icons/delete.png"/></a>';
             str+='</div>';
 			 str+='</div>';
@@ -1195,6 +1207,10 @@ function addNewPersonOfFamily()
 
 function deleteDiv(count)
 {
+
+	newPersons = jQuery.grep(newPersons, function(value) {
+	  return value != count;
+	});
 
 	var r=confirm("Are You Sure To Delete ?");
 
