@@ -403,11 +403,31 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 				if(!voter.getString("isNew").equalsIgnoreCase("true"))
 				{
 					
-					voterDetailsVO.setVoterId(Long.parseLong(voter.getString("voterId")));
-					voterDetailsVO.setEducationId(Long.parseLong(voter.getString("voterEdctn")));
-					voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("voterOccptn")));
-					voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("voterFamilyRelationId")));
-					voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("voterSocialPstn")));
+					if(voter.has("voterId"))
+					{
+						voterDetailsVO.setVoterId(Long.parseLong(voter.getString("voterId")));
+						voterDetailsVO.setEducationId(Long.parseLong(voter.getString("voterEdctn")));
+						voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("voterOccptn")));
+						voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("voterFamilyRelationId")));
+						voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("voterSocialPstn")));
+						
+					}else if(voter.has("familyMemberId"))
+					{
+						
+						voterDetailsVO.setName(voter.getString("name"));
+						voterDetailsVO.setAge(Long.parseLong(voter.getString("age")));
+						voterDetailsVO.setGender(voter.getString("gender"));
+						voterDetailsVO.setRelativeName(voter.getString("relativeName"));
+						voterDetailsVO.setRelationShipType(voter.getString("relationShipType"));
+						voterDetailsVO.setEducationId(Long.parseLong(voter.getString("education")));
+						voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("occupation")));
+						voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("socialPosistion")));
+						voterDetailsVO.setMobileNo(voter.getString("mobileNo"));
+						voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("familyRelationId")));
+						voterDetailsVO.setHouseHoldFamilyMemberId(voter.getLong("familyMemberId"));
+						
+						
+					}
 					
 					
 				}else
