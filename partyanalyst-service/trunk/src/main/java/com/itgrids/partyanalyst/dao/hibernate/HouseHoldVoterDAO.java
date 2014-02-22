@@ -24,10 +24,34 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return qry.list();
 	}
 	
-	public List<Object[]> getHouseHoldIdOfFamilyHeadForVoter(String houseNo){
-		Query qry=getSession().createQuery(" select model.voterId,model.voterFamilyRelationId,model.houseHoldId from HouseHoldVoter model" +
+	public List<Object[]> getHouseHoldIdOfFamilyHeadForVoter(String houseNo,Long panchayatId,Long localBodyId){
+		/*Query qry=getSession().createQuery(" select model.voterId,model.voterFamilyRelationId,model.houseHoldId from HouseHoldVoter model" +
 				" where model.houseHolds.houseNo=:houseNo ");
 		qry.setParameter("houseNo", houseNo);
+		
+		return qry.list();*/
+		
+		StringBuffer sb=new StringBuffer();
+		sb.append(" select model.voterId,model.voterFamilyRelationId,model.houseHoldId from HouseHoldVoter model ");
+		if(panchayatId!=null){
+			sb.append(" where model.houseHolds.panchayat.panchayatId =:panchayatId");
+		}else if(localBodyId!=null){
+			sb.append(" where model.houseHolds.localElectionBody.localElectionBodyId =:localBodyId");
+		}
+		
+		sb.append(" and model.houseHolds.houseNo =:houseNo");
+		
+		String query=sb.toString();
+		
+		Query qry=getSession().createQuery(query);
+		
+		if(panchayatId!=null){
+			qry.setParameter("panchayatId", panchayatId);
+		}
+		if(localBodyId!=null){
+			qry.setParameter("localBodyId", localBodyId);
+		}
+			qry.setParameter("houseNo", houseNo);
 		
 		return qry.list();
 	}

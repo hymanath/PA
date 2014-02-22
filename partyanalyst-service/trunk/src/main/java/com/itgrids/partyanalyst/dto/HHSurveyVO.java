@@ -22,8 +22,22 @@ public class HHSurveyVO {
 	private HHSurveyVO optsSelected;
 	private boolean isOptSelected;
 	private String optsRemarked;
+	private List<VoterHouseInfoVO> parentsList;
+	private List<VoterHouseInfoVO> childrenList;
 	
 	
+	public List<VoterHouseInfoVO> getParentsList() {
+		return parentsList;
+	}
+	public void setParentsList(List<VoterHouseInfoVO> parentsList) {
+		this.parentsList = parentsList;
+	}
+	public List<VoterHouseInfoVO> getChildrenList() {
+		return childrenList;
+	}
+	public void setChildrenList(List<VoterHouseInfoVO> childrenList) {
+		this.childrenList = childrenList;
+	}
 	public String getOptsRemarked() {
 		return optsRemarked;
 	}
