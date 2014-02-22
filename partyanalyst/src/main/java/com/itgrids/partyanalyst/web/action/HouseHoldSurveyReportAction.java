@@ -422,6 +422,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 					voterDetailsVO.setOccupationId(Long.parseLong(voter.getString("occupation")));
 					voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("socialPosistion")));
 					voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("familyRelationId")));
+					voterDetailsVO.setMobileNo(voter.getString("mobileNo"));
 					
 				}
 				
