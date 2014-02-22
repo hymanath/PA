@@ -51,7 +51,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private String houseNo;
 	private Long boothId;
 	private String status;
-	private List<VoterHouseInfoVO> votersFamilyInfo;
+	private HHSurveyVO votersFamilyInfo;
 	
 	private List<GenericVO> occupationList;
 	private List<GenericVO> educationList;
@@ -92,11 +92,13 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		this.socialPositionList = socialPositionList;
 	}
 
-	public List<VoterHouseInfoVO> getVotersFamilyInfo() {
+	
+
+	public HHSurveyVO getVotersFamilyInfo() {
 		return votersFamilyInfo;
 	}
 
-	public void setVotersFamilyInfo(List<VoterHouseInfoVO> votersFamilyInfo) {
+	public void setVotersFamilyInfo(HHSurveyVO votersFamilyInfo) {
 		this.votersFamilyInfo = votersFamilyInfo;
 	}
 
