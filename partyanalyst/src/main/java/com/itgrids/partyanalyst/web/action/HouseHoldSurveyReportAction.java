@@ -433,7 +433,14 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 						voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("voterFamilyRelationId")));
 						voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("voterSocialPstn")));
 						
-					}else if(voter.has("familyMemberId"))
+					} 
+					
+					
+				}else
+				{
+					voterDetailsVO.setNewPerson(true);
+
+					if(voter.has("familyMemberId"))
 					{
 						
 						voterDetailsVO.setName(voter.getString("name"));
@@ -450,11 +457,8 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 						
 						
 					}
-					
-					
-				}else
-				{
-					voterDetailsVO.setNewPerson(true);
+					else
+					{
 					
 					voterDetailsVO.setAge(Long.parseLong(voter.getString("age")));
 					voterDetailsVO.setName(voter.getString("name"));
@@ -466,6 +470,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 					voterDetailsVO.setSocialPstnId(Long.parseLong(voter.getString("socialPosistion")));
 					voterDetailsVO.setVoterFamilyRelationId(Long.parseLong(voter.getString("familyRelationId")));
 					voterDetailsVO.setMobileNo(voter.getString("mobileNo"));
+					}
 					
 				}
 				
