@@ -2999,7 +2999,11 @@ function showAlert()
 	  <div id="ConstituencyDiv" class="selectDiv">
 	     <!-- Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalList(\'mandalField\');getPublicationDate();"/> -->
 		 
-		 Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalOrMuncipalityList();getPublicationDate();"/>
+		 Select Constituency<font class="requiredFont">*</font><s:select theme="simple"  cssClass="selectWidth" label="Select Your State" name="constituencyList" id="districtId" list="districtsList" listKey="id" listValue="name" onchange="getConstituenciesForADistrict();"/>
+
+		 <select id="constituencyId" onChange="getPublicationDatesByConstituencyId()">
+
+		 </select>
 		 
 		 &nbsp;&nbsp;	
 	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:180px;" name="publicationDateList" >
@@ -3554,6 +3558,55 @@ function openProblemEditFormNew(id,boothId,publicationDateId,houseNo)
 	var urlStr="votersEditNewHHAction.action?voterId="+id+"&boothId="+boothId+"&publicationDateId="+publicationDateId+"&houseNo="+houseNo+"";
 	var updateBrowser = window.open(urlStr,"Voter Details","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();	
+}
+
+function getConstituenciesForADistrict()
+{
+	var districtDtls={
+             districtId:$('#districtId').val()
+	};
+
+	$.ajax({
+          type:'POST',
+          url: 'getConstituenciesForADistrictAjaxAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(districtDtls)},
+
+          success: function(result){ 
+			$('#constituencyId').find('option').remove();
+			  $.each(result,function(index,value){
+				  $('#constituencyId').append('<option value="'+value.id+'">'+value.name+'</option>');
+			  });			  
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+
+function getPublicationDatesByConstituencyId()
+{
+	var constnDtls={
+             selected:$('#constituencyId').val(),
+			 task:"getPublicationDate"
+	};
+
+	$.ajax({
+          type:'POST',
+          url: 'voterAnalysisAjaxAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constnDtls)},
+
+          success: function(result){ 
+			$('#publicationDateList').find('option').remove();
+			  $.each(result,function(index,value){
+				  $('#publicationDateList').append('<option value="'+value.id+'">'+value.name+'</option>');
+			  });			  
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
 }
 
 </script>

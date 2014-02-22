@@ -1374,6 +1374,7 @@
 		  <property name="crossVotingEstimationService" ref="crossVotingEstimationService"/>
 		  <property name="votersAnalysisService" ref="votersAnalysisService"/>
 		  <property name="houseHoldSurveyReportService" ref="houseHoldSurveyReportService"/>
+		  <property name="regionServiceDataImp" ref="regionServiceDataImp" />
 	</bean>
 	
 </beans>	

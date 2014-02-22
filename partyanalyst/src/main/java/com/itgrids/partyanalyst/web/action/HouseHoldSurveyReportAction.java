@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
+import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -37,7 +38,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private String task;
 	
 	private Long userId;
-	private List<SelectOptionVO> constituencyList, userAccessConstituencyList;
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList, districtsList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IVotersAnalysisService votersAnalysisService;
 	private IHouseHoldSurveyReportService houseHoldSurveyReportService;
@@ -57,9 +58,24 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<GenericVO> educationList;
 	private List<GenericVO> socialPositionList;
 	private Long houseHoldsId;
+	private IRegionServiceData regionServiceDataImp;
 	
-	
-	
+	public IRegionServiceData getRegionServiceDataImp() {
+		return regionServiceDataImp;
+	}
+
+	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
+		this.regionServiceDataImp = regionServiceDataImp;
+	}
+
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+
 	public Long getHouseHoldsId() {
 		return houseHoldsId;
 	}
@@ -265,6 +281,10 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
+		
+		
+		districtsList = regionServiceDataImp.getDistrictsByStateID(1L);
+		
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
 		
