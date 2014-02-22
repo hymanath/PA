@@ -168,7 +168,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		this.hhSurveyQuestionDAO = hhSurveyQuestionDAO;
 	}
 
-	public List<HHSurveyVO> getHHSurveyQuestionOptions(Long surveyId,Long boothId,String houseNo){
+	public List<HHSurveyVO> getHHSurveyQuestionOptions(Long surveyId,Long boothId,String houseNo,Long voterId){
 		List<HHSurveyVO> qstnOptionsList=new ArrayList<HHSurveyVO>();
 		List<HHSurveyVO> mainQstnList=new ArrayList<HHSurveyVO>();
 		List<HHSurveyVO> subQstnList=new ArrayList<HHSurveyVO>();
@@ -195,15 +195,26 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 				}
 			}
 			
-			List<HouseHolds> houseHolds=houseHoldsDAO.getHouseHoldInfoByPanchayatOrLocalId(panchayatId, muncipalityId, houseNo);
+			
+			
+			
 			Long houseHoldId=null;
-			if(houseHolds.size()>0){
+			
+			houseHoldId = houseHoldVoterDAO.getHouseHoldIdForVoter(voterId);
+			
+			//List<HouseHolds> houseHolds=houseHoldsDAO.getHouseHoldInfoByPanchayatOrLocalId(panchayatId, muncipalityId, houseNo);
+			/*if(houseHolds.size()>0){
 				for(HouseHolds houseHold:houseHolds){
 					houseHoldId=houseHold.getHouseHoldId();
 				}
+			}*/
+			
+			List<HHSurveyAnswers> srvyAnsrsList=new ArrayList<HHSurveyAnswers>();
+			
+			if(houseHoldId!=null){
+				srvyAnsrsList=hhSurveyAnswersDAO.getSurveyAnswersByHouseHoldId(houseHoldId);
 			}
 			
-			List<HHSurveyAnswers> srvyAnsrsList=hhSurveyAnswersDAO.getSurveyAnswersByHouseHoldId(houseHoldId);
 			Map<Long,HHSurveyVO> qstOptnSlctedMap=new HashMap<Long, HHSurveyVO>();
 			
 			for(HHSurveyAnswers hhsa:srvyAnsrsList){

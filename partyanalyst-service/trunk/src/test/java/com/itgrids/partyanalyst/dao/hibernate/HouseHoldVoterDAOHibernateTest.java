@@ -14,7 +14,10 @@ public class HouseHoldVoterDAOHibernateTest extends BaseDaoTestCase{
 
 
 	public void test(){
-		System.out.println("hhOptionsDAO");
+		//System.out.println("hhOptionsDAO");
+		
+		Long houseHoldId= houseHoldVoterDAO.getHouseHoldIdForVoter(6979790l);
+		System.out.println(houseHoldId);
 	}
 
 }
