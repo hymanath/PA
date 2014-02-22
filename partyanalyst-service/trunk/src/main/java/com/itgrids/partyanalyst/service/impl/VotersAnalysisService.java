@@ -3193,6 +3193,8 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 				 voterCategoryValueDAO.getVoterCategoryValuesForVotersForHHSurvey(1l,voterIds,ctgrysReqForHHSurveyList);
 	   
 	   
+	   
+	   
 	   List<Object[]> hhVoterRelations =  houseHoldVoterDAO.getVoterRelationsByVoterIds(voterIds);
 	   Map<Long,Long> hhVoterRelMap=new HashMap<Long, Long>();
 	   if(hhVoterRelations.size()>0){

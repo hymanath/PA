@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IHouseHoldSurveyReportService {
-	public List<HHSurveyVO> getHHSurveyQuestionOptions(Long surveyId,Long boothId,String houseNo);
+	public List<HHSurveyVO> getHHSurveyQuestionOptions(Long surveyId,Long boothId,String houseNo,Long voterId);
 	
 	public List<GenericVO> getAllOptionTypes();
 	public String createSurveySubCategory(String name,boolean isChild,Long parentId);

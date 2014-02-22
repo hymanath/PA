@@ -50,4 +50,12 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		
 	}
 	
+	public Long getHouseHoldIdForVoter(Long voterId){
+		Query query = getSession().createQuery(" select model.houseHoldId from HouseHoldVoter model " +
+				" where model.voter.voterId = :voterId");
+		
+		query.setParameter("voterId", voterId);
+		return (Long) query.uniqueResult();
+	}
+	
 }
