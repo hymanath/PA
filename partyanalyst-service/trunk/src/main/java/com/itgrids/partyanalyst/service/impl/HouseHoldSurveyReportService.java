@@ -786,7 +786,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								if(voterDtls.getMobileNo() != null && !voterDtls.getMobileNo().equalsIgnoreCase(""))
 								familyDetails.setMobileNo(voterDtls.getMobileNo());
 								
-								 familyDetails = 	houseHoldsFamilyDetailsDAO.save(familyDetails);
+								familyDetails = 	houseHoldsFamilyDetailsDAO.save(familyDetails);
 								
 								
 								HouseHoldVoter newPerson = new HouseHoldVoter();
@@ -819,6 +819,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 							
 						
 						for(HouseHoldVotersVO voterDtls:votersDetails.getHouseHoldsVoters())
+							if(voterDtls.getHouseHoldFamilyMemberId() != null)
 							newVoterIds.add(voterDtls.getVoterId());
 						
 						
@@ -859,17 +860,91 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								
 									
 								}
+								
+								for(Long savedVoterID:savedVoterIds)
+								{
+									HouseHoldVoter houseHoldsVoter = getMatchedHouseHoldsVoter(
+											savedVoterID,houseHoldsVoters);
+									
+									houseHoldsVoter.setIsDelete(IConstants.TRUE);
+									houseHoldVoterDAO.save(houseHoldsVoter);
+									
+									
+								}
 							}
+						}
+						
+						
+						//updating family members details
+
+						List<Long> savedMemberIds = new ArrayList<Long>();
+						List<Long> newMemberIds = new ArrayList<Long>();
+						
+						List<HouseHoldsFamilyDetails> membersDetails = houseHoldVoterDAO
+										.getFamilyMembersDetailsByHouseHoldsId(hseHoldId);	
+						
+						
+						for(HouseHoldsFamilyDetails details:membersDetails)
+							savedMemberIds.add(details.getHouseHoldsFamilyDetailsId());
+						
+						for(HouseHoldVotersVO voterDtls:votersDetails.getHouseHoldsVoters())
+							if(voterDtls.isNewPerson() && voterDtls.getHouseHoldFamilyMemberId().longValue() !=0)
+								newMemberIds.add(voterDtls.getHouseHoldFamilyMemberId());
+						
+						
+						for(HouseHoldVotersVO voterDtls:votersDetails.getHouseHoldsVoters())
+						{
 							
-							
-							for(Long savedVoterID:savedVoterIds)
+							if(voterDtls.isNewPerson())
 							{
-								HouseHoldVoter houseHoldsVoter = getMatchedHouseHoldsVoter(
-										savedVoterID,houseHoldsVoters);
+								if(savedMemberIds.contains(voterDtls.getHouseHoldFamilyMemberId()))
+								{
+									HouseHoldsFamilyDetails familyDetails = getMatchedFamilyMemberDetails(
+											voterDtls.getHouseHoldFamilyMemberId(),
+											membersDetails);
+									
+									familyDetails.setAge(voterDtls.getAge());
+									familyDetails.setGender(voterDtls.getGender());
+									familyDetails.setName(voterDtls.getName());
+									//familyDetails.setInsertedTime(DateUtilService.getCurrentDateAndTime());
+									
+									familyDetails.setRelationshipType(voterDtls.getRelationShipType());									
+									familyDetails.setRelativeName(voterDtls.getRelativeName());									
+									familyDetails.setMobileNo(voterDtls.getMobileNo());									
+									familyDetails = houseHoldsFamilyDetailsDAO.save(familyDetails);
+										
+									savedMemberIds.remove(voterDtls.getVoterId());
+										
+								}else
+								{
+									HouseHoldsFamilyDetails familyDetails = new HouseHoldsFamilyDetails();
+									
+									familyDetails.setAge(voterDtls.getAge());
+									familyDetails.setGender(voterDtls.getGender());
+									familyDetails.setName(voterDtls.getName());
+									familyDetails.setInsertedTime(DateUtilService.getCurrentDateAndTime());
+									familyDetails.setRelationshipType(voterDtls.getRelationShipType());									
+									familyDetails.setRelativeName(voterDtls.getRelativeName());									
+									familyDetails.setMobileNo(voterDtls.getMobileNo());	
+									familyDetails.setIsDelete(IConstants.FALSE);
+									
+									 houseHoldsFamilyDetailsDAO.save(familyDetails);
+										
+								}
 								
-								houseHoldsVoter.setIsDelete(IConstants.TRUE);
-								
-								
+								for(Long savedVoterID:savedMemberIds)
+								{
+									
+									HouseHoldsFamilyDetails familyDetails = getMatchedFamilyMemberDetails(
+											savedVoterID,
+											membersDetails);
+									
+									familyDetails.setIsDelete(IConstants.TRUE);
+									
+									
+									 houseHoldsFamilyDetailsDAO.save(familyDetails);
+									
+								}
 							}
 						}
                     }
@@ -924,6 +999,19 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			e.printStackTrace();
 		}
 		return "success";
+	}
+	
+	
+	
+	public HouseHoldsFamilyDetails getMatchedFamilyMemberDetails(Long memberId,List<HouseHoldsFamilyDetails> houseHoldVoters)
+	{
+		
+		for(HouseHoldsFamilyDetails familyMember:houseHoldVoters)
+			if(familyMember.getHouseHoldsFamilyDetailsId().longValue() == memberId.longValue())
+				return familyMember;
+		return null;
+		
+		
 	}
 	
 	public HouseHoldVoter getMatchedHouseHoldsVoter(Long voterId,List<HouseHoldVoter> houseHoldVoters)

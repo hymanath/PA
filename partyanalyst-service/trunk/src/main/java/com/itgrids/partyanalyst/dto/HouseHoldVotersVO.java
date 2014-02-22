@@ -22,7 +22,14 @@ public class HouseHoldVotersVO {
 	private boolean newPerson;
 	private String mobileNo;
 	private Long houseHoldsId;
+	private Long houseHoldFamilyMemberId;
 	
+	public Long getHouseHoldFamilyMemberId() {
+		return houseHoldFamilyMemberId;
+	}
+	public void setHouseHoldFamilyMemberId(Long houseHoldFamilyMemberId) {
+		this.houseHoldFamilyMemberId = houseHoldFamilyMemberId;
+	}
 	public String getMobileNo() {
 		return mobileNo;
 	}

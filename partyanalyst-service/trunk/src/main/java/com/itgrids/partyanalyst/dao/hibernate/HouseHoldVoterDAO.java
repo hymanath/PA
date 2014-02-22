@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IHouseHoldVoterDAO;
 import com.itgrids.partyanalyst.model.HouseHoldVoter;
+import com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -57,5 +58,17 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		query.setParameter("voterId", voterId);
 		return (Long) query.uniqueResult();
 	}
+	
+	
+	public List<HouseHoldsFamilyDetails> getFamilyMembersDetailsByHouseHoldsId(Long houseHoldsId){
+		
+		Query query = getSession().createQuery(" select model.houseHoldsFamilyDetails from HouseHoldVoter model " +
+				" where model.houseHoldId = :houseHoldsId");
+		
+		query.setParameter("houseHoldsId", houseHoldsId);
+		return query.list();
+	}
+	
+	
 	
 }
