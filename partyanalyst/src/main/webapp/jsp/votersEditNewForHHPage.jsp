@@ -312,13 +312,16 @@ function buildChildrenTable(myResults,hno){
 					}
 	
 		str+="<tr>";
-			str+="<td><input type='checkbox' value="+myResults[i].HHFamilyDetailsId+"></td>";
+			str+="<td><input type='checkbox' value="+myResults[i].HHFamilyDetailsId+" class='familyMemberChkbx' checked></td>";
 			
-			str+="<td><input type='checkbox' value="+myResults[i].age+"></td>";
-			str+="<td><input type='checkbox' value="+myResults[i].gaurdian+"></td>";
-			str+="<td><input type='checkbox' value="+myResults[i].gaurdian+"></td>";
+			str+="<td><input type='text' id='memberPrsnName"+myResults[i].HHFamilyDetailsId+"' value='"+myResults[i].name+"'/></td>";
+
+			str+="<td><input type='text' id='memberPrsnAge"+myResults[i].HHFamilyDetailsId+"' value='"+myResults[i].age+"'/></td>";
+
+			str+="<td><input type='text' id='memberPrsnGrdn"+myResults[i].HHFamilyDetailsId+"' value='"+myResults[i].gaurdian+"'/></td>";
+
 			
-					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"fmlyRltn>";
+					str+="<td><select id='memberPrsnrltnType"+myResults[i].HHFamilyDetailsId+"'>";
 					for(var j in myResults[i].familyRelsList){
 						if(familyRelsSel==myResults[i].familyRelsList[j].id){
 							str+="<option value="+myResults[i].familyRelsList[j].id+" selected>"+myResults[i].familyRelsList[j].name+"</option>";
@@ -329,7 +332,7 @@ function buildChildrenTable(myResults,hno){
 					str+="</select></td>";
 					
 					
-					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"edctn>";
+					str+="<td><select id='memberPrsnEdctn"+myResults[i].HHFamilyDetailsId+"'>";
 						for(var j in myResults[i].educationList){
 							if(eduSelId==myResults[i].educationList[j].id){
 								str+="<option value="+myResults[i].educationList[j].id+" selected>"+myResults[i].educationList[j].name+"</option>";
@@ -339,7 +342,7 @@ function buildChildrenTable(myResults,hno){
 						}
 						str+="</select></td>";
 					
-					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"occup>";
+					str+="<td><select id='memberPrsnOctpn"+myResults[i].HHFamilyDetailsId+"'>";
 						for(var j in myResults[i].occupationList){
 							if(occuSelId==myResults[i].occupationList[j].id){
 								str+="<option value="+myResults[i].occupationList[j].id+" selected>"+myResults[i].occupationList[j].name+"</option>";
@@ -349,7 +352,7 @@ function buildChildrenTable(myResults,hno){
 						}
 						str+="</select ></td>";
 					
-					str+="<td><select id="+myResults[i].HHFamilyDetailsId+"sclCtg>";
+					str+="<td><select id='memberPrsnSclPstn"+myResults[i].HHFamilyDetailsId+"'>";
 						for(var j in myResults[i].socialPositionList){
 							if(socialPosSel==myResults[i].socialPositionList[j].id){
 								str+="<option value="+myResults[i].socialPositionList[j].id+" selected>"+myResults[i].socialPositionList[j].name+"</option>";
@@ -539,7 +542,7 @@ function buildVotersInFamilySearch(results,hno){
 		var publicationDateId="${publicationDateId}";
 		var houseNo = oRecord.getData("houseNo");
 		
-		elLiner.innerHTML ='<input type="checkbox" name="voters" value='+id+' class="voterChkbx"></input>';
+		elLiner.innerHTML ='<input type="checkbox" checked name="voters" value='+id+' class="voterChkbx"></input>';
 		
 	}
     YAHOO.widget.DataTable.Occupation = function(elLiner, oRecord, oColumn, oData)
@@ -1186,7 +1189,7 @@ function submitQuestionDetails()
 	 voterDtls.voters = [];
 	 voterDtls.boothId = "${boothId}";
 	 voterDtls.houseNo = "${houseNo}";
-	 voterDtls.houseHoldsId = 0;
+	 voterDtls.houseHoldsId = 69;
 
   $('.voterChkbx').each(function(index,value){
 	   if(this.checked)
@@ -1214,15 +1217,18 @@ function submitQuestionDetails()
 				selectedVoterDtls =
 			       {
 			         familyMemberId:this.value,
-                    name:$('#memberPrsnName'+newPersons[i]).val().trim(),
-                    age:$('#memberPrsnAge'+newPersons[i]).val(),
-					 gender:$('#memberPrsnGndr'+newPersons[i]).val(),
-					 relativeName:$('#memberPrsnGrdn'+newPersons[i]).val().trim(),
-					 education:$('#memberPrsnEdctn'+newPersons[i]).val(),
-					 occupation:$('#memberPrsnOctpn'+newPersons[i]).val(),
-					 socialPosistion: $('#memberPrsnSclPstn'+newPersons[i]).val(),
-					 familyRelationId:$('#memberPrsnrltnType'+newPersons[i]).val(),
-					 mobileNo:$('#memberPrsnMblNO'+newPersons[i]).val().trim(), 
+                     name:$('#memberPrsnName'+this.value).val().trim(),
+                     age:$('#memberPrsnAge'+this.value).val(),
+					// gender:$('#memberPrsnGndr'+this.value).val(),
+					  gender:'M',
+					 relativeName:$('#memberPrsnGrdn'+this.value).val().trim(),
+					 education:$('#memberPrsnEdctn'+this.value).val(),
+					 occupation:$('#memberPrsnOctpn'+this.value).val(),
+					 socialPosistion: $('#memberPrsnSclPstn'+this.value).val(),
+					 familyRelationId:$('#memberPrsnrltnType'+this.value).val(),
+					// mobileNo:$('#memberPrsnMblNO'+this.value).val().trim(), 
+					  mobileNo:"test", 
+					relationShipType:"1",
 					 isNew: 'true'					 	 
 			       };
 
