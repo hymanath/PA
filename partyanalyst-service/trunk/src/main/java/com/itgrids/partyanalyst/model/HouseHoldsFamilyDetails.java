@@ -27,8 +27,8 @@ public class HouseHoldsFamilyDetails extends BaseModel implements Serializable{
 	 private Long age;
 	 private Date insertedTime;
 	 private String mobileNo;
+	 private String isDelete;
 	
-	 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "house_holds_family_details_id", unique = true, nullable = false)
@@ -96,6 +96,15 @@ public class HouseHoldsFamilyDetails extends BaseModel implements Serializable{
 	}
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
+	}
+	
+	
+	@Column(name="is_delete")  
+	public String getIsDelete() {
+		return isDelete;
+	}
+	public void setIsDelete(String isDelete) {
+		this.isDelete = isDelete;
 	}
 	 
 
