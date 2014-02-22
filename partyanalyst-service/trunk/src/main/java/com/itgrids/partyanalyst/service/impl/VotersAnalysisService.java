@@ -3127,7 +3127,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			    		if(hh.getOccupationId()!=null){
 			    			vtrInfo=new VoterHouseInfoVO();
 			    			vtrInfo.setCategoryValuesId(IConstants.HOUSE_HOLD_VOTER_OCCUPATION);
-			    			vtrInfo.setCategoryValueId(hh.getEducationId());
+			    			vtrInfo.setCategoryValueId(hh.getOccupationId());
 			    			
 			    			categList.add(vtrInfo);
 			    		}if(hh.getSocialCategoryId()!=null){
@@ -3135,7 +3135,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			    			vtrInfo.setVoterId(hh.getVoterId());
 			    			vtrInfo.setCategoryValuesId(IConstants.HOUSE_HOLD_VOTER_SOCIAL_POSITIONS);
 			    			//vtrInfo.setName(name);
-			    			vtrInfo.setCategoryValueId(hh.getEducationId());
+			    			vtrInfo.setCategoryValueId(hh.getSocialCategoryId());
 			    			
 			    			categList.add(vtrInfo);
 			    		}
@@ -3145,7 +3145,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			    			vtrInfo.setCategoryValuesId(hh.getVoterFamilyRelation().getId());
 			    			vtrInfo.setName(hh.getVoterFamilyRelation().getRelation());
 			    			vtrInfo.setCategoryValueId(hh.getVoterFamilyRelation().getVoterFamilyRelationId());
-			    			
+			    			childVO.setVoterFamilyRelId(hh.getVoterFamilyRelation().getVoterFamilyRelationId());
 			    			categList.add(vtrInfo);
 			    		}
 			    		
@@ -3156,7 +3156,21 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 				    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_EDUCATION);
 				    	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_SOCIAL_POSITIONS);
 				    
-				    	
+				    	List<Object[]> relationsList= voterFamilyRelationDAO.getAllRelations();
+				 	   	List<GenericVO> relsList=new ArrayList<GenericVO>();
+				 	   	GenericVO defaultGvo = new GenericVO();
+				 	   	defaultGvo.setId(0l);
+				 	   	defaultGvo.setName("Select");
+				 	   	
+				 	   	relsList.add(defaultGvo);
+				 		
+				 	    for(Object[] ob:relationsList){
+				 	    	GenericVO gvo=new GenericVO();
+				 	    	gvo.setId(Long.valueOf(ob[0].toString()));
+				 	    	gvo.setName(ob[1].toString());
+				 	    	
+				 	    	relsList.add(gvo);
+				 	    }
 				    	
 				    	Map<Long,List<GenericVO>> categoriesMap=getCategoriesForHHSurvey();
 				    	List<GenericVO> occupationList=new ArrayList<GenericVO>();
@@ -3182,11 +3196,13 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 								socialPositionList.addAll(entry.getValue());
 							}
 						}
+			    		
+			    		
 						
 			    		childVO.setOccupationList(occupationList);
 			    		childVO.setEducationList(educationList);
 			    		childVO.setSocialPositionList(socialPositionList);
-						
+						childVO.setFamilyRelsList(relsList);
 						
 			    		
 			    		childrenList.add(childVO);
