@@ -404,7 +404,7 @@ $("#pageUpBtn").live("click",function(){
 	var publicationDateId ='';
 	var flag =true;
 		var str ='';
-	id = $("#constituencyList").val();
+	id = $("#constituencyId").val();
 	if(id == 0 ||id == null)
 	{
 		str +='<div>Please Select Constituency</div>';
@@ -472,7 +472,7 @@ $("#pageUpBtn").live("click",function(){
 	
 	if(level == 1){
 		type = 'constituency';
-		id = $("#constituencyList").val();
+		id = $("#constituencyId").val();
 		selectedType=type;
 		selectedTypeId=id;	
 	}
@@ -631,7 +631,7 @@ $("#pageUpBtn").live("click",function(){
 	   queryType = 'or';
 	}
 
-	var constituencyId = $("#constituencyList").val();
+	var constituencyId = $("#constituencyId").val();
 	var mandalId = 0;
 
 	if($("#reportLevel").val() == 5)
