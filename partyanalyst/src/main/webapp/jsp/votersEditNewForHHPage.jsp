@@ -1024,12 +1024,12 @@ function saveHouseHoldInfo(){
 					
 				str+="<tr>";
 					
-					str+="<td><input type='checkbox' name='searchedVoter' value="+temp[i].voterId+"></td>";
+					str+="<td><input type='checkbox' class='voterChkbx' name='searchedVoter' value="+temp[i].voterId+"></td>";
 					str+="<td>"+temp[i].name+"</td>";
 					str+="<td>"+temp[i].age+"</td>";
 					str+="<td>"+temp[i].gaurdian+"</td>";
 					
-					str+="<td><select>";
+					str+="<td><select id="+temp[i].voterId+"fmlyRltn>";
 					for(var j in temp[i].familyRelsList){
 						if(familyRelsSel==temp[i].familyRelsList[j].id){
 							str+="<option value="+temp[i].familyRelsList[j].id+" selected>"+temp[i].familyRelsList[j].name+"</option>";
@@ -1042,7 +1042,7 @@ function saveHouseHoldInfo(){
 					
 					str+="<td>"+temp[i].voterIdCardNo+"</td>";
 					
-					str+="<td><select>";
+					str+="<td><select id="+temp[i].voterId+"edctn>";
 						for(var j in temp[i].educationList){
 							if(eduSelId==temp[i].educationList[j].id){
 								str+="<option value="+temp[i].educationList[j].id+" selected>"+temp[i].educationList[j].name+"</option>";
@@ -1052,7 +1052,7 @@ function saveHouseHoldInfo(){
 						}
 						str+="</select></td>";
 					
-					str+="<td><select>";
+					str+="<td><select id="+temp[i].voterId+"occup>";
 						for(var j in temp[i].occupationList){
 							if(occuSelId==temp[i].occupationList[j].id){
 								str+="<option value="+temp[i].occupationList[j].id+" selected>"+temp[i].occupationList[j].name+"</option>";
@@ -1060,7 +1060,7 @@ function saveHouseHoldInfo(){
 								str+="<option value="+temp[i].occupationList[j].id+">"+temp[i].occupationList[j].name+"</option>";
 							}
 						}
-						str+="</select></td>";
+						str+="</select id="+temp[i].voterId+"sclCtg></td>";
 					
 					str+="<td><select>";
 						for(var j in temp[i].socialPositionList){
