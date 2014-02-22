@@ -10,7 +10,7 @@ import com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails;
 
 public interface IHouseHoldVoterDAO extends GenericDao<HouseHoldVoter, Long>{
 	public List<Object[]> getVoterRelationsByVoterIds(List<Long> voterIds);
-	public List<Object[]> getHouseHoldIdOfFamilyHeadForVoter(String houseNo);
+	public List<Object[]> getHouseHoldIdOfFamilyHeadForVoter(String houseNo,Long panchayatId,Long localBodyId);
 	public List<Object[]> getHouseHoldIdOfVoter(String houseNo);
 	public List<HouseHoldVoter> getHouseHoldsVoterdDetailsByHouseHoldId(Long houseHoldsId);
 	

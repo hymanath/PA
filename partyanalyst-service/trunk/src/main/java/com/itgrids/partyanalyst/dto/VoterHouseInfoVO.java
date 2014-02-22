@@ -116,9 +116,36 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private boolean isDisable;
     private boolean makeItEnable;
     private String casteName;
+    private Long HHFamilyDetailsId;
+    private Long vtrFamilyRelTypeId;
+    private boolean isChildren;
     
     
     
+	public boolean isChildren() {
+		return isChildren;
+	}
+
+	public void setChildren(boolean isChildren) {
+		this.isChildren = isChildren;
+	}
+
+	public Long getHHFamilyDetailsId() {
+		return HHFamilyDetailsId;
+	}
+
+	public void setHHFamilyDetailsId(Long hHFamilyDetailsId) {
+		HHFamilyDetailsId = hHFamilyDetailsId;
+	}
+
+	public Long getVtrFamilyRelTypeId() {
+		return vtrFamilyRelTypeId;
+	}
+
+	public void setVtrFamilyRelTypeId(Long vtrFamilyRelTypeId) {
+		this.vtrFamilyRelTypeId = vtrFamilyRelTypeId;
+	}
+
 	public String getCasteName() {
 		return casteName;
 	}
