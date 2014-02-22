@@ -224,7 +224,7 @@ function callAjax(jsObj,url){
 								getCategoryValues(myResults);
 							}else if(jsObj.task == "getVotersInAFamilySearch")
 							{
-								buildVotersInFamilySearch(myResults,jsObj.hno);
+								buildVotersInFamilySearch(myResults.parentsList,jsObj.hno);
 							}
 							else if(jsObj.task == "storeCategoeryValues")
 							{
@@ -456,7 +456,7 @@ function buildVotersInFamilySearch(results,hno){
 			if(categ1 != null && categ1.length > 0){
 			 for(var i in categ1){
 			    if(categ1[i].categoryValuesId == 7)
-				   if(categ1[i].name != null)
+				   //if(categ1[i].name != null)
 				    val = categ1[i].categoryValueId;
 			  }
 			 }
@@ -489,7 +489,7 @@ function buildVotersInFamilySearch(results,hno){
 			if(categ1 != null && categ1.length > 0){
 			 for(var i in categ1){
 			    if(categ1[i].categoryValuesId == 8)
-				   if(categ1[i].name != null)
+				  // if(categ1[i].name != null)
 				    val = categ1[i].categoryValueId;
 			  }
 			 }
@@ -521,7 +521,7 @@ function buildVotersInFamilySearch(results,hno){
 			if(categ1 != null && categ1.length > 0){
 			 for(var i in categ1){
 			    if(categ1[i].categoryValuesId == 9)
-				   if(categ1[i].name != null)
+				  // if(categ1[i].name != null)
 				    val = categ1[i].categoryValueId;
 			  }
 			 }
@@ -1151,7 +1151,7 @@ function submitQuestionDetails()
 					 socialPosistion: $('#newPrsnSclPstn'+newPersons[i]).val(),
 					 familyRelationId:$('#newPrsnrltnType'+newPersons[i]).val(),
 					 mobileNo:$('#newPrsnMblNO'+newPersons[i]).val().trim(),
-					 familyMemberId:0,
+					 familyMemberId:0
 					 	 
 			       };
 
