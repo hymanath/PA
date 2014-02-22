@@ -1109,17 +1109,40 @@ function submitQuestionDetails()
 				 voterDtls.voters.push(selectedVoterDtls);
 	   }
    });
-   
+  
+  
+  $('.familyMemberChkbx').each(function(index,value){
+	   if(this.checked)
+	   {
+			
+				selectedVoterDtls =
+			       {
+			         familyMemberId:this.value,
+                    name:$('#memberPrsnName'+newPersons[i]).val().trim(),
+                    age:$('#memberPrsnAge'+newPersons[i]).val(),
+					 gender:$('#memberPrsnGndr'+newPersons[i]).val(),
+					 relativeName:$('#memberPrsnGrdn'+newPersons[i]).val().trim(),
+					 education:$('#memberPrsnEdctn'+newPersons[i]).val(),
+					 occupation:$('#memberPrsnOctpn'+newPersons[i]).val(),
+					 socialPosistion: $('#memberPrsnSclPstn'+newPersons[i]).val(),
+					 familyRelationId:$('#memberPrsnrltnType'+newPersons[i]).val(),
+					 mobileNo:$('#memberPrsnMblNO'+newPersons[i]).val().trim(), 
+					 isNew: 'true'					 	 
+			       };
 
+				 voterDtls.voters.push(selectedVoterDtls);
+	   }
+  });
+  
 
-   for(var i=0;i<newPersons.length;i++)
-   {
+  for(var i=0;i<newPersons.length;i++)
+  {
 		selectedVoterDtls =
 			       {
 					
 					 isNew: 'true',
 					 name:$('#newPrsnName'+newPersons[i]).val().trim(),
-                     age:$('#newPrsnAge'+newPersons[i]).val(),
+                    age:$('#newPrsnAge'+newPersons[i]).val(),
 					 gender:$('#newPrsnGndr'+newPersons[i]).val(),
 					 relativeName:$('#newPrsnGrdn'+newPersons[i]).val().trim(),
 					 relationShipType:$('#newPrsnrltnType'+newPersons[i]).val(),
@@ -1127,13 +1150,14 @@ function submitQuestionDetails()
 					 occupation:$('#newPrsnOctpn'+newPersons[i]).val(),
 					 socialPosistion: $('#newPrsnSclPstn'+newPersons[i]).val(),
 					 familyRelationId:$('#newPrsnrltnType'+newPersons[i]).val(),
-					 mobileNo:$('#newPrsnMblNO'+newPersons[i]).val().trim() 
+					 mobileNo:$('#newPrsnMblNO'+newPersons[i]).val().trim(),
+					 familyMemberId:0,
 					 	 
 			       };
 
 				 voterDtls.voters.push(selectedVoterDtls);
 
-   }
+  }
 	 $.ajax({
           type:'POST',
           url: 'saveHouseHoldsVotersDetailsAction.action',
