@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
+import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 
 @Component
 @Path("/")
@@ -370,5 +371,87 @@ public class WebServiceHandler {
 			e.printStackTrace();
 			return "Failure";
 		}
+    }
+	
+	@GET
+    @Path("/updateVoterTagDetails/{uniqueCode}/{voterTagDetails}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateVoterTagDetails(
+			@PathParam("uniqueCode") String uniqueCode,
+			@PathParam("voterTagDetails") String voterTagDetails)
+    {
+		try{
+			net.sf.json.JSONObject tag = (net.sf.json.JSONObject) net.sf.json.JSONObject
+					.fromObject(voterTagDetails);
+			
+			LOG.warn("uniqueCode -- "+uniqueCode);
+			LOG.warn("voterTagDetails Data -- "+voterTagDetails);
+			
+			Long voterId = tag.getLong("voterId");
+			
+			if(voterId == null || uniqueCode == null || uniqueCode.trim().isEmpty())
+				return "Fail";
+			
+			VoterTagVO voterTagVO = new VoterTagVO();
+			voterTagVO.setVoterId(tag.getLong("voterId"));
+			voterTagVO.setIsCadre(tag.getString("isCadre"));
+			voterTagVO.setIsInfluencingPeople(tag.getString("isInfluencingPeople"));
+			voterTagVO.setTags(tag.getString("tags"));
+			voterTagVO.setMobileNo(tag.getString("mobileNo"));
+			voterTagVO.setPartyId(tag.getLong("partyId"));
+			voterTagVO.setCasteStateId(tag.getLong("casteStateId"));
+			voterTagVO.setLatitude(tag.getString("latitude"));
+			voterTagVO.setLongitude(tag.getString("longitude"));
+			voterTagVO.setInsertTime(tag.getString("insertTime"));
+			voterTagVO.setUniqueCode(uniqueCode);
+			
+			return webServiceHandlerService.updateVoterTagDetails(voterTagVO);
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in updateVoterTagDetails() Method, Exception is ",e);
+			return "Fail";
+		}
+	
+    }
+	
+	@GET
+    @Path("/updateVoterBoothActivitiesDetails/{uniqueCode}/{voterBoothActivitiesDetails}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateVoterBoothActivitiesDetails(
+			@PathParam("uniqueCode") String uniqueCode,
+			@PathParam("voterBoothActivitiesDetails") String voterBoothActivitiesDetails)
+    {
+		try{
+			net.sf.json.JSONObject tag = (net.sf.json.JSONObject) net.sf.json.JSONObject
+					.fromObject(voterBoothActivitiesDetails);
+			
+			LOG.warn("uniqueCode -- "+uniqueCode);
+			LOG.warn("voterBoothActivitiesDetails Data -- "+voterBoothActivitiesDetails);
+			
+			Long voterId = tag.getLong("voterId");
+			
+			if(voterId == null || uniqueCode == null || uniqueCode.trim().isEmpty())
+				return "Fail";
+			
+			VoterTagVO voterTagVO = new VoterTagVO();
+			voterTagVO.setVoterId(tag.getLong("voterId"));
+			voterTagVO.setBoothId(tag.getLong("boothId"));
+			voterTagVO.setBoothActivitiesId(tag.getLong("boothActivitiesId"));
+			voterTagVO.setLatitude(tag.getString("latitude"));
+			voterTagVO.setLongitude(tag.getString("longitude"));
+			voterTagVO.setInsertTime(tag.getString("insertTime"));
+			voterTagVO.setUniqueCode(uniqueCode);
+			
+			return webServiceHandlerService.updateVoterBoothActivitiesDetails(voterTagVO);
+			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in updateVoterTagDetails() Method, Exception is ",e);
+			return "Fail";
+		}
+	
     }
 }
