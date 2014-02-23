@@ -40,7 +40,7 @@ public class DateUtilService {
 	/**
 	 * This method returns Current Date in yyyy-MM-dd hh:mm:ss 
 	 * Format of Date Object with default Indian Time Zone.
-	 * @return String
+	 * @return Date
 	 * @author Kamalakar Dandu
 	 */
 	public Date getCurrentDateAndTime()
@@ -111,5 +111,18 @@ public class DateUtilService {
 	System.out.println(	new DateUtilService().getDayBeforeYesterDayDate());
 	System.out.println( new  DateUtilService().getCurrentDateAndTime());
 	}
-
+	
+	public Date getDateAndTime(String DateString)
+	{
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_WITH_SECONDS);
+			return sdf.parse(DateString);
+		}catch(Exception e)
+		{
+			log.error("Exception Occured in DateUtilService.getDateAndTime() " +
+					" check for log details");
+					return null;
+		}
+		
+	}
 }
