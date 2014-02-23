@@ -5,6 +5,7 @@ import java.awt.Color;
 public interface IConstants {
 	public static final String DATE_PATTERN = "dd/MM/yyyy";
 	public static final String DATE_PATTERN_YYYY_MM_DD = "yyyy/MM/dd";
+	public static final String DATE_PATTERN_WITH_SECONDS = "yyyy-MM-dd HH:mm:ss";
 	public static final Long CENSUS_YEAR = 2001L;
 	public static final Long DELIMITATION_YEAR = 2009L;
 	public static final Long PREV_DELIMITATION_YEAR = 2004L;
