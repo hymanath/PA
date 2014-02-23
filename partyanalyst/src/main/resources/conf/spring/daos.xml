@@ -1345,4 +1345,15 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
+   <bean id="voterTagDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterTagDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="boothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothActivitiesDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="voterBoothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBoothActivitiesDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>		
