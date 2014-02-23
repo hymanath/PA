@@ -681,7 +681,7 @@ public List<SelectOptionVO> getConstituencyList()
 			StringBuilder str = new StringBuilder();
 			
 			try{
-				List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituency(constituencyId,publicationId,1L);
+				List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(constituencyId,publicationId);
 				
 				if(votersList != null && votersList.size() > 0)
 				{
