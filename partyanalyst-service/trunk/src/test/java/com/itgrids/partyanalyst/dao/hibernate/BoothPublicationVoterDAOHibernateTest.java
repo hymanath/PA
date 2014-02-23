@@ -222,13 +222,19 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 				}
 			
 		    }*/
-	    public void testGetWardBoothTotalMaleFemaleVotersCount(){
+	    /*public void testGetWardBoothTotalMaleFemaleVotersCount(){
 		  List<Object[]> countList = boothPublicationVoterDAO.getWardBoothAgeCount(47l,1l, 8l,309l);
 			for(Object[] count:countList){
 				System.out.print(count[0].toString()+"--"+count[1].toString()+"--"+count[2].toString()+"--"+count[3].toString());
 				System.out.println("");
 			}
 		
-	    }
+	    }*/
+	
+		public void testGetVoterDetailsOfAConstituencyAndPublication()
+		{
+			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(232l,8l);
+			System.out.println(list.size());
+		}
 	    
 	}
