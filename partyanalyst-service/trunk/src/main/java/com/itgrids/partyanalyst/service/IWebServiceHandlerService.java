@@ -6,6 +6,7 @@ import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
+import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 
 public interface IWebServiceHandlerService {
 	
@@ -44,5 +45,9 @@ public interface IWebServiceHandlerService {
 	public String updateVoterMobileNumberAndCaste(String voterID,
 			Long casteStateId,
 			String mobileNo,String uniqueId);
+	
+	public String updateVoterTagDetails(VoterTagVO voterTagVO);
+	
+	public String updateVoterBoothActivitiesDetails(VoterTagVO voterTagVO);
 
 }
