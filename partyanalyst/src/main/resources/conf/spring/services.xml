@@ -1874,6 +1874,8 @@
 	  <property name="castePredictionService" ref="castePredictionService" />
 	  <property name="influencingPeopleService" ref="influencingPeopleService"></property>
 	  <property name="voterReportService" ref="voterReportService"/>
+	  <property name="voterTagDAO" ref="voterTagDAO"/>
+	  <property name="voterBoothActivitiesDAO" ref="voterBoothActivitiesDAO"/>
  </bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
