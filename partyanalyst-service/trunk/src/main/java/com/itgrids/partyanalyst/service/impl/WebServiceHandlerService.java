@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,6 +15,8 @@ import com.itgrids.partyanalyst.dao.IMobileAppUserProfileDAO;
 import com.itgrids.partyanalyst.dao.IPingingTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
+import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
+import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.FlagVO;
@@ -26,6 +29,8 @@ import com.itgrids.partyanalyst.model.MobileAppPinging;
 import com.itgrids.partyanalyst.model.MobileAppUser;
 import com.itgrids.partyanalyst.model.MobileAppUserAccessKey;
 import com.itgrids.partyanalyst.model.UserVoterDetails;
+import com.itgrids.partyanalyst.model.VoterBoothActivities;
+import com.itgrids.partyanalyst.model.VoterTag;
 import com.itgrids.partyanalyst.service.IInfluencingPeopleService;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
@@ -36,6 +41,7 @@ import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 
 
 public class WebServiceHandlerService implements IWebServiceHandlerService {
@@ -65,6 +71,26 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private CastePredictionService castePredictionService; 
 	private IInfluencingPeopleService influencingPeopleService;
 	private IVoterReportService voterReportService;
+	private IVoterTagDAO voterTagDAO;
+	private IVoterBoothActivitiesDAO voterBoothActivitiesDAO;
+	private DateUtilService dateUtilService = new DateUtilService();
+
+	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
+		return voterBoothActivitiesDAO;
+	}
+
+	public void setVoterBoothActivitiesDAO(
+			IVoterBoothActivitiesDAO voterBoothActivitiesDAO) {
+		this.voterBoothActivitiesDAO = voterBoothActivitiesDAO;
+	}
+
+	public IVoterTagDAO getVoterTagDAO() {
+		return voterTagDAO;
+	}
+
+	public void setVoterTagDAO(IVoterTagDAO voterTagDAO) {
+		this.voterTagDAO = voterTagDAO;
+	}
 
 	public IVoterReportService getVoterReportService() {
 		return voterReportService;
@@ -763,6 +789,84 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	{
 		
 		return voterReportService.updateVoterMobileNumberAndCaste(voterID,casteStateId,mobileNo,uniqueId);
+	}
+	
+	
+	public String updateVoterTagDetails(VoterTagVO voterTagVO)
+	{
+		try{
+			VoterTag voterTag = new VoterTag();
+			voterTag = voterTagDAO.getVoterTagByVoterIdAndUniqueCode(voterTagVO.getVoterId(),voterTagVO.getUniqueCode());
+			
+			if(voterTag == null)
+				voterTag = new VoterTag();
+			
+			Date insertTime = dateUtilService.getDateAndTime(voterTagVO.getInsertTime());
+			String isCadre = voterTagVO.getIsCadre();
+			String isInfluencingPeople = voterTagVO.getIsInfluencingPeople();
+			String tags = voterTagVO.getTags();
+			
+			if(insertTime == null)
+				insertTime = dateUtilService.getCurrentDateAndTime();
+			if(isCadre == null)
+				isCadre = "N";
+			if(isInfluencingPeople == null)
+				isInfluencingPeople = "N";
+			if(tags == null)
+				tags = "";
+			
+			voterTag.setVoterId(voterTagVO.getVoterId());
+			voterTag.setIsCadre(isCadre);
+			voterTag.setIsInfluencingPeople(isInfluencingPeople);
+			voterTag.setTags(voterTagVO.getTags());
+			voterTag.setMobileNo(voterTagVO.getMobileNo());
+			voterTag.setPartyId(voterTagVO.getPartyId());
+			voterTag.setCasteStateId(voterTagVO.getCasteStateId());
+			voterTag.setLatitude(voterTagVO.getLatitude());
+			voterTag.setLongitude(voterTagVO.getLongitude());
+			voterTag.setInsertTime(insertTime);
+			voterTag.setSyncTime(dateUtilService.getCurrentDateAndTime());
+			voterTag.setUniqueCode(voterTagVO.getUniqueCode());
+			voterTag.setIsdelete(IConstants.FALSE);
+			
+			voterTagDAO.save(voterTag);
+			
+			return "Success";
+		}catch(Exception e)
+		{
+			log.error("Exception Occured in updateVoterTagDetails(), exception is ",e);
+			return "Fail";
+		}
+	}
+	
+	public String updateVoterBoothActivitiesDetails(VoterTagVO voterTagVO)
+	{
+		try{
+			VoterBoothActivities voterBoothActivities = new VoterBoothActivities();
+			
+			Date insertTime = dateUtilService.getDateAndTime(voterTagVO.getInsertTime());
+			
+			if(insertTime == null)
+				insertTime = dateUtilService.getCurrentDateAndTime();
+			
+			voterBoothActivities.setVoterId(voterTagVO.getVoterId());
+			voterBoothActivities.setBoothId(voterTagVO.getBoothId());
+			voterBoothActivities.setBoothActivitiesId(voterTagVO.getBoothActivitiesId());
+			voterBoothActivities.setLatitude(voterTagVO.getLatitude());
+			voterBoothActivities.setLongitude(voterTagVO.getLongitude());
+			voterBoothActivities.setInsertTime(insertTime);
+			voterBoothActivities.setSyncTime(dateUtilService.getCurrentDateAndTime());
+			voterBoothActivities.setUniqueCode(voterTagVO.getUniqueCode());
+			voterBoothActivities.setIsdelete(IConstants.FALSE);
+			
+			voterBoothActivitiesDAO.save(voterBoothActivities);
+			
+			return "Success";
+		}catch(Exception e)
+		{
+			log.error("Exception Occured in updateVoterTagDetails(), exception is ",e);
+			return "Fail";
+		}
 	}
 
 }
