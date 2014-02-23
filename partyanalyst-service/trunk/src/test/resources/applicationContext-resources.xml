@@ -392,22 +392,41 @@
 				<value>com.itgrids.partyanalyst.model.PredictedVoterCaste</value>
 				<value>com.itgrids.partyanalyst.model.CasteInsertType</value>
 				<value>com.itgrids.partyanalyst.model.HHSurveyQuestion</value>
-		<value>com.itgrids.partyanalyst.model.HHOptions</value>
-		<value>com.itgrids.partyanalyst.model.HHQuestionOptions</value>
-		<value>com.itgrids.partyanalyst.model.HHOptionType</value>
-		<value>com.itgrids.partyanalyst.model.HHSurvey</value>
-		<value>com.itgrids.partyanalyst.model.HouseHolds</value>
-		<value>com.itgrids.partyanalyst.model.HHSurveyAnswers</value>
-		<value>com.itgrids.partyanalyst.model.HHSurveySubType</value>
-		
-		<value>com.itgrids.partyanalyst.model.VoterFamilyRelation</value>
-		<value>com.itgrids.partyanalyst.model.HouseHoldVoter</value>
+				<value>com.itgrids.partyanalyst.model.HHOptions</value>
+				<value>com.itgrids.partyanalyst.model.HHQuestionOptions</value>
+				<value>com.itgrids.partyanalyst.model.HHOptionType</value>
+				<value>com.itgrids.partyanalyst.model.HHSurvey</value>
+				<value>com.itgrids.partyanalyst.model.HouseHolds</value>
+				<value>com.itgrids.partyanalyst.model.HHSurveyAnswers</value>
+				<value>com.itgrids.partyanalyst.model.HHSurveySubType</value>
+		     	<value>com.itgrids.partyanalyst.model.VoterFamilyRelation</value>
+				<value>com.itgrids.partyanalyst.model.HouseHoldVoter</value>
+				<value>com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails</value>
+				<value>com.itgrids.partyanalyst.model.VoterTag</value>
+				<value>com.itgrids.partyanalyst.model.BoothActivities</value>
+				<value>com.itgrids.partyanalyst.model.VoterBoothActivities</value>
 					
 			</list>
 		</property>
 	</bean>
 
 	<!-- Add new DAOs here -->
+	
+	<bean id="voterBoothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBoothActivitiesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="boothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.BoothActivitiesDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="voterTagDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterTagDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="houseHoldsFamilyDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.HouseHoldsFamilyDetailsDAO" >
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="webServiceBaseUrlDAO" class="com.itgrids.partyanalyst.dao.hibernate.WebServiceBaseUrlDAO" >
 		<property name="sessionFactory" ref="sessionFactory" />
