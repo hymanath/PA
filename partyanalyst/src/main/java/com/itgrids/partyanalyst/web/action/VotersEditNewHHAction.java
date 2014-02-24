@@ -14,6 +14,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -606,10 +607,12 @@ public String saveVoterDetails(){
 		voterHouseInfoVO1=votersAnalysisService.getBoothDetailsForVoter(new Long(boothId));
 		voterHouseInfoVO= votersAnalysisService.getVoterPersonalDetailsByVoterId(new Long(voterId),userId);
 		
+		List<GenericVO> hhLeadersList=votersAnalysisService.getHHLeadersList(new Long(boothId));
+		
 		voterHouseInfoVO.setBoothName(voterHouseInfoVO1.getBoothName());
 		voterHouseInfoVO.setVilliageCovered(voterHouseInfoVO1.getVilliageCovered());
 		voterHouseInfoVO.setPanchayatName(voterHouseInfoVO1.getPanchayatName());
-		
+		voterHouseInfoVO.setBoothLeaderList(hhLeadersList);
 	}
    }
   }
