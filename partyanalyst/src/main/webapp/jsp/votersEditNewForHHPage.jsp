@@ -916,6 +916,7 @@ function saveHouseHoldInfo(){
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
 <input type="hidden" name="voterHouseInfoVO.categoryValuesId" value="${voterHouseInfoVO.categoryValuesId}"/>-->
 <div id="mainDiv" >
+<div id="errorDiv" style="color:red"></div>
 
 <div>
   <span class="fontStyle"><b>Panchayat Name: </b></span> ${voterHouseInfoVO.panchayatName}
@@ -1233,6 +1234,55 @@ var voterDtls={
 };
 function submitQuestionDetails()
 {
+  var errorDivEle = document.getElementById('errorDiv');
+  var flag= true;
+  var str= '';
+  if($('#BoothLeadersListId').val() == 0)
+  {
+       str+='Booth Leader Name is Required<br>';
+	   flag=false;
+  }
+  $('.ageCls').each(function() {
+    if($.trim($(this).val()).length == 0)
+	 {
+		str+='Age is required for adding new person<br>';
+		flag=false;
+		return false;
+	 }
+  });
+
+   $('.ageCls').each(function() {
+    if($.trim($(this).val()).length > 0)
+	 {
+		if(isNaN($.trim($(this).val()))){
+		str+='Age must be integer<br>';
+		flag=false;
+		return false;
+		}
+	 }
+   });
+      
+  $('.nameCls').each(function() {
+     if($.trim($(this).val()).length == 0)
+	  {
+	    str+='Name is required for adding new person<br>';
+	    flag=false;
+		return false;
+	 }
+  });
+  $('.gaurdianCls').each(function(){
+     if($.trim($(this).val()).length == 0)
+	 {
+         str += 'Gaurdian Name is required for adding new person<br>';
+		 flag=false;
+		 return false;
+     }
+  });
+  errorDivEle.innerHTML = str;
+  if(flag == false)
+  {
+     return;
+  }
 	 voterDtls.voters = [];
 	 voterDtls.boothId = "${boothId}";
 	 voterDtls.houseNo = "${houseNo}";
@@ -1361,15 +1411,15 @@ function addNewPersonOfFamily()
 		   str+='<div class="row-fluid " id="newPersonDetails'+newPersonsCount+'">';
 
 			str+='<div style="float:left;width:20px;margin-top:5px;"><input type="checkbox" disabled="true" checked /></div>';
-			str+='<div style="float:left;width:89px;"><input type="text"  style="width:69px;" id="newPrsnName'+newPersonsCount+'"/></div>';
-			str+='<div style="float:left;width:40px;"><input type="text"  style="width:19px;" id="newPrsnAge'+newPersonsCount+'"/></div>';
+			str+='<div style="float:left;width:89px;"><input type="text"  style="width:69px;" class="nameCls" id="newPrsnName'+newPersonsCount+'"/></div>';
+			str+='<div style="float:left;width:40px;"><input type="text"  style="width:19px;" class="ageCls" id="newPrsnAge'+newPersonsCount+'"/></div>';
 			str+='<div style="float:left;width:89px;">';
 				str+='<select style="width:48px;" id="newPrsnGndr'+newPersonsCount+'">';
 				 str+='<option value="M">M</option>';
  				 str+='<option value="F">F</option>';
 				str+='</select>';
 			str+='</div>';
-			str+='<div style="float:left;width:89px;"><input type="text"  style="width:65px;" id="newPrsnGrdn'+newPersonsCount+'"/></div>';
+			str+='<div style="float:left;width:89px;"><input type="text"  style="width:65px;" class="gaurdianCls" id="newPrsnGrdn'+newPersonsCount+'"/></div>';
 
 			str+='<div style="float:left;width:112px;">';
             str+='<select style="width:100px;" id="newPrsnrltnType'+newPersonsCount+'">';  
