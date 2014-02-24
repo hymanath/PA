@@ -362,8 +362,21 @@ function updateAttributeField(id){
 
 function submitForm(type)
 {
-	if(validateFields()){
-			var debateDetails={
+	if(type == 'edit'){
+		if(validateFieldsForEdit()){
+				saveDetails(type)
+		}
+	}
+	else if(validateFields()){
+			saveDetails(type)
+	}
+	else{
+		console.log("error");
+	}
+}
+
+function saveDetails(type){
+var debateDetails={
 			endTime : '',
 			startTime : '',
 			channelId : '',
@@ -486,10 +499,6 @@ function submitForm(type)
 					 YAHOO.util.Connect.setForm('debateFromDiv',false);
 					 YAHOO.util.Connect.asyncRequest('POST','saveDebateDetailsAction.action',uploadHandler);
 			//console.log(debateDetails);
-		}
-		else{
-		console.log("error");
-		}
 }
 	
 function getValues(){
@@ -1342,7 +1351,6 @@ function updatePercntage(id){
 	$( ".smsOptinPerc " ).each(function( index ) {	
 			var perc1 = parseFloat($(this).val());
 			if(!isNaN(perc1)){
-				console.log(":      "+perc1);
 					perc = perc + perc1;
 				if(totalPerc <0)
 					perc = perc - perc1;
