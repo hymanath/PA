@@ -3059,10 +3059,14 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			for (Entry<Long, List<Long>> entry : hhMap.entrySet())
 			{
 				List<Long> vtrIds=entry.getValue();
-				if(houseHoldId.equals(entry.getKey())){
-					vtrsWithSameHH.addAll(vtrIds);
-				}else{
+				if(houseHoldId==null){
 					vtrsWithDiffHH.addAll(vtrIds);
+				}else{
+					if(houseHoldId.equals(entry.getKey())){
+						vtrsWithSameHH.addAll(vtrIds);
+					}else{
+						vtrsWithDiffHH.addAll(vtrIds);
+					}
 				}
 			}
 		    
