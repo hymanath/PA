@@ -2998,16 +2998,16 @@ function showAlert()
 	
 	<div id="DistrictDiv" class="selectDiv">  
 	     <!-- Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;width:165px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="clearErrDiv(),getMandalList(\'mandalField\');getPublicationDate();"/> -->
-		 Select District 
-		 <s:select theme="simple"  cssClass="selectWidth" label="Select Your State" name="constituencyList" id="districtId" list="districtsList" listKey="id" listValue="name" onchange="getConstituenciesForADistrict();"/>
+		 Select District<font class="requiredFont">*</font> 
+		 <s:select theme="simple" style="margin-left:57px;width:165px;"  cssClass="selectWidth" label="Select Your State" name="constituencyList" id="districtId" list="districtsList" listKey="id" listValue="name" onchange="getConstituenciesForADistrict();"/>
 	</div>
 	
 	<div id="ConstituencyDiv" class="selectDiv">		
 		 Select Constituency<font class="requiredFont">*</font>
-		<select id="constituencyId" onChange="getPublicationDatesByConstituencyId()"></select>
+		<select id="constituencyId" style="margin-left:20px;width:165px;"  onChange="getPublicationDatesByConstituencyId()"></select>
 		
 		&nbsp;&nbsp;	
-	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:180px;" name="publicationDateList" >
+	     Select Publication Date<font class="requiredFont">*</font> <select id="publicationDateList" class="selectWidth" style="width:165px;" name="publicationDateList" >
 		</select>  <span style='display:none;float: right;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>		
 	  </div>
 	  

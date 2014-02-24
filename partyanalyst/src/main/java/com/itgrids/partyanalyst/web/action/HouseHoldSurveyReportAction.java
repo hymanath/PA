@@ -284,6 +284,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		
 		
 		districtsList = regionServiceDataImp.getDistrictsByStateID(1L);
+		districtsList.add(0, new SelectOptionVO(0L,"Select District"));
 		
 		constituencyList = votersAnalysisService.getConstituencyList(userAccessConstituencyList);
 		constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
