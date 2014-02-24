@@ -409,7 +409,7 @@
 		
 		<value>com.itgrids.partyanalyst.model.HHLeader</value>
 		<value>com.itgrids.partyanalyst.model.HHBoothLeader</value>
-					
+	    <value>com.itgrids.partyanalyst.model.PartyTrends</value>	
 			</list>
 		</property>
 	</bean>
@@ -2086,5 +2086,7 @@
     <bean id="hhBoothLeaderDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHBoothLeaderDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
-   
+   <bean id="partyTrendsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyTrendsDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>
