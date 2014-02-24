@@ -95,6 +95,7 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
+import com.itgrids.partyanalyst.dao.hibernate.HHBoothLeaderDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastLocationVO;
 import com.itgrids.partyanalyst.dto.CastVO;
@@ -130,6 +131,8 @@ import com.itgrids.partyanalyst.model.CustomVoter;
 import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.HHBoothLeader;
+import com.itgrids.partyanalyst.model.HHLeader;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.HamletBooth;
 import com.itgrids.partyanalyst.model.HamletBoothElection;
@@ -249,9 +252,19 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IVoterFamilyRelationDAO voterFamilyRelationDAO;
     private IHouseHoldVoterDAO houseHoldVoterDAO;
     private HHSurveyVO houseHoldVoterChildVO;
-    
+    private HHBoothLeaderDAO hhBoothLeaderDAO;
     
   
+    
+	
+
+	public HHBoothLeaderDAO getHhBoothLeaderDAO() {
+		return hhBoothLeaderDAO;
+	}
+
+	public void setHhBoothLeaderDAO(HHBoothLeaderDAO hhBoothLeaderDAO) {
+		this.hhBoothLeaderDAO = hhBoothLeaderDAO;
+	}
 
 	public HHSurveyVO getHouseHoldVoterChildVO() {
 		return houseHoldVoterChildVO;
@@ -3041,12 +3054,12 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 				}
 			}
 			
-
+		    Long houseHoldId=houseHoldVoterDAO.getHouseHoldIdForVoter(voterId);
 
 			for (Entry<Long, List<Long>> entry : hhMap.entrySet())
 			{
 				List<Long> vtrIds=entry.getValue();
-				if(vtrIds.contains(voterId)){
+				if(houseHoldId.equals(entry.getKey())){
 					vtrsWithSameHH.addAll(vtrIds);
 				}else{
 					vtrsWithDiffHH.addAll(vtrIds);
@@ -3054,7 +3067,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			}
 		    
 		   
-			Long houseHoldId=houseHoldVoterDAO.getHouseHoldIdForVoter(voterId);
+			
 		    List<HouseHoldVoter> vtrsInHHList=new ArrayList<HouseHoldVoter>();
 		    List<VoterHouseInfoVO> categoriesSvdList=new ArrayList<VoterHouseInfoVO>();
 		    List<VoterHouseInfoVO> childrenList=new ArrayList<VoterHouseInfoVO>();
@@ -20936,6 +20949,32 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	    }
 		
 		return voterHouseInfoVOList;
+	}
+	
+	public List<GenericVO> getHHLeadersList(Long boothId){
+		
+		List<HHBoothLeader> leadersList=hhBoothLeaderDAO.getAllLeaderModelByBoothId(boothId);
+		List<GenericVO> hbLdrList=new ArrayList<GenericVO>();
+		
+		GenericVO gvo_defa=new GenericVO();
+		gvo_defa.setId(0l);
+		gvo_defa.setName("Select");
+		
+		hbLdrList.add(gvo_defa);
+		
+		
+		
+		for(HHBoothLeader hbLdr:leadersList){
+			GenericVO gvo=new GenericVO();
+			
+			gvo.setId(hbLdr.getHhLeader().getId());
+			gvo.setName(hbLdr.getHhLeader().getUniqueCode());
+			
+			hbLdrList.add(gvo);
+		}
+		return hbLdrList;
+		
+		
 	}
 		
 }

@@ -119,9 +119,17 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private Long HHFamilyDetailsId;
     private Long vtrFamilyRelTypeId;
     private boolean isChildren;
+    private List<GenericVO> boothLeaderList;
     
     
-    
+	public List<GenericVO> getBoothLeaderList() {
+		return boothLeaderList;
+	}
+
+	public void setBoothLeaderList(List<GenericVO> boothLeaderList) {
+		this.boothLeaderList = boothLeaderList;
+	}
+
 	public boolean isChildren() {
 		return isChildren;
 	}

@@ -405,6 +405,10 @@
 				<value>com.itgrids.partyanalyst.model.VoterTag</value>
 				<value>com.itgrids.partyanalyst.model.BoothActivities</value>
 				<value>com.itgrids.partyanalyst.model.VoterBoothActivities</value>
+		<value>com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails</value>
+		
+		<value>com.itgrids.partyanalyst.model.HHLeader</value>
+		<value>com.itgrids.partyanalyst.model.HHBoothLeader</value>
 					
 			</list>
 		</property>
@@ -2072,6 +2076,14 @@
    </bean>
    
     <bean id="houseHoldVoterDAO" class="com.itgrids.partyanalyst.dao.hibernate.HouseHoldVoterDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="hhLeaderDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHLeaderDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhBoothLeaderDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHBoothLeaderDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    

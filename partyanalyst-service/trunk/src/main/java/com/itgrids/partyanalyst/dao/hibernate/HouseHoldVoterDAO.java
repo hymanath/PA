@@ -39,7 +39,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 			sb.append(" where model.houseHolds.localElectionBody.localElectionBodyId =:localBodyId");
 		}
 		
-		sb.append(" and model.houseHolds.houseNo =:houseNo");
+		sb.append(" and model.houseHolds.houseNo =:houseNo and model.isDelete=:deleteStatus");
 		
 		String query=sb.toString();
 		
@@ -52,6 +52,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 			qry.setParameter("localBodyId", localBodyId);
 		}
 			qry.setParameter("houseNo", houseNo);
+			qry.setParameter("deleteStatus", IConstants.FALSE);
 		
 		return qry.list();
 	}
@@ -89,9 +90,10 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	
 	public Long getHouseHoldIdForVoter(Long voterId){
 		Query query = getSession().createQuery(" select model.houseHoldId from HouseHoldVoter model " +
-				" where model.voter.voterId = :voterId");
+				" where model.voter.voterId = :voterId and model.isDelete=:deleteStatus");
 		
 		query.setParameter("voterId", voterId);
+		query.setParameter("deleteStatus", IConstants.FALSE);
 		return (Long) query.uniqueResult();
 	}
 	
