@@ -276,7 +276,9 @@ function callCandidateUpdatePageAjax(jsObj,url){
 
 
 function buildChildrenTable(myResults,hno){
-	
+	if(myResults.length>0){
+	$("#childrenTable").css("display","block");
+	}
 
 	var str="";
 	str+="<table class='table table-bordered'>";
@@ -320,7 +322,6 @@ function buildChildrenTable(myResults,hno){
 
 			str+="<td><input type='text' id='memberPrsnGrdn"+myResults[i].HHFamilyDetailsId+"' value='"+myResults[i].gaurdian+"'/></td>";
 
-			
 					str+="<td><select id='memberPrsnrltnType"+myResults[i].HHFamilyDetailsId+"'>";
 					for(var j in myResults[i].familyRelsList){
 						if(familyRelsSel==myResults[i].familyRelsList[j].id){
@@ -521,6 +522,13 @@ function buildVotersInFamilySearch(results,hno){
    var temp = false;
    
     $("#impFamDtlsTitle").html("<h3>Voters in house no "+hno+"</h3>");
+	/*YAHOO.widget.DataTable.DeleteRow = function(elLiner, oRecord, oColumn, oData) 
+	{
+		var id=oRecord.getData("voterId");
+		// str+='<a href="javascript:{deleteDiv('+newPersonsCount+')}"style="margin-left:20px;"><img src="images/icons/delete.png"/></a>';
+		elLiner.innerHTML ='<a href="javascript:{deleteVtrDiv('+id+')}"style="margin-left:20px;"><img src="images/icons/delete.png"/></a>';
+		
+	}*/
 	YAHOO.widget.DataTable.NameLink = function(elLiner, oRecord, oColumn, oData) 
 	{
 		var id=oRecord.getData("voterId");
@@ -689,6 +697,7 @@ function buildVotersInFamilySearch(results,hno){
 							{key:"Education", label: "Education",formatter:YAHOO.widget.DataTable.Education},
 							{key:"Occupation", label: "Occupation",formatter:YAHOO.widget.DataTable.Occupation},
 							{key:"Social Position", label: "SocialPosition",formatter:YAHOO.widget.DataTable.SocialPosition}
+							//{key:"Delete", label: "Delete",formatter:YAHOO.widget.DataTable.DeleteRow}
 						]; 
 
     var myConfigs = { 
@@ -708,6 +717,11 @@ function openProblemEditFormNew(id,boothId,publicationDateId,houseNo)
 	var urlStr="votersEditNewHHAction.action?voterId="+id+"&boothId="+boothId+"&publicationDateId="+publicationDateId+"&houseNo="+houseNo+"&selIds=7,8";
 	var updateBrowser = window.open(urlStr,"Voter Details","scrollbars=yes,height=600,width=700,left=200,top=200");	
 	updateBrowser.focus();	
+}
+
+function deleteVtrDiv(id){
+	alert(id);
+	alert($(this).attr("id"));
 }
 
 getHouseHoldInfoPage();
@@ -786,6 +800,7 @@ function buildQuestionAnswers(results){
 				str+="</div>";
 
 				}else if(results[i].subQuestList[j].questionsList[k].optionTypeId==3){
+					if(results[i].mainQuesId==11){
 					str+="<div class='span12'>";
 					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){						
 						str+="<textarea cols='10' rows='2' maxlength='250' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">"+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+"</textarea>"; 						
@@ -794,6 +809,17 @@ function buildQuestionAnswers(results){
 					}
 					
 					str+="</div>";
+					}else{
+					
+					str+="<div class='span12'>";
+					if(results[i].subQuestList[j].questionsList[k].optsSelected!=null){
+						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+" value="+results[i].subQuestList[j].questionsList[k].optsSelected.options[0].option+">";
+					}else{
+						str+="<input type='text' name='questionOptionsList["+queLoopId+"].option' id=QUES"+results[i].subQuestList[j].questionsList[k].questionId+">";
+					}
+					
+					str+="</div>";
+					}
 				}
 				queLoopId = queLoopId+1;
 			}
@@ -911,11 +937,14 @@ function saveHouseHoldInfo(){
 		<th style="width: 23%;">Voter Name</th>
 		<td style="width: 3%;"><b>:</b></td>
 		<td style="width: 50%;">${voterHouseInfoVO.name}</td>
-		<th style="width: 14%;">Age</th>
+		<th>House No</th>
+		<td><b>:</b></td>
+		<td>${voterHouseInfoVO.houseNo}</td>
+		<!--<th style="width: 14%;">Age</th>
 		<td style="width: 3%;"><b>:</b></td>
-		<td style="width: 9%;">${voterHouseInfoVO.age}</td>
+		<td style="width: 9%;">${voterHouseInfoVO.age}</td>-->
 	</tr>
-	<tr>
+	<!--<tr>
 		<th>Guardian Name</th>
 		<td><b>:</b></td>
 		<td>${voterHouseInfoVO.gaurdian}</td>
@@ -930,18 +959,31 @@ function saveHouseHoldInfo(){
 		<th>House No</th>
 		<td><b>:</b></td>
 		<td>${voterHouseInfoVO.houseNo}</td>
-	</tr>
+	</tr>-->
 	
 	<tr>
 		<th>Mobile NO</th>
 		<td><b>:</b></td>
-		<td>${voterHouseInfoVO.mobileNo}</td>
+		<td><input type="text" value=${voterHouseInfoVO.mobileNo}></input></td>
 		<th>Caste</th>
 		<td><b>:</b></td>
 		<td>${voterHouseInfoVO.casteName}</td>
 	</tr>
+	
+	<tr>
+		<th>Booth Leader</th>
+		<td><b>:</b></td>
+		<td><s:select theme="simple" style="width: 169px;"
+				 name="BoothLeadersList" 
+				id="BoothLeadersListId" list="voterHouseInfoVO.BoothLeaderList" 
+				listKey="id" listValue="name"/>
+			</td>
+		
+	</tr>
 
 </table>
+
+
 </fieldset>
 
  
@@ -984,9 +1026,11 @@ function saveHouseHoldInfo(){
 </form>
 	<div id="impFamDtlsOuterPopUp">
 		   <div id="impFamDtlsTitle"></div>
-		   <div id="impFamDtls"  class="table table-striped span10"></div>
-		   <div id="childrenTable"></div>
+		   <div id="impFamDtls"  class="table table-striped" style="margin-left:-200px;"></div>
+		  
 		</div>
+		
+		 <div id="childrenTable" style="display:none;margin-left:-200px;"></div>
 </div>
 
 <!--
@@ -1018,7 +1062,7 @@ function saveHouseHoldInfo(){
 
 	</div>
 
-<div id="qstnAnswer" class="span10" style="border:1px solid gray"></div>
+<div id="qstnAnswer" class="span10 offset2" style="border:1px solid gray"></div>
 <div class="statusMsg span12"></div>
 
 <div id="dialog">
@@ -1189,7 +1233,7 @@ function submitQuestionDetails()
 	 voterDtls.voters = [];
 	 voterDtls.boothId = "${boothId}";
 	 voterDtls.houseNo = "${houseNo}";
-	 voterDtls.houseHoldsId = 69;
+	 voterDtls.houseHoldsId = 0;
 
   $('.voterChkbx').each(function(index,value){
 	   if(this.checked)
