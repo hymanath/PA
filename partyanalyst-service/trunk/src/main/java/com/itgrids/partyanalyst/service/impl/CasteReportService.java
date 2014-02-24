@@ -18,10 +18,12 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
@@ -30,15 +32,18 @@ import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.CastVO;
+import com.itgrids.partyanalyst.dto.PartyTrendsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.PartyTrends;
 import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICasteReportService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -59,7 +64,16 @@ public class CasteReportService implements ICasteReportService{
 	private IPanchayatHamletDAO panchayatHamletDAO ;
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IHamletDAO hamletDAO;
+	@Autowired
+	private IPartyTrendsDAO partyTrendsDAO;
 	
+	public IPartyTrendsDAO getPartyTrendsDAO() {
+		return partyTrendsDAO;
+	}
+
+	public void setPartyTrendsDAO(IPartyTrendsDAO partyTrendsDAO) {
+		this.partyTrendsDAO = partyTrendsDAO;
+	}
 	public IHamletDAO getHamletDAO() {
 		return hamletDAO;
 	}
@@ -785,5 +799,116 @@ public class CasteReportService implements ICasteReportService{
 		}
 	 }
 	
+	// @Override
+	public <K,V>Map<K,V> loadConstituenciesForReport() {
+		 Map<Long, String> map =new HashMap<Long, String>();
+		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadConst();
+		for (Object[] objects : obj) {
+			map.put(Long.valueOf(objects[0].toString()), objects[1].toString());
+			
+		}
+		return (Map<K, V>) map ;
+	}
+	
+	public ResultStatus  generateXL(List<Long> constIds) throws IOException {
+		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
+		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(constIds);
+		
+		for (Object[] objects : obj) {
+			
+			Long constId=Long.valueOf(objects[0].toString());
+			PartyTrendsVO vo =new PartyTrendsVO();
+			vo.setConstituencyId(constId);
+			vo.setConstituencyName(objects[1].toString());
+			vo.setName(objects[2].toString());
+			vo.setPervTrenzWt(Float.valueOf(objects[3].toString()));
+			vo.setPrpWt(Float.valueOf(objects[4].toString()));
+			vo.setTotalWt(Float.valueOf(objects[5].toString()));
+			vo.setYoungVotersWt(Float.valueOf(objects[6].toString()));
+			if(map.containsKey(constId))
+			{
+				map.get(constId).add(vo);
+			}else
+			{
+				List<PartyTrendsVO> l = new ArrayList<PartyTrendsVO>();
+				l.add(vo);
+				map.put(constId, l);
+			}
+		}
+		generateXL(map);
+		ResultStatus s =new ResultStatus();
+	    s.setResultCode(0);
+		return null ;
+	}
+
+   public void  generateXL(Map<Long,List<PartyTrendsVO>> map) throws IOException
+
+   
+
+
+   {
+	   
+	   FileOutputStream fileOut =    new FileOutputStream("c:\\anil\\anils.xls");
+	   Set<Long> keys = map.keySet();
+	    HSSFWorkbook workbook=new HSSFWorkbook();
+	    HSSFSheet sheet =null;
+	    
+	  for (Long long1 : keys) {
+		List<PartyTrendsVO> voa=  map.get(long1);
+		
+		   sheet =  workbook.createSheet(voa.get(0).getConstituencyName());
+		    sheet.setColumnWidth(0, 4800);
+			sheet.setColumnWidth(1, 4800);
+			sheet.setColumnWidth(2, 3000);
+			sheet.setColumnWidth(3, 3000);
+			sheet.setColumnWidth(4, 3000);
+			sheet.setColumnWidth(5, 3000);
+		  int cnt=1;
+		  HSSFRow rowhead =sheet.createRow(0);
+		  Cell cell = rowhead.createCell(0);
+			 
+	       cell.setCellValue("Constituency");
+	       
+	       cell = rowhead.createCell(1);
+	       cell.setCellValue("Name");
+	       cell = rowhead.createCell(2);
+	       cell.setCellValue("PervTrenzWt");
+	       cell = rowhead.createCell(3);
+	       cell.setCellValue("PrpWt");
+	       cell = rowhead.createCell(4);
+	       cell.setCellValue("YoungVotersWt");
+	       
+	       cell = rowhead.createCell(5);
+	       cell.setCellValue("TotalWt");
+	       
+		for (PartyTrendsVO partyTrendsVO : voa) {
+			  rowhead =sheet.createRow(cnt);
+			 
+			   cell = rowhead.createCell(0);
+			 
+		       cell.setCellValue(partyTrendsVO.getConstituencyName());
+		       
+		       cell = rowhead.createCell(1);
+		       cell.setCellValue(partyTrendsVO.getName());
+		       cell = rowhead.createCell(2);
+		       cell.setCellValue(partyTrendsVO.getPervTrenzWt());
+		       cell = rowhead.createCell(3);
+		       cell.setCellValue(partyTrendsVO.getPrpWt());
+		       cell = rowhead.createCell(4);
+		       cell.setCellValue(partyTrendsVO.getYoungVotersWt());
+		       
+		       cell = rowhead.createCell(5);
+		       cell.setCellValue(partyTrendsVO.getTotalWt());
+		       cnt++;
+		}
+	  }
+	    workbook.write(fileOut);
+		 fileOut.close(); 
+
+		  
+	
+   }
+	
+
 
 }
