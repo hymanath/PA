@@ -474,7 +474,8 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 					}
 					
 				}
-				
+				voterDetailsVO.setLeaderId(voter.getLong("leaderId"));
+				voterDetailsVO.setOwnerMobileNo(voter.getString("ownerMobileNo"));
 				houseHoldVoters.add(voterDetailsVO);
 				
 				
@@ -489,6 +490,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			return Action.ERROR;
 		}
 		
 		return Action.SUCCESS;

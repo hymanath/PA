@@ -87,9 +87,17 @@ public class VotersEditNewHHAction  extends ActionSupport implements ServletRequ
     
     private List<SelectOptionVO> educationsList,occupationsList,socialPositionsList,relationList;
     private IHouseHoldSurveyReportService houseHoldSurveyReportService;
-    
+    private Long houseHoldIdOfVoter;
     
 	
+	public Long getHouseHoldIdOfVoter() {
+		return houseHoldIdOfVoter;
+	}
+
+	public void setHouseHoldIdOfVoter(Long houseHoldIdOfVoter) {
+		this.houseHoldIdOfVoter = houseHoldIdOfVoter;
+	}
+
 	public IHouseHoldSurveyReportService getHouseHoldSurveyReportService() {
 		return houseHoldSurveyReportService;
 	}
@@ -608,6 +616,18 @@ public String saveVoterDetails(){
 		voterHouseInfoVO= votersAnalysisService.getVoterPersonalDetailsByVoterId(new Long(voterId),userId);
 		
 		List<GenericVO> hhLeadersList=votersAnalysisService.getHHLeadersList(new Long(boothId));
+		
+		GenericVO gvo=houseHoldSurveyReportService.getLeaderIdAndMobileNoFromHH(Long.valueOf(voterId));
+		if(gvo.getName()!=null){
+			if( gvo.getName().trim().length()!=0){
+				voterHouseInfoVO.setOwnerMobNo(gvo.getName());
+			}
+		}
+		if(gvo.getId()!=null){
+			voterHouseInfoVO.setLeaderId(gvo.getId());
+		}
+		
+		houseHoldIdOfVoter = houseHoldSurveyReportService.getHouseHoldIdOfVoter(Long.valueOf(voterId));
 		
 		voterHouseInfoVO.setBoothName(voterHouseInfoVO1.getBoothName());
 		voterHouseInfoVO.setVilliageCovered(voterHouseInfoVO1.getVilliageCovered());
