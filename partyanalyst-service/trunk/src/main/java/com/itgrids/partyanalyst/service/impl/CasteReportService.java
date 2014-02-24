@@ -144,11 +144,13 @@ public class CasteReportService implements ICasteReportService{
 
 	{
 		List<CastVO> resultList = new ArrayList<CastVO>();
+		List<CastVO> result = new ArrayList<CastVO>();
 		
 		try{
 			if(type.equalsIgnoreCase(IConstants.BOOTH) || type.equalsIgnoreCase(IConstants.HAMLET) || type.equalsIgnoreCase(IConstants.PANCHAYAT))
 			{
-				getCasteWiseInfoForBooth1(resultList,constituencyId, publicationId, type, userId,partialChecked);
+				result =  getCasteWiseInfoForBooth1(resultList,constituencyId, publicationId, type, userId,partialChecked);
+				return result;
 			}
 			else
 			{
@@ -237,14 +239,14 @@ public class CasteReportService implements ICasteReportService{
 				  setValuesForaCasteInLocation(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0]);
 				 
 			 }
-			  
-			  
-			}
+		}
+			
 		}
 		catch(Exception e)
 		{
 		log.error("Exception Occured in getCasteWiseInfo() method in CasteReportService",e);	
 		}
+		
 		return resultList;
 	}
 	 public List<CastVO> setValuesForaCasteInLocation(List<CastVO> resultList,Long casteId,Long locationId,Long count)
@@ -452,7 +454,8 @@ public class CasteReportService implements ICasteReportService{
 							 castvo.setTotalVoters(totalCountMap.get(casteId));
 							 Map<Long,CastVO> locationMap = casteMap.get(casteId) ;
 							 List<CastVO> locations = new ArrayList<CastVO>();
-							;
+							 List<CastVO> locations1 = new ArrayList<CastVO>();
+							
 							 for(Long locationId : locationIds)
 							 {
 								 
@@ -466,10 +469,12 @@ public class CasteReportService implements ICasteReportService{
 								 locationvo.setLocationName(panchayatDAO.getPanchayatNameById(locationId)); 	 
 								 locationvo.setCastCount(0l);
 								 locations.add(locationvo); 
+							
 							 }	
+							 
 							 sortlocationsList(locations);
 							 castvo.setCasteList(locations);
-							 castes.add(castvo); 
+						     castes.add(castvo); 
 						 }
 					    sortCastsList(castes);
 						resultVo.setCasteList(castes);
@@ -490,10 +495,74 @@ public class CasteReportService implements ICasteReportService{
 			log.error("Exception Occured in getCasteWiseInfo() method in CasteReportService",e);	
 			}
 				sortPanchayat(resultList);
-			return resultList;
+				List<CastVO> result = new ArrayList<CastVO>();
+				result = setDataList(resultList);
+				
+			return result;
+			
 		}
 	
 	 
+ public List<CastVO> setDataList(List<CastVO> resultList)
+	 {
+	 List<CastVO> result = new ArrayList<CastVO>();
+		 try{
+			 String constituencyName =resultList.get(0).getPartyName();
+			for(CastVO vo : resultList)
+			{
+			List<CastVO> casteList = vo.getCasteList();
+			int locationsSize =  casteList.get(0).getCasteList().size();
+			int maxindex= 0;
+			for(int i=0;i<locationsSize;i=i+3)
+			{
+				
+				CastVO resultVo = new CastVO();
+				resultVo.setPanchayatId(vo.getPanchayatId());
+				resultVo.setPanchayat(vo.getPanchayat());
+				List<CastVO> castList = new ArrayList<CastVO>();
+			    for(CastVO cast : casteList)
+				{
+					CastVO castvo = new CastVO();
+					castvo.setCastStateId(cast.getCastStateId());
+					castvo.setCastName(cast.getCastName());
+					
+					List<CastVO> locationList = new ArrayList<CastVO>();
+					Long total = 0l;
+					for(CastVO location : cast.getCasteList().subList(maxindex,  cast.getCasteList().size()- 0))
+					{
+						
+						CastVO locationvo = new CastVO();
+						locationvo.setLocationId(location.getLocationId());
+						locationvo.setLocationName(location.getLocationName());
+						locationvo.setCastCount(location.getCastCount());
+						locationList.add(locationvo);
+						total = location.getCastCount() + total;
+						if(locationList.size() >= 3)
+						{
+						  break;
+						}
+						
+					}
+					castvo.setTotalVoters(total);
+					castvo.setCasteList(locationList);
+					castList.add(castvo);
+				}
+			    if(locationsSize >= 3)
+				maxindex = maxindex + 3;
+			    resultVo.setCasteList(castList);
+			    result.add(resultVo);	
+			    result.get(0).setPartyName(constituencyName);
+			}
+			
+			}
+		 }
+		 catch(Exception e)
+		 {
+			 log.error("Exception Occured in createNewLocationList() method in CasteReportService",e);		 
+		 }
+		return result;
+		
+	 }
 	 public ResultStatus getVoterAddressDetails (Long constituencyId,Long publicationId,Long userId)
 	 {
 		 ResultStatus resultStatus = new ResultStatus();
@@ -521,9 +590,7 @@ public class CasteReportService implements ICasteReportService{
 		  	List<Long> boothIds = new ArrayList<Long>(boothHousesMap.keySet());
 		  	
 		    for(Long boothId :boothHousesMap.keySet())
-		    	
-		    	
-			{
+		    	{
 		  		if(boothHousesMap.get(boothId) != null)
 		  		{
 		  		for(String hno : boothHousesMap.get(boothId))
@@ -537,7 +604,6 @@ public class CasteReportService implements ICasteReportService{
 		  						VoterHouseInfoVO vo = new VoterHouseInfoVO();
 		  						voterIds.add((Long)params[0]);
 		  						vo.setVoterId((Long)params[0]);
-		  						
 		  						vo.setName(params[1]!= null?params[1].toString() : "");
 		  						vo.setAge((Long)params[2]);
 		  						vo.setGender(params[3]!= null?params[3].toString() : "");
@@ -618,6 +684,7 @@ public class CasteReportService implements ICasteReportService{
 						panchayatMap.put((Long)panchayat[0],panchayatName);	
 				}
 			
+			/** excel header **/
 		    HSSFWorkbook workbook = new HSSFWorkbook();
 			HSSFSheet sheet = workbook.createSheet("Sample sheet");
 			Row header = sheet.createRow(0);
