@@ -783,6 +783,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								
 								voter.setVoterId(voterDtls.getVoterId());
 								voter.setIsDelete(IConstants.FALSE);
+								voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
+								voter.setLeaderId(voterDtls.getLeaderId());
 								
 								houseHoldVoterDAO.save(voter);
 								
@@ -817,6 +819,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								newPerson.setSocialCategoryId(voterDtls.getSocialPstnId());
 								newPerson.setHouseHoldsFamilyDetailsId(familyDetails.getHouseHoldsFamilyDetailsId());
 								newPerson.setIsDelete(IConstants.FALSE);
+								newPerson.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
+								newPerson.setLeaderId(voterDtls.getLeaderId());
 								
 								houseHoldVoterDAO.save(newPerson);
 
@@ -858,6 +862,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 										houseHoldsVoter.setEducationId(voterDtls.getEducationId());
 										houseHoldsVoter.setOccupationId(voterDtls.getOccupationId());
 										houseHoldsVoter.setSocialCategoryId(voterDtls.getSocialPstnId());
+										houseHoldsVoter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
+										houseHoldsVoter.setLeaderId(voterDtls.getLeaderId());
 										
 										houseHoldVoterDAO.save(houseHoldsVoter);
 										
@@ -873,6 +879,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									voter.setEducationId(voterDtls.getEducationId());
 									voter.setOccupationId(voterDtls.getOccupationId());
 									voter.setSocialCategoryId(voterDtls.getSocialPstnId());
+									voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
+									voter.setLeaderId(voterDtls.getLeaderId());
 									
 									houseHoldVoterDAO.save(voter);
 									
@@ -946,7 +954,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 										familyMember.setOccupationId(voterDtls.getOccupationId());
 										familyMember.setSocialCategoryId(voterDtls.getSocialPstnId());
 										familyMember.setVoterFamilyRelationId(voterDtls.getVoterFamilyRelationId());
-										
+										familyMember.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
+										familyMember.setLeaderId(voterDtls.getLeaderId());
 										houseHoldVoterDAO.save(familyMember);
 										
 									}
@@ -977,6 +986,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									voter.setOccupationId(voterDtls.getOccupationId());
 									voter.setSocialCategoryId(voterDtls.getSocialPstnId());
 									voter.setHouseHoldsFamilyDetailsId(familyDetails.getHouseHoldsFamilyDetailsId());
+									voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo()!=null?voterDtls.getOwnerMobileNo():"");
+									voter.setLeaderId(voterDtls.getLeaderId());
 									
 									houseHoldVoterDAO.save(voter);
 										
@@ -1011,6 +1022,26 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		}
 		
 		return houseHoldId;
+	}
+	
+	public GenericVO getLeaderIdAndMobileNoFromHH(Long voterId){
+		log.debug("Entered into the getLeaderIdAndMobileNoFromHH method");
+		GenericVO gvo=new GenericVO();
+		try {
+			List<Object[]> hhLdrMblList=houseHoldVoterDAO.getOwnerMobileAndLeaderIdForVoterId(voterId);
+		
+			for(Object[] obj:hhLdrMblList){
+				
+				
+				gvo.setId(Long.valueOf(obj[0].toString()));
+				gvo.setName(obj[1].toString());
+			}
+				
+		} catch (Exception e) {
+			log.error("Exception raised in the getLeaderIdAndMobileNoFromHH method");
+			e.printStackTrace();
+		}
+		return gvo;
 	}
 	
 	public String saveMainQuestionDetails(String qtn)
@@ -1101,6 +1132,12 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		return values;
 	}
 	
+	public Long getHouseHoldIdOfVoter(Long voterId){
+		
+		Long houseHoldId = houseHoldVoterDAO.getHouseHoldIdForVoter(voterId);
+		return houseHoldId;
+		
+	}
 	
 	
 }

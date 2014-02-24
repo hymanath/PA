@@ -23,7 +23,22 @@ public class HouseHoldVotersVO {
 	private String mobileNo;
 	private Long houseHoldsId;
 	private Long houseHoldFamilyMemberId = 0L;
+	private Long leaderId;
+	private String ownerMobileNo;
 	
+	
+	public String getOwnerMobileNo() {
+		return ownerMobileNo;
+	}
+	public void setOwnerMobileNo(String ownerMobileNo) {
+		this.ownerMobileNo = ownerMobileNo;
+	}
+	public Long getLeaderId() {
+		return leaderId;
+	}
+	public void setLeaderId(Long leaderId) {
+		this.leaderId = leaderId;
+	}
 	public Long getHouseHoldFamilyMemberId() {
 		return houseHoldFamilyMemberId;
 	}

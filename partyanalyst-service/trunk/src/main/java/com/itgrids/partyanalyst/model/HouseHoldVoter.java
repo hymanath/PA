@@ -38,8 +38,9 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	private Long houseHoldsFamilyDetailsId;
 	private HouseHoldsFamilyDetails houseHoldsFamilyDetails;
 	private String isDelete;
+	private String ownerMobileNo;
+	private Long leaderId;
 	
-
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -163,6 +164,24 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	public void setIsDelete(String isDelete) {
 		this.isDelete = isDelete;
 	}
+	
+	@Column(name="mobile_no")
+	public String getOwnerMobileNo() {
+		return ownerMobileNo;
+	}
+	public void setOwnerMobileNo(String ownerMobileNo) {
+		this.ownerMobileNo = ownerMobileNo;
+	}
+	
+	@Column(name="leader_id")
+	public Long getLeaderId() {
+		return leaderId;
+	}
+	public void setLeaderId(Long leaderId) {
+		this.leaderId = leaderId;
+	}
+	
+	
 	
 
 }
