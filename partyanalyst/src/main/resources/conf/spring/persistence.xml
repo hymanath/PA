@@ -392,6 +392,7 @@
 				<value>com.itgrids.partyanalyst.model.VoterTag</value>
 				<value>com.itgrids.partyanalyst.model.BoothActivities</value>
 				<value>com.itgrids.partyanalyst.model.VoterBoothActivities</value>
+				<value>com.itgrids.partyanalyst.model.PartyTrends</value>	
 			</list>
 			
 		</property>

@@ -1364,4 +1364,7 @@
    <bean id="voterBoothActivitiesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterBoothActivitiesDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+    <bean id="partyTrendsDAO" class="com.itgrids.partyanalyst.dao.hibernate.PartyTrendsDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>		
