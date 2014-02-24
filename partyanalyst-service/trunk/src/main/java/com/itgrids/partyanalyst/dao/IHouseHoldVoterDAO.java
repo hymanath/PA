@@ -18,4 +18,5 @@ public interface IHouseHoldVoterDAO extends GenericDao<HouseHoldVoter, Long>{
 	public List<HouseHoldsFamilyDetails> getFamilyMembersDetailsByHouseHoldsId(Long houseHoldsId);
 	public List<HouseHoldVoter> getHouseHoldsVoterdDetailsByHouseHoldId1(Long houseHoldsId);
 	public List<HouseHoldVoter> getHouseHoldVoterDetailsByFamilyMemberId(Long houseHoldFamilyMemberId);
+	public List<HouseHoldVoter> checkExistanceOfVoterInHouseHoldsVoter(Long voterId);
 }

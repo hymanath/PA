@@ -10,5 +10,6 @@ import com.itgrids.partyanalyst.model.HHSurveyQuestion;
 
 public interface IHHSurveyAnswersDAO extends GenericDao<HHSurveyAnswers, Long>{
 	public List<HHSurveyAnswers> getSurveyAnswersByHouseHoldId(Long houseHoldId);
+	public int deleteAllPreviousAnswersByHouseHoldsId(Long houseHoldsId);
 	
 }

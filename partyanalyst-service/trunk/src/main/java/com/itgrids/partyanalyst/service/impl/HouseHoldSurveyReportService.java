@@ -649,6 +649,13 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
          }*/
 		
 		//List<Object[]> houseHoldsList=houseHoldsDAO.
+				
+				
+				
+		//delete all the previous records by houseHoldsId
+	   //This is the temporary solutions.We need to change this using is_delete column in table
+				
+			hhSurveyAnswersDAO.deleteAllPreviousAnswersByHouseHoldsId(houseHoldsId);
 		
 		for(HHSurveyVO hsvo:questOptsList){
 			HHSurveyAnswers hsAnswer=null;
@@ -762,6 +769,18 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								voter.setEducationId(voterDtls.getEducationId());
 								voter.setOccupationId(voterDtls.getOccupationId());
 								voter.setSocialCategoryId(voterDtls.getSocialPstnId());
+								
+								List<HouseHoldVoter> houseHoldVotersList = houseHoldVoterDAO.checkExistanceOfVoterInHouseHoldsVoter(voterDtls.getVoterId());
+								
+								if(houseHoldVotersList != null && houseHoldVotersList.size() >0)
+								{
+									for(HouseHoldVoter hhVoter:houseHoldVotersList)
+									{
+										hhVoter.setIsDelete(IConstants.TRUE);
+										houseHoldVoterDAO.save(hhVoter);
+									}
+								}
+								
 								voter.setVoterId(voterDtls.getVoterId());
 								voter.setIsDelete(IConstants.FALSE);
 								
