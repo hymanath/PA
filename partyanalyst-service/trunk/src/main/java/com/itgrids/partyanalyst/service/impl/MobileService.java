@@ -691,7 +691,7 @@ public List<SelectOptionVO> getConstituencyList()
 						try{
 							strTemp = new StringBuilder();
 							strTemp.append("INSERT INTO voter(voter_id,house_no,name,relationship_type,relative_name,gender,age,voter_id_card_no) VALUES (");
-							strTemp.append(params[0].toString().trim()+",'"+params[1].toString().trim()+"','"+params[2].toString().trim()+"','"+params[3].toString().trim()+"','"+params[4].toString().trim()+"','");
+							strTemp.append(params[0].toString().trim()+",'"+params[1].toString().trim()+"','"+replaceSpecialChars(params[2].toString().trim())+"','"+params[3].toString().trim()+"','"+replaceSpecialChars(params[4].toString().trim())+"','");
 							strTemp.append(params[5].toString().trim()+"',"+params[6].toString().trim()+",'"+params[7].toString().trim()+"'");
 							strTemp.append(");\n");
 							str.append(strTemp);
@@ -2618,4 +2618,22 @@ public List<SelectOptionVO> getConstituencyList()
  		}
  		return vo;
  	}
+  	
+  	public String replaceSpecialChars(String str)
+  	{
+  		try{
+  			String newStr = "";
+  			
+  			char[] charArray = str.toCharArray();
+  			for(Character C : charArray)
+			{
+				if(Character.isLetter(C) || C.toString().equals(" "))
+					newStr = newStr+C.toString();
+			}
+  			return newStr.trim();
+  		}catch(Exception e)
+  		{
+  			return str;
+  		}
+  	}
 }
