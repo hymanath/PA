@@ -801,10 +801,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			if(voterTag == null)
 				voterTag = new VoterTag();
 			
-			Date insertTime = dateUtilService.getDateAndTime(voterTagVO.getInsertTime());
+			String insertTimeStr = replaceString(voterTagVO.getInsertTime());
+			
+			Date insertTime = dateUtilService.getDateAndTime(insertTimeStr);
 			String isCadre = voterTagVO.getIsCadre();
 			String isInfluencingPeople = voterTagVO.getIsInfluencingPeople();
 			String tags = voterTagVO.getTags();
+			Long partyId = voterTagVO.getPartyId();
+			Long casteStateId = voterTagVO.getCasteStateId();
 			
 			if(insertTime == null)
 				insertTime = dateUtilService.getCurrentDateAndTime();
@@ -814,19 +818,23 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				isInfluencingPeople = "N";
 			if(tags == null)
 				tags = "";
+			if(partyId.equals(0L))
+				partyId = null;
+			if(casteStateId.equals(0L))
+				casteStateId = null;
 			
 			voterTag.setVoterId(voterTagVO.getVoterId());
 			voterTag.setIsCadre(isCadre);
 			voterTag.setIsInfluencingPeople(isInfluencingPeople);
-			voterTag.setTags(voterTagVO.getTags());
-			voterTag.setMobileNo(voterTagVO.getMobileNo());
-			voterTag.setPartyId(voterTagVO.getPartyId());
-			voterTag.setCasteStateId(voterTagVO.getCasteStateId());
-			voterTag.setLatitude(voterTagVO.getLatitude());
-			voterTag.setLongitude(voterTagVO.getLongitude());
+			voterTag.setTags(tags.trim());
+			voterTag.setMobileNo(voterTagVO.getMobileNo().trim());
+			voterTag.setPartyId(partyId);
+			voterTag.setCasteStateId(casteStateId);
+			voterTag.setLatitude(voterTagVO.getLatitude().trim());
+			voterTag.setLongitude(voterTagVO.getLongitude().trim());
 			voterTag.setInsertTime(insertTime);
 			voterTag.setSyncTime(dateUtilService.getCurrentDateAndTime());
-			voterTag.setUniqueCode(voterTagVO.getUniqueCode());
+			voterTag.setUniqueCode(voterTagVO.getUniqueCode().trim());
 			voterTag.setIsdelete(IConstants.FALSE);
 			
 			voterTagDAO.save(voterTag);
@@ -844,7 +852,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		try{
 			VoterBoothActivities voterBoothActivities = new VoterBoothActivities();
 			
-			Date insertTime = dateUtilService.getDateAndTime(voterTagVO.getInsertTime());
+			String insertTimeStr = replaceString(voterTagVO.getInsertTime());
+			
+			Date insertTime = dateUtilService.getDateAndTime(insertTimeStr);
 			
 			if(insertTime == null)
 				insertTime = dateUtilService.getCurrentDateAndTime();
@@ -852,11 +862,11 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			voterBoothActivities.setVoterId(voterTagVO.getVoterId());
 			voterBoothActivities.setBoothId(voterTagVO.getBoothId());
 			voterBoothActivities.setBoothActivitiesId(voterTagVO.getBoothActivitiesId());
-			voterBoothActivities.setLatitude(voterTagVO.getLatitude());
-			voterBoothActivities.setLongitude(voterTagVO.getLongitude());
+			voterBoothActivities.setLatitude(voterTagVO.getLatitude().trim());
+			voterBoothActivities.setLongitude(voterTagVO.getLongitude().trim());
 			voterBoothActivities.setInsertTime(insertTime);
 			voterBoothActivities.setSyncTime(dateUtilService.getCurrentDateAndTime());
-			voterBoothActivities.setUniqueCode(voterTagVO.getUniqueCode());
+			voterBoothActivities.setUniqueCode(voterTagVO.getUniqueCode().trim());
 			voterBoothActivities.setIsdelete(IConstants.FALSE);
 			
 			voterBoothActivitiesDAO.save(voterBoothActivities);
@@ -866,6 +876,18 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		{
 			log.error("Exception Occured in updateVoterTagDetails(), exception is ",e);
 			return "Fail";
+		}
+	}
+	
+	public String replaceString(String str)
+	{
+		try{
+			str = str.replace("+"," ");
+			return str;
+		}catch(Exception e)
+		{
+			log.error("Exception occured in replaceString() Method ",e);
+			return str;
 		}
 	}
 
