@@ -31,7 +31,7 @@
 		
 <script src="js/debate.js"></script>
 <style type="text/css">
-	#errorMsgDiv,#RerrDiv,#RerrDivForAnalysis{
+	#errorMsgDiv,#RerrDiv,#RerrDivForAnalysis,#errorForTotal{
 		font-weight:bold;
 		margin-bottom:10px;
 		color:red;
@@ -219,7 +219,7 @@ function getSelectedDebate()
 function prepopulateDebateForm(result)
 {
 	var str = '';
-	
+
 	str += '';
 	str += '<div id="successMsg" style="display:none;" align="center"></div>';
 	str += '<div id="debateDiv" class="container" style="font-size: 17px;font-weight: bold;line-height: 1.5;">';
@@ -228,7 +228,7 @@ function prepopulateDebateForm(result)
 
 	str += '<div class="row-fluid" >';
 	str += '<div class="span12">';
-	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Subject : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>';
+	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Subject : <font class="requiredFont">*</font><span id="subject1Err" class="errDiv" style="margin-left: 100px;"> </span><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Subject" onClick="addMoreSubject();"><i class="icon-plus" style="margin-left:15px;"></i></a></label>';
 	for(var i in result.debateNames)
 	{
 		if(i == 0)
@@ -237,7 +237,7 @@ function prepopulateDebateForm(result)
 		}
 		else
 		{
-			str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
+			str += "<span id='addedsubject"+subjCount+"'><label style='font-size: 17px;font-weight: bold;line-height: 1.5;'>Subject : <font class='requiredFont'>*</font><span id='subject"+subjCount+"'Err' class='errDiv' style='margin-left: 100px;'> </span><a href='javascript:{}'  title='Click here to remove another Subject' onclick='removeSubject(\"addedsubject"+subjCount+"\");'><i class='icon-trash pull-right' style='margin-left:15px;'></i></a></label>";
 			str +='<input type="text" Class="subjectClass span12" name="subject'+subjCount+'" id="subject'+subjCount+'" value="'+result.debateNames[i]+'"></input>';
 			str += "</br></span>";
 
@@ -263,7 +263,7 @@ function prepopulateDebateForm(result)
 	}
 	str += '</select>';
 	
-	str += '</div>';
+	str += '<span id="channelErr" class="errDiv"></span></div>';
 	str += '<div class="span3">';
 	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Observer : <font class="requiredFont">*</font><a class="btn btn-mini pull-right" href="javascript:{}"  title="Click here to add another Observer" onClick="addAttribute(\'Observer\');"><i class="icon-plus"></i></a></label>';
 	str += '<select name="observer"  id="observer" >';
@@ -272,14 +272,14 @@ function prepopulateDebateForm(result)
 			str += '<option value='+observerArray[i].id+'>'+observerArray[i].name+'</option>';
 	}
 	str += '</select>';
-	str += '</div>	';
+	str += '<span id="observerErr" class="errDiv" ></span></div>	';
 	str += '<div class="span3">';
 	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">Start Date : <font class="requiredFont">*</font></label>';
-	str += '<input type="text" class="input-block-level selectWidth" name="startTime" id="startTime" value="'+result.stDate+'"></input>';
+	str += '<input type="text" class="input-block-level selectWidth" name="startTime" id="startTime" value="'+result.stDate+'"></input><span id="startTimeErr" class="errDiv"></span>';
 	str += '</div>			';	
 	str += '<div class="span3">';
 	str += '<label style="font-size: 17px;font-weight: bold;line-height: 1.5;">End Date : <font class="requiredFont">*</font></label>';
-	str += '<input type="text" class="input-block-level selectWidth" name="endTime" id="endTime" value="'+result.edDate+'"></input>';
+	str += '<input type="text" class="input-block-level selectWidth" name="endTime" id="endTime" value="'+result.edDate+'"></input><span id="endTimeErr" class="errDiv"></span>';
 	str += '</div>	';
 	str += '</div>	';
 	str += '</div>';
@@ -298,26 +298,32 @@ function prepopulateDebateForm(result)
     for(var p in result.participantsList)
 	{
 		str += "<tr id='row"+candCunt+"' class='particepntDetailsRow'>";
-		str += "<td><select name='party"+candCunt+"'  id='party"+candCunt+"' onChange='getCandidatesOfSelectedParty(this.value,this.id,candCunt)' class='partysClass'><option value='0' selected='selected'>Select</option>";
+		str += "<td><select name='party"+candCunt+"'  id='party"+candCunt+"' onChange='getCandidatesOfSelectedPartyEdit(this.value,this.id,"+candCunt+")' class='partysClass'><option value='0' selected='selected'>Select</option>";
 		for ( var i in partiesArray)
 		{
 			str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 		}
-		str+='</select></td>';
+		str+='</select><span id="party'+candCunt+'Err" class="errDiv"></span></td>';
 
 		str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate'+candCunt+'" id="candidate'+candCunt+'" >';
 		str+='<option value="'+result.participantsList[p].id+'"> '+result.participantsList[p].name+'</option>';
 		str +='</select>';
-		str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a></td>';
+		str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a><span id="candidate'+candCunt+'Err" class="errDiv"></span></td>';
 	    for(var i in result.participantsList[p].scaleList)
 		{
 	
 			var myClass1 = result.participantsList[p].scaleList[i].name+""+candCunt+"";
 			str +='<td>';
-			str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+''+candCunt+'" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');" value="'+result.participantsList[p].scaleList[i].perc+'"/><div style="font-weight:normal;">(0-5)</div>';
+			str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myClass1.replace(/\s/g, '')+'" name="'+charsArray[i].name+''+candCunt+'" id="'+myClass1.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myClass1.replace(/\s/g, "")+'\');" value="'+result.participantsList[p].scaleList[i].perc+'"/>';
+			
+			var rolesids1 = myClass1.replace(/\s/g, '');
+			rolesids1 = rolesids1.replace('(Scale)', '');
+			
+			str +='<div id="'+rolesids1+'Err" class="errDiv"></div>';
 			str +='</td>';
 		}
-     	str +='<td class="participantRolesblock1"><input type="hidden" id="'+candCunt+'participantRoles" class="partiRoleClass" value="'+result.participantsList[p].roleList[0].totalCount+'"></input>';
+	
+			str +='<td class="participantRolesblock1"><input type="hidden" id="'+candCunt+'participantRoles" class="partiRoleClass" value="'+result.participantsList[p].roleList[0].totalCount+'"></input>';
 		var roleArray = ""
 		str += '<select theme="simple" multiple="true"  Class="selectWidth participantsRoles" name="'+candCunt+'participantRoles" id="participantRoles'+candCunt+'" key="'+candCunt+'participantRoles">';
 		for (var j in rolesArray)
@@ -339,11 +345,11 @@ function prepopulateDebateForm(result)
 			}
 			
 		}
-		str +='</select></td>';
+		str +='</select><span id="'+candCunt+'participantRolesErr" class="errDiv"></span></td>';
 		
 		if(result.participantsList[p].partyId == 872)
 		{
-			str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+candCunt+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" ></input>';
+			str +='<td class="party'+candCunt+'"><input type="hidden" id="'+candCunt+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" ></input>';
 			str += '<div id="expReoleDiv'+candCunt+'"><select  multiple="multiple" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="'+candCunt+'expparticipantRoles" id="expparticipantRoles'+candCunt+'" key ="'+candCunt+'expparticipantRoles" >';
 			for (var j in rolesArray)
 			{
@@ -363,17 +369,12 @@ function prepopulateDebateForm(result)
 					str += '<option  value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 				}
 			}
-			str += '</select></div></td>';
+			str += '</select></div><span id="'+candCunt+'expparticipantRolesErr" class="errDiv"></span></td>';
 		}
 		else
 		{
-			str +='<td class="expparticipantRolesblock1"><input type="hidden" id="'+1+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" value="0"></input>';
-			str += '<div id="expReoleDiv'+candCunt+'"><select style="display:none;" theme="simple" Class="selectWidth expparticipantsRoles expPartyClass" name="expparticipantRoles'+candCunt+'" id="expparticipantRoles'+candCunt+'" key ="'+1+'expparticipantRoles" >';
-			for (var j in rolesArray)
-			{
-				str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
-			}
-			str += '</select></div></td>';
+			str +='<td class="party'+candCunt+'"><input type="hidden" id="'+candCunt+'expparticipantRoles" class="expPartyClass expPartyClass1 expPartiesRoleClass" value="0"></input>';
+			str += '<div id="expReoleDiv'+candCunt+'"></div><span id="'+candCunt+'expparticipantRolesErr" class="errDiv"></span></td>';
 		}
 	
 		if(result.participantsList[p].summery != null)
@@ -415,7 +416,7 @@ function prepopulateDebateForm(result)
 		str += '<label><p style="font-size: 17px;font-weight: bold;line-height: 1.5;"> '+count+' )'+result.questionAnswersList[i].location+' </p></label>';
 		str += '</div>';
 		str += '<div class="span7" >';
-		str += 'Answer : <font class="requiredFont">*</font>';
+		str += 'Answer : <font class="requiredFont">*</font><span id="answer'+count+'Err" class="errDiv"></span>';
 		str += '<input type="text" Class="selectWidth debateAnswr input-block-level" name="answer'+count+'" id="answer'+count+'" value="'+result.questionAnswersList[i].name+'"></input>';
 		str += '</div>';
 		str += '</div>';
@@ -435,25 +436,26 @@ function prepopulateDebateForm(result)
 	
 	if(result.smsPoleList != null)
 	{
+	var percCount = 1;
 		for(var i in result.smsPoleList)
 		{
 			str += '<div class="row">';
 			str += '<div class="span7" >';
 			str += '<label>';
 			str += '<strong>Option : </strong>';
-			str += '</label>';
-			str += '<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1" value="'+result.smsPoleList[i].type+'"/>';
+			str += '<span id="smsoption'+percCount+'Err" class="errDiv"></span></label>';
+			str += '<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption'+percCount+'" value="'+result.smsPoleList[i].type+'"/>';
 			str += '</div>';
 			str += '<div class="span3">';
-			str += '<label><strong>Percentage : </strong></label>';
+			str += '<label><strong>Percentage : </strong></label><span id="smsper'+percCount+'Err" class="errDiv"></span>';
 			if(result.smsPoleList[i].perc > 0)
 			{
-				str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); value="'+result.smsPoleList[i].perc+'"/>';
+				str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper'+percCount+'" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); value="'+result.smsPoleList[i].perc+'"/>';
 				str += '</div>';
 			}
 			else
 			{
-				str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); />';
+				str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper'+percCount+'" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); />';
 				str += '</div>';
 			}
 			/* if(i == 0)
@@ -462,6 +464,7 @@ function prepopulateDebateForm(result)
 			} */
 			
 			str += '</div>';
+			percCount = percCount+1;
 		}
 	}
 	else
@@ -470,11 +473,11 @@ function prepopulateDebateForm(result)
 			str += '<div class="span7" >';
 			str += '<label>';
 			str += '<strong>Option : </strong>';
-			str += '</label>';
+			str += '<span id="smsoption1Err" class="errDiv"></span></label>';
 			str += '<input type="text" Class="selectWidth smsOptin span12" name="smsoption1" id="smsoption1" value="'+result.smsPoleList[i].type+'"/>';
 			str += '</div>';
 			str += '<div class="span3">';
-			str += '<label><strong>Percentage : </strong></label>';							
+			str += '<label><strong>Percentage : </strong></label><span id="smsper1Err" class="errDiv"></span>';							
 			str += '<input type="text" Class="selectWidth smsOptinPerc inuput-block-level" name="smsper1" id="smsper1" key="smsoption1" onKeyup="isNumber(\'percentage\',\'smsper1\')",updatePercntage("smsper1"); value="'+result.smsPoleList[i].perc+'"/>';
 			str += '</div>';
 			
@@ -494,7 +497,7 @@ function prepopulateDebateForm(result)
 
 				
 	str += '<div id="debateSummery" class="row-fluid m_top10">';
-	str += '<legend class="boxHeading">Summary :</legend>';
+	str += '<legend class="boxHeading">Summary :<font class="requiredFont">*</font><span id="debetSumErr" class="errDiv"></span></legend>';
 	str += '<div class="control-group form-horizontal">';
 
 	str += '<textarea placeholder="Please Enter Debate Summary ..." rows="4" cols="50" class="span12" name="debetSum" id="debetSum" >'+result.debateSummery+'</textarea>';
@@ -564,23 +567,25 @@ function addMoreCandidatesForEdit()
 {
 	var str ='';
 	str += "<tr id='row"+candCunt+"' class='particepntDetailsRow'>";
-	str += "<td><select name='party"+candCunt+"'  id='party"+candCunt+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedParty(this.value,this.id,"+candCunt+");' class='partysClass'><option value='0' selected='selected'>Select</option>";
+	str += "<td><select name='party"+candCunt+"'  id='party"+candCunt+"' list='partiesList' theme='simple' listKey='id' listValue='name' onChange='getCandidatesOfSelectedPartyEdit(this.value,this.id,"+candCunt+");' class='partysClass'><option value='0' selected='selected'>Select</option>";
 	for ( var i in partiesArray)
 	{
 		str += '<option value='+ partiesArray[i].id + '>'+ partiesArray[i].name + '</option>';
 	}
-	str+='</select></td><td>';
+	str+='</select><span id="party'+candCunt+'Err" class="errDiv"></span></td><td>';
 
 	
 	str +='<select theme="simple" Class="selectWidth candidatesClass" name="candidate1" id="candidate'+candCunt+'" >';
 	str +='<option value="0"> Select </option>';
-	str +='</select>';
+	str +='</select>  <span id="candidate'+candCunt+'Err" class="errDiv"></span>';
 	str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate'+candCunt+'\',\'party'+candCunt+'\','+candCunt+')"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a></td>';
 	for(var i in charsArray){
 		var myclass =charsArray[i].name+''+candCunt;
 		str +='<td>';
-		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myclass.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myclass.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myclass.replace(/\s/g, '')+'\');"/><div style="font-weight:normal;">(0-5)</div>';
-		str +='</td>';
+		str +='<input type="text" Class="selectWidth '+charsArray[i].id+'CharClass participntRoles '+myclass.replace(/\s/g, '')+'" name="'+charsArray[i].name+'1" id="'+myclass.replace(/\s/g, '')+'" style="width:30px;" onKeyup="isNumber(\'scale\',\''+myclass.replace(/\s/g, '')+'\');"/>';
+		var rolesids = myclass.replace(/\s/g, '');
+			rolesids = rolesids.replace('(Scale)', '');
+		str +='<div id="'+rolesids+'Err" class="errDiv"></div></td>';
 	}
 	
 	str +='<td class="participantRolesblock'+candCunt+'">';
@@ -591,14 +596,9 @@ function addMoreCandidatesForEdit()
 		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
 	}
 	
-	str +='</select></td><td class="expparticipantRolesblock'+candCunt+'">';
+	str +='</select><span id="'+candCunt+'participantRolesErr" class="errDiv"></span></td><td class="party'+candCunt+'">';
 	str +='<input type="hidden" id="'+candCunt+'expparticipantRoles" class="expPartyClass  expPartyClass1 expPartiesRoleClass" value="0"></input>';
-	str +='<div id="expReoleDiv'+candCunt+'"><select  style="display:none" ;theme="simple" multiple="multiple" Class="selectWidth expparticipantsRoles expPartyClass " name="expparticipantRoles'+candCunt+'" id="expparticipantRoles'+candCunt+'" key="'+candCunt+'expparticipantRoles">';
-	for (var j in rolesArray)
-	{
-		str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
-	}
-	str += '</select></td>';
+	str +='<div id="expReoleDiv'+candCunt+'"></div><span id="'+candCunt+'expparticipantRolesErr" class="errDiv"></td>';
 	str += '<td><textarea placeholder="Please Enter Candidate Summary ..." rows="2" cols="25" class="candSummary" name="candSummary" id="candSummary'+candCunt+'" ></textarea></td>';
 	str +='<td><a  name="row'+candCunt+'" class="icon-trash" title="Click here to add another Subject" onClick="removeCandidate(this.name);" style="cursor: pointer;"></a></td>';
     str +='</tr>';
@@ -614,6 +614,261 @@ function addMoreCandidatesForEdit()
 	
 	candCunt++;
 }
+
+function getCandidatesOfSelectedPartyEdit(partyId,divId,id)
+{
+
+	if(partyId == 872)
+	{
+		var str  = '';
+		str +='<select style="display:none" ;theme="simple" multiple="multiple" Class="selectWidth expparticipantsRoles expPartyClass " name="'+id+'expparticipantRoles" id="expparticipantRoles'+id+'" key="'+id+'expparticipantRoles">';
+		for (var j in rolesArray)
+		{
+			str += '<option value="'+rolesArray[j].id+'">'+rolesArray[j].name+'</option>';
+		}
+		str += '</select>';
+		$('#expReoleDiv'+id+'').html(str);
+		$('#expparticipantRoles'+id+'').show();
+		$('#expparticipantRoles'+id+'').multiselect({	
+			multiple: true,
+			selectedList: 1,
+			hide: "explode"	
+	}).multiselectfilter({    
+	});
+	}
+	else
+	{
+		$('#expReoleDiv'+id+'').html('');
+		//$('#expparticipantRoles'+id+'').remove();
+	}
+	var numb = divId.match(/\d/g);
+	//$('#candidate1').find('option').remove();
+	var jsObj = {
+			partyId :partyId,
+			selectedVal :"candidate"+numb+"",
+			task : "getCandidatesOfAParty"	
+	};
+	
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "getCandidatesListForDebateAction.action?"+rparam;
+	callAjax(jsObj,url);
+}
+
+function validateFieldsForEdit(){
+
+	//$(".subjectClass,#channel,#observer,#telecastTime").css("border","1px solid #CCCCCC");
+	//$(".hasDatepicker,.partysClass,.candidatesClass").css("border","1px solid #CCCCCC");
+	//$(".participntRoles,.participantsRoles,.smsOptinPerc").css("border","1px solid #CCCCCC");
+	//$("#debetSum,#smsques1,.debateAnswr,.smsOptin").css("border","1px solid #CCCCCC");
+	//$(".ui-state-default").removeClass("ui-state-error");
+	
+	$(".errDiv").html('');
+	var flag = true;
+	var channel = $("#channel").val();
+	//var telecastTime = $("#telecastTime").val();
+	var startTime =$("#startTime").val();
+	var endTime = $("#endTime").val();
+	var observer = $("#observer").val();
+
+	var smsQuestin =  $("#smsques1").val();
+	var debetSum = $("#debetSum").val();
+	var partiRol1e = $(".partiRoleClass").val();
+
+		$( ".subjectClass" ).each(function( index ) {
+		 var subject = $( this ).val();
+			if(subject.trim().length <= 0){
+				var divId = $(this ).attr("id");			
+				$("#"+divId+"Err").html("Please enter subject.");
+				flag = false;
+			}
+		});
+		if(channel <=0){		
+				$("#channelErr").html('Please Select Channel.');
+			flag = false;
+		}
+		/*if(telecastTime <=0){
+			$("#telecastTime").css("border","1px solid #D14719");
+			flag = false;
+		}
+			*/
+		if(startTime.trim().length <= 0){
+			$("#startTimeErr").html('Please Select Start Time.');
+			flag = false;
+		}
+		if(observer <=0){
+			$("#observerErr").html('Please Select Observer.');
+			flag = false;
+		}
+		if(endTime.trim().length <= 0){
+			$("#endTimeErr").html("Please Select End Time.");
+			flag = false;
+		}
+		var fromTimeArr = startTime.substring(11).split(":");
+		var toTimeArr = endTime.substring(11).split(":");	
+		
+			var fromhours =fromTimeArr[0];
+			var frommin   = fromTimeArr[1];
+
+			var tohours = toTimeArr[0];
+			var tomin   = toTimeArr[1];
+			
+		startTime = startTime.substring(0,startTime.length - 6);
+		endTime = endTime.substring(0,endTime.length - 6);
+
+		var fromDateArrr = startTime.split("/");			
+				var frommonth=fromDateArrr[0];
+				var fromDat=fromDateArrr[1];
+				var fromyear=fromDateArrr[2];
+				
+		var toDateArr = endTime.split("/");			
+				var tomonth=toDateArr[0];
+				var toDat=toDateArr[1];
+				var toyear=toDateArr[2];				
+		
+		if(fromyear>toyear){
+			//$("#startTime,#endTime").css("border","1px solid #D14719");
+			$("#startTimeErr").html('Start Date should be less than End Date.');
+			flag = false;
+		}
+		 if(frommonth>tomonth){
+			   if(fromyear == toyear){
+				 //$("#startTime,#endTime").css("border","1px solid #D14719");
+				$("#startTimeErr").html('Start Date should be less than End Date.');
+				 flag = false;
+			}		
+		}
+		
+		if(fromDat>toDat){	
+			if(frommonth == tomonth && fromyear == toyear){
+				// $("#startTime,#endTime").css("border","1px solid #D14719");
+			$("#startTimeErr").html('Start Date should be less than End Date.');
+				 flag = false;				 
+			   }
+		}	
+		if( fromhours > tohours ){
+			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat){
+				//$("#startTime,#endTime").css("border","1px solid #D14719");
+				$("#startTimeErr").html('Start Date hour and End Date hour not matching.');
+				flag = false;				
+			}					
+		}		
+		if(frommin >= tomin ){
+			if(frommonth == tomonth && fromyear == toyear && fromDat == toDat && fromhours == tohours){
+				//$("#startTime,#endTime").css("border","1px solid #D14719");
+				$("#startTimeErr").html('Start Date minutes and End Date minutes not matching.');
+				flag = false;				
+			}		
+		}
+			
+		
+		$( ".partysClass" ).each(function( index ) {
+		 var partyId = $(this ).val();	 
+			if(partyId <= 0){
+				var divId = $(this ).attr("id");		
+				$("#"+divId+"Err").html('Please select Party .');
+				flag = false;
+			}
+		});
+		
+		$( ".candidatesClass" ).each(function( index ) {
+		 var candidate = $( this ).val();
+
+			if(candidate <= 0){
+				var divId = $(this ).attr("id");	
+				$("#"+divId+"Err").html('Please select Candidate .');				
+				flag = false;
+			}
+		});
+
+		$( ".participntRoles" ).each(function( index ) {
+		
+		 var prsentation = $( this ).val();
+		 var divId = $(this ).attr("id");
+		 var rolesids = divId.replace(/\s/g, '');
+			rolesids = rolesids.replace('(Scale)', '');
+				if(prsentation == null ||  prsentation.trim().length <= 0){		
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' required.');				
+				flag = false;			
+			}
+			if(prsentation >5){
+				$("#"+rolesids+"Err").html(''+rolesids.slice(0, rolesids.lastIndexOf("1"))+' between 1 - 5.');
+				flag = false;	
+			}
+
+		});
+
+		$( ".partiRoleClass" ).each(function( index ) {
+		 var participantRoles = $( this ).val();
+		 
+			if(participantRoles == null || participantRoles.trim().length <= 0){
+				var myclass=  $(this).closest('td').attr("class"); 
+				var divId = $(this ).attr("id");			
+				$("#"+divId+"Err").html('Please select participation role(s).');
+				flag = false;
+			}
+		});		
+		
+	
+		$(".expPartiesRoleClass ").each(function(index){
+			var exppartiRole = $(this).val();
+			var myclass=  $(this).closest('td').attr("class"); 
+		 if($('#'+myclass+'').val() == 872 ){
+				if(exppartiRole == null || exppartiRole == 0 || exppartiRole.trim().length <= 0){
+					var divId = $(this).attr("id");
+					$("#"+divId+"Err").html('Please select expected participation role(s).');
+					flag = false;
+				}
+			}
+		});
+		
+		$(".debateAnswr ").each(function(index){
+			var answr = $( this ).val();
+			if(answr == null || answr.trim().length <= 0){
+				var divId = $(this ).attr("id");				
+				$("#"+divId+"Err").html('Answer is Required.');
+				flag = false;
+			}
+				
+		});
+		/*if(smsQuestin == null || smsQuestin.trim().length <= 0){
+				$("#smsques1").css("border","1px solid #D14719");
+				flag = false;
+		}*/
+		if(smsQuestin.trim().length > 0){
+			$( ".smsOptin" ).each(function( index ) {
+			 var smsOption = $( this ).val();
+
+				if(smsOption == null || smsOption.trim().length <= 0){
+					var divId = $(this ).attr("id");
+					$("#"+divId+"Err").html('Option is Required.');
+					flag = false;
+				}
+			});
+			
+			$( ".smsOptinPerc" ).each(function( index ) {
+			 var smsOptionPerc = $( this ).val();
+			 
+				if(smsOptionPerc == null || smsOptionPerc.trim().length <= 0){
+					var divId = $(this ).attr("id");
+					$("#"+divId+"Err").html('Percentage is Required.');
+					flag = false;
+				}
+			});
+
+			if(totalPerc < 0 || totalPerc > 0 || totalPerc > 100){
+				$("#errorForTotal").html('Percentage Must be 100.');
+				flag = false;
+			}
+		}
+		if(debetSum == null || debetSum.trim().length <= 0){
+				$("#debetSumErr").html('Debate Summary is Required.');
+				flag = false;
+		}	
+
+	return flag;
+
+}
+
 </script>
 </body>
 
