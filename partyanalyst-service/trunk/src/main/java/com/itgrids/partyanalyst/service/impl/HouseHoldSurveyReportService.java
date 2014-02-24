@@ -864,6 +864,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 										houseHoldsVoter.setSocialCategoryId(voterDtls.getSocialPstnId());
 										houseHoldsVoter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
 										houseHoldsVoter.setLeaderId(voterDtls.getLeaderId());
+										houseHoldsVoter.setIsDelete(IConstants.FALSE);
 										
 										houseHoldVoterDAO.save(houseHoldsVoter);
 										
@@ -881,6 +882,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									voter.setSocialCategoryId(voterDtls.getSocialPstnId());
 									voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo());
 									voter.setLeaderId(voterDtls.getLeaderId());
+									voter.setIsDelete(IConstants.FALSE);
 									
 									houseHoldVoterDAO.save(voter);
 									
@@ -988,6 +990,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									voter.setHouseHoldsFamilyDetailsId(familyDetails.getHouseHoldsFamilyDetailsId());
 									voter.setOwnerMobileNo(voterDtls.getOwnerMobileNo()!=null?voterDtls.getOwnerMobileNo():"");
 									voter.setLeaderId(voterDtls.getLeaderId());
+									voter.setIsDelete(IConstants.FALSE);
 									
 									houseHoldVoterDAO.save(voter);
 										
