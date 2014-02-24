@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -381,11 +382,12 @@ public class WebServiceHandler {
 			@PathParam("voterTagDetails") String voterTagDetails)
     {
 		try{
+			Log.error("Entered into updateVoterTagDetails() Method ");
 			net.sf.json.JSONObject tag = (net.sf.json.JSONObject) net.sf.json.JSONObject
 					.fromObject(voterTagDetails);
 			
-			LOG.warn("uniqueCode -- "+uniqueCode);
-			LOG.warn("voterTagDetails Data -- "+voterTagDetails);
+			LOG.error("uniqueCode -- "+uniqueCode);
+			LOG.error("voterTagDetails Data -- "+voterTagDetails);
 			
 			Long voterId = tag.getLong("voterId");
 			
@@ -424,6 +426,7 @@ public class WebServiceHandler {
 			@PathParam("voterBoothActivitiesDetails") String voterBoothActivitiesDetails)
     {
 		try{
+			Log.error("Entered into updateVoterBoothActivitiesDetails() Method ");
 			net.sf.json.JSONObject tag = (net.sf.json.JSONObject) net.sf.json.JSONObject
 					.fromObject(voterBoothActivitiesDetails);
 			
