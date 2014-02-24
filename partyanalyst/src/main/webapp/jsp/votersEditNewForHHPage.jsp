@@ -719,11 +719,6 @@ function openProblemEditFormNew(id,boothId,publicationDateId,houseNo)
 	updateBrowser.focus();	
 }
 
-function deleteVtrDiv(id){
-	alert(id);
-	alert($(this).attr("id"));
-}
-
 getHouseHoldInfoPage();
 
 function getHouseHoldInfoPage(){
@@ -890,7 +885,7 @@ function saveHouseHoldInfo(){
 					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
 					if(uploadResult=="success"){
 						$('.statusMsg').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
-					}else if(uploadResult=="failure"){
+					}else if(uploadResult=="error"){
 						$('.statusMsg').html("<h5 style='text-align:center;color:red;'>Internal Error .. Please Try Again Later</h5>");
 					}
 				}
@@ -964,7 +959,7 @@ function saveHouseHoldInfo(){
 	<tr>
 		<th>Mobile NO</th>
 		<td><b>:</b></td>
-		<td><input type="text" value=${voterHouseInfoVO.mobileNo}></input></td>
+		<td><input type="text" id="ownerMobileNo" value=${voterHouseInfoVO.mobileNo}></input></td>
 		<th>Caste</th>
 		<td><b>:</b></td>
 		<td>${voterHouseInfoVO.casteName}</td>
@@ -973,7 +968,7 @@ function saveHouseHoldInfo(){
 	<tr>
 		<th>Booth Leader</th>
 		<td><b>:</b></td>
-		<td><s:select theme="simple" style="width: 169px;"
+			<td><s:select theme="simple" style="width: 169px;"
 				 name="BoothLeadersList" 
 				id="BoothLeadersListId" list="voterHouseInfoVO.BoothLeaderList" 
 				listKey="id" listValue="name"/>
@@ -1167,7 +1162,7 @@ function saveHouseHoldInfo(){
 					
 				str+="<tr>";
 					
-					str+="<td><input type='checkbox' class='voterChkbx' name='searchedVoter' value="+temp[i].voterId+"></td>";
+					str+="<td><input type='checkbox' class='voterChkbx' name='searchedVoter' value="+temp[i].voterId+" checked></td>";
 					str+="<td>"+temp[i].name+"</td>";
 					str+="<td>"+temp[i].age+"</td>";
 					str+="<td>"+temp[i].gaurdian+"</td>";
@@ -1223,6 +1218,14 @@ function saveHouseHoldInfo(){
 	}
 </script>
 <script>
+
+if('${voterHouseInfoVO.ownerMobNo}'!=null){
+	$("#ownerMobileNo").val('${voterHouseInfoVO.ownerMobNo}');
+}
+if('${voterHouseInfoVO.leaderId}'!=null){
+	$("#BoothLeadersListId").val('${voterHouseInfoVO.leaderId}');
+}
+
 var voterDtls={
 	boothId:'',
 	voters:[],
@@ -1233,12 +1236,24 @@ function submitQuestionDetails()
 	 voterDtls.voters = [];
 	 voterDtls.boothId = "${boothId}";
 	 voterDtls.houseNo = "${houseNo}";
-	 voterDtls.houseHoldsId = 0;
+	 var houseHoldOfVoter='${houseHoldIdOfVoter}';
+	 
+	 if(houseHoldOfVoter){
+		voterDtls.houseHoldsId = '${houseHoldIdOfVoter}';
+	 }else{
+		voterDtls.houseHoldsId = "0";
+	 }
+	 
+	var leader=$("#BoothLeadersListId").val();
+	var ownerMob=$("#ownerMobileNo").val();
 
   $('.voterChkbx').each(function(index,value){
+		var leader=$("#BoothLeadersListId").val();
+		var ownerMob=$("#ownerMobileNo").val();
+		
+		
 	   if(this.checked)
 	   {
-			
 				selectedVoterDtls =
 			       {
 			         voterId:this.value,
@@ -1246,7 +1261,9 @@ function submitQuestionDetails()
 					 voterEdctn:$('#'+this.value+"edctn").val(),
 					 voterOccptn:$('#'+this.value+"occup").val(),
 					 voterSocialPstn: $('#'+this.value+"sclCtg").val(),
-					 isNew: 'false'					 	 
+					 isNew: 'false',	
+					 leaderId:leader,
+					 ownerMobileNo:ownerMob
 			       };
 
 				 voterDtls.voters.push(selectedVoterDtls);
@@ -1255,6 +1272,8 @@ function submitQuestionDetails()
   
   
   $('.familyMemberChkbx').each(function(index,value){
+
+		return ;
 	   if(this.checked)
 	   {
 			
@@ -1264,16 +1283,18 @@ function submitQuestionDetails()
                      name:$('#memberPrsnName'+this.value).val().trim(),
                      age:$('#memberPrsnAge'+this.value).val(),
 					// gender:$('#memberPrsnGndr'+this.value).val(),
-					  gender:'M',
+					 gender:'M',
 					 relativeName:$('#memberPrsnGrdn'+this.value).val().trim(),
 					 education:$('#memberPrsnEdctn'+this.value).val(),
 					 occupation:$('#memberPrsnOctpn'+this.value).val(),
 					 socialPosistion: $('#memberPrsnSclPstn'+this.value).val(),
 					 familyRelationId:$('#memberPrsnrltnType'+this.value).val(),
 					// mobileNo:$('#memberPrsnMblNO'+this.value).val().trim(), 
-					  mobileNo:"test", 
-					relationShipType:"1",
-					 isNew: 'true'					 	 
+					 mobileNo:"test", 
+					 relationShipType:"1",
+					 isNew: 'true',
+					 leaderId:leader,
+					 ownerMobileNo:ownerMob
 			       };
 
 				 voterDtls.voters.push(selectedVoterDtls);
@@ -1288,7 +1309,7 @@ function submitQuestionDetails()
 					
 					 isNew: 'true',
 					 name:$('#newPrsnName'+newPersons[i]).val().trim(),
-                    age:$('#newPrsnAge'+newPersons[i]).val(),
+                     age:$('#newPrsnAge'+newPersons[i]).val(),
 					 gender:$('#newPrsnGndr'+newPersons[i]).val(),
 					 relativeName:$('#newPrsnGrdn'+newPersons[i]).val().trim(),
 					 relationShipType:$('#newPrsnrltnType'+newPersons[i]).val(),
@@ -1297,8 +1318,9 @@ function submitQuestionDetails()
 					 socialPosistion: $('#newPrsnSclPstn'+newPersons[i]).val(),
 					 familyRelationId:$('#newPrsnrltnType'+newPersons[i]).val(),
 					 mobileNo:$('#newPrsnMblNO'+newPersons[i]).val().trim(),
-					 familyMemberId:0
-					 	 
+					 familyMemberId:0,
+					 leaderId:leader,
+					 ownerMobileNo:ownerMob					 
 			       };
 
 				 voterDtls.voters.push(selectedVoterDtls);
@@ -1323,9 +1345,9 @@ function setHiddenFieldInForm(houseHoldsId)
 {
 	$('#houseHoldsId').val(houseHoldsId);
 	
-	//if($('#houseHoldsId').val()!=null || $('#houseHoldsId').val()!=""){
+	if($('#houseHoldsId').val()!=null || $('#houseHoldsId').val()!=""){
 		saveHouseHoldInfo();
-	//}
+	}
 	
 
 }
