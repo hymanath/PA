@@ -1323,7 +1323,6 @@ function submitQuestionDetails()
   
   $('.familyMemberChkbx').each(function(index,value){
 
-		return ;
 	   if(this.checked)
 	   {
 			
