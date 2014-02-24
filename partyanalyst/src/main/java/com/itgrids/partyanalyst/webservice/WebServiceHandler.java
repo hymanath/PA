@@ -427,8 +427,8 @@ public class WebServiceHandler {
 			net.sf.json.JSONObject tag = (net.sf.json.JSONObject) net.sf.json.JSONObject
 					.fromObject(voterBoothActivitiesDetails);
 			
-			LOG.warn("uniqueCode -- "+uniqueCode);
-			LOG.warn("voterBoothActivitiesDetails Data -- "+voterBoothActivitiesDetails);
+			LOG.error("uniqueCode -- "+uniqueCode);
+			LOG.error("voterBoothActivitiesDetails Data -- "+voterBoothActivitiesDetails);
 			
 			Long voterId = tag.getLong("voterId");
 			
