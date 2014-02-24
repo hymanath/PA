@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,8 +33,22 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	private List<CastVO> casteWiseResult;
 	private List<VoterHouseInfoVO> voterDetails;
 	private ResultStatus resultStatus;
+	private  Map<Long,String> consMap;
+	private List<Long> constValues;
 	
 	
+	public List<Long> getConstValues() {
+		return constValues;
+	}
+	public void setConstValues(List<Long> constValues) {
+		this.constValues = constValues;
+	}
+	public Map<Long, String> getConsMap() {
+		return consMap;
+	}
+	public void setConsMap(Map<Long, String> consMap) {
+		this.consMap = consMap;
+	}
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -173,5 +188,56 @@ public String getVoterAddressDetails()
 	}
 	return Action.SUCCESS;
 }
+public String loadConst()
+{
+	try{
+		Long userId = 0l;
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return INPUT;
+		
+		consMap=casteReportService.loadConstituenciesForReport();
+		
+		
+	}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in loadConst() method",e);
+	}
+	return Action.SUCCESS;
+}
+
+public String getConstXL()
+{
+	try{
+		Long userId = 0l;
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return INPUT;
+		try{
+			resultStatus=casteReportService.generateXL(constValues);
+		 
+		}catch(Exception e)
+		{
+			resultStatus = new ResultStatus();
+			resultStatus.setResultCode(1);
+		    resultStatus.setMessage(e.getMessage());
+			return ERROR;
+		}
+	//	constValues
+		return Action.SUCCESS;
+		
+	}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in loadConst() method",e);
+	}
+	return Action.SUCCESS;
+}
+
+
+
 
 }
