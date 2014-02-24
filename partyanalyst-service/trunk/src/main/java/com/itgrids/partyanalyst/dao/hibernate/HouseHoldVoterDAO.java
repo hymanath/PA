@@ -118,11 +118,21 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		return query.list();
 	}
 	
+	public List<Object[]> getOwnerMobileAndLeaderIdForVoterId(Long voterId){
+		Query query = getSession().createQuery(" select model.leaderId,model.ownerMobileNo from HouseHoldVoter model " +
+				" where model.voter.voterId = :voterId and model.isDelete=:deleteStatus");
+		
+		query.setParameter("voterId", voterId);
+		query.setParameter("deleteStatus", IConstants.FALSE);
+		
+		return query.list();
+	}
+	
 	
 	public List<HouseHoldVoter> checkExistanceOfVoterInHouseHoldsVoter(Long voterId)
 	{
 		Query query = getSession().createQuery("select HHV from HouseHoldVoter HHV " +
-				"where HHV.voterId = :voterId where HHV.isDelete = :deletedStatus");
+				" where HHV.voterId = :voterId and HHV.isDelete = :deletedStatus");
 		
 		query.setParameter("voterId", voterId);
 		query.setParameter("deletedStatus", IConstants.FALSE);

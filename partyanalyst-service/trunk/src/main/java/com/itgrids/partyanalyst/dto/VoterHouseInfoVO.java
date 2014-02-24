@@ -121,7 +121,28 @@ public class VoterHouseInfoVO implements Comparable<VoterHouseInfoVO>{
     private boolean isChildren;
     private List<GenericVO> boothLeaderList;
     
+    private String ownerMobNo;
+    private Long leaderId;
     
+    
+    
+    
+	public String getOwnerMobNo() {
+		return ownerMobNo;
+	}
+
+	public void setOwnerMobNo(String ownerMobNo) {
+		this.ownerMobNo = ownerMobNo;
+	}
+
+	public Long getLeaderId() {
+		return leaderId;
+	}
+
+	public void setLeaderId(Long leaderId) {
+		this.leaderId = leaderId;
+	}
+
 	public List<GenericVO> getBoothLeaderList() {
 		return boothLeaderList;
 	}

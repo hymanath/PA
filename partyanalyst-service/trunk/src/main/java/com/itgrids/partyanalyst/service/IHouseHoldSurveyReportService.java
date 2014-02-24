@@ -24,6 +24,9 @@ public interface IHouseHoldSurveyReportService {
 	
 	public List<SelectOptionVO> getUserVoterCategoryValuesById(Long categoryId);
 	public List<SelectOptionVO> getFamilyRelationsList();
+	
+	public GenericVO getLeaderIdAndMobileNoFromHH(Long voterId);
+	public Long getHouseHoldIdOfVoter(Long voterId);
 
 
 }
