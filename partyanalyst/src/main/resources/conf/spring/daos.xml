@@ -1345,7 +1345,15 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
-   <bean id="voterTagDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterTagDAO">
+    <bean id="hhLeaderDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHLeaderDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="hhBoothLeaderDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHBoothLeaderDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+    <bean id="voterTagDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterTagDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    
