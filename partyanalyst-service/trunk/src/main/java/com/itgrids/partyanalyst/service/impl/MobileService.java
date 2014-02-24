@@ -2205,12 +2205,12 @@ public List<SelectOptionVO> getConstituencyList()
   					String lastAuthorisedTime = getLastAuthorisedTime(pastTime,currentTime,params[7].toString());
   					registrationVO.setDateOfBirth(lastAuthorisedTime);
   					
-  				     if(lastAuthorisedTime.indexOf("days") > 0)
+  				   /*  if(lastAuthorisedTime.indexOf("days") > 0)
   				     {
   				    	String days = lastAuthorisedTime.substring(lastAuthorisedTime.indexOf("(")+1,lastAuthorisedTime.indexOf(")")).replaceAll("[a-zA-Z]", "");
   				    	if( Long.valueOf(days.toString().trim()) >= 10)
   				    	sendSmsToMobileAppUser(firstName +" "+lastName,params[9].toString());
-  				     }
+  				     }*/
   					registrationVO.setAppId(params[8]!=null?params[8].toString():"");
   					result.add(registrationVO);
   					
