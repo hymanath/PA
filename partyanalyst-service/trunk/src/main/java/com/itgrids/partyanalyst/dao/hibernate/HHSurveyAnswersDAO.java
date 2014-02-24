@@ -22,4 +22,18 @@ public class HHSurveyAnswersDAO extends GenericDaoHibernate<HHSurveyAnswers,Long
 	}
 	
 	
+	public int deleteAllPreviousAnswersByHouseHoldsId(Long houseHoldsId)
+	{
+		Query query = getSession()
+				.createQuery(
+						"delete from HHSurveyAnswers HHSA where HHSA.houseHoldId = :houseHoldsId");	
+		
+		
+		query.setParameter("houseHoldsId", houseHoldsId);
+		
+		return query.executeUpdate();
+		
+	}
+	
+	
 }

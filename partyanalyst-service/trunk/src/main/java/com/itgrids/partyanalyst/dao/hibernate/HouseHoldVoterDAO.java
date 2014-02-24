@@ -119,5 +119,17 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	}
 	
 	
+	public List<HouseHoldVoter> checkExistanceOfVoterInHouseHoldsVoter(Long voterId)
+	{
+		Query query = getSession().createQuery("select HHV from HouseHoldVoter HHV " +
+				"where HHV.voterId = :voterId where HHV.isDelete = :deletedStatus");
+		
+		query.setParameter("voterId", voterId);
+		query.setParameter("deletedStatus", IConstants.FALSE);
+		
+		return query.list();
+		
+	}
+	
 	
 }
