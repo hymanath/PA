@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -12,4 +15,12 @@ public interface ICasteReportService {
 	
 	public ResultStatus getVoterAddressDetails(Long constituencyId,Long publicationId,Long userId);
 
+	
+	//anilUpdate
+	public <K,V>Map<K,V> loadConstituenciesForReport() ;
+	public ResultStatus  generateXL(List<Long> constIds)  throws IOException ;
+
+
+
+	
 }
