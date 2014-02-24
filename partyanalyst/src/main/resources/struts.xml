@@ -6415,6 +6415,14 @@
            		<param name="root">status</param>
         	</result>
 		</action>
-		
+			<action name="partyShare" class="casteReportAction" method="loadConst">
+			<result name="success">/jsp/partyShare.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+		</action>
+		<action name="getReportForPartyShare" class="casteReportAction" method="getConstXL">
+			<result name="success" type="redirect">partyShare.action</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+		</action>
+	
 		</package>
 </struts>      
