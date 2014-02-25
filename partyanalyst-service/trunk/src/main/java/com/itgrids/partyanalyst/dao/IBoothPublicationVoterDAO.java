@@ -583,4 +583,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<String> getVoterNamesOfAConstituency(Long constituencyId,Long publicationDateId);
 	  
 	  public List<Object[]> getVoterDetailsOfAConstituencyAndPublication(Long constituencyId, Long publicationDateId);
+	  
+	  public List<Voter> getVoterInfoByVoterIds(Long constituencyId,Long publicationDateId,List<Long> voterIds);
 }
