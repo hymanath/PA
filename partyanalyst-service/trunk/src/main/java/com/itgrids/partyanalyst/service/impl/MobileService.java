@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +25,9 @@ import java.util.TimeZone;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.apache.velocity.texen.util.FileUtil;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -38,6 +44,7 @@ import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyHierarchyInfoDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEducationalQualificationsDAO;
@@ -181,7 +188,17 @@ public class MobileService implements IMobileService{
  private IMobileAppPingingDAO mobileAppPingingDAO;
  private IWardBoothDAO wardBoothDAO;
  private IWebServiceBaseUrlDAO webServiceBaseUrlDAO;
+ private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
  
+public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+	return delimitationConstituencyAssemblyDetailsDAO;
+}
+
+public void setDelimitationConstituencyAssemblyDetailsDAO(
+		IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+	this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+}
+
 public IWebServiceBaseUrlDAO getWebServiceBaseUrlDAO() {
 	return webServiceBaseUrlDAO;
 }
@@ -652,6 +669,123 @@ public List<SelectOptionVO> getConstituencyList()
 	}
   }
 	
+
+	public ResultStatus createDataDumpFileForAParliamnetConstituency(RegistrationVO reVo)
+	{
+		LOG.info("Entered into createDataDumpFileForAParliamnetConstituency() Method ");
+		ResultStatus resultStatus = new ResultStatus();
+		try{
+			Class.forName("org.sqlite.JDBC");
+			Connection connection = null;
+			ResultSet rs = null;
+			Statement statement = null;
+			
+			Long pconstituencyId = reVo.getConstituencyId();
+			Long publicationId = reVo.getPublicationDateId();
+			String constituencyName = constituencyDAO.get(pconstituencyId).getName();
+			String path = reVo.getPath();
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			String date = sdf.format(new Date());
+			String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			
+			File destDir = new File(path+pathSeperator+constituencyName+"_"+date+"_CMS");
+			destDir.mkdir();
+			File baseFile = new File(path+pathSeperator+"Base"+pathSeperator+"base.sqlite");
+			
+			FileOutputStream fos = new FileOutputStream(path+pathSeperator+constituencyName+"_"+date+"_CMS.zip");
+			ZipOutputStream zos = new ZipOutputStream(fos);
+			
+			List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
+			
+			for(Constituency ac : acList)
+			{
+				try{
+				try{
+				File acFile = new File(path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+				FileUtils.copyFile(baseFile, acFile);
+				}catch(Exception e)
+				{
+					LOG.error("Exception is -",e);
+				}
+				
+				List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
+				
+				if(votersList != null && votersList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Object[] params : votersList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO voter(voter_id,house_no,name,relationship_type,relative_name,gender,age,voter_id_card_no)" +
+								" VALUES ('"+params[0].toString()+"','"+params[1].toString().trim()+"','"+replaceSpecialChars(params[2].toString().trim())+"','"+params[3].toString().trim()+"','"+replaceSpecialChars(params[4].toString().trim())+"'," +
+										"'"+params[5].toString().trim()+"',"+params[6].toString().trim()+",'"+params[7].toString().trim()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Voter Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
+				
+				List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(ac.getConstituencyId(), publicationId);
+				if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Object[] params : votersAndSerialNosList)
+					{
+						records++;
+						try{
+						String serialNo = params[2]!= null ? params[2].toString() : "0";
+						statement.executeUpdate("INSERT INTO booth_publication_voter(booth_publication_voter_id, booth_id, voter_id, serial_no) VALUES (" +
+								"'"+params[0].toString()+"','"+params[1].toString()+"','"+params[2].toString()+"','"+serialNo+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Booth Publication Voter Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
+				}catch(Exception e)
+				{
+					LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
+				}
+				
+			}
+			
+			try{
+				 for(File rf : destDir.listFiles())
+					 addToZipFile(rf.getAbsolutePath(), zos);
+				 zos.close();
+				 fos.close();
+			 }catch(Exception e)
+			 {
+				 LOG.error("Exception Occured in Zipping Files");
+			 }
+			
+			resultStatus.setMessage("/SQLITE_DB/"+constituencyName+"_"+date+"_CMS.zip");
+			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			return resultStatus;
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in createDataDumpFileForAConstituency() Method",e);
+			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			return resultStatus;
+		}
+	}
 	public ResultStatus createDataDumpFileForAConstituency(RegistrationVO reVo)
 	{
 		LOG.info("Entered into createDataDumpFileForAConstituency() Method ");
