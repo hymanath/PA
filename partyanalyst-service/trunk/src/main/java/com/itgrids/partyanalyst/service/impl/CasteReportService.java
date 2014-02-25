@@ -820,10 +820,18 @@ public class CasteReportService implements ICasteReportService{
 	public ResultStatus  generateXL(List<Long> constIds) throws IOException {
 		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
 	    List<Long> constIdRemains=	 (List<Long>)partyTrendsDAO.loadConst(constIds);
+	    List<Long> constIdRemainsLeft = new ArrayList<Long>();
 	    final List<PartyTrendsVO> paVo=null;
 	    
-	    if(constIdRemains != null &&constIdRemains.size()>0 ){
-	    	//paVo=getPartyTrendsForConstituencies(constIdRemains);
+	    if(constIdRemains != null && constIdRemains.size()!= constIds.size() ){
+	    	for (Long  id : constIds) {
+	    		
+				if(!constIdRemains.contains(id))
+				{
+					constIdRemainsLeft.add(id);
+				}
+			}
+	    	//paVo=getPartyTrendsForConstituencies(constIdRemainsLeft);
 	    	try{
 	    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 	    		  protected void doInTransactionWithoutResult(TransactionStatus status) 
