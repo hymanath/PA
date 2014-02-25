@@ -16,11 +16,14 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
 	public PartyTrendsDAO() {
 		super(PartyTrends.class);
 	}
+	@Override
 	public List<?> loadConst() {
 		
 		Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
 		return query.list();
+		//Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
 	}
+	@Override
 	public List<?> loadEntitiesForXl(List<Long> constIds) {
 		Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name,model.name,model.pervTrenzWt,model.prpWt,model.youngVotersWt,model.totalWt  from   PartyTrends model  where model.constituency.constituencyId in(:constIds)  group by  model.partyTrendsId  order by model.constituency.name ");
 	
@@ -28,6 +31,31 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
 		return query.list();
 		
 	}
+	public List<Object[]> findAssemblyConstituenciesForSimaAndra(Long electionScopeId,Long staetId,List<String> areas,List<Long> districIds) {
+		
+		Query query = getSession().createQuery("select model.constituencyId , model.name ,model.areaType from Constituency model   " +
+				"  where model.state.stateId= :stateId  and model.electionScope.electionScopeId=:electionScopeId  and  model.areaType in (:areas) and model.deformDate is null and model.district.districtId not in(:districIds)  "   +
+				"order by model.name");
+		
+		
+		//query.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
+		query.setParameter("electionScopeId", electionScopeId);
+		query.setParameter("stateId", staetId);
+		query.setParameterList("areas", areas);
+		query.setParameterList("districIds", districIds);
+
+
+		return query.list();
+	}
+	@Override
+	public List<?> loadConst(List<Long> constIds) {
+		
+		Query query= getSession().createQuery("select model.constituency.constituencyId from   PartyTrends model  where  model.constituency.constituencyId not in(:constIds)   group by  model.constituency.constituencyId ");
+		query.setParameterList("constIds", constIds);
+		return query.list();
+		//Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
+	}
+	
 
 	
 	
