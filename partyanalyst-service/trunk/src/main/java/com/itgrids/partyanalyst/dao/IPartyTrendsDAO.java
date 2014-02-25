@@ -26,4 +26,7 @@ public interface IPartyTrendsDAO extends GenericDao<PartyTrends, Long> {
 	
 	public List<?> loadConst();
 	public List<?> loadEntitiesForXl(List<Long> constIds );
+	public List<Object[]> findAssemblyConstituenciesForSimaAndra(Long electionYear,Long staetId,List<String> areas,List<Long> districIds);
+	public List<?> loadConst(List<Long> constIds);
+    
 }
