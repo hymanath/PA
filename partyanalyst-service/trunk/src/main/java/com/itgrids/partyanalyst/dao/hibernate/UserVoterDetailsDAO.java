@@ -2944,7 +2944,7 @@ IUserVoterDetailsDAO{
 			str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
 				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
 			if(type.equalsIgnoreCase(IConstants.MANDAL))
-				str.append("  group by model.casteState.caste.casteId,bpv.booth.tehsil.tehsilId order by model.casteState.caste.casteName");
+				str.append("  and bpv.booth.localBody is null group by model.casteState.caste.casteId,bpv.booth.tehsil.tehsilId order by model.casteState.caste.casteName");
 		
 			else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
 				str.append("  group by model.casteState.caste.casteId,bpv.booth.panchayat.panchayatId order by bpv.booth.tehsil.tehsilName,bpv.booth.panchayat.panchayatId,model.casteState.caste.casteName");
