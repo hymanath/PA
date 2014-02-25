@@ -231,10 +231,38 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 		
 	    }*/
 	
-		public void testGetVoterDetailsOfAConstituencyAndPublication()
+		/*public void testGetVoterDetailsOfAConstituencyAndPublication()
 		{
-			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(232l,8l);
+			List<Object[]> list = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(173l,10l);
 			System.out.println(list.size());
+			
+			for(Object[] params : list)
+			{
+				String name = params[2].toString();
+				String name2 = "";
+				char[] charArray = name.toCharArray();
+				for(Character C : charArray)
+				{
+					if(!Character.isLetter(C) && !C.toString().equals(" "))
+						System.out.println(params[0]);
+					else
+					{
+						name2 = name2+C.toString();
+					}
+				}
+				if(name2.length() > 0)
+				{
+					System.out.println(name+"   "+name2);
+				}
+			}
+		}*/
+	
+		public void test()
+		{
+			String str = "2014-02-24+20:48:59";
+			str = str.replace("+"," ");
+			System.out.println(str);
+					
 		}
 	    
 	}
