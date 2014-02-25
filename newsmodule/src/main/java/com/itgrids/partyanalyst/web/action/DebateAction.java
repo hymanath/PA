@@ -44,7 +44,7 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	private String 						attributeName;
 	private String 						task;
 	private String 						status;
-	
+	private String 						key;
 	private Long 						debateId ;
 	
 	private ResultStatus 				resultStatus;
@@ -84,6 +84,15 @@ public class DebateAction extends ActionSupport implements ServletRequestAware
 	private IStaticDataService staticDataService;
 
 	
+	
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 	public String getChannel() {
 		return channel;
 	}

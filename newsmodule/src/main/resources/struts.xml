@@ -6062,6 +6062,11 @@
 	 	  <action name="genereateReportAction" class="debateAction" method="generateReport">
 	 			 <result>/jsp/genereateDebetReport.jsp</result>
 	 	  </action>
+	 	  
+	 	  <action name="genereatePfbReportAction" class="debateAction" method="generateReport">
+	 			 <result>/jsp/genereatePfbReport.jsp</result>
+	 	  </action>
+	 	  
 		<action name="partyWiseGraphAction" class="newsAnalysisAction" method="getPartyAnalysedDataForGraph">
 		   <result name="success" type="json">
 		 	<param name="root">graphData</param>
@@ -6157,6 +6162,12 @@
 		</action>
 		
 		
+		<action name="generateUrlForPFAAction" class="politicalFeedBackAction"  method="generateUrlForPFA">
+		   <result type="json" name="success">
+		    	<param name="root">status</param>
+		   </result> 
+		</action>
+		
 		<action name="savePoliticalFeedBackAction" class="politicalFeedBackAction"  method="savePoliticalFeedForm">
 		   <result type="json" name="success">
 		    	<param name="root">resultStatus</param>
@@ -6175,6 +6186,11 @@
 		   </result> 
 		</action>
 		
+		<action name="getPoliticatFeedBackAction" class="politicalFeedBackAction"  method="getPoliticatFeedBack">
+		   <result type="json" name="success">
+		    	<param name="root">politicalFeedBackVOList</param>
+		   </result> 
+		</action>
 		
 		<action name="getSelectedPoliticalFeedBackDetailsAction" class="politicalFeedBackAction"  method="getSelectedPoliticalFeedBackDetails">
 		   <result type="json" name="success">
@@ -6189,6 +6205,11 @@
 		   </result> 
 		</action>
 		
+		<action name="deltePfbReportDetailsAction" class="politicalFeedBackAction"  method="deltePfbReportDetails">
+		   <result type="json" name="success">
+		    	<param name="root">status</param>
+		   </result> 
+		</action>
 		
         </package>
 		

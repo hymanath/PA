@@ -230,4 +230,68 @@ public class PoliticalFeedBackAction extends ActionSupport implements ServletReq
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String generateUrlForPFA()
+	{
+		try
+		{
+			LOG.info(" Entered into generateUrl() in DebateAction class. ");
+			 jObj = new JSONObject(getTask());
+			 HttpSession session = request.getSession();
+				RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+				if(regVo == null)
+					return Action.ERROR;
+			Long pfbId = jObj.getLong("pfbId");
+			String description = jObj.getString("description");
+			Long userId = regVo.getRegistrationID();
+			String path = request.getRequestURL().toString().replace("generateUrlForPFAAction.action","genereatePfbReportAction.action?");
+			status = politicalFeedBackService.savePFBReportForPdf(userId,pfbId,description, path);
+		}
+		catch (Exception e) 
+		{
+			LOG.error(" Exception occured in generateUrl() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String deltePfbReportDetails()
+	{
+		try
+		{
+			LOG.info(" Entered into generateUrl() in DebateAction class. ");
+			jObj = new JSONObject(getTask());
+			status = politicalFeedBackService.deltePfbReportDetails(jObj.getString("key"));
+			if(status == null)
+			{
+				return Action.ERROR;
+			}
+		}
+		catch (Exception e) 
+		{
+			LOG.error(" Exception occured in generateUrl() in DebateAction class. ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getPoliticatFeedBack()
+	{
+		try {
+			LOG.debug("Entered into getPoliticatFeedBack method in PoliticalFeedBackAction Class");
+			jObj = new JSONObject(getTask());
+			Long count = politicalFeedBackService.getPfbDetails(jObj.getString("key"));
+			if(count > 0)
+			{
+				politicalFeedBackVOList = politicalFeedBackService.getSelectedPolitialFeedBackDetails(jObj.getString("date"),jObj.getLong("constituencyId"));
+			}
+			
+			else
+			{
+				return Action.ERROR;
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception Occured getPoliticatFeedBack method in PoliticalFeedBackAction Class",e);
+		}
+		return Action.SUCCESS;
+	}
 }
