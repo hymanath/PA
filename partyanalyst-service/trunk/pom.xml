@@ -169,6 +169,13 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
 		<!-- This was added for jax latest jar to read excel files -->
 		<dependency>
 			<groupId>net.sourceforge.jexcelapi</groupId>
