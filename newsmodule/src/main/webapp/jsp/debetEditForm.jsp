@@ -305,8 +305,14 @@ function prepopulateDebateForm(result)
 		}
 		str+='</select><span id="party'+candCunt+'Err" class="errDiv"></span></td>';
 
-		str +='<td><select theme="simple" Class="selectWidth candidatesClass" name="candidate'+candCunt+'" id="candidate'+candCunt+'" >';
-		str+='<option value="'+result.participantsList[p].id+'"> '+result.participantsList[p].name+'</option>';
+		str +='<td>srishailam<select theme="simple" Class="selectWidth candidatesClass" name="candidate'+candCunt+'" id="candidate'+candCunt+'" >';
+		str+='<option value="0"> Select Candidate</option>';
+		if(result.participantsList[p].candidatesList != null)
+		for(var j in result.participantsList[p].candidatesList){
+			str+='<option value="'+result.participantsList[p].candidatesList[j].id+'"> '+result.participantsList[p].candidatesList[j].name+'</option>';
+		}
+		
+		//str+='<option value="'+result.participantsList[p].id+'"> '+result.participantsList[p].name+'</option>';
 		str +='</select>';
 		str +='<a href="javascript:{}" onclick="createNewCandidate(\'candidate1\',\'party1\',1)"><span class="btn btn-mini pull-right m_topN65" style="width: 20px;"><img  title="Click Here To Create New Candidate" src="images/user.png" class="createNewCandidate" id="candidate'+candCunt+'"></span></a><span id="candidate'+candCunt+'Err" class="errDiv"></span></td>';
 	    for(var i in result.participantsList[p].scaleList)
@@ -396,6 +402,9 @@ function prepopulateDebateForm(result)
 		str +='</tr>';
 		
 		candCunt++;
+		
+		$('#candidate'+candCunt+'').val(result.participantsList[p].id);
+		
 	}
 	str +='</table>';
 	str += '</div>';
