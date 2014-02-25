@@ -65,8 +65,22 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private Long crossVotingParty;
 	private List<SelectOptionVO> mandalsList;
 	private boolean politician;
+	private boolean hhEntitled;
 	
 	
+	
+
+
+	public boolean isHhEntitled() {
+		return hhEntitled;
+	}
+
+
+	public void setHhEntitled(boolean hhEntitled) {
+		this.hhEntitled = hhEntitled;
+	}
+
+
 	public List<SelectOptionVO> getMandalsList() {
 		return mandalsList;
 	}
@@ -477,6 +491,10 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 		if(!(Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 		 return "userProfile";
+		
+		//FOR CHECKING ENTITLEMENTS CONSISTS HOUSEHOLDS SURVEY ENTITLEMENT
+		List<String> entitlements=user.getEntitlements();
+		hhEntitled = entitlements.contains("HOUSEHOLDS_SURVEY_ENTITLEMENT");
 		
 		
 		constituencyId = user.getConstituencyId();

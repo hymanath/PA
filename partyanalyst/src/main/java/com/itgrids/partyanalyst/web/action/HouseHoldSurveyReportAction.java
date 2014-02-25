@@ -19,8 +19,7 @@ import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
-import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -61,8 +60,17 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<GenericVO> socialPositionList;
 	private Long houseHoldsId;
 	private IRegionServiceData regionServiceDataImp;
+	private EntitlementsHelper entitlementsHelper;
 	private List<String> voterIdList;
 	private ResultStatus resultStatus;
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	
 	public ResultStatus getResultStatus() {
 		return resultStatus;
@@ -79,15 +87,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	public void setVoterIdList(List<String> voterIdList) {
 		this.voterIdList = voterIdList;
 	}
-
-	public List<SelectOptionVO> getBoothsList() {
-		return boothsList;
-	}
-
-	public void setBoothsList(List<SelectOptionVO> boothsList) {
-		this.boothsList = boothsList;
-	}
-
+	
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -295,20 +295,20 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 
 	public String execute(){
 		session = request.getSession();
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.HOUSEHOLDS_SURVEY_ENTITLEMENT))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.HOUSEHOLDS_SURVEY_ENTITLEMENT))
+			return ERROR;
+		
+		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+		userId = user.getRegistrationID();
 		
 		optiontypes = houseHoldSurveyReportService.getAllOptionTypes();
 		
-		RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
-		if(user == null)
-			return "error";
-		
-		userId = user.getRegistrationID();
-		
-		
-		
 		Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
 		Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
-		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userId,electionYear,electionTypeId);
+		userAccessConstituencyList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(1l,electionYear,electionTypeId);
 		
 		
 		districtsList = regionServiceDataImp.getDistrictsByStateID(1L);
@@ -422,7 +422,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 
 			Long voterId=jObj.getLong("voterId");
 			
-			votersFamilyInfo = votersAnalysisService.getFamilyInformationForHHSurvey(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),userId,null,voterId);
+			votersFamilyInfo = votersAnalysisService.getFamilyInformationForHHSurvey(null,jObj.getLong("id"),jObj.getLong("publicationDateId"),jObj.getString("hno"),1l,null,voterId);
 			
 		}catch(Exception e){
 			//log.error("Exception Occured in getVotersFamilyDetails() Method,Exception is- ",e);
