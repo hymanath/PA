@@ -203,9 +203,15 @@ lable{line-height:40px;}
  </div>
  <div id="userSettingsDialog"></div>
 
-<div id="connectPeoplePopup" style="display:none;">
-	<div id="allConnectedUsersDisplay_main"></div>
+	<div id="connectPeoplePopup" style="display:none;">
+		<div id="allConnectedUsersDisplay_main"></div>
 	</div>
+	
+	<div id="houseHoldDivId" class="widget" style="display:none;">
+		<a id="houseHoldForm" class="btn btn-info" style="margin:5px;" href="houseHoldSurveyReportAction.action"> House Hold Page</a>
+		<a id="houseHoldAdmin" class="btn btn-info" href="houseHoldCreationAction.action"> House Hold Admin</a>
+	</div>
+	
 <div class="btn btn-xlarge" style="height: 185px;">
     
     <h2 style="margin-top: 38px;">Advanced Dashboard</h2>
@@ -914,6 +920,12 @@ userAccessType = '${sessionScope.USER.accessType}';
 var loginMode = '${loginMode}';	  
 var stateId = $('#stateList_d').val();
 var districtId = '${districtId}';
+var isHHEntitled = '${hhEntitled}';
+
+if(isHHEntitled){
+	$("#houseHoldDivId").css("display","block");
+}
+
 var selType= "";
 $("#constituencyId option[value=0]").remove();
 $("#constituencyList option[value=0]").remove();

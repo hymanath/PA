@@ -233,6 +233,7 @@ function callAjax(jsObj,url){
 							{
 							
 							}else if(jsObj.task == "getVotersMatched"){
+								$("#ajaxImg").css("display","none");
 								buildTableForSearchedVoters(myResults);
 							}
 							
@@ -1042,7 +1043,7 @@ function saveHouseHoldInfo(){
 
 	<div style="border:1px solid #000;padding:4px;border-radius:2px 2px 2px 2px;margin-bottom:5px;">
 			<div  class="row-fluid" style="clear:both;font-weight:bold;margin:6px 0 9px 34px;">
-				<div style="float:left;width:20px;margin:1px;"><input type="checkbox"/></div>
+				<div style="float:left;width:80px;margin:1px;"> Select </div>
 				<div style="float:left;width:89px;">Name</div>
 				<div style="float:left;width:40px;">Age</div>
 				<div style="float:left;width:89px;">Gender</div>
@@ -1065,10 +1066,13 @@ function saveHouseHoldInfo(){
 	<div class="span12 row searchVtrCrit" style="display:none;">
 		<div class="span8 row-fluid"><span class="span4 ">Voter Id</span><input type="text" id="voterId" class="span4 vtrIdCls"/></div> (or)
 		<div class="span8 row-fluid"><span class="span4 ">Voter Name</span><input type="text" id="voterNameId" class="span4 vtrNameCls"/></div>
-		<div class="span8"><span class="btn btn-info" onclick="searchNow()"> Search </span></div>
+		<div class="span8"><span class="btn btn-info searchNowBtn" onclick="searchNow()"> Search </span><img id='ajaxImg' style='width: 25px;display:none;margin-left:5px;' src='images/icons/ajaxImg.gif'></div>
+		
 	</div>
 	
 	<div class="span12 row searchedVotersDiv"></div>
+	
+	<div class="span8 row-fluid errorDiv"></div>
 </div>
 
 </div>
@@ -1076,8 +1080,18 @@ function saveHouseHoldInfo(){
 
 <script>
 	function searchNow(){
+		
+		
+	
 		var voterCardNo=$(".vtrIdCls").val();
 		var voterName=$(".vtrNameCls").val();
+		$("#searchedVotersDiv").html("");
+		
+		if(voterCardNo=="" && voterName==""){
+			$(".errorDiv").html("<span style='color:red'> Please Enter Name or Voter Id to Search </span>");
+			return;
+		}
+		$("#ajaxImg").css("display","inline-block");
 		var publicationDateId="${publicationDateId}";
 		var boothId="${boothId}";
 		//var constituencyId = 228;
@@ -1111,13 +1125,23 @@ function saveHouseHoldInfo(){
 	}
 	var temp;
 	function buildTableForSearchedVoters(results){
+		var voterArr=[];
+		 $('.voterChkbx').each(function(index,value){
+			voterArr.push(this.value);
+		 });
+		
+		
 		var str="";
 		str+="<table class='table table-bordered' searchedVotersTable>";
 			str+="<thead>";
 				str+="<tr><th>Select</th><th>Name</th><th>Serial No</th><th>Booth No</th><th>House No</th></tr>";
 				for(var i in results){
 					str+="<tr>";
-						str+="<td><input type='checkbox' name='searchedVoter' value="+results[i].voterId+"></td>";
+						if(voterArr.indexOf(results[i].voterId.toString())==-1){
+							str+="<td><input type='checkbox' name='searchedVoter' value="+results[i].voterId+"></td>";
+						}else{
+							str+="<td><input type='checkbox' name='searchedVoter' value="+results[i].voterId+" disabled='true'></td>";
+						}
 						str+="<td>"+results[i].name+"</td>";
 						str+="<td>"+results[i].sNo+"</td>";
 						str+="<td>"+results[i].boothName+"</td>";
@@ -1132,6 +1156,8 @@ function saveHouseHoldInfo(){
 	}
 	
 	function addVoter(){
+		
+		
 		var str="";
 		$('input[name="searchedVoter"]:checked').each(function() {
 			
@@ -1216,14 +1242,20 @@ function saveHouseHoldInfo(){
 			}
 		});
 		$(".yui-dt-data").append(str);
+		if(str!=""){
+			$(".errorDiv").html("<span style='color:green'> Added Successfully </span>");
+			$(".searchNowBtn").click();
+		}
+		
+		
 	}
 </script>
 <script>
 
-if('${voterHouseInfoVO.ownerMobNo}'!=null){
+if('${voterHouseInfoVO.ownerMobNo}'){
 	$("#ownerMobileNo").val('${voterHouseInfoVO.ownerMobNo}');
 }
-if('${voterHouseInfoVO.leaderId}'!=null){
+if('${voterHouseInfoVO.leaderId}'){
 	$("#BoothLeadersListId").val('${voterHouseInfoVO.leaderId}');
 }
 
@@ -1315,11 +1347,11 @@ function submitQuestionDetails()
 	 
 	var leader=$("#BoothLeadersListId").val();
 	var ownerMob=$("#ownerMobileNo").val();
-
+	
+	
   $('.voterChkbx').each(function(index,value){
 		var leader=$("#BoothLeadersListId").val();
 		var ownerMob=$("#ownerMobileNo").val();
-		
 		
 	   if(this.checked)
 	   {
@@ -1337,11 +1369,11 @@ function submitQuestionDetails()
 
 				 voterDtls.voters.push(selectedVoterDtls);
 	   }
+	   
    });
   
-  
   $('.familyMemberChkbx').each(function(index,value){
-
+		
 	   if(this.checked)
 	   {
 			
@@ -1428,7 +1460,7 @@ function addNewPersonOfFamily()
 
 		   str+='<div class="row-fluid " id="newPersonDetails'+newPersonsCount+'">';
 
-			str+='<div style="float:left;width:20px;margin-top:5px;"><input type="checkbox" disabled="true" checked /></div>';
+			str+='<div style="float:left;width:80px;margin-top:5px;"><input type="checkbox" disabled="true" checked /></div>';
 			str+='<div style="float:left;width:89px;"><input type="text"  style="width:69px;" class="nameCls" id="newPrsnName'+newPersonsCount+'"/></div>';
 			str+='<div style="float:left;width:40px;"><input type="text"  style="width:19px;" class="ageCls" id="newPrsnAge'+newPersonsCount+'"/></div>';
 			str+='<div style="float:left;width:89px;">';

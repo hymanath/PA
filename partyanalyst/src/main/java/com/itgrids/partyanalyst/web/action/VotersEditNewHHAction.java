@@ -550,10 +550,16 @@ public class VotersEditNewHHAction  extends ActionSupport implements ServletRequ
 		
 		
 		educationsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(8L);
-		occupationsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(7L);
-		socialPositionsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(9L);
-		relationList = houseHoldSurveyReportService.getFamilyRelationsList();
+		educationsList.add(0,new SelectOptionVO(0L,"Select Education"));
 		
+		occupationsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(7L);
+		occupationsList.add(0,new SelectOptionVO(0L,"Select Occupation"));
+		
+		socialPositionsList = houseHoldSurveyReportService.getUserVoterCategoryValuesById(9L);
+		socialPositionsList.add(0,new SelectOptionVO(0L,"Select Social Position"));
+		
+		relationList = houseHoldSurveyReportService.getFamilyRelationsList();
+		relationList.add(0,new SelectOptionVO(0L,"Select Relation"));
 		
 		//session.setAttribute(ISessionConstants.WINDOW_TASK,windowTask);
 /*		HttpSession session = request.getSession();
