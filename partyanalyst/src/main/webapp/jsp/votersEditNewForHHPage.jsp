@@ -1237,6 +1237,7 @@ function submitQuestionDetails()
   var errorDivEle = document.getElementById('errorDiv');
   var flag= true;
   var str= '';
+  var pattern1= /^\d{10}$/;
   if($('#BoothLeadersListId').val() == 0)
   {
        str+='Booth Leader Name is Required<br>';
@@ -1278,6 +1279,24 @@ function submitQuestionDetails()
 		 return false;
      }
   });
+   $('.mobileCls').each(function(){
+     if($.trim($(this).val()).length == 0)
+	 {
+         str += 'Mobile No is required for adding new person<br>';
+		 flag=false;
+		 return false;
+     }
+  });
+
+   $('.mobileCls').each(function(){
+	  if ($.trim($(this).val()).length>0){
+		if( (!pattern1.test($(this).val())) || (($(this).val()).length !=10 )) {  
+					      str += 'Please enter valid mobile number.';
+			              flag=false;
+		                  return false; 
+					 }
+			}
+   });
   errorDivEle.innerHTML = str;
   if(flag == false)
   {

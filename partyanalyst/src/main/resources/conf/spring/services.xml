@@ -1909,6 +1909,9 @@
  	 <property name="houseHoldsDAO" ref="houseHoldsDAO"></property>
  	 <property name="hhSurveyAnswersDAO" ref="hhSurveyAnswersDAO"></property>
  	 <property name="houseHoldVoterDAO" ref="houseHoldVoterDAO"></property>
+	 <property name="publicationDateDAO" ref="publicationDateDAO"></property>
+	 <property name="hhLeaderDAO" ref="hhLeaderDAO"></property> 
+	 <property name="hhBoothLeaderDAO" ref="hhBoothLeaderDAO"></property>
   </bean>
    
 </beans>		
