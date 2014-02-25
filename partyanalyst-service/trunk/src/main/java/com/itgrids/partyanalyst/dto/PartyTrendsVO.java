@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import com.itgrids.partyanalyst.model.PartyTrends;
+
 
 
 
@@ -23,6 +25,25 @@ public class PartyTrendsVO {
 	private Float prpWt;
 	private Float  youngVotersWt;
 	private Float  totalWt;
+	
+	public PartyTrendsVO()
+	{
+		super();
+	}
+	
+	public PartyTrendsVO(Long partyTrendsId, Long constituencyId,
+			String constituencyName, String name, Float pervTrenzWt,
+			Float prpWt, Float youngVotersWt, Float totalWt) {
+		super();
+		this.partyTrendsId = partyTrendsId;
+		this.constituencyId = constituencyId;
+		this.constituencyName = constituencyName;
+		this.name = name;
+		this.pervTrenzWt = pervTrenzWt;
+		this.prpWt = prpWt;
+		this.youngVotersWt = youngVotersWt;
+		this.totalWt = totalWt;
+	}
 	
 	@Override
 	public String toString() {
