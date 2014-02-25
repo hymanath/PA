@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -24,6 +25,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
@@ -66,6 +70,8 @@ public class CasteReportService implements ICasteReportService{
 	private IHamletDAO hamletDAO;
 	@Autowired
 	private IPartyTrendsDAO partyTrendsDAO;
+	@Autowired
+	private TransactionTemplate transactionTemplate;
 	
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
@@ -802,7 +808,8 @@ public class CasteReportService implements ICasteReportService{
 	// @Override
 	public <K,V>Map<K,V> loadConstituenciesForReport() {
 		 Map<Long, String> map =new HashMap<Long, String>();
-		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadConst();
+	//	List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadConst();
+		 List<Object[]> obj=(List<Object[]>) partyTrendsDAO.findAssemblyConstituenciesForSimaAndra(2L, 1l, Arrays.asList(new String[]{"RURAL","RURAL-URBAN"}),  Arrays.asList(new Long[]{1L,2L,3L,4L,5L,6L,7L,8L,9L,10L}));
 		for (Object[] objects : obj) {
 			map.put(Long.valueOf(objects[0].toString()), objects[1].toString());
 			
@@ -812,12 +819,36 @@ public class CasteReportService implements ICasteReportService{
 	
 	public ResultStatus  generateXL(List<Long> constIds) throws IOException {
 		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
+	    List<Long> constIdRemains=	 (List<Long>)partyTrendsDAO.loadConst(constIds);
+	    final List<PartyTrendsVO> paVo=null;
+	    
+	    if(constIdRemains != null &&constIdRemains.size()>0 ){
+	    	//paVo=getPartyTrendsForConstituencies(constIdRemains);
+	    	try{
+	    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+	    		  protected void doInTransactionWithoutResult(TransactionStatus status) 
+	    		 {
+	    			  for (PartyTrendsVO partyTrendsVO : paVo) {
+						
+	    				  partyTrendsDAO.save(getPartyTrends(partyTrendsVO));
+					}
+	    			  
+	    		 }
+	    		});
+	    	
+	    }catch (Exception e) {
+	    	e.printStackTrace();
+	    	log.debug("exception occured while saving PartyTrends");
+	    }
+			
+		}
+	    
 		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(constIds);
 		
 		for (Object[] objects : obj) {
 			
 			Long constId=Long.valueOf(objects[0].toString());
-			PartyTrendsVO vo =new PartyTrendsVO();
+			PartyTrendsVO vo = new PartyTrendsVO();
 			vo.setConstituencyId(constId);
 			vo.setConstituencyName(objects[1].toString());
 			vo.setName(objects[2].toString());
@@ -840,7 +871,19 @@ public class CasteReportService implements ICasteReportService{
 	    s.setResultCode(0);
 		return null ;
 	}
-
+	public   PartyTrends getPartyTrends(PartyTrendsVO vo) {
+		PartyTrends pt =new PartyTrends();
+		
+		pt.setConstituency(constituencyDAO.get(vo.getConstituencyId())) ;
+	
+		pt.setName(vo.getName());
+		pt.setPervTrenzWt(vo.getPervTrenzWt()) ;
+		pt.setPrpWt(vo.getPervTrenzWt());
+		pt.setYoungVotersWt(vo.getYoungVotersWt());
+		pt.setTotalWt(vo.getTotalWt());
+		
+		return pt;
+	}
    public void  generateXL(Map<Long,List<PartyTrendsVO>> map) throws IOException
 
    
