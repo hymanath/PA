@@ -2199,18 +2199,10 @@ public List<SelectOptionVO> getConstituencyList()
   					registrationVO.setAccessValue("YES");
   					else
   						registrationVO.setAccessValue("Denied");
-  					
   					Date pastTime = (Date)formatter.parse(params[7].toString());;
   					Date currentTime =date.getCurrentDateAndTime();
   					String lastAuthorisedTime = getLastAuthorisedTime(pastTime,currentTime,params[7].toString());
   					registrationVO.setDateOfBirth(lastAuthorisedTime);
-  					
-  				   /*  if(lastAuthorisedTime.indexOf("days") > 0)
-  				     {
-  				    	String days = lastAuthorisedTime.substring(lastAuthorisedTime.indexOf("(")+1,lastAuthorisedTime.indexOf(")")).replaceAll("[a-zA-Z]", "");
-  				    	if( Long.valueOf(days.toString().trim()) >= 10)
-  				    	sendSmsToMobileAppUser(firstName +" "+lastName,params[9].toString());
-  				     }*/
   					registrationVO.setAppId(params[8]!=null?params[8].toString():"");
   					result.add(registrationVO);
   					
@@ -2224,8 +2216,40 @@ public List<SelectOptionVO> getConstituencyList()
 		}
 		return result;
   	}
-  	
-  	public ResultStatus sendSmsToMobileAppUser(String uname,String mobileNo)
+  	/** send sms to mobile App user for authorisation **/
+  	public ResultStatus getMobileAppLastAuthorisedTime()
+  	{
+  		ResultStatus resultStatus = new ResultStatus();
+  		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		DateUtilService date = new DateUtilService();
+			
+  		try{
+  		
+  			List<Object[]> list = mobileAppUserAccessDAO.getMobileAppUserAuthorisedTime();
+  			for(Object[] params : list)
+				{
+  				RegistrationVO registrationVO = new RegistrationVO();
+				String firstName = params[0]!=null ?params[0].toString():"";
+				String lastName = params[1]!=null ?params[1].toString():"";
+				Date pastTime = (Date)formatter.parse(params[2].toString());;
+				Date currentTime = date.getCurrentDateAndTime();
+				String lastAuthorisedTime = getLastAuthorisedTime(pastTime,currentTime,params[2].toString());
+			    if(lastAuthorisedTime.indexOf("days") > 0)
+				     {
+				    	String days = lastAuthorisedTime.substring(lastAuthorisedTime.indexOf("(")+1,lastAuthorisedTime.indexOf(")")).replaceAll("[a-zA-Z]", "");
+				    	if(Long.valueOf(days.toString().trim()) >= 10)
+				    	sendSmsToMobileAppUser(firstName +" "+lastName,params[4].toString());
+				     }
+				}
+  			
+  		}
+  		catch(Exception e)
+  		{
+  			LOG.error("Exception Occured in getMobileAppLastAuthorisedTime Method");	
+  		}
+		return resultStatus;
+  	}
+	public ResultStatus sendSmsToMobileAppUser(String uname,String mobileNo)
   	{
   		ResultStatus resultStatus = new ResultStatus();
   		try{
