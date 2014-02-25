@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IHHSurveyQuestionDAO;
 import com.itgrids.partyanalyst.model.HHSurveyQuestion;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 
 public class HHSurveyQuestionDAO extends GenericDaoHibernate<HHSurveyQuestion,Long> implements IHHSurveyQuestionDAO {
@@ -17,8 +18,9 @@ public class HHSurveyQuestionDAO extends GenericDaoHibernate<HHSurveyQuestion,Lo
 	
 	@SuppressWarnings("unchecked")
 	public List<HHSurveyQuestion> getModelBySurveyId(Long surveyId){
-		Query qry=getSession().createQuery(" from HHSurveyQuestion model where model.hhSurvey.surveyId =:surveyId");
+		Query qry=getSession().createQuery(" from HHSurveyQuestion model where model.hhSurvey.surveyId =:surveyId and model.isDeleted = :deleteStatus");
 		qry.setParameter("surveyId", surveyId);
+		qry.setParameter("deleteStatus", IConstants.FALSE);
 		return qry.list();
 	}
 	

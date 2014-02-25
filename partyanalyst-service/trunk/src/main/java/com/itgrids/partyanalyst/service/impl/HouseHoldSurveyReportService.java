@@ -907,6 +907,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 								}else
 								{
 									HouseHoldVoter voter = new HouseHoldVoter();
+									int update_count=houseHoldVoterDAO.updateStatusIfVoterIdExist(voterDtls.getVoterId());
 									
 									voter.setVoterId(voterDtls.getVoterId());
 									voter.setVoterFamilyRelationId(voterDtls.getVoterFamilyRelationId());
@@ -1016,7 +1017,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 									HouseHoldVoter voter = new HouseHoldVoter();
 									
 									voter.setVoterId(voterDtls.getVoterId());
-									voter.setVoterFamilyRelationId(familyDetails.getHouseHoldsFamilyDetailsId());
+									voter.setVoterFamilyRelationId(Long.valueOf(voterDtls.getRelationShipType()));
 									voter.setHouseHoldId(hseHoldId);
 									voter.setEducationId(voterDtls.getEducationId());
 									voter.setOccupationId(voterDtls.getOccupationId());
@@ -1039,6 +1040,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 							HouseHoldsFamilyDetails familyDetails = getMatchedFamilyMemberDetails(
 									savedMemberId,
 									membersDetails);
+							
+							int count=houseHoldVoterDAO.childMembersDelete(savedMemberId);
 							
 							familyDetails.setIsDelete(IConstants.TRUE);
 							houseHoldsFamilyDetailsDAO.save(familyDetails);

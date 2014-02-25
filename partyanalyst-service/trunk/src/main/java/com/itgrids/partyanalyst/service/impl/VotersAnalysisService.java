@@ -3019,11 +3019,14 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		    List<Booth> boothDtls=boothDAO.getModelByBoothId(boothId);
 			Long muncipalityId=null;
 			Long panchayatId=null;
+			Long constituencyId=null;
 			for(Booth booth:boothDtls){
 				if(booth.getLocalBody()!=null){
 					muncipalityId=booth.getLocalBody().getLocalElectionBodyId();
+					constituencyId=booth.getConstituency().getConstituencyId();
 				}else if(booth.getPanchayat()!=null){
 					panchayatId=booth.getPanchayat().getPanchayatId();
+					constituencyId=booth.getConstituency().getConstituencyId();
 				}
 			}
 		    
@@ -3066,6 +3069,27 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 						vtrsWithSameHH.addAll(vtrIds);
 					}else{
 						vtrsWithDiffHH.addAll(vtrIds);
+					}
+				}
+			}
+			
+			
+			//IN THE CASE WHEN HOUSE HOLD ID EXIST WHEN PERSON ADDED TO OTHER HOUSE  
+			if(hhMap.size()<=0 && houseHoldId !=null){
+				List<HouseHoldVoter> hhVtrList=houseHoldVoterDAO.getHouseHoldsVoterdDetailsByHouseHoldId(houseHoldId);
+				if(hhVtrList.size()>0){
+					for(HouseHoldVoter param:hhVtrList){
+						vtrsWithSameHH.add(param.getVoterId());
+					}
+				}
+			}
+			
+			//
+			if(hhMap.size()<=0 && houseHoldId ==null){
+				List<Long> vtrTempList= houseHoldVoterDAO.getVoterIdsExistByVoterIds(voterIds);
+				if(vtrTempList.size()>0){
+					for(Long param:vtrTempList){
+						vtrsWithDiffHH.add(param);
 					}
 				}
 			}
@@ -3228,7 +3252,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		    }
 			
 			houseHoldVoterChildVO=new HHSurveyVO();
-			voterHouseInfoVOList=getTheVtrList(sno,boothId,voterIds,vtrsWithSameHH,vtrsWithDiffHH,ttlVtrIds,votersInfoList,categoriesSvdList);
+			voterHouseInfoVOList=getTheVtrList(sno,boothId,voterIds,vtrsWithSameHH,vtrsWithDiffHH,ttlVtrIds,votersInfoList,categoriesSvdList,constituencyId,publicationDateId);
 			
 		    houseHoldVoterChildVO.setParentsList(voterHouseInfoVOList);
 		    houseHoldVoterChildVO.setChildrenList(childrenList);
@@ -3243,7 +3267,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		return houseHoldVoterChildVO;
 	}
 	
-	public List<VoterHouseInfoVO> getTheVtrList(Long sno,Long boothId,List<Long> voterIds,List<Long> vtrsWithSameHH,List<Long> vtrsWithDiffHH,List<Long> totalVtrIds,List<Voter> votersInfoList,List<VoterHouseInfoVO> categoriesSvdList){
+	public List<VoterHouseInfoVO> getTheVtrList(Long sno,Long boothId,List<Long> voterIds,List<Long> vtrsWithSameHH,List<Long> vtrsWithDiffHH,List<Long> totalVtrIds,List<Voter> votersInfoList,List<VoterHouseInfoVO> categoriesSvdList,Long constituencyId,Long publicationDateId){
 		
 		if(vtrsWithDiffHH.size()<=0){
 			if(vtrsWithSameHH.size()>0){
@@ -3259,6 +3283,26 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 		if(vtrsWithDiffHH.size()>0 && vtrsWithSameHH.size()>0){
 			voterIds=vtrsWithSameHH;
 		}
+		
+		
+		//CREATING MAP HAVING PARAMETERS WITH VOTERID AND ITS VoterHouseInfoVO OF CATEGORIES
+		Map<Long,List<VoterHouseInfoVO>> categoriesForSavedVotersMap=new HashMap<Long, List<VoterHouseInfoVO>>();
+		if(categoriesSvdList.size()>0){
+		for(VoterHouseInfoVO param:categoriesSvdList){
+			if(categoriesForSavedVotersMap.get(param.getVoterId())!=null){
+				List<VoterHouseInfoVO> vhListTemp=categoriesForSavedVotersMap.get(param.getVoterId());
+				vhListTemp.add(param);
+				
+				categoriesForSavedVotersMap.put(param.getVoterId(), vhListTemp);
+			}else{
+				List<VoterHouseInfoVO> vhListTemp=new ArrayList<VoterHouseInfoVO>();
+				vhListTemp.add(param);
+				
+				categoriesForSavedVotersMap.put(param.getVoterId(), vhListTemp);
+			}
+		}
+		}
+		
 		
 		Map<Long,String> mobileNosMap = new HashMap<Long, String>(0);
 		List<VoterHouseInfoVO> voterHouseInfoVOList=new ArrayList<VoterHouseInfoVO>();
@@ -3306,11 +3350,12 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 	    	relsList.add(gvo);
 	    }
 	    
-	    
+	   List<Voter> vtrsInfoList=boothPublicationVoterDAO.getVoterInfoByVoterIds(constituencyId, publicationDateId, voterIds);		
+		
 	   //Map<Long, VoterHouseInfoVO> voterCastePartyDetails =  getUserCasteAndSelectedPartyVoters(voterIds,userId);
-	    	
-		for(Voter voter : votersInfoList){
-			if(voterIds.contains(voter.getVoterId())){
+	  // for(Voter voter : votersInfoList){	
+		for(Voter voter : vtrsInfoList){
+			//if(voterIds.contains(voter.getVoterId())){
 				
 				if(!vtrIdsAlrdyIn.contains(voter.getVoterId())){
 	    	voterHouseInfoVO = new VoterHouseInfoVO();
@@ -3383,12 +3428,12 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 			
 			
 	    	try {
-	    		if(categoriesSvdList.size()<=0){
+	    		if(categoriesForSavedVotersMap.get(voter.getVoterId())==null){
 	    			setVotersCategories(votersCategoriesList,voter,voterHouseInfoVO);
 	    		}
 	    		else{
 	    			//setVotersCategories(categoriesSvdList,voter,voterHouseInfoVO);
-	    			voterHouseInfoVO.setCategoriesList(categoriesSvdList);
+	    			voterHouseInfoVO.setCategoriesList(categoriesForSavedVotersMap.get(voter.getVoterId()));
 	    		}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -3400,7 +3445,7 @@ public VotersInfoForMandalVO getVotersCountForPanchayat(Long id,Long publication
 	    	//getUserCasteAndSelectedParty(voterHouseInfoVO , voter.getVoterId(),userId);
 	    	
 	    	sno = sno+1;
-		}
+		//}
 		}
 		}
 		return voterHouseInfoVOList;
@@ -20889,12 +20934,13 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 	    	voterHouseInfoVO.setVoterIdCardNo(voter.getVoterIDCardNo());
 	    	
 	    	voterHouseInfoVO.setVoterId(voter.getVoterId());
-	    	voterHouseInfoVO.setBoothId(boothId);
+	    	voterHouseInfoVO.setBoothId(Long.valueOf(obj[1].toString()));
 	    	/*if(mobileNosMap.get(voter.getVoterId()) != null)
 	    	 voterHouseInfoVO.setMobileNo(mobileNosMap.get(voter.getVoterId()));
 	    	else
 	    	 voterHouseInfoVO.setMobileNo("N/A");*/
-	    	voterHouseInfoVO.setBoothName(boothDAO.getPartNoByBoothId(voterHouseInfoVO.getBoothId()).get(0).toString());
+	    	//voterHouseInfoVO.setBoothName(boothDAO.getPartNoByBoothId(voterHouseInfoVO.getBoothId()).get(0).toString());
+	    	voterHouseInfoVO.setBoothName(obj[2].toString());
 	    	//VoterHouseInfoVO voterCastPartyVO = voterCastePartyDetails.get(voter.getVoterId());
 	    	
 	    	Map<Long,List<GenericVO>> categoriesMap=getCategoriesForHHSurvey();
@@ -20972,7 +21018,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			GenericVO gvo=new GenericVO();
 			
 			gvo.setId(hbLdr.getHhLeader().getId());
-			gvo.setName(hbLdr.getHhLeader().getUniqueCode());
+			gvo.setName(hbLdr.getHhLeader().getName());
 			
 			hbLdrList.add(gvo);
 		}

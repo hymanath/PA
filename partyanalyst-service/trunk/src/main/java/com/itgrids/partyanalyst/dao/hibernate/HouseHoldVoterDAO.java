@@ -141,5 +141,30 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		
 	}
 	
+	public int childMembersDelete(Long voterFamilyId){
+		Query qry = getSession().createQuery(" update HouseHoldVoter model set model.isDelete =:deleteStatus where model.houseHoldsFamilyDetailsId =:voterFamilyId");
+		qry.setParameter("voterFamilyId", voterFamilyId);
+		qry.setParameter("deleteStatus", IConstants.TRUE);
+		
+		return qry.executeUpdate();
+	}
+	
+	public int updateStatusIfVoterIdExist(Long voterId){
+		Query qry = getSession().createQuery(" update HouseHoldVoter model set model.isDelete =:deleteStatus where model.voterId =:voterId");
+		qry.setParameter("voterFamilyId", voterId);
+		qry.setParameter("deleteStatus", IConstants.TRUE);
+		
+		return qry.executeUpdate();
+	}
+	
+	public List<Long> getVoterIdsExistByVoterIds(List<Long> voterIds){
+		Query qry = getSession().createQuery(" select model.voterId from HouseHoldVoter model" +
+				"  where model.voterId in (:voterIds) and model.isDelete =:deleteStatus");
+		qry.setParameter("deleteStatus", IConstants.FALSE);
+		qry.setParameterList("voterIds", voterIds);
+		
+		return qry.list();
+	}
+	
 	
 }

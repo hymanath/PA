@@ -6339,5 +6339,19 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("publicationDateId",publicationDateId);
 		return query.list();
 	}
+	
+	public List<Voter> getVoterInfoByVoterIds(Long constituencyId,Long publicationDateId,List<Long> voterIds) {
+		Query qry=getSession().createQuery("select model.voter from BoothPublicationVoter model " +
+				" where model.booth.publicationDate.publicationDateId = :publicationDateId " +
+				//" and model.booth.boothId = :boothId " +
+				" and model.booth.constituency.constituencyId = :constituencyId " +
+				" and model.voter.voterId in (:voterIds)") ;
+		
+		qry.setParameter("publicationDateId", publicationDateId);
+		qry.setParameter("constituencyId", constituencyId);
+		qry.setParameterList("voterIds",voterIds);
+		
+		return qry.list();
+     }
 
 }

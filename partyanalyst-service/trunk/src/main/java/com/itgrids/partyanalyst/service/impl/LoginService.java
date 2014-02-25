@@ -321,7 +321,9 @@ public class LoginService implements ILoginService{
 				regVO.setSubscribePartyImpDate(user.getIncludePartyImpDateStatus());
 				regVO.setParentUserId(user.getParentUser() != null?user.getParentUser().getUserId():null);
 				regVO.setMainAccountId(user.getMainAccountUser() != null ? user.getMainAccountUser().getUserId() : null);
-				regVO.setMultipleAccessRestriction(Boolean.valueOf(user.getMultipleAccessRestriction().toString()));			
+				if(user.getMultipleAccessRestriction()!=null){
+				regVO.setMultipleAccessRestriction(Boolean.valueOf(user.getMultipleAccessRestriction().toString()));
+				}
 				if(user.getParty() != null){
 					regVO.setParty(user.getParty().getPartyId());
 					regVO.setPartyShortName(user.getParty().getShortName());
