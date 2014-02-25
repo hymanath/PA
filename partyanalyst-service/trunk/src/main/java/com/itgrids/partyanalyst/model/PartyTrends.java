@@ -26,12 +26,12 @@ public class PartyTrends implements Serializable{
 	 private static final long serialVersionUID = 1L;
 	 
 	 private Long partyTrendsId;	
-
+ 
 	
 	  
 	  private Constituency constituency;
 	 private String name;
-	 
+	 private Long constituencyId;
 	  
 	private Float pervTrenzWt;
 	private Float prpWt;
@@ -94,6 +94,17 @@ public class PartyTrends implements Serializable{
 	public void setTotalWt(Float totalWt) {
 		this.totalWt = totalWt;
 	}
+	@Column(name="constituency_id" ,insertable=false ,updatable=false )
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+	
+	
+	
+	
 	
 	
 	 
