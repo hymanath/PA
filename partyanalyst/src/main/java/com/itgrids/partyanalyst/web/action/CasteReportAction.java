@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -217,8 +219,19 @@ public String getConstXL()
 		if(user == null)
 		return INPUT;
 		try{
+			System.out.println("before   ===="+constValues);
+			 if(request.getParameterMap().containsKey("constValues")){
+			String[] ids=	 request.getParameterValues("constValues");
+			for (String string : ids) {
+				constValues = new ArrayList<Long>();
+				constValues.add(Long.valueOf(string));
+			}
+			 }
+			 System.out.println("after ==="+constValues);
 			resultStatus=casteReportService.generateXL(constValues);
 		 
+			 
+		   
 		}catch(Exception e)
 		{
 			resultStatus = new ResultStatus();
