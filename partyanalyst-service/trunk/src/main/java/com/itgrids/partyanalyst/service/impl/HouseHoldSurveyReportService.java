@@ -1187,7 +1187,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	{
 		log.debug("Entered into the saveLeaderDetails service method");
 		ResultStatus resultStatus = new ResultStatus();
-		List namesList = hhBoothLeaderDAO.getLeaderNamesForBoothId(leaderDtls.getName(),leaderDtls.getBoothId());
+		List namesList = hhBoothLeaderDAO.getLeaderIdForBoothId(leaderDtls.getName(),leaderDtls.getBoothId());
 	    if(namesList != null && namesList.size() > 0 ){
 	    	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 	    	return resultStatus;
