@@ -729,7 +729,20 @@ public class DebateService implements IDebateService{
 							participantVO.setExpRoles(expRole.toString());
 					}
 					
+					List<Object[]> candiList = candidateDAO.getCandidatesForDebate(paticiVO.getCount());
+					List<SelectOptionVO> candidatesList = null;
+					if(candiList != null && candiList.size()>0){
+						candidatesList = new ArrayList<SelectOptionVO>();
+						for (Object[] candidate : candiList) {
+							SelectOptionVO candiVO = new SelectOptionVO();
+							candiVO.setId(Long.valueOf(candidate[0].toString()));
+							candiVO.setName(candidate[1].toString());
+							
+							candidatesList.add(candiVO);
+						}
+					}
 					
+					participantVO.setCandidatesList(candidatesList);
 					participantVO.setScaleList(scopeList);
 					participantVO.setExpRoleList(expList);
 					particepentDetailsList.add(participantVO);

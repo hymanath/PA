@@ -20,7 +20,15 @@ public class ParticipantVO implements Serializable{
 	private String prtiRoles;
 	private String expRoles;
 	private Double perc;
+	private List<SelectOptionVO> candidatesList;
 	
+	
+	public List<SelectOptionVO> getCandidatesList() {
+		return candidatesList;
+	}
+	public void setCandidatesList(List<SelectOptionVO> candidatesList) {
+		this.candidatesList = candidatesList;
+	}
 	public Long getId() {
 		return id;
 	}
