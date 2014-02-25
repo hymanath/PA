@@ -22,4 +22,14 @@ public class HHBoothLeaderDAO extends GenericDaoHibernate<HHBoothLeader,Long> im
 		return qry.list();
 	}
 	
+	public List getLeaderIdForBoothId(String name,Long boothId)
+	{
+		Query query = getSession().createQuery("select model.hhBoothLeaderId from HHBoothLeader model where model.hhLeader.name= :name and model.boothId= :boothId");
+		query.setParameter("name", name);
+		query.setParameter("boothId", boothId);
+		return query.list();
+		
+	}
+	
+	
 }

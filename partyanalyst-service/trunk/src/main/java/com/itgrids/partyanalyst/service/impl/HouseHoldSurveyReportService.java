@@ -30,10 +30,16 @@ import com.itgrids.partyanalyst.dao.IUserVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterCategoryValueDAO;
 import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRelationDAO;
+import com.itgrids.partyanalyst.dao.IHHLeaderDAO;
+import com.itgrids.partyanalyst.dao.IHHBoothLeaderDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.HHOptionType;
@@ -46,6 +52,8 @@ import com.itgrids.partyanalyst.model.HouseHoldVoter;
 import com.itgrids.partyanalyst.model.HouseHolds;
 import com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails;
 import com.itgrids.partyanalyst.model.VoterFamilyRelation;
+import com.itgrids.partyanalyst.model.HHLeader;
+import com.itgrids.partyanalyst.model.HHBoothLeader;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -63,6 +71,8 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	private IBoothDAO boothDAO;
 	private IHouseHoldsDAO houseHoldsDAO;
 	private IHHSurveyAnswersDAO hhSurveyAnswersDAO;
+	private IHHBoothLeaderDAO hhBoothLeaderDAO;
+	private IPublicationDateDAO publicationDateDAO;
 	private DateUtilService DateUtilService = new DateUtilService();
 	
 	
@@ -86,7 +96,31 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	
 	
 	private IHouseHoldVoterDAO houseHoldVoterDAO;
+	private IHHLeaderDAO hhLeaderDAO;		    
 	
+	public IPublicationDateDAO getPublicationDateDAO() {
+		return publicationDateDAO;
+	}
+
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
+	}
+
+	public IHHBoothLeaderDAO getHhBoothLeaderDAO() {
+		return hhBoothLeaderDAO;
+	}
+
+	public void setHhBoothLeaderDAO(IHHBoothLeaderDAO hhBoothLeaderDAO) {
+		this.hhBoothLeaderDAO = hhBoothLeaderDAO;
+	}
+	
+	public IHHLeaderDAO getHhLeaderDAO() {
+		return hhLeaderDAO;
+	}
+
+	public void setHhLeaderDAO(IHHLeaderDAO hhLeaderDAO) {
+		this.hhLeaderDAO = hhLeaderDAO;
+	}
 
 	public IHouseHoldVoterDAO getHouseHoldVoterDAO() {
 		return houseHoldVoterDAO;
@@ -1142,5 +1176,68 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		
 	}
 	
-	
+    public List<String> getAllVoterIds(){
+		
+		List<String> allVoterIds = hhLeaderDAO.getAllExistingVoterIds();		
+		return allVoterIds;
+		
+	}
+    
+    public ResultStatus saveLeaderDetails(final HHLeaderDetailsVO leaderDtls)
+	{
+		log.debug("Entered into the saveLeaderDetails service method");
+		ResultStatus resultStatus = new ResultStatus();
+		List namesList = hhBoothLeaderDAO.getLeaderNamesForBoothId(leaderDtls.getName(),leaderDtls.getBoothId());
+	    if(namesList != null && namesList.size() > 0 ){
+	    	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	    	return resultStatus;
+	    }
+	    else{
+		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				public void doInTransactionWithoutResult(TransactionStatus status) {
+			
+					HHLeader details = new HHLeader();
+					details.setName(leaderDtls.getName());
+					details.setMobileNo(leaderDtls.getMobileNo());
+					details.setVoterId(leaderDtls.getVoterId());
+					details.setUniqueCode(leaderDtls.getUniqueCode());					
+					details.setIs_active(leaderDtls.getIsActive());
+					
+					     details = hhLeaderDAO.save(details);
+										
+							HHBoothLeader hhBoothLeader = new HHBoothLeader();							
+							hhBoothLeader.setConstituencyId(leaderDtls.getConstId());
+							hhBoothLeader.setBoothId(leaderDtls.getBoothId());
+							hhBoothLeader.setHhLeaderId(details.getId());
+							hhBoothLeader = hhBoothLeaderDAO.save(hhBoothLeader);
+					}				
+			});
+		} catch (Exception e) {
+			log.error("Exception raised in the saveLeaderDetails service method");
+			e.printStackTrace();
+		}
+	  }
+	    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+    	return resultStatus;
+	}
+    
+    public List<SelectOptionVO> getBoothIdsByConstituencyId(Long constituencyId)
+    {
+    	Long publicationId =publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
+    	List<Object[]> boothIdNames = boothDAO.getBoothsInAConstituencyByPublication(constituencyId,publicationId);
+    	List<SelectOptionVO> result = new ArrayList<SelectOptionVO>(); 
+    	if(boothIdNames != null && boothIdNames.size() > 0){
+    	for(Object[] param: boothIdNames)
+    	{
+    		SelectOptionVO vo =new SelectOptionVO();
+    		vo.setId((Long)param[0]);
+    		vo.setName("booth - "+param[1].toString());
+    		result.add(vo);
+    	}
+    	}
+		return result;
+    
+    }
+    
 }

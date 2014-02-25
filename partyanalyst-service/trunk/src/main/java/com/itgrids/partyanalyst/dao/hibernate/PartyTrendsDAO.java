@@ -16,13 +16,11 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
 	public PartyTrendsDAO() {
 		super(PartyTrends.class);
 	}
-	@Override
 	public List<?> loadConst() {
 		
 		Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
 		return query.list();
 	}
-	@Override
 	public List<?> loadEntitiesForXl(List<Long> constIds) {
 		Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name,model.name,model.pervTrenzWt,model.prpWt,model.youngVotersWt,model.totalWt  from   PartyTrends model  where model.constituency.constituencyId in(:constIds)  group by  model.partyTrendsId  order by model.constituency.name ");
 	

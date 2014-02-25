@@ -3,9 +3,11 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.GenericVO;
+import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 
 public interface IHouseHoldSurveyReportService {
@@ -27,6 +29,9 @@ public interface IHouseHoldSurveyReportService {
 	
 	public GenericVO getLeaderIdAndMobileNoFromHH(Long voterId);
 	public Long getHouseHoldIdOfVoter(Long voterId);
+	public List<String> getAllVoterIds();
+	public ResultStatus saveLeaderDetails(final HHLeaderDetailsVO leaderDtls);
+	public List<SelectOptionVO> getBoothIdsByConstituencyId(Long constituencyId);
 
 
 }
