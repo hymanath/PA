@@ -33,11 +33,13 @@ $(document).ready(function(){
 		<div class="span" id="subQtnDiv"><input type="button" class="btn btn-primary" style="margin:70px 50px" onClick="createSubQuestions();" value="Create Sub Questions" /></div>
 
 		<div class="span" id="qtnDiv"><input type="button" class="btn btn-primary" style="margin:70px 50px" onClick="createQuestions();" value="Create Questions"></input></div>
+
+		<div class="span" id="leaderDiv"><input type="button" class="btn btn-primary" style="margin:20px 50px" onclick="createNewLeader();" value ="Create Leader"></input></div>
      
  </div>
 <div id="mainQtnDivDialog" style="display:none">
 <div id="errorQtnDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
-<div id="statusDiv2"></div>
+<div id="statusDiv1"></div>
     <div id="mainQtnDivId" style="margin:15px">Create MainQuestion :<font class="mandatory">*</font><input id="mainQtnId" type="text" maxlength="100"></div>
 	<input type="button" class="btn" value="Create" style="margin-left:160px" onClick="validateMainQtn();"></input>
 </div>
@@ -103,11 +105,32 @@ $(document).ready(function(){
 
 		</div>
 	</div>
-
-
-
-
  </div>
+
+<div id="leaderDivDialog" style="display:none">
+ <div id="errorLeaderDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
+  <div id="statusDiv3"></div>
+    <div style="margin-left:36px;">
+    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:45px;"></div>
+	<div>Mobile No :<font class="mandatory">*</font><input id="lmobileId" type="text" maxlength="20" style="margin-left:24px;"></div>
+	<div>Voter Id:<font class="mandatory">*</font><input id="lVoterId" type="text" maxlength="20" style="margin-left:39px;"></div>
+	<div>Unique Id:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:29px;"></div>
+
+	<div>is Active:<font class="mandatory">*</font><input id="yesId" type="radio" value="YES" name="radiobtn" style="margin:0px 5px 0px 40px;"/>YES<input id="noId" type="radio" style="margin:0px 5px 0px 20px;" value="NO" name="radiobtn" style="margin-left:15px;"/>NO
+	</div>
+ 
+	<div id="ConstituencyDiv" class="selectDiv">		
+		 Select Constituency<font class="requiredFont">*</font>
+		<select id="constituencyId" onChange="getBooths()" style="margin:7px;">
+		</select>
+	</div>
+	<div id="BoothsDiv" class="selectDiv">		
+		 Select Booth<font class="requiredFont">*</font>
+		<select id="boothId" style="margin:7px 52px;"></select>
+	</div>	
+	
+	<input type="button" class="btn" value="Create" style="margin:20px 112px" onClick="validateLeaderDetails();"></input>
+</div>
 
 <script>
  function getSubSurveyTypes(mainTypeId)
@@ -231,7 +254,7 @@ if($('#optionTypeId').val() != 3)
 		  dataType: 'json',
 		  data: {task:JSON.stringify(mainQtnDtls)},			 
 		  success: function(data){  
-              $('#statusMsg1').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
+              $('#statusDiv1').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
 		  },
 		  error:function() { 
 		  }
@@ -261,11 +284,158 @@ if($('#optionTypeId').val() != 3)
 		  dataType: 'json',
 		  data: {task:JSON.stringify(subQtnDtls)},			 
 		  success: function(data){  
-              $('#statusMsg2').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
+              $('#statusDiv2').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
 		  },
 		  error:function() { 
 		  }
 	  });
+ }
+var voterIdsArray=[];
+function createNewLeader()
+{  
+	$("#errorLeaderDiv").html("");
+
+	 $('#leaderDivDialog').dialog({
+	 title:'Enter Leader Details',
+	 width:500
+     });
+
+    var voterIdDtls={task:"getvoterIds"}
+	$.ajax({
+	   type:"POST",
+	   url:"getVoterIdsAction.action",
+       dataType: 'json',
+	   data:{task:JSON.stringify(voterIdDtls)},
+        }).done(function(result){
+        voterIdsArray=result;
+      });
+
+	var districtDtls={
+             electionTypeId:2,
+			 stateId:1,
+			 task:"getConstituencies"
+	};
+	$.ajax({
+		  type:"POST",
+		  url:"getAllConstituenciesInState.action",
+		  data :{task:JSON.stringify(districtDtls)},
+	}).done(function(result){
+        $("#constituencyId option").remove();
+        for(var i in result)
+        {
+		   $('#constituencyId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');         
+        }
+	});
+ }
+ 
+ function validateLeaderDetails()
+ {
+   var leaderDtls={leaderName:'',mobileNo:'',voterId:'',uniqueCode:'',constituencyId:'',boothId:'',isActive:'NO'};
+   
+   leaderDtls.mobileNo = $("#lmobileId").val().trim();
+   leaderDtls.voterId  = $("#lVoterId").val().trim();
+   leaderDtls.uniqueCode = $("#luniqueId").val().trim();
+   leaderDtls.leaderName = $("#leaderNameId").val().trim();
+   leaderDtls.isActive  = $("input[name='radiobtn']:checked").val();
+   leaderDtls.constituencyId = $("#constituencyId option:selected").val();
+   leaderDtls.boothId = $("#boothId option:selected").val();
+   var pattern1= /^\d{10}$/;
+
+    if (leaderDtls.leaderName.length == 0){
+      $("#errorLeaderDiv").html("Please enter the Name");
+         return ;
+    }
+
+    if (leaderDtls.mobileNo.length == 0){
+      $("#errorLeaderDiv").html("Please enter mobile number");
+         return ;
+    }
+
+    if (leaderDtls.mobileNo.length > 0){
+	  if( (leaderDtls.mobileNo.length !=10) || (!pattern1.test(leaderDtls.mobileNo))) {  
+		$("#errorLeaderDiv").html("Please enter valid mobile number");
+        return ;
+		 } 
+	}
+	 if(leaderDtls.voterId.length == 0){
+       $('#errorLeaderDiv').html("Please enter Voter Id<br>");
+	   return;
+   }
+   
+   if(leaderDtls.voterId.length > 0){
+     for(var i in voterIdsArray){
+        if(leaderDtls.voterId == voterIdsArray[i])
+		  {
+		    $('#errorLeaderDiv').html("Voter Id already exists<br>");
+	         return;
+		  }	
+     }
+   }
+   if(leaderDtls.uniqueCode.length == 0){
+       $('#errorLeaderDiv').html("Please enter Unique Code<br>");
+	   return;
+   }
+
+   if(leaderDtls.constituencyId == 0)
+   {
+        $('#errorLeaderDiv').html("Please Select Constituency<br>");
+	   return;
+   }
+ 
+    if(leaderDtls.boothId == 0)
+   {
+        $('#errorLeaderDiv').html("Please Select Booth<br>");
+	   return;
+   }
+	if($("input[name='radiobtn']:checked").length == 0)
+	{
+		  $('#errorLeaderDiv').html("Please Select radio button<br>");
+	   return;
+	}
+     $.ajax({
+		  type:'POST',
+		  url: 'saveLeaderDetails.action',
+		  dataType: 'json',
+		  data: {task:JSON.stringify(leaderDtls)},	
+          }).done(function(result){
+		  if(result != null){
+			  if(result.resultCode == 0){
+				 
+            $("#errorLeaderDiv").html('');
+            $("#statusDiv3").css("visibility","visible");
+		    $('#statusDiv3').text('Saved Successfully..').css("color","green");
+		    setTimeout('$("#statusDiv3").css("visibility","hidden")',2500);
+			$('#lmobileId,#lmobileId,#lVoterId,#luniqueId,#leaderNameId').val("");
+			$('#constituencyId').val(0);
+			  }
+		      else if(result.resultCode == 1){
+			     $('#errorLeaderDiv').html("Name already exists,Please Enter another<br>");
+	             return;
+		      }
+		  }
+	   });
+ }
+
+
+ function getBooths()
+ {
+    var constDtls={
+             constituencyId:$('#constituencyId').val()
+	};
+
+	$.ajax({
+          type:'POST',
+          url: 'getBoothsAjaxAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constDtls)},
+     	  }).done(function(result){
+             $("#boothId option").remove();
+             for(var i in result)
+             {
+		        $('#boothId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');         
+             }
+	   });
+
  }
 
  </script>

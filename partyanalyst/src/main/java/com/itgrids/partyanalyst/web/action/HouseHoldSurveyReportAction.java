@@ -17,8 +17,10 @@ import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
 import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
@@ -38,7 +40,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private String task;
 	
 	private Long userId;
-	private List<SelectOptionVO> constituencyList, userAccessConstituencyList, districtsList;
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList, districtsList, boothsList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IVotersAnalysisService votersAnalysisService;
 	private IHouseHoldSurveyReportService houseHoldSurveyReportService;
@@ -59,7 +61,33 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<GenericVO> socialPositionList;
 	private Long houseHoldsId;
 	private IRegionServiceData regionServiceDataImp;
+	private List<String> voterIdList;
+	private ResultStatus resultStatus;
 	
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
+
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public List<String> getVoterIdList() {
+		return voterIdList;
+	}
+
+	public void setVoterIdList(List<String> voterIdList) {
+		this.voterIdList = voterIdList;
+	}
+
+	public List<SelectOptionVO> getBoothsList() {
+		return boothsList;
+	}
+
+	public void setBoothsList(List<SelectOptionVO> boothsList) {
+		this.boothsList = boothsList;
+	}
+
 	public IRegionServiceData getRegionServiceDataImp() {
 		return regionServiceDataImp;
 	}
@@ -527,6 +555,63 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		return Action.SUCCESS;
 		
 	} 
+	public String getVoterIds()
+	{
+		try {		
+			jObj = new JSONObject(getTask());			
+
+			voterIdList = houseHoldSurveyReportService.getAllVoterIds();			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return Action.SUCCESS;
+		
+	} 
 	
+	public String saveLeaderDetails()
+	{
+		try {		
+			jObj = new JSONObject(getTask());
+			   
+			String leaderName = jObj.getString("leaderName");
+			String mobileNo = jObj.getString("mobileNo"); 
+			String voterId = jObj.getString("voterId");			
+			String uniqueCode = jObj.getString("uniqueCode");
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long boothId = jObj.getLong("boothId");
+	        String isActive = jObj.getString("isActive");		
+			
+            HHLeaderDetailsVO leaderDtls = new HHLeaderDetailsVO();
+			
+            leaderDtls.setName(leaderName);
+            leaderDtls.setMobileNo(mobileNo);
+            leaderDtls.setVoterId(voterId);
+            leaderDtls.setUniqueCode(uniqueCode);
+            leaderDtls.setConstId(constituencyId);
+            leaderDtls.setBoothId(boothId);
+         	leaderDtls.setIsActive(isActive);
+			
+         	resultStatus = houseHoldSurveyReportService.saveLeaderDetails(leaderDtls);				
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return Action.SUCCESS;		
+	} 
+		
+	public String getBoothIdsForAConstituency()
+	{
+		try {		
+			jObj = new JSONObject(getTask());			
+
+			boothsList = houseHoldSurveyReportService.getBoothIdsByConstituencyId(jObj.getLong("constituencyId"));			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return Action.SUCCESS;
+		
+	} 
 	
 }

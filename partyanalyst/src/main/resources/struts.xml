@@ -6424,5 +6424,23 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 		</action>
 	
+		<action name="getVoterIdsAction" class="houseHoldSurveyReportAction"  method="getVoterIds">
+		   <result type="json" name="success">
+		       <param name="root">voterIdList</param>
+		   </result>
+		</action>
+				
+		<action name="getBoothsAjaxAction" class="houseHoldSurveyReportAction"  method="getBoothIdsForAConstituency">
+		   <result type="json" name="success">
+		       <param name="root">boothsList</param>
+		   </result>
+		</action>
+	
+		<action name="saveLeaderDetails" class="houseHoldSurveyReportAction" method="saveLeaderDetails">
+		 <result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+			
 		</package>
 </struts>      
