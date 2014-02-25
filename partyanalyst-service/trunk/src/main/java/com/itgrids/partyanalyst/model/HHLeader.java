@@ -28,6 +28,7 @@ public class HHLeader extends BaseModel implements Serializable{
 	private String mobileNo;
 	private String uniqueCode;
 	private String is_active;
+	private String voterId; 
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,6 +72,13 @@ public class HHLeader extends BaseModel implements Serializable{
 		this.is_active = is_active;
 	}
 	
-	 
+	@Column(name="voter_id")
+	public String getVoterId() {
+		return voterId;
+	}
+	public void setVoterId(String voterId) {
+		this.voterId = voterId;
+	}
+	
 
 }

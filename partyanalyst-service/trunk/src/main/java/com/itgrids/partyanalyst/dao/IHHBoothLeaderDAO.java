@@ -10,4 +10,5 @@ import com.itgrids.partyanalyst.model.HHBoothLeader;
 public interface IHHBoothLeaderDAO extends GenericDao<HHBoothLeader, Long>{
 	
 	public List<HHBoothLeader> getAllLeaderModelByBoothId(Long boothId);
+	public List getLeaderIdForBoothId(String name,Long boothId);
 }
