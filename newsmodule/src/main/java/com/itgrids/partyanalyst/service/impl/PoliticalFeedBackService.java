@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IPfbReportDAO;
 import com.itgrids.partyanalyst.dao.hibernate.AssemblyPoliticalFeedbackDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ConstituencyDAO;
 import com.itgrids.partyanalyst.dao.hibernate.ParlimentActionItemsDAO;
@@ -30,6 +32,7 @@ import com.itgrids.partyanalyst.model.AssemblyPoliticalFeedback;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ParlimentActionItems;
 import com.itgrids.partyanalyst.model.ParlimentPoliticalFeedback;
+import com.itgrids.partyanalyst.model.PfbReport;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.IPoliticalFeedBackService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -45,7 +48,12 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 	private TransactionTemplate 			            transactionTemplate;
 	private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
 	private IDelimitationConstituencyDAO				delimitationConstituencyDAO;
+	private IPfbReportDAO 								pfbReportDAO;
 	
+	
+	public void setPfbReportDAO(IPfbReportDAO pfbReportDAO) {
+		this.pfbReportDAO = pfbReportDAO;
+	}
 	public void setParlimentPoliticalFeedbackDAO(
 			ParlimentPoliticalFeedbackDAO parlimentPoliticalFeedbackDAO) {
 		this.parlimentPoliticalFeedbackDAO = parlimentPoliticalFeedbackDAO;
@@ -534,6 +542,83 @@ public class PoliticalFeedBackService implements IPoliticalFeedBackService{
 		}
 		return status;
 	}
+	
+	 public String savePFBReportForPdf( Long userId, Long pfbId, String description, String path)
+	 {
+		 String string = "invalid";
+		 try {
+			 LOG.info("Enterd into savePFBReportForPdf() in DebateService class");
+						String key = pfbReportDAO.getpfbDatils(userId, pfbId);
+						if(key == null)
+						{
+							PfbReport pfbReport = new PfbReport();
+							DateUtilService currentDate = new DateUtilService();
+							pfbReport.setDescription(escapeUnicode(StringEscapeUtils.unescapeJava(description)));
+							pfbReport.setCreatedDate(currentDate.getCurrentDateAndTime());
+							ParlimentPoliticalFeedback parlimentPoliticalFeedback = parlimentPoliticalFeedbackDAO.get(pfbId);
+							if(parlimentPoliticalFeedback != null)
+							{
+								pfbReport.setParlimentPoliticalFeedback(parlimentPoliticalFeedback);
+							}
+							User user = userDAO.get(userId);
+							if(user != null)
+							{
+								pfbReport.setUser(user);
+							}
+							String key1 = UUID.randomUUID().toString();
+							pfbReport.setKey(key1);
+							pfbReport.setIsDeleted("N");
+							pfbReport = pfbReportDAO.save(pfbReport);
+							if(pfbReport == null)
+							{
+								
+								string = "error";
+							}
+							else
+							{
+								string = path+"key="+key1;
+								
+							}
+						}
+						else
+						{
+							string = path+"key="+key;
+						}
+		} catch (Exception e) {
+			LOG.error("Error occured in savePFBReportForPdf() in DebateService class",e);
+			string = "error";
+		}
+		 return string;
+	 }
+	 
+	 
+	 public String deltePfbReportDetails(String key)
+	 {
+		 String status = null;
+		 try {
+			 LOG.info("Enterd into deltePfbReportDetails() in DebateService class");
+			 int count = pfbReportDAO.deletePfdDetails(key);
+			 if(count > 0)
+			 {
+				 status = "success"; 
+			 }
+		} catch (Exception e) {
+			LOG.error("Error occured in deltePfbReportDetails() in DebateService class",e);
+		}
+		return status;
+	 }
+	 
+	 public Long getPfbDetails(String key)
+	 {
+		 Long count = 0l;
+		 try {
+			 LOG.info("Enterd into getPfbDetails() in DebateService class");
+			 count = pfbReportDAO.getPfdDetails(key);
+		} catch (Exception e) {
+			LOG.error("Error occured in getPfbDetails() in DebateService class",e);
+		}
+		 return count;
+	 }
 	/* public String buildExcelForPFB(List<PoliticalFeedBackVO> returnList){
 			LOG.info("entered into buildExcelForSmsPole()in meetingService class.");
 			String filename =null;

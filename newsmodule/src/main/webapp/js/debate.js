@@ -707,7 +707,7 @@ function fillSelectOptionsVO(results,selectedVal)
 }
 
 function callAjax(jsObj,url)
-	{
+{
 
 	var callback =
 	{			
@@ -795,7 +795,7 @@ function callAjax(jsObj,url)
 	};
 
 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
-	}
+}
 	
 
 	
@@ -1265,28 +1265,28 @@ function  buildDebateBTDatesTable(results)
 	}
 }
 
-	function isNumber(type,id){
-	var smsQuestin =  $("#smsques1").val();
-		if(smsQuestin.trim().length > 0){
-		if(type == "percentage"){			
-					var smsOptionPerc =$( "#"+id+"").val();
-					if(isNaN(smsOptionPerc)){					
-						$("#"+id+"").css("border","1px solid #D14719");
-					}else{
-						$("#"+id+"").css("border","1px solid #CCCCCC");
-					}	
-		}else{
-			 var prsentation = $( "#"+id+"").val();
-				if(isNaN(prsentation) || prsentation >5){
-					$("#"+id+"").css("border","1px solid #D14719");	
-				}
-				else{
+function isNumber(type,id){
+var smsQuestin =  $("#smsques1").val();
+	if(smsQuestin.trim().length > 0){
+	if(type == "percentage"){			
+				var smsOptionPerc =$( "#"+id+"").val();
+				if(isNaN(smsOptionPerc)){					
+					$("#"+id+"").css("border","1px solid #D14719");
+				}else{
 					$("#"+id+"").css("border","1px solid #CCCCCC");
-				}
-		}		
-		}
-		
+				}	
+	}else{
+		 var prsentation = $( "#"+id+"").val();
+			if(isNaN(prsentation) || prsentation >5){
+				$("#"+id+"").css("border","1px solid #D14719");	
+			}
+			else{
+				$("#"+id+"").css("border","1px solid #CCCCCC");
+			}
+	}		
 	}
+	
+}
 
 	
 function getTypeOfConstituency(value)
@@ -1368,33 +1368,33 @@ function updatePercntage(id){
 
 
 	
-	function createNewCandidate(listId,party,id){
-		$('#'+party+'').css("border","1px solid #CCCCCC");
-		$('#presentParty').html('');
-		$('#errorMsgDiv').html('');
+function createNewCandidate(listId,party,id){
+	$('#'+party+'').css("border","1px solid #CCCCCC");
+	$('#presentParty').html('');
+	$('#errorMsgDiv').html('');
 
-		var partyName = $('#'+party+' :selected').text();
-		var partyId = $('#'+party+'').val();
-		debateNewCandiPartyId = partyId;
-		partyDiv = party;
-		roleOptionsID = id;
-		if(partyId <= 0){
-			$('#'+party+'').css("border","1px solid #D14719");
-			return;
-		}
-
-		$('#presentParty').html(''+partyName+'');
-		$("#createCandidateDiv").dialog({
-			modal: true,
-			title: "<b>Create New Candidate</b>",
-			width: 500,
-			height: 220       
-		});   
-		
-	   //getPartiesList("partySelectNewList",null);
-	   //getDesignationList("designationsList");   
-
+	var partyName = $('#'+party+' :selected').text();
+	var partyId = $('#'+party+'').val();
+	debateNewCandiPartyId = partyId;
+	partyDiv = party;
+	roleOptionsID = id;
+	if(partyId <= 0){
+		$('#'+party+'').css("border","1px solid #D14719");
+		return;
 	}
+
+	$('#presentParty').html(''+partyName+'');
+	$("#createCandidateDiv").dialog({
+		modal: true,
+		title: "<b>Create New Candidate</b>",
+		width: 500,
+		height: 220       
+	});   
+	
+   //getPartiesList("partySelectNewList",null);
+   //getDesignationList("designationsList");   
+
+}
 	
 	
 function showNewDebateDiv(){

@@ -1477,4 +1477,8 @@
 	</bean>
 	
 	
+	<bean id="pfbReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.PfbReportDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		

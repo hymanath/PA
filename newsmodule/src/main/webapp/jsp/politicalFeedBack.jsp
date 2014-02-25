@@ -272,6 +272,11 @@ function callAjax(jsObj,url)
 						$('#errorDiv').show();
 						$('#errorDiv').html('<b style="color:red">No Data Avaliable</b>').fadeOut(5000);
 					}
+				}else if(jsObj.task == "generateUrl")
+				{
+					var url = myResults;
+					url += '&fromDate='+$('#pcDateview').val()+'&debateId='+$('#parlimentListview').val();+'';
+					alert(url);
 				}
 			
 			}catch(e)
@@ -394,7 +399,8 @@ function buildPoliticalFeedBack(result)
 	{
 		str += '<div style="float:right;">';
 		str += '<a class="btn btn-success" style="margin-right: 15px;" onClick="editSelectedPoliticalFeedBack('+result[i].id+')">Edit</a>';
-		str += '<a class="btn btn-success" onClick="deletedPoliticalFeedBack('+result[i].id+')">Delete</a>';
+		str += '<a class="btn btn-success" onClick="deletedPoliticalFeedBack('+result[i].id+')" style="margin-right: 15px;">Delete</a>';
+		str += '<a class="btn btn-success" onClick="generateUrl('+result[i].id+')">Pdf</a>';
 		str += '</div>';
 		str += '<legend class="boxHeading"> Parliment Wise Daily Political Feedback </legend>';
 		str += '<div class="row-fluid">';
@@ -531,7 +537,18 @@ function viewPoliticalFeedBack()
 	$('#parlimentListview').val(0);
 	$('#formFillDiv').hide();
 }
-
+function generateUrl(pfbId)
+{
+	var jsObj =
+		{ 
+			pfbId : pfbId,
+			description  : "description",
+			task:"generateUrl"
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "generateUrlForPFAAction.action?"+rparam;						
+		callAjax(jsObj,url);
+}
 function validateFields(type)
 {
 	var flag = true;

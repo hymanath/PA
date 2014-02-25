@@ -22,4 +22,10 @@ public interface IPoliticalFeedBackService {
 	public PoliticalFeedBackVO getSelectedPoliticalFeedBackDetails(Long pfbId);
 	
 	public String deletedPoliticalFeedBadk(Long id);
+	
+	 public String savePFBReportForPdf( Long userId, Long pfbId, String description, String path);
+	 
+	 public String deltePfbReportDetails(String key);
+	 
+	 public Long getPfbDetails(String key);
 }
