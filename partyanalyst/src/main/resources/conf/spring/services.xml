@@ -1804,6 +1804,7 @@
      <property name="mobileAppPingingDAO" ref="mobileAppPingingDAO"/>
      <property name="wardBoothDAO" ref="wardBoothDAO"/>
      <property name="webServiceBaseUrlDAO" ref="webServiceBaseUrlDAO"/>
+     <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO"/>
     </bean>
     
      <bean name="voiceSmsService" class="com.itgrids.partyanalyst.service.impl.VoiceSmsService">
