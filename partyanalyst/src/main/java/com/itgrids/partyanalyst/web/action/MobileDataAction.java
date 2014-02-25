@@ -211,12 +211,19 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		 
 		 else if(jObj.getString("task").equalsIgnoreCase("createDataDumpForCMS"))
 		 {
-			 String path = IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB";
 			 RegistrationVO regVo = new RegistrationVO();
 			 regVo.setConstituencyId(jObj.getLong("constituencyId"));
 			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
 			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB");
 			 resultStatus = mobileService.createDataDumpFileForAConstituency(regVo);
+		 }
+		 else if(jObj.getString("task").equalsIgnoreCase("createDataDumpForCMSPC"))
+		 {
+			 RegistrationVO regVo = new RegistrationVO();
+			 regVo.setConstituencyId(jObj.getLong("constituencyId"));
+			 regVo.setPublicationDateId(jObj.getLong("publicationId"));
+			 regVo.setPath(IWebConstants.STATIC_CONTENT_FOLDER_URL+"SQLITE_DB");
+			 resultStatus = mobileService.createDataDumpFileForAParliamnetConstituency(regVo);
 		 }
 		 else if(jObj.getString("task").equalsIgnoreCase("saveSuperAdmin"))
 		 {
