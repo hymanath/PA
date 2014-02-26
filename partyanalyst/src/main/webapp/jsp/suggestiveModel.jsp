@@ -1082,6 +1082,7 @@ function panchayatMatrx(result)
  <input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
   <input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
   <input type="button" value="Get Voter Address" class="btn" id="voterAddressbtn" onclick="redirectToVoterAddress()" style="margin-top:10px;"/>
+   <input type="button" value="Get Voter Locations" class="btn" id="voterrangebtn" onclick="redirectToVoterRange()" style="margin-top:10px;"/>
 
  </fieldset>
   </div>
@@ -4470,6 +4471,11 @@ win.focus();
 function redirectToVoterAddress()
 {
 var win=window.open('voterAddressAction.action', '_blank');
+win.focus();
+}
+function redirectToVoterRange()
+{
+var win=window.open('voterLocationAction.action', '_blank');
 win.focus();
 }
 </script>

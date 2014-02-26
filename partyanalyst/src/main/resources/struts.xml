@@ -6447,5 +6447,14 @@
            		<param name="root">status</param>
         	</result>
 		</action>
+		<action name="getVoterLocationsAction" class="casteReportAction" method="getPanchayatsInVoterRange">
+		 <result type="json" name="success">
+           		<param name="root">panchayats</param>
+        	</result>
+		</action>
+		<action name="voterLocationAction" class="casteReportAction">
+			<result name="success">/jsp/voterRangeReport.jsp</result>
+			<result name="input">/jsp/loginForm.jsp</result>
+		</action>
 		</package>
 </struts>      
