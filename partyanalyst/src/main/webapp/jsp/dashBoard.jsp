@@ -922,7 +922,7 @@ var stateId = $('#stateList_d').val();
 var districtId = '${districtId}';
 var isHHEntitled = '${hhEntitled}';
 
-if(isHHEntitled){
+if(isHHEntitled==true){
 	$("#houseHoldDivId").css("display","block");
 }
 
