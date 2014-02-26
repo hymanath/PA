@@ -40,7 +40,7 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private String task;
 	
 	private Long userId;
-	private List<SelectOptionVO> constituencyList, userAccessConstituencyList, districtsList, boothsList;
+	private List<SelectOptionVO> constituencyList, userAccessConstituencyList, districtsList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private IVotersAnalysisService votersAnalysisService;
 	private IHouseHoldSurveyReportService houseHoldSurveyReportService;
@@ -65,15 +65,6 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<String> voterIdList;
 	private ResultStatus resultStatus;
 	
-	
-	public List<SelectOptionVO> getBoothsList() {
-		return boothsList;
-	}
-
-	public void setBoothsList(List<SelectOptionVO> boothsList) {
-		this.boothsList = boothsList;
-	}
-
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -608,20 +599,6 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			e.printStackTrace();
 		}		
 		return Action.SUCCESS;		
-	} 
-		
-	public String getBoothIdsForAConstituency()
-	{
-		try {		
-			jObj = new JSONObject(getTask());			
-
-			boothsList = houseHoldSurveyReportService.getBoothIdsByConstituencyId(jObj.getLong("constituencyId"));			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-		return Action.SUCCESS;
-		
 	} 
 	
 }
