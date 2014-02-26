@@ -121,12 +121,19 @@ $(document).ready(function(){
  
 	<div id="ConstituencyDiv" class="selectDiv">		
 		 Select Constituency<font class="requiredFont">*</font>
-		<select id="constituencyId" onChange="getBooths()" style="margin:7px;">
+		<select id="constituencyId" onChange="getPublicationDates()" style="margin:7px 29px;">
 		</select>
 	</div>
+ 
+   <div id="publicationDiv" class="selectDiv">		
+		 Select Publication Date<font class="requiredFont">*</font>
+		<select id="publicationId" onChange="getBooths()" style="margin:7px;"><option value="0">Select Publication Date</option>
+		</select> <span style='display:none;float: right;margin:7px 38px;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>
+	</div>
+
 	<div id="BoothsDiv" class="selectDiv">		
 		 Select Booth<font class="requiredFont">*</font>
-		<select id="boothId" style="margin:7px 52px;"></select>
+		<select id="boothId" style="margin:7px 72px;"><option value="0">Select Booth</option></select>
 	</div>	
 	
 	<input type="button" class="btn" value="Create" style="margin:20px 112px" onClick="validateLeaderDetails();"></input>
@@ -373,8 +380,12 @@ function createNewLeader()
         $('#errorLeaderDiv').html("Please Select Constituency<br>");
 	   return;
    }
- 
-    if(leaderDtls.boothId == 0)
+   if($("#publicationId option:selected").val() ==0)
+   {
+        $('#errorLeaderDiv').html("Please Select Publication Date<br>");
+	   return;
+   }
+   if(leaderDtls.boothId == 0)
    {
         $('#errorLeaderDiv').html("Please Select Booth<br>");
 	   return;
@@ -409,23 +420,56 @@ function createNewLeader()
  }
 
 
- function getBooths()
+ function getPublicationDates()
  {
-    var constDtls={
-             constituencyId:$('#constituencyId').val()
+	 $("#boothId option").remove();
+     var constituencyDtls={
+             selected:$('#constituencyId').val(),
+			 task:"getPublicationDate"
 	};
 
 	$.ajax({
           type:'POST',
-          url: 'getBoothsAjaxAction.action',
+          url: 'voterAnalysisAjaxAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDtls)},
+
+          success: function(result){
+			  $('#publicationId').find('option').remove();
+			  $('#publicationId').append('<option value="0">Select Publication Date</option>');
+			  $.each(result,function(index,value){
+				  $('#publicationId').append('<option value="'+value.id+'">'+value.name+'</option>');
+			  });			  
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+} 
+
+ function getBooths()
+ {
+	$("#ajaxLoad").css("display","block");
+    var constDtls={
+             constituencyId:$('#constituencyId').val(),
+			 publicationId:$('#publicationId').val(),
+		     task:"getBoothsForConstituency"
+	};
+
+	$.ajax({
+          type:'POST',
+          url: 'getBoothsForConstituencyIdAndPublicationId.action',
           dataType: 'json',
           data: {task:JSON.stringify(constDtls)},
-     	  }).done(function(result){
+     	  }).done(function(result){ 
+			  $("#ajaxLoad").css("display","none");
+			if(result != null){
              $("#boothId option").remove();
              for(var i in result)
              {
-		        $('#boothId').append('<option value='+result[i].id+'>'+result[i].name+'</option>');         
+		        $('#boothId').append('<option value='+result[i].id+'>Booth-'+result[i].name+'</option>');         
              }
+		   }
 	   });
 
  }
