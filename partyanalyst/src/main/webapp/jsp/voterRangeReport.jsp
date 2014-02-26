@@ -289,15 +289,15 @@ function getPublicationDate()
 }
 function buildVoterLocations(results,jsObj)
 {
-	alert('aa');
+	
 	$("#showAjaxImg").css("display","none");
 	$("#voterLocationsDiv").css("display","block");
 	var str = '';
 	str+='<table class="table table-bordered">';
 	str+='<tr>';
-	str+='<td>range</td>';
-	str+='<td>panchayat</td>';
-	str+='<td>Total</td>';
+	str+='<td>Range</td>';
+	str+='<td>Panchayat</td>';
+	str+='<td>Total Panchayats</td>';
 	str+='</tr>';
 	for(var i in results)
 	{
