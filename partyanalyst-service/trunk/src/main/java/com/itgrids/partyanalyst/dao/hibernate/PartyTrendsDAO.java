@@ -50,7 +50,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
 	@Override
 	public List<?> loadConst(List<Long> constIds) {
 		
-		Query query= getSession().createQuery("select model.constituency.constituencyId from   PartyTrends model  where  model.constituency.constituencyId not in(:constIds)   group by  model.constituency.constituencyId ");
+		Query query= getSession().createQuery("select model.constituencyId from   Constituency model  where  model.constituencyId  in(:constIds)  and model.constituencyId not in(select distinct model1.constituency.constituencyId from PartyTrends model1 ) ");
 		query.setParameterList("constIds", constIds);
 		return query.list();
 		//Query query= getSession().createQuery("select model.constituency.constituencyId,model.constituency.name from   PartyTrends model  group by  model.constituency.constituencyId order by model.constituency.name ");
