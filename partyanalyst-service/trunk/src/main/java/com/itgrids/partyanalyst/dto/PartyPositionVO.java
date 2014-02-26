@@ -45,7 +45,8 @@ public class PartyPositionVO implements Serializable{
 	private String constituencyType;
     private String location;
     private String villagesCovered;
-    
+    private double prevTrendPoint;
+    private Double prp;
    
 	public String getVillagesCovered() {
 		return villagesCovered;
@@ -261,6 +262,18 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setConstituencyType(String constituencyType) {
 		this.constituencyType = constituencyType;
+	}
+	public double getPrevTrendPoint() {
+		return prevTrendPoint;
+	}
+	public void setPrevTrendPoint(double prevTrendPoint) {
+		this.prevTrendPoint = prevTrendPoint;
+	}
+	public Double getPrp() {
+		return prp;
+	}
+	public void setPrp(Double prp) {
+		this.prp = prp;
 	}
 	
 	

@@ -36,6 +36,10 @@ public class PanchayatVO implements Serializable {
 	private String areaType;
 	private List<BasicVO> muncipalityCasteList;
 	private Long muncipaltotalVoters;
+	private Long totalTargetCount;
+	private Double targetPerc;
+	private Double voterPoints;
+	
 	public Long getPanchayatId() {
 		return panchayatId;
 	}
@@ -186,6 +190,24 @@ public class PanchayatVO implements Serializable {
 	}
 	public void setMuncipaltotalVoters(Long muncipaltotalVoters) {
 		this.muncipaltotalVoters = muncipaltotalVoters;
+	}
+	public Long getTotalTargetCount() {
+		return totalTargetCount;
+	}
+	public void setTotalTargetCount(Long totalTargetCount) {
+		this.totalTargetCount = totalTargetCount;
+	}
+	public Double getTargetPerc() {
+		return targetPerc;
+	}
+	public void setTargetPerc(Double targetPerc) {
+		this.targetPerc = targetPerc;
+	}
+	public Double getVoterPoints() {
+		return voterPoints;
+	}
+	public void setVoterPoints(Double voterPoints) {
+		this.voterPoints = voterPoints;
 	}
 	
 		
