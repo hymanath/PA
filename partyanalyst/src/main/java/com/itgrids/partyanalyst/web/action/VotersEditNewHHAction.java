@@ -619,7 +619,7 @@ public String saveVoterDetails(){
 	if(voterId !=null)
 	{
 		voterHouseInfoVO1=votersAnalysisService.getBoothDetailsForVoter(new Long(boothId));
-		voterHouseInfoVO= votersAnalysisService.getVoterPersonalDetailsByVoterId(new Long(voterId),userId);
+		voterHouseInfoVO= votersAnalysisService.getVoterPersonalDetailsByVoterId(new Long(voterId),1l);
 		
 		List<GenericVO> hhLeadersList=votersAnalysisService.getHHLeadersList(new Long(boothId));
 		
