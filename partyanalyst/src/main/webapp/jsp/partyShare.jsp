@@ -9,9 +9,15 @@
   </head>
 
  <body>
+ <script type="text/javascript">
+   function showExcel(url){
+	   
+	   window.open(url);
+   }
+ </script>
 <br/><br/><br/><br/><br/><br/>
 
- <c:if test="${not empty consMap}">
+ <s:if test="consMap != null">
  
   <div class="container m_top20">
 	<div class="row">
@@ -24,20 +30,25 @@
 </div>
 
 </div>
-<br/><br/>
 <div class="span12"></div>
  <div class="container m_top20">
 	<div class="row">
 	  <div class=" offset4 span4 thumnail">
          
 						<s:form action="getReportForPartyShare">
- 						<s:select list="consMap"  name="constValues" id="constId" multiple="true" ></s:select> 
-                       <input type="submit" value="GenerateExcel" class="btn btn-info pull-right sapn3" />
-                       </s:form>
+ 						<table><tr><td><s:select list="consMap"   name="constValues" id="constId" multiple="true" ></s:select></td></tr> 
+                       <tr><td></td><td><input type="submit" value="GenerateExcel" class="btn btn-info pull-left sapn3" />
+                        <s:if test="resultStatus != null && resultStatus.message != null">
+                        &nbsp;&nbsp;<a href="javascript:{};" class="btn btn-info pull-right sapn3" onclick="showExcel('${resultStatus.message}');">View Excel</a>
+                       </s:if>
+					   </td></tr>
+					   </table>
+					   </s:form>
+                      
 </div>
 </div>
 
 </div>
-</c:if>
+</s:if>
 <br/><br/><br/><br/><br/><br/><br/><br/>
  </html>

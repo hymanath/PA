@@ -237,6 +237,7 @@ public String getConstXL()
 			resultStatus = new ResultStatus();
 			resultStatus.setResultCode(1);
 		    resultStatus.setMessage(e.getMessage());
+		    log.error("Exception Occured in getConstXL() method",e);
 			return ERROR;
 		}
 	//	constValues
