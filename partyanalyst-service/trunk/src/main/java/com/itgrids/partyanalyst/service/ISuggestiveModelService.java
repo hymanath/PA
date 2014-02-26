@@ -10,7 +10,9 @@ import com.itgrids.partyanalyst.dto.ExceptCastsVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
+import com.itgrids.partyanalyst.dto.PartyTrendsVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SuggestedLocationsVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
@@ -65,4 +67,6 @@ public interface ISuggestiveModelService {
 	 public Long getLatestPublicationByConstituency(Long constituencyId);
 	 
 	 public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex);
+	 
+	 public List<PartyTrendsVO> calculateOrderOfPriorityForConstituency(Long userId,List<Long> constituencyIds,List<Long> casteIdsList,List<ExceptCastsVO> exceptCasteList,List<SelectOptionVO> groups,List<ExceptCastsVO> exceptCasteMncplList,String party,List<Long> electionIds,Long partyId,SuggestedLocationsVO weigthPerc);
 }

@@ -175,5 +175,5 @@ public interface IBoothConstituencyElectionDAO extends GenericDao<BoothConstitue
 	
 	public List<Object[]> getConstituencyListByElectionId(Long electionId,List<Long> constituencyIdsList);
 	
-	
+	public List<Long> getBoothIdsByLocalEleBody(Long localEleBodyId, Long electionId);
 }

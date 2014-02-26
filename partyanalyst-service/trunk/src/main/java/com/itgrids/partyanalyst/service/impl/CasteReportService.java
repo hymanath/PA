@@ -4,17 +4,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -48,8 +48,8 @@ import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.PartyTrends;
-import com.itgrids.partyanalyst.model.Voter;
 import com.itgrids.partyanalyst.service.ICasteReportService;
+import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 
@@ -72,6 +72,7 @@ public class CasteReportService implements ICasteReportService{
 	private IPartyTrendsDAO partyTrendsDAO;
 	@Autowired
 	private TransactionTemplate transactionTemplate;
+    private ISuggestiveModelService suggestiveModelService;
 	
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
@@ -158,6 +159,15 @@ public class CasteReportService implements ICasteReportService{
 
 	public void setUserVoterDetailsDAO(IUserVoterDetailsDAO userVoterDetailsDAO) {
 		this.userVoterDetailsDAO = userVoterDetailsDAO;
+	}
+
+	public ISuggestiveModelService getSuggestiveModelService() {
+		return suggestiveModelService;
+	}
+
+	public void setSuggestiveModelService(
+			ISuggestiveModelService suggestiveModelService) {
+		this.suggestiveModelService = suggestiveModelService;
 	}
 
 	public List<CastVO> getCasteWiseInfo(Long constituencyId,Long publicationId,String type,Long userId,String partialChecked)
@@ -806,24 +816,24 @@ public class CasteReportService implements ICasteReportService{
 	 }
 	
 	// @Override
-	public <K,V>Map<K,V> loadConstituenciesForReport() {
-		 Map<Long, String> map =new HashMap<Long, String>();
+	public <K,V>TreeMap<K,V> loadConstituenciesForReport() {
+		 TreeMap<Long, String> map =new TreeMap<Long, String>();
 	//	List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadConst();
 		 List<Object[]> obj=(List<Object[]>) partyTrendsDAO.findAssemblyConstituenciesForSimaAndra(2L, 1l, Arrays.asList(new String[]{"RURAL","RURAL-URBAN"}),  Arrays.asList(new Long[]{1L,2L,3L,4L,5L,6L,7L,8L,9L,10L}));
 		for (Object[] objects : obj) {
 			map.put(Long.valueOf(objects[0].toString()), objects[1].toString());
 			
 		}
-		return (Map<K, V>) map ;
+		return (TreeMap<K, V>) map ;
 	}
 	
 	public ResultStatus  generateXL(List<Long> constIds) throws IOException {
 		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
 	    List<Long> constIdRemains=	 (List<Long>)partyTrendsDAO.loadConst(constIds);
 	    List<Long> constIdRemainsLeft = new ArrayList<Long>();
-	    final List<PartyTrendsVO> paVo=null;
+	      new ArrayList<PartyTrendsVO>();
 	    
-	    if(constIdRemains != null && constIdRemains.size()!= constIds.size() ){
+	    if(constIdRemains != null && constIdRemains.size() > 0 ){
 	    	for (Long  id : constIds) {
 	    		
 				if(!constIdRemains.contains(id))
@@ -832,23 +842,24 @@ public class CasteReportService implements ICasteReportService{
 				}
 			}
 	    	//paVo=getPartyTrendsForConstituencies(constIdRemainsLeft);
-	    	try{
-	    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-	    		  protected void doInTransactionWithoutResult(TransactionStatus status) 
-	    		 {
-	    			  for (PartyTrendsVO partyTrendsVO : paVo) {
-						
-	    				  partyTrendsDAO.save(getPartyTrends(partyTrendsVO));
-					}
-	    			  
-	    		 }
-	    		});
-	    	
-	    }catch (Exception e) {
-	    	e.printStackTrace();
-	    	log.debug("exception occured while saving PartyTrends");
-	    }
-			
+	    	final List<PartyTrendsVO> paVo = suggestiveModelService.calculateOrderOfPriorityForConstituency(null, constIdRemainsLeft, null, null, null, null, null, null, null, null);
+		    if(paVo != null && paVo.size() > 0){	
+		    	try{
+			    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			    		  protected void doInTransactionWithoutResult(TransactionStatus status) 
+			    		 {
+			    			  for (PartyTrendsVO partyTrendsVO : paVo) {
+								
+			    				  partyTrendsDAO.save(getPartyTrends(partyTrendsVO));
+							}
+			    			  
+			    		 }
+			    		});
+			    	
+			    }catch (Exception e) {
+			    	log.debug("exception occured while saving PartyTrends",e);
+			    }
+		    }
 		}
 	    
 		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(constIds);
@@ -860,10 +871,10 @@ public class CasteReportService implements ICasteReportService{
 			vo.setConstituencyId(constId);
 			vo.setConstituencyName(objects[1].toString());
 			vo.setName(objects[2].toString());
-			vo.setPervTrenzWt(Float.valueOf(objects[3].toString()));
-			vo.setPrpWt(Float.valueOf(objects[4].toString()));
-			vo.setTotalWt(Float.valueOf(objects[5].toString()));
-			vo.setYoungVotersWt(Float.valueOf(objects[6].toString()));
+			vo.setPervTrenzWt(new BigDecimal(objects[3].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+			vo.setPrpWt(new BigDecimal(objects[4].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+			vo.setTotalWt(new BigDecimal(objects[6].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+			vo.setYoungVotersWt(new BigDecimal(objects[5].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
 			if(map.containsKey(constId))
 			{
 				map.get(constId).add(vo);
@@ -874,10 +885,11 @@ public class CasteReportService implements ICasteReportService{
 				map.put(constId, l);
 			}
 		}
-		generateXL(map);
+		String url = generateXL(map);
 		ResultStatus s =new ResultStatus();
 	    s.setResultCode(0);
-		return null ;
+	    s.setMessage(url);
+		return s ;
 	}
 	public   PartyTrends getPartyTrends(PartyTrendsVO vo) {
 		PartyTrends pt =new PartyTrends();
@@ -886,20 +898,21 @@ public class CasteReportService implements ICasteReportService{
 	
 		pt.setName(vo.getName());
 		pt.setPervTrenzWt(vo.getPervTrenzWt()) ;
-		pt.setPrpWt(vo.getPervTrenzWt());
+		pt.setPrpWt(vo.getPrpWt());
 		pt.setYoungVotersWt(vo.getYoungVotersWt());
 		pt.setTotalWt(vo.getTotalWt());
 		
 		return pt;
 	}
-   public void  generateXL(Map<Long,List<PartyTrendsVO>> map) throws IOException
+   public String  generateXL(Map<Long,List<PartyTrendsVO>> map) throws IOException
 
    
 
 
    {
-	   
-	   FileOutputStream fileOut =    new FileOutputStream("c:\\anil\\anils.xls");
+	   Random randomNum = new Random();
+		String filename= "Strategy/"+"report"+randomNum.nextInt(10000000)+".xls";
+	   FileOutputStream fileOut =    new FileOutputStream(IConstants.STATIC_CONTENT_FOLDER_URL+filename);
 	   Set<Long> keys = map.keySet();
 	    HSSFWorkbook workbook=new HSSFWorkbook();
 	    HSSFSheet sheet =null;
@@ -921,16 +934,16 @@ public class CasteReportService implements ICasteReportService{
 	       cell.setCellValue("Constituency");
 	       
 	       cell = rowhead.createCell(1);
-	       cell.setCellValue("Name");
+	       cell.setCellValue("Panchayat");
 	       cell = rowhead.createCell(2);
-	       cell.setCellValue("PervTrenzWt");
+	       cell.setCellValue("P.T Weight%");
 	       cell = rowhead.createCell(3);
-	       cell.setCellValue("PrpWt");
+	       cell.setCellValue("PRP Weight%");
 	       cell = rowhead.createCell(4);
-	       cell.setCellValue("YoungVotersWt");
+	       cell.setCellValue("Young Voters Weight%");
 	       
 	       cell = rowhead.createCell(5);
-	       cell.setCellValue("TotalWt");
+	       cell.setCellValue("Total Weight");
 	       
 		for (PartyTrendsVO partyTrendsVO : voa) {
 			  rowhead =sheet.createRow(cnt);
@@ -957,7 +970,7 @@ public class CasteReportService implements ICasteReportService{
 		 fileOut.close(); 
 
 		  
-	
+	return filename;
    }
 	
 

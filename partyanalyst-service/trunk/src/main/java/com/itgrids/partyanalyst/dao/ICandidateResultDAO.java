@@ -73,5 +73,6 @@ public interface ICandidateResultDAO extends GenericDao<CandidateResult, Long>{
 	
 	public List<CandidateResult> findCandidateResultsByCandidateIds(List<Long> candidateIds , Long electionId);
 	
+	public List<String> getTdpPartyPercentage(Long constituencyId);
 
 }

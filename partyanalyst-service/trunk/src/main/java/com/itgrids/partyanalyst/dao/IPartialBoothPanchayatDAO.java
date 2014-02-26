@@ -63,4 +63,6 @@ public interface IPartialBoothPanchayatDAO extends GenericDao<PartialBoothPancha
 	public Long checkPanchayatIsPartial(Long panchayatId,Long publicationId);
 	
 	public List<PartialBoothPanchayat> getPartialBoothsInAConstituency(Long constituencyId);
+	
+	public List<Object[]> getPartialPanchayatsList(Long constituencyId,Long publicationId);
 }

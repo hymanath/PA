@@ -818,5 +818,14 @@ public List<Object[]> getConstituencyListByElectionId(Long electionId,List<Long>
   return query.list();
 }
 
-
+public List<Long> getBoothIdsByLocalEleBody(Long localEleBodyId, Long electionId)
+{
+	StringBuilder stringBuilder = new StringBuilder();
+	stringBuilder.append("select distinct model.booth.boothId from BoothConstituencyElection model where model.booth.localBody.localElectionBodyId =:localElectionBodyId  " +
+			" and model.constituencyElection.election.electionId = :electionId ");
+	Query query = getSession().createQuery(stringBuilder.toString());
+	query.setParameter("electionId", electionId);
+	query.setParameter("localElectionBodyId", localEleBodyId);
+	return query.list();
+}
 }
