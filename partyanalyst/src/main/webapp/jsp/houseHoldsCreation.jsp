@@ -111,9 +111,9 @@ $(document).ready(function(){
  <div id="errorLeaderDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
   <div id="statusDiv3"></div>
     <div style="margin-left:36px;">
-    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:45px;"></div>
+    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;"></div>
 	<div>Mobile No :<font class="mandatory">*</font><input id="lmobileId" type="text" maxlength="20" style="margin-left:24px;"></div>
-	<div>Voter Id:<font class="mandatory">*</font><input id="lVoterId" type="text" maxlength="20" style="margin-left:39px;"></div>
+	<div>Voter Id:<font class="mandatory">*</font><input id="lVoterId" type="text" maxlength="20" style="margin-left:39px;" onblur="validateVoterId();"></div>
 	<div>Unique Id:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:29px;"></div>
 
 	<div>is Active:<font class="mandatory">*</font><input id="yesId" type="radio" value="YES" name="radiobtn" style="margin:0px 5px 0px 40px;"/>YES<input id="noId" type="radio" style="margin:0px 5px 0px 20px;" value="NO" name="radiobtn" style="margin-left:15px;"/>NO
@@ -294,27 +294,19 @@ var voterIdsArray=[];
 function createNewLeader()
 {  
 	$("#errorLeaderDiv").html("");
+    $('#lmobileId,#lmobileId,#lVoterId,#luniqueId,#leaderNameId').val("");
 
-	 $('#leaderDivDialog').dialog({
+	$('#leaderDivDialog').dialog({
 	 title:'Enter Leader Details',
 	 width:500
-     });
-
-    var voterIdDtls={task:"getvoterIds"}
-	$.ajax({
-	   type:"POST",
-	   url:"getVoterIdsAction.action",
-       dataType: 'json',
-	   data:{task:JSON.stringify(voterIdDtls)},
-        }).done(function(result){
-        voterIdsArray=result;
-      });
+    });
 
 	var districtDtls={
              electionTypeId:2,
 			 stateId:1,
 			 task:"getConstituencies"
 	};
+	
 	$.ajax({
 		  type:"POST",
 		  url:"getAllConstituenciesInState.action",
@@ -437,7 +429,19 @@ function createNewLeader()
 	   });
 
  }
+ function validateVoterId()
+ {
+      var voterIdDtls={task:"getvoterIds"}
+	   $.ajax({
+	   type:"POST",
+	   url:"getVoterIdsAction.action",
+       dataType: 'json',
+	   data:{task:JSON.stringify(voterIdDtls)},
+        }).done(function(result){
+        voterIdsArray=result;
+      });
+ }
 
- </script>
+</script>
 </body>
 </html>
