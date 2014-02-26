@@ -28,6 +28,7 @@ import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.SuggestedLocationsVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
@@ -1022,6 +1023,23 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			try{
 				jObj = new JSONObject(getTask());
 				familyInfo = suggestiveModelService.getFamilyDetailsForConstituency(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),jObj.getLong("minVal"),jObj.getLong("maxVal"),jObj.getInt("startIndex"),jObj.getInt("results"));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			 return Action.SUCCESS;	
+		}
+		
+		public String getReport(){
+			try{
+				jObj = new JSONObject(getTask());
+				String ids = jObj.getString("constituencyIds");
+				String[] constiIds = ids.split(",");
+				List<Long> constituencyIds = new ArrayList<Long>();
+				for(String id:constiIds){
+					constituencyIds.add(Long.valueOf(id));
+				}
+				familyInfo = suggestiveModelService.calculateOrderOfPriorityForConstituency(1l,constituencyIds,null,null,null,null,null,null,null,null);
 			}
 			catch (Exception e) {
 				e.printStackTrace();

@@ -6420,7 +6420,7 @@
 			<result name="input">/jsp/loginForm.jsp</result>
 		</action>
 		<action name="getReportForPartyShare" class="casteReportAction" method="getConstXL">
-			<result name="success" type="redirect">partyShare.action</result>
+			<result name="success" type="redirect">partyShare.action?resultStatus.message=${resultStatus.message}</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 		</action>
 	
@@ -6441,6 +6441,11 @@
            		<param name="root">resultStatus</param>
         	</result>
 		</action>
-			
+					
+	    <action name="getSuggestiveReport" class="suggestiveModelAction" method="getReport">
+		 <result type="json" name="success">
+           		<param name="root">status</param>
+        	</result>
+		</action>
 		</package>
 </struts>      

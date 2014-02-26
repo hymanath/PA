@@ -1747,6 +1747,9 @@
 	  <property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO" />
 	  <property name="localElectionBodyWardDAO" ref="localElectionBodyWardDAO" />
 	  <property name="boothResultDAO" ref="boothResultDAO" />
+	  <property name="candidateResultDAO" ref="candidateResultDAO" />
+	  <property name="prpWeightegesDAO" ref="prpWeightegesDAO" />
+	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO" />	  
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
@@ -1898,6 +1901,7 @@
    <property name="panchayatHamletDAO" ref="panchayatHamletDAO"></property>
    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
    <property name="hamletDAO" ref="hamletDAO" />
+   <property name="suggestiveModelService" ref="suggestiveModelService" />
      </bean>
    <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
   	 <property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
