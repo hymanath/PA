@@ -830,19 +830,16 @@ public class CasteReportService implements ICasteReportService{
 	public ResultStatus  generateXL(List<Long> constIds) throws IOException {
 		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
 	    List<Long> constIdRemains=	 (List<Long>)partyTrendsDAO.loadConst(constIds);
-	    List<Long> constIdRemainsLeft = new ArrayList<Long>();
+
 	      new ArrayList<PartyTrendsVO>();
 	    
 	    if(constIdRemains != null && constIdRemains.size() > 0 ){
-	    	for (Long  id : constIds) {
-	    		
-				if(!constIdRemains.contains(id))
-				{
-					constIdRemainsLeft.add(id);
-				}
-			}
+	    	
 	    	//paVo=getPartyTrendsForConstituencies(constIdRemainsLeft);
-	    	final List<PartyTrendsVO> paVo = suggestiveModelService.calculateOrderOfPriorityForConstituency(null, constIdRemainsLeft, null, null, null, null, null, null, null, null);
+	    	for(Long constiId:constIdRemains){
+	    		List<Long> remIds= new ArrayList<Long>();
+	    		remIds.add(constiId);
+	    	final List<PartyTrendsVO> paVo = suggestiveModelService.calculateOrderOfPriorityForConstituency(null, remIds, null, null, null, null, null, null, null, null);
 		    if(paVo != null && paVo.size() > 0){	
 		    	try{
 			    		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
@@ -860,6 +857,7 @@ public class CasteReportService implements ICasteReportService{
 			    	log.debug("exception occured while saving PartyTrends",e);
 			    }
 		    }
+	    }
 		}
 	    
 		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(constIds);

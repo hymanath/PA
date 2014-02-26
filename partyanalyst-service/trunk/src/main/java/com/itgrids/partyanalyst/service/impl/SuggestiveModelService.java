@@ -6176,11 +6176,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		double prevTrendWeigthPerc = 0d;//weigthPerc.getPrevTrendWeight();
 		//double agedVotrsWeigthPerc = weigthPerc.getAgedVotrWeight();
 		float youngVotrsWeigthPerc = 10.00f;//weigthPerc.getYoungVotrWeight();
-		double regainVotrsWeigthPerc = 0d;//weigthPerc.getRegainableWeight();
+		Double regainVotrsWeigthPerc = 0d;//weigthPerc.getRegainableWeight();
 		List<PartyTrendsVO> returnVal = new ArrayList<PartyTrendsVO>();
 	  for(Long constituencyId:constituencyIds){
-		  
+		 try{
+		  LOG.info("Enter in to calc for consti Id "+constituencyId);
 		  regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(constituencyId);
+		  if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
+			  regainVotrsWeigthPerc = 0d;
 		  prevTrendWeigthPerc = 90d-regainVotrsWeigthPerc;
 			
 			Map<String ,Map<String,PartyImpactVO>> prpImpact = getElectionResultsForSelectedElectionsForAConsttituency(constituencyId,"TDP");//prp impac
@@ -6238,6 +6241,9 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		    	trend.setTotalWt(new BigDecimal(trend.getPervTrenzWt()+trend.getPrpWt()+trend.getYoungVotersWt()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
 		    	returnVal.add(trend);
 		    }
+		 }catch(Exception e){
+			 LOG.error("Exception rised in calculation for constiId "+constituencyId+" ",e);
+		 }
 	  }
 	  return returnVal;
 	}
