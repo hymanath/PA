@@ -32,13 +32,19 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	private Long constituencyId;
 	private ICasteReportService casteReportService;
 	private static final Logger log = Logger.getLogger(CasteReportAction.class);
-	private List<CastVO> casteWiseResult;
+	private List<CastVO> casteWiseResult,panchayats;
 	private List<VoterHouseInfoVO> voterDetails;
 	private ResultStatus resultStatus;
 	private  Map<Long,String> consMap;
 	private List<Long> constValues;
 	
 	
+	public List<CastVO> getPanchayats() {
+		return panchayats;
+	}
+	public void setPanchayats(List<CastVO> panchayats) {
+		this.panchayats = panchayats;
+	}
 	public List<Long> getConstValues() {
 		return constValues;
 	}
@@ -252,7 +258,27 @@ public String getConstXL()
 	return Action.SUCCESS;
 }
 
-
+public String getPanchayatsInVoterRange()
+{
+	try{
+		Long userId = 0l;
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return INPUT;
+		else
+	    userId = user.getRegistrationID();
+		jObj = new JSONObject(getTask());
+		
+		panchayats =  casteReportService.getPanchayatsInVoterRange(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),userId);
+		
+	}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in getVoterAddressDetails() method",e);
+	}
+	return Action.SUCCESS;
+}
 
 
 }
