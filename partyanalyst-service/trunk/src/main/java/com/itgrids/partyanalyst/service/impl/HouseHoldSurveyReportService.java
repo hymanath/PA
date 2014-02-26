@@ -72,7 +72,6 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	private IHouseHoldsDAO houseHoldsDAO;
 	private IHHSurveyAnswersDAO hhSurveyAnswersDAO;
 	private IHHBoothLeaderDAO hhBoothLeaderDAO;
-	private IPublicationDateDAO publicationDateDAO;
 	private DateUtilService DateUtilService = new DateUtilService();
 	
 	
@@ -98,14 +97,6 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	private IHouseHoldVoterDAO houseHoldVoterDAO;
 	private IHHLeaderDAO hhLeaderDAO;		    
 	
-	public IPublicationDateDAO getPublicationDateDAO() {
-		return publicationDateDAO;
-	}
-
-	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
-		this.publicationDateDAO = publicationDateDAO;
-	}
-
 	public IHHBoothLeaderDAO getHhBoothLeaderDAO() {
 		return hhBoothLeaderDAO;
 	}
@@ -1224,30 +1215,4 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
     	return resultStatus;
 	}
-    
-    public List<SelectOptionVO> getBoothIdsByConstituencyId(Long constituencyId)
-    {
-    	log.debug("Entered into the getBoothIdsByConstituencyId service method");
-    	List<SelectOptionVO> result= new ArrayList<SelectOptionVO>();
-		try {
-			Long publicationId =publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
-			List<Object[]> boothIdNames = boothDAO.getBoothsInAConstituencyByPublication(constituencyId,publicationId);
-			if(boothIdNames != null && boothIdNames.size() > 0){
-			for(Object[] param: boothIdNames)
-			{
-				SelectOptionVO vo =new SelectOptionVO();
-				vo.setId((Long)param[0]);
-				vo.setName("booth - "+param[1].toString());
-				result.add(vo);
-			}
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			log.error("Exception raised in the getBoothIdsByConstituencyId service method");
-			e.printStackTrace();
-		}
-		return result;
-    
-    }
-    
 }
