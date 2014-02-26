@@ -920,9 +920,9 @@ userAccessType = '${sessionScope.USER.accessType}';
 var loginMode = '${loginMode}';	  
 var stateId = $('#stateList_d').val();
 var districtId = '${districtId}';
-var isHHEntitled = '${hhEntitled}';
+var hhEntitled = '${hhEntitled}';
 
-if(isHHEntitled==true){
+if(hhEntitled=="true"){
 	$("#houseHoldDivId").css("display","block");
 }
 

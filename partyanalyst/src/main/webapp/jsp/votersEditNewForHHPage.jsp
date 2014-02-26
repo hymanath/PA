@@ -228,9 +228,9 @@ function callAjax(jsObj,url){
 								if(myResults.childrenList!=null){
 									buildChildrenTable(myResults.childrenList,jsObj.hno);
 								}
-								if($("#"+'${voterId}'+"fmlyRltn").val()==0){
+								/*if($("#"+'${voterId}'+"fmlyRltn").val()==0){
 									$("#"+'${voterId}'+"fmlyRltn").val(1);
-								}
+								}*/
 							}
 							else if(jsObj.task == "storeCategoeryValues")
 							{
@@ -1024,7 +1024,7 @@ function saveHouseHoldInfo(){
 
 </div>
 </form>
-	<div id="impFamDtlsOuterPopUp">
+		<div id="impFamDtlsOuterPopUp">
 		   <div id="impFamDtlsTitle"></div>
 		   <div id="impFamDtls"  class="table table-striped" style="margin-left:-200px;"></div>
 		  
@@ -1378,8 +1378,13 @@ function submitQuestionDetails()
     var count=countElement("1",relationsArr);
       if(count>1)
 	  {
-	   $("#errorDiv").html('Family Head Relation must be assigned to only one person<br>');
+	   //$("#errorDiv").html('Family Head Relation must be assigned to only one person<br>');
+	   alert('Family Head Relation must be assigned to only one person');
 		 return ;
+	  }
+	  if(count<1){
+		alert('Please Assign Family Head to Atleast One Person');
+		return;
 	  }
 	   
   $('.familyMemberChkbx').each(function(index,value){
