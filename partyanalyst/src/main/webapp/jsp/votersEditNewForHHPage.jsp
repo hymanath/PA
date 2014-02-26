@@ -228,6 +228,9 @@ function callAjax(jsObj,url){
 								if(myResults.childrenList!=null){
 									buildChildrenTable(myResults.childrenList,jsObj.hno);
 								}
+								if($("#"+'${voterId}'+"fmlyRltn").val()==0){
+									$("#"+'${voterId}'+"fmlyRltn").val(1);
+								}
 							}
 							else if(jsObj.task == "storeCategoeryValues")
 							{
@@ -1348,13 +1351,14 @@ function submitQuestionDetails()
 	var leader=$("#BoothLeadersListId").val();
 	var ownerMob=$("#ownerMobileNo").val();
 	
-	
-  $('.voterChkbx').each(function(index,value){
+	var relationsArr=[];
+    $('.voterChkbx').each(function(index,value){
 		var leader=$("#BoothLeadersListId").val();
 		var ownerMob=$("#ownerMobileNo").val();
 		
 	   if(this.checked)
 	   {
+				relationsArr.push($('#'+this.value+"fmlyRltn").val());
 				selectedVoterDtls =
 			       {
 			         voterId:this.value,
@@ -1371,7 +1375,13 @@ function submitQuestionDetails()
 	   }
 	   
    });
-  
+    var count=countElement("1",relationsArr);
+      if(count>1)
+	  {
+	   $("#errorDiv").html('Family Head Relation must be assigned to only one person<br>');
+		 return ;
+	  }
+	   
   $('.familyMemberChkbx').each(function(index,value){
 		
 	   if(this.checked)
@@ -1404,6 +1414,7 @@ function submitQuestionDetails()
 
   for(var i=0;i<newPersons.length;i++)
   {
+		relationsArr.push($('#newPrsnrltnType'+newPersons[i]).val());
 		selectedVoterDtls =
 			       {
 					
@@ -1426,6 +1437,7 @@ function submitQuestionDetails()
 				 voterDtls.voters.push(selectedVoterDtls);
 
   }
+
 	 $.ajax({
           type:'POST',
           url: 'saveHouseHoldsVotersDetailsAction.action',
@@ -1440,7 +1452,11 @@ function submitQuestionDetails()
           }
     });
 }
-
+function countElement(item,array) {
+    var count = 0;
+    $.each(array, function(i,v) { if (v == item) count++; });
+    return count;
+}
 function setHiddenFieldInForm(houseHoldsId)
 {
 	$('#houseHoldsId').val(houseHoldsId);
