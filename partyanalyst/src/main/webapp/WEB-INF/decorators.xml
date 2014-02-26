@@ -197,6 +197,7 @@
 		<pattern>/newsZoneAction*</pattern>
 		<pattern>/partyPerformanceJasper*</pattern>
 		<!-- <pattern>/suggestiveModelAction*</pattern> -->
+		<pattern>/partyShare*</pattern>
     </decorator>
     
     <decorator name="newHome" page="homelayout.jsp">
