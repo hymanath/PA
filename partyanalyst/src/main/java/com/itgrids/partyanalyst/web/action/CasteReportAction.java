@@ -222,8 +222,9 @@ public String getConstXL()
 			System.out.println("before   ===="+constValues);
 			 if(request.getParameterMap().containsKey("constValues")){
 			String[] ids=	 request.getParameterValues("constValues");
+			constValues = new ArrayList<Long>();
 			for (String string : ids) {
-				constValues = new ArrayList<Long>();
+				
 				constValues.add(Long.valueOf(string));
 			}
 			 }
