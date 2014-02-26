@@ -6479,8 +6479,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  List<Object[]> youngPartialVoters = boothPublicationVoterDAO.getConstiPanchayatVotersForPartial(constituencyId, publicationId,partialIds, true);
 			  youngVoters.addAll(youngPartialVoters);
 		 }else{
-			  totalVoters = boothPublicationVoterDAO.getConstiPanchayatVoters(constituencyId, publicationId,partialIds, false);
-			  youngVoters = boothPublicationVoterDAO.getConstiPanchayatVoters(constituencyId, publicationId,partialIds, true);
+			  totalVoters = boothPublicationVoterDAO.getConstiPanchayatVoters(constituencyId, publicationId,null, false);
+			  youngVoters = boothPublicationVoterDAO.getConstiPanchayatVoters(constituencyId, publicationId,null, true);
 		 }
          if(constituencyType.equalsIgnoreCase("RURAL-URBAN")){
         	 List<Object[]> lclTotalVoters = boothPublicationVoterDAO.getConstiLEBVoters(constituencyId,publicationId,false);
