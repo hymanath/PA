@@ -31,7 +31,6 @@ public interface IHouseHoldSurveyReportService {
 	public Long getHouseHoldIdOfVoter(Long voterId);
 	public List<String> getAllVoterIds();
 	public ResultStatus saveLeaderDetails(final HHLeaderDetailsVO leaderDtls);
-	public List<SelectOptionVO> getBoothIdsByConstituencyId(Long constituencyId);
 
 
 }
