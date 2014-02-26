@@ -65,6 +65,15 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private List<String> voterIdList;
 	private ResultStatus resultStatus;
 	
+	
+	public List<SelectOptionVO> getBoothsList() {
+		return boothsList;
+	}
+
+	public void setBoothsList(List<SelectOptionVO> boothsList) {
+		this.boothsList = boothsList;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
