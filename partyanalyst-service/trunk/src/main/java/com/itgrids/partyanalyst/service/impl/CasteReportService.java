@@ -18,6 +18,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 
+import javassist.expr.Cast;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -484,8 +486,6 @@ public class CasteReportService implements ICasteReportService{
 							 castvo.setTotalVoters(totalCountMap.get(casteId));
 							 Map<Long,CastVO> locationMap = casteMap.get(casteId) ;
 							 List<CastVO> locations = new ArrayList<CastVO>();
-							 List<CastVO> locations1 = new ArrayList<CastVO>();
-							
 							 for(Long locationId : locationIds)
 							 {
 								 
@@ -555,7 +555,6 @@ public class CasteReportService implements ICasteReportService{
 					CastVO castvo = new CastVO();
 					castvo.setCastStateId(cast.getCastStateId());
 					castvo.setCastName(cast.getCastName());
-					
 					List<CastVO> locationList = new ArrayList<CastVO>();
 					Long total = 0l;
 					for(CastVO location : cast.getCasteList().subList(maxindex,  cast.getCasteList().size()- 0))
@@ -971,6 +970,127 @@ public class CasteReportService implements ICasteReportService{
 	return filename;
    }
 	
-
+  public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId)
+  {
+	  
+	  List<CastVO> resultList = new ArrayList<CastVO>(); 
+	  
+		List<Object[]> list  = new ArrayList<Object[]>();
+		List<Object[]> list1  = null;
+		List<Object[]> list2  = null;
+		Set<String> partialIds = new HashSet<String>();
+	  try{
+		 List<Object[]> partial = userVoterDetailsDAO.getPartialPanchayatsForConstituency(constitunecyId,publicationId);
+		  for(Object[] p:partial){
+				if(p[0] !=null){
+					partialIds.add(p[0].toString());
+				}
+				if(p[1] !=null){
+					partialIds.add(p[1].toString());
+				}
+			}
+		  String paids = "";
+			for(String g:partialIds){
+				if(paids.length()==0)
+					paids = g;
+				else
+					paids =paids+","+g;
+			}
+			if(paids.length() > 0)
+			{
+		  list1= userVoterDetailsDAO.getVoterCountInLocation1(constitunecyId,publicationId,userId,paids);
+		  list2 = userVoterDetailsDAO.getVoterCountInLocation2(constitunecyId,publicationId,userId,paids);
+		  
+		  if(list1 != null && list1.size() > 0)
+			  list.addAll(list1);
+		  if(list2 != null && list2.size() > 0)
+			  list.addAll(list2);
+			}
+			else
+				list = userVoterDetailsDAO.getVoterCountInLocation(constitunecyId,publicationId,userId);
+		  setToVo(resultList,list,501l,1000l);
+		  setToVo(resultList,list,1001l,1500l);
+		  setToVo(resultList,list,1501l,2000l);
+		  setToVo(resultList,list,2001l,3000l);
+		  setToVo(resultList,list,3001l,4000l);
+		  setToVo(resultList,list,4001l,5000l);
+		  setToVo(resultList,list,5001l,5000l);
+		  setToVo(resultList,list,5001l,6000l);
+		  setToVo(resultList,list,0l,500l);//For Below
+		  setToVo(resultList,list,6000l,0l);//For Above
+		  
+	  }
+	  catch(Exception e)
+	  {
+		  
+	  }
+	return resultList;
+  }
+public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,Long endrange)
+{
+	try{
+	 if(list != null && list.size() > 0)
+	 {
+	  CastVO mainvo = new CastVO();
+	  if(startrange > 0 && endrange >0)
+	  mainvo.setRange(""+startrange+" to "+endrange+" ");
+	  else
+	  {
+		     if(startrange == 0 )
+			 mainvo.setRange("Below 500");
+			else if(endrange == 0)
+			 mainvo.setRange("Above 6000");
+	  }
+	   List<CastVO> result = new ArrayList<CastVO>();
+	   for(Object[] params : list)
+		{
+		      Long count = (Long)params[0]; 
+		      if(startrange > 0 && endrange >0)
+		      {
+					 if(count >= startrange && count <=endrange)	
+					 {
+						 CastVO vo = new CastVO();
+						 vo.setPanchayatId((Long)params[1]);
+						 vo.setPanchayat(params[2].toString());
+						 vo.setCastCount(count);
+						 result.add(vo);
+					}
+		      }
+		      else
+		      {
+		    	  /** For below 500 **/
+				 if(startrange == 0 && count < endrange)
+				 {
+					 CastVO vo = new CastVO();
+					 vo.setPanchayatId((Long)params[1]);
+					 vo.setPanchayat(params[2].toString());
+					 vo.setCastCount(count);
+					 result.add(vo);
+				
+				 }	
+				 /** For Above 6000 **/
+					 else if(endrange == 0 && count > startrange)
+					 {
+						 CastVO vo = new CastVO();
+						 vo.setPanchayatId((Long)params[1]);
+						 vo.setPanchayat(params[2].toString());
+						 vo.setCastCount(count);
+						 result.add(vo);
+					 }
+			 }
+				 
+		      }
+			 mainvo.setRange1(result);
+			 mainvo.setTotalVoters(new Long(result.size()));
+			 resultList.add(mainvo); 
+	  }
+	 
+	    }
+	 
+	catch(Exception e)
+	{
+		
+	}
+}
 
 }

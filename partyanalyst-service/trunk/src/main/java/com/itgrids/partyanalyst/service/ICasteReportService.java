@@ -19,6 +19,7 @@ public interface ICasteReportService {
 	//anilUpdate
 	public <K,V>Map<K,V> loadConstituenciesForReport() ;
 	public ResultStatus  generateXL(List<Long> constIds)  throws IOException ;
+	 public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId);
 
 
 

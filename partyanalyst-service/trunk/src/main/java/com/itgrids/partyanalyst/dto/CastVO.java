@@ -48,15 +48,32 @@ public class CastVO implements Serializable, Comparable<CastVO>{
 	private String constituency;
 	private String tehsil;
 	private String hamlet;
-	
-	
-	public CastVO(){
+	private String range;
+	private List<CastVO> range1;
+
+   public CastVO(){
 		
 	}
 	
 	public CastVO(String castName, String castPercentage) {
 		this.castName = castName;
 		this.castPercentage = castPercentage;
+	}
+
+	public String getRange() {
+		return range;
+	}
+
+	public void setRange(String range) {
+		this.range = range;
+	}
+
+	public List<CastVO> getRange1() {
+		return range1;
+	}
+
+	public void setRange1(List<CastVO> range1) {
+		this.range1 = range1;
 	}
 
 	public Long getPanchayatId() {
