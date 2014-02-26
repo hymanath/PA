@@ -6245,7 +6245,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	
 		  
 	public void calculateWeightsForPreviousTrents(List<PartyPositionVO> orderOfPriority,Map<Long,SuggestedLocationsVO> panchayatLocs,Map<String,SuggestedLocationsVO> panchayatNames,double prevTrendWeigthPerc){
-		if(orderOfPriority.size() > 0 && orderOfPriority.get(0) != null ){
+		if(orderOfPriority != null && orderOfPriority.size() > 0 && orderOfPriority.get(0) != null ){
 			for(PartyPositionVO location : orderOfPriority.get(0).getSuggestedLocations()){
 				
 				SuggestedLocationsVO previousTrend = getSuggestedLocation(location.getId(),location.getName(),panchayatLocs,panchayatNames);
