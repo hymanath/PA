@@ -696,6 +696,8 @@ public List<SelectOptionVO> getConstituencyList()
 			FileOutputStream fos = new FileOutputStream(path+pathSeperator+constituencyName+"_"+date+"_CMS.zip");
 			ZipOutputStream zos = new ZipOutputStream(fos);
 			
+			List<Booth> boothsList = boothDAO.getBoothDataForAPublication(publicationId);
+			
 			List<Constituency> acList = delimitationConstituencyAssemblyDetailsDAO.findAssemblyConstituencies(pconstituencyId,2009l);
 			
 			for(Constituency ac : acList)
@@ -764,6 +766,90 @@ public List<SelectOptionVO> getConstituencyList()
 					LOG.error("Exception Occured for "+ac.getName()+" Constituency, Exception is - ",e);
 				}
 				
+				if(boothsList != null && boothsList.size() > 0)
+				{
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					int records = 0;
+					for(Booth booth : boothsList)
+					{
+						records++;
+						try{
+						statement.executeUpdate("INSERT INTO booth(booth_id,part_no,part_name,location,village_covered,tehsil_id,male_voters,female_voters,total_voters," +
+								"constituency_id,year,publication_date_id) VALUES (" +
+								"'"+booth.getBoothId()+"','"+booth.getPartNo()+"','','"+booth.getLocation()+"','"+booth.getVillagesCovered()+"','"+booth.getTehsil().getTehsilId()+"'" +
+										",'"+booth.getMaleVoters()+"','"+booth.getFemaleVoters()+"','"+booth.getTotalVoters()+"','"+booth.getConstituency().getConstituencyId()+"','"+booth.getYear()+"','"+booth.getPublicationDate().getPublicationDateId()+"')");
+						}catch(Exception e)
+						{
+							LOG.error(e);
+						}
+					}
+					LOG.error(ac.getName()+" Constituency "+records+" Booth Publication Voter Records Inserted");
+					connection.commit();
+					statement.close();
+					connection.close();
+					
+					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
+					connection.setAutoCommit(false);
+					statement = connection.createStatement();
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getPanchayat() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set panchayat_id = "+booth.getPanchayat().getPanchayatId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getLocalBody() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set local_election_body_id = "+booth.getLocalBody().getLocalElectionBodyId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getLocalBodyWard() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set ward_id = "+booth.getLocalBodyWard().getConstituencyId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					for(Booth booth : boothsList)
+					{
+						if(booth.getRefBooth() != null)
+						{
+							try{
+							statement.executeUpdate("UPDATE booth set ref_booth_id = "+booth.getRefBooth().getBoothId()+" where booth_id = "+booth.getBoothId());
+							}catch(Exception e)
+							{
+								LOG.error(e);
+							}
+						}
+					}
+					
+					connection.commit();
+					statement.close();
+					connection.close();
+				}
 			}
 			
 			try{
