@@ -2794,4 +2794,23 @@ public List<SelectOptionVO> getConstituencyList()
   			return str;
   		}
   	}
+	public List<SelectOptionVO> getPCConstituencyList()
+    {
+  	  List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
+  	 try{
+  		 List<Object[]> list = null;
+  		
+  		 list = constituencyDAO.getParliamentConstituencies();
+  		if(list != null && list.size() > 0)
+  		 for(Object[] params:list)
+  		  selectOptionVOList.add(new SelectOptionVO((Long)params[0],params[1]!=null?params[1].toString():""));
+  		
+  	  return selectOptionVOList;
+  	 }catch (Exception e) {
+  	  e.printStackTrace();
+  	  LOG.error(" Exception Occured in getPCConstituencyList() method, Exception - "+e);
+  	  return selectOptionVOList;
+  	}
+    }
+  	
 }
