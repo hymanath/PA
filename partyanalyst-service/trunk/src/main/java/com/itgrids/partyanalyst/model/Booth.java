@@ -57,6 +57,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	
 	private Constituency localBodyWard;
 	private String isPartial;
+	private Booth refBooth;
 	private Set<HamletBooth> hamletBooths = new HashSet<HamletBooth>(0);
 	
 	/** default constructor */
@@ -335,6 +336,18 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setHamletBooths(Set<HamletBooth> hamletBooths) {
 		this.hamletBooths = hamletBooths;
+	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ref_booth_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public Booth getRefBooth() {
+		return refBooth;
+	}
+
+	public void setRefBooth(Booth refBooth) {
+		this.refBooth = refBooth;
 	}
 	
 	
