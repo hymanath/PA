@@ -6968,12 +6968,12 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			   
 			  if(selectedPartyTotal == null)
 				  selectedPartyTotal = 0L;
-			
-			  
-			  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+			  double selectedPartyTotalPercent = 0d;
+			  if(totalVotes != null && totalVotes > 0)
+			   selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		      
-		     Double prpperc = null;
-		     if(prp != null)
+		     Double prpperc = 0d;
+		     if(prp != null && totalVotes != null && totalVotes > 0)
 		    	 prpperc =  new BigDecimal((prp*100.0/totalVotes)).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
 		      double difference = selectedPartyTotalPercent;
 		    	
