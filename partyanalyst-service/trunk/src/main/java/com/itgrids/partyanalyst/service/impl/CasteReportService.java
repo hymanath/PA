@@ -46,6 +46,7 @@ import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.PartyTrendsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -815,18 +816,20 @@ public class CasteReportService implements ICasteReportService{
 	 }
 	
 	// @Override
-	public <K,V>TreeMap<K,V> loadConstituenciesForReport() {
-		 TreeMap<Long, String> map =new TreeMap<Long, String>();
+	public List<SelectOptionVO> loadConstituenciesForReport() {
+		List<SelectOptionVO> returnVo =new ArrayList<SelectOptionVO>();
 	//	List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadConst();
 		 List<Object[]> obj=(List<Object[]>) partyTrendsDAO.findAssemblyConstituenciesForSimaAndra(2L, 1l, Arrays.asList(new String[]{"RURAL","RURAL-URBAN"}),  Arrays.asList(new Long[]{1L,2L,3L,4L,5L,6L,7L,8L,9L,10L}));
 		for (Object[] objects : obj) {
-			map.put(Long.valueOf(objects[0].toString()), objects[1].toString());
-			
+			SelectOptionVO vo = new SelectOptionVO();
+			vo.setId((Long)objects[0]);
+			vo.setName(objects[1].toString());
+			returnVo.add(vo);
 		}
-		return (TreeMap<K, V>) map ;
+		return returnVo ;
 	}
 	
-	public ResultStatus  generateXL(List<Long> constIds) throws IOException {
+	public ResultStatus  generateXL(List<Long> constIds,Long topPercent) throws IOException {
 		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
 	    List<Long> constIdRemains=	 (List<Long>)partyTrendsDAO.loadConst(constIds);
 
@@ -868,10 +871,12 @@ public class CasteReportService implements ICasteReportService{
 			vo.setConstituencyId(constId);
 			vo.setConstituencyName(objects[1].toString());
 			vo.setName(objects[2].toString());
-			vo.setPervTrenzWt(new BigDecimal(objects[3].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
-			vo.setPrpWt(new BigDecimal(objects[4].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
-			vo.setTotalWt(new BigDecimal(objects[6].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
-			vo.setYoungVotersWt(new BigDecimal(objects[5].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+			vo.setPervTrenzWts(new BigDecimal(objects[3].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			vo.setPrpWts(new BigDecimal(objects[4].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			vo.setTotalWts(new BigDecimal(objects[6].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			vo.setYoungVotersWts(new BigDecimal(objects[5].toString()).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			vo.setId((Long)objects[7]);
+			vo.setLocName(objects[8]!=null?objects[8].toString():"");
 			if(map.containsKey(constId))
 			{
 				map.get(constId).add(vo);
@@ -882,7 +887,7 @@ public class CasteReportService implements ICasteReportService{
 				map.put(constId, l);
 			}
 		}
-		String url = generateXL(map);
+		String url = generateXL(map,topPercent);
 		ResultStatus s =new ResultStatus();
 	    s.setResultCode(0);
 	    s.setMessage(url);
@@ -898,10 +903,12 @@ public class CasteReportService implements ICasteReportService{
 		pt.setPrpWt(vo.getPrpWt());
 		pt.setYoungVotersWt(vo.getYoungVotersWt());
 		pt.setTotalWt(vo.getTotalWt());
+		pt.setId(vo.getId());
+		pt.setType(vo.getLocName());
 		
 		return pt;
 	}
-   public String  generateXL(Map<Long,List<PartyTrendsVO>> map) throws IOException
+   public String  generateXL(Map<Long,List<PartyTrendsVO>> map,Long topPercent) throws IOException
 
    
 
@@ -916,7 +923,10 @@ public class CasteReportService implements ICasteReportService{
 	    
 	  for (Long long1 : keys) {
 		List<PartyTrendsVO> voa=  map.get(long1);
-		
+		   int length = voa.size();
+		   if(topPercent != null){
+			   length = (length*topPercent.intValue())/100;
+		   }
 		   sheet =  workbook.createSheet(voa.get(0).getConstituencyName());
 		    sheet.setColumnWidth(0, 4800);
 			sheet.setColumnWidth(1, 4800);
@@ -924,6 +934,7 @@ public class CasteReportService implements ICasteReportService{
 			sheet.setColumnWidth(3, 3000);
 			sheet.setColumnWidth(4, 3000);
 			sheet.setColumnWidth(5, 3000);
+			sheet.setColumnWidth(7, 4800);
 		  int cnt=1;
 		  HSSFRow rowhead =sheet.createRow(0);
 		  Cell cell = rowhead.createCell(0);
@@ -933,16 +944,23 @@ public class CasteReportService implements ICasteReportService{
 	       cell = rowhead.createCell(1);
 	       cell.setCellValue("Panchayat");
 	       cell = rowhead.createCell(2);
-	       cell.setCellValue("P.T Weight%");
+	       cell.setCellValue("P.T Weightage%");
 	       cell = rowhead.createCell(3);
-	       cell.setCellValue("PRP Weight%");
+	       cell.setCellValue("PRP Weightage%");
 	       cell = rowhead.createCell(4);
-	       cell.setCellValue("Young Voters Weight%");
+	       cell.setCellValue("Young Voters Weightage%");
 	       
 	       cell = rowhead.createCell(5);
-	       cell.setCellValue("Total Weight");
+	       cell.setCellValue("Top Opportunity");
 	       
-		for (PartyTrendsVO partyTrendsVO : voa) {
+	       cell = rowhead.createCell(6);
+	       cell.setCellValue("PanchayatId");
+	       
+	       cell = rowhead.createCell(7);
+	       cell.setCellValue("Panchayat Type");
+	       
+		for (int i = 0;i < length;i++) {
+			PartyTrendsVO partyTrendsVO = voa.get(i);
 			  rowhead =sheet.createRow(cnt);
 			 
 			   cell = rowhead.createCell(0);
@@ -952,14 +970,19 @@ public class CasteReportService implements ICasteReportService{
 		       cell = rowhead.createCell(1);
 		       cell.setCellValue(partyTrendsVO.getName());
 		       cell = rowhead.createCell(2);
-		       cell.setCellValue(partyTrendsVO.getPervTrenzWt());
+		       cell.setCellValue(partyTrendsVO.getPervTrenzWts());
 		       cell = rowhead.createCell(3);
-		       cell.setCellValue(partyTrendsVO.getPrpWt());
+		       cell.setCellValue(partyTrendsVO.getPrpWts());
 		       cell = rowhead.createCell(4);
-		       cell.setCellValue(partyTrendsVO.getYoungVotersWt());
+		       cell.setCellValue(partyTrendsVO.getYoungVotersWts());
 		       
 		       cell = rowhead.createCell(5);
-		       cell.setCellValue(partyTrendsVO.getTotalWt());
+		       cell.setCellValue(partyTrendsVO.getTotalWts());
+		       
+		       cell = rowhead.createCell(6);
+		       cell.setCellValue(partyTrendsVO.getId());
+		       cell = rowhead.createCell(7);
+		       cell.setCellValue(partyTrendsVO.getLocName());
 		       cnt++;
 		}
 	  }

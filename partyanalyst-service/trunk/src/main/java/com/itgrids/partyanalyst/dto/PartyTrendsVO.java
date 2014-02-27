@@ -25,6 +25,13 @@ public class PartyTrendsVO {
 	private Float prpWt;
 	private Float  youngVotersWt;
 	private Float  totalWt;
+	private Long id;
+	private String locName;
+	
+	private String pervTrenzWts;
+	private String prpWts;
+	private String  youngVotersWts;
+	private String  totalWts;
 	
 	public PartyTrendsVO()
 	{
@@ -116,6 +123,54 @@ public class PartyTrendsVO {
 
 	public void setConstituencyName(String constituencyName) {
 		this.constituencyName = constituencyName;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getLocName() {
+		return locName;
+	}
+
+	public void setLocName(String locName) {
+		this.locName = locName;
+	}
+
+	public String getPervTrenzWts() {
+		return pervTrenzWts;
+	}
+
+	public void setPervTrenzWts(String pervTrenzWts) {
+		this.pervTrenzWts = pervTrenzWts;
+	}
+
+	public String getPrpWts() {
+		return prpWts;
+	}
+
+	public void setPrpWts(String prpWts) {
+		this.prpWts = prpWts;
+	}
+
+	public String getYoungVotersWts() {
+		return youngVotersWts;
+	}
+
+	public void setYoungVotersWts(String youngVotersWts) {
+		this.youngVotersWts = youngVotersWts;
+	}
+
+	public String getTotalWts() {
+		return totalWts;
+	}
+
+	public void setTotalWts(String totalWts) {
+		this.totalWts = totalWts;
 	}
 
 	

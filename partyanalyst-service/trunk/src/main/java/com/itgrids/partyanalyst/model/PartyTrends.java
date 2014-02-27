@@ -37,6 +37,8 @@ public class PartyTrends implements Serializable{
 	private Float prpWt;
 	private Float  youngVotersWt;
 	private Float  totalWt;
+	private Long id;
+	private String type;
 	
 	 @Id
 	 @GeneratedValue(strategy=GenerationType.AUTO)
@@ -100,6 +102,20 @@ public class PartyTrends implements Serializable{
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	@Column(name="id")
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	@Column(name="type")
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	

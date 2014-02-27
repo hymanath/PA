@@ -6363,7 +6363,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		if(isYoungVoters){
 			queryStr.append(" and bpv.voter.age >=18 and  bpv.voter.age <=22 ");
 		}
-		queryStr.append(" group by bpv.booth.panchayat.panchayatId ");
+		queryStr.append(" and bpv.booth.panchayat.panchayatId is not null group by bpv.booth.panchayat.panchayatId ");
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationId",publicationId);
