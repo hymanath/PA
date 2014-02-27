@@ -779,7 +779,7 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(name);
 	}*/
 	
-	public void testGetWardDetailsByLocalEleBodyId(){
+	/*public void testGetWardDetailsByLocalEleBodyId(){
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(83l);
 		List<Object[]> wards = boothDAO.getWardsByLocalElecBodyIds(ids, 8l, 232l);
@@ -789,5 +789,11 @@ public class BoothDAOHibernateTest extends BaseDaoTestCase{
 			}
 			System.out.println("");
 		}
+	}*/
+	
+	public void testGetBoothDataForAPublication()
+	{
+		List<Booth> list = boothDAO.getBoothDataForAPublication(10l);
+		System.out.println(list.size());
 	}
 }
