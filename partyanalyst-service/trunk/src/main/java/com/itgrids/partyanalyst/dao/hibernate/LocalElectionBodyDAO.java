@@ -169,4 +169,15 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 		
 		
 	}
+  
+  public List<Object[]> getLocalElectionBodyNames(List<Long> localElectionBodyIds){
+		
+		Query query = getSession()
+				.createQuery("select model.localElectionBodyId,concat(model.name,' ',model.electionType.electionType) from LocalElectionBody model where model.localElectionBodyId in(:localElectionBodyIds)");
+		
+		query.setParameterList("localElectionBodyIds", localElectionBodyIds);
+		return query.list();
+		
+		
+	}
 }

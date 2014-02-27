@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
@@ -17,8 +18,8 @@ public interface ICasteReportService {
 
 	
 	//anilUpdate
-	public <K,V>Map<K,V> loadConstituenciesForReport() ;
-	public ResultStatus  generateXL(List<Long> constIds)  throws IOException ;
+	public  List<SelectOptionVO> loadConstituenciesForReport() ;
+	public ResultStatus  generateXL(List<Long> constIds,Long topPercent)  throws IOException ;
 	 public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId);
 
 

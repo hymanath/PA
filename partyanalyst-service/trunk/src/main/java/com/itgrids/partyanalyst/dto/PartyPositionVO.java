@@ -47,6 +47,7 @@ public class PartyPositionVO implements Serializable{
     private String villagesCovered;
     private double prevTrendPoint;
     private Double prp;
+    private String type;
    
 	public String getVillagesCovered() {
 		return villagesCovered;
@@ -274,6 +275,12 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setPrp(Double prp) {
 		this.prp = prp;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 	
