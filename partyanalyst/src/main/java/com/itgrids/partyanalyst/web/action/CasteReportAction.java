@@ -1,8 +1,6 @@
 package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -16,8 +14,8 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.service.ICasteReportService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -35,8 +33,9 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	private List<CastVO> casteWiseResult,panchayats;
 	private List<VoterHouseInfoVO> voterDetails;
 	private ResultStatus resultStatus;
-	private  Map<Long,String> consMap;
+	private  List<SelectOptionVO> consMap;
 	private List<Long> constValues;
+	private Long topPanchayats;
 	
 	
 	public List<CastVO> getPanchayats() {
@@ -51,10 +50,11 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	public void setConstValues(List<Long> constValues) {
 		this.constValues = constValues;
 	}
-	public Map<Long, String> getConsMap() {
+	
+	public List<SelectOptionVO> getConsMap() {
 		return consMap;
 	}
-	public void setConsMap(Map<Long, String> consMap) {
+	public void setConsMap(List<SelectOptionVO> consMap) {
 		this.consMap = consMap;
 	}
 	public ResultStatus getResultStatus() {
@@ -144,6 +144,12 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 		this.constituencyId = constituencyId;
 	}
 	
+	public Long getTopPanchayats() {
+		return topPanchayats;
+	}
+	public void setTopPanchayats(Long topPanchayats) {
+		this.topPanchayats = topPanchayats;
+	}
 	public String execute() throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -235,7 +241,7 @@ public String getConstXL()
 			}
 			 }
 			 System.out.println("after ==="+constValues);
-			resultStatus=casteReportService.generateXL(constValues);
+			resultStatus=casteReportService.generateXL(constValues,topPanchayats);
 		 
 			 
 		   

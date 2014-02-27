@@ -36,8 +36,9 @@
 	  <div class=" offset4 span4 thumnail">
          
 						<s:form action="getReportForPartyShare">
- 						<table><tr><td><s:select list="consMap"   name="constValues" id="constId" multiple="true" ></s:select></td></tr> 
-                       <tr><td></td><td><input type="submit" value="GenerateExcel" class="btn btn-info pull-left sapn3" />
+ 						<table><tr><td><s:select list="consMap"  listKey="id" listValue="name"  name="constValues" id="constId" multiple="true" ></s:select></td></tr> 
+                       <tr><td colspan="2"><b>Get top <input style="width:28px;" name="topPanchayats" type="text" />&nbsp;% Panchayats</b><td></tr>
+					   <tr><td></td><td><input type="submit" value="GenerateExcel" class="btn btn-info pull-left sapn3" />
                         <s:if test="resultStatus != null && resultStatus.message != null">
                         &nbsp;&nbsp;<a href="javascript:{};" class="btn btn-info pull-right sapn3" onclick="showExcel('${resultStatus.message}');">View Excel</a>
                        </s:if>
