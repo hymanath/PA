@@ -1757,4 +1757,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return getHibernateTemplate().find(" from Booth model where model.boothId = ? ",boothId);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Booth> getBoothDataForAPublication(Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select model from Booth model where model.publicationDate.publicationDateId = :publicationDateId ");
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
+	
 }
