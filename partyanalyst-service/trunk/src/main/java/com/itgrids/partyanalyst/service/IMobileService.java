@@ -41,4 +41,5 @@ public interface IMobileService {
 	public ResultStatus createDataDumpFileForAConstituency(RegistrationVO reVo);
 	
 	public ResultStatus createDataDumpFileForAParliamnetConstituency(RegistrationVO reVo);
+	public List<SelectOptionVO> getPCConstituencyList();
 }
