@@ -1749,7 +1749,8 @@
 	  <property name="boothResultDAO" ref="boothResultDAO" />
 	  <property name="candidateResultDAO" ref="candidateResultDAO" />
 	  <property name="prpWeightegesDAO" ref="prpWeightegesDAO" />
-	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO" />	  
+	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO" />
+	  <property name="staticDataService" ref="staticDataService" />	  	  
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
