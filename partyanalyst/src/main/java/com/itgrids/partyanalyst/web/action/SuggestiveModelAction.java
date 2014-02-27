@@ -28,7 +28,6 @@ import com.itgrids.partyanalyst.dto.PartyImpactVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.SuggestedLocationsVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDataVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
@@ -36,7 +35,6 @@ import com.itgrids.partyanalyst.dto.VotersInfoForMandalVO;
 import com.itgrids.partyanalyst.dto.YouthLeaderSelectionVO;
 import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
-import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -1039,7 +1037,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				for(String id:constiIds){
 					constituencyIds.add(Long.valueOf(id));
 				}
-				familyInfo = suggestiveModelService.calculateOrderOfPriorityForConstituency(1l,constituencyIds,null,null,null,null,null,null,null,null);
+				//familyInfo = suggestiveModelService.calculateOrderOfPriorityForConstituency(1l,constituencyIds,null,null,null,null,null,null,null,null);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
