@@ -559,6 +559,15 @@
 										</a>
 									</span><br>
 									</fieldset></td>
+								<td>
+								<fieldset class="f2">
+									<legend class="l2">Top Critical Panchayats Identification</legend>
+									<span class="fontStyle">
+										Top Critical Panchayats Identification:&nbsp;
+										<a class="alinkstyle" href="<s:url action="partyShare"/>">  Critical Panchayats
+										</a>
+									</span><br>
+									</fieldset></td>
 								</tr>
 								<tr>
 								<td>
