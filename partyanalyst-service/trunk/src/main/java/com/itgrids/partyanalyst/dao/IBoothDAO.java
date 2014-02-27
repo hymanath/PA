@@ -341,4 +341,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List getConstituneycId(Long boothId);
 	
 	public List<Booth> getModelByBoothId(Long boothId);
+	
+	public List<Booth> getBoothDataForAPublication(Long publicationDateId);
 }
