@@ -218,7 +218,29 @@ var populateId ;
 	</div>
 </div>
 
-	 <!-- dataDumpforCms  end -->
+	 <!-- dataDumpforCmsPC  end -->
+	  <!--mobile Data user Details end-->
+<div id="dataDumpforCmspc" class="widget">
+<h4>Create Sqllite Dump For CMS For A Parliament Constituency</h4>
+<div id="cmspcerrorDiv"></div>
+<table >
+<tr>
+ <td>select Parliament </td><td></td><td> <s:select theme="simple" cssClass="selectWidth" label="Select Your State" name="pcconstituencyList" id="cmspcconstituencyList" list="pcconstituencyList" listKey="id" listValue="name" style="margin-top:10px;"/></td>
+ </tr>
+
+<tr>
+<td>Select Publication</td><td></td><td> <select theme="simple" Class="selectWidth" name="publicationList" id="cmspcpublicationDateList"  style="margin-top:10px;"> <option value="9">1-1-2014</option><option value="8">1-2-2013</option><option value="7">1-1-2013</option> </select></td></tr>
+ </table>
+ <div  style="margin-left: 150px;margin-top:10px;">
+	   <input type="button" class="btn btn-info" value="create Dump File" id="cmspccreateFile"/>
+	    <img src="./images/icons/search.gif" id="cmspcajaxImg" style="display:none;"/>
+	   <a id="cmspcdownloadLink" style="margin-left: 11px;display:none;" href="${filePath}" class="btn btn-info">Download link</a>
+	
+
+	</div>
+</div>
+
+	 <!-- dataDumpforCmsPC  end -->
 <br/>
   </div>
  <div class="widget blue">
@@ -439,6 +461,50 @@ $("#cmsajaxImg").css("display","block");
 	});
 
 
+$("#cmspccreateFile").click(function(){
+
+$("#cmspcerrorDiv").html("");
+var flag = false;
+var errorDiv= document.getElementById("cmspcerrorDiv");
+	
+var constituencyId = $("#cmspcconstituencyList").val();  
+
+var publicationId = $("#cmspcpublicationDateList").val();
+
+var str = '<font color="red">';
+
+ if(constituencyId == 0)
+	{
+	 str += 'Please Select Constituency<br>';
+	  flag = true;
+	 
+	}
+	 if(publicationId == 0)
+	{
+	 str += 'Please Select Publication<br>';
+	  flag = true;
+	 
+	}
+if(flag == true)
+	{
+cmspcerrorDiv.innerHTML =str;
+return;
+	}
+else
+	{
+cmspcerrorDiv.innerHTML = '';
+$("#cmspcajaxImg").css("display","block");
+	var jsObj=
+		{
+		 constituencyId:constituencyId,
+		publicationId:publicationId,
+		 task:"createDataDumpForCMSPC"				
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "createDataDumpAction.action?"+rparam;						
+		callAjax(jsObj,url);	
+}
+	});
 function callAjax(jsObj,url)
 {
  var myResults;
@@ -480,7 +546,8 @@ function callAjax(jsObj,url)
 								buildPublicationDateList(myResults,jsObj);
 								else if(jsObj.task == "populateMobileAppUserData")
 							     populateMobileAppUserData(myResults);
-						  
+								else if(jsObj.task == "createDataDumpForCMSPC")
+								showStatusForCMSPC(myResults);
 							}
 							
 									catch (e) {
@@ -530,6 +597,24 @@ function callAjax(jsObj,url)
 	  $("#cmserrorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
 	  $("#cmsdownloadLink").attr('href',result.message);
 	  $("#cmsdownloadLink").css("display","inline-block");
+	  return;
+	}
+ }
+ function showStatusForCMSPC(result)
+ {
+	$("#cmspcerrorMsgDiv").html("");
+	$("#cmspcajaxImg").css("display","none");
+	
+	if(result == null || result.resultCode == 1)
+	{
+	  $("#cmspcerrorMsgDiv").html("Error Occured! Try Again.").css("color","red");
+	  return;
+	}
+	else
+	{
+	  $("#cmspcerrorMsgDiv").html("Data Dump Create Successfully.").css("color","green");
+	  $("#cmspcdownloadLink").attr('href',result.message);
+	  $("#cmspcdownloadLink").css("display","inline-block");
 	  return;
 	}
  }

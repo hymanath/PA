@@ -36,7 +36,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	private IMobileService mobileService;
 	private ResultStatus resultStatus;
 	public static final Logger LOG = Logger.getLogger(MobileDataAction.class);
-	private List<SelectOptionVO> constituencyList,userList,superAdminUsersList;
+	private List<SelectOptionVO> constituencyList,userList,superAdminUsersList,pcconstituencyList;
 	private String filePath;
 	private IRegistrationService registrationService;
 	private EntitlementVO allRegisteredUsersData;
@@ -153,7 +153,13 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		this.constituencyList = constituencyList;
 	}
 	
+	public List<SelectOptionVO> getPcconstituencyList() {
+		return pcconstituencyList;
+	}
 
+	public void setPcconstituencyList(List<SelectOptionVO> pcconstituencyList) {
+		this.pcconstituencyList = pcconstituencyList;
+	}
 	public String execute()
 	{
 		try{
@@ -172,6 +178,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
          constituencyList.add(0, new SelectOptionVO(0L,"Select Constituency"));
         allRegisteredUsersData = registrationService.getAllRegisterdUsers();
         superAdminUsersList = mobileService.getSuperAdminMobileAppUsers();
+        pcconstituencyList = mobileService.getPCConstituencyList();
 		}
 		
 		catch (Exception e) {
