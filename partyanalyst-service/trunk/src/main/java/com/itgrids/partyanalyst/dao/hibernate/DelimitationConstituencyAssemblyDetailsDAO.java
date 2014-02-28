@@ -180,4 +180,40 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 		return query.list();
 	
 	}
+	
+	public List<Object[]> findLatestParliamentsByAssemblyIds(List<Long> assemblyIds,List<Long> notIds){
+		StringBuilder q = new StringBuilder();
+		 q.append("select distinct model.delimitationConstituency.constituency.constituencyId,model.delimitationConstituency.constituency.name " +
+				" from DelimitationConstituencyAssemblyDetails model where model.delimitationConstituency.year = " +
+				"(select max(model1.year) from DelimitationConstituency model1) and model.constituency.constituencyId in (:assemblyIds) ");
+		if(notIds != null && notIds.size() > 0){
+			q.append(" and model.constituency.constituencyId not in (:notIds) ");
+		}
+			
+       q.append(" order by model.delimitationConstituency.constituency.name ");
+       Query query = getSession().createQuery(q.toString());
+		query.setParameterList("assemblyIds", assemblyIds);
+		if(notIds != null && notIds.size() > 0){
+		query.setParameterList("notIds", notIds);
+		}
+		return query.list();
+	} 
+	
+	public List<Object[]> findAssParlIdsForAListOfParlConstis(List<Long> parliamentConstituencyIds,List<Long> notIds){	
+		StringBuilder query = new StringBuilder();
+		query.append(" select model.constituency.constituencyId,model.delimitationConstituency.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where ");
+		query.append(" model.delimitationConstituency.constituency.constituencyId in (:parliamentConstituencyIds) and model.constituency.district.districtId > 10 and model.constituency.areaType != 'URBAN' ");
+		query.append(" and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1)  ");
+		
+		if(notIds != null && notIds.size() > 0){
+			query.append(" and model.constituency.constituencyId not in (:notIds) ");
+		}
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		if(notIds != null && notIds.size() > 0){
+			queryObject.setParameterList("notIds", notIds);
+			}
+		queryObject.setParameterList("parliamentConstituencyIds", parliamentConstituencyIds);
+		return queryObject.list();
+	}
 }

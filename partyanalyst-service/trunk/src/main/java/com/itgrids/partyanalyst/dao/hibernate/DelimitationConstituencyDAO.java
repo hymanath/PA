@@ -207,4 +207,12 @@ IDelimitationConstituencyDAO {
 		query.setParameter("year", year);
 		return (Long)query.uniqueResult();
 	}
+	
+	public List<Object[]> getConstituencyNo(List<Long> constituencyIds,Long year)
+	{
+		Query query = getSession().createQuery("select model.constituency.constituencyId,model.constituencyNO from DelimitationConstituency model where model.constituency.constituencyId in (:constituencyIds) and model.year = 2009");
+		query.setParameterList("constituencyIds", constituencyIds);
+		//query.setParameter("year", 2009);
+		return query.list();
+	}
 }
