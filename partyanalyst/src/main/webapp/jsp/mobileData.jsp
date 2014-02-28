@@ -264,6 +264,10 @@ var populateId ;
     <input type="text" id="AccessKeyId" placeholder="AccessKey">
     </div>
     </div>
+	<div style="margin-left: 96px; margin-bottom: 17px;"><input id="forgotpwdId" type="radio" style="margin-top:0px;" value="Authorisation_Access_Key" name="radiobtn"/>
+	Forgot Password
+	<input id="accesskeyId" type="radio" style="margin-top:0px;" value="Request_For_Forget_Pwd_Access_Key" name="radiobtn"/>
+	Authorisation Accesskey</div>
 	<div  style="margin-left: 150px;">
 	   <input type="button" class="btn btn-info" value="SendSMS" id="SentSMSId" onclick="sendSmsToUser();"/>
 	   <img src="./images/icons/search.gif" id="ajaxImg1" style="display:none"/>
@@ -676,12 +680,8 @@ var errorDiv= document.getElementById("errorMsgDiv1");
  var mobileNo =$("#MobileNoId").val();
  var mobileAppuser = $("#userList").val();
   var str = '<font color="red">';
-/*if(mobileAppuser == 0)
-	{
-	 str += 'Please Select User<br>';
-	  flag = true;
-	 
-	}*/
+  var type = $("input[name='radiobtn']:checked").val();
+
 	if(mobileNo == 0 || mobileNo == null)
 	{
 	str += 'mobileNo is Required<br>';
@@ -690,6 +690,11 @@ var errorDiv= document.getElementById("errorMsgDiv1");
 	if(accessKey == 0 || accessKey == null)
 	{
 	str += 'accessKey is Required<br>';
+	flag = true;
+	}
+	if(type == 0 || type == null)
+	{
+	str += 'type is Required<br>';
 	flag = true;
 	}
  if(flag == true)
@@ -706,6 +711,7 @@ errorDiv.innerHTML = '';
 		 mobileNo:mobileNo,
 		 mobileAppuserId:mobileAppuser,
 		 accessKey:accessKey,
+		 type:type,
 		 task:"sendSms"				
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);

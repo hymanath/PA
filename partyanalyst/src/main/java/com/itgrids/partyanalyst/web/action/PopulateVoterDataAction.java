@@ -30,7 +30,7 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private HttpServletRequest request;
 	private ConstituencyManagementVO constituencyManagementVO;
 	private IVotersAnalysisService votersAnalysisService;
-	private List<SelectOptionVO> constituencyList;
+	private List<SelectOptionVO> constituencyList,districts,selectvo;
 	private ResultStatus resultStatus;
 	private IVoterModificationService voterModificationService;
     private List<SelectOptionVO> allConstituenciesList = new ArrayList<SelectOptionVO>(0);
@@ -39,6 +39,19 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 	private IStaticDataService staticDataService;
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	
+	
+	public List<SelectOptionVO> getSelectvo() {
+		return selectvo;
+	}
+	public void setSelectvo(List<SelectOptionVO> selectvo) {
+		this.selectvo = selectvo;
+	}
+	public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
 	public ICrossVotingEstimationService getCrossVotingEstimationService() {
 		return crossVotingEstimationService;
 	}
@@ -154,6 +167,8 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			}
 			//constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
 			constituencyList = votersAnalysisService.getConstituenciesFromVoterDataAvaliableConstituencies();
+			
+			districts = staticDataService.getDistricts(1l);
 			constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
 			return SUCCESS;
 		}
@@ -492,6 +507,42 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 		  return Action.SUCCESS;
 		}
 		
+		public String insertVotersDataToIntermediateTablesForDistrict()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in insertVotersDataToIntermediateTablesForDistrict() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
 		
+			Long userId =regVO.getRegistrationID();
+			selectvo = votersAnalysisService.insertVotersDataInIntermediateTablesForDistrict(jObj.getLong("id"), jObj.getLong("publicationDateId"),userId);
+			return Action.SUCCESS;
+		}
+		
+		public String deleteVotersDataToIntermediateTablesForDistrict()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in deleteVotersDataToIntermediateTablesForDistrict() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO regVO = (RegistrationVO)session.getAttribute("USER");
+			if(regVO == null)
+				return null;
+		
+			Long userId =regVO.getRegistrationID();
+			resultStatus = votersAnalysisService.deleteVotersDataInIntermediateTablesForDistrict(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
 		
 }

@@ -44,6 +44,14 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 	
 	
 
+	public List<SelectOptionVO> getPcconstituencyList() {
+		return pcconstituencyList;
+	}
+
+	public void setPcconstituencyList(List<SelectOptionVO> pcconstituencyList) {
+		this.pcconstituencyList = pcconstituencyList;
+	}
+
 	public Long getPopulateID() {
 		return populateID;
 	}
@@ -153,13 +161,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 		this.constituencyList = constituencyList;
 	}
 	
-	public List<SelectOptionVO> getPcconstituencyList() {
-		return pcconstituencyList;
-	}
 
-	public void setPcconstituencyList(List<SelectOptionVO> pcconstituencyList) {
-		this.pcconstituencyList = pcconstituencyList;
-	}
 	public String execute()
 	{
 		try{
@@ -271,7 +273,7 @@ public class MobileDataAction extends ActionSupport implements ServletRequestAwa
 			session = request.getSession();
 			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 			Long userID = user.getRegistrationID();
-			resultStatus = mobileService.sendSmsToMobileAppUser(jObj.getString("mobileNo"),jObj.getLong("mobileAppuserId"),jObj.getString("accessKey"),userID);
+			resultStatus = mobileService.sendSmsToMobileAppUser(jObj.getString("mobileNo"),jObj.getLong("mobileAppuserId"),jObj.getString("accessKey"),userID,jObj.getString("type"));
 		}
 		catch (Exception e) {
 			e.printStackTrace();

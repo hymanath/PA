@@ -6450,5 +6450,16 @@
 			<result name="success">/jsp/voterRangeReport.jsp</result>
 			<result name="input">/jsp/loginForm.jsp</result>
 		</action>
+		<action name="districtwiseinsertVotersDataToIntermediateTablesAction" class="populateVoterDataAction" method="insertVotersDataToIntermediateTablesForDistrict">
+		<result type="json" name="success">
+           		<param name="root">selectvo</param>
+        	</result>
+		</action>
+		<action name="districtwisedeleteVotersDataFromIntermediateTablesAction" class="populateVoterDataAction" method="deleteVotersDataToIntermediateTablesForDistrict">
+		<result type="json" name="success">
+           		<param name="root">resultStatus</param>
+        	</result>
+		</action>
+		
 		</package>
 </struts>      
