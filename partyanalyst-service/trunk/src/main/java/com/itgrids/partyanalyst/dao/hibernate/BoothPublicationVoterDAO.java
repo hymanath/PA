@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.poi.hssf.record.formula.functions.Request;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
@@ -6353,6 +6352,14 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		return qry.list();
      }
+	
+	public List<Object[]> getpanchayts(Long constituencyId,Long publicationDateId)
+	{
+		Query query = getSession().createQuery("Select distinct model.panchayat.panchayatId,model.panchayat.panchayatName from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		return query.list();
+	}
 
 	public List<Object[]> getConstiPanchayatVoters(Long constituencyId,Long publicationId,Set<Long> partialPanchatyats,boolean isYoungVoters){
 		StringBuilder queryStr = new StringBuilder();
