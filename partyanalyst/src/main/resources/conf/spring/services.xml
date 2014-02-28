@@ -55,7 +55,7 @@
 		<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
 		<property name="wardBoothDAO" ref="wardBoothDAO" />
 		<property name="voterDataInsertDAO" ref="voterDataInsertDAO"></property>
-					
+		<property name="staticDataService" ref="staticDataService" />		
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >
@@ -1544,6 +1544,7 @@
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 		<property name="voterModifiationPdfsGenerations" ref="voterModifiationPdfsGenerations" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+		<property name="staticDataService" ref="staticDataService" />	
 	</bean>
 	
 	<bean name="voterModifiationPdfsGenerations" class="com.itgrids.partyanalyst.service.impl.VoterModifiationPdfsGenerations">

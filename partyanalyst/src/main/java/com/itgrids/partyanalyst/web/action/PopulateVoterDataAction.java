@@ -544,5 +544,37 @@ public class PopulateVoterDataAction extends ActionSupport implements ServletReq
 			resultStatus = votersAnalysisService.deleteVotersDataInIntermediateTablesForDistrict(jObj.getLong("id"), jObj.getLong("publicationDateId"));
 			return Action.SUCCESS;
 		}
+		public String districtdeletevotermodificationFromIntermediateTables()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}
+			catch(Exception e)
+			{
+				Log.error("Exception Occured in districtdeletevotermodificationFromIntermediateTables() Method, Exception -"+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				return null;
+			resultStatus = voterReportService.deletevotermodificationFromIntermediateTablesForDistrict(jObj.getLong("id"),jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
+		public String insertVoterModificationDataToIntermediateTablesForDistrict()
+		{
+			try{
+				jObj = new JSONObject(getTask());
+			}catch (Exception e) {
+				e.printStackTrace();
+				Log.error("Exception Occured in insertVoterModificationDataToIntermediateTablesForDistrict() Method, Exception - "+e);
+			}
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			if(user == null)
+				return null;
+			
+			selectvo = voterModificationService.insertGenderWiseVoterModifInfoInVoterModificationInfoTableForDistrict(jObj.getLong("id"), jObj.getLong("publicationDateId"));
+			return Action.SUCCESS;
+		}
 		
 }
