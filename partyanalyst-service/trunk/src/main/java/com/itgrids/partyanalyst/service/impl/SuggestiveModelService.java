@@ -6487,7 +6487,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  List<Long> lclIds = new ArrayList<Long>();
 		  List<PanchayatVO> orderList = new ArrayList<PanchayatVO>();
 		  PanchayatVO vo = null;
-		  Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+		  Long publicationId = 10l;//voterInfoDAO.getLatestPublicationDate(constituencyId);
 		  Set<Long> partialIds = new HashSet<Long>();
 		  List<Object[]> partialBooths = partialBoothPanchayatDAO.getPartialPanchayatsList(constituencyId,publicationId);
 			for(Object[] panchayat:partialBooths){
