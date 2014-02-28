@@ -66,6 +66,7 @@ import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.model.VoterModificationAgeInfo;
 import com.itgrids.partyanalyst.model.VoterModificationInfo;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterModifiationPdfsGenerations;
 import com.itgrids.partyanalyst.service.IVoterModificationService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -102,6 +103,16 @@ public class VoterModificationService implements IVoterModificationService{
 		      Font.BOLD);
 	private static Font catFont1 = new Font(Font.FontFamily.TIMES_ROMAN, 11,
 		      Font.BOLD);
+	 private IStaticDataService staticDataService;
+	    
+
+		public IStaticDataService getStaticDataService() {
+			return staticDataService;
+		}
+
+		public void setStaticDataService(IStaticDataService staticDataService) {
+			this.staticDataService = staticDataService;
+		}
    /* private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
 		      Font.NORMAL, BaseColor.RED);
     private static Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16,
@@ -4155,6 +4166,39 @@ public class VoterModificationService implements IVoterModificationService{
 	 		}
 	 		 
 	 	 }
+	      public List<SelectOptionVO> insertGenderWiseVoterModifInfoInVoterModificationInfoTableForDistrict(Long districtId, Long publicationDateId)
+		  {
+			  LOG.info(" Entered into insertGenderWiseVoterModifInfoInVoterModificationInfoTableForDistrict() Method, with Values - Report Level Value - "+districtId+" and Publicarion Date Id - "+publicationDateId);
+			  List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+			  ResultStatus resultStatus = new ResultStatus();
+			  try{
+				  SelectOptionVO mainvo = new SelectOptionVO();
+				 
+				  List<SelectOptionVO> constituencies = staticDataService.getConstituenciesFordistricts(districtId);
+				  if(constituencies != null && constituencies.size() > 0)
+					
+				  if(constituencies != null && constituencies.size() > 0)
+				  {
+				  for(SelectOptionVO vo :constituencies )
+				  {
+					  resultStatus=insertGenderWiseVoterModifInfoInVoterModificationInfoTable(vo.getId(), publicationDateId);
+				  if(resultStatus.getResultCode() == 1)
+				  {
+					  result.add(new SelectOptionVO(vo.getId(),vo.getName())); 
+				  }
+				  }
+				  mainvo.setTotalCount(new Long(constituencies.size()));
+				  result.add(mainvo);
+				  result.get(0).setTotalCount(new Long(constituencies.size()));
+				  }
+				 
+				  
+			  }catch (Exception e) {
+				  LOG.error("Exception Occured in insertGenderWiseVoterModifInfoInVoterModificationInfoTableForDistrict(), Exception is -",e);
+				  
+			 }
+			return result;
+		  }	
 	}
 
 	
