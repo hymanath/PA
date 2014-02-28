@@ -21038,8 +21038,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  ResultStatus resultStatus = new ResultStatus();
 		  try{
 			  SelectOptionVO mainvo = new SelectOptionVO();
-			  List<Long> constiIds = new ArrayList<Long>();
-			
+			 
 			  List<SelectOptionVO> constituencies = staticDataService.getConstituenciesFordistricts(districtId);
 			  if(constituencies != null && constituencies.size() > 0)
 				
@@ -21053,9 +21052,9 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				  result.add(new SelectOptionVO(vo.getId(),vo.getName())); 
 			  }
 			  }
-			  mainvo.setTotalCount(new Long(constiIds.size()));
+			  mainvo.setTotalCount(new Long(constituencies.size()));
 			  result.add(mainvo);
-			  result.get(0).setTotalCount(new Long(constiIds.size()));
+			  result.get(0).setTotalCount(new Long(constituencies.size()));
 			  }
 			 
 			  
