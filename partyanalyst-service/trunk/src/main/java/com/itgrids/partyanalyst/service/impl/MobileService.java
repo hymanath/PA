@@ -1497,7 +1497,7 @@ public List<SelectOptionVO> getConstituencyList()
 				try{
 					strTemp = new StringBuilder();
 					strTemp.append("INSERT INTO voter(voter_id,house_no,name,relationship_type,relative_name,gender,age,voter_id_card_no,mobile_no) VALUES (");
-					strTemp.append(params[0].toString()+",'"+params[1].toString()+"','"+params[2].toString()+"','"+params[3].toString()+"','"+params[4].toString()+"','");
+					strTemp.append(params[0].toString()+",'"+params[1].toString()+"','"+replaceSpecialChars(params[2].toString().trim())+"','"+params[3].toString()+"','"+replaceSpecialChars(params[4].toString())+"','");
 					strTemp.append(params[5].toString()+"',"+params[6].toString()+",'"+params[7].toString()+"',");
 					strTemp.append(params[8] != null ? "'"+params[8].toString()+"'" : "NULL");
 					strTemp.append(");\n");
