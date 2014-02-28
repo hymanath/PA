@@ -728,7 +728,7 @@ public List<SelectOptionVO> getConstituencyList()
 					LOG.error("Exception is -",e);
 				}
 				
-				/*List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
+				List<Object[]> votersList = boothPublicationVoterDAO.getVoterDetailsOfAConstituencyAndPublication(ac.getConstituencyId(),publicationId);
 				
 				if(votersList != null && votersList.size() > 0)
 				{
@@ -752,9 +752,9 @@ public List<SelectOptionVO> getConstituencyList()
 					connection.commit();
 					statement.close();
 					connection.close();
-				}*/
+				}
 				
-				/*List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(ac.getConstituencyId(), publicationId);
+				List<Object[]> votersAndSerialNosList = boothPublicationVoterDAO.getRecordsFromBoothPublicationVoter(ac.getConstituencyId(), publicationId);
 				if(votersAndSerialNosList != null && votersAndSerialNosList.size() > 0)
 				{
 					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
@@ -777,9 +777,9 @@ public List<SelectOptionVO> getConstituencyList()
 					connection.commit();
 					statement.close();
 					connection.close();
-				}*/
+				}
 				
-				/*if(boothsList != null && boothsList.size() > 0)
+				if(boothsList != null && boothsList.size() > 0)
 				{
 					connection = DriverManager.getConnection("jdbc:sqlite:"+path+pathSeperator+constituencyName+"_"+date+"_CMS"+pathSeperator+ac.getName()+".sqlite");
 					connection.setAutoCommit(false);
@@ -862,7 +862,7 @@ public List<SelectOptionVO> getConstituencyList()
 					connection.commit();
 					statement.close();
 					connection.close();
-				}*/
+				}
 				
 				if(panchayatsList != null && panchayatsList.size() > 0)
 				{
