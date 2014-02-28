@@ -590,4 +590,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getConstiPanchayatVotersForPartial(Long constituencyId,Long publicationId,Set<Long> partialPanchatyats,boolean isYoungVoters);
 	  
 	  public List<Object[]> getConstiLEBVoters(Long constituencyId,Long publicationId,boolean isYoungVoters);
+	  
+	  public List<Object[]> getpanchayts(Long constituencyId,Long publicationDateId);
 }
