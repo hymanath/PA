@@ -114,6 +114,7 @@ import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.model.WardBooth;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -175,7 +176,16 @@ public class VoterReportService implements IVoterReportService{
     private IVoterFlagDAO voterFlagDAO;
     private IWardBoothDAO wardBoothDAO;
     private IVoterDataInsertDAO voterDataInsertDAO;
-   
+    private IStaticDataService staticDataService;
+    
+
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
 
 	public IVoterDataInsertDAO getVoterDataInsertDAO() {
 		return voterDataInsertDAO;
@@ -5662,4 +5672,26 @@ public class VoterReportService implements IVoterReportService{
 			return "success";
 			 
 		 }
+		
+		 public ResultStatus deletevotermodificationFromIntermediateTablesForDistrict(Long districtId, Long publicationDateId)
+		  {
+			  ResultStatus resultStatus = new ResultStatus();
+			  try{
+				  SelectOptionVO mainvo = new SelectOptionVO();
+				  List<Long> constiIds = new ArrayList<Long>();
+				
+				  List<SelectOptionVO> constituencies = staticDataService.getConstituenciesFordistricts(districtId);
+				  if(constituencies != null && constituencies.size() > 0)
+					  for(SelectOptionVO vo : constituencies )
+						  constiIds.add(vo.getId());
+				  if(constiIds != null && constiIds.size() > 0)
+				  for(Long constituencyId :constiIds )
+					  resultStatus = deletevotermodificationFromIntermediateTables(constituencyId,publicationDateId);
+			  }
+			  catch (Exception e) {
+				  LOG.error("Exception Occured in deletevotermodificationFromIntermediateTablesForDistrict(), Exception is -",e);
+				  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+			 }
+			return resultStatus;
+		  }
 }
