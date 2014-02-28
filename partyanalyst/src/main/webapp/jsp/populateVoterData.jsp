@@ -18,7 +18,7 @@
 	<script type="text/javascript" src="js/yahoo/button-min.js"></script> 	
 	<script src="js/yahoo/resize-min.js"></script> 
 	<script src="js/yahoo/layout-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/container-min.js"></script> 
+	<script type="text/javascript" src="js/yahoo/container-min.js"></script>didist 
 	<script type="text/javascript" src="js/yahoo/dom-min.js"></script> 
 	<script type="text/javascript" src="js/yahoo/yui-min.js"></script>
 	<script type="text/javascript" src="js/json/json-min.js"></script>
@@ -152,6 +152,37 @@ fieldset{
 	</div>
 	</div>
  </fieldset>
+ 
+ 
+ 
+ 
+ 
+ 
+ <div class="headingDiv">District wise Populate Voters Data To Intermediate Tables</div>
+ <fieldset>
+    <div id="districterrorMsgDiv"></div>
+	<div id="districtDiv" class="selectDiv">
+		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your District" name="districtList" id="voterDataDistrictList" list="districts" listKey="id" listValue="name"/> &nbsp;&nbsp;
+
+		Select Publication Date<font class="requiredFont">*</font> <select id="districtpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		<option value="9">1-1-2014</option>
+		<option value="7">1-1-2013</option>
+		<option value="8">1-2-2013</option>
+		</select>
+		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="ajaxLoad"><img src="images/icons/search.gif" /></span>
+	
+
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="districtwisevoterDataInsertBtn" />
+			<input type="button" class="btn btn-info" value="Delete Existing Data" id="districtvoterDataDeleteBtn" />
+			<img src="./images/icons/search.gif" style="display:none;" id="districtajaxImage" />
+		</div>
+	</div>
+	</div>
+ </fieldset>
+ 
+ 
+ 
 </div>	
 <div id="voterDataOuterDiv">
 <div class="headingDiv" style="width:500px;">Populate Voters Basic Info Data To Intermediate Tables</div>
@@ -789,6 +820,36 @@ $("#voterDataDeleteBtn").click(function(){
 
 });
 
+$("#districtvoterDataDeleteBtn").click(function(){
+	
+        var constituencyId = $("#voterDataDistrictList").val(); 
+		var publicationDateId = $("#districtpublicationDateList").val();
+		if(constituencyId == 0)
+		{
+			$("#districterrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#districterrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		$("#districvoterDataDeleteBtn").attr("disabled", "disabled");
+		$("#districtajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"districtdeleteVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "districtwisedeleteVotersDataFromIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+
+
+});
 
 $("#constituencyHierarchyId").change(function(){
     
@@ -947,6 +1008,10 @@ function callAjax(jsObj,url)
 								else if(jsObj.task == "deleteConstituencyBasicData")
 								 showConstituencyHierarchyDeleteDataStatus(myResults);
 								
+								else if(jsObj.task == "districtdeleteVotersData")
+									showdistrictDeleteVoterDataStatus(myResults);
+								else if(jsObj.task == "districtwiseinsertVotersData")
+									showdistrictInsertVoterDataStatus(myResults);
 								
 								
 							}
@@ -978,6 +1043,23 @@ function callAjax(jsObj,url)
 		else
 		{
 			$("#errorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+	}
+	function showdistrictInsertVoterDataStatus(result)
+	{
+		$("#districtajaxImage").css("display","none");
+		$("#districtwisevoterDataInsertBtn").removeAttr("disabled");
+		//document.getElementById('constituencyList').selectedIndex = 0;
+		//document.getElementById('publicationDateList').selectedIndex = 0;
+		if(result.length > 0)
+		{
+			$("#districterrorMsgDiv").html("Voters Data Inserted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#districterrorMsgDiv").html("Error Occured try Again.").css("color","red");
 				return;
 		}
 	}
@@ -1050,6 +1132,22 @@ function showDeleteVoterDataStatus(result)
 		}
 	}
 
+function showdistrictDeleteVoterDataStatus(result)
+{
+	$("#districtajaxImage").css("display","none");
+		$("#districtvoterDataDeleteBtn").removeAttr("disabled");
+		
+		if(result.resultCode == 0)
+		{
+			$("#districterrorMsgDiv").html("Voters Data Deleted Successfully.").css("color","green");
+				return;
+		}
+		else
+		{
+			$("#districterrorMsgDiv").html("Error Occured try Again.").css("color","red");
+				return;
+		}
+}
 	function showDeleteVoterCastDataStatus(result)
 	{
 
@@ -1289,7 +1387,35 @@ function showConstituencyHierarchyDeleteDataStatus(result)
 	$("#conHierErrorMsgDiv").html('Error Occured try Again.').css("color","red");
 }
 
+$("#districtwisevoterDataInsertBtn").click(function(){
+	
+		var constituencyId = $("#voterDataDistrictList").val(); 
+		var publicationDateId = $("#districtpublicationDateList").val();
+		if(constituencyId == 0)
+		{
+			$("#districterrorMsgDiv").html('Please Select Constituency.');
+			return;
+		}
+		if(publicationDateId == 0 || publicationDateId == null)
+		{
+		  $("#districterrorMsgDiv").html('Please Select Publication Date.');
+			return;
+		}
+		
+		//$("#voterDataInsertBtn").attr("disabled", "disabled");
+		$("#districtajaxImage").css("display","block");
+		
+		var jsObj=
+		{
+		  id				  :constituencyId,
+		  publicationDateId : publicationDateId,
+		  task:"districtwiseinsertVotersData"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "districtwiseinsertVotersDataToIntermediateTablesAction.action?"+rparam;	
+		 callAjax(jsObj,url);
 
+	});
 
 </script>
 </body>

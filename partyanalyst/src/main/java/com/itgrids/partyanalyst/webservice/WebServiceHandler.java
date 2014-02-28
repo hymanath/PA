@@ -457,4 +457,38 @@ public class WebServiceHandler {
 		}
 	
     }
+	
+	@GET
+	@Path("/requestForAuthorisationAccessKey/{uniqueCode}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String requestForAuthorisationForAccessKey(@PathParam("uniqueCode") String uniqueCode)
+	{
+		
+		try{
+			
+			return webServiceHandlerService.requestForAuthorisationAccesskey(uniqueCode);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in requestForAuthorisationForAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
+
+	
+	@GET
+	@Path("/verificationForAuthorisationAccessKey/{uniqueCode}/{accesskey}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String verificationForAuthorisationAccessKey(@PathParam("uniqueCode") String uniqueCode,@PathParam("accesskey") String accesskey)
+	{
+		try{
+			
+			return webServiceHandlerService.verificationForAuthorisationAccessKey(uniqueCode,accesskey);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in verificationForAuthorisationAccessKey() Method, Exception is ",e);
+			return "Fail";
+		}
+	}
 }
