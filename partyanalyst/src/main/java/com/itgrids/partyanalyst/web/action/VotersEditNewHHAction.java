@@ -1852,6 +1852,8 @@ public String saveLocality()
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return Action.ERROR;
+			
 		}
 		   return Action.SUCCESS;
 	   }

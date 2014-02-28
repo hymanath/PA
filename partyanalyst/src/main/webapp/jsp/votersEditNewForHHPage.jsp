@@ -1083,9 +1083,7 @@ function saveHouseHoldInfo(){
 
 <script>
 	function searchNow(){
-		
-		
-	
+		$(".searchedVotersDiv").html("");
 		var voterCardNo=$(".vtrIdCls").val();
 		var voterName=$(".vtrNameCls").val();
 		$("#searchedVotersDiv").html("");
@@ -1128,12 +1126,13 @@ function saveHouseHoldInfo(){
 	}
 	var temp;
 	function buildTableForSearchedVoters(results){
+    $(".errorDiv").html("");
 		var voterArr=[];
 		 $('.voterChkbx').each(function(index,value){
 			voterArr.push(this.value);
 		 });
-		
-		
+		if(results!=null && results.length>0)
+		{
 		var str="";
 		str+="<table class='table table-bordered' searchedVotersTable>";
 			str+="<thead>";
@@ -1156,7 +1155,12 @@ function saveHouseHoldInfo(){
 		temp = results;
 		str+="<span onclick=addVoter() class='btn btn-info'>Add Voter</span>";
 		$(".searchedVotersDiv").html(str);
-	}
+		}
+		else
+		{
+			$(".searchedVotersDiv").html("<span style='color:red'>No Data Avalible For Given Search Details");
+		}
+	}  
 	
 	function addVoter(){
 		
