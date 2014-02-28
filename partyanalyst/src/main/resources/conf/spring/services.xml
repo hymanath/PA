@@ -1904,6 +1904,9 @@
    <property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
    <property name="hamletDAO" ref="hamletDAO" />
    <property name="suggestiveModelService" ref="suggestiveModelService" />
+   <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+   <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
+   
      </bean>
    <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
   	 <property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
