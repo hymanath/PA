@@ -9276,4 +9276,22 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		}
 	}
 	
+	public List<SelectOptionVO> getConstituenciesFordistricts(Long districtId)
+	{
+		 List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		try{
+			List<Object[]> list = constituencyDAO.getDistrictConstituencies(districtId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				result.add(new SelectOptionVO((Long)params[0],params[1].toString()));
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 }

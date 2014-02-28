@@ -15,7 +15,7 @@ public class MobileAppUserProfileDAO extends GenericDaoHibernate<MobileAppUserPr
 	}
 	public List<Object[]> getMobileNoByUniquecode(String uniqueCode)
 	{
-		return getHibernateTemplate().find("select model.mobileAppUser.mobileNo,model.firstName,model.lastName from MobileAppUserProfile model where model.mobileAppUser.uniqueCode=?",uniqueCode);
+		return getHibernateTemplate().find("select model.mobileAppUser.mobileNo,model.firstName,model.lastName,model.mobileAppUser.email,model.mobileAppUser.mobileAppUserId from MobileAppUserProfile model where model.mobileAppUser.uniqueCode=?",uniqueCode);
 		
 	}
 	public List<Object> getMobileAppUserProfileId(Long mobileAppUserId)

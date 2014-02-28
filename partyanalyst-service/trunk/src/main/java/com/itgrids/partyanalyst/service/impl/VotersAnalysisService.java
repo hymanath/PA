@@ -9680,7 +9680,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 			  List<SelectOptionVO> partialPanchayatsList = new ArrayList<SelectOptionVO>(0);
 			  List<Long> partialPanchayatIdsList = new ArrayList<Long>(0);
 			  
-			  calculateAndInsertVoterInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,publicationDateId,reportLevelValue,userId,false);
+			  resultStatus = calculateAndInsertVoterInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,null,publicationDateId,reportLevelValue,userId,false);
 			  calculateAndInsertVoterFamilyInfoForALocation(IConstants.CONSTITUENCY,reportLevelValue,publicationDateId,reportLevelValue,userId,false);
 			  //calculateAndInsertVoterAgeInfoForALocation(IConstants.CONSTITUENCY, reportLevelValue, publicationDateId,reportLevelValue,userId);
 			  
@@ -10130,8 +10130,10 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 					  votersInfo.setTotalFamilyPercentage(new BigDecimal((new Double(votersInfo.getTotalFamilies())*100)/parentTotalfamilies).setScale(2, BigDecimal.ROUND_HALF_UP).toString());  
 				  }
 				  saveVotersDataInVoterInfoTable(votersInfo);
+				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 			  }
-			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+			 else
+			  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 			  return resultStatus;
 		  }catch (Exception e) {
 			  log.error(" Exception Occured in calculateAndInsertVoterInfoForALocation() Method, with Values - Location Type - "+locationType+" - Location Value - "+locationValue+", Parent Location Id - "+parentLocationId+" and Publicarion Date Id - "+publicationDateId);
@@ -10289,6 +10291,7 @@ public SelectOptionVO storeCategoryVakues(final Long userId, final String name, 
 						familyInfo.setConstituencyId(importantFamiliesInfoVo.getConstituencyId());
 						
 						voterFamilyInfoDAO.save(familyInfo);
+						
 					}});
 			  voterDAO.flushAndclearSession();
 			  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
@@ -21026,5 +21029,60 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		
 		
 	}
-		
+	  
+	  public List<SelectOptionVO> insertVotersDataInIntermediateTablesForDistrict(Long districtId, Long publicationDateId,Long userId)
+	  {
+		  log.info(" Entered into insertVotersDataInIntermediateTables() Method, with Values - Report Level Value - "+districtId+" and Publicarion Date Id - "+publicationDateId);
+		  List<SelectOptionVO> result = new ArrayList<SelectOptionVO>();
+		  ResultStatus resultStatus = new ResultStatus();
+		  try{
+			  SelectOptionVO mainvo = new SelectOptionVO();
+			  List<Long> constiIds = new ArrayList<Long>();
+			
+			  List<SelectOptionVO> constituencies = staticDataService.getConstituenciesFordistricts(districtId);
+			  if(constituencies != null && constituencies.size() > 0)
+				
+			  if(constituencies != null && constituencies.size() > 0)
+			  {
+			  for(SelectOptionVO vo :constituencies )
+			  {
+				  resultStatus=insertVotersDataInIntermediateTables(vo.getId(), publicationDateId,userId,false,false,false);
+			  if(resultStatus.getResultCode() == 1)
+			  {
+				  result.add(new SelectOptionVO(vo.getId(),vo.getName())); 
+			  }
+			  }
+			  mainvo.setTotalCount(new Long(constiIds.size()));
+			  result.add(mainvo);
+			  result.get(0).setTotalCount(new Long(constiIds.size()));
+			  }
+			 
+			  
+		  }catch (Exception e) {
+			  log.error("Exception Occured in insertVoterInfoDataToIntermediateTables(), Exception is -",e);
+			  
+		 }
+		return result;
+	  }	
+	  public ResultStatus deleteVotersDataInIntermediateTablesForDistrict(Long districtId, Long publicationDateId)
+	  {
+		  ResultStatus resultStatus = new ResultStatus();
+		  try{
+			  SelectOptionVO mainvo = new SelectOptionVO();
+			  List<Long> constiIds = new ArrayList<Long>();
+			
+			  List<SelectOptionVO> constituencies = staticDataService.getConstituenciesFordistricts(districtId);
+			  if(constituencies != null && constituencies.size() > 0)
+				  for(SelectOptionVO vo : constituencies )
+					  constiIds.add(vo.getId());
+			  if(constiIds != null && constiIds.size() > 0)
+			  for(Long constituencyId :constiIds )
+				  resultStatus = deleteVoterInfoFromIntermediateTablesByConstituencyId(constituencyId,publicationDateId);
+		  }
+		  catch (Exception e) {
+			  log.error("Exception Occured in deleteVotersDataInIntermediateTablesForDistrict(), Exception is -",e);
+			  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 }
+		return resultStatus;
+	  }
 }

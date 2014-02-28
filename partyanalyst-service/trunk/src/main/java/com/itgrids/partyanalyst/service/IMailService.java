@@ -32,4 +32,8 @@ public interface IMailService {
 	public ResultStatus sendEmailToAdminGroup(EmailDetailsVO emailDetailsVo,String requestFrom);
 	
 	public ResultStatus sendEmailToAdminGroupForAccessKey(String userName);
+	
+	public ResultStatus sendEmailToAdminGroupForAuthorisationAccessKey(String userName);
+	
+	public ResultStatus sendEmailToMobileAppUserForAuthorisationAccessKey(String userName,String email);
 }

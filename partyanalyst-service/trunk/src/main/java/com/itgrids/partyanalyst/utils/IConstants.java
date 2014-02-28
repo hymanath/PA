@@ -715,6 +715,7 @@ public interface IConstants {
     public static final String Get_User_Voice_Recording_Files = "Get_User_Voice_Recording_Files";
     public static final String Send_Voice_Sms = "Send_Voice_Sms";
     public static final String Send_Text_Sms = "Send_Text_Sms";
+    public static final String Authorisation_Access_Key = "Authorisation_Access_Key";
     
     public static final Long HOUSE_HOLD_VOTER_EDUCATION=8l;
     public static final Long HOUSE_HOLD_VOTER_OCCUPATION=7l;

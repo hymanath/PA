@@ -49,5 +49,9 @@ public interface IWebServiceHandlerService {
 	public String updateVoterTagDetails(VoterTagVO voterTagVO);
 	
 	public String updateVoterBoothActivitiesDetails(VoterTagVO voterTagVO);
+	
+	public String requestForAuthorisationAccesskey(String uniqueCode);
+	
+	public String verificationForAuthorisationAccessKey(String uniqueCode,String accesskey);
 
 }

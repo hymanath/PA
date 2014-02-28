@@ -2317,12 +2317,16 @@ public List<SelectOptionVO> getConstituencyList()
 		return resultStatus;
   	}
   	
-  	public ResultStatus sendSmsToMobileAppUser(String mobileNo,Long mobileAppuserId,String accessKey,Long userID)
+  	public ResultStatus sendSmsToMobileAppUser(String mobileNo,Long mobileAppuserId,String accessKey,Long userID,String type)
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		DateUtilService date = new DateUtilService();
+		String message ="";
 		try{
-			String message = "your Access key for your App : "+accessKey+"";
+			if(type.equalsIgnoreCase(IConstants.Request_For_Forget_Pwd_Access_Key))
+		     message = "your Access key for your App : "+accessKey+"";
+			else if(type.equalsIgnoreCase(IConstants.Authorisation_Access_Key))
+				  message = "your Access key for your App Authorisation: "+accessKey+"";
 			String [] phoneNumbers = {mobileNo.toString()};
 			smsCountrySmsService.sendSmsFromAdmin(message, true, phoneNumbers);
 			MobileAppUserAccessKey mobileAppUserAccessKey = new MobileAppUserAccessKey();
@@ -2331,7 +2335,9 @@ public List<SelectOptionVO> getConstituencyList()
 			mobileAppUserAccessKey.setIsUsed("false");
 			mobileAppUserAccessKey.setMobileAppUser(mobileAppUserDAO.get(mobileAppuserId));
 			mobileAppUserAccessKey.setAccessKey(accessKey);
+			mobileAppUserAccessKey.setType(type);
 			mobileAppUserAccessKeyDAO.save(mobileAppUserAccessKey);
+			
 			resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		}
 		catch (Exception e) {
@@ -2458,7 +2464,7 @@ public List<SelectOptionVO> getConstituencyList()
 				     {
 				    	String days = lastAuthorisedTime.substring(lastAuthorisedTime.indexOf("(")+1,lastAuthorisedTime.indexOf(")")).replaceAll("[a-zA-Z]", "");
 				    	if(Long.valueOf(days.toString().trim()) >= 10)
-				    	sendSmsToMobileAppUser(firstName +" "+lastName,params[4].toString());
+				    	sendSmsToMobileAppUsers(firstName +" "+lastName,params[4].toString());
 				     }
 				}
   			
@@ -2469,7 +2475,7 @@ public List<SelectOptionVO> getConstituencyList()
   		}
 		return resultStatus;
   	}
-	public ResultStatus sendSmsToMobileAppUser(String uname,String mobileNo)
+	public ResultStatus sendSmsToMobileAppUsers(String uname,String mobileNo)
   	{
   		ResultStatus resultStatus = new ResultStatus();
   		try{
@@ -2880,7 +2886,7 @@ public List<SelectOptionVO> getConstituencyList()
   			return str;
   		}
   	}
-	public List<SelectOptionVO> getPCConstituencyList()
+  	public List<SelectOptionVO> getPCConstituencyList()
     {
   	  List<SelectOptionVO> selectOptionVOList = new ArrayList<SelectOptionVO>();
   	 try{
@@ -2899,4 +2905,5 @@ public List<SelectOptionVO> getConstituencyList()
   	}
     }
   	
+	
 }

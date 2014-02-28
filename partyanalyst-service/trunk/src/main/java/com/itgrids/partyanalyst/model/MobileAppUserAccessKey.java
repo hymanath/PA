@@ -31,6 +31,7 @@ public class MobileAppUserAccessKey extends BaseModel implements Serializable{
 	private Long createdBy;
 	private Date creationTime;
 	private String isUsed;
+	private String type;
 
 	public MobileAppUserAccessKey()
 	{
@@ -38,7 +39,7 @@ public class MobileAppUserAccessKey extends BaseModel implements Serializable{
 	}
 	
 	public MobileAppUserAccessKey(Long mobileAppUserAccesskeyId,MobileAppUser mobileAppUser,String accessKey,Long createdBy,
-			Date creationTime,String isUsed)
+			Date creationTime,String isUsed,String type)
 			
 	{
 		this.mobileAppUserAccesskeyId = mobileAppUserAccesskeyId;
@@ -47,6 +48,7 @@ public class MobileAppUserAccessKey extends BaseModel implements Serializable{
 		this.createdBy = createdBy;
 		this.creationTime = creationTime;
 		this.isUsed = isUsed;
+		this.type = type;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -94,6 +96,14 @@ public class MobileAppUserAccessKey extends BaseModel implements Serializable{
 	}
 	public void setIsUsed(String isUsed) {
 		this.isUsed = isUsed;
+	}
+	@Column(name = "type")
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 	
 

@@ -329,5 +329,8 @@ public interface IVotersAnalysisService {
 	 public List<VoterHouseInfoVO> getVotersOfSearchedCriteriaForHH(String voterCardNo,String voterName,Long boothId,Long publicationId);
 	 
 	 public List<GenericVO> getHHLeadersList(Long boothId);
+	 public List<SelectOptionVO> insertVotersDataInIntermediateTablesForDistrict(Long reportLevelValue, Long publicationDateId,Long userId);
+	 
+	 public ResultStatus deleteVotersDataInIntermediateTablesForDistrict(Long districtId, Long publicationDateId);
 	 	
 }
