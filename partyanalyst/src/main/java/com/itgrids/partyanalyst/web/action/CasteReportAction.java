@@ -36,8 +36,22 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	private  List<SelectOptionVO> consMap;
 	private List<Long> constValues;
 	private Long topPanchayats;
+	private Boolean notConsiderWeights;
+	private String notConstiIds;
 	
 	
+	public Boolean getNotConsiderWeights() {
+		return notConsiderWeights;
+	}
+	public void setNotConsiderWeights(Boolean notConsiderWeights) {
+		this.notConsiderWeights = notConsiderWeights;
+	}
+	public String getNotConstiIds() {
+		return notConstiIds;
+	}
+	public void setNotConstiIds(String notConstiIds) {
+		this.notConstiIds = notConstiIds;
+	}
 	public List<CastVO> getPanchayats() {
 		return panchayats;
 	}
@@ -210,8 +224,21 @@ public String loadConst()
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
-		
-		consMap=casteReportService.loadConstituenciesForReport();
+		String[] notIds = null;
+		 if(notConstiIds != null && notConstiIds.trim().length() > 0){
+			 notIds = notConstiIds.trim().split(",");
+		 }
+		 List<Long> notIdsList = new ArrayList<Long>();
+		 if(notIds != null && notIds.length > 0){
+			 for(String id:notIds){
+				 try{
+					 notIdsList.add(Long.valueOf(id.trim()));
+				 }catch(Exception e){
+					 
+				 }
+			 }
+		 }
+		consMap=casteReportService.loadConstituenciesForReport(notIdsList);
 		
 		
 	}
@@ -241,7 +268,25 @@ public String getConstXL()
 			}
 			 }
 			 System.out.println("after ==="+constValues);
-			resultStatus=casteReportService.generateXL(constValues,topPanchayats);
+			 boolean consdWeig = false;
+			 if(notConsiderWeights != null && notConsiderWeights){
+				 consdWeig = true;
+			 }
+			 String[] notIds = null;
+			 if(notConstiIds != null && notConstiIds.trim().length() > 0){
+				 notIds = notConstiIds.trim().split(",");
+			 }
+			 List<Long> notIdsList = new ArrayList<Long>();
+			 if(notIds != null && notIds.length > 0){
+				 for(String id:notIds){
+					 try{
+						 notIdsList.add(Long.valueOf(id.trim()));
+					 }catch(Exception e){
+						 
+					 }
+				 }
+			 }
+			resultStatus=casteReportService.generateXL(constValues,topPanchayats,consdWeig,notIdsList);
 		 
 			 
 		   
