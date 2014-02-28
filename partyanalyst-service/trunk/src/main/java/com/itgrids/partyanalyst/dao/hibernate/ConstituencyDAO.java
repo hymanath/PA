@@ -688,7 +688,14 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 	public List<Object[]> getParliamentConstituencies() {
 	
 		return getHibernateTemplate().find("select distinct model.constituencyId,model.name" +
-				" from Constituency model where model.state.stateId = 1 and model.electionScope.electionType.electionTypeId = 1");
+				" from Constituency model where model.state.stateId = 1 and model.electionScope.electionType.electionTypeId = 1 order by model.name");
+			
+	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getDistrictConstituencies(Long districtId) {
+	
+		return getHibernateTemplate().find("select distinct model.constituencyId,model.name" +
+				" from Constituency model where model.district.districtId =? and model.electionScope.electionType.electionTypeId = 2 and model.deformDate is null order by model.name",districtId);
 			
 	}
 }

@@ -891,5 +891,73 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		}
 	}
 
+	
+	public String requestForAuthorisationAccesskey(String uniqueCode)
+	{
+		String resultstr = "";
+		try{
+			StringBuilder str =new StringBuilder();
+			ResultStatus resultStatus = new ResultStatus();
+			List<Object[]> list = mobileAppUserProfileDAO.getMobileNoByUniquecode(uniqueCode);
+			
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					
+					List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Authorisation_Access_Key);
+					saveMobileAppPingIngDetails((Long) params[4],(Long)pingingTypeId.get(0),null,null);
+					String[] mobile = {params[0].toString()};
+					String[] admingroupMobileNos = {IConstants.ADMINGROUPMOBILE};
+					String name = params[1].toString()+" " +params[2].toString();
+					String msg = "Dear "+name+", Your request for Authorisation access key hasbeen received in few minutes we can send Access Key to your mobile and email.";
+					String adminMsg = "Hi Admin Group, "+name+" requested for Authorisation access key,verify his details and send access key to him immediately.";
+					resultStatus = smsCountrySmsService.sendSmsFromAdmin(msg,true,mobile);
+					smsCountrySmsService.sendSmsFromAdmin(adminMsg,true,admingroupMobileNos);
+					if(name != null && name !="")
+					{
+					mailService.sendEmailToAdminGroupForAuthorisationAccessKey(name);
+					if(params[3] != null && params[3] !="")
+					mailService.sendEmailToMobileAppUserForAuthorisationAccessKey(name,params[3].toString());
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			log.error("Exception occured in requestForAuthorisationAccesskey() Method ",e);	
+		}
+		return resultstr;
+	}
+	public String verificationForAuthorisationAccessKey(String uniqueCode,String accesskey)
+	{
+		String resultstr = "";
+		List<Object> pingingTypeId =null;
+		try{
+			List<Object[]> list = mobileAppUserAccessKeyDAO.checkUniqueCodeByAccesskey(uniqueCode,accesskey);	
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+				MobileAppUserAccessKey mobileAppUserAccessKey = mobileAppUserAccessKeyDAO.get((Long)params[1]);
+				if(mobileAppUserAccessKey.getType().equalsIgnoreCase(IConstants.Request_For_Forget_Pwd_Access_Key))
+				 pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Request_For_Forget_Pwd_Access_Key);
+				else if(mobileAppUserAccessKey.getType().equalsIgnoreCase(IConstants.Authorisation_Access_Key))
+				 pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Authorisation_Access_Key);
+				saveMobileAppPingIngDetails((Long) params[0],(Long)pingingTypeId.get(0),null,null);	
+				mobileAppUserAccessKey.setIsUsed("true");
+				mobileAppUserAccessKeyDAO.save(mobileAppUserAccessKey);
+				}
+				resultstr = "True : your Authorisation access is accepted"	;
+			}
+				else
+				resultstr = "False : your Authorisation access is not accepted"	;	
+		}
+		catch(Exception e)
+		{
+			log.error("Exception occured in verificationForAuthorisationAccessKey() Method ",e);		
+		}
+		return resultstr;
+	}
 }
 

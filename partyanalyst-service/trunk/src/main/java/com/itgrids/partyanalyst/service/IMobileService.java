@@ -18,7 +18,7 @@ public interface IMobileService {
  
 	public ResultStatus checkAuthenticateUserAndUpdateLastAuthorisedTime(String userId,String macAddressId);
 	
-	public ResultStatus sendSmsToMobileAppUser(String mobileNo,Long mobileAppuserId,String accessKey,Long userID);
+	public ResultStatus sendSmsToMobileAppUser(String mobileNo,Long mobileAppuserId,String accessKey,Long userID,String type);
 	
 	public List<SelectOptionVO> getMobileAppUsers();
 	

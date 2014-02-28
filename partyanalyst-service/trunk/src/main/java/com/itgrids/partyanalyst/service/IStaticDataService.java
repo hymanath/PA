@@ -411,4 +411,5 @@ public interface IStaticDataService {
 		public MandalVO getElectionYearsAndPartiesForSelectedConstituencyInSuggestive(Long constituencyId);
 		
 		public String getPartyVotesPercentage(Long electionId, Long partyId);
+		public List<SelectOptionVO> getConstituenciesFordistricts(Long districtId);
 }
