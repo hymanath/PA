@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -259,9 +261,201 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 	
 		public void test()
 		{
-			String str = "2014-02-24+20:48:59";
-			str = str.replace("+"," ");
-			System.out.println(str);
+			List<Long> cIdsList = new ArrayList<Long>(0);
+			cIdsList.add(147l);
+			cIdsList.add(304l);
+			cIdsList.add(305l);
+			cIdsList.add(303l);
+			cIdsList.add(171l);
+			cIdsList.add(172l);
+			cIdsList.add(366l);
+			cIdsList.add(149l);
+			cIdsList.add(308l);
+			cIdsList.add(307l);
+			cIdsList.add(155l);
+			cIdsList.add(156l);
+			cIdsList.add(157l);
+			cIdsList.add(163l);
+			cIdsList.add(146l);
+			cIdsList.add(249l);
+			cIdsList.add(152l);
+			cIdsList.add(309l);
+			cIdsList.add(153l);
+			cIdsList.add(159l);
+			cIdsList.add(160l);
+			cIdsList.add(187l);
+			cIdsList.add(193l);
+			cIdsList.add(168l);
+			cIdsList.add(169l);
+			cIdsList.add(170l);
+			cIdsList.add(176l);
+			cIdsList.add(180l);
+			cIdsList.add(199l);
+			cIdsList.add(203l);
+			cIdsList.add(205l);
+			cIdsList.add(208l);
+			cIdsList.add(210l);
+			cIdsList.add(214l);
+			cIdsList.add(207l);
+			cIdsList.add(311l);
+			cIdsList.add(312l);
+			cIdsList.add(206l);
+			cIdsList.add(211l);
+			cIdsList.add(212l);
+			cIdsList.add(215l);
+			cIdsList.add(216l);
+			cIdsList.add(181l);
+			cIdsList.add(167l);
+			cIdsList.add(173l);
+			cIdsList.add(174l);
+			cIdsList.add(177l);
+			cIdsList.add(178l);
+			cIdsList.add(179l);
+			cIdsList.add(196l);
+			cIdsList.add(331l);
+			cIdsList.add(195l);
+			cIdsList.add(191l);
+			cIdsList.add(192l);
+			cIdsList.add(186l);
+			cIdsList.add(194l);
+			cIdsList.add(184l);
+			cIdsList.add(185l);
+			cIdsList.add(327l);
+			cIdsList.add(328l);
+			cIdsList.add(182l);
+			cIdsList.add(329l);
+			cIdsList.add(330l);
+			cIdsList.add(209l);
+			cIdsList.add(213l);
+			cIdsList.add(217l);
+			cIdsList.add(218l);
+			cIdsList.add(219l);
+			cIdsList.add(228l);
+			cIdsList.add(229l);
+			cIdsList.add(280l);
+			cIdsList.add(281l);
+			cIdsList.add(301l);
+			cIdsList.add(282l);
+			cIdsList.add(283l);
+			cIdsList.add(284l);
+			cIdsList.add(302l);
+			cIdsList.add(241l);
+			cIdsList.add(232l);
+			cIdsList.add(233l);
+			cIdsList.add(340l);
+			cIdsList.add(341l);
+			cIdsList.add(238l);
+			cIdsList.add(223l);
+			cIdsList.add(221l);
+			cIdsList.add(222l);
+			cIdsList.add(224l);
+			cIdsList.add(225l);
+			cIdsList.add(226l);
+			cIdsList.add(227l);
+			cIdsList.add(344l);
+			cIdsList.add(288l);
+			cIdsList.add(289l);
+			cIdsList.add(291l);
+			cIdsList.add(231l);
+			cIdsList.add(236l);
+			cIdsList.add(237l);
+			cIdsList.add(239l);
+			cIdsList.add(260l);
+			cIdsList.add(264l);
+			cIdsList.add(258l);
+			cIdsList.add(265l);
+			cIdsList.add(334l);
+			cIdsList.add(253l);
+			cIdsList.add(255l);
+			cIdsList.add(254l);
+			cIdsList.add(332l);
+			cIdsList.add(261l);
+			cIdsList.add(263l);
+			cIdsList.add(262l);
+			cIdsList.add(333l);
+			cIdsList.add(257l);
+			cIdsList.add(276l);
+			cIdsList.add(279l);
+			cIdsList.add(297l);
+			cIdsList.add(278l);
+			cIdsList.add(277l);
+			cIdsList.add(298l);
+			cIdsList.add(272l);
+			cIdsList.add(299l);
+			cIdsList.add(273l);
+			cIdsList.add(270l);
+			cIdsList.add(275l);
+			cIdsList.add(300l);
+			cIdsList.add(267l);
+			cIdsList.add(271l);
+			cIdsList.add(242l);
+			cIdsList.add(243l);
+			cIdsList.add(251l);
+			cIdsList.add(245l);
+			cIdsList.add(244l);
+			cIdsList.add(250l);
+			cIdsList.add(249l);
+			cIdsList.add(252l);
+			cIdsList.add(246l);
+			cIdsList.add(248l);
+			cIdsList.add(290l);
+			cIdsList.add(285l);
+			cIdsList.add(294l);
+			cIdsList.add(286l);
+			cIdsList.add(133l);
+			cIdsList.add(134l);
+			cIdsList.add(135l);
+			cIdsList.add(136l);
+			cIdsList.add(137l);
+			cIdsList.add(140l);
+			cIdsList.add(141l);
+			cIdsList.add(306l);
+			cIdsList.add(113l);
+			cIdsList.add(359l);
+			cIdsList.add(138l);
+			cIdsList.add(360l);
+			cIdsList.add(124l);
+			cIdsList.add(125l);
+			cIdsList.add(108l);
+			cIdsList.add(111l);
+			cIdsList.add(112l);
+			cIdsList.add(352l);
+			cIdsList.add(114l);
+			cIdsList.add(116l);
+			cIdsList.add(117l);
+			cIdsList.add(368l);
+			cIdsList.add(358l);
+			cIdsList.add(354l);
+			cIdsList.add(356l);
+			cIdsList.add(355l);
+			cIdsList.add(357l);
+			cIdsList.add(127l);
+			cIdsList.add(109l);
+			cIdsList.add(353l);
+			cIdsList.add(122l);
+			cIdsList.add(120l);
+			cIdsList.add(121l);
+			cIdsList.add(361l);
+			cIdsList.add(129l);
+
+			for(Long cid : cIdsList)
+			{
+				Map<String,Long> pmap = new HashMap<String,Long>(0);
+				List<Object[]> list = boothPublicationVoterDAO.getpanchayts(cid,10l);
+				for(Object[] params : list)
+				{
+					String pstr = params[1].toString().toUpperCase();
+					if(pmap.get(pstr) != null)
+					{
+						System.out.println("In "+cid+" Constituency --> Panchayat Name - "+pstr
+								+" with Duplicate Names, their Ids are "+params[0].toString()+","+pmap.get(pstr));
+					}
+					else
+					{
+						pmap.put(pstr, (Long)params[0]);
+					}
+				}
+			}
 					
 		}
 	    
