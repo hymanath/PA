@@ -18,8 +18,8 @@ public interface ICasteReportService {
 
 	
 	//anilUpdate
-	public  List<SelectOptionVO> loadConstituenciesForReport() ;
-	public ResultStatus  generateXL(List<Long> constIds,Long topPercent)  throws IOException ;
+	public  List<SelectOptionVO> loadConstituenciesForReport(List<Long> notIds) ;
+	public ResultStatus  generateXL(List<Long> constIds,Long topPercent,boolean notConsiderWeights,List<Long> notIds)  throws IOException ;
 	 public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId);
 
 

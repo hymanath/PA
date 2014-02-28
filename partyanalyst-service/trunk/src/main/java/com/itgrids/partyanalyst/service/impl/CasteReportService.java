@@ -1,8 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -16,9 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeMap;
-
-import javassist.expr.Cast;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -34,6 +36,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -76,6 +80,8 @@ public class CasteReportService implements ICasteReportService{
 	@Autowired
 	private TransactionTemplate transactionTemplate;
     private ISuggestiveModelService suggestiveModelService;
+    private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
+    private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
@@ -171,6 +177,24 @@ public class CasteReportService implements ICasteReportService{
 	public void setSuggestiveModelService(
 			ISuggestiveModelService suggestiveModelService) {
 		this.suggestiveModelService = suggestiveModelService;
+	}
+
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
+	}
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 
 	public List<CastVO> getCasteWiseInfo(Long constituencyId,Long publicationId,String type,Long userId,String partialChecked)
@@ -816,22 +840,40 @@ public class CasteReportService implements ICasteReportService{
 	 }
 	
 	// @Override
-	public List<SelectOptionVO> loadConstituenciesForReport() {
+	public List<SelectOptionVO> loadConstituenciesForReport(List<Long> notIds) {
 		List<SelectOptionVO> returnVo =new ArrayList<SelectOptionVO>();
 	//	List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadConst();
 		 List<Object[]> obj=(List<Object[]>) partyTrendsDAO.findAssemblyConstituenciesForSimaAndra(2L, 1l, Arrays.asList(new String[]{"RURAL","RURAL-URBAN"}),  Arrays.asList(new Long[]{1L,2L,3L,4L,5L,6L,7L,8L,9L,10L}));
-		for (Object[] objects : obj) {
-			SelectOptionVO vo = new SelectOptionVO();
-			vo.setId((Long)objects[0]);
-			vo.setName(objects[1].toString());
-			returnVo.add(vo);
+		List<Long> assemblyIds = new ArrayList<Long>();
+		 for (Object[] objects : obj) {
+			 assemblyIds.add((Long)objects[0]);
 		}
+		 List<Object[]> parliaments = delimitationConstituencyAssemblyDetailsDAO.findLatestParliamentsByAssemblyIds(assemblyIds,notIds);
+		 for (Object[] objects : parliaments) {
+				SelectOptionVO vo = new SelectOptionVO();
+				vo.setId((Long)objects[0]);
+				vo.setName(objects[1].toString());
+				returnVo.add(vo);
+			}
 		return returnVo ;
 	}
 	
-	public ResultStatus  generateXL(List<Long> constIds,Long topPercent) throws IOException {
-		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
-	    List<Long> constIdRemains=	 (List<Long>)partyTrendsDAO.loadConst(constIds);
+	public ResultStatus  generateXL(List<Long> constIds,Long topPercent,boolean notConsiderWeights,List<Long> notIds) throws IOException {
+		 Map<Long,Map<Long, List<PartyTrendsVO>>> parliamantMap =new HashMap<Long,Map<Long, List<PartyTrendsVO>>>();
+		 
+		 List<Long> assembIds = new ArrayList<Long>();
+		 Map<Long,Long> constiNosMap = new HashMap<Long,Long>();
+		 Map<Long,Long> parlIdsMap = new HashMap<Long,Long>();
+		 List<Object[]> assembliesIds = delimitationConstituencyAssemblyDetailsDAO.findAssParlIdsForAListOfParlConstis(constIds,notIds);
+	     for(Object[] assId:assembliesIds){
+	    	 assembIds.add((Long)assId[0]);
+	    	 parlIdsMap.put((Long)assId[0], (Long)assId[1]);
+	     }
+	     List<Object[]>  assNos = delimitationConstituencyDAO.getConstituencyNo(assembIds,null);
+	     for(Object[] assId:assNos){
+	    	 constiNosMap.put((Long)assId[0], (Long)assId[1]);
+	     }
+		 List<Long> constIdRemains=	 (List<Long>)partyTrendsDAO.loadConst(assembIds);
 
 	      new ArrayList<PartyTrendsVO>();
 	    
@@ -862,11 +904,20 @@ public class CasteReportService implements ICasteReportService{
 	    }
 		}
 	    
-		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(constIds);
+		List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(assembIds);
+		//SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		//String date = sdf.format(new Date());
+		
 		
 		for (Object[] objects : obj) {
 			
 			Long constId=Long.valueOf(objects[0].toString());
+			Long parliamentId = parlIdsMap.get(constId);
+			Map<Long, List<PartyTrendsVO>> map = parliamantMap.get(parliamentId);
+			if(map == null){
+				map = new HashMap<Long, List<PartyTrendsVO>>();
+				parliamantMap.put(parliamentId, map);
+			}
 			PartyTrendsVO vo = new PartyTrendsVO();
 			vo.setConstituencyId(constId);
 			vo.setConstituencyName(objects[1].toString());
@@ -887,7 +938,7 @@ public class CasteReportService implements ICasteReportService{
 				map.put(constId, l);
 			}
 		}
-		String url = generateXL(map,topPercent);
+		String url = generateXL(parliamantMap,topPercent,constiNosMap,notConsiderWeights);
 		ResultStatus s =new ResultStatus();
 	    s.setResultCode(0);
 	    s.setMessage(url);
@@ -908,21 +959,35 @@ public class CasteReportService implements ICasteReportService{
 		
 		return pt;
 	}
-   public String  generateXL(Map<Long,List<PartyTrendsVO>> map,Long topPercent) throws IOException
-
-   
-
-
+   public String  generateXL(Map<Long,Map<Long, List<PartyTrendsVO>>> parliamentMap,Long topPercent,Map<Long,Long> constiNosMap,boolean notConsiderWeights) throws IOException
    {
-	   Random randomNum = new Random();
-		String filename= "Strategy/"+"report"+randomNum.nextInt(10000000)+".xls";
-	   FileOutputStream fileOut =    new FileOutputStream(IConstants.STATIC_CONTENT_FOLDER_URL+filename);
-	   Set<Long> keys = map.keySet();
-	    HSSFWorkbook workbook=new HSSFWorkbook();
-	    HSSFSheet sheet =null;
+	   String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		String path = IConstants.STATIC_CONTENT_FOLDER_URL+pathSeperator+"Strategy";
+		Random randomNum = new Random();
+		
+		String returnString ="";
+		
+		for(Long parliamentKey:parliamentMap.keySet()){
+			String parliamentName = constituencyDAO.get(parliamentKey).getName();
+			String filename= ""+parliamentName+"_"+randomNum.nextInt(10000000);
+			File destDir = new File(path+pathSeperator+""+filename);
+			destDir.mkdir();
+			 returnString ="Strategy/"+filename+".zip";
+		Map<Long, List<PartyTrendsVO>> map = parliamentMap.get(parliamentKey);
+		
+		 Set<Long> keys = map.keySet();
+		for (Long long1 : keys) {
+			List<PartyTrendsVO> voa=  map.get(long1);
+		 HSSFWorkbook workbook=new HSSFWorkbook();
+		 HSSFSheet sheet =null;
+		File f1 = new File(path+pathSeperator+filename+pathSeperator+constiNosMap.get(long1)+"_"+constituencyDAO.get(long1).getDistrict().getDistrictName()+"_"+voa.get(0).getConstituencyName()+".xls");
+		
+	      FileOutputStream fileOut =    new FileOutputStream(f1);
+	  
+	   
 	    
-	  for (Long long1 : keys) {
-		List<PartyTrendsVO> voa=  map.get(long1);
+	 
+		
 		   int length = voa.size();
 		   if(topPercent != null){
 			   length = (length*topPercent.intValue())/100;
@@ -930,12 +995,14 @@ public class CasteReportService implements ICasteReportService{
 		   sheet =  workbook.createSheet(voa.get(0).getConstituencyName());
 		    sheet.setColumnWidth(0, 4800);
 			sheet.setColumnWidth(1, 4800);
-			sheet.setColumnWidth(2, 3000);
-			sheet.setColumnWidth(3, 3000);
-			sheet.setColumnWidth(4, 3000);
-			sheet.setColumnWidth(5, 3000);
-			sheet.setColumnWidth(7, 4800);
-		  int cnt=1;
+			if(!notConsiderWeights){
+			   sheet.setColumnWidth(2, 3000);
+			   sheet.setColumnWidth(3, 3000);
+			   sheet.setColumnWidth(4, 3000);
+			   sheet.setColumnWidth(5, 3000);
+			  sheet.setColumnWidth(7, 4800);
+			}
+		
 		  HSSFRow rowhead =sheet.createRow(0);
 		  Cell cell = rowhead.createCell(0);
 			 
@@ -943,6 +1010,7 @@ public class CasteReportService implements ICasteReportService{
 	       
 	       cell = rowhead.createCell(1);
 	       cell.setCellValue("Panchayat");
+	      if(!notConsiderWeights){
 	       cell = rowhead.createCell(2);
 	       cell.setCellValue("P.T Weightage%");
 	       cell = rowhead.createCell(3);
@@ -958,10 +1026,10 @@ public class CasteReportService implements ICasteReportService{
 	       
 	       cell = rowhead.createCell(7);
 	       cell.setCellValue("Panchayat Type");
-	       
+	      }  
 		for (int i = 0;i < length;i++) {
 			PartyTrendsVO partyTrendsVO = voa.get(i);
-			  rowhead =sheet.createRow(cnt);
+			  rowhead =sheet.createRow(i+1);
 			 
 			   cell = rowhead.createCell(0);
 			 
@@ -969,6 +1037,7 @@ public class CasteReportService implements ICasteReportService{
 		       
 		       cell = rowhead.createCell(1);
 		       cell.setCellValue(partyTrendsVO.getName());
+		      if(!notConsiderWeights){
 		       cell = rowhead.createCell(2);
 		       cell.setCellValue(partyTrendsVO.getPervTrenzWts());
 		       cell = rowhead.createCell(3);
@@ -983,16 +1052,46 @@ public class CasteReportService implements ICasteReportService{
 		       cell.setCellValue(partyTrendsVO.getId());
 		       cell = rowhead.createCell(7);
 		       cell.setCellValue(partyTrendsVO.getLocName());
-		       cnt++;
+		      }
 		}
-	  }
-	    workbook.write(fileOut);
+		workbook.write(fileOut);
 		 fileOut.close(); 
-
-		  
-	return filename;
+	  }
+		FileOutputStream fos = new FileOutputStream(path+pathSeperator+""+filename+".zip");
+		ZipOutputStream zos = new ZipOutputStream(fos);
+		try{
+			 for(File rf : destDir.listFiles())
+				 addToZipFile(rf.getAbsolutePath(), zos);
+			 zos.close();
+			 fos.close();
+		 }catch(Exception e)
+		 {
+			 log.error("Exception Occured in Zipping Files");
+		 }
+		}
+		
+	return returnString;
    }
-	
+   public  void addToZipFile(String fileName, ZipOutputStream zos)
+	 {
+			try {
+				File file = new File(fileName);
+				FileInputStream fis = new FileInputStream(file);
+				ZipEntry zipEntry = new ZipEntry(fileName);
+				zos.putNextEntry(zipEntry);
+
+				byte[] bytes = new byte[1024];
+				int length;
+				while ((length = fis.read(bytes)) >= 0){
+					zos.write(bytes, 0, length);
+				}
+				zos.closeEntry();
+				fis.close();
+			} catch (Exception e) {
+				log.error("Exception Occured in addToZipFile() Method ");
+			}
+			
+		}
   public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId)
   {
 	  
