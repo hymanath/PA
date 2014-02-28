@@ -1068,7 +1068,7 @@ function panchayatMatrx(result)
   <!--<div id="titleHeading" align="center"> SUGGESTIVE MODEL </div>-->
  <c:if test="${!hideMainMenu}"> 
   <div class="widget blue">
-  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 485px;" class="widget-block">
+  <div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px; height: 560px;" class="widget-block">
   <h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">SUGGESTIVE MODEL</h4>
 
  <div class="well" style="float:left;width:200px;margin-top:70px;height:auto;">
