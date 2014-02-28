@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Formatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Collections;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -400,7 +402,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 				}
 				optionsList.add(optVo);
 			}
-			
+			Collections.sort(optionsList,sortById);
 			hsvo.setOptions(optionsList);
 			hsvo.setOptionType(hhSrvyQstn.getHhoptionType().getOptionType());
 			hsvo.setOptionTypeId(hhSrvyQstn.getHhoptionType().getOptionTypeId());
@@ -434,6 +436,14 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 		
 		return subListVO;
 	}
+	
+	 public static Comparator<HHSurveyVO> sortById = new Comparator<HHSurveyVO>()
+	 {				  
+	     public int compare(HHSurveyVO resultData1, HHSurveyVO resultData2)
+		{
+			return (resultData1.getOptionId().intValue()) - (resultData2.getOptionId().intValue());
+		}
+	 };
 	
 	public HHSurveyVO getMatchedVOForMainQstns(Long id,List<HHSurveyVO> list )
 	{
