@@ -20894,12 +20894,13 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
     	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_OCCUPATION);
     	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_EDUCATION);
     	ctgrysReqForHHSurveyList.add(IConstants.HOUSE_HOLD_VOTER_SOCIAL_POSITIONS);
-		
-		List<Object[]> votersCategoriesList = 
-				 voterCategoryValueDAO.getVoterCategoryValuesForVotersForHHSurvey(1l,voterIds,ctgrysReqForHHSurveyList);
-	   
-	   
-	   List<Object[]> hhVoterRelations =  houseHoldVoterDAO.getVoterRelationsByVoterIds(voterIds);
+        List<Object[]> votersCategoriesList=new ArrayList<Object[]>();
+        List<Object[]> hhVoterRelations =new ArrayList<Object[]>();
+		if(voterIds != null && voterIds.size()>0){
+		 votersCategoriesList = 
+				 voterCategoryValueDAO.getVoterCategoryValuesForVotersForHHSurvey(1l,voterIds,ctgrysReqForHHSurveyList);		
+	             hhVoterRelations =  houseHoldVoterDAO.getVoterRelationsByVoterIds(voterIds);
+		}
 	   Map<Long,Long> hhVoterRelMap=new HashMap<Long, Long>();
 	   if(hhVoterRelations.size()>0){
 		   for(Object[] obj:hhVoterRelations){
