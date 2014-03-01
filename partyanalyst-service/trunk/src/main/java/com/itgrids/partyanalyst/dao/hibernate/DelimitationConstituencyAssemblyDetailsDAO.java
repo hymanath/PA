@@ -202,7 +202,7 @@ public class DelimitationConstituencyAssemblyDetailsDAO extends GenericDaoHibern
 	public List<Object[]> findAssParlIdsForAListOfParlConstis(List<Long> parliamentConstituencyIds,List<Long> notIds){	
 		StringBuilder query = new StringBuilder();
 		query.append(" select model.constituency.constituencyId,model.delimitationConstituency.constituency.constituencyId from DelimitationConstituencyAssemblyDetails model where ");
-		query.append(" model.delimitationConstituency.constituency.constituencyId in (:parliamentConstituencyIds) and model.constituency.district.districtId > 10 and model.constituency.areaType != 'URBAN' ");
+		query.append(" model.delimitationConstituency.constituency.constituencyId in (:parliamentConstituencyIds) and model.constituency.areaType != 'URBAN' ");
 		query.append(" and model.delimitationConstituency.year = (select max(model1.year) from DelimitationConstituency model1)  ");
 		
 		if(notIds != null && notIds.size() > 0){

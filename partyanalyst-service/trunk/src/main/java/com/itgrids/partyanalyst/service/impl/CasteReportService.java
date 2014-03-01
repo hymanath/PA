@@ -956,6 +956,7 @@ public class CasteReportService implements ICasteReportService{
 		pt.setTotalWt(vo.getTotalWt());
 		pt.setId(vo.getId());
 		pt.setType(vo.getLocName());
+		pt.setPriority(vo.getPriority());
 		
 		return pt;
 	}
@@ -1214,5 +1215,29 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		
 	}
 }
-
+  public void updatePriority(){
+	List<Long> constiIds = partyTrendsDAO.getConstituencyIds();
+	System.out.println("started");
+	int x = 0;
+	for(Long conId:constiIds){
+		try{
+			x=x+1;
+			System.out.println(x);
+		List<PartyTrends> trends = partyTrendsDAO.getAllTrends(conId);
+		int totalCount = trends.size();
+		for(int i =1;i<=totalCount;i++){
+			PartyTrends pt = trends.get(i-1);
+			Long priorty = new Long((i*100)/totalCount);
+			if(priorty.longValue() == 0l)
+				priorty = 1l;
+			pt.setPriority(priorty);
+			partyTrendsDAO.save(pt);
+			constituencyDAO.flushAndclearSession();
+		}
+		}catch(Exception e){
+			log.error("Exception Occured in Zipping Files",e);
+		}
+	}
+	System.out.println("completed");
+}
 }

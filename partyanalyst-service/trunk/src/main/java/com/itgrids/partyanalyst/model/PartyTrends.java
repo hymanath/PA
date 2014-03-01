@@ -26,7 +26,7 @@ public class PartyTrends implements Serializable{
 	 private static final long serialVersionUID = 1L;
 	 
 	 private Long partyTrendsId;	
- 
+	 private Long priority;	
 	
 	  
 	  private Constituency constituency;
@@ -116,6 +116,14 @@ public class PartyTrends implements Serializable{
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	@Column(name="priority")
+	public Long getPriority() {
+		return priority;
+	}
+	public void setPriority(Long priority) {
+		this.priority = priority;
 	}
 	
 	

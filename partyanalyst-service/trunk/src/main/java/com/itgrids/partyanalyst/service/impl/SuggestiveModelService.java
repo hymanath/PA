@@ -75,6 +75,7 @@ import com.itgrids.partyanalyst.excel.booth.VoterVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.model.PartyTrends;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.Voter;
@@ -6254,7 +6255,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			      trend.setYoungVotersWt(0f);
 		    	trend.setTotalWt(new BigDecimal(trend.getPervTrenzWt()+trend.getPrpWt()+trend.getYoungVotersWt()).setScale(4, BigDecimal.ROUND_HALF_UP).floatValue());
 		    	returnVal.add(trend);
+		    	
 		    }
+		    int totalCount = returnVal.size();
+			for(int i =1;i<=totalCount;i++){
+				PartyTrendsVO pt = returnVal.get(i-1);
+				Long priorty = new Long((i*100)/totalCount);
+				if(priorty.longValue() == 0l)
+					priorty = 1l;
+				pt.setPriority(priorty);
+				constituencyDAO.flushAndclearSession();
+			}
 		 }catch(Exception e){
 			 LOG.error("Exception rised in calculation for constiId "+constituencyId+" ",e);
 		 }
@@ -6460,15 +6471,22 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				}
 	     };
 	     
-    public static Comparator<SuggestedLocationsVO> prpEffectSort = new Comparator<SuggestedLocationsVO>()
+    public static Comparator<PartyTrendsVO> partyTrendsSort = new Comparator<PartyTrendsVO>()
  		 {
  				  
- 			  public int compare(SuggestedLocationsVO loc1, SuggestedLocationsVO loc2)
+ 			  public int compare(PartyTrendsVO loc1, PartyTrendsVO loc2)
  				{
- 				   return (loc2.getPrpEffect().compareTo(loc1.getPrpEffect()));
+ 				   return (loc2.getTotalWt().compareTo(loc1.getTotalWt()));
  				}
  		  };
-	 		  
+ 		 public static Comparator<SuggestedLocationsVO> prpEffectSort = new Comparator<SuggestedLocationsVO>()
+ 		 		 {
+ 		 				  
+ 		 			  public int compare(SuggestedLocationsVO loc1, SuggestedLocationsVO loc2)
+ 		 				{
+ 		 				   return (loc2.getPrpEffect().compareTo(loc1.getPrpEffect()));
+ 		 				}
+ 		 		  };		  
 	public static Comparator<SuggestedLocationsVO> finalSort = new Comparator<SuggestedLocationsVO>()
 		 {
 						  
