@@ -289,7 +289,7 @@ fieldset{
 	<div id="ConstituencyDiv" class="selectDiv">
 		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votermodificationconstiId" list="constituencyList" listKey="id" listValue="name"/> &nbsp;&nbsp;
          <br>
-		Select Publication Date<font class="requiredFont">*</font> <select id="votermodificationpublicationList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		Select Publication Date<font class="requiredFont">*</font> <select id="votermodificationpublicationList" class="selectWidth" style="width:172px;height:25px;margin-top:10px;" name="publicationDateList" >
 		</select>
 		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="votermodificationajaxLoad"><img src="images/icons/search.gif" /></span>
 
@@ -311,16 +311,16 @@ fieldset{
     <div id="districtvotermodificationerrorMsgDiv"></div>
 	<div id="basicvotermodificationdistrictDiv"></div>
 	<div id="ConstituencyDiv" class="selectDiv">
-		Select District<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your Constituency" name="districtconstituencyList" id="districtvotermodificationconstiId" list="districts" listKey="id" listValue="name"/> &nbsp;&nbsp;
+		Select District<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:63px;" cssClass="selectWidth" label="Select Your Constituency" name="districtconstituencyList" id="districtvotermodificationconstiId" list="districts" listKey="id" listValue="name"/> &nbsp;&nbsp;
          <br>
-		Select Publication Date<font class="requiredFont">*</font> <select id="districtvotermodificationpublicationList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		Select Publication Date<font class="requiredFont">*</font> <select id="districtvotermodificationpublicationList" class="selectWidth" style="width:172px;height:25px;margin-top:10px;" name="publicationDateList" >
 		<option value="9">1-1-2014</option>
 		<option value="7">1-1-2013</option>
 		<option value="8">1-2-2013</option>
 		</select>
 		<span style="float: right; clear: both; margin-right: -19px; margin-top: 8px;display:none;" id="districtvotermodificationajaxLoad"><img src="images/icons/search.gif" /></span>
 
-		<div id="districtvoterDataInsertDiv">
+		<div id="districtvoterDataInsertDiv" style="margin-top:10px;">
 			<input type="button" class="btn btn-info" value="Submit" id="districtvotermodificationDataInsertBtn" />
 			<input type="button" class="btn btn-info" value="Delete Existing Data" id="districtvotermodificationvoterDataDeleteBtn" />
 			<img src="./images/icons/search.gif" style="display:none;margin-left: 10px;" id="districtvotermodificationajaxImage" />
