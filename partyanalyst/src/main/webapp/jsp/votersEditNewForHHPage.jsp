@@ -688,7 +688,7 @@ function buildVotersInFamilySearch(results,hno){
 	    }
 			
      var votersResultColumnDefs = [ 
-							{label:"Select Voter",formatter:YAHOO.widget.DataTable.CheckVoter},
+							{key:"select", label: "<input type='checkbox' id='selectAll' checked/>", formatter:YAHOO.widget.DataTable.CheckVoter},
 		    	           	{key:"name", label: "Name", sortable: true,formatter:YAHOO.widget.DataTable.NameLink},
 							<!--{key:"gender", label: "Gender", sortable: true},-->
 		    				{key:"age", label: "Age",sortable:true},
@@ -710,12 +710,20 @@ function buildVotersInFamilySearch(results,hno){
 	var myDataSource = new YAHOO.util.DataSource(results);
 					myDataSource.response = YAHOO.util.DataSource.TYPE_JSARRAY
 					myDataSource.responseschema = {
-						 fields : ["name","gender","age","houseNo","gaurdian","relationship","voterId","boothId"]
+						 fields : ["select","name","gender","age","houseNo","gaurdian","relationship","voterId","boothId"]
 					};
 
 		var familesDataSource = new YAHOO.widget.DataTable("impFamDtls", votersResultColumnDefs,myDataSource, myConfigs);
     
 }
+
+$('#selectAll').live("click",function(){
+if($(this).attr('checked'))
+$('.voterChkbx').attr('checked',true);
+else
+$('.voterChkbx').attr('checked',false);
+});
+
 function openProblemEditFormNew(id,boothId,publicationDateId,houseNo)
 {
 	var urlStr="votersEditNewHHAction.action?voterId="+id+"&boothId="+boothId+"&publicationDateId="+publicationDateId+"&houseNo="+houseNo+"&selIds=7,8";
@@ -877,13 +885,13 @@ function buildQuestionAnswers(results){
 	str+="<input type='hidden' name='houseNo' value="+houseNo+"></input>";
 	
 	str+="<span class='btn btn-info' onclick=submitQuestionDetails()> Save </span>";
+	str+="<img id='submitQuesAjaxImg' style='width: 25px;display:none;margin-left:5px;' src='images/icons/ajaxImg.gif'>"
 	str+="</form>"
 	str+="</div>";
 	$("#qstnAnswer").html(str);
 }
 
 function saveHouseHoldInfo(){
-
 	var uploadHandler = {
 				success: function(o) {
 					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
@@ -899,6 +907,7 @@ function saveHouseHoldInfo(){
 		YAHOO.util.Connect.setForm('QuestionAnswersForm',false);
 		YAHOO.util.Connect.asyncRequest('POST','hhQstnAnswrsForm.action',uploadHandler);
 		
+		$("#submitQuesAjaxImg").css("display","none");
 	//$( "#QuestionAnswersFormId" ).submit();
 }
  </script>
@@ -1031,6 +1040,7 @@ function saveHouseHoldInfo(){
 		</div>
 		
 		 <div id="childrenTable" style="display:none;margin-left:-200px;"></div>
+		 
 </div>
 
 <!--
@@ -1178,7 +1188,7 @@ function saveHouseHoldInfo(){
 					if(temp[i].voterFamilyRelId!=null||temp[i].voterFamilyRelId!=""){
 						familyRelsSel=temp[i].voterFamilyRelId;
 					}
-					
+					if(temp[i].categoriesList!=null){
 					if(temp[i].categoriesList.length>0){
 					for(var j in temp[i].categoriesList){
 						if(temp[i].categoriesList[j].categoryValuesId==7){
@@ -1191,6 +1201,7 @@ function saveHouseHoldInfo(){
 							socialPosSel=temp[i].categoriesList[j].categoryValueId;
 						}
 						
+					}
 					}
 					}
 					
@@ -1273,6 +1284,7 @@ var voterDtls={
 };
 function submitQuestionDetails()
 {
+  $("#submitQuesAjaxImg").css("display","block");
   var errorDivEle = document.getElementById('errorDiv');
   var flag= true;
   var str= '';
