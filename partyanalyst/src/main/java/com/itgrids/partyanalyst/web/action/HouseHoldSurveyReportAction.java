@@ -517,6 +517,9 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 			houseHoldVotersDtls.setHouseHoldsId(Long.parseLong(jObj.getString("houseHoldsId")));
 			houseHoldsId = houseHoldSurveyReportService.saveHouseHoldsVotersDetails(houseHoldVotersDtls);
 			
+			if(houseHoldsId.equals(0l)){
+				return Action.ERROR;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Action.ERROR;
