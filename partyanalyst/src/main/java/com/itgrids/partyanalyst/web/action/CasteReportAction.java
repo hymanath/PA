@@ -16,7 +16,9 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICasteReportService;
+import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -38,7 +40,7 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	private Long topPanchayats;
 	private Boolean notConsiderWeights;
 	private String notConstiIds;
-	
+	private EntitlementsHelper entitlementsHelper;
 	
 	public Boolean getNotConsiderWeights() {
 		return notConsiderWeights;
@@ -164,6 +166,13 @@ public class CasteReportAction extends ActionSupport implements ServletRequestAw
 	public void setTopPanchayats(Long topPanchayats) {
 		this.topPanchayats = topPanchayats;
 	}
+	
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 	public String execute() throws Exception
 	{
 		HttpSession session = request.getSession();
@@ -219,11 +228,14 @@ public String getVoterAddressDetails()
 public String loadConst()
 {
 	try{
-		Long userId = 0l;
+
 		HttpSession session = request.getSession();
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(user == null)
-		return INPUT;
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
+			return ERROR;
+	
 		String[] notIds = null;
 		 if(notConstiIds != null && notConstiIds.trim().length() > 0){
 			 notIds = notConstiIds.trim().split(",");
@@ -252,11 +264,15 @@ public String loadConst()
 public String getConstXL()
 {
 	try{
-		Long userId = 0l;
+		
 		HttpSession session = request.getSession();
-		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
-		if(user == null)
-		return INPUT;
+		//RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
+			return ERROR;
+		
 		try{
 			System.out.println("before   ===="+constValues);
 			 if(request.getParameterMap().containsKey("constValues")){
@@ -330,6 +346,24 @@ public String getPanchayatsInVoterRange()
 	}
 	return Action.SUCCESS;
 }
-
+public String updatePriority()
+{
+	try{
+		HttpSession session = request.getSession();
+		//RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.ADMIN_PAGE))
+			return INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.ADMIN_PAGE))
+			return ERROR;
+		casteReportService.updatePriority();
+		
+	}
+	catch(Exception e)
+	{
+		log.error("Exception Occured in updatePriority() method",e);
+	}
+	return Action.SUCCESS;
+}
 
 }

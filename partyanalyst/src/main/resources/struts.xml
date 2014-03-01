@@ -6470,5 +6470,8 @@
         <param name="root">selectvo</param>
         	</result>
 		</action>
+		 <action name="updatePrrAction" class="casteReportAction" method="updatePriority">
+          </action>
 		</package>
+		
 </struts>      
