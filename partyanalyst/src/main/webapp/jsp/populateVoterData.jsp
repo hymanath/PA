@@ -166,6 +166,7 @@ fieldset{
 		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your District" name="districtList" id="voterDataDistrictList" list="districts" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
 		Select Publication Date<font class="requiredFont">*</font> <select id="districtpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
+		<option value="10">1-2-2014</option>
 		<option value="9">1-1-2014</option>
 		<option value="7">1-1-2013</option>
 		<option value="8">1-2-2013</option>
@@ -314,6 +315,7 @@ fieldset{
 		Select District<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:63px;" cssClass="selectWidth" label="Select Your Constituency" name="districtconstituencyList" id="districtvotermodificationconstiId" list="districts" listKey="id" listValue="name"/> &nbsp;&nbsp;
          <br>
 		Select Publication Date<font class="requiredFont">*</font> <select id="districtvotermodificationpublicationList" class="selectWidth" style="width:172px;height:25px;margin-top:10px;" name="publicationDateList" >
+		<option value="10">1-2-2014</option>
 		<option value="9">1-1-2014</option>
 		<option value="7">1-1-2013</option>
 		<option value="8">1-2-2013</option>
