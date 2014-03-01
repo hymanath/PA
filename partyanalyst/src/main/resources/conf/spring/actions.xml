@@ -1341,7 +1341,7 @@
 	</bean>
 	<bean id="casteReportAction" class="com.itgrids.partyanalyst.web.action.CasteReportAction" singleton="false">
 		  <property name="casteReportService" ref="casteReportService" />  
-	    
+	    <property name="entitlementsHelper" ref="entitlementsHelper" />  
 	</bean>
 	
 	
