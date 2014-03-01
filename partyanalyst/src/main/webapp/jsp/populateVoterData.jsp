@@ -1088,9 +1088,17 @@ function callAjax(jsObj,url)
 		if(result.length > 0)
 		{
 			$("#districterrorMsgDiv").html("Voters Data Inserted Successfully.").css("color","green");
-			
+			if(result[0].name == null)
 			$("#basicdistrictDiv").html('<b> Total Constituencies</b> : '+result[0].totalCount+'');
-				return;
+		     else
+			if(result[0].name != null)
+			$("#basicdistrictDiv").html('<b> Total Constituencies</b> : '+result[0].totalCount+' <b>Data not Available constituencies:</b>');
+			for(var i in result)
+			{
+			if(result[i].name != null)
+		    $("#basicdistrictDiv").append(''+result[i].name+'');
+			}
+			return;
 		}
 		else
 		{
@@ -1374,7 +1382,16 @@ function showdistrictVoterModificationDataStatus(result)
 		if(result.length > 0)
 		{
 			$("#districtvotermodificationerrorMsgDiv").html("Voters Data Inserted Successfully.").css("color","green");
+			if(result[0].name == null)
 			$("#basicvotermodificationdistrictDiv").html('<b> Total Constituencies</b> : '+result[0].totalCount+'');
+		else
+			if(result[0].name != null)
+			$("#basicvotermodificationdistrictDiv").html('<b> Total Constituencies</b> : '+result[0].totalCount+' <b>Data not Available constituencies:</b>');
+			for(var i in result)
+			{
+			if(result[i].name != null)
+		    $("#basicvotermodificationdistrictDiv").append(''+result[i].name+'');
+			}
 				return;
 		}
 		else
