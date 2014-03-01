@@ -765,7 +765,7 @@ public List<SelectOptionVO> getConstituencyList()
 					{
 						records++;
 						try{
-						String serialNo = params[2]!= null ? params[2].toString() : "0";
+						String serialNo = params[3]!= null ? params[3].toString() : "0";
 						statement.executeUpdate("INSERT INTO booth_publication_voter(booth_publication_voter_id, booth_id, voter_id, serial_no) VALUES (" +
 								"'"+params[0].toString()+"','"+params[1].toString()+"','"+params[2].toString()+"','"+serialNo+"')");
 						}catch(Exception e)
