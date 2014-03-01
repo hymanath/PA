@@ -2965,8 +2965,8 @@ IUserVoterDetailsDAO{
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVotersDetailsBySearchCriteriaForHouseHolds(Long publicationDateId,String qry) {
 		
-		 	Query query = getSession().createQuery("select model.voter,model.booth.boothId,model.booth.partNo,model.serialNo from BoothPublicationVoter model,UserVoterDetails model2 where " +
-		 		" model.voter.voterId = model2.voter.voterId and model.booth.publicationDate.publicationDateId = :publicationDateId "+qry) ;
+		 	Query query = getSession().createQuery("select model.voter,model.booth.boothId,model.booth.partNo,model.serialNo from BoothPublicationVoter model where " +
+		 		"  model.booth.publicationDate.publicationDateId = :publicationDateId "+qry) ;
 			
 		 	query.setParameter("publicationDateId", publicationDateId);
 			
