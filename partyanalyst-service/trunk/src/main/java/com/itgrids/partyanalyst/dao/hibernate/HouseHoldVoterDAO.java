@@ -151,7 +151,7 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 	
 	public int updateStatusIfVoterIdExist(Long voterId){
 		Query qry = getSession().createQuery(" update HouseHoldVoter model set model.isDelete =:deleteStatus where model.voterId =:voterId");
-		qry.setParameter("voterFamilyId", voterId);
+		qry.setParameter("voterId", voterId);
 		qry.setParameter("deleteStatus", IConstants.TRUE);
 		
 		return qry.executeUpdate();
