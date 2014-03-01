@@ -1144,9 +1144,9 @@ function saveHouseHoldInfo(){
 		if(results!=null && results.length>0)
 		{
 		var str="";
-		str+="<table class='table table-bordered' searchedVotersTable>";
+		str+="<table class='table table-bordered' id='srchVotersTableId'>";
 			str+="<thead>";
-				str+="<tr><th>Select</th><th>Name</th><th>Serial No</th><th>Booth No</th><th>House No</th></tr>";
+				str+="<tr><th>Select</th><th>Name</th><th>Serial No</th><th>Booth No</th><th>House No</th></tr></thead><tbody>";
 				for(var i in results){
 					str+="<tr>";
 						if(voterArr.indexOf(results[i].voterId.toString())==-1){
@@ -1160,15 +1160,20 @@ function saveHouseHoldInfo(){
 						str+="<td>"+results[i].houseNo+"</td>";
 					str+="</tr>";
 				}
-			str+="</thead>";
+			str+="</tbody>";
 		str+="</table>";
 		temp = results;
-		str+="<span onclick=addVoter() class='btn btn-info'>Add Voter</span>";
+		str+="<br><span onclick=addVoter() class='btn btn-info'>Add Voter</span>";
 		$(".searchedVotersDiv").html(str);
+		$('#srchVotersTableId').dataTable({        
+		   "aaSorting": [[ 5, "desc" ]],
+		   "aLengthMenu": [[15, 30, 90, -1], [15, 30, 90, "All"]],
+		   "aoColumns": [null,null,null,null,null] 
+        });
 		}
 		else
 		{
-			$(".searchedVotersDiv").html("<span style='color:red'>No Data Avalible For Given Search Details");
+			$(".searchedVotersDiv").html("<span style='color:red'>No Data Available For Given Search Details");
 		}
 	}  
 	
