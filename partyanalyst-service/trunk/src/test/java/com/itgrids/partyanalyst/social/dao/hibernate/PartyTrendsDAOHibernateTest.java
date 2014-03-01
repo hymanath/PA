@@ -1,24 +1,11 @@
 package com.itgrids.partyanalyst.social.dao.hibernate;
 
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
 import org.appfuse.dao.BaseDaoTestCase;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
-import com.itgrids.partyanalyst.dto.PartyTrendsVO;
-import com.itgrids.partyanalyst.social.dao.IPartySocialDAO;
-import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.model.PartyTrends;
 
 public class PartyTrendsDAOHibernateTest extends BaseDaoTestCase {
    // @Autowired
@@ -44,7 +31,7 @@ public class PartyTrendsDAOHibernateTest extends BaseDaoTestCase {
 
 
 
-	public void testGetAllAnswersForTheQuestion() throws Exception{
+	/*public void testGetAllAnswersForTheQuestion() throws Exception{
 		 Map<Long, List<PartyTrendsVO>> map =new HashMap<Long,List<PartyTrendsVO> >();
 		List<Long> cost = new ArrayList<Long>();
 		cost.add(341L);
@@ -142,5 +129,21 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 
 			  
 		
-	   }
+	   }*/
+	
+	public void testPopulatePriority(){
+		List<Long> constiIds = partyTrendsDAO.getConstituencyIds();
+		for(Long conId:constiIds){
+			List<PartyTrends> trends = partyTrendsDAO.getAllTrends(conId);
+			int totalCount = trends.size();
+			for(int i =1;i<=totalCount;i++){
+				PartyTrends pt = trends.get(i-1);
+				Long priorty = new Long((i*100)/totalCount);
+				if(priorty.longValue() == 0l)
+					priorty = 1l;
+				pt.setPriority(priorty);
+				partyTrendsDAO.save(pt);
+			}
+		}
+	}
 }

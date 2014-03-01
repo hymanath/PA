@@ -22,7 +22,7 @@ public interface ICasteReportService {
 	public ResultStatus  generateXL(List<Long> constIds,Long topPercent,boolean notConsiderWeights,List<Long> notIds)  throws IOException ;
 	 public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId);
 
-
+	 public void updatePriority();
 
 	
 }

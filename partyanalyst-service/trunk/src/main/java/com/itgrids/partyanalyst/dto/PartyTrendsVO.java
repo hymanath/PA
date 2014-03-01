@@ -32,6 +32,7 @@ public class PartyTrendsVO {
 	private String prpWts;
 	private String  youngVotersWts;
 	private String  totalWts;
+	private Long priority;
 	
 	public PartyTrendsVO()
 	{
@@ -171,6 +172,14 @@ public class PartyTrendsVO {
 
 	public void setTotalWts(String totalWts) {
 		this.totalWts = totalWts;
+	}
+
+	public Long getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Long priority) {
+		this.priority = priority;
 	}
 
 	
