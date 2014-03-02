@@ -205,12 +205,36 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		return query.list();
 	}
 	
+	/*@SuppressWarnings("unchecked")
+	public List<Object[]> getModifiedVotersByConstituency(Long constituencyId, Long publicationDateId, String status)
+	{
+		Long voterStatusId = null;
+		Query query = getSession().createQuery(" select model.voter.voterId,model.partNo from VoterModification model, BoothPublicationVoter model2 where " +
+				" model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo and " +
+				" model2.booth.constituency.constituencyId = :constituencyId and model.voterStatusId = :voterStatusId ");
+		
+		if(status.equalsIgnoreCase(IConstants.STATUS_ADDED))
+			voterStatusId = 1L;
+		else if(status.equalsIgnoreCase(IConstants.STATUS_DELETED))
+			voterStatusId = 2L;
+		else if(status.equalsIgnoreCase(IConstants.STATUS_MOVED))
+			voterStatusId = 3L;
+		else if(status.equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+			voterStatusId = 4L;
+		
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId",publicationDateId);
+		query.setParameter("voterStatusId",voterStatusId);
+		return query.list();
+	}*/
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getModifiedVotersByConstituency(Long constituencyId, Long publicationDateId, String status)
 	{
-		Query query = getSession().createQuery(" select model.voter.voterId,model.partNo from VoterModification model, BoothPublicationVoter model2 where " +
-				" model.voter.voterId = model2.voter.voterId and model.publicationDate.publicationDateId = :publicationDateId and model.partNo = model2.booth.partNo and " +
-				" model2.booth.constituency.constituencyId = :constituencyId and model.status = :status ");
+		Query query = getSession().createQuery(" select model.voter.voterId,model.partNo from VoterModification model where " +
+				" model.publicationDate.publicationDateId = :publicationDateId and " +
+				" model.constituency.constituencyId = :constituencyId and model.voterStatus.status = :status ");
+		
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameter("status",status);
