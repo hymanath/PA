@@ -34,7 +34,7 @@ public class PredictedVoterCasteDAO extends GenericDaoHibernate<PredictedVoterCa
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Long> getVoterIdsFromCastePrediction(Long userId,Long casteStateId,Integer firstRecord,Integer maxRecords)
+	public List<Integer> getVoterIdsFromCastePrediction(Long userId,Long casteStateId,Integer firstRecord,Integer maxRecords)
 	{
 		Query query = getSession().createSQLQuery("SELECT PVC.voter_id from predicted_voter_caste PVC where PVC.caste_state_id = :casteStateId and PVC.voter_id not in (" +
 				" SELECT UVD.voter_id from user_voter_details UVD where UVD.user_id = :userId and UVD.caste_state_id is not null and UVD.caste_insert_type_id != 1) ");
