@@ -118,7 +118,14 @@ public class CastePredictionService implements ICastePredictionService {
 		LOG.info("Entered into insertPredictedCasteIntoMainCasteTables() Method ");
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			List<Long> voterIdsList = predictedVoterCasteDAO.getVoterIdsFromCastePrediction(userId,casteStateId,firstRecord,maxRecords);
+			List<Long> voterIdsList = new ArrayList<Long>(0);
+			List<Integer> voterIdsResultList = predictedVoterCasteDAO.getVoterIdsFromCastePrediction(userId,casteStateId,firstRecord,maxRecords);
+			
+			if(voterIdsResultList != null && voterIdsResultList.size() > 0)
+			{
+				for(Integer resultId : voterIdsResultList)
+					voterIdsList.add(resultId.longValue());
+			}
 			
 			if(voterIdsList != null && voterIdsList.size() > 0)
 			{
