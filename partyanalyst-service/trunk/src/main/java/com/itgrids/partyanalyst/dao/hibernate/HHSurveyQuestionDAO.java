@@ -18,7 +18,7 @@ public class HHSurveyQuestionDAO extends GenericDaoHibernate<HHSurveyQuestion,Lo
 	
 	@SuppressWarnings("unchecked")
 	public List<HHSurveyQuestion> getModelBySurveyId(Long surveyId){
-		Query qry=getSession().createQuery(" from HHSurveyQuestion model where model.hhSurvey.surveyId =:surveyId and model.isDeleted = :deleteStatus");
+		Query qry=getSession().createQuery(" from HHSurveyQuestion model where model.hhSurvey.surveyId =:surveyId and model.isDeleted = :deleteStatus order by orderId");
 		qry.setParameter("surveyId", surveyId);
 		qry.setParameter("deleteStatus", IConstants.FALSE);
 		return qry.list();
