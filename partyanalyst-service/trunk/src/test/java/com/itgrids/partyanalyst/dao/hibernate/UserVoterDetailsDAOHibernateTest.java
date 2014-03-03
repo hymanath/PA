@@ -668,13 +668,13 @@ for (Object[] objects : list) {
 		System.out.println(list.size());
 	}*/
 	
-	/*public void testgetmatchtedRecordsForACaste()
+	public void testgetmatchtedRecordsForACaste()
 	{
 		List<Long> voterIdsList = new ArrayList<Long>(0);
 		voterIdsList.add(49l);
 		List<Long> list = userVoterDetailsDAO.getMatchtedRecordsForACaste(1l,292l,voterIdsList);
 		System.out.println(list.size());
-	}*/
+	}
 	
 	/*public void testgetUnmatchtedRecordsForACaste()
 	{
@@ -697,10 +697,10 @@ for (Object[] objects : list) {
 		System.out.println(list.size());
 	}*/
 	
-	public void test(){
+	/*public void test(){
 		List<UserVoterDetails> list=userVoterDetailsDAO.getUserVoterDetailsByVoterCardNo("RYT0981613");
 		System.out.println(list.size());
 		
-	}
+	}*/
 	
 }
