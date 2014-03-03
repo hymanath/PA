@@ -3841,7 +3841,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						votersCountMap.put(obj[5].toString()+obj[2].toString() , (Long)obj[0]);
 						
 						//For Panchayat highest castes
-						 panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat((Long)obj[1],3l,8l,1l);
+						 panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat((Long)obj[1],3l,10l,1l);
 						 
 						 int j=0;
 						 BasicVO basicVO =null;
