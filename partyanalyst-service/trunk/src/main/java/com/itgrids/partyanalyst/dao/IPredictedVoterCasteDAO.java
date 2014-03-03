@@ -12,5 +12,5 @@ public interface IPredictedVoterCasteDAO extends GenericDao<PredictedVoterCaste,
 	
 	public List<Long> getVoterIdsFromCastePredictionForACaste(Long casteStateId,Integer firstRecord,Integer maxRecords);
 	
-	public List<Long> getVoterIdsFromCastePrediction(Long userId,Long casteStateId,Integer firstRecord,Integer maxRecords);
+	public List<Integer> getVoterIdsFromCastePrediction(Long userId,Long casteStateId,Integer firstRecord,Integer maxRecords);
 }
