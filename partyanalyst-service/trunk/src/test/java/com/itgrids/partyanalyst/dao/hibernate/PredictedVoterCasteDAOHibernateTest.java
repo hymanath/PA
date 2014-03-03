@@ -32,10 +32,10 @@ public class PredictedVoterCasteDAOHibernateTest extends BaseDaoTestCase{
 		System.out.println(voterIdsList.size());
 	}*/
 	
-	public void testGetVoterIdsFromCastePrediction()
+	/*public void testGetVoterIdsFromCastePrediction()
 	{
 		List<Long> voterIdsList = predictedVoterCasteDAO.getVoterIdsFromCastePrediction(1l,292l,0,100);
 		System.out.println(voterIdsList.size());
-	}
+	}*/
 
 }
