@@ -41,6 +41,7 @@ public class HHSurveyQuestion extends BaseModel implements Serializable {
 	  private HHSurveySubType surveySubType;
 	  private Set<HHQuestionOptions> hhQuestionOptions = new HashSet<HHQuestionOptions>(0);
 	  private String remarks;
+	  private Long orderId;
 	  
 	  
 	@Id
@@ -154,6 +155,13 @@ public class HHSurveyQuestion extends BaseModel implements Serializable {
 		this.surveyId = surveyId;
 	}
 	
+	@Column(name="order_id")
+	public Long getOrderId() {
+		return orderId;
+	}
+	public void setOrderId(Long orderId) {
+		this.orderId = orderId;
+	}
 	
 	  
 }
