@@ -34,7 +34,7 @@ import com.itgrids.partyanalyst.dao.IVoterDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyRelationDAO;
 import com.itgrids.partyanalyst.dao.IHHLeaderDAO;
 import com.itgrids.partyanalyst.dao.IHHBoothLeaderDAO;
-import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
+import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dto.GenericVO;
 import com.itgrids.partyanalyst.dto.HHLeaderDetailsVO;
 import com.itgrids.partyanalyst.dto.HHQuestionDetailsVO;
@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.HHOptionType;
 import com.itgrids.partyanalyst.model.HHOptions;
@@ -57,6 +58,7 @@ import com.itgrids.partyanalyst.model.VoterFamilyRelation;
 import com.itgrids.partyanalyst.model.HHLeader;
 import com.itgrids.partyanalyst.model.HHBoothLeader;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -74,6 +76,9 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	private IHouseHoldsDAO houseHoldsDAO;
 	private IHHSurveyAnswersDAO hhSurveyAnswersDAO;
 	private IHHBoothLeaderDAO hhBoothLeaderDAO;
+	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	private IVotersAnalysisService votersAnalysisService;
+
 	private DateUtilService DateUtilService = new DateUtilService();
 	
 	
@@ -96,6 +101,24 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	private IHouseHoldsFamilyDetailsDAO houseHoldsFamilyDetailsDAO; 
 	
 	
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
+	public IBoothPublicationVoterDAO getBoothPublicationVoterDAO() {
+		return boothPublicationVoterDAO;
+	}
+
+	public void setBoothPublicationVoterDAO(
+			IBoothPublicationVoterDAO boothPublicationVoterDAO) {
+		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
+	}
+
 	private IHouseHoldVoterDAO houseHoldVoterDAO;
 	private IHHLeaderDAO hhLeaderDAO;		    
 	
@@ -1225,4 +1248,38 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 	    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
     	return resultStatus;
 	}
+    
+    public VoterDetailsVO getVoterDetailsByVoterId(String voterIdCardNo)
+	{
+		log.debug("Entered into the getVoterDetailsByVoterId method");
+		VoterDetailsVO resultVO = new VoterDetailsVO();
+		try {
+			List<Object[]> constyPublicationIdByVoterId=boothPublicationVoterDAO.getConstyPublicationIdByVoterId(voterIdCardNo);
+			List<VoterDetailsVO> constyPublicationIds= new ArrayList<VoterDetailsVO>();
+			if(constyPublicationIdByVoterId != null && constyPublicationIdByVoterId.size() > 0)
+			{
+			Object[] list = (Object[])constyPublicationIdByVoterId.get(0);
+			    VoterDetailsVO vo= new VoterDetailsVO();
+				vo.setVoterId((Long)list[3]);
+				vo.setVoterName(list[4].toString());
+				vo.setConstituencyId((Long)list[0]);
+				vo.setBoothId((Long)list[1]);
+				vo.setPublicationDateId((Long)list[2]);
+				constyPublicationIds.add(vo);			
+			
+		    resultVO.setConstyPublicationIds(constyPublicationIds);
+			
+		    List<SelectOptionVO> publicationDatesList = votersAnalysisService.publicationDetailsBasedOnConstituency(vo.getConstituencyId());
+			List<SelectOptionVO> boothList = votersAnalysisService.getBoothsForConstituencyAndPublication(vo.getConstituencyId(),vo.getPublicationDateId());
+			resultVO.setPublicationDatesList(publicationDatesList);
+			resultVO.setBoothList(boothList);
+			}
+		} catch (Exception e) {
+			log.error("Exception raised in the getVoterDetailsByVoterId method");
+			e.printStackTrace();
+		}
+		return resultVO;
+	}
+    
+    
 }
