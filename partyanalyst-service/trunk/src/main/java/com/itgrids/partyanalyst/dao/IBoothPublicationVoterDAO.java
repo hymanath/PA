@@ -592,4 +592,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getConstiLEBVoters(Long constituencyId,Long publicationId,boolean isYoungVoters);
 	  
 	  public List<Object[]> getpanchayts(Long constituencyId,Long publicationDateId);
+	  
+	  public List<Object[]> getPdfsForVotersAddress();
 }
