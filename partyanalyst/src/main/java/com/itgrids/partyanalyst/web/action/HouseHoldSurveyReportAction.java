@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IHouseHoldSurveyReportService;
@@ -64,7 +65,17 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 	private EntitlementsHelper entitlementsHelper;
 	private List<String> voterIdList;
 	private ResultStatus resultStatus;
+	private VoterDetailsVO resultVO;
 	
+
+	public VoterDetailsVO getResultVO() {
+		return resultVO;
+	}
+
+	public void setResultVO(VoterDetailsVO resultVO) {
+		this.resultVO = resultVO;
+	}
+
 	public EntitlementsHelper getEntitlementsHelper() {
 		return entitlementsHelper;
 	}
@@ -604,4 +615,14 @@ public class HouseHoldSurveyReportAction extends ActionSupport implements Servle
 		return Action.SUCCESS;		
 	} 
 	
+	public String getVoterDetailsById()
+	{
+		try {		
+			jObj = new JSONObject(getTask());
+			resultVO = houseHoldSurveyReportService.getVoterDetailsByVoterId(jObj.getString("voterIdCardNo"));
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	}
 }

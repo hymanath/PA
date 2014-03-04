@@ -3557,7 +3557,7 @@ function disableButton(id)
 function openProblemEditFormNew(id,boothId,publicationDateId,houseNo)
 {
 	var urlStr="votersEditNewHHAction.action?voterId="+id+"&boothId="+boothId+"&publicationDateId="+publicationDateId+"&houseNo="+houseNo+"";
-	var updateBrowser = window.open(urlStr,"Voter Details","scrollbars=yes,height=600,width=700,left=200,top=200");	
+	var updateBrowser = window.open(urlStr);	
 	updateBrowser.focus();	
 }
 

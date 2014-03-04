@@ -1922,6 +1922,10 @@
  	 <property name="houseHoldVoterDAO" ref="houseHoldVoterDAO"></property>
 	 <property name="hhLeaderDAO" ref="hhLeaderDAO"></property> 
 	 <property name="hhBoothLeaderDAO" ref="hhBoothLeaderDAO"></property>
+	 <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"></property>
+	 <property name="votersAnalysisService" ref="votersAnalysisService"></property>
+	 
+	 
   </bean>
    
 </beans>		

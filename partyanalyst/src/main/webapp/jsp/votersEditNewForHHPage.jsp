@@ -1294,6 +1294,8 @@ function submitQuestionDetails()
   var flag= true;
   var str= '';
   var pattern1= /^\d{10}$/;
+  //var pattern2 =  /^\d{1,3}(?:\.\d{0,2})?$/;
+	  
   if($('#BoothLeadersListId').val() == 0)
   {
        str+='Booth Leader Name is Required<br>';
@@ -1417,7 +1419,7 @@ function submitQuestionDetails()
 			       {
 			         familyMemberId:this.value,
                      name:$('#memberPrsnName'+this.value).val().trim(),
-                     age:$('#memberPrsnAge'+this.value).val(),
+                     age:Math.round(Number($('#memberPrsnAge'+this.value).val())),
 					// gender:$('#memberPrsnGndr'+this.value).val(),
 					 gender:'M',
 					 relativeName:$('#memberPrsnGrdn'+this.value).val().trim(),
@@ -1446,7 +1448,7 @@ function submitQuestionDetails()
 					
 					 isNew: 'true',
 					 name:$('#newPrsnName'+newPersons[i]).val().trim(),
-                     age:$('#newPrsnAge'+newPersons[i]).val(),
+                     age:Math.round(Number($('#newPrsnAge'+newPersons[i]).val())),
 					 gender:$('#newPrsnGndr'+newPersons[i]).val(),
 					 relativeName:$('#newPrsnGrdn'+newPersons[i]).val().trim(),
 					 relationShipType:$('#newPrsnrltnType'+newPersons[i]).val(),

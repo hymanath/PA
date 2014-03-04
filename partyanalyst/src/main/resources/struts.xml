@@ -6471,7 +6471,12 @@
         	</result>
 		</action>
 		 <action name="updatePrrAction" class="casteReportAction" method="updatePriority">
-          </action>
+          </action>        
+           <action name="getAllVoterDetailsAction" class="houseHoldSurveyReportAction" method="getVoterDetailsById">
+			<result type="json" name="success">
+				<param name="root">resultVO</param>				
+			</result> 
+		</action>         
 		</package>
 		
 </struts>      
