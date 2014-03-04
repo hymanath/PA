@@ -1,25 +1,10 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
-import com.itgrids.partyanalyst.excel.booth.BoothVoterVO;
-import com.itgrids.partyanalyst.model.BoothPublicationVoter;
-import com.itgrids.partyanalyst.model.Voter;
-import com.itgrids.partyanalyst.utils.IConstants;
 
 public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 
@@ -30,6 +15,8 @@ public class BoothPublicationVoterDAOHiberbateTest extends BaseDaoTestCase {
 		this.boothPublicationVoterDAO = boothPublicationVoterDAO;
 	}
 
+	
+	
 	/*
 	 * public void testfindVotersCastInfoByConstituencyAndPublicationDate() {
 	 * List voters =
@@ -1023,7 +1010,7 @@ List<Long> attrIds = new ArrayList<Long>();
 		}
 	}*/
 	
-	public void test()
+	/*public void test()
 	{
 		try{
 		List<Object[]> list = boothPublicationVoterDAO.getlist1();
@@ -1039,19 +1026,19 @@ List<Long> attrIds = new ArrayList<Long>();
 			sb.append(i+" -->\t"+list2.get(0)[0].toString()+"\t"+list2.get(0)[1].toString()+"\t"+list2.get(0)[2].toString()+"\t"+list2.get(0)[3].toString()+"\t"+list2.get(0)[4].toString()+"\t#"+params[1].toString()+"\t"+params[2].toString()+"\n");
 		}
 		
-		/*i = 0;
+		i = 0;
 		for(Object[] params : list)
 		{
 			List<Object[]> list2 = boothPublicationVoterDAO.getlist3((Long)params[0],params[1].toString());
 			System.out.println(++i+" -->\t"+list2.get(0)[0].toString()+"\t"+list2.get(0)[1].toString()+"\t"+list2.get(0)[2].toString()+"\t"+list2.get(0)[3].toString()+"\t"+list2.get(0)[4].toString()+"\t"+params[1].toString()+"\t"+params[2].toString());
 			sb.append(i+" -->\t"+list2.get(0)[0].toString()+"\t"+list2.get(0)[1].toString()+"\t"+list2.get(0)[2].toString()+"\t"+list2.get(0)[3].toString()+"\t"+list2.get(0)[4].toString()+"\t#"+params[1].toString()+"\t"+params[2].toString()+"\n");
-		}*/
+		}
 		outwriter.write(sb.toString());
 		outwriter.close();
 		}
 		catch (Exception e) {
 		}
-	}
+	}*/
 	
 	/*public void test()
 	{
@@ -1121,4 +1108,94 @@ List<Long> attrIds = new ArrayList<Long>();
 		catch (Exception e) {
 		}
 	}*/
+	
+	
+	public void testgetPdfsForVotersAddress()
+	{
+		List<Object[]> values = boothPublicationVoterDAO.getPdfsForVotersAddress();
+		if(values != null && values.size() > 0 )
+		{
+			System.out.println(values.size());
+			StringBuilder sb  = new StringBuilder();
+			
+			int i =0;
+			int k = 0;
+			for (Object[] parms : values) {
+				if(k == 0)
+				sb.append("<table  style='font-family: arial; font-size: 7px;'>");
+				//System.out.println(k++);
+				i++;
+				k++;
+				if(i == 0)
+				{
+					sb.append("<tr>");
+				}
+				
+				sb.append("<td style='width: 200px; height: 140px;'>");
+				sb.append("<div style='border: 1px solid;'><p>To,<p>");
+				sb.append("<p style='margin-left: 10px;'>"+replaceSpecialChars(parms[7].toString())+"<p>");
+				String name = "";
+				if(parms[12].toString().equalsIgnoreCase("Father") || parms[12].toString().equalsIgnoreCase("Mother"))
+				{
+					if(parms[8].toString().trim().equalsIgnoreCase("M"))
+					{
+						name = "S/O , " + replaceSpecialChars(parms[11].toString());
+					}
+					else
+					{
+						name = "D/O , " + replaceSpecialChars(parms[11].toString());
+					}
+				}
+				
+				else if(parms[12].toString().equalsIgnoreCase("Husband"))
+				{
+					name = "W/O , "  + replaceSpecialChars(parms[11].toString());
+				}
+				else
+				{
+					name = "C/O , "  + replaceSpecialChars(parms[11].toString());
+				}
+				sb.append("<p style='margin-left: 10px;'>"+name+"<p>");
+				sb.append("<p style='margin-left: 10px;'>H.NO : "+parms[10].toString()+"</p>");
+				sb.append("<p style='margin-left: 10px;'>Village : "+parms[2].toString()+"<p>");
+				sb.append("<p style='margin-left: 10px;'>Panchayat : "+parms[1].toString()+"<p>");
+				sb.append("<p style='margin-left: 10px;'>Mandal : "+parms[0].toString()+"<p>");
+				sb.append("<p style='margin-left: 10px;'>District : "+parms[14].toString()+"<p>");
+				sb.append("<p style='margin-left: 10px;'>Andhra Pradesh<p>");
+				sb.append("</div></td>");
+				sb.append("<td></td>");
+				if(i == 4)
+				{
+					sb.append("</tr>");
+					i = 0;
+				}
+				if(k==24)
+				{
+					k = 0;
+					sb.append("</table></br></br></br>");
+				}
+			}
+			sb.append("</table>");
+			System.out.println(sb.toString());
+		}
+	}
+	
+	
+	public String replaceSpecialChars(String str)
+  	{
+  		try{
+  			String newStr = "";
+  			
+  			char[] charArray = str.toCharArray();
+  			for(Character C : charArray)
+			{
+				if(Character.isLetter(C) || C.toString().equals(" "))
+					newStr = newStr+C.toString();
+			}
+  			return newStr.trim();
+  		}catch(Exception e)
+  		{
+  			return str;
+  		}
+  	}
 }
