@@ -9,6 +9,7 @@ import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.HouseHoldVotersVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 
 public interface IHouseHoldSurveyReportService {
 	public List<HHSurveyVO> getHHSurveyQuestionOptions(Long surveyId,Long boothId,String houseNo,Long voterId);
@@ -31,6 +32,7 @@ public interface IHouseHoldSurveyReportService {
 	public Long getHouseHoldIdOfVoter(Long voterId);
 	public List<String> getAllVoterIds();
 	public ResultStatus saveLeaderDetails(final HHLeaderDetailsVO leaderDtls);
+	public VoterDetailsVO getVoterDetailsByVoterId(String voterIdCardNo);
 
 
 }

@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+
 public class VoterDetailsVO {
 	private String voterName;
 	private Long voterId;
@@ -30,10 +32,33 @@ public class VoterDetailsVO {
 	private String mobileNumber;
 	private String uniqueId;
 	private Long infleunceLevelId;
+	private List<VoterDetailsVO> constyPublicationIds;
+	private List<SelectOptionVO> publicationDatesList;
+	private List<SelectOptionVO> boothList;
 	
 	
 	
 	
+	public List<SelectOptionVO> getPublicationDatesList() {
+		return publicationDatesList;
+	}
+	public void setPublicationDatesList(List<SelectOptionVO> publicationDatesList) {
+		this.publicationDatesList = publicationDatesList;
+	}
+
+	public List<SelectOptionVO> getBoothList() {
+		return boothList;
+	}
+	public void setBoothList(List<SelectOptionVO> boothList) {
+		this.boothList = boothList;
+	}
+	public List<VoterDetailsVO> getConstyPublicationIds() {
+		return constyPublicationIds;
+	}
+	public void setConstyPublicationIds(List<VoterDetailsVO> constyPublicationIds) {
+		this.constyPublicationIds = constyPublicationIds;
+	}
+
 	public Long getInfleunceLevelId() {
 		return infleunceLevelId;
 	}
