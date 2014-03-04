@@ -6409,4 +6409,22 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		query.setParameter("publicationId",publicationId);
 		return query.list();
 	}
+	
+	public List<Object[]> getPdfsForVotersAddress()
+	{
+		Query query = getSession().createSQLQuery("SELECT T.tehsil_name,P.panchayat_name,H.hamlet_name," +
+				"B.part_no,BPV.serial_no,V.voter_id,V.voter_id_card_no," +
+				"V.`name`,V.gender,V.age,CONCAT('#',V.house_no)," +
+						"V.relative_name,V.relationship_type,UVD.mobile_no ,D.district_name " +
+						"FROM panchayat P,tehsil T,booth B, District D ,voter_category_value VCV," +
+						" booth_publication_voter BPV,voter V  LEFT OUTER JOIN user_voter_details " +
+						"UVD on V.voter_id = UVD.voter_id LEFT OUTER JOIN hamlet H on " +
+						"UVD.hamlet_id = H.hamlet_id WHERE T.tehsil_id = B.tehsil_id AND " +
+						"P.panchayat_id = B.panchayat_id AND B.booth_id = BPV.booth_id AND " +
+						"V.voter_id = BPV.voter_id AND V.voter_id = VCV.voter_id AND " +
+						"VCV.user_id = 1 AND B.publication_date_id = 10 AND " +
+						"B.constituency_id = 228 AND VCV.user_voter_category_value_id = 10 AND D.district_Id = T.district_id " +
+						" ORDER BY B.booth_id,BPV.serial_no");
+		return query.list();
+	}
 }
