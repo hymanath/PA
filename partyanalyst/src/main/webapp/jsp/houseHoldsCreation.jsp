@@ -114,7 +114,7 @@ $(document).ready(function(){
     <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;"></div>
 	<div>Mobile No :<font class="mandatory">*</font><input id="lmobileId" type="text" maxlength="20" style="margin-left:24px;"></div>
 	<div>Voter Id:<font class="mandatory">*</font><input id="lVoterId" type="text" maxlength="20" style="margin-left:39px;" onblur="validateVoterId();"></div>
-	<div>Unique Id:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:29px;"></div>
+	<div>Book No:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:29px;"></div>
 
 	<div>is Active:<font class="mandatory">*</font><input id="yesId" type="radio" value="YES" name="radiobtn" style="margin:0px 5px 0px 40px;"/>YES<input id="noId" type="radio" style="margin:0px 5px 0px 20px;" value="NO" name="radiobtn" style="margin-left:15px;"/>NO
 	</div>
