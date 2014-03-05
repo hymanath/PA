@@ -1093,7 +1093,7 @@ public class CasteReportService implements ICasteReportService{
 			}
 			
 		}
-  public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId)
+  public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId,boolean considerPartial)
   {
 	  
 	  List<CastVO> resultList = new ArrayList<CastVO>(); 
@@ -1101,28 +1101,26 @@ public class CasteReportService implements ICasteReportService{
 		List<Object[]> list  = new ArrayList<Object[]>();
 		List<Object[]> list1  = null;
 		List<Object[]> list2  = null;
-		Set<String> partialIds = new HashSet<String>();
+		Set<Long> partialIds = new HashSet<Long>();
 	  try{
-		 List<Object[]> partial = userVoterDetailsDAO.getPartialPanchayatsForConstituency(constitunecyId,publicationId);
-		  for(Object[] p:partial){
-				if(p[0] !=null){
-					partialIds.add(p[0].toString());
+		  List<Object[]> partialPanchayats = null;
+		 if(considerPartial){
+		    partialPanchayats = userVoterDetailsDAO.getPartialPanchayatsForConstituency(constitunecyId,publicationId);
+		 }
+		 if(partialPanchayats != null){
+		   for(Object[] partialPanchaya:partialPanchayats){
+				if(partialPanchaya[0] !=null){
+					partialIds.add((Long)partialPanchaya[0]);
 				}
-				if(p[1] !=null){
-					partialIds.add(p[1].toString());
+				if(partialPanchaya[1] !=null){
+					partialIds.add((Long)partialPanchaya[1]);
 				}
 			}
-		  String paids = "";
-			for(String g:partialIds){
-				if(paids.length()==0)
-					paids = g;
-				else
-					paids =paids+","+g;
-			}
-			if(paids.length() > 0)
+		 }
+			if(partialIds.size() > 0)
 			{
-		  list1= userVoterDetailsDAO.getVoterCountInLocation1(constitunecyId,publicationId,userId,paids);
-		  list2 = userVoterDetailsDAO.getVoterCountInLocation2(constitunecyId,publicationId,userId,paids);
+		  list1= userVoterDetailsDAO.getVoterCountInLocation1(constitunecyId,publicationId,userId,partialIds);
+		  list2 = userVoterDetailsDAO.getVoterCountInLocation(constitunecyId,publicationId,userId,partialIds);
 		  
 		  if(list1 != null && list1.size() > 0)
 			  list.addAll(list1);
@@ -1130,7 +1128,7 @@ public class CasteReportService implements ICasteReportService{
 			  list.addAll(list2);
 			}
 			else
-				list = userVoterDetailsDAO.getVoterCountInLocation(constitunecyId,publicationId,userId);
+				list = userVoterDetailsDAO.getVoterCountInLocation(constitunecyId,publicationId,userId,null);
 		  setToVo(resultList,list,501l,1000l);
 		  setToVo(resultList,list,1001l,1500l);
 		  setToVo(resultList,list,1501l,2000l);
