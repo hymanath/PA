@@ -337,7 +337,7 @@ public String getPanchayatsInVoterRange()
 	    userId = user.getRegistrationID();
 		jObj = new JSONObject(getTask());
 		
-		panchayats =  casteReportService.getPanchayatsInVoterRange(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),userId);
+		panchayats =  casteReportService.getPanchayatsInVoterRange(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),userId,jObj.getBoolean("considerPartial"));
 		
 	}
 	catch(Exception e)

@@ -97,8 +97,9 @@ var maxr = 1000;
 			<td></td><td><select id="publicationDateList">
 			<option value="0"> Select Publication </option>
 			</select></td>
-		</tr>
 			
+		</tr>
+		<tr><td colspan="4"><input style="margin-left:10px;" id="considerPartial" type="checkbox"/>&nbsp;Consider Partial Panchayats</td></tr>	
 	</table>
 
 	<input type="button" value="submit" onclick="getVoterLocations();" class="btn btn-success"/>
@@ -207,7 +208,7 @@ function getVoterLocations()
 	$("#voterLocationsDiv").css("display","none");
 	var constituencyId = $("#listConstituencyNames").val();
 	var publicationId = $("#publicationDateList").val();
-	
+	var considerPartial = $('#considerPartial').is(':checked');
 	var str ='<font color="red">';
 	var flag = true;
 	if(constituencyId == 0)
@@ -235,7 +236,7 @@ var jsObj=
 	        constituencyId:constituencyId,
 			publicationId:publicationId,
 			
-			
+			considerPartial:considerPartial,
 			task:"getVoterLocations"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
