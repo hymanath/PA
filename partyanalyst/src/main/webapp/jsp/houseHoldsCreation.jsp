@@ -111,12 +111,11 @@ $(document).ready(function(){
  <div id="errorLeaderDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
   <div id="statusDiv3"></div>
     <div style="margin-left:36px;">
-    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;"></div>
-	<div>Mobile No :<font class="mandatory">*</font><input id="lmobileId" type="text" maxlength="20" style="margin-left:24px;"></div>
 	<div>Voter Id:<font class="mandatory">*</font><input id="lVoterId" type="text" maxlength="20" style="margin-left:39px;" onblur="validateVoterId();"></div>
+    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;"></div>
+	<div>Mobile No :<font class="mandatory">*</font><input id="lmobileId" type="text" maxlength="20" style="margin-left:24px;"></div>	
 	<div>Book No:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:29px;"></div>
-
-	<div>is Active:<font class="mandatory">*</font><input id="yesId" type="radio" value="YES" name="radiobtn" style="margin:0px 5px 0px 40px;"/>YES<input id="noId" type="radio" style="margin:0px 5px 0px 20px;" value="NO" name="radiobtn" style="margin-left:15px;"/>NO
+	<div>is Active:<font class="mandatory">*</font><input id="yesId" type="radio" value="YES" name="radiobtn" style="margin:0px 5px 0px 40px;" checked/>YES<input id="noId" type="radio" style="margin:0px 5px 0px 20px;" value="NO" name="radiobtn" style="margin-left:15px;"/>NO
 	</div>
  
 	<div id="ConstituencyDiv" class="selectDiv">		
@@ -133,7 +132,7 @@ $(document).ready(function(){
 
 	<div id="BoothsDiv" class="selectDiv">		
 		 Select Booth<font class="requiredFont">*</font>
-		<select id="boothId" style="margin:7px 72px;"><option value="0">Select Booth</option></select>
+		<select id="boothsId" style="margin:7px 72px;"><option value="0">Select Booth</option></select>
 	</div>	
 	
 	<input type="button" class="btn" value="Create" style="margin:20px 112px" onClick="validateLeaderDetails();"></input>
@@ -301,7 +300,7 @@ var voterIdsArray=[];
 function createNewLeader()
 {  
 	$("#errorLeaderDiv").html("");
-    $('#lmobileId,#lmobileId,#lVoterId,#luniqueId,#leaderNameId').val("");
+    $('#lmobileId,#lVoterId,#luniqueId,#leaderNameId').val("");
 
 	$('#leaderDivDialog').dialog({
 	 title:'Enter Leader Details',
@@ -329,7 +328,7 @@ function createNewLeader()
  
  function validateLeaderDetails()
  {
-   var leaderDtls={leaderName:'',mobileNo:'',voterId:'',uniqueCode:'',constituencyId:'',boothId:'',isActive:'NO'};
+   var leaderDtls={leaderName:'',mobileNo:'',voterId:'',uniqueCode:'',constituencyId:'',boothId:'',isActive:'YES'};
    
    leaderDtls.mobileNo = $("#lmobileId").val().trim();
    leaderDtls.voterId  = $("#lVoterId").val().trim();
@@ -337,7 +336,7 @@ function createNewLeader()
    leaderDtls.leaderName = $("#leaderNameId").val().trim();
    leaderDtls.isActive  = $("input[name='radiobtn']:checked").val();
    leaderDtls.constituencyId = $("#constituencyId option:selected").val();
-   leaderDtls.boothId = $("#boothId option:selected").val();
+   leaderDtls.boothId = $("#boothsId option:selected").val();
    var pattern1= /^\d{10}$/;
 
     if (leaderDtls.leaderName.length == 0){
@@ -409,7 +408,7 @@ function createNewLeader()
 		    $('#statusDiv3').text('Saved Successfully..').css("color","green");
 		    setTimeout('$("#statusDiv3").css("visibility","hidden")',2500);
 			$('#lmobileId,#lmobileId,#lVoterId,#luniqueId,#leaderNameId').val("");
-			$('#constituencyId').val(0);
+			$('#constituencyId','#boothsId','#publicationId').val(0);			
 			  }
 		      else if(result.resultCode == 1){
 			     $('#errorLeaderDiv').html("Name already exists,Please Enter another<br>");
@@ -418,61 +417,7 @@ function createNewLeader()
 		  }
 	   });
  }
-
-
- function getPublicationDates()
- {
-	 $("#boothId option").remove();
-     var constituencyDtls={
-             selected:$('#constituencyId').val(),
-			 task:"getPublicationDate"
-	};
-
-	$.ajax({
-          type:'POST',
-          url: 'voterAnalysisAjaxAction.action',
-          dataType: 'json',
-          data: {task:JSON.stringify(constituencyDtls)},
-
-          success: function(result){
-			  $('#publicationId').find('option').remove();
-			  $('#publicationId').append('<option value="0">Select Publication Date</option>');
-			  $.each(result,function(index,value){
-				  $('#publicationId').append('<option value="'+value.id+'">'+value.name+'</option>');
-			  });			  
-         },
-          error:function() { 
-           console.log('error', arguments);
-         }
-    });
-} 
-
- function getBooths()
- {
-	$("#ajaxLoad").css("display","block");
-    var constDtls={
-             constituencyId:$('#constituencyId').val(),
-			 publicationId:$('#publicationId').val(),
-		     task:"getBoothsForConstituency"
-	};
-
-	$.ajax({
-          type:'POST',
-          url: 'getBoothsForConstituencyIdAndPublicationId.action',
-          dataType: 'json',
-          data: {task:JSON.stringify(constDtls)},
-     	  }).done(function(result){ 
-			  $("#ajaxLoad").css("display","none");
-			if(result != null){
-             $("#boothId option").remove();
-             for(var i in result)
-             {
-		        $('#boothId').append('<option value='+result[i].id+'>Booth-'+result[i].name+'</option>');         
-             }
-		   }
-	   });
-
- }
+  
  function validateVoterId()
  {
       var voterIdDtls={task:"getvoterIds"}
@@ -484,6 +429,30 @@ function createNewLeader()
         }).done(function(result){
         voterIdsArray=result;
       });
+    
+      var voterDtls={voterIdCardNo:$('#lVoterId').val()};
+	   $.ajax({
+	   type:"POST",
+	   url:"getAllVoterDetailsAction.action",
+       dataType: 'json',
+	   data:{task:JSON.stringify(voterDtls)},
+        }).done(function(result){
+		 $("#boothsId option").remove();
+	     $('#publicationId option').remove();
+		 for(var i in result.publicationDatesList)
+          {
+			  $('#publicationId').append('<option value="'+result.publicationDatesList[i].id+'">'+result.publicationDatesList[i].name+'</option>');
+		  }
+		  for(var i in result.boothList)
+          {
+		     $('#boothsId').append('<option value='+result.boothList[i].id+'>Booth-'+result.boothList[i].name+'</option>');         
+          }
+          $('#leaderNameId').val(result.constyPublicationIds[0].voterName);
+          $('#constituencyId').val(result.constyPublicationIds[0].constituencyId);  $('#publicationId').val(result.constyPublicationIds[0].publicationDateId);
+          $('#boothsId').val(result.constyPublicationIds[0].boothId);
+		  
+        
+	 });
  }
 
 </script>
