@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
-
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -3101,53 +3101,45 @@ IUserVoterDetailsDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getVoterCountInLocation(Long constituencyId,Long publicationId,Long userId)
+	public List<Object[]> getVoterCountInLocation(Long constituencyId,Long publicationId,Long userId,Set<Long> panchayatIds)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct count(model.voter.voterId),");
+		str.append("select  count(distinct bpv.voter.voterId),");
 	    str.append(" bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
-		str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
-				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
-		str.append(" and bpv.booth.localBody is null group by bpv.booth.panchayat.panchayatId order by bpv.booth.panchayat.panchayatId");
+		str.append("from BoothPublicationVoter bpv  " +
+				" where bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
+		str.append(" and bpv.booth.localBody.localElectionBodyId is null ");
+		if(panchayatIds != null && panchayatIds.size() > 0){
+			str.append(" and bpv.booth.panchayat.panchayatId not in(:panchayatIds)");
+		}
+		str.append(" group by bpv.booth.panchayat.panchayatId order by bpv.booth.panchayat.panchayatName");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationId", publicationId);
-		query.setParameter("userId", userId);
+		if(panchayatIds != null && panchayatIds.size() > 0){
+		  query.setParameterList("panchayatIds", panchayatIds);
+		}
 	
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")
-	public List<Object[]> getVoterCountInLocation1(Long constituencyId,Long publicationId,Long userId,String partialIds)
+	public List<Object[]> getVoterCountInLocation1(Long constituencyId,Long publicationId,Long userId,Set<Long> panchayatIds)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct count(model.voter.voterId),");
-	    str.append(" bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
-		str.append("from UserVoterDetails model,BoothPublicationVoter bpv,PanchayatHamlet ph where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
-				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
-		str.append(" and model.hamlet.hamletId = ph.hamlet.hamletId and bpv.booth.localBody is null and bpv.booth.panchayat.panchayatId in("+partialIds+") group by bpv.booth.panchayat.panchayatId order by bpv.booth.panchayat.panchayatId");
+		str.append("select  count(distinct bpv.voter.voterId),");
+	    str.append(" ph.panchayat.panchayatId,ph.panchayat.panchayatName ");
+		str.append("from UserVoterDetails uvd,BoothPublicationVoter bpv,PanchayatHamlet ph where bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId and " +
+				" bpv.voter.voterId = uvd.voter.voterId and uvd.user.userId = :userId and ");
+		str.append("  uvd.hamlet.hamletId = ph.hamlet.hamletId and bpv.booth.localBody is null and ph.panchayat.panchayatId in(:panchayatIds) group by ph.panchayat.panchayatId order by ph.panchayat.panchayatName ");
 		Query query = getSession().createQuery(str.toString());
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationId", publicationId);
+		query.setParameterList("panchayatIds", panchayatIds);
 		query.setParameter("userId", userId);
 	
 		return query.list();
 	}
-	@SuppressWarnings("unchecked")
-	public List<Object[]> getVoterCountInLocation2(Long constituencyId,Long publicationId,Long userId,String partialIds)
-	{
-		StringBuilder str = new StringBuilder();
-		str.append("select distinct count(model.voter.voterId),");
-	    str.append(" bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
-		str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
-				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
-		str.append(" and bpv.booth.localBody is null and bpv.booth.panchayat.panchayatId not in("+partialIds+") group by bpv.booth.panchayat.panchayatId order by bpv.booth.panchayat.panchayatId");
-		Query query = getSession().createQuery(str.toString());
-		query.setParameter("constituencyId", constituencyId);
-		query.setParameter("publicationId", publicationId);
-		query.setParameter("userId", userId);
 	
-		return query.list();
-	}
 	public List<Object[]> getPartialPanchayatsForConstituency(Long constituencyId,Long publicationId)
 	{
 		Query query = getSession().createQuery("select pbp.panchayat.panchayatId,b.panchayat.panchayatId from PartialBoothPanchayat pbp,Booth b where pbp.booth.boothId = b.boothId and b.constituency.constituencyId =:constituencyId and b.publicationDate.publicationDateId =:publicationId");
