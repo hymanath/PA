@@ -9,10 +9,10 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dao.hibernate.UserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.model.Cadre;
 import com.itgrids.partyanalyst.model.Candidate;
@@ -327,11 +327,10 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	public List<Object[]> getCasteReportForPartial(Long constituencyId,Long publicationId,String type,Long userId,String partialIds,Long tehsilId);
 	public List<Object[]> getCasteReportForNotPartial(Long constituencyId,Long publicationId,String type,Long userId,String partialIds,Long tehsilId);
 	
-	public List<Object[]> getVoterCountInLocation1(Long constituencyId,Long publicationId,Long userId,String partialIds);
+	public List<Object[]> getVoterCountInLocation1(Long constituencyId,Long publicationId,Long userId,Set<Long> partialPanchayatIds);
 	
 	public List<Object[]> getPartialPanchayatsForConstituency(Long constituencyId,Long publicationId);
 	
-	public List<Object[]> getVoterCountInLocation2(Long constituencyId,Long publicationId,Long userId,String partialIds);
-	public List<Object[]> getVoterCountInLocation(Long constituencyId,Long publicationId,Long userId);
+	public List<Object[]> getVoterCountInLocation(Long constituencyId,Long publicationId,Long userId,Set<Long> partialPanchayatIds);
 	
 }
