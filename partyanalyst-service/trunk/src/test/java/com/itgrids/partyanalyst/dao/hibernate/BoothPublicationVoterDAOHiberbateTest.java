@@ -1113,7 +1113,7 @@ List<Long> attrIds = new ArrayList<Long>();
 	}*/
 	
 	
-	public void testgetPdfsForVotersAddress()
+	/*public void testgetPdfsForVotersAddress()
 	{
 		List<Object[]> values = boothPublicationVoterDAO.getPdfsForVotersAddress();
 		if(values != null && values.size() > 0 )
@@ -1193,8 +1193,13 @@ List<Long> attrIds = new ArrayList<Long>();
 				e.printStackTrace();
 			}
 		}
-	}
+	}*/
 	
+	
+	public void testGetTotalVotersBoothWise(){
+		List<Object[]> list=boothPublicationVoterDAO.getTotalVotersOfBoothByConstituencyId(228l, 10l);
+		System.out.println(list.size());
+	}
 	
 	public String replaceSpecialChars(String str)
   	{
