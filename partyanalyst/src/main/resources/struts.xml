@@ -6476,7 +6476,20 @@
 			<result type="json" name="success">
 				<param name="root">resultVO</param>				
 			</result> 
-		</action>         
+		</action>   
+		
+		<action name="stratagicReportsAction" class="stratagicReportsAction">
+			<result name="success">/jsp/stratagicReports.jsp</result>
+			<result name="error">/jsp/loginForm.jsp</result>
+		</action>
+		
+		
+		<action name="getBoothWiseAddedAndDeletedVotersStratagicAction" class="stratagicReportsAction" method="getBoothWiseAddedAndDeletedVoters">
+			<result type="json" name="success">
+				<param name="root">boothWiseAddedDelList</param>				
+			</result> 
+		</action>
+		      
 		</package>
 		
 </struts>      

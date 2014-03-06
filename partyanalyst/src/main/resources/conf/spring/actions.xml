@@ -1378,5 +1378,11 @@
 		  <property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
 	
+	<bean id="stratagicReportsAction" class="com.itgrids.partyanalyst.web.action.StratagicReportsAction" singleton="false">
+		<property name="suggestiveModelService" ref="suggestiveModelService"/>
+		<property name="crossVotingEstimationService" ref="crossVotingEstimationService"/>
+		<property name="stratagicReportsService" ref="stratagicReportsService"/>
+	</bean>
+	
 </beans>	
 	

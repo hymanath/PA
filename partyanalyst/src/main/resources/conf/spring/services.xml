@@ -1927,6 +1927,10 @@
 	 
 	 
   </bean>
+  
+   <bean name="stratagicReportsService" class="com.itgrids.partyanalyst.service.impl.StratagicReportsService">
+   	
+   </bean>
    
 </beans>		
 	

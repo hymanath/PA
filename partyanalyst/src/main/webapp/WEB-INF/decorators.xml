@@ -290,6 +290,7 @@
 		<pattern>/votersEditNewHHAction*</pattern>
 		<pattern>/houseHoldCreationAction*</pattern>
 		<pattern>/voterLocationAction*</pattern>
+		<pattern>/stratagicReportsAction*</pattern>
 		<!--  <pattern>/partyShare*</pattern>  -->
     	 </decorator>
     	 
