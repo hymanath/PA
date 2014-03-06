@@ -1080,7 +1080,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			log.error("Exception raised in  saveHouseHoldsVotersDetails service method");
+			log.error("Exception raised in  saveHouseHoldsVotersDetails service method" +e);
 			return 0L;
 
 		}
