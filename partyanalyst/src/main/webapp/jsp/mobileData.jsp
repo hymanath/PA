@@ -264,9 +264,9 @@ var populateId ;
     <input type="text" id="AccessKeyId" placeholder="AccessKey">
     </div>
     </div>
-	<div style="margin-left: 96px; margin-bottom: 17px;"><input id="forgotpwdId" type="radio" style="margin-top:0px;" value="Authorisation_Access_Key" name="radiobtn"/>
+	<div style="margin-left: 96px; margin-bottom: 17px;"><input id="forgotpwdId" type="radio" style="margin-top:0px;" value="Request_For_Forget_Pwd_Access_Key" name="radiobtn"/>
 	Forgot Password
-	<input id="accesskeyId" type="radio" style="margin-top:0px;" value="Request_For_Forget_Pwd_Access_Key" name="radiobtn"/>
+	<input id="accesskeyId" type="radio" style="margin-top:0px;" value="Authorisation_Access_Key" name="radiobtn"/>
 	Authorisation Accesskey</div>
 	<div  style="margin-left: 150px;">
 	   <input type="button" class="btn btn-info" value="SendSMS" id="SentSMSId" onclick="sendSmsToUser();"/>
