@@ -6,6 +6,7 @@ import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IHouseHoldVoterDAO;
+import com.itgrids.partyanalyst.model.HHSurveyAnswers;
 import com.itgrids.partyanalyst.model.HouseHoldVoter;
 import com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -88,6 +89,8 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		
 	}
 	
+	
+	
 	public Long getHouseHoldIdForVoter(Long voterId){
 		Query query = getSession().createQuery(" select model.houseHoldId from HouseHoldVoter model " +
 				" where model.voter.voterId = :voterId and model.isDelete=:deleteStatus");
@@ -164,6 +167,26 @@ public class HouseHoldVoterDAO extends GenericDaoHibernate<HouseHoldVoter,Long> 
 		qry.setParameterList("voterIds", voterIds);
 		
 		return qry.list();
+	}
+	
+	
+	public List<HouseHoldVoter> getTotalVoters(){
+		Query query=getSession().createQuery(" select model " +
+				"from HouseHoldVoter model where model.isDelete='false' order by model.houseHolds.houseHoldId,model.voterFamilyRelation.voterFamilyRelationId");
+		return query.list();
+	}
+	
+	public List<HHSurveyAnswers> getAllSurveyAnswers(List<Long> houseHoldIds){
+		Query query=getSession().createQuery(" select model from HHSurveyAnswers model where model.houseHold.houseHoldId in (:houseHoldIds)" +
+				" group by model.hhSurveyAnswerId ");
+		query.setParameterList("houseHoldIds", houseHoldIds);
+		return query.list();
+	}
+	
+	public List<Object[]> getAllQuestions(){
+		Query query=getSession().createQuery(" select model.surveyQuestionId,model.question from HHSurveyQuestion model where " +
+				" model.isDeleted='false' ");
+		return query.list();
 	}
 	
 	

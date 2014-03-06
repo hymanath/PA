@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.partyanalyst.model.HHSurveyAnswers;
 import com.itgrids.partyanalyst.model.HouseHoldVoter;
 import com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails;
 
@@ -25,4 +26,8 @@ public interface IHouseHoldVoterDAO extends GenericDao<HouseHoldVoter, Long>{
 	public int updateStatusIfVoterIdExist(Long voterId);
 	
 	public List<Long> getVoterIdsExistByVoterIds(List<Long> voterIds);
+	
+	public List<HouseHoldVoter> getTotalVoters();
+	public List<HHSurveyAnswers> getAllSurveyAnswers(List<Long> houseHoldIds);
+	public List<Object[]> getAllQuestions();
 }
