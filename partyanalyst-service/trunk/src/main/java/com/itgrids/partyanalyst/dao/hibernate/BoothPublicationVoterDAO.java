@@ -6427,4 +6427,13 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 						" ORDER BY B.booth_id,BPV.serial_no");
 		return query.list();
 	}
+	
+	public List<Object[]> getTotalVotersOfBoothByConstituencyId(Long constituencyId,Long publicationDateId){
+			Query query = getSession().createQuery("select count(distinct model.voter.voterId),model.booth.partNo from BoothPublicationVoter model where model.booth.constituency.constituencyId=:constituencyId" +
+					" and model.booth.publicationDate.publicationDateId=:publicationDateId group by model.booth.partNo order by model.booth.boothId asc");
+			query.setParameter("constituencyId", constituencyId);
+			query.setParameter("publicationDateId", publicationDateId);
+			return query.list();
+		
+	}
 }
