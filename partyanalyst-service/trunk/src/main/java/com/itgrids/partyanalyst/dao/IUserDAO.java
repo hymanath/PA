@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -105,5 +106,11 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	
 	public List<User> checkUsernameAndEncryptedPasswordForUser(String userName, String encryptedPassword);
 	public List<User> updateAllUsersPasswords();
+	
+	public Long getCount();
+	public List<BigInteger> getPanc(String s);
+	public BigInteger count(String s);
+	public List<Object[]> getData(String s);
+	public Long Allcount(String s);
 
 }
