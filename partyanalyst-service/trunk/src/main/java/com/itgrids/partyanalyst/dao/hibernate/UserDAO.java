@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -462,6 +464,42 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		Query query = getSession().createQuery("select model from User model order by model.userId");		
 		
 		return query.list();
+	}
+	
+	public Long getCount(){
+		String constiId = "221";
+		String maxboothcount = "select max(counted) from (select count(*) as counted from booth where constituency_id = "+constiId+" and publication_date_id = 8 group by panchayat_id) sub";
+		String panchayats = "select distinct panchayat_id from booth where constituency_id = "+constiId+" and publication_date_id = 8 ";
+		
+		List<Long> panchIds= new ArrayList<Long>();
+		StringBuilder table = new StringBuilder();
+		table.append("<table>");
+		for(Long pancId:panchIds){
+			
+		}
+		table.append("</table>");
+		Query query = getSession().createQuery("select count(*) from User");
+		return (Long)query.uniqueResult();
+	}
+	
+	public List<BigInteger> getPanc(String s){
+		Query query = getSession().createSQLQuery(s);
+		return query.list();
+	}
+	
+	public BigInteger count(String s){
+		Query query = getSession().createSQLQuery(s);
+		return (BigInteger)query.uniqueResult();
+	}
+	
+	public List<Object[]> getData(String s){
+		Query query = getSession().createSQLQuery(s);
+		return query.list();
+	}
+	
+	public Long Allcount(String s){
+		Query query = getSession().createSQLQuery(s);
+		return (Long)query.uniqueResult();
 	}
 	
 }
