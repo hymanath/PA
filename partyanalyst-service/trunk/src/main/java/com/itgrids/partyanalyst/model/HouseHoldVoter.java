@@ -41,6 +41,11 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	private String ownerMobileNo;
 	private Long leaderId;
 	
+	private UserVoterCategoryValue education;
+	private UserVoterCategoryValue occupation;
+	private UserVoterCategoryValue socialCategory;
+
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -179,6 +184,39 @@ public class HouseHoldVoter extends BaseModel implements Serializable {
 	}
 	public void setLeaderId(Long leaderId) {
 		this.leaderId = leaderId;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "education_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserVoterCategoryValue getEducation() {
+	return education;
+	}
+	public void setEducation(UserVoterCategoryValue education) {
+	this.education = education;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "occupation_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserVoterCategoryValue getOccupation() {
+	return occupation;
+	}
+	public void setOccupation(UserVoterCategoryValue occupation) {
+	this.occupation = occupation;
+	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "social_category_id" ,insertable = false ,updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public UserVoterCategoryValue getSocialCategory() {
+	return socialCategory;
+	}
+	public void setSocialCategory(UserVoterCategoryValue socialCategory) {
+	this.socialCategory = socialCategory;
 	}
 	
 	
