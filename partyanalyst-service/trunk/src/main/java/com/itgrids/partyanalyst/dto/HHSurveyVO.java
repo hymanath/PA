@@ -24,8 +24,15 @@ public class HHSurveyVO {
 	private String optsRemarked;
 	private List<VoterHouseInfoVO> parentsList;
 	private List<VoterHouseInfoVO> childrenList;
+	private Long houseHoldId;
 	
 	
+	public Long getHouseHoldId() {
+		return houseHoldId;
+	}
+	public void setHouseHoldId(Long houseHoldId) {
+		this.houseHoldId = houseHoldId;
+	}
 	public List<VoterHouseInfoVO> getParentsList() {
 		return parentsList;
 	}

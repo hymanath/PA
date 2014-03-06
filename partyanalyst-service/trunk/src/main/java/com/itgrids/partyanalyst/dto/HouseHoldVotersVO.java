@@ -26,7 +26,20 @@ public class HouseHoldVotersVO {
 	private Long leaderId;
 	private String ownerMobileNo;
 	
+	private String relation;
+	private String education;
+	private String occupation;
+	private String socialPosition;
+	private String childrenName;
 	
+	
+	
+	public String getChildrenName() {
+		return childrenName;
+	}
+	public void setChildrenName(String childrenName) {
+		this.childrenName = childrenName;
+	}
 	public String getOwnerMobileNo() {
 		return ownerMobileNo;
 	}
@@ -142,4 +155,29 @@ public class HouseHoldVotersVO {
 	public void setHouseHoldsId(Long houseHoldsId) {
 		this.houseHoldsId = houseHoldsId;
 	}
+	public String getRelation() {
+		return relation;
+	}
+	public void setRelation(String relation) {
+		this.relation = relation;
+	}
+	public String getEducation() {
+		return education;
+	}
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	public String getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
+	}
+	public String getSocialPosition() {
+		return socialPosition;
+	}
+	public void setSocialPosition(String socialPosition) {
+		this.socialPosition = socialPosition;
+	}
+	
 }
