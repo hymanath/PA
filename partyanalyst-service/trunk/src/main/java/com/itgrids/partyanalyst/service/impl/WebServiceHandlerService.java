@@ -904,7 +904,7 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			{
 				for(Object[] params : list)
 				{
-					
+					try{
 					List<Object> pingingTypeId = pingingTypeDAO.getPingingTypeIdByType(IConstants.Authorisation_Access_Key);
 					saveMobileAppPingIngDetails((Long) params[4],(Long)pingingTypeId.get(0),null,null);
 					String[] mobile = {params[0].toString()};
@@ -920,14 +920,19 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 					if(params[3] != null && params[3] !="")
 					mailService.sendEmailToMobileAppUserForAuthorisationAccessKey(name,params[3].toString());
 					}
+					}catch(Exception e)
+					{
+						log.error(e);
+					}
 				}
 			}
+			return "True : Accesskey will be Sent to your Mobile & Email shorty";
 		}
 		catch(Exception e)
 		{
 			log.error("Exception occured in requestForAuthorisationAccesskey() Method ",e);	
+			return "False : Your request not processed, Please try again";
 		}
-		return resultstr;
 	}
 	public String verificationForAuthorisationAccessKey(String uniqueCode,String accesskey)
 	{
@@ -948,10 +953,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 				mobileAppUserAccessKey.setIsUsed("true");
 				mobileAppUserAccessKeyDAO.save(mobileAppUserAccessKey);
 				}
-				resultstr = "True : your Authorisation access is accepted"	;
+				resultstr = "True : Your Authorisation access key is accepted, please login now"	;
 			}
 				else
-				resultstr = "False : your Authorisation access is not accepted"	;	
+				resultstr = "False : Your Authorisation access key is not valid"	;	
 		}
 		catch(Exception e)
 		{
