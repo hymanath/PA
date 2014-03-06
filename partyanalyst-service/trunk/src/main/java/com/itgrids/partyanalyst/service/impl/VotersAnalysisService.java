@@ -7019,6 +7019,36 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 					try{
 						List<Long> bPVIDSList =  boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(entry.getKey().toString(),entry.getValue(),fromPublicationDateId);
 						if(bPVIDSList != null && bPVIDSList.size() > 0)
+						{
+							for(Long bpvId : bPVIDSList)
+							{
+								BoothPublicationVoter bpv = boothPublicationVoterDAO.get(bpvId);
+								Long boothId = boothDAO.getBoothIdByConstituencyPublicationPartNo(constituencyId,toPublicationDateId,bpv.getBooth().getPartNo());
+								
+								if(boothId != null)
+								{
+									BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
+									boothPublicationVoter.setBoothId(boothId);
+									boothPublicationVoter.setVoter(bpv.getVoter());
+									boothPublicationVoter.setSerialNo(bpv.getSerialNo());
+									boothPublicationVoterDAO.save(boothPublicationVoter);
+								}
+							}
+						}
+					}catch(Exception e)
+					{
+						
+					}
+				}
+			}
+			
+			if(deletedVoterIdsMap.size() > 0)
+			{
+				for(Map.Entry<Long,List<Long>> entry : deletedVoterIdsMap.entrySet())
+				{
+					try{
+						List<Long> bPVIDSList =  boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(entry.getKey().toString(),entry.getValue(),fromPublicationDateId);
+						if(bPVIDSList != null && bPVIDSList.size() > 0)
 							boothPublicationVoterDAO.deleteByIdsList(bPVIDSList);
 					}catch (Exception e) {}
 				}
