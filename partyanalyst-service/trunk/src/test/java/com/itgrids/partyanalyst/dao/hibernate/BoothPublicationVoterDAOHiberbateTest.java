@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
@@ -1118,6 +1121,7 @@ List<Long> attrIds = new ArrayList<Long>();
 			System.out.println(values.size());
 			StringBuilder sb  = new StringBuilder();
 			
+			
 			int i =0;
 			int k = 0;
 			for (Object[] parms : values) {
@@ -1157,7 +1161,10 @@ List<Long> attrIds = new ArrayList<Long>();
 				}
 				sb.append("<p style='margin-left: 10px;'>"+name+"<p>");
 				sb.append("<p style='margin-left: 10px;'>H.NO : "+parms[10].toString()+"</p>");
-				sb.append("<p style='margin-left: 10px;'>Village : "+parms[2].toString()+"<p>");
+				if(parms[2] != null)
+				{
+					sb.append("<p style='margin-left: 10px;'>Village : "+parms[2].toString()+"<p>");
+				}
 				sb.append("<p style='margin-left: 10px;'>Panchayat : "+parms[1].toString()+"<p>");
 				sb.append("<p style='margin-left: 10px;'>Mandal : "+parms[0].toString()+"<p>");
 				sb.append("<p style='margin-left: 10px;'>District : "+parms[14].toString()+"<p>");
@@ -1176,7 +1183,15 @@ List<Long> attrIds = new ArrayList<Long>();
 				}
 			}
 			sb.append("</table>");
-			System.out.println(sb.toString());
+			//System.out.println(sb.toString());
+			try{
+			BufferedWriter outwriter = new BufferedWriter(new FileWriter(new File("C:\\Data.html")));
+			outwriter.write(sb.toString());
+			outwriter.close();
+			}catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 	
