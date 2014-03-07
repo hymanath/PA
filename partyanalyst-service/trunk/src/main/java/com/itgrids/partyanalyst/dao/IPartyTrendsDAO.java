@@ -30,4 +30,18 @@ public interface IPartyTrendsDAO extends GenericDao<PartyTrends, Long> {
 	public List<?> loadConst(List<Long> constIds);
 	public List<Long> getConstituencyIds();
 	public List<PartyTrends> getAllTrends(Long constiId);
+    public List<Object[]> getPreviousTrendsData(Long constId);
+    public List<Object[]> getPreviousForPrp(Long constId);
+    public List<Object[]> getParliamentCountForPrpAndYsr(Long constId);
+    public List<Object[]> getParliamentCountForInc(Long constId);
+    public List<?> getPreviousTrendsData(List<Long> partyIds,Long constId);
+    public List<?> getPreviousTrendsDataForParleament(List<Long> partyIds,Long constId);
+    public List<Object[]> getTotalVotersForConst(Long constId);
+
+
+
+
+
+
+
 }
