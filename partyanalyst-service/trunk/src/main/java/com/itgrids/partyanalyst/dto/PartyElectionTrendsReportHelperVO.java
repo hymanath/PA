@@ -10,7 +10,14 @@ public class PartyElectionTrendsReportHelperVO  {
 	private Long marginVotes=0L;
 	private Double marginVotesPercentage=0.0;
 	private Double percentage=0.0;
+	private Long rank=0L;
 	
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
 	public Double getMarginVotesPercentage() {
 		return marginVotesPercentage;
 	}
