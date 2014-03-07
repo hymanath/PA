@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
@@ -41,6 +42,26 @@ public class StratagicReportsAction extends ActionSupport implements
 	private ISuggestiveModelService suggestiveModelService;
 	private List<AgeRangeVO> boothWiseAddedDelList;
 	
+	List<PartyElectionTrendsReportVO> prevTrends;
+	List<PartyElectionTrendsReportVO> prevTrendsParliament;
+	
+	public List<PartyElectionTrendsReportVO> getPrevTrends() {
+		return prevTrends;
+	}
+
+	public void setPrevTrends(List<PartyElectionTrendsReportVO> prevTrends) {
+		this.prevTrends = prevTrends;
+	}
+
+	public List<PartyElectionTrendsReportVO> getPrevTrendsParliament() {
+		return prevTrendsParliament;
+	}
+
+	public void setPrevTrendsParliament(
+			List<PartyElectionTrendsReportVO> prevTrendsParliament) {
+		this.prevTrendsParliament = prevTrendsParliament;
+	}
+
 	public ServletContext getContext() {
 		return context;
 	}
@@ -178,4 +199,32 @@ public class StratagicReportsAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
+	public String getPreviousTrendsReport(){
+		try{
+		jObj = new JSONObject(getTask());
+	
+	Long constituencyId=jObj.getLong("constituencyId");
+	prevTrends=stratagicReportsService.getPreviousTrendsReport(constituencyId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Action.ERROR;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getPreviousTrendsReportParliament(){
+		try{
+		jObj = new JSONObject(getTask());
+	
+	Long constituencyId=jObj.getLong("constituencyId");
+	prevTrendsParliament=stratagicReportsService.getPreviousTrendsReportParliament(constituencyId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Action.ERROR;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
