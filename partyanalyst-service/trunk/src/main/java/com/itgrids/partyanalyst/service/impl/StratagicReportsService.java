@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +14,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
+import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
 
 public class StratagicReportsService implements IStratagicReportsService{
@@ -25,6 +29,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	@Autowired
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	
+	@Autowired IPartyTrendsDAO partyTrendsDAO;
 	
 	   
 	public List<AgeRangeVO> getBoothWiseAddedAndDeletedVoters(Long constiId,Long pubId){
@@ -248,4 +254,227 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  }
 		  return result;
 	  }
+	public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
+		
+		List<Object[]> ids = (List<Object[]>)partyTrendsDAO.getPreviousTrendsData(null, constId);
+		Map<Long,PartyElectionTrendsReportVO> maps = new HashMap<Long, PartyElectionTrendsReportVO>();
+
+		System.out.println(ids.size());
+		
+		for (Object[] object : ids) {
+			
+		if(maps.containsKey(Long.valueOf(object[0].toString())))
+		{
+			PartyElectionTrendsReportVO vo =maps.get(Long.valueOf(object[0].toString()));
+	        vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+	        vo.setTotalVoters(((Double)object[1]).longValue());
+	        vo.setTotalVotesPolled(((Double)object[2]).longValue());
+	        PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+	        voh.setPercentage((Double)object[7]);
+	        voh.setVotesEarned(((Double)object[4]).longValue());
+	        if(((Long)object[3]).equals(872L))
+	        {
+	     	   voh.setMarginVotes(((Double)object[5]).longValue());
+	     	   voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+	     	   vo.setTdpVo(voh);
+	        }else if(((Long)object[3]).equals(362L))
+	        {
+	     	   vo.setIncVo(voh);
+
+	        }else if(((Long)object[3]).equals(662L)||((Long)object[3]).equals(1117L)  )
+	        {
+	     	   vo.setPrpVo(voh);
+
+	        }else {
+	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+	     	   if(vo1!=null)
+	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+	     	   else 
+	     	   {
+	     		   vo1= new PartyElectionTrendsReportHelperVO();
+	     		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+
+	     	   }
+	     		   
+	     	  vo.setOthersVo(vo1);
+	        }
+			
+		}
+		else
+		{
+			PartyElectionTrendsReportVO vo =new PartyElectionTrendsReportVO();
+			           vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+			           vo.setTotalVoters(((Double)object[1]).longValue());
+			           vo.setTotalVotesPolled(((Double)object[2]).longValue());
+			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+			           voh.setPercentage((Double)object[7]);
+			           voh.setVotesEarned(((Double)object[4]).longValue());
+			           if(((Long)object[3]).equals(872L))
+			           {
+			        	   voh.setMarginVotes((Long)object[5]);
+			        	   voh.setMarginVotesPercentage(((Double)object[6]));
+			        	   vo.setTdpVo(voh);
+			           }else if(((Long)object[3]).equals(362L))
+			           {
+			        	   vo.setIncVo(voh);
+
+			           }else if(((Long)object[3]).equals(662L)||((Long)object[3]).equals(1117L)  )
+			           {
+			        	   vo.setPrpVo(voh);
+
+			           }else {
+			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+			        	   if(vo1!=null)
+			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+			        	   else 
+			        	   {
+			        		   vo1= new PartyElectionTrendsReportHelperVO();
+			        		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+
+			        	   }
+			        		   
+			        	   vo.setOthersVo(vo1);
+			           }
+			           
+		maps.put(Long.valueOf(object[0].toString()),vo );
+		}
+		}
+		System.out.println(maps);
+		List<PartyElectionTrendsReportVO> finalRes= new ArrayList<PartyElectionTrendsReportVO>();
+		for(Long year:maps.keySet())
+		{
+			PartyElectionTrendsReportVO vo=	maps.get(year);
+			
+			//vo.getOthersVo().setVotesEarned(vo.getTotalVotesPolled()-( + vo.getIncVo()!=null ?vo.getIncVo().getVotesEarned().longValue():0L));
+			vo.getOthersVo().setPercentage((double)((double)vo.getOthersVo().getVotesEarned()/(double)vo.getTotalVotesPolled())*100);
+			finalRes.add(vo);
+		}
+		Collections.sort(finalRes);
+		return finalRes;
+	}
+	public List<PartyElectionTrendsReportVO> getPreviousTrendsReportParliament(Long constId){
+		Map<Long,Long> idMap = new HashMap<Long, Long>();
+		List<Object[]> obj=	partyTrendsDAO.getTotalVotersForConst(232L);
+		for (Object[] objects : obj) {
+			idMap.put(Long.valueOf(objects[0].toString()), ((Double)objects[1]).longValue());
+			
+		}
+
+		List<Object[]> ids = (List<Object[]>)partyTrendsDAO.getPreviousTrendsDataForParleament(null, constId);
+		Map<Long,PartyElectionTrendsReportVO> maps = new HashMap<Long, PartyElectionTrendsReportVO>();
+
+		System.out.println(ids.size());
+		
+		for (Object[] object : ids) {
+			
+		if(maps.containsKey(Long.valueOf(object[0].toString())))
+		{
+			PartyElectionTrendsReportVO vo =maps.get(Long.valueOf(object[0].toString()));
+			  vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+			  if(idMap.containsKey(Long.valueOf(object[0].toString())))
+	          vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
+	           vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+	           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+	           voh.setPercentage(((Long)object[4]).doubleValue());
+	           voh.setVotesEarned(((Long)object[3]).longValue());
+	           if(((Long)object[2]).equals(872L))
+	           {
+	        	 /*  voh.setMarginVotes((Long)object[5]);
+	        	   voh.setMarginVotesPercentage(((Double)object[6]));*/
+	        	   vo.setTdpVo(voh);
+	           }else if(((Long)object[2]).equals(362L))
+	           {
+	        	   vo.setIncVo(voh);
+
+	           }else if(((Long)object[2]).equals(662L)||((Long)object[2]).equals(1117L)  )
+	           {
+	        	   vo.setPrpVo(voh);
+
+	           }else {
+	        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+	        	   if(vo1!=null)
+	        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+	        	   else 
+	        	   {
+	        		   vo1= new PartyElectionTrendsReportHelperVO();
+	        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+
+	        	   }
+	        		   
+	        	   vo.setOthersVo(vo1);
+	        }
+			
+		}
+		else
+		{
+			PartyElectionTrendsReportVO vo =new PartyElectionTrendsReportVO();
+			           vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+			     	  if(idMap.containsKey(Long.valueOf(object[0].toString())))
+				          vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
+			           vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+			           voh.setPercentage(((Long)object[4]).doubleValue());
+			           voh.setVotesEarned(((Long)object[3]).longValue());
+			           if(((Long)object[2]).equals(872L))
+			           {
+			        	 /*  voh.setMarginVotes((Long)object[5]);
+			        	   voh.setMarginVotesPercentage(((Double)object[6]));*/
+			        	   vo.setTdpVo(voh);
+			           }else if(((Long)object[2]).equals(362L))
+			           {
+			        	   vo.setIncVo(voh);
+
+			           }else if(((Long)object[2]).equals(662L)||((Long)object[2]).equals(1117L)  )
+			           {
+			        	   vo.setPrpVo(voh);
+
+			           }else {
+			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+			        	   if(vo1!=null)
+			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+			        	   else 
+			        	   {
+			        		   vo1= new PartyElectionTrendsReportHelperVO();
+			        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+
+			        	   }
+			        		   
+			        	   vo.setOthersVo(vo1);
+			           }
+			           
+		maps.put(Long.valueOf(object[0].toString()),vo );
+		}
+		}
+		System.out.println(maps);
+		List<PartyElectionTrendsReportVO> finalRes= new ArrayList<PartyElectionTrendsReportVO>();
+
+		for(Long year:maps.keySet())
+		{PartyElectionTrendsReportVO vo=maps.get(year);
+			Long tdp=vo.getTdpVo()!=null ?vo.getTdpVo().getVotesEarned():0L;
+			
+			Long inc =vo.getIncVo()!=null ? vo.getIncVo().getVotesEarned():0L;
+			 
+			Long prp11= vo.getPrpVo()!=null ? vo.getPrpVo().getVotesEarned() :0L;
+			 
+			Long others = vo.getOthersVo().getVotesEarned();
+			
+			Long max=inc;
+			if(prp11!=null && prp11>inc )
+				max=prp11;
+			else if(others !=null && others>inc )
+				max=others;
+			vo.getTdpVo().setMarginVotes(tdp-max);
+			vo.getTdpVo().setMarginVotesPercentage( (double)(vo.getTdpVo().getMarginVotes()/vo.getTotalVotesPolled())*100);
+			
+			//PartyElectionTrendsReportVO vo=	maps.get(year);
+			
+			//vo.getOthersVo().setVotesEarned(vo.getTotalVotesPolled()-( + vo.getIncVo()!=null ?vo.getIncVo().getVotesEarned().longValue():0L));
+			vo.getOthersVo().setPercentage((double)((double)vo.getOthersVo().getVotesEarned()/(double)vo.getTotalVotesPolled())*100);
+			finalRes.add(vo);
+		}
+		
+	
+		Collections.sort(finalRes);
+	return finalRes	;
+	}
 }
