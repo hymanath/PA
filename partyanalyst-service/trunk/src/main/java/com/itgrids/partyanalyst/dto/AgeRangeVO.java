@@ -1,5 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.List;
+import java.util.Map;
+
 public class AgeRangeVO {
  String panchayat;
  String hamlet;
@@ -50,6 +53,29 @@ public class AgeRangeVO {
  String delAge36to45Per = "";
  String delAge46to60Per = "";
  String delAbove60Per = "";
+ 
+ private String queryString;
+ private String partQueryString;
+ private List<Object[]>   output;
+ private List<Object[]>   output1;
+ private List<AgeRangeVO> ageRangeVOList;
+ private double ageRangePerc;
+
+ private long tehsilId;
+ private String tehsilName;
+ private Long panchayatId=0l;
+ private Long maleCount=0l;
+ private Long femaleCount=0l;
+ private Long totalMaleCount=0l;
+ private Long totalFemaleCount=0l;
+ private Map<String,AgeRangeVO> map;
+ private String panchayatName;
+ private Long hamletId=0l;
+ private String hamletName;
+ private Long particularAgeVotersCount=0l;
+ private String ageRange;
+ private Long totalCount=0l;
+
  
  
 public String getPanchayat() {
@@ -309,6 +335,126 @@ public String getDelAbove60Per() {
 }
 public void setDelAbove60Per(String delAbove60Per) {
 	this.delAbove60Per = delAbove60Per;
+}
+public String getQueryString() {
+	return queryString;
+}
+public void setQueryString(String queryString) {
+	this.queryString = queryString;
+}
+public String getPartQueryString() {
+	return partQueryString;
+}
+public void setPartQueryString(String partQueryString) {
+	this.partQueryString = partQueryString;
+}
+public List<Object[]> getOutput() {
+	return output;
+}
+public void setOutput(List<Object[]> output) {
+	this.output = output;
+}
+public List<Object[]> getOutput1() {
+	return output1;
+}
+public void setOutput1(List<Object[]> output1) {
+	this.output1 = output1;
+}
+public List<AgeRangeVO> getAgeRangeVOList() {
+	return ageRangeVOList;
+}
+public void setAgeRangeVOList(List<AgeRangeVO> ageRangeVOList) {
+	this.ageRangeVOList = ageRangeVOList;
+}
+public double getAgeRangePerc() {
+	return ageRangePerc;
+}
+public void setAgeRangePerc(double ageRangePerc) {
+	this.ageRangePerc = ageRangePerc;
+}
+public long getTehsilId() {
+	return tehsilId;
+}
+public void setTehsilId(long tehsilId) {
+	this.tehsilId = tehsilId;
+}
+public String getTehsilName() {
+	return tehsilName;
+}
+public void setTehsilName(String tehsilName) {
+	this.tehsilName = tehsilName;
+}
+public Long getPanchayatId() {
+	return panchayatId;
+}
+public void setPanchayatId(Long panchayatId) {
+	this.panchayatId = panchayatId;
+}
+public Long getMaleCount() {
+	return maleCount;
+}
+public void setMaleCount(Long maleCount) {
+	this.maleCount = maleCount;
+}
+public Long getFemaleCount() {
+	return femaleCount;
+}
+public void setFemaleCount(Long femaleCount) {
+	this.femaleCount = femaleCount;
+}
+public Long getTotalMaleCount() {
+	return totalMaleCount;
+}
+public void setTotalMaleCount(Long totalMaleCount) {
+	this.totalMaleCount = totalMaleCount;
+}
+public Long getTotalFemaleCount() {
+	return totalFemaleCount;
+}
+public void setTotalFemaleCount(Long totalFemaleCount) {
+	this.totalFemaleCount = totalFemaleCount;
+}
+public Map<String, AgeRangeVO> getMap() {
+	return map;
+}
+public void setMap(Map<String, AgeRangeVO> map) {
+	this.map = map;
+}
+public String getPanchayatName() {
+	return panchayatName;
+}
+public void setPanchayatName(String panchayatName) {
+	this.panchayatName = panchayatName;
+}
+public Long getHamletId() {
+	return hamletId;
+}
+public void setHamletId(Long hamletId) {
+	this.hamletId = hamletId;
+}
+public String getHamletName() {
+	return hamletName;
+}
+public void setHamletName(String hamletName) {
+	this.hamletName = hamletName;
+}
+public Long getParticularAgeVotersCount() {
+	return particularAgeVotersCount;
+}
+public void setParticularAgeVotersCount(Long particularAgeVotersCount) {
+	this.particularAgeVotersCount = particularAgeVotersCount;
+}
+public String getAgeRange() {
+	return ageRange;
+}
+public void setAgeRange(String ageRange) {
+	this.ageRange = ageRange;
+}
+public Long getTotalCount() {
+	return totalCount;
+}
+public void setTotalCount(Long totalCount) {
+	this.totalCount = totalCount;
 }
 
 
