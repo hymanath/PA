@@ -1,10 +1,12 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+import org.springframework.jdbc.object.SqlQuery;
 
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.model.PartyTrends;
@@ -118,5 +120,62 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
 		query.setParameter("constiId", constiId);
 		return query.list();
     }
-	
+  public List<Object[]> getPreviousTrendsData(Long constId)
+	{
+		Query   q=      getSession().createSQLQuery("select election_year,total_votes,total_votes_polled,p.short_name,p.party_id,cr1.votes_earned,(cr1.votes_earned-cr2.votes_earned),round((( cr1.votes_earned-cr2.votes_earned)/total_votes_polled * 100 ),1) AS marginpercentage,round((cr1.votes_earned / total_votes_polled * 100),2) AS tdppercentage,p1.short_name,p1.party_id,cr2.votes_earned,round(( cr2.votes_earned/total_votes_polled * 100 ),2) AS incpercentage,'others',sum(cr3.votes_earned),round(( sum(cr3.votes_earned)/total_votes_polled * 100 ),2),rejected_votes from  constituency_election ce join election e on  ce.election_id=e.election_id join constituency_election_result cr on cr.consti_elec_id= ce.consti_elec_id join nomination n on ce.consti_elec_id=n.consti_elec_id join nomination n1 on ce.consti_elec_id=n1.consti_elec_id join nomination n2 on ce.consti_elec_id=n2.consti_elec_id join party p on p.party_id=n.party_id  join candidate_result cr1 on n.nomination_id=cr1.nomination_id join party p1 on p1.party_id=n1.party_id join candidate_result cr2 on n1.nomination_id=cr2.nomination_id    join party p2 on p2.party_id=n2.party_id join candidate_result cr3 on n2.nomination_id=cr3.nomination_id  join constituency c on ce.constituency_id=c.constituency_id where e.election_scope_id=2 and ce.constituency_id=? and p.party_id =872 and p1.party_id=362  and p2.party_id not in(662,362,872)  group by election_year,sub_type  order by election_year desc ");
+	  
+		  q.setBigDecimal(0, new BigDecimal(constId));
+		  return q.list();
+	}
+    public List<Object[]> getPreviousForPrp(Long constId)
+   	{
+   		  Query q=      getSession().createSQLQuery("select election_year,p.short_name,p.party_id,cr1.votes_earned,round(( cr1.votes_earned/total_votes_polled * 100 ),2) AS tdppercentage from  constituency_election ce join election e on  ce.election_id=e.election_id join constituency_election_result cr on cr.consti_elec_id= ce.consti_elec_id join nomination n on ce.consti_elec_id=n.consti_elec_id  join party p on p.party_id=n.party_id  join candidate_result cr1 on n.nomination_id=cr1.nomination_id  join constituency c on ce.constituency_id=c.constituency_id where e.election_scope_id=2 and ce.constituency_id=? and p.party_id =662   group by election_year,sub_type  order by election_year desc ");
+   		 q.setBigDecimal(0, new BigDecimal(constId));
+   		  return q.list();
+   	}
+    public List<Object[]> getParliamentCountForPrpAndYsr(Long constId)
+   	{
+    	Query q=      getSession().createSQLQuery("SELECT  distinct  election_year ,sum( br.valid_votes) as tv  ,p.party_id,sum( cb.votes_earned),round(( sum(cb.votes_earned)/sum(br.valid_votes) * 100 ),2) AS tdppercentage from  constituency_election as ce join booth_constituency_election bc on ce.consti_elec_id=bc.consti_elec_id join nomination n on ce.consti_elec_id=n.consti_elec_id join booth b on b.booth_id=bc.booth_id join booth_result br  on  br.booth_constituency_election_id=bc.booth_constituency_election_id join election e on  ce.election_id=e.election_id join party p on p.party_id=n.party_id join candidate_booth_result cb on cb.booth_constituency_election_id=bc.booth_constituency_election_id and  cb.nomination_id=n.nomination_id where b.constituency_id=232 and e.election_scope_id=1 and p.party_id  in(662, 1117 ) group by election_year order by election_year desc ");
+    	q.setBigDecimal(0, new BigDecimal(constId));
+ 		  return q.list();
+   	}
+    public List<Object[]> getParliamentCountForInc(Long constId)
+
+    {
+    	Query q=   getSession().createSQLQuery("SELECT  distinct  election_year ,sum( br.valid_votes) as tv  ,p.short_name,p.party_id,sum( cb.votes_earned),round(( sum(cb.votes_earned)/sum(br.valid_votes) * 100 ),2) AS tdppercentage,p1.short_name ,p1.party_id, sum(cb1.votes_earned),round(( sum(cb1.votes_earned)/sum(br.valid_votes) * 100 ),2) AS incpercentage from  constituency_election as ce join booth_constituency_election bc on ce.consti_elec_id=bc.consti_elec_id join nomination n on ce.consti_elec_id=n.consti_elec_id join booth b on b.booth_id=bc.booth_id join booth_result br  on  br.booth_constituency_election_id=bc.booth_constituency_election_id join election e on  ce.election_id=e.election_id join party p on p.party_id=n.party_id join candidate_booth_result cb on cb.booth_constituency_election_id=bc.booth_constituency_election_id and  cb.nomination_id=n.nomination_id join nomination n1 on ce.consti_elec_id=n1.consti_elec_id join party p1 on p1.party_id=n1.party_id join candidate_booth_result cb1 on cb1.booth_constituency_election_id=bc.booth_constituency_election_id and  cb1.nomination_id=n1.nomination_id where b.constituency_id=? and e.election_scope_id=1 and p1.party_id =362  and p.party_id=872   group by election_year order by election_year desc");     
+    	q.setBigDecimal(0, new BigDecimal(constId));
+		  return q.list();
+    }
+    public List<?> getPreviousTrendsData(List<Long> partyIds,Long constId)
+    {
+    	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes,cer.totalVotesPolled,n.party.partyId,cr.votesEarned,cr.marginVotes,cr.marginVotesPercentage,(cr.votesEarned/cer.totalVotesPolled) * 100  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 group by  ce.election.electionYear,n.party.partyId ");
+    	q.setParameter(0, constId);
+    	return q.list();
+    }
+    public List<?> getPreviousTrendsDataForParleament(List<Long> partyIds,Long constId)
+    {
+    	//Query q= getSession().createQuery("select ce.election.electionYear,sum(be.boothResult.validVotes),n.party.partyId,sum(cr.votesEarned),(sum(cr.votesEarned)/sum(be.boothResult.validVotes)) * 100  from ConstituencyElection ce join  ce.boothConstituencyElections be join be.booth b   join ce.nominations   n join n.candidateBoothResults    cr     where  ce.constituency.constituencyId=232 and ce.election.electionScope.electionScopeId=1  group by  ce.election.electionYear,n.party.partyId ");
+    	Query q= getSession().createQuery("select ce.election.electionYear,sum(be.boothResult.validVotes),n.party.partyId,sum(cr.votesEarned),(sum(cr.votesEarned)/sum(be.boothResult.validVotes)) * 100  from ConstituencyElection ce " +
+    			"  ,BoothConstituencyElection be " +
+    			" ,Booth b   " +
+    			", Nomination   n  " +
+    			" ,CandidateBoothResult    cr     " +
+    			"where  " +
+    			"be.constituencyElection.constiElecId=ce.constiElecId and " +
+    			"b.boothId= be.booth.boothId and " +
+    			"n.constituencyElection.constiElecId=ce.constiElecId and " +
+    			"cr.nomination.nominationId = n.nominationId and  cr.boothConstituencyElection.boothConstituencyElectionId= be.boothConstituencyElectionId and  " +
+    			" ce.election.electionScope.electionScopeId=1 and b.constituency.constituencyId=? group by  ce.election.electionYear,n.party.partyId ");
+    	q.setParameter(0, constId);
+    	return q.list();
+    }
+    public List<Object[]> getTotalVotersForConst(Long constId)
+    {
+    	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 group by  ce.election.electionYear");
+    	q.setParameter(0, constId);
+    	return q.list();
+    }
+   
+    
+    
 }
