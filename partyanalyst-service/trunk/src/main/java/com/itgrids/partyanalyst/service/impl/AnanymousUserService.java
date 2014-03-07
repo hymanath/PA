@@ -467,7 +467,9 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 					user.setDistrictId(constituencyDAO.getDistrictIdByConstituencyId(new Long(userDetails.getConstituency())).get(0));
 					user.setConstituencyId(new Long(userDetails.getConstituency()));
 					user.setUpdatedDate(dateUtilService.getCurrentDateAndTime());
-					
+					user.setIsPwdChanged("false");
+					user.set_loginRestriction("false");
+					user.setMultipleAccessRestriction("false");
 					if(isUpdate && userDetails.getUserProfilePic()!= null)
 					{	
 						user.setProfileImg(userDetails.getUserProfilePic());
