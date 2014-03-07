@@ -58,7 +58,7 @@ public interface IVoterModificationService {
 	 
 	 public List<VoterAdderdOrDeletedRengesInfoVO> getReportForVotersAddedOrDeletedVotersForSelectdConstituency(Long constituencyId,Long publicationDateId,String reportType);
 	 
-	 public SelectOptionVO createPdf(Long constituencyId,Long publicatIonId,String locationType, Long locationValue ,String queryType,String path);
+	 public SelectOptionVO createPdf(Long constituencyId,Long publicatIonId,String locationType, Long locationValue ,String queryType,String path,String type);
 	 
 	 public List<SelectOptionVO> insertGenderWiseVoterModifInfoInVoterModificationInfoTableForDistrict(Long districtId, Long publicationDateId);
 	 
