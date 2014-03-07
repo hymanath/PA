@@ -154,7 +154,7 @@
 		$(".prevoiusElectionTrendsDiv").html("");
 	 
 		var str="";
-		str+="<h4 style='text-align:center;'>PRV</h4>";
+		str+="<h4 style='text-align:center;'>Assembly Constituency Wise Result</h4>";
 		str+="<table class='table table-bordered' style='font-size:16px;'>";
 		str+="<thead>";
 	//	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Added</th></tr>";
@@ -202,7 +202,7 @@
 		$(".prevoiusElectionTrendsParliamentDiv").html("");
 	 
 		var str="";
-		str+="<h4 style='text-align:center;'>PRV</h4>";
+		str+="<h4 style='text-align:center;'>Parliament Constituency Wise Result</h4>";
 		str+="<table class='table table-bordered' style='font-size:16px;'>";
 		str+="<thead>";
 	//	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Added</th></tr>";
