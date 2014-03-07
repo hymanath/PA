@@ -6489,6 +6489,18 @@
 				<param name="root">boothWiseAddedDelList</param>				
 			</result> 
 		</action>
+		
+		<action name="getPreviousTrendsReportAction" class="stratagicReportsAction" method="getPreviousTrendsReport">
+			<result type="json" name="success">
+				<param name="root">prevTrends</param>				
+			</result> 
+		</action>
+		
+		<action name="getPreviousTrendsReportParliamentAction" class="stratagicReportsAction" method="getPreviousTrendsReportParliament">
+			<result type="json" name="success">
+				<param name="root">prevTrendsParliament</param>				
+			</result> 
+		</action>
 		      
 		</package>
 		
