@@ -147,8 +147,11 @@ public class RegistrationService implements IRegistrationService{
 			
 			if(values.getConstituency()!= null && !values.getConstituency().equalsIgnoreCase("Select Constituency"))
 			user.setConstituencyId(Long.parseLong(values.getConstituency().toString()));
-			
+			user.setIsPwdChanged("true");
+			user.set_loginRestriction("false");
+			user.setMultipleAccessRestriction("false");
 			user = userDAO.save(user);
+			
 			saveDataInToUserRolesTable(user,values);
 			requestStatus.setRequestStatus(BaseDTO.SUCCESS);
 		}
