@@ -466,6 +466,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		return query.list();
 	}
 	
+	
 	public Long getCount(){
 		String constiId = "221";
 		String maxboothcount = "select max(counted) from (select count(*) as counted from booth where constituency_id = "+constiId+" and publication_date_id = 8 group by panchayat_id) sub";
@@ -501,5 +502,206 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 		Query query = getSession().createSQLQuery(s);
 		return (Long)query.uniqueResult();
 	}
+	
+   	
+	public List<Object[]> getAgePanchayatHamletWithType(Long constituencyId,Long publicationId)
+	{
+		
+	/*	
+		
+		StringBuilder query = new StringBuilder();
+		query.append(" select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct  uvd.voter.voterId),ph.panchayat.panchayatName,");
+		query.append(" uvd.voter.voterAgeRange.voterAgeRangeId, uvd.voter.gender ");
+		query.append( " from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd");
+		query.append( "  where bpv.voter.voterId=uvd.voter.voterId and ph.hamlet.hamletId=uvd.hamlet.hamletId  ");
+		query.append("and bpv.booth.constituency.constituencyId = "+constituencyId+" and bpv.booth.publicationDate.publicationDateId = "+publicationId+" ");
+		query.append("group by uvd.hamlet.hamletId,uvd.voter.voterAgeRange.voterAgeRangeId, uvd.voter.gender");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		return queryObject.list();
+		
+	*/
+		
+		StringBuilder query = new StringBuilder();
+		query.append(" select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct  uvd.voter.voterId),ph.panchayat.panchayatName,");
+		query.append(" uvd.voter.voterAgeRange.voterAgeRangeId");
+		query.append( " from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd");
+		query.append( "  where bpv.voter.voterId=uvd.voter.voterId and ph.hamlet.hamletId=uvd.hamlet.hamletId  ");
+		query.append("and bpv.booth.constituency.constituencyId = "+constituencyId+" and bpv.booth.publicationDate.publicationDateId = "+publicationId+" ");
+		query.append("group by uvd.hamlet.hamletId,uvd.voter.voterAgeRange.voterAgeRangeId");
+		
+		Query queryObject = getSession().createQuery(query.toString());
+		
+		return queryObject.list();	
+		
+		
+	}
+	
+/*	public List<Object[]> getAgePanchayatHamletWithType1(Long constituencyId,Long publicationId)
+	{
+		
+  Query queryObject = getSession().createQuery("  select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,uvd.voter.gender"+   
+" from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd"+
+ " where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and"+
+       " bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId = "+publicationId+" "+
+       " and uvd.user.userId=1 and uvd.voter.age>=18 and  uvd.voter.age<=22"+
+ "group by  uvd.hamlet.hamletId,uvd.voter.gender ");
+		
+		return queryObject.list();
+		
+	}	
+*/	
+	
+	public List<Object[]> getAgePanchayatBoothWiseWithType(Long constituencyId,Long publicationId)
+	{
+		Query queryObject = getSession().createQuery(" select bpv.booth.boothId,bpv.booth.partNo,count(distinct bpv.voter.voterId),bpv.booth.panchayat.panchayatName,"+
+        "bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender from  BoothPublicationVoter bpv "+ 
+        "where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"  "+
+        "group by bpv.booth.boothId,bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender");
+						
+	    return queryObject.list();
+						
+	}
+	
+	public List<Object[]> getAgePanchayatBoothWiseWithType1(Long constituencyId,Long publicationId)
+	{
+		Query queryObject = getSession().createQuery("	select bpv.booth.boothId,bpv.booth.partNo,count(distinct bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
+        "from  BoothPublicationVoter bpv "+ 
+        "where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+        "and bpv.voter.age>=18 and  bpv.voter.age<=22 "+ 
+        "group by bpv.booth.boothId,bpv.voter.gender");
+								
+	    return queryObject.list();	
+		
+   }
+
+	
+	public List<Object[]> getAgePanchayatWiseWithType(Long constituencyId,Long publicationId)	
+	{
+
+		Query queryObject = getSession().createQuery("	select bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName,count(distinct bpv.voter.voterId), "+
+        "bpv.booth.tehsil.tehsilName,bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender  "+
+        "from BoothPublicationVoter bpv "+
+        "where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"  "+
+        "group by bpv.booth.panchayat.panchayatId,bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender");
+	  return queryObject.list();	
+		
+		
+	}
+	
+	public List<Object[]> getAgePanchayatWiseWithType1(Long constituencyId,Long publicationId)	
+	{
+
+		Query queryObject = getSession().createQuery("select bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName,count(distinct bpv.voter.voterId), bpv.booth.tehsil.tehsilName, "+
+         "bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender "+
+         "from BoothPublicationVoter bpv "+
+         "where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"  "+ 
+         " and   bpv.voter.age>=18 and  bpv.voter.age<=22  " +
+         "group by bpv.booth.panchayat.panchayatId,bpv.voter.gender");
+	   return queryObject.list();	
+		
+		
+	}
+	
+	    public List<Long>  gettingLocalElectionBodyForAConstituency(Long constituencyId)
+	    {
+
+	    	Query queryObject = getSession().createQuery(" select  model.localElectionBody.localElectionBodyId from AssemblyLocalElectionBody model where " +
+	    			                                     " model.constituency.constituencyId=? and model.year=? ");
+	    	queryObject.setParameter(0, constituencyId);
+			queryObject.setParameter(1, IConstants.PRESENT_ELECTION_YEAR);	
+			
+			return queryObject.list();	
+	    	
+	    }
+	
+	public List<Object[]> getAgeBoothWiseForMunWithType(Long constituencyId,Long publicationId,List<Long> localElecBodyList)	
+	{
+
+		Query queryObject = getSession().createQuery("select bpv.booth.boothId,bpv.booth.partNo,count(distinct bpv.voter.voterId),'Municipality',  bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender "+
+		
+           "from BoothPublicationVoter bpv "+
+           "where  bpv.booth.constituency.constituencyId=:constituencyId and bpv.booth.publicationDate.publicationDateId=:publicationId "+
+           "and bpv.booth.localBody.localElectionBodyId in (:localElecBodyList) "+
+           "group by  bpv.booth.boothId,bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender ");
+		    
+		queryObject.setParameter("constituencyId", constituencyId);
+		queryObject.setParameter("publicationId", publicationId);
+		queryObject.setParameterList("localElecBodyList", localElecBodyList);
+		
+	   return queryObject.list();	
+	}
+	public List<Object[]> getAgeBoothWiseForMunWithType1(Long constituencyId,Long publicationId,List<Long> localElecBodyList)
+	{
+		
+		Query queryObject = getSession().createQuery("select bpv.booth.boothId,bpv.booth.partNo,count(distinct bpv.voter.voterId),'Municipality', bpv.voter.gender "+
+          "from BoothPublicationVoter bpv "+
+          "where bpv.booth.constituency.constituencyId=:constituencyId and bpv.booth.publicationDate.publicationDateId=:publicationId "+
+          "and bpv.booth.localBody.localElectionBodyId in (:localElecBodyList) and  bpv.voter.age>=18 and  bpv.voter.age<=22 "+
+          "group by  bpv.booth.boothId,bpv.voter.gender   ");
+		
+		queryObject.setParameter("constituencyId", constituencyId);
+		queryObject.setParameter("publicationId", publicationId);
+		queryObject.setParameterList("localElecBodyList", localElecBodyList);
+		
+	   return queryObject.list();	
+		
+		
+		
+		
+	}
+
+	
+	public List<Object[]> getAgePanchayatWiseForMunicpalWithType(Long constituencyId,Long publicationId,List<Long> localElecBodyList)
+	{
+		
+		Query queryObject = getSession().createQuery(" select  1,' Municipality',count(distinct bpv.voter.voterId),'Municipality',bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender "+
+		"from BoothPublicationVoter bpv "+
+        "where  bpv.booth.constituency.constituencyId=:constituencyId and bpv.booth.publicationDate.publicationDateId=:publicationId  "+
+        "and bpv.booth.localBody.localElectionBodyId in (:localElecBodyList)  "+
+        "group by bpv.voter.voterAgeRange.voterAgeRangeId,bpv.voter.gender ");
+		
+		queryObject.setParameter("constituencyId", constituencyId);
+		queryObject.setParameter("publicationId", publicationId);
+		queryObject.setParameterList("localElecBodyList", localElecBodyList);
+		
+	    return queryObject.list();		
+		
+	}
+	public List<Object[]> getAgePanchayatWiseForMunicpalWithType1(Long constituencyId,Long publicationId,List<Long> localElecBodyList)
+	{
+		Query queryObject = getSession().createQuery("select  1,' Municipality',count(distinct bpv.voter.voterId),'Municipality',bpv.voter.gender "+
+          "from BoothPublicationVoter bpv "+
+          "where  bpv.booth.constituency.constituencyId=:constituencyId and bpv.booth.publicationDate.publicationDateId=:publicationId "+
+          "and bpv.booth.localBody.localElectionBodyId in (:localElecBodyList) and bpv.voter.age>=18 and  bpv.voter.age<=22 "+
+           "group by bpv.voter.gender	");
+		
+		
+		queryObject.setParameter("constituencyId", constituencyId);
+		queryObject.setParameter("publicationId", publicationId);
+		queryObject.setParameterList("localElecBodyList", localElecBodyList);
+		
+	    return queryObject.list();		
+		
+	}
+	public List<Object[]> getData(String query)
+	{
+		
+		Query queryObject = getSession().createQuery(query);
+		//queryObject.setFirstResult(1);
+		//queryObject.setMaxResults(4);
+		return queryObject.list();
+		
+		
+	}
+	
+
+	
+	
+	
+	
+	
+	
 	
 }

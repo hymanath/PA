@@ -113,4 +113,24 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public List<Object[]> getData(String s);
 	public Long Allcount(String s);
 
+	public List<Object[]> getAgePanchayatHamletWithType(Long constituencyId,Long publicationId);
+	//public List<Object[]> getAgePanchayatHamletWithType1(Long constituencyId,Long publicationId);
+
+	public List<Object[]> getAgePanchayatBoothWiseWithType(Long constituencyId,Long publicationId);
+	public List<Object[]> getAgePanchayatBoothWiseWithType1(Long constituencyId,Long publicationId);
+	
+	public List<Object[]> getAgePanchayatWiseWithType(Long constituencyId,Long publicationId);
+	public List<Object[]> getAgePanchayatWiseWithType1(Long constituencyId,Long publicationId);
+   
+	public List<Long>  gettingLocalElectionBodyForAConstituency(Long constituencyId);
+	public List<Object[]> getAgeBoothWiseForMunWithType(Long constituencyId,Long publicationId,List<Long> localElecBodyList);
+	public List<Object[]> getAgeBoothWiseForMunWithType1(Long constituencyId,Long publicationId,List<Long> localElecBodyList);
+	
+	
+	public List<Object[]> getAgePanchayatWiseForMunicpalWithType(Long constituencyId,Long publicationId,List<Long> localElecBodyList);
+	public List<Object[]> getAgePanchayatWiseForMunicpalWithType1(Long constituencyId,Long publicationId,List<Long> localElecBodyList);
+	
+	public List<Object[]> getData(String query);
+
+	
 }
