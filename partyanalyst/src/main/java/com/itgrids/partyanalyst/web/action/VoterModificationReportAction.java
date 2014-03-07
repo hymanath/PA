@@ -486,12 +486,13 @@ public class VoterModificationReportAction extends ActionSupport implements Serv
 	{
 		try {
 			jObj = new JSONObject(getTask());
-			Long constituencyId = jObj.getLong("constituencyId");
-			Long publicationId = jObj.getLong("publicationId");
-			String locationType =  jObj.getString("locationType");
-			Long locationValue = jObj.getLong("locationValue");
+			Long id               = jObj.getLong("constituencyId");
+			Long publicationId    = jObj.getLong("publicationId");
+			String locationType   = jObj.getString("locationType");
+			Long locationValue    = jObj.getLong("locationValue");
+			String type   		  = jObj.getString("type");
 			String path = IWebConstants.STATIC_CONTENT_FOLDER_URL ;
-			selectOptionVO = voterModificationService.createPdf(constituencyId,publicationId,locationType,locationValue,"intermediate" ,path);
+			selectOptionVO = voterModificationService.createPdf(id,publicationId,locationType,locationValue,"intermediate" ,path,type);
 			
 		} catch (Exception e) {
 			// TODO: handle exception

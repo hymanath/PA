@@ -334,10 +334,11 @@ function createPdfs(constituencyId,toPublicationDateId)
 	var jObj=
 	{
 	constituencyId : constituencyId,
-	locationType : "constituency",
-	locationValue : constituencyId,
-	publicationId : toPublicationDateId,
-	task:"createPdfs"
+	locationType   : "constituency",
+	locationValue  : constituencyId,
+	publicationId  : toPublicationDateId,
+	type           : "constituency",
+	task           : "createPdfs"
 	};
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
 	var url = "createPdfAction.action?"+rparam;

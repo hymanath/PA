@@ -1544,7 +1544,8 @@
 		<property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
 		<property name="voterModifiationPdfsGenerations" ref="voterModifiationPdfsGenerations" />
 		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
-		<property name="staticDataService" ref="staticDataService" />	
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="districtDAO" ref="districtDAO" />	
 	</bean>
 	
 	<bean name="voterModifiationPdfsGenerations" class="com.itgrids.partyanalyst.service.impl.VoterModifiationPdfsGenerations">
