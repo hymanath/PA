@@ -7036,7 +7036,7 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 						}
 					}catch(Exception e)
 					{
-						
+						log.error("Exception Occured, Exception is ",e);
 					}
 				}
 			}
