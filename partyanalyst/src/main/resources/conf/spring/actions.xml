@@ -1384,5 +1384,12 @@
 		<property name="stratagicReportsService" ref="stratagicReportsService"/>
 	</bean>
 	
+	
+	<bean id="votersInformationAction" class="com.itgrids.partyanalyst.web.action.VotersInformationAction" singleton="false">
+		  <property name="votersInformationService" ref="votersInformationService" />  
+	</bean>
+	
+	
+	
 </beans>	
 	

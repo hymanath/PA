@@ -1929,9 +1929,19 @@
 	 
   </bean>
   
+   
    <bean name="stratagicReportsService" class="com.itgrids.partyanalyst.service.impl.StratagicReportsService">
    	
    </bean>
    
+   <bean name="votersInformationService" class="com.itgrids.partyanalyst.service.impl.VotersInformationService" >
+ 	<property name="constituencyDAO" ref="constituencyDAO"/>
+ 	<property name="userDAO" ref="userDAO"/>
+ 	<property name="ageWiseExcelsGenerationService" ref="ageWiseExcelsGenerationService"/>
+   </bean>
+  
+   <bean name="ageWiseExcelsGenerationService" class="com.itgrids.partyanalyst.service.impl.AgeWiseExcelsGenerationService" >
+   </bean>
+  
 </beans>		
 	
