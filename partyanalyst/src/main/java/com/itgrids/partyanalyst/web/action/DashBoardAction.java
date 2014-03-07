@@ -66,9 +66,30 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> mandalsList;
 	private boolean politician;
 	private boolean hhEntitled;
+	private List<SelectOptionVO> districtsList;
+	private List<SelectOptionVO> publicationDatesList;
 	
 	
-	
+
+
+	public List<SelectOptionVO> getDistrictsList() {
+		return districtsList;
+	}
+
+
+	public void setDistrictsList(List<SelectOptionVO> districtsList) {
+		this.districtsList = districtsList;
+	}
+
+
+	public List<SelectOptionVO> getPublicationDatesList() {
+		return publicationDatesList;
+	}
+
+
+	public void setPublicationDatesList(List<SelectOptionVO> publicationDatesList) {
+		this.publicationDatesList = publicationDatesList;
+	}
 
 
 	public boolean isHhEntitled() {
@@ -491,7 +512,8 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 		if(!(Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 		 return "userProfile";
-		
+		districtsList = votersAnalysisService.getDistrictsList(1l);
+		publicationDatesList = votersAnalysisService.getPublicationList();
 		//FOR CHECKING ENTITLEMENTS CONSISTS HOUSEHOLDS SURVEY ENTITLEMENT
 		List<String> entitlements=user.getEntitlements();
 		hhEntitled = entitlements.contains("HOUSEHOLDS_SURVEY_ENTITLEMENT");

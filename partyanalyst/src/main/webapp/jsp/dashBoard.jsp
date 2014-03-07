@@ -8,6 +8,7 @@
 <head>
 	<title>DashBoard</title>			 
 	<!-- <link rel="stylesheet" type="text/css" href="style.css"/>  -->
+	<script type="text/javascript" src="js/blockui.js"></script>
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 	<script type="text/javascript" src="js/connectPeople/connectPeople.js"></script> 
@@ -575,6 +576,36 @@ lable{line-height:40px;}
 				
 				<div>
 					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getCrossVotingReport();" style="float:right;"></input>
+				</div>
+			</div>       				
+		</div>
+		
+		<div class="row-fluid">
+			<div class="span12 widget">
+				<h2>Voter Modification Report </h2>
+				
+				
+				<div>
+				   <table>
+				     <tr>
+				        <td><s:label theme="simple" for="districtList" value=" Select District"/></td>
+						<td><s:select cssClass="selectstyle" theme="simple" id="districtList" name="crossVotingYear" list="districtsList" listKey="id" listValue="name" onChange=""/></td>
+				        <td></td>
+						<td></td>
+				     </tr>
+				     <tr>
+				        <td><s:label theme="simple" for="prevPublicationId" value="Previous Publication"/></td>
+						 <!--<td><s:select theme="simple" id="prevPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingAConsti" listValue="name" onChange=""/></td>-->
+						 <td><select id="prevPublicationId"><option value="9">2014-01-01</option></select></td>
+					    <td><s:label theme="simple" for="presentPublicationId" value="Present Publication"/></td>
+						<!--<td><s:select theme="simple" id="presentPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingParty" listValue="name"/></td>-->
+						<td><select id="presentPublicationId"><option value="10">2014-02-01</option></select></td>
+				    </tr>
+				   </table>
+				</div>
+				
+				<div>
+					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getVoterModifivationReport();" style="float:right;"></input>
 				</div>
 			</div>       				
 		</div>
@@ -1881,6 +1912,20 @@ function callAjax(jsObj,url){
 								{
 									populateConstituenyes(myResults);
 								}
+								else if(jsObj.task == "createPdfs")
+								{
+									
+									if(myResults.name == 'success')
+									{
+										$.unblockUI();
+										alert("Pdfs Created Successfully");
+									}
+									else
+									{
+										$.unblockUI();
+										alert("Error occured while creating the pdf");
+									}
+								}
 								}catch (e) {
 							     
 								}  
@@ -2331,6 +2376,26 @@ function checkForUserStatus()
          $('#timeoutid').html('');
 		 }, 3000);
 	}
+}
+
+function getVoterModifivationReport()
+{
+	//var districtId = ().val();
+	
+	$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	var jObj=
+	{
+	constituencyId : $('#districtList option:selected').val(),
+	locationType   : "constituency",
+	locationValue  : $('#districtList option:selected').val(),
+	publicationId  : $('#presentPublicationId').val(),
+	type           : "district",
+	task           : "createPdfs"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "createPdfAction.action?"+rparam;
+
+	callAjax(jObj,url);
 }
 checkForUserStatus();
 </script>
