@@ -8,8 +8,8 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	private String tdpPartyName;
 	
 	private PartyElectionTrendsReportHelperVO tdpVo;
-	private PartyElectionTrendsReportHelperVO incVo;
-	private PartyElectionTrendsReportHelperVO prpVo;
+	private PartyElectionTrendsReportHelperVO incVo=new PartyElectionTrendsReportHelperVO();
+	private PartyElectionTrendsReportHelperVO prpVo = new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO othersVo;
 	public Integer getElectionYear() {
 		return electionYear;
