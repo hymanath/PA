@@ -70,7 +70,7 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	@Override
 	public int compareTo(PartyElectionTrendsReportVO o) {
 		
-		return this.electionYear.compareTo(o.electionYear);
+		return o.electionYear.compareTo(this.electionYear);
 	}
   
 	
