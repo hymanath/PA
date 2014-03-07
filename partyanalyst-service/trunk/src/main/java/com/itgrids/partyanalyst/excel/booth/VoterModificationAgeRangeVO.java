@@ -22,8 +22,37 @@ public class VoterModificationAgeRangeVO implements Serializable{
 	private Long relocatedMale = 0L;
 	private Long relocatedFemale = 0L;
 	
+	private Long addedMale1 = 0L;
+	private Long addedFemale1 = 0L;
+	private Long deletedMale1 = 0L;
+	private Long deletedFemale1 = 0L;
+	
 	public String getRange() {
 		return range;
+	}
+	public Long getAddedMale1() {
+		return addedMale1;
+	}
+	public void setAddedMale1(Long addedMale1) {
+		this.addedMale1 = addedMale1;
+	}
+	public Long getAddedFemale1() {
+		return addedFemale1;
+	}
+	public void setAddedFemale1(Long addedFemale1) {
+		this.addedFemale1 = addedFemale1;
+	}
+	public Long getDeletedMale1() {
+		return deletedMale1;
+	}
+	public void setDeletedMale1(Long deletedMale1) {
+		this.deletedMale1 = deletedMale1;
+	}
+	public Long getDeletedFemale1() {
+		return deletedFemale1;
+	}
+	public void setDeletedFemale1(Long deletedFemale1) {
+		this.deletedFemale1 = deletedFemale1;
 	}
 	public void setRange(String range) {
 		this.range = range;

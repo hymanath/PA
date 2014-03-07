@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.DecimalFormat;
@@ -8,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyHierarchyInfoDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
@@ -45,8 +47,6 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
-import com.itgrids.partyanalyst.dto.BasicVO;
-import com.itgrids.partyanalyst.dao.hibernate.DelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dto.ConstituencyHierarchyInfoVO;
 import com.itgrids.partyanalyst.dto.PanchayatAddedOrDeletedVO;
 import com.itgrids.partyanalyst.dto.PdfVO;
@@ -97,6 +97,7 @@ public class VoterModificationService implements IVoterModificationService{
 	private IRegionServiceData regionServiceDataImp;
 	private IConstituencyHierarchyInfoDAO constituencyHierarchyInfoDAO;
 	private IPanchayatHamletDAO panchayatHamletDAO;
+	private IDistrictDAO districtDAO ;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	private IVoterModifiationPdfsGenerations voterModifiationPdfsGenerations;
 	private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 14,
@@ -121,12 +122,21 @@ public class VoterModificationService implements IVoterModificationService{
 		      Font.BOLD);
 	  */
 	
+		
 	
 	/**
 	 * @return the voterModifiationPdfsGenerations
 	 */
 	public IVoterModifiationPdfsGenerations getVoterModifiationPdfsGenerations() {
 		return voterModifiationPdfsGenerations;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
 	}
 
 	/**
@@ -3681,54 +3691,150 @@ public class VoterModificationService implements IVoterModificationService{
 		 panchayat.setTotalMaleVotersForYoungerVoters(panchayat.getTotalMaleVotersForYoungerVoters()+1);
 		 VoterModificationAgeRangeVO vmVo = votersMap.get(1l);
 		 if("added".equalsIgnoreCase(type)){
-		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setAddedMale(vmVo.getAddedMale() + 1);
+			}
+			else
+			{
+				vmVo.setAddedFemale(vmVo.getAddedFemale() + 1);
+			}
+			vmVo.setAddedCount(vmVo.getAddedCount()+1);
 		 }else{
-		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setDeletedMale(vmVo.getDeletedMale() + 1);
+			}
+			else
+			{
+				vmVo.setDeletedFemale(vmVo.getDeletedFemale() + 1);
+			}
+		    vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
 		 }
 		 }
 		 else if(age >= 23 && age <= 25){
 		 panchayat.setTotalMaleVotesFor18To25(panchayat.getTotalMaleVotesFor18To25()+1);
 		 VoterModificationAgeRangeVO vmVo = votersMap.get(2l);
 		 if("added".equalsIgnoreCase(type)){
-		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setAddedMale(vmVo.getAddedMale() + 1);
+			}
+			else
+			{
+				vmVo.setAddedFemale(vmVo.getAddedFemale() + 1);
+			}
+			vmVo.setAddedCount(vmVo.getAddedCount()+1);
 		 }else{
-		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setDeletedMale(vmVo.getDeletedMale() + 1);
+			}
+			else
+			{
+				vmVo.setDeletedFemale(vmVo.getDeletedFemale() + 1);
+			}
+			vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
 		 }
 		 }
 		 else if(age >= 26 && age <= 35){
 		 panchayat.setTotalMaleVotersFor26To35(panchayat.getTotalMaleVotersFor26To35()+1);
 		 VoterModificationAgeRangeVO vmVo = votersMap.get(3l);
 		 if("added".equalsIgnoreCase(type)){
-		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setAddedMale(vmVo.getAddedMale() + 1);
+			}
+			else
+			{
+				vmVo.setAddedFemale(vmVo.getAddedFemale() + 1);
+			}
+			vmVo.setAddedCount(vmVo.getAddedCount()+1);
 		 }else{
-		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setDeletedMale(vmVo.getDeletedMale() + 1);
+			}
+			else
+			{
+				vmVo.setDeletedFemale(vmVo.getDeletedFemale() + 1);
+			}
+			vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
 		 }
 		 }
 		 else if(age >= 36 && age <= 45){
 		 panchayat.setTotalMaleVotersFor36To45(panchayat.getTotalMaleVotersFor36To45()+1);
 		 VoterModificationAgeRangeVO vmVo = votersMap.get(4l);
 		 if("added".equalsIgnoreCase(type)){
-		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setAddedMale(vmVo.getAddedMale() + 1);
+			}
+			else
+			{
+				vmVo.setAddedFemale(vmVo.getAddedFemale() + 1);
+			}
+			vmVo.setAddedCount(vmVo.getAddedCount()+1);
 		 }else{
-		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setDeletedMale(vmVo.getDeletedMale() + 1);
+			}
+			else
+			{
+				vmVo.setDeletedFemale(vmVo.getDeletedFemale() + 1);
+			}
+			vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
 		 }
 		 }
 		 else if(age >= 46 && age <= 60){
 		 panchayat.setTotalMaleVotersFor46To60(panchayat.getTotalMaleVotersFor46To60()+1);
 		 VoterModificationAgeRangeVO vmVo = votersMap.get(5l);
 		 if("added".equalsIgnoreCase(type)){
-		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setAddedMale(vmVo.getAddedMale() + 1);
+			}
+			else
+			{
+				vmVo.setAddedFemale(vmVo.getAddedFemale() + 1);
+			}
+			vmVo.setAddedCount(vmVo.getAddedCount()+1);
 		 }else{
-		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setDeletedMale(vmVo.getDeletedMale() + 1);
+			}
+			else
+			{
+				vmVo.setDeletedFemale(vmVo.getDeletedFemale() + 1);
+			}
+			vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
 		 }
 		 }
 		 else if(age >60){
 		 panchayat.setTotalMaleVotersForAbove60(panchayat.getTotalMaleVotersForAbove60()+1);
 		 VoterModificationAgeRangeVO vmVo = votersMap.get(6l);
 		 if("added".equalsIgnoreCase(type)){
-		 vmVo.setAddedCount(vmVo.getAddedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setAddedMale(vmVo.getAddedMale() + 1);
+			}
+			else
+			{
+				vmVo.setAddedFemale(vmVo.getAddedFemale() + 1);
+			}
+			vmVo.setAddedCount(vmVo.getAddedCount()+1);
 		 }else{
-		 vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
+			if(voter[8].toString().equalsIgnoreCase("M"))
+			{
+				vmVo.setDeletedMale(vmVo.getDeletedMale() + 1);
+			}
+			else
+			{
+				vmVo.setDeletedFemale(vmVo.getDeletedFemale() + 1);
+			}
+			vmVo.setDeletedCount(vmVo.getDeletedCount()+1);
 		 }
 		 }
 		 vo = new VoterVO();
@@ -3887,131 +3993,163 @@ public class VoterModificationService implements IVoterModificationService{
 			}
 		}	
 		
-		   public SelectOptionVO createPdf(Long constituencyId,Long publicatIonId,String locationType,Long locationValue,String queryType,String path)
+		   public SelectOptionVO createPdf(Long id,Long publicatIonId,String locationType,Long locationValue,String queryType,String path,String type)
 		   {
 			    
 			    SelectOptionVO selectOptionVO = new SelectOptionVO();
 			    
 			    try {
+			    	
 			    	LOG.info("Enterd into createPdf () in VoterModification Service");
-			    	Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
-			    	String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
-			    	String constituenyName = values[0].toString().toUpperCase();
-			    	String districtName = values[1].toString().toUpperCase();
-			    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
-				    Document document = new Document();
-				   // Random randomGenerator = new Random();
-				   // int no = randomGenerator.nextInt(10000);
-				    //String fileSeparator = System.getProperty("file.separator");
-				    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
-				    String FILE = path+filePath;
-				    File file  = new File(FILE);
-				    file.createNewFile();
-				    selectOptionVO.setUrl(filePath);
-				  	try {
-				  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
-				  	} catch (FileNotFoundException e) {
-				  		e.printStackTrace();
-				  	} catch (DocumentException e) {
-				  		e.printStackTrace();
-				  	}
-				  	Long previousPublicationId = getPerviousPublicationId(publicatIonId);
-				  	String presentPublicationName = publicationDateDAO.get(publicatIonId).getName().toUpperCase();
-				  	String previousPublicationName = publicationDateDAO.get(previousPublicationId).getName().toUpperCase();
-				  	document.open();
-				  	addTitlePage(document,constituenyName,presentPublicationName,previousPublicationName);
-				  	
-				  	PdfVO pdfVO = getAddedVotersInAPublication(constituencyId,previousPublicationId,publicatIonId);
-					List<VoterAgeRangeVO> voterAgeRangeVOList = getVoterInfoByPublicationDateListNew( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId);
-		  			if(voterAgeRangeVOList != null && voterAgeRangeVOList.size() > 0)
-		  			{
-		  				voterModifiationPdfsGenerations.buildVoterModifivationReport(voterAgeRangeVOList,document,constituenyName);
-		  			}
-				  	VoterModificationGenderInfoVO voterModificationGenderInfoVO = getGenderWiseVoterModificationsBetweenPublications( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId, queryType);
-				  	if(voterModificationGenderInfoVO != null)
-				  	{
-				  		voterModifiationPdfsGenerations.buildGenderWiseVoterModifivationReport(voterModificationGenderInfoVO,document,constituenyName);
-				  	}
-		  			//List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList =  getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId, queryType);
-		  			List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList =  pdfVO.getAgeRangeVOList();
-		  			if(voterModificationAgeRangeVOList != null && voterModificationAgeRangeVOList.size() > 0)
-		  			{
-		  				voterModifiationPdfsGenerations.buildVoterModifivationReportByAgeRange(voterModificationAgeRangeVOList,document,constituenyName);
-		  			}
-				  	/*List<VoterModificationGenderInfoVO> listForGender = getGenderWiseVoterModificationsForEachPublication( locationType, locationValue, constituencyId, fromPublicationDateId, toPublicationDateId, queryType);
-				  	if(listForGender != null && listForGender.size() > 0)
-				  	{
-				  		buildAddedDeletedVotesByGender(listForGender,document,constituenyName);
-				  	}*/
-				   VoterModificationVO voterModificationVO  = getSubLevelsVoterModificationDetailsByLocationValue(
-							 locationType,  locationValue,  constituencyId,
-							 previousPublicationId,  publicatIonId);
-				    if(voterModificationVO != null)
-				    {
-			  		List<VoterModificationVO> list = voterModificationVO.getModifiedVotersList();
-			  		   voterModifiationPdfsGenerations.buildAddedDeletedVotesByMundal(list,document,constituenyName);
-				    }
-				    List<VoterAdderdOrDeletedRengesInfoVO> returnList = getReportForVotersAddedOrDeletedVotersForSelectdConstituency(constituencyId,publicatIonId,"");
-				   // PdfVO pdfVO = getAddedVotersInAPublication(constituencyId,previousPublicationId,publicatIonId);
-				 
-				    if(returnList != null && returnList.size() > 0)
-				    {
-					   					  
-				    	voterModifiationPdfsGenerations.createTableForAddedVoters(document,returnList,constituenyName);
-				    	voterModifiationPdfsGenerations.deletedVotersDetails(document,returnList,constituenyName);
-					  
-				    }
-				    if(pdfVO != null)
-				    {
-					  
+			    	List<Object[]> constiList =new ArrayList<Object[]>();
+			    	if(type.equalsIgnoreCase("district"))
+			    	{
+			    		constiList =  constituencyDAO.getDistrictConstituencies(id);
+			    	}
+			    	else
+			    	{
+			    		Object[] values = {id,null};
+			    		constiList.add(values);
+			    	}
+			    	if(constiList != null && constiList.size() > 0)
+			    	{
+			    		
+			    		//String distName = districtDAO.get(id).getDistrictName();
+			    		//FileOutputStream fos = null;
+				    	//String FILE1 = path+"VMR"+"/"+""+distName+".zip";
+					    //File file1  = new File(FILE1);
+				    	//fos = new FileOutputStream(file1);
 				    	
-				    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetails(document,pdfVO,constituenyName);
-				    	 List<VotersDetailsVO> addedList   = pdfVO.getCompleteVoterDetailsVoList();
-				    	 if(addedList != null && addedList.size() > 1)
-				    	 {
-				    		 Collections.sort(addedList,sortData);
-				    	 }
-				    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetailsByList(document,addedList,constituenyName,"add");
-				    	 List<VotersDetailsVO> deletedList = pdfVO.getCompleteVoterDetailsVoList();
-				    	 
-				    	 if(deletedList != null && deletedList.size() > 0)
-				    	 {
-				    		 Collections.sort(deletedList,deletedDatesortData);
-				    	 }
-				    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetailsByList(document,deletedList,constituenyName,"delete");
-				    	 List<VotersDetailsVO> added   = pdfVO.getAddedDetaildByPerc();
-				    	 if(added != null && added.size() > 1)
-				    	 {
-				    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyPrecReport("add",document,pdfVO,constituenyName); 
-				    	 }
-				    	 List<VotersDetailsVO> deleted   = pdfVO.getDeletedDetaildByPerc();
-				    	 if(deleted != null && deleted.size() >1)
-				    	 {
-				    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyPrecReport("delete",document,pdfVO,constituenyName);
-				    	 }
-				    	 
-				    	 
-				    	 voterModifiationPdfsGenerations.agewiseAddedDeletedVoterDetails("add",document,pdfVO,constituenyName);
-				    	 voterModifiationPdfsGenerations.agewiseAddedDeletedVoterDetails("delete",document,pdfVO,constituenyName);
-				    	 List<VotersDetailsVO> boothWiseAdded = pdfVO.getBoothWiseAddedList();
-				    	 List<VotersDetailsVO> boothWiseDeleted = pdfVO.getBoothWiseDeletedList();
-				    	 if(boothWiseAdded != null && boothWiseAdded.size() > 0)
-				    	 {
-				    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyBoothWiseReport("add",document,pdfVO,constituenyName,constituencyType);
-				    	 }
-				    	 if(boothWiseDeleted != null && boothWiseDeleted.size() > 0)
-				    	 {
-				    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyBoothWiseReport("delete",document,pdfVO,constituenyName,constituencyType);
-				    	 }
-				    	 voterModifiationPdfsGenerations.totalAddedOrDeletedVoterDetails("add",document,pdfVO,constituenyName);
-				    	 voterModifiationPdfsGenerations.totalAddedOrDeletedVoterDetails("delete",document,pdfVO,constituenyName);
-				    	 
-				    	 
-				    }
-				  
-				   
-				   document.close();
-				   selectOptionVO.setName("success");
+				    	//ZipOutputStream zos = new ZipOutputStream(fos);
+			    		for (Object[] objects : constiList)
+			    		{
+			    			Document document = new Document();
+			    			Long constituencyId = (Long)objects[0];
+			    			locationValue = constituencyId;
+			    			Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+					    	String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
+					    	String constituenyName = values[0].toString().toUpperCase();
+					    	String districtName = values[1].toString().toUpperCase();
+					    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+						   
+						   // Random randomGenerator = new Random();
+						   // int no = randomGenerator.nextInt(10000);
+						    //String fileSeparator = System.getProperty("file.separator");
+					    	
+						    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+						    String FILE = path+filePath;
+						    File file  = new File(FILE);
+						    file.createNewFile();
+						   // selectOptionVO.setUrl("VMR"+"/"+""+distName+".zip");
+						  	try {
+						  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
+						  	} catch (FileNotFoundException e) {
+						  		e.printStackTrace();
+						  	} catch (DocumentException e) {
+						  		e.printStackTrace();
+						  	}
+						  	Long previousPublicationId = getPerviousPublicationId(publicatIonId);
+						  	String presentPublicationName = publicationDateDAO.get(publicatIonId).getName().toUpperCase();
+						  	String previousPublicationName = publicationDateDAO.get(previousPublicationId).getName().toUpperCase();
+						  	document.open();
+						  	addTitlePage(document,constituenyName,presentPublicationName,previousPublicationName);
+						  	
+						  	PdfVO pdfVO = getAddedVotersInAPublication(constituencyId,previousPublicationId,publicatIonId);
+							List<VoterAgeRangeVO> voterAgeRangeVOList = getVoterInfoByPublicationDateListNew( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId);
+				  			if(voterAgeRangeVOList != null && voterAgeRangeVOList.size() > 0)
+				  			{
+				  				voterModifiationPdfsGenerations.buildVoterModifivationReport(voterAgeRangeVOList,document,constituenyName);
+				  			}
+						  	VoterModificationGenderInfoVO voterModificationGenderInfoVO = getGenderWiseVoterModificationsBetweenPublications( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId, queryType);
+						  	if(voterModificationGenderInfoVO != null)
+						  	{
+						  		voterModifiationPdfsGenerations.buildGenderWiseVoterModifivationReport(voterModificationGenderInfoVO,document,constituenyName);
+						  	}
+				  			//List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList =  getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications( locationType, locationValue, constituencyId, previousPublicationId, publicatIonId, queryType);
+				  			List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList =  pdfVO.getAgeRangeVOList();
+				  			if(voterModificationAgeRangeVOList != null && voterModificationAgeRangeVOList.size() > 0)
+				  			{
+				  				voterModifiationPdfsGenerations.buildVoterModifivationReportByAgeRange(voterModificationAgeRangeVOList,document,constituenyName);
+				  				voterModifiationPdfsGenerations.buildVoterModifivationReportByAgeRangeByGender(voterModificationAgeRangeVOList,document,constituenyName);
+				  			}
+						  	/*List<VoterModificationGenderInfoVO> listForGender = getGenderWiseVoterModificationsForEachPublication( locationType, locationValue, constituencyId, fromPublicationDateId, toPublicationDateId, queryType);
+						  	if(listForGender != null && listForGender.size() > 0)
+						  	{
+						  		buildAddedDeletedVotesByGender(listForGender,document,constituenyName);
+						  	}*/
+						   VoterModificationVO voterModificationVO  = getSubLevelsVoterModificationDetailsByLocationValue(
+									 locationType,  locationValue,  constituencyId,
+									 previousPublicationId,  publicatIonId);
+						    if(voterModificationVO != null)
+						    {
+					  		List<VoterModificationVO> list = voterModificationVO.getModifiedVotersList();
+					  		   voterModifiationPdfsGenerations.buildAddedDeletedVotesByMundal(list,document,constituenyName);
+						    }
+						    List<VoterAdderdOrDeletedRengesInfoVO> returnList = getReportForVotersAddedOrDeletedVotersForSelectdConstituency(constituencyId,publicatIonId,"");
+						   // PdfVO pdfVO = getAddedVotersInAPublication(constituencyId,previousPublicationId,publicatIonId);
+						 
+						    if(returnList != null && returnList.size() > 0)
+						    {
+							   					  
+						    	voterModifiationPdfsGenerations.createTableForAddedVoters(document,returnList,constituenyName);
+						    	voterModifiationPdfsGenerations.deletedVotersDetails(document,returnList,constituenyName);
+							  
+						    }
+						    if(pdfVO != null)
+						    {
+						    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetails(document,pdfVO,constituenyName);
+						    	 List<VotersDetailsVO> addedList   = pdfVO.getCompleteVoterDetailsVoList();
+						    	 if(addedList != null && addedList.size() > 1)
+						    	 {
+						    		 Collections.sort(addedList,sortData);
+						    	 }
+						    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetailsByList(document,addedList,constituenyName,"add");
+						    	 List<VotersDetailsVO> deletedList = pdfVO.getCompleteVoterDetailsVoList();
+						    	 
+						    	 if(deletedList != null && deletedList.size() > 0)
+						    	 {
+						    		 Collections.sort(deletedList,deletedDatesortData);
+						    	 }
+						    	 voterModifiationPdfsGenerations.panchayatWiseAddedDeletedVoterDetailsByList(document,deletedList,constituenyName,"delete");
+						    	 List<VotersDetailsVO> added   = pdfVO.getAddedDetaildByPerc();
+						    	 if(added != null && added.size() > 1)
+						    	 {
+						    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyPrecReport("add",document,pdfVO,constituenyName); 
+						    	 }
+						    	 List<VotersDetailsVO> deleted   = pdfVO.getDeletedDetaildByPerc();
+						    	 if(deleted != null && deleted.size() >1)
+						    	 {
+						    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyPrecReport("delete",document,pdfVO,constituenyName);
+						    	 }
+						    	 
+						    	 
+						    	 voterModifiationPdfsGenerations.agewiseAddedDeletedVoterDetails("add",document,pdfVO,constituenyName);
+						    	 voterModifiationPdfsGenerations.agewiseAddedDeletedVoterDetails("delete",document,pdfVO,constituenyName);
+						    	 List<VotersDetailsVO> boothWiseAdded = pdfVO.getBoothWiseAddedList();
+						    	 List<VotersDetailsVO> boothWiseDeleted = pdfVO.getBoothWiseDeletedList();
+						    	 if(boothWiseAdded != null && boothWiseAdded.size() > 0)
+						    	 {
+						    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyBoothWiseReport("add",document,pdfVO,constituenyName,constituencyType);
+						    	 }
+						    	 if(boothWiseDeleted != null && boothWiseDeleted.size() > 0)
+						    	 {
+						    		 voterModifiationPdfsGenerations.buildAddedOrDeletedVotersbyBoothWiseReport("delete",document,pdfVO,constituenyName,constituencyType);
+						    	 }
+						    	 voterModifiationPdfsGenerations.totalAddedOrDeletedVoterDetails("add",document,pdfVO,constituenyName);
+						    	 voterModifiationPdfsGenerations.totalAddedOrDeletedVoterDetails("delete",document,pdfVO,constituenyName);
+						    	 
+						    	 document.close();
+						    	 /*addToZipFile(filePath, zos);
+						    	 zos.close();
+								 fos.close();*/
+						    }
+						}
+			    		
+			    		
+						
+						selectOptionVO.setName("success");
+			    	}
+			    	
 				} catch (Exception e) {
 					selectOptionVO.setName("fail");
 					LOG.error("Exception occured in createPdf () in VoterModification Service",e);
@@ -4021,6 +4159,29 @@ public class VoterModificationService implements IVoterModificationService{
 			   
 		  }
 		  
+		   public  void addToZipFile(String fileName, ZipOutputStream zos)  {
+
+				//System.out.println("Writing '" + fileName + "' to zip file");
+				try {
+					File file = new File(fileName);
+					FileInputStream fis = new FileInputStream(file);
+					ZipEntry zipEntry = new ZipEntry(fileName);
+					zos.putNextEntry(zipEntry);
+
+					byte[] bytes = new byte[1024];
+					int length;
+					while ((length = fis.read(bytes)) >= 0) {
+						zos.write(bytes, 0, length);
+					}
+
+					zos.closeEntry();
+					fis.close();
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
+			}
+		   
 		  public Long getPerviousPublicationId(Long publicationDateId)
 		  {
 			  List<Long> previousPublications = publicationDateDAO.getPreviousPublicationIds(publicationDateId) ;

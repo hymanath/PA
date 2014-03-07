@@ -132,7 +132,6 @@ import com.itgrids.partyanalyst.model.DelimitationConstituency;
 import com.itgrids.partyanalyst.model.District;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.HHBoothLeader;
-import com.itgrids.partyanalyst.model.HHLeader;
 import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.HamletBooth;
 import com.itgrids.partyanalyst.model.HamletBoothElection;
@@ -21114,5 +21113,47 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			  resultStatus.setResultCode(ResultCodeMapper.FAILURE);
 		 }
 		return resultStatus;
+	  }
+	  
+	  public List<SelectOptionVO> getDistrictsList(Long stateId)
+	  {
+		  List<SelectOptionVO> returnList = null;
+		  try {
+			List<Object[]> districtsList = districtDAO.getDistrictIdAndNameByState(stateId);
+			if(districtsList != null&& districtsList.size() > 0)
+			{
+				returnList = new ArrayList<SelectOptionVO>();
+				fillSelectOptionVO(districtsList,returnList);
+			}
+		} catch (Exception e) {
+			log.error("Exception Occured in getDistrictsList(), Exception is -",e);
+		}
+		  return returnList;
+	  }
+	  
+	  public List<SelectOptionVO> getPublicationList()
+	  {
+		  List<SelectOptionVO> returnList = null;
+		  try {
+			List<Object[]> publicationDatesList = publicationDateDAO.getAllPublicationDates();
+			if(publicationDatesList != null&& publicationDatesList.size() > 0)
+			{
+				returnList = new ArrayList<SelectOptionVO>();
+				fillSelectOptionVO(publicationDatesList,returnList);
+			}
+		} catch (Exception e) {
+			log.error("Exception Occured in getDistrictsList(), Exception is -",e);
+		}
+		  return returnList;
+	  }
+	  
+	  public void fillSelectOptionVO(List<Object[]> list ,List<SelectOptionVO> returnList)
+	  {
+		  for (Object[] objects : list) {
+			  SelectOptionVO selectOptionVO = new SelectOptionVO();
+			  selectOptionVO.setId((Long)objects[0]);
+			  selectOptionVO.setName(objects[1].toString());
+			  returnList.add(selectOptionVO);
+		  }
 	  }
 }

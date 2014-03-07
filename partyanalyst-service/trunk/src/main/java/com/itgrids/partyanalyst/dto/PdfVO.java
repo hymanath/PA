@@ -29,6 +29,8 @@ public class PdfVO implements Serializable{
 	private List<VotersDetailsVO> addedDetaildByPerc;
 	private List<VotersDetailsVO> deletedDetaildByPerc;
 	
+	private List<VotersDetailsVO> ageRangeMaleFemaleList;
+	
 	private List<VoterModificationAgeRangeVO> ageRangeVOList;
 	
 	private List<VotersDetailsVO> boothWiseAddedList;
@@ -207,6 +209,13 @@ public class PdfVO implements Serializable{
 	 */
 	public void setBoothWiseDeletedList(List<VotersDetailsVO> boothWiseDeletedList) {
 		this.boothWiseDeletedList = boothWiseDeletedList;
+	}
+	public List<VotersDetailsVO> getAgeRangeMaleFemaleList() {
+		return ageRangeMaleFemaleList;
+	}
+	public void setAgeRangeMaleFemaleList(
+			List<VotersDetailsVO> ageRangeMaleFemaleList) {
+		this.ageRangeMaleFemaleList = ageRangeMaleFemaleList;
 	}
 	
 	

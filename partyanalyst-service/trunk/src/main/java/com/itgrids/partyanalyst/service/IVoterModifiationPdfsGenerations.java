@@ -38,4 +38,6 @@ public interface IVoterModifiationPdfsGenerations {
 	 public void panchayatWiseAddedDeletedVoterDetailsByList(Document document,List<VotersDetailsVO> voterDetails,String constituenyName,String type);
 	 
 	 public void buildAddedOrDeletedVotersbyBoothWiseReport(String type,Document document,PdfVO pdfVO, String constituenyName,String constituencyType);
+	 
+	 public void buildVoterModifivationReportByAgeRangeByGender(List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList,Document document,String constituenyName);
 }

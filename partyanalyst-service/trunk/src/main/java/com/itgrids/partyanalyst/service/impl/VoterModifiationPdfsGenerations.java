@@ -966,201 +966,205 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	   */
 	  public void buildAddedDeletedVotesByMundal(List<VoterModificationVO> list,Document document,String constituenyName)
 	  {
-		    List<SelectOptionVO> selectOptionVOList = list.get(0).getSelectOptionVOsList();
-	    	Long size = 7L + selectOptionVOList.size();
-		    try
-		    {
-		    	LOG.info("Enterd into buildAddedDeletedVotesByMundal() method in VoterModifiationPdfsGenerations Class");
-		    	
-		    	PdfPTable table = new PdfPTable(size.intValue());
-		    	document.add( new Paragraph(" ") );
-		    	document.add( new Paragraph(" ") );
-		    	
-		 	  	PdfPCell cellHeading = new PdfPCell(new Phrase("Mandal/Muncipality Wise Newly Added/Deleted Voters Info",BIGFONT));;
-		 	  	cellHeading.setColspan(size.intValue());
-		 	  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cellHeading);
-		 	  	PdfPCell cell;
-		 	  	cell = new PdfPCell(new Phrase("Mandal",BIGFONT));
-		 	  	cell.setRowspan(2);
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell); 
-		 	  	
-		 	  	cell = new PdfPCell(new Phrase("Voters",BIGFONT));
-		 	  	cell.setColspan(selectOptionVOList.size());
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
-		 	  	
-		 	  	cell = new PdfPCell(new Phrase("Total Voters ",BIGFONT));
-		 	  	cell.setColspan(2);
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
-		 	  	
-		 	  	cell = new PdfPCell(new Phrase("Male Voters",BIGFONT));
-		 	  	cell.setColspan(2);
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
-		 	  	
-		 	  	cell = new PdfPCell(new Phrase("Female Voters",BIGFONT));
-		 	  	cell.setColspan(2);
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
+		  if(list != null && list.size() > 0)
+		  {
+			  List<SelectOptionVO> selectOptionVOList = list.get(0).getSelectOptionVOsList();
+		    	Long size = 7L + selectOptionVOList.size();
+			    try
+			    {
+			    	LOG.info("Enterd into buildAddedDeletedVotesByMundal() method in VoterModifiationPdfsGenerations Class");
+			    	
+			    	PdfPTable table = new PdfPTable(size.intValue());
+			    	document.add( new Paragraph(" ") );
+			    	document.add( new Paragraph(" ") );
+			    	
+			 	  	PdfPCell cellHeading = new PdfPCell(new Phrase("Mandal/Muncipality Wise Newly Added/Deleted Voters Info",BIGFONT));;
+			 	  	cellHeading.setColspan(size.intValue());
+			 	  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cellHeading);
+			 	  	PdfPCell cell;
+			 	  	cell = new PdfPCell(new Phrase("Mandal",BIGFONT));
+			 	  	cell.setRowspan(2);
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell); 
+			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Voters",BIGFONT));
+			 	  	cell.setColspan(selectOptionVOList.size());
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
+			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Total Voters ",BIGFONT));
+			 	  	cell.setColspan(2);
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
+			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Male Voters",BIGFONT));
+			 	  	cell.setColspan(2);
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
+			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Female Voters",BIGFONT));
+			 	  	cell.setColspan(2);
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
 
-		 	  	
-		 	  	PdfPCell c1 ;
-		 	  	if(list != null && list.size() > 0);
-		 	  	{
-		 	  			if(selectOptionVOList != null && selectOptionVOList.size() > 0)
-		 	  			{
-		 	  				Long count = 0l;
-		 	  				for (SelectOptionVO selectOptionVO : selectOptionVOList) {
-		 	  					count ++;
-		 	  					if(count == 1)
-		 	  					{
-		 	  						//table.addCell(selectOptionVO.getId().toString());
-		 	  						c1 = new PdfPCell(new Phrase(selectOptionVO.getName().toString(),BIGFONT));
-		 	  						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  						c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  			  			table.addCell(c1);
-		 	  					}
-		 	  					
-		 	  					else
-		 	  					{
-		 	  						c1 = new PdfPCell(new Phrase(selectOptionVO.getName().toString(),BIGFONT));
-		 	  						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  						c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  			  			table.addCell(c1);
-		 	  			  		    //table.addCell(selectOptionVO.getId().toString());
-		 	  					}
-		 	  					
-		 					}
-		 	  			}
-		 	  		
-		 	  		/*c1 = new PdfPCell(new Phrase("Electoral Roll 2014 - Draft",BIGFONT));
+			 	  	
+			 	  	PdfPCell c1 ;
+			 	  	if(list != null && list.size() > 0);
+			 	  	{
+			 	  			if(selectOptionVOList != null && selectOptionVOList.size() > 0)
+			 	  			{
+			 	  				Long count = 0l;
+			 	  				for (SelectOptionVO selectOptionVO : selectOptionVOList) {
+			 	  					count ++;
+			 	  					if(count == 1)
+			 	  					{
+			 	  						//table.addCell(selectOptionVO.getId().toString());
+			 	  						c1 = new PdfPCell(new Phrase(selectOptionVO.getName().toString(),BIGFONT));
+			 	  						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  						c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  			  			table.addCell(c1);
+			 	  					}
+			 	  					
+			 	  					else
+			 	  					{
+			 	  						c1 = new PdfPCell(new Phrase(selectOptionVO.getName().toString(),BIGFONT));
+			 	  						c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  						c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  			  			table.addCell(c1);
+			 	  			  		    //table.addCell(selectOptionVO.getId().toString());
+			 	  					}
+			 	  					
+			 					}
+			 	  			}
+			 	  		
+			 	  		/*c1 = new PdfPCell(new Phrase("Electoral Roll 2014 - Draft",BIGFONT));
+				 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+				 	  	table.addCell(c1);
+
+				 	  	c1 = new PdfPCell(new Phrase("Electoral Roll 2013 - Final",BIGFONT));
+				 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+				 	  	table.addCell(c1);*/
+			 	  	}
+			 	  	
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
 			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
 			 	  	table.addCell(c1);
-
-			 	  	c1 = new PdfPCell(new Phrase("Electoral Roll 2013 - Final",BIGFONT));
+			 	  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
 			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-			 	  	table.addCell(c1);*/
-		 	  	}
-		 	  	
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
-		 	  	table.addCell(c1);
-		 	  	
-		 	  
-		 	  		  	
-		 	  	if(list != null && list.size() > 0);
-		 	  	{
-		 	  		for (VoterModificationVO votersDetailsVO : list) {
-		 	  			List<SelectOptionVO> selectOptionVOList1 = votersDetailsVO.getSelectOptionVOsList();
-		 	  			PdfPCell c2 = new PdfPCell(new Phrase(votersDetailsVO.getName(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			
-		 	  			//table.addCell(votersDetailsVO.getName());
-		 	  			if(selectOptionVOList1 != null && selectOptionVOList1.size() > 0)
-		 	  			{
-		 	  				Long count = 0l;
-		 	  				for (SelectOptionVO selectOptionVO : selectOptionVOList1) {
-		 	  					count ++;
-		 	  					if(count == 1)
-		 	  					{
-		 	  						//table.addCell(selectOptionVO.getId().toString());
-		 	  						c2 = new PdfPCell(new Phrase(selectOptionVO.getId().toString(),SMALLFONT));
-		 	  						c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			  			table.addCell(c2);
-		 	  					}
-		 	  					
-		 	  					else
-		 	  					{
-		 	  						c2 = new PdfPCell(new Phrase(selectOptionVO.getId().toString(),SMALLFONT));
-		 	  						c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			  			table.addCell(c2);
-		 	  			  		    //table.addCell(selectOptionVO.getId().toString());
-		 	  					}
-		 	  					
-		 					}
-		 	  			}
-		 	  			
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedCount().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedCount().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getMaleVotersAdded().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getMaleVotersDeleted().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getFemaleVotersAdded().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getFemaleVotersDeleted().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			/*table.addCell(votersDetailsVO.getAddedCount().toString());
-		 	  			table.addCell(votersDetailsVO.getDeletedCount().toString());
-		 	  			table.addCell(votersDetailsVO.getMaleVotersAdded().toString());
-		 	  			table.addCell(votersDetailsVO.getMaleVotersDeleted().toString());
-		 	  			table.addCell(votersDetailsVO.getFemaleVotersAdded().toString());
-		 	  			table.addCell(votersDetailsVO.getFemaleVotersDeleted().toString());*/
-		 	  		}
-		 	  	}
-		 	  	float[] widths = null;
-		 	  	if(size == 8)
-		 	  	{
-		 	  		 widths = new float[] { 1f, 1.5f ,1f,1.2f, 1f ,1.2f,1f,1.2f};
-		 	  	}else
-		 	  	{
-		 	  		 widths = new float[] { 1f, 1.5f ,1.5f,1f,1.2f, 1f ,1.2f,1f,1.2f};
-		 	  	}
-		 	  	
-		 	  	table.setWidths(widths);
-		 	  	document.add(table);	 	  	
-		 	  	
-			}
-		    catch (Exception e)
-			{
-				LOG.debug("Exception raised in buildAddedDeletedVotesByMundal() method in VoterModifiationPdfsGenerations Class",e);
-			}
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
+			 	  	table.addCell(c1);
+			 	  	
+			 	  
+			 	  		  	
+			 	  	if(list != null && list.size() > 0);
+			 	  	{
+			 	  		for (VoterModificationVO votersDetailsVO : list) {
+			 	  			List<SelectOptionVO> selectOptionVOList1 = votersDetailsVO.getSelectOptionVOsList();
+			 	  			PdfPCell c2 = new PdfPCell(new Phrase(votersDetailsVO.getName(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			
+			 	  			//table.addCell(votersDetailsVO.getName());
+			 	  			if(selectOptionVOList1 != null && selectOptionVOList1.size() > 0)
+			 	  			{
+			 	  				Long count = 0l;
+			 	  				for (SelectOptionVO selectOptionVO : selectOptionVOList1) {
+			 	  					count ++;
+			 	  					if(count == 1)
+			 	  					{
+			 	  						//table.addCell(selectOptionVO.getId().toString());
+			 	  						c2 = new PdfPCell(new Phrase(selectOptionVO.getId().toString(),SMALLFONT));
+			 	  						c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			  			table.addCell(c2);
+			 	  					}
+			 	  					
+			 	  					else
+			 	  					{
+			 	  						c2 = new PdfPCell(new Phrase(selectOptionVO.getId().toString(),SMALLFONT));
+			 	  						c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			  			table.addCell(c2);
+			 	  			  		    //table.addCell(selectOptionVO.getId().toString());
+			 	  					}
+			 	  					
+			 					}
+			 	  			}
+			 	  			
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedCount().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getMaleVotersAdded().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getMaleVotersDeleted().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getFemaleVotersAdded().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getFemaleVotersDeleted().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			/*table.addCell(votersDetailsVO.getAddedCount().toString());
+			 	  			table.addCell(votersDetailsVO.getDeletedCount().toString());
+			 	  			table.addCell(votersDetailsVO.getMaleVotersAdded().toString());
+			 	  			table.addCell(votersDetailsVO.getMaleVotersDeleted().toString());
+			 	  			table.addCell(votersDetailsVO.getFemaleVotersAdded().toString());
+			 	  			table.addCell(votersDetailsVO.getFemaleVotersDeleted().toString());*/
+			 	  		}
+			 	  	}
+			 	  	float[] widths = null;
+			 	  	if(size == 8)
+			 	  	{
+			 	  		 widths = new float[] { 1f, 1.5f ,1f,1.2f, 1f ,1.2f,1f,1.2f};
+			 	  	}else
+			 	  	{
+			 	  		 widths = new float[] { 1f, 1.5f ,1.5f,1f,1.2f, 1f ,1.2f,1f,1.2f};
+			 	  	}
+			 	  	
+			 	  	table.setWidths(widths);
+			 	  	document.add(table);	 	  	
+			 	  	
+				}
+			    catch (Exception e)
+				{
+					LOG.debug("Exception raised in buildAddedDeletedVotesByMundal() method in VoterModifiationPdfsGenerations Class",e);
+				}
+		  }
+		    
 	  	
 	  }
 	  
@@ -1175,109 +1179,113 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	  {
 		    try
 		    {
-		    	LOG.info("Enterd into buildAddedDeletedVotesByGender() method in VoterModifiationPdfsGenerations Class");
-		    	PdfPTable table = new PdfPTable(8);
-		    	document.add( new Paragraph(" ") );
-		    	document.add( new Paragraph(" ") );
-		 	  			 		
-		 	  	PdfPCell cell;
-		 	  			 	  	
-		 	  	cell = new PdfPCell(new Phrase("Added",BIGFONT));
-		 	  	cell.setColspan(3);
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
-		 	  	
-		 	  	cell = new PdfPCell(new Phrase("Deleted",BIGFONT));
-		 	  	cell.setColspan(3);
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
+		    	if(list != null && list.size() > 0)
+		    	{
+		    		LOG.info("Enterd into buildAddedDeletedVotesByGender() method in VoterModifiationPdfsGenerations Class");
+			    	PdfPTable table = new PdfPTable(8);
+			    	document.add( new Paragraph(" ") );
+			    	document.add( new Paragraph(" ") );
+			 	  			 		
+			 	  	PdfPCell cell;
+			 	  			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Added",BIGFONT));
+			 	  	cell.setColspan(3);
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
+			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Deleted",BIGFONT));
+			 	  	cell.setColspan(3);
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
 
-		 	  	
-		 	    
+			 	  	
+			 	    
 
-		 	  	PdfPCell c1 = new PdfPCell(new Phrase("Publication Name",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
+			 	  	PdfPCell c1 = new PdfPCell(new Phrase("Publication Name",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
 
-		 	  	c1 = new PdfPCell(new Phrase("Previous Publication Name",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Total",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Total",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
-		 	  	table.addCell(c1);
-		 	  	
-		 	  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
-		 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
-		 	  	table.addCell(c1);
-		 	  	
-		 	  
-		 	  		  	
-		 	  	if(list != null && list.size() > 0);
-		 	  	{
-		 	  		for (VoterModificationGenderInfoVO votersDetailsVO : list) {
-		 	  			PdfPCell c2 = new PdfPCell(new Phrase(votersDetailsVO.getPublicationName(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getPreviousPublicationName().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedTotal().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedMale().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedFemale().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedTotal().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedMale().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedFemale().toString(),SMALLFONT));
-		 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  			table.addCell(c2);
-		 	  			
-		 	  			/*table.addCell(votersDetailsVO.getPublicationName());
-		 	  			table.addCell(votersDetailsVO.getPreviousPublicationName().toString());
-		 	  			table.addCell(votersDetailsVO.getAddedTotal().toString());
-		 	  			table.addCell(votersDetailsVO.getAddedMale().toString());
-		 	  			table.addCell(votersDetailsVO.getAddedFemale().toString());
-		 	  			table.addCell(votersDetailsVO.getDeletedTotal().toString());
-		 	  			table.addCell(votersDetailsVO.getDeletedMale().toString());
-		 	  			table.addCell(votersDetailsVO.getDeletedFemale().toString());*/
-		 	  		}
-		 	  	}
-		 	  	//table.setWidthPercentage(100);
-		 	  	document.add(table);
+			 	  	c1 = new PdfPCell(new Phrase("Previous Publication Name",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Total",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Total",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
+			 	  	table.addCell(c1);
+			 	  	
+			 	  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+			 	  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	c1.setBackgroundColor(BaseColor.YELLOW);	    
+			 	  	table.addCell(c1);
+			 	  	
+			 	  
+			 	  		  	
+			 	  	if(list != null && list.size() > 0);
+			 	  	{
+			 	  		for (VoterModificationGenderInfoVO votersDetailsVO : list) {
+			 	  			PdfPCell c2 = new PdfPCell(new Phrase(votersDetailsVO.getPublicationName(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getPreviousPublicationName().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedTotal().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedMale().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getAddedFemale().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedTotal().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedMale().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			c2 = new PdfPCell(new Phrase(votersDetailsVO.getDeletedFemale().toString(),SMALLFONT));
+			 	  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  			table.addCell(c2);
+			 	  			
+			 	  			/*table.addCell(votersDetailsVO.getPublicationName());
+			 	  			table.addCell(votersDetailsVO.getPreviousPublicationName().toString());
+			 	  			table.addCell(votersDetailsVO.getAddedTotal().toString());
+			 	  			table.addCell(votersDetailsVO.getAddedMale().toString());
+			 	  			table.addCell(votersDetailsVO.getAddedFemale().toString());
+			 	  			table.addCell(votersDetailsVO.getDeletedTotal().toString());
+			 	  			table.addCell(votersDetailsVO.getDeletedMale().toString());
+			 	  			table.addCell(votersDetailsVO.getDeletedFemale().toString());*/
+			 	  		}
+			 	  	}
+			 	  	//table.setWidthPercentage(100);
+			 	  	document.add(table);
+		    	}
+		    	
 		 	  	
 			}
 		    catch (Exception e)
@@ -1400,69 +1408,73 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	  {
 		    try
 		    {
-		    	LOG.info("Enterd into buildVoterModifivationReport() method in VoterModifiationPdfsGenerations Class");
-		    	PdfPTable table = new PdfPTable(4);
-		 	  	document.add( new Paragraph(" ") );
-		 	  	document.add( new Paragraph(" ") );
-		 	  	
-		 	  	PdfPCell cellHeading = new PdfPCell(new Phrase("Voters Basic Info In "+constituenyName+" Constituency ",BIGFONT));;
-		 	  	cellHeading.setColspan(4);
-		 	  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cellHeading);
-		 	  	
-		 	  	PdfPCell cell;
-		 	  	
-		 	  	
-		 	  	
-		 	  	cell = new PdfPCell(new Phrase("Publication Date",BIGFONT));
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
-		 	  	
-		 	  	
-		 	  	
-		 	  	cell = new PdfPCell(new Phrase("Total Voters",BIGFONT));
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
+		    	if(voterAgeRangeVOList != null && voterAgeRangeVOList.size() > 0)
+		    	{
+		    		LOG.info("Enterd into buildVoterModifivationReport() method in VoterModifiationPdfsGenerations Class");
+			    	PdfPTable table = new PdfPTable(4);
+			 	  	document.add( new Paragraph(" ") );
+			 	  	document.add( new Paragraph(" ") );
+			 	  	
+			 	  	PdfPCell cellHeading = new PdfPCell(new Phrase("Voters Basic Info In "+constituenyName+" Constituency ",BIGFONT));;
+			 	  	cellHeading.setColspan(4);
+			 	  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cellHeading);
+			 	  	
+			 	  	PdfPCell cell;
+			 	  	
+			 	  	
+			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Publication Date",BIGFONT));
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
+			 	  	
+			 	  	
+			 	  	
+			 	  	cell = new PdfPCell(new Phrase("Total Voters",BIGFONT));
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
 
-		 	  	
-		 	    
+			 	  	
+			 	    
 
-		 	  	cell = new PdfPCell(new Phrase("Male Voters",BIGFONT));
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
+			 	  	cell = new PdfPCell(new Phrase("Male Voters",BIGFONT));
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
 
-		 	  	cell = new PdfPCell(new Phrase("Female Voters",BIGFONT));
-		 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 	  	cell.setBackgroundColor(BaseColor.YELLOW);
-		 	  	table.addCell(cell);
-		 	  	for (VoterAgeRangeVO voterAgeRangeVO : voterAgeRangeVOList) {
-		 	  		
-		 	  		PdfPCell c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getPublicationDate().toString(),SMALLFONT));
-		 	  		c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 			table.addCell(c2);
-		 		  	c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getTotalVoters().toString(),SMALLFONT));
-		 		  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 			table.addCell(c2);
-		 		  	c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getMaleVoters().toString(),SMALLFONT));
-		 		  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 			table.addCell(c2);
-		 		  	c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getFemaleVoters().toString(),SMALLFONT));
-		 		  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 			table.addCell(c2);
-		 	  		/*table.addCell(voterAgeRangeVO.getPublicationDate().toString());
-		 			table.addCell(voterAgeRangeVO.getTotalVoters().toString());
-		 			table.addCell(voterAgeRangeVO.getMaleVoters().toString());
-		 			table.addCell(voterAgeRangeVO.getFemaleVoters().toString());*/
-		 			
-		 		}
-		 	  	
-		 	  	float[] widths = new float[] { 1.2f, 1f ,1f,1f};
-		 	  	table.setWidths(widths);
-		 	  	document.add(table);
+			 	  	cell = new PdfPCell(new Phrase("Female Voters",BIGFONT));
+			 	  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 	  	cell.setBackgroundColor(BaseColor.YELLOW);
+			 	  	table.addCell(cell);
+			 	  	for (VoterAgeRangeVO voterAgeRangeVO : voterAgeRangeVOList) {
+			 	  		
+			 	  		PdfPCell c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getPublicationDate().toString(),SMALLFONT));
+			 	  		c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 			table.addCell(c2);
+			 		  	c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getTotalVoters().toString(),SMALLFONT));
+			 		  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 			table.addCell(c2);
+			 		  	c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getMaleVoters().toString(),SMALLFONT));
+			 		  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 			table.addCell(c2);
+			 		  	c2 = new PdfPCell(new Phrase(voterAgeRangeVO.getFemaleVoters().toString(),SMALLFONT));
+			 		  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			 			table.addCell(c2);
+			 	  		/*table.addCell(voterAgeRangeVO.getPublicationDate().toString());
+			 			table.addCell(voterAgeRangeVO.getTotalVoters().toString());
+			 			table.addCell(voterAgeRangeVO.getMaleVoters().toString());
+			 			table.addCell(voterAgeRangeVO.getFemaleVoters().toString());*/
+			 			
+			 		}
+			 	  	
+			 	  	float[] widths = new float[] { 1.2f, 1f ,1f,1f};
+			 	  	table.setWidths(widths);
+			 	  	document.add(table);
+		    	}
+		    	
 		 	  	
 			}
 		    catch (Exception e) {
@@ -1481,153 +1493,157 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	  {
 		  try 
 		  {
-			    LOG.info("Enterd into buildVoterModifivationReportByAgeRange() method in VoterModifiationPdfsGenerations Class");
-			    PdfPTable table = new PdfPTable(12);
-			    document.add( new Paragraph(" ") );
-			    document.add( new Paragraph(" ") );	  	
-			  	PdfPCell cellHeading = new PdfPCell(new Phrase("Age Wise Newly Added/Deleted Voters Info ",BIGFONT));;
-			  	cellHeading.setColspan(12);
-			  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(cellHeading);
-			  	
-			  	PdfPCell cell;
-			  	cell = new PdfPCell(new Phrase("Young Voters",BIGFONT));
-			  	cell.setColspan(2);
-			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	cell.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(cell);
-			  	
-			  	cell = new PdfPCell(new Phrase("23-25",BIGFONT));
-			  	cell.setColspan(2);
-			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	cell.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(cell);
-			  	
-			  	cell = new PdfPCell(new Phrase("26-35",BIGFONT));
-			  	cell.setColspan(2);
-			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	cell.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(cell);
-			  	
-			  	cell = new PdfPCell(new Phrase("36-45",BIGFONT));
-			  	cell.setColspan(2);
-			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	cell.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(cell);
-			  	
-			  	cell = new PdfPCell(new Phrase("46-60",BIGFONT));
-			  	cell.setColspan(2);
-			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	cell.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(cell);
-			  	
-			  	cell = new PdfPCell(new Phrase("60-Above",BIGFONT));
-			  	cell.setColspan(2);
-			  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	cell.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(cell);
-			  	
-			  	PdfPCell c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	
-			  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	
-			  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	
-			  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	
-			  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	
-			  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
-			  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	c1.setBackgroundColor(BaseColor.YELLOW);
-			  	table.addCell(c1);
-			  	
-			  
-			  	for (VoterModificationAgeRangeVO voterModificationAgeRangeVO : voterModificationAgeRangeVOList) {
-			  		
-			  		PdfPCell c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getAddedCount().toString(),SMALLFONT));
-		  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-		  			table.addCell(c2);
-				  	c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getDeletedCount().toString(),SMALLFONT));
-				  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-					table.addCell(c2);
-			  		/*Long addedCount = 0l;
-			  		Long deletedCount = 0l;
-			  		if(voterModificationAgeRangeVO.getRange().equalsIgnoreCase("Young Voters"))
-			  		{
-			  			addedCount   = voterModificationAgeRangeVO.getAddedCount();
-			  			deletedCount = voterModificationAgeRangeVO.getDeletedCount();
-			  		}
-			  		if(voterModificationAgeRangeVO.getRange().equalsIgnoreCase("18-25"))
-			  		{
-			  			Long addedCount1 = voterModificationAgeRangeVO.getAddedCount();
-			  			Long deletedCount1 = voterModificationAgeRangeVO.getDeletedCount();
-			  			PdfPCell c2 = new PdfPCell(new Phrase(String.valueOf((addedCount1-addedCount)),SMALLFONT));
-			  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  			table.addCell(c2);
-					  	c2 = new PdfPCell(new Phrase(String.valueOf((deletedCount1-deletedCount)),SMALLFONT));
-					  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
-						table.addCell(c2);
-			  			table.addCell(String.valueOf((addedCount1-addedCount)));
-			  			table.addCell(String.valueOf((deletedCount1-deletedCount)));
-			  		}
-			  		else
-			  		{
-			  			PdfPCell c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getAddedCount().toString(),SMALLFONT));
+			  if(voterModificationAgeRangeVOList != null && voterModificationAgeRangeVOList.size() > 0)
+			  {
+				  LOG.info("Enterd into buildVoterModifivationReportByAgeRange() method in VoterModifiationPdfsGenerations Class");
+				    PdfPTable table = new PdfPTable(12);
+				    document.add( new Paragraph(" ") );
+				    document.add( new Paragraph(" ") );	  	
+				  	PdfPCell cellHeading = new PdfPCell(new Phrase("Age Wise Newly Added/Deleted Voters Info ",BIGFONT));;
+				  	cellHeading.setColspan(12);
+				  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cellHeading);
+				  	
+				  	PdfPCell cell;
+				  	cell = new PdfPCell(new Phrase("Young Voters",BIGFONT));
+				  	cell.setColspan(2);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("23-25",BIGFONT));
+				  	cell.setColspan(2);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("26-35",BIGFONT));
+				  	cell.setColspan(2);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("36-45",BIGFONT));
+				  	cell.setColspan(2);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("46-60",BIGFONT));
+				  	cell.setColspan(2);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("60-Above",BIGFONT));
+				  	cell.setColspan(2);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	PdfPCell c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  
+				  	for (VoterModificationAgeRangeVO voterModificationAgeRangeVO : voterModificationAgeRangeVOList) {
+				  		
+				  		PdfPCell c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getAddedCount().toString(),SMALLFONT));
 			  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  			table.addCell(c2);
 					  	c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getDeletedCount().toString(),SMALLFONT));
 					  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
 						table.addCell(c2);
-			  			table.addCell(voterModificationAgeRangeVO.getAddedCount().toString());
-			  			table.addCell(voterModificationAgeRangeVO.getDeletedCount().toString());
-			  		}*/
-			  		
-					
-				}
-			  	float[] widths = new float[] { 1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f};
-			  	table.setWidths(widths);
-			  	document.add(table);
+				  		/*Long addedCount = 0l;
+				  		Long deletedCount = 0l;
+				  		if(voterModificationAgeRangeVO.getRange().equalsIgnoreCase("Young Voters"))
+				  		{
+				  			addedCount   = voterModificationAgeRangeVO.getAddedCount();
+				  			deletedCount = voterModificationAgeRangeVO.getDeletedCount();
+				  		}
+				  		if(voterModificationAgeRangeVO.getRange().equalsIgnoreCase("18-25"))
+				  		{
+				  			Long addedCount1 = voterModificationAgeRangeVO.getAddedCount();
+				  			Long deletedCount1 = voterModificationAgeRangeVO.getDeletedCount();
+				  			PdfPCell c2 = new PdfPCell(new Phrase(String.valueOf((addedCount1-addedCount)),SMALLFONT));
+				  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  			table.addCell(c2);
+						  	c2 = new PdfPCell(new Phrase(String.valueOf((deletedCount1-deletedCount)),SMALLFONT));
+						  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+							table.addCell(c2);
+				  			table.addCell(String.valueOf((addedCount1-addedCount)));
+				  			table.addCell(String.valueOf((deletedCount1-deletedCount)));
+				  		}
+				  		else
+				  		{
+				  			PdfPCell c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getAddedCount().toString(),SMALLFONT));
+				  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  			table.addCell(c2);
+						  	c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getDeletedCount().toString(),SMALLFONT));
+						  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+							table.addCell(c2);
+				  			table.addCell(voterModificationAgeRangeVO.getAddedCount().toString());
+				  			table.addCell(voterModificationAgeRangeVO.getDeletedCount().toString());
+				  		}*/
+				  		
+						
+					}
+				  	float[] widths = new float[] { 1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f};
+				  	table.setWidths(widths);
+				  	document.add(table);
+			  }
+			    
 
 		  }
 		  catch (Exception e)
@@ -1638,6 +1654,252 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	  	
 	  }
 	  
+	  
+	  /**
+	   * Age Wise Newly Added/Deleted Voters Info
+	   * @param voterModificationAgeRangeVOList
+	   * @param document
+	   * @param constituenyName
+	   * @Date 10-12-2013
+	   */
+	  public void buildVoterModifivationReportByAgeRangeByGender(List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList,Document document,String constituenyName)
+	  {
+		  try 
+		  {
+			  if(voterModificationAgeRangeVOList != null && voterModificationAgeRangeVOList.size() > 0)
+			  {
+				  LOG.info("Enterd into buildVoterModifivationReportByAgeRange() method in VoterModifiationPdfsGenerations Class");
+				    PdfPTable table = new PdfPTable(24);
+				    document.add( new Paragraph(" ") );
+				    document.add( new Paragraph(" ") );	  	
+				  	PdfPCell cellHeading = new PdfPCell(new Phrase("Age Wise Newly Added/Deleted Voters Info ",BIGFONT));;
+				  	cellHeading.setColspan(24);
+				  	cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cellHeading.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cellHeading);
+				  	
+				  	PdfPCell cell;
+				  	cell = new PdfPCell(new Phrase("Young Voters",BIGFONT));
+				  	cell.setColspan(4);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("23-25",BIGFONT));
+				  	cell.setColspan(4);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("26-35",BIGFONT));
+				  	cell.setColspan(4);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("36-45",BIGFONT));
+				  	cell.setColspan(4);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("46-60",BIGFONT));
+				  	cell.setColspan(4);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	cell = new PdfPCell(new Phrase("60-Above",BIGFONT));
+				  	cell.setColspan(4);
+				  	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	cell.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(cell);
+				  	
+				  	PdfPCell c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Added",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	c1 = new PdfPCell(new Phrase("Deleted",BIGFONT));
+				  	c1.setColspan(2);
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	table.addCell(c1);
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW);
+				  	c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+				  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	c1.setBackgroundColor(BaseColor.YELLOW); 
+				  	
+				  	
+				  	for (VoterModificationAgeRangeVO voterModificationAgeRangeVO : voterModificationAgeRangeVOList) {
+				  		
+				  		PdfPCell c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getAddedMale().toString(),SMALLFONT));
+			  			c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  			table.addCell(c2);
+					  	c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getAddedFemale().toString(),SMALLFONT));
+					  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+						table.addCell(c2);
+						c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getDeletedMale().toString(),SMALLFONT));
+					  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+						table.addCell(c2);
+						c2 = new PdfPCell(new Phrase(voterModificationAgeRangeVO.getDeletedFemale().toString(),SMALLFONT));
+					  	c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+						table.addCell(c2);
+				  		
+				  		
+						
+					}
+				  	float[] widths = new float[] { 1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f, 1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f,1.1f, 1.2f ,1.1f,1.2f};
+				  	table.setWidths(widths);
+				  	document.add(table);
+			  }
+			    
+
+		  }
+		  catch (Exception e)
+		  {
+			 LOG.debug("Exception raised in buildVoterModifivationReportByAgeRange() method in VoterModifiationPdfsGenerations Class",e);
+		  }
+	  	
+	  	
+	  }
 	  /**
 	   * Percentage Wise Voters Additions In Panchayats
 	   * @param type
@@ -1882,5 +2144,83 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 		  }
 	  	
 	  }
+	  
+	  
   
+	 /* public void buildAddressTable(Document document,List<Object[]> list)
+	  {
+		 
+		  try
+		  {
+			  if(list != null && list.size() > 0 )
+			  {
+					StringBuilder sb  = new StringBuilder();
+					PdfPTable table = new PdfPTable(2);
+					document.add( new Paragraph(" ") );
+					document.add( new Paragraph(" ") );
+					for (Object[] parms : list) {
+						
+						sb.append("<p>To,<p>");
+						sb.append("<p>"+replaceSpecialChars(parms[7].toString())+"<p>");
+						String name = "";
+						if(parms[12].toString().equalsIgnoreCase("Father") || parms[12].toString().equalsIgnoreCase("Mother"))
+						{
+							if(parms[7].toString().equalsIgnoreCase("Male"))
+							{
+								name = "S/O , " + replaceSpecialChars(parms[11].toString());
+							}
+							else
+							{
+								name = "D/O , " + replaceSpecialChars(parms[11].toString());
+							}
+						}
+						
+						else if(parms[12].toString().equalsIgnoreCase("Husband"))
+						{
+							name = "W/O , "  + replaceSpecialChars(parms[11].toString());
+						}
+						else
+						{
+							name = "C/O , "  + replaceSpecialChars(parms[11].toString());
+						}
+						sb.append("<p>"+name+"<p>");
+						sb.append("<p>H.NO : "+parms[10].toString()+"</p>");
+						sb.append("<p>Village : "+parms[2].toString()+"<p>");
+						sb.append("<p>Panchayat : "+parms[1].toString()+"<p>");
+						sb.append("<p>Mandal : "+parms[0].toString()+"<p>");
+						sb.append("<p>Andhra Pradesh<p>");
+						
+						PdfPCell c2 = new PdfPCell(new Phrase(sb.toString(),SMALLFONT));
+				  		c2.setHorizontalAlignment(Element.ALIGN_CENTER);
+						table.addCell(c2);
+					}
+					document.add(table);
+				}
+		  }
+		  catch (Exception e)
+		  {
+			LOG.debug("Exception raised in buildAddressTable() method in VoterModifiationPdfsGenerations Class",e);
+		  }
+	  	
+	  }
+	  
+	  
+	  public String replaceSpecialChars(String str)
+	  	{
+	  		try{
+	  			String newStr = "";
+	  			
+	  			char[] charArray = str.toCharArray();
+	  			for(Character C : charArray)
+				{
+					if(Character.isLetter(C) || C.toString().equals(" "))
+						newStr = newStr+C.toString();
+				}
+	  			return newStr.trim();
+	  		}catch(Exception e)
+	  		{
+	  			return str;
+	  		}
+	  	}
+	  */
 }
