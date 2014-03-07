@@ -6495,11 +6495,32 @@
 				<param name="root">prevTrends</param>				
 			</result> 
 		</action>
-		
+
 		<action name="getPreviousTrendsReportParliamentAction" class="stratagicReportsAction" method="getPreviousTrendsReportParliament">
 			<result type="json" name="success">
 				<param name="root">prevTrendsParliament</param>				
 			</result> 
+		</action>
+		
+				<action name="gettingVotersBasedOnCasteAndAgeAction" class="votersAnalysisAction">
+			<result name="success">/jsp/gettingVotersBasedOnCasteAndAge.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=votersAnalysisNewAction
+			</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+
+		<action name="gettingVotersBasedOnCasteAndAgeAjaxAction" class="votersAnalysisAction"
+			method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">namesList</param>
+			</result>
+		</action>
+
+		<action name="votersInfoAjaxAction" class="votersInformationAction"
+			method="AjaxHandler">
+			<result type="json" name="success">
+				<param name="root">rs</param>
+			</result>
 		</action>
 		      
 		</package>
