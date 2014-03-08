@@ -1129,15 +1129,17 @@ public class CasteReportService implements ICasteReportService{
 			}
 			else
 				list = userVoterDetailsDAO.getVoterCountInLocation(constitunecyId,publicationId,userId,null);
+		  setToVo(resultList,list,0l,500l);//For Below
 		  setToVo(resultList,list,501l,1000l);
 		  setToVo(resultList,list,1001l,1500l);
 		  setToVo(resultList,list,1501l,2000l);
-		  setToVo(resultList,list,2001l,3000l);
+		  setToVo(resultList,list,2001l,2500l);
+		  setToVo(resultList,list,2501l,3000l);
 		  setToVo(resultList,list,3001l,4000l);
 		  setToVo(resultList,list,4001l,5000l);
 		  setToVo(resultList,list,5001l,5000l);
 		  setToVo(resultList,list,5001l,6000l);
-		  setToVo(resultList,list,0l,500l);//For Below
+		 
 		  setToVo(resultList,list,6000l,0l);//For Above
 		  
 	  }
