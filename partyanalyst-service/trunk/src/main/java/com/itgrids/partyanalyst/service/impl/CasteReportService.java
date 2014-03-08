@@ -243,6 +243,7 @@ public class CasteReportService implements ICasteReportService{
 				}
 			if(lclCasteIds != null && lclCasteIds.size() > 0)
 			 casteStateIds.addAll(lclCasteIds);
+			Long total = 0l;
 			 for(Long casteId : casteStateIds)
 			 {
 				 CastVO resultVo = new CastVO(); 
@@ -276,6 +277,7 @@ public class CasteReportService implements ICasteReportService{
 						 }
 					 }
 				 }
+				 resultVo.setTotalVoters(total);
 				 sortlocationsList(locationsList);
 				 resultVo.setCasteList(locationsList);
 				 resultList.add(resultVo); 
@@ -310,15 +312,20 @@ public class CasteReportService implements ICasteReportService{
 		  try{
 			  for(CastVO castVo : resultList)
 			  {
+				 
 				  if(castVo.getCastStateId().equals(casteId))
 				  {
+					  Long total = castVo.getCastCount();
+					 
 					  for(CastVO locationvo : castVo.getCasteList())
 					  {
 						  if(locationvo.getLocationId().equals(locationId))
 						  {
 							  locationvo.setCastCount(count);
+							  castVo.setTotalVoters(count+castVo.getTotalVoters());
 						  }
 					  }
+					 
 				  }
 			  }
 		  }
