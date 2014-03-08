@@ -322,6 +322,7 @@ function buildCasteDetails(results,jsObj)
 	str+='<thead >';
   
 	str+='<th style="background-color:#F6E816;">Caste</th>';
+	str+='<th style="background-color:#F6E816;">Total Voters</th>';
 	for(var i in results[0].casteList)
 		{
 	str+='<th style="background-color:#F6E816;">'+results[0].casteList[i].locationName+'</th>';
@@ -334,6 +335,7 @@ function buildCasteDetails(results,jsObj)
 	
 	str+='<tr>';	
     str+='<td>'+results[j].castName+'</td>';
+	 str+='<td>'+results[j].totalVoters+'</td>';
 	for(var k=0;k<results[j].casteList.length;k++)
 			{
 		
