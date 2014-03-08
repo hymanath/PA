@@ -213,8 +213,6 @@ public class CasteReportService implements ICasteReportService{
 			{
 			Map<Long,Map<String,CastVO>>  resultMap = new HashMap<Long, Map<String,CastVO>>();
 			List<Object[]> casteList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
-			
-			
 			List<Long> locationIds = new ArrayList<Long>();
 			List<Long> casteStateIds = new ArrayList<Long>();
 			 if(casteList != null && casteList.size() > 0)
@@ -227,7 +225,7 @@ public class CasteReportService implements ICasteReportService{
 						 casteStateIds.add((Long)params[2]);
 				 }
 			}
-			 List<Long> lclIds = new ArrayList<Long>();
+			    List<Long> lclIds = new ArrayList<Long>();
 				List<Long> lclCasteIds = new ArrayList<Long>();
 				List<Object[]> localbody = null;
 			 if(type.equalsIgnoreCase(IConstants.MANDAL))
@@ -445,11 +443,13 @@ public class CasteReportService implements ICasteReportService{
 							
 					                }
 		                           }
+					
 				   else
 				   {
-					   castesList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
+					  castesList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
+					
 				   }
-					 if(castesList != null && castesList.size() > 0)
+					/* if(castesList != null && castesList.size() > 0)
 					 {
 						  for(Object[] params : castesList)
 						 {
@@ -476,15 +476,20 @@ public class CasteReportService implements ICasteReportService{
 							  vo.setCastCount((Long)params[0]);
 					     }
 					}
+					 
+					 
+					 
+					 
 					 Map<Long,Long> totalCountMap = new HashMap<Long, Long>();
 					 for(Long superLevel : resulMap.keySet())
 					 {
 						CastVO resultVo = new CastVO();
 						resultVo.setPanchayatId(superLevel);
+						
 						if(type.equalsIgnoreCase(IConstants.BOOTH) || type.equalsIgnoreCase(IConstants.HAMLET))
 						resultVo.setPanchayat(panchayatDAO.getPanchayatNameById(superLevel));
 						else
-							resultVo.setPanchayat(tehsilDAO.getTehsilNameById(superLevel));
+						resultVo.setPanchayat(tehsilDAO.getTehsilNameById(superLevel));
 						Map<Long,Map<Long,CastVO>> casteMap = resulMap.get(superLevel);
 						List<Long> locationIds = new ArrayList<Long>();
 						
@@ -541,9 +546,26 @@ public class CasteReportService implements ICasteReportService{
 					 {
 						 setValuesForaCasteInBooth(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0],(Long)params2[5]);
 						 
+					 }*/
+					 setResultForLocalBody(resultList,castesList,type,constituencyId);
+					 for(Object[] params2 : castesList)
+					 {
+						 setValuesForaCasteInBooth(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0],(Long)params2[5]);
+						 
 					 }
-					
-				
+					 /** Adding Localbody Castes**/
+					 if(type.equalsIgnoreCase(IConstants.BOOTH))
+					  {
+					 List<Object[]> muncipalityList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,IConstants.LOCAL_ELECTION_BODY,userId);
+					 if(muncipalityList != null && muncipalityList.size() > 0)
+						 setResultForLocalBody(resultList,muncipalityList,IConstants.LOCAL_ELECTION_BODY,constituencyId);
+					 for(Object[] params2 : muncipalityList)
+					 {
+						 setValuesForaCasteInBooth(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0],(Long)params2[5]);
+						 
+					 }
+					  }
+					 
 			}
 			catch(Exception e)
 			{
@@ -552,8 +574,7 @@ public class CasteReportService implements ICasteReportService{
 				sortPanchayat(resultList);
 				List<CastVO> result = new ArrayList<CastVO>();
 				result = setDataList(resultList);
-				
-			return result;
+				return result;
 			
 		}
 	
@@ -568,7 +589,9 @@ public class CasteReportService implements ICasteReportService{
 			List<CastVO> casteList = vo.getCasteList();
 			int locationsSize =  casteList.get(0).getCasteList().size();
 			int maxindex= 0;
-			for(int i=0;i<locationsSize;i=i+3)
+			
+			/** To split booths as 7**/
+			for(int i=0;i<locationsSize;i=i+7)
 			{
 				
 				CastVO resultVo = new CastVO();
@@ -591,7 +614,7 @@ public class CasteReportService implements ICasteReportService{
 						locationvo.setCastCount(location.getCastCount());
 						locationList.add(locationvo);
 						total = location.getCastCount() + total;
-						if(locationList.size() >= 3)
+						if(locationList.size() >= 7)
 						{
 						  break;
 						}
@@ -601,8 +624,8 @@ public class CasteReportService implements ICasteReportService{
 					castvo.setCasteList(locationList);
 					castList.add(castvo);
 				}
-			    if(locationsSize >= 3)
-				maxindex = maxindex + 3;
+			    if(locationsSize >= 7)
+				maxindex = maxindex + 7;
 			    resultVo.setCasteList(castList);
 			    result.add(resultVo);	
 			    result.get(0).setPartyName(constituencyName);
@@ -1240,4 +1263,110 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 	}
 	System.out.println("completed");
 }
+  
+  public void setResultForLocalBody(List<CastVO> resultList,List<Object[]> castesList,String type,Long constituencyId)
+  {
+	  Map<Long,Map<Long,Map<Long,CastVO>>> resulMap = new HashMap<Long, Map<Long,Map<Long,CastVO>>>();
+  
+	  try{
+		  if(castesList != null && castesList.size() > 0)
+			 {
+				  for(Object[] params : castesList)
+				 {
+					   Map<Long,Map<Long,CastVO>> casteMap = resulMap.get((Long)params[5]);
+					  if(casteMap == null)
+					  {
+						  casteMap = new HashMap<Long, Map<Long,CastVO>>();
+						  resulMap.put((Long)params[5], casteMap);
+					  }
+					 
+					  Map<Long,CastVO> locationMap = casteMap.get((Long)params[2]) ;
+					  if(locationMap == null)
+					  {
+						  locationMap = new HashMap<Long, CastVO>();
+						  casteMap.put((Long)params[2], locationMap);
+					  }
+					  CastVO vo = locationMap.get((Long)params[3]);
+					  if(vo == null)
+					  {
+						  vo = new CastVO();
+					      locationMap.put((Long)params[3], vo);
+					  }
+					  vo.setLocationName(params[6].toString());
+					  vo.setCastCount((Long)params[0]);
+			     }
+			}
+			 
+			 
+			 
+			 
+			 Map<Long,Long> totalCountMap = new HashMap<Long, Long>();
+			 for(Long superLevel : resulMap.keySet())
+			 {
+				CastVO resultVo = new CastVO();
+				resultVo.setPanchayatId(superLevel);
+				
+				if(type.equalsIgnoreCase(IConstants.BOOTH) || type.equalsIgnoreCase(IConstants.HAMLET))
+				resultVo.setPanchayat(panchayatDAO.getPanchayatNameById(superLevel));
+				else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+				resultVo.setPanchayat(tehsilDAO.getTehsilNameById(superLevel));
+				else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			    resultVo.setPanchayat(localElectionBodyDAO.getLocalElectionBodyName(superLevel) +" MUNCIPALITY");
+				Map<Long,Map<Long,CastVO>> casteMap = resulMap.get(superLevel);
+				List<Long> locationIds = new ArrayList<Long>();
+				
+				for(Long casteId : casteMap.keySet())
+				 {
+                  Map<Long,CastVO> locationMap = casteMap.get(casteId) ;
+                  Long total = 0l;
+					
+					 for(Long locationId : locationMap.keySet())
+					 {
+						 CastVO countvo =  locationMap.get(locationId);
+						 total = total + countvo.getCastCount(); 
+					     if(!locationIds.contains(locationId))
+						 locationIds.add(locationId); 
+					 }	
+					 totalCountMap.put(casteId, total);
+				 }
+				List<CastVO> castes = new ArrayList<CastVO>();
+				 for(Long casteId : casteMap.keySet())
+				 {
+					 CastVO castvo = new CastVO();
+					 castvo.setCastStateId(casteId);
+					 castvo.setCastName(casteDAO.get(casteId).getCasteName());
+					 castvo.setTotalVoters(totalCountMap.get(casteId));
+					 Map<Long,CastVO> locationMap = casteMap.get(casteId) ;
+					 List<CastVO> locations = new ArrayList<CastVO>();
+					 for(Long locationId : locationIds)
+					 {
+						 
+						 CastVO locationvo = new CastVO();
+						 locationvo.setLocationId(locationId);
+						 if(type.equalsIgnoreCase(IConstants.BOOTH) ||type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY) )
+						 locationvo.setLocationName(boothDAO.getBoothPartNoByBoothId(locationId));
+						 else if(type.equalsIgnoreCase(IConstants.HAMLET))
+						 locationvo.setLocationName(hamletDAO.get(locationId).getHamletName()); 
+						 else if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+						 locationvo.setLocationName(panchayatDAO.getPanchayatNameById(locationId)); 	 
+						 locationvo.setCastCount(0l);
+						 locations.add(locationvo); 
+					
+					 }	
+					 
+					 sortlocationsList(locations);
+					 castvo.setCasteList(locations);
+				     castes.add(castvo); 
+				 }
+			    sortCastsList(castes);
+				resultVo.setCasteList(castes);
+				resultList.add(resultVo);
+				resultList.get(0).setPartyName(constituencyDAO.get(constituencyId).getName());
+			 }
+	  }
+	  catch(Exception e)
+	  {
+		  e.printStackTrace();
+	  }
+  }
 }

@@ -2941,8 +2941,12 @@ IUserVoterDetailsDAO{
 			str.append("bpv.booth.boothId,bpv.booth.partNo,bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
 		else if(type.equalsIgnoreCase(IConstants.HAMLET))
 			str.append("model.hamlet.hamletId,model.hamlet.hamletName,bpv.booth.panchayat.panchayatId,bpv.booth.panchayat.panchayatName ");
+		else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+			str.append("bpv.booth.boothId,bpv.booth.partNo,bpv.booth.localBody.localElectionBodyId,bpv.booth.localBody.name ");
 			str.append("from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
 				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId");
+			
+			
 			if(type.equalsIgnoreCase(IConstants.MANDAL))
 				str.append("  and bpv.booth.localBody is null group by model.casteState.caste.casteId,bpv.booth.tehsil.tehsilId order by model.casteState.caste.casteName");
 		
@@ -2950,6 +2954,9 @@ IUserVoterDetailsDAO{
 				str.append("  group by model.casteState.caste.casteId,bpv.booth.panchayat.panchayatId order by bpv.booth.tehsil.tehsilName,bpv.booth.panchayat.panchayatId,model.casteState.caste.casteName");
 			else if(type.equalsIgnoreCase(IConstants.BOOTH))
 				str.append("  group by model.casteState.caste.casteId,bpv.booth.boothId order by bpv.booth.panchayat.panchayatName, bpv.booth.boothId," +
+						" model.casteState.caste.casteName");
+			else if(type.equalsIgnoreCase(IConstants.LOCAL_ELECTION_BODY))
+				str.append("  group by model.casteState.caste.casteId,bpv.booth.boothId order by bpv.booth.localBody.name, bpv.booth.boothId," +
 						" model.casteState.caste.casteName");
 			else if(type.equalsIgnoreCase(IConstants.HAMLET))
 				str.append("  group by model.casteState.caste.casteId,model.hamlet.hamletId order by bpv.booth.panchayat.panchayatName, model.hamlet.hamletId," +
