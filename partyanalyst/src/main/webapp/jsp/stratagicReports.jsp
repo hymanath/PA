@@ -27,6 +27,14 @@
 </div>
  
 
+<div style="margin-left:252px;">
+ <input type="button" value="Get Mandal Wise CasteInfo" class="btn" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
+ <input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
+ <input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
+  <input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
+  
+</div>
+
 
 <script>
 	function getReport(){
@@ -237,6 +245,13 @@
 		
 		$(".prevoiusElectionTrendsParliamentDiv").html(str);
 	 }
+
+function redirectToCasteInfo(type)
+{
+var win=window.open('casteReportAction.action?type='+type+'', '_blank');
+win.focus();
+}
+
  
  </script>
 </body>
