@@ -310,7 +310,14 @@ public class StratagicReportsService implements IStratagicReportsService{
 	        {
 	     	   vo.setPrpVo(voh);
 
-	        }else {
+	        }
+	        else if(((Long)object[3]).equals(163L)){
+		       vo.setBjpVo(voh);
+	        }
+	        else if(((Long)object[3]).equals(886L)){
+	     	   vo.setTrsVo(voh);
+	        }
+	        else {
 	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 	     	   if(vo1!=null){
 	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
@@ -353,7 +360,14 @@ public class StratagicReportsService implements IStratagicReportsService{
 			           {
 			        	   vo.setPrpVo(voh);
 
-			           }else {
+			           }
+			           	else if(((Long)object[3]).equals(163L)){
+					       vo.setBjpVo(voh);
+				        }
+				        else if(((Long)object[3]).equals(886L)){
+				     	   vo.setTrsVo(voh);
+				        }
+			           else {
 			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 			        	   if(vo1!=null){
 			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
@@ -677,7 +691,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			if(partyResults==null){
 				partyResults=new ArrayList<PartyResultsVO>();
 			}
-			PartyResultsVO pv=getMatchedPartyVO(partyResults,Long.valueOf(ob[0].toString()));
+			PartyResultsVO pv=getMatchedPartyVO1(partyResults,Long.valueOf(ob[0].toString()),Long.valueOf(ob[9].toString()));
 			if(pv==null){
 				pv=new PartyResultsVO();
 			}
@@ -686,6 +700,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			pv.setVotesEarned(((Double)(ob[2])).longValue());
 			pv.setDiffPercent(calcPercentage(pvo_temp.getVotesPolled(), pv.getVotesEarned()));
 			pv.setRank(Long.valueOf(ob[8].toString()));
+			pv.setNominationId(Long.valueOf(ob[9].toString()));
 			partyResults.add(pv);
 			
 			
@@ -750,7 +765,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 							prvo.setOtherVotes(0l);
 							prvo.setOtherVotesPercent(calcPercentage(totalValidVotes,prvo.getOtherVotes()));
 						}
-						Long exPr=parr.getParticipated();
+						Long exPr=prvo.getParticipated();
 						prvo.setParticipated(exPr+1l);
 						
 						if(partyResults.get(i).getRank()==1){
@@ -854,15 +869,17 @@ public class StratagicReportsService implements IStratagicReportsService{
 			if(partyResults==null){
 				partyResults=new ArrayList<PartyResultsVO>();
 			}
-			PartyResultsVO pv=getMatchedPartyVO(partyResults,Long.valueOf(ob[0].toString()));
+			PartyResultsVO pv=getMatchedPartyVO1(partyResults,Long.valueOf(ob[0].toString()),Long.valueOf(ob[9].toString()));
 			if(pv==null){
 				pv=new PartyResultsVO();
+				pv.setRank(0l);
 			}
 			pv.setPartyId(Long.valueOf(ob[0].toString()));
 			pv.setPartyName(ob[1].toString());
 			pv.setVotesEarned(((Double)(ob[2])).longValue());
 			pv.setDiffPercent(calcPercentage(pvo_temp.getVotesPolled(), pv.getVotesEarned()));
 			pv.setRank(Long.valueOf(ob[8].toString()));
+			pv.setNominationId(Long.valueOf(ob[9].toString()));
 			partyResults.add(pv);
 			
 			
@@ -930,7 +947,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 						prvo.setParticipated(exPr+1l);
 						
 						if(partyResults.get(i).getRank()==1){
-							Long exWn=parr.getWon();
+							Long exWn=prvo.getWon();
 							prvo.setWon(exWn+1l);
 						}
 						
@@ -990,6 +1007,15 @@ public class StratagicReportsService implements IStratagicReportsService{
 	public PartyResultsVO getMatchedPartyVO(List<PartyResultsVO> pvoList,Long partyId){
 		for(PartyResultsVO pv:pvoList){
 			if(pv.getPartyId().longValue()==partyId.longValue()){
+				return pv;
+			}
+		}
+		return null;
+	}
+	
+	public PartyResultsVO getMatchedPartyVO1(List<PartyResultsVO> pvoList,Long partyId,Long nominationId){
+		for(PartyResultsVO pv:pvoList){
+			if(pv.getPartyId().longValue()==partyId.longValue() && pv.getNominationId().longValue() == nominationId.longValue()){
 				return pv;
 			}
 		}
