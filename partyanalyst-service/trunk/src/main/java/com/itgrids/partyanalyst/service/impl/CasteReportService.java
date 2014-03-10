@@ -580,13 +580,13 @@ public class CasteReportService implements ICasteReportService{
 			}
 				sortPanchayat(resultList);
 				List<CastVO> result = new ArrayList<CastVO>();
-				result = setDataList(resultList);
+				result = setDataList(resultList,type);
 				return result;
 			
 		}
 	
 	 
- public List<CastVO> setDataList(List<CastVO> resultList)
+ public List<CastVO> setDataList(List<CastVO> resultList,String type)
 	 {
 	 List<CastVO> result = new ArrayList<CastVO>();
 		 try{
@@ -596,9 +596,13 @@ public class CasteReportService implements ICasteReportService{
 			List<CastVO> casteList = vo.getCasteList();
 			int locationsSize =  casteList.get(0).getCasteList().size();
 			int maxindex= 0;
-			
+			 int splitNo = 0;
 			/** To split booths as 7**/
-			for(int i=0;i<locationsSize;i=i+7)
+			if(type.equalsIgnoreCase("booth"))
+				splitNo = 7;
+			else
+				splitNo = 3;
+			for(int i=0;i<locationsSize;i=i+splitNo)
 			{
 				
 				CastVO resultVo = new CastVO();
@@ -621,7 +625,7 @@ public class CasteReportService implements ICasteReportService{
 						locationvo.setCastCount(location.getCastCount());
 						locationList.add(locationvo);
 						total = location.getCastCount() + total;
-						if(locationList.size() >= 7)
+						if(locationList.size() >= splitNo)
 						{
 						  break;
 						}
@@ -631,8 +635,8 @@ public class CasteReportService implements ICasteReportService{
 					castvo.setCasteList(locationList);
 					castList.add(castvo);
 				}
-			    if(locationsSize >= 7)
-				maxindex = maxindex + 7;
+			    if(locationsSize >= splitNo)
+				maxindex = maxindex + splitNo;
 			    resultVo.setCasteList(castList);
 			    result.add(resultVo);	
 			    result.get(0).setPartyName(constituencyName);
