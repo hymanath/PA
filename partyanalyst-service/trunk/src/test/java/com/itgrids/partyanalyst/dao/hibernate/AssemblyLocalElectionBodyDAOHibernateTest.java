@@ -126,7 +126,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		}
 	}*/
 	
-	/*public void testgetAssemblyLocalElectionBodyIdsList()
+	public void testgetAssemblyLocalElectionBodyIdsList()
 	{
 		List<Long> constituencyids = new ArrayList<Long>();
 		constituencyids.add(347l);
@@ -134,7 +134,7 @@ public class AssemblyLocalElectionBodyDAOHibernateTest  extends BaseDaoTestCase 
 		for (Object[] objects : ids) {
 			System.out.println(objects[0] +":"+ objects[1]);
 		}
-	}*/
+	}
 	
 	
 	/*public void testGeLocalElectionBodyListForVotersAnalysis()

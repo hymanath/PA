@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.appfuse.dao.BaseDaoTestCase;
 import org.junit.Test;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
@@ -171,7 +174,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Test
 	public void testGetLocalBodyElections(){
 		List elections = constituencyElectionDAO.getLocalBodyElectionsInAState(122l, 1L);
@@ -181,7 +184,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 				System.out.println(" Election Id :" + (Long)params[0] + " Year :" + (String)params[1]);
 			}
 		}
-	}
+	}*/
 	
 	/*public void testGetReservationZoneForAConstituency(){
 		//List list = constituencyElectionDAO.getLatestReservationZone(21l,IConstants.ELECTION_SUBTYPE_MAIN);
@@ -329,7 +332,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		}
 	}*/
 	
-	public void testfindAllElectionsHappendInAConstituency()
+	/*public void testfindAllElectionsHappendInAConstituency()
 	{
 		List<Long> constituencyId = new ArrayList<Long>(0);
 		constituencyId.add(232l);
@@ -338,7 +341,7 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 		for(Object[] params : list)
 		System.out.println(params[0]+" "+params[1]);
-	}
+	}*/
 	
 	/*public void testfindLatestElectionYear()
 	{
@@ -371,4 +374,96 @@ public class ConstituencyElectionDAOHibernateTest extends BaseDaoTestCase {
 		for(Object[] params : list)
 		System.out.println(params[0]+" "+params[1]);
 	}*/
+	
+	public void test(){
+		List<Long> electionIds=new ArrayList<Long>();
+		List<Long> tehsilIds=new ArrayList<Long>();
+		electionIds.add(37l);
+		electionIds.add(39l);
+		electionIds.add(65l);
+		electionIds.add(67l);
+		
+		tehsilIds.add(783l);
+		tehsilIds.add(784l);
+		tehsilIds.add(785l);
+		tehsilIds.add(786l);
+		tehsilIds.add(787l);
+		tehsilIds.add(802l);
+		
+		List<Object[]> list=constituencyElectionDAO.getZptcMptcResultsOfConstituency(tehsilIds,electionIds);
+		
+		Map<Long,PartyResultsVO> electionMap=new HashMap<Long, PartyResultsVO>();
+		
+		for(Object[] obj:list){
+			PartyResultsVO pvo1=electionMap.get(Long.valueOf(obj[7].toString()));
+			if(pvo1==null){
+				pvo1=new PartyResultsVO();
+			}
+			PartyResultsVO pvo=new PartyResultsVO();
+			pvo.setPartyId(Long.valueOf(obj[4].toString()));
+			pvo.setPartyName(obj[3].toString());
+			pvo.setValidVotes(((Double)(obj[2])).longValue());
+			pvo.setVotesEarned(((Double)(obj[5])).longValue());
+			pvo.setElectionId(Long.valueOf(obj[7].toString()));
+			
+			
+			List<PartyResultsVO> pvoList=pvo1.getPartyResultsVOList();
+			if(pvoList==null){
+				pvoList=new ArrayList<PartyResultsVO>();
+			}
+			pvoList.add(pvo);
+			pvo1.setPartyResultsVOList(pvoList);
+			pvo1.setElectionId(Long.valueOf(obj[7].toString()));
+			
+			electionMap.put(Long.valueOf(obj[7].toString()), pvo1);
+			
+		}
+		
+
+		List<PartyResultsVO> finalVOList=new ArrayList<PartyResultsVO>();
+		for (Entry<Long, PartyResultsVO> entry : electionMap.entrySet())
+		{
+			PartyResultsVO finalVO=new PartyResultsVO();
+			
+			Map<Long,PartyResultsVO> partyMap=new HashMap<Long, PartyResultsVO>();
+			PartyResultsVO pvo=entry.getValue();
+			for(PartyResultsVO param:pvo.getPartyResultsVOList()){
+				
+				PartyResultsVO party=partyMap.get(param.getPartyId());
+				Long validVotes=null;
+				if(party==null){
+					party=new PartyResultsVO();
+					party.setValidVotes(0l);
+				}
+				validVotes=party.getValidVotes();
+				
+				Long partyEarned=party.getVotesEarned();
+				if(partyEarned==null){
+					partyEarned=0l;
+				}
+				Long presCount=param.getVotesEarned()!=null?param.getVotesEarned():0l;
+				party.setVotesEarned(partyEarned+presCount);
+				party.setPartyId(param.getPartyId());
+				partyMap.put(param.getPartyId(), party);
+				validVotes+=param.getValidVotes()!=null?param.getValidVotes():0l;
+				party.setValidVotes(validVotes);
+				finalVO.setValidVotes(validVotes);
+			}
+			List<PartyResultsVO> pvoList=new ArrayList<PartyResultsVO>();
+			for (Entry<Long, PartyResultsVO> entry2 : partyMap.entrySet())
+			{
+				pvoList.add(entry2.getValue());
+			}
+			finalVO.setElectionId(entry.getKey());
+			finalVO.setPartyResultsVOList(pvoList);
+			
+			
+			finalVOList.add(finalVO);
+		}
+
+
+		
+		System.out.println(list.size());
+		
+	}
 }
