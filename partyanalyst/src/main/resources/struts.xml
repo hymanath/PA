@@ -6502,7 +6502,13 @@
 			</result> 
 		</action>
 		
-				<action name="gettingVotersBasedOnCasteAndAgeAction" class="votersAnalysisAction">
+		<action name="getZptcMptcResultsOfConstituencyAction" class="stratagicReportsAction" method="getZptcMptcResultsOfConstituency">
+			<result type="json" name="success">
+				<param name="root">prevResults</param>				
+			</result> 
+		</action>
+		
+		<action name="gettingVotersBasedOnCasteAndAgeAction" class="votersAnalysisAction">
 			<result name="success">/jsp/gettingVotersBasedOnCasteAndAge.jsp</result>
 			<result name="input">/jsp/loginForm.jsp?src=votersAnalysisNewAction
 			</result>
