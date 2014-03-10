@@ -10,6 +10,12 @@
 		#constituencyId{width:200px;}
 		.resultDiv table th{text-align:center;}
 		.resultDiv {margin-left:-100px;}
+		
+		.resultDiv1 table th{text-align:center;}
+		.resultDiv1 {margin-left:-100px;}
+		
+		.partyStrengths table th{text-align:center;}
+		.partyStrengths {margin-left:-100px;}
 	</style>
 </head>
 <body>
@@ -20,10 +26,13 @@
        <div><input type="button" class="btn btn-primary" onClick="getReport();" value="Get Stratagic Report"></input></div>
 	</div>
 	
-	
-	<div class="resultDiv"></div>
 	<div class="prevoiusElectionTrendsDiv"></div>
 	<div class="prevoiusElectionTrendsParliamentDiv"></div>
+	<div class="addedDeletedDiv" style="display:none;"></div>
+	<div class="resultDiv" style="display:none;"></div>
+	<div class="partyStrengths" style="display:none;"></div>
+	<div class="resultDiv1" style="display:none;"></div>
+	
 </div>
  
 
@@ -41,6 +50,8 @@
 		getBoothWiseAddedAndDeletedVoters();
 		getPreviousTrendsReport();
 		getPreviousTrendsReportParliament();
+		getMptcZptcResultsOfConstituency();
+		
 	}
 	function getPreviousTrendsReport()
 	 {
@@ -95,7 +106,9 @@
  }
  
  function buildBoothWiseAddedAndDeletedVoters(results){
-	$(".resultDiv").html("");
+	
+	$(".addedDeletedDiv").css("display","block");
+	
  
 	var str="";
 	str+="<h4 style='text-align:center;'> Booth Wise ADDED Voters</h4>";
@@ -104,11 +117,9 @@
 	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Added</th></tr>";
 	str+="<tr>";
 		str+="<th colspan=2>Total Added</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
-		//str+="<th colspan=2>Total Deleted</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
 	str+"</tr>";
 	str+="<tr>";
 		str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
-		//str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
 	str+"</tr>";
 	str+="</thead>";
 	str+="<tbody>";
@@ -116,9 +127,6 @@
 			str+="<tr>";
 			str+="<td>"+results[i].panchayat+"</td><td>Booth-"+results[i].hamlet+"</td><td>"+results[i].totalVotersInBooth+"</td>";
 			str+="<td>"+results[i].totalVotersAdded+"</td><td>"+results[i].totalVotersAddedPer+"</td><td>"+results[i].youngVoters+"</td><td>"+results[i].youngVotersPer+"</td><td>"+results[i].age18To25+"</td><td>"+results[i].age18To25Per+"</td><td>"+results[i].age26to35+"</td><td>"+results[i].age26to35Per+"</td><td>"+results[i].age36to45+"</td><td>"+results[i].age36to45Per+"</td><td>"+results[i].age46to60+"</td><td>"+results[i].age46to60Per+"</td><td>"+results[i].above60+"</td><td>"+results[i].above60Per+"</td>";
-			//str+="<td>"+results[i].totalVotersDeleted+"</td><td>"+results[i].totalVotersDeletedPer+"</td><td>"+results[i].delYoungVoters+"</td><td>"+results[i].delYoungVotersPer+"</td><td>"+results[i].delAge18To25+"</td><td>"+results[i].delAge18To25Per+"</td><td>"+results[i].delAge26to35+"</td><td>"+results[i].delAge26to35Per+"</td><td>"+results[i].delAge36to45+"</td><td>"+results[i].delAge36to45Per+"</td><td>"+results[i].delAge46to60+"</td><td>"+results[i].delAge46to60Per+"</td><td>"+results[i].delAbove60+"</td><td>"+results[i].delAbove60Per+"</td>";
-			//str+="<th>Panchayat</th><th>Booth</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th>
-			//"<th>Above 60</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th><th>Above 60</th>";
 			str+="</tr>";
 		}
 	str+="</tbody>";
@@ -130,11 +138,9 @@
 	str+="<thead>";
 	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Deleted</th></tr>"
 	str+="<tr>";
-		//str+="<th colspan=2>Total Added</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
 		str+="<th colspan=2>Total Deleted</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
 	str+"</tr>";
 	str+="<tr>";
-		//str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
 		str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
 	str+"</tr>";
 	str+="</thead>";
@@ -143,18 +149,13 @@
 			
 			str+="<tr>";
 			str+="<td>"+results[i].panchayat+"</td><td>Booth-"+results[i].hamlet+"</td><td>"+results[i].totalVotersInBooth+"</td>";
-			//str+="<td>"+results[i].totalVotersAdded+"</td><td>"+results[i].totalVotersAddedPer+"</td><td>"+results[i].youngVoters+"</td><td>"+results[i].youngVotersPer+"</td><td>"+results[i].age18To25+"</td><td>"+results[i].age18To25Per+"</td><td>"+results[i].age26to35+"</td><td>"+results[i].age26to35Per+"</td><td>"+results[i].age36to45+"</td><td>"+results[i].age36to45Per+"</td><td>"+results[i].age46to60+"</td><td>"+results[i].age46to60Per+"</td><td>"+results[i].above60+"</td><td>"+results[i].above60Per+"</td>";
 			str+="<td>"+results[i].totalVotersDeleted+"</td><td>"+results[i].totalVotersDeletedPer+"</td><td>"+results[i].delYoungVoters+"</td><td>"+results[i].delYoungVotersPer+"</td><td>"+results[i].delAge18To25+"</td><td>"+results[i].delAge18To25Per+"</td><td>"+results[i].delAge26to35+"</td><td>"+results[i].delAge26to35Per+"</td><td>"+results[i].delAge36to45+"</td><td>"+results[i].delAge36to45Per+"</td><td>"+results[i].delAge46to60+"</td><td>"+results[i].delAge46to60Per+"</td><td>"+results[i].delAbove60+"</td><td>"+results[i].delAbove60Per+"</td>";
-			//str+="<th>Panchayat</th><th>Booth</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th>
-			//"<th>Above 60</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th><th>Above 60</th>";
 			str+="</tr>";
 		}
 	str+="</tbody>";
 	str+="</table>";
 	
-	
-	
-	$(".resultDiv").html(str);
+	$(".addedDeletedDiv").html(str);
  }
  
 
@@ -239,12 +240,297 @@
 			}
 		str+="</tbody>";
 		str+="</table>";
-		
-		
-		
-		
 		$(".prevoiusElectionTrendsParliamentDiv").html(str);
 	 }
+	 
+	 function getMptcZptcResultsOfConstituency()
+	{
+		var constituencyDetails={constituencyId:""};
+		constituencyDetails.constituencyId=$("#constituencyId").val();
+	
+		$.ajax({
+			type:'POST',
+			url: 'getZptcMptcResultsOfConstituencyAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(constituencyDetails)},
+			}).done(function(myResults){ 
+				$("#ajaxLoad").css("display","none");
+				if(myResults != null){
+					buildMptcZptcResults(myResults);
+					buildMuncipalCorpResults(myResults);
+				}
+		});
+	}
+	
+	function buildMptcZptcResults(myResults){	
+	
+	$(".resultDiv").css("display","block");
+	
+	var str="";
+	str+="<h4 style='text-align:center;'> ZPTC & MPTC Results </h4>";
+	str+="<table class='table table-bordered' style='font-size:16px;'>";
+	str+="<thead>";
+	str+="<tr><th>YEAR </th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>%</th><th>MARGIN (%)</th><th>INC</th><th>%</th><th>TRS</th><th>%</th><th>OTHERS</th><th>%</th></tr>";
+	str+="</thead>";
+	str+="<tbody>";
+	
+	var results=myResults.partyResultsVOList;
+		for(var i in results){
+			str+="<tr>";
+				str+="<tr><td>"+results[i].year+"-"+results[i].electionName+"</td><td>--</td><td>"+results[i].validVotes+"</td>";
+					
+					var tdp_exist=false;
+					var trs_exist=false;
+					var inc_exist=false;
+				
+					for(var j=0;j<results[i].partyResultsVOList.length;j++){
+						if(results[i].partyResultsVOList[j].partyId==872){
+							if(results[i].partyResultsVOList[j].rank!=null){
+								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+							}else{
+								str+="<td style='background:#F7DFAF;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+							}
+							
+							tdp_exist=true;
+						}
+					}
+					if(!tdp_exist){
+						str+="<td> -- </td><td> -- </td>";
+					}
+					str+="<td>"+results[i].marginVotes+"("+results[i].marginPercent+")</td>";
+					
+					
+					
+					for(var j=0;j<results[i].partyResultsVOList.length;j++){
+						if(results[i].partyResultsVOList[j].partyId==362){
+							if(results[i].partyResultsVOList[j].rank!=null){
+								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+							}else{
+								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+							}
+							inc_exist=true;
+						}
+					}
+					
+					if(!inc_exist){
+						str+="<td> -- </td><td> -- </td>";
+					}
+					for(var j=0;j<results[i].partyResultsVOList.length;j++){
+						if(results[i].partyResultsVOList[j].partyId==886){
+							if(results[i].partyResultsVOList[j].rank!=null){
+								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+							}else{
+								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+							}
+							trs_exist=true;
+						}
+					}
+					
+					if(!trs_exist){
+						str+="<td> -- </td><td> -- </td>";
+					}
+					if(results[i].otherVotes!=null){
+						str+="<td>"+results[i].otherVotes+"</td><td>"+results[i].otherVotesPercent+"</td>";
+					}else{
+						str+="<td> -- </td><td> -- </td>";
+					}
+					
+			str+="</tr>";
+		}
+	str+="</tbody>";
+	str+="</table>";
+	
+	$(".resultDiv").html(str);
+	}
+	function buildMuncipalCorpResults(myResults){	
+	if(myResults.muncipalCorpResults!=null || myResults.gmcResults !=null){
+	$(".resultDiv1").css("display","block");
+	$(".partyStrengths").css("display","block");
+	
+	
+	var str="";
+	str+="<h4 style='text-align:center;'> Muncipal/Corporation Results </h4>";
+	str+="<table class='table table-bordered' style='font-size:16px;'>";
+	str+="<thead>";
+	str+="<tr><th> Location </th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>INC</th><th>BJP</th><th>TRS</th><th>Others</th>";
+	//str+="<th>TRS</th><th>%</th><th>OTHERS</th><th>%</th></tr>";
+	str+="</thead>";
+	str+="<tbody>";
+	if(myResults.muncipalCorpResults!=null){
+		var results=myResults.muncipalCorpResults;
+	}else if(myResults.gmcResults!=null){
+		var results=myResults.gmcResults;
+	}
+	
+		for(var i in results){
+			str+="<tr>";
+				str+="<tr><td>"+results[i].location+"</td>";
+				str+="<td>"+results[i].votesPolled+"</td>";
+				str+="<td>"+results[i].validVotes+"</td>";
+					
+					var tdp_exist=false;
+					var trs_exist=false;
+					var inc_exist=false;
+					var bjp_exist=false;
+					var ranked=false;
+				
+					for(var j=0;j<results[i].partyResultsVOList.length;j++){
+						if(results[i].partyResultsVOList[j].partyId==872){
+							if(results[i].partyResultsVOList[j].rank==1){
+								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+								ranked=true;
+							}else{
+								str+="<td style='background:#F7DFAF;'>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+							}
+							
+							tdp_exist=true;
+						}
+					}
+					if(!tdp_exist){
+						str+="<td> -- </td>";
+					}
+					
+					for(var j=0;j<results[i].partyResultsVOList.length;j++){
+						if(results[i].partyResultsVOList[j].partyId==362){
+							if(results[i].partyResultsVOList[j].rank==1){
+								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+								ranked=true;
+							}else{
+								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+							}
+							inc_exist=true;
+						}
+					}
+					
+					if(!inc_exist){
+						str+="<td> -- </td>";
+					}
+					for(var j=0;j<results[i].partyResultsVOList.length;j++){
+						if(results[i].partyResultsVOList[j].partyId==163){
+							if(results[i].partyResultsVOList[j].rank==1){
+								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+								ranked=true;
+							}else{
+								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+							}
+							bjp_exist=true;
+						}
+					}
+					
+					if(!bjp_exist){
+						str+="<td> -- </td>";
+					}
+					for(var j=0;j<results[i].partyResultsVOList.length;j++){
+						if(results[i].partyResultsVOList[j].partyId==886){
+							if(results[i].partyResultsVOList[j].rank==1){
+								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+								ranked=true;
+							}else{
+								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+							}
+							trs_exist=true;
+						}
+					}
+					
+					if(!trs_exist){
+						str+="<td> -- </td>";
+					}
+					
+					if(results[i].otherVotes!=null){
+						if(ranked==false){
+							str+="<td style='background:#CBE699;'>"+results[i].otherVotes+"</td>";
+						}else{
+							str+="<td>"+results[i].otherVotes+"</td>";
+						}
+					}else{
+						str+="<td> -- </td>";
+					}
+			str+="</tr>";
+		}
+		str+="</tbody>";
+		str+="</table>";
+	
+		$(".resultDiv1").html(str);
+	
+	
+		if(myResults.partyStrengths!=null){
+			var vresults=myResults.partyStrengths;
+					var v_tdp_exist=false;
+					var v_trs_exist=false;
+					var v_inc_exist=false;
+					var v_bjp_exist=false;
+					
+					
+			var vstr="";
+				vstr+="<h4 style='text-align:center;'> Muncipal/Corporation Party Strength </h4>";
+				vstr+="<table class='table table-bordered' style='font-size:16px;'>";
+				vstr+="<thead>";
+					vstr+="<tr><th colspan=3>TDP</th><th colspan=3>INC</th><th colspan=3>BJP</th><th colspan=3>TRS</th><th colspan=3>OTHERS</th></tr>";
+					vstr+="<tr><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th></tr>";
+				vstr+="</thead>";
+				vstr+="<tbody>";
+					
+				
+					for(var i=0;i<vresults.length;i++){
+						if(vresults[i].partyId==872){
+							vstr+="<td>"+vresults[i].participated+"</td>";
+							vstr+="<td>"+vresults[i].won+"</td>";
+							vstr+="<td>"+vresults[i].percentage+"</td>";
+							v_tdp_exist=true;
+						}
+					}
+					if(!v_tdp_exist){
+						str+="<td> - </td><td> - </td><td> - </td>";
+					}
+					for(var i=0;i<vresults.length;i++){
+						if(vresults[i].partyId==362){
+							vstr+="<td>"+vresults[i].participated+"</td>";
+							vstr+="<td>"+vresults[i].won+"</td>";
+							vstr+="<td>"+vresults[i].percentage+"</td>";
+							v_inc_exist=true;
+						}
+					}
+					if(!v_inc_exist){
+						str+="<td> - </td><td> - </td><td> - </td>";
+					}
+					for(var i=0;i<vresults.length;i++){
+						if(vresults[i].partyId==163){
+							vstr+="<td>"+vresults[i].participated+"</td>";
+							vstr+="<td>"+vresults[i].won+"</td>";
+							vstr+="<td>"+vresults[i].percentage+"</td>";
+							v_bjp_exist=true;
+						}
+					}
+					if(!v_bjp_exist){
+						vstr+="<td> - </td><td> - </td><td> - </td>";
+					}
+					
+					for(var i=0;i<vresults.length;i++){
+						if(vresults[i].partyId==886){
+							vstr+="<td>"+vresults[i].participated+"</td>";
+							vstr+="<td>"+vresults[i].won+"</td>";
+							vstr+="<td>"+vresults[i].percentage+"</td>";
+							v_trs_exist=true;
+						}
+					}
+					if(!v_trs_exist){
+						vstr+="<td> - </td><td> - </td><td> - </td>";
+					}
+					
+					vstr+="<td>"+myResults.participated+"</td>";
+					vstr+="<td>"+myResults.won+"</td>";
+					vstr+="<td>"+myResults.otherVotesPercent+"</td>";
+					
+					
+				vstr+="</tbody>";
+				vstr+="</table>";
+		}
+		
+		$(".partyStrengths").html(vstr);
+		}
+	}
+		
+	
 
 function redirectToCasteInfo(type)
 {
