@@ -1196,7 +1196,7 @@ List<Long> attrIds = new ArrayList<Long>();
 	}*/
 	
 	
-	public void testGetTotalVotersBoothWise(){
+	/*public void testGetTotalVotersBoothWise(){
 		List<Object[]> list=boothPublicationVoterDAO.getTotalVotersOfBoothByConstituencyId(228l, 10l);
 		System.out.println(list.size());
 	}
@@ -1217,5 +1217,11 @@ List<Long> attrIds = new ArrayList<Long>();
   		{
   			return str;
   		}
-  	}
+  	}*/
+	
+	public void testGetMaxSerialNoOfABooth()
+	{
+		Long serialNo = boothPublicationVoterDAO.getMaxSerialNoOfABooth(371092l);
+		System.out.println(serialNo);
+	}
 }
