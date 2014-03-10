@@ -58,6 +58,7 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 	private List<PartyResultsVO> partyStrengths;
 	private Long participated;
 	private Long won;
+	private Long nominationId;
 	
 	
 	// getters and setters
@@ -65,6 +66,14 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 	
 	public Long getVotesPolled() {
 		return votesPolled;
+	}
+
+	public Long getNominationId() {
+		return nominationId;
+	}
+
+	public void setNominationId(Long nominationId) {
+		this.nominationId = nominationId;
 	}
 
 	public List<PartyResultsVO> getPartyStrengths() {
