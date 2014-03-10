@@ -10,7 +10,6 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IVotersInformationService;
@@ -19,6 +18,8 @@ import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class VotersInformationAction extends ActionSupport implements ServletRequestAware{
+	
+	private static final long serialVersionUID = 8343031574483864330L;
 	private HttpServletRequest request;
 	private HttpSession session;
 	private String task;
