@@ -207,7 +207,7 @@ public class WebServiceHandler {
 	public String sendSMS(@PathParam("uniqueCode") String uniqueCode , @PathParam("mobileNos") String mobileNos, @PathParam("message") String message)
 
     {
-		
+		message = message.replace("_"," ");
 		try{
 			resultStatus = webServiceHandlerService.sendSMS(uniqueCode,mobileNos,message);
 			 if(resultStatus.getResultCode() == 0)
