@@ -1460,8 +1460,8 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 		//List<Object[]> li=nominationDAO.findAllZptcOrMptcResultsInaConstituency(323l,electionTypeIds,"2009");
 		//List<Object[]> li1=nominationDAO.findAllZptcOrMptcResultsInaConstituencyPartyWise(323l, electionTypeIds, "2009");
 		
-		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsInaConstituency(232l,electionIds);
-		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsInaConstituencyPartyWise(232l, electionIds);
+		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsInaConstituency(31l,electionIds);
+		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsInaConstituencyPartyWise(31l, electionIds);
 		
 		
 		/*List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituency(315l, electionIds);
@@ -1519,6 +1519,7 @@ public void testGetLocalBodiesElecCandidateDetailsForAnElection(){
 			pv.setVotesEarned(((Double)(ob[2])).longValue());
 			pv.setDiffPercent(calcPercentage(pvo_temp.getVotesPolled(), pv.getVotesEarned()));
 			pv.setRank(Long.valueOf(ob[8].toString()));
+			pv.setNominationId(Long.valueOf(ob[9].toString()));
 			partyResults.add(pv);
 			
 			
