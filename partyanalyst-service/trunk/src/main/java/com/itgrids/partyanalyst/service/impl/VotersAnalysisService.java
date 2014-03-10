@@ -7016,22 +7016,18 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 				for(Map.Entry<Long,List<Long>> entry : deletedVoterIdsMap.entrySet())
 				{
 					try{
-						List<Long> bPVIDSList =  boothPublicationVoterDAO.getBoothPublicationVoterIdsByVoterIdsList(entry.getKey().toString(),entry.getValue(),fromPublicationDateId);
-						if(bPVIDSList != null && bPVIDSList.size() > 0)
+						Long boothId = boothDAO.getBoothIdByConstituencyPublicationPartNo(constituencyId,toPublicationDateId, entry.getKey().toString());
+						long serailNo = boothPublicationVoterDAO.getMaxSerialNoOfABooth(boothId);
+						
+						if(boothId != null)
 						{
-							for(Long bpvId : bPVIDSList)
+							for(Long voterId : entry.getValue())
 							{
-								BoothPublicationVoter bpv = boothPublicationVoterDAO.get(bpvId);
-								Long boothId = boothDAO.getBoothIdByConstituencyPublicationPartNo(constituencyId,toPublicationDateId,bpv.getBooth().getPartNo());
-								
-								if(boothId != null)
-								{
-									BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
-									boothPublicationVoter.setBoothId(boothId);
-									boothPublicationVoter.setVoter(bpv.getVoter());
-									boothPublicationVoter.setSerialNo(bpv.getSerialNo());
-									boothPublicationVoterDAO.save(boothPublicationVoter);
-								}
+								BoothPublicationVoter boothPublicationVoter = new BoothPublicationVoter();
+								boothPublicationVoter.setBoothId(boothId);
+								boothPublicationVoter.setVoter(voterDAO.get(voterId));
+								boothPublicationVoter.setSerialNo(++serailNo);
+								boothPublicationVoterDAO.save(boothPublicationVoter);
 							}
 						}
 					}catch(Exception e)
@@ -7039,6 +7035,7 @@ public ResultStatus insertVoterData(Long constituencyId,Long publicationDateId,I
 						log.error("Exception Occured, Exception is ",e);
 					}
 				}
+				
 			}
 			
 			if(deletedVoterIdsMap.size() > 0)
