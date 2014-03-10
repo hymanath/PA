@@ -16,6 +16,8 @@
 		
 		.partyStrengths table th{text-align:center;}
 		.partyStrengths {margin-left:-100px;}
+		
+		.prevoiusElectionTrendsDiv {margin-left:-100px;}
 	</style>
 </head>
 <body>
@@ -172,7 +174,7 @@
 			//str+="<th colspan=2>Total Deleted</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
 		//str+"</tr>";
 		str+="<tr>";
-			str+="<th>Ranks</th><th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% Votes(TDP)</th><th>Margin Votes(%)</th><th>INC</th><th>% Votes(INC)</th><th>PRP/YSRCP</th><th>% Votes(PRP/YSRCP)</th><th>OTHERS</th><th>% votes (OTHERS)</th>";
+			str+="<th>Ranks</th><th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% </th><th>Margin Votes(%)</th><th>INC</th><th>%</th><th>PRP/YSRCP</th><th>%</th><th>BJP</th><th>%</th><th>TRS</th><th>%</th><th>OTHERS</th><th>%</th>";
 			//str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
 		str+"</tr>";
 		str+="</thead>";
@@ -192,7 +194,7 @@
 				
 				str+="<tr>";
 				//str+="<td>"+results[i].panchayat+"</td><td>Booth-"+results[i].hamlet+"</td><td>"+results[i].totalVotersInBooth+"</td>";
-				str+="<td>TDP Rank-"+tdpRank+"  INC rank-"+incRank+" PRP/YSRCPrank-"+prpRank+" Others Rank-"+othersRank+"</td><td>"+results[i].electionYear+"</td><td>"+results[i].totalVoters+"</td><td>"+results[i].totalVotesPolled+"</td><td>"+results[i].tdpVo.votesEarned+"</td><td>"+results[i].tdpVo.percentage+"</td><td>"+tdpPer+"</td><td>"+results[i].incVo.votesEarned+"</td><td>"+results[i].incVo.percentage+"</td><td>"+results[i].prpVo.votesEarned+"</td><td>"+results[i].prpVo.percentage+"</td><td>"+results[i].othersVo.votesEarned+"</td><td>"+results[i].othersVo.percentage+"</td>";
+				str+="<td>TDP Rank-"+tdpRank+"  INC rank-"+incRank+" PRP/YSRCPrank-"+prpRank+" Others Rank-"+othersRank+"</td><td>"+results[i].electionYear+"</td><td>"+results[i].totalVoters+"</td><td>"+results[i].totalVotesPolled+"</td><td>"+results[i].tdpVo.votesEarned+"</td><td>"+results[i].tdpVo.percentage+"</td><td>"+tdpPer+"</td><td>"+results[i].incVo.votesEarned+"</td><td>"+results[i].incVo.percentage+"</td><td>"+results[i].prpVo.votesEarned+"</td><td>"+results[i].prpVo.percentage+"</td><td>"+results[i].bjpVo.votesEarned+"</td><td>"+results[i].bjpVo.percentage+"</td><td>"+results[i].trsVo.votesEarned+"</td><td>"+results[i].trsVo.percentage+"</td><td>"+results[i].othersVo.votesEarned+"</td><td>"+results[i].othersVo.percentage+"</td>";
 				//str+="<td>"+results[i].totalVotersDeleted+"</td><td>"+results[i].totalVotersDeletedPer+"</td><td>"+results[i].delYoungVoters+"</td><td>"+results[i].delYoungVotersPer+"</td><td>"+results[i].delAge18To25+"</td><td>"+results[i].delAge18To25Per+"</td><td>"+results[i].delAge26to35+"</td><td>"+results[i].delAge26to35Per+"</td><td>"+results[i].delAge36to45+"</td><td>"+results[i].delAge36to45Per+"</td><td>"+results[i].delAge46to60+"</td><td>"+results[i].delAge46to60Per+"</td><td>"+results[i].delAbove60+"</td><td>"+results[i].delAbove60Per+"</td>";
 				//str+="<th>Panchayat</th><th>Booth</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th>
 				//"<th>Above 60</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th><th>Above 60</th>";
