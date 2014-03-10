@@ -10,7 +10,23 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	private PartyElectionTrendsReportHelperVO tdpVo;
 	private PartyElectionTrendsReportHelperVO incVo=new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO prpVo = new PartyElectionTrendsReportHelperVO();
+	private PartyElectionTrendsReportHelperVO trsVo = new PartyElectionTrendsReportHelperVO();
+	private PartyElectionTrendsReportHelperVO bjpVo = new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO othersVo;
+	
+	
+	public PartyElectionTrendsReportHelperVO getTrsVo() {
+		return trsVo;
+	}
+	public void setTrsVo(PartyElectionTrendsReportHelperVO trsVo) {
+		this.trsVo = trsVo;
+	}
+	public PartyElectionTrendsReportHelperVO getBjpVo() {
+		return bjpVo;
+	}
+	public void setBjpVo(PartyElectionTrendsReportHelperVO bjpVo) {
+		this.bjpVo = bjpVo;
+	}
 	public Integer getElectionYear() {
 		return electionYear;
 	}
