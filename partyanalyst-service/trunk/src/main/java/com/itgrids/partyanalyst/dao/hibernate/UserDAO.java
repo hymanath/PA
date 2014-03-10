@@ -685,7 +685,7 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	    return queryObject.list();		
 		
 	}
-	public List<Object[]> getData(String query)
+	public List<Object[]> getData1(String query)
 	{
 		
 		Query queryObject = getSession().createQuery(query);
