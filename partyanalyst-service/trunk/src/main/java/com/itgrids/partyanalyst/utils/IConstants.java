@@ -722,6 +722,7 @@ public interface IConstants {
     public static final Long HOUSE_HOLD_VOTER_SOCIAL_POSITIONS=9l;
     
     public static final Long STRATAGIC_REPORT_PUBLICATION_DATE_ID=10l;
+    public static final Long TDP_PARTY_ID=872l;
     
     public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
     //public static final String STATIC_CONTENT_FOLDER_URL = "/home/dakavara/public_html/";

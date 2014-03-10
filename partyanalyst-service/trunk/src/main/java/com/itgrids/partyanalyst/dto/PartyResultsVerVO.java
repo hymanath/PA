@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-public class PartyResultsVO implements Comparable<PartyResultsVO>{
+public class PartyResultsVerVO{
 
 	private Long partyId;
 	private String partyName;
@@ -56,31 +56,14 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 	private List<PartyResultsVO> muncipalCorpResults;
 	private List<PartyResultsVO> gmcResults;
 	private List<PartyResultsVO> partyStrengths;
-	private Long participated;
+	private List<PartyResultsVO> otherPartyStrengths;
 	private Long won;
-	
-	
+	private Long participated;
 	// getters and setters
 	
 	
 	public Long getVotesPolled() {
 		return votesPolled;
-	}
-
-	public List<PartyResultsVO> getPartyStrengths() {
-		return partyStrengths;
-	}
-
-	public void setPartyStrengths(List<PartyResultsVO> partyStrengths) {
-		this.partyStrengths = partyStrengths;
-	}
-
-	public Long getParticipated() {
-		return participated;
-	}
-
-	public void setParticipated(Long participated) {
-		this.participated = participated;
 	}
 
 	public Long getWon() {
@@ -91,21 +74,37 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 		this.won = won;
 	}
 
+	public Long getParticipated() {
+		return participated;
+	}
+
+	public void setParticipated(Long participated) {
+		this.participated = participated;
+	}
+
 	public List<PartyResultsVO> getMuncipalCorpResults() {
 		return muncipalCorpResults;
 	}
+
+
 
 	public void setMuncipalCorpResults(List<PartyResultsVO> muncipalCorpResults) {
 		this.muncipalCorpResults = muncipalCorpResults;
 	}
 
+
+
 	public List<PartyResultsVO> getGmcResults() {
 		return gmcResults;
 	}
 
+
+
 	public void setGmcResults(List<PartyResultsVO> gmcResults) {
 		this.gmcResults = gmcResults;
 	}
+
+
 
 	public Long getLocationId() {
 		return locationId;
@@ -274,9 +273,9 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 	
 	@Override
 	public boolean equals(Object obj){
-		if(!(obj instanceof PartyResultsVO))
+		if(!(obj instanceof PartyResultsVerVO))
 			return false;
-		PartyResultsVO voObj = (PartyResultsVO) obj;
+		PartyResultsVerVO voObj = (PartyResultsVerVO) obj;
 		return this.partyId.equals(voObj.getPartyId());
 	}
 	
@@ -340,6 +339,8 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 	public void setType(String type) {
 		this.type = type;
 	}
+
+	
 
 	public List<PartyResultsVO> getPartyResultsVOList() {
 		return partyResultsVOList;
@@ -437,14 +438,24 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 	public void setYear(Long year) {
 		this.year = year;
 	}
-	@Override
-	public int compareTo(PartyResultsVO vo) {
-		
-		if(this.votesEarned - vo.votesEarned >0)
-			return 0;
-		
-		return 1;
+
+	public List<PartyResultsVO> getPartyStrengths() {
+		return partyStrengths;
+	}
+
+	public void setPartyStrengths(List<PartyResultsVO> partyStrengths) {
+		this.partyStrengths = partyStrengths;
+	}
+
+	public List<PartyResultsVO> getOtherPartyStrengths() {
+		return otherPartyStrengths;
+	}
+
+	public void setOtherPartyStrengths(List<PartyResultsVO> otherPartyStrengths) {
+		this.otherPartyStrengths = otherPartyStrengths;
 	}
 	
+	
+		
 	
 }

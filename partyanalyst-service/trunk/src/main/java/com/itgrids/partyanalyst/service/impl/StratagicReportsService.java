@@ -3,34 +3,37 @@ package com.itgrids.partyanalyst.service.impl;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.INominationDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
 
 public class StratagicReportsService implements IStratagicReportsService{
 	private static final Logger log = Logger.getLogger(StratagicReportsService.class);
 	
-	@Autowired
-	private IUserDAO userDAO;
+	@Autowired IUserDAO userDAO;
 	
-	@Autowired
-	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	@Autowired IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
 	@Autowired IPartyTrendsDAO partyTrendsDAO;
+	
+	@Autowired INominationDAO nominationDAO;
 	
 	   
 	public List<AgeRangeVO> getBoothWiseAddedAndDeletedVoters(Long constiId,Long pubId){
@@ -513,5 +516,492 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 		Collections.sort(finalRes);
 	return finalRes	;
+	}
+	
+	public PartyResultsVerVO getZptcMptcResultsOfConstituency(Long constiutencyId){
+		PartyResultsVerVO pvMain=new PartyResultsVerVO();
+		
+		List<Long> electionTypeIds=new ArrayList<Long>();
+		electionTypeIds.add(37l);
+		electionTypeIds.add(39l);
+		electionTypeIds.add(65l);
+		electionTypeIds.add(67l);
+		
+		List<Object[]> li=nominationDAO.findAllZptcOrMptcResultsInaConstituency(constiutencyId,electionTypeIds,"2009");
+		List<Object[]> li1=nominationDAO.findAllZptcOrMptcResultsInaConstituencyPartyWise(constiutencyId, electionTypeIds, "2009");
+		
+		
+		List<PartyResultsVO> electionList=new ArrayList<PartyResultsVO>();
+		for(Object[] ob:li){
+			PartyResultsVO pvo=new PartyResultsVO();
+			pvo.setElectionId(Long.valueOf(ob[5].toString()));
+			pvo.setValidVotes(ob[4]!=null?((Double)ob[4]).longValue():0l);
+			pvo.setVotesPolled(ob[3]!=null?((Double)ob[3]).longValue():0l);
+			pvo.setYear(Long.valueOf(ob[0].toString()));
+			pvo.setElectionName(ob[1].toString());
+			
+			electionList.add(pvo);
+		}
+		
+		List<Long> partyIds=new ArrayList<Long>();
+		partyIds.add(872l);
+		partyIds.add(362l);
+		partyIds.add(886l);
+		
+		
+		for(Object[] ob:li1){
+			PartyResultsVO pvo_temp=getMatchedVO(electionList,Long.valueOf(ob[5].toString()));
+			List<PartyResultsVO> partyResults=pvo_temp.getPartyResultsVOList();
+			if(partyResults==null){
+				partyResults=new ArrayList<PartyResultsVO>();
+			}
+			PartyResultsVO pv=getMatchedPartyVO(partyResults,Long.valueOf(ob[0].toString()));
+			if(pv==null){
+				pv=new PartyResultsVO();
+			}
+			pv.setPartyId(Long.valueOf(ob[0].toString()));
+			pv.setPartyName(ob[1].toString());
+			pv.setVotesEarned(((Double)(ob[2])).longValue());
+			pv.setDiffPercent(calcPercentage(pvo_temp.getValidVotes(), pv.getVotesEarned()));
+			
+			partyResults.add(pv);
+			
+			
+			if(!partyIds.contains(pv.getPartyId())){
+				Long existVotes=pvo_temp.getOtherVotes()!=null?pvo_temp.getOtherVotes():0l;
+				pvo_temp.setOtherVotes(existVotes+pv.getVotesEarned());
+				pvo_temp.setOtherVotesPercent(calcPercentage(pvo_temp.getValidVotes(), pvo_temp.getOtherVotes()));
+			}
+			pvo_temp.setPartyResultsVOList(partyResults);
+			
+		}
+		
+		for(PartyResultsVO pvo:electionList){
+			List<PartyResultsVO> partyResults=pvo.getPartyResultsVOList();
+			Collections.sort(partyResults);
+			Long marginVotes=0l;
+			for(int i=0;i<partyResults.size();i++){
+				if(partyResults.get(i).getPartyId().longValue()==872l){
+					if(i==0){
+						if(!partyIds.contains(partyResults.get(1).getPartyId())){
+							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
+						}else{
+							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
+						}
+					}else{
+						if(!partyIds.contains(partyResults.get(0).getPartyId())){
+							marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
+						}else{
+							marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
+						}
+					}
+				}
+			}
+		}
+		
+		pvMain.setPartyResultsVOList(electionList);
+		return pvMain;
+		
+	}
+	
+	public PartyResultsVerVO getMuncipalCorpPrevResults(Long constiutencyId){
+		List<Long> electionIds=new ArrayList<Long>();
+		electionIds.add(40l);
+		electionIds.add(42l);
+		electionIds.add(201l);
+		
+		//electionIds.add(63l);
+		
+		//List<Object[]> li=nominationDAO.findAllZptcOrMptcResultsInaConstituency(323l,electionTypeIds,"2009");
+		//List<Object[]> li1=nominationDAO.findAllZptcOrMptcResultsInaConstituencyPartyWise(323l, electionTypeIds, "2009");
+		
+		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsInaConstituency(constiutencyId,electionIds);
+		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsInaConstituencyPartyWise(constiutencyId, electionIds);
+		
+		
+		/*List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituency(315l, electionIds);
+		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(315l, electionIds);*/
+		
+		
+		List<PartyResultsVO> electionList=new ArrayList<PartyResultsVO>();
+		Map<Long,List<PartyResultsVO>> eleMap=new HashMap<Long, List<PartyResultsVO>>();
+		
+		for(Object[] ob:li){
+			List<PartyResultsVO> wardsList=eleMap.get(Long.valueOf(ob[7].toString()));
+			if(wardsList==null){
+				wardsList=new ArrayList<PartyResultsVO>();
+			}
+			
+			eleMap.put(Long.valueOf(ob[7].toString()), wardsList);
+		}
+		for(Object[] ob:li){
+			List<PartyResultsVO> wardsList=eleMap.get(Long.valueOf(ob[7].toString()));
+			
+			PartyResultsVO pvo=new PartyResultsVO();
+			pvo.setElectionId(Long.valueOf(ob[7].toString()));
+			pvo.setValidVotes(ob[6]!=null?((Double)ob[6]).longValue():0l);
+			pvo.setVotesPolled(ob[5]!=null?((Double)ob[5]).longValue():0l);
+			pvo.setYear(Long.valueOf(ob[0].toString()));
+			pvo.setElectionName(ob[1].toString());
+			pvo.setLocation(ob[3].toString());
+			pvo.setLocationId(Long.valueOf(ob[2].toString()));
+			wardsList.add(pvo);
+		}
+		
+		List<Long> partyIds=new ArrayList<Long>();
+		partyIds.add(872l);
+		partyIds.add(362l);
+		partyIds.add(886l);
+		partyIds.add(163l);
+		
+		
+		for(Object[] ob:li1){
+			
+			List<PartyResultsVO> wardsList=eleMap.get(Long.valueOf(ob[5].toString()));
+			
+			PartyResultsVO pvo_temp=getMatchedWardVO(wardsList,Long.valueOf(ob[5].toString()),Long.valueOf(ob[6].toString()));
+			
+			List<PartyResultsVO> partyResults=pvo_temp.getPartyResultsVOList();
+			if(partyResults==null){
+				partyResults=new ArrayList<PartyResultsVO>();
+			}
+			PartyResultsVO pv=getMatchedPartyVO(partyResults,Long.valueOf(ob[0].toString()));
+			if(pv==null){
+				pv=new PartyResultsVO();
+			}
+			pv.setPartyId(Long.valueOf(ob[0].toString()));
+			pv.setPartyName(ob[1].toString());
+			pv.setVotesEarned(((Double)(ob[2])).longValue());
+			pv.setDiffPercent(calcPercentage(pvo_temp.getVotesPolled(), pv.getVotesEarned()));
+			pv.setRank(Long.valueOf(ob[8].toString()));
+			partyResults.add(pv);
+			
+			
+			if(!partyIds.contains(pv.getPartyId())){
+				Long existVotes=pvo_temp.getOtherVotes()!=null?pvo_temp.getOtherVotes():0l;
+				pvo_temp.setOtherVotes(existVotes+pv.getVotesEarned());
+				pvo_temp.setOtherVotesPercent(calcPercentage(pvo_temp.getVotesPolled(), pvo_temp.getOtherVotes()));
+			}
+			pvo_temp.setPartyResultsVOList(partyResults);
+			
+		}
+		
+
+		PartyResultsVerVO prvo=new PartyResultsVerVO();
+		Map<Long,PartyResultsVerVO> partyRanksMap=new HashMap<Long, PartyResultsVerVO>();
+		
+		Map<Long,PartyResultsVO> party_res=new HashMap<Long, PartyResultsVO>();
+		for (Entry<Long, List<PartyResultsVO>> entry : eleMap.entrySet())
+		{
+		List<PartyResultsVO> electionList1=entry.getValue();
+		Long totalValidVotes=0l;
+		for(PartyResultsVO pvo:electionList1){
+			totalValidVotes+=pvo.getValidVotes();
+		}
+		for(PartyResultsVO pvo:electionList1){
+			List<PartyResultsVO> partyResults=pvo.getPartyResultsVOList();
+			Collections.sort(partyResults);
+			Long marginVotes=0l;
+			for(int i=0;i<partyResults.size();i++){
+				//PARTICIPATED AND RANK COUNT START
+				PartyResultsVO parr=party_res.get(partyResults.get(i).getPartyId().longValue());
+				if(parr==null){
+					parr=new PartyResultsVO();
+					parr.setWon(0l);
+					parr.setParticipated(0l);
+					parr.setVotesEarned(0l);
+					parr.setPercentage(calcPercentage(totalValidVotes, parr.getVotesEarned()));
+					//party_res.put(partyResults.get(i).getPartyId().longValue(), parr);
+				}
+				
+				if(partyResults.get(i).getRank()!=null){
+					if(partyResults.get(i).getRank()==1){
+						Long exist=parr.getWon();
+						parr.setWon(exist+1l);
+					}
+				}
+					Long existPrtcptd=parr.getParticipated();
+					parr.setParticipated(existPrtcptd+1l);
+					parr.setPartyId(partyResults.get(i).getPartyId().longValue());
+					
+					
+					Long votesErnd_exist=parr.getVotesEarned();
+					parr.setVotesEarned(partyResults.get(i).getVotesEarned()+votesErnd_exist);
+					parr.setPercentage(calcPercentage(totalValidVotes,parr.getVotesEarned()));
+					
+					party_res.put(partyResults.get(i).getPartyId().longValue(), parr);
+					
+					if(!partyIds.contains(partyResults.get(i).getPartyId().longValue())){
+						if(prvo.getParticipated()==null){
+							prvo.setParticipated(0l);
+							prvo.setWon(0l);
+							prvo.setOtherVotes(0l);
+							prvo.setOtherVotesPercent(calcPercentage(totalValidVotes,prvo.getOtherVotes()));
+						}
+						Long exPr=parr.getParticipated();
+						prvo.setParticipated(exPr+1l);
+						
+						if(partyResults.get(i).getRank()==1){
+							Long exWn=prvo.getWon();
+							prvo.setWon(exWn+1l);
+						}
+						
+						Long votesErnd=prvo.getOtherVotes();
+						prvo.setOtherVotes(partyResults.get(i).getVotesEarned()+votesErnd);
+						prvo.setOtherVotesPercent(calcPercentage(totalValidVotes,prvo.getOtherVotes()));
+					
+					}
+				//END	
+				
+					
+				
+				if(partyResults.get(i).getPartyId().longValue()==872l){
+					if(i==0){
+						if(!partyIds.contains(partyResults.get(1).getPartyId())){
+							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+						}else{
+							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+						}
+					}else{
+						if(!partyIds.contains(partyResults.get(0).getPartyId())){
+							marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
+						}else{
+							marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+						}
+					}
+				}
+			}
+		}
+		prvo.setElectionId(entry.getKey());
+		
+		List<PartyResultsVO> partyStrengths=new ArrayList<PartyResultsVO>(party_res.values());
+			if(prvo.getPartyResultsVOList()==null){
+				prvo.setPartyResultsVOList(electionList1);
+				prvo.setPartyStrengths(partyStrengths);
+			}else{
+				List<PartyResultsVO> eleList=prvo.getPartyResultsVOList();
+				eleList.addAll(electionList1);
+				prvo.setPartyResultsVOList(eleList);
+			}
+		}
+		
+		return prvo;
+	}
+	
+	public PartyResultsVerVO getMuncipalCorpPrevResultsInGHMC(Long constiutencyId){
+		List<Long> electionIds=new ArrayList<Long>();
+		
+		electionIds.add(63l);
+		
+		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituency(constiutencyId, electionIds);
+		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(constiutencyId, electionIds);
+		
+		
+		List<PartyResultsVO> electionList=new ArrayList<PartyResultsVO>();
+		Map<Long,List<PartyResultsVO>> eleMap=new HashMap<Long, List<PartyResultsVO>>();
+		
+		for(Object[] ob:li){
+			List<PartyResultsVO> wardsList=eleMap.get(Long.valueOf(ob[7].toString()));
+			if(wardsList==null){
+				wardsList=new ArrayList<PartyResultsVO>();
+			}
+			
+			eleMap.put(Long.valueOf(ob[7].toString()), wardsList);
+		}
+		for(Object[] ob:li){
+			List<PartyResultsVO> wardsList=eleMap.get(Long.valueOf(ob[7].toString()));
+			
+			PartyResultsVO pvo=new PartyResultsVO();
+			pvo.setElectionId(Long.valueOf(ob[7].toString()));
+			pvo.setValidVotes(ob[6]!=null?((Double)ob[6]).longValue():0l);
+			pvo.setVotesPolled(ob[5]!=null?((Double)ob[5]).longValue():0l);
+			pvo.setYear(Long.valueOf(ob[0].toString()));
+			pvo.setElectionName(ob[1].toString());
+			pvo.setLocation(ob[3].toString());
+			pvo.setLocationId(Long.valueOf(ob[2].toString()));
+			wardsList.add(pvo);
+		}
+		
+		List<Long> partyIds=new ArrayList<Long>();
+		partyIds.add(872l);
+		partyIds.add(362l);
+		partyIds.add(886l);
+		partyIds.add(163l);
+		
+		for(Object[] ob:li1){
+			
+			List<PartyResultsVO> wardsList=eleMap.get(Long.valueOf(ob[5].toString()));
+			
+			PartyResultsVO pvo_temp=getMatchedWardVO(wardsList,Long.valueOf(ob[5].toString()),Long.valueOf(ob[6].toString()));
+			
+			List<PartyResultsVO> partyResults=pvo_temp.getPartyResultsVOList();
+			if(partyResults==null){
+				partyResults=new ArrayList<PartyResultsVO>();
+			}
+			PartyResultsVO pv=getMatchedPartyVO(partyResults,Long.valueOf(ob[0].toString()));
+			if(pv==null){
+				pv=new PartyResultsVO();
+			}
+			pv.setPartyId(Long.valueOf(ob[0].toString()));
+			pv.setPartyName(ob[1].toString());
+			pv.setVotesEarned(((Double)(ob[2])).longValue());
+			pv.setDiffPercent(calcPercentage(pvo_temp.getVotesPolled(), pv.getVotesEarned()));
+			pv.setRank(Long.valueOf(ob[8].toString()));
+			partyResults.add(pv);
+			
+			
+			if(!partyIds.contains(pv.getPartyId())){
+				Long existVotes=pvo_temp.getOtherVotes()!=null?pvo_temp.getOtherVotes():0l;
+				pvo_temp.setOtherVotes(existVotes+pv.getVotesEarned());
+				pvo_temp.setOtherVotesPercent(calcPercentage(pvo_temp.getVotesPolled(), pvo_temp.getOtherVotes()));
+			}
+			pvo_temp.setPartyResultsVOList(partyResults);
+			
+		}
+		
+
+		PartyResultsVerVO prvo=new PartyResultsVerVO();
+		Map<Long,PartyResultsVO> party_res=new HashMap<Long, PartyResultsVO>();
+		
+		for (Entry<Long, List<PartyResultsVO>> entry : eleMap.entrySet())
+		{
+		List<PartyResultsVO> electionList1=entry.getValue();
+		Long totalValidVotes=0l;
+		for(PartyResultsVO pvo:electionList1){
+			totalValidVotes+=pvo.getValidVotes();
+		}
+		for(PartyResultsVO pvo:electionList1){
+			List<PartyResultsVO> partyResults=pvo.getPartyResultsVOList();
+			Collections.sort(partyResults);
+			Long marginVotes=0l;
+			
+			for(int i=0;i<partyResults.size();i++){
+				
+				//PARTICIPATED AND RANK COUNT START
+				PartyResultsVO parr=party_res.get(partyResults.get(i).getPartyId().longValue());
+				if(parr==null){
+					parr=new PartyResultsVO();
+					parr.setWon(0l);
+					parr.setParticipated(0l);
+					parr.setVotesEarned(0l);
+					parr.setPercentage(calcPercentage(totalValidVotes, parr.getVotesEarned()));
+				}
+				
+				if(partyResults.get(i).getRank()!=null){
+					if(partyResults.get(i).getRank()==1){
+						Long exist=parr.getWon();
+						parr.setWon(exist+1l);
+					}
+				}
+					Long existPrtcptd=parr.getParticipated();
+					parr.setParticipated(existPrtcptd+1l);
+					parr.setPartyId(partyResults.get(i).getPartyId().longValue());
+					
+					Long votesErnd_exist=parr.getVotesEarned();
+					parr.setVotesEarned(partyResults.get(i).getVotesEarned()+votesErnd_exist);
+					parr.setPercentage(calcPercentage(totalValidVotes,parr.getVotesEarned()));
+					
+					party_res.put(partyResults.get(i).getPartyId().longValue(), parr);
+					
+					if(!partyIds.contains(partyResults.get(i).getPartyId().longValue())){
+						if(prvo.getParticipated()==null){
+							prvo.setParticipated(0l);
+							prvo.setWon(0l);
+							prvo.setOtherVotes(0l);
+							prvo.setOtherVotesPercent(calcPercentage(totalValidVotes,prvo.getOtherVotes()));
+						}
+						Long exPr=parr.getParticipated();
+						prvo.setParticipated(exPr+1l);
+						
+						if(partyResults.get(i).getRank()==1){
+							Long exWn=parr.getWon();
+							prvo.setWon(exWn+1l);
+						}
+						
+						Long votesErnd=prvo.getOtherVotes();
+						prvo.setOtherVotes(partyResults.get(i).getVotesEarned()+votesErnd);
+						prvo.setOtherVotesPercent(calcPercentage(totalValidVotes,prvo.getOtherVotes()));
+					
+					}
+				//END
+				
+				if(partyResults.get(i).getPartyId().longValue()==872l){
+					if(i==0){
+						if(!partyIds.contains(partyResults.get(1).getPartyId())){
+							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+						}else{
+							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+						}
+					}else{
+						if(!partyIds.contains(partyResults.get(0).getPartyId())){
+							marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
+						}else{
+							marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+						}
+					}
+				}
+			}
+		}
+		prvo.setElectionId(entry.getKey());
+		
+		List<PartyResultsVO> partyStrengths=new ArrayList<PartyResultsVO>(party_res.values());
+		
+			if(prvo.getPartyResultsVOList()==null){
+				prvo.setPartyResultsVOList(electionList1);
+				prvo.setPartyStrengths(partyStrengths);
+			}else{
+				List<PartyResultsVO> eleList=prvo.getPartyResultsVOList();
+				eleList.addAll(electionList1);
+				prvo.setPartyResultsVOList(eleList);
+			}
+		}
+		
+		return prvo;
+	} 
+	
+	public PartyResultsVO getMatchedVO(List<PartyResultsVO> pvoList,Long electionId){
+		for(PartyResultsVO pv:pvoList){
+			if(pv.getElectionId().longValue()==electionId.longValue()){
+				return pv;
+			}
+		}
+		return null;
+	}
+	public PartyResultsVO getMatchedPartyVO(List<PartyResultsVO> pvoList,Long partyId){
+		for(PartyResultsVO pv:pvoList){
+			if(pv.getPartyId().longValue()==partyId.longValue()){
+				return pv;
+			}
+		}
+		return null;
+	}
+	
+	public PartyResultsVO getMatchedWardVO(List<PartyResultsVO> pvoList,Long electionId,Long wardId){
+		for(PartyResultsVO pv:pvoList){
+			if(pv.getElectionId().longValue()==electionId.longValue() && pv.getLocationId().longValue()==wardId.longValue()){
+				return pv;
+			}
+		}
+		return null;
 	}
 }
