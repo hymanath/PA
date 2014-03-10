@@ -110,15 +110,14 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
 	}*/
-	/*public void testGetIspartialForMandalByMandalIdsList()
+	public void testGetIspartialForMandalByMandalIdsList()
 	{
 		List<Long> mandalIdsList = new ArrayList<Long>(0);
-		mandalIdsList.add(232l);
-		mandalIdsList.add(347l);
-		List<Object[]> list = delimitationConstituencyMandalDAO.getTehsilsForRuralConstituencyes(mandalIdsList);
+		mandalIdsList.add(228l);
+		List<Object[]> list = delimitationConstituencyMandalDAO.getTehsilsForRuralConstituencyes(mandalIdsList, 2009l);
 		for (Object[] parms : list) 
 			System.out.println(parms[0]+" "+parms[1]);
-	}*/
+	}
 	/*public void testgetTehsilsByDelimitationConstituencyIds(){
 		List<Long> mandalIdsList = new ArrayList<Long>(0);
 		mandalIdsList.add(232l);
@@ -144,7 +143,7 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 		}
 	}*/
 	
-	public void testGetAssemblyConstituencyAndMandalsInAState()
+	/*public void testGetAssemblyConstituencyAndMandalsInAState()
 	{
 		List<Object[]> list = delimitationConstituencyMandalDAO.getAssemblyConstituencyAndMandalsInAState(1l);
 		System.out.println(list.size());
@@ -155,5 +154,5 @@ public class DelimitationConstituencyMandalDAOHibernateTest extends
 			for(Object obj : params)
 				System.out.print("\t"+obj.toString());
 		}
-	}
+	}*/
 }
