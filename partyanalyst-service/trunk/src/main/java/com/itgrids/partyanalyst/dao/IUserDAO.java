@@ -130,7 +130,7 @@ public interface IUserDAO extends GenericDao<User,Long>{
 	public List<Object[]> getAgePanchayatWiseForMunicpalWithType(Long constituencyId,Long publicationId,List<Long> localElecBodyList);
 	public List<Object[]> getAgePanchayatWiseForMunicpalWithType1(Long constituencyId,Long publicationId,List<Long> localElecBodyList);
 	
-	public List<Object[]> getData(String query);
+	public List<Object[]> getData1(String query);
 
 	
 }
