@@ -4311,12 +4311,13 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 		" model.constituencyElection.election.electionId," +
 		 		" model.constituencyElection.constituency.constituencyId," +
 		 		" model.constituencyElection.constituency.name," +
-		 		" model.candidateResult.rank" +
+		 		" model.candidateResult.rank," +
+		 		" model.nominationId" +
 		 		" from Nomination model,AssemblyLocalElectionBody model1 " +
 		 		" where" +
 		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId = model1.localElectionBody.localElectionBodyId and " +
 		 		" model1.constituency.constituencyId = :constituencyId and model.constituencyElection.election.electionId in(:electionIds) " +
-		 		" group by model1.localElectionBody.localElectionBodyId,model.constituencyElection.constituency.constituencyId,model.party.partyId " +
+		 		" group by model1.localElectionBody.localElectionBodyId,model.constituencyElection.constituency.constituencyId,model.nominationId,model.party.partyId " +
 		 		" order by model1.localElectionBody.name,model.constituencyElection.constituency.name");
 		 qry.setParameter("constituencyId", constituencyId);
 		 qry.setParameterList("electionIds", electionIds);
@@ -4348,12 +4349,13 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 		" model.constituencyElection.election.electionId," +
 		 		" model.constituencyElection.constituency.constituencyId," +
 		 		" model.constituencyElection.constituency.name," +
-		 		" model.candidateResult.rank" +
+		 		" model.candidateResult.rank," +
+		 		" model.nominationId" +
 		 		" from Nomination model,AssemblyLocalElectionBodyWard model1 " +
 		 		" where " +
 		 		" model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
 		 		" model1.assemblyLocalElectionBody.constituency.constituencyId = :constituencyId and model.constituencyElection.election.electionId in(:electionIds) " +
-				" group by model.constituencyElection.constituency.constituencyId,model.party.partyId");
+				" group by model.constituencyElection.constituency.constituencyId,model.nominationId,model.party.partyId");
 		 qry.setParameter("constituencyId", constituencyId);
 		 qry.setParameterList("electionIds", electionIds);
 		 //qry.setParameter("delimiYear", delimiYear);

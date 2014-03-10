@@ -148,7 +148,7 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     }
     public List<?> getPreviousTrendsData(List<Long> partyIds,Long constId)
     {
-    	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes,cer.totalVotesPolled,n.party.partyId,cr.votesEarned,cr.marginVotes,cr.marginVotesPercentage,(cr.votesEarned/cer.totalVotesPolled) * 100 ,cr.rank  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 group by  ce.election.electionYear,n.party.partyId ");
+    	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes,cer.totalVotesPolled,n.party.partyId,sum(cr.votesEarned),cr.marginVotes,cr.marginVotesPercentage,(cr.votesEarned/cer.totalVotesPolled) * 100 ,cr.rank  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 group by  ce.election.electionYear,n.party.partyId ");
     	q.setParameter(0, constId);
     	return q.list();
     }
