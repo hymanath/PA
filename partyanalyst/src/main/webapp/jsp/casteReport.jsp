@@ -79,6 +79,8 @@ var maxr = 1000;
     margin-right: auto;
   
     width: 800px;}
+
+
 	
 </style>
 </head>
@@ -366,14 +368,14 @@ function buildBoothWiseCaste(results,type)
 	for(var i in results)
 	{
 		if(i==0)
-	 str+='<table class="table table-bordered" id="casteWiseDataTable" >';
+	 str+='<table class="table table-bordered" id="casteWiseDataTable" style="width:50%;" >';
 		else
-	 str+='<table class="table table-bordered" id="casteWiseDataTable" style="margin-top:-20px;border-top:none;">';
+	 str+='<table class="table table-bordered" id="casteWiseDataTable" style="margin-top:-20px;border-top:none;width:50%;">';
 	str+='<tr>';
 	var rspan = results[i].casteList.length + 1;
-	 str+='<td rowspan='+rspan+' style="font-weight:bold;">'+results[i].panchayat+'</td>';
-	 str+='<td style="font-weight:bold;background-color:#F6E816;">Caste</td>';
-	  str+='<td style="font-weight:bold;background-color:#F6E816;">Total Voters</td>';
+	 str+='<td rowspan='+rspan+' style="font-weight:bold;width:10%;">'+results[i].panchayat+'</td>';
+	 str+='<td style="font-weight:bold;background-color:#F6E816;width:10%;">Caste</td>';
+	  str+='<td style="font-weight:bold;background-color:#F6E816;width:10%;">Total Voters</td>';
 	
 	 for(var j in results[i].casteList)
 		{
@@ -383,9 +385,9 @@ function buildBoothWiseCaste(results,type)
 	
 	 for(var k in results[i].casteList[0].casteList)
 		if(type == 'booth')
-	 str+='<td style="font-weight:bold;background-color:#F6E816;">booth - '+ results[i].casteList[0].casteList[k].locationName+'</td>';
+	 str+='<td style="font-weight:bold;background-color:#F6E816;width:10%;"># '+ results[i].casteList[0].casteList[k].locationName+'</td>';
 	 else
-		 str+='<td style="font-weight:bold;background-color:#F6E816;">'+ results[i].casteList[0].casteList[k].locationName+'</td>';
+		 str+='<td style="font-weight:bold;background-color:#F6E816;width:10%;">'+ results[i].casteList[0].casteList[k].locationName+'</td>';
 	 str+='</tr>';
 			}
 		
