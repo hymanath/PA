@@ -231,7 +231,7 @@ String	queryForTotalCount=
 			"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
 			" group by bpv.voter.gender ");	
 
-List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
+List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
 AgeRangeVO ageRangeVOForTotalCount=null;
 if(totalCountList!=null)
 {
@@ -335,7 +335,7 @@ public AgeRangeVO printDataForConstituency(List<AgeRangeVO> query,AgeRangeVO age
 		  {
 		    for(AgeRangeVO   vo    :query)
 		    {
-			   List<Object[]> list = userDAO.getData(vo.getQueryString());
+			   List<Object[]> list = userDAO.getData1(vo.getQueryString());
 			   AgeRangeVO vo1=new AgeRangeVO();
 			   vo1.setAgeRange(vo.getAgeRange());
 			   vo1.setOutput(list);
@@ -459,7 +459,7 @@ String	queryForTotalCount = ("select ph.hamlet.hamletId,ph.hamlet.hamletName,cou
 	    		" group by  uvd.hamlet.hamletId,bpv.voter.gender");
 
          Map<Long,AgeRangeVO> totalCountMap=new LinkedHashMap<Long,AgeRangeVO>();
-         List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
+         List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
          if(totalCountList!=null)
          {
            for (Object[] totalCountListObj : totalCountList) {
@@ -580,7 +580,7 @@ if(query!=null)
 {
 for(AgeRangeVO   vo    :query)
 {
-  List<Object[]> list1 = userDAO.getData(vo.getQueryString());
+  List<Object[]> list1 = userDAO.getData1(vo.getQueryString());
  
   AgeRangeVO vo1=new AgeRangeVO();
   vo1.setAgeRange(vo.getAgeRange());
@@ -708,7 +708,7 @@ public List<AgeRangeVO> getPanchayatWiseDetails(Long constituencyId,Long publica
  		            "group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");
 
 	         Map<Long,AgeRangeVO> totalCountMap=new LinkedHashMap<Long,AgeRangeVO>();
-	         List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
+	         List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
 	         if(totalCountList!=null)
 	         {
 	           for (Object[] totalCountListObj : totalCountList) {
@@ -808,7 +808,7 @@ public List<AgeRangeVO> getPanchayatWiseDetails(Long constituencyId,Long publica
 			String partialBoot = (" select pbp.panchayat.panchayatId,pbp.booth.panchayat.panchayatId  "+
 			        "from PartialBoothPanchayat pbp "+
 			        "where pbp.booth.constituency.constituencyId=232 and pbp.booth.publicationDate.publicationDateId=8 ");
-			List<Object[]> par = userDAO.getData(partialBoot);
+			List<Object[]> par = userDAO.getData1(partialBoot);
 			for(Object[] p:par){
 			if(p[0] !=null){
 			partialIds.add(p[0].toString());
@@ -849,8 +849,8 @@ public List<AgeRangeVO> getPanchayatWiseDetails(Long constituencyId,Long publica
 				
 
 		         Map<Long,AgeRangeVO> totalCountMap=new LinkedHashMap<Long,AgeRangeVO>();
-		         List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
-		         List<Object[]> totalCountList2 = userDAO.getData(parqueryForTotalCount);
+		         List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
+		         List<Object[]> totalCountList2 = userDAO.getData1(parqueryForTotalCount);
 		         
 		         if(totalCountList2!=null)
 		        	 totalCountList.addAll(totalCountList2);
@@ -1006,10 +1006,10 @@ if(query!=null)
 {
 for(AgeRangeVO   vo    :query)
 {
-  List<Object[]> list1 = userDAO.getData(vo.getQueryString());
+  List<Object[]> list1 = userDAO.getData1(vo.getQueryString());
   List<Object[]> list2 =null;
   if(partial){
-   list2 = userDAO.getData(vo.getPartQueryString());
+   list2 = userDAO.getData1(vo.getPartQueryString());
   }
   AgeRangeVO vo1=new AgeRangeVO();
   vo1.setAgeRange(vo.getAgeRange());
@@ -1172,7 +1172,7 @@ public List<AgeRangeVO> generateQueries(Long constituencyId,Long publicationId,L
 	
 	
 	
-	 List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
+	 List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
 	  
 	 if(totalCountList!=null)
 	 {
@@ -1223,7 +1223,7 @@ public List<AgeRangeVO> generateQueries(Long constituencyId,Long publicationId,L
 			" group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
 	
 	
-	List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
+	List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
 	 for (Object[] totalCountListObj : totalCountList) {
 		 AgeRangeVO   ageRangeVOForTotalCount=totalCountMap.get((Long)totalCountListObj[0]);
 		
@@ -1379,7 +1379,7 @@ List<AgeRangeVO> output=new ArrayList<AgeRangeVO>();
   {
     for(AgeRangeVO   vo    :query)
     {
-	   List<Object[]> list = userDAO.getData(vo.getQueryString());
+	   List<Object[]> list = userDAO.getData1(vo.getQueryString());
 	   AgeRangeVO vo1=new AgeRangeVO();
 	   vo1.setAgeRange(vo.getAgeRange());
 	   vo1.setOutput(list);
@@ -1485,7 +1485,7 @@ String	queryForTotalCount=
 				"group by bpv.booth.boothId,bpv.voter.gender ");	
 
      Map<Long,AgeRangeVO> totalCountMap=new LinkedHashMap<Long,AgeRangeVO>();
-     List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
+     List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
      if(totalCountList!=null)
      {
        for (Object[] totalCountListObj : totalCountList) {
@@ -1597,7 +1597,7 @@ String	queryForTotalCount=("select bpv.booth.boothId,bpv.booth.partNo," +
 	     "and bpv.booth.localBody.localElectionBodyId is not null  "+
 	"group by bpv.booth.boothId,bpv.voter.gender  ");
  Map<Long,AgeRangeVO> totalCountMap=new LinkedHashMap<Long,AgeRangeVO>();
- List<Object[]> totalCountList = userDAO.getData(queryForTotalCount);
+ List<Object[]> totalCountList = userDAO.getData1(queryForTotalCount);
  if(totalCountList!=null)
  {
    for (Object[] totalCountListObj : totalCountList) {
@@ -1720,7 +1720,7 @@ if(query!=null)
 {
 for(AgeRangeVO   vo    :query)
 {
-  List<Object[]> list1 = userDAO.getData(vo.getQueryString());
+  List<Object[]> list1 = userDAO.getData1(vo.getQueryString());
  
   AgeRangeVO vo1=new AgeRangeVO();
   vo1.setAgeRange(vo.getAgeRange());
