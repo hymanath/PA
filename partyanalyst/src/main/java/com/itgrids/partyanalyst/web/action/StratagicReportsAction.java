@@ -9,14 +9,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVO;
+import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -45,6 +45,29 @@ public class StratagicReportsAction extends ActionSupport implements
 	List<PartyElectionTrendsReportVO> prevTrends;
 	List<PartyElectionTrendsReportVO> prevTrendsParliament;
 	
+	private PartyResultsVerVO prevResults;
+	private List<PartyResultsVO> prevMPTCZPTCResults;
+	
+	
+	
+	
+
+	public PartyResultsVerVO getPrevResults() {
+		return prevResults;
+	}
+
+	public void setPrevResults(PartyResultsVerVO prevResults) {
+		this.prevResults = prevResults;
+	}
+
+	public List<PartyResultsVO> getPrevMPTCZPTCResults() {
+		return prevMPTCZPTCResults;
+	}
+
+	public void setPrevMPTCZPTCResults(List<PartyResultsVO> prevMPTCZPTCResults) {
+		this.prevMPTCZPTCResults = prevMPTCZPTCResults;
+	}
+
 	public List<PartyElectionTrendsReportVO> getPrevTrends() {
 		return prevTrends;
 	}
@@ -224,6 +247,45 @@ public class StratagicReportsAction extends ActionSupport implements
 			return Action.ERROR;
 		}
 		
+		return Action.SUCCESS;
+	}
+	
+	public String getZptcMptcResultsOfConstituency(){
+		try{
+			jObj = new JSONObject(getTask());
+			Long constituencyId=jObj.getLong("constituencyId");
+			
+			String areaType=suggestiveModelService.getConstituencyType(constituencyId);
+			prevResults=new PartyResultsVerVO();
+				
+			if(!areaType.equalsIgnoreCase("urban")){
+				prevResults=stratagicReportsService.getZptcMptcResultsOfConstituency(constituencyId);
+			}
+
+			PartyResultsVerVO pv=stratagicReportsService.getMuncipalCorpPrevResults(constituencyId);
+			if(pv.getPartyResultsVOList()!=null){
+				prevResults.setMuncipalCorpResults(pv.getPartyResultsVOList());
+				prevResults.setPartyStrengths(pv.getPartyStrengths());
+				prevResults.setParticipated(pv.getParticipated());
+				prevResults.setWon(pv.getWon());
+				prevResults.setOtherVotes(pv.getOtherVotes());
+				prevResults.setOtherVotesPercent(pv.getOtherVotesPercent());
+			}
+				
+			PartyResultsVerVO pv_gmc=stratagicReportsService.getMuncipalCorpPrevResultsInGHMC(constituencyId);
+			if(pv_gmc.getPartyResultsVOList()!=null){
+				prevResults.setGmcResults(pv_gmc.getPartyResultsVOList());
+				prevResults.setPartyStrengths(pv_gmc.getPartyStrengths());
+				prevResults.setParticipated(pv_gmc.getParticipated());
+				prevResults.setWon(pv_gmc.getWon());
+				prevResults.setOtherVotes(pv_gmc.getOtherVotes());
+				prevResults.setOtherVotesPercent(pv_gmc.getOtherVotesPercent());
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Action.ERROR;
+		}
 		return Action.SUCCESS;
 	}
 	
