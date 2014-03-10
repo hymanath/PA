@@ -6436,4 +6436,11 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		
 	}
+	
+	public Long getMaxSerialNoOfABooth(Long boothId)
+	{
+		Query query = getSession().createQuery("select max(model.serialNo) from BoothPublicationVoter model where model.booth.boothId = :boothId");
+		query.setParameter("boothId",boothId);
+		return (Long) query.uniqueResult();
+	}
 }
