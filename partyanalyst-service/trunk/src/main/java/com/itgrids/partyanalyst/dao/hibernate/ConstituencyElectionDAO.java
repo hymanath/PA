@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 
 import com.itgrids.partyanalyst.dao.IConstituencyElectionDAO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -704,6 +705,28 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		return queryObject.list();		
 	}
 	
+	public List<Object[]> getZptcMptcResultsOfConstituency(List<Long> tehsilIds,List<Long> electionIds){
+    	 //Query query = getSession().createQuery("");
+		 StringBuilder str=new StringBuilder();
+		
+		 str.append(" SELECT MC.`name`,CER.total_votes,CER.valid_votes,P.short_name,P.party_id,CR.votes_earned,CR.rank,CE.election_id " +
+				" from party P,nomination N,constituency MC,constituency_election CE,constituency_election_result CER,candidate_result CR " +
+				" WHERE MC.constituency_id = CE.constituency_id " +
+				" AND CE.consti_elec_id = CER.consti_elec_id " +
+				" AND CE.consti_elec_id = N.consti_elec_id " +
+				" AND N.party_id = P.party_id " +
+				" AND N.nomination_id = CR.nomination_id " +
+				//" AND MC.local_election_body_id = 83 AND CE.election_id = 40;");
+				" AND MC.tehsil_id in(:tehsilIds) AND CE.election_id in(:electionIds)" +
+				" order by CE.election_id,CR.rank");
+		 
+		 String sql=str.toString();
+		 SQLQuery query = getSession().createSQLQuery(sql);
+		 query.setParameterList("tehsilIds", tehsilIds);
+		 query.setParameterList("electionIds",electionIds);
+		
+		 return query.list();
+	}
 	
 }
 

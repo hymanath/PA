@@ -4266,6 +4266,128 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 Object[] params = {electionYear,pcId};
 		 return getHibernateTemplate().find("select model.party.partyId from Nomination model where model.constituencyElection.election.electionYear = ? and model.constituencyElection.constituency.constituencyId = ? ",params);
 	 }
+	 
+	 public List<Object[]> findAllZptcOrMptcResultsInaConstituency(Long constituencyId,List<Long> electionTypeIds,String delimiYear) {
+		 Query qry= getSession().createQuery("select model.constituencyElection.election.electionYear,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+		 		" model.constituencyElection.constituency.electionScope.electionType.electionTypeId,sum(model.totalVotes),sum(model.validVotes)," +
+		 		" model.constituencyElection.election.electionId" +
+		 		" from ConstituencyElectionResult model,DelimitationConstituencyMandal model1 " +
+		 		" where model.constituencyElection.constituency.tehsil.tehsilId=model1.tehsil.tehsilId" +
+		 		" and model1.delimitationConstituency.constituency.constituencyId=:constituencyId" +
+		 		" and model1.delimitationConstituency.year=2009" +
+		 		" and model.constituencyElection.election.electionId in(:electionTypeIds)" +
+		 		" group by model.constituencyElection.election.electionId");
+		 qry.setParameter("constituencyId", constituencyId);
+		 qry.setParameterList("electionTypeIds", electionTypeIds);
+		 //qry.setParameter("delimiYear", delimiYear);
+		 return qry.list();
+	 }
+	 
+	 public List<Object[]> findMuncipalOrCorpResultsInaConstituency(Long constituencyId,List<Long> electionIds) {
+		 Query qry= getSession().createQuery("select model.constituencyElection.election.electionYear," +
+		 		" model.constituencyElection.election.electionScope.electionType.electionType," +
+		 		" model.constituencyElection.constituency.constituencyId," +
+		 		" model.constituencyElection.constituency.name," +
+		 		" model.constituencyElection.election.electionScope.electionType.electionTypeId,sum(model.totalVotes),sum(model.validVotes)," +
+		 		" model.constituencyElection.election.electionId" +
+		 		" from ConstituencyElectionResult model,AssemblyLocalElectionBody model1 " +
+		 		" where " +
+		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId = model1.localElectionBody.localElectionBodyId and " +
+		 		" model1.constituency.constituencyId = :constituencyId and model.constituencyElection.election.electionId in(:electionIds) " +
+		 		" group by model1.localElectionBody.localElectionBodyId,model.constituencyElection.constituency.constituencyId " +
+		 		" order by model1.localElectionBody.name,model.constituencyElection.constituency.constituencyId");
+		 
+		 qry.setParameter("constituencyId", constituencyId);
+		 qry.setParameterList("electionIds", electionIds);
+		 return qry.list();
+	 }
+	 
+	 public List<Object[]> findMuncipalOrCorpResultsInaConstituencyPartyWise(Long constituencyId,List<Long> electionIds) {
+		 Query qry= getSession().createQuery("select model.party.partyId," +
+		 		" model.party.shortName," +
+		 		" sum(model.candidateResult.votesEarned)," +
+		 		" model.constituencyElection.election.electionYear," +
+		 		" model.constituencyElection.election.electionScope.electionType.electionType," +
+		 		" model.constituencyElection.election.electionId," +
+		 		" model.constituencyElection.constituency.constituencyId," +
+		 		" model.constituencyElection.constituency.name," +
+		 		" model.candidateResult.rank" +
+		 		" from Nomination model,AssemblyLocalElectionBody model1 " +
+		 		" where" +
+		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId = model1.localElectionBody.localElectionBodyId and " +
+		 		" model1.constituency.constituencyId = :constituencyId and model.constituencyElection.election.electionId in(:electionIds) " +
+		 		" group by model1.localElectionBody.localElectionBodyId,model.constituencyElection.constituency.constituencyId,model.party.partyId " +
+		 		" order by model1.localElectionBody.name,model.constituencyElection.constituency.name");
+		 qry.setParameter("constituencyId", constituencyId);
+		 qry.setParameterList("electionIds", electionIds);
+		 //qry.setParameter("delimiYear", delimiYear);
+		 return qry.list();
+	 }
+	 public List<Object[]> findMuncipalOrCorpResultsOfGMCInaConstituency(Long constituencyId,List<Long> electionIds){
+		 Query qry= getSession().createQuery("select model.constituencyElection.election.electionYear," +
+		 		" model.constituencyElection.election.electionScope.electionType.electionType," +
+		 		" model.constituencyElection.constituency.constituencyId," +
+		 		" model.constituencyElection.constituency.name," +
+		 		" model.constituencyElection.election.electionScope.electionType.electionTypeId,sum(model.totalVotes),sum(model.validVotes)," +
+		 		" model.constituencyElection.election.electionId" +
+		 		" from ConstituencyElectionResult model,AssemblyLocalElectionBodyWard model1 " +
+		 		" where " +
+		 		" model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
+		 		" model1.assemblyLocalElectionBody.constituency.constituencyId = :constituencyId and model.constituencyElection.election.electionId in(:electionIds) " +
+		 		" group by model.constituencyElection.constituency.constituencyId order by model.constituencyElection.constituency.name");
+		 
+		 qry.setParameter("constituencyId", constituencyId);
+		 qry.setParameterList("electionIds", electionIds);
+		 return qry.list();
+	 }
+	 
+	 public List<Object[]> findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(Long constituencyId,List<Long> electionIds) {
+		 Query qry= getSession().createQuery("select model.party.partyId,model.party.shortName," +
+		 		" sum(model.candidateResult.votesEarned)," +
+		 		" model.constituencyElection.election.electionYear,model.constituencyElection.election.electionScope.electionType.electionType," +
+		 		" model.constituencyElection.election.electionId," +
+		 		" model.constituencyElection.constituency.constituencyId," +
+		 		" model.constituencyElection.constituency.name," +
+		 		" model.candidateResult.rank" +
+		 		" from Nomination model,AssemblyLocalElectionBodyWard model1 " +
+		 		" where " +
+		 		" model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +
+		 		" model1.assemblyLocalElectionBody.constituency.constituencyId = :constituencyId and model.constituencyElection.election.electionId in(:electionIds) " +
+				" group by model.constituencyElection.constituency.constituencyId,model.party.partyId");
+		 qry.setParameter("constituencyId", constituencyId);
+		 qry.setParameterList("electionIds", electionIds);
+		 //qry.setParameter("delimiYear", delimiYear);
+		 return qry.list();
+	 }
+	 
+	 public List<Object[]> findAllZptcOrMptcResultsInaConstituencyPartyWise(Long constituencyId,List<Long> electionTypeIds,String delimiYear) {
+		 Query qry= getSession().createQuery("select model.party.partyId,model.party.shortName,sum(model.candidateResult.votesEarned)," +
+		 		"  model.constituencyElection.election.electionYear,model.constituencyElection.constituency.electionScope.electionType.electionType," +
+		 		" model.constituencyElection.election.electionId" +
+		 		" from Nomination model,DelimitationConstituencyMandal model1 " +
+		 		" where model.constituencyElection.constituency.tehsil.tehsilId=model1.tehsil.tehsilId" +
+		 		" and model1.delimitationConstituency.constituency.constituencyId=:constituencyId" +
+		 		" and model1.delimitationConstituency.year=2009" +
+		 		" and model.constituencyElection.election.electionId in(:electionTypeIds)" +
+		 		" group by model.constituencyElection.election.electionId,model.party.partyId");
+		 qry.setParameter("constituencyId", constituencyId);
+		 qry.setParameterList("electionTypeIds", electionTypeIds);
+		 //qry.setParameter("delimiYear", delimiYear);
+		 return qry.list();
+	 }
+	 
+	/* public Long getCountOfWardsInAConstituency(Long constituencyId,List<Long> electionIds){
+		 Query qry= getSession().createQuery("select model1.localElectionBody.noOfWards"+
+			 		" AssemblyLocalElectionBody model1 " +
+			 		" where " +
+			 		" model1.constituency.constituencyId = :constituencyId  " +
+			 		" group by model1.localElectionBody.localElectionBodyId,model.constituencyElection.constituency.constituencyId " +
+			 		" order by model1.localElectionBody.name,model.constituencyElection.constituency.constituencyId");
+		 query.setParameter("constituencyId", constituencyId);
+		 query.setParameterList("electionIds", electionIds);
+	 }*/
+	 
+	 
 
 }
 
