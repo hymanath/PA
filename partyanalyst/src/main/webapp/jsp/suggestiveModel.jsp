@@ -470,8 +470,10 @@ function getLeadersList(){
 				constituencyId   : constituencyId,
 				casteIds         : casteIds,
 				expCasteArray    : expCasteArray,
+				expCasteArrayForMuncipality  : expCasteArrayForMuncipality,
 				checkStatus      : checkStatus,
 				constituencyType : constituencyType,
+				publiationId     : $('#listPublicationValues').val(),
 				task             : "getLeadersList"		
 			};
 			 $("#getAllExpCasteDetails").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -543,6 +545,7 @@ var jsObj=
 		casteIds                    : casteIds,
 		checkStatus                 : checkStatus,
 		expCasteArrayForMuncipality : expCasteArrayForMuncipality,
+		publicationId               : $('#listPublicationValues').val(),
 		task                        : "getLeadersListInRuralUrbans"		
 	};
 	 $("#muncipalityExpCasteDetails").val(YAHOO.lang.JSON.stringify(jsObj));
@@ -567,8 +570,10 @@ var jsObj=
 
 function getCandidateCastes(constituencyIds){
 	var constituencyId = $('#listConstituencyNames').val();
+	var publicationId = $('#listPublicationValues').val();
 	var jsObj ={
 		constituencyId : constituencyId,
+		publicationId : publicationId,
 		task : "getUserAssignedVoterCastes"
 		};
 	var rparam="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -586,11 +591,11 @@ function getConstituencyType()
 		</c:if>
 		if(constituencyId == 0)
 		return;
-		
+		var publicationId = $("#listPublicationValues option:selected").val();
 		var jsObj=
 				{
 					constituencyId : constituencyId,
-					publicationId  : latestPublicationId,
+					publicationId  : publicationId,
 					task           : "getConstituencyType"
 				}
 			var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -633,6 +638,12 @@ function callAjax(param,jsObj,url){
 						{
 							populateElectionYearDropdown(myResults);
 						}
+						else if(jsObj.task == "getPublicationDate")
+								{
+								$('#publicationAjaxImage').css('display','none');
+
+									buildPublicationDateList(myResults);
+								}
 						else if(jsObj.task == "getPartyDetails")
 						{
 							populatePartiesDropdown(myResults);
@@ -1095,7 +1106,7 @@ function panchayatMatrx(result)
 					Constituency Name :<font id="requiredValue" class="requiredFont">*</font> 
 				</td>
 				<td>
-					<select id="listConstituencyNames" onchange="clearAll(),getLatestPublicationId(),getPartyDetails(this.options[this.selectedIndex].value),getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyBasicCountInfo();">
+					<select id="listConstituencyNames" onchange="clearAll(),getLatestPublicationId();getPartyDetails(this.options[this.selectedIndex].value);getCandidateCastes(this.options[this.selectedIndex].value);getConstituencyBasicCountInfo();getPublicationDate();">
 					<option value="0"> Select Constituency </option>
 					</select>
 				</td>		
@@ -1111,6 +1122,20 @@ function panchayatMatrx(result)
 		-->
 			</tr>
 	</table>		
+</div>
+<br><br>
+<div style="width: 500px; float: left;margin-bottom: 5px;">
+	<table>
+		<tr id="tableRowS">
+			<td id="tdWidth">
+				Publication Date:<font id="requiredValue" class="requiredFont">*</font> 
+			</td>
+			<td><select id="listPublicationValues" class="selectWidth"  name="listPublicationValues" >
+			<option value="0">Select Publication Date</option>
+			</select>
+			</td>
+			</tr>
+</table>
 </div>
 <br><br>
 <div style="width: 500px; float: left;margin-bottom: 5px;">
@@ -1767,8 +1792,11 @@ function storeMandalPanchayatValues(result)
 function getVotersCountsForPanchayats()
 {
 	var constituencyId = $('#listConstituencyNames option:selected').val();
-	var jsObj = {
+	var publicationId = $('#listPublicationValues option:selected').val();
+	var jsObj = 
+		{
 	        constituencyId : constituencyId,
+			publicationId  : publicationId,
 			task           : "getVoterscountInPanchayats"
 		};
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -2109,7 +2137,7 @@ function buildLeadersTableWithExpPerc(results)
 		if(constituencyType == 'RURAL-URBAN')
 		{
 			getLeadersListInRuralUrbans();
-		}
+		} 
 	}
 	
 }
@@ -3561,6 +3589,7 @@ $('#ajaxLoaderImgForNewPartyDiv').show();
      var jsObj= 
 	{	
         constituencyId:$('#listConstituencyNames').val(),
+		publicationId:$('#listPublicationValues').val(),
 		partyName : $('#partySelectEl option:selected').text(),
 		task:"getEffectOfNewParty"		
 	};
@@ -3574,11 +3603,13 @@ function getConstituencyBasicCountInfo()
 {
 $("#basicCountDiv").css("display","none");
 var id = $('#listConstituencyNames').val();
+var publicationId = $('#listPublicationValues').val();
 if(id == 0)
 return;
 var jsObj= 
 	{	
         constituencyId:id,
+		publicationId:publicationId,
 		task:"getConstituencyBasicCountInfo"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -3778,6 +3809,7 @@ function getCasteBasicInfo()
 {
 $("#basicCasteInfoDiv").css("display","none");
 var id = $('#listConstituencyNames').val();
+var publicationId = $('#listPublicationValues').val();
 var text = $('#listConstituencyNames option:selected').text();
 if(id == 0)
 return;
@@ -3785,7 +3817,7 @@ var jsObj=
 	{	
         constituencyId:id,
 		id:id,
-		publicationDateId:latestPublicationId,
+		publicationDateId:publicationId,
 		queryType:"sub",
 		type:"constituency",
 		typename:text,
@@ -4467,6 +4499,55 @@ function redirectToCasteInfo(type)
 {
 var win=window.open('casteReportAction.action?type='+type+'', '_blank');
 win.focus();
+}
+
+
+function getPublicationDate()
+	{
+	var constituencyID = document.getElementById("listConstituencyNames");
+	var name=constituencyID.options[constituencyID.selectedIndex].name;
+	var value=constituencyID.options[constituencyID.selectedIndex].value;
+
+	var jsObj = 
+	{
+		selected:value,
+		task:"getPublicationDate"
+	}	
+	var param = "task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "voterAnalysisAjaxAction.action?"+param;
+	callAjax(param,jsObj,url);
+}
+function buildPublicationDateList(results)
+	{
+	publicationDatesList=results;
+	var selectedElmt=document.getElementById("listPublicationValues");
+	removeSelectElements(selectedElmt);
+
+	var  publicationIdsArray = new Array();
+
+	for(var val in results)
+	{	
+	publicationIdsArray.push(results[val].id);
+
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+
+	var largest = Math.max.apply(Math, publicationIdsArray);
+
+	$('#listPublicationValues').val(largest);
+	$('#listPublicationValues').trigger("change");
+
 }
 function redirectToVoterAddress()
 {

@@ -188,7 +188,7 @@ public class ConstituencyInfoAction extends ActionSupport implements ServletRequ
 			Long userID = user.getRegistrationID();
 			jObj = new JSONObject(getTask());
 			
-			votersDetailsVO = constituencyInfoService.getConstituencyBasicCountInfoById(jObj.getLong("constituencyId"),userID);
+			votersDetailsVO = constituencyInfoService.getConstituencyBasicCountInfoById(jObj.getLong("constituencyId"),userID,jObj.getLong("publicationId"));
 		}
 		catch(Exception e)
 		{

@@ -639,9 +639,19 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			//Long mandalId       = jObj.getLong("mandalId");
 			Long constituencyId = jObj.getLong("constituencyId");
 			String casteIds = jObj.getString("casteIds");
+			Long publicationId = jObj.getLong("publiationId");
 			String constituencyType = jObj.getString("constituencyType");
 			String[] strArray = casteIds.split(",");
-			
+			JSONArray jsonArray1 = jObj.getJSONArray("expCasteArrayForMuncipality");
+			List<ExceptCastsVO> exceptCasteListForMuncipal = new ArrayList<ExceptCastsVO>();
+			for (int i = 0 ; i < jsonArray1.length() ; i++) {
+				JSONObject jSONObject= jsonArray1.getJSONObject(i);
+				ExceptCastsVO exceptCastsVO = new ExceptCastsVO();
+				exceptCastsVO.setCasteId(jSONObject.getLong("casteId"));
+				exceptCastsVO.setCastePerc(jSONObject.getDouble("expPerc"));
+				exceptCastsVO.setPanchayatId(jSONObject.getLong("mandalId"));
+				exceptCasteListForMuncipal.add(exceptCastsVO);
+			}
 			JSONArray jsonArray = jObj.getJSONArray("expCasteArray");
 			List<Long> castesIdsList = new ArrayList<Long>();
 			Boolean checkStatus = jObj.getBoolean("checkStatus");
@@ -658,16 +668,17 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				//exceptCastsVO.setSelectLevelvalue(jSONObject.getLong("levelValue"));
 				exceptCasteList.add(exceptCastsVO);
 			}
+			
 			for(String casteId:strArray)
 				castesIdsList.add(Long.parseLong(casteId));
 			
 			if(constituencyType.equalsIgnoreCase(IConstants.URBAN))
 			{
-				LeaderSelectionList = suggestiveModelService.getLeadersInUrbanConstituencyes(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus);
+				LeaderSelectionList = suggestiveModelService.getLeadersInUrbanConstituencyes(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus,publicationId);
 			}
 			else
 			{
-				LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList,casteMap,exceptCasteList,checkStatus);
+				LeaderSelectionList = suggestiveModelService.findingBoothInchargesForBoothLevel(userId,constituencyId,castesIdsList,casteMap,exceptCasteList,checkStatus,publicationId,exceptCasteListForMuncipal);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -751,10 +762,11 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 					exceptCastsVO.setPanchayatId(jSONObject.getLong("mandalId"));
 					exceptCasteList.add(exceptCastsVO);
 				}
+				Long publicationId = jObj.getLong("publicationId");
 				for(String casteId:strArray)
 					castesIdsList.add(Long.parseLong(casteId));
 
-				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus);
+				LeaderSelectionLists = suggestiveModelService.findingBoothInchargesForBoothLevelForMincipality(userId,constituencyId,castesIdsList,exceptCasteList,checkStatus,publicationId);
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -775,7 +787,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				}
 				
 				if(jObj.getString("task").equals("getUserAssignedVoterCastes")){
-					castesList = suggestiveModelService.getUserAssignedVotersCasteDetailsByConstId(jObj.getLong("constituencyId"),userID);
+					castesList = suggestiveModelService.getUserAssignedVotersCasteDetailsByConstId(jObj.getLong("constituencyId"),userID,jObj.getLong("publicationId"));
 				}
 			}
 			
@@ -793,7 +805,7 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 			
 			//newPartyImpactDetails = constituencyPageService.findPanchayatsWiseResultsInElectionsOfMandalForSuggestiveModel(jObj.getLong("constituencyId"));
 			
-			resultMap = suggestiveModelService.getElectionResultsForSelectedElectionsForAConsttituency(jObj.getLong("constituencyId"),jObj.getString("partyName"));
+			resultMap = suggestiveModelService.getElectionResultsForSelectedElectionsForAConsttituency(jObj.getLong("constituencyId"),jObj.getString("partyName"),jObj.getLong("publicationId"));
 			
 			return Action.SUCCESS;
 			
@@ -934,8 +946,8 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 				log.debug("Entered into getVoterscountInPanchayats() method in Suggestive Model Action");
 				jObj = new JSONObject(getTask());
 				Long constituencyId = jObj.getLong("constituencyId");
-				//Long publicationId = jObj.getLong("publicatinId");
-				VoterCountVOList = suggestiveModelService.getVotersCountInPanchayats(constituencyId);
+				Long publicationId = jObj.getLong("publicationId");
+				VoterCountVOList = suggestiveModelService.getVotersCountInPanchayats(constituencyId,publicationId);
 			}catch(Exception e){
 				log.error("Exception raised in getVoterscountInPanchayats() method in Suggestive Model Action",e);
 			}
