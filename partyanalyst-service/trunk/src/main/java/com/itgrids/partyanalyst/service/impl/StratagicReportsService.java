@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,6 +24,7 @@ import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StratagicReportsService implements IStratagicReportsService{
 	private static final Logger log = Logger.getLogger(StratagicReportsService.class);
@@ -794,6 +796,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			pv.setDiffPercent(calcPercentage(pvo_temp.getVotesPolled(), pv.getVotesEarned()));
 			pv.setRank(Long.valueOf(ob[8].toString()));
 			pv.setNominationId(Long.valueOf(ob[9].toString()));
+			pv.setLocationId(pvo_temp.getLocationId());
 			partyResults.add(pv);
 			
 			
@@ -820,6 +823,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		for(PartyResultsVO pvo:electionList1){
 			List<PartyResultsVO> partyResults=pvo.getPartyResultsVOList();
+			List<PartyResultsVO> partyResultsToRmve=new ArrayList<PartyResultsVO>();
 			Collections.sort(partyResults);
 			Long marginVotes=0l;
 			for(int i=0;i<partyResults.size();i++){
@@ -832,7 +836,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					parr.setVotesEarned(0l);
 					parr.setPercentage(calcPercentage(totalValidVotes, parr.getVotesEarned()));
 					//party_res.put(partyResults.get(i).getPartyId().longValue(), parr);
-				}
+				} 
 				
 				if(partyResults.get(i).getRank()!=null){
 					if(partyResults.get(i).getRank()==1){
@@ -842,14 +846,12 @@ public class StratagicReportsService implements IStratagicReportsService{
 				}
 					Long existPrtcptd=parr.getParticipated();
 					parr.setParticipated(existPrtcptd+1l);
-					parr.setPartyId(partyResults.get(i).getPartyId().longValue());
 					
 					
 					Long votesErnd_exist=parr.getVotesEarned();
 					parr.setVotesEarned(partyResults.get(i).getVotesEarned()+votesErnd_exist);
 					parr.setPercentage(calcPercentage(totalValidVotes,parr.getVotesEarned()));
 					
-					party_res.put(partyResults.get(i).getPartyId().longValue(), parr);
 					
 					if(!partyIds.contains(partyResults.get(i).getPartyId().longValue())){
 						if(prvo.getParticipated()==null){
@@ -871,6 +873,17 @@ public class StratagicReportsService implements IStratagicReportsService{
 						prvo.setOtherVotesPercent(calcPercentage(totalValidVotes,prvo.getOtherVotes()));
 					
 					}
+					
+					if(IConstants.INDEPENDENT_ID.longValue()!=partyResults.get(i).getPartyId().longValue()){
+						if(parr.getPartyId()!=null && parr.getLocationId()!=null){
+							if(parr.getPartyId().longValue()==partyResults.get(i).getPartyId().longValue() && parr.getLocationId().longValue()==partyResults.get(i).getLocationId().longValue()){
+								partyResultsToRmve.add(partyResults.get(i));
+							}
+						}
+					}
+					parr.setLocationId(partyResults.get(i).getLocationId());
+					parr.setPartyId(partyResults.get(i).getPartyId().longValue());
+					party_res.put(partyResults.get(i).getPartyId().longValue(), parr);
 				//END	
 				
 					
@@ -895,6 +908,28 @@ public class StratagicReportsService implements IStratagicReportsService{
 					}
 				}
 			}
+			
+			//REMOVING RESULTS WHEN MORE THAN ONE MEMBER OF A PARTY PARTICIPATED FROM SAME WARD -- START --SASI
+			if(partyResultsToRmve.size()>0){
+				for(PartyResultsVO prTemp:partyResultsToRmve){
+					Long nominId=prTemp.getNominationId();
+					/*for(PartyResultsVO prTempIn:partyResults){
+						if(prTempIn.getNominationId().longValue()==nominId.longValue()){
+							int index=partyResults.indexOf(prTempIn);
+							partyResults.remove(index);
+						}
+					}*/
+					ListIterator<PartyResultsVO> it = partyResults.listIterator();
+					while ( it.hasNext() ) {
+						PartyResultsVO prTempIn = it.next();
+					      if (prTempIn.getNominationId().longValue()==nominId.longValue()){ 
+					        it.remove();
+					      }
+					}
+				}
+			}
+			//END -- SASI
+			
 		}
 		prvo.setElectionId(entry.getKey());
 		
