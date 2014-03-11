@@ -55,7 +55,6 @@ public class VoterModificationAction extends ActionSupport implements ServletReq
 	private StaticDataService staticDataService;
 	private IVoterModificationService voterModificationService;
 	private List<VoterAdderdOrDeletedRengesInfoVO> voterAdderdOrDeletedRengesInfoVOList;
-	@Override
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
