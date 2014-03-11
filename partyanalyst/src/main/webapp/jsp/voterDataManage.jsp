@@ -1,4 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+
+	
+	
+	<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="s" uri="/struts-tags" %>
@@ -27,7 +30,7 @@
 	.voterManagementInnerDiv p{font-size: 13px;}
 	#voterDataInsertId{font-weight:bold;}
 	#voterChangesButtonId,#mapVoterButtonId{font-weight:bold;margin-top:10px;}
-	.errorMsgDiv,.errorMsgDiv1{color: red;
+	.errorMsgDiv,.errorMsgDiv1,.errorMsgDiv2,.errorMsgDiv3{color: red;
     font-size: 13px;
     padding-bottom: 12px; padding-top: 12px;}
 	table{font-size:13px;}
@@ -109,7 +112,7 @@
 			<tr>
 				<th>To Publication </th>
 				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getConstituenciesToMapPublicationData();"></s:select></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getConstituenciesToMapPublicationDataFor();"></s:select></td>
 			</tr>
 
 			<tr>
@@ -118,7 +121,7 @@
 				<td>
 				<!-- <s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesList" id="mapVoterConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select> -->
 
-				<select id="mapVoterConstituencyId" class="selectBoxWidth" name="constituenciesList">
+				<select id="mapVoterDistrictId" class="selectBoxWidth" name="districtsList">
 				</select>
 				</td>
 			</tr>
@@ -128,12 +131,54 @@
 				
 				Create Booth if not Available</div>
 			
-			<p><input type="button" value="Submit" onclick="InsertmapVoterData();" id="mapVoterButtonId" class="btn btn-info" /><span id="mapajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></span></p>
+			<p><input type="button" value="Submit" onclick="InsertmapVoterDataForDis();" id="mapVoterButtonId" class="btn btn-info" /><span id="mapajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></span></p>
 				</center>
 	</div>
 </fieldset>
 </div>
 
+<div id="voterManagementMainDiv" class="span8">
+ <div class="headingDiv" style="width:488px;">District Wise Voter Data Mapping From One publication to another Publication</div>
+ 
+<fieldset>
+<div class="errorMsgDiv2"></div>
+
+<div class="voterManagementInnerDiv">
+<center>
+<table cellpadding="4">
+			<tr>
+				<th>From Publication </th>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="frompublicationDateIdForDis" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select></td>
+			</tr>
+			
+			<tr>
+				<th>To Publication </th>
+				<td>:</td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateIdForDis" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getConstituenciesToMapPublicationDataForDis();"></s:select></td>
+			</tr>
+
+			<tr>
+				<th>District </th>
+				<td>:</td>
+				<td>
+				
+				<s:select  theme="simple" cssClass="selectBoxWidth" label="Select Your District" name="districtList" id="voterDataDistrictList" list="districts" listKey="id" listValue="name"/>
+				
+               </td>
+			</tr>
+			
+			</table>
+			<div style="margin-left:100px;"><input type="checkbox" id="checkedID">
+				
+				Create Booth if not Available</div></br>
+			
+			<p><input type="button" value="Submit" onclick="InsertmapVoterDataForDis();" id="mapVoterButtonIdForDis" class="btn btn-info" /><span id="mapajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></span></p>
+			<div id="errorMsgDivId1" class="errorMsgDiv3"></div>
+				</center>
+	</div>
+</fieldset>
+</div>
 <div id="voterManagementMainDiv" class="span8">
  <div class="headingDiv" style="width:615px;">Copy Voter Modification Data from temporary table to main table</div>
 
@@ -201,6 +246,42 @@
 </div>	
 <!-- voters Modification Info Div End -->
 
+<div id="voterManagementMainDiv" class="span8">
+<div class="headingDiv" style="width:450px;">Populate voters Modification Info To Intermediate Tables</div>
+ <fieldset>
+    <div id="voterModificationErrorDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+	<center>
+     <table cellpadding="4">
+	  <tr>
+	    <td>Constituency</td>
+		<td>:</td>
+		<td><s:select theme="simple" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="votermodificationConstituencyId" list="constituencyList" listKey="id" listValue="name"/></td>
+	  </tr>
+	  <tr>
+	   <td>From Publication Date</td>
+	   <td>:</td>
+	   <td><select id="voterModificationFromPublicationId" class="selectWidth" style="width:200px;height:25px;" name="publicationDateList" >
+		</select></td>
+	  </tr>
+	  <tr>
+	  <td>To Publication Date</td>
+	  <td>:</td>
+	  <td><select id="voterModificationToPublicationId" class="selectWidth" style="width:200px;height:25px;" name="publicationDateList" >
+		</select></td>
+	  </tr>
+	 </table>
+     
+		<div id="voterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="votermodificationBtn" />
+			<!-- <input type="button" class="btn btn-info" value="Delete Existing Data" id="votermodificationvoterDataDeleteBtn" /> -->
+			<img src="./images/icons/search.gif" style="display:none;margin-left: 10px;" id="votermodificationImage" />
+		</div>
+		</center>
+	</div>
+ </fieldset>
+</div>	
+<!-- voters Modification Info Div End -->
 
 <script type="text/javascript">
 
@@ -226,12 +307,21 @@ function callAjax(jsObj, url){
 							{
 								buildConstituencies(myResults);
 							}
+							/*else if(jsObj.task == "getConstituenciesForDis")
+							{
+								buildConstituenciesForDis(myResults);
+							}*/
 							else if(jsObj.task == "deleteVoterModifiedData")
 							{
 								showdeleteVoterModifiedDataStatus(myResults);
 							}
+							
 							else if(jsObj.task == "getModifiedVotersBetweenTwoPublications")
 							 showVoterModificationSaveStatus(myResults);
+							 else if(jsObj.task == "getVoterDataForDis")
+							  showVoterModificationSaveStatusForDis(myResults);
+							 
+
 
 							else if(jsObj.task == "getPublicationDatesForVotingModificationBetweenDates")
 								buildpublicationDateListForVoterModification(myResults,jsObj);
@@ -417,6 +507,49 @@ function callAjax(jsObj, url){
 		var url = "insertVoterDataAction.action?"+rparam;						
 		callAjax(jsObj,url);
 	}
+	
+	function InsertmapVoterDataForDis()
+	{
+		var DistrictId = $("#voterDataDistrictList").val();
+		var frompublicationDateId = $("#frompublicationDateIdForDis").val();
+		var topublicationDateId = $("#topublicationDateIdForDis").val();
+		
+        var boothCreateflag = $("#checkedID").attr('checked');
+		
+		var str = '';
+			var errorEle = $(".errorMsgDiv2");
+			errorEle.html('');
+			
+			 if(frompublicationDateId == 0 || frompublicationDateId== '')
+			{
+				errorEle.html('Please Select From Publication Date');
+				return;
+			}
+			else if(topublicationDateId == 0 || topublicationDateId== '')
+			{
+				errorEle.html('Please Select To Publication Date');
+				return;
+			}
+			else if(DistrictId == 0 || DistrictId == '' || DistrictId == null)
+			{
+				errorEle.html('Please Select District');
+				return;
+			}
+			
+		var jsObj=
+		{				
+			DistrictId		 : DistrictId,
+			frompublicationDateIdForDis: frompublicationDateId,
+			topublicationDateIdForDis  :topublicationDateId,
+			boothCreateflag      :boothCreateflag,
+			task				 : "getVoterDataForDis"
+			
+		}
+
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "insertVoterDataForDisAction.action?"+rparam;						
+		callAjax(jsObj,url);
+	}
 	function showModifiedVotersInsertDataStatus(results)
 	{
 		$(".errorMsgDiv").html('');
@@ -498,10 +631,49 @@ function getConstituenciesToMapPublicationData()
 		 callAjax(jsObj,url);
 }
 
+function getConstituenciesToMapPublicationDataForDis()
+{
+
+	var fromPublication =$("#frompublicationDateIdForDis").val();
+	var toPublication = $("#topublicationDateIdForDis").val();
+	$("#mapajaxImgDivId").css({'display':'block','display':'inline'});
+	var jsObj=
+		{
+		  fromPublication:fromPublication,
+		  toPublication : toPublication,
+		  task:"getConstituenciesForDis"
+		};
+		 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		 var url = "voterAnalysisAjaxForDisAction.action?"+rparam;	
+		 callAjax(jsObj,url);
+}
+
 function buildConstituencies(results)
 {
 	$("#mapajaxImgDivId").css("display","none");
 	var selectedElmt = document.getElementById("mapVoterConstituencyId");
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
+
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}
+}
+
+function buildConstituenciesForDis(results)
+{
+	$("#mapajaxImgDivId").css("display","none");
+	var selectedElmt = document.getElementById("voterDataDistrictList");
 	removeSelectElements(selectedElmt);
 	for(var val in results)
 	{
@@ -638,6 +810,41 @@ $("#voterModificationErrorDiv").html('');
 }
 
 
+function showVoterModificationSaveStatusForDis(result)
+{
+
+$("#errorMsgDivId1").html('');
+ 
+  var str='';
+  str+='<table border=4 width=400>';
+ 
+   str+= '<tr><td>Constituency Name</td>';
+       str+= '<td colspan=2>From Publication</td>';
+		str+= '<td colspan=2>To Publication</td>';
+        str+= '<td>Insert Status</td>';
+    str+= '</tr>';
+	
+	for(var i in result)
+	{
+    str+= '<tr><td>'+result[i].name+'</td>';
+	str+= '<td colspan=2><center>'+result[i].validCount+'</center></td>';
+    str+= '<td colspan=2><center>'+result[i].totalCount+'</center></td>';
+	if(result[i].id==0)
+	{
+	str+= '<td>Inserted</td>';
+	}
+	else
+	{
+	str+= '<td>Exception </td>';
+    }
+	
+	str+='</tr>';
+	}
+    str+='</table>'
+	$("#errorMsgDivId1").html(str).css("color","black");
+ 
+}
+
 function buildpublicationDateListForVoterModification(result,jsObj)
 {
  
@@ -654,6 +861,7 @@ function buildpublicationDateListForVoterModification(result,jsObj)
    }
  }
 }
+
 
 </script>
 </body>

@@ -680,6 +680,11 @@ public class VotersAnalysisAction extends ActionSupport implements ServletReques
 			
 			namesList = votersAnalysisService.getConstituenciesToMapPublicationData(jObj.getLong("fromPublication"),jObj.getLong("toPublication"));
 		}
+		else if(jObj.getString("task").equalsIgnoreCase("getConstituenciesForDis"))
+		{
+			
+			namesList = votersAnalysisService.getConstituenciesToMapPublicationData(jObj.getLong("fromPublication"),jObj.getLong("toPublication"));
+		}
 			
 		return Action.SUCCESS;
 	}
