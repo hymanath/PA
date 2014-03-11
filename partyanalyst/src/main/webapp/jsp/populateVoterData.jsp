@@ -163,7 +163,7 @@ fieldset{
     <div id="districterrorMsgDiv"></div>
 	<div id="basicdistrictDiv"></div>
 	<div id="districtDiv" class="selectDiv">
-		Select Constituency<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your District" name="districtList" id="voterDataDistrictList" list="districts" listKey="id" listValue="name"/> &nbsp;&nbsp;
+		Select District<font class="requiredFont">*</font><s:select theme="simple" style="margin-left:27px;" cssClass="selectWidth" label="Select Your District" name="districtList" id="voterDataDistrictList" list="districts" listKey="id" listValue="name"/> &nbsp;&nbsp;
 
 		Select Publication Date<font class="requiredFont">*</font> <select id="districtpublicationDateList" class="selectWidth" style="width:172px;height:25px;" name="publicationDateList" >
 		<option value="10">1-2-2014</option>
