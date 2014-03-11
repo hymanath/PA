@@ -3156,4 +3156,13 @@ IUserVoterDetailsDAO{
 		return query.list();	
 	}
 	
+	public Long getCasteVoterNamesOfAConstituency(Long constituencyId,Long publicationId,Long userId)
+	{
+		Query query = getSession().createQuery("select distinct count(model.voter.voterId) from UserVoterDetails model,BoothPublicationVoter bpv where model.user.userId = :userId and bpv.voter.voterId = model.voter.voterId" +
+				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId and model.casteState.casteStateId is not null");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("userId","userId");
+		return (Long)query.uniqueResult();	
+	}
 }
