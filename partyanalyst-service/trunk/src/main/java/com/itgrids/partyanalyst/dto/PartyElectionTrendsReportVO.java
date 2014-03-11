@@ -6,13 +6,15 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	private Long  totalVoters;
 	private Long totalVotesPolled;
 	private String tdpPartyName;
-	private Long districtId;
 	private PartyElectionTrendsReportHelperVO tdpVo;
 	private PartyElectionTrendsReportHelperVO incVo=new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO prpVo = new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO trsVo = new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO bjpVo = new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO othersVo;
+	
+	private Long districtId;
+	
 	
 	
 	public Long getDistrictId() {
