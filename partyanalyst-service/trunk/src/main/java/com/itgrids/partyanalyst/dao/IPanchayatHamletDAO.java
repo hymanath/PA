@@ -35,4 +35,6 @@ public interface IPanchayatHamletDAO extends GenericDao<PanchayatHamlet,Long>{
 	public List<Object[]> getAllHamletsOfPanchayats(List<Long> panchayitIds);
 	
 	public List getHamletByPanchayatId(Long panchayatId);
+	
+	public List<Long> getboothdByPanchayat(Long year,List<Long> panchayatIds);
 }

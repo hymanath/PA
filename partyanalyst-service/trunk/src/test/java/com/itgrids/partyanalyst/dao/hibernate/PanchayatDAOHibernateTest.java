@@ -147,7 +147,7 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
-	public void testgetPanchayatDetails()
+	/*public void testgetPanchayatDetails()
 	{
 		List<Long> ids = new ArrayList<Long>();
 		ids.add(844l);
@@ -158,5 +158,10 @@ public class PanchayatDAOHibernateTest extends BaseDaoTestCase{
 		for (Object[] parms : values) {
 			System.out.println(parms[0] +":"+ parms[1]+":"+ parms[2] +":"+ parms[3]);
 		}
+	}*/
+	
+	public void testgetPanchayatIdsForDelemationEffect()
+	{
+		System.out.println(panchayatDAO.getPanchayatIdsForDelemationEffect(232l,2009l).size());
 	}
 }

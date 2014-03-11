@@ -705,5 +705,10 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 		Query query = getSession().createQuery("Select model.constituencyId,model.areaType from Constituency model where model.electionScope.electionScopeId = :electionScopeId and deformDate is null");
 		query.setParameter("electionScopeId",electionScopeId);
 		return query.list();
+	}	
+	public List<Object[]> getConstis(){
+		Query query = getSession().createQuery(" select model.constituencyId,model.name from Constituency model " +
+				" where  model.areaType != 'URBAN' and model.district.districtId > 10 and model.state.stateId = 1 and model.deformDate is null ");
+		return query.list();
 	}
 }

@@ -30,7 +30,16 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private List<ConstituencyElectionResultsVO> assemblyList;
 	private List<ConstituencyElectionResultsVO> parliamentList;
 	private List<ConstituencyElectionResultsVO> mptcZptcList ;
+	private SelectOptionVO panchatsList;
 	
+	public SelectOptionVO getPanchatsList() {
+		return panchatsList;
+	}
+
+	public void setPanchatsList(SelectOptionVO panchatsList) {
+		this.panchatsList = panchatsList;
+	}
+
 	public List<ConstituencyElectionResultsVO> getMptcZptcList() {
 		return mptcZptcList;
 	}

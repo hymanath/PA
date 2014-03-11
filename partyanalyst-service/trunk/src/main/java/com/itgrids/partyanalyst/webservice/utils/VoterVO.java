@@ -44,7 +44,7 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 
 	private String name;
 
-	//@Override
+	
 	public int compareTo(VoterVO o) {
 		// TODO Auto-generated method stub
 		return this.getAge().compareTo(o.getAge());

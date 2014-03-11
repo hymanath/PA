@@ -125,8 +125,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	private ICandidateResultDAO candidateResultDAO;
 	private IPartialBoothPanchayatDAO partialBoothPanchayatDAO;
 	private IPRPWeightegesDAO prpWeightegesDAO;
-	private IStaticDataService staticDataService;
-		
+	private IStaticDataService staticDataService;	
+	    
 	public IVoterReportLevelDAO getVoterReportLevelDAO() {
 		return voterReportLevelDAO;
 	}
@@ -2312,13 +2312,13 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 
 	 }
  
-	 public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevelForMincipality(Long userId,Long constituencyId,List<Long> casteIdsList ,List<ExceptCastsVO> expCasteDetails,Boolean checkStatus){
+	 public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevelForMincipality(Long userId,Long constituencyId,List<Long> casteIdsList ,List<ExceptCastsVO> expCasteDetails,Boolean checkStatus,Long publicationId){
 		 List<YouthLeaderSelectionVO> returnList = new ArrayList<YouthLeaderSelectionVO>();
 		 List<SelectOptionVO> booths= null;
 		 List<Long> boothIds= null;
 		 List<BasicVO> basicVOListForBooth = null;
 		 DecimalFormat deciamlFormat = new DecimalFormat("#.##");
-		 Long publicationId = 0L;
+		 //Long publicationId = 0L;
 		 YouthLeaderSelectionVO boothyouthSelectionVO  = null;
 		 List<YouthLeaderSelectionVO> botthDetailsList = null;
 		 List<YouthLeaderSelectionVO> botthLevelList = null;
@@ -2343,7 +2343,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 YouthLeaderSelectionVO youthLeaderSelectionVO = new YouthLeaderSelectionVO();
 		 try{
 			 //publicationId = publicationDateDAO.getLatestPublicationId();
-			 publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+			// publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 			 List<Long> list = assemblyLocalElectionBodyDAO.getLocalEleBodyIdsListByConstituencyId(constituencyId, publicationId);
 			 if(list == null || list.size() == 0)
 			  return null;
@@ -2975,7 +2975,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	  * @param boolean expCaste
 	  * @return List<YouthLeaderSelectionVO>
 	  */
-	 public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevel(Long userid,Long constituencyId,List<Long> casteIdsList,Map<Long,Double> casteMap,List<ExceptCastsVO> expCaseList,boolean expCaste)
+	 public List<YouthLeaderSelectionVO> findingBoothInchargesForBoothLevel(Long userid,Long constituencyId,List<Long> casteIdsList,Map<Long,Double> casteMap,List<ExceptCastsVO> expCaseList,boolean expCaste,Long publicationId,List<ExceptCastsVO> expCaseListForMuncipal)
 	 {
 		 List<YouthLeaderSelectionVO> returnList = new ArrayList<YouthLeaderSelectionVO>();
 		 try {
@@ -2991,7 +2991,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				Map<Long,List<BasicVO>> casteMapForBooth = new HashMap<Long, List<BasicVO>>();//Map<booyhid,catseDetails>
 				Map<Long,List<BasicVO>> casteMapForBooths = new HashMap<Long, List<BasicVO>>();//Map<booyhid,catseDetails>
 				Map<Long,String> casteNamesMap = new HashMap<Long, String>();//Map<casteId,casteName>
-				Long publicationId = 0l;
+				//Long publicationId = 0l;
 				List<BasicVO> basicVOListForPanchayat = null;
 				List<BasicVO> basicVOListForBooth = null;
 				List<YouthLeaderSelectionVO> botthLevelList = null;
@@ -3013,7 +3013,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				Set<Long> expCastesIds  = null;
 				DecimalFormat df = new DecimalFormat("#.##");
 				//publicationId = publicationDateDAO.getLatestPublicationId();
-				publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+				//publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 				List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId,publicationId);
 				
 				if(expCaste)
@@ -3047,7 +3047,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				if(tehsilIds != null && tehsilIds.size() > 0)
 				{
 					for (Long mandalId : tehsilIds) {
-						List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByTehsilId(mandalId);
+						//List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByTehsilId(mandalId);
+						List<Object[]> panchayatsList =  voterInfoDAO.getPanchayatDetailsForConstituency(constituencyId,publicationId,mandalId);
 						if(panchayatsList != null && panchayatsList.size() > 0)
 						{
 							panchayats = new ArrayList<SelectOptionVO>();
@@ -3158,6 +3159,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								returnList.add(youthLeaderSelectionVO);
 							}
 						}
+					}
+				}
+				if(constituencyDAO.get(constituencyId).getAreaType().equalsIgnoreCase("RURAL-URBAN"))
+				{
+					List<YouthLeaderSelectionVO> list = findingBoothInchargesForBoothLevelForMincipality(userid,constituencyId,casteIdsList , expCaseListForMuncipal, expCaste,publicationId);
+					if(list != null && list.size() > 0)
+					{
+						returnList.addAll(list);
 					}
 				}
 				
@@ -3627,15 +3636,16 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 }
 	    }
 	 }
+	 
 	 	
 		
-		 public List<SelectOptionVO> getUserAssignedVotersCasteDetailsByConstId(Long constituencyId,Long userId){
+		 public List<SelectOptionVO> getUserAssignedVotersCasteDetailsByConstId(Long constituencyId,Long userId,Long publicationId){
 			 
 			 List<SelectOptionVO> casteList = null;
 			 List castes;
 			 List<Long> constituencyIds = new ArrayList<Long>();
 			 constituencyIds.add(constituencyId);
-			 Long publicationId = getLatestPublicationByConstituency(constituencyId);
+			 //Long publicationId = getLatestPublicationByConstituency(constituencyId);
 			// Long publicationId = publicationDateDAO.getLatestPublicationId();
 			 try{
 				 if(constituencyId !=null){
@@ -3661,7 +3671,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  * @param Long constituencyId 
 		  * @return Map<String ,Map<String,PartyImpactVO>>
 		  */
-		 public Map<String ,Map<String,PartyImpactVO>> getElectionResultsForSelectedElectionsForAConsttituency(Long constituencyId,String partyName)
+		 public Map<String ,Map<String,PartyImpactVO>> getElectionResultsForSelectedElectionsForAConsttituency(Long constituencyId,String partyName,Long publicationId)
 		 {	
 			 
 			 LOG.debug("Entered into the getElectionResultsForSelectedElectionsForAConsttituency service method");
@@ -3697,7 +3707,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 Map<String , Long> votersCountMap = new HashMap<String, Long>();
 
 				 //this method will set all the voter details 
-				setAlltheVotersDetaiulsForPresentAndPreviousElections(resultMap,panchayatResultsList,totalParties ,votersCountMap);
+				setAlltheVotersDetaiulsForPresentAndPreviousElections(resultMap,panchayatResultsList,totalParties ,votersCountMap,publicationId);
 				 
 				List<String> partiesList = new ArrayList<String>(totalParties);
 				Collections.sort(partiesList);
@@ -3724,8 +3734,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		  * @param elections
 		  * @param panchayatResultsList
 		  */
-		public void getAllPanchayatWiseVotersDetailsForPartyAndElectionWise(Long constituencyId,
-				List<Long> tehsilIds, List<Long> elections,
+		public void getAllPanchayatWiseVotersDetailsForPartyAndElectionWise(
+				Long constituencyId,List<Long> tehsilIds, List<Long> elections,
 				List<Object[]> panchayatResultsList)	 
 		{
 			LOG.debug("Entered into getAllPanchayatWiseVotersDetailsForPartyAndElectionWise service method");
@@ -3765,7 +3775,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						
 						for(Object[] obj:list)
 						{
-							Object[] newObj = new Object[6]; 
+							Object[] newObj = new Object[7]; 
 							newObj[0] = obj[2];                    // no of voters
 							newObj[1] = entryForBooths.getKey();   // panchayat id
 							newObj[2] = electionId;                //election id
@@ -3773,13 +3783,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							newObj[4] = obj[1];                    //party name
 							
 							newObj[5] = panchayatDAO.getPanchayatNameById(entryForBooths.getKey()); // panchayat name
-							
+							newObj[6] = 3l;							//report level for panchayat
 							panchayatResultsList.add(newObj);
 							
 						}
 						
 					 }
 				 }
+				
 			 //for municipalities
 			 for(Long electionId:elections){
 					List<Long> staticParties = partyDAO.getStaticParties(IConstants.STATIC_PARTIES + ",'IND'");
@@ -3822,7 +3833,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		 * @param totalParties
 		 * @param votersCountMap
 		 */
-		public void setAlltheVotersDetaiulsForPresentAndPreviousElections(Map<String ,Map<String,PartyImpactVO>> resultMap,List<Object[]> panchayatResultsList,Set<String> totalParties , Map<String , Long> votersCountMap)
+		public void setAlltheVotersDetaiulsForPresentAndPreviousElections(Map<String ,Map<String,PartyImpactVO>> resultMap,List<Object[]> panchayatResultsList,Set<String> totalParties , Map<String , Long> votersCountMap , Long publicationId)
 		{
 			LOG.debug("Entered into the setAlltheVotersDetaiulsForPresentAndPreviousElections service method");
 			try
@@ -3841,8 +3852,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						votersCountMap.put(obj[5].toString()+obj[2].toString() , (Long)obj[0]);
 						
 						//For Panchayat highest castes
-						 panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat((Long)obj[1],3l,10l,1l);
-						 
+						if((Long)obj[6]==5l)
+							panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat((Long)obj[1],(Long)obj[6],publicationId,1l);
+						else 
+							panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat((Long)obj[1],(Long)obj[6],publicationId,1l);
+						
 						 int j=0;
 						 BasicVO basicVO =null;
 						 panchayatList = new ArrayList<BasicVO>();
@@ -4119,12 +4133,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				{
 				   for(Object[] params:electionList)
 				   {
-					   String electionType = electionDAO.get((Long)params[0]).getElectionScope().getElectionType().getElectionType();
-					  if(electionType.equalsIgnoreCase("Assembly"))
-					  {
-						if(!assemblyEleIdsList.contains((Long)params[0]))
-						assemblyEleIdsList.add((Long)params[0]);
-					  }
+					   assemblyEleIdsList.add((Long)params[0]); 
 				   } 	
 				}
 				
@@ -4368,7 +4377,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						
 						if(resultMap != null && resultMap.size() > 0)
 							//getPartyPerformanceForBooth(partyPositionVO, partyId,boothMap);	
-							getPartyPerformanceForLocalBodyBooth(partyPositionVO, partyId,resultMap);	
+							getPartyPerformanceForLocalBodyBooth(partyPositionVO, partyId,resultMap,electionId);	
 				
 			
 				}catch (Exception e) {
@@ -4391,7 +4400,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					return null;	
 				}
 			}
-			public void getPartyPerformanceForLocalBodyBooth(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<String,Map<Long,Map<Long,Long>>> resultMap)
+			public void getPartyPerformanceForLocalBodyBooth(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<String,Map<Long,Map<Long,Long>>> resultMap,Long electionId)
 			{
 				try{
 					Map<Long,Long> boothTotalMap = new HashMap<Long, Long>(0);
@@ -4422,6 +4431,16 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					Long selectedPartyTotal = partyMap.get(selectedpartyId);
 					Long comparePartyTotal = 0L;
 						 
+					if(selectedPartyTotal == null)
+					{
+						 AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,selectedpartyId);
+						  if(alliancePartiesVO.getAllianceParties() == null)
+							  selectedPartyTotal = 0L;
+						  else
+							  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
+								  selectedPartyTotal = partyMap.get(alianceParty.getId());
+					}
+						
 					  for(Long partysId:partyMap.keySet())
 					  {
 					    if(!partysId.equals(selectedpartyId) && comparePartyTotal < partyMap.get(partysId))
@@ -4575,7 +4594,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  }
 				}
 				if(resultMap != null && resultMap.size() > 0)
-					getPartyPerformanceForPanchayat1(resultMap,partyPositionVO, partyId); 
+					getPartyPerformanceForPanchayat1(resultMap,partyPositionVO, partyId,electionId); 
 				if(resultMap1 != null && resultMap1.size() > 0)
 				  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,booths);
 				
@@ -4766,7 +4785,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			}
 			
 			
-			public void getPartyPerformanceForPanchayat1(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId)
+			public void getPartyPerformanceForPanchayat1(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId, Long electionId)
 			{
 				try{
 					
@@ -4775,9 +4794,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					
 					Map<Long,List<Long>> boothIdsMap = new HashMap<Long, List<Long>>(0);//<panchayatId,List<boothIds>>
 					Map<Long,Long> panchayatTotalVotersMap = new HashMap<Long, Long>(0);//<locationId,totalVoters>
-					Map<Long,List<Long>> localbodyboothIdsMap = new HashMap<Long, List<Long>>(0);//<panchayatId,List<boothIds>>
-					Map<Long,Long> localbodyTotalVotersMap = new HashMap<Long, Long>(0);//<locationId,totalVoters>
-					
+										
 					  List<Long> panchayatIdsList = new ArrayList<Long>(resultMap.keySet());
 					  List<Object[]> boothList = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayatIdsList(panchayatIdsList, partyPositionVO.getId());
 					  if(boothList != null && boothList.size() > 0)
@@ -4803,7 +4820,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  for(Long id : boothIdsMap.keySet())
 					panchayatTotalVotersMap.put(id, boothDAO.getTotalVotesByBoothIdsList(boothIdsMap.get(id)));
 				}
-				
+				 AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,selectedpartyId);
 				//panchayat start	
 				 for(Long id:resultMap.keySet())
 				 {
@@ -4822,14 +4839,22 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						 comparePartyTotal = partyMap.get(partysId);
 						  
 					  }
-				   
-				  if(selectedPartyTotal == null)
-					  selectedPartyTotal = 0L;
+					  
+				  if(selectedPartyTotal == null){
+					 
+					  if(alliancePartiesVO.getAllianceParties() == null)
+						  selectedPartyTotal = 0L;
+					  else
+						  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
+							  if(selectedPartyTotal == null || selectedPartyTotal.longValue() == 0l)
+							  selectedPartyTotal = partyMap.get(alianceParty.getId());
+				  }
+				  
 				  if(comparePartyTotal == null)
 					  comparePartyTotal = 0L;
-				  
-				  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				  double selectedPartyTotalPercent = 0d;
+				  if(totalVotes != null && totalVotes > 0)
+				   selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      
 			      //double difference = new BigDecimal(selectedPartyTotalPercent - comparePartyTotalPercent).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			      double difference = selectedPartyTotalPercent;
@@ -4912,7 +4937,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							  comparePartyTotal = 0L;
 						  
 						  double selectedPartyTotalPercent =  new BigDecimal((selectedPartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-					      double comparePartyTotalPercent =  new BigDecimal((comparePartyTotal*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+					     
 					     
 					      double difference = selectedPartyTotalPercent;
 					    	
@@ -5168,7 +5193,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 return returnList;
 			 }
 			 	
-				public List<YouthLeaderSelectionVO> getLeadersInUrbanConstituencyes(Long userId,Long constituencyId,List<Long> casteIdsList ,List<ExceptCastsVO> expCasteDetails,Boolean checkStatus)
+				public List<YouthLeaderSelectionVO> getLeadersInUrbanConstituencyes(Long userId,Long constituencyId,List<Long> casteIdsList ,List<ExceptCastsVO> expCasteDetails,Boolean checkStatus,Long publicationDateId)
 				{
 					List<YouthLeaderSelectionVO> returnList = null;
 					try {
@@ -5176,7 +5201,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						Map<Long,String> wardsNameMap = new HashMap<Long, String>();//Map<wardId,wardname>
 						Map<Long,String> boothsNameMap = new HashMap<Long, String>();//Map<boothId,boothName>
 						Map<Long,Long> boothwiseTotalVotersMap = new HashMap<Long, Long>();//Map<boothId,totalvoters>
-						Long publicationDateId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+						//Long publicationDateId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 						//Long publicationDateId = publicationDateDAO.getLatestPublicationId();
 						Long assemblyLocalBodiId = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyIdByConstituency(constituencyId);
 						DecimalFormat deciamlFormat = new DecimalFormat("#.##");
@@ -5465,18 +5490,30 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 //latestPublictaionId = publicationDateDAO.getLatestPublicationId();
 					 latestPublictaionId = voterInfoDAO.getLatestPublicationDate(constituenycId);
 					 List<Object[]> addedVotersCount = voterModificationDAO.getAddedVotersByBoothIds(boothIds,latestPublictaionId,constituenycId);
-					 List<Object[]> constituencyInfo = constituencyElectionResultDAO.findTotalVotesAndPolledVotesAndVotesPercentage(electionId,constituenycId);
+					 Set<Long> booths = new HashSet<Long>(boothIds);
+					 
+					 List<Object[]> constituencyInfo = null;
+					 Long partyPolledVotesInConstituency = null;
+					 if(electionDAO.get(electionId).getElectionScope().getElectionType().getElectionType().equalsIgnoreCase("Assembly")){
+					     constituencyInfo = constituencyElectionResultDAO.findTotalVotesAndPolledVotesAndVotesPercentage(electionId,constituenycId);
+					     partyPolledVotesInConstituency = nominationDAO.getPartyPercentage(constituenycId, electionId, partyId).longValue();
+					 }else{
+						 TotalVotesInConstituency = candidateBoothResultDAO.findTotalVotesForAssembInAParliament(booths, electionId);
+						 TotalPolledVotesInConstituency = candidateBoothResultDAO.findPolledVotesForAssembInAParliament(booths, electionId);
+						 partyPolledVotesInConstituency = candidateBoothResultDAO.findTotalVotesPolledForCandidateAssembInAParliament(booths, electionId, partyId);
+					 }
 					 if(constituencyInfo != null && constituencyInfo.size() > 0)
 						for(Object[] params : constituencyInfo)
 						{
 							TotalVotesInConstituency = new Double(params[0].toString()).longValue();
 							TotalPolledVotesInConstituency =new Double(params[1].toString()).longValue();
 						}
+					 
 					 Double pollingPerForConstituency = (TotalPolledVotesInConstituency * 100.0)/TotalVotesInConstituency;
-					 Long partyPolledVotesInConstituency = nominationDAO.getPartyPercentage(constituenycId, electionId, partyId).longValue();
+					 
 					 Double partyPerInConstituency = (partyPolledVotesInConstituency * 100.0)/TotalPolledVotesInConstituency;
 					
-					 Set<Long> booths = new HashSet<Long>(boothIds);
+					
 					 totalVotesForBooth =candidateBoothResultDAO.findBoothResultsForMultipleBoothsAndElectionIdForSelElection(booths,electionId); 
 					 
 					 if(totalVotersInBooth != null && totalVotersInBooth.size() > 0)
@@ -5634,13 +5671,13 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				return result;
 			 }
 			 
-	public List<VoterCountVO> getVotersCountInPanchayats(Long constituencyId)
+	public List<VoterCountVO> getVotersCountInPanchayats(Long constituencyId,Long publicationId)
 	{
 		List<VoterCountVO> voterCountVOList = new ArrayList<VoterCountVO>();
 	
 		try {
 			LOG.debug("Enterd into getVotersCountInPanchayats() method in Suggestive Model Service");
-			Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+			//Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 			if(publicationId != null)
 			{
 				//String constituencyType = constituencyDAO.get(constituencyId).getAreaType();
@@ -5821,8 +5858,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				fillPartyWiseVotersCountAndPercentage(afterDelimationPartyResult,delimationDetails,partyId,delimationEffectMap,"after",others);
 			}
 			Long previousElectionId = electionDAO.getElectionId(previousElectionYear,2l,1l);
-			List<Long> tehsilIds = boothDAO.getTehsilsForAfterDelimation(constituencyId,Long.valueOf(presentElectionYear));
-			List<Long> boothIds  = boothDAO.getBoothsBeforDelimation(Long.valueOf(previousElectionYear),tehsilIds);
+			//List<Long> tehsilIds = boothDAO.getTehsilsForAfterDelimation(constituencyId,Long.valueOf(presentElectionYear));
+			List<Long> panchayatIds = panchayatDAO.getPanchayatIdsForDelemationEffect(constituencyId,Long.valueOf(presentElectionYear));
+			//List<Long> boothIds  = boothDAO.getBoothsBeforDelimation(Long.valueOf(previousElectionYear),tehsilIds);
+			List<Long> boothIds  = panchayatHamletDAO.getboothdByPanchayat(Long.valueOf(previousElectionYear),panchayatIds);
 			List<Object[]> beforeDelimationtotalAndPolledVotesCount = boothResultDAO.getBeforeDelimitationEffectBasedOnVoters(previousElectionId,boothIds);
 			if(beforeDelimationtotalAndPolledVotesCount != null && beforeDelimationtotalAndPolledVotesCount.size() > 0)
 			{

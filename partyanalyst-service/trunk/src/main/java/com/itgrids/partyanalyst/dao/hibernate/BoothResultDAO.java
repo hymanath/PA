@@ -68,7 +68,7 @@ public class BoothResultDAO extends GenericDaoHibernate<BoothResult, Long> imple
 	{
 		Query query = getSession().createQuery("select sum(model.boothConstituencyElection.booth.totalVoters), " +
 				" sum(model.validVotes) from BoothResult model where " +
-				" model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyid " +
+				" model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyid " +
 				" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId");
 		query.setParameter("electionId", electionId);
 		query.setParameter("constituencyid", constituencyid);
