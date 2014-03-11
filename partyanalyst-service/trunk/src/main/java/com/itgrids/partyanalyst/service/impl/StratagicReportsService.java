@@ -293,6 +293,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	        vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
 	        vo.setTotalVoters(((Double)object[1]).longValue());
 	        vo.setTotalVotesPolled(((Double)object[2]).longValue());
+	        vo.setDistrictId(Long.valueOf(object[9].toString()));
 	        PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 	        voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((Double)object[7])));
 	        voh.setVotesEarned(((Double)object[4]).longValue());
@@ -311,11 +312,31 @@ public class StratagicReportsService implements IStratagicReportsService{
 	     	   vo.setPrpVo(voh);
 
 	        }
-	        else if(((Long)object[3]).equals(163L)){
-		       vo.setBjpVo(voh);
-	        }
-	        else if(((Long)object[3]).equals(886L)){
-	     	   vo.setTrsVo(voh);
+	        else if(Long.valueOf(object[9].toString())<10){
+	        	if(((Long)object[3]).equals(163L)){
+	        		vo.setBjpVo(voh);
+	        	}
+	        	else if(((Long)object[3]).equals(886L)){
+	        		vo.setTrsVo(voh);
+	        	}
+	        	 else {
+	  	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+	  	     	   if(vo1!=null){
+	  	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+	  	     		  if( vo1.getRank()<(Long)object[8] )
+	          			  vo1.setRank((Long)object[8]); 
+	  	     	   }
+	  	        
+	  	     	   else 
+	  	     	   {
+	  	     		   vo1= new PartyElectionTrendsReportHelperVO();
+	  	     		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+	  		 	     	  vo1.setRank((Long)object[8]); 
+
+	  	     	   }
+	  	     	  //vo1.setRank((Long)object[8]); 
+	  	     	  vo.setOthersVo(vo1);
+	  	        }
 	        }
 	        else {
 	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
@@ -324,6 +345,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	     		  if( vo1.getRank()<(Long)object[8] )
         			  vo1.setRank((Long)object[8]); 
 	     	   }
+	        
 	     	   else 
 	     	   {
 	     		   vo1= new PartyElectionTrendsReportHelperVO();
@@ -342,6 +364,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			           vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
 			           vo.setTotalVoters(((Double)object[1]).longValue());
 			           vo.setTotalVotesPolled(((Double)object[2]).longValue());
+			           vo.setDistrictId(Long.valueOf(object[9].toString()));
 			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 			           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((Double)object[7])));
 			           voh.setVotesEarned(((Double)object[4]).longValue());
@@ -361,12 +384,32 @@ public class StratagicReportsService implements IStratagicReportsService{
 			        	   vo.setPrpVo(voh);
 
 			           }
-			           	else if(((Long)object[3]).equals(163L)){
-					       vo.setBjpVo(voh);
-				        }
-				        else if(((Long)object[3]).equals(886L)){
-				     	   vo.setTrsVo(voh);
-				        }
+			           else if(Long.valueOf(object[9].toString())<10){
+			           		if(((Long)object[3]).equals(163L)){
+			           			vo.setBjpVo(voh);
+			           		}
+			           		else if(((Long)object[3]).equals(886L)){
+			           			vo.setTrsVo(voh);
+			           		}
+			           	 else {
+				        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+				        	   if(vo1!=null){
+				        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+				        		  if( vo1.getRank()<(Long)object[8] )
+				        			  vo1.setRank((Long)object[8]); 
+				        	   }
+				        	   else 
+				        	   {
+				        		   vo1= new PartyElectionTrendsReportHelperVO();
+				        		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+						 	     	  vo1.setRank((Long)object[8]); 
+
+				        	   }
+	   
+				        	   vo.setOthersVo(vo1);
+				           }
+			           }
+			           
 			           else {
 			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 			        	   if(vo1!=null){
@@ -421,8 +464,9 @@ public class StratagicReportsService implements IStratagicReportsService{
 			PartyElectionTrendsReportVO vo =maps.get(Long.valueOf(object[0].toString()));
 			  vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
 			  if(idMap.containsKey(Long.valueOf(object[0].toString())))
-	          vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
+			   vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
 	           vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+	           vo.setDistrictId(Long.valueOf(object[5].toString()));
 	           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 	           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)((Long)object[3]).longValue()/(double)Long.valueOf(object[1].toString()))*100))));
 	           voh.setVotesEarned(((Long)object[3]).longValue());
@@ -439,7 +483,29 @@ public class StratagicReportsService implements IStratagicReportsService{
 	           {
 	        	   vo.setPrpVo(voh);
 
-	           }else {
+	           }
+	           else if(Long.valueOf(object[5].toString())<10){
+	           		if(((Long)object[3]).equals(163L)){
+	           			vo.setBjpVo(voh);
+	           		}
+	           		else if(((Long)object[3]).equals(886L)){
+	           			vo.setTrsVo(voh);
+	           		}
+	           		else {
+			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+			        	   if(vo1!=null)
+			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+			        	   else 
+			        	   {
+			        		   vo1= new PartyElectionTrendsReportHelperVO();
+			        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+
+			        	   }
+			        		   
+			        	   vo.setOthersVo(vo1);
+			           }
+	           }
+	           else {
 	        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 	        	   if(vo1!=null)
 	        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
@@ -459,8 +525,9 @@ public class StratagicReportsService implements IStratagicReportsService{
 			PartyElectionTrendsReportVO vo =new PartyElectionTrendsReportVO();
 			           vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
 			     	  if(idMap.containsKey(Long.valueOf(object[0].toString())))
-				          vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
+				       vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
 			           vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+			           vo.setDistrictId(Long.valueOf(object[5].toString()));
 			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
 			           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)(((Long)object[3]).longValue())/(double)(Long.valueOf(object[1].toString()).longValue()))*100))));
 			           voh.setVotesEarned(((Long)object[3]).longValue());
@@ -477,7 +544,29 @@ public class StratagicReportsService implements IStratagicReportsService{
 			           {
 			        	   vo.setPrpVo(voh);
 
-			           }else {
+			           } else if(Long.valueOf(object[5].toString())<10){
+			           		if(((Long)object[3]).equals(163L)){
+			           			vo.setBjpVo(voh);
+			           		}
+			           		else if(((Long)object[3]).equals(886L)){
+			           			vo.setTrsVo(voh);
+			           		}
+			           		else {
+					        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+					        	   if(vo1!=null)
+					        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+					        	   else 
+					        	   {
+					        		   vo1= new PartyElectionTrendsReportHelperVO();
+					        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+
+					        	   }
+					        		   
+					        	   vo.setOthersVo(vo1);
+					           }
+			           }
+			           
+			           else {
 			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 			        	   if(vo1!=null)
 			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
@@ -513,6 +602,10 @@ public class StratagicReportsService implements IStratagicReportsService{
 			else if(others !=null && others>inc )
 				max=others;
 			
+			if(vo.getTdpVo()==null){
+				PartyElectionTrendsReportHelperVO tdpVo=new PartyElectionTrendsReportHelperVO();
+				vo.setTdpVo(tdpVo);
+			}
 			vo.getTdpVo().setMarginVotes(tdp-max);
 			System.out.println(vo.getTdpVo().getMarginVotes());
 			System.out.println(vo.getTotalVotesPolled());
