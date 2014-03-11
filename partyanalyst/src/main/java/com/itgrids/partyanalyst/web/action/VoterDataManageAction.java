@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
@@ -30,6 +31,15 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 	private Integer maxResults;
 	private IVotersAnalysisService votersAnalysisService;
 	private List<SelectOptionVO> constituenciesList,publicationDateList;
+	private List<SelectOptionVO> districts;
+	public List<SelectOptionVO> getDistricts() {
+		return districts;
+	}
+
+	public void setDistricts(List<SelectOptionVO> districts) {
+		this.districts = districts;
+	}
+
 	private String task;
 	JSONObject jObj;
 	private ResultStatus resultStatus;
@@ -38,7 +48,26 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 	private List<SelectOptionVO> allConstituenciesList = new ArrayList<SelectOptionVO>(0);
 	private List<SelectOptionVO> constituencyList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
+	private Long districtId;
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+
+	private IStaticDataService staticDataService;
 	
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+
 	public List<SelectOptionVO> getConstituenciesListForVoterChanges() {
 		return constituenciesListForVoterChanges;
 	}
@@ -185,11 +214,11 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 			return "error";
 		}
 		
-		votersAnalysisService.insertVoterData(constituencyId,publicationDateId,startIndex,maxResults);
-		
 		constituenciesList = votersAnalysisService.getConstituenciesList();
 		
 		publicationDateList = votersAnalysisService.getAllPublicationDates();
+		
+		districts = staticDataService.getDistricts(1l);
 		
 		constituenciesListForVoterChanges = votersAnalysisService.getConstituenciesToBeMappedForVoterChanges();
 		
@@ -201,9 +230,10 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
 			allConstituenciesList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(userID,electionYear,electionTypeId);
 		}
-		constituencyList = votersAnalysisService.getConstituenciesFromBoothPublicationVoter();
-		constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
+		constituencyList = staticDataService.getConstituencies(1l);
 		
+		constituencyList.add(0,new SelectOptionVO(0L,"Select Constituency"));
+			
 		
 		return ActionSupport.SUCCESS;
 	}
@@ -231,6 +261,47 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		{
 			resultStatus = votersAnalysisService.mapVoterDataFromOnePublicationToAnotherPublication(jObj.getLong("constituencyId"),jObj.getLong("frompublicationDateId"),jObj.getLong("topublicationDateId"),jObj.getBoolean("boothCreateflag"));
 		}
+		
+		else if(jObj.getString("task").equalsIgnoreCase("getVoterDataForDis"))
+		{
+			  
+			 try{
+				 publicationDateList = new ArrayList<SelectOptionVO>();
+				 
+				
+			
+		   List<SelectOptionVO> constituencies = staticDataService.getConstituenciesFordistricts(jObj.getLong("DistrictId"));
+			 
+				
+			  if(constituencies != null && constituencies.size() > 0)
+			  {
+			  for(SelectOptionVO vo :constituencies )
+			  {
+					 
+					Long toList =votersAnalysisService.getVoterCountForToPublication(vo.getId(),jObj.getLong("topublicationDateIdForDis"));
+					
+					Long fromList =votersAnalysisService.getVoterCountForToPublication(vo.getId(),jObj.getLong("frompublicationDateIdForDis"));
+					
+					
+			    resultStatus = votersAnalysisService.mapVoterDataFromOnePublicationToAnotherPublication(vo.getId(),jObj.getLong("frompublicationDateIdForDis"),jObj.getLong("topublicationDateIdForDis"),jObj.getBoolean("boothCreateflag"));
+			    SelectOptionVO vo1 = new SelectOptionVO();
+				  vo1.setId(Long.valueOf(resultStatus.getResultCode()));
+				  vo1.setValidCount(fromList);
+				  vo1.setTotalCount(toList);
+				  vo1.setName(vo.getName().toString());
+				  publicationDateList.add(vo1);
+				
+			  }
+			  }
+			 
+			 
+			 }catch(Exception e)
+			 {
+			  e.printStackTrace(); 
+			 }
+		}
+		
+		
 		return Action.SUCCESS;
 	}
 
