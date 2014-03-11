@@ -23,6 +23,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	
 	/*public void testGetVotersCount1()
+
 	{
 		List<VoterInfo> list = voterInfoDAO.getVotersCount(1l, 232l, 7l);
 		if(list != null && list.size() > 0)
@@ -35,6 +36,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 	}*/
 	
 	/*public void testDeleteVotersInfoByReportLevelValue()
+
 	{
 		List<Long> reportLevelValue = new ArrayList<Long>(0);
 		reportLevelValue.add(232l);
@@ -42,12 +44,15 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}*/
 	
+	
 	/*public void testGetTotalVotersByReportLevelValue()
+
 	{
 		System.out.println(voterInfoDAO.getTotalVotersByReportLevelValue(1l, 232l, 7l));
 	}*/
 	
 	/*public void testgetVoterInfoByPublicationDateIds()
+
 	{
 		List<Long> publicationDateIds = new ArrayList<Long>(0);
 		publicationDateIds.add(7l);
@@ -61,7 +66,9 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
+	
 	/*public void testGetTotalVotersByPublicationDateIdsList()
+
 	{
 		List<Long> publicationDateIds = new ArrayList<Long>(0);
 		publicationDateIds.add(7l);
@@ -201,7 +208,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println(objects[0] +":"+ objects[1]);
 		}
 	}*/
-	public void testgetTotalVotersInAPanchayat()
+	/*public void testgetTotalVotersInAPanchayat()
 	{
 		List<Long> panchayatIds = new ArrayList<Long>();
 		panchayatIds.add(1l);
@@ -209,5 +216,8 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		panchayatIds.add(3l);
 		Long count = voterInfoDAO.getVotersCountInALocation(11l, 12l, 8l, 309l);
 		System.out.println(count);
-	}
+	}*/
+	
+	
+
 }

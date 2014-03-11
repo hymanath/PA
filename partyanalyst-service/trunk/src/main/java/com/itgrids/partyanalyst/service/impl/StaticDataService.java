@@ -9164,16 +9164,27 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			 }
 			 if(electionIds != null && electionIds.size() > 0)
 			 {
-				List<Object[]> electionYearsList = nominationDAO.getElectionyearsByElection(electionIds,partyId);
+				 List<Long> partyIds = new ArrayList<Long>();
+				 AlliancePartyResultsVO alliancePartiesVO = null;
+				 for(Long eId:electionIds){
+				  alliancePartiesVO = getAlliancePartiesByElectionAndParty(eId,partyId);
+				  if(alliancePartiesVO == null)
+					  partyIds.add(partyId);
+				  else if(alliancePartiesVO != null)
+					  for(SelectOptionVO param:alliancePartiesVO.getAllianceParties())
+						  partyIds.add(param.getId());
+				 }
+				List<Object[]> electionYearsList = nominationDAO.getElectionyearsByElectionAndParty(electionIds,partyIds);
 				if(electionYearsList != null && electionYearsList.size() > 0)
 				{
 					for (Object[] parms : electionYearsList) {
 						SelectOptionVO selectOptionVO = new SelectOptionVO();
 						selectOptionVO.setId((Long) parms[0]);
-						selectOptionVO.setName( parms[1].toString());
+						selectOptionVO.setName( parms[1].toString()+"("+parms[2].toString()+")");
 						reteurnList.add(selectOptionVO);
 					}
 				}
+			
 			 }
 			/*if(electionIds != null && electionIds.size() > 0)
 			{

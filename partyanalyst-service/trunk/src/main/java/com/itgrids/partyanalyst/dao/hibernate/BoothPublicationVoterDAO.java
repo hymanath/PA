@@ -6426,7 +6426,55 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 						"B.constituency_id = 228 AND D.district_Id = T.district_id " +
 						" ORDER BY B.booth_id,BPV.serial_no");
 		return query.list();
-	}
+	}	
+	public List<Object[]>  getHamletsForPartialBooth1(Long boothId){
+			
+			Query query = getSession().createSQLQuery("select distinct h.hamlet_id,h.hamlet_name from partial_booth_panchayat pbp,hamlet h where " +
+					" pbp.booth_id = :boothId and pbp.hamlet_id = h.hamlet_id") ;
+			query.setParameter("boothId", boothId);
+			
+			return query.list();
+		}
+	 
+	 public List<Object[]> getPartialBoothHamlets1(Long panchayatId,Long publicationId){
+					
+			Query query = getSession().createQuery("select distinct ph.hamlet.hamletId, " +
+					"ph.hamlet.hamletName from PanchayatHamlet ph,PartialBoothPanchayat pbp " +
+					"where pbp.booth.panchayat.panchayatId = :panchayatId " +
+					" and pbp.booth.publicationDate.publicationDateId = :publicationId" +
+					" and pbp.panchayat.panchayatId = ph.panchayat.panchayatId ");
+			query.setParameter("panchayatId", panchayatId);
+			query.setParameter("publicationId", publicationId);
+			return query.list();
+		}
+	 
+	 public List<Object[]> getPartialBoothHamlets2(Long panchayatId,Long publicationId){
+		 
+			Query query = getSession().createQuery("select distinct pbp.hamlet.hamletId," +
+					"pbp.hamlet.hamletName from PartialBoothPanchayat pbp " +
+					"where pbp.booth.boothId in (select model.boothId from Booth model where " +
+					"model.panchayat.panchayatId = :panchayatId and " +
+					"model.publicationDate.publicationDateId = :publicationId)" +
+					" and pbp.hamlet.hamletId is not null");
+			query.setParameter("panchayatId", panchayatId);
+			query.setParameter("publicationId", publicationId);
+			return query.list();
+		}
+	 
+	 public List<Object[]> getPartialBoothHamlet(Long panchayatId,Long publicationId){
+		 
+			Query query = getSession().createQuery("select distinct pbp.description," +
+		        		"pbp.booth.panchayat.panchayatName,pbp.panchayat.panchayatName,pbp.hamlet.hamletName," +
+		        		"pbp.booth.partNo,pbp.booth.panchayat.panchayatId,pbp.booth.boothId," +
+		        		"pbp.booth.panchayat.panchayatId from PartialBoothPanchayat pbp " +
+						"where pbp.booth.boothId in (select model.boothId from Booth model where " +
+						"model.panchayat.panchayatId = :panchayatId and " +
+						"model.publicationDate.publicationDateId = :publicationId)" +
+						" and pbp.hamlet.hamletId is not null");
+			query.setParameter("panchayatId", panchayatId);
+			query.setParameter("publicationId", publicationId);
+			return query.list();
+		}
 	
 	public List<Object[]> getTotalVotersOfBoothByConstituencyId(Long constituencyId,Long publicationDateId){
 			Query query = getSession().createQuery("select count(distinct model.voter.voterId),model.booth.partNo from BoothPublicationVoter model where model.booth.constituency.constituencyId=:constituencyId" +

@@ -350,5 +350,13 @@ GenericDaoHibernate<PartialBoothPanchayat, Long> implements IPartialBoothPanchay
 		query.setParameter("constituencyId",constituencyId);
 		query.setParameter("publicationId",publicationId);
 		return query.list();
+	}	
+	public List<Object[]> getHamletsForPartialHamlets(Long panchayatId,Long publicationId){
+		
+		Query query = getSession().createQuery("select distinct pbp.hamlet.hamletId,pbp.hamlet.hamletName from PartialBoothPanchayat pbp"+
+				" where pbp.panchayat.panchayatId = :panchayatId and pbp.booth.publicationDate.publicationDateId = :publicationId") ;
+		query.setParameter("panchayatId", panchayatId);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
 	}
 }

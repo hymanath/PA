@@ -51,5 +51,6 @@ public interface ILocalElectionBodyDAO extends GenericDao<LocalElectionBody, Lon
 	
 	public String getLocalElectionBodyName1(Long localElectionBodyId);
 	
-	public List<Object[]> getLocalElectionBodyNames(List<Long> localElectionBodyIds);
+	public List<Object[]> getLocalElectionBodyNames(List<Long> localElectionBodyIds);	
+	 public String getLocalElectionBodyNameNew(Long localElectionBodyId);
 }

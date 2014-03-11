@@ -180,7 +180,7 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 		}
 		return resultList;
 	}
-	public List<VotersDetailsVO> getConstituencyBasicCountInfoById(Long constituencyId,Long userId)
+	public List<VotersDetailsVO> getConstituencyBasicCountInfoById(Long constituencyId,Long userId,Long publicationId)
 	{
 		List<VotersDetailsVO> resultList = new ArrayList<VotersDetailsVO>();
 		List<SelectOptionVO> subList = new ArrayList<SelectOptionVO>();
@@ -188,7 +188,7 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 		List<Long> localbodies = new ArrayList<Long>();
 		//Long latestPublicationId = publicationDateDAO.getLatestPublicationId();
 		//Long latestPublicationId = publicationDateDAO.getLatestPublicationIdByConstiId(constituencyId);
-		Long latestPublicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+		//Long latestPublicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 		try{
 			VotersDetailsVO votersDetailsVO = new VotersDetailsVO();
 			subList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId, IConstants.PRESENT_YEAR, null);	
@@ -208,15 +208,15 @@ public class ConstituencyInfoService implements IConstituencyInfoService{
 			if(mandalIds != null && mandalIds.size() > 0)
 			{
 				//List<SelectOptionVO> panchayatsList = staticDataService.getPanchayatiesByMandalIdsListAndConstituencyId(mandalIds,constituencyId,latestPublicationId);
-				List<Object[]> panchayatsList = boothDAO.getPanchayatiesByMandalsListAndConstituencyId(mandalIds, constituencyId, latestPublicationId);
+				List<Object[]> panchayatsList = boothDAO.getPanchayatiesByMandalsListAndConstituencyId(mandalIds, constituencyId, publicationId);
 				if(panchayatsList !=null && panchayatsList.size() > 0)
 				votersDetailsVO.setTotalPanchayats(new Long(panchayatsList.size()));
 			}
 			else
 			votersDetailsVO.setTotalPanchayats(0l);	
 			
-			votersDetailsVO.setTotalBooths(new Long(boothDAO.getBoothIdsByConstituencyIdAndPublicationId(constituencyId,latestPublicationId).size()));
-			votersDetailsVO.setTotalNoOfWards(boothDAO.getWardsListByConstituencyId(constituencyId,latestPublicationId).size());
+			votersDetailsVO.setTotalBooths(new Long(boothDAO.getBoothIdsByConstituencyIdAndPublicationId(constituencyId,publicationId).size()));
+			votersDetailsVO.setTotalNoOfWards(boothDAO.getWardsListByConstituencyId(constituencyId,publicationId).size());
 			resultList.add(votersDetailsVO);
 		}
 		catch (Exception e) {

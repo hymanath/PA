@@ -248,4 +248,9 @@ public interface ICandidateBoothResultDAO extends GenericDao<CandidateBoothResul
 	 
 	 public List<Object[]> getPartyWiseBeforDelimationEffectBasedOnVoters(Long electionId,List<Long> boothIds);
 
+	 public Long findTotalVotesPolledForCandidateAssembInAParliament(Set<Long> boothslist, Long electionId,Long partyId);
+	 
+	 public Long findTotalVotesForAssembInAParliament(Set<Long> boothslist, Long electionId);
+	 
+	 public Long findPolledVotesForAssembInAParliament(Set<Long> boothslist, Long electionId);
 }

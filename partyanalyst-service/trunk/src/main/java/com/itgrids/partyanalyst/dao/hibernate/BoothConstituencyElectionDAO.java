@@ -734,9 +734,9 @@ public List<Long> getElectionsByMandals(List<Long> mandalIds,Long partyId,Long e
 {
 	Query query = getSession().createQuery("select distinct model.constituencyElection.election.electionId from BoothConstituencyElection model " +
 			" where model.booth.tehsil.tehsilId in (:mandalIds) and " +
-			" model.constituencyElection.election.electionScope.electionType.electionTypeId = :electionTypeId " );
+			" model.constituencyElection.election.electionScope.electionType.electionTypeId in (1,2) " );
 	//query.setParameter("partyId", partyId);
-	query.setParameter("electionTypeId", electionTypeId);
+	//query.setParameter("electionTypeId", electionTypeId);
 	query.setParameterList("mandalIds", mandalIds);
 	return query.list();
 }

@@ -4391,5 +4391,14 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	 
 	 
 
+		public List<Object[]> getElectionyearsByElectionAndParty(List<Long> electionIds,List<Long> partyIds)
+		{
+			Query query = getSession().createQuery("select distinct model.constituencyElection.election.electionId,model.constituencyElection.election.electionYear,model.constituencyElection.election.electionScope.electionType.electionType from Nomination model " +
+					" where model.constituencyElection.election.electionId in (:electionIds) " +
+					" and model.party.partyId in (:partyIds)  order by model.constituencyElection.election.electionYear desc");
+			query.setParameterList("electionIds", electionIds);
+			query.setParameterList("partyIds", partyIds);
+			return query.list();
+		}
 }
 

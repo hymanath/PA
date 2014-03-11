@@ -179,5 +179,16 @@ public String getLocalElectionBodyName(Long localElectionBodyId){
 		return query.list();
 		
 		
+	}  
+  public String getLocalElectionBodyNameNew(Long localElectionBodyId){
+		
+		Query query = getSession()
+				.createQuery(
+						"select concat(model.name,' ',model.electionType.electionType) from LocalElectionBody model where model.localElectionBodyId = ?");
+		
+		query.setParameter(0, localElectionBodyId);
+		return (String)query.uniqueResult();
+		
+		
 	}
 }

@@ -1577,6 +1577,34 @@ public List<Object[]> getlocalbodywardResults1(Long constituencyId, List<Long> e
 		return query.list();
 	}
    
+   public Long findTotalVotesForAssembInAParliament(Set<Long> boothslist, Long electionId){
+		Query query = getSession().createQuery("select sum(model.totalVoters) "+
+				" from Booth model where model.boothId in(:boothslist)  ");
+		
+		//query.setParameter("electionId",electionId);
+		query.setParameterList("boothslist",boothslist);
+		return (Long)query.uniqueResult();
+	}
+   public Long findPolledVotesForAssembInAParliament(Set<Long> boothslist, Long electionId){
+
+		Query query = getSession().createQuery("select  sum(model.votesEarned) "+
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId  " +
+				"  and model.boothConstituencyElection.booth.boothId in(:boothslist)  ");
+		
+		query.setParameter("electionId",electionId);
+		query.setParameterList("boothslist",boothslist);
+		return (Long)query.uniqueResult();
+	}
+   public Long findTotalVotesPolledForCandidateAssembInAParliament(Set<Long> boothslist, Long electionId,Long partyId){
+		Query query = getSession().createQuery("select  sum(model.votesEarned) "+
+				" from CandidateBoothResult model where model.boothConstituencyElection.constituencyElection.election.electionId =:electionId  " +
+				"  and model.boothConstituencyElection.booth.boothId in(:boothslist) and model.nomination.party.partyId =:partyId ");
+		
+		query.setParameter("partyId",partyId);
+		query.setParameter("electionId",electionId);
+		query.setParameterList("boothslist",boothslist);
+		return (Long)query.uniqueResult();
+	}
    public Long getConstituencyTotalVotes(Long constituencyId,Long electionId)
    {
 	   Query query = getSession().createQuery(" select sum(model.votesEarned) from CandidateBoothResult model where model.boothConstituencyElection.booth.constituency.constituencyId =:constituencyId " +
