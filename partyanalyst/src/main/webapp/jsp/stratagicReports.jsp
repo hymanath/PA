@@ -28,6 +28,13 @@
        <div><input type="button" class="btn btn-primary" onClick="getReport();" value="Get Stratagic Report"></input></div>
 	</div>
 	
+	<div>
+		<input type="button" value="Get Mandal Wise CasteInfo" class="btn" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
+		<input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
+		<input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
+		<input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
+	</div>
+	
 	<div class="prevoiusElectionTrendsDiv"></div>
 	<div class="prevoiusElectionTrendsParliamentDiv"></div>
 	<div class="addedDeletedDiv" style="display:none;"></div>
@@ -38,22 +45,27 @@
 </div>
  
 
-<div style="margin-left:252px;">
- <input type="button" value="Get Mandal Wise CasteInfo" class="btn" id="mandalcasteInfobtn" onclick="redirectToCasteInfo('mandal')" style="margin-top:10px;"/>
- <input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
- <input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
-  <input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
-  
-</div>
+
 
 
 <script>
 	function getReport(){
+		clearAllReportDivs();
+		
 		getBoothWiseAddedAndDeletedVoters();
 		getPreviousTrendsReport();
 		getPreviousTrendsReportParliament();
 		getMptcZptcResultsOfConstituency();
 		
+	}
+	
+	function clearAllReportDivs(){
+		$(".prevoiusElectionTrendsDiv").html("");
+		$(".prevoiusElectionTrendsParliamentDiv").html("");
+		$(".addedDeletedDiv").html("");
+		$(".resultDiv").html("");
+		$(".partyStrengths").html("");
+		$(".resultDiv1").html("");
 	}
 	function getPreviousTrendsReport()
 	 {
@@ -109,6 +121,8 @@
  
  function buildBoothWiseAddedAndDeletedVoters(results){
 	
+	
+	if(results.length>0){
 	$(".addedDeletedDiv").css("display","block");
 	
  
@@ -158,6 +172,7 @@
 	str+="</table>";
 	
 	$(".addedDeletedDiv").html(str);
+	}
  }
  
 
@@ -168,14 +183,12 @@
 		str+="<h4 style='text-align:center;'>Assembly Constituency Wise Result</h4>";
 		str+="<table class='table table-bordered' style='font-size:16px;'>";
 		str+="<thead>";
-	//	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Added</th></tr>";
-	//	str+="<tr>";
-	//		str+="<th colspan=2>Total Added</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
-			//str+="<th colspan=2>Total Deleted</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
-		//str+"</tr>";
 		str+="<tr>";
-			str+="<th>Ranks</th><th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% </th><th>Margin Votes(%)</th><th>INC</th><th>%</th><th>PRP/YSRCP</th><th>%</th><th>BJP</th><th>%</th><th>TRS</th><th>%</th><th>OTHERS</th><th>%</th>";
-			//str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
+			str+="<th>Ranks</th><th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% </th><th>Margin Votes(%)</th><th>INC</th><th>%</th><th>PRP/YSRCP</th><th>%</th>";
+			if(results[0].districtId<10){
+				str+="<th>BJP</th><th>%</th><th>TRS</th><th>%</th>";
+			}
+			str+="<th>OTHERS</th><th>%</th>";
 		str+"</tr>";
 		str+="</thead>";
 		str+="<tbody>";
@@ -193,11 +206,11 @@
 				var  othersRank = parseInt(results[i].othersVo.rank);
 				
 				str+="<tr>";
-				//str+="<td>"+results[i].panchayat+"</td><td>Booth-"+results[i].hamlet+"</td><td>"+results[i].totalVotersInBooth+"</td>";
-				str+="<td>TDP Rank-"+tdpRank+"  INC rank-"+incRank+" PRP/YSRCPrank-"+prpRank+" Others Rank-"+othersRank+"</td><td>"+results[i].electionYear+"</td><td>"+results[i].totalVoters+"</td><td>"+results[i].totalVotesPolled+"</td><td>"+results[i].tdpVo.votesEarned+"</td><td>"+results[i].tdpVo.percentage+"</td><td>"+tdpPer+"</td><td>"+results[i].incVo.votesEarned+"</td><td>"+results[i].incVo.percentage+"</td><td>"+results[i].prpVo.votesEarned+"</td><td>"+results[i].prpVo.percentage+"</td><td>"+results[i].bjpVo.votesEarned+"</td><td>"+results[i].bjpVo.percentage+"</td><td>"+results[i].trsVo.votesEarned+"</td><td>"+results[i].trsVo.percentage+"</td><td>"+results[i].othersVo.votesEarned+"</td><td>"+results[i].othersVo.percentage+"</td>";
-				//str+="<td>"+results[i].totalVotersDeleted+"</td><td>"+results[i].totalVotersDeletedPer+"</td><td>"+results[i].delYoungVoters+"</td><td>"+results[i].delYoungVotersPer+"</td><td>"+results[i].delAge18To25+"</td><td>"+results[i].delAge18To25Per+"</td><td>"+results[i].delAge26to35+"</td><td>"+results[i].delAge26to35Per+"</td><td>"+results[i].delAge36to45+"</td><td>"+results[i].delAge36to45Per+"</td><td>"+results[i].delAge46to60+"</td><td>"+results[i].delAge46to60Per+"</td><td>"+results[i].delAbove60+"</td><td>"+results[i].delAbove60Per+"</td>";
-				//str+="<th>Panchayat</th><th>Booth</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th>
-				//"<th>Above 60</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th><th>Above 60</th>";
+				str+="<td>TDP Rank-"+tdpRank+"  INC rank-"+incRank+" PRP/YSRCPrank-"+prpRank+" Others Rank-"+othersRank+"</td><td>"+results[i].electionYear+"</td><td>"+results[i].totalVoters+"</td><td>"+results[i].totalVotesPolled+"</td><td>"+results[i].tdpVo.votesEarned+"</td><td>"+results[i].tdpVo.percentage+"</td><td>"+tdpPer+"</td><td>"+results[i].incVo.votesEarned+"</td><td>"+results[i].incVo.percentage+"</td><td>"+results[i].prpVo.votesEarned+"</td><td>"+results[i].prpVo.percentage+"</td>";
+				if(results[0].districtId<10){
+					str+="<td>"+results[i].bjpVo.votesEarned+"</td><td>"+results[i].bjpVo.percentage+"</td><td>"+results[i].trsVo.votesEarned+"</td><td>"+results[i].trsVo.percentage+"</td>";
+				}
+				str+="<td>"+results[i].othersVo.votesEarned+"</td><td>"+results[i].othersVo.percentage+"</td>";
 				str+="</tr>";
 			}
 			}
@@ -216,14 +229,8 @@
 		str+="<h4 style='text-align:center;'>Parliament Constituency Wise Result</h4>";
 		str+="<table class='table table-bordered' style='font-size:16px;'>";
 		str+="<thead>";
-	//	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Added</th></tr>";
-	//	str+="<tr>";
-	//		str+="<th colspan=2>Total Added</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
-			//str+="<th colspan=2>Total Deleted</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
-		//str+"</tr>";
 		str+="<tr>";
-			str+="<th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% Votes(TDP)</th><th>Margin Votes(%)</th><th>INC</th><th>% Votes(INC)</th><th>PRP/YSRCP</th><th>% Votes(PRP/YSRCP)</th><th>OTHERS</th><th>% votes(OTHERS)</th>";
-			//str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
+			str+="<th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% </th><th>Margin Votes(%)</th><th>INC</th><th>% </th><th>PRP/YSRCP</th><th>% </th><th>OTHERS</th><th>%</th>";
 		str+"</tr>";
 		str+="</thead>";
 		str+="<tbody>";
@@ -231,11 +238,7 @@
 				if(results[i].tdpVo !=null){
 					if(results[i].tdpVo !=null){
 				str+="<tr>";
-				//str+="<td>"+results[i].panchayat+"</td><td>Booth-"+results[i].hamlet+"</td><td>"+results[i].totalVotersInBooth+"</td>";
 				str+="<td>"+results[i].electionYear+"</td><td>"+results[i].totalVoters+"</td><td>"+results[i].totalVotesPolled+"</td><td>"+results[i].tdpVo.votesEarned+"</td><td>"+results[i].tdpVo.percentage+"</td><td>"+results[i].tdpVo.marginVotes+"("+results[i].tdpVo.marginVotesPercentage+"%)</td><td>"+results[i].incVo.votesEarned+"</td><td>"+results[i].incVo.percentage+"</td><td>"+results[i].prpVo.votesEarned+"</td><td>"+results[i].prpVo.percentage+"</td><td>"+results[i].othersVo.votesEarned+"</td><td>"+results[i].othersVo.percentage+"</td>";
-				//str+="<td>"+results[i].totalVotersDeleted+"</td><td>"+results[i].totalVotersDeletedPer+"</td><td>"+results[i].delYoungVoters+"</td><td>"+results[i].delYoungVotersPer+"</td><td>"+results[i].delAge18To25+"</td><td>"+results[i].delAge18To25Per+"</td><td>"+results[i].delAge26to35+"</td><td>"+results[i].delAge26to35Per+"</td><td>"+results[i].delAge36to45+"</td><td>"+results[i].delAge36to45Per+"</td><td>"+results[i].delAge46to60+"</td><td>"+results[i].delAge46to60Per+"</td><td>"+results[i].delAbove60+"</td><td>"+results[i].delAbove60Per+"</td>";
-				//str+="<th>Panchayat</th><th>Booth</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th>
-				//"<th>Above 60</th><th>Young Voters</th><th>18 - 25</th><th>26 - 35</th><th>36 - 45</th><th>46 - 60</th><th>Above 60</th>";
 				str+="</tr>";
 					}
 				}
