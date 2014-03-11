@@ -5694,4 +5694,33 @@ public class VoterReportService implements IVoterReportService{
 			 }
 			return resultStatus;
 		  }
+		 
+		public ResultStatus getCasteVotersAvailableConstituencyIds()
+		{ 
+			List<SelectOptionVO> voterAvailableConstIds = new ArrayList<SelectOptionVO>();
+			ResultStatus resultStatus = new ResultStatus();
+		  try{
+			List<Object[]> constituencyIds = constituencyDAO.getConstituencyByStateId(1L);
+			
+			for(Object[] param : constituencyIds)
+			{
+				  SelectOptionVO vo = new SelectOptionVO();
+			      vo.setId((Long)param[0]);
+			      vo.setName(param[1].toString());
+			      Long publicationId = publicationDateDAO.getLatestPublicationIdByConstiId((Long)param[0]);
+			      Long count = userVoterDetailsDAO.getCasteVoterNamesOfAConstituency((Long)param[0], publicationId,1l);
+			      vo.setOrderId(publicationId);
+			      if(count > 0){			    	
+			    	  voterAvailableConstIds.add(vo);
+			      }			     
+			}
+			for(SelectOptionVO vo1 : voterAvailableConstIds)
+			{				
+				resultStatus = insertVotersCasteDataInIntermediateTables(vo1.getId(), vo1.getOrderId(),1l,false,false,false,false,false);			
+			}
+	      }catch (Exception e) {
+				  LOG.error("Exception Occured in getVotersAvailableConstituencyIds(), Exception is -",e);
+			 }
+		return resultStatus;
+		}
 }
