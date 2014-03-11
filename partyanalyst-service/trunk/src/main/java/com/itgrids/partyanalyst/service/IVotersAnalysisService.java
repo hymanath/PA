@@ -332,10 +332,13 @@ public interface IVotersAnalysisService {
 	 public List<SelectOptionVO> insertVotersDataInIntermediateTablesForDistrict(Long reportLevelValue, Long publicationDateId,Long userId);
 	 
 	 public ResultStatus deleteVotersDataInIntermediateTablesForDistrict(Long districtId, Long publicationDateId);
+
+	 
+	 public Long getVoterCountForToPublication(Long constituencyId,Long publicationDateId);
+
 	 
 	 public List<SelectOptionVO> getDistrictsList(Long stateId);
 	 
 	 public List<SelectOptionVO> getPublicationList();
-	 
-	 	
+
 }

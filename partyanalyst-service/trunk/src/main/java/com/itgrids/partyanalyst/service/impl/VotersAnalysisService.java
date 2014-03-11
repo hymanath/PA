@@ -95,6 +95,7 @@ import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
 import com.itgrids.partyanalyst.dao.IVoterTempDAO;
 import com.itgrids.partyanalyst.dao.IWardDAO;
+import com.itgrids.partyanalyst.dao.hibernate.BoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.hibernate.HHBoothLeaderDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
 import com.itgrids.partyanalyst.dto.CastLocationVO;
@@ -21066,7 +21067,7 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			  SelectOptionVO mainvo = new SelectOptionVO();
 			 
 			  List<SelectOptionVO> constituencies = staticDataService.getConstituenciesFordistricts(districtId);
-			  if(constituencies != null && constituencies.size() > 0)
+			  
 				
 			  if(constituencies != null && constituencies.size() > 0)
 			  {
@@ -21111,6 +21112,26 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		 }
 		return resultStatus;
 	  }
+
+	  
+	  public Long getVoterCountForToPublication(Long constituencyId,Long publicationDateId)
+		 {
+		  
+			
+			 try{
+				 return boothPublicationVoterDAO.getVoterCountForToPublication(constituencyId,publicationDateId);
+			 }catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getVoterCountForToPublication() Method, Exception - "+e);
+				return 0l;
+			}
+		 }
+	  
+	  
+	  
+	 
+	  
+
 	  
 	  public List<SelectOptionVO> getDistrictsList(Long stateId)
 	  {
@@ -21153,4 +21174,5 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			  returnList.add(selectOptionVO);
 		  }
 	  }
+
 }
