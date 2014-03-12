@@ -178,13 +178,12 @@
 
  function buildPrevoiusElectionTrendsDiv(results){
 		$(".prevoiusElectionTrendsDiv").html("");
-	 
-		var str="";
+	 	var str="";
 		str+="<h4 style='text-align:center;'>Assembly Constituency Wise Result</h4>";
 		str+="<table class='table table-bordered' style='font-size:16px;'>";
 		str+="<thead>";
 		str+="<tr>";
-			str+="<th>Ranks</th><th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% </th><th>Margin Votes(%)</th><th>INC</th><th>%</th><th>PRP/YSRCP</th><th>%</th>";
+			str+="<th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% </th><th>Margin Votes(%)</th><th>INC</th><th>%</th><th>PRP/YSRCP</th><th>%</th>";
 			if(results[0].districtId<10){
 				str+="<th>BJP</th><th>%</th><th>TRS</th><th>%</th>";
 			}
@@ -193,7 +192,6 @@
 		str+="</thead>";
 		str+="<tbody>";
 			for(var i in results){
-				
 				if(results[i].tdpVo !=null){
 				var  tdpRank = parseInt(results[i].tdpVo.rank);
 				var tdpPer="";
@@ -201,18 +199,68 @@
 				 tdpPer=results[i].tdpVo.marginVotes+"("+results[i].tdpVo.marginVotesPercentage+"%)";
 				 else
 				 tdpPer="-"+results[i].tdpVo.marginVotes+"(-"+results[i].tdpVo.marginVotesPercentage+"%)";
-				var  incRank = parseInt(results[i].incVo.rank);
-				var  prpRank = parseInt(results[i].prpVo.rank);
-				var  othersRank = parseInt(results[i].othersVo.rank);
-				
-				str+="<tr>";
-				str+="<td>TDP Rank-"+tdpRank+"  INC rank-"+incRank+" PRP/YSRCPrank-"+prpRank+" Others Rank-"+othersRank+"</td><td>"+results[i].electionYear+"</td><td>"+results[i].totalVoters+"</td><td>"+results[i].totalVotesPolled+"</td><td>"+results[i].tdpVo.votesEarned+"</td><td>"+results[i].tdpVo.percentage+"</td><td>"+tdpPer+"</td><td>"+results[i].incVo.votesEarned+"</td><td>"+results[i].incVo.percentage+"</td><td>"+results[i].prpVo.votesEarned+"</td><td>"+results[i].prpVo.percentage+"</td>";
-				if(results[0].districtId<10){
-					str+="<td>"+results[i].bjpVo.votesEarned+"</td><td>"+results[i].bjpVo.percentage+"</td><td>"+results[i].trsVo.votesEarned+"</td><td>"+results[i].trsVo.percentage+"</td>";
+					var  incRank = parseInt(results[i].incVo.rank);
+					var  prpRank = parseInt(results[i].prpVo.rank);
+					var  othersRank = parseInt(results[i].othersVo.rank);
+				}else{
+					tdpper="--";
 				}
-				str+="<td>"+results[i].othersVo.votesEarned+"</td><td>"+results[i].othersVo.percentage+"</td>";
+				str+="<tr>";
+				str+="<td>"+results[i].electionYear+"</td>";
+				if(results[i].totalVoters!=null){
+					str+="<td>"+results[i].totalVoters+"</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+				str+="<td>"+results[i].totalVotesPolled+"</td>";
+				
+				if(results[i].tdpVo!=null){
+					if(results[i].tdpVo.rank==1){
+						str+="<td style='background:#CBE699'>"+results[i].tdpVo.votesEarned+"</td>";
+					}else{
+						str+="<td>"+results[i].tdpVo.votesEarned+"</td>";
+					}
+					str+="<td>"+results[i].tdpVo.percentage+"</td>";
+					str+="<td>"+tdpPer+"</td>";
+				}else{
+					str+="<td>-</td><td>-</td><td>-</td>";
+				}
+				if(results[i].incVo.rank==1){
+					str+="<td style='background:#CBE699'>"+results[i].incVo.votesEarned+"</td>";
+				}else{
+					str+="<td>"+results[i].incVo.votesEarned+"</td>";
+				}
+				str+="<td>"+results[i].incVo.percentage+"</td>";
+				
+				if(results[i].prpVo.rank==1){
+					str+="<td style='background:#CBE699'>"+results[i].prpVo.votesEarned+"</td>";
+				}else{
+					str+="<td>"+results[i].prpVo.votesEarned+"</td>";
+				}
+				str+="<td>"+results[i].prpVo.percentage+"</td>";
+				if(results[0].districtId<10){
+					if(results[i].bjpVo.rank==1){
+						str+="<td style='background:#CBE699'>"+results[i].bjpVo.votesEarned+"</td>";
+					}else{
+						str+="<td>"+results[i].bjpVo.votesEarned+"</td>";
+					}
+					str+="<td>"+results[i].bjpVo.percentage+"</td>";
+					
+					if(results[i].trsVo.rank==1){
+						str+="<td style='background:#CBE699'>"+results[i].trsVo.votesEarned+"</td>";
+					}else{
+						str+="<td>"+results[i].trsVo.votesEarned+"</td>";
+					}
+					str+="<td>"+results[i].trsVo.percentage+"</td>";
+				}
+				if(results[i].othersVo.rank==1){
+					str+="<td style='background:#CBE699'>"+results[i].othersVo.votesEarned+"</td>";
+				}else{
+					str+="<td>"+results[i].othersVo.votesEarned+"</td>";
+				}
+				str+="<td>"+results[i].othersVo.percentage+"</td>";
 				str+="</tr>";
-			}
+			
 			}
 		str+="</tbody>";
 		str+="</table>";
@@ -230,7 +278,15 @@
 		str+="<table class='table table-bordered' style='font-size:16px;'>";
 		str+="<thead>";
 		str+="<tr>";
-			str+="<th>Year</th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>% </th><th>Margin Votes(%)</th><th>INC</th><th>% </th><th>PRP/YSRCP</th><th>% </th><th>OTHERS</th><th>%</th>";
+			str+="<th>Year</th><th>Total Voters</th><th>Votes Polled</th>";
+			str+="<th>TDP</th><th>% </th>";
+			str+="<th>Margin Votes(%)</th>";
+			str+="<th>INC</th><th>% </th>";
+			str+="<th>PRP/YSRCP</th><th>% </th>";
+			if(results[0].districtId<10){
+				str+="<th>BJP</th><th>%</th><th>TRS</th><th>%</th>";
+			}
+			str+="<th>OTHERS</th><th>%</th>";
 		str+"</tr>";
 		str+="</thead>";
 		str+="<tbody>";
@@ -238,7 +294,49 @@
 				if(results[i].tdpVo !=null){
 					if(results[i].tdpVo !=null){
 				str+="<tr>";
-				str+="<td>"+results[i].electionYear+"</td><td>"+results[i].totalVoters+"</td><td>"+results[i].totalVotesPolled+"</td><td>"+results[i].tdpVo.votesEarned+"</td><td>"+results[i].tdpVo.percentage+"</td><td>"+results[i].tdpVo.marginVotes+"("+results[i].tdpVo.marginVotesPercentage+"%)</td><td>"+results[i].incVo.votesEarned+"</td><td>"+results[i].incVo.percentage+"</td><td>"+results[i].prpVo.votesEarned+"</td><td>"+results[i].prpVo.percentage+"</td><td>"+results[i].othersVo.votesEarned+"</td><td>"+results[i].othersVo.percentage+"</td>";
+				str+="<td>"+results[i].electionYear+"</td>";
+				if(results[i].totalVoters!=null){
+					str+="<td>"+results[i].totalVoters+"</td>";
+				}else{
+					str+="<td>-</td>";
+				}
+				str+="<td>"+results[i].totalVotesPolled+"</td>";
+				if(results[i].tdpVo.rank==1){
+					str+="<td style='background:#CBE699'>"+results[i].tdpVo.votesEarned+"</td>";
+				}else{
+					str+="<td>"+results[i].tdpVo.votesEarned+"</td>";
+				}
+				str+="<td>"+results[i].tdpVo.percentage+"</td>";
+				str+="<td>"+results[i].tdpVo.marginVotes+"("+results[i].tdpVo.marginVotesPercentage+"%)</td>";
+				if(results[i].incVo.rank==1){
+					str+="<td style='background:#CBE699'>"+results[i].incVo.votesEarned+"</td>";
+				}else{
+					str+="<td>"+results[i].incVo.votesEarned+"</td>";
+				}
+				str+="<td>"+results[i].incVo.percentage+"</td>";
+				if(results[i].prpVo.rank==1){
+					str+="<td style='background:#CBE699'>"+results[i].prpVo.votesEarned+"</td>";
+				}else{
+					str+="<td>"+results[i].prpVo.votesEarned+"</td>";
+				}
+				str+="<td>"+results[i].prpVo.percentage+"</td>";
+				if(results[0].districtId<10){
+					if(results[i].bjpVo.rank==1){
+						str+="<td style='background:#CBE699'>"+results[i].bjpVo.votesEarned+"</td>";
+					}else{
+						str+="<td>"+results[i].bjpVo.votesEarned+"</td>";
+					}
+					str+="<td>"+results[i].bjpVo.percentage+"</td>";
+					
+					if(results[i].trsVo.rank==1){
+						str+="<td style='background:#CBE699'>"+results[i].trsVo.votesEarned+"</td>";
+					}else{
+						str+="<td>"+results[i].trsVo.votesEarned+"</td>";
+					}
+					str+="<td>"+results[i].trsVo.percentage+"</td>";
+				}
+				str+="<td>"+results[i].othersVo.votesEarned+"</td>";
+				str+="<td>"+results[i].othersVo.percentage+"</td>";
 				str+="</tr>";
 					}
 				}
@@ -268,7 +366,8 @@
 	}
 	
 	function buildMptcZptcResults(myResults){	
-	
+	if(myResults.partyResultsVOList!=null)
+	{
 	$(".resultDiv").css("display","block");
 	
 	var str="";
@@ -346,6 +445,7 @@
 	str+="</table>";
 	
 	$(".resultDiv").html(str);
+	}
 	}
 	function buildMuncipalCorpResults(myResults){	
 	if(myResults.muncipalCorpResults!=null || myResults.gmcResults !=null){
