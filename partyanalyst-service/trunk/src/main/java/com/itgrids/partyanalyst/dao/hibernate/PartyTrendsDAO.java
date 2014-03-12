@@ -154,9 +154,8 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     }
     public List<?> getPreviousTrendsDataForParleament(List<Long> partyIds,Long constId)
     {
-    	//Query q= getSession().createQuery("select ce.election.electionYear,sum(be.boothResult.validVotes),n.party.partyId,sum(cr.votesEarned),(sum(cr.votesEarned)/sum(be.boothResult.validVotes)) * 100  from ConstituencyElection ce join  ce.boothConstituencyElections be join be.booth b   join ce.nominations   n join n.candidateBoothResults    cr     where  ce.constituency.constituencyId=232 and ce.election.electionScope.electionScopeId=1  group by  ce.election.electionYear,n.party.partyId ");
     	Query q= getSession().createQuery("select ce.election.electionYear,sum(be.boothResult.validVotes),n.party.partyId,sum(cr.votesEarned),(sum(cr.votesEarned)/sum(be.boothResult.validVotes)) * 100,  " +
-    			" b.constituency.district.districtId from ConstituencyElection ce " +
+    			" b.constituency.district.districtId,n.candidateResult.rank from ConstituencyElection ce " +
     			"  ,BoothConstituencyElection be " +
     			" ,Booth b   " +
     			", Nomination   n  " +
@@ -170,6 +169,18 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     	q.setParameter(0, constId);
     	return q.list();
     }
+    
+    /*@SuppressWarnings("unchecked")
+	public List<Object[]> getPreviousTrendsDataForParleament(List<Long> partyIds,Long constituencyId)
+    {
+    	Query query = getSession().createQuery("select model.boothConstituencyElection.constituencyElection.election.electionYear,sum(model.boothConstituencyElection.boothResult.validVotes),model.nomination.party.partyId," +
+    			" sum(model.votesEarned),sum(model.votesEarned)*100/sum(model.boothConstituencyElection.boothResult.validVotes),model.boothConstituencyElection.constituencyElection.constituency.district.districtId,model.nomination.candidateResult.rank from CandidateBoothResult model where " +
+    			" model.boothConstituencyElection.constituencyElection.election.electionScope.electionScopeId = 1 and model.boothConstituencyElection.constituencyElection.constituency.constituencyId = :constituencyId " +
+    			" group by model.boothConstituencyElection.constituencyElection.election.electionYear,model.nomination.party.partyId");
+    	query.setParameter("constituencyId",constituencyId);
+    	return query.list();
+    }
+    */
     public List<Object[]> getTotalVotersForConst(Long constId)
     {
     	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 group by  ce.election.electionYear");
