@@ -33,6 +33,7 @@
 		<input type="button" value="Get Panchayat Wise CasteInfo" class="btn" id="panchayatcasteInfobtn" onclick="redirectToCasteInfo('panchayat')" style="margin-top:10px;"/>
 		<input type="button" value="Get Booth Wise CasteInfo" class="btn" id="boothcasteInfobtn" onclick="redirectToCasteInfo('booth')" style="margin-top:10px;"/>
 		<input type="button" value="Get Hamlet Wise CasteInfo" class="btn" id="hamletcasteInfobtn" onclick="redirectToCasteInfo('hamlet')" style="margin-top:10px;"/>
+		<input type="button" value="Get Age Wise Report" class="btn" id="hamletcasteInfobtn" onclick="getAgeReport();" style="margin-top:10px;"/>
 	</div>
 	
 	<div class="prevoiusElectionTrendsDiv"></div>
@@ -49,6 +50,11 @@
 
 
 <script>
+
+	function getAgeReport()
+	{
+		window.open("gettingVotersBasedOnCasteAndAgeAction.action");
+	}
 	function getReport(){
 		clearAllReportDivs();
 		
