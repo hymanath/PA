@@ -6,7 +6,6 @@
 <html>
 <head>
 
-<%-- <script type="text/javascript" src="js/jQuery/jquery-1.4.2.min.js"></script> --%>
 
 <!-- YUI Dependency files (Start) -->
 	<script type="text/javascript" src="js/yahoo/yahoo-min.js"></script>
@@ -44,8 +43,7 @@
 
 	<!-- YUI Dependency files (End) -->
    <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-   <%--  <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/facescroll.js"></script>
-	   <script type="text/javascript" src="http://www.dynamicdrive.com/dynamicindex11/facescroll/jquery.ui.touch-punch.min.js"></script> --%>
+
 
    <script type="text/javascript" src="js/jquery.dataTables.js"></script>
    <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
@@ -72,8 +70,9 @@
 
 <div id="ConstituencyDiv" class="selectDiv container"  style="border: 1px solid; margin-top: 40px; padding-bottom: 13px; padding-top: 21px; border-radius: 4px;">
 <div style="margin-left: 295px; padding-bottom: 23px;">
-		<h4>Constituency Wise Age Details</h4>
+		<h4>Constituency Wise Age Details.</h4>
 </div>
+<div id="errorDiv" style="color:red; margin-left: 336px; margin-top: 0px; margin-bottom: 9px; "></div>
 <div>
 	<div style="margin-bottom: 11px; margin-left: 221px;">
 		<span id="constId">Constituency<font style="color:red">*</font></span>:<s:select theme="simple" style="height: 30px; width: 200px; margin-left: 25px;" cssClass="selectWidth" label="Select Your State" name="constituencyList" id="constituencyList" list="constituencyList" listKey="id" listValue="name" onchange="getPublicationDate();"/> <span id="constErrorId" style="color:red"></span>
@@ -85,7 +84,7 @@
 		
 		
 	</div>
-	<div style="color:red;margin-bottom: 11px; margin-left: 221px ">note: Age Ranges should give with hypen or ">" symbols only. Ex:18-22,>60 .</div>
+	<div style="color:red;margin-bottom: 11px; margin-left: 221px ">note: Age Ranges should give with hypen or ">","<","<=",">="  symbols only. Ex:18-22,>25,<25,<=25,>=25,25 .</div>
 	<div class="agerangeClass">
 	<div style="margin-bottom: 11px; margin-left: 221px " id="divId0" >
 	<span id="ageRangeId">Age Range</span>:  <input type="text" name="ageRange"  style="margin-left: 42px; width: 185px;" class="ageRangeClass" >
@@ -195,18 +194,19 @@ function removeSelectElements(selectedElmt)
 function gettingVoterDetailsForAConstituency()
 {   
   
-  var consti = $("#constituencyList").val();
-  if(consti == 0){
-	$("#constErrorId").html("please select Constituency.");
-	 return;
-  }
-  var consti1 = $("#publicationDateList").val();
-  if(consti1 == 0){
-	$("#pubErrorId").html("please select publication Date.");
-	 return;
-  }
-  
-  
+$('#errorDiv').html("");
+var str=''
+if($('#constituencyList').val() == 0)
+str+='please select Constituency.<br>';
+if( ($('#publicationDateList').val()== null) || ($('#publicationDateList').val()== 0) )
+str+='please select publication Date.<br>';
+console.log($('#ageRangeId').val());
+
+if(str.length > 0)
+{
+$('#errorDiv').html(str);
+return;
+}  
   
 
 $("#ajaxImage").css("display"," inline-block");
