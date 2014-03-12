@@ -897,7 +897,25 @@ lable{line-height:40px;}
 	
 	
  <!--End of Management Tools Block-->
- 
+ <!-- STRATAGIC REPORTS BLOCK -- SASI-->
+ <div class="span12 well well-small" style="margin-left:0px;">
+     <div class="page-header"><h4>STRATAGIC REPORT</h4></div>
+		
+		
+		<div class="row-fluid">
+			<div class="span12 widget">
+				<div class="media">
+					<div class="media-body">
+						<p>Get Stratagic Reports of a Constituency</p>
+						<a class="btn btn-small pull-right" target="_blank" href="stratagicReportsAction.action">View</a>
+					</div>
+				</div> 
+			</div> 
+					   
+	
+        </div>
+   </div>
+
  
 </div></div>
 
