@@ -216,6 +216,7 @@ function getCasteInfo(startIndex)
 	$("#CasteDetailsDiv").css("display","none");
 	var constituencyId = $("#listConstituencyNames").val();
 	var publicationId = $("#publicationDateList").val();
+	var name  = $("#listConstituencyNames option:selected").text();
 	if(type == "panchayat")
 	{
 	
@@ -254,6 +255,7 @@ var jsObj=
 			startIndex:startIndex,
 		    results:maxr,
 			partialchecked:partialchecked,
+			name:name,
 			task:"getCasteDetails"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -349,17 +351,17 @@ function buildCasteDetails(results,jsObj)
 	str+='</table>';
 		}
 	str+='<a id="dlink"  style="display:none;"></a>';	
-	str+='<input type="button" value="Export To Excel" onclick="generateExcel();" class="btn btn-success"/>';
+	str+='<input type="button" value="Export To Excel" onclick="generateExcel(\''+jsObj.name+'\');" class="btn btn-success"/>';
 	$("#CasteDetailsDiv").html(str);
 	}
 	if(jsObj.type == "booth"  || jsObj.type == 'panchayat' || jsObj.type == 'hamlet' )
 			{
-			buildBoothWiseCaste(results,jsObj.type);
+			buildBoothWiseCaste(results,jsObj.type,jsObj.name);
 		}
 	
 }
 
-function buildBoothWiseCaste(results,type)
+function buildBoothWiseCaste(results,type,name)
 {
 
 	var str = '';
@@ -405,7 +407,7 @@ function buildBoothWiseCaste(results,type)
 	}
   
 	str+='<a id="dlink"  style="display:none;"></a>';
-	str+='<input type="button" value="Export To Excel" onclick="generateExcel();" class="btn btn-success"/>';
+	str+='<input type="button" value="Export To Excel" onclick="generateExcel(\''+name+'\');" class="btn btn-success"/>';
 	$("#CasteDetailsDiv").html(str);
 }
 </script>
@@ -427,9 +429,9 @@ var tableToExcel = (function () {
         }
     })()
 
-function generateExcel()
+function generateExcel(name)
 {
-	var fileName = type;
+	var fileName = name+' Constituency ' +type;
  tableToExcel('CasteDetailsDiv', 'Report',''+fileName+'.xls');
 }
 </script>
