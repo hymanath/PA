@@ -14529,7 +14529,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setVoterId((++count)+"");
 					voterVO.setFirstName(params.getFirstName()+" "+params.getLastName());
 					voterVO.setGender(params.getGender());
-					voterVO.setHouseNo(params.getUserAddress().getHouseNo());
+					voterVO.setHouseNo("# "+params.getUserAddress().getHouseNo());
 					voterVO.setCast(params.getCaste());
 					voterVO.setMobileNo(params.getPhoneNo()!=null ? params.getPhoneNo() :" ");
 					voterVO.setInfluencingRange(params.getInfluencingScope());
@@ -14596,7 +14596,7 @@ public List<VoterVO> getInfluencePeopleDetails(Long userId,List<String> location
 					voterVO.setFirstName(params.getVoter().getName());
 					voterVO.setAge(params.getVoter().getAge());
 					voterVO.setGender(params.getVoter().getGender());
-					voterVO.setHouseNo(params.getVoter().getHouseNo());
+					voterVO.setHouseNo("# "+params.getVoter().getHouseNo());
 					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
 					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
@@ -14833,7 +14833,7 @@ public List<VoterVO> getCadrePeopleDetails(Long userId,List<Long> locationValues
 					voterVO.setFirstName(params.getVoter().getName());
 					voterVO.setAge(params.getVoter().getAge());
 					voterVO.setGender(params.getVoter().getGender());
-					voterVO.setHouseNo(params.getVoter().getHouseNo());
+					voterVO.setHouseNo("# "+params.getVoter().getHouseNo());
 					voterVO.setRelativeFirstName(params.getVoter().getRelativeName());
 					voterVO.setRelationshipType(params.getVoter().getRelationshipType());
 					voterVO.setVoterIDCardNo(params.getVoter().getVoterIDCardNo());
@@ -14962,7 +14962,7 @@ public List<VoterVO> getPoliticianDetails(List<Long> locationValues,String type,
 					voterVO.setFirstName(params[0]!=null ? params[0].toString() : " ");
 					voterVO.setAge((Long) params[5]);
 					voterVO.setGender(params[2]!=null ? params[2].toString() : " ");
-					voterVO.setHouseNo(params[6]!=null ? params[6].toString() : " ");
+					voterVO.setHouseNo("# "+params[6]!=null ? params[6].toString() : " ");
 					voterVO.setRelativeFirstName(params[4]!=null ? params[4].toString() : " ");
 					voterVO.setRelationshipType(params[7]!=null ? params[7].toString() : " ");
 					//voterVO.setCast(params[9]!=null ? params[9].toString() : " ");
