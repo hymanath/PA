@@ -27,7 +27,7 @@ import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.service.IVotersInformationService;
 
 
-public  class VotersInformationService implements IVotersInformationService {
+public  class VotersInformationService implements IVotersInformationService  {
 
 	
 	private IConstituencyDAO constituencyDAO;
@@ -41,9 +41,15 @@ public  class VotersInformationService implements IVotersInformationService {
 	HSSFWorkbook workbook;
 	HSSFSheet constituencyWiseSheet  ;
 	HSSFSheet mandalWiseSheet;
-	HSSFSheet panchayatwiseSheet;
-	HSSFSheet boothWiseSheet;
-	HSSFSheet hamletWiseSheet;
+	HSSFSheet panchayatwiseSheet1;
+	HSSFSheet panchayatwiseSheet2;
+	HSSFSheet panchayatwiseSheet3;
+	HSSFSheet boothWiseSheet1;
+	HSSFSheet boothWiseSheet2;
+	HSSFSheet boothWiseSheet3;
+	HSSFSheet hamletWiseSheet1;
+	HSSFSheet hamletWiseSheet2;
+	HSSFSheet hamletWiseSheet3;
 	FileOutputStream out;
 	
 	public void setAgeWiseExcelsGenerationService(
@@ -83,41 +89,49 @@ public  class VotersInformationService implements IVotersInformationService {
 			   {
 				   if(ageOrCasteRadio.equalsIgnoreCase("age"))
 				   {  
-					
+					    //constituency wise.
 					    AgeRangeVO    constituencyWise =getConstituencyWiseDetails(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
 					    constituencyWiseSheet = workbook.createSheet("Constituency");
 					    ageWiseExcelsGenerationService.generateExcelsForConstituency(constituencyWise, constituencyWiseSheet, workbook, ageRanges);
-					    
+					    //mandalwise.
 					    List<AgeRangeVO> mandalWise =getMandalWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
 					    Collections.sort(mandalWise,mandalWiseSort);
 					    mandalWiseSheet = workbook.createSheet("Mandal");
 					    ageWiseExcelsGenerationService.generateExcelsForMandalReport1(mandalWise, mandalWiseSheet, workbook, ageRanges);
-					    
-					    List<AgeRangeVO> panchayatWise = getPanchayatWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges,pId);
-					    panchayatwiseSheet = workbook.createSheet("Panchayat");
-					    ageWiseExcelsGenerationService.generateExcelsForPanchayatReport(panchayatWise, panchayatwiseSheet, workbook, ageRanges);
-					    
+					    //panchayatwise.
+					     List<AgeRangeVO> panchayatWise = getPanchayatWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges,pId);
+					     Collections.sort(panchayatWise,panchayatWiseSort);
+					     panchayatwiseSheet1 = workbook.createSheet("Panchayat Report1");
+						 panchayatwiseSheet2 = workbook.createSheet("Panchayat Report2");
+						 panchayatwiseSheet3 = workbook.createSheet("Panchayat Report3");
+					     ageWiseExcelsGenerationService.generateExcelsForPanchayatReport1(panchayatWise, panchayatwiseSheet1, workbook, ageRanges);
+					     ageWiseExcelsGenerationService.generateExcelsForPanchayatReport2(panchayatWise, panchayatwiseSheet2, workbook, ageRanges);
+					     ageWiseExcelsGenerationService.generateExcelsForPanchayatReport3(panchayatWise, panchayatwiseSheet3, workbook, ageRanges);
+					    //hamletwise.
 					    List<AgeRangeVO>  hamletWise = getHamletWiseDetailsForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges );
-					     Collections.sort(hamletWise,hamletWiseSort);
-					    hamletWiseSheet = workbook.createSheet("Hamlet");
-					    ageWiseExcelsGenerationService.generateExcelsForHamletReport(hamletWise, hamletWiseSheet, workbook, ageRanges);
-					    
-					    List<AgeRangeVO> boothWise = getBoothWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
-					   
-					   // Collections.sort(boothWise,partNoWiseSort);
-					    boothWiseSheet = workbook.createSheet("Booth");
-					    ageWiseExcelsGenerationService.generateExcelsForBoothReport(boothWise, boothWiseSheet, workbook, ageRanges);
-					   
-					  
+					    hamletWiseSheet1 = workbook.createSheet("Hamlet1");
+						 hamletWiseSheet2 = workbook.createSheet("Hamlet2");
+						 hamletWiseSheet3 = workbook.createSheet("Hamlet3");
+						 Collections.sort(hamletWise,hamletWiseSort);
+					     ageWiseExcelsGenerationService.generateExcelsForHamletReport1(hamletWise, hamletWiseSheet1, workbook, ageRanges);
+					     ageWiseExcelsGenerationService.generateExcelsForHamletReport2(hamletWise, hamletWiseSheet2, workbook, ageRanges);
+					     ageWiseExcelsGenerationService.generateExcelsForHamletReport3(hamletWise, hamletWiseSheet3, workbook, ageRanges);
+					    //boothwise.
+					     List<AgeRangeVO> boothWise = getBoothWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
+					     boothWiseSheet1 = workbook.createSheet("Booth1");
+						 boothWiseSheet2 = workbook.createSheet("Booth2");
+						 boothWiseSheet3 = workbook.createSheet("Booth3");
+						 Collections.sort(boothWise,boothWiseSort);
+					    ageWiseExcelsGenerationService.generateExcelsForBoothReport1(boothWise, boothWiseSheet1, workbook, ageRanges);
+					    ageWiseExcelsGenerationService.generateExcelsForBoothReport2(boothWise, boothWiseSheet2, workbook, ageRanges);
+					    ageWiseExcelsGenerationService.generateExcelsForBoothReport3(boothWise, boothWiseSheet3, workbook, ageRanges);
 			
 				   }//if
 				   
 			   }//rural
 			   if(constituency.getAreaType().equalsIgnoreCase("URBAN"))
 			   {
-				  
-				   
-				   if(ageOrCasteRadio.equalsIgnoreCase("age"))
+				  if(ageOrCasteRadio.equalsIgnoreCase("age"))
 			        {
 				       AgeRangeVO    constituencyWise =getConstituencyWiseDetails(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
 				       constituencyWiseSheet = workbook.createSheet("Constituency");
@@ -129,11 +143,12 @@ public  class VotersInformationService implements IVotersInformationService {
 							 ageRangeVO.setTehsilName(ageRangeVO.getTehsilName() + " Munciplity");
 							 panchayatWiseForBooth1.add(ageRangeVO);
 						}
-					  boothWiseSheet = workbook.createSheet("Booth");
-					  boothWiseSheet.autoSizeColumn((short) 1000);
-					  ageWiseExcelsGenerationService.generateExcelsForBoothReport(panchayatWiseForBooth1,boothWiseSheet,workbook,ageRanges);
-
-				      
+					   boothWiseSheet1 = workbook.createSheet("Booth1");
+					   boothWiseSheet2 = workbook.createSheet("Booth2");
+					   boothWiseSheet3 = workbook.createSheet("Booth3");
+					   ageWiseExcelsGenerationService.generateExcelsForBoothReport1(panchayatWiseForBooth1,boothWiseSheet1,workbook,ageRanges);
+					   ageWiseExcelsGenerationService.generateExcelsForBoothReport2(panchayatWiseForBooth1,boothWiseSheet2,workbook,ageRanges);
+					   ageWiseExcelsGenerationService.generateExcelsForBoothReport3(panchayatWiseForBooth1,boothWiseSheet3,workbook,ageRanges);
 					   
 			        }
 				  
@@ -141,12 +156,12 @@ public  class VotersInformationService implements IVotersInformationService {
 			   if(constituency.getAreaType().equalsIgnoreCase("RURAL-URBAN"))
 			   {
 				   if(ageOrCasteRadio.equalsIgnoreCase("age"))
-			       {
+			       { //constituency wise.
 					 AgeRangeVO    constituencyWise =getConstituencyWiseDetails(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
 					 constituencyWiseSheet = workbook.createSheet("Constituency");
 					 constituencyWiseSheet.autoSizeColumn((short) 1000);
                      ageWiseExcelsGenerationService.generateExcelsForConstituency(constituencyWise, constituencyWiseSheet, workbook, ageRanges);
-					 
+					 //municpality wise.
 					 List<AgeRangeVO> muncipalityWise = getMunicipalityWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
 					 List<AgeRangeVO> muncipalityWise1 = new ArrayList<AgeRangeVO>();//kavali---->kavali municipality.
 					 for (AgeRangeVO ageRangeVO : muncipalityWise) {
@@ -154,27 +169,38 @@ public  class VotersInformationService implements IVotersInformationService {
 						 ageRangeVO.setPanchayatName(ageRangeVO.getPanchayatName() + " Munciplity");
 						 muncipalityWise1.add(ageRangeVO);
 					 }
+					 //mandalwise.
 					 List<AgeRangeVO> mandalWise = getMandalWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
-					 Collections.sort(mandalWise,mandalWiseSort);
+					 Collections.sort(mandalWise,mandalWiseSort);//dnso of mandalname.
 					 if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
 						mandalWise.addAll(muncipalityWise1);
 					 mandalWiseSheet = workbook.createSheet("Mandal");
 					 ageWiseExcelsGenerationService.generateExcelsForMandalReport1(mandalWise, mandalWiseSheet, workbook, ageRanges);
-					 
-					
-					    
+					 //panchayatwise.   
 					 List<AgeRangeVO> panchayatWise = getPanchayatWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges,pId);
+					 Collections.sort(panchayatWise,panchayatWiseSort);
 					 if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
 						panchayatWise.addAll(muncipalityWise1);
-					 panchayatwiseSheet = workbook.createSheet("Panchayat");
-					 panchayatwiseSheet.autoSizeColumn((short) 1000);
-					 ageWiseExcelsGenerationService.generateExcelsForPanchayatReport(panchayatWise, panchayatwiseSheet, workbook, ageRanges);
-					 
+					 panchayatwiseSheet1 = workbook.createSheet("Panchayat Report1");
+					 panchayatwiseSheet2 = workbook.createSheet("Panchayat Report2");
+					 panchayatwiseSheet3 = workbook.createSheet("Panchayat Report3");
+	                 panchayatwiseSheet1.autoSizeColumn((short) 1000);
+					 panchayatwiseSheet2.autoSizeColumn((short) 1000);
+					 panchayatwiseSheet3.autoSizeColumn((short) 1000);
+					 ageWiseExcelsGenerationService.generateExcelsForPanchayatReport1(panchayatWise, panchayatwiseSheet1, workbook, ageRanges);
+					 ageWiseExcelsGenerationService.generateExcelsForPanchayatReport2(panchayatWise, panchayatwiseSheet2, workbook, ageRanges);
+					 ageWiseExcelsGenerationService.generateExcelsForPanchayatReport3(panchayatWise, panchayatwiseSheet3, workbook, ageRanges);
+					 //hamletwise.
 			         List<AgeRangeVO>  hamletWise = getHamletWiseDetailsForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges );
-				     hamletWiseSheet = workbook.createSheet("Hamlet");
-				     hamletWiseSheet.autoSizeColumn((short) 1000);
-					 ageWiseExcelsGenerationService.generateExcelsForHamletReport(hamletWise, hamletWiseSheet, workbook, ageRanges);
-					 
+			         Collections.sort(hamletWise,hamletWiseSort);
+			         hamletWiseSheet1 = workbook.createSheet("Hamlet1");
+					 hamletWiseSheet2 = workbook.createSheet("Hamlet2");
+					 hamletWiseSheet3 = workbook.createSheet("Hamlet3");
+					 Collections.sort(hamletWise,hamletWiseSort);
+				     ageWiseExcelsGenerationService.generateExcelsForHamletReport1(hamletWise, hamletWiseSheet1, workbook, ageRanges);
+				     ageWiseExcelsGenerationService.generateExcelsForHamletReport2(hamletWise, hamletWiseSheet2, workbook, ageRanges);
+				     ageWiseExcelsGenerationService.generateExcelsForHamletReport3(hamletWise, hamletWiseSheet3, workbook, ageRanges);
+					 //boothwise.
 				     List<AgeRangeVO> boothWise  = getBoothWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
 				     List<AgeRangeVO> panchayatWiseForBooth = getPanchayatWiseForBoothForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
 					 List<AgeRangeVO> panchayatWiseForBooth1 = new ArrayList<AgeRangeVO>();
@@ -184,10 +210,13 @@ public  class VotersInformationService implements IVotersInformationService {
 					}
 					if(panchayatWiseForBooth1 != null && panchayatWiseForBooth1.size() > 0)
 						boothWise.addAll(panchayatWiseForBooth1);
-			        boothWiseSheet = workbook.createSheet("Booth");
-					 ageWiseExcelsGenerationService.generateExcelsForBoothReport(boothWise, boothWiseSheet, workbook, ageRanges);
-					 
-					
+					 boothWiseSheet1 = workbook.createSheet("Booth1");
+					 boothWiseSheet2 = workbook.createSheet("Booth2");
+					 boothWiseSheet3 = workbook.createSheet("Booth3");
+					 Collections.sort(boothWise,boothWiseSort);
+					 ageWiseExcelsGenerationService.generateExcelsForBoothReport1(boothWise, boothWiseSheet1, workbook, ageRanges);
+					 ageWiseExcelsGenerationService.generateExcelsForBoothReport2(boothWise, boothWiseSheet2, workbook, ageRanges);
+					 ageWiseExcelsGenerationService.generateExcelsForBoothReport3(boothWise, boothWiseSheet3, workbook, ageRanges);
 					
 				    }
 		   }
@@ -208,9 +237,6 @@ public  class VotersInformationService implements IVotersInformationService {
 		}
 		return resultStatus;
 }
-		
-
-
 AgeRangeVO vo;
 //getConstituencyWiseDetails
 public AgeRangeVO getConstituencyWiseDetails(Long constituencyId,Long publicationId,List<String> ageRanges)	
@@ -223,7 +249,7 @@ public AgeRangeVO getConstituencyWiseDetails(Long constituencyId,Long publicatio
 		ageRanges.add("26-35");
 		ageRanges.add("36-45");
 		ageRanges.add("46-60");
-		ageRanges.add("Above60");
+		ageRanges.add(">60");
 	 }
 String	queryForTotalCount=	
 			(" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
@@ -271,57 +297,142 @@ else
 
 }
 }
-
-String subString="-";
 List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
 for(String ageRange:ageRanges)
 {
-if(ageRange.contains(subString))
-{    
-   String[] parts = ageRange.split("-");
-	    String part1 = parts[0]; 
-	    String part2 = parts[1]; 
-			
-			String	queryString=null;
-		queryString=	
-					(" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
-					"	from BoothPublicationVoter bpv "+
-					"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-					" and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+"  "+
-					" group by bpv.voter.gender ");	
-		
-		 AgeRangeVO vo=new AgeRangeVO();
-	        vo.setAgeRange(ageRange);
-	        vo.setQueryString(queryString);
-		     query.add(vo);
-      }  
-     
-      else
-      {  String queryString2=null;
+	if(ageRange.contains("-"))
+	{    
+		    String[] parts = ageRange.split("-");
+			    String part1 = parts[0]; 
+			    String part2 = parts[1]; 
+					
+					String	queryString1=null;
+				queryString1=	
+							(" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+							"	from BoothPublicationVoter bpv "+
+							"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+							" and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+"  "+
+							" group by bpv.voter.gender ");	
+				
+				 AgeRangeVO vo=new AgeRangeVO();
+			        vo.setAgeRange(ageRange);
+			        vo.setQueryString(queryString1);
+				     query.add(vo);
+	}  
+	else if( (ageRange.contains(">")) && (!ageRange.contains("=")))
+	{
+		     String queryString2=null;
+				  String str=ageRange;
+			   	   str = str.trim();
+			   	  Pattern p = Pattern.compile("(\\d+)");
+			   	  Matcher m = p.matcher(str);
+			   	  Long ageRangeageRange=0l;
+			   	  if(m.find())
+			   	    ageRangeageRange=Long.parseLong(m.group(1));
+			   	    queryString2= 	
+						   (" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+						   		 "	from BoothPublicationVoter bpv "+
+						   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+						   		 " and bpv.voter.age>"+ageRangeageRange+"  "+
+						   		 "		group by bpv.voter.gender");	
+						   	
+			     
+			   	   AgeRangeVO vo=new AgeRangeVO();
+			        vo.setAgeRange(ageRange);
+			        vo.setQueryString(queryString2);
+				     query.add(vo);
+		    	   
+				    
+		    	   
+	}
+	else if((ageRange.contains("<")) && (!ageRange.contains("=")))
+	{	
+		 String queryString3=null;
 		  String str=ageRange;
-	   	   str = str.trim();
-	   	  Pattern p = Pattern.compile("(\\d+)");
-	   	  Matcher m = p.matcher(str);
-	   	  Long ageRangeageRange=0l;
-	   	  if(m.find())
-	   	    ageRangeageRange=Long.parseLong(m.group(1));
-	   	    queryString2= 	
+	  	   str = str.trim();
+	  	  Pattern p = Pattern.compile("(\\d+)");
+	  	  Matcher m = p.matcher(str);
+	  	  Long ageRangeageRange=0l;
+	  	  if(m.find())
+	  	    ageRangeageRange=Long.parseLong(m.group(1));
+	  	    queryString3= 	
 				   (" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
 				   		 "	from BoothPublicationVoter bpv "+
 				   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-				   		 " and bpv.voter.age>"+ageRangeageRange+"  "+
+				   		 " and bpv.voter.age<"+ageRangeageRange+"  "+
 				   		 "		group by bpv.voter.gender");	
 				   	
-	     
-	   	   AgeRangeVO vo=new AgeRangeVO();
-	        vo.setAgeRange(ageRange);
-	        vo.setQueryString(queryString2);
+	    
+	  	   AgeRangeVO vo=new AgeRangeVO();
+	       vo.setAgeRange(ageRange);
+	       vo.setQueryString(queryString3);
 		     query.add(vo);
-   	   
-		    
-   	   
-      }
 	}
+	else if((ageRange.contains(">")) && (ageRange.contains("=")))
+	{  String queryString4=null;
+	String str=ageRange;
+	   str = str.trim();
+	  Pattern p = Pattern.compile("(\\d+)");
+	  Matcher m = p.matcher(str);
+	  Long ageRangeageRange=0l;
+	  if(m.find())
+	    ageRangeageRange=Long.parseLong(m.group(1));
+	    queryString4= 	
+			   (" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+			   		 "	from BoothPublicationVoter bpv "+
+			   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+			   		 " and bpv.voter.age>="+ageRangeageRange+"  "+
+			   		 "		group by bpv.voter.gender");	
+			   	
+
+	   AgeRangeVO vo=new AgeRangeVO();
+	 vo.setAgeRange(ageRange);
+	 vo.setQueryString(queryString4);
+	  query.add(vo);
+
+	}
+	else if((ageRange.contains("<")) && (ageRange.contains("=")))
+	{  String queryString5=null;
+	   String str=ageRange;
+	   str = str.trim();
+	  Pattern p = Pattern.compile("(\\d+)");
+	  Matcher m = p.matcher(str);
+	  Long ageRangeageRange=0l;
+	  if(m.find())
+	    ageRangeageRange=Long.parseLong(m.group(1));
+	    queryString5= 	
+			   (" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+			   		 "	from BoothPublicationVoter bpv "+
+			   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+			   		 " and bpv.voter.age<="+ageRangeageRange+"  "+
+			   		 "		group by bpv.voter.gender");	
+			   	
+
+	   AgeRangeVO vo=new AgeRangeVO();
+	 vo.setAgeRange(ageRange);
+	 vo.setQueryString(queryString5);
+	  query.add(vo);
+
+	}
+	else 
+	{  String queryString6=null;
+	   Long ageRangeageRange=Long.parseLong(ageRange);
+	  
+	    queryString6= 	
+			   (" select bpv.booth.constituency.constituencyId, bpv.booth.constituency.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+			   		 "	from BoothPublicationVoter bpv "+
+			   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+			   		 " and bpv.voter.age="+ageRangeageRange+"  "+
+			   		 "		group by bpv.voter.gender");	
+			   	
+
+	   AgeRangeVO vo=new AgeRangeVO();
+	 vo.setAgeRange(ageRange);
+	 vo.setQueryString(queryString6);
+	  query.add(vo);
+	}
+
+}
 	 AgeRangeVO  li =printDataForConstituency( query,ageRangeVOForTotalCount);
     return li;	   	
 }
@@ -446,7 +557,7 @@ public List<AgeRangeVO> getHamletWiseDetailsForAConstituency(Long constituencyId
 		ageRanges.add("26-35");
 		ageRanges.add("36-45");
 		ageRanges.add("46-60");
-		ageRanges.add("Above60");
+		ageRanges.add(">60");
 	}
 	
 	
@@ -498,55 +609,145 @@ String	queryForTotalCount = ("select ph.hamlet.hamletId,ph.hamlet.hamletName,cou
      }
    }
 	
-         String subString="-";
+      
      	List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
      	for(String ageRange:ageRanges)
      	{
-        if(ageRange.contains(subString))
-        {    
-     	    String[] parts = ageRange.split("-");
-     		    String part1 = parts[0]; 
-     		    String part2 = parts[1]; 
-	    //0-hid,1-hname,2-count,3-pname
-	    
-        String	queryString = ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender " +
-	    		"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
-	    		"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
-	    		"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"  " +
-	    		"and uvd.user.userId=1 and uvd.voter.age>="+part1+" and  uvd.voter.age<="+part2+"  " +
-	    		" group by  uvd.hamlet.hamletId,bpv.voter.gender");
-        AgeRangeVO vo=new AgeRangeVO();
-        vo.setAgeRange(ageRange);
-        vo.setQueryString(queryString);
-	     query.add(vo);
-	
-     }
-   else{
-	   
-		  String str=ageRange;
-   	   str = str.trim();
-   	  Pattern p = Pattern.compile("(\\d+)");
-   	  Matcher m = p.matcher(str);
-   	  Long ageRangeageRange=0l;
-   	  if(m.find())
-   	    ageRangeageRange=Long.parseLong(m.group(1));
-	   
-	   
-	   String queryString2= ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender  " +
-	    			"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
-	    			"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
-	    			"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"    " +
-	    			"and uvd.user.userId=1 and uvd.voter.age>"+ageRangeageRange+" " +
-	    			"group by  uvd.hamlet.hamletId,bpv.voter.gender");
-   
-        AgeRangeVO vo=new AgeRangeVO();
-        vo.setAgeRange(ageRange);
-        vo.setQueryString(queryString2);
-	     query.add(vo);
-	    	
-	    }
-     
- }	    
+     		  if(ageRange.contains("-"))
+     		  {    
+     		     	    String[] parts = ageRange.split("-");
+     		     		    String part1 = parts[0]; 
+     		     		    String part2 = parts[1]; 
+     			    //0-hid,1-hname,2-count,3-pname
+     			    
+     		        String	queryString = ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender " +
+     			    		"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
+     			    		"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
+     			    		"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"  " +
+     			    		"and uvd.user.userId=1 and uvd.voter.age>="+part1+" and  uvd.voter.age<="+part2+"  " +
+     			    		" group by  uvd.hamlet.hamletId,bpv.voter.gender");
+     		        AgeRangeVO vo=new AgeRangeVO();
+     		        vo.setAgeRange(ageRange);
+     		        vo.setQueryString(queryString);
+     			     query.add(vo);
+     			
+     		   }
+     		  else if( (ageRange.contains(">")) && (!ageRange.contains("=")))
+     		  {
+     			   
+     				  String str=ageRange;
+     		   	   str = str.trim();
+     		   	  Pattern p = Pattern.compile("(\\d+)");
+     		   	  Matcher m = p.matcher(str);
+     		   	  Long ageRangeageRange=0l;
+     		   	  if(m.find())
+     		   	    ageRangeageRange=Long.parseLong(m.group(1));
+     			   
+     			   
+     			   String queryString2= ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender  " +
+     			    			"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
+     			    			"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
+     			    			"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"    " +
+     			    			"and uvd.user.userId=1 and uvd.voter.age>"+ageRangeageRange+" " +
+     			    			"group by  uvd.hamlet.hamletId,bpv.voter.gender");
+     		   
+     		        AgeRangeVO vo=new AgeRangeVO();
+     		        vo.setAgeRange(ageRange);
+     		        vo.setQueryString(queryString2);
+     			     query.add(vo);
+     			    	
+     		  }
+     		  else if( (ageRange.contains(">")) && (ageRange.contains("=")))
+     		  {
+     			   
+     				  String str=ageRange;
+     		   	   str = str.trim();
+     		   	  Pattern p = Pattern.compile("(\\d+)");
+     		   	  Matcher m = p.matcher(str);
+     		   	  Long ageRangeageRange=0l;
+     		   	  if(m.find())
+     		   	    ageRangeageRange=Long.parseLong(m.group(1));
+     			   
+     			   
+     			   String queryString3= ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender  " +
+     			    			"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
+     			    			"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
+     			    			"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"    " +
+     			    			"and uvd.user.userId=1 and uvd.voter.age>="+ageRangeageRange+" " +
+     			    			"group by  uvd.hamlet.hamletId,bpv.voter.gender");
+     		   
+     		        AgeRangeVO vo=new AgeRangeVO();
+     		        vo.setAgeRange(ageRange);
+     		        vo.setQueryString(queryString3);
+     			     query.add(vo);
+     			    	
+     		  }
+     		  else if( (ageRange.contains("<")) && (!ageRange.contains("=")))
+     		  {
+     			   
+     				  String str=ageRange;
+     		   	   str = str.trim();
+     		   	  Pattern p = Pattern.compile("(\\d+)");
+     		   	  Matcher m = p.matcher(str);
+     		   	  Long ageRangeageRange=0l;
+     		   	  if(m.find())
+     		   	    ageRangeageRange=Long.parseLong(m.group(1));
+     			   
+     			   
+     			   String queryString4= ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender  " +
+     			    			"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
+     			    			"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
+     			    			"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"    " +
+     			    			"and uvd.user.userId=1 and uvd.voter.age<"+ageRangeageRange+" " +
+     			    			"group by  uvd.hamlet.hamletId,bpv.voter.gender");
+     		   
+     		        AgeRangeVO vo=new AgeRangeVO();
+     		        vo.setAgeRange(ageRange);
+     		        vo.setQueryString(queryString4);
+     			     query.add(vo);
+     			    	
+     		  }
+     		  else if( (ageRange.contains("<")) && (ageRange.contains("=")))
+     		  {
+     			   
+     				  String str=ageRange;
+     		   	   str = str.trim();
+     		   	  Pattern p = Pattern.compile("(\\d+)");
+     		   	  Matcher m = p.matcher(str);
+     		   	  Long ageRangeageRange=0l;
+     		   	  if(m.find())
+     		   	    ageRangeageRange=Long.parseLong(m.group(1));
+     			   
+     			   
+     			   String queryString5= ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender  " +
+     			    			"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
+     			    			"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
+     			    			"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"    " +
+     			    			"and uvd.user.userId=1 and uvd.voter.age<="+ageRangeageRange+" " +
+     			    			"group by  uvd.hamlet.hamletId,bpv.voter.gender");
+     		   
+     		        AgeRangeVO vo=new AgeRangeVO();
+     		        vo.setAgeRange(ageRange);
+     		        vo.setQueryString(queryString5);
+     			     query.add(vo);
+     			    	
+     		  }  
+     		  else
+     		  {
+     			  Long ageRangeageRange=Long.parseLong(ageRange);
+     		      String queryString6= ("select ph.hamlet.hamletId,ph.hamlet.hamletName,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName,bpv.voter.gender  " +
+     			    			"from PanchayatHamlet ph,BoothPublicationVoter bpv,UserVoterDetails uvd  " +
+     			    			"where ph.hamlet.hamletId=uvd.hamlet.hamletId  and bpv.voter.voterId=uvd.voter.voterId and  " +
+     			    			"bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId ="+publicationId+"    " +
+     			    			"and uvd.user.userId=1 and uvd.voter.age="+ageRangeageRange+" " +
+     			    			"group by  uvd.hamlet.hamletId,bpv.voter.gender");
+     		  
+     		       AgeRangeVO vo=new AgeRangeVO();
+     		       vo.setAgeRange(ageRange);
+     		       vo.setQueryString(queryString6);
+     			     query.add(vo);
+     		   }
+}	    
 List<AgeRangeVO>  li =printData4( query,totalCountMap);
 return li;    
 }
@@ -683,7 +884,7 @@ public List<AgeRangeVO> getPanchayatWiseForAConstituency(Long constituencyId,Lon
 		ageRanges.add("26-35");
 		ageRanges.add("36-45");
 		ageRanges.add("46-60");
-		ageRanges.add("Above60");
+		ageRanges.add(">60");
 	}
 	
 	 if( pId==false )
@@ -748,55 +949,147 @@ public List<AgeRangeVO> getPanchayatWiseDetails(Long constituencyId,Long publica
 	   }
 		 
 		   
-			  String subString="-";
+			 
 				List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
 				for(String ageRange:ageRanges)
 				{
-			   if(ageRange.contains(subString))
-			   {    
-				    String[] parts = ageRange.split("-");
-					    String part1 = parts[0]; 
-					    String part2 = parts[1]; 
-				//pid,pname,count,tnme. 
-			  String queryString =
-			    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
-			    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
-			    		"from BoothPublicationVoter bpv "+
-			    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
-			    		     " and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" "+
-			    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");
-		        AgeRangeVO vo=new AgeRangeVO();
-		        vo.setAgeRange(ageRange);
-		        vo.setQueryString(queryString);
-			     query.add(vo);
-			
-		       }
-		      else{
-		    	  
-		    	  String str=ageRange;
-		    	   str = str.trim();
-		    	  Pattern p = Pattern.compile("(\\d+)");
-		    	  Matcher m = p.matcher(str);
-		    	  Long ageRangeageRange=0l;
-		    	  if(m.find())
-		    	    ageRangeageRange=Long.parseLong(m.group(1));
-		    	    
-		    	  
-		    	 String queryString2 =
-			    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
-			    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
-			    		"from BoothPublicationVoter bpv "+
-			    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
-			    		     " and bpv.voter.age>"+ageRangeageRange+"  "+
-			    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");
-		   
-		           AgeRangeVO vo=new AgeRangeVO();
-		           vo.setAgeRange(ageRange);
-		           vo.setQueryString(queryString2);
-			       query.add(vo);
-			    	
-			    }
-	          }
+					   if(ageRange.contains("-"))
+					   {    
+						    String[] parts = ageRange.split("-");
+							    String part1 = parts[0]; 
+							    String part2 = parts[1]; 
+						//pid,pname,count,tnme. 
+					  String queryString =
+					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
+					    		"from BoothPublicationVoter bpv "+
+					    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+					    		     " and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" "+
+					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");
+				        AgeRangeVO vo=new AgeRangeVO();
+				        vo.setAgeRange(ageRange);
+				        vo.setQueryString(queryString);
+					     query.add(vo);
+					
+				       }
+				      else if((ageRange.contains(">"))&&(!ageRange.contains("=")))
+				      {
+				    	  
+				    	  String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	  String queryString2 =
+					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
+					    		"from BoothPublicationVoter bpv "+
+					    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+					    		     " and bpv.voter.age>"+ageRangeageRange+"  "+
+					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");
+				   
+				           AgeRangeVO vo=new AgeRangeVO();
+				           vo.setAgeRange(ageRange);
+				           vo.setQueryString(queryString2);
+					       query.add(vo);
+					    	
+					    }
+				      else if((ageRange.contains(">"))&&(ageRange.contains("=")))
+				      {
+				    	  
+				    	  String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	  String queryString3 =
+					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
+					    		"from BoothPublicationVoter bpv "+
+					    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+					    		     " and bpv.voter.age>="+ageRangeageRange+"  "+
+					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");
+				   
+				           AgeRangeVO vo=new AgeRangeVO();
+				           vo.setAgeRange(ageRange);
+				           vo.setQueryString(queryString3);
+					       query.add(vo);
+					    	
+					    }
+				      else if((ageRange.contains("<"))&&(!ageRange.contains("=")))
+				      {
+				    	  
+				    	  String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	  String queryString4 =
+					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
+					    		"from BoothPublicationVoter bpv "+
+					    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+					    		     " and bpv.voter.age<"+ageRangeageRange+"  "+
+					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");
+				   
+				           AgeRangeVO vo=new AgeRangeVO();
+				           vo.setAgeRange(ageRange);
+				           vo.setQueryString(queryString4);
+					       query.add(vo);
+					    	
+					    }
+				      else if((ageRange.contains("<"))&&(ageRange.contains("=")))
+				      {
+				    	  
+				    	  String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	  String queryString5 =
+					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
+					    		"from BoothPublicationVoter bpv "+
+					    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+					    		     " and bpv.voter.age<="+ageRangeageRange+"  "+
+					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");
+				   
+				           AgeRangeVO vo=new AgeRangeVO();
+				           vo.setAgeRange(ageRange);
+				           vo.setQueryString(queryString5);
+					       query.add(vo);
+					    	
+					    }
+				      else 
+				      {
+				    	  
+				    	  
+				    	  Long ageRangeageRange=Long.parseLong(ageRange);
+				    	 
+				    	  String queryString6 =
+					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
+					    		"from BoothPublicationVoter bpv "+
+					    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+					    		     " and bpv.voter.age="+ageRangeageRange+"  "+
+					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");
+				   
+				           AgeRangeVO vo=new AgeRangeVO();
+				           vo.setAgeRange(ageRange);
+				           vo.setQueryString(queryString6);
+					       query.add(vo);
+					    	
+					    }
+					  
+			          }
 			  List<AgeRangeVO>  li =printData2( query,false,totalCountMap);
 			  return li; 
 		  }
@@ -896,76 +1189,208 @@ public List<AgeRangeVO> getPanchayatWiseDetails(Long constituencyId,Long publica
 		      	List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
 		      	for(String ageRange:ageRanges)
 		      	{
-		         if(ageRange.contains(subString))
-		         {    
-		      	    String[] parts = ageRange.split("-");
-		      		    String part1 = parts[0]; 
-		      		    String part2 = parts[1]; 
-					    
-					    ////pid,pname,count,tnme. 
-				   String	    queryham =
-					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
-					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
-					    		"from BoothPublicationVoter bpv "+
-					    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
-					    		     " and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
-					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");	    
-					    
-					    
-					    
-					    
-			    String	parqueryham = 
-						("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
-						"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
-						"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
-						"          and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" and ph.panchayat.panchayatId in("+paids+") "+
-						 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-						"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
+			         if(ageRange.contains("-"))
+			         {    
+			      	    String[] parts = ageRange.split("-");
+			      		    String part1 = parts[0]; 
+			      		    String part2 = parts[1]; 
+						    
+						    ////pid,pname,count,tnme. 
+					   String queryham1 =
+						    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+						    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender "+
+						    		"from BoothPublicationVoter bpv "+
+						    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+						    		     " and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
+						    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender ");	    
+						    
+						    
+						    
+						    
+				    String	parqueryham1 = 
+							("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
+							"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
+							"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
+							"          and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" and ph.panchayat.panchayatId in("+paids+") "+
+							 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+							"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
 
-				
-				        AgeRangeVO vo=new AgeRangeVO();
-				        vo.setAgeRange(ageRange);
-				        vo.setQueryString(queryham);
-				        vo.setPartQueryString(parqueryham);
-					     query.add(vo);
 					
-				     }
-				   else{
+					        AgeRangeVO vo=new AgeRangeVO();
+					        vo.setAgeRange(ageRange);
+					        vo.setQueryString(queryham1);
+					        vo.setPartQueryString(parqueryham1);
+						     query.add(vo);
+						
+					     }
+					   else if((ageRange.contains(">"))&&(!ageRange.contains("=")))
+					   {
+						   
+						   String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	    
+						   
+						  String queryham2 =
+						    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+						    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender  "+
+						    		"from BoothPublicationVoter bpv "+
+						    		"where bpv.booth.constituency.constituencyId=232 and bpv.booth.publicationDate.publicationDateId=8"+
+						    		     " and bpv.voter.age>"+ageRangeageRange+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
+						    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");	    
+						   
+						  String parqueryham2 = 
+									("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
+									"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
+									"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
+									"          and bpv.voter.age>"+ageRangeageRange+" and ph.panchayat.panchayatId in("+paids+") "+
+									 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+									"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
 					   
-					   String str=ageRange;
-			    	   str = str.trim();
-			    	  Pattern p = Pattern.compile("(\\d+)");
-			    	  Matcher m = p.matcher(str);
-			    	  Long ageRangeageRange=0l;
-			    	  if(m.find())
-			    	    ageRangeageRange=Long.parseLong(m.group(1));
-			    	    
+					        AgeRangeVO vo=new AgeRangeVO();
+					        vo.setAgeRange(ageRange);
+					        vo.setQueryString(queryham2);
+					        vo.setPartQueryString(parqueryham2);
+						     query.add(vo);
+						    	
+						    }
+					   else if((ageRange.contains(">"))&&(ageRange.contains("=")))
+					   {
+						   
+						   String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	    
+						   
+						  String queryham3 =
+						    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+						    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender  "+
+						    		"from BoothPublicationVoter bpv "+
+						    		"where bpv.booth.constituency.constituencyId=232 and bpv.booth.publicationDate.publicationDateId=8"+
+						    		     " and bpv.voter.age>="+ageRangeageRange+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
+						    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");	    
+						   
+						  String parqueryham3 = 
+									("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
+									"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
+									"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
+									"          and bpv.voter.age>="+ageRangeageRange+" and ph.panchayat.panchayatId in("+paids+") "+
+									 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+									"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
 					   
-					  String queryham2 =
-					    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
-					    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender  "+
-					    		"from BoothPublicationVoter bpv "+
-					    		"where bpv.booth.constituency.constituencyId=232 and bpv.booth.publicationDate.publicationDateId=8"+
-					    		     " and bpv.voter.age>"+ageRangeageRange+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
-					    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");	    
+					        AgeRangeVO vo=new AgeRangeVO();
+					        vo.setAgeRange(ageRange);
+					        vo.setQueryString(queryham3);
+					        vo.setPartQueryString(parqueryham3);
+						     query.add(vo);
+						    	
+						    }
+					   else if((ageRange.contains("<"))&&(!ageRange.contains("=")))
+					   {
+						   
+						   String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	    
+						   
+						  String queryham4 =
+						    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+						    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender  "+
+						    		"from BoothPublicationVoter bpv "+
+						    		"where bpv.booth.constituency.constituencyId=232 and bpv.booth.publicationDate.publicationDateId=8"+
+						    		     " and bpv.voter.age<"+ageRangeageRange+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
+						    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");	    
+						   
+						  String parqueryham4 = 
+									("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
+									"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
+									"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
+									"          and bpv.voter.age<"+ageRangeageRange+" and ph.panchayat.panchayatId in("+paids+") "+
+									 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+									"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
 					   
-					  String parqueryham2 = 
-								("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
-								"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
-								"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
-								"          and bpv.voter.age>"+ageRangeageRange+" and ph.panchayat.panchayatId in("+paids+") "+
-								 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-								"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
-				   
-				        AgeRangeVO vo=new AgeRangeVO();
-				        vo.setAgeRange(ageRange);
-				        vo.setQueryString(queryham2);
-				        vo.setPartQueryString(parqueryham2);
-					     query.add(vo);
-					    	
-					    }
-			        
-				 }	    
+					        AgeRangeVO vo=new AgeRangeVO();
+					        vo.setAgeRange(ageRange);
+					        vo.setQueryString(queryham4);
+					        vo.setPartQueryString(parqueryham4);
+						     query.add(vo);
+						    	
+						    }
+					   else if((ageRange.contains("<"))&&(ageRange.contains("=")))
+					   {
+						   
+						   String str=ageRange;
+				    	   str = str.trim();
+				    	  Pattern p = Pattern.compile("(\\d+)");
+				    	  Matcher m = p.matcher(str);
+				    	  Long ageRangeageRange=0l;
+				    	  if(m.find())
+				    	    ageRangeageRange=Long.parseLong(m.group(1));
+				    	    
+						   
+						  String queryham5 =
+						    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+						    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender  "+
+						    		"from BoothPublicationVoter bpv "+
+						    		"where bpv.booth.constituency.constituencyId=232 and bpv.booth.publicationDate.publicationDateId=8"+
+						    		     " and bpv.voter.age<="+ageRangeageRange+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
+						    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");	    
+						   
+						  String parqueryham5 = 
+									("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
+									"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
+									"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
+									"          and bpv.voter.age<="+ageRangeageRange+" and ph.panchayat.panchayatId in("+paids+") "+
+									 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+									"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
+					   
+					        AgeRangeVO vo=new AgeRangeVO();
+					        vo.setAgeRange(ageRange);
+					        vo.setQueryString(queryham5);
+					        vo.setPartQueryString(parqueryham5);
+						     query.add(vo);
+						    	
+						    }
+					   else 
+					   {
+						 
+				    	  Long ageRangeageRange=Long.parseLong(ageRange);
+				    	  String queryham6 =
+						    		("select bpv.booth.panchayat.panchayatId, bpv.booth.panchayat.panchayatName," +
+						    				"count(distinct bpv.voter.voterId),bpv.booth.tehsil.tehsilName,bpv.voter.gender  "+
+						    		"from BoothPublicationVoter bpv "+
+						    		"where bpv.booth.constituency.constituencyId=232 and bpv.booth.publicationDate.publicationDateId=8"+
+						    		     " and bpv.voter.age="+ageRangeageRange+" and bpv.booth.panchayat.panchayatId not in("+paids+") "+
+						    		"group by bpv.booth.panchayat.panchayatId,bpv.voter.gender  ");	    
+						   
+						  String parqueryham6 = 
+									("select ph.panchayat.panchayatId,ph.panchayat.panchayatName,count(distinct bpv.voter.voterId),ph.panchayat.tehsil.tehsilName,bpv.voter.gender  "+
+									"from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph "+
+									"where bpv.voter.voterId=uvd.voter.voterId and uvd.hamlet.hamletId=ph.hamlet.hamletId "+ 
+									"          and bpv.voter.age="+ageRangeageRange+" and ph.panchayat.panchayatId in("+paids+") "+
+									 "         and bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+									"group by ph.panchayat.panchayatId,bpv.voter.gender  ");
+					   
+					        AgeRangeVO vo=new AgeRangeVO();
+					        vo.setAgeRange(ageRange);
+					        vo.setQueryString(queryham6);
+					        vo.setPartQueryString(parqueryham6);
+						     query.add(vo);
+						    	
+						    }
+					 }	    
 			List<AgeRangeVO>  li =printData2( query,true,totalCountMap);
 			return li;
 		}
@@ -1134,7 +1559,7 @@ public List<AgeRangeVO> getMandalWiseForAConstituency(Long constituencyId,Long p
 		ageRanges.add("26-35");
 		ageRanges.add("36-45");
 		ageRanges.add("46-60");
-		ageRanges.add("Above60");
+		ageRanges.add(">60");
 	}
 	 List<AgeRangeVO> li= generateQueries(constituencyId,publicationId,ageRanges,"mandal");
 	   return li;
@@ -1153,7 +1578,7 @@ public List<AgeRangeVO> getMunicipalityWiseForAConstituency(Long constituencyId,
 		ageRanges.add("26-35");
 		ageRanges.add("36-45");
 		ageRanges.add("46-60");
-		ageRanges.add("Above60");
+		ageRanges.add(">60");
 	}
 	 List<AgeRangeVO> li= generateQueries(constituencyId,publicationId,ageRanges,"municpality");
      return li;
@@ -1266,85 +1691,229 @@ public List<AgeRangeVO> generateQueries(Long constituencyId,Long publicationId,L
          }
 }
 }
-	String subString="-";
+	
 	List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
 	for(String ageRange:ageRanges)
 	{
-   if(ageRange.contains(subString))
-   {    
-	    String[] parts = ageRange.split("-");
-		    String part1 = parts[0]; 
-		    String part2 = parts[1]; 
-			
-			String	queryString=null;
-			if(type.equalsIgnoreCase("mandal"))
-			{
-		    	queryString = (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
-		    		 "	from BoothPublicationVoter bpv "+
-		    		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-		    		 " and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+"  and bpv.booth.localBody.localElectionBodyId is null "+
-		    		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");
-		    
-		   }
-		   else if(type.equalsIgnoreCase("municpality"))
-		   {
-		      queryString=	
-					(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
-					"	from BoothPublicationVoter bpv "+
-					"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-					" and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" and bpv.booth.localBody.localElectionBodyId is not null "+
-					" group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
-		   
-		   
-		   
-		   } 
-		   
-	        AgeRangeVO vo=new AgeRangeVO();
-	        vo.setAgeRange(ageRange);
-	        vo.setQueryString(queryString);
-		     query.add(vo);
-		
-	     }
-	   else{
-			  String queryString2=null;
-			  String str=ageRange;
-	   	   str = str.trim();
-	   	  Pattern p = Pattern.compile("(\\d+)");
-	   	  Matcher m = p.matcher(str);
-	   	  Long ageRangeageRange=0l;
-	   	  if(m.find())
-	   	    ageRangeageRange=Long.parseLong(m.group(1));
-	   	    
-		   if(type.equalsIgnoreCase("mandal"))
-			{
-		     queryString2= 	
-				   (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
-				   		 "	from BoothPublicationVoter bpv "+
-				   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-				   		 " and bpv.voter.age>"+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is null "+
-				   		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");	
-				   	
-	        }
-			  else if(type.equalsIgnoreCase("municpality"))
-		   {
-		       queryString2=	
-					(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
-					"	from BoothPublicationVoter bpv "+
-					"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
-					" and bpv.voter.age>"+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is not null "+
-					"		group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
-		   
-		   
-		    }
-			 
-	        AgeRangeVO vo=new AgeRangeVO();
-	        vo.setAgeRange(ageRange);
-	        vo.setQueryString(queryString2);
-		     query.add(vo);
-		    	
-		    }
-         
-	 }	    
+		   if(ageRange.contains("-"))
+		   {    
+			        String[] parts = ageRange.split("-");
+				    String part1 = parts[0]; 
+				    String part2 = parts[1]; 
+					
+					String	queryString1=null;
+					if(type.equalsIgnoreCase("mandal"))
+					{
+				    	queryString1 = (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+				    		 "	from BoothPublicationVoter bpv "+
+				    		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+				    		 " and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+"  and bpv.booth.localBody.localElectionBodyId is null "+
+				    		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");
+				    
+				   }
+				   else if(type.equalsIgnoreCase("municpality"))
+				   {
+				      queryString1=	
+							(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+							"	from BoothPublicationVoter bpv "+
+							"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+							" and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" and bpv.booth.localBody.localElectionBodyId is not null "+
+							" group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
+				   
+				   } 
+				   
+			        AgeRangeVO vo=new AgeRangeVO();
+			        vo.setAgeRange(ageRange);
+			        vo.setQueryString(queryString1);
+				     query.add(vo);
+				
+		 }
+		  else if( (ageRange.contains(">")) && (!ageRange.contains("=")))
+		  {
+				      
+				   String queryString2=null;
+				   String str=ageRange;
+			   	   str = str.trim();
+			   	  Pattern p = Pattern.compile("(\\d+)");
+			   	  Matcher m = p.matcher(str);
+			   	  Long ageRangeageRange=0l;
+			   	  if(m.find())
+			   	    ageRangeageRange=Long.parseLong(m.group(1));
+			   	    
+				   if(type.equalsIgnoreCase("mandal"))
+					{
+				     queryString2= 	
+						   (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+						   		 "	from BoothPublicationVoter bpv "+
+						   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+						   		 " and bpv.voter.age>"+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is null "+
+						   		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");	
+						   	
+			        }
+					  else if(type.equalsIgnoreCase("municpality"))
+				   {
+				       queryString2=	
+							(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+							"	from BoothPublicationVoter bpv "+
+							"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+							" and bpv.voter.age>"+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is not null "+
+							"		group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
+				   
+				   
+				    }
+					 
+			        AgeRangeVO vo=new AgeRangeVO();
+			        vo.setAgeRange(ageRange);
+			        vo.setQueryString(queryString2);
+				     query.add(vo);
+				    	
+			}
+		  else if( (ageRange.contains("<")) && (!ageRange.contains("=")) )
+		  {
+			   String queryString3=null;
+			   String str=ageRange;
+		   	   str = str.trim();
+		   	  Pattern p = Pattern.compile("(\\d+)");
+		   	  Matcher m = p.matcher(str);
+		   	  Long ageRangeageRange=0l;
+		   	  if(m.find())
+		   	    ageRangeageRange=Long.parseLong(m.group(1));
+		   	    
+			   if(type.equalsIgnoreCase("mandal"))
+				{
+			     queryString3= 	
+					   (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+					   		 "	from BoothPublicationVoter bpv "+
+					   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+					   		 " and bpv.voter.age<"+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is null "+
+					   		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");	
+					   	
+		        }
+				  else if(type.equalsIgnoreCase("municpality"))
+			   {
+			       queryString3=	
+						(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+						"	from BoothPublicationVoter bpv "+
+						"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+						" and bpv.voter.age<"+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is not null "+
+						"		group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
+			   
+			   
+			    }
+				 
+		        AgeRangeVO vo=new AgeRangeVO();
+		        vo.setAgeRange(ageRange);
+		        vo.setQueryString(queryString3);
+			     query.add(vo); 
+			  
+		}
+		  else if( (ageRange.contains(">")) && (ageRange.contains("=")) )
+		  {
+			  String queryString4=null;
+			   String str=ageRange;
+		  	   str = str.trim();
+		  	  Pattern p = Pattern.compile("(\\d+)");
+		  	  Matcher m = p.matcher(str);
+		  	  Long ageRangeageRange=0l;
+		  	  if(m.find())
+		  	    ageRangeageRange=Long.parseLong(m.group(1));
+		  	    
+			   if(type.equalsIgnoreCase("mandal"))
+				{
+			     queryString4= 	
+					   (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+					   		 "	from BoothPublicationVoter bpv "+
+					   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+					   		 " and bpv.voter.age>="+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is null "+
+					   		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");	
+					   	
+		       }
+				  else if(type.equalsIgnoreCase("municpality"))
+			   {
+			       queryString4=	
+						(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+						"	from BoothPublicationVoter bpv "+
+						"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+						" and bpv.voter.age>="+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is not null "+
+						"		group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
+			   
+			   
+			    }
+				 
+		       AgeRangeVO vo=new AgeRangeVO();
+		       vo.setAgeRange(ageRange);
+		       vo.setQueryString(queryString4);
+			     query.add(vo);   
+		}
+		  else if( (ageRange.contains("<")) && (ageRange.contains("=")) )
+		  { 
+			  String queryString5=null;
+			   String str=ageRange;
+		 	   str = str.trim();
+		 	  Pattern p = Pattern.compile("(\\d+)");
+		 	  Matcher m = p.matcher(str);
+		 	  Long ageRangeageRange=0l;
+		 	  if(m.find())
+		 	    ageRangeageRange=Long.parseLong(m.group(1));
+		 	    
+			   if(type.equalsIgnoreCase("mandal"))
+				{
+			     queryString5= 	
+					   (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+					   		 "	from BoothPublicationVoter bpv "+
+					   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+					   		 " and bpv.voter.age<="+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is null "+
+					   		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");	
+					   	
+		      }
+				  else if(type.equalsIgnoreCase("municpality"))
+			   {
+			       queryString5=	
+						(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+						"	from BoothPublicationVoter bpv "+
+						"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+						" and bpv.voter.age<="+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is not null "+
+						"		group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
+			   
+			   
+			    }
+				 
+		      AgeRangeVO vo=new AgeRangeVO();
+		      vo.setAgeRange(ageRange);
+		      vo.setQueryString(queryString5);
+			     query.add(vo);   
+		}
+		  else { 
+			  String queryString6=null;
+			  Long ageRangeageRange=Long.parseLong(ageRange);
+			  if(type.equalsIgnoreCase("mandal"))
+				{
+			      queryString6= 	
+					   (" select bpv.booth.tehsil.tehsilId, bpv.booth.tehsil.tehsilName,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+					   		 "	from BoothPublicationVoter bpv "+
+					   		 "	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+					   		 " and bpv.voter.age="+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is null "+
+					   		 "		group by bpv.booth.tehsil.tehsilId,bpv.voter.gender");	
+					   	
+		        }
+				  else if(type.equalsIgnoreCase("municpality"))
+			   {
+			       queryString6=	
+						(" select bpv.booth.localBody.localElectionBodyId , bpv.booth.localBody.name,count(distinct bpv.voter.voterId),bpv.voter.gender "+
+						"	from BoothPublicationVoter bpv "+
+						"	where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" "+
+						" and bpv.voter.age="+ageRangeageRange+" and bpv.booth.localBody.localElectionBodyId is not null "+
+						"		group by bpv.booth.localBody.localElectionBodyId,bpv.voter.gender ");	
+			   
+			   
+			    }
+				 
+		    AgeRangeVO vo=new AgeRangeVO();
+		    vo.setAgeRange(ageRange);
+		    vo.setQueryString(queryString6);
+			     query.add(vo);   
+		}
+}	    
  List<AgeRangeVO>  li =printData1( query,totalCountMap);
 return li;
 	
@@ -1475,7 +2044,7 @@ public List<AgeRangeVO> getBoothWiseForAConstituency(Long constituencyId,Long pu
 		ageRanges.add("26-35");
 		ageRanges.add("36-45");
 		ageRanges.add("46-60");
-		ageRanges.add("Above60");
+		ageRanges.add(">60");
 	}
 String	queryForTotalCount=	
 				("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
@@ -1524,57 +2093,150 @@ String	queryForTotalCount=
  }
 }	
 	
-     String subString="-";
- 	List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
+   
+List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
  	for(String ageRange:ageRanges)
  	{
-    if(ageRange.contains(subString))
-    {    
- 	    String[] parts = ageRange.split("-");
- 		    String part1 = parts[0]; 
- 		    String part2 = parts[1]; 
-			    
-			    String	queryString=	
-						("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
-						"from BoothPublicationVoter bpv "+
-						"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
-						"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" "+
-						"group by bpv.booth.boothId,bpv.voter.gender ");	
-								
-		 
-       AgeRangeVO vo=new AgeRangeVO();
-       vo.setAgeRange(ageRange);
-       vo.setQueryString(queryString);
-	     query.add(vo);
-	
-      }
-     else{
-   	  
-   	  String str=ageRange;
-   	   str = str.trim();
-   	  Pattern p = Pattern.compile("(\\d+)");
-   	  Matcher m = p.matcher(str);
-   	  Long ageRangeageRange=0l;
-   	  if(m.find())
-   	    ageRangeageRange=Long.parseLong(m.group(1));
-   	  
+ 		if(ageRange.contains("-"))
+ 		{    
+ 		    String[] parts = ageRange.split("-");
+ 			    String part1 = parts[0]; 
+ 			    String part2 = parts[1]; 
+ 				    
+ 				    String	queryString=	
+ 							("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
+ 							"from BoothPublicationVoter bpv "+
+ 							"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
+ 							"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" "+
+ 							"group by bpv.booth.boothId,bpv.voter.gender ");	
+ 									
+ 			 
+ 		   AgeRangeVO vo=new AgeRangeVO();
+ 		   vo.setAgeRange(ageRange);
+ 		   vo.setQueryString(queryString);
+ 		     query.add(vo);
 
-      
-	    String	queryString2=	
-				("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
-				"from BoothPublicationVoter bpv "+
-				"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
-				"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age>"+ageRangeageRange+"  "+
-				"group by bpv.booth.boothId,bpv.voter.gender ");	
-   	    
-   	  
-        AgeRangeVO vo=new AgeRangeVO();
-          vo.setAgeRange(ageRange);
-          vo.setQueryString(queryString2);
-	       query.add(vo);
-	    	
-	    }
-     }
+ 		  }
+ 		else if((ageRange.contains(">"))&&(!ageRange.contains("=")))
+ 		{
+ 		  
+ 		  String str=ageRange;
+ 		   str = str.trim();
+ 		  Pattern p = Pattern.compile("(\\d+)");
+ 		  Matcher m = p.matcher(str);
+ 		  Long ageRangeageRange=0l;
+ 		  if(m.find())
+ 		    ageRangeageRange=Long.parseLong(m.group(1));
+ 		  
+
+ 		  
+ 		    String	queryString2=	
+ 					("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
+ 					"from BoothPublicationVoter bpv "+
+ 					"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
+ 					"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age>"+ageRangeageRange+"  "+
+ 					"group by bpv.booth.boothId,bpv.voter.gender ");	
+ 		    
+ 		  
+ 		    AgeRangeVO vo=new AgeRangeVO();
+ 		      vo.setAgeRange(ageRange);
+ 		      vo.setQueryString(queryString2);
+ 		       query.add(vo);
+ 		    	
+ 		}
+ 		else if((ageRange.contains(">"))&&(ageRange.contains("=")))
+ 		{
+ 		  
+ 		  String str=ageRange;
+ 		   str = str.trim();
+ 		  Pattern p = Pattern.compile("(\\d+)");
+ 		  Matcher m = p.matcher(str);
+ 		  Long ageRangeageRange=0l;
+ 		  if(m.find())
+ 		    ageRangeageRange=Long.parseLong(m.group(1));
+ 		  
+ 		    String	queryString3=	
+ 					("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
+ 					"from BoothPublicationVoter bpv "+
+ 					"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
+ 					"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age>="+ageRangeageRange+"  "+
+ 					"group by bpv.booth.boothId,bpv.voter.gender ");	
+ 		    
+ 		  
+ 		    AgeRangeVO vo=new AgeRangeVO();
+ 		      vo.setAgeRange(ageRange);
+ 		      vo.setQueryString(queryString3);
+ 		       query.add(vo);
+ 		    	
+ 		}
+ 		else if((ageRange.contains("<"))&&(!ageRange.contains("=")))
+ 		{
+ 		  
+ 		  String str=ageRange;
+ 		   str = str.trim();
+ 		  Pattern p = Pattern.compile("(\\d+)");
+ 		  Matcher m = p.matcher(str);
+ 		  Long ageRangeageRange=0l;
+ 		  if(m.find())
+ 		    ageRangeageRange=Long.parseLong(m.group(1));
+ 		 String	queryString4=	
+ 					("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
+ 					"from BoothPublicationVoter bpv "+
+ 					"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
+ 					"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age<"+ageRangeageRange+"  "+
+ 					"group by bpv.booth.boothId,bpv.voter.gender ");	
+ 		    
+ 		  
+ 		    AgeRangeVO vo=new AgeRangeVO();
+ 		      vo.setAgeRange(ageRange);
+ 		      vo.setQueryString(queryString4);
+ 		       query.add(vo);
+ 		    	
+ 		}
+ 		else if((ageRange.contains("<"))&&(ageRange.contains("=")))
+ 		{
+ 		  
+ 		  String str=ageRange;
+ 		   str = str.trim();
+ 		  Pattern p = Pattern.compile("(\\d+)");
+ 		  Matcher m = p.matcher(str);
+ 		  Long ageRangeageRange=0l;
+ 		  if(m.find())
+ 		    ageRangeageRange=Long.parseLong(m.group(1));
+ 		  
+ 		    String	queryString5=	
+ 					("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
+ 					"from BoothPublicationVoter bpv "+
+ 					"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
+ 					"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age<="+ageRangeageRange+"  "+
+ 					"group by bpv.booth.boothId,bpv.voter.gender ");	
+ 		    
+ 		  
+ 		    AgeRangeVO vo=new AgeRangeVO();
+ 		      vo.setAgeRange(ageRange);
+ 		      vo.setQueryString(queryString5);
+ 		       query.add(vo);
+ 		    	
+ 		}
+ 		else
+ 		{
+ 		  
+ 		Long ageRangeageRange=Long.parseLong(ageRange);
+ 		String	queryString6=	
+ 					("	select bpv.booth.boothId,bpv.booth.partNo,count(bpv.voter.voterId),bpv.booth.panchayat.panchayatName,bpv.voter.gender "+
+ 					"from BoothPublicationVoter bpv "+
+ 					"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+" " +
+ 					"and bpv.booth.localBody.localElectionBodyId is null and bpv.voter.age="+ageRangeageRange+"  "+
+ 					"group by bpv.booth.boothId,bpv.voter.gender ");	
+ 		    
+ 		  
+ 		    AgeRangeVO vo=new AgeRangeVO();
+ 		      vo.setAgeRange(ageRange);
+ 		      vo.setQueryString(queryString6);
+ 		       query.add(vo);
+ 		    	
+ 		}
+}
 	  List<AgeRangeVO>  li =printData3( query,totalCountMap);
 	  return li; 
 }
@@ -1588,7 +2250,7 @@ public List<AgeRangeVO> getPanchayatWiseForBoothForAConstituency(Long constituen
 		ageRanges.add("26-35");
 		ageRanges.add("36-45");
 		ageRanges.add("46-60");
-		ageRanges.add("Above60");
+		ageRanges.add(">60");
 	}
 String	queryForTotalCount=("select bpv.booth.boothId,bpv.booth.partNo," +
 			"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
@@ -1636,57 +2298,154 @@ String	queryForTotalCount=("select bpv.booth.boothId,bpv.booth.partNo," +
 }
 }	
 	
-	
- String subString="-";
 	List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
 	for(String ageRange:ageRanges)
 	{
-if(ageRange.contains(subString))
-{    
-	    String[] parts = ageRange.split("-");
+		if(ageRange.contains("-"))
+		{    
+		String[] parts = ageRange.split("-");
 		    String part1 = parts[0]; 
 		    String part2 = parts[1]; 
 		       
 			    String queryString =
-	    		("select bpv.booth.boothId,bpv.booth.partNo," +
-	    				"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
-	    		"from BoothPublicationVoter bpv "+
-	    		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
-	    		     "and bpv.booth.localBody.localElectionBodyId is not null and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" "+
-	    		"group by bpv.booth.boothId,bpv.voter.gender  ");
-       AgeRangeVO vo=new AgeRangeVO();
-       vo.setAgeRange(ageRange);
-       vo.setQueryString(queryString);
-	     query.add(vo);
-	
-      }
-     else{
-   	  
-   	  String str=ageRange;
-   	   str = str.trim();
-   	  Pattern p = Pattern.compile("(\\d+)");
-   	  Matcher m = p.matcher(str);
-   	  Long ageRangeageRange=0l;
-   	  if(m.find())
-   	    ageRangeageRange=Long.parseLong(m.group(1));
-   	  
+				("select bpv.booth.boothId,bpv.booth.partNo," +
+						"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
+				"from BoothPublicationVoter bpv "+
+				"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+				     "and bpv.booth.localBody.localElectionBodyId is not null and bpv.voter.age>="+part1+" and bpv.voter.age<="+part2+" "+
+				"group by bpv.booth.boothId,bpv.voter.gender  ");
+		   AgeRangeVO vo=new AgeRangeVO();
+		   vo.setAgeRange(ageRange);
+		   vo.setQueryString(queryString);
+		     query.add(vo);
 
-	    String queryString2 =
-		("select bpv.booth.boothId,bpv.booth.partNo," +
-				"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
+		}
+		else if((ageRange.contains(">"))&&(!ageRange.contains("=")))
+		{
+		   	  
+		  String str=ageRange;
+		   str = str.trim();
+		  Pattern p = Pattern.compile("(\\d+)");
+		  Matcher m = p.matcher(str);
+		  Long ageRangeageRange=0l;
+		  if(m.find())
+		    ageRangeageRange=Long.parseLong(m.group(1));
+		  
+
+		    String queryString2 =
+			("select bpv.booth.boothId,bpv.booth.partNo," +
+		"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
 		"from BoothPublicationVoter bpv "+
 		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
-		     "and bpv.booth.localBody.localElectionBodyId is not  null and bpv.voter.age>"+ageRangeageRange+"  "+
+		 "and bpv.booth.localBody.localElectionBodyId is not  null and bpv.voter.age>"+ageRangeageRange+"  "+
 		"group by bpv.booth.boothId,bpv.voter.gender  ");
-   	    
-   	  
-        AgeRangeVO vo=new AgeRangeVO();
-          vo.setAgeRange(ageRange);
-          vo.setQueryString(queryString2);
-	       query.add(vo);
-	    	
-	    }
-     }
+		    
+		  
+		    AgeRangeVO vo=new AgeRangeVO();
+		      vo.setAgeRange(ageRange);
+		      vo.setQueryString(queryString2);
+		       query.add(vo);
+		    	
+		}
+		else if((ageRange.contains(">"))&&(ageRange.contains("=")))
+		{
+		   	  
+		  String str=ageRange;
+		   str = str.trim();
+		  Pattern p = Pattern.compile("(\\d+)");
+		  Matcher m = p.matcher(str);
+		  Long ageRangeageRange=0l;
+		  if(m.find())
+		    ageRangeageRange=Long.parseLong(m.group(1));
+		  
+
+		    String queryString3 =
+			("select bpv.booth.boothId,bpv.booth.partNo," +
+		"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
+		"from BoothPublicationVoter bpv "+
+		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+		 "and bpv.booth.localBody.localElectionBodyId is not  null and bpv.voter.age>="+ageRangeageRange+"  "+
+		"group by bpv.booth.boothId,bpv.voter.gender  ");
+		    
+		  
+		    AgeRangeVO vo=new AgeRangeVO();
+		      vo.setAgeRange(ageRange);
+		      vo.setQueryString(queryString3);
+		       query.add(vo);
+		    	
+		}
+		else if((ageRange.contains("<"))&&(!ageRange.contains("=")))
+		{
+		   	  
+		  String str=ageRange;
+		   str = str.trim();
+		  Pattern p = Pattern.compile("(\\d+)");
+		  Matcher m = p.matcher(str);
+		  Long ageRangeageRange=0l;
+		  if(m.find())
+		    ageRangeageRange=Long.parseLong(m.group(1));
+		  
+
+		    String queryString4 =
+			("select bpv.booth.boothId,bpv.booth.partNo," +
+		"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
+		"from BoothPublicationVoter bpv "+
+		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+		 "and bpv.booth.localBody.localElectionBodyId is not  null and bpv.voter.age<"+ageRangeageRange+"  "+
+		"group by bpv.booth.boothId,bpv.voter.gender  ");
+		    
+		  
+		    AgeRangeVO vo=new AgeRangeVO();
+		      vo.setAgeRange(ageRange);
+		      vo.setQueryString(queryString4);
+		       query.add(vo);
+		    	
+		}
+		else if((ageRange.contains("<"))&&(ageRange.contains("=")))
+		{
+		   	  
+		  String str=ageRange;
+		   str = str.trim();
+		  Pattern p = Pattern.compile("(\\d+)");
+		  Matcher m = p.matcher(str);
+		  Long ageRangeageRange=0l;
+		  if(m.find())
+		    ageRangeageRange=Long.parseLong(m.group(1));
+		  
+
+		    String queryString5 =
+			("select bpv.booth.boothId,bpv.booth.partNo," +
+		"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
+		"from BoothPublicationVoter bpv "+
+		"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+		 "and bpv.booth.localBody.localElectionBodyId is not  null and bpv.voter.age<="+ageRangeageRange+"  "+
+		"group by bpv.booth.boothId,bpv.voter.gender  ");
+		    
+		  
+		    AgeRangeVO vo=new AgeRangeVO();
+		      vo.setAgeRange(ageRange);
+		      vo.setQueryString(queryString5);
+		       query.add(vo);
+		    	
+		}
+		else
+		{
+		Long ageRangeageRange=Long.parseLong(ageRange);
+		String queryString6 =
+				("select bpv.booth.boothId,bpv.booth.partNo," +
+			"count(distinct bpv.voter.voterId),bpv.booth.localBody.name,bpv.voter.gender "+
+			"from BoothPublicationVoter bpv "+
+			"where bpv.booth.constituency.constituencyId="+constituencyId+" and bpv.booth.publicationDate.publicationDateId="+publicationId+"   "+
+			 "and bpv.booth.localBody.localElectionBodyId is not  null and bpv.voter.age="+ageRangeageRange+"  "+
+			"group by bpv.booth.boothId,bpv.voter.gender  ");
+			    
+			  
+			    AgeRangeVO vo=new AgeRangeVO();
+			      vo.setAgeRange(ageRange);
+			      vo.setQueryString(queryString6);
+			       query.add(vo);	
+		}
+		     }
 	  List<AgeRangeVO>  li =printData3( query,totalCountMap);
 	  return li; 
 }
@@ -1819,7 +2578,16 @@ public static Comparator<AgeRangeVO> mandalWiseSort = new Comparator<AgeRangeVO>
 			
 			}
 };
-
+public static Comparator<AgeRangeVO> panchayatWiseSort = new Comparator<AgeRangeVO>()
+{	  
+		  public int compare(AgeRangeVO vo2,AgeRangeVO vo1)
+			{  
+			              String  s2=vo2.getTehsilName();
+			              String s1=vo1.getTehsilName();
+			               return s2.compareTo(s1);
+			
+			}
+};
 public static Comparator<AgeRangeVO> hamletWiseSort = new Comparator<AgeRangeVO>()
 {	  
 		  public int compare(AgeRangeVO vo2,AgeRangeVO vo1)
@@ -1827,6 +2595,16 @@ public static Comparator<AgeRangeVO> hamletWiseSort = new Comparator<AgeRangeVO>
 			               Long i2=vo2.getTotalCount();
 			               Long i1=vo1.getTotalCount();
 			               return i1.compareTo(i2);
+			
+			}
+};
+public static Comparator<AgeRangeVO> boothWiseSort = new Comparator<AgeRangeVO>()
+{	  
+		  public int compare(AgeRangeVO vo2,AgeRangeVO vo1)
+			{  
+			            Long  l2=Long.parseLong(vo2.getPanchayatName());
+			            Long l1=Long.parseLong(vo1.getPanchayatName());
+			               return l2.compareTo(l1);
 			
 			}
 };
@@ -1888,7 +2666,7 @@ public static Comparator<AgeRangeVO> hamletWiseSort = new Comparator<AgeRangeVO>
         	 vo1.setAge26to35Percantage( Double.parseDouble(df.format(((double)  vo1.getAge26to35()*100)/totalVoters ) ) );
         	 vo1.setAge36to45Percantage(Double.parseDouble(df.format(((double)  vo1.getAge36to45()*100)/totalVoters ) ));
         	 vo1.setAge46to60Percantage(Double.parseDouble(df.format(((double)  vo1.getAge46to60()*100)/totalVoters ) ));
-        	 vo1.setAgeabove60Percantage(Double.parseDouble(df.format(((double)  vo1.getAbove60()*100)/totalVoters ) ));
+        	 vo1.setAge>60Percantage(Double.parseDouble(df.format(((double)  vo1.get>60()*100)/totalVoters ) ));
             }  
 
 	li = new ArrayList<AgeRangeVO>(map.values());
