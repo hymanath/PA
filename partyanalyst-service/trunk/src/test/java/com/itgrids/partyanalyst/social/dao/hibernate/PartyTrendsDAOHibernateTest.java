@@ -507,7 +507,13 @@ List<Object[]> obj=(List<Object[]>) partyTrendsDAO.loadEntitiesForXl(cost);
 	public  void test()
 	{
 	//List<Object[]> obj=	partyTrendsDAO.getTotalVotersForConst(232L);
-		List<Object[]> obj=	(List<Object[]>) partyTrendsDAO.getPreviousTrendsData(null,149L);
+		List<Object[]> obj=new ArrayList<Object[]>();
+		try {
+			obj = (List<Object[]>) partyTrendsDAO.getPreviousTrendsDataForParleament(null,149L);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
 	System.out.println(obj.size());
 
