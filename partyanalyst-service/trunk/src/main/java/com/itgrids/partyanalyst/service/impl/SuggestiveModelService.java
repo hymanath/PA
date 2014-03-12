@@ -6145,7 +6145,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			vo.setName(voter.getName());
 			vo.setAge(voter.getAge());
 			vo.setGender(voter.getGender());
-			vo.setHouseNo(voter.getHouseNo());
+			vo.setHouseNo("# - " +voter.getHouseNo());
 			voterIds.add(voter.getVoterId());
 			voterDetails.add(vo);
 			}
@@ -6168,7 +6168,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
 			  voterHouseInfoVO.setBoothId(boothId);
 			  voterHouseInfoVO.setPartNo(boothDAO.get(boothId).getPartNo());
-			  voterHouseInfoVO.setHouseNo(houseNo);
+			  voterHouseInfoVO.setHouseNo("# - " +houseNo);
 			  List<VoterHouseInfoVO> voterDetails = resultmap.get(houseNo.toString());
 			 
 			  voterHouseInfoVO.setCount(new Long(voterDetails.size()));
