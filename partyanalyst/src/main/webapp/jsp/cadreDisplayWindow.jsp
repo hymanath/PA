@@ -182,11 +182,11 @@ function getInfluencingPeopleVotersDetails()
 	}
 
 var myConfigs = {
-initialRequest: "sort=firstName&dir=asc&startIndex=0&results=10", // Initial request for first page of data
+initialRequest: "sort=firstName&dir=asc&startIndex=0&results=100", // Initial request for first page of data
 dynamicData: true, // Enables dynamic server-driven data
 sortedBy : {key:"firstName", dir:YAHOO.widget.DataTable.CLASS_ASC}, // Sets UI initial sort arrow
    paginator : new YAHOO.widget.Paginator({ 
-		        rowsPerPage    : 10 
+		        rowsPerPage    : 100 
 			    })  // Enables pagination
 };
 
