@@ -42,4 +42,6 @@ public interface IMobileService {
 	
 	public ResultStatus createDataDumpFileForAParliamnetConstituency(RegistrationVO reVo);
 	public List<SelectOptionVO> getPCConstituencyList();
+	
+	public String replaceSpecialChars(String str);
 }
