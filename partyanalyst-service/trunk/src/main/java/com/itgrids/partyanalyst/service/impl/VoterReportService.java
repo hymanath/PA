@@ -114,6 +114,7 @@ import com.itgrids.partyanalyst.model.VoterReportLevel;
 import com.itgrids.partyanalyst.model.VotingTrendz;
 import com.itgrids.partyanalyst.model.VotingTrendzPartiesResult;
 import com.itgrids.partyanalyst.model.WardBooth;
+import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IVotersAnalysisService;
@@ -177,7 +178,17 @@ public class VoterReportService implements IVoterReportService{
     private IWardBoothDAO wardBoothDAO;
     private IVoterDataInsertDAO voterDataInsertDAO;
     private IStaticDataService staticDataService;
+    private IMobileService mobileService;
+
     
+    
+	public IMobileService getMobileService() {
+		return mobileService;
+	}
+
+	public void setMobileService(IMobileService mobileService) {
+		this.mobileService = mobileService;
+	}
 
 	public IStaticDataService getStaticDataService() {
 		return staticDataService;
@@ -5723,4 +5734,62 @@ public class VoterReportService implements IVoterReportService{
 			 }
 		return resultStatus;
 		}
+		
+		
+	public ResultStatus updateVoterNamesAndRelativeNames()
+	{
+		ResultStatus resultStatus = new ResultStatus();
+				
+		try{
+			
+		 Long voterCount = voterDAO.getVoterCount();
+		
+		 Integer startIndex = 0;
+		 Integer maxIndex = 100000;
+		 if(voterCount > 0)
+		 {
+			 for(;;)
+			 {
+				 try{
+					if(startIndex >= Integer.valueOf(voterCount.intValue())-1)
+							break;
+					if(maxIndex >= Integer.valueOf(voterCount.intValue()))
+							maxIndex = Integer.valueOf(voterCount.intValue()) - 1;
+						
+					 List<Object[]> list = voterDAO.getVoterNames(startIndex,maxIndex);
+					 if(list != null && list.size() > 0)
+					 {
+							 for(Object[]  params : list)
+							 {
+								 try{
+									String name =mobileService.replaceSpecialChars(params[1] != null ?params[1].toString().trim() : ""); 
+									String relativeName = mobileService.replaceSpecialChars(params[2] != null ?params[2].toString().trim() : ""); 
+									Integer value = voterDAO.updateVoter((Long)params[0],name,relativeName);
+									if(value == 1)
+										resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+										
+								 }catch(Exception e)
+								 {
+									 LOG.error("Exception Occured in updateVoter() method in VoterReportService, Exception is -",e);
+									 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+								 }
+								 
+							 }
+					 }
+					 startIndex = maxIndex;
+					 maxIndex = maxIndex + 100000;
+			 	}catch(Exception e)
+			 	{
+			 		 LOG.error("Exception Occured in getVoterNames() Block in VoterReportService, Exception is -",e);	
+			 	}
+				 
+			    }
+		  }
+		}
+		catch (Exception e) {
+			  LOG.error("Exception Occured in updateVoterNamesAndRelativeNames() Block in VoterReportService, Exception is -",e);
+		 }
+		return resultStatus;
+	}
+		
 }

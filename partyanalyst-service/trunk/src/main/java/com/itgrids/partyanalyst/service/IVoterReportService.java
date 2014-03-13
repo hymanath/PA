@@ -132,6 +132,8 @@ public interface IVoterReportService {
 				String mobileNo,String uniqueId);
 	 
 	 public ResultStatus deletevotermodificationFromIntermediateTablesForDistrict(Long districtId, Long publicationDateId);
+	 
+	 public ResultStatus updateVoterNamesAndRelativeNames();
 
     
 }
