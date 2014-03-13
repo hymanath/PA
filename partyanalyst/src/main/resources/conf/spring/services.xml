@@ -55,7 +55,9 @@
 		<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO" />
 		<property name="wardBoothDAO" ref="wardBoothDAO" />
 		<property name="voterDataInsertDAO" ref="voterDataInsertDAO"></property>
-		<property name="staticDataService" ref="staticDataService" />		
+		<property name="staticDataService" ref="staticDataService" />
+		<property name="mobileService" ref="mobileService" />
+		
 	</bean>
 	
 	<bean name="partyStrengthService" class="com.itgrids.partyanalyst.service.impl.PartyStrengthService" >

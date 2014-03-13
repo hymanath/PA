@@ -6542,7 +6542,12 @@
 				<param name="root">rs</param>
 			</result>
 		</action>
-        
+        <action name="updateVoterNamesAction" class="votersEditAction"
+			method="updateVoterNames">
+			<result type="json" name="success">
+				<param name="root">result</param>
+			</result>
+		</action>
 		      
 		</package>
 		

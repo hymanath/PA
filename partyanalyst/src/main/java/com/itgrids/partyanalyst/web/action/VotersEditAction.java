@@ -1725,5 +1725,19 @@ public String saveLocality()
 		}	
 					    return Action.SUCCESS;
 		}
+	   
+	   public String updateVoterNames()
+	   {
+		   try{
+			   
+				//jObj = new JSONObject(getTask());
+			   result = voterReportService.updateVoterNamesAndRelativeNames();	   
+		   }
+		   catch(Exception e)
+		   {
+			   LOG.error("Exception rised in updateVoterNames ",e);
+	     }
+		return Action.SUCCESS;
+	  }
 
    }
