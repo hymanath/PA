@@ -133,15 +133,15 @@
 	
  
 	var str="";
-	str+="<h4 style='text-align:center;'> Booth Wise ADDED Voters</h4>";
+	str+="<h4 style='text-align:center;'> Booth Wise ADDED Votes</h4>";
 	str+="<table class='table table-bordered' style='font-size:16px;'>";
 	str+="<thead>";
-	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Added</th></tr>";
+	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Votes</th><th colspan=14>Added</th></tr>";
 	str+="<tr>";
-		str+="<th colspan=2>Total Added</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
+		str+="<th colspan=2>Total Added</th><th colspan=2>Young Votes</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
 	str+"</tr>";
 	str+="<tr>";
-		str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
+		str+="<th>Votes</th><th>%</th><th>Voters</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th>";
 	str+"</tr>";
 	str+="</thead>";
 	str+="<tbody>";
@@ -155,15 +155,15 @@
 	str+="</table>";
 	
 	
-	str+="<h4 style='text-align:center;'> Booth Wise DELETED Voters</h4>";
+	str+="<h4 style='text-align:center;'> Booth Wise DELETED Votes</h4>";
 	str+="<table class='table table-bordered' style='font-size:16px;'>";
 	str+="<thead>";
-	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Voters</th><th colspan=14>Deleted</th></tr>"
+	str+="<tr><th rowspan=3>Panchayat</th><th rowspan=3>Booth</th><th rowspan=3>Total Votes</th><th colspan=14>Deleted</th></tr>"
 	str+="<tr>";
-		str+="<th colspan=2>Total Deleted</th><th colspan=2>Young Voters</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
+		str+="<th colspan=2>Total Deleted</th><th colspan=2>Young Votes</th><th colspan=2>18-25</th><th colspan=2>26-35</th><th colspan=2>36-45</th><th colspan=2>46-60</th><th colspan=2>Above 60</th>";
 	str+"</tr>";
 	str+="<tr>";
-		str+="<th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th><th>Voters</th><th>%</th>";
+		str+="<th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th><th>Votes</th><th>%</th>";
 	str+"</tr>";
 	str+="</thead>";
 	str+="<tbody>";
