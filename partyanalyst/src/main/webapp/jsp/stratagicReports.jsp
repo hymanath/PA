@@ -398,7 +398,7 @@
 							if(results[i].partyResultsVOList[j].rank!=null){
 								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
 							}else{
-								str+="<td style='background:#F7DFAF;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
 							}
 							
 							tdp_exist=true;
