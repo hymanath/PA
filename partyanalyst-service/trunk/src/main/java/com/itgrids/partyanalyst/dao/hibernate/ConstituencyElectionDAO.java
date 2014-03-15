@@ -728,6 +728,7 @@ public class ConstituencyElectionDAO extends GenericDaoHibernate<ConstituencyEle
 		 return query.list();
 	}
 	
+	
 }
 
 

@@ -9304,5 +9304,76 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		}
 		return result;
 	}
+
+	public List<SelectOptionVO> getMuncipalAssemblyConstiList(Long userId,Long stateId){
+		log.info(" entered into getMuncipalAssemblyConstiList() of StaticDataService class.");
+		List<SelectOptionVO> returnList = null;
+		try {
+			List<Object[]> constiList = constituencyDAO.getAllMucipalAssembyConstiListInState(stateId);
+			if(constiList != null && constiList.size()>0){
+				returnList = new ArrayList<SelectOptionVO>();
+				for (Object[] param : constiList) {					
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(Long.valueOf(param[0].toString()));
+					vo.setName(param[1].toString());					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			log.error(" entered into getMuncipalAssemblyConstiList() of StaticDataService class.",e);
+		}
+		return returnList;
+	}
 	
+	public List<SelectOptionVO> getAssemblyConstiElectionYears(Long userId,Long cosntId){
+		log.info(" entered into getAssemblyConstiElectionYears() of StaticDataService class.");
+		List<SelectOptionVO> returnList = null;
+		try {
+			List<Long> consiIDs= new ArrayList<Long>();
+			consiIDs.add(cosntId);
+			List<Object[]> constiList = constituencyElectionDAO.getElectionYearsByConstituencyIds(consiIDs);
+			if(constiList != null && constiList.size()>0){
+				returnList = new ArrayList<SelectOptionVO>();
+				for (Object[] param : constiList) {					
+					SelectOptionVO vo = new SelectOptionVO();
+					vo.setId(Long.valueOf(param[0].toString()));
+					vo.setName(param[1].toString());					
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			log.error(" entered into getAssemblyConstiElectionYears() of StaticDataService class.",e);
+		}
+		return returnList;
+	}
+	
+	public List<SelectOptionVO> getPartyDEtailsByElectionId(Long userId,List<Long> electionIDs){
+		log.info(" entered into getPartyDEtailsByElectionId() of StaticDataService class.");
+		List<SelectOptionVO> returnList = null;
+		try {
+			List<String> partyList = new ArrayList<String>();
+			partyList.add("INC");
+			partyList.add("TDP");
+			partyList.add("TRS");
+			partyList.add("BJP");
+			partyList.add("PRP");
+			partyList.add("YSRCP");
+			
+			List<Object[]> partyDetails = nominationDAO.getPartyIdAndShortNameForThatParticipatedByElectionIds(electionIDs);
+			if(partyDetails != null && partyDetails.size()>0){
+				returnList = new ArrayList<SelectOptionVO>();
+				for (Object[] param : partyDetails) {
+					if(partyList.contains(param[1].toString())){
+						SelectOptionVO vo = new SelectOptionVO();
+						vo.setId(Long.valueOf(param[0].toString()));
+						vo.setName(param[1].toString());					
+						returnList.add(vo);
+					}
+				}
+			}
+		} catch (Exception e) {
+			log.error(" entered into getPartyDEtailsByElectionId() of StaticDataService class.",e);
+		}
+		return returnList;
+	}
 }
