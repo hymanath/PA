@@ -294,6 +294,7 @@
 		<!--  <pattern>/partyShare*</pattern>  -->
 		<pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
 		<pattern>/muncipalElectionDetailsAction*</pattern>
+		<pattern>/voterAverageAgewiseAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
