@@ -6572,6 +6572,20 @@
 			</result>
 		</action>
 		      
+		<action name="voterAverageAgewiseAction" class="votersInformationAction">
+			<result name="success">/jsp/voterAverageAgewisePage.jsp</result>
+			<result name="input">/jsp/loginForm.jsp?src=votersAnalysisNewAction
+			</result>
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		</action>
+
+		<action name="getAverageVoterDetailsAction" class="votersInformationAction"
+			method="getAverageVoterDetails">
+			<result type="json" name="success">
+				<param name="root">countList</param>
+			</result>
+		</action>
+		
 		</package>
 		
 </struts>      
