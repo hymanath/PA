@@ -633,4 +633,5 @@ public interface INominationDAO extends GenericDao<Nomination, Long>{
 	 
 	 public List<Object[]> findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(Long constituencyId,List<Long> electionIds);
 	 
+	 public List getPartyIdAndShortNameForThatParticipatedByElectionIds(List<Long> electionIds);
 }

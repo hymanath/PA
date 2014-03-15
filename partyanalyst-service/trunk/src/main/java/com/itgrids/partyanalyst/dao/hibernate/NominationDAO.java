@@ -907,7 +907,7 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	@SuppressWarnings("unchecked")
 	public List getPartyIdAndShortNameForThatParticipatedInAElection(Long electionId){
 		return getHibernateTemplate().find("select distinct model.party.partyId,model.party.shortName from Nomination model"+
-				" where model.constituencyElection.election.electionId = ?",electionId);
+				" where model.constituencyElection.election.electionId = ? order by model.party.shortName asc",electionId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -4398,6 +4398,16 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 					" and model.party.partyId in (:partyIds)  order by model.constituencyElection.election.electionYear desc");
 			query.setParameterList("electionIds", electionIds);
 			query.setParameterList("partyIds", partyIds);
+			return query.list();
+		}
+		
+		@SuppressWarnings("unchecked")
+		public List getPartyIdAndShortNameForThatParticipatedByElectionIds(List<Long> electionIds){			
+			
+			Query query = getSession().createQuery("select distinct model.party.partyId,model.party.shortName from Nomination model"+
+					" where model.constituencyElection.election.electionId in (:electionIds) order by model.party.shortName asc");
+			query.setParameterList("electionIds", electionIds);
+			
 			return query.list();
 		}
 }

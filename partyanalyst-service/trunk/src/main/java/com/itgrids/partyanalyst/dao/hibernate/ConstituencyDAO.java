@@ -711,4 +711,13 @@ public class ConstituencyDAO extends GenericDaoHibernate<Constituency, Long>
 				" where  model.areaType != 'URBAN' and model.district.districtId > 10 and model.state.stateId = 1 and model.deformDate is null ");
 		return query.list();
 	}
+	
+	public List<Object[]> getAllMucipalAssembyConstiListInState(Long stateId){
+		Query query = getSession().createQuery(" select model.constituencyId,model.name from Constituency model " +
+				" where   model.state.stateId =:stateId and model.electionScope.electionScopeId = 2 and model.areaType != 'URBAN' and  model.deformDate is null " +
+				"order by model.name asc");
+		query.setParameter("stateId", stateId);
+		
+		return query.list();
+	}
 }
