@@ -303,7 +303,7 @@ public class CasteReportService implements ICasteReportService{
 		{
 		log.error("Exception Occured in getCasteWiseInfo() method in CasteReportService",e);	
 		}
-		
+		sortTotalVoters(resultList);
 		return resultList;
 	}
 	 public List<CastVO> setValuesForaCasteInLocation(List<CastVO> resultList,Long casteId,Long locationId,Long count)
@@ -454,7 +454,6 @@ public class CasteReportService implements ICasteReportService{
 				   else
 				   {
 					  castesList = userVoterDetailsDAO.getCasteReport(constituencyId,publicationId,type,userId);
-					
 				   }
 					/* if(castesList != null && castesList.size() > 0)
 					 {
@@ -571,7 +570,7 @@ public class CasteReportService implements ICasteReportService{
 						 setValuesForaCasteInBooth(resultList,(Long)params2[2],(Long)params2[3],(Long)params2[0],(Long)params2[5]);
 						 
 					 }
-					  }
+					}
 					 
 			}
 			catch(Exception e)
@@ -579,10 +578,10 @@ public class CasteReportService implements ICasteReportService{
 			log.error("Exception Occured in getCasteWiseInfo() method in CasteReportService",e);	
 			}
 				sortPanchayat(resultList);
+              
 				List<CastVO> result = new ArrayList<CastVO>();
 				result = setDataList(resultList,type);
-				return result;
-			
+			    return result;
 		}
 	
 	 
@@ -632,11 +631,14 @@ public class CasteReportService implements ICasteReportService{
 						
 					}
 					castvo.setTotalVoters(total);
+					
 					castvo.setCasteList(locationList);
+					
 					castList.add(castvo);
 				}
 			    if(locationsSize >= splitNo)
 				maxindex = maxindex + splitNo;
+			    sortTotalVoters(castList);
 			    resultVo.setCasteList(castList);
 			    result.add(resultVo);	
 			    result.get(0).setPartyName(constituencyName);
@@ -1370,14 +1372,35 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 				     castes.add(castvo); 
 				 }
 			    sortCastsList(castes);
+			   
 				resultVo.setCasteList(castes);
+				
 				resultList.add(resultVo);
 				resultList.get(0).setPartyName(constituencyDAO.get(constituencyId).getName());
 			 }
+			 
+			 
 	  }
 	  catch(Exception e)
 	  {
 		  e.printStackTrace();
 	  }
   }
+  
+
+  public void sortTotalVoters(List<CastVO> castList)
+	{
+		 Collections.sort(castList, new Comparator<CastVO>() {
+
+			
+				 public int compare(CastVO arg0, CastVO arg1) {
+				        if(arg0.getTotalVoters() < arg1.getTotalVoters()){
+				            return 1;
+				        } else {
+				            return -1;
+				        }
+				 }
+		 });
+		
+	}
 }
