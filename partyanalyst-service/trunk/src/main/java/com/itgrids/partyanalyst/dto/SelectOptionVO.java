@@ -17,6 +17,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private String villageCovered;
 	private List<SelectOptionVO> selectOptionsList = new ArrayList<SelectOptionVO>(0);
 	private List<SelectOptionVO> selectOptionsList1 = new ArrayList<SelectOptionVO>(0);
+	private List<SelectOptionVO> selectOptionsList2 = new ArrayList<SelectOptionVO>(0);
 	private boolean hampletPresent;
 	private String partno;
 	private List<Long> locationValuesList;
@@ -32,6 +33,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private List<ConstituencyElectionResultsVO> mptcZptcList ;
 	private SelectOptionVO panchatsList;
 	
+	public List<SelectOptionVO> getSelectOptionsList2() {
+		return selectOptionsList2;
+	}
+
+	public void setSelectOptionsList2(List<SelectOptionVO> selectOptionsList2) {
+		this.selectOptionsList2 = selectOptionsList2;
+	}
+
 	public SelectOptionVO getPanchatsList() {
 		return panchatsList;
 	}

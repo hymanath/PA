@@ -340,5 +340,5 @@ public interface IVotersAnalysisService {
 	 public List<SelectOptionVO> getDistrictsList(Long stateId);
 	 
 	 public List<SelectOptionVO> getPublicationList();
-
+	 public SelectOptionVO getCountList1(Long id,Long publicationDateId,String type);
 }
