@@ -680,7 +680,34 @@ lable{line-height:40px;}
 			<!----<div class="span6 widget-simple">
 				<h4>Voters Search</h4>
 				<div><input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input></div>
-			</div>	---->   
+			</div>	---->  
+			
+
+		<div class="row-fluid">
+			<div class="span12 widget" id="VoterAverageAgeDiv" >
+				<h2>Voter Average Age Report</h2>
+				<div id="boothWiseResult"></div>
+
+	   
+				<div class="form-horizontal boothResults " name='boothSelection' style="display:block;">
+					
+					<table  style="margin-bottom: -8px; margin-top: -20px;">
+					<tr>
+					<td><span>Constituency</span></td>
+					<td><s:select cssClass="selectstyle span12" theme="simple" id="voterAverageAgeId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
+					</td>
+					</tr>
+					</table>
+					<div class="control-group" id="errorDiv" style="color:red;"></div>
+					<button class="btn btn-mini btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="voterAverageAgePopUp()" style="float: right; margin-top: -55px; margin-right: 201px;">View Report</button>
+					
+				</div>
+			</div>
+		</div>
+
+
+
+
 		</div>
     </div>
     
@@ -2414,6 +2441,13 @@ function getVoterModifivationReport()
 	var url = "createPdfAction.action?"+rparam;
 
 	callAjax(jObj,url);
+}
+
+function voterAverageAgePopUp(){
+var constiId = $("#voterAverageAgeId").val();
+var urlstr = "voterAverageAgewiseAction.action?constiId="+constiId+"";
+  var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+     browser1.focus();
 }
 checkForUserStatus();
 </script>
