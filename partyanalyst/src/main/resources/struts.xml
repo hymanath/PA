@@ -419,6 +419,29 @@
            		<param name="root">votesMarginAnalysisVO</param>
         	</result>       		
         </action>
+        
+		 <action name="muncipalElectionDetailsAction" class="electionResultsAnalysisReportAction" method="muncipalConstituencies"> 
+            <result name="success">/jsp/muncipalityElectionDetails.jsp</result>
+        </action>
+		
+		  <action name="getPartyWiseELecitonDetailsAction" class="electionResultsAnalysisReportAction" method="getPartyWiseELecitonDetails"> 
+              <result type="json" name="success">
+           		<param name="root">partiesList</param>
+        	</result>       		
+        </action>
+        
+        <action name="getPartyListForElectionAction" class="electionResultsAnalysisReportAction" method="getPartyListByElectionId"> 
+              <result type="json" name="success">
+           		<param name="root">partiesList</param>
+        	</result>       		
+        </action>
+        
+        <action name="getElectionYearsForCosntituencyAction" class="electionResultsAnalysisReportAction" method="getElectionYearsForCosntituency"> 
+              <result type="json" name="success">
+           		<param name="root">electionYears</param>
+        	</result>       		
+        </action>
+        
         <action name="electionResultsAnalysisReportPopupAction" class="electionResultsAnalysisReportPopupAction">
             <result name="success">/jsp/electionResultsAnalysisPopup.jsp</result>	
         </action>
