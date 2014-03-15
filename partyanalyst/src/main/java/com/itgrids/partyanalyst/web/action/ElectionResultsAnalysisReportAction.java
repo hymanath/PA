@@ -53,7 +53,17 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	private AnalysisReportService analysisReportService;
 	private PartyPositionAnalysisResultVO partyPositionAnalysisResultVO;
 	
-	private EntitlementsHelper entitlementsHelper;
+	private EntitlementsHelper entitlementsHelper;	
+	private List<SelectOptionVO> constiList ;
+	
+	
+	public List<SelectOptionVO> getConstiList() {
+		return constiList;
+	}
+
+	public void setConstiList(List<SelectOptionVO> constiList) {
+		this.constiList = constiList;
+	}
 
 	public List<VotesMarginAnalysisVO> getVotesMarginAnalysisVO() {
 		return votesMarginAnalysisVO;
@@ -667,4 +677,111 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
 	}
     
     
+    public String muncipalConstituencies(){
+    	log.info(" entered into muncipalConstituencies() of ElectionResultsAnalysisReportAction class.");
+    	try {
+    		session = request.getSession();
+    		RegistrationVO regVO =(RegistrationVO) session.getAttribute("USER");
+			
+    		if(regVO == null )
+    			return Action.ERROR;
+    		
+    		constiList = staticDataService.getMuncipalAssemblyConstiList(regVO.getRegistrationID(),1L);
+    		
+		} catch (Exception e) {
+			log.error(" Exception occured in  muncipalConstituencies() of ElectionResultsAnalysisReportAction class.",e);
+		}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String getElectionYearsForCosntituency(){
+    	log.info(" entered into muncipalConstituencies() of ElectionResultsAnalysisReportAction class.");
+    	try {
+    		session = request.getSession();
+    		RegistrationVO regVO =(RegistrationVO) session.getAttribute("USER");
+			
+    		if(regVO == null )
+    			return Action.ERROR;
+    		
+    		jObj = new JSONObject(getTask());
+    		electionYears = staticDataService.getAssemblyConstiElectionYears(regVO.getRegistrationID(),Long.valueOf(jObj.getString("constiId")));
+		} catch (Exception e) {
+			log.error(" Exception occured in  muncipalConstituencies() of ElectionResultsAnalysisReportAction class.",e);
+		}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String getPartyListByElectionId(){
+    	log.info(" entered into muncipalConstituencies() of ElectionResultsAnalysisReportAction class.");
+    	try {
+    		session = request.getSession();
+    		RegistrationVO regVO =(RegistrationVO) session.getAttribute("USER");
+			
+    		if(regVO == null )
+    			return Action.ERROR;
+    		
+    		jObj = new JSONObject(getTask());
+    		//partiesList = staticDataService.getPartyDEtailsByElectionId(regVO.getRegistrationID(),Long.valueOf(jObj.getString("electionId")));
+    		String[] electionIds = jObj.getString("electionId").split(",");
+    		List<Long> electionIDS = new ArrayList<Long>();
+    		if(electionIds != null && electionIds.length > 0 ){
+    			for(int i=0 ;i<electionIds.length ;i++){
+    				electionIds[i] = replaceString(electionIds[i].toString());
+    				electionIDS.add(Long.valueOf(electionIds[i].toString()));
+    			}    			
+    		}
+    		partiesList = staticDataService.getPartyDEtailsByElectionId(regVO.getRegistrationID(),electionIDS);
+		} catch (Exception e) {
+			log.error(" Exception occured in  muncipalConstituencies() of ElectionResultsAnalysisReportAction class.",e);
+		}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    public String getPartyWiseELecitonDetails(){
+    	log.info(" entered into getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.");
+    	try {
+    		session = request.getSession();
+    		RegistrationVO regVO =(RegistrationVO) session.getAttribute("USER");
+			
+    		if(regVO == null )
+    			return Action.ERROR;
+    		
+    		jObj = new JSONObject(getTask());
+    	
+    		String[] electionIds = jObj.getString("electionId").split(",");
+    		List<Long> electionIDS = new ArrayList<Long>();
+    		if(electionIds != null && electionIds.length > 0 ){
+    			for(int i=0 ;i<electionIds.length ;i++){
+    				electionIds[i] = replaceString(electionIds[i].toString());
+    				electionIDS.add(Long.valueOf(electionIds[i].toString()));
+    			}    			
+    		}
+    		
+    		String[] partyIds = jObj.getString("partyList").split(",");
+    		List<Long> partyidsList = new ArrayList<Long>();
+    		if(partyIds != null && partyIds.length > 0 ){
+    			for(int i=0 ;i<partyIds.length ;i++){
+    				partyIds[i] = replaceString(partyIds[i].toString());
+    				partyidsList.add(Long.valueOf(partyIds[i].toString()));
+    			}    			
+    		}
+    		
+    		
+		} catch (Exception e) {
+			log.error(" Exception occured in  getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.",e);
+		}
+    	
+    	return Action.SUCCESS;
+    }
+    
+    private String replaceString(String stringStr){
+    	stringStr = stringStr.replace("\"", "");
+    	stringStr = stringStr.replace("[", "");
+    	stringStr = stringStr.replace("]", "");;
+    	return stringStr;
+    }
+
 }
