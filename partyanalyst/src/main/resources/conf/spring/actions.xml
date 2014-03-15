@@ -1390,6 +1390,7 @@
 	
 	<bean id="votersInformationAction" class="com.itgrids.partyanalyst.web.action.VotersInformationAction" singleton="false">
 		  <property name="votersInformationService" ref="votersInformationService" />  
+		  <property name="votersAnalysisService" ref="votersAnalysisService" /> 
 	</bean>
 	
 	
