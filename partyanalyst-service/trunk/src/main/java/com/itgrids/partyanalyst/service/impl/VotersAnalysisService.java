@@ -109,6 +109,7 @@ import com.itgrids.partyanalyst.dto.HHSurveyVO;
 import com.itgrids.partyanalyst.dto.ImportantFamiliesInfoVo;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleBeanVO;
 import com.itgrids.partyanalyst.dto.InfluencingPeopleVO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PartyVotesEarnedVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -21175,4 +21176,118 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  }
 	  }
 
+	  public SelectOptionVO getCountList1(Long id,Long publicationDateId,String type)
+	  {
+		  SelectOptionVO result = new SelectOptionVO();
+		  List<Object[]> mandalwiseDetails = null;
+		  
+		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"constituency");
+		  setData(result,mandalwiseDetails,"constituency");
+		  
+		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"mandal");
+		  setData(result,mandalwiseDetails,"mandal");
+		  
+		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"panchayat");
+		  setData(result,mandalwiseDetails,"panchayat");
+		  
+		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"booth");
+		  setData(result,mandalwiseDetails,"booth");
+	
+		  return result;
+	  }
+	  
+	  public void setData(SelectOptionVO resultVO, List<Object[]> dataList,String type){
+		  List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
+		  List<SelectOptionVO> panchayatsList = new ArrayList<SelectOptionVO>();
+		  List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>();
+		  
+		  
+		  for(Object[] param:dataList){
+			  if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
+			  {
+				  resultVO.setId((Long)param[1]);
+				  resultVO.setTotalCount((Long)param[0]);
+				  resultVO.setValidCount(((Long)param[2])*100/(Long)param[0]);
+			  }
+			  if(type.equalsIgnoreCase(IConstants.MANDAL))
+			  {
+				  SelectOptionVO votersDetailsVO2 = new SelectOptionVO();
+				  votersDetailsVO2.setId((Long)param[1]);
+				  votersDetailsVO2.setName(param[2].toString());
+				  votersDetailsVO2.setTotalCount((Long)param[0]);
+				  votersDetailsVO2.setValidCount(((Long)param[3])*100/(Long)param[0]);
+				  mandalsList.add(votersDetailsVO2);
+			  }
+			  
+			  if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
+			  {
+				  SelectOptionVO votersDetailsVO3 = null;
+				  votersDetailsVO3 = checkVOExist((Long)param[1],panchayatsList);//mandalList
+				  if(votersDetailsVO3 == null){
+					  votersDetailsVO3 = new SelectOptionVO();
+					  votersDetailsVO3.setId((Long)param[1]);
+					  votersDetailsVO3.setName(param[2].toString());
+					  panchayatsList.add(votersDetailsVO3);
+				  }
+				  SelectOptionVO votersDetailsVO4 = null;
+				  if(votersDetailsVO3.getSelectOptionsList().size() > 0)
+					  votersDetailsVO4 = checkVOExist((Long)param[2],votersDetailsVO3.getSelectOptionsList());//panchayatlist
+				  if(votersDetailsVO4 == null && param[2] != null){
+					  votersDetailsVO4 = new SelectOptionVO();
+					  votersDetailsVO4.setId((Long)param[2]);
+					  votersDetailsVO4.setName(param[3].toString());
+					  votersDetailsVO4.setTotalCount((Long)param[0]);
+					  votersDetailsVO4.setValidCount(((Long)param[4])*100/(Long)param[0]);
+					  votersDetailsVO3.getSelectOptionsList().add(votersDetailsVO4);
+				  }
+			  }
+			  
+			  if(type.equalsIgnoreCase(IConstants.BOOTH))
+			  {
+				  SelectOptionVO votersDetailsVO3 = new SelectOptionVO();
+				  votersDetailsVO3 = checkVOExist((Long)param[1],boothsList);
+				  if(votersDetailsVO3 == null){
+					  votersDetailsVO3 = new SelectOptionVO();
+					  votersDetailsVO3.setId((Long)param[1]);
+					  votersDetailsVO3.setName(param[2].toString());
+					  boothsList.add(votersDetailsVO3);
+				  }
+				  SelectOptionVO votersDetailsVO4 = null;
+				  if(votersDetailsVO3.getSelectOptionsList().size() > 0)
+					  votersDetailsVO4 = checkVOExist((Long)param[2],votersDetailsVO3.getSelectOptionsList());//panchayatlist
+				  if(votersDetailsVO4 == null && param[2] != null){
+					  votersDetailsVO4 = new SelectOptionVO();
+					  votersDetailsVO4.setId((Long)param[3]);
+					  votersDetailsVO4.setName(param[4].toString());
+					  votersDetailsVO4.setTotalCount((Long)param[0]);
+					  votersDetailsVO4.setValidCount(((Long)param[5])*100/(Long)param[0]);
+				  votersDetailsVO3.getSelectOptionsList().add(votersDetailsVO4);
+				  }
+			  }
+		  }
+		  if(mandalsList.size() > 0)
+		  resultVO.setSelectOptionsList(mandalsList);
+		  if(panchayatsList.size() > 0)
+		  resultVO.setSelectOptionsList1(panchayatsList);
+		  if(boothsList.size() > 0)
+		  resultVO.setSelectOptionsList2(boothsList);
+	  }
+	  
+	  public SelectOptionVO checkVOExist(Long locationId,List<SelectOptionVO> list)
+		{
+			try{
+			if(list == null)
+			 return null;
+			for(SelectOptionVO positionVO:list)
+			if(positionVO.getId() != null)
+			 if(positionVO.getId().equals(locationId))
+			  return positionVO;
+				
+			 return null;
+			}catch (Exception e) {
+			 e.printStackTrace();
+			 log.error(" ExceptionOccured in checkPartyPositionVOExist() method, Exception - "+e);
+			 return null;
+			}
+		}
 }
