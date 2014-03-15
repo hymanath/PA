@@ -12,6 +12,9 @@ import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VotersDetailsVO;
+import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.service.IVotersInformationService;
 import com.itgrids.partyanalyst.util.IWebConstants;
 import com.opensymphony.xwork2.Action;
@@ -29,7 +32,27 @@ public class VotersInformationAction extends ActionSupport implements ServletReq
 	private ResultStatus rs;
 	
     private IVotersInformationService votersInformationService;
+	private IVotersAnalysisService votersAnalysisService;
+	public SelectOptionVO countList;
+	public Long constiId;
 	
+	public IVotersAnalysisService getVotersAnalysisService() {
+		return votersAnalysisService;
+	}
+
+	public void setVotersAnalysisService(
+			IVotersAnalysisService votersAnalysisService) {
+		this.votersAnalysisService = votersAnalysisService;
+	}
+
+	public SelectOptionVO getCountList() {
+		return countList;
+	}
+
+	public void setCountList(SelectOptionVO countList) {
+		this.countList = countList;
+	}
+
 	public void setServletRequest(HttpServletRequest request) {
 	   this.request=request;
 	}
@@ -114,4 +137,36 @@ public class VotersInformationAction extends ActionSupport implements ServletReq
 		return Action.SUCCESS;
 	}
 
+	public String getAverageVoterDetails()
+	{
+		String param;
+		param = getTask();
+		Long userId = 0l;
+		Long constituencyId = null;
+		session = request.getSession();
+		RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
+		if(regVO.getParentUserId()!=null)
+		{
+		  userId=regVO.getMainAccountId();
+		}
+		else
+		{
+		  userId = regVO.getRegistrationID();
+		}
+
+		
+		try{
+			jObj = new JSONObject(param);
+			constituencyId = jObj.getLong("constiId");
+			Long publicationDateId = 8L;
+			String type = "constituency";
+			Long tehsilId = 0L;
+			
+			countList = votersAnalysisService.getCountList1(publicationDateId,constituencyId,type);
+			 //votersInfo = votersAnalysisService.getVotersCount(userId,type,jObj.getLong("id"),jObj.getLong("publicationDateId"),constituencyId,res);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+		return Action.SUCCESS;
+	}
 }
