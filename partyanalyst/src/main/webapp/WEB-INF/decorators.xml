@@ -293,6 +293,7 @@
 		<pattern>/stratagicReportsAction*</pattern>
 		<!--  <pattern>/partyShare*</pattern>  -->
 		<pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
+		<pattern>/muncipalElectionDetailsAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
