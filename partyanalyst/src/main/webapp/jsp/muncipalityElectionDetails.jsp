@@ -118,7 +118,9 @@ $('#muncipalElectnYears :selected').each(function(i, selected){
   electionIds[i] = $(selected).val(); 
 });
 
+ var cosntiId = $('#muncipalConstiList1').val();
 	var jsObj = {
+			 cosntituencyId : cosntiId,
 			 electionId : electionIds,
 			 task : "getPartyListForElection"
 			 }
