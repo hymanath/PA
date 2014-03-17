@@ -884,9 +884,9 @@ function buildQuestionAnswers(results){
 	str+="<input type='hidden' name='boothId' value="+boothId+"></input>";
 	str+="<input type='hidden' name='houseNo' value="+houseNo+"></input>";
 	
-	str+="<span class='btn btn-info' onclick=submitQuestionDetails()> Save </span>";
-	str+="<img id='submitQuesAjaxImg' style='width: 25px;display:none;margin-left:5px;' src='images/icons/ajaxImg.gif'>"
-	str+="</form>"
+	str+="<span class='btn btn-info' id = 'saveBtnId' onclick=submitQuestionDetails()> Save </span>";
+	str+="<img id='submitQuesAjaxImg' style='width: 25px;display:none;margin-left:5px;' src='images/icons/ajaxImg.gif'>"	
+	str+="<div id='errorDiv' style='color:red'></div></form>"
 	str+="</div>";
 	$("#qstnAnswer").html(str);
 }
@@ -896,6 +896,7 @@ function saveHouseHoldInfo(){
 				success: function(o) {
 					var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
 					if(uploadResult=="success"){
+						 $("#saveBtnId").attr("disabled",true);
 						$('.statusMsg').html("<h5 style='text-align:center;color:green;'>Saved Successfully..</h5>");
 					}else if(uploadResult=="error"){
 						$('.statusMsg').html("<h5 style='text-align:center;color:red;'>Internal Error .. Please Try Again Later</h5>");
@@ -928,10 +929,6 @@ function saveHouseHoldInfo(){
 <!--<input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
 <input type="hidden" name="voterHouseInfoVO.categoryValuesId" value="${voterHouseInfoVO.categoryValuesId}"/>-->
-<div id="mainDiv" >
-<div id="errorDiv" style="color:red"></div>
-
-<div>
   <span class="fontStyle"><b>Panchayat Name: </b></span> ${voterHouseInfoVO.panchayatName}
   <span class="fontStyle" style="margin-left: 25px;"><b>Booth Name:</b></span> ${voterHouseInfoVO.boothName}
 </div>
