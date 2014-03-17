@@ -44,4 +44,6 @@ public interface IMobileService {
 	public List<SelectOptionVO> getPCConstituencyList();
 	
 	public String replaceSpecialChars(String str);
+	
+	public ResultStatus getMobileAppLastAuthorisedTime();
 }
