@@ -929,6 +929,8 @@ function saveHouseHoldInfo(){
 <!--<input type="hidden" name="voterHouseInfoVO.userId" value="${voterHouseInfoVO.userId}"/>
 <input type="hidden" name="voterHouseInfoVO.userVoterDetailsId" value="${voterHouseInfoVO.userVoterDetailsId}"/>
 <input type="hidden" name="voterHouseInfoVO.categoryValuesId" value="${voterHouseInfoVO.categoryValuesId}"/>-->
+  <div id="mainDiv" >
+  <div> 
   <span class="fontStyle"><b>Panchayat Name: </b></span> ${voterHouseInfoVO.panchayatName}
   <span class="fontStyle" style="margin-left: 25px;"><b>Booth Name:</b></span> ${voterHouseInfoVO.boothName}
 </div>
