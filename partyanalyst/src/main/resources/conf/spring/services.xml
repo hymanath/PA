@@ -1312,8 +1312,10 @@
 	<bean name="scheduler" class="com.itgrids.partyanalyst.notification.service.impl.Scheduler">
 		<property name="schedulerService" ref="schedulerService"/>
 		<property name="mailsSendingService" ref="mailsSendingService"/>
+		<property name="voterReportService" ref="voterReportService"/>
 		<property name="userDAO" ref="userDAO"/>
 		<property name="partyCandidateSpecialPageScheduleService" ref="partyCandidateSpecialPageScheduleService"/>
+		  <property name="mobileService" ref="mobileService"></property>
 	</bean>
 	
 	<bean name="everyDayBatchJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -1324,6 +1326,24 @@
 	<bean name="cronTriggerForEveryDayJob" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayBatchJob" />
     	<property name="cronExpression" value="0 0 14 * * ?" />
+	</bean>
+	
+	<bean name="everyDayBatchJobForInsertCaste" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runTheBatchJobForInsertCasteForEveryDay" />
+	</bean> 
+	<bean name="cronTriggerForEveryDayJobForInsertCaste" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayBatchJobForInsertCaste" />
+    	<property name="cronExpression" value="0 0 4 * * ?" />
+	</bean>
+	
+	<bean name="everyDayBatchJobTosendSmsToMobileAppUsers" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  		<property name="targetObject" ref="scheduler" />
+	  	<property name="targetMethod" value="runTheBatchJobTosendSmsToMobileAppUser" />
+	</bean> 
+	<bean name="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    	<property name="jobDetail" ref="everyDayBatchJobTosendSmsToMobileAppUsers" />
+    	<property name="cronExpression" value="0 0 10 * * ?" />
 	</bean>
 	
 	<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -1352,6 +1372,8 @@
             <ref bean="cronTriggerForEveryDayJob" />
             <ref bean="cronTriggerForUpdates" />
             <ref bean="secondCronTriggerForUpdates" />
+			<ref bean="cronTriggerForEveryDayJobForInsertCaste" />
+			<ref bean="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" />
         </list>
     	</property>
 	</bean>
