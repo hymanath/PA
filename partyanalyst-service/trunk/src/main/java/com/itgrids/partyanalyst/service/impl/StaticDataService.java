@@ -9347,7 +9347,7 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 		return returnList;
 	}
 	
-	public List<SelectOptionVO> getPartyDEtailsByElectionId(Long userId,List<Long> electionIDs){
+	public List<SelectOptionVO> getPartyDEtailsByElectionId(Long userId,List<Long> electionIDs,Long constituencyId){
 		log.info(" entered into getPartyDEtailsByElectionId() of StaticDataService class.");
 		List<SelectOptionVO> returnList = null;
 		try {
@@ -9358,12 +9358,45 @@ public boolean removeCadreImage(Long cadreId,Long userId){
 			partyList.add("BJP");
 			partyList.add("PRP");
 			partyList.add("YSRCP");
+			partyList.add("BSP");
+			partyList.add("PPON");
+			partyList.add("IND");
 			
-			List<Object[]> partyDetails = nominationDAO.getPartyIdAndShortNameForThatParticipatedByElectionIds(electionIDs);
-			if(partyDetails != null && partyDetails.size()>0){
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			Long districtId = constituency.getDistrict().getDistrictId();
+			
+			List<Object[]> partyDetails = nominationDAO.getPartyIdAndShortNameForThatParticipatedByElectionIds(electionIDs,constituencyId);
+			List<Long> partyIds = null;
+			if(partyDetails != null && partyDetails.size()>0){				
 				returnList = new ArrayList<SelectOptionVO>();
+				partyIds = new ArrayList<Long>();				
 				for (Object[] param : partyDetails) {
 					if(partyList.contains(param[1].toString())){
+
+						SelectOptionVO vo = new SelectOptionVO();
+						vo.setId(Long.valueOf(param[0].toString()));
+						vo.setName(param[1].toString());
+						
+						if(!param[1].toString().equalsIgnoreCase("TRS")){
+							partyIds.add(Long.valueOf(param[0].toString()));												
+							returnList.add(vo);
+						}	
+						else if(districtId <= 10){ // TRS party Adding only in Telangana Region 
+							partyIds.add(Long.valueOf(param[0].toString()));					
+							returnList.add(vo);													
+						}
+					}
+				}
+			}
+			
+			//checking for alliance parties details 
+			
+			partyDetails = allianceGroupDAO.getAlliancesAndPartiesForPartiesAndElections(electionIDs,partyIds);
+			
+			if(partyDetails != null && partyDetails.size()>0){
+				for (Object[] param : partyDetails) {
+					if(partyList.contains(param[1].toString())){
+						
 						SelectOptionVO vo = new SelectOptionVO();
 						vo.setId(Long.valueOf(param[0].toString()));
 						vo.setName(param[1].toString());					

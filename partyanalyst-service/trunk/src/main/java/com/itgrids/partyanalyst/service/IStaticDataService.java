@@ -418,7 +418,7 @@ public interface IStaticDataService {
 		
 		public List<SelectOptionVO> getAssemblyConstiElectionYears(Long userId,Long cosntId);
 		
-		public List<SelectOptionVO> getPartyDEtailsByElectionId(Long userId,List<Long> electionID);
+		public List<SelectOptionVO> getPartyDEtailsByElectionId(Long userId,List<Long> electionID,Long constituencyId);
 		
 		
 }
