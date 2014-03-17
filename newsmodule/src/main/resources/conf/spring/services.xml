@@ -1681,6 +1681,7 @@
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 		<property name="boothDAO" ref="boothDAO" />
 		<property name="userAddressDAO" ref="userAddressDAO" />
+		<property name="userDAO" ref="userDAO" />
 		
 	</bean>	
 	
@@ -1726,7 +1727,8 @@
 		<property name="tehsilDAO" ref="tehsilDAO" />
 		<property name="hamletDAO" ref="hamletDAO" />
 		<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
-		<property name="boothDAO" ref="boothDAO" />		
+		<property name="boothDAO" ref="boothDAO" />	
+		<property name="reportService" ref="reportService" />		
    </bean>
    
    <bean name="newsAnalysisService" class="com.itgrids.partyanalyst.service.impl.NewsAnalysisService">
@@ -1780,6 +1782,18 @@
    		<property name="userDAO" ref="userDAO" />
    		<property name="debateReportDAO" ref="debateReportDAO" />
    </bean>
-
+   
+   <bean name="articleNewsService" class="com.itgrids.partyanalyst.service.impl.ArticleNewsService">
+   		<property name="articleDAO" ref="articleDAO" />
+   		
+   </bean>
+   
+   <bean name="partyActivitiesService" class="com.itgrids.partyanalyst.service.impl.PartyActivitiesService">
+   		<property name="candidatePartyFileDAO" ref="candidatePartyFileDAO" />
+   		<property name="candidatePartyKeywordDAO" ref="candidatePartyKeywordDAO" />
+   		<property name="keywordDAO" ref="keywordDAO" />
+   		<property name="districtDAO" ref="districtDAO" />
+   		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+   </bean>
 </beans>		
 	

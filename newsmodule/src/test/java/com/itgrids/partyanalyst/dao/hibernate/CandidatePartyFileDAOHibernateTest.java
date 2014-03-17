@@ -1,7 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -67,4 +69,54 @@ public class CandidatePartyFileDAOHibernateTest extends BaseDaoTestCase{
 	}
 	*/
 	
+	public void testGetNews(){
+		Calendar c= Calendar.getInstance();
+		c.set(2014,0, 3);
+		Date date1 = new Date();
+		List<Long> categoryIds = new ArrayList<Long>();
+		categoryIds.add(3991l);
+		List<Long> districtIds = new ArrayList<Long>();
+		districtIds.add(1l);
+		districtIds.add(22l);
+		districtIds.add(23l);
+		districtIds.add(20l);
+		districtIds.add(14l);
+		districtIds.add(17l);
+		districtIds.add(5l);
+		districtIds.add(3l);
+		districtIds.add(10l);
+		districtIds.add(16l);
+		districtIds.add(21l);
+		districtIds.add(7l);
+		districtIds.add(4l);
+		districtIds.add(8l);
+		districtIds.add(19l);
+		districtIds.add(2l);
+		districtIds.add(18l);
+		districtIds.add(6l);
+		districtIds.add(11l);
+		districtIds.add(13l);
+		districtIds.add(12l);
+		districtIds.add(9l);
+		districtIds.add(15l);
+		/*List<Object[]> result = candidatePartyFileDAO.getPoliticalActivitiesNews(c.getTime(), date1,categoryIds,districtIds,0,10000);
+		Long result1 = candidatePartyFileDAO.getPoliticalActivitiesNewsCount(c.getTime(), date1,categoryIds,districtIds);
+		System.out.println(result.size());
+		System.out.println(result1);
+		for(Object[] res:result1){
+			System.out.println(res[0].toString());
+			
+		}
+		for(Long res:result1){
+			System.out.println(res);
+			
+		}*/
+		List<Long> partyIds = new ArrayList<Long>();
+		partyIds.add(872l);
+		List<Object[]> result1 = candidatePartyFileDAO.getAllPoliticalActivitiesCount(c.getTime(), date1,districtIds,1l,partyIds);
+		for(Object[] res:result1){
+			System.out.println(res[0].toString()+" : "+res[1].toString()+" : "+res[2].toString()+" : "+res[3].toString()+" : "+res[4].toString()+" : "+res[5].toString());
+			
+		}
+	}
 }

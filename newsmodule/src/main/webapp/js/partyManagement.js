@@ -1,99 +1,3 @@
-function buildLocationWiseNews(results)
-{
-	var str='';
-	$("#newsReportAjaxImg").css("display","none");
-	
-	if(results != null && results != '')
-	{
-	$("#locationWiseNewsDiv").css("display","block");
-		str+='<label class="checkbox inline">';
-		str+='<input type="checkbox" id="selectAll" value="Select All" onclick="selectAllCheckBox();">Select All';
-		str+='</label>';
-		str+='<label class="checkbox inline">';
-		str+='<input type="checkbox" id="unselectAll" value="Unselect All" onclick="unselectAllCheckBox();">Unselect All';
-		str+='</label>';
-		for(var i in results)
-		{
-		str+='<div class="container">';
-		str+='<h4 id="mainheading">'+results[i].scope+' WISE </h4>';
-		for(var j=0; j< results[i].fileVOList.length;j++)
-			{
-			for(var k=0;k<results[i].fileVOList[j].fileVOList.length;k++)
-			{
-		var source = results[i].fileVOList[j].fileVOList[k].source;
-		var eenadu = results[i].fileVOList[j].fileVOList[k].eenadu;
-		str+=' <div class="row-fluid">';
-        str+='<div class="span12 well">';
-        str+='<div class="media">';
-        str+=' <div class="media-body">';
-        str+='<hgroup>';
-		
-		if(eenadu || source == "Eenadu Telugu")
-				{
-			
-				str+="<h4 class='media-heading'><span class='enadu fontStyle pagerRow' style='font-weight:bold;'>";
-				str+='<input type="checkbox" class="find-table newscheckbox" value='+results[i].fileVOList[j].fileVOList[k].contentId+'>&nbsp;';
-				str+="<a href='javascript:{getNewsDetailsByContentId("+results[i].fileVOList[j].fileVOList[k].contentId+")}'>"+results[i].fileVOList[j].fileVOList[k].fileTitle1+"</a></span></h4>";
-				}
-				else
-				{
-				str+="<h4 class='media-heading' style='text-transform: capitalize;color: #005580;'>";
-				str+='<input type="checkbox" class="find-table newscheckbox" value='+results[i].fileVOList[j].fileVOList[k].contentId+'>&nbsp;';
-				str+="<a  href='javascript:{getNewsDetailsByContentId("+results[i].fileVOList[j].fileVOList[k].contentId+")}'>"+results[i].fileVOList[j].fileVOList[k].fileTitle1+"</a></h4><br/>";
-				}
-			
-				str+='<div  class="span3">';
-				str+='<span style="font-weight:bold;font-size:14px;"> Source : </span>';
-			for(var k1=0;k1<results[i].fileVOList[j].fileVOList[k].fileVOList.length;k1++)
-				{
-			    str+='<span class="label"> '+results[i].fileVOList[j].fileVOList[k].fileVOList[k1].source+'</span>&nbsp;';
-				}
-				str+='</div>';
-				str+='<div  class="span4">';
-				str+='<span style="font-weight:bold;font-size:14px;"> Candidate Name : </span>';
-			    str+='<span class="label"> '+results[i].fileVOList[j].fileVOList[k].candidateName+'</span>&nbsp;';
-				str+='</div>';
-				str+='<div  class="span3 ">';
-				str+='<span style="font-weight:bold;font-size:14px;"> file Date : </span>';
-			    str+='<span class="label"> '+results[i].fileVOList[j].fileVOList[k].fileDate+'</span>&nbsp;';
-				str+='</div>';
-			     str+='<i class="pull-right">-'+results[i].fileVOList[j].fileVOList[k].locationName+' </i>';
-		        str+='</hgroup>';
-		
-				 str+=' </div>';
-				 str+=' </div>';
-				 str+='</div>';
-				 str+=' </div>';
-				 str+='</div>';
-			}
-			}
-		}
-		 str +='<br/><div class="form-actions text-center"><input type="button" value="submit" class="btn btn-info" id="savenewsReport" onclick="saveNewsReport()"/>';
-		 str+='<img style="display: none;" src="images/search.jpg" id="savenewsAjaxImg"></div>';
-		 $("#locationWiseNewsDiv").html(str);
-	}else{
-		
-		$("#locationWiseNewsDiv").html("<span style='margin-left:353px;'>No News Exists With Your Search Criteria</span>");
-		$("#locationWiseNewsDiv").show();
-	}
-}
-
-function selectAllCheckBox()
-{
-	$("#unselectAll").attr("checked", false);
-	$(".newscheckbox").each(function() {
-	 $(this).attr("checked", true);
-    });
-}
-function unselectAllCheckBox()
-{
-$("#selectAll").attr("checked", false);
-$(".newscheckbox").each(function() {
-	 $(this).attr("checked", false);
-    });
-}
-
-
 
 
 function deleteFile(fileTableId)
@@ -154,11 +58,7 @@ function callAjax(jsObj,url)
 		try
 		{ 
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
-		  if (jsObj.task == "getCandidatesOfAParty")
-		 {
-			  	$('#candidateAjaxImg').hide();
-			 buildPartyCandidates(myResults);
-		 }else if (jsObj.task == "generateKeyForReport")
+		 if (jsObj.task == "generateKeyForReport")
 		 {
 		   $('#'+jsObj.id).text(myResults);
 		   $('#'+jsObj.id).show();
@@ -171,11 +71,6 @@ function callAjax(jsObj,url)
 			 //clearOptionsListForSelectElmtId('mainCategory');
 			 //createOptionsForSelectElement('mainCategory',myResults);
 		 }
-
-		 else if(jsObj.task == "getPartyPhotoGallaryDetail")
-			{
-               buildCandidatePhotoGallary(myResults);
-			}
 		else if(jsObj.task == "partyGallariesForUplaod" && jsObj.updatePhoto== "UpdatePhoto")
 			{
                clearOptionsListForSelectElmtId('gallaryPhotoSelectId');
@@ -196,22 +91,6 @@ function callAjax(jsObj,url)
 		
            showUploadVideoStatus(myResults);  
 			}
-
-			else if(jsObj.task == "partyVideoVisibility")
-			{
-				
-			
-				hideVedioVisibility(myResults);
-			}
-		else if(jsObj.task == "partyNewsVisibility")
-			{
-				hideNewsVisibility(myResults);
-			}
-
-			else if(jsObj.task == "partyPhotoVisibility")
-			{
-				hidePhotoVisibility(myResults);
-			}
 		else if(jsObj.task == "saveDiscription")
 			{
            showDiscriptionStatus(myResults);  
@@ -227,28 +106,15 @@ function callAjax(jsObj,url)
         else if(jsObj.task == "deletePartyGallary")  
 			{
            showDeleteGallary(myResults);  
-			}
-			
-		else if(jsObj.task == "UpdatePartyGallary")  
-			{
-           updateGallaryDiv(myResults);  
 			}		
 		else if(jsObj.task == "UpdatePhotoGallary")  
 			{
            updateGallaryStatus(myResults);  
-			}	
-		else if(jsObj.task == "updateFilesAndPhotos")  
-			{
-           updateFilesAndPhotosDiv(myResults,jsObj.fileId);  
 			}		
 		else if(jsObj.task == "updateProfileDiscription")
 			{
            showDiscriptionUpdateStatus(myResults);  
 			}		
-		else if(jsObj.task == "getPhotosInAGallary")
-			{
-               showPhotosInAGallary(myResults);
-			}
        else if(jsObj.task == "getCandidateNewsGallaryDetail")
 			{
                buildCandidateGallary(myResults,"zero","news");
@@ -272,7 +138,7 @@ function callAjax(jsObj,url)
 			else if(jsObj.task == "getScopesForNewSearch")
 			{ 
 			   clearOptionsListForSelectElmtId(jsObj.divId);
-               buildResults(myResults,jsObj.divId);
+               buildResults(myResults,jsObj);
 			}
 			else if(jsObj.task == "getElectionType")
 			{ 
@@ -281,32 +147,37 @@ function callAjax(jsObj,url)
 			}			
 			else if(jsObj.task == "getStates")
 			{ 
-               buildResults(myResults,"stateDiv");
+               buildResults(myResults,jsObj);
 			}
 			
 			else if(jsObj.task == "getDistrictsByStateId")
 			{ 
-               buildResults(myResults,"districtDiv");
+               buildResults(myResults,jsObj);
 			}
 			else if(jsObj.task == "constituenciesInDistrict")
 			{ 
-               buildResults(myResults,"constituencyDiv");
+			   jsObj.divId ="constituencyDiv"+jsObj.index;
+               buildResults(myResults,jsObj);
 			}
 			else if(jsObj.task == "getConstNotInGivenAreaType")
 			{ 
-               buildResults(myResults,"constituencyDiv");
+			   jsObj.divId ="constituencyDiv"+jsObj.index;
+               buildResults(myResults,jsObj);
 			}
 			else if(jsObj.task == "subRegionsInConstituency")
 			{ 
-               buildResults(myResults,"mandalDiv");
+			   jsObj.divId ="mandalDiv"+jsObj.index;
+               buildResults(myResults,jsObj);
 			}
 			else if(jsObj.task == "hamletsOrWardsInRegion")
 			{ 
-               buildResults(myResults,"villageDiv");
+			   jsObj.divId ="villageDiv"+jsObj.index;
+               buildResults(myResults,jsObj);
 			}
 			else if(jsObj.task == "boothsInTehsilOrMunicipality")
 			{ 
-               buildResults(myResults,"villageDiv");
+			   jsObj.divId ="villageDiv"+jsObj.index;
+               buildResults(myResults,jsObj);
 			}
 			else if(jsObj.task == "createNewGallary" && jsObj.contentType =='News Gallary')
 			{  
@@ -316,11 +187,6 @@ function callAjax(jsObj,url)
 			else if(jsObj.task == "createNewGallary")  
 			{ 
                showGallaryCreateMsg(myResults,jsObj.createOrUpdate);
-			}
-			
-			else if(jsObj.task == "createVideoNewGallary")  
-			{ 
-               showVideoGallaryCreateMsg(myResults,jsObj.createOrUpdate);
 			}
 			else if(jsObj.task == "partyGallariesForUplaod" && jsObj.contentType=="News Gallary")
 			{ 
@@ -383,10 +249,7 @@ function callAjax(jsObj,url)
 
                showPartyDescription(myResults);
 			}
-			else if(jsObj.task == "updateIndividualPhotoDetails")
-			{ 
-               showPhotoUpdateDetails(myResults);
-			}
+			
 			else if(jsObj.task == "getAssmblParlElecYears")
 			{ 
                createListData('assmblParlElecYearsSelect',myResults);
@@ -465,7 +328,7 @@ function callAjax(jsObj,url)
 				}
 		else if(jsObj.task == "getLocationScope")
 		{
-		 showUserAccessLocationScopeList(myResults);
+		 showUserAccessLocationScopeList(myResults,jsObj.index);
 		}
 	   else if(jsObj.task == "getKeywords")
 			{
@@ -624,204 +487,6 @@ function createListData(elmtId,optionsList)
      document.getElementById('gallaryPhotoSelectId').value = gGallaryId;
 }
 
-function showPhotoUpdateDetails(result)
-{ 
-  var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
-	var str = '';
-	
-	if(result.resultCode == 0)
-	{
-	   document.getElementById('fileTitleId').value='';
-	   document.getElementById('fileDescId').value='';
-		str += '<font color="green"><b>Photo Updated Successfully.</b>';
-	}
-	else
-		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
-
-	errorDivEle.innerHTML = str;
-}
-function buildCandidatePhotoGallary(results)
-{
-	var str ='';
-
-	
-		str+='<div id="content" style="width:650px;">';
-		
-		//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
-		str +='<table style="margin:5px;margin-left:auto;width:31%;margin-right:auto;margin-top:7px;">';
-		str += '<tr>';
-		str += '	<td><input type="button" class="btn btn-success highlight" value="Create Gallery" onclick="buildCreateGallaryDiv()"></td>';
-		str += '	<td><input type="button" class="btn btn-success highlight" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
-		str += '</tr>';
-		str += '</table>'
-        str += '<center><div id="fileUploadErrorMsgDivId"></div></center>'; 
-		str += '<fieldset class="imgFieldset">';
-		str +='<table width="100%" style="margin-top:10px;">';
-	if(results.length<=0)
-	{
-		str+='<b>&nbsp;No Photo Galleries Found </b>';
-	}
-	else
-	{
-		
-		for(var i in results)
-		{
-			no_of_imagesPerRow = 3; 
-			j = i;
-
-			if(j++ % no_of_imagesPerRow == 0)
-				str += '<tr style="height:220px;">';
-			
-			str += '<td width="33%" class="imageStyle">';
-			str += '<table class="tableStyle">';
-			str += '<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;"><b>'+results[i].gallaryName+'</b></font></div></td></tr>';
-			if(results[i].path!=null)
-			{
-			 str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="'+results[i].path+'" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
-			}
-			else
-			{
-			  str += '<tr><td><a href="javascript:{}" title="'+results[i].gallaryDescription+'"><img src="images/icons/DefaultPhotoGalleryImage.jpg" class="gallaryImg" onclick="getCompleteGallaries(\''+results[i].gallaryId+'\')"/></a></td></tr>';
-			}
-			str += '<tr><td><div><b>'+results[i].gallaryDescription+'</b></div></td></tr>';
-			str+= '<tr><td><div><b>Gallery Size: ('+results[i].sizeOfGallary+')</b></div></td></tr>';
-			str +='<tr>';
-			str +='<table><tr>';
-			str +='<td> <input type="button" class="buttonStyle" style="background: none repeat scroll 0 0 #0063dc;" value="Update" id= "updateGallary_'+i+'" onclick="updateGallary('+results[i].gallaryId+')"></td>';
-			str +='<td style="padding-right:10px;"><input type="button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value="Delete" id= "deleteGallary_'+i+'" onclick="deleteGallary('+results[i].gallaryId+')"></td></tr>';
-			str +='</tr>';
-			str += '</table>';
-			str += '</td>';
-			
-			if(j % no_of_imagesPerRow == 0)
-				str+= '</tr>';
-		
-		}
-	}
-		str += ' </table>';
-		str += ' </fieldset>';
-		str+='</div>';
-		document.getElementById("photoGallaryDiv").innerHTML = str;
-	
-}
-
-function buildCreateGallaryDiv()
-{
-	var str ='';
-	str+='<div id="content" style="width:650px;">';
-		
-	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table class="aligncenter">';
-	str += '<tr>';
-	str += '	<td><input type="button" class="btn btn-success highlight" value="Create Gallery" onclick="buildCreateGallaryDiv()"></td>';
-	str += '	<td><input type="button" class="btn btn-success highlight" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
-	str += '</tr>';
-	str += '</table>';*/
-
-	//str += '<fieldset class="imgFieldset"  style="width:540px;margin-left:auto;margin-right:auto;">';
-	str += '<h2 align="center">Create A Gallery</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table class="aligncenter"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
-	str += '<table class="aligncenter"><tr><td><b><font>Gallery Name<font class="requiredFont"> * </font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr>';
-
-	str += '<tr><td><b><font>Description</font><b></td>';
-	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str += '<table class="aligncenter">';
-	str+='<tr><td>';
-
-
-	str += '<div><label class="radio"><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font>Visible to Public Also</font></b></input></label></div>';
-	str+='</td></tr>';
-	str+='<tr><td>';
-	str += '<div><label class="radio"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font>Make This Private</font></b></input></label></div>';
-	str+='</td></tr>';
-	str += '</table>';
-	str+='<div id="creategalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Gallery" onClick="createGallary(\'Photo Gallary\',\'Create\')"></td><td ><input type="button" class="btn btn-success highlight" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"></td></tr></table>';
-
-
-	//str += '</fieldset>';
-	str+='</div>';
-	document.getElementById("photoGallaryDiv").innerHTML = str;
-
-}
-
-function buildUploadPhotosDiv()
-{
-	var tempPartyId = 872; 
-	var str ='';
-	str+='<div id="content" style="width:650px;">';
-		
-	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table class="aligncenter m_top10">';
-	str += '<tr>';
-	str += '	<td><input type="button" class="btn btn-success highlight" value="Create Gallery" onclick="buildCreateGallaryDiv()"></td>';
-	str += '	<td><input type="button" class="btn btn-success highlight" value="Upload photos" onclick="buildUploadPhotosDiv()"></td>';
-	str += '</tr>';
-	str += '</table>';*/
-	
-	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadFilesForm">';
-
-	//str += '<fieldset class="imgFieldset" style="width:540px;">';
-	str += '<h2 align="center">Upload A Photo</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table class="aligncenter"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
-	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
-	str += '<tr><td><b><font>Select Gallery</font></b></td><td><select onchange=" buildPhotoVisibility()" id="gallaryPhotoSelectId" name="gallaryId"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font>Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="photofileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
-
-	str += '<tr><td><b><font>Description<font class="requiredFont">*</font></font><b></td>';
-	str += '<td><textarea id="photofileDescId" name="fileDescription" cols="19" rows="3" name="requirement"></textarea></td></tr>';
-	str +='<tr><td><b><font>File Path<font class="requiredFont">*</font></font><b></td><td><input type="file" name="userImage" id="photofileId" /></td>';
-	str +='<td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMorePhotos()" title="Click here to add more Photos" alt=""Click here to add more images""/></td></tr>';
-	str +='<tr><td colspan="3"><div id="addMorePhotosDiv"></div></td></tr>';
-	/*str += '   <TR>';
-	str += '     <td colspan="2">';
-	str += '<table>';
-	str += '   <tr>';
-	str += '     <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '     <TD class="selectWidthPadd"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="25"/>';
-	str += '         <DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '     <TD>';
-	str += '       <A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '       <IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
-	str += '     </TD>';
-	str += '   </tr>';
-	str += '</table>';
-	str += '     </td>';
-	str += '   </TR></table>';*/
-	str += '<TR>';
-	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextPhoto" class="dateField" readonly="true" name="fileDate" size="20"/>';
-	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '<TD>';
-	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
-	str += '</TD>';
-	str += '</TR></table>';
-	str+='<table class="aligncenter">';
-	str+='<tr><td>';
-	str += '<div id="photoPublicRadioDiv" ><label class="radio"><input type="radio" value="public" name="visibility" id="PhotopublicRadioId" checked="true"><b><font>Visible to Public Also</font></b></input></label></div>';
-	str+='</td></tr>';
-	str+='<tr><td>';
-	str += '<div id="photoPrivateRadioDiv" ><label class="radio"><input type="radio" value="private" name="visibility" id="photoprivateRadioId"><b><font>Make This Private</font></b></input></label></div>';
-	str+='</td></tr>';
-	str+='</table>';
-	str +='<input type="hidden" name="profileType" value="party_profile">';
-	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
-	str +='<input type="hidden" name="profileGalleryType" value="photo_gallery">';
-	//str+='<input type="radio" style="margin-left:57px;" onclick="otherProfiles(\'otherProPhotoDiv\',\'fromPartyProfile\',\'Photo Gallary\')"/>    Do you want to upload this file to other profiles';
-
-	str+='<div id="otherProPhotoDiv" style="margin: 10px;"></div>'; 
-	str+='<div id="uploadphotogalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input type="button" id="uploadPhotoId" class="btn btn-success highlight" value="Upload Photo" onClick="uploadAFile()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel" onclick="clearDiv(\'photoGallaryDiv\')"></td></tr></table>';
-	str += '</form>';
-	//str += '</fieldset>';
-	str+='</div>';
-	document.getElementById("photoGallaryDiv").innerHTML = str;
-	getPartyGallariesForUplaod('Photo Gallary');
-}
-
 	function createGallary(contentType,createOrUpdate)
     {
 	var galName = document.getElementById('pGallaryNameId').value;
@@ -935,87 +600,6 @@ function showNewsGallaryCreateMsg(result)
 	document.getElementById('newsCateName').value='';
 	document.getElementById('newsCateDesc').value='';
 }
-		
-	
-function getCompleteGallaries(gallaryId){
-    gGallaryId=gallaryId;
-    var jsObj =
-		{ 
-            time : timeST,
-		    gallaryId:gallaryId,
-			task:"getPhotosInAGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}
-
-	function showPhotosInAGallary(results){
-   var str ='';
-   str+='<div id="content" style="width:650px;">';
-   str += '<fieldset class="imgFieldset">';
-   if(results.length>0)
-   {
-   str +='<table>';
-   str +='   <tr>';
-   str +='     <td><b style="color:green;font-size:14px;">'+results[0].gallaryName+'</b></td>'; 
-   str +='   </tr>';
-   str +='</table>';
-   }
-   str += '<center><div id="fileUploadErrorMsgDivId"></div></center>';
-   str+='<table width="100%" style="margin-top:10px;">'
-   str+='<tr><td>';
-   str+='<input type="button" value="Back To Gallery"  class="btn btn-success highlight" onclick="showPhotoGallary();" />';
-   
-   str+= '</td></tr>';
-   for(var i in results)
-   {
-     no_of_imagesPerRow = 3; 
-     j = i;
-     if(j++ % no_of_imagesPerRow == 0){
-       str+= '<tr style="height:220px;">';
-     }
-     str+= '<td width="33%" class="imageStyle"><table class="tableStyle">';
-	 
-	 str +='<tr><td><div><font style="color:#FF0084;font-size:13px;font-family: verdana,arial;">';
-	 if(results[i].source == 'Eenadu Telugu')
-	  str += '<b class="enadu">'+results[i].fileTitle1+'</b>';
-     else
-       str += '<b>'+results[i].fileTitle1+'</b>';
-	 str +='</font></div></td></tr>';
-
-	 str+= '<tr><td><a rel="photo_gallery" href="'+results[i].path+'" title="'+results[i].fileDescription1+'"><img alt="" src="'+results[i].path+'" class="gallaryImg" height="100px" /></a></td></tr>';
-	 
-	 str += '<tr><td><div>';
-	 if(results[i].source == 'Eenadu Telugu')
-	  str += '<b class="enadu">'+results[i].fileDescription1+'</b>';
-	 else
-	  str += '<b>'+results[i].fileDescription1+'</b>';
-	 str += '</div></td></tr>';
-
-	 str += '<tr><td><table><tr><td><input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #0063dc;" value = "Update" id= "updateFile_'+i+'" onclick="updateFilesAndPhotos('+results[i].fileId+')"></td>';
-	 str += '<td> <input type = "button" class="buttonStyle" style="background: none repeat scroll 0 0 #F61D50;" value = "Delete" id= "deleteFile_'+i+'" onclick="deleteFilesAndPhotos('+results[i].fileId+')"></td></tr></table>';
-     str+= '<tr><td><div class="fancyBoxImageDivTitle"></div></td></tr></table></td>';
-     if(j % no_of_imagesPerRow == 0){
-       str+= '</tr>';
-     }
-
-   }
-   str+= ' </table>';
-   str += ' </fieldset>';
-   str+='</div>';
-   document.getElementById("photoGallaryDiv").innerHTML = str;
-
-   $("a[rel=photo_gallery]").fancybox({
-     'transitionIn'		: 'none',
-     'transitionOut'		: 'none',
-     'titlePosition' 	: 'over',
-     'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
-        return '<div id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; <span>' + title : '') + '</span></div>';
-     }
-   });
-}
 
 function getPartyGallariesForUplaod(contentType,type)
 {
@@ -1055,13 +639,7 @@ function uploadAFile()
 		$("#uploadphotogalAjax").show();
 		disableButton('uploadPhotoId');
 
-		/* var photoprivateRadioId = document.getElementById('photoprivateRadioId').checked;
-		if(photoprivateRadioId == true)
-		document.getElementById('photoprivateRadioId').checked= 'true';
-		if(photoprivateRadioId == false)
-		document.getElementById('PhotopublicRadioId').checked= 'true';*/
-
-		$("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+		$("#keywordListId1").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 
 
     var keywordStr = "";
@@ -1091,50 +669,6 @@ function uploadAFile()
 	else
 		return;
 }
- function uploadNewsFromPartyPage()
-{
-	document.getElementById('uploadNewsBtnId');
-	if(validateNewsFileUpload())
-	{
-		$("#uploadnewsgalAjax").show();
-		disableButton('uploadNewsBtnId');
-	var newsprivateRadioId = document.getElementById('newsprivateRadioId').checked;
-		if(newsprivateRadioId == true)
-	document.getElementById('newsprivateRadioId').checked = 'true';
-		if(newsprivateRadioId == false)
-	document.getElementById('newsPublicRadioId').checked = 'true';
-
-    
-    var keywordStr = "";
-	$(".as-selections li").each(function(){
-              keywordStr +=$(this).text()+",";
-				
-            });
-   
-   var length = keywordStr.length;
-    keywordStr = keywordStr.substr(0,length-2); 
-	$("#keywordListId").val(keywordStr);
-    
-		var uploadHandler = {
-				upload: function(o) {
-					$("#uploadnewsgalAjax").hide();
-
-					
-
-					uploadResult = o.responseText;
-					showNewsUploadStatus(uploadResult);	
-					enableButton('uploadNewsBtnId');
-				}
-			};
-
-		
-		YAHOO.util.Connect.setForm('uploadNewsForm',true);
-		YAHOO.util.Connect.asyncRequest('POST','uploadFilesAction.action',uploadHandler);
-	}
-	else
-		return;
-}
-	
 	function enableButton(id)
 {
 	document.getElementById(id).disabled  = false;
@@ -1240,273 +774,6 @@ function validateFileUpload()
          scrollTop: $("#fileUploadErrorMsgDivId").offset().top
      }, 2000);
 	}
-	return flag;
-}
-
-function validateNewsFileUpload()
-{
-	var fileTitle = document.getElementById('newsfileTitle').value;
-	var fileDesc = document.getElementById('newsfileDescription').value;
-	var fileVal = document.getElementById("newsfileId").value;
-	var source = document.getElementById("source").value;
-	var languageId = document.getElementById("language").value;
-	//var keywords = document.getElementById("keywords").value;
-	//var galEle = document.getElementById("gallaryId").value;
-	var fileDate = document.getElementById("existingFromTextNews").value;
-	var scope = document.getElementById("scopeDiv").value;
-	
-	//var pageNo = document.getElementById("pageno").value;
-	//var pageNo = document.getElementById("newslength").value;
-	var flag = true;
-
-	fileTitle = removeAllUnwantedCharacters1(fileTitle);	
-	fileDesc = removeAllUnwantedCharacters1(fileDesc);
-	document.getElementById('newsfileTitle').value = fileTitle;
-	document.getElementById('newsfileDescription').value = fileDesc;
-
-	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv1');
-	var str = '<font color="red">';
-	/*if(galEle == 0)
-	{
-		str += 'Select Gallery<br>';
-		flag = false;
-	}*/
-	if(fileDate.length == 0)
-	{
-		str +='File Date is Required<br>';
-		flag = false;
-	}
-	if(fileTitle.length == 0)
-	{
-		str += ' Title is Required.<br>';
-		flag = false;
-	}
-	 $('.pageno').each(function() {
-           if($.trim($(this).val()).length == 0)
-	       {
-		     str += ' Page Number is Required.<br>';
-		     flag = false;
-			 return false;
-	       }
-       });
-	$('.pageno').each(function() {
-           if($.trim($(this).val()).length > 0)
-	       {
-		     if(isNaN($.trim($(this).val()))){
-				 str += ' Page Number must be Integer.<br>';
-				 flag = false;
-				 return false;
-			 }
-	       }
-       });
-	   $('.newsLengthCls').each(function() {
-           if($.trim($(this).val()).length == 0)
-	       {
-		     str += ' News Length is Required.<br>';
-		     flag = false;
-			 return false;
-	       }
-       });
-	$('.newsLengthCls').each(function() {
-           if($.trim($(this).val()).length > 0)
-	       {
-		     if(isNaN($.trim($(this).val()))){
-				 str += ' News Length must be number.<br>';
-				 flag = false;
-				 return false;
-			 }
-	       }
-       });
-	if(fileTitle.length >800)
-	{
-		str += 'Title should be less than 800 Characters<br>';
-		flag = false;
-	}
-	if(fileDesc.length == 0)
-	{
-		str += 'News Description is Required.<br>';
-		flag = false;
-	}
-	if(isValid(fileDesc)){
-		str += 'Description should not contain #,$,%,& Special charactors<br>';
-		flag = false;		
-	}
-	if(fileDesc.length > 1800)
-	{
-		str += 'Description Should not exceed 1800 Characters.<br>';
-		flag = false;
-	}
-	if(fileVal.length == 0)
-	{
-		str += 'File Path is Required.<br>';
-		flag = false;
-	}
-	if(source.length == 0)
-	{
-		str += 'Source is Required.<br>';
-		flag = false;
-	}
-	if(languageId.length == 0)
-	{
-		str += 'Language is Required.<br>';
-		flag = false;
-	}
-	/*if(keywords.length >200)
-	{
-		str += 'Keywords should be less than 200 Characters<br>';
-		flag = false;
-	}*/
-	if(scope == 0 )
-	{
-		str += 'Location Scope is Required.';
-		flag = false;
-	}
-	if(scope == 2)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 3)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 4)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 5)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.<br>';
-		flag = false;
-		}
-		if(mandalVal == 0)
-		{
-		str += 'Mandal Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 6 || scope == 8 || scope == 9)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
-		var villageVal=document.getElementById('villageDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.<br>';
-		flag = false;
-		}
-		if(mandalVal == 0)
-		{
-		str += 'Mandal Name is Required.<br>';
-		flag = false;
-		}
-		if(villageVal == 0)
-		{
-		str += 'Villiage Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 7)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
-		
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.<br>';
-		flag = false;
-		}
-		if(mandalVal == 0)
-		{
-		str += 'Mandal Name is Required.';
-		flag = false;
-		}
-		
-	}
-	str += '</font>';
-	errorDivEle.innerHTML = str;
-	if(flag == false)
-	{
-		 //$("#uploadNewsBtnId").css("background","#51A351");
-		$('html, body').animate({
-         scrollTop: $("#uploadNewsFileErrorDiv1").offset().top
-     }, 2000);
-	
-	}
-	else
-	 //$("#uploadNewsBtnId").css("background","#BBBB51");
 	return flag;
 }
 	
@@ -1635,12 +902,11 @@ function clearNewsUploadFileFields1()
 
     newKeywordsInserting();
 
-	 getScopes();
+	 getScopes(0);
 	 getSource("source");
 	 getLanguage("language");
 	 getNewsImportance();
 	 getCategory();
-	// getCandidatesofUser();
 }
 
 
@@ -1668,7 +934,7 @@ function newKeywordsInserting()
      $(".multiKeywordList").html('');
 	 $(".multiKeywordList").html('<input type="text" name="keywordList1" id="keywordListId1"/>');
 
-	 $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+	 $("#keywordListId1").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 
 
 }
@@ -1687,7 +953,7 @@ function clearNewsUploadFileFields()
 	document.getElementById('existingFromTextNews').value = '';
 	document.getElementById('ImagenewsfileId').value = '';
 	document.getElementById('newsDescriptionId').value = '';
-	getScopes();
+	getScopes(0);
 
 	newKeywordsInserting();
 }
@@ -1751,241 +1017,6 @@ function showNewsGallaey(fileId)
   
   }
 }
-
-function buildUploadNewsForMultipleUsers()
-{
-	
-   var tempPartyId = 872;
-   var str ='';
-	str+='<div id="content" style="width:650px;">';
-	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table>';
-	str +=  '<tr>';
-	str += 	'<td><input type="button" class="imageButton" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
-	str += '<td><input type="button" class="imageButton" value="Upload News" onclick="buildUploadNews()"></td>';
-	str += '<td><input type="button" class="imageButton" value="Upload News For Multiple Users" onclick="buildUploadNewsForMultipleUsers()"></td>';
-	str += 	 '</tr>';
-	str += 	'</table>';*/
-	//str += '<fieldset class="imgFieldset" style="width:504px;">';
-	str += '<form name="uploadForm1" action="uploadFilesForMultipleCandidates.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
-	str += '<h2 align="center">Upload A News</h2>';
-	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>';
-
-     str+='<div class="aligncenter" style="margin-left:-45px;">';
-     //str+='<a style="margin-left:46px;font-weight:bold;color:blue;" href="javascript:void(0);" id="responseDiv">Click Here To Respond  To News</a>'; 
-
-	 str+='<a href="javascript:void(0)" title="Click here to respond to news"  id="responseDiv" style="margin-left:586px;"><img id="" src="images/responseImage.png"/></a>';
-
-
-	/*str+='<table class="aligncenter" style="margin-left:123px;left:50%;">';
-     
-    str+='<td><div id="responseContentDiv" style="display:none;">';
-	str+='<table> <tr><td class="tdWidth1">Select Candidate:</td><td class="selectWidthPadd"><select id="candidatesList" onChange="getCandidateNews(this.value)"></select></td></tr>';
-
-	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><select id="candidateNewsList"  multiple="true" style="display:none;"></select></td></tr>';
-
-	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><div style="display:none;" id="buttonsDiv"><input type="button" id="addFile" value="Add"/>';
-	str+='<input type="button" value="Remove" id="deleteFile"/></div></td></tr>';
-
-
-	str+='<tr><td class="tdWidth1"></td><td class="selectWidthPadd"><select id="respenseNewsList" name="responseFileIds" multiple ="true" style="display:none;"></select></td></tr></table>';
-
-
-	 
-	str+='</div></td>';
-	str+='</table>';*/
-	str+='<div id="responseContentDiv" style="display:none;border:1px solid #a6a66a;width:526px;margin:17px 0px 25px 94px">';
-       str+='<div style="margin-left:72px;">';
-	   	 	 str+='<div id="dateErrorMessage"></div><br>';
-         str+='<div id="noNewsError"></div>';
-
-	     str+='<span style="margin-right:30px;"><b>Start Date:<font class="requiredFont">*</font></b><input type="text" name="fromDate" class="inputClass" id="fromDateId" readonly="true"/></span>';
-		 str+='<span><b>End Date:<font class="requiredFont">*</font></b><input type="text" name="toDate" readonly="true" class="inputClass" id="toDateId"/></span>';
-	   str+='</div>';
-
-       str+='<div><label style="float:left;margin-left:182px;"><input style="margin-top: 0px; margin-right: 4px;" type="radio" name="newsType" value="party" class="typeRadio">Party</input></label><label style="margin-left:249px;"><input type="radio" style="margin-top: 0px; margin-right: 4px;" checked="checked" name="newsType" value="candidate" class="typeRadio" selected>Candidate</input></label></div>'
-
-	     str+='<div style="margin-left:70px;" id="candidatesDiv">';
-	     str+='<b>Select Candidate :<font class="requiredFont">*</font></b><select id="candidatesList"></select>';
-		 str+='</div>';
-
-		 str+='<div id="partyNewsDiv" style="display:none;">';
-
-		 str+='<div style="margin-left:70px;" id="partyDiv">';
-
-	     str+='<b>Select Party :<font class="requiredFont">*</font></b><select id="partyList" style="margin-left:30px;"><option value="0">Select Party</option><option value="163">BJP<option value="265">CPI</option><option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872">TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select>';
-		 str+='</div>';
-
-          
-		 str+='<div style="margin-left:70px;" id="gallariesDiv">';
-	     str+='<b>Select Gallery :<font class="requiredFont">*</font></b><select id="gallariesList" style="margin-left:17px"></select>';
-		 str+='</div>';
-
-		 str+='</div>';
-
-		 //str+='<div id="noNewsError"></div>';
-         
-		 str +='<div id="categoryGallaryHideShowDiv" style="display:none;">';
-		 str +='<label id="allLabelId"><input type="checkbox" value="ByGallery" id="gallaryAllCheckboxId" checked="true" onclick="getCandidateNews();"/>All</label>';
-		 str +='<label id="byGallaryLabelId"><input type="checkbox" value="ByGallery" id="gallaryCheckboxId"/>By Gallery</label>';
-		 str +='<label id="byCategoryLabelId"><input type="checkbox" value="ByCategory" id="categoryCheckboxId"/>By Category</label>';
-		 str +='</div>';
-                 
-         str +='<div id="categoryShowHideDiv" style="display:none;">';
-		 str +='<b>Select Category :<font class="requiredFont">*</font></b><select id="candidateCategoryId"></select>';
-		 str +='<input type="checkbox" value="categoryGallaries" id="categoryGallary"/>Gallery'; 
-         str +='</div>';
-
-		 str +='<div id="gallaryShowHideDiv" style="display:none;"><b>Select Gallery :<font class="requiredFont">*</font></b><select id="gallaryList"></select></div>';
-
-		 /* str +='<div id="categoryGallaryShowHideDiv" style="display:none;text-align:center;">';
-		 str +='<select id="categoryGallarySelect"></select>';
-		 str +='</div>'; */
-
-
-	     str+='<div style="text-align:center;">';
-		 str+='<div style="clear:both;"><select id="candidateNewsList"  multiple="true" style="display:none;"></select></div>';
-
-		 /*str +='<div id="gallaryShowHideDiv" style="display:none;"><select id="gallaryList"></select></div>';*/
-		 
-
-	     str+='<div style="display:none;" id="buttonsDiv"><input type="button" id="addFile" value="Add"/>';
-		 str+='<input type="button" value="Remove" id="deleteFile"/>';
-	   str+='</div>';
-
-	   str+='<div>';
-	    str+='<select id="respenseNewsList" name="responseFileIds" multiple ="true" style="display:none;"></select>';
-	   str+='</div>';
-	   str+='</div>';
-	   
-	str+='</div>';
-	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
-	
-	/*str += '   <tr>';
-	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="category" name="category" onchange="getGallariesForSelectedCategory()"><option value="0">Select Category</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
-	str += '   </tr>';*/
-
-       //keyworda Start
-	str +='<tr>';
-	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList1" id="keywordListId1"/></td>';
-	str +='</tr>';
-
-	str +='<tr>';
-	str += '       <td class="tdWidth1"></td>';
-	str += '  <td class="selectWidthPadd"><div style="margin-top: 2px; margin-bottom: 14px;">After entering the keyword comma(,) is mandatory</div></td>';
-	str +='</tr>';
-
-    str += '   <tr>';
-	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="800"></input></td>'; 
-	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceTelugu"><img id="" src="images/letter-t-video.png"  style="height:35px;width:35px;" alt="Select Telugu language" title="Eenadu Telugu Language"/></a> </td>';
-	str += ' <td><a href="javascript:{changeLanguage();}" id="sourceEnglish" style="display:none"><img src="images/e-letter.jpg" style="height:35px;width:35px;" title="English Language"></img></a></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Description : <font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="1800"></textarea></td>';
-	str += '   </tr>';
-	
-	/*str += '   <tr>';
-	str += '       <td class="tdWidth1">Keywords : </td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200"></input></td></tr>'; */
-
-	str += '<TR>';
-	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" />';
-	
-	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '<TD>';
-	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	
-	str += '</TD>';
-	str += '</TR>';
-	
-	/*str += '   </tr>';
-	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
-	str += '   </tr>';*/
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Importance : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance"><option value="0">Select NewsImportance</option></select></td>';
-	str += '   </tr>';
-
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Select Party : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="partiesList" name="party" onchange="getCandidatesOfSelectedParty(this.value)"><option value="0">Select Party</option><option value="163">BJP</option><option value="265">CPI</option>	  <option value="269">CPM</option><option value="362">INC</option><option value="990">MIM</option><option value="872" selected>TDP</option><option value="886">TRS</option><option value="1117">YSRCP</option></select></td>';
-	str += '   </tr>';
-	
-
-	
-	str+='<tr><td></td><td><img id="candidateAjaxImg" src="images/search.jpg" style="display:none;"/></td></tr>';
-
-
-	str +='<tr><td class="tdWidth1"><div style="margin-top:100px;width:155px;">Select Candidate : </div></td><td><select multiple="true" id="list1"></select><input type="button" id="button1" value="Add" class="btn"/>&nbsp;<input type="button" id="button2" value="Remove" class="btn"/><br/><select multiple="true" id="candidateList" name="candidateList" style="margin-top:5px;"></select></td></tr>';
-	//str +='<tr><td class="tdWidth1"></td><td><input type="button" id="button1" value="Add"/><input type="button" id="button2" value="Remove"/></td></tr>';
-	str += '   <tr>';
-	str += '       <td></td>';
-	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv">Visible to Public Also</font></b></input></label></td>';
-    str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td></td>';
-	str += '       <td id="newsprivateRadioDiv"><label class="radio"><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font>Make This Private</font></b></input></label></td>';
-	str += '   </tr>';
-	str +='    <tr>';
-    str +='	   <td class="tdWidth1">Location Scope : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
-    str +='  </tr>';
-	str +='  <tr>';
-	str +='    <td colspan="2">';
-	str +='       <div id="showScopeSubs" />'; 
-	str +='    </td>';
-	str +='  </tr>';
-
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News description in details : </td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsDesc" cols="20" rows="3" name="newsDescription"></textarea></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '</table>';
-
-	str +='<input type="hidden" name="profileType" value="party_profile">';
-	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
-	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
-	
-	
-	str+='<div id="uploadFilesDiv" style="margin-left:122px;"></div>';
-	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
-	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success" value="Upload News"  onClick="uploadNewsFromPartyPage1()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
-
-	str +='<input type="hidden" id="keywordListId" name="keywordList"/>';
-
-	str += '</form>';
-	//str += '</fieldset>';
-
-	str+='</div></div>';
-	document.getElementById("newsGallaryDiv").innerHTML = str;
-	//getPartyGallariesForUplaod("News Gallary");
-	
-	 getScopes();
-	 getSource("source");
-	 getLanguage("language");
-	 getNewsImportance();
-	 getCategory();
-	 //getCandidatesofUser();
-
-	  getScopeForUser();
-	  getCandidates();
-	  $('#partiesList').trigger('change');
-
-  //keywords
-  $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
-
-}
-
 
 function buildCreateNewsCategory()
 {
@@ -2084,31 +1115,19 @@ function createUserNewsCategory()
 
 }
 
-function getDistricts1(stateId){
-  var jsObj =
-		{ 
-            time : timeST,
-			stateId : stateId,
-			task:"getDistrictsByStateId"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
- 
-}
-function getDistricts2(stateId){
+function getDistricts1(stateId,index){
   var jsObj =
 		{ 
             time : timeST,
 			stateId : stateId,
 			task:"getDistrictsByStateId",
-            type:"forEdit" 
+			divId:"districtDiv"+index,
+			index:index
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callnewAjax(jsObj,url);
+	callAjax(jsObj,url);
  
 }
 
@@ -2198,13 +1217,14 @@ function getDistricts2(stateId){
 	callAjax(jsObj,url);
 }
 
-function getScopes(){
+function getScopes(index){
   
  var jsObj =
 		{ 
             time : timeST,
-			divId:"scopeDiv",
-  		    task:"getScopesForNewSearch"
+			divId:"scopeDiv"+index,
+  		    task:"getScopesForNewSearch",
+			index:index
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2212,14 +1232,14 @@ function getScopes(){
 	callAjax(jsObj,url);
  
 }
-function buildResults(results,divId){
-
+function buildResults(results,jsObj){
+     var divId = jsObj.divId;
 	$('#'+divId).find('option').remove();
 
-  var locationScopeId = $("#scopeDiv").val(); 
+  var locationScopeId = $("#scopeDiv"+jsObj.index).val(); 
  
   var elmt = document.getElementById(divId);
-         if(divId=='scopeDiv' || divId == "scopeDivForEdit")
+         if(divId.indexOf("scopeDiv") > -1)
 		 {
 		    var option1 = document.createElement('option');
 		 option1.value= 0;
@@ -2245,7 +1265,7 @@ function buildResults(results,divId){
 			elmt.add(option1); // IE only
 		}
 
-	  if(divId == "mandalDiv")
+	  if(divId.indexOf("mandalDiv") > -1)
 	  {
         for(var j in results)
 	    {
@@ -2314,12 +1334,12 @@ function buildResults(results,divId){
 	  for(var i in results)
 	  {
 		var option = document.createElement('option');
-		if(divId =="scopeDiv" || divId == "scopeDivForEdit")
+		if(divId.indexOf("scopeDiv") > -1)
 		  {
 		  option.value=results[i].locationScope;
 		  option.text=results[i].locationScopeValue;
 		  }
-		else if(divId =="stateDiv" || divId =="districtDiv")
+		else if(divId.indexOf("stateDiv") > -1 || divId.indexOf("districtDiv") > -1)
 		{
 		  option.value=results[i].ids;
 		  option.text=results[i].names;
@@ -2383,7 +1403,7 @@ function buildResultsForElectType(results){
 		}
     }
 }
- function getAllDetails(id,task,areaType,constId)
+ function getAllDetails(id,task,areaType,constId,index)
    {
         var jsObj =
 		{ 
@@ -2394,31 +1414,13 @@ function buildResultsForElectType(results){
 			selectElementId:"",
 			address:"",
 			areaType:areaType,
-			constId:constId
+			constId:constId,
+			index:index
 		};
 	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 	 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
 	 callAjax(jsObj,url);
    }
-function getAllDetails1(id,task,areaType,constId)
-{
-
-        var jsObj =
-		{ 
-            time : timeST,
-			id:id,
-			task:task,
-			taskType:"",
-			selectElementId:"",
-			address:"",
-			areaType:areaType,
-			constId:constId,
-            type:'forEdit'
-		};
-	 var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	 var url = "locationsHierarchiesAjaxAction.action?"+rparam;						
-	 callnewAjax(jsObj,url);
- }
 function getStatesForPartyManifesto()
 {
   var jsObj =
@@ -2455,71 +1457,58 @@ function clearAll(elmtId)
 		elmt.remove(i);
 	}	
    }
-function clearAllElmts(scopeId,value){
+function clearAllElmts(scopeId,value,index){
  if(scopeId==4)
  { 
     if(value==1)
-	clearAllForSelect("constituencyDiv");
+	clearAllForSelect("constituencyDiv"+index);
 	
  }
  if(scopeId==5)
  {
    if(value==1)
    {
-	clearAllForSelect("constituencyDiv");
-	clearAllForSelect("mandalDiv");
+	clearAllForSelect("constituencyDiv"+index);
+	clearAllForSelect("mandalDiv"+index);
 	}
    if(value==2)
-	clearAllForSelect("mandalDiv");
+	clearAllForSelect("mandalDiv"+index);
  }
  if(scopeId==6)
  {
    if(value==1)
    {
-	clearAllForSelect("constituencyDiv");
-	clearAllForSelect("mandalDiv");
-	clearAllForSelect("villageDiv");
+	clearAllForSelect("constituencyDiv"+index);
+	clearAllForSelect("mandalDiv"+index);
+	clearAllForSelect("villageDiv"+index);
 	}
 	if(value==2)
 	{
-	clearAllForSelect("mandalDiv");
-	clearAllForSelect("villageDiv");
+	clearAllForSelect("mandalDiv"+index);
+	clearAllForSelect("villageDiv"+index);
 	}
 	if(value==3)
-	clearAllForSelect("villageDiv");
+	clearAllForSelect("villageDiv"+index);
  }
  if(scopeId==9)
  {
    if(value==1)
    {
-	clearAllForSelect("constituencyDiv");
-	clearAllForSelect("mandalDiv");
-	clearAllForSelect("villageDiv");
+	clearAllForSelect("constituencyDiv"+index);
+	clearAllForSelect("mandalDiv"+index);
+	clearAllForSelect("villageDiv"+index);
 	}
 	if(value==2)
 	{
-	clearAllForSelect("mandalDiv");
-	clearAllForSelect("villageDiv");
+	clearAllForSelect("mandalDiv"+index);
+	clearAllForSelect("villageDiv"+index);
 	}
 	if(value==3)
-	clearAllForSelect("villageDiv");
+	clearAllForSelect("villageDiv"+index);
  }
 
 }
 
- function buildSearchNewsDetails(){
- var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td style="color:#4B74C6;font-weight:bold;">Location Scope :</td>';
-  str +='	   <td style="width:172px;padding-left:10px;"><select id="scopeDiv" name="locationScope" class="selectWidth" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
-  str +='  </tr>';
-  str +='</table>';
-  str +='  <span id="showScopeSubs" />'; 
-
- document.getElementById("uploadNewsDiv").innerHTML = str;
- getScopes();
-}
 function buildAssmblParlElecYears(electionType)
 { 
      var str ='';
@@ -2596,233 +1585,85 @@ function buildStatesForAssParl(type)
     buildAssmblParlElecYears('Parliament');
  }
 
-/*function getLocations(id){
 
-   if(id==0)
-  {
-   var val ='';
-  val +='<table>';
-  val +='  <tr><td></td>';
-  val +='  </tr>';
-  val +='</table>';
-  document.getElementById("showScopeSubs").innerHTML = val;
-    
-  }
-  else if(id==1)
-  {
-    var str ='';
-  str +='<table>';
-  str +='  <tr><td></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-  }
-  else if(id==2)
-  {
-   var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	    <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" name="locationValue"/></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-   getStatesForSpecialPage();
-  }
-  else if(id==3)
-  {
-   var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-   getStatesForSpecialPage();
-  }
-  else if(id==4)
-  {
-   var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1"> District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv" onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" ><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-   getStatesForSpecialPage();
-  }
-  else if(id==5 || id==7)
-  {
-   if(id==5)
-   {
-     areaType1 = "URBAN" ;
-     areaType2 = "RURAL" ;
-   }
-   if(id==7)
-   {
-     areaType1 = "RURAL" ;
-     areaType2 = "URBAN" ;
-   }
-   
-    var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"    onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" name="locationValue" ><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-   getStatesForSpecialPage();
-  }
-  else if(id==6 || id==8)
-  {
-   if(id==6)
-   {
-     areaType1 = "URBAN" ;
-     areaType2 = "RURAL" ;
-   }
-   if(id==8)
-   {
-     areaType1 = "RURAL" ;
-     areaType2 = "URBAN" ;
-   }
-    var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv"    onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv"   onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv"  onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDiv"    onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Village/Ward/Division : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue"  ><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-   getStatesForSpecialPage();
-  }
-  else if(id==9)
-  {
-     var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"/ ></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv"  onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">Village/Ward/Division : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="villageDiv" name="locationValue"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-   getStatesForSpecialPage();
-  }
-}*/
-
-
-function getLocations(id){
+function getLocations(id,index){
 
    var str = '';
-  if(id==0 || id == 1)
-   $("#showScopeSubs").html(str);
+  if(id==0 || id == 1){
+   if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+	}
+   $("#showScopeSubs"+index).html(str);
+   }
     
   else if(id==2)
   {
 
    str += '<div class="span2">';
-   str += ' <label>State</label>';
-   str += ' <select class="input-block-level" name="locationValue" style="margin-left:5px;width: 137px;"  id="stateDiv"></select>';
+   str += ' <label>State';
+   if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+   }
+   str += '</label>';
+   str += ' <select class="input-block-level" name="locationValue['+index+']" style="margin-left:5px;width: 137px;"  id="stateDiv'+index+'" onchange="removeAndAddSelection(\'stateDiv'+index+'\');removeAndAddSelection(\'stateDiv'+index+'\');"></select>';
    str +='</div>';
-
-   $("#showScopeSubs").html(str);
-   getStatesForSpecialPage();
+   
+   $("#showScopeSubs"+index).html(str);
+   getStatesForSpecialPage(index);
   }
   else if(id==3)
   {
    
    str += '<div class="span2">';
    str += ' <label>State</label>';
-   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str += ' <select class="input-block-level" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="removeAndAddSelection(\'stateDiv'+index+'\');clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
    str +='</div>';
 
    str += '<div class="span2">';
-   str += ' <label>District</label>';
-   str += ' <select class="input-block-level" name="locationValue" id="districtDiv"><option value="0">Select Location</option></select>';
+   str += ' <label>District';
+    if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+   }
+   str += '</label>';
+   str += ' <select class="input-block-level" name="locationValue['+index+']" onchange="removeAndAddSelection(\'districtDiv'+index+'\');" id="districtDiv'+index+'"><option value="0">Select Location</option></select>';
    str +='</div>';
    
-   $("#showScopeSubs").html(str);
-   getStatesForSpecialPage();
+   $("#showScopeSubs"+index).html(str);
+   getStatesForSpecialPage(index);
   }
   else if(id==4)
   {
    
    str += '<div class="span2">';
    str += ' <label>State</label>';
-   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAllElmts(4,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str += ' <select class="input-block-level" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="removeAndAddSelection(\'stateDiv'+index+'\');clearAllElmts(4,1,'+index+');clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
    str +='</div>';
 
    str += '<div class="span2">';
    str += ' <label>District</label>';
-   str += ' <select class="input-block-level" id="districtDiv" onchange="clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="districtDiv'+index+'" onchange="removeAndAddSelection(\'districtDiv'+index+'\');clearAll(\'constituencyDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
   
    str += '<div class="span2">';
-   str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" name="locationValue" id="constituencyDiv"><option value="0">Select Location</option></select>';
+   str += ' <label>Assembly Consti';
+   if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+	}
+   str +='</label>';
+   str += ' <select class="input-block-level" name="locationValue['+index+']" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');"  id="constituencyDiv'+index+'"><option value="0">Select Location</option></select>';
    str +='</div>';
-
-   $("#showScopeSubs").html(str);
+   
+   $("#showScopeSubs"+index).html(str);
   
-   getStatesForSpecialPage();
+   getStatesForSpecialPage(index);
   }
   else if(id==5 || id==7)
   {
@@ -2839,27 +1680,33 @@ function getLocations(id){
    
    str += '<div class="span2">';
    str += ' <label>State</label>';
-   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAllElmts(5,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str += ' <select class="input-block-level" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="removeAndAddSelection(\'stateDiv'+index+'\');clearAllElmts(5,1,'+index+');clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
    str +='</div>';
 
    str += '<div class="span2">';
    str += ' <label>District</label>';
-   str += ' <select class="input-block-level" id="districtDiv" onchange="clearAllElmts(5,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="districtDiv'+index+'" onchange="removeAndAddSelection(\'districtDiv'+index+'\');clearAllElmts(5,2,'+index+');clearAll(\'constituencyDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
   
    str += '<div class="span2">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv" onchange="clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
    str += '<div class="span2">';
-   str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" name="locationValue" id="mandalDiv"><option value="0">Select Location</option></select>';
+   str += ' <label>Mndl/Mun/Corp';
+   if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+	}
+   str += '</label>';
+   str += ' <select class="input-block-level" name="locationValue['+index+']" onchange="removeAndAddSelection(\'mandalDiv'+index+'\');" id="mandalDiv'+index+'"><option value="0">Select Location</option></select>';
    str +='</div>';
-
-   $("#showScopeSubs").html(str);
+   
+   $("#showScopeSubs"+index).html(str);
   
-   getStatesForSpecialPage();
+   getStatesForSpecialPage(index);
   }
   else if(id==6 || id==8)
   {
@@ -2876,134 +1723,80 @@ function getLocations(id){
 
    str += '<div class="span2">';
    str += ' <label>State</label>';
-   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAllElmts(6,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str += ' <select class="input-block-level" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="removeAndAddSelection(\'stateDiv'+index+'\');clearAllElmts(6,1,'+index+');clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
    str +='</div>';
 
    str += '<div class="span2">';
    str += ' <label>District</label>';
-   str += ' <select class="input-block-level" id="districtDiv" onchange="clearAllElmts(6,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="districtDiv'+index+'" onchange="removeAndAddSelection(\'districtDiv'+index+'\');clearAllElmts(6,2,'+index+');clearAll(\'constituencyDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
   
    str += '<div class="span2">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv" onchange="clearAllElmts(6,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAllElmts(6,3,'+index+');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
    
    str += '<div class="span2">';
-   str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" id="mandalDiv"  name="mandalId" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <label>Mndl/Mun/Corp</label>';
+   str += ' <select class="input-block-level" id="mandalDiv'+index+'"  name="mandalId['+index+']" onchange="removeAndAddSelection(\'mandalDiv'+index+'\');clearAll(\'villageDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';
-   str += ' <label>Village/Ward/Division</label>';
-   str += ' <select class="input-block-level" id="villageDiv" name="locationValue"><option value="0">Select Location</option></select>';
+   str += ' <label>Village/Ward/Div';
+   if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+	}
+   str += ' </label>';
+   str += ' <select class="input-block-level" id="villageDiv'+index+'" onchange="removeAndAddSelection(\'villageDiv'+index+'\');" name="locationValue['+index+']"><option value="0">Select Location</option></select>';
    str +='</div>';
-   $("#showScopeSubs").html(str);
    
-   getStatesForSpecialPage();
+   $("#showScopeSubs"+index).html(str);
+   
+   getStatesForSpecialPage(index);
   }
   else if(id==9)
   {
 
    str += '<div class="span2">';
    str += ' <label>State</label>';
-   str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+   str += ' <select class="input-block-level" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="removeAndAddSelection(\'stateDiv'+index+'\');clearAllElmts(9,1,'+index+');clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
    str +='</div>';
 
    str += '<div class="span2">';
    str += ' <label>District</label>';
-   str += ' <select class="input-block-level" id="districtDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);clearAll(\'constituencyDiv\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="districtDiv'+index+'"  onchange="removeAndAddSelection(\'districtDiv'+index+'\');clearAllElmts(9,2,'+index+');clearAll(\'constituencyDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
   
    str += '<div class="span2">';
    str += ' <label>Assembly Consti</label>';
-   str += ' <select class="input-block-level" id="constituencyDiv" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);clearAll(\'mandalDiv\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select>';
+   str += ' <select class="input-block-level" id="constituencyDiv'+index+'" onchange="removeAndAddSelection(\'constituencyDiv'+index+'\');clearAllElmts(9,3,'+index+');clearAll(\'mandalDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\','+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';
-   str += ' <label>Mndl/Munic/Corp/GMC</label>';
-   str += ' <select class="input-block-level" id="mandalDiv" name="mandalId"  onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select>';
+   str += ' <label>Mndl/Mun/Corp</label>';
+   str += ' <select class="input-block-level" id="mandalDiv'+index+'" name="mandalId['+index+']" onchange="removeAndAddSelection(\'mandalDiv'+index+'\');clearAll(\'villageDiv'+index+'\');getAllDetails(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv'+index+'\').options[document.getElementById(\'constituencyDiv'+index+'\').selectedIndex].value,'+index+')"><option value="0">Select Location</option></select>';
    str +='</div>';
 
    str += '<div class="span2">';
-   str += ' <label>Village/Ward/Division</label>';
-   str += ' <select class="input-block-level" id="villageDiv" name="locationValue"><option value="0">Select Location</option></select>';
+   str += ' <label>Village/Ward/Div';
+   if(index == 0){
+    str +='<span style="display:none">changeDel</span>';
+   }else{
+    str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+   }
+   str += '</label>';
+   str += ' <select class="input-block-level" id="villageDiv'+index+'" onchange="removeAndAddSelection(\'villageDiv'+index+'\')"; name="locationValue['+index+']"><option value="0">Select Location</option></select>';
    str +='</div>';
-   $("#showScopeSubs").html(str);
+   
+   $("#showScopeSubs"+index).html(str);
     
-   getStatesForSpecialPage();
+   getStatesForSpecialPage(index);
   }
   // setTimeout("setStateId();",1000);
 
 }
-/*
-function setStateId(){
-	$('#stateDiv').val(statteId);
-
-	if($("#scopeDiv").val() != 2)
-		getDistricts1(statteId);
-		
-	if((locationScop1e.toLowerCase()).indexOf("district") != -1 || (locationScop1e.toLowerCase()).indexOf("mla") != -1 || (locationScop1e.toLowerCase()).indexOf("mp") != -1){	
-		setDistricts();
-	}
-}
-
-function setDistricts(){
-	if(distritcId != ''){
-			//$('#districtDiv').val(distritcId);
-			if($("#scopeDiv").val() != 3)
-				getAllDetails(distritcId,'constituenciesInDistrict','','');
-			if((locationScop1e.toLowerCase()).indexOf("mla") != -1 || (locationScop1e.toLowerCase()).indexOf("mp") != -1 ){
-				setAssmbyConst();
-			}
-	}
-}
-function setAssmbyConst(){
-	if(cosntiId != ''){
-		//$('#constituencyDiv').val(cosntiId);
-		if($("#scopeDiv").val() != 4)
-			getAllDetails(cosntiId,'subRegionsInConstituency','RURAL','');
-	}
-}
-
-*/
-function addMoreFiles()
-{
-	var moreDivElmt = document.createElement("addMoreFilesDiv");
-	var str ='';
-	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+fileCount+'">';
-	str += ' <tr>';
-	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+fileCount+'" size="25" /></td>';
-	str += ' </tr>';
-	str += ' <tr>';
-	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="filesourceId'+fileCount+'" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option></select></td>';
-	str += ' </tr>';
-	str += ' <tr>';
-	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+fileCount+'" name="sourceLanguageId" style="width:175px;"><option value="0">Select Language</option></select></td>';
-	
-	str += ' </tr>';
-	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsedition'+fileCount+'" name="newsedition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+fileCount+'" name="pageno" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+fileCount+'" class="newslength newsLengthCls" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
-	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFile(\'moreFileTableId'+fileCount+'\')"></td>';
-	str += '   </tr>';
-	str +='</table>';
-	moreDivElmt.innerHTML = str;
-	document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
-	getSource("filesourceId"+fileCount+"");
-	getLanguage('sourceLangId'+fileCount+'');
-	fileCount++;
-} 
 
 function getCategory()
 {
@@ -3035,321 +1828,12 @@ function clearDiv(divId)
 {
   document.getElementById(divId).innerHTML = "";
 }
-function showOrHideVideoFilesDiv()
-{
-	
-document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
-  document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
-  document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
-}
-
-function showVideoGallaey1()
-{
-	
-if(!formValidation()){
-  $("#profileManagementHeaderDiv2").css("display","block");
-  $("#videoGallaryDiv").css("display","block");
-  $("#profileManagementMainOuterDiv5").css("display","none");
-document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
-document.getElementById("profileManagementMainOuterDiv2").style.display = 'block';
-document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
-document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
-document.getElementById("profileManagementMainOuterDiv6").style.display = 'none';
- $("#profileManagementMainOuterDiv7").css("display","none");
- $("#profileManagementMainOuterDivStatus").css("display","none");
-/*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
-$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
-$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
-$("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});*/
-
-$("#dateSelectDiv").css("display","none");
-buildCreateVideoGallaryDiv();
-
-}
-return;
-}
-	
-
-function buildCreateVideoGallaryDiv()
-{
-	var str ='';
-	str+='<div id="content" style="width:650px;">';
-		
-	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table class="aligncenter">';
-	str += '<tr>';
-	str += '	<td><input type="button" class="btn btn-success highlight" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()"></td>';
-	str += '	<td><input type="button" class="btn btn-success highlight" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
-	str += '</tr>';
-	str += '</table>';*/
-
-	//str += '<fieldset class="imgFieldset" style="width:449px;">';
-	str += '<h2 align="center">Create A Video Gallery</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table class="aligncenter"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
-	str += '<table class="aligncenter"><tr><td><b><font>Gallery Name<font class="requiredFont">*</font></font></b></td><td><input type="text" id="pVGallaryNameId" size="25" maxlength="100"></td></tr>';
-
-	str += '<tr><td><b><font>Description</font><b></td>';
-	str += '<td><textarea id="pVGallaryDescId" cols="19" rows="3" name="requirement"></textarea></td></tr></table>';
-	str+='<table class="aligncenter">';
-	str+='<tr><td>';
-	str += '<div ><label class="radio"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font>Visible to Public Also</font></b></input></label></div>';
-	str+='</td></tr>';
-	str+='<tr><td>';
-	str += '<div><label class="radio"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font>Make This Private</font></b></input></label></div>';
-	str+='</td></tr>';
-	str+='</table>';
-	str+='<div id="createvediogalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input type="button" class="btn btn-success highlight" value="Create Gallery" style="background-color:#57B731" onClick="createVideoGallary(\'Video Gallary\')"></td><td><input type="button" class="btn btn-success highlight" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"></td></tr></table>';
-
-	
-	//str += '</fieldset>';
-	str+='</div>';
-	document.getElementById("videoGallaryDiv").innerHTML = str;
-
-}
-
-function buildUploadVideoDiv()
-{
-	var str ='';
-	str+='<div id="content" style="width:650px;">';
-		
-	//str += '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table class="aligncenter m_top10">';
-	str += '<tr>';
-	str += '	<td><input type="button" class="btn btn-success highlight highlight" value="Create Video Gallery" onclick="buildCreateVideoGallaryDiv()"></td>';
-	str += '	<td><input type="button" class="btn btn-success highlight highlight" value="Upload Video" onclick="buildUploadVideoDiv()"></td>';
-	str += '</tr>';
-	str += '</table>';*/
-	//str += '<fieldset class="imgFieldset" style="width:504px;">';
-	str += '<h2 align="center">Upload A Video</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-    str += '<table class="aligncenter"><tr><td>';
-	str+='<div id="fileSuccessDiv"></div><div id="galErrorMsgDivId"></div></td></tr></table>';
-	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
-	str += '<tr><td><b><font>Select Gallery</font></b></td><td><select onchange="buildPartyVedioVisibility()" id="gallarySelectId" name="gallarySelectId"><option value="0">Select</option></select></td></tr>';
-	str += '<tr><td><b><font>Video Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="videoTitle" size="25" maxlength="50" style="margin-top:8px;"></td></tr>';
-    str += '<tr><td><b><font>Video Description<font class="requiredFont">*</font></font></b></td><td><textarea id="fileDescId" name="videoDescription" cols="19" rows="3" name="requirement" style="margin-top:8px;"></textarea></td></tr>';
-    str += '<TR>';
-	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromText" class="dateField" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
-	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '<TD>';
-	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
-	str += '</TD>';
-	str += '</TR>';
-	str += '<tr><td><b><font>Video Path In Youtube<font class="requiredFont">*</font></font></b></td><td><input type="text" id="path" name="path" size="25" maxlength="200" style="margin-top:8px;"></td></tr>';
-	str += '<tr><td><b><font>Keyword</font></b></td><td><input type="text" id="keyword" name="keyword" size="25" maxlength="200" style="margin-top:8px;"></td></tr>';
-	str += '<tr><td><b><font>Source</font><font class="requiredFont">*</font></b></td><td><select id="source" name="fileSourceId" style="margin-top:8px;"><option value="0">Select Source</option></select></td></tr>';
-	str += '<tr><td><b><font>Language</font><font class="requiredFont">*</font></b></td><td><select id="language" name="sourceLanguageId" style="margin-top:8px;"><option value="0">Select Language</option></select></td><td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreVideos()" title="Click here to add more Videos" alt="Click here to add more images"/></td></tr>';
-	str += '<tr><td colspan="3"><div id="addMoreVideosDiv"></div></td></tr>';
-	str += '</table>';
-	str+='<table class="aligncenter">';
-	str+='<tr><td>';
-	str += '<div id="vedioPublicDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="vpublicRadioId" checked="true"><b><font>Visible to Public Also</font></b></input></label></div>';
-	str += '<div id="vedioPrivateDiv"><label class="radio"><input type="radio" value="private" name="visibility" id="vprivateRadioId"><b><font>Make This Private</font></b></input></label></div>';
-	//str+='<input type="radio" style="margin-left:57px;" onclick="otherProfiles(\'otherProVideoDiv\',\'fromPartyProfile\',\'Video Gallary\')"/>    Do you want to upload this file to other profiles';
-	str+='<div id="otherProVideoDiv" style="margin: 10px;"></div>'; 
-	str+='</td></tr>';
-	str+='</table>';
-	str+='<div id="uploadvediogalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input type="button" id="uploadVideoBtnId" class="btn btn-success highlight" value="Upload Video" style="background-color:#57B731" onclick="uploadVideoGallary()"></td><td><input type="button" class="btn btn-success highlight" value="Cancel" onclick="clearDiv(\'videoGallaryDiv\')"></td></tr></table>';
-	//str += '</fieldset>';
-	str+='</div>';
-	document.getElementById("videoGallaryDiv").innerHTML = str;
-	getPartyGallariesForUplaod('Video Gallary');
-	getSource("source");
-	getLanguage("language");
-
-
-}
-
 function getEnadu()
 {
 
 
 }
 
-function getCompleteVideoGallaries(gallaryId){
-    /*var jsObj =
-		{ 
-            time : timeST,
-		    gallaryId:gallaryId,
-			task:"getPhotosInAGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);*/
-}
-
-function createVideoGallary(contentType)
-{
-
-	var galName = document.getElementById('pVGallaryNameId').value;
-	var galDesc = document.getElementById('pVGallaryDescId').value;
-	var isPublic = document.getElementById('vpublicRadioId').checked;
-	var partyId=872;
-	var makeThis = 'true';
-
-	var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var eFlag = false;
-
-	var str = '<font color="red">';
-
-	if(galName.length == 0)
-	{
-		str += 'Gallery Name Required<br>';
-		eFlag = true;
-	}
-	if(galDesc.length > 300)
-	{
-		str += 'Description should be less than 300 Characters<br>';
-		eFlag = true;
-	}
-	
-	str += '</font>';
-	errorDivEle.innerHTML = str;
-	
-	if(eFlag)
-		return;
-
-	if(isPublic)
-		makeThis = 'false';
-	
-	galName = removeAllUnwantedCharacters(galName);
-	galDesc = removeAllUnwantedCharacters(galDesc);
-	$("#createvediogalAjax").show();
-	var jsObj =
-		{ 
-            name : galName,
-		    desc : galDesc,
-			visibility : makeThis,
-			partyId : partyId,
-			contentType : contentType,
-			createOrUpdate:'Create',
-			task : "createVideoNewGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "partyManageAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}
-
-
-
-function buildPartyVedioVisibility()
-{
-
-	var galEle = document.getElementById('gallarySelectId');
-	var galId = galEle.options[galEle.selectedIndex].value;
-	var jsObj =
-	{
-		gallaryId : galId,
-			task : "partyVideoVisibility"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "partyManageVisibilityAction.action?"+rparam;
-	callAjax(jsObj,url);
-}
-
-
-
-function buildPartyNewsVisibility()
-{
-	var galEle = document.getElementById('gallaryId');
-	var galId = galEle.options[galEle.selectedIndex].value;
-
-	var jsObj =
-	{
-		gallaryId : galId,
-			task : "partyNewsVisibility"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "partyManageVisibilityAction.action?"+rparam;
-	callAjax(jsObj,url);
-}
-
-function buildPhotoVisibility()
-{
-var galEle = document.getElementById('gallaryPhotoSelectId');
-	var galId = galEle.options[galEle.selectedIndex].value;
-
-	var jsObj =
-	{
-		gallaryId : galId,
-		task : "partyPhotoVisibility"
-	};
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "partyManageVisibilityAction.action?"+rparam;
-	callAjax(jsObj,url);
-}
-function showVideoGallaryCreateMsg(result)
-{
-	$("#createvediogalAjax").hide();
-	var errorDivEle = document.getElementById('galErrorMsgDivId');
-	var str = '';
-	
-	if(result.resultCode == 0)
-	{
-		clearVideoGallaryFields();
-		if(result.exceptionMsg == null)
-			str += '<font color="green"><b>Gallery Created Successfully.</b>';
-		else
-			str += '<font color="red"><b>Gallery Name is already exist.</b>';
-			
-	}
-	else
-		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
-
-	errorDivEle.innerHTML = str;
-}
-
-function showUploadVideoStatus(result)
-{
-	var errorDivEle = document.getElementById('fileSuccessDiv');
-	document.getElementById('uploadVideoBtnId');
-	var str = '';
-
-	if(result.resultCode == 0)
-	{
-		clearUploadVideoFields();
-		enableButton('uploadVideoBtnId');
-		str += '<font color="green"><b>Video Uploaded Successfully.</b>';
-	}
-	else if(result.resultCode == 1) 
-	{
-		str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
-	}
-	else
-	{
-	
-		str += '<font color="red"><b>'+result+'</b>';
-	}
-	errorDivEle.innerHTML = str;
-}
-
-function clearVideoGallaryFields()
-{
-
-	document.getElementById('pVGallaryNameId').value = '';
-	document.getElementById('pVGallaryDescId').value = '';
-	//document.getElementById('vpublicRadioId').checked = true;
-}
-
-function clearUploadVideoFields()
-{
-	$("#addMoreVideosDiv").html('');
-	$("#otherProVideoDiv").html('');
-	document.getElementById('fileTitleId').value = '';
-	document.getElementById('fileDescId').value = '';
-	//document.getElementById('vpublicRadioId').checked = true;
-	document.getElementById('path').value = '';
-	document.getElementById("keyword").value = '';
-	document.getElementById("source").value = '';	
-	document.getElementById('existingFromText').value = '';
-}
 //****** profile discription ***
 
 function cleardescriptionFields()
@@ -3635,25 +2119,7 @@ var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
 	errorDivEle.innerHTML = str;
 }
 
-function showDeleteFilesAndPhotosStatus(myResult)
-	{
-	
-	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
-		var str = '';
 
-		if(myResult.resultCode == 0)
-		{
-			getCompleteGallaries(gGallaryId);
-			str += '<font color="green"><b>Photo Deleted Successfully.</b>';
-		}
-		else if(myResult.resultCode == 1) 
-		{
-			str += '<font color="red"><b>Error Ocuured, Try Again.</b>';
-		}
-		
-		errorDivEle.innerHTML = str;
-		
-}
 
 function showDeleteGallary(myResult)   
 	{
@@ -3709,54 +2175,6 @@ var r=confirm("Do you want to delete!");
 	callAjax(jsObj,url);	
 	}
 }
-
-function updateGallary(gallaryId)
- {
-  var r=confirm("Do you want to update!");
- if (r==true)
-    {
-	//var candidateId=document.getElementById("candidateId").value;
-	var partyId = 872;
-	var jsObj =
-		{ 
-     		gallaryId : gallaryId,
-			partyId : partyId,
-		   	task : "UpdatePartyGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "updatePartyPhotoGallaryAction.action?"+rparam;
-	callAjax(jsObj,url);	
-	}
- 
- }
- 
- function updateGallaryDiv(myResults)
- {
-    var str ='';
-	document.getElementById("profileManagementMainOuterDiv1").style.display = 'none';
-	
-	str+='<div id="content" style="width:650px;">';
-	str += '<fieldset class="imgFieldset" style="width:400px;">';
-	str += '<h2 align="center">Update A Gallery</h2>';
-	str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-	str += '<table align="left" class="paddingCss"><tr><td><div id="galErrorMsgDivId"></div></td></tr></table>';
-	str += '<table width="75%"><tr><td><b><font>Gallery Name<font class="requiredFont"> * </font></font></b></td><td><input type="text" id="pGallaryNameId" size="25" maxlength="100"></td></tr>';
-	str += '<tr><td><b><font>Description</font><b></td>';
-	str += '<td><textarea id="pGallaryDescId" cols="19" rows="3" name="requirement">'+myResults.description+'</textarea></td></tr></table>';
-	str +='<input type = "hidden" name ="gallaryId" id ="gallaryId" value ='+myResults.gallaryId+'>';
-	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font>Visible to Public Also</font></b></input></div>';
-	str += '<div style="padding-left: 14px; padding-right: 120px; "><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font>Make This Private</font></b></input></div>';
-	str += '<table style="margin-left:auto;margin-right:auto;"><tr><td style="padding-right: 4px;"><input type="button" class="btn btn-success highlight" value="Update Gallery" style="background-color:#57B731" onClick="createGallary(\'Photo Gallary\',\'Update\')"></td><td style="padding-right: 49px;"><input type="button" class="btn btn-success highlight" value="Cancel" onclick="showPhotoGallary()" style="background-color:#CF4740"></td></tr></table>';
-	str += '</fieldset>';
-	str+='</div>';
-	document.getElementById("updateGallaryDiv").innerHTML = str;
-	document.getElementById("pGallaryNameId").value=myResults.gallaryName;
-	/*if(myResults.fileName1 != 'false')
-	document.getElementById("privateRadioId").checked= true;
-	else
-	document.getElementById("publicRadioId").checked= true;*/
- }
  
  function  updateGallaryStatus(myResults)
     {
@@ -3774,189 +2192,6 @@ function updateGallary(gallaryId)
 	
 
 	}
-	
-	function updateFilesAndPhotos(fileId)
-		{
-			var r=confirm("Do you want to update the photo(or files)!");
-			 if (r==true)
-			 {
-			 var jsObj =
-					{ 
-						gallaryId : gGallaryId,
-						fileId : fileId,
-						task : "updateFilesAndPhotos"
-					};
-
-				var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-				var url = "candidatePhotoGallaryUpdateAction.action?"+rparam;
-				callAjax(jsObj,url);	
-				}
-		}
-		
-function updateFilesAndPhotosDiv(myResults,fileId)
-     {
-	 var str ='';
-		str+='<div id="content" style="width:650px;">';
-		str += '<fieldset class="imgFieldset" style="width:400px;">';
-		str += '<h2 align="center">Update A Photo</h2>';
-		str += '<div id="gallaryCreateInnerDiv" style="margin-left:10px;margin-bottom:5px;"></div>';
-		str += '<table align="left" class="paddingCss"><tr><td><div id="fileUploadErrorMsgDivId"></div></td></tr></table>';
-		str += '<table width="75%">';
-		str += '<tr><td><b><font>Select Gallery</font></b></td><td><select id="gallaryPhotoSelectId" class="gallaryTitleVal" name="gallaryId" style="width:175px;"></select></td></tr>';
-		str += '<tr><td><b><font>Photo Title<font class="requiredFont">*</font></font></b></td><td><input type="text" id="fileTitleId" name="fileTitle" size="25" maxlength="50"></td></tr>';
-		str += '<tr><td><b><font>Description<font class="requiredFont">*</font></font><b></td>';
-		str += '<td><textarea id="fileDescId" name="fileDescription" cols="19" rows="3" name="requirement">'+myResults.fileDescription1+'</textarea></td></tr></table>';
-		str += '<div style="padding-right: 113px;"><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font>Visible to Public Also</font></b></input></div>';
-		str += '<div style="padding-right: 127px;"><input type="radio" value="private" name="visibility" id="privateRadioId"><b><font>Make This Private</font></b></input></div>';
-		str += '<table><tr><td style="padding-right: 40px;"><input type="button" class="btn btn-success highlight" value="Update Photo" style="background-color:#57B731" onClick="updatePhoto('+fileId+','+myResults.fileTypeId+')"></td><td style="padding-right: 41px;"><input type="button" class="btn btn-success highlight" value="Cancel" onclick="getCompleteGallaries(gGallaryId)"  style="background-color:#CF4740"></td></tr></table>';
-		str += '</fieldset>';
-		str+='</div>';
-		document.getElementById("photoGallaryDiv").innerHTML = str;
-		document.getElementById('fileTitleId').value = myResults.fileTitle1;
-		/*if(myResults.file != 'false')
-		document.getElementById('privateRadioId').checked = true;
-		else 
-		document.getElementById('publicRadioId').checked = true;*/
-		getCandidateGallariesForUpdatePhoto();
-	 }	 
-function updatePhoto(fileId,fileGallaryId)
-{ 
-  var galEle = document.getElementById('gallaryPhotoSelectId');
-     var gallaryId = galEle.options[galEle.selectedIndex].value;
-	 var title = document.getElementById('fileTitleId').value;
-	var galDesc = document.getElementById('fileDescId').value;
-	var isPublic = document.getElementById('publicRadioId').checked;	
-	var makeThis = 'true';
-	var errorDivEle = document.getElementById('fileUploadErrorMsgDivId');
-	var eFlag = false;
-	var str = '<font color="red">';
-
-	if(title.length == 0)
-	{
-		str += 'Title is  Required<br>';
-		eFlag = true;
-	}
-	if(title.length >50)
-	{
-		str += 'Title should be less than 50 Characters<br>';
-		eFlag = true;
-	}
-	if(galDesc.length == 0)
-	{
-		str += 'Description is  Required<br>';
-		eFlag = true;
-	}
-	if(galDesc.length > 300)
-	{
-		str += 'Description should be less than 300 Characters<br>';
-		eFlag = true;
-	}
-	
-	str += '</font>';
-	errorDivEle.innerHTML = str;
-	
-	if(eFlag)
-		return;
-
-	/*if(isPublic)
-		makeThis = 'false';*/
-	
-	var jsObj =
-		{ 
-            title : title,
-		    desc : galDesc,
-			visibility : makeThis,
-             fileId:fileId,
-			gallaryId : gallaryId,
-			fileGallaryId:fileGallaryId,
-			task : "updateIndividualPhotoDetails"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "createNewGallaryAction.action?"+rparam;						
-	callAjax(jsObj,url);
-}	 
-	
- 
-
-	  function hideVedioVisibility(myResults)
-	  {
-		
-
-		  if(myResults.isPrivate == "true"){
-
-			  document.getElementById('vedioPublicDiv').style.display = 'none';
-
-			document.getElementById('vedioPrivateDiv').style.display = 'block';
-			document.getElementById('vprivateRadioId').checked = true;
-		  }
-		  else
-		  {
-			document.getElementById('vedioPublicDiv').style.display = 'block';
-		   document.getElementById('vpublicRadioId').checked = true;
-
-		   document.getElementById('vedioPrivateDiv').style.display = 'block';
-		  }
-	  }
-
-
-	  function hideNewsVisibility(myResults)
-	  {
-		  if(myResults.isPrivate == "true")
-		  {
-			 document.getElementById('newsPublicRadioDiv').style.display = 'none';
-			 
-			document.getElementById('newsprivateRadioDiv').style.display = 'block';
-			document.getElementById('newsprivateRadioId').checked = true;
-		  }
-		  else
-		  {
-			 document.getElementById('newsPublicRadioDiv').style.display = 'block';
-			document.getElementById('newsPublicRadioId').checked = true;
-		   
-		   document.getElementById('newsprivateRadioDiv').style.display='block';
-		   
-		  }
-	  }
-
-
-	  function hidePhotoVisibility(myResults)
-	  {
-		  
-		if(myResults.isPrivate == "true")
-		  {
-			 document.getElementById('photoPublicRadioDiv').style.display = 'none';
-
-			document.getElementById('photoPrivateRadioDiv').style.display = 'block';
-			document.getElementById('photoprivateRadioId').checked = true;
-		  }
-		  else
-		  {
-			  document.getElementById('photoPublicRadioDiv').style.display = 'block';
-		   document.getElementById('PhotopublicRadioId').checked = true;
-		   document.getElementById('photoPrivateRadioDiv').style.display = 'block';
-
-		  }
-	  }
-	  function checkAllValuesAndSendAjaxForNews()
-{
-	if($('#fromDateId1').val() != "" && $('#toDateId1').val() != "" && $('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#gallariesList').val() != "" && $('#gallariesList').val() != "0"){
-		$('#dateErrorMessage').html('');
-		$('#noNewsError').html("");
-		$('#gallariesList').change();
-	}
-
-}
-
-function checkAllValuesAndSendAjax()
-{
-	if($('#fromDateId1').val() != "" && $('#toDateId1').val() != "" && $('#fromDateId').val() != "" && $('#toDateId').val() != "" && $('#candidatesList').val() != ""){
-		$('#dateErrorMessage').html('');
-		$('#candidatesList').change();
-		$('#noNewsError').html("");
-	}
-
-}
 
 function showTheNewsToUpdate()
 {
@@ -3981,6 +2216,7 @@ function showTheNewsToUpdate()
   $("#dateSelectDiv").css("display","block");
   $("#newsFromDateId").val('');
   $("#newsToDateId").val('');
+  $('#mergeKeywordDiv').css("display","block");
    populateDate();
   getTotalNewsWithPagination();
  
@@ -4013,13 +2249,7 @@ var callback = {
 		{ 
 		 myResults = YAHOO.lang.JSON.parse(o.responseText); 
 
-		 if(jsObj.task == "getNewsForACandidate")
-		 {
-
-			 buildNewsDetailsOfcandidate(myResults);
-
-		 }
-		 else if (jsObj.task == "getCandidates")
+		  if (jsObj.task == "getCandidates")
 		 {
              buildCandidates(myResults);
 		 }else if(jsObj.task == "getCandidatesOfAUser")
@@ -4035,87 +2265,7 @@ var callback = {
            setTimeout(hideDialog,3000);
 			buildNewsDetails();
 		 } 
-         else if(jsObj.task == "getCandidatePhotoGallaryDetail")
-			{
-               buildCandidatePhotoGallary(myResults);
-			}
-			else if(jsObj.task == "candidateGallariesForUplaod")
-			{ 
-			   if(jsObj.contentType=="News Gallary")
-				{
-
-					//clearOptionsListForSelectElmtId('gallaryId');
-					//createOptionsForSelectElmtId('gallaryId',myResults);
-
-					//$("#gallaryId").prepend("<option value='0'>Select Gallery</option>");
-					//document.getElementById("gallaryId").value = 0;
-						//$('#gallaryId').val(reqFile.contentId);
-
-						appendResults1(myResults,"gallaryIdForEdit");
-				
-				}
-				else if(jsObj.contentType=="Video Gallary")
-				{
-					clearOptionsListForSelectElmtId('gallarySelectId');
-					createOptionsForSelectElmtId('gallarySelectId',myResults);
-
-					$("#gallarySelectId").prepend("<option value ='0'>Select Gallery</option>");
-					document.getElementById("gallarySelectId").value = 0;
-				}
-				else if(jsObj.contentType=="Photo Gallary")
-				{
-					clearOptionsListForSelectElmtId('gallaryphotoselectId');
-					createOptionsForSelectElmtId('gallaryphotoselectId',myResults);
-					$("#gallaryphotoselectId").prepend("<option value='0'>Select Gallery</option>");
-                    document.getElementById("gallaryphotoselectId").value = 0;
-				}
-			}
-			else if(jsObj.task == "getScopesForNewSearch")
-			{ 
-			   //clearOptionsListForSelectElmtId("scopeDiv");
-              // buildResults(myResults,"scopeDiv");
-			  appendResults1(myResults,jsObj.divId);
-			}
-			else if(jsObj.task == "getStates" && jsObj.type == "forEdit")
-			{
-               appendResults1(myResults,"stateDivForEdit");
-			}
-			else if(jsObj.task == "getStates"){
-
-              appendResults1(myResults,"stateDiv");
-			}
-			else if(jsObj.task == "getDistrictsByStateId" && jsObj.type == "forEdit"){
-				appendResults1(myResults,"districtDivForEdit");
-
-			}
-			else if(jsObj.task == "getDistrictsByStateId"){
-				appendResults1(myResults,"districtDiv");
-			}else if(jsObj.task == "constituenciesInDistrict" && jsObj.type=="forEdit"){
-                  appendResults1(myResults,"constituencyDivForEdit");
-			}
-			else if(jsObj.task == "constituenciesInDistrict"){
-				appendResults1(myResults,"constituencyDiv");
-			}else if(jsObj.task == "getConstNotInGivenAreaType" && jsObj.type=="forEdit"){
-                appendResults1(myResults,"constituencyDivForEdit");
-			}
-			else if(jsObj.task == "getConstNotInGivenAreaType"){
-                appendResults1(myResults,"constituencyDiv");
-			}else if(jsObj.task == "subRegionsInConstituency" && jsObj.type=="forEdit"){ 
-
-               appendResults1(myResults,"mandalDivForEdit");
-			}else if(jsObj.task == "subRegionsInConstituency"){ 
-               appendResults1(myResults,"mandalDiv");
-			}else if(jsObj.task == "hamletsOrWardsInRegion" && jsObj.type=="forEdit"){ 
-               appendResults1(myResults,"villageDivForEdit");
-			}
-			else if(jsObj.task == "hamletsOrWardsInRegion"){ 
-               appendResults1(myResults,"villageDiv");
-			}else if(jsObj.task == "boothsInTehsilOrMunicipality" && jsObj.type=="forEdit"){ 
-               appendResults1(myResults,"villageDivForEdit");
-			}
-			else if(jsObj.task == "boothsInTehsilOrMunicipality"){ 
-               appendResults1(myResults,"villageDiv");
-			}else if(jsObj.task == "saveFileComment"){
+		else if(jsObj.task == "saveFileComment"){
 
 				alert("Your comment is saved successfully.");
 			}
@@ -4309,388 +2459,6 @@ function addToNewsResponse()
    $("#errorMsgNewsDiv").html('Please Select News').css("color","red");
   }  
    
-}
-
-function editNewsDetails(fileId,source){
-
-
-
-  $("#editNewsOuter").dialog({ stack: false,
-							    height: 570,
-								width: 720,
-								position:[130,130],								
-								modal: true,
-								title:'Edit News Details',
-								overlay: { opacity: 0.5, background: 'black'}
-								});
-	$("#editNewsOuter").dialog();
-	var str= '';
-	
-	
-	for(var i in newsDetails){
-	  if(newsDetails[i].fileId == fileId)
-	  {
-	    reqFile = newsDetails[i];
-		
-	  }
-	}
-
-	var str ='';
-
-	/*str+='<div style="float:right;"><div style="float:left;"><b>Flag Status:</b><input type="hidden" name="flagValue" id="flagInd" value="'+reqFile.flagSet+'"></input></div>';
-      if(reqFile.flagSet == "true"){
-		  str+='<div id="flagSet" style="width: 130px;"><a href=javaScript:{setFlagVariable(\'false\');}   ><i class="icon-flag"></i></a></div>';
-
-		  str+='<div id="flagUnSet" style="display:none;width: 130px;"><a href=javaScript:{setFlagVariable(\'true\');}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
-	  }
-	  else{
-		    str+='<div id="flagSet" style="display:none;width: 130px;"><a href=javaScript:{setFlagVariable(\'false\');}><i class="icon-flag"></i></a></div>';
-
-		   str+='<div id="flagUnSet" style="width: 130px;"><a href=javaScript:{setFlagVariable(\'true\')}  class="unflagClass" ><i class="icon-flag"></i></a></div>';
-		 // str+='';
-	  }
-	  str+='<div style="clear: both" ></div>';
-	  str+='</div>';
-
-	str+='<div>';*/
-
-	str+='<form id="updateNewsDetailsForm" method="post" action="updateDeleteNewsAction.action" name="updateNewsDetailsForm">';
-	str+='<input type="hidden" name="task" id="updateNewsDetailsId" />';
-    str+='</form>';
-
-	str += '<fieldset>';
-	
-	str += '<table><tr><td><div id="uploadNewsFileErrorDiv"/></td></tr></table>';
-	str += '<table style="display:-moz-inline-box;">';
-	str+='<tr>';
-	str+='<td class="tdWidth">Select News Gallery : <font class="requiredFont">*</font></td>';
-	str+='<td class="selectWidthPadd"><select style="width:222px;"  id="gallaryIdForEdit" name="gallaryId" class="selectWidth"/><option value="0">Select</option></select></td>';
-	str +='<td></td>';
-	str+='</tr>';
-    str += '   <tr>';
-	str += '       <td class="tdWidth">Title : <font class="requiredFont">*</font></td>';
-	
-	str +='<td>';
-	
-	if(source == "Eenadu Telugu")
-	 str += ' <input style="font-family: eFont; font-size: 20px;" type="text" id="fileTitle" size="25" maxlength="100" />';
-	else 
-	 str += ' <input type="text" id="fileTitle" size="25" maxlength="100" />';
-
-	str +='</td>';
-	str += '   </tr>';
-	str += '   <tr>';
-    
-	str += '       <td class="tdWidth">News Description : <font class="requiredFont">*</font></td>';
-	str +='<td>';
-	if(source == "Eenadu Telugu")
-     str += '<textarea style="font-family: eFont; font-size: 20px;" id="fileDescription" cols="20" rows="3"></textarea>';
-	else
-	 str += '<textarea id="fileDescription" cols="20" rows="3"></textarea>';
-	str +='</td>';
-	
-	str += '   </tr>';
-
-    str += '   <tr>';
-	str += '       <td class="tdWidth">Keywords : </td>';
-	if(source == "Eenadu Telugu")
-	str += '       <td class="selectWidthPadd"><input type="text"  style="font-family: eFont; font-size: 20px;" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
-	else
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywordsForEdit" name="keywords" size="25" maxlength="200" style="margin-top:8px;" value="'+reqFile.keywords+'" ></text></td></tr>';
-
-	str += '   <TR>';
-	
-	
-	str += ' <td class="tdWidth"><b><font>File Date : <font class="requiredFont">*</font></font></b></td>';
-	str += '<TD><input type="text" id="existingFromText" readonly="true" name="fileDate" size="20" style="margin-top:8px;"/>';
-	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '<TD>';
-	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
-	str += '</TD>';
-	
-	str += '   </TR>';
-
-
-	for(var i in reqFile.fileVOList)
-	{
-	   str += '   <tr>';
-	   str += '       <td class="tdWidth">Source : <font class="requiredFont">*</font></td>';
-	   str += '       <td><select id="sourceEdit'+i+'" style="width:222px;"></select></td>';
-	   str += '       <td><input type="hidden" id="sourceEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
-	   str += '   </tr>';
-	
-	   str += '   <tr>';
-	   str += '       <td class="tdWidth">Language : <font class="requiredFont">*</font></td>';
-	   str += '       <td><select id="languageEdit'+i+'" style="width:222px;"></select></td>';
-	   str += '       <td><input type="hidden" id="languageEditId'+i+'" value="'+reqFile.fileVOList[i].fileSourceLanguageId+'" /></td>';
-	   str += '   </tr>';
-	}
-	str += '       <td class="tdWidth">Category : </td>';
-	str += '  <td><select id="categoryEdit" style="width:222px;"><option value="0">-select category-</option></select></td>';
-	str += '   </tr>';
-	str += '   </tr>';
-	str += '       <td class="tdWidth">News Importance : <font class="requiredFont">*</font></td>';
-	str += '       <td><select id="newsimportanceForEdit" style="width:222px;"></select></td>';
-	str += '   </tr>';
-
-	/*
-		str += '   <tr>';
-		str += '       <td class="tdWidth">File Path<font class="requiredFont">*</font></td>';
-		str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId" size="25" style="margin-top:8px;"/></td>';
-		str += '       <td class="selectWidthPadd" style="padding-left:24px;"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt=""Click here to add more images""/></td>';
-		str += '   </tr>';
-	*/
-
-	str += '   <tr>';
-	str += '      <td colspan="2"> <div id="addMoreFilesDiv" style="margin-left:107px;"></div></td>';
-	str += '   </tr>';
-
-	/*
-		str +='<tr><td class="tdWidth" style="width:97px;">Image To Display:</td><td><input type="file" name="imageForDisplay" id="newsfileId" size="25" style="margin-top:8px;"/></td></tr>';
-	*/
-	//str += '   <tr>';
-
-
-	str += '   <tr>';
-	str += '       <td></td>';
-
-	//Here visibility means isPrivate
-	if(reqFile.visibility == "false")
-
-		//str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
-
-		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId" checked="true"><i  class="icon-bullhorn" ></i></input></label></td>';
-	else
-
-		//str += '       <td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><b><font id="visiblePublicText" color="#4B74C6">Visible to Public Also</font></b></input></label></td>';
-
-		str += '<td id="newsPublicRadioId"><label><input type="radio" value="public" name="visibility" id="publicRadioId"><i  class="icon-bullhorn" ></i></input></label></td>';
-
-    str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td></td>';
-
-	if(reqFile.visibility == "true")
-
-	 // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
-	  str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private" name="visibility" checked="true" id="privateRadioId"></input><i  class="icon-lock" ></i></label></td>';
-   else
-	  // str += '       <td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"><b><font id="visiblePrivateText" color="#4B74C6">Make This Private</font></b></input></label></td>';
-
-    str += '<td id="newsPrivateRadioId"><label><input type="radio" value="private"  name="visibility" id="privateRadioId"></input><i  class="icon-lock" ></label></td>';
-
-	str += '   </tr>';
-
-	str +='    <tr>';
-    str +='	   <td class="tdWidth">Location Scope : <font class="requiredFont">*</font></td>';
-    str +='	   <td><select id="scopeDivForEdit" name="locationScope" style="width:222px;" class="selectWidth" onchange="getLocations1(this.options[this.selectedIndex].value)"  /></td>';
-    str +='  </tr>';
- 
-	str +='  <tr>';
-	str +='    <td colspan="2">';
-	str +='       <div id="showScopeSubsForEdit" />'; 
-	str +='    </td>';
-	str +='  </tr>';
-
-   if(reqFile.locationScope != null && reqFile.locationScope != "null"){
-
-
-		str +='  <tr>';
-		str +='    <td>';
-
-       str+='<input type="hidden" id="locationValueId" value='+reqFile.location+'></input>';
-
-		str +='       <div style="font-weight:bold;margin-left: 54px;">'+reqFile.locationValue+'</div>'; 
-		str +='    </td>';
-		str +='    <td>';
-		str +='<input type="button" class="btn" value="Edit" onClick="getLocationDiv();"/>'; 
-		str +='    </td>';
-		str +='  </tr>';
-
-   }
-   str +='    <tr>';
-    str +='	   <td class="tdWidth">News description in details : </td>';
-	if(source == "Eenadu Telugu")
-	    str +='	   <td><textarea id="newsfileDescriptionForEdit" style="font-family: eFont; font-size: 20px;" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
-     else
-    str +='	   <td><textarea id="newsfileDescriptionForEdit" cols="20" rows="3" name="fileDescription" >'+reqFile.newsDescription+'</textarea></td>';
-    str +='  </tr>';
-
-
-	str += '</table>';
-
-	str+='<div id="newsSuccessDiv"></div>';
-	str += '<div style="padding-left:223px;padding-top:10px; margin-bottom: 25px; margin-top: 11px;"> <input type="button" value="Update" class="btn btn-success highlight" onclick="updateDeleteNews(\'Update\','+fileId+');" /></div>';
-	str += '</fieldset>';
-	str+='</div>';
-
-	
-    
-	str+='<input type="hidden" name="fileGallaryId"  id="fileGallaryId" value='+reqFile.contentId+'></input>';
-	    document.getElementById("editNewsInner").innerHTML = str;
-		
-	   
-		//document.getElementById("existingFromText").value = reqFile.fileDate;
-	    document.getElementById("fileTitle").value = reqFile.fileTitle1;
-	    document.getElementById("keywords").value = reqFile.keywords;
-		document.getElementById("fileDescription").value = reqFile.description;
-		document.getElementById("existingFromText").value = reqFile.fileDateAsString;
-
-		getNews("sourceEdit","getAllSourceDetails","","","","","","","","","","");
-        getNews("categoryEdit","getAllCategoryDetails",reqFile.categoryId,"","","","","","","","","");
-        getNews("languageEdit","getAllSourceLanguageDetails","","","","","","","","","","");
-        getNews("newsimportanceForEdit","getAllNewsImportanceDetails",reqFile.newsImportanceId,"","","","","","","","","");
-	
-		
-		//CHANGE BY SAMBA
-	getCandidateGallariesForUplaod("News Gallary",reqFile.fileId);  
-	getScopes1();
- }
- function getNews(task,queryType,fileType,sourceId,languegeId,categoryId,newsImportanceId,locationScope,location,title,fromDate,toDate){
-/*if(returnedResults != undefined){
-	modifiedRecord = returnedResults.fileGallaryId;
-}*/
-
-   // document.getElementById("newsDeleteMessage").innerHTML = "";
-    var timeST = new Date().getTime();	
-var jsObj=
-	      { 
-		    queryType	:queryType,
-			fileType	:fileType,
-			sourceId	:sourceId,
-            languegeId	:languegeId,
-            categoryId	:categoryId,
-            newsImportanceId :newsImportanceId,
-            locationScope :locationScope,
-            location	:location,
-			fromDate	:fromDate,
-			toDate		:toDate,
-			title		:title,
-			timeST      :timeST,
-			task		:task
-	       }
-	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-      var url = "getAllNewsForAUser.action?"+rparam;						
-      callAjax1(jsObj,url);
-}
-
-
-function getCandidateGallariesForUplaod(contentType , fileId)
-{
-//var candidateId=document.getElementById("candidateId").value;
-	var jsObj =
-		{ 
-			contentType : contentType,
-		   	task : "candidateGallariesForUplaod"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidateGallaries.action?"+rparam;
-	callnewAjax(jsObj,url);
-}
- function getScopes1(){
- var jsObj =
-		{ 
-            time : timeST,
-			task:"getScopesForNewSearch",
-            divId:"scopeDivForEdit" 
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callnewAjax(jsObj,url);
- 
-}
-
-function appendResults1(results , divId){
-
-
-	$('#'+divId).find('option').remove();
-
-
-    if(divId == "scopeDiv" || divId == "scopeDivForEdit"){
-		//$('#'+divId).append(new Option("Select Scope", "0"));
-
-		for(var i in results){			
-
-			$('#'+divId).append('<option value='+results[i].locationScope+'>'+results[i].locationScopeValue+'</option>');
-		}
-
-		if(reqFile.locationScope != null && reqFile.locationScope != "null")
-		$('#'+divId).val(reqFile.locationScope);
-		//getLocations(reqFile.locationScope);
-
-	}
-
-
-	if(divId == "stateDiv" || divId == "stateDivForEdit"){
-		//$('#'+divId).append(new Option("Select State", "0"));
-
-		for(var i in results){
-
-		$('#'+divId).append('<option value='+results[i].ids+'>'+results[i].names+'</option>');
-	    }
-	}
-
-	if(divId == "districtDiv" || divId == "districtDivForEdit"){
-
-		//$('#'+divId).append(new Option("Select District", "0"));
-
-		for(var i in results){
-
-		$('#'+divId).append('<option value='+results[i].ids+'>'+results[i].names+'</option>');
-	    }
-	}
-   
-    if(divId == "constituencyDiv" || divId == "constituencyDivForEdit"){
-
-		//$('#'+divId).append(new Option("Select Constituency", "0"));
-
-		for(var i in results){
-		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
-	    }
-
-	} 
-
-	if(divId == "mandalDiv" || divId == "mandalDivForEdit"){
-
-for(var i in results){
-		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
-	    }
-
-
-	}
-
-	if(divId == "villageDiv" || divId == "villageDivForEdit"){
-
-	//$('#'+divId).append(new Option("Select Village", "0"));
-
-		for(var i in results){
-		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
-	    }
-
-	}
-	if(divId == "gallaryId" || divId == "gallaryIdForEdit"){
-
-		for(var i in results){
-
-		$('#'+divId).append('<option value='+results[i].id+'>'+results[i].name+'</option>');
-
-	    }
-
-if(divId == "gallaryIdForEdit")
-	$('#gallaryIdForEdit').val(reqFile.fileGallaryId);
-else
-	$('#gallaryId').val(reqFile.fileGallaryId);
-
-
-	}
-}
- function getLocationDiv(){
-	bvalue=true;
-	var id =  $('#scopeDivForEdit').val();
-   getLocations1(id);
 }
 
 function callAjax1(jsObj,url){
@@ -4909,638 +2677,6 @@ function bildDateForLanguage(results)
 		 document.getElementById("newsimportanceForEdit").value = val;
 	}
 }
-function getLocations1(id){
-   if(id==0)
-  {
-   var val ='';
-  val +='<table>';
-  val +='  <tr><td></td>';
-  val +='  </tr>';
-  val +='</table>';
-  document.getElementById("showScopeSubsForEdit").innerHTML = val;
-    
-  }
-  else if(id==1)
-  {
-    var str ='';
-  str +='<table>';
-  str +='  <tr><td></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubsForEdit").innerHTML = str;
-  }
-  else if(id==2)
-  {
-   var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" name="locationValue" class="selectWidth" style="width: 222px; margin-left: -4px;"/></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubsForEdit").innerHTML = str;
-   getStatesForLocationScope1();
-  }
-  else if(id==3)
-  {
-   var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getDistricts2(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth" name="locationValue"style="width: 222px; margin-left: -4px;"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubsForEdit").innerHTML = str;
-   getStatesForLocationScope1();
-  }
-  else if(id==4)
-  {
-   var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(4,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubsForEdit").innerHTML = str;
-   getStatesForLocationScope1();
-  }
-  else if(id==5 || id==7)
-  {
-   if(id==5)
-   {
-     areaType1 = "URBAN" ;
-     areaType2 = "RURAL" ;
-   }
-   if(id==7)
-   {
-     areaType1 = "RURAL" ;
-     areaType2 = "URBAN" ;
-   }
-   
-    var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit"style="width: 222px; margin-left: -4px;"  class="selectWidth" onchange="clearAllElmts(5,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="clearAllElmts(5,2);getAllDetails1(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit"style="width: 222px; margin-left: -4px;" class="selectWidth" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubsForEdit").innerHTML = str;
-   getStatesForLocationScope1();
-  }
-  else if(id==6 || id==8)
-  {
-   if(id==6)
-   {
-     areaType1 = "URBAN" ;
-     areaType2 = "RURAL" ;
-   }
-   if(id==8)
-   {
-     areaType1 = "RURAL" ;
-     areaType2 = "URBAN" ;
-   }
-
-    var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,2);getAllDetails1(this.options[this.selectedIndex].value,\'getConstNotInGivenAreaType\',\''+areaType1+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;" onchange="clearAllElmts(6,3);getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\''+areaType2+'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  class="selectWidth"style="width: 222px; margin-left: -4px;"  name="mandalId" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="villageDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubsForEdit").innerHTML = str;
-   getStatesForLocationScope1();
-  }
-  else if(id==9)
-  {
-     var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="stateDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,1);getDistricts2(this.options[this.selectedIndex].value)"/></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,2);getAllDetails1(this.options[this.selectedIndex].value,\'constituenciesInDistrict\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Assembly Consti : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="constituencyDivForEdit" class="selectWidth"style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="clearAllElmts(9,3);getAllDetails1(this.options[this.selectedIndex].value,\'subRegionsInConstituency\',\'\',\'\')"><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='  <tr>';
-  //str +='	   <td class="tdWidth" style="width: 162px;">Mandal/ Municipality/ Corp/GMC<font class="requiredFont">*</font></td>';
-  //str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit" class="selectWidth" style="width: 222px; margin-left: -4px;" onkeydown="if (event.keyCode == 13) document.getElementById(\'searchButton\').click()" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDiv\').options[document.getElementById(\'constituencyDiv\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
-
-   str +='	   <td class="tdWidth" style="width: 162px;">Mndl/Munic/Corp/GMC : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="mandalDivForEdit"  name="mandalId" onchange="getAllDetails1(this.options[this.selectedIndex].value,\'boothsInTehsilOrMunicipality\',\'\',document.getElementById(\'constituencyDivForEdit\').options[document.getElementById(\'constituencyDivForEdit\').selectedIndex].value)"><option value="0">Select Location</option></select></td>';
-
-  str +='  </tr>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth" style="width: 162px;">Village/Ward/Division : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="villageDivForEdit" name="locationValue"style="width: 222px; margin-left: -4px;" class="selectWidth" ><option value="0">Select Location</option></select></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubsForEdit").innerHTML = str;
-   getStatesForLocationScope1();
-  }
-}
-
-function getStatesForLocationScope1()
-{
-  var jsObj =
-		{ 
-            time : timeST,
-			task:"getStates",
-            type:"forEdit"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callnewAjax(jsObj,url);
-}
-
-function getStatesForLocationScope()
-{
-  var jsObj =
-		{ 
-            time : timeST,
-			task:"getStates"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "candidatePhotoGallaryAction.action?"+rparam;						
-	callnewAjax(jsObj,url);
-}
-
-function updateDeleteNews(task,fileId){
-
-var fileTitle = $('#fileTitle').val();
-var fileDescription = $('#fileDescription').val();
-var flagInd = $('#flagInd').val();
-var scope = $('#scopeDiv').val();
-var errorMessage = "";
-var validate = false;
-var newsDescription = "";
-
-if(fileTitle == ""){
- errorMessage+="File title is required<br>";
- validate = true;
-}
-
-if(fileDescription == ""){
-	errorMessage+="File description is required";
-	validate = true;
-}
-if(bvalue){
-if(scope == 3)
-	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		if(stateVal == 0)
-		{
-		errorMessage += 'State Name is Required.<br>';
-		validate = true;
-		}
-		if(districtVal == 0)
-		{
-		errorMessage += 'District Name is Required.';
-		validate = true;
-		}
-	}
-
-	if(scope == 4)
-	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
-		if(stateVal == 0)
-		{
-		errorMessage += 'State Name is Required.<br>';
-		validate = true;
-		}
-		if(districtVal == 0)
-		{
-		errorMessage += 'District Name is Required.<br>';
-		validate = true;
-		}
-		if(constituencyVal == 0)
-		{
-		errorMessage += 'Constituency Name is Required.';
-		validate = true;
-		}
-	}
-	if(scope == 5)
-	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
-		var mandalVal=document.getElementById('mandalDivForEdit').value;
-		if(stateVal == 0)
-		{
-		errorMessage += 'State Name is Required.<br>';
-		validate = true;
-		}
-		if(districtVal == 0)
-		{
-		errorMessage += 'District Name is Required.<br>';
-		validate = true;
-		}
-		if(constituencyVal == 0)
-		{
-		errorMessage += 'Constituency Name is Required.<br>';
-		validate = true;
-		}
-		if(mandalVal == 0)
-		{
-		errorMessage += 'Mandal Name is Required.';
-		validate = true;
-		}
-	}
-	if(scope == 6 || scope == 8 || scope == 9)
-	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
-		var mandalVal=document.getElementById('mandalDivForEdit').value;
-		var villageVal=document.getElementById('villageDivForEdit').value;
-		if(stateVal == 0)
-		{
-		errorMessage += 'State Name is Required.<br>';
-		validate = true;
-		}
-		if(districtVal == 0)
-		{
-		errorMessage += 'District Name is Required.<br>';
-		validate = true;
-		}
-		if(constituencyVal == 0)
-		{
-		errorMessage += 'Constituency Name is Required.<br>';
-		validate = true;
-		}
-		if(mandalVal == 0)
-		{
-		errorMessage += 'Mandal Name is Required.<br>';
-		validate = true;
-		}
-		if(villageVal == 0)
-		{
-		errorMessage += 'Villiage Name is Required.';
-		validate = true;
-		}
-	}
-	if(scope == 7)
-	{
-		var stateVal=document.getElementById('stateDivForEdit').value;
-		var districtVal=document.getElementById('districtDivForEdit').value;
-		var constituencyVal=document.getElementById('constituencyDivForEdit').value;
-		var mandalVal=document.getElementById('mandalDivForEdit').value;
-		
-		if(stateVal == 0)
-		{
-		errorMessage += 'State Name is Required.<br>';
-		validate = true;
-		}
-		if(districtVal == 0)
-		{
-		errorMessage += 'District Name is Required.<br>';
-		validate = true;
-		}
-		if(constituencyVal == 0)
-		{
-		errorMessage += 'Constituency Name is Required.<br>';
-		validate = true;
-		}
-		if(mandalVal == 0)
-		{
-		errorMessage += 'Mandal Name is Required.';
-		validate = true;
-		}
-		
-	}
-}
-if(validate == true) {
-$('#uploadNewsFileErrorDiv').html('<span style="color:red;">'+errorMessage+'</span>');
-validate = false;
-return false;
-}
-
-//document.getElementById("newsDeleteMessage").innerHTML = "";	
- var timeST = new Date().getTime();
- 
-
-   var title ="";
-   var description ="" ;
-   var sourceId =""  ;
-   var languegeId ="" ;
-   var categoryId ="" ;
-   var newsImportanceId ="" ;
-   var sourceString ='';
-   var languageString = '';
-
-   //CHANGE BY SAMBA START
-
-   var gallaryId = "";
-   var keywords = "";
-   var fileDate = "";
-   var locationScopeId = "0";
-   var locationScopeValue = "";
-   var visibility = "";
-   var fileGallaryId  = 0;
-   //CHANGE BY SAMBA END
-
-  if(task == "Update")
-  {
-   title  = document.getElementById("fileTitle").value;
-   description  = document.getElementById("fileDescription").value;
-    //changes by anil
-	title = htmlEntity(title);
-	description = htmlEntity(description);
-    //CHANGE BY SAMBA START
-
-	visibility = $('input:radio[name=visibility]:checked').val();
-
-   gallaryId = document.getElementById("gallaryIdForEdit").value;
-   keywords = document.getElementById("keywordsForEdit").value;
-   fileDate = document.getElementById("existingFromText").value;
-   locationScopeId = document.getElementById("scopeDivForEdit").value;
-   fileGallaryId = $('#fileGallaryId').val();
-   newsDescription = $('#newsfileDescriptionForEdit').val();
-   newsDescription = htmlEntity(newsDescription);
-
-   try
-  {
-  	 locationScopeValue = document.getElementsByName('locationValue')[0].value; 
-  }
-   catch(err)
-  { 
-	locationScopeValue = reqFile.locationVal;
-  }
-
-  if(locationScopeValue == null || locationScopeValue == "null")
-	  locationScopeValue = 0;
-
-
-
-  // keywords = removeAllUnwantedCharacters(keywords); 
-   keywords = htmlEntity(keywords);
-
-    //CHANGE BY SAMBA END
-   
-  // title = removeAllUnwantedCharacters(title);   
-  // description = removeAllUnwantedCharacters(description);
-  
-   for(var i in reqFile.fileVOList)
-   {
-      var sourceEle  = document.getElementById("sourceEdit"+i);
-      sourceId  = sourceEle.options[sourceEle.selectedIndex].value;
-      var filesourceId1 = document.getElementById("sourceEditId"+i).value;
-	  sourceString = sourceString+''+sourceId+','+filesourceId1+'-';
-	  
-	  
-      var languegeEle = document.getElementById("languageEdit"+i);
-      languegeId = languegeEle.options[languegeEle.selectedIndex].value;
-	  var filesourceId2 = document.getElementById("languageEditId"+i).value;
-	  languageString = languageString+''+languegeId+','+filesourceId2+'-';
-	  
-	  
-   }
-   var categoryEle = document.getElementById("categoryEdit");
-   categoryId = categoryEle.options[categoryEle.selectedIndex].value;
-   
-   var newsImportanceEle = document.getElementById("newsimportance");
-   newsImportanceId = newsImportanceEle.options[newsImportanceEle.selectedIndex].value;
-  }
-  if(task == "Delete")
-  {
-    var r = confirm("Do you want to delete this news article");
-      if (r == false)
-       return;  
-  
-  }
-
-  if(locationScopeId == 5 || locationScopeId == 7 || locationScopeId == 6 || locationScopeId == 8){
-
-try{
-    locationScopeValue = locationScopeValue.substring(1);
-}catch(e){
-	locationScopeValue = locationScopeValue;
-
-}
-
-  }
-
-  modifiedRecord  = fileId;
-   var jsObj=
-	      { 
-		  title		       :	title,
-		  description	   :	description,
-		  task			   :	task,
-		  sourceId		   :	sourceId,
-		  languegeId	   :	languegeId,
-		  categoryId	   :	categoryId,
-		  fileId           :    fileId,
-		  timeST           :    timeST,
-		  newsImportanceId :    newsImportanceId,
-		  sourceData       :    sourceString.slice(0, -1),
-		  languageData     :    languageString.slice(0, -1),
-		  gallaryId        :    gallaryId,
-          keywords         :    keywords,
-          fileDate         :    fileDate,
-          locationScopeId  :    locationScopeId,
-          locationScopeValue:   locationScopeValue,
-		  visibility        :visibility,
-		  flagInd          :false,
-		  fileGallaryId:fileGallaryId,
-          newsDescription:newsDescription 
-     }
-
- if(task == "Update")
- {
-   $("#updateNewsDetailsId").val(YAHOO.lang.JSON.stringify(jsObj));
-			var uploadHandler = {
-			   success : function( o ) {
-						  var uploadResult = YAHOO.lang.JSON.parse(o.responseText);
-						  //console.log(uploadResult);
-						 buildUpdateStatus(uploadResult);
-					}									
-		   };
-
-	
-	YAHOO.util.Connect.setForm('updateNewsDetailsForm',false);
-	YAHOO.util.Connect.asyncRequest('POST','updateDeleteNewsAction.action?',uploadHandler);
-
- }
-  else
-  {
-	
-	  var rparam ="task="+encodeURIComponent(unescape(YAHOO.lang.JSON.stringify(jsObj)));
-      var url = "updateDeleteNewsAction.action?"+rparam;	//18111
-  callnewAjax(jsObj,url);
-  }
- 
- }
-
- function  hideDialog()
- {
-	
-	 $("#editNewsOuter").dialog('close');
- }
-function getCandidates(){
-  
- var jsObj =
-		{ 
-			task:"getCandidates"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getNewsContainedCandidates.action?"+rparam;						
-	callnewAjax(jsObj,url);
- 
-}
-function getCandidatesofUser(){
-  
- var jsObj =
-		{ 
-			task:"getCandidatesOfAUser"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidatesOfAUser.action?"+rparam;						
-	callAjax(jsObj,url);
- 
-}
-function getNewsForAParty(partyId)
-{
-	if( partyId != 0 ){
-
-	var jsObj =
-		{ 
-		    partyId : partyId,
-			task:"getAllGallariesOfAParty"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllGallariesOfAParty.action?"+rparam;						
-	callAjax(jsObj,url);
-	}
-
-}
-
-function getAllNewsOfAGallary(gallaryId)
-{
-	if( gallaryId != 0 ){
-
-	var jsObj =
-		{ 
-		    gallaryId : gallaryId,
-            fromDate : $('#fromDateId').val(),
-            toDate : $('#toDateId').val(),
-			task:"getAllTheNewsOfAGallary"
-		};
-
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getAllTheNewsOfAGallary.action?"+rparam;						
-	callAjax(jsObj,url);
-	}
-
-}
-
-function getCandidateNews()
-{
-
-    $("#gallaryCheckboxId").attr("checked",false);
-	$("#categoryCheckboxId").attr("checked",false);
-	$("#respenseNewsList").find('option').remove();
-
-	$("#categoryShowHideDiv").css("display","none");
-	$("#gallaryShowHideDiv").css("display","none");
-	if($("#gallaryAllCheckboxId").is(":checked"))
-	{
-	  var candidateId = $("#candidatesList").val();
-	  var jsObj =
-		{ 
-		    candidateId : candidateId,
-            fromDate : $('#fromDateId').val(),
-            toDate : $('#toDateId').val(),
-			task:"getNewsForACandidate"
-		};
-
-	  var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	  var url = "getNewsForACandidate.action?"+rparam;						
-	  callnewAjax(jsObj,url);
-	}
-
-}
-
-function buildNewsDetailsOfcandidate(results)
-{
-	$('#noNewsError').html('');
-	$('#dateErrorMessage').html('');
-	if(results == null || results.length == 0)
-	{
-		$('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
-		$('#noNewsError').html('<b style="color:red;">No news found.Changing the date range may help you.</b>');
-		$("#categoryGallaryHideShowDiv").css("display","none");
-		return false;
-	}else{
-
-		$("#categoryGallaryHideShowDiv").css("display","block");
-		$('#candidateNewsList , #respenseNewsList , #buttonsDiv').show();
-	}
-	$('#candidateNewsList').find('option').remove();
-
-	$.each(results , function(index , value){
-
-		if(value.flag == true)
-		  $('#candidateNewsList').append('<option class="enadu" title="'+results[index].name+'" value="'+results[index].id+'">'+results[index].name+'</option>');
-		else
-			$('#candidateNewsList').append('<option class="notEenadu" title="'+results[index].name+'" value="'+results[index].id+'">'+results[index].name+'</option>');
-
-
-	});
-
-}
 
  function buildCandidatesOfAUser(results)
  {
@@ -5564,46 +2700,6 @@ function buildCandidates(results)
  }
 
 
- function uploadNewsFromPartyPage1()
-{
-	document.getElementById('uploadNewsBtnId');
-	if(validateNewsFileUpload1())
-	{
-		disableButton('uploadNewsBtnId');
-	var newsprivateRadioId = document.getElementById('newsprivateRadioId').checked;
-		if(newsprivateRadioId == true)
-	document.getElementById('newsprivateRadioId').checked = 'true';
-		if(newsprivateRadioId == false)
-	document.getElementById('newsPublicRadioId').checked = 'true';
-
-    var keywordStr = "";
-	$(".as-selections li").each(function(){
-              keywordStr +=$(this).text()+",";
-				
-            });
-   
-   var length = keywordStr.length;
-    keywordStr = keywordStr.substr(0,length-2); 
-	$("#keywordId").val(keywordStr);
-
-	
-		var uploadHandler = {
-				upload: function(o) {
-					uploadResult = o.responseText;
-					showNewsUploadStatus1(uploadResult);	
-					enableButton('uploadNewsBtnId');
-				}
-			};
-
-		
-		YAHOO.util.Connect.setForm('uploadForm1',true);
-		YAHOO.util.Connect.asyncRequest('POST','uploadFilesForMultipleCandidates.action',uploadHandler);
-	}
-	else
-		return;
-}
-
-
 function validateUploadFileDetails()
 {
    
@@ -5613,13 +2709,9 @@ function validateUploadFileDetails()
    var fileDesc  = $.trim($("#newsfileDescription").val());
    var synopsysDesc  = $.trim($("#newsSynopsysDesc").val());
    var fileDate = $("#newsdatedatepic").val();
-   var scope = document.getElementById("scopeDiv").value;
    var newsImporatnce =document.getElementById("newsimportance").value;
    var sourceArr = new Array();
-   //fileTitle = removeAllUnwantedCharacters1(fileTitle);	
-   //fileDesc = removeAllUnwantedCharacters1(fileDesc);
-	//document.getElementById('newsfileTitle').value = fileTitle;
-	//document.getElementById('newsfileDescription').value = fileDesc;
+
 
 	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
 	
@@ -5790,147 +2882,237 @@ function validateUploadFileDetails()
 		str += 'News Description Should not exceed 2000 Characters.<br>';
 		flag = false;
 	}
-	
-	
+var allLocSeleted = true;
+$('.scopeLevel').each(function() {
+   var scope = $(this).val();
+   var key = $(this).attr("key");   
 	if(scope == 0 )
 	{
-		str += 'Location Scope is Required.';
+	    if(!(str.indexOf("Location Scope is Required") > -1)){
+		 str += 'Location Scope is Required.';
+		}
 		flag = false;
+		allLocSeleted = false;
 	}
-	if(scope == 2)
+	else if(scope == 2)
 	{
-		var stateVal=document.getElementById('stateDiv').value;
+		var stateVal=document.getElementById('stateDiv'+key).value;
 		if(stateVal == 0)
 		{
-		str += 'State Name is Required.';
+		if(!(str.indexOf("State Name is Required") > -1)){
+		  str += 'State Name is Required.';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 	}
-	if(scope == 3)
+	else if(scope == 3)
 	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
+		var stateVal=document.getElementById('stateDiv'+key).value;
+		var districtVal=document.getElementById('districtDiv'+key).value;
 		if(stateVal == 0)
 		{
-		str += 'State Name is Required.<br>';
+		if(!(str.indexOf("State Name is Required") > -1)){
+		 str += 'State Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(districtVal == 0)
 		{
-		str += 'District Name is Required.';
+		if(!(str.indexOf("District Name is Required") > -1)){
+		 str += 'District Name is Required.';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 	}
-	if(scope == 4)
+	else if(scope == 4)
 	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
+		var stateVal=document.getElementById('stateDiv'+key).value;
+		var districtVal=document.getElementById('districtDiv'+key).value;
+		var constituencyVal=document.getElementById('constituencyDiv'+key).value;
 		if(stateVal == 0)
 		{
-		str += 'State Name is Required.<br>';
+		if(!(str.indexOf("State Name is Required") > -1)){
+		 str += 'State Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(districtVal == 0)
 		{
-		str += 'District Name is Required.<br>';
+		if(!(str.indexOf("District Name is Required") > -1)){
+		 str += 'District Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(constituencyVal == 0)
 		{
-		str += 'Constituency Name is Required.';
+		if(!(str.indexOf("Constituency Name is Required") > -1)){
+		 str += 'Constituency Name is Required.';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 	}
-	if(scope == 5)
+	else if(scope == 5)
 	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
+		var stateVal=document.getElementById('stateDiv'+key).value;
+		var districtVal=document.getElementById('districtDiv'+key).value;
+		var constituencyVal=document.getElementById('constituencyDiv'+key).value;
+		var mandalVal=document.getElementById('mandalDiv'+key).value;
 		if(stateVal == 0)
 		{
-		str += 'State Name is Required.<br>';
+		if(!(str.indexOf("State Name is Required") > -1)){
+		 str += 'State Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(districtVal == 0)
 		{
-		str += 'District Name is Required.<br>';
+		if(!(str.indexOf("District Name is Required") > -1)){
+		 str += 'District Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(constituencyVal == 0)
 		{
-		str += 'Constituency Name is Required.<br>';
+		if(!(str.indexOf("Constituency Name is Required") > -1)){
+		 str += 'Constituency Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(mandalVal == 0)
 		{
-		str += 'Mandal Name is Required.';
+		if(!(str.indexOf("Mandal Name is Required") > -1)){
+		 str += 'Mandal Name is Required.';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 	}
-	if(scope == 6 || scope == 8 || scope == 9)
+	else if(scope == 6 || scope == 8 || scope == 9)
 	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
-		var villageVal=document.getElementById('villageDiv').value;
+		var stateVal=document.getElementById('stateDiv'+key).value;
+		var districtVal=document.getElementById('districtDiv'+key).value;
+		var constituencyVal=document.getElementById('constituencyDiv'+key).value;
+		var mandalVal=document.getElementById('mandalDiv'+key).value;
+		var villageVal=document.getElementById('villageDiv'+key).value;
 		if(stateVal == 0)
 		{
-		str += 'State Name is Required.<br>';
+		if(!(str.indexOf("State Name is Required") > -1)){
+		 str += 'State Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(districtVal == 0)
 		{
-		str += 'District Name is Required.<br>';
+		if(!(str.indexOf("District Name is Required") > -1)){
+		 str += 'District Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(constituencyVal == 0)
 		{
-		str += 'Constituency Name is Required.<br>';
+		if(!(str.indexOf("Constituency Name is Required") > -1)){
+		 str += 'Constituency Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(mandalVal == 0)
 		{
-		str += 'Mandal Name is Required.<br>';
+		if(!(str.indexOf("Mandal Name is Required") > -1)){
+		 str += 'Mandal Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(villageVal == 0)
 		{
-		str += 'Villiage Name is Required.';
+		if(!(str.indexOf("Villiage Name is Required") > -1)){
+		 str += 'Villiage Name is Required.';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 	}
-	if(scope == 7)
+	else if(scope == 7)
 	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
+		var stateVal=document.getElementById('stateDiv'+key).value;
+		var districtVal=document.getElementById('districtDiv'+key).value;
+		var constituencyVal=document.getElementById('constituencyDiv'+key).value;
+		var mandalVal=document.getElementById('mandalDiv'+key).value;
 		
 		if(stateVal == 0)
 		{
-		str += 'State Name is Required.<br>';
+		if(!(str.indexOf("State Name is Required") > -1)){
+		 str += 'State Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(districtVal == 0)
 		{
-		str += 'District Name is Required.<br>';
+		if(!(str.indexOf("District Name is Required") > -1)){
+		 str += 'District Name is Required.<br>';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(constituencyVal == 0)
 		{
-		str += 'Constituency Name is Required.<br>';
+		if(!(str.indexOf("Constituency Name is Required") > -1)){
+		  str += 'Constituency Name is Required.<br>';
+		 }
 		flag = false;
+		allLocSeleted = false;
 		}
 		if(mandalVal == 0)
 		{
-		str += 'Mandal Name is Required.';
+		if(!(str.indexOf("Mandal Name is Required") > -1)){
+		 str += 'Mandal Name is Required.';
+		}
 		flag = false;
+		allLocSeleted = false;
 		}
 		
 	}
+  });
+  if(allLocSeleted){
+     var containsDuplicateLoc = false;
+	  var locations = new Array();
+	  $('.scopeLevel').each(function() {
+	    var locScope = $(this).val();
+        var key = $(this).attr("key");
+	    var locValue = $('[name="locationValue['+key+']"]').val();
+		for(var i in locations){
+		   if(locations[i].id == locScope && locations[i].value == locValue ){
+		      containsDuplicateLoc = true;
+			  flag = false;
+			  str += 'News Location cannot be duplicate(Ex: If Location Scope is Constituency and Assembly Consti is kavali Once again Location Scope Constituency and Assembly Consti kavali cannot be selected).<br>';
+		   }
+		  if(containsDuplicateLoc){
+		     break;
+		  }
+		}
+		if(containsDuplicateLoc){
+		     return false;
+		}
+		var obj={
+		   id:locScope,
+		   value:locValue
+		}
+		locations.push(obj);
+	  });
+  }
 	  try{
 	    var invalidImg = false;
 	    $('.addFileImgCls').each(function() {
@@ -6059,624 +3241,6 @@ function uploadFile()
 	else
 		return;
 }
-
- function addMoreFiles1(value,text)
-{
-	//var moreDivElmt = document.createElement("addMoreFilesDiv");
-	var str ='';
-	str+='<div id="'+value+'"  class="div'+value+'">';
-	str+="<u><span style='font-weight:bold;'>Upload "+text+" Files</span></u>";
-	str +='<table style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId0'+value+'">';
-
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
-
-	str += ' <tr>';
-	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" class="newsFile"/></td>';
-	str += ' </tr>';
-	str += ' <tr>';
-	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="filesourceId'+value+'" name="fileSourceId" style="width:175px;"><option value="0">Select Source</option><option value="1">Eenadu</option><option value="2">Sakshi</option></select></td>';
-	str += ' </tr>';
-	str += ' <tr>';
-	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+value+'" name="sourceLanguageId" style="width:175px;"></select></td>';
-	
-	str += ' </tr>';
-	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsedition'+value+'" name="newsedition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength newsLengthCls" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
-	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/plus.png" title="Click here to add more file" onclick="addMoreFiles2('+value+')"></td>';
-	str += '   </tr>';
-	str+='<input type="hidden" name="filesList" value="'+value+'"/>';
-	str +='</table>';
-	
-	str+='</div>';
-	$('#uploadFilesDiv').append(str);
-	//document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
-	//document.getElementById(value).appendChild(moreDivElmt);
-	getSource("filesourceId"+value+"");
-	getLanguage('sourceLangId'+value+'');
-	//fileCount++;
-} 
-var divCount = 1;
-function addMoreFiles2(value)
-{
-	//var moreDivElmt = document.createElement("addMoreFilesDiv");
-	var str ='';
-	str +='<table class="moreFileTable" style="background:#e3e3e3;border-radius:9px;padding:5px;margin-top:12px;" id="moreFileTableId'+divCount+''+value+'">';
-	str += ' <tr>';
-	str +='<td>File Path</td>';
-	str += ' <td class="selectWidthPadd"><input type="file" name="userImage" id="newsFileId'+value+'" size="25" /></td>';
-	str += ' </tr>';
-	str += ' <tr>';
-	str += ' <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="filesourceId'+divCount+''+value+'" name="fileSourceId" style="width:175px;" class="source'+value+'" ></select></td>';
-	str += ' </tr>';
-	str += ' <tr>';
-	str += ' <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
-	str += ' <td class="selectWidthPadd"><select id="sourceLangId'+divCount+''+value+'" name="sourceLanguageId" style="width:175px;" class="lang'+value+'"></select></td>';
-	
-	str += ' </tr>';
-	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsedition'+value+'" name="newsedition" style="width:175px;margin-top:8px;"><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno'+value+'" name="pageno" class="pageno pagenoCls" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric(this.value);"></input></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength'+value+'" class="newslength newsLengthCls" name="newslength" size="25" maxlength="200" style="margin-top:8px;" onKeyup="IsNumeric1(this.value);"></input></td>';
-	//str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(\'moreFileTableId'+value+'\')"></td>';
-	str +='<td><img style="background: #fff; border-radius: 11px; padding: 4px;" src="images/minus.png" title="Click here to delete file" onclick="deleteFileDiv(this)"></td>';
-	str += '   </tr>';
-	str+='<input type="hidden" name="filesList" value="'+value+'"/>';
-	str +='</table>';
-	//str+='<input type="hidden" name="filesList" value="'+value+'"/>';
-	//$('#'+value).append(str);
-	$('#'+value+'').append(str);
-	//document.getElementById("addMoreFilesDiv").appendChild(moreDivElmt);
-	//document.getElementById(value).appendChild(moreDivElmt);
-	//alert("filesourceId"+value+"");
-
-	getSource1("filesourceId"+divCount+value);
-	getLanguage1("sourceLangId"+divCount+value);
-	//fileCount++;
-	divCount ++;
-
-} 
-function deleteFileDiv(element)
-{
-	//$('#'+id).remove();
-
-	//$('#'+id).closest().find('.moreFileTable').remove();
-	$($(element)).closest('table').remove();
-}
-function getSource1(selectOptionId){
-	//$('#'+selectOptionId).find('option').remove();
-	
-	$.each(sourceObj,function(index,value){
-		$('#'+selectOptionId).append('<option value="'+sourceObj[index].id+'">'+sourceObj[index].name+'</option>');
-
-	});
-	
- 	
-}
-
-function getLanguage1(fillOptionId)
-{
-
-//$('#'+fillOptionId).find('option').remove();
-	
-	$.each(languagesObj,function(index,value){
-		$('#'+fillOptionId).append('<option value="'+languagesObj[index].id+'">'+languagesObj[index].name+'</option>');
-
-	});
-		
-}
-
-function validateNewsFileUpload1()
-{
-	var fileTitle = document.getElementById('newsfileTitle').value;
-	var fileDesc = document.getElementById('newsfileDescription').value;
-	//var fileVal = document.getElementById("newsfileId").value;
-	//var source = document.getElementById("source").value;
-	//var languageId = document.getElementById("language").value;
-	//var keywords = document.getElementById("keywords").value;
-	//var galEle = document.getElementById("gallaryId").value;
-	var fileDate = document.getElementById("existingFromTextNews").value;
-	var scope = document.getElementById("scopeDiv").value;
-	
-	//var pageNo = document.getElementById("pageno").value;
-	//var pageNo = document.getElementById("newslength").value;
-	var flag = true;
-
-	fileTitle = removeAllUnwantedCharacters1(fileTitle);	
-	fileDesc = removeAllUnwantedCharacters1(fileDesc);
-	document.getElementById('newsfileTitle').value = fileTitle;
-	document.getElementById('newsfileDescription').value = fileDesc;
-
-	var errorDivEle = document.getElementById('uploadNewsFileErrorDiv');
-	var str = '<font color="red">';
-	/*if(galEle == 0)
-	{
-		str += 'Select Gallery<br>';
-		flag = false;
-	}*/
-	if(fileDate.length == 0)
-	{
-		str +='File Date is Required<br>';
-		flag = false;
-	}
-	if(fileTitle.length == 0)
-	{
-		str += ' Title is Required.<br>';
-		flag = false;
-	}
-
-
-		
-	 $('.newsFile').each(function() {
-           if($.trim($(this).val()).length == 0)
-	       {
-		     str+='File Required';
-		     flag = false;
-			 return false;
-	       }
-       });
-
-
-	 $('.pageno').each(function() {
-           if($.trim($(this).val()).length == 0)
-	       {
-		     str += ' Page Number is Required.<br>';
-		     flag = false;
-			 return false;
-	       }
-       });
-	$('.pageno').each(function() {
-           if($.trim($(this).val()).length > 0)
-	       {
-		     if(isNaN($.trim($(this).val()))){
-				 str += ' Page Number must be Integer.<br>';
-				 flag = false;
-				 return false;
-			 }
-	       }
-       });
-	   $('.newslength').each(function() {
-           if($.trim($(this).val()).length == 0)
-	       {
-		     str += ' News Length is Required.<br>';
-		     flag = false;
-			 return false;
-	       }
-       });
-	$('.newslength').each(function() {
-           if($.trim($(this).val()).length > 0)
-	       {
-		     if(isNaN($.trim($(this).val()))){
-				 str += ' News Length must be number.<br>';
-				 flag = false;
-				 return false;
-			 }
-	       }
-       });
-	if(fileTitle.length >50)
-	{
-		str += 'Title should be less than 50 Characters<br>';
-		flag = false;
-	}
-	if(fileDesc.length == 0)
-	{
-		str += 'Description is Required.<br>';
-		flag = false;
-	}
-	if(fileDesc.length > 200)
-	{
-		str += 'Description Should not exceed 200 Characters.<br>';
-		flag = false;
-	}
-	/*if(fileVal.length == 0)
-	{
-		str += 'File is Required.<br>';
-		flag = false;
-	}*/
-	/*if(source.length == 0)
-	{
-		str += 'Source is Required.<br>';
-		flag = false;
-	}
-	if(languageId.length == 0)
-	{
-		str += 'Language is Required.<br>';
-		flag = false;
-	}*/
-	/*if(keywords.length >200)
-	{
-		str += 'Keywords should be less than 200 Characters<br>';
-		flag = false;
-	}*/
-
-	if($("#candidateList > option:selected").length == 0)
-	{
-		str += 'Select Candidate<br>';
-		flag = false;
-
-	}
-	if(scope == 0 )
-	{
-		str += 'Location Scope is Required.';
-		flag = false;
-	}
-	if(scope == 2)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 3)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 4)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 5)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.<br>';
-		flag = false;
-		}
-		if(mandalVal == 0)
-		{
-		str += 'Mandal Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 6 || scope == 8 || scope == 9)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
-		var villageVal=document.getElementById('villageDiv').value;
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.<br>';
-		flag = false;
-		}
-		if(mandalVal == 0)
-		{
-		str += 'Mandal Name is Required.<br>';
-		flag = false;
-		}
-		if(villageVal == 0)
-		{
-		str += 'Villiage Name is Required.';
-		flag = false;
-		}
-	}
-	if(scope == 7)
-	{
-		var stateVal=document.getElementById('stateDiv').value;
-		var districtVal=document.getElementById('districtDiv').value;
-		var constituencyVal=document.getElementById('constituencyDiv').value;
-		var mandalVal=document.getElementById('mandalDiv').value;
-		
-		if(stateVal == 0)
-		{
-		str += 'State Name is Required.<br>';
-		flag = false;
-		}
-		if(districtVal == 0)
-		{
-		str += 'District Name is Required.<br>';
-		flag = false;
-		}
-		if(constituencyVal == 0)
-		{
-		str += 'Constituency Name is Required.<br>';
-		flag = false;
-		}
-		if(mandalVal == 0)
-		{
-		str += 'Mandal Name is Required.';
-		flag = false;
-		}
-		
-	}
-	str += '</font>';
-	errorDivEle.innerHTML = str;
-	if(flag == false)
-	{
-		// $("#uploadNewsBtnId").css("background","#51A351");
-		$('html, body').animate({
-         scrollTop: $("#uploadNewsFileErrorDiv").offset().top
-     }, 2000);
-		
-	}
-	else
-	//$("#uploadNewsBtnId").css("background","#BBBB51");
-	return flag;
-}
-
-
-function  buildUploadNews()
-{
-   var tempPartyId = 872;
-   var str ='';
-	str+='<div id="content" style="width:650px;">';
-	//str +=  '<table style="margin:5px;width:40%;margin-left:50px;">';
-	/*str +='<table class="aligncenter m_top10">';
-	str +=  '<tr>';
-	str += 	'<td><input type="button" class="btn btn-success highlight" value="Create News Categery" onclick="buildCreateNewsCategory()"></td>';
-	str += '<td><input type="button" class="btn btn-success highlight" value="Upload News" onclick="buildUploadNews()"></td>';
-	str += 	 '</tr>';
-	str += 	'</table>';*/
-	//str += '<fieldset class="imgFieldset" style="width:504px;">';
-	str += '<form name="uploadForm" action="uploadFilesAction.action" enctype="multipart/form-data"  method="post" id="uploadNewsForm">';
-	str += '<h2 align="center">Upload A News</h2>';
-	str += '<table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv1" /></td></tr></table>';
-	str += '<table class="aligncenter" style="margin-left:123px;left:50%;">';
-	
-    
-	//keyworda Start
-	str +='<tr>';
-	str += '       <td class="tdWidth1">Keyword : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd multiKeywordList"><input type="text" name="keywordList" id="keywordListId1"/></td>';
-	str +='</tr>';
-
-    str +='<tr>';
-	str += '       <td class="tdWidth1"></td>';
-	str += '  <td class="selectWidthPadd"><div style="margin-top: 2px; margin-bottom: 14px;">After entering the keyword comma(,) is mandatory</div></td>';
-	str +='</tr>';
-	/*str += '   </tr>';
-	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="category" name="category" onchange="getGallariesForSelectedCategory()"><option value="0">Select Category</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += ' <td class="tdWidth1">Select Gallery : </td><td class="selectWidthPadd"><select onchange="buildPartyNewsVisibility()" id="gallaryId" name="gallaryId"/></select></td>';
-	str += '   </tr>';*/
-
-
-    str += '   <tr>';
-	str += '       <td class="tdWidth1">Title : <font class="requiredFont">*</font><b></td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="newsfileTitle" name="fileTitle" size="25" maxlength="160" ></input></td>'; 
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Description : <font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><textarea id="newsfileDescription" cols="20" rows="3" name="fileDescription" maxlength="330"></textarea></td>';
-	str += '   </tr>';
-	
-	/* str += '   <tr>';
-	str += '       <td class="tdWidth1">Keywords : </td>';
-	str += '       <td class="selectWidthPadd"><input type="text" id="keywords" name="keywords" size="25" maxlength="200" ></input></td></tr>'; */
-
-
-	str += '<TR>';
-	str += ' <td><b><font>File Date<font class="requiredFont">*</font></font></b></td>';
-	str += '<TD style="padding-right: 31px;"><input type="text" id="existingFromTextNews" class="dateField" readonly="true" name="fileDate" size="20" />';
-	
-	str += '<DIV class="yui-skin-sam"><DIV id="existingFromText_Div" style="position:absolute;"></DIV></DIV></TD>';
-	str += '<TD>';
-	str += '<A href="javascript:{}" title="Click To Select A Date" onclick="showDateCal()">';
-	//str += '<IMG width="23" height="23" src="images/icons/constituencyManagement/calendar.jpeg" border="0"/></A>';
-	str += '</TD>';
-	str += '</TR>';
-	str	+= '<tr>';
-	str += '       <td class="tdWidth1">Source : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="source" name="fileSourceId" ><option value="0">Select Source</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Language : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="language" name="sourceLanguageId" ><option value="0">Select Language</option></select></td>';
-	/*str += '   </tr>';
-	str += '       <td class="tdWidth1">Category : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="category" name="category" ><option value="0">Select Category</option></select></td>';
-	str += '   </tr>';*/
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Importance : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsimportance" name="newsimportance" ><option value="0">Select NewsImportance</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Edition : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><select id="newsedition" name="newsedition" ><option value="1">Main Edition</option><option value="2">District/Sub Edition</option></select></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">Page Number : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="pageno" name="pageno" size="25" class="pageno pagenoCls" maxlength="200" onKeyup="IsNumeric(this.value);"></input></td>';
-	str += '    <td id="Err4Numer">Only Numbers</td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">News Length : <font class="requiredFont">*</font></td>';
-	str += '  <td class="selectWidthPadd"><input type="text" id="newslength" name="newslength" class="newslength newsLengthCls" size="25" maxlength="200" onKeyup="IsNumeric1(this.value);"></input></td>';
-	str += '   <td id="Err4Numer1">Only Numbers</td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td class="tdWidth1">File Path : <font class="requiredFont">*</font></td>';
-	str += '       <td class="selectWidthPadd"><input type="file" name="userImage" id="newsfileId" size="25" style="margin-top:8px;"/></td>';
-	str += '       <td class="selectWidthPadd"><img style="background:#cdcdcd;padding:5px;" src="images/plus.png" onclick="addMoreFiles()" title="Click here to add more images" alt="Click here to add more images"/></td>';
-	str += '   </tr>';
-	str += '   <tr>';
-	str += '      <td colspan="2"> <div id="addMoreFilesDiv"></div></td>';
-	str += '   </tr>';
-	str += '   </tr>';
-
-    str +='<tr><td class="tdWidth1" style="width:97px;">Image To Display : </td><td><input type="file" name="imageForDisplay" id="ImagenewsfileId" size="25" /></td></tr>';
-
-	str += '   <tr>';
-	str += '       <td></td>';
-	str += ' <td id="newsPublicRadioDiv"><label class="radio"><input type="radio" value="public" name="visibility" id="newsPublicRadioId" checked="true"><b><font id="newsfontDiv" >Visible to Public Also</font></b></input></label></td>';
-    str += '   </tr>';
-	str += '   <tr>';
-	str += '       <td></td>';
-	str += '       <td id="newsprivateRadioDiv"><label class="radio"><input type="radio" value="private" name="visibility" id="newsprivateRadioId"><b><font>Make This Private</font></b></input></label></td>';
-	str += '   </tr>';
-	str +='    <tr>';
-    str +='	   <td class="tdWidth1">Location Scope : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"  /></td>';
-    str +='  </tr>';
-	str +='  <tr>';
-	str +='    <td colspan="2">';
-	str +='       <div id="showScopeSubs" />'; 
-	str +='    </td>';
-	str +='  </tr>';
-	str +='<tr>';
-	str +='<td class="tdWidth1">News description in details : </td>';
-	str +='<td><textarea id="newsDescriptionId" name="newsDescription" rows="3" cols="20" id="newsDesc"></textarea></td>';
-	str +='</tr>';
-	str += '</table>';
-
-	str +='<input type="hidden" name="profileType" value="party_profile">';
-	str +='<input type="hidden" name="profileId" value="'+tempPartyId+'">';
-	str +='<input type="hidden" name="profileGalleryType" value="news_gallery">';
-	//str+='<input type="radio" style="margin-left:55px;" onclick="otherProfiles(\'otherProNewsDiv\',\'fromPartyProfile\',\'News Gallary\')"/>    Do you want to upload this file to other profiles';
-	str+='<div id="otherProNewsDiv" style="margin: 10px;"></div>'; 
-	str+='<div id="uploadnewsgalAjax" style="display:none;margin-left:430px;clear:both;"><img src="images/search.jpg"/></div>';
-	str += '<table class="aligncenter"><tr><td><input id="uploadNewsBtnId" type="button" class="btn btn-success " value="Upload News" style="background-color:#57B731" onClick="uploadNewsFromPartyPage()"></td><td><input id="uploadNewsBtnId" type="button" class="btn btn-success highlight" value="Cancel"  onClick="clearDiv(\'newsGallaryDiv\');"></td></tr></table>';
-
-    str +='<input type="hidden" id="keywordListId" name="keywordList"/>';
-
-	str += '</form>';
-	//str += '</fieldset>';
-	str+='</div>';
-	document.getElementById("newsGallaryDiv").innerHTML = str;
-	//getPartyGallariesForUplaod("News Gallary");
-	
-	 getScopes();
-	 getSource("source");
-	 getLanguage("language");
-	 getNewsImportance();
-	 //getCategory();
-
-	 getScopeForUser();
-
-   //keywords
-   $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
-
-
-
-	 $(document).ready(function(){
-	 	$("#source").change(function () {
-	
-var str = "";
-str = $("#source option:selected").text();
-//alert(str)
-
-if(/Eenadu Telugu/i.test(str))
-{
-if(!$('#newsfileTitle').hasClass('enadu'))
-{
-$('#newsfileTitle').addClass('enadu');
-$('#newsfileDescription').addClass('enadu');
-$('#keywords').addClass('enadu');
-$('#newsDescriptionId').addClass('enadu');
-}
-}else{
-if($('#newsfileTitle').hasClass('enadu'))
-{
-$('#newsfileTitle').removeClass('enadu');
-$('#newsfileDescription').removeClass('enadu');
-$('#keywords').removeClass('enadu');
-$('#newsDescriptionId').removeClass('enadu');
-}
-}
-});
-});
-}
-
-function getCandidatesOfSelectedParty(partyId)
-{
-    $('#list1').find('option').remove();
-	$('#candidateAjaxImg').show();
-	
-		var jsObj = {
-			partyId :partyId,
-			task : "getCandidatesOfAParty"	
-		};
-	
-	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-	var url = "getCandidatesOfAParty.action?"+rparam;					
-	
-callAjax(jsObj,url);
-}
-
-function buildPartyCandidates(results)
-{
-	$.each(results,function(index , value){
-		$('#list1').append('<option value="'+value.id+'">'+value.name+'</option>');
-
-	});
-
-
-}
-
 
 
 function showUserNewsCategoryStatus(results)
@@ -7217,7 +3781,7 @@ function getTotalNewsWithPagination()
 		
 		if(userType == "Admin")
 		{
-			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+')"/>';
+			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+',\'addresponse\')"/>';
 		//str +='<input  class="btn btn-info" type="button" onclick="editFile('+fileId+')" value="Edit" />';
 
 		}
@@ -7270,8 +3834,7 @@ if(loginUserType !='Admin'){
 			   {key:"source", label:"SOURCE"},
 			   {key:"title", label:"TITLE",formatter:YAHOO.widget.DataTable.title},
 			   {key:"description", label:"DESCRIPTION",formatter:YAHOO.widget.DataTable.description},
-			   {key:"locationScopeValue", label:"IMPACT AREA"},
-			   {key:"locationValue", label:"AREA NAME"},
+			   {key:"locationValue", label:"LOCATION"},
 			   {key:"fileDateAsString", label:"NEWS DATE"}
 	  ];
   }
@@ -7281,8 +3844,7 @@ if(loginUserType !='Admin'){
 				   {key:"source", label:"SOURCE"},
 				   {key:"title", label:"TITLE",formatter:YAHOO.widget.DataTable.title},
 				   {key:"description", label:"DESCRIPTION",formatter:YAHOO.widget.DataTable.description},
-				   {key:"locationScopeValue", label:"IMPACT AREA"},
-				   {key:"locationValue", label:"AREA NAME"},
+				   {key:"locationValue", label:"LOCATION"},
 				   {key:"fileDateAsString", label:"NEWS DATE"},
 				   {key:"Edit",label:"Edit",formatter:YAHOO.widget.DataTable.Edit},
 				   {key:"Delete",label:"Delete",formatter:YAHOO.widget.DataTable.Delete}
@@ -7294,7 +3856,7 @@ if(loginUserType !='Admin'){
   resultsList: "fileVOList",
    fields: [
              {key:"fileId", parser:"number"},
-			        "eenaduTeluguFontStr","source","title", "descEenadu","description", "locationScopeValue","locationValue", "fileDateAsString","userType"],
+			        "eenaduTeluguFontStr","source","title", "descEenadu","description","locationValue", "fileDateAsString","userType"],
 			        
 
     metaFields: {
@@ -7532,40 +4094,7 @@ var descriptionValue = $("#newsreportfileDescription").val();
 		elLiner.innerHTML=str;
 					
 	};
-	
-	YAHOO.widget.DataTable.location = function(elLiner, oRecord, oColumn, oData) 
-	{
-	    var str='';
-		
-		var locationName = oRecord.getData("locationName");
-		var location = oRecord.getData("locationScopeValue");
-		str +=''+locationName+'&nbsp;&nbsp;'+location+'';
-		  
-		elLiner.innerHTML=str;
-					
-	};
 
-	YAHOO.widget.DataTable.Edit = function(elLiner, oRecord, oColumn, oData){
-	
-	var str='';
-		
-		var locationName = oRecord.getData("locationName");
-		var location = oRecord.getData("locationScopeValue");
-		str +=''+locationName+'&nbsp;&nbsp;'+location+'';
-		  
-		elLiner.innerHTML=str;
-	}
-	
-	YAHOO.widget.DataTable.Delete = function(elLiner, oRecord, oColumn, oData){
-	
-	var str='';
-		
-		var locationName = oRecord.getData("locationName");
-		var location = oRecord.getData("locationScopeValue");
-		str +=''+locationName+'&nbsp;&nbsp;'+location+'';
-		  
-		elLiner.innerHTML=str;
-	}
 	
 	YAHOO.widget.DataTable.EditFile = function(elLiner, oRecord, oColumn, oData) 
 	{
@@ -7573,7 +4102,7 @@ var descriptionValue = $("#newsreportfileDescription").val();
 		var fileId =  oRecord.getData("contentId");
 		
 		
-			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+')"/>';
+			str+='<img src="images/icons/edit.png" style="cursor: pointer;" onclick="editFile('+fileId+',\'generatereport\')"/>';
 		
 		elLiner.innerHTML=str;					
 	}; 
@@ -7602,7 +4131,7 @@ var descriptionValue = $("#newsreportfileDescription").val();
 		   {key:"fileTitle1",label:"Title",width:180,formatter:YAHOO.widget.DataTable.title},
 		   {key:"fileDate",label:"File Date",width:80},
 		   {key:"candidateName",label:"Candidate Name"},
-		   {key:"",label:"Location",formatter:YAHOO.widget.DataTable.location},
+		   {key:"locationName",label:"Location"},
 		   {key:"",label:"Edit",formatter:YAHOO.widget.DataTable.EditFile},
 		   {key:"",label:"delete",formatter:YAHOO.widget.DataTable.DeleteFile}
 		  ];  
@@ -7613,7 +4142,7 @@ var descriptionValue = $("#newsreportfileDescription").val();
   resultsList: "fileVOList",
    fields: [
              {key:"contentId", parser:"number"},
-			        "fileTitle1","source","eenaduTeluguFontStr","fileDate","candidateName","locationName","locationScopeValue","tempvar"],
+			        "fileTitle1","source","eenaduTeluguFontStr","fileDate","candidateName","locationName","tempvar"],
 
     metaFields: {
     totalRecords: "count" // Access to value in the server response
@@ -7660,7 +4189,7 @@ function getKeywordList(){
 		 $("#keywordDiv").html('');
 		 $("#keywordDiv").html('<input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId">');
 		 
-         $("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});		 
+         $("#keywordId").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});		 
 		}
 		
 		});
@@ -8070,9 +4599,9 @@ function deleteFile(fileId)
 	callAjax(jsObj, url);
 }
 
-function editFile(id){
+function editFile(id,type){
 
-  var browser1 = window.open("editNewsAction.action?fileId="+id,"EditNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
+  var browser1 = window.open("editNewsAction.action?fileId="+id+"&type="+type,"EditNewsWindow","scrollbars=yes,height=600,width=1050,left=200,top=200");	
      browser1.focus();
 }
 

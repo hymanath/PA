@@ -18,4 +18,7 @@ public interface IKeywordDAO extends GenericDao<Keyword, Long> {
 	
 	public List<Long> getKeywordIdByKeyword(String keywordName);
 
+	public List<Keyword> getKeywordByName(String keywordName);
+	
+	public List<Object[]> getKeyWordsBySearchString(String searchString);
 }

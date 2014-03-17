@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.model.FilePaths;
 import com.itgrids.partyanalyst.model.FileSourceLanguage;
 import com.itgrids.partyanalyst.model.Gallary;
 import com.itgrids.partyanalyst.model.PartyGallery;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.UserGallary;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
@@ -51,6 +52,7 @@ import com.itgrids.partyanalyst.util.IConstants;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.dao.ICategoryDAO;
+import com.itgrids.partyanalyst.dao.hibernate.UserAddressDAO;
 
 public class PartyDetailsService implements IPartyDetailsService {/*
 	
@@ -2447,28 +2449,34 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 	     if(toDateStr != null && !toDateStr.equalsIgnoreCase(""))
 	       toDate = format.parse(toDateStr);
 	    	
-		List<File> newsDetails = fileGallaryDAO.getNewsCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
+		List<UserAddress> newsDetails = fileGallaryDAO.getNewsCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
 		Long newsDetailsCount = fileGallaryDAO.getNewsTotalCountForALocation1(locationId,startRecord,maxRecord,queryType,fromDate,toDate);
 		Set<Long> fileIds = new HashSet<Long>();
-		for(File param:newsDetails){
-			fileIds.add(param.getFileId());
+		if(newsDetails !=null && newsDetails.size() > 0)
+		{
+		for(UserAddress param:newsDetails){
+			fileIds.add(param.getFile().getFileId());
 		}
+		}
+		if(fileIds != null && fileIds.size() > 0)
+		{
 		Map<Long,String> candidateNames = candidateDetailsService.getCandidateNames(fileIds);
 		Map<Long,String> keywordsCount = candidateDetailsService.getKeywordsCountByFileId(fileIds);
 		Map<Long,String> categorysCount = candidateDetailsService.getCategorysCountByFileId(fileIds);
-		for(File param:newsDetails)
+		
+		for(UserAddress param:newsDetails)
 		{
 			 file =new FileVO();
 			 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			 String newDate = formatter.format(param.getFileDate());
-			 file.setContentId(param.getFileId());
+			 String newDate = formatter.format(param.getFile().getFileDate());
+			 file.setContentId(param.getFile().getFileId());
 			 file.setCandidateId(872l);
-			 if(param.getFont()!=null)
-				 file.setFont(new Long(param.getFont().getFontId()));
-			 if(param.getDescFont()!=null)
+			 if(param.getFile().getFont()!=null)
+				 file.setFont(new Long(param.getFile().getFont().getFontId()));
+			 if(param.getFile().getDescFont()!=null)
 				 file.setDescEenadu(true);
 			 
-			 Set<FileSourceLanguage> set = param.getFileSourceLanguage();
+			 Set<FileSourceLanguage> set = param.getFile().getFileSourceLanguage();
 			 String sourceString = "";
 			 for(FileSourceLanguage source:set)
 					if(source.getSource() != null)
@@ -2476,11 +2484,11 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 
 			 sourceString = sourceString.substring(0, sourceString.length()-1);
 			 file.setSource(sourceString);
-			 
-			 file.setFileTitle1(param.getFileTitle()!= null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(param.getFileTitle())):"");
-			 file.setDescription(param.getFileDescription() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(param.getFileDescription())):"");
-			 file.setDisplayImageName(param.getFileName());
-			 file.setDisplayImagePath(param.getFilePath());
+			
+			 file.setFileTitle1(param.getFile().getFileTitle()!= null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(param.getFile().getFileTitle())):"");
+			 file.setDescription(param.getFile().getFileDescription() != null?StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(param.getFile().getFileDescription())):"");
+			 file.setDisplayImageName(param.getFile().getFileName());
+			 file.setDisplayImagePath(param.getFile().getFilePath());
 			 file.setImagePathInUpperCase("TDP.png");
 			 file.setFileDate(newDate);
 			 file.setFileType("Party");
@@ -2488,7 +2496,7 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 file.setKeywords(keywordsCount.get(file.getContentId())!=null ? keywordsCount.get(file.getContentId()) : "");
 			 file.setCandidateName(candidateNames.get(file.getContentId())!=null ? candidateNames.get(file.getContentId()) : "");
 			 List<Long> fileId = new ArrayList<Long>();
-		     fileId.add(Long.valueOf(param.getFileId().toString()));
+		     fileId.add(Long.valueOf(param.getFile().getFileId().toString()));
 		     List<Object[]> responseCount = newsResponseDAO.getResponceCountForFiles(fileId);
 		     
              if(responseCount.size() > 0 && responseCount != null){
@@ -2496,6 +2504,7 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
              		file.setResponseCount(Integer.parseInt(parmas[1].toString()));
              	}       
              }
+		
              else
             	 file.setResponseCount(0);
              
@@ -2503,11 +2512,14 @@ public List<FileVO> generateNewsDetails(List<Object[]> countByCategoryList,Long 
 			 file.setTotalResultsCount(newsDetailsCount);
 			 result.add(file);
 		}
+		}
 		}catch (Exception e) {
 			log.error("Exception occured in getNewsCountForALocation1",e);
 		}
 		return result;
 	}
+	
+	
 }
 	
 

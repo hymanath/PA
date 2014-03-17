@@ -54,6 +54,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 	private List<SelectOptionVO> parlConstiList1;
 	private List<SelectOptionVO> assemConstiList1;
 	private List<AddressVO> userDetailsVO;
+	private String type;
 	
 	
 	public List<AddressVO> getUserDetailsVO() {
@@ -207,6 +208,15 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 			INewsMonitoringService newsMonitoringService) {
 		this.newsMonitoringService = newsMonitoringService;
 	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public NewsEditVO getModel() {
 	        return news;
 	    }
@@ -224,7 +234,7 @@ ServletRequestAware, ServletResponseAware,ServletContextAware,ModelDriven<NewsEd
 			if (registrationVO != null) 
 			{
 			// if("Admin".equalsIgnoreCase(registrationVO.getUserType()) || "subuser".equalsIgnoreCase(registrationVO.getUserType())  )
-				 keywordsList = candidateDetailsService.getTotalKeyWords();
+				 //keywordsList = candidateDetailsService.getTotalKeyWords();
 				 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
 				 {
 					 

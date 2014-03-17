@@ -18,4 +18,6 @@ public interface INewsReportDAO extends GenericDao<NewsReport, Long>{
 	
 	public void updateNewKey(String key,Long reportId);
 	
+	 public void deleteNewsReport(Long newsReportId);
+	
 }

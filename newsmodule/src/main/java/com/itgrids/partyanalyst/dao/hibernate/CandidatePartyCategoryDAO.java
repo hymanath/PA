@@ -129,13 +129,16 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> gallaryIds,Integer startIndex,Integer maxIndex)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model " );
+			 if(regionValue != 1)
+				 str.append(" ,UserAddress ua ");
+			 str.append(" where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue != 1)
-			 str.append("and model.candidatePartyFile.file.regionScopes.regionScopesId = :regionValue ") ; 
+			 str.append("and model.candidatePartyFile.file.fileId = ua.file.fileId and ua.regionScopes.regionScopesId = :regionValue ") ; 
 			 if(gallaryIds !=null && gallaryIds.size() > 0)
 			 str.append("and model.gallary.gallaryId in (:gallaryIds) ") ; 
 			 if(fromDate != null)
@@ -168,19 +171,26 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds,Long importanceId,Integer startIndex,Integer maxIndex)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyCategory model ");
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" ,UserAddress ua ");
+			 }
+			 str.append("where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" and  model.candidatePartyFile.file.fileId = ua.file.fileId ");
+			 }
 			 if(regionValue.longValue() == 1l){
-				   str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+				   str.append("and ua.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
-			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
+			   str.append("and ua.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:location) ");
+			   str.append("and ua.constituency.constituencyId in (:location) ");
 			 }else if(regionValue.longValue() == 4l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId = :location ");
+			   str.append("and ua.constituency.constituencyId = :location ");
 			 }
 			 if(gallaryIds !=null && gallaryIds.size() > 0)
 				 str.append("and model.gallary.gallaryId in (:gallaryIds) ") ; 
@@ -216,13 +226,16 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		public Long getAllTheNewsCountForAUserBasedByUserIdCount(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> gallaryIds)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model ");
+			 if(regionValue != 1)
+				str.append(" ,UserAddress ua ");
+			 str.append("where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue != 1)
-			 str.append("and model.candidatePartyFile.file.regionScopes.regionScopesId = :regionValue ") ; 
+				 str.append("and model.candidatePartyFile.file.fileId = ua.file.fileId and ua.regionScopes.regionScopesId = :regionValue ") ;
 			 if(gallaryIds !=null && gallaryIds.size() > 0)
 			 str.append("and model.gallary.gallaryId in (:gallaryIds) ") ; 
 			 if(fromDate != null)
@@ -250,19 +263,26 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		public Long getAllTheNewsCountForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> gallaryIds,Long importanceId)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyCategory model " );
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" ,UserAddress ua ");
+			 }
+			 str.append("where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" and  model.candidatePartyFile.file.fileId = ua.file.fileId ");
+			 }
 			 if(regionValue.longValue() == 1l){
-			     str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			     str.append("and ua.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
-			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
+			   str.append("and ua.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:location) ");
+			   str.append("and ua.constituency.constituencyId in (:location) ");
 			 }else if(regionValue.longValue() == 4l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId = :location ");
+			   str.append("and ua.constituency.constituencyId = :location ");
 			 }
 			 if(gallaryIds !=null && gallaryIds.size() > 0)
 				 str.append("and model.gallary.gallaryId in (:gallaryIds) ") ; 
@@ -326,9 +346,9 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 
 		 queryString.append("select distinct model.candidatePartyFile.file.fileDate , " +
 		 		" model.candidatePartyFile.file.synopsysDescription , " +
-		 		" model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name ," +
+		 		" model.gallary.name , ua.constituency.name ," +
 		 		" model.candidatePartyFile.file.synopsysFont.fontId from " +
-		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		" CandidatePartyCategory model,UserAddress ua where ua.constituency.constituencyId in (:constituencyIds)  and  model.candidatePartyFile.file.fileId = ua.file.fileId  and " +
 		 		" model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
 		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
 		 		" and model.candidatePartyFile.file.isDeleted = 'N' ");
@@ -340,7 +360,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 {
 			queryString.append(" and model.candidatePartyFile.file.fileDate <= :toDate ");
 		 }
-		queryString.append(" order by model.gallary.name , model.candidatePartyFile.file.userAddress.constituency.name , " +
+		queryString.append(" order by model.gallary.name , ua.constituency.name , " +
 		 		" model.candidatePartyFile.file.fileDate");
 		
 		 Query query = getSession().createQuery(queryString.toString());
@@ -366,7 +386,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 StringBuffer queryString = new StringBuffer();
 		 
 		 queryString.append("select distinct model.candidatePartyFile.file.fileId  from " +
-		 		"  CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		"  CandidatePartyCategory model,UserAddress ua where ua.constituency.constituencyId in (:constituencyIds) and  model.candidatePartyFile.file.fileId = ua.file.fileId  and " +
 		 		"  model.gallary.gallaryId in (:categIds) and  model.candidatePartyFile.file.synopsysDescription is not null " +
 		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
 				"  and model.candidatePartyFile.file.isDeleted = 'N' ");
@@ -400,9 +420,9 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		
 		queryString.append("select model.gallary.name,count(distinct model.candidatePartyFile.file.fileId)," +
 		 		"  model.gallary.gallaryId , " +
-		 		"  model.candidatePartyFile.file.userAddress.constituency.constituencyId , " +
-		 		"  model.candidatePartyFile.file.userAddress.constituency.name from " +
-		 		"  CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
+		 		"  ua.constituency.constituencyId , " +
+		 		"  ua.constituency.name from " +
+		 		"  CandidatePartyCategory model,UserAddress ua where ua.constituency.constituencyId in (:constituencyIds) and ua.file.fileId = model.candidatePartyFile.file.fileId and " +
 		 		"  model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null  " +
 		 		"  and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId) " +
 				"  and model.candidatePartyFile.file.isDeleted = 'N' ");
@@ -414,7 +434,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 {
 			queryString.append(" and model.candidatePartyFile.file.fileDate <= :toDate ");
 		 }
-		queryString.append("  group by model.candidatePartyFile.file.userAddress.constituency.constituencyId ,model.gallary.gallaryId ");
+		queryString.append("  group by ua.constituency.constituencyId ,model.gallary.gallaryId ");
 		 
 	    Query query = getSession().createQuery(queryString.toString());
 		 
@@ -438,8 +458,8 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 StringBuffer queryString = new StringBuffer();
 		 
 		 queryString.append("select distinct  model.candidatePartyFile.file.fileId,model.gallary.gallaryId from " +
-		 		" CandidatePartyCategory model where model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:constituencyIds) and " +
-		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
+		 		" CandidatePartyCategory model,UserAddress ua  where ua.constituency.constituencyId in (:constituencyIds) and  model.candidatePartyFile.file.fileId = ua.file.fileId " +
+		 		" and model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
 		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)  " +
 				" and model.candidatePartyFile.file.isDeleted = 'N' ");
 		 if(fromDate != null)
@@ -474,10 +494,10 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 StringBuffer queryString = new StringBuffer();
 		 queryString.append("select model.gallary.name,count(distinct model.candidatePartyFile.file.fileId)," +
 		 		" model.gallary.gallaryId , " +
-		 		" model.candidatePartyFile.file.locationValue , " +
-		 		" model.candidatePartyFile.file.userAddress.district.districtName from " +
-		 		" CandidatePartyCategory model where model.candidatePartyFile.file.regionScopes. regionScopesId = 3 and" +
-		 		" model.candidatePartyFile.file.locationValue in (:districtIds) and " +
+		 		" ua.locationValue , " +
+		 		" ua.district.districtName from " +
+		 		" CandidatePartyCategory model,UserAddress ua where ua.file.fileId = model.candidatePartyFile.file.fileId and ua.regionScopes.regionScopesId = 3 and" +
+		 		" ua.locationValue in (:districtIds) and " +
 		 		" model.gallary.gallaryId in (:categIds) and model.candidatePartyFile.file.synopsysDescription is not null " +
 		 		" and (model.candidatePartyFile.sourceParty.partyId = :partyId or model.candidatePartyFile.destinationParty.partyId = :partyId)" +
 				" and model.candidatePartyFile.file.isDeleted = 'N' ");
@@ -489,7 +509,7 @@ public class CandidatePartyCategoryDAO extends GenericDaoHibernate<CandidatePart
 		 {
 			queryString.append(" and model.candidatePartyFile.file.fileDate <= :toDate ");
 		 }
-		 queryString.append("  group by model.candidatePartyFile.file.locationValue ,model.gallary.gallaryId");
+		 queryString.append("  group by ua.locationValue ,model.gallary.gallaryId");
 		 Query query = getSession().createQuery(queryString.toString());
 		 
 		 query.setParameterList("categIds", categIds);

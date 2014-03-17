@@ -1475,7 +1475,9 @@
 	<bean id="assemblyPoliticalFeedbackDAO" class="com.itgrids.partyanalyst.dao.hibernate.AssemblyPoliticalFeedbackDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+	<bean id="articleDAO" class="com.itgrids.partyanalyst.dao.hibernate.ArticleDAO">
+	  <property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	
 	<bean id="pfbReportDAO" class="com.itgrids.partyanalyst.dao.hibernate.PfbReportDAO">
 	  <property name="sessionFactory" ref="sessionFactory" />

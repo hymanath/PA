@@ -51,11 +51,17 @@ public class ReportFilesDAOHibernateTest  extends BaseDaoTestCase {
 		
 	}*/
 	
-	public void testgetCandidateDetailsByFileIds(){
+/*	public void testgetCandidateDetailsByFileIds(){
 		Set<Long> ids = new HashSet<Long>();
 		//ids.add(55l);
 		ids.add(79l);
 		List<Object[]> val = fileSourceLanguageDAO.getCandidateDetailsByFileIds(ids);
+		System.out.println(val.size());
+	}*/
+	
+	public void testgetFileNewsReports(){
+		
+		List<Object[]> val = reportFilesDAO.getFileNewsReports(1L,1,10);
 		System.out.println(val.size());
 	}
 }

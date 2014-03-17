@@ -99,4 +99,5 @@ public interface IPartyDetailsService {
 			Long maxRecord,String queryType,String fromDateStr,String toDateStr);
 	
 	public List<FileVO> getNewsCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,String fromDateStr,String toDateStr);
+	
 }

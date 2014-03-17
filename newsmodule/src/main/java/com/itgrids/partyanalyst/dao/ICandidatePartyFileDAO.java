@@ -68,4 +68,14 @@ public interface ICandidatePartyFileDAO extends GenericDao<CandidatePartyFile, L
 	public List<Object[]> otherPartiesEffectOnTdpBenifitWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate);
 	public List<Object[]> otherPartiesWiseEffectOnTdpTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate);
 	public List<Object[]> otherPartiesWiseEffectOnTdpBenifitCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate);
+	
+	public List<Object[]> getPoliticalActivitiesNews(Date fromDate,Date toDate,List<Long> categoryIds,List<Long> districtIds,Integer startIndex,Integer maxIndex);
+	
+	public Long getPoliticalActivitiesNewsCount(Date fromDate,Date toDate,List<Long> categoryIds,List<Long> districtIds);
+	
+	public List<Long> getDestinationDetails(Long partyId,Long fileId);
+	
+	public List<Long> getSourceDetails(Long partyId,Long fileId);
+	
+	public List<Object[]> getAllPoliticalActivitiesCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds);
 }

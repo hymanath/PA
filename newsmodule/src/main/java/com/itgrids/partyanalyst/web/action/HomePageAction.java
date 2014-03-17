@@ -611,7 +611,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
         else
 		return Action.SUCCESS;
 	}
-	public String getCandidates(){
+	public String getCandidatesNew(){
 		if(log.isDebugEnabled())
 			log.debug("In HomePageAction's getCandidates");
 		try {
@@ -623,7 +623,7 @@ public class HomePageAction extends ActionSupport implements ServletRequestAware
 			candidatesList1=newsMonitoringService.getCandidatesNewsCount();
 			
 			
-			for(SelectOptionVO vo:candidatesList)
+			for(SelectOptionVO vo:candidatesList1)
 				candidatesMap.put(vo.getId(), vo.getName());
 			
 			

@@ -15,4 +15,9 @@ public interface IReportFilesDAO extends GenericDao<ReportFiles, Long>{
 	public List<Object[]> getOtherLvlReportDetails(Long newsReportId,Long userId);
 	
 	public List<Object[]> getOtherLvlReportDetailsByKey(Long newsReportId,String key);
+	
+	public List<Object[]> getFileNewsReports(Long userId,Integer startIndex,Integer maxIndex);
+	
+    public Integer deleteReportFiles(Long newsReportId);
+	
 }

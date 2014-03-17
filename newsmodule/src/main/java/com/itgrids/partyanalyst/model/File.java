@@ -86,18 +86,7 @@ public class File extends BaseModel implements java.io.Serializable {
 
 	}
 
-	/** full constructor *//*
-	public File(Long fileId, String fileName, String filePath,
-			String fileTitle, String fileDescription, FileType fileType,
-			Set<ProblemFile> ProblemFile) {
-		this.fileId = fileId;
-		this.fileName = fileName;
-		this.filePath = filePath;
-		this.fileTitle = fileTitle;
-		this.fileDescription = fileDescription;
-		this.fileType = fileType;
-		this.ProblemFile = ProblemFile;
-	}*/
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

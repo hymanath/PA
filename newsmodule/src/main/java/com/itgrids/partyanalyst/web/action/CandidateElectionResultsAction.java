@@ -102,8 +102,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private List<SelectOptionVO> selectOptionList;
 	private List<String> descriptions;
 	private String keywords;
-	private Long locationScope;
-	private Long locationValue;
+	private List<Long> locationScope;
+	private List<Long> locationValue;
 	private String fileDate;
 	private List<GallaryVO> gallaryList;
 	private Long source;
@@ -113,7 +113,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	private String profileId;
 	private String profileGalleryType;
 	private Long category;
-	private Long mandalId;
+	private List<Long> mandalId;
 	private IPartyDetailsService partyDetailsService;
 	private Long newsimportance;
 	private List<CandidateCommentsVO> candidateCommentsVO;
@@ -821,21 +821,25 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.keywords = keywords;
 	}
 
-	public Long getLocationScope() {
+
+	public List<Long> getLocationScope() {
 		return locationScope;
 	}
 
-	public void setLocationScope(Long locationScope) {
+
+	public void setLocationScope(List<Long> locationScope) {
 		this.locationScope = locationScope;
 	}
 
-	public Long getLocationValue() {
+	public List<Long> getLocationValue() {
 		return locationValue;
 	}
 
-	public void setLocationValue(Long locationValue) {
+
+	public void setLocationValue(List<Long> locationValue) {
 		this.locationValue = locationValue;
 	}
+
 
 	public String getFileDate() {
 		return fileDate;
@@ -1170,13 +1174,12 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		this.responseFileId = responseFileId;
 	}
 
-
-	public Long getMandalId() {
+	public List<Long> getMandalId() {
 		return mandalId;
 	}
 
 
-	public void setMandalId(Long mandalId) {
+	public void setMandalId(List<Long> mandalId) {
 		this.mandalId = mandalId;
 	}
 
@@ -1303,8 +1306,9 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 				//fileVO.setKeywords(escapeUnicode(StringEscapeUtils.unescapeHtml(getKeywords())));
 				fileVO.setCategoryId(getCategory());
 				fileVO.setNewsImportanceId(getNewsimportance());
-				fileVO.setLocationScope(getLocationScope());
-				fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
+				fileVO.setUploadPartyGalleryId(getLocationScope());
+				fileVO.setUploadCandidateGalleryId(getLocationValue());
+				//fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 				fileVO.setFileDate(getFileDate());
 				fileVO.setFileTypesList(fileTypes);
 				
@@ -1428,7 +1432,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 	  String filePath = null;
 	  String fileNames = null;
 	  FileVO fileVO = new FileVO();
-	  fileVO.setStateId(mandalId);
+	  //fileVO.setStateId(mandalId);
+	  fileVO.setUploadSPGalleryId(mandalId);
 	  
 	  session = request.getSession();
 	  RegistrationVO regVO = (RegistrationVO) session.getAttribute("USER");
@@ -1485,8 +1490,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.escapeJava(getNewsSynopsysDesc())));
 		fileVO.setVisibility(getVisibility());
 		fileVO.setNewsImportanceId(getNewsimportance());
-		fileVO.setLocationScope(getLocationScope());
-		fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
+		fileVO.setUploadPartyGalleryId(getLocationScope());
+		fileVO.setUploadCandidateGalleryId(getLocationValue());
 		fileVO.setFileDate(getFileDate());
 		fileVO.setFileId(responseFileId);
 		
@@ -1771,7 +1776,7 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 			fileVO.setLanguegeId(getLanguage());
 			fileVO.setCategoryId(getCategory());
 			fileVO.setNewsImportanceId(getNewsimportance());
-			fileVO.setLocationScope(getLocationScope());
+			//fileVO.setLocationScope(getLocationScope());
 			fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : null);
 			fileVO.setFileDate(getFileDate());
 			fileVO.setFileTypesList(fileTypes);
@@ -3403,8 +3408,8 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setFileDescription1(escapeUnicode(StringEscapeUtils.escapeJava(getNewsSynopsysDesc())));
 		fileVO.setVisibility(getVisibility());
 		fileVO.setNewsImportanceId(getNewsimportance());
-		fileVO.setLocationScope(getLocationScope());
-		fileVO.setLocationValue(getLocationValue() != null ? getLocationValue().toString() : "1");
+		fileVO.setUploadPartyGalleryId(getLocationScope());
+		fileVO.setUploadCandidateGalleryId(getLocationValue());
 		//fileVO.setLocationValue("1");
 		fileVO.setFileDate(getFileDate());
 		fileVO.setFileId(fileId);
@@ -3557,7 +3562,10 @@ public class CandidateElectionResultsAction extends ActionSupport implements
 		fileVO.setResponseFileIdsStr(responseFileIdsStr);
 		
 	    fileVO.setCandidatePartyNewsVOList(candidatePartyNewsVOList);
-	    fileVO.setStateId(mandalId);
+	    
+	    fileVO.setFileVOList(this.fileVO);
+	    //fileVO.setStateId(mandalId);
+	    fileVO.setUploadSPGalleryId(mandalId);
 	    result = candidateDetailsService.editUploadedFileForCandidateParty(fileVO);
 		
 	    if(result.getResultCode() == ResultCodeMapper.SUCCESS){

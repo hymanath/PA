@@ -7,6 +7,7 @@ import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface IFileDAO extends GenericDao<File, Long> {
 	

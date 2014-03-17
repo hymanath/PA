@@ -19,4 +19,27 @@ public class UserAddressDAO extends GenericDaoHibernate<UserAddress, Long> imple
 		return queryObject.executeUpdate();
 	}
 	
+	public void deleteUserAddressByFileId(Long fileId){
+		Query query = getSession().createQuery(" delete from UserAddress model where model.file.fileId = :fileId");
+		query.setParameter("fileId", fileId);
+		query.executeUpdate();
+	}
+	
+	public List<UserAddress> getAllAddress(Long fileId,Long districtId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" Select model from UserAddress model where model.file.fileId = :fileId ");
+		if(districtId != null && districtId.longValue() > 0){
+			queryStr.append(" and model.district.districtId =:districtId ");
+		}
+		Query query = getSession().createQuery(queryStr.toString());
+		if(districtId != null && districtId.longValue() > 0){
+			query.setParameter("districtId", districtId);
+		}
+		query.setParameter("fileId", fileId);
+		return query.list();
+	}
+	public List<Object[]> getfileAddressListByFileId(Long fileId){
+
+		return getHibernateTemplate().find("select model.regionScopes.regionScopesId,model.locationValue,model.constituency.constituencyId from UserAddress model where model.file.fileId = ?",fileId);
+		}
 }

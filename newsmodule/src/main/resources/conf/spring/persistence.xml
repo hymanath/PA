@@ -135,8 +135,8 @@
 				<value>com.itgrids.partyanalyst.model.ParlimentActionItems</value>	
 				<value>com.itgrids.partyanalyst.model.AssemblyPoliticalFeedback</value>		
 				
-				
-				<!-- <value>com.itgrids.partyanalyst.model.Country</value>
+				<!-- <value>com.itgrids.partyanalyst.model.Article</value>
+				<value>com.itgrids.partyanalyst.model.Country</value>
 				<value>com.itgrids.partyanalyst.model.State</value>
 				<value>com.itgrids.partyanalyst.model.Constituency</value>
 				<value>com.itgrids.partyanalyst.model.District</value>

@@ -239,7 +239,7 @@ if(!validInd)
 var userName1=document.getElementById('userName1').value;
 var password1=document.getElementById('passWord_Id1').value;
 
-task="validateUserForLogin";
+var task="validateUserForLogin";
  
  		
  var jsObj=

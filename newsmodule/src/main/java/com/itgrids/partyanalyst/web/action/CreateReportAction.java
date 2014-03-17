@@ -5,10 +5,12 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsActivityVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.service.IReportService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -27,6 +29,10 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	private NewsActivityVO report;
 	private boolean forPdf;
 	private Long delaySeconds;
+	private HttpSession session;
+	private ResultStatus resultStatus;
+	private JSONObject jObj;
+	private String task;
 	
 	private IReportService reportService;
 	
@@ -41,7 +47,21 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	public void setReportId(Long reportId) {
 		this.reportId = reportId;
 	}
+	public ResultStatus getResultStatus() {
+		return resultStatus;
+	}
 
+	public void setResultStatus(ResultStatus resultStatus) {
+		this.resultStatus = resultStatus;
+	}
+
+	public String getTask() {
+		return task;
+	}
+
+	public void setTask(String task) {
+		this.task = task;
+	}	
 	public String getKey() {
 		return key;
 	}
@@ -138,4 +158,21 @@ public class CreateReportAction extends ActionSupport implements ServletRequestA
 	   }
 		return Action.SUCCESS;
 	}
+	public String deleteReportFromFile()
+	   {
+		   try{
+			     jObj =new JSONObject(getTask());
+				 session = request.getSession();
+				  RegistrationVO regVo = (RegistrationVO) session.getAttribute("USER");
+				  if(regVo == null)
+					  return Action.ERROR;
+				   Long userId = regVo.getRegistrationID();  
+				 
+				   resultStatus = reportService.deleteReportNews(jObj.getLong("reportFilesId"),userId);  
+		   }
+		   catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Action.SUCCESS;
+	   }
 }

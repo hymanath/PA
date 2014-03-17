@@ -4283,7 +4283,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     public StringBuilder getTotalNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder();
     	query.append("select count(distinct cpf.file.fileId) from CandidatePartyFile cpf " );
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	if(candidateId != null && candidateId.longValue() > 0){
     	   
     		query.append(" (cpf.sourceCandidate.candidateId =:candidateId or cpf.destinationCandidate.candidateId =:candidateId )"); 
@@ -4302,7 +4302,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     public StringBuilder getPostivNegivNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder();
     	 query.append("select count(distinct cpf.file.fileId) from CandidatePartyFile cpf   " );
-     	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+     	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	if(candidateId != null && candidateId.longValue() > 0){
     		query.append(" ((cpf.sourceCandidate.candidateId =:candidateId and cpf.sourceBenefit.benefitId = "+positiveNegivId+" ) or (cpf.destinationCandidate.candidateId =:candidateId  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ))");
     	}else if(partyId != null && partyId.longValue() > 0){
@@ -4322,11 +4322,11 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder(); 
     	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
     		if(locationLvl.longValue() == 1){
-				 query.append( " and cpf.file.userAddress.district.districtId in ("+locationIds+") ");
+				 query.append( " and ua.district.districtId in ("+locationIds+") ");
 			}else if(locationLvl.longValue() == 2){
-				query.append(" and cpf.file.userAddress.parliamentConstituency.constituencyId in ("+locationIds+")");
+				query.append(" and ua.parliamentConstituency.constituencyId in ("+locationIds+")");
 			}else if(locationLvl.longValue() == 3){
-				query.append(" and cpf.file.userAddress.constituency.constituencyId in ("+locationIds+") ");
+				query.append(" and ua.constituency.constituencyId in ("+locationIds+") ");
 			}
     	}
     	return query;
@@ -4335,7 +4335,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     public StringBuilder getPartyOwnNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder(); 
     	query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf   " );
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId ");
 	    if(fromDate != null){
 		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
@@ -4350,7 +4350,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     public StringBuilder getPartyOwnNegativeNewsCountQuery(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder(); 
     	query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf   " );
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId and " +
     			" cpf.destinationBenefit.benefitId = 2 ");
 	    if(fromDate != null){
@@ -4365,13 +4365,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
     
     public StringBuilder getPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder();
+    	query.append("select count(distinct cpf.file.fileId),cpf.destinationBenefit.benefitId from CandidatePartyFile cpf ");
+    	query.append(" "+getCategorySourceQuery(null, null,null,locationLvl,locationIds)+"  " );
+    	query.append(" cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null ");
     	if(candidateId != null && candidateId.longValue() > 0){
-    	   query.append("select count(distinct cpf.file.fileId),cpf.destinationBenefit.benefitId from CandidatePartyFile cpf where cpf.file.isDeleted != 'Y' and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
-    	   		" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId in(1,2) "); 	   
+    		query.append(" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId in(1,2) "); 	   
     	}else if(partyId != null && partyId.longValue() > 0){
-    		 query.append(" select count(distinct cpf.file.fileId),cpf.destinationBenefit.benefitId from CandidatePartyFile cpf where cpf.file.isDeleted != 'Y' and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  " +
-	    	    " and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId in(1,2) ");
-	    	  
+    		query.append(" and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId in(1,2) ");	    	  
     	}
        if(fromDate != null){
   		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
@@ -4388,7 +4388,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     public StringBuilder getPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder();
     	query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf  " );
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     		query.append(" cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  " );
     	if(candidateId != null && candidateId.longValue() > 0){
     		query.append(" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
@@ -4408,7 +4408,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     public StringBuilder getTotalNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder();
     	 query.append(" select count(distinct cpf.file.fileId) from CandidatePartyFile cpf " );
-    	 query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	 query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	 query.append(" cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  "); 
     	 if(candidateId != null && candidateId.longValue() > 0){
     		query.append(" and cpf.destinationCandidate.candidateId =:candidateId ");
@@ -4555,7 +4555,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder();
     	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	if(candidateId != null && candidateId.longValue() > 0){
     		query.append(" (cpf.sourceCandidate.candidateId =:candidateId or cpf.destinationCandidate.candidateId =:candidateId )"); 
     	}else if(partyId != null && partyId.longValue() > 0){
@@ -4571,8 +4571,11 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	query.append(" order by cpf.file.fileDate desc,cpf.file.updatedDate desc");
     	return query;
     }
-    public StringBuilder getCategorySourceQuery(Long categoryId,Long sourceId,Long keywordId){
+    public StringBuilder getCategorySourceQuery(Long categoryId,Long sourceId,Long keywordId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder();
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ,UserAddress ua ");
+    	}
     	if(categoryId != null && categoryId.longValue() > 0){
     		query.append(" ,CandidatePartyCategory cpc where cpf.file.isDeleted != 'Y' and cpf.candidatePartyFileId = cpc.candidatePartyFile.candidatePartyFileId and cpc.gallary.gallaryId ="+categoryId+" and ");
     	}else if(sourceId != null && sourceId.longValue() > 0 ){
@@ -4582,13 +4585,16 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	}else{
     		query.append(" where cpf.file.isDeleted != 'Y' and ");
     	}
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ua.file.fileId = cpf.file.fileId and ");
+    	}
     	return query;
     }
     public StringBuilder getPostivNegivNewsQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId,Long categoryId,Long sourceId,Long keywordId){
     	StringBuilder query = new StringBuilder();
     	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf  ");
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	if(candidateId != null && candidateId.longValue() > 0){  
            query.append(" ((cpf.sourceCandidate.candidateId =:candidateId and cpf.sourceBenefit.benefitId = "+positiveNegivId+" ) or (cpf.destinationCandidate.candidateId =:candidateId  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ))");
     	}else if(partyId != null && partyId.longValue() > 0){
@@ -4609,7 +4615,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder(); 
     	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     			query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId ");
 	    if(fromDate != null){
 		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
@@ -4626,7 +4632,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder(); 
     	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     			query.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId " +
     					" and cpf.destinationBenefit.benefitId = 2 ");
 	    if(fromDate != null){
@@ -4644,7 +4650,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder();
     	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	query.append("  cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null  " );
     	if(candidateId != null && candidateId.longValue() > 0){
     		query.append(" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId ="+positiveNegivId+" "); 	   
@@ -4667,7 +4673,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder();
     	query.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 				" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId from CandidatePartyFile cpf ");
-    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+    	query.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,locationLvl,locationIds)+"  " );
     	query.append("  cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null   " );
     	if(candidateId != null && candidateId.longValue() > 0){
     		query.append(" and cpf.destinationCandidate.candidateId =:candidateId ");
@@ -4880,7 +4886,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
     
     public StringBuilder getPartyOwnNegNewsCountCategoryWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds,String type){
     	StringBuilder str = new StringBuilder(); 
-		 str.append(getAttributeSelectQuery(type));
+		 str.append(getAttributeSelectQuery(type,locationLvl,locationIds));
 	   		str.append("  cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId = 2 ");
 	    str.append(addLocaionAndDateQuery(locationLvl,locationIds,fromDate,toDate));
 				 str.append(getAttributeGroupByQuery(type));
@@ -4889,8 +4895,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
     
     public StringBuilder getPartyOwnNewsCountCategoryWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder(); 
-    	query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and  " +
-	   		"  cpc.candidatePartyFile.sourceParty.partyId =:partyId and cpc.candidatePartyFile.destinationParty.partyId =:partyId ");
+    	query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc ");
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ,UserAddress ua where cpc.candidatePartyFile.file.fileId = ua.file.fileId and cpc.candidatePartyFile.file.isDeleted != 'Y' and ");
+    	}else{
+    		query.append(" where cpc.candidatePartyFile.file.isDeleted != 'Y' and ");
+    	}
+    	query.append(" cpc.candidatePartyFile.sourceParty.partyId =:partyId and cpc.candidatePartyFile.destinationParty.partyId =:partyId ");
 	    if(fromDate != null){
 		   query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
 	    }
@@ -4906,11 +4917,11 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder(); 
     	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
     		if(locationLvl.longValue() == 1){
-				 query.append( " and cpc.candidatePartyFile.file.userAddress.district.districtId in ("+locationIds+") ");
+				 query.append( " and ua.district.districtId in ("+locationIds+") ");
 			}else if(locationLvl.longValue() == 2){
-				query.append(" and cpc.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId in ("+locationIds+")");
+				query.append(" and ua.parliamentConstituency.constituencyId in ("+locationIds+")");
 			}else if(locationLvl.longValue() == 3){
-				query.append(" and cpc.candidatePartyFile.file.userAddress.constituency.constituencyId in ("+locationIds+") ");
+				query.append(" and ua.constituency.constituencyId in ("+locationIds+") ");
 			}
     	}
     	return query;
@@ -4920,11 +4931,11 @@ public class NewsAnalysisService implements INewsAnalysisService {
     	StringBuilder query = new StringBuilder(); 
     	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
     		if(locationLvl.longValue() == 1){
-				 query.append( " and cpk.candidatePartyFile.file.userAddress.district.districtId in ("+locationIds+") ");
+				 query.append( " and ua.district.districtId in ("+locationIds+") ");
 			}else if(locationLvl.longValue() == 2){
-				query.append(" and cpk.candidatePartyFile.file.userAddress.parliamentConstituency.constituencyId in ("+locationIds+")");
+				query.append(" and ua.parliamentConstituency.constituencyId in ("+locationIds+")");
 			}else if(locationLvl.longValue() == 3){
-				query.append(" and cpk.candidatePartyFile.file.userAddress.constituency.constituencyId in ("+locationIds+") ");
+				query.append(" and ua.constituency.constituencyId in ("+locationIds+") ");
 			}
     	}
     	return query;
@@ -4932,8 +4943,14 @@ public class NewsAnalysisService implements INewsAnalysisService {
     
     public StringBuilder getPartyOwnNewsCountSourceWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder(); 
-    	query.append(" select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf where fsl.file.isDeleted != 'Y' and  " +
-	   		"  fsl.file.fileId = cpf.file.fileId  and cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId ");
+    	query.append(" select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf ");
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ,UserAddress ua where fsl.file.fileId = ua.file.fileId and fsl.file.isDeleted != 'Y' and ");
+    	}else{
+    		query.append(" where fsl.file.isDeleted != 'Y' and  ");
+    	}	
+    	
+    	query.append("  fsl.file.fileId = cpf.file.fileId  and cpf.sourceParty.partyId =:partyId and cpf.destinationParty.partyId =:partyId ");
 	    if(fromDate != null){
 		   query.append(" and date(fsl.file.fileDate) >= :fromDate ");
 	    }
@@ -4947,8 +4964,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
     
     public StringBuilder getPartyOwnNewsCountKeywordWise(Date fromDate,Date toDate,Long partyId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder(); 
-    	query.append(" select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk where cpk.candidatePartyFile.file.isDeleted != 'Y' and  " +
-	   		"  cpk.candidatePartyFile.sourceParty.partyId =:partyId and cpk.candidatePartyFile.destinationParty.partyId =:partyId ");
+    	query.append(" select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk " );
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ,UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and cpk.candidatePartyFile.file.isDeleted != 'Y' and ");
+    	}else{
+    	   query.append("where cpk.candidatePartyFile.file.isDeleted != 'Y' and  " );
+    	}
+    	query.append("  cpk.candidatePartyFile.sourceParty.partyId =:partyId and cpk.candidatePartyFile.destinationParty.partyId =:partyId ");
 	    if(fromDate != null){
 		   query.append(" and date(cpk.candidatePartyFile.file.fileDate) >= :fromDate ");
 	    }
@@ -4962,13 +4984,18 @@ public class NewsAnalysisService implements INewsAnalysisService {
     
     public StringBuilder getCategoryPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId){
     	StringBuilder query = new StringBuilder();
+    	query.append("select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc  ");
+    	
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ,UserAddress ua where cpc.candidatePartyFile.file.fileId = ua.file.fileId and cpc.candidatePartyFile.file.isDeleted != 'Y' ");
+    	}else{
+    		query.append(" where cpc.candidatePartyFile.file.isDeleted != 'Y' ");
+    	}
+    	query.append(" and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null ");
     	if(candidateId != null && candidateId.longValue() > 0){
-    	   query.append("select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null " +
-    	   		" and cpc.candidatePartyFile.destinationCandidate.candidateId =:candidateId and cpc.candidatePartyFile.destinationBenefit.benefitId is not null  and cpc.candidatePartyFile.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
+    		query.append(" and cpc.candidatePartyFile.destinationCandidate.candidateId =:candidateId and cpc.candidatePartyFile.destinationBenefit.benefitId is not null  and cpc.candidatePartyFile.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
     	}else if(partyId != null && partyId.longValue() > 0){
-    		 query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name  from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null  " +
-	    	    " and cpc.candidatePartyFile.destinationParty.partyId =:partyId and cpc.candidatePartyFile.destinationBenefit.benefitId is not null and cpc.candidatePartyFile.destinationBenefit.benefitId = "+positiveNegivId+" ");
-	    	  
+    		query.append(" and cpc.candidatePartyFile.destinationParty.partyId =:partyId and cpc.candidatePartyFile.destinationBenefit.benefitId is not null and cpc.candidatePartyFile.destinationBenefit.benefitId = "+positiveNegivId+" ");  	  
     	}
        if(fromDate != null){
   		   query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
@@ -4982,7 +5009,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
     }
     public StringBuilder getKeywordPostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId){
     	StringBuilder query = new StringBuilder();
-    	 query.append(" select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type  from CandidatePartyKeyword cpk where cpk.candidatePartyFile.file.isDeleted != 'Y' and cpk.candidatePartyFile.sourceCandidate.candidateId is null and cpk.candidatePartyFile.sourceParty.partyId is null  ");
+    	 query.append(" select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type  from CandidatePartyKeyword cpk ");
+    	 if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+      		query.append(" ,UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and cpk.candidatePartyFile.file.isDeleted != 'Y'  ");
+      	}else{
+      		 query.append(" where cpk.candidatePartyFile.file.isDeleted != 'Y' " );
+      	}	
+    	 query.append(" and cpk.candidatePartyFile.sourceCandidate.candidateId is null and cpk.candidatePartyFile.sourceParty.partyId is null  ");
     	if(candidateId != null && candidateId.longValue() > 0){
     	 query.append(" and cpk.candidatePartyFile.destinationCandidate.candidateId =:candidateId and cpk.candidatePartyFile.destinationBenefit.benefitId is not null  and cpk.candidatePartyFile.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
     	}else if(partyId != null && partyId.longValue() > 0){ 
@@ -5000,12 +5033,17 @@ public class NewsAnalysisService implements INewsAnalysisService {
     }
     public StringBuilder getCategoryTotalNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder();
+    	query.append("select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc ");
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ,UserAddress ua where cpc.candidatePartyFile.file.fileId = ua.file.fileId and cpc.candidatePartyFile.file.isDeleted != 'Y' ");
+    	}else{
+    	   query.append(" where cpc.candidatePartyFile.file.isDeleted != 'Y' ");
+    	}
+    	query.append("and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null   ");
     	if(candidateId != null && candidateId.longValue() > 0){
-    	   query.append("select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null   " +
-    	   		" and cpc.candidatePartyFile.destinationCandidate.candidateId =:candidateId ");
+    		query.append(" and cpc.candidatePartyFile.destinationCandidate.candidateId =:candidateId ");
     	}else if(partyId != null && partyId.longValue() > 0){
-    		 query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc where cpc.candidatePartyFile.file.isDeleted != 'Y' and cpc.candidatePartyFile.sourceCandidate.candidateId is null and cpc.candidatePartyFile.sourceParty.partyId is null   " +
-	    	   		" and cpc.candidatePartyFile.destinationParty.partyId =:partyId ");
+    		query.append(" and cpc.candidatePartyFile.destinationParty.partyId =:partyId ");
     	}
     	   if(fromDate != null){
  		       query.append(" and date(cpc.candidatePartyFile.file.fileDate) >= :fromDate ");
@@ -5019,7 +5057,13 @@ public class NewsAnalysisService implements INewsAnalysisService {
     }
     public StringBuilder getKeywordTotalNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder();
-    	 query.append("select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk where cpk.candidatePartyFile.file.isDeleted != 'Y' and cpk.candidatePartyFile.sourceCandidate.candidateId is null and cpk.candidatePartyFile.sourceParty.partyId is null   " );
+    	 query.append("select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk ");
+    	 if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+     		query.append(" ,UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and cpk.candidatePartyFile.file.isDeleted != 'Y'  ");
+     	}else{
+     		 query.append(" where cpk.candidatePartyFile.file.isDeleted != 'Y' " );
+     	}	
+    	 query.append(" and cpk.candidatePartyFile.sourceCandidate.candidateId is null and cpk.candidatePartyFile.sourceParty.partyId is null   " );
     	if(candidateId != null && candidateId.longValue() > 0){
     		query.append(" and cpk.candidatePartyFile.destinationCandidate.candidateId =:candidateId ");
     	}else if(partyId != null && partyId.longValue() > 0){
@@ -5037,12 +5081,17 @@ public class NewsAnalysisService implements INewsAnalysisService {
     }
     public StringBuilder getSourcePostivNegivNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds,Long positiveNegivId){
     	StringBuilder query = new StringBuilder();
+    	 query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  ");
+    	 if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+     		query.append(" ,UserAddress ua where fsl.file.fileId = ua.file.fileId and fsl.file.isDeleted != 'Y' ");
+     	}else{
+     		query.append(" where fsl.file.isDeleted != 'Y'   ");
+     	}	
+    	 query.append(" and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " );
     	if(candidateId != null && candidateId.longValue() > 0){
-    	   query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
-    	   		" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
+    		query.append(" and cpf.destinationCandidate.candidateId =:candidateId and cpf.destinationBenefit.benefitId is not null  and cpf.destinationBenefit.benefitId = "+positiveNegivId+" "); 	   
     	}else if(partyId != null && partyId.longValue() > 0){
-    	   query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
-	    	    " and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ");	  
+    		query.append(" and cpf.destinationParty.partyId =:partyId and cpf.destinationBenefit.benefitId is not null and cpf.destinationBenefit.benefitId = "+positiveNegivId+" ");	  
     	}
        if(fromDate != null){
   		   query.append(" and date(cpf.file.fileDate) >= :fromDate ");
@@ -5057,12 +5106,17 @@ public class NewsAnalysisService implements INewsAnalysisService {
     
     public StringBuilder getSourceTotalNewsCountInMediaQuery(Date fromDate,Date toDate,Long partyId,Long candidateId,Long locationLvl,String locationIds){
     	StringBuilder query = new StringBuilder();
+    	query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  " );
+    	if(locationLvl != null && locationIds != null && locationLvl.longValue() > 0 && locationIds.trim().length() > 0){
+    		query.append(" ,UserAddress ua where fsl.file.fileId = ua.file.fileId and fsl.file.isDeleted != 'Y' ");
+    	}else{
+    		query.append(" where fsl.file.isDeleted != 'Y'  ");
+    	}	
+    	query.append(" and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null ");
     	if(candidateId != null && candidateId.longValue() > 0){
-    		query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
-    	   		" and cpf.destinationCandidate.candidateId =:candidateId ");
+    		query.append(" and cpf.destinationCandidate.candidateId =:candidateId ");
     	}else if(partyId != null && partyId.longValue() > 0){
-    		query.append("select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf  where fsl.file.isDeleted != 'Y' and fsl.file.fileId = cpf.file.fileId and cpf.sourceCandidate.candidateId is null and cpf.sourceParty.partyId is null " +
-	    	   		" and cpf.destinationParty.partyId =:partyId ");
+    		query.append(" and cpf.destinationParty.partyId =:partyId ");
     	}
     	   if(fromDate != null){
  		       query.append(" and date(cpf.file.fileDate) >= :fromDate ");
@@ -5182,11 +5236,11 @@ public class NewsAnalysisService implements INewsAnalysisService {
 		StringBuilder str = new StringBuilder();
 		if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
 			 if(level.longValue() == 1)
-				 str.append(" and cpf.file.userAddress.district.districtId in( "+ids+")");
+				 str.append(" and ua.district.districtId in( "+ids+")");
 			 if(level.longValue() == 3)
-				 str.append(" and cpf.file.userAddress.constituency.constituencyId in("+ids+")");
+				 str.append(" and ua.constituency.constituencyId in("+ids+")");
 			 if(level.longValue() == 2)
-				 str.append(" and cpf.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
+				 str.append(" and ua.parliamentConstituency.constituencyId in ("+ids+")");
 		 }
 		 if(fromDate != null)
 			 str.append(" and date(cpf.file.fileDate) >= :fromDate");
@@ -5204,7 +5258,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 			 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 						" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 			}
-		 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+		 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " );
 			 if(candidateId != null && candidateId.longValue() >0){
 				str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
 			 }else if(partyId != null && partyId.longValue() >0){
@@ -5227,7 +5281,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 						" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 			}
-			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " );
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5250,7 +5304,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 				}
-			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " ); 
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " ); 
 			  if(candidateId != null && candidateId.longValue() >0){
 					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5273,7 +5327,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 				}
-			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " ); 
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " ); 
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.sourceCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5296,7 +5350,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 				}
-			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " ); 
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " ); 
 			 if(candidateId != null && candidateId.longValue() >0){
 				str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 			 }else if(partyId != null && partyId.longValue() >0){
@@ -5319,7 +5373,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 				}
-			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " ); 
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " ); 
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5342,7 +5396,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 				}
-			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " ); 
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " ); 
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5365,7 +5419,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 str.append("select distinct  cpf.file.fileTitle ,cpf.file.fileDescription ," +
 							" cpf.file.fileDate ,cpf.file.filePath ,cpf.file.fileId ,cpf.file.font.fontId,cpf.file.descFont.fontId  from CandidatePartyFile cpf  ");
 				}
-			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId)+"  " );  
+			 str.append(" "+getCategorySourceQuery(categoryId, sourceId,keywordId,level,ids)+"  " );  
 			   if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5382,7 +5436,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 public StringBuilder tdpEffectOnOtherPartiesTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,String type){
 		 StringBuilder str = new StringBuilder();
 		 
-		 str.append(getAttributeSelectQuery(type));
+		 str.append(getAttributeSelectQuery(type,level,ids));
 			 if(candidateId != null && candidateId.longValue() >0){
 				str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
 			 }else if(partyId != null && partyId.longValue() >0){
@@ -5397,7 +5451,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 
 		public StringBuilder tdpEffectOnOtherPartiesBenifitWiseCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,String type){
 			StringBuilder str = new StringBuilder();
-			str.append(getAttributeSelectQuery(type));
+			str.append(getAttributeSelectQuery(type,level,ids));
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5412,7 +5466,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 
 		public StringBuilder tdpEffectOnOthersPartyWiseTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
 			 StringBuilder str = new StringBuilder();
-			 str.append(getAttributeSelectQuery(type));
+			 str.append(getAttributeSelectQuery(type,level,ids));
 			  if(candidateId != null && candidateId.longValue() >0){
 					str.append("  cpf.sourceCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5427,7 +5481,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 
 		public StringBuilder tdpEffectOnOthersPartyWiseBenifitCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
 			 StringBuilder str = new StringBuilder();
-			 str.append(getAttributeSelectQuery(type));
+			 str.append(getAttributeSelectQuery(type,level,ids));
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.sourceCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5442,7 +5496,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 
 		public StringBuilder otherPartiesOnTdpEffectTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,String type){
 			 StringBuilder str = new StringBuilder();
-			 str.append(getAttributeSelectQuery(type));
+			 str.append(getAttributeSelectQuery(type,level,ids));
 			 if(candidateId != null && candidateId.longValue() >0){
 				str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 			 }else if(partyId != null && partyId.longValue() >0){
@@ -5457,7 +5511,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	
 		public StringBuilder otherPartiesEffectOnTdpBenifitWiseCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,String type){
 			 StringBuilder str = new StringBuilder();
-			 str.append(getAttributeSelectQuery(type));
+			 str.append(getAttributeSelectQuery(type,level,ids));
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5472,7 +5526,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	 
 		public StringBuilder otherPartiesWiseEffectOnTdpTotalCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
 			 StringBuilder str = new StringBuilder();
-			 str.append(getAttributeSelectQuery(type));
+			 str.append(getAttributeSelectQuery(type,level,ids));
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5487,7 +5541,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	
 		public StringBuilder otherPartiesWiseEffectOnTdpBenifitCountAttrWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,Long benfitId,Long otherPartyId,String type){
 			 StringBuilder str = new StringBuilder();
-			 str.append(getAttributeSelectQuery(type));
+			 str.append(getAttributeSelectQuery(type,level,ids));
 			   if(candidateId != null && candidateId.longValue() >0){
 					str.append(" cpf.destinationCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
@@ -5499,22 +5553,34 @@ public class NewsAnalysisService implements INewsAnalysisService {
 				 return str;
 		 }
 	 
-	 public StringBuilder getAttributeSelectQuery(String type){
+	 public StringBuilder getAttributeSelectQuery(String type,Long level,String ids){
 		 StringBuilder query = new StringBuilder();
 		 if(type.equalsIgnoreCase("category")){
-		   query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc,CandidatePartyFile cpf where    " +
-		   		" cpf.candidatePartyFileId = cpc.candidatePartyFile.candidatePartyFileId and cpf.file.isDeleted != 'Y' and ");
+		   query.append(" select count(distinct cpc.candidatePartyFile.file.fileId),cpc.gallary.gallaryId,cpc.gallary.name from CandidatePartyCategory cpc,CandidatePartyFile cpf     ");
+		   query.append(addLocationToQuery(level,ids));
+		   query.append("  and cpf.candidatePartyFileId = cpc.candidatePartyFile.candidatePartyFileId  and ");
 		 }else if(type.equalsIgnoreCase("source")){
-			 query.append(" select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf where fsl.file.isDeleted != 'Y' and  " +
-				   		"  fsl.file.fileId = cpf.file.fileId and ");
+			 query.append(" select count(distinct fsl.file.fileId),fsl.source.sourceId,fsl.source.source from FileSourceLanguage fsl,CandidatePartyFile cpf ");
+			 query.append(addLocationToQuery(level,ids));
+			 query.append(" and fsl.file.fileId = cpf.file.fileId and ");
 		 }else if(type.equalsIgnoreCase("keyword")){
-			 query.append(" select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk,CandidatePartyFile cpf where    " +
-				   		" cpf.candidatePartyFileId = cpk.candidatePartyFile.candidatePartyFileId and cpf.file.isDeleted != 'Y' and ");
+			 query.append(" select count(distinct cpk.candidatePartyFile.file.fileId),cpk.keyword.keywordId,cpk.keyword.type from CandidatePartyKeyword cpk,CandidatePartyFile cpf     ");
+			 query.append(addLocationToQuery(level,ids));
+			 query.append(" and cpf.candidatePartyFileId = cpk.candidatePartyFile.candidatePartyFileId  and ");
 		 }
 		 
 		 return query;
 	 }
 	 
+	 public StringBuilder addLocationToQuery(Long level,String ids){
+		 StringBuilder query = new StringBuilder();
+		 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+			 query.append(",UserAddress ua where cpf.file.fileId = ua.file.fileId and cpf.file.isDeleted != 'Y' ");
+		 }else{
+			 query.append("where cpf.file.isDeleted != 'Y' ");
+		 }
+		 return query;
+	 }
 	 public StringBuilder getAttributeGroupByQuery(String type){
 		 StringBuilder query = new StringBuilder();
 		 if(type.equalsIgnoreCase("category")){
@@ -5536,7 +5602,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	  
 	  public StringBuilder getTotalNewsCountAttributeWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate,String type){
 	    	StringBuilder query = new StringBuilder();
-	    	query.append(getAttributeSelectQuery(type));
+	    	query.append(getAttributeSelectQuery(type,level,ids));
 	    	if(candidateId != null && candidateId.longValue() > 0){
 	    	   
 	    		query.append(" (cpf.sourceCandidate.candidateId =:candidateId or cpf.destinationCandidate.candidateId =:candidateId )"); 
@@ -5550,7 +5616,7 @@ public class NewsAnalysisService implements INewsAnalysisService {
 	  
 	  public StringBuilder getPostivNegivNewsCountAttributeWise(Long partyId,Long candidateId,Long locationLvl,String locationIds,Date fromDate,Date toDate,Long benfitId,String type){
 	    	StringBuilder query = new StringBuilder();
-	    	query.append(getAttributeSelectQuery(type));
+	    	query.append(getAttributeSelectQuery(type,locationLvl,locationIds));
 	    	if(candidateId != null && candidateId.longValue() > 0){
 	    		query.append(" ((cpf.sourceCandidate.candidateId =:candidateId and cpf.sourceBenefit.benefitId = "+benfitId+" ) or (cpf.destinationCandidate.candidateId =:candidateId  and cpf.destinationBenefit.benefitId = "+benfitId+" ))");
 	    	}else if(partyId != null && partyId.longValue() > 0){

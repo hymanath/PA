@@ -112,5 +112,11 @@
 	<bean id="politicalFeedBackAction" class="com.itgrids.partyanalyst.web.action.PoliticalFeedBackAction" singleton="false">
 	 	<property name="politicalFeedBackService" ref="politicalFeedBackService"/>
 	</bean>
-	
+	<bean id="articleNewsAction" class="com.itgrids.partyanalyst.web.action.ArticleNewsAction" singleton="false">
+		<property name="articleNewsService" ref="articleNewsService"/>		
+	</bean>	
+	<bean id="partyActivitiesAction" class="com.itgrids.partyanalyst.web.action.PartyActivitiesAction" singleton="false">
+		<property name="partyActivitiesService" ref="partyActivitiesService"/>
+		<property name="staticDataService" ref="staticDataService"/>				
+	</bean>
 	</beans>

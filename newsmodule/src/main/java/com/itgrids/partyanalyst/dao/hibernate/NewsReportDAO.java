@@ -64,4 +64,10 @@ public class NewsReportDAO extends GenericDaoHibernate<NewsReport, Long> impleme
 		   query.setParameter("reportId", reportId);
 		   query.executeUpdate();
    }
+   
+   public void deleteNewsReport(Long newsReportId){
+	   Query query = getSession().createQuery("Delete from NewsReport model where model.newsReportId = :newsReportId ");
+		   query.setParameter("newsReportId", newsReportId);
+		   query.executeUpdate();
+   }
 }

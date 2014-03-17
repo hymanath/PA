@@ -2879,6 +2879,12 @@
 		<result name="NOT_LOGGED_IN" type="redirect">homePage.action?notLogged=true</result>
 		</action>
 		
+		<action name="articleAction" class="partyManagementAction">
+		<result name="success">/jsp/article.jsp</result>
+		<result name="error">/jsp/globalError.jsp</result>
+		<result name="NOT_LOGGED_IN" type="redirect">homePage.action?notLogged=true</result>
+		</action>
+		
 		<action name="partyManageAction" class="partyManagementAction" method="AjaxHandler">
 		<result type="json" name="success">
            		<param name="root">result</param>
@@ -5375,7 +5381,7 @@
 		    	<param name="root">returnVal</param>
 		   </result> 
 		</action>
-		<action name="getCandidateNamesInHomePageAction" class="homePageAction"  method="getCandidates">
+		<action name="getCandidateNamesInHomePageAction" class="homePageAction"  method="getCandidatesNew">
 		   <result type="json" name="success">
 		   	<param name="root">candidatesList1</param>
 		  </result>
@@ -5841,6 +5847,12 @@
 		   </result>
 		</action>
 		
+		<action name="getArticleNewsAction" class="articleNewsAction" method="getTotalArticleNews">
+		  <result type="json" name="success">
+		    	<param name="root">savedDetails1</param>
+		   </result>
+		</action>
+		
 		<action name="getPartiesListAction" class="newsPaginationAction" method="ajaxHandler">
 		  <result type="json" name="success">
 		    	<param name="root">partiesList</param>
@@ -5918,6 +5930,11 @@
 		   </result>
 		</action>
 		<action name="deleteNewsAction" class="newsDisplayAction" method="deleteNewsFromFile">
+		  <result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action>
+		<action name="deleteViewReportAction" class="createReportAction" method="deleteReportFromFile">
 		  <result type="json" name="success">
 		    	<param name="root">resultStatus</param>
 		   </result>
@@ -6028,7 +6045,7 @@
 		   </result>
 		  </action>
 		  
-	 	  <action name="getCandidatesListForDebateAction" class="debateAction" method="getCandidatesListForDebate">
+	 	   <action name="getCandidatesListForDebateAction" class="debateAction" method="getCandidatesListForDebate">
 			   <result name="success" type="json">
 			 		<param name="root">candidatesList</param>
 			   </result>
@@ -6208,6 +6225,40 @@
 		<action name="deltePfbReportDetailsAction" class="politicalFeedBackAction"  method="deltePfbReportDetails">
 		   <result type="json" name="success">
 		    	<param name="root">status</param>
+		   </result> 
+		</action>
+		
+		<action name="politicalActivitiesAction" class="partyActivitiesAction">
+		  <result name="success">/jsp/politicalActivities.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		
+		<action name="getNewsToUpdateKeywordsAction" class="partyActivitiesAction"  method="getNewsToUpdateKeywords">
+		   <result type="json" name="success">
+		    	<param name="root">activities</param>
+		   </result> 
+		</action>
+		
+		<action name="updateKeywordsAction" class="partyActivitiesAction"  method="updateKeywords">
+		   <result type="json" name="success">
+		    	<param name="root">status</param>
+		   </result> 
+		</action>
+		
+		<action name="activitiesAnalysisAction" class="partyActivitiesAction"  method="activitiesAnalysis">
+		  <result name="success">/jsp/activitiesAnalysis.jsp</result>
+		  <result name="error" type="redirect">loginPageAction.action</result>
+		</action>
+		
+		<action name="getActivitiesCountAction" class="partyActivitiesAction"  method="getActivitiesCount">
+		   <result type="json" name="success">
+		    	<param name="root">partyActivitiesList</param>
+		   </result> 
+		</action>
+		
+		<action name="getKeyWordsBySearchCriteria" class="partyManagementAction"  method="getKeyWordsBySearchCriteria">
+		   <result type="json" name="success">
+		    	<param name="root">keywordsList</param>
 		   </result> 
 		</action>
 		

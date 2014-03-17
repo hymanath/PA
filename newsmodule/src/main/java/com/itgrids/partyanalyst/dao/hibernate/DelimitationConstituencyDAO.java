@@ -220,4 +220,11 @@ IDelimitationConstituencyDAO {
 		return query.list();
 	}
 	
+	public List<Object[]> findConstituencyiOrder(List<Long> constituencyIds)
+	{
+		Query query = getSession().createQuery("select model.constituency.constituencyId , model.constituency.name from DelimitationConstituency model where  " +
+				"  model.constituency.constituencyId in (:constituencyIds) and model.year = (Select max(model1.year) from DelimitationConstituency model1) order by model.constituencyNO ");
+		query.setParameterList("constituencyIds", constituencyIds);
+		return query.list();
+	}
 }

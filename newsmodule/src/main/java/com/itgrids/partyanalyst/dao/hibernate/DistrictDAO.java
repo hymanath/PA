@@ -162,4 +162,11 @@ public List<Object[]> getAllDistrictInfoDetails(){
 		return getHibernateTemplate().find("select model.districtId,model.districtName from District model where model.districtId = ? order by model.districtName",districtId);
 	}
 	
+	public List<Object[]> getDistrictNames(List<Long> districtIds){
+		Query query = getSession().createQuery(" select model.districtId, model.districtName from District model where model.districtId in (:districtIds) " +
+				" order by model.districtId ");
+		
+		query.setParameterList("districtIds", districtIds);
+		return query.list();
+	}
 }

@@ -85,10 +85,10 @@ line-height: 1;
 							 </s:else>
 							 
 							 <s:if test="#stateNews.keyWordsList != null">
-							   <h5 style="border-bottom:1px solid #333"> <i><s:property value="scope"/>:&nbsp;&nbsp; <s:property value="locationName"/></i><span class="pull-right"><s:text name="%{names}"/></span></h5>
+							   <h5 style="border-bottom:1px solid #333"> <i><s:property value="scope"/>:&nbsp;&nbsp; <s:text name="%{locationName}"/></i><span class="pull-right"><s:text name="%{names}"/></span></h5>
 							 </s:if>
 							 <s:else>
-							   <h5 style="border-bottom:1px solid #333"> <i><s:property value="locationName"/></i></h5>
+							   <h5 style="border-bottom:1px solid #333"> <i><s:text name="%{locationName}"/></i></h5>
 							 </s:else>
 							</hgroup>
 							<div><s:property value="fileDate"/></div>
@@ -112,7 +112,7 @@ line-height: 1;
 	       </s:if>
 		   <s:if test="news.fileVOList != null && news.fileVOList.size() > 0">
 		     <s:iterator value="news.fileVOList" var="districtMain" status="mainIndex">							 
-		       <div class="btn btn-block" style="margin-bottom: 8px;"><b><s:property value="locationName"/>&nbsp;&nbsp;District</b></div>
+		       <div class="btn btn-block" style="margin-bottom: 8px;"><b><s:text name="%{locationName}"/>&nbsp;&nbsp;District</b></div>
 			   <s:iterator value="#districtMain.fileVOList" var="districtNews" status="distIndex">							 
 				   <div class="row-fluid">
 				     <div class="span12 well">
@@ -126,10 +126,10 @@ line-height: 1;
 								<h4 class="media-heading fontclass"><s:property value="title"/></h4>
 							 </s:else>
 							 <s:if test="#districtNews.scope == 'DISTRICT' || #districtNews.scope == 'CONSTITUENCY' ">
-							   <h5 style="border-bottom:1px solid #333"> <i><s:property value="scope"/>:&nbsp;&nbsp; <s:property value="locationName"/></i><span class="pull-right"><s:text name="%{names}"/></span></h5>
+							   <h5 style="border-bottom:1px solid #333"> <i><s:property value="scope"/>:&nbsp;&nbsp; <s:text name="%{locationName}"/></i><span class="pull-right"><s:text name="%{names}"/></span></h5>
 							 </s:if>
 							 <s:else>
-							   <h5 style="border-bottom:1px solid #333"> <i> <s:property value="locationName"/></i><span class="pull-right"><s:text name="%{names}"/></span></h5>
+							   <h5 style="border-bottom:1px solid #333"> <i> <s:text name="%{locationName}"/></i><span class="pull-right"><s:text name="%{names}"/></span></h5>
 							 </s:else>
 							</hgroup>
 							<div><s:property value="fileDate"/></div>

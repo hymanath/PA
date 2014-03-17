@@ -1,12 +1,14 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IFileGallaryDAO;
-import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 
@@ -43,6 +45,27 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		}
 	}*/
 	
+	
+	
+	/*public void testgetNewsCountForALocation1()
+	{
+		
+		try{
+		DateFormat format =
+                new SimpleDateFormat("yyyy-MM-dd");
+        Date fromDate =
+                format.parse("2014-02-01");
+        Date toDate =
+               format.parse("2014-02-15");
+		List<UserAddress> newsDetails = fileGallaryDAO.getNewsCountForALocation1(2l,0,10,"District",fromDate,toDate);
+		System.out.println(newsDetails.size());
+		for (UserAddress file : newsDetails) {
+			System.out.println(file);
+		}
+		}catch(Exception e){
+			 e.printStackTrace(); 
+		}
+	}*/
 	/*public void testgetNewsForSelectedKeyWord()
 	{
 		List<FileGallary> list = fileGallaryDAO.getNewsForSelectedKeyWord("11", 872L, "", null, null);
@@ -51,11 +74,16 @@ public class FileGallaryDAOHibernateTest extends BaseDaoTestCase{
 		 System.out.println(fileGallary.getFileGallaryId()+" "+fileGallary.getFile().getFileId());
 	}*/
 	
-	public void testgetNewsForSelectedKeyWord()
+	/*public void testgetNewsForSelectedKeyWord()
 	{
 		List<Long> list= fileGallaryDAO.getLocationValuesByRegionScopeId2(4l,"",872l);
 		System.out.println(list);
 		
 	}
+	*/
 	
+	public void testgetNewsTotalCountForALocation1(){
+		Long count = fileGallaryDAO.getNewsTotalCountForALocation1(2L, 0, 0, "District", null, null);
+		System.out.println("count : "+count);
+	}
 }

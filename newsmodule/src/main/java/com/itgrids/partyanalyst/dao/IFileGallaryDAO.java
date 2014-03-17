@@ -8,6 +8,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
 import com.itgrids.partyanalyst.model.File;
 import com.itgrids.partyanalyst.model.FileGallary;
+import com.itgrids.partyanalyst.model.UserAddress;
 
 public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
 	
@@ -326,7 +327,7 @@ public interface IFileGallaryDAO extends GenericDao<FileGallary, Long>{/*
   	
   	public List<Long> getLocationValuesByRegionScopeId2(Long regionScopeId, String queryType,Long partyId);
   	
-  	public List<File> getNewsCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr);
+  	public List<UserAddress> getNewsCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr);
   	
   	public Long getNewsTotalCountForALocation1(Long locationId,Integer startRecord,Integer maxRecord,String queryType,Date fromDateStr,Date toDateStr);
   	

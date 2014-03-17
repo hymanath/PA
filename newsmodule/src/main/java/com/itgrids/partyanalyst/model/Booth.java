@@ -49,7 +49,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long year;
 	//private Set<BoothConstituencyElection> boothConstituencyElections = new HashSet<BoothConstituencyElection>(0);
 	//private Set<BoothVillageCensus> boothVillageCensuses = new HashSet<BoothVillageCensus>(0);
-	private Set<UserAddress> userAddressBooths = new HashSet<UserAddress>(0);
+
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	
 	//private Set<BoothPublicationVoter> boothPublicationVoters = new HashSet<BoothPublicationVoter>(0);
@@ -238,15 +238,6 @@ public class Booth extends BaseModel implements java.io.Serializable {
 		this.boothLocalBodyWard = boothLocalBodyWard;
 	}*/
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "booth")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserAddress> getUserAddressBooths() {
-		return userAddressBooths;
-	}
-
-	public void setUserAddressBooths(Set<UserAddress> userAddressBooths) {
-		this.userAddressBooths = userAddressBooths;
-	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "booth")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)

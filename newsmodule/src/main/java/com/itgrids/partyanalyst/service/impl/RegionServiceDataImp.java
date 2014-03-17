@@ -423,39 +423,41 @@ public class RegionServiceDataImp implements IRegionServiceData {
 	public List<SelectOptionVO> getSubRegionsInConstituency(Long constituencyId, String year, String scope) {
 		Constituency constituency = constituencyDAO.get(constituencyId);
 		List<SelectOptionVO> subRegionsList = new ArrayList<SelectOptionVO>();
-		
+
 		if(constituency.getAreaType() == null)
-		return subRegionsList;			
+		return subRegionsList;
 		String areaType = constituency.getAreaType();
-		
-		
+
+
 		if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
 		{
-			subRegionsList = getTehsilsInConstituency(constituencyId);
+		if(scope.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+		subRegionsList = getTehsilsInConstituency(constituencyId);
 		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
 		{
-			subRegionsList = getLocalElectionBodies(constituencyId, year);
-			
-			
+		subRegionsList = getLocalElectionBodies(constituencyId, year);
+
+
 		} else if(areaType.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
 		{
-			if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
-			{
-				subRegionsList = getTehsilsInConstituency(constituencyId);
-			} else if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
-			{
-				subRegionsList = getLocalElectionBodies(constituencyId, year);
-			} else {
-				subRegionsList = getTehsilsInConstituency(constituencyId);
-				List<SelectOptionVO> localElectionBodiesList = getLocalElectionBodies(constituencyId, year);
-				if(localElectionBodiesList.size() != 0)
-				{
-					subRegionsList.addAll(localElectionBodiesList);				
-				}
-			} 						
+		if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+		{
+		subRegionsList = getTehsilsInConstituency(constituencyId);
+		} else if(scope != null && scope.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+		{
+		subRegionsList = getLocalElectionBodies(constituencyId, year);
+		} else {
+		subRegionsList = getTehsilsInConstituency(constituencyId);
+		List<SelectOptionVO> localElectionBodiesList = getLocalElectionBodies(constituencyId, year);
+		if(localElectionBodiesList.size() != 0)
+		{
+		subRegionsList.addAll(localElectionBodiesList);
+		}
+		}
 		}
 		return subRegionsList;
-	}
+		}
+
 	
 
 	@SuppressWarnings("unchecked")
