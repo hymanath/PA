@@ -732,7 +732,8 @@ public class ElectionResultsAnalysisReportAction extends ActionSupport implement
     				electionIDS.add(Long.valueOf(electionIds[i].toString()));
     			}    			
     		}
-    		partiesList = staticDataService.getPartyDEtailsByElectionId(regVO.getRegistrationID(),electionIDS);
+    		Long cosntituencyId = jObj.getLong("cosntituencyId");
+    		partiesList = staticDataService.getPartyDEtailsByElectionId(regVO.getRegistrationID(),electionIDS,cosntituencyId);
 		} catch (Exception e) {
 			log.error(" Exception occured in  muncipalConstituencies() of ElectionResultsAnalysisReportAction class.",e);
 		}
