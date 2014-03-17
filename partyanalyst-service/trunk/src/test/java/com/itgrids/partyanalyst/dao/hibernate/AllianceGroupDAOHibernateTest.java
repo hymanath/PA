@@ -54,7 +54,7 @@ public class AllianceGroupDAOHibernateTest extends BaseDaoTestCase {
 		System.out.println(list.size());
 	}*/
 	
-	public void testGetAlliancesAndPartiesForAnElection()
+	/*public void testGetAlliancesAndPartiesForAnElection()
 	{
 		List<Object[]> list = allianceGroupDAO.getAlliancesAndPartiesForAnElection(38l);
 		
@@ -66,6 +66,27 @@ public class AllianceGroupDAOHibernateTest extends BaseDaoTestCase {
 			for(Object obj : params)
 				System.out.print("\t"+obj.toString());
 		}
-	}
+	}*/
 
+	public void testGetgetAlliancesAndPartiesForPartiesAndElections()
+	{
+		List<Long> Eids = new ArrayList<Long>();
+		Eids.add(38L);
+		Eids.add(3L);
+		
+		List<Long> Pids = new ArrayList<Long>();
+		Pids.add(872L);
+		
+		
+		List<Object[]> list = allianceGroupDAO.getAlliancesAndPartiesForPartiesAndElections(Eids,Pids);
+		
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj.toString());
+		}
+	}
 }

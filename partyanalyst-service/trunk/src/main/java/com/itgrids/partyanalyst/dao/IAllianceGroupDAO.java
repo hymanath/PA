@@ -28,4 +28,6 @@ public interface IAllianceGroupDAO extends GenericDao<AllianceGroup, Long>  {
 	public List findAlliancePartiesByElectionStateAndPartyExcludeParty(List<Long> electionIds, Long partyId, Long stateId);
 	
 	public List<Object[]> getAlliancesAndPartiesForAnElection(Long electionId);
+	
+	public List<Object[]> getAlliancesAndPartiesForPartiesAndElections(List<Long> electionIds,List<Long> partyIds);
 }
