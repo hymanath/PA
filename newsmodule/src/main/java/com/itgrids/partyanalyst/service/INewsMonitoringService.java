@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itgrids.partyanalyst.dto.ArticleVO;
 import com.itgrids.partyanalyst.dto.CandidateNewsCountVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.NewsCountVO;
@@ -103,6 +104,7 @@ public interface INewsMonitoringService {/*
     public NewsEditVO getInfoForFile(String userType,Long fileId,Long userId);
     
     public ResultStatus updateCandidatesAndParty(Long candidateId,Long partyId,String candidateName,Long designationId,Long loctionId,Long locationValue);
+    //public List<ArticleVO> getArticleNews();
    
 }
 

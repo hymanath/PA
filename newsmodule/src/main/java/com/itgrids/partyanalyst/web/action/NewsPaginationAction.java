@@ -352,7 +352,7 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 		return Action.SUCCESS;
 	}
 	
-	public String checkIsKeywordExist(){
+/*	public String checkIsKeywordExist(){
 		try{
 			session = request.getSession();
 			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
@@ -375,7 +375,36 @@ public class NewsPaginationAction  extends ActionSupport implements ServletReque
 			log.debug("exception occured in checkIsKeywordExist(),newsPaginationAction class",e); 
 		}
 			return Action.SUCCESS;
-	}	
+	}*/
+	public String checkIsKeywordExist(){
+		try{
+			session = request.getSession();
+			RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+			if(user == null)
+				return ERROR;
+			String keyword = null;
+			if(request.getParameter("task").equalsIgnoreCase("addNewKeyword")){
+				keyword = request.getParameter("keyword");
+				keyword= keyword.replace("\"", "");
+				status = candidateDetailsService.isKeywordExist(user.getRegistrationID(),keyword);
+			}
+			else if(request.getParameter("task").equalsIgnoreCase("mergeKeywords")){
+				List<Long> keywordsList = new ArrayList<Long>();
+				String keywords = request.getParameter("keywords");
+				String[] options = keywords.split(",");
+				
+				for (String value : options) {
+					keywordsList.add(Long.valueOf(value.trim()));
+				}
+				keyword = request.getParameter("newKeyword");
+				keyword= keyword.replace("\"", "");
+				status = candidateDetailsService.mergeSelectedKeywords(user.getRegistrationID(),keywordsList,keyword);
+			}
+		}catch (Exception e) {
+			log.debug("exception occured in checkIsKeywordExist(),newsPaginationAction class",e); 
+		}
+			return Action.SUCCESS;
+	}		
 	public String getKeywordList(){
 		try{
 			session = request.getSession();

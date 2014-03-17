@@ -72,7 +72,7 @@
 			<!--------- Row-1 -------->
 			<div class="row-fluid">
 				<div class="span12 content_widget">
-                  <div id="myResult1"><div id="ajaximg"><img id="" width="18" height="11" style="width: 150px; height: 15px;margin-top:100px;" src="images/icons/goldAjaxLoad.gif"></div></div>
+                  <div id="myResult1"><div id="ajaximg"><img id="" width="18" height="11" style="width: 150px; height: 15px;margin-top:100px;margin-left:400px;" src="images/icons/goldAjaxLoad.gif"></div></div>
 				</div>	
 			</div>
 			<!--------- Row-1 End -------->

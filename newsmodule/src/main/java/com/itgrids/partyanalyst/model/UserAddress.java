@@ -25,6 +25,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.NotFoundAction;
 
 /**
@@ -56,6 +58,9 @@ public class UserAddress implements java.io.Serializable {
 	private LocalElectionBody localElectionBody;
 	private Constituency ward;
 	private Booth booth;
+	private File file;
+	private RegionScopes regionScopes;
+	private Long locationValue;
 	private Set<File> files = new HashSet<File>(0); 
 	
 	/*private Cadre cadreCurrentAddress; 
@@ -271,6 +276,36 @@ public class UserAddress implements java.io.Serializable {
 	public void setFiles(Set<File> files) {
 		this.files = files;
 	}
+
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "file_id")	
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
 	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name = "location_scope_id")
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public RegionScopes getRegionScopes() {
+		return regionScopes;
+	}
 	
+	public void setRegionScopes(RegionScopes regionScopes) {
+		this.regionScopes = regionScopes;
+	}
+	
+	@Column(name = "location_value")
+	public Long getLocationValue() {
+		return locationValue;
+	}
+
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
+	}
+
 }

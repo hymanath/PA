@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -43,4 +44,10 @@ public interface ICandidatePartyKeywordDAO extends GenericDao<CandidatePartyKeyw
 	public List<Object[]> getCandidatePartyKeywordsByFileIds(Long candidatePartyFileId);
 	
 	public void deleteCandidatePartyKeywords(List<Long> candidatePartyFileIds);
+	
+	public List<Object[]> getKeywordsByFileIds(Set<Long> fileIds);
+	
+	public List<String> getExistingKeywords(List<String> keywords,List<Long> candidatePartyFileIds);
+	
+	public List<Object[]> getAllExistingKeywords(List<String> keywords,List<Long> candidatePartyFileIds);
 }

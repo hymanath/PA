@@ -352,4 +352,6 @@ public interface ICandidateDetailsService {
 	 public List<SelectOptionVO> getUsersNewsUploadStatus(Date fromDate,Date toDate);
 	 
 	 public SelectOptionVO generateExcelForUsersNewsUploadStatus(Date fromDate,Date toDate,String from,String to);
+	 
+	 public List<SelectOptionVO> getKeyWordsBySearchCriteria(String searchString);
 }

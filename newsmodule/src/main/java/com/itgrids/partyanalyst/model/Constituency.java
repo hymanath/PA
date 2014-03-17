@@ -62,9 +62,7 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	//private Set<CommentCategoryConstituency> commentCategoryConstituency = new HashSet<CommentCategoryConstituency>(0);
 	private LocalElectionBody localElectionBody;
 	//private Set<BoothConstituencyElection> boothConstituencyElections;
-	private Set<UserAddress> userAddress = new HashSet<UserAddress>(0);
-	private Set<UserAddress> ward = new HashSet<UserAddress>(0);
-	private Set<UserAddress> parliamentConstituencies = new HashSet<UserAddress>(0);
+	
 	private Set<LocalGroupRegion> localGroupRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<LocalGroupRegion> localGroupWardRegion = new HashSet<LocalGroupRegion>(0);
 	private Set<LocalGroupRegion> localGroupParliamentConstRegion = new HashSet<LocalGroupRegion>(0);
@@ -296,27 +294,6 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	public void setAreaType(String areaType) {
 		this.areaType = areaType;
 	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserAddress> getUserAddress() {
-		return userAddress;
-	}
-
-	
-	public void setUserAddress(Set<UserAddress> userAddress) {
-		this.userAddress = userAddress;
-	}
-
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "ward")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserAddress> getWard() {
-		return ward;
-	}
-
-	public void setWard(Set<UserAddress> ward) {
-		this.ward = ward;
-	}
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "constituency")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
@@ -348,17 +325,6 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 		this.localElectionBodyWard = localElectionBodyWard;
 	}
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parliamentConstituency")
-	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public Set<UserAddress> getParliamentConstituencies() {
-		return parliamentConstituencies;
-	}
-
-	public void setParliamentConstituencies(
-			Set<UserAddress> parliamentConstituencies) {
-		this.parliamentConstituencies = parliamentConstituencies;
-	}
-
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "parliamentConstituency")
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)	
 	public Set<LocalGroupRegion> getLocalGroupParliamentConstRegion() {

@@ -21,9 +21,7 @@
   <!-- <link rel="stylesheet" href="js/ui/1.9.0-themes-base/jquery-ui.css" /> -->
     <script src="js/jquery-1.8.2.js"></script>
     <script src="js/ui/1.9.0-themes-base/jquery-ui.js"></script>
-
-	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-	 <SCRIPT type="text/javascript" src="js/specialPage/specialPage.js"></SCRIPT>
+	
 	<!-- YUI Skin Sam -->
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <script type="text/javascript" src="js/problemCompleteDetails.js"></script>
@@ -67,7 +65,7 @@
 
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-<script type="text/javascript" src="js/partyManagement.js"></script>
+
 
 <!-- JQuery files (End) -->
 <!-- Bootstrap -->
@@ -77,8 +75,7 @@
 <!-- keywords -->
     <link rel="stylesheet" type="text/css" href="styles/autoSuggest.css"> 
 	<script type="text/javascript" src="js/jquery.autoSuggest.js"></script>
-	<script type="text/javascript" src="js/jquery.autoSuggest.minified.js"></script>
-	<script type="text/javascript" src="js/jquery.autoSuggest.packed.js"></script>
+
 
 <!-- keywords -->
 <link  rel="stylesheet" type="text/css" href="styles/partyManagement/partyManagement.css"/>
@@ -205,7 +202,7 @@ var locationScop1e = '${sessionScope.USER.accessType}';
 var statteId = '${userDetailsVO[0].stateId}';
 var distritcId =  '${userDetailsVO[0].districtId}';
 var cosntiId =  '${userDetailsVO[0].constituencyId}';
-
+var editType = '${type}';
 <c:forEach var="districts" items="${districtsList1}">
 	var districtList ={
 	id:"${districts.id}",
@@ -232,13 +229,7 @@ var cosntiId =  '${userDetailsVO[0].constituencyId}';
 </c:forEach>
 
 
-var keywordsArray = new Array();
-<c:forEach var="keywords" items="${keywordsList}">
-   var obj = {value:${keywords.id},
-			name:"${keywords.name}"}
 
-		keywordsArray.push(obj);
-</c:forEach>
 
 var partyArray = new Array();
 <c:forEach var="party" items="${news.partyList}">
@@ -261,11 +252,21 @@ var keyObj = {
 	selectedKeys.push(keyObj);
 </c:forEach>
 
+
+
+var locationsList = new Array();
+<c:forEach var="list" items="${news.fileVOLIst}" varStatus="j">
+var locaObj = {
+		id:'${list.locationScope}',
+		name: '${list.locationScopeValue}'
+	}
+	locationsList.push(locaObj);
+</c:forEach>
 </script>
 <script> 
 $('document').ready(function(){
 
- $("#scopeDiv").prop("disabled", "disabled");
+ $(".scopeLevelDiv").prop("disabled", "disabled");
 //candidate creation
 $(".createNewCandidate").live("click",function(){	
 $('#errorMsg1Div').html('');
@@ -434,7 +435,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 	
 	<!--1st block opening -->
 		<div class="container"  align="left">
-         <table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv" /></td></tr></table>
+         <table class="aligncenter"><tr><td><div id="uploadNewsFileErrorDiv1" /></td></tr></table>
 		
 		<div class="span12"> 
 		 <legend class="boxHeading text-center">Edit Selected News</legend> 
@@ -659,7 +660,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
                   var obj = {value:${keywords.id},name:"${keywords.name}"}
 				  existingKeyList.push(obj);
                  </c:forEach>
-				$("#${stat.index}keywordId").autoSuggest(keywordsArray, {preFill:existingKeyList,selectedItemProp: "name", searchObjProps: "name"});
+				$("#${stat.index}keywordId").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,preFill:existingKeyList,selectedItemProp: "name", searchObjProps: "name"});
 
 			</script>
 			
@@ -887,27 +888,76 @@ $(".destinationCandidateCloseImg").live("click",function(){
 	
 		<div class="row-fluid" style="margin-top: 15px;" align="left">
 			<div class="container m_top10" style="padding: 5px 15px 15px; border: 1px solid rgb(173, 194, 72);  border-radius: 5px; width: 870px;"><legend class="">Select News Location</legend>
-				<div class="span12 ">  
-			<div id="scopeDiv1">
-			 <input type="hidden" id="locationScope1" name="locationScope" value="${news.selectOptionVOList[0].id}"/>
-			 <input type="hidden" id="locationValue1" name="locationValue" value="${news.selectOptionVOList[0].location}"/>
-			  <input type="hidden" id="locationValueMandal" name="mandalId" value="${news.selectOptionVOList[0].value}"/>
-			 </div>
-					<div class="row-fluid">    <div class="span2" style="margin-right: 50px;">    
-						<label>Location Scope    </label>
-						<s:select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"  listValue="locationScopeValue" list="news.fileVOLIst" listKey="locationScope" value="news.selectOptionVOList[0].id" />
-					</div>
-					
-					<div id="showScopeSubs"></div>
-					
-					</div>
-						<div id="showScopeSubs" style="margin-left: 160px;"></div>
-						<div id="editLocationValue">
-						<span style="font-weight:bold;">Location Value:</span>  ${news.selectOptionVOList[0].name}  
-						<a class="btn" onclick='changeLocationValue()' id="editLocationBtn"> Edit Location </a>
-						</div>
+			
+				<s:iterator value="news.selectOptionVOList" var="locationList" status="i">
+			<div id="locationDiv${i.index}">
+				<div class="span12" style="border:1px solid #7FC2EB;padding:10px;margin-top:10px;">  
 						
-				</div>   
+						<div class="row-fluid">    
+							<div class="span2" style="margin-right: 80px;">    
+								<label>Location Scope    </label>
+					 <s:select cssClass="scopeLevelDiv" class="input-block-level" id="scopeDiv%{#i.index}" name="fileVO[%{#i.index}].locationScope" onchange="changeLocationValue(this.options[this.selectedIndex].value,%{#i.index})"  listValue="locationScopeValue" list="news.fileVOLIst" listKey="locationScope" value="news.selectOptionVOList[#i.index].id"/>
+							
+							</div>
+						
+							<div id="showScopeSubs${i.index}"></div>
+						
+						</div>
+							<div id="editLocationValue">
+							<span style="font-weight:bold;">Location Value:</span>  ${news.selectOptionVOList[i.index].name}  							
+							</div>
+							<div id="newsUpdationDiv">
+							<a class="btn" onclick='changeLocationValue(${news.selectOptionVOList[i.index].id},${i.index})' id="editLocationBtn${i.index}" style="margin-left: 230px;"> Edit Location </a>
+							
+							
+			<div id="scopesDiv${i.index}">
+			<input type="hidden" id="scopeDiv${i.index}" name="fileVO[${i.index}].locationScope" value="${news.selectOptionVOList[i.index].id}"/>
+				<s:if test="%{#locationList.id == 2}">
+				<input type="hidden" id="stateDiv${i.index}" name="fileVO[${i.index}].locationValue" value="${news.selectOptionVOList[i.index].location}"/>	
+				<s:if test="#i.index != 0">
+						<a class="btn btn-warning pull-right" onclick='clearDiv("locationDiv${i.index}","stateDiv",${i.index})' id="trashBtn${i.index}"> <i class="icon-trash"></i> Delete </a>
+				</s:if>				
+				</s:if>	 
+							
+				<s:if test="%{#locationList.id == 3}">
+				<input type="hidden" id="districtDiv${i.index}" name="fileVO[${i.index}].locationValue" value="${news.selectOptionVOList[i.index].location}"/>
+				<s:if test="#i.index != 0">
+						<a class="btn btn-warning pull-right" onclick='clearDiv("locationDiv${i.index}","districtDiv",${i.index})' id="trashBtn${i.index}"> <i class="icon-trash"></i> Delete </a>
+				</s:if>				 
+				</s:if>
+				<s:if test="%{#locationList.id == 4}">
+				<input type="hidden" id="constituencyDiv${i.index}" name="fileVO[${i.index}].locationValue" value="${news.selectOptionVOList[i.index].location}"/>
+				<s:if test="#i.index != 0">
+						<a class="btn btn-warning pull-right" onclick='clearDiv("locationDiv${i.index}","constituencyDiv",${i.index})' id="trashBtn${i.index}"> <i class="icon-trash"></i> Delete </a>
+				</s:if>				 
+				</s:if>
+				<s:if test="%{#locationList.id == 5 || #locationList.id == 7}">
+				<input type="hidden" id="mandalDiv${i.index}" name="fileVO[${i.index}].locationValue" value="${news.selectOptionVOList[i.index].location}"/>
+				<s:if test="#i.index != 0">
+						<a class="btn btn-warning pull-right" onclick='clearDiv("locationDiv${i.index}","mandalDiv",${i.index})' id="trashBtn${i.index}"> <i class="icon-trash"></i> Delete </a>
+				</s:if>				 
+				</s:if>
+				<s:if test="%{#locationList.id == 6 || #locationList.id == 8 || #locationList.id == 9}">
+				<input type="hidden" id="villageDiv${i.index}" name="fileVO[${i.index}].locationValue" value="${news.selectOptionVOList[i.index].location}"/>
+				<s:if test="#i.index != 0">
+						<a class="btn btn-warning pull-right" onclick='clearDiv("locationDiv${i.index}","villageDiv",${i.index})' id="trashBtn${i.index}"> <i class="icon-trash"></i> Delete </a>
+				</s:if>				 
+				</s:if>
+			</div>
+			
+					</div>
+							
+				</div>  
+			</div> 
+				
+				<s:if test="#i.index==news.selectOptionVOList.size()-1">
+				<div id="newLocationsDiv"> </div>
+				<div id="addNewBtnDiv">
+				<a class="btn btn-info pull-right" onclick='addNewLocation(${i.index})' id="addNewLocation${i.index}" style="margin-top: 20px;"> <i class="icon-plus"></i> Add New Location </a>
+				<div>
+				</s:if>
+			</s:iterator>
+				
 			</div>
 		</div>
 
@@ -922,6 +972,7 @@ $(".destinationCandidateCloseImg").live("click",function(){
 			 
 $("#newsimportance").val('${news.newsimportance}');
 uploadNewsForPartyAndCandidate(19);
+
 function uploadNewsForPartyAndCandidate(fileId)
 {
 getPartyGallariesForUplaod("News Gallary","whomegallaryId");
@@ -959,16 +1010,18 @@ function getDesignationList(designationList)
 	callAjax(jsObj, url);
 }
 
-var locationDisabled = true;
-function changeLocationValue()
+
+
+function changeLocationValue(scopeld,index)
 {
-	locationDisabled = false;
-	$("#editLocationBtn").addClass("disabled");  
-	$("#scopeDiv").prop("disabled", false);
-	$("#scopeDiv").val(${news.selectOptionVOList[0].id});
-	getLocations(${news.selectOptionVOList[0].id});
-	$("#scopeDiv1").html("");
-					
+	$('#editLocationBtn'+index+'').attr('disabled', true);
+	$('#scopeDiv'+index+'').removeAttr('disabled');
+	$('#scopesDiv'+index+'').html('');
+	$('#locationScope'+index+'').removeAttr('name');
+	$('#locationValue'+index+'').removeAttr('name');
+
+		getLocationsForEdit(scopeld,index);
+				
  }
 function clearExistingImg(id,zoomId){
 
@@ -987,6 +1040,45 @@ function isValid(str){
 	return flag;
 }
 
+function addNewLocation(index){
+index = index+1;
+var str = '';
+	if(locationsList != null && locationsList.length > 0){
+	str +='<div id="locationDiv'+index+'">';
+		str +='<div class="span12" style="border:1px solid #7FC2EB;padding:10px;margin-top:10px;">';
+		
+				str +='<div class="row-fluid">  '  
+					str +='	<div class="span2" style="margin-right: 80px;">  ';  
+					str +='	<label>Location Scope    </label>';
+					str +='<select class="scopeLevelDiv" onchange="changeLocationValue(this.options[this.selectedIndex].value,'+index+')" id="scopeDiv'+index+'" name="fileVO['+index+'].locationScope" >';
+					for(var i in locationsList){
+						str +='<option value="'+locationsList[i].id+'">'+locationsList[i].name+'</option>';
+						}
+					str +='</select>';
+					str +='</div>';						
+					str +='<div id="showScopeSubs'+index+'"></div>';
+				str +='</div>';				
+					str +='	<div id="newsUpdationDiv">';
+					str +='<a class="btn btn-info pull-right" onclick="clearDiv(\'locationDiv'+index+'\',\'scopeDiv\','+index+')" id="trashBtn'+index+'"> <i class="icon-trash"></i> Delete </a>';						
+					str +='</div>		';
+
+		str +='</div>';
+	str +='</div>';
+				
+	}
+	$('#newLocationsDiv').append(str);
+	$('#addNewBtnDiv').html('');
+		str='';
+		str +='<a class="btn btn-success pull-right" onclick="addNewLocation('+index+')" id="addNewLocation'+index+'" style="margin-top: 20px;"> <i class="icon-plus"></i> Add New Location </a>';
+		$('#addNewBtnDiv').html(str);
+		
+		getLocationsForEdit(2,index);
+}
+
+function clearDiv(divid,selectBoxDiv,index){
+	$("#"+divid+"").html('');	
+	$("#selectBoxDiv"+index+"").val('0');				
+}
 </script>
 </body>
 </html>

@@ -9,34 +9,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title> TDP News Portal </title>
 <!--<script type="text/javascript" src="js/jquery.js"></script>-->
-<script type="text/javascript" src="js/jquery.dataTables.js"></script>
-   <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
-<SCRIPT type="text/javascript" src="js/AddNewProblem/addNewProblem.js"></SCRIPT>
+
 
   <link rel="stylesheet" href="js/ui/1.10.3/smoothness/jquery1.10.3-ui.css" />
 
   <script src="js/ui/1.10.3/jquery-ui.js"></script>
     <script src="js/jquery-1.8.2.js"></script>	
     <script src="js/ui/1.9.0-themes-base/jquery-ui.js"></script>
- <!-- <script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yahoo-dom-event/yahoo-dom-event.js">
-	</script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/json/json-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/element/element-min.js"></script> 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/datasource/datasource-min.js" ></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection-min.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/get/get-min.js" ></script>
-	 
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/connection/connection.js"></script> 	
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/yuiloader/yuiloader-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/dom/dom-min.js"></script>
-	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/event/event-min.js"></script> -->
-	<script type="text/javascript" src="js/LocationHierarchy/locationHierarchy.js"></script>	
-	 <SCRIPT type="text/javascript" src="js/specialPage/specialPage.js"></SCRIPT>
+
 	 <SCRIPT type="text/javascript" src="js/loginpopup.js"></SCRIPT>
 	<!-- YUI Skin Sam -->
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
-<script type="text/javascript" src="js/problemCompleteDetails.js"></script>
 	
 <!-- JQuery files (Start) -->
 
@@ -73,8 +56,6 @@
 	<!-- YUI Dependency files (End) -->
 
 
-<script type="text/javascript" src="js/customPaginator/customPaginator.js"></script>
-
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <link  rel="stylesheet" type="text/css" href="styles/landingPage/landingPage.css"/>
 <script type="text/javascript" src="js/partyManagement.js"></script>
@@ -87,8 +68,7 @@
 <!-- keywords -->
     <link rel="stylesheet" type="text/css" href="styles/autoSuggest.css"> 
 	<script type="text/javascript" src="js/jquery.autoSuggest.js"></script>
-	<script type="text/javascript" src="js/jquery.autoSuggest.minified.js"></script>
-	<script type="text/javascript" src="js/jquery.autoSuggest.packed.js"></script>
+
 
 <!-- keywords -->
 <link  rel="stylesheet" type="text/css" href="styles/partyManagement/partyManagement.css"/>
@@ -191,6 +171,9 @@ h2{
     margin-left: 440px;
     margin-top: 7px;
 }
+.delStyle{
+  margin-left:5px;
+}
 </style>
 </head>
 <script type="text/javascript">
@@ -276,25 +259,6 @@ var fileSourceSubArray = {
 	fontCheckBox:''
 
 };
-
-function showPhotoGallary1()
-{
-if(!formValidation()){
-document.getElementById("profileManagementMainOuterDiv2").style.display = 'none';
-
-document.getElementById("profileManagementMainOuterDiv1").style.display = 'block';
-document.getElementById("profileManagementMainOuterDiv3").style.display = 'none';
-document.getElementById("profileManagementMainOuterDiv4").style.display = 'none';
-$("#dateSelectDiv").css("display","none");
-/*$("#photoGalleryId").css({"background":"none repeat scroll 0 0 #F61D50"});
-$("#videoGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
-$("#newsGalleryId").css({"background":"none repeat scroll 0 0 #0063DC"});
-$("#newsEditId").css({"background":"none repeat scroll 0 0 #0063DC"});*/
-
- buildCreateGallaryDiv();
-}
-return;
-}
 
 
 function isKeywordExist(){
@@ -718,13 +682,16 @@ function createNewParty()
 						</ul>
 					</li>
 					<c:if test="${sessionScope.USER.userAccessType == 'Admin'}">
-					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" id="allKeywordsDiv" onClick="getKeywordsByCount()">Keyword Management <b class="caret"></b></a>
+					<li class="dropdown"><a data-toggle="dropdown" class="dropdown-toggle" style="cursor:pointer;color: #005580;" id="allKeywordsDiv" >Keyword Management <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li>
 								<li><a data-toggle="tab" id="newKeywordBtn" style="cursor:pointer;color: #005580;" onclick="createPartyKeywordDiv();">Create New Keyword</a></li>
 							</li>
 							<li>
 								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="createPartyKeywordDiv();reFreshKeywordList();"> Merge Keywords </a>
+							</li>
+							<li>
+								<a data-toggle="tab" id="mergeKeywordBtn" style="cursor:pointer;color: #005580;" onClick="getKeywordsByCount()"> View Keyword Wise Total News </a>
 							</li>
 						</ul>
 					</li>
@@ -1086,7 +1053,7 @@ function createNewParty()
 <div id='keyWordsMainDiv' class="divInfo">
 		
 </div>
-<div id='showKeywordsDiv' align="center" style="display:none; width: 400px; margin: 15px auto 0px auto;border:1px solid #CCCCCC; padding:15px;"></div>
+<div id='showKeywordsDiv' align="center" style="display:none; width: 400px; margin: 15px auto 0px auto;border:1px solid #CCCCCC; padding:15px;"><img src="images/icons/goldAjaxLoad.gif" /></div>
 <div id="alterKeywords">
 	<div id='profileManagementMainOuterDiv8' style="display:none">
 
@@ -1116,7 +1083,7 @@ function createNewParty()
 	</div>
 						<div id="keywordLists" style="width: 550px; margin-left: 60px;">
 						  	Select Keywords <span style="margin-left: 15px;">:</span>
-							<select  style="width:400px;" id="keywordsList"> <select>
+							<select  style="width:400px;" id="keywordsList"> </select>
 						</div>
 						<div style="width: 400px; margin-left: 66px;">
 							Enter New Keyword <span>:</span> <input type="text" id="aliasKeyword" style="margin-top: 10px;" onkeyup="clearDiv('statusDiv2');"/>
@@ -1131,7 +1098,7 @@ function createNewParty()
 </div>
 
 <!-- updared by prasad for Actions Div-->
-<div id="newDesignationDiv" align="center" class="container well">
+<div id="newDesignationDiv" style="display:none;" align="center" class="container well">
 	<h2 align="center">Create New Designation</h2>
 	<div align="center" style="width: 410px; margin: 2px 0px 2px 12px;padding:15px;">
 	<div id="statusDivForDesignation" align="center" style="margin :10px 0px 15px 13px;"></div>
@@ -1144,7 +1111,7 @@ function createNewParty()
 </div>
 
 
-<div id="newPartyCreationDiv" align="center" class="container well">
+<div id="newPartyCreationDiv" style="display:none;" align="center" class="container well">
 	<h2 align="center">Create New Party</h2>
 	<div align="center" style="width: 500px; margin: 15px 0px 0px 40px;padding:15px;">
 	<div id="statusForParty" align="center" style="margin: 2px 0px 2px 55px;"></div>
@@ -1158,7 +1125,7 @@ function createNewParty()
 	</div>
 </div>
 
-<div id="newCandidateCreationDiv" align="center" class="container well">
+<div id="newCandidateCreationDiv" style="display:none;" align="center" class="container well">
 	<h2 align="center">Create New Candidate</h2>
 	<div align="center" style="width: 400px; margin: 15px 0px 0px 40px;padding:15px;">
 
@@ -1193,7 +1160,7 @@ function createNewParty()
 <input type="button" value="submit" class="btn" id="createCandidateId1"/>
 </div>
 </div>
-<div id="newEditCandidateDiv" align="center" class="container well" >
+<div id="newEditCandidateDiv" style="display:none;" align="center" class="container well" >
 	<h2 align="center">Edit Candidate</h2>
 	<div align="center" style="width: 500px; margin: 15px 0px 0px 40px;padding:15px;">
 	<div id="statusForParty" align="center" style="margin-bottom: 2px;margin-top: 2px;"></div>
@@ -1283,13 +1250,6 @@ function getTypeOfConstituencyForCreate(value)
 	}
 }
 
-var keywordsArray = new Array();
-<c:forEach var="keywords" items="${keywordsList}">
-   var obj = {value:${keywords.id},
-			name:"${keywords.name}"}
-
-		keywordsArray.push(obj);
-</c:forEach>
 
 var keywordGallaries;
 var newsDetails;
@@ -1373,44 +1333,6 @@ $(".dateField").live("click", function(){
 });
 
 
-	 $(document).on("change",'#gallariesList', function(){
-		 $("#noNewsError").html('');
-		 $('#dateErrorMessage').html("");
-
-       if($('#fromDateId').val() == "" || $('#toDateId').val() == ""){
-			$('#dateErrorMessage').html("<b style='color:red;'>Select Date Range</b>");
-		}else{
-		getAllNewsOfAGallary(this.value);
-		}
-     });
-
-     $(document).on("change",'#partyList', function(){
-         $('#candidateNewsList , #respenseNewsList').find('option').remove();
-		 $('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
-
-		getNewsForAParty(this.value);
-     });
-
-	$(document).on("change",'.typeRadio', function(){
-		$('#noNewsError ,#dateErrorMessage').html('');
-		$('#candidateNewsList , #respenseNewsList , #buttonsDiv').hide();
-        $("#gallaryShowHideDiv").css("display","none");
-		$("#categoryShowHideDiv").css("display","none");
-		if(this.value == "candidate"){
-			$('#candidatesDiv').show('slow');
-			$('#partyNewsDiv').hide('slow');
-			$('#candidatesList').val("");
-		}else
-		{
-			$("#categoryGallaryHideShowDiv").css("display","none");
-			$('#candidatesDiv').hide();
-			$('#partyNewsDiv').show('slow');
-			$('#partyList').val(872);
-			getNewsForAParty(872);
-
-		}
-     });
-
 
 $(document).on("click",'#fromDateId1 , #toDateId1', function(){
  $(this).datepicker({
@@ -1422,128 +1344,8 @@ $(document).on("click",'#fromDateId1 , #toDateId1', function(){
 	}).datepicker("show");
 });
 	
-$(document).on("click",'#fromDateId , #toDateId', function(){
- $(this).datepicker({
-		dateFormat: "dd/mm/yy",
-		changeMonth: true,
-        changeYear: true,
-		maxDate: new Date(),
-	    onSelect: function(dateText, inst) { 
-			isDatesValid();
-			if($('input:radio[name=newsType]:checked').val() == "party")
- 				   checkAllValuesAndSendAjaxForNews();
-			else if($('input:radio[name=newsType]:checked').val() == "candidate")
-                   checkAllValuesAndSendAjax();
-	}
-		
-	}).datepicker("show");
-});
-
-    $(document).on('click','#responseDiv',function(){
-		$('#candidateNewsList').empty();
-		$('#respenseNewsList').empty();		
-		  if($('#responseContentDiv').css('display') == "block"){
-			  $('#candidatesList').val("");
-			  $('#dateErrorMessage').html("");
-              $('#noNewsError').html('');
-		  }
-
-		   $('#responseContentDiv').toggle('slow');
-		   		//alert($('#responseContentDiv').is(":visible"))
 
 
-     });
-
-
-	    $(document).on('click','#addFile',function(){
-    $("#candidateNewsList > option:selected").each(function(){
-      $(this).remove().appendTo("#respenseNewsList");
-    });
-	  $('#respenseNewsList option').prop('selected', 'selected')
-  });
-
-  $(document).on('click','#deleteFile',function(){
-   $("#respenseNewsList > option:selected").each(function(){
-      $(this).remove().appendTo("#candidateNewsList");
-   });
-
-	  var my_options = $("#candidateNewsList option");
-
-	my_options.sort(function(a,b) {
-		if (a.text > b.text) return 1;
-		else if (a.text < b.text) return -1;
-		else return 0
-	})
-
-	$("#candidateNewsList").empty().append( my_options );
-
-	 $('#respenseNewsList option').prop('selected', 'selected');
-	});
-
-
-
-  $(document).on('click','#button1',function(){
-    $("#list1 > option:selected").each(function(){
-      $(this).remove().appendTo("#candidateList");
-		// showUploadFilesDiv($(this).val(),$(this).text());
-
-        addMoreFiles1($(this).val(),$(this).text());
-    });
-	  $('#candidateList option').prop('selected', 'selected');
-
-	 
-
-  });
-
-  $(document).on('click','#button2',function(){
-
-		
-
-   $("#candidateList > option:selected").each(function(){
-		 $('.div'+$(this).val()).remove();
-
-		/* $("input:[value='"+ $(this).val()+"']").each(function(){
-			 alert($(this).attr('id'));
-
-		 });*/
-      $(this).remove().appendTo("#list1");
-   });
-
-	 var my_options = $("#list1 option");
-
-	my_options.sort(function(a,b) {
-		if (a.text > b.text) return 1;
-		else if (a.text < b.text) return -1;
-		else return 0
-	})
-
-	$("#list1").empty().append( my_options );
-	 $('#candidateList option').prop('selected', 'selected');
-
-   });
-
-    $(document).on('change','#candidatesList',function(){
-        $('#dateErrorMessage').html("");
-		$('#noNewsError').html("");
-		
-		if($('#fromDateId').val() == "" || $('#toDateId').val() == ""){
-			$('#dateErrorMessage').html("<b style='color:red;'>Select Date Range</b>");
-		}else if($(this).val() != ""){
-
-		 $("#categoryGallaryHideShowDiv").css('display','inline-block');
-		 $("#gallaryShowHideDiv").css("display","none");
-
-         $("#respenseNewsList").find('option').remove();
-		 $("#candidateNewsList").find('option').remove();
-
-		 $("#gallaryAllCheckboxId").attr("checked",true);
-		 getCandidateNews();
-
-         //getCandidateNews($(this).val());
-		 //$("#gallaryAllCheckboxId").trigger('click');
-		}
-   
-    });
 //CategoryGallary
 //gallary
 $("#gallaryCheckboxId").live("click",function(){
@@ -2576,13 +2378,14 @@ function getGallariesForSelectedCategory()
 	var url = "getGallariesByCategoryIdAction.action?"+rparam;						
 	callAjax1(jsObj,url);
 }
-function getScopeForUser(){
+function getScopeForUser(index){
   
  var jsObj =
 		{ 
             time : timeST,
 			divId:"scopeDiv",
-  		    task:"getLocationScope"
+  		    task:"getLocationScope",
+			index:index
 		};
 
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
@@ -2591,132 +2394,16 @@ function getScopeForUser(){
  
 }
 
-function showUserAccessLocationScopeList1(results)
+
+function showUserAccessLocationScopeList(results,index)
 {
-  
-  
-  var id = results.scopeId;
- 
-  $("#scopeDiv").val(id);
-  //$("#scopeDiv option:selected").val(id);
-  if(id==0)
-  {
-   var val ='';
-  val +='<table>';
-  val +='  <tr><td></td>';
-  val +='  </tr>';
-  val +='</table>';
-  document.getElementById("showScopeSubs").innerHTML = val;
-    
-  }
-  else if(id==1)
-  {
-    var str ='';
-  str +='<table>';
-  str +='  <tr><td></td>';
-  str +='  </tr>';
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-  }
-
-  else if(id==2)
-  {
-   var str ='';
-  str +='<table>';
-  str +='  <tr>';
-  str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select style="margin-left:5px;width: 137px;" name="locationValue" id="stateDiv" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
-  str +='  </tr>';
-  
-  /*str +='  <tr>';
-  str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
-  str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"></select></td>';
-  str +='  </tr>';*/
-
-  str +='</table>';
-   document.getElementById("showScopeSubs").innerHTML = str;
-   buildSelectOptionVOList(results.stateList,'stateDiv',1);
-   //buildSelectOptionVOList(results.districtList,'districtDiv',null);
-
-  }
-
-  else if(id == 3)
-  {
-
-    var str ='';
-    str +='<table>';
-    str +='  <tr>';
-    str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
-    str +='  </tr>';
-    str +='  <tr>';
-    str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"></select></td>';
-    str +='  </tr>';
-		
-	/*str +='  <tr>';
-    str +='	   <td class="tdWidth1">Assembly Constituency : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" ></select></td>';
-    str +='  </tr>';*/
-
-   
-
-    str +='</table>';
-    document.getElementById("showScopeSubs").innerHTML = str;
-    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
-    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
-	//buildSelectOptionVOList(results.constituencyList,'constituencyDiv',null);
-	
-  }
-  
-
-
-  else if(id == 4)
-  {
-
-    var str ='';
-    str +='<table>';
-    str +='  <tr>';
-    str +='	   <td class="tdWidth1">State : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)" /></td>';
-    str +='  </tr>';
-    str +='  <tr>';
-    str +='	   <td class="tdWidth1">District : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="districtDiv" name="locationValue"></select></td>';
-    str +='  </tr>';
-		
-	str +='  <tr>';
-    str +='	   <td class="tdWidth1">Assembly Consti : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="constituencyDiv" name="locationValue" ></select></td>';
-    str +='  </tr>';
-
-   /* str +='  <tr>';
-    str +='	   <td class="tdWidth1">Mandal/ Municipality/ Corp/GMC : <font class="requiredFont">*</font></td>';
-    str +='	   <td class="selectWidthPadd"><select id="mandalDiv"    onchange="clearAll(\'villageDiv\');getAllDetails(this.options[this.selectedIndex].value,\'hamletsOrWardsInRegion\',\'\',\'\')"></select></td>';
-    str +='  </tr>';*/
-
-    str +='</table>';
-    document.getElementById("showScopeSubs").innerHTML = str;
-    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
-    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
-	buildSelectOptionVOList(results.constituencyList,'constituencyDiv',results.constituencyId);
-	//buildSelectOptionVOList(results.mandalList,'mandalDiv',null);
-  }
-  
-  
-  
-}
-
-
-
-function showUserAccessLocationScopeList(results)
-{
-  
+  if(index == undefined)
+  index = 0;
  
   var id = results.scopeId;
   var str = '';
 
-  $("#scopeDiv").val(id);
+  $("#scopeDiv"+index).val(id);
   
   if(id==0 || id==1)
    str +='';
@@ -2724,12 +2411,19 @@ function showUserAccessLocationScopeList(results)
   else if(id==2)
   {
     str += '<div class="span2">';
-    str += ' <label>State</label>';
-    str += ' <select class="input-block-level" name="locationValue" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
-	str +='</div>';
-	document.getElementById("showScopeSubs").innerHTML = str;
+    str += ' <label>State';
+	 if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+	}
+	str += '</label>';
+    str += ' <select class="input-block-level" name="locationValue['+index+']" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
+	str += '</div>';
+	
+	document.getElementById("showScopeSubs"+index).innerHTML = str;
 
-    buildSelectOptionVOList(results.stateList,'stateDiv',1);
+    buildSelectOptionVOList(results.stateList,'stateDiv'+index,1);
   }
 
   else if(id == 3)
@@ -2737,57 +2431,59 @@ function showUserAccessLocationScopeList(results)
    
     str += '<div class="span2">';
     str += ' <label>State</label>';
-    str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+    str += ' <select class="input-block-level" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
 	str +='</div>';
 
 	str += '<div class="span2">';
-    str += ' <label>District</label>';
-    str += ' <select class="input-block-level" name="locationValue" id="districtDiv" ></select>';
+    str += ' <label>District';
+	if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+	}
+	str += '</label>';
+    str += ' <select class="input-block-level" name="locationValue['+index+']" id="districtDiv'+index+'" ></select>';
 	str +='</div>';
+    
+    document.getElementById("showScopeSubs"+index).innerHTML = str;
 
-    document.getElementById("showScopeSubs").innerHTML = str;
-
-    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
-    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
+    buildSelectOptionVOList(results.stateList,'stateDiv'+index,results.stateId);
+    buildSelectOptionVOList(results.districtList,'districtDiv'+index,results.districtId);
 
   }
-  
-
-
   else if(id == 4)
   {
   
     str += '<div class="span2">';
     str += ' <label>State</label>';
-    str += ' <select class="input-block-level" id="stateDiv" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv\');getDistricts1(this.options[this.selectedIndex].value)"></select>';
+    str += ' <select class="input-block-level" id="stateDiv'+index+'" style="margin-left:5px;width: 137px;" onchange="clearAll(\'districtDiv'+index+'\');getDistricts1(this.options[this.selectedIndex].value,'+index+')"></select>';
 	str +='</div>';
 
 	str += '<div class="span2">';
     str += ' <label>District</label>';
-    str += ' <select class="input-block-level" id="districtDiv"></select>';
+    str += ' <select class="input-block-level" id="districtDiv'+index+'"></select>';
 	str +='</div>';
 
 	str += '<div class="span2">';
-    str += ' <label>Assembly Consti</label>';
-    str += ' <select class="input-block-level" id="constituencyDiv" name="locationValue"></select>';
+    str += ' <label>Assembly Consti';
+	if(index == 0){
+	str +='<span style="display:none">changeDel</span>';
+	}else{
+	str +='<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+index+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>';
+	}
+	str +='</label>';
+    str += ' <select class="input-block-level" id="constituencyDiv'+index+'" name="locationValue['+index+']"></select>';
 	str +='</div>';
     
-	document.getElementById("showScopeSubs").innerHTML = str;
+	document.getElementById("showScopeSubs"+index).innerHTML = str;
 
-    buildSelectOptionVOList(results.stateList,'stateDiv',results.stateId);
-    buildSelectOptionVOList(results.districtList,'districtDiv',results.districtId);
-	buildSelectOptionVOList(results.constituencyList,'constituencyDiv',results.constituencyId);
+    buildSelectOptionVOList(results.stateList,'stateDiv'+index,results.stateId);
+    buildSelectOptionVOList(results.districtList,'districtDiv'+index,results.districtId);
+	buildSelectOptionVOList(results.constituencyList,'constituencyDiv'+index,results.constituencyId);
 	
   }
-  
    
-  
 }
-
-
-
-	
-	
 
 function buildSelectOptionVOList(optionsList,elmt,populatedId)
 {
@@ -3017,101 +2713,14 @@ function showReportFileNewsStatus(result)
 		 return;
 }
 
-var data = {items:keywordsArray};
-
 
 $(document).ready(function(){
 	$(function(){
-    $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+    $("#keywordListId1").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 
 
   });
 });
-
-function getUnassignedKeyWords()
-{
-	
-  $("#newsAssignGallaryDiv").css("display","none");
-  $("#newsAssignGallaryDiv").html('');
-  $("#profileManagementMainOuterDiv4").css("display","none");
-  $("#profileManagementHeaderDiv2").css("display","none");
-  $("#profileManagementMainOuterDiv3").css("display","none");
-  $("#profileManagementHeaderDiv3").css("display","none");
-  $("#videoGallaryDiv").css("display","none");
-  $("#dateSelectDiv").css("display","none");
-  $("#profileManagementMainOuterDiv5").css("display","none");
-  $("#profileManagementHeaderDiv5").css("display","none");
-  $("#profileManagementMainOuterDiv6").css("display","block");
-  $("#profileManagementHeaderDiv6").css("display","none");
-    $("#profileManagementMainOuterDiv7").css("display","none");
-	$("#profileManagementMainOuterDivStatus").css("display","none");
-  $("#profileManagementMainOuterDiv8").css("display","none");
-  		$('#statusDiv1').html('');
-		$('#statusDiv2').html('');
-    var str ='';
-	str+='<div class="container well">';
-
-	str+='<div class="row clearfix">';
-	str+='<legend class="text-center ">Map KeyWords To Gallaries</legend>';
-	str+='<div id="keywordErrorMsgDivId" ></div>';
-	str+='<div class="row-fluid"><div class="span6 well well-small " id="keywordsDiv">';
-	str+=' </div>';
-	str+='<div class="span6"> '; 
-	str+='<div class="row-fluid">';
-	str+='<div class="span12 well well-small ">';
-    str+='<label><strong>Select Category Name</strong></label>';
-    str+=' <select class="input-block-level"  id="keywordCategory"  onchange="getGallariesForSelectedCategory1(\'keywordCategory\')">';
-	str+='</select>';
-    str+='</div>';
-	str+='</div></div>';
-	str+='<div class="row-fluid">';
-    str+='<div class="span12 well well-small " id="categorygallary" style="display:none;">';
-    str+='<label><strong>List oF (Category) Gallarys</strong></label>';
-	str+='</div>';
-	str+='</div>';
-    str+='</div>';
-	str+='<div class="form-actions text-center">';
-	str+=' <button type="submit " class="btn btn-success btn-large" onclick="updateGallaryKeyword();">Submit</button>';
-	str+='<img style="display:none;" src="images/search.jpg" id="keywordAjaxImg">';
-	str+='</div>';
-	str+='</div>';
-
-	str+='</div>';
-	
-		str+='<div class="container well">';
-		str+='<div class="row clearfix">';
-	str+='<legend class="text-center ">Update KeyWord</legend>';
-	str+='<div id="keywordErrorMsgDivId1" ></div>';
-    str+='<div class="row-fluid"><div class="span6 well well-small " id="gallaryMapedkeywordsDiv">';
-	 str+='<label><strong>Select KeyWord</strong></label>';
-     str+=' <select class="input-block-level" id="keywords">';
-	 str+='</select>';
-	str+=' </div>';
-	str+='<div class="span6"> '; 
-	str+='<div class="row-fluid">';
-	str+='<div class="span12 well well-small ">';
-     str+='<label><strong>Select Category Name</strong></label>';
-     str+=' <select class="input-block-level" id="keywordCategory1" onchange="getGallaryId();getGallariesForSelectedCategory1(\'keywordCategory1\');">';
-	 str+='</select>';
-    str+='</div>';
-	str+='</div></div>';
-	str+='<div class="row-fluid">';
-    str+='<div class="span12 well well-small " id="categorygallary1" style="display:none;">';
-	
-	str+='</div>';
-	str+='</div>';
-    str+='</div>';
-	str+='<div class="form-actions text-center">';
-	str+=' <button type="submit " class="btn btn-success btn-large" onclick="updateExistingKeyword();">Submit</button>';
-	str+='<img style="display:none;" src="images/search.jpg" id="keywordAjaxImg1">';
-	str+='</div>';
-	str+='</div>';
-	str+='</div>';
-	document.getElementById("keyWordsMainDiv").innerHTML = str;
-	getCategory();
-	getKeyWords();
-	getMappedKeyWords();
-}
 
 function getKeyWords()
 {
@@ -3333,7 +2942,9 @@ function uploadNewsForPartyAndCandidate(fileId)
 		str+='    </div>';
 		str+='<div class="span12 well well-small" style="margin-left: 0px;">';
 		str+='<label><strong>Enter Keywords</strong></label><input type="text" class="input-block-level keyword0 destinationKeywords" key="keywordId0" id="keywordId">';
-		str+='<span class="help-block">Enter multiple keywords with comma separator Ex : padayatra,scam,';
+		str+='<span class="help-block">Enter multiple keywords with comma separator Ex : padayatra,scam.';
+		str+='<span class="help-block">If it is an activity done by cadre please select "Cadre" keyword.';
+		str+='<span class="help-block">If it is an activity done by mla incharge or mp incharge please select "MLA/Incharge" , "MP/Incharge" keyword.';
 		str+='<span class="help-block">Note:Keyword should not contain #,$,%,& Special characters.';
 		str+='    </span>';
 		str+='</div>';
@@ -3402,10 +3013,18 @@ function uploadNewsForPartyAndCandidate(fileId)
 
 		str+='<div class="row-fluid">';
 		str+='      <a style="margin-top:-30px" class="offset6 span5 btn btn-danger" onclick="addNewFileSource();" href="javascript:void(0);" style="margin-top: -60px;">Click here to  <span class="label ">Add <i class="icon-plus-sign icon-white"></i></span> another source</a></div></div>';
-		str+='<div class="row-fluid"><div class="container m_top10" style="padding:5px 15px 15px 15px;width: 920px;border:1px solid #ADC248;margin-left:14px;border-radius:5px;width:906px;"><legend class="">Select News Location</legend><div class="span12 ">    <div class="row-fluid">    <div class="span2">    <label>Location Scope    </label>';
-		str += '<select class="input-block-level" id="scopeDiv" name="locationScope" onchange="getLocations(this.options[this.selectedIndex].value)"></select></div>';
-        str +='<div id="showScopeSubs"></div>';
-		str +='</div><div id="showScopeSubs" style="margin-left: 160px;"></div></div>    </div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Submit" class="btn btn-success btn-large">                         </div></div></div>';
+		str+='<div class="row-fluid"><div class="container m_top10" style="padding:5px 15px 15px 15px;width: 920px;border:1px solid #ADC248;margin-left:14px;border-radius:5px;width:906px;"><legend class="">Select News Location</legend>';
+		str+='<div id="newsLocationMainDiv"><div class="span12 newLocationClass" id="newsLocation0">';    
+		str+='    <div class="row-fluid"> ';   
+		str+='       <div class="span2"> ';   
+		str+='         <label>Location Scope</label>';
+		str+='         <select class="input-block-level scopeLevel" key="0" id="scopeDiv0" name="locationScope[0]" onchange="removeAndAddSelection(\'scopeDiv0\');getLocations(this.options[this.selectedIndex].value,0)"></select>';
+		str+='       </div>';
+        str+='       <div id="showScopeSubs0"></div>';
+		str+='    </div>';
+		str+='</div></div>'; 
+	    str+='<div><a style="margin-left: 15px;" class="btn btn-success span5" onclick="addNewLocation();" href="javascript:void(0);">Click here to <span class="label">Add <i class="icon-plus-sign icon-white"></i></span> another location</a></div>';
+		str+='</div></div></div><div class="form-actions text-center"><input type="button" id="uploadNewsBtnId" onclick="uploadFile()" value="Submit" class="btn btn-success btn-large">                         </div></div></div>';
        
 	   if(fileId != null)
         str +='<input type="hidden" name="responseFileIdsStr" value="'+fileId+'">';  	
@@ -3426,24 +3045,24 @@ function uploadNewsForPartyAndCandidate(fileId)
 	$("#newsdatedatepic").datepicker({ dateFormat: 'dd/mm/yy',maxDate:new Date() });
     $("#newsdatedatepic").datepicker("setDate", new Date());
 	
-	 getScopes();
+	 getScopes(0);
 	 getSource("filesourceId0");
 	getLanguage('sourceLangId0');
 	 getNewsImportance();
 
 
-	  getScopeForUser();
+	  getScopeForUser(0);
 
 
 	 getBenefitList();
 	 getPartiesList("partiesList","partiesListForWhome");
 	 
 
-$("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+$("#keywordId").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 
 
   
-  $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+  $("#keywordListId1").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 
 
 		$("#KeywordPartiesListForNewsTo").multiselect({
@@ -3451,6 +3070,44 @@ $("#keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProp
 		$("#KeywordPartiesListForNewsTo").multiselect('refresh');
 		$("#KeywordPartiesListForNewsTo").multiselect('create');
 
+}
+newsLocCloneNo = 1;
+function addNewLocation(){
+  var str = $("#newsLocation0").html();
+  str = '<span id="deleteMultiLoc'+newsLocCloneNo+'">'+str+'</span>'; 
+  str = str.replace('<span style="display:none">changeDel</span>','<a href="javascript:{};" onclick="removeThisLocation(\'deleteMultiLoc'+newsLocCloneNo+'\')" title="Click here to remove this location" class="icon-trash delStyle"></a>');
+  str = str.replace('key="0"','key="'+newsLocCloneNo+'"');
+  str = str.replace(/showScopeSubs0/gi,'showScopeSubs'+newsLocCloneNo);
+  str = str.replace(/getLocations(this.options[this.selectedIndex].value,0)/gi,'getLocations(this.options[this.selectedIndex].value,'+newsLocCloneNo+')');
+  str = str.replace(/,0/gi,','+newsLocCloneNo+'');
+  str = str.replace('locationScope[0]','locationScope['+newsLocCloneNo+']');
+  str = str.replace('locationValue[0]','locationValue['+newsLocCloneNo+']');
+  str = str.replace(/scopeDiv0/gi,'scopeDiv'+newsLocCloneNo);
+  str = str.replace(/stateDiv0/gi,'stateDiv'+newsLocCloneNo);
+  str = str.replace(/districtDiv0/gi,'districtDiv'+newsLocCloneNo);
+  str = str.replace(/constituencyDiv0/gi,'constituencyDiv'+newsLocCloneNo);
+  str = str.replace(/mandalDiv0/gi,'mandalDiv'+newsLocCloneNo);
+  str = str.replace('mandalId[0]','mandalId['+newsLocCloneNo+']');
+  str = str.replace(/villageDiv0/gi,'villageDiv'+newsLocCloneNo);
+  $("#newsLocationMainDiv").append(str);
+  newsLocCloneNo=newsLocCloneNo+1;
+}
+
+function removeThisLocation(id){
+  if(confirm("Do you want to delete this Location?")){
+    $("#"+id).remove();
+  }
+}
+
+function removeAndAddSelection(id){
+  var value = $("#"+id+" option:selected").val();
+  $("#"+id).find('option').removeAttr("selected");
+    //$("#"+id).each(function() {
+    //   $(this).removeAttr("selected");
+    // });
+  //$("#"+id).find('option:selected').removeAttr("selected");
+ // $('#'+id+' option[value="'+value+'"]').setAttribute('selected','selected');
+   $("#"+id).find('option[value='+value+']').attr('selected','selected');
 }
 var addSource = 0;
 function addNewFileSource(){
@@ -3645,7 +3302,7 @@ var str ='';
 $( "#whomeTalkedMainDIV").append(str);
 
 
-$("#"+whome+"keywordId").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+$("#"+whome+"keywordId").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 getPartyGallariesForUplaod("News Gallary",whome+"whomegallaryId");
 getPartiesList("partiesListForWhome"+whome+"",null);
 
@@ -3826,7 +3483,7 @@ function buildPartyKeywordsDiv()
  
 
   document.getElementById("partyKeywordsDiv").appendChild(divElmt);
-   $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+   $("#keywordListId1").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 }
 
 
@@ -3859,7 +3516,7 @@ function buildCandidateKeywordsList()
   divElmt.innerHTML = str;
   
   document.getElementById("candidateKeywordsDiv").appendChild(divElmt);
-   $("#keywordListId1").autoSuggest(data.items, {selectedItemProp: "name", searchObjProps: "name"});
+   $("#keywordListId1").autoSuggest("getKeyWordsBySearchCriteria.action", {minChars: 4,selectedItemProp: "name", searchObjProps: "name"});
 
    /*//sourceCandidateIdsArray
    
@@ -4678,6 +4335,20 @@ function isValid(str){
 		}
     }
 	return flag;
+}
+function getStatesForSpecialPage(index)
+{
+  var jsObj =
+		{ 
+            time : timeST,
+			task:"getStates",
+			divId:"stateDiv"+index,
+			index:index
+		};
+
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "candidatePhotoGallaryAction.action?"+rparam;						
+	callAjax(jsObj,url);
 }
 </script>
 </body>

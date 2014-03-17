@@ -37,6 +37,7 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 	
 	private IPartyDetailsService partyDetailsService;
 	private List<FileVO> newsCountByCategoryList;	
+	
 	private Long gallaryId;
 	private String gallaryDescription;
 		
@@ -223,4 +224,5 @@ public class PartyWiseNewsDisplayAction extends ActionSupport implements Servlet
 
 		return Action.SUCCESS;
 	}
+	
 }

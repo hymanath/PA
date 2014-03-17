@@ -566,9 +566,6 @@ getCategoryNews();
 						<table style="margin-top:15px;">
 							<tr id="tableRowS">
 								<td id="tdWidth" style="width:190px;">
-								<!--	<s:select theme="simple" label="Candidates" name="candidates"
-								id="candidatesListId" list="candidatesList1" listKey="id"
-								listValue="name" headerKey="0" headerValue="Select Candidate" style="margin-left:-18px"/>-->
 								<select id="candidatesListId"></select>
 						</td>
 							</tr>

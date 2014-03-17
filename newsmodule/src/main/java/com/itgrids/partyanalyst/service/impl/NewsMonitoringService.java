@@ -97,6 +97,7 @@ import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
 import com.itgrids.partyanalyst.service.INewsMonitoringService;
 import com.itgrids.partyanalyst.service.IPartyDetailsService;
+import com.itgrids.partyanalyst.service.IReportService;
 import com.itgrids.partyanalyst.utils.CommonStringUtils;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -151,13 +152,30 @@ public class NewsMonitoringService implements INewsMonitoringService {
     private IBoothDAO boothDAO;
     private IHamletDAO hamletDAO;
     private IPartyDetailsService partyDetailsService;
-	
-    public ITehsilDAO getTehsilDAO() {
+    private IReportService reportService;
+
+	public ITehsilDAO getTehsilDAO() {
 		return tehsilDAO;
 	}
 
 	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
 		this.tehsilDAO = tehsilDAO;
+	}
+
+	public IReportService getReportService() {
+		return reportService;
+	}
+
+	public void setReportService(IReportService reportService) {
+		this.reportService = reportService;
+	}
+
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public IStateDAO getStateDAO() {
+		return stateDAO;
 	}
 
 	public ILocalElectionBodyDAO getLocalElectionBodyDAO() {
@@ -3586,7 +3604,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		else
 	    			inputs.setUserId(0l);	
 	    	 List<File> filesList = fileDAO.getTotalFilesListByLocation(inputs.getUserId(), fromDate, toDate,inputs.getStartIndex(),inputs.getMaxResult(),inputs.getLocationId(),scopeval); 
-	    	if(filesList != null && filesList.size() > 0)
+		    if(filesList != null && filesList.size() > 0)
 	    	{
 	    	   fileVOList = new ArrayList<FileVO>();
 	    	   for(File file:filesList)
@@ -3603,8 +3621,8 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    		   fileVO.setFileDateAsString(dateString);
 			    		 }
 			    		  
-			    		 if(file.getRegionScopes() != null)
-			    		   fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
+			    		 //if(file.getRegionScopes() != null)
+			    		   //fileVO.setLocationScope(file.getRegionScopes().getRegionScopesId());
 			    		  
 			    		  String fileDate = file.getFileDate().toString();
 			    		  String dateObj = fileDate.substring(8,10)+'-'+fileDate.substring(5,7)+'-'+fileDate.substring(0,4);
@@ -3626,11 +3644,11 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    		  
 			    		  fileVO.setSource(fileSourceStr);
 			    		  fileVO.setUserType(userType.get(0).toString());
-			    		  fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
-			    		  fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
-			    		  fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
-			    		  if(file.getRegionScopes()!=null)
-			    		  fileVO.setLocationValue(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(), file.getLocationValue()));
+			    		 // fileVO.setLocationScopeValue(file.getRegionScopes()!=null?file.getRegionScopes().getScope():"");
+			    		  //fileVO.setLocation(file.getLocationValue()!=null?file.getLocationValue():null);
+			    		 // fileVO.setLocationVal(file.getLocationValue()!=null?file.getLocationValue():null);
+			    		  //if(file.getRegionScopes()!=null)
+			    		  fileVO.setLocationValue(reportService.getLocationDetails1(file.getFileId(),null));
 			    		  
 			    		  
 			    		  fileVOList.add(fileVO);
@@ -3640,7 +3658,7 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    	     }
 	    	  // resultVO.setUserType(userType.get(0).toString());
 	    	   resultVO.setFileVOList(fileVOList);
-	    	   resultVO.setCount(fileDAO.getTotalFilesListCount(fromDate, toDate).intValue());
+	    	   //resultVO.setCount(fileDAO.getTotalFilesListCount(fromDate, toDate).intValue());
 	    	   resultVO.setCount(fileDAO.getTotalFilesListCountByLocation(inputs.getUserId(), fromDate, toDate,inputs.getLocationId(),scopeval).intValue());
 	    	  }
 	    	}
@@ -4971,18 +4989,32 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    	if(fileVO.getGallaryIds() != null && fileVO.getGallaryIds().size() > 0)
 			    	{
 			    		 list =candidatePartyCategoryDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getGallaryIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
-			    	     resultFileVO.setCount(candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdCount(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getGallaryIds()).intValue());
+			    		 Long count = candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdCount(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getGallaryIds());
+			    		 if(count != null){
+			    		   resultFileVO.setCount(count.intValue());
+			    		 }else{
+			    			 resultFileVO.setCount(0);
+			    		 }
 			    	}
 			    	else if(fileVO.getKeywordIds() != null && fileVO.getKeywordIds().size() > 0)
 			    	{
 			    		 list =candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getKeywordIds(),fileVO.getStartIndex(),fileVO.getMaxResult());
-			    		 
-			    	     resultFileVO.setCount(candidatePartyKeywordDAO.getAllTheNewsCountForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getKeywordIds()).intValue());	
+			    		 Long count = candidatePartyKeywordDAO.getAllTheNewsCountForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getKeywordIds());
+			    		 if(count != null){
+				    		   resultFileVO.setCount(count.intValue());
+				    		 }else{
+				    			 resultFileVO.setCount(0);
+				    		 }	
 			    	}
 			    	else
 			    	{
 				   list = fileDAO.getAllTheNewsForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue(),fileVO.getStartIndex(),fileVO.getMaxResult());
-				   resultFileVO.setCount(fileDAO.getAllTheNewsCountForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue()).intValue());
+				   Long count = fileDAO.getAllTheNewsCountForAUserBasedByUserId(type,fileVO.getUserId(),fromDate,toDate,fileVO.getImportanceId(),fileVO.getRegionValue());
+				   if(count != null){
+		    		   resultFileVO.setCount(count.intValue());
+		    		 }else{
+		    			 resultFileVO.setCount(0);
+		    		 }	
 			    	}
 			    }else{
 			    	List<Long> ids = null;
@@ -4992,35 +5024,37 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 			    	if(fileVO.getGallaryIds() != null && fileVO.getGallaryIds().size() > 0)
 			    	{
 			    		 list = candidatePartyCategoryDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds(),fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());				       
-					     resultFileVO.setCount(candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds(),fileVO.getImportanceId()).intValue());	
+			    		 Long count = candidatePartyCategoryDAO.getAllTheNewsCountForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getGallaryIds(),fileVO.getImportanceId());
+			    		 if(count != null){
+				    		   resultFileVO.setCount(count.intValue());
+				    		 }else{
+				    			 resultFileVO.setCount(0);
+				    		 }	
+					    	
 			    	}
 			    	else if(fileVO.getKeywordIds() != null && fileVO.getKeywordIds().size() > 0)
 			    	{
 			    	 	 list = candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds(),fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());	       
-					     resultFileVO.setCount(candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds(),fileVO.getImportanceId()).intValue());	
+			    	 	Long count = candidatePartyKeywordDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getKeywordIds(),fileVO.getImportanceId());
+			    	 	if(count != null){
+				    		   resultFileVO.setCount(count.intValue());
+				    		 }else{
+				    			 resultFileVO.setCount(0);
+				    		 }		
 			    	}
 			    	else
 			       list = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocation(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids,fileVO.getImportanceId(),fileVO.getStartIndex(),fileVO.getMaxResult());
 			       
-			       resultFileVO.setCount(fileDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids).intValue());
+			    	Long count = fileDAO.getAllTheNewsForAUserBasedByUserIdForALocationCount(type, fileVO.getUserId(), fromDate, toDate, fileVO.getLocationId(), fileVO.getLocationVal(),ids);
+			    	if(count != null){
+			    		   resultFileVO.setCount(count.intValue());
+			    		 }else{
+			    			 resultFileVO.setCount(0);
+			    		 }	
 			    }
 				resultList = setDataForAllLocations(list,fileVO.getUserId());
-				if(resultList != null && resultList.size() > 0)
-				{
-				  List<FileVO> tempFileVOList = new ArrayList<FileVO>(0);
-				  for(FileVO fileVO2: resultList)
-				   if(fileVO2.getFileVOList() != null && fileVO2.getFileVOList().size() > 0)
-				   {
-					 for(FileVO fileVO3:fileVO2.getFileVOList())
-					  tempFileVOList.addAll(fileVO3.getFileVOList());
-				   }
-				  
-				  resultFileVO.setFileVOList(tempFileVOList);
-					
-				}
+				 resultFileVO.setFileVOList(resultList);
 				
-				 
-			
 		  }
 		  catch (Exception e) {
 			log.error("Exception Occured in getAllNewsDetails() method , Exception - ",e);
@@ -5061,23 +5095,11 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 	    		 Date currentDate = dateUtilService.getCurrentDateAndTime();
 				for(File file : list)
 				{
-					boolean tempvar=false;
-					if(file.getRegionScopes() != null && file.getRegionScopes().getRegionScopesId() != null)
-					{
-					Map<Long,List<FileVO>> locationMap = regionWiseMap.get(file.getRegionScopes().getRegionScopesId());
-					if(locationMap == null)
-					{
-						locationMap = new HashMap<Long, List<FileVO>>();
-						regionWiseMap.put(file.getRegionScopes().getRegionScopesId(), locationMap);
-					}
 					
-					List<FileVO> filesList = locationMap.get(file.getLocationValue());
+					boolean tempvar=false;
+					
+					
 					FileVO fileVO = new FileVO();
-					if(filesList == null)
-					{
-						filesList = new ArrayList<FileVO>();
-						locationMap.put(file.getLocationValue(), filesList);
-					}
 					fileVO.setContentId(file.getFileId());
 					fileVO.setFileTitle1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileTitle())));
 					fileVO.setFileDescription1(StringEscapeUtils.unescapeJava(CommonStringUtils.removeSpecialCharsFromAString(file.getFileDescription())));
@@ -5111,63 +5133,14 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
 		    		fileVO.setSource(fileSourceStr);
 		    		
 		    		
-		    		/*String sourceString = "";
-		    		String language = "";
-		    		List<FileVO> sourceList = new ArrayList<FileVO>();
-					for(FileSourceLanguage source:set)
-					{
-						FileVO filesource = new FileVO();
-						if(source.getSource() != null && (source.getSource().getSource() != null && !source.getSource().getSource().equals("")))
-						{
-						sourceString+=source.getSource().getSource()+" ";
-						filesource.setSource(source.getSource().getSource());
-						}
-						if(source.getLanguage() != null && (source.getLanguage().getLanguage() != null && !source.getLanguage().getLanguage().equals("")))
-						{
-						language+=source.getLanguage().getLanguage()+" ";
-						filesource.setLanguage(source.getLanguage().getLanguage());
-						}
-						sourceList.add(filesource);
-					}
-					if(file.getFont() != null){
-						fileVO.setEenadu(true);
-					}
-					fileVO.setSource(sourceString);
-					fileVO.setLanguage(language);
-					fileVO.setFileVOList(sourceList);*/
-					
 					fileVO.setCandidateName(candidateNames.get(file.getFileId()) != null?candidateNames.get(file.getFileId()):"");
 					
-					fileVO.setLocationScopeValue(getRegionLvl(file.getRegionScopes().getRegionScopesId().intValue()));
-					fileVO.setLocationName(candidateDetailsService.getLocationDetails(file.getRegionScopes().getRegionScopesId(),file.getLocationValue()));
-					filesList.add(fileVO);
-					}
+					fileVO.setLocationName(reportService.getLocationDetails1(file.getFileId(),null));
+					result.add(fileVO);
+					
 			}
 				 
-				if(regionWiseMap != null)
-				for(Long regionVal : regionWiseMap.keySet())
-				{
-					FileVO fileVO = new FileVO();
-					String regionScope ="";
-					fileVO.setRegionValue(regionVal);
-					if(regionVal != null)
-					regionScope = getRegionLvl(regionVal.intValue());
-					fileVO.setScope(regionScope);
-					List<FileVO> locationsList = new ArrayList<FileVO>();
-					Map<Long,List<FileVO>> locationMap  =  regionWiseMap.get(regionVal);
-					if(locationMap != null)
-					for(Long locationId : locationMap.keySet())
-					{
-						FileVO fileVO2 = new FileVO();
-						List<FileVO> filesList = locationMap.get(locationId);
-						fileVO2.setLocationId(locationId);
-						fileVO2.setLocationName(candidateDetailsService.getLocationDetails(regionVal,locationId));
-						fileVO2.setFileVOList(filesList);
-						locationsList.add(fileVO2);
-					}
-					fileVO.setFileVOList(locationsList);
-					result.add(fileVO);	
-				}
+				
 			}
 		  catch (Exception e) {
 			  log.error("Exception Occured in setDataForAllLocations method in NewsMonitoringService", e);
@@ -5965,98 +5938,104 @@ public Long saveContentNotesByContentId(final Long contentId ,final  String comm
     	log.debug("entered into getFileScope() of NewsMonitoringService class.");
     	List<SelectOptionVO> newsAreaDetails = null;
     	try {
-			File file = fileDAO.get(fileId);
-			FileVO fielVo = new FileVO();
+			//File file = fileDAO.get(fileId);
 			
-			Long scopeId = file.getRegionScopes().getRegionScopesId();
-			String locationName =null;
-			String locationId = null;
-			String assLocElecBdyId =null;
-			Long assConstituencyId = null;
-			if(file.getUserAddress() != null && file.getUserAddress().getConstituency() != null){
-			 assConstituencyId = file.getUserAddress().getConstituency().getConstituencyId();
-			}
-			switch (scopeId.intValue()) {
-			case 2:
-					State state = stateDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					locationName = state.getStateName();
-					locationId = state.getStateId().toString();
-				break;
-
-			case 3:
-					District district = districtDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					locationName = district.getDistrictName();
-					locationId = district.getDistrictId().toString();
-				break;
-			case 4:
-					Constituency constituency = constituencyDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					locationName = constituency.getName();
-					locationId = constituency.getConstituencyId().toString();
-				break;
-			case 5:
-					Tehsil tehsil = tehsilDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					locationName = tehsil.getTehsilName();
-					locationId =  "2"+tehsil.getTehsilId().toString();
-				break;
-			case 6:
-					Hamlet hamlet = hamletDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					locationName = hamlet.getPanchayatName();
-					locationId = "2"+hamlet.getHamletId().toString();
-				break;
-			case 7:
-				LocalElectionBody localElectionBody = localElectionBodyDAO.get(Long.valueOf(file.getLocationValue().toString()));					
-				locationName = localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType();
-				List<Object[]> muncipalityDetails = null;
-				if(assConstituencyId == null){
-				  muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetails(localElectionBody.getLocalElectionBodyId());
-				}else{
-				  muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetailsByConstiId(localElectionBody.getLocalElectionBodyId(),assConstituencyId);	
-				}
-				 if(muncipalityDetails.size() > 0){
-						for (Object[] parms : muncipalityDetails) {
-							locationId = "1"+parms[0].toString();
-						}
-					
-					}
-				break;
-			case 8:
-					Constituency ward = constituencyDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					
-					if(ward.getLocalElectionBody().getName() !=""){
-						locationName = ward.getName();
-						locationId = "1"+ward.getConstituencyId().toString();
-					}
-					else{
-						locationName = ward.getName()+" ("+ward.getLocalElectionBody().getName().trim()+")";
-						locationId = "1"+ward.getConstituencyId().toString();
-					}
-					if(assConstituencyId != null && locationId != null){
-					   List<Object[]> munciDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetailsByConstiId(ward.getLocalElectionBody().getLocalElectionBodyId(),assConstituencyId);
-					   if(munciDetails.size() > 0){
-							for (Object[] parms : munciDetails) {
-								assLocElecBdyId = "1"+parms[0].toString();
-							}
-						
-						}
-					}
-				break;
-			case 9:
-					Booth booth = boothDAO.get(Long.valueOf(file.getLocationValue().toString()));
-					locationName = "Booth - "+booth.getPartNo()+" ("+booth.getLocation()+")";
-					locationId = booth.getBoothId().toString();
-				break;
-			default:
-				break;
-			}
+			List<Object[]> fileaddresList = userAddressDAO.getfileAddressListByFileId(fileId);
 			
-			if(locationName != null){
+			if(fileaddresList != null && fileaddresList.size()>0){
 				newsAreaDetails = new ArrayList<SelectOptionVO>();
-				SelectOptionVO selectOptionVO = new SelectOptionVO();
-				selectOptionVO.setId(scopeId);
-				selectOptionVO.setName(locationName);
-				selectOptionVO.setLocation(locationId);	
-				selectOptionVO.setValue(assLocElecBdyId);
-				newsAreaDetails.add(selectOptionVO);
+				for (Object[] param : fileaddresList) {
+					Long scopeId = Long.valueOf(param[0].toString());
+					Long scopeValue = Long.valueOf(param[1].toString());
+					String locationName =null;
+					String locationId = null;
+					String assLocElecBdyId =null;
+					Long assConstituencyId = null;
+					if(param[0] != null){
+					 assConstituencyId = Long.valueOf(param[2] != null ? param[2].toString():"0");
+					}
+					switch (scopeId.intValue()) {
+					case 2:
+							State state = stateDAO.get(scopeValue);
+							locationName = state.getStateName();
+							locationId = state.getStateId().toString();
+						break;
+
+					case 3:
+							District district = districtDAO.get(scopeValue);
+							locationName = district.getDistrictName();
+							locationId = district.getDistrictId().toString();
+						break;
+					case 4:
+							Constituency constituency = constituencyDAO.get(scopeValue);
+							locationName = constituency.getName();
+							locationId = constituency.getConstituencyId().toString();
+						break;
+					case 5:
+							Tehsil tehsil = tehsilDAO.get(scopeValue);
+							locationName = tehsil.getTehsilName();
+							locationId =  "2"+tehsil.getTehsilId().toString();
+						break;
+					case 6:
+							Hamlet hamlet = hamletDAO.get(scopeValue);
+							locationName = hamlet.getPanchayatName();
+							locationId = "2"+hamlet.getHamletId().toString();
+						break;
+					case 7:
+						LocalElectionBody localElectionBody = localElectionBodyDAO.get(scopeValue);					
+						locationName = localElectionBody.getName()+" "+localElectionBody.getElectionType().getElectionType();
+						List<Object[]> muncipalityDetails = null;
+						if(assConstituencyId == null){
+						  muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetails(localElectionBody.getLocalElectionBodyId());
+						}else{
+						  muncipalityDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetailsByConstiId(localElectionBody.getLocalElectionBodyId(),assConstituencyId);	
+						}
+						 if(muncipalityDetails.size() > 0){
+								for (Object[] parms : muncipalityDetails) {
+									locationId = "1"+parms[0].toString();
+								}
+							
+							}
+						break;
+					case 8:
+							Constituency ward = constituencyDAO.get(scopeValue);
+							
+							if(ward.getLocalElectionBody().getName() !=""){
+								locationName = ward.getName();
+								locationId = "1"+ward.getConstituencyId().toString();
+							}
+							else{
+								locationName = ward.getName()+" ("+ward.getLocalElectionBody().getName().trim()+")";
+								locationId = "1"+ward.getConstituencyId().toString();
+							}
+							if(assConstituencyId != null && locationId != null){
+							   List<Object[]> munciDetails = assemblyLocalElectionBodyDAO.getAssemblyLocalElectionBodyDetailsByConstiId(ward.getLocalElectionBody().getLocalElectionBodyId(),assConstituencyId);
+							   if(munciDetails.size() > 0){
+									for (Object[] parms : munciDetails) {
+										assLocElecBdyId = "1"+parms[0].toString();
+									}
+								
+								}
+							}
+						break;
+					case 9:
+							Booth booth = boothDAO.get(scopeValue);
+							locationName = "Booth - "+booth.getPartNo()+" ("+booth.getLocation()+")";
+							locationId = booth.getBoothId().toString();
+						break;
+					default:
+						break;
+					}
+					
+					if(locationName != null){						
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId(scopeId);
+						selectOptionVO.setName(locationName);
+						selectOptionVO.setLocation(locationId);	
+						selectOptionVO.setValue(assLocElecBdyId);
+						newsAreaDetails.add(selectOptionVO);
+					}
+				}
 			}
 		} catch (Exception e) {
 			log.debug("entered into getFileScope() of NewsMonitoringService class.",e);

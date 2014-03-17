@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import com.itgrids.partyanalyst.dao.IFileDAO;
 import com.itgrids.partyanalyst.dto.AnalysisVO;
 import com.itgrids.partyanalyst.model.File;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class FileDAO extends GenericDaoHibernate<File, Long> implements
@@ -145,13 +146,13 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	public Long getTotalFilesListCount(Date fromDate,Date toDate)
 	{
 	  StringBuilder str = new StringBuilder();
-	  str.append(" select count(*) from File model where model.isDeleted != 'Y' ");
+	  str.append(" select count(*) from UserAddress model where model.file.isDeleted != 'Y' ");
 	   if(fromDate != null)
-		  str.append(" and date(model.fileDate) >= :fromDate ");
+		  str.append(" and date(model.file.fileDate) >= :fromDate ");
 	   if(toDate != null)
-		  str.append(" and date(model.fileDate) <= :toDate ");
+		  str.append(" and date(model.file.fileDate) <= :toDate ");
 	   		 
-	   str.append(" order by date(model.fileDate) desc,model.updatedDate desc ");
+	   str.append(" order by date(model.file.fileDate) desc,model.file.updatedDate desc ");
 	  
 	  Query query = getSession().createQuery(str.toString());
 	  
@@ -167,18 +168,18 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,Integer startIndex,Integer maxIndex)
 	 {
 		 StringBuilder str = new StringBuilder();
-		 str.append("select distinct model from File model where model.isDeleted !='Y' ");
+		 str.append("select distinct model.file from UserAddress model where model.file.isDeleted !='Y' ");
 		 if(!"Admin".equalsIgnoreCase(userType))
-		 str.append("and model.user.userId = :userId ");
+		 str.append("and model.file.user.userId = :userId ");
 		 if(importanceId != 0)
-		 str.append("and model.newsImportance.newsImportanceId = :importanceId ");
+		 str.append("and model.file.newsImportance.newsImportanceId = :importanceId ");
 		 if(regionValue != 1)
 		 str.append("and model.regionScopes.regionScopesId = :regionValue ") ; 
 		 if(fromDate != null)
-			 str.append("and date(model.fileDate) >= :fromDate ");
+			 str.append("and date(model.file.fileDate) >= :fromDate ");
 		 if(toDate != null)
-			 str.append("and date(model.fileDate) <= :toDate "); 
-		 str.append("order by model.fileDate desc ");
+			 str.append("and date(model.file.fileDate) <= :toDate "); 
+		 str.append(" group by model.file.fileId order by model.file.fileDate desc ");
 		 Query query = getSession().createQuery(str.toString());
 		 if(!"Admin".equalsIgnoreCase(userType))
 		 query.setParameter("userId", userId);
@@ -202,25 +203,25 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,Long importanceId,Integer startIndex,Integer maxIndex)
 	 {
 		 StringBuilder str = new StringBuilder();
-		 str.append("select distinct model from File model where model.isDeleted !='Y' ");
+		 str.append("select distinct model.file from UserAddress model where model.file.isDeleted !='Y' ");
 		 if(!"Admin".equalsIgnoreCase(userType))
-		 str.append("and model.user.userId = :userId ");
+		 str.append("and model.file.user.userId = :userId ");
 		 if(importanceId != 0)
-			 str.append("and model.newsImportance.newsImportanceId = :importanceId ");
+			 str.append("and model.file.newsImportance.newsImportanceId = :importanceId ");
 		 if(regionValue.longValue() == 1l){
-		   str.append("and model.userAddress.state.stateId = :location ");
+		   str.append("and model.state.stateId = :location ");
 		 }else if(regionValue.longValue() == 2l){
-		   str.append("and model.userAddress.district.districtId = :location ");
+		   str.append("and model.district.districtId = :location ");
 		 }else if(regionValue.longValue() == 3l){
-		   str.append("and model.userAddress.constituency.constituencyId in (:location) ");
+		   str.append("and model.constituency.constituencyId in (:location) ");
 		 }else if(regionValue.longValue() == 4l){
-		   str.append("and model.userAddress.constituency.constituencyId = :location ");
+		   str.append("and model.constituency.constituencyId = :location ");
 		 }
 		 if(fromDate != null)
-			 str.append("and date(model.fileDate) >= :fromDate ");
+			 str.append("and date(model.file.fileDate) >= :fromDate ");
 		 if(toDate != null)
-			 str.append("and date(model.fileDate) <= :toDate "); 
-		 str.append("order by model.fileDate desc ");
+			 str.append("and date(model.file.fileDate) <= :toDate "); 
+		 str.append("group by model.file.fileId order by model.file.fileDate desc ");
 		 Query query = getSession().createQuery(str.toString());
 		 if(!"Admin".equalsIgnoreCase(userType))
 		 query.setParameter("userId", userId);
@@ -254,25 +255,26 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	 
 	 
 	 @SuppressWarnings("unchecked")
+	 
 		public List<File> getTotalFilesListByLocation(Long userId,Date fromDate,Date toDate,Integer startIndex,Integer maxIndex,Long locationVal,Long scopeId)
 		{
 		  StringBuilder str = new StringBuilder();
-		  str.append(" select model from File model where model.isDeleted != 'Y' ");
+		  str.append(" select distinct model.file from UserAddress model where model.file.isDeleted != 'Y' ");
 		  if((locationVal != null && locationVal > 0) && (scopeId == 3))
-			 str.append(" and model.userAddress.district.districtId =:locationVal ");	
+			 str.append(" and model.district.districtId =:locationVal ");	
 		  if((locationVal != null && locationVal > 0) && (scopeId == 4))
-			   str.append(" and model.userAddress.constituency.constituencyId =:locationVal ");	
+			   str.append(" and model.constituency.constituencyId =:locationVal ");	
 		  if((locationVal != null && locationVal > 0) && (scopeId == 5))
-			   str.append(" and model.userAddress.parliamentConstituency.constituencyId =:locationVal ");	
+			   str.append(" and model.parliamentConstituency.constituencyId =:locationVal ");	
 		  //if(scopeId != null && scopeId > 0)
 			  // str.append(" and model.regionScopes.regionScopesId=:scopeId ");	  
 		  if(userId > 0)
-			  str.append(" and model.user.userId=:userId ");	    
+			  str.append(" and model.file.user.userId=:userId ");	    
 		   if(fromDate != null)
-			  str.append(" and date(model.fileDate) >= :fromDate ");
+			  str.append(" and date(model.file.fileDate) >= :fromDate ");
 		   if(toDate != null)
-			  str.append(" and date(model.fileDate) <= :toDate ");
-		   str.append(" order by date(model.fileDate) desc,model.updatedDate desc ");
+			  str.append(" and date(model.file.fileDate) <= :toDate ");
+		   str.append(" order by date(model.file.fileDate) desc,model.file.updatedDate desc ");
 		   Query query = getSession().createQuery(str.toString());
 		   if(fromDate != null)
 		   query.setParameter("fromDate", fromDate);
@@ -341,22 +343,22 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	 public Long getTotalFilesListCountByLocation(Long userId,Date fromDate,Date toDate,Long locationVal,Long scopeId)
 		{
 		  StringBuilder str = new StringBuilder();
-		  str.append(" select count(distinct model.fileId) from File model where model.isDeleted != 'Y' ");
+		  str.append(" select count(distinct model.file.fileId) from UserAddress model where model.file.isDeleted != 'Y' ");
 		  if((locationVal != null && locationVal > 0) && (scopeId == 3))
-			 str.append(" and model.userAddress.district.districtId =:locationVal ");	
+			 str.append(" and model.district.districtId =:locationVal ");	
 		  if((locationVal != null && locationVal > 0) && (scopeId == 4))
-			   str.append(" and model.userAddress.constituency.constituencyId =:locationVal ");	
+			   str.append(" and model.constituency.constituencyId =:locationVal ");	
 		  if((locationVal != null && locationVal > 0) && (scopeId == 5))
-			   str.append(" and model.userAddress.parliamentConstituency.constituencyId =:locationVal ");	
+			   str.append(" and model.parliamentConstituency.constituencyId =:locationVal ");	
 		  //if(scopeId != null && scopeId > 0)
 			  // str.append(" and model.regionScopes.regionScopesId=:scopeId ");	  
 		  if(userId > 0)
-			  str.append(" and model.user.userId=:userId ");	    
+			  str.append(" and model.file.user.userId=:userId ");	    
 		   if(fromDate != null)
-			  str.append(" and date(model.fileDate) >= :fromDate ");
+			  str.append(" and date(model.file.fileDate) >= :fromDate ");
 		   if(toDate != null)
-			  str.append(" and date(model.fileDate) <= :toDate ");
-		   str.append(" order by date(model.fileDate) desc,model.updatedDate desc ");
+			  str.append(" and date(model.file.fileDate) <= :toDate ");
+		   str.append(" order by date(model.file.fileDate) desc,model.file.updatedDate desc ");
 		   Query query = getSession().createQuery(str.toString());
 		   if(fromDate != null)
 		   query.setParameter("fromDate", fromDate);
@@ -374,23 +376,23 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 	public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds)
 	 {
 		 StringBuilder str = new StringBuilder();
-		 str.append("select count(distinct model.fileId) from File model where model.isDeleted !='Y' ");
+		 str.append("select count(distinct model.file.fileId) from UserAddress model where model.file.isDeleted !='Y' ");
 		 if(!"Admin".equalsIgnoreCase(userType))
-		 str.append("and model.user.userId = :userId ");
+		 str.append("and model.file.user.userId = :userId ");
 		 if(regionValue.longValue() == 1l){
-		   str.append("and model.userAddress.state.stateId = :location ");
+		   str.append("and model.state.stateId = :location ");
 		 }else if(regionValue.longValue() == 2l){
-		   str.append("and model.userAddress.district.districtId = :location ");
+		   str.append("and model.district.districtId = :location ");
 		 }else if(regionValue.longValue() == 3l){
-		   str.append("and model.userAddress.constituency.constituencyId in (:location) ");
+		   str.append("and model.constituency.constituencyId in (:location) ");
 		 }else if(regionValue.longValue() == 4l){
-		   str.append("and model.userAddress.constituency.constituencyId = :location ");
+		   str.append("and model.constituency.constituencyId = :location ");
 		 }
 		 if(fromDate != null)
-			 str.append("and date(model.fileDate) >= :fromDate ");
+			 str.append("and date(model.file.fileDate) >= :fromDate ");
 		 if(toDate != null)
-			 str.append("and date(model.fileDate) <= :toDate "); 
-		 str.append("order by model.fileDate desc ");
+			 str.append("and date(model.file.fileDate) <= :toDate "); 
+		 str.append("order by model.file.fileDate desc ");
 		 Query query = getSession().createQuery(str.toString());
 		 if(!"Admin".equalsIgnoreCase(userType))
 		 query.setParameter("userId", userId);
@@ -411,18 +413,18 @@ public class FileDAO extends GenericDaoHibernate<File, Long> implements
 		public Long getAllTheNewsCountForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select count(distinct model.fileId) from File model where model.isDeleted !='Y' ");
+			 str.append("select count(distinct model.file.fileId) from UserAddress model where model.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
-			 str.append("and model.user.userId = :userId ");
+			 str.append("and model.file.user.userId = :userId ");
 			 if(importanceId != 0)
-			 str.append("and model.newsImportance.newsImportanceId = :importanceId ");
+			 str.append("and model.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue != 1)
 			 str.append("and model.regionScopes.regionScopesId = :regionValue ") ; 
 			 if(fromDate != null)
-				 str.append("and date(model.fileDate) >= :fromDate ");
+				 str.append("and date(model.file.fileDate) >= :fromDate ");
 			 if(toDate != null)
-				 str.append("and date(model.fileDate) <= :toDate "); 
-			 str.append("order by model.fileDate desc ");
+				 str.append("and date(model.file.fileDate) <= :toDate "); 
+			 str.append("  order by model.file.fileDate desc ");
 			 Query query = getSession().createQuery(str.toString());
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 query.setParameter("userId", userId);

@@ -864,17 +864,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 			 
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
-			UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
+			//UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
 			
 			File file = new File();
 			
 			file.setFileTitle(fileVO.getTitle());
 			file.setFileDescription(fileVO.getDescription());
 			file.setSynopsysDescription(fileVO.getFileDescription1());
-			file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
-			Long regionScopeId = regionScopesDAO.get(fileVO.getLocationScope()).getRegionScopesId();
+			//file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
+			//Long regionScopeId = regionScopesDAO.get(fileVO.getLocationScope()).getRegionScopesId();
 			
-			if(regionScopeId == 5 || regionScopeId == 6 || regionScopeId == 8 ){
+			/*if(regionScopeId == 5 || regionScopeId == 6 || regionScopeId == 8 ){
 				file.setLocationValue(Long.parseLong(fileVO.getLocationValue().substring(1)));			
 			}
 			else if(regionScopeId == 7){
@@ -883,7 +883,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			}
 			else
 				file.setLocationValue(Long.parseLong(fileVO.getLocationValue()));
-			
+			*/
 			if(fileVO.getNewsImportanceId() != null && fileVO.getNewsImportanceId() > 0)
 			 file.setNewsImportance(newsImportanceDAO.get(fileVO.getNewsImportanceId()));
 			
@@ -903,7 +903,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			}
 			}
 			
-			file.setUserAddress(userAddress);
+			//file.setUserAddress(userAddress);
 			file.setUser(userDAO.get(fileVO.getUserId()));
 			
 			if(fileVO.isEenadu())
@@ -925,8 +925,17 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				file.setIsPrivate("N");	
 			file = fileDAO.save(file);
 			
-			
-			
+			for(int i = 0;i<fileVO.getUploadPartyGalleryId().size();i++){
+				Long scopeId = fileVO.getUploadPartyGalleryId().get(i);
+				Long locationValue = fileVO.getUploadCandidateGalleryId().get(i);
+				if(scopeId != null && locationValue != null){
+					Long mandalId=null;
+					if(fileVO.getUploadSPGalleryId() != null && i<fileVO.getUploadSPGalleryId().size()){
+						mandalId = fileVO.getUploadSPGalleryId().get(i);
+					}
+			      saveFileLocationInUserAddress(scopeId,locationValue,mandalId,file);
+				}
+			}
 			if(fileVO.getFileSourceVOList() != null && fileVO.getFileSourceVOList().size() > 0)
 			{
 			  for(FileSourceVO fileSourceVO :fileVO.getFileSourceVOList())
@@ -984,9 +993,12 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					  {
 						String[] str = keywords.split(",");
 						if(str != null)
-						 for(String keyword:str)
-						  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+""))
+						 for(String keyword:str){
+						  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+"")){
+							  keyword = keyword.replace("\"", "");
 							  keywordsList.add(keyword.substring(1));
+						  }
+						 }
 					  }
 				    }
 				 }
@@ -1002,6 +1014,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 					 keyword2.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 					 keyword2.setCreatedBy(fileVO.getUserId());
 					 keywordDAO.save(keyword2);*/
+					   keyword = keyword.replace("\"", "");
 					   saveKeyword(fileVO.getUserId(),keyword);
 				   }
 			    }
@@ -1103,6 +1116,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						  {
 						    if(keyword != null && !keyword.equalsIgnoreCase(""))
 						    {
+						    	keyword = keyword.replace("\"", "");
 						     CandidatePartyKeyword candidatePartyKeyword = new CandidatePartyKeyword();
 						     candidatePartyKeyword.setCandidatePartyFile(candidatePartyFile);
 						     candidatePartyKeyword.setKeyword(keywordDAO.get(keywordDAO.getKeywordIdByKeyword(keyword.substring(1)).get(0)));
@@ -1252,6 +1266,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 							  {
 							    if(keyword != null && !keyword.equalsIgnoreCase("") && !"".equalsIgnoreCase(keyword.substring(1)) && keyword.substring(1).length() > 0)
 							    {
+							    	keyword = keyword.replace("\"", "");
 							     CandidatePartyKeyword candidatePartyKeyword = new CandidatePartyKeyword();
 							     candidatePartyKeyword.setCandidatePartyFile(candidatePartyFile);
 							     candidatePartyKeyword.setKeyword(keywordDAO.get(keywordDAO.getKeywordIdByKeyword(keyword.substring(1)).get(0)));
@@ -1345,6 +1360,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				  keyword.setCreatedBy(fileVO.getUserId());
 				  keyword = keywordDAO.save(keyword);
 				  */
+					keywordStr = keywordStr.replace("\"", "");
 					Keyword keyword = saveKeyword(fileVO.getUserId(),keywordStr);
 				}
 			}
@@ -1361,6 +1377,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			 for(String keyword:totalKeywordsMap.keySet())
 			  if(!gallaryMappedKeywordsList.contains(keyword))
 			  {
+				  keyword = keyword.replace("\"", "");
 				  GallaryKeyword gallaryKeyword = new GallaryKeyword();
 				  gallaryKeyword.setGallary(gallaryDAO.get(IConstants.DEFAULT_GALLARY_ID));
 				  gallaryKeyword.setKeyword(keywordDAO.get(totalKeywordsMap.get(keyword)));
@@ -1371,7 +1388,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 			  }
 			
 			 
-			  UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
+			  //UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
 			  
 			  File file = new File();
 			  FileSourceLanguage fileSourceLanguage = new FileSourceLanguage();
@@ -1418,7 +1435,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 				  file.setUser(userDAO.get(fileVO.getUserId()));
 				  file.setNewsDescription(fileVO.getNewsDescription());
 				   
-				  file.setUserAddress(userAddress);
+				  //file.setUserAddress(userAddress);
 				  file = fileDAO.save(file);
 				
 				  List<Object> maxOrderNo = filePathsDAO.getMaxOrderNo();
@@ -1567,6 +1584,7 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 						
 			for(String keywordStr: fileVO.getKeyWordsList())
 			{
+				keywordStr= keywordStr.replace("\"", "");
 			  FileKeyword fileKeyword = new FileKeyword();
 			  fileKeyword.setFile(file);
 			  fileKeyword.setKeyword(keywordDAO.get(totalKeywordsMap.get(keywordStr)));
@@ -1586,15 +1604,27 @@ public class CandidateDetailsService implements ICandidateDetailsService {
 		}
 	}
 	
-	public UserAddress saveFileLocationInUserAddress(Long locationId,Long locationValue,Long mandalId)
+	public UserAddress saveFileLocationInUserAddress(Long locationId,Long locationValue,Long mandalId,File file)
 	{
 	 try{
 		 
-		 if(locationId == null || locationId == 0L  )
+		 if(locationId == null || locationId.longValue() == 0L  )
 			return null;
 		 UserAddress userAddress = new UserAddress(); 
 		 userAddress.setCountry(countryDAO.get(1L));
-		
+		 userAddress.setFile(file);
+		 userAddress.setRegionScopes(regionScopesDAO.get(locationId));
+		 //userAddress.setLocationValue(locationValue);
+		 if(locationId.longValue() == 5l || locationId.longValue() == 6l || locationId.longValue() == 8l ){
+			 userAddress.setLocationValue(Long.parseLong(locationValue.toString().substring(1)));			
+			}
+			else if(locationId.longValue() == 7l){
+				Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.valueOf(locationValue.toString().substring(1))).get(0);
+				userAddress.setLocationValue(localEleBodyId);				
+			}
+			else{
+				userAddress.setLocationValue(locationValue);
+			}
 		if(locationId == 2L)
 		  userAddress.setState(stateDAO.get(locationValue));
 		
@@ -8391,9 +8421,8 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 			Map<Long,String> candidateNames = getCandidateNames(fileIds);
 			for(File file : fileList)
 			 {
-			/*	int count =candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size();
-				if(count>0)
-					return;*/
+				Set<FileSourceLanguage> fileSourceLanguages = file.getFileSourceLanguage();
+			  if(fileSourceLanguages != null && fileSourceLanguages.size() > 0){
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 				
 					
@@ -8433,7 +8462,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				//fileVO.setResponseCount(candidateNewsResponseDAO.getFileGalleryIdByResponseGalleryId(fileGallary.getFileGallaryId()).size());
 				responseCount = newsResponseDAO.getCandidateNewsResponseFileIds(file.getFileId()).size();
 				fileVO.setResponseCount(responseCount);
-				Set<FileSourceLanguage> fileSourceLanguages = file.getFileSourceLanguage();
+				
 				List<FileSourceLanguage> fileSourceLanguageList = new ArrayList<FileSourceLanguage>(fileSourceLanguages);
 				Collections.sort(fileSourceLanguageList,CandidateDetailsService.fileSourceLanguageSort);
 				
@@ -8476,6 +8505,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 				 fileVO.setReqFileDate(file.getFileDate());
 				 
 				fileVOsList.add(fileVO);
+			 }
 			 }
 			/*if(fileGalleryIdsList != null && fileGalleryIdsList.size() > 0)
 			{
@@ -8844,6 +8874,7 @@ public List<FileVO> getVideosListForSelectedFile(Long fileId)
 	 log.debug("");
 	 String status = null;
 	 try{
+		 keyword = keyword.replace("\"", "");
 		List<Object[]> keywordsList = keywordDAO.getKeyWordIdByName(keyword);
 		if(keywordsList != null && keywordsList.size() > 0){
 			status = " "+keyword+" Keyword Already Exist.Please Enter New Keyword. ";				
@@ -9002,7 +9033,7 @@ private Keyword saveKeyword(Long userId, String keyword1){
 	 log.error("entered into saveKeyword() in CandidateDetailsService class. ");
 	 try{
 		 Keyword keyword = new Keyword();
-		 
+		 keyword1 = keyword1.replace("\"", "");
 		 keyword.setType(keyword1.toString() != null ? keyword1.toString():"");
 		 keyword.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 		 keyword.setCreatedBy(userId);
@@ -9155,8 +9186,10 @@ public void saveNewKeyWords(FileVO fileVO){
 			String[] str = keywords.split(",");
 			if(str != null)
 			 for(String keyword:str)
-			  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+""))
+			  if(keyword != null && !keyword.trim().equalsIgnoreCase("") && !keywordsList.contains(""+keyword.substring(1)+"")){
+				  keyword = keyword.replace("\"", "");
 				  keywordsList.add(keyword.substring(1));
+			  }
 		  }
 		 }
 	 
@@ -9171,6 +9204,7 @@ public void saveNewKeyWords(FileVO fileVO){
 			 keyword2.setCreatedDate(dateUtilService.getCurrentDateAndTime());
 			 keyword2.setCreatedBy(fileVO.getUserId());
 			 keywordDAO.save(keyword2);*/
+			   keyword = keyword.replace("\"", "");
 			   saveKeyword(fileVO.getUserId(),keyword);
 		   }
 	    }
@@ -9276,6 +9310,7 @@ public void saveWhoAndWhomeDetails(FileVO fileVO,File file,Date createdDate){
 				  {
 				    if(keyword != null && !keyword.equalsIgnoreCase(""))
 				    {
+				    	keyword = keyword.replace("\"", "");
 				     CandidatePartyKeyword candidatePartyKeyword = new CandidatePartyKeyword();
 				     candidatePartyKeyword.setCandidatePartyFile(candidatePartyFile);
 				     candidatePartyKeyword.setKeyword(keywordDAO.get(keywordDAO.getKeywordIdByKeyword(keyword.substring(1)).get(0)));
@@ -9346,25 +9381,29 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 			public void doInTransactionWithoutResult(TransactionStatus status) {
 		 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");	
-		UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
+		//UserAddress userAddress = saveFileLocationInUserAddress(fileVO.getLocationScope(),Long.parseLong(fileVO.getLocationValue()),fileVO.getStateId());
 		
 		File file = fileDAO.get(fileVO.getFileId());
 		
 		file.setFileTitle(fileVO.getTitle());
 		file.setFileDescription(fileVO.getDescription());
 		file.setSynopsysDescription(fileVO.getFileDescription1()!= null ? fileVO.getFileDescription1():null);
-		file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
-		Long regionScopeId = regionScopesDAO.get(fileVO.getLocationScope()).getRegionScopesId();
 		
-		if(regionScopeId == 5 || regionScopeId == 6 || regionScopeId == 8 ){
-			file.setLocationValue(Long.parseLong(fileVO.getLocationValue().substring(1)));			
-		}
-		else if(regionScopeId == 7){
-			Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.valueOf(fileVO.getLocationValue().toString().substring(1))).get(0);
-			file.setLocationValue(localElectionBodyDAO.get(localEleBodyId).getLocalElectionBodyId());				
-		}
-		else
-			file.setLocationValue(Long.parseLong(fileVO.getLocationValue()));
+		/* 
+			file.setRegionScopes(regionScopesDAO.get(fileVO.getLocationScope()));
+			Long regionScopeId = regionScopesDAO.get(fileVO.getLocationScope()).getRegionScopesId();
+			
+			if(regionScopeId == 5 || regionScopeId == 6 || regionScopeId == 8 ){
+				file.setLocationValue(Long.parseLong(fileVO.getLocationValue().substring(1)));			
+			}
+			else if(regionScopeId == 7){
+				Long localEleBodyId = (Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(Long.valueOf(fileVO.getLocationValue().toString().substring(1))).get(0);
+				file.setLocationValue(localElectionBodyDAO.get(localEleBodyId).getLocalElectionBodyId());				
+			}
+			else
+				file.setLocationValue(Long.parseLong(fileVO.getLocationValue()));
+			
+		*/
 		
 		if(fileVO.getNewsImportanceId() != null && fileVO.getNewsImportanceId() > 0)
 		 file.setNewsImportance(newsImportanceDAO.get(fileVO.getNewsImportanceId()));
@@ -9389,7 +9428,7 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 		}
 		}
 		
-		file.setUserAddress(userAddress);
+		//file.setUserAddress(userAddress);
 		file.setUpdatedBy(userDAO.get(fileVO.getUserId()));
 		
 		if(fileVO.isEenadu())
@@ -9414,6 +9453,20 @@ public ResultStatus editUploadedFileForCandidateParty(final FileVO fileVO)
 		else
 			file.setIsPrivate("N");	
 		file = fileDAO.save(file);
+		
+		userAddressDAO.deleteUserAddressByFileId(file.getFileId());
+		
+		if(fileVO.getFileVOList() != null && fileVO.getFileVOList().size()>0){
+			  for (FileVO fileScopes : fileVO.getFileVOList()) {
+			   if(fileScopes != null){
+				Long scopeId = fileScopes.getLocationScope()!= null ?fileScopes.getLocationScope():0L;
+				Long locationValue = Long.valueOf(fileScopes.getLocationValue() != null ?fileScopes.getLocationValue():"0");
+				if(scopeId != null && locationValue != null && scopeId != 0 && locationValue != 0){
+				      saveFileLocationInUserAddress(scopeId,locationValue,fileScopes.getLocation(),file);
+				}
+			   }
+			}
+		}
 		
 		List<Long> candidatePartyFileIds = candidatePartyFileDAO.getCandidatePartyFileIds(file.getFileId());
 		String responseFileIds = "";
@@ -9643,4 +9696,22 @@ public SelectOptionVO getDesignationOfCandidateFromCandidateTable(Long candidate
 	 
 	 return selectOptionVO;
  }
+ 
+   public List<SelectOptionVO> getKeyWordsBySearchCriteria(String searchString){
+	   List<SelectOptionVO> keywordsList = new ArrayList<SelectOptionVO>();
+	   SelectOptionVO vo = null;
+	   try{
+		   List<Object[]> keyWordsArray = keywordDAO.getKeyWordsBySearchString(searchString);
+		   for(Object[] keyword:keyWordsArray){
+			   vo = new SelectOptionVO();
+			   vo.setId((Long)keyword[0]);
+			   vo.setName(keyword[1].toString());
+			   keywordsList.add(vo);
+		   }
+	   }catch(Exception e){
+		   log.error("Exception Occured in getKeyWordsBySearchCriteria method ",e);
+	   }
+	   return keywordsList;
+   }
+   
 }

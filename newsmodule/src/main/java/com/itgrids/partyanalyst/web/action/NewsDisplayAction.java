@@ -16,6 +16,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.itgrids.partyanalyst.dto.ArticleVO;
 import com.itgrids.partyanalyst.dto.FileVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
@@ -38,7 +39,17 @@ public class NewsDisplayAction implements ServletRequestAware{
 	private FileVO savedDetails,fileVO;
 	private List<FileVO> fileVOs;
 	private String reportUrl;
+	//private List<ArticleVO> result,articleVO;
 	
+
+	/*public List<ArticleVO> getResult() {
+		return result;
+	}
+
+	public void setResult(List<ArticleVO> result) {
+		this.result = result;
+	}*/
+
 	public FileVO getSavedDetails() {
 		return savedDetails;
 	}

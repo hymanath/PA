@@ -258,6 +258,9 @@
 		<pattern>/politicalFeedBackAction*</pattern>
 		<pattern>/debateReportAction*</pattern>
 		<pattern>/debetSavingAction*</pattern>
+		<pattern>/articleAction*</pattern>
+		<pattern>/politicalActivitiesAction*</pattern>
+		<pattern>/activitiesAnalysisAction*</pattern>
     	 </decorator>
 
 </decorators>

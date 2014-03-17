@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -85,13 +86,17 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 		public List<File> getAllTheNewsForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> keywordIds,Integer startIndex,Integer maxIndex)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyKeyword model ");
+	
+			 if(regionValue != 1)
+			  str.append(" ,UserAddress ua ");
+			 str.append("where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue != 1)
-			 str.append("and model.candidatePartyFile.file.regionScopes.regionScopesId = :regionValue ") ; 
+			 str.append("and model.candidatePartyFile.file.fileId = ua.file.fileId and ua.regionScopes.regionScopesId = :regionValue ") ; 
 			 if(keywordIds !=null && keywordIds.size() > 0)
 			 str.append("and model.keyword.keywordId in (:keywordIds) ") ; 
 			 if(fromDate != null)
@@ -124,19 +129,26 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 		public List<File> getAllTheNewsForAUserBasedByUserIdForALocation(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds,Long importanceId,Integer startIndex,Integer maxIndex)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select distinct model.candidatePartyFile.file from CandidatePartyKeyword model ");
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" ,UserAddress ua ");
+			 }
+			 str.append("  where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" and  model.candidatePartyFile.file.fileId = ua.file.fileId ");
+			 }			 
 			 if(regionValue.longValue() == 1l){
-			     str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			     str.append("and ua.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
-			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
+			   str.append("and ua.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:location) ");
+			   str.append("and ua.constituency.constituencyId in (:location) ");
 			 }else if(regionValue.longValue() == 4l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId = :location ");
+			   str.append("and ua.constituency.constituencyId = :location ");
 			 }
 			 if(keywordIds !=null && keywordIds.size() > 0)
 				 str.append("and model.keyword.keywordId in (:keywordIds) ") ;
@@ -144,7 +156,7 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 				 str.append("and date(model.candidatePartyFile.file.fileDate) >= :fromDate ");
 			 if(toDate != null)
 				 str.append("and date(model.candidatePartyFile.file.fileDate) <= :toDate "); 
-			 str.append("order by model.candidatePartyFile.file.fileDate desc ");
+			 str.append(" group by model.candidatePartyFile.file.fileId order by model.candidatePartyFile.file.fileDate desc ");
 			 Query query = getSession().createQuery(str.toString());
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 query.setParameter("userId", userId);
@@ -172,13 +184,16 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 		public Long getAllTheNewsCountForAUserBasedByUserId(String userType,Long userId,Date fromDate,Date toDate,Long importanceId,Long regionValue,List<Long> keywordIds)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyKeyword model ");
+			 if(regionValue != 1)
+				 str.append(" ,UserAddress ua ");
+			 str.append("where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 			 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
 			 if(regionValue != 1)
-			 str.append("and model.candidatePartyFile.file.regionScopes.regionScopesId = :regionValue ") ; 
+			 str.append("and model.candidatePartyFile.file.fileId = ua.file.fileId and ua.regionScopes.regionScopesId = :regionValue ") ; 
 			 if(keywordIds !=null && keywordIds.size() > 0)
 			 str.append("and model.keyword.keywordId in (:keywordIds) ") ; 
 			 if(fromDate != null)
@@ -222,19 +237,26 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 		public Long getAllTheNewsForAUserBasedByUserIdForALocationCount(String userType,Long userId,Date fromDate,Date toDate,Long regionValue,Long location,List<Long> locationIds,List<Long> keywordIds,Long importanceId)
 		 {
 			 StringBuilder str = new StringBuilder();
-			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyKeyword model where model.candidatePartyFile.file.isDeleted !='Y' ");
+			 str.append("select count(distinct model.candidatePartyFile.file.fileId) from CandidatePartyKeyword model ");
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" ,UserAddress ua ");
+			 }
+			 str.append("where model.candidatePartyFile.file.isDeleted !='Y' ");
 			 if(!"Admin".equalsIgnoreCase(userType))
 			 str.append("and model.candidatePartyFile.file.user.userId = :userId ");
 			 if(importanceId != 0)
 				 str.append("and model.candidatePartyFile.file.newsImportance.newsImportanceId = :importanceId ");
+			 if(regionValue.longValue() == 1l || regionValue.longValue() == 2l || regionValue.longValue() == 3l || regionValue.longValue() == 4l){
+				 str.append(" and  model.candidatePartyFile.file.fileId = ua.file.fileId ");
+			 }
 			 if(regionValue.longValue() == 1l){
-			     str.append("and model.candidatePartyFile.file.userAddress.state.stateId = :location ");
+			     str.append("and ua.state.stateId = :location ");
 			 }else if(regionValue.longValue() == 2l){
-			   str.append("and model.candidatePartyFile.file.userAddress.district.districtId = :location ");
+			   str.append("and ua.district.districtId = :location ");
 			 }else if(regionValue.longValue() == 3l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId in (:location) ");
+			   str.append("and ua.constituency.constituencyId in (:location) ");
 			 }else if(regionValue.longValue() == 4l){
-			   str.append("and model.candidatePartyFile.file.userAddress.constituency.constituencyId = :location ");
+			   str.append("and ua.constituency.constituencyId = :location ");
 			 }
 			 if(keywordIds !=null && keywordIds.size() > 0)
 				 str.append("and model.keyword.keywordId in (:keywordIds) ") ;
@@ -349,4 +371,30 @@ public class CandidatePartyKeywordDAO extends GenericDaoHibernate<CandidateParty
 			 return query.list();
 		 }
 		
+		public List<Object[]> getKeywordsByFileIds(Set<Long> fileIds){
+			StringBuilder str = new StringBuilder();
+			 str.append("select distinct cpk.candidatePartyFile.file.fileId,cpk.keyword.type from CandidatePartyKeyword cpk where cpk.candidatePartyFile.file.fileId in(:fileIds) ");
+			 Query query = getSession().createQuery(str.toString());
+			 query.setParameterList("fileIds", fileIds);
+			 
+			 return query.list();
+		}
+		
+		public List<String> getExistingKeywords(List<String> keywords,List<Long> candidatePartyFileIds){
+			StringBuilder str = new StringBuilder();
+			 str.append("select distinct cpk.keyword.type from CandidatePartyKeyword cpk where cpk.candidatePartyFile.candidatePartyFileId in(:candidatePartyFileIds) and cpk.keyword.type in(:keywords) ");
+			 Query query = getSession().createQuery(str.toString());
+			 query.setParameterList("candidatePartyFileIds", candidatePartyFileIds);
+			 query.setParameterList("keywords", keywords);
+			 return query.list();
+		}
+		
+		public List<Object[]> getAllExistingKeywords(List<String> keywords,List<Long> candidatePartyFileIds){
+			StringBuilder str = new StringBuilder();
+			 str.append("select distinct cpk.candidatePartyFile.candidatePartyFileId,cpk.keyword.type from CandidatePartyKeyword cpk where cpk.candidatePartyFile.candidatePartyFileId in(:candidatePartyFileIds) and cpk.keyword.type in(:keywords) ");
+			 Query query = getSession().createQuery(str.toString());
+			 query.setParameterList("candidatePartyFileIds", candidatePartyFileIds);
+			 query.setParameterList("keywords", keywords);
+			 return query.list();
+		}
 }

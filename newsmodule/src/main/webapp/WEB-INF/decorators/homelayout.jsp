@@ -179,10 +179,10 @@ margin:-1px 0px 0px 0px ;
 							</li>
 							 <li class="outerLi" id="programsTabId">
 								<a href="newsActivitiesAction.action" class="innerA">Activities</a>
-									 <!--<ul>
-										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=candidate"><span>Candidate News Report</span></a></li>
-										<li><a href="candidateNewsDetailsAction.action?fromDate=&toDate=&requestFor=opponent"><span>Opponent Party Critics Report</span></a></li>
-									</ul> -->
+									 <ul>
+										<li style="width:180px;"><a href="activitiesAnalysisAction.action"><span>Political Activities Analysis</span></a></li>
+										<li style="width:180px;"><a href="politicalActivitiesAction.action"><span>Update Political Activities</span></a></li>
+									</ul> 
 							</li> 
 						      <li class="outerLi" id="partyManagementTabId"><a href="partyManagementAction.action" class="innerA">Manage News</a></li>
 							   <li class="outerLi" id="debateTabId"><a href="#" class="innerA"> Reports </a>

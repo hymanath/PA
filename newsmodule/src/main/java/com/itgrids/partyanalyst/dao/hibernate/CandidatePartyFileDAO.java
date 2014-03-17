@@ -616,22 +616,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 	 @SuppressWarnings("unchecked")
 		public Long tdpEffectOnOtherPartiesTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 			 StringBuilder str = new StringBuilder();
-				str.append("select count(distinct model.file.fileId) from CandidatePartyFile model " +
-						" where model.file.isDeleted != 'Y' " );
+				str.append("select count(distinct model.file.fileId) from CandidatePartyFile model ");
+						str.append(addLocationToQuery(level,ids));
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" and model.sourceCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
 					str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 				 }
 				 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) ");
-				 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-					 if(level.longValue() == 1)
-						 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-					 if(level.longValue() == 3)
-						 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-					 if(level.longValue() == 2)
-						 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-				 }
+				 str.append(getLocationString(level,ids));
 				 if(fromDate != null)
 					 str.append(" and date(model.file.fileDate) >= :fromDate");
 					if(toDate != null)
@@ -654,22 +647,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 @SuppressWarnings("unchecked")
 			public List<Object[]> tdpEffectOnOtherPartiesBenifitWiseCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 				 StringBuilder str = new StringBuilder();
-					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId from CandidatePartyFile model " +
-							" where model.file.isDeleted != 'Y' " );
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId from CandidatePartyFile model ");
+							str.append(addLocationToQuery(level,ids));
 					 if(candidateId != null && candidateId.longValue() >0){
 						str.append(" and model.sourceCandidate.candidateId = :candidateId ");
 					 }else if(partyId != null && partyId.longValue() >0){
 						str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 					 }
 					 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
-					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-						 if(level.longValue() == 1)
-							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-						 if(level.longValue() == 3)
-							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-						 if(level.longValue() == 2)
-							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-					 }
+					 str.append(getLocationString(level,ids));
 					    if(fromDate != null)
 						 str.append(" and date(model.file.fileDate) >= :fromDate");
 						if(toDate != null)
@@ -692,22 +678,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 @SuppressWarnings("unchecked")
 			public List<Object[]> tdpEffectOnOthersPartyWiseTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 				 StringBuilder str = new StringBuilder();
-					str.append("select count(distinct model.file.fileId),model.destinationParty.partyId,model.destinationParty.shortName from CandidatePartyFile model " +
-							" where model.file.isDeleted != 'Y' " );
+					str.append("select count(distinct model.file.fileId),model.destinationParty.partyId,model.destinationParty.shortName from CandidatePartyFile model ");
+							str.append(addLocationToQuery(level,ids));
 					 if(candidateId != null && candidateId.longValue() >0){
 						str.append(" and model.sourceCandidate.candidateId = :candidateId ");
 					 }else if(partyId != null && partyId.longValue() >0){
 						str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 					 }
 					 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) ");
-					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-						 if(level.longValue() == 1)
-							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-						 if(level.longValue() == 3)
-							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-						 if(level.longValue() == 2)
-							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-					 }
+					 str.append(getLocationString(level,ids));
 					    if(fromDate != null)
 						 str.append(" and date(model.file.fileDate) >= :fromDate");
 						if(toDate != null)
@@ -730,22 +709,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 @SuppressWarnings("unchecked")
 			public List<Object[]> tdpEffectOnOthersPartyWiseBenifitCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 				 StringBuilder str = new StringBuilder();
-					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId,model.destinationParty.partyId from CandidatePartyFile model " +
-							" where model.file.isDeleted != 'Y' " );
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId,model.destinationParty.partyId from CandidatePartyFile model ");
+							str.append(addLocationToQuery(level,ids));
 					 if(candidateId != null && candidateId.longValue() >0){
 						str.append(" and model.sourceCandidate.candidateId = :candidateId ");
 					 }else if(partyId != null && partyId.longValue() >0){
 						str.append(" and model.sourceParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 					 }
 					 str.append(" and (model.destinationParty.partyId is not null or model.destinationCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
-					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-						 if(level.longValue() == 1)
-							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-						 if(level.longValue() == 3)
-							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-						 if(level.longValue() == 2)
-							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-					 }
+					 str.append(getLocationString(level,ids));
 					    if(fromDate != null)
 						 str.append(" and date(model.file.fileDate) >= :fromDate");
 						if(toDate != null)
@@ -768,22 +740,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 @SuppressWarnings("unchecked")
 			public Long otherPartiesOnTdpEffectTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 				 StringBuilder str = new StringBuilder();
-					str.append("select count(distinct model.file.fileId) from CandidatePartyFile model " +
-				      " where model.file.isDeleted != 'Y' " );
+					str.append("select count(distinct model.file.fileId) from CandidatePartyFile model ");
+							str.append(addLocationToQuery(level,ids));
 				 if(candidateId != null && candidateId.longValue() >0){
 					str.append(" and model.destinationCandidate.candidateId = :candidateId ");
 				 }else if(partyId != null && partyId.longValue() >0){
 					str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 				 }
 				 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) ");
-				 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-					 if(level.longValue() == 1)
-						 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-					 if(level.longValue() == 3)
-						 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-					 if(level.longValue() == 2)
-						 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-				 }
+				 str.append(getLocationString(level,ids));
 				    if(fromDate != null)
 					 str.append(" and date(model.file.fileDate) >= :fromDate");
 					if(toDate != null)
@@ -806,22 +771,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 @SuppressWarnings("unchecked")
 			public List<Object[]> otherPartiesEffectOnTdpBenifitWise(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 				 StringBuilder str = new StringBuilder();
-					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId from CandidatePartyFile model " +
-						    " where model.file.isDeleted != 'Y' " );
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId from CandidatePartyFile model ");
+							str.append(addLocationToQuery(level,ids));
 					 if(candidateId != null && candidateId.longValue() >0){
 						str.append(" and model.destinationCandidate.candidateId = :candidateId ");
 					 }else if(partyId != null && partyId.longValue() >0){
 						str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 					 }
 					 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
-					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-						 if(level.longValue() == 1)
-							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-						 if(level.longValue() == 3)
-							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-						 if(level.longValue() == 2)
-							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-					 }
+					 str.append(getLocationString(level,ids));
 					    if(fromDate != null)
 						 str.append(" and date(model.file.fileDate) >= :fromDate");
 						if(toDate != null)
@@ -844,22 +802,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 @SuppressWarnings("unchecked")
 			public List<Object[]> otherPartiesWiseEffectOnTdpTotalCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 				 StringBuilder str = new StringBuilder();
-					str.append("select count(distinct model.file.fileId),model.sourceParty.partyId,model.sourceParty.shortName from CandidatePartyFile model " +
-							  " where model.file.isDeleted != 'Y' " );
+					str.append("select count(distinct model.file.fileId),model.sourceParty.partyId,model.sourceParty.shortName from CandidatePartyFile model " );
+							str.append(addLocationToQuery(level,ids));
 					 if(candidateId != null && candidateId.longValue() >0){
 						str.append(" and model.destinationCandidate.candidateId = :candidateId ");
 					 }else if(partyId != null && partyId.longValue() >0){
 						str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 					 }
 					 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) ");
-					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-						 if(level.longValue() == 1)
-							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-						 if(level.longValue() == 3)
-							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-						 if(level.longValue() == 2)
-							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-					 }
+					 str.append(getLocationString(level,ids));
 					    if(fromDate != null)
 						 str.append(" and date(model.file.fileDate) >= :fromDate");
 						if(toDate != null)
@@ -882,22 +833,15 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 		 @SuppressWarnings("unchecked")
 			public List<Object[]> otherPartiesWiseEffectOnTdpBenifitCount(Long partyId,Long candidateId,Long level,String ids,Date fromDate,Date toDate){
 				 StringBuilder str = new StringBuilder();
-					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId,model.sourceParty.partyId from CandidatePartyFile model " +
-						    " where model.file.isDeleted != 'Y' " );
+					str.append("select count(distinct model.file.fileId),model.destinationBenefit.benefitId,model.sourceParty.partyId from CandidatePartyFile model ");
+							str.append(addLocationToQuery(level,ids));
 					 if(candidateId != null && candidateId.longValue() >0){
 						str.append(" and model.destinationCandidate.candidateId = :candidateId ");
 					 }else if(partyId != null && partyId.longValue() >0){
 						str.append(" and model.destinationParty.partyId = :partyId and model.sourceParty.partyId != model.destinationParty.partyId ");
 					 }
 					 str.append(" and (model.sourceParty.partyId is not null or model.sourceCandidate.candidateId is not null ) and model.destinationBenefit.benefitId is not null ");
-					 if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
-						 if(level.longValue() == 1)
-							 str.append(" and model.file.userAddress.district.districtId in( "+ids+")");
-						 if(level.longValue() == 3)
-							 str.append(" and model.file.userAddress.constituency.constituencyId in("+ids+")");
-						 if(level.longValue() == 2)
-							 str.append(" and model.file.userAddress.parliamentConstituency.constituencyId in ("+ids+")");
-					 }
+					 str.append(getLocationString(level,ids));
 					    if(fromDate != null)
 						 str.append(" and date(model.file.fileDate) >= :fromDate");
 						if(toDate != null)
@@ -916,4 +860,192 @@ public class CandidatePartyFileDAO extends GenericDaoHibernate<CandidatePartyFil
 						  query.setParameter("toDate", toDate);
 					 return query.list();
 			 }
+			
+			public StringBuilder getLocationString(Long level,String ids){
+				StringBuilder str = new StringBuilder();
+				if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+					 if(level.longValue() == 1)
+						 str.append(" and ua.district.districtId in( "+ids+")");
+					 if(level.longValue() == 3)
+						 str.append(" and ua.constituency.constituencyId in("+ids+")");
+					 if(level.longValue() == 2)
+						 str.append(" and ua.parliamentConstituency.constituencyId in ("+ids+")");
+				 }
+				return str;
+			}
+			
+			public StringBuilder addLocationToQuery(Long level,String ids){
+				StringBuilder str = new StringBuilder();
+				if(level != null && level.longValue() > 0 && ids != null && ids.trim().length() > 0){
+					 str.append(" ,UserAddress ua where model.file.fileId = ua.file.fileId and model.file.isDeleted != 'Y' ");
+				 }else{
+					 str.append(" where model.file.isDeleted != 'Y' ");
+				 }
+				return str;
+			}
+			
+			public List<Object[]> getPoliticalActivitiesNews(Date fromDate,Date toDate,List<Long> categoryIds,List<Long> districtIds,Integer startIndex,Integer maxIndex){
+				StringBuilder str = new StringBuilder();
+				str.append("select distinct cpc.candidatePartyFile.file.fileId,CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN sp.shortName ELSE dp.shortName END," +
+						" ua.district.districtId,ua.district.districtName,consti.constituencyId,consti.name,cpc.candidatePartyFile.file.fileTitle,cpc.candidatePartyFile.file.fileDescription,cpc.candidatePartyFile.file.fileDate,cpc.candidatePartyFile.file.font.fontId,cpc.candidatePartyFile.file.descFont.fontId,CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END " +
+						" from CandidatePartyCategory cpc Left Join cpc.candidatePartyFile.sourceParty sp Left Join cpc.candidatePartyFile.destinationParty dp,UserAddress ua Left Join ua.constituency consti where cpc.candidatePartyFile.file.fileId = ua.file.fileId and (cpc.candidatePartyFile.sourceParty.partyId is not null or (cpc.candidatePartyFile.sourceParty.partyId is null and cpc.candidatePartyFile.destinationParty.partyId is not null)) " +
+						" and cpc.candidatePartyFile.file.isDeleted !='Y' and cpc.gallary.gallaryId in(:categoryIds) and ua.district.districtId in(:districtIds) ");
+				if(fromDate != null && toDate != null){
+					str.append(" and  cpc.candidatePartyFile.file.fileDate between :fromDate and :toDate ");
+				}
+				else if(fromDate != null){
+					str.append(" and  cpc.candidatePartyFile.file.fileDate >= :fromDate ");
+				}
+				else if(toDate != null){
+					str.append(" and  cpc.candidatePartyFile.file.fileDate <= :toDate ");
+				}
+				str.append(" order by ua.district.districtId,consti.constituencyId");
+				
+				Query query = getSession().createQuery(str.toString());
+						
+				if(fromDate != null){
+				  query.setDate("fromDate", fromDate);
+				}
+				if(toDate != null){
+				  query.setDate("toDate", toDate);
+				}
+				query.setParameterList("categoryIds", categoryIds);
+				query.setParameterList("districtIds", districtIds);
+				query.setFirstResult(startIndex);
+				query.setMaxResults(maxIndex);
+				return query.list();
+			}
+			public Long getPoliticalActivitiesNewsCount(Date fromDate,Date toDate,List<Long> categoryIds,List<Long> districtIds){
+				StringBuilder str = new StringBuilder();
+				str.append(" select distinct cpc.candidatePartyFile.file.fileId , CASE WHEN cpc.candidatePartyFile.sourceParty.partyId is not null THEN sp.shortName ELSE dp.shortName END " +
+						" from CandidatePartyCategory cpc Left Join cpc.candidatePartyFile.sourceParty sp Left Join cpc.candidatePartyFile.destinationParty dp,UserAddress ua Left Join ua.constituency consti where cpc.candidatePartyFile.file.fileId = ua.file.fileId and (cpc.candidatePartyFile.sourceParty.partyId is not null or (cpc.candidatePartyFile.sourceParty.partyId is null and cpc.candidatePartyFile.destinationParty.partyId is not null)) " +
+						" and cpc.candidatePartyFile.file.isDeleted !='Y' and cpc.gallary.gallaryId in(:categoryIds) and ua.district.districtId in(:districtIds) ");
+				if(fromDate != null && toDate != null){
+					str.append(" and  cpc.candidatePartyFile.file.fileDate between :fromDate and :toDate ");
+				}
+				else if(fromDate != null){
+					str.append(" and  cpc.candidatePartyFile.file.fileDate >= :fromDate ");
+				}
+				else if(toDate != null){
+					str.append(" and  cpc.candidatePartyFile.file.fileDate <= :toDate ");
+				}
+				
+				Query query = getSession().createQuery(str.toString());
+						
+				if(fromDate != null){
+				  query.setDate("fromDate", fromDate);
+				}
+				if(toDate != null){
+				  query.setDate("toDate", toDate);
+				}
+				query.setParameterList("categoryIds", categoryIds);
+				query.setParameterList("districtIds", districtIds);
+				return new Long(query.list().size());
+			}
+			
+			public List<Long> getDestinationDetails(Long partyId,Long fileId){
+				Query query = getSession().createQuery("select cpf.candidatePartyFileId from CandidatePartyFile cpf where cpf.file.fileId =:fileId and cpf.sourceParty.partyId is null and cpf.destinationParty.partyId =:partyId   ");
+				query.setParameter("partyId", partyId);
+				query.setParameter("fileId", fileId);
+				return query.list();
+			}
+			
+			public List<Long> getSourceDetails(Long partyId,Long fileId){
+				Query query = getSession().createQuery("select cpf.candidatePartyFileId from CandidatePartyFile cpf where cpf.file.fileId =:fileId and cpf.sourceParty.partyId =:partyId   ");
+				query.setParameter("partyId", partyId);
+				query.setParameter("fileId", fileId);
+				return query.list();
+			}
+			
+/*			public List<Object[]> getAllPoliticalActivitiesCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds){
+				StringBuilder str = new StringBuilder();
+				//0 count,1 partyName,2 keywordid,3 keyword,4 locationId,5 locationName
+				str.append("select count(distinct cpk.candidatePartyFile.file.fileId),CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.shortName ELSE dp.shortName END ,cpk.keyword.keywordId,cpk.keyword.type, ");
+				if(locationType.longValue() == 1l){
+				  str.append(" ua.district.districtId,ua.district.districtName ");
+				}else{
+				  str.append(" ua.constituency.constituencyId,ua.constituency.name ");
+				}
+				str.append(" from CandidatePartyKeyword cpk Left Join cpk.candidatePartyFile.sourceParty sp with sp.partyId in(:partyIds) Left Join cpk.candidatePartyFile.destinationParty dp with dp.partyId in(:partyIds),UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and ((cpk.candidatePartyFile.sourceParty.partyId is not null) or (cpk.candidatePartyFile.sourceParty.partyId is null and cpk.candidatePartyFile.destinationParty.partyId is not null)) " +
+						" and cpk.candidatePartyFile.file.isDeleted !='Y' and cpk.keyword.type in('Cadre','MLA/Incharge','MP/Incharge')  ");
+				if(locationType.longValue() == 1l){
+				   str.append(" and ua.district.districtId in(:locationIds) ");
+				}else{
+				   str.append(" and ua.constituency.constituencyId in(:locationIds) ");
+				}
+				if(fromDate != null && toDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate between :fromDate and :toDate ");
+				}
+				else if(fromDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate >= :fromDate ");
+				}
+				else if(toDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate <= :toDate ");
+				}
+				str.append(" group by ");
+				if(locationType.longValue() == 1l){
+					  str.append(" ua.district.districtId, ");
+					}else{
+					  str.append(" ua.constituency.constituencyId, ");
+					}
+				str.append(" CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END,cpk.keyword.keywordId ");
+				Query query = getSession().createQuery(str.toString());
+						
+				if(fromDate != null){
+				  query.setDate("fromDate", fromDate);
+				}
+				if(toDate != null){
+				  query.setDate("toDate", toDate);
+				}
+				query.setParameterList("locationIds", locationIds);
+				query.setParameterList("partyIds", partyIds);
+				return query.list();
+			}*/
+			public List<Object[]> getAllPoliticalActivitiesCount(Date fromDate,Date toDate,List<Long> locationIds,Long locationType,List<Long> partyIds){
+				StringBuilder str = new StringBuilder();
+				//0 count,1 partyName,2 keywordid,3 keyword,4 locationId,5 locationName
+				str.append("select count(distinct cpk.candidatePartyFile.file.fileId),CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.shortName ELSE dp.shortName END ,cpk.keyword.keywordId,cpk.keyword.type, ");
+				if(locationType.longValue() == 1l){
+				  str.append(" ua.district.districtId,ua.district.districtName ");
+				}else{
+				  str.append(" ua.constituency.constituencyId,ua.constituency.name ");
+				}
+				
+				str.append(" from CandidatePartyKeyword cpk Left Join cpk.candidatePartyFile.sourceParty sp Left Join cpk.candidatePartyFile.destinationParty dp,UserAddress ua where cpk.candidatePartyFile.file.fileId = ua.file.fileId and ((cpk.candidatePartyFile.sourceParty.partyId is not null) or (cpk.candidatePartyFile.sourceParty.partyId is null and cpk.candidatePartyFile.destinationParty.partyId is not null)) " +
+						" and cpk.candidatePartyFile.file.isDeleted !='Y' and cpk.keyword.type in('Cadre','MLA/Incharge','MP/Incharge')   ");
+				
+				if(locationType.longValue() == 1l){
+				   str.append(" and ua.district.districtId in(:locationIds) ");
+				}else{
+				   str.append(" and ua.constituency.constituencyId in(:locationIds) ");
+				}
+				if(fromDate != null && toDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate between :fromDate and :toDate ");
+				}
+				else if(fromDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate >= :fromDate ");
+				}
+				else if(toDate != null){
+					str.append(" and  cpk.candidatePartyFile.file.fileDate <= :toDate ");
+				}
+				str.append(" and CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END  in(:partyIds) group by ");
+				if(locationType.longValue() == 1l){
+					  str.append(" ua.district.districtId, ");
+					}else{
+					  str.append(" ua.constituency.constituencyId, ");
+					}
+				str.append(" CASE WHEN cpk.candidatePartyFile.sourceParty.partyId is not null THEN sp.partyId ELSE dp.partyId END,cpk.keyword.keywordId ");
+
+				Query query = getSession().createQuery(str.toString());
+						
+				if(fromDate != null){
+				  query.setDate("fromDate", fromDate);
+				}
+				if(toDate != null){
+				  query.setDate("toDate", toDate);
+				}
+				query.setParameterList("locationIds", locationIds);
+				query.setParameterList("partyIds", partyIds);
+				return query.list();
+			}
 }

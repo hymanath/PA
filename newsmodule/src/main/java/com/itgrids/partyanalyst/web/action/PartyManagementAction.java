@@ -449,7 +449,10 @@ public String execute()
 		 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || "subuser".equalsIgnoreCase(registrationVO.getUserAccessType())  )
 		 {
 			 
-			 keywordsList = candidateDetailsService.getTotalKeyWords();
+			 keywordsList = new ArrayList<SelectOptionVO>();//candidateDetailsService.getTotalKeyWords();
+			 keywordsList.add(new SelectOptionVO(1l,"Cadre"));
+			 keywordsList.add(new SelectOptionVO(2l,"MP/Incharge"));
+			 keywordsList.add(new SelectOptionVO(3l,"MLA/Incharge"));
 			 if("Admin".equalsIgnoreCase(registrationVO.getUserAccessType()) || registrationVO.getAccessType().equalsIgnoreCase("STATE")){
 				 ConstituencyInfoVO constituencyInfoVO = staticDataService.getConstituenciesByElectionTypeAndStateId(2L,1L);
 				 ConstituencyInfoVO parliamantConstis = staticDataService.getConstituenciesByElectionTypeAndStateId(1L,1L);
@@ -805,5 +808,14 @@ public String execute()
 	  return Action.SUCCESS;
 	  }
 
+   public String getKeyWordsBySearchCriteria(){
+	      String searchString = request.getParameter("q");
+	      if(searchString != null && searchString.trim().length() > 0){
+	    	  keywordsList = candidateDetailsService.getKeyWordsBySearchCriteria(searchString);
+	      }else{
+	    	  keywordsList = new ArrayList<SelectOptionVO>(); 
+	      }
+	      return  Action.SUCCESS;
+   }
 }
 

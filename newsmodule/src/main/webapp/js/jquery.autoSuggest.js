@@ -28,7 +28,7 @@
 			preFill: {},
 			limitText: "No More Selections Are Allowed",
 			selectedItemProp: "value", //name of object property
-			selectedValuesProp: "value", //name of object property
+			selectedValuesProp: "name", //name of object property
 			searchObjProps: "value", //comma separated list of object property names
 			queryParam: "q",
 			retrieveLimit: false, //number for 'limit' param on ajax request
@@ -221,7 +221,7 @@
 				function keyChange() {
 					// ignore if the following keys are pressed: [del] [shift] [capslock]
 					if( lastKeyPressCode == 46 || (lastKeyPressCode > 8 && lastKeyPressCode < 32) ){ return results_holder.hide(); }
-					var string = input.val().replace(/[\\]+|[\/]+/g,"");
+					var string = input.val();//.replace(/[\\]+|[\/]+/g,"");
 					if (string == prev) return;
 					prev = string;
 					if (string.length >= opts.minChars) {
@@ -271,7 +271,8 @@
 							}
 						}
 						if(str){
-							if (!opts.matchCase){ str = str.toLowerCase(); }				
+							if (!opts.matchCase){ str = str.toLowerCase(); }
+ 					
 							if(str.search(query) != -1 && values_input.val().search(","+data[num][opts.selectedValuesProp]+",") == -1){
 								forward = true;
 							}	

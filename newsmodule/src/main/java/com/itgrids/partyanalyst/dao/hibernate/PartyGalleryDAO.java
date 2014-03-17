@@ -337,12 +337,12 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	}
 	public List<Object[]> getAllNewsDetailsForDistrict(Long partyId,int firstResult,int maxResult,String queryType,long stateId ,List<Long> districtIds){
 		   
-	     StringBuilder query = new StringBuilder("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath,model.descFont.fontId from File model where ");
+	     StringBuilder query = new StringBuilder("select distinct model.file.fileId,model.file.fileDate,model.file.fileTitle,model.file.fileDescription,model.file.font.fontId,model.file.fileName,model.file.filePath,model.file.descFont.fontId from UserAddress model where ");
 			query.append(" ");			
 			if(queryType.equalsIgnoreCase("Public"))
-					query.append(" model.isPrivate != 'Y'  and ");
-			query.append(" model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue and model.isDeleted != 'Y' ");
-			query.append("  order by model.fileDate desc,model.updatedDate desc ");
+					query.append(" model.file.isPrivate != 'Y'  and ");
+			query.append(" model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue and model.file.isDeleted != 'Y' ");
+			query.append("  order by model.file.fileDate desc,model.file.updatedDate desc ");
 			Query queryObject = getSession().createQuery(query.toString());			
 			queryObject.setLong("locationValue", stateId);
 			queryObject.setParameterList("locId", districtIds);
@@ -382,11 +382,11 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 }
 	public int getCountOfNewsFilesForDistrict(Long partyId,String queryType,long stateId ,List<Long> districtIds){
 		   
-	     StringBuilder query = new StringBuilder("select distinct count(*) from File model where ");		
+	     StringBuilder query = new StringBuilder("select  count(distinct model.file.fileId) from UserAddress model where ");		
 	  			if(queryType.equalsIgnoreCase("Public"))
-	  					query.append(" model.isPrivate != 'Y'  and ");
-	  			query.append(" model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue and model.isDeleted != 'Y' ");
-	  			query.append("  order by model.fileDate desc,model.updatedDate desc ");
+	  					query.append(" model.file.isPrivate != 'Y'  and ");
+	  			query.append(" model.locationValue in (:locId)  and model.regionScopes.regionScopesId = :locationValue and model.file.isDeleted != 'Y' ");
+	  			query.append("  order by model.file.fileDate desc,model.file.updatedDate desc ");
 	  			Query queryObject = getSession().createQuery(query.toString());			
 	  			queryObject.setLong("locationValue", stateId);
 	  			queryObject.setParameterList("locId", districtIds);						
@@ -411,11 +411,11 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 	public List<Object[]> getAllNewsDetailsForState(Long partyId,int firstResult,int maxResult,String queryType,long stateId , long scopeId){
 		   
 	     StringBuilder query = new StringBuilder();
-			query.append("select model.fileId,model.fileDate,model.fileTitle,model.fileDescription,model.font.fontId,model.fileName,model.filePath,model.descFont.fontId from File model where ");		
+			query.append("select distinct model.file.fileId,model.file.fileDate,model.file.fileTitle,model.file.fileDescription,model.file.font.fontId,model.file.fileName,model.file.filePath,model.file.descFont.fontId from UserAddress model where ");		
 			if(queryType.equalsIgnoreCase("Public"))
-					query.append("  model.isPrivate != 'Y' and ");	
-			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.isDeleted !='Y' ");
-			query.append(" order by model.fileDate desc,model.updatedDate desc ");
+					query.append("  model.file.isPrivate != 'Y' and ");	
+			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.file.isDeleted !='Y' ");
+			query.append(" order by model.file.fileDate desc,model.file.updatedDate desc ");
 			Query queryObject = getSession().createQuery(query.toString());		
 			queryObject.setLong("locationValue", stateId);
 			queryObject.setLong("locId", scopeId);
@@ -450,11 +450,11 @@ public class PartyGalleryDAO extends GenericDaoHibernate<PartyGallery,Long> impl
 }
 	public int getCountOfNewsFiles(Long partyId,String queryType,long stateId , long scopeId){
 		  StringBuilder query = new StringBuilder();
-			query.append("select distinct count(*) from File model where ");		
+			query.append("select  count(distinct model.file.fileId) from UserAddress model where ");		
 			if(queryType.equalsIgnoreCase("Public"))
-					query.append("  model.isPrivate != 'Y' and ");	
-			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.isDeleted != 'Y'");
-			query.append(" order by model.fileDate desc,model.updatedDate desc ");
+					query.append("  model.file.isPrivate != 'Y' and ");	
+			query.append(" model.locationValue = :locationValue and model.regionScopes.regionScopesId = :locId and model.file.isDeleted != 'Y'");
+			query.append(" order by model.file.fileDate desc,model.file.updatedDate desc ");
 			Query queryObject = getSession().createQuery(query.toString());		
 			queryObject.setLong("locationValue", stateId);
 			queryObject.setLong("locId", scopeId);
