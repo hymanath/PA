@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,6 +34,7 @@ public class HouseHolds extends BaseModel implements Serializable {
 	private Long panchaytId;
 	private Long localElectionBodyId;
 	private Set<HouseHoldVoter> houseHoldVoters = new HashSet<HouseHoldVoter>(0);
+	private Date insertedTime;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -98,5 +100,15 @@ public class HouseHolds extends BaseModel implements Serializable {
 	public void setHouseHoldVoters(Set<HouseHoldVoter> houseHoldVoters) {
 		this.houseHoldVoters = houseHoldVoters;
 	}
+	
+	@Column(name = "inserted_time", length = 20)
+	public Date getInsertedTime() {
+		return insertedTime;
+	}
+	public void setInsertedTime(Date insertedTime) {
+		this.insertedTime = insertedTime;
+	}
+	
+	
 
 }
