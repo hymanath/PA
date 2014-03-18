@@ -166,6 +166,7 @@ function  getPartyWiseELecitonDetails(){
 	
 	if(isValid){
 		var jsObj = {
+				constituencyId:constituencyId,
 				 electionId : electionIds,
 				 partyList : partyLists,
 				 task : "getPartyWiseELecitonDetails"
@@ -205,7 +206,8 @@ function callAjaxFor(jsObj,url)
 								}
 								
 								else if( jsObj.task= "getPartyWiseELecitonDetails"){
-									alert("success");
+									console.log(myResults);
+									buildLocationWisePartyVariation(myResults);
 								}
 						}catch (e){
 							console.log(e);
@@ -218,6 +220,81 @@ function callAjaxFor(jsObj,url)
  		               };
  		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 }
+
+
+function buildLocationWisePartyVariation(results){
+	var str="";
+	str+="<table class='table table-bordered'>";
+		str+="<thead>";
+			
+			str+="<tr><th rowspan=3> Location </th>";
+			str+="<th colspan="+results.yearSpanCount+">"+results.pastYear+"</th>";
+			str+="<th colspan="+results.yearSpanCount+">"+results.currentYear+"</th>";
+			str+="<th colspan="+results.partiesCount+">CHANGE</th>";
+			str+="<tr>";
+			str+="<th rowspan=2>Valid Votes</th>";
+			for(var i in results.partiesList){
+					str+="<th colspan=2>"+results.partiesList[i].partyName+"</th>";
+			}
+			
+			str+="<th rowspan=2>Valid Votes</th>";
+			for(var i in results.partiesList){
+				
+					str+="<th colspan=2>"+results.partiesList[i].partyName+"</th>";
+			}
+			
+			for(var i in results.partiesList){
+				str+="<th rowspan=2>"+results.partiesList[i].partyName+"</th>";
+			}
+			str+="</tr>";
+			
+			str+="<tr>";
+			for(var i in results.partiesList){
+				str+="<th>Votes</th><th>%</th>";
+			}
+			for(var i in results.partiesList){
+				str+="<th>Votes</th><th>%</th>";
+			}
+			str+="</tr>";
+			
+			
+			
+		str+="</thead>";
+		str+="<tbody>";
+			for(var i in results.locationWiseList){
+			str+="<tr>";
+				str+="<td>"+results.locationWiseList[i].location+"</td>";
+				str+="<td>"+results.locationWiseList[i].pastValidVotes+"</td>";
+				for(var j in results.locationWiseList[i].partiesList){
+					if(results.locationWiseList[i].partiesList[j].pastAlianced){
+						str+="<td>"+results.locationWiseList[i].partiesList[j].pastYearVotesEarned+"(A)</td>";	
+					}else{
+						str+="<td>"+results.locationWiseList[i].partiesList[j].pastYearVotesEarned+"</td>";	
+					}
+					str+="<td>"+results.locationWiseList[i].partiesList[j].pastYearPercentage+"</td>";	
+				}
+				str+="<td>"+results.locationWiseList[i].presentValidVotes+"</td>";
+				for(var j in results.locationWiseList[i].partiesList){
+					if(results.locationWiseList[i].partiesList[j].currentAlianced){
+						str+="<td>"+results.locationWiseList[i].partiesList[j].presentYearVotersEarned+"(A)</td>";	
+					}else{
+						str+="<td>"+results.locationWiseList[i].partiesList[j].presentYearVotersEarned+"</td>";	
+					}
+					str+="<td>"+results.locationWiseList[i].partiesList[j].presentYearPercentage+"</td>";		
+				}
+				
+				for(var j in results.locationWiseList[i].partiesList){
+					str+="<td>"+results.locationWiseList[i].partiesList[j].percentage+"</td>";		
+				}
+			str+="</tr>";			
+			}
+		str+="</tbody>";
+	str+="</table>";
+	
+	$("#resultDiv").html(str);
+}
+
+
 </script>
 <body>
 	<div id="mainDiv" style="border:2px solid #78BCE8;padding:20px;border-radius:5px;margin-top:25px;">
@@ -263,8 +340,11 @@ function callAjaxFor(jsObj,url)
 		<input type="button" class="btn btn-info offset2" value="Submit" onclick="getPartyWiseELecitonDetails();"/>
 	</div>
 	</div>
+	
+	<div id="resultDiv"></div>
 </body>
 <script>
+
 
 </script>
 </html>
