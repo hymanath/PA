@@ -1,10 +1,14 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
@@ -14,15 +18,30 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IElectionDAO;
+import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
+import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.INominationDAO;
+import com.itgrids.partyanalyst.dao.IPanchayatDAO;
+import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.Election;
+import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -36,6 +55,29 @@ public class StratagicReportsService implements IStratagicReportsService{
 	@Autowired IPartyTrendsDAO partyTrendsDAO;
 	
 	@Autowired INominationDAO nominationDAO;
+	
+	@Autowired RegionServiceDataImp regionServiceDataImp;
+	
+	@Autowired IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	
+	@Autowired IConstituencyDAO constituencyDAO;
+	
+	@Autowired IHamletBoothElectionDAO hamletBoothElectionDAO;
+	
+	@Autowired IElectionDAO electionDAO;
+	
+	@Autowired ICandidateBoothResultDAO candidateBoothResultDAO;
+	
+	@Autowired IStaticDataService staticDataService;
+	
+	@Autowired IPanchayatDAO panchayatDAO;
+	
+	@Autowired ILocalElectionBodyDAO localElectionBodyDAO;
+	
+	@Autowired IBoothDAO boothDAO;
+	
+	@Autowired IPartyDAO partyDAO;
+	
 	
 	   
 	public List<AgeRangeVO> getBoothWiseAddedAndDeletedVoters(Long constiId,Long pubId){
@@ -1193,4 +1235,696 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		return null;
 	}
+	
+	 public PartyPositionResultsVO getPartyChanges(Long constituencyId,List<Long> assemblyEleIdsList,List<Long> partiesSelected)
+		{
+		  List<PartyPositionResultsVO> resultList = null;
+		  List<PartyPositionResultsVO> locationsList=new ArrayList<PartyPositionResultsVO>();
+		  
+		  PartyPositionResultsVO finalVO=new PartyPositionResultsVO();
+			try{
+			List<Long> constituencyIdsList = new ArrayList<Long>(0);
+			constituencyIdsList.add(constituencyId);
+			//List<Long> assemblyEleIdsList = new ArrayList<Long>(0);
+			List<Long> mandalIds = new ArrayList<Long>();
+			List<Long> localbodyIds = new ArrayList<Long>();
+			List<SelectOptionVO> mandalsList = regionServiceDataImp.getSubRegionsInConstituency(constituencyId,IConstants.PRESENT_YEAR, null);
+			if(mandalsList != null && mandalsList.size() > 0)
+			for(SelectOptionVO vo : mandalsList)
+			if(vo.getId().toString().substring(0,1).equalsIgnoreCase("2"))
+			mandalIds.add(new Long(vo.getId().toString().substring(1)));
+			else
+				localbodyIds.add((Long)assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(vo.getId().toString().substring(1))).get(0));
+
+			
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			
+			Map<Long, List<PartyPositionResultsVO>> elections=new HashMap<Long, List<PartyPositionResultsVO>>();
+			Map<Long, String> electionsTypeMap=new HashMap<Long,String>();
+			
+			Collections.sort(assemblyEleIdsList);
+			
+			
+
+			/*assemblyEleIdsList.add(IConstants.ELECTION_YEAR2);
+			assemblyEleIdsList.add(IConstants.ELECTION_YEAR1);*/
+			
+			List<PartyPositionResultsVO> prevPancResultList = new ArrayList<PartyPositionResultsVO>();
+			List<PartyPositionResultsVO> currPancResultList = new ArrayList<PartyPositionResultsVO>();
+			
+			elections.put(assemblyEleIdsList.get(0).longValue(),prevPancResultList);
+			elections.put(assemblyEleIdsList.get(1).longValue(),currPancResultList);
+			
+			
+			electionsTypeMap.put(assemblyEleIdsList.get(0).longValue(),"PAST");
+			electionsTypeMap.put(assemblyEleIdsList.get(1).longValue(),"CURRENT");
+			
+			
+			if(assemblyEleIdsList != null && assemblyEleIdsList.size() > 0)
+			{
+				resultList = new ArrayList<PartyPositionResultsVO>(0);
+				  //List<SuggestiveRange> suggestiveRangeList = suggestiveRangeDAO.getSuggestiveRangeList();
+					  
+				PartyPositionResultsVO partyPositionResultsVO = null;
+				  for(Long eleId :assemblyEleIdsList)
+				  {
+					Election election = electionDAO.get(eleId);
+					partyPositionResultsVO = new PartyPositionResultsVO();
+					List<PartyPositionResultsVO> pancResultList = null;
+					
+					pancResultList = elections.get(eleId.longValue());
+                /* if(eleId.longValue() ==38l){
+					  pancResultList = currPancResultList;
+                 }else{
+                	  pancResultList = prevPancResultList;
+                 }*/
+					
+					Map<Long,String> partyNamesMap=new HashMap<Long, String>();
+					List<Object[]> partyNames=partyDAO.getPartyShortNameByIds(partiesSelected);
+					for(Object[] ob:partyNames){
+						partyNamesMap.put(Long.valueOf(ob[0].toString()), ob[1].toString());
+					}
+					
+                 partyPositionResultsVO.setWeakPollingPercentVOList(pancResultList);
+
+
+                 partyPositionResultsVO.setName(election.getElectionYear() != null?election.getElectionYear():" ");
+                 partyPositionResultsVO.setId(eleId);
+                 partyPositionResultsVO.setConstituencyId(constituencyId);
+                 partyPositionResultsVO.setPartiesCount(partiesSelected.size());
+                 partyPositionResultsVO.setYearSpanCount((partiesSelected.size()*2)+1);
+                 
+                 
+                 
+                 List<PartyPositionResultsVO> partiesList=new ArrayList<PartyPositionResultsVO>();
+                 
+                 Collections.sort(partiesSelected);
+                 
+                 for(Long partyId:partiesSelected){
+                	 PartyPositionResultsVO pvo=new PartyPositionResultsVO();
+                	 pvo.setPartyId(partyId);
+                	 pvo.setPartyName(partyNamesMap.get(partyId));
+                	 
+                	 partiesList.add(pvo);
+                 }
+                 
+                 
+                 partyPositionResultsVO.setPartiesList(partiesList);
+					
+					if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+					{
+						List<Long> panchayatIds = null;
+						if(mandalIds != null && mandalIds.size() > 0)
+						 panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIds,eleId);
+						if(panchayatIds != null && panchayatIds.size() > 0)
+							getMandalWisePartyPerformanceReportNew(constituencyId,eleId,pancResultList,panchayatIds,null,partiesSelected,partyNamesMap,electionsTypeMap);	
+						
+					}
+					else if(constituency.getAreaType().equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+					{
+						List<Long> panchayatIds = null;
+						if(mandalIds != null && mandalIds.size() > 0)
+						 panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdAndMandalIdsList(mandalIds,eleId);
+						List<Object[]> boothIdsList = null;
+						if(localbodyIds != null && localbodyIds.size() > 0)
+						 boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
+						if(panchayatIds != null && panchayatIds.size() > 0)
+							getMandalWisePartyPerformanceReportNew(constituencyId,eleId,pancResultList,panchayatIds,boothIdsList,partiesSelected,partyNamesMap,electionsTypeMap);
+					}
+					resultList.add(partyPositionResultsVO);
+				  }
+			}
+			//PROCESSING THE RESULTS OF TWO YEARS
+			
+		//	System.out.println(resultList.size());
+			
+			if(resultList != null && resultList.size() == 2){
+				List<PartyPositionResultsVO> prevResults = resultList.get(0).getWeakPollingPercentVOList();
+				List<PartyPositionResultsVO> currResults = resultList.get(1).getWeakPollingPercentVOList();
+				
+				finalVO.setPartiesCount(partiesSelected.size());
+                finalVO.setYearSpanCount((partiesSelected.size()*2)+1);
+                finalVO.setPastYear(resultList.get(0).getName());
+                finalVO.setCurrentYear(resultList.get(1).getName());
+                finalVO.setPartiesList(resultList.get(0).getPartiesList());
+				
+				for(PartyPositionResultsVO tempParam:currResults){
+					PartyPositionResultsVO pvo=new PartyPositionResultsVO();
+					pvo.setLocation(tempParam.getName());
+					pvo.setId(tempParam.getId());
+					PartyPositionResultsVO posvo=getMatchedPastYearVO(tempParam.getId(),prevResults);
+					if(posvo==null){
+						posvo=new PartyPositionResultsVO();
+					}
+					List<PartyPositionResultsVO> finalPartyList=null;
+					if(tempParam.getPartiesList()!=null){
+						
+						finalPartyList=pvo.getPartiesList();
+						if(finalPartyList==null){
+							finalPartyList=new ArrayList<PartyPositionResultsVO>();
+						}
+						
+						
+						List<Long> partyIdsLocal=new ArrayList<Long>();
+						for(PartyPositionResultsVO param:tempParam.getPartiesList()){
+							PartyPositionResultsVO party=new PartyPositionResultsVO();
+							
+							Double presPercntg=null;
+							Double prevPercntg=null;
+							Double difference=null;
+							partyIdsLocal.add(param.getPartyId());
+							
+							party.setPartyId(param.getPartyId());
+							party.setPresentValidVotes(param.getTotalValidVotes());
+							party.setPresentYearVotersEarned(param.getVotesEarned());
+							party.setPresentYearPercentage(String.valueOf(param.getPercentage()));
+							if(param.isCurrentAlianced()){
+								party.setCurrentAlianced(true);
+								party.setCurrentAlianceName(param.getPartyName());
+							}
+							presPercntg=param.getPercentage();
+							
+							List<PartyPositionResultsVO> pastPartiesList=posvo.getPartiesList();
+							if(pastPartiesList!=null){
+								PartyPositionResultsVO pastVO=getMatchedPartyResultsVO(pastPartiesList,param.getPartyId());
+								if(pastVO!=null){
+									party.setPastValidVotes(pastVO.getTotalValidVotes());
+									party.setPastYearVotesEarned(pastVO.getVotesEarned());
+									party.setPastYearPercentage(String.valueOf(pastVO.getPercentage()));
+									
+									if(pastVO.isPastAlianced()){
+										party.setPastAlianced(true);
+										party.setPastAlianceName(pastVO.getPartyName());
+									}
+									
+									
+									prevPercntg=pastVO.getPercentage();
+								}
+							}
+							
+							if(party.getPresentYearPercentage()==null){
+								presPercntg=0.0d;
+							}
+							if(party.getPastYearPercentage()==null){
+								prevPercntg=0.0d;
+							}
+						
+							if(presPercntg!=null && prevPercntg!=null){
+								difference=presPercntg-prevPercntg;
+								difference=new BigDecimal(difference).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+							}
+							
+							party.setPercentage(difference);
+							if(difference>0){
+								party.setStatus("UP");
+							}else{
+								party.setStatus("DOWN");
+							}
+							
+							finalPartyList.add(party);
+						}
+						
+						List<PartyPositionResultsVO> pastPartiesList=posvo.getPartiesList();
+						if(pastPartiesList!=null){
+							for(PartyPositionResultsVO plcl:pastPartiesList){
+								if(!partyIdsLocal.contains(plcl.getPartyId().longValue()) && partiesSelected.contains(plcl.getPartyId().longValue())){
+									Double presPercntg=null;
+									Double prevPercntg=null;
+									Double difference=null;
+									
+									PartyPositionResultsVO party=new PartyPositionResultsVO();
+									party.setPartyId(plcl.getPartyId().longValue());
+									party.setPastValidVotes(plcl.getTotalValidVotes());
+									party.setPastYearVotesEarned(plcl.getVotesEarned());
+									party.setPastYearPercentage(String.valueOf(plcl.getPercentage()));
+									if(plcl.isPastAlianced()){
+										party.setPastAlianced(true);
+										party.setPastAlianceName(plcl.getPartyName());
+									}
+									prevPercntg=plcl.getPercentage();
+									
+									if(presPercntg==null){
+										presPercntg=0.0d;
+									}
+									if(party.getPastYearPercentage()==null){
+										prevPercntg=0.0d;
+									}
+								
+									if(presPercntg!=null && prevPercntg!=null){
+										difference=presPercntg-prevPercntg;
+									}
+									
+									party.setPercentage(difference);
+									if(difference>0){
+										party.setStatus("UP");
+									}else{
+										party.setStatus("DOWN");
+									}
+									
+									finalPartyList.add(party);
+								}
+							}
+						}
+						
+						
+					}
+					
+					
+					pvo.setPresentValidVotes(tempParam.getTotalValidVotes());
+					pvo.setPastValidVotes(posvo.getTotalValidVotes());
+					pvo.setVotesIncreased(tempParam.getTotalValidVotes()-posvo.getTotalValidVotes());
+					pvo.setPartiesList(finalPartyList);
+					
+					 if(finalPartyList!=null){
+						 Collections.sort(finalPartyList, sortPartiesById);
+					 }
+					
+					locationsList.add(pvo);
+				}
+				finalVO.setLocationWiseList(locationsList);
+				
+				//System.out.println(locationsList.size());
+				
+			}
+			
+			
+			}catch(Exception e){
+				log.error("Exception Raised in PartyChanges in Stratagic Report Service" + e);
+			}
+			
+			return finalVO;
+		}
+	 
+	 public PartyPositionResultsVO getMatchedPastYearVO(Long id,List<PartyPositionResultsVO> resultsList){
+		 for(PartyPositionResultsVO pv:resultsList){
+				if(pv.getId()==id.longValue()){
+					return pv;
+				}
+			}
+			return null;
+	 }
+	 public PartyPositionResultsVO getMatchedPartyResultsVO(List<PartyPositionResultsVO> pvoList,Long partyId){
+			for(PartyPositionResultsVO pv:pvoList){
+				if(pv.getPartyId().longValue()==partyId.longValue()){
+					return pv;
+				}
+			}
+			return null;
+		}
+	 
+	 	
+	 public void getMandalWisePartyPerformanceReportNew(Long constituencyId,Long electionId,List<PartyPositionResultsVO> pancResultList,List<Long> panchaytIdsList,List<Object[]> localbodybooths,List<Long> partiesSelected,Map<Long,String> partyNamesMap,Map<Long,String> electionTypeMap)
+		{
+			try{
+			Map<Long,List<Long>> boothIds = new HashMap<Long, List<Long>>();//Map<boothId,List<panchayatId>>
+			Map<Long,Map<Long,Long>> resultMap = new HashMap<Long, Map<Long,Long>>(0);//Map<panchayatId,Map<partyId,totalvoters>>
+			Map<Long,Map<Long,Long>> resultMap1 = new HashMap<Long,Map<Long,Long>>(0);//Map<localbodyname,Map<partyId,totalvoters>>
+			Map<Long,List<Long>> boothIdMap = new HashMap<Long, List<Long>>(0);//<localBodyName,<boothIds>
+			//List<Long> boothIds1 = null;
+			List<Long> booths = new ArrayList<Long>();
+			if(localbodybooths != null && localbodybooths.size() > 0)
+			{
+			for(Object[] params: localbodybooths)
+			{
+				List<Long> boothIds1 = boothIdMap.get(params[2]);
+					if(boothIds1 == null)
+					{
+					boothIds1 = new ArrayList<Long>(0);	
+					boothIdMap.put((Long)params[2], boothIds1);
+					}
+					if(!boothIds1.contains((Long)params[0]))
+					boothIds1.add((Long)params[0]);
+			}
+			
+			for(Long localbodyId : boothIdMap.keySet())
+			{
+				booths = boothIdMap.get(localbodyId);
+				List<Object[]> partyResult = candidateBoothResultDAO.findBoothResultsForBoothsAndElectionAndAllParties( boothIdMap.get(localbodyId),electionId,null);
+				Map<Long,Long> partyMap1 = null;
+				for(Object[] params : partyResult)
+				{
+					partyMap1 = resultMap1.get(localbodyId);
+					if(partyMap1 == null)
+					{
+						partyMap1 = new HashMap<Long, Long>(0);
+						resultMap1.put(localbodyId, partyMap1);
+					}
+					Long votesEarned = partyMap1.get((Long)params[0]);
+					if(votesEarned == null)
+						partyMap1.put((Long)params[0], (Long)params[2]);	
+					else
+						partyMap1.put((Long)params[0], votesEarned+(Long)params[2]);	
+				}
+				
+			}
+			}
+			if(panchaytIdsList != null && panchaytIdsList.size() > 0)
+			{
+			  List<Object[]> list = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayatIdsList(panchaytIdsList, electionId); 
+			  if(list != null && list.size() > 0)
+			  {
+				  for(Object[] params:list)
+				  {
+					  List<Long> panchayatIds = boothIds.get((Long)params[1]);
+					  if(panchayatIds == null)
+					  {
+					   panchayatIds = new ArrayList<Long>(0);
+					   boothIds.put((Long)params[1], panchayatIds);
+					  }
+					  if(!panchayatIds.contains((Long)params[0]))
+					   panchayatIds.add((Long)params[0]);
+				  }
+				  
+				  List<Object[]> resultList = candidateBoothResultDAO.findBoothResultsForMultipleBoothsAndElectionIdForSelElection(boothIds.keySet(), electionId);
+				  if(resultList != null && resultList.size() > 0)
+				  {
+					 for(Object[] params:resultList)
+					 {
+					   List<Long> panchayatIdsList = boothIds.get((Long)params[0]);
+					   if(panchayatIdsList != null && panchayatIdsList.size() > 0)
+					   {
+						 Map<Long,Long> partyMap = null;//Map<PartyId,totalvotes>
+						 for(Long panchayatId :panchayatIdsList)
+						 {
+							 partyMap = resultMap.get(panchayatId);
+							 if(partyMap == null)
+							 {
+								 partyMap = new HashMap<Long, Long>(0);
+								 resultMap.put(panchayatId, partyMap);
+							 }
+							 Long votesEarned = partyMap.get((Long)params[1]);
+							 if(votesEarned == null)
+							  partyMap.put((Long)params[1],(Long)params[2]);
+							 else
+							  partyMap.put((Long)params[1], votesEarned+(Long)params[2]);
+						 }
+					   }
+					   
+					 }
+				  }
+				  
+			  }
+			}
+			AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,872l);
+			
+			
+			
+			if(resultMap != null && resultMap.size() > 0)
+				getPartyPerformanceForPanchayatNew(resultMap,pancResultList,electionId,alliancePartiesVO,partiesSelected,partyNamesMap,electionTypeMap); 
+			if(resultMap1 != null && resultMap1.size() > 0)
+				getPartyPerformanceForLocalBodyNew(pancResultList,resultMap1,booths,electionId,alliancePartiesVO,partiesSelected,partyNamesMap,electionTypeMap);
+			
+			
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error(" Exception Occured in getMandalWisePartyPerformanceReport() method, Exception - "+e);
+			  }
+		}
+	 
+	 public void getPartyPerformanceForPanchayatNew(Map<Long,Map<Long,Long>> resultMap,List<PartyPositionResultsVO> resultList,Long electionId,AlliancePartyResultsVO alliancePartiesVO,List<Long> partiesSelected,Map<Long,String> partyNamesMap,Map<Long,String> electionTypeMap)
+		{
+			try{
+
+			 for(Long id:resultMap.keySet())
+			 {
+				 Map<Long,Long> partyMap = resultMap.get(id);
+				 Long totalVotes = 0L;
+				
+				 PartyPositionResultsVO locationVO = new PartyPositionResultsVO();
+				 
+				 for(Long partysId:partyMap.keySet())
+				  totalVotes += partyMap.get(partysId); 
+				
+				 List<Long> partiesDone=new ArrayList<Long>();
+				 for (Entry<Long, Long> entry : partyMap.entrySet()){
+					 
+					 Long partyId=entry.getKey();
+					
+					 if(partiesSelected.contains(partyId)){
+					 List<PartyPositionResultsVO> partiesList=locationVO.getPartiesList();
+					 if(partiesList==null){
+						 partiesList=new ArrayList<PartyPositionResultsVO>();
+					 }
+					 
+					 
+					 
+
+					 PartyPositionResultsVO partyvo=new PartyPositionResultsVO();
+					
+					
+						Long selectedPartyTotal=partyMap.get(partyId);
+					 	if(selectedPartyTotal==null){
+							 AlliancePartyResultsVO alliances = staticDataService.getAlliancePartiesByElectionAndParty(electionId,partyId);
+						 
+							 for(SelectOptionVO alianceParty:alliances.getAllianceParties()){
+								 if(selectedPartyTotal == null || selectedPartyTotal.longValue() == 0l){
+									 selectedPartyTotal = partyMap.get(alianceParty.getId());
+								 }
+							 }
+						 }
+					 
+					 
+					partyvo.setPartyId(partyId);
+					partyvo.setPartyName(partyNamesMap.get(partyId));
+					partyvo.setVotesEarned(selectedPartyTotal);
+					partyvo.setPercentage(new BigDecimal((partyvo.getVotesEarned()*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+					
+					partiesList.add(partyvo);
+					
+					partiesDone.add(partyId);
+					locationVO.setPartiesList(partiesList);
+					 }
+					 
+					 
+					
+					 }
+				 
+				 //THOSE WHICH ARE NOT PARTICIPATED BECAUSE OF ALLIANCE
+				  Collection<Long> similar = new HashSet<Long>( partiesSelected );
+		          Collection<Long> different = new HashSet<Long>();
+		          different.addAll( partiesSelected );
+		          different.addAll( partiesDone );
+
+		          similar.retainAll( partiesDone );
+		          different.removeAll( similar );
+				 
+		          
+				 for(Long parId:different){
+					 
+					 List<PartyPositionResultsVO> partiesList=locationVO.getPartiesList();
+					 if(partiesList==null){
+						 partiesList=new ArrayList<PartyPositionResultsVO>();
+					 }
+					 
+					 PartyPositionResultsVO partyvo=new PartyPositionResultsVO();
+					 
+					 Long selectedPartyTotal=partyMap.get(parId);
+					 
+					 	if(selectedPartyTotal==null){
+							 AlliancePartyResultsVO alliances = staticDataService.getAlliancePartiesByElectionAndParty(electionId,parId);
+							 StringBuilder st=new StringBuilder();
+							 if(alliances!=null){
+							 for(SelectOptionVO alianceParty:alliances.getAllianceParties()){
+								 
+								 if(selectedPartyTotal == null || selectedPartyTotal.longValue() == 0l){
+									 selectedPartyTotal = partyMap.get(alianceParty.getId());
+									 st.append(partyNamesMap.get(alianceParty.getId()));
+									 st.append(",");
+								 }
+								 
+								 if(electionTypeMap.get(electionId).equalsIgnoreCase("CURRENT")){
+									 partyvo.setCurrentAlianced(true);
+								 }else{
+									 partyvo.setPastAlianced(true);
+								 }
+								 
+							 }
+							 }
+							 st.append(partyNamesMap.get(parId));
+							 
+							 partyvo.setPartyName(st.toString());
+						 }
+					 	
+					 	partyvo.setPartyId(parId);
+						partyvo.setVotesEarned(selectedPartyTotal);
+						
+						if(partyvo.getVotesEarned()!=null){
+							partyvo.setPercentage(new BigDecimal((partyvo.getVotesEarned()*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+						}
+						partiesList.add(partyvo);
+						
+						locationVO.setPartiesList(partiesList);
+				 }
+				 
+				 
+				 
+				 String locationName = "";
+				 locationName = panchayatDAO.getPanchayatNameById(id); 
+				 
+				
+				 
+		    	 locationVO.setId(id);
+		    	 locationVO.setName(locationName != null?locationName:" ");
+		    	 locationVO.setTotalValidVotes(totalVotes);
+		    	 locationVO.setType("Panchayat");
+		    	 resultList.add(locationVO);
+		   } 
+			
+			}catch (Exception e) {
+			
+			 log.error(" Exception Occured in getPartyPerformanceForPanchayatNew() method, Exception - ",e);
+			}
+		}
+	 
+	 		public static Comparator<PartyPositionResultsVO> sortPartiesById = new Comparator<PartyPositionResultsVO>()
+				{
+							  
+						  public int compare(PartyPositionResultsVO vo1, PartyPositionResultsVO vo2)
+							{
+							   return (int) (new Long(vo1.getPartyId()) - (new Long(vo2.getPartyId())));
+							}
+				};
+				
+				private static String removeLastChar(String str) {
+			        return str.substring(0,str.length()-1);
+			    }
+	 
+	  
+	  public void getPartyPerformanceForLocalBodyNew(List<PartyPositionResultsVO> pancResultList,Map<Long,Map<Long,Long>> resultMap1,List<Long> localbodyboothIds,Long electionId,AlliancePartyResultsVO alliancePartiesVO,List<Long> partiesSelected,Map<Long,String> partyNamesMap,Map<Long,String> electionTypeMap)
+		 {
+			 try{
+				 Long localbodytotalVoters = 0l;
+				 if(localbodyboothIds != null && localbodyboothIds.size() > 0)
+			     localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(localbodyboothIds).get(0);	
+				 if(resultMap1 != null)
+				 {
+				 for(Long localbodyId : resultMap1.keySet())
+				 {
+					 	String localbodyName = localElectionBodyDAO.getLocalElectionBodyName1(localbodyId);
+						Map<Long,Long> partyMap1 = resultMap1.get(localbodyId);
+						Long totalVotes = 0L;
+							 
+						for(Long partysId:partyMap1.keySet())
+						  totalVotes += partyMap1.get(partysId); 
+						
+						List<Long> partiesDone=new ArrayList<Long>();
+						
+						PartyPositionResultsVO locationVO = new PartyPositionResultsVO();
+							 
+						for (Entry<Long, Long> entry : partyMap1.entrySet()){
+							 
+							 Long partyId=entry.getKey();
+							 
+							 if(partiesSelected.contains(partyId)){
+							 List<PartyPositionResultsVO> partiesList=locationVO.getPartiesList();
+							 if(partiesList==null){
+								 partiesList=new ArrayList<PartyPositionResultsVO>();
+							 }
+							 
+							 
+							 
+							 Long selectedPartyTotal=null;
+							 PartyPositionResultsVO partyvo=new PartyPositionResultsVO();
+							
+							
+								selectedPartyTotal=partyMap1.get(partyId);
+							 	if(selectedPartyTotal==null){
+									 AlliancePartyResultsVO alliances = staticDataService.getAlliancePartiesByElectionAndParty(electionId,partyId);
+								 
+									 for(SelectOptionVO alianceParty:alliances.getAllianceParties()){
+										 if(selectedPartyTotal == null || selectedPartyTotal.longValue() == 0l){
+											 selectedPartyTotal = partyMap1.get(alianceParty.getId());
+										 }
+									 }
+								 }
+							 
+							 
+							partyvo.setPartyId(partyId);
+							partyvo.setPartyName(partyNamesMap.get(partyId));
+							partyvo.setVotesEarned(selectedPartyTotal);
+							partyvo.setPercentage(new BigDecimal((partyvo.getVotesEarned()*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+							
+							partiesDone.add(partyId);
+							
+							partiesList.add(partyvo);
+							locationVO.setPartiesList(partiesList);
+							 }
+						 }
+						
+						//THOSE WHICH ARE NOT PARTICIPATED BECAUSE OF ALLIANCE
+						  Collection<Long> similar = new HashSet<Long>( partiesSelected );
+				          Collection<Long> different = new HashSet<Long>();
+				          different.addAll( partiesSelected );
+				          different.addAll( partiesDone );
+
+				          similar.retainAll( partiesDone );
+				          different.removeAll( similar );
+						 
+				          
+						 for(Long parId:different){
+							 
+							 List<PartyPositionResultsVO> partiesList=locationVO.getPartiesList();
+							 if(partiesList==null){
+								 partiesList=new ArrayList<PartyPositionResultsVO>();
+							 }
+							 
+							 PartyPositionResultsVO partyvo=new PartyPositionResultsVO();
+							 
+							 Long selectedPartyTotal=partyMap1.get(parId);
+							 
+							 	if(selectedPartyTotal==null){
+									 AlliancePartyResultsVO alliances = staticDataService.getAlliancePartiesByElectionAndParty(electionId,parId);
+									 StringBuilder st=new StringBuilder();
+									 if(alliances!=null){
+									 for(SelectOptionVO alianceParty:alliances.getAllianceParties()){
+										 if(selectedPartyTotal == null || selectedPartyTotal.longValue() == 0l){
+											 selectedPartyTotal = partyMap1.get(alianceParty.getId());
+											 st.append(partyNamesMap.get(alianceParty.getId()));
+											 st.append(",");
+										 }
+										 if(electionTypeMap.get(electionId).equalsIgnoreCase("CURRENT")){
+											 partyvo.setCurrentAlianced(true);
+										 }else{
+											 partyvo.setPastAlianced(true);
+										 }
+									 }
+									 }
+									 st.append(partyNamesMap.get(parId));
+									 
+									 partyvo.setPartyName(st.toString());
+								 }
+							 	
+							 	partyvo.setPartyId(parId);
+								partyvo.setVotesEarned(selectedPartyTotal);
+								if(partyvo.getVotesEarned()!=null){
+									partyvo.setPercentage(new BigDecimal((partyvo.getVotesEarned()*100.0/totalVotes)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+								}
+								partiesList.add(partyvo);
+								
+								locationVO.setPartiesList(partiesList);
+						 }
+						 
+						 
+						
+						
+				    		 locationVO.setId(localbodyId);
+				    		 locationVO.setName(localbodyName);
+				    		// locationVO.setPartyPercentage(selectedPartyTotalPercent);
+				    		// locationVO.setSelectedPartyTotalVoters(selectedPartyTotal);
+				    		 locationVO.setTotalValidVotes(totalVotes);
+				    		 locationVO.setTotalVoters(localbodytotalVoters);
+				    		 locationVO.setPercentage(new BigDecimal((totalVotes*100.0/localbodytotalVoters)).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+				    		// locationVO.setMargin(difference);
+				    		 locationVO.setType("Municipality");
+				    		// locationVO.setPrp(prpperc);
+				    		 pancResultList.add(locationVO);
+
+				 }
+				 } 
+			 }
+			 catch(Exception e)
+			 {
+				 log.error(" Exception Occured in getPartyPerformanceForLocalBodyNew() method, Exception - ",e);
+			 }
+		 }
 }
