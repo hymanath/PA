@@ -1,17 +1,23 @@
 package com.itgrids.partyanalyst.web.action;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.PartyEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
+import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -47,9 +53,10 @@ public class StratagicReportsAction extends ActionSupport implements
 	
 	private PartyResultsVerVO prevResults;
 	private List<PartyResultsVO> prevMPTCZPTCResults;
+	private PartyPositionResultsVO locationsList;
 	
 	
-	
+	private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
 
 	public PartyResultsVerVO getPrevResults() {
@@ -185,6 +192,13 @@ public class StratagicReportsAction extends ActionSupport implements
 	public void setBoothWiseAddedDelList(List<AgeRangeVO> boothWiseAddedDelList) {
 		this.boothWiseAddedDelList = boothWiseAddedDelList;
 	}
+	public PartyPositionResultsVO getLocationsList() {
+		return locationsList;
+	}
+
+	public void setLocationsList(PartyPositionResultsVO locationsList) {
+		this.locationsList = locationsList;
+	}
 
 	@Override
 	public String execute() throws Exception {
@@ -288,5 +302,72 @@ public class StratagicReportsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getVariationOfVotersOverParty(){
+			log.debug(" Entered Into getChangeByParty in StratagicReportsAction");
+		try{
+			jObj = new JSONObject(getTask());
+			Long constituencyId=jObj.getLong("constituencyId");
+			
+			String[] electionIds = jObj.getString("electionId").split(",");
+    		List<Long> electionIDS = new ArrayList<Long>();
+    		if(electionIds != null && electionIds.length > 0 ){
+    			for(int i=0 ;i<electionIds.length ;i++){
+    				electionIds[i] = replaceString(electionIds[i].toString());
+    				electionIDS.add(Long.valueOf(electionIds[i].toString()));
+    			}    			
+    		}
+    		
+    		String[] partyIds = jObj.getString("partyList").split(",");
+    		List<Long> partyidsList = new ArrayList<Long>();
+    		if(partyIds != null && partyIds.length > 0 ){
+    			for(int i=0 ;i<partyIds.length ;i++){
+    				partyIds[i] = replaceString(partyIds[i].toString());
+    				partyidsList.add(Long.valueOf(partyIds[i].toString()));
+    			}    			
+    		}
+    		
+			/*List<Long> electionIds=new ArrayList<Long>();
+			electionIds.add(e);
+			electionIds.add(e);*/
+			Map<Long,PartyEffectVO> prpEffect=new HashMap<Long, PartyEffectVO>();
+			
+			locationsList=stratagicReportsService.getPartyChanges(constituencyId,electionIDS,partyidsList);
+			
+		}catch(Exception e){
+			log.error(" Exception Raised In getChangeByParty in StratagicReportsAction"+e);
+			return Action.ERROR;
+		}
+		return Action.SUCCESS;
+	}
+	
+	private String replaceString(String stringStr){
+    	stringStr = stringStr.replace("\"", "");
+    	stringStr = stringStr.replace("[", "");
+    	stringStr = stringStr.replace("]", "");;
+    	return stringStr;
+    }
+	
+	
+	 public String getPartyWiseELecitonDetails(){
+	    	log.info(" entered into getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.");
+	    	try {
+	    		session = request.getSession();
+	    		RegistrationVO regVO =(RegistrationVO) session.getAttribute("USER");
+				
+	    		if(regVO == null )
+	    			return Action.ERROR;
+	    		
+	    		jObj = new JSONObject(getTask());
+	    	
+	    		
+	    		
+	    		
+			} catch (Exception e) {
+				log.error(" Exception occured in  getPartyWiseELecitonDetails() of ElectionResultsAnalysisReportAction class.",e);
+			}
+	    	
+	    	return Action.SUCCESS;
+	    }
 	
 }
