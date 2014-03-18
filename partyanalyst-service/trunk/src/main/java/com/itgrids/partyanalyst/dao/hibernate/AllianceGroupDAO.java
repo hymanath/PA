@@ -36,7 +36,7 @@ public class AllianceGroupDAO extends GenericDaoHibernate<AllianceGroup, Long> i
 	public List<Object[]> getAlliancesAndPartiesForPartiesAndElections(List<Long> electionIds,List<Long> partyIds){
 		Object[] params = {electionIds, partyIds};
 		Query query = getSession().createQuery("select model.group.groupId, model.group.groupName, model.party.partyId, model.party.shortName" +
-				" from AllianceGroup model where model.group.groupId = (select model1.group.groupId from AllianceGroup model1 where" +
+				" from AllianceGroup model where model.group.groupId in (select model1.group.groupId from AllianceGroup model1 where" +
 				" model1.group.groupId in(select model2.group.groupId from ElectionAlliance model2 where model2.election.electionId  in(:electionIds)) " +
 				"and model1.party.partyId in(:partyIds))");
 		query.setParameterList("electionIds", electionIds);
