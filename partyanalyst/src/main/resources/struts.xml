@@ -424,9 +424,9 @@
             <result name="success">/jsp/muncipalityElectionDetails.jsp</result>
         </action>
 		
-		  <action name="getPartyWiseELecitonDetailsAction" class="electionResultsAnalysisReportAction" method="getPartyWiseELecitonDetails"> 
+		  <action name="getPartyWiseELecitonDetailsAction" class="stratagicReportsAction" method="getVariationOfVotersOverParty"> 
               <result type="json" name="success">
-           		<param name="root">partiesList</param>
+           		<param name="root">locationsList</param>
         	</result>       		
         </action>
         
@@ -6569,6 +6569,11 @@
 			method="updateVoterNames">
 			<result type="json" name="success">
 				<param name="root">result</param>
+			</result>
+		</action>
+        <action name="getVariationOfVotersOverPartyAction" class="stratagicReportsAction" method="getVariationOfVotersOverParty">
+			<result type="json" name="success">
+				<param name="root">locationsList</param>
 			</result>
 		</action>
 		      
