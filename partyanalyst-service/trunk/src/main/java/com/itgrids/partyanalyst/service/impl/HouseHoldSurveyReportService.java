@@ -808,7 +808,7 @@ public class HouseHoldSurveyReportService implements IHouseHoldSurveyReportServi
 						hhModel.setHouseNo(votersDetails.getHouseNo());
 						hhModel.setPanchaytId(panchayatId);
 						hhModel.setLocalElectionBodyId(muncipalityId);
-						
+						hhModel.setInsertedTime(DateUtilService.getCurrentDateAndTime());
 						hhModel=houseHoldsDAO.save(hhModel);
 						
 						hseHoldId = hhModel.getHouseHoldId();
