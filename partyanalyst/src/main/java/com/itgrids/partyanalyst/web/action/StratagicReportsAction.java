@@ -22,6 +22,9 @@ import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterCountVO;
+import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
@@ -54,10 +57,39 @@ public class StratagicReportsAction extends ActionSupport implements
 	private PartyResultsVerVO prevResults;
 	private List<PartyResultsVO> prevMPTCZPTCResults;
 	private PartyPositionResultsVO locationsList;
+	private VoterModificationVO voterModificationVO;
+	private List<VoterCountVO> VoterCountVOList;
+	private VoterDensityWithPartyVO voterDensityWithPartyVO;
 	
 	
 	private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
+	
+	
+	public VoterDensityWithPartyVO getVoterDensityWithPartyVO() {
+		return voterDensityWithPartyVO;
+	}
+
+	public void setVoterDensityWithPartyVO(
+			VoterDensityWithPartyVO voterDensityWithPartyVO) {
+		this.voterDensityWithPartyVO = voterDensityWithPartyVO;
+	}
+
+	public List<VoterCountVO> getVoterCountVOList() {
+		return VoterCountVOList;
+	}
+
+	public void setVoterCountVOList(List<VoterCountVO> voterCountVOList) {
+		VoterCountVOList = voterCountVOList;
+	}
+
+	public VoterModificationVO getVoterModificationVO() {
+		return voterModificationVO;
+	}
+
+	public void setVoterModificationVO(VoterModificationVO voterModificationVO) {
+		this.voterModificationVO = voterModificationVO;
+	}
 
 	public PartyResultsVerVO getPrevResults() {
 		return prevResults;
@@ -369,5 +401,57 @@ public class StratagicReportsAction extends ActionSupport implements
 	    	
 	    	return Action.SUCCESS;
 	    }
+	 
+	 	public String getSubLevelVoterModificationReportForConstituency()
+		{
+			
+			String param ;
+			param = getTask();
+			try{
+				jObj = new JSONObject(param);		
+			}catch (Exception e) {
+				e.printStackTrace();
+				log.error("Exception Occured in getAllVoterInformationInALocation() Method, Exception - "+e);
+			}
+			
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+			Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+			String locationType = jObj.getString("locationType");
+			Long locationValue = jObj.getLong("locationValue");
+			String status = jObj.getString("status");
+			
+			
+			
+			/*voterModificationVO = voterModificationService.getSubLevelsVoterModificationDetails(
+					locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);*/
+			
+			voterModificationVO = stratagicReportsService.getSubLevelsVoterModificationDetailsByLocationValue(
+					locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+			return Action.SUCCESS;
+			
+		}
+	 	
+	 	
+	 	//Method For Getting VoterDensity
+	 	/*
+	 	 * @Author SASI
+	 	 * @Date 19-03-2014
+	 	 * 
+	 	 * */
+	 	public String getVoterDensityPanchayatWiseWithPartyResult(){
+	 		log.debug("Entered Into getVoterDensityPanchayatWiseWithPartyResult()");
+			
+			try{
+				log.debug("Entered into getVoterscountInPanchayats() method in Suggestive Model Action");
+				jObj = new JSONObject(getTask());
+				Long constituencyId = jObj.getLong("constituencyId");
+				Long publicationId = jObj.getLong("publicationId");
+				voterDensityWithPartyVO = stratagicReportsService.getVotersCountInPanchayatsForDensity(constituencyId,publicationId);
+			}catch(Exception e){
+				log.error("Exception raised in getVoterDensityPanchayatWiseWithPartyResult() method in StratagicReportAction",e);
+			}
+			return Action.SUCCESS;
+	 	}
 	
 }
