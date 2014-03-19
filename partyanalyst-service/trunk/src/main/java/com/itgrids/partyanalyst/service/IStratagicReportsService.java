@@ -10,6 +10,8 @@ import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
+import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 
 
 public interface IStratagicReportsService {
@@ -21,5 +23,8 @@ public interface IStratagicReportsService {
 	public PartyResultsVerVO getMuncipalCorpPrevResults(Long constiutencyId);
 	
 	public PartyPositionResultsVO getPartyChanges(Long constituencyId,List<Long> assemblyEleIdsList,List<Long> partiesSelected);
-
+	public VoterModificationVO getSubLevelsVoterModificationDetailsByLocationValue(String locationType, Long locationValue, Long constituencyId,
+			Long fromPublicationDateId, Long toPublicationDateId);
+	
+	public VoterDensityWithPartyVO getVotersCountInPanchayatsForDensity(Long constituencyId,Long publicationId);
 }
