@@ -56,7 +56,7 @@ $(document).ready(function(){
 	<input type="button" class="btn" value="Create" style="margin-left:160px" onClick="validateSubQtn();"></input>
 </div>
 
-<div id="searchDiv" style="">
+<div id="searchDiv">
  <div id="errorSearchDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
 </div>
 
@@ -119,7 +119,9 @@ $(document).ready(function(){
   <div id="statusDiv3"></div>
     <div style="margin-left:36px;">
 	<div>Voter Id:<font class="mandatory">*</font><input id="lVoterId" type="text" maxlength="20" style="margin-left:39px;" onblur="validateVoterId();"></div>
-    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;"><input type="button" class="btn" value="Search" style="margin:1px 8px 14px" onClick="searchNow1();"></input></div>
+    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;">
+    <!--  <input type="button" class="btn" value="Search" style="margin:1px 8px 14px" onClick="searchNow1();"></input>-->
+    </div>
 	<div>Mobile No :<font class="mandatory">*</font><input id="lmobileId" type="text" maxlength="20" style="margin-left:24px;"></div>	
 	<div>Book No:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:37px;"></div>
 	<div>is Active:<font class="mandatory">*</font><input id="yesId" type="radio" value="YES" name="radiobtn" style="margin:0px 5px 0px 40px;" checked/>YES<input id="noId" type="radio" style="margin:0px 5px 0px 20px;" value="NO" name="radiobtn" style="margin-left:15px;"/>NO
