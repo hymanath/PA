@@ -3165,4 +3165,20 @@ IUserVoterDetailsDAO{
 		query.setParameter("userId","userId");
 		return (Long)query.uniqueResult();	
 	}
+	
+	
+	@SuppressWarnings("unchecked")
+	 public List<Object[]> getWardBYLocalElectionBodyId(Long id , Long publicationId ,Long userId)
+	 {
+		 Query query = getSession().createQuery(" select distinct UVD.voter.voterId, UVD.ward.name from UserVoterDetails UVD, BoothPublicationVoter BPV where " +
+		 		" UVD.voter.voterId = BPV.voter.voterId and BPV.booth.localBody.localElectionBodyId = :localElectionBodyId and BPV.booth.publicationDate.publicationDateId = :publicationDateId and " +
+		 		" UVD.user.userId = :userId order by UVD.ward.constituencyId ");
+		 
+		 query.setParameter("publicationDateId", publicationId);
+		 query.setParameter("localElectionBodyId", id);
+		 query.setParameter("userId", userId);
+		 
+		 return query.list();
+	 }
 }
+
