@@ -410,7 +410,9 @@
 		<value>com.itgrids.partyanalyst.model.HHLeader</value>
 		<value>com.itgrids.partyanalyst.model.HHBoothLeader</value>
 		<value>com.itgrids.partyanalyst.model.PRPWeighteges</value>
-	    <value>com.itgrids.partyanalyst.model.PartyTrends</value>	
+	    <value>com.itgrids.partyanalyst.model.PartyTrends</value>
+	    
+	    <value>com.itgrids.partyanalyst.model.PanchayatResult</value>	
 			</list>
 		</property>
 	</bean>
@@ -2091,6 +2093,10 @@
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    <bean id="prpWeightegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PRPWeightegesDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+   <bean id="panchayatResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatResultDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
 </beans>
