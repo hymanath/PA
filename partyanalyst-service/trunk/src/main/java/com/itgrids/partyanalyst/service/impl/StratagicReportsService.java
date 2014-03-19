@@ -79,7 +79,6 @@ public class StratagicReportsService implements IStratagicReportsService{
 	@Autowired IPartyDAO partyDAO;
 	
 	
-	   
 	public List<AgeRangeVO> getBoothWiseAddedAndDeletedVoters(Long constiId,Long pubId){
 		List<AgeRangeVO> boothWiseAddedDeletedVoters=new ArrayList<AgeRangeVO>();
 		try{
@@ -1927,4 +1926,23 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 log.error(" Exception Occured in getPartyPerformanceForLocalBodyNew() method, Exception - ",e);
 			 }
 		 }
+	  
+	  public List<SelectOptionVO> getSearchTypeDetails(Long userId,String searchtype,Long cosntituencyId){
+			log.info("Entered into the setValuesToCensusVO method StratagicReportServiceForMLASuccess class");
+			List<SelectOptionVO> returnList = null;
+			try
+			{
+				if(searchtype.equalsIgnoreCase("basedOnElection")){
+									
+				}
+				else if(searchtype.equalsIgnoreCase("basedOnPublication")){
+					
+				}
+			}catch(Exception e)
+			{
+			log.error("Exception Occured in the setValuesToCensusVO method StratagicReportServiceForMLASuccess class",e);
+				
+			}
+			return returnList;
+		}
 }

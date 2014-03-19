@@ -1,11 +1,13 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
+import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 
 public class VoterAgeInfoDAOHibernateTest extends BaseDaoTestCase{
 	
@@ -80,12 +82,59 @@ public class VoterAgeInfoDAOHibernateTest extends BaseDaoTestCase{
 		voterAgeInfoDAO.getVoterAgeInfoList(232l);
 	}*/
 	
-	public void testgetPanchayatWiseVoterDetailsForSuggestiveModel()
+	/*public void testgetPanchayatWiseVoterDetailsForSuggestiveModel()
 	{
 		List<Object[]> values = voterAgeInfoDAO.getPanchayatWiseVoterDetailsForSuggestiveModel(228l, 8l,3l,1l);
 		for (Object[] params : values) {
 			System.out.println(params[0] +" "+params[1] +":"+ params[2] +":"+ params[3] +":"+ params[4]);
 		}
 	}
+*/
+	
+	public void testgetVoterAgeInfoListByconstituency()
+	{
 
+		VoterStratagicReportVo voterStratagicReportVo = null;
+		List<VoterStratagicReportVo> ageWiseReportVOList = null;
+		try {
+			DecimalFormat decimalFormat = new DecimalFormat("##.##");
+			List<Object[]> voterAgeInfoList = voterAgeInfoDAO.getVoterAgeInfoListByconstituency(228l, 8l);
+		
+			if(voterAgeInfoList != null && voterAgeInfoList.size()>0){
+				ageWiseReportVOList = new ArrayList<VoterStratagicReportVo>();
+				voterStratagicReportVo = new VoterStratagicReportVo();
+				Long totalVotersCount = 0L;
+				
+				for (Object[] voterAgeCount : voterAgeInfoList) {
+					totalVotersCount = totalVotersCount + Long.valueOf(voterAgeCount[2].toString());
+				}
+				
+				for (Object[] voterAge : voterAgeInfoList) {
+					VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
+					Float totalCount = Float.valueOf(voterAge[3].toString());
+					Double percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+					agewiseReportVO.setMaleVotersCount(totalCount.longValue());
+					agewiseReportVO.setMaleTotalPercentage(percentage);
+					
+					totalCount = Float.valueOf(voterAge[4].toString());
+					percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+					agewiseReportVO.setFemaleVotersCount(totalCount.longValue());
+					agewiseReportVO.setFemaleTotalPercentage(percentage);
+					
+					totalCount = Float.valueOf(voterAge[2].toString());
+					percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+					agewiseReportVO.setTotalVoters(totalCount.longValue());										
+					agewiseReportVO.setTotalPercentage(percentage);
+					
+					ageWiseReportVOList.add(agewiseReportVO);
+				}
+			}
+			
+			voterStratagicReportVo.setVoterStategicReportVOList(ageWiseReportVOList);
+		} catch (Exception e) {
+			log.error(" exception occured in getAgeWiseVotersInfoByConstituency() of StratagicReportsService class. ",e);
+		}
+		
+	}
+	
 }
