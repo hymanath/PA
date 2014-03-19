@@ -31,4 +31,5 @@ public interface IVoterAgeInfoDAO extends GenericDao<VoterAgeInfo, Long>{
 	
 	public List<Object[]> getPanchayatWiseVoterDetailsForSuggestiveModel(Long constituencyId,Long publicationId,Long reportLevelId,Long ageRangeId);
 	
+	public List<Object[]> getVoterAgeInfoListByconstituency(Long constituencyId,Long publicationDateId);
 }
