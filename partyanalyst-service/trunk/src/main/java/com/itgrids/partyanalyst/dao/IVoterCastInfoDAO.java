@@ -42,4 +42,6 @@ public interface IVoterCastInfoDAO extends GenericDao<VoterCastInfo,Long>{
 	public List<Object[]> getCasteAvaliableConstituencyes(List<Long> constituencyIds,Long userId);
 	
 	//public List<Object[]> getPanchayatWiseCasteForSuggestiveModel(Long constituencyId,Long publicationId,Long levelId,Long userId);
+	
+	public List<Object[]> getVoterCasteInfoListByConstituency(Long constituencyId,Long publicationDateId,Long userId);
 }
