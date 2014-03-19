@@ -1370,4 +1370,8 @@
    <bean id="prpWeightegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PRPWeightegesDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   
+    <bean id="panchayatResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatResultDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
 </beans>		

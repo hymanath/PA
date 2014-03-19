@@ -394,6 +394,8 @@
 				<value>com.itgrids.partyanalyst.model.VoterBoothActivities</value>
 				<value>com.itgrids.partyanalyst.model.PartyTrends</value>					
 				<value>com.itgrids.partyanalyst.model.PRPWeighteges</value>
+				
+				<value>com.itgrids.partyanalyst.model.PanchayatResult</value>
 			</list>
 			
 		</property>
