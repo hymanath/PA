@@ -1857,5 +1857,24 @@ public String saveLocality()
 		}
 		   return Action.SUCCESS;
 	   }
+	   
+	   public String getSearchedVoters(){
+		   try {
+			jObj = new JSONObject(getTask());
+			String voterCardNo=jObj.getString("voterCardNo");
+			String voterName=jObj.getString("voterName");
+			Long constituencyId=jObj.getLong("constituency");
+			Long publicationDateId=jObj.getLong("publicationDateId");
+			
+			voterDetailsSearched=votersAnalysisService.getVotersOfSearchedCriteria(voterCardNo,voterName,constituencyId,publicationDateId);			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Action.ERROR;			
+		}
+		   return Action.SUCCESS;
+	   }
+
+ 
 
    }

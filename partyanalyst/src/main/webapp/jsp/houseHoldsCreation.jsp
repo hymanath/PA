@@ -5,6 +5,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
+<link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
+
 </head>
 <body>
 <style>
@@ -51,6 +54,10 @@ $(document).ready(function(){
 	 <s:select theme="simple" name="mainTypeId1" id="mainTypeId1" list="mainSurveyTypes" listKey="id" listValue="name"/></div>
     <div style="margin-left:36px;">Create SubQuestion :<font class="mandatory">*</font><input id="subQtnId" type="text" maxlength="100"></div>
 	<input type="button" class="btn" value="Create" style="margin-left:160px" onClick="validateSubQtn();"></input>
+</div>
+
+<div id="searchDiv" style="">
+ <div id="errorSearchDiv" style="color:red;font-weight:bold;margin-bottom:10px;"></div>
 </div>
 
  <div class="container" id="createQstnDiv" style="display:none">
@@ -112,9 +119,9 @@ $(document).ready(function(){
   <div id="statusDiv3"></div>
     <div style="margin-left:36px;">
 	<div>Voter Id:<font class="mandatory">*</font><input id="lVoterId" type="text" maxlength="20" style="margin-left:39px;" onblur="validateVoterId();"></div>
-    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;"></div>
+    <div>Name :<font class="mandatory">*</font><input id="leaderNameId" type="text" maxlength="100" style="margin-left:48px;"><input type="button" class="btn" value="Search" style="margin:1px 8px 14px" onClick="searchNow1();"></input></div>
 	<div>Mobile No :<font class="mandatory">*</font><input id="lmobileId" type="text" maxlength="20" style="margin-left:24px;"></div>	
-	<div>Book No:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:29px;"></div>
+	<div>Book No:<font class="mandatory">*</font><input id="luniqueId" type="text" maxlength="20" style="margin-left:37px;"></div>
 	<div>is Active:<font class="mandatory">*</font><input id="yesId" type="radio" value="YES" name="radiobtn" style="margin:0px 5px 0px 40px;" checked/>YES<input id="noId" type="radio" style="margin:0px 5px 0px 20px;" value="NO" name="radiobtn" style="margin-left:15px;"/>NO
 	</div>
  
@@ -126,7 +133,7 @@ $(document).ready(function(){
  
    <div id="publicationDiv" class="selectDiv">		
 		 Select Publication Date<font class="requiredFont">*</font>
-		<select id="publicationId" onChange="getBooths()" style="margin:7px;"><option value="0">Select Publication Date</option>
+		<select id="publicationId" style="margin:7px;"><option value="0">Select Publication Date</option>
 		</select> <span style='display:none;float: right;margin:7px 38px;' id='ajaxLoad'><img src='./images/icons/search.gif' /></span>
 	</div>
 
@@ -454,6 +461,132 @@ function createNewLeader()
         
 	 });
  }
+
+function searchNow1(){
+
+    $("#searchDiv").html("");
+	
+    if($("#leaderNameId").val().trim() == "")
+	{
+      $('#errorLeaderDiv').html("Please Select Name to search<br>");
+	}
+	else if($("#constituencyId").val() == 0)
+	{
+      $('#errorLeaderDiv').html("Please Select Constituency<br>");
+	}
+	else if($("#publicationId").val() == 0)
+	{
+      $('#errorLeaderDiv').html("Please Select Publication Date<br>");
+	}
+	else {
+       $('#searchDiv').dialog({
+		title:"search", 
+		width:800,
+		modal:true,
+        buttons: {
+			"OK":function() {$(this).dialog('close');}
+		}
+	   });
+		
+		var voterCardNo=$("#lVoterId").val();
+		var voterName=$("#leaderNameId").val();
+		if(voterName==""){
+			$("#errorSearchDiv").html("<span style='color:red'> Please Enter Name to Search </span>");
+			return;
+		}
+		//$("#ajaxImg").css("display","inline-block");
+		var publicationDateId=$("#publicationId").val();
+		var constituency =  $("#constituencyId option:selected").val()
+		var jsObj =
+		{
+			voterCardNo:voterCardNo,
+			voterName:voterName,
+			publicationDateId:publicationDateId,
+			constituency:constituency,
+			task:"getVotersMatched"
+		};
+		$.ajax({
+		   type: "POST",
+		   url: "getVotersForSearchingAction.action",		
+		   data: {task:JSON.stringify(jsObj)},
+		}).done(function(results) {
+		   buildTableForSearchedVoters(results);
+	    });
+	}
+}
+function getPublicationDates()
+{
+	var constnDtls={
+             selected:$('#constituencyId').val(),
+			 task:"getPublicationDate"
+	};
+	$.ajax({
+          type:'POST',
+          url: 'voterAnalysisAjaxAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constnDtls)},
+
+          success: function(result){ 
+			$('#publicationId').find('option').remove();
+			  $.each(result,function(index,value){
+				  $('#publicationId').append('<option value="'+value.id+'">'+value.name+'</option>');
+			  });			  
+         },
+          error:function() { 
+           console.log('error', arguments);
+         }
+    });
+}
+
+function buildTableForSearchedVoters(results){
+		
+		if(results!=null && results.length>0)
+		{
+		var str="";
+		str+="<table class='table table-bordered' id='searchVotersTableId'>";
+			str+="<thead>";
+				str+="<tr>";
+				//str+="<th>Select</th>";
+				str+="<th>Name</th><th>Voter CardId</th><th>Serial No</th><th>Booth No</th></tr></thead><tbody>";
+				for(var i in results){
+					str+="<tr>";
+						//str+="<td><input type='checkbox' id= 'check"+i+"'   name='searchedVoters' class= 'checkedCls' value="+results[i].voterId+" onclick='getChecked(this.id)'></input></td>";
+						str+="<td>"+results[i].name+"</td>";
+						str+="<td>"+results[i].voterIdCardNo+"</td>";
+						str+="<td>"+results[i].toSno+"</td>";
+						str+="<td>"+results[i].partNo+"</td>";						
+					str+="</tr>";
+				}
+			str+="</tbody>";
+		str+="</table>";
+		temp = results;
+		str+="<br><span onclick=addVoter() class='btn btn-info'>Add Voter</span>";
+		$("#searchDiv").html(str);
+		$('#searchVotersTableId').dataTable();
+		}
+		else
+		{
+			$("#searchDiv").html("<span style='color:red'>No Data Available For Given Search Details");
+		}
+	}  
+
+function addVoter(){	
+       
+	$('input[name="searchedVoters"]:checked').each(function() {
+		for(var i in temp){
+				if(temp[i].voterId==this.value){
+                  $("#lVoterId").attr("value",temp[i].voterIdCardNo);
+				  $("#leaderNameId").attr("value",temp[i].name);
+				  $('#boothsId').append('<option value="'+temp[i].boothId+'">'+temp[i].partNo+'</option>');
+				}
+		}$('#searchDiv').dialog( "close" );
+	});
+}
+function getChecked(id){
+             
+		$(".checkedCls").removeAttr("checked");
+	    $('#'+id).attr('checked',true);
+}
 
 </script>
 </body>
