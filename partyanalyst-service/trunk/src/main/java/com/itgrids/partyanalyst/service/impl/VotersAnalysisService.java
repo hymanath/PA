@@ -21290,4 +21290,39 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			 return null;
 			}
 		}
+	  
+	  
+	  public List<VoterHouseInfoVO> getVotersOfSearchedCriteria(String voterCardNo,String voterName,Long constituencyId,Long publicationId){
+			
+			StringBuilder qryString=new StringBuilder();
+			
+			qryString.append(" and model.booth.constituency.constituencyId ="+constituencyId+"");
+			
+			if(voterCardNo.trim().length()>0 ){
+				qryString.append(" and model.voter.voterIDCardNo = '"+voterCardNo+"'");
+			}else if(voterName.trim().length()>0){
+				qryString.append(" and model.voter.name like '%"+voterName+"%'");
+			}
+			
+			qryString.append(" order by model.voter.name ");
+			
+			
+			List<Object[]> voterDataList=userVoterDetailsDAO.getVotersDetailsBySearchCriteriaForHouseHolds(publicationId,qryString.toString());
+			List<Long> voterIds=new ArrayList<Long>();
+			List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
+			if(voterDataList.size()>0){
+				for(Object[] vData:voterDataList){
+					VoterHouseInfoVO vo = new VoterHouseInfoVO();
+					Voter voter=(Voter)vData[0];
+					vo.setVoterId(voter.getVoterId());
+					vo.setName(voter.getName());
+					vo.setBoothId(Long.valueOf(vData[1].toString()));
+					vo.setPartNo(vData[2].toString());
+					vo.setToSno(Long.valueOf(vData[3].toString()));
+					vo.setVoterIdCardNo(voter.getVoterIDCardNo());
+					resultList.add(vo);
+				}
+			}
+			return resultList;
+	  }
 }

@@ -341,4 +341,6 @@ public interface IVotersAnalysisService {
 	 
 	 public List<SelectOptionVO> getPublicationList();
 	 public SelectOptionVO getCountList1(Long id,Long publicationDateId,String type);
+	 
+	 public List<VoterHouseInfoVO> getVotersOfSearchedCriteria(String voterCardNo,String voterName,Long constituencyId,Long publicationId);
 }
