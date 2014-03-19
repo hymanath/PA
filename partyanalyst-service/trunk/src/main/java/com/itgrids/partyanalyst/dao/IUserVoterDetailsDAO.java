@@ -333,4 +333,6 @@ public interface IUserVoterDetailsDAO extends GenericDao<UserVoterDetails, Long>
 	
 	public List<Object[]> getVoterCountInLocation(Long constituencyId,Long publicationId,Long userId,Set<Long> partialPanchayatIds);
 	public Long getCasteVoterNamesOfAConstituency(Long constituencyId,Long publicationId,Long userId);
+	
+	 public List<Object[]> getWardBYLocalElectionBodyId(Long id , Long publicationId ,Long userId);
 }

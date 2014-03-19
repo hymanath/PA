@@ -6042,13 +6042,14 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		return publicationID;
 	}
 	
-	public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex)
+	public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,Long userId)
 	{
 		List<VoterHouseInfoVO> result = new ArrayList<VoterHouseInfoVO>();
 		try{
 		List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,startIndex,maxIndex);
 		List<Object[]> totalList = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,null,null);
 		Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
+		Map<Long,String> wardMap = new HashMap<Long, String>();
 		if(list !=null && list.size() > 0)
 		{
 			for(Object[] params : list)
@@ -6094,9 +6095,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			{
 				if (booth.getLocalBody() != null)
 				localbody = booth.getLocalBody().getName();
-				if(localbody != null && localbody != "")
-					tehsil = localbody +" Muncipality";
-				else
+			     else
 					tehsil = booth.getTehsil().getTehsilName();	
 				if(booth.getPanchayat() != null)
 				{
@@ -6106,23 +6105,64 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					hamletName = hamlets.get(0).toString();
 				}
 				
+				if(localbody != null && localbody != "")
+				{
+					if( booth.getLocalBody().getElectionType() != null)
+					{
+					String electionType = booth.getLocalBody().getElectionType().getElectionType();
+					if(electionType.equalsIgnoreCase(IConstants.GHMC))
+					{
+					tehsil = localbody +" Corporation";
+					if(booth.getLocalBodyWard() != null)
+					wardName = booth.getLocalBodyWard().getName();
+					}
+					else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
+					{
+						tehsil = localbody +" Muncipality";
+						List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getId().toString().substring(1).trim()));
+						List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
+						if(wardNames != null && wardNames.size() > 0)
+							for(Object[] wardparams : wardNames)
+							{
+								wardMap.put((Long)wardparams[0],wardparams[1]!= null ?  wardparams[1].toString() :"");
+							}
+					
+					}
+				   }
+					
+				}
+				
 			}
 			else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
 			{
 				if (booth.getLocalBody() != null)
 					localbody = booth.getLocalBody().getName();
-				String electionType =consti.getElectionScope().getElectionType().getElectionType();
-					if(localbody != null && localbody != "")
+		           if(localbody != null && localbody != "")
 					{
+		        	   if( booth.getLocalBody().getElectionType() != null)
+		        	   {
+						String electionType = booth.getLocalBody().getElectionType().getElectionType();
 						if(electionType.equalsIgnoreCase(IConstants.GHMC))
+						{
 						tehsil = localbody +" Corporation";
 						if(booth.getLocalBodyWard() != null)
 						wardName = booth.getLocalBodyWard().getName();
-					}
+						}
+				      
 					else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
 					{
 						tehsil = localbody +" Muncipality";
+						List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getId().toString().substring(1).trim()));
+						List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
+						if(wardNames != null && wardNames.size() > 0)
+							for(Object[] wardparams : wardNames)
+							{
+								wardMap.put((Long)wardparams[0],wardparams[1]!= null ?  wardparams[1].toString() :"");
+							}
+					
 					}
+		       }
+			}
 				
 			}
 			votervo.setTehsilName(tehsil);
@@ -6186,9 +6226,13 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			  String cast = voterCaste.get(voterDetails.get(voterDetails.size()-1).getVoterId());
 			  voterHouseInfoVO.setElderCaste(cast != null ? cast : " ");
 			  VoterHouseInfoVO basicVo = basicInfo.get(boothId);
+			
 			  voterHouseInfoVO.setTehsilName(basicVo.getTehsilName());
+			  if(basicVo.getTehsilName().contains("Muncipality") && wardMap != null)
+			  voterHouseInfoVO.setWardName(wardMap.get(basicVo.getVoterId()) != null ?wardMap.get(basicVo.getVoterId()) : "");
+			  else if(basicVo.getTehsilName().contains("Corporation"))  
+			  voterHouseInfoVO.setWardName(basicVo.getWardName() !=null ? basicVo.getWardName().toString() : "");
 			  voterHouseInfoVO.setPanchayatName(basicVo.getPanchayatName());
-			  voterHouseInfoVO.setWardName(basicVo.getWardName());
 			  voterHouseInfoVO.setHamletName(basicVo.getHamletName());
 			  boolean flag = false;
 			  List<VoterHouseInfoVO> youngervoterDetails  = voterDetails;
