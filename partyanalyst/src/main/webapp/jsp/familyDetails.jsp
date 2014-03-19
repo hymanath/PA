@@ -338,6 +338,7 @@ function buildFamilyDetails(results,jsObj)
 	str+='<th>Mandal/Muncipality</th>';
 	str+='<th>Panchayat</th>';
 	str+='<th>Hamlet</th>';
+	str+='<th>Ward</th>';
 		}
 	else if(results[0].constituencyType == 'URBAN')
 		{
@@ -367,15 +368,28 @@ function buildFamilyDetails(results,jsObj)
 		{
 	str+='<tr>';	
     str+='<td>'+j+'</td>';
-	if(results[0].constituencyType == 'RURAL' || results[0].constituencyType == 'RURAL-URBAN')
+	if(results[0].constituencyType == 'RURAL')
 		{
     str+='<td>'+results[i].tehsilName+'</td>';
     str+='<td>'+results[i].panchayatName+'</td>';
     str+='<td>'+results[i].hamletName+'</td>';
+	
 		}
+		if(results[0].constituencyType == 'RURAL-URBAN')
+		{
+    str+='<td>'+results[i].tehsilName+'</td>';
+    str+='<td>'+results[i].panchayatName+'</td>';
+    str+='<td>'+results[i].hamletName+'</td>';
+	if(results[i].wardName == null)
+		results[i].wardName = "";
+		str+='<td>'+results[i].wardName+'</td>';
+		}
+	
    else if(results[0].constituencyType == 'URBAN')
 		{
     str+='<td>'+results[i].tehsilName+'</td>';
+	if(results[i].wardName == null)
+		results[i].wardName = "";
     str+='<td>'+results[i].wardName+'</td>';
 		}
     str+='<td>'+results[i].partNo+'</td>';
