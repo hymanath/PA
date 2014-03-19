@@ -29,7 +29,7 @@ public class MobileAppUserAccessDAO extends GenericDaoHibernate<MobileAppUserAcc
 	
 	public List<Object[]> getMobileAppUserdetails()
 	{
-		return getHibernateTemplate().find("select model1.firstName,model1.lastName,model.mobileAppUser.user.userId,model.mobileAppUser.user.firstName,model.mobileAppUser.user.lastName,model.mobileAppUser.uniqueCode,model.isAuthorised,model.lastAuthorisedTime,model.mobileAppUser.mobileAppUserId,model.mobileAppUser.mobileNo from MobileAppUserAccess model,MobileAppUserProfile model1 where model.mobileAppUser.mobileAppUserId = model1.mobileAppUser.mobileAppUserId");
+		return getHibernateTemplate().find("select distinct model1.firstName,model1.lastName,model.mobileAppUser.user.userId,model.mobileAppUser.user.firstName,model.mobileAppUser.user.lastName,model.mobileAppUser.uniqueCode,model.isAuthorised,model.lastAuthorisedTime,model.mobileAppUser.mobileAppUserId,model.mobileAppUser.mobileNo from MobileAppUserAccess model,MobileAppUserProfile model1 where model.mobileAppUser.mobileAppUserId = model1.mobileAppUser.mobileAppUserId");
 	}
 	
 
