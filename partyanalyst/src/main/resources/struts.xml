@@ -6591,6 +6591,19 @@
 			</result>
 		</action>
 		
+		<action name="getSubLevelVoterModificationReportForConstituencyAction" class="stratagicReportsAction"
+			method="getSubLevelsVoterModificationDetailsByLocationValue">
+			<result type="json" name="success">
+				<param name="root">countList</param>
+			</result>
+		</action>
+		
+		<action name="getVoterDensityPanchayatWiseWithPartyResultAction" class="stratagicReportsAction" method="getVoterDensityPanchayatWiseWithPartyResult">
+			<result type="json" name="success">
+				<param name="root">voterDensityWithPartyVO</param>
+			</result>
+		</action>
+		
 		<action name="getVotersForSearchingAction" class="votersEditNewHHAction" method="getSearchedVoters">
 			<result type="json" name="success">
 				<param name="root">voterDetailsSearched</param>				
