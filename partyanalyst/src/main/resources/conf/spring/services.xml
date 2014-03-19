@@ -1967,5 +1967,17 @@
    <bean name="ageWiseExcelsGenerationService" class="com.itgrids.partyanalyst.service.impl.AgeWiseExcelsGenerationService" >
    </bean>
   
+   <bean name="stratagicReportServiceForMLASuccess" class="com.itgrids.partyanalyst.service.impl.StratagicReportServiceForMLASuccess">
+   	<property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
+   	<property name="voterAgeInfoDAO" ref="voterAgeInfoDAO"/>
+   	<property name="voterInfoDAO" ref="voterInfoDAO"/>
+   	<property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO"/>   	
+   	<property name="constituencyCensusDetailsDAO" ref="constituencyCensusDetailsDAO"/>
+   	<property name="constituencyDAO" ref="constituencyDAO"/>
+   	<property name="stateDAO" ref="stateDAO"/>
+   	<property name="districtDAO" ref="districtDAO"/>
+   	<property name="censusDAO" ref="censusDAO"/>   	
+   </bean>
+   
 </beans>		
 	
