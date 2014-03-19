@@ -6591,6 +6591,11 @@
 			</result>
 		</action>
 		
+		<action name="getVotersForSearchingAction" class="votersEditNewHHAction" method="getSearchedVoters">
+			<result type="json" name="success">
+				<param name="root">voterDetailsSearched</param>				
+			</result> 
+		</action>
 		</package>
 		
 </struts>      
