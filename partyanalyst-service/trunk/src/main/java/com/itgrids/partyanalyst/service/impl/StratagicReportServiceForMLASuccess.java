@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -48,11 +51,27 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	
 	@Autowired IDistrictDAO districtDAO;
 	
+	@Autowired IBoothDAO boothDAO;
+	
 	public HouseHoldsVO getHouseHoldInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
 		LOG.info(" entered into getHouseHoldInfoByConstituency() in StratagicReportsService class.");
 		HouseHoldsVO houseHoldsVO = null;
 		List<HouseHoldsVO> houseHoldsVOList = null;
 		try {
+			Long houseHoldsByNewVoterList = 0L; 
+			Long houseHoldsByCensus = 0L;
+			
+			List<Long> tehsilIds = boothDAO.getTehsildByConstituency(constituencyId, publicationDateId);
+			List<Long> houstholdsDetials = censusDAO.getCensusDetailsInConstituency(tehsilIds,2011L);
+			if(houstholdsDetials != null && houstholdsDetials.size()>0){		
+				Set<Long> houstholdsCount = new HashSet<Long>();
+				houstholdsCount.addAll(houstholdsDetials);
+				
+				for (Long houseHolds : houstholdsCount) {
+					houseHoldsByCensus = houseHoldsByCensus + houseHolds;
+				}
+			}
+			
 			List<Object[]> houseHoldsDetails = voterFamilyInfoDAO.getTotalFamiliesByCosntituency(232L,8L,232L);
 			if(houseHoldsDetails != null && houseHoldsDetails.size()>0){
 				houseHoldsVOList = new ArrayList<HouseHoldsVO>();
@@ -64,6 +83,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					ohuseholds.setFamilyCount(houseHolds[2] != null ? houseHolds[2].toString():"");
 					ohuseholds.setFamilyPercentage(houseHolds[3] != null ? houseHolds[3].toString():"");
 					
+					houseHoldsByNewVoterList = houseHoldsByNewVoterList + Long.valueOf(houseHolds[2].toString());
 					houseHoldsVOList.add(ohuseholds);
 				}
 				houseHoldsVO.setHouseHoldsVOList(houseHoldsVOList);
@@ -73,8 +93,8 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					"Building Block of the entire structure and so we have put forward a measure of the " +
 					"families in the constituency based on the total number of voter base available in each " +
 					"of them respectively.</p>");
-			Long houseHoldsByCensus = 0L;
-			Long houseHoldsByNewVoterList = 0L;
+			
+
 			houseHoldsVO.setCalcMessage("<p>Please Note: Total Households: "+houseHoldsByCensus+" (According to the Census), "+houseHoldsByNewVoterList+" (According to the Voters List)</p>");
 		} catch (Exception e) {
 			LOG.error(" exception occured in getHouseHoldInfoByConstituency() of StratagicReportsService class. ",e);
@@ -351,6 +371,13 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			resultVO.setDifferencePopulation(currentDetails.getTotalPopulation() - previousDetails.getTotalPopulation());
 			resultVO.setDifferencePopulationPercent(roundTo2DigitsFloatValue((float)resultVO.getDifferencePopulation()*100f/previousDetails.getTotalPopulation()));
 			
+			String populationStatus = null;
+			if(currentDetails.getTotalPopulation() - previousDetails.getTotalPopulation() > 0){
+				populationStatus = " increased ";
+			}
+			else if(currentDetails.getTotalPopulation() - previousDetails.getTotalPopulation() < 0){
+				populationStatus = " decreased ";
+			}
 			resultVO.setDifferenceMalePopulation(currentDetails.getMalePopulation() - previousDetails.getMalePopulation());
 			resultVO.setDifferenceMalePercent(roundTo2DigitsFloatValue((float)resultVO.getDifferenceMalePopulation()*100f/previousDetails.getMalePopulation()));
 			resultVO.setDifferenceFemalePopulation(currentDetails.getFemalePopulation() - previousDetails.getFemalePopulation());
@@ -368,6 +395,13 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			resultVO.setDifferenceWorkingPeople(currentDetails.getWorkingPeople() - previousDetails.getWorkingPeople());
 			resultVO.setDifferenceWorkingPeoplePercent(roundTo2DigitsFloatValue((float)resultVO.getDifferenceWorkingPeople()*100f / previousDetails.getWorkingPeople()));
 			
+			String emplmentStatus = null; 
+			if(currentDetails.getWorkingPeople() - previousDetails.getWorkingPeople() >0){
+				emplmentStatus = " improved ";
+			}
+			else if(currentDetails.getWorkingPeople() - previousDetails.getWorkingPeople() >0){
+				emplmentStatus = " not improved ";
+			}
 			resultVO.setDifferenceMaleWorkingPeople(currentDetails.getWorkingMale() - previousDetails.getWorkingMale());
 			resultVO.setDifferenceMaleWorkingPeoplePercent(roundTo2DigitsFloatValue((float)resultVO.getDifferenceMaleWorkingPeople()*100f / previousDetails.getWorkingMale()));
 			
@@ -382,6 +416,15 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			
 			resultVO.setDifferenceLiterates(currentDetails.getLiterates() - previousDetails.getLiterates());
 			resultVO.setDifferenceLiteratesPercent(roundTo2DigitsFloatValue((float)resultVO.getDifferenceLiterates() *100f/previousDetails.getLiterates()));
+			
+			
+			String literatusStatus = null; 
+			if(currentDetails.getLiterates() - previousDetails.getLiterates() >0){
+				literatusStatus = " increased ";
+			}
+			else if(currentDetails.getWorkingPeople() - previousDetails.getWorkingPeople() >0){
+				literatusStatus = " decreased ";
+			}
 			
 			resultVO.setDifferenceMaleLiterates(currentDetails.getMaleLiterates() - previousDetails.getMaleLiterates());
 			resultVO.setDifferenceMaleLiteratesPercent(roundTo2DigitsFloatValue((float)resultVO.getDifferenceMaleLiterates()*100f/previousDetails.getMaleLiterates()));
@@ -416,6 +459,14 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					" appropriate knowledge to help us going along the way. We have put in our effort to " +
 					" bring Most Accurate & Most Recent Census based on Population, SC, ST, Literates for the " +
 					" years of 2001 and 2011</p>");
+			
+			StringBuffer conclusion = new StringBuffer();
+				conclusion.append("<p> Population were "+populationStatus+" in this Constituency. </p>,");			
+			//	conclusion.append("<p> ST’s were Improved where as SC’s were decreased when compare to district and State. </p>,");
+				conclusion.append("<p> Employment resources are "+emplmentStatus+", where as decreased for Women </p>,");
+				conclusion.append("<p> Education Facilities are "+literatusStatus+". </p>");
+				
+			resultVO.setConclusion(conclusion.toString());
 			
 		}catch(Exception e)
 		{
