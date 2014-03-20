@@ -15,7 +15,6 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.model.Census;
-import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICensusDAO {
@@ -466,5 +465,18 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		  
 		  return query.list();
 		  
+	  }
+	  
+	  public List<Long> getCensusDetailsInConstituency(List<Long> tehsilIDs,Long year) {
+  
+		  
+		  Query query = getSession().createQuery("select model.houseHolds from Census model where " +
+		  		"model.tehsilId in (:tehsilIDs) and model.level = :level and model.year =:year");
+
+		  query.setParameter("year", year);
+		  query.setParameter("level", IConstants.TEHSIL);
+		  query.setParameterList("tehsilIDs", tehsilIDs);
+		  
+		  return query.list();
 	  }
 }
