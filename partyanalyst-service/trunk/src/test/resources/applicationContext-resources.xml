@@ -413,8 +413,9 @@
 	    <value>com.itgrids.partyanalyst.model.PartyTrends</value>
 	    
 	    <value>com.itgrids.partyanalyst.model.PanchayatResult</value>	
-	    <value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>					
-		<value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
+	    <value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
+		<value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>
+		
 			</list>
 		</property>
 	</bean>
@@ -2097,16 +2098,18 @@
    <bean id="prpWeightegesDAO" class="com.itgrids.partyanalyst.dao.hibernate.PRPWeightegesDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
-   
-   <bean id="panchayatResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatResultDAO">
-    	<property name="sessionFactory" ref="sessionFactory" />
-   </bean>   
-    <bean id="strategyMergPancListDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergPancListDAO">
+   <bean id="strategyMergPancListDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergPancListDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
    <bean id="strategyMergePanchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergePanchayatDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   
+   
+   <bean id="panchayatResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatResultDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+
    <bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
 		<property name="stateDAO" ref="stateDAO"/>
 		<property name="districtDAO" ref="districtDAO"/>

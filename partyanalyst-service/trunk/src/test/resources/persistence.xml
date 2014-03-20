@@ -63,9 +63,9 @@
 		<class>com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers</class>	
 		<class>com.itgrids.partyanalyst.model.SmsType</class>
 		<class>com.itgrids.partyanalyst.model.HouseHoldsVoter</class>
-		<class>com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails</class>
-		
-		
+		<class>com.itgrids.partyanalyst.model.HouseHoldsFamilyDetails</class>		
+		<class>com.itgrids.partyanalyst.model.StrategyMergePanchayat</class>
+		<class>com.itgrids.partyanalyst.model.StrategyMergPancList</class>
 			
 		
 		
