@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.AssumptionsVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
@@ -26,4 +27,6 @@ public interface IStratagicReportsService {
 	public VoterDensityWithPartyVO getVotersCountInPanchayatsForDensity(Long constituencyId,Long publicationId);
 	
 	public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId);
+	
+	public AssumptionsVO votersAssumptionsService(Long constituencyId,Long base,Long assured,Long publicationDateId,Long tdpPerc);
 }
