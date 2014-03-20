@@ -76,8 +76,22 @@ public class AgeRangeVO {
  private String ageRange;
  private Long totalCount=0l;
 
+ private String mainHeading1;
+ private String mainHeading2;
  
  
+public String getMainHeading1() {
+	return mainHeading1;
+}
+public void setMainHeading1(String mainHeading1) {
+	this.mainHeading1 = mainHeading1;
+}
+public String getMainHeading2() {
+	return mainHeading2;
+}
+public void setMainHeading2(String mainHeading2) {
+	this.mainHeading2 = mainHeading2;
+}
 public String getPanchayat() {
 	return panchayat;
 }
