@@ -446,7 +446,7 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>{
 	public void setYear(Long year) {
 		this.year = year;
 	}
-	@Override
+	
 	public int compareTo(PartyResultsVO vo) {
 		
 		if(this.votesEarned - vo.votesEarned >0)

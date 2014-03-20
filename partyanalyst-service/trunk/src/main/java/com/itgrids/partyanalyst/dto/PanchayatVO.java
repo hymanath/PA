@@ -11,7 +11,11 @@ public class PanchayatVO implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -1934532470630303835L;
+	/**
+	 * 
+	 */
+	
 	private Long panchayatId;
 	private String panchayatName;
 	private int totalVoters;
@@ -39,6 +43,11 @@ public class PanchayatVO implements Serializable {
 	private Long totalTargetCount;
 	private Double targetPerc;
 	private Double voterPoints;
+	//private Map<Long,PanchayatVO> casteMap;
+	private Map<Long,Long> casteMap;
+	private Double partyPerc;
+	private Long count;
+	private Double differencePerc;
 	
 	public Long getPanchayatId() {
 		return panchayatId;
@@ -208,6 +217,36 @@ public class PanchayatVO implements Serializable {
 	}
 	public void setVoterPoints(Double voterPoints) {
 		this.voterPoints = voterPoints;
+	}
+	/*public Map<Long, PanchayatVO> getCasteMap() {
+		return casteMap;
+	}
+	public void setCasteMap(Map<Long, PanchayatVO> casteMap) {
+		this.casteMap = casteMap;
+	}*/
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
+	public Double getPartyPerc() {
+		return partyPerc;
+	}
+	public void setPartyPerc(Double partyPerc) {
+		this.partyPerc = partyPerc;
+	}
+	public Double getDifferencePerc() {
+		return differencePerc;
+	}
+	public void setDifferencePerc(Double differencePerc) {
+		this.differencePerc = differencePerc;
+	}
+	public Map<Long, Long> getCasteMap() {
+		return casteMap;
+	}
+	public void setCasteMap(Map<Long, Long> casteMap) {
+		this.casteMap = casteMap;
 	}
 	
 		

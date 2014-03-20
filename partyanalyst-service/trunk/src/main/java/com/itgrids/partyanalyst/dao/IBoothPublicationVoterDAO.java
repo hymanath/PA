@@ -608,4 +608,16 @@ public interface IBoothPublicationVoterDAO extends
 	  public Long getVoterCountForToPublication(Long constituencyId,Long publicationDateId);
 
 	  public List<Object[]> getConstituencyDetails(Long constituencyId,Long publicationDateId,String type);
+	  
+	  public List<Object[]> getCasteCount(Set<Long> casteStateIds,Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo);
+	  
+	  public List<Object[]> getCasteCountForPartial(Set<Long> casteStateIds,Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo);
+	  
+	  public List<Object[]> getTotalVotersByAge(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo);
+	  
+	  public List<Object[]> getTotalVotersCountForPartial(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo);
+	  
+	  public List<Object[]> getTotalVotersByAgeForMunicipality(Long publicationId,Long constituencyId,Long ageFrom,Long ageTo);
+	  
+	  public List<Object[]> getCasteCountForMunicipality(Set<Long> casteStateIds,Long publicationId,Long constituencyId,Long ageFrom,Long ageTo);
 }

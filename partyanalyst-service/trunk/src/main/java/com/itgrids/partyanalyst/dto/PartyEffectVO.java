@@ -13,6 +13,7 @@ public class PartyEffectVO  implements Serializable{
 	private Double prpCurrentPerc;
 	private Long id;
 	private Double difference;
+	private String name;
 	
 	public Double getTdpPrevPerc() {
 		return tdpPrevPerc;
@@ -52,6 +53,14 @@ public class PartyEffectVO  implements Serializable{
 	
 	public void setDifference(Double difference) {
 		this.difference = difference;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

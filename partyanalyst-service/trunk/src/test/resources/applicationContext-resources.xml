@@ -413,6 +413,8 @@
 	    <value>com.itgrids.partyanalyst.model.PartyTrends</value>
 	    
 	    <value>com.itgrids.partyanalyst.model.PanchayatResult</value>	
+	    <value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>					
+		<value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
 			</list>
 		</property>
 	</bean>
@@ -2098,5 +2100,53 @@
    
    <bean id="panchayatResultDAO" class="com.itgrids.partyanalyst.dao.hibernate.PanchayatResultDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>   
+    <bean id="strategyMergPancListDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergPancListDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   <bean id="strategyMergePanchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergePanchayatDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   <bean name="regionServiceDataImp" class="com.itgrids.partyanalyst.service.impl.RegionServiceDataImp">
+		<property name="stateDAO" ref="stateDAO"/>
+		<property name="districtDAO" ref="districtDAO"/>
+		<property name="constituencyDAO" ref="constituencyDAO"/>
+		<property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO"/>
+		<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO"/>
+		<property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
+		<property name="electionDAO" ref="electionDAO"/>
+		<property name="hamletDAO" ref="hamletDAO"/>
+		<property name="townshipDAO" ref="townshipDAO"/>
+		<property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"/>
+		<property name="assemblyLocalElectionBodyWardDAO" ref="assemblyLocalElectionBodyWardDAO"/>
+		<property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+		<property name="boothDAO" ref="boothDAO" />
+		<property name="boothMapperService" ref="boothMapperService" />	
+		<property name="moduleRegionScopesDAO" ref="moduleRegionScopesDAO" />
+		<property name="moduleDetailsDAO" ref="moduleDetailsDAO" />
+		<property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />	
+		<property name="regionScopesProblemTypeDAO" ref="regionScopesProblemTypeDAO"/>	
+		<property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+		<property name="panchayatDAO" ref="panchayatDAO"></property>	
+		<property name="wardDAO" ref="wardDAO" />	
+	</bean>
+	
+   <bean name="strategyModelTargetingService" class="com.itgrids.partyanalyst.service.impl.StrategyModelTargetingService" >
+      <property name="regionServiceDataImp" ref="regionServiceDataImp"></property>
+      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property>
+      <property name="suggestiveRangeDAO" ref="suggestiveRangeDAO" />
+      <property name="electionDAO" ref="electionDAO" />
+      <property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+      <property name="boothDAO" ref="boothDAO"></property>
+      <property name="staticDataService" ref="staticDataService"></property>
+      <property name="panchayatDAO" ref="panchayatDAO"></property>
+      <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+	  <property name="strategyMergPancListDAO" ref="strategyMergPancListDAO"/>
+	  <property name="voterInfoDAO" ref="voterInfoDAO"/>
+	  <property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
+	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
+	  <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+	  <property name="constituencyDAO" ref="constituencyDAO"></property>
+	  <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+ </bean>
 </beans>
