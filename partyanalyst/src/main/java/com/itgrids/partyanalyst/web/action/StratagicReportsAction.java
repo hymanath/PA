@@ -418,6 +418,7 @@ public class StratagicReportsAction extends ActionSupport implements
 				prevResults.setWon(pv.getWon());
 				prevResults.setOtherVotes(pv.getOtherVotes());
 				prevResults.setOtherVotesPercent(pv.getOtherVotesPercent());
+				prevResults.setDistrictId(pv.getDistrictId());
 			}
 				
 			PartyResultsVerVO pv_gmc=stratagicReportsService.getMuncipalCorpPrevResultsInGHMC(constituencyId);
