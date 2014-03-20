@@ -1958,7 +1958,7 @@
   
    
    <bean name="stratagicReportsService" class="com.itgrids.partyanalyst.service.impl.StratagicReportsService">
-   	
+   		<property name="publicationDateDAO" ref="publicationDateDAO"></property>
    </bean>
    
    <bean name="votersInformationService" class="com.itgrids.partyanalyst.service.impl.VotersInformationService" >
