@@ -48,11 +48,11 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		return query.list();
 	}
 	
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	public List<Object[]> getGenderWiseVoterModificationsBetweenPublications(String locationType,Long locationValue,Long constituencyId,List<Long> publicationIdsList)
 	{
 		StringBuilder str = new StringBuilder();
-		str.append(" select count(model.voter.voterId),model.status,model.voter.gender from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
+		str.append(" select count(model.voter.voterId),model.voterStatus.status,model.voter.gender from VoterModification model, BoothPublicationVoter model2 where model.voter.voterId = model2.voter.voterId and ");
 		str.append(" model.publicationDate.publicationDateId in(:publicationIdsList) and model.partNo = model2.booth.partNo ");
 		
 		if(locationType.equalsIgnoreCase("constituency"))
@@ -77,6 +77,19 @@ public class VoterModificationDAO extends GenericDaoHibernate<VoterModification,
 		if(locationType.equalsIgnoreCase("localElectionBody") || locationType.equalsIgnoreCase("Local Election Body") ||
 				locationType.equalsIgnoreCase("ward"))
 			query.setParameter("constituencyId",constituencyId);
+		return query.list();
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getGenderWiseVoterModificationsBetweenPublications(String locationType,Long locationValue,Long constituencyId,List<Long> publicationIdsList)
+	{
+		
+		Query query = getSession().createQuery("select count(model.voter.voterId),model.voterStatus.status,model.voter.gender from VoterModification model " +
+				" where model.constituency.constituencyId = :constituencyId " +
+				" and model.publicationDate.publicationDateId in (:publicationIdsList) " +
+				" group by model.voterStatus.voterStatusId,model.voter.gender");
+		query.setParameterList("publicationIdsList",publicationIdsList);
+		query.setParameter("constituencyId",constituencyId);
 		return query.list();
 	}
 	@SuppressWarnings("unchecked")

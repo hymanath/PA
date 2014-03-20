@@ -1,9 +1,13 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -17,6 +21,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 
 
 
@@ -1832,5 +1837,241 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 	 		 cell8.setCellStyle(style1);
 	     }
 }
+	
+	
+	/**
+	 * This service is used for creating excel sheet for Important familes
+	 * @param list
+	 * @param sheet
+	 * @param workbook
+	 */
+	public void generateExcelsForImportaneFamiles(List<VoterHouseInfoVO>  list ,HSSFSheet sheet,HSSFWorkbook workbook)
+	{
+		 
+			
+		    Font font = workbook.createFont();
+		    font.setFontName("Calibri");
+		    font.setFontHeightInPoints((short)12);
+		    CellStyle style = workbook.createCellStyle();
+		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
+		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setAlignment(CellStyle.ALIGN_CENTER);
+		    style.setFont(font);
 
+		    Font font1 = workbook.createFont();
+		    font1.setFontName("Calibri");
+		    font1.setFontHeightInPoints((short)11);
+		    CellStyle style1 = workbook.createCellStyle();
+		    style1.setFont(font1);
+
+		    Font font2 = workbook.createFont();
+		    font2.setFontName("Calibri");
+		    font2.setFontHeightInPoints((short)15);
+		    CellStyle style2 = workbook.createCellStyle();
+		    style2.setFont(font2);
+		    
+	    HSSFRow  rowHead= sheet.createRow((short) 0);
+	    Cell cell = rowHead.createCell(1);
+	    cell.setCellValue("Importannt Familes Report");
+	    cell.setCellStyle(style2);
+	    sheet.addMergedRegion(new CellRangeAddress(0,0,0,15));
+	    
+	    HSSFRow  rowHead1= sheet.createRow((short) 1);
+	    
+	    Cell cell11 = rowHead1.createCell(1);
+	    cell11.setCellValue("");
+	    cell11.setCellStyle(style2);
+	    sheet.addMergedRegion(new CellRangeAddress(1,1,0,7));
+	    
+	   // HSSFRow  rowHead2= sheet.createRow((short) 0);
+	     cell11 = rowHead1.createCell(7);
+	     cell11.setCellValue("Elder Person");
+	     cell11.setCellStyle(style2);
+	     sheet.addMergedRegion(new CellRangeAddress(1,1,7,11));
+	    
+	   // HSSFRow  rowHead3= sheet.createRow((short) 0);
+	    cell11 = rowHead1.createCell(11);
+	    cell11.setCellValue("Younger Person");
+	    cell11.setCellStyle(style2);
+	    sheet.addMergedRegion(new CellRangeAddress(1,1,11,15));
+	    
+	    
+	    Row row1 = sheet.createRow(2);
+	    Cell cell1 = row1.createCell(0);
+	    cell1.setCellValue("S.NO");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(1);
+	    cell1.setCellValue("Mandal/Muncipality");
+	    cell1.setCellStyle(style);
+	   
+	    cell1 = row1.createCell(2);
+	    cell1.setCellValue("Panchayat");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(3);
+	    cell1.setCellValue("Hamlet");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(4);
+	    cell1.setCellValue("Booth");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(5);
+	    cell1.setCellValue("Caste");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(6);
+	    cell1.setCellValue("H.NO");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(7);
+	    cell1.setCellValue("Count");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(8);
+	    cell1.setCellValue("Voter Id");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(9);
+	    cell1.setCellValue("Name");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(10);
+	    cell1.setCellValue("Gender");
+	    cell1.setCellStyle(style);
+	    
+	   
+	    
+	    cell1 = row1.createCell(11);
+	    cell1.setCellValue("Age");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(12);
+	    cell1.setCellValue("VoterId");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(13);
+	    cell1.setCellValue("Name");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(14);
+	    cell1.setCellValue("Gender");
+	    cell1.setCellStyle(style);
+	    
+	    cell1 = row1.createCell(15);
+	    cell1.setCellValue("Age");
+	    cell1.setCellStyle(style);
+	    
+	    Map<Long,List<VoterHouseInfoVO>> map = new HashMap<Long, List<VoterHouseInfoVO>>();
+		  for (VoterHouseInfoVO voterHouseInfoVO : list)
+		  {
+			  List<VoterHouseInfoVO> values =  map.get(Long.valueOf(voterHouseInfoVO.getPartNo()));
+			  if(values == null)
+			  {
+				  values = new ArrayList<VoterHouseInfoVO>();
+				 
+			  }
+			  values.add(voterHouseInfoVO);
+			  map.put(Long.valueOf(voterHouseInfoVO.getPartNo()), values);
+			  
+		  }
+		  Set<Long> boothIds = map.keySet();
+		  if(boothIds != null && boothIds.size() > 0)
+		  {
+			  int count3 = 3;
+			  int count = 1;
+			  for (Long boothId : boothIds)
+			  {
+				  List<VoterHouseInfoVO>  list1 = map.get(boothId);
+				  Collections.sort(list1,sort);
+				  for (VoterHouseInfoVO voterHouseInfoVO : list1)
+				  {
+					  Row row2 = sheet.createRow(count3);
+					    Cell cell31 = row2.createCell(0);
+					    cell31.setCellValue(count);
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(1);
+					    cell31.setCellValue(voterHouseInfoVO.getTehsilName() != null ? voterHouseInfoVO.getTehsilName().toString() : "");
+					    //cell31.setCellStyle(style);
+					   
+					    cell31 = row2.createCell(2);
+					    cell31.setCellValue(voterHouseInfoVO.getPanchayatName() != null ? voterHouseInfoVO.getPanchayatName().toString() : "");
+					    //cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(3);
+					    cell31.setCellValue(voterHouseInfoVO.getHamletName() != null ? voterHouseInfoVO.getHamletName().toString() : "");
+					    //cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(4);
+					    cell31.setCellValue(voterHouseInfoVO.getPartNo() != null ? voterHouseInfoVO.getPartNo().toString() : "");
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(5);
+					    cell31.setCellValue(voterHouseInfoVO.getElderCaste() != null ? voterHouseInfoVO.getElderCaste().toString() : "");
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(6);
+					    cell31.setCellValue(voterHouseInfoVO.getHouseNo() != null ? voterHouseInfoVO.getHouseNo().toString() : "");
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(7);
+					    cell31.setCellValue(voterHouseInfoVO.getCount() != null ? voterHouseInfoVO.getCount().toString() : "");
+					    //cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(8);
+					    cell31.setCellValue(voterHouseInfoVO.getVoterIdCardNo() != null ? voterHouseInfoVO.getVoterIdCardNo().toString() : "");
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(9);
+					    cell31.setCellValue(voterHouseInfoVO.getElder() != null ? voterHouseInfoVO.getElder().toString() : "");
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(10);
+					    cell31.setCellValue(voterHouseInfoVO.getElderGender() != null ? voterHouseInfoVO.getElderGender().toString() : "");
+					    //cell31.setCellStyle(style);
+					    
+					   
+					    
+					    cell31 = row2.createCell(11);
+					    cell31.setCellValue(voterHouseInfoVO.getElderAge() != null ? voterHouseInfoVO.getElderAge().toString() : "");
+					    //cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(12);
+					    cell31.setCellValue(voterHouseInfoVO.getVoterGroup() != null ? voterHouseInfoVO.getVoterGroup().toString() : "");
+					    //cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(13);
+					    cell31.setCellValue(voterHouseInfoVO.getYounger() != null ? voterHouseInfoVO.getYounger().toString() : "");
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(14);
+					    cell31.setCellValue(voterHouseInfoVO.getYoungerGender() != null ? voterHouseInfoVO.getYoungerGender().toString() : "");
+					   // cell31.setCellStyle(style);
+					    
+					    cell31 = row2.createCell(15);
+					    cell31.setCellValue(voterHouseInfoVO.getYoungerAge() != null ? voterHouseInfoVO.getYoungerAge().toString() : "");
+					   // cell31.setCellStyle(style);
+					    count3++;
+					    count++;
+				  }
+			  }
+			  
+		  }
+}
+
+	
+	 public static Comparator<VoterHouseInfoVO> sort = new Comparator<VoterHouseInfoVO>()
+	 {
+			  
+		  public int compare(VoterHouseInfoVO loc1, VoterHouseInfoVO loc2)
+			{
+			   return (loc2.getCount().compareTo(loc1.getCount()));
+			}
+	 };
 }

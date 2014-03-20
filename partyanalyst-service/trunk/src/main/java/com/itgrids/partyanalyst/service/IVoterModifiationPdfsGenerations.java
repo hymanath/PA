@@ -6,6 +6,7 @@ import com.itextpdf.text.Document;
 import com.itgrids.partyanalyst.dto.PdfVO;
 import com.itgrids.partyanalyst.dto.VoterAdderdOrDeletedRengesInfoVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
+import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
@@ -40,4 +41,8 @@ public interface IVoterModifiationPdfsGenerations {
 	 public void buildAddedOrDeletedVotersbyBoothWiseReport(String type,Document document,PdfVO pdfVO, String constituenyName,String constituencyType);
 	 
 	 public void buildVoterModifivationReportByAgeRangeByGender(List<VoterModificationAgeRangeVO> voterModificationAgeRangeVOList,Document document,String constituenyName);
+	 
+	 public void buildAddressTable(Document document,List<Object[]> list);
+	 
+	 public void generatePdfsForImpFamiles(Document document,List<VoterHouseInfoVO> list ,String constituencyName);
 }

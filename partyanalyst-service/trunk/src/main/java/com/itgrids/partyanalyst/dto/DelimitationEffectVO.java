@@ -18,6 +18,8 @@ public class DelimitationEffectVO implements Serializable{
 	private String presentYear;
 	private String previousyear;
 	private List<DelimitationEffectVO> delimitationEffectVO;
+	private List<DelimitationEffectVO> presentElections;
+	private List<DelimitationEffectVO> pervElections;
 	public Long getPresentCount() {
 		return presentCount;
 	}
@@ -84,6 +86,18 @@ public class DelimitationEffectVO implements Serializable{
 	}
 	public void setPreviousyear(String previousyear) {
 		this.previousyear = previousyear;
+	}
+	public List<DelimitationEffectVO> getPresentElections() {
+		return presentElections;
+	}
+	public void setPresentElections(List<DelimitationEffectVO> presentElections) {
+		this.presentElections = presentElections;
+	}
+	public List<DelimitationEffectVO> getPervElections() {
+		return pervElections;
+	}
+	public void setPervElections(List<DelimitationEffectVO> pervElections) {
+		this.pervElections = pervElections;
 	}
 	
 	

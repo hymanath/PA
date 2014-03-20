@@ -62,4 +62,6 @@ public interface IVoterModificationService {
 	 
 	 public List<SelectOptionVO> insertGenderWiseVoterModifInfoInVoterModificationInfoTableForDistrict(Long districtId, Long publicationDateId);
 	 
+	 public void createPdfForAddresses(String path);
+	 
 }
