@@ -13,8 +13,27 @@ public class CasteStratagicReportVO implements java.io.Serializable{
 	private Long maleCasteVoters;
 	private Long femaleCasteVoters;
 	private Double castePercentage;
+	private String message;
+	private String heading;
 	
 	private List<CasteStratagicReportVO> strategicVOList = new ArrayList<CasteStratagicReportVO>();
+
+	
+	public String getHeading() {
+		return heading;
+	}
+
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
 	public String getCaste() {
 		return caste;

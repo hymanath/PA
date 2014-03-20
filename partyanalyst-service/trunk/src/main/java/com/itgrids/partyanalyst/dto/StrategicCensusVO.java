@@ -81,9 +81,16 @@ public class StrategicCensusVO implements java.io.Serializable{
 	private StrategicCensusVO stateDetails;
 	private String message;
 	private String conclusion;
+	private String Heading;
 	private List<StrategicCensusVO> CensusDetailsList;
 	
 	
+	public String getHeading() {
+		return Heading;
+	}
+	public void setHeading(String heading) {
+		Heading = heading;
+	}
 	public StrategicCensusVO getDistrictDetails() {
 		return districtDetails;
 	}

@@ -4,6 +4,11 @@ import java.util.List;
 
 public class VoterStratagicReportVo implements java.io.Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String voterAgeRange;
 	private Long femaleVotersCount;
 	private Long maleVotersCount;
@@ -16,7 +21,17 @@ public class VoterStratagicReportVo implements java.io.Serializable{
 	private String message;
 	private List<VoterStratagicReportVo> voterStategicReportVOList = null;
 
+	private String heading;
 	
+	
+	public String getHeading() {
+		return heading;
+	}
+
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
+
 	public String getMessage() {
 		return message;
 	}
