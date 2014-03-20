@@ -59,11 +59,21 @@ public class PartyResultsVerVO{
 	private List<PartyResultsVO> otherPartyStrengths;
 	private Long won;
 	private Long participated;
+	
+	private Long districtId;
 	// getters and setters
 	
 	
 	public Long getVotesPolled() {
 		return votesPolled;
+	}
+
+	public Long getDistrictId() {
+		return districtId;
+	}
+
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
 	}
 
 	public Long getWon() {
