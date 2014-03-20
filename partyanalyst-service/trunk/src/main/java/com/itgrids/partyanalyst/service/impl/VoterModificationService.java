@@ -588,7 +588,9 @@ public class VoterModificationService implements IVoterModificationService{
 		 LOG.debug("Entered into getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
 		 VoterModificationGenderInfoVO result = new VoterModificationGenderInfoVO();
 		 try{
-			 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 //List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+			 List<Long> publicationIdsList = new ArrayList<Long>();
+			 publicationIdsList.add(toPublicationDateId);
 			 if("intermediate".equalsIgnoreCase(queryType) && locationType!= null && !locationType.equalsIgnoreCase(IConstants.BOOTH)){
 				  String location = locationType;
 				  if("localElectionBody".equalsIgnoreCase(locationType)){
@@ -608,16 +610,16 @@ public class VoterModificationService implements IVoterModificationService{
 						 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
 						 {
 							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-								 result.setAddedMale((Long)params[0]);
+								 result.setAddedMale(result.getAddedMale() + (Long)params[0]);
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-								 result.setAddedFemale((Long)params[0]);
+								 result.setAddedFemale(result.getAddedFemale() + (Long)params[0]);
 						 }
 						 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
 						 {
 							 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-								 result.setDeletedMale((Long)params[0]);
+								 result.setDeletedMale(result.getDeletedMale() + (Long)params[0]);
 							 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-								 result.setDeletedFemale((Long)params[0]);
+								 result.setDeletedFemale(result.getDeletedFemale() + (Long)params[0]);
 						 }
 						 
 						 if(locationType.equalsIgnoreCase(IConstants.BOOTH))
@@ -625,16 +627,16 @@ public class VoterModificationService implements IVoterModificationService{
 							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
 							 {
 								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-									 result.setMovedMale((Long)params[0]);
+									 result.setMovedMale(result.getMovedMale() + (Long)params[0]);
 								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-									 result.setMovedFemale((Long)params[0]);
+									 result.setMovedFemale(result.getMovedFemale() + (Long)params[0]);
 							 }
 							 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
 							 {
 								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
-									 result.setRelocatedMale((Long)params[0]);
+									 result.setRelocatedMale(result.getRelocatedMale() + (Long)params[0]);
 								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
-									 result.setRelocatedFemale((Long)params[0]);
+									 result.setRelocatedFemale(result.getRelocatedFemale() + (Long)params[0]);
 							 }
 						 }
 					 }
@@ -3856,10 +3858,10 @@ public class VoterModificationService implements IVoterModificationService{
 		
 		
 		public void populatePercentage(LinkedHashMap<Long,VotersDetailsVO> totalAddedDel,Map<Long,Long> votersCount,Map<Long,Long> presentVotersCount){
-			DecimalFormat df = new DecimalFormat("###.##");
+			DecimalFormat df = new DecimalFormat("##.##");
 			for(Long id:totalAddedDel.keySet()){
 				VotersDetailsVO vo = totalAddedDel.get(id);
-				Long totalVoters = votersCount.get(id);
+				Long totalVoters = presentVotersCount.get(id);
 				if(totalVoters != null && totalVoters.longValue() >0){
 					vo.setVotersPercentFor18To25(df.format(vo.getMaleVotersCountBetween18To25()*100/totalVoters.doubleValue()));
 					vo.setVotersPercentFor26To35(df.format(vo.getTotalMaleVotesFor18To25()*100/totalVoters.doubleValue()));
@@ -4004,7 +4006,15 @@ public class VoterModificationService implements IVoterModificationService{
 			    	List<Object[]> constiList =new ArrayList<Object[]>();
 			    	if(type.equalsIgnoreCase("district"))
 			    	{
-			    		constiList =  constituencyDAO.getDistrictConstituencies(id);
+			    		//constiList =  constituencyDAO.getDistrictConstituencies(id);
+			    		List<Long> districtIdslist = new ArrayList<Long>();
+			    		districtIdslist.add(16l);
+			    		districtIdslist.add(17l);
+			    		districtIdslist.add(18l);
+			    		districtIdslist.add(19l);
+			    		districtIdslist.add(20l);
+			    		
+			    		constiList =  constituencyDAO.getDistrictConstituenciesList(districtIdslist);
 			    	}
 			    	else
 			    	{
@@ -4143,6 +4153,7 @@ public class VoterModificationService implements IVoterModificationService{
 						    	 zos.close();
 								 fos.close();*/
 						    }
+						    System.out.println(constituencyId);
 						}
 			    		
 			    		
@@ -4360,6 +4371,35 @@ public class VoterModificationService implements IVoterModificationService{
 			 }
 			return result;
 		  }	
+	      
+	      public void createPdfForAddresses(String path)
+	      {
+	    	  try
+	    	  {
+	    		   
+				  	List<Object[]> values = boothPublicationVoterDAO.getPdfsForVotersAddress();
+				  	if(values != null && values.size() > 0 )
+					{
+				  		Document document = new Document();
+			    	    //String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".pdf";
+			    	    String filePath = "VMR"+"/"+"Address.pdf";
+				  		//String filePath = "C:\\Data.pdf";
+					    String FILE = path + filePath;
+					    File file  = new File(FILE);
+					    System.out.println(path);
+					    System.out.println(file);
+					    file.createNewFile();
+					  	PdfWriter.getInstance(document, new FileOutputStream(FILE));
+					  	document.open();
+					  	voterModifiationPdfsGenerations.buildAddressTable(document,values);
+					  	
+					  	document.close();
+					}
+			 } catch (Exception e) {
+				e.printStackTrace();
+			}
+	    	  
+	      }
 	}
 
 	
