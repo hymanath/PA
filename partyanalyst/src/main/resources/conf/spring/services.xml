@@ -1973,6 +1973,24 @@
    <bean name="stratagicReportServiceForMLASuccess" class="com.itgrids.partyanalyst.service.impl.StratagicReportServiceForMLASuccess">
 
    </bean>
-   
+      
+   <bean name="strategyModelTargetingService" class="com.itgrids.partyanalyst.service.impl.StrategyModelTargetingService" >
+      <property name="regionServiceDataImp" ref="regionServiceDataImp"></property>
+      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property>
+      <property name="suggestiveRangeDAO" ref="suggestiveRangeDAO" />
+      <property name="electionDAO" ref="electionDAO" />
+      <property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO" />
+      <property name="boothDAO" ref="boothDAO"></property>
+      <property name="staticDataService" ref="staticDataService"></property>
+      <property name="panchayatDAO" ref="panchayatDAO"></property>
+      <property name="localElectionBodyDAO" ref="localElectionBodyDAO"/>
+	  <property name="strategyMergPancListDAO" ref="strategyMergPancListDAO"/>
+	  <property name="voterInfoDAO" ref="voterInfoDAO"/>
+	  <property name="voterCastInfoDAO" ref="voterCastInfoDAO"/>
+	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
+	  <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
+	  <property name="constituencyDAO" ref="constituencyDAO"></property>
+ </bean>
+  
 </beans>		
 	

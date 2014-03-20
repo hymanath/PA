@@ -396,6 +396,8 @@
 				<value>com.itgrids.partyanalyst.model.PRPWeighteges</value>
 				
 				<value>com.itgrids.partyanalyst.model.PanchayatResult</value>
+				<value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>					
+				<value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
 			</list>
 			
 		</property>
