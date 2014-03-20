@@ -146,9 +146,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	@Autowired IVoterAgeRangeDAO voterAgeRangeDAO;
 	
 	@Autowired IVoterReportLevelDAO voterReportLevelDAO;
-	
-	//@Autowired IPublicationDateDAO publicationDateDAO;
-	
+
 	@Autowired IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
 	
 	@Autowired IAllianceGroupDAO allianceGroupDAO;

@@ -54,7 +54,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	@Autowired IBoothDAO boothDAO;
 	
 	public HouseHoldsVO getHouseHoldInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
-		LOG.info(" entered into getHouseHoldInfoByConstituency() in StratagicReportsService class.");
+		LOG.info(" entered into getHouseHoldInfoByConstituency() in StratagicReportServiceForMLASuccess class.");
 		HouseHoldsVO houseHoldsVO = null;
 		List<HouseHoldsVO> houseHoldsVOList = null;
 		try {
@@ -96,15 +96,17 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			
 
 			houseHoldsVO.setCalcMessage("<p>Please Note: Total Households: "+houseHoldsByCensus+" (According to the Census), "+houseHoldsByNewVoterList+" (According to the Voters List)</p>");
+			
+			houseHoldsVO.setHeading(" Households ");
 		} catch (Exception e) {
-			LOG.error(" exception occured in getHouseHoldInfoByConstituency() of StratagicReportsService class. ",e);
+			LOG.error(" exception occured in getHouseHoldInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}
 		
 		return houseHoldsVO;
 	}
 
 	public VoterStratagicReportVo getVotersInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
-		LOG.info(" entered into getVotersInfoByConstituency() in StratagicReportsService class.");
+		LOG.info(" entered into getVotersInfoByConstituency() in StratagicReportServiceForMLASuccess class.");
 		VoterStratagicReportVo voterStratagicReportVo = null;
 		List<VoterStratagicReportVo> ageWiseReportVOList = null;
 		try {
@@ -132,15 +134,16 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 						" the information available more easier understand and target we have categorized " +
 						" Voter Base into Age Group, Caste, Urban Vs Rural %, Density across each Panchayath." +
 						"  </p>");
+				voterStratagicReportVo.setHeading(" Voters ");
 		} catch (Exception e) {
-			LOG.error(" exception occured in getVotersInfoByConstituency() of StratagicReportsService class. ",e);
+			LOG.error(" exception occured in getVotersInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}
 		
 		return voterStratagicReportVo;
 	}
 
 	public VoterStratagicReportVo getFirstTimeVotersInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
-		LOG.info(" entered into getFirstTimeVotersInfoByConstituency() in StratagicReportsService class.");
+		LOG.info(" entered into getFirstTimeVotersInfoByConstituency() in StratagicReportServiceForMLASuccess class.");
 		VoterStratagicReportVo voterStratagicReportVo = null;
 		List<VoterStratagicReportVo> ageWiseReportVOList = null;
 		try {
@@ -183,15 +186,16 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			}
 			
 			voterStratagicReportVo.setVoterStategicReportVOList(ageWiseReportVOList);	
+			voterStratagicReportVo.setHeading(" First Time Voters ");
 		} catch (Exception e) {
-			LOG.error(" exception occured in getFirstTimeVotersInfoByConstituency() of StratagicReportsService class. ",e);
+			LOG.error(" exception occured in getFirstTimeVotersInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}
 		
 		return voterStratagicReportVo;
 	}
 
 	public VoterStratagicReportVo getAgeWiseVotersInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
-		LOG.info(" entered into getAgeWiseVotersInfoByConstituency() in StratagicReportsService class.");
+		LOG.info(" entered into getAgeWiseVotersInfoByConstituency() in StratagicReportServiceForMLASuccess class.");
 		VoterStratagicReportVo voterStratagicReportVo = null;
 		List<VoterStratagicReportVo> ageWiseReportVOList = null;
 		try {
@@ -234,15 +238,16 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			}
 			
 			voterStratagicReportVo.setVoterStategicReportVOList(ageWiseReportVOList);
+			voterStratagicReportVo.setHeading(" Voters by Age Group ");
 		} catch (Exception e) {
-			LOG.error(" exception occured in getAgeWiseVotersInfoByConstituency() of StratagicReportsService class. ",e);
+			LOG.error(" exception occured in getAgeWiseVotersInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}
 		
 		return voterStratagicReportVo;
 	}
 
 	public CasteStratagicReportVO getCasteWiseVotersInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
-		LOG.info(" entered into getCasteWiseVotersInfoByConstituency() in StratagicReportsService class.");
+		LOG.info(" entered into getCasteWiseVotersInfoByConstituency() in StratagicReportServiceForMLASuccess class.");
 		CasteStratagicReportVO stratagicVO = null;
 		List<CasteStratagicReportVO> stratagicVOList = null;
 		try {
@@ -265,9 +270,9 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				}
 			}			
 			stratagicVO.setStrategicVOList(stratagicVOList);
-			
+			stratagicVO.setHeading(" Voters by Caste ");
 		} catch (Exception e) {
-			LOG.error(" exception occured in getCasteWiseVotersInfoByConstituency() of StratagicReportsService class. ",e);
+			LOG.error(" exception occured in getCasteWiseVotersInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}
 		
 		return stratagicVO;
@@ -462,7 +467,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				conclusion.append("<p> Education Facilities are "+literatusStatus+". </p>");
 				
 			resultVO.setConclusion(conclusion.toString());
-			
+			resultVO.setHeading(" Census \"A Snapshot\" ");
 		}catch(Exception e)
 		{
 			LOG.error("Exception occured in the StratagicReportServiceForMLASuccess service method");
