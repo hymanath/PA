@@ -784,8 +784,9 @@ public class StratagicReportsService implements IStratagicReportsService{
 		List<Object[]> li=nominationDAO.findAllZptcOrMptcResultsInaConstituency(constiutencyId,electionTypeIds,"2009");
 		List<Object[]> li1=nominationDAO.findAllZptcOrMptcResultsInaConstituencyPartyWise(constiutencyId, electionTypeIds, "2009");
 		Long districtId=null;
-		if(li.size()>0){
-			districtId=Long.valueOf(li.get(0)[6].toString());
+		List<Long> districtIds=constituencyDAO.getDistrictIdByConstituencyId(constiutencyId);
+		if(districtIds.size()>0){
+			districtId=districtIds.get(0).longValue();
 		}
 		
 		Map<Long,Double> electionWisePolledVotesMap=new HashMap<Long, Double>();
@@ -861,6 +862,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			for(int i=0;i<partyResults.size();i++){
 				if(partyResults.get(i).getPartyId().longValue()==872l){
 					if(i==0){
+						if(partyResults.size()>1){
 						if(!partyIds.contains(partyResults.get(1).getPartyId())){
 							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
 							partyResults.get(0).setRank(1l);
@@ -868,6 +870,12 @@ public class StratagicReportsService implements IStratagicReportsService{
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}else{
 							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
+							partyResults.get(0).setRank(1l);
+							pvo.setMarginVotes(marginVotes);
+							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
+						}
+						}else{
+							marginVotes=0l;
 							partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
@@ -905,6 +913,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 		
 		//List<Object[]> li=nominationDAO.findAllZptcOrMptcResultsInaConstituency(323l,electionTypeIds,"2009");
 		//List<Object[]> li1=nominationDAO.findAllZptcOrMptcResultsInaConstituencyPartyWise(323l, electionTypeIds, "2009");
+		Long districtId=null;
+		List<Long> districtIds=constituencyDAO.getDistrictIdByConstituencyId(constiutencyId);
+		if(districtIds.size()>0){
+			districtId=districtIds.get(0).longValue();
+		}
 		
 		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsInaConstituency(constiutencyId,electionIds);
 		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsInaConstituencyPartyWise(constiutencyId, electionIds);
@@ -1058,25 +1071,35 @@ public class StratagicReportsService implements IStratagicReportsService{
 				
 					
 				
-				if(partyResults.get(i).getPartyId().longValue()==872l){
-					if(i==0){
-						if(!partyIds.contains(partyResults.get(1).getPartyId())){
-							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+					if(partyResults.get(i).getPartyId().longValue()==872l){
+						if(i==0){
+							if(partyResults.size()>1){
+							if(!partyIds.contains(partyResults.get(1).getPartyId())){
+								marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}else{
+								marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}
+							}else{
+								marginVotes=0l;
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}
 						}else{
-							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
-							partyResults.get(0).setRank(1l);
-							pvo.setMarginVotes(marginVotes);
-						}
-					}else{
-						if(!partyIds.contains(partyResults.get(0).getPartyId())){
-							marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
-						}else{
-							marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
-							partyResults.get(0).setRank(1l);
-							pvo.setMarginVotes(marginVotes);
+							if(!partyIds.contains(partyResults.get(0).getPartyId())){
+								marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}else{
+								marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}
 						}
 					}
-				}
 			}
 			
 			//REMOVING RESULTS WHEN MORE THAN ONE MEMBER OF A PARTY PARTICIPATED FROM SAME WARD -- START --SASI
@@ -1107,7 +1130,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				prvo.setPartyResultsVOList(eleList);
 			}
 		}
-		
+		prvo.setDistrictId(districtId);
 		return prvo;
 	}
 	
@@ -1261,25 +1284,35 @@ public class StratagicReportsService implements IStratagicReportsService{
 					
 				//END
 				
-				if(partyResults.get(i).getPartyId().longValue()==872l){
-					if(i==0){
-						if(!partyIds.contains(partyResults.get(1).getPartyId())){
-							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+					if(partyResults.get(i).getPartyId().longValue()==872l){
+						if(i==0){
+							if(partyResults.size()>1){
+							if(!partyIds.contains(partyResults.get(1).getPartyId())){
+								marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}else{
+								marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}
+							}else{
+								marginVotes=0l;
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}
 						}else{
-							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
-							partyResults.get(0).setRank(1l);
-							pvo.setMarginVotes(marginVotes);
-						}
-					}else{
-						if(!partyIds.contains(partyResults.get(0).getPartyId())){
-							marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
-						}else{
-							marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
-							partyResults.get(0).setRank(1l);
-							pvo.setMarginVotes(marginVotes);
+							if(!partyIds.contains(partyResults.get(0).getPartyId())){
+								marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}else{
+								marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
+								partyResults.get(0).setRank(1l);
+								pvo.setMarginVotes(marginVotes);
+							}
 						}
 					}
-				}
 			}
 			
 			//REMOVING RESULTS WHEN MORE THAN ONE MEMBER OF A PARTY PARTICIPATED FROM SAME WARD -- START --SASI
