@@ -1,6 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -212,14 +215,22 @@ public class CensusDAOHibernateTest extends BaseDaoTestCase {
 	
 	   public void testGetCensusDetailsOfAState()
 	   {
-		   List<Object[]> list = censusDAO.getCensusDetailsOfAState(1l,2001l);
-		   System.out.println(list.size());
+		   List<Long> tehsilIDs = new ArrayList<Long>();
+		   tehsilIDs.add(655L);
+		   tehsilIDs.add(657L);
+		   tehsilIDs.add(658L);
+		   tehsilIDs.add(659L);
+		   Long houseHoldsByCensus = 0L;
+		   List<Long> houstholdsDetials = censusDAO.getCensusDetailsInConstituency(tehsilIDs,2011L);
+		   if(houstholdsDetials != null && houstholdsDetials.size()>0){		
+				Set<Long> houstholdsCount = new HashSet<Long>();
+				houstholdsCount.addAll(houstholdsDetials);
+				
+				for (Long houseHolds : houstholdsCount) {
+					houseHoldsByCensus = houseHoldsByCensus + houseHolds;
+				}
+			}
+		   System.out.println(houseHoldsByCensus);
 		   
-		   for(Object[] params : list)
-		   {
-			   System.out.println();
-			   for(Object str : params)
-				   System.out.print("\t"+str.toString());
-		   }
 	   }
 }
