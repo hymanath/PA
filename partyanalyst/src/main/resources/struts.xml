@@ -6592,9 +6592,9 @@
 		</action>
 		
 		<action name="getSubLevelVoterModificationReportForConstituencyAction" class="stratagicReportsAction"
-			method="getSubLevelsVoterModificationDetailsByLocationValue">
+			method="getSubLevelVoterModificationReportForConstituency">
 			<result type="json" name="success">
-				<param name="root">countList</param>
+				<param name="root">voterModificationVO</param>
 			</result>
 		</action>
 		
@@ -6609,6 +6609,31 @@
 				<param name="root">voterDetailsSearched</param>				
 			</result> 
 		</action>
+		
+		<!-- ACTIONS FOR VOTER MODIFICATION REPORTS IN STRATAGIC REPORT -->
+		<action name="getVoterInfoForStratagyAction" class="stratagicReportsAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">voterAgeRangeVOList</param>				
+			</result>
+		</action>	
+			
+		<action name="getAddedOrDeletedVoterInfoInALocationForStratagyAction" class="stratagicReportsAction" method="ajaxHandler">
+		  <result type="json" name="success">
+				<param name="root">voterModificationAgeRangeVOList</param>				
+			</result>
+		</action>
+		
+		<action name="getGenderWiseVoterModifiForEachPublicForStratagyAction" class="stratagicReportsAction" method="ajaxHandler">
+			<result type="json" name="success">
+			  <param name="root">voterModificationGenderInfoVOList</param>
+			</result>
+		</action>
+		<action name="getGenderWiseVoterModifiBetweenPublicationsForStratagyAction" class="stratagicReportsAction" method="ajaxHandler">
+			<result type="json" name="success">
+				<param name="root">voterModificationGenderInfoVO</param>				
+			</result>		
+		</action>
+		
 		</package>
 		
 </struts>      
