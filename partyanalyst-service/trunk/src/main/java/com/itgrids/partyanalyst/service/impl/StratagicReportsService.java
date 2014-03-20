@@ -783,13 +783,35 @@ public class StratagicReportsService implements IStratagicReportsService{
 		
 		List<Object[]> li=nominationDAO.findAllZptcOrMptcResultsInaConstituency(constiutencyId,electionTypeIds,"2009");
 		List<Object[]> li1=nominationDAO.findAllZptcOrMptcResultsInaConstituencyPartyWise(constiutencyId, electionTypeIds, "2009");
+		Long districtId=null;
+		if(li.size()>0){
+			districtId=Long.valueOf(li.get(0)[6].toString());
+		}
 		
+		Map<Long,Double> electionWisePolledVotesMap=new HashMap<Long, Double>();
+		if(li1.size()>0){
+			for(Object[] cnt:li1){
+				Double count=electionWisePolledVotesMap.get(Long.valueOf(cnt[5].toString()));
+				if(count==null){
+					count=0.0d;
+					electionWisePolledVotesMap.put(Long.valueOf(cnt[5].toString()),count);
+				}
+				count=count+(Double)cnt[2];
+				electionWisePolledVotesMap.put(Long.valueOf(cnt[5].toString()),count);
+			}
+		}
 		
 		List<PartyResultsVO> electionList=new ArrayList<PartyResultsVO>();
 		for(Object[] ob:li){
 			PartyResultsVO pvo=new PartyResultsVO();
 			pvo.setElectionId(Long.valueOf(ob[5].toString()));
-			pvo.setValidVotes(ob[4]!=null?((Double)ob[4]).longValue():0l);
+			Double validCount=electionWisePolledVotesMap.get(Long.valueOf(ob[5].toString()));
+			if(ob[4]==validCount){
+				pvo.setValidVotes(ob[4]!=null?((Double)ob[4]).longValue():0l);
+			}else{
+				pvo.setValidVotes(validCount.longValue());
+			}
+			
 			pvo.setVotesPolled(ob[3]!=null?((Double)ob[3]).longValue():0l);
 			pvo.setYear(Long.valueOf(ob[0].toString()));
 			pvo.setElectionName(ob[1].toString());
@@ -800,7 +822,9 @@ public class StratagicReportsService implements IStratagicReportsService{
 		List<Long> partyIds=new ArrayList<Long>();
 		partyIds.add(872l);
 		partyIds.add(362l);
-		partyIds.add(886l);
+		if(districtId<=10 && districtId!=null){
+			partyIds.add(886l);
+		}
 		
 		
 		for(Object[] ob:li1){
@@ -866,6 +890,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		
 		pvMain.setPartyResultsVOList(electionList);
+		pvMain.setDistrictId(districtId);
 		return pvMain;
 		
 	}
