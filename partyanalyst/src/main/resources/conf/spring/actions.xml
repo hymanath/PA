@@ -1385,6 +1385,8 @@
 		<property name="suggestiveModelService" ref="suggestiveModelService"/>
 		<property name="crossVotingEstimationService" ref="crossVotingEstimationService"/>
 		<property name="stratagicReportsService" ref="stratagicReportsService"/>
+		<property name="stratagicReportServiceForMLASuccess" ref="stratagicReportServiceForMLASuccess"/>
+		<property name="staticDataService" ref="staticDataService"/>
 	</bean>
 	
 	
