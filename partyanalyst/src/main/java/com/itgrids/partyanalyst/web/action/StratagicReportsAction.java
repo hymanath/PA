@@ -15,6 +15,7 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
@@ -24,6 +25,7 @@ import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
+import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
@@ -61,11 +63,54 @@ public class StratagicReportsAction extends ActionSupport implements
 	private List<VoterCountVO> VoterCountVOList;
 	private VoterDensityWithPartyVO voterDensityWithPartyVO;
 	
+	private PDFHeadingAndReturnVO voterAgeRangeVOList;
+	private PDFHeadingAndReturnVO voterModificationAgeRangeVOList;
+	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
+	private PDFHeadingAndReturnVO voterModificationGenderInfoVOList;
 	
 	private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
 	
 	
+	
+
+	public PDFHeadingAndReturnVO getVoterAgeRangeVOList() {
+		return voterAgeRangeVOList;
+	}
+
+	public void setVoterAgeRangeVOList(PDFHeadingAndReturnVO voterAgeRangeVOList) {
+		this.voterAgeRangeVOList = voterAgeRangeVOList;
+	}
+
+	public PDFHeadingAndReturnVO getVoterModificationAgeRangeVOList() {
+		return voterModificationAgeRangeVOList;
+	}
+
+	public void setVoterModificationAgeRangeVOList(
+			PDFHeadingAndReturnVO voterModificationAgeRangeVOList) {
+		this.voterModificationAgeRangeVOList = voterModificationAgeRangeVOList;
+	}
+
+	public PDFHeadingAndReturnVO getVoterModificationGenderInfoVOList() {
+		return voterModificationGenderInfoVOList;
+	}
+
+	public void setVoterModificationGenderInfoVOList(
+			PDFHeadingAndReturnVO voterModificationGenderInfoVOList) {
+		this.voterModificationGenderInfoVOList = voterModificationGenderInfoVOList;
+	}
+
+	public VoterModificationGenderInfoVO getVoterModificationGenderInfoVO() {
+		return voterModificationGenderInfoVO;
+	}
+
+	public void setVoterModificationGenderInfoVO(
+			VoterModificationGenderInfoVO voterModificationGenderInfoVO) {
+		this.voterModificationGenderInfoVO = voterModificationGenderInfoVO;
+	}
+
+	
+
 	public VoterDensityWithPartyVO getVoterDensityWithPartyVO() {
 		return voterDensityWithPartyVO;
 	}
@@ -453,5 +498,41 @@ public class StratagicReportsAction extends ActionSupport implements
 			}
 			return Action.SUCCESS;
 	 	}
+	 	
+	 	public String ajaxHandler()
+		{
+			String param;
+			param = getTask();
+			
+			try{
+				jObj = new JSONObject(param);	
+			}catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in ajaxHandler() Method, Exception - "+e);
+			}
+			Long constituencyId = jObj.getLong("constituencyId");
+			Long fromPublicationDateId = jObj.getLong("fromPublicationDateId");
+			Long toPublicationDateId = jObj.getLong("toPublicationDateId");
+			String locationType = jObj.getString("locationType");
+			Long locationValue = jObj.getLong("locationValue");
+			String taskToDo=jObj.getString("taskToDo");
+			
+			if(taskToDo.equalsIgnoreCase("voterInfo")){
+				voterAgeRangeVOList = stratagicReportsService.getVoterInfoByPublicationDateList(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+			}
+			
+			if(taskToDo.equalsIgnoreCase("addedOrDeletedVoterInfoInALocation")){
+				voterModificationAgeRangeVOList = stratagicReportsService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
+			}
+			
+			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiBetweenPublications")){
+				voterModificationGenderInfoVO = stratagicReportsService.getGenderWiseVoterModificationsBetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
+			}
+			
+			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiForEachPublic")){
+				voterModificationGenderInfoVOList = stratagicReportsService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
+			}
+			return Action.SUCCESS;
+		}
 	
 }
