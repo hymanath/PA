@@ -295,6 +295,7 @@
 		<pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
 		<pattern>/muncipalElectionDetailsAction*</pattern>
 		<pattern>/voterAverageAgewiseAction*</pattern>
+		<pattern>/strategyModelAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">

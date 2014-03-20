@@ -6633,6 +6633,11 @@
 				<param name="root">voterModificationGenderInfoVO</param>				
 			</result>		
 		</action>
+	
+		<action name="strategyModelAction" class="suggestiveModelAction">
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="success">/jsp/strategyReport.jsp</result>	
+		 </action>
 		
 		</package>
 		
