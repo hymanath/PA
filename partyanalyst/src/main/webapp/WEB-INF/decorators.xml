@@ -295,6 +295,7 @@
 		<pattern>/gettingVotersBasedOnCasteAndAgeAction*</pattern>
 		<pattern>/muncipalElectionDetailsAction*</pattern>
 		<pattern>/voterAverageAgewiseAction*</pattern>
+		<pattern>/mergePanchayatAction*</pattern>
 		<pattern>/strategyModelAction*</pattern>
     	 </decorator>
     	 
