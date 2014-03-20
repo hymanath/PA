@@ -207,7 +207,15 @@ public class CensusVO implements Serializable{
 	private CensusVO stateDetails;
 	
 	private String message;
+	private String conclusion;;
 	
+	
+	public String getConclusion() {
+		return conclusion;
+	}
+	public void setConclusion(String conclusion) {
+		this.conclusion = conclusion;
+	}
 	public String getMessage() {
 		return message;
 	}
