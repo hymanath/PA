@@ -43,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
+import com.itgrids.partyanalyst.dto.AssumptionsVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
@@ -2768,7 +2769,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				delimationDetails.setDelimitationEffectVO(withoutAllianceList);
 				delimationDetails.setPresentElections(withAllianceList);
 			} catch (Exception e) {
-				LOG.error("Exception raised in getDelimationEffectOnConstituency() method in Suggestive Model Service",e);
+				LOG.error("Exception raised in getDelimationEffectOnConstituency() method ",e);
 			}
 			delimationDetails.setHeading1("Delimitation Effect");
 			
@@ -2789,7 +2790,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	  public void fillVotersCountForConstituency(List<Object[]> result,DelimitationEffectVO delimationDetails,String type)
 		{
 			try {
-				LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service");
+				LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method ");
 				DecimalFormat df = new DecimalFormat("#.##");
 				if(type.equalsIgnoreCase("after"))
 				{
@@ -2817,7 +2818,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				}
 				
 			} catch (Exception e) {
-				LOG.error("Exception raised in fillVotersCountForConstituency() method in Suggestive Model Service",e);
+				LOG.error("Exception raised in fillVotersCountForConstituency() method ",e);
 			}
 			
 		}
@@ -2825,7 +2826,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	  public void fillPartyWiseVotersCountAndPercentage(List<Object[]> result,DelimitationEffectVO delimationDetails,Long partyId,Map<String, DelimitationEffectVO> delimationEffectMap,String type,DelimitationEffectVO others)
 		{
 			try {
-				LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service");
+				LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method ");
 				DecimalFormat df = new DecimalFormat("#.##");
 				//String parties = IConstants.STATIC_PARTIESFOR_DELIMATION.replace("'", "");
 				String parties = IConstants.STATIC_PARTIES.replace("'", "");
@@ -2905,10 +2906,49 @@ public class StratagicReportsService implements IStratagicReportsService{
 				
 				
 			} catch (Exception e) {
-				LOG.error("Exception raised in fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service",e);
+				LOG.error("Exception raised in fillPartyWiseVotersCountAndPercentage() method ",e);
 			}
 			
 		}
 		
+	  
+	  public AssumptionsVO votersAssumptionsService(Long constituencyId,Long base,Long assured,Long publicationDateId,Long tdpPerc)
+	  {
+		  AssumptionsVO assumptionsVO = null;
+		  try {
+			  LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method ");
+			  
+			  Long totalVoters = voterInfoDAO.getVotersCountInALocation(1l, constituencyId, publicationDateId, constituencyId);
+			  if(totalVoters != null && totalVoters > 0)
+			  {
+				  
+				  
+
+				  assumptionsVO = new AssumptionsVO();
+				  Long targetedPolledVotees = ((totalVoters * base)/100);
+				  
+				  Long targetedVotesForTDP  = ((targetedPolledVotees * tdpPerc)/100);
+				  Long addtionalPerc = tdpPerc - assured ;
+				  Long addtionalVoters = ((targetedPolledVotees * addtionalPerc)/100);
+				  
+				  
+				  assumptionsVO.setTotalVoters(totalVoters);
+				  assumptionsVO.setExpPerc(base);
+				  assumptionsVO.setTargetedPolledVotees(targetedPolledVotees);
+				  assumptionsVO.setTargetedVotesForTDP(targetedVotesForTDP);
+				  assumptionsVO.setAddtionalVoters(addtionalVoters);
+				  assumptionsVO.setAddtionalPerc(addtionalPerc);
+				  
+				  assumptionsVO.setHeading1("Poll Percentage "+base+"% ");
+				  assumptionsVO.setHeading2("Contending Party’s – 3 Major Parties (TDP, INC and YSRCP)");
+				  assumptionsVO.setHeading3("Assured Voter Base for our Party – "+assured+"% (Based on the Previous Votes Polled)");
+				   
+				  
+			  }
+		} catch (Exception e) {
+			LOG.error("Exception raised in votersAssumptionsService() method ",e);
+		}
+		return assumptionsVO;
+	  }
 		
 }
