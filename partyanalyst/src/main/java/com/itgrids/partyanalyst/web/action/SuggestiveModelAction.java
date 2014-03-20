@@ -39,6 +39,7 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IElectionService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 
@@ -1032,12 +1033,12 @@ public class SuggestiveModelAction  implements ServletRequestAware {
 		{
 			try{
 				jObj = new JSONObject(getTask());
+				//String path = IWebConstants.STATIC_CONTENT_FOLDER_URL ;
 				session = request.getSession();
 				RegistrationVO regVo = (RegistrationVO) session.getAttribute(IConstants.USER);
 				if(regVo == null)
 					return Action.ERROR;
 				Long userId = regVo.getRegistrationID();
-				
 				familyInfo = suggestiveModelService.getFamilyDetailsForConstituency(jObj.getLong("constituencyId"),jObj.getLong("publicationId"),jObj.getLong("minVal"),jObj.getLong("maxVal"),jObj.getInt("startIndex"),jObj.getInt("results"),userId);
 			}
 			catch (Exception e) {
