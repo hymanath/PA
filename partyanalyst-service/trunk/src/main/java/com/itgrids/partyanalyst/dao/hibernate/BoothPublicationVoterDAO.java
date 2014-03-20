@@ -6592,7 +6592,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	
 	public List<Object[]> getTotalVotersByAge(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select bpv.booth.panchayat.panchayatId,count(distinct bpv.voter.voterId) from BoothPublicationVoter bpv where " +
+		queryStr.append("select bpv.booth.panchayat.panchayatId,count(distinct bpv.voter.voterId),bpv.booth.panchayat.panchayatName from BoothPublicationVoter bpv where " +
 				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId   and bpv.booth.panchayat.panchayatId is not null  ");
 				if(panchayatIds != null && panchayatIds.size() > 0){
 					queryStr.append(" and bpv.booth.panchayat.panchayatId not in(:panchayatIds)");
@@ -6622,7 +6622,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	
 	public List<Object[]> getTotalVotersCountForPartial(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select ph.panchayat.panchayatId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph where " +
+		queryStr.append("select ph.panchayat.panchayatId,count(distinct uvd.voter.voterId),ph.panchayat.panchayatName from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph where " +
 				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId and bpv.voter.voterId = uvd.voter.voterId and uvd.hamlet.hamletId = ph.hamlet.hamletId  and bpv.booth.panchayat.panchayatId is not null " +
 				"  and ph.panchayat.panchayatId in(:panchayatIds) ");
 				if(ageFrom != null){
@@ -6648,7 +6648,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	
 	public List<Object[]> getTotalVotersByAgeForMunicipality(Long publicationId,Long constituencyId,Long ageFrom,Long ageTo){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select bpv.booth.localBody.localElectionBodyId,count(distinct bpv.voter.voterId) from BoothPublicationVoter bpv where " +
+		queryStr.append("select bpv.booth.localBody.localElectionBodyId,count(distinct bpv.voter.voterId),concat(bpv.booth.localBody.name,' ',bpv.booth.localBody.electionType.electionType) from BoothPublicationVoter bpv where " +
 				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId   and bpv.booth.localBody.localElectionBodyId is not null  ");
 				
 				if(ageFrom != null){

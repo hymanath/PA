@@ -381,7 +381,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	
 	public List<Object[]> getVoterCountByLevels(Long constituencyId,Long publicationDateId,List<Long> reportLevelIds)
 	{
-		Query query = getSession().createQuery("select model.reportLevelValue ,model.totalVoters from VoterInfo model " +
+		Query query = getSession().createQuery("select model.reportLevelValue ,model.totalVoters,model.voterReportLevel.voterReportLevelId from VoterInfo model " +
 				" where model.constituencyId = :constituencyId and " +
 				" model.voterReportLevel.voterReportLevelId in(:reportLevelIds) and " +
 				" model.publicationDate.publicationDateId = :publicationDateId");

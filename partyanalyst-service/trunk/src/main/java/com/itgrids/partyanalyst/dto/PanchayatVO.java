@@ -48,6 +48,7 @@ public class PanchayatVO implements Serializable {
 	private Double partyPerc;
 	private Long count;
 	private Double differencePerc;
+	private Double opportunity;
 	
 	public Long getPanchayatId() {
 		return panchayatId;
@@ -247,6 +248,12 @@ public class PanchayatVO implements Serializable {
 	}
 	public void setCasteMap(Map<Long, Long> casteMap) {
 		this.casteMap = casteMap;
+	}
+	public Double getOpportunity() {
+		return opportunity;
+	}
+	public void setOpportunity(Double opportunity) {
+		this.opportunity = opportunity;
 	}
 	
 		
