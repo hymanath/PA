@@ -1,14 +1,11 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
-import com.itgrids.partyanalyst.dto.PartyEffectVO;
+import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
-import com.itgrids.partyanalyst.dto.PartyPositionVO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
@@ -27,4 +24,6 @@ public interface IStratagicReportsService {
 			Long fromPublicationDateId, Long toPublicationDateId);
 	
 	public VoterDensityWithPartyVO getVotersCountInPanchayatsForDensity(Long constituencyId,Long publicationId);
+	
+	public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId);
 }
