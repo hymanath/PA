@@ -4270,7 +4270,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 	 public List<Object[]> findAllZptcOrMptcResultsInaConstituency(Long constituencyId,List<Long> electionTypeIds,String delimiYear) {
 		 Query qry= getSession().createQuery("select model.constituencyElection.election.electionYear,model.constituencyElection.constituency.electionScope.electionType.electionType," +
 		 		" model.constituencyElection.constituency.electionScope.electionType.electionTypeId,sum(model.totalVotes),sum(model.validVotes)," +
-		 		" model.constituencyElection.election.electionId" +
+		 		" model.constituencyElection.election.electionId," +
+		 		" model.constituencyElection.constituency.district.districtId" +
 		 		" from ConstituencyElectionResult model,DelimitationConstituencyMandal model1 " +
 		 		" where model.constituencyElection.constituency.tehsil.tehsilId=model1.tehsil.tehsilId" +
 		 		" and model1.delimitationConstituency.constituency.constituencyId=:constituencyId" +
@@ -4289,7 +4290,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 		" model.constituencyElection.constituency.constituencyId," +
 		 		" model.constituencyElection.constituency.name," +
 		 		" model.constituencyElection.election.electionScope.electionType.electionTypeId,sum(model.totalVotes),sum(model.validVotes)," +
-		 		" model.constituencyElection.election.electionId" +
+		 		" model.constituencyElection.election.electionId," +
+		 		" model.constituencyElection.constituency.district.districtId" +
 		 		" from ConstituencyElectionResult model,AssemblyLocalElectionBody model1 " +
 		 		" where " +
 		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId = model1.localElectionBody.localElectionBodyId and " +
