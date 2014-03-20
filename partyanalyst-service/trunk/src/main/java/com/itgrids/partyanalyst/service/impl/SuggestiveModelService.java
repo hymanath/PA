@@ -4311,7 +4311,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					resultList.get(0).setAddedVoterDetails(panchayatVos);
 				}*/
 				
-				//Percentage
+				//Percentage calculation used to show piechart
 				Map<Long,Map<String,Long>> map = new HashMap<Long, Map<String,Long>>(0);//<electionId,Map<strong,totalValidVotes>>
 				for(PartyPositionVO partyPositionVO1:resultList)
 				{

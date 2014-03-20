@@ -6531,4 +6531,171 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getCasteCount(Set<Long> casteStateIds,Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select bpv.booth.panchayat.panchayatId,uvd.casteState.casteStateId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd where " +
+				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId and bpv.booth.panchayat.panchayatId is not null and bpv.voter.voterId = uvd.voter.voterId ");
+				if(panchayatIds != null && panchayatIds.size() > 0){
+					queryStr.append(" and bpv.booth.panchayat.panchayatId not in(:panchayatIds)");
+				}
+				if(ageFrom != null){
+					queryStr.append(" and uvd.voter.age >=:ageFrom ");
+				}
+				if(ageTo != null){
+					queryStr.append(" and uvd.voter.age <=:ageTo ");
+				}
+				queryStr.append(" and uvd.casteState.casteStateId in(:casteStateIds) group by bpv.booth.panchayat.panchayatId,uvd.casteState.casteStateId");
+				
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationId", publicationId);
+	    if(panchayatIds != null && panchayatIds.size() > 0){
+	      query.setParameterList("panchayatIds", panchayatIds);
+	    }
+	    if(ageFrom != null){
+	      query.setParameter("ageFrom", ageFrom);
+	    }
+	    if(ageTo != null){
+	      query.setParameter("ageTo", ageTo);
+	    }
+	    query.setParameterList("casteStateIds", casteStateIds);
+	return query.list();
+	}
+	
+	public List<Object[]> getCasteCountForPartial(Set<Long> casteStateIds,Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select ph.panchayat.panchayatId,uvd.casteState.casteStateId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph where " +
+				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId  and bpv.booth.panchayat.panchayatId is not null  and bpv.voter.voterId = uvd.voter.voterId and uvd.hamlet.hamletId = ph.hamlet.hamletId " +
+				"  and ph.panchayat.panchayatId in(:panchayatIds) ");
+				if(ageFrom != null){
+					queryStr.append(" and uvd.voter.age >=:ageFrom ");
+				}
+				if(ageTo != null){
+					queryStr.append(" and uvd.voter.age <=:ageTo ");
+				}
+				queryStr.append(" and uvd.casteState.casteStateId in(:casteStateIds) group by ph.panchayat.panchayatId,uvd.casteState.casteStateId");
+				
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationId", publicationId);
+	    query.setParameterList("panchayatIds", panchayatIds);
+	    if(ageFrom != null){
+	      query.setParameter("ageFrom", ageFrom);
+	    }
+	    if(ageTo != null){
+	      query.setParameter("ageTo", ageTo);
+	    }
+	    query.setParameterList("casteStateIds", casteStateIds);
+	return query.list();
+	}
+	
+	public List<Object[]> getTotalVotersByAge(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select bpv.booth.panchayat.panchayatId,count(distinct bpv.voter.voterId) from BoothPublicationVoter bpv where " +
+				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId   and bpv.booth.panchayat.panchayatId is not null  ");
+				if(panchayatIds != null && panchayatIds.size() > 0){
+					queryStr.append(" and bpv.booth.panchayat.panchayatId not in(:panchayatIds)");
+				}
+				if(ageFrom != null){
+					queryStr.append(" and bpv.voter.age >=:ageFrom ");
+				}
+				if(ageTo != null){
+					queryStr.append(" and bpv.voter.age <=:ageTo ");
+				}
+				queryStr.append("  group by bpv.booth.panchayat.panchayatId");
+				
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationId", publicationId);
+	    if(panchayatIds != null && panchayatIds.size() > 0){
+	      query.setParameterList("panchayatIds", panchayatIds);
+	    }
+	    if(ageFrom != null){
+	      query.setParameter("ageFrom", ageFrom);
+	    }
+	    if(ageTo != null){
+	      query.setParameter("ageTo", ageTo);
+	    }
+	return query.list();
+	}
+	
+	public List<Object[]> getTotalVotersCountForPartial(Long publicationId,Long constituencyId,List<Long> panchayatIds,Long ageFrom,Long ageTo){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select ph.panchayat.panchayatId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd,PanchayatHamlet ph where " +
+				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId and bpv.voter.voterId = uvd.voter.voterId and uvd.hamlet.hamletId = ph.hamlet.hamletId  and bpv.booth.panchayat.panchayatId is not null " +
+				"  and ph.panchayat.panchayatId in(:panchayatIds) ");
+				if(ageFrom != null){
+					queryStr.append(" and uvd.voter.age >=:ageFrom ");
+				}
+				if(ageTo != null){
+					queryStr.append(" and uvd.voter.age <=:ageTo ");
+				}
+				queryStr.append("  group by ph.panchayat.panchayatId");
+				
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationId", publicationId);
+	    query.setParameterList("panchayatIds", panchayatIds);
+	    if(ageFrom != null){
+	      query.setParameter("ageFrom", ageFrom);
+	    }
+	    if(ageTo != null){
+	      query.setParameter("ageTo", ageTo);
+	    }
+	return query.list();
+	}
+	
+	public List<Object[]> getTotalVotersByAgeForMunicipality(Long publicationId,Long constituencyId,Long ageFrom,Long ageTo){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select bpv.booth.localBody.localElectionBodyId,count(distinct bpv.voter.voterId) from BoothPublicationVoter bpv where " +
+				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId   and bpv.booth.localBody.localElectionBodyId is not null  ");
+				
+				if(ageFrom != null){
+					queryStr.append(" and bpv.voter.age >=:ageFrom ");
+				}
+				if(ageTo != null){
+					queryStr.append(" and bpv.voter.age <=:ageTo ");
+				}
+				queryStr.append("  group by bpv.booth.localBody.localElectionBodyId ");
+				
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationId", publicationId);
+
+	    if(ageFrom != null){
+	      query.setParameter("ageFrom", ageFrom);
+	    }
+	    if(ageTo != null){
+	      query.setParameter("ageTo", ageTo);
+	    }
+	return query.list();
+	}
+	
+	public List<Object[]> getCasteCountForMunicipality(Set<Long> casteStateIds,Long publicationId,Long constituencyId,Long ageFrom,Long ageTo){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append("select bpv.booth.localBody.localElectionBodyId,uvd.casteState.casteStateId,count(distinct uvd.voter.voterId) from BoothPublicationVoter bpv,UserVoterDetails uvd where " +
+				" bpv.booth.constituency.constituencyId =:constituencyId and bpv.booth.publicationDate.publicationDateId =:publicationId and bpv.booth.localBody.localElectionBodyId is not null and bpv.voter.voterId = uvd.voter.voterId ");
+				
+				if(ageFrom != null){
+					queryStr.append(" and uvd.voter.age >=:ageFrom ");
+				}
+				if(ageTo != null){
+					queryStr.append(" and uvd.voter.age <=:ageTo ");
+				}
+				queryStr.append(" and uvd.casteState.casteStateId in(:casteStateIds) group by bpv.booth.localBody.localElectionBodyId,uvd.casteState.casteStateId");
+				
+	    Query query = getSession().createQuery(queryStr.toString());
+	    query.setParameter("constituencyId", constituencyId);
+	    query.setParameter("publicationId", publicationId);
+	   
+	    if(ageFrom != null){
+	      query.setParameter("ageFrom", ageFrom);
+	    }
+	    if(ageTo != null){
+	      query.setParameter("ageTo", ageTo);
+	    }
+	    query.setParameterList("casteStateIds", casteStateIds);
+	return query.list();
+	}
 }
