@@ -4,13 +4,25 @@ import java.util.List;
 
 public class HouseHoldsVO implements java.io.Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String familiRange ;
 	private String familyCount;
 	private String familyPercentage;
 	private List<HouseHoldsVO> houseHoldsVOList = null;
 	private String message;
 	private String calcMessage;
+	private String heading;
 	
+	public String getHeading() {
+		return heading;
+	}
+	public void setHeading(String heading) {
+		this.heading = heading;
+	}
 	public String getCalcMessage() {
 		return calcMessage;
 	}
