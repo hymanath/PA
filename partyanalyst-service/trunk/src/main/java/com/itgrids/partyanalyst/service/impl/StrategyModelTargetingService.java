@@ -32,6 +32,7 @@ import com.itgrids.partyanalyst.dto.PartyEffectVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.StrategyVO;
+import com.itgrids.partyanalyst.dto.SuggestedLocationsVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.SuggestiveRange;
@@ -471,6 +472,7 @@ public class StrategyModelTargetingService implements
 	    		 effect.setPrpCurrentPerc(effectPartyperc);
 	    		 effect.setTdpCurrentPerc(difference);
 	    		 effect.setId(id);
+	    		 effect.setReportLvl(3l);
 	    	 }else{
 	    		 effect.setTdpPrevPerc(difference); 
 	    	 }
@@ -584,6 +586,7 @@ public class StrategyModelTargetingService implements
 	    		 effect.setPrpCurrentPerc(effectPartyperc);
 	    		 effect.setTdpCurrentPerc(difference);
 	    		 effect.setId(key);
+	    		 effect.setReportLvl(3l);
 	    	 }else{
 	    		 effect.setTdpPrevPerc(difference); 
 	    	 }
@@ -685,6 +688,7 @@ public class StrategyModelTargetingService implements
 			    		 effect.setPrpCurrentPerc(effectPartyperc);
 			    		 effect.setTdpCurrentPerc(difference);
 			    		 effect.setId(localbodyId);
+			    		 effect.setReportLvl(5l);
 			    	 }else{
 			    		 effect.setTdpPrevPerc(difference); 
 			    	 } 
@@ -839,6 +843,7 @@ public class StrategyModelTargetingService implements
 		    List<Object[]> totalVoters = new ArrayList<Object[]>();
 			List<Object[]> youngTotal = new ArrayList<Object[]>();
 			List<Object[]> agedTotal = new ArrayList<Object[]>();
+			Map<Long,String> panchayatNames = new HashMap<Long,String>();
 			
             Constituency constituency = constituencyDAO.get(constituencyId);
             
@@ -853,10 +858,10 @@ public class StrategyModelTargetingService implements
 			   List<Object[]> partialPanchayatsList = partialBoothPanchayatDAO.getPartialPanchayatsList(constituencyId, publicationId);
 			   List<Long> partialIds = new ArrayList<Long>();
 			   for(Object[] partial:partialPanchayatsList){
-					if(partial[0] !=null){
+					if(partial[0] !=null && !partialIds.contains((Long)partial[0])){
 						partialIds.add((Long)partial[0]);
 					}
-					if(partial[1] !=null){
+					if(partial[1] !=null && !partialIds.contains((Long)partial[1])){
 						partialIds.add((Long)partial[1]);
 					}
 			   }
@@ -902,7 +907,12 @@ public class StrategyModelTargetingService implements
 				   
 				   //aged voters calculation ends
 			   }else{
+				   List<Object[]> totalVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, null, null, null);
 
+				   if(totalVotersCount != null && totalVotersCount.size() > 0){
+					   totalVoters.addAll(totalVotersCount);
+				   }
+				   
 				   //young voters calculation starts
 				   List<Object[]> youngVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, null, 18l, 22l);
 				   
@@ -913,7 +923,7 @@ public class StrategyModelTargetingService implements
 				   //young voters calculation ends
 				   
                    //aged voters calculation starts
-				    List<Object[]> agedVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, partialIds, 61l, 200l);   
+				    List<Object[]> agedVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, null, 61l, 200l);   
 				    
 				    if(agedVotersCount != null && agedVotersCount.size() > 0){
 						 agedTotal.addAll(agedVotersCount);
@@ -944,6 +954,7 @@ public class StrategyModelTargetingService implements
 				 
 				 for(Object[] count:totalVoters){
 					 totalVotersMap.put((Long)count[0],(Long)count[1]);
+					 panchayatNames.put((Long)count[0],count[2].toString());
 				 }
 				 mergeTotalVoters(totalVotersMap,mergePanchayatMap);
 				 
@@ -952,7 +963,7 @@ public class StrategyModelTargetingService implements
 				 }
 				 mergeTotalVoters(ageVotersMap, mergePanchayatMap);
 				 
-			     youngCastesList = getOrderOfPriorWithOutCaste(totalVotersMap,ageVotersMap);
+			     youngCastesList = getOrderOfPriorWithOutCaste(totalVotersMap,ageVotersMap,panchayatNames);
 			     
 			     ageVotersMap = new HashMap<Long,Long>();
 			     for(Object[] count:agedTotal){
@@ -960,7 +971,7 @@ public class StrategyModelTargetingService implements
 				 }
 			     mergeTotalVoters(ageVotersMap, mergePanchayatMap);
 			     
-			     agedCastesList = getOrderOfPriorWithOutCaste(totalVotersMap,ageVotersMap);
+			     agedCastesList = getOrderOfPriorWithOutCaste(totalVotersMap,ageVotersMap,panchayatNames);
 			   
 		   
 		    priorityList.add(youngCastesList);
@@ -969,7 +980,7 @@ public class StrategyModelTargetingService implements
 		 
 	 }
 
-	 public List<PanchayatVO> getOrderOfPriorWithOutCaste(Map<Long,Long> totalVotersMap,Map<Long,Long> youngOldVotersList){
+	 public List<PanchayatVO> getOrderOfPriorWithOutCaste(Map<Long,Long> totalVotersMap,Map<Long,Long> youngOldVotersList,Map<Long,String> panchayatNames){
 		 
 		List<PanchayatVO> totalPriorityList = new ArrayList<PanchayatVO>();
 				 
@@ -978,7 +989,9 @@ public class StrategyModelTargetingService implements
 			
 			 for(Long panchayatId:youngOldVotersList.keySet()){
 				 panchayatVo = new PanchayatVO();
+				 panchayatVo.setPanchayatId(panchayatId);
 				 panchayatVo.setCount(totalVotersMap.get(panchayatId));
+				 panchayatVo.setPanchayatName(panchayatNames.get(panchayatId));
 				 panchayatVo.setTotalTargetCount(youngOldVotersList.get(panchayatId));
 				 panchayatVo.setTargetPerc(new BigDecimal((panchayatVo.getTotalTargetCount()*100)/panchayatVo.getCount()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
 				 totalPriorityList.add(panchayatVo);
@@ -1001,11 +1014,18 @@ public class StrategyModelTargetingService implements
 		    List<PanchayatVO> totalCastesList = null;
 		    List<PanchayatVO> youngCastesList = null;
 		    List<PanchayatVO> agedCastesList = null;
+		    List<Long> panchayatIds = new ArrayList<Long>();
+		    List<Long> lebIds = new ArrayList<Long>();
+		    
+		    Map<Long,String> panchayatNames = new HashMap<Long,String>();
+		    Map<Long,Long> totalVotersMap = new HashMap<Long,Long>();
 		    
 		    List<Object[]> youngCaste = new ArrayList<Object[]>();
 			List<Object[]> youngTotal = new ArrayList<Object[]>();
 			List<Object[]> ageCaste = new ArrayList<Object[]>();
 			List<Object[]> ageTotal = new ArrayList<Object[]>();
+			
+			
 			
 			List<Long> locationLvs = new ArrayList<Long>();
 			 locationLvs.add(3l);
@@ -1020,19 +1040,30 @@ public class StrategyModelTargetingService implements
 			   
 			//total voters calculation starts
 			   List<Object[]> totalVotersList = voterInfoDAO.getVoterCountByLevels(constituencyId, publicationId, locationLvs);
+			   for(Object[] total:totalVotersList){
+				   if(((Long)total[2]).longValue() == 3l){
+					   panchayatIds.add((Long)total[0]);
+					   totalVotersMap.put((Long)total[0],(Long)total[1]);
+				   }else{
+					   lebIds.add((Long)total[0]); 
+					   totalVotersMap.put((Long)total[0],(Long)total[1]);
+				   }
+			   }
+			   
+			   populateNames(panchayatIds,lebIds,panchayatNames);
 			   List<Object[]> casteList = voterCastInfoDAO.getVotersCastInfoByCasteIds(locationLvs, constituencyId, publicationId, 1l, new ArrayList<Long>(castePercents.keySet()));
 			   
-			    totalCastesList = getOrderOfPriorUsingCaste(castePercents,casteList,totalVotersList,mergePanchayatMap,mergeCasteMap,currentResult,"totalCaste");
+			    totalCastesList = getOrderOfPriorUsingCaste(castePercents,casteList,totalVotersList,mergePanchayatMap,mergeCasteMap,currentResult,"totalCaste",panchayatNames,totalVotersMap);
 			 //total voters calculation ends  
 			    
 			    //getting partial panchayats
 			   List<Object[]> partialPanchayatsList = partialBoothPanchayatDAO.getPartialPanchayatsList(constituencyId, publicationId);
 			   List<Long> partialIds = new ArrayList<Long>();
 			   for(Object[] partial:partialPanchayatsList){
-					if(partial[0] !=null){
+					if(partial[0] !=null && !partialIds.contains((Long)partial[0])){
 						partialIds.add((Long)partial[0]);
 					}
-					if(partial[1] !=null){
+					if(partial[1] !=null && !partialIds.contains((Long)partial[1])){
 						partialIds.add((Long)partial[1]);
 					}
 			   }
@@ -1127,8 +1158,8 @@ public class StrategyModelTargetingService implements
 							 ageTotal.addAll(totalAgeVoterForMunic);
 						 }
 			   }
-			   youngCastesList = getOrderOfPriorUsingCaste(castePercents,youngCaste,youngTotal,mergePanchayatMap,mergeCasteMap,currentResult,"youngCaste");
-			   agedCastesList = getOrderOfPriorUsingCaste(castePercents,ageCaste,ageTotal,mergePanchayatMap,mergeCasteMap,currentResult,"agedCaste");
+			   youngCastesList = getOrderOfPriorUsingCaste(castePercents,youngCaste,youngTotal,mergePanchayatMap,mergeCasteMap,currentResult,"youngCaste",panchayatNames,totalVotersMap);
+			   agedCastesList = getOrderOfPriorUsingCaste(castePercents,ageCaste,ageTotal,mergePanchayatMap,mergeCasteMap,currentResult,"agedCaste",panchayatNames,totalVotersMap);
 			
 			
 			priorityList.add(totalCastesList);
@@ -1156,27 +1187,38 @@ public class StrategyModelTargetingService implements
 			   panchayats.add((Long)mergePanchayat[0]);
 			}
 	 }
-	 public List<PanchayatVO> getOrderOfPriorUsingCaste(Map<Long,Float> castePercents, List<Object[]> casteList,List<Object[]> totalVotersList,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Set<Long>> mergeCasteMap,Map<Long,Double> currentResult,String type){
+	 public List<PanchayatVO> getOrderOfPriorUsingCaste(Map<Long,Float> castePercents, List<Object[]> casteList,List<Object[]> totalVotersList,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Set<Long>> mergeCasteMap,Map<Long,Double> currentResult,String type,Map<Long,String> panchayatNames,Map<Long,Long> pancTotalVotersList){
 		 Map<Long,PanchayatVO> totalCastePriorityMap = new HashMap<Long,PanchayatVO>();
 		 
 		 PanchayatVO panchayatVo = null;
 		 Map<Long,Long> totalVotersMap = new HashMap<Long,Long>();
-		 
-		 for(Object[] count:totalVotersList){
-			 totalVotersMap.put((Long)count[0],(Long)count[1]);
+		 if(type.equalsIgnoreCase("totalCaste")){	
+			 totalVotersMap = pancTotalVotersList;
+		 }else{
+			 for(Object[] count:totalVotersList){
+				 totalVotersMap.put((Long)count[0],(Long)count[1]);
+			 }
 		 }
-		
 		 for(Object[] caste:casteList){
 			 panchayatVo = totalCastePriorityMap.get((Long)caste[0]);
 			 if(panchayatVo == null){
 				 panchayatVo = new PanchayatVO();
+				 panchayatVo.setPanchayatId((Long)caste[0]);
+				 panchayatVo.setPanchayatName(panchayatNames.get((Long)caste[0]));
+				 panchayatVo.setTotalPanchayatVoters(pancTotalVotersList.get((Long)caste[0]).intValue());
 				 Map<Long,Long> casteMap = new HashMap<Long,Long>();
 				 panchayatVo.setCasteMap(casteMap);
+				 casteMap.put(0l, totalVotersMap.get((Long)caste[0]));
 				 for(Long casteStateId:castePercents.keySet()){
-					 casteMap.put(casteStateId, 0l);
+					 if(casteStateId.longValue() != 0l){
+					  casteMap.put(casteStateId, 0l);
+					 }
 				 }
+				 totalCastePriorityMap.put((Long)caste[0],panchayatVo);
 			 }
-			 panchayatVo.getCasteMap().put((Long)caste[1],(Long)caste[2]);
+			 Map<Long,Long> casteMap = panchayatVo.getCasteMap();
+			 casteMap.put((Long)caste[1],(Long)caste[2]);
+			 casteMap.put(0l,casteMap.get(0l)-(Long)caste[2]);
 			
 		 }
 		 if(mergePanchayatMap != null && mergePanchayatMap.size() > 0){
@@ -1214,11 +1256,14 @@ public class StrategyModelTargetingService implements
 				 panchayat.setPartyPerc(0d);
 			 }
 			 panchayat.setDifferencePerc(panchayat.getTargetPerc()-panchayat.getPartyPerc());
+			 panchayat.setOpportunity(panchayat.getPartyPerc()-panchayat.getTargetPerc());
 		   } 
 		 }
 		 List<PanchayatVO> returnList = new ArrayList<PanchayatVO>(totalCastePriorityMap.values());
 		 if(type.equalsIgnoreCase("totalCaste")){	
 		    calculateForTotalCaste(returnList);
+		 }else{
+			 calculateForYoungOld(returnList); 
 		 }
 		 return returnList;
 	 }
@@ -1301,8 +1346,82 @@ public class StrategyModelTargetingService implements
 			   return (loc2.getTargetPerc().compareTo(loc1.getTargetPerc()));
 			}
 	   };
-     		  
-
+     	
+	   public  Comparator<PartyEffectVO> prpSort = new Comparator<PartyEffectVO>()
+			   {
+					  
+				  public int compare(PartyEffectVO loc1, PartyEffectVO loc2)
+					{
+					   return (loc2.getDifference().compareTo(loc1.getDifference()));
+					}
+			   };
+			   
+       public void populateNames(List<Long> panchayatIds,List<Long> lebIds,Map<Long,String> panchayatNames){
+    	   if(panchayatIds.size() > 0){
+    		   List<Object[]> panchayatsList = panchayatDAO.getPanchayatsByPanchayatIdsList(panchayatIds);
+    		   for(Object[] panchayat:panchayatsList){
+    			   panchayatNames.put((Long)panchayat[0], panchayat[1].toString());
+    		   }
+    	   }
+    	   if(lebIds.size() > 0){
+    		   List<Object[]> panchayatsList = localElectionBodyDAO.getLocalElectionBodyNames(lebIds);
+    		   for(Object[] panchayat:panchayatsList){
+    			   panchayatNames.put((Long)panchayat[0], panchayat[1].toString());
+    		   }
+    	   }
+       }
+       
+       public List<PartyEffectVO> calculateWeightsForPrpImpact(Map<Long,PartyEffectVO> prpEffect,Long publicationId){
+    	   List<PartyEffectVO> prpList =  new ArrayList<PartyEffectVO>(prpEffect.values());
+   		for(Long location:prpEffect.keySet()){
+   			PartyEffectVO locationVo = prpEffect.get(location);
+   			if(locationVo.getPrpCurrentPerc() != null && locationVo.getTdpCurrentPerc() != null && locationVo.getTdpPrevPerc() != null){
+   				Double prpPerc = locationVo.getPrpCurrentPerc();
+   				Double partyDiff = null;
+   			
+   					
+   					Double partyPrev = locationVo.getTdpPrevPerc();
+   					Double partyCurrent = locationVo.getTdpCurrentPerc();
+   				    partyDiff = partyCurrent-partyPrev;
+   				   if(partyDiff < 0){
+   					partyDiff = partyDiff*(-1);
+   					if(prpPerc > partyDiff){
+   						locationVo.setDifference(partyDiff);
+   					}else{
+   						locationVo.setDifference(prpPerc);
+   					}
+   				}
+   			}
+   		}
+   		for(Long location:prpEffect.keySet()){
+   			PartyEffectVO locationVo = prpEffect.get(location);
+   			if(locationVo.getDifference() == null){
+   				locationVo.setDifference(0d);
+   			}
+   		}
+   		
+   		Collections.sort(prpList,prpSort);
+   		
+   			for(PartyEffectVO partyEffectVO:prpList){
+   				if(prpList.get(0).getDifference() != null && prpList.get(0).getDifference() > 0){
+   					partyEffectVO.setPoints(new BigDecimal(partyEffectVO.getDifference()*100/prpList.get(0).getDifference()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+   					List<Object[]> panchayatVoterCount = voterCastInfoDAO.getTopThreeCasteForPanchayat(partyEffectVO.getId(),partyEffectVO.getReportLvl(),publicationId,1l);//Long panchayatId,Long reportId,Long publicationId,Long userId
+					int i = 0;
+					StringBuilder cast = new StringBuilder("");
+					 for(Object[] panchayat:panchayatVoterCount){
+						 if(i==3){
+						 break;
+						 }
+						 cast.append("("+panchayat[0].toString());
+						 cast.append(","+panchayat[2].toString());
+						 cast.append(","+panchayat[1].toString()+")");
+						 i++;
+					 }
+					 partyEffectVO.setCastes(cast.toString());
+   				}
+   		   }
+   		return prpList;
+   	}
 	   public void getPrioritiesToTarget(StrategyVO strategyVO){
 		   Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
 		   Map<Long,Double> currentResult = new HashMap<Long,Double>();
@@ -1314,6 +1433,7 @@ public class StrategyModelTargetingService implements
 		   boolean castePresent = false;
 		   
 		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
+		   List<PartyEffectVO> otherPartyEffect = calculateWeightsForPrpImpact(partyEffect,strategyVO.getPublicationId());
 		   if(strategyVO.getCastePercents() != null){
 			   castePresent = true;
 			   List<Object> castePriorities = getTotalYoungOldVotersEffectWithCaste(strategyVO.getCastePercents(),strategyVO.getPublicationId(),strategyVO.getConstituencyId(),strategyVO.getMergeCasteMap(),currentResult);

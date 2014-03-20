@@ -14,6 +14,9 @@ public class PartyEffectVO  implements Serializable{
 	private Long id;
 	private Double difference;
 	private String name;
+	private Double points;
+	private String castes;
+	private Long reportLvl;
 	
 	public Double getTdpPrevPerc() {
 		return tdpPrevPerc;
@@ -61,6 +64,30 @@ public class PartyEffectVO  implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Double getPoints() {
+		return points;
+	}
+
+	public void setPoints(Double points) {
+		this.points = points;
+	}
+
+	public String getCastes() {
+		return castes;
+	}
+
+	public void setCastes(String castes) {
+		this.castes = castes;
+	}
+
+	public Long getReportLvl() {
+		return reportLvl;
+	}
+
+	public void setReportLvl(Long reportLvl) {
+		this.reportLvl = reportLvl;
 	}
 	
 	

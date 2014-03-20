@@ -1,9 +1,9 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -38,7 +38,13 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 		strategyVO.setAgedWt(0.2);
 		strategyVO.setTotalCastWt(0.2);
 		strategyVO.setPublicationId(8l);
-
+		Map<Long,Float> castePercents = new HashMap<Long,Float>();
+		castePercents.put(211l,0.4f);
+		castePercents.put(161l,0.6f);
+		castePercents.put(285l,0.3f);
+		castePercents.put(189l,0.8f);
+		castePercents.put(0l,0.4f);
+		//strategyVO.setCastePercents(castePercents);
 		strategyModelTargetingService.getPrioritiesToTarget(strategyVO);
 	}
 }
