@@ -20,9 +20,13 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.IBoothResultDAO;
@@ -37,6 +41,8 @@ import com.itgrids.partyanalyst.dao.IPanchayatResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
+import com.itgrids.partyanalyst.dao.IStrategyMergPancListDAO;
+import com.itgrids.partyanalyst.dao.IStrategyMergePanchayatDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
@@ -55,6 +61,7 @@ import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
@@ -64,6 +71,8 @@ import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.StrategyMergPancList;
+import com.itgrids.partyanalyst.model.StrategyMergePanchayat;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
@@ -104,6 +113,22 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	@Autowired IPartyDAO partyDAO;
 	
+	@Autowired IStrategyMergePanchayatDAO strategyMergePanchayatDAO;
+	
+	@Autowired IStrategyMergPancListDAO strategyMergPancListDAO;
+	
+	@Autowired IBoothConstituencyElectionDAO boothConstituencyElectionDAO;
+	
+	private TransactionTemplate transactionTemplate = null;
+	
+	public TransactionTemplate getTransactionTemplate() {
+		return transactionTemplate;
+	}
+
+	public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
+		this.transactionTemplate = transactionTemplate;
+	}
+
 	@Autowired IRegionServiceData regionServiceData;
 	
 	@Autowired IVoterModificationInfoDAO voterModificationInfoDAO;
@@ -1989,7 +2014,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			 }
 			 catch(Exception e)
 			 {
-				 LOG.error(" Exception Occured in getPartyPerformanceForLocalBodyNew() method, Exception - ",e);
+				 LOG.error(" Exception Occured in getPartyPerformanceForLocalBodyNew() method StratagicReportService class, Exception - ",e);
 			 }
 		 }
 	  
@@ -2131,6 +2156,127 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return null;
 			 }
 		 }
+	  
+	  public List<SelectOptionVO> getSearchTypeDetails(Long userId,String searchtype,Long cosntituencyId){
+			LOG.info("Entered into the setValuesToCensusVO method StratagicReportService class");
+			List<SelectOptionVO> returnList = null;
+			try
+			{
+				if(searchtype.equalsIgnoreCase("basedOnElection")){
+									
+				}
+				else if(searchtype.equalsIgnoreCase("basedOnPublication")){
+					
+				}
+			}catch(Exception e)
+			{
+			LOG.error("Exception Occured in the setValuesToCensusVO method StratagicReportService class",e);
+				
+			}
+			return returnList;
+		}
+	  
+	  public ResultStatus mergePanchayatsToOnePanchayat(final Long userId,final  String searchtype,final Long searchTypeValue,final Long cosntituencyId,final Long panchayatId,final List<Long> mergedPanchyatsIds){
+		  LOG.info("Entered into the mergePanchayatsToOnePanchayat method StratagicReportService class");
+			ResultStatus status =  new ResultStatus();;
+			try
+			{
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					public void doInTransactionWithoutResult(TransactionStatus status) {
+						
+						StrategyMergePanchayat strategyMergePanchayat = new StrategyMergePanchayat();
+						
+						strategyMergePanchayat.setType(searchtype);
+						strategyMergePanchayat.setTypeValue(searchTypeValue);
+						strategyMergePanchayat.setPanchayat(panchayatDAO.get(panchayatId));
+						strategyMergePanchayat.setConstituency(constituencyDAO.get(cosntituencyId));
+						
+						strategyMergePanchayat = strategyMergePanchayatDAO.save(strategyMergePanchayat);
+						
+						if(mergedPanchyatsIds != null && mergedPanchyatsIds.size()>0){
+							for (Long mergePanchyatId : mergedPanchyatsIds) {
+								
+								StrategyMergPancList strategyMergPancList = new StrategyMergPancList();									
+								
+								strategyMergPancList.setStrategyMergePanchayat(strategyMergePanchayat);
+								strategyMergPancList.setPanchayat(panchayatDAO.get(mergePanchyatId));
+								
+								strategyMergPancListDAO.save(strategyMergPancList);
+							}
+						}
+					}
+				});
+				
+
+				status.setResultCode(0);
+			}catch(Exception e)
+			{
+				status.setResultCode(1);
+				LOG.error("Exception Occured in the mergePanchayatsToOnePanchayat method StratagicReportService class",e);
+			}
+			return status;
+	  }
+	  
+	  public List<SelectOptionVO> getElectionIdsAndYearsByCosntutuencyId(Long electionScopeId,Long constituencyId) {
+			LOG.info(" entered into getElectionIdsAndYearsByCosntutuencyId() of StratagicReportService class.");
+			List<Long> mandalIds;
+			List<SelectOptionVO> reteurnList = null;
+			try {
+				 Constituency constituency = constituencyDAO.get(constituencyId);
+				 String constiType = constituency.getAreaType();
+				 
+				 Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
+				 List<Long> electionIds=new ArrayList<Long>();
+				 if(constiType.equalsIgnoreCase("rural")||constiType.equalsIgnoreCase("rural-urban")){
+					mandalIds = boothDAO.getTehsildByConstituency(constituencyId, publicationId);
+					electionIds = boothConstituencyElectionDAO.getElectionsByMandals(mandalIds,null,electionScopeId);
+				 }else{
+					electionIds = boothConstituencyElectionDAO.getElectionsByUrbanConsti(constituencyId,electionScopeId);
+				 }			 
+					List<Object[]> electionYearsList = nominationDAO.getElectionyearsByElectionIds(electionIds);
+					if(electionYearsList != null && electionYearsList.size() > 0)
+					{
+						reteurnList = new ArrayList<SelectOptionVO>();
+						for (Object[] parms : electionYearsList) {
+							SelectOptionVO selectOptionVO = new SelectOptionVO();
+							selectOptionVO.setId((Long) parms[0]);
+							selectOptionVO.setName( parms[1].toString()+"("+parms[2].toString()+")");
+							reteurnList.add(selectOptionVO);
+						}
+					}
+							 
+			
+			} catch (Exception e) {
+				LOG.error(" exception occured  in getElectionIdsAndYearsByCosntutuencyId() of StratagicReportService class.",e);
+			}
+			
+			return reteurnList;
+		}
+	  
+	  public List<SelectOptionVO> getPanchayatDetailsForElectionInCosntituency(Long userId,Long constituencyId,Long elctionId){
+			LOG.info(" entered into getElectionIdsAndYearsByCosntutuencyId() of StratagicReportService class.");
+			List<SelectOptionVO> panchayatList = null;
+			try {
+				
+				List<Object[]> panchayatDetils = hamletBoothElectionDAO.getPanchayatDetailsByConstituencyId(constituencyId, elctionId);
+
+				if(panchayatDetils != null && panchayatDetils.size()>0){
+					panchayatList = new ArrayList<SelectOptionVO>();
+					for (Object[] parms : panchayatDetils) {
+						
+						SelectOptionVO selectOptionVO = new SelectOptionVO();
+						selectOptionVO.setId((Long) parms[0]);
+						selectOptionVO.setName( parms[1].toString());
+						panchayatList.add(selectOptionVO);
+					}
+				}
+				
+				
+			} catch (Exception e) {
+				LOG.error(" exception occured  in getElectionIdsAndYearsByCosntutuencyId() of StratagicReportService class.",e);
+			}	
+			return panchayatList;
+		}
 	  
 	  public void getVotermodificationDetailsFromVoterModifInfoTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOs, SelectOptionVO optionVO, List<Long> publicationIdsList, Long constituencyId, List<Long> pubIdsListForTotVoters)
 		 {
