@@ -36,26 +36,35 @@ import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatResultDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
+import com.itgrids.partyanalyst.dao.IPublicationDateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IVoterAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterModificationAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.AssumptionsVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
+import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
+import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
+import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.Election;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
@@ -109,10 +118,30 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	@Autowired IPanchayatResultDAO panchayatResultDAO;
 	
+	@Autowired IVoterAgeRangeDAO voterAgeRangeDAO;
+	
+	@Autowired IVoterReportLevelDAO voterReportLevelDAO;
+	
+	//@Autowired IPublicationDateDAO publicationDateDAO;
+	
+	@Autowired IVoterModificationAgeInfoDAO voterModificationAgeInfoDAO;
+	
 	@Autowired IAllianceGroupDAO allianceGroupDAO;
-	   
+	
+	private IPublicationDateDAO publicationDateDAO;
+	
 	@Autowired IBoothResultDAO boothResultDAO;
 	
+	
+	   
+	public IPublicationDateDAO getPublicationDateDAO() {
+		return publicationDateDAO;
+	}
+
+	public void setPublicationDateDAO(IPublicationDateDAO publicationDateDAO) {
+		this.publicationDateDAO = publicationDateDAO;
+	}
+
 	public List<AgeRangeVO> getBoothWiseAddedAndDeletedVoters(Long constiId,Long pubId){
 		List<AgeRangeVO> boothWiseAddedDeletedVoters=new ArrayList<AgeRangeVO>();
 		try{
@@ -301,7 +330,10 @@ public class StratagicReportsService implements IStratagicReportsService{
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-		
+		if(boothWiseAddedDeletedVoters.size()>0){
+			boothWiseAddedDeletedVoters.get(0).setMainHeading1("Age Group –Booth wise Additions information");
+			boothWiseAddedDeletedVoters.get(0).setMainHeading2("Age Group –Booth wise Deletions information");
+		}
 		return boothWiseAddedDeletedVoters;
 	}
 	
@@ -2014,7 +2046,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 LOG.error("Exception Occured in getSubLevelsVoterModificationDetailsByLocationValue() Method");
 				 LOG.error("Exception is - "+e);
 			}
-			 
+			 voterModificationVO.setMainHeading("Locality");
 			 return voterModificationVO;
 		 }
 	  
@@ -2451,7 +2483,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			} catch (Exception e) {
 				LOG.error("Exception raised in voterDensityInPanchayat() method in Suggestive Model Service",e);
 			}
-			
+			voterDensityPartyVO.setInformation("A categorization that provides you with insight on the density of votes and similar number of panchayaths in your constituency helping in creating a common strategy");
 			return voterDensityPartyVO;
 		}
 	  
@@ -2559,6 +2591,391 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 	  
 	//METHOD TO GET VOTERS DENSITY PANCHAYAT WITH PARTY'S WON IN THE PANCHAYATS -- SASI -- END
+	  
+	  
+	  /*
+	   * 
+	   * Methods From VoterModificationReport
+	   *
+	   * */
+	  
+	  public PDFHeadingAndReturnVO getVoterInfoByPublicationDateList(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+		 {
+		  	PDFHeadingAndReturnVO pdfVO=new PDFHeadingAndReturnVO();
+			 List<VoterAgeRangeVO> voterAgeRangeVOList = null;
+			 try{
+				 
+				 List<Long> publicationDateIds = getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId, toPublicationDateId);
+				 
+				 if(publicationDateIds != null && publicationDateIds.size() > 0)
+				 {
+					 
+					List<Object[]> list = voterInfoDAO.getVoterInfoByPublicationDateIds(votersAnalysisService.getReportLevelId(locationType), locationValue, publicationDateIds);
+				   if(list != null && list.size() > 0)
+				   {
+					   voterAgeRangeVOList = new ArrayList<VoterAgeRangeVO>(0);
+					 for(Object[] params : list)
+					 {
+						 VoterAgeRangeVO voterAgeRangeVO = new VoterAgeRangeVO();
+						 voterAgeRangeVO.setTotalVoters((Long)params[0]);
+						 voterAgeRangeVO.setMaleVoters((Long)params[1]);
+						 voterAgeRangeVO.setFemaleVoters((Long)params[2]);
+						 voterAgeRangeVO.setPublicationDate(params[3].toString());
+						 voterAgeRangeVOList.add(voterAgeRangeVO);
+					 }
+				   }
+				}
+				 pdfVO.setVoterInfoByPublicationList(voterAgeRangeVOList);
+				 pdfVO.setMainHeading("Voters Additions & Deletions");
+				 return pdfVO;
+			 }catch (Exception e) {
+				 e.printStackTrace();
+				 LOG.error("Exception Occured in getVoterInfoByPublicationDateList() Method, Exception - "+e);
+				 return pdfVO;
+			}
+			 
+		 }
+	  
+	  public PDFHeadingAndReturnVO getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,String queryType)
+		 {
+		  	PDFHeadingAndReturnVO pdfVO=new PDFHeadingAndReturnVO();
+			 LOG.debug("Entered into getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+			 List<VoterModificationAgeRangeVO> result = new ArrayList<VoterModificationAgeRangeVO>(0);
+			 try{
+				 List<String> ageRanges = voterAgeRangeDAO.getAllVoterAgeRanges();
+				 VoterModificationAgeRangeVO voterModificationAgeRangeVO = null;
+				 if("intermediate".equalsIgnoreCase(queryType) && locationType != null && !locationType.equalsIgnoreCase(IConstants.BOOTH)){
+					 //getting data from intermediate table
+				   result = getVotersAddedDeletedCountAgeWiseInBetwnPublicsFromIntermediateTable(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+				 }
+				 
+				 //if data not present in intermediate table then calculating by actual process
+				 if("main".equalsIgnoreCase(queryType) || result.isEmpty()){
+					 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+					 for(String ageRange : ageRanges)
+					 {
+						 try{
+						 voterModificationAgeRangeVO = new VoterModificationAgeRangeVO();
+						 voterModificationAgeRangeVO.setRange(ageRange);
+						 if(ageRange != null && ageRange.equalsIgnoreCase(IConstants.YOUNGER_VOTERS))
+						  ageRange = IConstants.YOUNG_VOTERS_AGE_RANGE;
+						 String[] ages = ageRange.split("-");
+						 Long ageFrom = new Long(ages[0].trim());
+						 Long ageTo = null;
+						 if(!ages[1].trim().equalsIgnoreCase("Above"))
+							 ageTo = Long.valueOf(ages[1].trim());
+							 
+						 List<Object[]> list = voterModificationDAO.getAgeWiseAddedAndDeletedVotersCountInBetweenPublicationsInALocation(locationType, locationValue, constituencyId, publicationIdsList, ageFrom, ageTo);
+						 
+						 if(list != null && list.size() > 0)
+						 {
+							 for(Object[] params :list)
+							 {
+								 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+								 	voterModificationAgeRangeVO.setAddedCount((Long)params[0]);
+								 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+								 	voterModificationAgeRangeVO.setDeletedCount((Long)params[0]);
+							 }
+						 }
+						 result.add(voterModificationAgeRangeVO);
+						 }catch (Exception e) {}
+					 }
+				 }
+				 pdfVO.setAgeRangeWiseAddedDeletedList(result);
+				 pdfVO.setSubHeading("Gender Wise Voter Modifications between ");
+				 return pdfVO; 
+			 }catch (Exception e) {
+				 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+				 LOG.error("Exception is - ",e);
+				 return pdfVO; 
+			 }
+		 }
+	  
+	  public List<VoterModificationAgeRangeVO> getVotersAddedDeletedCountAgeWiseInBetwnPublicsFromIntermediateTable(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId)
+		 {
+			 LOG.debug("Entered into getVotersAddedDeletedCountAgeWiseInBetwnPublicsFromIntermediateTable() Method");
+			 Map<Long,VoterModificationAgeRangeVO> mapObjects = new HashMap<Long,VoterModificationAgeRangeVO>();
+			 try{
+				 List<VoterAgeRange> ageRanges = voterAgeRangeDAO.getAll();
+				 Map<Long,String> ageRangeMap = new HashMap<Long,String>();
+				 for(VoterAgeRange range:ageRanges){
+					 ageRangeMap.put(range.getVoterAgeRangeId(), range.getAgeRange());
+				 }
+				 String location = locationType;
+			
+				 VoterModificationAgeRangeVO voterModificationAgeRangeVO = null;
+				 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+				 List<Object[]> ageWiseAddedDelVoters = voterModificationAgeInfoDAO.getGenderWiseVoterModificationsBetweenPublications(getReportLevelId(location),locationValue,constituencyId,publicationIdsList,ageRangeMap.keySet());
+				 for(Object[] ageRange : ageWiseAddedDelVoters)
+				 {
+					 try{
+					 voterModificationAgeRangeVO = mapObjects.get((Long)ageRange[1]);
+					 if(voterModificationAgeRangeVO == null){
+						 voterModificationAgeRangeVO = new VoterModificationAgeRangeVO();
+						 mapObjects.put((Long)ageRange[1], voterModificationAgeRangeVO);
+						 voterModificationAgeRangeVO.setRange(ageRangeMap.get((Long)ageRange[1]));
+					 }
+					 if(ageRange[2].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+						voterModificationAgeRangeVO.setAddedCount((Long)ageRange[0]);
+					 else if(ageRange[2].toString().equalsIgnoreCase(IConstants.STATUS_DELETED));
+						voterModificationAgeRangeVO.setDeletedCount((Long)ageRange[0]);
+					 }catch (Exception e) {}
+				 }
+				 return new ArrayList<VoterModificationAgeRangeVO>(mapObjects.values()); 
+			 }catch (Exception e) {
+				 LOG.error("Exception Occured in getVotersAddedDeletedCountAgeWiseInBetwnPublicsFromIntermediateTable() Method");
+				 LOG.error("Exception is - ",e);
+				 return new ArrayList<VoterModificationAgeRangeVO>(); 
+			 }
+			 
+		 }
+	  
+	  public VoterModificationGenderInfoVO getGenderWiseVoterModificationsBetweenPublications(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,String queryType)
+		 {
+			 LOG.debug("Entered into getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+			 VoterModificationGenderInfoVO result = new VoterModificationGenderInfoVO();
+			 try{
+				 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+				 if("intermediate".equalsIgnoreCase(queryType) && locationType!= null && !locationType.equalsIgnoreCase(IConstants.BOOTH)){
+					  String location = locationType;
+					   // getting sum of all added/deleted male/female voters count from intermediate table for all publications present between selected publications
+					  getGendWiseVoterModifsBetwnPublicationsFromIntermediateTable(getReportLevelId(location),locationValue,constituencyId,publicationIdsList,result);
+				 }
+				  //if data not present in intermediate table then calculating by actual process
+				  if("main".equalsIgnoreCase(queryType) || !result.isDataPresent()){
+					  List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationsBetweenPublications(locationType, locationValue, constituencyId, publicationIdsList);
+					 
+					  if(list != null && list.size() > 0)
+					  {
+						 for(Object[] params : list)
+						 {
+							 if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 result.setAddedMale((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 result.setAddedFemale((Long)params[0]);
+							 }
+							 else if(params[1].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.MALE))
+									 result.setDeletedMale((Long)params[0]);
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 result.setDeletedFemale((Long)params[0]);
+							 }
+							 
+						 }
+						 result.setAddedTotal(result.getAddedMale() + result.getAddedFemale());
+						 result.setDeletedTotal(result.getDeletedMale() + result.getDeletedFemale());
+						 
+					  }
+			    }
+				 return result;
+			 }catch (Exception e) {
+				 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
+				 LOG.error("Exception is - "+e);
+				 return result;
+			 }
+		 }
+	  
+	  public void getGendWiseVoterModifsBetwnPublicationsFromIntermediateTable(Long reportLevelId,Long locationValue,Long constituencyId,List<Long> publicationIdsList,VoterModificationGenderInfoVO result){
+			 try{
+			  List<Object[]> addedDeletedList = voterModificationInfoDAO.getGenderWiseVoterModificationsBetweenPublications(reportLevelId,locationValue,constituencyId,publicationIdsList);
+			  if(addedDeletedList != null && !addedDeletedList.isEmpty()){
+				  result.setDataPresent(true);
+				  for(Object[] addedDeleted:addedDeletedList){
+					  if((IConstants.STATUS_ADDED).equalsIgnoreCase(addedDeleted[2].toString())){
+						  result.setAddedMale((Long)addedDeleted[0]);
+						  result.setAddedFemale((Long)addedDeleted[1]);
+					  }else if((IConstants.STATUS_DELETED).equalsIgnoreCase(addedDeleted[2].toString())){
+						  result.setDeletedMale((Long)addedDeleted[0]);
+						  result.setDeletedFemale((Long)addedDeleted[1]);
+					  }
+				  }
+				  if(result.getAddedMale() != null &&  result.getAddedFemale() != null)
+				     result.setAddedTotal(result.getAddedMale() + result.getAddedFemale());
+				  if(result.getDeletedMale() != null &&  result.getDeletedFemale() != null)
+					 result.setDeletedTotal(result.getDeletedMale() + result.getDeletedFemale());
+			  }
+			 }catch(Exception e){
+				 LOG.error("Exception Occured in getGendWiseVoterModifsBetwnPublicationsFromIntermediateTable() Method",e);
+			 }
+		 }
+	  
+	  
+	  public Long getReportLevelId(String type)
+		 {
+			 Long reportLevelId = 0l;
+			 try{
+				 reportLevelId = voterReportLevelDAO.getReportLevelIdByType(type);
+				 return reportLevelId;
+			 }catch (Exception e) {
+				LOG.error("Exception Occured in getReportLevelId() Method, Exception - ",e);
+				return reportLevelId;
+			}
+		 }
+	  
+	  public PDFHeadingAndReturnVO getGenderWiseVoterModificationsForEachPublication(String locationType,Long locationValue,Long constituencyId,Long fromPublicationDateId,Long toPublicationDateId,String queryType)
+		 {
+		  
+		  PDFHeadingAndReturnVO pdfVO=new PDFHeadingAndReturnVO();
+			 LOG.debug("Entered into getGenderWiseVoterModificationsForEachPublication() Method");
+			 List<VoterModificationGenderInfoVO> result = new ArrayList<VoterModificationGenderInfoVO>();
+			 try{
+				 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
+				 if("intermediate".equalsIgnoreCase(queryType) && !locationType.equalsIgnoreCase(IConstants.BOOTH)){
+					 String location = locationType;
+					  
+					 // getting data from intermediate table 
+					 getGendWiseVoterModifsForEachPublicationsFromIntermediateTable(getReportLevelId(location),locationValue,constituencyId,publicationIdsList,result);
+				 }
+				// if data from not present in intermediate table then calculating by normal process
+				 if("main".equalsIgnoreCase(queryType) || result.isEmpty()){
+					 List<Object[]> list = voterModificationDAO.getGenderWiseVoterModificationsForEachPublication(locationType, locationValue, constituencyId, publicationIdsList);
+					 
+					 if(list != null && list.size() > 0)
+					 {
+						 for(Object[] params : list)
+						 {
+							 VoterModificationGenderInfoVO infoVO = getVoterModificationGenderInfoVOFromResultList((Long)params[0],result);
+							 boolean flag = false;
+							 
+							 if(infoVO == null)
+							 {
+								 infoVO = new VoterModificationGenderInfoVO();
+								 infoVO.setPublicationId((Long)params[0]);
+								 infoVO.setPublicationName(params[4].toString());
+								 flag = true;
+							 }
+							 if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_ADDED))
+							 {
+								 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+									 infoVO.setAddedMale((Long)params[1]);
+								 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 infoVO.setAddedFemale((Long)params[1]);
+							 }
+							 else if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_DELETED))
+							 {
+								 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+									 infoVO.setDeletedMale((Long)params[1]);
+								 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+									 infoVO.setDeletedFemale((Long)params[1]);
+							 }
+							 
+							 if(locationType != null && locationType.equalsIgnoreCase(IConstants.BOOTH))
+							 {
+								 if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_MOVED))
+								 {
+									 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+										 infoVO.setMovedMale((Long)params[1]);
+									 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+										 infoVO.setMovedFemale((Long)params[1]);
+								 }
+								 else if(params[2].toString().equalsIgnoreCase(IConstants.STATUS_RELOCATED))
+								 {
+									 if(params[3].toString().equalsIgnoreCase(IConstants.MALE))
+										 infoVO.setRelocatedMale((Long)params[1]);
+									 else if(params[3].toString().equalsIgnoreCase(IConstants.FEMALE))
+										 infoVO.setRelocatedFemale((Long)params[1]);
+								 }
+							 }
+							 if(flag)
+								 result.add(infoVO); 
+						 }
+					 }
+				 }
+				 for(VoterModificationGenderInfoVO infoVO : result)
+				 {
+					 List<Long>	idsList = getPreviousPublicationIds(infoVO.getPublicationId());
+					 if(idsList != null && idsList.size() > 0)
+					 {
+						 infoVO.setPreviousPublicationId(idsList.get(0));
+						 infoVO.setPreviousPublicationName(publicationDateDAO.getNamePublicationDateId(idsList.get(0)));
+					 }
+					 else
+						 infoVO.setPreviousPublicationId(0L);
+					 
+					 infoVO.setAddedTotal(infoVO.getAddedMale() + infoVO.getAddedFemale());
+					 infoVO.setDeletedTotal(infoVO.getDeletedMale() + infoVO.getDeletedFemale());
+					 
+				 }
+				 
+				 pdfVO.setGenderWiseVoterModificationInfoForEachPublicationList(result);
+				 pdfVO.setMainHeading("Age Group");
+				 return pdfVO;
+			 }catch (Exception e) {
+				 LOG.error("Exception Occured in getGenderWiseVoterModificationsForEachPublication() Method");
+				 LOG.error("Exception is - "+e);
+				 return pdfVO;
+			 }
+		 }
+	  
+	  public void getGendWiseVoterModifsForEachPublicationsFromIntermediateTable(Long reportLevelId,Long locationValue,Long constituencyId,List<Long> publicationIdsList,List<VoterModificationGenderInfoVO> resultList){
+			try{
+			 // getting sum of all added/deleted male/female voters count from intermediate table for each publication wise present between selected publications
+			 List<Object[]> addedDeletedList = voterModificationInfoDAO.getGenderWiseVoterModificationsForEachPublication(reportLevelId,locationValue,constituencyId,publicationIdsList);
+			 VoterModificationGenderInfoVO result = null;
+			 Map<Long,VoterModificationGenderInfoVO> resultMap = new HashMap<Long,VoterModificationGenderInfoVO>();
+			 if(addedDeletedList != null && !addedDeletedList.isEmpty()){
+				 //populating data to VoterModificationGenderInfoVO
+				  for(Object[] addedDeleted:addedDeletedList){
+					  result = resultMap.get((Long)addedDeleted[3]);
+					  if(result == null){
+						  result = new VoterModificationGenderInfoVO();
+						  result.setPublicationId((Long)addedDeleted[3]);
+						  result.setPublicationName(addedDeleted[4].toString());
+						  resultMap.put((Long)addedDeleted[3], result);
+					  }
+					  if((IConstants.STATUS_ADDED).equalsIgnoreCase(addedDeleted[2].toString())){
+						  result.setAddedMale((Long)addedDeleted[0]);
+						  result.setAddedFemale((Long)addedDeleted[1]);
+					  }else if((IConstants.STATUS_DELETED).equalsIgnoreCase(addedDeleted[2].toString())){
+						  result.setDeletedMale((Long)addedDeleted[0]);
+						  result.setDeletedFemale((Long)addedDeleted[1]);
+					  }
+				  }
+				  if(!resultMap.isEmpty()){
+					   for(VoterModificationGenderInfoVO vo : resultMap.values()){
+						   if(vo.getAddedMale() != null &&  vo.getAddedFemale() != null)
+						     vo.setAddedTotal(vo.getAddedMale() + vo.getAddedFemale());
+						   if(vo.getDeletedMale() != null &&  vo.getDeletedFemale() != null)
+						     vo.setDeletedTotal(vo.getDeletedMale() + vo.getDeletedFemale());
+					   }
+				       resultList.addAll(resultMap.values());
+				   }
+			  }
+			 }catch(Exception e){
+				 LOG.error("Exception Occured in getGendWiseVoterModifsForEachPublicationsFromIntermediateTable() Method",e);
+			 }
+		 }
+	  
+	  
+	  public VoterModificationGenderInfoVO getVoterModificationGenderInfoVOFromResultList(Long publicationDateId,List<VoterModificationGenderInfoVO> resultList)
+		 {
+			 try{
+				 if(resultList != null && resultList.size() > 0)
+					 for(VoterModificationGenderInfoVO infoVO : resultList)
+						 if(infoVO.getPublicationId().equals(publicationDateId))
+							 return infoVO;
+				 return null;
+			 }catch (Exception e) {
+				 LOG.error("Exception Occured in getVoterModificationGenderInfoVOFromResultList() Method");
+				 LOG.error("Exception is - "+e);
+				 return null;
+			}
+		 }
+	  
+	  public List<Long> getPreviousPublicationIds(Long publicationDateId)
+		 {
+			 LOG.debug("Entered into getPreviousPublicationId() Method");
+			 try{
+				 return voterInfoDAO.getPreviousPublicationIds(publicationDateId);
+			 }catch (Exception e) {
+				 LOG.error("Exception Occured in getPreviousPublicationId() Method");
+				 LOG.error("Exception is - "+e);
+				 return null; 
+			 }
+		 }
 	  
 	  /**
 	   * This service is ude for getting the delimation effect for constitueny
