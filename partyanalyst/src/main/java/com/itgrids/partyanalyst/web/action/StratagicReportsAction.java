@@ -15,6 +15,8 @@ import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
+import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
@@ -22,12 +24,16 @@ import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
+import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
+import com.itgrids.partyanalyst.service.IStaticDataService;
+import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -45,8 +51,9 @@ public class StratagicReportsAction extends ActionSupport implements
 	private ServletContext context;
 	JSONObject jObj = null;
 	private String task = null;
-	
+	private ResultStatus status;
 	private IStratagicReportsService stratagicReportsService;
+	private IStratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess;
 	private List<SelectOptionVO> constituenciesList;
 	private List userAccessConstituencyList;
 	private ICrossVotingEstimationService crossVotingEstimationService;
@@ -58,7 +65,12 @@ public class StratagicReportsAction extends ActionSupport implements
 	
 	private PartyResultsVerVO prevResults;
 	private List<PartyResultsVO> prevMPTCZPTCResults;
+	private CasteStratagicReportVO casteStratagicReportVO =null;
+	private VoterStratagicReportVo voterStratagicReportVo;
+	private HouseHoldsVO houseHoldsVO;
+	private List<SelectOptionVO> optionsList ;
 	private PartyPositionResultsVO locationsList;
+	private IStaticDataService staticDataService;
 	private VoterModificationVO voterModificationVO;
 	private List<VoterCountVO> VoterCountVOList;
 	private VoterDensityWithPartyVO voterDensityWithPartyVO;
@@ -71,6 +83,51 @@ public class StratagicReportsAction extends ActionSupport implements
 	private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
 	
+	public ResultStatus getStatus() {
+		return status;
+	}
+	public void setStatus(ResultStatus status) {
+		this.status = status;
+	}
+	public IStaticDataService getStaticDataService() {
+		return staticDataService;
+	}
+	public void setStaticDataService(IStaticDataService staticDataService) {
+		this.staticDataService = staticDataService;
+	}
+	public List<SelectOptionVO> getOptionsList() {
+		return optionsList;
+	}
+	public void setOptionsList(List<SelectOptionVO> optionsList) {
+		this.optionsList = optionsList;
+	}
+	public IStratagicReportServiceForMLASuccess getStratagicReportServiceForMLASuccess() {
+		return stratagicReportServiceForMLASuccess;
+	}
+	public void setStratagicReportServiceForMLASuccess(
+			IStratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess) {
+		this.stratagicReportServiceForMLASuccess = stratagicReportServiceForMLASuccess;
+	}
+	public HouseHoldsVO getHouseHoldsVO() {
+		return houseHoldsVO;
+	}
+	public void setHouseHoldsVO(HouseHoldsVO houseHoldsVO) {
+		this.houseHoldsVO = houseHoldsVO;
+	}
+	public VoterStratagicReportVo getVoterStratagicReportVo() {
+		return voterStratagicReportVo;
+	}
+	public void setVoterStratagicReportVo(
+			VoterStratagicReportVo voterStratagicReportVo) {
+		this.voterStratagicReportVo = voterStratagicReportVo;
+	}
+	public CasteStratagicReportVO getCasteStratagicReportVO() {
+		return casteStratagicReportVO;
+	}
+	public void setCasteStratagicReportVO(
+			CasteStratagicReportVO casteStratagicReportVO) {
+		this.casteStratagicReportVO = casteStratagicReportVO;
+	}
 	
 	
 
@@ -535,4 +592,209 @@ public class StratagicReportsAction extends ActionSupport implements
 			return Action.SUCCESS;
 		}
 	
+	 
+		/* Srishailam start*/
+		public String getHouseHoldInfoByConstituency(){
+			LOG.info(" Entered into getHouseHoldDetails() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				Long cosntitueny = jObj.getLong("constituencyId");
+				Long publicationDateId = jObj.getLong("publicationDateId");
+				houseHoldsVO = stratagicReportServiceForMLASuccess.getHouseHoldInfoByConstituency(regvo.getRegistrationID(),cosntitueny,publicationDateId);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in getHouseHoldDetails() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;				
+		}
+		public String getVotersInfoByConstituency(){
+			LOG.info(" Entered into getVotersInfoByConstituency() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				Long cosntitueny = jObj.getLong("constituencyId");
+				Long publicationDateId = jObj.getLong("publicationDateId");
+				voterStratagicReportVo = stratagicReportServiceForMLASuccess.getVotersInfoByConstituency(regvo.getRegistrationID(),cosntitueny,publicationDateId);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in getVotersInfoByConstituency() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;				
+		}
+		public String getFirstTimeVotersInfoByConstituency(){
+			LOG.info(" Entered into getFirstTimeVotersInfoByConstituency() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				Long cosntitueny = jObj.getLong("constituencyId");
+				Long publicationDateId = jObj.getLong("publicationDateId");
+				voterStratagicReportVo = stratagicReportServiceForMLASuccess.getFirstTimeVotersInfoByConstituency(regvo.getRegistrationID(),cosntitueny,publicationDateId);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in getFirstTimeVotersInfoByConstituency() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;				
+		}
+		public String getAgeWiseVotersInfoByConstituency(){
+			LOG.info(" Entered into getAgeWiseVotersInfoByConstituency() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				Long cosntitueny = jObj.getLong("constituencyId");
+				Long publicationDateId = jObj.getLong("publicationDateId");
+				voterStratagicReportVo = stratagicReportServiceForMLASuccess.getAgeWiseVotersInfoByConstituency(regvo.getRegistrationID(),cosntitueny,publicationDateId);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in getAgeWiseVotersInfoByConstituency() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;				
+		}
+		public String getCasteWiseVotersInfoByConstituency(){
+			LOG.info(" Entered into getCasteWiseVotersInfoByConstituency() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				Long cosntitueny = jObj.getLong("constituencyId");
+				Long publicationDateId = jObj.getLong("publicationDateId");
+				casteStratagicReportVO = stratagicReportServiceForMLASuccess.getCasteWiseVotersInfoByConstituency(regvo.getRegistrationID(),cosntitueny,publicationDateId);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in getCasteWiseVotersInfoByConstituency() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;				
+		}
+		
+		/* Srishailam end*/
+		
+		public String mergePanchayats(){
+			LOG.info(" Entered into mergePanchayats() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+
+			} catch (Exception e) {
+				LOG.error("Exception occured in mergePanchayats() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;
+		}
+		
+		
+		
+		public String getSearchTypeDetailsAction(){
+			LOG.info(" Entered into getSearchTypeDetailsAction() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				
+				String searchtype =  jObj.getString("searchType");
+				Long cosntituencyId =  jObj.getLong("cosntituencyId");
+				
+				optionsList = stratagicReportsService.getSearchTypeDetails(regvo.getRegistrationID(),searchtype,cosntituencyId);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in getSearchTypeDetailsAction() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;
+		}
+		
+		public String mergePanchayatsToOnePanchayat(){
+			
+			LOG.info(" Entered into getSearchTypeDetailsAction() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				
+				String searchtype =  jObj.getString("type");
+				Long cosntituencyId =  jObj.getLong("cosntituencyId");
+				Long searchTypeValue =  jObj.getLong("searchTypeValue");
+				Long panchayatId =  jObj.getLong("panchayatId");
+				String PanchayatIds =  jObj.getString("PanchayatIdsForMerge");
+				String[]pachayatList = PanchayatIds.split(",");
+				List<Long> mergedPanchyatsIds = new ArrayList<Long>();
+				
+				for(int i = 0;i<pachayatList.length;i++){
+					pachayatList[i] = replaceString(pachayatList[i]);
+					mergedPanchyatsIds.add(Long.valueOf(pachayatList[i].toString()));
+				}
+				
+				status = stratagicReportsService.mergePanchayatsToOnePanchayat(regvo.getRegistrationID(),searchtype,searchTypeValue,
+						cosntituencyId,panchayatId,mergedPanchyatsIds);
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in getSearchTypeDetailsAction() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;
+			
+		}
+		
+		public String electionDetailsByConstituency(){
+			
+			LOG.info(" Entered into electionDetailsByConstituency() in StratagicReportsAction class");
+			session = request.getSession();
+			RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+			try {
+				if(regvo == null)
+					return Action.ERROR;
+				
+				jObj = new JSONObject(getTask());
+				Long constituencyId= jObj.getLong("constituencyId");
+				optionsList = stratagicReportsService.getElectionIdsAndYearsByCosntutuencyId(2L,constituencyId); //assembly wise election details
+				
+			} catch (Exception e) {
+				LOG.error("Exception occured in electionDetailsByConstituency() of StratagicReportsAction class",e);
+			}
+			return Action.SUCCESS;
+			
+		}
+
+	public String getPanchayatDetailsForElectionInCosntituency(){
+		
+		LOG.info(" Entered into getPanchayatDetailsForElectionInCosntituency() in StratagicReportsAction class");
+		session = request.getSession();
+		RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+		try {
+			if(regvo == null)
+				return Action.ERROR;
+			
+			jObj = new JSONObject(getTask());
+			Long constituencyId= jObj.getLong("constituencyId");
+			Long electionId= jObj.getLong("electionId");
+			optionsList = stratagicReportsService.getPanchayatDetailsForElectionInCosntituency(regvo.getRegistrationID(),constituencyId,electionId);
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured in getPanchayatDetailsForElectionInCosntituency() of StratagicReportsAction class",e);
+		}
+		return Action.SUCCESS;
+	}
 }
