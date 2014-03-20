@@ -58,6 +58,12 @@
 	function getReport(){
 		clearAllReportDivs();
 		
+		getVoterInfo();
+		getAddedDeletedVoterInfoInALocation();
+		getGenderWiseVoterModificationsBetweenPublications();
+		getGenderWiseVoterModificationsForEachPublication()
+		getVoterDensityReport();
+		getMandalWiseVoterModificationReportOfConstituency();
 		getBoothWiseAddedAndDeletedVoters();
 		getPreviousTrendsReport();
 		getPreviousTrendsReportParliament();
@@ -645,10 +651,198 @@
 
 function redirectToCasteInfo(type)
 {
-var win=window.open('casteReportAction.action?type='+type+'', '_blank');
-win.focus();
+	var win=window.open('casteReportAction.action?type='+type+'', '_blank');
+	win.focus();
 }
 
+function getMandalWiseVoterModificationReportOfConstituency()
+ {
+	var constituencyDetails={constituencyId:"",locationType:"constituency",locationValue:"",status:"",fromPublicationDateId:"",toPublicationDateId:""};
+	constituencyDetails.constituencyId=$("#constituencyId").val();
+	constituencyDetails.locationValue=$("#constituencyId").val();
+	constituencyDetails.fromPublicationDateId=8;
+	constituencyDetails.toPublicationDateId=10;
+	
+	$.ajax({
+          type:'POST',
+          url: 'getSubLevelVoterModificationReportForConstituencyAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  $("#ajaxLoad").css("display","none");
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				console.log(result);
+			}
+	   });
+ }
+ 
+ function getVoterDensityReport()
+ {
+	var constituencyDetails={constituencyId:"",publicationId:""};
+	constituencyDetails.constituencyId=$("#constituencyId").val();
+	constituencyDetails.publicationId=10;
+		
+	$.ajax({
+          type:'POST',
+          url: 'getVoterDensityPanchayatWiseWithPartyResultAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  $("#ajaxLoad").css("display","none");
+			if(result != null){
+				console.log(result);
+				buildVoterscountInPanchayats(result);
+			}
+	   });
+ }
+ 
+ function buildVoterscountInPanchayats(result)
+{
+	
+	if(result.densityList != null && result.densityList.length > 0)
+	{
+		$('.partyStrengths').show();
+		var str = '';
+		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">VOTER DENSITY VS PANCHAYATS</h4>';
+		str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
+		str += '<tr>';
+		str += '<th>Voters Range</th>';
+		for(var i in result.densityList)
+		{
+			str += '<th>'+result.densityList[i].type+'</th>';
+		}
+		str += '</tr>';
+		str += '<tr>';
+		str += '<td>No of Panchayats</td>';
+		for(var j in result.densityList)
+		{
+			str += '<td>'+result.densityList[j].count+'</td>';
+		}
+		str += '</tr>';
+		
+		for(var k in result.partyWiseList){
+			str += '<tr>';
+			str += '<td>'+result.partyWiseList[k].partyName+'</td>';
+			for(var j in result.partyWiseList[k].densityList)
+			{
+				str += '<td>'+result.partyWiseList[k].densityList[j].count+'</td>';
+			}
+			str += '</tr>';
+		}
+		
+		str += '<tr>';
+		str += '<td> Ananymous </td>';
+		for(var j in result.ananymousDensity)
+		{
+			str += '<td>'+result.ananymousDensity[j].count+'</td>';
+		}
+		str += '</tr>';
+		
+		str += '</table>';
+		$('.partyStrengths').html(str);
+	}
+}
+
+//VOTER MODIFICATION REPORT
+
+function getVoterInfo(){
+		
+	var constituencyDetails={constituencyId:"",locationType:"constituency",locationValue:"",status:"",fromPublicationDateId:"",toPublicationDateId:"",taskToDo:"voterInfo"};
+	constituencyDetails.constituencyId=$("#constituencyId").val();
+	constituencyDetails.locationValue=$("#constituencyId").val();
+	constituencyDetails.fromPublicationDateId=9;
+	constituencyDetails.toPublicationDateId=10;
+	
+	
+	$.ajax({
+          type:'POST',
+          url: 'getVoterInfoForStratagyAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  $("#ajaxLoad").css("display","none");
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				console.log(result);
+			}
+	   });
+	
+	}
+
+	function getAddedDeletedVoterInfoInALocation()
+	{
+		var constituencyDetails={constituencyId:"",locationType:"constituency",locationValue:"",status:"",fromPublicationDateId:"",toPublicationDateId:"",taskToDo:"addedOrDeletedVoterInfoInALocation"};
+	constituencyDetails.constituencyId=$("#constituencyId").val();
+	constituencyDetails.locationValue=$("#constituencyId").val();
+	constituencyDetails.fromPublicationDateId=9;
+	constituencyDetails.toPublicationDateId=10;
+	
+	
+	$.ajax({
+          type:'POST',
+          url: 'getAddedOrDeletedVoterInfoInALocationForStratagyAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  $("#ajaxLoad").css("display","none");
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				console.log(result);
+			}
+	   });
+	   
+	
+	}
+
+	function getGenderWiseVoterModificationsBetweenPublications()
+	{
+	
+	var constituencyDetails={constituencyId:"",locationType:"constituency",locationValue:"",status:"",fromPublicationDateId:"",toPublicationDateId:"",taskToDo:"genderWiseVoterModifiBetweenPublications"};
+	constituencyDetails.constituencyId=$("#constituencyId").val();
+	constituencyDetails.locationValue=$("#constituencyId").val();
+	constituencyDetails.fromPublicationDateId=8;
+	constituencyDetails.toPublicationDateId=10;
+	
+	
+	$.ajax({
+          type:'POST',
+          url: 'getGenderWiseVoterModifiBetweenPublicationsForStratagyAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  $("#ajaxLoad").css("display","none");
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				console.log(result);
+			}
+	   });
+			
+	}
+
+	function getGenderWiseVoterModificationsForEachPublication()
+	{
+			var constituencyDetails={constituencyId:"",locationType:"constituency",locationValue:"",status:"",fromPublicationDateId:"",toPublicationDateId:"",taskToDo:"genderWiseVoterModifiForEachPublic"};
+	constituencyDetails.constituencyId=$("#constituencyId").val();
+	constituencyDetails.locationValue=$("#constituencyId").val();
+	constituencyDetails.fromPublicationDateId=9;
+	constituencyDetails.toPublicationDateId=10;
+	
+	
+	$.ajax({
+          type:'POST',
+          url: 'getGenderWiseVoterModifiForEachPublicForStratagyAction.action',
+          dataType: 'json',
+          data: {task:JSON.stringify(constituencyDetails)},
+     	  }).done(function(result){ 
+			  $("#ajaxLoad").css("display","none");
+			if(result != null){
+				//buildBoothWiseAddedAndDeletedVoters(result);
+				console.log(result);
+			}
+	   });	
+	
+	}
  
  </script>
 </body>
