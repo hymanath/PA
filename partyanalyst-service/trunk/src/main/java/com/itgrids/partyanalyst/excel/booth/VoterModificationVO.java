@@ -43,6 +43,36 @@ public class VoterModificationVO implements Serializable{
 	private String villageCovered;
 	private List<VoterVO> movedVoterVOsList = new ArrayList<VoterVO>(0);
 	private List<VoterVO> relocatedVoterVOsList = new ArrayList<VoterVO>(0);
+	
+	private String mainHeading;
+	private String subHeading;
+	private String information;
+	
+	
+
+	public String getMainHeading() {
+		return mainHeading;
+	}
+
+	public void setMainHeading(String mainHeading) {
+		this.mainHeading = mainHeading;
+	}
+
+	public String getSubHeading() {
+		return subHeading;
+	}
+
+	public void setSubHeading(String subHeading) {
+		this.subHeading = subHeading;
+	}
+
+	public String getInformation() {
+		return information;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
+	}
 
 	public Long getLocationId() {
 		return locationId;
