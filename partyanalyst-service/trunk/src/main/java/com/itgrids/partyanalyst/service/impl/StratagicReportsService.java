@@ -2770,8 +2770,18 @@ public class StratagicReportsService implements IStratagicReportsService{
 			} catch (Exception e) {
 				LOG.error("Exception raised in getDelimationEffectOnConstituency() method in Suggestive Model Service",e);
 			}
+			delimationDetails.setHeading1("Delimitation Effect");
 			
+			delimationDetails.setHeading2("Based on the new boundaries of the Constituency that " +
+					"came into effect post the delimitation in 2009, we have segregated each " +
+					"party’s performance for 2004 Results to match " +
+					"these areas. Thus the setting of goal is more " +
+					"accurate as we have the exact statistics for" +
+					" the present boundaries.)");
 			
+			delimationDetails.setHeading3(" Parties Performance " +
+					" in "+constituencyDAO.get(constituencyId).getName()+" Constituency for 2004 & 2009" +
+					" Elections (Based on 2009 Delimitation)");
 			return delimationDetails;		
 		}
 
