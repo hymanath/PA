@@ -407,6 +407,23 @@ public class HamletBoothElectionDAO extends GenericDaoHibernate<HamletBoothElect
 		return  query.list(); 
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPanchayatDetailsByConstituencyId(Long constituencyId, Long electionId)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+
+		stringBuilder.append("select distinct model2.panchayat.panchayatId, model2.panchayat.panchayatName from HamletBoothElection model,PanchayatHamlet model2, Booth model3");
+		stringBuilder.append(" where model.hamlet.hamletId = model2.hamlet.hamletId and model.boothConstituencyElection.booth.boothId = model3.boothId");
+		stringBuilder.append(" and model.boothConstituencyElection.constituencyElection.election.electionId = :electionId ");
+		stringBuilder.append("and model.boothConstituencyElection.booth.constituency.constituencyId = :constituencyId order by  model2.panchayat.panchayatName");
+		
+		
+		Query query = getSession().createQuery(stringBuilder.toString());
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("electionId", electionId);
+		return query.list();
+	}
+	
 	public List<Long> getPanchayatIdsByEleIdMandalIdConstituencyId(List<Long> mandalIdsList, Long electionId,Long constituencyId)
 	{
 		Query query = getSession().createQuery("select distinct PH.panchayat.panchayatId from HamletBoothElection HBE , PanchayatHamlet PH where HBE.hamlet.hamletId = PH.hamlet.hamletId " +
