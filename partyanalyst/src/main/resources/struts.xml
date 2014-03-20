@@ -6507,7 +6507,36 @@
 			<result name="success">/jsp/stratagicReports.jsp</result>
 			<result name="error">/jsp/loginForm.jsp</result>
 		</action>
+
+		<action name="getHouseHoldVotersInfoReportsAction" class="stratagicReportsAction" method="getHouseHoldInfoByConstituency">
+			<result type="json" name="success">
+				<param name="root">houseHoldsVO</param>				
+			</result> 
+		</action>
 		
+		<action name="getVotersInfoReportsAction" class="stratagicReportsAction" method="getVotersInfoByConstituency">
+			<result type="json" name="success">
+				<param name="root">voterStratagicReportVo</param>				
+			</result> 
+		</action>
+		
+		<action name="getFirstTimeVotersInfoReportsAction" class="stratagicReportsAction" method="getFirstTimeVotersInfoByConstituency">
+			<result type="json" name="success">
+				<param name="root">voterStratagicReportVo</param>				
+			</result> 
+		</action>
+		
+		<action name="getAgeWiseVotersInfoReportsAction" class="stratagicReportsAction" method="getAgeWiseVotersInfoByConstituency">
+			<result type="json" name="success">
+				<param name="root">voterStratagicReportVo</param>				
+			</result> 
+		</action>
+		
+		<action name="getCasteWiseVotersInfoReportsAction" class="stratagicReportsAction" method="getCasteWiseVotersInfoByConstituency">
+			<result type="json" name="success">
+				<param name="root">casteStratagicReportVO</param>				
+			</result> 
+		</action>
 		
 		<action name="getBoothWiseAddedAndDeletedVotersStratagicAction" class="stratagicReportsAction" method="getBoothWiseAddedAndDeletedVoters">
 			<result type="json" name="success">
@@ -6526,6 +6555,36 @@
 				<param name="root">prevTrendsParliament</param>				
 			</result> 
 		</action>
+		
+		<action name="getSearchTypeDetailsAction" class="stratagicReportsAction" method="getSearchTypeDetailsAction">
+			<result type="json" name="success">
+				<param name="root">prevTrendsParliament</param>				
+			</result> 
+		</action>
+		
+		<action name="mergePanchayatsToOnePanchayatAction" class="stratagicReportsAction" method="mergePanchayatsToOnePanchayat">
+			<result type="json" name="success">
+				<param name="root">status</param>				
+			</result> 
+		</action>
+		
+		<action name="electionDetailsByConstituencyAction" class="stratagicReportsAction" method="electionDetailsByConstituency">
+			<result type="json" name="success">
+				<param name="root">optionsList</param>				
+			</result> 
+		</action>
+		
+		<action name="getPanchayatDetailsForElectionInCosntituencyAction" class="stratagicReportsAction" method="getPanchayatDetailsForElectionInCosntituency">
+			<result type="json" name="success">
+				<param name="root">optionsList</param>				
+			</result> 
+		</action>
+		
+		
+		<action name="mergePanchayatAction" class="stratagicReportsAction" method="mergePanchayats">
+			<result name="success">/jsp/mergePanchayats.jsp</result>			
+		</action>
+		
 		<action name="insertVoterDataForDisAction" class="voterDataManageAction" method="AjaxHandler">
            <result type="json" name="success">
            		<param name="root">publicationDateList</param>
