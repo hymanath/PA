@@ -89,7 +89,7 @@ public class ConstituencyCensusDetailsDAOHibernateTest extends BaseDaoTestCase{
 		years.add(2001L);
 		years.add(2011L);
 		List<ConstituencyCensusDetails> censusDetailsList = constituencyCensusDetailsDAO
-				.getCensusConstituencyByConstituencyIdAndYears(232L, years);
+				.getCensusConstituencyByConstituencyIdAndYears(181L, years);
 				
 		resultVO.setCount(Integer.valueOf(censusDetailsList.size()));			
 		resultVO.setStateName("Andhra Pradesh");
