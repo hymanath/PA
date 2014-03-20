@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,13 +16,16 @@ import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
+import com.itgrids.partyanalyst.dao.IBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
@@ -38,6 +43,7 @@ import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
+import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
@@ -56,7 +62,7 @@ import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StratagicReportsService implements IStratagicReportsService{
-	private static final Logger log = Logger.getLogger(StratagicReportsService.class);
+	private static final Logger LOG = Logger.getLogger(StratagicReportsService.class);
 	
 	@Autowired IUserDAO userDAO;
 	
@@ -101,7 +107,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 	@Autowired IVotersAnalysisService votersAnalysisService;
 	
 	@Autowired IPanchayatResultDAO panchayatResultDAO;
+	
+	@Autowired IAllianceGroupDAO allianceGroupDAO;
 	   
+	@Autowired IBoothResultDAO boothResultDAO;
+	
 	public List<AgeRangeVO> getBoothWiseAddedAndDeletedVoters(Long constiId,Long pubId){
 		List<AgeRangeVO> boothWiseAddedDeletedVoters=new ArrayList<AgeRangeVO>();
 		try{
@@ -304,7 +314,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	public String roundTo2DigitsFloatValue(Float number){
 		  
-		log.debug("Entered into the roundTo2DigitsFloatValue service method");
+		LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
 		  
 		  String result = "";
 		  try
@@ -318,14 +328,14 @@ public class StratagicReportsService implements IStratagicReportsService{
 			result =  f.format(number);
 		  }catch(Exception e)
 		  {
-			  log.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
 			  e.printStackTrace();
 		  }
 		  return result;
 	  }
 	public String roundTo2DigitsDoubleValue(Double number){
 		  
-		log.debug("Entered into the roundTo2DigitsFloatValue service method");
+		LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
 		  
 		  String result = "";
 		  try
@@ -339,7 +349,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			result =  f.format(number);
 		  }catch(Exception e)
 		  {
-			  log.error("Exception raised in roundTo2DigitsFloatValue service method");
+			  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
 			  e.printStackTrace();
 		  }
 		  return result;
@@ -1531,7 +1541,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			
 			}catch(Exception e){
-				log.error("Exception Raised in PartyChanges in Stratagic Report Service" + e);
+				LOG.error("Exception Raised in PartyChanges in Stratagic Report Service" + e);
 			}
 			
 			return finalVO;
@@ -1659,7 +1669,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			}catch (Exception e) {
 				e.printStackTrace();
-				log.error(" Exception Occured in getMandalWisePartyPerformanceReport() method, Exception - "+e);
+				LOG.error(" Exception Occured in getMandalWisePartyPerformanceReport() method, Exception - "+e);
 			  }
 		}
 	 
@@ -1794,7 +1804,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			}catch (Exception e) {
 			
-			 log.error(" Exception Occured in getPartyPerformanceForPanchayatNew() method, Exception - ",e);
+			 LOG.error(" Exception Occured in getPartyPerformanceForPanchayatNew() method, Exception - ",e);
 			}
 		}
 	 
@@ -1946,7 +1956,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			 }
 			 catch(Exception e)
 			 {
-				 log.error(" Exception Occured in getPartyPerformanceForLocalBodyNew() method, Exception - ",e);
+				 LOG.error(" Exception Occured in getPartyPerformanceForLocalBodyNew() method, Exception - ",e);
 			 }
 		 }
 	  
@@ -1957,7 +1967,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				String locationType, Long locationValue, Long constituencyId,
 				Long fromPublicationDateId, Long toPublicationDateId)	 {
 			 VoterModificationVO voterModificationVO = new VoterModificationVO();
-			 log.debug("Entered into getSubLevelsVoterModificationDetailsByLocationValue() Method");
+			 LOG.debug("Entered into getSubLevelsVoterModificationDetailsByLocationValue() Method");
 			 try{
 				 List<Long> publicationIdsList = getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(fromPublicationDateId, toPublicationDateId);
 				 List<Long> pubIdsListForTotVoters = new ArrayList<Long>(0);
@@ -2000,8 +2010,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				
 				
 			 }catch (Exception e) {
-				 log.error("Exception Occured in getSubLevelsVoterModificationDetailsByLocationValue() Method");
-				 log.error("Exception is - "+e);
+				 LOG.error("Exception Occured in getSubLevelsVoterModificationDetailsByLocationValue() Method");
+				 LOG.error("Exception is - "+e);
 			}
 			 
 			 return voterModificationVO;
@@ -2024,14 +2034,14 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 
 			 }catch (Exception e) {
 				 e.printStackTrace();
-				 log.error("Exception Occured in getVoterModificationSubLevelsData() Method, Exception - "+e);
+				 LOG.error("Exception Occured in getVoterModificationSubLevelsData() Method, Exception - "+e);
 				 return voterModificationVO;
 			}
 		 }
 	  
 	  public List<Long> getVoterPublicationIdsBetweenTwoPublicationsForVotersModification(Long fromPublicationDateId,Long toPublicationDateId)
 		 {
-			 log.debug("Entered into getVoterPublicationIdsBetweenTwoPublicationsForVotersModification() Method");
+			 LOG.debug("Entered into getVoterPublicationIdsBetweenTwoPublicationsForVotersModification() Method");
 			 List<Long> publicationIdsList = new ArrayList<Long>(0);
 			 try{
 				 if(fromPublicationDateId == null || fromPublicationDateId == 0 || fromPublicationDateId.equals(toPublicationDateId))
@@ -2043,8 +2053,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 }
 				 return publicationIdsList;
 			 }catch (Exception e) {
-				 log.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublicationsForVotersModification() Method");
-				 log.error("Exception is - "+e);
+				 LOG.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublicationsForVotersModification() Method");
+				 LOG.error("Exception is - "+e);
 				 return publicationIdsList; 
 			 }
 		 }
@@ -2072,19 +2082,19 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 
 			 }catch (Exception e) {
 				 e.printStackTrace();
-				 log.error("Exception Occured in getVoterModificationDataByPublicationDateList() Method, Exception - +e");
+				 LOG.error("Exception Occured in getVoterModificationDataByPublicationDateList() Method, Exception - +e");
 				 
 			}
 		 }
 	  
 	  public List<Long> getVoterPublicationIdsBetweenTwoPublications(Long fromPublicationDateId,Long toPublicationDateId) 
 		 {
-			 log.debug("Entered into getVoterPublicationIdsBetweenTwoPublications() Method");
+			 LOG.debug("Entered into getVoterPublicationIdsBetweenTwoPublications() Method");
 			 try{
 				 return voterInfoDAO.getVoterPublicationIdsBetweenTwoPublications(fromPublicationDateId, toPublicationDateId);
 			 }catch (Exception e) {
-				 log.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublications() Method");
-				 log.error("Exception is - "+e);
+				 LOG.error("Exception Occured in getVoterPublicationIdsBetweenTwoPublications() Method");
+				 LOG.error("Exception is - "+e);
 				 return null;
 			 }
 		 }
@@ -2165,7 +2175,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 
 			 }catch (Exception e) {
 				 e.printStackTrace();
-				 log.error("Exception Occured in getVotermodificationDetailsFromVoterModifInfoTable() Method, Exception - +e");
+				 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModifInfoTable() Method, Exception - +e");
 			}
 		 }
 	  public void getVotermodificationDetailsFromVoterModificationTable(List<Object[]> voterModifDetails, List<VoterModificationVO> voterModificationVOsList, SelectOptionVO optionVO, List<Long> pubIdsListForTotVoters,Long constituencyId)
@@ -2258,7 +2268,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 
 			 }catch (Exception e) {
 				 e.printStackTrace();
-				 log.error("Exception Occured in getVotermodificationDetailsFromVoterModificationTable() Method, Exception -" +e);
+				 LOG.error("Exception Occured in getVotermodificationDetailsFromVoterModificationTable() Method, Exception -" +e);
 				 
 				 
 			}
@@ -2291,7 +2301,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 
 			 }catch (Exception e) {
 				 e.printStackTrace();
-				 log.error("Exception Occured in getVoterModificationSublevelQueryString() method, Exception - "+e);
+				 LOG.error("Exception Occured in getVoterModificationSublevelQueryString() method, Exception - "+e);
 				 return "";
 			}
 		 }
@@ -2310,7 +2320,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 return selectOptionVOList;
 			 }catch (Exception e) {
 				 e.printStackTrace();
-				 log.error("Exception Occured in getTotalVotersByPublicationIdsList() method, Exception - "+e);
+				 LOG.error("Exception Occured in getTotalVotersByPublicationIdsList() method, Exception - "+e);
 				 return null;
 			}
 		}
@@ -2325,7 +2335,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			VoterDensityWithPartyVO voterDensityPartyVO=new VoterDensityWithPartyVO();
 			try {
-				log.debug("Enterd into voterDensityInPanchayat() method in Suggestive Model Service");
+				LOG.debug("Enterd into voterDensityInPanchayat() method in Suggestive Model Service");
 				//Long publicationId = voterInfoDAO.getLatestPublicationDate(constituencyId);
 				if(publicationId != null)
 				{
@@ -2438,7 +2448,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				}
 				
 			} catch (Exception e) {
-				log.error("Exception raised in voterDensityInPanchayat() method in Suggestive Model Service",e);
+				LOG.error("Exception raised in voterDensityInPanchayat() method in Suggestive Model Service",e);
 			}
 			
 			return voterDensityPartyVO;
@@ -2548,4 +2558,347 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 	  
 	//METHOD TO GET VOTERS DENSITY PANCHAYAT WITH PARTY'S WON IN THE PANCHAYATS -- SASI -- END
+	  
+	  /**
+	   * This service is ude for getting the delimation effect for constitueny
+	   * @param constituencyId
+	   * @param partyId
+	   * @return delimationDetails
+	   */
+	  @SuppressWarnings("unused")
+		public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId)
+		{
+			DelimitationEffectVO delimationDetails = new DelimitationEffectVO();
+			try {
+				List<DelimitationEffectVO> delimitationEffectList = null;
+				List<DelimitationEffectVO> delimitationEffectList1 = null;
+				List<DelimitationEffectVO> delimitationEffectList2 = null;
+				Map<String, DelimitationEffectVO> delimationEffectMap = new HashMap<String, DelimitationEffectVO>();
+				Map<String, DelimitationEffectVO> delimationEffectMap1 = new HashMap<String, DelimitationEffectVO>();
+				LOG.debug("Enterd into getDelimationEffectOnConstituency() method in Suggestive Model Service");
+				DelimitationEffectVO others = new DelimitationEffectVO();
+				String presentElectionYear = IConstants.PRESENT_ELECTION_YEAR;
+				String previousElectionYear = IConstants.PREVIOUS_ELECTION_YEAR;
+				delimationDetails.setPresentYear(presentElectionYear);
+				delimationDetails.setPreviousyear(previousElectionYear);
+				Long presentElectionId = electionDAO.getElectionId(presentElectionYear,2l,1l);
+				// here we are getting the present election polled and total voter details
+				List<Object[]> afterDelimationtotalAndPolledVotesCount = boothResultDAO.getAfterDelimitationEffectBasedOnVoters(presentElectionId,constituencyId);
+				if(afterDelimationtotalAndPolledVotesCount != null && afterDelimationtotalAndPolledVotesCount.size() > 0)
+				{
+					// here we are fillng the total and polled voters details into VO
+					fillVotersCountForConstituency(afterDelimationtotalAndPolledVotesCount,delimationDetails,"after");
+					
+				}
+				// here we are getting the party wise polled votes for present election
+				List<Object[]> afterDelimationPartyResult = candidateBoothResultDAO.getPartyWiseAfterDelimationEffectBasedOnVoters(presentElectionId,constituencyId);
+				if(afterDelimationPartyResult != null && afterDelimationPartyResult.size() > 0)
+				{
+					// here we are filling the party wise votes polled and how much percentage they got into VO
+					fillPartyWiseVotersCountAndPercentage(afterDelimationPartyResult,delimationDetails,partyId,delimationEffectMap,"after",others);
+				}
+				
+				// here we are getting the previous election id based on present election id
+				Long previousElectionId = electionDAO.getElectionId(previousElectionYear,2l,1l);
+				
+				// here we are getting the tehsils for present elections (then only we can compare previous and present election details)
+				List<Long> tehsilIds = boothDAO.getTehsilsForAfterDelimation(constituencyId,Long.valueOf(presentElectionYear));
+				//List<Long> panchayatIds = panchayatDAO.getPanchayatIdsForDelemationEffect(constituencyId,Long.valueOf(presentElectionYear));
+				
+				// here we are getting the booth ids for list of tehsil present in present election.
+				List<Long> boothIds  = boothDAO.getBoothsBeforDelimation(Long.valueOf(previousElectionYear),tehsilIds);
+				//List<Long> boothIds  = panchayatHamletDAO.getboothdByPanchayat(Long.valueOf(previousElectionYear),panchayatIds);
+				
+				// here we are getting the previous elections total voters and polled votes
+				List<Object[]> beforeDelimationtotalAndPolledVotesCount = boothResultDAO.getBeforeDelimitationEffectBasedOnVoters(previousElectionId,boothIds);
+				if(beforeDelimationtotalAndPolledVotesCount != null && beforeDelimationtotalAndPolledVotesCount.size() > 0)
+				{
+					// here we are filling the previous voters and polled votes details in VO
+					fillVotersCountForConstituency(beforeDelimationtotalAndPolledVotesCount,delimationDetails,"before");
+				}
+				
+				// here we are getting the previous election details based on present booths
+				List<Object[]> beforeDelimationPartyResult = candidateBoothResultDAO.getPartyWiseBeforDelimationEffectBasedOnVoters(previousElectionId,boothIds);
+				if(beforeDelimationPartyResult != null && beforeDelimationPartyResult.size() > 0)
+				{
+					// here we are filling the party wise votes polled and percentage for previous election
+					fillPartyWiseVotersCountAndPercentage(beforeDelimationPartyResult,delimationDetails,partyId,delimationEffectMap,"before",others);
+				}
+				// here we are placing the all details into VO by party wise
+				Set<String> totalParties = delimationEffectMap.keySet();
+				if(totalParties != null && totalParties.size() > 0)
+				{
+				    delimitationEffectList = new ArrayList<DelimitationEffectVO>();
+					for (DelimitationEffectVO delimitationEffectVO : delimationEffectMap.values()) {
+						if(delimitationEffectVO.getPresentCount() > 0 || delimitationEffectVO.getPreviousCount() > 0)
+						{
+							DelimitationEffectVO delimitationEffect = new DelimitationEffectVO();
+							delimitationEffect.setPartyId(delimitationEffectVO.getPartyId());
+							delimitationEffect.setPartyName(delimitationEffectVO.getPartyName());
+							delimitationEffect.setPresentCount(delimitationEffectVO.getPresentCount());
+							delimitationEffect.setPresentPolledVotes(delimitationEffectVO.getPresentPolledVotes());
+							delimitationEffect.setPresentPerc(delimitationEffectVO.getPresentPerc());
+							delimitationEffect.setPreviousCount(delimitationEffectVO.getPreviousCount());
+							delimitationEffect.setPreviousPolledVotes(delimitationEffectVO.getPreviousPolledVotes());
+							delimitationEffect.setPreviousPerc(delimitationEffectVO.getPreviousPerc());
+							
+							delimitationEffectList.add(delimitationEffect);
+						}
+						
+					}
+				}
+				
+				delimationDetails.setDelimitationEffectVO(delimitationEffectList);
+				delimitationEffectList1 = new ArrayList<DelimitationEffectVO>();
+				
+				// here we are processing the result for the sake of allians party wise results for present election
+				for (DelimitationEffectVO delimitationEffectVO : delimationDetails.getDelimitationEffectVO()) {
+					
+					DelimitationEffectVO delimitationEffectVO2 = new DelimitationEffectVO();
+					
+					List<Object[]> allianceParites = allianceGroupDAO.findAlliancePartiesByElectionAndParty(38l, delimitationEffectVO.getPartyId());
+					if(allianceParites != null && allianceParites.size() > 0)
+					{
+						Long presentCount = 0l;
+						for (Object[] objects : allianceParites)
+						{
+							DelimitationEffectVO delimitationEffect = delimationEffectMap.get(objects[3].toString());
+							if(delimitationEffect != null)
+							{
+								delimitationEffectVO2.setPartyId(delimitationEffectVO.getPartyId());
+								delimitationEffectVO2.setPartyName(delimitationEffectVO.getPartyName());
+								delimitationEffectVO2.setPresentCount(delimitationEffectVO2.getPresentCount() + delimitationEffect.getPresentCount());
+								delimitationEffectVO2.setPresentPolledVotes(delimitationEffectVO2.getPresentPolledVotes() + delimitationEffect.getPresentPolledVotes());
+								delimitationEffectVO2.setPresentPerc(delimitationEffectVO2.getPresentPerc() + delimitationEffect.getPresentPerc());
+								
+							}
+							
+						}
+					}
+					else
+					{
+						delimitationEffectVO = delimationEffectMap.get(delimitationEffectVO.getPartyName());
+						delimitationEffectVO2.setPartyId(delimitationEffectVO.getPartyId());
+						delimitationEffectVO2.setPartyName(delimitationEffectVO.getPartyName());
+						delimitationEffectVO2.setPresentCount(delimitationEffectVO.getPresentCount());
+						delimitationEffectVO2.setPresentPolledVotes(delimitationEffectVO.getPresentPolledVotes());
+						delimitationEffectVO2.setPresentPerc(delimitationEffectVO.getPresentPerc());
+						
+					}
+					if(delimitationEffectVO2.getPartyName() != null)
+					{
+						delimationEffectMap1.put(delimitationEffectVO.getPartyName(), delimitationEffectVO2);
+						delimitationEffectList1.add(delimitationEffectVO2);
+					}
+					
+				}
+				//delimationDetails.setPresentElections(delimitationEffectList1);
+				
+				
+				delimitationEffectList2 = new ArrayList<DelimitationEffectVO>();
+				// here we are processing the result for the sake of alliance party wise result for previous elections
+				for (DelimitationEffectVO delimitationEffectVO : delimationDetails.getDelimitationEffectVO()) {
+					
+					
+						//DelimitationEffectVO delimitationEffectVO2 = new DelimitationEffectVO();
+					DelimitationEffectVO delimitationEffectVO2 = delimationEffectMap1.get(delimitationEffectVO.getPartyName());
+						if(delimitationEffectVO != null)
+						{
+							
+							List<Object[]> allianceParites = allianceGroupDAO.findAlliancePartiesByElectionAndParty(3l, delimitationEffectVO.getPartyId());
+							if(allianceParites != null && allianceParites.size() > 0)
+							{
+								Long presentCount = 0l;
+								for (Object[] objects : allianceParites)
+								{
+									DelimitationEffectVO delimitationEffect = delimationEffectMap.get(objects[3].toString());
+									if(delimitationEffect != null)
+									{
+										delimitationEffectVO2.setPartyId(delimitationEffectVO.getPartyId());
+										delimitationEffectVO2.setPartyName(delimitationEffectVO.getPartyName());
+										delimitationEffectVO2.setPreviousCount(delimitationEffectVO2.getPreviousCount() + delimitationEffect.getPreviousCount());
+										delimitationEffectVO2.setPreviousPolledVotes(delimitationEffectVO2.getPreviousPolledVotes() + delimitationEffect.getPreviousPolledVotes());
+										delimitationEffectVO2.setPreviousPerc(delimitationEffectVO2.getPreviousPerc() + delimitationEffect.getPreviousPerc());
+										
+									}
+									
+								}
+							}
+							else
+							{
+								delimitationEffectVO = delimationEffectMap.get(delimitationEffectVO.getPartyName());
+								delimitationEffectVO2.setPartyId(delimitationEffectVO.getPartyId());
+								delimitationEffectVO2.setPartyName(delimitationEffectVO.getPartyName());
+								delimitationEffectVO2.setPreviousCount(delimitationEffectVO.getPreviousCount());
+								delimitationEffectVO2.setPreviousPolledVotes(delimitationEffectVO.getPreviousPolledVotes());
+								delimitationEffectVO2.setPreviousPerc(delimitationEffectVO.getPreviousPerc());
+								
+							}
+							
+							if(delimitationEffectVO2.getPartyId() != null)
+							{
+								delimationEffectMap1.put(delimitationEffectVO.getPartyName(), delimitationEffectVO2);
+								delimitationEffectList2.add(delimitationEffectVO2);
+							}
+						}
+						else
+						{
+							delimationEffectMap1.put(delimitationEffectVO.getPartyName(), delimitationEffectVO2);
+						}
+					}
+					
+
+				//delimationDetails.setPervElections(delimitationEffectList2);
+				
+				
+				// here we are processing the result for only selected parties
+				String reqParties = IConstants.STATIC_PARTIESFOR_DELIMATION.replace("'", "");
+				List<String> partyNames = Arrays.asList(reqParties.split("\\s*,\\s*"));
+				List<DelimitationEffectVO> withoutAllianceList = new ArrayList<DelimitationEffectVO>();
+				List<DelimitationEffectVO> withAllianceList = new ArrayList<DelimitationEffectVO>();
+				for (String partyName : partyNames)
+				{
+					DelimitationEffectVO withoutAlliance = delimationEffectMap.get(partyName);
+					DelimitationEffectVO withAlliance = delimationEffectMap1.get(partyName);
+					if(withoutAlliance != null)
+					withoutAllianceList.add(withoutAlliance);
+					if(withAlliance != null)
+					withAllianceList.add(withAlliance);
+				}
+				delimationDetails.setDelimitationEffectVO(withoutAllianceList);
+				delimationDetails.setPresentElections(withAllianceList);
+			} catch (Exception e) {
+				LOG.error("Exception raised in getDelimationEffectOnConstituency() method in Suggestive Model Service",e);
+			}
+			
+			
+			return delimationDetails;		
+		}
+
+	  
+	  public void fillVotersCountForConstituency(List<Object[]> result,DelimitationEffectVO delimationDetails,String type)
+		{
+			try {
+				LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service");
+				DecimalFormat df = new DecimalFormat("#.##");
+				if(type.equalsIgnoreCase("after"))
+				{
+					for (Object[] parms : result) {
+						delimationDetails.setPresentCount((Long)parms[0]);
+						delimationDetails.setPresentPolledVotes((Long)parms[1]);
+						if(delimationDetails.getPresentCount() >0 && delimationDetails.getPresentPolledVotes() > 0)
+						{
+							Double percentage = Double.valueOf(df.format(Long.valueOf(delimationDetails.getPresentPolledVotes())*100/(float)delimationDetails.getPresentCount()));
+							delimationDetails.setPresentPerc(percentage);
+						}
+					}
+				}
+				else
+				{
+					for (Object[] parms : result) {
+						delimationDetails.setPreviousCount((Long)parms[0]);
+						delimationDetails.setPreviousPolledVotes((Long)parms[1]);
+						if(delimationDetails.getPreviousCount() >0 && delimationDetails.getPreviousPolledVotes() > 0)
+						{
+							Double percentage = Double.valueOf(df.format(Long.valueOf(delimationDetails.getPreviousPolledVotes())*100/(float)delimationDetails.getPreviousCount()));
+							delimationDetails.setPreviousPerc(percentage);
+						}
+					}
+				}
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised in fillVotersCountForConstituency() method in Suggestive Model Service",e);
+			}
+			
+		}
+	  
+	  public void fillPartyWiseVotersCountAndPercentage(List<Object[]> result,DelimitationEffectVO delimationDetails,Long partyId,Map<String, DelimitationEffectVO> delimationEffectMap,String type,DelimitationEffectVO others)
+		{
+			try {
+				LOG.debug("Enterd into fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service");
+				DecimalFormat df = new DecimalFormat("#.##");
+				//String parties = IConstants.STATIC_PARTIESFOR_DELIMATION.replace("'", "");
+				String parties = IConstants.STATIC_PARTIES.replace("'", "");
+				List<String> partyNames = Arrays.asList(parties.split("\\s*,\\s*"));
+				
+				Long count = 0l;
+				DelimitationEffectVO delimitationEffectVO = null;
+				
+					for (Object[] parms : result) {
+						
+						String party = parms[2].toString();
+						delimitationEffectVO =  delimationEffectMap.get(party);
+						if(delimitationEffectVO == null)
+						{
+							delimitationEffectVO = new DelimitationEffectVO();
+							delimationEffectMap.put(party, delimitationEffectVO);
+						}
+						if(type.equalsIgnoreCase("after"))
+						{
+							if(partyNames.contains(party))
+							{
+								delimitationEffectVO.setPresentCount((Long)parms[1]);
+								delimitationEffectVO.setPartyId((Long)parms[0]);
+								delimitationEffectVO.setPartyName(parms[2] != null ? parms[2].toString() : "");
+								if(delimationDetails.getPresentCount() > 0 && delimationDetails.getPresentPolledVotes() > 0)
+								{
+									Double percentage = Double.valueOf(df.format(Long.valueOf(delimitationEffectVO.getPresentCount())*100/(float)delimationDetails.getPresentPolledVotes()));
+									delimitationEffectVO.setPresentPerc(percentage);
+									
+								}
+							}
+							else
+							{
+								count = count + (Long)parms[1];
+								others.setPartyId(0l);
+								others.setPresentCount(count);
+								others.setPartyName("Others");
+								Double percentage = Double.valueOf(df.format(Long.valueOf(count)*100/(float)delimationDetails.getPresentPolledVotes()));
+								others.setPresentPerc(percentage);
+							
+							}
+						}
+						else
+						{
+							if(partyNames.contains(party))
+							{
+								delimitationEffectVO.setPreviousCount((Long)parms[1]);
+								delimitationEffectVO.setPartyId((Long)parms[0]);
+								delimitationEffectVO.setPartyName(parms[2] != null ? parms[2].toString() : "");
+								if(delimationDetails.getPreviousCount() > 0 && delimationDetails.getPreviousPolledVotes() > 0)
+								{
+									Double percentage = Double.valueOf(df.format(Long.valueOf(delimitationEffectVO.getPreviousCount())*100/(float)delimationDetails.getPreviousPolledVotes()));
+									delimitationEffectVO.setPreviousPerc(percentage);
+									
+								}
+							}
+							else
+							{
+								count = count + (Long)parms[1];
+								others.setPartyId(0l);
+								others.setPreviousCount(count);
+								others.setPartyName("Others");
+								Double percentage = Double.valueOf(df.format(Long.valueOf(count)*100/(float)delimationDetails.getPreviousPolledVotes()));
+								others.setPreviousPerc(percentage);
+							
+							}
+						}
+						
+					}
+				
+				
+				if(others.getPreviousCount() > 0 || others.getPresentCount() > 0)
+				{
+					delimationEffectMap.put(others.getPartyName(), others);
+				}
+				
+				
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised in fillPartyWiseVotersCountAndPercentage() method in Suggestive Model Service",e);
+			}
+			
+		}
+		
+		
 }
