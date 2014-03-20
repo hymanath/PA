@@ -1776,7 +1776,10 @@
 	  <property name="candidateResultDAO" ref="candidateResultDAO" />
 	  <property name="prpWeightegesDAO" ref="prpWeightegesDAO" />
 	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO" />
-	  <property name="staticDataService" ref="staticDataService" />	  	  
+	  <property name="staticDataService" ref="staticDataService" />	 
+	  <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
+	  <property name="voterModifiationPdfsGenerations" ref="voterModifiationPdfsGenerations" />	  	
+	  <property name="allianceGroupDAO" ref="allianceGroupDAO" />	  
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">

@@ -1824,7 +1824,7 @@ function buildgetDelimationEffect(result)
 	var str = '';
 	str+='<div class="widget blue">';
 	str+='<div style="margin-top: 0px; clear: both; display: block; padding-bottom:1px;overflow:scroll;" class="widget-block">';
-	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Delimation Effect</h4>';
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Delimation Effect With Out Alliance</h4>';
 	str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
 	str += '<tr>';
 	str += '<th rowspan="2">Election Year</th>';
@@ -1865,6 +1865,51 @@ function buildgetDelimationEffect(result)
 	{
 		str += '<td>'+result.delimitationEffectVO[k].presentCount+'</td>';
 		str += '<td>'+result.delimitationEffectVO[k].presentPerc+'</td>';
+	}
+	str += '</tr>';
+	str += '</table>';
+	
+	str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;" class="">Delimation Effect With Alliance</h4>';
+	str += '<table class="table table-hover table-bordered" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;margin-left: -15px;">';
+	str += '<tr>';
+	str += '<th rowspan="2">Election Year</th>';
+	str += '<th rowspan="2">Total Votes</th>';
+	str += '<th rowspan="2">Polled votes</th>';
+	str += '<th rowspan="2">Poll %</th>';
+	for(var i  in result.presentElections)
+	{
+		str += '<th colspan="2"><span style="float: left; margin-left: 30px;">'+result.presentElections[i].partyName+'</span></th>';
+		
+	}
+	
+	str += '</tr>';
+	str += '<tr>';
+	for(var n  in result.presentElections)
+	{
+		str += '<th>Gain Votes</th>';
+		str += '<th>%</th>';
+	}
+	str += '</tr>';
+	str += '<tr>';
+	str += '<td>'+result.previousyear+'</td>';
+	str += '<td>'+result.previousCount+'</td>';
+	str += '<td>'+result.previousPolledVotes+'</td>';
+	str += '<td>'+result.previousPerc+'</td>';
+	for(var j in result.presentElections)
+	{
+		str += '<td>'+result.presentElections[j].previousCount+'</td>';
+		str += '<td>'+result.presentElections[j].previousPerc+'</td>';
+	}
+	str += '</tr>';
+	str += '<tr>';
+	str += '<td>'+result.presentYear+'</td>';
+	str += '<td>'+result.presentCount+'</td>';
+	str += '<td>'+result.presentPolledVotes+'</td>';
+	str += '<td>'+result.presentPerc+'</td>';
+	for(var k in result.presentElections)
+	{
+		str += '<td>'+result.presentElections[k].presentCount+'</td>';
+		str += '<td>'+result.presentElections[k].presentPerc+'</td>';
 	}
 	str += '</tr>';
 	str += '</table>';
