@@ -9,6 +9,8 @@ import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
@@ -38,4 +40,12 @@ public interface IStratagicReportsService {
 	public DelimitationEffectVO getDelimationEffectOnConstituency(Long constituencyId,Long partyId);
 	
 	public AssumptionsVO votersAssumptionsService(Long constituencyId,Long base,Long assured,Long publicationDateId,Long tdpPerc);
+	
+	public List<SelectOptionVO> getSearchTypeDetails(Long userId,String searchtype,Long cosntituencyId);
+	
+	public ResultStatus mergePanchayatsToOnePanchayat(Long userId, String searchtype,Long searchTypeValue,Long cosntituencyId,Long panchayatId,List<Long> mergedPanchyatsIds);
+	
+	public List<SelectOptionVO> getElectionIdsAndYearsByCosntutuencyId(Long electionScopeId,Long constituencyId) ;
+	
+	public List<SelectOptionVO> getPanchayatDetailsForElectionInCosntituency(Long userId,Long constituencyId,Long elctionId);
 }
