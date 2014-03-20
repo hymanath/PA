@@ -23,8 +23,8 @@ import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
-import com.itgrids.partyanalyst.dto.CensusVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
+import com.itgrids.partyanalyst.dto.StrategicCensusVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
@@ -275,10 +275,10 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	
 
 	
-	public CensusVO getCensusDetailsForAConstituency(Long constituencyId)
+	public StrategicCensusVO getCensusDetailsForAConstituency(Long constituencyId)
 	{
 		LOG.debug("Entered into the getCensusDetailsForAConstituency service method StratagicReportServiceForMLASuccess class.");
-		CensusVO resultVO = new CensusVO();
+		StrategicCensusVO resultVO = new StrategicCensusVO();
 		
 		try
 		{
@@ -303,22 +303,19 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			List<ConstituencyCensusDetails> censusDetailsList = constituencyCensusDetailsDAO
 					.getCensusConstituencyByConstituencyIdAndYears(constituencyId, years);
 					
-			resultVO.setCount(Integer.valueOf(censusDetailsList.size()));			
 			resultVO.setStateName(stateInfo.size() != 0 ?stateName:"");
+			resultVO.setCount(Integer.valueOf(censusDetailsList.size()));			
 			resultVO.setDistrictName(districtInfo.size()>0 ? districtName:"");
-								
 			
-			List<CensusVO> censusList = new ArrayList<CensusVO>();
+			List<StrategicCensusVO> censusList = new ArrayList<StrategicCensusVO>();
 			
 			for(ConstituencyCensusDetails details:censusDetailsList)
 			{
-
-					CensusVO censusDetailsVO = new CensusVO();				
+					StrategicCensusVO censusDetailsVO = new StrategicCensusVO();				
 					
 					censusDetailsVO.setYear(Integer.parseInt(details.getYear().toString()!= null ? details.getYear().toString():"0"));
 					censusDetailsVO.setTotalPopulation(details.getTotalPopulation());
 					censusDetailsVO.setTotalPopulationPercentage("".toString());
-					
 					
 					censusDetailsVO.setMalePopulation(details.getTotalMalePopulation());
 					censusDetailsVO.setFemalePopulation(details.getTotalFemalePopulation());				
@@ -359,14 +356,12 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					censusDetailsVO.setFemaleLiteraturePercentage(Double.parseDouble(roundTo2DigitsFloatValue((float)details.getFemaleLiterates()*100f/details.getPopulationLiterates())));
 					
 					censusList.add(censusDetailsVO);
-					
-
 			}
 			
 			resultVO.setCensusDetailsList(censusList);
 			
-			CensusVO previousDetails = censusList.get(0);
-			CensusVO currentDetails = censusList.get(1);
+			StrategicCensusVO previousDetails = censusList.get(0);
+			StrategicCensusVO currentDetails = censusList.get(1);
 			
 			resultVO.setDifferencePopulation(currentDetails.getTotalPopulation() - previousDetails.getTotalPopulation());
 			resultVO.setDifferencePopulationPercent(roundTo2DigitsFloatValue((float)resultVO.getDifferencePopulation()*100f/previousDetails.getTotalPopulation()));
@@ -441,8 +436,8 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			
 			List<Object[]> stateCensusDetails = censusDAO.getStatePopulationForDifferentYears(stateId,years);
 			
-			CensusVO districtVO = new CensusVO();
-			CensusVO stateVO = new CensusVO();
+			StrategicCensusVO districtVO = new StrategicCensusVO();
+			StrategicCensusVO stateVO = new StrategicCensusVO();
 			
 			
 			setValuesToCensusVO(districtCensusDetails.get(0),districtCensusDetails.get(1), districtVO);
@@ -476,7 +471,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 		return resultVO;
 	}
 
-	private void setValuesToCensusVO(Object[] currentDetails , Object[] previousDetails,CensusVO censusDetailsVO)
+	private void setValuesToCensusVO(Object[] currentDetails , Object[] previousDetails,StrategicCensusVO censusDetailsVO)
 	{
 		LOG.error("Entered into the setValuesToCensusVO method StratagicReportServiceForMLASuccess class");
 		//CensusVO censusDetailsVO = new CensusVO();
