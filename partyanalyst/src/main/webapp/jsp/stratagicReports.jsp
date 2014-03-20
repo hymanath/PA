@@ -386,7 +386,11 @@
 	str+="<h4 style='text-align:center;'> ZPTC & MPTC Results </h4>";
 	str+="<table class='table table-bordered' style='font-size:16px;'>";
 	str+="<thead>";
-	str+="<tr><th>YEAR </th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>%</th><th>MARGIN (%)</th><th>INC</th><th>%</th><th>TRS</th><th>%</th><th>OTHERS</th><th>%</th></tr>";
+	str+="<tr><th>YEAR </th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>%</th><th>MARGIN (%)</th><th>INC</th><th>%</th>";
+	if(myResults.districtId<=10){
+		str+="<th>TRS</th><th>%</th>";
+	}
+	str+="<th>OTHERS</th><th>%</th></tr>";
 	str+="</thead>";
 	str+="<tbody>";
 	
@@ -431,6 +435,7 @@
 					if(!inc_exist){
 						str+="<td> -- </td><td> -- </td>";
 					}
+					if(myResults.districtId<=10){
 					for(var j=0;j<results[i].partyResultsVOList.length;j++){
 						if(results[i].partyResultsVOList[j].partyId==886){
 							if(results[i].partyResultsVOList[j].rank!=null){
@@ -444,6 +449,7 @@
 					
 					if(!trs_exist){
 						str+="<td> -- </td><td> -- </td>";
+					}
 					}
 					if(results[i].otherVotes!=null){
 						str+="<td>"+results[i].otherVotes+"</td><td>"+results[i].otherVotesPercent+"</td>";
@@ -469,7 +475,11 @@
 	str+="<h4 style='text-align:center;'> Muncipal/Corporation Results </h4>";
 	str+="<table class='table table-bordered' style='font-size:16px;'>";
 	str+="<thead>";
-	str+="<tr><th> Location </th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>INC</th><th>BJP</th><th>TRS</th><th>Others</th>";
+	str+="<tr><th> Location </th><th>Total Voters</th><th>Votes Polled</th><th>TDP</th><th>INC</th><th>BJP</th>";
+	if(myResults.districtId<=10){
+		str+="<th>TRS</th>";
+	}
+	str+="<th>Others</th>";
 	//str+="<th>TRS</th><th>%</th><th>OTHERS</th><th>%</th></tr>";
 	str+="</thead>";
 	str+="<tbody>";
@@ -497,7 +507,7 @@
 								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
 								ranked=true;
 							}else{
-								str+="<td style='background:#F7DFAF;'>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
+								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td>";
 							}
 							
 							tdp_exist=true;
@@ -537,6 +547,8 @@
 					if(!bjp_exist){
 						str+="<td> -- </td>";
 					}
+					
+					if(myResults.districtId<=10){
 					for(var j=0;j<results[i].partyResultsVOList.length;j++){
 						if(results[i].partyResultsVOList[j].partyId==886){
 							if(results[i].partyResultsVOList[j].rank==1){
@@ -551,6 +563,7 @@
 					
 					if(!trs_exist){
 						str+="<td> -- </td>";
+					}
 					}
 					
 					if(results[i].otherVotes!=null){
@@ -582,8 +595,16 @@
 				vstr+="<h4 style='text-align:center;'> Muncipal/Corporation Party Strength </h4>";
 				vstr+="<table class='table table-bordered' style='font-size:16px;'>";
 				vstr+="<thead>";
-					vstr+="<tr><th colspan=3>TDP</th><th colspan=3>INC</th><th colspan=3>BJP</th><th colspan=3>TRS</th><th colspan=3>OTHERS</th></tr>";
-					vstr+="<tr><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th></tr>";
+					vstr+="<tr><th colspan=3>TDP</th><th colspan=3>INC</th><th colspan=3>BJP</th>";
+					if(myResults.districtId<=10){
+						vstr+="<th colspan=3>TRS</th>";
+					}
+					vstr+="<th colspan=3>OTHERS</th></tr>";
+					vstr+="<tr><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th><th>Participated</th><th>Secured</th><th>Votes %</th>";
+					if(myResults.districtId<=10){
+						vstr+="<th>Participated</th><th>Secured</th><th>Votes %</th>";
+					}
+					vstr+="</tr>";
 				vstr+="</thead>";
 				vstr+="<tbody>";
 					
@@ -621,7 +642,7 @@
 					if(!v_bjp_exist){
 						vstr+="<td> - </td><td> - </td><td> - </td>";
 					}
-					
+					if(myResults.districtId<=10){
 					for(var i=0;i<vresults.length;i++){
 						if(vresults[i].partyId==886){
 							vstr+="<td>"+vresults[i].participated+"</td>";
@@ -632,6 +653,7 @@
 					}
 					if(!v_trs_exist){
 						vstr+="<td> - </td><td> - </td><td> - </td>";
+					}
 					}
 					
 					vstr+="<td>"+myResults.participated+"</td>";
