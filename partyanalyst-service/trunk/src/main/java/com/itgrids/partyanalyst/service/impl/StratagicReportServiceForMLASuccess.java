@@ -24,7 +24,6 @@ import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
-import com.itgrids.partyanalyst.dto.StrategicCensusStatusVO;
 import com.itgrids.partyanalyst.dto.StrategicCensusVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -285,8 +284,8 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	public StrategicCensusVO getCensusDetailsForAConstituency(Long constituencyId)
 	{
 		LOG.debug("Entered into the getCensusDetailsForAConstituency service method StratagicReportServiceForMLASuccess class.");
-		StrategicCensusStatusVO resultVO = new StrategicCensusStatusVO();
-		StrategicCensusVO returnResultVO = new StrategicCensusVO();
+		StrategicCensusVO resultVO = new StrategicCensusVO();
+		
 		try
 		{
 			List<Long> years = new ArrayList<Long>();
@@ -294,34 +293,16 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			years.add(2001L);
 			years.add(2011L);
 		
-			String stateName = null;
-			String districtName = null;
-			String constituencyName = null;
-			Constituency constituency = constituencyDAO.get(constituencyId);
-			
-			
-			Long stateId = constituency.getState().getStateId();
-			Long districtId = constituency.getDistrict().getDistrictId();
-			stateName = constituency.getState().getStateName();
-			districtName = constituency.getDistrict().getDistrictName();
-			constituencyName = constituency.getName();
-					
-			returnResultVO.setStateName(stateName != null ?stateName:"");			
-			returnResultVO.setDistrictName(districtName != null ? districtName:"");
-			returnResultVO.setConstituencyName(constituencyName != null ?constituencyName:"");
-			
-			
 			List<ConstituencyCensusDetails> censusDetailsList = constituencyCensusDetailsDAO
 					.getCensusConstituencyByConstituencyIdAndYears(constituencyId, years);
+					
 			
-			returnResultVO.setCount(Integer.valueOf(censusDetailsList.size()));
-			
-			
-			List<StrategicCensusStatusVO> censusList = new ArrayList<StrategicCensusStatusVO>();
+			resultVO.setCount(Integer.valueOf(censusDetailsList.size()));	
+			List<StrategicCensusVO> censusList = new ArrayList<StrategicCensusVO>();
 			
 			for(ConstituencyCensusDetails details:censusDetailsList)
 			{
-				StrategicCensusStatusVO censusDetailsVO = new StrategicCensusStatusVO();				
+					StrategicCensusVO censusDetailsVO = new StrategicCensusVO();				
 					
 					censusDetailsVO.setYear(Integer.parseInt(details.getYear().toString()!= null ? details.getYear().toString():"0"));
 					censusDetailsVO.setTotalPopulation(details.getTotalPopulation());
@@ -368,10 +349,10 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					censusList.add(censusDetailsVO);
 			}
 			
-			returnResultVO.setStrategicCensusStatusVOList(censusList);
+			resultVO.setCensusDetailsList(censusList);
 			
-			StrategicCensusStatusVO previousDetails = censusList.get(0);
-			StrategicCensusStatusVO currentDetails = censusList.get(1);
+			StrategicCensusVO previousDetails = censusList.get(0);
+			StrategicCensusVO currentDetails = censusList.get(1);
 			
 			resultVO.setDifferencePopulation(currentDetails.getTotalPopulation() - previousDetails.getTotalPopulation());
 			resultVO.setDifferencePopulationPercent(roundTo2DigitsFloatValue((float)resultVO.getDifferencePopulation()*100f/previousDetails.getTotalPopulation()));
@@ -435,13 +416,25 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			resultVO.setDifferenceMaleLiteratesPercent(roundTo2DigitsFloatValue((float)resultVO.getDifferenceMaleLiterates()*100f/previousDetails.getMaleLiterates()));
 			resultVO.setDifferenceFemaleLiterates(currentDetails.getFemaleLiterates() - previousDetails.getFemaleLiterates());
 			resultVO.setDifferenceFemaleLiteratesPercent(roundTo2DigitsFloatValue((float)resultVO.getDifferenceFemaleLiterates() *100f /previousDetails.getFemaleLiterates()));
+			
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			
+			Long stateId = constituency.getState().getStateId();
+			Long districtId = constituency.getDistrict().getDistrictId();
 
+			String stateName = constituency.getState().getStateName();
+			String districtName = constituency.getDistrict().getDistrictName();
+			String constituencyName = constituency.getName();
+			
+			resultVO.setStateName(stateName != null  ?stateName:"");
+			resultVO.setDistrictName(districtName != null ? districtName:"");
+			resultVO.setConstituencyName(constituencyName != null ?constituencyName:"");
 			
 			List<Object[]> districtCensusDetails = censusDAO.getDistrictPopulationForDifferentYears(districtId,years);
 			List<Object[]> stateCensusDetails = censusDAO.getStatePopulationForDifferentYears(stateId,years);
 			
-			StrategicCensusStatusVO districtVO = new StrategicCensusStatusVO();
-			StrategicCensusStatusVO stateVO = new StrategicCensusStatusVO();
+			StrategicCensusVO districtVO = new StrategicCensusVO();
+			StrategicCensusVO stateVO = new StrategicCensusVO();
 			
 			
 			setValuesToCensusVO(districtCensusDetails.get(0),districtCensusDetails.get(1), districtVO);
@@ -451,29 +444,29 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			resultVO.setDistrictDetails(districtVO);
 			resultVO.setStateDetails(stateVO);
 			
-			returnResultVO.setMessage(" We all know that the Indian Census has always been misinterpreted, " +
+			resultVO.setMessage(" We all know that the Indian Census has always been misinterpreted, " +
 					" mis-communicated over the period of years, rightfully we always wanted to have " +
 					" appropriate knowledge to help us going along the way. We have put in our effort to " +
 					" bring Most Accurate & Most Recent Census based on Population, SC, ST, Literates for the " +
-					" years of 2001 and 2011");
+					" years of 2001 and 2011 ");
 			
 			StringBuffer conclusion = new StringBuffer();
-				conclusion.append("  Population were "+populationStatus+" in this Constituency. ,");			
-			//	conclusion.append("  ST’s were Improved where as SC’s were decreased when compare to district and State. ,");
-				conclusion.append("  Employment resources are "+emplmentStatus+", where as decreased for Women ,");
-				conclusion.append("  Education Facilities are "+literatusStatus+". ");
+				conclusion.append("  Population were "+populationStatus+" in this Constituency.  ,");			
+			//	conclusion.append("  ST’s were Improved where as SC’s were decreased when compare to district and State.  ,");
+				conclusion.append("  Employment resources are "+emplmentStatus+", where as decreased for Women  ,");
+				conclusion.append("  Education Facilities are "+literatusStatus+".  ");
 				
-			returnResultVO.setConclusion(conclusion.toString());
-			returnResultVO.setHeading(" Census \"A Snapshot\" ");
+			resultVO.setConclusion(conclusion.toString());
+			resultVO.setHeading(" Census \"A Snapshot\" ");
 		}catch(Exception e)
 		{
 			LOG.error("Exception occured in the StratagicReportServiceForMLASuccess service method");
 		}
 		
-		return returnResultVO;
+		return resultVO;
 	}
 
-	private void setValuesToCensusVO(Object[] currentDetails , Object[] previousDetails,StrategicCensusStatusVO censusDetailsVO)
+	private void setValuesToCensusVO(Object[] currentDetails , Object[] previousDetails,StrategicCensusVO censusDetailsVO)
 	{
 		LOG.error("Entered into the setValuesToCensusVO method StratagicReportServiceForMLASuccess class");
 		//CensusVO censusDetailsVO = new CensusVO();
