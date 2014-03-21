@@ -1377,5 +1377,9 @@
     <bean id="strategyMergPancListDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergPancListDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   <bean id="strategyMergePanchayatDAO" class="com.itgrids.partyanalyst.dao.hibernate.StrategyMergePanchayatDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
    
 </beans>		
