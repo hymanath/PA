@@ -838,6 +838,7 @@ public class StratagicReportsAction extends ActionSupport implements
 			List<Long> electionIds = new ArrayList<Long>();
 			electionIds.add(jObj.getLong("electionYear1"));
 			electionIds.add(jObj.getLong("electionYear2"));
+			strategyVO.setElectionIds(electionIds);
 			Map<Long,Float> castePercents = null;
 			org.json.JSONArray castesArray = jObj.getJSONArray("expCasteArray");
 			if(castesArray.length() > 0){
