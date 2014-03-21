@@ -15,6 +15,8 @@ public class OrderOfPriorityVO {
   private Double casteWeight = 0d;
   private Double prevTrnzWeight = 0d;
   private Double totalWeight = 0d;
+  private String type;
+  
 public Long getPanchayatId() {
 	return panchayatId;
 }
@@ -98,6 +100,12 @@ public Long getPrevElectionVotes() {
 }
 public void setPrevElectionVotes(Long prevElectionVotes) {
 	this.prevElectionVotes = prevElectionVotes;
+}
+public String getType() {
+	return type;
+}
+public void setType(String type) {
+	this.type = type;
 }
   
   
