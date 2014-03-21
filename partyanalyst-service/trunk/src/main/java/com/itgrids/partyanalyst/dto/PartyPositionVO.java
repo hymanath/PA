@@ -48,16 +48,12 @@ public class PartyPositionVO implements Serializable{
     private double prevTrendPoint;
     private Double prp;
     private String type;
+    private String hedding;
+    private String title;
     private String winPartyName;
     private Long winPartyTotal =0l;
     private Long rank;
     
-	public Long getRank() {
-		return rank;
-	}
-	public void setRank(Long rank) {
-		this.rank = rank;
-	}
 	public String getWinPartyName() {
 		return winPartyName;
 	}
@@ -69,6 +65,24 @@ public class PartyPositionVO implements Serializable{
 	}
 	public void setWinPartyTotal(Long winPartyTotal) {
 		this.winPartyTotal = winPartyTotal;
+	}
+	public Long getRank() {
+		return rank;
+	}
+	public void setRank(Long rank) {
+		this.rank = rank;
+	}
+	public String getHedding() {
+		return hedding;
+	}
+	public void setHedding(String hedding) {
+		this.hedding = hedding;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getVillagesCovered() {
 		return villagesCovered;
