@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
 import com.itgrids.partyanalyst.dto.PartyEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
@@ -32,6 +33,7 @@ import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
+import com.itgrids.partyanalyst.service.IBoothwisePollingStratagicService;
 import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
@@ -84,10 +86,28 @@ public class StratagicReportsAction extends ActionSupport implements
 	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
 	private PDFHeadingAndReturnVO voterModificationGenderInfoVOList;
 	private String url;
+	List<PartyPositionVO> boothwiseResult;
+	private IBoothwisePollingStratagicService boothwisePollingStratagicService;
 	
 	private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
 	
+	public List<PartyPositionVO> getBoothwiseResult() {
+		return boothwiseResult;
+	}
+	public void setBoothwiseResult(List<PartyPositionVO> boothwiseResult) {
+		this.boothwiseResult = boothwiseResult;
+	}
+	public IBoothwisePollingStratagicService getBoothwisePollingStratagicService() {
+		return boothwisePollingStratagicService;
+	}
+	public void setBoothwisePollingStratagicService(
+			IBoothwisePollingStratagicService boothwisePollingStratagicService) {
+		this.boothwisePollingStratagicService = boothwisePollingStratagicService;
+	}
+	public HttpServletRequest getRequest() {
+		return request;
+	}
 	public ResultStatus getStatus() {
 		return status;
 	}
@@ -860,4 +880,23 @@ public class StratagicReportsAction extends ActionSupport implements
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPollingPercentageForBoothsOfTDPEffect(){
+		try{
+		jObj = new JSONObject(getTask());
+	
+	Long constituencyId=jObj.getLong("constituencyId");
+	Long partyId = jObj.getLong("partyId");
+	Long electionId = jObj.getLong("electionId");
+	Long electionId1 = jObj.getLong("electionId1");
+	
+	boothwiseResult = boothwisePollingStratagicService.getPollingPercentagesByParty(constituencyId,partyId,electionId,electionId1);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Action.ERROR;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 }
