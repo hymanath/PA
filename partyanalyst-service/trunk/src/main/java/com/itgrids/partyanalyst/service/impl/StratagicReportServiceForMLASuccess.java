@@ -89,13 +89,13 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				houseHoldsVO.setHouseHoldsVOList(houseHoldsVOList);
 			}
 			
-			houseHoldsVO.setMessage("<p>As we understand that it is very important to know the Basic " +
+			houseHoldsVO.setMessage(" As we understand that it is very important to know the Basic " +
 					"Building Block of the entire structure and so we have put forward a measure of the " +
 					"families in the constituency based on the total number of voter base available in each " +
-					"of them respectively.</p>");
+					"of them respectively.");
 			
 
-			houseHoldsVO.setCalcMessage("<p>Please Note: Total Households: "+houseHoldsByCensus+" (According to the Census), "+houseHoldsByNewVoterList+" (According to the Voters List)</p>");
+			houseHoldsVO.setCalcMessage(" Please Note: Total Households: "+houseHoldsByCensus+" (According to the Census), "+houseHoldsByNewVoterList+" (According to the Voters List)");
 			
 			houseHoldsVO.setHeading(" Households ");
 		} catch (Exception e) {
@@ -129,11 +129,11 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				}
 				
 				voterStratagicReportVo.setVoterStategicReportVOList(ageWiseReportVOList);	
-				voterStratagicReportVo.setMessage("<p> The Data furnished below is in accordance with the " +
+				voterStratagicReportVo.setMessage("  The Data furnished below is in accordance with the " +
 						" latest Voter Database released by the Election Commission. With thoughts on making " +
 						" the information available more easier understand and target we have categorized " +
 						" Voter Base into Age Group, Caste, Urban Vs Rural %, Density across each Panchayath." +
-						"  </p>");
+						"  ");
 				voterStratagicReportVo.setHeading(" Voters ");
 		} catch (Exception e) {
 			LOG.error(" exception occured in getVotersInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
@@ -160,7 +160,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				}
 				
 				for (Object[] voterAge : voterAgeInfoList) {
-					if(voterAge[1].toString().equalsIgnoreCase("1")){ // only Young Voters
+					if(voterAge[0].toString().equalsIgnoreCase("1")){ // only Young Voters
 						VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
 						
 						agewiseReportVO.setVoterAgeRange(voterAge[1].toString());
@@ -212,7 +212,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				}
 				
 				for (Object[] voterAge : voterAgeInfoList) {
-					if(!voterAge[1].toString().equalsIgnoreCase("1")){// not adding young voter details
+					if(!voterAge[0].toString().equalsIgnoreCase("1")){// not adding young voter details
 						VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
 						
 						agewiseReportVO.setVoterAgeRange(voterAge[1].toString());
@@ -454,17 +454,17 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			
 			//List<ConstituencyCensusDetails> censusDetailsList = censusDAO.getCensusConstituencyForStateAndDistrict(constituencyId, years);
 			
-			resultVO.setMessage("<p>We all know that the Indian Census has always been misinterpreted, " +
+			resultVO.setMessage(" We all know that the Indian Census has always been misinterpreted, " +
 					" mis-communicated over the period of years, rightfully we always wanted to have " +
 					" appropriate knowledge to help us going along the way. We have put in our effort to " +
 					" bring Most Accurate & Most Recent Census based on Population, SC, ST, Literates for the " +
-					" years of 2001 and 2011</p>");
+					" years of 2001 and 2011");
 			
 			StringBuffer conclusion = new StringBuffer();
-				conclusion.append("<p> Population were "+populationStatus+" in this Constituency. </p>,");			
-			//	conclusion.append("<p> ST’s were Improved where as SC’s were decreased when compare to district and State. </p>,");
-				conclusion.append("<p> Employment resources are "+emplmentStatus+", where as decreased for Women </p>,");
-				conclusion.append("<p> Education Facilities are "+literatusStatus+". </p>");
+				conclusion.append("  Population were "+populationStatus+" in this Constituency. ,");			
+			//	conclusion.append("  ST’s were Improved where as SC’s were decreased when compare to district and State. ,");
+				conclusion.append("  Employment resources are "+emplmentStatus+", where as decreased for Women ,");
+				conclusion.append("  Education Facilities are "+literatusStatus+". ");
 				
 			resultVO.setConclusion(conclusion.toString());
 			resultVO.setHeading(" Census \"A Snapshot\" ");
