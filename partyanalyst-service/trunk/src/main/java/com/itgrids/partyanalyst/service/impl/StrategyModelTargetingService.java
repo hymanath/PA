@@ -1,7 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -18,7 +17,6 @@ import org.apache.log4j.Logger;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
@@ -31,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
 import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
+import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
@@ -78,8 +77,14 @@ public class StrategyModelTargetingService implements
 	private IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	private IConstituencyDAO constituencyDAO;
 	private ICandidateResultDAO candidateResultDAO;
+	private ICasteStateDAO casteStateDAO;
 	private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
+
+	
+	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
+		this.casteStateDAO = casteStateDAO;
+	}
 
 	public void setRegionServiceDataImp(IRegionServiceData regionServiceDataImp) {
 		this.regionServiceDataImp = regionServiceDataImp;
@@ -1619,16 +1624,19 @@ public class StrategyModelTargetingService implements
     	   return avgPerc;
        }
        
-	   public void getPrioritiesToTarget(StrategyVO strategyVO,String path){
+	   @SuppressWarnings("unchecked")
+	public void getPrioritiesToTarget(StrategyVO strategyVO,String path){
 		   Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
 		   Map<Long,Double> currentResult = new HashMap<Long,Double>();
 		   Map<Long,OrderOfPriorityVO> finalOrder = new HashMap<Long,OrderOfPriorityVO>();
 		   List<PanchayatVO> totalCastesList = null;
 		   List<PanchayatVO> youngCastesList = null;
 		   List<PanchayatVO> agedCastesList = null;
+		   Map<Long,String> casteNameMap = null;
+		   Map<String,Float> casteNamePercMap = null;
 		   strategyVO.setEffectPartyId(662l);
-			strategyVO.setEffectElectionId(38l);
-		   
+		   strategyVO.setEffectElectionId(38l);
+			
 		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
 		   
 		   calculateWeightsForPreviousTrents(previousTrends.get(0).getSuggestedLocations(),finalOrder,strategyVO.getPrevTrnzWt());
@@ -1646,6 +1654,26 @@ public class StrategyModelTargetingService implements
 			   agedCastesList  = (List<PanchayatVO>)voterPriorities.get(1);
 		   }
 		   List<OrderOfPriorityVO> finalOrderOfOriority = calculateFinalOrder(new ArrayList<OrderOfPriorityVO>(finalOrder.values()));
+		   
+		   if(strategyVO.getCastePercents() != null && strategyVO.getCastePercents().size() > 0)
+		   {
+			   
+			   List<Object[]> casteNames = casteStateDAO.getCasteNamesByCasteIds(new ArrayList<Long>(strategyVO.getCastePercents().keySet()));
+			   if(casteNames != null && casteNames.size() > 0)
+			   {
+				   casteNamePercMap = new HashMap<String, Float>();
+				   casteNameMap = new HashMap<Long, String>();
+				   for (Object[] objects : casteNames)
+				   {
+					   casteNameMap.put((Long)objects[0], objects[1].toString());
+				   }
+				   for(Long casteStateId :casteNameMap.keySet())
+				   {
+					   casteNamePercMap.put(casteNameMap.get(casteStateId), strategyVO.getCastePercents().get(casteStateId));
+				   }
+			   }
+		   }
+		    path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
 		   Document document = new Document();
 		   String filePath = "VMR"+"/1.pdf";
 		   String FILE = path+filePath;
@@ -1658,19 +1686,61 @@ public class StrategyModelTargetingService implements
 			   LOG.debug("Exception raised in getPrioritiesToTarget() method",e);
 		   }
 		   document.open();
+		   if(casteNamePercMap != null && casteNamePercMap.size() > 0)
+		   {
+			   generateCasteWiseTable(document,casteNamePercMap);
+		   }
+		   
 		   if(strategyVO.getCastePercents() != null){
 		     panchayatWiseTargetVotesTable(document,totalCastesList);
 		   }
+		  
 		   generatePdfForMatrixReport(document,previousTrends);
 		     panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");
 		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");
 		  
 		   prpEffectTableTable(document,otherPartyEffect);
-		  
+		   orderOFPriorityTable(document,finalOrderOfOriority,15);
 		   document.close();
 	   }
 	   
 	   
+	   public void generateCasteWiseTable(Document document,Map<String,Float> casteNamePercMap)
+	   {
+		   try {
+			   LOG.info("Enterd into generateCasteWiseTable() method");
+			      PdfPTable table = new PdfPTable(6);
+				  Paragraph preface = new Paragraph();
+				  preface.setAlignment(Element.PTABLE);
+				  preface.add( new Paragraph("               Step 3 – Targeting"));
+				  preface.add( new Paragraph(" ") );
+				  preface.add( new Paragraph("               Key Factors"));
+				  preface.add( new Paragraph("               Caste, Previous Trends, Young Voter Base, Aged Voter Base, & PRP Votes that can be"));
+				  preface.add( new Paragraph("               regained;"));
+				  preface.add( new Paragraph(" ") );
+				  preface.add( new Paragraph("               Caste"));
+				  preface.add( new Paragraph(" ") );
+				  document.add(preface); 
+				  Set<String> names = casteNamePercMap.keySet();
+				  for (String name : names) {
+					  
+					  PdfPCell cell ;
+				  	  cell = new PdfPCell(new Phrase(name,style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(Long.valueOf((long) (casteNamePercMap.get(name)*100)) + "%",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.CYAN);
+				  	  table.addCell(cell);
+				  }
+				  
+				  document.add(table);
+		} catch (Exception e) {
+			LOG.debug("Exception raised in generateCasteWiseTable() method ",e);
+		}
+	   }
 	   public void panchayatWiseTargetVotesTable(Document document,List<PanchayatVO> totalCastesList)
 		  {
 			  try {
@@ -1679,6 +1749,15 @@ public class StrategyModelTargetingService implements
 				  PdfPTable table = new PdfPTable(6);
 				  Paragraph preface = new Paragraph();
 				  preface.setAlignment(Element.PTABLE);
+				  preface.add( new Paragraph(" ") );
+				  preface.add( new Paragraph(" ") );
+				  preface.add( new Paragraph("               List of the Top Panchayaths based on the Caste Assumption (Please note that these"));
+				  preface.add( new Paragraph("               Panchayaths are in order of priority which is though not the final list is though"));
+				  preface.add( new Paragraph("               not the final list, you can find the full & final list in"));
+				  preface.add( new Paragraph(" ") );
+				  preface.add( new Paragraph("               START HERE Section"));
+				  preface.add( new Paragraph(" ") );
+				  preface.add( new Paragraph(" ") );
 				  preface.add( new Paragraph("               Panchayath Wise :"));
 				  preface.add( new Paragraph(" ") );
 				  document.add(preface); 
@@ -2035,6 +2114,105 @@ public class StrategyModelTargetingService implements
 				  	
 			} catch (Exception e) {
 				LOG.debug("Exception raised in generatePdfForMatrixReport() method in VoterModifiationPdfsGenerations Class",e);
+			}
+		  }
+		  
+		  public void orderOFPriorityTable(Document document,List<OrderOfPriorityVO> list,int count)
+		  {
+			  try {
+				  LOG.info("Enterd into orderOFPriorityTable() method ");
+				  
+				      PdfPTable table = new PdfPTable(6);
+				    
+				      Paragraph preface = new Paragraph();
+				      preface.setAlignment(Element.PTABLE);
+				   
+				      preface.add( new Paragraph("               Panchayaths – Top Priority & Opportunity"));
+				      preface.add( new Paragraph(" ") );
+				      document.add(preface);
+				     
+				      PdfPCell cell;
+				      
+				      cell = new PdfPCell(new Phrase("Panchayath",style1));
+				      cell.setRowspan(2);
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("Total Voters",style1));
+				  	  cell.setRowspan(2);
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("Targeted 2014 vs 2009",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setColspan(2);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("Difference",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setColspan(2);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	
+				  	  cell = new PdfPCell(new Phrase("Targeted Votes",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("2009 TDP Votes",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("Votes",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("%",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  int size = 0;
+				  	  for(OrderOfPriorityVO orderOfPriorityVO : list)
+				  	  {
+				  		  if(size == count)
+				  		  {
+				  			  break;
+				  		  }
+				  		  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getName(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTargetedVoters().toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getPreviousVoters().toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunity().toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunityPerc().toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	size++;
+				  	  }
+				  	  table.setHeaderRows(2);
+				  	
+				  	  document.add(table);
+			} catch (Exception e) {
+				LOG.debug("Exception raised in orderOFPriorityTable() method",e);
 			}
 		  }
 }
