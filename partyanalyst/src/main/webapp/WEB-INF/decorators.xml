@@ -297,6 +297,7 @@
 		<pattern>/voterAverageAgewiseAction*</pattern>
 		<pattern>/mergePanchayatAction*</pattern>
 		<pattern>/strategyModelAction*</pattern>
+		<pattern>/boothPollReportAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
