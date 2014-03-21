@@ -24,8 +24,24 @@ public class VoterDensityWithPartyVO implements Serializable {
 	private String mainHeading;
 	private String subHeading;
 	private String information;
+	private String ananymousPanchayats;
+	
+	private String information2;
 	
 	
+	
+	public String getInformation2() {
+		return information2;
+	}
+	public void setInformation2(String information2) {
+		this.information2 = information2;
+	}
+	public String getAnanymousPanchayats() {
+		return ananymousPanchayats;
+	}
+	public void setAnanymousPanchayats(String ananymousPanchayats) {
+		this.ananymousPanchayats = ananymousPanchayats;
+	}
 	public String getInformation() {
 		return information;
 	}
