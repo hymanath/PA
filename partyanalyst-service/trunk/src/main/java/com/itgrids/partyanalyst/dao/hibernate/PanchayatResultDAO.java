@@ -15,7 +15,7 @@ public class PanchayatResultDAO extends GenericDaoHibernate<PanchayatResult,Long
 	}
 	
 	public List<Object[]> getPartyWiseWonInPanchayts(List<Long> panchayatIds){
-		Query query=getSession().createQuery("select model.party.partyId,model.party.shortName,model.panchayat.panchayatId,model.panchayat.panchayatName from PanchayatResult model " +
+		Query query=getSession().createQuery("select model.party.partyId,model.party.shortName,model.panchayat.panchayatId,model.panchayat.panchayatName,model.totalVoters from PanchayatResult model " +
 				"where model.panchayat.panchayatId in(:panchayatIds)");
 		
 		query.setParameterList("panchayatIds", panchayatIds);
