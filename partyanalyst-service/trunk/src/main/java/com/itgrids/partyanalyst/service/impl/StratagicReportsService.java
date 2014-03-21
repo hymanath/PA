@@ -452,7 +452,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	  	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 	  	     	   if(vo1!=null){
 	  	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-	  	     		  if(vo1.getRank()<(Long)object[8] )
+	  	     		  if(vo1.getRank()>(Long)object[8] )
 	          			  vo1.setRank((Long)object[8]); 
 	  	     	   }
 	  	        
@@ -471,7 +471,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 	     	   if(vo1!=null){
 	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-	     		  if( vo1.getRank()<(Long)object[8] )
+	     		  if( vo1.getRank()>(Long)object[8] )
         			  vo1.setRank((Long)object[8]); 
 	     	   }
 	        
@@ -521,7 +521,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 				        	   if(vo1!=null){
 				        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-				        		  if( vo1.getRank()<(Long)object[8] )
+				        		  if( vo1.getRank()>(Long)object[8] )
 				        			  vo1.setRank((Long)object[8]); 
 				        	   }
 				        	   else 
@@ -540,7 +540,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 			        	   if(vo1!=null){
 			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-			        		  if( vo1.getRank()<(Long)object[8] )
+			        		  if( vo1.getRank()>(Long)object[8] )
 			        			  vo1.setRank((Long)object[8]); 
 			        	   }
 			        	   else 
@@ -623,7 +623,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 			        	   if(vo1!=null){
 			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
-			        	   		if( vo1.getRank()<(Long)object[6] ){
+			        	   		if( vo1.getRank()>(Long)object[6] ){
 			          			  vo1.setRank((Long)object[6]);
 			        	   		}
 			        	   }
@@ -686,7 +686,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					        	   if(vo1!=null){
 					        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
 					        	   		
-					        		   if( vo1.getRank()<(Long)object[6] ){
+					        		   if( vo1.getRank()>(Long)object[6] ){
 					          			  vo1.setRank((Long)object[6]); 
 					        		   }
 					        	   }
