@@ -408,6 +408,7 @@ public class StratagicReportsAction extends ActionSupport implements
 				
 			if(!areaType.equalsIgnoreCase("urban")){
 				prevResults=stratagicReportsService.getZptcMptcResultsOfConstituency(constituencyId);
+				prevResults.setZptcMptcTitle("Zilla and Mandal Parishad Elections Results");
 			}
 
 			PartyResultsVerVO pv=stratagicReportsService.getMuncipalCorpPrevResults(constituencyId);
@@ -419,6 +420,10 @@ public class StratagicReportsAction extends ActionSupport implements
 				prevResults.setOtherVotes(pv.getOtherVotes());
 				prevResults.setOtherVotesPercent(pv.getOtherVotesPercent());
 				prevResults.setDistrictId(pv.getDistrictId());
+				prevResults.setMuncipalOrCorpOrGmc(pv.getMuncipalOrCorpOrGmc());
+				prevResults.setTotalNoOfWardsTitle("Total No of Wards -"+pv.getPartyResultsVOList().size());
+				prevResults.setWardTitle("* indicates Inclusive of All Other Parties and Independents, Independents are participated for more than one seat in some of the Wards");
+				prevResults.setInformation("A categorization that provides you with insight of "+pv.getElectionBodyType()+" Election results of Wards in your constituency helping in creating a common strategy:");
 			}
 				
 			PartyResultsVerVO pv_gmc=stratagicReportsService.getMuncipalCorpPrevResultsInGHMC(constituencyId);
@@ -429,6 +434,10 @@ public class StratagicReportsAction extends ActionSupport implements
 				prevResults.setWon(pv_gmc.getWon());
 				prevResults.setOtherVotes(pv_gmc.getOtherVotes());
 				prevResults.setOtherVotesPercent(pv_gmc.getOtherVotesPercent());
+				prevResults.setMuncipalOrCorpOrGmc(pv.getMuncipalOrCorpOrGmc());
+				prevResults.setTotalNoOfWardsTitle("Total No of Wards -"+pv_gmc.getPartyResultsVOList().size());
+				prevResults.setWardTitle("* indicates Inclusive of All Other Parties and Independents, Independents are participated for more than one seat in some of the Wards");
+				prevResults.setInformation("A categorization that provides you with insight of "+pv_gmc.getElectionBodyType()+" Election results of Wards in your constituency helping in creating a common strategy:");
 			}
 
 		} catch (Exception e) {
