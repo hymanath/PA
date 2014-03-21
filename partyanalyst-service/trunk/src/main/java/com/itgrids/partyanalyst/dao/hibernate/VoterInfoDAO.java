@@ -202,7 +202,7 @@ public class VoterInfoDAO extends GenericDaoHibernate<VoterInfo, Long> implement
 	public List<Object[]> getVoterDetailedCountByLocation(Long reportLevelId,Long reportLevelValue,Long publicationDateId,Long constituencyId)
 	{
 		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(" select model.totalVoters,model.maleVoters,model.femaleVoters from VoterInfo model where ");
+		stringBuilder.append(" select model.totalVoters,model.maleVoters,model.femaleVoters,model.maleVotersPercentage,model.familiesPercentage from VoterInfo model where ");
 		stringBuilder.append(" model.voterReportLevel.voterReportLevelId =:reportLevelId and model.reportLevelValue =:reportLevelValue ");
 		stringBuilder.append(" and model.publicationDate.publicationDateId =:publicationDateId and model.constituencyId = :constituencyId ");
 		Query queryObj = getSession().createQuery(stringBuilder.toString());
