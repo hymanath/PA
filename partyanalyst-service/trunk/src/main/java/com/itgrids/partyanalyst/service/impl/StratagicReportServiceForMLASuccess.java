@@ -123,7 +123,8 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 							voterInfoReportVO.setTotalVoters(voterInfo[0] != null ?(Long)voterInfo[0]:0L);
 							voterInfoReportVO.setMaleVotersCount(voterInfo[1] != null ?(Long)voterInfo[1]:0L);
 							voterInfoReportVO.setFemaleVotersCount(voterInfo[2] != null ?(Long)voterInfo[2]:0L);
-							
+							voterInfoReportVO.setMaleTotalPercentage(voterInfo[3] != null ?(Double)voterInfo[3]:0.0D);
+							voterInfoReportVO.setFemaleTotalPercentage(voterInfo[4] != null ?(Double)voterInfo[4]:0.0D);
 							ageWiseReportVOList.add(voterInfoReportVO);									
 					}
 				}
