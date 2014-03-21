@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
 import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
@@ -35,7 +36,9 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
+import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
+import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -59,6 +62,7 @@ public class StratagicReportsAction extends ActionSupport implements
 	private ICrossVotingEstimationService crossVotingEstimationService;
 	private ISuggestiveModelService suggestiveModelService;
 	private List<AgeRangeVO> boothWiseAddedDelList;
+	private IStrategyModelTargetingService strategyModelTargetingService;
 	
 	List<PartyElectionTrendsReportVO> prevTrends;
 	List<PartyElectionTrendsReportVO> prevTrendsParliament;
@@ -79,6 +83,7 @@ public class StratagicReportsAction extends ActionSupport implements
 	private PDFHeadingAndReturnVO voterModificationAgeRangeVOList;
 	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
 	private PDFHeadingAndReturnVO voterModificationGenderInfoVOList;
+	private String url;
 	
 	private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
@@ -131,6 +136,12 @@ public class StratagicReportsAction extends ActionSupport implements
 	
 	
 
+	public String getUrl() {
+		return url;
+	}
+	public void setUrl(String url) {
+		this.url = url;
+	}
 	public PDFHeadingAndReturnVO getVoterAgeRangeVOList() {
 		return voterAgeRangeVOList;
 	}
@@ -334,6 +345,13 @@ public class StratagicReportsAction extends ActionSupport implements
 		this.locationsList = locationsList;
 	}
 
+	public IStrategyModelTargetingService getStrategyModelTargetingService() {
+		return strategyModelTargetingService;
+	}
+	public void setStrategyModelTargetingService(
+			IStrategyModelTargetingService strategyModelTargetingService) {
+		this.strategyModelTargetingService = strategyModelTargetingService;
+	}
 	@Override
 	public String execute() throws Exception {
 		
@@ -804,6 +822,40 @@ public class StratagicReportsAction extends ActionSupport implements
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in getPanchayatDetailsForElectionInCosntituency() of StratagicReportsAction class",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String generateReport(){
+		LOG.info(" Entered into generateReport() ");
+		try {
+			
+			StrategyVO strategyVO = new StrategyVO();
+			jObj = new JSONObject(getTask());
+			strategyVO.setConstituencyId(jObj.getLong("constituencyId"));
+			strategyVO.setPartyId(jObj.getLong("partyId"));
+			strategyVO.setPublicationId(jObj.getLong("publicationId"));
+			List<Long> electionIds = new ArrayList<Long>();
+			electionIds.add(jObj.getLong("electionYear1"));
+			electionIds.add(jObj.getLong("electionYear2"));
+			Map<Long,Float> castePercents = null;
+			org.json.JSONArray castesArray = jObj.getJSONArray("expCasteArray");
+			if(castesArray.length() > 0){
+				castePercents = new HashMap<Long,Float>();
+				for(int i = 0;i<castesArray.length();i++){
+					JSONObject jSONObject= castesArray.getJSONObject(i);
+					castePercents.put(jSONObject.getLong("casteId"), new Float((jSONObject.getDouble("expPerc"))));
+				}
+			}
+			strategyVO.setPrevTrnzWt(jObj.getDouble("prevTrnzWt"));
+			strategyVO.setYoungWt(jObj.getDouble("youngWt"));
+			strategyVO.setPrpWt(jObj.getDouble("prpWt"));
+			strategyVO.setAgedWt(jObj.getDouble("agedWt"));
+			strategyVO.setTotalCastWt(jObj.getDouble("totalCastWt"));
+			strategyModelTargetingService.getPrioritiesToTarget(strategyVO, IWebConstants.STATIC_CONTENT_FOLDER_URL);
+			url ="";
+		}catch (Exception e) {
+			LOG.error("Exception occured in generateReport() ",e);
 		}
 		return Action.SUCCESS;
 	}

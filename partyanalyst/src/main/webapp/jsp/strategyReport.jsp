@@ -342,12 +342,17 @@ function submitDetails()
 				electionYear2:electionYear2,
 				selCastesArray : selectedCastes1,
 				expCasteArray :expCasteArray,
+				prevTrnzWt:prevTrendsId,
+				youngWt:YVotersId,
+				prpWt:prpEffId,
+				agedWt:ageWiseId,
+				totalCastWt:totalId,
 				task:"saveDetails"						
 			};
 		
 		$.ajax({
 		      type : "POST",
-		      url : "",
+		      url : "generateStrategyAction.action",
 		      data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
 	    });
