@@ -923,6 +923,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsInaConstituencyPartyWise(constiutencyId, electionIds);
 		
 		
+		String name="";
+		String localBodyType="";
+		if(li.size()>0){
+			name=li.get(0)[0].toString()+" "+li.get(0)[9].toString()+" "+li.get(0)[1].toString()+" Results - WARD Wise";
+			localBodyType=li.get(0)[1].toString();
+		}
+		
 		/*List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituency(315l, electionIds);
 		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(315l, electionIds);*/
 		
@@ -1131,6 +1138,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 			}
 		}
 		prvo.setDistrictId(districtId);
+		prvo.setMuncipalOrCorpOrGmc(name);
+		prvo.setElectionBodyType(localBodyType);
 		return prvo;
 	}
 	
@@ -1141,6 +1150,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 		
 		List<Object[]> li=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituency(constiutencyId, electionIds);
 		List<Object[]> li1=nominationDAO.findMuncipalOrCorpResultsOfGMCInaConstituencyPartyWise(constiutencyId, electionIds);
+		
+		String name="";
+		String localBodyType="";
+		if(li.size()>0){
+			name=li.get(0)[0].toString()+" "+li.get(0)[8].toString()+" "+li.get(0)[1].toString()+" Results - WARD Wise";
+			localBodyType=li.get(0)[1].toString();
+		}
 		
 		
 		List<PartyResultsVO> electionList=new ArrayList<PartyResultsVO>();
@@ -1343,7 +1359,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 				prvo.setPartyResultsVOList(eleList);
 			}
 		}
-		
+		prvo.setMuncipalOrCorpOrGmc(name);
+		prvo.setElectionBodyType(localBodyType);
 		return prvo;
 	} 
 	
@@ -2652,6 +2669,24 @@ public class StratagicReportsService implements IStratagicReportsService{
 						
 						
 					}
+					
+					
+					if(ananymousPanchayatIds.size()>0){
+						List<Object[]> ananymousPanchayats=panchayatDAO.getPanchayatsByPanchayatIdsList(ananymousPanchayatIds);
+						if(ananymousPanchayats.size()>0){
+							StringBuilder sb = new StringBuilder();
+
+							for (Object[] obj : ananymousPanchayats) {
+							    if (sb.length() != 0) {
+							        sb.append(",");
+							    }
+							    sb.append(obj[1].toString());
+							}
+							voterDensityPartyVO.setAnanymousPanchayats(sb.toString());
+							voterDensityPartyVO.setInformation2("Ananymous Panchayats "+sb.toString());
+						}
+					}
+					
 					
 					
 					voterDensityPartyVO.setDensityList(voterCountVOList);

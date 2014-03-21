@@ -4291,7 +4291,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 		" model.constituencyElection.constituency.name," +
 		 		" model.constituencyElection.election.electionScope.electionType.electionTypeId,sum(model.totalVotes),sum(model.validVotes)," +
 		 		" model.constituencyElection.election.electionId," +
-		 		" model.constituencyElection.constituency.district.districtId" +
+		 		" model.constituencyElection.constituency.district.districtId," +
+		 		" model1.localElectionBody.name" +
 		 		" from ConstituencyElectionResult model,AssemblyLocalElectionBody model1 " +
 		 		" where " +
 		 		" model.constituencyElection.constituency.localElectionBody.localElectionBodyId = model1.localElectionBody.localElectionBodyId and " +
@@ -4332,7 +4333,8 @@ public class NominationDAO extends GenericDaoHibernate<Nomination, Long> impleme
 		 		" model.constituencyElection.constituency.constituencyId," +
 		 		" model.constituencyElection.constituency.name," +
 		 		" model.constituencyElection.election.electionScope.electionType.electionTypeId,sum(model.totalVotes),sum(model.validVotes)," +
-		 		" model.constituencyElection.election.electionId" +
+		 		" model.constituencyElection.election.electionId," +
+		 		" model1.assemblyLocalElectionBody.localElectionBody.name" +
 		 		" from ConstituencyElectionResult model,AssemblyLocalElectionBodyWard model1 " +
 		 		" where " +
 		 		" model.constituencyElection.constituency.constituencyId = model1.constituency.constituencyId and " +

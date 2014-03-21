@@ -61,11 +61,68 @@ public class PartyResultsVerVO{
 	private Long participated;
 	
 	private Long districtId;
+	
+	private String muncipalOrCorpOrGmc;
+	private String totalNoOfWardsTitle;
+	private String information;
+	private String zptcMptcTitle;
+	private String electionBodyType;
 	// getters and setters
 	
+	private String wardTitle;
 	
+	
+	
+	public String getWardTitle() {
+		return wardTitle;
+	}
+
+	public void setWardTitle(String wardTitle) {
+		this.wardTitle = wardTitle;
+	}
+
 	public Long getVotesPolled() {
 		return votesPolled;
+	}
+
+	public String getElectionBodyType() {
+		return electionBodyType;
+	}
+
+	public void setElectionBodyType(String electionBodyType) {
+		this.electionBodyType = electionBodyType;
+	}
+
+	public String getZptcMptcTitle() {
+		return zptcMptcTitle;
+	}
+
+	public void setZptcMptcTitle(String zptcMptcTitle) {
+		this.zptcMptcTitle = zptcMptcTitle;
+	}
+
+	public String getMuncipalOrCorpOrGmc() {
+		return muncipalOrCorpOrGmc;
+	}
+
+	public void setMuncipalOrCorpOrGmc(String muncipalOrCorpOrGmc) {
+		this.muncipalOrCorpOrGmc = muncipalOrCorpOrGmc;
+	}
+
+	public String getTotalNoOfWardsTitle() {
+		return totalNoOfWardsTitle;
+	}
+
+	public void setTotalNoOfWardsTitle(String totalNoOfWardsTitle) {
+		this.totalNoOfWardsTitle = totalNoOfWardsTitle;
+	}
+
+	public String getInformation() {
+		return information;
+	}
+
+	public void setInformation(String information) {
+		this.information = information;
 	}
 
 	public Long getDistrictId() {
