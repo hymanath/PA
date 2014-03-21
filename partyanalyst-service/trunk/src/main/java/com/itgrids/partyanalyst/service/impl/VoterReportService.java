@@ -5736,15 +5736,11 @@ public class VoterReportService implements IVoterReportService{
 		}
 		
 		
-	public ResultStatus updateVoterNamesAndRelativeNames()
+	public ResultStatus updateVoterNamesAndRelativeNames(Integer startIndex,Integer voterCount)
 	{
 		ResultStatus resultStatus = new ResultStatus();
-				
 		try{
 			
-		 Long voterCount = voterDAO.getVoterCount();
-		
-		 Integer startIndex = 0;
 		 Integer maxIndex = 100000;
 		 if(voterCount > 0)
 		 {
