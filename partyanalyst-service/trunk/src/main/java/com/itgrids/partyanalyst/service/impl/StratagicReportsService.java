@@ -439,23 +439,20 @@ public class StratagicReportsService implements IStratagicReportsService{
 	        {
 	     	   vo.setIncVo(voh);
 
-	        }else if(((Long)object[3]).equals(662L)||((Long)object[3]).equals(1117L)  )
+	        }else if(((Long)object[3]).equals(1117L))
 	        {
 	     	   vo.setPrpVo(voh);
 
 	        }
-	        else if(Long.valueOf(object[9].toString())<10){
-	        	if(((Long)object[3]).equals(163L)){
-	        		vo.setBjpVo(voh);
-	        	}
-	        	else if(((Long)object[3]).equals(886L)){
+	        else if(Long.valueOf(object[9].toString())<11){
+	        	if(((Long)object[3]).equals(886L)){
 	        		vo.setTrsVo(voh);
 	        	}
 	        	 else {
 	  	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 	  	     	   if(vo1!=null){
 	  	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-	  	     		  if( vo1.getRank()<(Long)object[8] )
+	  	     		  if(vo1.getRank()<(Long)object[8] )
 	          			  vo1.setRank((Long)object[8]); 
 	  	     	   }
 	  	        
@@ -511,16 +508,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 			           {
 			        	   vo.setIncVo(voh);
 
-			           }else if(((Long)object[3]).equals(662L)||((Long)object[3]).equals(1117L)  )
+			           }else if(((Long)object[3]).equals(1117L)  )
 			           {
 			        	   vo.setPrpVo(voh);
 
 			           }
-			           else if(Long.valueOf(object[9].toString())<10){
-			           		if(((Long)object[3]).equals(163L)){
-			           			vo.setBjpVo(voh);
-			           		}
-			           		else if(((Long)object[3]).equals(886L)){
+			           else if(Long.valueOf(object[9].toString())<11){
+			        	 if(((Long)object[3]).equals(886L)){
 			           			vo.setTrsVo(voh);
 			           		}
 			           	 else {
@@ -616,16 +610,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 	           {
 	        	   vo.setIncVo(voh);
 
-	           }else if(((Long)object[2]).equals(662L)||((Long)object[2]).equals(1117L)  )
+	           }else if(((Long)object[2]).equals(1117L)  )
 	           {
 	        	   vo.setPrpVo(voh);
 
 	           }
-	           else if(Long.valueOf(object[5].toString())<10){
-	           		if(((Long)object[2]).equals(163L)){
-	           			vo.setBjpVo(voh);
-	           		}
-	           		else if(((Long)object[2]).equals(886L)){
+	           else if(Long.valueOf(object[5].toString())<11){
+	        	   if(((Long)object[2]).equals(886L)){
 	           			vo.setTrsVo(voh);
 	           		}
 	           		else {
@@ -682,15 +673,12 @@ public class StratagicReportsService implements IStratagicReportsService{
 			           {
 			        	   vo.setIncVo(voh);
 
-			           }else if(((Long)object[2]).equals(662L)||((Long)object[2]).equals(1117L)  )
+			           }else if(((Long)object[2]).equals(1117L))
 			           {
 			        	   vo.setPrpVo(voh);
 
-			           } else if(Long.valueOf(object[5].toString())<10){
-			           		if(((Long)object[2]).equals(163L)){
-			           			vo.setBjpVo(voh);
-			           		}
-			           		else if(((Long)object[2]).equals(886L)){
+			           } else if(Long.valueOf(object[5].toString())<11){
+			        	   if(((Long)object[2]).equals(886L)){
 			           			vo.setTrsVo(voh);
 			           		}
 			           		else {
