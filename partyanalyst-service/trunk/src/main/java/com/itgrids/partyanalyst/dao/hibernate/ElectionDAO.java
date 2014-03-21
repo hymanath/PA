@@ -826,6 +826,10 @@ public class ElectionDAO extends GenericDaoHibernate<Election, Long> implements
 		
 	}
 	
-	
+	public List<Long> getAllAssemblyMainElectionsIdsInAP(){
+		Query query = getSession().createQuery(" select model.electionId from Election model where model.electionScope.electionScopeId = 2 and model.elecSubtype ='MAIN' ");
+		
+		return query.list();
+	}
 	
 }
