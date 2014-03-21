@@ -79,7 +79,26 @@ public class VotersEditAction  extends ActionSupport implements ServletRequestAw
 	private List<InfluencingPeopleBeanVO> influencingPeopleBeanVO;
 	
     private Long casteCategoryId;
+    
+    private Integer startIndex;
+    private Integer voterCount;
 	
+	public Integer getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(Integer startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	public Integer getVoterCount() {
+		return voterCount;
+	}
+
+	public void setVoterCount(Integer voterCount) {
+		this.voterCount = voterCount;
+	}
+
 	public Long getCasteCategoryId() {
 		return casteCategoryId;
 	}
@@ -1729,9 +1748,7 @@ public String saveLocality()
 	   public String updateVoterNames()
 	   {
 		   try{
-			   
-				//jObj = new JSONObject(getTask());
-			   result = voterReportService.updateVoterNamesAndRelativeNames();	   
+			   result = voterReportService.updateVoterNamesAndRelativeNames(getStartIndex(),getVoterCount());	   
 		   }
 		   catch(Exception e)
 		   {
