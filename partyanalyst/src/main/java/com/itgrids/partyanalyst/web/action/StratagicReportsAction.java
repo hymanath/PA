@@ -868,6 +868,7 @@ public class StratagicReportsAction extends ActionSupport implements
 					castePercents.put(jSONObject.getLong("casteId"), new Float((jSONObject.getDouble("expPerc"))));
 				}
 			}
+			strategyVO.setCastePercents(castePercents);
 			strategyVO.setPrevTrnzWt(jObj.getDouble("prevTrnzWt"));
 			strategyVO.setYoungWt(jObj.getDouble("youngWt"));
 			strategyVO.setPrpWt(jObj.getDouble("prpWt"));
