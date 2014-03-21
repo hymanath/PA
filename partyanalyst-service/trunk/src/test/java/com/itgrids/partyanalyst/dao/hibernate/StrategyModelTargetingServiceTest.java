@@ -45,6 +45,6 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 		castePercents.put(189l,0.8f);
 		castePercents.put(0l,0.4f);
 		strategyVO.setCastePercents(castePercents);
-		strategyModelTargetingService.getPrioritiesToTarget(strategyVO);
+		strategyModelTargetingService.getPrioritiesToTarget(strategyVO,"");
 	}
 }
