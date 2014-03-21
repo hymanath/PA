@@ -35,6 +35,7 @@
     padding-bottom: 12px; padding-top: 12px;}
 	table{font-size:13px;}
 	table th{font-weight:normal;}
+	
 	#minResults,#maxResults{width:186px;}
 
 #voterModificationFromPublicationId,#votermodificationConstituencyId,#voterModificationToPublicationId{width: 200px;}
@@ -112,7 +113,7 @@
 			<tr>
 				<th>To Publication </th>
 				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getConstituenciesToMapPublicationDataFor();"></s:select></td>
+			<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Publication Date" name="publicationDateList" id="topublicationDateId" list="publicationDateList" listKey="id" listValue="name" headerKey="0" headerValue="Select" onchange="getConstituenciesToMapPublicationData();"></s:select></td>
 			</tr>
 
 			<tr>
@@ -121,7 +122,7 @@
 				<td>
 				<!-- <s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesList" id="mapVoterConstituencyId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select"></s:select> -->
 
-				<select id="mapVoterDistrictId" class="selectBoxWidth" name="districtsList">
+				<select id="mapVoterConstituencyId" class="selectBoxWidth" name="constituenciesList">
 				</select>
 				</td>
 			</tr>
@@ -131,7 +132,7 @@
 				
 				Create Booth if not Available</div>
 			
-			<p><input type="button" value="Submit" onclick="InsertmapVoterDataForDis();" id="mapVoterButtonId" class="btn btn-info" /><span id="mapajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></span></p>
+			<p><input type="button" value="Submit" onclick="InsertmapVoterData();" id="mapVoterButtonId" class="btn btn-info" /><span id="mapajaxImgDivId" style="display:none;"><img src="images/icons/search.gif"/></span></p>
 				</center>
 	</div>
 </fieldset>
@@ -191,7 +192,7 @@
 			<tr>
 				<th>Constituency </th>
 				<td>:</td>
-				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesListForVoterChanges" id="constituencySelectId" list="constituenciesList" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"></s:select></td>
+				<td><s:select cssClass="selectBoxWidth" theme="simple" label="Select Your Constituency" name="constituenciesListForVoterChanges" id="constituencySelectId" list="constituencyList" listKey="id" listValue="name" headerKey="0" headerValue="Select Constituency"></s:select></td>
 			</tr>
 			<tr>
 				<th>Publication Date</th>
