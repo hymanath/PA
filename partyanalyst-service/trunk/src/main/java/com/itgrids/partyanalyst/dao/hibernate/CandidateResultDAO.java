@@ -212,7 +212,7 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 	}
 	
 	public List<String> getPartyPercentage(Long constituencyId,Long electionId,List<Long> partyIds){
-		Query queryObject = getSession().createQuery("select model.votesPercengate from CandidateResult model where model.nomination.constituencyElection.election.electionId =:electionId and model.nomination.constituencyElection.constituency.constituencyId =:constituencyId and model.nomination.party.partyId in (:partyId) order by model.votesPercengate desc ");
+		Query queryObject = getSession().createQuery("select model.votesPercengate from CandidateResult model where model.nomination.constituencyElection.election.electionId =:electionId and model.nomination.constituencyElection.constituency.constituencyId =:constituencyId and model.nomination.party.partyId in (:partyIds) order by model.votesPercengate desc ");
 		  queryObject.setParameter("constituencyId",constituencyId);
 		  queryObject.setParameter("electionId",electionId);
 		  queryObject.setParameterList("partyIds",partyIds);

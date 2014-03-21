@@ -1023,14 +1023,18 @@ public class StrategyModelTargetingService implements
 			 }
 			 priorVo.setTotalVoters(totalVotersMap.get(panchayatId));
 			 priorVo.setTargetedVoters(Math.round((totalVotersMap.get(panchayatId)*avgPerc)/100));
-			 if(!(priorVo.getTargetedVoters()-priorVo.getPreviousVoters() <= 0)){
-				 if(priorVo.getPrevElectionVotes() != null && (priorVo.getTargetedVoters()-priorVo.getPrevElectionVotes() <= 0)){
-					 priorVo.setOpportunity(priorVo.getPrevElectionVotes());
+			 if(priorVo.getPreviousVoters() == null){
+				 priorVo.setPreviousVoters(0l);
+			 }
+			 if(!(priorVo.getTargetedVoters()-priorVo.getPreviousVoters() > 0)){
+				 if(priorVo.getPrevElectionVotes() != null && (priorVo.getTargetedVoters()-priorVo.getPrevElectionVotes() > 0)){
+					 priorVo.setOpportunity(priorVo.getPrevElectionVotes()-priorVo.getTargetedVoters());
+					 priorVo.setPreviousVoters(priorVo.getPrevElectionVotes());
 				 }else{
-					 priorVo.setOpportunity(priorVo.getPreviousVoters());
+					 priorVo.setOpportunity(priorVo.getPreviousVoters()-priorVo.getTargetedVoters());
 				 }
 			 }else{
-				 priorVo.setOpportunity(priorVo.getPreviousVoters());
+				 priorVo.setOpportunity(priorVo.getPreviousVoters()-priorVo.getTargetedVoters());
 			 }
 			 priorVo.setOpportunityPerc(new BigDecimal((priorVo.getOpportunity()*100/priorVo.getTotalVoters())).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
 		 }
@@ -1218,9 +1222,9 @@ public class StrategyModelTargetingService implements
 					   if(totalYoungVoterForMunic != null && totalYoungVoterForMunic.size() > 0){
 						   youngTotal.addAll(totalYoungVoterForMunic);
 					   }
-					   List<Object[]> totalAgeVoterForMunic = boothPublicationVoterDAO.getTotalVotersByAgeForMunicipality(publicationId,constituencyId, 18l, 22l);
+					   List<Object[]> totalAgeVoterForMunic = boothPublicationVoterDAO.getTotalVotersByAgeForMunicipality(publicationId,constituencyId, 61l, 200l);
 						  
-					   List<Object[]> casteAgeVoterForMunic = boothPublicationVoterDAO.getCasteCountForMunicipality(castePercents.keySet(),publicationId,constituencyId, 18l, 22l);
+					   List<Object[]> casteAgeVoterForMunic = boothPublicationVoterDAO.getCasteCountForMunicipality(castePercents.keySet(),publicationId,constituencyId, 61l, 200l);
 					   if(casteAgeVoterForMunic != null && casteAgeVoterForMunic.size() > 0){
 							 ageCaste.addAll(casteAgeVoterForMunic);
 						 }
@@ -1327,8 +1331,11 @@ public class StrategyModelTargetingService implements
 			   }
 			   priority.setTotalVoters(totalVoters);
 			   priority.setTargetedVoters(Long.valueOf(panchayat.getOthrExpctdVotes()));
-			   priority.setOpportunity(priority.getTargetedVoters() - priority.getPreviousVoters());
-			   priority.setOpportunityPerc(new BigDecimal((priority.getOpportunity()*100)/priority.getTargetedVoters()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+			   if(priority.getPreviousVoters() == null){
+				   priority.setPreviousVoters(0l);
+			   }
+			   priority.setOpportunity(priority.getPreviousVoters() - priority.getTargetedVoters());
+			   priority.setOpportunityPerc(new BigDecimal((priority.getOpportunity()*100)/priority.getTotalVoters()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
 			   
 			 Double partyPerc = currentResult.get(panchayatId);
 			 if(partyPerc != null){
@@ -1337,7 +1344,7 @@ public class StrategyModelTargetingService implements
 				 panchayat.setPartyPerc(0d);
 			 }
 			 panchayat.setDifferencePerc(panchayat.getTargetPerc()-panchayat.getPartyPerc());
-			 panchayat.setOpportunity(panchayat.getPartyPerc()-panchayat.getTargetPerc());
+			 panchayat.setOpportunity(panchayat.getTargetPerc()-panchayat.getPartyPerc());
 		   } 
 		 }
 		 List<PanchayatVO> returnList = new ArrayList<PanchayatVO>(totalCastePriorityMap.values());
@@ -1351,8 +1358,10 @@ public class StrategyModelTargetingService implements
 	 
 	 public void calculateForTotalCaste(List<PanchayatVO> returnList,Double weight,Map<Long,OrderOfPriorityVO> finalOrder){
 		 Collections.sort(returnList,totalCasteSort);
+		 Double addValue = 0d;
 		 if(returnList.get(returnList.size()-1).getDifferencePerc() < 0){
-			 Double addValue = returnList.get(returnList.size()-1).getDifferencePerc()*(-1);
+			  addValue = returnList.get(returnList.size()-1).getDifferencePerc()*(-1);
+		 }
 			 for(PanchayatVO vo:returnList){
 				 vo.setDifferencePerc( vo.getDifferencePerc()+addValue);
 				 vo.setVoterPoints(new BigDecimal((vo.getDifferencePerc()*100/returnList.get(0).getDifferencePerc())).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -1366,7 +1375,7 @@ public class StrategyModelTargetingService implements
 				 priorVo.setCasteWeight(new BigDecimal(vo.getVoterPoints()*weight/100).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
 			 }
 			 
-		 }
+		 
 	 }
 	 
 	 public void calculateForYoungOld(List<PanchayatVO> returnList,Double weight,Map<Long,OrderOfPriorityVO> finalOrder,String type){
@@ -1569,7 +1578,9 @@ public class StrategyModelTargetingService implements
        public List<OrderOfPriorityVO>  calculateFinalOrder(List<OrderOfPriorityVO>  finalOrder){
 		   for(OrderOfPriorityVO priority:finalOrder){
 			   priority.setTotalWeight(priority.getPrpWeight()+priority.getYoungWeight()+priority.getAgeWeight()+priority.getCasteWeight()+priority.getPrevTrnzWeight());
+			  
 		   }
+		   Collections.sort(finalOrder,finalOrderSort);	
 		   return finalOrder;
 	   }
        
@@ -1615,7 +1626,8 @@ public class StrategyModelTargetingService implements
 		   List<PanchayatVO> totalCastesList = null;
 		   List<PanchayatVO> youngCastesList = null;
 		   List<PanchayatVO> agedCastesList = null;
-
+		   strategyVO.setEffectPartyId(662l);
+			strategyVO.setEffectElectionId(38l);
 		   
 		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
 		   
