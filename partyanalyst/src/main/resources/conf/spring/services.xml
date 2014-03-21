@@ -1997,5 +1997,19 @@
 	  <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
  </bean>
   
+  
+   <bean name="boothwisePollingStratagicService" class="com.itgrids.partyanalyst.service.impl.BoothwisePollingStratagicService" >
+    <property name="partyDAO" ref="partyDAO"/>
+   <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO"/>
+   <property name="nominationDAO" ref="nominationDAO"/>
+   <property name="constituencyElectionResultDAO" ref="constituencyElectionResultDAO"/>
+   <property name="voterModificationDAO" ref="voterModificationDAO"/>
+   <property name="voterInfoDAO" ref="voterInfoDAO"/>
+   <property name="hamletBoothElectionDAO" ref="hamletBoothElectionDAO"/>
+   <property name="boothConstituencyElectionDAO" ref="boothConstituencyElectionDAO"/>
+   <property name="boothDAO" ref="boothDAO"/>
+   <property name="electionDAO" ref="electionDAO"/>
+   </bean>
+   
 </beans>		
 	
