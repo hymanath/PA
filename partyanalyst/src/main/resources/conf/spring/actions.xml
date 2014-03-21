@@ -1387,6 +1387,7 @@
 		<property name="stratagicReportsService" ref="stratagicReportsService"/>
 		<property name="stratagicReportServiceForMLASuccess" ref="stratagicReportServiceForMLASuccess"/>
 		<property name="staticDataService" ref="staticDataService"/>
+		<property name="strategyModelTargetingService" ref="strategyModelTargetingService"/>
 	</bean>
 	
 	
