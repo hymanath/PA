@@ -16,6 +16,7 @@
 <link type="text/css" href="styles/bootstrapInHome/bootstrap-responsive.min.css" rel="stylesheet" />
 
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.js"></script>
+<script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 
 <style type="text/css">	</style>
@@ -24,7 +25,7 @@
 $(document).ready(function(){
      getConstituencyList(); 
 	
-	 $("#candidateCastesId").multiselect({ noneSelectedText:"Select Castes"});
+	 $("#candidateCastesId").multiselect({ noneSelectedText:"Select Castes"}).multiselectfilter({});
 });
 
 function getConstituencyList(){
