@@ -15,6 +15,8 @@ public class StrategicCensusVO implements java.io.Serializable{
 	
 	private String stateName;
 	private String districtName;
+	private String constituencyName ;
+	
 	private Integer count;
 	private Integer year;
 	private Long totalPopulation;
@@ -86,6 +88,12 @@ public class StrategicCensusVO implements java.io.Serializable{
 	private List<StrategicCensusVO> CensusDetailsList;
 	
 	
+	public String getConstituencyName() {
+		return constituencyName;
+	}
+	public void setConstituencyName(String constituencyName) {
+		this.constituencyName = constituencyName;
+	}
 	public String getHeading() {
 		return Heading;
 	}
