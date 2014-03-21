@@ -133,9 +133,9 @@ public interface IVoterReportService {
 	 
 	 public ResultStatus deletevotermodificationFromIntermediateTablesForDistrict(Long districtId, Long publicationDateId);
 	 
-	 public ResultStatus updateVoterNamesAndRelativeNames();
+	 public ResultStatus updateVoterNamesAndRelativeNames(Integer startIndex,Integer voterCount);
 	 
 	 public ResultStatus getCasteVotersAvailableConstituencyIds();
-
+	 
     
 }
