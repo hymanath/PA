@@ -206,5 +206,7 @@ public interface IElectionDAO extends GenericDao<Election, Long>{
 	
 	public Long getElectionId(String electionYear,Long elecetionType ,Long stateId);
 	
+	public List<Long> getAllAssemblyMainElectionsIdsInAP();
+	
 		
 }

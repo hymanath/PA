@@ -5,7 +5,8 @@ public class OrderOfPriorityVO {
   private String name;
   private Long totalVoters;
   private Long targetedVoters;
-  private Long previousVoters;
+  private Long previousVoters =0l;
+  private Long prevElectionVotes=0l;
   private Long opportunity;
   private Double opportunityPerc;
   private Double prpWeight = 0d;
@@ -91,7 +92,13 @@ public Double getTotalWeight() {
 }
 public void setTotalWeight(Double totalWeight) {
 	this.totalWeight = totalWeight;
-};
+}
+public Long getPrevElectionVotes() {
+	return prevElectionVotes;
+}
+public void setPrevElectionVotes(Long prevElectionVotes) {
+	this.prevElectionVotes = prevElectionVotes;
+}
   
   
 }

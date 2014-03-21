@@ -11,6 +11,8 @@ public class PartyEffectVO  implements Serializable{
 	private Double tdpPrevPerc;
 	private Double tdpCurrentPerc;
 	private Double prpCurrentPerc;
+	private Long tdpCurrentVotes;
+	private Long tdpPrevVotes;
 	private Long id;
 	private Double difference;
 	private String name;
@@ -88,6 +90,22 @@ public class PartyEffectVO  implements Serializable{
 
 	public void setReportLvl(Long reportLvl) {
 		this.reportLvl = reportLvl;
+	}
+
+	public Long getTdpCurrentVotes() {
+		return tdpCurrentVotes;
+	}
+
+	public void setTdpCurrentVotes(Long tdpCurrentVotes) {
+		this.tdpCurrentVotes = tdpCurrentVotes;
+	}
+
+	public Long getTdpPrevVotes() {
+		return tdpPrevVotes;
+	}
+
+	public void setTdpPrevVotes(Long tdpPrevVotes) {
+		this.tdpPrevVotes = tdpPrevVotes;
 	}
 	
 	

@@ -2150,6 +2150,7 @@
 	  <property name="partialBoothPanchayatDAO" ref="partialBoothPanchayatDAO"/>
 	  <property name="boothPublicationVoterDAO" ref="boothPublicationVoterDAO"/>
 	  <property name="constituencyDAO" ref="constituencyDAO"></property>
+	  <property name="candidateResultDAO" ref="candidateResultDAO"></property>	  
 	  <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
  </bean>
 </beans>
