@@ -6697,7 +6697,11 @@
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		    <result name="success">/jsp/strategyReport.jsp</result>	
 		 </action>
-		
+		<action name="generateStrategyAction" class="stratagicReportsAction" method="generateReport">
+			<result type="json" name="success">
+				<param name="root">url</param>				
+			</result> 
+		</action>
 		</package>
 		
 </struts>      
