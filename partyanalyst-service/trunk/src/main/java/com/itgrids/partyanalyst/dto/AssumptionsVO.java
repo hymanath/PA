@@ -11,6 +11,7 @@ public class AssumptionsVO  implements Serializable{
 	private String heading1;
 	private String heading2;
 	private String heading3;
+	private String heading4;
 	
 	private Long totalVoters;
 	private Long expPerc;
@@ -19,6 +20,29 @@ public class AssumptionsVO  implements Serializable{
 	private Long targetedVotesForTDP;
 	private Long addtionalVoters;
 	private Long addtionalPerc;
+	
+	private Long assuredPer;
+	private Long tdpPer;
+	
+	
+	public String getHeading4() {
+		return heading4;
+	}
+	public void setHeading4(String heading4) {
+		this.heading4 = heading4;
+	}
+	public Long getAssuredPer() {
+		return assuredPer;
+	}
+	public void setAssuredPer(Long assuredPer) {
+		this.assuredPer = assuredPer;
+	}
+	public Long getTdpPer() {
+		return tdpPer;
+	}
+	public void setTdpPer(Long tdpPer) {
+		this.tdpPer = tdpPer;
+	}
 	public Long getTotalVoters() {
 		return totalVoters;
 	}
