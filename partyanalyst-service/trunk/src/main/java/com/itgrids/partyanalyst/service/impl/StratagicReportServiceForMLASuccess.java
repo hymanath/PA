@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -17,6 +20,7 @@ import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyCensusDetailsDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
@@ -24,11 +28,14 @@ import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
+import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
+import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.StrategicCensusVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.ConstituencyCensusDetails;
 import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
+import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StratagicReportServiceForMLASuccess implements IStratagicReportServiceForMLASuccess{
 	public static Logger LOG = Logger.getLogger(StratagicReportServiceForMLASuccess.class);
@@ -52,6 +59,8 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	@Autowired IDistrictDAO districtDAO;
 	
 	@Autowired IBoothDAO boothDAO;
+	
+	@Autowired IPartyTrendsDAO partyTrendsDAO;
 	
 	public HouseHoldsVO getHouseHoldInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
 		LOG.info(" entered into getHouseHoldInfoByConstituency() in StratagicReportServiceForMLASuccess class.");
@@ -534,4 +543,502 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 		
 	}
 	
+	
+	//start mymethods
+	
+public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
+		
+		List<Object[]> ids = (List<Object[]>)partyTrendsDAO.getPreviousTrendsData(null, constId);
+		Map<Long,PartyElectionTrendsReportVO> maps = new HashMap<Long, PartyElectionTrendsReportVO>();
+
+		System.out.println(ids.size());
+		
+		for (Object[] object : ids) {
+			
+		if(maps.containsKey(Long.valueOf(object[0].toString())))
+		{
+			PartyElectionTrendsReportVO vo =maps.get(Long.valueOf(object[0].toString()));
+	        vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+	        vo.setTotalVoters(((Double)object[1]).longValue());
+	        vo.setTotalVotesPolled(((Double)object[2]).longValue());
+	        vo.setDistrictId(Long.valueOf(object[9].toString()));
+	        vo.setElectionId(Long.valueOf(object[11].toString()));
+	        PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+	        voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((Double)object[7])));
+	        voh.setVotesEarned(((Double)object[4]).longValue());
+	        voh.setRank((Long)object[8]);
+	        voh.setName(object[10].toString());
+	      
+	        if(((Long)object[3]).equals(872L))
+	        {
+	     	   voh.setMarginVotes(((Double)object[5]).longValue());
+	     	   voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+	     	   vo.setTdpVo(voh);
+	        }else if(((Long)object[3]).equals(362L))
+	        {
+	     	   vo.setIncVo(voh);
+
+	        }else if(((Long)object[3]).equals(662L)||((Long)object[3]).equals(1117L)  )
+	        {
+	     	   vo.setPrpVo(voh);
+
+	        }
+	        else if(Long.valueOf(object[9].toString())<10){
+	        	if(((Long)object[3]).equals(163L)){
+	        		vo.setBjpVo(voh);
+	        	}
+	        	else if(((Long)object[3]).equals(886L)){
+	        		vo.setTrsVo(voh);
+	        	}
+	        	 else {
+	  	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+	  	     	   if(vo1!=null){
+	  	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+	  	     		  if( vo1.getRank()<(Long)object[8] )
+	          			  vo1.setRank((Long)object[8]); 
+	  	     	   }
+	  	        
+	  	     	   else 
+	  	     	   {
+	  	     		   vo1= new PartyElectionTrendsReportHelperVO();
+	  	     		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+	  		 	     	  vo1.setRank((Long)object[8]); 
+
+	  	     	   }
+	  	     	  //vo1.setRank((Long)object[8]); 
+	  	     	  vo.setOthersVo(vo1);
+	  	        }
+	        }
+	        else {
+	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+	     	   if(vo1!=null){
+	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+	     		  if( vo1.getRank()<(Long)object[8] )
+        			  vo1.setRank((Long)object[8]); 
+	     	   }
+	        
+	     	   else 
+	     	   {
+	     		   vo1= new PartyElectionTrendsReportHelperVO();
+	     		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+		 	     	  vo1.setRank((Long)object[8]); 
+
+	     	   }
+	     	  //vo1.setRank((Long)object[8]); 
+	     	  vo.setOthersVo(vo1);
+	        }
+			
+		}
+		else
+		{
+			           PartyElectionTrendsReportVO vo =new PartyElectionTrendsReportVO();
+			           vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+			           vo.setTotalVoters(((Double)object[1]).longValue());
+			           vo.setTotalVotesPolled(((Double)object[2]).longValue());
+			           vo.setDistrictId(Long.valueOf(object[9].toString()));
+				       vo.setElectionId(Long.valueOf(object[11].toString()));
+
+			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+			           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((Double)object[7])));
+				        voh.setVotesEarned(((Double)object[4]).longValue());
+				        voh.setRank((Long)object[8]);
+				        voh.setName(object[10].toString());
+			           if(((Long)object[3]).equals(872L))
+			           {
+			        	   voh.setMarginVotes(((Double)object[5]).longValue());
+				     	   voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+				     	   vo.setTdpVo(voh);
+			           }else if(((Long)object[3]).equals(362L))
+			           {
+			        	   vo.setIncVo(voh);
+
+			           }else if(((Long)object[3]).equals(662L)||((Long)object[3]).equals(1117L)  )
+			           {
+			        	   vo.setPrpVo(voh);
+
+			           }
+			           else if(Long.valueOf(object[9].toString())<10){
+			           		if(((Long)object[3]).equals(163L)){
+			           			vo.setBjpVo(voh);
+			           		}
+			           		else if(((Long)object[3]).equals(886L)){
+			           			vo.setTrsVo(voh);
+			           		}
+			           	 else {
+				        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+				        	   if(vo1!=null){
+				        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+				        		  if( vo1.getRank()<(Long)object[8] )
+				        			  vo1.setRank((Long)object[8]); 
+				        	   }
+				        	   else 
+				        	   {
+				        		   vo1= new PartyElectionTrendsReportHelperVO();
+				        		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+						 	     	  vo1.setRank((Long)object[8]); 
+
+				        	   }
+	   
+				        	   vo.setOthersVo(vo1);
+				           }
+			           }
+			           
+			           else {
+			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+			        	   if(vo1!=null){
+			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
+			        		  if( vo1.getRank()<(Long)object[8] )
+			        			  vo1.setRank((Long)object[8]); 
+			        	   }
+			        	   else 
+			        	   {
+			        		   vo1= new PartyElectionTrendsReportHelperVO();
+			        		   vo1.setVotesEarned(((Double)object[4]).longValue()) ;
+					 	     	  vo1.setRank((Long)object[8]); 
+
+			        	   }
+   
+			        	   vo.setOthersVo(vo1);
+			           }
+			           
+		maps.put(Long.valueOf(object[0].toString()),vo );
+		}
+		}
+		System.out.println(maps);
+		List<PartyElectionTrendsReportVO> finalRes= new ArrayList<PartyElectionTrendsReportVO>();
+		for(Long year:maps.keySet())
+		{
+			PartyElectionTrendsReportVO vo=	maps.get(year);
+			if(vo.getDistrictId()>10)
+			alliancesCheck(vo, constId);
+			if(vo.getOthersVo()!=null){
+				//vo.getOthersVo().setVotesEarned(vo.getTotalVotesPolled()-( + vo.getIncVo()!=null ?vo.getIncVo().getVotesEarned().longValue():0L));
+				vo.getOthersVo().setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)((double)vo.getOthersVo().getVotesEarned()/(double)vo.getTotalVotesPolled())*100)));
+			}else{
+				PartyElectionTrendsReportHelperVO othersVo=new PartyElectionTrendsReportHelperVO();
+				vo.setOthersVo(othersVo);
+			}
+		 // check for aliances
+			
+			finalRes.add(vo);
+		}
+		Collections.sort(finalRes);
+		return finalRes;
+	}
+	
+ 
+
+public String roundTo2DigitsDoubleValue(Double number){
+	  
+	 LOG.debug("Entered into the roundTo2DigitsFloatValue service method");
+	  
+	  String result = "";
+	  try
+	  {
+		  
+		
+		NumberFormat f = NumberFormat.getInstance(Locale.ENGLISH);  
+		f.setMaximumFractionDigits(2);  
+		f.setMinimumFractionDigits(2);
+		
+		result =  f.format(number);
+	  }catch(Exception e)
+	  {
+		  LOG.error("Exception raised in roundTo2DigitsFloatValue service method");
+		  e.printStackTrace();
+	  }
+	  return result;
+  }
+ 
+
+public void alliancesCheck(PartyElectionTrendsReportVO partyVos,Long constId)
+   {
+	   List<Object[]> obj=null;
+	   if(partyVos.getTdpVo()==null)
+	   {
+		   // get aliance for tdp and add it to current vo by rank 
+		   obj= getData(IConstants.TDP_PARTY_ID,partyVos.getElectionId(),constId, Long.valueOf(partyVos.getElectionYear().toString()));
+		
+			   //get aliances for inc and add it to current vo
+			   if(obj !=null && obj.size()>0 ){
+				   buildHelperVoForConst(partyVos,IConstants.TDP,obj.get(0));
+			   }
+			   }
+  
+	   
+	   List<Object[]> obj1=null;
+	     if(partyVos.getIncVo() == null || partyVos.getIncVo().getVotesEarned().equals(0L) )
+	    {
+		   //get aliances for inc and add it to current vo
+		   obj1= getData(IConstants.INC_PARTY_ID,partyVos.getElectionId(),constId, Long.valueOf(partyVos.getElectionYear().toString()));
+		   if(obj1 !=null && obj1.size()>0 ){
+			   buildHelperVoForConst(partyVos,IConstants.INC,obj1.get(0));
+		   }else{
+			   
+		   }
+		   }
+	   
+   }
+
+public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String name,Object[] object)
+{
+	
+	 PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+	 voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((Double)object[7])));
+     voh.setVotesEarned(((Double)object[4]).longValue());
+     voh.setRank((Long)object[8]);  
+     voh.setName(object[10].toString());
+     if(name.equalsIgnoreCase(IConstants.TDP))
+     {
+      /* voh.setMarginVotes(((Double)object[5]).longValue());
+	   voh.setMarginVotesPercentage(((Double)object[6]));*/
+	   
+	   voh.setMarginVotes(((Double)object[5]).longValue());
+ 	   voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+	   partyVos.setTdpVo(voh);
+     }
+	   
+	   if(name.equalsIgnoreCase(IConstants.INC)) 
+	   {
+		   partyVos.setIncVo(voh);
+	   }
+	   
+	   PartyElectionTrendsReportHelperVO  othersVo=partyVos.getOthersVo();
+	   if(othersVo!=null)
+	   othersVo.setVotesEarned( othersVo.getVotesEarned()-((Double)object[4]).longValue());
+}
+
+  public List<Object[]> getData(Long partyId,Long ElectionId,Long constId,Long Year)
+  {
+	  List<Long> obj=	partyTrendsDAO.getWithAlliance(partyId, ElectionId);
+		 for (Long long1 : obj) {
+			System.out.println();
+		} 
+		 if(obj !=null && obj.size()>0 ){
+				List<?> obj1= partyTrendsDAO.getPreviousTrendsDataWithAlliance(obj, constId,Year);
+				return (List<Object[]>) obj1;
+		 
+		 }else return null;
+	  
+  }
+	
+  public List<PartyElectionTrendsReportVO> getPreviousTrendsReportParliament(Long constId){
+		
+
+		Map<Long,Long> idMap = new HashMap<Long, Long>();
+		List<Object[]> obj=	partyTrendsDAO.getTotalVotersForConst(constId);
+		for (Object[] objects : obj) {
+			idMap.put(Long.valueOf(objects[0].toString()), ((Double)objects[1]).longValue());
+			
+		}
+		//List<Object[]> ids1  =(List<Object[]>)partyTrendsDAO.getTotalCountForParleament(232L, 2012L);
+
+		List<Object[]> ids = (List<Object[]>)partyTrendsDAO.getPreviousTrendsDataForParleament(null, constId);
+		Map<Long,PartyElectionTrendsReportVO> maps = new HashMap<Long, PartyElectionTrendsReportVO>();
+
+		System.out.println(ids.size());
+		
+		// get alliances for tdp inc based on year and election type
+		
+		for (Object[] object : ids) {
+			
+		if(maps.containsKey(Long.valueOf(object[0].toString())))
+		{
+			PartyElectionTrendsReportVO vo =maps.get(Long.valueOf(object[0].toString()));
+			  vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+			   if(idMap.containsKey(Long.valueOf(object[0].toString())))
+			   vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString()))!=null ?idMap.get(Long.valueOf(object[0].toString())):0L );
+			   else
+			   {
+				   System.out.println("----nottfound for the key"+Long.valueOf(object[0].toString()));
+			
+				   List<Object[]> objs1= partyTrendsDAO.getTotalVotersForConstFormBooth(constId, Long.valueOf(object[0].toString()));
+			       for (Object[] objects : objs1) {
+				   idMap.put(Long.valueOf(objects[1].toString()),Long.valueOf(objects[0].toString())); 
+				   vo.setTotalVoters(idMap.get(Long.valueOf(objects[0].toString()))!=null ?idMap.get(Long.valueOf(objects[0].toString())):0L );
+
+			}
+			   
+			   }
+			   vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+	           vo.setDistrictId(Long.valueOf(object[5].toString()));
+	           vo.setElectionId(Long.valueOf(object[8].toString()));
+	           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+	           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)((Long)object[3]).longValue()/(double)Long.valueOf(object[1].toString()))*100))));
+	           voh.setVotesEarned(((Long)object[3]).longValue());
+	           voh.setRank(((Long)object[6]).longValue());
+		       voh.setName(object[7].toString());
+
+	           if(((Long)object[2]).equals(872L))
+	           {
+	        	 /*  voh.setMarginVotes((Long)object[5]);
+	        	   voh.setMarginVotesPercentage(((Double)object[6]));*/
+	        	   vo.setTdpVo(voh);
+	           }else if(((Long)object[2]).equals(362L))
+	           {
+	        	   vo.setIncVo(voh);
+
+	           }else if(((Long)object[2]).equals(662L)||((Long)object[2]).equals(1117L)  )
+	           {
+	        	   vo.setPrpVo(voh);
+
+	           }
+	           else if(Long.valueOf(object[5].toString())<10){
+	           		if(((Long)object[2]).equals(163L)){
+	           			vo.setBjpVo(voh);
+	           		}
+	           		else if(((Long)object[2]).equals(886L)){
+	           			vo.setTrsVo(voh);
+	           		}
+	           		else {
+			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+			        	   if(vo1!=null){
+			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+			        	   		if( vo1.getRank()<(Long)object[6] ){
+			          			  vo1.setRank((Long)object[6]);
+			        	   		}
+			        	   }
+			        	   else 
+			        	   {
+			        		   vo1= new PartyElectionTrendsReportHelperVO();
+			        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+			        		   vo1.setRank((Long)object[6]); 
+			        	   }
+			        		   
+			        	   vo.setOthersVo(vo1);
+			           }
+	           }
+	           else {
+	        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+	        	   if(vo1!=null)
+	        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+	        	   else 
+	        	   {
+	        		   vo1= new PartyElectionTrendsReportHelperVO();
+	        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+
+	        	   }
+	        		   
+	        	   vo.setOthersVo(vo1);
+	        }
+			
+		}
+		else
+		{
+			PartyElectionTrendsReportVO vo =new PartyElectionTrendsReportVO();
+			           vo.setElectionYear(Long.valueOf(object[0].toString()).intValue());
+			     	  if(idMap.containsKey(Long.valueOf(object[0].toString())))
+				       vo.setTotalVoters(idMap.get(Long.valueOf(object[0].toString())));
+			           vo.setTotalVotesPolled(Long.valueOf(object[1].toString()));
+			           vo.setDistrictId(Long.valueOf(object[5].toString()));
+			           vo.setElectionId(Long.valueOf(object[8].toString()));
+
+			           PartyElectionTrendsReportHelperVO voh= new PartyElectionTrendsReportHelperVO();
+			           voh.setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)(((Long)object[3]).longValue())/(double)(Long.valueOf(object[1].toString()).longValue()))*100))));
+			           voh.setVotesEarned(((Long)object[3]).longValue());
+			           voh.setRank(((Long)object[6]).longValue());
+			           voh.setName(object[7].toString());
+			           if(((Long)object[2]).equals(872L))
+			           {
+			        	 /*  voh.setMarginVotes((Long)object[5]);
+			        	   voh.setMarginVotesPercentage(((Double)object[6]));*/
+			        	   vo.setTdpVo(voh);
+			           }else if(((Long)object[2]).equals(362L))
+			           {
+			        	   vo.setIncVo(voh);
+
+			           }else if(((Long)object[2]).equals(662L)||((Long)object[2]).equals(1117L)  )
+			           {
+			        	   vo.setPrpVo(voh);
+
+			           } else if(Long.valueOf(object[5].toString())<10){
+			           		if(((Long)object[2]).equals(163L)){
+			           			vo.setBjpVo(voh);
+			           		}
+			           		else if(((Long)object[2]).equals(886L)){
+			           			vo.setTrsVo(voh);
+			           		}
+			           		else {
+					        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+					        	   if(vo1!=null){
+					        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+					        	   		
+					        		   if( vo1.getRank()<(Long)object[6] ){
+					          			  vo1.setRank((Long)object[6]); 
+					        		   }
+					        	   }
+					        	   else 
+					        	   {
+					        		   vo1= new PartyElectionTrendsReportHelperVO();
+					        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+					        		   vo1.setRank((Long)object[6]); 
+					        	   }
+					        		   
+					        	   vo.setOthersVo(vo1);
+					           }
+			           }
+			           
+			           else {
+			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
+			        	   if(vo1!=null)
+			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Long)object[3]).longValue()) ;
+			        	   else 
+			        	   {
+			        		   vo1= new PartyElectionTrendsReportHelperVO();
+			        		   vo1.setVotesEarned(((Long)object[3]).longValue()) ;
+
+			        	   }
+			        		   
+			        	   vo.setOthersVo(vo1);
+			           }
+			           
+		maps.put(Long.valueOf(object[0].toString()),vo );
+		}
+		}
+		System.out.println(maps);
+		List<PartyElectionTrendsReportVO> finalRes= new ArrayList<PartyElectionTrendsReportVO>();
+
+		for(Long year:maps.keySet())
+		{PartyElectionTrendsReportVO vo=maps.get(year);
+		
+		   //here aliance check for tdp in seemandara
+		     if(vo.getDistrictId()>10)
+			alliancesCheck(vo, constId);
+		
+			Long tdp=vo.getTdpVo()!=null ?vo.getTdpVo().getVotesEarned():0L;
+			
+			Long inc =vo.getIncVo()!=null ? vo.getIncVo().getVotesEarned():0L;
+			 
+			Long prp11= vo.getPrpVo()!=null ? vo.getPrpVo().getVotesEarned() :0L;
+			 
+			Long others = vo.getOthersVo().getVotesEarned();
+			
+			Long max=inc;
+			if(prp11!=null && prp11>inc )
+				max=prp11;
+			else if(others !=null && others>inc )
+				max=others;
+			
+			if(vo.getTdpVo()==null){
+				PartyElectionTrendsReportHelperVO tdpVo=new PartyElectionTrendsReportHelperVO();
+				vo.setTdpVo(tdpVo);
+			}
+			vo.getTdpVo().setMarginVotes(tdp-max);
+			System.out.println(vo.getTdpVo().getMarginVotes());
+			System.out.println(vo.getTotalVotesPolled());
+			System.out.println((double)(vo.getTdpVo().getMarginVotes()/vo.getTotalVotesPolled())*100); 
+			
+			vo.getTdpVo().setMarginVotesPercentage(Double.valueOf(roundTo2DigitsDoubleValue( (double)(((double)vo.getTdpVo().getMarginVotes()/(double)vo.getTotalVotesPolled())*100))));
+			
+			//PartyElectionTrendsReportVO vo=	maps.get(year);
+			
+			//vo.getOthersVo().setVotesEarned(vo.getTotalVotesPolled()-( + vo.getIncVo()!=null ?vo.getIncVo().getVotesEarned().longValue():0L));
+			vo.getOthersVo().setPercentage(Double.valueOf(roundTo2DigitsDoubleValue((double)(((double)vo.getOthersVo().getVotesEarned()/(double)vo.getTotalVotesPolled())*100))));
+			finalRes.add(vo);
+		}
+		
+	
+		Collections.sort(finalRes);
+	return finalRes	;
+	}
 }
