@@ -146,16 +146,19 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     	q.setBigDecimal(0, new BigDecimal(constId));
 		  return q.list();
     }
+    
+    //previous trends dataa queries
+    
     public List<?> getPreviousTrendsData(List<Long> partyIds,Long constId)
     {
-    	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes,cer.totalVotesPolled,n.party.partyId,sum(cr.votesEarned),cr.marginVotes,cr.marginVotesPercentage,(cr.votesEarned/cer.totalVotesPolled) * 100 ,cr.rank,ce.constituency.district.districtId  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 group by  ce.election.electionYear,n.party.partyId ");
+    	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes,cer.totalVotesPolled,n.party.partyId,sum(cr.votesEarned),cr.marginVotes,cr.marginVotesPercentage,(cr.votesEarned/cer.totalVotesPolled) * 100 ,cr.rank,ce.constituency.district.districtId,p.shortName,ce.election.electionId  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr join n.party p  where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 group by  ce.election.electionYear,n.party.partyId ");
     	q.setParameter(0, constId);
     	return q.list();
     }
     public List<?> getPreviousTrendsDataForParleament(List<Long> partyIds,Long constId)
     {
     	Query q= getSession().createQuery("select ce.election.electionYear,sum(be.boothResult.validVotes),n.party.partyId,sum(cr.votesEarned),(sum(cr.votesEarned)/sum(be.boothResult.validVotes)) * 100,  " +
-    			" b.constituency.district.districtId,n.candidateResult.rank from ConstituencyElection ce " +
+    			" b.constituency.district.districtId,n.candidateResult.rank,n.party.shortName,ce.election.electionId from ConstituencyElection ce " +
     			"  ,BoothConstituencyElection be " +
     			" ,Booth b   " +
     			", Nomination   n  " +
@@ -169,6 +172,10 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     	q.setParameter(0, constId);
     	return q.list();
     }
+    
+    
+    //getAllVotes
+   
     
     /*@SuppressWarnings("unchecked")
 	public List<Object[]> getPreviousTrendsDataForParleament(List<Long> partyIds,Long constituencyId)
@@ -187,7 +194,35 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     	q.setParameter(0, constId);
     	return q.list();
     }
-   
+    public List<Object[]> getTotalVotersForConstFormBooth(Long constId,Long year)
+    {
+    	Query q= getSession().createQuery("select sum(b.totalVoters),b.year  from Booth b where   b.constituency.constituencyId=? and b.year=? group by b.year");
+    	q.setParameter(0, constId);
+    	q.setParameter(1, year);
+    	return q.list();
+    }
+    
+    // get count for aliance
+    public List<?> getPreviousTrendsDataWithAlliance(List<Long> partyIds,Long constId,Long year)
+    {
+    	Query q= getSession().createQuery("select ce.election.electionYear,cer.totalVotes,cer.totalVotesPolled,n.party.partyId,sum(cr.votesEarned),cr.marginVotes,cr.marginVotesPercentage,(cr.votesEarned/cer.totalVotesPolled) * 100 ,cr.rank,ce.constituency.district.districtId,p.shortName,ce.election.electionId  from ConstituencyElection ce join ce.nominations  n join ce.constituencyElectionResult cer join n.candidateResult cr join n.party p  where ce.constituency.constituencyId=? and ce.election.electionScope.electionScopeId=2 and ce.election.electionYear=? and n.party.partyId in(:ids) group by  ce.election.electionYear,n.party.partyId order by cr.rank  ");
+    	q.setParameter(0, constId);
+    	q.setParameter(1, year.toString());
+    	q.setParameterList("ids", partyIds);
+    	return q.list();
+    }
+    
+    // get alliance group from aliance
+    
+  //  "ElectionAlliance"
+    public List<Long> getWithAlliance(Long partyIds,Long electionId)
+    {
+    	Query q= getSession().createQuery("select ag1.party.partyId   from ElectionAlliance ea ,AllianceGroup ag,AllianceGroup ag1   where ea.group.groupId = ag1.group.groupId and ea.group.groupId = ag.group.groupId and ea.election.electionId=? and ea.state.stateId=1 and ag.party.partyId=? ");
+    	q.setParameter(0, electionId);
+    	q.setParameter(1, partyIds);
+    //	q.setParameter("ids", partyIds);
+    	return q.list();
+    }
     
     
 }
