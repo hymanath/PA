@@ -370,7 +370,17 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			maps.put(PdfPages.ageGroup, defaultFileName);
 			voterModificationGenderInfoVOList=null;
 		 //stratagicReportsService.generatePDFForVoterInfo(voterModificationGenderInfoVOList,"genderWise");
-		
+			
+			
+			/*DeSerialize<List<AgeRangeVO>>  dboothWiseAddedDelList=new DeSerialize<List<AgeRangeVO>>();
+			  List<AgeRangeVO> boothWiseAddedDelList = dboothWiseAddedDelList.deSerialize( maps.get(PdfPages.boothWiseAddedDelList) );
+
+			  stratagicReportsService.generateBoothWiseAddedDeletedVoters(boothWiseAddedDelList,document);*/
+			defaultFileName="boothWiseAddedDelList"+uidentifier;
+			List<AgeRangeVO> boothWiseAddedDelList =stratagicReportsService.getBoothWiseAddedAndDeletedVoters(constituencyId,publicationDateId);
+			defaultFileName =   serialize(defaultFileName, boothWiseAddedDelList);
+			maps.put(PdfPages.boothWiseAddedDelList, defaultFileName);
+			
 		//-->locality wise added deleted 
 			
 			defaultFileName="localityAddedDeleted"+uidentifier;
