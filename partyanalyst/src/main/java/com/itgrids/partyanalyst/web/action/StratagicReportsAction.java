@@ -405,7 +405,7 @@ public class StratagicReportsAction extends ActionSupport implements
 		
 		boothWiseAddedDelList=stratagicReportsService.getBoothWiseAddedAndDeletedVoters(constituencyId,publicationDateId);
 		
-		
+		stratagicReportsService.generateBoothWiseAddedDeletedVoters(boothWiseAddedDelList);
 		return Action.SUCCESS;
 	}
 	public String getPreviousTrendsReport(){
@@ -460,7 +460,7 @@ public class StratagicReportsAction extends ActionSupport implements
 				prevResults.setDistrictId(pv.getDistrictId());
 				prevResults.setMuncipalOrCorpOrGmc(pv.getMuncipalOrCorpOrGmc());
 				prevResults.setTotalNoOfWardsTitle("Total No of Wards -"+pv.getPartyResultsVOList().size());
-				prevResults.setWardTitle("* indicates Inclusive of All Other Parties and Independents, Independents are participated for more than one seat in some of the Wards");
+				prevResults.setWardTitle("Others indicates Inclusive of All Other Parties and Independents, Independents are participated for more than one seat in some of the Wards");
 				prevResults.setInformation("A categorization that provides you with insight of "+pv.getElectionBodyType()+" Election results of Wards in your constituency helping in creating a common strategy:");
 			}
 				
@@ -473,11 +473,12 @@ public class StratagicReportsAction extends ActionSupport implements
 				prevResults.setOtherVotes(pv_gmc.getOtherVotes());
 				prevResults.setOtherVotesPercent(pv_gmc.getOtherVotesPercent());
 				prevResults.setMuncipalOrCorpOrGmc(pv.getMuncipalOrCorpOrGmc());
+				prevResults.setDistrictId(pv_gmc.getDistrictId());
 				prevResults.setTotalNoOfWardsTitle("Total No of Wards -"+pv_gmc.getPartyResultsVOList().size());
-				prevResults.setWardTitle("* indicates Inclusive of All Other Parties and Independents, Independents are participated for more than one seat in some of the Wards");
+				prevResults.setWardTitle("Others indicates Inclusive of All Other Parties and Independents, Independents are participated for more than one seat in some of the Wards");
 				prevResults.setInformation("A categorization that provides you with insight of "+pv_gmc.getElectionBodyType()+" Election results of Wards in your constituency helping in creating a common strategy:");
 			}
-
+			stratagicReportsService.generatePdfForLocalElectionResults(prevResults);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Action.ERROR;
@@ -578,6 +579,8 @@ public class StratagicReportsAction extends ActionSupport implements
 			
 			voterModificationVO = stratagicReportsService.getSubLevelsVoterModificationDetailsByLocationValue(
 					locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+			
+			stratagicReportsService.getPDFForSubLevelAddedDeleted(voterModificationVO);
 			return Action.SUCCESS;
 			
 		}
@@ -598,6 +601,8 @@ public class StratagicReportsAction extends ActionSupport implements
 				Long constituencyId = jObj.getLong("constituencyId");
 				Long publicationId = jObj.getLong("publicationId");
 				voterDensityWithPartyVO = stratagicReportsService.getVotersCountInPanchayatsForDensity(constituencyId,publicationId);
+				
+				stratagicReportsService.generatePDFForDensity(voterDensityWithPartyVO);
 			}catch(Exception e){
 				log.error("Exception raised in getVoterDensityPanchayatWiseWithPartyResult() method in StratagicReportAction",e);
 			}
@@ -624,10 +629,12 @@ public class StratagicReportsAction extends ActionSupport implements
 			
 			if(taskToDo.equalsIgnoreCase("voterInfo")){
 				voterAgeRangeVOList = stratagicReportsService.getVoterInfoByPublicationDateList(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
+				stratagicReportsService.generatePDFForVoterInfo(voterAgeRangeVOList,"voterInfo");
 			}
 			
 			if(taskToDo.equalsIgnoreCase("addedOrDeletedVoterInfoInALocation")){
 				voterModificationAgeRangeVOList = stratagicReportsService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
+				stratagicReportsService.generatePDFForVoterInfo(voterModificationAgeRangeVOList,"addedDeleted");
 			}
 			
 			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiBetweenPublications")){
@@ -636,6 +643,7 @@ public class StratagicReportsAction extends ActionSupport implements
 			
 			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiForEachPublic")){
 				voterModificationGenderInfoVOList = stratagicReportsService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
+				stratagicReportsService.generatePDFForVoterInfo(voterModificationGenderInfoVOList,"genderWise");
 			}
 			return Action.SUCCESS;
 		}
@@ -899,5 +907,6 @@ public class StratagicReportsAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
+	
 	
 }
