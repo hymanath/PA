@@ -19,7 +19,11 @@
 <script type="text/javascript" src="js/multiSelectBox/jquery.multiselect.filter.js"></script>
 <link rel="stylesheet" type="text/css" href="css/multiSelectBox/jquery.multiselect.css" />
 
-<style type="text/css">	</style>
+<style type="text/css">
+ input[type="search"]{
+  padding: 4px 1px;
+}
+</style>
 
 <script type="text/javascript" >
 $(document).ready(function(){
@@ -171,7 +175,7 @@ function getCandidateCastes(constituencyIds){
 			
                 $("#candidateCastesId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 			}
-			$("#candidateCastesId").append("<option value=0>Others</option>");
+			$("#candidateCastesId").append("<option value=0 disabled='disabled' selected='selected' >Others</option>");
 		    $("#candidateCastesId").multiselect('refresh'); 
 	});
 }
@@ -210,6 +214,7 @@ function getElectionYears(id){
 var selectedCastes = [];
 function getSelectedCastes()
 {
+    expCasteArray = new Array();
 	$('#castesDisplayDiv').html('');
 	selectedCastes = new Array();
 	$('#castesDisplayDiv').dialog({
@@ -233,7 +238,7 @@ function getSelectedCastes()
 		
 	}
 	str+='</table></div>';
-    str+='<div><input type="button" class="btn btn-primary" value="Get values" onClick="getAllExpcetedCasteDetails();"></input></div></div>';
+    str+='<div><input type="button" class="btn btn-primary" value="OK" onClick="getAllExpcetedCasteDetails();"></input></div></div>';
 
 	$('#castesDisplayDiv').append(str);
 	
@@ -260,7 +265,8 @@ function getAllExpcetedCasteDetails()
 
 		casteDetails["casteId"]      =    casteId,
 		casteDetails["expPerc"]      =    expPerc
-		expCasteArray.push(casteDetails);					
+		expCasteArray.push(casteDetails);	
+      $('#castesDisplayDiv').dialog('close');		
    }
 }
 
