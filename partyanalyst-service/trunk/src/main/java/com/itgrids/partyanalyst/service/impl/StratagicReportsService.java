@@ -3613,13 +3613,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 		return assumptionsVO;
 	  }
 	  
-	  public void generatePdfForLocalElectionResults(PartyResultsVerVO prevResults){
+	  public void generatePdfForLocalElectionResults(PartyResultsVerVO prevResults , Document document){
 		  LOG.debug("Entered Into LocalElectionResults Blocks For GENERATING PDF");
-		  Document document = new Document();
+		//  Document document = new Document();
 		  try {
-			  PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+			//  PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
 		
-			  document.open();
+			  //document.open();
 		  
 		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
@@ -4211,7 +4211,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 
 		  }
 		  
-		  document.close();		  
+		  
 		  
 		  } catch (Exception e) {
 			  LOG.debug("Exception Raised while GENERATING PDF in LocalElectionResults Blocks" +e);
@@ -4220,15 +4220,15 @@ public class StratagicReportsService implements IStratagicReportsService{
 		 
 	  }
 	  
-	  public void generatePDFForVoterInfo(PDFHeadingAndReturnVO result,String task){
+	  public void generatePDFForVoterInfo(PDFHeadingAndReturnVO result,String task,Document document ){
 		  LOG.debug("Entered Into VoterInfo Blocks For GENERATING PDF");
 		  
-		  Document document = new Document();
+		  //Document document = new Document();
 		  try {
-			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+			//PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
 		
 		  
-			document.open();
+			//document.open();
 		  
 		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
@@ -4388,7 +4388,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  }
 
 
-		  document.close(); 
+		 // document.close(); 
 		  }
 		  catch (Exception e) {
 			  LOG.error("Exception Occured While Generating PDF for VotersInfo Block of VoterModification" +e);
@@ -4397,22 +4397,15 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 		  
 	  
-	  public void generatePDFForDensity(VoterDensityWithPartyVO result){
+	  public void generatePDFForDensity(VoterDensityWithPartyVO result,Document document){
 		  LOG.debug("Entered Into Density For GENERATING PDF");
 		  
-		  DelimitationEffectVO dv=new DelimitationEffectVO();
-		  generatePDFForDelimitationEffect(dv);
-		  
-		  AssumptionsVO avo= new AssumptionsVO();
-		  
-		  generatePDFForAssuredTargetVotersBlock(avo);
-		  
-		  Document document = new Document();
+	
 		  try {
-			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+			
 		
 			
-		  document.open();
+		
 	  
 		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
@@ -4479,7 +4472,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  document.add(new Paragraph(result.getInformation2(),TITLE));
 		  document.add(Chunk.NEWLINE);
 		  
-		  document.close();
+		//  document.close();
 		  
 		  }catch (Exception e) {
 			  LOG.debug("Exception Raised while GENERATING PDF in Density Block" +e);
@@ -4488,17 +4481,17 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 	  }
 	  
-	  public void generatePDFForAssuredTargetVotersBlock(AssumptionsVO result){
+	  public void generatePDFForAssuredTargetVotersBlock(AssumptionsVO result,Document document){
 		  LOG.debug("Entered Into generatePDFForAssuredTargetVotersBlock For GENERATING PDF");
 		  
-		  result=votersAssumptionsService(232l,85l,46l,10l,54l);
+		 // result=votersAssumptionsService(232l,85l,46l,10l,54l);
 		  
-		  Document document = new Document();
+		 // Document document = new Document();
 		  try {
-			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+			//PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
 		
 			
-		  document.open();
+		  //document.open();
 	  
 		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
@@ -4572,7 +4565,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  document.add(table1);
 		  document.add(Chunk.NEWLINE);
 		  
-		  document.close();
+		//  document.close();
 		  
 		  }catch (Exception e) {
 			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForAssuredTargetVotersBlock Block" +e);
@@ -4581,17 +4574,17 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 	  }
 	  
-	  public void generatePDFForDelimitationEffect(DelimitationEffectVO result){
+	  public void generatePDFForDelimitationEffect(DelimitationEffectVO result,Document document){
 		  LOG.debug("Entered Into generatePDFForDelimitationEffect For GENERATING PDF");
 		  
-		  result=getDelimationEffectOnConstituency(159l,882l);
+		 // DelimitationEffectVO result=getDelimationEffectOnConstituency(159l,882l);
 		  
-		  Document document = new Document();
+		//  Document document = new Document();
 		  try {
-			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+			//PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
 		
 			
-		  document.open();
+		 // document.open();
 	  
 		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
@@ -4716,7 +4709,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  document.add(new Paragraph("We have considered 2009 Delimitation area results for comparison",TITLE));
 		  document.add(Chunk.NEWLINE);
 		  
-		  document.close();
+		  //document.close();
 		  
 		  }catch (Exception e) {
 			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForDelimitationEffect Block" +e);
@@ -4724,15 +4717,15 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		  
 	  }
-	  public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result){
+	  public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result,Document document){
 		  LOG.debug("Entered Into BoothWiseAddedDeletedVoters For GENERATING PDF");
 		  
-		  Document document = new Document();
+		 // Document document = new Document();
 		  try {
-			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+			//PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
 		
 			
-		  document.open();
+		 // document.open();
 	  
 		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
@@ -4887,7 +4880,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  document.add(Chunk.NEXTPAGE);
 		  document.add(new Paragraph(result.get(0).getMainHeading2(),TITLE));
 		  document.add(Chunk.NEWLINE);
-		  
+		  document.newPage();
 		  PdfPTable table1 = new PdfPTable(17);
 		  column = new PdfPCell(new Phrase("PANCHAYAT",TBCELL));
 		  column.setRowspan(3);
@@ -5017,23 +5010,23 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  float[] widths1=new float[] {3.0f,1.5f,1.5f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f};
 		  table1.setWidths(widths1);
 		  document.add(table1);
-		  document.close();
+		 // document.close();
 		  } catch (Exception e) {
 				LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters" +e);
 				e.printStackTrace();
 			} 
 	  }
 	  
-	  public void getPDFForSubLevelAddedDeleted(VoterModificationVO resultvo){
+	  public void getPDFForSubLevelAddedDeleted(VoterModificationVO resultvo, Document document ){
 		  LOG.debug("Entered Into getPDFForSubLevelAddedDeleted For GENERATING PDF");
 		  
-		  Document document = new Document();
+		  //Document document = new Document();
 		  try {
 			  
 			  
-			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+			//PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
 		
-			document.open();
+			//document.open();
 	  
 			Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
 			TITLE.setColor(BaseColor.BLACK);
@@ -5133,7 +5126,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			}
 			
 			document.add(table);
-			document.close();
+			//document.close();
 			
 			
 		  
