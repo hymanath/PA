@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -16,13 +17,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
@@ -1878,10 +1877,10 @@ public class StrategyModelTargetingService implements
 		   String filePath = "VMR"+"/1.pdf";
 		   String FILE = path+filePath;
 		   File file = new File(FILE);
-		   
+		   PdfWriter writer = null;
 		   try {
 			   file.createNewFile();
-		   PdfWriter.getInstance(document, new FileOutputStream(FILE));
+			   writer = PdfWriter.getInstance(document, new FileOutputStream(FILE));
 		   } catch (Exception e) {
 			   LOG.debug("Exception raised in getPrioritiesToTarget() method",e);
 		   }
@@ -1907,6 +1906,7 @@ public class StrategyModelTargetingService implements
 		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");
 		  
 		   prpEffectTableTable(document,otherPartyEffect);
+		   buildPiChart(document,panchayatsClassification,writer);
 		   buildPanchayatsClassificationBlock(document,panchayatsClassification);
 		   if(impfamilesList != null && impfamilesList.size() > 0)
 		   {
@@ -2911,9 +2911,48 @@ public class StrategyModelTargetingService implements
                } catch (Exception e) {
                        e.printStackTrace();
                }
-          }
+          }		  
+		  public void buildPiChart(Document document,List<OrderOfPriorityVO> panchayatsClassification,PdfWriter writer)
+		  {
+		  try{
+			  DefaultPieDataset  dataSet = new DefaultPieDataset ();
+			  for(OrderOfPriorityVO order:panchayatsClassification){
+				  dataSet.setValue(order.getName(),order.getTotalVoters());
+			  }
+	
+			  JFreeChart chart = ChartFactory.createPieChart("Strategy Suggestive Model", dataSet, true, true, false);
+			  chart.setBackgroundPaint(Color.white);
+			  PiePlot plot = (PiePlot)chart.getPlot();
+			  for(int i=0;i<panchayatsClassification.size();i++){
+				   switch(i){
+				    case 0:plot.setSectionPaint("Highly Critical Panchayaths",new Color(255, 0, 0));
+				           plot.setExplodePercent("Highly Critical Panchayaths", 0.08);
+				    	   break;
+				    case 1: plot.setSectionPaint("Critical Panchayaths",new Color(204, 102, 0));
+				    	   break;
+				    case 2:plot.setSectionPaint("Medium Panchayaths",new Color(255, 153, 102));
+				    	   break;
+				    case 3:plot.setSectionPaint("Easy Panchayaths", new Color(51, 153, 255));
+				    	   break;
+				    case 4:plot.setSectionPaint("Good Panchayaths", new Color(0, 153, 0));
+				    	   break;
 
- 
+	             }
+			  }
+			
+		      plot.setSimpleLabels(true);
+		      
+			  PdfContentByte cb = writer.getDirectContent();
+			  PdfTemplate bar = cb.createTemplate(300, 400);
+			  Graphics2D g2d2 = bar.createGraphics(300,400,new DefaultFontMapper());
+			  Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 300,400);
+	
+			  chart.draw(g2d2, rectangle2d);
+			  g2d2.dispose();
+			  cb.addTemplate(bar,0.0f,0.0f);
+		   }catch(Exception e){
+			  LOG.debug("Exception raised in buildPanchayatsClassificationBlock() ",e);
+			}
+		  }
 
-		  
 }
