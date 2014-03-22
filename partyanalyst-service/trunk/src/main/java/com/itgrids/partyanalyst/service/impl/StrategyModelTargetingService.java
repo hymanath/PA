@@ -2944,11 +2944,11 @@ public class StrategyModelTargetingService implements
 			
 		      plot.setSimpleLabels(true);
 		      
-			  PdfContentByte cb = writer.getDirectContent();
-			  PdfTemplate bar = cb.createTemplate(300, 400);
-			  Graphics2D g2d2 = bar.createGraphics(300,400,new DefaultFontMapper());
-			  Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 300,400);
-	
+		      PdfContentByte cb = writer.getDirectContent();
+			  PdfTemplate bar = cb.createTemplate(600, 800);
+			  Graphics2D g2d2 = bar.createGraphics(600,800);
+			  Rectangle2D rectangle2d = new Rectangle2D.Double(80,110, 300,400);
+
 			  chart.draw(g2d2, rectangle2d);
 			  g2d2.dispose();
 			  cb.addTemplate(bar,0.0f,0.0f);
