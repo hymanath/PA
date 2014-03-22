@@ -48,4 +48,14 @@ public interface IStratagicReportsService {
 	public List<SelectOptionVO> getElectionIdsAndYearsByCosntutuencyId(Long electionScopeId,Long constituencyId) ;
 	
 	public List<SelectOptionVO> getPanchayatDetailsForElectionInCosntituency(Long userId,Long constituencyId,Long elctionId);
+	
+	public void generatePdfForLocalElectionResults(PartyResultsVerVO prevResults);
+	
+	public void generatePDFForVoterInfo(PDFHeadingAndReturnVO pvo,String task);
+	
+	public void generatePDFForDensity(VoterDensityWithPartyVO result);
+	
+	public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result);
+	
+	public void getPDFForSubLevelAddedDeleted(VoterModificationVO result);
 }
