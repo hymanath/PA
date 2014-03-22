@@ -491,6 +491,7 @@ public class StrategyModelTargetingService implements
 		  PartyEffectVO effect = partyEffect.get(id);
 	    	 if(effect == null){
 	    	  effect = new PartyEffectVO();
+	    	  effect.setId(id);
 	    	  effect.setName(locationName);
 	    	  partyEffect.put(id, effect);
 	    	 }
@@ -551,7 +552,8 @@ public class StrategyModelTargetingService implements
 		  Long prp = 0l;
 		  Long panchayatTotalVoters = 0l;
 		  for(Long id:panchayatIds){	
-			 Map<Long,Long> partyMap = resultMap.get(id);	 
+			 Map<Long,Long> partyMap = resultMap.get(id);
+			if(partyMap != null) {
 			 for(Long partysId:partyMap.keySet()){
 			  totalVotes += partyMap.get(partysId); 
 		     }	
@@ -586,6 +588,7 @@ public class StrategyModelTargetingService implements
 		    if(totVoters != null){
 		    	panchayatTotalVoters = panchayatTotalVoters+totVoters;
 		    }
+		  }
          }
          
 			
@@ -608,6 +611,7 @@ public class StrategyModelTargetingService implements
 	    	 if(effect == null){
 	    	  effect = new PartyEffectVO();
 	    	  effect.setName(locationName);
+	    	  effect.setId(key);
 	    	  partyEffect.put(key, effect);
 	    	 }
 	    	 if(effectElectionId != null && effectPartyId != null && electionId.longValue() == effectElectionId.longValue()){
@@ -712,6 +716,7 @@ public class StrategyModelTargetingService implements
 			    	 if(effect == null){
 			    	  effect = new PartyEffectVO();
 			    	  effect.setName(localbodyName);
+			    	  effect.setId(localbodyId);
 			    	  partyEffect.put(localbodyId, effect);
 			    	 }
 			    	 if(effectElectionId != null && effectPartyId != null && partyPositionVO.getId().longValue() == effectElectionId.longValue()){
@@ -1055,6 +1060,9 @@ public class StrategyModelTargetingService implements
 				 panchayatVo = new PanchayatVO();
 				 panchayatVo.setPanchayatId(panchayatId);
 				 panchayatVo.setCount(totalVotersMap.get(panchayatId));
+				 panchayatVo.setTotalPanchayatVoters(totalVotersMap.get(panchayatId).intValue());
+				 panchayatVo.setTotalVoters(youngOldVotersList.get(panchayatId).intValue());
+				 panchayatVo.setOthrExpctdVotes(youngOldVotersList.get(panchayatId).intValue());
 				 panchayatVo.setPanchayatName(panchayatNames.get(panchayatId));
 				 panchayatVo.setTotalTargetCount(youngOldVotersList.get(panchayatId));
 				 panchayatVo.setTargetPerc(new BigDecimal((panchayatVo.getTotalTargetCount()*100)/panchayatVo.getCount()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
@@ -1261,7 +1269,6 @@ public class StrategyModelTargetingService implements
 			   if(panchayats == null){
 				   panchayats = new HashSet<Long>();
 				   mergePanchayatMap.put((Long)mergePanchayat[1],panchayats);
-				   panchayats.add((Long)mergePanchayat[1]);
 			   }
 			   panchayats.add((Long)mergePanchayat[0]);
 			}
@@ -1284,7 +1291,8 @@ public class StrategyModelTargetingService implements
 				 panchayatVo = new PanchayatVO();
 				 panchayatVo.setPanchayatId((Long)caste[0]);
 				 panchayatVo.setPanchayatName(panchayatNames.get((Long)caste[0]));
-				 panchayatVo.setTotalPanchayatVoters(pancTotalVotersList.get((Long)caste[0]).intValue());
+				 if(pancTotalVotersList.get((Long)caste[0]) != null)
+				   panchayatVo.setTotalPanchayatVoters(pancTotalVotersList.get((Long)caste[0]).intValue());
 				 Map<Long,Long> casteMap = new HashMap<Long,Long>();
 				 panchayatVo.setCasteMap(casteMap);
 				 casteMap.put(0l, totalVotersMap.get((Long)caste[0]));
@@ -1582,6 +1590,12 @@ public class StrategyModelTargetingService implements
        }
        public List<OrderOfPriorityVO>  calculateFinalOrder(List<OrderOfPriorityVO>  finalOrder){
 		   for(OrderOfPriorityVO priority:finalOrder){
+			   if(priority.getOpportunity() == null){
+				   priority.setOpportunity(0l);
+			   }
+			   if(priority.getOpportunityPerc() == null){
+				   priority.setOpportunityPerc(0d);
+			   }
 			   priority.setTotalWeight(priority.getPrpWeight()+priority.getYoungWeight()+priority.getAgeWeight()+priority.getCasteWeight()+priority.getPrevTrnzWeight());
 			  
 		   }
@@ -2337,16 +2351,24 @@ public class StrategyModelTargetingService implements
 				  		  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getName(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
-					  	  
-					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),style2));
+					  	  if(orderOfPriorityVO.getTotalVoters() != null)
+					  	   cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),style2));
+					  	  else
+					  		cell = new PdfPCell(new Phrase("",style2));  
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
+					  	 if(orderOfPriorityVO.getTargetedVoters() != null)
 					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTargetedVoters().toString(),style2));
+					  	 else
+					  	  cell = new PdfPCell(new Phrase("",style2)); 
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
+					  	if(orderOfPriorityVO.getPreviousVoters() != null)
 					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getPreviousVoters().toString(),style2));
+					  	else
+					  	  cell = new PdfPCell(new Phrase("",style2));	
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
