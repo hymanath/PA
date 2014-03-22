@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
@@ -24,6 +25,15 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -1147,6 +1157,12 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		
 		
+		Long districtId=null;
+		List<Long> districtIds=constituencyDAO.getDistrictIdByConstituencyId(constiutencyId);
+		if(districtIds.size()>0){
+			districtId=districtIds.get(0).longValue();
+		}
+		
 		List<PartyResultsVO> electionList=new ArrayList<PartyResultsVO>();
 		Map<Long,List<PartyResultsVO>> eleMap=new HashMap<Long, List<PartyResultsVO>>();
 		
@@ -1349,6 +1365,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		prvo.setMuncipalOrCorpOrGmc(name);
 		prvo.setElectionBodyType(localBodyType);
+		prvo.setDistrictId(districtId);
 		return prvo;
 	} 
 	
@@ -2907,7 +2924,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					 }
 				 }
 				 pdfVO.setAgeRangeWiseAddedDeletedList(result);
-				 pdfVO.setSubHeading("Gender Wise Voter Modifications between ");
+				 pdfVO.setSubHeading("Age Group ");
 				 return pdfVO; 
 			 }catch (Exception e) {
 				 LOG.error("Exception Occured in getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications() Method");
@@ -3126,7 +3143,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				 }
 				 
 				 pdfVO.setGenderWiseVoterModificationInfoForEachPublicationList(result);
-				 pdfVO.setMainHeading("Age Group");
+				 pdfVO.setMainHeading("Gender Wise Voter Modifications between");
 				 return pdfVO;
 			 }catch (Exception e) {
 				 LOG.error("Exception Occured in getGenderWiseVoterModificationsForEachPublication() Method");
@@ -3592,5 +3609,1293 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		return assumptionsVO;
 	  }
+	  
+	  public void generatePdfForLocalElectionResults(PartyResultsVerVO prevResults){
+		  LOG.debug("Entered Into LocalElectionResults Blocks For GENERATING PDF");
+		  Document document = new Document();
+		  try {
+			  PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
 		
+			  document.open();
+		  
+		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);
+		  
+		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  
+		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
+		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  Font TBCELLSM_WIN = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  
+		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
+
+		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		  subHeading.setColor(BaseColor.MAGENTA);
+		  
+		  
+		  
+		  if(prevResults.getPartyResultsVOList()!=null && prevResults.getPartyResultsVOList().size()>0){
+			  
+		  document.add(new Paragraph(prevResults.getZptcMptcTitle(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  int columnsCount=10;
+		  boolean trsAvail=false;
+		  if(prevResults.getDistrictId()<=10){
+			  columnsCount=12;
+			  trsAvail=true;
+		  }
+		  
+		  PdfPTable table = new PdfPTable(columnsCount);
+		  PdfPCell column=null;
+		  column = new PdfPCell(new Phrase("YEAR",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Total Votes",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes Polled",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("TDP",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("MARGIN",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("INC",TBCELL));
+		  table.addCell(column);
+
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  if(trsAvail){
+			  column = new PdfPCell(new Phrase("TRS",TBCELL));
+			  table.addCell(column);
+
+			  column = new PdfPCell(new Phrase("%",TBCELL));
+			  table.addCell(column);
+		  }
+		  
+		  column = new PdfPCell(new Phrase("OTHERS",TBCELL));
+		  table.addCell(column);
+
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  for(PartyResultsVO temp:prevResults.getPartyResultsVOList()){
+			  column = new PdfPCell(new Phrase(temp.getYear()+""+temp.getElectionName(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("--",TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(temp.getValidVotes().toString(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  boolean tdpexist=false;
+			  boolean incexist=false;
+			  boolean trsexist=false;
+			  
+			  //BUILDING TDP CELLS
+			  for(PartyResultsVO temp1:temp.getPartyResultsVOList()){
+				  if(temp1.getPartyId().longValue()==872l){
+					  if(temp1.getRank()!=null){
+						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
+						  column.setBackgroundColor(BaseColor.GREEN);
+						  table.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
+						  table.addCell(column);
+					  }else{
+						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM));
+						  table.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
+						  table.addCell(column);
+					  }
+					  
+					  tdpexist=true;
+				  }
+			  }
+			  
+			  if(!tdpexist){
+				  column = new PdfPCell(new Phrase("--",TBCELLSM));
+				  table.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase("--",TBCELLSM));
+				  table.addCell(column);
+			  }
+			  
+			  
+			  column = new PdfPCell(new Phrase(temp.getMarginVotes().toString()+"("+temp.getMarginPercent()+")",TBCELLSM));
+			  table.addCell(column);
+			  
+			  
+			//BUILDING INC CELLS
+			  for(PartyResultsVO temp1:temp.getPartyResultsVOList()){
+				  if(temp1.getPartyId().longValue()==362l){
+					  if(temp1.getRank()!=null){
+						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
+						  column.setBackgroundColor(BaseColor.GREEN);
+						  table.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
+						  table.addCell(column);
+					  }else{
+						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM));
+						  table.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
+						  table.addCell(column);
+					  }
+					  
+					  incexist=true;
+				  }
+			  }
+			  
+			  if(!incexist){
+				  column = new PdfPCell(new Phrase("--",TBCELLSM));
+				  table.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase("--",TBCELLSM));
+				  table.addCell(column);
+			  }
+			  
+			if(trsAvail){
+			 //BUILDING TRS CELLS
+			  for(PartyResultsVO temp1:temp.getPartyResultsVOList()){
+				  if(temp1.getPartyId().longValue()==886l){
+					  if(temp1.getRank()!=null){
+						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
+						  column.setBackgroundColor(BaseColor.GREEN);
+						  table.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
+						  table.addCell(column);
+					  }else{
+						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM));
+						  table.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
+						  table.addCell(column);
+					  }
+					  
+					  trsexist=true;
+				  }
+			  }
+			  
+			  if(!trsexist){
+				  column = new PdfPCell(new Phrase("--",TBCELLSM));
+				  table.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase("--",TBCELLSM));
+				  table.addCell(column);
+			  }
+			}
+			if(temp.getOtherVotes()!=null)
+			  column = new PdfPCell(new Phrase(temp.getOtherVotes().toString(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(temp.getOtherVotesPercent(),TBCELLSM));
+			  table.addCell(column);
+		  }
+		  
+		  document.add(Chunk.NEWLINE);
+		  document.add(table);
+		  document.add(Chunk.NEWLINE);
+		  }
+		  
+		  if(prevResults.getPartyStrengths()!=null){
+			  if(prevResults.getPartyStrengths().size()>0){
+				  List<PartyResultsVO> resultsVOs=prevResults.getPartyStrengths();
+				  
+				  boolean tdpexist=false;
+				  boolean incexist=false;
+				  boolean trsexist=false;
+				  boolean bjpexist=false;
+				  
+				  boolean trsavail=false;
+				  
+				  Long disrictId=prevResults.getDistrictId();
+				  if(disrictId<=10){
+					  trsavail=true;
+				  }
+				  
+				  int columnsCount=12;
+				  boolean trsAvail=false;
+				  if(prevResults.getDistrictId()<=10){
+					  columnsCount=15;
+					  trsAvail=true;
+				  }
+				  
+				  PdfPTable table2 = new PdfPTable(columnsCount);
+				  PdfPCell column=null;
+				  column = new PdfPCell(new Phrase("TDP",TBCELL));
+				  column.setColspan(3);
+				  table2.addCell(column);
+				  
+				  
+				  column = new PdfPCell(new Phrase("INC",TBCELL));
+				  column.setColspan(3);
+				  table2.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase("BJP",TBCELL));
+				  column.setColspan(3);
+				  table2.addCell(column);
+				  
+				  if(trsavail){
+					  column = new PdfPCell(new Phrase("TRS",TBCELL));
+					  column.setColspan(3);
+					  table2.addCell(column);
+				  }
+				  
+				  column = new PdfPCell(new Phrase("OTHERS",TBCELL));
+				  column.setColspan(3);
+				  table2.addCell(column);
+				  
+				  
+				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  table2.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  table2.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  table2.addCell(column);
+				  
+				  if(trsavail){
+				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  table2.addCell(column);
+				  }
+				  
+				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  table2.addCell(column);
+				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  table2.addCell(column);
+				  
+				  
+				  for(PartyResultsVO temp:resultsVOs){
+					  if(temp.getPartyId().longValue()==872l){
+						  column = new PdfPCell(new Phrase(temp.getParticipated().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getWon().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getPercentage(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  tdpexist=true;
+					  }
+				  }
+					  if(!tdpexist){
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+					  }
+					  
+					  for(PartyResultsVO temp:resultsVOs){
+					  if(temp.getPartyId().longValue()==362l){
+						  column = new PdfPCell(new Phrase(temp.getParticipated().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getWon().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getPercentage(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  incexist=true;
+					  }
+					  }
+					  if(!incexist){
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+					  }
+					  
+					  for(PartyResultsVO temp:resultsVOs){
+					  if(temp.getPartyId().longValue()==163l){
+						  column = new PdfPCell(new Phrase(temp.getParticipated().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getWon().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getPercentage(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  bjpexist=true;
+					  }
+					  }
+					  if(!bjpexist){
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+					  }
+					  if(trsavail){
+						  for(PartyResultsVO temp:resultsVOs){
+					  if(temp.getPartyId().longValue()==886l){
+						  column = new PdfPCell(new Phrase(temp.getParticipated().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getWon().toString(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase(temp.getPercentage(),TBCELLSM));
+						  table2.addCell(column);
+						  
+						  trsexist=true;
+					  }
+						  }
+					  if(!trsexist){
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+						  
+						  column = new PdfPCell(new Phrase("-",TBCELLSM));
+						  table2.addCell(column);
+					  }
+					  }
+					  
+					  column = new PdfPCell(new Phrase(prevResults.getParticipated().toString(),TBCELLSM));
+					  table2.addCell(column);
+					  
+					  column = new PdfPCell(new Phrase(prevResults.getWon().toString(),TBCELLSM));
+					  table2.addCell(column);
+					  
+					  column = new PdfPCell(new Phrase(prevResults.getOtherVotesPercent(),TBCELLSM));
+					  table2.addCell(column);
+					  
+					  
+				 
+				  
+				  document.add(table2);  
+			  }
+			  
+		  
+		  document.add(Chunk.NEWLINE);
+		  document.add(new Paragraph(prevResults.getTotalNoOfWardsTitle(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  document.add(new Paragraph(prevResults.getWardTitle(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		 
+		  }
+		  
+		  if(prevResults.getGmcResults()!=null || prevResults.getMuncipalCorpResults()!=null){
+			  document.add(new Paragraph(prevResults.getMuncipalOrCorpOrGmc(),TITLE));
+			  document.add(Chunk.NEWLINE);
+			  
+			  int columnsCount=7;
+			  boolean trsAvail=false;
+			  if(prevResults.getDistrictId()<=10){
+				  columnsCount=8;
+				  trsAvail=true;
+			  }
+			  
+			  PdfPTable table1 = new PdfPTable(columnsCount);
+			  PdfPCell column=null;
+			  column = new PdfPCell(new Phrase("Location",TBCELL));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("Total Votes",TBCELL));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("Votes Polled",TBCELL));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("TDP",TBCELL));
+			  table1.addCell(column);
+			  
+			  
+			  column = new PdfPCell(new Phrase("INC",TBCELL));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("BJP",TBCELL));
+			  table1.addCell(column);
+
+			  
+			  if(trsAvail){
+				  column = new PdfPCell(new Phrase("TRS",TBCELL));
+				  table1.addCell(column);
+			  }
+			  
+			  column = new PdfPCell(new Phrase("OTHERS",TBCELL));
+			  table1.addCell(column);
+			  
+			  List<PartyResultsVO> results=new ArrayList<PartyResultsVO>();
+			  
+			  if(prevResults.getMuncipalCorpResults()!=null){
+				  results=prevResults.getMuncipalCorpResults();
+			  }
+			  if(prevResults.getGmcResults()!=null){
+				  results=prevResults.getGmcResults();
+			  }
+			  for(PartyResultsVO temp:results){
+				  
+				  column = new PdfPCell(new Phrase(temp.getLocation(),TBCELLSM));
+				  table1.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase(temp.getVotesPolled().toString(),TBCELLSM));
+				  table1.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase(temp.getValidVotes().toString(),TBCELLSM));
+				  table1.addCell(column);
+				  
+				  boolean tdpexist=false;
+				  boolean incexist=false;
+				  boolean trsexist=false;
+				  boolean bjpexist=false;
+				  
+				  boolean ranked=false;
+				  
+				  for(PartyResultsVO temp1:temp.getPartyResultsVOList()){
+					  
+					  if(temp1.getPartyId().longValue()==872l){
+						  if(temp1.getRank()==1l){
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
+							  column.setBackgroundColor(BaseColor.GREEN);
+							  table1.addCell(column);
+							  
+							  ranked=true;
+						  }else{
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM));
+							  table1.addCell(column);
+						  }
+						  tdpexist=true;
+					  }
+				  }
+					  if(!tdpexist){
+						  column = new PdfPCell(new Phrase("--",TBCELLSM));
+						  table1.addCell(column);
+						 
+					  }
+					  
+					  //FOR INC
+					  for(PartyResultsVO temp1:temp.getPartyResultsVOList()){
+						  
+					  if(temp1.getPartyId().longValue()==362l){
+						  if(temp1.getRank()==1l){
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
+							  column.setBackgroundColor(BaseColor.GREEN);
+							  table1.addCell(column);
+							  
+							  ranked=true;
+						  }else{
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM));
+							  table1.addCell(column);
+						  }
+						  incexist=true;
+					  }
+					  }
+					  if(!incexist){
+						  column = new PdfPCell(new Phrase("--",TBCELLSM));
+						  table1.addCell(column);
+						 
+					  }
+					  
+					  
+					  //FOR BJP
+					  for(PartyResultsVO temp1:temp.getPartyResultsVOList()){
+						  
+					  if(temp1.getPartyId().longValue()==163l){
+						  if(temp1.getRank()==1l){
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
+							  column.setBackgroundColor(BaseColor.GREEN);
+							  table1.addCell(column);
+							  
+							  ranked=true;
+						  }else{
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM));
+							  table1.addCell(column);
+						  }
+						  bjpexist=true;
+					  }
+					  }
+					  if(!bjpexist){
+						  column = new PdfPCell(new Phrase("--",TBCELLSM));
+						  table1.addCell(column);
+						  
+					  }
+					  
+					  if(trsAvail){
+					  //FOR TRS
+						  for(PartyResultsVO temp1:temp.getPartyResultsVOList()){
+							  
+					  if(temp1.getPartyId().longValue()==886l){
+						  if(temp1.getRank()==1l){
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
+							  column.setBackgroundColor(BaseColor.GREEN);
+							  table1.addCell(column);
+							  
+							  ranked=true;
+						  }else{
+							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM));
+							  table1.addCell(column);
+						  }
+						  trsexist=true;
+					  }
+						  }
+					  if(!trsexist){
+						  column = new PdfPCell(new Phrase("--",TBCELLSM));
+						  table1.addCell(column);
+					  }
+						 
+					  }
+					  
+					  if(temp.getOtherVotes()!=null){
+						  if(!ranked){
+							  column = new PdfPCell(new Phrase(temp.getOtherVotes().toString(),TBCELLSM_WIN));
+							  column.setBackgroundColor(BaseColor.GREEN);
+							  table1.addCell(column);
+						  }else{
+							  column = new PdfPCell(new Phrase(temp.getOtherVotes().toString(),TBCELLSM));
+							  table1.addCell(column);
+						  }
+					  }else{
+						  column = new PdfPCell(new Phrase("--",TBCELLSM));
+						  table1.addCell(column);
+					  }
+					  
+				  }
+			  
+			  document.add(new Paragraph(prevResults.getInformation(),TITLE)); 
+			  document.add(Chunk.NEWLINE);
+			  document.add(table1);
+			  
+
+		  }
+		  
+		  document.close();		  
+		  
+		  } catch (Exception e) {
+			  LOG.debug("Exception Raised while GENERATING PDF in LocalElectionResults Blocks" +e);
+			  e.printStackTrace();
+		  } 
+		 
+	  }
+	  
+	  public void generatePDFForVoterInfo(PDFHeadingAndReturnVO result,String task){
+		  LOG.debug("Entered Into VoterInfo Blocks For GENERATING PDF");
+		  
+		  Document document = new Document();
+		  try {
+			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+		
+		  
+			document.open();
+		  
+		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);
+		  
+		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  
+		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
+
+		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		  subHeading.setColor(BaseColor.MAGENTA);
+		  
+		  
+		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
+		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  
+		  if(task.equalsIgnoreCase("voterInfo")){
+			  
+			  
+			 document.add(new Paragraph(result.getMainHeading(),TBCELL));
+			 document.add(Chunk.NEWLINE);
+			  
+		  PdfPTable table = new PdfPTable(4);
+		  PdfPCell column=null;
+		  column = new PdfPCell(new Phrase("Publication Date",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Total Voters",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Male Voters",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Female Voters",TBCELL));
+		  table.addCell(column);
+		  
+		  List<VoterAgeRangeVO> rslt=result.getVoterInfoByPublicationList();
+		  
+		  for(VoterAgeRangeVO temp1:rslt){
+		  column = new PdfPCell(new Phrase(temp1.getPublicationDate(),TBCELLSM));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(temp1.getTotalVoters().toString(),TBCELLSM));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(temp1.getMaleVoters().toString(),TBCELLSM));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(temp1.getFemaleVoters().toString(),TBCELLSM));
+		  table.addCell(column);
+		  }
+		  document.add(table);
+		  document.add(Chunk.NEWLINE);
+		 
+		  }
+		  if(task.equalsIgnoreCase("genderWise")){
+			  
+			  document.add(new Paragraph(result.getMainHeading(),TBCELL));
+			  document.add(Chunk.NEWLINE);
+			  
+			  PdfPTable table = new PdfPTable(8);
+			  PdfPCell column=null;
+			  column = new PdfPCell(new Phrase("Publication Name",TBCELL));
+			  column.setRowspan(2);
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("Previous Publication Name",TBCELL));
+			  column.setRowspan(2);
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("Added",TBCELL));
+			  column.setColspan(3);
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			  column.setColspan(3);
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("Total",TBCELL));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase("Male",TBCELL));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase("Female",TBCELL));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase("Total",TBCELL));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase("Male",TBCELL));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase("Female",TBCELL));
+			  table.addCell(column);
+			  
+			 			  
+			  List<VoterModificationGenderInfoVO> rslt=result.getGenderWiseVoterModificationInfoForEachPublicationList();
+			  
+			  for(VoterModificationGenderInfoVO temp1:rslt){
+			  column = new PdfPCell(new Phrase(temp1.getPublicationName(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(temp1.getPreviousPublicationName(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(temp1.getAddedTotal().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(temp1.getAddedMale().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(temp1.getAddedFemale().toString(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(temp1.getDeletedTotal().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(temp1.getDeletedMale().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(temp1.getDeletedFemale().toString(),TBCELLSM));
+			  table.addCell(column);
+			  }
+			  document.add(table);
+			  document.add(Chunk.NEWLINE);
+		  }
+		  
+		  if(task.equalsIgnoreCase("addedDeleted")){
+			  
+			  document.add(new Paragraph(result.getSubHeading(),TITLE));
+			  document.add(Chunk.NEWLINE);
+			  
+			  PdfPTable table = new PdfPTable(7);
+			  PdfPCell column=null;
+			  
+			  List<VoterModificationAgeRangeVO> rslt=result.getAgeRangeWiseAddedDeletedList();
+			  
+			  column = new PdfPCell(new Phrase("Age Range",TBCELL));
+			  table.addCell(column);
+			  for(VoterModificationAgeRangeVO temp1:rslt){
+				  column = new PdfPCell(new Phrase(temp1.getRange(),TBCELLSM));
+				  table.addCell(column);
+			  }
+			  
+			  column = new PdfPCell(new Phrase("Added",TBCELL));
+			  table.addCell(column);
+			  
+			  for(VoterModificationAgeRangeVO temp1:rslt){
+				  column = new PdfPCell(new Phrase(temp1.getAddedCount().toString(),TBCELLSM));
+				  table.addCell(column);
+			  }
+
+			  column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			  table.addCell(column);
+			  
+			  for(VoterModificationAgeRangeVO temp1:rslt){
+				  column = new PdfPCell(new Phrase(temp1.getDeletedCount().toString(),TBCELLSM));
+				  table.addCell(column);
+				  
+			  }
+			  document.add(table);
+			  document.add(Chunk.NEWLINE);
+		  }
+
+
+		  document.close(); 
+		  }
+		  catch (Exception e) {
+			  LOG.error("Exception Occured While Generating PDF for VotersInfo Block of VoterModification" +e);
+		}
+	  }
+		  
+		  
+	  
+	  public void generatePDFForDensity(VoterDensityWithPartyVO result){
+		  LOG.debug("Entered Into Density For GENERATING PDF");
+		  
+		  Document document = new Document();
+		  try {
+			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+		
+			
+		  document.open();
+	  
+		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);
+		  
+		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+	  
+		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
+
+		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		  subHeading.setColor(BaseColor.MAGENTA);
+		  
+		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
+		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  
+		  
+		  document.add(new Paragraph(result.getInformation(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  PdfPTable table = new PdfPTable(11);
+		  PdfPCell column=null;
+		  column = new PdfPCell(new Phrase("Voters Range",TBCELL));
+		  table.addCell(column);
+		  
+		  List<VoterDensityWithPartyVO> rslt=result.getDensityList();
+		  if(rslt!=null){
+		  for(VoterDensityWithPartyVO temp:rslt){
+			  column = new PdfPCell(new Phrase(temp.getType(),TBCELL));
+			  table.addCell(column);
+		  }
+		  }
+		  
+		  column = new PdfPCell(new Phrase("No Of Panchayats",TBCELL));
+		  table.addCell(column);
+		  
+		  if(rslt!=null){
+		  for(VoterDensityWithPartyVO temp1:rslt){
+			  column = new PdfPCell(new Phrase(temp1.getCount().toString(),TBCELLSM));
+			  table.addCell(column);
+		  }
+		  }
+		  
+		  if(result.getPartyWiseList()!=null){
+		  for(VoterDensityWithPartyVO temp2:result.getPartyWiseList()){
+			  column = new PdfPCell(new Phrase(temp2.getPartyName(),TBCELLSM));
+			  table.addCell(column);
+			  for(VoterDensityWithPartyVO temp3:temp2.getDensityList()){
+				  column = new PdfPCell(new Phrase(temp3.getCount().toString(),TBCELLSM));
+				  table.addCell(column);
+			  }
+		  }
+		  }
+		  
+		  column = new PdfPCell(new Phrase("Ananymous",TBCELLSM));
+		  table.addCell(column);
+		  
+		  if(result.getAnanymousDensity()!=null){
+		  for(VoterDensityWithPartyVO temp4:result.getAnanymousDensity()){
+			  column = new PdfPCell(new Phrase(temp4.getCount().toString(),TBCELLSM));
+			  table.addCell(column);
+		  }
+		  }
+		  
+		  document.add(table);
+		  document.add(Chunk.NEWLINE);
+		  document.add(new Paragraph(result.getInformation2(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.close();
+		  
+		  }catch (Exception e) {
+			  LOG.debug("Exception Raised while GENERATING PDF in Density Block" +e);
+			  e.printStackTrace();
+		}
+		  
+	  }
+	  public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result){
+		  LOG.debug("Entered Into BoothWiseAddedDeletedVoters For GENERATING PDF");
+		  
+		  Document document = new Document();
+		  try {
+			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+		
+			
+		  document.open();
+	  
+		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);
+		  
+		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  
+		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 7,Font.BOLD);
+		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+	  
+		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
+
+		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		  subHeading.setColor(BaseColor.MAGENTA);
+		  
+		  document.add(new Paragraph(result.get(0).getMainHeading1(),BIGFONT));
+		  document.add(Chunk.NEWLINE);
+		  
+		  PdfPTable table = new PdfPTable(17);
+		  PdfPCell column=null;
+		  column = new PdfPCell(new Phrase("PANCHAYAT",TBCELL));
+		  column.setRowspan(3);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("BOOTH",TBCELL));
+		  column.setRowspan(3);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("TOTAL VOTES",TBCELL));
+		  column.setRowspan(3);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("ADDED",TBCELL));
+		  column.setColspan(14);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Total Added",TBCELL));
+		  column.setColspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Young Votes",TBCELL));
+		  column.setColspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("18-25",TBCELL));
+		  column.setColspan(2);
+		  table.addCell(column);
+
+		  column = new PdfPCell(new Phrase("26-35",TBCELL));
+		  column.setColspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("36-45",TBCELL));
+		  column.setColspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("46-60",TBCELL));
+		  column.setColspan(2);
+		  table.addCell(column);
+
+		  column = new PdfPCell(new Phrase("Above 60",TBCELL));
+		  column.setColspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table.addCell(column);
+		  
+		  
+		  for(AgeRangeVO param:result){
+			  column = new PdfPCell(new Phrase(param.getPanchayat(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getHamlet(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getTotalVotersInBooth().toString(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getTotalVotersAdded().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getTotalVotersAddedPer(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getYoungVoters().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getYoungVotersPer().toString(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getAge18To25().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getAge18To25Per(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getAge26to35().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getAge26to35Per().toString(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getAge36to45().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getAge36to45Per().toString(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getAge46to60().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getAge46to60Per(),TBCELLSM));
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getAbove60().toString(),TBCELLSM));
+			  table.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getAbove60Per().toString(),TBCELLSM));
+			  table.addCell(column);
+		  }
+		  float[] widths=new float[] {3.0f,1.5f,1.5f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f};
+		  table.setWidths(widths);
+		  document.add(table);
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.add(Chunk.NEXTPAGE);
+		  document.add(new Paragraph(result.get(0).getMainHeading2(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  PdfPTable table1 = new PdfPTable(17);
+		  column = new PdfPCell(new Phrase("PANCHAYAT",TBCELL));
+		  column.setRowspan(3);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("BOOTH",TBCELL));
+		  column.setRowspan(3);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("TOTAL VOTES",TBCELL));
+		  column.setRowspan(3);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("DELETED",TBCELL));
+		  column.setColspan(14);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Total Deleted",TBCELL));
+		  column.setColspan(2);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Young Votes",TBCELL));
+		  column.setColspan(2);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("18-25",TBCELL));
+		  column.setColspan(2);
+		  table1.addCell(column);
+
+		  column = new PdfPCell(new Phrase("26-35",TBCELL));
+		  column.setColspan(2);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("36-45",TBCELL));
+		  column.setColspan(2);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("46-60",TBCELL));
+		  column.setColspan(2);
+		  table1.addCell(column);
+
+		  column = new PdfPCell(new Phrase("Above 60",TBCELL));
+		  column.setColspan(2);
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table1.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table1.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table1.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table1.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table1.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table1.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes",TBCELL));
+		  table1.addCell(column);
+		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  table1.addCell(column);
+		  
+		  
+		  for(AgeRangeVO param:result){
+			  column = new PdfPCell(new Phrase(param.getPanchayat(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getHamlet(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getTotalVotersInBooth().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getTotalVotersDeleted().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getTotalVotersDeletedPer(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getDelYoungVoters().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getDelYoungVotersPer().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getDelAge18To25().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getDelAge18To25Per(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getAge26to35().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getAge26to35Per().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getDelAge36to45().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getDelAge36to45Per().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getDelAge46to60().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getDelAge46to60Per(),TBCELLSM));
+			  table1.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(param.getDelAbove60().toString(),TBCELLSM));
+			  table1.addCell(column);
+			  column = new PdfPCell(new Phrase(param.getDelAbove60Per().toString(),TBCELLSM));
+			  table1.addCell(column);
+		  }
+		  float[] widths1=new float[] {3.0f,1.5f,1.5f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f,1.0f,1.2f};
+		  table1.setWidths(widths1);
+		  document.add(table1);
+		  document.close();
+		  } catch (Exception e) {
+				LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters" +e);
+				e.printStackTrace();
+			} 
+	  }
+	  
+	  public void getPDFForSubLevelAddedDeleted(VoterModificationVO resultvo){
+		  LOG.debug("Entered Into getPDFForSubLevelAddedDeleted For GENERATING PDF");
+		  
+		  Document document = new Document();
+		  try {
+			  
+			  
+			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+		
+			document.open();
+	  
+			Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+			TITLE.setColor(BaseColor.BLACK);
+		  
+			Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+			Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+	  
+			Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+			SMALLFONT_WIN.setColor(BaseColor.GREEN);
+
+			Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+			subHeading.setColor(BaseColor.MAGENTA);
+			
+			 Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
+			 Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  
+			List<SelectOptionVO> publications=resultvo.getModifiedVotersList().get(0).getSelectOptionVOsList();
+			
+			
+			document.add(new Paragraph(resultvo.getMainHeading(),TITLE));
+			document.add(Chunk.NEWLINE);
+			
+			PdfPTable table = new PdfPTable(9);
+			PdfPCell column=null;
+			
+			column = new PdfPCell(new Phrase("Mandal/Muncipality",TBCELL));
+			column.setRowspan(2);
+			table.addCell(column);
+			
+			column = new PdfPCell(new Phrase("Voters",TBCELL));
+			column.setColspan(2);
+			table.addCell(column);
+			
+			column = new PdfPCell(new Phrase("Total Voters",TBCELL));
+			column.setColspan(2);
+			table.addCell(column);
+			
+			column = new PdfPCell(new Phrase("Male Voters",TBCELL));
+			column.setColspan(2);
+			table.addCell(column);
+			
+			column = new PdfPCell(new Phrase("Female Voters",TBCELL));
+			column.setColspan(2);
+			table.addCell(column);
+			
+			for(SelectOptionVO temp:publications){
+				column = new PdfPCell(new Phrase(temp.getName(),TBCELL));
+				table.addCell(column);
+			}
+			
+			column = new PdfPCell(new Phrase("Added",TBCELL));
+			table.addCell(column);
+			column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			table.addCell(column);
+			
+			column = new PdfPCell(new Phrase("Added",TBCELL));
+			table.addCell(column);
+			column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			table.addCell(column);
+			
+			column = new PdfPCell(new Phrase("Added",TBCELL));
+			table.addCell(column);
+			column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			table.addCell(column);
+			
+			for(VoterModificationVO temp1:resultvo.getModifiedVotersList()){
+				
+				List<SelectOptionVO> publicationsList=temp1.getSelectOptionVOsList();
+				
+				column = new PdfPCell(new Phrase(temp1.getName(),TBCELLSM));
+				table.addCell(column);
+			
+			
+			for(SelectOptionVO temp2:publicationsList){
+				column = new PdfPCell(new Phrase(temp2.getId().toString(),TBCELLSM));
+				table.addCell(column);
+			}
+			
+			
+				column = new PdfPCell(new Phrase(temp1.getAddedCount().toString(),TBCELLSM));
+				table.addCell(column);
+				
+				column = new PdfPCell(new Phrase(temp1.getDeletedCount().toString(),TBCELLSM));
+				table.addCell(column);
+				
+				column = new PdfPCell(new Phrase(temp1.getMaleVotersAdded().toString(),TBCELLSM));
+				table.addCell(column);
+				
+				column = new PdfPCell(new Phrase(temp1.getMaleVotersDeleted().toString(),TBCELLSM));
+				table.addCell(column);
+				
+				column = new PdfPCell(new Phrase(temp1.getFemaleVotersAdded().toString(),TBCELLSM));
+				table.addCell(column);
+				
+				column = new PdfPCell(new Phrase(temp1.getFemaleVotersDeleted().toString(),TBCELLSM));
+				table.addCell(column);
+			}
+			
+			document.add(table);
+			document.close();
+			
+			
+		  
+		  	}catch (Exception e) {
+			  LOG.error("Exception Occured While Generating PDF for BoothWiseAddedDeletedVoters" +e);
+		  	}  
+	  }
+	  
 }
