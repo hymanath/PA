@@ -1727,7 +1727,7 @@ public class StrategyModelTargetingService implements
 	     		   }
 	     		   
 	     	   }
-	     	 if(gainableVotes > 0){
+	     	 if(count > 0){
 	     	  criticalPrior.setName("Critical Panchayaths");
 	     	  criticalPrior.setTotalVoters(Long.valueOf(count));
 	     	  criticalPrior.setOpportunityPerc(gainablePerc/count);
@@ -1754,7 +1754,7 @@ public class StrategyModelTargetingService implements
 		  		   }
 		  		   
 		  	   }
-		  	 if(gainableVotes > 0){
+		  	 if(count > 0){
 		  	   mediumPrior.setName("Medium Panchayaths");
 		  	   mediumPrior.setTotalVoters(Long.valueOf(count));
 		  	   mediumPrior.setOpportunityPerc(gainablePerc/count);
@@ -1781,7 +1781,7 @@ public class StrategyModelTargetingService implements
 				   }
 				   
 			   }
-			  if(gainableVotes > 0){
+			  if(count > 0){
 			   easyPrior.setName("Easy Panchayaths");
 			   easyPrior.setTotalVoters(Long.valueOf(count));
 			   easyPrior.setOpportunityPerc(gainablePerc/count);
@@ -1808,7 +1808,7 @@ public class StrategyModelTargetingService implements
 				   }
 				   
 			   }
-			  if(gainableVotes > 0){
+			  if(count > 0){
 			   goodPrior.setName("Good Panchayaths");
 			   goodPrior.setTotalVoters(Long.valueOf(count));
 			   goodPrior.setOpportunityPerc(gainablePerc/count);
@@ -2800,12 +2800,17 @@ public class StrategyModelTargetingService implements
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
-					  	  
-					  	  cell = new PdfPCell(new Phrase(new BigDecimal(classificationVo.getOpportunityPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).toString(),style2));
+					  	  if(classificationVo.getOpportunity() > 0)
+					  	   cell = new PdfPCell(new Phrase(new BigDecimal(classificationVo.getOpportunityPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).toString(),style2));
+					  	  else
+					  		cell = new PdfPCell(new Phrase("N/A",style2));  
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
+					  	 if(classificationVo.getOpportunity() > 0)
 					  	  cell = new PdfPCell(new Phrase(classificationVo.getOpportunity().toString(),style2));
+					  	 else
+					  	  cell = new PdfPCell(new Phrase("",style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
