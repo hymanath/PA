@@ -1996,6 +1996,10 @@
 	  <property name="candidateResultDAO" ref="candidateResultDAO"></property>	  
 	  <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
 	  <property name="casteStateDAO" ref="casteStateDAO" />
+	  <property name="suggestiveModelService" ref="suggestiveModelService" />
+	  
+	  
+	  
  </bean>
   
   
