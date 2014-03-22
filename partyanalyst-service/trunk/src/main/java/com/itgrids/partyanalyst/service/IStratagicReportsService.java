@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
+import com.itextpdf.text.Document;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.AssumptionsVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
@@ -49,13 +50,15 @@ public interface IStratagicReportsService {
 	
 	public List<SelectOptionVO> getPanchayatDetailsForElectionInCosntituency(Long userId,Long constituencyId,Long elctionId);
 	
-	public void generatePdfForLocalElectionResults(PartyResultsVerVO prevResults);
+	public void generatePdfForLocalElectionResults(PartyResultsVerVO prevResults,Document document);
 	
-	public void generatePDFForVoterInfo(PDFHeadingAndReturnVO pvo,String task);
+	public void generatePDFForVoterInfo(PDFHeadingAndReturnVO pvo,String task,Document document);
 	
-	public void generatePDFForDensity(VoterDensityWithPartyVO result);
+	public void generatePDFForDensity(VoterDensityWithPartyVO result,Document document);
 	
-	public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result);
+	public void generateBoothWiseAddedDeletedVoters(List<AgeRangeVO> result,Document document);
 	
-	public void getPDFForSubLevelAddedDeleted(VoterModificationVO result);
+	public void getPDFForSubLevelAddedDeleted(VoterModificationVO result,Document document);
+	 public void generatePDFForAssuredTargetVotersBlock(AssumptionsVO result,Document document);
+	 public void generatePDFForDelimitationEffect(DelimitationEffectVO result,Document document);
 }
