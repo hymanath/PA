@@ -2152,5 +2152,6 @@
 	  <property name="constituencyDAO" ref="constituencyDAO"></property>
 	  <property name="candidateResultDAO" ref="candidateResultDAO"></property>	  
 	  <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO" />
+	  <property name="casteStateDAO" ref="casteStateDAO" />
  </bean>
 </beans>
