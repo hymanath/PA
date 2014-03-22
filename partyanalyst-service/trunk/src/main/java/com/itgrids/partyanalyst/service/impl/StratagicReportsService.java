@@ -3598,10 +3598,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 				  assumptionsVO.setAddtionalVoters(addtionalVoters);
 				  assumptionsVO.setAddtionalPerc(addtionalPerc);
 				  
+				  assumptionsVO.setAssuredPer(assured);
+				  assumptionsVO.setTdpPer(tdpPerc);
+				  
 				  assumptionsVO.setHeading1("Poll Percentage "+base+"% ");
 				  assumptionsVO.setHeading2("Contending Party’s – 3 Major Parties (TDP, INC and YSRCP)");
 				  assumptionsVO.setHeading3("Assured Voter Base for our Party – "+assured+"% (Based on the Previous Votes Polled)");
-				   
+				  assumptionsVO.setHeading4("Final Goal");
 				  
 			  }
 		} catch (Exception e) {
@@ -4397,6 +4400,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 	  public void generatePDFForDensity(VoterDensityWithPartyVO result){
 		  LOG.debug("Entered Into Density For GENERATING PDF");
 		  
+		  DelimitationEffectVO dv=new DelimitationEffectVO();
+		  generatePDFForDelimitationEffect(dv);
+		  
+		  AssumptionsVO avo= new AssumptionsVO();
+		  
+		  generatePDFForAssuredTargetVotersBlock(avo);
+		  
 		  Document document = new Document();
 		  try {
 			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
@@ -4410,9 +4420,6 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 	  
-		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
-		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
-
 		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
 		  subHeading.setColor(BaseColor.MAGENTA);
 		  
@@ -4476,6 +4483,243 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 		  }catch (Exception e) {
 			  LOG.debug("Exception Raised while GENERATING PDF in Density Block" +e);
+			  e.printStackTrace();
+		}
+		  
+	  }
+	  
+	  public void generatePDFForAssuredTargetVotersBlock(AssumptionsVO result){
+		  LOG.debug("Entered Into generatePDFForAssuredTargetVotersBlock For GENERATING PDF");
+		  
+		  result=votersAssumptionsService(232l,85l,46l,10l,54l);
+		  
+		  Document document = new Document();
+		  try {
+			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+		
+			
+		  document.open();
+	  
+		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);
+		  
+		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+	  
+		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
+
+		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		  subHeading.setColor(BaseColor.MAGENTA);
+		  
+		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
+		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  
+		  document.add(new Paragraph("ASSUMPTIONS",TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  
+		  document.add(new Paragraph(result.getHeading1(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.add(new Paragraph(result.getHeading2(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.add(new Paragraph(result.getHeading3(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  PdfPTable table = new PdfPTable(2);
+		  PdfPCell column=null;
+		 		  
+		  column = new PdfPCell(new Phrase("Current Total Voters",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getTotalVoters().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Expected Polling Percentage",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getExpPerc().toString()+" %",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Targeted Polled Votes",TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getTargetedPolledVotees().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  document.add(table);
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.add(new Paragraph(result.getHeading4(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  PdfPTable table1 = new PdfPTable(2);
+		  		  
+		  column = new PdfPCell(new Phrase("Targeted Votes for TDP in 2014 ("+result.getTdpPer()+" % Votes Share in Polled Votes)",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getTargetedVotesForTDP().toString(),TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Additional Votes("+result.getAddtionalPerc()+" %) Required for TDP ( After removing the Assured ("+result.getAssuredPer()+" %) voters Base )",TBCELL));
+		  table1.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getAddtionalVoters().toString(),TBCELL));
+		  table1.addCell(column);
+		  
+		  document.add(table1);
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.close();
+		  
+		  }catch (Exception e) {
+			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForAssuredTargetVotersBlock Block" +e);
+			  e.printStackTrace();
+		}
+		  
+	  }
+	  
+	  public void generatePDFForDelimitationEffect(DelimitationEffectVO result){
+		  LOG.debug("Entered Into generatePDFForDelimitationEffect For GENERATING PDF");
+		  
+		  result=getDelimationEffectOnConstituency(159l,882l);
+		  
+		  Document document = new Document();
+		  try {
+			PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
+		
+			
+		  document.open();
+	  
+		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);
+		  
+		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+	  
+		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
+
+		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		  subHeading.setColor(BaseColor.MAGENTA);
+		  
+		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
+		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  
+		  
+		  document.add(new Paragraph(result.getHeading1(),BIGFONT));
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.add(new Paragraph(result.getHeading2(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.add(new Paragraph(result.getHeading3(),TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  int partiesCount=result.getDelimitationEffectVO()!=null?result.getDelimitationEffectVO().size():0;
+		  PdfPTable table = new PdfPTable(4+partiesCount*2);
+		  PdfPCell column=null;
+		 		  
+		  column = new PdfPCell(new Phrase("",TBCELL));
+		  column.setBorder(0);
+		  column.setRowspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Total Votes",TBCELL));
+		  column.setRowspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Votes Polled",TBCELL));
+		  column.setRowspan(2);
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase("Poll %",TBCELL));
+		  column.setRowspan(2);
+		  table.addCell(column);
+		  
+		  for(DelimitationEffectVO temp1:result.getDelimitationEffectVO()){
+			  column = new PdfPCell(new Phrase(temp1.getPartyName(),TBCELL));
+			  column.setColspan(2);
+			  table.addCell(column);
+		  }
+		  
+		  for(DelimitationEffectVO temp1:result.getDelimitationEffectVO()){
+			  column = new PdfPCell(new Phrase("Votes",TBCELL));;
+			  table.addCell(column);
+			  
+			  column = new PdfPCell(new Phrase(" % ",TBCELL));;
+			  table.addCell(column);
+		  }
+		  
+		  
+		  column = new PdfPCell(new Phrase(result.getPreviousyear(),TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getPreviousCount().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getPreviousPolledVotes().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getPreviousPerc().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  for(DelimitationEffectVO temp2:result.getDelimitationEffectVO()){
+			  if(temp2.getPreviousCount()!=null){
+				  column = new PdfPCell(new Phrase(temp2.getPreviousCount().toString(),TBCELL));
+				  table.addCell(column);
+			  
+				  column = new PdfPCell(new Phrase(temp2.getPreviousPerc().toString(),TBCELL));
+				  table.addCell(column);
+			  }else{
+				  column = new PdfPCell(new Phrase(" - ",TBCELL));
+				  table.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase(" - ",TBCELL));
+				  table.addCell(column);
+			  }
+		  }
+		  
+		  column = new PdfPCell(new Phrase(result.getPresentYear(),TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getPresentCount().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getPresentPolledVotes().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  column = new PdfPCell(new Phrase(result.getPresentPerc().toString(),TBCELL));
+		  table.addCell(column);
+		  
+		  for(DelimitationEffectVO temp2:result.getDelimitationEffectVO()){
+			  if(temp2.getPreviousCount()!=null){
+				  column = new PdfPCell(new Phrase(temp2.getPresentCount().toString(),TBCELL));
+				  table.addCell(column);
+			  
+				  column = new PdfPCell(new Phrase(temp2.getPresentPerc().toString(),TBCELL));
+				  table.addCell(column);
+			  }else{
+				  column = new PdfPCell(new Phrase(" - ",TBCELL));
+				  table.addCell(column);
+				  
+				  column = new PdfPCell(new Phrase(" - ",TBCELL));
+				  table.addCell(column);
+			  }
+		  }
+		  
+		  
+		  document.add(table);
+		  document.add(Chunk.NEWLINE);
+		  document.add(new Paragraph("We have considered 2009 Delimitation area results for comparison",TITLE));
+		  document.add(Chunk.NEWLINE);
+		  
+		  document.close();
+		  
+		  }catch (Exception e) {
+			  LOG.debug("Exception Raised while GENERATING PDF in generatePDFForDelimitationEffect Block" +e);
 			  e.printStackTrace();
 		}
 		  
