@@ -2016,5 +2016,7 @@
    <property name="electionDAO" ref="electionDAO"/>
    </bean>
    
+   <bean name="stratagicReportsServicePdf" class="com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf"></bean>
+   
 </beans>		
 	
