@@ -1,11 +1,17 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.itgrids.partyanalyst.excel.booth.VoterModificationAgeRangeVO;
 
 
-public class PDFHeadingAndReturnVO {
+public class PDFHeadingAndReturnVO implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1546721346437413624L;
 	private String mainHeading;
 	private String subHeading;
 	

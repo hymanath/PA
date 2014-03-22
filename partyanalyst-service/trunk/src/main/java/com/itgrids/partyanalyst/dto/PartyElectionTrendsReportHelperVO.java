@@ -1,6 +1,12 @@
 package com.itgrids.partyanalyst.dto;
 
-public class PartyElectionTrendsReportHelperVO  {
+import java.io.Serializable;
+
+public class PartyElectionTrendsReportHelperVO  implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1000000000L;
 	//private String party;
 	//private Integer electionYear;
 //	private Long  totalVoters;
