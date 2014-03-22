@@ -1047,7 +1047,7 @@ public class StrategyModelTargetingService implements
 			 }else{
 				 priorVo.setOpportunity(priorVo.getPreviousVoters()-priorVo.getTargetedVoters());
 			 }
-			 priorVo.setOpportunityPerc(new BigDecimal((priorVo.getOpportunity()*100/priorVo.getTotalVoters())).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+			 priorVo.setOpportunityPerc(new BigDecimal((priorVo.getOpportunity()*100/priorVo.getTotalVoters().floatValue())).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 		 }
 	 }
 	 public List<PanchayatVO> getOrderOfPriorWithOutCaste(Map<Long,Long> totalVotersMap,Map<Long,Long> youngOldVotersList,Map<Long,String> panchayatNames,String type,Map<Long,OrderOfPriorityVO> finalOrder,Double wt){
@@ -1066,7 +1066,7 @@ public class StrategyModelTargetingService implements
 				 panchayatVo.setOthrExpctdVotes(youngOldVotersList.get(panchayatId).intValue());
 				 panchayatVo.setPanchayatName(panchayatNames.get(panchayatId));
 				 panchayatVo.setTotalTargetCount(youngOldVotersList.get(panchayatId));
-				 panchayatVo.setTargetPerc(new BigDecimal((panchayatVo.getTotalTargetCount()*100)/panchayatVo.getCount()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+				 panchayatVo.setTargetPerc(new BigDecimal((panchayatVo.getTotalTargetCount()*100)/panchayatVo.getCount().floatValue()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
 				 totalPriorityList.add(panchayatVo);
 			 }
 				
@@ -1349,7 +1349,7 @@ public class StrategyModelTargetingService implements
 				   priority.setPreviousVoters(0l);
 			   }
 			   priority.setOpportunity(priority.getPreviousVoters() - priority.getTargetedVoters());
-			   priority.setOpportunityPerc(new BigDecimal((priority.getOpportunity()*100)/priority.getTotalVoters()).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue());
+			   priority.setOpportunityPerc(new BigDecimal((priority.getOpportunity()*100)/priority.getTotalVoters().floatValue()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 			   
 			 Double partyPerc = currentResult.get(panchayatId);
 			 if(partyPerc != null){
@@ -1704,11 +1704,13 @@ public class StrategyModelTargetingService implements
 	     		   }
 	     		   
 	     	   }
+	     	 if(gainableVotes > 0){
 	     	  criticalPrior.setName("Critical Panchayaths");
 	     	  criticalPrior.setTotalVoters(Long.valueOf(count));
 	     	  criticalPrior.setOpportunityPerc(gainablePerc/count);
 	     	  criticalPrior.setOpportunity(gainableVotes);
 	     	  panchClassific.add(criticalPrior);
+	     	 }
     	   }
     	   if(size <= finalOrderOfOriority.size()){
 		     	size = size-1;
@@ -1729,11 +1731,13 @@ public class StrategyModelTargetingService implements
 		  		   }
 		  		   
 		  	   }
+		  	 if(gainableVotes > 0){
 		  	   mediumPrior.setName("Medium Panchayaths");
 		  	   mediumPrior.setTotalVoters(Long.valueOf(count));
 		  	   mediumPrior.setOpportunityPerc(gainablePerc/count);
 		  	   mediumPrior.setOpportunity(gainableVotes);
 		  	   panchClassific.add(mediumPrior);
+		  	 }
     	   }
     	   if(size <= finalOrderOfOriority.size()){
 		  	   size = size-1;
@@ -1754,11 +1758,13 @@ public class StrategyModelTargetingService implements
 				   }
 				   
 			   }
+			  if(gainableVotes > 0){
 			   easyPrior.setName("Easy Panchayaths");
 			   easyPrior.setTotalVoters(Long.valueOf(count));
 			   easyPrior.setOpportunityPerc(gainablePerc/count);
 			   easyPrior.setOpportunity(gainableVotes);
 			   panchClassific.add(easyPrior);
+			  }
     	   }
     	   if(size <= finalOrderOfOriority.size()){
 			    size = size-1;
@@ -1779,11 +1785,13 @@ public class StrategyModelTargetingService implements
 				   }
 				   
 			   }
+			  if(gainableVotes > 0){
 			   goodPrior.setName("Good Panchayaths");
 			   goodPrior.setTotalVoters(Long.valueOf(count));
 			   goodPrior.setOpportunityPerc(gainablePerc/count);
 			   goodPrior.setOpportunity(gainableVotes);
 			   panchClassific.add(goodPrior);
+			  }
     	   }
     	   
     	   return panchClassific;
@@ -1842,7 +1850,7 @@ public class StrategyModelTargetingService implements
 				   }
 			   }
 		   }
-		   path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";		   
+		    //path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";		   
 		   Document document = new Document();
 		   String filePath = "VMR"+"/1.pdf";
 		   String FILE = path+filePath;
@@ -1869,10 +1877,11 @@ public class StrategyModelTargetingService implements
 		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");
 		  
 		   prpEffectTableTable(document,otherPartyEffect);
+		   buildPanchayatsClassificationBlock(document,panchayatsClassification);
 		   if(impfamilesList != null && impfamilesList.size() > 0)
 		   {
 			   generateImpFamilesTable(document,impfamilesList);
-		   }
+		   }		   
 		   orderOFPriorityTable(document,finalOrderOfOriority,15);
 		   document.close();
 	   }
@@ -2076,34 +2085,57 @@ public class StrategyModelTargetingService implements
 	   {
 		   try {
 			   LOG.info("Enterd into generateCasteWiseTable() method");
-			      PdfPTable table = new PdfPTable(6);
+			      
 				  Paragraph preface = new Paragraph();
 				  preface.setAlignment(Element.PTABLE);
 				  preface.add( new Paragraph("               Step 3 – Targeting"));
 				  preface.add( new Paragraph(" ") );
 				  preface.add( new Paragraph("               Key Factors"));
 				  preface.add( new Paragraph("               Caste, Previous Trends, Young Voter Base, Aged Voter Base, & PRP Votes that can be"));
-				  preface.add( new Paragraph("               regained;"));
+				  preface.add( new Paragraph("               regained."));
 				  preface.add( new Paragraph(" ") );
 				  preface.add( new Paragraph("               Caste"));
 				  preface.add( new Paragraph(" ") );
-				  document.add(preface); 
-				  Set<String> names = casteNamePercMap.keySet();
-				  for (String name : names) {
-					  
-					  PdfPCell cell ;
-				  	  cell = new PdfPCell(new Phrase(name,style1));
-				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.YELLOW);
-				  	  table.addCell(cell);
-				  	  
-				  	  cell = new PdfPCell(new Phrase(Long.valueOf((long) (casteNamePercMap.get(name)*100)) + "%",style1));
-				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.CYAN);
-				  	  table.addCell(cell);
+				  document.add(preface);
+				  int totalTables = Math.round(casteNamePercMap.size()/6.0f);
+				  
+				
+				 List<String> names = new ArrayList<String>(casteNamePercMap.keySet());
+				 Collections.sort(names);
+				  PdfPCell cell ;
+				  int count = 0;
+				  int casteSize = casteNamePercMap.size();
+				  for(int i=1;i<=totalTables;i++){
+					  PdfPTable table = null;
+					  int iterateMin = 0;
+					  int iterateMax = 0;
+					  if((casteSize-count) >= 6){
+						  table = new PdfPTable(6);
+						  iterateMin = count;
+						  iterateMax = count+5;
+					  }else{
+						  table = new PdfPTable(casteSize-count);
+						  iterateMin = count;
+						  iterateMax = casteSize-1;
+					  }
+					  for (int j=iterateMin;j<=iterateMax;j++) {
+						  count++;
+					  	  cell = new PdfPCell(new Phrase(names.get(j),style1));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  cell.setBackgroundColor(BaseColor.YELLOW);
+					  	  table.addCell(cell);
+					  }	
+					  for (int j=iterateMin;j<=iterateMax;j++) {
+					  	  cell = new PdfPCell(new Phrase(Long.valueOf((long) (casteNamePercMap.get(names.get(j))*100)) + "%",style1));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  }
+					  document.add(table);
+					   preface = new Paragraph();
+					   preface.add( new Paragraph(" ") );
+					   document.add(preface);
 				  }
 				  
-				  document.add(table);
 		} catch (Exception e) {
 			LOG.debug("Exception raised in generateCasteWiseTable() method ",e);
 		}
@@ -2120,15 +2152,13 @@ public class StrategyModelTargetingService implements
 				  preface.add( new Paragraph(" ") );
 				  preface.add( new Paragraph("               List of the Top Panchayaths based on the Caste Assumption (Please note that these"));
 				  preface.add( new Paragraph("               Panchayaths are in order of priority which is though not the final list is though"));
-				  preface.add( new Paragraph("               not the final list, you can find the full & final list in"));
+				  preface.add( new Paragraph("               not the final list, you can find the full & final list in \"START HERE\" Section)"));
 				  preface.add( new Paragraph(" ") );
-				  preface.add( new Paragraph("               START HERE Section"));
 				  preface.add( new Paragraph(" ") );
 				  preface.add( new Paragraph(" ") );
 				  preface.add( new Paragraph("               Panchayath Wise :"));
 				  preface.add( new Paragraph(" ") );
 				  document.add(preface); 
-				  DecimalFormat df = new DecimalFormat("##.##");
 				  PdfPCell cell ;
 				  	  
 			        cell = new PdfPCell(new Phrase("Panchayath",style1));
@@ -2180,15 +2210,15 @@ public class StrategyModelTargetingService implements
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
-					  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getTargetPerc()).toString(),style2));
+					  	  cell = new PdfPCell(new Phrase(new BigDecimal(panchayatVO.getTargetPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).toString(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
-					  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getPartyPerc()).toString(),style2));
+					  	  cell = new PdfPCell(new Phrase(new BigDecimal(panchayatVO.getPartyPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).toString(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
-					  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getOpportunity()).toString(),style2));
+					  	  cell = new PdfPCell(new Phrase(new BigDecimal(panchayatVO.getOpportunity()).setScale(2, BigDecimal.ROUND_HALF_UP).toString(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
@@ -2208,7 +2238,6 @@ public class StrategyModelTargetingService implements
 				  	
 				  LOG.info("Enterd into panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class");
 				    PdfPTable table = new PdfPTable(5);
-				    DecimalFormat df = new DecimalFormat("##.##"); 
 				    Paragraph preface = new Paragraph();
 				    preface.setAlignment(Element.PTABLE);
 				    preface.add( new Paragraph("               Panchayath Wise :"));
@@ -2266,7 +2295,7 @@ public class StrategyModelTargetingService implements
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
-					  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getTargetPerc()).toString(),style2));
+					  	  cell = new PdfPCell(new Phrase(new BigDecimal(panchayatVO.getTargetPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).toString(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
@@ -2588,6 +2617,73 @@ public class StrategyModelTargetingService implements
 				  	  document.add(table);
 			} catch (Exception e) {
 				LOG.debug("Exception raised in orderOFPriorityTable() method",e);
+			}
+		  }
+		  
+		  public void buildPanchayatsClassificationBlock(Document document, List<OrderOfPriorityVO>  panchayatsClassific)
+		  {
+			  try {
+				  	
+				  LOG.info("Enterd into buildPanchayatsClassificationBlock() method in StrategyModelTargetingService Class");
+				    PdfPTable table = new PdfPTable(4);
+				    Paragraph preface = new Paragraph();
+				    preface.setAlignment(Element.PTABLE);
+				    preface.add( new Paragraph("               Step 4 – Start Here :"));
+				    preface.add( new Paragraph(" ") );
+				    document.add(preface);
+				    
+			        PdfPCell cell ;
+				  	  
+			        cell = new PdfPCell(new Phrase("Status",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+					  
+				  	  
+				  	  cell = new PdfPCell(new Phrase("No of Panchayaths",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("Gainable Votes%",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase("Gainable Votes",style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  table.addCell(cell);
+				  	  
+				  	  
+
+				  	  for (OrderOfPriorityVO classificationVo : panchayatsClassific)
+				  	  {
+				  		 
+				  		  cell = new PdfPCell(new Phrase(classificationVo.getName(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(classificationVo.getTotalVoters().toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  
+					  	  cell = new PdfPCell(new Phrase(new BigDecimal(classificationVo.getOpportunityPerc()).setScale(2, BigDecimal.ROUND_HALF_UP).toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(classificationVo.getOpportunity().toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  
+					  	
+					}
+					document.add(table);
+					document.newPage();
+			} catch (Exception e) {
+				LOG.debug("Exception raised in buildPanchayatsClassificationBlock() ",e);
 			}
 		  }
 }
