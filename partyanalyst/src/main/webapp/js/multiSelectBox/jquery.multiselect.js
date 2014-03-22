@@ -174,8 +174,8 @@
 
         // pre-selected?
         if(isSelected) {
-         // html += ' checked="checked"';
-         // html += ' aria-selected="true"';
+         html += ' checked="checked"';
+         html += ' aria-selected="true"';
         }
 
         // disabled?
