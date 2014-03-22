@@ -7,12 +7,19 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
-public class PartyResultsVerVO{
+public class PartyResultsVerVO implements Serializable{
+	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4262111258774213337L;
 	private Long partyId;
 	private String partyName;
 	private Long candidateId;
@@ -348,7 +355,10 @@ public class PartyResultsVerVO{
 	
 	@Override
 	public int hashCode(){
+		if(this.partyId !=null)
 		return this.partyId.hashCode();
+		else
+			return new Random().nextInt();
 	}
 	
 	public void setBallotVotesPercentage(String ballotVotesPercentage) {

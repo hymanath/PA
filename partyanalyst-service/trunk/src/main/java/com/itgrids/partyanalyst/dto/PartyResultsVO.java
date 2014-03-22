@@ -7,11 +7,12 @@
  */
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-public class PartyResultsVO implements Comparable<PartyResultsVO>{
+public class PartyResultsVO implements Comparable<PartyResultsVO>,Serializable{
 
 	private Long partyId;
 	private String partyName;

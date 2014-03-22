@@ -1,11 +1,19 @@
 package com.itgrids.partyanalyst.dto;
 
-public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTrendsReportVO> {
+import java.io.Serializable;
+
+public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTrendsReportVO>,Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1000000001L;
 	//private String party;
+	
 	private Integer electionYear;
-	private Long  totalVoters;
+	private Long  totalVoters=0L;
 	private Long totalVotesPolled;
 	private String tdpPartyName;
+	private Long electionId;
 	private PartyElectionTrendsReportHelperVO tdpVo;
 	private PartyElectionTrendsReportHelperVO incVo=new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO prpVo = new PartyElectionTrendsReportHelperVO();
@@ -13,6 +21,14 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 	private PartyElectionTrendsReportHelperVO bjpVo = new PartyElectionTrendsReportHelperVO();
 	private PartyElectionTrendsReportHelperVO othersVo;
 	
+
+	
+	public Long getElectionId() {
+		return electionId;
+	}
+	public void setElectionId(Long electionId) {
+		this.electionId = electionId;
+	}
 	private Long districtId;
 	
 	
@@ -91,7 +107,7 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 				+ ", tdpVo=" + tdpVo + ", incVo=" + incVo + ", prpVo=" + prpVo
 				+ "]";
 	}*/
-
+	@Override
 	public int compareTo(PartyElectionTrendsReportVO o) {
 		
 		return o.electionYear.compareTo(this.electionYear);

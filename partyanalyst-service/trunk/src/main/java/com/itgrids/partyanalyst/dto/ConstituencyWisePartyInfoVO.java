@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.dto;
 
-public class ConstituencyWisePartyInfoVO {
+import java.io.Serializable;
+
+public class ConstituencyWisePartyInfoVO implements Serializable{
 
 	private Long constituencyId;
 	private String constituencyName;
