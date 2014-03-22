@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.util.ServletContextAware;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
@@ -27,6 +28,7 @@ import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StratagicReportInputVO;
 import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
@@ -38,6 +40,7 @@ import com.itgrids.partyanalyst.service.ICrossVotingEstimationService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
+import com.itgrids.partyanalyst.service.IStratagicReportsServicePdf;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -89,7 +92,10 @@ public class StratagicReportsAction extends ActionSupport implements
 	List<PartyPositionVO> boothwiseResult;
 	private IBoothwisePollingStratagicService boothwisePollingStratagicService;
 	
-	private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
+	@Autowired
+	private IStratagicReportsServicePdf stratagicReportsServicePdf;
+	
+private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
 	
 	public List<PartyPositionVO> getBoothwiseResult() {
@@ -405,7 +411,7 @@ public class StratagicReportsAction extends ActionSupport implements
 		
 		boothWiseAddedDelList=stratagicReportsService.getBoothWiseAddedAndDeletedVoters(constituencyId,publicationDateId);
 		
-		stratagicReportsService.generateBoothWiseAddedDeletedVoters(boothWiseAddedDelList);
+		//stratagicReportsService.generateBoothWiseAddedDeletedVoters(boothWiseAddedDelList);
 		return Action.SUCCESS;
 	}
 	public String getPreviousTrendsReport(){
@@ -478,7 +484,7 @@ public class StratagicReportsAction extends ActionSupport implements
 				prevResults.setWardTitle("Others indicates Inclusive of All Other Parties and Independents, Independents are participated for more than one seat in some of the Wards");
 				prevResults.setInformation("A categorization that provides you with insight of "+pv_gmc.getElectionBodyType()+" Election results of Wards in your constituency helping in creating a common strategy:");
 			}
-			stratagicReportsService.generatePdfForLocalElectionResults(prevResults);
+			//stratagicReportsService.generatePdfForLocalElectionResults(prevResults);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Action.ERROR;
@@ -580,7 +586,7 @@ public class StratagicReportsAction extends ActionSupport implements
 			voterModificationVO = stratagicReportsService.getSubLevelsVoterModificationDetailsByLocationValue(
 					locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
 			
-			stratagicReportsService.getPDFForSubLevelAddedDeleted(voterModificationVO);
+			//stratagicReportsService.getPDFForSubLevelAddedDeleted(voterModificationVO);
 			return Action.SUCCESS;
 			
 		}
@@ -602,7 +608,7 @@ public class StratagicReportsAction extends ActionSupport implements
 				Long publicationId = jObj.getLong("publicationId");
 				voterDensityWithPartyVO = stratagicReportsService.getVotersCountInPanchayatsForDensity(constituencyId,publicationId);
 				
-				stratagicReportsService.generatePDFForDensity(voterDensityWithPartyVO);
+				//stratagicReportsService.generatePDFForDensity(voterDensityWithPartyVO);
 			}catch(Exception e){
 				log.error("Exception raised in getVoterDensityPanchayatWiseWithPartyResult() method in StratagicReportAction",e);
 			}
@@ -629,12 +635,12 @@ public class StratagicReportsAction extends ActionSupport implements
 			
 			if(taskToDo.equalsIgnoreCase("voterInfo")){
 				voterAgeRangeVOList = stratagicReportsService.getVoterInfoByPublicationDateList(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId);
-				stratagicReportsService.generatePDFForVoterInfo(voterAgeRangeVOList,"voterInfo");
+				//stratagicReportsService.generatePDFForVoterInfo(voterAgeRangeVOList,"voterInfo");
 			}
 			
 			if(taskToDo.equalsIgnoreCase("addedOrDeletedVoterInfoInALocation")){
 				voterModificationAgeRangeVOList = stratagicReportsService.getVotersAddedAndDeletedCountAgeWiseInBeetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
-				stratagicReportsService.generatePDFForVoterInfo(voterModificationAgeRangeVOList,"addedDeleted");
+				//stratagicReportsService.generatePDFForVoterInfo(voterModificationAgeRangeVOList,"addedDeleted");
 			}
 			
 			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiBetweenPublications")){
@@ -643,7 +649,7 @@ public class StratagicReportsAction extends ActionSupport implements
 			
 			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiForEachPublic")){
 				voterModificationGenderInfoVOList = stratagicReportsService.getGenderWiseVoterModificationsForEachPublication(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
-				stratagicReportsService.generatePDFForVoterInfo(voterModificationGenderInfoVOList,"genderWise");
+				//stratagicReportsService.generatePDFForVoterInfo(voterModificationGenderInfoVOList,"genderWise");
 			}
 			return Action.SUCCESS;
 		}
@@ -907,6 +913,13 @@ public class StratagicReportsAction extends ActionSupport implements
 		
 		return Action.SUCCESS;
 	}
-	
-	
+	public String buildStrategicPdf()
+	{
+		System.out.println("inside==========================================");
+		StratagicReportInputVO inputs = new StratagicReportInputVO();
+		
+		stratagicReportsServicePdf.buildPdfDelegator(inputs);
+		
+		return Action.SUCCESS;
+	}
 }
