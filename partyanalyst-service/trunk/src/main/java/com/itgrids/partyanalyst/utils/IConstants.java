@@ -724,11 +724,13 @@ public interface IConstants {
     public static final Long STRATAGIC_REPORT_PUBLICATION_DATE_ID=10l;
     public static final Long TDP_PARTY_ID=872l;
     public static final Long INDEPENDENT_ID=366l;
-    
+    public static final Long INC_PARTY_ID=362L;
+
     public static final String STATIC_CONTENT_FOLDER_URL = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";
     //public static final String STATIC_CONTENT_FOLDER_URL = "/home/dakavara/public_html/";
     
     public static final String STATIC_PARTIESFOR_DELIMATION = "'INC','PRP','TDP','TRS,Others'";
     
     public static final String pdfLocalPath="C:\\Users\\sasi\\Desktop\\sample.pdf";
+    public static final String IMAGE="C:\\pdfs\\const\\indeximage.jpg";
 }
