@@ -53,7 +53,14 @@ public class PartyPositionVO implements Serializable{
     private String winPartyName;
     private Long winPartyTotal =0l;
     private Long rank;
+    private boolean winpartyExist;
     
+	public boolean isWinpartyExist() {
+		return winpartyExist;
+	}
+	public void setWinpartyExist(boolean winpartyExist) {
+		this.winpartyExist = winpartyExist;
+	}
 	public String getWinPartyName() {
 		return winPartyName;
 	}

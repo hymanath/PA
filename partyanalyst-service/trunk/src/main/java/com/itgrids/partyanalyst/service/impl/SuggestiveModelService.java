@@ -7632,9 +7632,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	  
 	  public List<PartyPositionVO> getPartyPerfromanceStratagicReport(Long constituencyId,Long partyId,Long electionId)
 	  {
-		  constituencyId =146l;
-		  partyId = 872l;
-		  electionId =38l;
+		  
 		  PartyPositionVO partyPositionVO = null;
 		  List<Long> panchayatIds = null;
 		  List<PartyPositionVO> resultList = new ArrayList<PartyPositionVO>();
@@ -7730,15 +7728,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				
 				//resultMap -- Map<panchayatId,Map<partyId,totalvoters>>
 				//resultMap1 -- Map<localbodyName,Map<partyId,totalvoters>>
-				
+				boolean winPartyExist = false;
 				Map<Long,List<Long>> boothIdsMap = new HashMap<Long, List<Long>>(0);//<panchayatId,List<boothIds>>
 				Map<Long,Long> panchayatTotalVotersMap = new HashMap<Long, Long>(0);//<locationId,totalVoters>
 			    Map<Long,PartyPositionVO> winpartyMap = new HashMap<Long, PartyPositionVO>();						
-				  List<Long> panchayatIdsList = new ArrayList<Long>(resultMap.keySet());
-				  List<Object[]> boothList = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayatIdsList(panchayatIdsList, electionId);
-				  List<Object[]> panchayatresult = panchayatResultDAO.getPartyWiseWonInPanchayts(panchayatIdsList);
+				List<Long> panchayatIdsList = new ArrayList<Long>(resultMap.keySet());
+				List<Object[]> boothList = hamletBoothElectionDAO.getPanchayatBoothDetailsByPanchayatIdsList(panchayatIdsList, electionId);
+				List<Object[]> panchayatresult = panchayatResultDAO.getPartyWiseWonInPanchayts(panchayatIdsList);
+				
 				  if(panchayatresult != null && panchayatresult.size() > 0)
 				  {
+					  winPartyExist = true;
 					  for(Object[] params : panchayatresult)
 					  {
 					  PartyPositionVO vo = winpartyMap.get((Long)params[2]);  
@@ -7751,6 +7751,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  vo.setWinPartyTotal((Long)params[4]);
 					  }
 				  }
+				  if(winPartyExist == false)
+				  {
+					return ;
+				  }
+				  else
 				  if(boothList != null && boothList.size() > 0)
 				  {
 					  for(Object[] params:boothList)
@@ -7829,22 +7834,28 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		    	     locationVO.setRank(2l) ;
 		    	     else if(difference >=40.01 && difference <= 100.00)
 		    			 locationVO.setRank(1l) ; 
+		    		 String winPartyName ="";
+		    		 Long winPartyTotal =0l;
 		    		 if(winpartyMap != null )
 		    		 {
 		    		 PartyPositionVO winVo = new PartyPositionVO();
 		    		 winVo = winpartyMap.get(id);
 		    		 if(winVo != null)
 		    		 {
-		    		 locationVO.setWinPartyName(winVo.getWinPartyName());
-		    		 locationVO.setWinPartyTotal(winVo.getWinPartyTotal());
+		    			 winPartyName = winVo.getWinPartyName();
+		    			 winPartyTotal = winVo.getWinPartyTotal();
+		    	     }
 		    		 }
-		    		 }
+		    		 locationVO.setWinPartyName(winPartyName);
+		    		 locationVO.setWinPartyTotal(winPartyTotal);
 		    		 partyPositionVOList.add(locationVO);
 		    		
 		      }
 		    
 		    } // panchayat End
-			
+		
+
+		  
 			}catch (Exception e) {
 			 e.printStackTrace();
 			 LOG.error(" Exception Occured in getPartyPerformanceForSelectedlocation() method, Exception - "+e);

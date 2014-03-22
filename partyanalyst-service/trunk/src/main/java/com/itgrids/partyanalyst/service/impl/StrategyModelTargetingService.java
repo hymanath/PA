@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
@@ -15,14 +17,23 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+
+import org.jfree.data.category.DefaultCategoryDataset;
+
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.DefaultFontMapper;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
@@ -54,6 +65,7 @@ import com.itgrids.partyanalyst.model.SuggestiveRange;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
+import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StrategyModelTargetingService implements
@@ -79,10 +91,20 @@ public class StrategyModelTargetingService implements
 	private IConstituencyDAO constituencyDAO;
 	private ICandidateResultDAO candidateResultDAO;
 	private ICasteStateDAO casteStateDAO;
+	private ISuggestiveModelService suggestiveModelService;
 	private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
 
 	
+	public ISuggestiveModelService getSuggestiveModelService() {
+		return suggestiveModelService;
+	}
+
+	public void setSuggestiveModelService(
+			ISuggestiveModelService suggestiveModelService) {
+		this.suggestiveModelService = suggestiveModelService;
+	}
+
 	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 		this.casteStateDAO = casteStateDAO;
 	}
@@ -1828,7 +1850,8 @@ public class StrategyModelTargetingService implements
 			   agedCastesList  = (List<PanchayatVO>)voterPriorities.get(1);
 		   }
 		   List<OrderOfPriorityVO> finalOrderOfOriority = calculateFinalOrder(new ArrayList<OrderOfPriorityVO>(finalOrder.values()));
-		   List<OrderOfPriorityVO> panchayatsClassification = calculateCriticalModerateEasyPanchs(finalOrderOfOriority);		   
+		   List<OrderOfPriorityVO> panchayatsClassification = calculateCriticalModerateEasyPanchs(finalOrderOfOriority);
+		   		   
 		   List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
 		   getImpFamilesList(finalOrderOfOriority.get(0).getPanchayatId(),strategyVO.getPublicationId(),impfamilesList);
 		   
@@ -1871,7 +1894,14 @@ public class StrategyModelTargetingService implements
 		   if(strategyVO.getCastePercents() != null){
 		     panchayatWiseTargetVotesTable(document,totalCastesList);
 		   }
-		  
+		   List<PartyPositionVO> list = suggestiveModelService.getPartyPerfromanceStratagicReport(strategyVO.getConstituencyId(),872l,strategyVO.getEffectElectionId());
+		   
+		   if(list != null && list.size() > 0)
+		   {
+			   panchayatwisePartyPerformanceTable(document,list,1l);
+			   panchayatwisePartyPerformanceTable(document,list,2l);
+			   //buildChartForPartyPerformanceReort(document,list);
+		   }
 		   generatePdfForMatrixReport(document,previousTrends);
 		     panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");
 		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");
@@ -2139,6 +2169,104 @@ public class StrategyModelTargetingService implements
 		} catch (Exception e) {
 			LOG.debug("Exception raised in generateCasteWiseTable() method ",e);
 		}
+	   }
+	   
+	   public void panchayatwisePartyPerformanceTable(Document document,List<PartyPositionVO> panchayatList,Long rank)
+	   {
+		   try{
+			 LOG.info("Entered into panchayatwisePartyPerformanceTable() method in VoterModifiationPdfsGenerations Class");
+			 PdfPTable table = new PdfPTable(7);
+			 PdfPCell cell ;
+			 DecimalFormat df = new DecimalFormat("##.##");
+			 cell = new PdfPCell(new Phrase("Panchayat",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+		  	  table.addCell(cell);
+		  	  
+		  	 cell = new PdfPCell(new Phrase("Total Votes",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+		  	  table.addCell(cell);
+		  	  
+		  	 cell = new PdfPCell(new Phrase("Votes Polled",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+		  	  table.addCell(cell);
+		  	  
+		  	 cell = new PdfPCell(new Phrase("TDP Gained",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+		  	  table.addCell(cell);
+		  	  
+		  	 cell = new PdfPCell(new Phrase("margin",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+		  	  table.addCell(cell);
+		  	  
+		 	 cell = new PdfPCell(new Phrase("2013 Total Votes",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+		  	  table.addCell(cell);
+		  	  
+		  	  
+		 	 cell = new PdfPCell(new Phrase("Win Party Name",style1));
+			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  cell.setBackgroundColor(BaseColor.YELLOW);
+		  	  table.addCell(cell);
+		  	 
+		  	  for(PartyPositionVO partyPositionVO :panchayatList)
+		  	  {
+		  		  if(partyPositionVO.getRank() == rank)
+		  		  {
+		  			  
+		  		  cell = new PdfPCell(new Phrase(partyPositionVO.getName(),style2));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  table.addCell(cell);  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getTotalVoters()).toString(),style2));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  table.addCell(cell);  
+			  	  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getTotalValidVotes()).toString(),style2));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  table.addCell(cell);  
+			  	  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getSelectedPartyTotalVoters()).toString(),style2));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  table.addCell(cell);  
+			  	  
+			  	  
+			  	  cell = new PdfPCell(new Phrase(df.format(partyPositionVO.getMargin()).toString(),style2));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  table.addCell(cell);
+			  	  
+			  	  
+			  	 cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getWinPartyTotal()).toString(),style2));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  table.addCell(cell);  
+			  
+			  	  cell = new PdfPCell(new Phrase(partyPositionVO.getWinPartyName(),style2));
+			  	  if(rank == 1 && !partyPositionVO.getWinPartyName().equalsIgnoreCase("TDP"))
+				  cell.setBackgroundColor(BaseColor.RED);
+			  	  if(rank == 2 && partyPositionVO.getWinPartyName().equalsIgnoreCase("TDP"))
+					  cell.setBackgroundColor(BaseColor.GREEN);
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  table.addCell(cell);  
+				  
+			  	  
+		  		  }
+			 }
+		  	table.setHeaderRows(2);
+			 document.add(table);
+			 document.newPage();
+			  
+		   }
+		   catch(Exception e)
+		   {
+			   LOG.error("Exception Occured in panchayatwisePartyPerformanceTable() method",e);
+		   }
 	   }
 	   public void panchayatWiseTargetVotesTable(Document document,List<PanchayatVO> totalCastesList)
 		  {
@@ -2620,6 +2748,8 @@ public class StrategyModelTargetingService implements
 			}
 		  }
 		  
+       
+		  
 		  public void buildPanchayatsClassificationBlock(Document document, List<OrderOfPriorityVO>  panchayatsClassific)
 		  {
 			  try {
@@ -2686,4 +2816,104 @@ public class StrategyModelTargetingService implements
 				LOG.debug("Exception raised in buildPanchayatsClassificationBlock() ",e);
 			}
 		  }
+		  
+		  public void buildChart(Document doc)
+          {
+                  try {
+                       DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+                       dataSet.setValue(791, "Margin", "Panchayat_Name-2013");
+                       dataSet.setValue(978, "Margin", "Panchayat_Name-2009");
+                       dataSet.setValue(1262, "Population", "1850 AD");
+                       dataSet.setValue(1650, "Population", "1900 AD");
+                       dataSet.setValue(2519, "Population", "1950 AD");
+                       dataSet.setValue(6070, "Population", "2000 AD");
+               
+                       JFreeChart chart = ChartFactory.createBarChart(
+                               "World Population growth", "Year", "Population in millions",
+                               dataSet, PlotOrientation.VERTICAL, false, true, false);
+                       
+                          Document document = new Document();
+                          PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\VMR\\2.pdf"));
+                          document.open();
+                          PdfContentByte cb = writer.getDirectContent();
+                          PdfTemplate bar = cb.createTemplate(400, 500);
+                          Graphics2D g2d2 = bar.createGraphics(350,450,new DefaultFontMapper());
+                          Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 300,400);
+                                 
+                       chart.draw(g2d2, rectangle2d);
+                       g2d2.dispose();
+                       cb.addTemplate(bar,0.0f,0.0f);
+                       document.close();
+               } catch (Exception e) {
+                       e.printStackTrace();
+               }
+          }
+
+ 
+		  public void buildChartForPartyPerformanceReort(Document doc,List<PartyPositionVO> list)
+          {
+                  try {
+                       DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+                       
+                       if(list != null && list.size() > 0)
+                       {
+                    	  
+                    	   for(PartyPositionVO vo : list)
+                    	   {
+                    		
+                    		if(vo.getRank() == 1) 
+                    		{
+	                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
+	                    			{
+					                       dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
+	                    			}
+	                    			else
+	                    			{
+	                    				   dataSet.setValue(vo.getMargin()/2, "Margin", vo.getName().toString()+" -2013");
+	                    			}
+	                                       dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
+	                    			
+                    		}
+                    		else
+                    		{
+	                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
+	                    			{
+	                    				dataSet.setValue(2 * (vo.getMargin()), "Margin", vo.getName().toString()+" -2013");
+	                    			}
+	                    			else
+	                    			{
+	                    				   dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
+	                    			}
+	                                       dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
+	                    			
+                    		}
+                    		
+                    	   }
+                      
+                       }
+                       
+                       JFreeChart chart = ChartFactory.createBarChart(
+                               "PartyPerformance", "Panchayat ", "Margin",
+                               dataSet, PlotOrientation.HORIZONTAL, false, true, false);
+                       
+                          Document document = new Document();
+                          PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\VMR\\2.pdf"));
+                          document.open();
+                          PdfContentByte cb = writer.getDirectContent();
+                          PdfTemplate bar = cb.createTemplate(1000, 1000);
+                          Graphics2D g2d2 = bar.createGraphics(950,950,new DefaultFontMapper());
+                          Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 900,900);
+                                 
+                       chart.draw(g2d2, rectangle2d);
+                       g2d2.dispose();
+                       cb.addTemplate(bar,0.0f,0.0f);
+                       document.close();
+               } catch (Exception e) {
+                       e.printStackTrace();
+               }
+          }
+
+ 
+
+		  
 }
