@@ -6668,6 +6668,10 @@
 				<param name="root">voterDetailsSearched</param>				
 			</result> 
 		</action>
+		<action name="buildStg" class="stratagicReportsAction" method="buildStrategicPdf">
+			<result name="success">/jsp/voterAverageAgewisePage.jsp</result>
+		</action>
+		
 		
 		<!-- ACTIONS FOR VOTER MODIFICATION REPORTS IN STRATAGIC REPORT -->
 		<action name="getVoterInfoForStratagyAction" class="stratagicReportsAction" method="ajaxHandler">
