@@ -3,12 +3,12 @@ package com.itgrids.partyanalyst.dto;
 public class OrderOfPriorityVO {
   private Long panchayatId;
   private String name;
-  private Long totalVoters;
-  private Long targetedVoters;
+  private Long totalVoters = 0l;
+  private Long targetedVoters = 0l;
   private Long previousVoters =0l;
   private Long prevElectionVotes=0l;
-  private Long opportunity;
-  private Double opportunityPerc;
+  private Long opportunity = 0l;
+  private Double opportunityPerc = 0.0;
   private Double prpWeight = 0d;
   private Double youngWeight = 0d;
   private Double ageWeight = 0d;

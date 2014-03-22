@@ -620,4 +620,8 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getTotalVotersByAgeForMunicipality(Long publicationId,Long constituencyId,Long ageFrom,Long ageTo);
 	  
 	  public List<Object[]> getCasteCountForMunicipality(Set<Long> casteStateIds,Long publicationId,Long constituencyId,Long ageFrom,Long ageTo);
+	  
+	  public List<Object[]> getPanchayatwiseImpFamiles(Long publicationId,Long panchayatId);
+	  
+	  public List<Object[]> getElderPersonDetails(Long publicationId,Long boothId,String houseNo);
 }

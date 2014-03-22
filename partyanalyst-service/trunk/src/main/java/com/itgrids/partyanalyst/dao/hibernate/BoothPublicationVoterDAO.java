@@ -6698,4 +6698,30 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	    query.setParameterList("casteStateIds", casteStateIds);
 	return query.list();
 	}
+	
+	public List<Object[]> getPanchayatwiseImpFamiles(Long publicationId,Long panchayatId)
+	{
+		Query query = getSession().createQuery("select B.boothId, B.partNo , V.houseNo  " +
+				" from     BoothPublicationVoter BPV, Booth B,Voter V where B.panchayat.panchayatId = :panchayatId " +
+				" and B.publicationDate.publicationDateId = :publicationId  and B.boothId = BPV.booth.boothId and " +
+				" BPV.voter.voterId = V.voterId  and V.houseNo not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00')" +
+				" group by  B.boothId , V.houseNo  having count(*) <= 15 order by count(V.voterId) desc limit 5 ");
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("panchayatId", panchayatId);
+		return query.list();
+	}
+	
+	public List<Object[]> getElderPersonDetails(Long publicationId,Long boothId,String houseNo)
+	{
+		Query query = getSession().createSQLQuery("select UVD.caste_state_id,V.name,V.gender,V.age from booth_publication_voter BPV, booth B," +
+				" voter V left join user_voter_details UVD on UVD.voter_id = V.voter_id and UVD.user_id = 1" +
+				" where  B.booth_id = :boothId and V.house_no = :houseNo " +
+				"and B.publication_date_id = :publicationId and B.booth_id = BPV.booth_id and" +
+				"  BPV.voter_id = V.voter_id and V.house_no not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00','0-0-0','0-0-0') order by V.age desc");
+		
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("boothId", boothId);
+		query.setParameter("houseNo", houseNo);
+		return query.list();
+	}
 }

@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
+import com.itgrids.partyanalyst.dto.ImpFamilesVO;
 import com.itgrids.partyanalyst.dto.OrderOfPriorityVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyEffectVO;
@@ -1637,7 +1638,6 @@ public class StrategyModelTargetingService implements
     	   }
     	   return avgPerc;
        }
-       
        public List<OrderOfPriorityVO> calculateCriticalModerateEasyPanchs(List<OrderOfPriorityVO> finalOrderOfOriority){
     	   List<OrderOfPriorityVO>  panchClassific = new ArrayList<OrderOfPriorityVO>();
     	   Long totalOpportunity = 0l;
@@ -1787,7 +1787,9 @@ public class StrategyModelTargetingService implements
     	   }
     	   
     	   return panchClassific;
-       }
+       }       
+       
+       
 	   @SuppressWarnings("unchecked")
 	public void getPrioritiesToTarget(StrategyVO strategyVO,String path){
 		   Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
@@ -1818,7 +1820,9 @@ public class StrategyModelTargetingService implements
 			   agedCastesList  = (List<PanchayatVO>)voterPriorities.get(1);
 		   }
 		   List<OrderOfPriorityVO> finalOrderOfOriority = calculateFinalOrder(new ArrayList<OrderOfPriorityVO>(finalOrder.values()));
-		   List<OrderOfPriorityVO> panchayatsClassification = calculateCriticalModerateEasyPanchs(finalOrderOfOriority);
+		   List<OrderOfPriorityVO> panchayatsClassification = calculateCriticalModerateEasyPanchs(finalOrderOfOriority);		   
+		   List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
+		   getImpFamilesList(finalOrderOfOriority.get(0).getPanchayatId(),strategyVO.getPublicationId(),impfamilesList);
 		   
 		   if(strategyVO.getCastePercents() != null && strategyVO.getCastePercents().size() > 0)
 		   {
@@ -1838,7 +1842,7 @@ public class StrategyModelTargetingService implements
 				   }
 			   }
 		   }
-		    //path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";		   
+		   path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";		   
 		   Document document = new Document();
 		   String filePath = "VMR"+"/1.pdf";
 		   String FILE = path+filePath;
@@ -1865,11 +1869,209 @@ public class StrategyModelTargetingService implements
 		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");
 		  
 		   prpEffectTableTable(document,otherPartyEffect);
+		   if(impfamilesList != null && impfamilesList.size() > 0)
+		   {
+			   generateImpFamilesTable(document,impfamilesList);
+		   }
 		   orderOFPriorityTable(document,finalOrderOfOriority,15);
 		   document.close();
 	   }
 	   
 	   
+	   public void getImpFamilesList(Long panchayatId,Long publicationDateId,List<ImpFamilesVO> impfamilesList)
+       {
+    	   try
+    	   {
+    		   LOG.info("Enterd into getImpFamilesList() method");
+    		   //panchayatId = 461l;
+    		   List<Object[]> boothWiseDetails = boothPublicationVoterDAO.getPanchayatwiseImpFamiles(publicationDateId,panchayatId);
+    		   if(boothWiseDetails != null && boothWiseDetails.size() > 0)
+    		   {
+    			   //impfamilesList = new ArrayList<ImpFamilesVO>();
+    			   int impCount = 0;
+    			   for (Object[] objects : boothWiseDetails)
+    			   {
+    				   if(impCount == 5)
+    				   {
+    					   break;
+    				   }
+    				   if(objects[1] != null && objects[2] != null)
+    				   {
+    					   
+    					   ImpFamilesVO impFamilesVO = new ImpFamilesVO();
+        				   impFamilesVO.setBoothId(Long.valueOf(objects[1].toString()));
+        				   impFamilesVO.setHouseNo(objects[2].toString());
+        				   List<Object[]> voterDetails = boothPublicationVoterDAO.getElderPersonDetails(publicationDateId, (Long)objects[0], objects[2].toString());
+        				   if(voterDetails != null && voterDetails.size() > 0)
+        				   {
+        					   int count = 0;
+        					   int size = voterDetails.size();
+        					   Boolean flag = false;
+        					   for (Object[] objects2 : voterDetails)
+        					   {
+        						   if(count  == 0)
+        						   {
+        							   impFamilesVO.setElderPerson(objects2[1] != null ? objects2[1].toString() : null);
+        							   impFamilesVO.setElderPersonAge(objects2[3] != null ? Long.valueOf(objects2[3].toString()) : null);
+        							   impFamilesVO.setEldPersomGender(objects2[2] != null ? objects2[2].toString() : null);
+        							   impFamilesVO.setCount(Long.valueOf(size));
+        							   if(objects2[0] != null)
+        							   {
+        								   List<Long> casteStateIds = new ArrayList<Long>();
+            							   casteStateIds.add(Long.valueOf(objects2[0].toString()));
+            							   List<Object[]> castes = casteStateDAO.getCasteNamesByCasteIds(casteStateIds);
+            							   impFamilesVO.setCaste(castes.get(0)[1].toString());
+        							   }
+        							   
+        						   }
+        						   for (int i = size-1; i >= 1; i--)
+        						   {
+        							   if(voterDetails.get(i)[2] != null)
+        							   {
+        								   if(voterDetails.get(i)[2].toString().trim().equalsIgnoreCase("M"))
+        								   {
+        									   impFamilesVO.setYoungerPerson(voterDetails.get(i)[1] != null ? voterDetails.get(i)[1].toString() : null);
+                							   impFamilesVO.setYoungerPersonAge(voterDetails.get(i)[3] != null ? Long.valueOf(voterDetails.get(i)[3].toString()) : null);
+                							   impFamilesVO.setYoungPersomGender(voterDetails.get(i)[2] != null ? voterDetails.get(i)[2].toString() : null);
+                							   flag = true;
+                							   break;
+        								   }
+        							   }
+        						   }
+        						   if(flag)
+        						   {
+        							   break;
+        						   }
+        						   count++;
+        					   }
+        				   }
+        				   impfamilesList.add(impFamilesVO);
+    				   }
+    				   impCount++;  
+    			   }
+    		   }
+    		   
+    	   } 
+    	   catch (Exception e)
+    	   {
+    		   LOG.debug("Exception raised in getImpFamilesList() method ",e);
+    	   }
+       }
+	   
+	   public void generateImpFamilesTable(Document document , List<ImpFamilesVO> list)
+	   {
+		   try 
+		   {
+			   LOG.info("Enterd into generateImpFamilesTable() method");
+			   PdfPTable table = new PdfPTable(10);
+				Paragraph preface = new Paragraph();
+				preface.setAlignment(Element.PTABLE);
+				preface.add( new Paragraph("               Top Families"));
+				preface.add( new Paragraph(" ") );
+				document.add(preface); 
+				
+				PdfPCell cell ;
+			  	  
+	           cell = new PdfPCell(new Phrase("Booth",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("House No",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("No",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Caste",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Eldest Person",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Gender",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Age",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Youngest Person",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Gender",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Age",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   table.addCell(cell);
+		  	   
+		  	   for (ImpFamilesVO impFamilesVO : list)
+		  	   {
+		  		   cell = new PdfPCell(new Phrase(impFamilesVO.getBoothId() != null ? impFamilesVO.getBoothId().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getHouseNo() != null ? impFamilesVO.getHouseNo().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCount() != null ? impFamilesVO.getCount().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCaste() != null ? impFamilesVO.getCaste().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPerson() != null ? impFamilesVO.getElderPerson().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getEldPersomGender() != null ? impFamilesVO.getEldPersomGender().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPersonAge() != null ? impFamilesVO.getElderPersonAge().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPerson() != null ? impFamilesVO.getYoungerPerson().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungPersomGender() != null ? impFamilesVO.getYoungPersomGender().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPersonAge() != null ? impFamilesVO.getYoungerPersonAge().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   table.addCell(cell);
+		  	   }
+		  	   document.add(table);
+		  	   document.newPage();
+		   } 
+		   catch (Exception e)
+		   {
+			   LOG.debug("Exception raised in generateImpFamilesTable() method ",e);
+		   }
+	   }
 	   public void generateCasteWiseTable(Document document,Map<String,Float> casteNamePercMap)
 	   {
 		   try {
