@@ -1,10 +1,15 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class AgeRangeVO {
- String panchayat;
+public class AgeRangeVO implements Serializable{
+ /**
+	 * 
+	 */
+	private static final long serialVersionUID = 289826852845671037L;
+String panchayat;
  String hamlet;
  Long youngVoters = 0l;
  Long  age18To25 = 0l;
