@@ -278,9 +278,10 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 					
 					stratagicVOList.add(casteReportVO);
 				}
+				stratagicVO.setStrategicVOList(stratagicVOList);
+				stratagicVO.setHeading(" Voters by Caste ");
 			}			
-			stratagicVO.setStrategicVOList(stratagicVOList);
-			stratagicVO.setHeading(" Voters by Caste ");
+			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getCasteWiseVotersInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}

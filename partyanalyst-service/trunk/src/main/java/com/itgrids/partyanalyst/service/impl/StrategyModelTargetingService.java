@@ -197,7 +197,7 @@ public class StrategyModelTargetingService implements
 		
 	}
 	
-	public List<PartyPositionVO> getPartyPreviousTrends(Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult)
+	public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult)
 	{
 		List<PartyPositionVO> resultList = null;
 		try{
@@ -233,8 +233,10 @@ public class StrategyModelTargetingService implements
 			if(assemblyEleIdsList != null && assemblyEleIdsList.size() > 0)
 			{
 				resultList = new ArrayList<PartyPositionVO>(0);
-				  List<SuggestiveRange> suggestiveRangeList = suggestiveRangeDAO.getSuggestiveRangeList();
-					  
+				List<SuggestiveRange> suggestiveRangeList = null;
+			     if(!strategyVO.isConsiderRange()){
+				   suggestiveRangeList = suggestiveRangeDAO.getSuggestiveRangeList();
+			     }	  
 				  PartyPositionVO partyPositionVO = null;
 				  int count = 0;
 				  for(Long eleId :assemblyEleIdsList){
@@ -244,6 +246,7 @@ public class StrategyModelTargetingService implements
 					List<PartyPositionVO> rangeList = new ArrayList<PartyPositionVO>();
 					
 					PartyPositionVO range = null;
+					if(!strategyVO.isConsiderRange()){
 					for(SuggestiveRange suggestiveRange:suggestiveRangeList)
 					  {
 						range = new PartyPositionVO();
@@ -254,7 +257,9 @@ public class StrategyModelTargetingService implements
 						rangeList.add(range);
 						
 					  }
-					
+					}else{
+					   rangeList = getRangeList(strategyVO);
+					}
 					partyPositionVO.setPartyPositionVOList(rangeList);
 					partyPositionVO.setName(election.getElectionYear() != null?election.getElectionYear():" ");
 					partyPositionVO.setId(eleId);
@@ -1822,7 +1827,8 @@ public class StrategyModelTargetingService implements
        
        
 	   @SuppressWarnings("unchecked")
-	public void getPrioritiesToTarget(StrategyVO strategyVO,String path){
+	public List<Object> getPrioritiesToTarget(StrategyVO strategyVO,String path){
+		   List<Object> targetingObjects = new ArrayList<Object>();
 		   Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
 		   Map<Long,Double> currentResult = new HashMap<Long,Double>();
 		   Map<Long,OrderOfPriorityVO> finalOrder = new HashMap<Long,OrderOfPriorityVO>();
@@ -1831,10 +1837,8 @@ public class StrategyModelTargetingService implements
 		   List<PanchayatVO> agedCastesList = null;
 		   Map<Long,String> casteNameMap = null;
 		   Map<String,Float> casteNamePercMap = null;
-		   strategyVO.setEffectPartyId(662l);
-		   strategyVO.setEffectElectionId(38l);
 			
-		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
+		   List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
 		   
 		   calculateWeightsForPreviousTrents(previousTrends.get(0).getSuggestedLocations(),finalOrder,strategyVO.getPrevTrnzWt());
 		   
@@ -1875,7 +1879,7 @@ public class StrategyModelTargetingService implements
 			   }
 		   }
 		    //path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\";		   
-		   Document document = new Document();
+/*		   Document document = new Document();
 		   String filePath = "VMR"+"/1.pdf";
 		   String FILE = path+filePath;
 		   File file = new File(FILE);
@@ -1887,35 +1891,50 @@ public class StrategyModelTargetingService implements
 			   LOG.debug("Exception raised in getPrioritiesToTarget() method",e);
 		   }
 		   document.open();
+		  
 		   if(casteNamePercMap != null && casteNamePercMap.size() > 0)
 		   {
-			   generateCasteWiseTable(document,casteNamePercMap);
+			   generateCasteWiseTable(document,casteNamePercMap);//1
 		   }
-		   
+		  
 		   if(strategyVO.getCastePercents() != null){
-		     panchayatWiseTargetVotesTable(document,totalCastesList);
-		   }
+		     panchayatWiseTargetVotesTable(document,totalCastesList);//2
+		   }*/
 		   List<PartyPositionVO> list = suggestiveModelService.getPartyPerfromanceStratagicReport(strategyVO.getConstituencyId(),872l,strategyVO.getEffectElectionId());
 		   
-		   if(list != null && list.size() > 0)
+	/*	   if(list != null && list.size() > 0)
 		   {
-			   panchayatwisePartyPerformanceTable(document,list,1l);
-			   panchayatwisePartyPerformanceTable(document,list,2l);
+			   panchayatwisePartyPerformanceTable(document,list,1l);//3
+			   panchayatwisePartyPerformanceTable(document,list,2l);//3
 			   //buildChartForPartyPerformanceReort(document,list);
 		   }
-		   generatePdfForMatrixReport(document,previousTrends);
-		     panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");
-		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");
+		   
+		   generatePdfForMatrixReport(document,previousTrends);//4
 		  
-		   prpEffectTableTable(document,otherPartyEffect);
-		   buildPiChart(document,panchayatsClassification,writer);
-		   buildPanchayatsClassificationBlock(document,panchayatsClassification);
+		     panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
+		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
+		    
+		   prpEffectTableTable(document,otherPartyEffect);//7
+		   buildPiChart(document,panchayatsClassification,writer);//8
+		   buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
 		   if(impfamilesList != null && impfamilesList.size() > 0)
 		   {
-			   generateImpFamilesTable(document,impfamilesList);
+			   generateImpFamilesTable(document,impfamilesList);//9
 		   }		   
-		   orderOFPriorityTable(document,finalOrderOfOriority,15);
-		   document.close();
+		   orderOFPriorityTable(document,finalOrderOfOriority,15);//10
+		   document.close();*/
+		   
+		     targetingObjects.add(casteNamePercMap);//1
+		     targetingObjects.add(totalCastesList);//2
+		     targetingObjects.add(list);//3
+		     targetingObjects.add(previousTrends);//4
+		     targetingObjects.add(youngCastesList);//5
+		     targetingObjects.add(agedCastesList);//6
+		     targetingObjects.add(otherPartyEffect);//7
+		     targetingObjects.add(panchayatsClassification);//8
+		     targetingObjects.add(impfamilesList);//9
+		     targetingObjects.add(finalOrderOfOriority);//10
+		   return targetingObjects;
 	   }
 	   
 	   
@@ -2962,4 +2981,43 @@ public class StrategyModelTargetingService implements
 			}
 		  }
 
+		  public List<PartyPositionVO> getRangeList(StrategyVO strategyVO){
+			  List<PartyPositionVO> rangeList = new ArrayList<PartyPositionVO>();
+			  PartyPositionVO range = new PartyPositionVO();
+				range.setName("VERY STRONG");
+				range.setMinValue(strategyVO.getVeryStrongMin());
+				range.setMaxValue(strategyVO.getVeryStrongMax());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("STRONG");
+				range.setMinValue(strategyVO.getStrongMin());
+				range.setMaxValue(strategyVO.getStrongMax());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("OK");
+				range.setMinValue(strategyVO.getOkMin());
+				range.setMaxValue(strategyVO.getOkMax());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("POOR");
+				range.setMinValue(strategyVO.getPoorMin());
+				range.setMaxValue(strategyVO.getPoorMax());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("VERY POOR");
+				range.setMinValue(strategyVO.getVeryPoorMin());
+				range.setMaxValue(strategyVO.getVeryPoorMax());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("WORST");
+				range.setMinValue(strategyVO.getWorstMin());
+				range.setMaxValue(strategyVO.getWorstMax());
+				rangeList.add(range);
+			  return rangeList;
+		  }
 }

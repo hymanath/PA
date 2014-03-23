@@ -6,24 +6,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
-import java.util.UUID;
-
-import jxl.format.RGB;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,59 +28,33 @@ import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.CMYKColor;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.IBoothDAO;
-import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
-import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
-import com.itgrids.partyanalyst.dao.IConstituencyDAO;
-import com.itgrids.partyanalyst.dao.IElectionDAO;
-import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
-import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
-import com.itgrids.partyanalyst.dao.INominationDAO;
-import com.itgrids.partyanalyst.dao.IPanchayatDAO;
-import com.itgrids.partyanalyst.dao.IPanchayatResultDAO;
-import com.itgrids.partyanalyst.dao.IPartyDAO;
-import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
-import com.itgrids.partyanalyst.dao.ITehsilDAO;
-import com.itgrids.partyanalyst.dao.IUserDAO;
-import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
-import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
-import com.itgrids.partyanalyst.dao.IVoterModificationInfoDAO;
 import com.itgrids.partyanalyst.dto.AgeRangeVO;
-import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
 import com.itgrids.partyanalyst.dto.AssumptionsVO;
 import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
 import com.itgrids.partyanalyst.dto.DelimitationEffectVO;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
+import com.itgrids.partyanalyst.dto.ImpFamilesVO;
+import com.itgrids.partyanalyst.dto.OrderOfPriorityVO;
 import com.itgrids.partyanalyst.dto.PDFHeadingAndReturnVO;
-import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportHelperVO;
+import com.itgrids.partyanalyst.dto.PanchayatVO;
+import com.itgrids.partyanalyst.dto.PartyEffectVO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
-import com.itgrids.partyanalyst.dto.PartyPositionResultsVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
-import com.itgrids.partyanalyst.dto.PartyResultsVO;
 import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.StratagicReportInputVO;
 import com.itgrids.partyanalyst.dto.StrategicCensusVO;
+import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
-import com.itgrids.partyanalyst.dto.VoterModificationGenderInfoVO;
 import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.excel.booth.VoterModificationVO;
-import com.itgrids.partyanalyst.model.Constituency;
-import com.itgrids.partyanalyst.model.Election;
-import com.itgrids.partyanalyst.model.LocalElectionBody;
 import com.itgrids.partyanalyst.service.IBoothwisePollingStratagicService;
-import com.itgrids.partyanalyst.service.IRegionServiceData;
-import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStratagicReportServiceForMLASuccess;
 import com.itgrids.partyanalyst.service.IStratagicReportsService;
 import com.itgrids.partyanalyst.service.IStratagicReportsServicePdf;
+import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
-import com.itgrids.partyanalyst.service.IVotersAnalysisService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
 /**
@@ -118,22 +81,13 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	private ISuggestiveModelService suggestiveModelService;
 	
 	
-	private Long constId=232L;
-	private Long publicationDateId=9L;
-	private Long userId=0L;
-	private Long partyId=IConstants.TDP_PARTY_ID;
-	private Long electionId1=3L;
-	private Long electionId=38L;
-	private String locationType=IConstants.CONSTITUENCY;
-	private Long locationValue=constId,constituencyId=constId,fromPublicationDateId=8L,toPublicationDateId=9L;
+	@Autowired
+	private IStrategyModelTargetingService strategyModelTargetingService;
 	
-	//asumptions
-	private Long base=232L;
-	private Long assured=232L;
-	private Long tdpPerc=232L;
 	
 	private enum PdfPages{
 		prevConst,prevPar,prevMptcZptc,census,hoseHolds,voterInfo,firstTimeVoters, votersAgeGroup, votersCaste,panchayatVoterDensity, voterAdditionAndDeletion, genderWiseVoterModification, ageGroup,pollingPercent, boothWiseAddedDelList, delimitationEffect, assumptions, localityAddedDeleted 
+		,selectedCastes,totalCastesOrder,partyPerformance,previousTrends,youngCastes,agedCastes,otherPartyEffect,panchayatsClassification,impfamilesList,finalOrderOfOriority
 	}
 	private Map<PdfPages,String> maps =new HashMap<PdfPages, String>();
 	
@@ -169,7 +123,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			         System.out.printf("Serialized data is saved in"+fileName);
 			         return  fileName;
 			}catch (Exception e) {
-				
+				LOG.error("exception rised in serialize ",e);
 				fileOut=null;
 			}finally{
 				if(fileOut!=null)
@@ -199,8 +153,8 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 
 	
 	
-	@Override
-	public Object buildPdf(StratagicReportInputVO inputVo) {
+	
+	public Object buildPdf(StrategyVO inputVo) {
 		
 		return null;
 	}
@@ -208,16 +162,15 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	
 	
 	
-	@Override
-	public Object buildPdfDelegator(StratagicReportInputVO inputVo) {
+	
+	public Object buildPdfDelegator(StrategyVO strategyVO) {
 		
 		int noOfPages=29;
-		
 		
 		//serailization of data 
 		
 		
-		serializationOfObjects();
+		serializationOfObjects(strategyVO);
 		//deserilization of data
 		
 		DeserializationOfObjects();
@@ -227,8 +180,21 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	}
 	
 	//
-	public Object serializationOfObjects()
+	public Object serializationOfObjects(StrategyVO strategyVO)
 	{
+		 Long constId=strategyVO.getConstituencyId();
+		 Long publicationDateId=strategyVO.getPublicationId();
+		 Long userId=0L;
+		 Long partyId=strategyVO.getPartyId();
+		 Long electionId1=strategyVO.getElectionIds().get(1);
+		 Long electionId=strategyVO.getElectionIds().get(0);
+		 String locationType=IConstants.CONSTITUENCY;
+		 Long locationValue=constId,constituencyId=constId,fromPublicationDateId=publicationDateId-1,toPublicationDateId=publicationDateId;
+		
+		//asumptions
+		 Long base=strategyVO.getBase();
+		 Long assured=strategyVO.getAssured();
+		 Long tdpPerc=strategyVO.getTdpPerc();
 		//maps.put(PdfPages.prevConst, "prev1");
 		//maps.put(PdfPages.prevPar, "prev1");
         String defaultFileName;
@@ -341,10 +307,73 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//targetting key factors
 		
 		//18111s
+		
+		//page 13 to 23
+		List<Object> targetingAreas = strategyModelTargetingService.getPrioritiesToTarget(strategyVO, "");
+		Map<String,Float> casteNamePercMap =  (Map<String,Float>)targetingAreas.get(0);//1
+		List<PanchayatVO> totalCastesList = (List<PanchayatVO>)targetingAreas.get(1);//2
+		List<PartyPositionVO> partyPerformance = (List<PartyPositionVO>)targetingAreas.get(2);//3
+		List<PartyPositionVO> previousTrends = (List<PartyPositionVO>)targetingAreas.get(3);//4
+		List<PanchayatVO> youngCastesList = (List<PanchayatVO>)targetingAreas.get(4);//5
+		List<PanchayatVO> agedCastesList = (List<PanchayatVO>)targetingAreas.get(5);//6
+		List<PartyEffectVO> otherPartyEffect = (List<PartyEffectVO>)targetingAreas.get(6);//7
+		List<OrderOfPriorityVO> panchayatsClassification = (List<OrderOfPriorityVO>)targetingAreas.get(7);//8
+		List<ImpFamilesVO> impfamilesList = (List<ImpFamilesVO>)targetingAreas.get(8);//9
+		List<OrderOfPriorityVO> finalOrderOfOriority = (List<OrderOfPriorityVO>)targetingAreas.get(9);//10
+		targetingAreas = null;
 		//page-21
 		
+		    defaultFileName="selectedCastes"+uidentifier;		 
+			defaultFileName =   serialize(defaultFileName, casteNamePercMap);
+			maps.put(PdfPages.selectedCastes, defaultFileName);
+			casteNamePercMap=null;
 		
+			defaultFileName="totalCastesOrder"+uidentifier;
+			defaultFileName =   serialize(defaultFileName, totalCastesList);
+			maps.put(PdfPages.totalCastesOrder, defaultFileName);
+			totalCastesList=null;
+				
+			defaultFileName="partyPerformance"+uidentifier;
+			defaultFileName =   serialize(defaultFileName,partyPerformance);
+			maps.put(PdfPages.partyPerformance, defaultFileName);
+			partyPerformance=null;
+			
+		    defaultFileName="previousTrends"+uidentifier;		 
+			defaultFileName =   serialize(defaultFileName, previousTrends);
+			maps.put(PdfPages.previousTrends, defaultFileName);
+			previousTrends=null;
 		
+			defaultFileName="youngCastes"+uidentifier;
+			defaultFileName =   serialize(defaultFileName, youngCastesList);
+			maps.put(PdfPages.youngCastes, defaultFileName);
+			youngCastesList=null;
+				
+			defaultFileName="agedCastes"+uidentifier;
+			defaultFileName =   serialize(defaultFileName,agedCastesList);
+			maps.put(PdfPages.agedCastes, defaultFileName);
+			agedCastesList=null;
+			
+			defaultFileName="otherPartyEffect"+uidentifier;
+			defaultFileName =   serialize(defaultFileName,otherPartyEffect);
+			maps.put(PdfPages.otherPartyEffect, defaultFileName);
+			otherPartyEffect=null;
+			
+		    defaultFileName="panchayatsClassification"+uidentifier;		 
+			defaultFileName =   serialize(defaultFileName, panchayatsClassification);
+			maps.put(PdfPages.panchayatsClassification, defaultFileName);
+			panchayatsClassification=null;
+		
+			defaultFileName="impfamilesList"+uidentifier;
+			defaultFileName =   serialize(defaultFileName, impfamilesList);
+			maps.put(PdfPages.impfamilesList, defaultFileName);
+			impfamilesList=null;
+				
+			defaultFileName="finalOrderOfOriority"+uidentifier;
+			defaultFileName =   serialize(defaultFileName,finalOrderOfOriority);
+			maps.put(PdfPages.finalOrderOfOriority, defaultFileName);
+			finalOrderOfOriority=null;		
+			//targetting key factors ends
+			
 		//-->Voters Additions & Deletions
 		 
 		
@@ -395,7 +424,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		  defaultFileName =   serialize(defaultFileName, polling);
 			maps.put(PdfPages.pollingPercent, defaultFileName);
 		}catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("exception rised in serializationOfObjects ",e);
 			//logic delete all created files
 		}
 		//logic delete all created files when exception raised
@@ -474,6 +503,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	   DeSerialize<StrategicCensusVO> cdes =new DeSerialize<StrategicCensusVO>();
 	  StrategicCensusVO cVo =cdes.deSerialize( maps.get(PdfPages.census) );
 	  buildPdfForCensusData(cVo, document, writer, cVo.getMessage());
+	  if(cVo != null && cVo.getConclusion() != null){
 	  String[] conclusions= cVo.getConclusion().split("'");
 	 
 	  com.itextpdf.text.List orderedList = new com.itextpdf.text.List(com.itextpdf.text.List.ORDERED);
@@ -484,7 +514,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  
      document.add(orderedList);
 
-
+	  }
 	  
 	   cdes=null;
 	   cVo=null;
@@ -574,6 +604,60 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      
     //18111
      //page-21
+  //targetting key factors starts
+    DeSerialize<Map<String,Float>>  dcasteNamePercMap=new DeSerialize<Map<String,Float>>();
+	  Map<String,Float> casteNamePercMap =dcasteNamePercMap.deSerialize( maps.get(PdfPages.selectedCastes) );
+	  strategyModelTargetingService.generateCasteWiseTable(document,casteNamePercMap);//1
+	  casteNamePercMap=null;
+
+    DeSerialize<List<PanchayatVO>>  dtotalCastesList=new DeSerialize<List<PanchayatVO>>();
+	  List<PanchayatVO> totalCastesList =dtotalCastesList.deSerialize( maps.get(PdfPages.totalCastesOrder) );
+	  strategyModelTargetingService.panchayatWiseTargetVotesTable(document,totalCastesList);//2
+	  totalCastesList=null;
+
+    DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
+	  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance) ); 
+	  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l);//3
+	  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l);//3
+	  partyPerformance=null;
+
+    DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
+	  List<PartyPositionVO> previousTrends =dpreviousTrends.deSerialize( maps.get(PdfPages.previousTrends) );
+	  strategyModelTargetingService.generatePdfForMatrixReport(document,previousTrends);//4
+	  previousTrends=null;
+
+    DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
+	  List<PanchayatVO> youngCastesList =dyoungCastesList.deSerialize( maps.get(PdfPages.youngCastes) );
+	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
+	  youngCastesList=null;
+
+    DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
+	  List<PanchayatVO> agedCastesList =dagedCastesList.deSerialize( maps.get(PdfPages.agedCastes) );
+	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
+	  agedCastesList=null;
+
+    DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
+	  List<PartyEffectVO> otherPartyEffect =dotherPartyEffect.deSerialize( maps.get(PdfPages.otherPartyEffect) );
+	  strategyModelTargetingService.prpEffectTableTable(document,otherPartyEffect);//7
+	  otherPartyEffect=null;
+
+    DeSerialize<List<OrderOfPriorityVO>>  dpanchayatsClassification=new DeSerialize<List<OrderOfPriorityVO>>();
+	  List<OrderOfPriorityVO> panchayatsClassification =dpanchayatsClassification.deSerialize( maps.get(PdfPages.panchayatsClassification) );
+	  strategyModelTargetingService.buildPiChart(document,panchayatsClassification,writer);//8
+	  strategyModelTargetingService.buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
+	  panchayatsClassification=null;
+
+    DeSerialize<List<ImpFamilesVO>>  dimpfamilesList=new DeSerialize<List<ImpFamilesVO>>();
+	  List<ImpFamilesVO> impfamilesList =dimpfamilesList.deSerialize( maps.get(PdfPages.impfamilesList) );
+	  strategyModelTargetingService.generateImpFamilesTable(document,impfamilesList);//9
+	  impfamilesList=null;
+
+    DeSerialize<List<OrderOfPriorityVO>>  dfinalOrderOfOriority=new DeSerialize<List<OrderOfPriorityVO>>();
+	  List<OrderOfPriorityVO> finalOrderOfOriority =dfinalOrderOfOriority.deSerialize( maps.get(PdfPages.finalOrderOfOriority) );
+	  strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,15);//10
+	  finalOrderOfOriority=null;	  
+	//targetting key factors ends
+    
    //-->Voters Additions & Deletions
      document.newPage();
 		
@@ -634,7 +718,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	 
 	 document.close();
 	}catch (Exception e) {
-	e.printStackTrace();
+		LOG.error("Exception rised in DeserializationOfObjects",e);
 	 document.close();
 
 	}
