@@ -1,7 +1,13 @@
 package com.itgrids.partyanalyst.dto;
 
-public class OrderOfPriorityVO {
-  private Long panchayatId;
+import java.io.Serializable;
+
+public class OrderOfPriorityVO implements Serializable{
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6197334651374437329L;
+private Long panchayatId;
   private String name;
   private Long totalVoters = 0l;
   private Long targetedVoters = 0l;

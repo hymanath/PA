@@ -25,6 +25,23 @@ public class StrategyVO implements Serializable {
 	private Long publicationId;
 	private Map<Long,Float> castePercents;
 	private Map<Long,Set<Long>> mergeCasteMap;
+	private Long base;
+	private Long assured;
+	private Long tdpPerc;
+	
+	private Double worstMin;
+	private Double worstMax;
+	private Double veryPoorMin;
+	private Double veryPoorMax;
+	private Double poorMin;
+	private Double poorMax;
+	private Double okMin;
+	private Double okMax;
+	private Double strongMin;
+	private Double strongMax;
+	private Double veryStrongMin;
+	private Double veryStrongMax;
+	private boolean considerRange;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -103,6 +120,102 @@ public class StrategyVO implements Serializable {
 	}
 	public void setMergeCasteMap(Map<Long, Set<Long>> mergeCasteMap) {
 		this.mergeCasteMap = mergeCasteMap;
+	}
+	public Long getBase() {
+		return base;
+	}
+	public void setBase(Long base) {
+		this.base = base;
+	}
+	public Long getAssured() {
+		return assured;
+	}
+	public void setAssured(Long assured) {
+		this.assured = assured;
+	}
+	public Long getTdpPerc() {
+		return tdpPerc;
+	}
+	public void setTdpPerc(Long tdpPerc) {
+		this.tdpPerc = tdpPerc;
+	}
+	public Double getWorstMin() {
+		return worstMin;
+	}
+	public void setWorstMin(Double worstMin) {
+		this.worstMin = worstMin;
+	}
+	public Double getWorstMax() {
+		return worstMax;
+	}
+	public void setWorstMax(Double worstMax) {
+		this.worstMax = worstMax;
+	}
+	public Double getVeryPoorMin() {
+		return veryPoorMin;
+	}
+	public void setVeryPoorMin(Double veryPoorMin) {
+		this.veryPoorMin = veryPoorMin;
+	}
+	public Double getVeryPoorMax() {
+		return veryPoorMax;
+	}
+	public void setVeryPoorMax(Double veryPoorMax) {
+		this.veryPoorMax = veryPoorMax;
+	}
+	public Double getPoorMin() {
+		return poorMin;
+	}
+	public void setPoorMin(Double poorMin) {
+		this.poorMin = poorMin;
+	}
+	public Double getPoorMax() {
+		return poorMax;
+	}
+	public void setPoorMax(Double poorMax) {
+		this.poorMax = poorMax;
+	}
+	public Double getOkMin() {
+		return okMin;
+	}
+	public void setOkMin(Double okMin) {
+		this.okMin = okMin;
+	}
+	public Double getOkMax() {
+		return okMax;
+	}
+	public void setOkMax(Double okMax) {
+		this.okMax = okMax;
+	}
+	public Double getStrongMin() {
+		return strongMin;
+	}
+	public void setStrongMin(Double strongMin) {
+		this.strongMin = strongMin;
+	}
+	public Double getStrongMax() {
+		return strongMax;
+	}
+	public void setStrongMax(Double strongMax) {
+		this.strongMax = strongMax;
+	}
+	public Double getVeryStrongMin() {
+		return veryStrongMin;
+	}
+	public void setVeryStrongMin(Double veryStrongMin) {
+		this.veryStrongMin = veryStrongMin;
+	}
+	public Double getVeryStrongMax() {
+		return veryStrongMax;
+	}
+	public void setVeryStrongMax(Double veryStrongMax) {
+		this.veryStrongMax = veryStrongMax;
+	}
+	public boolean isConsiderRange() {
+		return considerRange;
+	}
+	public void setConsiderRange(boolean considerRange) {
+		this.considerRange = considerRange;
 	}
 	
 	

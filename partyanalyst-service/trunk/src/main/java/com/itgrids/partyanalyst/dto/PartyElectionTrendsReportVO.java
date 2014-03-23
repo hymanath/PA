@@ -107,7 +107,7 @@ public class PartyElectionTrendsReportVO implements Comparable<PartyElectionTren
 				+ ", tdpVo=" + tdpVo + ", incVo=" + incVo + ", prpVo=" + prpVo
 				+ "]";
 	}*/
-	@Override
+	
 	public int compareTo(PartyElectionTrendsReportVO o) {
 		
 		return o.electionYear.compareTo(this.electionYear);
