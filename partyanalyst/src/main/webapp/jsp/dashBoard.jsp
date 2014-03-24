@@ -609,6 +609,39 @@ lable{line-height:40px;}
 				</div>
 			</div>       				
 		</div>
+		
+		<div class="row-fluid">
+			<div class="span12 widget">
+				<h2>Importent Family Details</h2>
+				
+				
+				<div>
+				   <table>
+				     <tr>
+				        <td><s:label theme="simple" for="districtList" value=" Select District"/></td>
+						<td><s:select cssClass="selectstyle" theme="simple" id="districtListForImp" name="crossVotingYear" list="districtsList" listKey="id" listValue="name" onChange=""/></td>
+				        <td><s:label theme="simple" for="prevPublicationId" value="Publication Date"/></td>
+						<td><select id="prevPublicationIdForImp">
+							<option value="0">Select Publication Date</option>
+							<option value="10">2014-02-01</option>
+							<option value="9">1-1-2014</option>
+							<option value="8">1-2-2013</option>
+							<option value="7">1-1-2013</option>
+						</select></td>
+						<td></td>
+				     </tr>
+				     <tr>
+						<td>Form Value</td><td><input type="text" id="fromAgeRange" style="width: 137px;"></input></td>
+						<td>To Value</td><td><input type="text" id="toAgeRange" style="width: 137px;"></input></td>
+				    </tr>
+				   </table>
+				</div>
+				
+				<div>
+					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getImpFamilyDetails();" style="float:right;"></input>
+				</div>
+			</div>       				
+		</div>
 	    <div class="row-fluid">
 			<div class="span12 widget" id="boothResultsDiv" >
 				<h2>Booth Wise Results</h2>
@@ -2450,6 +2483,78 @@ var urlstr = "voterAverageAgewiseAction.action?constiId="+constiId+"";
      browser1.focus();
 }
 checkForUserStatus();
+
+function getImpFamilyDetails()
+{
+	var constituencyId = $("#districtListForImp").val();
+	var publicationId = $("#prevPublicationIdForImp").val();
+	var fromValue =  $.trim($("#fromAgeRange").val());
+	var toValue =  $.trim($("#toAgeRange").val());
+	var maxr = null;
+	var str ='<font color="red">';
+	var flag = true;
+	if(constituencyId == 0)
+	{
+		str+='Select Constituency<br/>';
+		flag =false;
+	}
+	if(publicationId == 0)
+	{
+		str+='Select Publication<br/>';
+		flag =false;
+	}
+	if(fromValue == "" || isNaN(fromValue))
+	{
+		str+='Enter From Value Number<br/>';
+		flag =false;
+	}
+	else if(isNaN(toValue))
+	{
+		str+='Enter To Value Number<br/>';
+		flag =false;
+	}
+	if(toValue == "")
+	{
+     toValue = 0;
+	}
+	else
+	{
+	 if(toValue < fromValue)
+	{
+        str+='From Value must be greter than To value<br/>';
+		flag =false;
+	}
+	}
+	if(flag == false)
+	{
+			//errorDiv.html(str);
+			return;
+	}
+	
+	else
+	{
+		//errorDiv.html('');
+		var jsObj= 
+		{	
+				constituencyId:constituencyId,
+				publicationId:publicationId,
+				minVal:fromValue,
+				maxVal:toValue,
+				startIndex:0,
+				results:1000,
+				type : "district",
+				task:"getFamilyDetails"		
+		};
+		/* var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "<%=request.getContextPath()%>/getFamilyDetailsAction.action?"+param;
+		callAjax(param,jsObj,url);
+		 */
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getFamilyDetailsAction.action?"+rparam;
+
+		callAjax(jsObj,url);
+	}
+}
 </script>
 
 </body>
