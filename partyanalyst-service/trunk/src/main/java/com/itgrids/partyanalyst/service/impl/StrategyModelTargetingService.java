@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,10 +20,15 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.ItemLabelAnchor;
+import org.jfree.chart.labels.ItemLabelPosition;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.TextAnchor;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -2879,42 +2885,42 @@ public class StrategyModelTargetingService implements
 		  public void buildChartForPartyPerformanceReort(Document doc,List<PartyPositionVO> list)
           {
                   try {
+                	  int size = list.size();
+                	  int increment = 20;
+                	  int pageNo = 2;
+                	  int maxindex =0;
+                     for(int i=0;i<size;i=i+increment)
+                	  {
                        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-                       
-                       if(list != null && list.size() > 0)
+                        if(list != null && list.size() > 0)
                        {
-                    	  
-                    	   for(PartyPositionVO vo : list)
-                    	   {
-                    		
-                    		if(vo.getRank() == 1) 
-                    		{
-	                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
-	                    			{
-					                       dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
-	                    			}
-	                    			else
-	                    			{
-	                    				   dataSet.setValue(vo.getMargin()/2, "Margin", vo.getName().toString()+" -2013");
-	                    			}
-	                                       dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
-	                    			
-                    		}
-                    		else
-                    		{
-	                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
-	                    			{
-	                    				dataSet.setValue(2 * (vo.getMargin()), "Margin", vo.getName().toString()+" -2013");
-	                    			}
-	                    			else
-	                    			{
-	                    				   dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
-	                    			}
-	                                       dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
-	                    			
-                    		}
-                    		
-                    	   }
+	                        	Long total = 0l;
+	                    	   for(PartyPositionVO vo : list.subList(maxindex, list.size() - 0))
+	                    	   {
+	                    		   if(total == 20)
+	                    			break;
+	                    		if(vo.getRank() == 1) 
+	                    		{
+	                    			 dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
+		                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
+		                    			dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
+		                    			else
+		                                dataSet.setValue(vo.getMargin()/2, "Margin", vo.getName().toString()+" -2013");
+		                    		   
+		                    	}
+	                    		else
+	                    		{
+	                    			  dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
+		                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
+		                    		      dataSet.setValue(2 * (vo.getMargin()), "Margin", vo.getName().toString()+" -2013");
+		                    			else
+		                    			  dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
+		                    			
+	                    		}
+	                    		total ++;
+	                    		}
+	                    	   if(size >= increment)
+	                    		   maxindex = maxindex + increment;
                       
                        }
                        
@@ -2922,22 +2928,34 @@ public class StrategyModelTargetingService implements
                                "PartyPerformance", "Panchayat ", "Margin",
                                dataSet, PlotOrientation.HORIZONTAL, false, true, false);
                        
+                       final CategoryPlot plot = chart.getCategoryPlot();
+                       final CategoryItemRenderer renderer = new CustomRenderer(
+                               new Paint[] {Color.green,
+                            		   Color.BLUE}
+                           );
+                          renderer.setItemLabelsVisible(true);
+                          final ItemLabelPosition p = new ItemLabelPosition(
+                                  ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, 45.0
+                              );
+                          renderer.setPositiveItemLabelPosition(p);
+                          plot.setRenderer(renderer);
                           Document document = new Document();
-                          PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\VMR\\2.pdf"));
+                          PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\VMR\\"+pageNo+".pdf"));
                           document.open();
                           PdfContentByte cb = writer.getDirectContent();
                           PdfTemplate bar = cb.createTemplate(1000, 1000);
                           Graphics2D g2d2 = bar.createGraphics(950,950,new DefaultFontMapper());
                           Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 900,900);
-                                 
                        chart.draw(g2d2, rectangle2d);
                        g2d2.dispose();
                        cb.addTemplate(bar,0.0f,0.0f);
                        document.close();
+                       pageNo++;
+                	  }
                } catch (Exception e) {
                        e.printStackTrace();
                }
-          }		  
+          }		
 		  public void buildPiChart(Document document,List<OrderOfPriorityVO> panchayatsClassification,PdfWriter writer)
 		  {
 		  try{
