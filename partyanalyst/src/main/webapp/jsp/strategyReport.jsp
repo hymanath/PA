@@ -101,6 +101,64 @@ function getConstituencyList(){
 	     <td>Previous Trendz Weightage :<font class="mandatory">*</font></td>
 		 <td><input id="prevTrendsId" type="text"></td>
     </tr>
+    <tr>
+	     <td>Base :<font class="mandatory">*</font></td>
+		 <td><input id="base" type="text"></td>
+    </tr>
+    <tr>
+	     <td>Assured :<font class="mandatory">*</font></td>
+		 <td><input id="assured" type="text"></td>
+    </tr>
+    <tr>
+	     <td>Party Percentage :<font class="mandatory">*</font></td>
+		 <td><input id="partyPerc" type="text"></td>
+    </tr>
+    
+    
+    
+    <tr style="display:none;">
+	     <td>Worst Max :<font class="mandatory">*</font></td>
+		 <td><input id="worstMax" value="0" type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td>Very Poor Min :<font class="mandatory">*</font></td>
+		 <td><input id="veryPoorMin" value="0" type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td>Very Poor Max :<font class="mandatory">*</font></td>
+		 <td><input id="veryPoorMax" value="0" type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td> Poor Min :<font class="mandatory">*</font></td>
+		 <td><input id="poorMin" value="0" type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td> Poor Max :<font class="mandatory">*</font></td>
+		 <td><input id="poorMax" value="0" type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td>Ok Min :<font class="mandatory">*</font></td>
+		 <td><input id="okMin"  value="0" type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td>Ok Max :<font class="mandatory">*</font></td>
+		 <td><input id="okMax"  value="0"  type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td>Strong Min :<font class="mandatory">*</font></td>
+		 <td><input id="strongMin" value="0"  type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td>Strong Max :<font class="mandatory">*</font></td>
+		 <td><input id="strongMax" value="0"  type="text"></td>
+    </tr>
+    <tr style="display:none;">
+	     <td>Very Strong Min :<font class="mandatory">*</font></td>
+		 <td><input id="veryStrongMin" value="0"  type="text"></td>
+    </tr>
+    
+    
+    
 	<tr>
 	    <td>Caste Names :<font id="requiredValue" class="requiredFont">*</font></td>		
 		<td><select id="candidateCastesId" multiple="multiple" ></select></td>
@@ -283,7 +341,20 @@ function submitDetails()
 	var totalId = $("#totalId").val().trim();
 	var YVotersId = $("#YVotersId").val().trim();
 	var ageWiseId = $("#ageWiseId").val().trim();
+	var base = $("#base").val().trim();
+	var assured = $("#assured").val().trim();
+	var partyPerc = $("#partyPerc").val().trim();
 	var selectedCastes1 = new Array();
+	var worstMax = $("#worstMax").val().trim();
+	var veryPoorMin = $("#veryPoorMin").val().trim();
+	var veryPoorMax	= $("#veryPoorMax").val().trim();	  
+	var poorMin = $("#poorMin").val().trim();
+	var poorMax = $("#poorMax").val().trim();
+	var okMin = $("#okMin").val().trim();
+	var okMax = $("#okMax").val().trim();
+	var strongMin = $("#strongMin").val().trim();
+	var strongMax = $("#strongMax").val().trim();
+	var veryStrongMin  = $("#veryStrongMin").val().trim();
 	
 	var total = parseFloat(prpEffId) + parseFloat(prevTrendsId) + parseFloat(totalId) + parseFloat(YVotersId)+ parseFloat(ageWiseId);
 	
@@ -323,12 +394,12 @@ function submitDetails()
          $("#errorMsgDiv").html("");
 	} 
   
-	if(totalId == "" || prevTrendsId == "" || YVotersId == "" || ageWiseId == "")
+	if(totalId == "" || prevTrendsId == "" || YVotersId == "" || ageWiseId == "" || base =="" || assured == "" || partyPerc == "")
     {
 		 $("#errorMsgDiv").html("Please enter all the text fields");
 		 return;
 	}  
-	if(isNaN(totalId) || isNaN(prevTrendsId) || isNaN(YVotersId) || isNaN(ageWiseId))
+	if(isNaN(totalId) || isNaN(prevTrendsId) || isNaN(YVotersId) || isNaN(ageWiseId) || isNaN(base) || isNaN(assured) || isNaN(partyPerc))
     {
 		 $("#errorMsgDiv").html("Weightage values must be Numeric");
 		 return;
@@ -354,6 +425,22 @@ function submitDetails()
 				prpWt:prpEffId,
 				agedWt:ageWiseId,
 				totalCastWt:totalId,
+				effectPartyId:662,
+				effectElectionId:38,
+				base:base,
+				assured:assured,
+				partyPerc:partyPerc,
+				considerRange:false,
+				worstMax        :worstMax,
+				veryPoorMin     :veryPoorMin,
+				veryPoorMax		:veryPoorMax	 ,
+				poorMin         :poorMin,
+				poorMax         :poorMax,
+				okMin           :okMin,
+				okMax           :okMax,
+				strongMin       :strongMin,
+				strongMax       :strongMax,
+				veryStrongMin   :veryStrongMin,
 				task:"saveDetails"						
 			};
 		
