@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -21,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -6218,105 +6221,90 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		return publicationID;
 	}
 	
-	public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,Long userId)
+	public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,Long userId,String path,String seltype)
 	{
-		List<VoterHouseInfoVO> result = new ArrayList<VoterHouseInfoVO>();
+		List<VoterHouseInfoVO> result = null;
 		try{
-		List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,startIndex,maxIndex);
-		List<Object[]> totalList = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,null,null);
-		Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
-		Map<Long,String> wardMap = new HashMap<Long, String>();
-		if(list !=null && list.size() > 0)
+		List<Long> constituencyIds = new ArrayList<Long>();
+		if(seltype.equalsIgnoreCase("district"))
 		{
-			for(Object[] params : list)
-			{
-				List<String> hnos = boothHousesMap.get((Long)params[0]);
-				if(hnos == null)
-				{
-					hnos = new ArrayList<String>();
-					boothHousesMap.put((Long)params[0], hnos);
-				}
-				if(!hnos.contains(params[1].toString()))
-					hnos.add(params[1].toString());
+			List<Object[]> constiList =  constituencyDAO.getDistrictConstituencies(constituencyId);
+			for (Object[] parms : constiList) {
+				constituencyIds.add((Long)parms[0]);
 			}
+			startIndex = null;
+			maxIndex = null;
 		}
-		for(Long boothId :boothHousesMap.keySet())
+		else
 		{
-		Map<Long,VoterHouseInfoVO> basicInfo = new HashMap<Long,VoterHouseInfoVO>();
-		Booth booth = boothDAO.get(boothId);
-		Constituency consti = constituencyDAO.get((Long)booth.getConstituency().getConstituencyId());
-		String type = consti.getAreaType();
-		if(booth != null)
-		{
-			String tehsil ="";
-			String panchayat = "";
-			String hamlet = "";
-			String ward = "";
-			String localbody = "";
-			String hamletName = "";
-			String wardName= "";
-			VoterHouseInfoVO votervo = new VoterHouseInfoVO();
-			if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+			constituencyIds.add(constituencyId);
+		}
+		for (Long id : constituencyIds) {
+			result = new ArrayList<VoterHouseInfoVO>();
+			constituencyId = id;
+			List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,startIndex,maxIndex);
+			List<Object[]> totalList = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,null,null);
+			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
+			Map<Long,String> wardMap = new HashMap<Long, String>();
+			if(list !=null && list.size() > 0)
 			{
-				tehsil = booth.getTehsil().getTehsilName();
-				if(booth.getPanchayat() != null)
+				for(Object[] params : list)
 				{
-				panchayat =booth.getPanchayat().getPanchayatName();
-				List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
-				if(hamlets != null && hamlets.size() > 0)
-					hamletName = hamlets.get(0).toString();
+					List<String> hnos = boothHousesMap.get((Long)params[0]);
+					if(hnos == null)
+					{
+						hnos = new ArrayList<String>();
+						boothHousesMap.put((Long)params[0], hnos);
+					}
+					if(!hnos.contains(params[1].toString()))
+						hnos.add(params[1].toString());
 				}
 			}
-			else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+			for(Long boothId :boothHousesMap.keySet())
 			{
-				if (booth.getLocalBody() != null)
-				localbody = booth.getLocalBody().getName();
-			     else
-					tehsil = booth.getTehsil().getTehsilName();	
-				if(booth.getPanchayat() != null)
-				{
-				panchayat =booth.getPanchayat().getPanchayatName();
-				List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
-				if(hamlets != null && hamlets.size() > 0)
-					hamletName = hamlets.get(0).toString();
-				}
-				
-				if(localbody != null && localbody != "")
-				{
-					if( booth.getLocalBody().getElectionType() != null)
-					{
-					String electionType = booth.getLocalBody().getElectionType().getElectionType();
-					if(electionType.equalsIgnoreCase(IConstants.GHMC))
-					{
-					tehsil = localbody +" Corporation";
-					if(booth.getLocalBodyWard() != null)
-					wardName = booth.getLocalBodyWard().getName();
-					}
-					else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
-					{
-						tehsil = localbody +" Muncipality";
-						List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getId().toString().substring(1).trim()));
-						List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
-						if(wardNames != null && wardNames.size() > 0)
-							for(Object[] wardparams : wardNames)
-							{
-								wardMap.put((Long)wardparams[0],wardparams[1]!= null ?  wardparams[1].toString() :"");
-							}
-					
-					}
-				   }
-					
-				}
-				
-			}
-			else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+			Map<Long,VoterHouseInfoVO> basicInfo = new HashMap<Long,VoterHouseInfoVO>();
+			Booth booth = boothDAO.get(boothId);
+			Constituency consti = constituencyDAO.get((Long)booth.getConstituency().getConstituencyId());
+			String type = consti.getAreaType();
+			if(booth != null)
 			{
-				if (booth.getLocalBody() != null)
+				String tehsil ="";
+				String panchayat = "";
+				String hamlet = "";
+				String ward = "";
+				String localbody = "";
+				String hamletName = "";
+				String wardName= "";
+				VoterHouseInfoVO votervo = new VoterHouseInfoVO();
+				if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL))
+				{
+					tehsil = booth.getTehsil().getTehsilName();
+					if(booth.getPanchayat() != null)
+					{
+					panchayat =booth.getPanchayat().getPanchayatName();
+					List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
+					if(hamlets != null && hamlets.size() > 0)
+						hamletName = hamlets.get(0).toString();
+					}
+				}
+				else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_RURAL_URBAN))
+				{
+					if (booth.getLocalBody() != null)
 					localbody = booth.getLocalBody().getName();
-		           if(localbody != null && localbody != "")
+				     else
+						tehsil = booth.getTehsil().getTehsilName();	
+					if(booth.getPanchayat() != null)
 					{
-		        	   if( booth.getLocalBody().getElectionType() != null)
-		        	   {
+					panchayat =booth.getPanchayat().getPanchayatName();
+					List hamlets = panchayatHamletDAO.getHamletByPanchayatId(booth.getPanchayat().getPanchayatId());
+					if(hamlets != null && hamlets.size() > 0)
+						hamletName = hamlets.get(0).toString();
+					}
+					
+					if(localbody != null && localbody != "")
+					{
+						if( booth.getLocalBody().getElectionType() != null)
+						{
 						String electionType = booth.getLocalBody().getElectionType().getElectionType();
 						if(electionType.equalsIgnoreCase(IConstants.GHMC))
 						{
@@ -6324,123 +6312,169 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						if(booth.getLocalBodyWard() != null)
 						wardName = booth.getLocalBodyWard().getName();
 						}
-				      
-					else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
-					{
-						tehsil = localbody +" Muncipality";
-						List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getId().toString().substring(1).trim()));
-						List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
-						if(wardNames != null && wardNames.size() > 0)
-							for(Object[] wardparams : wardNames)
-							{
-								wardMap.put((Long)wardparams[0],wardparams[1]!= null ?  wardparams[1].toString() :"");
-							}
-					
-					}
-		       }
-			}
-				
-			}
-			votervo.setTehsilName(tehsil);
-			votervo.setPanchayatName(panchayat);
-			votervo.setHamletName(hamletName);
-			votervo.setWardName(wardName);
-			basicInfo.put(boothId, votervo);
-			
-		}		
-		
-		  List<Object[]> list1 = boothPublicationVoterDAO.getFamilyWiseInfoForBooth(boothId, boothHousesMap.get(boothId));
-		  Map<String,List<VoterHouseInfoVO>> resultmap = new HashMap<String, List<VoterHouseInfoVO>>();
-		  List<Long> voterIds = new ArrayList<Long>();
-		  
-		  for(Object[] params1 :list1)
-		  {
-			  List<VoterHouseInfoVO> voterDetails = resultmap.get(params1[0].toString());
-			  Voter voter = (Voter) params1[1];
-			  VoterHouseInfoVO vo = new VoterHouseInfoVO();
-			  if(voterDetails == null)
-			  {
-				  voterDetails = new ArrayList<VoterHouseInfoVO>();
-				  resultmap.put(params1[0].toString(), voterDetails);
-			  }
-			vo.setVoterIdCardNo(voter.getVoterIDCardNo());
-			vo.setVoterId(voter.getVoterId());
-			vo.setName(voter.getName());
-			vo.setAge(voter.getAge());
-			vo.setGender(voter.getGender());
-			vo.setHouseNo("#  " +voter.getHouseNo());
-			voterIds.add(voter.getVoterId());
-			voterDetails.add(vo);
-			}
-		 Map<Long,String> voterCaste =new HashMap<Long, String>();
-		 List<Object[]> casteInfo =  userVoterDetailsDAO.getCasteForVoter(voterIds);
-			if(casteInfo != null && casteInfo.size() > 0)
-				for(Object[] casteName : casteInfo)
-				{
-					String caste = voterCaste.get((Long)casteName[0]);
-					if(caste == null)
-					voterCaste.put((Long)casteName[0],casteName[1].toString());
-					else
-					voterCaste.put((Long)casteName[0],caste);	
-				}
-			
-		
-		  for(String houseNo : resultmap.keySet())
-		  {
-			  
-			  VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
-			  voterHouseInfoVO.setBoothId(boothId);
-			  voterHouseInfoVO.setPartNo(boothDAO.get(boothId).getPartNo());
-			  voterHouseInfoVO.setHouseNo("#  " +houseNo);
-			  List<VoterHouseInfoVO> voterDetails = resultmap.get(houseNo.toString());
-			 
-			  voterHouseInfoVO.setCount(new Long(voterDetails.size()));
-			  voterHouseInfoVO.setElder(voterDetails.get(voterDetails.size()-1).getName());
-			  voterHouseInfoVO.setElderAge((voterDetails.get(voterDetails.size()-1).getAge()));
-			  voterHouseInfoVO.setElderGender(voterDetails.get(voterDetails.size()-1).getGender());
-			  voterHouseInfoVO.setVoterIdCardNo(voterDetails.get(voterDetails.size()-1).getVoterIdCardNo().toString());
-			  String cast = voterCaste.get(voterDetails.get(voterDetails.size()-1).getVoterId());
-			  voterHouseInfoVO.setElderCaste(cast != null ? cast : " ");
-			  VoterHouseInfoVO basicVo = basicInfo.get(boothId);
-			
-			  voterHouseInfoVO.setTehsilName(basicVo.getTehsilName());
-			  if(basicVo.getTehsilName().contains("Muncipality") && wardMap != null)
-			  voterHouseInfoVO.setWardName(wardMap.get(basicVo.getVoterId()) != null ?wardMap.get(basicVo.getVoterId()) : "");
-			  else if(basicVo.getTehsilName().contains("Corporation"))  
-			  voterHouseInfoVO.setWardName(basicVo.getWardName() !=null ? basicVo.getWardName().toString() : "");
-			  voterHouseInfoVO.setPanchayatName(basicVo.getPanchayatName());
-			  voterHouseInfoVO.setHamletName(basicVo.getHamletName());
-			  boolean flag = false;
-			  List<VoterHouseInfoVO> youngervoterDetails  = voterDetails;
-			 
-					for(int i=0;i<youngervoterDetails.size()-1;i++)
-					{
-						if(youngervoterDetails.get(i).getGender().equalsIgnoreCase("M"))
+						else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
 						{
-							voterHouseInfoVO.setYounger(youngervoterDetails.get(i).getName());
-							voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(i).getAge());
-							voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(i).getGender());
-							voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(i).getVoterIdCardNo().toString());
-							flag = true;
+							tehsil = localbody +" Muncipality";
+							List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getLocalElectionBodyId().toString()));
+							List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
+							if(wardNames != null && wardNames.size() > 0)
+								for(Object[] wardparams : wardNames)
+								{
+									wardMap.put((Long)wardparams[0],wardparams[1]!= null ?  wardparams[1].toString() :"");
+								}
+						
 						}
-					}
-					if(!flag)
-					{
-						voterHouseInfoVO.setYounger(youngervoterDetails.get(0).getName());
-						voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(0).getAge());
-						voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(0).getGender());
-						voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(0).getVoterIdCardNo().toString());
+					   }
+						
 					}
 					
-					result.add(voterHouseInfoVO);
-					if(totalList != null && totalList.size() > 0)
-					result.get(0).setConstituencyType(type);
-				    result.get(0).setTotalHousesCount(new Long(totalList.size()));
-		  }
-		 
+				}
+				else if(type.equalsIgnoreCase(IConstants.CONST_TYPE_URBAN))
+				{
+					if (booth.getLocalBody() != null)
+						localbody = booth.getLocalBody().getName();
+			           if(localbody != null && localbody != "")
+						{
+			        	   if( booth.getLocalBody().getElectionType() != null)
+			        	   {
+							String electionType = booth.getLocalBody().getElectionType().getElectionType();
+							if(electionType.equalsIgnoreCase(IConstants.GHMC))
+							{
+							tehsil = localbody +" Corporation";
+							if(booth.getLocalBodyWard() != null)
+							wardName = booth.getLocalBodyWard().getName();
+							}
+					      
+						else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
+						{
+							tehsil = localbody +" Muncipality";
+							List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getLocalElectionBodyId().toString()));
+							List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
+							if(wardNames != null && wardNames.size() > 0)
+								for(Object[] wardparams : wardNames)
+								{
+									wardMap.put((Long)wardparams[0],wardparams[1]!= null ?  wardparams[1].toString() :"");
+								}
+						
+						}
+			       }
+				}
+					
+				}
+				votervo.setTehsilName(tehsil);
+				votervo.setPanchayatName(panchayat);
+				votervo.setHamletName(hamletName);
+				votervo.setWardName(wardName);
+				basicInfo.put(boothId, votervo);
+				
+			}		
+			
+			  List<Object[]> list1 = boothPublicationVoterDAO.getFamilyWiseInfoForBooth(boothId, boothHousesMap.get(boothId));
+			  Map<String,List<VoterHouseInfoVO>> resultmap = new HashMap<String, List<VoterHouseInfoVO>>();
+			  List<Long> voterIds = new ArrayList<Long>();
+			  
+			  for(Object[] params1 :list1)
+			  {
+				  List<VoterHouseInfoVO> voterDetails = resultmap.get(params1[0].toString());
+				  Voter voter = (Voter) params1[1];
+				  VoterHouseInfoVO vo = new VoterHouseInfoVO();
+				  if(voterDetails == null)
+				  {
+					  voterDetails = new ArrayList<VoterHouseInfoVO>();
+					  resultmap.put(params1[0].toString(), voterDetails);
+				  }
+				vo.setVoterIdCardNo(voter.getVoterIDCardNo());
+				vo.setVoterId(voter.getVoterId());
+				vo.setName(voter.getName());
+				vo.setAge(voter.getAge());
+				vo.setGender(voter.getGender());
+				vo.setHouseNo("#  " +voter.getHouseNo());
+				voterIds.add(voter.getVoterId());
+				voterDetails.add(vo);
+				}
+			 Map<Long,String> voterCaste =new HashMap<Long, String>();
+			 List<Object[]> casteInfo =  userVoterDetailsDAO.getCasteForVoter(voterIds);
+				if(casteInfo != null && casteInfo.size() > 0)
+					for(Object[] casteName : casteInfo)
+					{
+						String caste = voterCaste.get((Long)casteName[0]);
+						if(caste == null)
+						voterCaste.put((Long)casteName[0],casteName[1].toString());
+						else
+						voterCaste.put((Long)casteName[0],caste);	
+					}
+				
+			
+			  for(String houseNo : resultmap.keySet())
+			  {
+				  
+				  VoterHouseInfoVO voterHouseInfoVO = new VoterHouseInfoVO();
+				  voterHouseInfoVO.setBoothId(boothId);
+				  voterHouseInfoVO.setPartNo(boothDAO.get(boothId).getPartNo());
+				  voterHouseInfoVO.setHouseNo("#  " +houseNo);
+				  List<VoterHouseInfoVO> voterDetails = resultmap.get(houseNo.toString());
+				 
+				  voterHouseInfoVO.setCount(new Long(voterDetails.size()));
+				  voterHouseInfoVO.setElder(voterDetails.get(voterDetails.size()-1).getName());
+				  voterHouseInfoVO.setElderAge((voterDetails.get(voterDetails.size()-1).getAge()));
+				  voterHouseInfoVO.setElderGender(voterDetails.get(voterDetails.size()-1).getGender());
+				  voterHouseInfoVO.setVoterIdCardNo(voterDetails.get(voterDetails.size()-1).getVoterIdCardNo().toString());
+				  String cast = voterCaste.get(voterDetails.get(voterDetails.size()-1).getVoterId());
+				  voterHouseInfoVO.setElderCaste(cast != null ? cast : " ");
+				  VoterHouseInfoVO basicVo = basicInfo.get(boothId);
+				
+				  voterHouseInfoVO.setTehsilName(basicVo.getTehsilName());
+				  if(basicVo.getTehsilName().contains("Muncipality") && wardMap != null)
+				  voterHouseInfoVO.setWardName(wardMap.get(basicVo.getVoterId()) != null ?wardMap.get(basicVo.getVoterId()) : "");
+				  else if(basicVo.getTehsilName().contains("Corporation"))  
+				  voterHouseInfoVO.setWardName(basicVo.getWardName() !=null ? basicVo.getWardName().toString() : "");
+				  voterHouseInfoVO.setPanchayatName(basicVo.getPanchayatName());
+				  voterHouseInfoVO.setHamletName(basicVo.getHamletName());
+				  boolean flag = false;
+				  List<VoterHouseInfoVO> youngervoterDetails  = voterDetails;
+				 
+						for(int i=0;i<youngervoterDetails.size()-1;i++)
+						{
+							if(youngervoterDetails.get(i).getGender().equalsIgnoreCase("M"))
+							{
+								voterHouseInfoVO.setYounger(youngervoterDetails.get(i).getName());
+								voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(i).getAge());
+								voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(i).getGender());
+								voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(i).getVoterIdCardNo().toString());
+								flag = true;
+							}
+						}
+						if(!flag)
+						{
+							voterHouseInfoVO.setYounger(youngervoterDetails.get(0).getName());
+							voterHouseInfoVO.setYoungerAge(youngervoterDetails.get(0).getAge());
+							voterHouseInfoVO.setYoungerGender(youngervoterDetails.get(0).getGender());
+							voterHouseInfoVO.setVoterGroup(youngervoterDetails.get(0).getVoterIdCardNo().toString());
+						}
+						
+						result.add(voterHouseInfoVO);
+						if(totalList != null && totalList.size() > 0)
+						result.get(0).setConstituencyType(type);
+					    result.get(0).setTotalHousesCount(new Long(totalList.size()));
+			  }
+			    Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
+		    	String constituenyName = values[0].toString().toUpperCase();
+		    	String districtName = values[1].toString().toUpperCase();
+		    	Long constituenyNo = delimitationConstituencyDAO.getConstituencyNo(constituencyId,2009l);
+			    String filePath = "VMR"+"/"+""+districtName+"_"+constituenyNo+"_"+constituenyName+".xls";
+			    String FILE = path+filePath;
+			    //File file  = new File(FILE);
+			    //file.createNewFile();
+			    FileOutputStream out = new FileOutputStream(FILE);
+			    
+				HSSFWorkbook workbook = new HSSFWorkbook(); 
+				HSSFSheet sheet  = workbook.createSheet("report");
+				ageWiseExcelsGenerationService.generateExcelsForImportaneFamiles(result , sheet, workbook);
+				workbook.write(out);
+				
+			 }
+		}
 		
-		 
-		 }
 	}
 		catch(Exception e)
 		{
@@ -7373,42 +7407,16 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 }
 		 }
 	  
-	  /*public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,String path)
+	  /*public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,String path,Long districtId)
 		{
 			List<VoterHouseInfoVO> result = new ArrayList<VoterHouseInfoVO>();
 			try{
-				
-				List<Long> districtIdslist = new ArrayList<Long>();
-				districtIdslist.add(1l);
-	    		districtIdslist.add(2l);
-	    		districtIdslist.add(3l);
-	    		districtIdslist.add(4l);
-	    		districtIdslist.add(5l);
-	    		districtIdslist.add(6l);
-	    		districtIdslist.add(7l);
-	    		districtIdslist.add(8l);
-	    		districtIdslist.add(9l);
-	    		districtIdslist.add(10l);
-				districtIdslist.add(11l);
-	    		districtIdslist.add(12l);
-	    		districtIdslist.add(13l);
-	    		districtIdslist.add(14l);
-	    		districtIdslist.add(15l);
-	    		districtIdslist.add(16l);
-				districtIdslist.add(17l);
-	    		districtIdslist.add(18l);
-	    		districtIdslist.add(19l);
-	    		districtIdslist.add(20l);
-	    		districtIdslist.add(21l);
-	    		districtIdslist.add(22l);
-	    		districtIdslist.add(23l);
+	    		List<Long> districtIdslist = new ArrayList<Long>();
+	    		districtIdslist.add(districtId);
 	    		List<Object[]> constiList =  constituencyDAO.getDistrictConstituenciesList(districtIdslist);
 	    		int count = 0;
-	    		//for (Object[] objects : constiList) {
-	    			
-	    			//System.out.println(constituencyId);
-	    			//constituencyId = (Long)objects[0];
-	    			
+	    		for (Object[] objects : constiList) {
+	    		
 	    			List<Object[]> list = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,startIndex,maxIndex);
 	    			List<Object[]> totalList = boothPublicationVoterDAO.getHouseNosForBooth(constituencyId,publicationId,minValue,maxValue,null,null);
 	    			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
@@ -7615,11 +7623,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 	    				ageWiseExcelsGenerationService.generateExcelsForImportaneFamiles(result , sheet, workbook);
 	    				workbook.write(out);
 	    				
-	    				//System.out.println(districtName);
-	    				//System.out.println(constituenyName);
-	    				//System.out.println(count++);
-				//}
-			
+	    			
+			}
 			}
 			catch(Exception e)
 			{
@@ -7628,8 +7633,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			}		
 			return result;
 		}
-		*/
-	  
+		
+	  */
 	  public List<PartyPositionVO> getPartyPerfromanceStratagicReport(Long constituencyId,Long partyId,Long electionId)
 	  {
 		  

@@ -3,6 +3,9 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itextpdf.text.Document;
+import com.itgrids.partyanalyst.dto.PanchayatVO;
+import com.itgrids.partyanalyst.dto.PartyEffectVO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PdfVO;
 import com.itgrids.partyanalyst.dto.VoterAdderdOrDeletedRengesInfoVO;
 import com.itgrids.partyanalyst.dto.VoterAgeRangeVO;
@@ -45,4 +48,12 @@ public interface IVoterModifiationPdfsGenerations {
 	 public void buildAddressTable(Document document,List<Object[]> list);
 	 
 	 public void generatePdfsForImpFamiles(Document document,List<VoterHouseInfoVO> list ,String constituencyName);
+	 
+	/* public void generatePdfForMatrixReport(Document documet,List<PartyPositionVO>  previousTrends);
+	 
+	 public void panchayatWiseTargetVotesTable(Document document,List<PanchayatVO> totalCastesList);
+	 
+	 public void panchayatWiseTargetYoungVotesTable(Document document,List<PanchayatVO> totalCastesList,String type);
+	 
+	 public void prpEffectTableTable(Document document,List<PartyEffectVO> list);*/
 }
