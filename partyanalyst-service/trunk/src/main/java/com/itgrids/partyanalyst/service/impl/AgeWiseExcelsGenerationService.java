@@ -1845,7 +1845,7 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 	 * @param sheet
 	 * @param workbook
 	 */
-	public void generateExcelsForImportaneFamiles(List<VoterHouseInfoVO>  list ,HSSFSheet sheet,HSSFWorkbook workbook)
+	public void generateExcelsForImportaneFamiles(List<VoterHouseInfoVO>  list ,HSSFSheet sheet,HSSFWorkbook workbook,String type)
 	{
 		 
 			
@@ -1899,71 +1899,104 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 	    cell11.setCellStyle(style2);
 	    sheet.addMergedRegion(new CellRangeAddress(1,1,11,15));
 	    
-	    
+	    int i = 0;
 	    Row row1 = sheet.createRow(2);
-	    Cell cell1 = row1.createCell(0);
+	    Cell cell1 = row1.createCell(i);
 	    cell1.setCellValue("S.NO");
 	    cell1.setCellStyle(style);
+	    i++;
+	    if(type.equalsIgnoreCase("RURAL"))
+	    {
+	    	cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Mandal/Muncipality");
+		    cell1.setCellStyle(style);
+		   
+		    cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Panchayat");
+		    cell1.setCellStyle(style);
+		    
+		    cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Hamlet");
+		    cell1.setCellStyle(style);
+	    }
+	    else if(type.equalsIgnoreCase("URBAN"))
+	    {
+	    	cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Muncipality/Corporation");
+		    cell1.setCellStyle(style);
+		   
+		    cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Ward");
+		    cell1.setCellStyle(style);
+
+	    }
+	    else
+	    {
+	    	cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Mandal/Muncipality");
+		    cell1.setCellStyle(style);
+		   
+		    cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Panchayat");
+		    cell1.setCellStyle(style);
+		    
+		    cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Hamlet");
+		    cell1.setCellStyle(style);
+		    
+		    cell1 = row1.createCell(i++);
+		    cell1.setCellValue("Ward");
+		    cell1.setCellStyle(style);
+	    }
 	    
-	    cell1 = row1.createCell(1);
-	    cell1.setCellValue("Mandal/Muncipality");
-	    cell1.setCellStyle(style);
-	   
-	    cell1 = row1.createCell(2);
-	    cell1.setCellValue("Panchayat");
-	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(3);
-	    cell1.setCellValue("Hamlet");
-	    cell1.setCellStyle(style);
-	    
-	    cell1 = row1.createCell(4);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Booth");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(5);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Caste");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(6);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("H.NO");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(7);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Count");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(8);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Voter Id");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(9);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Name");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(10);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Gender");
 	    cell1.setCellStyle(style);
 	    
 	   
 	    
-	    cell1 = row1.createCell(11);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Age");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(12);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("VoterId");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(13);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Name");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(14);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Gender");
 	    cell1.setCellStyle(style);
 	    
-	    cell1 = row1.createCell(15);
+	    cell1 = row1.createCell(i++);
 	    cell1.setCellValue("Age");
 	    cell1.setCellStyle(style);
 	    
@@ -1981,6 +2014,7 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 			  
 		  }
 		  Set<Long> boothIds = map.keySet();
+		  
 		  if(boothIds != null && boothIds.size() > 0)
 		  {
 			  int count3 = 3;
@@ -1991,70 +2025,110 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 				  Collections.sort(list1,sort);
 				  for (VoterHouseInfoVO voterHouseInfoVO : list1)
 				  {
+					  int j = 0;
 					  Row row2 = sheet.createRow(count3);
-					    Cell cell31 = row2.createCell(0);
+					    Cell cell31 = row2.createCell(j);
 					    cell31.setCellValue(count);
 					   // cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(1);
-					    cell31.setCellValue(voterHouseInfoVO.getTehsilName() != null ? voterHouseInfoVO.getTehsilName().toString() : "");
-					    //cell31.setCellStyle(style);
+					    j++;
+					   if(type.equalsIgnoreCase("RURAL"))
+					   {
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getTehsilName() != null ? voterHouseInfoVO.getTehsilName().toString() : "");
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getPanchayatName() != null ? voterHouseInfoVO.getPanchayatName().toString() : "");
+
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getHamletName() != null ? voterHouseInfoVO.getHamletName().toString() : "");
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getPartNo() != null ? voterHouseInfoVO.getPartNo().toString() : "");
+						   // cell31.setCellStyle(style);
+
+					   }
+					   else if(type.equalsIgnoreCase("URBAN"))
+					   {
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getTehsilName() != null ? voterHouseInfoVO.getTehsilName().toString() : "");
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getWardName() != null ? voterHouseInfoVO.getWardName().toString() : "");
+
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getPartNo() != null ? voterHouseInfoVO.getPartNo().toString() : "");
+						   // cell31.setCellStyle(style);
+
+					   }
+					   else
+					   {
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getTehsilName() != null ? voterHouseInfoVO.getTehsilName().toString() : "");
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getPanchayatName() != null ? voterHouseInfoVO.getPanchayatName().toString() : "");
+
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getHamletName() != null ? voterHouseInfoVO.getHamletName().toString() : "");
+						    
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getWardName() != null ? voterHouseInfoVO.getWardName().toString() : "");
+
+						    cell31 = row2.createCell(j++);
+						    cell31.setCellValue(voterHouseInfoVO.getPartNo() != null ? voterHouseInfoVO.getPartNo().toString() : "");
+						   // cell31.setCellStyle(style);
+					   }
+					    
+					    
 					   
-					    cell31 = row2.createCell(2);
-					    cell31.setCellValue(voterHouseInfoVO.getPanchayatName() != null ? voterHouseInfoVO.getPanchayatName().toString() : "");
-					    //cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(3);
-					    cell31.setCellValue(voterHouseInfoVO.getHamletName() != null ? voterHouseInfoVO.getHamletName().toString() : "");
-					    //cell31.setCellStyle(style);
-					    
-					    cell31 = row2.createCell(4);
-					    cell31.setCellValue(voterHouseInfoVO.getPartNo() != null ? voterHouseInfoVO.getPartNo().toString() : "");
-					   // cell31.setCellStyle(style);
-					    
-					    cell31 = row2.createCell(5);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getElderCaste() != null ? voterHouseInfoVO.getElderCaste().toString() : "");
 					   // cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(6);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getHouseNo() != null ? voterHouseInfoVO.getHouseNo().toString() : "");
 					   // cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(7);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getCount() != null ? voterHouseInfoVO.getCount().toString() : "");
 					    //cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(8);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getVoterIdCardNo() != null ? voterHouseInfoVO.getVoterIdCardNo().toString() : "");
 					   // cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(9);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getElder() != null ? voterHouseInfoVO.getElder().toString() : "");
 					   // cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(10);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getElderGender() != null ? voterHouseInfoVO.getElderGender().toString() : "");
 					    //cell31.setCellStyle(style);
 					    
 					   
 					    
-					    cell31 = row2.createCell(11);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getElderAge() != null ? voterHouseInfoVO.getElderAge().toString() : "");
 					    //cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(12);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getVoterGroup() != null ? voterHouseInfoVO.getVoterGroup().toString() : "");
 					    //cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(13);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getYounger() != null ? voterHouseInfoVO.getYounger().toString() : "");
 					   // cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(14);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getYoungerGender() != null ? voterHouseInfoVO.getYoungerGender().toString() : "");
 					   // cell31.setCellStyle(style);
 					    
-					    cell31 = row2.createCell(15);
+					    cell31 = row2.createCell(j++);
 					    cell31.setCellValue(voterHouseInfoVO.getYoungerAge() != null ? voterHouseInfoVO.getYoungerAge().toString() : "");
 					   // cell31.setCellStyle(style);
 					    count3++;
