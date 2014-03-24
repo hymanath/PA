@@ -644,7 +644,7 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 			}
 			
 			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiBetweenPublications")){
-				voterModificationGenderInfoVO = stratagicReportsService.getGenderWiseVoterModificationsBetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
+				//voterModificationGenderInfoVO = stratagicReportsService.getGenderWiseVoterModificationsBetweenPublications(locationType,locationValue,constituencyId,fromPublicationDateId,toPublicationDateId,"intermediate");
 			}
 			
 			if(taskToDo.equalsIgnoreCase("genderWiseVoterModifiForEachPublic")){
@@ -888,7 +888,26 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 			strategyVO.setPrpWt(jObj.getDouble("prpWt"));
 			strategyVO.setAgedWt(jObj.getDouble("agedWt"));
 			strategyVO.setTotalCastWt(jObj.getDouble("totalCastWt"));
-			strategyModelTargetingService.getPrioritiesToTarget(strategyVO, IWebConstants.STATIC_CONTENT_FOLDER_URL);
+			strategyVO.setBase(jObj.getLong("base"));
+			strategyVO.setAssured(jObj.getLong("assured"));
+			strategyVO.setTdpPerc(jObj.getLong("partyPerc"));
+			strategyVO.setEffectPartyId(jObj.getLong("effectPartyId"));
+			strategyVO.setEffectElectionId(jObj.getLong("effectElectionId"));
+			if(jObj.getBoolean("considerRange")){
+				strategyVO.setWorstMin(0d);
+				strategyVO.setWorstMax(jObj.getDouble("worstMax"));
+				strategyVO.setVeryPoorMin(jObj.getDouble("veryPoorMin"));
+				strategyVO.setVeryPoorMax(jObj.getDouble("veryPoorMax"));
+				strategyVO.setPoorMin(jObj.getDouble("poorMin"));
+				strategyVO.setPoorMax(jObj.getDouble("poorMax"));
+				strategyVO.setOkMin(jObj.getDouble("okMin"));
+				strategyVO.setOkMax(jObj.getDouble("okMax"));
+				strategyVO.setStrongMin(jObj.getDouble("strongMin"));
+				strategyVO.setStrongMax(jObj.getDouble("strongMax"));
+				strategyVO.setVeryStrongMin(jObj.getDouble("veryStrongMin"));
+				strategyVO.setVeryStrongMax(100d);
+			}
+			stratagicReportsServicePdf.buildPdfDelegator(strategyVO);
 			url ="";
 		}catch (Exception e) {
 			LOG.error("Exception occured in generateReport() ",e);
@@ -913,7 +932,7 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 		
 		return Action.SUCCESS;
 	}
-	public String buildStrategicPdf()
+	/*public String buildStrategicPdf()
 	{
 		System.out.println("inside==========================================");
 		StratagicReportInputVO inputs = new StratagicReportInputVO();
@@ -921,5 +940,5 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 		stratagicReportsServicePdf.buildPdfDelegator(inputs);
 		
 		return Action.SUCCESS;
-	}
+	}*/
 }
