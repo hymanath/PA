@@ -2506,8 +2506,10 @@ function getImpFamilyDetails()
 	var fromValue =  $.trim($("#fromAgeRange").val());
 	var toValue =  $.trim($("#toAgeRange").val());
 	var maxr = null;
-	var str ='<font color="red">';
+	/* //var str ='<font color="red">';
 	var flag = true;
+	alert(constituencyId);
+	alert(publicationId);alert(fromValue);alert(toValue);
 	if(constituencyId == 0)
 	{
 		str+='Select Constituency<br/>';
@@ -2540,14 +2542,15 @@ function getImpFamilyDetails()
 		flag =false;
 	}
 	}
-	if(flag == false)
+	alert(flag); */
+	/* if(flag == false)
 	{
 			//errorDiv.html(str);
 			return;
 	}
 	
 	else
-	{
+	{ */
 		$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
 		var jsObj= 
 		{	
@@ -2565,7 +2568,7 @@ function getImpFamilyDetails()
 		var url = "getFamilyDetailsAction.action?"+rparam;
 
 		callAjax(jsObj,url);
-	}
+	//}
 }
 </script>
 
