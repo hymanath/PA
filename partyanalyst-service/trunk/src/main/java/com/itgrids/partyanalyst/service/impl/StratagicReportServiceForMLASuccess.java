@@ -60,7 +60,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	
 	@Autowired IBoothDAO boothDAO;
 	
-	@Autowired IPartyTrendsDAO partyTrendsDAO;
+	@Autowired public IPartyTrendsDAO partyTrendsDAO;
 	
 	public HouseHoldsVO getHouseHoldInfoByConstituency(Long userId,Long constituencyId,Long publicationDateId){
 		LOG.info(" entered into getHouseHoldInfoByConstituency() in StratagicReportServiceForMLASuccess class.");
