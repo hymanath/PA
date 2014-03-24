@@ -1159,9 +1159,29 @@ public class StrategyModelTargetingService implements
 			Map<Long,Set<Long>> mergePanchayatMap = new HashMap<Long,Set<Long>>();
 			getPanchayatsToMerge(mergePanchayatIds,mergePanchayatMap,constituencyId,"P",publicationId);
 			
+			//getting partial panchayats
+			   List<Object[]> partialPanchayatsList = partialBoothPanchayatDAO.getPartialPanchayatsList(constituencyId, publicationId);
+			   List<Long> partialIds = new ArrayList<Long>();
+			   for(Object[] partial:partialPanchayatsList){
+					if(partial[0] !=null && !partialIds.contains((Long)partial[0])){
+						partialIds.add((Long)partial[0]);
+					}
+					if(partial[1] !=null && !partialIds.contains((Long)partial[1])){
+						partialIds.add((Long)partial[1]);
+					}
+			   }
 			   
+			   Set<Long> allPanchayatIds = new HashSet<Long>();
+			   allPanchayatIds.addAll(partialIds);
+			  List<Object[]> ids =  boothDAO.getPanchayatAndLebIds(constituencyId, publicationId);
+			  for(Object[] id:ids){
+				  if(id[0] != null)
+				    allPanchayatIds.add((Long)id[0]);
+				  if(id[1] != null)
+					allPanchayatIds.add((Long)id[1]);
+			  }
 			//total voters calculation starts
-			   List<Object[]> totalVotersList = voterInfoDAO.getVoterCountByLevels(constituencyId, publicationId, locationLvs);
+			   List<Object[]> totalVotersList = voterInfoDAO.getVoterCountByLevels(constituencyId, publicationId, locationLvs,allPanchayatIds);
 			   for(Object[] total:totalVotersList){
 				   if(((Long)total[2]).longValue() == 3l){
 					   panchayatIds.add((Long)total[0]);
@@ -1173,22 +1193,12 @@ public class StrategyModelTargetingService implements
 			   }
 			   
 			   populateNames(panchayatIds,lebIds,panchayatNames);
-			   List<Object[]> casteList = voterCastInfoDAO.getVotersCastInfoByCasteIds(locationLvs, constituencyId, publicationId, 1l, new ArrayList<Long>(castePercents.keySet()));
+			   List<Object[]> casteList = voterCastInfoDAO.getVotersCastInfoByCasteIds(locationLvs, constituencyId, publicationId, 1l, new ArrayList<Long>(castePercents.keySet()),allPanchayatIds);
 			   
 			    totalCastesList = getOrderOfPriorUsingCaste(castePercents,casteList,totalVotersList,mergePanchayatMap,mergeCasteMap,currentResult,"totalCaste",panchayatNames,totalVotersMap,strategyVO.getTotalCastWt(),finalOrder);
 			 //total voters calculation ends  
 			    
-			    //getting partial panchayats
-			   List<Object[]> partialPanchayatsList = partialBoothPanchayatDAO.getPartialPanchayatsList(constituencyId, publicationId);
-			   List<Long> partialIds = new ArrayList<Long>();
-			   for(Object[] partial:partialPanchayatsList){
-					if(partial[0] !=null && !partialIds.contains((Long)partial[0])){
-						partialIds.add((Long)partial[0]);
-					}
-					if(partial[1] !=null && !partialIds.contains((Long)partial[1])){
-						partialIds.add((Long)partial[1]);
-					}
-			   }
+			    
 			  
 			  
 			   if(partialIds.size() > 0){
@@ -1356,7 +1366,11 @@ public class StrategyModelTargetingService implements
 			 Map<Long,Long> casteMap = panchayat.getCasteMap();
 			 for(Long casteStateId:casteMap.keySet()){
 				 Long count = casteMap.get(casteStateId);
+				 if(castePercents.get(casteStateId) != null && count != null){
 				 panchayat.setOthrExpctdVotes(panchayat.getOthrExpctdVotes()+Math.round(count*castePercents.get(casteStateId)));
+				 }else{
+					 panchayat.setOthrExpctdVotes(0);
+				 }
 			 }
 			 panchayat.setCasteMap(null);
 			 
@@ -2361,7 +2375,7 @@ public class StrategyModelTargetingService implements
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
-					  	  cell = new PdfPCell(new Phrase(Long.valueOf(panchayatVO.getOtherVotes()).toString(),style2));
+					  	  cell = new PdfPCell(new Phrase(Long.valueOf(panchayatVO.getOthrExpctdVotes()).toString(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  table.addCell(cell);
 					  	  
