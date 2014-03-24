@@ -81,7 +81,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				}
 			}
 			
-			List<Object[]> houseHoldsDetails = voterFamilyInfoDAO.getTotalFamiliesByCosntituency(232L,8L,232L);
+			List<Object[]> houseHoldsDetails = voterFamilyInfoDAO.getTotalFamiliesByCosntituency(constituencyId,publicationDateId,constituencyId);
 			if(houseHoldsDetails != null && houseHoldsDetails.size()>0){
 				houseHoldsVOList = new ArrayList<HouseHoldsVO>();
 				houseHoldsVO = new HouseHoldsVO();
@@ -166,7 +166,8 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				Long totalVotersCount = 0L;
 				
 				for (Object[] voterAgeCount : voterAgeInfoList) {
-					totalVotersCount = totalVotersCount + Long.valueOf(voterAgeCount[2].toString());
+					if(!voterAgeCount[0].toString().equalsIgnoreCase("1"))
+						totalVotersCount = totalVotersCount + Long.valueOf(voterAgeCount[2].toString());
 				}
 				
 				for (Object[] voterAge : voterAgeInfoList) {
@@ -174,14 +175,14 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 						VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
 						
 						agewiseReportVO.setVoterAgeRange(voterAge[1].toString());
-						
+						Float ageWiseTotalCount = Float.valueOf(voterAge[2].toString());
 						Float totalCount = Float.valueOf(voterAge[3].toString());
-						Double percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+						Double percentage = Double.valueOf(decimalFormat.format(totalCount*100/ageWiseTotalCount));
 						agewiseReportVO.setMaleVotersCount(totalCount.longValue());
 						agewiseReportVO.setMaleTotalPercentage(percentage);
 						
 						totalCount = Float.valueOf(voterAge[4].toString());
-						percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+						percentage = Double.valueOf(decimalFormat.format(totalCount*100/ageWiseTotalCount));
 						agewiseReportVO.setFemaleVotersCount(totalCount.longValue());
 						agewiseReportVO.setFemaleTotalPercentage(percentage);
 						
@@ -218,22 +219,24 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 				Long totalVotersCount = 0L;
 				
 				for (Object[] voterAgeCount : voterAgeInfoList) {
+					if(!voterAgeCount[0].toString().equalsIgnoreCase("1"))
 					totalVotersCount = totalVotersCount + Long.valueOf(voterAgeCount[2].toString());
 				}
 				
 				for (Object[] voterAge : voterAgeInfoList) {
 					if(!voterAge[0].toString().equalsIgnoreCase("1")){// not adding young voter details
-						VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
 						
+						VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
+						Float ageWiseTotalCount = Float.valueOf(voterAge[2].toString());
 						agewiseReportVO.setVoterAgeRange(voterAge[1].toString());
 						
 						Float totalCount = Float.valueOf(voterAge[3].toString());
-						Double percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+						Double percentage = Double.valueOf(decimalFormat.format(totalCount*100/ageWiseTotalCount));
 						agewiseReportVO.setMaleVotersCount(totalCount.longValue());
 						agewiseReportVO.setMaleTotalPercentage(percentage);
 						
 						totalCount = Float.valueOf(voterAge[4].toString());
-						percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+						percentage = Double.valueOf(decimalFormat.format(totalCount*100/ageWiseTotalCount));
 						agewiseReportVO.setFemaleVotersCount(totalCount.longValue());
 						agewiseReportVO.setFemaleTotalPercentage(percentage);
 						
@@ -261,20 +264,55 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 		CasteStratagicReportVO stratagicVO = null;
 		List<CasteStratagicReportVO> stratagicVOList = null;
 		try {
+			DecimalFormat decimalFormat = new DecimalFormat("##.##");
 			List<Object[]> votersCastInfo = voterCastInfoDAO.getVoterCasteInfoListByConstituency(constituencyId,publicationDateId,userId);
 			
 			if(votersCastInfo != null && votersCastInfo.size()>0){
 				stratagicVOList = new ArrayList<CasteStratagicReportVO>();
 				stratagicVO = new CasteStratagicReportVO();
-				for (Object[] casteVoter : votersCastInfo) {
-					CasteStratagicReportVO casteReportVO = new CasteStratagicReportVO();
+				Long otherCastesTotalCount = 0L;
+				Long otherCastesMaleCount = 0L;
+				Long otherCastesFemaleCount = 0L;
+				Float totalCastePerce = 0.0F; 
+				for(int i = 0 ;i<votersCastInfo.size();i++ ){
+					Object[] casteVoter = votersCastInfo.get(i);
+					if(i <15){ // top 15 caste Information
+										
+						CasteStratagicReportVO casteReportVO = new CasteStratagicReportVO();
+						
+						casteReportVO.setCaste(casteVoter[1].toString());
+						casteReportVO.setCasteCategory(casteVoter[3].toString());
+						casteReportVO.setTotalCasteVoters(Long.valueOf(casteVoter[4].toString()));
+						casteReportVO.setMaleCasteVoters(Long.valueOf(casteVoter[5].toString()));
+						casteReportVO.setFemaleCasteVoters(Long.valueOf(casteVoter[6].toString()));
+						
+						String perc = decimalFormat.format(Double.valueOf(casteVoter[7].toString()));
+						casteReportVO.setCastePercentage(Float.parseFloat(perc));
+						
+						totalCastePerce = totalCastePerce + Float.valueOf(casteVoter[7].toString());
+						
+						stratagicVOList.add(casteReportVO);
+					}
+					else{ // other castes Info
+						
+						otherCastesTotalCount = otherCastesTotalCount + Long.valueOf(casteVoter[4].toString());
+						otherCastesMaleCount = otherCastesMaleCount + Long.valueOf(casteVoter[5].toString());
+						otherCastesFemaleCount = otherCastesFemaleCount + Long.valueOf(casteVoter[6].toString());						
+					}
+				}
+				
+				if(otherCastesTotalCount != 0){
 					
-					casteReportVO.setCaste(casteVoter[1].toString());
-					casteReportVO.setCasteCategory(casteVoter[3].toString());
-					casteReportVO.setTotalCasteVoters(Long.valueOf(casteVoter[4].toString()));
-					casteReportVO.setMaleCasteVoters(Long.valueOf(casteVoter[5].toString()));
-					casteReportVO.setFemaleCasteVoters(Long.valueOf(casteVoter[6].toString()));
-					casteReportVO.setCastePercentage(Double.valueOf(casteVoter[7].toString()));
+					CasteStratagicReportVO casteReportVO = new CasteStratagicReportVO();
+					casteReportVO.setCaste("");
+					casteReportVO.setCasteCategory("");
+					casteReportVO.setTotalCasteVoters(otherCastesTotalCount);
+					casteReportVO.setMaleCasteVoters(Long.valueOf(otherCastesMaleCount));
+					casteReportVO.setFemaleCasteVoters(Long.valueOf(otherCastesFemaleCount));
+					
+					totalCastePerce = (100.0F - totalCastePerce);
+					String perc = decimalFormat.format(Double.valueOf(totalCastePerce));
+					casteReportVO.setCastePercentage(Float.parseFloat(perc));
 					
 					stratagicVOList.add(casteReportVO);
 				}
