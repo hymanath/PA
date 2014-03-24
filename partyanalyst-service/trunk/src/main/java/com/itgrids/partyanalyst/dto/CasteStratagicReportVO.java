@@ -12,7 +12,7 @@ public class CasteStratagicReportVO implements java.io.Serializable{
 	private Long totalCasteVoters;
 	private Long maleCasteVoters;
 	private Long femaleCasteVoters;
-	private Double castePercentage;
+	private Float castePercentage;
 	private String message;
 	private String heading;
 	
@@ -75,11 +75,12 @@ public class CasteStratagicReportVO implements java.io.Serializable{
 		this.femaleCasteVoters = femaleCasteVoters;
 	}
 
-	public Double getCastePercentage() {
+	
+	public Float getCastePercentage() {
 		return castePercentage;
 	}
 
-	public void setCastePercentage(Double castePercentage) {
+	public void setCastePercentage(Float castePercentage) {
 		this.castePercentage = castePercentage;
 	}
 
