@@ -6315,7 +6315,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
 						{
 							tehsil = localbody +" Muncipality";
-							if((booth.getLocalBody() != null && booth.getLocalBody().getLocalElectionBodyId() != null)
+							if(booth.getLocalBody() != null && booth.getLocalBody().getLocalElectionBodyId() != null)
 									{
 							List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getLocalElectionBodyId().toString()));
 							List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
@@ -6350,7 +6350,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
 						{
 							tehsil = localbody +" Muncipality";
-							if((booth.getLocalBody() != null && booth.getLocalBody().getLocalElectionBodyId() != null)
+							if(booth.getLocalBody() != null && booth.getLocalBody().getLocalElectionBodyId() != null)
 									{
 							List<Object> assemblyLocalbodyId = assemblyLocalElectionBodyDAO.getLocalElectionBodyId(new Long(booth.getLocalBody().getLocalElectionBodyId().toString()));
 							List<Object[]> wardNames = userVoterDetailsDAO.getWardBYLocalElectionBodyId((Long) assemblyLocalbodyId.get(0) ,publicationId ,userId);
