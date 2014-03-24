@@ -1806,4 +1806,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return (Long) query.uniqueResult();
 	}
 	
+	public List<Object[]> getPanchayatAndLebIds(Long constituencyId,Long publicationDateId){
+		Query query = getSession().createQuery("Select model.panchayat.panchayatId,model.localBody.localElectionBodyId from Booth model where model.constituency.constituencyId = :constituencyId and model.publicationDate.publicationDateId = :publicationDateId  ");
+		query.setParameter("constituencyId",constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		
+		return query.list();
+	}
+	
 }
