@@ -623,7 +623,7 @@ lable{line-height:40px;}
 				        <td><s:label theme="simple" for="prevPublicationId" value="Publication Date"/></td>
 						<td><select id="prevPublicationIdForImp">
 							<option value="0">Select Publication Date</option>
-							<option value="10">2014-02-01</option>
+							<option value="10">1-2-2014</option>
 							<option value="9">1-1-2014</option>
 							<option value="8">1-2-2013</option>
 							<option value="7">1-1-2013</option>
@@ -2004,6 +2004,21 @@ function callAjax(jsObj,url){
 										alert("Error occured while creating the pdf");
 									}
 								}
+								
+								else if(jsObj.task == "getFamilyDetails")
+								{
+									
+									if(myResults != null)
+									{
+										$.unblockUI();
+										alert("Report Created Successfully");
+									}
+									else
+									{
+										$.unblockUI();
+										alert("Error occured while creating the Report");
+									}
+								}
 								}catch (e) {
 							     
 								}  
@@ -2533,7 +2548,7 @@ function getImpFamilyDetails()
 	
 	else
 	{
-		//errorDiv.html('');
+		$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
 		var jsObj= 
 		{	
 				constituencyId:constituencyId,
@@ -2545,10 +2560,7 @@ function getImpFamilyDetails()
 				type : "district",
 				task:"getFamilyDetails"		
 		};
-		/* var param="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "<%=request.getContextPath()%>/getFamilyDetailsAction.action?"+param;
-		callAjax(param,jsObj,url);
-		 */
+		
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
 		var url = "getFamilyDetailsAction.action?"+rparam;
 
