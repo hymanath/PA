@@ -19,7 +19,14 @@ public class BoothVO {
 	private String fileName;
 	private String constituencyId;
 	private String constituencyName;
+	private String pincode;
 	
+	public String getPincode() {
+		return pincode;
+	}
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
+	}
 	public String getConstituencyId() {
 		return constituencyId;
 	}
