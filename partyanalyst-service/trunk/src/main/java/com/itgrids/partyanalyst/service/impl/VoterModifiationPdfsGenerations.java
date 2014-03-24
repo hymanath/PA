@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +12,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
@@ -18,7 +20,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itgrids.partyanalyst.dto.PartyTrendsVO;
+import com.itgrids.partyanalyst.dto.PanchayatVO;
+import com.itgrids.partyanalyst.dto.PartyEffectVO;
+import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.PdfVO;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.dto.VoterAdderdOrDeletedRengesInfoVO;
@@ -46,7 +50,8 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 	 private static Logger LOG = Logger.getLogger(VoterModifiationPdfsGenerations.class);
 	 private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.BOLD);
 	 
-	 
+	 private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	 private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
 	 /**
 	  * Range Wise Voter Additions In Panchayats
 	  * @param document
@@ -2492,4 +2497,372 @@ public class VoterModifiationPdfsGenerations implements IVoterModifiationPdfsGen
 			   return (loc2.getCount().compareTo(loc1.getCount()));
 			}
 	  };
+	  
+	  
+	 /* public void panchayatWiseTargetVotesTable(Document document,List<PanchayatVO> totalCastesList)
+	  {
+		  try {
+			  	
+			  LOG.info("Enterd into panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class");
+			  PdfPTable table = new PdfPTable(6);
+			  Paragraph preface = new Paragraph();
+			  preface.setAlignment(Element.PTABLE);
+			  preface.add( new Paragraph("               Panchayath Wise :"));
+			  preface.add( new Paragraph(" ") );
+			  document.add(preface); 
+			  DecimalFormat df = new DecimalFormat("##.##");
+			  PdfPCell cell ;
+			  	  
+		        cell = new PdfPCell(new Phrase("Panchayath",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase("2014 Voters",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("Total Targeted",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("Targeted Percentage",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("2009 TDP Voting Percentage",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("Opportunity %",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  int count = 0;
+			  	  for (PanchayatVO panchayatVO : totalCastesList)
+			  	  {
+			  		  if(count == 14)
+			  		  {
+			  			  break;
+			  		  }
+			  		  cell = new PdfPCell(new Phrase(panchayatVO.getPanchayatName(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(Long.valueOf(panchayatVO.getTotalVoters()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(Long.valueOf(panchayatVO.getOtherVotes()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getTargetPerc()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getPartyPerc()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getOpportunity()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  count ++;
+				}
+			  	table.setHeaderRows(2);
+				 document.add(table);
+				 document.newPage();
+		} catch (Exception e) {
+			LOG.debug("Exception raised in panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class",e);
+		}
+	  }
+	  
+	  public void panchayatWiseTargetYoungVotesTable(Document document,List<PanchayatVO> totalCastesList,String type)
+	  {
+		  try {
+			  	
+			  LOG.info("Enterd into panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class");
+			    PdfPTable table = new PdfPTable(5);
+			    DecimalFormat df = new DecimalFormat("##.##"); 
+			    Paragraph preface = new Paragraph();
+			    preface.setAlignment(Element.PTABLE);
+			    preface.add( new Paragraph("               Panchayath Wise :"));
+			    preface.add( new Paragraph(" ") );
+			    document.add(preface);
+			    
+		        PdfPCell cell ;
+			  	  
+		        cell = new PdfPCell(new Phrase("Panchayath",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase("Total Voters",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase(type,style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("Targeted",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("Targeted %",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	 int count = 0;
+			  	  for (PanchayatVO panchayatVO : totalCastesList)
+			  	  {
+			  		  if(count == 14)
+			  		  {
+			  			  break;
+			  		  }
+			  		  cell = new PdfPCell(new Phrase(panchayatVO.getPanchayatName(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(Long.valueOf(panchayatVO.getTotalPanchayatVoters()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(Long.valueOf(panchayatVO.getTotalVoters()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(Long.valueOf(panchayatVO.getOthrExpctdVotes()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  cell = new PdfPCell(new Phrase(df.format(panchayatVO.getTargetPerc()).toString(),style2));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  table.addCell(cell);
+				  	  
+				  	  count ++;
+				  	  
+				  	
+				}
+			  	table.setHeaderRows(2);
+				document.add(table);
+				document.newPage();
+		} catch (Exception e) {
+			LOG.debug("Exception raised in panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class",e);
+		}
+	  }
+	  
+	  public void prpEffectTableTable(Document document,List<PartyEffectVO> list)
+	  {
+		  try {
+			  	
+			  LOG.info("Enterd into panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class");
+			  
+			  DecimalFormat df = new DecimalFormat("##.##"); 
+			  
+			  PdfPTable table = new PdfPTable(4);
+			    
+			    Paragraph preface = new Paragraph();
+			    preface.setAlignment(Element.PTABLE);
+			    preface.add( new Paragraph("               PRP Votes to Regain"));
+			    preface.add( new Paragraph(" ") );
+			    document.add(preface);
+			    
+			    
+		        
+		        PdfPCell cell ;
+			  	  
+		        cell = new PdfPCell(new Phrase("Panchayath",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase("PRP Gain %",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  
+			  	  
+			  	  cell = new PdfPCell(new Phrase("PRP Effect on TDP Party",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("Major Castes %",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	 
+			  	  for (PartyEffectVO partyEffectVO : list)
+			  	  {
+			  		  if( partyEffectVO.getDifference() > 0.0)
+			  		  {
+			  			  cell = new PdfPCell(new Phrase(partyEffectVO.getName(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(df.format(partyEffectVO.getPrpCurrentPerc()).toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(df.format(partyEffectVO.getDifference()).toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+					  	  cell = new PdfPCell(new Phrase(partyEffectVO.getCastes(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+					  	  
+			  		  }
+
+				}
+			  	  table.setHeaderRows(2);
+				  document.add(table);
+				  document.newPage();
+		} catch (Exception e) {
+			LOG.debug("Exception raised in panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class",e);
+		}
+	  }
+	  public void generatePdfForMatrixReport(Document document,List<PartyPositionVO>  previousTrends)
+	  {
+		  try {
+			  LOG.info("Enterd into generatePdfsForImpFamiles() method in VoterModifiationPdfsGenerations Class");
+			    
+			    PdfPTable table = new PdfPTable(7);
+			    
+			    Paragraph preface = new Paragraph();
+			    preface.setAlignment(Element.PTABLE);
+			   
+			    preface.add( new Paragraph("               Previous Trends"));
+			    preface.add( new Paragraph(" ") );
+			    document.add(preface);
+			    
+		          PdfPCell cellHeading;
+			      cellHeading = new PdfPCell(new Phrase("Previous Trends",style1));
+			      cellHeading.setColspan(7);
+				  cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  cellHeading.setBackgroundColor(BaseColor.YELLOW);
+				  table.addCell(cellHeading);
+				  
+				  PdfPCell cell ;
+			  	  cell = new PdfPCell(new Phrase(previousTrends.get(0).getName()+ "/" + previousTrends.get(1).getName(),style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+				  
+			  	  
+			  	  cell = new PdfPCell(new Phrase("WORST",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.RED);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("VERY POOR",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.ORANGE);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("POOR",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.CYAN);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("OK",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.YELLOW);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("STRONG",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.BLUE);
+			  	  table.addCell(cell);
+			  	  
+			  	  cell = new PdfPCell(new Phrase("VERY STRONG",style1));
+			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	  cell.setBackgroundColor(BaseColor.GREEN);
+			  	  table.addCell(cell);
+			  	  
+			  	List<PartyPositionVO> previousElectionList = previousTrends.get(0).getPartyPositionVOList();
+			  	List<PartyPositionVO> presentElectionList  = previousTrends.get(1).getPartyPositionVOList();
+			  	Collections.reverse(previousElectionList);
+			  	Collections.reverse(presentElectionList);
+			  	int i = 0;
+			  	  for (PartyPositionVO partyPositionVO : previousElectionList)
+			  	  {
+			  		  cell = new PdfPCell(new Phrase(partyPositionVO.getName(),style1));
+				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  if(i == 0)
+				  	  {
+				  		 cell.setBackgroundColor(BaseColor.RED);
+				  	  }  
+				  	  else if(i == 1)
+				  	  {
+				  		 cell.setBackgroundColor(BaseColor.ORANGE);
+				  	  }
+				  	  else if(i == 2)
+				  	  {
+				  		 cell.setBackgroundColor(BaseColor.CYAN);
+				  	  }
+				  	  else if(i == 3)
+				  	  {
+				  		 cell.setBackgroundColor(BaseColor.YELLOW); 
+				  	  }
+				  	  else if(i == 4)
+				  	  {
+				  		 cell.setBackgroundColor(BaseColor.BLUE); 
+				  	  }
+				  	  else if(i == 5)
+				  	  {
+				  		 cell.setBackgroundColor(BaseColor.GREEN);
+				  	  }
+				  	  
+				  	  table.addCell(cell);
+				  	  
+				  	 
+				  	  
+				  	  
+			  		  for (PartyPositionVO partyPositionVO1 : presentElectionList)
+			  		  {
+				  			StringBuffer sb = new StringBuffer("");
+				  			if(partyPositionVO.getPartyPositionVOList() != null && partyPositionVO.getPartyPositionVOList().size() > 0)
+				  			{
+				  				for(PartyPositionVO namesPositionVO : partyPositionVO.getPartyPositionVOList())
+							  	  {
+						  			
+								  		  for(PartyPositionVO namesPositionVO1 : partyPositionVO1.getPartyPositionVOList())
+									  	  {
+								  			  if(namesPositionVO.getId().equals(namesPositionVO1.getId()))
+								  				  sb.append(namesPositionVO.getName()+ '\n');
+									  	  }
+	
+							  	  }
+				  			}
+			  			  cell = new PdfPCell(new Phrase(sb.toString(),style2));
+					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	  table.addCell(cell);
+			  		  }
+			  		  i++;
+			  	  }
+			  	table.setHeaderRows(2);
+			  	document.add(table);
+			  	document.newPage();
+			  	
+		} catch (Exception e) {
+			LOG.debug("Exception raised in generatePdfForMatrixReport() method in VoterModifiationPdfsGenerations Class",e);
+		}
+	  }*/
 }

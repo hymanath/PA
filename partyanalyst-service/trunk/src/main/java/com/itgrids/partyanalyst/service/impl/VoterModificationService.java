@@ -4006,15 +4006,15 @@ public class VoterModificationService implements IVoterModificationService{
 			    	List<Object[]> constiList =new ArrayList<Object[]>();
 			    	if(type.equalsIgnoreCase("district"))
 			    	{
-			    		//constiList =  constituencyDAO.getDistrictConstituencies(id);
-			    		List<Long> districtIdslist = new ArrayList<Long>();
+			    		constiList =  constituencyDAO.getDistrictConstituencies(id);
+			    		/*List<Long> districtIdslist = new ArrayList<Long>();
 			    		districtIdslist.add(16l);
 			    		districtIdslist.add(17l);
 			    		districtIdslist.add(18l);
 			    		districtIdslist.add(19l);
 			    		districtIdslist.add(20l);
 			    		
-			    		constiList =  constituencyDAO.getDistrictConstituenciesList(districtIdslist);
+			    		constiList =  constituencyDAO.getDistrictConstituenciesList(districtIdslist);*/
 			    	}
 			    	else
 			    	{

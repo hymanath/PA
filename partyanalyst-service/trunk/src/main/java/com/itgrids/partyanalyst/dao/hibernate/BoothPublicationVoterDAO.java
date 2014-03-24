@@ -6260,7 +6260,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		StringBuilder str =new StringBuilder();
 		
 		str.append("select model.booth.boothId,model.voter.houseNo,count(model.voter.voterId) from BoothPublicationVoter model where model.booth.constituency.constituencyId = :constituencyId and " +
-				" model.booth.publicationDate.publicationDateId = :publicationId");
+				" model.booth.publicationDate.publicationDateId = :publicationId and model.voter.houseNo not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00','0-0-0','0-0-0')");
 		
 		str.append(" group by model.booth.boothId,model.voter.houseNo ");
 		if(maxVal == 0)
