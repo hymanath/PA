@@ -1742,6 +1742,12 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	Paragraph p =   new Paragraph("Polling Stations – Increase Polling %" ,subHeading);
     p.setFont(subHeading);
     document.add(p);
+    
+    Paragraph p1 =   new Paragraph("We need to try & improve the polling percentages where we are very strong."+
+    		"The following are the polling booths where we are strong and had low polling percentages." ,BIGFONT);
+    p1.setFont(BIGFONT);
+    document.add(p1);
+    
 	pollingStationHelper(finalRes, table, headings,"Strong","Polling Stations – Increase Polling %");
 	
 	document.add( new Paragraph(" ") );
@@ -1752,9 +1758,16 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
   	
   	document.add( new Paragraph(" ") );
   	
-	Paragraph p1 =   new Paragraph("Polling Stations – Reduce Polling %" ,subHeading);
-    p1.setFont(subHeading);
-    document.add(p1);
+	Paragraph p2 =   new Paragraph("Polling Stations – Reduce Polling %" ,subHeading);
+    p2.setFont(subHeading);
+    document.add(p2);
+    
+    Paragraph p3 =   new Paragraph("We need to try & decrease the polling percentages where we are OK and there "+
+    		"has been abnormal polling percentage. The below are the polling booths where we had highest polling"+
+    		"percentages and our party’s performances was low.",BIGFONT);
+    p3.setFont(BIGFONT);
+    document.add(p3);
+    
 	pollingStationHelper(finalRes, table1, headings,"Weak","Polling Stations – Reduce Polling %");
 
 	document.add( new Paragraph(" ") );
@@ -1826,19 +1839,22 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	 	 table.addCell(c1);
 		
 		 
-	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getSelectedPartyTotalVoters()),SMALLFONT));
+	 	if(input.equalsIgnoreCase("Strong"))
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getSelectedPartyTotalVoters()),SMALLFONT));
+	 	else
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getSelectedPartyTotalVoters()),SMALLFONT));
+	 		
 	 	 table.addCell(c1); 
 	 	
 	 	 
-		 
-	 	 
 	 	
-	 	 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getPartyPercentage()),BIGFONT));
+	 	if(input.equalsIgnoreCase("Strong"))
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getPartyPercentage()),BIGFONT));
+	 	else
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getPartyPercentage()),BIGFONT));
+	 	
 	 	 table.addCell(c1);
 		 
-	 	 
-		
 		 
 	 	if(input.equalsIgnoreCase("Strong"))
 		
