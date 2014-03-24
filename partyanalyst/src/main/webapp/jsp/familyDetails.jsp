@@ -237,7 +237,7 @@ function getFamilyInfo(startIndex)
 	}
 	else
 	{
-	 if(toValue < fromValue)
+	 if(toValue > fromValue)
 	{
         str+='From Value must be greter than To value<br/>';
 		flag =false;
@@ -262,8 +262,8 @@ var jsObj=
 			maxVal:toValue,
 			startIndex:startIndex,
 		    results:maxr,
-
-		task:"getFamilyDetails"		
+			type : "constituency",
+		    task:"getFamilyDetails"		
 	};
 	var param="task="+YAHOO.lang.JSON.stringify(jsObj);
 	var url = "<%=request.getContextPath()%>/getFamilyDetailsAction.action?"+param;

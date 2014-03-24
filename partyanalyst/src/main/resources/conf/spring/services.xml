@@ -1781,7 +1781,7 @@
 	  <property name="voterModifiationPdfsGenerations" ref="voterModifiationPdfsGenerations" />	  	
 	  <property name="allianceGroupDAO" ref="allianceGroupDAO" />	
 	  <property name="panchayatResultDAO" ref="panchayatResultDAO" />	
-	    
+	  <property name="ageWiseExcelsGenerationService" ref="ageWiseExcelsGenerationService" />	
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
