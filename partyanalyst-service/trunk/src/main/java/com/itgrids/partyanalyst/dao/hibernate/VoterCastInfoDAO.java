@@ -226,10 +226,12 @@ public class VoterCastInfoDAO extends GenericDaoHibernate<VoterCastInfo,Long> im
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVoterCasteInfoListByConstituency(Long constituencyId,Long publicationDateId,Long userId)
 	{
+		Long reportLevelValue = constituencyId;
 		Query query = getSession().createQuery(" select model.casteState.caste.casteId, model.casteState.caste.casteName, model.casteState.casteCategoryGroup.casteCategory.casteCategoryId, " +
 				" model.casteState.casteCategoryGroup.casteCategory.categoryName,model.casteVoters,model.casteMaleVoters, " +
-				"model.casteFemaleVoters,model.castePercentage from VoterCastInfo model where model.constituency.constituencyId =:constituencyId and model.publicationDateId = :publicationDateId and model.userId =:userId ");
+				"model.casteFemaleVoters,model.castePercentage,model.casteState.casteStateId from VoterCastInfo model where model.voterReportLevel = 1 and model.reportLevelValue =:reportLevelValue and model.constituency.constituencyId =:constituencyId and model.publicationDateId = :publicationDateId and model.userId =:userId order by  model.casteVoters desc, model.casteState.caste.casteName asc");
 		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("reportLevelValue", reportLevelValue);
 		query.setParameter("publicationDateId",publicationDateId);
 		query.setParameter("userId", userId);
 		
