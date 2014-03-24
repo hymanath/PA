@@ -98,7 +98,7 @@ public class VoterAgeInfoDAOHibernateTest extends BaseDaoTestCase{
 		List<VoterStratagicReportVo> ageWiseReportVOList = null;
 		try {
 			DecimalFormat decimalFormat = new DecimalFormat("##.##");
-			List<Object[]> voterAgeInfoList = voterAgeInfoDAO.getVoterAgeInfoListByconstituency(228l, 8l);
+			List<Object[]> voterAgeInfoList = voterAgeInfoDAO.getVoterAgeInfoListByconstituency(181L, 10l);
 		
 			if(voterAgeInfoList != null && voterAgeInfoList.size()>0){
 				ageWiseReportVOList = new ArrayList<VoterStratagicReportVo>();
@@ -106,18 +106,23 @@ public class VoterAgeInfoDAOHibernateTest extends BaseDaoTestCase{
 				Long totalVotersCount = 0L;
 				
 				for (Object[] voterAgeCount : voterAgeInfoList) {
-					totalVotersCount = totalVotersCount + Long.valueOf(voterAgeCount[2].toString());
+					if(!voterAgeCount[0].toString().equalsIgnoreCase("1"))
+						totalVotersCount = totalVotersCount + Long.valueOf(voterAgeCount[2].toString());
 				}
 				
 				for (Object[] voterAge : voterAgeInfoList) {
-					VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
+					if(!voterAge[0].toString().equalsIgnoreCase("1")){
+						
+						VoterStratagicReportVo agewiseReportVO = new VoterStratagicReportVo();
+						
+					Float ageWiseTotalCount = Float.valueOf(voterAge[2].toString());					
 					Float totalCount = Float.valueOf(voterAge[3].toString());
-					Double percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+					Double percentage = Double.valueOf(decimalFormat.format(totalCount*100/ageWiseTotalCount));
 					agewiseReportVO.setMaleVotersCount(totalCount.longValue());
 					agewiseReportVO.setMaleTotalPercentage(percentage);
 					
 					totalCount = Float.valueOf(voterAge[4].toString());
-					percentage = Double.valueOf(decimalFormat.format(totalCount*100/totalVotersCount));
+					percentage = Double.valueOf(decimalFormat.format(totalCount*100/ageWiseTotalCount));
 					agewiseReportVO.setFemaleVotersCount(totalCount.longValue());
 					agewiseReportVO.setFemaleTotalPercentage(percentage);
 					
@@ -127,6 +132,7 @@ public class VoterAgeInfoDAOHibernateTest extends BaseDaoTestCase{
 					agewiseReportVO.setTotalPercentage(percentage);
 					
 					ageWiseReportVOList.add(agewiseReportVO);
+				}
 				}
 			}
 			

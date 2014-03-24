@@ -129,10 +129,10 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 		
 	}
 	*/
-	/*public void testGetgetVoterDetailedCountByLocation()
+	public void testGetgetVoterDetailedCountByLocation()
 	{
 		VoterInfo voterInfo = null;
-		List<Object[]> votersDetailesCount = voterInfoDAO.getVoterDetailedCountByLocation(3l,4l,8l,232l);
+		List<Object[]> votersDetailesCount = voterInfoDAO.getVoterDetailedCountByLocation(1L,181L,10L,181L);
 		System.out.println(votersDetailesCount.size());
 		if(votersDetailesCount!=null && votersDetailesCount.size()>0){
 		voterInfo = new VoterInfo();
@@ -142,7 +142,7 @@ public class VoterInfoDAOHibernateTest extends BaseDaoTestCase{
 			System.out.println((Long) objects[2]);
 		}
 	}
-	}*/
+	}
 
 
 	/*public void testGetgetVoterDetailedCountByLocation()

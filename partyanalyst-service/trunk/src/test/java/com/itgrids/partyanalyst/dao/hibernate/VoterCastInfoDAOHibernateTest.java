@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Set;
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
 import com.itgrids.partyanalyst.dto.VoterCastInfoVO;
 import com.itgrids.partyanalyst.model.VoterCastInfo;
 
@@ -112,10 +114,77 @@ public class VoterCastInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetVoterCasteInfoListByConstituency()
 	{
-		List<Object[]> values = voterCastInfoDAO.getVoterCasteInfoListByConstituency(175L,8L,1L);
+		/*List<Object[]> values = voterCastInfoDAO.getVoterCasteInfoListByConstituency(181L,10L,1L);
 		for (Object[] parms : values) {
-			System.out.println(parms[1]  +":"+ parms[3]+""+parms[4]  +":"+ parms[5]   );
+			System.out.println(parms[1]  +"  \n  :   "+parms[8]+ "  :  "+ parms[2] +"  :  "+ parms[3]+" :  "+parms[4]  +":  " +parms[5]+ "  :  "+parms[6]+ "  :  "+ Float.parseFloat(parms[7].toString()) +"\n"  );
+		}*/
+		
+		DecimalFormat decimalFormat = new DecimalFormat("##.##");
+		List<Object[]> votersCastInfo = voterCastInfoDAO.getVoterCasteInfoListByConstituency(181L,10L,1L);
+		CasteStratagicReportVO stratagicVO = null;
+		List<CasteStratagicReportVO> stratagicVOList = null;
+		try{
+		if(votersCastInfo != null && votersCastInfo.size()>0){
+			stratagicVOList = new ArrayList<CasteStratagicReportVO>();
+			stratagicVO = new CasteStratagicReportVO();
+			Long otherCastesTotalCount = 0L;
+			Long otherCastesMaleCount = 0L;
+			Long otherCastesFemaleCount = 0L;
+			Float totalCastePerce = 0.0F; 
+			for(int i = 0 ;i<votersCastInfo.size();i++ ){
+				Object[] casteVoter = votersCastInfo.get(i);
+				
+				System.out.println(casteVoter[1]  +"  \n  :   "+casteVoter[8]+ "  :  "+ casteVoter[2] +"  :  "+ casteVoter[3]+" :  "+casteVoter[4]  +":  " +casteVoter[5]+ "  :  "+casteVoter[6]+ "  :  "+ Float.parseFloat(casteVoter[7].toString()) +"\n"  );
+				
+				if(i <15){ // top 15 caste Information
+									
+					CasteStratagicReportVO casteReportVO = new CasteStratagicReportVO();
+					
+					casteReportVO.setCaste(casteVoter[1].toString());
+					casteReportVO.setCasteCategory(casteVoter[3].toString());
+					casteReportVO.setTotalCasteVoters(Long.valueOf(casteVoter[4].toString()));
+					casteReportVO.setMaleCasteVoters(Long.valueOf(casteVoter[5].toString()));
+					casteReportVO.setFemaleCasteVoters(Long.valueOf(casteVoter[6].toString()));
+					
+					String perc = decimalFormat.format(Double.valueOf(casteVoter[7].toString()));
+					casteReportVO.setCastePercentage(Float.parseFloat(perc));
+					
+					totalCastePerce = totalCastePerce + Float.valueOf(casteVoter[7].toString());
+					
+					stratagicVOList.add(casteReportVO);
+				}
+				else{ // other castes Info
+					
+					otherCastesTotalCount = otherCastesTotalCount + Long.valueOf(casteVoter[4].toString());
+					otherCastesMaleCount = otherCastesMaleCount + Long.valueOf(casteVoter[5].toString());
+					otherCastesFemaleCount = otherCastesFemaleCount + Long.valueOf(casteVoter[6].toString());
+					
+					
+				}
+			}
+			
+			if(otherCastesTotalCount != 0){
+				totalCastePerce = (100.0F - totalCastePerce);
+				CasteStratagicReportVO casteReportVO = new CasteStratagicReportVO();
+				casteReportVO.setCaste("");
+				casteReportVO.setCasteCategory("");
+				casteReportVO.setTotalCasteVoters(otherCastesTotalCount);
+				casteReportVO.setMaleCasteVoters(Long.valueOf(otherCastesMaleCount));
+				casteReportVO.setFemaleCasteVoters(Long.valueOf(otherCastesFemaleCount));
+				
+				String perc = decimalFormat.format(Double.valueOf(totalCastePerce));
+				casteReportVO.setCastePercentage(Float.parseFloat(perc));
+				
+				stratagicVOList.add(casteReportVO);
+			}
+			stratagicVO.setStrategicVOList(stratagicVOList);
+			stratagicVO.setHeading(" Voters by Caste ");
+			}			
+			
+		} catch (Exception e) {
+			//G.error(" exception occured in getCasteWiseVotersInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}
+
 	}
 	
 }

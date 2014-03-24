@@ -72,7 +72,7 @@ public class VoterFamilyInfoDAOHibernateTest extends BaseDaoTestCase{
 	
 	public void testgetVoterFamilyInfoList()
 	{
-		List<Object[]> list = voterFamilyInfoDAO.getTotalFamiliesByCosntituency(232L,8L,232L);
+		List<Object[]> list = voterFamilyInfoDAO.getTotalFamiliesByCosntituency(181L,10L,181L);
 		for (Object[] param : list) {
 			System.out.println(param[0]+" : "+param[1]+"  : "+param[2]+" : "+param[3]);
 		}
