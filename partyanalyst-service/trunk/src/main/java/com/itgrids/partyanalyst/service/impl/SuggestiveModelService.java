@@ -6374,7 +6374,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				
 			}		
 			
-			  List<Object[]> list1 = boothPublicationVoterDAO.getFamilyWiseInfoForBooth(boothId, boothHousesMap.get(boothId));
+			List<Object[]> list1 = boothPublicationVoterDAO.getFamilyWiseInfoForBooth(boothId, boothHousesMap.get(boothId));
 			  Map<String,List<VoterHouseInfoVO>> resultmap = new HashMap<String, List<VoterHouseInfoVO>>();
 			  List<Long> voterIds = new ArrayList<Long>();
 			  
@@ -6462,6 +6462,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						result.get(0).setConstituencyType(type);
 					    result.get(0).setTotalHousesCount(new Long(totalList.size()));
 			  }
+			  try{
 			    Object[] values = constituencyDAO.constituencyName(constituencyId).get(0);
 		    	String constituenyName = values[0].toString().toUpperCase();
 		    	String districtName = values[1].toString().toUpperCase();
@@ -6476,7 +6477,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				HSSFSheet sheet  = workbook.createSheet("report");
 				ageWiseExcelsGenerationService.generateExcelsForImportaneFamiles(result , sheet, workbook,type);
 				workbook.write(out);
-				
+			  }
+			  catch(Exception e)
+			  {
+				  e.printStackTrace();
+			  }
 			 }
 		}
 		
