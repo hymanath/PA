@@ -6257,7 +6257,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						boothHousesMap.put((Long)params[0], hnos);
 					}
 					if(!hnos.contains(params[1].toString()))
-						hnos.add(params[1].toString());
+						hnos.add(params[1].toString().toUpperCase());
 				}
 			}
 			for(Long boothId :boothHousesMap.keySet())
@@ -6306,7 +6306,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						if( booth.getLocalBody().getElectionType() != null)
 						{
 						String electionType = booth.getLocalBody().getElectionType().getElectionType();
-						if(electionType.equalsIgnoreCase(IConstants.GHMC))
+						if(electionType.equalsIgnoreCase(IConstants.GHMC) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE))
 						{
 						tehsil = localbody +" Corporation";
 						if(booth.getLocalBodyWard() != null && booth.getLocalBodyWard().getName() != null)
@@ -6340,7 +6340,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			        	   if( booth.getLocalBody().getElectionType() != null)
 			        	   {
 							String electionType = booth.getLocalBody().getElectionType().getElectionType();
-							if(electionType.equalsIgnoreCase(IConstants.GHMC))
+							if(electionType.equalsIgnoreCase(IConstants.GHMC) || electionType.equalsIgnoreCase(IConstants.CORPORATION_ELECTION_TYPE))
 							{
 							tehsil = localbody +" Corporation";
 							if(booth.getLocalBodyWard() != null)
@@ -6474,7 +6474,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			    
 				HSSFWorkbook workbook = new HSSFWorkbook(); 
 				HSSFSheet sheet  = workbook.createSheet("report");
-				ageWiseExcelsGenerationService.generateExcelsForImportaneFamiles(result , sheet, workbook);
+				ageWiseExcelsGenerationService.generateExcelsForImportaneFamiles(result , sheet, workbook,type);
 				workbook.write(out);
 				
 			 }
