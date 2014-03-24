@@ -351,4 +351,6 @@ public interface IBoothDAO extends GenericDao<Booth, Long>{
 	public List<Long> getPanchayatsForAfterDelimation(Long constituencyId,Long year);
 	
 	public List<Long> getBoothsBeforDelimationByPanchayat(Long year , List<Long> panchayatis);
+	
+	public List<Object[]> getPanchayatAndLebIds(Long constituencyId,Long publicationDateId);
 }
