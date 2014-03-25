@@ -1858,7 +1858,6 @@ public class StrategyModelTargetingService implements
     	   Long gainableVotes = 0l;
     	   OrderOfPriorityVO highCriticalPrior = new OrderOfPriorityVO();
     	   for(int i = 0;i< finalOrderOfOriority.size();i++){
-    		   size= size+1;
     		   if(gainableVotes < highOppourtunity){
     		     count = count+1;
     		     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
@@ -1867,6 +1866,7 @@ public class StrategyModelTargetingService implements
     		   }else{
     			   break;
     		   }
+    		   size= size+1;
     		   
     	   }
     	   highCriticalPrior.setName("Highly Critical Panchayaths");
@@ -1875,15 +1875,13 @@ public class StrategyModelTargetingService implements
     	   highCriticalPrior.setOpportunity(gainableVotes);
     	   panchClassific.add(highCriticalPrior);
     	   
-    	   if(size <= finalOrderOfOriority.size()){
-	    	    size = size-1;
+    	   if(size < finalOrderOfOriority.size()){
 	    	    count = 0;
 	    	    gainablePerc = 0d;
 	    	    gainableVotes = 0l;
 	    	    
 	    	    OrderOfPriorityVO criticalPrior = new OrderOfPriorityVO();
 	     	   for(int i = size;i< finalOrderOfOriority.size();i++){
-	     		   size= size+1;
 	     		   if(gainableVotes < criticalOppourtunity){
 	     		     count = count+1;
 	     		     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
@@ -1892,7 +1890,7 @@ public class StrategyModelTargetingService implements
 	     		   }else{
 	     			   break;
 	     		   }
-	     		   
+	     		  size= size+1;
 	     	   }
 	     	 if(count > 0){
 	     	  criticalPrior.setName("Critical Panchayaths");
@@ -1902,15 +1900,13 @@ public class StrategyModelTargetingService implements
 	     	  panchClassific.add(criticalPrior);
 	     	 }
     	   }
-    	   if(size <= finalOrderOfOriority.size()){
-		     	size = size-1;
+    	   if(size < finalOrderOfOriority.size()){
 		 	    count = 0;
 		 	    gainablePerc = 0d;
 		 	    gainableVotes = 0l;
 		 	    
 		 	    OrderOfPriorityVO mediumPrior = new OrderOfPriorityVO();
 		  	   for(int i = size;i< finalOrderOfOriority.size();i++){
-		  		   size= size+1;
 		  		   if(gainableVotes < mediumOppourtunity){
 		  		     count = count+1;
 		  		     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
@@ -1919,7 +1915,7 @@ public class StrategyModelTargetingService implements
 		  		   }else{
 		  			   break;
 		  		   }
-		  		   
+		  		 size= size+1;
 		  	   }
 		  	 if(count > 0){
 		  	   mediumPrior.setName("Medium Panchayaths");
@@ -1929,15 +1925,13 @@ public class StrategyModelTargetingService implements
 		  	   panchClassific.add(mediumPrior);
 		  	 }
     	   }
-    	   if(size <= finalOrderOfOriority.size()){
-		  	   size = size-1;
+    	   if(size < finalOrderOfOriority.size()){
 			    count = 0;
 			    gainablePerc = 0d;
 			    gainableVotes = 0l;
 			    
 			    OrderOfPriorityVO easyPrior = new OrderOfPriorityVO();
 			   for(int i = size;i< finalOrderOfOriority.size();i++){
-				   size= size+1;
 				   if(gainableVotes < easyOppourtunity){
 				     count = count+1;
 				     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
@@ -1946,7 +1940,7 @@ public class StrategyModelTargetingService implements
 				   }else{
 					   break;
 				   }
-				   
+				   size= size+1;
 			   }
 			  if(count > 0){
 			   easyPrior.setName("Easy Panchayaths");
@@ -1956,15 +1950,13 @@ public class StrategyModelTargetingService implements
 			   panchClassific.add(easyPrior);
 			  }
     	   }
-    	   if(size <= finalOrderOfOriority.size()){
-			    size = size-1;
+    	   if(size < finalOrderOfOriority.size()){
 			    count = 0;
 			    gainablePerc = 0d;
 			    gainableVotes = 0l;
 			    
 			    OrderOfPriorityVO goodPrior = new OrderOfPriorityVO();
 			   for(int i = size;i< finalOrderOfOriority.size();i++){
-				   size= size+1;
 				   if(gainableVotes < goodOppourtunity){
 				     count = count+1;
 				     gainableVotes = gainableVotes+((-1)*finalOrderOfOriority.get(i).getOpportunity());
@@ -1973,7 +1965,7 @@ public class StrategyModelTargetingService implements
 				   }else{
 					   break;
 				   }
-				   
+				   size= size+1;
 			   }
 			  if(count > 0){
 			   goodPrior.setName("Good Panchayaths");
@@ -2158,10 +2150,16 @@ public class StrategyModelTargetingService implements
         							   }
         							   
         						   }
+        						   impFamilesVO.setYoungerPerson(voterDetails.get(size-1)[1] != null ? voterDetails.get(size-1)[1].toString() : null);
+    							   impFamilesVO.setYoungerPersonAge(voterDetails.get(size-1)[3] != null ? Long.valueOf(voterDetails.get(size-1)[3].toString()) : null);
+    							   impFamilesVO.setYoungPersomGender(voterDetails.get(size-1)[2] != null ? voterDetails.get(size-1)[2].toString() : null);
+    							   impFamilesVO.setYoungerVoterId(objects2[4] != null ? objects2[4].toString() : null);
         						   for (int i = size-1; i >= 1; i--)
         						   {
         							   if(voterDetails.get(i)[2] != null)
         							   {
+        
+        								   
         								   if(voterDetails.get(i)[2].toString().trim().equalsIgnoreCase("M"))
         								   {
         									   impFamilesVO.setYoungerPerson(voterDetails.get(i)[1] != null ? voterDetails.get(i)[1].toString() : null);

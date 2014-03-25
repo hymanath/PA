@@ -11,16 +11,15 @@ import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itgrids.partyanalyst.dao.IPRPWeightegesDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
-import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
 import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
-import com.itgrids.partyanalyst.service.impl.StratagicReportServiceForMLASuccess;
-import com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf;
 
 public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 	IStrategyModelTargetingService strategyModelTargetingService;
 	IPartyTrendsDAO partyTrendsDAO;
+	IPRPWeightegesDAO prpWeightegesDAO;
 
 	public IStrategyModelTargetingService getStrategyModelTargetingService() {
 		return strategyModelTargetingService;
@@ -147,8 +146,18 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 		}
 	  }*/
 	
+
+
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
+	}
+
+	public IPRPWeightegesDAO getPrpWeightegesDAO() {
+		return prpWeightegesDAO;
+	}
+
+	public void setPrpWeightegesDAO(IPRPWeightegesDAO prpWeightegesDAO) {
+		this.prpWeightegesDAO = prpWeightegesDAO;
 	}
 
 	public void setPartyTrendsDAO(IPartyTrendsDAO partyTrendsDAO) {
@@ -182,7 +191,7 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 
 	public StrategyVO getRang(){
 		StrategyVO strategyVO = new StrategyVO();
-		strategyVO.setConstituencyId(181l);//
+		strategyVO.setConstituencyId(282l);//
 		strategyVO.setPartyId(872l);
 		List<Long> electionIds = new ArrayList<Long>();
 		electionIds.add(38l);
@@ -206,13 +215,18 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 		castePercents.put(287l,0.50f);//Velama
 		castePercents.put(286l,0.65f);//Vysya
 		castePercents.put(0l,0.50f);//others
-
+		Double regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(strategyVO.getConstituencyId());
+		  if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
+			  regainVotrsWeigthPerc = 0d;
+		  Double prevTrendWeigthPerc = 80d-regainVotrsWeigthPerc;
+		  
 		strategyVO.setCastePercents(null);
-		strategyVO.setPrevTrnzWt(15d);
-		strategyVO.setYoungWt(5d);
-		strategyVO.setPrpWt(15d);
-		strategyVO.setAgedWt(5d);
-		strategyVO.setTotalCastWt(60d);
+		strategyVO.setPrevTrnzWt(prevTrendWeigthPerc);
+		strategyVO.setYoungWt(10d);
+		strategyVO.setPrpWt(regainVotrsWeigthPerc);
+		strategyVO.setAgedWt(10d);
+		strategyVO.setTotalCastWt(0d);
+		strategyVO.setAutoCalculate(true);
 		/*strategyVO.setBase(jObj.getLong("base"));
 		strategyVO.setAssured(jObj.getLong("assured"));
 		strategyVO.setTdpPerc(jObj.getLong("partyPerc"));*/
