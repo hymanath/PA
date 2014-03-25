@@ -40,13 +40,13 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class StratagicReportServiceForMLASuccess implements IStratagicReportServiceForMLASuccess{
 	public static Logger LOG = Logger.getLogger(StratagicReportServiceForMLASuccess.class);
 	
-	@Autowired IVoterCastInfoDAO voterCastInfoDAO;
+	@Autowired public IVoterCastInfoDAO voterCastInfoDAO;
 	
-	@Autowired IVoterAgeInfoDAO voterAgeInfoDAO;
+	@Autowired public IVoterAgeInfoDAO voterAgeInfoDAO;
 	   
-	@Autowired IVoterInfoDAO voterInfoDAO;
+	@Autowired public IVoterInfoDAO voterInfoDAO;
 	
-	@Autowired IVoterFamilyInfoDAO voterFamilyInfoDAO;
+	@Autowired public IVoterFamilyInfoDAO voterFamilyInfoDAO;
 	
 	@Autowired IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	
@@ -54,11 +54,11 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	
 	@Autowired IStateDAO stateDAO;
 	
-	@Autowired ICensusDAO censusDAO;
+	@Autowired public ICensusDAO censusDAO;
 	
-	@Autowired IDistrictDAO districtDAO;
+	@Autowired public IDistrictDAO districtDAO;
 	
-	@Autowired IBoothDAO boothDAO;
+	@Autowired public IBoothDAO boothDAO;
 	
 	@Autowired public IPartyTrendsDAO partyTrendsDAO;
 	
@@ -107,6 +107,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			houseHoldsVO.setCalcMessage(" Please Note: Total Households: "+houseHoldsByCensus+" (According to the Census), "+houseHoldsByNewVoterList+" (According to the Voters List)");
 			
 			houseHoldsVO.setHeading(" Households ");
+			
 		} catch (Exception e) {
 			LOG.error(" exception occured in getHouseHoldInfoByConstituency() of StratagicReportServiceForMLASuccess class. ",e);
 		}
