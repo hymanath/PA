@@ -28,7 +28,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -92,7 +94,10 @@ import com.itgrids.partyanalyst.utils.IConstants;
 
 public class StratagicReportsService implements IStratagicReportsService{
 	private static final Logger LOG = Logger.getLogger(StratagicReportsService.class);
-	
+	  Font  TITLE = FontFactory.getFont("Calibri",9,Font.BOLD);
+	  BaseColor bcolor=BaseColor.YELLOW;
+	  BaseColor subHeading= new BaseColor(69,109,142);
+	  Font SMALLFONT = FontFactory.getFont("Calibri",9,Font.NORMAL);
 	@Autowired IUserDAO userDAO;
 	
 	@Autowired IBoothPublicationVoterDAO boothPublicationVoterDAO;
@@ -3617,31 +3622,32 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  LOG.debug("Entered Into LocalElectionResults Blocks For GENERATING PDF");
 		//  Document document = new Document();
 		  try {
-			//  PdfWriter writer= PdfWriter.getInstance(document, new FileOutputStream(IConstants.pdfLocalPath));
-		
-			  //document.open();
-		  
-		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
-		  TITLE.setColor(BaseColor.BLACK);
+			  Font calibriBold = FontFactory.getFont("Calibri",9,Font.BOLD);
+			  BaseColor winner=new BaseColor(146, 208, 80);
+			  BaseColor runner= new BaseColor(141,180,226);
+			  Font calibriBold1 = FontFactory.getFont("Calibri",23,Font.BOLD);
+		      TITLE.setColor(BaseColor.BLACK);
 		  
 		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  //Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 		  
-		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
-		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
-		  Font TBCELLSM_WIN = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		//  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
+		  Font TBCELL =calibriBold;
+		  Font TBCELLSM = calibriBold;
+		//  Font TBCELLSM_WIN = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
+		  Font TBCELLSM_WIN = calibriBold;
 		  
 		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
-		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
+		  SMALLFONT_WIN.setColor(winner);
 
-		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		/*  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
 		  subHeading.setColor(BaseColor.MAGENTA);
-		  
+		  */
 		  
 		  
 		  if(prevResults.getPartyResultsVOList()!=null && prevResults.getPartyResultsVOList().size()>0){
 			  
-		  document.add(new Paragraph(prevResults.getZptcMptcTitle(),TITLE));
+		  document.add(new Paragraph(prevResults.getZptcMptcTitle(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
 		  int columnsCount=10;
@@ -3650,45 +3656,60 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  columnsCount=12;
 			  trsAvail=true;
 		  }
-		  
+		 int padding =6;
+		  BaseColor bcolor=BaseColor.YELLOW;
 		  PdfPTable table = new PdfPTable(columnsCount);
 		  PdfPCell column=null;
 		  column = new PdfPCell(new Phrase("YEAR",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Total Votes",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Votes Polled",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("TDP",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
-		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  column = new PdfPCell(new Phrase("  %      Votes    (TDP)",TBCELL));
+		  column.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  column.setPadding(padding);
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
-		  column = new PdfPCell(new Phrase("MARGIN",TBCELL));
+		  column = new PdfPCell(new Phrase(" Margin Votes(%)",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("INC",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 
-		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  column = new PdfPCell(new Phrase("%          Votes    (INC)",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  if(trsAvail){
 			  column = new PdfPCell(new Phrase("TRS",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 
-			  column = new PdfPCell(new Phrase("%",TBCELL));
+			  column = new PdfPCell(new Phrase("%         Votes      (TRS)",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 		  }
 		  
 		  column = new PdfPCell(new Phrase("OTHERS",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 
-		  column = new PdfPCell(new Phrase("%",TBCELL));
+		  column = new PdfPCell(new Phrase("%          Votes      (OTHERS)",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  for(PartyResultsVO temp:prevResults.getPartyResultsVOList()){
@@ -3710,7 +3731,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				  if(temp1.getPartyId().longValue()==872l){
 					  if(temp1.getRank()!=null){
 						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
-						  column.setBackgroundColor(BaseColor.GREEN);
+						  column.setBackgroundColor(winner);
 						  table.addCell(column);
 						  
 						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
@@ -3745,7 +3766,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				  if(temp1.getPartyId().longValue()==362l){
 					  if(temp1.getRank()!=null){
 						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
-						  column.setBackgroundColor(BaseColor.GREEN);
+						  column.setBackgroundColor(winner);
 						  table.addCell(column);
 						  
 						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
@@ -3776,7 +3797,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				  if(temp1.getPartyId().longValue()==886l){
 					  if(temp1.getRank()!=null){
 						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
-						  column.setBackgroundColor(BaseColor.GREEN);
+						  column.setBackgroundColor(winner);
 						  table.addCell(column);
 						  
 						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
@@ -3810,9 +3831,15 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  }
 		  
 		  document.add(Chunk.NEWLINE);
+		  
+		  float[] widths = new float[] {1.1f, 1.5f ,1.5f,1.2f,1.2f, 1.7f ,1.2f,1.2f,1.6f,1.8f };
+			table.setWidths(widths);
 		  document.add(table);
 		  document.add(Chunk.NEWLINE);
 		  }
+		  TITLE.setColor(subHeading);
+		  Paragraph phead = new Paragraph("Ward Wise Election Results In 2005",TITLE);
+		  document.add(phead);
 		  
 		  if(prevResults.getPartyStrengths()!=null){
 			  if(prevResults.getPartyStrengths().size()>0){
@@ -3840,64 +3867,84 @@ public class StratagicReportsService implements IStratagicReportsService{
 				  PdfPTable table2 = new PdfPTable(columnsCount);
 				  PdfPCell column=null;
 				  column = new PdfPCell(new Phrase("TDP",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  column.setColspan(3);
 				  table2.addCell(column);
 				  
 				  
 				  column = new PdfPCell(new Phrase("INC",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  column.setColspan(3);
 				  table2.addCell(column);
 				  
 				  column = new PdfPCell(new Phrase("BJP",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  column.setColspan(3);
 				  table2.addCell(column);
 				  
 				  if(trsavail){
 					  column = new PdfPCell(new Phrase("TRS",TBCELL));
+					  column.setBackgroundColor(bcolor);
 					  column.setColspan(3);
 					  table2.addCell(column);
 				  }
 				  
 				  column = new PdfPCell(new Phrase("OTHERS",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  column.setColspan(3);
 				  table2.addCell(column);
 				  
 				  
 				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  
 				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  
 				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  
 				  if(trsavail){
 				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  }
 				  
 				  column = new PdfPCell(new Phrase("Participated",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("Secured",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  column = new PdfPCell(new Phrase("%",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table2.addCell(column);
 				  
 				  
@@ -4013,15 +4060,16 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  
 					  
 				 
-				  
-				  document.add(table2);  
-			  }
+						float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.2f ,1.2f,1.2f};
+						table2.setWidths(widths);
+				        document.add(table2);  
+			    }
 			  
 		  
 		  document.add(Chunk.NEWLINE);
 		  document.add(new Paragraph(prevResults.getTotalNoOfWardsTitle(),TITLE));
 		  document.add(Chunk.NEWLINE);
-		  document.add(new Paragraph(prevResults.getWardTitle(),TITLE));
+		  document.add(new Paragraph(prevResults.getWardTitle(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
 		 
@@ -4041,31 +4089,39 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  PdfPTable table1 = new PdfPTable(columnsCount);
 			  PdfPCell column=null;
 			  column = new PdfPCell(new Phrase("Location",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table1.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("Total Votes",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table1.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("Votes Polled",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table1.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("TDP",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table1.addCell(column);
 			  
 			  
 			  column = new PdfPCell(new Phrase("INC",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table1.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("BJP",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table1.addCell(column);
 
 			  
 			  if(trsAvail){
 				  column = new PdfPCell(new Phrase("TRS",TBCELL));
+				  column.setBackgroundColor(bcolor);
 				  table1.addCell(column);
 			  }
 			  
 			  column = new PdfPCell(new Phrase("OTHERS",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table1.addCell(column);
 			  
 			  List<PartyResultsVO> results=new ArrayList<PartyResultsVO>();
@@ -4099,7 +4155,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  if(temp1.getPartyId().longValue()==872l){
 						  if(temp1.getRank()==1l){
 							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
-							  column.setBackgroundColor(BaseColor.GREEN);
+							  column.setBackgroundColor(winner);
 							  table1.addCell(column);
 							  
 							  ranked=true;
@@ -4122,7 +4178,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  if(temp1.getPartyId().longValue()==362l){
 						  if(temp1.getRank()==1l){
 							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
-							  column.setBackgroundColor(BaseColor.GREEN);
+							  column.setBackgroundColor(winner);
 							  table1.addCell(column);
 							  
 							  ranked=true;
@@ -4146,7 +4202,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  if(temp1.getPartyId().longValue()==163l){
 						  if(temp1.getRank()==1l){
 							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
-							  column.setBackgroundColor(BaseColor.GREEN);
+							  column.setBackgroundColor(winner);
 							  table1.addCell(column);
 							  
 							  ranked=true;
@@ -4170,7 +4226,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  if(temp1.getPartyId().longValue()==886l){
 						  if(temp1.getRank()==1l){
 							  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
-							  column.setBackgroundColor(BaseColor.GREEN);
+							  column.setBackgroundColor(winner);
 							  table1.addCell(column);
 							  
 							  ranked=true;
@@ -4191,7 +4247,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  if(temp.getOtherVotes()!=null){
 						  if(!ranked){
 							  column = new PdfPCell(new Phrase(temp.getOtherVotes().toString(),TBCELLSM_WIN));
-							  column.setBackgroundColor(BaseColor.GREEN);
+							  column.setBackgroundColor(winner);
 							  table1.addCell(column);
 						  }else{
 							  column = new PdfPCell(new Phrase(temp.getOtherVotes().toString(),TBCELLSM));
@@ -4204,14 +4260,45 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  
 				  }
 			  
-			  document.add(new Paragraph(prevResults.getInformation(),TITLE)); 
+			  document.add(new Paragraph(prevResults.getInformation(),SMALLFONT)); 
 			  document.add(Chunk.NEWLINE);
 			  document.add(table1);
 			  
 
 		  }
 		  
+		  Chunk id = new Chunk("                                                    ",calibriBold1);
+	         
+		     
+		     Chunk id1 = new Chunk("Winner", SMALLFONT);
 		  
+		     Chunk id2 = new Chunk("-", calibriBold);
+		     
+		     Chunk id3 = new Chunk("  ", calibriBold1);
+		     id3.setBackground(winner);
+		     
+		     Chunk id4 = new Chunk("Runner", SMALLFONT);
+			  
+			     Chunk id5 = new Chunk("-", calibriBold);
+			    
+			     Chunk id6 = new Chunk("  ", calibriBold1);				     
+			     id6.setBackground(runner);
+	        // id3.setHorizontalScaling(2);
+	         
+	        // Image img = Image.getInstance(IConstants.IMAGE);
+		       
+		 // Chunk id1= new Chunk(img, 5, 5, false);
+	   //  id1.setBackground(BaseColor.RED);
+	    // id1.setHorizontalScaling(2);
+		
+	
+	     document.add(id);
+	     document.add(id1);
+	     document.add(id2);
+	     document.add(id3);
+	     document.add(id4);
+	     document.add(id5);
+	     document.add(id6);
 		  
 		  } catch (Exception e) {
 			  LOG.debug("Exception Raised while GENERATING PDF in LocalElectionResults Blocks" +e);
@@ -4230,11 +4317,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 			//document.open();
 		  
-		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
-		  TITLE.setColor(BaseColor.BLACK);
+		  //Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(subHeading);
 		  
 		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		 // Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 		  
 		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
@@ -4249,21 +4336,25 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  if(task.equalsIgnoreCase("voterInfo")){
 			  
 			  
-			 document.add(new Paragraph(result.getMainHeading(),TBCELL));
+			 document.add(new Paragraph(result.getMainHeading(),TITLE));
 			 document.add(Chunk.NEWLINE);
 			  
 		  PdfPTable table = new PdfPTable(4);
 		  PdfPCell column=null;
 		  column = new PdfPCell(new Phrase("Publication Date",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Total Voters",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Male Voters",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Female Voters",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  List<VoterAgeRangeVO> rslt=result.getVoterInfoByPublicationList();
@@ -4294,32 +4385,42 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  PdfPCell column=null;
 			  column = new PdfPCell(new Phrase("Publication Name",TBCELL));
 			  column.setRowspan(2);
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("Previous Publication Name",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  column.setRowspan(2);
 			  table.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("Added",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  column.setColspan(3);
 			  table.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  column.setColspan(3);
 			  table.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("Total",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  column = new PdfPCell(new Phrase("Male",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  column = new PdfPCell(new Phrase("Female",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase("Total",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  column = new PdfPCell(new Phrase("Male",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  column = new PdfPCell(new Phrase("Female",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  
 			 			  
@@ -4361,6 +4462,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  List<VoterModificationAgeRangeVO> rslt=result.getAgeRangeWiseAddedDeletedList();
 			  
 			  column = new PdfPCell(new Phrase("Age Range",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  for(VoterModificationAgeRangeVO temp1:rslt){
 				  column = new PdfPCell(new Phrase(temp1.getRange(),TBCELLSM));
@@ -4368,6 +4470,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  }
 			  
 			  column = new PdfPCell(new Phrase("Added",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  
 			  for(VoterModificationAgeRangeVO temp1:rslt){
@@ -4376,6 +4479,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			  }
 
 			  column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  
 			  for(VoterModificationAgeRangeVO temp1:rslt){
@@ -4407,11 +4511,12 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 		
 	  
-		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
-		  TITLE.setColor(BaseColor.BLACK);
+		/*  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);*/
+			  TITLE.setColor(new BaseColor(69,109,142)); 
 		  
 		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  //Font SMALLFONT = FontFactory.getFont("Calibri",9,Font.NORMAL);
 	  
 		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
 		  subHeading.setColor(BaseColor.MAGENTA);
@@ -4420,7 +4525,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
 		  
 		  
-		  document.add(new Paragraph(result.getInformation(),TITLE));
+		  document.add(new Paragraph(result.getInformation(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
 		  PdfPTable table = new PdfPTable(11);
@@ -4493,11 +4598,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 		  //document.open();
 	  
-		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
-		  TITLE.setColor(BaseColor.BLACK);
-		  
+		  /*Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);*/
+			  TITLE.setColor(BaseColor.BLACK);
 		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		//  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 	  
 		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
@@ -4508,35 +4613,40 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  Font TBCELL = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.BOLD);
 		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
 		  
+		  TITLE.setColor(new BaseColor(69,109,142)); 
+		  
 		  document.add(new Paragraph("ASSUMPTIONS",TITLE));
 		  document.add(Chunk.NEWLINE);
 		  
-		  
-		  document.add(new Paragraph(result.getHeading1(),TITLE));
+		  TITLE.setColor(BaseColor.BLACK);
+		  document.add(new Paragraph(result.getHeading1(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
-		  document.add(new Paragraph(result.getHeading2(),TITLE));
+		  document.add(new Paragraph(result.getHeading2(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
-		  document.add(new Paragraph(result.getHeading3(),TITLE));
+		  document.add(new Paragraph(result.getHeading3(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
 		  PdfPTable table = new PdfPTable(2);
 		  PdfPCell column=null;
 		 		  
 		  column = new PdfPCell(new Phrase("Current Total Voters",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase(result.getTotalVoters().toString(),TBCELL));
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Expected Polling Percentage",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase(result.getExpPerc().toString()+" %",TBCELL));
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Targeted Polled Votes",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase(result.getTargetedPolledVotees().toString(),TBCELL));
@@ -4544,19 +4654,21 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 		  document.add(table);
 		  document.add(Chunk.NEWLINE);
-		  
+		  TITLE.setColor(new BaseColor(69,109,142)); 
 		  document.add(new Paragraph(result.getHeading4(),TITLE));
 		  document.add(Chunk.NEWLINE);
 		  
 		  PdfPTable table1 = new PdfPTable(2);
 		  		  
 		  column = new PdfPCell(new Phrase("Targeted Votes for TDP in 2014 ("+result.getTdpPer()+" % Votes Share in Polled Votes)",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table1.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase(result.getTargetedVotesForTDP().toString(),TBCELL));
 		  table1.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Additional Votes("+result.getAddtionalPerc()+" %) Required for TDP ( After removing the Assured ("+result.getAssuredPer()+" %) voters Base )",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table1.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase(result.getAddtionalVoters().toString(),TBCELL));
@@ -4586,11 +4698,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 		 // document.open();
 	  
-		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		//  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
 		  
 		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-		  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  //Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 	  
 		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
@@ -4602,13 +4714,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  Font TBCELLSM = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
 		  
 		  
-		  document.add(new Paragraph(result.getHeading1(),BIGFONT));
+		/*  document.add(new Paragraph(result.getHeading1(),BIGFONT));*/
 		  document.add(Chunk.NEWLINE);
 		  
-		  document.add(new Paragraph(result.getHeading2(),TITLE));
+		  document.add(new Paragraph(result.getHeading2(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
-		  document.add(new Paragraph(result.getHeading3(),TITLE));
+		  document.add(new Paragraph(result.getHeading3(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
 		  int partiesCount=result.getDelimitationEffectVO()!=null?result.getDelimitationEffectVO().size():0;
@@ -4621,33 +4733,40 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Total Votes",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  column.setRowspan(2);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Votes Polled",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  column.setRowspan(2);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase("Poll %",TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  column.setRowspan(2);
 		  table.addCell(column);
 		  
 		  for(DelimitationEffectVO temp1:result.getDelimitationEffectVO()){
 			  column = new PdfPCell(new Phrase(temp1.getPartyName(),TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  column.setColspan(2);
 			  table.addCell(column);
 		  }
 		  
 		  for(DelimitationEffectVO temp1:result.getDelimitationEffectVO()){
-			  column = new PdfPCell(new Phrase("Votes",TBCELL));;
+			  column = new PdfPCell(new Phrase("Votes",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 			  
-			  column = new PdfPCell(new Phrase(" % ",TBCELL));;
+			  column = new PdfPCell(new Phrase(" % ",TBCELL));
+			  column.setBackgroundColor(bcolor);
 			  table.addCell(column);
 		  }
 		  
 		  
 		  column = new PdfPCell(new Phrase(result.getPreviousyear(),TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase(result.getPreviousCount().toString(),TBCELL));
@@ -4676,6 +4795,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  }
 		  
 		  column = new PdfPCell(new Phrase(result.getPresentYear(),TBCELL));
+		  column.setBackgroundColor(bcolor);
 		  table.addCell(column);
 		  
 		  column = new PdfPCell(new Phrase(result.getPresentCount().toString(),TBCELL));
@@ -4706,7 +4826,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 		  document.add(table);
 		  document.add(Chunk.NEWLINE);
-		  document.add(new Paragraph("We have considered 2009 Delimitation area results for comparison",TITLE));
+		  document.add(new Paragraph("We have considered 2009 Delimitation area results for comparison",SMALLFONT));
 		  document.add(Chunk.NEWLINE);
 		  
 		  //document.close();
@@ -4727,7 +4847,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 		 // document.open();
 	  
-		  Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD);
+		 // Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD);
 		  TITLE.setColor(BaseColor.BLACK);
 		  
 		  Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
@@ -5028,8 +5148,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		
 			//document.open();
 	  
-			Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
-			TITLE.setColor(BaseColor.BLACK);
+			//Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+			TITLE.setColor(subHeading);
 		  
 			Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 			Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
@@ -5054,42 +5174,54 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			column = new PdfPCell(new Phrase("Mandal/Muncipality",TBCELL));
 			column.setRowspan(2);
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Voters",TBCELL));
 			column.setColspan(2);
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Total Voters",TBCELL));
 			column.setColspan(2);
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Male Voters",TBCELL));
 			column.setColspan(2);
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Female Voters",TBCELL));
 			column.setColspan(2);
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			for(SelectOptionVO temp:publications){
 				column = new PdfPCell(new Phrase(temp.getName(),TBCELL));
+				column.setBackgroundColor(bcolor);
 				table.addCell(column);
 			}
 			
 			column = new PdfPCell(new Phrase("Added",TBCELL));
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Added",TBCELL));
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Added",TBCELL));
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			column = new PdfPCell(new Phrase("Deleted",TBCELL));
+			column.setBackgroundColor(bcolor);
 			table.addCell(column);
 			
 			for(VoterModificationVO temp1:resultvo.getModifiedVotersList()){
