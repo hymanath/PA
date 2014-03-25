@@ -470,8 +470,8 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		    PdfWriter writer=	PdfWriter.getInstance(document, new FileOutputStream(filePath));
 			 document.open();
 			 
-			    //Image image1 = Image.getInstance(IConstants.IMAGE);
-		        //document.add(image1);
+			    Image image1 = Image.getInstance(IConstants.IMAGE);
+		        document.add(image1);
 		        
 		        document.newPage();
 			 buildPreviousTrendsHeadings(document);
@@ -810,7 +810,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		document.add( new Paragraph(" ") );
 
 		PdfPTable table = new PdfPTable(12);
-		 table.setWidthPercentage(100);
+		 table.setWidthPercentage(50);
 		  	c1 = new PdfPCell(new Phrase("Year",calibriBold));
 		  	c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	c1.setBackgroundColor(BaseColor.YELLOW);
@@ -1544,15 +1544,29 @@ public void buildPdfForHouseHolds(HouseHoldsVO finalRes,Document document,PdfWri
 	 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 	
-	    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
-	    subHeading.setColor(BaseColor.MAGENTA); 
+	    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.BOLD);
+	    subHeading.setColor(BaseColor.BLACK);
+	    
+	    Font title = new Font(Font.FontFamily.TIMES_ROMAN,12,Font.BOLD);
+		  title.setColor(new BaseColor(141,180,226)); 
+	   
+	   
 	  
-	
+	   Paragraph p1 =   new Paragraph(finalRes.getHeading() ,title);
+		p1.setFont(title);
+		
+		document.add(p1 );
 	
 	Paragraph p =   new Paragraph(heading ,SMALLFONT);
 	//p.setFont(subHeading);
 	
 	document.add(p );
+
+	
+	Paragraph p2 =   new Paragraph(finalRes.getCalcMessage() ,subHeading);
+	p2.setFont(subHeading);
+	
+	document.add(p2 );
 	
 	PdfPCell c1;
 	document.add( new Paragraph(" ") );
@@ -1571,14 +1585,14 @@ public void buildPdfForHouseHolds(HouseHoldsVO finalRes,Document document,PdfWri
 	  	
 	  	for (HouseHoldsVO prev : finalRes.getHouseHoldsVOList()) {
 
-	  		
+	  	
 		 c1 = new PdfPCell(new Phrase(prev.getFamiliRange(),BIGFONT));
 	 	 c1.setBackgroundColor(BaseColor.YELLOW);
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		
 	  	}
-	  	 c1 = new PdfPCell(new Phrase("No Of Families",BIGFONT));
+	  	 c1 = new PdfPCell(new Phrase("No of Families",BIGFONT));
 	 	 c1.setBackgroundColor(BaseColor.YELLOW);
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
@@ -1682,15 +1696,23 @@ public void buildPdfForCasteVoters(CasteStratagicReportVO finalRes,Document docu
 public void buildPdfForVotersInfo(VoterStratagicReportVo finalRes,Document document,PdfWriter writer,String heading) throws DocumentException, IOException
 {
 
-	 Font BIGFONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	/* Font BIGFONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-	 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+	 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);*/
 	
-	    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
-	    subHeading.setColor(BaseColor.MAGENTA); 
+	    /*Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
+	    subHeading.setColor(BaseColor.MAGENTA); */
 	  
-	
-	
+	   /* Font title = new Font(Font.FontFamily.TIMES_ROMAN,12,Font.BOLD);
+		  title.setColor(new BaseColor(141,180,226)); */
+	   
+	    TITLE.setColor(subHeading);
+	  
+	   Paragraph p1 =   new Paragraph(finalRes.getHeading() ,TITLE);
+		
+	    
+		document.add(p1 );
+		TITLE.setColor(BaseColor.BLACK);
 	Paragraph p =   new Paragraph(heading ,SMALLFONT);
 	//p.setFont(subHeading);
 	
@@ -1700,8 +1722,10 @@ public void buildPdfForVotersInfo(VoterStratagicReportVo finalRes,Document docum
 	document.add( new Paragraph(" ") );
 
 	PdfPTable table = new PdfPTable(3);
+	table.setWidthPercentage(30);
+	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 
-	  	c1 = new PdfPCell(new Phrase("Total Voters",BIGFONT));
+	  	c1 = new PdfPCell(new Phrase("Total Voters",SMALLFONT));
 	 	 c1.setBackgroundColor(BaseColor.YELLOW);
 
 		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -1711,60 +1735,68 @@ public void buildPdfForVotersInfo(VoterStratagicReportVo finalRes,Document docum
 	  	for (VoterStratagicReportVo prev : finalRes.getVoterStategicReportVOList()) {
 
 	  		
-		 c1 = new PdfPCell(new Phrase(prev.getTotalVoters().toString(),BIGFONT));
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+		 c1 = new PdfPCell(new Phrase(prev.getTotalVoters().toString(),SMALLFONT));
+	 	// c1.setBackgroundColor(BaseColor.YELLOW);
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
-		 
+		
 		 c1 = new PdfPCell(new Phrase("",BIGFONT));
 	 	 c1.setBorder(Rectangle.NO_BORDER);
 		 table.addCell(c1);
 		 
 		 
-		 c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+		 c1 = new PdfPCell(new Phrase("Male",SMALLFONT));
 	 	 c1.setBackgroundColor(BaseColor.YELLOW);
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
-		 c1 = new PdfPCell(new Phrase(prev.getMaleVotersCount().toString(),BIGFONT));
+		 c1 = new PdfPCell(new Phrase(prev.getMaleVotersCount().toString(),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 		 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getMaleTotalPercentage()),BIGFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 		 
 	 	 
-		 c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+		 c1 = new PdfPCell(new Phrase("Female",SMALLFONT));
 	 	 c1.setBackgroundColor(BaseColor.YELLOW);
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
 	 	 
-		 c1 = new PdfPCell(new Phrase(prev.getFemaleVotersCount().toString(),BIGFONT));
-	 
+		 c1 = new PdfPCell(new Phrase(prev.getFemaleVotersCount().toString(),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getFemaleTotalPercentage()),BIGFONT));
-		 
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
 		 	
-	  	}	float[] widths = new float[] {1.2f, 1.2f ,1.2f};
+	  	}
+	  	float[] widths = new float[] {1f, 1f ,1f};
 		table.setWidths(widths);
-	  	
 	  	document.add(table);
 		
 }	  
 public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo finalRes,Document document,PdfWriter writer,String heading) throws DocumentException, IOException
 {
 
-	 Font BIGFONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	/* Font BIGFONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 	
 	    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
-	    subHeading.setColor(BaseColor.MAGENTA); 
+	    subHeading.setColor(BaseColor.MAGENTA); */
 	  
-	
+	 TITLE.setColor(subHeading);
+	  
+	   Paragraph p1 =   new Paragraph(finalRes.getHeading() ,TITLE);
+		
+	    
+		document.add(p1 );
+		TITLE.setColor(BaseColor.BLACK);
 	
 	/*Paragraph p =   new Paragraph(heading ,subHeading);
 	//p.setFont(subHeading);
@@ -1773,11 +1805,13 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 	
 	PdfPCell c1;
 	document.add( new Paragraph(" ") );
-
+	
+	
 	PdfPTable table = new PdfPTable(7);
-
+	
 	  	c1 = new PdfPCell(new Phrase("Age Range",BIGFONT));
 	  	c1.setRowspan(2);
+	  	
 		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	c1.setBackgroundColor(BaseColor.YELLOW);
 
@@ -1819,38 +1853,50 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 		
 		 
 	  	for (VoterStratagicReportVo prev : finalRes.getVoterStategicReportVOList()) {
-         
-	  		 c1 = new PdfPCell(new Phrase(prev.getVoterAgeRange(),BIGFONT));
-	 	 	 table.addCell(c1);
+             if(prev.getVoterAgeRange().equalsIgnoreCase("Young Voters"))
 	  		
+            	 {
+            	 c1 = new PdfPCell(new Phrase("First Time Voters (18-22)",SMALLFONT));
+       	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+    	 	 	 table.addCell(c1);     	 
+            	 }
+             else{
+	  		 c1 = new PdfPCell(new Phrase(prev.getVoterAgeRange(),SMALLFONT));
+	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	 	 table.addCell(c1);
+             }
 		
 		 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getTotalVoters()),BIGFONT));
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getTotalVoters()),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	table.addCell(c1);
 		 
 		
 		 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getTotalPercentage()),BIGFONT));
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getTotalPercentage()),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 	 	 
 		 
 	 	 
-	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getMaleVotersCount()),BIGFONT));
+	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getMaleVotersCount()),SMALLFONT));
+	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 	 	 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getMaleTotalPercentage()),BIGFONT));
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getMaleTotalPercentage()),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 		 
 	 	 
 		
 		 
 	 	 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getFemaleVotersCount()),BIGFONT));
-	 
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getFemaleVotersCount()),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getFemaleTotalPercentage()),BIGFONT));
-		 
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getFemaleTotalPercentage()),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
 		 	
@@ -1865,9 +1911,9 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 public void buildPdfForPollingStations(PartyPositionVO finalRes,Document document,PdfWriter writer,List<String> headings) throws DocumentException, IOException
 {
 
-	/* Font BIGFONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	 Font BIGFONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-	 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);*/
+	 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 	
 	 Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 	  subHeading.setColor(new BaseColor(69,109,142)); 
@@ -1885,35 +1931,34 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	PdfPTable table = new PdfPTable(6);
 	PdfPTable table1 = new PdfPTable(6);
 	
-	/*Paragraph p =   new Paragraph("Polling Stations – Increase Polling %" ,TITLE);
-    p.setFont(TITLE);
-    document.add(p);*/
-	 buildSubHeading(document, "Polling Stations – Increase Polling %");
+	
+	Paragraph p =   new Paragraph("Polling Stations – Increase Polling %" ,subHeading);
+    p.setFont(subHeading);
+    document.add(p);
     
     Paragraph p1 =   new Paragraph("We need to try & improve the polling percentages where we are very strong."+
-    		"The following are the polling booths where we are strong and had low polling percentages." ,SMALLFONT);
-    p1.setFont(SMALLFONT);
+    		"The following are the polling booths where we are strong and had low polling percentages." ,BIGFONT);
+    p1.setFont(BIGFONT);
     document.add(p1);
     
 	pollingStationHelper(finalRes, table, headings,"Strong","Polling Stations – Increase Polling %");
 	
 	document.add( new Paragraph(" ") );
 	
-	float[] widths = new float[] {0.8f, 1.8f ,1.2f,1.2f,1.2f, 1.5f };
+	float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f };
 	table.setWidths(widths);
   	document.add(table);
   	
   	document.add( new Paragraph(" ") );
   	
-	/*Paragraph p2 =   new Paragraph("Polling Stations – Reduce Polling %" ,TITLE);
-    p2.setFont(TITLE);
-    document.add(p2);*/
-	 buildSubHeading(document, "Polling Stations – Reduce Polling %");
+	Paragraph p2 =   new Paragraph("Polling Stations – Reduce Polling %" ,subHeading);
+    p2.setFont(subHeading);
+    document.add(p2);
     
     Paragraph p3 =   new Paragraph("We need to try & decrease the polling percentages where we are OK and there "+
     		"has been abnormal polling percentage. The below are the polling booths where we had highest polling"+
-    		"percentages and our party’s performances was low.",SMALLFONT);
-    p3.setFont(SMALLFONT);
+    		"percentages and our party’s performances was low.",BIGFONT);
+    p3.setFont(BIGFONT);
     document.add(p3);
     
 	pollingStationHelper(finalRes, table1, headings,"Weak","Polling Stations – Reduce Polling %");
@@ -1958,7 +2003,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		if(input.equalsIgnoreCase("Strong"))
 			{
 				
-	  		    c1 = new PdfPCell(new Phrase("Improve (Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",BIGFONT));
+	  		    c1 = new PdfPCell(new Phrase("Improve (Avg Poll% "+prev.getPartyPercentage()+")",BIGFONT));
 	  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			c1.setBackgroundColor(BaseColor.YELLOW);
 	  			table.addCell(c1);
@@ -1966,7 +2011,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 				
 			{ 
 				
-				   c1 = new PdfPCell(new Phrase("To Decrease(((Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",BIGFONT));
+				   c1 = new PdfPCell(new Phrase("To Decrease(((Avg Poll% "+prev.getPartyPercentage()+")",BIGFONT));
 		  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			c1.setBackgroundColor(BaseColor.YELLOW);
 		  			table.addCell(c1);
@@ -1975,47 +2020,41 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		count++;
          
 	  		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getId()),SMALLFONT));
-	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 	 table.addCell(c1);
 	  		
 		
 		 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocalbodyName()),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	 table.addCell(c1);
+	 	table.addCell(c1);
 		 
 	 	 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getPollingPercentage())),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 		
 		 
 	 	if(input.equalsIgnoreCase("Strong"))
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getPartyTotalvotes()),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getSelectedPartyTotalVoters()),SMALLFONT));
 	 	else
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getPartyTotalvotes()),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getSelectedPartyTotalVoters()),SMALLFONT));
 	 		
-	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1); 
 	 	
 	 	 
 	 	
 	 	if(input.equalsIgnoreCase("Strong"))
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getWeakPollingPercentVOList().get(0).getPartyPercentage())),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getPartyPercentage()),BIGFONT));
 	 	else
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getStrongPollingPercentVOList().get(0).getPartyPercentage())),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getPartyPercentage()),BIGFONT));
 	 	
-	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 		 
 		 
 	 	if(input.equalsIgnoreCase("Strong"))
 		
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMinValue())),SMALLFONT));
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMinValue())),BIGFONT));
 	 	else
-			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMaxValue())),SMALLFONT));
+			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMaxValue())),BIGFONT));
 
-	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
 		
