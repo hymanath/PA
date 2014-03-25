@@ -48,13 +48,14 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 	
 	@Autowired public IVoterFamilyInfoDAO voterFamilyInfoDAO;
 	
-	@Autowired IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
+	@Autowired
+	public IConstituencyCensusDetailsDAO constituencyCensusDetailsDAO;
 	
-	@Autowired IConstituencyDAO constituencyDAO;
+	@Autowired public IConstituencyDAO constituencyDAO;
 	
 	@Autowired IStateDAO stateDAO;
 	
-	@Autowired public ICensusDAO censusDAO;
+	@Autowired 	public ICensusDAO censusDAO;
 	
 	@Autowired public IDistrictDAO districtDAO;
 	
@@ -502,7 +503,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 			StringBuffer conclusion = new StringBuffer();
 				conclusion.append("  Population were "+populationStatus+" in this Constituency.  ,");			
 			//	conclusion.append("  ST’s were Improved where as SC’s were decreased when compare to district and State.  ,");
-				conclusion.append("  Employment resources are "+emplmentStatus+", where as decreased for Women  ,");
+				conclusion.append("  Employment resources are "+emplmentStatus+"  where as decreased for Women  ,");
 				conclusion.append("  Education Facilities are "+literatusStatus+".  ");
 				
 			resultVO.setConclusion(conclusion.toString());
@@ -510,6 +511,7 @@ public class StratagicReportServiceForMLASuccess implements IStratagicReportServ
 		}catch(Exception e)
 		{
 			LOG.error("Exception occured in the StratagicReportServiceForMLASuccess service method");
+			e.printStackTrace();
 		}
 		
 		return resultVO;
@@ -590,7 +592,7 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 		
 		List<Object[]> ids = (List<Object[]>)partyTrendsDAO.getPreviousTrendsData(null, constId);
 		Map<Long,PartyElectionTrendsReportVO> maps = new HashMap<Long, PartyElectionTrendsReportVO>();
-
+       
 		System.out.println(ids.size());
 		
 		for (Object[] object : ids) {
@@ -623,18 +625,15 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 	     	   vo.setPrpVo(voh);
 
 	        }
-	        else if(Long.valueOf(object[9].toString())<10){
-	        	if(((Long)object[3]).equals(163L)){
-	        		vo.setBjpVo(voh);
-	        	}
-	        	else if(((Long)object[3]).equals(886L)){
+	        else if(Long.valueOf(object[9].toString())<11){
+	        	 if(((Long)object[3]).equals(886L)){
 	        		vo.setTrsVo(voh);
 	        	}
 	        	 else {
 	  	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 	  	     	   if(vo1!=null){
 	  	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-	  	     		  if( vo1.getRank()<(Long)object[8] )
+	  	     		  if( vo1.getRank()>(Long)object[8] )
 	          			  vo1.setRank((Long)object[8]); 
 	  	     	   }
 	  	        
@@ -653,7 +652,7 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 	     	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 	     	   if(vo1!=null){
 	     		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-	     		  if( vo1.getRank()<(Long)object[8] )
+	     		  if( vo1.getRank()>(Long)object[8] )
         			  vo1.setRank((Long)object[8]); 
 	     	   }
 	        
@@ -697,11 +696,8 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 			        	   vo.setPrpVo(voh);
 
 			           }
-			           else if(Long.valueOf(object[9].toString())<10){
-			           		if(((Long)object[3]).equals(163L)){
-			           			vo.setBjpVo(voh);
-			           		}
-			           		else if(((Long)object[3]).equals(886L)){
+			           else if(Long.valueOf(object[9].toString())<11){
+			           		 if(((Long)object[3]).equals(886L)){
 			           			vo.setTrsVo(voh);
 			           		}
 			           	 else {
@@ -727,7 +723,7 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 			        	   PartyElectionTrendsReportHelperVO vo1 = vo.getOthersVo();
 			        	   if(vo1!=null){
 			        		   vo1.setVotesEarned(vo1.getVotesEarned()+((Double)object[4]).longValue()) ;
-			        		  if( vo1.getRank()<(Long)object[8] )
+			        		  if( vo1.getRank()>(Long)object[8] )
 			        			  vo1.setRank((Long)object[8]); 
 			        	   }
 			        	   else 
@@ -879,6 +875,8 @@ public void buildHelperVoForConst(PartyElectionTrendsReportVO partyVos ,String n
 		System.out.println(ids.size());
 		
 		// get alliances for tdp inc based on year and election type
+		
+		
 		
 		for (Object[] object : ids) {
 			
