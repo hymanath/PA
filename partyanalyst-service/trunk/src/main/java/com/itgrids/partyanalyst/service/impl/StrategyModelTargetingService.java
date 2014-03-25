@@ -2017,7 +2017,7 @@ public class StrategyModelTargetingService implements
 		   List<OrderOfPriorityVO> panchayatsClassification = calculateCriticalModerateEasyPanchs(finalOrderOfOriority);
    		   
 		   List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
-		   getImpFamilesList(finalOrderOfOriority.get(0).getPanchayatId(),strategyVO.getPublicationId(),impfamilesList);
+		   getImpFamilesList(finalOrderOfOriority.get(0).getPanchayatId(),strategyVO.getPublicationId(),impfamilesList,"panchayat");
 		   
 		   if(strategyVO.getCastePercents() != null && strategyVO.getCastePercents().size() > 0)
 		   {
@@ -2097,13 +2097,22 @@ public class StrategyModelTargetingService implements
 	   }
 	   
 	   
-	   public void getImpFamilesList(Long panchayatId,Long publicationDateId,List<ImpFamilesVO> impfamilesList)
+	   public void getImpFamilesList(Long panchayatId,Long publicationDateId,List<ImpFamilesVO> impfamilesList,String type)
        {
     	   try
     	   {
     		   LOG.info("Enterd into getImpFamilesList() method");
     		   //panchayatId = 461l;
-    		   List<Object[]> boothWiseDetails = boothPublicationVoterDAO.getPanchayatwiseImpFamiles(publicationDateId,panchayatId);
+    		   List<Object[]> boothWiseDetails = null;
+    		   if(type.endsWith("panchayat"))
+    		   {
+    			   boothWiseDetails = boothPublicationVoterDAO.getPanchayatwiseImpFamiles(publicationDateId,panchayatId);
+    		   }
+    		   else
+    		   {
+    			   boothWiseDetails = boothPublicationVoterDAO.getImpFamilesForMuncipality(publicationDateId,panchayatId);
+    		   }
+    		   
     		   if(boothWiseDetails != null && boothWiseDetails.size() > 0)
     		   {
     			   //impfamilesList = new ArrayList<ImpFamilesVO>();
@@ -2190,7 +2199,8 @@ public class StrategyModelTargetingService implements
 				Paragraph preface = new Paragraph();
 				int padding = 6;
 				preface.setAlignment(Element.PTABLE);
-				preface.add( new Paragraph(list.get(0).getPanchayatName()+ "  TOP FAMILES"));
+				preface.add( new Paragraph(" ") );
+				preface.add( new Paragraph("TOP FAMILES"));
 				preface.add( new Paragraph(" ") );
 				document.add(preface); 
 				table.setWidthPercentage(100);
@@ -2208,7 +2218,7 @@ public class StrategyModelTargetingService implements
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("No",style1));
+		  	   cell = new PdfPCell(new Phrase("Count",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
@@ -3300,7 +3310,14 @@ public class StrategyModelTargetingService implements
 						if( VO.getType().equalsIgnoreCase("Highly Critical") || VO.getType().equalsIgnoreCase("Critical"))
 						{
 							List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
-							getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList);
+							if(VO.getName().contains("MUNCIPALITY") || VO.getName().contains("CORPORATION") || VO.getName().contains("Greater Municipal Corp"))
+							{
+								getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList,"mincipality");
+							}
+							else
+							{
+								getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList,"panchayat");
+							}
 							buildPdfForHouseHolds(strategyVO,document,writer,VO.getName(),VO.getPanchayatId()); 
 							generateImpFamilesTable(document,impfamilesList);
 							document.newPage();
@@ -3338,20 +3355,20 @@ public class StrategyModelTargetingService implements
 			}
 			 
 			 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-			
-			
-			    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
-			    subHeading.setColor(BaseColor.MAGENTA); 
+
 			  
 			    Paragraph preface = new Paragraph();
 			    preface.setAlignment(Element.PTABLE);
 			    preface.add( new Paragraph(" ") );
+			    preface.add( new Paragraph(" ") );
+			    preface.add( new Paragraph(name) );
 			    preface.add( new Paragraph(" ") );
 			    document.add(preface);
 			
 			PdfPCell c1;
 			
 			PdfPTable table = new PdfPTable(5);
+			table.setWidthPercentage(100);
 			int padding = 6;
 				
 			     c1 = new PdfPCell(new Phrase("Range",BIGFONT));
@@ -3360,11 +3377,25 @@ public class StrategyModelTargetingService implements
 				 c1.setPadding(padding);
 				 table.addCell(c1);
 
-				table.addCell(c1);
 			  	for (HouseHoldsVO prev : houseHoldsVO.getHouseHoldsVOList()) {
-
-			  		
-				 c1 = new PdfPCell(new Phrase(prev.getFamiliRange(),BIGFONT));
+			  	String nameType = "";
+			  	 if(prev.getFamiliRange().equalsIgnoreCase("0-3"))
+			  	 {
+			  		nameType = "Voters Below 3";
+			  	 }
+			  	 else if(prev.getFamiliRange().equalsIgnoreCase("4-6"))
+			  	 {
+			  		nameType = "Voters Between 4-6";
+			  	 }
+			  	 else if(prev.getFamiliRange().equalsIgnoreCase("7-10"))
+			  	 {
+			  		nameType = "Voters Between 7-10"; 
+			  	 }
+			  	 else
+			  	 {
+			  		nameType = "Voters Above 10"; 
+			  	 }
+				 c1 = new PdfPCell(new Phrase(nameType,BIGFONT));
 			 	 c1.setBackgroundColor(BaseColor.YELLOW);
 				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 				 c1.setPadding(padding);

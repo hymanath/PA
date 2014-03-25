@@ -624,4 +624,6 @@ public interface IBoothPublicationVoterDAO extends
 	  public List<Object[]> getPanchayatwiseImpFamiles(Long publicationId,Long panchayatId);
 	  
 	  public List<Object[]> getElderPersonDetails(Long publicationId,Long boothId,String houseNo);
+	  
+	  public List<Object[]> getImpFamilesForMuncipality(Long publicationId,Long muncipalityId);
 }
