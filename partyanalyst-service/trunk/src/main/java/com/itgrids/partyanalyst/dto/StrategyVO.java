@@ -42,6 +42,7 @@ public class StrategyVO implements Serializable {
 	private Double veryStrongMin;
 	private Double veryStrongMax;
 	private boolean considerRange;
+	private boolean autoCalculate;
 	
 	public Long getConstituencyId() {
 		return constituencyId;
@@ -216,6 +217,12 @@ public class StrategyVO implements Serializable {
 	}
 	public void setConsiderRange(boolean considerRange) {
 		this.considerRange = considerRange;
+	}
+	public boolean isAutoCalculate() {
+		return autoCalculate;
+	}
+	public void setAutoCalculate(boolean autoCalculate) {
+		this.autoCalculate = autoCalculate;
 	}
 	
 	
