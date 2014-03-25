@@ -2,6 +2,8 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -145,11 +147,9 @@ public class BoothwisePollingStratagicService  implements IBoothwisePollingStrat
 		 Long latestPublictaionId = 0l;
 		 Long TotalVotesInConstituency = 0l;
 		 Long TotalPolledVotesInConstituency = 0l;
-		 Double partyPercentage = 0.0;
 		 Map<Long,Map<Long,Long>> boothMap = new HashMap<Long, Map<Long,Long>>();//<boothId,PartyMap<PartyId,polledVotes>)
 		 List<PartyPositionVO> result = new ArrayList<PartyPositionVO>();
 		 List<Object[]> totalVotesForBooth = null;
-		 List<Object[]> totalPolledVotesForBooth = null;
 		 Map<Long,Object[]> totalVotersMap = new HashMap<Long, Object[]>();
 		 Map<Long,String> panchayatMap = new HashMap<Long, String>();
 		 Map<Long,Long> addedVotersMap = new HashMap<Long, Long>();
@@ -162,7 +162,6 @@ public class BoothwisePollingStratagicService  implements IBoothwisePollingStrat
 			 List<Long> boothIds = boothConstituencyElectionDAO.getBoothIdsByConstituencyId(constituenycId,electionId);
 			 List<Object[]> totalVotersInBooth =boothDAO.getTotalVotesForBooth(boothIds);
 			 List<Object[]> panchayatnames = hamletBoothElectionDAO.getPanchayatNamesByBoothIds(boothIds);
-			 //latestPublictaionId = publicationDateDAO.getLatestPublicationId();
 			 latestPublictaionId = voterInfoDAO.getLatestPublicationDate(constituenycId);
 			 List<Object[]> addedVotersCount = voterModificationDAO.getAddedVotersByBoothIds(boothIds,latestPublictaionId,constituenycId);
 			 Set<Long> booths = new HashSet<Long>(boothIds);
@@ -263,23 +262,18 @@ public class BoothwisePollingStratagicService  implements IBoothwisePollingStrat
 						 StrongpartyInfo.add(partyVo);
 					 }
 				}
-				
+				 
 				 partyPositionVO.setTotalValidVotes(totalValidVotes);
 				 Object[] params1 = totalVotersMap.get(boothId);
 				
 				 partyPositionVO.setTotalVoters((Long)params1[1]);
-				 //partyPositionVO.setLocation(params1[2].toString());
-				 //partyPositionVO.setVillagesCovered(params1[3].toString());
 				 partyPositionVO.setPollingPercentage((partyPositionVO.getTotalValidVotes() * 100.0 )/ partyPositionVO.getTotalVoters());
-				 //partyPositionVO.setRangePercentage((long)(pollingPerForConstituency * partyPositionVO.getTotalVoters())/100 );
-				
 				
 				 if(pollingPerForConstituency < partyPositionVO.getPollingPercentage())
 				 {
 					 if(WeakpartyInfo != null && WeakpartyInfo.size() >0)
 					 {
 					 partyPositionVO.setMinValue(partyPositionVO.getPollingPercentage()-pollingPerForConstituency) ;
-					 //partyPositionVO.setLostSeats(new Double((partyPositionVO.getMinValue()* partyPositionVO.getTotalVoters())/100).longValue());
 					 partyPositionVO.setWeakPollingPercentVOList(WeakpartyInfo);
 					 if(addedVotersMap.get(boothId) == null || addedVotersMap.get(boothId).equals(""))
 						 partyPositionVO.setAddedVotersCount(0l);
@@ -293,31 +287,48 @@ public class BoothwisePollingStratagicService  implements IBoothwisePollingStrat
 					 if(StrongpartyInfo != null && StrongpartyInfo.size() >0)
 					 {
 					 partyPositionVO.setMaxValue(pollingPerForConstituency-partyPositionVO.getPollingPercentage());
-					 //partyPositionVO.setToTarget(new Double((partyPositionVO.getMaxValue() * partyPositionVO.getTotalVoters())/100).longValue());
-					 //partyPositionVO.setToImprove(new Double((partyPositionVO.getToTarget() * StrongpartyInfo.get(0).getPartyPercentage())/100).longValue());
 					 partyPositionVO.setStrongPollingPercentVOList(StrongpartyInfo);
 					 PollingLowboothResultList.add(partyPositionVO);
 					 }
 				 }
 				 }
-			
+			 sortPolling(PollingLowboothResultList);
+			 sortPolling(PollingHighboothResultList);
+
 			 mainVo.setPartyPercentage(Double.valueOf(decimalFormat.format(partyPerInConstituency)));
 			 mainVo.setPollingPercentage(Double.valueOf(decimalFormat.format(pollingPerForConstituency)));
 			 if(PollingHighboothResultList != null && PollingHighboothResultList.size() >0)
-			 mainVo.setStrongPollingPercentVOList(PollingHighboothResultList);
+			 mainVo.setStrongPollingPercentVOList(PollingHighboothResultList.subList(0, 14));
 			 if(PollingLowboothResultList != null && PollingLowboothResultList.size() > 0)
-			 mainVo.setWeakPollingPercentVOList(PollingLowboothResultList);
+			 mainVo.setWeakPollingPercentVOList(PollingLowboothResultList.subList(0, 14));
 			 result.add(mainVo);
 	 }
 		 catch(Exception e)
 		 {
-			 
 			 e.printStackTrace();
 		 }
-		 result.get(0).setTitle("Polling Stations - increase polling % ");
-		 result.get(0).setHedding("We need to try & improve the polling percentages where we are very strong."+ 
-		 "The following are the polling booths where we are strong and had low polling percentages");
 		return result;
 	 }
 	
+	  public void sortPolling(List<PartyPositionVO> castList)
+		{
+			 Collections.sort(castList, new Comparator<PartyPositionVO>() {
+				 
+					 public int compare(PartyPositionVO arg0, PartyPositionVO arg1) {
+						 if(arg0.getMaxValue() != null && arg0.getMaxValue() > 0 )
+					        if(arg0.getMaxValue() < arg1.getMaxValue()){
+					            return 1;
+					        } else {
+					            return -1;
+					        }
+						 if(arg0.getMinValue() != null && arg0.getMinValue() > 0 )
+							 if(arg0.getMinValue() < arg1.getMinValue()){
+						            return 1;
+						        } else {
+						            return -1;
+						        }
+						 return -1;
+					 }
+			 });
+		}
 }
