@@ -105,8 +105,8 @@ public class StrategyModelTargetingService implements
 	private ISuggestiveModelService suggestiveModelService;
 	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
 	
-	private static Font style1 = new Font(Font.FontFamily.ZAPFDINGBATS, 10,Font.BOLD);
-	private static Font style2 = new Font(Font.FontFamily.ZAPFDINGBATS, 8,Font.NORMAL);
+	private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
 
 	
 	public ISuggestiveModelService getSuggestiveModelService() {
@@ -3220,12 +3220,12 @@ public class StrategyModelTargetingService implements
 	             }
 			  }
 			
-		      plot.setSimpleLabels(true);
+		      //plot.setSimpleLabels(true);
 		      
 		      PdfContentByte cb = writer.getDirectContent();
 			  PdfTemplate bar = cb.createTemplate(600, 800);
 			  Graphics2D g2d2 = bar.createGraphics(600,800);
-			  Rectangle2D rectangle2d = new Rectangle2D.Double(80,110, 300,400);
+			  Rectangle2D rectangle2d = new Rectangle2D.Double(30,130, 530,500);
 
 			  chart.draw(g2d2, rectangle2d);
 			  g2d2.dispose();
