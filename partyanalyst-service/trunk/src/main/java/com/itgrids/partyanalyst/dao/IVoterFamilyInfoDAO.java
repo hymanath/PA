@@ -30,4 +30,6 @@ public interface IVoterFamilyInfoDAO extends GenericDao<VoterFamilyInfo, Long>{
 	public Long getTotalFamiliesCount(Long constituencyId,Long publicationDateId,Long voterReportLevelId,Long reportLevelValue);
 	
 	public List<Object[]> getTotalFamiliesByCosntituency(Long constituencyId,Long publicationDateId,Long reportLevelValue);
+	
+	public List<Object[]> getTotalFamilies(Long constituencyId,Long publicationDateId,Long reportLevelValue,Long reportLvlId);
 }

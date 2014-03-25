@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -32,10 +32,12 @@ import org.jfree.ui.TextAnchor;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -57,8 +59,10 @@ import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStrategyMergPancListDAO;
 import com.itgrids.partyanalyst.dao.ISuggestiveRangeDAO;
 import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ImpFamilesVO;
 import com.itgrids.partyanalyst.dto.OrderOfPriorityVO;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
@@ -99,6 +103,8 @@ public class StrategyModelTargetingService implements
 	private ICandidateResultDAO candidateResultDAO;
 	private ICasteStateDAO casteStateDAO;
 	private ISuggestiveModelService suggestiveModelService;
+	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
+	
 	private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
 
@@ -199,10 +205,12 @@ public class StrategyModelTargetingService implements
 		this.candidateResultDAO = candidateResultDAO;
 	}
 
-	public void getCriticalPanchayatsData(){
-		
-	}
 	
+	
+	public void setVoterFamilyInfoDAO(IVoterFamilyInfoDAO voterFamilyInfoDAO) {
+		this.voterFamilyInfoDAO = voterFamilyInfoDAO;
+	}
+
 	public List<PartyPositionVO> getPartyPreviousTrends(StrategyVO strategyVO,Long constituencyId,Long partyId,List<Long> electionIds,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult)
 	{
 		List<PartyPositionVO> resultList = null;
@@ -235,7 +243,11 @@ public class StrategyModelTargetingService implements
 				 //getting all panchayats in mandals
 				 panchayatIds =hamletBoothElectionDAO.getPanchayatIdsByEleIdMandalIdConstituencyId(mandalIds,assemblyEleIdsList.get(0),constituencyId);
 			}
-				 
+				
+			List<PartyPositionVO> prevPancResultList = new ArrayList<PartyPositionVO>();
+			List<PartyPositionVO> currPancResultList = new ArrayList<PartyPositionVO>();
+			
+			
 			if(assemblyEleIdsList != null && assemblyEleIdsList.size() > 0)
 			{
 				resultList = new ArrayList<PartyPositionVO>(0);
@@ -276,15 +288,54 @@ public class StrategyModelTargetingService implements
 						//getting all booths in municipality
 					  boothIdsList = hamletBoothElectionDAO.getBoothsByLocalBodyNElectionId(localbodyIds,eleId);
 					}
+					
 					if(count == 1){
-					    getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,currentResult);
+						if(strategyVO.isAutoCalculate()){
+							partyPositionVO.setWeakPollingPercentVOList(currPancResultList);
+						}
+					    getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,currentResult,currPancResultList);
 					}else{
-						getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,null);
+						getMandalWisePartyPerformanceReport(constituencyId,eleId, partyPositionVO, partyId,panchayatIds,boothIdsList,partyEffect,effectPartyId,effectElectionId,null,prevPancResultList);
+						if(strategyVO.isAutoCalculate()){
+						  partyPositionVO.setWeakPollingPercentVOList(prevPancResultList);
+						}
 					}
 					 resultList.add(partyPositionVO);
 				  }
 			}
 			
+			Double prevPerc = 0d;
+			int prevCount = 0;
+			Double currentPerc = 0d;
+			int currentCount = 0;
+			if(strategyVO.isAutoCalculate()){
+				List<PartyPositionVO> currResults = currPancResultList;
+				List<PartyPositionVO> prevResults = prevPancResultList;
+				
+				for(PartyPositionVO result:currResults){
+					
+					if(result.getPartyPercentage() != null && result.getPartyPercentage() > 0){
+						
+						currentPerc = currentPerc+result.getPartyPercentage();
+						currentCount = currentCount+1;
+					}
+				}
+				
+				for(PartyPositionVO result:prevResults){
+					
+					if(result.getPartyPercentage() != null && result.getPartyPercentage() > 0){
+						prevPerc = prevPerc+result.getPartyPercentage();
+						prevCount = prevCount+1;
+					}
+				}
+				if(prevCount > 0)
+				  prevPerc = new BigDecimal(prevPerc/prevCount).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+				if(currentCount > 0)
+				  currentPerc = new BigDecimal(currentPerc/currentCount).setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+				addRanges(prevPerc,currentPerc,resultList.get(0));
+				addRanges(prevPerc,currentPerc,resultList.get(1));
+			}	
+
 			if(resultList != null && resultList.size() == 2){
 			  List<PartyPositionVO> suggestedLocations = getSuggestiveLocationsForAParty(resultList);
 			  resultList.get(0).setSuggestedLocations(suggestedLocations);
@@ -297,7 +348,91 @@ public class StrategyModelTargetingService implements
 		}
 	}
 	
-	public void getMandalWisePartyPerformanceReport(Long constituencyId,Long electionId,PartyPositionVO partyPositionVO,Long partyId,List<Long> panchaytIdsList,List<Object[]> localbodybooths,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult)
+	public void addRanges(Double prevPerc,Double currentPerc,PartyPositionVO partyPositionVO){
+		  List<PartyPositionVO> rangeList = new ArrayList<PartyPositionVO>();
+		  Float worestMin = 0.0f;
+		  Float worestMax = 0.0f;
+		  Float veryPoorMin = 0.0f;
+		  Float veryPoorMax = 0.0f;
+		  Float poorMin = 0.0f;
+		  Float poorMax = 0.0f;
+		  Float okMin = 0.0f;
+		  Float okMax = 0.0f;
+		  Float strongMin = 0.0f;
+		  Float strongMax = 0.0f;
+		  Float veryStrongMin = 0.0f;
+		  Float veryStrongMax = 100.00f;
+		  Float constiAvgPerc = new BigDecimal((prevPerc+currentPerc)/2).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+			okMin = constiAvgPerc-2.50f;
+			okMax = constiAvgPerc+2.50f;
+			Float minDifference = new BigDecimal(constiAvgPerc/5).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+			poorMin = okMin-minDifference;
+			poorMax = okMin-0.01f;
+			veryPoorMin = poorMin-minDifference;
+			veryPoorMax = poorMin-0.01f;
+			worestMax = veryPoorMin-0.01f;
+			strongMin = okMax+0.01f;
+			strongMax = okMax+minDifference;
+			veryStrongMin = strongMax+0.01f;
+			LOG.info("consticurrentPerc: "+currentPerc+"constiprevPerc: "+prevPerc+" constiAvgPerc: "+constiAvgPerc+"okMin: "+okMin+" okMax: "+okMax+" minDifference: "+minDifference+" poorMin: "+poorMin+" poorMax: "+poorMax+"veryPoorMin: "+veryPoorMin+" veryPoorMax: "+veryPoorMax+" worestMin: "+worestMin+" worestMax: "+worestMax+" strongMin: "+strongMin+" strongMax: "+strongMax);
+			PartyPositionVO range = null;
+
+				
+				range = new PartyPositionVO();
+				range.setName("VERY STRONG");
+				range.setMinValue(veryStrongMin.doubleValue());
+				range.setMaxValue(veryStrongMax.doubleValue());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("STRONG");
+				range.setMinValue(strongMin.doubleValue());
+				range.setMaxValue(strongMax.doubleValue());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("OK");
+				range.setMinValue(okMin.doubleValue());
+				range.setMaxValue(okMax.doubleValue());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("POOR");
+				range.setMinValue(poorMin.doubleValue());
+				range.setMaxValue(poorMax.doubleValue());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("VERY POOR");
+				range.setMinValue(veryPoorMin.doubleValue());
+				range.setMaxValue(veryPoorMax.doubleValue());
+				rangeList.add(range);
+				
+				range = new PartyPositionVO();
+				range.setName("WORST");
+				range.setMinValue(worestMin.doubleValue());
+				range.setMaxValue(worestMax.doubleValue());
+				rangeList.add(range);
+
+			partyPositionVO.setPartyPositionVOList(rangeList);
+			List<PartyPositionVO> partyPositionVOList = partyPositionVO.getPartyPositionVOList();
+			List<PartyPositionVO> resultVOList = partyPositionVO.getWeakPollingPercentVOList();
+		      for(PartyPositionVO positionVO :partyPositionVOList)
+		      {
+		       for(PartyPositionVO result:resultVOList){
+		    	if(result.getPartyPercentage() >= positionVO.getMinValue() && result.getPartyPercentage() <= positionVO.getMaxValue())
+		    	{
+		    	 List<PartyPositionVO> locationList = positionVO.getPartyPositionVOList();
+		    	 if(locationList == null || locationList.size() == 0)
+		    		locationList = new ArrayList<PartyPositionVO>(0);
+		    		locationList.add(result);
+		    		positionVO.setPartyPositionVOList(locationList);
+		    	}
+		      }
+		      }
+	  }
+	
+	public void getMandalWisePartyPerformanceReport(Long constituencyId,Long electionId,PartyPositionVO partyPositionVO,Long partyId,List<Long> panchaytIdsList,List<Object[]> localbodybooths,Map<Long,PartyEffectVO> partyEffect,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
 	{
 		try{
 		Map<Long,List<Long>> boothIds = new HashMap<Long, List<Long>>();//Map<boothId,List<panchayatId>>
@@ -396,11 +531,11 @@ public class StrategyModelTargetingService implements
 		AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,partyId);
 		if(resultMap != null && resultMap.size() > 0){
 			//getting results for panchayats
-			getPartyPerformanceForPanchayat(resultMap,partyPositionVO, partyId,electionId,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult); 
+			getPartyPerformanceForPanchayat(resultMap,partyPositionVO, partyId,electionId,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList); 
 		}
 		if(resultMap1 != null && resultMap1.size() > 0){
 			//getting results for municipalities
-		  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,booths,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult);
+		  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,booths,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList);
 		}
 		
 		}catch (Exception e) {
@@ -408,7 +543,7 @@ public class StrategyModelTargetingService implements
 		  }
 	}
 	
-	 public void getPartyPerformanceForPanchayat(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId, Long electionId,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult)
+	 public void getPartyPerformanceForPanchayat(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId, Long electionId,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
 		{
 			try{
 				
@@ -467,18 +602,18 @@ public class StrategyModelTargetingService implements
 			 for(Long id:resultMap.keySet())
 			 {
 				 if(!mergePanchayatIds.contains(id)){
-				   calculateDifference(panchayatTotalVotersMap,resultMap,id,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,currentResult);
+				   calculateDifference(panchayatTotalVotersMap,resultMap,id,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,currentResult,pancResultList);
 				 }
 			 } 
 			if(mergePanchayatMap.size() > 0){
-				calculateDifferenceForMergePanchayats(panchayatTotalVotersMap,resultMap,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,mergePanchayatMap,currentResult);
+				calculateDifferenceForMergePanchayats(panchayatTotalVotersMap,resultMap,selectedpartyId,alliancePartiesVO,effectPartyId,effectElectionId,electionId,partyEffect,partyPositionVO,mergePanchayatMap,currentResult,pancResultList);
 			}
 			}catch (Exception e) {
 			 LOG.error(" Exception Occured in getPartyPerformanceForPanchayat() method, Exception - ",e);
 			}
 		}
 	 
-	 public void calculateDifference(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long id,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Double> currentResult){
+	 public void calculateDifference(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long id,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList){
 		 
 
 			Map<Long,Long> partyMap = resultMap.get(id);
@@ -567,6 +702,7 @@ public class StrategyModelTargetingService implements
 	    		   currentResult.put(id, difference);
 	    		 locationList.add(locationVO);
 	    		 positionVO.setPartyPositionVOList(locationList);
+	    		 pancResultList.add(locationVO);
 	    		 
 	    	 }
 	    	 
@@ -577,7 +713,7 @@ public class StrategyModelTargetingService implements
 		 
 	 }
 	 
-	 public void calculateDifferenceForMergePanchayats(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Double> currentResult){
+	 public void calculateDifferenceForMergePanchayats(Map<Long,Long> panchayatTotalVotersMap,Map<Long,Map<Long,Long>> resultMap,Long selectedpartyId,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Long electionId,Map<Long,PartyEffectVO> partyEffect,PartyPositionVO partyPositionVO,Map<Long,Set<Long>> mergePanchayatMap,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList){
 		 
         for(Long key:mergePanchayatMap.keySet()){
         	Set<Long> panchayatIds = mergePanchayatMap.get(key);
@@ -686,7 +822,7 @@ public class StrategyModelTargetingService implements
 	    		   currentResult.put(key, difference);
 	    		 locationList.add(locationVO);
 	    		 positionVO.setPartyPositionVOList(locationList);
-	    		 
+	    		 pancResultList.add(locationVO);
 	    	 }
 	    	 
 	    	}
@@ -696,7 +832,7 @@ public class StrategyModelTargetingService implements
 		 
 	 }
 	 
-	 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,List<Long> localbodyboothIds,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult)
+	 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,List<Long> localbodyboothIds,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
 	 {
 		 try{
 			 Long localbodytotalVoters = 0l;
@@ -791,6 +927,7 @@ public class StrategyModelTargetingService implements
 			    		 if(currentResult != null)
 			    		  currentResult.put(localbodyId, difference);
 			    		 positionVO.setPartyPositionVOList(locationList);
+			    		 pancResultList.add(locationVO);
 			    		 
 			    	 }
 			    	 
@@ -3065,6 +3202,99 @@ public class StrategyModelTargetingService implements
 				buildPiChart(document,panchayatsClassification,writer);//8
 				buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
 				orderOFPriorityTable(document,finalOrderOfOriority,15);
+				buildPdfForHouseHolds(strategyVO,document,writer,finalOrderOfOriority.get(0).getName(),finalOrderOfOriority.get(0).getPanchayatId()); 
 				generateImpFamilesTable(document,impfamilesList);
+				
+	
 		}
+		
+		public void buildPdfForHouseHolds(StrategyVO strategyVO,Document document,PdfWriter writer,String name,Long id) 
+		{
+		try{
+			List<Object[]> houseHoldsDetails = null;
+			List<HouseHoldsVO> houseHoldsVOList = null;
+			HouseHoldsVO houseHoldsVO = null;
+			if(name.contains("MUNCIPALITY") || name.contains("CORPORATION") || name.contains("Greater Municipal Corp")){
+				houseHoldsDetails = voterFamilyInfoDAO.getTotalFamilies(strategyVO.getConstituencyId(), strategyVO.getPublicationId(), id, 5l);
+			}else{
+				houseHoldsDetails = voterFamilyInfoDAO.getTotalFamilies(strategyVO.getConstituencyId(), strategyVO.getPublicationId(), id, 3l);
+			}
+			if(houseHoldsDetails != null && houseHoldsDetails.size()>0){
+				houseHoldsVOList = new ArrayList<HouseHoldsVO>();
+				houseHoldsVO = new HouseHoldsVO();
+				for (Object[] houseHolds : houseHoldsDetails) {
+					HouseHoldsVO ohuseholds = new HouseHoldsVO();
+					
+					ohuseholds.setFamiliRange(houseHolds[1] != null ? houseHolds[1].toString():"");
+					ohuseholds.setFamilyCount(houseHolds[2] != null ? houseHolds[2].toString():"");
+					ohuseholds.setFamilyPercentage(houseHolds[3] != null ? houseHolds[3].toString():"");
+					houseHoldsVOList.add(ohuseholds);
+				}
+				houseHoldsVO.setHouseHoldsVOList(houseHoldsVOList);
+				
+			}
+			 
+			 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+			
+			
+			    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
+			    subHeading.setColor(BaseColor.MAGENTA); 
+			  
+			
+			
+			PdfPCell c1;
+			
+			PdfPTable table = new PdfPTable(5);
+
+			  	c1 = new PdfPCell(new Phrase("",BIGFONT));
+			  c1.setBorder(Rectangle.NO_BORDER);
+			  	
+			  	table.addCell(c1);
+			    	
+			 
+			  	
+			  	table.setHeaderRows(1);
+			  	
+			  	for (HouseHoldsVO prev : houseHoldsVO.getHouseHoldsVOList()) {
+
+			  		
+				 c1 = new PdfPCell(new Phrase(prev.getFamiliRange(),BIGFONT));
+			 	 c1.setBackgroundColor(BaseColor.YELLOW);
+				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 table.addCell(c1);
+				
+			  	}
+			  	 c1 = new PdfPCell(new Phrase("No Of Families",BIGFONT));
+			 	 c1.setBackgroundColor(BaseColor.YELLOW);
+				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 table.addCell(c1);
+		          
+				for (HouseHoldsVO prev :  houseHoldsVO.getHouseHoldsVOList()) {
+
+					 c1 = new PdfPCell(new Phrase(prev.getFamilyCount(),BIGFONT));
+				 	// c1.setBackgroundColor(BaseColor.YELLOW);
+					 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+					 table.addCell(c1);
+			  	}
+				
+				 c1 = new PdfPCell(new Phrase(" Families %",BIGFONT));
+			 	 c1.setBackgroundColor(BaseColor.YELLOW);
+				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 table.addCell(c1);
+				
+		      for (HouseHoldsVO prev :  houseHoldsVO.getHouseHoldsVOList()) {
+
+		    		 c1 = new PdfPCell(new Phrase(prev.getFamilyPercentage(),BIGFONT));
+				 
+					 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+					 table.addCell(c1);
+			  	}
+				float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f};
+				table.setWidths(widths);
+			  	document.add(table);
+		 }catch(Exception e){
+			LOG.error("Exception",e);	
+			}
+		}
+		
 }

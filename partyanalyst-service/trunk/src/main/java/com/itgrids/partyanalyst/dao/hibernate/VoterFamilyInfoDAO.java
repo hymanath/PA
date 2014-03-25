@@ -137,4 +137,16 @@ public class VoterFamilyInfoDAO extends GenericDaoHibernate<VoterFamilyInfo, Lon
 		query.setParameter("reportLevelValue", reportLevelValue);
 		return query.list();
 	}
+	
+	public List<Object[]> getTotalFamilies(Long constituencyId,Long publicationDateId,Long reportLevelValue,Long reportLvlId){
+		Query query = getSession().createQuery("select  model.voterFamilyRange.voterFamilyRangeId,model.voterFamilyRange.familyRange," +
+				" model.totalFamilies, model.familiesPercentage from VoterFamilyInfo model where model.constituencyId =:constituencyId and model.publicationDate.publicationDateId =:publicationDateId " +
+				" and model.voterReportLevel.voterReportLevelId =:reportLvlId and model.reportLevelValue =:reportLevelValue and model.totalFamilies is not null order by model.voterFamilyRange.voterFamilyRangeId asc ");
+		query.setParameter("constituencyId", constituencyId);
+		query.setParameter("publicationDateId", publicationDateId);
+		query.setParameter("reportLevelValue", reportLevelValue);
+		query.setParameter("reportLvlId", reportLvlId);
+		return query.list();
+	}
+	
 }
