@@ -6704,12 +6704,25 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 		Query query = getSession().createQuery("select B.boothId, B.partNo , V.houseNo,B.panchayat.panchayatName ,B.panchayat.panchayatId " +
 				" from     BoothPublicationVoter BPV, Booth B,Voter V where B.panchayat.panchayatId = :panchayatId " +
 				" and B.publicationDate.publicationDateId = :publicationId  and B.boothId = BPV.booth.boothId and " +
-				" BPV.voter.voterId = V.voterId  and V.houseNo not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00','N.A','NL')" +
+				" BPV.voter.voterId = V.voterId  and V.houseNo not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00','N.A','NL','0-0-0')" +
 				" group by  B.boothId , V.houseNo having count(V.voterId) >= 5  order by count(V.voterId) desc  ");
 		query.setParameter("publicationId", publicationId);
 		query.setParameter("panchayatId", panchayatId);
 		return query.list();
 	}
+	
+	public List<Object[]> getImpFamilesForMuncipality(Long publicationId,Long muncipalityId)
+	{
+		Query query = getSession().createQuery("select B.boothId, B.partNo , V.houseNo,B.localBody.name ,B.localBody.localElectionBodyId " +
+				" from   BoothPublicationVoter BPV, Booth B,Voter V where B.localBody.localElectionBodyId = :muncipalityId " +
+				" and B.publicationDate.publicationDateId = :publicationId  and B.boothId = BPV.booth.boothId and " +
+				" BPV.voter.voterId = V.voterId  and V.houseNo not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00','N.A','NL','0-0-0')" +
+				" group by  B.boothId , V.houseNo having count(V.voterId) >= 5  order by count(V.voterId) desc  ");
+		query.setParameter("publicationId", publicationId);
+		query.setParameter("muncipalityId", muncipalityId);
+		return query.list();
+	}
+	
 	
 	public List<Object[]> getElderPersonDetails(Long publicationId,Long boothId,String houseNo)
 	{
@@ -6717,7 +6730,7 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 				" voter V left join user_voter_details UVD on UVD.voter_id = V.voter_id and UVD.user_id = 1" +
 				" where  B.booth_id = :boothId and V.house_no = :houseNo " +
 				"and B.publication_date_id = :publicationId and B.booth_id = BPV.booth_id and" +
-				"  BPV.voter_id = V.voter_id and V.house_no not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00','0-0-0','0-0-0','N.A','NL') order by V.age desc");
+				"  BPV.voter_id = V.voter_id and V.house_no not in ('0','0-0','00-0','0-00','N.A.','-','--','000','00','0-0-0','N.A','NL') order by V.age desc");
 		
 		query.setParameter("publicationId", publicationId);
 		query.setParameter("boothId", boothId);
