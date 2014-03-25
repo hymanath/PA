@@ -1,25 +1,90 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itgrids.partyanalyst.dao.IPRPWeightegesDAO;
+import com.itgrids.partyanalyst.dao.IBoothDAO;
+import com.itgrids.partyanalyst.dao.ICensusDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
-import com.itgrids.partyanalyst.dto.StrategyVO;
+import com.itgrids.partyanalyst.dao.IVoterAgeInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
+import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
+import com.itgrids.partyanalyst.dto.CasteStratagicReportVO;
+import com.itgrids.partyanalyst.dto.HouseHoldsVO;
+import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
+import com.itgrids.partyanalyst.dto.VoterStratagicReportVo;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
+import com.itgrids.partyanalyst.service.impl.StratagicReportServiceForMLASuccess;
+import com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf;
 
 public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 	IStrategyModelTargetingService strategyModelTargetingService;
 	IPartyTrendsDAO partyTrendsDAO;
-	IPRPWeightegesDAO prpWeightegesDAO;
+	IBoothDAO boothDAO;
+	ICensusDAO censusDAO;
+	IVoterInfoDAO voterInfoDAO;
+	IVoterAgeInfoDAO voterAgeInfoDAO;
+	IVoterCastInfoDAO voterCastInfoDAO;
+	
+	public IVoterCastInfoDAO getVoterCastInfoDAO() {
+		return voterCastInfoDAO;
+	}
+
+	public void setVoterCastInfoDAO(IVoterCastInfoDAO voterCastInfoDAO) {
+		this.voterCastInfoDAO = voterCastInfoDAO;
+	}
+
+	public IVoterAgeInfoDAO getVoterAgeInfoDAO() {
+		return voterAgeInfoDAO;
+	}
+
+	public void setVoterAgeInfoDAO(IVoterAgeInfoDAO voterAgeInfoDAO) {
+		this.voterAgeInfoDAO = voterAgeInfoDAO;
+	}
+
+	public IVoterInfoDAO getVoterInfoDAO() {
+		return voterInfoDAO;
+	}
+
+	public void setVoterInfoDAO(IVoterInfoDAO voterInfoDAO) {
+		this.voterInfoDAO = voterInfoDAO;
+	}
+
+	IVoterFamilyInfoDAO voterFamilyInfoDAO;
+	
+	
+
+	public IBoothDAO getBoothDAO() {
+		return boothDAO;
+	}
+
+	public void setBoothDAO(IBoothDAO boothDAO) {
+		this.boothDAO = boothDAO;
+	}
+
+	public ICensusDAO getCensusDAO() {
+		return censusDAO;
+	}
+
+	public void setCensusDAO(ICensusDAO censusDAO) {
+		this.censusDAO = censusDAO;
+	}
+
+	public IVoterFamilyInfoDAO getVoterFamilyInfoDAO() {
+		return voterFamilyInfoDAO;
+	}
+
+	public void setVoterFamilyInfoDAO(IVoterFamilyInfoDAO voterFamilyInfoDAO) {
+		this.voterFamilyInfoDAO = voterFamilyInfoDAO;
+	}
 
 	public IStrategyModelTargetingService getStrategyModelTargetingService() {
 		return strategyModelTargetingService;
@@ -146,106 +211,201 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 		}
 	  }*/
 	
-
-
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
-	}
-
-	public IPRPWeightegesDAO getPrpWeightegesDAO() {
-		return prpWeightegesDAO;
-	}
-
-	public void setPrpWeightegesDAO(IPRPWeightegesDAO prpWeightegesDAO) {
-		this.prpWeightegesDAO = prpWeightegesDAO;
 	}
 
 	public void setPartyTrendsDAO(IPartyTrendsDAO partyTrendsDAO) {
 		this.partyTrendsDAO = partyTrendsDAO;
 	}
 
-	public void testBuild(){
-		StrategyVO strategyVO = getRang();
+	/*public void testBuild(){
 		Document document = new Document();
 		   String filePath = "D:"+"/1.pdf";
 
 		   File file = new File(filePath);
 		   PdfWriter writer = null;
 		   try {
-			   file.createNewFile();
-			   writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
+			 file.createNewFile();
+			   //writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
+			     
 		   } catch (Exception e) {
 			   e.printStackTrace();
 		   }
 		   document.open();
-		  /* StratagicReportsServicePdf stratagicReportsServicePdf = new StratagicReportsServicePdf();
-		   stratagicReportsServicePdf.strategyModelTargetingService = strategyModelTargetingService;*/
+		StratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess = new StratagicReportServiceForMLASuccess();
+		stratagicReportServiceForMLASuccess.partyTrendsDAO = partyTrendsDAO;
+		List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReport(181l);
+		StratagicReportsServicePdf val = new StratagicReportsServicePdf();
 		try{
-			//stratagicReportsServicePdf.buildPdfDelegator(strategyVO);
-			strategyModelTargetingService.getTopPanchayats(strategyVO, document, writer);
+		val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");
 		}catch (Exception e) {
 			   e.printStackTrace();
 		   }
 		 document.close();
-	}
+	}*/
+	public void testBuild(){
+		if(true)
+			return;
+        //1 
+Document document = new Document();
+String filePath = "C:/pdfs"+"/1.pdf";
+try {
+File file = new File(filePath);
+PdfWriter writer = null;
 
-	public StrategyVO getRang(){
-		StrategyVO strategyVO = new StrategyVO();
-		strategyVO.setConstituencyId(282l);//
-		strategyVO.setPartyId(872l);
-		List<Long> electionIds = new ArrayList<Long>();
-		electionIds.add(38l);
-		electionIds.add(3l);
-		strategyVO.setPublicationId(10l);
-		strategyVO.setConsiderRange(true);
-		strategyVO.setElectionIds(electionIds);
-		Map<Long,Float> castePercents = new HashMap<Long,Float>();
-		castePercents.put(86l,0.60f);	//gouda
-		castePercents.put(110l,0.60f);	//settibalaja
-		castePercents.put(211l,0.15f);  //Mala
-		castePercents.put(288l,0.70f);//kapu
-		castePercents.put(285l,0.15f);//reddy
-		castePercents.put(290l,0.80f);//kamma
-		castePercents.put(189l,0.70f);//madiga
-		castePercents.put(289l,0.80f);//Kshatriya
-		castePercents.put(159l,0.70f);//Thurpu Kapu
-		castePercents.put(61l ,0.60f);//Chakali/Rajaka
-		castePercents.put(103l,0.60f);//Padmashali
-		castePercents.put(38l ,0.60f);//Mangali
-		castePercents.put(287l,0.50f);//Velama
-		castePercents.put(286l,0.65f);//Vysya
-		castePercents.put(0l,0.50f);//others
-		Double regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(strategyVO.getConstituencyId());
-		  if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
-			  regainVotrsWeigthPerc = 0d;
-		  Double prevTrendWeigthPerc = 80d-regainVotrsWeigthPerc;
-		  
-		strategyVO.setCastePercents(null);
-		strategyVO.setPrevTrnzWt(prevTrendWeigthPerc);
-		strategyVO.setYoungWt(10d);
-		strategyVO.setPrpWt(regainVotrsWeigthPerc);
-		strategyVO.setAgedWt(10d);
-		strategyVO.setTotalCastWt(0d);
-		strategyVO.setAutoCalculate(true);
-		/*strategyVO.setBase(jObj.getLong("base"));
-		strategyVO.setAssured(jObj.getLong("assured"));
-		strategyVO.setTdpPerc(jObj.getLong("partyPerc"));*/
-		strategyVO.setEffectPartyId(662l);
-		strategyVO.setEffectElectionId(38l);
+file.createNewFile();
+//2
+writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+//TableHeader event = new TableHeader();
+//writer.setPageEvent(event);
+    
+document.open();
+
+StratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess = new StratagicReportServiceForMLASuccess();
+stratagicReportServiceForMLASuccess.partyTrendsDAO = partyTrendsDAO;
+stratagicReportServiceForMLASuccess.boothDAO=boothDAO;
+stratagicReportServiceForMLASuccess.censusDAO=censusDAO;
+stratagicReportServiceForMLASuccess.voterFamilyInfoDAO=voterFamilyInfoDAO;
+/*List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(181L);
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();*/
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();
+HouseHoldsVO hvo=stratagicReportServiceForMLASuccess.getHouseHoldInfoByConstituency(null, 181L, 9L);
+document.newPage();
+//try{
+/*val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");*/
+val.buildPdfForHouseHolds( hvo, document, writer, hvo.getMessage());
+document.newPage();
+document.add(new Paragraph("fhdhdh"));
+
+}catch (Exception e) {
+e.printStackTrace();
+}
+document.close();
+}
+
+
+
+public void testBuild4(){
+	if(true)
+		return;
+    //1
+Document document = new Document();
+String filePath = "C:/pdfs"+"/1.pdf";
+try {
+File file = new File(filePath);
+PdfWriter writer = null;
+
+file.createNewFile();
+//2
+writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+//TableHeader event = new TableHeader();
+//writer.setPageEvent(event);
+
+document.open();
+
+StratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess = new StratagicReportServiceForMLASuccess();
+stratagicReportServiceForMLASuccess.partyTrendsDAO = partyTrendsDAO;
+stratagicReportServiceForMLASuccess.voterInfoDAO=voterInfoDAO;
+
+/*List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(181L);
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();*/
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();
+VoterStratagicReportVo vinfo=stratagicReportServiceForMLASuccess.getVotersInfoByConstituency(1L, 181L, 9L);
+document.newPage();
+//try{
+/*val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");*/
+val. buildPdfForVotersInfo(vinfo, document, writer, vinfo.getMessage());
+document.newPage();
+document.add(new Paragraph("fhdhdh"));
+
+}catch (Exception e) {
+e.printStackTrace();
+}
+document.close();
+}
 	
-			strategyVO.setWorstMin(0d);
-			strategyVO.setWorstMax(21.12d);
-			strategyVO.setVeryPoorMin(21.13);
-			strategyVO.setVeryPoorMax(29d);
-			strategyVO.setPoorMin(29.01d);
-			strategyVO.setPoorMax(36.87d);
-			strategyVO.setOkMin(36.88d);
-			strategyVO.setOkMax(41.88);
-			strategyVO.setStrongMin(41.89);
-			strategyVO.setStrongMax(49.76);
-			strategyVO.setVeryStrongMin(49.77);
-			strategyVO.setVeryStrongMax(100d);
-		
-		return strategyVO;
-	}
+public void testBuild1(){
+	
+    //1
+Document document = new Document();
+String filePath = "C:/pdfs"+"/1.pdf";
+try {
+File file = new File(filePath);
+PdfWriter writer = null;
+
+file.createNewFile();
+//2
+writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+//TableHeader event = new TableHeader();
+//writer.setPageEvent(event);
+
+document.open();
+
+StratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess = new StratagicReportServiceForMLASuccess();
+stratagicReportServiceForMLASuccess.partyTrendsDAO = partyTrendsDAO;
+stratagicReportServiceForMLASuccess.voterAgeInfoDAO=voterAgeInfoDAO;
+
+/*List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(181L);
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();*/
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();
+VoterStratagicReportVo vinfo=stratagicReportServiceForMLASuccess.getFirstTimeVotersInfoByConstituency(1L, 232L, 10L);
+document.newPage();
+//try{
+/*val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");*/
+val.buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
+document.newPage();
+document.add(new Paragraph("fhdhdh"));
+
+}catch (Exception e) {
+e.printStackTrace();
+}
+document.close();
+}
+
+
+public void testBuild2(){
+	if(true)
+		return ;
+	
+    //1
+Document document = new Document();
+String filePath = "C:/pdfs"+"/1.pdf";
+try {
+File file = new File(filePath);
+PdfWriter writer = null;
+
+file.createNewFile();
+//2
+writer = PdfWriter.getInstance(document, new FileOutputStream(filePath));
+
+//TableHeader event = new TableHeader();
+//writer.setPageEvent(event);
+
+document.open();
+
+StratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess = new StratagicReportServiceForMLASuccess();
+stratagicReportServiceForMLASuccess.partyTrendsDAO = partyTrendsDAO;
+stratagicReportServiceForMLASuccess.voterAgeInfoDAO=voterAgeInfoDAO;
+
+/*List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReportParliament(181L);
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();*/
+StratagicReportsServicePdf val = new StratagicReportsServicePdf();
+VoterStratagicReportVo vinfo=stratagicReportServiceForMLASuccess.getAgeWiseVotersInfoByConstituency(1L, 232L, 9L);
+document.newPage();
+//try{
+/*val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");*/
+val. buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
+document.newPage();
+document.add(new Paragraph("fhdhdh"));
+
+}catch (Exception e) {
+e.printStackTrace();
+}
+document.close();
+}
+
 }
