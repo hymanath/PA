@@ -2329,8 +2329,10 @@ public class StrategyModelTargetingService implements
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 		  	   }
+		  	   table.setHeaderRows(2);
 		  	   document.add(table);
-		  	   document.newPage();
+		  	 
+		  	   //document.newPage();
 		   } 
 		   catch (Exception e)
 		   {
@@ -3301,6 +3303,7 @@ public class StrategyModelTargetingService implements
 							getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList);
 							buildPdfForHouseHolds(strategyVO,document,writer,VO.getName(),VO.getPanchayatId()); 
 							generateImpFamilesTable(document,impfamilesList);
+							document.newPage();
 						}
 					}
 					
@@ -3340,46 +3343,52 @@ public class StrategyModelTargetingService implements
 			    Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 			    subHeading.setColor(BaseColor.MAGENTA); 
 			  
-			
+			    Paragraph preface = new Paragraph();
+			    preface.setAlignment(Element.PTABLE);
+			    preface.add( new Paragraph(" ") );
+			    preface.add( new Paragraph(" ") );
+			    document.add(preface);
 			
 			PdfPCell c1;
 			
 			PdfPTable table = new PdfPTable(5);
+			int padding = 6;
+				
+			     c1 = new PdfPCell(new Phrase("Range",BIGFONT));
+			 	 c1.setBackgroundColor(BaseColor.YELLOW);
+				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 c1.setPadding(padding);
+				 table.addCell(c1);
 
-			  	c1 = new PdfPCell(new Phrase("",BIGFONT));
-			  c1.setBorder(Rectangle.NO_BORDER);
-			  	
-			  	table.addCell(c1);
-			    	
-			 
-			  	
-			  	table.setHeaderRows(1);
-			  	
+				table.addCell(c1);
 			  	for (HouseHoldsVO prev : houseHoldsVO.getHouseHoldsVOList()) {
 
 			  		
 				 c1 = new PdfPCell(new Phrase(prev.getFamiliRange(),BIGFONT));
 			 	 c1.setBackgroundColor(BaseColor.YELLOW);
 				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 c1.setPadding(padding);
 				 table.addCell(c1);
 				
 			  	}
 			  	 c1 = new PdfPCell(new Phrase("No Of Families",BIGFONT));
 			 	 c1.setBackgroundColor(BaseColor.YELLOW);
 				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 c1.setPadding(padding);
 				 table.addCell(c1);
 		          
 				for (HouseHoldsVO prev :  houseHoldsVO.getHouseHoldsVOList()) {
 
 					 c1 = new PdfPCell(new Phrase(prev.getFamilyCount(),BIGFONT));
-				 	// c1.setBackgroundColor(BaseColor.YELLOW);
 					 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+					 c1.setPadding(padding);
 					 table.addCell(c1);
 			  	}
 				
 				 c1 = new PdfPCell(new Phrase(" Families %",BIGFONT));
 			 	 c1.setBackgroundColor(BaseColor.YELLOW);
 				 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+				 c1.setPadding(padding);
 				 table.addCell(c1);
 				
 		      for (HouseHoldsVO prev :  houseHoldsVO.getHouseHoldsVOList()) {
@@ -3387,10 +3396,9 @@ public class StrategyModelTargetingService implements
 		    		 c1 = new PdfPCell(new Phrase(prev.getFamilyPercentage(),BIGFONT));
 				 
 					 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+					 c1.setPadding(padding);
 					 table.addCell(c1);
 			  	}
-				float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f};
-				table.setWidths(widths);
 			  	document.add(table);
 		 }catch(Exception e){
 			LOG.error("Exception",e);	
