@@ -39,5 +39,7 @@ public interface IStrategyModelTargetingService {
 	
 	public void buildPiChart(Document document,List<OrderOfPriorityVO> panchayatsClassification,PdfWriter writer);
 	
+	public void getImpFamilesList(Long panchayatId,Long publicationDateId,List<ImpFamilesVO> impfamilesList);
+	
 	public void getTopPanchayats(StrategyVO strategyVO,Document document,PdfWriter writer);
 }

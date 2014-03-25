@@ -17,6 +17,10 @@ public class ImpFamilesVO implements Serializable{
 	private String youngerPerson;
 	private String youngPersomGender;
 	private Long youngerPersonAge;
+	private String panchayatName;
+	private Long panchayatId;
+	private String elderVoterId;
+	private String youngerVoterId;
 	public Long getId() {
 		return id;
 	}
@@ -82,6 +86,30 @@ public class ImpFamilesVO implements Serializable{
 	}
 	public void setYoungerPersonAge(Long youngerPersonAge) {
 		this.youngerPersonAge = youngerPersonAge;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public String getElderVoterId() {
+		return elderVoterId;
+	}
+	public void setElderVoterId(String elderVoterId) {
+		this.elderVoterId = elderVoterId;
+	}
+	public String getYoungerVoterId() {
+		return youngerVoterId;
+	}
+	public void setYoungerVoterId(String youngerVoterId) {
+		this.youngerVoterId = youngerVoterId;
 	}
 	
 	

@@ -105,8 +105,8 @@ public class StrategyModelTargetingService implements
 	private ISuggestiveModelService suggestiveModelService;
 	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
 	
-	private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-	private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
+	private static Font style1 = new Font(Font.FontFamily.ZAPFDINGBATS, 10,Font.BOLD);
+	private static Font style2 = new Font(Font.FontFamily.ZAPFDINGBATS, 8,Font.NORMAL);
 
 	
 	public ISuggestiveModelService getSuggestiveModelService() {
@@ -2015,7 +2015,7 @@ public class StrategyModelTargetingService implements
 		   }
 		   List<OrderOfPriorityVO> finalOrderOfOriority = calculateFinalOrder(new ArrayList<OrderOfPriorityVO>(finalOrder.values()));
 		   List<OrderOfPriorityVO> panchayatsClassification = calculateCriticalModerateEasyPanchs(finalOrderOfOriority);
-		   		   
+   		   
 		   List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
 		   getImpFamilesList(finalOrderOfOriority.get(0).getPanchayatId(),strategyVO.getPublicationId(),impfamilesList);
 		   
@@ -2061,14 +2061,14 @@ public class StrategyModelTargetingService implements
 		   }*/
 		   List<PartyPositionVO> list = null;//suggestiveModelService.getPartyPerfromanceStratagicReport(strategyVO.getConstituencyId(),872l,strategyVO.getEffectElectionId());
 		   
-	/*	   if(list != null && list.size() > 0)
+		  /* if(list != null && list.size() > 0)
 		   {
-			   panchayatwisePartyPerformanceTable(document,list,1l);//3
-			   panchayatwisePartyPerformanceTable(document,list,2l);//3
+			   //panchayatwisePartyPerformanceTable(document,list,1l);//3
+			   //panchayatwisePartyPerformanceTable(document,list,2l);//3
 			   //buildChartForPartyPerformanceReort(document,list);
-		   }
+		   }*/
 		   
-		   generatePdfForMatrixReport(document,previousTrends);//4
+		 /*  generatePdfForMatrixReport(document,previousTrends);//4
 		  
 		     panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
 		     panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
@@ -2107,19 +2107,21 @@ public class StrategyModelTargetingService implements
     		   if(boothWiseDetails != null && boothWiseDetails.size() > 0)
     		   {
     			   //impfamilesList = new ArrayList<ImpFamilesVO>();
-    			   int impCount = 0;
+    			   //int impCount = 0;
     			   for (Object[] objects : boothWiseDetails)
     			   {
-    				   if(impCount == 5)
+    				   /*if(impCount == 5)
     				   {
     					   break;
-    				   }
-    				   if(objects[1] != null && objects[2] != null)
+    				   }*/
+    				   if(objects[1] != null && objects[2] != null && objects[3] != null)
     				   {
     					   
     					   ImpFamilesVO impFamilesVO = new ImpFamilesVO();
         				   impFamilesVO.setBoothId(Long.valueOf(objects[1].toString()));
         				   impFamilesVO.setHouseNo(objects[2].toString());
+        				   impFamilesVO.setPanchayatName(objects[3].toString());
+        				   impFamilesVO.setPanchayatId((Long)objects[4]);
         				   List<Object[]> voterDetails = boothPublicationVoterDAO.getElderPersonDetails(publicationDateId, (Long)objects[0], objects[2].toString());
         				   if(voterDetails != null && voterDetails.size() > 0)
         				   {
@@ -2133,6 +2135,7 @@ public class StrategyModelTargetingService implements
         							   impFamilesVO.setElderPerson(objects2[1] != null ? objects2[1].toString() : null);
         							   impFamilesVO.setElderPersonAge(objects2[3] != null ? Long.valueOf(objects2[3].toString()) : null);
         							   impFamilesVO.setEldPersomGender(objects2[2] != null ? objects2[2].toString() : null);
+        							   impFamilesVO.setElderVoterId(objects2[4] != null ? objects2[4].toString() : null);
         							   impFamilesVO.setCount(Long.valueOf(size));
         							   if(objects2[0] != null)
         							   {
@@ -2152,6 +2155,7 @@ public class StrategyModelTargetingService implements
         									   impFamilesVO.setYoungerPerson(voterDetails.get(i)[1] != null ? voterDetails.get(i)[1].toString() : null);
                 							   impFamilesVO.setYoungerPersonAge(voterDetails.get(i)[3] != null ? Long.valueOf(voterDetails.get(i)[3].toString()) : null);
                 							   impFamilesVO.setYoungPersomGender(voterDetails.get(i)[2] != null ? voterDetails.get(i)[2].toString() : null);
+                							   impFamilesVO.setYoungerVoterId(objects2[4] != null ? objects2[4].toString() : null);
                 							   flag = true;
                 							   break;
         								   }
@@ -2166,7 +2170,7 @@ public class StrategyModelTargetingService implements
         				   }
         				   impfamilesList.add(impFamilesVO);
     				   }
-    				   impCount++;  
+    				   //impCount++;  
     			   }
     		   }
     		   
@@ -2182,105 +2186,147 @@ public class StrategyModelTargetingService implements
 		   try 
 		   {
 			   LOG.info("Enterd into generateImpFamilesTable() method");
-			   PdfPTable table = new PdfPTable(10);
+			   PdfPTable table = new PdfPTable(12);
 				Paragraph preface = new Paragraph();
+				int padding = 6;
 				preface.setAlignment(Element.PTABLE);
-				preface.add( new Paragraph("               Top Families"));
+				preface.add( new Paragraph(list.get(0).getPanchayatName()+ "  TOP FAMILES"));
 				preface.add( new Paragraph(" ") );
 				document.add(preface); 
-				
+				table.setWidthPercentage(100);
 				PdfPCell cell ;
 			  	  
 	           cell = new PdfPCell(new Phrase("Booth",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("House No",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("No",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("Caste",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("Eldest Person",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
+		  	   table.addCell(cell);
+		  	   
+		  	   cell = new PdfPCell(new Phrase("Voter Id",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("Gender",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("Age",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("Youngest Person",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
+		  	   table.addCell(cell);
+		  	 
+		  	   cell = new PdfPCell(new Phrase("Voter Id",style1));
+		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("Gender",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding);
 		  	   table.addCell(cell);
 		  	   
 		  	   cell = new PdfPCell(new Phrase("Age",style1));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
+		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
 		  	   for (ImpFamilesVO impFamilesVO : list)
 		  	   {
 		  		   cell = new PdfPCell(new Phrase(impFamilesVO.getBoothId() != null ? impFamilesVO.getBoothId().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getHouseNo() != null ? impFamilesVO.getHouseNo().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCount() != null ? impFamilesVO.getCount().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCaste() != null ? impFamilesVO.getCaste().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPerson() != null ? impFamilesVO.getElderPerson().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   table.addCell(cell);
 			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderVoterId() != null ? impFamilesVO.getElderVoterId().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
+			  	   table.addCell(cell);
+			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getEldPersomGender() != null ? impFamilesVO.getEldPersomGender().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPersonAge() != null ? impFamilesVO.getElderPersonAge().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPerson() != null ? impFamilesVO.getYoungerPerson().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerVoterId() != null ? impFamilesVO.getYoungerVoterId().toString() :"",style2));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungPersomGender() != null ? impFamilesVO.getYoungPersomGender().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
 			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPersonAge() != null ? impFamilesVO.getYoungerPersonAge().toString() :"",style2));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 		  	   }
 		  	   document.add(table);
@@ -2309,7 +2355,7 @@ public class StrategyModelTargetingService implements
 				  document.add(preface);
 				  int totalTables = ((Double)(Math.ceil(casteNamePercMap.size()/6.0f))).intValue(); 
 				  
-				
+				  int padding = 6;
 				 List<String> names = new ArrayList<String>(casteNamePercMap.keySet());
 				 Collections.sort(names);
 				  PdfPCell cell ;
@@ -2333,11 +2379,13 @@ public class StrategyModelTargetingService implements
 					  	  cell = new PdfPCell(new Phrase(names.get(j),style1));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  cell.setBackgroundColor(BaseColor.YELLOW);
+					  	cell.setPadding(padding);
 					  	  table.addCell(cell);
 					  }	
 					  for (int j=iterateMin;j<=iterateMax;j++) {
 					  	  cell = new PdfPCell(new Phrase(Long.valueOf((long) (casteNamePercMap.get(names.get(j))*100)) + "%",style1));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	cell.setPadding(padding);
 					  	  table.addCell(cell);
 					  }
 					  document.add(table);
@@ -2357,41 +2405,49 @@ public class StrategyModelTargetingService implements
 			 LOG.info("Entered into panchayatwisePartyPerformanceTable() method in VoterModifiationPdfsGenerations Class");
 			 PdfPTable table = new PdfPTable(7);
 			 PdfPCell cell ;
+			 int padding = 6;
 			 DecimalFormat df = new DecimalFormat("##.##");
 			 cell = new PdfPCell(new Phrase("Panchayat",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
 		  	 cell = new PdfPCell(new Phrase("Total Votes",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
 		  	 cell = new PdfPCell(new Phrase("Votes Polled",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
 		  	 cell = new PdfPCell(new Phrase("TDP Gained",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
 		  	 cell = new PdfPCell(new Phrase("margin",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
 		 	 cell = new PdfPCell(new Phrase("2013 Total Votes",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	  
 		  	  
 		 	 cell = new PdfPCell(new Phrase("Win Party Name",style1));
 			 cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  cell.setBackgroundColor(BaseColor.YELLOW);
+			  cell.setPadding(padding);
 		  	  table.addCell(cell);
 		  	 
 		  	  for(PartyPositionVO partyPositionVO :panchayatList)
@@ -2401,30 +2457,36 @@ public class StrategyModelTargetingService implements
 		  			  
 		  		  cell = new PdfPCell(new Phrase(partyPositionVO.getName(),style2));
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
 			  	  
 			  	  cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getTotalVoters()).toString(),style2));
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
 			  	  
 			  	  
 			  	  cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getTotalValidVotes()).toString(),style2));
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
 			  	  
 			  	  
 			  	  cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getSelectedPartyTotalVoters()).toString(),style2));
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
 			  	  
 			  	  
 			  	  cell = new PdfPCell(new Phrase(df.format(partyPositionVO.getMargin()).toString(),style2));
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setPadding(padding);
 			  	  table.addCell(cell);
 			  	  
 			  	  
 			  	 cell = new PdfPCell(new Phrase(Long.valueOf(partyPositionVO.getWinPartyTotal()).toString(),style2));
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
 			  
 			  	  cell = new PdfPCell(new Phrase(partyPositionVO.getWinPartyName(),style2));
@@ -2433,6 +2495,7 @@ public class StrategyModelTargetingService implements
 			  	  if(rank == 2 && partyPositionVO.getWinPartyName().equalsIgnoreCase("TDP"))
 					  cell.setBackgroundColor(BaseColor.GREEN);
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
 				  
 			  	  
@@ -2821,11 +2884,11 @@ public class StrategyModelTargetingService implements
 				  LOG.info("Enterd into orderOFPriorityTable() method ");
 				  
 				      PdfPTable table = new PdfPTable(6);
-				    
+				      table.setWidthPercentage(100);
 				      Paragraph preface = new Paragraph();
 				      preface.setAlignment(Element.PTABLE);
-				   
-				      preface.add( new Paragraph("               Panchayaths – Top Priority & Opportunity"));
+				      int padding = 6;
+				      preface.add( new Paragraph("Panchayaths – Top Priority & Opportunity"));
 				      preface.add( new Paragraph(" ") );
 				      document.add(preface);
 				     
@@ -2835,88 +2898,106 @@ public class StrategyModelTargetingService implements
 				      cell.setRowspan(2);
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("Total Voters",style1));
 				  	  cell.setRowspan(2);
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("Targeted 2014 vs 2009",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setColspan(2);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("Difference",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setColspan(2);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	
 				  	  cell = new PdfPCell(new Phrase("Targeted Votes",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("2009 TDP Votes",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("Votes",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("%",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
-				  	  int size = 0;
+				  	  //int size = 0;
 				  	  for(OrderOfPriorityVO orderOfPriorityVO : list)
 				  	  {
-				  		  if(size == count)
+				  		  /*if(size == count)
 				  		  {
 				  			  break;
+				  		  }*/
+				  		  if(orderOfPriorityVO.getType().equalsIgnoreCase("Highly Critical") || orderOfPriorityVO.getType().equalsIgnoreCase("Critical"))
+				  		  {
+				  			  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getName(),style2));
+						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
+						  	  table.addCell(cell);
+						  	  if(orderOfPriorityVO.getTotalVoters() != null)
+						  	   cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),style2));
+						  	  else
+						  		cell = new PdfPCell(new Phrase("",style2));  
+						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
+						  	  table.addCell(cell);
+						  	  
+						  	  if(orderOfPriorityVO.getTargetedVoters() != null)
+						  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTargetedVoters().toString(),style2));
+						  	  else
+						  	  cell = new PdfPCell(new Phrase("",style2)); 
+						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
+						  	  table.addCell(cell);
+						  	  
+						  	  if(orderOfPriorityVO.getPreviousVoters() != null)
+						  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getPreviousVoters().toString(),style2));
+						  	  else
+						  	  cell = new PdfPCell(new Phrase("",style2));	
+						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
+						  	  table.addCell(cell);
+						  	  
+						  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunity().toString(),style2));
+						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
+						  	  table.addCell(cell);
+						  	  
+						  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunityPerc().toString(),style2));
+						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
+						  	  table.addCell(cell);
+						  	  //size++;
 				  		  }
-				  		  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getName(),style2));
-					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					  	  table.addCell(cell);
-					  	  if(orderOfPriorityVO.getTotalVoters() != null)
-					  	   cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTotalVoters().toString(),style2));
-					  	  else
-					  		cell = new PdfPCell(new Phrase("",style2));  
-					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					  	  table.addCell(cell);
-					  	  
-					  	 if(orderOfPriorityVO.getTargetedVoters() != null)
-					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getTargetedVoters().toString(),style2));
-					  	 else
-					  	  cell = new PdfPCell(new Phrase("",style2)); 
-					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					  	  table.addCell(cell);
-					  	  
-					  	if(orderOfPriorityVO.getPreviousVoters() != null)
-					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getPreviousVoters().toString(),style2));
-					  	else
-					  	  cell = new PdfPCell(new Phrase("",style2));	
-					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					  	  table.addCell(cell);
-					  	  
-					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunity().toString(),style2));
-					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					  	  table.addCell(cell);
-					  	  
-					  	  cell = new PdfPCell(new Phrase(orderOfPriorityVO.getOpportunityPerc().toString(),style2));
-					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-					  	  table.addCell(cell);
-					  	size++;
 				  	  }
 				  	  table.setHeaderRows(2);
 				  	
 				  	  document.add(table);
+				  	document.newPage();
 			} catch (Exception e) {
 				LOG.debug("Exception raised in orderOFPriorityTable() method",e);
 			}
@@ -2932,31 +3013,35 @@ public class StrategyModelTargetingService implements
 				    PdfPTable table = new PdfPTable(4);
 				    Paragraph preface = new Paragraph();
 				    preface.setAlignment(Element.PTABLE);
-				    preface.add( new Paragraph("               Step 4 – Start Here :"));
-				    preface.add( new Paragraph(" ") );
+				   // preface.add( new Paragraph(" Step 4 – Start Here :"));
+				   // preface.add( new Paragraph(" ") );
 				    document.add(preface);
-				    
+				    table.setWidthPercentage(100);
 			        PdfPCell cell ;
-				  	  
+				  	 int padding = 6;
 			        cell = new PdfPCell(new Phrase("Status",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  cell.setPadding(padding);
 				  	  table.addCell(cell);
 					  
 				  	  
 				  	  cell = new PdfPCell(new Phrase("No of Panchayaths",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("Gainable Votes%",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("Gainable Votes",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  
@@ -2966,10 +3051,12 @@ public class StrategyModelTargetingService implements
 				  		 
 				  		  cell = new PdfPCell(new Phrase(classificationVo.getName(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	cell.setPadding(padding);
 					  	  table.addCell(cell);
 					  	  
 					  	  cell = new PdfPCell(new Phrase(classificationVo.getTotalVoters().toString(),style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	cell.setPadding(padding);
 					  	  table.addCell(cell);
 					  	  
 					  	  if(classificationVo.getOpportunity() > 0)
@@ -2977,6 +3064,7 @@ public class StrategyModelTargetingService implements
 					  	  else
 					  		cell = new PdfPCell(new Phrase("N/A",style2));  
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	cell.setPadding(padding);
 					  	  table.addCell(cell);
 					  	  
 					  	 if(classificationVo.getOpportunity() > 0)
@@ -2984,6 +3072,7 @@ public class StrategyModelTargetingService implements
 					  	 else
 					  	  cell = new PdfPCell(new Phrase("",style2));
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+					  	cell.setPadding(padding);
 					  	  table.addCell(cell);
 					  	  
 					  	  
@@ -3196,18 +3285,29 @@ public class StrategyModelTargetingService implements
 				List<PanchayatVO> agedCastesList = (List<PanchayatVO>)targetingAreas.get(5);//6
 				List<PartyEffectVO> otherPartyEffect = (List<PartyEffectVO>)targetingAreas.get(6);//7
 				List<OrderOfPriorityVO> panchayatsClassification = (List<OrderOfPriorityVO>)targetingAreas.get(7);//8
-				List<ImpFamilesVO> impfamilesList = (List<ImpFamilesVO>)targetingAreas.get(8);//9
+				//List<ImpFamilesVO> impfamilesList = (List<ImpFamilesVO>)targetingAreas.get(8);//9
 				List<OrderOfPriorityVO> finalOrderOfOriority = (List<OrderOfPriorityVO>)targetingAreas.get(9);//10
 				
 				buildPiChart(document,panchayatsClassification,writer);//8
 				buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
 				orderOFPriorityTable(document,finalOrderOfOriority,15);
-				buildPdfForHouseHolds(strategyVO,document,writer,finalOrderOfOriority.get(0).getName(),finalOrderOfOriority.get(0).getPanchayatId()); 
-				generateImpFamilesTable(document,impfamilesList);
+				for(OrderOfPriorityVO VO : finalOrderOfOriority)
+				{
+					if(VO.getType() != null)
+					{
+						if( VO.getType().equalsIgnoreCase("Highly Critical") || VO.getType().equalsIgnoreCase("Critical"))
+						{
+							List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
+							getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList);
+							buildPdfForHouseHolds(strategyVO,document,writer,VO.getName(),VO.getPanchayatId()); 
+							generateImpFamilesTable(document,impfamilesList);
+						}
+					}
+					
+				}
 				
-	
+				
 		}
-		
 		public void buildPdfForHouseHolds(StrategyVO strategyVO,Document document,PdfWriter writer,String name,Long id) 
 		{
 		try{
