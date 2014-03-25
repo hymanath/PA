@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -32,12 +31,11 @@ import org.jfree.ui.TextAnchor;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.DefaultFontMapper;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -105,8 +103,13 @@ public class StrategyModelTargetingService implements
 	private ISuggestiveModelService suggestiveModelService;
 	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
 	
-	private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-	private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
+	//private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	//private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
+	private static Font style1 = new Font(FontFactory.getFont("arial",10,Font.BOLD));
+	private static Font style2 = new Font(FontFactory.getFont("arial",8,Font.NORMAL));
+	
+	private static Font style3 = new Font(FontFactory.getFont("arial",6,Font.BOLD));
+	private static Font style4 = new Font(FontFactory.getFont("arial",6,Font.NORMAL));
 
 	
 	public ISuggestiveModelService getSuggestiveModelService() {
@@ -2206,73 +2209,73 @@ public class StrategyModelTargetingService implements
 				table.setWidthPercentage(100);
 				PdfPCell cell ;
 			  	  
-	           cell = new PdfPCell(new Phrase("Booth",style1));
+	           cell = new PdfPCell(new Phrase("Booth",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("House No",style1));
+		  	   cell = new PdfPCell(new Phrase("House No",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Count",style1));
+		  	   cell = new PdfPCell(new Phrase("Count",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Caste",style1));
+		  	   cell = new PdfPCell(new Phrase("Caste",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Eldest Person",style1));
+		  	   cell = new PdfPCell(new Phrase("Eldest Person",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Voter Id",style1));
+		  	   cell = new PdfPCell(new Phrase("Voter Id",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Gender",style1));
+		  	   cell = new PdfPCell(new Phrase("Gender",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Age",style1));
+		  	   cell = new PdfPCell(new Phrase("Age",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Youngest Person",style1));
+		  	   cell = new PdfPCell(new Phrase("Youngest Person",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	 
-		  	   cell = new PdfPCell(new Phrase("Voter Id",style1));
+		  	   cell = new PdfPCell(new Phrase("Voter Id",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Gender",style1));
+		  	   cell = new PdfPCell(new Phrase("Gender",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding);
 		  	   table.addCell(cell);
 		  	   
-		  	   cell = new PdfPCell(new Phrase("Age",style1));
+		  	   cell = new PdfPCell(new Phrase("Age",style3));
 		  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  	   cell.setBackgroundColor(BaseColor.YELLOW);
 		  	   cell.setPadding(padding); 
@@ -2280,66 +2283,66 @@ public class StrategyModelTargetingService implements
 		  	   
 		  	   for (ImpFamilesVO impFamilesVO : list)
 		  	   {
-		  		   cell = new PdfPCell(new Phrase(impFamilesVO.getBoothId() != null ? impFamilesVO.getBoothId().toString() :"",style2));
+		  		   cell = new PdfPCell(new Phrase(impFamilesVO.getBoothId() != null ? impFamilesVO.getBoothId().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getHouseNo() != null ? impFamilesVO.getHouseNo().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getHouseNo() != null ? impFamilesVO.getHouseNo().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCount() != null ? impFamilesVO.getCount().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCount() != null ? impFamilesVO.getCount().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCaste() != null ? impFamilesVO.getCaste().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getCaste() != null ? impFamilesVO.getCaste().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPerson() != null ? impFamilesVO.getElderPerson().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPerson() != null ? impFamilesVO.getElderPerson().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderVoterId() != null ? impFamilesVO.getElderVoterId().toString() :"",style2));
-			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			  	   cell.setPadding(padding); 
-			  	   table.addCell(cell);
-			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getEldPersomGender() != null ? impFamilesVO.getEldPersomGender().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderVoterId() != null ? impFamilesVO.getElderVoterId().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPersonAge() != null ? impFamilesVO.getElderPersonAge().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getEldPersomGender() != null ? impFamilesVO.getEldPersomGender().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPerson() != null ? impFamilesVO.getYoungerPerson().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getElderPersonAge() != null ? impFamilesVO.getElderPersonAge().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerVoterId() != null ? impFamilesVO.getYoungerVoterId().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPerson() != null ? impFamilesVO.getYoungerPerson().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungPersomGender() != null ? impFamilesVO.getYoungPersomGender().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerVoterId() != null ? impFamilesVO.getYoungerVoterId().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 			  	   
-			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPersonAge() != null ? impFamilesVO.getYoungerPersonAge().toString() :"",style2));
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungPersomGender() != null ? impFamilesVO.getYoungPersomGender().toString() :"",style4));
+			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			  	   cell.setPadding(padding); 
+			  	   table.addCell(cell);
+			  	   
+			  	   cell = new PdfPCell(new Phrase(impFamilesVO.getYoungerPersonAge() != null ? impFamilesVO.getYoungerPersonAge().toString() :"",style4));
 			  	   cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 		  	   }
-		  	   table.setHeaderRows(2);
+		  	   table.setHeaderRows(1);
 		  	   document.add(table);
 		  	 
 		  	   //document.newPage();
@@ -2896,7 +2899,7 @@ public class StrategyModelTargetingService implements
 				  LOG.info("Enterd into orderOFPriorityTable() method ");
 				  
 				      PdfPTable table = new PdfPTable(6);
-				      table.setWidthPercentage(100);
+				      //table.setWidthPercentage(100);
 				      Paragraph preface = new Paragraph();
 				      preface.setAlignment(Element.PTABLE);
 				      int padding = 6;
@@ -3237,7 +3240,7 @@ public class StrategyModelTargetingService implements
 		      PdfContentByte cb = writer.getDirectContent();
 			  PdfTemplate bar = cb.createTemplate(600, 800);
 			  Graphics2D g2d2 = bar.createGraphics(600,800);
-			  Rectangle2D rectangle2d = new Rectangle2D.Double(30,130, 530,500);
+			  Rectangle2D rectangle2d = new Rectangle2D.Double(30,200, 530,500);
 
 			  chart.draw(g2d2, rectangle2d);
 			  g2d2.dispose();
@@ -3288,44 +3291,56 @@ public class StrategyModelTargetingService implements
 		  }
 		  
 		public void getTopPanchayats(StrategyVO strategyVO,Document document,PdfWriter writer){
-			 List<Object> targetingAreas = getPrioritiesToTarget(strategyVO,"");
-			 Map<String,Float> casteNamePercMap =  (Map<String,Float>)targetingAreas.get(0);//1
-				List<PanchayatVO> totalCastesList = (List<PanchayatVO>)targetingAreas.get(1);//2
-				List<PartyPositionVO> partyPerformance = (List<PartyPositionVO>)targetingAreas.get(2);//3
-				List<PartyPositionVO> previousTrends = (List<PartyPositionVO>)targetingAreas.get(3);//4
-				List<PanchayatVO> youngCastesList = (List<PanchayatVO>)targetingAreas.get(4);//5
-				List<PanchayatVO> agedCastesList = (List<PanchayatVO>)targetingAreas.get(5);//6
-				List<PartyEffectVO> otherPartyEffect = (List<PartyEffectVO>)targetingAreas.get(6);//7
-				List<OrderOfPriorityVO> panchayatsClassification = (List<OrderOfPriorityVO>)targetingAreas.get(7);//8
-				//List<ImpFamilesVO> impfamilesList = (List<ImpFamilesVO>)targetingAreas.get(8);//9
-				List<OrderOfPriorityVO> finalOrderOfOriority = (List<OrderOfPriorityVO>)targetingAreas.get(9);//10
-				
-				buildPiChart(document,panchayatsClassification,writer);//8
-				buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
-				orderOFPriorityTable(document,finalOrderOfOriority,15);
-				for(OrderOfPriorityVO VO : finalOrderOfOriority)
-				{
-					if(VO.getType() != null)
+			try {
+				 List<Object> targetingAreas = getPrioritiesToTarget(strategyVO,"");
+				 Map<String,Float> casteNamePercMap =  (Map<String,Float>)targetingAreas.get(0);//1
+					List<PanchayatVO> totalCastesList = (List<PanchayatVO>)targetingAreas.get(1);//2
+					List<PartyPositionVO> partyPerformance = (List<PartyPositionVO>)targetingAreas.get(2);//3
+					List<PartyPositionVO> previousTrends = (List<PartyPositionVO>)targetingAreas.get(3);//4
+					List<PanchayatVO> youngCastesList = (List<PanchayatVO>)targetingAreas.get(4);//5
+					List<PanchayatVO> agedCastesList = (List<PanchayatVO>)targetingAreas.get(5);//6
+					List<PartyEffectVO> otherPartyEffect = (List<PartyEffectVO>)targetingAreas.get(6);//7
+					List<OrderOfPriorityVO> panchayatsClassification = (List<OrderOfPriorityVO>)targetingAreas.get(7);//8
+					//List<ImpFamilesVO> impfamilesList = (List<ImpFamilesVO>)targetingAreas.get(8);//9
+					List<OrderOfPriorityVO> finalOrderOfOriority = (List<OrderOfPriorityVO>)targetingAreas.get(9);//10
+					Paragraph preface = new Paragraph();
+				    preface.setAlignment(Element.PTABLE);
+				    preface.add( new Paragraph(" ") );
+				    preface.setAlignment(Element.ALIGN_CENTER);
+				    preface.add( new Paragraph(constituencyDAO.get(strategyVO.getConstituencyId()).getName() + "  CRITICAL PANCHAYAT - TOP FAMILYS DETAILS" , style1));
+				    preface.add( new Paragraph(" ") );
+				    preface.add( new Paragraph(" ") );
+				    document.add(preface);
+					buildPiChart(document,panchayatsClassification,writer);//8
+					buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
+					orderOFPriorityTable(document,finalOrderOfOriority,15);
+					for(OrderOfPriorityVO VO : finalOrderOfOriority)
 					{
-						if( VO.getType().equalsIgnoreCase("Highly Critical") || VO.getType().equalsIgnoreCase("Critical"))
+						if(VO.getType() != null)
 						{
-							List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
-							if(VO.getName().contains("MUNCIPALITY") || VO.getName().contains("CORPORATION") || VO.getName().contains("Greater Municipal Corp"))
+							if( VO.getType().equalsIgnoreCase("Highly Critical") || VO.getType().equalsIgnoreCase("Critical"))
 							{
-								getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList,"mincipality");
+								List<ImpFamilesVO> impfamilesList = new ArrayList<ImpFamilesVO>();
+								if(VO.getName().contains("MUNCIPALITY") || VO.getName().contains("CORPORATION") || VO.getName().contains("Greater Municipal Corp"))
+								{
+									getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList,"mincipality");
+								}
+								else
+								{
+									getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList,"panchayat");
+								}
+								buildPdfForHouseHolds(strategyVO,document,writer,VO.getName(),VO.getPanchayatId()); 
+								generateImpFamilesTable(document,impfamilesList);
+								document.newPage();
 							}
-							else
-							{
-								getImpFamilesList(VO.getPanchayatId(),strategyVO.getPublicationId(),impfamilesList,"panchayat");
-							}
-							buildPdfForHouseHolds(strategyVO,document,writer,VO.getName(),VO.getPanchayatId()); 
-							generateImpFamilesTable(document,impfamilesList);
-							document.newPage();
 						}
+						
 					}
 					
-				}
-				
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
 				
 		}
 		public void buildPdfForHouseHolds(StrategyVO strategyVO,Document document,PdfWriter writer,String name,Long id) 
@@ -3336,8 +3351,22 @@ public class StrategyModelTargetingService implements
 			HouseHoldsVO houseHoldsVO = null;
 			if(name.contains("MUNCIPALITY") || name.contains("CORPORATION") || name.contains("Greater Municipal Corp")){
 				houseHoldsDetails = voterFamilyInfoDAO.getTotalFamilies(strategyVO.getConstituencyId(), strategyVO.getPublicationId(), id, 5l);
+				Paragraph preface = new Paragraph();
+			    preface.setAlignment(Element.PTABLE);
+			    preface.add( new Paragraph(" ") );
+			    preface.add( new Paragraph(" ") );
+			    preface.add( new Paragraph(name));
+			    preface.add( new Paragraph(" ") );
+			    document.add(preface);
 			}else{
 				houseHoldsDetails = voterFamilyInfoDAO.getTotalFamilies(strategyVO.getConstituencyId(), strategyVO.getPublicationId(), id, 3l);
+				Paragraph preface = new Paragraph();
+			    preface.setAlignment(Element.PTABLE);
+			    preface.add( new Paragraph(" ") );
+			    preface.add( new Paragraph(" ") );
+			    preface.add( new Paragraph(name + " PANCHAYAT") );
+			    preface.add( new Paragraph(" ") );
+			    document.add(preface);
 			}
 			if(houseHoldsDetails != null && houseHoldsDetails.size()>0){
 				houseHoldsVOList = new ArrayList<HouseHoldsVO>();
@@ -3357,13 +3386,7 @@ public class StrategyModelTargetingService implements
 			 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 
 			  
-			    Paragraph preface = new Paragraph();
-			    preface.setAlignment(Element.PTABLE);
-			    preface.add( new Paragraph(" ") );
-			    preface.add( new Paragraph(" ") );
-			    preface.add( new Paragraph(name) );
-			    preface.add( new Paragraph(" ") );
-			    document.add(preface);
+			    
 			
 			PdfPCell c1;
 			
