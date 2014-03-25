@@ -1318,6 +1318,15 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					   return (cstVO1.getCastCount().intValue()) - (cstVO2.getCastCount().intValue());
 					}
 			  };
+			  
+			  public  Comparator<PartyTrendsVO> finalLocationsSort = new Comparator<PartyTrendsVO>()
+				{
+					  
+				  public int compare(PartyTrendsVO cstVO1, PartyTrendsVO cstVO2)
+					{
+					   return (cstVO1.getTotalWt().compareTo(cstVO2.getTotalWt()));
+					}
+			  };
 	
 	public OptionVO getPartyPerformantForSelectedConstituency(Long constituencyId,Long electionId,Long partyId)
 	{
@@ -6567,6 +6576,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 		    	returnVal.add(trend);
 		    	
 		    }
+		    Collections.sort(returnVal,finalLocationsSort);
 		    int totalCount = returnVal.size();
 			for(int i =1;i<=totalCount;i++){
 				PartyTrendsVO pt = returnVal.get(i-1);
