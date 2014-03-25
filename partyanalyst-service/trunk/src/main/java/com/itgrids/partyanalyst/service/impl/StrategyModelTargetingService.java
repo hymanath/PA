@@ -2168,7 +2168,7 @@ public class StrategyModelTargetingService implements
 				  preface.add( new Paragraph("               Caste"));
 				  preface.add( new Paragraph(" ") );
 				  document.add(preface);
-				  int totalTables = Math.round(casteNamePercMap.size()/6.0f);
+				  int totalTables = ((Double)(Math.ceil(casteNamePercMap.size()/6.0f))).intValue(); 
 				  
 				
 				 List<String> names = new ArrayList<String>(casteNamePercMap.keySet());
@@ -2560,7 +2560,7 @@ public class StrategyModelTargetingService implements
 				  LOG.info("Enterd into generatePdfsForImpFamiles() method in VoterModifiationPdfsGenerations Class");
 				    
 				    PdfPTable table = new PdfPTable(7);
-				    
+				    table.setWidthPercentage(100);
 				    Paragraph preface = new Paragraph();
 				    preface.setAlignment(Element.PTABLE);
 				   
@@ -2568,12 +2568,6 @@ public class StrategyModelTargetingService implements
 				    preface.add( new Paragraph(" ") );
 				    document.add(preface);
 				    
-			          PdfPCell cellHeading;
-				      cellHeading = new PdfPCell(new Phrase("Previous Trends",style1));
-				      cellHeading.setColspan(7);
-					  cellHeading.setHorizontalAlignment(Element.ALIGN_CENTER);
-					  cellHeading.setBackgroundColor(BaseColor.YELLOW);
-					  table.addCell(cellHeading);
 					  
 					  PdfPCell cell ;
 				  	  cell = new PdfPCell(new Phrase(previousTrends.get(0).getName()+ "/" + previousTrends.get(1).getName(),style1));
@@ -2584,17 +2578,17 @@ public class StrategyModelTargetingService implements
 				  	  
 				  	  cell = new PdfPCell(new Phrase("WORST",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.RED);
+				  	  cell.setBackgroundColor(new BaseColor(255, 0, 0));
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("VERY POOR",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.ORANGE);
+				  	  cell.setBackgroundColor(new BaseColor(204, 102, 0));
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("POOR",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.CYAN);
+				  	  cell.setBackgroundColor(new BaseColor(255, 153, 102));
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("OK",style1));
@@ -2604,12 +2598,12 @@ public class StrategyModelTargetingService implements
 				  	  
 				  	  cell = new PdfPCell(new Phrase("STRONG",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.BLUE);
+				  	  cell.setBackgroundColor(new BaseColor(51, 153, 255));
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("VERY STRONG",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.GREEN);
+				  	  cell.setBackgroundColor(new BaseColor(0, 153, 0));
 				  	  table.addCell(cell);
 				  	  
 				  	List<PartyPositionVO> previousElectionList = previousTrends.get(0).getPartyPositionVOList();
@@ -2627,11 +2621,11 @@ public class StrategyModelTargetingService implements
 					  	  }  
 					  	  else if(i == 1)
 					  	  {
-					  		 cell.setBackgroundColor(BaseColor.ORANGE);
+					  		 cell.setBackgroundColor(new BaseColor(204, 102, 0));
 					  	  }
 					  	  else if(i == 2)
 					  	  {
-					  		 cell.setBackgroundColor(BaseColor.CYAN);
+					  		 cell.setBackgroundColor(new BaseColor(255, 153, 102));
 					  	  }
 					  	  else if(i == 3)
 					  	  {
@@ -2639,11 +2633,11 @@ public class StrategyModelTargetingService implements
 					  	  }
 					  	  else if(i == 4)
 					  	  {
-					  		 cell.setBackgroundColor(BaseColor.BLUE); 
+					  		 cell.setBackgroundColor(new BaseColor(51, 153, 255)); 
 					  	  }
 					  	  else if(i == 5)
 					  	  {
-					  		 cell.setBackgroundColor(BaseColor.GREEN);
+					  		 cell.setBackgroundColor(new BaseColor(0, 153, 0));
 					  	  }
 					  	  
 					  	  table.addCell(cell);
