@@ -2,7 +2,10 @@ package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.appfuse.dao.BaseDaoTestCase;
 
@@ -10,6 +13,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
 import com.itgrids.partyanalyst.dto.PartyElectionTrendsReportVO;
+import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.impl.StratagicReportServiceForMLASuccess;
 import com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf;
@@ -152,6 +156,7 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 	}
 
 	public void testBuild(){
+		StrategyVO strategyVO = getRang();
 		Document document = new Document();
 		   String filePath = "D:"+"/1.pdf";
 
@@ -164,16 +169,69 @@ public class StrategyModelTargetingServiceTest  extends BaseDaoTestCase{
 			   e.printStackTrace();
 		   }
 		   document.open();
-		StratagicReportServiceForMLASuccess stratagicReportServiceForMLASuccess = new StratagicReportServiceForMLASuccess();
-		stratagicReportServiceForMLASuccess.partyTrendsDAO = partyTrendsDAO;
-		List<PartyElectionTrendsReportVO> resForPrevTrends = stratagicReportServiceForMLASuccess.getPreviousTrendsReport(181l);
-		StratagicReportsServicePdf val = new StratagicReportsServicePdf();
+		  /* StratagicReportsServicePdf stratagicReportsServicePdf = new StratagicReportsServicePdf();
+		   stratagicReportsServicePdf.strategyModelTargetingService = strategyModelTargetingService;*/
 		try{
-		val.buildPdfForPrevTrends("", resForPrevTrends, document, writer, "Previous Election Results in ");
+			//stratagicReportsServicePdf.buildPdfDelegator(strategyVO);
+			strategyModelTargetingService.getTopPanchayats(strategyVO, document, writer);
 		}catch (Exception e) {
 			   e.printStackTrace();
 		   }
 		 document.close();
 	}
 
+	public StrategyVO getRang(){
+		StrategyVO strategyVO = new StrategyVO();
+		strategyVO.setConstituencyId(181l);//
+		strategyVO.setPartyId(872l);
+		List<Long> electionIds = new ArrayList<Long>();
+		electionIds.add(38l);
+		electionIds.add(3l);
+		strategyVO.setPublicationId(10l);
+		strategyVO.setConsiderRange(true);
+		strategyVO.setElectionIds(electionIds);
+		Map<Long,Float> castePercents = new HashMap<Long,Float>();
+		castePercents.put(86l,0.60f);	//gouda
+		castePercents.put(110l,0.60f);	//settibalaja
+		castePercents.put(211l,0.15f);  //Mala
+		castePercents.put(288l,0.70f);//kapu
+		castePercents.put(285l,0.15f);//reddy
+		castePercents.put(290l,0.80f);//kamma
+		castePercents.put(189l,0.70f);//madiga
+		castePercents.put(289l,0.80f);//Kshatriya
+		castePercents.put(159l,0.70f);//Thurpu Kapu
+		castePercents.put(61l ,0.60f);//Chakali/Rajaka
+		castePercents.put(103l,0.60f);//Padmashali
+		castePercents.put(38l ,0.60f);//Mangali
+		castePercents.put(287l,0.50f);//Velama
+		castePercents.put(286l,0.65f);//Vysya
+		castePercents.put(0l,0.50f);//others
+
+		strategyVO.setCastePercents(null);
+		strategyVO.setPrevTrnzWt(15d);
+		strategyVO.setYoungWt(5d);
+		strategyVO.setPrpWt(15d);
+		strategyVO.setAgedWt(5d);
+		strategyVO.setTotalCastWt(60d);
+		/*strategyVO.setBase(jObj.getLong("base"));
+		strategyVO.setAssured(jObj.getLong("assured"));
+		strategyVO.setTdpPerc(jObj.getLong("partyPerc"));*/
+		strategyVO.setEffectPartyId(662l);
+		strategyVO.setEffectElectionId(38l);
+	
+			strategyVO.setWorstMin(0d);
+			strategyVO.setWorstMax(21.12d);
+			strategyVO.setVeryPoorMin(21.13);
+			strategyVO.setVeryPoorMax(29d);
+			strategyVO.setPoorMin(29.01d);
+			strategyVO.setPoorMax(36.87d);
+			strategyVO.setOkMin(36.88d);
+			strategyVO.setOkMax(41.88);
+			strategyVO.setStrongMin(41.89);
+			strategyVO.setStrongMax(49.76);
+			strategyVO.setVeryStrongMin(49.77);
+			strategyVO.setVeryStrongMax(100d);
+		
+		return strategyVO;
+	}
 }
