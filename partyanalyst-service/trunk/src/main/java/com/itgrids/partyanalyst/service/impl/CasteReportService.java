@@ -1,11 +1,9 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -717,6 +715,279 @@ public class CasteReportService implements ICasteReportService{
 		  	
 	 return resultStatus;
 	 }
+	 
+	 public ResultStatus getVoterAddressDetailsForCriticalPanchayats(Long constituencyId,List<Long> panchayatIdsList,Long publicationId,Long userId)
+	 {
+		 ResultStatus resultStatus = new ResultStatus();
+		 try{
+			List<Object[]> boothHnos = userVoterDetailsDAO.getVoterHnoAndBoothsForPanchayatList(panchayatIdsList,publicationId);
+			
+			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
+		  	
+			if(boothHnos != null && boothHnos.size() > 0)
+			{
+		  		for(Object[] params : boothHnos)
+				{
+					List<String> hnos = boothHousesMap.get((Long)params[0]);
+					if(hnos == null)
+						hnos = new ArrayList<String>();
+					
+					hnos.add(params[1].toString());	
+					boothHousesMap.put((Long)params[0],hnos);
+				}
+			}
+		  	
+		  	List<Long> voterIds = new ArrayList<Long>();
+		  
+		  	List<VoterHouseInfoVO> resultList = new ArrayList<VoterHouseInfoVO>();
+		 
+		  	List<Long> boothIds = new ArrayList<Long>(boothHousesMap.keySet());
+		  	
+		    for(Long boothId :boothHousesMap.keySet())
+		    	{
+		  		if(boothHousesMap.get(boothId) != null)
+		  		{
+		  		for(String hno : boothHousesMap.get(boothId))
+		  			{
+		  				List<Object[]>  list = userVoterDetailsDAO.getElderVoterDetails(boothId, hno);
+		  				 if(list != null && list.size() > 0)
+		  				{
+		  					for(Object[] params : list)
+		  					{
+		  						
+		  						VoterHouseInfoVO vo = new VoterHouseInfoVO();
+		  						voterIds.add((Long)params[0]);
+		  						vo.setVoterId((Long)params[0]);
+		  						vo.setName(params[1]!= null?params[1].toString() : "");
+		  						vo.setAge((Long)params[2]);
+		  						vo.setGender(params[3]!= null?params[3].toString() : "");
+		  						vo.setHouseNo(hno);
+		  						vo.setBoothId(boothId);
+		  						resultList.add(vo);
+		  					}
+		  					
+		  				}
+		  		}
+			}
+			}
+		    createExcelForVoterAddressForCriticalPanchayats(resultList,voterIds,constituencyId,boothIds,userId);
+		    resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+			 resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+		 }
+		  	
+	 return resultStatus;
+	 }
+	 
+	 public void createExcelForVoterAddressForCriticalPanchayats(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
+	 {
+		 log.info("Enter into createExcelForVoterAddressForCriticalPanchayats Method with Constituency Id - "+constituencyId);
+		try{
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			String areaType = constituency.getAreaType();
+			String districtName ="";
+			if(constituency.getDistrict() != null)
+			districtName = constituency.getDistrict().getDistrictName();
+		 	
+			Map<Long,String> tehsilMap = new HashMap<Long, String>();
+		  	Map<Long,String> hamletMap = new HashMap<Long, String>();
+		  	Map<Long,String> panchayatMap = new HashMap<Long, String>();
+		  	Map<Long,String> pincodesMap = new HashMap<Long, String>();
+		  	
+		  	List<Object[]> pincodesInfo = boothDAO.getPincodesForBoothIdsList(boothIds);
+		  	
+		  	if(pincodesInfo != null && pincodesInfo.size() > 0)
+		  	{
+		  		for(Object[] params : pincodesInfo)
+		  		{
+		  			try{
+		  			String pincode = params[1].toString();
+		  			if(pincode != null && pincode.length() == 6)
+		  				pincodesMap.put((Long)params[0],pincode);
+		  			}catch(Exception e)
+		  			{
+		  				log.error(e);
+		  			}
+		  		}
+		  	}
+			
+		  	List<Object[]> hamletInfo =  userVoterDetailsDAO.getHamletForVoter(voterIds,userId);
+		  	
+		  	if(hamletInfo != null && hamletInfo.size() > 0)
+		  	{
+				for(Object[] hamlet : hamletInfo)
+				{
+					try{
+					BigInteger voterId1 =(BigInteger)hamlet[0];
+					String hamletName = hamletMap.get(voterId1.longValue());
+					if(hamletName == null)
+						hamletMap.put(voterId1.longValue(),hamlet[1].toString());
+					else
+						hamletMap.put(voterId1.longValue(),hamletName);	
+					}catch(Exception e)
+					{
+						log.error(e);
+					}
+				}
+		  	}
+		  	
+			List<Object[]> tehsils = userVoterDetailsDAO.getLocationForVoter(boothIds,IConstants.TEHSIL);
+			
+			if(tehsils != null && tehsils.size() > 0)
+			{
+				for(Object[] tehsil : tehsils)
+				{
+					try{
+					String mandal = tehsilMap.get((Long)tehsil[0]);
+					if(mandal == null)
+						tehsilMap.put((Long)tehsil[0],tehsil[1].toString());
+					else
+						tehsilMap.put((Long)tehsil[0],mandal);
+					}catch(Exception e)
+					{
+						log.error(e);
+					}
+				}
+			}
+			
+			List<Object[]> panchayats = userVoterDetailsDAO.getLocationForVoter(boothIds,IConstants.PANCHAYAT);
+			
+			if(panchayats != null && panchayats.size() > 0)
+			{
+				for(Object[] panchayat : panchayats)
+				{
+					try{
+					String panchayatName = panchayatMap.get((Long)panchayat[0]);
+					if(panchayatName == null)
+						panchayatMap.put((Long)panchayat[0],panchayat[1].toString());
+					else
+						panchayatMap.put((Long)panchayat[0],panchayatName);
+					}catch(Exception e)
+					{
+						log.error(e);
+					}
+				}
+			}
+			
+			/** excel header **/
+		    HSSFWorkbook workbook = new HSSFWorkbook();
+			HSSFSheet sheet = workbook.createSheet(constituency.getName());
+			
+			Row header = sheet.createRow(0);
+		    header.createCell(0).setCellValue("SNO");
+			header.createCell(1).setCellValue("Voter Name");
+		    header.createCell(2).setCellValue("Gender");
+		    header.createCell(3).setCellValue("House No");
+		    if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+		    {
+			    header.createCell(4).setCellValue("Hamlet Name");
+			    header.createCell(5).setCellValue("Panchayat Name");
+			    if(areaType.equalsIgnoreCase(IConstants.RURAL))
+			    	header.createCell(6).setCellValue("Mandal Name");
+			    else if(areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+			    	header.createCell(6).setCellValue("Mandal/Muncipality");
+			    header.createCell(7).setCellValue("District Name");
+			    header.createCell(8).setCellValue("Pincode");
+		    }
+		    else
+		    {
+			    header.createCell(4).setCellValue("Muncipality");		
+			    header.createCell(5).setCellValue("District Name");
+			    header.createCell(6).setCellValue("Pincode");
+		    }
+		    
+		    int rowNum = 0;
+		    for(VoterHouseInfoVO voter : resultList)
+		    {
+		       rowNum++;
+		       Row dataRow = sheet.createRow(rowNum);
+	    	   dataRow.createCell(0).setCellValue(rowNum);
+	    	   dataRow.createCell(1).setCellValue(voter.getName());
+	    	   dataRow.createCell(2).setCellValue(voter.getGender());
+	    	   dataRow.createCell(3).setCellValue(voter.getHouseNo());
+	    	   
+	    	   if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+			   {
+	    		   	dataRow.createCell(4).setCellValue(hamletMap.get(voter.getVoterId()));
+	    		   	dataRow.createCell(5).setCellValue(panchayatMap.get(voter.getBoothId()));
+	    		   	
+	    		   	if(areaType.equalsIgnoreCase(IConstants.RURAL))
+	    		   		dataRow.createCell(6).setCellValue(tehsilMap.get(voter.getBoothId()));
+	    		   	
+				    else if(areaType.equalsIgnoreCase(IConstants.RURALURBAN))
+				    {
+				    	Booth booth = boothDAO.get(voter.getBoothId());
+				    	String tehsil ="";
+				    	String localbody ="";
+				    	if (booth.getLocalBody() != null)
+							localbody = booth.getLocalBody().getName();
+						if(localbody != null && localbody != "")
+							tehsil = localbody +" Muncipality";
+						else
+							tehsil = booth.getTehsil().getTehsilName();	
+				    	dataRow.createCell(6).setCellValue(tehsil);
+				    }
+	    		   	dataRow.createCell(7).setCellValue(districtName);
+	    		   	
+	    		   	String pincode = "";
+	    		   	if(pincodesMap.get(voter.getBoothId()) != null)
+	    		   		pincode = pincodesMap.get(voter.getBoothId());
+	    		   	
+	    		   	dataRow.createCell(8).setCellValue(pincode);
+			    }
+			    else
+			    {
+			    	Booth booth = boothDAO.get(voter.getBoothId());
+			    	String tehsil ="";
+			    	String localbody ="";
+			    	if (booth.getLocalBody() != null)
+						localbody = booth.getLocalBody().getName();
+					String electionType =constituency.getElectionScope().getElectionType().getElectionType();
+					
+					if(localbody != null && localbody != "")
+					{
+						if(electionType.equalsIgnoreCase(IConstants.GHMC))
+						tehsil = localbody +" Corporation";
+						
+					}
+					else if(electionType.equalsIgnoreCase(IConstants.MUNCIPLE_ELECTION_TYPE))
+					{
+						tehsil = localbody +" Muncipality";
+					}
+			    	dataRow.createCell(4).setCellValue(tehsil);		
+			    	dataRow.createCell(5).setCellValue(districtName);
+			    	
+			    	String pincode = "";
+	    		   	if(pincodesMap.get(voter.getBoothId()) != null)
+	    		   		pincode = pincodesMap.get(voter.getBoothId());
+	    		   	
+	    		   	dataRow.createCell(6).setCellValue(pincode);
+			    }
+		    }
+		    
+		    try {
+    		   	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+    	        FileOutputStream out =
+    	                new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_voterAddressExcel.xls"));
+    	        workbook.write(out);
+    	        out.close();
+    	         
+    	    } catch (FileNotFoundException e) {
+    	        e.printStackTrace();
+    	    } catch (IOException e) {
+    	        e.printStackTrace();
+    	    } 
+		    
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in createExcelForVoterAddress()", e) ;
+		}
+	 }
+
 	 public void createExcelForVoterAddress(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
 	 
 	 {
