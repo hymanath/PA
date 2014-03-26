@@ -39,6 +39,7 @@ public class Booth extends BaseModel implements java.io.Serializable {
 	private Long femaleVoters;
 	private Long totalVoters;
 	private Panchayat panchayat;
+	private String pincode;
 	
 
 	private Constituency constituency;
@@ -348,6 +349,15 @@ public class Booth extends BaseModel implements java.io.Serializable {
 
 	public void setRefBooth(Booth refBooth) {
 		this.refBooth = refBooth;
+	}
+
+	@Column(name ="pincode")
+	public String getPincode() {
+		return pincode;
+	}
+
+	public void setPincode(String pincode) {
+		this.pincode = pincode;
 	}
 	
 	
