@@ -429,6 +429,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			  stratagicReportsService.generateBoothWiseAddedDeletedVoters(boothWiseAddedDelList,document);*/
 			defaultFileName="boothWiseAddedDelList"+uidentifier;
 			List<AgeRangeVO> boothWiseAddedDelList =stratagicReportsService.getBoothWiseAddedAndDeletedVoters(constituencyId,publicationDateId);
+		
 			defaultFileName =   serialize(defaultFileName, boothWiseAddedDelList);
 			maps.put(PdfPages.boothWiseAddedDelList, defaultFileName);
 			
@@ -594,20 +595,6 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	 DeSerialize<CasteStratagicReportVO>  dcvo=new DeSerialize<CasteStratagicReportVO>();
 	 CasteStratagicReportVO cvo =dcvo.deSerialize( maps.get(PdfPages.votersCaste) );
 	 if(cvo!=null)
-     {
-             List<String> columnNames = new ArrayList<String>();
-         columnNames.add("Caste");
-         columnNames.add("Caste Category");
-         columnNames.add("Voters");
-         columnNames.add("Male Voters");
-         columnNames.add("Female Voters ");
-         columnNames.add("Caste Percentage ");
-        
-     buildPdfForCasteVoters(cvo, document, writer, "Voters by Caste", columnNames);
-    
-    
-     }
-
 	 {
 		 List<String> columnNames = new ArrayList<String>();
 	     columnNames.add("Caste");
@@ -1684,13 +1671,14 @@ public void buildPdfForCasteVoters(CasteStratagicReportVO finalRes,Document docu
 	    subHeading.setColor(BaseColor.MAGENTA); 
 	  
 	
-	    if(finalRes.getStrategicVOList()!=null && finalRes.getStrategicVOList().size()>0)
-	    	buildSubHeading(document, heading);
+	   /* if(finalRes.getStrategicVOList()!=null && finalRes.getStrategicVOList().size()>0)
+	    	buildSubHeading(document, heading);*/
 	
 	/*Paragraph p =   new Paragraph(heading ,subHeading);
 	//p.setFont(subHeading);
 	
 	document.add(p );*/
+	  
 	    if(finalRes.getStrategicVOList()!=null && finalRes.getStrategicVOList().size()>0)
             buildSubHeading(document, heading);
 	PdfPCell c1;
@@ -1928,60 +1916,6 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 		 
 		
 		 
-	  	for (VoterStratagicReportVo prev : finalRes.getVoterStategicReportVOList()) {
-             if(prev.getVoterAgeRange().equalsIgnoreCase("Young Voters"))
-	  		
-            	 {
-            	 c1 = new PdfPCell(new Phrase("First Time Voters (18-22)",SMALLFONT));
-            	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-    	 	 	 table.addCell(c1);     	 
-            	 }
-             else{
-	  		 c1 = new PdfPCell(new Phrase(prev.getVoterAgeRange(),SMALLFONT));
-	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	 	 table.addCell(c1);
-             }
-		
-		 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getTotalVoters()),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	table.addCell(c1);
-		 
-		
-		 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getTotalPercentage()),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	 table.addCell(c1);
-	 	 
-		 
-	 	 
-	 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getMaleVotersCount()),SMALLFONT));
-	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	 table.addCell(c1);
-	 	 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getMaleTotalPercentage()),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	 table.addCell(c1);
-		 
-	 	 
-		
-		 
-	 	 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getFemaleVotersCount()),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
-		 
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getFemaleTotalPercentage()),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
-		 
-		 	
-	  	}
-		float[] widths = new float[] {1.6f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
-		table.setWidths(widths);
-	  	document.add(table);
-		
-
 			for (VoterStratagicReportVo prev : finalRes.getVoterStategicReportVOList()) {
 	             if(prev.getVoterAgeRange().equalsIgnoreCase("Young Voters"))
 		  		
@@ -2031,8 +1965,8 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 			 
 			 	
 		  	}
-			float[] widths1 = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
-			table.setWidths(widths1);
+			float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
+			table.setWidths(widths);
 		  	document.add(table);
 			
 	}
