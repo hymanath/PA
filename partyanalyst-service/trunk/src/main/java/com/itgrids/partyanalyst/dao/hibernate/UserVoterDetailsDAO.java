@@ -2996,6 +2996,17 @@ IUserVoterDetailsDAO{
 		//query.setMaxResults(100);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getVoterHnoAndBoothsForPanchayatList(List<Long> panchayatIdsList,Long publicationId)
+	{
+	    Query query = getSession().createQuery("select model.booth.boothId,model.voter.houseNo from BoothPublicationVoter model where model.booth.panchayat.panchayatId in(:panchayatIdsList) and " +
+				" model.booth.publicationDate.publicationDateId = :publicationId group by model.booth.boothId,model.voter.houseNo ");
+		query.setParameterList("panchayatIdsList", panchayatIdsList);
+		query.setParameter("publicationId", publicationId);
+		return query.list();
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getElderVoterDetails(Long boothId,String hno)
 	{
@@ -3006,6 +3017,8 @@ IUserVoterDetailsDAO{
 		query.setMaxResults(1);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getLocationForVoter(List<Long> boothIds,String type)
 	{
 		StringBuilder str = new StringBuilder();
@@ -3020,6 +3033,7 @@ IUserVoterDetailsDAO{
 		return query.list();	
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Object[]> getHamletForVoter(List<Long> voterIds,Long userId)
 	{
 		Query query = getSession().createSQLQuery("SELECT UVD.voter_id,H.hamlet_name FROM user_voter_details UVD,hamlet H where UVD.hamlet_id = H.hamlet_id and" +
