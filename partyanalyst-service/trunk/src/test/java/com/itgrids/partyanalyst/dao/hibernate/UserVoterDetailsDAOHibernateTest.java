@@ -668,13 +668,13 @@ for (Object[] objects : list) {
 		System.out.println(list.size());
 	}*/
 	
-	public void testgetmatchtedRecordsForACaste()
+	/*public void testgetmatchtedRecordsForACaste()
 	{
 		List<Long> voterIdsList = new ArrayList<Long>(0);
 		voterIdsList.add(49l);
 		List<Long> list = userVoterDetailsDAO.getMatchtedRecordsForACaste(1l,292l,voterIdsList);
 		System.out.println(list.size());
-	}
+	}*/
 	
 	/*public void testgetUnmatchtedRecordsForACaste()
 	{
@@ -702,5 +702,21 @@ for (Object[] objects : list) {
 		System.out.println(list.size());
 		
 	}*/
+	
+	public void testGetVoterHnoAndBoothsForPanchayatList()
+	{
+		List<Long> panchayatIdsList = new ArrayList<Long>();
+		panchayatIdsList.add(3284l);
+		panchayatIdsList.add(3285l);
+		List<Object[]> list = userVoterDetailsDAO.getVoterHnoAndBoothsForPanchayatList(panchayatIdsList,10l);
+		System.out.println(list.size());
+		
+		for(Object[] params : list)
+		{
+			System.out.println();
+			for(Object obj : params)
+				System.out.print("\t"+obj.toString());
+		}
+	}
 	
 }
