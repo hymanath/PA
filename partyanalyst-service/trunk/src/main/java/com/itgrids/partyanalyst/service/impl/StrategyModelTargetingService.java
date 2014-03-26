@@ -1223,13 +1223,18 @@ public class StrategyModelTargetingService implements
 			 priorVo.setTargetedVoters(Math.round((totalVotersMap.get(panchayatId)*avgPerc)/100));
 			 if(priorVo.getPreviousVoters() == null){
 				 priorVo.setPreviousVoters(0l);
-			 }
+			 }//priorVo.getPrevElectionVotes() 2004 priorVo.getPreviousVoters()2009
 			 if(!(priorVo.getTargetedVoters()-priorVo.getPreviousVoters() > 0)){
-				 if(priorVo.getPrevElectionVotes() != null && (priorVo.getTargetedVoters()-priorVo.getPrevElectionVotes() > 0)){
-					 priorVo.setOpportunity(priorVo.getPrevElectionVotes()-priorVo.getTargetedVoters());
-					 priorVo.setPreviousVoters(priorVo.getPrevElectionVotes());
+				 if(priorVo.getPrevElectionVotes() != null && (priorVo.getPrevElectionVotes()-priorVo.getPreviousVoters() > 0)){
+					 priorVo.setOpportunity(priorVo.getPreviousVoters()-priorVo.getPrevElectionVotes());
+					 priorVo.setTargetedVoters(priorVo.getPrevElectionVotes());
+				 }else if(priorVo.getPreviousPerc() != null && priorVo.getCurrentPerc() != null && (priorVo.getPreviousPerc() - priorVo.getCurrentPerc()) > 0){
+					 Double reqPerc = priorVo.getPreviousPerc() - priorVo.getCurrentPerc();
+					 Long target = priorVo.getPreviousVoters()+(Math.round(priorVo.getTotalVoters()*reqPerc/100));
+					 priorVo.setTargetedVoters(target);
+					 priorVo.setOpportunity(priorVo.getPreviousVoters()-target);					 
 				 }else{
-					 priorVo.setOpportunity(priorVo.getPreviousVoters()-priorVo.getTargetedVoters());
+					 priorVo.setOpportunity(0l);
 				 }
 			 }else{
 				 priorVo.setOpportunity(priorVo.getPreviousVoters()-priorVo.getTargetedVoters());
@@ -1717,10 +1722,16 @@ public class StrategyModelTargetingService implements
 					
 					finalOrder.put(locationVo.getId(), priority);
 				}
-				if(locationVo.getTdpCurrentVotes() != null)
+				if(locationVo.getTdpCurrentVotes() != null){
 				  priority.setPreviousVoters(locationVo.getTdpCurrentVotes());
-				if(locationVo.getTdpPrevVotes() != null)
+				}if(locationVo.getTdpPrevVotes() != null){
 				   priority.setPrevElectionVotes(locationVo.getTdpPrevVotes());
+				}if(locationVo.getTdpCurrentPerc() != null){
+					 priority.setCurrentPerc(locationVo.getTdpCurrentPerc());
+				}
+                 if(locationVo.getTdpPrevPerc() != null){
+                	 priority.setPreviousPerc(locationVo.getTdpPrevPerc());
+				}
    			if(locationVo.getPrpCurrentPerc() != null && locationVo.getTdpCurrentPerc() != null && locationVo.getTdpPrevPerc() != null){
    				Double prpPerc = locationVo.getPrpCurrentPerc();
    				Double partyDiff = null;

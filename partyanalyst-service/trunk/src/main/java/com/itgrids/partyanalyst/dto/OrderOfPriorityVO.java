@@ -22,6 +22,8 @@ private Long panchayatId;
   private Double prevTrnzWeight = 0d;
   private Double totalWeight = 0d;
   private String type;
+  private Double previousPerc = 0d;
+  private Double currentPerc = 0d;
   
 public Long getPanchayatId() {
 	return panchayatId;
@@ -112,6 +114,18 @@ public String getType() {
 }
 public void setType(String type) {
 	this.type = type;
+}
+public Double getPreviousPerc() {
+	return previousPerc;
+}
+public void setPreviousPerc(Double previousPerc) {
+	this.previousPerc = previousPerc;
+}
+public Double getCurrentPerc() {
+	return currentPerc;
+}
+public void setCurrentPerc(Double currentPerc) {
+	this.currentPerc = currentPerc;
 }
   
   
