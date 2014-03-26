@@ -18,6 +18,7 @@
 	<link rel="stylesheet" type="text/css" href="styles/newhome_styles.css">
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
 	
+	<script type="text/javascript" src="js/md5.js"></script>
 </head>
 <style>
 	#changePWDButton,#cancelButtonID{background-color: #2F96B4;}
@@ -1538,8 +1539,8 @@ $(".changePwdLink").live("click",function(){
 		div.append('<span>Fields marked with (<font color="red">*</font>) are mandatory</span><br>');
 		div.append('<img src="images/icons/infoicon.png" />');
 		div.append('<span>Password must be minimum of 6 characters long</span><br>');
-		div.append('<img src="images/icons/infoicon.png" />');
-		div.append('<span>Password should not contain & # \\ + % characters</span>');
+		/*div.append('<img src="images/icons/infoicon.png" />');
+		div.append('<span>Password should not contain & # \\ + % characters</span>');*/
 		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>Current Password</span><font color="red"> *</font> <input type="password" id="currentPwdId" name="currentPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 15px;"/></div>');
 		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>New Password</span><font color="red"> *</font> <input type="password" id="newPwdId" name="newPassword" style="height: 18px; width: 160px; margin-top: 10px;margin-left: 38px;"/></div>');
 		div.append('<div style="width: 360px; margin-left: auto; margin-right: auto;"> <span>Confirm Password</span><font color="red"> *</font> <input type="password" id="confirmPwdId" name="confirmPassword" style="height: 18px; width: 160px; margin-top: 10px; margin-left: 13px;"/></div>');
@@ -1553,7 +1554,10 @@ $(".changePwdLink").live("click",function(){
    });
 
    $("#changePWDButton").live("click",function(){
-
+	
+   
+		var userName="${profileUserName}";
+   
 		var cpwd = $.trim($("#currentPwdId").val());
 		var npwd = $.trim($("#newPwdId").val());
 		var cfmpwd = $.trim($("#confirmPwdId").val());
@@ -1585,7 +1589,7 @@ $(".changePwdLink").live("click",function(){
 	 return;
 	}else if ( cpwd != null)
 			{ 				
-				var iChars = "#%&+\\";  
+				/*var iChars = "#%&+\\";  
 				
 		            for (var i = 0; i < cpwd.length; i++)
                 {      
@@ -1594,7 +1598,7 @@ $(".changePwdLink").live("click",function(){
 					errorDiv.html('<font color="red">Current password should not contain & # \\ + % characters</font>');
 					return;
                     } 
-                }
+                }*/
 			
 			}
 	if(npwd=='')
@@ -1603,7 +1607,7 @@ $(".changePwdLink").live("click",function(){
 	   return;
 	}else if ( npwd != null)
 			{ 				
-				var iChars = "#%&+\\";  
+				/*var iChars = "#%&+\\";  
 				
 		            for (var i = 0; i < npwd.length; i++)
                 {      
@@ -1612,7 +1616,7 @@ $(".changePwdLink").live("click",function(){
 					errorDiv.html('<font color="red">New password should not contain & # \\ + % characters</font>');
 					return;
                     } 
-                }
+                }*/
 			
 			}
 	if(cfmpwd=='')
@@ -1621,7 +1625,7 @@ $(".changePwdLink").live("click",function(){
 	   return;
 	}else if ( cfmpwd != null)
 			{ 				
-				var iChars = "#%&+\\";  
+				/*var iChars = "#%&+\\";  
 				
 		            for (var i = 0; i < cfmpwd.length; i++)
                 {      
@@ -1630,7 +1634,7 @@ $(".changePwdLink").live("click",function(){
 					errorDiv.html('<font color="red">Confirm password should not contain & # \\ + % characters</font>');
 					return;
                     } 
-                }
+                }*/
 			
 			}
 	if(cpwd == npwd)
@@ -1643,7 +1647,10 @@ $(".changePwdLink").live("click",function(){
 	{
 	  errorDiv.html("Sending Your Request.Please wait</font>");
 	  errorDiv.html('<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">');
-
+	
+	  cpwd=MD5(MD5(userName)+MD5(cpwd));
+	  npwd=MD5(MD5(userName)+MD5(npwd));
+	  
       var jsObj={
       crntPassword:cpwd,
       newPassword:npwd,
