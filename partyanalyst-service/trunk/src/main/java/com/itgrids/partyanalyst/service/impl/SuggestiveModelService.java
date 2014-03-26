@@ -1324,7 +1324,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  
 				  public int compare(PartyTrendsVO cstVO1, PartyTrendsVO cstVO2)
 					{
-					   return (cstVO1.getTotalWt().compareTo(cstVO2.getTotalWt()));
+					   return (cstVO2.getTotalWt().compareTo(cstVO1.getTotalWt()));
 					}
 			  };
 	
