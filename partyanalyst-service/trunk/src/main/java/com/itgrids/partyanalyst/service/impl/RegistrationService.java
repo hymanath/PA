@@ -25,6 +25,7 @@ import com.itgrids.partyanalyst.model.Role;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.security.EncryptDecrypt;
+import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IRegistrationService;
@@ -263,10 +264,20 @@ public class RegistrationService implements IRegistrationService{
 			
 			String secretKey = EncryptDecrypt.getSecretKey();
 			
-			EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
+			//EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
+			PBKDF2 pb=new PBKDF2();
+			String md5pwd=values.getPassword();
+			String storedPwd=pb.generatePassword(md5pwd);
+			/*user.setPasswdHashTxt(encryptDecrypt.encryptText(md5pwd));
+			user.setHashKeyTxt(secretKey);*/
 			
-			user.setPasswdHashTxt(encryptDecrypt.encryptText(values.getPassword()));
-			user.setHashKeyTxt(secretKey);
+			String[] parts = storedPwd.split(":");
+	        //int iterations = Integer.parseInt(parts[0]);
+	        String passwordSalt=parts[1];
+	        String passwordHash=parts[2];
+			
+			user.setPasswordHash(passwordHash);
+			user.setPasswordSalt(passwordSalt);
 
 			user.setParty(partyDAO.get(values.getParty()));
 			SimpleDateFormat format = new SimpleDateFormat(IConstants.DATE_PATTERN);
