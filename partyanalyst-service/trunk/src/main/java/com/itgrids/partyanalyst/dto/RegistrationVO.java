@@ -78,9 +78,18 @@ public class RegistrationVO extends BaseDTO{
 	private String deviceId;
 	
 	private Long publicationDateId;
+	private String randomNumber;
 	
 	
 	
+	public String getRandomNumber() {
+		return randomNumber;
+	}
+
+	public void setRandomNumber(String randomNumber) {
+		this.randomNumber = randomNumber;
+	}
+
 	public Long getPublicationDateId() {
 		return publicationDateId;
 	}
