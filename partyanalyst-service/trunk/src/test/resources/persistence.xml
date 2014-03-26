@@ -67,7 +67,15 @@
 		<class>com.itgrids.partyanalyst.model.StrategyMergePanchayat</class>
 		<class>com.itgrids.partyanalyst.model.StrategyMergPancList</class>
 			
+		<class>com.itgrids.partyanalyst.model.ForgetPasswordAccessKey</class>
 		
+		<class>com.itgrids.partyanalyst.model.HHSurveyQuestion</class>
+		<class>com.itgrids.partyanalyst.model.HHOptions</class>
+		<class>com.itgrids.partyanalyst.model.HHQuestionOptions</class>
+		<class>com.itgrids.partyanalyst.model.HHOptionType</class>
+		<class>com.itgrids.partyanalyst.model.HHSurvey</class>
+		<class>com.itgrids.partyanalyst.model.HouseHolds</class>
+		<class>com.itgrids.partyanalyst.model.HHSurveyAnswers</class>
 		
 		
 		 <properties> 
