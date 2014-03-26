@@ -285,7 +285,44 @@ ServletRequestAware, ModelDriven<RegistrationVO>, Preparable  {
 		 
 		return SUCCESS;
 	}
-	
+	public String recoverPasswordUsingLink(){
+		regVO = new RegistrationVO();
+		try {
+			jObj = new JSONObject(getTask());
+			if(jObj.getString("task").equalsIgnoreCase("forgotPassword"))
+			{
+				
+				regVO = ananymousUserService.getUserDetailsToRecoverPassword(jObj.getString("userName"));	
+				
+				if(regVO.getEmail()== null || regVO.getEmail() == " ")
+					return SUCCESS;
+				
+				else
+				{
+					email = regVO.getEmail();
+				 	String requestURL= request.getRequestURL().toString();
+					String requestFrom = null;
+					
+					if(requestURL.contains(IConstants.PARTYANALYST_SITE))
+						requestFrom = IConstants.SERVER;
+					else
+						requestFrom = IConstants.LOCALHOST;
+					
+					ResultStatus rs = mailService.sendMailToUserToRecoverPassword(regVO,requestFrom);
+				 
+					if(rs.getResultCode() == 1)
+					 regVO = null;
+
+					return SUCCESS;
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+		
+	}
 	public String recoverPassword(){
 		
 		regVO = new RegistrationVO();
