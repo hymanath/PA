@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="js/yahoo/yui-js-2.8/build/calendar/calendar-min.js"></script>
 	<script type="text/javascript" src="js/calendar Component/calendarComponent.js"></script>
 	<script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
+	<script type="text/javascript" src="js/md5.js"></script>
 <style type="text/css">
 
 	.calBtn
@@ -343,11 +344,21 @@ function getUserNameAvailabilityResult(results)
 	}
 function getStatesValidationForFreeuser()
 {
-	
+
 var Ele=document.getElementById('freeuser');
 var errorDiv=document.getElementById('errorDiv');
 var stateSelectBox =document.getElementById("stateSelectBox").value;
 var constituency = document.getElementById("constituency").value;
+
+var usname=document.getElementById("userNameField").value;
+var pasword=document.getElementById("passwordField").value;
+
+var md5Pwd=MD5(MD5(usname)+MD5(pasword));
+
+var mdpwd=document.getElementById("password1");
+mdpwd.value=md5Pwd;
+
+
 var str = '<font style="color:red;font-size:12px;">';
 
 	if(Ele.checked == true)
@@ -443,7 +454,8 @@ var str = '<font style="color:red;font-size:12px;">';
 				<table class="registrationTable">
 					<tr>
 						<td width="100px;"><span>Password</span><b class="requiredFont" style="color:red"> * </b></td>
-						<td ><s:password id="passwordField" name="password"/>  </td>
+						<td ><s:password id="passwordField" name="password1"/>  </td>
+						<input type="hidden" name="password" id="password1"/>
 						<td></td>
 					</tr>
 				</table>
