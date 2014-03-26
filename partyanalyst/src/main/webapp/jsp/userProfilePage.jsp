@@ -1005,9 +1005,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5189c6', end
 
 <!-- Templated END -->
 
-	
+<input type="hidden" id="loginEmailId" name="loginUserEmailId"/>
 
 <script type="text/javascript">
+ 
+ $('#loginEmailId').val('${loginUsrname}');
  
  function openModal(alertMsg,type){'color',''
  if(type=="alert"){$('.modal-header').find('h4').html('<h4 style="color:#E4662C;">Alert</h4>')}
