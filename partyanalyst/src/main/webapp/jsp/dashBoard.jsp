@@ -1648,8 +1648,8 @@ $(".changePwdLink").live("click",function(){
 	  errorDiv.html("Sending Your Request.Please wait</font>");
 	  errorDiv.html('<img src="images/icons/partypositions.gif" style="padding-left:10px;" width="18" height="11">');
 	
-	  cpwd=MD5(MD5(userName)+MD5(cpwd));
-	  npwd=MD5(MD5(userName)+MD5(npwd));
+	  cpwd=MD5(MD5(userName.toLowerCase())+MD5(cpwd));
+	  npwd=MD5(MD5(userName.toLowerCase())+MD5(npwd));
 	  
       var jsObj={
       crntPassword:cpwd,
