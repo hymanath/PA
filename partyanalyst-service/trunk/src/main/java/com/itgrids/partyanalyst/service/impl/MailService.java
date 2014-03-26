@@ -171,14 +171,28 @@ public class MailService implements IMailService{
 		String text;
     	subject = "";
     	subject = "Mail From www.partyanalyst.com";
+    	String link="";
+    	 
+    	
+    	if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("localhost")){
+    		link="localhost:8080/PartyAnalyst/resetPasswordAction";
+    	}else if(IConstants.DEPLOYED_HOST.equalsIgnoreCase("tdpserver")){
+    		link=IConstants.DEPLOYED_HOST+"/resetPasswordAction";
+    	}else{
+    		link=IConstants.DEPLOYED_HOST+"/resetPasswordAction";
+    	}
+    	
+    	String slink="<a href='http://"+link+".action?randomNumber="+registrationVO.getRandomNumber()+"'";
     	
     	text = "";
     	text = "<div style='border:1px solid #CCCCCC;background:#EFFFFF;'>"+mailsTemplateService.getHeader()+"" 
     			+"<div style='margin-left:26px;margin-top:20px;margin-bottom: 7px;'>Hi <b>"+registrationVO.getFirstName()+" "+registrationVO.getLastName()+",</b></div>" +
-    			"<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>Here are the login details for your Party Analyst Account.<br>";
+    			"<div style='margin-left:45px;margin-bottom:40px;line-height: 1.5em;'>Please Reset Your Password <br>";
     	text += "User Name is : " + " " +registrationVO.getUserName()+"<br>";
-    	if(registrationVO.getPassword()!= null)
-    	text += "Your Password is :" +"  <b>"+ registrationVO.getPassword()+"</b>";
+    	//if(registrationVO.getPassword()!= null)
+    	//text += "Your Password is :" +"  <b>"+ registrationVO.getPassword()+"</b>";
+    	text += "Click on the Link to Reset Your Password :<a href="+slink+"> Click Here </a>";
+    	//text += "Click on the Link to Reset Your Password :<a href='http://localhost:8080/PartyAnalyst'>Click Here</a>";
     	text +="</div><div style='margin: -17px 3px 0px 19px; padding-bottom: 18px;'>"+mailsTemplateService.getFooter()+"</div></div>";
     	quickRequestVO.setToEmailId(registrationVO.getEmail());
     	quickRequestVO.setSubject(subject);
