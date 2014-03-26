@@ -88,8 +88,19 @@ public class LoginAction extends ActionSupport implements ServletContextAware, S
     private String SUCCESS = "success";
     private String FAILURE = "failure";
     private ResultStatus resultStatus;
+    private String status;
     
-    public String getResultForAjax() {
+    
+    
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getResultForAjax() {
 		return resultForAjax;
 	}
 
