@@ -1,14 +1,17 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.WordUtils;
@@ -28,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ICustomMessageDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IFavoriteLinkPageDAO;
+import com.itgrids.partyanalyst.dao.IForgetPasswordAccessKeyDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IMessageTypeDAO;
@@ -63,6 +67,7 @@ import com.itgrids.partyanalyst.dto.UserSettingsVO;
 import com.itgrids.partyanalyst.model.CommentData;
 import com.itgrids.partyanalyst.model.CustomMessage;
 import com.itgrids.partyanalyst.model.FavoriteLinkPage;
+import com.itgrids.partyanalyst.model.ForgetPasswordAccessKey;
 import com.itgrids.partyanalyst.model.MessageType;
 import com.itgrids.partyanalyst.model.ProfileOpts;
 import com.itgrids.partyanalyst.model.Role;
@@ -75,6 +80,7 @@ import com.itgrids.partyanalyst.model.UserProfileOpts;
 import com.itgrids.partyanalyst.model.UserReferralEmails;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.security.EncryptDecrypt;
+import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IAnanymousUserService;
 import com.itgrids.partyanalyst.service.IDateService;
 import com.itgrids.partyanalyst.service.IMailsSendingService;
@@ -82,6 +88,7 @@ import com.itgrids.partyanalyst.service.IProblemManagementService;
 import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.itgrids.partyanalyst.utils.Util;
 
 public class AnanymousUserService implements IAnanymousUserService {
 
@@ -121,8 +128,19 @@ public class AnanymousUserService implements IAnanymousUserService {
 	private ISpecialPageDAO specialPageDAO;
 	private SimpleDateFormat sdf = new SimpleDateFormat(IConstants.DATE_PATTERN_VALUE);
 	private TaskExecutor taskExecutor;
+	private IForgetPasswordAccessKeyDAO forgetPasswordAccessKeyDAO;
 	
 	
+	
+	public IForgetPasswordAccessKeyDAO getForgetPasswordAccessKeyDAO() {
+		return forgetPasswordAccessKeyDAO;
+	}
+
+	public void setForgetPasswordAccessKeyDAO(
+			IForgetPasswordAccessKeyDAO forgetPasswordAccessKeyDAO) {
+		this.forgetPasswordAccessKeyDAO = forgetPasswordAccessKeyDAO;
+	}
+
 	public TaskExecutor getTaskExecutor() {
 		return taskExecutor;
 	}
@@ -430,17 +448,30 @@ public Boolean saveAnonymousUserDetails(final RegistrationVO userDetails, final 
 						String str = ((Long)System.currentTimeMillis()).toString();
 						String pwd = str.substring(str.length()-7,str.length());
 						
-						user.setHashKeyTxt(hashKey);
-						
-						EncryptDecrypt encryptDecrypt = new EncryptDecrypt(hashKey);
-						user.setPasswdHashTxt(encryptDecrypt.encryptText(pwd));
 						
 												
 						userDetails.setPassword(getPassword(pwd));
 						user.setUserName(userDetails.getEmail());
 						//user.setPassword(userDetails.getPassword());
 						
+
+						String md5Pwd=Util.MD5(Util.MD5(user.getUserName())+ Util.MD5(pwd));
 						
+						/*user.setHashKeyTxt(hashKey);
+						
+						EncryptDecrypt encryptDecrypt = new EncryptDecrypt(hashKey);
+						user.setPasswdHashTxt(encryptDecrypt.encryptText(md5Pwd));*/
+						
+						PBKDF2 pb=new PBKDF2();
+						String storedPwd=pb.generatePassword(md5Pwd);
+						
+						String[] parts = storedPwd.split(":");
+				        //int iterations = Integer.parseInt(parts[0]);
+				        String passwordSalt=parts[1];
+				        String passwordHash=parts[2];
+						
+						user.setPasswordHash(passwordHash);
+						user.setPasswordSalt(passwordSalt);
 						
 						user.setRegisteredDate(dateUtilService.getCurrentDateAndTime());
 						user.setEmail(userDetails.getEmail());
@@ -2237,15 +2268,29 @@ public RegistrationVO getUserDetailsToRecoverPassword(String userName){
 			
 			if(registrationVO.getEmail() != null && registrationVO.getEmail().trim().length() > 0)
 			{
-				String secretKey =userDetails.getHashKeyTxt();
+				/*String secretKey =userDetails.getHashKeyTxt();
 				
 				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);		
 				
-				registrationVO.setPassword(encryptDecrypt.decryptText(userDetails.getPasswdHashTxt()));
+				registrationVO.setPassword(encryptDecrypt.decryptText(userDetails.getPasswdHashTxt()));*/
 				
 				//registrationVO.setPassword((String)ananymousUserObj[1]);
 				registrationVO.setFirstName(userDetails.getFirstName());
 				registrationVO.setLastName(userDetails.getLastName());
+				registrationVO.setRegistrationID(userDetails.getUserId());
+				
+				
+				ForgetPasswordAccessKey fpKey=new ForgetPasswordAccessKey();
+				
+				fpKey.setUserId(userDetails.getUserId());
+				fpKey.setTimeStamp(getCurrentDateAndTime());
+				fpKey.setIsValidated("N");
+				String uuidTkn = UUID.randomUUID().toString();
+				fpKey.setAccessKey(uuidTkn);
+				
+				forgetPasswordAccessKeyDAO.save(fpKey);
+				
+				registrationVO.setRandomNumber(uuidTkn);
 			}
 			else
 				registrationVO.setEmail(null);
@@ -2301,22 +2346,41 @@ public String changeUserPassword(String crntpassword,String newpassword,Long reg
 	{
        User user = userDAO.get(regId);
        
-       String savedSecretKey = user.getHashKeyTxt();
-       String encryptedPassword = user.getPasswdHashTxt();
+      /* String savedSecretKey = user.getHashKeyTxt();
+       String encryptedPassword = user.getPasswdHashTxt();*/
        
-       EncryptDecrypt encryptDecrypt = new EncryptDecrypt(savedSecretKey);
+       String salt = user.getPasswordSalt();
+	   String hash = user.getPasswordHash();
+	   //boolean validated= EncryptDecrypt.validatePassword(password, hash, salt);
+	   PBKDF2 pb= new PBKDF2();
+	   boolean validated = pb.validatePWD(crntpassword, hash, salt);
+	   if(!validated){
+		   return IConstants.NoPassword;
+	   }
+       
+      /* EncryptDecrypt encryptDecrypt = new EncryptDecrypt(savedSecretKey);
        String presentEncryptedPassword = encryptDecrypt.encryptText(crntpassword);
        
-       if(!encryptedPassword.equalsIgnoreCase(presentEncryptedPassword))
-    	   return IConstants.NoPassword;
+       if(!encryptedPassword.equalsIgnoreCase(presentEncryptedPassword))*/
+    	//   return IConstants.NoPassword;
        else
        {
-    	   String secretKey = EncryptDecrypt.getSecretKey();
+    	  /* String secretKey = EncryptDecrypt.getSecretKey();
     	   EncryptDecrypt phash1 = new EncryptDecrypt(secretKey);
     	   String encryptPassword = phash1.encryptText(newpassword);
     	   
     	   user.setPasswdHashTxt(encryptPassword);
-    	   user.setHashKeyTxt(secretKey);
+    	   user.setHashKeyTxt(secretKey);*/
+    	   
+    	   	PBKDF2 pb1=new PBKDF2();
+			String storedPwd=pb1.generatePassword(newpassword);
+			String[] parts = storedPwd.split(":");
+	        //int iterations = Integer.parseInt(parts[0]);
+	        String passwordSalt=parts[1];
+	        String passwordHash=parts[2];
+			
+			user.setPasswordHash(passwordHash);
+			user.setPasswordSalt(passwordSalt);
     	   
     	   userDAO.save(user);
     	   
@@ -3305,5 +3369,74 @@ public DataTransferVO getAllConnectedUsersBasedonLocationType(List<Long> locatio
 			}
 		}
 	return locationIds;
+	}
+	
+	public RegistrationVO verifyLinkForPassword(String randomNumber){
+		ForgetPasswordAccessKey fo=new ForgetPasswordAccessKey();
+		RegistrationVO rvo=new RegistrationVO();
+		User user=new User();
+		fo=forgetPasswordAccessKeyDAO.getModelByRandomNumber(randomNumber);
+		if(fo!=null){
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			Calendar cal = Calendar.getInstance();
+			
+			String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+			
+			long duration =   cal.getTime().getTime() - fo.getTimeStamp().getTime();
+			long diffSeconds = duration / 1000 % 60;  
+			long diffMinutes = duration / (60 * 1000) % 60;        
+			long diffHours = duration / (60 * 60 * 1000);
+			
+			if(diffMinutes+(diffHours*60)>720){
+				return rvo;
+			}
+			else{
+			user=userDAO.getUserByUserId(fo.getUserId());
+			if(user!=null){
+				rvo.setRegistrationID(user.getUserId());
+				rvo.setFirstName(user.getFirstName());
+				rvo.setEmail(user.getEmail());
+				rvo.setUserName(user.getUserName());
+				rvo.setRandomNumber(randomNumber);
+			}
+			}
+			
+		}
+		return rvo;
+	}
+	
+	public String confirmChangePassword(RegistrationVO rvo,String newPassword){
+		User user = userDAO.get(rvo.getRegistrationID());
+		
+		int count=forgetPasswordAccessKeyDAO.updateIsValidated(rvo.getRandomNumber());
+		
+		/*
+		String secretKey = EncryptDecrypt.getSecretKey();
+		
+		EncryptDecrypt phash1 = new EncryptDecrypt(secretKey);
+  	   	String encryptPassword = phash1.encryptText(newPassword);*/
+  	   
+  	   	try {
+  	   		
+  	   	PBKDF2 pb=new PBKDF2();
+		String storedPwd=pb.generatePassword(newPassword);
+		String[] parts = storedPwd.split(":");
+        //int iterations = Integer.parseInt(parts[0]);
+        String passwordSalt=parts[1];
+        String passwordHash=parts[2];
+		
+		user.setPasswordHash(passwordHash);
+		user.setPasswordSalt(passwordSalt);
+  	   		
+			/*user.setPasswdHashTxt(encryptPassword);
+			user.setHashKeyTxt(secretKey);*/
+ 	   
+			userDAO.save(user);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return "failed";
+		}
+  	   	
+		return "success";
 	}
 }
