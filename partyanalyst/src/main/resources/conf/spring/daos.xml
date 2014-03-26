@@ -1295,6 +1295,9 @@
      <bean id="casteInsertTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.CasteInsertTypeDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
    </bean>
+   <bean id="forgetPasswordAccessKeyDAO" class="com.itgrids.partyanalyst.dao.hibernate.ForgetPasswordAccessKeyDAO">
+    	<property name="sessionFactory" ref="sessionFactory" />
+   </bean>
    
     <bean id="hhSurveyQuestionDAO" class="com.itgrids.partyanalyst.dao.hibernate.HHSurveyQuestionDAO">
     	<property name="sessionFactory" ref="sessionFactory" />
