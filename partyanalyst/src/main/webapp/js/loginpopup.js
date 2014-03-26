@@ -67,7 +67,9 @@ if(!validInd)
 	return false;
 
 var userName1=document.getElementById('userName1').value;
-var password1=document.getElementById('passWord_Id1').value;
+var pswd1=document.getElementById('passWord_Id1').value;
+
+var password1=MD5(MD5(userName1)+MD5(pswd1));
 
 task="validateUserForLogin";
  
@@ -233,7 +235,7 @@ function showLoginStatus(results)
 		                eFlag = true;
 	               }else if ( securityName != null)
 					{ 				
-						var iChars = "#%&+\\";  
+						/*var iChars = "#%&+\\";  
 						
 							for (var i = 0; i < securityName.length; i++)
 						{      
@@ -242,7 +244,7 @@ function showLoginStatus(results)
 							errorDivEle.innerHTML = '<font color="red">Password should not contain special characters</font>';
 							return;
 							} 
-						}
+						}*/
 					
 					}
 	              	                str += '</font>';
@@ -329,7 +331,6 @@ function showLoginStatus(results)
 function checkAvailability()
 {
 	//alert("checkAvailability");
-
 	var name = document.getElementById("userName_FP").value;
  	
 	if(name=="")
@@ -353,7 +354,7 @@ function checkAvailability()
 				task:"forgotPassword",
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "recoverPasswordAnanymousUserAction.action?"+rparam;						
+		var url = "recoverPasswordUsingLink.action?"+rparam;						
 		callAJAX1(jsObj,url);
  	 }
 }
