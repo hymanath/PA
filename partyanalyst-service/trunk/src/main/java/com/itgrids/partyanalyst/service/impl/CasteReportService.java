@@ -950,7 +950,10 @@ public class CasteReportService implements ICasteReportService{
 		       
 	    	   String relation = "";
 	    	   
-	    	   if(voter.getRelationship().equalsIgnoreCase("Mother") || 
+	    	   if(voter.getRelationship() == null)
+	    		   relation = "C/O";
+	    	   
+	    	   else if(voter.getRelationship().equalsIgnoreCase("Mother") || 
 	    			   voter.getRelationship().equalsIgnoreCase("Father"))
 	    	   {
 	    		   if(voter.getGender().equalsIgnoreCase(IConstants.MALE))
