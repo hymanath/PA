@@ -28,7 +28,8 @@ String currentAndNewPWDEqual = globalErrorMsgRb.getString("currentAndNewPWD");
 String newAndConfirmPWDEqual = globalErrorMsgRb.getString("newAndConfirmPWD");
 String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
  %>}
-</script>
+ 
+ </script>
 
 <title>Change Password</title>
 <style>
@@ -71,14 +72,18 @@ String passwordSpaceEle = globalErrorMsgRb.getString("passwordSpace");
 		<div id="password_window_errorMsg" style="font-size: 13px; margin-left: 123px; margin-top: -3px; margin-bottom: 8px;"></div>
 		<div><span style="color: black;font-size:13px;"><img src="images/icons/infoicon.png">Fields marked with (<font color=red>*</font>) are mandatory</span><br>
 		<span style="color: black;font-size:13px;"><img src="images/icons/infoicon.png">Password should contain 6 characters</span><br>
-		<span style="color: black;font-size:13px;"><img src="images/icons/infoicon.png">Password should not contain $,#,\,+,% characters</span></div>
+		<!--<span style="color: black;font-size:13px;"><img src="images/icons/infoicon.png">Password should not contain $,#,\,+,% characters</span></div>-->
 
 		<table style="font-family: verdana; font-size: 13px;margin-left: 5px;color:#000;">
-		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword" id="currentPWDId" cssclass="textFieldStyle" ></td></tr>
-		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword" id="newPWDId" cssclass="textFieldStyle">
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Current Password</td><td>  <input type="password" name="currentPassword1" id="currentPWDId" cssclass="textFieldStyle" ></td></tr>
+		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;New Password</td><td><input type="password" name="newPassword1" id="newPWDId" cssclass="textFieldStyle">
 	    </td></tr>
 		<tr><td class="tdStyle"><font style="color:red">*</font>&nbsp;Confirm Password</td><td>  <input type="password" name="confirmPassword" id="confirmPWDId" cssclass="textFieldStyle">
         </td></tr></tbody></table>
+		
+		<input type="hidden" name="currentPassword" id="currentPasswordId"/>
+		<input type="hidden" name="newPassword" id="newPasswordId"/>
+		
 		<div id="password_window_footer_div" class="yui-skin-sam" style="padding: 2px 5px 1px 0px; width: 356px; margin: 16px 0px 3px;">
 			<table width="97%">
 			<tbody><tr>
@@ -268,6 +273,7 @@ function callAjax(jsObj,url){
 
 function validatefields()
 { 
+	var userName='${sessionScope.userName}';
 	var eFlag = true;
 	var pwdCheck = false;
 	var currentPWDEle = document.getElementById("currentPWDId").value;
@@ -300,7 +306,7 @@ function validatefields()
 		eFlag = false;
 	}else if ( newPWDEle != null)
 			{ 				
-				var iChars = "#%&+\\";  
+				/*var iChars = "#%&+\\";  
 				
 		            for (var i = 0; i < newPWDEle.length; i++)
                 {      
@@ -310,7 +316,7 @@ function validatefields()
 					str +='<font color="red">Password should not contain special characters</font>';
 					eFlag = false;
                     } 
-                }
+                }*/
 			
 			}
 	
@@ -326,7 +332,7 @@ function validatefields()
 	}else if ( newPWDEle != null)
 			{ 
 				if(!pwdCheck){
-				var iChars = "#%&+\\";  
+				/*var iChars = "#%&+\\";  
 				
 		            for (var i = 0; i < newPWDEle.length; i++)
                 {      
@@ -335,7 +341,7 @@ function validatefields()
 					str +='<font color="red">Password should not contain special characters</font>';
 					eFlag = false;
                     } 
-                }
+                }*/
 				}
 			}
 	else if(currentPWDEle == newPWDEle)
@@ -357,6 +363,14 @@ function validatefields()
 	
 	if(!eFlag)
 		resultDIVEle.innerHTML = str;
+	
+	
+	var crntPwd=MD5(MD5(userName)+MD5(currentPWDEle));
+	
+	$('#currentPasswordId').val(crntPwd);
+	
+	var newPwd=MD5(MD5(userName)+MD5(newPWDEle));
+	$('#newPasswordId').val(newPwd);
 	
 	return eFlag;
 }
