@@ -721,8 +721,8 @@ $(".changePwdLink").live("click",function(){
 	  return;
 	}
 	
-	cpwd=MD5(MD5(loginUserEmail)+MD5(cpwd));
-	npwd=MD5(MD5(loginUserEmail)+MD5(npwd));
+	cpwd=MD5(MD5(loginUserEmail.toLowerCase())+MD5(cpwd));
+	npwd=MD5(MD5(loginUserEmail.toLowerCase())+MD5(npwd));
 	
 	if(cpwd!='')
 	{
