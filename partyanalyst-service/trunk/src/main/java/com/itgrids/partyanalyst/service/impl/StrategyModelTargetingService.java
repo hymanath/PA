@@ -2466,6 +2466,8 @@ public class StrategyModelTargetingService implements
 			  	   cell.setPadding(padding); 
 			  	   table.addCell(cell);
 		  	   }
+		  	    float[] widths = new float[] {1f,1f,.8f,1f,1f,1f,.5f,.8f,1f,1f,0.9f,.5f};
+		  	  table.setWidths(widths);
 		  	   table.setHeaderRows(1);
 		  	   document.add(table);
 		  	   if(reqType == null)
@@ -2600,6 +2602,7 @@ public class StrategyModelTargetingService implements
 	   public void generateCasteWiseTable(Document document,Map<String,Float> casteNamePercMap)
 	   {
 		   try {
+			   
 			    Font topHeading = new Font(Font.FontFamily.TIMES_ROMAN, 20,Font.BOLD);
 			    topHeading.setColor( new BaseColor(111,165,235));//69,109,142,
 				Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
@@ -2660,6 +2663,19 @@ public class StrategyModelTargetingService implements
 					   preface = new Paragraph();
 					   preface.add( new Paragraph(" ") );
 					   document.add(preface);
+					   
+					   Font calibriNormal = FontFactory.getFont("Calibri",9,Font.NORMAL);
+					
+						  Paragraph preface1 = new Paragraph();
+						  preface1.setAlignment(Element.PTABLE);
+						  preface1.add( new Paragraph(" ") );
+						  preface1.add( new Paragraph(" ") );
+						  preface1.add( new Paragraph("List of the Top Panchayaths based on the Caste Assumption (Please note that these Panchayaths are in order of priority",calibriNormal));
+						  preface1.add( new Paragraph("which is though not the final list is though not the final list, you can find the full & final list in \"START HERE\" Section)",calibriNormal));
+						  preface1.add( new Paragraph(" ") );
+						  preface1.add( new Paragraph(" ") );
+						  preface1.add( new Paragraph(" ") );
+						  document.add(preface); 
 				  }
 				  
 		} catch (Exception e) {
@@ -2785,19 +2801,8 @@ public class StrategyModelTargetingService implements
 				  LOG.info("Enterd into panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class");
 				  PdfPTable table = new PdfPTable(6);
 				  table.setWidthPercentage(100);
-				  Font calibriNormal = FontFactory.getFont("Calibri",9,Font.NORMAL);
 				  Font calibriItelac = FontFactory.getFont("Calibri",9,Font.BOLDITALIC);
-				  Font calibriItelac2 = FontFactory.getFont("Calibri",7,Font.BOLDITALIC);
-				  Paragraph preface = new Paragraph();
-				  preface.setAlignment(Element.PTABLE);
-				  preface.add( new Paragraph(" ") );
-				  preface.add( new Paragraph(" ") );
-				  preface.add( new Paragraph("List of the Top Panchayaths based on the Caste Assumption (Please note that these Panchayaths are in order of priority",calibriNormal));
-				  preface.add( new Paragraph("which is though not the final list is though not the final list, you can find the full & final list in \"START HERE\" Section)",calibriNormal));
-				  preface.add( new Paragraph(" ") );
-				  preface.add( new Paragraph(" ") );
-				  preface.add( new Paragraph(" ") );
-				  document.add(preface); 
+					Font calibriItelac2 = FontFactory.getFont("Calibri",7,Font.BOLDITALIC);
 				  PdfPCell cell ;
 				  int padding = 6;  
 			        cell = new PdfPCell(new Phrase("Panchayath",calibriItelac));
@@ -2985,12 +2990,14 @@ public class StrategyModelTargetingService implements
 				  LOG.info("Enterd into panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class");
 				  
 				  DecimalFormat df = new DecimalFormat("##.##"); 
-				  
+				  int padding = 6;
+				  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
+					subHeading.setColor(new BaseColor(69,109,142));
 				  PdfPTable table = new PdfPTable(4);
-				    
+				  table.setWidthPercentage(100);
 				    Paragraph preface = new Paragraph();
 				    preface.setAlignment(Element.PTABLE);
-				    preface.add( new Paragraph("PRP Votes to Regain"));
+				    preface.add( new Paragraph("PRP Votes to Regain",subHeading));
 				    preface.add( new Paragraph(" ") );
 				    document.add(preface);
 				    
@@ -2999,14 +3006,16 @@ public class StrategyModelTargetingService implements
 			        PdfPCell cell ;
 				  	  
 			        cell = new PdfPCell(new Phrase("Panchayath",style1));
-				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 					  
 				  	  
 				  	  cell = new PdfPCell(new Phrase("PRP Gain %",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  
@@ -3014,11 +3023,13 @@ public class StrategyModelTargetingService implements
 				  	  cell = new PdfPCell(new Phrase("PRP Effect on TDP Party",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	  cell = new PdfPCell(new Phrase("Major Castes %",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	 
@@ -3027,19 +3038,23 @@ public class StrategyModelTargetingService implements
 				  		  if( partyEffectVO.getDifference() > 0.0)
 				  		  {
 				  			  cell = new PdfPCell(new Phrase(partyEffectVO.getName(),style2));
-						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+						  	cell.setPadding(padding);
 						  	  table.addCell(cell);
 						  	  
 						  	  cell = new PdfPCell(new Phrase(df.format(partyEffectVO.getPrpCurrentPerc()).toString(),style2));
 						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
 						  	  table.addCell(cell);
 						  	  
 						  	  cell = new PdfPCell(new Phrase(df.format(partyEffectVO.getDifference()).toString(),style2));
 						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
 						  	  table.addCell(cell);
 						  	  
 						  	  cell = new PdfPCell(new Phrase(partyEffectVO.getCastes(),style2));
 						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+						  	cell.setPadding(padding);
 						  	  table.addCell(cell);
 						  	  
 				  		  }
