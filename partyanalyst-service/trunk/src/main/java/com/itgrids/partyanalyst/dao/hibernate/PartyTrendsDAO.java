@@ -224,5 +224,9 @@ public class PartyTrendsDAO extends GenericDaoHibernate<PartyTrends, Long> imple
     	return q.list();
     }
     
-    
+    public List<Object[]> getPanchayatIds(Long districtId){
+    	Query query = getSession().createQuery("select model.id,model.constituency.constituencyId from PartyTrends model where model.constituency.district.districtId =:districtId and model.type = 'Panchayat' and model.priority < 26");
+    	query.setParameter("districtId", districtId);
+    	return query.list();
+    }
 }

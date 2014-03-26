@@ -44,7 +44,7 @@ public interface IPartyTrendsDAO extends GenericDao<PartyTrends, Long> {
     public List<Long> getWithAlliance(Long partyIds,Long electionId);
     public List<?> getPreviousTrendsDataWithAlliance(List<Long> partyIds,Long constId,Long year);
     
-    
+    public List<Object[]> getPanchayatIds(Long districtId);
 
 
 
