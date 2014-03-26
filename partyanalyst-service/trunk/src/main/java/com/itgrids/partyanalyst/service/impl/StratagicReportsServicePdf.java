@@ -1616,6 +1616,9 @@ public void buildPdfForHouseHolds(HouseHoldsVO finalRes,Document document,PdfWri
 	document.add( new Paragraph(" ") );
 
 	PdfPTable table = new PdfPTable(5);
+	table.setWidthPercentage(60);
+	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
+
 
 	  	c1 = new PdfPCell(new Phrase("",BIGFONT));
 	  c1.setBorder(Rectangle.NO_BORDER);
@@ -1628,15 +1631,49 @@ public void buildPdfForHouseHolds(HouseHoldsVO finalRes,Document document,PdfWri
 	  	int count=0;
 	  	
 	  	for (HouseHoldsVO prev : finalRes.getHouseHoldsVOList()) {
-
+	  		if(prev.getFamiliRange().equalsIgnoreCase("0-3"))
+		  		
+       	 {
+       	 c1 = new PdfPCell(new Phrase("Voters             Below 3",BIGFONT));
+       	 c1.setBackgroundColor(BaseColor.YELLOW);
+  	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	 	 table.addCell(c1);     	 
+       	 }
+	  	else if(prev.getFamiliRange().equalsIgnoreCase("4-6"))
+		  		
+	       	 {
+	       	 c1 = new PdfPCell(new Phrase("Voters         Between 4-6",BIGFONT));
+	       	 c1.setBackgroundColor(BaseColor.YELLOW);
+	  	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 	 	 table.addCell(c1);     	 
+	       	 }
+	  	else if(prev.getFamiliRange().equalsIgnoreCase("7-10"))
+		  		
+	       	 {
+	       	 c1 = new PdfPCell(new Phrase("Voters           Between 7-10",BIGFONT));
+	       	 c1.setBackgroundColor(BaseColor.YELLOW);
+	  	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 	 	 table.addCell(c1);     	 
+	       	 }
+	  	else if(prev.getFamiliRange().equalsIgnoreCase("10-Above"))
+	  		
+      	 {
+      	 c1 = new PdfPCell(new Phrase("Voters          Above 10",BIGFONT));
+      	 c1.setBackgroundColor(BaseColor.YELLOW);
+ 	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	 	 table.addCell(c1);     	 
+      	 }
+        else{
+        	c1 = new PdfPCell(new Phrase(prev.getFamiliRange(),BIGFONT));
+   	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+   		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+   		 table.addCell(c1);        
+   		 }
 	  	
-		 c1 = new PdfPCell(new Phrase(prev.getFamiliRange(),BIGFONT));
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
+		
 		
 	  	}
-	  	 c1 = new PdfPCell(new Phrase("No of Families",BIGFONT));
+	  	 c1 = new PdfPCell(new Phrase("No of           Families",BIGFONT));
 	 	 c1.setBackgroundColor(BaseColor.YELLOW);
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
@@ -1656,12 +1693,12 @@ public void buildPdfForHouseHolds(HouseHoldsVO finalRes,Document document,PdfWri
 		
       for (HouseHoldsVO prev :  finalRes.getHouseHoldsVOList()) {
 
-    		 c1 = new PdfPCell(new Phrase(prev.getFamilyPercentage(),SMALLFONT));
+    		 c1 = new PdfPCell(new Phrase(prev.getFamilyPercentage()+"%",SMALLFONT));
 		 
 			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 			 table.addCell(c1);
 	  	}
-		float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f};
+		float[] widths = new float[] {1.0f, 1.0f ,1.0f,1.0f,1.0f};
 		table.setWidths(widths);
 	  	document.add(table);
 		
@@ -1878,6 +1915,7 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 	
 	
 	PdfPTable table = new PdfPTable(7);
+	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
 	  	c1 = new PdfPCell(new Phrase("Age Range",BIGFONT));
 	  	c1.setRowspan(2);
@@ -1971,7 +2009,7 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 			 
 			 	
 		  	}
-			float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
+			float[] widths = new float[] {1.6f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
 			table.setWidths(widths);
 		  	document.add(table);
 			
