@@ -1397,7 +1397,10 @@
 		  <property name="votersAnalysisService" ref="votersAnalysisService" /> 
 	</bean>
 	
-	
+	<bean id="voterAddressAction" class="com.itgrids.partyanalyst.web.action.VoterAddressAction" singleton="false">
+		  <property name="casteReportService" ref="casteReportService" />  
+		  <property name="entitlementsHelper" ref="entitlementsHelper" /> 
+	</bean>
 	
 </beans>	
 	

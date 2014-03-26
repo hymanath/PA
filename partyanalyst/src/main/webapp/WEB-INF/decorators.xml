@@ -298,6 +298,7 @@
 		<pattern>/mergePanchayatAction*</pattern>
 		<pattern>/strategyModelAction*</pattern>
 		<pattern>/boothPollReportAction*</pattern>
+		<pattern>/getVotersAddressAction*</pattern>
     	 </decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
