@@ -1,15 +1,11 @@
 package com.itgrids.partyanalyst.service;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import com.itgrids.partyanalyst.dto.CastVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
-import com.itgrids.partyanalyst.excel.booth.VoterVO;
 
 public interface ICasteReportService {
 	public List<CastVO> getCasteWiseInfo(Long constituencyId,Long publicationId,String type,Long userId,String partialChecked);
@@ -23,6 +19,7 @@ public interface ICasteReportService {
 	 public List<CastVO> getPanchayatsInVoterRange(Long constitunecyId,Long publicationId,Long userId,boolean considerPartial);
 
 	 public void updatePriority();
-
+	 
+	 public ResultStatus getVoterAddressDetailsForCriticalPanchayats(Long constituencyId,List<Long> panchayatIdsList,Long publicationId,Long userId);
 	
 }
