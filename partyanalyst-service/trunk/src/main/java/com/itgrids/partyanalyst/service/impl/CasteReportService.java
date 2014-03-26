@@ -31,13 +31,17 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPRPWeightegesDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
 import com.itgrids.partyanalyst.dao.IPartyTrendsDAO;
@@ -49,11 +53,13 @@ import com.itgrids.partyanalyst.dto.PartyTrendsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
+import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
 import com.itgrids.partyanalyst.model.PartyTrends;
 import com.itgrids.partyanalyst.service.ICasteReportService;
+import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -80,6 +86,9 @@ public class CasteReportService implements ICasteReportService{
     private ISuggestiveModelService suggestiveModelService;
     private IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO;
     private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+    private IDistrictDAO districtDAO ;
+    private IStrategyModelTargetingService strategyModelTargetingService;
+    private IPRPWeightegesDAO prpWeightegesDAO;
 	
 	public IPartyTrendsDAO getPartyTrendsDAO() {
 		return partyTrendsDAO;
@@ -193,6 +202,31 @@ public class CasteReportService implements ICasteReportService{
 	public void setDelimitationConstituencyDAO(
 			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
 		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	public IStrategyModelTargetingService getStrategyModelTargetingService() {
+		return strategyModelTargetingService;
+	}
+
+	public void setStrategyModelTargetingService(
+			IStrategyModelTargetingService strategyModelTargetingService) {
+		this.strategyModelTargetingService = strategyModelTargetingService;
+	}
+
+	public IPRPWeightegesDAO getPrpWeightegesDAO() {
+		return prpWeightegesDAO;
+	}
+
+	public void setPrpWeightegesDAO(IPRPWeightegesDAO prpWeightegesDAO) {
+		this.prpWeightegesDAO = prpWeightegesDAO;
 	}
 
 	public List<CastVO> getCasteWiseInfo(Long constituencyId,Long publicationId,String type,Long userId,String partialChecked)
@@ -1674,4 +1708,105 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		 });
 		
 	}
+  
+  public List<SelectOptionVO> getDistricts(Long stateId){
+
+		List<SelectOptionVO> districtList = new ArrayList<SelectOptionVO>();
+		try{
+			
+			List<Object[]> list = districtDAO.getDistrictIdAndNameByState(stateId);
+			if(list != null && list.size() > 0)
+			{
+				for(Object[] params : list)
+				{
+					SelectOptionVO selectOptionVO = new SelectOptionVO();
+					selectOptionVO.setId((Long)params[0]);
+					selectOptionVO.setName(params[1].toString());
+					districtList.add(selectOptionVO);
+					
+				}
+			}
+			return districtList;
+		}catch (Exception e) {
+			log.error("Exception Occured in getDistrictsByStateID() Method , Exception - ",e);
+			return districtList;
+		}
+  }
+  
+  public String getVoterAddress(Long districtId,Long publicationId){
+	  List<Object[]> trendsList = partyTrendsDAO.getPanchayatIds(districtId);
+	  Map<Long,List<Long>> panchayatIdsMap = new HashMap<Long,List<Long>>();
+	  for(Object[] trend:trendsList){
+		  List<Long> panchayatIds = panchayatIdsMap.get((Long)trend[1]);
+		  if(panchayatIds == null){
+			  panchayatIds = new ArrayList<Long>();
+			  panchayatIdsMap.put((Long)trend[1], panchayatIds);
+		  }
+		  panchayatIds.add((Long)trend[0]);
+	  }
+	  for(Long constituencyId:panchayatIdsMap.keySet()){
+		  List<Long> panchayatIds = panchayatIdsMap.get(constituencyId);
+		  getVoterAddressDetailsForCriticalPanchayats(constituencyId, panchayatIds, publicationId, 1l);
+		  
+		  StrategyVO strategyVO = new StrategyVO();
+		  strategyVO.setConstituencyId(constituencyId);//
+			strategyVO.setPartyId(872l);
+			List<Long> electionIds = new ArrayList<Long>();
+			electionIds.add(38l);
+			electionIds.add(3l);
+			strategyVO.setPublicationId(publicationId);
+			strategyVO.setConsiderRange(true);
+			strategyVO.setElectionIds(electionIds);
+			Double regainVotrsWeigthPerc = null;
+			try{
+			 regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(strategyVO.getConstituencyId());
+			}catch(Exception e){
+				
+			}
+			 if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
+				  regainVotrsWeigthPerc = 0d;
+			  Double prevTrendWeigthPerc = 90d-regainVotrsWeigthPerc;
+			  
+			strategyVO.setCastePercents(null);
+			strategyVO.setPrevTrnzWt(prevTrendWeigthPerc);
+			strategyVO.setYoungWt(5d);
+			strategyVO.setPrpWt(regainVotrsWeigthPerc);
+			strategyVO.setAgedWt(5d);
+			strategyVO.setTotalCastWt(0d);
+			strategyVO.setAutoCalculate(true);
+			/*strategyVO.setBase(jObj.getLong("base"));
+			strategyVO.setAssured(jObj.getLong("assured"));
+			strategyVO.setTdpPerc(jObj.getLong("partyPerc"));*/
+			strategyVO.setEffectPartyId(662l);
+			strategyVO.setEffectElectionId(38l);
+		
+				strategyVO.setWorstMin(0d);
+				strategyVO.setWorstMax(21.12d);
+				strategyVO.setVeryPoorMin(21.13);
+				strategyVO.setVeryPoorMax(29d);
+				strategyVO.setPoorMin(29.01d);
+				strategyVO.setPoorMax(36.87d);
+				strategyVO.setOkMin(36.88d);
+				strategyVO.setOkMax(41.88);
+				strategyVO.setStrongMin(41.89);
+				strategyVO.setStrongMax(49.76);
+				strategyVO.setVeryStrongMin(49.77);
+				strategyVO.setVeryStrongMax(100d);
+				Constituency c = constituencyDAO.get(constituencyId);
+				String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		  Document document =  new Document();;
+		  String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+c.getName()+"_voterImportantFamily.pdf";
+		  File file = new File(path);
+		   PdfWriter writer = null;
+		   try {
+			   file.createNewFile();
+			   writer = PdfWriter.getInstance(document, new FileOutputStream(path));
+		   } catch (Exception e) {
+			   log.error("Exception Occured in getVoterAddress() Method , Exception - ",e);
+		   }
+		   document.open();
+		  strategyModelTargetingService.getTopPanchayats(strategyVO,document,writer);
+	  }
+	  return "";
+  }
 }

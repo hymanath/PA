@@ -49,6 +49,7 @@ import com.itgrids.partyanalyst.dao.ICandidateBoothResultDAO;
 import com.itgrids.partyanalyst.dao.ICandidateResultDAO;
 import com.itgrids.partyanalyst.dao.ICasteStateDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
@@ -102,6 +103,7 @@ public class StrategyModelTargetingService implements
 	private ICasteStateDAO casteStateDAO;
 	private ISuggestiveModelService suggestiveModelService;
 	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
+	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
 	//private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
 	//private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
@@ -136,6 +138,15 @@ public class StrategyModelTargetingService implements
 
 	public void setSuggestiveRangeDAO(ISuggestiveRangeDAO suggestiveRangeDAO) {
 		this.suggestiveRangeDAO = suggestiveRangeDAO;
+	}
+
+	public IDelimitationConstituencyDAO getDelimitationConstituencyDAO() {
+		return delimitationConstituencyDAO;
+	}
+
+	public void setDelimitationConstituencyDAO(
+			IDelimitationConstituencyDAO delimitationConstituencyDAO) {
+		this.delimitationConstituencyDAO = delimitationConstituencyDAO;
 	}
 
 	public void setElectionDAO(IElectionDAO electionDAO) {
@@ -3305,7 +3316,7 @@ public class StrategyModelTargetingService implements
 				    preface.setAlignment(Element.PTABLE);
 				    preface.add( new Paragraph(" ") );
 				    preface.setAlignment(Element.ALIGN_CENTER);
-				    preface.add( new Paragraph(constituencyDAO.get(strategyVO.getConstituencyId()).getName() + "  CRITICAL PANCHAYAT - TOP FAMILYS DETAILS" , style1));
+				    preface.add( new Paragraph(delimitationConstituencyDAO.getConstituencyNo(strategyVO.getConstituencyId(), 2009l)+": "+constituencyDAO.get(strategyVO.getConstituencyId()).getName() + "  CRITICAL PANCHAYAT - TOP FAMILYS DETAILS" , style1));
 				    preface.add( new Paragraph(" ") );
 				    preface.add( new Paragraph(" ") );
 				    document.add(preface);
@@ -3336,7 +3347,7 @@ public class StrategyModelTargetingService implements
 					}
 					
 			} catch (Exception e) {
-				// TODO: handle exception
+				LOG.error("Exception occured in getTopPanchayats",e);
 			}
 			
 				
@@ -3455,6 +3466,7 @@ public class StrategyModelTargetingService implements
 		 }catch(Exception e){
 			LOG.error("Exception",e);	
 			}
+		
 		}
 		
 }
