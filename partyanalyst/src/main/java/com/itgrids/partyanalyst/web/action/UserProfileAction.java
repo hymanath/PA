@@ -57,6 +57,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	JSONObject jObj;
 	private String loginUserName;
 	private Long loginUserId;
+	private String loginUsrname;
 	private String loginUserProfilePic;
 	private IAnanymousUserService ananymousUserService;
 	private IStaticDataService staticDataService;
@@ -100,6 +101,17 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 	private List<CandidateVO> userBlockedRequestsList;
 	
 	
+	
+	
+
+	public String getLoginUsrname() {
+		return loginUsrname;
+	}
+
+	public void setLoginUsrname(String loginUsrname) {
+		this.loginUsrname = loginUsrname;
+	}
+
 	public List<PublicProfileStreemVO> getPublicProfileStreemList() {
 		return publicProfileStreemList;
 	}
@@ -527,7 +539,7 @@ public class UserProfileAction extends ActionSupport implements ServletRequestAw
 		 List<Long> userId = new ArrayList<Long>(0);
 		 
 		 loginUserId = user.getRegistrationID();
-		
+		 loginUsrname=user.getUserName();
 		 loginUserName = user.getFirstName()+" "+user.getLastName();
 		 loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(loginUserId);
 		 
