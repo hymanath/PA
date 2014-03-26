@@ -3010,7 +3010,7 @@ IUserVoterDetailsDAO{
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getElderVoterDetails(Long boothId,String hno)
 	{
-		Query query = getSession().createQuery("select model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender from BoothPublicationVoter model where  model.booth.boothId = :boothId and model.voter.houseNo =:hno order by model.voter.age desc");
+		Query query = getSession().createQuery("select model.voter.voterId,model.voter.name,model.voter.age,model.voter.gender,model.voter.relativeName,model.voter.relationshipType from BoothPublicationVoter model where  model.booth.boothId = :boothId and model.voter.houseNo =:hno order by model.voter.age desc");
 		query.setParameter("boothId", boothId);
 		query.setParameter("hno", hno);
 		query.setFirstResult(0);
