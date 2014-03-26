@@ -58,6 +58,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private String loginUserProfilePic;
 	private IAnanymousUserService ananymousUserService;
 	private String loginUserName;
+	private String profileUserName;
 	private CrossVotingVO crossVotingVO;
 	private Long crossVotingYear;
 	private Long crossVotingPConsti;
@@ -70,6 +71,16 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private List<SelectOptionVO> publicationDatesList;
 	
 	
+
+
+	public String getProfileUserName() {
+		return profileUserName;
+	}
+
+
+	public void setProfileUserName(String profileUserName) {
+		this.profileUserName = profileUserName;
+	}
 
 
 	public List<SelectOptionVO> getDistrictsList() {
@@ -521,6 +532,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		
 		constituencyId = user.getConstituencyId();
 		loginUserName = user.getFirstName()+" "+user.getLastName();
+		profileUserName= user.getUserName();
 		loginUserProfilePic = ananymousUserService.getUserProfileImageByUserId(user.getRegistrationID());
 		if(constituencyId != null){
 			districtStateList = constituencySearchService.getDistrictAndStateId(constituencyId);
