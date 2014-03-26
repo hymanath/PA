@@ -754,6 +754,10 @@ public class CasteReportService implements ICasteReportService{
 	 {
 		 ResultStatus resultStatus = new ResultStatus();
 		 try{
+			
+			if(panchayatIdsList == null || panchayatIdsList.size() == 0)
+				 return null;
+			 
 			List<Object[]> boothHnos = userVoterDetailsDAO.getVoterHnoAndBoothsForPanchayatList(panchayatIdsList,publicationId);
 			
 			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
