@@ -105,8 +105,8 @@ public class StrategyModelTargetingService implements
 	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
 	
-	//private static Font style1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-	//private static Font style2 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
+	private static Font style6 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.NORMAL);
+	private static Font style5 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
 	private static Font style1 = new Font(FontFactory.getFont("arial",10,Font.BOLD));
 	private static Font style2 = new Font(FontFactory.getFont("arial",8,Font.NORMAL));
 	
@@ -2610,11 +2610,9 @@ public class StrategyModelTargetingService implements
 				Font calibriBold = FontFactory.getFont("Calibri",9,Font.BOLD);
 				
 			   LOG.info("Enterd into generateCasteWiseTable() method");
-			   document.newPage();
+			   	  document.newPage();
 				  Paragraph preface = new Paragraph();
 				  preface.setAlignment(Element.PTABLE);
-				  preface.add( new Paragraph("Step 3 – Targeting",topHeading));
-				  preface.add( new Paragraph(" ") );
 				  preface.add( new Paragraph("Key Factors",subHeading));
 				  preface.add( new Paragraph("Caste, Previous Trends, Young Voter Base, Aged Voter Base, & PRP Votes that can be",calibriBold));
 				  preface.add( new Paragraph("regained."));
@@ -3072,6 +3070,7 @@ public class StrategyModelTargetingService implements
 		  {
 			  try {
 				  LOG.info("Enterd into generatePdfsForImpFamiles() method in VoterModifiationPdfsGenerations Class");
+				  int padding = 8;
 				  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 				  subHeading.setColor(new BaseColor(69,109,142));
 				    PdfPTable table = new PdfPTable(7);
@@ -3087,38 +3086,45 @@ public class StrategyModelTargetingService implements
 					  PdfPCell cell ;
 				  	  cell = new PdfPCell(new Phrase(previousTrends.get(0).getName()+ "/" + previousTrends.get(1).getName(),style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	  cell.setBackgroundColor(new BaseColor(214, 195, 139));
+				  	  cell.setPadding(padding);
 				  	  table.addCell(cell);
 					  
 				  	  
-				  	  cell = new PdfPCell(new Phrase("WORST",style1));
+				  	  cell = new PdfPCell(new Phrase("WORST",style5));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(new BaseColor(255, 0, 0));
+				  	  cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
-				  	  cell = new PdfPCell(new Phrase("VERY POOR",style1));
+				  	  cell = new PdfPCell(new Phrase("VERY POOR",style5));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(new BaseColor(204, 102, 0));
+				  	 cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
-				  	  cell = new PdfPCell(new Phrase("POOR",style1));
+				  	  cell = new PdfPCell(new Phrase("POOR",style5));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(new BaseColor(255, 153, 102));
+				  	 cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
-				  	  cell = new PdfPCell(new Phrase("OK",style1));
+				  	  cell = new PdfPCell(new Phrase("OK",style5));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
+				  	 cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
-				  	  cell = new PdfPCell(new Phrase("STRONG",style1));
+				  	  cell = new PdfPCell(new Phrase("STRONG",style5));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(new BaseColor(51, 153, 255));
+				  	 cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
-				  	  cell = new PdfPCell(new Phrase("VERY STRONG",style1));
+				  	  cell = new PdfPCell(new Phrase("VERY STRONG",style5));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(new BaseColor(0, 153, 0));
+				  	 cell.setPadding(padding);
 				  	  table.addCell(cell);
 				  	  
 				  	List<PartyPositionVO> previousElectionList = previousTrends.get(0).getPartyPositionVOList();
@@ -3128,7 +3134,8 @@ public class StrategyModelTargetingService implements
 				  	int i = 0;
 				  	  for (PartyPositionVO partyPositionVO : previousElectionList)
 				  	  {
-				  		  cell = new PdfPCell(new Phrase(partyPositionVO.getName(),style1));
+				  		  cell = new PdfPCell(new Phrase(partyPositionVO.getName(),style5));
+				  		 cell.setPadding(padding);
 					  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 					  	  if(i == 0)
 					  	  {
@@ -3171,12 +3178,12 @@ public class StrategyModelTargetingService implements
 									  		  for(PartyPositionVO namesPositionVO1 : partyPositionVO1.getPartyPositionVOList())
 										  	  {
 									  			  if(namesPositionVO.getId().equals(namesPositionVO1.getId()))
-									  				  sb.append(namesPositionVO.getName()+ '\n');
+									  				  sb.append(namesPositionVO.getName()+ "\n\n");
 										  	  }
 		
 								  	  }
 					  			}
-				  			  cell = new PdfPCell(new Phrase(sb.toString(),style2));
+				  			  cell = new PdfPCell(new Phrase(sb.toString(),style5));
 						  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 						  	  table.addCell(cell);
 				  		  }
