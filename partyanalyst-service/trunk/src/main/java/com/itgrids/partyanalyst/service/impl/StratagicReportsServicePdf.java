@@ -328,7 +328,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		//18111s
 		
 		//page 13 to 23
-		/*try{
+		try{
 		List<Object> targetingAreas = strategyModelTargetingService.getPrioritiesToTarget(strategyVO, "");
 		Map<String,Float> casteNamePercMap =  (Map<String,Float>)targetingAreas.get(0);//1
 		List<PanchayatVO> totalCastesList = (List<PanchayatVO>)targetingAreas.get(1);//2
@@ -395,7 +395,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			//targetting key factors ends
 		}catch (Exception e) {
 		e.printStackTrace();
-		}*/
+		}
 		//-->Voters Additions & Deletions
 		 
 		
@@ -663,7 +663,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
     //18111
      //page-21
   //targetting key factors starts
-   /* try{
+    try{
     DeSerialize<Map<String,Float>>  dcasteNamePercMap=new DeSerialize<Map<String,Float>>();
 	  Map<String,Float> casteNamePercMap =dcasteNamePercMap.deSerialize( maps.get(PdfPages.selectedCastes) );
 	  strategyModelTargetingService.generateCasteWiseTable(document,casteNamePercMap);//1
@@ -673,13 +673,17 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  List<PanchayatVO> totalCastesList =dtotalCastesList.deSerialize( maps.get(PdfPages.totalCastesOrder) );
 	  strategyModelTargetingService.panchayatWiseTargetVotesTable(document,totalCastesList);//2
 	  totalCastesList=null;
-
-    DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
-	  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance) ); 
-	  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l);//3
-	  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l);//3
-	  partyPerformance=null;
-
+	try {
+		DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
+		  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance) ); 
+		  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l);//3
+		  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l);//3
+		  partyPerformance=null;
+	
+	} catch (Exception e) {
+		// TODO: handle exception
+	}
+	    
     DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
 	  List<PartyPositionVO> previousTrends =dpreviousTrends.deSerialize( maps.get(PdfPages.previousTrends) );
 	  strategyModelTargetingService.generatePdfForMatrixReport(document,previousTrends);//4
@@ -695,30 +699,32 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
 	  agedCastesList=null;
 
-    DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
+      DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
 	  List<PartyEffectVO> otherPartyEffect =dotherPartyEffect.deSerialize( maps.get(PdfPages.otherPartyEffect) );
 	  strategyModelTargetingService.prpEffectTableTable(document,otherPartyEffect);//7
 	  otherPartyEffect=null;
+	  
+	  DeSerialize<List<ImpFamilesVO>>  dimpfamilesList=new DeSerialize<List<ImpFamilesVO>>();
+	  List<ImpFamilesVO> impfamilesList =dimpfamilesList.deSerialize( maps.get(PdfPages.impfamilesList) );
+	  strategyModelTargetingService.generateImpFamilesTable(document,impfamilesList,null);//9
+	  impfamilesList=null;
 
-    DeSerialize<List<OrderOfPriorityVO>>  dpanchayatsClassification=new DeSerialize<List<OrderOfPriorityVO>>();
+      DeSerialize<List<OrderOfPriorityVO>>  dpanchayatsClassification=new DeSerialize<List<OrderOfPriorityVO>>();
 	  List<OrderOfPriorityVO> panchayatsClassification =dpanchayatsClassification.deSerialize( maps.get(PdfPages.panchayatsClassification) );
 	  strategyModelTargetingService.buildPiChart(document,panchayatsClassification,writer);//8
 	  strategyModelTargetingService.buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
 	  panchayatsClassification=null;
 
-    DeSerialize<List<ImpFamilesVO>>  dimpfamilesList=new DeSerialize<List<ImpFamilesVO>>();
-	  List<ImpFamilesVO> impfamilesList =dimpfamilesList.deSerialize( maps.get(PdfPages.impfamilesList) );
-	  strategyModelTargetingService.generateImpFamilesTable(document,impfamilesList);//9
-	  impfamilesList=null;
+   
 
-    DeSerialize<List<OrderOfPriorityVO>>  dfinalOrderOfOriority=new DeSerialize<List<OrderOfPriorityVO>>();
+      DeSerialize<List<OrderOfPriorityVO>>  dfinalOrderOfOriority=new DeSerialize<List<OrderOfPriorityVO>>();
 	  List<OrderOfPriorityVO> finalOrderOfOriority =dfinalOrderOfOriority.deSerialize( maps.get(PdfPages.finalOrderOfOriority) );
 	  strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,15);//10
 	  finalOrderOfOriority=null;	  
 	  
     }catch (Exception e) {
 	e.printStackTrace();
-	}*/
+	}
 	//targetting key factors ends
     
    //-->Voters Additions & Deletions

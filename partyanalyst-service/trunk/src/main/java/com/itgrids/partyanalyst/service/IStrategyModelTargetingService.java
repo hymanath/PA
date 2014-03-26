@@ -15,7 +15,7 @@ import com.itgrids.partyanalyst.dto.StrategyVO;
 public interface IStrategyModelTargetingService {
 	public List<Object> getPrioritiesToTarget(StrategyVO strategyVO,String path);
 	
-	public void generateImpFamilesTable(Document document , List<ImpFamilesVO> list);
+	public void generateImpFamilesTable(Document document , List<ImpFamilesVO> list,String reqType);
 	
 	public void generateCasteWiseTable(Document document,Map<String,Float> casteNamePercMap);
 	
@@ -39,7 +39,7 @@ public interface IStrategyModelTargetingService {
 	
 	public void buildPiChart(Document document,List<OrderOfPriorityVO> panchayatsClassification,PdfWriter writer);
 	
-	public void getImpFamilesList(Long panchayatId,Long publicationDateId,List<ImpFamilesVO> impfamilesList,String type);
+	public void getImpFamilesList(Long panchayatId,Long publicationDateId,List<ImpFamilesVO> impfamilesList,String type,String reqFor);
 	
 	public void getTopPanchayats(StrategyVO strategyVO,Document document,PdfWriter writer);
 }
