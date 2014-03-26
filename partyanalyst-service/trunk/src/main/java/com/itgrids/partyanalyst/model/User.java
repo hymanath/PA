@@ -123,12 +123,16 @@ public class User extends BaseModel implements Serializable{
 	
 	private String passwdHashTxt;
 	private String hashKeyTxt;
+	private String md5Password;
 	private String multipleAccessRestriction;
 	private Set<UpdationDetails> createdBy = new HashSet<UpdationDetails>(0);
 	private Set<UpdationDetails> updatedBy = new HashSet<UpdationDetails>(0);
 	private Set<SurveyAccessUsers> surveyAccessUsers = new HashSet<SurveyAccessUsers>(0);
 	private Set<DemoRequestActions> demoRequestActions = new HashSet<DemoRequestActions>(0);
 	private Set<MobileAppUser> mobileAppUser = new HashSet<MobileAppUser>(0);
+	
+	private String passwordHash;
+	private String passwordSalt;
 	
 	public User(){}
 	 
@@ -929,7 +933,7 @@ public class User extends BaseModel implements Serializable{
 		this._loginRestriction = _loginRestriction;
 	}
 
-	@Column(name = "passwd_hash_txt", nullable = false, length = 250)
+	@Column(name = "passwd_hash_txt", nullable = true, length = 250)
 	public String getPasswdHashTxt() {
 		return passwdHashTxt;
 	}
@@ -939,7 +943,7 @@ public class User extends BaseModel implements Serializable{
 	}
 
 
-	@Column(name = "hash_key_txt", nullable = false, length = 250)
+	@Column(name = "hash_key_txt", nullable = true, length = 250)
 	public String getHashKeyTxt() {
 		return hashKeyTxt;
 	}
@@ -947,6 +951,8 @@ public class User extends BaseModel implements Serializable{
 	public void setHashKeyTxt(String hashKeyTxt) {
 		this.hashKeyTxt = hashKeyTxt;
 	}
+	
+	
 	
 
 	
@@ -1048,6 +1054,7 @@ public class User extends BaseModel implements Serializable{
 	public void setMobileAppUser(Set<MobileAppUser> mobileAppUser) {
 		this.mobileAppUser = mobileAppUser;
 	}
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
 	public Set<VoterFlag> getVoterFlags() {
 		return VoterFlags;
@@ -1056,6 +1063,27 @@ public class User extends BaseModel implements Serializable{
 	public void setVoterFlags(Set<VoterFlag> voterFlags) {
 		VoterFlags = voterFlags;
 	}
+
+	@Column(name="Hash_Key", length=250)
+	public String getPasswordHash() {
+		return passwordHash;
+	}
+
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
+	}
+	
+	
+	@Column(name="Salt_Key", length=1000)
+	public String getPasswordSalt() {
+		return passwordSalt;
+	}
+
+	public void setPasswordSalt(String passwordSalt) {
+		this.passwordSalt = passwordSalt;
+	}
+	
+	
 	
 	
 }
