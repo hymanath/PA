@@ -2111,7 +2111,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		if(input.equalsIgnoreCase("Strong"))
 			{
 				
-	  		    c1 = new PdfPCell(new Phrase("Improve (Avg Poll% "+prev.getPartyPercentage()+")",BIGFONT));
+	  		    c1 = new PdfPCell(new Phrase("Improve (Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",BIGFONT));
 	  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			c1.setBackgroundColor(BaseColor.YELLOW);
 	  			table.addCell(c1);
@@ -2119,7 +2119,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 				
 			{ 
 				
-				   c1 = new PdfPCell(new Phrase("To Decrease(((Avg Poll% "+prev.getPartyPercentage()+")",BIGFONT));
+				   c1 = new PdfPCell(new Phrase("To Decrease(((Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",BIGFONT));
 		  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			c1.setBackgroundColor(BaseColor.YELLOW);
 		  			table.addCell(c1);
@@ -2128,41 +2128,47 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		count++;
          
 	  		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getId()),SMALLFONT));
+	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 	 table.addCell(c1);
 	  		
 		
 		 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocalbodyName()),SMALLFONT));
-	 	table.addCell(c1);
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	 table.addCell(c1);
 		 
 	 	 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getPollingPercentage())),SMALLFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 		
 		 
 	 	if(input.equalsIgnoreCase("Strong"))
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getSelectedPartyTotalVoters()),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getPartyTotalvotes()),SMALLFONT));
 	 	else
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getSelectedPartyTotalVoters()),SMALLFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getPartyTotalvotes()),SMALLFONT));
 	 		
+	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1); 
 	 	
 	 	 
 	 	
 	 	if(input.equalsIgnoreCase("Strong"))
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getWeakPollingPercentVOList().get(0).getPartyPercentage()),BIGFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getWeakPollingPercentVOList().get(0).getPartyPercentage())),SMALLFONT));
 	 	else
-	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getStrongPollingPercentVOList().get(0).getPartyPercentage()),BIGFONT));
+	 		c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getStrongPollingPercentVOList().get(0).getPartyPercentage())),SMALLFONT));
 	 	
+	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	 table.addCell(c1);
 		 
 		 
 	 	if(input.equalsIgnoreCase("Strong"))
 		
-		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMinValue())),BIGFONT));
+		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMinValue())),SMALLFONT));
 	 	else
-			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMaxValue())),BIGFONT));
+			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getMaxValue())),SMALLFONT));
 
+	 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
 		
