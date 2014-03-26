@@ -1937,7 +1937,9 @@
    <property name="suggestiveModelService" ref="suggestiveModelService" />
    <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
    <property name="delimitationConstituencyAssemblyDetailsDAO" ref="delimitationConstituencyAssemblyDetailsDAO" />
-   
+   <property name="districtDAO" ref="districtDAO" />
+   <property name="strategyModelTargetingService" ref="strategyModelTargetingService" />
+   <property name="prpWeightegesDAO" ref="prpWeightegesDAO" />
      </bean>
    <bean name="houseHoldSurveyReportService" class="com.itgrids.partyanalyst.service.impl.HouseHoldSurveyReportService">
   	 <property name="hhSurveyQuestionDAO" ref="hhSurveyQuestionDAO" />
@@ -1998,7 +2000,7 @@
 	  <property name="casteStateDAO" ref="casteStateDAO" />
 	  <property name="suggestiveModelService" ref="suggestiveModelService" />
 	  <property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
-	  
+	  <property name="delimitationConstituencyDAO" ref="delimitationConstituencyDAO" />
 	  
 	  
  </bean>

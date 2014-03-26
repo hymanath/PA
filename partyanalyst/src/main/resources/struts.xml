@@ -6713,6 +6713,17 @@
 	                     <param name="root">boothwiseResult</param>
                   </result>
 	     </action>
+	     <action name="getVotersAddressAction" class="voterAddressAction">
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="success">/jsp/votersAddress.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp</result>
+		 </action>
+		 
+		 <action name="generateVoterAddressUrl" class="voterAddressAction" method="getVoterAddress">
+			<result type="json" name="success">
+				<param name="root">url</param>				
+			</result> 
+		</action>
 </package>
 		
 </struts>      
