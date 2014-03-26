@@ -103,9 +103,9 @@ public class StratagicReportsService implements IStratagicReportsService{
 	 Font calibriBold1 = FontFactory.getFont("Calibri",13,Font.BOLD);
 	 Font calibriBold2 = FontFactory.getFont("Calibri",24,Font.BOLD);
 	
-	@Autowired IUserDAO userDAO;
+	@Autowired public IUserDAO userDAO;
 	
-	@Autowired IBoothPublicationVoterDAO boothPublicationVoterDAO;
+	@Autowired public  IBoothPublicationVoterDAO boothPublicationVoterDAO;
 	
 	@Autowired IPartyTrendsDAO partyTrendsDAO;
 	
@@ -368,6 +368,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 					   table.append("<td>"+vo.getPanchayat()+"</td><td>Booth-"+vo.getHamlet()+"</td><td>"+vo.getYoungVoters()+"</td><td>"+vo.getAge18To25()+"</td><td>"+vo.getAge26to35()+"</td><td>"+vo.getAge36to45()+"</td><td>"+vo.getAge46to60()+"</td><td>"+vo.getAbove60()+"</td><td>"+vo.getDelYoungVoters()+"</td><td>"+vo.getDelAge18To25()+"</td><td>"+vo.getDelAge26to35()+"</td><td>"+vo.getDelAge36to45()+"</td><td>"+vo.getDelAge46to60()+"</td><td>"+vo.getDelAbove60()+"</td>");
 					table.append("</tr>");*/
 				}
+				sortByVotersPercentage(boothWiseAddedDeletedVoters);
 				/*table.append("</table>");*/
 			System.out.println(table.toString());
 			}catch(Exception e){
@@ -379,6 +380,20 @@ public class StratagicReportsService implements IStratagicReportsService{
 		}
 		return boothWiseAddedDeletedVoters;
 	}
+	
+	  public void sortByVotersPercentage(List<AgeRangeVO> boothWiseAddedDeletedVoters)
+		{
+			 Collections.sort(boothWiseAddedDeletedVoters, new Comparator<AgeRangeVO>() {
+				 
+					 public int compare(AgeRangeVO arg0, AgeRangeVO arg1) {
+						 if(arg0.getTotalVotersAddedPer()!= null && arg1.getTotalVotersAddedPer()!= null ){
+							 return Double.valueOf(arg0.getTotalVotersAddedPer()).compareTo(Double.valueOf(arg1.getTotalVotersAddedPer()));
+						 
+					 }else
+					return 0;
+					 }
+			 });
+		}
 	
 	public String calcPercentage(Long total,Long count){
 		if(total>0){
