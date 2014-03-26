@@ -2354,6 +2354,12 @@
 			</result>		
 		</action>
 		
+		<action name="recoverPasswordUsingLink" class="anonymousUserAction" method="recoverPasswordUsingLink">
+			<result type="json" name="success">
+				<param name="root">regVO</param>				
+			</result>		
+		</action>
+		
 		<action name="changeAnanymousUserNameToEmailAction" class="anonymousUserAction" method="changeUserNameToEmail">
 			<result type="json" name="success">
 				<param name="root">resultValue</param>				
@@ -6343,6 +6349,14 @@
 			  <result type="json" name="success">
            		<param name="root">voterDetails</param>
         	</result>
+		</action>
+		<action name="resetPasswordAction" class="resetPasswordAction">
+        	 <result name="success">/jsp/resetPasswordPage.jsp</result>
+			<result type="redirect" name="error">loginAction.action?status=${isValidated}</result>
+      	</action>
+      	<action name="confirmLinkAction" class="resetPasswordAction" method="confirmPasswordAction">
+			 <result type="redirect" name="error">resetPasswordAction.action</result>
+			 <result type="redirect" name="success">loginAction.action?userName=${userName}&amp;password=${newPassword}</result>
 		</action>
 			<action name="casteReportAction" class="casteReportAction">
 			<result name="success">/jsp/casteReport.jsp</result>
