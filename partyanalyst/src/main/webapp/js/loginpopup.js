@@ -69,7 +69,7 @@ if(!validInd)
 var userName1=document.getElementById('userName1').value;
 var pswd1=document.getElementById('passWord_Id1').value;
 
-var password1=MD5(MD5(userName1)+MD5(pswd1));
+var password1=MD5(MD5(userName1.toLowerCase())+MD5(pswd1));
 
 task="validateUserForLogin";
  
