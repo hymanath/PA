@@ -365,11 +365,11 @@ function validatefields()
 		resultDIVEle.innerHTML = str;
 	
 	
-	var crntPwd=MD5(MD5(userName)+MD5(currentPWDEle));
+	var crntPwd=MD5(MD5(userName.toLowerCase())+MD5(currentPWDEle));
 	
 	$('#currentPasswordId').val(crntPwd);
 	
-	var newPwd=MD5(MD5(userName)+MD5(newPWDEle));
+	var newPwd=MD5(MD5(userName.toLowerCase())+MD5(newPWDEle));
 	$('#newPasswordId').val(newPwd);
 	
 	return eFlag;
