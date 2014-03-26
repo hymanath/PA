@@ -1778,7 +1778,7 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		  List<Long> panchayatIds = panchayatIdsMap.get(constituencyId);
 		  getVoterAddressDetailsForCriticalPanchayats(constituencyId, panchayatIds, publicationId, 1l);
 		  
-		  StrategyVO strategyVO = new StrategyVO();
+/*		  StrategyVO strategyVO = new StrategyVO();
 		  strategyVO.setConstituencyId(constituencyId);//
 			strategyVO.setPartyId(872l);
 			List<Long> electionIds = new ArrayList<Long>();
@@ -1804,9 +1804,9 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 			strategyVO.setAgedWt(5d);
 			strategyVO.setTotalCastWt(0d);
 			strategyVO.setAutoCalculate(true);
-			/*strategyVO.setBase(jObj.getLong("base"));
+			strategyVO.setBase(jObj.getLong("base"));
 			strategyVO.setAssured(jObj.getLong("assured"));
-			strategyVO.setTdpPerc(jObj.getLong("partyPerc"));*/
+			strategyVO.setTdpPerc(jObj.getLong("partyPerc"));
 			strategyVO.setEffectPartyId(662l);
 			strategyVO.setEffectElectionId(38l);
 		
@@ -1836,7 +1836,7 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		   }
 		   document.open();
 		  strategyModelTargetingService.getTopPanchayats(strategyVO,document,writer);
-		  document.close();
+		  document.close();*/
 	  }
 	  return "";
   }
