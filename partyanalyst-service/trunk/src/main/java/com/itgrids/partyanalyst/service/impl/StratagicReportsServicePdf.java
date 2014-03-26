@@ -684,17 +684,44 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		// TODO: handle exception
 	}
 	    
-    DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
+      DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
 	  List<PartyPositionVO> previousTrends =dpreviousTrends.deSerialize( maps.get(PdfPages.previousTrends) );
 	  strategyModelTargetingService.generatePdfForMatrixReport(document,previousTrends);//4
 	  previousTrends=null;
 
-    DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
+	  buildSubHeading(document, "First Time (18-22) Voters");
+	  Font calibriNormal = FontFactory.getFont("Calibri",9,Font.NORMAL);
+	  Paragraph preface = new Paragraph();
+	  preface.setAlignment(Element.PTABLE);
+	  preface.add( new Paragraph("Constituency Wise :",calibriNormal));
+	  //preface.add( new Paragraph(" ") );
+	  document.add(preface);
+	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.firstTimeVoters) );
+	  if(vinfo !=null)
+	  buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
+	  vinfo=null;
+	  
+      DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
 	  List<PanchayatVO> youngCastesList =dyoungCastesList.deSerialize( maps.get(PdfPages.youngCastes) );
 	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
 	  youngCastesList=null;
-
-    DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
+	  
+	  buildSubHeading(document, "Aged (Above 60) Voters");
+	  Paragraph preface1 = new Paragraph();
+	  preface1.setAlignment(Element.PTABLE);
+	  preface1.add( new Paragraph("Constituency Wise :",calibriNormal));
+	  //preface1.add( new Paragraph(" ") );
+	  document.add(preface1);
+	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.votersAgeGroup) );
+	  if(vinfo.getVoterStategicReportVOList() != null && vinfo.getVoterStategicReportVOList().size() > 0)
+	  {
+		  int size = vinfo.getVoterStategicReportVOList().size() ;
+		  buildPdfForFirstTimeVotersAndVotersByAgeGroupForConstituency(vinfo.getVoterStategicReportVOList().get(size-1), document, writer, "");
+	  }
+	  
+	  vinfo=null;
+		 
+      DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
 	  List<PanchayatVO> agedCastesList =dagedCastesList.deSerialize( maps.get(PdfPages.agedCastes) );
 	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
 	  agedCastesList=null;
@@ -1914,27 +1941,23 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 	document.add( new Paragraph(" ") );
 	
 	
-	PdfPTable table = new PdfPTable(7);
+	    PdfPTable table = new PdfPTable(7);
+	    table.setWidthPercentage(100);
+	  	
 	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
-	  	c1 = new PdfPCell(new Phrase("Age Range",BIGFONT));
+	    c1 = new PdfPCell(new Phrase("Age Range",BIGFONT));
 	  	c1.setRowspan(2);
 	  	
 		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	c1.setBackgroundColor(BaseColor.YELLOW);
-
-		//c1.setColspan(2);
-		
-	//	c1.set
-	  	table.addCell(c1);    	
-	 	//table.setHeaderRows(1);
+	  	table.addCell(c1);    
 	 	
 		c1 = new PdfPCell(new Phrase("Total Voters",BIGFONT));
 		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+	 	c1.setBackgroundColor(BaseColor.YELLOW);
 		c1.setColspan(2);
 	  	table.addCell(c1);    	
-	 	table.setHeaderRows(1);
 	 	
 	 	
 	 	 c1 = new PdfPCell(new Phrase("Male",BIGFONT));
@@ -1949,7 +1972,34 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
-		 table.addCell(getHeaderCell("Total Voters", BIGFONT));
+		 	 
+		/* c1 = new PdfPCell(new Phrase("Total Voters",BIGFONT));
+	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 table.addCell(c1);
+		 
+		 c1 = new PdfPCell(new Phrase("Total Percentage",BIGFONT));
+	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 table.addCell(c1);
+		 
+		 c1 = new PdfPCell(new Phrase("Voters",BIGFONT));
+	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 table.addCell(c1);
+		 
+		 c1 = new PdfPCell(new Phrase("Voters",BIGFONT));
+	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 table.addCell(c1);
+		 
+		 c1 = new PdfPCell(new Phrase("Percentage",BIGFONT));
+	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 table.addCell(c1);
+		 */
+		 
+		table.addCell(getHeaderCell("Total Voters", BIGFONT));
 		 table.addCell(getHeaderCell("Total Percentage", BIGFONT));
 		 
 		 table.addCell(getHeaderCell(" Voters", BIGFONT));
@@ -2241,4 +2291,94 @@ public String roundTo2DigitsDoubleValue(Double number){
 		return prevResults;
 		//stratagicReportsService.generatePdfForLocalElectionResults(prevResults);
   }
+  
+  public void buildPdfForFirstTimeVotersAndVotersByAgeGroupForConstituency(VoterStratagicReportVo finalRes,Document document,PdfWriter writer,String heading) throws DocumentException, IOException
+  {
+
+  	PdfPCell c1;
+  	document.add( new Paragraph(" ") );
+  	
+  	
+  	    PdfPTable table = new PdfPTable(7);
+  	    table.setWidthPercentage(100);
+  	  	
+  	
+  	    c1 = new PdfPCell(new Phrase("Age Range",BIGFONT));
+  	  	c1.setRowspan(2);
+  	  	
+  		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  	 	c1.setBackgroundColor(BaseColor.YELLOW);
+  	  	table.addCell(c1);    
+  	 	
+  		c1 = new PdfPCell(new Phrase("Total Voters",BIGFONT));
+  		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  	 	c1.setBackgroundColor(BaseColor.YELLOW);
+  		c1.setColspan(2);
+  	  	table.addCell(c1);    	
+  	 	
+  	 	
+  	 	 c1 = new PdfPCell(new Phrase("Male",BIGFONT));
+  	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+  	 	 c1.setColspan(2);
+  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  		 table.addCell(c1);
+  		 
+  		 c1 = new PdfPCell(new Phrase("Female",BIGFONT));
+  	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+  	 	 c1.setColspan(2);
+  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  		 table.addCell(c1);
+  		
+  		table.addCell(getHeaderCell("Total Voters", BIGFONT));
+  		 table.addCell(getHeaderCell("Total Percentage", BIGFONT));
+  		 
+  		 table.addCell(getHeaderCell(" Voters", BIGFONT));
+  		 table.addCell(getHeaderCell("Percentage", BIGFONT));
+  		 
+  		 table.addCell(getHeaderCell(" Voters", BIGFONT));
+  		 table.addCell(getHeaderCell("Percentage", BIGFONT));
+
+	  		 c1 = new PdfPCell(new Phrase(finalRes.getVoterAgeRange(),SMALLFONT));
+	  		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	 	 table.addCell(c1);
+
+  			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(finalRes.getTotalVoters()),SMALLFONT));
+  			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  		 	table.addCell(c1);
+  			 
+  			
+  			 
+  			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(finalRes.getTotalPercentage()),SMALLFONT));
+  			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  		 	 table.addCell(c1);
+  		 	 
+  			 
+  		 	 
+  		 	 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(finalRes.getMaleVotersCount()),SMALLFONT));
+  		 	 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  		 	 table.addCell(c1);
+  		 	 
+  			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(finalRes.getMaleTotalPercentage()),SMALLFONT));
+  			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  		 	 table.addCell(c1);
+  			 
+  		 	 
+  			
+  			 
+  		 	 
+  			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(finalRes.getFemaleVotersCount()),SMALLFONT));
+  			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  			 table.addCell(c1);
+  			 
+  			 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(finalRes.getFemaleTotalPercentage()),SMALLFONT));
+  			 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+  			 table.addCell(c1);
+
+  			float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
+  			table.setWidths(widths);
+  		  	document.add(table);
+  			
+  	}
+
+
 }
