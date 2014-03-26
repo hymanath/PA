@@ -294,13 +294,21 @@ public class BoothwisePollingStratagicService  implements IBoothwisePollingStrat
 				 }
 			 sortPolling(PollingLowboothResultList);
 			 sortPolling(PollingHighboothResultList);
+			 
+			 List<PartyPositionVO> PollingHighboothResultList1 = new ArrayList<PartyPositionVO>();
+			 List<PartyPositionVO> PollingLowboothResultList1 = new ArrayList<PartyPositionVO>();
+			 
+			 for(int i=0;i<=14;i++)
+				 PollingHighboothResultList1.add(PollingHighboothResultList.get(i));
+			 for(int i=0;i<=14;i++)
+				 PollingLowboothResultList1.add(PollingLowboothResultList.get(i));
 
 			 mainVo.setPartyPercentage(Double.valueOf(decimalFormat.format(partyPerInConstituency)));
 			 mainVo.setPollingPercentage(Double.valueOf(decimalFormat.format(pollingPerForConstituency)));
-			 if(PollingHighboothResultList != null && PollingHighboothResultList.size() >0)
-			 mainVo.setStrongPollingPercentVOList(PollingHighboothResultList.subList(0, 14));
-			 if(PollingLowboothResultList != null && PollingLowboothResultList.size() > 0)
-			 mainVo.setWeakPollingPercentVOList(PollingLowboothResultList.subList(0, 14));
+			 if(PollingHighboothResultList1 != null && PollingHighboothResultList1.size() >0)
+			 mainVo.setStrongPollingPercentVOList(PollingHighboothResultList1);
+			 if(PollingLowboothResultList1 != null && PollingLowboothResultList1.size() > 0)
+			 mainVo.setWeakPollingPercentVOList(PollingLowboothResultList1);
 			 result.add(mainVo);
 	 }
 		 catch(Exception e)
