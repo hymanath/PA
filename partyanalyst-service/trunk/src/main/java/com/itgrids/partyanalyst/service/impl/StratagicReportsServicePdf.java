@@ -200,7 +200,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 		 Long constId=strategyVO.getConstituencyId();
 		 Long publicationDateId=strategyVO.getPublicationId();
-		 Long userId=0L;
+		 Long userId=1L;
 		 Long partyId=strategyVO.getPartyId();
 		 Long electionId1=strategyVO.getElectionIds().get(1);
 		 Long electionId=strategyVO.getElectionIds().get(0);
@@ -588,11 +588,23 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 //page-8
 	 document.newPage();
 	//voters by caste  
-	 buildSubHeading(document, "Voters by Caste");
+	 
 	 DeSerialize<CasteStratagicReportVO>  dcvo=new DeSerialize<CasteStratagicReportVO>();
 	 CasteStratagicReportVO cvo =dcvo.deSerialize( maps.get(PdfPages.votersCaste) );
 	 if(cvo!=null)
-	 buildPdfForCasteVoters(cvo, document, writer, "", null);
+	 {
+		 List<String> columnNames = new ArrayList<String>();
+	     columnNames.add("Caste");
+	     columnNames.add("Caste Category");
+	     columnNames.add("Voters");
+	     columnNames.add("Male Voters");
+	     columnNames.add("Female Voters ");
+	     columnNames.add("Caste Percentage ");
+	     
+	 buildPdfForCasteVoters(cvo, document, writer, "", columnNames);
+	
+	 
+	 }
 	 cvo=null;
 	 dcvo=null;
 	 
@@ -1367,8 +1379,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulation()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulationPercent()), SMALLFONT));
   		
-  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getTotalPopulationPercentage()), SMALLFONT));
-  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getTotalPopulationPercentage()), SMALLFONT));
+  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferencePopulation()), SMALLFONT));
+  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferencePopulationPercent()), SMALLFONT));
 
        //male
   	  		
@@ -1656,6 +1668,8 @@ public void buildPdfForCasteVoters(CasteStratagicReportVO finalRes,Document docu
 	    subHeading.setColor(BaseColor.MAGENTA); 
 	  
 	
+	    if(finalRes.getStrategicVOList()!=null && finalRes.getStrategicVOList().size()>0)
+	    	buildSubHeading(document, heading);
 	
 	/*Paragraph p =   new Paragraph(heading ,subHeading);
 	//p.setFont(subHeading);
@@ -1675,6 +1689,7 @@ public void buildPdfForCasteVoters(CasteStratagicReportVO finalRes,Document docu
 	 
 		 
 		
+			
 		 
 	  	for (CasteStratagicReportVO prev : finalRes.getStrategicVOList()) {
          
