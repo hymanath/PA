@@ -102,4 +102,7 @@ public interface IAnanymousUserService {
 	
 	public List getParliamentConstituencies(List<Long> locationIds,String locationType);
 	
+	public RegistrationVO verifyLinkForPassword(String randomNumber);
+	
+	public String confirmChangePassword(RegistrationVO rvo,String newPassword);
 }	
