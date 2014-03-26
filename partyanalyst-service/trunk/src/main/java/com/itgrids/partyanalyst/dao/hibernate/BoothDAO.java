@@ -1814,4 +1814,12 @@ public class BoothDAO extends GenericDaoHibernate<Booth, Long> implements IBooth
 		return query.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getPincodesForBoothIdsList(List<Long> boothIdsList)
+	{
+		Query query = getSession().createQuery("Select model.boothId,model.pincode from Booth model where model.pincode is not null and model.boothId in(:boothIdsList)");
+		query.setParameterList("boothIdsList",boothIdsList);
+		return query.list();
+	}
+	
 }
