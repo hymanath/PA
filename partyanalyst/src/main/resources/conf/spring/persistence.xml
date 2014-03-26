@@ -372,6 +372,7 @@
 				<value>com.itgrids.partyanalyst.model.WardBooth</value>
 				<value>com.itgrids.partyanalyst.model.PredictedVoterCaste</value>
 				<value>com.itgrids.partyanalyst.model.CasteInsertType</value>
+				<value>com.itgrids.partyanalyst.model.ForgetPasswordAccessKey</value>
 				
 				<value>com.itgrids.partyanalyst.model.HHSurveyQuestion</value>
 				<value>com.itgrids.partyanalyst.model.HHOptions</value>
