@@ -132,7 +132,8 @@
 		<property name="favoriteLinkPageDAO" ref="favoriteLinkPageDAO"/>
 		<property name="userFavoriteLinksDAO" ref="userFavoriteLinksDAO"/>
 		<property name="specialPageDAO" ref="specialPageDAO" />
-		<property name="taskExecutor" ref="taskExecutor" />	
+		<property name="taskExecutor" ref="taskExecutor" />
+		<property name="forgetPasswordAccessKeyDAO" ref="forgetPasswordAccessKeyDAO" />	
 		
 	</bean>  
 	
