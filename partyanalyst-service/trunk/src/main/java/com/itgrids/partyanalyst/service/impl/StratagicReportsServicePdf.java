@@ -1981,7 +1981,7 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 		table.setWidths(widths);
 	  	document.add(table);
 		
-}
+
 			for (VoterStratagicReportVo prev : finalRes.getVoterStategicReportVOList()) {
 	             if(prev.getVoterAgeRange().equalsIgnoreCase("Young Voters"))
 		  		
@@ -2031,8 +2031,8 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 			 
 			 	
 		  	}
-			float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
-			table.setWidths(widths);
+			float[] widths1 = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f ,1.2f};
+			table.setWidths(widths1);
 		  	document.add(table);
 			
 	}
