@@ -807,6 +807,8 @@ public class CasteReportService implements ICasteReportService{
 		  						vo.setGender(params[3]!= null?params[3].toString() : "");
 		  						vo.setHouseNo(hno);
 		  						vo.setBoothId(boothId);
+		  						vo.setElder(params[4]!= null?params[4].toString() : "");
+		  						vo.setRelationship(params[5]!= null?params[5].toString() : "");
 		  						resultList.add(vo);
 		  					}
 		  					
