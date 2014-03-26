@@ -519,7 +519,7 @@ function handleErrorMessage()
 		                return false;
 					}
 					
-					var pwd=MD5(MD5(emailId)+MD5(securityName));
+					var pwd=MD5(MD5(emailId.toLowerCase())+MD5(securityName));
 					$('#hiddenPwd').val(pwd);
 					return true;
 						 
