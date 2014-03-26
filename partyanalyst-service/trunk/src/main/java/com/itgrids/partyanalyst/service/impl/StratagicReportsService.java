@@ -113,7 +113,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	@Autowired RegionServiceDataImp regionServiceDataImp;
 	
-	@Autowired IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	@Autowired public IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
 	
 	@Autowired public IConstituencyDAO constituencyDAO;
 	
@@ -125,9 +125,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 	
 	@Autowired IStaticDataService staticDataService;
 	
-	@Autowired public IPanchayatDAO panchayatDAO;
+	@Autowired
+	public IPanchayatDAO panchayatDAO;
 	
-	@Autowired ILocalElectionBodyDAO localElectionBodyDAO;
+	
+	@Autowired public ILocalElectionBodyDAO localElectionBodyDAO;
 	
 	@Autowired public IBoothDAO boothDAO;
 	
@@ -149,17 +151,21 @@ public class StratagicReportsService implements IStratagicReportsService{
 		this.transactionTemplate = transactionTemplate;
 	}
 
-	@Autowired IRegionServiceData regionServiceData;
+	@Autowired
+	public IRegionServiceData regionServiceData;
 	
-	@Autowired IVoterModificationInfoDAO voterModificationInfoDAO;
+	@Autowired
+	public IVoterModificationInfoDAO voterModificationInfoDAO;
 	
-	@Autowired ITehsilDAO tehsilDAO;
+	@Autowired
+	public ITehsilDAO tehsilDAO;
 	
-	@Autowired public IVoterInfoDAO voterInfoDAO;
+	@Autowired
+	public IVoterInfoDAO voterInfoDAO;
 	
 	@Autowired IVoterModificationDAO voterModificationDAO;
 	
-	@Autowired IVotersAnalysisService votersAnalysisService;
+	@Autowired public  IVotersAnalysisService votersAnalysisService;
 	
 	@Autowired public IPanchayatResultDAO panchayatResultDAO;
 	
@@ -3659,8 +3665,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		//  Font TBCELLSM_WIN = new Font(Font.FontFamily.TIMES_ROMAN,7,Font.NORMAL);
 		  Font TBCELLSM_WIN = calibriBold;
 		  
-		  Font SMALLFONT_WIN1 = FontFactory.getFont("Calibri",7,Font.NORMAL);
-		
+		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		 
 
 		/*  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
 		  subHeading.setColor(BaseColor.MAGENTA);
@@ -4393,7 +4399,38 @@ public class StratagicReportsService implements IStratagicReportsService{
 
 		  }
 		  
-		 
+		  Chunk id = new Chunk("                                                    ",calibriBold1);
+	         
+		     
+		     Chunk id1 = new Chunk("Winner", SMALLFONT);
+		  
+		     Chunk id2 = new Chunk("-", calibriBold);
+		     
+		     Chunk id3 = new Chunk("  ", calibriBold1);
+		     id3.setBackground(winner);
+		     
+		     Chunk id4 = new Chunk("Runner", SMALLFONT);
+			  
+			     Chunk id5 = new Chunk("-", calibriBold);
+			    
+			     Chunk id6 = new Chunk("  ", calibriBold1);				     
+			     id6.setBackground(runner);
+	        // id3.setHorizontalScaling(2);
+	         
+	        // Image img = Image.getInstance(IConstants.IMAGE);
+		       
+		 // Chunk id1= new Chunk(img, 5, 5, false);
+	   //  id1.setBackground(BaseColor.RED);
+	    // id1.setHorizontalScaling(2);
+		
+	
+	     document.add(id);
+	     document.add(id1);
+	     document.add(id2);
+	     document.add(id3);
+	     document.add(id4);
+	     document.add(id5);
+	     document.add(id6);
 		  
 		  } catch (Exception e) {
 			  LOG.debug("Exception Raised while GENERATING PDF in LocalElectionResults Blocks" +e);
@@ -4703,14 +4740,14 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 		  //document.open();
 	  
-		  //Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
-		  //TITLE.setColor(BaseColor.BLACK);
-		  
-		  //Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-		  //Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		  /*Font TITLE = new Font(Font.FontFamily.TIMES_ROMAN, 9,Font.BOLD);
+		  TITLE.setColor(BaseColor.BLACK);*/
+			  //TITLE.setColor(BaseColor.BLACK);
+		// Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+		//  Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 	  
-		  //Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
-		  //SMALLFONT_WIN.setColor(BaseColor.GREEN);
+		 // Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+		 // SMALLFONT_WIN.setColor(BaseColor.GREEN);
 
 		  //Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
 		  //subHeading.setColor(BaseColor.MAGENTA);
@@ -5321,36 +5358,43 @@ public class StratagicReportsService implements IStratagicReportsService{
 			document.add(Chunk.NEWLINE);
 			
 			PdfPTable table = new PdfPTable(9);
+			
 			PdfPCell column=null;
 			
-			column = new PdfPCell(new Phrase("Mandal/Muncipality",TBCELL));
+			column = new PdfPCell(new Phrase("Mandal/     Muncipality",TBCELL));
 			column.setRowspan(2);
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Voters",TBCELL));
 			column.setColspan(2);
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Total Voters",TBCELL));
 			column.setColspan(2);
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Male Voters",TBCELL));
 			column.setColspan(2);
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Female Voters",TBCELL));
 			column.setColspan(2);
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			for(SelectOptionVO temp:publications){
 				column = new PdfPCell(new Phrase(temp.getName(),TBCELL));
 				column.setBackgroundColor(bcolor);
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 			}
 			
@@ -5359,20 +5403,25 @@ public class StratagicReportsService implements IStratagicReportsService{
 			table.addCell(column);
 			column = new PdfPCell(new Phrase("Deleted",TBCELL));
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Added",TBCELL));
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			column = new PdfPCell(new Phrase("Deleted",TBCELL));
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			column = new PdfPCell(new Phrase("Added",TBCELL));
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			column = new PdfPCell(new Phrase("Deleted",TBCELL));
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			
 			for(VoterModificationVO temp1:resultvo.getModifiedVotersList()){
@@ -5380,31 +5429,39 @@ public class StratagicReportsService implements IStratagicReportsService{
 				List<SelectOptionVO> publicationsList=temp1.getSelectOptionVOsList();
 				
 				column = new PdfPCell(new Phrase(temp1.getName(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 			
 			
 			for(SelectOptionVO temp2:publicationsList){
 				column = new PdfPCell(new Phrase(temp2.getId().toString(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 			}
 			
 			
 				column = new PdfPCell(new Phrase(temp1.getAddedCount().toString(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 				
 				column = new PdfPCell(new Phrase(temp1.getDeletedCount().toString(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 				
 				column = new PdfPCell(new Phrase(temp1.getMaleVotersAdded().toString(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 				
 				column = new PdfPCell(new Phrase(temp1.getMaleVotersDeleted().toString(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 				
 				column = new PdfPCell(new Phrase(temp1.getFemaleVotersAdded().toString(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 				
 				column = new PdfPCell(new Phrase(temp1.getFemaleVotersDeleted().toString(),TBCELLSM));
+				column.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(column);
 			}
 			
