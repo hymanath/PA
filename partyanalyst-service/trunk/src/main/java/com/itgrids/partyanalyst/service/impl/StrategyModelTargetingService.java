@@ -3039,7 +3039,7 @@ public class StrategyModelTargetingService implements
 				  		  {
 				  			  cell = new PdfPCell(new Phrase(partyEffectVO.getName(),style2));
 						  	  cell.setHorizontalAlignment(Element.ALIGN_LEFT);
-						  	cell.setPadding(padding);
+							  	cell.setPadding(padding);
 						  	  table.addCell(cell);
 						  	  
 						  	  cell = new PdfPCell(new Phrase(df.format(partyEffectVO.getPrpCurrentPerc()).toString(),style2));
@@ -3060,7 +3060,7 @@ public class StrategyModelTargetingService implements
 				  		  }
 
 					}
-				  	table.setHorizontalAlignment(Element.ALIGN_LEFT);
+				  	//table.setHorizontalAlignment(Element.ALIGN_LEFT);
 				  	  table.setHeaderRows(1);
 					  document.add(table);
 					  document.newPage();
@@ -3553,7 +3553,7 @@ public class StrategyModelTargetingService implements
 			  PdfTemplate bar = cb.createTemplate(600, 800);
 			  Graphics2D g2d2 = bar.createGraphics(600,800);
 			  Rectangle2D rectangle2d = new Rectangle2D.Double(30,200, 530,390);
-
+			  
 			  chart.draw(g2d2, rectangle2d);
 			  g2d2.dispose();
 			  cb.addTemplate(bar,0.0f,0.0f);
