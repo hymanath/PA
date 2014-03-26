@@ -42,6 +42,7 @@
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 	<script type="text/javascript" src="js/bootstrap.js" ></script>
+	<script type="text/javascript" src="js/md5.js"></script>
 	<!--<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>-->
 	
 
