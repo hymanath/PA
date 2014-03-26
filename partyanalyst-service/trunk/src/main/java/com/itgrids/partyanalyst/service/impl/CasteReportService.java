@@ -1810,6 +1810,7 @@ public void setToVo(List<CastVO> resultList,List<Object[]> list,Long startrange,
 		   }
 		   document.open();
 		  strategyModelTargetingService.getTopPanchayats(strategyVO,document,writer);
+		  document.close();
 	  }
 	  return "";
   }
