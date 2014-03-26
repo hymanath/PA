@@ -252,8 +252,10 @@ if(request.getParameter("showMessage")!=null){
                                <span class="add-on"><i class="icon-envelope"></i></span><input type="text" class="span2" class="input-small" placeholder="Email" name="userName"  id="userName" style="width: 176px;" required>
                          </div>
 						 <div class="input-prepend">
-                               <span class="add-on"><i class="icon-lock"></i></span><input type="password" class="span2" class="input-small" placeholder="Password" name="password" style="width: 176px;" id="passWord_Id" required>
+                               <span class="add-on"><i class="icon-lock"></i></span><input type="password" class="span2" class="input-small" placeholder="Password" name="password1" style="width: 176px;" id="passWord_Id" required>
                          </div>
+						 
+						<input type="hidden" name="password" id="hiddenPwd"/>
                             
 			                <span class="divider"></span>
 			              <div class = "span3">
@@ -267,6 +269,14 @@ if(request.getParameter("showMessage")!=null){
 		
 			</div>
 			<script type="text/javascript">
+				var status='${status}';
+			
+				if(status=="error"){
+					$(".errorMessage").html("Link Provided to You Expired .. Please Try Again ");
+				}	
+			
+					
+			
 			    function handleErrorMessage()
                 { 
                     //document.getElementById("getLoginErrorMessageDiv").innerHTML = '';
@@ -292,9 +302,11 @@ if(request.getParameter("showMessage")!=null){
 	                str += '</font>';
 	                errorDivEle.innerHTML = str;
 	
-	                if(eFlag)
+	                if(eFlag){
 		                return false;
-						
+					}
+					
+					
 					return true;
 						  
                 }
