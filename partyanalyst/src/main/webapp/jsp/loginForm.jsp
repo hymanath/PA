@@ -5,17 +5,17 @@
 <%@page import="com.itgrids.partyanalyst.utils.IConstants"%>	
 
 
+
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/combo?2.8.2r1/build/assets/skins/sam/skin.css"> 
 <!-- Combo-handled YUI JS files: --> 
 <link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet" />
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/commonUtilityScript/commonUtilityScript.js"></script>
 <!--  BootStrap Code-->
- 
-
 <script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 <script type="text/javascript" src="js/homePage/homePage.js"> </script>
 <link type="text/css" rel="stylesheet" href="styles/newsstyle.css">
+<script type="text/javascript" src="js/md5.js"></script>
 <!--  BootStrap Stating -->
  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -494,8 +494,7 @@ if(request.getParameter("showMessage")!=null){
 function handleErrorMessage()
 { 
                  //document.getElementById("getLoginErrorMessageDiv").innerHTML = '';
-				 
-                 var emailId = document.getElementById("userName").value;
+				 var emailId = document.getElementById("userName").value;
                  var securityName = document.getElementById("passWord_Id").value;
                  var errorDivEle = document.getElementById("getLoginErrorMessageDiv");
 	             var eFlag = false;
@@ -516,11 +515,14 @@ function handleErrorMessage()
 	                str += '</font>';
 	                errorDivEle.innerHTML = str;
 	
-	                if(eFlag)
+	                if(eFlag){
 		                return false;
-						
+					}
+					
+					var pwd=MD5(MD5(emailId)+MD5(securityName));
+					$('#hiddenPwd').val(pwd);
 					return true;
-						  
+						 
 }
 
 
@@ -753,6 +755,7 @@ function afterPasswordSubmitToUser(username,email){
 function showForgotPasswordPanel()
 {
 
+
 	document.getElementById("validate").style.display = 'none';
 	$("#forgot_password_window").dialog({
 		resizable:false,
@@ -816,7 +819,6 @@ function showForgotPasswordPanel()
 
 function checkAvailability()
 {
-
 	var name = document.getElementById("userName_FP").value;
  	
 	if(name=="")
@@ -840,7 +842,7 @@ function checkAvailability()
 				task:"forgotPassword",
 		};	
 		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
-		var url = "recoverPasswordAnanymousUserAction.action?"+rparam;						
+		var url = "recoverPasswordUsingLink.action?"+rparam;						
 		callAJAX(jsObj,url);
  	 }
 }
