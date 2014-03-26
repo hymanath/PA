@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.model.UserGroupRelation;
 import com.itgrids.partyanalyst.model.UserLoginDetails;
 import com.itgrids.partyanalyst.model.UserRoles;
 import com.itgrids.partyanalyst.security.EncryptDecrypt;
+import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -271,19 +272,38 @@ public class LoginService implements ILoginService{
 
 		try{
 			
-			List<String> secretKeyList = userDAO.getEncryptedKeyByUserName(userName);
-			String secretKey = null;
-			if(secretKeyList != null && secretKeyList.size() > 0){
+			//List<String> secretKeyList = userDAO.getEncryptedKeyByUserName(userName);
+			List<User> userObj=userDAO.getModelByUserName(userName);
+			
+			if(userObj.size()==0){
+				return regVO;
+			}
+			
+			/*if(userObj.get(0).getHashKeyTxt() != null && userObj.get(0).getPasswdHashTxt()!=null){
 				
-				secretKey = secretKeyList.get(0);
+				EncryptDecrypt phash = new EncryptDecrypt(userObj.get(0).getHashKeyTxt());
+				String encrptdPassword = phash.encryptText(password);
 				
-				 EncryptDecrypt phash = new EncryptDecrypt(secretKey);
-				String encrptdPassword = phash.encryptText(password);;
+				if(encrptdPassword.equalsIgnoreCase(userObj.get(0).getPasswdHashTxt())){
+					user=userObj.get(0);
+				}
+				
 				List<User> userList = userDAO.checkUsernameAndEncryptedPasswordForUser(userName,
 						encrptdPassword);
 				
 				if(userList != null  && userList.size() >0)
 					user = userList.get(0);
+			}*/
+			if(userObj.get(0).getPasswordHash() !=null && userObj.get(0).getPasswordSalt()!=null){
+				String salt = userObj.get(0).getPasswordSalt();
+				String hash = userObj.get(0).getPasswordHash();
+				//boolean validated= EncryptDecrypt.validatePassword(password, hash, salt);
+				PBKDF2 pb= new PBKDF2();
+				boolean validated = pb.validatePWD(password, hash, salt);
+				if(validated){
+					user=userObj.get(0);
+				}
+				
 			}
 
 			//user = userDAO.findByUserNameAndPassword(userName, password);
@@ -625,25 +645,58 @@ public class LoginService implements ILoginService{
 			List<User> list = userDAO.getUserByUserName(userName);
 			
 			 User user = null;
-			String secretKey = null;
+			/*String secretKey = null;
 			String presentEncryptedPassword = null;
 			String savedEncryptedPassword = null;
+			*/
+			boolean userExist = false;
 			if(list != null && list.size() > 0){
 				 user = list.get(0);
-				secretKey = user.getHashKeyTxt();
-				 savedEncryptedPassword = user.getPasswdHashTxt();
+				 
+				 
+				 /*
+					 * Commented by SASI on 24-03-2014
+					 * @author <a href="sasi.itgrids.hyd@gmail.com">sasi.itgrids.hyd@gmail.com</a>
+					 * 
+				 */
+				/*secretKey = user.getHashKeyTxt();
+				savedEncryptedPassword = user.getPasswdHashTxt();
 				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
-				presentEncryptedPassword = encryptDecrypt.encryptText(crntpassword);
+				presentEncryptedPassword = encryptDecrypt.encryptText(crntpassword);*/
+				 
+				 String salt = user.getPasswordSalt();
+				 String hash = user.getPasswordHash();
+				 //boolean validated= EncryptDecrypt.validatePassword(password, hash, salt);
+				 PBKDF2 pb= new PBKDF2();
+				 boolean validated = pb.validatePWD(crntpassword, hash, salt);
+					if(validated){
+						userExist = true;
+					}
 				
 			}
 			
 					
-			if(user != null && user.getUserId() > 0 && savedEncryptedPassword.equals(presentEncryptedPassword))
+			if(user != null && user.getUserId() > 0 && userExist )
 			{
-				// secretKey = user.getHashKeyTxt();
+				/*
+				 * Commented by SASI on 24-03-2014
+				 * @author <a href="sasi.itgrids.hyd@gmail.com">sasi.itgrids.hyd@gmail.com</a>
+				 * 
+				 */
+				/*// secretKey = user.getHashKeyTxt();
 				EncryptDecrypt encryptDecrypt = new EncryptDecrypt(secretKey);
 				String encryptedPassword = encryptDecrypt.encryptText(newpassword);				
-				user.setPasswdHashTxt(encryptedPassword);
+				user.setPasswdHashTxt(encryptedPassword);*/
+				
+				PBKDF2 pb=new PBKDF2();
+				String storedPwd=pb.generatePassword(newpassword);
+				String[] parts = storedPwd.split(":");
+		        //int iterations = Integer.parseInt(parts[0]);
+		        String passwordSalt=parts[1];
+		        String passwordHash=parts[2];
+				
+				user.setPasswordHash(passwordHash);
+				user.setPasswordSalt(passwordSalt);
 				
 				//user.setPassword(newpassword);
 				user.setIsPwdChanged(IConstants.TRUE);
@@ -684,14 +737,29 @@ public class LoginService implements ILoginService{
 		{
 			User user = userList.get(0);
 			
-			String secretKey = user.getHashKeyTxt();
+			
+			/*
+			 * Commented by SASI on 24-03-2014
+			 * @author <a href="sasi.itgrids.hyd@gmail.com">sasi.itgrids.hyd@gmail.com</a>
+			 * 
+			 */
+			/*String secretKey = user.getHashKeyTxt();
 			String savedPassword = user.getPasswdHashTxt();
 			
 			EncryptDecrypt phash = new EncryptDecrypt(secretKey);
 			String encryptedPassword = phash.encryptText(crntpassword);
 			
 			if(encryptedPassword.equalsIgnoreCase(savedPassword))
+				userExist = true;*/
+			
+			String salt = user.getPasswordSalt();
+			String hash = user.getPasswordHash();
+			//boolean validated= EncryptDecrypt.validatePassword(password, hash, salt);
+			PBKDF2 pb= new PBKDF2();
+			boolean validated = pb.validatePWD(crntpassword, hash, salt);
+			if(validated){
 				userExist = true;
+			}
 		}
 		
 		if(userExist == true)
