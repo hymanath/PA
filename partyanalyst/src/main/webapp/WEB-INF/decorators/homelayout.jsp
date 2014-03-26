@@ -36,6 +36,7 @@
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 	<script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.24.custom.min.js"> </script>
+	<script type="text/javascript" src="js/md5.js"></script>
 	<% if(request.getRequestURL().indexOf("partyanalyst.com") != -1){
 
 %>
