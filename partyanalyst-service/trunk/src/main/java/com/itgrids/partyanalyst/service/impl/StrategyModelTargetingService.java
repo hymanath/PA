@@ -2681,11 +2681,18 @@ public class StrategyModelTargetingService implements
 		}
 	   }
 	   
-	   public void panchayatwisePartyPerformanceTable(Document document,List<PartyPositionVO> panchayatList,Long rank)
+	   public void panchayatwisePartyPerformanceTable(Document document,List<PartyPositionVO> panchayatList,Long rank,String heading)
 	   {
 		   try{
 			 LOG.info("Entered into panchayatwisePartyPerformanceTable() method in VoterModifiationPdfsGenerations Class");
 			 PdfPTable table = new PdfPTable(7);
+			 table.setWidthPercentage(100);
+			 Font calibriItelac = FontFactory.getFont("Calibri",9,Font.BOLDITALIC);
+			 Font calibriItelac2 = FontFactory.getFont("Calibri",7,Font.BOLDITALIC);
+			 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+       	     Paragraph p =   new Paragraph(heading ,SMALLFONT);
+     		//p.setFont(subHeading);
+     	     document.add(p );
 			 PdfPCell cell ;
 			 int padding = 6;
 			 DecimalFormat df = new DecimalFormat("##.##");
@@ -2734,7 +2741,7 @@ public class StrategyModelTargetingService implements
 		  	 
 		  	  for(PartyPositionVO partyPositionVO :panchayatList)
 		  	  {
-		  		  if(partyPositionVO.getRank() == rank)
+		  		  if(partyPositionVO.getRank().equals(rank))
 		  		  {
 		  			  
 		  		  cell = new PdfPCell(new Phrase(partyPositionVO.getName(),style2));
@@ -2779,11 +2786,10 @@ public class StrategyModelTargetingService implements
 			  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 			  	cell.setPadding(padding);
 			  	  table.addCell(cell);  
-				  
-			  	  
-		  		  }
+				  }
 			 }
-		  	table.setHeaderRows(2);
+		  	table.setHeaderRows(1);
+		  	table.setHorizontalAlignment(Element.ALIGN_LEFT);
 			 document.add(table);
 			 document.newPage();
 			  
@@ -3452,81 +3458,92 @@ public class StrategyModelTargetingService implements
           }
 
  
-		  public void buildChartForPartyPerformanceReort(Document doc,List<PartyPositionVO> list)
-          {
-                  try {
-                	  int size = list.size();
-                	  int increment = 20;
-                	  int pageNo = 2;
-                	  int maxindex =0;
-                     for(int i=0;i<size;i=i+increment)
-                	  {
-                       DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
-                        if(list != null && list.size() > 0)
-                       {
-	                        	Long total = 0l;
-	                    	   for(PartyPositionVO vo : list.subList(maxindex, list.size() - 0))
-	                    	   {
-	                    		   if(total == 20)
-	                    			break;
-	                    		if(vo.getRank() == 1) 
-	                    		{
-	                    			 dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
-		                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
-		                    			dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
-		                    			else
-		                                dataSet.setValue(vo.getMargin()/2, "Margin", vo.getName().toString()+" -2013");
-		                    		   
-		                    	}
-	                    		else
-	                    		{
-	                    			  dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
-		                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
-		                    		      dataSet.setValue(2 * (vo.getMargin()), "Margin", vo.getName().toString()+" -2013");
-		                    			else
-		                    			  dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
-		                    			
-	                    		}
-	                    		total ++;
-	                    		}
-	                    	   if(size >= increment)
-	                    		   maxindex = maxindex + increment;
-                      
-                       }
-                       
-                       JFreeChart chart = ChartFactory.createBarChart(
-                               "PartyPerformance", "Panchayat ", "Margin",
-                               dataSet, PlotOrientation.HORIZONTAL, false, true, false);
-                       
-                       final CategoryPlot plot = chart.getCategoryPlot();
-                       final CategoryItemRenderer renderer = new CustomRenderer(
-                               new Paint[] {Color.green,
-                            		   Color.BLUE}
-                           );
-                          renderer.setItemLabelsVisible(true);
-                          final ItemLabelPosition p = new ItemLabelPosition(
-                                  ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, 45.0
-                              );
-                          renderer.setPositiveItemLabelPosition(p);
-                          plot.setRenderer(renderer);
-                          Document document = new Document();
-                          PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\VMR\\"+pageNo+".pdf"));
-                          document.open();
-                          PdfContentByte cb = writer.getDirectContent();
-                          PdfTemplate bar = cb.createTemplate(1000, 1000);
-                          Graphics2D g2d2 = bar.createGraphics(950,950,new DefaultFontMapper());
-                          Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 900,900);
-                       chart.draw(g2d2, rectangle2d);
-                       g2d2.dispose();
-                       cb.addTemplate(bar,0.0f,0.0f);
-                       document.close();
-                       pageNo++;
-                	  }
-               } catch (Exception e) {
-                       e.printStackTrace();
-               }
-          }		
-		  public void buildPiChart(Document document,List<OrderOfPriorityVO> panchayatsClassification,PdfWriter writer)
+		   public void buildChartForPartyPerformanceReort(Document document,List<PartyPositionVO> list,PdfWriter writer,String heading)
+	          {
+	                  try {
+	                	  
+	                	  int size = list.size();
+	                	  int increment = 15;
+	                	  int maxindex =0;
+	                	  //Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
+	                	  //Paragraph p =   new Paragraph(heading ,SMALLFONT);
+	              		//p.setFont(subHeading);
+	              	   
+	                     for(int i=0;i<size;i=i+increment)
+	                	  {
+	                        DefaultCategoryDataset dataSet = new DefaultCategoryDataset();
+	                        if(list != null && list.size() > 0)
+	                       {
+		                        	Long total = 0l;
+		                    	   for(PartyPositionVO vo : list.subList(maxindex, list.size() - 0))
+		                    	   {
+		                    		   if(total == 15)
+		                    			break;
+		                    		if(vo.getRank() == 1) 
+		                    		{
+		                    			 dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
+			                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
+			                    			dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
+			                    			else
+			                                dataSet.setValue(vo.getMargin()/2, "Margin", vo.getName().toString()+" -2013");
+			                    		   
+			                    	}
+		                    		else
+		                    		{
+		                    			  dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2009");	
+			                    			if(vo.getWinPartyName().equalsIgnoreCase("TDP"))
+			                    		      dataSet.setValue(2 * (vo.getMargin()), "Margin", vo.getName().toString()+" -2013");
+			                    			else
+			                    			  dataSet.setValue(vo.getMargin(), "Margin", vo.getName().toString()+" -2013");
+			                    			
+		                    		}
+		                    		total ++;
+		                    		}
+		                    	   if(size >= increment)
+		                    		   maxindex = maxindex + increment;
+	                              }
+	                       
+	                       JFreeChart chart = ChartFactory.createBarChart(
+	                               "", "Panchayat ", "Margin",
+	                               dataSet, PlotOrientation.HORIZONTAL, false, true, false);
+	                       chart.setTitle(
+	                    		   new org.jfree.chart.title.TextTitle(""+heading+"",
+	                    		       new java.awt.Font("SansSerif", java.awt.Font.BOLD, 12)
+	                    		   ));
+	                    
+	                       final CategoryPlot plot = chart.getCategoryPlot();
+	                       final CategoryItemRenderer renderer = new CustomRenderer(
+	                               new Paint[] {Color.green,
+	                            		   Color.BLUE}
+	                           );
+	                       	
+	                          renderer.setItemLabelsVisible(true);
+	                         
+	                          final ItemLabelPosition p1 = new ItemLabelPosition(
+	                                  ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, 10.0
+	                              );
+	                          renderer.setPositiveItemLabelPosition(p1);
+	                          plot.setRenderer(renderer);
+	                         // Document document = new Document();
+	                         // PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("C:\\Program Files (x86)\\Apache Software Foundation\\Tomcat 6.0\\webapps\\PartyAnalyst\\VMR\\"+pageNo+".pdf"));
+	                         // document.open();
+	                          
+	                          PdfContentByte cb = writer.getDirectContent();
+	                          PdfTemplate bar = cb.createTemplate(800, 800);
+	                          Graphics2D g2d2 = bar.createGraphics(750,750,new DefaultFontMapper());
+	                          Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 750,750);
+		                       chart.draw(g2d2, rectangle2d);
+		                       g2d2.dispose();
+		                       cb.addTemplate(bar,0.0f,0.0f);
+	                      // document.close();
+	                      // pageNo++;
+	                       document.newPage();
+	                	  }
+	               } catch (Exception e) {
+	                       e.printStackTrace();
+	               }
+	          }		
+		   public void buildPiChart(Document document,List<OrderOfPriorityVO> panchayatsClassification,PdfWriter writer)
 		  {
 		  try{
 			  DefaultPieDataset  dataSet = new DefaultPieDataset ();
