@@ -3496,7 +3496,7 @@ public class StrategyModelTargetingService implements
 	                          PdfContentByte cb = writer.getDirectContent();
 	                          PdfTemplate bar = cb.createTemplate(800, 800);
 	                          Graphics2D g2d2 = bar.createGraphics(750,750,new DefaultFontMapper());
-	                          Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 750,750);
+	                          Rectangle2D rectangle2d = new Rectangle2D.Double(0, 0, 600,750);
 		                       chart.draw(g2d2, rectangle2d);
 		                       g2d2.dispose();
 		                       cb.addTemplate(bar,0.0f,0.0f);
