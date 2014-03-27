@@ -1573,12 +1573,7 @@ $(".changePwdLink").live("click",function(){
 	  errorDiv.html("<font color='red'>New password must be minimum Of 6 characters.</font>");
 	  return;
 	}
-	if(cpwd=="")
-	{
-     errorDiv.html("<font color='red'>Please enter password.</font>");	
-	 return;
-	}
-     if(npwd.length > 0 && cfmpwd.length > 0 && npwd != cfmpwd)
+	 if(npwd.length > 0 && cfmpwd.length > 0 && npwd != cfmpwd)
 	{
  	  errorDiv.html("<font color='red'>Passwords do not match.</font>");
        return
