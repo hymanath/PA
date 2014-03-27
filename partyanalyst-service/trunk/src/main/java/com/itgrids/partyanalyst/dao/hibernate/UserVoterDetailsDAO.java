@@ -3000,7 +3000,7 @@ IUserVoterDetailsDAO{
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getVoterHnoAndBoothsForPanchayatList(List<Long> panchayatIdsList,Long publicationId)
 	{
-	    Query query = getSession().createQuery("select model.booth.boothId,model.voter.houseNo from BoothPublicationVoter model where model.booth.panchayat.panchayatId in(:panchayatIdsList) and " +
+	    Query query = getSession().createQuery("select model.booth.boothId,model.voter.houseNo,count(model.voter.voterId) from BoothPublicationVoter model where model.booth.panchayat.panchayatId in(:panchayatIdsList) and " +
 				" model.booth.publicationDate.publicationDateId = :publicationId group by model.booth.boothId,model.voter.houseNo ");
 		query.setParameterList("panchayatIdsList", panchayatIdsList);
 		query.setParameter("publicationId", publicationId);
