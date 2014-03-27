@@ -767,11 +767,13 @@ public class CasteReportService implements ICasteReportService{
 			List<Object[]> boothHnos = userVoterDetailsDAO.getVoterHnoAndBoothsForPanchayatList(panchayatIdsList,publicationId);
 			
 			Map<Long,List<String>> boothHousesMap = new HashMap<Long, List<String>>();
+			Map<String,Long> houseNosCountMap = new HashMap<String,Long>(0);
 		  	
 			if(boothHnos != null && boothHnos.size() > 0)
 			{
 		  		for(Object[] params : boothHnos)
 				{
+		  			houseNosCountMap.put(params[0].toString()+":"+params[1].toString(),(Long)params[2]);
 					List<String> hnos = boothHousesMap.get((Long)params[0]);
 					if(hnos == null)
 						hnos = new ArrayList<String>();
@@ -809,6 +811,7 @@ public class CasteReportService implements ICasteReportService{
 		  						vo.setBoothId(boothId);
 		  						vo.setElder(params[4]!= null?params[4].toString() : "");
 		  						vo.setRelationship(params[5]!= null?params[5].toString() : "");
+		  						vo.setCount(houseNosCountMap.get(boothId.toString()+":"+hno));
 		  						resultList.add(vo);
 		  					}
 		  					
@@ -828,7 +831,7 @@ public class CasteReportService implements ICasteReportService{
 	 return resultStatus;
 	 }
 	 
-	 public void createExcelForVoterAddressForCriticalPanchayats(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
+	/* public void createExcelForVoterAddressForCriticalPanchayats(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
 	 {
 		 log.info("Enter into createExcelForVoterAddressForCriticalPanchayats Method with Constituency Id - "+constituencyId);
 		try{
@@ -918,7 +921,7 @@ public class CasteReportService implements ICasteReportService{
 				}
 			}
 			
-			/** excel header **/
+			*//** excel header **//*
 		    HSSFWorkbook workbook = new HSSFWorkbook();
 			HSSFSheet sheet = workbook.createSheet(constituency.getName());
 			
@@ -1055,8 +1058,179 @@ public class CasteReportService implements ICasteReportService{
 		{
 			log.error("Exception Occured in createExcelForVoterAddress()", e) ;
 		}
+	 }*/
+	 
+	 public void createExcelForVoterAddressForCriticalPanchayats(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
+	 {
+		 log.info("Enter into createExcelForVoterAddressForCriticalPanchayats Method with Constituency Id - "+constituencyId);
+		try{
+			Constituency constituency = constituencyDAO.get(constituencyId);
+			String districtName ="";
+			if(constituency.getDistrict() != null)
+			districtName = constituency.getDistrict().getDistrictName();
+		 	
+			Map<Long,String> tehsilMap = new HashMap<Long, String>();
+		  	Map<Long,String> hamletMap = new HashMap<Long, String>();
+		  	Map<Long,String> panchayatMap = new HashMap<Long, String>();
+		  	Map<Long,String> pincodesMap = new HashMap<Long, String>();
+		  	
+		  	List<Object[]> pincodesInfo = boothDAO.getPincodesForBoothIdsList(boothIds);
+		  	
+		  	if(pincodesInfo != null && pincodesInfo.size() > 0)
+		  	{
+		  		for(Object[] params : pincodesInfo)
+		  		{
+		  			try{
+		  			String pincode = params[1].toString();
+		  			if(pincode != null && pincode.length() == 6)
+		  				pincodesMap.put((Long)params[0],pincode);
+		  			}catch(Exception e)
+		  			{
+		  				log.error(e);
+		  			}
+		  		}
+		  	}
+			
+		  	List<Object[]> hamletInfo =  userVoterDetailsDAO.getHamletForVoter(voterIds,userId);
+		  	
+		  	if(hamletInfo != null && hamletInfo.size() > 0)
+		  	{
+				for(Object[] hamlet : hamletInfo)
+				{
+					try{
+					BigInteger voterId1 =(BigInteger)hamlet[0];
+					String hamletName = hamletMap.get(voterId1.longValue());
+					if(hamletName == null)
+						hamletMap.put(voterId1.longValue(),hamlet[1].toString());
+					else
+						hamletMap.put(voterId1.longValue(),hamletName);	
+					}catch(Exception e)
+					{
+						log.error(e);
+					}
+				}
+		  	}
+		  	
+			List<Object[]> tehsils = userVoterDetailsDAO.getLocationForVoter(boothIds,IConstants.TEHSIL);
+			
+			if(tehsils != null && tehsils.size() > 0)
+			{
+				for(Object[] tehsil : tehsils)
+				{
+					try{
+					String mandal = tehsilMap.get((Long)tehsil[0]);
+					if(mandal == null)
+						tehsilMap.put((Long)tehsil[0],tehsil[1].toString());
+					else
+						tehsilMap.put((Long)tehsil[0],mandal);
+					}catch(Exception e)
+					{
+						log.error(e);
+					}
+				}
+			}
+			
+			List<Object[]> panchayats = userVoterDetailsDAO.getLocationForVoter(boothIds,IConstants.PANCHAYAT);
+			
+			if(panchayats != null && panchayats.size() > 0)
+			{
+				for(Object[] panchayat : panchayats)
+				{
+					try{
+					String panchayatName = panchayatMap.get((Long)panchayat[0]);
+					if(panchayatName == null)
+						panchayatMap.put((Long)panchayat[0],panchayat[1].toString());
+					else
+						panchayatMap.put((Long)panchayat[0],panchayatName);
+					}catch(Exception e)
+					{
+						log.error(e);
+					}
+				}
+			}
+			
+			/** excel header **/
+		    HSSFWorkbook workbook = new HSSFWorkbook();
+			HSSFSheet sheet = workbook.createSheet(constituency.getName());
+			
+			Row header = sheet.createRow(0);
+		    header.createCell(0).setCellValue("SNO");
+			header.createCell(1).setCellValue("Address");
+		    header.createCell(2).setCellValue("Members Count");
+		    
+		    int rowNum = 0;
+		    for(VoterHouseInfoVO voter : resultList)
+		    {
+		       String relation = "";
+	    	   
+	    	   if(voter.getRelationship() == null)
+	    		   relation = "C/O";
+	    	   
+	    	   else if(voter.getRelationship().equalsIgnoreCase("Mother") || 
+	    			   voter.getRelationship().equalsIgnoreCase("Father"))
+	    	   {
+	    		   if(voter.getGender().equalsIgnoreCase(IConstants.MALE))
+	    			   relation = "S/O";
+	    		   else
+	    			   relation = "D/O";
+	    	   }
+	    	   else if(voter.getRelationship().equalsIgnoreCase("Husband"))
+	    		   relation = "W/O";
+	    	   else if(voter.getRelationship().equalsIgnoreCase("Others"))
+	    		   relation = "C/O";
+	    	   
+	    	   relation = (relation + " " +voter.getElder()).trim();
+	    	   
+	    	   rowNum++;
+		       Row dataRow = sheet.createRow(rowNum);
+		       dataRow.createCell(0).setCellValue(rowNum);
+		       
+	    	   String addrStr = voter.getName()+",\n";
+	    	   addrStr = addrStr + relation +",\n";
+	    	   addrStr += "H.No: "+voter.getHouseNo() +",\n";
+	    	   
+	    	   if(hamletMap.get(voter.getVoterId()) != null)
+	    		   addrStr += hamletMap.get(voter.getVoterId())+",\n";
+	    	   
+	    	   if(panchayatMap.get(voter.getBoothId()) != null)
+	    		   addrStr += panchayatMap.get(voter.getBoothId())+",\n";
+	    	   
+	    	   if(tehsilMap.get(voter.getBoothId()) != null)
+	    		   addrStr += tehsilMap.get(voter.getBoothId()) + " (Mandal),\n";
+	    	   
+	    	   addrStr += districtName+" (District)";
+	    	   
+	    	   if(pincodesMap.get(voter.getBoothId()) != null)
+	    		   addrStr += " - "+pincodesMap.get(voter.getBoothId());
+	    	   
+	    	   dataRow.createCell(1).setCellValue(addrStr);
+	    	   
+	    	   if(voter.getCount() != null)
+	    		   dataRow.createCell(2).setCellValue(voter.getCount());
+	    	   else
+	    		   dataRow.createCell(2).setCellValue(1);
+		    }
+		    
+		    try {
+    		   	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+    	        FileOutputStream out =
+    	                new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_voterAddressExcel.xls"));
+    	        workbook.write(out);
+    	        out.close();
+    	         
+    	    } catch (FileNotFoundException e) {
+    	        e.printStackTrace();
+    	    } catch (IOException e) {
+    	        e.printStackTrace();
+    	    } 
+		    
+		}
+		catch(Exception e)
+		{
+			log.error("Exception Occured in createExcelForVoterAddress()", e) ;
+		}
 	 }
-
+	 
 	 public void createExcelForVoterAddress(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
 	 
 	 {
