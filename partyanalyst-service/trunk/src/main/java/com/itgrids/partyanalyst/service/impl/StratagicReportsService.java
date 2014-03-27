@@ -893,6 +893,23 @@ public class StratagicReportsService implements IStratagicReportsService{
 		for(PartyResultsVO pvo:electionList){
 			List<PartyResultsVO> partyResults=pvo.getPartyResultsVOList();
 			Collections.sort(partyResults);
+			
+			if(partyResults.size()>0){
+				if(!partyIds.contains(partyResults.get(0).getPartyId().longValue())){
+					pvo.setOtherRankedOne(true);
+				}
+				if(!partyIds.contains(partyResults.get(1).getPartyId().longValue())){
+					pvo.setOtherRankedTwo(true);
+				}
+				
+				partyResults.get(0).setRank(1l);
+				if(partyResults.size()>1){
+					partyResults.get(1).setRank(2l);
+				}
+			}
+			
+			
+			
 			Long marginVotes=0l;
 			for(int i=0;i<partyResults.size();i++){
 				if(partyResults.get(i).getPartyId().longValue()==872l){
@@ -900,30 +917,30 @@ public class StratagicReportsService implements IStratagicReportsService{
 						if(partyResults.size()>1){
 						if(!partyIds.contains(partyResults.get(1).getPartyId())){
 							marginVotes=partyResults.get(0).getVotesEarned()-pvo.getOtherVotes();
-							partyResults.get(0).setRank(1l);
+							//partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}else{
 							marginVotes=partyResults.get(0).getVotesEarned()-partyResults.get(1).getVotesEarned();
-							partyResults.get(0).setRank(1l);
+							//partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}
 						}else{
 							marginVotes=0l;
-							partyResults.get(0).setRank(1l);
+							//partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}
 					}else{
 						if(!partyIds.contains(partyResults.get(0).getPartyId())){
 							marginVotes=partyResults.get(i).getPartyId().longValue()-pvo.getOtherVotes();
-							partyResults.get(0).setRank(1l);
+							//partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}else{
 							marginVotes=partyResults.get(i).getVotesEarned()-partyResults.get(0).getVotesEarned();
-							partyResults.get(0).setRank(1l);
+							//partyResults.get(0).setRank(1l);
 							pvo.setMarginVotes(marginVotes);
 							pvo.setMarginPercent(calcPercentage(pvo.getValidVotes(), marginVotes));
 						}
