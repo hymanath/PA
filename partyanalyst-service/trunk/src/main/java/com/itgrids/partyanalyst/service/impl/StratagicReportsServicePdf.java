@@ -627,12 +627,19 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  stratagicReportsService.generatePDFForDensity(voterDensityWithPartyVO,document);
 	  voterDensityWithPartyVO=null;
 	 
-	 //page 9
+	/* //page 9
 	 document.newPage();
 	  buildSubHeading(document, "Our Candidate");
 	 
       Paragraph str =new Paragraph("We consolidate the inputs procured from the field operations to provide a snapshot of the strengths, 	 weakness of the contestants available in the constituency. This is a key ingredient in helping us to create  a  strategy  based  on  the  covering  up  our  weakness  and  fortify  our  strengths  &  opportunities  as  well 	 exploit the opponent’s weakness.",SMALLFONT);
       document.add(str);
+
+	 document.add(Chunk.NEWLINE);
+	 document.add(Chunk.NEWLINE);
+	 buildPdfForText(document);*/
+
+     //page-10
+
       document.add(Chunk.NEWLINE);
  	 document.add(Chunk.NEWLINE);
  	 
@@ -854,6 +861,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
  	  document.add(orderedList11);
  	 
       //page-10
+
        //delimitation
     document.newPage();
      buildSubHeading(document, " Step 2 – Goal");
@@ -2618,5 +2626,234 @@ public String roundTo2DigitsDoubleValue(Double number){
   			
   	}
 
+  public void buildPdfForText(Document document)  throws DocumentException, IOException
+	 {
+		 
+		 String candidate="Mr. Gobbula Tammaiah (TDP)";
+	
+		 
+		 
+	 buildSubHeading1(document, candidate);
+	 document.add(Chunk.NEWLINE);
+	 buildSubHeading(document, "Strength & Weakness");
+	 buildSubHeading2(document, "Strengths");
+	 
+	 
+	 Paragraph str2 =new Paragraph("     Having Good Following in Student Community as a Principal of a College.",SMALLFONT);
+	 //document.add(str2);
+	 Paragraph str3 =new Paragraph("     Good Relationship in his Settibalija Community which is the Major Community in Constituency.",SMALLFONT);
+	 //document.add(str3);
+	 Paragraph str4 =new Paragraph("     Good Financial background.",SMALLFONT);
+	// document.add(str4);
+	
+	 
+	 document.add(new Paragraph(" ")); 
+	
+              
+       List<String> columnNames1 = new ArrayList<String>();
+       columnNames1.add(new ListItem(str2).toString());
+       columnNames1.add(new ListItem(str3).toString());
+       columnNames1.add(new ListItem(str4).toString());
 
+       getPdfContent(document,columnNames1);   	 
+	 
+	  document.add(new Paragraph(" ")); 
+	 buildSubHeading2(document, "Weakness");
+	
+	 
+	 Paragraph str5 =new Paragraph("  Some of the Cadre are Silent.",SMALLFONT);
+	 //document.add(str5);
+	 Paragraph str6 =new Paragraph("  No Good Relationship in Cadre.",SMALLFONT);
+	 //document.add(str6);
+	 
+	 document.add(new Paragraph(" ")); 
+	 
+    List<String> columnNames2 = new ArrayList<String>();
+   columnNames2.add(new ListItem(str5).toString());
+   columnNames2.add(new ListItem(str6).toString());
+
+     getPdfContent(document,columnNames2); 
+	  document.add(Chunk.NEWLINE); 
+	 buildSubHeading2(document, "Opportunity");
+	 Paragraph str7 =new Paragraph("  With the Solid Support of Settibalija Community, can win Easily .",SMALLFONT);
+	 //document.add(str7);
+	 Paragraph str8 =new Paragraph("  By Maintaining Good Relationship with Neutral Cadre may help to win Easily .",SMALLFONT);
+	// document.add(str8);
+	 Paragraph str9 =new Paragraph("  Capture the PRP Voting with lost by the party in 2009 General Elections .",SMALLFONT);
+	 //document.add(str9);
+	 
+	 document.add(Chunk.NEWLINE);
+	 
+	  
+	  List<String> columnNames3 = new ArrayList<String>();
+      columnNames3.add(new ListItem(str7).toString());
+      columnNames3.add(new ListItem(str8).toString());
+      columnNames3.add(new ListItem(str9).toString());
+      getPdfContent(document,columnNames3); 
+	  document.add(Chunk.NEWLINE); 
+	 buildSubHeading2(document, "Threat");
+	 Paragraph str10 =new Paragraph("   All the Parties may field their candidates from Settibalija Community .",SMALLFONT);
+	 //document.add(str10);
+	 Paragraph str11 =new Paragraph("   Ex Minister Pitani Satyanarayana near relative may contest from Jai Samaikya Andhra Party .",SMALLFONT);
+	 //document.add(str11);
+	 Paragraph str12 =new Paragraph("   Kapu Community Votes May Split, if Pawan Kalyan Party Contests.",SMALLFONT);
+	 //document.add(str12); 
+	 Paragraph str13 =new Paragraph("   Polling % in Nelamuru and Ramannapalem Panchayaths was above 90% in 2009 Election, and Our Party is losing much so, Preventive measures have to be taken in Maintain the Election process .",SMALLFONT);
+	 //document.add(str13); 
+	 
+	 document.add(Chunk.NEWLINE);
+	 
+	  
+	  List<String> columnNames4 = new ArrayList<String>();
+     columnNames4.add(new ListItem(str10).toString());
+     columnNames4.add(new ListItem(str11).toString());
+     columnNames4.add(new ListItem(str12).toString());
+     columnNames4.add(new ListItem(str13).toString());
+     getPdfContent(document,columnNames4);
+	 buildSubHeading(document, "Viable Opponents");
+	 Paragraph str1 =new Paragraph("   After required amount of survey & opinions collected from distinguished politicians, journalists as well  as the local public we have created a list of candidates who can pose threat ", SMALLFONT);
+	 document.add(str1);
+	 document.add(Chunk.NEWLINE);
+	 
+	 
+	 String candidate1="Mr. Kaadiboina Srinivas (YSRCP)";
+     buildSubHeading1(document, candidate1);
+	 document.add(Chunk.NEWLINE);
+	 buildSubHeading(document, "Strength & Weakness");
+	 document.add(Chunk.NEWLINE);
+	 buildSubHeading2(document, "Strengths:");
+	 
+	 Paragraph str21 =new Paragraph("   Good Support from MALA Community.",SMALLFONT);
+	// document.add(str21);
+	 Paragraph str22 =new Paragraph("   Can invest huge amounts.",SMALLFONT);
+	// document.add(str22);
+	 Paragraph str23 =new Paragraph("   Good Support from Kudupudi Srinivas, MP Contesting Candidate.",SMALLFONT);
+	 //document.add(str23);
+	 Paragraph str33 =new Paragraph("   Settibalija Caste Voting percentage may gain.",SMALLFONT);
+	 //document.add(str33);
+	 
+	 document.add(Chunk.NEWLINE);
+	
+	  
+
+	  List<String> columnNames5 = new ArrayList<String>();
+      columnNames5.add(new ListItem(str21).toString());
+      columnNames5.add(new ListItem(str22).toString());
+      columnNames5.add(new ListItem(str23).toString());
+      columnNames5.add(new ListItem(str33).toString());
+      getPdfContent(document,columnNames5);
+	  document.add(Chunk.NEWLINE);
+	 buildSubHeading2(document, "Weakness:");
+	 Paragraph str24 =new Paragraph("   Low Strength of Mala Community.",SMALLFONT);
+	 //document.add(str24);
+	 Paragraph str25 =new Paragraph("   Can lose Support from the Cadre, in case not getting the Chance of their Choice.",SMALLFONT);
+	 //document.add(str25);
+	 document.add(Chunk.NEWLINE);
+	 
+	  List<String> columnNames6 = new ArrayList<String>();
+      columnNames6.add(new ListItem(str24).toString());
+      columnNames6.add(new ListItem(str25).toString());
+      getPdfContent(document,columnNames6);
+	  document.add(Chunk.NEWLINE);
+	 buildSubHeading2(document, "Opportunity");
+	 Paragraph str26 =new Paragraph("   Winning Chances are there, if Kapu and Settibalija Castes Work together .",SMALLFONT);
+	 //document.add(str26);
+	 
+	 document.add(Chunk.NEWLINE);
+	 
+	  
+	  
+	  List<String> columnNames7 = new ArrayList<String>();
+      columnNames7.add(new ListItem(str26).toString());
+      getPdfContent(document,columnNames7);
+	  document.add(Chunk.NEWLINE);
+	 buildSubHeading2(document, "Threat:");
+	 Paragraph str29 =new Paragraph("   Dissatisfied Aspirants non Cooperation .",SMALLFONT);
+	// document.add(str29);
+	 Paragraph str30 =new Paragraph("   Ex Minister Pitani Satyanarayana May also in the Fray.",SMALLFONT);
+	 //document.add(str30);
+	 document.add(Chunk.NEWLINE);
+	
+	  
+	  List<String> columnNames8 = new ArrayList<String>();
+      columnNames8.add(new ListItem(str29).toString());
+      columnNames8.add(new ListItem(str30).toString());
+      getPdfContent(document,columnNames8);
+	  document.add(Chunk.NEWLINE);
+	  
+	  String candidate2="Mr.Pitani Satyanarayana (JSAP)";
+	  buildSubHeading1(document, candidate2);
+	 
+	 document.add(Chunk.NEWLINE);
+	// buildSubHeading(document, "Strength & Weakness");
+	 buildSubHeading2(document, "Strengths");
+	 
+	 Paragraph str41 =new Paragraph("   He was Ex Minister.",SMALLFONT);
+	 //document.add(str21);
+	 Paragraph str42 =new Paragraph("   Good Hold on Constituency.",SMALLFONT);
+	// document.add(str22);
+	 
+	 document.add(Chunk.NEWLINE);
+	
+	  
+	  List<String> columnNames9 = new ArrayList<String>();
+      columnNames9.add(new ListItem(str41).toString());
+      columnNames9.add(new ListItem(str42).toString());
+      getPdfContent(document,columnNames9);
+	  document.add(Chunk.NEWLINE);
+	 buildSubHeading2(document, "Weakness");
+	 Paragraph str43 =new Paragraph("   OC Category May against his Candidature.",SMALLFONT);
+	 //document.add(str43);
+	 Paragraph str44 =new Paragraph("   Lost Confidence in Samaikya Andhra Movement.",SMALLFONT);
+	 //document.add(str44);
+	 
+	 document.add(Chunk.NEWLINE);
+	 
+	  List<String> columnNames10 = new ArrayList<String>();
+      columnNames10.add(new ListItem(str43).toString());
+      columnNames10.add(new ListItem(str44).toString());
+      getPdfContent(document,columnNames10);
+	  document.add(Chunk.NEWLINE);
+	  buildSubHeading2(document, "Opportunity");
+	  Paragraph str45 =new Paragraph("   May get support from NGO’s to Jai Samaikya Andhra Party .",SMALLFONT);
+	// document.add(str45);
+	 
+	 document.add(Chunk.NEWLINE);
+	
+	  
+	  List<String> columnNames11 = new ArrayList<String>();
+      columnNames11.add(new ListItem(str45).toString());
+
+	 
+     getPdfContent(document,columnNames11);
+	 document.add(Chunk.NEWLINE);
+	 buildSubHeading2(document, "Threat");
+	 Paragraph str46 =new Paragraph("   Less Support from Own Caste .",SMALLFONT);
+	 //document.add(str46);
+	 Paragraph str47 =new Paragraph("   Nil Support from OC’s.",SMALLFONT);
+	 //document.add(str47);
+	  
+	 document.add(Chunk.NEWLINE);
+	 
+	  List<String> columnNames12 = new ArrayList<String>();
+     columnNames12.add(new ListItem(str46).toString());
+     columnNames12.add(new ListItem(str47).toString());
+     getPdfContent(document,columnNames12);
+	 }
+	 public void getPdfContent(Document document,List<String> strengths)throws DocumentException,IOException
+	 {
+		
+		 com.itextpdf.text.ZapfDingbatsList orderedList = new com.itextpdf.text.ZapfDingbatsList(108, 10);
+	 
+		 for (String string : strengths) {
+			  orderedList.add(new ListItem(string));
+              
+		}
+		 document.add(orderedList);   
+	 
+	  
+		 
+	 }
+	
 }
+
