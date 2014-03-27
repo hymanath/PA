@@ -1064,11 +1064,9 @@ public class StrategyModelTargetingService implements
 		 List<Object> priorityList = new ArrayList<Object>();
 		   
 		    List<PanchayatVO> youngCastesList = null;
-		    List<PanchayatVO> agedCastesList = null;
 		    
 		    List<Object[]> totalVoters = new ArrayList<Object[]>();
 			List<Object[]> youngTotal = new ArrayList<Object[]>();
-			List<Object[]> agedTotal = new ArrayList<Object[]>();
 			Map<Long,String> panchayatNames = new HashMap<Long,String>();
 			
             Constituency constituency = constituencyDAO.get(constituencyId);
@@ -1121,20 +1119,8 @@ public class StrategyModelTargetingService implements
 				    
 				   //young voters calculation ends
 				  
-                   //aged voters calculation starts
-				   
-				   List<Object[]> agedVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, partialIds, 61l, 200l);
-				   List<Object[]> agedVotersPartialCount = boothPublicationVoterDAO.getTotalVotersCountForPartial(publicationId, constituencyId, partialIds, 61l, 200l);
-				   
-				   if(agedVotersCount != null && agedVotersCount.size() > 0){
-					   agedTotal.addAll(agedVotersCount);
-				   }
-				   if(agedVotersPartialCount != null && agedVotersPartialCount.size() > 0){
-					   agedTotal.addAll(agedVotersPartialCount);
-				   }
-				   
-				   //aged voters calculation ends
-			   }else{
+                 
+			    }else{
 				   List<Object[]> totalVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, null, null, null);
 
 				   if(totalVotersCount != null && totalVotersCount.size() > 0){
@@ -1149,16 +1135,7 @@ public class StrategyModelTargetingService implements
 				   }
 				  			    
 				   //young voters calculation ends
-				   
-                   //aged voters calculation starts
-				    List<Object[]> agedVotersCount = boothPublicationVoterDAO.getTotalVotersByAge(publicationId, constituencyId, null, 61l, 200l);   
-				    
-				    if(agedVotersCount != null && agedVotersCount.size() > 0){
-						 agedTotal.addAll(agedVotersCount);
-					 }
-				    
-				   //aged voters calculation ends
-			   
+				 
 			   }
 			   if(constituency.getAreaType().equalsIgnoreCase("RURAL-URBAN")){
 				   
@@ -1172,11 +1149,7 @@ public class StrategyModelTargetingService implements
 					   if(totalYoungVoterForMunic != null && totalYoungVoterForMunic.size() > 0){
 						   youngTotal.addAll(totalYoungVoterForMunic);
 					   }
-					   List<Object[]> totalAgeVoterForMunic = boothPublicationVoterDAO.getTotalVotersByAgeForMunicipality(publicationId,constituencyId, 61l, 200l);
-						  
-					   if(totalAgeVoterForMunic != null && totalAgeVoterForMunic.size() > 0){
-						  agedTotal.addAll(totalAgeVoterForMunic);
-					   }
+					
 			   }
 			   
 				 
@@ -1194,17 +1167,10 @@ public class StrategyModelTargetingService implements
 				 
 			     youngCastesList = getOrderOfPriorWithOutCaste(totalVotersMap,ageVotersMap,panchayatNames,"young",finalOrder,strategyVO.getYoungWt(),avgPerc);
 			     
-			     ageVotersMap = new HashMap<Long,Long>();
-			     for(Object[] count:agedTotal){
-					 ageVotersMap.put((Long)count[0],(Long)count[1]);
-				 }
-			     mergeTotalVoters(ageVotersMap, mergePanchayatMap);
-			     
-			     agedCastesList = getOrderOfPriorWithOutCaste(totalVotersMap,ageVotersMap,panchayatNames,"aged",finalOrder,strategyVO.getAgedWt(),avgPerc);
-			   
+			  
 		   
 		    priorityList.add(youngCastesList);
-		    priorityList.add(agedCastesList);
+		    priorityList.add(null);
 			return priorityList;
 		 
 	 }
