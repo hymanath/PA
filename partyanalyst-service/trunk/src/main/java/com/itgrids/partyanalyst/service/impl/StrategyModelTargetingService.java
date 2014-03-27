@@ -2686,12 +2686,12 @@ public class StrategyModelTargetingService implements
 			 LOG.info("Entered into panchayatwisePartyPerformanceTable() method in VoterModifiationPdfsGenerations Class");
 			 PdfPTable table = new PdfPTable(7);
 			 table.setWidthPercentage(100);
-			 Font calibriItelac = FontFactory.getFont("Calibri",9,Font.BOLDITALIC);
-			 Font calibriItelac2 = FontFactory.getFont("Calibri",7,Font.BOLDITALIC);
-			 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
-       	     Paragraph p =   new Paragraph(heading ,SMALLFONT);
+		    Font subHeading = FontFactory.getFont("Calibri",11,Font.BOLD);
+    	    subHeading.setColor(new BaseColor(69,109,142)); 
+    	     Paragraph p =   new Paragraph( heading,subHeading);
      		//p.setFont(subHeading);
      	     document.add(p );
+     	     document.add(new Paragraph(" "));
 			 PdfPCell cell ;
 			 int padding = 6;
 			 DecimalFormat df = new DecimalFormat("##.##");
