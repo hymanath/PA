@@ -406,7 +406,11 @@
 					for(var j=0;j<results[i].partyResultsVOList.length;j++){
 						if(results[i].partyResultsVOList[j].partyId==872){
 							if(results[i].partyResultsVOList[j].rank!=null){
-								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								if(results[i].partyResultsVOList[j].rank==1){
+									str+="<td style='background:#92D050;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								}else if(results[i].partyResultsVOList[j].rank==2){
+									str+="<td style='background:#8DB4E2;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								}
 							}else{
 								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
 							}
@@ -424,7 +428,11 @@
 					for(var j=0;j<results[i].partyResultsVOList.length;j++){
 						if(results[i].partyResultsVOList[j].partyId==362){
 							if(results[i].partyResultsVOList[j].rank!=null){
-								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								if(results[i].partyResultsVOList[j].rank==1){
+									str+="<td style='background:#92D050;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								}else if(results[i].partyResultsVOList[j].rank==2){
+									str+="<td style='background:#8DB4E2;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								}
 							}else{
 								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
 							}
@@ -439,7 +447,11 @@
 					for(var j=0;j<results[i].partyResultsVOList.length;j++){
 						if(results[i].partyResultsVOList[j].partyId==886){
 							if(results[i].partyResultsVOList[j].rank!=null){
-								str+="<td style='background:#CBE699;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								if(results[i].partyResultsVOList[j].rank==1){
+									str+="<td style='background:#92D050;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								}else if(results[i].partyResultsVOList[j].rank==2){
+									str+="<td style='background:#8DB4E2;'>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
+								}
 							}else{
 								str+="<td>"+results[i].partyResultsVOList[j].votesEarned+"</td><td>"+results[i].partyResultsVOList[j].diffPercent+"</td>";
 							}
@@ -452,7 +464,13 @@
 					}
 					}
 					if(results[i].otherVotes!=null){
-						str+="<td>"+results[i].otherVotes+"</td><td>"+results[i].otherVotesPercent+"</td>";
+						if(results[i].otherRankedOne){
+							str+="<td style='background:#92D050;'>"+results[i].otherVotes+"</td><td>"+results[i].otherVotesPercent+"</td>";
+						}else if(results[i].otherRankedTwo){
+							str+="<td style='background:#8DB4E2;'>"+results[i].otherVotes+"</td><td>"+results[i].otherVotesPercent+"</td>";
+						}else{
+							str+="<td>"+results[i].otherVotes+"</td><td>"+results[i].otherVotesPercent+"</td>";
+						}
 					}else{
 						str+="<td> -- </td><td> -- </td>";
 					}
