@@ -927,7 +927,7 @@ public class CasteReportService implements ICasteReportService{
 			
 			Row header = sheet.createRow(0);
 		    header.createCell(0).setCellValue("SNO");
-		    header.createCell(1).setCellValue("Address");
+		    header.createCell(1).setCellValue("Voter Address");
 			header.createCell(2).setCellValue("Voter Name");
 			header.createCell(3).setCellValue("Voter Id Card No");
 		    header.createCell(4).setCellValue("Gender");
