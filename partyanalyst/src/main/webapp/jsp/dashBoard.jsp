@@ -1563,11 +1563,11 @@ $(".changePwdLink").live("click",function(){
 		var cfmpwd = $.trim($("#confirmPwdId").val());
 		var errorDiv = $("#password_window_errorMsg");
 		errorDiv.html('');		
-		if(cpwd.length > 0 &&cpwd.length < 6)
+		/*if(cpwd.length > 0 &&cpwd.length < 6)
 		{
 		  errorDiv.html("<font color='red'>Current password must be minimum Of 6 characters.</font>");
 	      return;
-		}
+		}*/
 	if(npwd.length > 0 &&npwd.length < 6)
 	{
 	  errorDiv.html("<font color='red'>New password must be minimum Of 6 characters.</font>");
@@ -1585,9 +1585,13 @@ $(".changePwdLink").live("click",function(){
 	}
 	if(cpwd=='')
 	{
+		if($("#currentPwdId").val().search(" ") ==0){
+			errorDiv.html("<font color='red'>Current Password Should Not Contain Spaces</font>");
+			return;
+		}
      errorDiv.html("<font color='red'>Please enter current password.</font>");
 	 return;
-	}else if ( cpwd != null)
+	}if ( cpwd != null)
 			{ 				
 				/*var iChars = "#%&+\\";  
 				
@@ -1602,10 +1606,14 @@ $(".changePwdLink").live("click",function(){
 			
 			}
 	if(npwd=='')
-	{
-      errorDiv.html("<font color='red'>Please enter new password.</font>");
+	{	
+		if($("#newPwdId").val().search(" ") ==0){
+			errorDiv.html("<font color='red'>New Password Should Not Contain Spaces</font>");
+			return;
+		}
+	   errorDiv.html("<font color='red'>Please enter new password.</font>");
 	   return;
-	}else if ( npwd != null)
+	} if ( npwd != null)
 			{ 				
 				/*var iChars = "#%&+\\";  
 				
@@ -1621,6 +1629,10 @@ $(".changePwdLink").live("click",function(){
 			}
 	if(cfmpwd=='')
 	{
+	   if($("#confirmPwdId").val().search(" ") ==0){
+			errorDiv.html("<font color='red'>Confirm Password Should Not Contain Spaces</font>");
+			return;
+		}
 	   errorDiv.html("<font color='red'>Please enter confirm password.</font>");
 	   return;
 	}else if ( cfmpwd != null)
@@ -1643,6 +1655,7 @@ $(".changePwdLink").live("click",function(){
 	  //setTimeout("closewdw()",3000);
 	  return;
 	}
+	
 	if(cpwd!='')
 	{
 	  errorDiv.html("Sending Your Request.Please wait</font>");
