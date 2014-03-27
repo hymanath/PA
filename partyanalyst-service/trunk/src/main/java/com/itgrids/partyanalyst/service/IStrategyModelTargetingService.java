@@ -19,7 +19,7 @@ public interface IStrategyModelTargetingService {
 	
 	public void generateCasteWiseTable(Document document,Map<String,Float> casteNamePercMap);
 	
-	public void panchayatwisePartyPerformanceTable(Document document,List<PartyPositionVO> panchayatList,Long rank);
+	public void panchayatwisePartyPerformanceTable(Document document,List<PartyPositionVO> panchayatList,Long rank,String heading);
 	
 	public void panchayatWiseTargetVotesTable(Document document,List<PanchayatVO> totalCastesList);
 	 
@@ -35,11 +35,11 @@ public interface IStrategyModelTargetingService {
 	
 	public void buildChart(Document doc);
 	
-	public void buildChartForPartyPerformanceReort(Document doc,List<PartyPositionVO> list);
-	
 	public void buildPiChart(Document document,List<OrderOfPriorityVO> panchayatsClassification,PdfWriter writer);
 	
 	public void getImpFamilesList(Long panchayatId,Long publicationDateId,List<ImpFamilesVO> impfamilesList,String type,String reqFor);
 	
 	public void getTopPanchayats(StrategyVO strategyVO,Document document,PdfWriter writer);
+	
+	 public void buildChartForPartyPerformanceReort(Document document,List<PartyPositionVO> list,PdfWriter writer,String heading);
 }
