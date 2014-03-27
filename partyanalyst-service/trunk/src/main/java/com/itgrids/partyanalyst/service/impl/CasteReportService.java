@@ -21,6 +21,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -31,8 +33,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.ICasteDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -53,7 +53,6 @@ import com.itgrids.partyanalyst.dto.PartyTrendsVO;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.dto.VoterHouseInfoVO;
 import com.itgrids.partyanalyst.model.Booth;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -812,6 +811,7 @@ public class CasteReportService implements ICasteReportService{
 		  						vo.setElder(params[4]!= null?params[4].toString() : "");
 		  						vo.setRelationship(params[5]!= null?params[5].toString() : "");
 		  						vo.setCount(houseNosCountMap.get(boothId.toString()+":"+hno));
+		  						vo.setVoterIdCardNo(params[6]!= null?params[6].toString() : "");
 		  						resultList.add(vo);
 		  					}
 		  					
@@ -831,7 +831,7 @@ public class CasteReportService implements ICasteReportService{
 	 return resultStatus;
 	 }
 	 
-	/* public void createExcelForVoterAddressForCriticalPanchayats(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
+	 public void createExcelForVoterAddressForCriticalPanchayats(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
 	 {
 		 log.info("Enter into createExcelForVoterAddressForCriticalPanchayats Method with Constituency Id - "+constituencyId);
 		try{
@@ -921,34 +921,42 @@ public class CasteReportService implements ICasteReportService{
 				}
 			}
 			
-			*//** excel header **//*
+			//** excel header **//*
 		    HSSFWorkbook workbook = new HSSFWorkbook();
 			HSSFSheet sheet = workbook.createSheet(constituency.getName());
 			
 			Row header = sheet.createRow(0);
 		    header.createCell(0).setCellValue("SNO");
-			header.createCell(1).setCellValue("Voter Name");
-		    header.createCell(2).setCellValue("Gender");
-		    header.createCell(3).setCellValue("Relation");
-		    header.createCell(4).setCellValue("House No");
+		    header.createCell(1).setCellValue("Address");
+			header.createCell(2).setCellValue("Voter Name");
+			header.createCell(3).setCellValue("Voter Id Card No");
+		    header.createCell(4).setCellValue("Gender");
+		    header.createCell(5).setCellValue("Relative Name");
+		    header.createCell(6).setCellValue("Relationship");
+		    header.createCell(7).setCellValue("House No");
+		    header.createCell(8).setCellValue("Members Count");
 		    if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
 		    {
-			    header.createCell(5).setCellValue("Hamlet Name");
-			    header.createCell(6).setCellValue("Panchayat Name");
+			    header.createCell(9).setCellValue("Hamlet Name");
+			    header.createCell(10).setCellValue("Panchayat Name");
 			    if(areaType.equalsIgnoreCase(IConstants.RURAL))
-			    	header.createCell(7).setCellValue("Mandal Name");
+			    	header.createCell(11).setCellValue("Mandal Name");
 			    else if(areaType.equalsIgnoreCase(IConstants.RURALURBAN))
-			    	header.createCell(7).setCellValue("Mandal/Muncipality");
-			    header.createCell(8).setCellValue("District Name");
-			    header.createCell(9).setCellValue("Pincode");
+			    	header.createCell(11).setCellValue("Mandal/Muncipality");
+			    header.createCell(12).setCellValue("District Name");
+			    header.createCell(13).setCellValue("Pincode");
 		    }
 		    else
 		    {
-			    header.createCell(5).setCellValue("Muncipality");		
-			    header.createCell(6).setCellValue("District Name");
-			    header.createCell(7).setCellValue("Pincode");
+			    header.createCell(9).setCellValue("Muncipality");		
+			    header.createCell(10).setCellValue("District Name");
+			    header.createCell(11).setCellValue("Pincode");
 		    }
 		    
+		    HSSFCellStyle cellStyle = workbook.createCellStyle();
+		    cellStyle.setWrapText(true);
+		    HSSFCell cell = null;
+	    	   
 		    int rowNum = 0;
 		    for(VoterHouseInfoVO voter : resultList)
 		    {
@@ -973,21 +981,50 @@ public class CasteReportService implements ICasteReportService{
 	    	   
 	    	   relation = (relation + " " +voter.getElder()).trim();
 	    	   
+	    	   String addrStr = voter.getName()+",\n";
+	    	   addrStr = addrStr + relation +",\n";
+	    	   addrStr += "H.No: "+voter.getHouseNo() +",\n";
+	    	   
+	    	   if(hamletMap.get(voter.getVoterId()) != null)
+	    		   addrStr += hamletMap.get(voter.getVoterId())+",\n";
+	    	   
+	    	   if(panchayatMap.get(voter.getBoothId()) != null)
+	    		   addrStr += panchayatMap.get(voter.getBoothId())+",\n";
+	    	   
+	    	   if(tehsilMap.get(voter.getBoothId()) != null)
+	    		   addrStr += tehsilMap.get(voter.getBoothId()) + " (Mandal),\n";
+	    	   
+	    	   addrStr += districtName+" (District)";
+	    	   
+	    	   if(pincodesMap.get(voter.getBoothId()) != null)
+	    		   addrStr += " - "+pincodesMap.get(voter.getBoothId());
+	    	   
 	    	   rowNum++;
 		       Row dataRow = sheet.createRow(rowNum);
-	    	   dataRow.createCell(0).setCellValue(rowNum);
-	    	   dataRow.createCell(1).setCellValue(voter.getName());
-	    	   dataRow.createCell(2).setCellValue(voter.getGender());
-	    	   dataRow.createCell(3).setCellValue(relation);
-	    	   dataRow.createCell(4).setCellValue(voter.getHouseNo());
+	    	   
+		       dataRow.createCell(0).setCellValue(rowNum);
+	    	   
+		       cell = (HSSFCell) dataRow.createCell(1);
+	    	   cell.setCellType( HSSFCell.CELL_TYPE_STRING );
+	    	   cell.setCellStyle(cellStyle);
+	    	   cell.setCellValue(addrStr);
+	    	   
+	    	   //dataRow.createCell(1).setCellValue(addrStr);
+	    	   dataRow.createCell(2).setCellValue(voter.getName());
+	    	   dataRow.createCell(3).setCellValue(voter.getVoterIdCardNo());
+	    	   dataRow.createCell(4).setCellValue(voter.getGender());
+	    	   dataRow.createCell(5).setCellValue(voter.getElder());
+	    	   dataRow.createCell(6).setCellValue(voter.getRelationship());
+	    	   dataRow.createCell(7).setCellValue(voter.getHouseNo());
+	    	   dataRow.createCell(8).setCellValue(voter.getCount());
 	    	   
 	    	   if(areaType.equalsIgnoreCase(IConstants.RURAL) || areaType.equalsIgnoreCase(IConstants.RURALURBAN))
 			   {
-	    		   	dataRow.createCell(5).setCellValue(hamletMap.get(voter.getVoterId()));
-	    		   	dataRow.createCell(6).setCellValue(panchayatMap.get(voter.getBoothId()));
+	    		   	dataRow.createCell(9).setCellValue(hamletMap.get(voter.getVoterId()));
+	    		   	dataRow.createCell(10).setCellValue(panchayatMap.get(voter.getBoothId()));
 	    		   	
 	    		   	if(areaType.equalsIgnoreCase(IConstants.RURAL))
-	    		   		dataRow.createCell(7).setCellValue(tehsilMap.get(voter.getBoothId()));
+	    		   		dataRow.createCell(11).setCellValue(tehsilMap.get(voter.getBoothId()));
 	    		   	
 				    else if(areaType.equalsIgnoreCase(IConstants.RURALURBAN))
 				    {
@@ -1000,15 +1037,15 @@ public class CasteReportService implements ICasteReportService{
 							tehsil = localbody +" Muncipality";
 						else
 							tehsil = booth.getTehsil().getTehsilName();	
-				    	dataRow.createCell(7).setCellValue(tehsil);
+				    	dataRow.createCell(11).setCellValue(tehsil);
 				    }
-	    		   	dataRow.createCell(8).setCellValue(districtName);
+	    		   	dataRow.createCell(12).setCellValue(districtName);
 	    		   	
 	    		   	String pincode = "";
 	    		   	if(pincodesMap.get(voter.getBoothId()) != null)
 	    		   		pincode = pincodesMap.get(voter.getBoothId());
 	    		   	
-	    		   	dataRow.createCell(9).setCellValue(pincode);
+	    		   	dataRow.createCell(13).setCellValue(pincode);
 			    }
 			    else
 			    {
@@ -1029,14 +1066,14 @@ public class CasteReportService implements ICasteReportService{
 					{
 						tehsil = localbody +" Muncipality";
 					}
-			    	dataRow.createCell(5).setCellValue(tehsil);		
-			    	dataRow.createCell(6).setCellValue(districtName);
+			    	dataRow.createCell(9).setCellValue(tehsil);		
+			    	dataRow.createCell(10).setCellValue(districtName);
 			    	
 			    	String pincode = "";
 	    		   	if(pincodesMap.get(voter.getBoothId()) != null)
 	    		   		pincode = pincodesMap.get(voter.getBoothId());
 	    		   	
-	    		   	dataRow.createCell(7).setCellValue(pincode);
+	    		   	dataRow.createCell(11).setCellValue(pincode);
 			    }
 		    }
 		    
@@ -1058,9 +1095,9 @@ public class CasteReportService implements ICasteReportService{
 		{
 			log.error("Exception Occured in createExcelForVoterAddress()", e) ;
 		}
-	 }*/
+	 }
 	 
-	 public void createExcelForVoterAddressForCriticalPanchayats(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
+	 public void createExcelForVoterAddressForCriticalPanchayats2(List<VoterHouseInfoVO> resultList ,List<Long> voterIds,Long constituencyId,List<Long> boothIds,Long userId)
 	 {
 		 log.info("Enter into createExcelForVoterAddressForCriticalPanchayats Method with Constituency Id - "+constituencyId);
 		try{
