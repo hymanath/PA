@@ -62,8 +62,28 @@ public class PartyResultsVO implements Comparable<PartyResultsVO>,Serializable{
 	private Long nominationId;
 	private Long districtId;
 	
+	private boolean otherRankedOne;
+	private boolean otherRankedTwo;
+	
 	// getters and setters
 	
+	
+	
+	public boolean isOtherRankedOne() {
+		return otherRankedOne;
+	}
+
+	public void setOtherRankedOne(boolean otherRankedOne) {
+		this.otherRankedOne = otherRankedOne;
+	}
+
+	public boolean isOtherRankedTwo() {
+		return otherRankedTwo;
+	}
+
+	public void setOtherRankedTwo(boolean otherRankedTwo) {
+		this.otherRankedTwo = otherRankedTwo;
+	}
 	
 	public Long getVotesPolled() {
 		return votesPolled;
