@@ -1642,6 +1642,16 @@ IUserVoterDetailsDAO{
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Object[]> getCasteForVoterList(List<Long> voterIds,Long userId)
+	{
+		Query query = getSession().createSQLQuery("SELECT UVD.voter_id,C.caste_name FROM user_voter_details UVD,caste_state CS,caste C where UVD.caste_state_id = CS.caste_state_id and " +
+				" CS.caste_id = C.caste_id and UVD.user_id = :userId and UVD.voter_id in (:voterIds) and UVD.caste_state_id is NOT NULL ");
+		query.setParameterList("voterIds",voterIds);
+		query.setParameter("userId", userId);
+		return query.list();	
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Long> getWardsCountByLocalEleBodyId(Long localEleBodyId,Long constituencyId,Long userId,Long publicationDateId)
 	{
 		Query query = getSession().createQuery(" select count(distinct model.ward.constituencyId) from UserVoterDetails model, BoothPublicationVoter model2 " +
