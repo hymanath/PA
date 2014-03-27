@@ -2610,7 +2610,6 @@ public class StrategyModelTargetingService implements
 				Font calibriBold = FontFactory.getFont("Calibri",9,Font.BOLD);
 				
 			   LOG.info("Enterd into generateCasteWiseTable() method");
-			   	  document.newPage();
 				  Paragraph preface = new Paragraph();
 				  preface.setAlignment(Element.PTABLE);
 				  preface.add( new Paragraph("Key Factors",subHeading));
@@ -2673,7 +2672,7 @@ public class StrategyModelTargetingService implements
 						  preface1.add( new Paragraph(" ") );
 						  preface1.add( new Paragraph(" ") );
 						  preface1.add( new Paragraph(" ") );
-						  document.add(preface); 
+						  document.add(preface1); 
 				  }
 				  
 		} catch (Exception e) {
@@ -2886,8 +2885,8 @@ public class StrategyModelTargetingService implements
 					}
 				  	table.setHeaderRows(1);
 				  	table.setHorizontalAlignment(Element.ALIGN_LEFT);
-					 document.add(table);
-					 document.newPage();
+					document.add(table);
+					document.newPage();
 			} catch (Exception e) {
 				LOG.debug("Exception raised in panchayatWiseTargetVotesTable() method in VoterModifiationPdfsGenerations Class",e);
 			}
