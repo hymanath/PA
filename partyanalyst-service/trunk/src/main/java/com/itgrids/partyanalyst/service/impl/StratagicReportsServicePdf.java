@@ -2314,9 +2314,9 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 
 public void buildPdfForPollingStations(PartyPositionVO finalRes,Document document,PdfWriter writer,List<String> headings) throws DocumentException, IOException
 {
-	 BaseColor subHeading= new BaseColor(69,109,142);
+	 //BaseColor subHeading= new BaseColor(69,109,142);
 	// Font SMALLFONT = FontFactory.getFont("Calibri",9,Font.NORMAL);
-
+	
 	/*Paragraph p =   new Paragraph(heading ,subHeading);
 	//p.setFont(subHeading);
 	
@@ -2331,8 +2331,8 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	table1.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
 	
-	Paragraph p =   new Paragraph("Polling Stations – Increase Polling %" ,BIGFONT);
-	BIGFONT.setColor(subHeading);
+	Paragraph p =   new Paragraph("Polling Stations – Increase Polling %" ,TITLE);
+	TITLE.setColor(subHeading);
     document.add(p);
     
     Paragraph p1 =   new Paragraph("We need to try & improve the polling percentages where we are very strong."+
@@ -2348,9 +2348,10 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
   	document.add(table);
   	
   	document.newPage();
-	Paragraph p2 =   new Paragraph("Polling Stations – Reduce Polling %" ,BIGFONT);
-	BIGFONT.setColor(subHeading);
+	Paragraph p2 =   new Paragraph("Polling Stations – Reduce Polling %" ,TITLE);
+	TITLE.setColor(subHeading);
     document.add(p2);
+    document.add(new Paragraph(""));
     
     Paragraph p3 =   new Paragraph("We need to try & decrease the polling percentages where we are OK and there "+
     		"has been abnormal polling percentage. The below are the polling booths where we had highest polling"+
@@ -2371,12 +2372,8 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 
 public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<String> headings ,String input,String heading)
 {
-	
-	Font calibriBold = FontFactory.getFont("Calibri",9,Font.BOLD);
 	Font calibriBold1 = FontFactory.getFont("Calibri",9,Font.BOLDITALIC);
 	//Font SMALLFONT = FontFactory.getFont("Calibri",9,Font.NORMAL);
-	
-	
 	
 	for(String msg:headings)
 	{
