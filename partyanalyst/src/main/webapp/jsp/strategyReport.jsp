@@ -23,6 +23,12 @@
  input[type="search"]{
   padding: 4px 1px;
 }
+#errorMsgDiv {
+    color: #FF0000;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 10px;
+}
 </style>
 
 <script type="text/javascript" >
@@ -60,7 +66,7 @@ function getConstituencyList(){
 		<table>
 		 <tr>
 		    <td>Constituency Name :<font id="requiredValue" class="requiredFont">*</font> </td>
-		    <td><select id="constituencyId" onchange="getPublicationDate();"><option value="0"> Select   
+		    <td><select id="constituencyId" onchange="getPublicationDate();removeCastesPerc();"><option value="0"> Select   
 		    Constituency </option></select></td>			
 		</tr>
 		<tr>
@@ -78,7 +84,7 @@ function getConstituencyList(){
 	</tr>
 	<tr>
 		<td>To Year :<font id="requiredValue" class="requiredFont">*</font> </td>	
-		<td><select id="electionYear2" onchange="validateYear2(this.options[this.selectedIndex].value)"><option value="0"> Select Year </option></select></td>
+		<td><select id="electionYear2" ><option value="0"> Select Year </option></select></td>
 	</tr>
 	
     <tr>
@@ -86,7 +92,7 @@ function getConstituencyList(){
 		<td><input id="prpEffId" type="text"></td>
 	</tr>
 	<tr>
-        <td>Total Weightage :<font class="mandatory">*</font></td>
+        <td>Cast Weightage :<font class="mandatory">*</font></td>
 		<td><input id="totalId" type="text"></td>
 	</tr>
 	<tr>
@@ -102,15 +108,15 @@ function getConstituencyList(){
 		 <td><input id="prevTrendsId" type="text"></td>
     </tr>
     <tr>
-	     <td>Base :<font class="mandatory">*</font></td>
+	     <td>Excepted Polling Percentage :<font class="mandatory">*</font></td>
 		 <td><input id="base" type="text"></td>
     </tr>
     <tr>
-	     <td>Assured :<font class="mandatory">*</font></td>
+	     <td>Voter Base Percentage :<font class="mandatory">*</font></td>
 		 <td><input id="assured" type="text"></td>
     </tr>
     <tr>
-	     <td>Party Percentage :<font class="mandatory">*</font></td>
+	     <td>Targeted Votes Percentage :<font class="mandatory">*</font></td>
 		 <td><input id="partyPerc" type="text"></td>
     </tr>
     
@@ -215,10 +221,17 @@ function getPartyDetails(id){
 }
 
 function getCandidateCastes(constituencyIds){
-	
+	$("#errorMsgDiv").html("");
 	var constituencyId = $("#constituencyId").val();
 	var publicationId = $("#publicationId").val();
-
+	if(publicationId == 0){
+	 $("#errorMsgDiv").html("Please Select Publication");
+		 return;
+	return;
+	}
+	
+     $("#candidateCastesId option").remove();
+     $("#candidateCastesId").multiselect('refresh'); 
 	var jsObj ={
 		constituencyId : constituencyId,
 		publicationId : publicationId,
@@ -234,7 +247,7 @@ function getCandidateCastes(constituencyIds){
 			for(var i in result){			
                 $("#candidateCastesId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 			}
-			if(result != null && result.size() > 0){
+			if(result != null && result.length > 0){
 			  $("#candidateCastesId").append("<option value=0 disabled='disabled' selected='selected' >Others</option>");
 		    }
 			$("#candidateCastesId").multiselect('refresh'); 
@@ -484,7 +497,12 @@ function submitDetails()
 
 }
 
+function removeCastesPerc(){
+expCasteArray = new Array();
+$("#candidateCastesId option").remove();
+$("#candidateCastesId").multiselect('refresh'); 
 
+}
 
 </script>
 </body>
