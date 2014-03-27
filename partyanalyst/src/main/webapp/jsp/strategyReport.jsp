@@ -229,15 +229,46 @@ function getCandidateCastes(constituencyIds){
 		url : "getUserAssignedVoterCastesAction.action",
 		data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
-			for(var i in result){
-			
+		expCasteArray= new Array();
+		$("#candidateCastesId option").remove();
+			for(var i in result){			
                 $("#candidateCastesId").append("<option value="+result[i].id+">"+result[i].name+"</option>");
 			}
-			$("#candidateCastesId").append("<option value=0 disabled='disabled' selected='selected' >Others</option>");
-		    $("#candidateCastesId").multiselect('refresh'); 
+			if(result != null && result.size() > 0){
+			  $("#candidateCastesId").append("<option value=0 disabled='disabled' selected='selected' >Others</option>");
+		    }
+			$("#candidateCastesId").multiselect('refresh'); 
 	});
 }
+function validateYear1(yearId,yearValue){
+	$('#errorMsgDiv').html('');
+		$("#electionYearSelectEl1").css("border","1px solid lightBlue");
+	if(yearId == 0){
+		$("#electionYearSelectEl1").css("border","1px solid IndianRed");
+		$('#errorMsgDiv').html('Please Select Election Years');
+		return;
+	}
 
+var select = new Array();
+$('#electionYear1 option').each(function(){
+	if(!(yearValue == $(this).text()|| yearValue < $(this).text()))
+		{
+		 var obj = {
+			 id : $(this).val(),
+			 name : $(this).text()
+		}
+	select.push(obj);
+	}
+});
+
+	$('#electionYear2').children().remove();
+	$('<option>').val(0).text('Select Year').appendTo('#electionYear2');
+
+for(var i=0;i<select.length;i++)
+	{	 					$('<option>').val(''+select[i].id+'').text(''+select[i].name+'').appendTo('#electionYear2');
+	}
+
+}
 function getElectionYears(id){
 	
 		var constituencyId = $("#constituencyId").val();
