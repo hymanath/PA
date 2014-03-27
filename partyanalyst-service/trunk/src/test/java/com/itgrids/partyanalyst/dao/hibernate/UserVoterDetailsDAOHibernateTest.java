@@ -703,7 +703,7 @@ for (Object[] objects : list) {
 		
 	}*/
 	
-	public void testGetVoterHnoAndBoothsForPanchayatList()
+	/*public void testGetVoterHnoAndBoothsForPanchayatList()
 	{
 		List<Long> panchayatIdsList = new ArrayList<Long>();
 		panchayatIdsList.add(3284l);
@@ -717,6 +717,15 @@ for (Object[] objects : list) {
 			for(Object obj : params)
 				System.out.print("\t"+obj.toString());
 		}
+	}*/
+	
+	public void testGetCasteForVoterList()
+	{
+		List<Long> voterIds = new ArrayList<Long>(0);
+		voterIds.add(12456l);
+		voterIds.add(12457l);
+		List<Object[]> list = userVoterDetailsDAO.getCasteForVoterList(voterIds,1l);
+		System.out.println(list.size());
 	}
 	
 }
