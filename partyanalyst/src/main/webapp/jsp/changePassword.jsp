@@ -289,47 +289,33 @@ function validatefields()
 		str += '<%=currentPWD%><br>';
 		eFlag = false;
 	}
-	else if(currentPWDEle.length > 0 && currentPWDEle.length < 6)
+	/*else if(currentPWDEle.length > 0 && currentPWDEle.length < 6)
 	{
 		str += '<%=currentPWDLength%><br>';
 		eFlag = false;
-	}
+	}*/
 	
 	if(newPWDEle.length == 0)
 	{
 		str += '<%=newPWD%><br>';
 		eFlag = false;
 	}
-	else if(newPWDEle.length > 0 && newPWDEle.length < 6)
+	if(newPWDEle.length > 0 && newPWDEle.length < 6)
 	{
 		str += '<%=newPWDLength%><br>';
 		eFlag = false;
-	}else if ( newPWDEle != null)
-			{ 				
-				/*var iChars = "#%&+\\";  
-				
-		            for (var i = 0; i < newPWDEle.length; i++)
-                {      
-                    if (iChars.indexOf(newPWDEle.charAt(i)) != -1)
-                    {  
-					pwdCheck = true;
-					str +='<font color="red">Password should not contain special characters</font>';
-					eFlag = false;
-                    } 
-                }*/
-			
-			}
-	
+	} 
 	if(confirmPWDEle.length == 0)
 	{
 		str += '<%=confirmPWD%><br>';
 		eFlag = false;
 	}
-	else if(confirmPWDEle.length > 0 && confirmPWDEle.length < 6)
+	if(confirmPWDEle.length > 0 && confirmPWDEle.length < 6)
 	{
 		str += '<%=confirmPWDLength%><br>';
 		eFlag = false;
-	}else if ( newPWDEle != null)
+	}
+	if ( newPWDEle != null)
 			{ 
 				if(!pwdCheck){
 				/*var iChars = "#%&+\\";  
@@ -344,17 +330,17 @@ function validatefields()
                 }*/
 				}
 			}
-	else if(currentPWDEle == newPWDEle)
+	if(currentPWDEle == newPWDEle)
 	{
 		str += '<%=newAndConfirmPWDEqual%><br>';
 		eFlag = false;
 	}
-	else if(newPWDEle != confirmPWDEle)
+	if(newPWDEle != confirmPWDEle)
 	{
 		str +='<%=newAndConfirmPWDEqual%><br>';
 		eFlag = false;
 	}
-	else if(currentPWDEle.search(" ") ==0 || newPWDEle.search(" ") ==0 || confirmPWDEle.search(" ") ==0)
+	if(currentPWDEle.search(" ") ==0 || newPWDEle.search(" ") ==0 || confirmPWDEle.search(" ") ==0)
 	{
 		str +='<%=passwordSpaceEle%>';
 		eFlag = false;
