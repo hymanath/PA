@@ -1689,7 +1689,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulation()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulationPercent()), SMALLFONT));
   		
-  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferencePopulation()), SMALLFONT));
+  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferencePopulationPercent()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferencePopulationPercent()), SMALLFONT));
 
        //male
@@ -1703,7 +1703,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMalePopulation()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMalePercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMalePopulation()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMalePercent()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceMalePercent()), SMALLFONT));
 		
 		
@@ -1719,7 +1719,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceFemalePopulation()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceFemalePercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceFemalePopulation()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceFemalePercent()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceFemalePercent()), SMALLFONT));
 		
   	  		
@@ -1732,7 +1732,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	    table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceHouseHolds()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceHouseHoldsPercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceHouseHolds()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceHouseHoldsPercent()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceHouseHoldsPercent()), SMALLFONT));
   	   	
   	  		
@@ -1744,7 +1744,7 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	        table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceSC()), SMALLFONT));
   			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceSCPercent()), SMALLFONT));
   			
-  			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceSC()), SMALLFONT));
+  			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceSCPercent()), SMALLFONT));
   			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceSCPercent()), SMALLFONT));
   			
   			
@@ -1755,11 +1755,11 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
 	  	  		table.addCell(getColumnCell(buildNullsAsEmptyString(prev.getPopulationSTPercent()), SMALLFONT));
   			}
   	  		
-  	  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulation()), SMALLFONT));
-			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferencePopulationPercent()), SMALLFONT));
+  	  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceST()), SMALLFONT));
+			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceSTPercent()), SMALLFONT));
 			
-			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferencePopulation()), SMALLFONT));
-			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferencePopulation()), SMALLFONT));
+			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceSTPercent()), SMALLFONT));
+			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceSTPercent()), SMALLFONT));
 			
 			
   			
@@ -1773,8 +1773,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
 	  	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceWorkingPeople()), SMALLFONT));
 			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceWorkingPeoplePercent()), SMALLFONT));
 			
-			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceWorkingPeople()), SMALLFONT));
-			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceWorkingPeople()), SMALLFONT));
+			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceWorkingPeoplePercent()), SMALLFONT));
+			table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceWorkingPeoplePercent()), SMALLFONT));
 			
 			
   	  		table.addCell(getColumnCell("Male Working People", SMALLFONT));
@@ -1786,8 +1786,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  	table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMaleWorkingPeople()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMaleWorkingPeoplePercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMaleWorkingPeople()), SMALLFONT));
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceMaleWorkingPeople()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMaleWorkingPeoplePercent()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceMaleWorkingPeoplePercent()), SMALLFONT));
 		
 		
   	  		table.addCell(getColumnCell("Female Working People", SMALLFONT));
@@ -1799,8 +1799,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  	table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceFemaleWorkingPeople()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceFemaleWorkingPeoplePercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceFemaleWorkingPeople()), SMALLFONT));
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceFemaleWorkingPeople()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceFemaleWorkingPeoplePercent()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceFemaleWorkingPeoplePercent()), SMALLFONT));
 		
 		
   	  		table.addCell(getColumnCell("Non Working People", SMALLFONT));
@@ -1812,8 +1812,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceNonWorkingPeople()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceNonWorkingPeoplePercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceNonWorkingPeople()), SMALLFONT));
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceNonWorkingPeople()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceNonWorkingPeoplePercent()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceNonWorkingPeoplePercent()), SMALLFONT));
 		
 		
 		
@@ -1825,8 +1825,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLessthan6Population()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLessthan6Percent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceLessthan6Population()), SMALLFONT));
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceLessthan6Population()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceLessthan6Percent()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceLessthan6Percent()), SMALLFONT));
 		
 		
   	  		table.addCell(getColumnCell("Literates", SMALLFONT));
@@ -1838,8 +1838,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLiterates()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceLiteratesPercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceLiterates()), SMALLFONT));
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceLiterates()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceLiteratesPercent()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceLiteratesPercent()), SMALLFONT));
 		
 		
   	  		table.addCell(getColumnCell("Male Literates", SMALLFONT));
@@ -1851,8 +1851,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
     	  table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMaleLiterates()), SMALLFONT));
   		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceMaleLiteratesPercent()), SMALLFONT));
   		
-  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMaleLiterates()), SMALLFONT));
-  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceMaleLiterates()), SMALLFONT));
+  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceMaleLiteratesPercent()), SMALLFONT));
+  		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceMaleLiteratesPercent()), SMALLFONT));
   		
   	  		table.addCell(getColumnCell("Female Literates", SMALLFONT));
   	  	for (StrategicCensusVO prev : finalRes.getCensusDetailsList()) {
@@ -1862,8 +1862,8 @@ public void buildPdfForCensusData(StrategicCensusVO finalRes,Document document,P
   	  	table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceFemaleLiterates()), SMALLFONT));
 		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDifferenceFemaleLiteratesPercent()), SMALLFONT));
 		
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceFemaleLiterates()), SMALLFONT));
-		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceFemaleLiterates()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getDistrictDetails().getDifferenceFemaleLiteratesPercent()), SMALLFONT));
+		table.addCell(getColumnCell(buildNullsAsEmptyString(finalRes.getStateDetails().getDifferenceFemaleLiteratesPercent()), SMALLFONT));
 		
   		
   	
