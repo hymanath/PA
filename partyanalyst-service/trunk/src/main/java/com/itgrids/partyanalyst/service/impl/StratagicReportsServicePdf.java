@@ -34,6 +34,7 @@ import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -503,7 +504,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	   List<PartyElectionTrendsReportVO> resForPrevTrendsForPaliament=des1.deSerialize( maps.get(PdfPages.prevPar) );	
 	   String parliamentName=name+" Segment";
 	   String heading2="Parliament Results In "+parliamentName;
-	   buildPdfForPrevTrends( maps.get(PdfPages.prevPar), resForPrevTrendsForPaliament, document, writer, heading);
+	   buildPdfForPrevTrends( maps.get(PdfPages.prevPar), resForPrevTrendsForPaliament, document, writer, heading2);
 	   resForPrevTrendsForPaliament=null;
 	   des1=null;
 	   
@@ -604,7 +605,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	     columnNames.add("Female Voters ");
 	     columnNames.add("Caste Percentage ");
 	     
-	 buildPdfForCasteVoters(cvo, document, writer, "", columnNames);
+	 buildPdfForCasteVoters(cvo, document, writer, "Voters by Caste", columnNames);
 	
 	 
 	 }
@@ -684,7 +685,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		// TODO: handle exception
 	}
 	    
-      DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
+    DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
 	  List<PartyPositionVO> previousTrends =dpreviousTrends.deSerialize( maps.get(PdfPages.previousTrends) );
 	  strategyModelTargetingService.generatePdfForMatrixReport(document,previousTrends);//4
 	  previousTrends=null;
@@ -701,7 +702,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  buildPdfForFirstTimeVotersAndVotersByAgeGroup(vinfo, document, writer, "");
 	  vinfo=null;
 	  
-      DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
+     DeSerialize<List<PanchayatVO>>  dyoungCastesList=new DeSerialize<List<PanchayatVO>>();
 	  List<PanchayatVO> youngCastesList =dyoungCastesList.deSerialize( maps.get(PdfPages.youngCastes) );
 	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
 	  youngCastesList=null;
@@ -721,12 +722,12 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  
 	  vinfo=null;
 		 
-      DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
+     DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
 	  List<PanchayatVO> agedCastesList =dagedCastesList.deSerialize( maps.get(PdfPages.agedCastes) );
 	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
 	  agedCastesList=null;
 
-      DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
+     DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
 	  List<PartyEffectVO> otherPartyEffect =dotherPartyEffect.deSerialize( maps.get(PdfPages.otherPartyEffect) );
 	  strategyModelTargetingService.prpEffectTableTable(document,otherPartyEffect);//7
 	  otherPartyEffect=null;
@@ -736,20 +737,20 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  strategyModelTargetingService.generateImpFamilesTable(document,impfamilesList,null);//9
 	  impfamilesList=null;
 
-      DeSerialize<List<OrderOfPriorityVO>>  dpanchayatsClassification=new DeSerialize<List<OrderOfPriorityVO>>();
+     DeSerialize<List<OrderOfPriorityVO>>  dpanchayatsClassification=new DeSerialize<List<OrderOfPriorityVO>>();
 	  List<OrderOfPriorityVO> panchayatsClassification =dpanchayatsClassification.deSerialize( maps.get(PdfPages.panchayatsClassification) );
 	  strategyModelTargetingService.buildPiChart(document,panchayatsClassification,writer);//8
 	  strategyModelTargetingService.buildPanchayatsClassificationBlock(document,panchayatsClassification);//8
 	  panchayatsClassification=null;
 
-   
+  
 
-      DeSerialize<List<OrderOfPriorityVO>>  dfinalOrderOfOriority=new DeSerialize<List<OrderOfPriorityVO>>();
+     DeSerialize<List<OrderOfPriorityVO>>  dfinalOrderOfOriority=new DeSerialize<List<OrderOfPriorityVO>>();
 	  List<OrderOfPriorityVO> finalOrderOfOriority =dfinalOrderOfOriority.deSerialize( maps.get(PdfPages.finalOrderOfOriority) );
 	  strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,15);//10
 	  finalOrderOfOriority=null;	  
 	  
-    }catch (Exception e) {
+   }catch (Exception e) {
 	e.printStackTrace();
 	}
 	//targetting key factors ends
@@ -826,28 +827,36 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 
 
 
-	private void buildPreviousTrendsHeadings(Document document) throws DocumentException {
+	public void buildPreviousTrendsHeadings(Document document) throws DocumentException {
 	
+		/*
+		          public static String[][] FONTS = {
+		        
+		        {"resources/fonts/cmr10.afm", BaseFont.WINANSI},
+		BaseFont.createFont(FONTS[0][0], FONTS[0][1], BaseFont.EMBEDDED);
+	System.out.println(FontFactory.contains("CALIBRI.TTF"));
+	System.out.println(FontFactory.contains("Calibri"));*/
 		 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 13,Font.BOLD);
-		 Font topHeading = new Font(Font.FontFamily.TIMES_ROMAN, 20,Font.BOLD);
+		 Font topHeading = FontFactory.getFont("CALIBRI", 12, Font.BOLD);
 		 topHeading.setColor( new BaseColor(111,165,235));//69,109,142,
-		 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 		
-		 Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
-		  subHeading.setColor(new BaseColor(69,109,142)); 
-		
+		 Font subHeading1 = TITLE;
+		 TITLE.setColor(subHeading);
+		 
 		Paragraph pageParagraph =   new Paragraph( "Step 1 – The Big Picture ",topHeading);
+		document.add(pageParagraph);
+		
 		document.add( new Paragraph(" ") );
 	
-		Paragraph p =   new Paragraph( "Previous Results “A Snapshot” ",subHeading);
+		Paragraph p =   new Paragraph( "Previous Results “A Snapshot” ",TITLE);		
+	
+				Paragraph p1 =   new Paragraph( "How did we fare in the Past?",SMALLFONT);
 		
-		document.add( new Paragraph(" ") );
-		Paragraph p1 =   new Paragraph( "How did we fare in the Past?",SMALLFONT);
-		
-		document.add(pageParagraph);
 		document.add(p);
-		document.add(p1);
 		
+		document.add(p1);
+		TITLE.setColor(BaseColor.BLACK);
+
 	}
 	
 	public void buildPdfForPrevTrends(String name,List<PartyElectionTrendsReportVO> finalRes,Document document,PdfWriter writer,String heading) throws DocumentException, IOException
@@ -1765,9 +1774,7 @@ public void buildPdfForCasteVoters(CasteStratagicReportVO finalRes,Document docu
 	}
 
 	 
-		 
 		
-			
 		 
 	  	for (CasteStratagicReportVO prev : finalRes.getStrategicVOList()) {
 	  		 if(prev.getCaste().equalsIgnoreCase(""))
@@ -1941,23 +1948,23 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 	document.add( new Paragraph(" ") );
 	
 	
-	    PdfPTable table = new PdfPTable(7);
-	    table.setWidthPercentage(100);
-	  	
+	PdfPTable table = new PdfPTable(7);
+	 table.setWidthPercentage(100);
 	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
-	    c1 = new PdfPCell(new Phrase("Age Range",BIGFONT));
+	  	c1 = new PdfPCell(new Phrase("Age Range",BIGFONT));
 	  	c1.setRowspan(2);
 	  	
 		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	 	c1.setBackgroundColor(BaseColor.YELLOW);
-	  	table.addCell(c1);    
-	 	
-		c1 = new PdfPCell(new Phrase("Total Voters",BIGFONT));
-		c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	c1.setBackgroundColor(BaseColor.YELLOW);
-		c1.setColspan(2);
 	  	table.addCell(c1);    	
+	 	
+		 c1 = new PdfPCell(new Phrase("Total Voters",BIGFONT));
+		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+	 	 c1.setBackgroundColor(BaseColor.YELLOW);
+		 c1.setColspan(2);
+	  	 table.addCell(c1);    	
+	 	
 	 	
 	 	
 	 	 c1 = new PdfPCell(new Phrase("Male",BIGFONT));
@@ -1972,34 +1979,7 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		 table.addCell(c1);
 		 
-		 	 
-		/* c1 = new PdfPCell(new Phrase("Total Voters",BIGFONT));
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
-		 
-		 c1 = new PdfPCell(new Phrase("Total Percentage",BIGFONT));
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
-		 
-		 c1 = new PdfPCell(new Phrase("Voters",BIGFONT));
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
-		 
-		 c1 = new PdfPCell(new Phrase("Voters",BIGFONT));
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
-		 
-		 c1 = new PdfPCell(new Phrase("Percentage",BIGFONT));
-	 	 c1.setBackgroundColor(BaseColor.YELLOW);
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-		 table.addCell(c1);
-		 */
-		 
-		table.addCell(getHeaderCell("Total Voters", BIGFONT));
+		 table.addCell(getHeaderCell("Total Voters", BIGFONT));
 		 table.addCell(getHeaderCell("Total Percentage", BIGFONT));
 		 
 		 table.addCell(getHeaderCell(" Voters", BIGFONT));
@@ -2103,7 +2083,7 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	
 	document.add( new Paragraph(" ") );
 	
-	float[] widths = new float[] {1.2f, 1.2f ,1.2f,1.2f,1.2f, 1.5f };
+	float[] widths = new float[] {1.2f, 1.4f ,1.2f,1.2f,1.2f, 1.5f };
 	table.setWidths(widths);
   	document.add(table);
   	
@@ -2185,7 +2165,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 		 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocalbodyName()),SMALLFONT));
 		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
-	 	 table.addCell(c1);
+	 	table.addCell(c1);
 		 
 	 	 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(roundTo2DigitsDoubleValue(prev.getPollingPercentage())),SMALLFONT));
@@ -2291,7 +2271,7 @@ public String roundTo2DigitsDoubleValue(Double number){
 		return prevResults;
 		//stratagicReportsService.generatePdfForLocalElectionResults(prevResults);
   }
-  
+
   public void buildPdfForFirstTimeVotersAndVotersByAgeGroupForConstituency(VoterStratagicReportVo finalRes,Document document,PdfWriter writer,String heading) throws DocumentException, IOException
   {
 
