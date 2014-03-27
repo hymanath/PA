@@ -72,7 +72,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	private static final Logger LOG = Logger.getLogger(StratagicReportsServicePdf.class);
 	// Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
-	 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
+	 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 12,Font.BOLD);
 	 Font  TITLE = FontFactory.getFont("Calibri",9,Font.BOLD);
 	  BaseColor bcolor=BaseColor.YELLOW;
 	  BaseColor subHeading= new BaseColor(69,109,142);
@@ -2048,15 +2048,8 @@ public void buildPdfForFirstTimeVotersAndVotersByAgeGroup(VoterStratagicReportVo
 
 public void buildPdfForPollingStations(PartyPositionVO finalRes,Document document,PdfWriter writer,List<String> headings) throws DocumentException, IOException
 {
-
-	 Font BIGFONT1 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-	 Font BIGFONT = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.BOLD);
-	 Font SMALLFONT = new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
-	
-	 Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
-	  subHeading.setColor(new BaseColor(69,109,142)); 
-	  
-	
+	 BaseColor subHeading= new BaseColor(69,109,142);
+	// Font SMALLFONT = FontFactory.getFont("Calibri",9,Font.NORMAL);
 	
 	/*Paragraph p =   new Paragraph(heading ,subHeading);
 	//p.setFont(subHeading);
@@ -2067,36 +2060,35 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 	document.add( new Paragraph(" ") );
 
 	PdfPTable table = new PdfPTable(6);
+	table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	PdfPTable table1 = new PdfPTable(6);
+	table1.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
 	
 	
-	Paragraph p =   new Paragraph("Polling Stations – Increase Polling %" ,subHeading);
-    p.setFont(subHeading);
+	Paragraph p =   new Paragraph("Polling Stations – Increase Polling %" ,BIGFONT);
+	BIGFONT.setColor(subHeading);
     document.add(p);
     
     Paragraph p1 =   new Paragraph("We need to try & improve the polling percentages where we are very strong."+
-    		"The following are the polling booths where we are strong and had low polling percentages." ,BIGFONT);
-    p1.setFont(BIGFONT);
+    		"The following are the polling booths where we are strong and had low polling percentages." ,SMALLFONT);
     document.add(p1);
     
 	pollingStationHelper(finalRes, table, headings,"Strong","Polling Stations – Increase Polling %");
 	
 	document.add( new Paragraph(" ") );
 	
-	float[] widths = new float[] {1.2f, 1.4f ,1.2f,1.2f,1.2f, 1.5f };
+	float[] widths = new float[] {1.0f,2.8f ,1.2f,1.2f,1.2f, 1.5f };
 	table.setWidths(widths);
   	document.add(table);
   	
-  	document.add( new Paragraph(" ") );
-  	
-	Paragraph p2 =   new Paragraph("Polling Stations – Reduce Polling %" ,subHeading);
-    p2.setFont(subHeading);
+  	document.newPage();
+	Paragraph p2 =   new Paragraph("Polling Stations – Reduce Polling %" ,BIGFONT);
+	BIGFONT.setColor(subHeading);
     document.add(p2);
     
     Paragraph p3 =   new Paragraph("We need to try & decrease the polling percentages where we are OK and there "+
     		"has been abnormal polling percentage. The below are the polling booths where we had highest polling"+
-    		"percentages and our party’s performances was low.",BIGFONT);
-    p3.setFont(BIGFONT);
+    		"percentages and our party’s performances was low.",SMALLFONT);
     document.add(p3);
     
 	pollingStationHelper(finalRes, table1, headings,"Weak","Polling Stations – Reduce Polling %");
@@ -2113,13 +2105,14 @@ public void buildPdfForPollingStations(PartyPositionVO finalRes,Document documen
 
 public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<String> headings ,String input,String heading)
 {
-	
-	
-	
+		
+	Font calibriBold = FontFactory.getFont("Calibri",9,Font.BOLD);
+	Font calibriBold1 = FontFactory.getFont("Calibri",9,Font.BOLDITALIC);
+	//Font SMALLFONT = FontFactory.getFont("Calibri",9,Font.NORMAL);
 	
 	for(String msg:headings)
 	{
-		 table.addCell(getHeaderCell(msg, BIGFONT));
+		 table.addCell(getHeaderCell(msg, calibriBold1));
 	}
 
 	 List<PartyPositionVO> objs=null;
@@ -2141,7 +2134,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 	  		if(input.equalsIgnoreCase("Strong"))
 			{
 				
-	  		    c1 = new PdfPCell(new Phrase("Improve (Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",BIGFONT));
+	  		    c1 = new PdfPCell(new Phrase("Improve                                                                (Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",calibriBold1));
 	  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 	  			c1.setBackgroundColor(BaseColor.YELLOW);
 	  			table.addCell(c1);
@@ -2149,7 +2142,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 				
 			{ 
 				
-				   c1 = new PdfPCell(new Phrase("To Decrease(((Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",BIGFONT));
+				   c1 = new PdfPCell(new Phrase("To Decrease     (Avg Poll% "+roundTo2DigitsDoubleValue(prev.getPollingPercentage())+")",calibriBold1));
 		  			c1.setHorizontalAlignment(Element.ALIGN_CENTER);
 		  			c1.setBackgroundColor(BaseColor.YELLOW);
 		  			table.addCell(c1);
@@ -2164,7 +2157,7 @@ public void pollingStationHelper(PartyPositionVO finalRes,PdfPTable table ,List<
 		
 		 
 		 c1 = new PdfPCell(new Phrase(buildNullsAsEmptyString(prev.getLocalbodyName()),SMALLFONT));
-		 c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+		 c1.setHorizontalAlignment(Element.ALIGN_LEFT);
 	 	table.addCell(c1);
 		 
 	 	 
