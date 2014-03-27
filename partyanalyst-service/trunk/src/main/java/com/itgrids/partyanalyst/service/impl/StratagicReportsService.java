@@ -5567,7 +5567,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			PdfPCell column=null;
 			
-			column = new PdfPCell(new Phrase("Mandal",BIGFONT));
+			column = new PdfPCell(new Phrase("             Mandal",BIGFONT));
 			column.setRowspan(2);
 			column.setBackgroundColor(bcolor);
 			column.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -5606,6 +5606,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 			
 			column = new PdfPCell(new Phrase("Added",BIGFONT));
 			column.setBackgroundColor(bcolor);
+			column.setHorizontalAlignment(Element.ALIGN_CENTER);
 			table.addCell(column);
 			column = new PdfPCell(new Phrase("Deleted",BIGFONT));
 			column.setBackgroundColor(bcolor);
