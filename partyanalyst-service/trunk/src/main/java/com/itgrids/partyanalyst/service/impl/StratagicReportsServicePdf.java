@@ -883,38 +883,36 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      //page-21
   //targetting key factors starts
     try{
-    DeSerialize<Map<String,Float>>  dcasteNamePercMap=new DeSerialize<Map<String,Float>>();
-	  Map<String,Float> casteNamePercMap =dcasteNamePercMap.deSerialize( maps.get(PdfPages.selectedCastes) );
-	  strategyModelTargetingService.generateCasteWiseTable(document,casteNamePercMap);//1
-	  casteNamePercMap=null;
-
-    DeSerialize<List<PanchayatVO>>  dtotalCastesList=new DeSerialize<List<PanchayatVO>>();
-	  List<PanchayatVO> totalCastesList =dtotalCastesList.deSerialize( maps.get(PdfPages.totalCastesOrder) );
-	  strategyModelTargetingService.panchayatWiseTargetVotesTable(document,totalCastesList);//2
-	  totalCastesList=null;
-	try {
-		DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
+    	document.newPage();
+    	Paragraph preface = new Paragraph();
+	    preface.setAlignment(Element.PTABLE);
+    	Font topHeading = new Font(Font.FontFamily.TIMES_ROMAN, 15,Font.BOLD);
+		topHeading.setColor( new BaseColor(111,165,235));//69,109,142,
+		preface.add( new Paragraph("Step 3 – Targeting",topHeading));
+		preface.add( new Paragraph(" ") );
+	    document.add(preface);
+        DeSerialize<Map<String,Float>>  dcasteNamePercMap=new DeSerialize<Map<String,Float>>();
+	    Map<String,Float> casteNamePercMap =dcasteNamePercMap.deSerialize( maps.get(PdfPages.selectedCastes) );
+	    if(casteNamePercMap != null && casteNamePercMap.size() > 0){
 		  
-		  String Eleheading="Election Results Comparision b/w 2009 Assembly & 2013  Panchayat";
-		  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance) ); 
-		  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l,Eleheading);//3
-		  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l,Eleheading);//3
-		  String EleChartheading="Election Results Comparision Chart b/w 2009 Assembly & 2013  Panchayat";
-		  strategyModelTargetingService.buildChartForPartyPerformanceReort(document,partyPerformance,writer,EleChartheading);//3
-		  partyPerformance=null;
-	
-	} catch (Exception e) {
-		// TODO: handle exception
-	}
-	    
-    DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
+		  strategyModelTargetingService.generateCasteWiseTable(document,casteNamePercMap);//1
+		  casteNamePercMap=null;
+	 
+	  	  DeSerialize<List<PanchayatVO>>  dtotalCastesList=new DeSerialize<List<PanchayatVO>>();
+	      List<PanchayatVO> totalCastesList =dtotalCastesList.deSerialize( maps.get(PdfPages.totalCastesOrder) );
+	      strategyModelTargetingService.panchayatWiseTargetVotesTable(document,totalCastesList);//2
+	      totalCastesList=null;
+	   }
+	  
+
+      DeSerialize<List<PartyPositionVO>>  dpreviousTrends=new DeSerialize<List<PartyPositionVO>>();
 	  List<PartyPositionVO> previousTrends =dpreviousTrends.deSerialize( maps.get(PdfPages.previousTrends) );
 	  strategyModelTargetingService.generatePdfForMatrixReport(document,previousTrends);//4
 	  previousTrends=null;
 
 	  buildSubHeading(document, "First Time (18-22) Voters");
 	  Font calibriNormal = FontFactory.getFont("Calibri",9,Font.NORMAL);
-	  Paragraph preface = new Paragraph();
+	   preface = new Paragraph();
 	  preface.setAlignment(Element.PTABLE);
 	  preface.add( new Paragraph("Constituency Wise :",calibriNormal));
 	  //preface.add( new Paragraph(" ") );
@@ -929,26 +927,28 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,youngCastesList,"18-22");//5
 	  youngCastesList=null;
 	  
-	  buildSubHeading(document, "Aged (Above 60) Voters");
-	  Paragraph preface1 = new Paragraph();
-	  preface1.setAlignment(Element.PTABLE);
-	  preface1.add( new Paragraph("Constituency Wise :",calibriNormal));
-	  //preface1.add( new Paragraph(" ") );
-	  document.add(preface1);
-	  vinfo =dvinfo.deSerialize( maps.get(PdfPages.votersAgeGroup) );
-	  if(vinfo.getVoterStategicReportVOList() != null && vinfo.getVoterStategicReportVOList().size() > 0)
-	  {
-		  int size = vinfo.getVoterStategicReportVOList().size() ;
-		  buildPdfForFirstTimeVotersAndVotersByAgeGroupForConstituency(vinfo.getVoterStategicReportVOList().get(size-1), document, writer, "");
-	  }
-	  
-	  vinfo=null;
-		 
-     DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
+	  DeSerialize<List<PanchayatVO>>  dagedCastesList=new DeSerialize<List<PanchayatVO>>();
 	  List<PanchayatVO> agedCastesList =dagedCastesList.deSerialize( maps.get(PdfPages.agedCastes) );
-	  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
-	  agedCastesList=null;
-
+	   if(agedCastesList != null && agedCastesList.size() > 0){
+		  buildSubHeading(document, "Aged (Above 60) Voters");
+		  Paragraph preface1 = new Paragraph();
+		  preface1.setAlignment(Element.PTABLE);
+		  preface1.add( new Paragraph("Constituency Wise :",calibriNormal));
+		  //preface1.add( new Paragraph(" ") );
+		  document.add(preface1);
+		  vinfo =dvinfo.deSerialize( maps.get(PdfPages.votersAgeGroup) );
+		  if(vinfo.getVoterStategicReportVOList() != null && vinfo.getVoterStategicReportVOList().size() > 0)
+		  {
+			  int size = vinfo.getVoterStategicReportVOList().size() ;
+			  buildPdfForFirstTimeVotersAndVotersByAgeGroupForConstituency(vinfo.getVoterStategicReportVOList().get(size-1), document, writer, "");
+		  }
+		  
+		  vinfo=null;
+			 
+	     
+		  strategyModelTargetingService.panchayatWiseTargetYoungVotesTable(document,agedCastesList,"Above 60");//6
+		  agedCastesList=null;
+	  }
      DeSerialize<List<PartyEffectVO>>  dotherPartyEffect=new DeSerialize<List<PartyEffectVO>>();
 	  List<PartyEffectVO> otherPartyEffect =dotherPartyEffect.deSerialize( maps.get(PdfPages.otherPartyEffect) );
 	  strategyModelTargetingService.prpEffectTableTable(document,otherPartyEffect);//7
@@ -972,6 +972,20 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	  strategyModelTargetingService.orderOFPriorityTable(document,finalOrderOfOriority,15);//10
 	  finalOrderOfOriority=null;	  
 	  
+	  try {
+			DeSerialize<List<PartyPositionVO>>  dpartyPerformance=new DeSerialize<List<PartyPositionVO>>();
+			  
+			  String Eleheading="Election Results Comparision b/w 2009 Assembly & 2013  Panchayat";
+			  List<PartyPositionVO> partyPerformance =dpartyPerformance.deSerialize( maps.get(PdfPages.partyPerformance) ); 
+			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,1l,Eleheading);//3
+			  strategyModelTargetingService.panchayatwisePartyPerformanceTable(document,partyPerformance,2l,Eleheading);//3
+			  String EleChartheading="Election Results Comparision Chart b/w 2009 Assembly & 2013  Panchayat";
+			  strategyModelTargetingService.buildChartForPartyPerformanceReort(document,partyPerformance,writer,EleChartheading);//3
+			  partyPerformance=null;
+		
+		} catch (Exception e) {
+			// TODO: handle exception
+		} 
    }catch (Exception e) {
 	e.printStackTrace();
 	}
