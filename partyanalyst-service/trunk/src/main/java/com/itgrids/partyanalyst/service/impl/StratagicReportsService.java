@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
@@ -36,7 +35,6 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IBoothConstituencyElectionDAO;
@@ -3809,7 +3807,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 					  if(temp1.getRank()!=null){
 						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
 						  column.setHorizontalAlignment(Element.ALIGN_CENTER);
-						  column.setBackgroundColor(winner);
+						  if(temp1.getRank()==1l){
+							  column.setBackgroundColor(winner);
+						  }else if(temp1.getRank()==2l){
+							  column.setBackgroundColor(runner);
+						  }
 						  table.addCell(column);
 						  
 						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
@@ -3855,7 +3857,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
 						  column.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-						  column.setBackgroundColor(winner);
+						  if(temp1.getRank()==1l){
+							  column.setBackgroundColor(winner);
+						  }else if(temp1.getRank()==2l){
+							  column.setBackgroundColor(runner);
+						  }
 						  table.addCell(column);
 						  
 						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
@@ -3898,7 +3904,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 						  column = new PdfPCell(new Phrase(temp1.getVotesEarned().toString(),TBCELLSM_WIN));
 						  column.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-						  column.setBackgroundColor(winner);
+						  if(temp1.getRank()==1l){
+							  column.setBackgroundColor(winner);
+						  }else if(temp1.getRank()==2l){
+							  column.setBackgroundColor(runner);
+						  }
 						  table.addCell(column);
 						  
 						  column = new PdfPCell(new Phrase(temp1.getDiffPercent(),TBCELLSM));
@@ -3936,7 +3946,11 @@ public class StratagicReportsService implements IStratagicReportsService{
 			if(temp.getOtherVotes()!=null)
 			  column = new PdfPCell(new Phrase(temp.getOtherVotes().toString(),TBCELLSM));
 			  column.setHorizontalAlignment(Element.ALIGN_CENTER);
-
+			  if(temp.isOtherRankedOne()){
+				  column.setBackgroundColor(winner);
+			  }else if(temp.isOtherRankedTwo()){
+				  column.setBackgroundColor(runner);
+			  }
 			  table.addCell(column);
 			  
 			  column = new PdfPCell(new Phrase(temp.getOtherVotesPercent(),TBCELLSM));
