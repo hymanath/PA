@@ -94,6 +94,7 @@ public class StratagicReportsAction extends ActionSupport implements
 	private List<Object> criticalPanchayats;
 	private Long constituencyId;
 	private List<SelectOptionVO> locationIds;
+	private String type;
 	
 	@Autowired
 	private IStratagicReportsServicePdf stratagicReportsServicePdf;
@@ -400,6 +401,13 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 	}
 	public void setConstituencyId(Long constituencyId) {
 		this.constituencyId = constituencyId;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	@Override
 	public String execute() throws Exception {
@@ -990,7 +998,7 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 			userAccessConstiList = new ArrayList<SelectOptionVO>();
 			SelectOptionVO constituencyVo = new SelectOptionVO();
 			Long constiId = Long.valueOf(regvo.getAccessValue().trim());
-			constituencyVo.setName(crossVotingEstimationService.getConstituencyName(constituencyId));
+			constituencyVo.setName(crossVotingEstimationService.getConstituencyName(constiId));
 			constituencyVo.setId(constiId);
 			userAccessConstiList.add(constituencyVo);
 		}else if("STATE".equalsIgnoreCase(regvo.getAccessType()) || "MP".equalsIgnoreCase(regvo.getAccessType()) || "DISTRICT".equalsIgnoreCase(regvo.getAccessType()) || "COUNTRY".equalsIgnoreCase(regvo.getAccessType())){

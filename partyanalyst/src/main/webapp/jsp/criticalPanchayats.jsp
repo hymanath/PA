@@ -23,10 +23,10 @@
     display:none; 
   }
   
-  #buildTable table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
-#buildTable table tr:nth-child(even){background:#EdF5FF;border:1px solid #d3d3d3;}
-#buildTable table td{border:1px solid #d3d3d3;padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
-#buildTable table th{
+  #buildTable table,#buildGraphTable table{border:1px solid #d3d3d3;border-collapse:collapse;padding:10px;margin-left:auto;margin-right:auto;width:100%;}
+#buildTable table tr:nth-child(even),#buildGraphTable table tr:nth-child(even){background:#EdF5FF;border:1px solid #d3d3d3;}
+#buildTable table td,#buildGraphTable table td{border:1px solid #d3d3d3;padding:8px;padding-left:10px;font-weight:normal;font:small-caption;color: #676A67;}
+#buildTable table th,#buildGraphTable table th{
 background-color: #CDE6FC;
     font-size: 13px;
     font-weight: bold;
@@ -38,14 +38,17 @@ background-color: #CDE6FC;
 	color:#333333;
 	border:1px solid #d3d3d3;
 	}
-#buildTable{
+#buildTable,#buildGraphTable{
 	font-family : arial;
 	font-size: 13px;
     margin-top:0px;
 	padding: 10px 10px 10px 0px;
 	 width: 900px;
 }
-#buildTable table th a{
+#buildGraphTable{
+  width: 600px;
+}
+#buildTable table th a,#buildGraphTable table th a{
 color:#333333;
 }
 #buildGraph{
@@ -61,6 +64,7 @@ color:#333333;
   </s:if>
   <div id="ajaxImage" style="margin-top:35px;"><img src="images/icons/goldAjaxLoad.gif"></div>
   <div id="buildGraph"></div>
+  <div id="buildGraphTable"></div>
   <div id="buildTable"></div>
   <div id="partyHighTable"></div>
   <div id="partyLowTable"></div>
@@ -78,6 +82,7 @@ color:#333333;
    }
    function getCriticalPanchayats(constituencyId){
    $("#buildGraph").html("");
+   $("#buildGraphTable").html("");
    $("#buildTable").html("");
    if(constituencyId == 0){
      return;
@@ -98,6 +103,7 @@ color:#333333;
 		  }catch(e){
 		   $("#ajaxImage").hide();
 		   $("#buildGraph").html("");
+		   $("#buildGraphTable").html("");
            $("#buildTable").html("");
 		   $("#buildGraph").html("<span style='color:red;font-weight:bold;font-size:12px;'>No Data Available</span>");
 		  }
@@ -111,6 +117,7 @@ color:#333333;
 	   }else{
 	       $("#ajaxImage").hide();
 		   $("#buildGraph").html("");
+		   $("#buildGraphTable").html("");
            $("#buildTable").html("");
 		   $("#buildGraph").html("<span style='color:red;font-weight:bold;font-size:12px;'>No Data Available</span>");
 	   }
@@ -142,7 +149,7 @@ color:#333333;
 	    str+="<tr>";
 		  str+="<td>"+result[i].name+"</td>";
 		  str+="<td>"+result[i].totalVoters+"</td>";
-		  str+="<td>"+result[i].targetedVoters+"</td>";
+		  str+="<td style='color:#44d43b;'>"+result[i].targetedVoters+"</td>";
 		  str+="<td>"+result[i].previousVoters+"</td>";
 		  str+="<td>"+result[i].opportunity+"</td>";
 		  str+="<td>"+result[i].opportunityPerc+"</td>";
@@ -175,12 +182,36 @@ color:#333333;
 		var title = 'Strategy Suggestive Model'; 
         var options = {'title':title,
                        'width':650,
-                       'height':400};
+                       'height':400,
+					     is3D: true};
 
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('buildGraph'));
         chart.draw(data, options);
-
+		var str ="<div><h5>Strategy Suggestive Model Table</h5></div><br/>";
+		str+="<table>";
+		str+="  <tr>";
+		str+="    <th>Status</th>";
+		str+="    <th>No of Panchayaths</th>";
+		str+="    <th>Gainable Votes %</th>";
+		str+="    <th>Gainable Votes</th>";
+		str+="  </tr>";
+		for(var j = 0 ; j< result.length ; j++){	
+         str+="  <tr>";
+		 str+="    <td>"+result[j].name+"</td>";
+		 str+="    <td>"+result[j].totalVoters+"</td>";
+		 if(result[j].opportunityPerc > 0)
+		  str+="    <td>"+result[j].opportunityPerc.toFixed(2)+"</td>";
+		 else
+		  str+="    <td>N/A</td>";
+		 if(result[j].opportunityPerc > 0)
+		   str+="    <td>"+result[j].opportunity+"</td>";
+		 else
+		   str+="    <td></td>";
+         str+="  </tr>";
+        }
+        str+="</table><br/>";		
+      $("#buildGraphTable").html(str);
        
 }
 </script>

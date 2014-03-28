@@ -173,6 +173,10 @@ lable{line-height:40px;}
 }
 
 .btnStyle{background:#F5F5F5}
+.divHeightClass{
+   height: 175px;
+   
+}
 </style>
 <div class="container">
 	
@@ -510,7 +514,38 @@ lable{line-height:40px;}
 		
 		
 		<div class="row-fluid">
-			<div class="span4 widget">
+		    <div class="span4 widget divHeightClass" style="margin-left:7px;">
+				<h2> CRITICAL PANCHAYATS REPORT </h2>
+				<fieldset>
+					View All Critical Panchayats
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewCriticalPanchayats();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			
+		    <div class="span4 widget divHeightClass" style="margin-left:7px;">
+				<h2> REDUCE POLLING ANALYSIS</h2>
+				<fieldset>	
+			      <input type="button" value="View" class="btn btn-small btnStyle" onCLick="reducePolling();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			
+			<div class="span4 widget divHeightClass" style="margin-left:7px;">
+			  <h2> INCREASE POLLING ANALYSIS </h2>
+				<fieldset>	
+			      <input type="button" value="View" class="btn btn-small btnStyle" onCLick="increasePolling();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			<div class="span4 widget divHeightClass" style="margin-left:7px;">
+				<h2>VOTER AVERAGE AGE REPORT </h2>
+				<fieldset>
+					<lable>Select Constituency </lable>
+					<s:select cssClass=" span12" theme="simple" id="voterAverageAgeId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
+				
+					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="voterAverageAgePopUp();" style="float:right;"></input>
+				</fieldset>
+			</div>
+			
+			<div class="span4 widget divHeightClass" style="margin-left:7px;">
 				<h2>Voters Analysis </h2>
 				<fieldset>
 					<lable>Select Constituency </lable>
@@ -520,7 +555,7 @@ lable{line-height:40px;}
 				</fieldset>
 			</div>
 			
-		    <div class="span4 widget">
+		    <div class="span4 widget divHeightClass" style="margin-left:7px;">
 				<h2> Results Vs Caste</h2>
 				<fieldset>
 				<lable>Constituency </lable>
@@ -530,7 +565,7 @@ lable{line-height:40px;}
 				</fieldset>
 			</div>
 			
-			<div class="span4 widget">
+			<div class="span4 widget divHeightClass"  style="margin-left:7px;">
 			  <h2>Voters Search</h2>
 				<div class="media">
 					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png"style="width: 64px; height: 64px;"></img>
@@ -716,28 +751,6 @@ lable{line-height:40px;}
 				<div><input type="button" value="View" class="btn btn-small" onCLick="openAllInNewWindow('voterssearch');" style="float:right;"></input></div>
 			</div>	---->  
 			
-
-		<div class="row-fluid">
-			<div class="span12 widget" id="VoterAverageAgeDiv" >
-				<h2>Voter Average Age Report</h2>
-				<div id="boothWiseResult"></div>
-
-	   
-				<div class="form-horizontal boothResults " name='boothSelection' style="display:block;">
-					
-					<table  style="margin-bottom: -8px; margin-top: -20px;">
-					<tr>
-					<td><span>Constituency</span></td>
-					<td><s:select cssClass="selectstyle span12" theme="simple" id="voterAverageAgeId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
-					</td>
-					</tr>
-					</table>
-					<div class="control-group" id="errorDiv" style="color:red;"></div>
-					<button class="btn btn-mini btn-small btnStyle" data-dismiss="modal" aria-hidden="true" onclick="voterAverageAgePopUp()" style="float: right; margin-top: -55px; margin-right: 201px;">View Report</button>
-					
-				</div>
-			</div>
-		</div>
 
 
 
@@ -1201,7 +1214,24 @@ function openVotersAnalysts()
 	window.open("votersAnalysisNewAction.action?constituencyId="+constituencyId);
 	}
 }
-
+function viewCriticalPanchayats()
+{
+	
+	  window.open("criticalPanchayatsAction.action?type=criticalPanchayats");
+	
+}
+function reducePolling()
+{
+	
+	  window.open("partyHighLowPollingAction.action?type=reducePolling");
+	
+}
+function increasePolling()
+{
+	
+	  window.open("partyHighLowPollingAction.action");
+	
+}
 function getCrossVotingReport()
 {
 	
@@ -2509,8 +2539,7 @@ function getVoterModifivationReport()
 function voterAverageAgePopUp(){
 var constiId = $("#voterAverageAgeId").val();
 var urlstr = "voterAverageAgewiseAction.action?constiId="+constiId+"";
-  var browser1 = window.open(urlstr,"subRegionsWiseAnalysis","scrollbars=yes,height=600,width=1050,left=200,top=200");	
-     browser1.focus();
+  window.open(urlstr);
 }
 checkForUserStatus();
 
