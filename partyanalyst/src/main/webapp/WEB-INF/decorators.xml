@@ -300,6 +300,8 @@
 		<pattern>/boothPollReportAction*</pattern>
 		<pattern>/getVotersAddressAction*</pattern>
 		<pattern>/resetPasswordAction*</pattern>
+		<pattern>/criticalPanchayatsAction*</pattern>
+		<pattern>/partyHighLowPollingAction*</pattern>
 		</decorator>
     	 
        <decorator name="tdpHome" page="tdplayout.jsp">
