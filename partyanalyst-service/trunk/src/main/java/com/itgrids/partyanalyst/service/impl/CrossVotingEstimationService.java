@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.WordUtils;
 import org.apache.log4j.Logger;
@@ -1077,4 +1078,22 @@ public class CrossVotingEstimationService implements ICrossVotingEstimationServi
 		return partyVOs1;
     }
  
+    public List<SelectOptionVO> getRuralAndRurlaUrbanConstis(Set<Long> assemblyIds){
+    	List<SelectOptionVO> constituencies = new ArrayList<SelectOptionVO>();
+    	SelectOptionVO vo = null;
+    	List<Object[]>   constituenciesList = constituencyDAO.getRuralAndRurlaUrbanConstis(assemblyIds);
+    	
+    	for(Object[] constituency:constituenciesList){
+    		vo = new SelectOptionVO();
+    		vo.setId((Long)constituency[0]);
+    		vo.setName(constituency[1].toString());
+    		constituencies.add(vo);
+    	}
+    	
+    	return constituencies;
+    }
+    
+    public String getConstituencyName(Long constituencyId){
+    	return constituencyDAO.get(constituencyId).getName();
+    }
 }

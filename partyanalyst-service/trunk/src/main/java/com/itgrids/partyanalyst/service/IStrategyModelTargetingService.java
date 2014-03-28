@@ -13,7 +13,7 @@ import com.itgrids.partyanalyst.dto.PartyPositionVO;
 import com.itgrids.partyanalyst.dto.StrategyVO;
 
 public interface IStrategyModelTargetingService {
-	public List<Object> getPrioritiesToTarget(StrategyVO strategyVO,String path);
+	public List<Object> getPrioritiesToTarget(StrategyVO strategyVO,boolean partyPerformanceReq);
 	
 	public void generateImpFamilesTable(Document document , List<ImpFamilesVO> list,String reqType);
 	
@@ -42,4 +42,6 @@ public interface IStrategyModelTargetingService {
 	public void getTopPanchayats(StrategyVO strategyVO,Document document,PdfWriter writer);
 	
 	 public void buildChartForPartyPerformanceReort(Document document,List<PartyPositionVO> list,PdfWriter writer,String heading);
+	 
+	 public List<Object> getCriticalPanchayats(Long constituencyId);
 }

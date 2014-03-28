@@ -330,7 +330,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		
 		//page 13 to 23
 		try{
-		List<Object> targetingAreas = strategyModelTargetingService.getPrioritiesToTarget(strategyVO, "");
+		List<Object> targetingAreas = strategyModelTargetingService.getPrioritiesToTarget(strategyVO, true);
 		Map<String,Float> casteNamePercMap =  (Map<String,Float>)targetingAreas.get(0);//1
 		List<PanchayatVO> totalCastesList = (List<PanchayatVO>)targetingAreas.get(1);//2
 		List<PartyPositionVO> partyPerformance = (List<PartyPositionVO>)targetingAreas.get(2);//3

@@ -1,7 +1,7 @@
 package com.itgrids.partyanalyst.service;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import com.itgrids.partyanalyst.dto.CrossVotingConsolidateVO;
 import com.itgrids.partyanalyst.dto.CrossVotingVO;
@@ -49,4 +49,7 @@ public interface ICrossVotingEstimationService {
 	
     public List<SelectOptionVO> getPartiesForAcAndPcElections(Long AcId, String electionYear,Long PcId);
 	
+    public List<SelectOptionVO> getRuralAndRurlaUrbanConstis(Set<Long> assemblyIds);
+    
+    public String getConstituencyName(Long constituencyId);
 }

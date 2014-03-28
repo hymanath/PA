@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IElectionDAO;
 import com.itgrids.partyanalyst.dao.IHamletBoothElectionDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.IPRPWeightegesDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartialBoothPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IStrategyMergPancListDAO;
@@ -104,6 +105,7 @@ public class StrategyModelTargetingService implements
 	private ISuggestiveModelService suggestiveModelService;
 	private IVoterFamilyInfoDAO voterFamilyInfoDAO;
 	private IDelimitationConstituencyDAO delimitationConstituencyDAO;
+	private IPRPWeightegesDAO prpWeightegesDAO;
 	
 	private static Font style6 = new Font(Font.FontFamily.TIMES_ROMAN, 10,Font.NORMAL);
 	private static Font style5 = new Font(Font.FontFamily.TIMES_ROMAN, 8,Font.NORMAL);
@@ -221,6 +223,14 @@ public class StrategyModelTargetingService implements
 
 	
 	
+	public IPRPWeightegesDAO getPrpWeightegesDAO() {
+		return prpWeightegesDAO;
+	}
+
+	public void setPrpWeightegesDAO(IPRPWeightegesDAO prpWeightegesDAO) {
+		this.prpWeightegesDAO = prpWeightegesDAO;
+	}
+
 	public void setVoterFamilyInfoDAO(IVoterFamilyInfoDAO voterFamilyInfoDAO) {
 		this.voterFamilyInfoDAO = voterFamilyInfoDAO;
 	}
@@ -641,7 +651,7 @@ public class StrategyModelTargetingService implements
 			//if party not partispated considering alliance
 			if(selectedPartyTotal == null){
 				 
-				  if(alliancePartiesVO.getAllianceParties() == null)
+				  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
 					  selectedPartyTotal = 0L;
 				  else
 					  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
@@ -747,7 +757,7 @@ public class StrategyModelTargetingService implements
 			
 			 //if party not partispated considering alliance
 			 if(partyTotal == null){
-				  if(alliancePartiesVO.getAllianceParties() == null){
+				  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null){
 					  partyTotal = 0L;
 				  }else{
 					  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties()){
@@ -867,7 +877,7 @@ public class StrategyModelTargetingService implements
 					
 					if(selectedPartyTotal == null){
 						 
-						  if(alliancePartiesVO.getAllianceParties() == null)
+						  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
 							  selectedPartyTotal = 0L;
 						  else
 							  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
@@ -1969,7 +1979,7 @@ public class StrategyModelTargetingService implements
        
        
 	   @SuppressWarnings("unchecked")
-	public List<Object> getPrioritiesToTarget(StrategyVO strategyVO,String path){
+	public List<Object> getPrioritiesToTarget(StrategyVO strategyVO,boolean partyPerformanceReq){
 		   List<Object> targetingObjects = new ArrayList<Object>();
 		   Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
 		   Map<Long,Double> currentResult = new HashMap<Long,Double>();
@@ -2044,7 +2054,9 @@ public class StrategyModelTargetingService implements
 		   }*/
 		   List<PartyPositionVO> list = null;
 		   try {
+			  if(partyPerformanceReq){
 			    list = suggestiveModelService.getPartyPerfromanceStratagicReport(strategyVO.getConstituencyId(),872l,strategyVO.getEffectElectionId());
+			  }
 		} catch (Exception e) {
 			
 		}
@@ -3593,7 +3605,7 @@ public class StrategyModelTargetingService implements
 		  
 		public void getTopPanchayats(StrategyVO strategyVO,Document document,PdfWriter writer){
 			try {
-				 List<Object> targetingAreas = getPrioritiesToTarget(strategyVO,"");
+				 List<Object> targetingAreas = getPrioritiesToTarget(strategyVO,false);
 				 Map<String,Float> casteNamePercMap =  (Map<String,Float>)targetingAreas.get(0);//1
 					List<PanchayatVO> totalCastesList = (List<PanchayatVO>)targetingAreas.get(1);//2
 					List<PartyPositionVO> partyPerformance = (List<PartyPositionVO>)targetingAreas.get(2);//3
@@ -3760,5 +3772,40 @@ public class StrategyModelTargetingService implements
 			}
 		
 		}
-		
+	public List<Object> getCriticalPanchayats(Long constituencyId){
+		 StrategyVO strategyVO = new StrategyVO();
+		Long publicationId =  voterInfoDAO.getLatestPublicationDate(constituencyId);
+		  strategyVO.setConstituencyId(constituencyId);
+			strategyVO.setPartyId(872l);
+			List<Long> electionIds = new ArrayList<Long>();
+			electionIds.add(38l);
+			electionIds.add(3l);
+			strategyVO.setPublicationId(publicationId);
+			strategyVO.setAutoCalculate(true);
+			strategyVO.setElectionIds(electionIds);
+			Double regainVotrsWeigthPerc = null;
+			try{
+			 regainVotrsWeigthPerc = prpWeightegesDAO.getPRPWeightageByConstiId(strategyVO.getConstituencyId());
+			}catch(Exception e){
+				
+			}
+			 if(regainVotrsWeigthPerc == null || regainVotrsWeigthPerc == 0d)
+				  regainVotrsWeigthPerc = 0d;
+			  Double prevTrendWeigthPerc = 90d-regainVotrsWeigthPerc;
+			  
+			strategyVO.setCastePercents(null);
+			strategyVO.setPrevTrnzWt(prevTrendWeigthPerc);
+			strategyVO.setYoungWt(10d);
+			strategyVO.setPrpWt(regainVotrsWeigthPerc);
+			strategyVO.setAgedWt(0d);
+			strategyVO.setTotalCastWt(0d);
+			strategyVO.setAutoCalculate(true);
+			strategyVO.setEffectPartyId(662l);
+			strategyVO.setEffectElectionId(38l);
+		List<Object> criticalPanchayats = new ArrayList<Object>();
+		List<Object> priorityList = getPrioritiesToTarget(strategyVO,false);
+		criticalPanchayats.add(priorityList.get(7));
+		criticalPanchayats.add(priorityList.get(9));
+		return criticalPanchayats;
+	}
 }
