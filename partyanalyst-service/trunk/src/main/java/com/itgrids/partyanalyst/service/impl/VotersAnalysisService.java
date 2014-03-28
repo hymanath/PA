@@ -21176,22 +21176,45 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  }
 	  }
 
-	  public SelectOptionVO getCountList1(Long id,Long publicationDateId,String type)
+	  public SelectOptionVO getCountList1(Long publicationDateId,Long id,String type)
 	  {
 		  SelectOptionVO result = new SelectOptionVO();
 		  List<Object[]> mandalwiseDetails = null;
-		  
-		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"constituency");
-		  setData(result,mandalwiseDetails,"constituency");
-		  
-		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"mandal");
-		  setData(result,mandalwiseDetails,"mandal");
-		  
-		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"panchayat");
-		  setData(result,mandalwiseDetails,"panchayat");
-		  
-		  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"booth");
-		  setData(result,mandalwiseDetails,"booth");
+		  //publicationDateId = voterInfoDAO.getLatestPublicationDate(id);
+		  publicationDateId =8l;
+		  String constituencyType = constituencyDAO.get(id).getAreaType();
+		  if(constituencyType.equalsIgnoreCase("RURAL") || constituencyType.equalsIgnoreCase("RURAL-URBAN"))
+		  {
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"constituency");
+			  setData(result,mandalwiseDetails,"constituency");
+			  
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"mandal");
+			  setData(result,mandalwiseDetails,"mandal");
+			 
+			  
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"panchayat");
+			  setData(result,mandalwiseDetails,"panchayat");
+			  
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"booth");
+			  setData(result,mandalwiseDetails,"booth");
+		  }
+		  if(constituencyType.equalsIgnoreCase("RURAL-URBAN"))
+		  {
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"muncipality");
+			  setData(result,mandalwiseDetails,"muncipality");
+			  
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"muncipalityBooth");
+			  setData(result,mandalwiseDetails,"muncipalityBooth");
+		  }
+		  if(constituencyType.equalsIgnoreCase("URBAN"))
+		  {
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"constituency");
+			  setData(result,mandalwiseDetails,"constituency");
+			 
+			  mandalwiseDetails= boothPublicationVoterDAO.getConstituencyDetails(publicationDateId,id,"muncipalityBooth");
+			  setData(result,mandalwiseDetails,"muncipalityBooth");
+		  }
+		 
 	
 		  return result;
 	  }
@@ -21200,14 +21223,17 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  List<SelectOptionVO> mandalsList = new ArrayList<SelectOptionVO>();
 		  List<SelectOptionVO> panchayatsList = new ArrayList<SelectOptionVO>();
 		  List<SelectOptionVO> boothsList = new ArrayList<SelectOptionVO>();
-		  
-		  
+		  List<SelectOptionVO> munciplaityWiseList = new ArrayList<SelectOptionVO>();
+		  List<SelectOptionVO> munciplaityWiseBoothList = new ArrayList<SelectOptionVO>();
+		  DecimalFormat df = new DecimalFormat("#.##");
 		  for(Object[] param:dataList){
 			  if(type.equalsIgnoreCase(IConstants.CONSTITUENCY))
 			  {
 				  resultVO.setId((Long)param[1]);
 				  resultVO.setTotalCount((Long)param[0]);
-				  resultVO.setValidCount(((Long)param[2])*100/(Long)param[0]);
+				  resultVO.setPerc(new Double(df.format((Double)param[3])));
+				  resultVO.setName(param[2].toString());
+				 // resultVO.setValidCount(((Long)param[2])*100/(Long)param[0]);
 			  }
 			  if(type.equalsIgnoreCase(IConstants.MANDAL))
 			  {
@@ -21215,8 +21241,19 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				  votersDetailsVO2.setId((Long)param[1]);
 				  votersDetailsVO2.setName(param[2].toString());
 				  votersDetailsVO2.setTotalCount((Long)param[0]);
-				  votersDetailsVO2.setValidCount(((Long)param[3])*100/(Long)param[0]);
+				  votersDetailsVO2.setPerc(new Double(df.format((Double)param[3])));
+				  //votersDetailsVO2.setValidCount(((Long)param[3])*100/(Long)param[0]);
 				  mandalsList.add(votersDetailsVO2);
+			  }
+			  
+			  if(type.equalsIgnoreCase("muncipality"))
+			  {
+				  SelectOptionVO votersDetailsVO2 = new SelectOptionVO();
+				  votersDetailsVO2.setId((Long)param[1]);
+				  votersDetailsVO2.setName(param[2].toString() + " Muncipality");
+				  votersDetailsVO2.setTotalCount((Long)param[0]);
+				  votersDetailsVO2.setPerc(new Double(df.format((Double)param[3])));
+				  munciplaityWiseList.add(votersDetailsVO2);
 			  }
 			  
 			  if(type.equalsIgnoreCase(IConstants.PANCHAYAT))
@@ -21231,16 +21268,18 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				  }
 				  SelectOptionVO votersDetailsVO4 = null;
 				  if(votersDetailsVO3.getSelectOptionsList().size() > 0)
-					  votersDetailsVO4 = checkVOExist((Long)param[2],votersDetailsVO3.getSelectOptionsList());//panchayatlist
+					  votersDetailsVO4 = checkVOExist((Long)param[3],votersDetailsVO3.getSelectOptionsList());//panchayatlist
 				  if(votersDetailsVO4 == null && param[2] != null){
 					  votersDetailsVO4 = new SelectOptionVO();
-					  votersDetailsVO4.setId((Long)param[2]);
-					  votersDetailsVO4.setName(param[3].toString());
+					  votersDetailsVO4.setId((Long)param[3]);
+					  votersDetailsVO4.setName(param[4].toString());
 					  votersDetailsVO4.setTotalCount((Long)param[0]);
-					  votersDetailsVO4.setValidCount(((Long)param[4])*100/(Long)param[0]);
+					  votersDetailsVO4.setPerc(new Double(df.format((Double)param[5])));
+					  //votersDetailsVO4.setValidCount(((Long)param[5])*100/(Long)param[0]);
 					  votersDetailsVO3.getSelectOptionsList().add(votersDetailsVO4);
 				  }
 			  }
+			  
 			  
 			  if(type.equalsIgnoreCase(IConstants.BOOTH))
 			  {
@@ -21254,13 +21293,37 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 				  }
 				  SelectOptionVO votersDetailsVO4 = null;
 				  if(votersDetailsVO3.getSelectOptionsList().size() > 0)
-					  votersDetailsVO4 = checkVOExist((Long)param[2],votersDetailsVO3.getSelectOptionsList());//panchayatlist
+					  votersDetailsVO4 = checkVOExist((Long)param[3],votersDetailsVO3.getSelectOptionsList());//panchayatlist
 				  if(votersDetailsVO4 == null && param[2] != null){
 					  votersDetailsVO4 = new SelectOptionVO();
 					  votersDetailsVO4.setId((Long)param[3]);
 					  votersDetailsVO4.setName(param[4].toString());
 					  votersDetailsVO4.setTotalCount((Long)param[0]);
-					  votersDetailsVO4.setValidCount(((Long)param[5])*100/(Long)param[0]);
+					  votersDetailsVO4.setPerc(new Double(df.format((Double)param[5])));
+					  //votersDetailsVO4.setValidCount(((Long)param[5])*100/(Long)param[0]);
+				  votersDetailsVO3.getSelectOptionsList().add(votersDetailsVO4);
+				  }
+			  }
+			  if(type.equalsIgnoreCase("muncipalityBooth"))
+			  {
+				  SelectOptionVO votersDetailsVO3 = new SelectOptionVO();
+				  votersDetailsVO3 = checkVOExist((Long)param[1],munciplaityWiseBoothList);
+				  if(votersDetailsVO3 == null){
+					  votersDetailsVO3 = new SelectOptionVO();
+					  votersDetailsVO3.setId((Long)param[1]);
+					  votersDetailsVO3.setName(param[2].toString() + " Muncipality");
+					  munciplaityWiseBoothList.add(votersDetailsVO3);
+				  }
+				  SelectOptionVO votersDetailsVO4 = null;
+				  if(votersDetailsVO3.getSelectOptionsList().size() > 0)
+					  votersDetailsVO4 = checkVOExist((Long)param[3],votersDetailsVO3.getSelectOptionsList());//panchayatlist
+				  if(votersDetailsVO4 == null && param[2] != null){
+					  votersDetailsVO4 = new SelectOptionVO();
+					  votersDetailsVO4.setId((Long)param[3]);
+					  votersDetailsVO4.setName(param[4].toString());
+					  votersDetailsVO4.setTotalCount((Long)param[0]);
+					  votersDetailsVO4.setPerc(new Double(df.format((Double)param[5])));
+					  //votersDetailsVO4.setValidCount(((Long)param[5])*100/(Long)param[0]);
 				  votersDetailsVO3.getSelectOptionsList().add(votersDetailsVO4);
 				  }
 			  }
@@ -21271,6 +21334,16 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 		  resultVO.setSelectOptionsList1(panchayatsList);
 		  if(boothsList.size() > 0)
 		  resultVO.setSelectOptionsList2(boothsList);
+		  if(munciplaityWiseList.size() > 0)
+		  {
+			  resultVO.getSelectOptionsList().addAll(munciplaityWiseList);
+			  //resultVO.setSelectOptionsList(mandalsList);
+		  }
+		  if(munciplaityWiseBoothList.size() > 0)
+		  {
+			  resultVO.getSelectOptionsList2().addAll(munciplaityWiseBoothList);
+		  }
+			  
 	  }
 	  
 	  public SelectOptionVO checkVOExist(Long locationId,List<SelectOptionVO> list)

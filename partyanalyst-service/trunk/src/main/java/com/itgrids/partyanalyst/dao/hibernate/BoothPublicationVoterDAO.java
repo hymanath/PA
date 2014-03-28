@@ -6501,29 +6501,35 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 	
     }
 	
-	public List<Object[]> getConstituencyDetails(Long constituencyId,Long publicationDateId,String type){
+	public List<Object[]> getConstituencyDetails(Long publicationDateId,Long constituencyId,String type){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("select count(distinct model.voter.voterId),");
 		if(type.equalsIgnoreCase("constituency"))
-			queryStr.append("model.booth.constituency.constituencyId,");
+			queryStr.append("model.booth.constituency.constituencyId,model.booth.constituency.name,");
 		if(type.equalsIgnoreCase("mandal"))
 			queryStr.append("model.booth.tehsil.tehsilId,model.booth.tehsil.tehsilName,");
 		if(type.equalsIgnoreCase("panchayat"))
 			queryStr.append("model.booth.tehsil.tehsilId,model.booth.tehsil.tehsilName,model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName,");
 		if(type.equalsIgnoreCase("booth"))
 			queryStr.append("model.booth.panchayat.panchayatId,model.booth.panchayat.panchayatName,model.booth.boothId,model.booth.partNo,");
-		
-		queryStr.append("sum(model.voter.age) from BoothPublicationVoter model where " +
+		if(type.equalsIgnoreCase("muncipality"))
+			queryStr.append("model.booth.localBody.localElectionBodyId,booth.localBody.name,");
+		if(type.equalsIgnoreCase("muncipalityBooth"))
+			queryStr.append("model.booth.localBody.localElectionBodyId,booth.localBody.name,model.booth.boothId,model.booth.partNo,");
+		queryStr.append("avg(model.voter.age) from BoothPublicationVoter model where " +
 				"model.booth.constituency.constituencyId=:constituencyId and " +
 				"model.booth.publicationDate.publicationDateId=:publicationDateId ");
 		
 		if(type.equalsIgnoreCase("mandal"))
 			queryStr.append(" and model.booth.localBody is null group by model.booth.tehsil.tehsilId");
+		if(type.equalsIgnoreCase("muncipality"))
+			queryStr.append(" and model.booth.localBody is not null group by model.booth.localBody.localElectionBodyId");
 		if(type.equalsIgnoreCase("panchayat"))
 			queryStr.append("group by model.booth.tehsil.tehsilId,model.booth.panchayat.panchayatId");
 		if(type.equalsIgnoreCase("booth"))
 			queryStr.append("group by model.booth.panchayat.panchayatId,model.booth.boothId");
-		
+		if(type.equalsIgnoreCase("muncipalityBooth"))
+			queryStr.append("group by model.booth.localBody.localElectionBodyId,model.booth.boothId");
 		Query query = getSession().createQuery(queryStr.toString());
 		
 		query.setParameter("constituencyId", constituencyId);

@@ -32,6 +32,7 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 	private List<ConstituencyElectionResultsVO> parliamentList;
 	private List<ConstituencyElectionResultsVO> mptcZptcList ;
 	private SelectOptionVO panchatsList;
+	private Double perc;
 	
 	public List<SelectOptionVO> getSelectOptionsList2() {
 		return selectOptionsList2;
@@ -274,6 +275,14 @@ public class SelectOptionVO implements Serializable, Comparable<SelectOptionVO> 
 
 	public void setMainAccountId(Long mainAccountId) {
 		this.mainAccountId = mainAccountId;
+	}
+
+	public Double getPerc() {
+		return perc;
+	}
+
+	public void setPerc(Double perc) {
+		this.perc = perc;
 	}
 	
 	
