@@ -74,6 +74,14 @@ public class VotersInformationAction extends ActionSupport implements ServletReq
 	}
 
 	
+	public Long getConstiId() {
+		return constiId;
+	}
+
+	public void setConstiId(Long constiId) {
+		this.constiId = constiId;
+	}
+
 	public String execute() throws Exception
 	{
 		return  "success";
