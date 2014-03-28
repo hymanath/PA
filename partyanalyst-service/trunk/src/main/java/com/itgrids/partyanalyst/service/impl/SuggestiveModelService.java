@@ -5739,6 +5739,9 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 
 					 e.printStackTrace();
 				 }
+				 if(result != null && result.size() > 0){
+					 result.get(0).setConstituencyType(constituencyDAO.get(constituenycId).getAreaType());
+				 }
 				return result;
 			 }
 			 
