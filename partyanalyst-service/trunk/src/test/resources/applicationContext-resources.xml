@@ -2155,6 +2155,20 @@
 	  <property name="casteStateDAO" ref="casteStateDAO" />
 	  <property name="voterFamilyInfoDAO" ref="voterFamilyInfoDAO" />
  </bean>
+    <bean name="stratagicReportsServicePdf" class="com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf"></bean>
+    <bean name="stratagicReportServiceForMLASuccess" class="com.itgrids.partyanalyst.service.impl.StratagicReportServiceForMLASuccess"/>
+    <bean name="stratagicReportsService" class="com.itgrids.partyanalyst.service.impl.StratagicReportsService">
+       <property name="transactionTemplate" ref="transactionTemplate" />   	
+   	   <property name="publicationDateDAO" ref="publicationDateDAO"></property>
+   </bean>
+   <bean name="suggestiveModelService" class="com.itgrids.partyanalyst.service.impl.SuggestiveModelService">
+      
+      <property name="constituencyDAO" ref="constituencyDAO" />
+     
+    </bean>
+    
+    
+ 
   <bean name="boothwisePollingStratagicService" class="com.itgrids.partyanalyst.service.impl.BoothwisePollingStratagicService" >
     <property name="partyDAO" ref="partyDAO"/>
    <property name="candidateBoothResultDAO" ref="candidateBoothResultDAO"/>
