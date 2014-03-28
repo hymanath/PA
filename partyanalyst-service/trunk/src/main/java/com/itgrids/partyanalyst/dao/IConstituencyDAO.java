@@ -8,10 +8,10 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
-import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.model.Constituency;
 
 /**
@@ -204,4 +204,6 @@ public interface IConstituencyDAO extends GenericDao<Constituency, Long>{
 	public List<Object[]> getAllMucipalAssembyConstiListInState(Long stateId);
 	
 	public List<Object[]> getDistrictConstituenciesList(List<Long> districtIds);
+	
+	public List<Object[]> getRuralAndRurlaUrbanConstis(Set<Long> assemblyIds);
 }

@@ -5530,6 +5530,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				 
 			 public List<PartyPositionVO> getPollingPercentagesByParty(Long constituenycId,Long partyId,Long electionId,Long electionId1)
 			 {
+				 Long mainPartyId = partyId;
 				 Long latestPublictaionId = 0l;
 				 Long TotalVotesInConstituency = 0l;
 				 Long TotalPolledVotesInConstituency = 0l;
@@ -5557,13 +5558,49 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 
 					 List<Object[]> constituencyInfo = null;
 					 Long partyPolledVotesInConstituency = null;
+					 AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,partyId);
 					 if(electionDAO.get(electionId).getElectionScope().getElectionType().getElectionType().equalsIgnoreCase("Assembly")){
 					     constituencyInfo = constituencyElectionResultDAO.findTotalVotesAndPolledVotesAndVotesPercentage(electionId,constituenycId);
+					     try{
 					     partyPolledVotesInConstituency = nominationDAO.getPartyPercentage(constituenycId, electionId, partyId).longValue();
+					     }catch(Exception e){
+					    	 
+					     }
+					     if((partyPolledVotesInConstituency == null || partyPolledVotesInConstituency.longValue() == 0) && alliancePartiesVO != null && alliancePartiesVO.getAllianceParties() != null && alliancePartiesVO.getAllianceParties().size() > 0){
+					    	
+						    	 for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties()){
+						    		 try{ 
+						    		  partyPolledVotesInConstituency = nominationDAO.getPartyPercentage(constituenycId, electionId,  alianceParty.getId()).longValue();
+						    		 }catch(Exception e){
+								    	 
+								     }
+							    	 if((partyPolledVotesInConstituency != null && partyPolledVotesInConstituency.longValue() > 0) ){
+							    		 partyId =  alianceParty.getId();
+							    		 break;
+							    	 }
+						    	 }
+					    	
+					     }
 					 }else{
 						 TotalVotesInConstituency = candidateBoothResultDAO.findTotalVotesForAssembInAParliament(booths, electionId);
 						 TotalPolledVotesInConstituency = candidateBoothResultDAO.findPolledVotesForAssembInAParliament(booths, electionId);
 						 partyPolledVotesInConstituency = candidateBoothResultDAO.findTotalVotesPolledForCandidateAssembInAParliament(booths, electionId, partyId);
+						 
+						 if((partyPolledVotesInConstituency == null || partyPolledVotesInConstituency.longValue() == 0) && alliancePartiesVO != null && alliancePartiesVO.getAllianceParties() != null && alliancePartiesVO.getAllianceParties().size() > 0){
+						    	
+					    	 for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties()){
+					    		 try{ 
+					    		  partyPolledVotesInConstituency = candidateBoothResultDAO.findTotalVotesPolledForCandidateAssembInAParliament(booths, electionId,  alianceParty.getId());
+					    		 }catch(Exception e){
+							    	 
+							     }
+						    	 if((partyPolledVotesInConstituency != null && partyPolledVotesInConstituency.longValue() > 0) ){
+						    		 partyId =  alianceParty.getId();
+						    		 break;
+						    	 }
+					    	 }
+				    	
+				     }
 					 }
 					 if(constituencyInfo != null && constituencyInfo.size() > 0)
 						for(Object[] params : constituencyInfo)
@@ -5640,7 +5677,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 							 if(partyId.equals(partyId1))
 							 {
 							 PartyPositionVO partyVo = new PartyPositionVO();
-							 partyVo.setPartyName(partyDAO.getPartyShortNameById(partyId1));
+							 partyVo.setPartyName(partyDAO.getPartyShortNameById(mainPartyId));
 							 partyVo.setPartyTotalvotes(partyMap.get(partyId1));
 							 partyVo.setPartyPercentage(partyVo.getPartyTotalvotes() * 100.0 /totalValidVotes);
 							 partyVo.setSelectedParty(true);
