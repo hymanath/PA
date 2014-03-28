@@ -60,9 +60,9 @@
 </style>
  <BODY>
 
-		<div id="mainDiv">
-<div id="innerDiv"></div>
-		</div>
+<div id="mainDiv">
+	<div id="innerDiv" class="container" style="font-family: verdana; font-size: 15px; padding-top: 36px;"></div>
+</div>
 
 
 
@@ -70,10 +70,9 @@
   <script>
   var constiId= "${constiId}";
 	function getAverageVoterDetails(){
-		alert("call");
-	//var constiId = ("#").val();
+
 	var jsObj = {
-			constiId : 232,
+			constiId : constiId,
 			task : "getAverageVoterDetails"
 		};
 	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
@@ -120,113 +119,154 @@ var reqfieldsArr = new Array();
 function buildAverageVoterDetails(results){
 var str = "";
 
-str += "<div class='span12 widget' id='div1' >";
-str += "<h3>Constituency Voter Average Age Report</h3>";
-str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
-	str += "<table  style='margin-bottom: -8px; margin-top: -20px; font-size:small;'>";
-	str += "<tr><td><span>Total voters : </span></td>";
-	str += "<td><span>"+results.totalCount+"</span></td><td></td>";
-	str += "<td><span> AvgVoters</span></td>";
-	str += "<td><span>"+results.validCount+"</span></td>";
+	str += '<h4 style="padding-bottom: 27px; margin-left: 163px;">'+results.name+' Constituemct Voter Average Age Report</h4>';
+	str += "<h4 style='margin-left: 28px;'>Constituency Wise Voter Average Age Report</h4>";
+	str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
+	str += "<table  class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small''>";
+	str += '<tr>';
+	str += '<th>Constituency</th>';
+	str += '<th>Total Voters</th>';
+	str += '<th>Avg Voters</th>';
+	str += '</tr>';
+	str += "<tr>";
+	str += "<td>"+results.name+"</td>";
+	str += "<td>"+results.totalCount+"</td>";
+	str += "<td>"+results.perc+"</td>";
 	str += "</tr>";
 	str += "</table>";
-
+str += '</div>';
 //mandalwise
-		str += "<div class='row-fluid'>";
-		str += "<div class='span12 widget' id='mandalDiv'  style='margin-top: 30px;'>";
-		str += "<h4>Mandalwise Voter Average Age Report</h4>";
-		str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
+		if(results.selectOptionsList != null && results.selectOptionsList.length > 0)
+		{
+			str += "<h4 style='margin-left: 28px;'>Mandal Wise Voter Average Age Report</h4>";
+			str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
 
-		str += "<table class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small''>";
-		
-		
-		for(var i in results.selectOptionsList){
-			str += "<tr>";
-			str += "<td><span>"+results.selectOptionsList[i].id+"</span></td>";
-			str += "<td><span>"+results.selectOptionsList[i].totalCount+"</span></td>";
-			str += "<td><span>"+results.selectOptionsList[i].validCount+"</span></td>";
-			str += "</tr>";
+			str += "<table class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small''>";
+			
+			str += '<tr>';
+			str += '<th>Mandal/Muncipality</th>';
+			str += '<th>Total Voters</th>';
+			str += '<th>Avg Voters</th>';
+			str += '</tr>';
+			for(var i in results.selectOptionsList){
+				str += "<tr>";
+				str += "<td><span>"+results.selectOptionsList[i].name+"</span></td>";
+				str += "<td><span>"+results.selectOptionsList[i].totalCount+"</span></td>";
+				str += "<td><span>"+results.selectOptionsList[i].perc+"</span></td>";
+				str += "</tr>";
+			}
+			str += "</table>";
+			str += "</div>";
 		}
-		str += "</table>";
-
-		str += "</div>";
-		str += "</div>";
+		
 
 //panchayatwise
-		str += "<div class='row-fluid'>";
-		str += "<div class='span12 widget' id='mandalDiv' >";
-		str += "<h4>Panchayatwise Voter Average Age Report</h4>";
-		str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
+		if(results.selectOptionsList1 != null && results.selectOptionsList1.length > 0)
+		{
+			str += "<h4 style='margin-left: 28px;'>Panchayat Wise Voter Average Age Report</h4>";
+			str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
 
-		str += "<table class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small'>";
-		
-		for(var i in results.selectOptionsList1){
-			str += "<tr>";
-			str += "<td rowspan='"+results.selectOptionsList1[i].selectOptionsList.length+"'><span>mandalname"+results.selectOptionsList1[i].id+"</span></td>";
-				for(var j in results.selectOptionsList1[i].selectOptionsList){
-					str += "<td><span>"+results.selectOptionsList1[i].selectOptionsList[j].id+"</span></td>";
-					str += "<td><span>"+results.selectOptionsList1[i].selectOptionsList[j].totalCount+"</span></td>";
-					str += "<td><span>"+results.selectOptionsList1[i].selectOptionsList[j].validCount+"</span></td>";
-					str += "</tr>";
+			str += "<table class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small'>";
+			str += '<tr>';
+			str += '<th>Mandal/Muncipality</th>';
+			str += '<th>Pancayat</th>';
+			str += '<th>Total Voters</th>';
+			str += '<th>Avg Voters</th>';
+			str += '</tr>';
+			
+			
+			for(var i in results.selectOptionsList1)
+			{
+				var length = 0;
+				for(var k in results.selectOptionsList1[i].selectOptionsList)
+				{
+					if(results.selectOptionsList1[i].selectOptionsList[k] != null)
+					{
+						length++;
+					}
 				}
-		str += "</tr>";
-		}
-		str += "</table>";
+				if(results.selectOptionsList1[i] != null)
+				{
+					str += "<tr>";
+					str += "<td rowspan='"+length+"'>"+results.selectOptionsList1[i].name+"</td>";
+					for(var j in results.selectOptionsList1[i].selectOptionsList)
+					{
+						if(results.selectOptionsList1[i].selectOptionsList[j] != null)
+						{
+							if(j > 0)
+							{
+								str += "<tr>";
+							}
+							str += "<td>"+results.selectOptionsList1[i].selectOptionsList[j].name+"</td>";
+							str += "<td>"+results.selectOptionsList1[i].selectOptionsList[j].totalCount+"</td>";
+							str += "<td>"+results.selectOptionsList1[i].selectOptionsList[j].perc+"</td>";
+							if(j > 0)
+							{
+								str += "</tr>";
+							}
+						}
+						str += "</tr>";
+					}
+					
+				}
+				
+			}
+		
+			str += "</table>";
 
-		str += "</div>";
-		str += "</div>";
+			str += "</div>";
+		}
 
 //boothwise
-		str += "<div class='row-fluid'>";
-		str += "<div class='span12 widget' id='mandalDiv' >";
-		str += "<h4>Boothwise Voter Average Age Report</h4>";
-		str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
+		if(results.selectOptionsList2 != null && results.selectOptionsList2.length > 0)
+		{
+			str += "<h4 style='margin-left: 28px;'>Booth Wise Voter Average Age Report</h4>";
+			str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
 
-		str += "<table class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small'>";
-		
-		for(var i in results.selectOptionsList2){
-			str += "<tr>";
-			str += "<td rowspan='"+results.selectOptionsList2[i].selectOptionsList.length+"'><span>mandalname"+results.selectOptionsList2[i].id+"</span></td>";
-				//for(var j in results.selectOptionsList2[i].selectOptionsList){
-					str += "<td><span>"+results.selectOptionsList2[i].selectOptionsList[j].id+"</span></td>";
-					str += "<td><span>"+results.selectOptionsList2[i].selectOptionsList[j].totalCount+"</span></td>";
-					str += "<td><span>"+results.selectOptionsList2[i].selectOptionsList[j].validCount+"</span></td>";
+			str += "<table class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small'>";
+			str += '<tr>';
+			str += '<th>Mandal/Muncipality</th>';
+			str += '<th>Booth</th>';
+			str += '<th>Total Voters</th>';
+			str += '<th>Avg Voters</th>';
+			str += '</tr>';
+			for(var i in results.selectOptionsList2)
+			{
+				if(results.selectOptionsList2[i]!= null)
+				{
+					str += "<tr>";
+					str += "<td rowspan='"+results.selectOptionsList2[i].selectOptionsList.length+"'>"+results.selectOptionsList2[i].name+"</td>";
+					for(var j in results.selectOptionsList2[i].selectOptionsList)
+					{
+						if(results.selectOptionsList2[i].selectOptionsList[j] != null)
+						{
+							if(j > 0)
+							{
+								str += "<tr>";
+							}
+							str += "<td><span>Booth - "+results.selectOptionsList2[i].selectOptionsList[j].name+"</span></td>";
+							str += "<td><span>"+results.selectOptionsList2[i].selectOptionsList[j].totalCount+"</span></td>";
+							str += "<td><span>"+results.selectOptionsList2[i].selectOptionsList[j].perc+"</span></td>";
+							if(j > 0)
+							{
+								str += "</tr>";
+							}
+						}
+					}	
 					str += "</tr>";
-				//}
-		str += "</tr>";
+				}
+			
+			}
+			str += "</table>";
+
+			str += "</div>";	
 		}
-		str += "</table>";
-
+		
 		str += "</div>";
 		str += "</div>";
-
-
-
-str += "</div>";
-str += "</div>";
 
 document.getElementById('innerDiv').innerHTML = str;
 }
-
-/*function dummy(){
-var str = "";
-
-str += "<div class='span12 widget' id='div1' style='font-size:small'>";
-str += "Constituency Voter Average Age Report";
-str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
-	str += "<table  style='margin-bottom: -8px; margin-top: -20px; font-size:small;'>";
-	str += "<tr><td><span>Total voters : </span></td>";
-	str += "<td><span>totalCount</span></td>";
-	str += "<td style='float:right;'><span> AvgVoters</span></td>";
-	str += "<td><span>validCount</span></td>";
-	str += "</tr>";
-	str += "</table>";
-//buildAverageVoterDetails();
- 
- document.getElementById('innerDiv').innerHTML = str;
-}
-
-dummy();*/
 
 getAverageVoterDetails();
   </script>
