@@ -98,7 +98,6 @@ color:#333333;
    }
    function buildCriticalPanchayats(result){
 	   if(result != null){
-	   alert(type);
 	       if(type == "reducePolling")
 		     buildPollingLowPercentageForBooths(result); 
 		   else
