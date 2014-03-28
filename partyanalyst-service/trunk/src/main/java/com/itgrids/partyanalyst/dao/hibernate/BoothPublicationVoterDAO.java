@@ -4473,7 +4473,8 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			else
 			 str.append(" count(distinct model.booth.boothId) ");
 			
-			str.append(" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and model.booth.tehsil.tehsilId in (:mandalIdsList) group by model.booth.tehsil.tehsilId ");
+			str.append(" from BoothPublicationVoter model where model.booth.constituency.constituencyId =:constituencyId and model.booth.publicationDate.publicationDateId =:publicationDateId and " +
+					" model.booth.localBody is null and model.booth.tehsil.tehsilId in (:mandalIdsList) group by model.booth.tehsil.tehsilId ");
 						
 			Query query = getSession().createQuery(str.toString());
 			query.setParameter("constituencyId", constituencyId);
