@@ -60,6 +60,7 @@ color:#333333;
   
   <script type="text/javascript">
    var constituencyId = '${constituencyId}';
+   var type = '${type}';
    function getAllCriticalPanchayats(){
       var constiId = $("#constituencyId").val();
 	  if(constiId > 0){
@@ -97,14 +98,11 @@ color:#333333;
    }
    function buildCriticalPanchayats(result){
 	   if(result != null){
-	   if((result[0].strongPollingPercentVOList == null || result[0].strongPollingPercentVOList.length == 0) && (result[0].weakPollingPercentVOList == null || result[0].weakPollingPercentVOList.length == 0)){
-	     $("#partyHighTable").html("");
-         $("#partyLowTable").html("");
-		 $("#partyHighTable").html("<span style='color:red;font-weight:bold;font-size:12px;'>No Data Available</span>");
-		 return;
-	   }
-		   buildPollingHighPercentageForBooths(result);
-		   buildPollingLowPercentageForBooths(result);
+	   alert(type);
+	       if(type == "reducePolling")
+		     buildPollingLowPercentageForBooths(result); 
+		   else
+		     buildPollingHighPercentageForBooths(result);
 	   }else{
 	       $("#ajaxImage").hide();
 	   }
@@ -120,8 +118,11 @@ function buildPollingHighPercentageForBooths(result)
 
 		var divEle = document.getElementById("partyHighTable");
 		var strongList = result[0].strongPollingPercentVOList;
-		if(strongList == null || strongList.length ==0)
-		  return;
+		if(strongList == null || strongList.length ==0){
+		  $("#partyHighTable").html("");
+          $("#partyLowTable").html("");
+		  $("#partyHighTable").html("<span style='color:red;font-weight:bold;font-size:12px;'>No Data Available</span>");
+		 }
 		var str = '';
 		str+='<div class="widget green">';
 		str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
@@ -129,13 +130,16 @@ function buildPollingHighPercentageForBooths(result)
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling High,' +strongList[0].weakPollingPercentVOList[0].partyName+' Party Weak</h4>';
 		str+='<div style="overflow-x:scroll;"><table id="pollingPerHigh"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
 		str+='<th>Booth</th>';
-		str+='<th>Panchayat</th>';
+		if(result[0].constituencyType != "URBAN"){
+		  str+='<th>Panchayat</th>';
+		}
 		str+='<th>Location</th>';
 		str+='<th>Villages Covered</th>';
-		str+='<th>'+strongList[0].weakPollingPercentVOList[0].partyName+' </th>';
-		str+='<th>Total Votes</th>';
-		str+='<th>Polled Votes</th>';
+		
+		str+='<th>Total Votes 2009</th>';
+		str+='<th>Polled Votes 2009</th>';
 		str+='<th>Polling %</th>';
+		str+='<th>'+strongList[0].weakPollingPercentVOList[0].partyName+' Votes 2009 </th>';
 		str+='<th>'+strongList[0].weakPollingPercentVOList[0].partyName+' %</th>';
 		str+='<th>To Decrease</th>';
 		str+='<th>Polling @'+result[0].pollingPercentage.toFixed(2)+'</th>';
@@ -144,10 +148,12 @@ function buildPollingHighPercentageForBooths(result)
 			{
 		str+='<tr>';
 		str+='<td>'+strongList[i].name+'</td>';
-		if(strongList[i].localbodyName !="")
-		str+='<td>'+strongList[i].localbodyName+'</td>';
-		else
-		str+='<td>-</td>';
+		if(result[0].constituencyType != "URBAN"){
+			if(strongList[i].localbodyName !="")
+			str+='<td>'+strongList[i].localbodyName+'</td>';
+			else
+			str+='<td>-</td>';
+		}
 		if(strongList[i].location !="")
 		str+='<td>'+strongList[i].location+'</td>';
 		else
@@ -155,11 +161,11 @@ function buildPollingHighPercentageForBooths(result)
 		if(strongList[i].villagesCovered !="")
 		str+='<td>'+strongList[i].villagesCovered+'</td>';
 		else
-		str+='<td>-</td>';
-		str+='<td>'+strongList[i].weakPollingPercentVOList[0].partyTotalvotes+'</td>';
+		str+='<td>-</td>';		
 		str+='<td>'+strongList[i].totalVoters+'</td>';
 		str+='<td>'+strongList[i].totalValidVotes+'</td>';
 		str+='<td>'+strongList[i].pollingPercentage.toFixed(2)+'</td>';
+		str+='<td>'+strongList[i].weakPollingPercentVOList[0].partyTotalvotes+'</td>';
 		str+='<td>'+strongList[i].weakPollingPercentVOList[0].partyPercentage.toFixed(2)+'</td>';
 		str+='<td>'+strongList[i].minValue.toFixed(2)+'</td>';
 		str+='<td>'+strongList[i].rangePercentage+'</td>';
@@ -176,33 +182,42 @@ function buildPollingLowPercentageForBooths(result)
 
 		var divEle = document.getElementById("partyLowTable");
 		var weakList = result[0].weakPollingPercentVOList;
-		if(weakList == null || weakList.length ==0)
-		  return;
+		if(weakList == null || weakList.length ==0){
+		  $("#partyHighTable").html("");
+          $("#partyLowTable").html("");
+		  $("#partyHighTable").html("<span style='color:red;font-weight:bold;font-size:12px;'>No Data Available</span>");
+		 }
 		var str = '';
 		str+='<div class="widget green">';
+		str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
+		str+='<span>'+strongList[0].weakPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling Low,' +weakList[0].strongPollingPercentVOList[0].partyName+' Party Strong</h4>';
 		str+='<div style="overflow-x:scroll;"><table id="pollingPerLow"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
 		str+='<th>Booth</th>';
+		if(result[0].constituencyType != "URBAN")
 		str+='<th>Panchayat</th>';
 		str+='<th>Location</th>';
 		str+='<th>Villages Covered</th>';
-		str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+'</th>';
-		str+='<th>Total Votes</th>';
-		str+='<th>Polled Votes</th>';
+		
+		str+='<th>Total Votes 2009</th>';
+		str+='<th>Polled Votes 2009</th>';
 		str+='<th>Polling %</th>';
+		str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+' Votes 2009</th>';
 		str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+' %</th>';
 		str+='<th>Scope To Improve(Avg Poll%('+result[0].pollingPercentage+'))</th>';
 		str+='<th>Polling @'+result[0].pollingPercentage.toFixed(2)+'</th>';
 		str+='<th>To Target</th>';
-		str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+'</th>';
+		str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+' Lost Votes</th>';
 		for(var i in weakList)
 			{
 		str+='<tr>';
 		str+='<td>'+weakList[i].name+'</td>';
-		if(weakList[i].localbodyName !="")
-		str+='<td>'+weakList[i].localbodyName+'</td>';
-		else
-			str+='<td>-</td>';
+		if(result[0].constituencyType != "URBAN"){
+			if(weakList[i].localbodyName !="")
+			  str+='<td>'+weakList[i].localbodyName+'</td>';
+			else
+			  str+='<td>-</td>';
+		}
 		if(weakList[i].location !="")
 		str+='<td>'+weakList[i].location+'</td>';
 		else
@@ -211,10 +226,11 @@ function buildPollingLowPercentageForBooths(result)
 		str+='<td>'+weakList[i].villagesCovered+'</td>';
 		else
 		str+='<td>-</td>';
-		str+='<td>'+weakList[i].strongPollingPercentVOList[0].partyTotalvotes+'</td>';
+		
 		str+='<td>'+weakList[i].totalVoters+'</td>';
 		str+='<td>'+weakList[i].totalValidVotes+'</td>';
 		str+='<td>'+weakList[i].pollingPercentage.toFixed(2)+'</td>';
+		str+='<td>'+weakList[i].strongPollingPercentVOList[0].partyTotalvotes+'</td>';
 		str+='<td>'+weakList[i].strongPollingPercentVOList[0].partyPercentage.toFixed(2)+'</td>';
 		str+='<td>'+weakList[i].maxValue.toFixed(2)+'</td>';
 		str+='<td>'+weakList[i].rangePercentage+'</td>';
