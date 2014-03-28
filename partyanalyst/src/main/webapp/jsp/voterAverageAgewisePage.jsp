@@ -60,8 +60,8 @@
 </style>
  <BODY>
 
-<div id="mainDiv">
-	<div id="innerDiv" class="container" style="font-family: verdana; font-size: 15px; padding-top: 36px;"></div>
+<div id="mainDiv" style="min-height:400px;">
+	<div id="innerDiv" class="container" style="font-family: verdana; font-size: 15px; padding-top: 36px;"><img style="margin-top:100px;;margin-left:400px;" src="images/icons/goldAjaxLoad.gif"></div>
 </div>
 
 

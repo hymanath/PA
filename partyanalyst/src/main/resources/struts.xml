@@ -6738,6 +6738,24 @@
 				<param name="root">url</param>				
 			</result> 
 		</action>
+		
+		 <action name="getAllCriticalPanchayats" class="stratagicReportsAction" method="getCriticalPanchayatsToAnalyse">
+			<result type="json" name="success">
+				<param name="root">criticalPanchayats</param>				
+			</result> 
+		</action>
+		
+		 <action name="criticalPanchayatsAction" class="stratagicReportsAction" method="criticalPanchayats">
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="success">/jsp/criticalPanchayats.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp</result>			
+		</action>
+		
+		<action name="partyHighLowPollingAction" class="stratagicReportsAction" method="criticalPanchayats">
+			<result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="success">/jsp/partyHighLow.jsp</result>	
+			<result name="input">/jsp/loginForm.jsp</result>			
+		</action>
 </package>
 		
 </struts>      

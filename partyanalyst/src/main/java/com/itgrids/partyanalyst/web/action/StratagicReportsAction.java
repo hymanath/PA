@@ -2,8 +2,10 @@ package com.itgrids.partyanalyst.web.action;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,6 @@ import com.itgrids.partyanalyst.dto.PartyResultsVerVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
-import com.itgrids.partyanalyst.dto.StratagicReportInputVO;
 import com.itgrids.partyanalyst.dto.StrategyVO;
 import com.itgrids.partyanalyst.dto.VoterCountVO;
 import com.itgrids.partyanalyst.dto.VoterDensityWithPartyVO;
@@ -43,7 +44,6 @@ import com.itgrids.partyanalyst.service.IStratagicReportsService;
 import com.itgrids.partyanalyst.service.IStratagicReportsServicePdf;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
-import com.itgrids.partyanalyst.util.IWebConstants;
 import com.itgrids.partyanalyst.utils.IConstants;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -91,6 +91,9 @@ public class StratagicReportsAction extends ActionSupport implements
 	private String url;
 	List<PartyPositionVO> boothwiseResult;
 	private IBoothwisePollingStratagicService boothwisePollingStratagicService;
+	private List<Object> criticalPanchayats;
+	private Long constituencyId;
+	private List<SelectOptionVO> locationIds;
 	
 	@Autowired
 	private IStratagicReportsServicePdf stratagicReportsServicePdf;
@@ -377,6 +380,26 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 	public void setStrategyModelTargetingService(
 			IStrategyModelTargetingService strategyModelTargetingService) {
 		this.strategyModelTargetingService = strategyModelTargetingService;
+	}
+	
+	public void setCriticalPanchayats(List<Object> criticalPanchayats) {
+		this.criticalPanchayats = criticalPanchayats;
+	}
+	
+	public List<SelectOptionVO> getLocationIds() {
+		return locationIds;
+	}
+	public void setLocationIds(List<SelectOptionVO> locationIds) {
+		this.locationIds = locationIds;
+	}
+	public List<Object> getCriticalPanchayats() {
+		return criticalPanchayats;
+	}
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
 	}
 	@Override
 	public String execute() throws Exception {
@@ -941,4 +964,58 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 		
 		return Action.SUCCESS;
 	}*/
+	
+	public String getCriticalPanchayatsToAnalyse(){
+		try{
+			jObj = new JSONObject(getTask());
+		
+		  criticalPanchayats = strategyModelTargetingService.getCriticalPanchayats(jObj.getLong("constituencyId"));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getCriticalPanchayats() ",e);
+			return Action.ERROR;
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String criticalPanchayats(){
+		session = request.getSession();
+		String type = request.getParameter("type");
+		RegistrationVO regvo = (RegistrationVO) session.getAttribute("USER");
+		List<SelectOptionVO> userAccessConstiList = null;
+		if(regvo == null)
+			return "input";
+	  if(regvo.getAccessType() != null){
+		if("MLA".equalsIgnoreCase(regvo.getAccessType())){
+			userAccessConstiList = new ArrayList<SelectOptionVO>();
+			SelectOptionVO constituencyVo = new SelectOptionVO();
+			Long constiId = Long.valueOf(regvo.getAccessValue().trim());
+			constituencyVo.setName(crossVotingEstimationService.getConstituencyName(constituencyId));
+			constituencyVo.setId(constiId);
+			userAccessConstiList.add(constituencyVo);
+		}else if("STATE".equalsIgnoreCase(regvo.getAccessType()) || "MP".equalsIgnoreCase(regvo.getAccessType()) || "DISTRICT".equalsIgnoreCase(regvo.getAccessType()) || "COUNTRY".equalsIgnoreCase(regvo.getAccessType())){
+			Long electionYear = new Long(IConstants.PRESENT_ELECTION_YEAR);
+			Long electionTypeId = new Long(IConstants.ASSEMBLY_ELECTION_TYPE_ID);
+			userAccessConstiList = crossVotingEstimationService.getConstituenciesForElectionYearAndTypeWithUserAccess(regvo.getRegistrationID(),electionYear,electionTypeId);
+		}else{
+			return Action.ERROR;
+		}
+		Set<Long> constituencyIds = new HashSet<Long>();
+		for(SelectOptionVO vo:userAccessConstiList){
+			constituencyIds.add(vo.getId());
+		}
+		if(type != null && type.equalsIgnoreCase("criticalPanchayats")){
+		    constituenciesList =  crossVotingEstimationService.getRuralAndRurlaUrbanConstis(constituencyIds);
+		}else{
+			constituenciesList = userAccessConstiList;
+		}
+		if(constituenciesList.size() == 1){
+			constituencyId = constituenciesList.get(0).getId();
+		}
+	  }else{
+		  return Action.ERROR;
+	  }
+		
+		return Action.SUCCESS;
+	}
 }
