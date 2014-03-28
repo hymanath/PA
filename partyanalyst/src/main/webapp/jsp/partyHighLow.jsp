@@ -7,6 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Polling High,Party Weak and Polling Low,Party Strong</title>
+ 	
  <style>
   #mainDiv{
    min-height:400px;
@@ -91,7 +92,7 @@ color:#333333;
 	  try{
 		  buildCriticalPanchayats(result);
 		  }catch(e){
-		   
+
 		  }
 		   $("#ajaxImage").hide();
    });
@@ -99,9 +100,9 @@ color:#333333;
    function buildCriticalPanchayats(result){
 	   if(result != null){
 	       if(type == "reducePolling")
-		     buildPollingLowPercentageForBooths(result); 
-		   else
-		     buildPollingHighPercentageForBooths(result);
+		      buildPollingHighPercentageForBooths(result);
+		   else		    
+			 buildPollingLowPercentageForBooths(result); 
 	   }else{
 	       $("#ajaxImage").hide();
 	   }
@@ -178,7 +179,6 @@ function buildPollingHighPercentageForBooths(result)
 
 function buildPollingLowPercentageForBooths(result)
 {
-
 		var divEle = document.getElementById("partyLowTable");
 		var weakList = result[0].weakPollingPercentVOList;
 		if(weakList == null || weakList.length ==0){
@@ -188,9 +188,9 @@ function buildPollingLowPercentageForBooths(result)
 		 }
 		var str = '';
 		str+='<div class="widget green">';
-		str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
-		str+='<span>'+strongList[0].weakPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
-		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling Low,' +weakList[0].strongPollingPercentVOList[0].partyName+' Party Strong</h4>';
+        str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
+        str+='<span>'+weakList[0].strongPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
+        str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling Low,' +weakList[0].strongPollingPercentVOList[0].partyName+' Party Strong</h4>';
 		str+='<div style="overflow-x:scroll;"><table id="pollingPerLow"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
 		str+='<th>Booth</th>';
 		if(result[0].constituencyType != "URBAN")
@@ -243,5 +243,6 @@ function buildPollingLowPercentageForBooths(result)
 
 }
 </script>
+
 </body>
 </html>
