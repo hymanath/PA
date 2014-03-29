@@ -514,26 +514,16 @@ lable{line-height:40px;}
 		
 		
 		<div class="row-fluid">
-		    <div class="span4 widget divHeightClass" style="margin-left:7px;">
-				<h2> CRITICAL PANCHAYATS REPORT </h2>
-				<fieldset>
-					View All Critical Panchayats
-					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewCriticalPanchayats();" style="float:right;"></input>
-				</fieldset>
+		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;"> CRITICAL PANCHAYATS REPORT <div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewCriticalPanchayats();" style="float:right;"></input></div></h2>
 			</div>
 			
-		    <div class="span4 widget divHeightClass" style="margin-left:7px;">
-				<h2> REDUCE POLLING ANALYSIS</h2>
-				<fieldset>	
-			      <input type="button" value="View" class="btn btn-small btnStyle" onCLick="reducePolling();" style="float:right;"></input>
-				</fieldset>
+		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;"> REDUCE POLLING ANALYSIS <div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="reducePolling();" style="float:right;"></input></div></h2>
 			</div>
 			
-			<div class="span4 widget divHeightClass" style="margin-left:7px;">
-			  <h2> INCREASE POLLING ANALYSIS </h2>
-				<fieldset>	
-			      <input type="button" value="View" class="btn btn-small btnStyle" onCLick="increasePolling();" style="float:right;"></input>
-				</fieldset>
+			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+			  <h2 style="padding-bottom:35px;"> INCREASE POLLING ANALYSIS <div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="increasePolling();" style="float:right;"></input></div></h2>
 			</div>
 			<div class="span4 widget divHeightClass" style="margin-left:7px;">
 				<h2>VOTER AVERAGE AGE REPORT </h2>
