@@ -125,7 +125,7 @@ function buildPollingHighPercentageForBooths(result)
 		 }
 		var str = '';
 		str+='<div class="widget green">';
-		str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
+		str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Constituency Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
 		str+='<span>'+strongList[0].weakPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling High,' +strongList[0].weakPollingPercentVOList[0].partyName+' Party Weak</h4>';
 		str+='<div style="overflow-x:scroll;"><table id="pollingPerHigh"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
@@ -188,7 +188,7 @@ function buildPollingLowPercentageForBooths(result)
 		 }
 		var str = '';
 		str+='<div class="widget green">';
-        str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
+        str+='<div style="font-family:verdana;font-size:13px;margin-left:2px;font-weight:bold;"><span>OverAll Constituency Avg Polling Percentage : '+result[0].pollingPercentage+'</span>&nbsp&nbsp;';
         str+='<span>'+weakList[0].strongPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
         str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling Low,' +weakList[0].strongPollingPercentVOList[0].partyName+' Party Strong</h4>';
 		str+='<div style="overflow-x:scroll;"><table id="pollingPerLow"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
