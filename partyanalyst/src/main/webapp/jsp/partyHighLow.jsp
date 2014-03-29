@@ -6,8 +6,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Polling High,Party Weak and Polling Low,Party Strong</title>
- 	
+<c:if test="${type == 'reducePolling'}"> 
+<title> Polling High,Party Weak	</title>
+</c:if> 
+<c:if test="${type == null || type == ''}"> 
+<title> Polling Low,Party Strong</title>
+</c:if> 
  <style>
   #mainDiv{
    min-height:400px;
