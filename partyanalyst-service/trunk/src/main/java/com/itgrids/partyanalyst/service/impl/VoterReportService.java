@@ -5740,7 +5740,7 @@ public class VoterReportService implements IVoterReportService{
 	{
 		ResultStatus resultStatus = new ResultStatus();
 		try{
-			
+		 LOG.warn("updateVoterNamesAndRelativeNames --> SI ->"+startIndex+" VC ->"+voterCount);	
 		 Integer maxIndex = 100000;
 		 if(voterCount > 0)
 		 {
@@ -5751,8 +5751,9 @@ public class VoterReportService implements IVoterReportService{
 							break;
 					if(maxIndex >= Integer.valueOf(voterCount.intValue()))
 							maxIndex = Integer.valueOf(voterCount.intValue()) - 1;
-						
-					 List<Object[]> list = voterDAO.getVoterNames(startIndex,maxIndex);
+					
+					 LOG.warn("Start Index -->"+startIndex);
+					 List<Object[]> list = voterDAO.getVoterNames(startIndex,100000);
 					 if(list != null && list.size() > 0)
 					 {
 							 for(Object[]  params : list)
@@ -5772,6 +5773,7 @@ public class VoterReportService implements IVoterReportService{
 								 
 							 }
 					 }
+					 LOG.warn(maxIndex+" --> Records updated");
 					 startIndex = maxIndex;
 					 maxIndex = maxIndex + 100000;
 			 	}catch(Exception e)
