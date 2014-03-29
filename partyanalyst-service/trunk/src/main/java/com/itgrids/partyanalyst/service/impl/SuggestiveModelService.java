@@ -4656,10 +4656,11 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  
 				  }
 				}
+				AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,partyId);
 				if(resultMap != null && resultMap.size() > 0)
-					getPartyPerformanceForPanchayat1(resultMap,partyPositionVO, partyId,electionId); 
+					getPartyPerformanceForPanchayat1(resultMap,partyPositionVO, partyId,electionId,alliancePartiesVO); 
 				if(resultMap1 != null && resultMap1.size() > 0)
-				  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,boothIdMap);
+				  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,boothIdMap,alliancePartiesVO);
 				
 				
 				}catch (Exception e) {
@@ -4848,7 +4849,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			}
 			
 			
-			public void getPartyPerformanceForPanchayat1(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId, Long electionId)
+			public void getPartyPerformanceForPanchayat1(Map<Long,Map<Long,Long>> resultMap,PartyPositionVO partyPositionVO, Long selectedpartyId, Long electionId,AlliancePartyResultsVO alliancePartiesVO)
 			{
 				try{
 					
@@ -4883,7 +4884,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  for(Long id : boothIdsMap.keySet())
 					panchayatTotalVotersMap.put(id, boothDAO.getTotalVotesByBoothIdsList(boothIdsMap.get(id)));
 				}
-				 AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,selectedpartyId);
+				 
 				//panchayat start	
 				 for(Long id:resultMap.keySet())
 				 {
@@ -4967,7 +4968,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				}
 			}
 			
-			 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,Map<Long,List<Long>> boothIdMap)
+			 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,Map<Long,List<Long>> boothIdMap,AlliancePartyResultsVO alliancePartiesVO)
 			 {
 				 try{
 					 Long localbodytotalVoters = 0l;
@@ -4994,7 +4995,15 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 								 comparePartyTotal = partyMap1.get(partysId);
 								  
 							  }
-						   
+							  if(selectedPartyTotal == null){
+									 
+								  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
+									  selectedPartyTotal = 0L;
+								  else
+									  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
+										  if(selectedPartyTotal == null || selectedPartyTotal.longValue() == 0l)
+										  selectedPartyTotal = partyMap1.get(alianceParty.getId());
+							  }
 						  if(selectedPartyTotal == null)
 							  selectedPartyTotal = 0L;
 						  if(comparePartyTotal == null)
