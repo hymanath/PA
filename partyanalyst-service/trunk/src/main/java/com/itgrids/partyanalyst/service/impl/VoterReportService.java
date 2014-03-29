@@ -5774,7 +5774,7 @@ public class VoterReportService implements IVoterReportService{
 							 }
 					 }
 					 LOG.warn(maxIndex+" --> Records updated");
-					 startIndex = maxIndex;
+					 startIndex = startIndex + 100000;
 					 maxIndex = maxIndex + 100000;
 			 	}catch(Exception e)
 			 	{
