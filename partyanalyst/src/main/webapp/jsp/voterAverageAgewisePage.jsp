@@ -8,7 +8,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Voting Trendz</title>
+<title>Voter Average Age Report </title>
 
 <!-- YUI Dependency files (Start) -->
 
@@ -119,14 +119,14 @@ var reqfieldsArr = new Array();
 function buildAverageVoterDetails(results){
 var str = "";
 
-	str += '<h4 style="padding-bottom: 27px; margin-left: 163px;">'+results.name+' Constituemct Voter Average Age Report</h4>';
+	str += '<h4 style="padding-bottom: 27px; margin-left: 163px;">'+results.name+' Constituency Voter Average Age Report</h4>';
 	str += "<h4 style='margin-left: 28px;'>Constituency Wise Voter Average Age Report</h4>";
 	str += "<div class='form-horizontal boothResults ' name='boothSelection' style='display:block;margin: 30px 30px;'>";
 	str += "<table  class='table table-bordered' style='margin-bottom: -8px; margin-top: -20px;style='font-size:small''>";
 	str += '<tr>';
 	str += '<th>Constituency</th>';
 	str += '<th>Total Voters</th>';
-	str += '<th>Avg Voters</th>';
+	str += '<th>Average Voters Age</th>';
 	str += '</tr>';
 	str += "<tr>";
 	str += "<td>"+results.name+"</td>";
@@ -146,7 +146,7 @@ str += '</div>';
 			str += '<tr>';
 			str += '<th>Mandal/Muncipality</th>';
 			str += '<th>Total Voters</th>';
-			str += '<th>Avg Voters</th>';
+			str += '<th>Average Voters Age</th>';
 			str += '</tr>';
 			for(var i in results.selectOptionsList){
 				str += "<tr>";
@@ -171,7 +171,7 @@ str += '</div>';
 			str += '<th>Mandal/Muncipality</th>';
 			str += '<th>Pancayat</th>';
 			str += '<th>Total Voters</th>';
-			str += '<th>Avg Voters</th>';
+			str += '<th>Average Voters Age</th>';
 			str += '</tr>';
 			
 			
@@ -228,7 +228,7 @@ str += '</div>';
 			str += '<th>Mandal/Muncipality</th>';
 			str += '<th>Booth</th>';
 			str += '<th>Total Voters</th>';
-			str += '<th>Avg Voters</th>';
+			str += '<th>Average Voters Age</th>';
 			str += '</tr>';
 			for(var i in results.selectOptionsList2)
 			{
