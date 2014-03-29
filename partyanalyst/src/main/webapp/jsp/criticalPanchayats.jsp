@@ -181,7 +181,7 @@ color:#333333;
         // Set chart options
 		var title = 'Strategy Suggestive Model'; 
         var options = {'title':title,
-                       'width':650,
+                       'width':800,
                        'height':400,
 					     is3D: true};
 
