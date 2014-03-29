@@ -1867,7 +1867,7 @@ public class StrategyModelTargetingService implements
     		   size= size+1;
     		   
     	   }
-    	   highCriticalPrior.setName("Highly Critical Panchayaths");
+    	   highCriticalPrior.setName("Highly Critical Panchayats");
     	   highCriticalPrior.setTotalVoters(Long.valueOf(count));
     	   highCriticalPrior.setOpportunityPerc(gainablePerc/count);
     	   highCriticalPrior.setOpportunity(gainableVotes);
@@ -1891,7 +1891,7 @@ public class StrategyModelTargetingService implements
 	     		  size= size+1;
 	     	   }
 	     	 if(count > 0){
-	     	  criticalPrior.setName("Critical Panchayaths");
+	     	  criticalPrior.setName("Critical Panchayats");
 	     	  criticalPrior.setTotalVoters(Long.valueOf(count));
 	     	  criticalPrior.setOpportunityPerc(gainablePerc/count);
 	     	  criticalPrior.setOpportunity(gainableVotes);
@@ -1916,7 +1916,7 @@ public class StrategyModelTargetingService implements
 		  		 size= size+1;
 		  	   }
 		  	 if(count > 0){
-		  	   mediumPrior.setName("Medium Panchayaths");
+		  	   mediumPrior.setName("Medium Panchayats");
 		  	   mediumPrior.setTotalVoters(Long.valueOf(count));
 		  	   mediumPrior.setOpportunityPerc(gainablePerc/count);
 		  	   mediumPrior.setOpportunity(gainableVotes);
@@ -1941,7 +1941,7 @@ public class StrategyModelTargetingService implements
 				   size= size+1;
 			   }
 			  if(count > 0){
-			   easyPrior.setName("Easy Panchayaths");
+			   easyPrior.setName("Easy Panchayats");
 			   easyPrior.setTotalVoters(Long.valueOf(count));
 			   easyPrior.setOpportunityPerc(gainablePerc/count);
 			   easyPrior.setOpportunity(gainableVotes);
@@ -1966,7 +1966,7 @@ public class StrategyModelTargetingService implements
 				   size= size+1;
 			   }
 			  if(count > 0){
-			   goodPrior.setName("Good Panchayaths");
+			   goodPrior.setName("Good Panchayats");
 			   goodPrior.setTotalVoters(Long.valueOf(count));
 			   goodPrior.setOpportunityPerc(gainablePerc/count);
 			   goodPrior.setOpportunity(gainableVotes);
@@ -2645,7 +2645,7 @@ public class StrategyModelTargetingService implements
 						  preface1.setAlignment(Element.PTABLE);
 						  preface1.add( new Paragraph(" ") );
 						  preface1.add( new Paragraph(" ") );
-						  preface1.add( new Paragraph("List of the Top Panchayaths based on the Caste Assumption (Please note that these Panchayaths are in order of priority",calibriNormal));
+						  preface1.add( new Paragraph("List of the Top Panchayats based on the Caste Assumption (Please note that these Panchayats are in order of priority",calibriNormal));
 						  preface1.add( new Paragraph("which is though not the final list is though not the final list, you can find the full & final list in \"START HERE\" Section)",calibriNormal));
 						  preface1.add( new Paragraph(" ") );
 						  preface1.add( new Paragraph(" ") );
@@ -3197,7 +3197,7 @@ public class StrategyModelTargetingService implements
 						Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 						subHeading.setColor(new BaseColor(69,109,142));
 						Font calibriBold = FontFactory.getFont("Calibri",9,Font.BOLD);
-				      preface.add( new Paragraph("Panchayaths – Top Priority & Opportunity",subHeading));
+				      preface.add( new Paragraph("Panchayats – Top Priority & Opportunity",subHeading));
 				      preface.add( new Paragraph(" ") );
 				      document.add(preface);
 				      table.setHorizontalAlignment(Element.ALIGN_LEFT);
@@ -3343,7 +3343,7 @@ public class StrategyModelTargetingService implements
 				  	  table.addCell(cell);
 					  
 				  	  
-				  	  cell = new PdfPCell(new Phrase("No of Panchayaths",style1));
+				  	  cell = new PdfPCell(new Phrase("No of Panchayats",style1));
 				  	  cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				  	  cell.setBackgroundColor(BaseColor.YELLOW);
 				  	cell.setPadding(padding);
@@ -3533,16 +3533,16 @@ public class StrategyModelTargetingService implements
 			  PiePlot plot = (PiePlot)chart.getPlot();
 			  for(int i=0;i<panchayatsClassification.size();i++){
 				   switch(i){
-				    case 0:plot.setSectionPaint("Highly Critical Panchayaths",new Color(255, 0, 0));
-				           plot.setExplodePercent("Highly Critical Panchayaths", 0.08);
+				    case 0:plot.setSectionPaint("Highly Critical Panchayats",new Color(255, 0, 0));
+				           plot.setExplodePercent("Highly Critical Panchayats", 0.08);
 				    	   break;
-				    case 1: plot.setSectionPaint("Critical Panchayaths",new Color(204, 102, 0));
+				    case 1: plot.setSectionPaint("Critical Panchayats",new Color(204, 102, 0));
 				    	   break;
-				    case 2:plot.setSectionPaint("Medium Panchayaths",new Color(255, 153, 102));
+				    case 2:plot.setSectionPaint("Medium Panchayats",new Color(255, 153, 102));
 				    	   break;
-				    case 3:plot.setSectionPaint("Easy Panchayaths", new Color(51, 153, 255));
+				    case 3:plot.setSectionPaint("Easy Panchayats", new Color(51, 153, 255));
 				    	   break;
-				    case 4:plot.setSectionPaint("Good Panchayaths", new Color(0, 153, 0));
+				    case 4:plot.setSectionPaint("Good Panchayats", new Color(0, 153, 0));
 				    	   break;
 
 	             }
