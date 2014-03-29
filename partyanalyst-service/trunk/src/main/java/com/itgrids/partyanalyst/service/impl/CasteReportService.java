@@ -1449,20 +1449,21 @@ public class CasteReportService implements ICasteReportService{
 			    	dataRow.createCell(6).setCellValue(tehsil);		
 			    	dataRow.createCell(7).setCellValue(districtName);
 			    }
-	    	   try {
-	    		   	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
-	    	        FileOutputStream out =
-	    	                new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_voterAddressExcel.xls"));
-	    	        workbook.write(out);
-	    	        out.close();
-	    	        System.out.println("Excel written successfully..");
-	    	         
-	    	    } catch (FileNotFoundException e) {
-	    	        e.printStackTrace();
-	    	    } catch (IOException e) {
-	    	        e.printStackTrace();
-	    	    } 
-		   }
+	    	  }
+		    
+		    try {
+    		   	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+    	        FileOutputStream out =
+    	                new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_voterAddressExcel.xls"));
+    	        workbook.write(out);
+    	        out.close();
+    	        System.out.println("Excel written successfully..");
+    	         
+    	    } catch (FileNotFoundException e) {
+    	        e.printStackTrace();
+    	    } catch (IOException e) {
+    	        e.printStackTrace();
+    	    } 
 		    
 		}
 		catch(Exception e)
