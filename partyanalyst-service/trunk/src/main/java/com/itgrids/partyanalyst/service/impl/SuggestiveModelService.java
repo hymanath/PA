@@ -4659,7 +4659,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				if(resultMap != null && resultMap.size() > 0)
 					getPartyPerformanceForPanchayat1(resultMap,partyPositionVO, partyId,electionId); 
 				if(resultMap1 != null && resultMap1.size() > 0)
-				  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,booths);
+				  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,boothIdMap);
 				
 				
 				}catch (Exception e) {
@@ -4967,16 +4967,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				}
 			}
 			
-			 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,List<Long> localbodyboothIds)
+			 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,Map<Long,List<Long>> boothIdMap)
 			 {
 				 try{
 					 Long localbodytotalVoters = 0l;
-					 if(localbodyboothIds != null && localbodyboothIds.size() > 0)
-				     localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(localbodyboothIds).get(0);	
+					
+				    	
 					 if(resultMap1 != null)
 					 {
 					 for(Long localbodyId : resultMap1.keySet())
 					 {
+						 localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(boothIdMap.get(localbodyId)).get(0);
 						 	String localbodyName = localElectionBodyDAO.getLocalElectionBodyName(localbodyId);
 							Map<Long,Long> partyMap1 = resultMap1.get(localbodyId);
 							Long totalVotes = 0L;
@@ -7307,7 +7308,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			if(resultMap != null && resultMap.size() > 0)
 				getPartyPerformanceForPanchayatNew(resultMap,pancResultList,prpEffect,electionId,alliancePartiesVO); 
 			if(resultMap1 != null && resultMap1.size() > 0)
-				getPartyPerformanceForLocalBodyNew(pancResultList,resultMap1,booths,prpEffect,electionId,alliancePartiesVO);
+				getPartyPerformanceForLocalBodyNew(pancResultList,resultMap1,boothIdMap,prpEffect,electionId,alliancePartiesVO);
 			
 			
 			}catch (Exception e) {
@@ -7393,16 +7394,17 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 			 LOG.error(" Exception Occured in getPartyPerformanceForPanchayatNew() method, Exception - ",e);
 			}
 		}
-	  public void getPartyPerformanceForLocalBodyNew(List<PartyPositionVO> pancResultList,Map<Long,Map<Long,Long>> resultMap1,List<Long> localbodyboothIds,Map<Long,PartyEffectVO> prpEffect,Long electionId,AlliancePartyResultsVO alliancePartiesVO)
+	  public void getPartyPerformanceForLocalBodyNew(List<PartyPositionVO> pancResultList,Map<Long,Map<Long,Long>> resultMap1,Map<Long,List<Long>> boothIdMap,Map<Long,PartyEffectVO> prpEffect,Long electionId,AlliancePartyResultsVO alliancePartiesVO)
 		 {
 			 try{
 				 Long localbodytotalVoters = 0l;
-				 if(localbodyboothIds != null && localbodyboothIds.size() > 0)
-			     localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(localbodyboothIds).get(0);	
+				 
+			     
 				 if(resultMap1 != null)
 				 {
 				 for(Long localbodyId : resultMap1.keySet())
 				 {
+					 localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(boothIdMap.get(localbodyId)).get(0);	
 					 	String localbodyName = localElectionBodyDAO.getLocalElectionBodyName1(localbodyId);
 						Map<Long,Long> partyMap1 = resultMap1.get(localbodyId);
 						Long totalVotes = 0L;

@@ -559,7 +559,7 @@ public class StrategyModelTargetingService implements
 		}
 		if(resultMap1 != null && resultMap1.size() > 0){
 			//getting results for municipalities
-		  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,booths,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList);
+		  getPartyPerformanceForLocalBody(partyPositionVO, partyId,resultMap1,boothIdMap,partyEffect,alliancePartiesVO,effectPartyId,effectElectionId,currentResult,pancResultList);
 		}
 		
 		}catch (Exception e) {
@@ -856,16 +856,16 @@ public class StrategyModelTargetingService implements
 		 
 	 }
 	 
-	 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,List<Long> localbodyboothIds,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
+	 public void getPartyPerformanceForLocalBody(PartyPositionVO partyPositionVO, Long selectedpartyId,Map<Long,Map<Long,Long>> resultMap1,Map<Long,List<Long>> boothIdMap,Map<Long,PartyEffectVO> partyEffect,AlliancePartyResultsVO alliancePartiesVO,Long effectPartyId,Long effectElectionId,Map<Long,Double> currentResult,List<PartyPositionVO> pancResultList)
 	 {
 		 try{
 			 Long localbodytotalVoters = 0l;
-			 if(localbodyboothIds != null && localbodyboothIds.size() > 0)
-		     localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(localbodyboothIds).get(0);	
+		     
 			 if(resultMap1 != null)
 			 {
 			 for(Long localbodyId : resultMap1.keySet())
 			 {
+				 localbodytotalVoters = boothDAO.getTotalaVotesByBoothIds(boothIdMap.get(localbodyId)).get(0);	
 				 String localbodyName = localElectionBodyDAO.getLocalElectionBodyName1(localbodyId);
 					Map<Long,Long> partyMap1 = resultMap1.get(localbodyId);
 					Long totalVotes = 0L;
