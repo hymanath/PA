@@ -1022,7 +1022,7 @@ lable{line-height:40px;}
 	    if($(this).val() == "Select Constituency" || $(this).val() == "Select")
 		   $(this).val("");
 	  });*/
-
+	 $("#voterAverageAgeId option[value='0']").remove();
 });
 </script>
 <script type="text/javascript">
