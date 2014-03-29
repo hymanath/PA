@@ -4497,7 +4497,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					if(selectedPartyTotal == null)
 					{
 						 AlliancePartyResultsVO alliancePartiesVO = staticDataService.getAlliancePartiesByElectionAndParty(electionId,selectedpartyId);
-						  if(alliancePartiesVO.getAllianceParties() == null)
+						  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
 							  selectedPartyTotal = 0L;
 						  else
 							  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
@@ -4905,7 +4905,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					  
 				  if(selectedPartyTotal == null){
 					 
-					  if(alliancePartiesVO.getAllianceParties() == null)
+					  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
 						  selectedPartyTotal = 0L;
 					  else
 						  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
@@ -7337,7 +7337,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					 
 				if(selectedPartyTotal == null){
 					 
-					  if(alliancePartiesVO.getAllianceParties() == null)
+					  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
 						  selectedPartyTotal = 0L;
 					  else
 						  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
@@ -7415,7 +7415,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 						Long selectedPartyTotal = partyMap1.get(872l);
 						if(selectedPartyTotal == null){
 							 
-							  if(alliancePartiesVO.getAllianceParties() == null)
+							  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
 								  selectedPartyTotal = 0L;
 							  else
 								  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
@@ -7868,7 +7868,7 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				  
 			  if(selectedPartyTotal == null){
 				 
-				  if(alliancePartiesVO.getAllianceParties() == null)
+				  if(alliancePartiesVO == null || alliancePartiesVO.getAllianceParties() == null)
 					  selectedPartyTotal = 0L;
 				  else
 					  for(SelectOptionVO alianceParty:alliancePartiesVO.getAllianceParties())
