@@ -1,6 +1,5 @@
 package com.itgrids.voterdata.service;
 import java.io.IOException;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,12 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.itgrids.voterdata.util.IConstants;
-
-
-
-
 
 public class UpdateMobileNos {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
@@ -32,7 +26,7 @@ public class UpdateMobileNos {
 		Long userId = 1l;
 		try{
 					Class.forName("com.mysql.jdbc.Driver");
-				   conn = DriverManager.getConnection(DB_URL,USER,PASS);
+					conn = DriverManager.getConnection(DB_URL,USER,PASS);
 		    		stmt = conn.createStatement();
 		    		String districtarr[] = IConstants.DISTRICT_IDS.split(",");
 		    		for(String distict : districtarr)
