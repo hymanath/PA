@@ -13,6 +13,7 @@ public class ReadMobileData {
 	public static void main(String[] args) {
 		try{
 			ReadMobileData readMobileData = new ReadMobileData();
+
 			File districtFolder = new File(args[0]);
 			{
 				if(districtFolder.isDirectory())
@@ -21,7 +22,7 @@ public class ReadMobileData {
 					if(file.isDirectory())
 					{
 						try{
-							readMobileData.readAndUpdateMobileDataInAFolder(file.getAbsolutePath());
+							readMobileData.mergeFiles(file.getAbsolutePath());
 						}catch(Exception e)
 						{
 							e.printStackTrace();
@@ -56,7 +57,7 @@ public class ReadMobileData {
 					{
 						oldFilesList.add(file.getAbsolutePath());
 						br = new BufferedReader(new FileReader(file));
-						outwriter = new BufferedWriter(new FileWriter(file.getAbsolutePath()+"_alternative"));
+						outwriter = new BufferedWriter(new FileWriter(file.getAbsolutePath()+"_Alternative"));
 						String line = null;
 						StringBuilder sb = new StringBuilder();
 						int index = 0;
@@ -74,6 +75,59 @@ public class ReadMobileData {
 						outwriter.close();
 					}
 				}
+				
+				for(String delfilePath : oldFilesList)
+				{
+					try{
+						File file = new File(delfilePath);
+						file.deleteOnExit();
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+				
+			}
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	public void mergeFiles(String folderPath)
+	{
+		try{
+			File folder = new File(folderPath);
+			
+			if(folder.isDirectory())
+			{
+				System.out.println("Reading Folder For Merging-- "+folderPath);
+				BufferedReader br = null;
+				BufferedWriter outwriter = new BufferedWriter(new FileWriter(folder.getAbsoluteFile()+"_Total"));
+				List<String> oldFilesList = new ArrayList<String>();
+				StringBuilder sb = new StringBuilder();
+				
+				for(File file : folder.listFiles())
+				{
+					if(!file.isDirectory())
+					{
+						oldFilesList.add(file.getAbsolutePath());
+						br = new BufferedReader(new FileReader(file));
+						String line = null;
+						
+						while((line = br.readLine()) != null)
+						{
+							if(line.trim().length() > 0)
+									sb.append(line+"\n");
+						}
+						br.close();
+					}
+					
+				}
+				
+				outwriter.write(sb.toString());
+				outwriter.close();
 				
 				for(String delfilePath : oldFilesList)
 				{
