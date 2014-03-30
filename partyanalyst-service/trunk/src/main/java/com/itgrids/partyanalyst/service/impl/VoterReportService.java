@@ -5711,7 +5711,7 @@ public class VoterReportService implements IVoterReportService{
 			List<SelectOptionVO> voterAvailableConstIds = new ArrayList<SelectOptionVO>();
 			ResultStatus resultStatus = new ResultStatus();
 		  try{
-			List<Object[]> constituencyIds = constituencyDAO.getConstituencyByStateId(1L);
+			List<Object[]> constituencyIds = constituencyDAO.getConstituencyByState(1L);
 			
 			for(Object[] param : constituencyIds)
 			{
