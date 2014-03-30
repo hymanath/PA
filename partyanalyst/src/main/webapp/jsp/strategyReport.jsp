@@ -171,7 +171,7 @@ function getConstituencyList(){
 		<td><input type="button" id="castePerId" value="Caste Percentage" onClick="getSelectedCastes();"  class="btn btn-success"></input></td>
     </tr>
 </table></div>
-<div><input type="button" id="submitId" value="Submit" class="btn btn-success" onClick="submitDetails();"></input></div> 
+<div style="padding-top:20px;"><input type="button" id="submitId" value="Submit" class="btn btn-success" onClick="submitDetails();"></input><img id="ajaxImgShowHide" style="margin-left:20px;display:none;" width="25" height="25" src="images/icons/loading.gif"/></div> 
 </div>
 
 <div id="castesDisplayDiv"></div>
@@ -454,7 +454,8 @@ function submitDetails()
         $("#errorMsgDiv").html("Sum of all weigthages must be equal to 100");
        return;
 	}
-	 
+	 $("#ajaxImgShowHide").show();
+	 $("#submitId").attr("disabled","disabled");	
 	 var jsObj=
 			{	
 				constituencyId:constituencyId,
@@ -493,6 +494,8 @@ function submitDetails()
 		      url : "generateStrategyAction.action",
 		      data : {task:JSON.stringify(jsObj)} ,
 		}).done(function(result){
+		    $("#ajaxImgShowHide").hide();			
+			$("#submitId").removeAttr('disabled');
 	    });
 
 }
