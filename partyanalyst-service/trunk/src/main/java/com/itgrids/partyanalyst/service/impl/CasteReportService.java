@@ -700,7 +700,7 @@ public class CasteReportService implements ICasteReportService{
 					if(hnos == null)
 						hnos = new ArrayList<String>();
 					
-					hnos.add(params[1].toString());	
+					hnos.add(params[1]!= null ?params[1] .toString() : "");	
 					boothHousesMap.put((Long)params[0], hnos);
 				}
 			}
@@ -1454,7 +1454,7 @@ public class CasteReportService implements ICasteReportService{
 		    try {
     		   	String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
     	        FileOutputStream out =
-    	                new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_voterAddressExcel.xls"));
+    	        	new FileOutputStream(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"Reports"+pathSeperator+constituency.getName()+"_voterAddressExcel.xls"));
     	        workbook.write(out);
     	        out.close();
     	        System.out.println("Excel written successfully..");
