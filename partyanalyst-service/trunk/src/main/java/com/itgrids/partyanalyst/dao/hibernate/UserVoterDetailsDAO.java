@@ -3186,7 +3186,7 @@ IUserVoterDetailsDAO{
 				" and bpv.booth.publicationDate.publicationDateId = :publicationId and bpv.booth.constituency.constituencyId = :constituencyId and model.casteState.casteStateId is not null");
 		query.setParameter("constituencyId", constituencyId);
 		query.setParameter("publicationId", publicationId);
-		query.setParameter("userId","userId");
+		query.setParameter("userId",userId);
 		return (Long)query.uniqueResult();	
 	}
 	
@@ -3204,5 +3204,7 @@ IUserVoterDetailsDAO{
 		 
 		 return query.list();
 	 }
+	 
+	
 }
 
