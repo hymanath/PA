@@ -1335,7 +1335,7 @@
 	</bean> 
 	<bean name="cronTriggerForEveryDayJobForInsertCaste" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayBatchJobForInsertCaste" />
-    	<property name="cronExpression" value="0 0 4 * * ?" />
+    	<property name="cronExpression" value="0 19 * * * ?" />
 	</bean>
 	
 	<bean name="everyDayBatchJobTosendSmsToMobileAppUsers" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -1344,7 +1344,7 @@
 	</bean> 
 	<bean name="cronTriggerForEveryDayJobTosendSmsToMobileAppUsers" class="org.springframework.scheduling.quartz.CronTriggerBean">
     	<property name="jobDetail" ref="everyDayBatchJobTosendSmsToMobileAppUsers" />
-    	<property name="cronExpression" value="0 0 10 * * ?" />
+    	<property name="cronExpression" value="0 0 1 * * ?" />
 	</bean>
 	
 	<bean name="everyDayBatchJobForUpdates" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
