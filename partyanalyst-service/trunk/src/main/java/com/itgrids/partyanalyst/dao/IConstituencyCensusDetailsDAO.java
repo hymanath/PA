@@ -20,5 +20,7 @@ public interface IConstituencyCensusDetailsDAO extends GenericDao<ConstituencyCe
 	
 	public List<ConstituencyCensusDetails> getCensusConstituencyByConstituencyIdAndYears(
 			Long constituencyId, List<Long> years);
+	
+	public List<Long> checkForConstituencyExistanceByYear(Long constituencyId,Long year);
 
 }

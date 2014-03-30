@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
@@ -65,5 +66,11 @@ public class ConstituencyCensusDetailsDAO extends GenericDaoHibernate<Constituen
 		return query.list();
 		
 		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Long> checkForConstituencyExistanceByYear(Long constituencyId,Long year) {
+		Object[] params = {constituencyId,year};
+		return getHibernateTemplate().find("select model.constituencyId from ConstituencyCensusDetails model where model.constituencyId = ? and model.year = ? ",params);	
 	}
 }
