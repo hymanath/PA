@@ -4786,8 +4786,9 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			Long constituencyId     = (Long) details[0];
 			String constituencyName = details[1].toString();
 			
-			boolean isExists = checkForConstituencyExistance(constituencyId);
+			//boolean isExists = checkForConstituencyExistance(constituencyId);
 			
+			boolean isExists = checkForConstituencyExistanceForCensusyear(constituencyId,censusYear);
 			if(isExists && update.equalsIgnoreCase(IConstants.FALSE))
 			{
 				if(log.isDebugEnabled()){
@@ -6051,6 +6052,34 @@ public class ConstituencyPageService implements IConstituencyPageService {
 			  sortByPartyName(mptcZptcsList); 
 			
 			  return mptcZptcsList;
+		}
+		
+
+		public boolean checkForConstituencyExistanceForCensusyear(Long constituencyId,Long year)
+		{
+			try
+			{
+			if(log.isDebugEnabled()){
+				log.debug("In the constituencyPageService.setCensusVO() method ........");
+			}
+			//Here we are getting Constitiency Id
+			List<Long>list = constituencyCensusDetailsDAO.checkForConstituencyExistanceByYear(constituencyId,year);
+			
+			if(list != null && list.size() > 0)
+			{
+				Long id = list.get(0);
+				
+				if(id.equals(constituencyId))
+				{
+					return true;
+				}
+			}
+			}catch(Exception ex){
+				log.debug("Exception Occured In the constituencyPageService.checkForConstituencyExistance() method ........");
+				log.error("Exception raised please check the log for details "+ex);
+				return false;
+			}
+			return false;
 		}
 }
 
