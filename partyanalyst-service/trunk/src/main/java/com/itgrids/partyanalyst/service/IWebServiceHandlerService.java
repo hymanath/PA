@@ -2,7 +2,7 @@ package com.itgrids.partyanalyst.service;
 
 import java.util.List;
 
-import com.itgrids.partyanalyst.dto.BasicVO;
+import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
@@ -53,5 +53,7 @@ public interface IWebServiceHandlerService {
 	public String requestForAuthorisationAccesskey(String uniqueCode);
 	
 	public String verificationForAuthorisationAccessKey(String uniqueCode,String accesskey);
+	
+	public EffectedBoothsResponse getInfectedBoothsOfConstituency(Long constituencyId);
 
 }
