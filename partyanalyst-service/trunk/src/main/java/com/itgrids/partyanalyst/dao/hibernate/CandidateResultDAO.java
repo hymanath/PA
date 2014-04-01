@@ -218,4 +218,16 @@ public class CandidateResultDAO extends GenericDaoHibernate<CandidateResult, Lon
 		  queryObject.setParameterList("partyIds",partyIds);
 		return queryObject.list();
 	}
+	
+	public List<Object[]> getPreviousElectionWinningPartyByConstituency(Long constituencyId){
+		Query query = getSession().createQuery(" select model.nomination.party.partyId,model.nomination.party.shortName," +
+				" model.nomination.constituencyElection.constituency.name," +
+				" model.nomination.constituencyElection.election.electionYear from CandidateResult model where model.rank = 1 " +
+				" and model.nomination.constituencyElection.constituency.constituencyId =:constituencyId " +
+				" and nomination.constituencyElection.constituency.electionScope.electionType.electionTypeId=2 order by " +
+				" model.nomination.constituencyElection.election.electionYear desc ");
+		query.setParameter("constituencyId", constituencyId);
+		
+		return query.list();
+	}
 }
