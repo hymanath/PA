@@ -98,12 +98,21 @@ public class CandidateResultDAOHibernateTest extends BaseDaoTestCase {
 	//	System.out.println(list);
 	//	setComplete();
 	}*/
-	public void testGetData2(){	
+	/*public void testGetData2(){	
 		//String marginPercentage,Double marginVotes,String electionYear,String electionType,Long constituencyId,Long candidateId)
 			int result = candidateResultDAO.updateMarginVotesAndPercentage("8.09",68.0d,"2005","MUNCIPALITY",6993l, 49705l);
 			System.out.println(result);
 			setComplete();
 		}
+	*/
+	
+	public void testGetLastElectionWinner(){
+		List<Object[]> list = candidateResultDAO.getPreviousElectionWinningPartyByConstituency(232l);
+		if(list.size()>0){
+			System.out.println(list.get(0)[0]+"--"+list.get(0)[1]+"--"+list.get(0)[2]+"--"+list.get(0)[3]);
+		}
+	}
+	
 	
 	
 }
