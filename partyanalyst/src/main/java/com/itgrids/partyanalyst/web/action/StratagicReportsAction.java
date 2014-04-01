@@ -938,8 +938,7 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 				strategyVO.setVeryStrongMin(jObj.getDouble("veryStrongMin"));
 				strategyVO.setVeryStrongMax(100d);
 			}
-			stratagicReportsServicePdf.buildPdfDelegator(strategyVO);
-			url ="";
+			url = stratagicReportsServicePdf.buildPdfDelegator(strategyVO).toString();
 		}catch (Exception e) {
 			LOG.error("Exception occured in generateReport() ",e);
 		}
