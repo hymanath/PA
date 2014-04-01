@@ -496,6 +496,7 @@ function submitDetails()
 		}).done(function(result){
 		    $("#ajaxImgShowHide").hide();			
 			$("#submitId").removeAttr('disabled');
+			window.open(result);
 	    });
 
 }
