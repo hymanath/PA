@@ -238,7 +238,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 				Map<String,Long> boothsTtlMap=new HashMap<String, Long>();
 				if(boothTotalsList.size()>0){
 					for(Object[] obj:boothTotalsList){
-						boothsTtlMap.put(obj[1].toString(), Long.valueOf(obj[0].toString()));
+						boothsTtlMap.put(obj[1].toString().trim(), Long.valueOf(obj[0].toString()));
 					}
 				}
 				
@@ -251,7 +251,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 						vo = new AgeRangeVO();
 						vo.setPanchayat(namesMap.get(data[0].toString()));
 						vo.setHamlet(data[0].toString());
-						boothTotalVoters=boothsTtlMap.get(vo.getHamlet());
+						boothTotalVoters=boothsTtlMap.get(vo.getHamlet().trim());
 						vo.setTotalVotersInBooth(boothTotalVoters);
 						
 						map.put(data[0].toString(),vo);
