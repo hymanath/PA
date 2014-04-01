@@ -9,10 +9,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.log4j.Logger;
-import org.jfree.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
 import com.itgrids.partyanalyst.dto.WSResultVO;
@@ -382,7 +382,7 @@ public class WebServiceHandler {
 			@PathParam("voterTagDetails") String voterTagDetails)
     {
 		try{
-			Log.error("Entered into updateVoterTagDetails() Method ");
+			LOG.error("Entered into updateVoterTagDetails() Method ");
 			net.sf.json.JSONObject tag = (net.sf.json.JSONObject) net.sf.json.JSONObject
 					.fromObject(voterTagDetails);
 			
@@ -426,7 +426,7 @@ public class WebServiceHandler {
 			@PathParam("voterBoothActivitiesDetails") String voterBoothActivitiesDetails)
     {
 		try{
-			Log.error("Entered into updateVoterBoothActivitiesDetails() Method ");
+			LOG.error("Entered into updateVoterBoothActivitiesDetails() Method ");
 			net.sf.json.JSONObject tag = (net.sf.json.JSONObject) net.sf.json.JSONObject
 					.fromObject(voterBoothActivitiesDetails);
 			
@@ -491,4 +491,23 @@ public class WebServiceHandler {
 			return "Fail";
 		}
 	}
+	
+	@GET
+	@Path("/getSample/{constituencyId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public EffectedBoothsResponse getInfectedBoothsList(@PathParam("constituencyId") Long constituencyId) {
+		try{
+			return webServiceHandlerService.getInfectedBoothsOfConstituency(constituencyId);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in verificationForAuthorisationAccessKey() Method, Exception is ",e);
+			return null;
+		}
+		
+		
+ 
+	}
+	
+	
 }
