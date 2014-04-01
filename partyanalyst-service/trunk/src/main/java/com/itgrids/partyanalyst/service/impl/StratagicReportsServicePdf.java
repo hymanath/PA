@@ -115,8 +115,10 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
      public  String  serialize(String fileName,E v) throws IOException 
 	
 	{
+    	 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+    	 String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
 		FileOutputStream fileOut =
-		         new FileOutputStream("c:\\temp1\\"+fileName+".ser");
+		         new FileOutputStream(path);
 		         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 		         out.writeObject(v);
 		         out.close();
@@ -129,9 +131,11 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	 public static  String  serialize(String fileName,Object obj) throws IOException 
 		
 		{
+		 String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
 			FileOutputStream fileOut =null;
 			try{
-			fileOut =new FileOutputStream("c:\\temp1\\"+fileName+".ser");
+				String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
+			fileOut =new FileOutputStream(path);
 			         ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			         out.writeObject(obj);
 			         out.close();
@@ -154,7 +158,9 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			
 			{
 			
-			 FileInputStream fileIn = new FileInputStream("c:\\temp1\\"+fileName+".ser");
+			  String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+		    	 String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"temp"+pathSeperator+fileName+".ser";
+			 FileInputStream fileIn = new FileInputStream(path);
 		     ObjectInputStream in = new ObjectInputStream(fileIn);
 		     E vos   =  (E) in.readObject();
 		    // System.out.println(vos);
@@ -190,10 +196,10 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		serializationOfObjects(strategyVO,maps);
 		//deserilization of data
 		
-		DeserializationOfObjects(maps);
+		Object url = DeserializationOfObjects(maps,strategyVO.getConstituencyId());
 		//build pdf 
 		
-		return null;
+		return url;
 	}
 	
 	//
@@ -456,18 +462,24 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 		return null;
 	}
 	
-	public Object DeserializationOfObjects(Map<PdfPages,String> maps) 
+	public Object DeserializationOfObjects(Map<PdfPages,String> maps,Long constituencyId) 
 	{
 		 //page-4
 	    //previous trends 
 	/*	Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,15,Font.BOLD);
 		  subHeading.setColor(new BaseColor(69,109,142)); */
 		   Document document=null;
+		   String pathSeperator = System.getProperty(IConstants.FILE_SEPARATOR);
+			 String uidentifier = new Random().nextInt(100000000)+"";
+			 String path = IConstants.STATIC_CONTENT_FOLDER_URL+"Strategy"+pathSeperator+"pdfs";
+			 String filePath = path+pathSeperator+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
+		   String url = "Strategy"+pathSeperator+"pdfs"+pathSeperator+constituencyDAO.get(constituencyId).getName()+"_"+uidentifier+".pdf";
 	try{
 		
+		 
 		//basic pdf blocks
-		   File f =new File("c:\\pdfs\\const");
-		    String filePath = "c:\\pdfs\\const\\aniltest.pdf";
+		   File f =new File(path);
+		   
 
 		    if( !f.exists())
 			f.mkdirs();
@@ -483,7 +495,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 			 
 			 int indentation = 0;
 				
-			   Image image = Image.getInstance(IConstants.IMAGE);
+			   Image image = Image.getInstance(path+pathSeperator+"indeximage.jpg");
 			 float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
 			                - document.rightMargin() - indentation) / image.getWidth()) * 100;
 
@@ -1063,7 +1075,7 @@ public class StratagicReportsServicePdf implements IStratagicReportsServicePdf{
 	 document.close();
 
 	}
-		return null;
+		return url;
 		
 		
 	}
