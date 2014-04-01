@@ -4767,10 +4767,22 @@ public List<Object[]> getVoterDataForBooth(Long boothId, Long publicationId,
 			return query.list();
 		}
 		
-		public List<Object[]> getVoterDetailsOfAConstituency(Long constituencyId, Long publicationDateId, Long userId)
+		/*public List<Object[]> getVoterDetailsOfAConstituency(Long constituencyId, Long publicationDateId, Long userId)
 		{
 			Query query = getSession().createQuery("select distinct model.voter.voterId, model.voter.houseNo, model.voter.name,model.voter.relationshipType,model.voter.relativeName,model.voter.gender,model.voter.age,model.voter.voterIDCardNo,model2.mobileNo  from BoothPublicationVoter model, UserVoterDetails model2 where " +
 					" model.voter.voterId = model2.voter.voterId and model.booth.constituency.constituencyId = :constituencyId and model.booth.publicationDate.publicationDateId = :publicationDateId and model2.user.userId = :userId ");
+			query.setParameter("constituencyId",constituencyId);
+			query.setParameter("publicationDateId",publicationDateId);
+			query.setParameter("userId",userId);
+			return query.list();
+		}*/
+		
+		public List<Object[]> getVoterDetailsOfAConstituency(Long constituencyId, Long publicationDateId, Long userId)
+		{
+			Query query = getSession().createSQLQuery("SELECT DISTINCT V.voter_id,V.house_no,V.name,V.relationship_type,V.relative_name,V.gender,V.age,V.voter_id_card_no,UVD.mobile_no from booth B,booth_publication_voter BPV,voter V " +
+					" LEFT OUTER JOIN user_voter_details UVD ON V.voter_id = UVD.voter_id AND UVD.user_id = :userId WHERE V.voter_id = BPV.voter_id AND B.booth_id = BPV.booth_id AND B.constituency_id = :constituencyId AND " +
+					" B.publication_date_id = :publicationDateId ORDER BY B.booth_id,BPV.serial_no ");
+			
 			query.setParameter("constituencyId",constituencyId);
 			query.setParameter("publicationDateId",publicationDateId);
 			query.setParameter("userId",userId);
