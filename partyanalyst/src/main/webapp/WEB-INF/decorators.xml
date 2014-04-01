@@ -300,6 +300,9 @@
 		<pattern>/boothPollReportAction*</pattern>
 		<pattern>/getVotersAddressAction*</pattern>
 		<pattern>/resetPasswordAction*</pattern>
+		
+		<pattern>/getInfectedBoothsAction*</pattern>
+		
 		<pattern>/criticalPanchayatsAction*</pattern>
 		<pattern>/partyHighLowPollingAction*</pattern>
 		</decorator>
