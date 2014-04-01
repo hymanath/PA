@@ -62,9 +62,13 @@ import com.itgrids.partyanalyst.dao.IVoterCastInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterFamilyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dto.AlliancePartyResultsVO;
+import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
+import com.itgrids.partyanalyst.dto.EffectedBoothsVo;
 import com.itgrids.partyanalyst.dto.HouseHoldsVO;
 import com.itgrids.partyanalyst.dto.ImpFamilesVO;
+import com.itgrids.partyanalyst.dto.InfectedBoothsVO;
 import com.itgrids.partyanalyst.dto.OrderOfPriorityVO;
+import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.PanchayatVO;
 import com.itgrids.partyanalyst.dto.PartyEffectVO;
 import com.itgrids.partyanalyst.dto.PartyPositionVO;
@@ -3808,4 +3812,167 @@ public class StrategyModelTargetingService implements
 		criticalPanchayats.add(priorityList.get(9));
 		return criticalPanchayats;
 	}
+		public EffectedBoothsResponse getPanchayatCategoriesForInfectedBooths(Long constituencyId){
+			StrategyVO strategyVO=new StrategyVO();
+			Map<Long,PartyEffectVO> partyEffect = new HashMap<Long,PartyEffectVO>();
+			Map<Long,Double> currentResult = new HashMap<Long,Double>();
+			
+			strategyVO.setConstituencyId(constituencyId);
+			strategyVO.setPartyId(872l); //TDP PARTY ID
+			List<Long> electionIds=new ArrayList<Long>();
+			electionIds.add(38l);//2009 ELECTION ID
+			electionIds.add(3l);//2004 ELECITON ID
+			
+			strategyVO.setElectionIds(electionIds);
+			strategyVO.setEffectPartyId(662l);//PRP PARTY ID
+			strategyVO.setEffectElectionId(38l);//2009 ELECTION ID
+			
+			strategyVO.setAutoCalculate(true);
+			
+			
+			List<PartyPositionVO>  previousTrends = getPartyPreviousTrends(strategyVO,strategyVO.getConstituencyId(),strategyVO.getPartyId(),strategyVO.getElectionIds(),partyEffect,strategyVO.getEffectPartyId(),strategyVO.getEffectElectionId(),currentResult);
+			
+			List<PartyPositionVO> voList=previousTrends.get(0).getPartyPositionVOList();
+			
+			
+			List<InfectedBoothsVO> levelVOs=new ArrayList<InfectedBoothsVO>();
+			InfectedBoothsVO infvo=null;
+			
+			infvo=new InfectedBoothsVO();
+			infvo.setName("VERY STRONG");
+			levelVOs.add(infvo);
+			
+			infvo=new InfectedBoothsVO();
+			infvo.setName("STRONG");
+			levelVOs.add(infvo);
+			
+			infvo=new InfectedBoothsVO();
+			infvo.setName("OK");
+			levelVOs.add(infvo);
+			
+			for(PartyPositionVO pvo:voList){
+				InfectedBoothsVO infectedVO=getMatchedInfectedLevel(levelVOs,pvo.getName());
+				if(infectedVO!=null){
+					List<PartyPositionVO> pvoList=pvo.getPartyPositionVOList();
+					if(pvoList.size()>0){
+						for(PartyPositionVO temp:pvoList){
+							InfectedBoothsVO infLocal=new InfectedBoothsVO();
+							infLocal.setPanchayatId(temp.getId());
+							infLocal.setName(temp.getName());
+							
+							List<Long> inTtlPanchList=infectedVO.getTotalPanchaytIds();
+							if(inTtlPanchList==null){
+								inTtlPanchList=new ArrayList<Long>();
+								infectedVO.setTotalPanchaytIds(inTtlPanchList);
+							}
+							inTtlPanchList.add(temp.getId());
+							
+							List<InfectedBoothsVO> infectedPanchayats=infectedVO.getPanchayatsList();
+							if(infectedPanchayats==null){
+								infectedPanchayats=new ArrayList<InfectedBoothsVO>();
+								infectedVO.setPanchayatsList(infectedPanchayats);
+							}
+							infectedPanchayats.add(infLocal);
+							
+						}
+					}
+				}
+				
+				
+			}
+			
+			InfectedBoothsVO mainVO=new InfectedBoothsVO();
+			EffectedBoothsVo inputs = new EffectedBoothsVo();
+			
+			List<Long> overAllPIds=new ArrayList<Long>();
+			for(InfectedBoothsVO invo:levelVOs){
+				overAllPIds.addAll(invo.getTotalPanchaytIds());
+			}
+			mainVO.setLevelVOs(levelVOs);
+			mainVO.setOverAllPanchayatIds(overAllPIds);
+			inputs.setPanchayatIds(overAllPIds);
+			
+			List<Object[]> previousElectionWinnersList=candidateResultDAO.getPreviousElectionWinningPartyByConstituency(constituencyId);
+			if(previousElectionWinnersList.size()>0){
+				mainVO.setPartyId(Long.valueOf(previousElectionWinnersList.get(0)[0].toString()));
+				mainVO.setParty(previousElectionWinnersList.get(0)[1].toString());
+				mainVO.setYear(previousElectionWinnersList.get(0)[3].toString());
+				inputs.setWonPartyId(Long.valueOf(previousElectionWinnersList.get(0)[0].toString()));
+			}
+			
+			
+			inputs.setConstId(constituencyId);
+			
+			
+			/*Client client = Client.create();
+	 		WebResource webResource = client
+			   .resource("http://localhost:8080/PartyAnalyst/WebService/getSample/"+constituencyId+"");
+	 		ClientResponse response = webResource.accept("application/json")
+	                   .get(ClientResponse.class);
+	 		if (response.getStatus() != 200) {
+			   throw new RuntimeException("Failed : HTTP error code : "
+				+ response.getStatus());
+			}
+	 		//EffectedBoothsResponse output = response.getEntity(EffectedBoothsResponse.class);
+	 		
+	 		EffectedBoothsResponse output = (EffectedBoothsResponse) response.getEntity(EffectedBoothsResponse.class);
+	 		//List<PartyPositionVO> output = webResource.accept("application/json").get(new GenericType<List<PartyPositionVO>>(){});
+	 		System.out.println("Output from Server .... \n");
+			System.out.println(output);*/
+			
+			
+			List<PanchayatCountVo> list = new ArrayList<PanchayatCountVo>();
+			PanchayatCountVo pvo = null ;
+			pvo = new PanchayatCountVo();
+			pvo.setPanchayatId(101l);
+			pvo.setPanchayatName("ABPalem");
+			List<Long> boothNos = new ArrayList<Long>();
+			boothNos.add(61l);
+			boothNos.add(62l);
+			pvo.setBooths(boothNos);
+			StringBuilder boothParts=new StringBuilder();
+			for(Long booth:boothNos){
+				boothParts.append(booth);
+				boothParts.append(",");
+			}
+			
+			pvo.setBoothsList(boothParts.deleteCharAt(boothParts.length()-1).toString());
+			pvo.setEffectedCount(2);
+			pvo.setEffected(true);
+			list.add(pvo);
+			
+			pvo = new PanchayatCountVo();
+			pvo.setPanchayatId(101l);
+			pvo.setPanchayatName("S.Kota");
+			List<Long> boothNos1 = new ArrayList<Long>();
+			boothNos1.add(121l);
+			boothNos1.add(122l);
+			pvo.setBooths(boothNos1);
+			StringBuilder boothParts1=new StringBuilder();
+			for(Long booth:boothNos1){
+				boothParts1.append(booth);
+				boothParts1.append(",");
+			}
+			pvo.setBoothsList(boothParts1.deleteCharAt(boothParts1.length()-1).toString());
+			pvo.setEffected(true);
+			pvo.setEffectedCount(1);
+			list.add(pvo);
+			
+			
+			EffectedBoothsResponse effectedResponse = new EffectedBoothsResponse();
+			effectedResponse.setPanchayats(list);
+			
+			return effectedResponse;
+			
+		}
+		
+		public InfectedBoothsVO getMatchedInfectedLevel(List<InfectedBoothsVO> invos,String name){
+			for(InfectedBoothsVO invo:invos){
+				if(invo.getName().equalsIgnoreCase(name)){
+					return invo;
+				}
+			}
+			return null;
+		}
+		
 }

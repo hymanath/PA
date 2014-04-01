@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IBoothPublicationVoterDAO;
@@ -19,7 +20,9 @@ import com.itgrids.partyanalyst.dao.IVoterBoothActivitiesDAO;
 import com.itgrids.partyanalyst.dao.IVoterTagDAO;
 import com.itgrids.partyanalyst.dao.IWebServiceBaseUrlDAO;
 import com.itgrids.partyanalyst.dto.CadreInfo;
+import com.itgrids.partyanalyst.dto.EffectedBoothsResponse;
 import com.itgrids.partyanalyst.dto.FlagVO;
+import com.itgrids.partyanalyst.dto.PanchayatCountVo;
 import com.itgrids.partyanalyst.dto.ResultCodeMapper;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.VoterDetailsVO;
@@ -36,6 +39,7 @@ import com.itgrids.partyanalyst.service.ILoginService;
 import com.itgrids.partyanalyst.service.IMailService;
 import com.itgrids.partyanalyst.service.IMobileService;
 import com.itgrids.partyanalyst.service.ISmsService;
+import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.IVoterReportService;
 import com.itgrids.partyanalyst.service.IWebServiceHandlerService;
@@ -74,6 +78,8 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 	private IVoterTagDAO voterTagDAO;
 	private IVoterBoothActivitiesDAO voterBoothActivitiesDAO;
 	private DateUtilService dateUtilService = new DateUtilService();
+	
+	@Autowired IStrategyModelTargetingService strategyModelTargetingService;
 
 	public IVoterBoothActivitiesDAO getVoterBoothActivitiesDAO() {
 		return voterBoothActivitiesDAO;
@@ -963,6 +969,51 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			log.error("Exception occured in verificationForAuthorisationAccessKey() Method ",e);		
 		}
 		return resultstr;
+	}
+	
+	public EffectedBoothsResponse getInfectedBoothsOfConstituency(Long constituencyId){
+		List<PanchayatCountVo> list = new ArrayList<PanchayatCountVo>();
+		PanchayatCountVo pvo = null ;
+		pvo = new PanchayatCountVo();
+		pvo.setPanchayatId(101l);
+		pvo.setPanchayatName("ABPalem");
+		List<Long> boothNos = new ArrayList<Long>();
+		boothNos.add(61l);
+		boothNos.add(62l);
+		pvo.setBooths(boothNos);
+		StringBuilder boothParts=new StringBuilder();
+		for(Long booth:boothNos){
+			boothParts.append(booth);
+			boothParts.append(",");
+		}
+		
+		pvo.setBoothsList(boothParts.deleteCharAt(boothParts.length()-1).toString());
+		pvo.setEffectedCount(2);
+		pvo.setEffected(true);
+		list.add(pvo);
+		
+		pvo = new PanchayatCountVo();
+		pvo.setPanchayatId(101l);
+		pvo.setPanchayatName("S.Kota");
+		List<Long> boothNos1 = new ArrayList<Long>();
+		boothNos1.add(121l);
+		boothNos1.add(122l);
+		pvo.setBooths(boothNos1);
+		StringBuilder boothParts1=new StringBuilder();
+		for(Long booth:boothNos1){
+			boothParts1.append(booth);
+			boothParts1.append(",");
+		}
+		pvo.setBoothsList(boothParts1.deleteCharAt(boothParts1.length()-1).toString());
+		pvo.setEffected(true);
+		pvo.setEffectedCount(1);
+		list.add(pvo);
+		
+		
+		EffectedBoothsResponse effectedResponse = new EffectedBoothsResponse();
+		effectedResponse.setPanchayats(list);
+		
+		return effectedResponse;
 	}
 }
 
