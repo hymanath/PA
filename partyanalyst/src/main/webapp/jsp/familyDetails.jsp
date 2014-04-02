@@ -237,9 +237,10 @@ function getFamilyInfo(startIndex)
 	}
 	else
 	{
-	 if(toValue > fromValue)
+	 if(!(fromValue < toValue))
 	{
-        str+='From Value must be greter than To value<br/>';
+	
+        str+='From Value must be less than To value<br/>';
 		flag =false;
 	}
 	}
