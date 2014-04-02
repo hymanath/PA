@@ -9,27 +9,21 @@
 <script type="text/javascript" src="js/jquery.dataTables.js"></script>
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css">
 <title>Infected Booths</title> 
-
-<style>
-	.parliamentDiv,.assemblyDiv{margin:10px;}
-	.infectedPanchaytTable th{font-weight:bold;font-size:14px;}
-	
-</style>
 </head>
 <body>
 	<h3 class="offset4">Infected Booths</h3>
 	
-	<div class="row span6 offset3" style="background:#f3f3f3">
-		<div class="span4 parliamentDiv">
+	<div class="row span12 offset3" style="background:#f3f3f3">
+		<div class="span5 parliamentDiv">
 			<span style="font-weight:bold;font-size:15px;">Select Parliamet :</span> <s:select theme="simple" name="parliament" id="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies()"/>
 		</div>
-		<div class="span4 assemblyDiv">
+		<div class="span5 assemblyDiv">
 			<span style="font-weight:bold;font-size:15px;">Select Assembly :</span> <s:select theme="simple" name="assembly" id="assemblyId" list="constituencyList" listKey="id" listValue="name"/>
 		</div>
 		
 		<span class="btn btn-info infectedBoothsBtn"> Get Infected Booths</span>
 	</div>
-	<div id="infectedBoothsId" class="span12 offset2"></div>
+	<div id="infectedBoothsId" class="pull-left"></div>
 	
 	<script>
 	
@@ -53,8 +47,7 @@
 		if(result!=null){
 			$("#infectedBoothsId").html("");
 			var str ="";
-			str+="<h4 class='offset4'> Infected Panchayats List </h4>";
-			str+= "<table class='table table-bordered infectedPanchaytTable'>";
+			str+= "<table class='table table-bordered'>";
 			str+="<thead>";
 				str+="<th>Panchayat</th>";
 				str+="<th>Booths</th>";
@@ -81,7 +74,7 @@
 			
 			var constituencyDetails={year:"",constituencyId:"",task:""};
 		
-			constituencyDetails.constituencyId= $('#assemblyId option:selected').val();
+			constituencyDetails.constituencyId= $('#pConstituencyList option:selected').val();
 			constituencyDetails.year = 2009;
 			$.ajax({
 				type:'POST',
