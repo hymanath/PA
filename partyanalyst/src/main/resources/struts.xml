@@ -6727,7 +6727,7 @@
 	                     <param name="root">boothwiseResult</param>
                   </result>
 	     </action>
-	     <action name="getVotersAddressAction" class="voterAddressAction">
+	     	     <action name="getVotersAddressAction" class="voterAddressAction">
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		    <result name="success">/jsp/votersAddress.jsp</result>	
 			<result name="input">/jsp/loginForm.jsp</result>
@@ -6774,6 +6774,60 @@
 			<result name="input">/jsp/loginForm.jsp</result>			
 		</action>
 		
+	     
+	     <action name="smsAction" class="voiceSmsAction">
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="success">/jsp/InformationManagerSMS.jsp</result>	
+		 </action>
+		 
+		 <action name="getSmsDetailsAction" class="voiceSmsAction"
+	     method="getSmsDetails">
+	              <result type="json" name="success">
+	                     <param name="root">voiceSmsResponseDetails</param>
+                  </result>
+	     </action>
+	     
+	     <action name="deleteSmsDetailsAction" class="voiceSmsAction"
+	     method="deleteSmsDetails">
+	              <result type="json" name="success">
+	                     <param name="root">status</param>
+                  </result>
+	     </action>
+	     
+	    
+		<action name="sendSmsToInformationManagers" class="voiceSmsAction" method="sendMailToInformationManager">
+		<result type="json" name="success">
+		<param name="root">result</param>
+		</result>
+		</action>
+		<action name="getInformationManagersAction" class="voiceSmsAction" method="getInformationManagers">
+		<result type="json" name="success">
+		<param name="root">users</param>
+		</result>
+		</action>
+
+	<action name="forwardMailToInformationManagerAction" class="voiceSmsAction" method="forwardMailToInformationManager">
+		<result type="json" name="success">
+		<param name="root">result</param>
+		</result>
+		</action>
+		<action name="reSendSmsToInformationManagers" class="voiceSmsAction" method="resendMailToInformationManager">
+		<result type="json" name="success">
+		<param name="root">result</param>
+		</result>
+		</action>
+		<action name="datewiseSortingAction" class="voiceSmsAction" method="datewiseSorting">
+		<result type="json" name="success">
+		<param name="root">voiceSmsResponseDetails</param>
+		</result>
+		</action>
+		
+		<action name="getSmsDetailsSeacrhAction" class="voiceSmsAction"
+		method="getSmsDetailsBySearch">
+		<result type="json" name="success">
+		<param name="root">voiceSmsResponseDetails</param>
+		</result>
+		</action>
 </package>
 		
 </struts>      
