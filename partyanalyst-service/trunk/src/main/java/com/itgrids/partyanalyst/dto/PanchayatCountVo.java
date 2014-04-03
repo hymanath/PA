@@ -21,7 +21,7 @@ public class PanchayatCountVo implements Comparable<PanchayatCountVo>,Serializab
 	private String panchayatName;
 	
 	private boolean effected;
-	//private Map<Long,QuestionCountVo> QuestionsMap= new HashMap<Long, QuestionCountVo>(17,0.90f);
+	private Map<Long,QuestionCountVo> questionsMap= new HashMap<Long, QuestionCountVo>(17,0.90f);
 	
 	private int effectedCount=0;
     
@@ -34,6 +34,22 @@ public class PanchayatCountVo implements Comparable<PanchayatCountVo>,Serializab
 	
 
 	
+
+	public Map<Long, QuestionCountVo> getQuestionsMap() {
+		return questionsMap;
+	}
+
+
+
+
+
+	public void setQuestionsMap(Map<Long, QuestionCountVo> questionsMap) {
+		this.questionsMap = questionsMap;
+	}
+
+
+
+
 
 	public String getBoothsList() {
 		return boothsList;
