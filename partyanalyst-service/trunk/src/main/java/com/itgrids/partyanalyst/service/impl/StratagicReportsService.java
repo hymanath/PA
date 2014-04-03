@@ -4462,8 +4462,8 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  Font SMALLFONT_WIN=new Font(Font.FontFamily.TIMES_ROMAN,10,Font.NORMAL);
 		  SMALLFONT_WIN.setColor(BaseColor.GREEN);
 
-		  Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
-		  subHeading.setColor(BaseColor.MAGENTA);
+		  //Font subHeading = new Font(Font.FontFamily.TIMES_ROMAN,11,Font.BOLD);
+		 // subHeading.setColor(BaseColor.MAGENTA);
 		  
 		  
 		  Font TBCELL = new Font(calibriBold);
@@ -4730,7 +4730,7 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  Font TBCELLSM = new Font(SMALLFONT);
 		  
 		  document.add(new Paragraph(result.getMainHeading(),TITLE));
-		  document.add(new Paragraph(""));
+		  document.add(new Phrase(""));
 		  document.add(new Paragraph(result.getInformation(),SMALLFONT));
 		  document.add(new Paragraph(" "));
 		  PdfPTable table = new PdfPTable(11);
@@ -4961,13 +4961,13 @@ public class StratagicReportsService implements IStratagicReportsService{
 		  
 		  TITLE.setColor(subHeading);
 		  document.add(new Paragraph(result.getHeading1(),TITLE));		  
-		  document.add(new Paragraph(""));		  
+		  document.add(new Phrase(""));		  
 		  document.add(new Paragraph(result.getHeading2(),SMALLFONT));
 		  document.add(Chunk.NEWLINE);		  
 		  document.add(new Paragraph(result.getHeading3(),SMALLFONT));
 		  
 		  int partiesCount=result.getDelimitationEffectVO()!=null?result.getDelimitationEffectVO().size():0;
-		  document.add(new Paragraph(""));
+		  document.add(new Phrase(""));
 		  PdfPTable table = new PdfPTable(4+partiesCount*2);
 		  table.setWidthPercentage(100);
 		  table.setHorizontalAlignment(PdfPTable.ALIGN_LEFT);
