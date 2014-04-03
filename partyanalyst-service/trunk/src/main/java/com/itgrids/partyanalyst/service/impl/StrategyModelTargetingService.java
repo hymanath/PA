@@ -3919,7 +3919,7 @@ public class StrategyModelTargetingService implements
 	         Client client = Client.create(clientConfig);
 		 
 	        WebResource webResource = client
-	             .resource("http://192.168.3.73:8080/Survey/WebService/getEffectedPanchayats");
+	             .resource("http://74.208.7.129/Survey/WebService/getEffectedPanchayats");
 
 	          ClientResponse response = webResource.accept("application/json")
 	                  .type("application/json").post(ClientResponse.class, inputs);
