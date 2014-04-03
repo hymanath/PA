@@ -82,6 +82,12 @@ import com.itgrids.partyanalyst.service.IStaticDataService;
 import com.itgrids.partyanalyst.service.IStrategyModelTargetingService;
 import com.itgrids.partyanalyst.service.ISuggestiveModelService;
 import com.itgrids.partyanalyst.utils.IConstants;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
 
 public class StrategyModelTargetingService implements
 		IStrategyModelTargetingService {
@@ -3903,26 +3909,31 @@ public class StrategyModelTargetingService implements
 			
 			inputs.setConstId(constituencyId);
 			
-			
-			/*Client client = Client.create();
-	 		WebResource webResource = client
-			   .resource("http://localhost:8080/PartyAnalyst/WebService/getSample/"+constituencyId+"");
-	 		ClientResponse response = webResource.accept("application/json")
-	                   .get(ClientResponse.class);
-	 		if (response.getStatus() != 200) {
-			   throw new RuntimeException("Failed : HTTP error code : "
-				+ response.getStatus());
-			}
-	 		//EffectedBoothsResponse output = response.getEntity(EffectedBoothsResponse.class);
-	 		
-	 		EffectedBoothsResponse output = (EffectedBoothsResponse) response.getEntity(EffectedBoothsResponse.class);
-	 		//List<PartyPositionVO> output = webResource.accept("application/json").get(new GenericType<List<PartyPositionVO>>(){});
-	 		System.out.println("Output from Server .... \n");
-			System.out.println(output);*/
-			
+		/*	
+			EffectedBoothsVo st = new EffectedBoothsVo();
+			st.setConstId(232L);*/
+	         ClientConfig clientConfig = new DefaultClientConfig();
+
+	         clientConfig.getFeatures().put(
+	                  JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+	         Client client = Client.create(clientConfig);
+		 
+	        WebResource webResource = client
+	             .resource("http://192.168.3.73:8080/Survey/WebService/getEffectedPanchayats");
+
+	          ClientResponse response = webResource.accept("application/json")
+	                  .type("application/json").post(ClientResponse.class, inputs);
+	          if (response.getStatus() != 200) {
+	              throw new RuntimeException("Failed : HTTP error code : "
+	                      + response.getStatus());
+	         }
+		 
+	          EffectedBoothsResponse output = response.getEntity(EffectedBoothsResponse.class);
+
+	          System.out.println("Server response .... \n");
 			
 			List<PanchayatCountVo> list = new ArrayList<PanchayatCountVo>();
-			PanchayatCountVo pvo = null ;
+			/*PanchayatCountVo pvo = null ;
 			pvo = new PanchayatCountVo();
 			pvo.setPanchayatId(101l);
 			pvo.setPanchayatName("ABPalem");
@@ -3961,8 +3972,12 @@ public class StrategyModelTargetingService implements
 			
 			EffectedBoothsResponse effectedResponse = new EffectedBoothsResponse();
 			effectedResponse.setPanchayats(list);
-			
-			return effectedResponse;
+			*/
+			for (PanchayatCountVo panchayatCountVo : output.getPanchayats()) {
+				panchayatCountVo.setQuestionsMap(null);
+				
+			}
+			return output;
 			
 		}
 		
