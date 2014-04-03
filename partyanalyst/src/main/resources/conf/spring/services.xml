@@ -2028,5 +2028,7 @@
    
    <bean name="stratagicReportsServicePdf" class="com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf"></bean>
    
+   <bean name="infectedBoothsService" class="com.itgrids.partyanalyst.service.impl.InfectedBoothsService"></bean>
+   
 </beans>		
 	
