@@ -11,6 +11,23 @@
 <title>Infected Booths</title> 
 
 <style>
+select {
+    background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    width: 250px;
+}
+
+select, textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], .uneditable-input,#fromDate,#toDate {
+    border-radius: 4px 4px 4px 4px;
+	color: #000000;
+    display: inline-block;
+    font-size: 13px;
+    line-height: 18px;
+    padding: 4px;
+}
+input, button, select, textarea {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
 	.parliamentDiv,.assemblyDiv{margin:10px;}
 
 	.infectedPanchaytTable {
@@ -42,14 +59,14 @@
 <body>
  <div class="container m_top20">
     
-	<div class="row well " style="margin-top: 15px;">
-	<h3 class="offset4" style="color:#4A66B5;"> Infected Booths </h3>
+	<div class="row well " style="margin-top: 15px;" align="center">
+	<h3 style="color:#4A66B5;"> Infected Booths </h3>
 	
-	 <div class=" span8 offset3" >
-		<div class="span4 parliamentDiv">
+	 <div>
+		<div class="parliamentDiv">
 			<span style="font-weight:bold;font-size:15px;">Select Parliamet :</span> <s:select theme="simple" name="parliament" id="pConstituencyList" list="parlConstis" listKey="id" listValue="name" onChange="getAssemblyConstituencies()"/>
 		</div>
-		<div class="span4 assemblyDiv">
+		<div class="assemblyDiv">
 			<span style="font-weight:bold;font-size:15px;">Select Assembly :</span> <s:select theme="simple" name="assembly" id="assemblyId" list="constituencyList" listKey="id" listValue="name"/>
 		</div>
 		
