@@ -99,7 +99,7 @@
 			str+="<div class='container m_top20'>";    
 	        str+="<div class='row well ' style='margin-top: 15px;' >";
 			
-			str+="<legend class='boxHeading m_top10 text-center'  style='color:#4A66B5;' >Infected Panchayats</legend>";
+			str+="<legend class='boxHeading m_top10 text-center'  style='color:#4A66B5;' >Infected Booths</legend>";
 			str+= "<table class='table-bordered infectedPanchaytTable' style='font-family: vardana;font-size:13px;' width='100%'>";
 			str+="<thead>";
 				str+="<th>Panchayat</th>";
