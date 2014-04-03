@@ -30,11 +30,13 @@
 		<span class="btn btn-info infectedBoothsBtn"> Get Infected Booths</span>
 	</div>
 	<div id="infectedBoothsId" class="span12 offset2"></div>
-	
+	<img id="publicationAjaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;margin-top: 109px;"/>
 	<script>
 	
 		$(".infectedBoothsBtn").click(function(){
-	$("#infectedBoothsId").html("");
+		  document.getElementById("publicationAjaxImage").style.display="block";
+		   
+	       $("#infectedBoothsId").html("");
 			var constituencyDetails={constituencyId:""};
 			constituencyDetails.constituencyId=$('#assemblyId option:selected').val();
 			$.ajax({
@@ -43,11 +45,13 @@
 				dataType: 'json',
 				data: {task:JSON.stringify(constituencyDetails)},			 
 				success: function(data){  
-				console.log('anilaaa')
+				//console.log('anilaaa')
+				   document.getElementById("publicationAjaxImage").style.display="none";
 					buildInfectedBoothsTable(data);
 				},
 				error:function(jqXHR, textStatus, errorThrown) { 
-					console.log(textStatus, errorThrown);
+				   document.getElementById("publicationAjaxImage").style.display="none";
+					//console.log(textStatus, errorThrown);
 				}
 			});
 		});
