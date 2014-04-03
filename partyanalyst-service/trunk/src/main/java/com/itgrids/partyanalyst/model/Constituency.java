@@ -77,7 +77,6 @@ public class Constituency extends BaseModel implements java.io.Serializable {
 	private Set<User> users = new HashSet<User>(0);
 	private Set<CustomVoterGroup> customVoterGroups = new HashSet<CustomVoterGroup>(0);
 	private Set<VoterDataAvailableConstituencies> voterDataAvailableConstituencies = new HashSet<VoterDataAvailableConstituencies>(0);
-
 	
 	// Constructors
 

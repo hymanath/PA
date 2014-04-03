@@ -130,6 +130,7 @@ public class User extends BaseModel implements Serializable{
 	private Set<SurveyAccessUsers> surveyAccessUsers = new HashSet<SurveyAccessUsers>(0);
 	private Set<DemoRequestActions> demoRequestActions = new HashSet<DemoRequestActions>(0);
 	private Set<MobileAppUser> mobileAppUser = new HashSet<MobileAppUser>(0);
+	private Set<UserSmsSent> userSmsSent = new HashSet<UserSmsSent>(0);
 	
 	private String passwordHash;
 	private String passwordSalt;
@@ -1084,6 +1085,15 @@ public class User extends BaseModel implements Serializable{
 	}
 	
 	
-	
+
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+	public Set<UserSmsSent> getUserSmsSent() {
+		return userSmsSent;
+	}
+
+	public void setUserSmsSent(Set<UserSmsSent> userSmsSent) {
+		this.userSmsSent = userSmsSent;
+	}
 	
 }
