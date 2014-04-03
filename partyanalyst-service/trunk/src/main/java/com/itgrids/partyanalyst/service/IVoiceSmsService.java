@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.dto.VotersDetailsVO;
@@ -28,6 +30,12 @@ public interface IVoiceSmsService {
 	public List<Long> sendVoiceSmsDirectlyToVoters(SMSSearchCriteriaVO searchVO);
 
     public boolean checkUploadFileExists(String fileName);
-
-
+    public List<VoiceSmsResponseDetailsVO> getSmsDetails(Long userId,Long typeId,Long constituencyId);
+    public String deleteSmsDetails(List<Long> smsResponseid);
+    public ResultStatus resendSmsResponseDetails(String message,Long receiverId,Long userId);
+	public ResultStatus saveSmsDetails(String smsDescription,List<Long> receiverIds,Long userId,String smsType);
+	public List<RegistrationVO> getInformationManagers(Long userId);
+	public List<String> getMobileNosForReceiverIds(List<Long> receiverIds);
+	public List<VoiceSmsResponseDetailsVO> getDatewiseSortingDetails(Long userId,Long typeId,String date);
+	public List<VoiceSmsResponseDetailsVO> getSmsDetailsBySearch(Long userId,Long typeId,String namesearchText,String mobilesearch);
 }
