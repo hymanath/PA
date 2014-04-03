@@ -614,7 +614,8 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 	        if(((Long)object[3]).equals(872L))
 	        {
 	     	   voh.setMarginVotes(((Double)object[5]).longValue());
-	     	   voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+	     	  // voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+	     	   voh.setMarginVotesPercentage(Double.valueOf(roundTo2DigitsDoubleValue( (double)(((double)voh.getMarginVotes()/(double)vo.getTotalVotesPolled())*100))));
 	     	   vo.setTdpVo(voh);
 	        }else if(((Long)object[3]).equals(362L))
 	        {
@@ -685,7 +686,8 @@ public List<PartyElectionTrendsReportVO> getPreviousTrendsReport(Long constId){
 			           if(((Long)object[3]).equals(872L))
 			           {
 			        	   voh.setMarginVotes(((Double)object[5]).longValue());
-				     	   voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+				     	   //voh.setMarginVotesPercentage((Double.valueOf(object[6].toString())));
+			        	   voh.setMarginVotesPercentage(Double.valueOf(roundTo2DigitsDoubleValue( (double)(((double)voh.getMarginVotes()/(double)vo.getTotalVotesPolled())*100))));
 				     	   vo.setTdpVo(voh);
 			           }else if(((Long)object[3]).equals(362L))
 			           {

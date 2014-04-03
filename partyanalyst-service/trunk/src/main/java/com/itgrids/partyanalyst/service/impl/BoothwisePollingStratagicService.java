@@ -208,7 +208,7 @@ public class BoothwisePollingStratagicService  implements IBoothwisePollingStrat
 			 }
 			 if(panchayatnames !=null &&panchayatnames.size() > 0)
 				 for(Object[] params : panchayatnames)
-					 panchayatMap.put((Long)params[0],params[1].toString()); 
+					 panchayatMap.put((Long)params[0],params[1].toString().substring(0, 1).toUpperCase() + params[1].toString().substring(1).toLowerCase()); 
 			 
 			 if(totalVotesForBooth != null && totalVotesForBooth.size() > 0)
 			 {
