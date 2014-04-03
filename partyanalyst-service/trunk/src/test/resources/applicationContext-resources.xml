@@ -415,6 +415,10 @@
 	    <value>com.itgrids.partyanalyst.model.PanchayatResult</value>	
 	    <value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
 		<value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>
+				<value>com.itgrids.partyanalyst.model.ReceiverType</value>
+				<value>com.itgrids.partyanalyst.model.SmsSentType</value>
+				<value>com.itgrids.partyanalyst.model.UserSmsSent</value>
+				<value>com.itgrids.partyanalyst.model.UserSmsReceiver</value>
 		
 			</list>
 		</property>
@@ -2181,4 +2185,19 @@
    <property name="boothDAO" ref="boothDAO"/>
    <property name="electionDAO" ref="electionDAO"/>
    </bean>
+   
+      
+     <bean id="userSmsSentDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSmsSentDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+        <bean id="userSmsReceiverDAO" class="com.itgrids.partyanalyst.dao.hibernate.UserSmsReceiverDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+        <bean id="receiverTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.ReceiverTypeDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+        <bean id="smsSentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsSentTypeDAO">
+    <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
 </beans>
