@@ -78,7 +78,9 @@ public class RegistrationVO extends BaseDTO{
 	private String deviceId;
 	
 	private Long publicationDateId;
-	private String randomNumber;
+	private String designation;
+	private String createdTime;
+private String randomNumber;
 	
 	
 	
@@ -88,6 +90,23 @@ public class RegistrationVO extends BaseDTO{
 
 	public void setRandomNumber(String randomNumber) {
 		this.randomNumber = randomNumber;
+	}
+
+	
+	public String getDesignation() {
+		return designation;
+	}
+
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	public Long getPublicationDateId() {
