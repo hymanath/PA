@@ -68,5 +68,24 @@ public class SmsResponseDetailsDAO  extends GenericDaoHibernate<SmsResponseDetai
 		query.setParameter("userId", userId);
 		return query.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getSmsDetails(Long userId,Long typeId){
+		Query query = getSession().createQuery("select model.noOfSmsSent,model.timeSent,model.smsDescription," +
+				"model.mobileNumbers,model.smsResponseDetailsId from SmsResponseDetails model " +
+				"where model.user.userId = :userId and model.smsType.smsTypeId = :typeId");
+		
+		query.setParameter("userId", userId);
+		query.setParameter("typeId", typeId);
+		return query.list();
+	}
+	
+	public Integer deleteSmsDetails(Long smsResponseid){
+		Query query = getSession().createQuery("update SmsResponseDetails model set model.isDeleted = 'true' " +
+				"where model.id = :smsResponseid");
+				
+		query.setParameter("smsResponseid", smsResponseid);
+		return query.executeUpdate();
+	}
 }
 
