@@ -1,9 +1,12 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.io.BufferedReader;
+
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,17 +21,25 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.IInformationManagerDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatHamletDAO;
+import com.itgrids.partyanalyst.dao.IReceiverTypeDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.ISmsHistoryDAO;
 import com.itgrids.partyanalyst.dao.ISmsModuleDAO;
 import com.itgrids.partyanalyst.dao.ISmsResponseDetailsDAO;
 import com.itgrids.partyanalyst.dao.ISmsTrackDAO;
+import com.itgrids.partyanalyst.dao.ISmsTypeDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
+import com.itgrids.partyanalyst.dao.IUserSmsReceiverDAO;
+import com.itgrids.partyanalyst.dao.IUserSmsSentDAO;
 import com.itgrids.partyanalyst.dao.IUserVoterDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceRecordingDetailsDAO;
 import com.itgrids.partyanalyst.dao.IVoiceSmsVerifiedNumbersDAO;
 import com.itgrids.partyanalyst.dao.hibernate.LocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.dto.ResultCodeMapper;
+import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
@@ -38,6 +49,8 @@ import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsResponseDetails;
 import com.itgrids.partyanalyst.model.SmsTrack;
 import com.itgrids.partyanalyst.model.User;
+import com.itgrids.partyanalyst.model.UserSmsReceiver;
+import com.itgrids.partyanalyst.model.UserSmsSent;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
@@ -68,8 +81,53 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private IPanchayatHamletDAO panchayatHamletDAO;
 	private IRegionScopesDAO regionScopesDAO;
 	private ICandidateDetailsService candidateDetailsService;
+	private IUserSmsReceiverDAO userSmsReceiverDAO;
+	private IInformationManagerDAO informationManagerDAO;
+	private IReceiverTypeDAO receiverTypeDAO;
+	private ISmsTypeDAO smsTypeDAO;
+	private IUserSmsSentDAO userSmsSentDAO;
 	
-	
+			
+	public ISmsTypeDAO getSmsTypeDAO() {
+		return smsTypeDAO;
+	}
+
+	public void setSmsTypeDAO(ISmsTypeDAO smsTypeDAO) {
+		this.smsTypeDAO = smsTypeDAO;
+	}
+
+	public IUserSmsSentDAO getUserSmsSentDAO() {
+		return userSmsSentDAO;
+	}
+
+	public void setUserSmsSentDAO(IUserSmsSentDAO userSmsSentDAO) {
+		this.userSmsSentDAO = userSmsSentDAO;
+	}
+
+	public IReceiverTypeDAO getReceiverTypeDAO() {
+		return receiverTypeDAO;
+	}
+
+	public void setReceiverTypeDAO(IReceiverTypeDAO receiverTypeDAO) {
+		this.receiverTypeDAO = receiverTypeDAO;
+	}
+
+	public IInformationManagerDAO getInformationManagerDAO() {
+		return informationManagerDAO;
+	}
+
+	public void setInformationManagerDAO(
+			IInformationManagerDAO informationManagerDAO) {
+		this.informationManagerDAO = informationManagerDAO;
+	}
+	public IUserSmsReceiverDAO getUserSmsReceiverDAO() {
+		return userSmsReceiverDAO;
+	}
+
+	public void setUserSmsReceiverDAO(IUserSmsReceiverDAO userSmsReceiverDAO) {
+		this.userSmsReceiverDAO = userSmsReceiverDAO;
+	}
+
 	public ICandidateDetailsService getCandidateDetailsService() {
 		return candidateDetailsService;
 	}
@@ -1211,4 +1269,176 @@ public class VoiceSmsService implements IVoiceSmsService {
 
 		return resultList;
 	}
+	
+	public List<VoiceSmsResponseDetailsVO> getSmsDetails(Long userId,Long typeId,Long constituencyId){
+		List<VoiceSmsResponseDetailsVO> result = new ArrayList<VoiceSmsResponseDetailsVO>();
+		
+		List<Object[]> smsdet = userSmsReceiverDAO.getSmsDetails(userId,typeId);
+		for(Object[] param:smsdet){
+			VoiceSmsResponseDetailsVO vo = new VoiceSmsResponseDetailsVO();
+			vo.setUserName(param[0].toString());
+			vo.setDateSent(param[1].toString());
+			vo.setDescription(param[2].toString());
+			vo.setNumbers(param[3].toString());
+			vo.setResponseId((Long)param[4]);
+			vo.setResponseCount((Long)param[5]);
+			result.add(vo);
+		}
+		return result;
+	}
+	
+	public String deleteSmsDetails(List<Long> smsResponseid){
+		
+		Integer val = userSmsReceiverDAO.deleteSmsDetails(smsResponseid);
+		
+		if(val == 0)
+			return "failure";
+		else
+			return "success";
+	}
+	
+	public ResultStatus resendSmsResponseDetails(String message,Long receiverId,Long userId)
+	{
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+
+	UserSmsReceiver userSmsReceiver = userSmsReceiverDAO.get(receiverId);
+	userSmsReceiver.setSmsSentType(IConstants.RESEND);//Resend
+	Long count = userSmsReceiver.getNoOfSmsSent();
+	userSmsReceiver.setNoOfSmsSent(count+1);
+	userSmsReceiverDAO.save(userSmsReceiver);
+
+	}
+
+	catch (Exception e) {
+	e.printStackTrace();
+	log.error("Exception Occured in saveSmsResponseDetails() method, Exception - "+e);
+	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	return resultStatus;
+	}
+	return resultStatus;
+	}
+	
+	
+	public ResultStatus saveSmsDetails(String smsDescription,List<Long> receiverIds,Long userId,String smsType)
+	{
+	ResultStatus resultStatus = new ResultStatus();
+	try{
+	UserSmsSent userSmsSent = new UserSmsSent();
+	if(receiverIds != null && receiverIds.size() > 0)
+	userSmsSent.setUser(userDAO.get(userId));
+	userSmsSent.setMessage(smsDescription);
+	userSmsSent.setSentTime(dateUtilService.getCurrentDateAndTime());
+	userSmsSent.setSmsType(smsTypeDAO.get(2l));//Text SMS
+	userSmsSent = userSmsSentDAO.save(userSmsSent);
+
+	if(receiverIds != null && receiverIds.size() > 0)
+	{
+
+	for(Long user : receiverIds)
+	{
+	UserSmsReceiver userSmsReceiver = new UserSmsReceiver();
+	userSmsReceiver.setUserSmsSent(userSmsSent);
+	userSmsReceiver.setSmsSentType(smsType);//Normal,Forward
+	userSmsReceiver.setReceiverId(user);
+	userSmsReceiver.setIsDeleted("false");
+	userSmsReceiver.setReceiverType(receiverTypeDAO.get(4l));
+	userSmsReceiver.setNoOfSmsSent(1l);
+	userSmsReceiverDAO.save(userSmsReceiver);
+
+	}
+	}
+
+	resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
+
+	}
+	catch (Exception e) {
+	e.printStackTrace();
+	log.error("Exception Occured in saveSmsResponseDetails() method, Exception - "+e);
+	resultStatus.setResultCode(ResultCodeMapper.FAILURE);
+	return resultStatus;
+	}
+	return resultStatus;
+	}
+	
+	public List<RegistrationVO> getInformationManagers(Long userId)
+	{
+	List<RegistrationVO> result =new ArrayList<RegistrationVO>();
+
+	try{
+	//List<Object[]> list = userGroupEntitlementDAO.getInformationManagerUsers(IConstants.INFORMATION_MONITOTING_SYSTEM,constituencyId.toString());
+	List<Object[]> list = informationManagerDAO.getInformationUsers(userId);
+	if(list != null && list.size() > 0)
+	{
+
+	for(Object[] params : list)
+	{
+	RegistrationVO regVO = new RegistrationVO();
+	regVO.setRegistrationID((Long)params[0]);
+	regVO.setFirstName(params[1] != null ?params[1] .toString() : "");
+	regVO.setLastName(params[2] != null ?params[2] .toString() : "");
+	regVO.setMobile(params[3] != null ?params[3] .toString() : "");
+	regVO.setDesignation(params[4] != null ?params[4] .toString() : "");
+	regVO.setCreatedTime(params[5] != null ?params[5] .toString() : "");
+	result.add(regVO);
+	}
+	}
+	}
+	catch (Exception e) {
+	e.printStackTrace();
+	log.error("Exception Occured in saveSmsResponseDetails() method, Exception - "+e);
+
+	}
+
+	return result;
+	}
+
+	public List<String> getMobileNosForReceiverIds(List<Long> receiverIds){
+		
+		return informationManagerDAO.getMobileNosForReceiverIds(receiverIds);
+	}
+	
+	public List<VoiceSmsResponseDetailsVO> getDatewiseSortingDetails(Long userId,Long typeId,String date){
+		List<VoiceSmsResponseDetailsVO> result = new ArrayList<VoiceSmsResponseDetailsVO>();
+		try{
+			Date firstDate = DateService.convertStringToDate(date, "dd/MM/yyyy");
+			
+		List<Object[]> smsdet = userSmsReceiverDAO.getDatewiseSortingDetails(userId,typeId,firstDate);
+		for(Object[] param:smsdet){
+			VoiceSmsResponseDetailsVO vo = new VoiceSmsResponseDetailsVO();
+			vo.setUserName(param[0].toString());
+			vo.setDateSent(param[1].toString());
+			vo.setDescription(param[2].toString());
+			vo.setNumbers(param[3].toString());
+			vo.setResponseId((Long)param[4]);
+			vo.setResponseCount((Long)param[5]);
+			result.add(vo);
+		}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public List<VoiceSmsResponseDetailsVO> getSmsDetailsBySearch(Long userId,Long typeId,String namesearchText,String mobilesearchText){
+		List<VoiceSmsResponseDetailsVO> result = new ArrayList<VoiceSmsResponseDetailsVO>();
+
+		List<Object[]> smsdet = userSmsReceiverDAO.getSmsDetailsBySearch(userId,typeId,namesearchText,mobilesearchText);
+		if(smsdet != null && smsdet.size() > 0)
+		{
+		for(Object[] param:smsdet){
+		VoiceSmsResponseDetailsVO vo = new VoiceSmsResponseDetailsVO();
+		vo.setUserName(param[0].toString());
+		vo.setDateSent(param[1].toString());
+		vo.setDescription(param[2].toString());
+		vo.setNumbers(param[3].toString());
+		vo.setResponseId((Long)param[4]);
+		vo.setResponseCount((Long)param[5]);
+		result.add(vo);
+		}
+		}
+		return result;
+		}
 }
