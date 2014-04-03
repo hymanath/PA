@@ -737,4 +737,8 @@ public interface IConstants {
     public static final String SECKEYFAC ="PBKDF2WithHmacSHA1";
 	public static final String SECRAN="SHA1PRNG";
 	public static final String  WEBIP="http://192.168.3.73:8080/Survey";
+    public static final String NORMAL="NORMAL";
+    public static final String FORWARD="FORWARD";
+    public static final String RESEND="RESEND";
+    
 }
