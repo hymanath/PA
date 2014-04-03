@@ -40,14 +40,15 @@ public class SmsResponseDetails extends BaseModel implements Serializable{
 	private String smsDescription;
 	private Long smsTypeId;
 	private SmsType smsType;
-	
+	private String mobileNumbers;
+	private String isDeleted;
 	private Set<SmsHistory> smsHistory = new HashSet<SmsHistory>(0);
 
 	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "sms_response_details_id", unique = true, nullable = false)
+	@Column(name = "voice_sms_response_details_id", unique = true, nullable = false)
 	public Long getSmsResponseDetailsId() {
 		return smsResponseDetailsId;
 	}
@@ -131,5 +132,22 @@ public class SmsResponseDetails extends BaseModel implements Serializable{
 	public void setSmsHistory(Set<SmsHistory> smsHistory) {
 		this.smsHistory = smsHistory;
 	}
+	
+	@Column(name="mobile_numbers" , length = 500)
+	public String getMobileNumbers() {
+		return mobileNumbers;
+	}
+	public void setMobileNumbers(String mobileNumbers) {
+		this.mobileNumbers = mobileNumbers;
+	}
+	
+	@Column(name="is_deleted" , length = 8)
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
 	
 }
