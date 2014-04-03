@@ -525,37 +525,36 @@ lable{line-height:40px;}
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
 			  <h2 style="padding-bottom:35px;"> INCREASE POLLING ANALYSIS <div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="increasePolling();" style="float:right;"></input></div></h2>
 			</div>
-			<div class="span4 widget divHeightClass" style="margin-left:7px;">
-				<h2>VOTER AVERAGE AGE REPORT </h2>
-				<fieldset>
-					<lable>Select Constituency </lable>
-					<s:select cssClass=" span12" theme="simple" id="voterAverageAgeId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
-				
-					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="voterAverageAgePopUp();" style="float:right;"></input>
-				</fieldset>
+			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;">VOTER AVERAGE AGE REPORT
+					<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="voterAverageAgePopUp();" style="float:right;"></input></div></h2>
 			</div>
 			
-			<div class="span4 widget divHeightClass" style="margin-left:7px;">
-				<h2>Voters Analysis </h2>
-				<fieldset>
-					<lable>Select Constituency </lable>
-					<s:select cssClass="selectstyle span12" theme="simple" id="constituencyId"  list="constituencyList" listKey="id" listValue="name" ></s:select>
-				
-					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="openVotersAnalysts();" style="float:right;"></input>
-				</fieldset>
+			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;">Voters Analysis
+					<div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle" onCLick="openVotersAnalysts();" style="float:right;"></input></div></h2>
 			</div>
 			
-		    <div class="span4 widget divHeightClass" style="margin-left:7px;">
-				<h2> Results Vs Caste</h2>
-				<fieldset>
-				<lable>Constituency </lable>
-				<s:select cssClass="selectstyle" theme="simple" id="constituencyList"  list="constituencyList" listKey="id" listValue="name" ></s:select>
-					
-			   <input type="button" value="View" class="btn btn-small btnStyle" onCLick="openCasteViseAnalysis();" style="float:right;"></input>
-				</fieldset>
+		    <div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;"> Results Vs Caste					
+			    <div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle" onCLick="openCasteViseAnalysis();" style="float:right;"></input></div></h2>
+		
 			</div>
-			
-			<div class="span4 widget divHeightClass"  style="margin-left:7px;">
+            <c:if test="${sessionScope.USER.isAdmin == 'true'}">
+			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;">STRATEGY ANALYSIS REPORT<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewStrategyAnalysisReport();" style="float:right;"></input></div></h2>
+			</div>
+			</c:if>
+
+			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;">INFECTED BOOTHS<div style="padding-top:20px;"><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewInfectedBooths();" style="float:right;"></input></div></h2>
+			</div>
+
+			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewPavchayathResults();" style="float:right;"></input></div></h2>
+			</div>
+          
+			<div class="span4 widget divHeightClass"  style="margin-left:7px;padding: 0px 20px;">
 			  <h2>Voters Search</h2>
 				<div class="media">
 					<img class="media-object pull-left m-top15" alt="Party Performance Report" src="./images/dashboard/Voters Search.png"style="width: 64px; height: 64px;"></img>
@@ -1136,13 +1135,8 @@ function getPartiesForElections(type){
 		callAjax(jsObj, url);
 }
 function openCasteViseAnalysis()
-{
-	var constituencyId = $('#constituencyList option:selected').val();
-	if(constituencyId != null && constituencyId != "" && constituencyId > 0)
-	{
-	window.open("casteAndElectionResultsComparisonAction.action?constituencyId="+constituencyId);
-	}
-	
+{	
+	window.open("casteAndElectionResultsComparisonAction.action");
 }
 function openAllInNewWindow(type){
  var url = "";
@@ -1198,15 +1192,11 @@ function openAllInNewWindow(type){
 
 function openVotersAnalysts()
 {
-	var constituencyId = $('#constituencyId option:selected').val();
-	if(constituencyId != null && constituencyId != "" && constituencyId > 0)
-	{
-	window.open("votersAnalysisNewAction.action?constituencyId="+constituencyId);
-	}
+	window.open("votersAnalysisNewAction.action");
 }
 function viewCriticalPanchayats()
 {
-	
+
 	  window.open("criticalPanchayatsAction.action?type=criticalPanchayats");
 	
 }
@@ -2527,8 +2517,7 @@ function getVoterModifivationReport()
 }
 
 function voterAverageAgePopUp(){
-var constiId = $("#voterAverageAgeId").val();
-var urlstr = "voterAverageAgewiseAction.action?constiId="+constiId+"";
+  var urlstr = "voterAverageAgewiseAction.action";
   window.open(urlstr);
 }
 checkForUserStatus();
@@ -2604,6 +2593,18 @@ function getImpFamilyDetails()
 		callAjax(jsObj,url);
 	//}
 }
+
+function viewStrategyAnalysisReport()
+{
+	  window.open("strategyModelAction.action");
+}
+
+
+function viewInfectedBooths()
+{
+	  window.open("getInfectedBoothsAction.action"); 
+}
+
 </script>
 
 </body>
