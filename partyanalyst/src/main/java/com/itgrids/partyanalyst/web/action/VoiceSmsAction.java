@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
 import com.itgrids.partyanalyst.util.IWebConstants;
@@ -43,11 +44,36 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private VoiceSmsResponseDetailsVO responseDtls;
 	private List<Long> mobileNumbersList  ;
 	private String fileName;
-	
+	private List<String> datesList;
 	private boolean check;
+	private ISmsService smsCountrySmsService;
+	private List<RegistrationVO> users;
+
+	public List<RegistrationVO> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<RegistrationVO> users) {
+		this.users = users;
+	}
+
+	public ISmsService getSmsCountrySmsService() {
+	return smsCountrySmsService;
+	}
+
+	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
+	this.smsCountrySmsService = smsCountrySmsService;
+	}
 	
 	
-	
+	public List<String> getDatesList() {
+		return datesList;
+	}
+
+	public void setDatesList(List<String> datesList) {
+		this.datesList = datesList;
+	}
+
 	public String getFileName() {
 		return fileName;
 	}
@@ -157,6 +183,14 @@ public class VoiceSmsAction implements ServletRequestAware{
 	}
 
 	
+	public ResultStatus getResult() {
+		return result;
+	}
+
+	public void setResult(ResultStatus result) {
+		this.result = result;
+	}
+
 	public Map<String, Map<String, Integer>> getResultMap() {
 		return resultMap;
 	}
@@ -878,15 +912,276 @@ public class VoiceSmsAction implements ServletRequestAware{
 
 	}
 	
+	public String getSmsDetails(){
+		
+		try
+		{
+			HttpSession session = request.getSession();		
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			 jObj = new JSONObject(getTask());
+			 
+			 voiceSmsResponseDetails = voiceSmsService.getSmsDetails(user.getRegistrationID(),jObj.getLong("typeId"),jObj.getLong("constituencyId"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		
+				
+		return Action.SUCCESS;
+	}
+	
+	public String deleteSmsDetails(){
+		
+		try
+		{
+			HttpSession session = request.getSession();		
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			 jObj = new JSONObject(getTask());
+				
+			 JSONArray jSONArray  = jObj.getJSONArray("ids");
+				List<Long> receiverIds = new ArrayList<Long>();
+				for(int i=0;i<jSONArray.length();i++)
+				{
+					receiverIds.add(new Long(jSONArray.get(i).toString().trim()));
+				}
+				
+			 status = voiceSmsService.deleteSmsDetails(receiverIds);
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		
+				
+		return Action.SUCCESS;
+	}	
+	
+	public String resendMailToInformationManager()
+	{
+		
+		try{
+			HttpSession session = request.getSession();			
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+			
+		    String requestURL= request.getRequestURL().toString();
+			String requestFrom = "";
+			if(requestURL.contains("partyanalyst.com"))
+				requestFrom = IConstants.SERVER;
+			else
+				requestFrom = IConstants.LOCALHOST;
+			
+			JSONArray jSONArray = jObj.getJSONArray("userIds"); 
+			
+			
+			List<String> strlist = new ArrayList<String>();
+			
+			if(jSONArray.length() > 0)
+			for(int i=0; i<jSONArray.length();i++)
+			{
+				JSONObject jSONObject= jSONArray.getJSONObject(i);
+				String description = jObj.getString("description");
+				strlist.add(jSONObject.getString("mobileNo"));
+				String[] mobilenumbers = new String[strlist.size()];
+				strlist.toArray(mobilenumbers );
+				result = smsCountrySmsService.sendSmsFromAdmin(description,true,mobilenumbers); 
+                voiceSmsService.resendSmsResponseDetails(description,jSONObject.getLong("receiverId"),userId);	
+			}
+			
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();	
+		}
+		return Action.SUCCESS;
+	}
 	
 	
+	public String forwardMailToInformationManager()
+	{
+		
+		try{
+			HttpSession session = request.getSession();
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+
+			if(user == null)
+			return Action.INPUT;
+			Long userId = user.getRegistrationID();
+			jObj = new JSONObject(getTask());
+
+			String requestURL= request.getRequestURL().toString();
+			String requestFrom = "";
+			if(requestURL.contains("partyanalyst.com"))
+			requestFrom = IConstants.SERVER;
+			else
+			requestFrom = IConstants.LOCALHOST;
+			List<RegistrationVO> regvoList = new ArrayList<RegistrationVO>();
+
+			//JSONArray jSONArray = jObj.getJSONArray("userIds");
+
+			List<Long> userList =new ArrayList<Long>();
+
+			String description = jObj.getString("description");
+
+			List<String> strlist = new ArrayList<String>();
+
+			
+			JSONArray jSONArray  = jObj.getJSONArray("attributeIds");
+			List<Long> receiverIds = new ArrayList<Long>();
+			for(int i=0;i<jSONArray.length();i++)
+			{
+				receiverIds.add(new Long(jSONArray.get(i).toString().trim()));
+			}
+			strlist= voiceSmsService.getMobileNosForReceiverIds(receiverIds);
+
+			String[] mobilenumbers = new String[strlist.size()];
+			strlist.toArray(mobilenumbers );
+			result = smsCountrySmsService.sendSmsFromAdmin(description,true,mobilenumbers);
+			if(result.getResultCode() == 0)
+			{
+			voiceSmsService.saveSmsDetails(description,receiverIds,userId,IConstants.FORWARD);
+			}
+			
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();	
+		}
+		return Action.SUCCESS;
+	}
 	
+	public String sendMailToInformationManager()
+	{
+
+	try{
+	HttpSession session = request.getSession();
+	RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+
+	if(user == null)
+	return Action.INPUT;
+	Long userId = user.getRegistrationID();
+	jObj = new JSONObject(getTask());
+
+	String requestURL= request.getRequestURL().toString();
+	String requestFrom = "";
+	if(requestURL.contains("partyanalyst.com"))
+	requestFrom = IConstants.SERVER;
+	else
+	requestFrom = IConstants.LOCALHOST;
+	List<RegistrationVO> regvoList = new ArrayList<RegistrationVO>();
+
+	JSONArray jSONArray = jObj.getJSONArray("userIds");
+
+	List<Long> userList =new ArrayList<Long>();
+
+	String description = jObj.getString("description");
+
+	List<String> strlist = new ArrayList<String>();
+
+	if(jSONArray.length() > 0)
+	for(int i=0; i<jSONArray.length();i++)
+	{
+	JSONObject jSONObject= jSONArray.getJSONObject(i);
+	userList.add(jSONObject.getLong("userId"));
+	strlist.add(jSONObject.getString("mobileNo"));
+	}
+
+
+	String[] mobilenumbers = new String[strlist.size()];
+	strlist.toArray(mobilenumbers );
+	result = smsCountrySmsService.sendSmsFromAdmin(description,true,mobilenumbers);
+	if(result.getResultCode() == 0)
+	{
+	voiceSmsService.saveSmsDetails(description,userList,userId,IConstants.NORMAL);
+	}
+	}
+	catch(Exception e)
+	{
+	e.printStackTrace();
+	}
+	return Action.SUCCESS;
+	}
+	public String getInformationManagers()
+	{
+
+	try{
+	jObj = new JSONObject(getTask());
+	HttpSession session = request.getSession();
+	RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+
+	if(user == null)
+	return Action.INPUT;
+	Long userId = user.getRegistrationID();
+	users = voiceSmsService.getInformationManagers(userId);
+	}
+	catch (Exception e) {
+	e.printStackTrace();
+	}
+	return Action.SUCCESS;
+	}
 	
+	public String datewiseSorting()
+	{
+		try
+		{
+			HttpSession session = request.getSession();		
+			RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			
+			if(user == null)
+				return Action.INPUT;
+			
+			 jObj = new JSONObject(getTask());
+			 
+			 voiceSmsResponseDetails = voiceSmsService.getDatewiseSortingDetails(user.getRegistrationID(),jObj.getLong("typeId"),jObj.getString("date"));
+			
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+		}
+		
+	return Action.SUCCESS;
+	}
 	
-	
-	
-	
-	
-	
-	
+	public String getSmsDetailsBySearch(){
+
+		try
+		{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+
+		if(user == null)
+		return Action.INPUT;
+
+		jObj = new JSONObject(getTask());
+
+		// voiceSmsResponseDetails = voiceSmsService.getSmsDetails(user.getRegistrationID(),jObj.getLong("typeId"),jObj.getLong("constituencyId"));
+		voiceSmsResponseDetails = voiceSmsService.getSmsDetailsBySearch(user.getRegistrationID(),jObj.getLong("typeId"),jObj.getString("namesearchText"),jObj.getString("mobilesearchText"));
+
+		}catch(Exception e)
+		{
+		e.printStackTrace();
+
+		}
+
+
+		return Action.SUCCESS;
+		}
+
 }

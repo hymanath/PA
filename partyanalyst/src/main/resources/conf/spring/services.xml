@@ -1856,10 +1856,16 @@
      <property name="smsHistoryDAO" ref="smsHistoryDAO"></property>
      <property name="taskExecutor" ref="taskExecutor" />	
 	 <property name="panchayatHamletDAO" ref="panchayatHamletDAO" />
-     <property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property> <property name="constituencyDAO" ref="constituencyDAO" /> 
+     <property name="localElectionBodyDAO" ref="localElectionBodyDAO"></property> 
+     <property name="constituencyDAO" ref="constituencyDAO" /> 
      <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO"></property> 	     
      <property name="regionScopesDAO" ref="regionScopesDAO"></property>
      <property name="candidateDetailsService" ref="candidateDetailsService"></property>
+     <property name="informationManagerDAO" ref="informationManagerDAO" />
+     <property name="userSmsReceiverDAO" ref="userSmsReceiverDAO" />
+     <property name="smsTypeDAO" ref="smsTypeDAO" />
+     <property name="userSmsSentDAO" ref="userSmsSentDAO" />
+     <property name="receiverTypeDAO" ref="receiverTypeDAO" />
     </bean>
     
     <bean name="marketingManagementService" class="com.itgrids.partyanalyst.service.impl.MarketingManagementService">
@@ -2021,8 +2027,6 @@
    </bean>
    
    <bean name="stratagicReportsServicePdf" class="com.itgrids.partyanalyst.service.impl.StratagicReportsServicePdf"></bean>
-   
-   <bean name="infectedBoothsService" class="com.itgrids.partyanalyst.service.impl.InfectedBoothsService"></bean>
    
 </beans>		
 	
