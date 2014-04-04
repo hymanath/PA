@@ -19,7 +19,7 @@ public class InformationManagerDAO extends GenericDaoHibernate<InformationManage
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getInformationUsers(Long userId)
 	{
-		Query query = getSession().createQuery("select model.informationManagerId,model.firstName,model.lastName,model.mobile,model.designation,model.createdTime from InformationManager model where model.parentUser.userId = :userId");
+		Query query = getSession().createQuery("select model.informationManagerId,model.firstName,model.lastName,model.mobile,model.designation,model.createdTime from InformationManager model where model.parentUser.user.userId = :userId");
 		query.setParameter("userId", userId);
 		return query.list();
 		
