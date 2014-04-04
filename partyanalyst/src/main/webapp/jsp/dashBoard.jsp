@@ -17,7 +17,7 @@
 	<link href="styles/tdphome_inner_styles.css" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" type="text/css" href="styles/newhome_styles.css">
 	<link type="text/css" href="styles/bootstrapInHome/bootstrap.css" rel="stylesheet">
-	
+	<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 	<script type="text/javascript" src="js/md5.js"></script>
 </head>
 <style>
@@ -744,7 +744,7 @@ lable{line-height:40px;}
 
 
 
-		</div>
+			</div>
     </div>
     
     
@@ -859,7 +859,7 @@ lable{line-height:40px;}
    </div>
 	<!-- SUGGESTIVE MODEL END -- >
    <!--Created By SASI Management Tools Block-->
-
+<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
  <div class="span12 well well-small" style="margin-left:0px;">
      <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Message Center</h4></div>
 		
@@ -879,9 +879,33 @@ lable{line-height:40px;}
 					   
 	
         </div>
-   </div>		
-		   
-   
+   </div>
+</c:if>   
+		 <!-- end -->  
+    <!--Created By Information Manager  Block-->
+<c:if test="${fn:contains(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
+ <div class="span12 well well-small" style="margin-left:0px;">
+     <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Message Center</h4></div>
+		
+		
+		<div class="row-fluid">
+			<div class="span12 widget">
+				<h2> Information Monitoring System</h2>
+				<div class="media">
+					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/dashboard/sms.png"style="width: 64px; height: 64px;"></img>
+						<div class="media-body">
+						<p>Send SMS To Information Manager</p>
+							
+							<a class="btn btn-small pull-right" target="_blank" href="smsAction.action">View</a>
+						</div>
+				</div> 
+			</div> 
+					   
+	
+        </div>
+   </div>
+</c:if>   
+		 <!-- end -->  
   <div class="row-fluid">
 	<div class="span12 well well-small">
      <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />  Management Tools</h4></div>
@@ -2593,6 +2617,7 @@ function getImpFamilyDetails()
 		callAjax(jsObj,url);
 	//}
 }
+
 
 function viewStrategyAnalysisReport()
 {
