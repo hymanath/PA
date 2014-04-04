@@ -274,9 +274,9 @@ var jsObj=
  var j = 1;
  var count = 0;
 function messageForward(value,id,msg,mobileno,fId)
-{debugger;
-if($(".dataTable tr").closest('.odd').length > 0)
-	$(".dataTable tr").closest('.odd').remove();
+{
+/*if($(".dataTable tr").closest('.odd').length > 0)
+	$(".dataTable tr").closest('.odd').remove();*/
 
 var arr = new Array();	
  arr = receiverSmsArray;
