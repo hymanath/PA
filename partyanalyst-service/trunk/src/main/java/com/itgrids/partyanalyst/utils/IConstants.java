@@ -293,6 +293,7 @@ public interface IConstants {
     public final static String VOTER_DATA_TOOLS = "VOTER_DATA_TOOLS";
     public final static String ASPIRANT_DEMO_REQUESTS_VIEW = "ASPIRANT_DEMO_REQUESTS_VIEW";
     public final static String HOUSEHOLDS_SURVEY_ENTITLEMENT = "HOUSEHOLDS_SURVEY_ENTITLEMENT";
+    public final static String INFORMATION_MONITOTING_SYSTEM = "INFORMATION_MONITOTING_SYSTEM";
     
     
     public static final String NULL_POINTER_EXCEPTION = "NULL_POINTER_EXCEPTION";
