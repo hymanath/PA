@@ -1,15 +1,16 @@
 	
+	var receiverSmsArray = null;
 	var maxcount = 200;
 	function buildUsers(results,jobj)
 	{
-	
+	receiverSmsArray = new Array();
 
 		
 		var str='';
 		str+='<table class="table table-striped table-bordered">';
         str+='<thead>';
 	    str+=' <tr>';
-        str+='<th style="width: 80px;">';
+        str+='<th>';
         //str+='<input id="selectAllId" type="checkbox" class="selectAllCheck" data-original-title="Tooltip on top" data-toggle="tooltip" data-placement="top">&nbsp;Select</th>';
 		str+=' <input type="checkbox" id="parentUserCheck"/>';
 		 str+='<label id="label" for="button"></label>';
@@ -22,9 +23,14 @@
 		str+='<tbody>';
 	  for(var i in results)
 		{
-		
+			var obj = {
+				userId : results[i].registrationID,
+				name : results[i].firstName,
+				mobileNo : results[i].mobile
+			};
+		receiverSmsArray.push(obj);
         str+='<tr >';
-        str+='<td style="width: 80px;"><input type="checkbox" class="userCheck" id=user'+results[i].registrationID+' value='+results[i].registrationID+'></td>';
+        str+='<td><input type="checkbox" class="userCheck" id=user'+results[i].registrationID+' value='+results[i].registrationID+'></td>';
         str+='<td >'+results[i].firstName+'</td>';
         str+='<td>'+results[i].lastName+'</td>';
         str+='<td style="width: 120px;" class="mobile" value='+results[i].mobile+'>'+results[i].mobile+'</td>';
@@ -64,7 +70,7 @@ str+='<div id="limitDiv">';
 str+='<table style="width:100%;"><tr>';
 str+='<td style="width:50%;"><div id="remainChars" style="margin-left:266px;">';
 str+='<span id="maxcount">'+maxcount+' </span> <span>chars remaining..</span></div></td>';
-str+='<td style="width:50%;"><div>Remaining no. of characters </div></td>';
+str+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
 str+='</tr></table>';
 str+='</div>';
 
@@ -105,44 +111,8 @@ str+='<input type="text" placeholder="Phone Number" class="input-small mobileNum
 function getSearchDetails()
 {
 $("#viewSmsDiv").html('');
-$("#errorDivName").css("display","block");
-$("#errorDivMobile").css("display","block");
 var nameText = $("#nameSearch").val().trim();
 var mobileText = $("#MobileSearch").val().trim();
-var flag = true;
-if(nameText.length > 0 && !isNaN(nameText))
-{
-		$("#errorDivName").text("Enter Name").css("color", "red");
-		flag =false;
-}
-else
-	{
-$("#errorDivName").text("");
-	}
-if(mobileText.length > 0)
-	{
-		if(isNaN(mobileText)) {
-		$("#errorDivMobile").text("Enter valid MobileNo").css("color", "red");
-		flag =false;
-		}
-		else if(!(mobileText.length >=10 && mobileText.length<=12))
-		{
-		$("#errorDivMobile").text("Enter valid MobileNo").css("color", "red");
-		flag =false;
-		}
-
-	}
-	else
-	{
-$("#errorDivMobile").text("");
-	}
-if(flag == false)
-return;
-if(flag == true)
-{
-$("#errorDivName").css("display","none");
-$("#errorDivMobile").css("display","none");
-}
 var jsObj=
 {
 typeId : 2,
@@ -168,7 +138,7 @@ return true;
 
 //sravanthi code
 
-var receiverSmsArray = null;
+
 
 var count = 0;
 function buildSmsDetails(myResults)
@@ -183,7 +153,7 @@ return;
 	
 	if(myResults != null)
 	{
-receiverSmsArray = new Array();
+
 	$("#viewSmsMainDiv").css("display","block");
 	$("#viewSmsDiv").html('');
 		$("#tableID").html('');
@@ -219,13 +189,7 @@ str+='</tr>';
 str+='</thead>';
 str+='<tbody>';
 for(var i in myResults){
-	
-	var obj = {
-		userId : myResults[i].responseId,
-		name : myResults[i].userName,
-		mobileNo : myResults[i].numbers
-	};
-		receiverSmsArray.push(obj);
+
 str += '<tr id="row'+i+'" value="'+myResults[i].responseId+'">';
 str+=' <td><input type="checkbox" class="viewSmsCheckbox" value="'+myResults[i].responseCount+'"></td>';
 str += '<td class="span3">'+myResults[i].description+'</td>';
@@ -311,7 +275,8 @@ var jsObj=
  var count = 0;
 function messageForward(value,id,msg,mobileno,fId)
 {
-/*if($(".dataTable tr").closest('.odd').length > 0)
+	/*
+	if($(".dataTable tr").closest('.odd').length > 0)
 	$(".dataTable tr").closest('.odd').remove();*/
 
 var arr = new Array();	
