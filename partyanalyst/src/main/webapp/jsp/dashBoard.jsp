@@ -885,16 +885,16 @@ lable{line-height:40px;}
     <!--Created By Information Manager  Block-->
 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
  <div class="span12 well well-small" style="margin-left:0px;">
-     <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Information Monitoring System</h4></div>
+     <div class="page-header"><h4><img src="./images/information-monitoring-system-ICON.png" />Information Monitoring System</h4></div>
 		
 		
 		<div class="row-fluid">
 			<div class="span12 widget">
-				<h2> Message Center</h2>
+				<h2> SEND TEXT SMS</h2>
 				<div class="media">
-					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/dashboard/sms.png"style="width: 64px; height: 64px;"></img>
+					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/information-monitoring-system.png"></img>&nbsp;
 						<div class="media-body">
-						<p>Send SMS To Information Manager</p>
+						<p>Send Text SMS To Information Managers.View sent SMS Details & Resend or Forwared SMS.</p>
 							
 							<a class="btn btn-small pull-right" target="_blank" href="smsAction.action">View</a>
 						</div>
