@@ -325,7 +325,7 @@ $(".userCheck").attr("checked",false);
 			  
 			  }
 	});
-	var description = $("#description").val();
+	var description = $("#description").val().trim();
 	if(userIds.length == 0)
 	{
 	str+='Select atleast one user<br/>';
