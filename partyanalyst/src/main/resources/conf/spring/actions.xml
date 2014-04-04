@@ -1305,6 +1305,7 @@
 		<property name="voiceSmsService" ref="voiceSmsService" />	
 		<property name="cadreManagementService" ref="cadreManagementService" />
 		<property name="smsCountrySmsService" ref="smsCountrySmsService" />
+		<property name="entitlementsHelper" ref="entitlementsHelper" />
 	</bean>
    <bean id="updateCustomerContacts" class="com.itgrids.partyanalyst.web.action.UpdateCustomerContacts" singleton="false">
        <property name="registrationService" ref="registrationService"/>

@@ -6775,7 +6775,7 @@
 		</action>
 		
 	     
-	     <action name="smsAction" class="voiceSmsAction">
+	     <action name="smsAction" class="voiceSmsAction" method="checkEntitlement">
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		    <result name="success">/jsp/InformationManagerSMS.jsp</result>	
 		 </action>
