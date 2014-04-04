@@ -21,6 +21,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.SmsVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
+import com.itgrids.partyanalyst.helper.EntitlementsHelper;
 import com.itgrids.partyanalyst.service.ISmsService;
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.service.impl.CadreManagementService;
@@ -48,6 +49,15 @@ public class VoiceSmsAction implements ServletRequestAware{
 	private boolean check;
 	private ISmsService smsCountrySmsService;
 	private List<RegistrationVO> users;
+    private EntitlementsHelper entitlementsHelper;
+    
+	public EntitlementsHelper getEntitlementsHelper() {
+		return entitlementsHelper;
+	}
+
+	public void setEntitlementsHelper(EntitlementsHelper entitlementsHelper) {
+		this.entitlementsHelper = entitlementsHelper;
+	}
 
 	public List<RegistrationVO> getUsers() {
 		return users;
@@ -1183,5 +1193,22 @@ public class VoiceSmsAction implements ServletRequestAware{
 
 		return Action.SUCCESS;
 		}
+	
+	public String checkEntitlement()
+	{
+		HttpSession session = request.getSession();
+		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
+		if(user == null)
+		return Action.INPUT;
+	
+	if(session.getAttribute(IConstants.USER) == null && 
+				!entitlementsHelper.checkForEntitlementToViewReport(null, IConstants.INFORMATION_MONITOTING_SYSTEM))
+			return Action.INPUT;
+		if(!entitlementsHelper.checkForEntitlementToViewReport((RegistrationVO)session.getAttribute(IConstants.USER), IConstants.INFORMATION_MONITOTING_SYSTEM))
+			return Action.ERROR;
+		
+		return Action.SUCCESS;
+		
+	}
 
 }
