@@ -105,8 +105,44 @@ str+='<input type="text" placeholder="Phone Number" class="input-small mobileNum
 function getSearchDetails()
 {
 $("#viewSmsDiv").html('');
+$("#errorDivName").css("display","block");
+$("#errorDivMobile").css("display","block");
 var nameText = $("#nameSearch").val().trim();
 var mobileText = $("#MobileSearch").val().trim();
+var flag = true;
+if(nameText.length > 0 && !isNaN(nameText))
+{
+		$("#errorDivName").text("Enter Name").css("color", "red");
+		flag =false;
+}
+else
+	{
+$("#errorDivName").text("");
+	}
+if(mobileText.length > 0)
+	{
+		if(isNaN(mobileText)) {
+		$("#errorDivMobile").text("Enter valid MobileNo").css("color", "red");
+		flag =false;
+		}
+		else if(!(mobileText.length >=10 && mobileText.length<=12))
+		{
+		$("#errorDivMobile").text("Enter valid MobileNo").css("color", "red");
+		flag =false;
+		}
+
+	}
+	else
+	{
+$("#errorDivMobile").text("");
+	}
+if(flag == false)
+return;
+if(flag == true)
+{
+$("#errorDivName").css("display","none");
+$("#errorDivMobile").css("display","none");
+}
 var jsObj=
 {
 typeId : 2,
