@@ -64,7 +64,7 @@ str+='<div id="limitDiv">';
 str+='<table style="width:100%;"><tr>';
 str+='<td style="width:50%;"><div id="remainChars" style="margin-left:266px;">';
 str+='<span id="maxcount">'+maxcount+' </span> <span>chars remaining..</span></div></td>';
-str+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+str+='<td style="width:50%;"><div>Remaining no. of characters </div></td>';
 str+='</tr></table>';
 str+='</div>';
 

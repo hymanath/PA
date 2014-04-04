@@ -81,6 +81,7 @@ background-color: rgba(225,220,45,0.4) !important;
 .dataTables_filter,.dataTables_length{display:none !important;}
 
 #tableID{font-size:12px}
+#errorMsgDiv{font-weight:bold;}
 </style>
 
  </HEAD>
@@ -281,7 +282,7 @@ maxDate: new Date()
 	getSmsDetails();
 	
 	return setTimeout(function(){
-					$("#errorMsgDiv").html('Sms sent successfully').css("color","green");
+					$("#errorMsgDiv").html('SMS sent successfully').css("color","green");
 					setTimeout(function(){
 							$("#errorMsgDiv").html('');
 							$("#maxcount").html('200');
