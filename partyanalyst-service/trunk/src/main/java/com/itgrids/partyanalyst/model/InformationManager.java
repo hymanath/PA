@@ -24,6 +24,8 @@ import org.hibernate.annotations.NotFoundAction;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class InformationManager extends BaseModel implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+
 	private Long informationManagerId;
 	
 	private String firstName;
@@ -32,7 +34,7 @@ public class InformationManager extends BaseModel implements Serializable{
 	private String designation;
 	private String email;
 	private User user;
-	private User parentUser;
+	private InformationManager parentUser;
 	
 	private RegionScopes regionScopes;
 	private Long locationValue;
@@ -43,14 +45,14 @@ public class InformationManager extends BaseModel implements Serializable{
 		
 	}
 	public InformationManager(Long informationManagerId,String firstName,String lastName,
-			String email,User user,User parentUser, RegionScopes regionScopes,Long locationValue,Date createdTime)
+			String email,User user,InformationManager parentUser, RegionScopes regionScopes,Long locationValue,Date createdTime)
 	{
 	this.informationManagerId = informationManagerId;
 	this.firstName =firstName;
 	this.lastName =lastName;
 	this.email =email;
 	this.user =user;
-	this.parentUser =parentUser;
+	this.parentUser = parentUser;
 	this.regionScopes =regionScopes;
 	this.locationValue =locationValue;
 	this.createdTime =createdTime;
@@ -109,17 +111,18 @@ public class InformationManager extends BaseModel implements Serializable{
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="parent_user_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
-	public User getParentUser() {
+	public InformationManager getParentUser() {
 		return parentUser;
 	}
-	public void setParentUser(User parentUser) {
+	public void setParentUser(InformationManager parentUser) {
 		this.parentUser = parentUser;
 	}
-
+	
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinColumn(name="region_scopes_id")
 	@LazyToOne(LazyToOneOption.NO_PROXY)
