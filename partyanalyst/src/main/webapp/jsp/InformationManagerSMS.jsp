@@ -286,11 +286,11 @@ maxDate: new Date()
  		                         }
  		               };
 
- 		YAHOO.util.Connect.asyncRequest('GET', url, callback);
+ 		YAHOO.util.Connect.asyncRequest('POST', url, callback);
 	}
 	function buildSendSmsStatus(result)
 	{
-		 maxcount = 200;
+		// maxcount = 200;
 		$("#ajaxImage").css("display","none");
 		document.getElementById("description").value = '';
 
