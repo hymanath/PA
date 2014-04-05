@@ -207,7 +207,7 @@ maxDate: new Date()
 
 </div>
 
-<span  class="btn btn-small btn-danger" id="deleteAll" onClick="deleteAllRows();"><i class="icon-trash"></i> Delete Selected Meassages</span>
+<span  class="btn btn-small btn-danger" id="deleteAll" onClick="deleteAllRows();"><i class="icon-trash"></i> Delete Selected Messages</span>
 </div>
 
 
