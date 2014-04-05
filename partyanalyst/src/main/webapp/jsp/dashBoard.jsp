@@ -551,7 +551,7 @@ lable{line-height:40px;}
 			</div>
 
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
-				<h2 style="padding-bottom:35px;">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewPavchayathResults();" style="float:right;"></input></div></h2>
+				<h2 style="padding-bottom:35px;">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewPanchayathResults();" style="float:right;"></input></div></h2>
 			</div>
           
 			<div class="span4 widget divHeightClass"  style="margin-left:7px;padding: 0px 20px;">
@@ -2628,6 +2628,11 @@ function viewStrategyAnalysisReport()
 function viewInfectedBooths()
 {
 	  window.open("getInfectedBoothsAction.action"); 
+}
+
+function viewPanchayathResults()
+{
+  window.open("panchayatResultsAction.action")
 }
 
 </script>

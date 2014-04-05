@@ -302,7 +302,7 @@
 		<pattern>/resetPasswordAction*</pattern>
 		
 		<pattern>/getInfectedBoothsAction*</pattern>
-		
+		<pattern>/panchayatResultsAction*</pattern>
 		<pattern>/criticalPanchayatsAction*</pattern>
 		<pattern>/partyHighLowPollingAction*</pattern>
 		</decorator>

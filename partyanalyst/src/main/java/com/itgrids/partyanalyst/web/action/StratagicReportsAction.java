@@ -89,7 +89,7 @@ public class StratagicReportsAction extends ActionSupport implements
 	private VoterModificationGenderInfoVO voterModificationGenderInfoVO;
 	private PDFHeadingAndReturnVO voterModificationGenderInfoVOList;
 	private String url;
-	List<PartyPositionVO> boothwiseResult;
+	List<PartyPositionVO> boothwiseResult,panchayatResult;
 	private IBoothwisePollingStratagicService boothwisePollingStratagicService;
 	private List<Object> criticalPanchayats;
 	private Long constituencyId;
@@ -102,6 +102,12 @@ public class StratagicReportsAction extends ActionSupport implements
 private static final Logger log = Logger.getLogger(StratagicReportsAction.class);
 	
 	
+	public List<PartyPositionVO> getPanchayatResult() {
+	return panchayatResult;
+}
+public void setPanchayatResult(List<PartyPositionVO> panchayatResult) {
+	this.panchayatResult = panchayatResult;
+}
 	public List<PartyPositionVO> getBoothwiseResult() {
 		return boothwiseResult;
 	}
@@ -1022,6 +1028,19 @@ private static final Logger log = Logger.getLogger(StratagicReportsAction.class)
 	  }else{
 		  return Action.ERROR;
 	  }
+		
+		return Action.SUCCESS;
+	}
+	
+	public String getPanchayatAssemblyResultDetails(){
+		try{
+			jObj = new JSONObject(getTask());
+		
+			panchayatResult = suggestiveModelService.getPartyPerfromanceStratagicReport(jObj.getLong("constituencyId"),jObj.getLong("partyId"),jObj.getLong("effectElectionId"));
+		} catch (Exception e) {
+			LOG.error("Exception occured in getPanchayatAssemblyResultDetails() ",e);
+			return Action.ERROR;
+		}
 		
 		return Action.SUCCESS;
 	}
