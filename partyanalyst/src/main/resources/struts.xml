@@ -6828,6 +6828,17 @@
 		<param name="root">voiceSmsResponseDetails</param>
 		</result>
 		</action>
+			
+		<action name="panchayatResultsAction" class="stratagicReportsAction">
+			<result name="success">/jsp/panchayatAssemblyResults.jsp</result>			
+		</action>	
+		
+		<action name="getPanchayatAssemblyResultDetailsAction" class="stratagicReportsAction" method="getPanchayatAssemblyResultDetails">
+			<result type="json" name="success">
+				<param name="root">panchayatResult</param>				
+			</result>		
+		</action>	
+		
 </package>
 		
 </struts>      
