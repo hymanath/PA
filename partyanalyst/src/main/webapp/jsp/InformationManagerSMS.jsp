@@ -175,7 +175,7 @@ maxDate: new Date()
 		<span id="errorDivName" style="margin-left:382px;display:none;"></span>
 		<span id="errorDivMobile" style="margin-left:382px;display:none;"></span>
 
-<div class="well well-samll form-inline"><label>Select Date: <input type="text" class="input-small" id="dateId" placeholder="Enter Date" style="width:120px !important;" onChange="getSortedInfoByDate(this.value);">
+<div class="well well-samll form-inline" style="padding:9px;margin-left:-20px;width:941px"><label>Select Date: <input type="text" class="input-small" id="dateId" placeholder="Enter Date" style="width:120px !important;" onChange="getSortedInfoByDate(this.value);">
               <span class="add-on"></span></label>&nbsp;&nbsp;<label>Enter Name: <input type="text" onchange="" style="width:120px !important;" id="nameSearch" class="input-small hasDatepicker" placeholder="Enter Name"></label>&nbsp;&nbsp; <label>Enter Number: <input type="text" class="input-small hasDatepicker" id="MobileSearch" style="width:120px !important;" placeholder="Enter Number"  maxlength="12"></label>&nbsp;&nbsp;
 <a class="btn btn-info" onClick="getSearchDetails();">search</a></div>
 
