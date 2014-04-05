@@ -894,7 +894,7 @@ lable{line-height:40px;}
 				<div class="media">
 					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/information-monitoring-system.png"></img>&nbsp;
 						<div class="media-body">
-						<p>Send Text SMS To Information Managers.View sent SMS Details & Resend or Forwared SMS.</p>
+						<p>Send Text SMS To Information Managers.View sent SMS Details & Resend or Forward SMS.</p>
 							
 							<a class="btn btn-small pull-right" target="_blank" href="smsAction.action">View</a>
 						</div>
