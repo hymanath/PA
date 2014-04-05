@@ -64,15 +64,18 @@ str+='<input type="text" placeholder="Phone Number" class="input-small mobileNum
 str+='<button type="submit" class="btn" onclick="addOtherContact(\'otherContactsDiv\');">add&nbsp;&nbsp;</button>';
 str+='<button type="submit" class="btn" onclick="deleteOtherContact(\'otherContactsDiv\');">delete&nbsp;&nbsp;</button>';
 str+='</label></div></div>';*/
-str+='<textarea rows="3" id="description" onkeyup="limitText(\'description\',\'maxcount\','+maxcount+')" class="span9 m-top15" placeholder="Enter Your Message Here" style="background:#fff;"></textarea>';
+
+str+='<textarea rows="3" id="description" class="span9 m-top15" placeholder="Enter Your Message Here" style="background:#fff;"></textarea>';
+str+='&nbsp;&nbsp; &nbsp;&nbsp;<button class="btn btn-small btn-info" type="submit" onclick="sendSMS()">Send SMS</button><img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;"/>';
+/*str+='<textarea rows="3" id="description" onkeyup="limitText(\'description\',\'maxcount\','+maxcount+')" class="span9 m-top15" placeholder="Enter Your Message Here" style="background:#fff;"></textarea>';
 str+='&nbsp;&nbsp; &nbsp;&nbsp;<button class="btn btn-small btn-info" type="submit" onclick="sendSMS()">Send SMS</button><img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;"/>';
 str+='<div id="limitDiv">';
 str+='<table style="width:100%;"><tr>';
 str+='<td style="width:50%;"><div id="remainChars" style="margin-left:266px;">';
 str+='<span id="maxcount">'+maxcount+' </span> <span>remaining..</span></div></td>';
 str+='<td style="width:50%;"><div>Remaining no. of characters</div></td>';
-str+='</tr></table>';
-str+='</div>';
+str+='</tr></table>';*/
+str+='</div><br/><br/>';
 
 //str+='&nbsp;&nbsp; &nbsp;&nbsp;<button class="btn btn-small btn-info" type="submit" onclick="getSmsDetails();">View SMS</button><img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;"/>';
 $("#userInfoDiv").html(str);
@@ -210,7 +213,7 @@ str += '<thead>';
 		  str+='</tr>';*/
 
 		  str+='<tr id="wonCandidatesTableSearch">';
-		  str+=' <th><input id="parentViewSmsCheckbox" type="checkbox" /></th>';
+		  str+=' <th><input id="parentViewSmsCheckbox" type="checkbox" style="width:4px !imporatnt;"/></th>';
 str+=' <th >MESSAGE</th>';
 str+='<th >SENT ON</th>';
 str+=' <th > NAME</th>';
@@ -228,7 +231,7 @@ str+='<tbody>';
 for(var i in myResults){
 
 str += '<tr id="row'+i+'" value="'+myResults[i].responseId+'">';
-str+=' <td><input type="checkbox" class="viewSmsCheckbox" value="'+myResults[i].responseCount+'"></td>';
+str+=' <td><input type="checkbox" class="viewSmsCheckbox" value="'+myResults[i].responseCount+'" style="width:4px !imporatnt;"></td>';
 str += '<td class="span3">'+myResults[i].description+'</td>';
 str += '<td>'+myResults[i].dateSent+'</td><td>'+myResults[i].userName+'</td><td>'+myResults[i].numbers+'</td>';
 str += '<td><button class="btn btn-small" onClick="messageResend('+myResults[i].responseCount+',\''+myResults[i].description+'\','+myResults[i].numbers+');" style="width: 100px;"><i class="icon-repeat"></i>  Resend</button></td>';
