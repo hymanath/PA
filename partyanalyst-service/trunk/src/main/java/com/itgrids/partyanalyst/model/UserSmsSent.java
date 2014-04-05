@@ -93,7 +93,7 @@ public class UserSmsSent extends BaseModel implements Serializable {
 		this.sentTime = sentTime;
 	}
 	
-	@Column(name="message" , length = 600)
+	@Column(name="message" , length = 200)
 	public String getMessage() {
 		return message;
 	}
