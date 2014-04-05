@@ -74,14 +74,30 @@
 input {width:60px !important;}
 
 
-table.dataTable tr.odd td.sorting_1,table.dataTable tr.even td.sorting_1 {
-background-color: rgba(225,220,45,0.4) !important;
+table.dataTable tr.odd td.sorting_1  {
+background-color: #F9F9F9 !important;
 }
+table.dataTable tr.even td.sorting_1
+{
+background-color:  #FFFFFF !important;
+}
+
 .widget {border-top:5px solid #FFDC2D;}
 .dataTables_filter,.dataTables_length{display:none !important;}
 
 #tableID{font-size:12px}
 #errorMsgDiv{font-weight:bold;}
+
+.paginate_disabled_next, .paginate_enabled_next {
+    margin-left: 10px !important;
+    padding-right: 31px !important;
+}
+.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next {
+   
+    margin-left: 40px !important;
+  
+}
+
 </style>
 
  </HEAD>

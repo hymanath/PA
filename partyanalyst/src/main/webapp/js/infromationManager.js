@@ -10,7 +10,7 @@
 		str+='<table class="table table-striped table-bordered">';
         str+='<thead>';
 	    str+=' <tr>';
-        str+='<th>';
+        str+='<th style="width:8px;">';
         //str+='<input id="selectAllId" type="checkbox" class="selectAllCheck" data-original-title="Tooltip on top" data-toggle="tooltip" data-placement="top">&nbsp;Select</th>';
 		str+=' <input type="checkbox" id="parentUserCheck"/>';
 		 str+='<label id="label" for="button"></label>';
@@ -30,7 +30,7 @@
 			};
 		receiverSmsArray.push(obj);
         str+='<tr >';
-        str+='<td><input type="checkbox" class="userCheck" id=user'+results[i].registrationID+' value='+results[i].registrationID+'></td>';
+        str+='<td style="width:8px;"><input type="checkbox" class="userCheck" id=user'+results[i].registrationID+' value='+results[i].registrationID+' ></td>';
         str+='<td >'+results[i].firstName+'</td>';
         str+='<td>'+results[i].lastName+'</td>';
         str+='<td style="width: 120px;" class="mobile" value='+results[i].mobile+'>'+results[i].mobile+'</td>';
@@ -69,8 +69,8 @@ str+='&nbsp;&nbsp; &nbsp;&nbsp;<button class="btn btn-small btn-info" type="subm
 str+='<div id="limitDiv">';
 str+='<table style="width:100%;"><tr>';
 str+='<td style="width:50%;"><div id="remainChars" style="margin-left:266px;">';
-str+='<span id="maxcount">'+maxcount+' </span> <span>chars remaining..</span></div></td>';
-str+='<td style="width:50%;"><div>Should not exceed 200 chars</div></td>';
+str+='<span id="maxcount">'+maxcount+' </span> <span>remaining..</span></div></td>';
+str+='<td style="width:50%;"><div>Remaining no. of characters</div></td>';
 str+='</tr></table>';
 str+='</div>';
 
@@ -113,6 +113,43 @@ function getSearchDetails()
 $("#viewSmsDiv").html('');
 var nameText = $("#nameSearch").val().trim();
 var mobileText = $("#MobileSearch").val().trim();
+/*$("#errorDivName").css("display","block");
+$("#errorDivMobile").css("display","block");
+
+var flag = true;
+if(nameText.length > 0 && !isNaN(nameText))
+{
+		$("#errorDivName").text("Enter Name").css("color", "red");
+		flag =false;
+}
+else
+	{
+$("#errorDivName").text("");
+	}
+if(mobileText.length > 0)
+	{
+		if(isNaN(mobileText)) {
+		$("#errorDivMobile").text("Enter valid MobileNo").css("color", "red");
+		flag =false;
+		}
+		else if(!(mobileText.length >=10 && mobileText.length<=12))
+		{
+		$("#errorDivMobile").text("Enter valid MobileNo").css("color", "red");
+		flag =false;
+		}
+
+	}
+	else
+	{
+$("#errorDivMobile").text("");
+	}
+if(flag == false)
+return;
+if(flag == true)
+{
+$("#errorDivName").css("display","none");
+$("#errorDivMobile").css("display","none");
+}*/
 var jsObj=
 {
 typeId : 2,
