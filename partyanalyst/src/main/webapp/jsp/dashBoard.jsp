@@ -892,7 +892,7 @@ lable{line-height:40px;}
 			<div class="span12 widget">
 				<h2> SEND TEXT SMS</h2>
 				<div class="media">
-					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/information-monitoring-system.png"></img>&nbsp;
+					<img class="media-object pull-left" alt="Send Text And Voice SMS" src="./images/information-monitoring-systemNew.png"></img>&nbsp;
 						<div class="media-body">
 						<p>Send Text SMS To Information Managers.View sent SMS Details & Resend or Forward SMS.</p>
 							
