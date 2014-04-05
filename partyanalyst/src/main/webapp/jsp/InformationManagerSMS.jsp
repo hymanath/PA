@@ -145,7 +145,7 @@ maxDate: new Date()
 <!--<div class="container m-top15" style="margin-top:20px">-->
 <div class="container m-top15 clearfix" style="background: none repeat scroll 0% 0% rgb(255, 255, 255) !important; margin-top: 0px; padding: 20px !important; border-right: 1px solid rgb(255, 220, 45) !important; border-left: 1px solid rgb(255, 220, 45) !important;">
 
-<h1 style="margin-bottom: 10px !important; text-align: center; margin-left: -1px !important;background:#FFDC2D;color:#FA764E;" class="alert alert-info">Information Monitoring System</h1>
+<h1 style="margin-bottom: 10px !important; text-align: center; margin-left: -1px !important;background:#FFDC2D;color:#FE0000;" class="alert alert-info">Information Monitoring System</h1>
 <div class=" widget clearfix " style="margin-bottom: 10px !important; ">
 
 <h2>Send Text SMS </h2>
