@@ -198,7 +198,7 @@ return;
 		$("#tableID").html('');
 var str = "";
 str += '<div id="successDiv"></div>';
-str += '<table class="table table-striped table-bordered m-top15" id="tableID"  style="float: left;">';
+str += '<table class="table table-striped table-bordered m-top15 clearfix" id="tableID"  style="float: left;">';
 str += '<thead>';
  /*str+='<tr id="wonCandidatesTablehead">';
  str+=' <th><input id="parentViewSmsCheckbox" type="checkbox" /></th>';
@@ -400,6 +400,16 @@ receiverIds =new Array();
 $('#mulSelect option:selected').each(function(i, selected){ 
  receiverIds[i] = $(this).val(); 
 });
+	if(receiverIds.length==0){
+	setTimeout(function(){
+		$("#successDiv").html("Please Select atleast one User..").css({"color":"red","width":"600px","float":"right"}).scrollTop();
+		$('html, body,#successDiv').animate({scrollTop:208}, 'slow');
+			setTimeout(function(){
+				$("#successDiv").html('');
+			},3000);
+		},1000);
+	return;
+	}
 
 var jsObj=
 {
