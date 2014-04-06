@@ -1,22 +1,23 @@
 	
 	var receiverSmsArray = null;
-	var maxcount = 200;
+	var maxcount = 0;
 	function buildUsers(results,jobj)
 	{
 	receiverSmsArray = new Array();
 
 		
 		var str='';
-		str+='<table class="table table-striped table-bordered">';
+		str+='<table class="table table-striped table-bordered" style="width:77% !important;">';
         str+='<thead>';
 	    str+=' <tr>';
         str+='<th style="width:8px;">';
         //str+='<input id="selectAllId" type="checkbox" class="selectAllCheck" data-original-title="Tooltip on top" data-toggle="tooltip" data-placement="top">&nbsp;Select</th>';
 		str+=' <input type="checkbox" id="parentUserCheck"/>';
 		 str+='<label id="label" for="button"></label>';
-         str+='<th>First Name</th>';
-         str+='<th>Last Name</th>';
-        str+='<th  style="width: 120px;">Contact Number</th>';
+        // str+='<th>First Name</th>';
+        // str+='<th>Last Name</th>';
+		str+='<th>Incharge</th>';
+		str+='<th  style="display:none;">Contact Number</th>';
 		str+='<th>Designation</th>';
         str+='</tr>';
         str+='</thead>';
@@ -25,15 +26,16 @@
 		{
 			var obj = {
 				userId : results[i].registrationID,
-				name : results[i].firstName,
+				name : results[i].accessValue,
 				mobileNo : results[i].mobile
 			};
 		receiverSmsArray.push(obj);
         str+='<tr >';
         str+='<td style="width:8px;"><input type="checkbox" class="userCheck" id=user'+results[i].registrationID+' value='+results[i].registrationID+' ></td>';
-        str+='<td >'+results[i].firstName+'</td>';
-        str+='<td>'+results[i].lastName+'</td>';
-        str+='<td style="width: 120px;" class="mobile" value='+results[i].mobile+'>'+results[i].mobile+'</td>';
+       // str+='<td >'+results[i].firstName+'</td>';
+       // str+='<td>'+results[i].lastName+'</td>';
+	   str+='<td>'+results[i].accessValue+'</td>';
+        str+='<td style="display:none;" class="mobile" value='+results[i].mobile+'>'+results[i].mobile+'</td>';
 		 str+='<td>'+results[i].designation+'</td>';
         str+='</tr>'
 	     }   
@@ -63,16 +65,17 @@ str+='<input type="text" class="input-small lastName" placeholder="Last Name" id
 str+='<input type="text" placeholder="Phone Number" class="input-small mobileNumber" id="mobileNumber" >&nbsp;&nbsp;';
 str+='<button type="submit" class="btn" onclick="addOtherContact(\'otherContactsDiv\');">add&nbsp;&nbsp;</button>';
 str+='<button type="submit" class="btn" onclick="deleteOtherContact(\'otherContactsDiv\');">delete&nbsp;&nbsp;</button>';
+str+='<textarea rows="3" id="description" onkeyup="limitText(\'description\',\'maxcount\','+maxcount+')" class="span9 m-top15" placeholder="Enter Your Message Here" style="background:#fff;"></textarea>';
 str+='</label></div></div>';*/
 
-
-str+='<textarea rows="3" id="description" onkeyup="limitText(\'description\',\'maxcount\','+maxcount+')" class="span9 m-top15" placeholder="Enter Your Message Here" style="background:#fff;"></textarea>';
+str+='<span id="alertMsg" style="color:red;"></span>';
+str+='<textarea rows="3" id="description" class="span9 m-top15" placeholder="Enter Your Message Here" style="background:#fff;" onkeyup="limitText(\'description\',\'maxcount\','+maxcount+')"></textarea>';
 str+='&nbsp;&nbsp; &nbsp;&nbsp;<button class="btn btn-small btn-info" type="submit" onclick="sendSMS()">Send SMS</button><img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;float:right;"/>';
 str+='<div id="limitDiv">';
 str+='<table style="width:100%;"><tr>';
 str+='<td style="width:50%;"><div id="remainChars" style="margin-left:266px;">';
-str+='<span id="maxcount">'+maxcount+' </span> <span>remaining..</span></div></td>';
-str+='<td style="width:50%;"><div>Remaining no. of characters</div></td>';
+str+='<span id="maxcount">'+maxcount+' </span> </div></td>';
+//str+='<td style="width:50%;"><div>Remaining no. of characters</div></td>';
 str+='</tr></table>';
 str+='</div><br/><br/>';
 
@@ -215,8 +218,8 @@ str += '<thead>';
 		  str+=' <th><input id="parentViewSmsCheckbox" type="checkbox" style="width:4px !imporatnt;"/></th>';
 str+=' <th >MESSAGE</th>';
 str+='<th >SENT ON</th>';
-str+=' <th > NAME</th>';
-str+='<th > CONTACT NUMBER</th>';
+str+=' <th > Incharge</th>';
+//str+='<th > CONTACT NUMBER</th>';
 
 
 str+=' <th > RE-SEND</th>';
@@ -231,11 +234,12 @@ for(var i in myResults){
 
 str += '<tr id="row'+i+'" value="'+myResults[i].responseId+'">';
 str+=' <td><input type="checkbox" class="viewSmsCheckbox" value="'+myResults[i].responseCount+'" style="width:4px !imporatnt;"></td>';
-str += '<td class="span3">'+myResults[i].description+'</td>';
-str += '<td>'+myResults[i].dateSent+'</td><td>'+myResults[i].userName+'</td><td>'+myResults[i].numbers+'</td>';
-str += '<td><button class="btn btn-small" onClick="messageResend('+myResults[i].responseCount+',\''+myResults[i].description+'\','+myResults[i].numbers+');" style="width: 100px;"><i class="icon-repeat"></i>  Resend</button></td>';
-str += '<td><button type="submit" class="btn btn-small btn-success" id="forward'+i+'" onClick="messageForward(\'row'+i+'\','+myResults[i].responseId+',\''+myResults[i].description+'\','+myResults[i].numbers+',\'forward'+i+'\');" style="width: 100px;"><i class="icon-share icon-white"></i> Forward</button></td>';
-str += '<td><button type="submit" class="btn btn-small btn-danger" style="width: 100px;" onClick="deleteRow('+myResults[i].responseCount+',\'forward'+i+'\');"><i class="icon-trash icon-white"></i> Delete</button></td></tr>';
+str += '<td class="span8">'+myResults[i].description+'</td>';
+str += '<td>'+myResults[i].dateSent+'</td><td>'+myResults[i].locationName+'</td>';
+//str+='<td>'+myResults[i].numbers+'</td>';
+str += '<td><button class="btn btn-small" onClick="messageResend('+myResults[i].responseCount+',\''+myResults[i].description+'\','+myResults[i].numbers+');" ><i class="icon-repeat"></i> </button></td>';
+str += '<td><button type="submit" class="btn btn-small btn-success" id="forward'+i+'" onClick="messageForward(\'row'+i+'\','+myResults[i].responseId+',\''+myResults[i].description+'\','+myResults[i].numbers+',\'forward'+i+'\');" ><i class="icon-share icon-white"></i></button></td>';
+str += '<td><button type="submit" class="btn btn-small btn-danger" onClick="deleteRow('+myResults[i].responseCount+',\'forward'+i+'\');"><i class="icon-trash icon-white"></i> </button></td></tr>';
 
 }
 str += '</tbody>';
@@ -244,7 +248,7 @@ str+='</table>';
 $("#viewSmsDiv").html(str);
 $('#tableID').dataTable({
 			"iDisplayLength": 15,
-			"aaSorting": [[ 8, "desc" ]],
+			"aaSorting": [[ 7, "desc" ]],
 			
 			"aoColumns":[
 			{"bSortable": false},
@@ -329,7 +333,7 @@ arrUnique = uniqBy(arr, JSON.stringify)
 
 var str = '';
 str += '<tr id="subrow'+value.match(/\d+/)+j+'">';
-str += '<td></td><td class="span3" colspan="3"><input class="comnClss" id="input'+value+'" type="text" style="width:150px !important;" value="'+msg+'"></td>';
+str += '<td></td><td class="span3" colspan="2"><input class="comnClss" id="input'+value+'" type="text" style="width:150px !important;" value="'+msg+'"></td>';
 str += '<td><select id="mulSelect" multiple="multiple">';
 for ( var i in arrUnique) {
 		str += '<option value='
@@ -337,8 +341,8 @@ for ( var i in arrUnique) {
 				+ arrUnique[i].name + '</option>';
 	}
 str+='</select></td>';
-str += '<td><span class="btn btn-small" onClick="forwardMessage('+id+',\'input'+value+'\','+mobileno+');"><i class="icon-share-alt"></i>&nbsp;Send</span></td>';
-str += '<td></td><td><span class="btn btn-small btn-danger"  onClick="deleteRow(\'subrow'+value.match(/\d+/)+j+'\',\''+fId+'\');"><i class="icon-trash icon-white"></i>  Delete</span></td></tr>';
+str += '<td><span class="btn btn-small" onClick="forwardMessage('+id+',\'input'+value+'\','+mobileno+');"><i class="icon-share-alt"></i></span></td>';
+str += '<td></td><td><span class="btn btn-small btn-danger"  onClick="deleteRow(\'subrow'+value.match(/\d+/)+j+'\',\''+fId+'\');"><i class="icon-trash icon-white"></i></span></td></tr>';
 $('#'+value).after(str);
 
 	$('#'+fId).attr("disabled", true);

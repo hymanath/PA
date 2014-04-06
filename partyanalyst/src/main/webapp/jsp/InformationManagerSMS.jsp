@@ -176,8 +176,9 @@ maxDate: new Date()
 		<span id="errorDivMobile" style="margin-left:382px;display:none;"></span>
 
 <div class="well well-samll form-inline" style="padding:9px;margin-left:-20px;width:941px"><label>Select Date: <input type="text" class="input-small" id="dateId" placeholder="Enter Date" style="width:120px !important;" onChange="getSortedInfoByDate(this.value);">
-              <span class="add-on"></span></label>&nbsp;&nbsp;<label>Enter Name: <input type="text" onchange="" style="width:120px !important;" id="nameSearch" class="input-small hasDatepicker" placeholder="Enter Name"></label>&nbsp;&nbsp; <label>Enter Number: <input type="text" class="input-small hasDatepicker" id="MobileSearch" style="width:120px !important;" placeholder="Enter Number"  maxlength="12"></label>&nbsp;&nbsp;
-<a class="btn btn-info" onClick="getSearchDetails();">search</a></div>
+              <span class="add-on"></span></label>&nbsp;&nbsp;<label>Enter Name: <input type="text" onchange="" style="width:120px !important;" id="nameSearch" class="input-small hasDatepicker" placeholder="Enter Name"></label>&nbsp;&nbsp; 
+			  <!--<label>Enter Number: <input type="text" class="input-small hasDatepicker" id="MobileSearch" style="width:120px !important;" placeholder="Enter Number"  maxlength="12"></label>&nbsp;&nbsp;-->
+<a class="btn btn-info" onClick="getLocationSearchDetails();">search</a></div>
 
 
 
@@ -290,7 +291,9 @@ maxDate: new Date()
 	}
 	function buildSendSmsStatus(result)
 	{
-		 maxcount = 200;
+		 maxcount = 0;
+		 count = 2;
+         limitno = 10;
 		$("#ajaxImage").css("display","none");
 		document.getElementById("description").value = '';
 
@@ -362,6 +365,8 @@ $(".userCheck").attr("checked",false);
 	}
 	else
 	{
+		
+		
 		$("#ajaxImage").css("display","inline-block");
 		errorMsgDiv.innerHTML = '';
 	/*if($('#mobileNumber').val().trim() != "")
@@ -415,30 +420,58 @@ function getInformationManagers(){
 			callAjax(jsObj,url);
 
 	}
-
-	function limitText(limitField, limitCount, limitNum)
+var count = 2;
+var limitno = 160;
+function limitText(limitField, limitCount, limitNum)
 {
 
 var limitFieldElmt = document.getElementById(limitField);
 var limitCountElmt = document.getElementById(limitCount);
+limitCountElmt.innerHTML = limitNum + limitFieldElmt.value.length+"";
+if(limitFieldElmt.value.length == 0)
+	{
+$("#alertMsg").html('');
+count = 2;
+limitno = 160;
+	}
+if(limitFieldElmt.value.length > limitno)
+	{
+$("#alertMsg").html('exceeding the limit '+limitno+' characters and you are in to '+count+' nd message');
+count ++;
+limitno = limitno + 160;
+	}
 
-if (limitFieldElmt.value.length > limitNum)
+/*if (limitFieldElmt.value.length > compare)
 {
-limitFieldElmt.value = limitFieldElmt.value.substring(0, limitNum);
+alert('exceeding the limit 160 characters and you are in to 2nd message');
 }
 else
 {
-limitCountElmt.innerHTML = limitNum - limitFieldElmt.value.length+"";
-}
+
+}*/
 }
 
-/*function buildStatus(result)
+
+function getLocationSearchDetails()
 {
-  
-}*/
+$("#viewSmsDiv").html('');
+var nameText = $("#nameSearch").val().trim();
+var jsObj=
+{
+typeId : 2,
+locationsearchText :nameText,
+
+task : "getSmsDetails"
+}
+var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+var url = "getSmsDetailsLocationSeacrhAction.action?"+rparam;
+
+callAjax(jsObj,url);
+}
+
 	  </script>
 	  <script type="text/javascript">
-	  getAllParliamentConstInCountry("constituency");
+	 
 	  getInformationManagers();
 	  getSmsDetails();
 	   </script> 
