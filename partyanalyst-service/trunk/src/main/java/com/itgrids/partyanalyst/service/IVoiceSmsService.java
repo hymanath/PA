@@ -38,4 +38,6 @@ public interface IVoiceSmsService {
 	public List<String> getMobileNosForReceiverIds(List<Long> receiverIds);
 	public List<VoiceSmsResponseDetailsVO> getDatewiseSortingDetails(Long userId,Long typeId,String date);
 	public List<VoiceSmsResponseDetailsVO> getSmsDetailsBySearch(Long userId,Long typeId,String namesearchText,String mobilesearch);
+	
+	public List<VoiceSmsResponseDetailsVO> getSmsDetailsByLocationSearch(Long userId,Long typeId,String locationsearchText);
 }

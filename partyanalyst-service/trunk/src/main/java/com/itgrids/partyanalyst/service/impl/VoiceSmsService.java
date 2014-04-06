@@ -13,8 +13,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hsqldb.lib.HashSet;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -43,17 +45,23 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SMSSearchCriteriaVO;
 import com.itgrids.partyanalyst.dto.VoiceSmsResponseDetailsVO;
 import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.Hamlet;
 import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.RegionScopes;
 import com.itgrids.partyanalyst.model.SmsHistory;
 import com.itgrids.partyanalyst.model.SmsModule;
 import com.itgrids.partyanalyst.model.SmsResponseDetails;
 import com.itgrids.partyanalyst.model.SmsTrack;
+import com.itgrids.partyanalyst.model.State;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.User;
 import com.itgrids.partyanalyst.model.UserSmsReceiver;
 import com.itgrids.partyanalyst.model.UserSmsSent;
 import com.itgrids.partyanalyst.model.VoiceRecordingDetails;
 import com.itgrids.partyanalyst.model.VoiceSmsVerifiedNumbers;
 import com.itgrids.partyanalyst.service.ICandidateDetailsService;
+
 import com.itgrids.partyanalyst.service.IVoiceSmsService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -87,7 +95,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 	private ISmsTypeDAO smsTypeDAO;
 	private IUserSmsSentDAO userSmsSentDAO;
 	
-			
+
 	public ISmsTypeDAO getSmsTypeDAO() {
 		return smsTypeDAO;
 	}
@@ -1282,6 +1290,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 			vo.setNumbers(param[3].toString());
 			vo.setResponseId((Long)param[4]);
 			vo.setResponseCount((Long)param[5]);
+			String locationName = candidateDetailsService.getLocationDetails((Long)param[6],
+					(Long)param[7]);
+			vo.setLocationName(locationName);
 			result.add(vo);
 		}
 		return result;
@@ -1380,6 +1391,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 	regVO.setMobile(params[3] != null ?params[3] .toString() : "");
 	regVO.setDesignation(params[4] != null ?params[4] .toString() : "");
 	regVO.setCreatedTime(params[5] != null ?params[5] .toString() : "");
+	String locationName = candidateDetailsService.getLocationDetails((Long)params[6],
+			(Long)params[7]);
+	regVO.setAccessValue(locationName !=null ?locationName.toString() : "");
 	result.add(regVO);
 	}
 	}
@@ -1392,6 +1406,7 @@ public class VoiceSmsService implements IVoiceSmsService {
 
 	return result;
 	}
+	
 
 	public List<String> getMobileNosForReceiverIds(List<Long> receiverIds){
 		
@@ -1412,6 +1427,9 @@ public class VoiceSmsService implements IVoiceSmsService {
 			vo.setNumbers(param[3].toString());
 			vo.setResponseId((Long)param[4]);
 			vo.setResponseCount((Long)param[5]);
+			String locationName = candidateDetailsService.getLocationDetails((Long)param[6],
+					(Long)param[7]);
+			vo.setLocationName(locationName);
 			result.add(vo);
 		}
 		}
@@ -1426,6 +1444,8 @@ public class VoiceSmsService implements IVoiceSmsService {
 		List<VoiceSmsResponseDetailsVO> result = new ArrayList<VoiceSmsResponseDetailsVO>();
 
 		List<Object[]> smsdet = userSmsReceiverDAO.getSmsDetailsBySearch(userId,typeId,namesearchText,mobilesearchText);
+		
+		
 		if(smsdet != null && smsdet.size() > 0)
 		{
 		for(Object[] param:smsdet){
@@ -1436,6 +1456,49 @@ public class VoiceSmsService implements IVoiceSmsService {
 		vo.setNumbers(param[3].toString());
 		vo.setResponseId((Long)param[4]);
 		vo.setResponseCount((Long)param[5]);
+		String locationName = candidateDetailsService.getLocationDetails((Long)param[6],
+				(Long)param[7]);
+		vo.setLocationName(locationName);
+		result.add(vo);
+		}
+		}
+		return result;
+		}
+	
+	
+	public List<VoiceSmsResponseDetailsVO> getSmsDetailsByLocationSearch(Long userId,Long typeId,String locationsearchText){
+		List<VoiceSmsResponseDetailsVO> result = new ArrayList<VoiceSmsResponseDetailsVO>();
+		Set<Long> informationManagerIds =new java.util.HashSet<Long>(0);
+		
+		List<Long> constiImIds = userSmsReceiverDAO.getSmsDetailsByLocationSearch(userId,typeId,locationsearchText,4l);
+		if(constiImIds != null)
+			informationManagerIds.addAll(constiImIds);
+		List<Long> tehsilImIds = userSmsReceiverDAO.getSmsDetailsByLocationSearchForMandal(userId,typeId,locationsearchText,5l);
+		if(tehsilImIds != null)
+			informationManagerIds.addAll(tehsilImIds);
+		List<Long> loclbodyImIds =  userSmsReceiverDAO.getSmsDetailsByLocationSearchForLocalbody(userId,typeId,locationsearchText,7l);
+		if(loclbodyImIds != null)
+			informationManagerIds.addAll(loclbodyImIds);
+		List<Long> boothImIds =  userSmsReceiverDAO.getSmsDetailsByLocationSearchForBooth(userId,typeId,locationsearchText,9l);
+		if(boothImIds != null)
+			informationManagerIds.addAll(boothImIds);
+		
+		if(informationManagerIds != null && informationManagerIds.size() > 0)
+		{
+		List<Long> list = new ArrayList<Long>(informationManagerIds);
+		List<Object[]> smsdet = userSmsReceiverDAO.getSmsDetailsByIds(list);
+		if(smsdet !=null && smsdet.size() > 0)
+		for(Object[] param:smsdet){
+		VoiceSmsResponseDetailsVO vo = new VoiceSmsResponseDetailsVO();
+		vo.setUserName(param[0].toString());
+		vo.setDateSent(param[1].toString());
+		vo.setDescription(param[2].toString());
+		vo.setNumbers(param[3].toString());
+		vo.setResponseId((Long)param[4]);
+		vo.setResponseCount((Long)param[5]);
+		String locationName = candidateDetailsService.getLocationDetails((Long)param[6],
+				(Long)param[7]);
+		vo.setLocationName(locationName);
 		result.add(vo);
 		}
 		}
