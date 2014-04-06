@@ -105,4 +105,6 @@ public interface IAnanymousUserService {
 	public RegistrationVO verifyLinkForPassword(String randomNumber);
 	
 	public String confirmChangePassword(RegistrationVO rvo,String newPassword);
+	
+	public boolean checkInfoManagerOrNot(Long userId);
 }	
