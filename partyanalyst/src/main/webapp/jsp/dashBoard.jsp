@@ -217,13 +217,14 @@ lable{line-height:40px;}
 		<a id="houseHoldForm" class="btn btn-info" style="margin:5px;" href="houseHoldSurveyReportAction.action"> House Hold Page</a>
 		<a id="houseHoldAdmin" class="btn btn-info" href="houseHoldCreationAction.action"> House Hold Admin</a>
 	</div>
-	
+<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 <div class="btn btn-xlarge" style="height: 185px;">
     
     <h2 style="margin-top: 38px;">Advanced Dashboard</h2>
     <a href="userProfile.action" class="btn btn-small btn-success" > Click <i class="icon-hand-up icon-white"></i> To View More Features </a>
 
             </div>
+ </c:if>			
 <div class="widget quicklinks m-top15">
 	<h2><span><i class="icon-random "id="icon_leftsec"></i></span>Quick Links</h2>
 
@@ -553,7 +554,7 @@ lable{line-height:40px;}
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
 				<h2 style="padding-bottom:35px;">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewPanchayathResults();" style="float:right;"></input></div></h2>
 			</div>
-          
+          <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
 			<div class="span4 widget divHeightClass"  style="margin-left:7px;padding: 0px 20px;">
 			  <h2>Voters Search</h2>
 				<div class="media">
@@ -564,6 +565,7 @@ lable{line-height:40px;}
 					</div>
 				</div>  
 			</div>
+		 </c:if>
 	    </div>
 		<div class="row-fluid">
 			<div class="span12 widget">
@@ -784,6 +786,7 @@ lable{line-height:40px;}
 	
 	<div class="span12 well well-small" style="margin-left:0px;">
      <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />Suggestive Model</h4></div>
+	  <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
 		<div class="row-fluid">
 			<div class="span6 widget" style="height: 235px;">
 				<h2> Panchayat wise Caste Details</h2>
@@ -817,7 +820,7 @@ lable{line-height:40px;}
 			</div>       
 							
 		</div>
-	
+	</c:if>
 		<div class="row-fluid">
 			<div class="span6 widget">
 				<h2>Younger Voter Details</h2>
@@ -828,12 +831,17 @@ lable{line-height:40px;}
 						<input type="button" value="View" class="btn btn-small" onClick="getYoungerVoterDetails();" style="float:right;"></input>
 				    </div> 
 				</div> -->	
-					<fieldset>
+					<fieldset><br/>
 					<lable>Select Constituency </lable>
 					<s:select cssClass="selectstyle span12" theme="simple" id="sugYoungconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes1');" name="" style="width: 148px; margin-left: 5px;"></s:select>
-					
+					<c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
+                    <span style="display:none;">
+					</c:if>
 					<lable>Select Caste </lable><select id="candidateCastes1" multiple="multiple" style="margin-left: 50px;">
 					</select>
+					<c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
+                    </span>
+					</c:if>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getYoungerVoterDetails();" style="float:right;"></input>
 				</fieldset>				
 			</div>			
@@ -846,12 +854,17 @@ lable{line-height:40px;}
 					<input type="button" value="View" class="btn btn-small" onClick="getOlderVoterDetails();" style="float:right;"></input>
 				</div> 
 		   </div> -->
-		   <fieldset>
+		   <fieldset><br/>
 					<lable>Select Constituency </lable>
 					<s:select cssClass="selectstyle span12" theme="simple" id="sugOldTarconstituencyId"  list="constituencyList" listKey="id" listValue="name" onChange="getCandidateCastes(this.options[this.selectedIndex].value,'candidateCastes2');" name="" style="width: 152px; margin-left: 5px;"></s:select>
-					
+					<c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
+                    <span style="display:none;">
+					</c:if>
 					<lable>Select Caste </lable><select id="candidateCastes2" multiple="multiple" style="margin-left: 50px;">
 					</select>
+					<c:if test="${fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
+                    </span>
+					</c:if>
 					<input type="button" value="View" class="btn btn-small btnStyle" onCLick="getOlderVoterDetails();" style="float:right;"></input>
 				</fieldset>
 		</div>
@@ -906,6 +919,7 @@ lable{line-height:40px;}
    </div>
 </c:if>   
 		 <!-- end -->  
+<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
   <div class="row-fluid">
 	<div class="span12 well well-small">
      <div class="page-header"><h4><img src="./images/dashboard/Management Tools copy.png" />  Management Tools</h4></div>
@@ -981,7 +995,7 @@ lable{line-height:40px;}
         </div>
      </div>
 	
-	
+
 	
  <!--End of Management Tools Block-->
  <!-- STRATAGIC REPORTS BLOCK -- SASI-->
@@ -1003,7 +1017,7 @@ lable{line-height:40px;}
         </div>
    </div>
 
- 
+ </c:if>
 </div></div>
 
 <script>
