@@ -106,5 +106,5 @@ public interface IAnanymousUserService {
 	
 	public String confirmChangePassword(RegistrationVO rvo,String newPassword);
 	
-	public boolean checkInfoManagerOrNot(Long userId);
+	//public boolean checkInfoManagerOrNot(Long userId);
 }	

@@ -706,12 +706,12 @@ public class UserDAO extends GenericDaoHibernate<User,Long> implements IUserDAO{
 	}
 	
 
-	public String checkInfoManagerOrNot(Long userId){
+/*	public String checkInfoManagerOrNot(Long userId){
 		Query queryObject = getSession().createQuery(" select model.infoManager from User model where model.userId =:userId ");
 		queryObject.setParameter("userId", userId);
 		
 		return (String)queryObject.uniqueResult();
-	}
+	}*/
 	
 	
 	
