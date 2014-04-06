@@ -69,7 +69,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 	private boolean hhEntitled;
 	private List<SelectOptionVO> districtsList;
 	private List<SelectOptionVO> publicationDatesList;
-	
+	private boolean infoManager;
 	
 
 
@@ -501,6 +501,15 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 
 	public void setSession(HttpSession session) {
 		this.session = session;
+	}
+
+	public boolean isInfoManager() {
+		return infoManager;
+	}
+
+
+	public void setInfoManager(boolean infoManager) {
+		this.infoManager = infoManager;
 	}
 
 
