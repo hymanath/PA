@@ -5,7 +5,7 @@
 <%@taglib uri="http://displaytag.sf.net" prefix="display" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.ResourceBundle;" %>
-
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -42,7 +42,6 @@
 	<script type="text/javascript" src="js/commonUtilityScript/regionSelect.js"></script>
 	<script type="text/javascript" src="js/landingPage/landingPage.js" ></script>
 	<script type="text/javascript" src="js/bootstrap.js" ></script>
-	<script type="text/javascript" src="js/md5.js"></script>
 	<!--<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>-->
 	
 
@@ -181,72 +180,137 @@ margin-top:10px;
 
     </div>
 <div id="menu" class="span10" style="border-top:1px solid #fff;border-bottom:1px solid #fff;padding:5px;margin-bottom:5px;">
-    <ul class="menu">
+      <ul class="menu">
         <li class="active"><a href="newhomePageAction.action"><span><i class="icon-home icon-black"></i></span></a></li>
 	
-    
-	
+    <c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_PERFORMANCE_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'ELECTION_COMPARISION_REPORT' ) ||
+		fn:contains(sessionScope.USER.entitlements, 'PARTY_RESULTS_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'ELECTION_RESULTS_ANALYSIS_REPORT' )  ||
+		fn:contains(sessionScope.USER.entitlements, 'CENSUS_REPORT_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_STRENGTH_AND_WEAKNESS' ) ||
+		fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) ||
+		fn:contains(sessionScope.USER.entitlements, 'CROSS_VOTING_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) }">
+	 
          <li>
+		
 			<a href="#" class="parent"><span>ANALYSIS</span></a>
+		
             <div  style="z-index:1;text-align:left;">
 			<ul>
-                <li><a href="#" class="parent">
+           <c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_PERFORMANCE_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'ELECTION_COMPARISION_REPORT' ) ||
+		fn:contains(sessionScope.USER.entitlements, 'PARTY_RESULTS_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'ELECTION_RESULTS_ANALYSIS_REPORT' )  ||
+		fn:contains(sessionScope.USER.entitlements, 'CENSUS_REPORT_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_STRENGTH_AND_WEAKNESS' ) }">
+               <li>
+			   
+			   <a href="#" class="parent">
 					<span>Election Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
+							  
+						       <c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_PERFORMANCE_REPORT' ) }">
+
 								<li><a href="partyPerformanceMain.action"><span>Party Performance Report</span></a></li>
-								<li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
-								<li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
-								<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
+								</c:if>
 								
+								 
+								 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'ELECTION_COMPARISION_REPORT' ) }">
+								<li><a href="electionComparisonAction.action"><span>Elections Comparison Report</span></a></li>
+								
+								</c:if>
+								
+								 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_RESULTS_REPORT' ) }">
+								<li><a href="partyResultsCriteriaAction.action"><span>Party Results Report</span></a></li>
+								</c:if>
+								
+								 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'ELECTION_RESULTS_ANALYSIS_REPORT' ) }">
+								<li><a href="electionResultsAnalysisAction.action"><span>Election Results Analysis Report</span></a></li>
+								</c:if>
+								 
+								 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'CENSUS_REPORT_ENTITLEMENT' ) }">
 								<li><a href="censusReportAction.action"><span>Elections vs Demographics</span></a></li>
+								</c:if>
+								 
+								 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_STRENGTH_AND_WEAKNESS' ) }">
 								<li><a href="partyStrengthAction.action"><span>Party Strengths/Weakness</span></a></li>
-								<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>
+								</c:if>
+								
+								<!--<li><a href="electionLiveResultsAnalysisAction.action"><span>Live & Previous Results Comparison</span></a></li>-->
+								
+						
 							</ul>
 						</div>
                 </li>
+				</c:if>
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) ||
+		fn:contains(sessionScope.USER.entitlements, 'CROSS_VOTING_REPORT' ) || fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) }">
                 <li>
-					<a href="#" class="parent"><span>Politician Analysis</span></a>
+					<a onmousedown="return false;" class="parent"><span>Politician Analysis</span></a>
 						<div  style="z-index:1;text-align:left;">
 							<ul>
+						
+						<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' ) }">
 								<li><a href="suggestiveModelAction.action"><span>Suggestive Model</span></a></li>
+								</c:if>
+								
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) }">
 								<li><a href="mandalPageSDetailAction.action"><span>Mandal Voting Report</span></a></li>
+								</c:if>
+								 
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CROSS_VOTING_REPORT' ) }">
 								<li><a href="crossVotingReportInputAction.action"><span>Cross Voting Report</span></a></li>
+								</c:if>
+								
+								<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PARTY_BOOTHWISE_RESULTS_REPORT' ) }">
 								<li><a href="partyBoothResultAction.action"><span>Constituency Booth Results Report</span></a></li>
+								</c:if>
+								
 							</ul>
 						</div>
                 </li>
-				
+				</c:if>
 				
 				
             </ul>
 		</div>
 		</li>
-        
-		<li id="mangntId"><a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
+        </c:if></c:if>
+		
+		<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PROBLEM_MANAGEMENT_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) ||
+		fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' )}">
+		<li id="mangntId">
+		
+		<a href="initailConstituencyManagementAction.action" class="parent"><span>MANAGEMENT TOOLS</span></a>
             <div  style="z-index:1;text-align:left;">
 				<ul>
-					<li><a href="#" class="parent"><span>Problem Management</span></a>
+				
+				<c:if test="${fn:contains(sessionScope.USER.entitlements, 'PROBLEM_MANAGEMENT_ENTITLEMENT') }">
+					<li><a onmousedown="return false;" class="parent"><span>Problem Management</span></a>
 						<div>
 							<ul>
+							  
+					
 								<li><a onclick="openAddNewProblemWindow()" href="javascript:{}"><span>Add New Problem</span></a></li>
 								<li><a href="constituencyManagementAction.action?cmTask=PROBLEMS_MANAGEMENT"><span>All Problems</span></a></li>
 								<li><a href="completeProblemDetailsSearchAction.action"><span>Problem Search And Report</span></a></li>
-								
-								
+							
 							</ul>
 						</div>
 					</li>
-					
+						</c:if>
 					<li><a href="initailConstituencyManagementAction.action"><span>Constituency Management</span></a></li>
+					
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CADRE_MANAGEMENT_ENTITLEMENT' ) }">
 					<li><a href="cadreManagementAction.action" id="cadreId"><span>Cadre Management</span></a></li>
+					</c:if>
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'CALL_CENTER_ENTITLEMENT' ) }">
+					
 					<li><a href="callCenterAction.action"><span>Call Center</span></a></li>
+					</c:if>
 					
 				</ul>
 			</div>
 		</li>
-		
-		
+		</c:if></c:if>
 		<li><a href="statePageAction.action?stateId=1"><span>STATE</span></a>
 			<div  style="z-index:8;text-align:left;" >
 			  <ul>		
@@ -255,18 +319,29 @@ margin-top:10px;
 			</div>
 		</li>
 		
-		
+			<c:if test="${sessionScope.loginStatus == 'out' && sessionScope.hasPartyAnalystUserRole == true}">   
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )  || fn:contains(sessionScope.USER.entitlements, 'VOTER_SEARCH_AND_EDIT' ) 
+		}">
 		<li>
 			<a href="#" class="parent"><span>CONSTITUENCY ANALYSIS</span></a>
 			<div  style="z-index:8;text-align:left;" >
 				<ul>
+				
+				 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' ) }">
 					<li><a href="votersAnalysisNewAction.action"><span>Voter Analysis</span></a></li>
+					</c:if>
+					<c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_SEARCH_AND_EDIT' ) }">
+					
 					<li><a href="votersSearchAction.action"><span>Voters Search &amp; Report</span></a></li>
+					</c:if>
+					 <c:if test="${fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' ) }">
 					<li><a href="casteAndElectionResultsComparisonAction.action"><span>Caste Vs Election Results</span></a></li>
+					</c:if>
 				</ul>
 			</div>
 		</li>
-
+</c:if></c:if>
+		
 		
 		
 		
@@ -278,6 +353,7 @@ margin-top:10px;
 					
 			
     </ul>
+	
 	
 </div>      
 </div>
