@@ -69,7 +69,7 @@ public class QuestionCountVo implements Comparable<QuestionCountVo> ,Serializabl
 	public void setOptionMaps(Map<Long, List<OptionsCountVo>> optionMaps) {
 		this.optionMaps = optionMaps;
 	}*/
-	@Override
+
 	public int compareTo(QuestionCountVo o) {
 		// TODO Auto-generated method stub
 		return 0;

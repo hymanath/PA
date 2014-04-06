@@ -3439,4 +3439,14 @@ public DataTransferVO getAllConnectedUsersBasedonLocationType(List<Long> locatio
   	   	
 		return "success";
 	}
+	
+	public boolean checkInfoManagerOrNot(Long userId){
+		String status = userDAO.checkInfoManagerOrNot(userId);
+		
+		if(status != null && status.equalsIgnoreCase("Y")){
+			return true;
+		}else{
+			return false;
+		}
+	}
 }
