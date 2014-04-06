@@ -134,7 +134,7 @@ public class User extends BaseModel implements Serializable{
 	
 	private String passwordHash;
 	private String passwordSalt;
-	private String infoManager;
+	//private String infoManager;
 	
 	public User(){}
 	 
@@ -1097,13 +1097,13 @@ public class User extends BaseModel implements Serializable{
 		this.userSmsSent = userSmsSent;
 	}
 
-	@Column(name="is_info_manager")
+	/*@Column(name="is_info_manager")
 	public String getInfoManager() {
 		return infoManager;
 	}
 
 	public void setInfoManager(String infoManager) {
 		this.infoManager = infoManager;
-	}
+	}*/
 	
 }
