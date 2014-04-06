@@ -15,4 +15,13 @@ public interface IUserSmsReceiverDAO extends GenericDao<UserSmsReceiver, Seriali
 	public Long getReceiverIdById(Long userSmsReceiverId);
 	public List<Object[]> getDatewiseSortingDetails(Long userId,Long typeId,Date date);
 	public List<Object[]> getSmsDetailsBySearch(Long userId,Long typeId,String namesearchText,String mobileSearch);
+	
+	public List<Long> getSmsDetailsByLocationSearch(Long userId,Long typeId,String locationsearchText,Long scope);
+	
+	public List<Object[]> getSmsDetailsByIds(List<Long> informationIds);
+	
+	public List<Long> getSmsDetailsByLocationSearchForMandal(Long userId,Long typeId,String locationsearchText,Long scope);
+	
+	public List<Long> getSmsDetailsByLocationSearchForLocalbody(Long userId,Long typeId,String locationsearchText,Long scope);
+	public List<Long> getSmsDetailsByLocationSearchForBooth(Long userId,Long typeId,String locationsearchText,Long scope);
 }
