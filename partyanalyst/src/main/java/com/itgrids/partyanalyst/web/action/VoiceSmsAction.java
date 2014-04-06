@@ -1210,5 +1210,31 @@ public class VoiceSmsAction implements ServletRequestAware{
 		return Action.SUCCESS;
 		
 	}
+	
+	public String getSmsDetailsByLocationSearch(){
+
+		try
+		{
+		HttpSession session = request.getSession();
+		RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+
+		if(user == null)
+		return Action.INPUT;
+
+		jObj = new JSONObject(getTask());
+
+		// voiceSmsResponseDetails = voiceSmsService.getSmsDetails(user.getRegistrationID(),jObj.getLong("typeId"),jObj.getLong("constituencyId"));
+		voiceSmsResponseDetails = voiceSmsService.getSmsDetailsByLocationSearch(user.getRegistrationID(),jObj.getLong("typeId"),jObj.getString("locationsearchText"));
+
+		}catch(Exception e)
+		{
+		e.printStackTrace();
+
+		}
+
+
+		return Action.SUCCESS;
+		}
+	
 
 }
