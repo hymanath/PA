@@ -639,7 +639,7 @@ lable{line-height:40px;}
 		
 		<div class="row-fluid">
 			<div class="span12 widget">
-				<h2>Importent Family Details</h2>
+				<h2>Important Family Details</h2>
 				
 				
 				<div>
