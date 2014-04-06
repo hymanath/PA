@@ -37,7 +37,7 @@ background-color: #CDE6FC;
 	font-family : arial;
 	font-size: 13px;
     margin-top:0px;
-	padding: 10px 10px 10px 0px;
+	padding: 30px 10px 10px 0px;
 	 width: 900px;
 }
 </style>
@@ -52,6 +52,7 @@ background-color: #CDE6FC;
 	 </div>
 	 <div id="ajaxImage" style="margin-top:35px;" align="center"><img src="images/icons/goldAjaxLoad.gif"></div>
 </div>
+<div id="headingDiv" style="display:none;margin-top:40px;"><b><center><h5>Election Results Comparision Chart b/w 2009 Assembly & 2013 Panchayat</h5><br/><br/><div style="margin-bottom:2px;"><i><font size="2" color="red">MARGIN</i></font></div></center></b></div>
 <div id="buildGraphDiv" style="margin-left:100px;"align="center"></div>
 <div id="buildTableDiv" style="margin-left:194px;"></div>
 <div id="buildTableDiv1" style="margin-left:194px;"></div>
@@ -61,6 +62,11 @@ background-color: #CDE6FC;
 var constituencyId = '${constituencyId}';
 function getPanchayatAssemblyResultDetails()
 {
+    $("#headingDiv").hide();
+	$("#buildGraphDiv").html("");
+	$("#buildTableDiv").html("");
+	$("#buildTableDiv1").html("")
+
 	    var constituencyId = $("#constituencyId").val();
 		$("#ajaxImage").show();
 		  var jsObj = 
@@ -85,98 +91,100 @@ function getPanchayatAssemblyResultDetails()
 						  $("#ajaxImage").hide();
 		                  $("#buildGraphDiv").html("");
 		                  $("#buildTableDiv").html("");
+						  $("#buildTableDiv1").html("");
 		                  $("#buildGraphDiv").html("<span style='color:red;font-weight:bold;font-size:12px;'>No Data Available</span>");
 					  }
 			});
 }
       
-var dataArray = new Array();
 
 function buildChartResult(result)
 {
+	$("#headingDiv").show();
+     var data = new google.visualization.DataTable();
+     data.addColumn('string', 'name');
+     data.addColumn('number', '2009');
+	 data.addColumn('number', '2013');
+	 data.addRows(result.length);
+		
+	 for(var j = 0 ; j< result.length ; j++)
+	 {	
+		if(result[j].rank == 1)
+		{
+			if(result[j].winPartyName == "TDP")
+			{
+			   var name = result[j].name;
+			   var val  = result[j].margin;
+			   var val1  =result[j].margin;
+			}
+			else{
+			   var name = result[j].name;
+			   var val  = result[j].margin;
+			   var val1   = parseFloat(result[j].margin)/2;
+			}								
+		}
+		else
+		{
+			if(result[j].winPartyName == "TDP")
+			{
+			   var name = result[j].name;
+			   var val  = result[j].margin;
+			   var val1   = parseFloat(result[j].margin)*2;
+			}
+			else{
+			    var name = result[j].name;
+				var val   = result[j].margin;
+				var val1   = result[j].margin;
+			}
+		}
+		data.setValue(j,0,name);
+		data.setValue(j,1,val);
+		data.setValue(j,2,val1);
+	 }
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0,1,{ calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },2,{ calc: "stringify",
+                         sourceColumn: 2,
+                         type: "string",
+                         role: "annotation" }
+		  	  ]);
 
-	for(var j in result)
-	{
-			var data = 
-			{
-				name : result[j].name+"-2009",
-				value : result[j].margin
-			}
-			dataArray.push(data);
-			var name = "";
-			var val = "";
-			if(result[j].rank == 1)
-			{
-					  
-			   if(result[j].winPartyName == "TDP")
-				{
-					  var name = result[j].name+"-2013";
-					  var val  = result[j].margin;
-				}
-				else{
-					var name = result[j].name+"-2013";
-					 var val   = parseFloat(result[j].margin)/2;
-				}								
-			}
-			else
-			{
-			   if(result[j].winPartyName == "TDP")
-				{
-				   var name = result[j].name+"-2013";
-				   var val   = parseFloat(result[j].margin)*2;
-				}
-				else{
-					var name = result[j].name+"-2013";
-					var val   = result[j].margin;
-				}
-			  ;
-			}
-			var data1 = 
-			{
-				name : name,
-				value : val
-			}
-
-			dataArray.push(data1);
-	}
-	var data = new google.visualization.DataTable();
-    data.addColumn('string', 'name');
-	data.addColumn('number', 'Margin Values');
-	data.addRows(dataArray.length);
-	for(var i = 0 ; i < dataArray.length ;i++)
-	{
-		data.setValue(i,0,dataArray[i].name);
-		data.setValue(i,1,dataArray[i].value);
-	}
-
-  
-		var title = 'Election Results Comparision Chart b/w 2009 Assembly & 2013 Panchayat'; 
-        var options = {'title':title,
+        var options = {
 			vAxis: {
               title: 'PANCHAYAT',
-			  'fontSize': 18
+			  'fontSize': 18,
+			  titleTextStyle: {color: 'red'},
+			  textStyle: {color: '#140E7C'},
+			  'fontStyle':'bold'
+
             },
             hAxis: {
-              title: 'MARGIN'
+              title: 'MARGIN',
+			  titleTextStyle: {color: 'red',fontSize: '14'},
             },
 		    'width': '100%',
-            'height': 1800,
+            'height': 3400,
             'fontSize': 12,
-		    'chartArea': {top: 50, right: 50, bottom: 30, height:1800, width:'75%'}
-
+			'fontColor':'green',
+		   'chartArea': {top: 50, right: 50, bottom: 30, height:3400, width:'75%'},
+			series: [{color: '#59A2BE', visibleInLegend: true}, {color: '#F06081', visibleInLegend: true}]
         };
+
          var chart = new google.visualization.BarChart(document.getElementById('buildGraphDiv'));       
-	     chart.draw(data, options); 
+	     chart.draw(view, options); 
 }
+
 function buildTableResult(result,rank)
 {
-		var str ="<div><b><center><h5>Election Results Comparision Chart b/w 2009 Assembly & 2013 Panchayat</h5></center></b></div><br/>";
+		var str ="<div><b><center><h5>Election Results Comparision Table b/w 2009(TDP @ Top Positions) Assembly & 2013 Panchayat</h5></center></b></div><br/>";
 		str+="<table><tr>";
 		str+="<th>Panchayat</th>";
 		str+="<th>Total Votes</th>";
 		str+="<th>Votes Polled</th>";
 		str+="<th>TDP Gained</th>";
-		str+="<th>margin</th>";
+		str+="<th>Margin</th>";
 		str+="<th>2013 Total Votes</th>";
 		str+="<th>Win Party Name</th>";
 		str+="  </tr>";
@@ -200,13 +208,13 @@ function buildTableResult(result,rank)
 
 function buildTableResult1(result,rank)
 {
-		var str ="<div><b><center><h5>Election Results Comparision Chart b/w 2009 Assembly & 2013 Panchayat</h5></center></b></div><br/>";
+		var str ="<div><b><center><h5>Election Results Comparision Table b/w 2009(TDP @ Lower Positions) Assembly & 2013 Panchayat</h5></center></b></div><br/>";
 		str+="<table><tr>";
 		str+="<th>Panchayat</th>";
 		str+="<th>Total Votes</th>";
 		str+="<th>Votes Polled</th>";
 		str+="<th>TDP Gained</th>";
-		str+="<th>margin</th>";
+		str+="<th>Margin</th>";
 		str+="<th>2013 Total Votes</th>";
 		str+="<th>Win Party Name</th>";
 		str+="  </tr>";
