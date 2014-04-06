@@ -20,7 +20,7 @@ public class UserSmsReceiverDAO extends GenericDaoHibernate<UserSmsReceiver, Ser
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getSmsDetails(Long userId,Long typeId){
 		Query query = getSession().createQuery("select model1.firstName,model.userSmsSent.sentTime,model.userSmsSent.message," +
-				"model1.mobile,model.receiverId,model.userSmsReceiverId from UserSmsReceiver model,InformationManager model1 " +
+				"model1.mobile,model.receiverId,model.userSmsReceiverId,model1.regionScopes.regionScopesId,model1.locationValue from UserSmsReceiver model,InformationManager model1 " +
 				"where model.userSmsSent.user.userId = :userId and model.userSmsSent.smsType.smsTypeId = :typeId " +
 				" and model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
 				" and model.isDeleted != 'true'" );
@@ -49,7 +49,7 @@ public class UserSmsReceiverDAO extends GenericDaoHibernate<UserSmsReceiver, Ser
 	@SuppressWarnings("unchecked")
 	public List<Object[]> getDatewiseSortingDetails(Long userId,Long typeId,Date date){
 		Query query = getSession().createQuery("select model1.firstName,model.userSmsSent.sentTime,model.userSmsSent.message," +
-				"model1.mobile,model.receiverId,model.userSmsReceiverId from UserSmsReceiver model,InformationManager model1 " +
+				"model1.mobile,model.receiverId,model.userSmsReceiverId,model1.regionScopes.regionScopesId,model1.locationValue from UserSmsReceiver model,InformationManager model1 " +
 				"where model.userSmsSent.user.userId = :userId and model.userSmsSent.smsType.smsTypeId = :typeId " +
 				" and model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
 				" and model.isDeleted != 'true' and date(model.userSmsSent.sentTime) = :date" );
@@ -65,7 +65,7 @@ public class UserSmsReceiverDAO extends GenericDaoHibernate<UserSmsReceiver, Ser
 	StringBuilder str = new StringBuilder();
 
 	str.append("select model1.firstName,model.userSmsSent.sentTime,model.userSmsSent.message," +
-	"model1.mobile,model.receiverId,model.userSmsReceiverId from UserSmsReceiver model,InformationManager model1 " +
+	"model1.mobile,model.receiverId,model.userSmsReceiverId,model1.regionScopes.regionScopesId,model1.locationValue from UserSmsReceiver model,InformationManager model1 " +
 	"where model.userSmsSent.user.userId = :userId and model.userSmsSent.smsType.smsTypeId = :typeId " +
 	" and model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
 	" and model.isDeleted != 'true'" );
@@ -84,5 +84,104 @@ public class UserSmsReceiverDAO extends GenericDaoHibernate<UserSmsReceiver, Ser
 
 	return query.list();
 	}
+	
+	
+	public List<Long> getSmsDetailsByLocationSearch(Long userId,Long typeId,String locationsearchText,Long scope)
+	{
+		StringBuilder str = new StringBuilder();
+
+		str.append("select distinct model1.informationManagerId from UserSmsReceiver model,InformationManager model1,Constituency model2 " +
+		"where model.userSmsSent.user.userId = :userId and model.userSmsSent.smsType.smsTypeId = :typeId " +
+		" and model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
+		" and model.isDeleted != 'true' and model1.locationValue = model2.constituencyId and model1.regionScopes.regionScopesId =:scope" );
+		if(scope == 4 && !locationsearchText.equalsIgnoreCase(""))
+		{
+		str.append(" and model2.name like '%"+locationsearchText+"%' )" );
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("typeId", typeId);
+		query.setParameter("scope", scope);
+
+		return query.list();
+	}
+	public List<Long> getSmsDetailsByLocationSearchForMandal(Long userId,Long typeId,String locationsearchText,Long scope)
+	{
+		StringBuilder str = new StringBuilder();
+
+		str.append("select distinct model1.informationManagerId from UserSmsReceiver model,InformationManager model1,Tehsil model2 " +
+		"where model.userSmsSent.user.userId = :userId and model.userSmsSent.smsType.smsTypeId = :typeId " +
+		" and model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
+		" and model.isDeleted != 'true' and model1.locationValue = model2.tehsilId and model1.regionScopes.regionScopesId =:scope" );
+		if(scope == 5 && !locationsearchText.equalsIgnoreCase(""))
+		{
+		str.append(" and model2.tehsilName like '%"+locationsearchText+"%' )" );
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("typeId", typeId);
+		query.setParameter("scope", scope);
+
+		return query.list();
+	}
+	
+	
+	public List<Long> getSmsDetailsByLocationSearchForLocalbody(Long userId,Long typeId,String locationsearchText,Long scope)
+	{
+		StringBuilder str = new StringBuilder();
+
+		str.append("select distinct model1.informationManagerId from UserSmsReceiver model,InformationManager model1,LocalElectionBody model2 " +
+		"where model.userSmsSent.user.userId = :userId and model.userSmsSent.smsType.smsTypeId = :typeId " +
+		" and model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
+		" and model.isDeleted != 'true' and model1.locationValue = model2.localElectionBodyId and model1.regionScopes.regionScopesId =:scope" );
+		if(scope == 5 && !locationsearchText.equalsIgnoreCase(""))
+		{
+		str.append(" and model2.name like '%"+locationsearchText+"%' )" );
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("typeId", typeId);
+		query.setParameter("scope", scope);
+
+		return query.list();
+	}
+	
+	
+	public List<Long> getSmsDetailsByLocationSearchForBooth(Long userId,Long typeId,String locationsearchText,Long scope)
+	{
+		StringBuilder str = new StringBuilder();
+
+		str.append("select distinct model1.informationManagerId from UserSmsReceiver model,InformationManager model1,Booth model2 " +
+		"where model.userSmsSent.user.userId = :userId and model.userSmsSent.smsType.smsTypeId = :typeId " +
+		" and model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
+		" and model.isDeleted != 'true' and model1.locationValue = model2.boothId and model1.regionScopes.regionScopesId =:scope" );
+		if(scope == 5 && !locationsearchText.equalsIgnoreCase(""))
+		{
+		str.append(" and model2.partNo like '%"+locationsearchText+"%' )" );
+		}
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("userId", userId);
+		query.setParameter("typeId", typeId);
+		query.setParameter("scope", scope);
+
+
+		return query.list();
+	}
+	
+	public List<Object[]> getSmsDetailsByIds(List<Long> informationIds)
+	{
+	StringBuilder str = new StringBuilder();
+
+	str.append("select model1.firstName,model.userSmsSent.sentTime,model.userSmsSent.message," +
+	"model1.mobile,model.receiverId,model.userSmsReceiverId,model1.regionScopes.regionScopesId,model1.locationValue from UserSmsReceiver model,InformationManager model1 " +
+	"where model1.informationManagerId = model.receiverId and model.receiverType.receiverTypeId = 4 " +
+	" and model.isDeleted != 'true' and model1.informationManagerId in (:informationIds)" );
+	
+	Query query = getSession().createQuery(str.toString());
+	query.setParameterList("informationIds", informationIds);
+	return query.list();
+	}
+	
+	
 	
 }
