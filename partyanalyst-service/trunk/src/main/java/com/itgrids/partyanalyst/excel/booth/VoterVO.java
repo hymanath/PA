@@ -68,7 +68,44 @@ public class VoterVO implements Serializable , Comparable<VoterVO>{
 	private String position;
 	private Long locationId;
 	private String flagName;
+	private Long year;
+	private Integer startIndex;
+	private Integer maxIndex;
+	private Long constituencyId;
 	
+	
+	public Long getConstituencyId() {
+		return constituencyId;
+	}
+
+	public void setConstituencyId(Long constituencyId) {
+		this.constituencyId = constituencyId;
+	}
+
+	public Long getYear() {
+		return year;
+	}
+
+	public void setYear(Long year) {
+		this.year = year;
+	}
+
+	public Integer getStartIndex() {
+		return startIndex;
+	}
+
+	public void setStartIndex(Integer startIndex) {
+		this.startIndex = startIndex;
+	}
+
+	public Integer getMaxIndex() {
+		return maxIndex;
+	}
+
+	public void setMaxIndex(Integer maxIndex) {
+		this.maxIndex = maxIndex;
+	}
+
 	public String getFlagName() {
 		return flagName;
 	}

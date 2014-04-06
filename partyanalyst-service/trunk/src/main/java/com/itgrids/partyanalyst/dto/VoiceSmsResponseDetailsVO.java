@@ -21,9 +21,17 @@ public class VoiceSmsResponseDetailsVO implements Serializable{
 	private List<Long> votersMobileNumbers;
 	private List<Long> allmobileNumbers;
 	private List<VoiceSmsResponseDetailsVO> responseDetailsList;
+	private String locationName;
+	
 	private Long responseCount;
 	
 	
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 	public Long getResponseCount() {
 		return responseCount;
 	}
