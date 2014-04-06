@@ -1293,6 +1293,7 @@ To
 <div id="basicCountDiv" class="widget blue" style="display:none;"></div>
 <div id="basicCasteInfoDiv" class="widget blue" style="display:none;"></div>
 <span id="dashBoardImgLoading" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"/></span>
+<span id="dashBoardImgLoading1Lat" style="display:none;"><img src="images/icons/goldAjaxLoad.gif"/></span>
 <div id="votersCountRageDiv" style="display:none"></div>
 <div id="delimationEffectDiv"></div>
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -3183,6 +3184,9 @@ var count=0;
 			if('${casteIds}'.length > 0){
 			  selectedCasteIds = '${casteIds}'.split(",");
 			}
+			 $("#dashBoardImgLoading").hide();
+			  $("#dashBoardImgLoading1Lat").show();
+			  $("#censusMainDiv").hide();
 		</c:if>
 		var jsObj = {
 			
@@ -3216,6 +3220,9 @@ var count=0;
 								}
 								
 							}*/
+							<c:if test="${youngVoters || oldVoters}">
+			                      $("#dashBoardImgLoading1Lat").hide();
+		                    </c:if>
 			buildAgeGroupWiseTable(uploadResult,jsObj);
 		
 		}
