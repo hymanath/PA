@@ -130,7 +130,7 @@ color:#333333;
    }
    
    function buildOrderPriorityTable(result){
-      var str ="<div><h5>Panchayaths - Top Priority & Opportunity</h5></div><br/>";
+      var str ="<div><h5>Panchayats - Top Priority & Opportunity</h5></div><br/>";
 	  str+="<table>";
 	  str+="<tr>";
 	  str+="  <th rowspan='2'>Panchayat</th>";
@@ -192,7 +192,7 @@ color:#333333;
 		str+="<table>";
 		str+="  <tr>";
 		str+="    <th>Status</th>";
-		str+="    <th>No of Panchayaths</th>";
+		str+="    <th>No of Panchayats</th>";
 		str+="    <th>Gainable Votes %</th>";
 		str+="    <th>Gainable Votes</th>";
 		str+="  </tr>";
