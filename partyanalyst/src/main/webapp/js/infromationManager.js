@@ -235,7 +235,8 @@ for(var i in myResults){
 str += '<tr id="row'+i+'" value="'+myResults[i].responseId+'">';
 str+=' <td><input type="checkbox" class="viewSmsCheckbox" value="'+myResults[i].responseCount+'" style="width:4px !imporatnt;"></td>';
 str += '<td class="span8">'+myResults[i].description+'</td>';
-str += '<td>'+myResults[i].dateSent+'</td><td>'+myResults[i].locationName+'</td>';
+str += '<td>'+myResults[i].dateSent+'</td>';
+str+='<td>'+myResults[i].locationName+'</td>';
 //str+='<td>'+myResults[i].numbers+'</td>';
 str += '<td><button class="btn btn-small" onClick="messageResend('+myResults[i].responseCount+',\''+myResults[i].description+'\','+myResults[i].numbers+');" ><i class="icon-repeat"></i> </button></td>';
 str += '<td><button type="submit" class="btn btn-small btn-success" id="forward'+i+'" onClick="messageForward(\'row'+i+'\','+myResults[i].responseId+',\''+myResults[i].description+'\','+myResults[i].numbers+',\'forward'+i+'\');" ><i class="icon-share icon-white"></i></button></td>';
@@ -257,8 +258,8 @@ $('#tableID').dataTable({
 			{"bSortable": false},
 			{"bSortable": false},
 			{"bSortable": false},
-			{"bSortable": false},
 			{"bSortable": false}
+			
 				],
 			"aLengthMenu": [[15, 30, -1], [15, 30, "All"]]
 
