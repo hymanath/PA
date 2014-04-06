@@ -529,7 +529,7 @@ public class DashBoardAction extends ActionSupport implements ServletRequestAwar
 		RegistrationVO user=(RegistrationVO) session.getAttribute("USER");
 		if(user == null)
 		return INPUT;
-		
+		infoManager = ananymousUserService.checkInfoManagerOrNot(user.getRegistrationID());
 		if(!(Boolean)session.getAttribute(IWebConstants.PARTY_ANALYST_USER_ROLE))
 		 return "userProfile";
 		districtsList = votersAnalysisService.getDistrictsList(1l);
