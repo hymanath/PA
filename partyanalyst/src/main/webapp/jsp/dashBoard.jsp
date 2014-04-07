@@ -554,6 +554,9 @@ lable{line-height:40px;}
 			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
 				<h2 style="padding-bottom:35px;">2009 ASSEMBLY VS 2013 PANCHAYAT RESULTS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="viewPanchayathResults();" style="float:right;"></input></div></h2>
 			</div>
+			<div class="span4 widget" style="margin-left:7px;padding: 0px 20px;">
+				<h2 style="padding-bottom:35px;">CONSTITUENCY WISE AGE DETAILS<div><input type="button" value="View" class="btn btn-small btnStyle" onCLick="getConstituencyWiseAgeDetails();" style="float:right;"></input></div></h2>
+			</div>
           <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">		 
 			<div class="span4 widget divHeightClass"  style="margin-left:7px;padding: 0px 20px;">
 			  <h2>Voters Search</h2>
@@ -2675,9 +2678,14 @@ function viewInfectedBooths()
 
 function viewPanchayathResults()
 {
-  window.open("panchayatResultsAction.action")
+  window.open("panchayatResultsAction.action");
 }
 
+
+function getConstituencyWiseAgeDetails()
+{
+	window.open("gettingVotersBasedOnCasteAndAgeAction.action");
+}
 </script>
 
 </body>
