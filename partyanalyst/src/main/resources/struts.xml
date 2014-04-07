@@ -6828,7 +6828,7 @@
 		<param name="root">voiceSmsResponseDetails</param>
 		</result>
 		</action>
-			
+		
 		<action name="panchayatResultsAction" class="stratagicReportsAction">
 			<result name="success">/jsp/panchayatAssemblyResults.jsp</result>			
 		</action>	
@@ -6844,11 +6844,23 @@
 		<param name="root">voiceSmsResponseDetails</param>
 		</result>
 		</action>
-		
 		<action name="strattegtReportsAction" class="strattegtReportsAction" >
 		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
 		    <result name="success">/jsp/strattegtReports.jsp</result>	
 		 </action>
+		<action name="insertteluguVoterDataAction" class="voterDataManageAction" method="insertTeluguVoterdata">
+			<result type="json" name="success">
+		    	<param name="root">resultStatus</param>
+		   </result>
+		</action>
+		
+		<action name="getVoterTempConstituenciesAction" class="voterDataManageAction"
+		method="getCriticalPanchayatConstituencies">
+		<result type="json" name="success">
+		<param name="root">constituenciesList</param>
+		</result>
+		</action>
+		
 </package>
 		
 </struts>      
