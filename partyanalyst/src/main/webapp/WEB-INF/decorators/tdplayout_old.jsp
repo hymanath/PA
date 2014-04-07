@@ -69,7 +69,7 @@
 <script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 <script type="text/javascript" src="js/bannerslider.js"></script>
 
-
+<script type="text/javascript" src="js/md5.js"></script>
 	
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
