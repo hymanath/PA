@@ -92,6 +92,8 @@ public interface IVoterDAO extends GenericDao<Voter, Long>{
 	public Long getVoterCount();
 	
 	public Integer updateVoter(Long voterId,String name,String relativeName);
+	
+	public List<Object[]> getVoterIdCardNo(List<String> idCardnos);
 
 
 }
