@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.service.impl;
 
 import java.math.BigDecimal;
+
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -57,6 +58,7 @@ import com.itgrids.partyanalyst.dao.IHamletBoothPublicationDAO;
 import com.itgrids.partyanalyst.dao.IHamletDAO;
 import com.itgrids.partyanalyst.dao.IHouseHoldVoterDAO;
 import com.itgrids.partyanalyst.dao.IInfluencingPeopleDAO;
+import com.itgrids.partyanalyst.dao.ILanguageDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyWardDAO;
 import com.itgrids.partyanalyst.dao.ILocalityDAO;
@@ -90,6 +92,8 @@ import com.itgrids.partyanalyst.dao.IVoterFlagDAO;
 import com.itgrids.partyanalyst.dao.IVoterInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationDAO;
 import com.itgrids.partyanalyst.dao.IVoterModificationTempDAO;
+import com.itgrids.partyanalyst.dao.IVoterNamesDAO;
+import com.itgrids.partyanalyst.dao.IVoterNamesTempDAO;
 import com.itgrids.partyanalyst.dao.IVoterPartyInfoDAO;
 import com.itgrids.partyanalyst.dao.IVoterReportLevelDAO;
 import com.itgrids.partyanalyst.dao.IVoterStatusDAO;
@@ -161,6 +165,8 @@ import com.itgrids.partyanalyst.model.VoterCategoryValue;
 import com.itgrids.partyanalyst.model.VoterFamilyInfo;
 import com.itgrids.partyanalyst.model.VoterInfo;
 import com.itgrids.partyanalyst.model.VoterModification;
+import com.itgrids.partyanalyst.model.VoterNames;
+import com.itgrids.partyanalyst.model.VoterNamesTemp;
 import com.itgrids.partyanalyst.model.VoterStatus;
 import com.itgrids.partyanalyst.model.VoterTemp;
 import com.itgrids.partyanalyst.service.IConstituencyPageService;
@@ -254,10 +260,33 @@ public class VotersAnalysisService implements IVotersAnalysisService{
     private IHouseHoldVoterDAO houseHoldVoterDAO;
     private HHSurveyVO houseHoldVoterChildVO;
     private HHBoothLeaderDAO hhBoothLeaderDAO;
+    private IVoterNamesTempDAO voterNamesTempDAO;
+    private ILanguageDAO languageDAO;
+    private IVoterNamesDAO voterNamesDAO;
     
-  
-    
-	
+    public IVoterNamesDAO getVoterNamesDAO() {
+		return voterNamesDAO;
+	}
+
+	public void setVoterNamesDAO(IVoterNamesDAO voterNamesDAO) {
+		this.voterNamesDAO = voterNamesDAO;
+	}
+
+	public ILanguageDAO getLanguageDAO() {
+		return languageDAO;
+	}
+
+	public void setLanguageDAO(ILanguageDAO languageDAO) {
+		this.languageDAO = languageDAO;
+	}
+
+	public IVoterNamesTempDAO getVoterNamesTempDAO() {
+		return voterNamesTempDAO;
+	}
+
+	public void setVoterNamesTempDAO(IVoterNamesTempDAO voterNamesTempDAO) {
+		this.voterNamesTempDAO = voterNamesTempDAO;
+	}
 
 	public HHBoothLeaderDAO getHhBoothLeaderDAO() {
 		return hhBoothLeaderDAO;
@@ -900,16 +929,20 @@ public void setVoterDataAvailableConstituenciesDAO(
 				for (Object[] voterDetails : votersList) {
 					
 					Voter voter = (Voter)voterDetails[0];
+					
+					
 					voterVO = new VoterVO();
 					voterVO.setVoterIds(voter.getVoterId());
 					voterIdsList.add(voter.getVoterId());
 					voterVO.setVoterId((Long.valueOf(++count).toString()));
 					
 					voterVO.setFirstName(voter.getName());
+					//voterVO.setFirstName(voter.getVoterNames().getFirstName() +"" +voter.getVoterNames().getLastName());
 					voterVO.setAge(voter.getAge());
 					voterVO.setGender(voter.getGender());
 					voterVO.setHouseNo(voter.getHouseNo());
 					voterVO.setRelativeFirstName(voter.getRelativeName());
+					//voterVO.setRelativeFirstName(voter.getVoterNames().getRelativeFirstName()+""+voter.getVoterNames().getRelativeLastName());
 					voterVO.setRelationshipType(voter.getRelationshipType());
 					voterVO.setVoterIDCardNo(voter.getVoterIDCardNo());
 					if(mobileNosMap.get(voter.getVoterId()) != null)
@@ -21398,4 +21431,97 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 			}
 			return resultList;
 	  }
+	  
+	  public List<SelectOptionVO> getVoterNamestempConstituencies()
+		{
+			List<SelectOptionVO> resultList = new ArrayList<SelectOptionVO>();
+			List<Object[]> list = new ArrayList<Object[]>();
+			try{
+				 list = voterNamesTempDAO.getConstituencies();
+				if(list != null && list.size() > 0)
+				{
+					for(Object[] params : list)
+					resultList.add(new SelectOptionVO((Long)params[0],params[1].toString()));	
+				}
+				
+			}catch (Exception e) {
+				 e.printStackTrace();
+				
+				}
+			return resultList;
+		}
+	  
+	  public ResultStatus insertVoterDataIntoVoterNamesTemp(Long constituencyId)
+	  {
+		  ResultStatus result = new ResultStatus();
+		  List<VoterVO> list = new ArrayList<VoterVO>();
+		  List<String> voterIdCardNos = new ArrayList<String>();
+		  Map<String,Long> voteIdMap = new HashMap<String, Long>();
+		  Integer maxIndex = 5000;
+		  Integer startIndex = 0;
+		  Long voterCount =  voterNamesTempDAO.getVotersCountACNO(constituencyId);  
+			  if(voterCount > 0)
+				 {
+					 for(;;)
+					 {
+						 try{
+							if(startIndex >= Integer.valueOf(voterCount.intValue())-1)
+									break;
+							if(maxIndex >= Integer.valueOf(voterCount.intValue()))
+									maxIndex = Integer.valueOf(voterCount.intValue()) - 1;
+				  List<VoterNamesTemp> voterTemp =voterNamesTempDAO.getVotersByACNO(startIndex,maxIndex,constituencyId);
+				  if(voterTemp != null && voterTemp.size() > 0)
+				  {
+					 for(VoterNamesTemp data : voterTemp) 
+					 {
+						 if(!voterIdCardNos.contains(data.getVoterIdCardNo()))
+						 voterIdCardNos.add(data.getVoterIdCardNo()); 
+						 VoterVO vo = new VoterVO();
+						 vo.setFirstName(data.getFirstName());
+						 vo.setName(data.getLastName() != null ? data.getLastName().toString() : "");
+						 vo.setRelativeFirstName(data.getRelativeFirstName() != null ?data.getRelativeFirstName() : "");
+						 vo.setRelativeLastName(data.getRelativeLastName() != null ? data.getRelativeLastName(): "");
+						 vo.setVoterIDCardNo(data.getVoterIdCardNo());
+						 list.add(vo);
+						 
+					 }
+				  }
+				  if(voterIdCardNos != null && voterIdCardNos.size() > 0)
+				  {
+					  List<Object[]> voterIds = voterDAO.getVoterIdCardNo(voterIdCardNos);
+					  if(voterIds != null && voterIds.size() > 0)
+					  {
+						  for(Object[] params : voterIds)
+						  voteIdMap.put(params[0].toString(),(Long)params[1]);  
+					  }
+				  }
+				  if(list != null && list.size() > 0)
+				  {
+					  for(VoterVO voter : list)
+					  {
+						  VoterNames voterNames = new VoterNames();
+						  voterNames.setFirstName(voter.getFirstName());
+						  voterNames.setLastName(voter.getName());
+						  voterNames.setRelativeFirstName(voter.getRelativeFirstName());
+						  voterNames.setRelativeLastName(voter.getRelativeLastName());
+						  voterNames.setLanguage(languageDAO.get(3l));
+						  voterNames.setVoter(voterDAO.get(voteIdMap.get(voter.getVoterIDCardNo())));
+						  voterNamesDAO.save(voterNames);
+					  }
+					  result.setResultCode(ResultCodeMapper.SUCCESS);
+				  }
+				 
+					 startIndex = startIndex + 500;
+					 maxIndex = maxIndex + 500;
+				  
+			 }
+					 catch (Exception e) {
+					  log.error(" Exception Occured in insertVoterDataIntoVoterNamesTemp() method, Exception - "+e);
+					  result.setResultCode(ResultCodeMapper.FAILURE);
+					 return result;
+					}
+			}
+		   }
+			return result;
+		 }
 }
