@@ -1410,5 +1410,9 @@
 	
 	<bean id="infectedBoothsAction" class="com.itgrids.partyanalyst.web.action.InfectedBoothsAction" singleton="false"></bean>
 	
+	<bean id="strattegtReportsAction" class="com.itgrids.partyanalyst.web.action.StrattegtReportsAction" singleton="false">
+	    <property name="crossVotingEstimationService" ref="crossVotingEstimationService" />  
+	</bean>
+	
 </beans>	
 	
