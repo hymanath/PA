@@ -82,7 +82,7 @@
 <script type="text/javascript" src="js/jquery.easing.1.2.js"></script>
 <script type="text/javascript" src="js/jquery.anythingslider.js"></script>
 <script type="text/javascript" src="js/bannerslider.js"></script>
-
+<script type="text/javascript" src="js/md5.js"></script>
 <link rel="SHORTCUT ICON" type="image/x-icon" href="images/icons/homePage/faviIcon.jpg">
 
 <style>

@@ -44,7 +44,7 @@
 	<script type="text/javascript" src="js/bootstrap.js" ></script>
 	<!--<script type="text/javascript" src="styles/assets/css/js/bootstrap.js" ></script>-->
 	
-
+<script type="text/javascript" src="js/md5.js"></script>
 	
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.core.css"/>
 	<link  rel="stylesheet" type="text/css" href="js/jQuery/development-bundle/themes/base/jquery.ui.theme.css"/>
