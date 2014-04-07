@@ -1403,5 +1403,12 @@
    <bean id="informationManagerDAO" class="com.itgrids.partyanalyst.dao.hibernate.InformationManagerDAO">
 	<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-
+	
+	<bean id="voterNamesDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterNamesDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="voterNamesTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterNamesTempDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 </beans>		
