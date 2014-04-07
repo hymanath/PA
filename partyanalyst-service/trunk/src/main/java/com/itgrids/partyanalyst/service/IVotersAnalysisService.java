@@ -343,4 +343,8 @@ public interface IVotersAnalysisService {
 	 public SelectOptionVO getCountList1(Long id,Long publicationDateId,String type);
 	 
 	 public List<VoterHouseInfoVO> getVotersOfSearchedCriteria(String voterCardNo,String voterName,Long constituencyId,Long publicationId);
+	 public ResultStatus insertVoterDataIntoVoterNamesTemp(Long constituencyId);
+	 
+	 public List<SelectOptionVO> getVoterNamestempConstituencies();
+	
 }
