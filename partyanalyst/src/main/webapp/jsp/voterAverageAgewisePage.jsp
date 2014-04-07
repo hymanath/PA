@@ -63,8 +63,8 @@
 <center><div id="mainDiv" style="min-height:400px;">
    <div style="margin-left:auto;margin-right:auto;margin-top:30px;">
 	   <span style="font-weight:bold;font-size:14px;">Select Constituency</span> :<font id="requiredValue" class="requiredFont">*</font><select id="constituencyId" onChange="getAverageVoterDetails();"><option value="0"> Select Constituency </option></select></div>	
-
-   <div id="innerDiv" class="container" style="font-family: verdana; font-size: 15px; padding-top: 36px;display:none"><img style="margin-top:100px;margin-left:400px;" src="images/icons/goldAjaxLoad.gif" id="ajaxImg"></div>
+   <div><img style="margin-top:100px;margin-left:50px;display:none;" src="images/icons/goldAjaxLoad.gif" id="ajaxImg"></div>
+   <div id="innerDiv" class="container" style="font-family: verdana; font-size: 15px; padding-top: 36px;display:none"></div>
 </div></center>
 
 
