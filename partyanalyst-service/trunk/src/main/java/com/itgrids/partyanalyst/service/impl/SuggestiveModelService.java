@@ -1,6 +1,5 @@
 package com.itgrids.partyanalyst.service.impl;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -22,8 +21,6 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.itgrids.partyanalyst.dao.IAllianceGroupDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyWardDAO;
@@ -6536,6 +6533,10 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 				HSSFSheet sheet  = workbook.createSheet("report");
 				ageWiseExcelsGenerationService.generateExcelsForImportaneFamiles(result , sheet, workbook,type);
 				workbook.write(out);
+				if(result != null && result.size() > 0)
+				{
+					result.get(0).setInfluencePartyName(filePath);
+				}
 			  }
 			  catch(Exception e)
 			  {
