@@ -68,7 +68,7 @@
 
 <body>
 
-<div id="ConstituencyDiv" class="selectDiv container"  style="border: 1px solid; margin-top: 40px; padding-bottom: 13px; padding-top: 21px; border-radius: 4px;">
+<div id="ConstituencyDiv" class="selectDiv container"  style="border: 1px solid; margin-top: 40px; padding-bottom: 13px; padding-top: 21px; border-radius: 4px;margin-bottom: 40px;">
 <div style="margin-left: 295px; padding-bottom: 23px;">
 		<h4>Constituency Wise Age Details.</h4>
 </div>
@@ -84,19 +84,26 @@
 		
 		
 	</div>
-	<div style="color:red;margin-bottom: 11px; margin-left: 221px ">note: Age Ranges should give with hypen or ">","<","<=",">="  symbols only. Ex:18-22,>25,<25,<=25,>=25,25 .</div>
-	<div class="agerangeClass">
-	<div style="margin-bottom: 11px; margin-left: 221px " id="divId0" >
-	<span id="ageRangeId">Age Range</span>:  <input type="text" name="ageRange"  style="margin-left: 42px; width: 185px;" class="ageRangeClass" >
-	    <input type="button" value="add" class="btn btn-info" onClick="addVoterAgeRange()" >
-	    <input type="button" value="delete" class="btn btn-info" onClick='deleteVoterAgeRange("divId0")'>
+	<div style="color:red;margin-bottom: 11px; margin-left: 221px ">Note: Age Ranges should give with > or - or < or <= or >=  symbols only. Ex:18-22 , >25 , <25 , <=25 , >=25 , 25.</div>
+	<div class="agerangeClass1">
+	<div style="margin-left: 221px " id="divId0" >
+	    <span id="ageRangeId">Age Range<font style="color:red">*</font></span>:  <input type="text" name="ageRange" value='18-22' style="margin-left: 34px; width: 185px;" class="ageRangeClass" >
+	    
+	    <input type="button" value="delete" style="margin-top: -10px; margin-left: 4px;" class="btn btn-danger" onClick='deleteVoterAgeRange("divId0")'>
 		<div id="refreshImg"  style="display:none;float:right;margin-right:160px;"></div>
 	</div>
+	<div style="margin-left: 221px " id="divId1" >
+	    <span id="">Age Range<font style="color:red">*</font></span>:  <input type="text" name="ageRange" value='>60'  style="margin-left: 34px; width: 185px;" class="ageRangeClass" >
+	    
+	    <input type="button" value="delete" style="margin-top: -10px; margin-left: 4px;" class="btn btn-danger" onClick='deleteVoterAgeRange("divId1")'>
+		
 	</div>
-	<div style="margin-bottom: 11px; margin-left: 221px;"><span>Partial Panchayats</span> :<input type="checkbox" value="patialpanchayat" name="radio1" id="partialCheckboxId" style="margin-left:19px;margin-top:-2px;"></div>
+	</div>
+	<input style="margin-left: 336px;margin-bottom:10px;" type="button" value="Click to add another Age Range" class="btn btn-info" onClick="addVoterAgeRange()" >
+	<div style="display:none;margin-bottom: 11px; margin-left: 221px;"><span>Partial Panchayats</span> :<input type="checkbox" value="patialpanchayat" name="radio1" id="partialCheckboxId" style="margin-left:19px;margin-top:-2px;"></div>
 </div>
 <div style="margin-bottom: 11px; margin-left: 390px;">
-<input type="button" value="submit" class="btn btn-info" onClick="gettingVoterDetailsForAConstituency()">
+<input type="button" id="submitbuttonDIV" style=" margin-left: -15px;" value="submit" class="btn btn-success btn-large" onClick="gettingVoterDetailsForAConstituency()">
 <span><img id="ajaxImage" src="./images/icons/search.gif" alt="Processing Image" style="display:none;"/></span>
 </div><br>
 </div>
@@ -105,17 +112,17 @@
 
 <script type="text/javascript">
 
-var count=1;
+var count=2;
 function addVoterAgeRange()
 {
  var str="";
  str+=" <div id='divId"+count+"' style='margin-left: 221px;'> ";
- str+=" AgeRange:  <input type='text' name='ageRange'  style='margin-left: 42px; width: 185px;' class='ageRangeClass' id='divId"+count+"'>&nbsp ";
- str+=" <input type='button'  class='ageRangeAddButton btn btn-info' value='add' onClick='addVoterAgeRange()'>&nbsp";
+ str+=" Age Range<font style='color:red'>*</font>:  <input type='text' name='ageRange' style='margin-left: 34px; width: 185px;' class='ageRangeClass' id='divId"+count+"'>&nbsp ";
+ 
  var id1="divId"+count;
- str+=" <input type='button' value='delete' class='btn btn-info' onClick='deleteVoterAgeRange(\""+id1+"\") '> ";
+ str+=" <input type='button' style='margin-top: -10px;' value='delete' class='btn btn-danger' onClick='deleteVoterAgeRange(\""+id1+"\") '> ";
  str+=" </div>";
- $('.agerangeClass').append(str);
+ $('.agerangeClass1').append(str);
  count++;
 }
 function deleteVoterAgeRange(id)
@@ -199,8 +206,7 @@ var str=''
 if($('#constituencyList').val() == 0)
 str+='please select Constituency.<br>';
 if( ($('#publicationDateList').val()== null) || ($('#publicationDateList').val()== 0) )
-str+='please select publication Date.<br>';
-console.log($('#ageRangeId').val());
+str+='please select Publication Date.<br>';
 
 if(str.length > 0)
 {
@@ -209,12 +215,15 @@ return;
 }  
   
 
-$("#ajaxImage").css("display"," inline-block");
+
 var arr = new Array();
 $.each($('.ageRangeClass'), function() {
-arr.push(this.value );
+   if($.trim(this.value).length > 0){
+     arr.push($.trim(this.value) );
+	}
 });
-	   
+	    $("#submitbuttonDIV").attr('disabled','disabled');
+$("#ajaxImage").css("display"," inline-block");
    var constituencyId=$('#constituencyList option:selected').val();
    var publicationId=$('#publicationDateList option:selected').val();
    //var ageOrCasteRadio = $('input:radio[name=radio1]:checked').val();
@@ -249,6 +258,7 @@ function callAjax(jsObj,url)
 								   else if(jsObj.task=="gettingVoterDetails")
 							       {  
 								      $("#ajaxImage").css("display","none");
+									  $("#submitbuttonDIV").removeAttr('disabled');
 								      if(myResults != null)
 									  {
 										 if(myResults.resultCode == 0)
