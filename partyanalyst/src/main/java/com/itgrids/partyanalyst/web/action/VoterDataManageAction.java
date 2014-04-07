@@ -304,5 +304,26 @@ public class VoterDataManageAction extends ActionSupport implements ServletReque
 		
 		return Action.SUCCESS;
 	}
-
+	public String insertTeluguVoterdata()
+	{
+		try{
+			jObj = new JSONObject(getTask());
+			resultStatus = votersAnalysisService.insertVoterDataIntoVoterNamesTemp(jObj.getLong("constituencyId"));
+		}
+		catch (Exception e) {
+			 e.printStackTrace(); 
+		}
+		return Action.SUCCESS;
+	}
+	
+	public String getCriticalPanchayatConstituencies()
+	{
+		try{
+			constituenciesList = votersAnalysisService.getVoterNamestempConstituencies();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		 return Action.SUCCESS;	
+	}
 }

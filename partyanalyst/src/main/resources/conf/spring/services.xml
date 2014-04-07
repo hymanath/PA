@@ -1542,7 +1542,10 @@
 		<property name="voterFamilyRelationDAO" ref="voterFamilyRelationDAO" />
 		<property name="houseHoldVoterDAO" ref="houseHoldVoterDAO" />
 		<property name="hhBoothLeaderDAO" ref="hhBoothLeaderDAO" />
-	</bean>
+		<property name="voterNamesTempDAO" ref="voterNamesTempDAO" />
+		<property name="voterNamesDAO" ref="voterNamesDAO" />
+		<property name="languageDAO" ref="languageDAO" />
+		</bean>
 	
 	<bean name="voterModificationService" class="com.itgrids.partyanalyst.service.impl.VoterModificationService">
 		<property name="votersAnalysisService" ref="votersAnalysisService"/>
@@ -1782,7 +1785,8 @@
 	  <property name="voterModifiationPdfsGenerations" ref="voterModifiationPdfsGenerations" />	  	
 	  <property name="allianceGroupDAO" ref="allianceGroupDAO" />	
 	  <property name="panchayatResultDAO" ref="panchayatResultDAO" />	
-	  <property name="ageWiseExcelsGenerationService" ref="ageWiseExcelsGenerationService" />	
+	  <property name="ageWiseExcelsGenerationService" ref="ageWiseExcelsGenerationService" />
+	  
     </bean>
     
     <bean name="mobileService" class="com.itgrids.partyanalyst.service.impl.MobileService">
@@ -1866,6 +1870,7 @@
      <property name="smsTypeDAO" ref="smsTypeDAO" />
      <property name="userSmsSentDAO" ref="userSmsSentDAO" />
      <property name="receiverTypeDAO" ref="receiverTypeDAO" />
+    
     </bean>
     
     <bean name="marketingManagementService" class="com.itgrids.partyanalyst.service.impl.MarketingManagementService">
