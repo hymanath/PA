@@ -284,6 +284,36 @@
 </div>	
 <!-- voters Modification Info Div End -->
 
+
+
+<!-- voters Data Insertion Info Div End -->
+
+<div id="voterManagementMainDiv" class="span8">
+<div class="headingDiv" style="width:450px;">Populate Telugu voters Data Info To Intermediate Tables</div>
+ <fieldset>
+    <div id="teluguvoterDataErrorDiv"></div>
+	<div id="ConstituencyDiv" class="selectDiv">
+	<center>
+     <table cellpadding="4">
+	  <tr>
+	    <td>Constituency</td>
+		<td>:</td>
+		<td><select theme="simple" cssClass="selectWidth" label="Select Your Constituency" name="constituencyList" id="teluguVoterDataConstituencyId" ></select></td>
+	  </tr>
+	  </table>
+     
+		<div id="teluguvoterDataInsertDiv">
+			<input type="button" class="btn btn-info" value="Submit" id="teluguVoterDataBtn" onclick="insertTeluguVoterData();" />
+			<!-- <input type="button" class="btn btn-info" value="Delete Existing Data" id="votermodificationvoterDataDeleteBtn" /> -->
+			<img src="./images/icons/search.gif" style="display:none;margin-left: 10px;" id="teluguVoterDataImg" />
+		</div>
+		</center>
+	</div>
+ </fieldset>
+</div>	
+<!-- voters Data Insertion Info Div End -->
+
+
 <script type="text/javascript">
 
 function callAjax(jsObj, url){
@@ -326,7 +356,10 @@ function callAjax(jsObj, url){
 
 							else if(jsObj.task == "getPublicationDatesForVotingModificationBetweenDates")
 								buildpublicationDateListForVoterModification(myResults,jsObj);
-							
+							else if(jsObj.task == "getTempConstituencies")
+							{
+								buildTempConstituencies(myResults);
+							}
 						}
 						catch(e)
 						{   
@@ -670,7 +703,27 @@ function buildConstituencies(results)
 		}	
 	}
 }
+function buildTempConstituencies(results)
+{
+	
+	var selectedElmt = document.getElementById("teluguVoterDataConstituencyId");
+	removeSelectElements(selectedElmt);
+	for(var val in results)
+	{
+		var opElmt = document.createElement('option');
+		opElmt.value=results[val].id;
+		opElmt.text=results[val].name;
 
+		try
+		{
+			selectedElmt.add(opElmt,null); // standards compliant
+		}
+		catch(ex)
+		{
+			selectedElmt.add(opElmt); // IE only
+		}	
+	}	
+}
 function buildConstituenciesForDis(results)
 {
 	$("#mapajaxImgDivId").css("display","none");
@@ -862,8 +915,41 @@ function buildpublicationDateListForVoterModification(result,jsObj)
    }
  }
 }
+function insertTeluguVoterData()
+{
+	        var constituencyId = $("#teluguVoterDataConstituencyId").val();
+		    var str = '';
+			var errorEle = $("#teluguvoterDataErrorDiv");
+			errorEle.html('');
+			if(constituencyId == 0 || constituencyId == '')
+			{
+				errorEle.html('Please Select Constituency');
+				return;
+			}
+			$("#teluguvoterDataErrorDiv").html('');
+			var jsObj=
+			{				
+				constituencyId: constituencyId,
+				task: "insertVoterData"
+			}
 
+	var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+	var url = "insertteluguVoterDataAction.action?"+rparam;						
+	callAjax(jsObj,url);
+}
 
+function getConstituencyTempList(){
+
+	var jsObj= 
+		{	
+			task:"getTempConstituencies"		
+		};
+		var param="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getVoterTempConstituenciesAction.action?"+param;
+		callAjax(jsObj,url);
+
+	}
+getConstituencyTempList();
 </script>
 </body>
 </html>
