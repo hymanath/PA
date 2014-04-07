@@ -415,11 +415,11 @@
 	    <value>com.itgrids.partyanalyst.model.PanchayatResult</value>	
 	    <value>com.itgrids.partyanalyst.model.StrategyMergePanchayat</value>
 		<value>com.itgrids.partyanalyst.model.StrategyMergPancList</value>
-				<value>com.itgrids.partyanalyst.model.ReceiverType</value>
-				<value>com.itgrids.partyanalyst.model.SmsSentType</value>
-				<value>com.itgrids.partyanalyst.model.UserSmsSent</value>
-				<value>com.itgrids.partyanalyst.model.UserSmsReceiver</value>
-		
+		<value>com.itgrids.partyanalyst.model.ReceiverType</value>
+		<value>com.itgrids.partyanalyst.model.SmsSentType</value>
+		<value>com.itgrids.partyanalyst.model.UserSmsSent</value>
+		<value>com.itgrids.partyanalyst.model.UserSmsReceiver</value>
+		<value>com.itgrids.partyanalyst.model.VoterNamesTemp</value>
 			</list>
 		</property>
 	</bean>
@@ -2199,5 +2199,7 @@
         <bean id="smsSentTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.SmsSentTypeDAO">
     <property name="sessionFactory" ref="sessionFactory" />
    </bean>
-   
+   <bean id="voterNamesTempDAO" class="com.itgrids.partyanalyst.dao.hibernate.VoterNamesTempDAO">
+	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
