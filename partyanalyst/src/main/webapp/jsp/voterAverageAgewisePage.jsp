@@ -98,6 +98,8 @@
    
 	function getAverageVoterDetails(){
     var constiId= $("#constituencyId").val();
+    $("#ajaxImg").css("display","block");
+    $("#innerDiv").html("");
 	var jsObj = {
 			constiId : constiId,
 			task : "getAverageVoterDetails"
@@ -294,6 +296,7 @@ str += '</div>';
 		str += "</div>";
 
 document.getElementById('innerDiv').innerHTML = str;
+$("#innerDiv").show();
 }
 
 </script>
