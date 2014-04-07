@@ -6844,6 +6844,11 @@
 		<param name="root">voiceSmsResponseDetails</param>
 		</result>
 		</action>
+		
+		<action name="strattegtReportsAction" class="strattegtReportsAction" >
+		    <result name="error">/jsp/entitlementErrorPage.jsp</result>
+		    <result name="success">/jsp/strattegtReports.jsp</result>	
+		 </action>
 </package>
 		
 </struts>      
