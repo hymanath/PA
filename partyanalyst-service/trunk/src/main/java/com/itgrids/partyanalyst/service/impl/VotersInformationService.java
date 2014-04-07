@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -82,7 +83,8 @@ public  class VotersInformationService implements IVotersInformationService  {
 			LOG.info("Enetered into gettingVotersInfoService method in VotersInformationService Service");
 			workbook = new HSSFWorkbook(); 
 			String constituencyName = constituencyDAO.get(Long.valueOf(constituencyId)).getName();
-			String filename=path+"Report"+"/"+""+constituencyName+".xls";
+			String uidentifier = new Random().nextInt(100000000)+"";
+			String filename=path+"Reports"+"/AgeWise"+"/"+constituencyName+"_"+uidentifier+".xls";
 			out=new FileOutputStream(filename);
 		    constituency=constituencyDAO.get(Long.parseLong(constituencyId));
 		    if(constituency.getAreaType().equalsIgnoreCase("RURAL"))
@@ -101,26 +103,26 @@ public  class VotersInformationService implements IVotersInformationService  {
 					    //panchayatwise.
 					     List<AgeRangeVO> panchayatWise = getPanchayatWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges,pId);
 					     Collections.sort(panchayatWise,panchayatWiseSort);
-					     panchayatwiseSheet1 = workbook.createSheet("Panchayat Report1");
-						 panchayatwiseSheet2 = workbook.createSheet("Panchayat Report2");
-						 panchayatwiseSheet3 = workbook.createSheet("Panchayat Report3");
+					     panchayatwiseSheet1 = workbook.createSheet("Panchayat Age Info");
+						 panchayatwiseSheet2 = workbook.createSheet("Panchayat Info Gender Wise");
+						 panchayatwiseSheet3 = workbook.createSheet("Panchayat Info Gender% Wise");
 					     ageWiseExcelsGenerationService.generateExcelsForPanchayatReport1(panchayatWise, panchayatwiseSheet1, workbook, ageRanges);
 					     ageWiseExcelsGenerationService.generateExcelsForPanchayatReport2(panchayatWise, panchayatwiseSheet2, workbook, ageRanges);
 					     ageWiseExcelsGenerationService.generateExcelsForPanchayatReport3(panchayatWise, panchayatwiseSheet3, workbook, ageRanges);
 					    //hamletwise.
 					    List<AgeRangeVO>  hamletWise = getHamletWiseDetailsForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges );
-					    hamletWiseSheet1 = workbook.createSheet("Hamlet1");
-						 hamletWiseSheet2 = workbook.createSheet("Hamlet2");
-						 hamletWiseSheet3 = workbook.createSheet("Hamlet3");
+					    hamletWiseSheet1 = workbook.createSheet("Hamlet Age Info");
+						 hamletWiseSheet2 = workbook.createSheet("Hamlet Info Gender Wise");
+						 hamletWiseSheet3 = workbook.createSheet("Hamlet Info Gender% Wise");
 						 Collections.sort(hamletWise,hamletWiseSort);
 					     ageWiseExcelsGenerationService.generateExcelsForHamletReport1(hamletWise, hamletWiseSheet1, workbook, ageRanges);
 					     ageWiseExcelsGenerationService.generateExcelsForHamletReport2(hamletWise, hamletWiseSheet2, workbook, ageRanges);
 					     ageWiseExcelsGenerationService.generateExcelsForHamletReport3(hamletWise, hamletWiseSheet3, workbook, ageRanges);
 					    //boothwise.
 					     List<AgeRangeVO> boothWise = getBoothWiseForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges);
-					     boothWiseSheet1 = workbook.createSheet("Booth1");
-						 boothWiseSheet2 = workbook.createSheet("Booth2");
-						 boothWiseSheet3 = workbook.createSheet("Booth3");
+					     boothWiseSheet1 = workbook.createSheet("Booth Age Info");
+						 boothWiseSheet2 = workbook.createSheet("Booth Info Gender Wise");
+						 boothWiseSheet3 = workbook.createSheet("Booth Info Gender% Wise");
 						 Collections.sort(boothWise,boothWiseSort);
 					    ageWiseExcelsGenerationService.generateExcelsForBoothReport1(boothWise, boothWiseSheet1, workbook, ageRanges);
 					    ageWiseExcelsGenerationService.generateExcelsForBoothReport2(boothWise, boothWiseSheet2, workbook, ageRanges);
@@ -143,9 +145,9 @@ public  class VotersInformationService implements IVotersInformationService  {
 							 ageRangeVO.setTehsilName(ageRangeVO.getTehsilName() + " Munciplity");
 							 panchayatWiseForBooth1.add(ageRangeVO);
 						}
-					   boothWiseSheet1 = workbook.createSheet("Booth1");
-					   boothWiseSheet2 = workbook.createSheet("Booth2");
-					   boothWiseSheet3 = workbook.createSheet("Booth3");
+					   boothWiseSheet1 = workbook.createSheet("Booth Age Info");
+					   boothWiseSheet2 = workbook.createSheet("Booth Info Gender Wise");
+					   boothWiseSheet3 = workbook.createSheet("Booth Info Gender% Wise");
 					   ageWiseExcelsGenerationService.generateExcelsForBoothReport1(panchayatWiseForBooth1,boothWiseSheet1,workbook,ageRanges);
 					   ageWiseExcelsGenerationService.generateExcelsForBoothReport2(panchayatWiseForBooth1,boothWiseSheet2,workbook,ageRanges);
 					   ageWiseExcelsGenerationService.generateExcelsForBoothReport3(panchayatWiseForBooth1,boothWiseSheet3,workbook,ageRanges);
@@ -181,9 +183,9 @@ public  class VotersInformationService implements IVotersInformationService  {
 					 Collections.sort(panchayatWise,panchayatWiseSort);
 					 if(muncipalityWise1 != null && muncipalityWise1.size() > 0)
 						panchayatWise.addAll(muncipalityWise1);
-					 panchayatwiseSheet1 = workbook.createSheet("Panchayat Report1");
-					 panchayatwiseSheet2 = workbook.createSheet("Panchayat Report2");
-					 panchayatwiseSheet3 = workbook.createSheet("Panchayat Report3");
+					 panchayatwiseSheet1 = workbook.createSheet("Panchayat Age Info");
+					 panchayatwiseSheet2 = workbook.createSheet("Panchayat Info Gender Wise");
+					 panchayatwiseSheet3 = workbook.createSheet("Panchayat Info Gender% Wise");
 	                 panchayatwiseSheet1.autoSizeColumn((short) 1000);
 					 panchayatwiseSheet2.autoSizeColumn((short) 1000);
 					 panchayatwiseSheet3.autoSizeColumn((short) 1000);
@@ -193,9 +195,9 @@ public  class VotersInformationService implements IVotersInformationService  {
 					 //hamletwise.
 			         List<AgeRangeVO>  hamletWise = getHamletWiseDetailsForAConstituency(Long.parseLong(constituencyId),Long.parseLong(publicationId), ageRanges );
 			         Collections.sort(hamletWise,hamletWiseSort);
-			         hamletWiseSheet1 = workbook.createSheet("Hamlet1");
-					 hamletWiseSheet2 = workbook.createSheet("Hamlet2");
-					 hamletWiseSheet3 = workbook.createSheet("Hamlet3");
+			         hamletWiseSheet1 = workbook.createSheet("Hamlet Age Info");
+					 hamletWiseSheet2 = workbook.createSheet("Hamlet Info Gender Wise");
+					 hamletWiseSheet3 = workbook.createSheet("Hamlet Info Gender% Wise");
 					 Collections.sort(hamletWise,hamletWiseSort);
 				     ageWiseExcelsGenerationService.generateExcelsForHamletReport1(hamletWise, hamletWiseSheet1, workbook, ageRanges);
 				     ageWiseExcelsGenerationService.generateExcelsForHamletReport2(hamletWise, hamletWiseSheet2, workbook, ageRanges);
@@ -210,9 +212,9 @@ public  class VotersInformationService implements IVotersInformationService  {
 					}
 					if(panchayatWiseForBooth1 != null && panchayatWiseForBooth1.size() > 0)
 						boothWise.addAll(panchayatWiseForBooth1);
-					 boothWiseSheet1 = workbook.createSheet("Booth1");
-					 boothWiseSheet2 = workbook.createSheet("Booth2");
-					 boothWiseSheet3 = workbook.createSheet("Booth3");
+					 boothWiseSheet1 = workbook.createSheet("Booth Age Info");
+					 boothWiseSheet2 = workbook.createSheet("Booth Info Gender Wise");
+					 boothWiseSheet3 = workbook.createSheet("Booth Info Gender% Wise");
 					 Collections.sort(boothWise,boothWiseSort);
 					 ageWiseExcelsGenerationService.generateExcelsForBoothReport1(boothWise, boothWiseSheet1, workbook, ageRanges);
 					 ageWiseExcelsGenerationService.generateExcelsForBoothReport2(boothWise, boothWiseSheet2, workbook, ageRanges);
@@ -221,7 +223,7 @@ public  class VotersInformationService implements IVotersInformationService  {
 				    }
 		   }
 			   workbook.write(out);
-			   resultStatus.setMessage("Report"+"/"+""+constituencyName+".xls"); 
+			   resultStatus.setMessage("Reports"+"/AgeWise"+"/"+constituencyName+"_"+uidentifier+".xls"); 
 			   resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 		} catch (Exception e) {
 			resultStatus.setResultCode(ResultCodeMapper.FAILURE);
@@ -241,7 +243,7 @@ AgeRangeVO vo;
 //getConstituencyWiseDetails
 public AgeRangeVO getConstituencyWiseDetails(Long constituencyId,Long publicationId,List<String> ageRanges)	
 {
-	if(ageRanges==null||ageRanges.get(0).isEmpty())
+	if(ageRanges==null || ageRanges.size() == 0 || ageRanges.get(0).isEmpty())
 	 {
 		ageRanges=new ArrayList<String>();
 		ageRanges.add("18-22");
@@ -549,7 +551,7 @@ public AgeRangeVO gettingPercantage1(AgeRangeVO outerVO)
 //getHamletWiseDetailsForAConstituency.
 public List<AgeRangeVO> getHamletWiseDetailsForAConstituency(Long constituencyId,Long publicationId,List<String> ageRanges)
 {  
-	if(ageRanges==null||ageRanges.get(0).isEmpty())
+	if(ageRanges==null || ageRanges.size() == 0 ||ageRanges.get(0).isEmpty())
 	{
 		ageRanges=new ArrayList<String>();
 		ageRanges.add("18-22");
@@ -876,7 +878,7 @@ if(list.size()>0){
 //getPanchayatWiseForAConstituency.
 public List<AgeRangeVO> getPanchayatWiseForAConstituency(Long constituencyId,Long publicationId,List<String> ageRanges,boolean pId)
 {
-	if(ageRanges==null||ageRanges.get(0).isEmpty())
+	if(ageRanges==null || ageRanges.size() == 0 ||ageRanges.get(0).isEmpty())
 	{
 		ageRanges=new ArrayList<String>();
 		ageRanges.add("18-22");
@@ -1551,7 +1553,7 @@ if(list.size()>0){
 //mandalwise details. 
 public List<AgeRangeVO> getMandalWiseForAConstituency(Long constituencyId,Long publicationId,List<String> ageRanges)
 {
-	if(ageRanges==null||ageRanges.get(0).isEmpty())
+	if(ageRanges==null || ageRanges.size() == 0 ||ageRanges.get(0).isEmpty())
 	{
 		ageRanges=new ArrayList<String>();
 		ageRanges.add("18-22");
@@ -1570,7 +1572,7 @@ public List<AgeRangeVO> getMandalWiseForAConstituency(Long constituencyId,Long p
 //munc wise details.  
 public List<AgeRangeVO> getMunicipalityWiseForAConstituency(Long constituencyId,Long publicationId,List<String> ageRanges)
 {
-	if(ageRanges==null||ageRanges.get(0).isEmpty())
+	if(ageRanges==null || ageRanges.size() == 0 ||ageRanges.get(0).isEmpty())
 	{
 		ageRanges=new ArrayList<String>();
 		ageRanges.add("18-22");
@@ -2036,7 +2038,7 @@ return li;
 
 public List<AgeRangeVO> getBoothWiseForAConstituency(Long constituencyId,Long publicationId,List<String> ageRanges)
 {
-	if(ageRanges==null||ageRanges.get(0).isEmpty())
+	if(ageRanges==null || ageRanges.size() == 0 ||ageRanges.get(0).isEmpty())
 	{
 		ageRanges=new ArrayList<String>();
 		ageRanges.add("18-22");
@@ -2242,7 +2244,7 @@ List<AgeRangeVO>  query=new ArrayList<AgeRangeVO>();
 }
 public List<AgeRangeVO> getPanchayatWiseForBoothForAConstituency(Long constituencyId,Long publicationId,List<String> ageRanges)
 {
-	if(ageRanges==null||ageRanges.get(0).isEmpty())
+	if(ageRanges==null || ageRanges.size() == 0 ||ageRanges.get(0).isEmpty())
 	{
 		ageRanges=new ArrayList<String>();
 		ageRanges.add("18-22");
