@@ -614,12 +614,24 @@ lable{line-height:40px;}
 				
 				<div>
 				   <table>
+				   <c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
+				     <tr>
+				        <td><s:label theme="simple" for="districtList" value=" Select Assembly"/></td>
+						<td><s:select cssClass="selectstyle" theme="simple" id="districtList" name="crossVotingYear" list="crossVotingVO.assemblyList" listKey="id" listValue="name" onChange=""/></td>
+				        <td></td>
+						<td></td>
+				     </tr>
+					 </c:if>
+					 
+					 
+					 <c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 				     <tr>
 				        <td><s:label theme="simple" for="districtList" value=" Select District"/></td>
 						<td><s:select cssClass="selectstyle" theme="simple" id="districtList" name="crossVotingYear" list="districtsList" listKey="id" listValue="name" onChange=""/></td>
 				        <td></td>
 						<td></td>
 				     </tr>
+					 </c:if>
 				     <tr>
 				        <td><s:label theme="simple" for="prevPublicationId" value="Previous Publication"/></td>
 						 <!--<td><s:select theme="simple" id="prevPublicationId" list="publicationDatesList" listKey="id"  name="crossVotingAConsti" listValue="name" onChange=""/></td>-->
@@ -632,7 +644,12 @@ lable{line-height:40px;}
 				</div>
 				
 				<div>
-					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getVoterModifivationReport();" style="float:right;"></input>
+				<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
+					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getVoterModifivationReport('Constituency');" style="float:right;"></input>
+					</c:if>
+					<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
+					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getVoterModifivationReport('District');" style="float:right;"></input>
+					</c:if>
 				</div>
 			</div>       				
 		</div>
@@ -645,8 +662,15 @@ lable{line-height:40px;}
 				<div>
 				   <table>
 				     <tr>
+						<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
+				        <td><s:label theme="simple" for="districtList" value=" Select Assembly"/></td>
+						<td><s:select cssClass="selectstyle" theme="simple" id="districtListForImp" name="crossVotingYear" list="crossVotingVO.assemblyList" listKey="id" listValue="name" onChange=""/></td>
+						</c:if>
+						
+						<c:if test="${ not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">	
 				        <td><s:label theme="simple" for="districtList" value=" Select District"/></td>
 						<td><s:select cssClass="selectstyle" theme="simple" id="districtListForImp" name="crossVotingYear" list="districtsList" listKey="id" listValue="name" onChange=""/></td>
+						</c:if>
 				        <td><s:label theme="simple" for="prevPublicationId" value="Publication Date"/></td>
 						<td><select id="prevPublicationIdForImp">
 							<option value="0">Select Publication Date</option>
@@ -665,7 +689,12 @@ lable{line-height:40px;}
 				</div>
 				
 				<div>
-					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getImpFamilyDetails();" style="float:right;"></input>
+					<c:if test="${ fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
+					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getImpFamilyDetails('Constituency');" style="float:right;"></input>
+					</c:if>
+					<c:if test="${not fn:containsIgnoreCase(sessionScope.USER.entitlements, 'INFORMATION_MONITOTING_SYSTEM' )}">
+					<input type="button" value="View" class="btn btn-small btnStyle" onClick="getImpFamilyDetails('District');" style="float:right;"></input>
+					</c:if>
 				</div>
 			</div>       				
 		</div>
@@ -2059,7 +2088,7 @@ function callAjax(jsObj,url){
 									if(myResults.name == 'success')
 									{
 										$.unblockUI();
-										alert("Pdfs Created Successfully");
+										window.open(myResults.url);
 									}
 									else
 									{
@@ -2074,7 +2103,7 @@ function callAjax(jsObj,url){
 									if(myResults != null)
 									{
 										$.unblockUI();
-										alert("Report Created Successfully");
+										window.open(myResults[0].influencePartyName);
 									}
 									else
 									{
@@ -2534,7 +2563,7 @@ function checkForUserStatus()
 	}
 }
 
-function getVoterModifivationReport()
+function getVoterModifivationReport(type)
 {
 	//var districtId = ().val();
 	
@@ -2545,7 +2574,7 @@ function getVoterModifivationReport()
 	locationType   : "constituency",
 	locationValue  : $('#districtList option:selected').val(),
 	publicationId  : $('#presentPublicationId').val(),
-	type           : "district",
+	type           : type,
 	task           : "createPdfs"
 	};
 	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
@@ -2560,7 +2589,7 @@ function voterAverageAgePopUp(){
 }
 checkForUserStatus();
 
-function getImpFamilyDetails()
+function getImpFamilyDetails(type)
 {
 	var constituencyId = $("#districtListForImp").val();
 	var publicationId = $("#prevPublicationIdForImp").val();
@@ -2621,7 +2650,7 @@ function getImpFamilyDetails()
 				maxVal:toValue,
 				startIndex:0,
 				results:1000,
-				type : "district",
+				type : type,
 				task:"getFamilyDetails"		
 		};
 		
