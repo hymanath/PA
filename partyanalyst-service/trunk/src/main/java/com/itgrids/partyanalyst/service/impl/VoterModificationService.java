@@ -4050,7 +4050,7 @@ public class VoterModificationService implements IVoterModificationService{
 						    String FILE = path+filePath;
 						    File file  = new File(FILE);
 						    file.createNewFile();
-						   // selectOptionVO.setUrl("VMR"+"/"+""+distName+".zip");
+						    selectOptionVO.setUrl(filePath);
 						  	try {
 						  		PdfWriter.getInstance(document, new FileOutputStream(FILE));
 						  	} catch (FileNotFoundException e) {
