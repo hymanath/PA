@@ -43,10 +43,10 @@ public class AgeWiseExcelsGenerationService {
 		    CellStyle style = workbook.createCellStyle();
 		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		    /*style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 		    style.setAlignment(CellStyle.ALIGN_CENTER);
 		    style.setFont(font);
 		    //for data.
@@ -167,10 +167,10 @@ public class AgeWiseExcelsGenerationService {
 		    CellStyle style = workbook.createCellStyle();
 		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		   /* style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 		    style.setAlignment(CellStyle.ALIGN_CENTER);
 		    style.setFont(font);
 		    //for data.
@@ -326,10 +326,10 @@ public class AgeWiseExcelsGenerationService {
 		    CellStyle style = workbook.createCellStyle();
 		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		   /* style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 		    style.setAlignment(CellStyle.ALIGN_CENTER);
 		    style.setFont(font);
 		    //for data.
@@ -475,10 +475,10 @@ public class AgeWiseExcelsGenerationService {
 	    CellStyle style = workbook.createCellStyle();
 	    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 	    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-	    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    /*style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 	    style.setAlignment(CellStyle.ALIGN_CENTER);
 	    style.setFont(font);
 	    //for data.
@@ -588,10 +588,10 @@ public class AgeWiseExcelsGenerationService {
 	    CellStyle style = workbook.createCellStyle();
 	    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 	    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-	    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    /*style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 	    style.setAlignment(CellStyle.ALIGN_CENTER);
 	    style.setFont(font);
 	    //for data.
@@ -726,10 +726,10 @@ public class AgeWiseExcelsGenerationService {
 		    CellStyle style = workbook.createCellStyle();
 		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		   /* style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 		    style.setAlignment(CellStyle.ALIGN_CENTER);
 		    style.setFont(font);
 		    //for data.
@@ -879,10 +879,10 @@ public class AgeWiseExcelsGenerationService {
 	    CellStyle style = workbook.createCellStyle();
 	    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 	    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-	    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    /*style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 	    style.setAlignment(CellStyle.ALIGN_CENTER);
 	    style.setFont(font);
 	    
@@ -1033,10 +1033,10 @@ public void generateExcelsForPanchayatReport2(List<AgeRangeVO>  list ,HSSFSheet 
 	    CellStyle style = workbook.createCellStyle();
 	    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 	    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-	    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    /*style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 	    style.setAlignment(CellStyle.ALIGN_CENTER);
 	    style.setFont(font);
 	    
@@ -1191,10 +1191,10 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 		    CellStyle style = workbook.createCellStyle();
 		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		   /* style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 		    style.setAlignment(CellStyle.ALIGN_CENTER);
 		    style.setFont(font);
 		    
@@ -1359,10 +1359,10 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 		    CellStyle style = workbook.createCellStyle();
 		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		    /*style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 		    style.setAlignment(CellStyle.ALIGN_CENTER);
 		    style.setFont(font);
 		    //for data.
@@ -1689,10 +1689,10 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 	    CellStyle style = workbook.createCellStyle();
 	    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 	    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-	    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+	    /*style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 	    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+	    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 	    style.setAlignment(CellStyle.ALIGN_CENTER);
 	    style.setFont(font);
 	    //for data.
@@ -1855,10 +1855,10 @@ public void generateExcelsForPanchayatReport3(List<AgeRangeVO>  list ,HSSFSheet 
 		    CellStyle style = workbook.createCellStyle();
 		    style.setFillForegroundColor(HSSFColor.YELLOW.index);
 		    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		    style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		   /* style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderTop(HSSFCellStyle.BORDER_THIN);
 		    style.setBorderRight(HSSFCellStyle.BORDER_THIN);
-		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		    style.setBorderLeft(HSSFCellStyle.BORDER_THIN);*/
 		    style.setAlignment(CellStyle.ALIGN_CENTER);
 		    style.setFont(font);
 

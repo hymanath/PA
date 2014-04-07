@@ -520,8 +520,8 @@ public class SuggestiveModelService implements ISuggestiveModelService {
 					//String ageRange=group.getId()+"> & <"+group.getPopulateId();
 
 					String ageRange = null;
-					if(group.getId()==60 && group.getPopulateId()>=100)
-						ageRange=" ABOVE "+group.getId();
+					if(group.getId()==61 && group.getPopulateId()>=100)
+						ageRange=" ABOVE 60";
 					else
 						ageRange=group.getId()+" TO "+group.getPopulateId();
 					
