@@ -13,6 +13,7 @@
 <title> Polling Low,Party Strong</title>
 </c:if> 
 <script type="text/javascript" src="js/jquery.doubleScroll.js"></script>
+<script type="text/javascript" src="js/jquery.dataTables.js"></script>
  <style>
   #mainDiv{
    min-height:400px;
@@ -134,6 +135,7 @@ function buildPollingHighPercentageForBooths(result)
 		str+='<span>'+strongList[0].weakPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
 		str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling High,' +strongList[0].weakPollingPercentVOList[0].partyName+' Party Weak</h4>';
 		str+='<div id="pollingPerHighDIV"><table id="pollingPerHigh"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+		str+='<thead>	';
 		str+='<th>Booth</th>';
 		if(result[0].constituencyType != "URBAN"){
 		  str+='<th>Panchayat</th>';
@@ -149,6 +151,7 @@ function buildPollingHighPercentageForBooths(result)
 		str+='<th>To Decrease</th>';
 		str+='<th>Polling @'+result[0].pollingPercentage.toFixed(2)+'</th>';
 		str+='<th>Lost Votes</th>';
+		str+='</thead><tbody>';
 		for(var i in strongList)
 			{
 		str+='<tr>';
@@ -177,10 +180,18 @@ function buildPollingHighPercentageForBooths(result)
 		str+='<td>'+strongList[i].lostSeats+'</td>';
 		str+='</tr>';
 			}
+		str+='</tbody>	';
 		str+='</table></div>';
 		str+='</div>';
 		divEle.innerHTML = str;
 		 $('#pollingPerHighDIV').doubleScroll();
+		   $('#pollingPerHigh').dataTable({
+			"aaSorting": [[ 6, "desc" ]],
+			"bPaginate": false,
+			"bLengthChange": false,
+			"bFilter": false,
+			"bInfo": false,
+			"bAutoWidth": false });
 }
 
 function buildPollingLowPercentageForBooths(result)
@@ -198,6 +209,7 @@ function buildPollingLowPercentageForBooths(result)
         str+='<span>'+weakList[0].strongPollingPercentVOList[0].partyName+'  Avg Polling Percentage : '+result[0].partyPercentage+'</span></div>';
         str+='<h4 style="margin: 0px -20px; padding: 10px 10px 10px 20px;color: black;">Polling Low,' +weakList[0].strongPollingPercentVOList[0].partyName+' Party Strong</h4>';
 		str+='<div id="pollingPerLowDIV"><table id="pollingPerLow"  class="table table-bordered table-striped table-hover" style="font-size: 12px; font-family: verdana; color: black; font-weight: lighter; margin-top: 15px;text-align:center;">';
+		str += '<thead>';
 		str+='<th>Booth</th>';
 		if(result[0].constituencyType != "URBAN")
 		str+='<th>Panchayat</th>';
@@ -213,6 +225,7 @@ function buildPollingLowPercentageForBooths(result)
 		str+='<th>Polling @'+result[0].pollingPercentage.toFixed(2)+'</th>';
 		str+='<th>To Target</th>';
 		str+='<th>'+weakList[0].strongPollingPercentVOList[0].partyName+' Lost Votes</th>';
+		str += '</thead><tbody>';
 		for(var i in weakList)
 			{
 		str+='<tr>';
@@ -243,10 +256,19 @@ function buildPollingLowPercentageForBooths(result)
 		str+='<td>'+weakList[i].toImprove+'</td>';
 		str+='</tr>';
 			}
+		str += '</tbody>';
 		str+='</table></div>';
 		str+='</div>';
 		divEle.innerHTML = str;
           $('#pollingPerLowDIV').doubleScroll();
+		  $('#pollingPerLow').dataTable({
+			"aaSorting": [[ 6, "asc" ]],
+			"bPaginate": false,
+			"bLengthChange": false,
+			"bFilter": false,
+			"bInfo": false,
+			"bAutoWidth": false });
+
 }
 </script>
 
