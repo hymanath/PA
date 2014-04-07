@@ -1329,7 +1329,7 @@ public class VoterReportService implements IVoterReportService{
 							for(VoterCastInfo voterCastInfo:list)
 							{
 								voterCastInfoVO = new VoterCastInfoVO();
-								voterCastInfoVO.setCastName(voterCastInfo.getCasteState().getCaste().getCasteName());
+								voterCastInfoVO.setCastName(voterCastInfo.getCasteState() != null ? voterCastInfo.getCasteState().getCaste().getCasteName() : "");
 								voterCastInfoVO.setMaleVoters(voterCastInfo.getCasteMaleVoters());
 								voterCastInfoVO.setFemaleVoters(voterCastInfo.getCasteFemaleVoters());
 								voterCastInfoVO.setTotalVoters(voterCastInfo.getCasteVoters());
