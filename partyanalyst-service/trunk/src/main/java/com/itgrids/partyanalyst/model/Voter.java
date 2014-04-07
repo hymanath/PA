@@ -48,7 +48,7 @@ public class Voter extends BaseModel implements Serializable {
 	private Set<CustomVoter> customVoters = new HashSet<CustomVoter>(0);
 	private Set<Respondent> respondent = new HashSet<Respondent>(0);
 	private VoterAgeRange voterAgeRange;
-	
+	private VoterNames voterNames;
 	
 	public Voter(){
 		
@@ -204,6 +204,17 @@ public class Voter extends BaseModel implements Serializable {
 
 	public void setVoterAgeRange(VoterAgeRange voterAgeRange) {
 		this.voterAgeRange = voterAgeRange;
+	}
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "voter_id")
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public VoterNames getVoterNames() {
+		return voterNames;
+	}
+
+	public void setVoterNames(VoterNames voterNames) {
+		this.voterNames = voterNames;
 	}
 	
 }
