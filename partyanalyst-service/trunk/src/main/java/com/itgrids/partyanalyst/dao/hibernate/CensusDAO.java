@@ -433,7 +433,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		  		" model.populationSC , model.populationST ,model.workingPopulation , model.workingMale ," +
 		  		"model.workingFemale , model.nonWorkingPopulation ,model.populationUnderSix , model.populationLiterates , " +
 		  		"model.maleLiterates , model.femaleLiterates , model.nonWorkingPopPercentage from Census model where " +
-		  		"model.districtId = :districtId and model.level = :level and model.year in(:years) " +
+		  		"model.districtId = :districtId and model.level = :level and model.year in(:years) and model.tru ='total' and model.tehsilId is null  " +
 		  		"order by model.year");
 		  
 		  
@@ -455,7 +455,7 @@ public class CensusDAO extends GenericDaoHibernate<Census, Long> implements ICen
 		  		" model.populationSC , model.populationST ,model.workingPopulation , model.workingMale ," +
 		  		"model.workingFemale , model.nonWorkingPopulation ,model.populationUnderSix , model.populationLiterates , " +
 		  		"model.maleLiterates , model.femaleLiterates , model.nonWorkingPopPercentage from Census model where " +
-		  		"model.stateId = :stateId and model.level = :level and model.year in(:years) " +
+		  		"model.stateId = :stateId and model.level = :level and model.year in(:years) and model.tru ='total' and model.districtId is null " +
 		  		"order by model.year");
 		  
 		  
