@@ -190,3 +190,165 @@ function showInfluencePeopleDialog(voterId){
 	 
 
 }
+
+
+
+
+function getVoterModifivationReport()
+{
+	//var districtId = ().val();
+	
+	$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+	var jObj=
+	{
+	constituencyId : $('#districtList option:selected').val(),
+	locationType   : "constituency",
+	locationValue  : $('#districtList option:selected').val(),
+	publicationId  : $('#presentPublicationId').val(),
+	type           : "district",
+	task           : "createPdfs"
+	};
+	var rparam ="&task="+YAHOO.lang.JSON.stringify(jObj);
+	var url = "createPdfAction.action?"+rparam;
+
+	callAjax(jObj,url);
+}
+
+function constituencyOptions(type){
+	
+	var electionIdsArr = new Array();
+		$("#electionYearsId option").each(function() {
+		var val = $(this).val();
+		electionIdsArr.push(val);
+		});
+	var largest = Math.max.apply(Math, electionIdsArr);
+		
+	var stateId=1;
+	var electionType=$("input:radio[name=electionType]:checked").val();
+	var electionId=$("#electionYearsId option:selected").val();
+	
+	if($("#electionYearsId").val() == 0)
+		electionId = largest;
+
+	var jsObj =
+		{  	
+			stateId:stateId,
+			electionType:electionType,
+			electionId:electionId,
+            type:type,
+			task:'forConstituencies'
+		};
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);				
+		var url = "optionsForBoothAction.action?"+rparam;
+		callAjax(jsObj, url);
+}
+
+
+function buildConstituencies(myResult){
+	if(myResult == null || myResult.length == 0)
+		return;
+	
+	$('#errorDiv').html("");
+	
+	var electionYearsElmt = document.getElementById("constiId");
+	electionYearsElmt.options.length=0;
+
+	var option = document.createElement('option');
+	option.value = "0";
+	option.text = "Select Constituency";
+	electionYearsElmt.add(option);
+	
+	
+	for(var i in myResult)
+	{
+		option = document.createElement('option');
+		option.value = myResult[i].id;
+		option.text = myResult[i].name;
+		try
+		{
+			electionYearsElmt.add(option,null); // standards compliant
+		}
+		catch(ex)
+		{
+			electionYearsElmt.add(option); // IE only
+		}
+	}
+	
+}
+
+
+function getImpFamilyDetails()
+{
+	var constituencyId = $("#districtListForImp").val();
+	var publicationId = $("#prevPublicationIdForImp").val();
+	var fromValue =  $.trim($("#fromAgeRange").val());
+	var toValue =  $.trim($("#toAgeRange").val());
+	var maxr = null;
+	/* //var str ='<font color="red">';
+	var flag = true;
+	alert(constituencyId);
+	alert(publicationId);alert(fromValue);alert(toValue);
+	if(constituencyId == 0)
+	{
+		str+='Select Constituency<br/>';
+		flag =false;
+	}
+	if(publicationId == 0)
+	{
+		str+='Select Publication<br/>';
+		flag =false;
+	}
+	if(fromValue == "" || isNaN(fromValue))
+	{
+		str+='Enter From Value Number<br/>';
+		flag =false;
+	}
+	else if(isNaN(toValue))
+	{
+		str+='Enter To Value Number<br/>';
+		flag =false;
+	}
+	if(toValue == "")
+	{
+     toValue = 0;
+	}
+	else
+	{
+	 if(toValue < fromValue)
+	{
+        str+='From Value must be greter than To value<br/>';
+		flag =false;
+	}
+	}
+	alert(flag); */
+	/* if(flag == false)
+	{
+			//errorDiv.html(str);
+			return;
+	}
+	
+	else
+	{ */
+		$.blockUI({ message: '<h6><img src="images/icons/ajaxImg.gif"/>Please wait.....</h6>' });
+		var jsObj= 
+		{	
+				constituencyId:constituencyId,
+				publicationId:publicationId,
+				minVal:fromValue,
+				maxVal:toValue,
+				startIndex:0,
+				results:1000,
+				type : "district",
+				task:"getFamilyDetails"		
+		};
+		
+		var rparam ="task="+YAHOO.lang.JSON.stringify(jsObj);
+		var url = "getFamilyDetailsAction.action?"+rparam;
+
+		callAjax(jsObj,url);
+	//}
+}
+
+
+
+
