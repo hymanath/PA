@@ -21511,8 +21511,8 @@ public List<SelectOptionVO> getLocalAreaWiseAgeDetailsForCustomWard(String type,
 					  result.setResultCode(ResultCodeMapper.SUCCESS);
 				  }
 				 
-					 startIndex = startIndex + 500;
-					 maxIndex = maxIndex + 500;
+					 startIndex = startIndex + 5000;
+					 maxIndex = maxIndex + 5000;
 				  
 			 }
 					 catch (Exception e) {
