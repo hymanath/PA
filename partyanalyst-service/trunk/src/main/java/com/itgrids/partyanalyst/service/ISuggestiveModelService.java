@@ -71,10 +71,9 @@ public interface ISuggestiveModelService {
 	 public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,Long userId,String path,String selType);
 	 
 	// public List<VoterHouseInfoVO> getFamilyDetailsForConstituency(Long constituencyId,Long publicationId,Long minValue,Long maxValue,Integer startIndex,Integer maxIndex,String path);
-	 
-
-	 
 	 public List<PartyPositionVO> getPartyPerfromanceStratagicReport(Long constituencyId,Long partyId,Long electionId);
+	 public List<SelectOptionVO> getCriticalPanchayatConstituencies();
+	 public List<VoterHouseInfoVO> getFamilyDetailsForPanchayat(VoterVO votervo,Long userId,String path);
 	 
 
 }
