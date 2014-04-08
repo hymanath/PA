@@ -865,7 +865,7 @@ public class ElectionService implements IElectionService{
 	}
 	
 	
-	public void setValuesToCensusVO(Object[] currentDetails , Object[] previousDetails,CensusVO censusDetailsVO)
+	public void setValuesToCensusVO(Object[] previousDetails , Object[] currentDetails,CensusVO censusDetailsVO)
 	{
 		log.error("Entered into the setValuesToCensusVO method electionservice class");
 		//CensusVO censusDetailsVO = new CensusVO();
