@@ -13,15 +13,15 @@ import com.itgrids.voterdata.util.IConstants;
 
 public class UpdateMobileNos {
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-	static final String DB_URL = "jdbc:mysql://localhost/dakavara_pa";
-	static final String USER = "root";
-	static final String PASS = "root";
+	static final String DB_URL = "jdbc:mysql://74.208.7.129:3372/dakavara_pa";
+	static final String USER = "devuser";
+	static final String PASS = "devuser@123";
     static Connection conn = null;
 	static Statement stmt = null;
 	
    public static String updateMobileNo()
 	{
-		Map<Long,String> availablemobileNoMap = new HashMap<Long, String>();
+		Map<Long,String> availablemobileNoMap = null;
 		String resultStr = "";
 		Long userId = 1l;
 		try{
@@ -32,6 +32,7 @@ public class UpdateMobileNos {
 			
 			for(String distict : districtarr)
 			{
+				availablemobileNoMap = new HashMap<Long, String>();
 				Long districtId = Long.parseLong(distict);
 				String selectQuery = " Select distinct model1.AC_NO from mobile_numbers model1 where model1.DIST_NO = "+districtId+" ";
 				ResultSet rs = stmt.executeQuery(selectQuery);
@@ -47,7 +48,9 @@ public class UpdateMobileNos {
 					{
 						Long constituencyId = new Integer(rs1.getInt("constituency_id")).longValue();
 
-						String selectQuery2 = "Select model1.mobile,model2.voter_id from mobile_numbers model1,voter model2 where model1.AC_NO = "+constitunecyNo+" and model1.IDCARD_NO = model2.voter_id_card_no";
+						String selectQuery2 = "Select model1.mobile,model2.voter_id from mobile_numbers model1,voter model2,booth_publication_voter BPV, booth B where " +
+								" model1.AC_NO = "+constitunecyNo+" and B.booth_id = BPV.booth_id AND BPV.voter_id = model2.voter_id AND model1.IDCARD_NO = model2.voter_id_card_no and " +
+										" B.publication_date_id = 10 AND B.constituency_id = "+constituencyId;
 						ResultSet rs2 = stmt.executeQuery(selectQuery2);
 						
 						while(rs2.next())
@@ -60,17 +63,17 @@ public class UpdateMobileNos {
 						String selectQuery3 = " Select uvd.voter_id,uvd.mobile_no,uvd." +
 								"user_voter_details_id from user_voter_details uvd where uvd.user_id = "+userId+" and uvd.voter_id in ("+voterIds+") ";	
 						
-						ResultSet rs3= stmt.executeQuery(selectQuery3);
+						ResultSet rs3 = stmt.executeQuery(selectQuery3);
 						List<Long> avilablevoterIds = new ArrayList<Long>();
 						
 						while(rs3.next())
 						{
 							String mobileNo = rs3.getString("mobile_no");
 							Long userVoterDetailsId = new Integer(rs3.getInt("user_voter_details_id")).longValue();
+							avilablevoterIds.add( new Integer(rs3.getInt("voter_id")).longValue());
 							
 							if(mobileNo == null || mobileNo.equalsIgnoreCase("N/A") || mobileNo.contains("99999") || mobileNo.contains("NA") || mobileNo.length() <= 5)
 							{
-								avilablevoterIds.add( new Integer(rs3.getInt("voter_id")).longValue());
 								String updateQuery = "update user_voter_details set mobile_no = '"+mobileNo+"' where user_voter_details_id = "+userVoterDetailsId+"";
 								stmt.executeUpdate(updateQuery);
 								resultStr = "updated";
@@ -78,17 +81,20 @@ public class UpdateMobileNos {
 	
 						}
 						
-						rs3.first();
-						
-						while(rs3.next())
+						for(Map.Entry<Long,String> entry : availablemobileNoMap.entrySet())
 						{
-							if(!avilablevoterIds.contains(new Integer(rs3.getInt("voter_id")).longValue()))
+							try{
+							if(!avilablevoterIds.contains(entry.getKey()))
 							{
-								Long voterId = new Integer(rs3.getInt("voter_id")).longValue();
-								String mobileNo = rs3.getString("mobile_no");
+								Long voterId = entry.getKey();
+								String mobileNo = entry.getValue();
 								String insertQuery = "INSERT INTO user_voter_details(voter_id, constituency_id, user_id, mobile_no) VALUES ("+voterId+","+constituencyId+","+userId+",'"+mobileNo+"')";
 								stmt.executeUpdate(insertQuery);
 								resultStr = "inserted";
+							}
+							}catch(Exception e)
+							{
+								e.printStackTrace();
 							}
 						}
 					}
